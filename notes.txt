@@ -1,1 +1,3 @@
-potentially remove uikit node package
+potentially remove unused packages or try to make global css for the ones that have not worked before
+
+https://startbootstrap.com/previews/simple-sidebar/ - phone feature
