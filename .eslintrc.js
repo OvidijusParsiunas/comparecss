@@ -1,14 +1,19 @@
 module.exports = {
-    "extends": "airbnb-base",
-    rules:{
-      "linebreak-style": 0,
-      "no-underscore-dangle": 0,
-      "no-param-reassign": 0,
-      "import/no-unresolved": [2, {ignore: ['fabric']}],
-      "prefer-destructuring": ["error",{"object": true, "array": false}],
-      "no-console": ["warn", { allow: ["warn", "error"] }],
-    },
-    "env": {
-      "browser": true
-    }
+  root: true,
+  env: {
+    node: true,
+  },
+  extends: [
+    'plugin:vue/essential',
+    '@vue/airbnb',
+    '@vue/typescript/recommended',
+  ],
+  parserOptions: {
+    ecmaVersion: 2020,
+  },
+  rules: {
+    'no-console': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'no-debugger': process.env.NODE_ENV === 'production' ? 'error' : 'off',
+    'linebreak-style': 'off',
+  },
 };

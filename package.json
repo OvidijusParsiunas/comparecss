@@ -1,43 +1,59 @@
 {
-  "name": "csscompare",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
-  "scripts": {
-    "build": "webpack",
-    "watch": "webpack --watch"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/OvidijusParsiunas/csscompare.git"
-  },
-  "author": "",
+  "name": "comparecss",
+  "version": "0.1.0",
+  "description": "An interactive catalog of css frameworks",
   "license": "ISC",
-  "bugs": {
-    "url": "https://github.com/OvidijusParsiunas/csscompare/issues"
+  "author": "Ovidijus Parsiunas",
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build",
+    "lint": "vue-cli-service lint"
   },
-  "homepage": "https://github.com/OvidijusParsiunas/csscompare#readme",
   "dependencies": {
+    "@vue/eslint-config-airbnb": "^5.1.0",
     "bootstrap": "^4.5.2",
     "bulma": "^0.9.0",
+    "core-js": "^3.6.5",
     "foundation-sites": "^6.6.3",
     "materialize-css": "^1.0.0",
-    "node-sass": "^4.14.1",
-    "uikit": "^3.5.7"
+    "uikit": "^3.5.7",
+    "vue": "^3.0.0-0",
+    "vue-class-component": "^8.0.0-0"
   },
   "devDependencies": {
-    "@babel/core": "^7.11.6",
-    "@babel/preset-env": "^7.11.5",
-    "babel-loader": "^8.1.0",
-    "css-loader": "^4.2.2",
-    "eslint": "^7.8.1",
-    "eslint-config-airbnb-base": "^14.2.0",
-    "eslint-loader": "^4.0.2",
-    "eslint-plugin-import": "^2.22.0",
-    "sass": "^1.26.10",
+    "@typescript-eslint/eslint-plugin": "^2.33.0",
+    "@typescript-eslint/parser": "^2.33.0",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-plugin-typescript": "^4.5.4",
+    "@vue/cli-service": "~4.5.0",
+    "@vue/compiler-sfc": "^3.0.0-0",
+    "@vue/eslint-config-typescript": "^5.0.2",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-vue": "^7.0.0-0",
+    "node-sass": "^4.14.1",
     "sass-loader": "^10.0.2",
-    "style-loader": "^1.2.1",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.12"
-  }
+    "typescript": "~3.9.3"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/vue3-essential",
+      "eslint:recommended",
+      "@vue/typescript"
+    ],
+    "parserOptions": {
+      "parser": "@typescript-eslint/parser"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
 }
