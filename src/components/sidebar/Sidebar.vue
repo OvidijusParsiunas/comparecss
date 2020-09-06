@@ -7,7 +7,7 @@
             <p>Dummy Heading</p>
             <li class="active">
                 <a href="#homeSubmenu" data-toggle="collapse"
-                aria-expanded="false" class="dropdown-toggle">
+                aria-expanded="false" class="dropdown-toggle" @click="buttonClick('Home')">
                 Home
                 </a>
                 <ul class="collapse list-unstyled" id="homeSubmenu">
@@ -27,7 +27,7 @@
             </li>
             <li>
                 <a href="#pageSubmenu" data-toggle="collapse"
-                aria-expanded="false" class="dropdown-toggle"
+                aria-expanded="false" class="dropdown-toggle" @click="buttonClick('Pages')"
                 >Pages
                 </a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
@@ -62,11 +62,14 @@
 </template>
 
 <script lang="ts">
-import { Vue } from 'vue-class-component';
 
-export default class Contents extends Vue {
-  msg!: string
-}
+export default {
+  methods: {
+    buttonClick(buttonName: string) {
+      this.$emit('sidenav-button-clicked', buttonName);
+    },
+  },
+};
 </script>
 
 <style lang="scss" scoped>

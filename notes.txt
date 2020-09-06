@@ -1,0 +1,8 @@
+potentially remove unused packages or try to make global css for the ones that have not worked before
+
+https://startbootstrap.com/previews/simple-sidebar/ - phone feature
+
+make the panelels order switchable via options popover or drag and drop
+
+https://www.youtube.com/watch?v=RA7sO_9V3vw&ab_channel=ProgramWithErik
+https://lusaxweb.github.io/vuesax/development/
