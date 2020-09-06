@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Sidebar @sidenav-button-clicked="buttonClickEvent($event)"/>
-    <Contents :activeButtonName="activeButtonName" :data="data"/>
+    <Contents :markup="markup"/>
   </div>
 </template>
 
@@ -17,23 +17,23 @@ import Sidebar from './components/sidebar/Sidebar.vue';
     Sidebar,
   },
   data: () => ({
-    activeButtonName: 'DefaultButtonName',
-    data: [
-      {
-        class: 'bootstrap',
-        component: '<button type="button" class="btn btn-primary">Primary</button>',
-      },
-      {
-        class: 'bulma',
-        component: '<button class="button">Button</button',
-      },
-    ],
+    markup: {
+      bootstrap: '<button type="button" class="btn btn-primary">Primary</button>',
+      material: '<button type="button" class="btn btn-primary">Primary</button>',
+      uikit: '<button class="uk-button uk-button-default">Primary</button>',
+      foundation: '<a class="button">Primary</a>',
+      bulma: '<button class="button">Button</button>',
+    },
   }),
   methods: {
-    buttonClickEvent(clickedButtonName: string) {
-      this.activeButtonName = clickedButtonName;
-      // get a new config here
-      console.log(this.activeButtonName);
+    buttonClickEvent() {
+      this.markup = {
+        bootstrap: '<button type="button" class="btn btn-primary">Second</button>',
+        material: '<button type="button" class="btn btn-primary">Second</button>',
+        uikit: '<button class="uk-button uk-button-default">Second</button>',
+        foundation: '<a class="button">Second</a>',
+        bulma: '<button class="button">Second</button>',
+      };
     },
   },
 })

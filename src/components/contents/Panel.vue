@@ -1,12 +1,14 @@
 <template>
   <div :class="panelClass">
-    <button type="button" class="btn btn-primary">Primary</button>
+    <div>Panel</div>
+    <div v-html="componentMarkup"></div>
   </div>
 </template>
 <script>
 export default {
   props: {
     panelClass: String,
+    componentMarkup: String,
   },
 };
 </script>
