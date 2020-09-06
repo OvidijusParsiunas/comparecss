@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Sidebar @sidenav-button-clicked="buttonClickEvent($event)"/>
-    <Contents :activeButtonName="activeButtonName"/>
+    <Contents :activeButtonName="activeButtonName" :data="data"/>
   </div>
 </template>
 
@@ -18,6 +18,16 @@ import Sidebar from './components/sidebar/Sidebar.vue';
   },
   data: () => ({
     activeButtonName: 'DefaultButtonName',
+    data: [
+      {
+        class: 'bootstrap',
+        component: '<button type="button" class="btn btn-primary">Primary</button>',
+      },
+      {
+        class: 'bulma',
+        component: '<button class="button">Button</button',
+      },
+    ],
   }),
   methods: {
     buttonClickEvent(clickedButtonName: string) {

@@ -16,26 +16,32 @@
     <div class="bulma">
         <button class="button">Button</button>
     </div>
-    <Panel panelClass="material"/>
+    <panel panelClass="material"/>
      <ul id="example-1">
-    <li v-for="item in panels" :key="item.message">
-      {{ item.message }}
-    </li>
   </ul>
+  <panel-slot v-for="item in data" :key="item.class" v-bind:class="item.class">
+    <div v-html="item.component"></div>
+  </panel-slot>
+  <!-- <panel-slot class="bulma">
+    <BulmaButtons/>
+  </panel-slot> -->
   </div>
 </template>
 
 <script lang="ts">
 
 import Panel from './Panel.vue';
+import PanelSlot from './PanelSlot.vue';
 
 export default {
   props: {
     activeButtonName: String,
     panels: Array,
+    data: Array,
   },
   components: {
     Panel,
+    PanelSlot,
   },
 };
 </script>
