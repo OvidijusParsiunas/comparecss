@@ -23,7 +23,10 @@
                 </ul>
             </li>
             <li>
-                <a href="#">About</a>
+                <a style="cursor: pointer" @click="buttonClick('Badges')">Badges</a>
+            </li>
+            <li>
+                <a style="cursor: pointer" @click="buttonClick('Buttons')">Buttons</a>
             </li>
             <li>
                 <a href="#pageSubmenu" data-toggle="collapse"

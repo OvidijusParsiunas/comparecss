@@ -1,14 +1,16 @@
 <template>
   <div id="app">
-    <Sidenav @sidenav-button-clicked="buttonClickEvent($event)"/>
+    <Sidenav @sidenav-button-clicked="sideNavButtonClick($event)"/>
     <Contents :markup="markup"/>
   </div>
 </template>
 
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
-import Contents from './components/contents/Contents.vue';
+import Contents from './components/content/Content.vue';
 import Sidenav from './components/sidenav/Sidenav.vue';
+import configManager from './services/configManager';
+import ContentMarkupInterface from './interfaces/ContentMarkupInterface';
 
 // https://vuejsdevelopers.com/2020/03/16/vue-js-tutorial/
 @Options({
@@ -16,28 +18,22 @@ import Sidenav from './components/sidenav/Sidenav.vue';
     Contents,
     Sidenav,
   },
-  data: () => ({
-    markup: {
+})
+export default class App extends Vue {
+    // data variables these have been moved here to allow typing
+    private markup: ContentMarkupInterface = {
       bootstrap: '<button type="button" class="btn btn-primary">Primary</button>',
       material: '<button type="button" class="btn btn-primary">Primary</button>',
       uikit: '<button class="uk-button uk-button-default">Primary</button>',
       foundation: '<a class="button">Primary</a>',
       bulma: '<button class="button">Button</button>',
-    },
-  }),
-  methods: {
-    buttonClickEvent() {
-      this.markup = {
-        bootstrap: '<button type="button" class="btn btn-primary">Second</button>',
-        material: '<button type="button" class="btn btn-primary">Second</button>',
-        uikit: '<button class="uk-button uk-button-default">Second</button>',
-        foundation: '<a class="button">Second</a>',
-        bulma: '<button class="button">Second</button>',
-      };
-    },
-  },
-})
-export default class App extends Vue {}
+    };
+
+    // methods
+    public sideNavButtonClick(clickedButtonName: string): void {
+      this.markup = configManager.retrieveContentMarkup(clickedButtonName);
+    }
+}
 </script>
 
 <style lang="css">
