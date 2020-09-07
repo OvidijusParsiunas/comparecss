@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <Sidebar @sidenav-button-clicked="buttonClickEvent($event)"/>
+    <Sidenav @sidenav-button-clicked="buttonClickEvent($event)"/>
     <Contents :markup="markup"/>
   </div>
 </template>
@@ -8,13 +8,13 @@
 <script lang="ts">
 import { Options, Vue } from 'vue-class-component';
 import Contents from './components/contents/Contents.vue';
-import Sidebar from './components/sidebar/Sidebar.vue';
+import Sidenav from './components/sidenav/Sidenav.vue';
 
 // https://vuejsdevelopers.com/2020/03/16/vue-js-tutorial/
 @Options({
   components: {
     Contents,
-    Sidebar,
+    Sidenav,
   },
   data: () => ({
     markup: {

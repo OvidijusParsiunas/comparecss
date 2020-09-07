@@ -1,6 +1,6 @@
 <template>
-  <nav id="comparecss-sidebar" class="bootstrap">
-        <div class="sidebar-header">
+  <nav id="comparecss-sidenav" class="bootstrap">
+        <div class="sidenav-header">
             <h3 class="active">comparecss</h3>
         </div>
         <ul class="list-unstyled components">
@@ -73,7 +73,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-#comparecss-sidebar {
+#comparecss-sidenav {
     min-width: 250px;
     max-width: 250px;
     background: #7386D5;
@@ -118,10 +118,10 @@ export default {
     }
 
     /* ---------------------------------------------------
-        SIDEBAR STYLE
+        sidenav STYLE
     ----------------------------------------------------- */
 
-    .sidebar-header {
+    .sidenav-header {
         padding: 20px;
         background: #6d7fcc;
     }
@@ -203,7 +203,7 @@ export default {
         .active {
             margin-left: 0;
         }
-        #sidebarCollapse span {
+        #sidenavCollapse span {
             display: none;
         }
     }
