@@ -110,4 +110,13 @@ body {
     box-sizing: border-box;
     @import "node_modules/bulma/bulma.sass";
 };
+
+.semantic {
+    @import "assets/scss/semantic.scss";
+};
+
+.pure {
+  @import 'node_modules/purecss-sass/vendor/assets/stylesheets/purecss.scss';
+
+}
 </style>

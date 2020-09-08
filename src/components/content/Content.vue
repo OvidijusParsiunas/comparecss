@@ -5,6 +5,8 @@
     <panel panelClass="uikit" :componentMarkup="markup.uikit"/>
     <panel panelClass="foundation" :componentMarkup="markup.foundation"/>
     <panel panelClass="bulma" :componentMarkup="markup.bulma"/>
+    <panel panelClass="semantic" :componentMarkup="markup.semantic"/>
+    <panel panelClass="pure" :componentMarkup="markup.pure"/>
   </div>
 </template>
   <!-- if the order is going to become important,
