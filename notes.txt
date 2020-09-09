@@ -1,4 +1,7 @@
-potentially remove unused packages or try to make global css for the ones that have not worked before
+try to use sass version of the packages
+
+https://speckyboy.com/top-50-css/
+https://github.com/troxler/awesome-css-frameworks
 
 https://startbootstrap.com/previews/simple-sidebar/ - phone feature
 

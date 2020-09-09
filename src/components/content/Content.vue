@@ -7,6 +7,8 @@
     <panel panelClass="bulma" :componentMarkup="markup.bulma"/>
     <panel panelClass="semantic" :componentMarkup="markup.semantic"/>
     <panel panelClass="pure" :componentMarkup="markup.pure"/>
+    <panel panelClass="skeleton" :componentMarkup="markup.skeleton"/>
+    <panel panelClass="milligram" :componentMarkup="markup.milligram"/>
   </div>
 </template>
   <!-- if the order is going to become important,

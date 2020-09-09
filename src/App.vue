@@ -117,6 +117,14 @@ body {
 
 .pure {
   @import 'node_modules/purecss-sass/vendor/assets/stylesheets/purecss.scss';
+}
 
+.skeleton {
+  @import "assets/scss/normalize.scss";
+  @import "assets/scss/skeleton.scss";
+}
+
+.milligram {
+  @import 'node_modules/milligram-sass/src/milligram.sass';
 }
 </style>
