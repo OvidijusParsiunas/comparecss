@@ -12,7 +12,7 @@ export default new class {
       default: {
         return {
           bootstrap: '',
-          material: '',
+          materialize: '',
           uikit: '',
           foundation: '',
           bulma: '',

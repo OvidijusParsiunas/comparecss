@@ -1,4 +1,4 @@
-try to use sass version of the packages
+try to use sass version of the packages or make sure that the used files are min versions
 
 https://speckyboy.com/top-50-css/
 https://github.com/troxler/awesome-css-frameworks

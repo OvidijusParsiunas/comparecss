@@ -12,3 +12,8 @@ export default {
   },
 };
 </script>
+<style lang="css">
+div {
+  width: 90%;
+}
+</style>

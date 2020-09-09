@@ -1,7 +1,7 @@
 <template>
   <div id="content">
     <panel panelClass="bootstrap" :componentMarkup="markup.bootstrap"/>
-    <panel panelClass="material" :componentMarkup="markup.material"/>
+    <panel panelClass="materialize" :componentMarkup="markup.materialize"/>
     <panel panelClass="uikit" :componentMarkup="markup.uikit"/>
     <panel panelClass="foundation" :componentMarkup="markup.foundation"/>
     <panel panelClass="bulma" :componentMarkup="markup.bulma"/>
@@ -9,6 +9,9 @@
     <panel panelClass="pure" :componentMarkup="markup.pure"/>
     <panel panelClass="skeleton" :componentMarkup="markup.skeleton"/>
     <panel panelClass="milligram" :componentMarkup="markup.milligram"/>
+    <panel panelClass="spectre" :componentMarkup="markup.spectre"/>
+    <panel panelClass="primer" :componentMarkup="markup.primer"/>
+    <panel panelClass="nes" :componentMarkup="markup.nes"/>
   </div>
 </template>
   <!-- if the order is going to become important,

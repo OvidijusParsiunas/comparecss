@@ -23,7 +23,7 @@ export default class App extends Vue {
   // data variables these have been moved here to allow typing
   private markup: ContentMarkupInterface = {
     bootstrap: '<button type="button" class="btn btn-primary">Primary</button>',
-    material: '<button type="button" class="btn btn-primary">Primary</button>',
+    materialize: '<button type="button" class="btn btn-primary">Primary</button>',
     uikit: '<button class="uk-button uk-button-default">Primary</button>',
     foundation: '<a class="button">Primary</a>',
     bulma: '<button class="button">Button</button>',
@@ -38,6 +38,7 @@ export default class App extends Vue {
 
 <style lang="css">
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+@import "https://fonts.googleapis.com/css?family=Press+Start+2P";
 #app {
     display: flex;
     width: 100%;
@@ -63,7 +64,7 @@ body {
       -webkit-tap-highlight-color: transparent;
   }
 }
- .material {
+ .materialize {
     @import "node_modules/materialize-css/sass/materialize.scss";
   }
 
@@ -126,5 +127,35 @@ body {
 
 .milligram {
   @import 'node_modules/milligram-sass/src/milligram.sass';
+}
+
+.spectre {
+  box-sizing: border-box;
+  font-size: 20px;
+  line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+  background: #fff;
+  color: #3b4351;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", sans-serif;
+  font-size: .8rem;
+  overflow-x: hidden;
+  text-rendering: optimizeLegibility;
+  @import 'node_modules/spectre.css/src/spectre.scss';
+}
+
+.primer {
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Helvetica,Arial,sans-serif,
+    "Apple Color Emoji","Segoe UI Emoji";
+  font-size: 14px;
+  line-height: 1.5;
+  color: #24292e;
+  background-color: #fff;
+  @import "@primer/css/index.scss";
+}
+
+.nes {
+  font-family: 'Press Start 2P';
+  @import "assets/scss/nes.scss";
 }
 </style>

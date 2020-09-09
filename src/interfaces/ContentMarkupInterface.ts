@@ -1,6 +1,6 @@
 export default interface ContentMarkupInterface {
   bootstrap: String,
-  material: String,
+  materialize: String,
   uikit: String,
   foundation: String,
   bulma: String,

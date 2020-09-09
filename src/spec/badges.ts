@@ -2,7 +2,7 @@ import ContentMarkupInterface from '../interfaces/ContentMarkupInterface';
 
 export default {
   bootstrap: '<span class="badge badge-primary">Primary</span>',
-  material: '<span class="new badge">4</span>',
+  materialize: '<span class="new badge">4</span>',
   uikit: `<span class="uk-badge">1</span>
           <span class="uk-badge">100</span>`,
   foundation: `<span class="badge primary">1</span>
