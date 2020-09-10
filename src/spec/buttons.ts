@@ -67,5 +67,38 @@ export default {
   <label class="nes-btn">
     <span>Select your file</span>
     <input type="file">
-  </label>`
+  </label>`,
+  picnic: `
+  <button>Button</button>
+<button class='success'>Success</button>
+<button class='warning'>Warning</button>
+<button class='error'>Error</button>
+<button disabled>Disabled</button>`,
+  chota: `<a class="button">Default</a>
+  <a class="button primary">Primary</a>
+  <a class="button secondary">Secondary</a>
+  <a class="button dark">Dark</a>
+  <a class="button error">Error</a>
+  <a class="button success">Success</a>
+  <a class="button outline">Outline</a>
+  <a class="button outline primary">Primary outline</a>
+  <a class="button outline secondary">Secondary outline</a>
+  <a class="button outline dark">Dark outline</a>
+  <a class="button clear">Clear</a>
+  <button type="button" class="button primary icon">New file 
+    <img src="https://icongr.am/feather/file.svg?size=16&amp;color=ffffff" alt="icon">
+  </button>
+  <button class="button icon-only">
+    <img src="https://icongr.am/feather/search.svg?size=24">
+  </button>`,
+  cirrus: ` <div class="btn-container">
+  <div class="btn btn-primary btn-animated">test</div>
+</div>
+<div class="btn-container">
+  <button class="btn-primary btn-animated">Regular Button</button>
+</div>
+<div class="btn-container">
+  <input type="submit" class="btn-primary btn-animated" value="Submit"/>
+</div>
+  `
 } as ContentMarkupInterface;

@@ -12,6 +12,13 @@
     <panel panelClass="spectre" :componentMarkup="markup.spectre"/>
     <panel panelClass="primer" :componentMarkup="markup.primer"/>
     <panel panelClass="nes" :componentMarkup="markup.nes"/>
+    <panel panelClass="picnic" :componentMarkup="markup.picnic"/>
+    <panel panelClass="chota" :componentMarkup="markup.chota"/>
+    <panel panelClass="cirrus" :componentMarkup="markup.cirrus"/>
+
+    <!-- turret css -->
+    <!-- HiQ -->
+    <!-- MUI CSS -->
   </div>
 </template>
   <!-- if the order is going to become important,

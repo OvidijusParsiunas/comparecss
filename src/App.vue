@@ -158,4 +158,84 @@ body {
   font-family: 'Press Start 2P';
   @import "assets/scss/nes.scss";
 }
+
+.picnic {
+  @import 'node_modules/picnic/src/picnic.scss';
+}
+
+.chota {
+  --bg-color: #ffffff;
+  --bg-secondary-color: #f3f3f6;
+  --color-primary: #14854F;
+  --color-lightGrey: #d2d6dd;
+  --color-grey: #747681;
+  --color-darkGrey: #3f4144;
+  --color-error: #d43939;
+  --color-success: #28bd14;
+  --grid-maxWidth: 120rem;
+  --grid-gutter: 2rem;
+  --font-size: 1.6rem;
+  --font-color: #333333;
+  --font-family-sans: -apple-system, BlinkMacSystemFont, Avenir, "Avenir Next",
+    "Segoe UI", "Roboto", "Oxygen", "Ubuntu", "Cantarell", "Fira Sans",
+    "Droid Sans", "Helvetica Neue", sans-serif;
+  --font-family-mono: monaco, "Consolas", "Lucida Console", monospace;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  font-size: 62.5%;
+  line-height: 1.15;
+  -ms-text-size-adjust: 100%;
+  -webkit-text-size-adjust: 100%;
+  background-color: var(--bg-color);
+  line-height: 1.6;
+  font-size: var(--font-size);
+  color: var(--font-color);
+  font-family: "Segoe UI", "Helvetica Neue", sans-serif; /*fallback*/
+  font-family: var(--font-family-sans);
+  margin: 0;
+  padding: 0;
+  @import 'node_modules/chota/dist/chota';
+}
+
+.cirrus {
+  --cirrus-fg: #374054;
+  --cirrus-bg: #fff;
+
+  --cirrus-primary: #f03d4d;
+  --cirrus-primary-light: #ffdadd;
+  --cirrus-accent-hover: #d62939;
+  --cirrus-accent-border: #c21b2b;
+  --cirrus-light: #f6f9fc;
+  --cirrus-light-gray: #f8f9fa;
+  --cirrus-gray: #d5d7dc;
+  --cirrus-dark-gray: #909090;
+  --cirrus-dark: #363636;
+  --cirrus-link: #5e5cc7;
+  --cirrus-link-dark: #4643e2;
+  --cirrus-info: #2972fa;
+  --cirrus-success: #0dd157;
+  --cirrus-warning: #fab633;
+  --cirrus-danger: #fb4143;
+
+  --cirrus-light-hover: #d9e6f2;
+  --cirrus-dark-hover: #424242;
+  --cirrus-info-hover: #2368e9;
+  --cirrus-link-hover: #f8f7ff;
+  --cirrus-success-hover: #00b147;
+  --cirrus-warning-hover: #f9a90e;
+  --cirrus-danger-hover: #f1393c;
+
+  --cirrus-select-bg: rgba(0, 161, 255, 0.2);
+
+  --cirrus-code-bg: var(--cirrus-primary-light);
+  --cirrus-code-fg: #dc4753;
+
+  --cirrus-form-group-bg: var(--cirrus-light-gray);
+  --cirrus-form-group-fg: var(--cirrus-dark-gray);
+
+  --toast-primary-bg: rgba(49, 59, 80, 0.9);
+
+  --animation-duration: .2s;
+  @import "assets/scss/cirrus.scss";
+}
 </style>
