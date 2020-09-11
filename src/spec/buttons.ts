@@ -100,5 +100,40 @@ export default {
 <div class="btn-container">
   <input type="submit" class="btn-primary btn-animated" value="Submit"/>
 </div>
-  `
+  `,
+  turret: `<div class="button-group">
+  <button class="button">Button</button>
+  <button class="button">Button</button>
+  <button class="button">Button</button>
+</div>`,
+hiq: `
+<form>
+  <fieldset>
+    <legend>Related Fields:</legend>
+    <p>
+        <label>Field 1:</label>
+        <input type="text">
+    </p>
+    <p>
+        <label>Field 2:</label>
+        <input type="text">
+    </p>
+    <p>
+        <label>Field 3:</label>
+        <input type="text">
+    </p>
+  </fieldset>
+</form>`,
+  mui: `<div>
+  <button class="mui-btn">Button</button>
+  <button class="mui-btn mui-btn--primary">Button</button>
+  <button class="mui-btn mui-btn--danger">Button</button>
+  <button class="mui-btn mui-btn--accent">Button</button>
+</div>
+<div>
+  <button class="mui-btn" disabled>Button</button>
+  <button class="mui-btn mui-btn--primary" disabled>Button</button>
+  <button class="mui-btn mui-btn--danger" disabled>Button</button>
+  <button class="mui-btn mui-btn--accent" disabled>Button</button>
+</div>`
 } as ContentMarkupInterface;

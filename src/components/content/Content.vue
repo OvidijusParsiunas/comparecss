@@ -15,10 +15,9 @@
     <panel panelClass="picnic" :componentMarkup="markup.picnic"/>
     <panel panelClass="chota" :componentMarkup="markup.chota"/>
     <panel panelClass="cirrus" :componentMarkup="markup.cirrus"/>
-
-    <!-- turret css -->
-    <!-- HiQ -->
-    <!-- MUI CSS -->
+    <panel panelClass="turret" :componentMarkup="markup.turret"/>
+    <panel panelClass="hiq" :componentMarkup="markup.hiq"/>
+    <panel panelClass="mui" :componentMarkup="markup.mui"/>
   </div>
 </template>
   <!-- if the order is going to become important,
