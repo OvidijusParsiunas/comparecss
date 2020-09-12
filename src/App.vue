@@ -18,6 +18,26 @@ import ContentMarkupInterface from './interfaces/ContentMarkupInterface';
     Contents,
     Sidenav,
   },
+  mounted() {
+    const jqueryScript = document.createElement('script');
+    jqueryScript.setAttribute('src', 'assets/jquery/jquery-3.5.1.slim.min.js');
+    document.head.appendChild(jqueryScript);
+    const recaptchaScript = document.createElement('script');
+    recaptchaScript.setAttribute('src', 'assets/mui/mui.min.js');
+    document.head.appendChild(recaptchaScript);
+    const semanticScript = document.createElement('script');
+    semanticScript.setAttribute('src', 'assets/semantic/semantic.min.js');
+    document.head.appendChild(semanticScript);
+    const foundationScript = document.createElement('script');
+    foundationScript.setAttribute('src', 'assets/foundation/foundation.js');
+    document.head.appendChild(foundationScript);
+    const uikitScript = document.createElement('script');
+    uikitScript.setAttribute('src', 'assets/uikit/uikit.min.js');
+    document.head.appendChild(uikitScript);
+    const bootstrapScript = document.createElement('script');
+    bootstrapScript.setAttribute('src', 'assets/bootstrap/bootstrap.min.js');
+    document.head.appendChild(bootstrapScript);
+  },
 })
 export default class App extends Vue {
   // data variables these have been moved here to allow typing
@@ -64,47 +84,48 @@ body {
       -webkit-tap-highlight-color: transparent;
   }
 }
- .materialize {
-    @import "node_modules/materialize-css/sass/materialize.scss";
-  }
 
-  .uikit {
-    // @import "node_modules/uikit/src/scss/variables.scss";
-    // @import "node_modules/uikit/src/scss/variables-theme.scss";
-    // @import "node_modules/uikit/src/scss/uikit-theme.scss";
-    // @import "node_modules/uikit/src/scss/mixins.scss";
-    // @import "node_modules/uikit/src/scss/mixins-theme.scss";
-    // @import "node_modules/uikit/src/scss/uikit.scss";
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
-    "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
-    "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-    font-size: 16px;
-    font-weight: normal;
-    line-height: 1.5;
-    -webkit-text-size-adjust: 100%;
-    background: #fff;
-    color: #666;
-    @import "assets/scss/uikit.scss";
+.materialize {
+  @import "node_modules/materialize-css/sass/materialize.scss";
+}
+
+.uikit {
+  // @import "node_modules/uikit/src/scss/variables.scss";
+  // @import "node_modules/uikit/src/scss/variables-theme.scss";
+  // @import "node_modules/uikit/src/scss/uikit-theme.scss";
+  // @import "node_modules/uikit/src/scss/mixins.scss";
+  // @import "node_modules/uikit/src/scss/mixins-theme.scss";
+  // @import "node_modules/uikit/src/scss/uikit.scss";
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+  "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  background: #fff;
+  color: #666;
+  @import "assets/scss/uikit.scss";
 };
 
 .foundation {
-    // @import 'node_modules/foundation-sites/scss/util/util';
+  // @import 'node_modules/foundation-sites/scss/util/util';
 
-    // @import "node_modules/foundation-sites/scss/foundation.scss";
-    // @import "node_modules/foundation-sites/scss/_global.scss";
-    -webkit-box-sizing: border-box;
-    box-sizing: border-box;
-    font-size: 100%;
-    margin: 0;
-    padding: 0;
-    background: #fefefe;
-    font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
-    font-weight: normal;
-    line-height: 1.5;
-    color: #0a0a0a;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    @import "assets/scss/foundation.scss";
+  // @import "node_modules/foundation-sites/scss/foundation.scss";
+  // @import "node_modules/foundation-sites/scss/_global.scss";
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+  background: #fefefe;
+  font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  font-weight: normal;
+  line-height: 1.5;
+  color: #0a0a0a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  @import "assets/scss/foundation.scss";
 };
 
 .bulma {
@@ -181,7 +202,7 @@ body {
     "Droid Sans", "Helvetica Neue", sans-serif;
   --font-family-mono: monaco, "Consolas", "Lucida Console", monospace;
   -webkit-box-sizing: border-box;
-          box-sizing: border-box;
+  box-sizing: border-box;
   font-size: 62.5%;
   line-height: 1.15;
   -ms-text-size-adjust: 100%;

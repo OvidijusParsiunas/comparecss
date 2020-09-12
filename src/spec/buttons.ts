@@ -2,7 +2,11 @@ import ContentMarkupInterface from '../interfaces/ContentMarkupInterface';
 
 export default {
   bootstrap: '<button type="button" class="btn btn-primary">Second</button>',
-  materialize: '<button type="button" class="btn btn-primary">Second</button>',
+  materialize: `
+  <a class="waves-effect waves-light btn">button</a>
+  <a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>button</a>
+  <a class="waves-effect waves-light btn"><i class="material-icons right">cloud</i>button</a>
+          `,
   uikit: '<button class="uk-button uk-button-default">Second</button>',
   foundation: '<a class="button">Second</a>',
   bulma: '<button class="button">Second</button>',
