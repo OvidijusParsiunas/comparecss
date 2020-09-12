@@ -18,6 +18,7 @@
     <panel panelClass="turret" :componentMarkup="markup.turret"/>
     <panel panelClass="hiq" :componentMarkup="markup.hiq"/>
     <panel panelClass="mui" :componentMarkup="markup.mui"/>
+    <panel panelClass="patternfly" :componentMarkup="markup.patternfly"/>
   </div>
 </template>
 

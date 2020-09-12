@@ -139,5 +139,10 @@ hiq: `
   <button class="mui-btn mui-btn--primary" disabled>Button</button>
   <button class="mui-btn mui-btn--danger" disabled>Button</button>
   <button class="mui-btn mui-btn--accent" disabled>Button</button>
-</div>`
+</div>`,
+patternfly: `<button class="pf-c-button pf-m-primary" type="button">Primary</button>
+<button class="pf-c-button pf-m-secondary" type="button">Secondary</button>
+<button class="pf-c-button pf-m-tertiary" type="button">Tertiary</button>
+<button class="pf-c-button pf-m-danger" type="button">Danger</button>
+<button class="pf-c-button pf-m-warning" type="button">Warning</button>`
 } as ContentMarkupInterface;
