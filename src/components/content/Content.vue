@@ -20,6 +20,13 @@
     <panel panelClass="mui" :componentMarkup="markup.mui"/>
   </div>
 </template>
+
+  // https://jdan.github.io/98.css/
+  // https://material.io/develop/web/components/buttons
+  // https://www.blazeui.com/getting-started/install
+  // https://kbrsh.github.io/wing/#installation
+  // https://tailwindcss.com/
+  // https://ant.design/components/button/
   <!-- if the order is going to become important,
   consider having a for loop which would traverse an array -->
   <!-- <panel-slot v-for="item in data" :key="item.class" v-bind:class="item.class">
