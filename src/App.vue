@@ -37,6 +37,9 @@ import ContentMarkupInterface from './interfaces/ContentMarkupInterface';
     const bootstrapScript = document.createElement('script');
     bootstrapScript.setAttribute('src', 'assets/bootstrap/bootstrap.min.js');
     document.head.appendChild(bootstrapScript);
+    const poppoverScript = document.createElement('script');
+    poppoverScript.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js');
+    document.head.appendChild(poppoverScript);
   },
 })
 export default class App extends Vue {
@@ -532,5 +535,20 @@ body {
   text-align: left;
   background-color: var(--pf-global--BackgroundColor--100);
   @import "assets/scss/patternfly.scss";
+}
+
+.bootflat {
+  @import "node_modules/bootstrap/scss/bootstrap";
+  button {
+      line-height: 1.15;
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      -ms-overflow-style: scrollbar;
+      -webkit-tap-highlight-color: transparent;
+  }
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #434a54;
+  background-color: white;
+  @import "assets/scss/bootflat.scss";
 }
 </style>

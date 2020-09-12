@@ -140,9 +140,11 @@ hiq: `
   <button class="mui-btn mui-btn--danger" disabled>Button</button>
   <button class="mui-btn mui-btn--accent" disabled>Button</button>
 </div>`,
-patternfly: `<button class="pf-c-button pf-m-primary" type="button">Primary</button>
-<button class="pf-c-button pf-m-secondary" type="button">Secondary</button>
-<button class="pf-c-button pf-m-tertiary" type="button">Tertiary</button>
-<button class="pf-c-button pf-m-danger" type="button">Danger</button>
-<button class="pf-c-button pf-m-warning" type="button">Warning</button>`
+  patternfly: `<button class="pf-c-button pf-m-primary" type="button">Primary</button>
+  <button class="pf-c-button pf-m-secondary" type="button">Secondary</button>
+  <button class="pf-c-button pf-m-tertiary" type="button">Tertiary</button>
+  <button class="pf-c-button pf-m-danger" type="button">Danger</button>
+  <button class="pf-c-button pf-m-warning" type="button">Warning</button>`,
+  bootflat: `<h1>Test bootflat</h1>
+  <a class="btn btn-primary">Primary</a>`
 } as ContentMarkupInterface;
