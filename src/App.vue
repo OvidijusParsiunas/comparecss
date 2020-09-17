@@ -10,7 +10,7 @@ import { Options, Vue } from 'vue-class-component';
 import Contents from './components/content/Content.vue';
 import Sidenav from './components/sidenav/Sidenav.vue';
 import markupManager from './services/markupManager';
-import ContentMarkupInterface from './interfaces/ContentMarkupInterface';
+import { ContentMarkupInterface } from './interfaces/ContentMarkupInterface';
 
 // https://vuejsdevelopers.com/2020/03/16/vue-js-tutorial/
 @Options({
@@ -424,17 +424,20 @@ body {
   --pf-global--danger-color--100: #c9190b;
   --pf-global--danger-color--200: #a30000;
   --pf-global--danger-color--300: #470000;
-  --pf-global--BoxShadow--sm: 0 0.0625rem 0.125rem 0 rgba(3, 3, 3, 0.12), 0 0 0.125rem 0 rgba(3, 3, 3, 0.06);
+  --pf-global--BoxShadow--sm: 0 0.0625rem 0.125rem 0
+  rgba(3, 3, 3, 0.12), 0 0 0.125rem 0 rgba(3, 3, 3, 0.06);
   --pf-global--BoxShadow--sm-top: 0 -0.125rem 0.25rem -0.0625rem rgba(3, 3, 3, 0.16);
   --pf-global--BoxShadow--sm-right: 0.125rem 0 0.25rem -0.0625rem rgba(3, 3, 3, 0.16);
   --pf-global--BoxShadow--sm-bottom: 0 0.125rem 0.25rem -0.0625rem rgba(3, 3, 3, 0.16);
   --pf-global--BoxShadow--sm-left: -0.125rem 0 0.25rem -0.0625rem rgba(3, 3, 3, 0.16);
-  --pf-global--BoxShadow--md: 0 0.25rem 0.5rem 0rem rgba(3, 3, 3, 0.12), 0 0 0.25rem 0 rgba(3, 3, 3, 0.06);
+  --pf-global--BoxShadow--md: 0 0.25rem 0.5rem 0rem
+  rgba(3, 3, 3, 0.12), 0 0 0.25rem 0 rgba(3, 3, 3, 0.06);
   --pf-global--BoxShadow--md-top: 0 -0.5rem 0.5rem -0.375rem rgba(3, 3, 3, 0.18);
   --pf-global--BoxShadow--md-right: 0.5rem 0 0.5rem -0.375rem rgba(3, 3, 3, 0.18);
   --pf-global--BoxShadow--md-bottom: 0 0.5rem 0.5rem -0.375rem rgba(3, 3, 3, 0.18);
   --pf-global--BoxShadow--md-left: -0.5rem 0 0.5rem -0.375rem rgba(3, 3, 3, 0.18);
-  --pf-global--BoxShadow--lg: 0 0.5rem 1rem 0 rgba(3, 3, 3, 0.16), 0 0 0.375rem 0 rgba(3, 3, 3, 0.08);
+  --pf-global--BoxShadow--lg: 0 0.5rem 1rem 0
+  rgba(3, 3, 3, 0.16), 0 0 0.375rem 0 rgba(3, 3, 3, 0.08);
   --pf-global--BoxShadow--lg-top: 0 -0.75rem 0.75rem -0.5rem rgba(3, 3, 3, 0.18);
   --pf-global--BoxShadow--lg-right: 0.75rem 0 0.75rem -0.5rem rgba(3, 3, 3, 0.18);
   --pf-global--BoxShadow--lg-bottom: 0 0.75rem 0.75rem -0.5rem rgba(3, 3, 3, 0.18);
@@ -496,10 +499,15 @@ body {
   --pf-global--icon--FontSize--lg: 1.5rem;
   --pf-global--icon--FontSize--xl: 3.375rem;
   --pf-global--FontFamily--sans-serif: RedHatText, Overpass, overpass, helvetica, arial, sans-serif;
-  --pf-global--FontFamily--heading--sans-serif: RedHatDisplay, Overpass, overpass, helvetica, arial, sans-serif;
-  --pf-global--FontFamily--monospace: Liberation Mono, consolas, SFMono-Regular, menlo, monaco, Courier New, monospace;
-  --pf-global--FontFamily--overpass--sans-serif: overpass, overpass, open sans, -apple-system, blinkmacsystemfont, Segoe UI, roboto, Helvetica Neue, arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
-  --pf-global--FontFamily--overpass--monospace: overpass-mono, overpass-mono, SFMono-Regular, menlo, monaco, consolas, Liberation Mono, Courier New, monospace;
+  --pf-global--FontFamily--heading--sans-serif: RedHatDisplay, Overpass, overpass,
+    helvetica, arial, sans-serif;
+  --pf-global--FontFamily--monospace: Liberation Mono, consolas, SFMono-Regular,
+    menlo, monaco, Courier New, monospace;
+  --pf-global--FontFamily--overpass--sans-serif: overpass, overpass, open sans, -apple-system,
+    blinkmacsystemfont, Segoe UI, roboto, Helvetica Neue, arial, sans-serif, Apple Color Emoji,
+    Segoe UI Emoji, Segoe UI Symbol;
+  --pf-global--FontFamily--overpass--monospace: overpass-mono, overpass-mono, SFMono-Regular,
+    menlo, monaco, consolas, Liberation Mono, Courier New, monospace;
   --pf-global--FontSize--4xl: 2.25rem;
   --pf-global--FontSize--3xl: 1.75rem;
   --pf-global--FontSize--2xl: 1.5rem;

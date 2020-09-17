@@ -1,10 +1,10 @@
-import ContentMarkupInterface from '../interfaces/ContentMarkupInterface';
-import Buttons from '../spec/buttons';
 import Badges from '@/spec/badges';
+import { ContentMarkupInterface } from '../interfaces/ContentMarkupInterface';
+import Buttons from '../spec/buttons';
 
 export default new class {
-  public retrieveContentMarkup(clickedButtonName: string): ContentMarkupInterface {
-    switch(clickedButtonName) {
+  static retrieveContentMarkup(clickedButtonName: string): ContentMarkupInterface {
+    switch (clickedButtonName) {
       case 'Badges':
         return Badges;
       case 'Buttons':
@@ -20,4 +20,4 @@ export default new class {
       }
     }
   }
-}
+}();

@@ -1,4 +1,4 @@
-import ContentMarkupInterface from '../interfaces/ContentMarkupInterface';
+import { ContentMarkupInterface } from '../interfaces/ContentMarkupInterface';
 
 export default {
   bootstrap: '<button type="button" class="btn btn-primary">Second</button>',
@@ -15,7 +15,7 @@ export default {
   <button class="ui button">Two</button>
   <button class="ui button">Three</button>
   </div>`,
-  pure: `<a class="pure-button" href="#">A Pure Button</a>`,
+  pure: '<a class="pure-button" href="#">A Pure Button</a>',
   skeleton: `<!-- Standard buttons -->
   <a class="button" href="#">Anchor button</a>
   
@@ -110,24 +110,24 @@ export default {
   <button class="button">Button</button>
   <button class="button">Button</button>
 </div>`,
-hiq: `
-<form>
-  <fieldset>
-    <legend>Related Fields:</legend>
-    <p>
-        <label>Field 1:</label>
-        <input type="text">
-    </p>
-    <p>
-        <label>Field 2:</label>
-        <input type="text">
-    </p>
-    <p>
-        <label>Field 3:</label>
-        <input type="text">
-    </p>
-  </fieldset>
-</form>`,
+  hiq: `
+  <form>
+    <fieldset>
+      <legend>Related Fields:</legend>
+      <p>
+          <label>Field 1:</label>
+          <input type="text">
+      </p>
+      <p>
+          <label>Field 2:</label>
+          <input type="text">
+      </p>
+      <p>
+          <label>Field 3:</label>
+          <input type="text">
+      </p>
+    </fieldset>
+  </form>`,
   mui: `<div>
   <button class="mui-btn">Button</button>
   <button class="mui-btn mui-btn--primary">Button</button>
@@ -146,5 +146,5 @@ hiq: `
   <button class="pf-c-button pf-m-danger" type="button">Danger</button>
   <button class="pf-c-button pf-m-warning" type="button">Warning</button>`,
   bootflat: `<h1>Test bootflat</h1>
-  <a class="btn btn-primary">Primary</a>`
+  <a class="btn btn-primary">Primary</a>`,
 } as ContentMarkupInterface;

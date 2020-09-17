@@ -1,4 +1,4 @@
-import ContentMarkupInterface from '../interfaces/ContentMarkupInterface';
+import { ContentMarkupInterface } from '../interfaces/ContentMarkupInterface';
 
 export default {
   bootstrap: '<span class="badge badge-primary">Primary</span>',
