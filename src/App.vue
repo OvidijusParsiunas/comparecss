@@ -50,6 +50,7 @@ export default class App extends Vue {
     foundation: '<a class="button">Primary</a>',
     bulma: '<button class="button">Button</button>',
   };
+
   // methods
   public sideNavButtonClick(clickedButtonName: string): void {
     this.markup = markupManager.retrieveContentMarkup(clickedButtonName);
