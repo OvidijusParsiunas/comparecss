@@ -68,7 +68,7 @@
 
 export default {
   methods: {
-    buttonClick(buttonName: string) {
+    buttonClick(buttonName: string): void {
       this.$emit('sidenav-button-clicked', buttonName);
     },
   },

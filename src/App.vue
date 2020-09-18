@@ -11,7 +11,6 @@ import Contents from './components/content/Content.vue';
 import Sidenav from './components/sidenav/Sidenav.vue';
 import markupManager from './services/markupManager';
 import { ContentMarkupInterface } from './interfaces/ContentMarkupInterface';
-
 // https://vuejsdevelopers.com/2020/03/16/vue-js-tutorial/
 @Options({
   components: {
@@ -51,7 +50,6 @@ export default class App extends Vue {
     foundation: '<a class="button">Primary</a>',
     bulma: '<button class="button">Button</button>',
   };
-
   // methods
   public sideNavButtonClick(clickedButtonName: string): void {
     this.markup = markupManager.retrieveContentMarkup(clickedButtonName);
@@ -110,11 +108,10 @@ body {
   background: #fff;
   color: #666;
   @import "assets/scss/uikit.scss";
-};
+}
 
 .foundation {
   // @import 'node_modules/foundation-sites/scss/util/util';
-
   // @import "node_modules/foundation-sites/scss/foundation.scss";
   // @import "node_modules/foundation-sites/scss/_global.scss";
   -webkit-box-sizing: border-box;
