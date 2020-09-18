@@ -47,5 +47,8 @@
     "> 1%",
     "last 2 versions",
     "not dead"
-  ]
+  ],
+  "devDependencies": {
+    "@babel/plugin-proposal-decorators": "^7.10.5"
+  }
 }
