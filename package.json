@@ -48,5 +48,10 @@
     "turretcss": "^5.2.2",
     "hiq": "^4.0.2",
     "muicss": "^0.10.2"
-  }
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not dead"
+  ]
 }
