@@ -136,7 +136,10 @@ body {
 };
 
 .semantic {
-    @import "assets/scss/semantic.scss";
+  @import "assets/scss/semantic.scss";
+  .ui.three.buttons > .button {
+    width: 20%;
+  }
 };
 
 .pure {

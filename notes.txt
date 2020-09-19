@@ -1,15 +1,4 @@
-.eslintrc.js, removed:
-
-extends: [
-    'plugin:vue/essential',
-    // '@vue/airbnb',
-    '@vue/typescript/recommended',
-  ],
-
-try to use sass version of the packages or make sure that the used files are min versions
-
-https://speckyboy.com/top-50-css/
-https://github.com/troxler/awesome-css-frameworks
+try to use css asset files so you can lazy load them
 
 https://startbootstrap.com/previews/simple-sidebar/ - phone feature
 

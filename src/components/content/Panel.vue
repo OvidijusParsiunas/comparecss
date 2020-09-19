@@ -1,7 +1,11 @@
 <template>
-  <div :class="panelClass">
+  <div class="panel">
     <div>Panel</div>
-    <div v-html="componentMarkup"></div>
+    <div :class="panelClass">
+      <div class="panel-content">
+        <div v-html="componentMarkup"></div>
+      </div>
+    </div>
   </div>
 </template>
 <script>
@@ -13,7 +17,10 @@ export default {
 };
 </script>
 <style lang="css">
-div {
-  width: 90%;
+.panel {
+  text-align: center;
+}
+.panel-content {
+  background-color: #fafafa;
 }
 </style>
