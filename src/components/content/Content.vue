@@ -1,25 +1,25 @@
 <template>
   <div id="content">
-    <panel panelClass="bootstrap" :componentMarkup="markup.bootstrap"/>
-    <panel panelClass="materialize" :componentMarkup="markup.materialize"/>
-    <panel panelClass="uikit" :componentMarkup="markup.uikit"/>
-    <panel panelClass="foundation" :componentMarkup="markup.foundation"/>
-    <panel panelClass="bulma" :componentMarkup="markup.bulma"/>
-    <panel panelClass="semantic" :componentMarkup="markup.semantic"/>
-    <panel panelClass="pure" :componentMarkup="markup.pure"/>
-    <panel panelClass="skeleton" :componentMarkup="markup.skeleton"/>
-    <panel panelClass="milligram" :componentMarkup="markup.milligram"/>
-    <panel panelClass="spectre" :componentMarkup="markup.spectre"/>
-    <panel panelClass="primer" :componentMarkup="markup.primer"/>
-    <panel panelClass="nes" :componentMarkup="markup.nes"/>
-    <panel panelClass="picnic" :componentMarkup="markup.picnic"/>
-    <panel panelClass="chota" :componentMarkup="markup.chota"/>
-    <panel panelClass="cirrus" :componentMarkup="markup.cirrus"/>
-    <panel panelClass="turret" :componentMarkup="markup.turret"/>
-    <panel panelClass="hiq" :componentMarkup="markup.hiq"/>
-    <panel panelClass="mui" :componentMarkup="markup.mui"/>
-    <panel panelClass="patternfly" :componentMarkup="markup.patternfly"/>
-    <panel panelClass="bootflat" :componentMarkup="markup.bootflat"/>
+    <panel name="Bootstrap" panelClass="bootstrap" iconSrc="assets/icons/bootstrap.ico" :componentMarkup="markup.bootstrap"/>
+    <panel name="Materialize" panelClass="materialize" iconSrc="assets/icons/materialize.png" customIconWidthPx="27px" :componentMarkup="markup.materialize"/>
+    <panel name="Uikit" panelClass="uikit" :componentMarkup="markup.uikit"/>
+    <panel name="Foundation" panelClass="foundation" :componentMarkup="markup.foundation"/>
+    <panel name="Bulma" panelClass="bulma" :componentMarkup="markup.bulma"/>
+    <panel name="Semantic" panelClass="semantic" :componentMarkup="markup.semantic"/>
+    <panel name="Pure" panelClass="pure" :componentMarkup="markup.pure"/>
+    <panel name="Skeleton" panelClass="skeleton" :componentMarkup="markup.skeleton"/>
+    <panel name="Milligram" panelClass="milligram" :componentMarkup="markup.milligram"/>
+    <panel name="Spectre" panelClass="spectre" :componentMarkup="markup.spectre"/>
+    <panel name="Primer" panelClass="primer" :componentMarkup="markup.primer"/>
+    <panel name="Nes" panelClass="nes" :componentMarkup="markup.nes"/>
+    <panel name="Picnic" panelClass="picnic" :componentMarkup="markup.picnic"/>
+    <panel name="Chota" panelClass="chota" :componentMarkup="markup.chota"/>
+    <panel name="Cirrus" panelClass="cirrus" :componentMarkup="markup.cirrus"/>
+    <panel name="Turret" panelClass="turret" :componentMarkup="markup.turret"/>
+    <panel name="Hiq" panelClass="hiq" :componentMarkup="markup.hiq"/>
+    <panel name="Mui" panelClass="mui" :componentMarkup="markup.mui"/>
+    <panel name="Patternfly" panelClass="patternfly" :componentMarkup="markup.patternfly"/>
+    <panel name="Bootflat" panelClass="bootflat" :componentMarkup="markup.bootflat"/>
   </div>
 </template>
 
@@ -45,8 +45,8 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style lang="css" scoped>
-#content {
-  width: 100%;
-  overflow: hidden;
-}
+  #content {
+    width: 100%;
+    overflow: hidden;
+  }
 </style>

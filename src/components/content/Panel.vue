@@ -1,6 +1,9 @@
 <template>
   <div class="panel">
-    <div>Panel</div>
+    <div style="height: 27px">
+        <img :style="{ width: customIconWidthPx }" style="float: left; margin-right: 10px;" v-bind:src="iconSrc"> 
+        <div style="font-size: 17px">{{name}}</div>
+    </div>
     <div :class="panelClass">
       <div class="panel-content">
         <div v-html="componentMarkup"></div>
@@ -11,16 +14,30 @@
 <script>
 export default {
   props: {
+    name: {
+      type: String,
+      default: 'Placeholder',
+    },
+    iconSrc: {
+      type: String,
+      default: 'assets/icons/bootstrap.ico'
+    },
+    customIconWidthPx: {
+      type: String,
+      default: '26px',
+    },
     panelClass: String,
     componentMarkup: String,
   },
 };
 </script>
 <style lang="css">
-.panel {
-  text-align: center;
-}
-.panel-content {
-  background-color: #fafafa;
-}
+  .panel {
+    padding: 20px;
+    border-bottom: 1px solid #d2d2d2;
+    background-color: white;
+  }
+  .panel-content {
+    text-align: center;
+  }
 </style>
