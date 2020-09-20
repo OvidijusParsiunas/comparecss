@@ -52,7 +52,7 @@
                 <a href="#">Portfolio</a>
             </li>
             <li>
-                <a href="#">Contact</a>
+                <a href="#">Statistics</a>
             </li>
         </ul>
 

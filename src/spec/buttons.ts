@@ -1,148 +1,69 @@
 import { ContentMarkupInterface } from '../interfaces/ContentMarkupInterface';
 
 // need materialize cloud icons
+// bootstrap button height
 export default {
   bootstrap: `
-    <button type="button" class="btn btn-primary">Primary</button>
-    <button type="button" class="btn btn-secondary">Secondary</button>
+    <button type="button" class="btn btn-primary">Button</button>
+    <button type="button" class="btn btn-secondary">Button</button>
     <button type="button" class="btn btn-success">Success</button>
     <button type="button" class="btn btn-danger">Danger</button>
-    <button type="button" class="btn btn-warning">Warning</button>
-    <button type="button" class="btn btn-info">Info</button>
-    <button type="button" class="btn btn-light">Light</button>
-    <button type="button" class="btn btn-dark">Dark</button>
-    <button type="button" class="btn btn-link">Link</button>
-    <button type="button" class="btn btn-outline-primary">Primary</button>
-    <button type="button" class="btn btn-outline-secondary">Secondary</button>
-    <button type="button" class="btn btn-outline-success">Success</button>
-    <button type="button" class="btn btn-outline-danger">Danger</button>
-    <button type="button" class="btn btn-outline-warning">Warning</button>
-    <button type="button" class="btn btn-outline-info">Info</button>
-    <button type="button" class="btn btn-outline-light">Light</button>
-    <button type="button" class="btn btn-outline-dark">Dark</button>
+    <button type="button" class="btn btn-primary" disabled>Disabled</button>
+    <button type="button" class="btn btn-outline-primary">Outlined</button>
   `,
   materialize: `
-    <a class="waves-effect waves-light btn">button</a>
-    <a class="waves-effect waves-light btn"><i class="material-icons left">cloud</i>button</a>
-    <a class="waves-effect waves-light btn"><i class="material-icons right">cloud</i>button</a>
-    <a class="btn-large disabled">Button</a>
-    <a class="btn disabled">Button</a>
-    <a class="btn-flat disabled">Button</a>
-    <a class="btn-floating disabled"><i class="material-icons">add</i></a>
+    <a class="btn">Button</a>
+    <a class="waves-effect waves-light btn">Button - Click</a>
+    <a class="btn disabled">Disabled</a>
   `,
   uikit: `
-    <a class="uk-button uk-button-default" href="#">Link</a>
     <button class="uk-button uk-button-default">Button</button>
-    <button class="uk-button uk-button-default" disabled>Disabled</button>
-    <button class="uk-button uk-button-default">Default</button>
-    <button class="uk-button uk-button-primary">Primary</button>
-    <button class="uk-button uk-button-secondary">Secondary</button>
+    <button class="uk-button uk-button-primary">Button</button>
     <button class="uk-button uk-button-danger">Danger</button>
-    <button class="uk-button uk-button-text">Text</button>
-    <button class="uk-button uk-button-link">Link</button>
+    <button class="uk-button uk-button-default" disabled>Disabled</button>
   `,
   foundation: `
-    <a class="button">Learn More</a>
-    <a class="button">View All Features</a>
-    <button type="button" class="success button">Save</button>
-    <button type="button" class="alert button">Delete</button>
-    <a class="button primary" href="#">Primary</a>
-    <a class="button secondary" href="#">Secondary</a>
-    <a class="button success" href="#">Success</a>
-    <a class="button alert" href="#">Alert</a>
-    <a class="button warning" href="#">Warning</a>
-  `,
+    <a class="button">Button</a>
+    <a class="button success">Success</a>
+    <a class="button alert">Danger</a>
+    <button type="button" class="button primary" disabled>Disabled</button>
+    <button class="hollow button" href="#">Outlined</button>
+    `,
   bulma: `
-    <a class="button">Anchor</a>
-    <button class="button">Button</button>
-    <input class="button" type="submit" value="Submit input">
-    <input class="button" type="reset" value="Reset input">
-    <button class="button is-white">White</button>
-    <button class="button is-light">Light</button>
-    <button class="button is-dark">Dark</button>
-    <button class="button is-black">Black</button>
-    <button class="button is-text">Text</button>
-    <button class="button is-primary">Primary</button>
-    <button class="button is-link">Link</button>
-    <button class="button is-info">Info</button>
-    <button class="button is-success">Success</button>
-    <button class="button is-warning">Warning</button>
-    <button class="button is-danger">Danger</button>
-    <button class="button is-primary is-light">Primary</button>
-    <button class="button is-link is-light">Link</button>
-    <button class="button is-info is-light">Info</button>
-    <button class="button is-success is-light">Success</button>
-    <button class="button is-warning is-light">Warning</button>
-    <button class="button is-danger is-light">Danger</button>
+  <button class="button is-link">Button</button>
+  <button class="button is-success">Success</button>
+  <button class="button is-danger">Danger</button>
+  <button class="button is-link" title="Disabled button" disabled>Disabled</button>
+  <button class="button is-link is-outlined">Outlined</button>
+  <button class="button is-link is-rounded">Rounded</button>
   `,
   semantic: `
-    <button class="ui button">Button</button>
-    <button class="ui primary button">Save</button>
-    <button class="ui secondary button">Okay</button>
-    <button class="ui red button">Red</button>
-    <button class="ui orange button">Orange</button>
-    <button class="ui yellow button">Yellow</button>
-    <button class="ui olive button">Olive</button>
-    <button class="ui green button">Green</button>
-    <button class="ui teal button">Teal</button>
-    <button class="ui blue button">Blue</button>
-    <button class="ui violet button">Violet</button>
-    <button class="ui purple button">Purple</button>
-    <button class="ui pink button">Pink</button>
-    <button class="ui brown button">Brown</button>
-    <button class="ui grey button">Grey</button>
-    <button class="ui black button">Black</button>
-    <button class="ui primary basic button">Primary</button>
-    <button class="ui secondary basic button">Secondary</button>
-    <button class="ui positive basic button">Positive</button>
-    <button class="ui negative basic button">Negative</button>
-    <button class="ui red basic button">Red</button>
-    <button class="ui orange basic button">Orange</button>
-    <button class="ui yellow basic button">Yellow</button>
-    <button class="ui olive basic button">Olive</button>
-    <button class="ui green basic button">Green</button>
-    <button class="ui teal basic button">Teal</button>
-    <button class="ui blue basic button">Blue</button>
-    <button class="ui violet basic button">Violet</button>
-    <button class="ui purple basic button">Purple</button>
-    <button class="ui pink basic button">Pink</button>
-    <button class="ui brown basic button">Brown</button>
-    <button class="ui grey basic button">Grey</button>
-    <button class="ui black basic button">Black</button>
+    <button class="ui primary button">Button</button>
+    <button class="ui green button">Success</button>
+    <button class="ui red button">Danger</button>
+    <button class="ui disabled button">Disabled</button>
+    <button class="ui primary basic button">Outlined</button>
   `,
   pure: `
-    <button class="pure-button">A Pure Button</button>
-    <button class="pure-button" disabled="">A Disabled Button</button>
-    <button class="pure-button pure-button-active">An Active Button</button>
-    <button class="pure-button pure-button-primary">A Primary Button</button>
-    <button class="button-success pure-button">Success Button</button>
-    <button class="button-error pure-button">Error Button</button>
-    <button class="button-warning pure-button">Warning Button</button>
-    <button class="button-secondary pure-button">Secondary Button</button>
-  `,
+    <button class="pure-button pure-button-primary">Button</button>
+    <button class="button-success pure-button">Success</button>
+    <button class="button-error pure-button">Danger</button>
+    <button class="pure-button" disabled="">Disabled</button>
+    `,
   skeleton: `
-    <a class="button" href="#">Anchor button</a>
-    <button>Button element</button>
-    <input type="submit" value="submit input">
-    <input type="button" value="button input">
-    <a class="button button-primary" href="#">Anchor button</a>
-    <button class="button-primary">Button element</button>
-    <input class="button-primary" type="submit" value="submit input">
-    <input class="button-primary" type="button" value="button input">
+    <button>Button</button>
+    <button class="button-primary">Button</button>
   `,
   milligram: `
-    <a class="button" href="#">Default Button</a>
+    <button class="button">Button</button>
     <button class="button button-outline">Outlined Button</button>
-    <input class="button button-clear" type="submit" value="Clear Button">
   `,
   spectre: `
-    <button class="btn">default button</button>
-    <button class="btn btn-primary">primary button</button>
-    <button class="btn btn-link">link button</button>
-    <button class="btn btn-success">success button</button>
-    <button class="btn btn-error">error button</button>
-    <button class="btn disabled" tabindex="-1">disabled button</button>
-    <button class="btn" disabled tabindex="-1">disabled button</button>
+    <button class="btn btn-primary">Button</button>
+    <button class="btn btn-success">Success</button>
+    <button class="btn btn-error">Danger</button>
+    <button class="btn disabled" tabindex="-1">Disabled</button>
+    <button class="btn">Outlined</button>
   `,
   primer: `<button class="btn mr-2" type="button">
   <!-- <%= octicon "search" %> -->

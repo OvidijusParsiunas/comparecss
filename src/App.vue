@@ -61,6 +61,7 @@ export default class App extends Vue {
 <style lang="css">
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 @import "https://fonts.googleapis.com/css?family=Press+Start+2P";
+@import url('https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin');
 #app {
     display: flex;
     width: 100%;
@@ -136,9 +137,18 @@ body {
 };
 
 .semantic {
+  font-family: sans-serif;
+  font-size: 100%;
+  line-height: 1.15;
+  margin: 0;
+  height: 100%;
+  font-size: 14px;
   @import "assets/scss/semantic.scss";
   .ui.three.buttons > .button {
     width: 20%;
+  }
+  .ui.buttons .button, .ui.buttons .or, .ui.button {
+    font-size: 14px;
   }
 };
 
@@ -180,10 +190,32 @@ body {
 }
 
 .milligram {
+  font-size: 14px;
+  box-sizing: border-box;
+  color: #606c76;
+  font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;
+  font-weight: 300;
+  letter-spacing: .01em;
+  line-height: 1.6;
   @import 'node_modules/milligram-sass/src/milligram.sass';
+  .button, button, dd, dt, li {
+    margin-bottom: 10px;
+  }
+  .button, button, input[type=button], input[type=reset], input[type=submit] {
+    font-size: 11px;
+    padding: 0 30px;
+    height: 38px;
+    line-height: 38px;
+    letter-spacing: 1px;
+    border: 1px solid #9b4dca;
+    border-radius: 4px;
+  }
 }
 
 .spectre {
+  font-family: sans-serif; /* 1 */
+  -webkit-text-size-adjust: 100%; /* 3 */ 
+  -ms-text-size-adjust: 100%; /* 3 */
   box-sizing: border-box;
   font-size: 20px;
   line-height: 1.5;
@@ -196,6 +228,14 @@ body {
   overflow-x: hidden;
   text-rendering: optimizeLegibility;
   @import 'node_modules/spectre.css/src/spectre.scss';
+  .btn, .materialize .btn-large, .materialize .btn-large, .materialize .btn-small, .materialize .btn-small {
+    border: 1px solid #5755d9;
+    border-radius: 2px;
+    font-size: 16px;
+    height: 36px;
+    line-height: 24px;
+    padding: 5px 8px;
+  }
 }
 
 .primer {
