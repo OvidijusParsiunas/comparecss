@@ -26,10 +26,10 @@
                 <a style="cursor: pointer" @click="buttonClick('Badges')">Badges</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick('Buttons')">Buttons</a>
+                <a style="cursor: pointer" @click="buttonClick(BUTTON_CONSTS.BUTTONS_BUTTON)">Buttons</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick('Button groups')">Button groups</a>
+                <a style="cursor: pointer" @click="buttonClick(BUTTON_CONSTS.BUTTON_GROUPS_BUTTON)">Button groups</a>
             </li>
             <li>
                 <a href="#pageSubmenu" data-toggle="collapse"
@@ -69,11 +69,20 @@
 
 <script lang="ts">
 
+import BUTTON_CONSTS from '../../consts/consts';
+
 export default {
   methods: {
     buttonClick(buttonName: string): void {
       this.$emit('sidenav-button-clicked', buttonName);
     },
+  },
+  data(): {
+      BUTTON_CONSTS
+  } {
+    return {
+      BUTTON_CONSTS,
+    }
   },
 };
 </script>
