@@ -1,6 +1,7 @@
 import { ContentMarkupInterface } from '../interfaces/ContentMarkupInterface';
 import Badges from '@/spec/badges';
 import Buttons from '../spec/buttons';
+import ButtonGroups from '../spec/buttonGroups';
 
 export default class MarkupManager {
   static retrieveContentMarkup(clickedButtonName: string): ContentMarkupInterface {
@@ -9,6 +10,8 @@ export default class MarkupManager {
         return Badges;
       case 'Buttons':
         return Buttons;
+      case 'Button groups':
+        return ButtonGroups;
       default: {
         return {
           bootstrap: '',

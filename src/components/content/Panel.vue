@@ -1,15 +1,26 @@
 <template>
-  <div class="panel">
-    <div style="height: 27px">
+  <div class="panel" v-if="componentMarkup">
+    <div style="padding-top: 0px; padding-bottom: 20px; padding-left: 10px; padding-right: 10px; background-color: white; box-shadow: 0 20px 40px -15px rgba(0,0,0,.05);"> 
+      <div style="height: 27px">
         <img :style="{ width: customIconWidthPx }" style="float: left; margin-right: 10px;" v-bind:src="iconSrc"> 
         <div style="font-size: 17px">{{name}}</div>
-    </div>
-    <div :class="panelClass">
-      <div class="panel-content">
-        <div v-html="componentMarkup"></div>
+      </div>
+      <div :class="panelClass">
+        <div class="panel-content">
+          <div v-html="componentMarkup"></div>
+        </div>
       </div>
     </div>
   </div>
+  <!-- <div style="height: 27px">
+      <img :style="{ width: customIconWidthPx }" style="float: left; margin-right: 10px;" v-bind:src="iconSrc"> 
+      <div style="font-size: 17px">{{name}}</div>
+  </div>
+  <div :class="panelClass">
+    <div class="panel-content">
+      <div v-html="componentMarkup"></div>
+    </div>
+  </div> -->
 </template>
 <script>
 export default {
@@ -34,7 +45,7 @@ export default {
 <style lang="css">
   .panel {
     padding: 20px;
-    border-bottom: 1px solid #d2d2d2;
+    /* border-bottom: 1px solid #d2d2d2; */
     background-color: white;
   }
   .panel-content {

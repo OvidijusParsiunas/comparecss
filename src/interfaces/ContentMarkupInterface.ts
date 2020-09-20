@@ -1,7 +1,7 @@
 export interface ContentMarkupInterface {
-  bootstrap: string;
-  materialize: string;
-  uikit: string;
-  foundation: string;
-  bulma: string;
+  bootstrap: string | null;
+  materialize: string | null;
+  uikit: string | null;
+  foundation: string | null;
+  bulma: string | null;
 }

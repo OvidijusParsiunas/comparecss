@@ -1,68 +1,59 @@
 import { ContentMarkupInterface } from '../interfaces/ContentMarkupInterface';
 
-// bootstrap button height
 export default {
   bootstrap: `
-    <button type="button" class="btn btn-primary">Button</button>
-    <button type="button" class="btn btn-secondary">Button</button>
-    <button type="button" class="btn btn-success">Success</button>
-    <button type="button" class="btn btn-danger">Danger</button>
-    <button type="button" class="btn btn-primary" disabled>Disabled</button>
-    <button type="button" class="btn btn-outline-primary">Outlined</button>
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-secondary">Left</button>
+      <button type="button" class="btn btn-secondary">Middle</button>
+      <button type="button" class="btn btn-secondary">Right</button>
+    </div>
   `,
-  materialize: `
-    <a class="btn">Button</a>
-    <a class="waves-effect waves-light btn">Button - Click</a>
-    <a class="btn disabled">Disabled</a>
-  `,
+  materialize: null,
   uikit: `
-    <button class="uk-button uk-button-default">Button</button>
-    <button class="uk-button uk-button-primary">Button</button>
-    <button class="uk-button uk-button-danger">Danger</button>
-    <button class="uk-button uk-button-default" disabled>Disabled</button>
+    <div class="uk-margin-small">
+      <div class="uk-button-group">
+        <button class="uk-button uk-button-primary">Left</button>
+        <button class="uk-button uk-button-primary">Middle</button>
+        <button class="uk-button uk-button-primary">Right</button>
+      </div>
+  </div>
   `,
   foundation: `
-    <a class="button">Button</a>
-    <a class="button success">Success</a>
-    <a class="button alert">Danger</a>
-    <button type="button" class="button primary" disabled>Disabled</button>
-    <button class="hollow button" href="#">Outlined</button>
+    <div class="button-group" style="display: inline-flex">
+      <a class="button">Left</a>
+      <a class="button">Middle</a>
+      <a class="button">Right</a>
+    </div>
     `,
   bulma: `
-    <button class="button is-link">Button</button>
-    <button class="button is-success">Success</button>
-    <button class="button is-danger">Danger</button>
-    <button class="button is-link" title="Disabled button" disabled>Disabled</button>
-    <button class="button is-link is-outlined">Outlined</button>
-    <button class="button is-link is-rounded">Rounded</button>
+    <div class="buttons has-addons" style="display: inline-flex">
+      <button class="button">Left</button>
+      <button class="button">Middle</button>
+      <button class="button">Right</button>
+   </div>
   `,
   semantic: `
-    <button class="ui primary button">Button</button>
-    <button class="ui green button">Success</button>
-    <button class="ui red button">Danger</button>
-    <button class="ui disabled button">Disabled</button>
-    <button class="ui primary basic button">Outlined</button>
+    <div class="ui buttons">
+      <button class="ui button">Left</button>
+      <button class="ui button">Middle</button>
+      <button class="ui button">Right</button>
+    </div>
   `,
   pure: `
-    <button class="pure-button pure-button-primary">Button</button>
-    <button class="button-success pure-button">Success</button>
-    <button class="button-error pure-button">Danger</button>
-    <button class="pure-button" disabled="">Disabled</button>
+    <div class="pure-button-group" role="group" aria-label="...">
+      <button class="pure-button">Left</button>
+      <button class="pure-button">Middle</button>
+      <button class="pure-button">Right</button>
+    </div>
     `,
-  skeleton: `
-    <button>Button</button>
-    <button class="button-primary">Button</button>
-  `,
-  milligram: `
-    <button class="button">Button</button>
-    <button class="button button-outline">Outlined</button>
-  `,
+  skeleton: null,
+  milligram: null,
   spectre: `
-    <button class="btn btn-primary">Button</button>
-    <button class="btn btn-success">Success</button>
-    <button class="btn btn-error">Danger</button>
-    <button class="btn disabled" tabindex="-1">Disabled</button>
-    <button class="btn">Outlined</button>
+    <div class="btn-group btn-group-block" style="width: 15%; display: inline-flex">
+      <button class="btn">Left</button>
+      <button class="btn">Middle</button>
+      <button class="btn">Right</button>
+    </div> 
   `,
   primer: `<button class="btn mr-2" type="button">
   <!-- <%= octicon "search" %> -->
