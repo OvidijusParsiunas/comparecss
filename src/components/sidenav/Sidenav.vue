@@ -29,6 +29,9 @@
                 <a style="cursor: pointer" @click="buttonClick('Buttons')">Buttons</a>
             </li>
             <li>
+                <a style="cursor: pointer" @click="buttonClick('Buttons')">Button groups</a>
+            </li>
+            <li>
                 <a href="#pageSubmenu" data-toggle="collapse"
                 aria-expanded="false" class="dropdown-toggle" @click="buttonClick('Pages')"
                 >Pages
