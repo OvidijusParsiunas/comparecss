@@ -23,16 +23,16 @@
                 </ul>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.BADGES_BUTTON)">Badges</a>
+                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.BADGES)">Badges</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.BUTTONS_BUTTON)">Buttons</a>
+                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.BUTTONS)">Buttons</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.BUTTON_GROUPS_BUTTON)">Button groups</a>
+                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.BUTTON_GROUPS)">Button groups</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.PROGRESS_BUTTON)">Progress</a>
+                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.PROGRESS)">Progress</a>
             </li>
             <li>
                 <a href="#pageSubmenu" data-toggle="collapse"

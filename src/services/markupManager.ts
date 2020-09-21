@@ -8,13 +8,13 @@ import { BUTTON_NAMES } from '../consts/buttonNames.enum';
 export default class MarkupManager {
   static retrieveContentMarkup(clickedButtonName: BUTTON_NAMES): ContentMarkupInterface {
     switch (clickedButtonName) {
-      case BUTTON_NAMES.BADGES_BUTTON:
+      case BUTTON_NAMES.BADGES:
         return Badges;
-      case BUTTON_NAMES.BUTTONS_BUTTON:
+      case BUTTON_NAMES.BUTTONS:
         return Buttons;
-      case BUTTON_NAMES.BUTTON_GROUPS_BUTTON:
+      case BUTTON_NAMES.BUTTON_GROUPS:
         return ButtonGroups;
-      case BUTTON_NAMES.PROGRESS_BUTTON:
+      case BUTTON_NAMES.PROGRESS:
         return Progress;        
       default: {
         return {
