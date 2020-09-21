@@ -65,6 +65,7 @@ export default class App extends Vue {
 @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
 @import "https://fonts.googleapis.com/css?family=Press+Start+2P";
 @import url('https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin');
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
 #app {
     display: flex;
     width: 100%;

@@ -23,7 +23,13 @@
                 </ul>
             </li>
             <li>
+                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.ALERTS)">Alerts</a>
+            </li>
+            <li>
                 <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.BADGES)">Badges</a>
+            </li>
+            <li>
+                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.BREAD_CRUMBS)">Bread crumbs</a>
             </li>
             <li>
                 <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.BUTTONS)">Buttons</a>
