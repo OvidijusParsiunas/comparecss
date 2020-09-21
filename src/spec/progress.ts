@@ -2,65 +2,141 @@ import { ContentMarkupInterface } from '../interfaces/ContentMarkupInterface';
 
 export default {
   bootstrap: `
-    <span class="badge badge-primary">Primary</span>
-    <span class="badge badge-success">Success</span>
-    <span class="badge badge-danger">Danger</span>
-    <span class="badge badge-pill badge-primary">Rounded</span>
-    <span class="badge badge-pill badge-primary">1</span>
+  <div class="progress">
+  <div class="progress-bar" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+<div class="progress">
+  <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">25%</div>
+</div>
+<div class="progress">
+  <div class="progress-bar progress-bar-striped bg-info" role="progressbar" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+</div>
+<div class="progress">
+  <div class="progress-bar progress-bar-striped progress-bar-animated" role="progressbar" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100" style="width: 75%"></div>
+</div>
   `,
   materialize: `
-    <div style="display: inline-flex"> 
-      <span class="new badge blue" data-badge-caption="Primary"></span>
-      <span class="new badge" data-badge-caption="Success"></span>
-      <span class="new badge red" data-badge-caption="Danger"></span>
-    </div>
+  <div class="progress">
+  <div class="determinate" style="width: 70%"></div>
+</div>
+<div class="progress">
+      <div class="indeterminate"></div>
+  </div>
   `,
   uikit: `
-    <span class="uk-label">Primary</span>
-    <span class="uk-badge">Rounded</span>
-    <span class="uk-badge">1</span>
+  <div class="uk-progress">
+  <div class="uk-progress-bar" style="width: 40%;">40%</div>
+</div>
+<div style="width: 65%;" class="uk-progress uk-progress-success">
+    <div class="uk-progress-bar" style="width: 40%;"></div>
+</div>
+<div class="uk-progress uk-progress-striped">
+    <div class="uk-progress-bar" style="width: 40%;"></div>
+</div>
+<div class="uk-progress uk-progress-striped uk-active">
+    <div class="uk-progress-bar" style="width: 40%;"></div>
+</div>
   `,
   foundation: `
-    <span class="label primary">Primary</span>
-    <span class="label success">Success</span>
-    <span class="label alert">Danger</span>
-    <span class="badge primary">1</span>
-  `,
+  <div class="progress" role="progressbar" tabindex="0" aria-valuenow="50" aria-valuemin="0" aria-valuetext="50 percent" aria-valuemax="100">
+  <div class="progress-meter" style="width: 50%"></div>
+</div>
+<div class="secondary progress" role="progressbar" tabindex="0" aria-valuenow="25" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
+  <div class="progress-meter" style="width: 25%"></div>
+</div>
+
+<div class="success progress">
+  <div class="progress-meter" style="width: 50%"></div>
+</div>
+
+<div class="warning progress">
+  <div class="progress-meter" style="width: 50%"></div>
+</div>
+
+<div class="alert progress">
+  <div class="progress-meter" style="width: 75%"></div>
+</div>
+<div class="progress" role="progressbar" tabindex="0" aria-valuenow="25" aria-valuemin="0" aria-valuetext="25 percent" aria-valuemax="100">
+  <span class="progress-meter" style="width: 25%">
+    <span class="progress-meter-text">25%</span>
+  </span>
+</div>
+    `,
   bulma: `
-    <div style="display: inline-flex">
-      <span class="tag is-link">Primary</span>
-      <span style="margin-left: 5px" class="tag is-success">Success</span>
-      <span style="margin-left: 5px" class="tag is-danger">Danger</span>
-      <div style="margin-left: 5px" class="tags has-addons">
-        <!-- <span class="tag">Package</span>
-        <span class="tag is-primary">Bulma</span> -->
-        <span class="tag is-dark">Build</span>
-        <span class="tag is-success">Passing</span>
-      </div>
-      </div>
-    </div>
+  <progress class="progress" value="15" max="100">15%</progress>
+<progress class="progress is-primary" value="15" max="100">15%</progress>
+<progress class="progress is-link" value="30" max="100">30%</progress>
+<progress class="progress is-info" value="45" max="100">45%</progress>
+<progress class="progress is-success" value="60" max="100">60%</progress>
+<progress class="progress is-warning" value="75" max="100">75%</progress>
+<progress class="progress is-danger" value="90" max="100">90%</progress>
+<progress class="progress is-small is-primary" max="100">15%</progress>
+<progress class="progress is-danger" max="100">30%</progress>
+<progress class="progress is-medium is-dark" max="100">45%</progress>
+<progress class="progress is-large is-info" max="100">60%</progress>
   `,
   semantic: `
-    <a class="ui blue label">Primary</a>
-    <a class="ui green label">Success</a>
-    <a class="ui red label">Danger</a>
-    <a class="ui blue circular label">Rounded</a>
-    <a class="ui blue circular label">1</a>
+  <div class="ui progress">
+  <div class="bar">
+    <div class="progress"></div>
+  </div>
+  <div class="label">Uploading Files</div>
+</div>
+<div class="ui indicating progress">
+  <div class="bar"></div>
+  <div class="label">Funding</div>
+</div>
+<div class="ui active progress">
+  <div class="bar">
+    <div class="progress"></div>
+  </div>
+  <div class="label">Uploading Files</div>
+</div>
+<div class="ui progress success">
+  <div class="bar">
+    <div class="progress"></div>
+  </div>
+  <div class="label">Everything worked, your file is all ready.</div>
+</div>
+<div class="ui red progress">
+  <div class="bar"></div>
+</div>
+<div class="ui orange progress">
+  <div class="bar"></div>
+</div>
+<div class="ui yellow progress">
+  <div class="bar"></div>
+</div>
+<div class="ui olive progress">
+  <div class="bar"></div>
+</div>
+<div class="ui green progress">
+  <div class="bar"></div>
+</div>
+<div class="ui teal progress">
+  <div class="bar" style="width: 65%"></div>
+</div>
+<div class="ui blue progress">
+  <div class="bar"></div>
+</div>
+<div class="ui violet progress">
+  <div class="bar"></div>
+</div>
+<div class="ui purple progress">
+  <div class="bar"></div>
+</div>
+<div class="ui pink progress">
+  <div class="bar"></div>
+</div>
+<div class="ui brown progress">
+  <div class="bar"></div>
   `,
   pure: null,
   skeleton: null,
   milligram: null,
   spectre: `
-    <div style="display: inline-flex">
-      <span class="label label-primary">Primary</span>
-      <span style="margin-left: 5px" class="label label-success">Success</span>
-      <span style="margin-left: 5px" class="label label-error">Danger</span>
-      <span style="margin-left: 5px" class="label label-rounded label-primary">Rounded</span>
-      <div style="margin-left: 5px">Notifications</div>
-        <span class="badge" data-badge="1"></span>
-      </div>
-      <button style="border: none" class="btn"></button>
-    </div>
+    <progress class="progress" value="25" max="100"></progress>
+    <progress class="progress" max="100"></progress>
   `,
   primer: `<button class="btn mr-2" type="button">
   <!-- <%= octicon "search" %> -->

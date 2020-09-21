@@ -23,13 +23,16 @@
                 </ul>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick('Badges')">Badges</a>
+                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.BADGES_BUTTON)">Badges</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_CONSTS.BUTTONS_BUTTON)">Buttons</a>
+                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.BUTTONS_BUTTON)">Buttons</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_CONSTS.BUTTON_GROUPS_BUTTON)">Button groups</a>
+                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.BUTTON_GROUPS_BUTTON)">Button groups</a>
+            </li>
+            <li>
+                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.PROGRESS_BUTTON)">Progress</a>
             </li>
             <li>
                 <a href="#pageSubmenu" data-toggle="collapse"
@@ -69,19 +72,19 @@
 
 <script lang="ts">
 
-import BUTTON_CONSTS from '../../consts/consts';
+import { BUTTON_NAMES } from '../../consts/buttonNames.enum';
 
 export default {
   methods: {
-    buttonClick(buttonName: string): void {
+    buttonClick(buttonName: BUTTON_NAMES): void {
       this.$emit('sidenav-button-clicked', buttonName);
     },
   },
   data(): {
-      BUTTON_CONSTS
+      BUTTON_NAMES
   } {
     return {
-      BUTTON_CONSTS,
+      BUTTON_NAMES,
     }
   },
 };

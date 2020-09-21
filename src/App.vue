@@ -11,6 +11,8 @@ import Contents from './components/content/Content.vue';
 import Sidenav from './components/sidenav/Sidenav.vue';
 import markupManager from './services/markupManager';
 import { ContentMarkupInterface } from './interfaces/ContentMarkupInterface';
+import { BUTTON_NAMES } from './consts/buttonNames.enum';
+
 // https://vuejsdevelopers.com/2020/03/16/vue-js-tutorial/
 @Options({
   components: {
@@ -41,6 +43,7 @@ import { ContentMarkupInterface } from './interfaces/ContentMarkupInterface';
     document.head.appendChild(poppoverScript);
   },
 })
+
 export default class App extends Vue {
   // data variables these have been moved here to allow typing
   private markup: ContentMarkupInterface = {
@@ -52,7 +55,7 @@ export default class App extends Vue {
   };
 
   // methods
-  public sideNavButtonClick(clickedButtonName: string): void {
+  public sideNavButtonClick(clickedButtonName: BUTTON_NAMES): void {
     this.markup = markupManager.retrieveContentMarkup(clickedButtonName);
   }
 }
@@ -109,6 +112,7 @@ body {
   -webkit-text-size-adjust: 100%;
   background: #fff;
   color: #666;
+  // @import "assets/scss/uikit2.scss";
   @import "assets/scss/uikit.scss";
 }
 
@@ -149,6 +153,10 @@ body {
   }
   .ui.buttons .button, .ui.buttons .or, .ui.button {
     font-size: 14px;
+  }
+  .ui.circular.labels .label, .ui.circular.labels .picnic [data-tooltip]:after, .picnic .ui.circular.labels [data-tooltip]:after, .ui.circular.label, .picnic .ui.circular[data-tooltip]:after, .picnic .ui.circular[data-tooltip]:after {
+    min-width: 1em;
+    min-height: 1em;
   }
 };
 
@@ -224,10 +232,11 @@ body {
   color: #3b4351;
   font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI",
     Roboto, "Helvetica Neue", sans-serif;
-  font-size: .8rem;
   overflow-x: hidden;
   text-rendering: optimizeLegibility;
-  @import 'node_modules/spectre.css/src/spectre.scss';
+  font-size: 16px;
+  @import "assets/scss/spectre.scss";
+  @import "assets/scss/spectre-exp.scss";
   .btn, .materialize .btn-large, .materialize .btn-large, .materialize .btn-small, .materialize .btn-small {
     border: 1px solid #5755d9;
     border-radius: 2px;
@@ -235,6 +244,16 @@ body {
     height: 36px;
     line-height: 24px;
     padding: 5px 8px;
+  }
+  .badge[data-badge]::after, .badge:not([data-badge])::after {
+    border-radius: 10px;
+    transform: translate(-1px, -10px);
+  }
+  .badge.btn::after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(50%,-50%);
   }
 }
 
