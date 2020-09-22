@@ -95,6 +95,9 @@ body {
 
 .materialize {
   @import "node_modules/materialize-css/sass/materialize.scss";
+  .breadcrumb:before {
+    color: rgb(255 134 134 / 70%);
+  }
 }
 
 .uikit {
@@ -134,6 +137,12 @@ body {
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   @import "assets/scss/foundation.scss";
+  .breadcrumbs li {
+    font-size: 15px;
+  }
+  div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, p, blockquote, th, td {
+    background-color: white;
+  }
 };
 
 .bulma {

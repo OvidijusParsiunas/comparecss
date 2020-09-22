@@ -2,85 +2,66 @@ import { ContentMarkupInterface } from '../interfaces/ContentMarkupInterface';
 
 export default {
   bootstrap: `
-  <nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item active" aria-current="page">Home</li>
+  <ol style="display: inline-flex; background-color: white; height: 20px;" class="breadcrumb">
+    <li class="breadcrumb-item"><a href="#!">First</a></li>
+    <li class="breadcrumb-item"><a href="#!">Second</a></li>
+    <li class="breadcrumb-item active" aria-current="page">Third</li>
   </ol>
-</nav>
-
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="#">Home</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Library</li>
-  </ol>
-</nav>
-
-<nav aria-label="breadcrumb">
-  <ol class="breadcrumb">
-    <li class="breadcrumb-item"><a href="#">Home</a></li>
-    <li class="breadcrumb-item"><a href="#">Library</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Data</li>
-  </ol>
-</nav>
   `,
   materialize: `
-  <nav>
-  <div class="nav-wrapper">
-    <div class="col s12">
-      <a href="#!" class="breadcrumb">First</a>
-      <a href="#!" class="breadcrumb">Second</a>
-      <a href="#!" class="breadcrumb">Third</a>
-    </div>
-  </div>
-</nav>
+    <nav style="background-color: white; color: red; box-shadow: none; height: 50px;">
+      <div class="nav-wrapper">
+        <div class="col s12">
+          <a href="#!" style="color: rgb(255 174 174 / 80%)" class="breadcrumb">First</a>
+          <a href="#!" style="color: rgb(255 174 174 / 80%)" class="breadcrumb">Second</a>
+          <a style="color: red" class="breadcrumb">Third</a>
+        </div>
+      </div>
+    </nav>
   `,
   uikit: null,
   foundation: `
-    <nav aria-label="You are here:" role="navigation">
-    <ul class="breadcrumbs">
-        <li><a href="#">Home</a></li>
-        <li><a href="#">Features</a></li>
-        <li class="disabled">Gene Splicing</li>
-        <li>
-        <span class="show-for-sr">Current: </span> Cloning
-        </li>
-    </ul>
+    <nav style="display: inline-flex" role="navigation">
+      <ul class="breadcrumbs">
+          <li><a href="#!">First</a></li>
+          <li><a href="#!">Second</a></li>
+          <li>Third</li>
+      </ul>
     </nav>
   `,
   bulma: `
-  <nav class="breadcrumb is-centered" aria-label="breadcrumbs">
-  <ul>
-    <li><a href="#">Bulma</a></li>
-    <li><a href="#">Documentation</a></li>
-    <li><a href="#">Components</a></li>
-    <li class="is-active"><a href="#" aria-current="page">Breadcrumb</a></li>
-  </ul>
-</nav>
+    <nav class="breadcrumb is-centered" aria-label="breadcrumbs">
+      <ul>
+        <li><a href="#!">First</a></li>
+        <li><a href="#!">Second</a></li>
+        <li class="is-active"><a aria-current="page">Third</a></li>
+      </ul>
+    </nav>
   `,
   semantic: `
-  <div class="ui breadcrumb">
-  <a class="section">Home</a>
-  <div class="divider"> / </div>
-  <a class="section">Store</a>
-  <div class="divider"> / </div>
-  <div class="active section">T-Shirt</div>
-</div>
+    <div class="ui breadcrumb">
+      <a class="section">First</a>
+      <div class="divider"> / </div>
+      <a class="section">Second</a>
+      <div class="divider"> / </div>
+      <div class="active section">Third</div>
+    </div>
   `,
   pure: null,
   skeleton: null,
   milligram: null,
   spectre: `
-  <ul class="breadcrumb">
-  <li class="breadcrumb-item">
-    <a href="#">Home</a>
-  </li>
-  <li class="breadcrumb-item">
-    <a href="#">Settings</a>
-  </li>
-  <li class="breadcrumb-item">
-    <a href="#">Change avatar</a>
-  </li>
-</ul>
+    <ul class="breadcrumb">
+      <li class="breadcrumb-item">
+        <a href="#!">First</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="#!">Second</a>
+      </li>
+      <li class="breadcrumb-item">
+        <a href="#!">Third</a>
+      </li>
+    </ul>
   `,
   primer: `<button class="btn mr-2" type="button">
   <!-- <%= octicon "search" %> -->
