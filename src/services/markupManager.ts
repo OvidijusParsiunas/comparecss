@@ -1,7 +1,7 @@
 import { ContentMarkupInterface } from '../interfaces/ContentMarkupInterface';
 import Alerts from '../spec/alerts';
 import Badges from '../spec/badges';
-import Breadcrumbs from '../spec/breadcrumbs';
+import Breadcrumbs from '../spec/breadCrumbs';
 import Buttons from '../spec/buttons';
 import ButtonGroups from '../spec/buttonGroups';
 import Progress from '../spec/progress';
