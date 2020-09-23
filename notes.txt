@@ -1,6 +1,8 @@
 try to use css asset files so you can lazy load them
 statistics should include size and github popularity
 
+when an alert close button doesn't work - have a toaster message appear to say that this functionality is not provided out of the box
+
 https://startbootstrap.com/previews/simple-sidebar/ - phone feature
 
 make the panelels order switchable via options popover or drag and drop

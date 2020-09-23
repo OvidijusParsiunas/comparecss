@@ -2,218 +2,105 @@ import { ContentMarkupInterface } from '../interfaces/ContentMarkupInterface';
 
 export default {
   bootstrap: `
-    <div class="alert alert-primary" role="alert">
-    A simple primary alert—check it out!
-    </div>
-    <div class="alert alert-secondary" role="alert">
-    A simple secondary alert—check it out!
-    </div>
-    <div class="alert alert-success" role="alert">
-    A simple success alert—check it out!
-    </div>
-    <div class="alert alert-danger" role="alert">
-    A simple danger alert—check it out!
-    </div>
-    <div class="alert alert-warning" role="alert">
-    A simple warning alert—check it out!
-    </div>
-    <div class="alert alert-info" role="alert">
-    A simple info alert—check it out!
-    </div>
-    <div class="alert alert-light" role="alert">
-    A simple light alert—check it out!
-    </div>
-    <div class="alert alert-dark" role="alert">
-    A simple dark alert—check it out!
+    <div style="width: 50%; display: inline-block">
+      <div class="alert alert-primary" role="alert">
+        Sample alert text!
+      </div>
+      <div class="alert alert-success" role="alert">
+        Sample alert text!
+      </div>
+      <div style="padding-right: 20px;" class="alert alert-warning alert-dismissible fade show" role="alert">
+        Sample alert text!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div style="padding-right: 20px;" class="alert alert-danger alert-dismissible fade show" role="alert">
+        Sample alert text!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      </div>
     </div>
   `,
   materialize: null,
   uikit: `
-  <div class="uk-alert-primary" uk-alert>
-  <a class="uk-alert-close" uk-close></a>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
-</div>
-
-<div class="uk-alert-success" uk-alert>
-  <a class="uk-alert-close" uk-close></a>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
-</div>
-
-<div class="uk-alert-warning" uk-alert>
-  <a class="uk-alert-close" uk-close></a>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
-</div>
-
-<div class="uk-alert-danger" uk-alert>
-  <a class="uk-alert-close" uk-close></a>
-  <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
-</div>
+    <div style="width: 50%; display: inline-block">
+      <div class="uk-alert-primary" uk-alert>
+        <a class="uk-alert-close"></a>
+        Sample alert text!
+      </div>
+      <div class="uk-alert-success" uk-alert>
+        <a class="uk-alert-close"></a>
+        Sample alert text!
+      </div>
+      <div class="uk-alert-warning" uk-alert>
+        <a class="uk-alert-close" uk-close></a>
+        Sample alert text!
+      </div>
+      <div class="uk-alert-danger" uk-alert>
+        <a class="uk-alert-close" uk-close></a>
+        Sample alert text!
+      </div>
+    </div>
   `,
   foundation: `
-  <div class="callout secondary">
-  <h5>This is a secondary callout</h5>
-  <p>It has an easy to override visual style, and is appropriately subdued.</p>
-  <a href="#">It's dangerous to go alone, take this.</a>
-</div>
-
-<div class="primary callout">
-  <h5>This is a primary callout</h5>
-  <p>It has an easy to override visual style, and is appropriately subdued.</p>
-  <a href="#">It's dangerous to go alone, take this.</a>
-</div>
-
-<div class="success callout">
-  <h5>This is a success callout</h5>
-  <p>It has an easy to override visual style, and is appropriately subdued.</p>
-  <a href="#">It's dangerous to go alone, take this.</a>
-</div>
-
-<div class="warning callout">
-  <h5>This is a warning callout</h5>
-  <p>It has an easy to override visual style, and is appropriately subdued.</p>
-  <a href="#">It's dangerous to go alone, take this.</a>
-</div>
-
-<div class="alert callout">
-  <h5>This is an alert callout</h5>
-  <p>It has an easy to override visual style, and is appropriately subdued.</p>
-  <a href="#">It's dangerous to go alone, take this.</a>
-</div>
+    <div style="width: 50%; display: inline-block">
+      <div class="primary callout">
+      <p>Sample alert text!</p>
+      </div>
+      <div class="success callout">
+        <p>Sample alert text!</p>
+      </div>
+      <div class="warning callout" data-closable>
+        <p>Sample alert text!</p>
+          <button style="outline: none;" class="close-button" aria-label="Dismiss alert" type="button" data-close>
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="alert callout" data-closable="slide-out-right">
+        <p>Sample alert text!</p>
+        <button style="outline: none;" class="close-button" aria-label="Dismiss alert" type="button" data-close>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
     `,
   bulma: `
-  <div class="notification is-primary">
-  <button class="delete"></button>
-  Primar lorem ipsum dolor sit amet, consectetur
-  adipiscing elit lorem ipsum dolor. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Sit amet,
-  consectetur adipiscing elit
-</div>
-
-<div class="notification is-link">
-  <button class="delete"></button>
-  Primar lorem ipsum dolor sit amet, consectetur
-  adipiscing elit lorem ipsum dolor. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Sit amet,
-  consectetur adipiscing elit
-</div>
-
-<div class="notification is-info">
-  <button class="delete"></button>
-  Primar lorem ipsum dolor sit amet, consectetur
-  adipiscing elit lorem ipsum dolor. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Sit amet,
-  consectetur adipiscing elit
-</div>
-
-<div class="notification is-success">
-  <button class="delete"></button>
-  Primar lorem ipsum dolor sit amet, consectetur
-  adipiscing elit lorem ipsum dolor. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Sit amet,
-  consectetur adipiscing elit
-</div>
-
-<div class="notification is-warning">
-  <button class="delete"></button>
-  Primar lorem ipsum dolor sit amet, consectetur
-  adipiscing elit lorem ipsum dolor. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Sit amet,
-  consectetur adipiscing elit
-</div>
-
-<div class="notification is-danger">
-  <button class="delete"></button>
-  Primar lorem ipsum dolor sit amet, consectetur
-  adipiscing elit lorem ipsum dolor. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Sit amet,
-  consectetur adipiscing elit
-</div>
-  <div class="notification is-primary is-light">
-  <button class="delete"></button>
-  Primar lorem ipsum dolor sit amet, consectetur
-  adipiscing elit lorem ipsum dolor. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Sit amet,
-  consectetur adipiscing elit
-</div>
-
-<div class="notification is-link is-light">
-  <button class="delete"></button>
-  Primar lorem ipsum dolor sit amet, consectetur
-  adipiscing elit lorem ipsum dolor. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Sit amet,
-  consectetur adipiscing elit
-</div>
-
-<div class="notification is-info is-light">
-  <button class="delete"></button>
-  Primar lorem ipsum dolor sit amet, consectetur
-  adipiscing elit lorem ipsum dolor. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Sit amet,
-  consectetur adipiscing elit
-</div>
-
-<div class="notification is-success is-light">
-  <button class="delete"></button>
-  Primar lorem ipsum dolor sit amet, consectetur
-  adipiscing elit lorem ipsum dolor. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Sit amet,
-  consectetur adipiscing elit
-</div>
-
-<div class="notification is-warning is-light">
-  <button class="delete"></button>
-  Primar lorem ipsum dolor sit amet, consectetur
-  adipiscing elit lorem ipsum dolor. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Sit amet,
-  consectetur adipiscing elit
-</div>
-
-<div class="notification is-danger is-light">
-  <button class="delete"></button>
-  Primar lorem ipsum dolor sit amet, consectetur
-  adipiscing elit lorem ipsum dolor. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Sit amet,
-  consectetur adipiscing elit
-</div>
+    <div style="width: 50%; display: inline-block">
+      <div class="notification is-info">
+        Sample alert text!
+      </div>
+      <div class="notification is-success">
+        Sample alert text!
+      </div>
+      <div class="notification is-warning is-light">
+        <button class="delete"></button>
+        Sample alert text - light!
+      </div>
+      <div class="notification is-danger is-light">
+        <button class="delete"></button>
+        Sample alert text - light!
+      </div>
+    </div>
   `,
   semantic: `
-  <div class="ui visible message">
-  <p>You can always see me</p>
-</div>
-<div class="ui floating message">
-  <p>Way to go!</p>
-</div>
-<div class="ui warning message">
-  <i class="close icon"></i>
-  <div class="header">
-    You must register before you can do that!
-  </div>
-  Visit our registration page, then try again
-</div>
-<div class="ui info message">
-  <i class="close icon"></i>
-  <div class="header">
-    Was this what you wanted?
-  </div>
-  <ul class="list">
-    <li>It's good to see you again.</li>
-    <li>Did you know it's been a while?</li>
-  </ul>
-</div>
-<div class="ui positive message">
-  <i class="close icon"></i>
-  <div class="header">
-    You are eligible for a reward
-  </div>
-  <p>Go to your <b>special offers</b> page to see now.</p>
-</div>
-<div class="ui negative message">
-  <i class="close icon"></i>
-  <div class="header">
-    We're sorry we can't apply that discount
-  </div>
-  <p>That offer has expired
-</p></div>
-<div class="ui red message">Red</div>
-<div class="ui orange message">Orange</div>
-<div class="ui yellow message">Yellow</div>
-<div class="ui olive message">Olive</div>
-<div class="ui green message">Green</div>
-<div class="ui teal message">Teal</div>
-<div class="ui blue message">Blue</div>
-<div class="ui violet message">Violet</div>
-<div class="ui purple message">Purple</div>
-<div class="ui pink message">Pink</div>
-<div class="ui brown message">Brown</div>
-<div class="ui black message">Black</div>
+    <div style="width: 50%; display: inline-block">
+      <div class="ui info message">
+        Sample alert text!
+      </div>
+      <div class="ui positive message">
+        Sample alert text!
+      </div>
+      <div class="ui warning message">
+        <i class="close icon"></i>
+        Sample alert text!
+      </div>
+      <div class="ui negative message">
+        <i class="close icon"></i>
+        Sample alert text!
+      </div>
+    </div>
   `,
   pure: null,
   skeleton: null,

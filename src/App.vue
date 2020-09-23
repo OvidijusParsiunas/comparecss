@@ -23,24 +23,29 @@ import { BUTTON_NAMES } from './consts/buttonNames.enum';
     const jqueryScript = document.createElement('script');
     jqueryScript.setAttribute('src', 'assets/jquery/jquery-3.5.1.slim.min.js');
     document.head.appendChild(jqueryScript);
+    const jqueryScript2 = document.createElement('script');
+    jqueryScript2.setAttribute('src', 'assets/jquery/jquery.js');
+    document.head.appendChild(jqueryScript2);
     const recaptchaScript = document.createElement('script');
     recaptchaScript.setAttribute('src', 'assets/mui/mui.min.js');
     document.head.appendChild(recaptchaScript);
-    const semanticScript = document.createElement('script');
-    semanticScript.setAttribute('src', 'assets/semantic/semantic.min.js');
-    document.head.appendChild(semanticScript);
-    const foundationScript = document.createElement('script');
-    foundationScript.setAttribute('src', 'assets/foundation/foundation.js');
-    document.head.appendChild(foundationScript);
-    const uikitScript = document.createElement('script');
-    uikitScript.setAttribute('src', 'assets/uikit/uikit.min.js');
-    document.head.appendChild(uikitScript);
-    const bootstrapScript = document.createElement('script');
-    bootstrapScript.setAttribute('src', 'assets/bootstrap/bootstrap.min.js');
-    document.head.appendChild(bootstrapScript);
-    const poppoverScript = document.createElement('script');
-    poppoverScript.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js');
-    document.head.appendChild(poppoverScript);
+    setTimeout(() => {
+      const semanticScript = document.createElement('script');
+      semanticScript.setAttribute('src', 'assets/semantic/semantic.min.js');
+      document.head.appendChild(semanticScript);
+      const uikitScript = document.createElement('script');
+      uikitScript.setAttribute('src', 'assets/uikit/uikit.min.js');
+      document.head.appendChild(uikitScript);
+      const bootstrapScript = document.createElement('script');
+      bootstrapScript.setAttribute('src', 'assets/bootstrap/bootstrap.min.js');
+      document.head.appendChild(bootstrapScript);
+      const poppoverScript = document.createElement('script');
+      poppoverScript.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js');
+      document.head.appendChild(poppoverScript);
+      const foundationScript = document.createElement('script');
+      foundationScript.setAttribute('src', 'assets/foundation/foundation.min.js');
+      document.head.appendChild(foundationScript);
+    }, 100);
   },
 })
 
@@ -66,6 +71,8 @@ export default class App extends Vue {
 @import "https://fonts.googleapis.com/css?family=Press+Start+2P";
 @import url('https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import "https://use.fontawesome.com/releases/v5.0.12/css/all.css";
+
 #app {
     display: flex;
     width: 100%;
@@ -80,16 +87,24 @@ body {
 </style>
 
 <style lang="scss">
+  @font-face {
+    font-family: 'Icons'; src: url("assets/icons/icons.woff") format('woff');
+    font-style: normal;
+    font-weight: normal;
+    font-variant: normal;
+    text-decoration: inherit;
+    text-transform: none;
+  }
 .bootstrap {
   @import "node_modules/bootstrap/scss/bootstrap";
   button {
-      font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
-        "Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
-      line-height: 1.15;
-      -webkit-text-size-adjust: 100%;
-      -ms-text-size-adjust: 100%;
-      -ms-overflow-style: scrollbar;
-      -webkit-tap-highlight-color: transparent;
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
+      "Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -ms-overflow-style: scrollbar;
+    -webkit-tap-highlight-color: transparent;
   }
 }
 
@@ -140,8 +155,11 @@ body {
   .breadcrumbs li {
     font-size: 15px;
   }
-  div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, p, blockquote, th, td {
+  div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, blockquote, th, td {
     background-color: white;
+  }
+  .callout > :first-child {
+    margin-bottom: 0px;
   }
 };
 
@@ -168,6 +186,9 @@ body {
     min-width: 1em;
     min-height: 1em;
   }
+  // i.icon.close:before {
+  //   content: url("assets/scss/times-solid.svg");
+  // }
 };
 
 .pure {
