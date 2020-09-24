@@ -9,6 +9,7 @@ import { BUTTON_NAMES } from '../consts/buttonNames.enum';
 import Cards from '../spec/cards';
 import Accordions from '../spec/accordions';
 import Dropdowns from '../spec/dropdowns';
+import Forms from '../spec/forms';
 
 export default class MarkupManager {
   static retrieveContentMarkup(clickedButtonName: BUTTON_NAMES): ContentMarkupInterface {
@@ -29,6 +30,8 @@ export default class MarkupManager {
         return Cards;
       case BUTTON_NAMES.DROPDOWNS:
         return Dropdowns;
+      case BUTTON_NAMES.FORMS:
+        return Forms;
       case BUTTON_NAMES.PROGRESS:
         return Progress;        
       default: {
