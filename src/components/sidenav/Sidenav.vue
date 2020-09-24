@@ -23,6 +23,9 @@
                 </ul>
             </li>
             <li>
+                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.ACCORDIONS)">Accordions</a>
+            </li>
+            <li>
                 <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.ALERTS)">Alerts</a>
             </li>
             <li>
@@ -36,6 +39,12 @@
             </li>
             <li>
                 <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.BUTTON_GROUPS)">Button groups</a>
+            </li>
+            <li>
+                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.CARDS)">Cards</a>
+            </li>
+            <li>
+                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.DROPDOWNS)">Dropdowns</a>
             </li>
             <li>
                 <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.PROGRESS)">Progress</a>
