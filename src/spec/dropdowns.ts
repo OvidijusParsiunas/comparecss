@@ -2,47 +2,35 @@ import { ContentMarkupInterface } from '../interfaces/ContentMarkupInterface';
 
 export default {
   bootstrap: `
-  <div class="dropdown">
-  <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Dropdown button
-  </button>
-  <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-    <a class="dropdown-item" href="#">Action</a>
-    <a class="dropdown-item" href="#">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
-  </div>
-</div>
-<!-- Example single danger button -->
-<div class="btn-group">
-  <button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    Action
-  </button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="#">Action</a>
-    <a class="dropdown-item" href="#">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
-    <div class="dropdown-divider"></div>
-    <a class="dropdown-item" href="#">Separated link</a>
-  </div>
-</div>
-<!-- Example split danger button -->
-<div class="btn-group">
-  <button type="button" class="btn btn-danger">Action</button>
-  <button type="button" class="btn btn-danger dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-    <span class="sr-only">Toggle Dropdown</span>
-  </button>
-  <div class="dropdown-menu">
-    <a class="dropdown-item" href="#">Action</a>
-    <a class="dropdown-item" href="#">Another action</a>
-    <a class="dropdown-item" href="#">Something else here</a>
-    <div class="dropdown-divider"></div>
-    <a class="dropdown-item" href="#">Separated link</a>
-  </div>
-</div>
+    <div style="display: inline-flex">
+      <div style="margin-left: 5px" class="dropdown">
+      <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+        Dropdown button
+      </button>
+      <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+        <a class="dropdown-item" href="#!">Option 1</a>
+        <a class="dropdown-item" href="#!">Option 2</a>
+        <a class="dropdown-item" href="#!">Option 3</a>
+      </div>
+      </div>
+      <!-- Example split primary button -->
+      <div style="margin-left: 5px" class="btn-group">
+        <button type="button" class="btn btn-primary">Split Button</button>
+        <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <span class="sr-only">Toggle Dropdown</span>
+        </button>
+        <div class="dropdown-menu">
+          <a class="dropdown-item" href="#!">Option 1</a>
+          <a class="dropdown-item" href="#!">Option 2</a>
+          <a class="dropdown-item" href="#!">Option 3</a>
+          <div class="dropdown-divider"></div>
+          <a class="dropdown-item" href="#!">Option 4</a>
+        </div>
+      </div>
+    </div>
   `,
   materialize: `
-  <!-- Dropdown Trigger -->
-  <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>Drop Me!</a>
+   <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>Drop Me!</a>
 
   <!-- Dropdown Structure -->
   <ul id='dropdown1' class='dropdown-content'>
@@ -55,53 +43,25 @@ export default {
   </ul>
   `,
   uikit: `
-  <div class="uk-inline">
-    <button class="uk-button uk-button-default" type="button">Hover</button>
-    <div uk-dropdown>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</div>
-</div>
-
-<div class="uk-inline">
-    <button class="uk-button uk-button-default" type="button">Click</button>
-    <div uk-dropdown="mode: click">Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</div>
-</div>
-<button class="uk-button uk-button-default" type="button">Hover</button>
-<div uk-dropdown>
-    <ul class="uk-nav uk-dropdown-nav">
-        <li class="uk-active"><a href="#">Active</a></li>
-        <li><a href="#">Item</a></li>
-        <li class="uk-nav-header">Header</li>
-        <li><a href="#">Item</a></li>
-        <li><a href="#">Item</a></li>
-        <li class="uk-nav-divider"></li>
-        <li><a href="#">Item</a></li>
+<button class="uk-button uk-button-default" type="button">Click</button>
+<div uk-dropdown="mode: click">
+    <ul style="text-align: left" class="uk-nav uk-dropdown-nav">
+      <li><a href="#!">Item 1</a></li>
+      <li><a href="#!">Item 2</a></li>
+      <li><a href="#!">Item 3</a></li>
+      <li class="uk-nav-divider"></li>
+      <li><a href="#!">Item 4</a></li>
     </ul>
 </div>
 <button class="uk-button uk-button-default" type="button">Hover</button>
-<div class="uk-width-large" uk-dropdown>
-    <div class="uk-dropdown-grid uk-child-width-1-2@m" uk-grid>
-        <div>
-            <ul class="uk-nav uk-dropdown-nav">
-                <li class="uk-active"><a href="#">Active</a></li>
-                <li><a href="#">Item</a></li>
-                <li class="uk-nav-header">Header</li>
-                <li><a href="#">Item</a></li>
-                <li><a href="#">Item</a></li>
-                <li class="uk-nav-divider"></li>
-                <li><a href="#">Item</a></li>
-            </ul>
-        </div>
-        <div>
-            <ul class="uk-nav uk-dropdown-nav">
-                <li class="uk-active"><a href="#">Active</a></li>
-                <li><a href="#">Item</a></li>
-                <li class="uk-nav-header">Header</li>
-                <li><a href="#">Item</a></li>
-                <li><a href="#">Item</a></li>
-                <li class="uk-nav-divider"></li>
-                <li><a href="#">Item</a></li>
-            </ul>
-        </div>
-    </div>
+<div uk-dropdown>
+    <ul style="text-align: left" class="uk-nav uk-dropdown-nav">
+      <li><a href="#!">Item 1</a></li>
+      <li><a href="#!">Item 2</a></li>
+      <li><a href="#!">Item 3</a></li>
+      <li class="uk-nav-divider"></li>
+      <li><a href="#!">Item 4</a></li>
+    </ul>
 </div>
   `,
   foundation: `
@@ -136,123 +96,7 @@ export default {
   Just some junk that needs to be said. Or not. Your choice.
 </div>
     `,
-  bulma: `
-  <div class="dropdown is-active">
-  <div class="dropdown-trigger">
-    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu">
-      <span>Dropdown button</span>
-      <span class="icon is-small">
-        <i class="fas fa-angle-down" aria-hidden="true"></i>
-      </span>
-    </button>
-  </div>
-  <div class="dropdown-menu" id="dropdown-menu" role="menu">
-    <div class="dropdown-content">
-      <a href="#" class="dropdown-item">
-        Dropdown item
-      </a>
-      <a class="dropdown-item">
-        Other dropdown item
-      </a>
-      <a href="#" class="dropdown-item is-active">
-        Active dropdown item
-      </a>
-      <a href="#" class="dropdown-item">
-        Other dropdown item
-      </a>
-      <hr class="dropdown-divider">
-      <a href="#" class="dropdown-item">
-        With a divider
-      </a>
-    </div>
-  </div>
-</div>
-
-<div class="dropdown is-active">
-  <div class="dropdown-trigger">
-    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu2">
-      <span>Content</span>
-      <span class="icon is-small">
-        <i class="fas fa-angle-down" aria-hidden="true"></i>
-      </span>
-    </button>
-  </div>
-  <div class="dropdown-menu" id="dropdown-menu2" role="menu">
-    <div class="dropdown-content">
-      <div class="dropdown-item">
-        <p>You can insert <strong>any type of content</strong> within the dropdown menu.</p>
-      </div>
-      <hr class="dropdown-divider">
-      <div class="dropdown-item">
-        <p>You simply need to use a <code>&lt;div&gt;</code> instead.</p>
-      </div>
-      <hr class="dropdown-divider">
-      <a href="#" class="dropdown-item">
-        This is a link
-      </a>
-    </div>
-  </div>
-</div>
-
-
-<div class="dropdown">
-  <div class="dropdown-trigger">
-    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu3">
-      <span>Click me</span>
-      <span class="icon is-small">
-        <i class="fas fa-angle-down" aria-hidden="true"></i>
-      </span>
-    </button>
-  </div>
-  <div class="dropdown-menu" id="dropdown-menu3" role="menu">
-    <div class="dropdown-content">
-      <a href="#" class="dropdown-item">
-        Overview
-      </a>
-      <a href="#" class="dropdown-item">
-        Modifiers
-      </a>
-      <a href="#" class="dropdown-item">
-        Grid
-      </a>
-      <a href="#" class="dropdown-item">
-        Form
-      </a>
-      <a href="#" class="dropdown-item">
-        Elements
-      </a>
-      <a href="#" class="dropdown-item">
-        Components
-      </a>
-      <a href="#" class="dropdown-item">
-        Layout
-      </a>
-      <hr class="dropdown-divider">
-      <a href="#" class="dropdown-item">
-        More
-      </a>
-    </div>
-  </div>
-</div>
-
-<div class="dropdown is-hoverable">
-  <div class="dropdown-trigger">
-    <button class="button" aria-haspopup="true" aria-controls="dropdown-menu4">
-      <span>Hover me</span>
-      <span class="icon is-small">
-        <i class="fas fa-angle-down" aria-hidden="true"></i>
-      </span>
-    </button>
-  </div>
-  <div class="dropdown-menu" id="dropdown-menu4" role="menu">
-    <div class="dropdown-content">
-      <div class="dropdown-item">
-        <p>You can insert <strong>any type of content</strong> within the dropdown menu.</p>
-      </div>
-    </div>
-  </div>
-</div>
-  `,
+  bulma: null,
   semantic: `
   <div class="ui dropdown">
   <div class="text">File</div>
@@ -289,8 +133,22 @@ export default {
         <div class="item">Google Docs</div>
         <div class="item">Google Drive</div>
         <div class="item">Dropbox</div>
-        <div class="ite
-  <div class="ui selection dropdown">
+        <div class="item">Adobe Creative Cloud</div>
+        <div class="item">Private FTP</div>
+        <div class="item">Another Service...</div>
+      </div>
+    </div>
+    <div class="item">E-mail Collaborators</div>
+  </div>
+</div>
+
+<select class="ui dropdown">
+  <option value="">Gender</option>
+  <option value="1">Male</option>
+  <option value="0">Female</option>
+</select>
+
+<div class="ui selection dropdown">
   <input type="hidden" name="gender">
   <i class="dropdown icon"></i>
   <div class="default text">Gender</div>
@@ -299,6 +157,7 @@ export default {
     <div class="item" data-value="0">Female</div>
   </div>
 </div>
+
 <div class="ui floating dropdown labeled search icon button">
   <i class="world icon"></i>
   <span class="text">Select Language</span>
@@ -404,24 +263,46 @@ export default {
     </div>
   </div>
 </div>
+
+<div class="ui floating labeled icon dropdown button">
+  <i class="dropdown icon"></i>
+  <span class="text">Menu</span>
+  <div class="menu">
+    <div class="item">
+      <i class="left dropdown icon"></i>
+      <span class="text">Left</span>
+      <div class="left menu">
+        <div class="item">1</div>
+        <div class="item">2</div>
+        <div class="item">3</div>
+      </div>
+    </div>
+    <div class="item">
+      <i class="dropdown icon"></i>
+      <span class="text">Right</span>
+      <div class="right menu">
+        <div class="item">1</div>
+        <div class="item">2</div>
+        <div class="item">3</div>
+      </div>
+    </div>
+  </div>
+</div>
   `,
   pure: `
   <div class="pure-menu pure-menu-horizontal">
   <ul class="pure-menu-list">
-      <li class="pure-menu-item pure-menu-selected">
-          <a href="#" class="pure-menu-link">Home</a>
-      </li>
       <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-          <a href="#" id="menuLink1" class="pure-menu-link">Contact</a>
+          <a href="#!" id="menuLink1" class="pure-menu-link">Contact</a>
           <ul class="pure-menu-children">
               <li class="pure-menu-item">
-                  <a href="#" class="pure-menu-link">Email</a>
+                  <a href="#!" class="pure-menu-link">Email</a>
               </li>
               <li class="pure-menu-item">
-                  <a href="#" class="pure-menu-link">Twitter</a>
+                  <a href="#!" class="pure-menu-link">Twitter</a>
               </li>
               <li class="pure-menu-item">
-                  <a href="#" class="pure-menu-link">Tumblr Blog</a>
+                  <a href="#!" class="pure-menu-link">Tumblr Blog</a>
               </li>
           </ul>
       </li>
@@ -431,37 +312,37 @@ export default {
 <div class="pure-menu custom-restricted-width">
     <ul class="pure-menu-list">
         <li class="pure-menu-item pure-menu-selected">
-            <a href="#" class="pure-menu-link">Flickr</a>
+            <a href="#!" class="pure-menu-link">Flickr</a>
         </li>
         <li class="pure-menu-item">
-            <a href="#" class="pure-menu-link">Messenger</a>
+            <a href="#!" class="pure-menu-link">Messenger</a>
         </li>
         <li class="pure-menu-item">
-            <a href="#" class="pure-menu-link">Sports</a>
+            <a href="#!" class="pure-menu-link">Sports</a>
         </li>
         <li class="pure-menu-item">
-            <a href="#" class="pure-menu-link">Finance</a>
+            <a href="#!" class="pure-menu-link">Finance</a>
         </li>
         <li class="pure-menu-item pure-menu-has-children">
-            <a href="#" id="menuLink1" class="pure-menu-link">More</a>
+            <a href="#!" id="menuLink1" class="pure-menu-link">More</a>
             <ul class="pure-menu-children">
                 <li class="pure-menu-item">
-                    <a href="#" class="pure-menu-link">Autos</a>
+                    <a href="#!" class="pure-menu-link">Autos</a>
                 </li>
                 <li class="pure-menu-item">
-                    <a href="#" class="pure-menu-link">Flickr</a>
+                    <a href="#!" class="pure-menu-link">Flickr</a>
                 </li>
                 <li class="pure-menu-item pure-menu-has-children">
-                    <a href="#" id="menuLink1" class="pure-menu-link">Even More</a>
+                    <a href="#!" id="menuLink1" class="pure-menu-link">Even More</a>
                     <ul class="pure-menu-children">
                         <li class="pure-menu-item">
-                            <a href="#" class="pure-menu-link">Foo</a>
+                            <a href="#!" class="pure-menu-link">Foo</a>
                         </li>
                         <li class="pure-menu-item">
-                            <a href="#" class="pure-menu-link">Bar</a>
+                            <a href="#!" class="pure-menu-link">Bar</a>
                         </li>
                         <li class="pure-menu-item">
-                            <a href="#" class="pure-menu-link">Baz</a>
+                            <a href="#!" class="pure-menu-link">Baz</a>
                         </li>
                     </ul>
                 </li>
@@ -479,7 +360,7 @@ export default {
   </li>
   <!-- menu item standard -->
   <li class="menu-item">
-    <a href="#">
+    <a href="#!">
       <i class="icon icon-link"></i> Slack
     </a>
   </li>
@@ -494,7 +375,7 @@ export default {
   <li class="divider"></li>
   <!-- menu item with badge -->
   <li class="menu-item">
-    <a href="#">
+    <a href="#!">
       <i class="icon icon-link"></i> Settings
     </a>
     <div class="menu-badge">
@@ -503,7 +384,7 @@ export default {
   </li>
 
   <li class="menu-item">
-    <a href="#">My profile</a>
+    <a href="#!">My profile</a>
     <div class="menu-badge">
       <label class="form-checkbox">
         <input type="checkbox">
@@ -515,7 +396,7 @@ export default {
 
     <!-- basic dropdown button -->
 <div class="dropdown">
-  <a href="#" class="btn btn-link dropdown-toggle" tabindex="0">
+  <a href="#!" class="btn btn-link dropdown-toggle" tabindex="0">
     dropdown menu <i class="icon icon-caret"></i>
   </a>
   <!-- menu component -->
@@ -527,10 +408,10 @@ export default {
 <!-- dropdown button group -->
 <div class="dropdown">
   <div class="btn-group">
-    <a href="#" class="btn">
+    <a href="#!" class="btn">
       dropdown button
     </a>
-    <a href="#" class="btn dropdown-toggle" tabindex="0">
+    <a href="#!" class="btn dropdown-toggle" tabindex="0">
       <i class="icon icon-caret"></i>
     </a>
 
@@ -570,7 +451,7 @@ export default {
   <!-- <%= octicon "pencil" %> -->
   <svg class="octicon octicon-pencil" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M0 12v3h3l8-8-3-3-8 8zm3 2H1v-2h1v1h1v1zm10.3-9.3L12 6 9 3l1.3-1.3a.996.996 0 011.41 0l1.59 1.59c.39.39.39 1.02 0 1.41z"></path></svg>
 </button>`,
-  nes: `<a class="nes-btn" href="#">Normal</a>
+  nes: `<a class="nes-btn" href="#!">Normal</a>
   <button type="button" class="nes-btn is-primary">Primary</button>
   <button type="button" class="nes-btn is-success">Success</button>
   <button type="button" class="nes-btn is-warning">Warning</button>

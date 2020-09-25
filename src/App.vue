@@ -45,12 +45,16 @@ import { BUTTON_NAMES } from './consts/buttonNames.enum';
       const foundationScript = document.createElement('script');
       foundationScript.setAttribute('src', 'assets/foundation/foundation.min.js');
       document.head.appendChild(foundationScript);
+      const foundationScript1 = document.createElement('script');
+      foundationScript1.setAttribute('src', 'assets/materialize/materialize.min.js');
+      document.head.appendChild(foundationScript1);
     }, 100);
+    // need to subscribe to when these are loaded onto the UI and then allow the user to execute certain ui functions
   },
 })
 
 export default class App extends Vue {
-  // data variables these have been moved here to allow typing
+  // data variables have been moved here to allow typing
   private markup: ContentMarkupInterface = {
     bootstrap: '<button type="button" class="btn btn-primary">Primary</button>',
     materialize: '<button type="button" class="btn btn-primary">Primary</button>',
@@ -62,6 +66,17 @@ export default class App extends Vue {
   // methods
   public sideNavButtonClick(clickedButtonName: BUTTON_NAMES): void {
     this.markup = markupManager.retrieveContentMarkup(clickedButtonName);
+    // should be called in the markup manager service
+    // these get added multiple times
+    const foundationScript2 = document.createElement('script');
+    foundationScript2.setAttribute('src', 'assets/semantic/app.js');
+    document.head.appendChild(foundationScript2);
+    const foundationScript1 = document.createElement('script');
+    foundationScript1.setAttribute('src', 'assets/materialize/app.js');
+    document.head.appendChild(foundationScript1);
+    const foundationScript = document.createElement('script');
+    foundationScript.setAttribute('src', 'assets/foundation/app.js');
+    document.head.appendChild(foundationScript);
   }
 }
 </script>
@@ -71,7 +86,7 @@ export default class App extends Vue {
 @import "https://fonts.googleapis.com/css?family=Press+Start+2P";
 @import url('https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin');
 @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-@import "https://use.fontawesome.com/releases/v5.0.12/css/all.css";
+@import "https://use.fontawesome.com/releases/v5.0.12/css/all.css";  /* is this needed? */
 
 #app {
     display: flex;
@@ -95,6 +110,12 @@ body {
     text-decoration: inherit;
     text-transform: none;
   }
+  @font-face {
+  font-family: 'Dropdown';
+  src: url(data:application/font-woff;charset=utf-8;base64,d09GRgABAAAAAAVgAA8AAAAACFAAAQAAAAAAAAAAAAAAAAAAAAAAAAAAAABGRlRNAAABWAAAABwAAAAchGgaq0dERUYAAAF0AAAAHAAAAB4AJwAPT1MvMgAAAZAAAABDAAAAVnW4TJdjbWFwAAAB1AAAAEsAAAFS8CcaqmN2dCAAAAIgAAAABAAAAAQAEQFEZ2FzcAAAAiQAAAAIAAAACP//AANnbHlmAAACLAAAAQoAAAGkrRHP9WhlYWQAAAM4AAAAMAAAADYPK8YyaGhlYQAAA2gAAAAdAAAAJANCAb1obXR4AAADiAAAACIAAAAiCBkAOGxvY2EAAAOsAAAAFAAAABQBnAIybWF4cAAAA8AAAAAfAAAAIAEVAF5uYW1lAAAD4AAAATAAAAKMFGlj5HBvc3QAAAUQAAAARgAAAHJoedjqd2ViZgAABVgAAAAGAAAABrO7W5UAAAABAAAAANXulPUAAAAA1r4hgAAAAADXu2Q1eNpjYGRgYOABYjEgZmJgBEIOIGYB8xgAA/YAN3jaY2BktGOcwMDKwMI4jTGNgYHBHUp/ZZBkaGFgYGJgZWbACgLSXFMYHFT/fLjFeOD/AQY9xjMMbkBhRpAcAN48DQYAeNpjYGBgZoBgGQZGBhDwAfIYwXwWBgMgzQGETAwMqn8+8H649f8/lHX9//9b7Pzf+fWgusCAkY0BzmUE6gHpQwGMDMMeAACbxg7SAAARAUQAAAAB//8AAnjadZBPSsNAGMXfS+yMqYgOhpSuSlKadmUhiVEhEMQzFF22m17BbbvzCh5BXCUn6EG8gjeQ4DepwYo4i+/ffL95j4EDA+CFC7jQuKyIeVHrI3wkleq9F7XrSInKteOeHdda8bOoaeepSc00NWPz/LRec9G8GabyGtEdF7h19z033GAMTK7zbM42xNEZpzYof0RtQ5CUHAQJ73OtVyutc+3b7Ou//b8XNlsPx3jgjUifABdhEohKJJL5iM5p39uqc7X1+sRQSqmGrUVhlsJ4lpmEUVwyT8SUYtg0P9DyNzPADDs+tjrGV6KRCRfsui3eHcL4/p8ZXvfMlcnEU+CLv7hDykOP+AKTPTxbAAB42mNgZGBgAGKuf5KP4vltvjLIMzGAwLV9ig0g+vruFFMQzdjACOJzMIClARh0CTJ42mNgZGBgPPD/AJD8wgAEjA0MjAyogAMAbOQEAQAAAAC7ABEAAAAAAKoAAAH0AAABgAAAAUAACAFAAAgAwAAXAAAAAAAAACoAKgAqADIAbACGAKAAugDSeNpjYGRgYOBkUGFgYgABEMkFhAwM/xn0QAIADdUBdAB42qWQvUoDQRSFv3GjaISUQaymSmGxJoGAsRC0iPYLsU50Y6IxrvlRtPCJJKUPIBb+PIHv4EN4djKuKAqCDHfmu+feOdwZoMCUAJNbAlYUMzaUlM14jjxbngOq7HnOia89z1Pk1vMCa9x7ztPkzfMyJbPj+ZGi6Xp+omxuPD+zaD7meaFg7mb8GrBqHmhwxoAxlm0uiRkpP9X5m26pKRoMxTGR1D49Dv/Yb/91o6l8qL6eu5n2hZQzn68utR9m3FU2cB4t9cdSLG2utI+44Eh/P9bqKO+oJ/WxmXssj77YkrjasZQD6SFddythk3Wtzrf+UF2p076Udla1VNzsERP3kkjVRKel7mp1udXYcHtZSlV7RfmJe1GiFWveluaeKD5/MuJcSk8Tpm/vvwPIbmJleNpjYGKAAFYG7ICTgYGRiZGZkYWRlZGNkZ2Rg5GTLT2nsiDDEEIZsZfmZRqZujmDaDcDAxcI7WIOpS2gtCWUdgQAZkcSmQAAAAFblbO6AAA=) format('woff');
+  font-weight: normal;
+  font-style: normal;
+}
 .bootstrap {
   @import "node_modules/bootstrap/scss/bootstrap";
   button {
@@ -133,6 +154,9 @@ body {
   color: #666;
   // @import "assets/scss/uikit2.scss";
   @import "assets/scss/uikit.scss";
+  .uk-dropdown {
+    min-width: 160px
+  }
 }
 
 .foundation {
