@@ -77,6 +77,9 @@ export default class App extends Vue {
     const foundationScript = document.createElement('script');
     foundationScript.setAttribute('src', 'assets/foundation/app.js');
     document.head.appendChild(foundationScript);
+    const pureScript = document.createElement('script');
+    pureScript.setAttribute('src', 'assets/pure/menus.js');
+    document.head.appendChild(pureScript);
   }
 }
 </script>
@@ -287,11 +290,12 @@ body {
   color: #3b4351;
   font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI",
     Roboto, "Helvetica Neue", sans-serif;
-  overflow-x: hidden;
+  // overflow-x: hidden;
   text-rendering: optimizeLegibility;
   font-size: 16px;
   @import "assets/scss/spectre.scss";
   @import "assets/scss/spectre-exp.scss";
+  @import "assets/scss/spectre-icons.scss";
   .btn, .materialize .btn-large, .materialize .btn-large, .materialize .btn-small, .materialize .btn-small {
     border: 1px solid #5755d9;
     border-radius: 2px;
@@ -309,6 +313,9 @@ body {
     right: 0;
     top: 0;
     transform: translate(50%,-50%);
+  }
+  .dropdown .menu {
+    max-height: none;
   }
 }
 

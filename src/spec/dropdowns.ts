@@ -290,7 +290,7 @@ export default {
 </div>
   `,
   pure: `
-  <div class="pure-menu pure-menu-horizontal">
+  <div style="width: 50%" class="pure-menu pure-menu-horizontal">
   <ul class="pure-menu-list">
       <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
           <a href="#!" id="menuLink1" class="pure-menu-link">Contact</a>
@@ -309,7 +309,7 @@ export default {
   </ul>
 </div>
 
-<div class="pure-menu custom-restricted-width">
+<div style="width: 50%" class="pure-menu custom-restricted-width">
     <ul class="pure-menu-list">
         <li class="pure-menu-item pure-menu-selected">
             <a href="#!" class="pure-menu-link">Flickr</a>
@@ -354,73 +354,25 @@ export default {
   skeleton: null,
   milligram: null,
   spectre: `
-  <ul class="menu">
-  <!-- menu header text -->
-  <li class="divider" data-content="LINKS">
-  </li>
-  <!-- menu item standard -->
-  <li class="menu-item">
-    <a href="#!">
-      <i class="icon icon-link"></i> Slack
-    </a>
-  </li>
-  <!-- menu item with form control -->
-  <li class="menu-item">
-    <label class="form-checkbox">
-      <input type="checkbox">
-      <i class="form-icon"></i> form-checkbox
-    </label>
-  </li>
-  <!-- menu divider -->
-  <li class="divider"></li>
-  <!-- menu item with badge -->
-  <li class="menu-item">
-    <a href="#!">
-      <i class="icon icon-link"></i> Settings
-    </a>
-    <div class="menu-badge">
-      <label class="label label-primary">2</label>
+  <div class="dropdown">
+    <div class="btn-group"><a class="btn btn-primary">dropdown button</a><a class="btn btn-primary dropdown-toggle" tabindex="0"><i class="icon icon-caret"></i></a>
+      <ul class="menu">
+        <li class="menu-item"><a href="#dropdowns">Slack</a></li>
+        <li class="menu-item"><a href="#dropdowns">Hipchat</a></li>
+        <li class="menu-item"><a href="#dropdowns">Skype</a></li>
+      </ul>
     </div>
-  </li>
-
-  <li class="menu-item">
-    <a href="#!">My profile</a>
-    <div class="menu-badge">
-      <label class="form-checkbox">
-        <input type="checkbox">
-        <i class="form-icon"></i> Public
-      </label>
-    </div>
-  </li>
-</ul>
-
-    <!-- basic dropdown button -->
-<div class="dropdown">
-  <a href="#!" class="btn btn-link dropdown-toggle" tabindex="0">
-    dropdown menu <i class="icon icon-caret"></i>
-  </a>
-  <!-- menu component -->
-  <ul class="menu">
-    ...
-  </ul>
-</div>
-
-<!-- dropdown button group -->
-<div class="dropdown">
-  <div class="btn-group">
-    <a href="#!" class="btn">
-      dropdown button
-    </a>
-    <a href="#!" class="btn dropdown-toggle" tabindex="0">
-      <i class="icon icon-caret"></i>
-    </a>
-
-    <!-- menu component -->
-    <ul class="menu">
-      ...
-    </ul>
   </div>
-</div>
+
+  <div class="column col-xs-12">
+    <div class="dropdown dropdown-right"><a class="btn btn-primary dropdown-toggle" tabindex="0">dropdown button <i class="icon icon-caret"></i></a>
+      <ul class="menu text-left">
+        <li class="menu-item"><a href="#dropdowns">Slack</a></li>
+        <li class="menu-item"><a href="#dropdowns">Hipchat</a></li>
+        <li class="menu-item"><a href="#dropdowns">Skype</a></li>
+      </ul>
+    </div>
+  </div>
   `,
   primer: `<button class="btn mr-2" type="button">
   <!-- <%= octicon "search" %> -->
