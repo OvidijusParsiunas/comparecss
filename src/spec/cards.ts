@@ -2,7 +2,7 @@ import { ContentMarkupInterface } from '../interfaces/ContentMarkupInterface';
 
 export default {
   bootstrap: `
-      <div class="card" style="width: 18rem; display: inline-flex">
+      <div class="card" style="width: 18rem; display: inline-block">
       <img style="width: 286px; height: 180px" class="card-img-top" src="https://lorempixel.com/100/190/nature/6" alt="Card image cap">
       <div style="text-align: left" class="card-body">
         <h5 class="card-title">Card title</h5>
@@ -11,7 +11,7 @@ export default {
       </div>
     </div>
 
-    <div class="card" style="width: 18rem; display: inline-flex">
+    <div class="card" style="width: 18rem; display: inline-block">
       <div style="text-align: left" class="card-body">
         <h5 class="card-title">Card title</h5>
         <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
@@ -20,7 +20,7 @@ export default {
         <a href="#" class="card-link">Another link</a>
       </div>
     </div>
-    <div class="card" style="width: 18rem; display: inline-flex; text-align: left">
+    <div class="card" style="width: 18rem; display: inline-block; text-align: left">
       <div class="card-header">
         Featured
       </div>
