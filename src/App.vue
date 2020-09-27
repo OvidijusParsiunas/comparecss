@@ -206,16 +206,30 @@ body {
   .ui.three.buttons > .button {
     width: 20%;
   }
-  .ui.buttons .button, .ui.buttons .or, .ui.button {
+  .ui.buttons .button, .ui.buttons .or, .ui.button, .ui.menu {
     font-size: 14px;
   }
   .ui.circular.labels .label, .ui.circular.labels .picnic [data-tooltip]:after, .picnic .ui.circular.labels [data-tooltip]:after, .ui.circular.label, .picnic .ui.circular[data-tooltip]:after, .picnic .ui.circular[data-tooltip]:after {
     min-width: 1em;
     min-height: 1em;
   }
-  // i.icon.close:before {
-  //   content: url("assets/scss/times-solid.svg");
-  // }
+  .ui.selection.dropdown {
+    min-width: 6em;
+    min-height: unset;
+  }
+  .ui.selection.dropdown .menu {
+    width: 100%;
+    min-width: 100%;
+  }
+  .ui.menu {
+    min-height: unset;
+  }
+  .ui.compact.menu {
+    vertical-align: unset;
+  }
+  .ui.menu .item {
+    padding: 0.75857143em 1.14285714em;
+  }
 };
 
 .pure {

@@ -5,7 +5,7 @@ export default {
     <div style="display: inline-flex">
       <div style="margin-left: 5px" class="dropdown">
       <button class="btn btn-primary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-        Dropdown button
+        Click Dropdown
       </button>
       <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
         <a class="dropdown-item" href="#!">Option 1</a>
@@ -13,9 +13,8 @@ export default {
         <a class="dropdown-item" href="#!">Option 3</a>
       </div>
       </div>
-      <!-- Example split primary button -->
       <div style="margin-left: 5px" class="btn-group">
-        <button type="button" class="btn btn-primary">Split Button</button>
+        <button type="button" class="btn btn-primary">Split Dropdown</button>
         <button type="button" class="btn btn-primary dropdown-toggle dropdown-toggle-split" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
           <span class="sr-only">Toggle Dropdown</span>
         </button>
@@ -30,349 +29,176 @@ export default {
     </div>
   `,
   materialize: `
-   <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>Drop Me!</a>
-
-  <!-- Dropdown Structure -->
-  <ul id='dropdown1' class='dropdown-content'>
-    <li><a href="#!">one</a></li>
-    <li><a href="#!">two</a></li>
-    <li class="divider" tabindex="-1"></li>
-    <li><a href="#!">three</a></li>
-    <li><a href="#!"><i class="material-icons">view_module</i>four</a></li>
-    <li><a href="#!"><i class="material-icons">cloud</i>five</a></li>
-  </ul>
+    <a class='dropdown-trigger btn' href='#' data-target='dropdown1'>Click Dropdown</a>
+    <ul id='dropdown1' class='dropdown-content'>
+      <li><a href="#!">Option 1</a></li>
+      <li><a href="#!">Option 2</a></li>
+      <li><a href="#!">Option 3</a></li>
+      <li class="divider" tabindex="-1"></li>
+      <li><a href="#!">Option 4</a></li>
+    </ul>
   `,
   uikit: `
-<button class="uk-button uk-button-default" type="button">Click</button>
-<div uk-dropdown="mode: click">
-    <ul style="text-align: left" class="uk-nav uk-dropdown-nav">
-      <li><a href="#!">Item 1</a></li>
-      <li><a href="#!">Item 2</a></li>
-      <li><a href="#!">Item 3</a></li>
-      <li class="uk-nav-divider"></li>
-      <li><a href="#!">Item 4</a></li>
-    </ul>
-</div>
-<button class="uk-button uk-button-default" type="button">Hover</button>
-<div uk-dropdown>
-    <ul style="text-align: left" class="uk-nav uk-dropdown-nav">
-      <li><a href="#!">Item 1</a></li>
-      <li><a href="#!">Item 2</a></li>
-      <li><a href="#!">Item 3</a></li>
-      <li class="uk-nav-divider"></li>
-      <li><a href="#!">Item 4</a></li>
-    </ul>
-</div>
+    <button class="uk-button uk-button-default" type="button">Click Dropdown</button>
+    <div uk-dropdown="mode: click">
+        <ul style="text-align: left" class="uk-nav uk-dropdown-nav">
+          <li><a href="#!">Option 1</a></li>
+          <li><a href="#!">Option 2</a></li>
+          <li><a href="#!">Option 3</a></li>
+          <li class="uk-nav-divider"></li>
+          <li><a href="#!">Option 4</a></li>
+        </ul>
+    </div>
+    <button class="uk-button uk-button-default" type="button">Hover Dropdown</button>
+    <div uk-dropdown>
+        <ul style="text-align: left" class="uk-nav uk-dropdown-nav">
+          <li><a href="#!">Option 1</a></li>
+          <li><a href="#!">Option 2</a></li>
+          <li><a href="#!">Option 3</a></li>
+          <li class="uk-nav-divider"></li>
+          <li><a href="#!">Option 4</a></li>
+        </ul>
+    </div>
   `,
   foundation: `
-  <button class="button" type="button" data-toggle="example-dropdown">Toggle Dropdown</button>
-<div class="dropdown-pane" id="example-dropdown" data-dropdown data-auto-focus="true">
-  Example form in a dropdown.
-  <form>
-    <div class="grid-container">
-      <div class="grid-x grid-margin-x">
-        <div class="cell medium-6">
-          <label>Name
-            <input type="text" placeholder="Kirk, James T.">
-          </label>
-        </div>
-        <div class="cell medium-6">
-          <label>Rank
-            <input type="text" placeholder="Captain">
-          </label>
-        </div>
-      </div>
+    <button class="button" type="button" data-toggle="example-dropdown">Click Dropdown</button>
+    <div style="padding: 0; width: 198px" class="dropdown-pane" id="example-dropdown" data-dropdown data-auto-focus="true">
+      <ul class="menu submenu is-dropdown-submenu first-sub vertical" data-submenu="" role="menubar" style="display: contents; text-align: left">
+        <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="#Item-2A" role="menuitem">Option 1</a></li>
+        <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="#Item-2B" role="menuitem">Option 2</a></li>
+        <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="#Item-2B" role="menuitem">Option 3</a></li>
+      </ul>
     </div>
-  </form>
-</div>
-
-<button class="button" type="button" data-toggle="example-dropdown-1">Hoverable Dropdown</button>
-<div class="dropdown-pane" id="example-dropdown-1" data-dropdown data-hover="true" data-hover-pane="true">
-  Just some junk that needs to be said. Or not. Your choice.
-</div>
-<button class="button" type="button" data-toggle="example-dropdown2">Top Aligned</button>
-
-<div class="dropdown-pane top" id="example-dropdown2" data-dropdown>
-  Just some junk that needs to be said. Or not. Your choice.
-</div>
+    <button class="button" type="button" data-toggle="example-dropdown-1">Hover Dropdown</button>
+    <div style="padding: 0; width: 198px" class="dropdown-pane" id="example-dropdown-1" data-dropdown data-hover="true" data-hover-pane="true">
+      <ul class="menu submenu is-dropdown-submenu first-sub vertical" data-submenu="" role="menubar" style="display: contents; text-align: left">
+        <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="#Item-2A" role="menuitem">Option 1</a></li>
+        <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="#Item-2B" role="menuitem">Option 2</a></li>
+        <li role="none" class="is-submenu-item is-dropdown-submenu-item"><a href="#Item-2B" role="menuitem">Option 3</a></li>
+      </ul>
+    </div>
     `,
   bulma: null,
   semantic: `
-  <div class="ui dropdown">
-  <div class="text">File</div>
-  <i class="dropdown icon"></i>
-  <div class="menu">
-    <div class="item">New</div>
-    <div class="item">
-      <span class="description">ctrl + o</span>
-      Open...
+    <select class="ui dropdown">
+      <option value="">Select Dropdown</option>
+      <option value="1">Option 1</option>
+      <option value="2">Option 2</option>
+      <option value="3">Option 3</option>
+    </select>
+    <div class="ui compact menu">
+      <div class="ui simple dropdown item">
+        Hover Dropdown
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          <div class="item">Option 1</div>
+          <div class="item">Option 2</div>
+          <div class="item">Option 3</div>
+        </div>
+      </div>
     </div>
-    <div class="item">
-      <span class="description">ctrl + s</span>
-      Save as...
+    <div class="ui buttons">
+      <div class="ui button">Split Dropdown</div>
+      <div class="ui floating dropdown icon button">
+        <i class="dropdown icon"></i>
+        <div class="menu">
+          <div class="item">Option 1</div>
+          <div class="item">Option 2</div>
+          <div class="item">Option 3</div>
+        </div>
+      </div>
     </div>
-    <div class="item">
-      <span class="description">ctrl + r</span>
-      Rename
-    </div>
-    <div class="item">Make a copy</div>
-    <div class="item">
-      <i class="folder icon"></i>
-      Move to folder
-    </div>
-    <div class="item">
-      <i class="trash icon"></i>
-      Move to trash
-    </div>
-    <div class="divider"></div>
-    <div class="item">Download As...</div>
-    <div class="item">
-      <i class="dropdown icon"></i>
-      Publish To Web
+    <div class="ui floating dropdown labeled search icon button">
+      <i class="world icon"></i>
+      <span class="text">Search Dropdown</span>
       <div class="menu">
-        <div class="item">Google Docs</div>
-        <div class="item">Google Drive</div>
-        <div class="item">Dropbox</div>
-        <div class="item">Adobe Creative Cloud</div>
-        <div class="item">Private FTP</div>
-        <div class="item">Another Service...</div>
+        <div class="item">Arabic</div>
+        <div class="item">Chinese</div>
+        <div class="item">Danish</div>
+        <div class="item">Dutch</div>
+        <div class="item">English</div>
+        <div class="item">French</div>
+        <div class="item">German</div>
+        <div class="item">Greek</div>
+        <div class="item">Hungarian</div>
+        <div class="item">Italian</div>
+        <div class="item">Japanese</div>
+        <div class="item">Korean</div>
+        <div class="item">Lithuanian</div>
+        <div class="item">Persian</div>
+        <div class="item">Polish</div>
+        <div class="item">Portuguese</div>
+        <div class="item">Russian</div>
+        <div class="item">Spanish</div>
+        <div class="item">Swedish</div>
+        <div class="item">Turkish</div>
+        <div class="item">Vietnamese</div>
       </div>
     </div>
-    <div class="item">E-mail Collaborators</div>
-  </div>
-</div>
-
-<select class="ui dropdown">
-  <option value="">Gender</option>
-  <option value="1">Male</option>
-  <option value="0">Female</option>
-</select>
-
-<div class="ui selection dropdown">
-  <input type="hidden" name="gender">
-  <i class="dropdown icon"></i>
-  <div class="default text">Gender</div>
-  <div class="menu">
-    <div class="item" data-value="1">Male</div>
-    <div class="item" data-value="0">Female</div>
-  </div>
-</div>
-
-<div class="ui floating dropdown labeled search icon button">
-  <i class="world icon"></i>
-  <span class="text">Select Language</span>
-  <div class="menu">
-    <div class="item">Arabic</div>
-    <div class="item">Chinese</div>
-    <div class="item">Danish</div>
-    <div class="item">Dutch</div>
-    <div class="item">English</div>
-    <div class="item">French</div>
-    <div class="item">German</div>
-    <div class="item">Greek</div>
-    <div class="item">Hungarian</div>
-    <div class="item">Italian</div>
-    <div class="item">Japanese</div>
-    <div class="item">Korean</div>
-    <div class="item">Lithuanian</div>
-    <div class="item">Persian</div>
-    <div class="item">Polish</div>
-    <div class="item">Portuguese</div>
-    <div class="item">Russian</div>
-    <div class="item">Spanish</div>
-    <div class="item">Swedish</div>
-    <div class="item">Turkish</div>
-    <div class="item">Vietnamese</div>
-  </div>
-</div>
-
-<div class="ui floating dropdown labeled icon button">
-  <i class="filter icon"></i>
-  <span class="text">Filter Posts</span>
-  <div class="menu">
-    <div class="ui icon search input">
-      <i class="search icon"></i>
-      <input type="text" placeholder="Search tags...">
-    </div>
-    <div class="divider"></div>
-    <div class="header">
-      <i class="tags icon"></i>
-      Tag Label
-    </div>
-    <div class="scrolling menu">
-      <div class="item">
-        <div class="ui red empty circular label"></div>
-        Important
-      </div>
-      <div class="item">
-        <div class="ui blue empty circular label"></div>
-        Announcement
-      </div>
-      <div class="item">
-        <div class="ui black empty circular label"></div>
-        Cannot Fix
-      </div>
-      <div class="item">
-        <div class="ui purple empty circular label"></div>
-        News
-      </div>
-      <div class="item">
-        <div class="ui orange empty circular label"></div>
-        Enhancement
-      </div>
-      <div class="item">
-        <div class="ui empty circular label"></div>
-        Change Declined
-      </div>
-      <div class="item">
-        <div class="ui yellow empty circular label"></div>
-        Off Topic
-      </div>
-      <div class="item">
-        <div class="ui pink empty circular label"></div>
-        Interesting
-      </div>
-      <div class="item">
-        <div class="ui green empty circular label"></div>
-        Discussion
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="ui teal buttons">
-  <div class="ui button">Save</div>
-  <div class="ui floating dropdown icon button">
-    <i class="dropdown icon"></i>
-    <div class="menu">
-      <div class="item"><i class="edit icon"></i> Edit Post</div>
-      <div class="item"><i class="delete icon"></i> Remove Post</div>
-      <div class="item"><i class="hide icon"></i> Hide Post</div>
-    </div>
-  </div>
-</div>
-
-<div class="ui compact menu">
-  <div class="ui simple dropdown item">
-    Dropdown
-    <i class="dropdown icon"></i>
-    <div class="menu">
-      <div class="item">Choice 1</div>
-      <div class="item">Choice 2</div>
-      <div class="item">Choice 3</div>
-    </div>
-  </div>
-</div>
-
-<div class="ui floating labeled icon dropdown button">
-  <i class="dropdown icon"></i>
-  <span class="text">Menu</span>
-  <div class="menu">
-    <div class="item">
-      <i class="left dropdown icon"></i>
-      <span class="text">Left</span>
-      <div class="left menu">
-        <div class="item">1</div>
-        <div class="item">2</div>
-        <div class="item">3</div>
-      </div>
-    </div>
-    <div class="item">
-      <i class="dropdown icon"></i>
-      <span class="text">Right</span>
-      <div class="right menu">
-        <div class="item">1</div>
-        <div class="item">2</div>
-        <div class="item">3</div>
-      </div>
-    </div>
-  </div>
-</div>
   `,
   pure: `
-  <div style="width: 50%" class="pure-menu pure-menu-horizontal">
-  <ul class="pure-menu-list">
-      <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
-          <a href="#!" id="menuLink1" class="pure-menu-link">Contact</a>
-          <ul class="pure-menu-children">
-              <li class="pure-menu-item">
-                  <a href="#!" class="pure-menu-link">Email</a>
-              </li>
-              <li class="pure-menu-item">
-                  <a href="#!" class="pure-menu-link">Twitter</a>
-              </li>
-              <li class="pure-menu-item">
-                  <a href="#!" class="pure-menu-link">Tumblr Blog</a>
-              </li>
-          </ul>
-      </li>
-  </ul>
-</div>
-
-<div style="width: 50%" class="pure-menu custom-restricted-width">
-    <ul class="pure-menu-list">
-        <li class="pure-menu-item pure-menu-selected">
-            <a href="#!" class="pure-menu-link">Flickr</a>
-        </li>
-        <li class="pure-menu-item">
-            <a href="#!" class="pure-menu-link">Messenger</a>
-        </li>
-        <li class="pure-menu-item">
-            <a href="#!" class="pure-menu-link">Sports</a>
-        </li>
-        <li class="pure-menu-item">
-            <a href="#!" class="pure-menu-link">Finance</a>
-        </li>
-        <li class="pure-menu-item pure-menu-has-children">
-            <a href="#!" id="menuLink1" class="pure-menu-link">More</a>
+    <div style="display: inline-flex">
+      <div class="pure-menu pure-menu-horizontal">
+        <ul class="pure-menu-list">
+          <li class="pure-menu-item pure-menu-has-children">
+            <a href="#!" id="menuLink1" class="pure-menu-link">Click Dropdown</a>
             <ul class="pure-menu-children">
-                <li class="pure-menu-item">
-                    <a href="#!" class="pure-menu-link">Autos</a>
-                </li>
-                <li class="pure-menu-item">
-                    <a href="#!" class="pure-menu-link">Flickr</a>
-                </li>
-                <li class="pure-menu-item pure-menu-has-children">
-                    <a href="#!" id="menuLink1" class="pure-menu-link">Even More</a>
-                    <ul class="pure-menu-children">
-                        <li class="pure-menu-item">
-                            <a href="#!" class="pure-menu-link">Foo</a>
-                        </li>
-                        <li class="pure-menu-item">
-                            <a href="#!" class="pure-menu-link">Bar</a>
-                        </li>
-                        <li class="pure-menu-item">
-                            <a href="#!" class="pure-menu-link">Baz</a>
-                        </li>
-                    </ul>
-                </li>
+              <li class="pure-menu-item">
+                <a href="#!" class="pure-menu-link">Option 1</a>
+              </li>
+              <li class="pure-menu-item">
+                <a href="#!" class="pure-menu-link">Option 2</a>
+              </li>
+              <li class="pure-menu-item">
+                <a href="#!" class="pure-menu-link">Option 3</a>
+              </li>
             </ul>
-        </li>
-    </ul>
-</div>
+          </li>
+        </ul>
+      </div>
+      <div class="pure-menu pure-menu-horizontal">
+        <ul class="pure-menu-list">
+          <li class="pure-menu-item pure-menu-has-children pure-menu-allow-hover">
+            <a href="#!" id="menuLink1" class="pure-menu-link">Hover Dropdown</a>
+            <ul class="pure-menu-children">
+              <li class="pure-menu-item">
+                <a href="#!" class="pure-menu-link">Option 1</a>
+              </li>
+              <li class="pure-menu-item">
+                <a href="#!" class="pure-menu-link">Option 2</a>
+              </li>
+              <li class="pure-menu-item">
+                <a href="#!" class="pure-menu-link">Option 3</a>
+              </li>
+            </ul>
+          </li>
+        </ul>
+      </div>
+    </div>
     `,
   skeleton: null,
   milligram: null,
   spectre: `
-  <div class="dropdown">
-    <div class="btn-group"><a class="btn btn-primary">dropdown button</a><a class="btn btn-primary dropdown-toggle" tabindex="0"><i class="icon icon-caret"></i></a>
-      <ul class="menu">
-        <li class="menu-item"><a href="#dropdowns">Slack</a></li>
-        <li class="menu-item"><a href="#dropdowns">Hipchat</a></li>
-        <li class="menu-item"><a href="#dropdowns">Skype</a></li>
-      </ul>
+    <div style="display: inline-flex">
+      <div class="column col-xs-12">
+        <div class="dropdown dropdown-right"><a class="btn btn-primary dropdown-toggle" tabindex="0">Click Dropdown<i class="icon icon-caret"></i></a>
+          <ul class="menu text-left">
+            <li class="menu-item"><a href="#dropdowns">Option 1</a></li>
+            <li class="menu-item"><a href="#dropdowns">Option 2</a></li>
+            <li class="menu-item"><a href="#dropdowns">Option 3</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="dropdown">
+        <div class="btn-group"><a class="btn btn-primary">Split Dropdown</a><a class="btn btn-primary dropdown-toggle" tabindex="0"><i class="icon icon-caret"></i></a>
+          <ul class="menu text-left">
+            <li class="menu-item"><a href="#dropdowns">Option 1</a></li>
+            <li class="menu-item"><a href="#dropdowns">Option 2</a></li>
+            <li class="menu-item"><a href="#dropdowns">Option 3</a></li>
+          </ul>
+        </div>
+      </div>
     </div>
-  </div>
-
-  <div class="column col-xs-12">
-    <div class="dropdown dropdown-right"><a class="btn btn-primary dropdown-toggle" tabindex="0">dropdown button <i class="icon icon-caret"></i></a>
-      <ul class="menu text-left">
-        <li class="menu-item"><a href="#dropdowns">Slack</a></li>
-        <li class="menu-item"><a href="#dropdowns">Hipchat</a></li>
-        <li class="menu-item"><a href="#dropdowns">Skype</a></li>
-      </ul>
-    </div>
-  </div>
   `,
   primer: `<button class="btn mr-2" type="button">
   <!-- <%= octicon "search" %> -->
