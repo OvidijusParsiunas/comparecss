@@ -2,7 +2,7 @@ import { ContentMarkupInterface } from '../interfaces/ContentMarkupInterface';
 
 export default {
   bootstrap: `
-    <div class="card" style="width: 18rem; display: inline-block; vertical-align: top">
+    <div class="card" style="width: 18rem; display: inline-block; vertical-align: top; margin-bottom: 10px">
       <img style="width: 286px; height: 180px" class="card-img-top" src="../assets/images/card-picture.webp" alt="Card image cap">
       <div style="text-align: left" class="card-body">
         <h5 class="card-title">Card Title</h5>
@@ -10,7 +10,7 @@ export default {
         <a href="#!" class="btn btn-primary">Button</a>
       </div>
     </div>
-    <div class="card" style="width: 18rem; display: inline-block; text-align: left; vertical-align: top">
+    <div class="card" style="width: 18rem; display: inline-block; text-align: left; vertical-align: top; margin-bottom: 10px">
       <div class="card-header">
         Card Header
       </div>
@@ -71,7 +71,7 @@ export default {
     </div>
   `,
   uikit: `
-    <div style="width: 18rem; display: inline-flex; text-align: left; vertical-align: top">
+    <div style="width: 18rem; display: inline-flex; text-align: left; vertical-align: top; margin-bottom: 10px">
       <div class="uk-card uk-card-default">
         <div class="uk-card-media-top">
           <img style="width: 286px; height: 180px" src="../assets/images/card-picture.webp" alt="">
@@ -82,7 +82,7 @@ export default {
         </div>
       </div>
     </div>
-    <div style="display: inline-flex; text-align: left; vertical-align: top">
+    <div style="display: inline-flex; text-align: left; vertical-align: top; margin-bottom: 10px">
       <div class="uk-card uk-card-default" style="width: 18rem;">
         <div class="uk-card-header">
           <div class="uk-grid-small uk-flex-middle" uk-grid>
@@ -129,7 +129,7 @@ export default {
     </div>
   `,
   bulma: `
-    <div class="card" style="width: 18rem; text-align: left; display: inline-block; vertical-align: top">
+    <div class="card" style="width: 18rem; text-align: left; display: inline-block; vertical-align: top; margin-bottom: 10px">
       <div class="card-image">
         <figure class="image is-4by3">
           <img src="../assets/images/card-picture.webp" alt="Placeholder image">
@@ -152,7 +152,7 @@ export default {
         </div>
       </div>
     </div>
-    <div class="card" style="width: 18rem; text-align: left; display: inline-block; vertical-align: top">
+    <div class="card" style="width: 18rem; text-align: left; display: inline-block; vertical-align: top; margin-bottom: 10px">
       <div class="card-content">
         <p class="title">
           Title text to make up the bulk of the card's content.
