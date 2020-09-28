@@ -2,169 +2,184 @@ import { ContentMarkupInterface } from '../interfaces/ContentMarkupInterface';
 
 export default {
   bootstrap: `
-      <div class="card" style="width: 18rem; display: inline-block">
-      <img style="width: 286px; height: 180px" class="card-img-top" src="https://lorempixel.com/100/190/nature/6" alt="Card image cap">
+    <div class="card" style="width: 18rem; display: inline-block; vertical-align: top">
+      <img style="width: 286px; height: 180px" class="card-img-top" src="../assets/images/card-picture.webp" alt="Card image cap">
       <div style="text-align: left" class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+        <h5 class="card-title">Card Title</h5>
+        <p class="card-text">Example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href="#!" class="btn btn-primary">Button</a>
       </div>
     </div>
-
-    <div class="card" style="width: 18rem; display: inline-block">
-      <div style="text-align: left" class="card-body">
-        <h5 class="card-title">Card title</h5>
-        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
-        <p class="card-text">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
-        <a href="#" class="card-link">Card link</a>
-        <a href="#" class="card-link">Another link</a>
-      </div>
-    </div>
-    <div class="card" style="width: 18rem; display: inline-block; text-align: left">
+    <div class="card" style="width: 18rem; display: inline-block; text-align: left; vertical-align: top">
       <div class="card-header">
-        Featured
+        Card Header
       </div>
       <div class="card-body">
-        <h5 class="card-title">Special title treatment</h5>
-        <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-        <a href="#" class="btn btn-primary">Go somewhere</a>
+        <h5 class="card-title">Card Title</h5>
+        <p class="card-text">Example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href="#!" class="btn btn-primary">Button</a>
+      </div>
+    </div>
+    <div class="card" style="width: 18rem; display: inline-block; vertical-align: top">
+      <div style="text-align: left" class="card-body">
+        <h5 class="card-title">Card Title</h5>
+        <h6 class="card-subtitle mb-2 text-muted">Card subtitle</h6>
+        <p class="card-text">Example text to build on the card title and make up the bulk of the card's content.</p>
+        <a href="#!" class="card-link">Link 1</a>
+        <a href="#!" class="card-link">Link 2</a>
       </div>
     </div>
   `,
   materialize: `
-    <div class="col s12 m6" style="width: 18rem; display: inline-flex; text-align: left">
-      <div class="card blue-grey darken-1">
-        <div class="card-content white-text">
-          <span class="card-title">Card Title</span>
-          <p>I am a very simple card. I am good at containing small bits of information.
-          I am convenient because I require little markup to use effectively.</p>
-        </div>
-        <div class="card-action">
-          <a href="#">This is a link</a>
-          <a href="#">This is a link</a>
-        </div>
-      </div>
-    </div>
-    <div class="col s12 m7" style="width: 18rem; display: inline-flex; text-align: left">
+    <div class="col s12 m7" style="width: 18rem; display: inline-flex; text-align: left; vertical-align: top">
       <div class="card">
         <div class="card-image">
-          <img style="width: 286px; height: 180px" src="https://lorempixel.com/100/190/nature/6">
+          <img style="width: 286px; height: 180px" src="../assets/images/card-picture.webp">
           <span class="card-title">Card Title</span>
         </div>
         <div class="card-content">
-          <p>I am a very simple card. I am good at containing small bits of information.
-          I am convenient because I require little markup to use effectively.</p>
+          <p>Example text to build on the card title and make up the bulk of the card's content.</p>
         </div>
         <div class="card-action">
-          <a href="#">This is a link</a>
+          <a href="#!">Link</a>
         </div>
       </div>
     </div>
-    <div class="col s12 m6" style="width: 18rem; display: inline-flex; text-align: left">
+    <div class="col s12 m6" style="width: 18rem; display: inline-flex; text-align: left; vertical-align: top">
       <div class="card">
         <div class="card-image">
-          <img style="width: 286px; height: 180px" src="https://lorempixel.com/100/190/nature/6">
+          <img style="width: 286px; height: 180px" src="../assets/images/card-picture.webp">
           <span class="card-title">Card Title</span>
           <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
         </div>
         <div class="card-content">
-          <p>I am a very simple card. I am good at containing small bits of information. I am convenient because I require little markup to use effectively.</p>
+          <p>Example text to build on the card title and make up the bulk of the card's content.</p>
+        </div>
+      </div>
+    </div>
+    <div class="col s12 m6" style="width: 18rem; display: inline-flex; text-align: left; vertical-align: top">
+      <div class="card">
+        <div class="card-content">
+          <span class="card-title">Card Title</span>
+          <p>Example text to build on the card title and make up the bulk of the card's content.</p>
+        </div>
+        <div class="card-action">
+          <a href="#!">Link 1</a>
+          <a href="#!">Link 2</a>
         </div>
       </div>
     </div>
   `,
   uikit: `
-    <div style="width: 18rem; display: inline-flex;  text-align: left">
-      <div class="uk-card uk-card-default uk-card-hover uk-card-body">
-        <h3 class="uk-card-title">Default</h3>
-        <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit.</p>
-      </div>
-    </div>
-    <div style="width: 18rem; display: inline-flex; text-align: left">
+    <div style="width: 18rem; display: inline-flex; text-align: left; vertical-align: top">
       <div class="uk-card uk-card-default">
         <div class="uk-card-media-top">
-          <img style="width: 286px; height: 180px" src="https://lorempixel.com/100/190/nature/6" alt="">
+          <img style="width: 286px; height: 180px" src="../assets/images/card-picture.webp" alt="">
         </div>
         <div class="uk-card-body">
-          <h3 class="uk-card-title">Media Top</h3>
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+          <h3 class="uk-card-title">Card Title</h3>
+          <p>Example text to build on the card title and make up the bulk of the card's content.</p>
         </div>
       </div>
     </div>
-    <div style="display: inline-flex; text-align: left">
+    <div style="display: inline-flex; text-align: left; vertical-align: top">
       <div class="uk-card uk-card-default" style="width: 18rem;">
         <div class="uk-card-header">
           <div class="uk-grid-small uk-flex-middle" uk-grid>
             <div class="uk-width-auto">
-              <img class="uk-border-circle" width="40" height="40" src="https://lorempixel.com/100/190/nature/6">
+              <img style="height: 40px" class="uk-border-circle" width="40" height="40" src="../assets/images/profile-picture.png">
             </div>
             <div class="uk-width-expand">
-              <h3 class="uk-card-title uk-margin-remove-bottom">Title</h3>
-              <p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">April 01, 2016</time></p>
+              <h3 class="uk-card-title uk-margin-remove-bottom">Card Title</h3>
+              <p class="uk-text-meta uk-margin-remove-top"><time datetime="2016-04-01T19:00">April 01, 2020</time></p>
             </div>
           </div>
         </div>
         <div class="uk-card-body">
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt.</p>
+          <p>Example text to build on the card title and make up the bulk of the card's content.</p>
         </div>
         <div class="uk-card-footer">
-          <a href="#" class="uk-button uk-button-text">Read more</a>
+          <a href="#!" class="uk-button uk-button-text">Link</a>
         </div>
       </div>
     </div>
-`,
+    <div style="width: 18rem; display: inline-flex; text-align: left; vertical-align: top">
+      <div class="uk-card uk-card-default uk-card-hover uk-card-body">
+        <h3 class="uk-card-title">Card Title</h3>
+        <p>Example text to build on the card title and make up the bulk of the card's content.</p>
+      </div>
+    </div>
+  `,
   foundation: `
-    <div class="card" style="width: 18rem; display: inline-flex; text-align: left">
+    <div class="card" style="width: 18rem; display: inline-flex; text-align: left; vertical-align: top">
       <div class="card-divider">
-        This is a header
+        Card Header
       </div>
-      <img style="width: 286px; height: 180px" src="https://lorempixel.com/100/190/nature/6">
+      <img style="width: 286px; height: 180px" src="../assets/images/card-picture.webp">
       <div class="card-section">
-        <h4>This is a card.</h4>
-        <p>It has an easy to override visual style, and is appropriately subdued.</p>
+        <h4>Card Title</h4>
+        <p>Example text to build on the card title and make up the bulk of the card's content.</p>
       </div>
     </div>
-    <div class="card" style="width: 18rem; display: inline-flex; text-align: left">
+    <div class="card" style="width: 18rem; display: inline-flex; text-align: left; vertical-align: top">
+      <img style="width: 286px; height: 180px" src="../assets/images/card-picture.webp">
       <div class="card-section">
-        <p>Images work just fine below the content too!</p>
+        <p>Example text to build on the card title and make up the bulk of the card's content.</p>
       </div>
-      <img style="width: 286px; height: 180px" src="https://lorempixel.com/100/190/nature/6">
     </div>
-    `,
+  `,
   bulma: `
-    <div class="card" style="width: 18rem; text-align: left; display: inline-block">
+    <div class="card" style="width: 18rem; text-align: left; display: inline-block; vertical-align: top">
       <div class="card-image">
         <figure class="image is-4by3">
-          <img src="https://lorempixel.com/100/190/nature/6" alt="Placeholder image">
+          <img src="../assets/images/card-picture.webp" alt="Placeholder image">
         </figure>
       </div>
       <div class="card-content">
         <div class="media">
           <div class="media-left">
             <figure class="image is-48x48">
-              <img src="https://lorempixel.com/100/190/nature/6" alt="Placeholder image">
+              <img style="height: 48px" src="../assets/images/profile-picture.png" alt="Placeholder image">
             </figure>
           </div>
           <div class="media-content">
-            <p class="title is-4">John Smith</p>
-            <p class="subtitle is-6">@johnsmith</p>
+            <p class="title is-4">Card Title</p>
+            <p class="subtitle is-6">@ovisource</p>
           </div>
         </div>
         <div class="content">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-          Phasellus nec iaculis mauris. <a>@bulmaio</a>.
-          <a href="#">#css</a> <a href="#">#responsive</a>
-          <br>
-          <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+          Example text to build on the card title and make up the bulk of the card's content.
         </div>
       </div>
     </div>
-    <div class="card" style="width: 18rem; text-align: left; display: inline-block">
+    <div class="card" style="width: 18rem; text-align: left; display: inline-block; vertical-align: top">
+      <div class="card-content">
+        <p class="title">
+          Title text to make up the bulk of the card's content.
+        </p>
+        <p class="subtitle">
+          @ovisource
+        </p>
+      </div>
+      <footer class="card-footer">
+        <p class="card-footer-item">
+          <span>
+            <a href="#!">Link 1</a>
+          </span>
+        </p>
+        <p class="card-footer-item">
+          <span>
+           <a href="#!">Link 2</a>
+          </span>
+        </p>
+      </footer>
+    </div>
+    <div class="card" style="width: 18rem; text-align: left; display: inline-block; vertical-align: top">
       <header class="card-header">
         <p class="card-header-title">
-          Component
+          Card Title
         </p>
-        <a href="#" class="card-header-icon" aria-label="more options">
+        <a href="#!" class="card-header-icon" aria-label="more options">
           <span class="icon">
             <i class="fas fa-angle-down" aria-hidden="true"></i>
           </span>
@@ -172,120 +187,81 @@ export default {
       </header>
       <div class="card-content">
         <div class="content">
-          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus nec iaculis mauris.
-          <a href="#">@bulmaio</a>. <a href="#">#css</a> <a href="#">#responsive</a>
-          <br>
-          <time datetime="2016-1-1">11:09 PM - 1 Jan 2016</time>
+          Example text to build on the card title and make up the bulk of the card's content.
         </div>
       </div>
       <footer class="card-footer">
-        <a href="#" class="card-footer-item">Save</a>
-        <a href="#" class="card-footer-item">Edit</a>
-        <a href="#" class="card-footer-item">Delete</a>
-      </footer>
-    </div>
-    <div class="card" style="width: 18rem; text-align: left; display: inline-block">
-      <div class="card-content">
-        <p class="title">
-          “There are two hard things in computer science: cache invalidation, naming things, and off-by-one errors.”
-        </p>
-        <p class="subtitle">
-          Jeff Atwood
-        </p>
-      </div>
-      <footer class="card-footer">
-        <p class="card-footer-item">
-          <span>
-            View on <a href="https://twitter.com/codinghorror/status/506010907021828096">Twitter</a>
-          </span>
-        </p>
-        <p class="card-footer-item">
-          <span>
-            Share on <a href="#">Facebook</a>
-          </span>
-        </p>
+        <a href="#!" class="card-footer-item">Button 1</a>
+        <a href="#!" class="card-footer-item">Button 2</a>
+        <a href="#!" class="card-footer-item">Button 3</a>
       </footer>
     </div>
   `,
   semantic: `
-    <div class="ui link cards" style="width: 18rem; text-align: left; display: inline-block; margin-right: 10px">
+    <div class="ui link cards" style="width: 18rem; text-align: left; display: inline-block; margin-right: 10px; margin-top: 0px; vertical-align: top">
       <div class="card">
         <div class="image">
-          <img src="https://lorempixel.com/100/190/nature/6">
+          <img style="width: 288px; height: 180px" src="../assets/images/card-picture.webp">
         </div>
         <div class="content">
-          <div class="header">Matt Giampietro</div>
+          <div class="header">Card Title</div>
           <div class="meta">
-            <a>Friends</a>
+            <a>ovisource</a>
           </div>
           <div class="description">
-            Matthew is an interior designer living in New York.
+            Example text to build on the card title and make up the bulk of the card's content.
           </div>
         </div>
         <div class="extra content">
           <span class="right floated">
-            Joined in 2013
+            Right Text
           </span>
           <span>
-            <i class="user icon"></i>
-            75 Friends
+            Left Text
           </span>
         </div>
       </div>
-    </div> 
-    <div class="ui card" style="width: 18rem; text-align: left; display: inline-block">
-      <div class="content">
-        <div class="header">Project Timeline</div>
+    </div>
+    <div class="ui card" style="width: 18rem; text-align: left; display: inline-block; vertical-align: top">
+      <div class="ui slide masked reveal image">
+        <img style="width: 288px; height: 180px" src="../assets/images/card-picture.webp" class="visible content">
+        <img style="width: 288px; height: 180px" src="../assets/images/card-picture.webp" class="hidden content">
       </div>
       <div class="content">
-        <h4 class="ui sub header">Activity</h4>
-        <div class="ui small feed">
-          <div class="event">
-            <div class="content">
-              <div class="summary">
-                <a>Elliot Fu</a> added <a>Jenny Hess</a> to the project
-              </div>
-            </div>
-          </div>
-          <div class="event">
-            <div class="content">
-              <div class="summary">
-                <a>Stevie Feliciano</a> was added as an <a>Administrator</a>
-              </div>
-            </div>
-          </div>
-          <div class="event">
-            <div class="content">
-              <div class="summary">
-                <a>Helen Troy</a> added two pictures
-              </div>
-            </div>
-          </div>
+        <a class="header">Card Title</a>
+        <div class="meta">
+          ovisource
         </div>
       </div>
       <div class="extra content">
-        <button class="ui button">Join Project</button>
+        <a>
+          Bottom text
+        </a>
       </div>
     </div>
-    <div class="ui card" style="width: 18rem; text-align: left; display: inline-block">
+    <div class="ui card" style="width: 18rem; text-align: left; display: inline-block; vertical-align: top">
       <div class="content">
         <div class="right floated meta">14h</div>
-        <img class="ui avatar image" src="https://lorempixel.com/100/190/nature/6"> Elliot
+          <img class="ui avatar image" src="../assets/images/card-picture.webp">Ovisource
       </div>
       <div class="image">
         <img>
       </div>
       <div class="content">
+        <div class="header">Card Title</div>
+        <div class="meta">2 days ago</div>
+        <div class="description">
+          <p>Example text to build on the card title and make up the bulk of the card's content.</p>
+        </div>
+      </div>
+      <div class="content">
         <span class="right floated">
-          <i class="heart outline like icon"></i>
           17 likes
         </span>
-        <i class="comment icon"></i>
         3 comments
       </div>
       <div class="extra content">
-        <div class="ui large transparent left icon input">
-          <i class="heart outline icon"></i>
+        <div class="ui large transparent left input">
           <input type="text" placeholder="Add Comment...">
         </div>
       </div>
@@ -324,7 +300,7 @@ export default {
   <!-- <%= octicon "pencil" %> -->
   <svg class="octicon octicon-pencil" viewBox="0 0 14 16" version="1.1" width="14" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M0 12v3h3l8-8-3-3-8 8zm3 2H1v-2h1v1h1v1zm10.3-9.3L12 6 9 3l1.3-1.3a.996.996 0 011.41 0l1.59 1.59c.39.39.39 1.02 0 1.41z"></path></svg>
 </button>`,
-  nes: `<a class="nes-btn" href="#">Normal</a>
+  nes: `<a class="nes-btn" href="#!">Normal</a>
   <button type="button" class="nes-btn is-primary">Primary</button>
   <button type="button" class="nes-btn is-success">Success</button>
   <button type="button" class="nes-btn is-warning">Warning</button>

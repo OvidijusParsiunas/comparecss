@@ -6,6 +6,7 @@ when an alert close button doesn't work - have a toaster message appear to say t
 https://startbootstrap.com/previews/simple-sidebar/ - phone feature
 
 make the panelels order switchable via options popover or drag and drop
-
 https://www.youtube.com/watch?v=RA7sO_9V3vw&ab_channel=ProgramWithErik
+
+https://vuetifyjs.com/en/
 https://lusaxweb.github.io/vuesax/development/
