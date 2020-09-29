@@ -1,5 +1,6 @@
 try to use css asset files so you can lazy load them
 statistics should include size and github popularity
+think about having loading placeholders when the images are loading up for cards
 
 when an alert close button doesn't work - have a toaster message appear to say that this functionality is not provided out of the box
 

@@ -1,179 +1,172 @@
 import { ContentMarkupInterface } from '../interfaces/ContentMarkupInterface';
 
-// bootstrap button height
 export default {
   bootstrap: `
-  <div id="accordion" style="text-align: left">
-  <div class="card">
-    <div class="card-header" id="headingOne">
-      <h5 class="mb-0">
-        <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
-          Collapsible Group Item #1
-        </button>
-      </h5>
-    </div>
-
-    <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
-      <div class="card-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
+    <div id="accordion" style="text-align: left; width: 51%; display: inline-block">
+      <div class="card">
+        <div class="card-header" id="headingOne">
+          <h5 class="mb-0">
+            <button class="btn btn-link" data-toggle="collapse" data-target="#collapseOne" aria-expanded="true" aria-controls="collapseOne">
+              Item 1
+            </button>
+          </h5>
+        </div>
+        <div id="collapseOne" class="collapse show" aria-labelledby="headingOne" data-parent="#accordion">
+          <div class="card-body">
+            According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground.
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header" id="headingTwo">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
+              Item 2
+            </button>
+          </h5>
+        </div>
+        <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
+          <div class="card-body">
+            The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black.
+          </div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-header" id="headingThree">
+          <h5 class="mb-0">
+            <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
+              Item 3
+            </button>
+          </h5>
+        </div>
+        <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
+          <div class="card-body">
+            Students, faculty, distinguished bees, please welcome Dean Buzzwell. Welcome, New Hive Oity graduating class of... 9:15.
+          </div>
+        </div>
       </div>
     </div>
-  </div>
-  <div class="card">
-    <div class="card-header" id="headingTwo">
-      <h5 class="mb-0">
-        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseTwo" aria-expanded="false" aria-controls="collapseTwo">
-          Collapsible Group Item #2
-        </button>
-      </h5>
-    </div>
-    <div id="collapseTwo" class="collapse" aria-labelledby="headingTwo" data-parent="#accordion">
-      <div class="card-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-      </div>
-    </div>
-  </div>
-  <div class="card">
-    <div class="card-header" id="headingThree">
-      <h5 class="mb-0">
-        <button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseThree" aria-expanded="false" aria-controls="collapseThree">
-          Collapsible Group Item #3
-        </button>
-      </h5>
-    </div>
-    <div id="collapseThree" class="collapse" aria-labelledby="headingThree" data-parent="#accordion">
-      <div class="card-body">
-        Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3 wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus labore sustainable VHS.
-      </div>
-    </div>
-  </div>
-</div>
   `,
   materialize: `
-  <ul class="collapsible" style="text-align: left">
-  <li>
-    <div class="collapsible-header"><i class="material-icons">filter_drama</i>First</div>
-    <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-  </li>
-  <li>
-    <div class="collapsible-header"><i class="material-icons">place</i>Second</div>
-    <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-  </li>
-  <li>
-    <div class="collapsible-header"><i class="material-icons">whatshot</i>Third</div>
-    <div class="collapsible-body"><span>Lorem ipsum dolor sit amet.</span></div>
-  </li>
-</ul>
+    <ul class="collapsible" style="text-align: left; width: 51%; display: inline-block">
+      <li class="active">
+        <div class="collapsible-header">Item 1</div>
+        <div class="collapsible-body"><span>According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground.</span></div>
+      </li>
+      <li>
+        <div class="collapsible-header">Item 2</div>
+        <div class="collapsible-body"><span>The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black.</span></div>
+      </li>
+      <li>
+        <div class="collapsible-header">Item 3</div>
+        <div class="collapsible-body"><span>Students, faculty, distinguished bees, please welcome Dean Buzzwell. Welcome, New Hive Oity graduating class of... 9:15.</span></div>
+      </li>
+    </ul>
   `,
   uikit: `
-  <ul uk-accordion style="text-align: left">
-  <li class="uk-open">
-      <a class="uk-accordion-title" href="#">Item 1</a>
-      <div class="uk-accordion-content">
-          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
-      </div>
-  </li>
-  <li>
-      <a class="uk-accordion-title" href="#">Item 2</a>
-      <div class="uk-accordion-content">
-          <p>Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor reprehenderit.</p>
-      </div>
-  </li>
-  <li>
-      <a class="uk-accordion-title" href="#">Item 3</a>
-      <div class="uk-accordion-content">
-          <p>Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat proident.</p>
-      </div>
-  </li>
-</ul>
+    <ul uk-accordion style="text-align: left; width: 51%; display: inline-block">
+      <li class="uk-open">
+        <a class="uk-accordion-title" href="#">Item 1</a>
+        <div class="uk-accordion-content">
+          <p>According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground.</p>
+        </div>
+      </li>
+      <li>
+        <a class="uk-accordion-title" href="#">Item 2</a>
+        <div class="uk-accordion-content">
+          <p>The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black.</p>
+        </div>
+      </li>
+      <li>
+        <a class="uk-accordion-title" href="#">Item 3</a>
+        <div class="uk-accordion-content">
+          <p>Students, faculty, distinguished bees, please welcome Dean Buzzwell. Welcome, New Hive Oity graduating class of... 9:15.</p>
+        </div>
+      </li>
+    </ul>
   `,
   foundation: `
-  <ul class="accordion" data-accordion data-allow-all-closed="true">
-    <li class="accordion-item is-active" data-accordion-item>
-        <a href="#!" class="accordion-title">Accordion 1</a>
-        <div class="accordion-content" data-tab-content >
-        <p>Panel 1. Lorem ipsum dolor</p>
-        <a href="#">Nowhere to Go</a>
-        </div>
-    </li>
-    <li class="accordion-item" data-accordion-item>
-        <a href="#!" class="accordion-title">Accordion 2</a>
-        <div class="accordion-content" data-tab-content>
-        <textarea></textarea>
-        <button class="button">I do nothing!</button>
-        </div>
-    </li>
-    <li class="accordion-item" data-accordion-item>
-        <a href="#!" class="accordion-title">Accordion 3</a>
-        <div class="accordion-content" data-tab-content>
-        Type your name!
-        <input type="text"></input>
-        </div>
-    </li>
-</ul>
+    <ul style="text-align: left; width: 51%; display: inline-block" class="accordion" data-accordion data-allow-all-closed="true">
+      <li class="accordion-item is-active" data-accordion-item>
+          <a href="#!" class="accordion-title">Item 1</a>
+          <div class="accordion-content" data-tab-content >
+            According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground.
+          </div>
+      </li>
+      <li class="accordion-item" data-accordion-item>
+          <a href="#!" class="accordion-title">Item 2</a>
+          <div class="accordion-content" data-tab-content>
+            The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black.
+          </div>
+      </li>
+      <li class="accordion-item" data-accordion-item>
+          <a href="#!" class="accordion-title">Item 3</a>
+          <div class="accordion-content" data-tab-content>
+            Students, faculty, distinguished bees, please welcome Dean Buzzwell. Welcome, New Hive Oity graduating class of... 9:15.
+          </div>
+      </li>
+    </ul>
     `,
   bulma: `
-  <section class="accordions">
-  <article class="accordion is-active">
-    <div class="accordion-header toggle">
-      <p>Hello World</p>
-    </div>
-    <div class="accordion-body">
-      <div class="accordion-content">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Aenean ac <em>eleifend lacus</em>, in mollis lectus. Donec sodales, arcu et sollicitudin porttitor, tortor urna tempor ligula, id porttitor mi magna a neque. Donec dui urna, vehicula et sem eget, facilisis sodales sem.
-      </div>
-    </div>
-  </article>
-  <article class="accordion">
-    <div class="accordion-header">
-      <p>Hello World</p>
-      <button class="toggle" aria-label="toggle"></button>
-    </div>
-    <div class="accordion-body">
-      <div class="accordion-content">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Aenean ac <em>eleifend lacus</em>, in mollis lectus. Donec sodales, arcu et sollicitudin porttitor, tortor urna tempor ligula, id porttitor mi magna a neque. Donec dui urna, vehicula et sem eget, facilisis sodales sem.
-      </div>
-    </div>
-  </article>
-  <article class="accordion">
-    <div class="accordion-header">
-      <p>Hello World</p>
-      <button class="toggle" aria-label="toggle"></button>
-    </div>
-    <div class="accordion-body">
-      <div class="accordion-content">
-        Lorem ipsum dolor sit amet, consectetur adipiscing elit. <strong>Pellentesque risus mi</strong>, tempus quis placerat ut, porta nec nulla. Vestibulum rhoncus ac ex sit amet fringilla. Nullam gravida purus diam, et dictum <a>felis venenatis</a> efficitur. Aenean ac <em>eleifend lacus</em>, in mollis lectus. Donec sodales, arcu et sollicitudin porttitor, tortor urna tempor ligula, id porttitor mi magna a neque. Donec dui urna, vehicula et sem eget, facilisis sodales sem.
-      </div>
-    </div>
-  </article>
-</section>
-
+    <section style="text-align: left; width: 51%; display: inline-block" class="accordions">
+      <article class="accordion is-active">
+        <div class="accordion-header toggle">
+          <p>Item 1</p>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-content">
+            According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground.
+          </div>
+        </div>
+      </article>
+      <article class="accordion">
+        <div class="accordion-header">
+          <p>Item 2</p>
+          <button class="toggle" aria-label="toggle"></button>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-content">
+            The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black.
+          </div>
+        </div>
+      </article>
+      <article class="accordion">
+        <div class="accordion-header">
+          <p>Item 3</p>
+          <button class="toggle" aria-label="toggle"></button>
+        </div>
+        <div class="accordion-body">
+          <div class="accordion-content">
+            Students, faculty, distinguished bees, please welcome Dean Buzzwell. Welcome, New Hive Oity graduating class of... 9:15.
+          </div>
+        </div>
+      </article>
+    </section>
   `,
   semantic: `
-  <div class="ui styled accordion">
-  <div class="title">
-    <i class="dropdown icon"></i>
-    What is a dog?
-  </div>
-  <div class="content">
-    <p class="transition hidden">A dog is a type of domesticated animal. Known for its loyalty and faithfulness, it can be found as a welcome guest in many households across the world.</p>
-  </div>
-  <div class="title active">
-    <i class="dropdown icon"></i>
-    What kinds of dogs are there?
-  </div>
-  <div class="content active">
-    <p class="transition visible">There are many breeds of dogs. Each breed varies in size and temperament. Owners often select a breed of dog that they find to be compatible with their own lifestyle and desires from a companion.</p>
-  </div>
-  <div class="title">
-    <i class="dropdown icon"></i>
-    How do you acquire a dog?
-  </div>
-  <div class="content">
-    <p>Three common ways for a prospective owner to acquire a dog is from pet shops, private owners, or shelters.</p>
-    <p>A pet shop may be the most convenient way to buy a dog. Buying a dog from a private owner allows you to assess the pedigree and upbringing of your dog before choosing to take it home. Lastly, finding your dog from a shelter, helps give a good home to a dog who may not find one so readily.</p>
-  </div>
-</div>
+    <div style="text-align: left; width: 51%; display: inline-block" class="ui styled accordion">
+      <div class="title active">
+        <i class="dropdown icon"></i>
+        Item 1
+      </div>
+      <div class="content active">
+        <p class="transition visible">According to all known laws of aviation, there is no way a bee should be able to fly. Its wings are too small to get its fat little body off the ground.</p>
+      </div>
+      <div class="title">
+        <i class="dropdown icon"></i>
+        Item 2
+      </div>
+      <div class="content">
+        <p class="transition hidden">The bee, of course, flies anyway because bees don't care what humans think is impossible. Yellow, black. Yellow, black. Yellow, black.</p>
+      </div>
+      <div class="title">
+        <i class="dropdown icon"></i>
+        Item 3
+      </div>
+      <div class="content">
+        <p>Students, faculty, distinguished bees, please welcome Dean Buzzwell. Welcome, New Hive Oity graduating class of... 9:15.</p>
+      </div>
+    </div>
   `,
   pure: `
     <button class="pure-button pure-button-primary">Button</button>
