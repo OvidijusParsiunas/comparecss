@@ -1,8 +1,8 @@
 $(function(){
-	$("#test").click(function(){
-		$(".testing123").modal('show');
+	$("#semantic-create-modal-button").click(function(){
+		$(".semantic-modal").modal('show');
 	});
-	$(".testing123").modal({
+	$(".semantic-modal").modal({
 		closable: true
 	});
 });

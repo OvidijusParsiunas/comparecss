@@ -117,8 +117,8 @@ export default {
             </div>
   `,
   semantic: `
-  <button class="ui button primary create_btn" type="button" id="test">Create</button>
-  <div class="ui modal testing123">
+  <button class="ui button primary create_btn" type="button" id="semantic-create-modal-button">Create</button>
+  <div class="ui modal semantic-modal">
     <div class="header">
       Delete Your Account
     </div>
@@ -129,9 +129,8 @@ export default {
       <div class="ui negative button">
         No
       </div>
-      <div class="ui positive right labeled icon button">
+      <div class="ui positive button">
         Yes
-        <i class="checkmark icon"></i>
       </div>
     </div>
   </div>
