@@ -64,6 +64,9 @@
                 </ul>
             </li>
             <li>
+                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.MODALS)">Modals</a>
+            </li>
+            <li>
                 <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.PROGRESS)">Progress</a>
             </li>
             <li>

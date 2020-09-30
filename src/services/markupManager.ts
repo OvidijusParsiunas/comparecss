@@ -10,6 +10,7 @@ import Cards from '../spec/cards';
 import Accordions from '../spec/accordions';
 import Dropdowns from '../spec/dropdowns';
 import Forms from '../spec/forms';
+import Modals from '../spec/modals';
 
 export default class MarkupManager {
   static retrieveContentMarkup(clickedButtonName: BUTTON_NAMES): ContentMarkupInterface {
@@ -32,6 +33,8 @@ export default class MarkupManager {
         return Dropdowns;
       case BUTTON_NAMES.FORMS:
         return Forms;
+      case BUTTON_NAMES.MODALS:
+        return Modals;        
       case BUTTON_NAMES.PROGRESS:
         return Progress;        
       default: {

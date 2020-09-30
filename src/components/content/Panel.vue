@@ -2,7 +2,7 @@
   <div class="panel" v-if="componentMarkup">
     <div style="padding-top: 0px; padding-bottom: 20px; padding-left: 10px; padding-right: 10px; background-color: white; box-shadow: 0 20px 40px -15px rgba(0,0,0,.05);"> 
       <div style="height: 27px">
-        <img :style="{ width: customIconWidthPx }" style="float: left; margin-right: 10px;" v-bind:src="iconSrc"> 
+        <img :style="{ width: customIconWidthPx }" style="float: left; margin-right: 10px;" :src="iconSrc"> 
         <div style="font-size: 17px">{{name}}</div>
       </div>
       <div :class="panelClass">
