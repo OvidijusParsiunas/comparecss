@@ -64,51 +64,25 @@ export default {
     </div>
     `,
   bulma: `
-  <p>
-               <a class = "button is-primary modal-button" data-target = "#modal">Launch example modal</a>
-            </p>
-            <div id = "modal" class = "modal">
-               <div class = "modal-background"></div>
-               <div class = "modal-content">
-                  <div class = "box">
-                     <article class = "media">
-                        <div class = "media-left">
-                           <figure class = "image is-64x64">
-                              <img src = "https://www.tutorialspoint.com/bootstrap/images/64.jpg" alt="Image">
-                           </figure>
-                        </div>
-                        <div class = "media-content">
-                           <div class = "content">
-                              <p>
-                                 <strong>Will Smith</strong> 
-                                 <small>@wsmith</small> 
-                                 <small>31m</small>
-                                 <br>
-                                 This is simple text. This is simple text. 
-                                 This is simple text. This is simple text.
-                              </p>
-                           </div>
-                           <nav class = "level">
-                              <div class = "level-left">
-                                 <a class = "level-item">
-                                    <span class = "icon is-small">
-                                       <i class = "fa fa-reply"></i>
-                                    </span>
-                                 </a>
-                                 <a class = "level-item">
-                                    <span class = "icon is-small">
-                                       <i class = "fa fa-retweet"></i>
-                                    </span>
-                                 </a>
-                              </div>
-                           </nav>
-                           
-                        </div>
-                     </article>
-                  </div>
-               </div>
-               <button class = "modal-close is-large" aria-label = "close"></button>
-            </div>
+    <p><a class="button is-primary modal-button" data-target = "#bulmaModal">Modal</a></p>
+    <div id="bulmaModal" style="text-align: left" class="modal">
+      <div class="modal-background"></div>
+      <div style="max-width: 500px" class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Modal title</p>
+          <button class="bulma-close delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <div class="content">
+            <p>Example modal text</p>
+          </div>
+        </section>
+        <footer style="text-align: right; display: block" class="modal-card-foot">
+          <button class="bulma-close button">Close</button>
+          <button class="bulma-close button is-success">Save</button>
+        </footer>
+      </div>
+    </div>
   `,
   semantic: `
   <button class="ui button primary create_btn" type="button" id="semantic-create-modal-button">Create</button>

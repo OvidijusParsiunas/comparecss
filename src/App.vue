@@ -283,6 +283,15 @@ body {
     box-sizing: border-box;
     @import "node_modules/bulma/bulma.sass";
     @import "assets/scss/bulma-accordion.scss";
+    .modal {
+      font-family: BlinkMacSystemFont,-apple-system,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
+    }
+    p {
+      color: #4a4a4a;
+      font-size: 1em;
+      font-weight: 400;
+      line-height: 1.5;
+    }
 };
 
 .semantic {

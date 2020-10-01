@@ -3,9 +3,9 @@ $(".modal-button").click(function() {
     $("html").addClass("is-clipped");
     $(target).addClass("is-active");
  });
- $(".modal-close").click(function() {
+ $(".bulma-close").click(function() {
     $("html").removeClass("is-clipped");
-    $(this).parent().removeClass("is-active");
+    $(this).parent().parent().parent().removeClass("is-active");
  });
  $(".modal-background").click(function() {
     $("html").removeClass("is-clipped");
