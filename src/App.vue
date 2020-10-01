@@ -107,6 +107,9 @@ export default class App extends Vue {
     const bulmaScript3 = document.createElement('script');
     bulmaScript3.setAttribute('src', 'assets/bulma/bulma-modal.js');
     document.head.appendChild(bulmaScript3);
+    const spectreScript1 = document.createElement('script');
+    spectreScript1.setAttribute('src', 'assets/spectre/spectre-modal.js');
+    document.head.appendChild(spectreScript1);
   }
 }
 </script>

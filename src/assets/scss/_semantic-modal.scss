@@ -389,6 +389,7 @@ body.dimmable > .dimmer {
   -ms-user-select: text;
   user-select: text;
   will-change: top, left, margin, transform, opacity;
+  outline: none;
 }
 
 .ui.modal > :first-child:not(.icon),

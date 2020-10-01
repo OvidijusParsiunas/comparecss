@@ -2,72 +2,66 @@ import { ContentMarkupInterface } from '../interfaces/ContentMarkupInterface';
 
 export default {
   bootstrap: `
-    <!-- Button trigger modal -->
-    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModal">
-        Launch demo modal
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bootstrapModal">
+        Modal
     </button>
-    
-    <!-- Modal -->
-    <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
+    <div class="modal fade" id="bootstrapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <div class="modal-header">
-            <h5 class="modal-title" id="exampleModalLabel">Modal title</h5>
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal header</h5>
             <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                 <span aria-hidden="true">&times;</span>
             </button>
             </div>
-            <div class="modal-body">
-            ...
+            <div style="text-align: left" class="modal-body">
+              Example modal text
             </div>
             <div class="modal-footer">
             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary">Save changes</button>
-            </div>
+            <button type="button" class="btn btn-primary">Save</button>
+          </div>
         </div>
         </div>
     </div>
   `,
   materialize: `
-    <a class="waves-effect waves-light btn modal-trigger" href="#modal1">Modal</a>
-
-    <!-- Modal Structure -->
-    <div style="text-align: left" id="modal1" class="modal">
-        <div class="modal-content">
+    <a class="waves-effect waves-light btn modal-trigger" href="#materializeModal">Modal</a>
+    <div style="max-width: 500px; text-align: left" id="materializeModal" class="modal">
+      <div class="modal-content">
         <h4>Modal Header</h4>
-        <p>A bunch of text</p>
-        </div>
-        <div class="modal-footer">
-        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Agree</a>
-        </div>
+        <p>Example modal text</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat">Close</a>
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Save</a>
+      </div>
     </div>
   `,
   uikit: `
-    <!-- This is a button toggling the modal -->
-    <button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #modal-example">Open</button>
-    
-    <!-- This is the modal -->
-    <div id="modal-example" uk-modal>
-        <div class="uk-modal-dialog uk-modal-body">
-            <h2 class="uk-modal-title">Headline</h2>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
-            <p class="uk-text-right">
-                <button class="uk-button uk-button-default uk-modal-close" type="button">Cancel</button>
-                <button class="uk-button uk-button-primary" type="button">Save</button>
-            </p>
-        </div>
+    <button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #uikitModal">Modal</button>
+    <div id="uikitModal" uk-modal>
+      <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title">Modal Header</h2>
+        <p>Example modal text</p>
+        <p class="uk-text-right">
+          <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+          <button class="uk-button uk-button-primary" type="button">Save</button>
+        </p>
+      </div>
     </div>
   `,
   foundation: `
-  <p><button style="outline: none" class="button" data-open="exampleModal1">Click me for a modal</button></p>
-  <div class="reveal" id="exampleModal1" data-reveal>
-  <h1>Awesome. I Have It.</h1>
-  <p class="lead">Your couch. It is mine.</p>
-  <p>I'm a cool paragraph that lives inside of an even cooler modal. Wins!</p>
-  <button class="close-button" data-close aria-label="Close modal" type="button">
-    <span aria-hidden="true">&times;</span>
-  </button>
-</div>
+    <p><button style="outline: none" class="button" data-open="foundationModal">Modal</button></p>
+    <div style="max-width: 500px" class="reveal" id="foundationModal" data-reveal>
+      <h3>Modal Header</h3>
+      <p>Example modal text</p>
+      <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <a style="margin-left: 5px; float: right" class="button primary" data-close aria-label="Close modal" href="#!">Save</a>
+      <a style="float: right" class="button secondary" data-close aria-label="Close modal" href="#!">Close</a>
+    </div>
     `,
   bulma: `
   <p>
@@ -135,26 +129,38 @@ export default {
     </div>
   </div>
   `,
-  pure: `
-    <button class="pure-button pure-button-primary">Button</button>
-    <button class="button-success pure-button">Success</button>
-    <button class="button-error pure-button">Danger</button>
-    <button class="pure-button" disabled="">Disabled</button>
-    `,
-  skeleton: `
-    <button>Button</button>
-    <button class="button-primary">Button</button>
-  `,
-  milligram: `
-    <button class="button">Button</button>
-    <button class="button button-outline">Outlined</button>
-  `,
+  pure: null,
+  skeleton: null,
+  milligram: null,
   spectre: `
-    <button class="btn btn-primary">Button</button>
-    <button class="btn btn-success">Success</button>
-    <button class="btn btn-error">Danger</button>
-    <button class="btn disabled" tabindex="-1">Disabled</button>
-    <button class="btn">Outlined</button>
+  <!-- Button -->
+<button class="btn btn-primary modal-toggle" data-modal="#myModalId">Open Modal</button>
+
+<!-- Modal -->
+<div class="modal" id="myModalId"><a class="modal-overlay" href="#modals" aria-label="Close"></a>
+                  <div class="modal-container" role="document">
+                    <div class="modal-header"><a class="btn btn-clear float-right modal-close" href="#modals" aria-label="Close"></a>
+                      <div class="modal-title h5">Modal title</div>
+                    </div>
+                    <div class="modal-body">
+                      <div class="content">
+                        <p>This is the content inside the modal.</p>
+                        <h4>Lorem ipsum</h4>
+                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent risus leo, dictum in vehicula sit amet, feugiat tempus tellus. Duis quis sodales risus. Etiam euismod ornare consequat.</p>
+                        <p>Climb leg rub face on everything give attitude nap all day for under the bed. Chase mice attack feet but rub face on everything hopped up on goofballs.</p>
+                        <h4>Cupcake ipsum</h4>
+                        <p>Jelly-o sesame snaps halvah croissant oat cake cookie. Cheesecake bear claw topping. Chupa chups apple pie carrot cake chocolate cake caramels.</p>
+                        <p>De braaaiiiins apocalypsi gorger omero prefrontal cortex undead survivor fornix dictum mauris. Hi brains mindless mortuis limbic cortex soulless creaturas optic nerve.</p>
+                        <h4>Candy ipsum</h4>
+                        <p>Efficiently unleash cross-media information without cross-media value. Quickly maximize timely deliverables for real-time schemas. Dramatically maintain clicks-and-mortar.</p>
+                        <p>Caerphilly swiss fromage frais. Brie cheese and wine fromage frais chalk and cheese danish fontina smelly cheese who moved my cheese cow.</p>
+                      </div>
+                    </div>
+                    <div class="modal-footer">
+                      <button class="btn btn-primary">Share</button><a class="btn btn-link modal-close" href="#modals">Close</a>
+                    </div>
+                  </div>
+                </div>
   `,
   primer: `<button class="btn mr-2" type="button">
   <!-- <%= octicon "search" %> -->
