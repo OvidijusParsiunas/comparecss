@@ -11,7 +11,7 @@
   height: 100%;
   text-align: center;
   vertical-align: middle;
-  padding: 1em;
+  padding: 0px;
   background-color: rgba(0, 0, 0, 0.85);
   opacity: 0;
   line-height: 1;
@@ -123,8 +123,18 @@
     color: #FFFFFF;
     text-shadow: none;
   }
+  .ui.grey.button {
+    -webkit-box-shadow: 0 0 0 0 rgba(34,36,38,.15) inset;
+    box-shadow: 0 0 0 0 rgba(34,36,38,.15) inset;
+  }
+  .ui.grey.button, .ui.grey.buttons .button {
+    background-color: #767676;
+    color: #fff;
+    text-shadow: none;
+    background-image: none;
+  }
   .ui.button, .ui.buttons .button, .ui.buttons .or {
-    font-size: 1rem;
+    font-size: 14px;
   }
   .ui.button {
     cursor: pointer;
@@ -139,7 +149,7 @@
     padding: .78571429em 1.5em .78571429em;
     text-transform: none;
     font-weight: 700;
-    line-height: 1em;
+    line-height: 14px;
     font-style: normal;
     text-align: center;
     text-decoration: none;
@@ -155,11 +165,16 @@
     transition: opacity .1s ease,background-color .1s ease,color .1s ease,box-shadow .1s ease,background .1s ease;
     transition: opacity .1s ease,background-color .1s ease,color .1s ease,box-shadow .1s ease,background .1s ease,-webkit-box-shadow .1s ease;
     -webkit-tap-highlight-color: transparent;
-}
-.visible.transition {
-  display: block!important;
-  visibility: visible!important;
-}
+  }
+  .visible.transition {
+    display: block!important;
+    visibility: visible!important;
+  }
+  p {
+    margin: 0;
+    font-size: 15px;
+  }
+  font-size: 14px;
 }
 
 /* Dimmer Content */
@@ -438,7 +453,7 @@ body.dimmable > .dimmer {
   font-family: 'Lato', 'Helvetica Neue', Arial, Helvetica, sans-serif;
   background: #FFFFFF;
   margin: 0em;
-  padding: 1.25rem 1.5rem;
+  padding: 17.5px 21px;
   -webkit-box-shadow: none;
   box-shadow: none;
   color: rgba(0, 0, 0, 0.85);
@@ -457,9 +472,9 @@ body.dimmable > .dimmer {
 
 .ui.modal > .content {
   display: block;
-  font-size: 1em;
+  font-size: 14px;
   line-height: 1.4;
-  padding: 1.5rem;
+  padding: 21px;
   background: #FFFFFF;
 }
 
@@ -538,7 +553,7 @@ body.dimmable > .dimmer {
 
 .ui.modal > .actions {
   background: #F9FAFB;
-  padding: 1rem 1rem;
+  padding: 14px;
   border-top: 1px solid rgba(34, 36, 38, 0.15);
   text-align: right;
 }
@@ -857,13 +872,13 @@ body.dimmable > .dimmer {
 ---------------*/
 
 .ui.modal {
-  font-size: 1rem;
+  font-size: 14px;
 }
 
 /* Mini */
 
 .ui.mini.modal > .header:not(.ui) {
-  font-size: 1.3em;
+  font-size: 18.2px;
 }
 
 /* Mini Modal Width */

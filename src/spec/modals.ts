@@ -64,12 +64,12 @@ export default {
     </div>
     `,
   bulma: `
-    <p><a class="button is-primary modal-button" data-target = "#bulmaModal">Modal</a></p>
+    <p><a class="button is-primary modal-button" data-target="#bulmaModal">Modal</a></p>
     <div id="bulmaModal" style="text-align: left" class="modal">
       <div class="modal-background"></div>
       <div style="max-width: 500px" class="modal-card">
         <header class="modal-card-head">
-          <p class="modal-card-title">Modal title</p>
+          <p class="modal-card-title">Modal Header</p>
           <button class="bulma-close delete" aria-label="close"></button>
         </header>
         <section class="modal-card-body">
@@ -85,56 +85,47 @@ export default {
     </div>
   `,
   semantic: `
-  <button class="ui button primary create_btn" type="button" id="semantic-create-modal-button">Create</button>
-  <div class="ui modal semantic-modal">
-    <div class="header">
-      Delete Your Account
-    </div>
-    <div class="content">
-      <p>Are you sure you want to delete your account</p>
-    </div>
-    <div class="actions">
-      <div class="ui negative button">
-        No
+    <button class="ui button primary create_btn" type="button" id="semantic-create-modal-button">Modal</button>
+    <div class="ui mini modal semantic-modal">
+      <div class="header">
+        Modal Header
       </div>
-      <div class="ui positive button">
-        Yes
+      <div class="content">
+        <p>Example modal text</p>
+      </div>
+      <div class="actions">
+        <div class="ui grey button ok">
+          Close
+        </div>
+        <div class="ui positive button">
+          Save
+        </div>
       </div>
     </div>
-  </div>
   `,
   pure: null,
   skeleton: null,
   milligram: null,
   spectre: `
-  <!-- Button -->
-<button class="btn btn-primary modal-toggle" data-modal="#myModalId">Open Modal</button>
-
-<!-- Modal -->
-<div class="modal" id="myModalId"><a class="modal-overlay" href="#modals" aria-label="Close"></a>
-                  <div class="modal-container" role="document">
-                    <div class="modal-header"><a class="btn btn-clear float-right modal-close" href="#modals" aria-label="Close"></a>
-                      <div class="modal-title h5">Modal title</div>
-                    </div>
-                    <div class="modal-body">
-                      <div class="content">
-                        <p>This is the content inside the modal.</p>
-                        <h4>Lorem ipsum</h4>
-                        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Praesent risus leo, dictum in vehicula sit amet, feugiat tempus tellus. Duis quis sodales risus. Etiam euismod ornare consequat.</p>
-                        <p>Climb leg rub face on everything give attitude nap all day for under the bed. Chase mice attack feet but rub face on everything hopped up on goofballs.</p>
-                        <h4>Cupcake ipsum</h4>
-                        <p>Jelly-o sesame snaps halvah croissant oat cake cookie. Cheesecake bear claw topping. Chupa chups apple pie carrot cake chocolate cake caramels.</p>
-                        <p>De braaaiiiins apocalypsi gorger omero prefrontal cortex undead survivor fornix dictum mauris. Hi brains mindless mortuis limbic cortex soulless creaturas optic nerve.</p>
-                        <h4>Candy ipsum</h4>
-                        <p>Efficiently unleash cross-media information without cross-media value. Quickly maximize timely deliverables for real-time schemas. Dramatically maintain clicks-and-mortar.</p>
-                        <p>Caerphilly swiss fromage frais. Brie cheese and wine fromage frais chalk and cheese danish fontina smelly cheese who moved my cheese cow.</p>
-                      </div>
-                    </div>
-                    <div class="modal-footer">
-                      <button class="btn btn-primary">Share</button><a class="btn btn-link modal-close" href="#modals">Close</a>
-                    </div>
-                  </div>
-                </div>
+    <button class="btn btn-primary modal-toggle" data-modal="#spectreModal">Modal</button>
+    <div id="spectreModal" style="text-align: left" class="modal">
+      <a class="modal-overlay" href="#modals" aria-label="Close"></a>
+      <div style="max-width: 500px" class="modal-container" role="document">
+          <div class="modal-header">
+            <a class="btn btn-clear float-right spectre-modal-close" href="#modals" aria-label="Close"></a>
+            <div class="modal-title h5">Modal Header</div>
+          </div>
+          <div class="modal-body">
+            <div class="content">
+                <p>Example modal text</p>
+            </div>
+          </div>
+          <div class="modal-footer">
+          <a class="btn spectre-modal-close" href="#modals">Close</a>
+          <button class="btn btn-primary spectre-modal-close">Save</button>
+          </div>
+      </div>
+    </div>
   `,
   primer: `<button class="btn mr-2" type="button">
   <!-- <%= octicon "search" %> -->

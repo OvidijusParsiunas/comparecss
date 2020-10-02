@@ -430,6 +430,9 @@ body {
   .dropdown .menu {
     max-height: none;
   }
+  .modal-container .h5 {
+    font-size: 20px;
+  }
 }
 
 .primer {
