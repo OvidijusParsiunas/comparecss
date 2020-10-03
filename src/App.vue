@@ -271,9 +271,6 @@ body {
   .breadcrumbs li {
     font-size: 15px;
   }
-  div, dl, dt, dd, ul, ol, li, h1, h2, h3, h4, h5, h6, pre, form, blockquote, th, td {
-    background-color: white;
-  }
   .callout > :first-child {
     margin-bottom: 0px;
   }

@@ -11,6 +11,7 @@ import Accordions from '../spec/accordions';
 import Dropdowns from '../spec/dropdowns';
 import Forms from '../spec/forms';
 import Modals from '../spec/modals';
+import Navbar from '../spec/navbar';
 
 export default class MarkupManager {
   static retrieveContentMarkup(clickedButtonName: BUTTON_NAMES): ContentMarkupInterface {
@@ -35,8 +36,10 @@ export default class MarkupManager {
         return Forms;
       case BUTTON_NAMES.MODALS:
         return Modals;        
+      case BUTTON_NAMES.NAVBARS:
+        return Navbar;    
       case BUTTON_NAMES.PROGRESS:
-        return Progress;        
+        return Progress;
       default: {
         return {
           bootstrap: '',
