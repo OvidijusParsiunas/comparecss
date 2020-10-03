@@ -11,7 +11,7 @@ import Accordions from '../spec/accordions';
 import Dropdowns from '../spec/dropdowns';
 import Forms from '../spec/forms';
 import Modals from '../spec/modals';
-import Navbar from '../spec/navbar';
+import Navbar from '../spec/navbars';
 
 export default class MarkupManager {
   static retrieveContentMarkup(clickedButtonName: BUTTON_NAMES): ContentMarkupInterface {
