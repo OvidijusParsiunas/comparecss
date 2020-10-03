@@ -12,4 +12,5 @@ export enum BUTTON_NAMES {
     NAVBARS,
     PAGINATION,
     PROGRESS,
+    TOOLTIPS,
 }

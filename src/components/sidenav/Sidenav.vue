@@ -76,6 +76,9 @@
                 <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.PROGRESS)">Progress</a>
             </li>
             <li>
+                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.TOOLTIPS)">Tooltips</a>
+            </li>
+            <li>
                 <a href="#pageSubmenu" data-toggle="collapse"
                 aria-expanded="false" class="dropdown-toggle" @click="buttonClick('Pages')"
                 >Pages

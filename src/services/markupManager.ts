@@ -13,6 +13,7 @@ import Forms from '../spec/forms';
 import Modals from '../spec/modals';
 import Navbar from '../spec/navbars';
 import Pagination from '../spec/pagination';
+import Tooltips from '../spec/tooltips';
 
 export default class MarkupManager {
   static retrieveContentMarkup(clickedButtonName: BUTTON_NAMES): ContentMarkupInterface {
@@ -43,6 +44,8 @@ export default class MarkupManager {
         return Pagination;    
       case BUTTON_NAMES.PROGRESS:
         return Progress;
+      case BUTTON_NAMES.TOOLTIPS:
+        return Tooltips;
       default: {
         return {
           bootstrap: '',

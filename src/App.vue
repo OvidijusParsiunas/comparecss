@@ -90,9 +90,12 @@ export default class App extends Vue {
     const foundationScript3 = document.createElement('script');
     foundationScript3.setAttribute('src', 'assets/materialize/materialize-accordion.js');
     document.head.appendChild(foundationScript3);
-    const materializeScript = document.createElement('script');
-    materializeScript.setAttribute('src', 'assets/materialize/materialize-modal.js');
-    document.head.appendChild(materializeScript);
+    const materializeScript1 = document.createElement('script');
+    materializeScript1.setAttribute('src', 'assets/materialize/materialize-modal.js');
+    document.head.appendChild(materializeScript1);
+    const materializeScript2 = document.createElement('script');
+    materializeScript2.setAttribute('src', 'assets/materialize/materialize-tooltip.js');
+    document.head.appendChild(materializeScript2);
     const foundationScript = document.createElement('script');
     foundationScript.setAttribute('src', 'assets/foundation/app.js');
     document.head.appendChild(foundationScript);
@@ -111,6 +114,9 @@ export default class App extends Vue {
     const spectreScript1 = document.createElement('script');
     spectreScript1.setAttribute('src', 'assets/spectre/spectre-modal.js');
     document.head.appendChild(spectreScript1);
+    const bootstrapScript1 = document.createElement('script');
+    bootstrapScript1.setAttribute('src', 'assets/bootstrap/bootstrap-tooltip.js');
+    document.head.appendChild(bootstrapScript1);
   }
 }
 </script>
@@ -181,6 +187,11 @@ body {
 @import "assets/scss/foundation-modal.scss";
 @import "assets/scss/bulma-modal.scss";
 @import "assets/scss/semantic-modal.scss";
+@import "assets/scss/bootstrap-tooltip.scss";
+@import "assets/scss/materialize-tooltip.scss";
+@import "assets/scss/uikit-tooltip.scss";
+@import "assets/scss/foundation-tooltip.scss";
+@import "assets/scss/bulma-tooltip.scss";
 
 .bootstrap {
   @import "node_modules/bootstrap/scss/bootstrap";
