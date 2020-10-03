@@ -10,5 +10,6 @@ export enum BUTTON_NAMES {
     FORMS,
     MODALS,
     NAVBARS,
+    PAGINATION,
     PROGRESS,
 }

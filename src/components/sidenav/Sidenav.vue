@@ -70,6 +70,9 @@
                 <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.NAVBARS)">Navbars</a>
             </li>
             <li>
+                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.PAGINATION)">Pagination</a>
+            </li>
+            <li>
                 <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.PROGRESS)">Progress</a>
             </li>
             <li>

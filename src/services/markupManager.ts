@@ -12,6 +12,7 @@ import Dropdowns from '../spec/dropdowns';
 import Forms from '../spec/forms';
 import Modals from '../spec/modals';
 import Navbar from '../spec/navbars';
+import Pagination from '../spec/pagination';
 
 export default class MarkupManager {
   static retrieveContentMarkup(clickedButtonName: BUTTON_NAMES): ContentMarkupInterface {
@@ -38,6 +39,8 @@ export default class MarkupManager {
         return Modals;        
       case BUTTON_NAMES.NAVBARS:
         return Navbar;    
+      case BUTTON_NAMES.PAGINATION:
+        return Pagination;    
       case BUTTON_NAMES.PROGRESS:
         return Progress;
       default: {

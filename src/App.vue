@@ -48,9 +48,10 @@ import { BUTTON_NAMES } from './consts/buttonNames.enum';
       const foundationScript = document.createElement('script');
       foundationScript.setAttribute('src', 'assets/foundation/foundation.min.js');
       document.head.appendChild(foundationScript);
-      const foundationScript1 = document.createElement('script');
-      foundationScript1.setAttribute('src', 'assets/materialize/materialize.min.js');
-      document.head.appendChild(foundationScript1);
+      // THIS SHOULD ONLY BE IMPORTED FOR ACCORDION, MODAL and DROPDOWNS, should be removed from the dom otherwise
+      // const foundationScript1 = document.createElement('script');
+      // foundationScript1.setAttribute('src', 'assets/materialize/materialize.min.js');
+      // document.head.appendChild(foundationScript1);
     }, 100);
     // need to subscribe to when these are loaded onto the UI and then allow the user to execute certain ui functions
   },
@@ -274,6 +275,23 @@ body {
   .callout > :first-child {
     margin-bottom: 0px;
   }
+  .pagination .disabled {
+    padding: 0.1875rem 0.625rem;
+    border-radius: 0;
+    color: #0a0a0a;
+    cursor: pointer;
+  }
+  .pagination .disabled:hover {
+    background: #e6e6e6;
+  }
+  .pagination-previous a::before, .pagination-previous.disabled::before, .pagination-next a::after, .pagination-next.disabled::after {
+    margin-left: unset;
+    margin-right: unset;
+  }
+  // removing the default background fade
+  nav, div, p {
+    background: white;
+  }
 };
 
 .bulma {
@@ -325,6 +343,9 @@ body {
   }
   .ui.menu .item {
     padding: 0.75857143em 1.14285714em;
+  }
+  .pagination a {
+    display: block !important;
   }
 };
 
