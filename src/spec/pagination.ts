@@ -60,66 +60,54 @@ export default {
     </nav>
     `,
   bulma: `
-  <nav class="pagination is-centered" role="navigation" aria-label="pagination">
-  <a class="pagination-previous">Previous</a>
-  <a class="pagination-next">Next page</a>
-  <ul class="pagination-list">
-    <li><a class="pagination-link" aria-label="Goto page 1">1</a></li>
-    <li><span class="pagination-ellipsis">&hellip;</span></li>
-    <li><a class="pagination-link" aria-label="Goto page 45">45</a></li>
-    <li><a class="pagination-link is-current" aria-label="Page 46" aria-current="page">46</a></li>
-    <li><a class="pagination-link" aria-label="Goto page 47">47</a></li>
-    <li><span class="pagination-ellipsis">&hellip;</span></li>
-    <li><a class="pagination-link" aria-label="Goto page 86">86</a></li>
-  </ul>
-</nav>
+    <nav class="pagination is-centered" role="navigation" aria-label="pagination">
+      <ul class="pagination-list">
+        <li><a class="pagination-previous">&lt</a></li>
+        <li><a class="pagination-link is-current" aria-label="Goto page 1">1</a></li>
+        <li><a class="pagination-link" aria-label="Goto page 2">2</a></li>
+        <li><a class="pagination-link" aria-label="Page 3" aria-current="page">3</a></li>
+        <li><a class="pagination-link" aria-label="Goto page 4">4</a></li>
+        <li><a class="pagination-link" aria-label="Goto page 5">5</a></li>
+        <li><a class="pagination-next">&gt</a>
+      </ul>
+    </nav>
   `,
   semantic: `
     <div class="ui pagination menu">
-  <a class="active item">
-    1
-  </a>
-  <div class="disabled item">
-    ...
-  </div>
-  <a class="item">
-    10
-  </a>
-  <a class="item">
-    11
-  </a>
-  <a class="item">
-    12
-  </a>
-</div>
+      <a class="active item">1</a>
+      <a class="item">2</a>
+      <a class="item">3</a>
+      <a class="item">4</a>
+      <a class="item">5</a>
+    </div>
   `,
   pure: null,
   skeleton: null,
   milligram: null,
   spectre: `
-  <ul class="pagination">
-  <li class="page-item disabled">
-    <a href="#" tabindex="-1">Previous</a>
-  </li>
-  <li class="page-item active">
-    <a href="#">1</a>
-  </li>
-  <li class="page-item">
-    <a href="#">2</a>
-  </li>
-  <li class="page-item">
-    <a href="#">3</a>
-  </li>
-  <li class="page-item">
-    <span>...</span>
-  </li>
-  <li class="page-item">
-    <a href="#">12</a>
-  </li>
-  <li class="page-item">
-    <a href="#">Next</a>
-  </li>
-</ul>
+    <ul style="display: inline-flex" class="pagination">
+      <li class="page-item">
+        <a href="#!" tabindex="-1">&lt</a>
+      </li>
+      <li class="page-item active">
+        <a href="#!">1</a>
+      </li>
+      <li class="page-item">
+        <a href="#!">2</a>
+      </li>
+      <li class="page-item">
+        <a href="#!">3</a>
+      </li>
+      <li class="page-item">
+        <a href="#!">4</a>
+      </li>
+      <li class="page-item">
+        <a href="#!">5</a>
+      </li>
+      <li class="page-item">
+        <a href="#!">&gt</a>
+      </li>
+    </ul>
   `,
   primer: `<button class="btn mr-2" type="button">
   <!-- <%= octicon "search" %> -->

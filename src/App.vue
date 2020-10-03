@@ -347,6 +347,9 @@ body {
   .pagination a {
     display: block !important;
   }
+  .ui.pagination.menu .active.item {
+    padding-top: 0.75857143em;
+}
 };
 
 .pure {
