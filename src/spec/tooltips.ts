@@ -43,10 +43,10 @@ export default {
   skeleton: null,
   milligram: null,
   spectre: `
-    <button class="btn btn-primary tooltip tooltip-left" spectre-tooltip="Tooltip text">Left</button>
-    <button class="btn btn-primary tooltip" spectre-tooltip="Tooltip text">Top</button>
-    <button class="btn btn-primary tooltip tooltip-bottom" spectre-tooltip="Tooltip text">Bottom</button>
-    <button class="btn btn-primary tooltip tooltip-right" spectre-tooltip="Tooltip text">Right</button>
+    <button class="btn btn-primary spectre-tooltip tooltip-left" spectre-tooltip="Tooltip text">Left</button>
+    <button class="btn btn-primary spectre-tooltip" spectre-tooltip="Tooltip text">Top</button>
+    <button class="btn btn-primary spectre-tooltip tooltip-bottom" spectre-tooltip="Tooltip text">Bottom</button>
+    <button class="btn btn-primary spectre-tooltip tooltip-right" spectre-tooltip="Tooltip text">Right</button>
   `,
   primer: `<button class="btn mr-2" type="button">
   <!-- <%= octicon "search" %> -->
