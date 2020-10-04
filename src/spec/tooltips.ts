@@ -2,129 +2,51 @@ import { ContentMarkupInterface } from '../interfaces/ContentMarkupInterface';
 
 export default {
   bootstrap: `
-  <button type="button" class="btn btn-secondary" data-toggle="bootstrapTooltip" data-placement="top" title="Tooltip on top">
-  Tooltip on top
-</button>
-<button type="button" class="btn btn-secondary" data-toggle="bootstrapTooltip" data-placement="right" title="Tooltip on right">
-  Tooltip on right
-</button>
-<button type="button" class="btn btn-secondary" data-toggle="bootstrapTooltip" data-placement="bottom" title="Tooltip on bottom">
-  Tooltip on bottom
-</button>
-<button type="button" class="btn btn-secondary" data-toggle="bootstrapTooltip" data-placement="left" title="Tooltip on left">
-  Tooltip on left
-</button>
+    <button type="button" class="btn btn-secondary" data-toggle="bootstrapTooltip" data-placement="left" title="Tooltip text">Left</button>
+    <button type="button" class="btn btn-secondary" data-toggle="bootstrapTooltip" data-placement="top" title="Tooltip text">Top</button>
+    <button type="button" class="btn btn-secondary" data-toggle="bootstrapTooltip" data-placement="bottom" title="Tooltip text">Bottom</button>
+    <button type="button" class="btn btn-secondary" data-toggle="bootstrapTooltip" data-placement="right" title="Tooltip text">Right</button>
   `,
   materialize: `
-    <a href="#!" class="btn tooltipped col s4 offset-s4 l2 offset-l1" data-html="true" data-position="bottom" materialize-tooltip="I am a tooltip">
-          Bottom</a>
-    <a href="#!" class="btn tooltipped col s4 offset-s4 l2 offset-l1" data-position="top" materialize-tooltip="I am a tooltip"> Top</a>
-    <a href="#!" class="btn tooltipped col s4 offset-s4 l2 offset-l1" data-position="left" materialize-tooltip="I am a tooltip"> Left</a>
-    <a href="#!" class="btn tooltipped col s4 offset-s4 l2 offset-l1" data-position="right" materialize-tooltip="I am a tooltip"> Right</a>
+    <a href="#!" class="btn tooltipped col s4 offset-s4 l2 offset-l1" data-position="left" materialize-tooltip="Tooltip text">Left</a>
+    <a href="#!" class="btn tooltipped col s4 offset-s4 l2 offset-l1" data-position="top" materialize-tooltip="Tooltip text">Top</a>
+    <a href="#!" class="btn tooltipped col s4 offset-s4 l2 offset-l1" data-html="true" data-position="bottom" materialize-tooltip="Tooltip text">Bottom</a>
+    <a href="#!" class="btn tooltipped col s4 offset-s4 l2 offset-l1" data-position="right" materialize-tooltip="Tooltip text">Right</a>
   `,
   uikit: `
     <p uk-margin>
-    <button class="uk-button uk-button-default" uk-tooltip="Hello World">Top</button>
-    <button class="uk-button uk-button-default" uk-tooltip="title: Hello World; pos: top-left">Top Left</button>
-    <button class="uk-button uk-button-default" uk-tooltip="title: Hello World; pos: top-right">Top Right</button>
-    <button class="uk-button uk-button-default" uk-tooltip="title: Hello World; pos: bottom">Bottom</button>
-    <button class="uk-button uk-button-default" uk-tooltip="title: Hello World; pos: bottom-left">Bottom Left</button>
-    <button class="uk-button uk-button-default" uk-tooltip="title: Hello World; pos: bottom-right">Bottom Right</button>
-    <button class="uk-button uk-button-default" uk-tooltip="title: Hello World; pos: left">Left</button>
-    <button class="uk-button uk-button-default" uk-tooltip="title: Hello World; pos: right">Right</button>
+      <button class="uk-button uk-button-default" uk-tooltip="title:Tooltip text; pos: left">Left</button>
+      <button class="uk-button uk-button-default" uk-tooltip="Tooltip text">Top</button>
+      <button class="uk-button uk-button-default" uk-tooltip="title: Tooltip text; pos: bottom">Bottom</button>
+      <button class="uk-button uk-button-default" uk-tooltip="title: Tooltip text; pos: right">Right</button>
     </p>
   `,
   foundation: `
-  <button class="button" type="button" data-tooltip tabindex="1" title="Fancy word for a beetle." data-position="bottom" data-alignment="left">
-  Bottom Left
-</button>
-
-<button class="button" type="button"  data-tooltip tabindex="1" title="Fancy word for a beetle." data-position="bottom" data-alignment="center">
-  Bottom Center
-</button>
-
-<button class="button" type="button" data-tooltip tabindex="1" title="Fancy word for a beetle." data-position="bottom" data-alignment="right">
-  Bottom Right
-</button>
-
-<button class="button" type="button" data-tooltip tabindex="1" title="Fancy word for a beetle." data-position="top" data-alignment="left">
-  Top Left
-</button>
-
-<button class="button" type="button" data-tooltip tabindex="1" title="Fancy word for a beetle." data-position="top" data-alignment="center">
-  Top Center
-</button>
-
-<button class="button" type="button" data-tooltip tabindex="1" title="Fancy word for a beetle." data-position="top" data-alignment="right">
-  Top Right
-</button>
-<button class="button" type="button" data-tooltip tabindex="1" title="Fancy word for a beetle." data-position="right" data-alignment="top">
-  Right Top
-</button>
-
-<button class="button" type="button" data-tooltip tabindex="1" title="Fancy word for a beetle." data-position="left" data-alignment="top">
-  Left Top
-</button>
-
-<button class="button" type="button" data-tooltip tabindex="1" title="Fancy word for a beetle." data-position="right" data-alignment="center">
-  Right Center
-</button>
-
-<button class="button" type="button" data-tooltip tabindex="1" title="Fancy word for a beetle." data-position="left" data-alignment="center">
-  Left Center
-</button>
-
-<button class="button" type="button" data-tooltip tabindex="1" title="Fancy word for a beetle." data-position="right" data-alignment="bottom">
-  Right Bottom
-</button>
-
-<button class="button" type="button" data-tooltip tabindex="1" title="Fancy word for a beetle." data-position="left" data-alignment="bottom">
-  Left Bottom
-</button>
+    <button style="cursor: pointer" class="button" type="button" data-tooltip tabindex="1" title="Tooltip text" data-position="left">Left</button>
+    <button style="cursor: pointer" class="button" type="button" data-tooltip tabindex="1" title="Tooltip text" data-position="top" data-alignment="center">Top</button>
+    <button style="cursor: pointer" class="button" type="button" data-tooltip tabindex="1" title="Tooltip text" data-position="bottom" data-alignment="center">Bottom</button>
+    <button style="cursor: pointer" class="button" type="button" data-tooltip tabindex="1" title="Tooltip text" data-position="right">Right</button>
     `,
   bulma: `
-  <div class="columns is-multiline text-center">
-  <div class="column">
-    <button class="button is-primary" bulma-tooltip="Tooltip Text">top tooltip</button>
-  </div>
-  <div class="column">
-    <button class="button is-primary has-tooltip-right" bulma-tooltip="Tooltip Text">right tooltip</button>
-  </div>
-  <div class="column">
-    <button class="button is-primary has-tooltip-bottom" bulma-tooltip="Tooltip Text">bottom tooltip</button>
-  </div>
-  <div class="column">
-    <button class="button is-primary has-tooltip-left" bulma-tooltip="Tooltip Text">left tooltip</button>
-  </div>
-</div>
+    <button class="button is-primary has-tooltip-left" bulma-tooltip="Tooltip text">Left</button>
+    <button class="button is-primary" bulma-tooltip="Tooltip text">Top</button>
+    <button class="button is-primary has-tooltip-bottom" bulma-tooltip="Tooltip text">Bottom</button>
+    <button class="button is-primary has-tooltip-right" bulma-tooltip="Tooltip text">Right</button>
   `,
   semantic: `
-    <button class="ui primary button">Button</button>
-    <button class="ui green button">Success</button>
-    <button class="ui red button">Danger</button>
-    <button class="ui disabled button">Disabled</button>
-    <button class="ui primary basic button">Outlined</button>
+    <div class="ui button" semantic-tooltip="Tooltip text" data-position="left center">Left</div>
+    <div class="ui button" semantic-tooltip="Tooltip text" data-position="top center">Top</div>
+    <div class="ui button" semantic-tooltip="Tooltip text" data-position="bottom center">Bottom</div>
+    <div class="ui button" semantic-tooltip="Tooltip text" data-position="right center">Right</div>
   `,
-  pure: `
-    <button class="pure-button pure-button-primary">Button</button>
-    <button class="button-success pure-button">Success</button>
-    <button class="button-error pure-button">Danger</button>
-    <button class="pure-button" disabled="">Disabled</button>
-    `,
-  skeleton: `
-    <button>Button</button>
-    <button class="button-primary">Button</button>
-  `,
-  milligram: `
-    <button class="button">Button</button>
-    <button class="button button-outline">Outlined</button>
-  `,
+  pure: null,
+  skeleton: null,
+  milligram: null,
   spectre: `
-    <button class="btn btn-primary">Button</button>
-    <button class="btn btn-success">Success</button>
-    <button class="btn btn-error">Danger</button>
-    <button class="btn disabled" tabindex="-1">Disabled</button>
-    <button class="btn">Outlined</button>
+    <button class="btn btn-primary tooltip tooltip-left" spectre-tooltip="Tooltip text">Left</button>
+    <button class="btn btn-primary tooltip" spectre-tooltip="Tooltip text">Top</button>
+    <button class="btn btn-primary tooltip tooltip-bottom" spectre-tooltip="Tooltip text">Bottom</button>
+    <button class="btn btn-primary tooltip tooltip-right" spectre-tooltip="Tooltip text">Right</button>
   `,
   primer: `<button class="btn mr-2" type="button">
   <!-- <%= octicon "search" %> -->

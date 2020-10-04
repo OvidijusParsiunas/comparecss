@@ -192,6 +192,7 @@ body {
 @import "assets/scss/uikit-tooltip.scss";
 @import "assets/scss/foundation-tooltip.scss";
 @import "assets/scss/bulma-tooltip.scss";
+@import "assets/scss/spectre-tooltip.scss";
 
 .bootstrap {
   @import "node_modules/bootstrap/scss/bootstrap";
