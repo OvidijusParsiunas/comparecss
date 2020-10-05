@@ -22,16 +22,22 @@ import { BUTTON_NAMES } from './consts/buttonNames.enum';
     Sidenav,
   },
   mounted() {
-    scripts.addScriptsToDom(
-      'assets/jquery/jquery-3.5.1.slim.min.js', 'assets/jquery/jquery.js', 'assets/mui/mui.min.js', 'assets/component-functionality.js',
-    );
-    setTimeout(() => {
-      scripts.addScriptsToDom(
-        'assets/semantic/semantic.min.js', 'assets/uikit/uikit.min.js', 'assets/bootstrap/bootstrap.min.js',
-        'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js', 'assets/foundation/foundation.min.js',
-      );
-    }, 100);
-    // need to subscribe to when these are loaded onto the UI and then allow the user to execute certain ui functions
+    scripts.addScriptsToHead(
+      'assets/jquery/jquery-3.5.1.slim.min.js', 'assets/jquery/jquery.js', 'assets/mui/mui.min.js',
+      'assets/uikit/uikit.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js',
+    ).then(() => {
+      return scripts.addScriptsToHead('assets/bootstrap/bootstrap.min.js');
+    }).then(() => {
+      return scripts.addScriptsToHead('assets/semantic/semantic.min.js');
+    }).then(() => {
+      return scripts.addScriptsToHead('assets/foundation/foundation.min.js');
+    }).then(() => {
+      scripts.addScriptsToHead('assets/component-functionality.js');
+    }).catch((e) => {
+      console.log('Failed to load a script:')
+      console.log(e);
+    });
+    // if we fail to load a certain script, display that as a toaster alert and do not show the component
   },
 })
 
@@ -45,7 +51,6 @@ export default class App extends Vue {
     bulma: '<button class="button">Button</button>',
   };
 
-  // methods
   public sideNavButtonClick(clickedButtonName: BUTTON_NAMES): void {
     this.markup = markupManager.retrieveContentMarkup(clickedButtonName);
     componentFunctionalityViaJS.triggerComponents(clickedButtonName);
