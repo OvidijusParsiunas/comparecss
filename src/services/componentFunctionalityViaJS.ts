@@ -16,52 +16,51 @@ export default class ComponentFunctionalityViaJS {
   // Therefore the current solution is to execute the line below from an outside script file
   // (<any>$(".ui.accordion")).accordion();
 
-  static triggerComponents(clickedButtonName: BUTTON_NAMES): void {
+  static triggerComponents(clickedButtonName: BUTTON_NAMES): () => void {
     switch (clickedButtonName) {
       case BUTTON_NAMES.ACCORDIONS:
-        setTimeout(() => {
+        return () => {
           window.componentFunctionality.bulmaAccordion();
           window.componentFunctionality.bulmaTrigger();
           window.componentFunctionality.foundationTrigger();
           window.componentFunctionality.materializeAccordion();
           window.componentFunctionality.semanticAccordion();
-        }, 10);
-        break;
+        };
       case BUTTON_NAMES.ALERTS:
-        setTimeout(() => {
+        return () => {
           window.componentFunctionality.bulmaAlert();
           window.componentFunctionality.semanticAlert();
-        }, 10);
+        };
         break;
       case BUTTON_NAMES.DROPDOWNS:
-        setTimeout(() => {
+        return () => {
           window.componentFunctionality.foundationTrigger();
           window.componentFunctionality.materializeDropdown();
           window.componentFunctionality.pureDropdown();
           window.componentFunctionality.semanticDropdown();
-        }, 10);
+        };
         break;
       case BUTTON_NAMES.MODALS:
-        setTimeout(() => {
+        return () => {
           window.componentFunctionality.bulmaModal();
           window.componentFunctionality.foundationTrigger();
           window.componentFunctionality.materializeModal();
           window.componentFunctionality.semanticModal();
           window.componentFunctionality.spectreModal();
-        }, 10);
+        };
         break;
       case BUTTON_NAMES.NAVBARS:
-        setTimeout(() => {
+        return () => {
           window.componentFunctionality.foundationTrigger();
-        }, 10); 
+        };
         break;
       case BUTTON_NAMES.TOOLTIPS:
-        setTimeout(() => {
+        return () => {
           window.componentFunctionality.bootstrapTooltip();
           window.componentFunctionality.foundationTrigger();
           window.componentFunctionality.materializeTooltip();
-        }, 10);
-      default: 
+        };
+        default: 
         break;
     }
   }

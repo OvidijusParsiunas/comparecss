@@ -39,10 +39,19 @@ import { BUTTON_NAMES } from './consts/buttonNames.enum';
     });
     // if we fail to load a certain script, display that as a toaster alert and do not show the component
   },
+  updated() {
+    this.$nextTick(() => {
+      if (this.jsFunctionalityFunc) {
+        this.jsFunctionalityFunc();
+        this.jsFunctionalityFunc = null;
+      }
+    })
+  }
 })
 
 export default class App extends Vue {
   // data variables have been moved here to allow typing
+  jsFunctionalityFunc: () => void = null;
   private markup: ContentMarkup = {
     bootstrap: '<button type="button" class="btn btn-primary">Primary</button>',
     materialize: '<button type="button" class="btn btn-primary">Primary</button>',
@@ -52,8 +61,8 @@ export default class App extends Vue {
   };
 
   public sideNavButtonClick(clickedButtonName: BUTTON_NAMES): void {
+    this.jsFunctionalityFunc = componentFunctionalityViaJS.triggerComponents(clickedButtonName);
     this.markup = markupManager.retrieveContentMarkup(clickedButtonName);
-    componentFunctionalityViaJS.triggerComponents(clickedButtonName);
   }
 }
 </script>
