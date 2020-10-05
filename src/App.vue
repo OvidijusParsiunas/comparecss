@@ -24,7 +24,7 @@ import { BUTTON_NAMES } from './consts/buttonNames.enum';
   mounted() {
     scripts.addScriptsToHead(
       'assets/jquery/jquery-3.5.1.slim.min.js', 'assets/jquery/jquery.js', 'assets/mui/mui.min.js',
-      'assets/uikit/uikit.min.js', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js',
+      'assets/uikit/uikit.min.js', 'assets/popper/popper.min.js',
     ).then(() => {
       return scripts.addScriptsToHead('assets/bootstrap/bootstrap.min.js');
     }).then(() => {
