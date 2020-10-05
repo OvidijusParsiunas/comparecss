@@ -1,0 +1,43 @@
+.spectre {
+  font-family: sans-serif;
+  -webkit-text-size-adjust: 100%;
+  -ms-text-size-adjust: 100%;
+  box-sizing: border-box;
+  font-size: 20px;
+  line-height: 1.5;
+  -webkit-tap-highlight-color: transparent;
+  background: #fff;
+  color: #3b4351;
+  font-family: -apple-system, system-ui, BlinkMacSystemFont, "Segoe UI",
+    Roboto, "Helvetica Neue", sans-serif;
+  text-rendering: optimizeLegibility;
+  font-size: 16px;
+  @import "../assets/scss/spectre/spectre.scss";
+  @import "../assets/scss/spectre/spectre-exp.scss";
+  @import "../assets/scss/spectre/spectre-icons.scss";
+  .btn, .materialize .btn-large, .materialize .btn-large, .materialize .btn-small, .materialize .btn-small {
+    border: 1px solid #5755d9;
+    border-radius: 2px;
+    font-size: 16px;
+    height: 36px;
+    line-height: 24px;
+    padding: 5px 8px;
+  }
+  .badge[data-badge]::after, .badge:not([data-badge])::after {
+    border-radius: 10px;
+    transform: translate(-1px, -10px);
+  }
+  .badge.btn::after {
+    position: absolute;
+    right: 0;
+    top: 0;
+    transform: translate(50%,-50%);
+  }
+  .dropdown .menu {
+    max-height: none;
+  }
+  .modal-container .h5 {
+    font-size: 20px;
+  }
+}
+@import "../assets/scss/spectre/spectre-tooltip.scss";

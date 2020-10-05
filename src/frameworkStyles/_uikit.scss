@@ -1,0 +1,17 @@
+.uikit {
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto,
+  "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji",
+  "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 16px;
+  font-weight: normal;
+  line-height: 1.5;
+  -webkit-text-size-adjust: 100%;
+  background: #fff;
+  color: #666;
+  @import "../assets/scss/uikit/uikit.scss";
+  .uk-dropdown {
+    min-width: 160px
+  }
+}
+@import "../assets/scss/uikit/uikit-tooltip.scss";
+@import "../assets/scss/uikit/uikit-modal.scss";

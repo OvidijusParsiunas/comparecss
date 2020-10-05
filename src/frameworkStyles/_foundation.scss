@@ -1,0 +1,43 @@
+.foundation {
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  font-size: 100%;
+  margin: 0;
+  padding: 0;
+  background: #fefefe;
+  font-family: "Helvetica Neue", Helvetica, Roboto, Arial, sans-serif;
+  font-weight: normal;
+  line-height: 1.5;
+  color: #0a0a0a;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  @import "../assets/scss/foundation/foundation.scss";
+  .breadcrumbs li {
+    font-size: 15px;
+  }
+  .callout > :first-child {
+    margin-bottom: 0px;
+  }
+  .pagination .disabled {
+    padding: 0.1875rem 0.625rem;
+    border-radius: 0;
+    color: #0a0a0a;
+    cursor: pointer;
+  }
+  .pagination .disabled:hover {
+    background: #e6e6e6;
+  }
+  .pagination-previous a::before, .pagination-previous.disabled::before, .pagination-next a::after, .pagination-next.disabled::after {
+    margin-left: unset;
+    margin-right: unset;
+  }
+  // removing the default background fade
+  nav, div, p {
+    background: white;
+  }
+  .callout p {
+    background: unset;
+  }
+}
+@import "../assets/scss/foundation/foundation-tooltip.scss";
+@import "../assets/scss/foundation/foundation-modal.scss";

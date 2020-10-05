@@ -1,0 +1,32 @@
+.bootstrap {
+  @import "node_modules/bootstrap/scss/bootstrap";
+  button {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
+      "Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+    line-height: 1.15;
+    -webkit-text-size-adjust: 100%;
+    -ms-text-size-adjust: 100%;
+    -ms-overflow-style: scrollbar;
+    -webkit-tap-highlight-color: none;
+  }
+  .btn:focus {
+    outline: none;
+    box-shadow: none;
+  }
+  h5 {
+    font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,
+      "Helvetica Neue",Arial,sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol";
+  }
+  .modal.fade .modal-dialog {
+    transition: -webkit-transform 0.3s ease-out;
+    transition: transform 0.3s ease-out;
+    transition: transform 0.3s ease-out, -webkit-transform 0.3s ease-out;
+    -webkit-transform: translate(0, -50px);
+    transform: translate(0, -50px);
+  }
+  .modal.show .modal-dialog {
+    transform: none;
+  }
+}
+@import "../assets/scss/bootstrap/bootstrap-modal.scss";
+@import "../assets/scss/bootstrap/bootstrap-tooltip.scss";

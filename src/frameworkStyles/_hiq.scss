@@ -1,0 +1,26 @@
+.hiq {
+   -webkit-text-size-adjust:100%;
+  text-rendering:var(--hiq-text-rendering, optimizeLegibility);
+  font-family:var(--hiq-font-family-base, -apple-system, system-ui, BlinkMacSystemFont,
+  'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif);
+  font-size:calc(var(--hiq-unitless-min-font-size, 15) * 1px);
+  font-weight:var(--hiq-font-weight-base, var(--hiq-font-weight-normal, 400));
+  letter-spacing:var(--hiq-letter-spacing-base, 0);
+  line-height:var(--hiq-line-height-base, 1.5);
+  @media (min-width: 460px){
+  html {
+    font-size:calc((var(--hiq-unitless-min-font-size, 15) * 1px)
+      + (calc(var(--hiq-unitless-max-font-size, 16)
+      - var(--hiq-unitless-min-font-size, 15)))
+      * (calc(100vw - (var(--hiq-unitless-lower-font-range, 460) * 1px)))
+      / (calc(var(--hiq-unitless-upper-font-range, 900)
+      - var(--hiq-unitless-lower-font-range, 460))));
+    }
+  }
+  @media (min-width: 900px){
+  html {
+      font-size:calc(var(--hiq-unitless-max-font-size, 16) * 1px);
+    }
+  }
+  @import 'node_modules/hiq/dist/hiq.min';
+}

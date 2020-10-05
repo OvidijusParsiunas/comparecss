@@ -1,0 +1,16 @@
+.materialize {
+  color: rgba(0,0,0,0.87);
+  line-height: 1.6;
+  font-size: 16px;
+  -webkit-font-smoothing: antialiased;
+  font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Oxygen-Sans,Ubuntu,Cantarell,"Helvetica Neue",sans-serif;
+  font-weight: normal;
+  @import "node_modules/materialize-css/sass/materialize.scss";
+  .breadcrumb:before {
+    color: rgb(255 134 134 / 70%);
+  }
+  .modal .modal-footer {
+    width: unset;
+  }
+}
+@import "../assets/scss/materialize/materialize-tooltip.scss";

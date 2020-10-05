@@ -16,7 +16,7 @@ import Pagination from '../spec/pagination';
 import Tooltips from '../spec/tooltips';
 
 export default class MarkupManager {
-  static retrieveContentMarkup(clickedButtonName: BUTTON_NAMES): ContentMarkup {
+  static getContentMarkup(clickedButtonName: BUTTON_NAMES): ContentMarkup {
     switch (clickedButtonName) {
       case BUTTON_NAMES.ACCORDIONS:
         return Accordions;

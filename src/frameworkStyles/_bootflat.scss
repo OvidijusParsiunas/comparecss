@@ -1,0 +1,14 @@
+.bootflat {
+  @import "node_modules/bootstrap/scss/bootstrap";
+  button {
+      line-height: 1.15;
+      -webkit-text-size-adjust: 100%;
+      -ms-text-size-adjust: 100%;
+      -ms-overflow-style: scrollbar;
+      -webkit-tap-highlight-color: transparent;
+  }
+  font-family: 'Open Sans', 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  color: #434a54;
+  background-color: white;
+  @import "../assets/scss/bootflat/bootflat.scss";
+}

@@ -16,7 +16,7 @@ export default class ComponentFunctionalityViaJS {
   // Therefore the current solution is to execute the line below from an outside script file
   // (<any>$(".ui.accordion")).accordion();
 
-  static triggerComponents(clickedButtonName: BUTTON_NAMES): () => void {
+  static getComponentTriggers(clickedButtonName: BUTTON_NAMES): () => void {
     switch (clickedButtonName) {
       case BUTTON_NAMES.ACCORDIONS:
         return () => {
