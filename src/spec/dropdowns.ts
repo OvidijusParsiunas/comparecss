@@ -1,4 +1,4 @@
-import { ContentMarkupInterface } from '../interfaces/ContentMarkupInterface';
+import { ContentMarkup } from '../interfaces/ContentMarkupInterface';
 
 export default {
   bootstrap: `
@@ -314,4 +314,4 @@ export default {
   <button class="pf-c-button pf-m-warning" type="button">Warning</button>`,
   bootflat: `<h1>Test bootflat</h1>
   <a class="btn btn-primary">Primary</a>`,
-} as ContentMarkupInterface;
+} as ContentMarkup;

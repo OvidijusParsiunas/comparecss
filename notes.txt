@@ -1,3 +1,6 @@
+fix bulma accordion css
+fix folder highercy
+
 try to use css asset files so you can lazy load them
 statistics should include size and github popularity
 think about having loading placeholders when the images are loading up for cards

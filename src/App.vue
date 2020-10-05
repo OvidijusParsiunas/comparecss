@@ -10,7 +10,9 @@ import { Options, Vue } from 'vue-class-component';
 import Contents from './components/content/Content.vue';
 import Sidenav from './components/sidenav/Sidenav.vue';
 import markupManager from './services/markupManager';
-import { ContentMarkupInterface } from './interfaces/ContentMarkupInterface';
+import componentFunctionalityViaJS from './services/componentFunctionalityViaJS';
+import scripts from './services/scripts';
+import { ContentMarkup } from './interfaces/ContentMarkupInterface';
 import { BUTTON_NAMES } from './consts/buttonNames.enum';
 
 // https://vuejsdevelopers.com/2020/03/16/vue-js-tutorial/
@@ -20,38 +22,14 @@ import { BUTTON_NAMES } from './consts/buttonNames.enum';
     Sidenav,
   },
   mounted() {
-    const jqueryScript = document.createElement('script');
-    jqueryScript.setAttribute('src', 'assets/jquery/jquery-3.5.1.slim.min.js');
-    document.head.appendChild(jqueryScript);
-    const jqueryScript2 = document.createElement('script');
-    jqueryScript2.setAttribute('src', 'assets/jquery/jquery.js');
-    document.head.appendChild(jqueryScript2);
-    const recaptchaScript = document.createElement('script');
-    recaptchaScript.setAttribute('src', 'assets/mui/mui.min.js');
-    document.head.appendChild(recaptchaScript);
-    const bulmaScript = document.createElement('script');
-    bulmaScript.setAttribute('src', 'assets/bulma/bulma-accordion.js');
-    document.head.appendChild(bulmaScript);
+    scripts.addScriptsToDom(
+      'assets/jquery/jquery-3.5.1.slim.min.js', 'assets/jquery/jquery.js', 'assets/mui/mui.min.js', 'assets/component-functionality.js',
+    );
     setTimeout(() => {
-      const semanticScript = document.createElement('script');
-      semanticScript.setAttribute('src', 'assets/semantic/semantic.min.js');
-      document.head.appendChild(semanticScript);
-      const uikitScript = document.createElement('script');
-      uikitScript.setAttribute('src', 'assets/uikit/uikit.min.js');
-      document.head.appendChild(uikitScript);
-      const bootstrapScript = document.createElement('script');
-      bootstrapScript.setAttribute('src', 'assets/bootstrap/bootstrap.min.js');
-      document.head.appendChild(bootstrapScript);
-      const poppoverScript = document.createElement('script');
-      poppoverScript.setAttribute('src', 'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js');
-      document.head.appendChild(poppoverScript);
-      const foundationScript = document.createElement('script');
-      foundationScript.setAttribute('src', 'assets/foundation/foundation.min.js');
-      document.head.appendChild(foundationScript);
-      // THIS SHOULD ONLY BE IMPORTED FOR ACCORDION, MODAL and DROPDOWNS, should be removed from the dom otherwise
-      // const foundationScript1 = document.createElement('script');
-      // foundationScript1.setAttribute('src', 'assets/materialize/materialize.min.js');
-      // document.head.appendChild(foundationScript1);
+      scripts.addScriptsToDom(
+        'assets/semantic/semantic.min.js', 'assets/uikit/uikit.min.js', 'assets/bootstrap/bootstrap.min.js',
+        'https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js', 'assets/foundation/foundation.min.js',
+      );
     }, 100);
     // need to subscribe to when these are loaded onto the UI and then allow the user to execute certain ui functions
   },
@@ -59,7 +37,7 @@ import { BUTTON_NAMES } from './consts/buttonNames.enum';
 
 export default class App extends Vue {
   // data variables have been moved here to allow typing
-  private markup: ContentMarkupInterface = {
+  private markup: ContentMarkup = {
     bootstrap: '<button type="button" class="btn btn-primary">Primary</button>',
     materialize: '<button type="button" class="btn btn-primary">Primary</button>',
     uikit: '<button class="uk-button uk-button-default">Primary</button>',
@@ -70,53 +48,7 @@ export default class App extends Vue {
   // methods
   public sideNavButtonClick(clickedButtonName: BUTTON_NAMES): void {
     this.markup = markupManager.retrieveContentMarkup(clickedButtonName);
-    // should be called in the markup manager service
-    // these get added multiple times
-    const foundationScript2 = document.createElement('script');
-    foundationScript2.setAttribute('src', 'assets/semantic/app.js');
-    document.head.appendChild(foundationScript2);
-    const foundationScript4 = document.createElement('script');
-    foundationScript4.setAttribute('src', 'assets/semantic/semantic-accordion.js');
-    document.head.appendChild(foundationScript4);
-    const foundationScript5 = document.createElement('script');
-    foundationScript5.setAttribute('src', 'assets/semantic/semantic-alert.js');
-    document.head.appendChild(foundationScript5);
-    const foundationScript6 = document.createElement('script');
-    foundationScript6.setAttribute('src', 'assets/semantic/semantic-modal.js');
-    document.head.appendChild(foundationScript6);
-    const foundationScript1 = document.createElement('script');
-    foundationScript1.setAttribute('src', 'assets/materialize/app.js');
-    document.head.appendChild(foundationScript1);
-    const foundationScript3 = document.createElement('script');
-    foundationScript3.setAttribute('src', 'assets/materialize/materialize-accordion.js');
-    document.head.appendChild(foundationScript3);
-    const materializeScript1 = document.createElement('script');
-    materializeScript1.setAttribute('src', 'assets/materialize/materialize-modal.js');
-    document.head.appendChild(materializeScript1);
-    const materializeScript2 = document.createElement('script');
-    materializeScript2.setAttribute('src', 'assets/materialize/materialize-tooltip.js');
-    document.head.appendChild(materializeScript2);
-    const foundationScript = document.createElement('script');
-    foundationScript.setAttribute('src', 'assets/foundation/app.js');
-    document.head.appendChild(foundationScript);
-    const pureScript = document.createElement('script');
-    pureScript.setAttribute('src', 'assets/pure/menus.js');
-    document.head.appendChild(pureScript);
-    const bulmaScript1 = document.createElement('script');
-    bulmaScript1.setAttribute('src', 'assets/bulma/app.js');
-    document.head.appendChild(bulmaScript1);
-    const bulmaScript2 = document.createElement('script');
-    bulmaScript2.setAttribute('src', 'assets/bulma/bulma-alert.js');
-    document.head.appendChild(bulmaScript2);
-    const bulmaScript3 = document.createElement('script');
-    bulmaScript3.setAttribute('src', 'assets/bulma/bulma-modal.js');
-    document.head.appendChild(bulmaScript3);
-    const spectreScript1 = document.createElement('script');
-    spectreScript1.setAttribute('src', 'assets/spectre/spectre-modal.js');
-    document.head.appendChild(spectreScript1);
-    const bootstrapScript1 = document.createElement('script');
-    bootstrapScript1.setAttribute('src', 'assets/bootstrap/bootstrap-tooltip.js');
-    document.head.appendChild(bootstrapScript1);
+    componentFunctionalityViaJS.triggerComponents(clickedButtonName);
   }
 }
 </script>
@@ -303,6 +235,9 @@ body {
   // removing the default background fade
   nav, div, p {
     background: white;
+  }
+  .callout p {
+    background: unset;
   }
 };
 

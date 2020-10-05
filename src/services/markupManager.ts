@@ -1,4 +1,4 @@
-import { ContentMarkupInterface } from '../interfaces/ContentMarkupInterface';
+import { ContentMarkup } from '../interfaces/ContentMarkupInterface';
 import Alerts from '../spec/alerts';
 import Badges from '../spec/badges';
 import Breadcrumbs from '../spec/breadCrumbs';
@@ -16,7 +16,7 @@ import Pagination from '../spec/pagination';
 import Tooltips from '../spec/tooltips';
 
 export default class MarkupManager {
-  static retrieveContentMarkup(clickedButtonName: BUTTON_NAMES): ContentMarkupInterface {
+  static retrieveContentMarkup(clickedButtonName: BUTTON_NAMES): ContentMarkup {
     switch (clickedButtonName) {
       case BUTTON_NAMES.ACCORDIONS:
         return Accordions;
