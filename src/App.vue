@@ -6,12 +6,12 @@
 </template>
 
 <script lang="ts">
-import componentFunctionalityViaJS from './services/componentFunctionalityViaJS';
+import cssFrameworksJSFunctionality from './services/cssFrameworksJSFunctionality';
 import Contents from './components/content/Content.vue';
 import Sidenav from './components/sidenav/Sidenav.vue';
 import markupManager from './services/markupManager';
 import scripts from './services/scripts';
-import { ContentMarkup } from './interfaces/ContentMarkupInterface';
+import { ContentMarkup } from './interfaces/contentMarkupInterface';
 import { BUTTON_NAMES } from './consts/buttonNames.enum';
 import { Options, Vue } from 'vue-class-component';
 
@@ -26,16 +26,16 @@ import { Options, Vue } from 'vue-class-component';
   },
   updated() {
     this.$nextTick(() => {
-      if (this.triggerComponentFunctionality) {
-        this.triggerComponentFunctionality();
-        this.triggerComponentFunctionality = null;
+      if (this.triggerCssFrameworksJs) {
+        this.triggerCssFrameworksJs();
+        this.triggerCssFrameworksJs = null;
       }
     })
   }
 })
 export default class App extends Vue {
   // data variables have been moved here to allow typing
-  triggerComponentFunctionality: () => void = null;
+  triggerCssFrameworksJs: () => void = null;
   private markup: ContentMarkup = {
     bootstrap: '<button type="button" class="btn btn-primary">Primary</button>',
     materialize: '<button type="button" class="btn btn-primary">Primary</button>',
@@ -45,7 +45,7 @@ export default class App extends Vue {
   };
 
   private sideNavButtonClick(clickedButtonName: BUTTON_NAMES): void {
-    this.triggerComponentFunctionality = componentFunctionalityViaJS.getComponentTriggers(clickedButtonName);
+    this.triggerCssFrameworksJs = cssFrameworksJSFunctionality.getTriggers(clickedButtonName);
     this.markup = markupManager.getContentMarkup(clickedButtonName);
   }
 
@@ -60,7 +60,7 @@ export default class App extends Vue {
     }).then(() => {
       return scripts.addScriptsToHead('assets/js/foundation/foundation.min.js');
     }).then(() => {
-      scripts.addScriptsToHead('assets/js/component-functionality.js');
+      scripts.addScriptsToHead('assets/js/cssFrameworkJsFunctionality.js');
     }).catch((e) => {
       console.log('Failed to load a script:')
       console.log(e);
@@ -89,24 +89,24 @@ body {
 }
 </style>
 <style lang="scss">
-@import "frameworkStyles/bootflat.scss";
-@import "frameworkStyles/bootstrap.scss";
-@import "frameworkStyles/bulma.scss";
-@import "frameworkStyles/chota.scss";
-@import "frameworkStyles/cirrus.scss";
-@import "frameworkStyles/foundation.scss";
-@import "frameworkStyles/hiq.scss";
-@import "frameworkStyles/materialize.scss";
-@import "frameworkStyles/milligram.scss";
-@import "frameworkStyles/mui.scss";
-@import "frameworkStyles/nes.scss";
-@import "frameworkStyles/patternfly.scss";
-@import "frameworkStyles/picnic.scss";
-@import "frameworkStyles/primer.scss";
-@import "frameworkStyles/pure.scss";
-@import "frameworkStyles/semantic.scss";
-@import "frameworkStyles/skeleton.scss";
-@import "frameworkStyles/spectre.scss";
-@import "frameworkStyles/turret.scss";
-@import "frameworkStyles/uikit.scss";
+@import "./cssFrameworks/styling/bootflat.scss";
+@import "./cssFrameworks/styling/bootstrap.scss";
+@import "./cssFrameworks/styling/bulma.scss";
+@import "./cssFrameworks/styling/chota.scss";
+@import "./cssFrameworks/styling/cirrus.scss";
+@import "./cssFrameworks/styling/foundation.scss";
+@import "./cssFrameworks/styling/hiq.scss";
+@import "./cssFrameworks/styling/materialize.scss";
+@import "./cssFrameworks/styling/milligram.scss";
+@import "./cssFrameworks/styling/mui.scss";
+@import "./cssFrameworks/styling/nes.scss";
+@import "./cssFrameworks/styling/patternfly.scss";
+@import "./cssFrameworks/styling/picnic.scss";
+@import "./cssFrameworks/styling/primer.scss";
+@import "./cssFrameworks/styling/pure.scss";
+@import "./cssFrameworks/styling/semantic.scss";
+@import "./cssFrameworks/styling/skeleton.scss";
+@import "./cssFrameworks/styling/spectre.scss";
+@import "./cssFrameworks/styling/turret.scss";
+@import "./cssFrameworks/styling/uikit.scss";
 </style>

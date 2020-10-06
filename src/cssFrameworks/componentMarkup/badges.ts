@@ -1,52 +1,66 @@
-import { ContentMarkup } from '../interfaces/ContentMarkupInterface';
+import { ContentMarkup } from '../../interfaces/contentMarkupInterface';
 
 export default {
   bootstrap: `
-    <button type="button" class="btn btn-secondary" data-toggle="bootstrapTooltip" data-placement="left" title="Tooltip text">Left</button>
-    <button type="button" class="btn btn-secondary" data-toggle="bootstrapTooltip" data-placement="top" title="Tooltip text">Top</button>
-    <button type="button" class="btn btn-secondary" data-toggle="bootstrapTooltip" data-placement="bottom" title="Tooltip text">Bottom</button>
-    <button type="button" class="btn btn-secondary" data-toggle="bootstrapTooltip" data-placement="right" title="Tooltip text">Right</button>
+    <span class="badge badge-primary">Primary</span>
+    <span class="badge badge-success">Success</span>
+    <span class="badge badge-danger">Danger</span>
+    <span class="badge badge-pill badge-primary">Rounded</span>
+    <span class="badge badge-pill badge-primary">1</span>
   `,
   materialize: `
-    <a href="#!" class="btn tooltipped col s4 offset-s4 l2 offset-l1" data-position="left" materialize-tooltip="Tooltip text">Left</a>
-    <a href="#!" class="btn tooltipped col s4 offset-s4 l2 offset-l1" data-position="top" materialize-tooltip="Tooltip text">Top</a>
-    <a href="#!" class="btn tooltipped col s4 offset-s4 l2 offset-l1" data-html="true" data-position="bottom" materialize-tooltip="Tooltip text">Bottom</a>
-    <a href="#!" class="btn tooltipped col s4 offset-s4 l2 offset-l1" data-position="right" materialize-tooltip="Tooltip text">Right</a>
+    <div style="display: inline-flex"> 
+      <span class="new badge blue" data-badge-caption="Primary"></span>
+      <span class="new badge" data-badge-caption="Success"></span>
+      <span class="new badge red" data-badge-caption="Danger"></span>
+    </div>
   `,
   uikit: `
-    <p uk-margin>
-      <button class="uk-button uk-button-default" uk-tooltip="title:Tooltip text; pos: left">Left</button>
-      <button class="uk-button uk-button-default" uk-tooltip="Tooltip text">Top</button>
-      <button class="uk-button uk-button-default" uk-tooltip="title: Tooltip text; pos: bottom">Bottom</button>
-      <button class="uk-button uk-button-default" uk-tooltip="title: Tooltip text; pos: right">Right</button>
-    </p>
+    <span class="uk-label">Primary</span>
+    <span class="uk-badge">Rounded</span>
+    <span class="uk-badge">1</span>
   `,
   foundation: `
-    <button style="cursor: pointer" class="button" type="button" data-tooltip tabindex="1" title="Tooltip text" data-position="left">Left</button>
-    <button style="cursor: pointer" class="button" type="button" data-tooltip tabindex="1" title="Tooltip text" data-position="top" data-alignment="center">Top</button>
-    <button style="cursor: pointer" class="button" type="button" data-tooltip tabindex="1" title="Tooltip text" data-position="bottom" data-alignment="center">Bottom</button>
-    <button style="cursor: pointer" class="button" type="button" data-tooltip tabindex="1" title="Tooltip text" data-position="right">Right</button>
-    `,
+    <span class="label primary">Primary</span>
+    <span class="label success">Success</span>
+    <span class="label alert">Danger</span>
+    <span class="badge primary">1</span>
+  `,
   bulma: `
-    <button class="button is-primary has-tooltip-left" bulma-tooltip="Tooltip text">Left</button>
-    <button class="button is-primary" bulma-tooltip="Tooltip text">Top</button>
-    <button class="button is-primary has-tooltip-bottom" bulma-tooltip="Tooltip text">Bottom</button>
-    <button class="button is-primary has-tooltip-right" bulma-tooltip="Tooltip text">Right</button>
+    <div style="display: inline-flex">
+      <span class="tag is-link">Primary</span>
+      <span style="margin-left: 5px" class="tag is-success">Success</span>
+      <span style="margin-left: 5px" class="tag is-danger">Danger</span>
+      <div style="margin-left: 5px" class="tags has-addons">
+        <!-- <span class="tag">Package</span>
+        <span class="tag is-primary">Bulma</span> -->
+        <span class="tag is-dark">Build</span>
+        <span class="tag is-success">Passing</span>
+      </div>
+      </div>
+    </div>
   `,
   semantic: `
-    <div class="ui button" semantic-tooltip="Tooltip text" data-position="left center">Left</div>
-    <div class="ui button" semantic-tooltip="Tooltip text" data-position="top center">Top</div>
-    <div class="ui button" semantic-tooltip="Tooltip text" data-position="bottom center">Bottom</div>
-    <div class="ui button" semantic-tooltip="Tooltip text" data-position="right center">Right</div>
+    <a class="ui blue label">Primary</a>
+    <a class="ui green label">Success</a>
+    <a class="ui red label">Danger</a>
+    <a class="ui blue circular label">Rounded</a>
+    <a class="ui blue circular label">1</a>
   `,
   pure: null,
   skeleton: null,
   milligram: null,
   spectre: `
-    <button class="btn btn-primary spectre-tooltip tooltip-left" spectre-tooltip="Tooltip text">Left</button>
-    <button class="btn btn-primary spectre-tooltip" spectre-tooltip="Tooltip text">Top</button>
-    <button class="btn btn-primary spectre-tooltip tooltip-bottom" spectre-tooltip="Tooltip text">Bottom</button>
-    <button class="btn btn-primary spectre-tooltip tooltip-right" spectre-tooltip="Tooltip text">Right</button>
+    <div style="display: inline-flex">
+      <span class="label label-primary">Primary</span>
+      <span style="margin-left: 5px" class="label label-success">Success</span>
+      <span style="margin-left: 5px" class="label label-error">Danger</span>
+      <span style="margin-left: 5px" class="label label-rounded label-primary">Rounded</span>
+      <div style="margin-left: 5px">Notifications</div>
+        <span class="badge" data-badge="1"></span>
+      </div>
+      <button style="border: none" class="btn"></button>
+    </div>
   `,
   primer: `<button class="btn mr-2" type="button">
   <!-- <%= octicon "search" %> -->

@@ -1,4 +1,4 @@
-export interface ComponentFunctionality {
+export interface CssFrameworksJsFunctionality {
     bootstrapTooltip: () => void;
     bulmaAlert: () => void;
     bulmaAccordion: () => void;

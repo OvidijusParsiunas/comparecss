@@ -1,67 +1,59 @@
-import { ContentMarkup } from '../interfaces/ContentMarkupInterface';
+import { ContentMarkup } from '../../interfaces/contentMarkupInterface';
 
 export default {
   bootstrap: `
-  <ol style="display: inline-flex; background-color: white; height: 20px;" class="breadcrumb">
-    <li class="breadcrumb-item"><a href="#!">First</a></li>
-    <li class="breadcrumb-item"><a href="#!">Second</a></li>
-    <li class="breadcrumb-item active" aria-current="page">Third</li>
-  </ol>
-  `,
-  materialize: `
-    <nav style="background-color: white; color: red; box-shadow: none; height: 50px;">
-      <div class="nav-wrapper">
-        <div class="col s12">
-          <a href="#!" style="color: rgb(255 174 174 / 80%)" class="breadcrumb">First</a>
-          <a href="#!" style="color: rgb(255 174 174 / 80%)" class="breadcrumb">Second</a>
-          <a style="color: red" class="breadcrumb">Third</a>
-        </div>
-      </div>
-    </nav>
-  `,
-  uikit: null,
-  foundation: `
-    <nav style="display: inline-flex" role="navigation">
-      <ul class="breadcrumbs">
-          <li><a href="#!">First</a></li>
-          <li><a href="#!">Second</a></li>
-          <li>Third</li>
-      </ul>
-    </nav>
-  `,
-  bulma: `
-    <nav class="breadcrumb is-centered" aria-label="breadcrumbs">
-      <ul>
-        <li><a href="#!">First</a></li>
-        <li><a href="#!">Second</a></li>
-        <li class="is-active"><a aria-current="page">Third</a></li>
-      </ul>
-    </nav>
-  `,
-  semantic: `
-    <div class="ui breadcrumb">
-      <a class="section">First</a>
-      <div class="divider"> / </div>
-      <a class="section">Second</a>
-      <div class="divider"> / </div>
-      <div class="active section">Third</div>
+    <div class="btn-group" role="group" aria-label="Basic example">
+      <button type="button" class="btn btn-secondary">Left</button>
+      <button type="button" class="btn btn-secondary">Middle</button>
+      <button type="button" class="btn btn-secondary">Right</button>
     </div>
   `,
-  pure: null,
+  materialize: null,
+  uikit: `
+    <div class="uk-margin-small">
+      <div class="uk-button-group">
+        <button class="uk-button uk-button-primary">Left</button>
+        <button class="uk-button uk-button-primary">Middle</button>
+        <button class="uk-button uk-button-primary">Right</button>
+      </div>
+  </div>
+  `,
+  foundation: `
+    <div class="button-group" style="display: inline-flex">
+      <a class="button">Left</a>
+      <a class="button">Middle</a>
+      <a class="button">Right</a>
+    </div>
+    `,
+  bulma: `
+    <div class="buttons has-addons" style="display: inline-flex">
+      <button class="button">Left</button>
+      <button class="button">Middle</button>
+      <button class="button">Right</button>
+   </div>
+  `,
+  semantic: `
+    <div class="ui buttons">
+      <button class="ui button">Left</button>
+      <button class="ui button">Middle</button>
+      <button class="ui button">Right</button>
+    </div>
+  `,
+  pure: `
+    <div class="pure-button-group" role="group" aria-label="...">
+      <button class="pure-button">Left</button>
+      <button class="pure-button">Middle</button>
+      <button class="pure-button">Right</button>
+    </div>
+    `,
   skeleton: null,
   milligram: null,
   spectre: `
-    <ul class="breadcrumb">
-      <li class="breadcrumb-item">
-        <a href="#!">First</a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="#!">Second</a>
-      </li>
-      <li class="breadcrumb-item">
-        <a href="#!">Third</a>
-      </li>
-    </ul>
+    <div class="btn-group btn-group-block" style="width: 15%; display: inline-flex">
+      <button class="btn">Left</button>
+      <button class="btn">Middle</button>
+      <button class="btn">Right</button>
+    </div> 
   `,
   primer: `<button class="btn mr-2" type="button">
   <!-- <%= octicon "search" %> -->

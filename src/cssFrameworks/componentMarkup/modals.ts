@@ -1,68 +1,131 @@
-import { ContentMarkup } from '../interfaces/ContentMarkupInterface';
+import { ContentMarkup } from '../../interfaces/contentMarkupInterface';
 
-// bootstrap button height
 export default {
   bootstrap: `
-    <button type="button" class="btn btn-primary">Button</button>
-    <button type="button" class="btn btn-secondary">Button</button>
-    <button type="button" class="btn btn-success">Success</button>
-    <button type="button" class="btn btn-danger">Danger</button>
-    <button type="button" class="btn btn-primary" disabled>Disabled</button>
-    <button type="button" class="btn btn-outline-primary">Outlined</button>
+    <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#bootstrapModal">
+        Modal
+    </button>
+    <div class="modal fade" id="bootstrapModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog" role="document">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="exampleModalLabel">Modal header</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+            </div>
+            <div style="text-align: left" class="modal-body">
+              Example modal text
+            </div>
+            <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+            <button type="button" class="btn btn-primary">Save</button>
+          </div>
+        </div>
+        </div>
+    </div>
   `,
   materialize: `
-    <a class="btn">Button</a>
-    <a class="waves-effect waves-light btn">Button - Click</a>
-    <a class="btn disabled">Disabled</a>
+    <a class="waves-effect waves-light btn modal-trigger" href="#materializeModal">Modal</a>
+    <div style="max-width: 500px; text-align: left" id="materializeModal" class="modal">
+      <div class="modal-content">
+        <h4>Modal Header</h4>
+        <p>Example modal text</p>
+      </div>
+      <div class="modal-footer">
+        <a href="#!" class="modal-close waves-effect waves-red btn-flat">Close</a>
+        <a href="#!" class="modal-close waves-effect waves-green btn-flat">Save</a>
+      </div>
+    </div>
   `,
   uikit: `
-    <button class="uk-button uk-button-default">Button</button>
-    <button class="uk-button uk-button-primary">Button</button>
-    <button class="uk-button uk-button-danger">Danger</button>
-    <button class="uk-button uk-button-default" disabled>Disabled</button>
+    <button class="uk-button uk-button-default uk-margin-small-right" type="button" uk-toggle="target: #uikitModal">Modal</button>
+    <div id="uikitModal" uk-modal>
+      <div class="uk-modal-dialog uk-modal-body">
+        <h2 class="uk-modal-title">Modal Header</h2>
+        <p>Example modal text</p>
+        <p class="uk-text-right">
+          <button class="uk-button uk-button-default uk-modal-close" type="button">Close</button>
+          <button class="uk-button uk-button-primary" type="button">Save</button>
+        </p>
+      </div>
+    </div>
   `,
   foundation: `
-    <a class="button">Button</a>
-    <a class="button success">Success</a>
-    <a class="button alert">Danger</a>
-    <button type="button" class="button primary" disabled>Disabled</button>
-    <button class="hollow button" href="#">Outlined</button>
+    <p><button style="outline: none" class="button" data-open="foundationModal">Modal</button></p>
+    <div style="max-width: 500px" class="reveal" id="foundationModal" data-reveal>
+      <h3>Modal Header</h3>
+      <p>Example modal text</p>
+      <button class="close-button" data-close aria-label="Close modal" type="button">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      <a style="margin-left: 5px; float: right" class="button primary" data-close aria-label="Close modal" href="#!">Save</a>
+      <a style="float: right" class="button secondary" data-close aria-label="Close modal" href="#!">Close</a>
+    </div>
     `,
   bulma: `
-    <button class="button is-link">Button</button>
-    <button class="button is-success">Success</button>
-    <button class="button is-danger">Danger</button>
-    <button class="button is-link" title="Disabled button" disabled>Disabled</button>
-    <button class="button is-link is-outlined">Outlined</button>
-    <button class="button is-link is-rounded">Rounded</button>
+    <p><a class="button is-primary modal-button" data-target="#bulmaModal">Modal</a></p>
+    <div id="bulmaModal" style="text-align: left" class="modal">
+      <div class="modal-background"></div>
+      <div style="max-width: 500px" class="modal-card">
+        <header class="modal-card-head">
+          <p class="modal-card-title">Modal Header</p>
+          <button class="bulma-close delete" aria-label="close"></button>
+        </header>
+        <section class="modal-card-body">
+          <div class="content">
+            <p>Example modal text</p>
+          </div>
+        </section>
+        <footer style="text-align: right; display: block" class="modal-card-foot">
+          <button class="bulma-close button">Close</button>
+          <button class="bulma-close button is-success">Save</button>
+        </footer>
+      </div>
+    </div>
   `,
   semantic: `
-    <button class="ui primary button">Button</button>
-    <button class="ui green button">Success</button>
-    <button class="ui red button">Danger</button>
-    <button class="ui disabled button">Disabled</button>
-    <button class="ui primary basic button">Outlined</button>
+    <button class="ui button primary create_btn" type="button" id="semantic-create-modal-button">Modal</button>
+    <div class="ui mini modal semantic-modal">
+      <div class="header">
+        Modal Header
+      </div>
+      <div class="content">
+        <p>Example modal text</p>
+      </div>
+      <div class="actions">
+        <div class="ui grey button ok">
+          Close
+        </div>
+        <div class="ui positive button">
+          Save
+        </div>
+      </div>
+    </div>
   `,
-  pure: `
-    <button class="pure-button pure-button-primary">Button</button>
-    <button class="button-success pure-button">Success</button>
-    <button class="button-error pure-button">Danger</button>
-    <button class="pure-button" disabled="">Disabled</button>
-    `,
-  skeleton: `
-    <button>Button</button>
-    <button class="button-primary">Button</button>
-  `,
-  milligram: `
-    <button class="button">Button</button>
-    <button class="button button-outline">Outlined</button>
-  `,
+  pure: null,
+  skeleton: null,
+  milligram: null,
   spectre: `
-    <button class="btn btn-primary">Button</button>
-    <button class="btn btn-success">Success</button>
-    <button class="btn btn-error">Danger</button>
-    <button class="btn disabled" tabindex="-1">Disabled</button>
-    <button class="btn">Outlined</button>
+    <button class="btn btn-primary modal-toggle" data-modal="#spectreModal">Modal</button>
+    <div id="spectreModal" style="text-align: left" class="modal">
+      <a class="modal-overlay" href="#modals" aria-label="Close"></a>
+      <div style="max-width: 500px" class="modal-container" role="document">
+          <div class="modal-header">
+            <a class="btn btn-clear float-right spectre-modal-close" href="#modals" aria-label="Close"></a>
+            <div class="modal-title h5">Modal Header</div>
+          </div>
+          <div class="modal-body">
+            <div class="content">
+                <p>Example modal text</p>
+            </div>
+          </div>
+          <div class="modal-footer">
+          <a class="btn spectre-modal-close" href="#modals">Close</a>
+          <button class="btn btn-primary spectre-modal-close">Save</button>
+          </div>
+      </div>
+    </div>
   `,
   primer: `<button class="btn mr-2" type="button">
   <!-- <%= octicon "search" %> -->

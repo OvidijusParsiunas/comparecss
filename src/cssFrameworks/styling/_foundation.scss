@@ -11,7 +11,7 @@
   color: #0a0a0a;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  @import "../assets/scss/foundation/foundation.scss";
+  @import "../../assets/scss/foundation/foundation.scss";
   .breadcrumbs li {
     font-size: 15px;
   }
@@ -39,5 +39,5 @@
     background: unset;
   }
 }
-@import "../assets/scss/foundation/foundation-tooltip.scss";
-@import "../assets/scss/foundation/foundation-modal.scss";
+@import "../../assets/scss/foundation/foundation-tooltip.scss";
+@import "../../assets/scss/foundation/foundation-modal.scss";

@@ -8,10 +8,10 @@
   -webkit-text-size-adjust: 100%;
   background: #fff;
   color: #666;
-  @import "../assets/scss/uikit/uikit.scss";
+  @import "../../assets/scss/uikit/uikit.scss";
   .uk-dropdown {
     min-width: 160px
   }
 }
-@import "../assets/scss/uikit/uikit-tooltip.scss";
-@import "../assets/scss/uikit/uikit-modal.scss";
+@import "../../assets/scss/uikit/uikit-tooltip.scss";
+@import "../../assets/scss/uikit/uikit-modal.scss";

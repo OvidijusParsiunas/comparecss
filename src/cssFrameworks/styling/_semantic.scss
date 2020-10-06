@@ -5,7 +5,7 @@
   margin: 0;
   height: 100%;
   font-size: 14px;
-  @import "../assets/scss/semantic/semantic.scss";
+  @import "../../assets/scss/semantic/semantic.scss";
   .ui.three.buttons > .button {
     width: 20%;
   }
@@ -40,7 +40,7 @@
     padding-top: 0.75857143em;
   }
 }
-@import "../assets/scss/semantic/semantic-alert-icon.scss";
-@import "../assets/scss/semantic/semantic-accordion-icon.scss";
-@import "../assets/scss/semantic/semantic-dropdown-icon.scss";
-@import "../assets/scss/semantic/semantic-modal.scss";
+@import "../../assets/scss/semantic/semantic-alert-icon.scss";
+@import "../../assets/scss/semantic/semantic-accordion-icon.scss";
+@import "../../assets/scss/semantic/semantic-dropdown-icon.scss";
+@import "../../assets/scss/semantic/semantic-modal.scss";

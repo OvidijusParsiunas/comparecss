@@ -12,9 +12,9 @@
     Roboto, "Helvetica Neue", sans-serif;
   text-rendering: optimizeLegibility;
   font-size: 16px;
-  @import "../assets/scss/spectre/spectre.scss";
-  @import "../assets/scss/spectre/spectre-exp.scss";
-  @import "../assets/scss/spectre/spectre-icons.scss";
+  @import "../../assets/scss/spectre/spectre.scss";
+  @import "../../assets/scss/spectre/spectre-exp.scss";
+  @import "../../assets/scss/spectre/spectre-icons.scss";
   .btn, .materialize .btn-large, .materialize .btn-large, .materialize .btn-small, .materialize .btn-small {
     border: 1px solid #5755d9;
     border-radius: 2px;
@@ -40,4 +40,4 @@
     font-size: 20px;
   }
 }
-@import "../assets/scss/spectre/spectre-tooltip.scss";
+@import "../../assets/scss/spectre/spectre-tooltip.scss";

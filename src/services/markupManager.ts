@@ -1,19 +1,19 @@
-import { ContentMarkup } from '../interfaces/ContentMarkupInterface';
-import Alerts from '../spec/alerts';
-import Badges from '../spec/badges';
-import Breadcrumbs from '../spec/breadCrumbs';
-import Buttons from '../spec/buttons';
-import ButtonGroups from '../spec/buttonGroups';
-import Progress from '../spec/progress';
+import { ContentMarkup } from '../interfaces/contentMarkupInterface';
+import Alerts from '../cssFrameworks/componentMarkup/alerts';
+import Badges from '../cssFrameworks/componentMarkup/badges';
+import Breadcrumbs from '../cssFrameworks/componentMarkup/breadCrumbs';
+import Buttons from '../cssFrameworks/componentMarkup/buttons';
+import ButtonGroups from '../cssFrameworks/componentMarkup/buttonGroups';
+import Progress from '../cssFrameworks/componentMarkup/progress';
 import { BUTTON_NAMES } from '../consts/buttonNames.enum';
-import Cards from '../spec/cards';
-import Accordions from '../spec/accordions';
-import Dropdowns from '../spec/dropdowns';
-import Forms from '../spec/forms';
-import Modals from '../spec/modals';
-import Navbar from '../spec/navbars';
-import Pagination from '../spec/pagination';
-import Tooltips from '../spec/tooltips';
+import Cards from '../cssFrameworks/componentMarkup/cards';
+import Accordions from '../cssFrameworks/componentMarkup/accordions';
+import Dropdowns from '../cssFrameworks/componentMarkup/dropdowns';
+import Forms from '../cssFrameworks/componentMarkup/forms';
+import Modals from '../cssFrameworks/componentMarkup/modals';
+import Navbar from '../cssFrameworks/componentMarkup/navbars';
+import Pagination from '../cssFrameworks/componentMarkup/pagination';
+import Tooltips from '../cssFrameworks/componentMarkup/tooltips';
 
 export default class MarkupManager {
   static getContentMarkup(clickedButtonName: BUTTON_NAMES): ContentMarkup {

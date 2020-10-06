@@ -1,111 +1,53 @@
-import { ContentMarkup } from '../interfaces/ContentMarkupInterface';
+import { ContentMarkup } from '../../interfaces/contentMarkupInterface';
 
 export default {
   bootstrap: `
-    <div style="width: 50%; display: inline-block">
-      <div class="alert alert-primary" role="alert">
-        Sample alert text!
-      </div>
-      <div class="alert alert-success" role="alert">
-        Sample alert text!
-      </div>
-      <div style="padding-right: 20px;" class="alert alert-warning alert-dismissible fade show" role="alert">
-        Sample alert text!
-        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-      <div style="padding-right: 20px;" class="alert alert-danger alert-dismissible fade show" role="alert">
-        Sample alert text!
-            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-        <span aria-hidden="true">&times;</span>
-      </button>
-      </div>
-    </div>
+    <button type="button" class="btn btn-secondary" data-toggle="bootstrapTooltip" data-placement="left" title="Tooltip text">Left</button>
+    <button type="button" class="btn btn-secondary" data-toggle="bootstrapTooltip" data-placement="top" title="Tooltip text">Top</button>
+    <button type="button" class="btn btn-secondary" data-toggle="bootstrapTooltip" data-placement="bottom" title="Tooltip text">Bottom</button>
+    <button type="button" class="btn btn-secondary" data-toggle="bootstrapTooltip" data-placement="right" title="Tooltip text">Right</button>
   `,
-  materialize: null,
+  materialize: `
+    <a href="#!" class="btn tooltipped col s4 offset-s4 l2 offset-l1" data-position="left" materialize-tooltip="Tooltip text">Left</a>
+    <a href="#!" class="btn tooltipped col s4 offset-s4 l2 offset-l1" data-position="top" materialize-tooltip="Tooltip text">Top</a>
+    <a href="#!" class="btn tooltipped col s4 offset-s4 l2 offset-l1" data-html="true" data-position="bottom" materialize-tooltip="Tooltip text">Bottom</a>
+    <a href="#!" class="btn tooltipped col s4 offset-s4 l2 offset-l1" data-position="right" materialize-tooltip="Tooltip text">Right</a>
+  `,
   uikit: `
-    <div style="width: 50%; display: inline-block">
-      <div class="uk-alert-primary" uk-alert>
-        <a class="uk-alert-close"></a>
-        Sample alert text!
-      </div>
-      <div class="uk-alert-success" uk-alert>
-        <a class="uk-alert-close"></a>
-        Sample alert text!
-      </div>
-      <div class="uk-alert-warning" uk-alert>
-        <a class="uk-alert-close" uk-close></a>
-        Sample alert text!
-      </div>
-      <div class="uk-alert-danger" uk-alert>
-        <a class="uk-alert-close" uk-close></a>
-        Sample alert text!
-      </div>
-    </div>
+    <p uk-margin>
+      <button class="uk-button uk-button-default" uk-tooltip="title:Tooltip text; pos: left">Left</button>
+      <button class="uk-button uk-button-default" uk-tooltip="Tooltip text">Top</button>
+      <button class="uk-button uk-button-default" uk-tooltip="title: Tooltip text; pos: bottom">Bottom</button>
+      <button class="uk-button uk-button-default" uk-tooltip="title: Tooltip text; pos: right">Right</button>
+    </p>
   `,
   foundation: `
-    <div style="width: 50%; display: inline-block">
-      <div class="primary callout">
-      <p>Sample alert text!</p>
-      </div>
-      <div class="success callout">
-        <p>Sample alert text!</p>
-      </div>
-      <div class="warning callout" data-closable>
-        <p>Sample alert text!</p>
-          <button style="outline: none;" class="close-button" aria-label="Dismiss alert" type="button" data-close>
-            <span aria-hidden="true">&times;</span>
-          </button>
-      </div>
-      <div class="alert callout" data-closable="slide-out-right">
-        <p>Sample alert text!</p>
-        <button style="outline: none;" class="close-button" aria-label="Dismiss alert" type="button" data-close>
-          <span aria-hidden="true">&times;</span>
-        </button>
-      </div>
-    </div>
+    <button style="cursor: pointer" class="button" type="button" data-tooltip tabindex="1" title="Tooltip text" data-position="left">Left</button>
+    <button style="cursor: pointer" class="button" type="button" data-tooltip tabindex="1" title="Tooltip text" data-position="top" data-alignment="center">Top</button>
+    <button style="cursor: pointer" class="button" type="button" data-tooltip tabindex="1" title="Tooltip text" data-position="bottom" data-alignment="center">Bottom</button>
+    <button style="cursor: pointer" class="button" type="button" data-tooltip tabindex="1" title="Tooltip text" data-position="right">Right</button>
     `,
   bulma: `
-    <div style="width: 50%; display: inline-block">
-      <div class="notification is-info">
-        Sample alert text!
-      </div>
-      <div class="notification is-success">
-        Sample alert text!
-      </div>
-      <div class="notification is-warning is-light">
-        <button class="delete"></button>
-        Sample alert text - light!
-      </div>
-      <div class="notification is-danger is-light">
-        <button class="delete"></button>
-        Sample alert text - light!
-      </div>
-    </div>
+    <button class="button is-primary has-tooltip-left" bulma-tooltip="Tooltip text">Left</button>
+    <button class="button is-primary" bulma-tooltip="Tooltip text">Top</button>
+    <button class="button is-primary has-tooltip-bottom" bulma-tooltip="Tooltip text">Bottom</button>
+    <button class="button is-primary has-tooltip-right" bulma-tooltip="Tooltip text">Right</button>
   `,
   semantic: `
-    <div style="width: 50%; display: inline-block">
-      <div class="ui info message">
-        Sample alert text!
-      </div>
-      <div class="ui positive message">
-        Sample alert text!
-      </div>
-      <div class="ui warning message">
-        <i class="close icon"></i>
-        Sample alert text!
-      </div>
-      <div class="ui negative message">
-        <i class="close icon"></i>
-        Sample alert text!
-      </div>
-    </div>
+    <div class="ui button" semantic-tooltip="Tooltip text" data-position="left center">Left</div>
+    <div class="ui button" semantic-tooltip="Tooltip text" data-position="top center">Top</div>
+    <div class="ui button" semantic-tooltip="Tooltip text" data-position="bottom center">Bottom</div>
+    <div class="ui button" semantic-tooltip="Tooltip text" data-position="right center">Right</div>
   `,
   pure: null,
   skeleton: null,
   milligram: null,
-  spectre: null,
+  spectre: `
+    <button class="btn btn-primary spectre-tooltip tooltip-left" spectre-tooltip="Tooltip text">Left</button>
+    <button class="btn btn-primary spectre-tooltip" spectre-tooltip="Tooltip text">Top</button>
+    <button class="btn btn-primary spectre-tooltip tooltip-bottom" spectre-tooltip="Tooltip text">Bottom</button>
+    <button class="btn btn-primary spectre-tooltip tooltip-right" spectre-tooltip="Tooltip text">Right</button>
+  `,
   primer: `<button class="btn mr-2" type="button">
   <!-- <%= octicon "search" %> -->
   <svg class="octicon octicon-search" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M15.7 13.3l-3.81-3.83A5.93 5.93 0 0013 6c0-3.31-2.69-6-6-6S1 2.69 1 6s2.69 6 6 6c1.3 0 2.48-.41 3.47-1.11l3.83 3.81c.19.2.45.3.7.3.25 0 .52-.09.7-.3a.996.996 0 000-1.41v.01zM7 10.7c-2.59 0-4.7-2.11-4.7-4.7 0-2.59 2.11-4.7 4.7-4.7 2.59 0 4.7 2.11 4.7 4.7 0 2.59-2.11 4.7-4.7 4.7z"></path></svg>

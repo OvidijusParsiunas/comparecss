@@ -1,74 +1,111 @@
-import { ContentMarkup } from '../interfaces/ContentMarkupInterface';
+import { ContentMarkup } from '../../interfaces/contentMarkupInterface';
 
 export default {
   bootstrap: `
-  <form>
-  <div class="form-group">
-    <label for="exampleInputEmail1">Email address</label>
-    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp" placeholder="Enter email">
-    <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-  </div>
-  <div class="form-check">
-    <input type="checkbox" class="form-check-input" id="exampleCheck1">
-    <label class="form-check-label" for="exampleCheck1">Check me out</label>
-  </div>
-  <button type="submit" class="btn btn-primary">Submit</button>
-</form>
+    <div style="width: 50%; display: inline-block">
+      <div class="alert alert-primary" role="alert">
+        Sample alert text!
+      </div>
+      <div class="alert alert-success" role="alert">
+        Sample alert text!
+      </div>
+      <div style="padding-right: 20px;" class="alert alert-warning alert-dismissible fade show" role="alert">
+        Sample alert text!
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div style="padding-right: 20px;" class="alert alert-danger alert-dismissible fade show" role="alert">
+        Sample alert text!
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">&times;</span>
+      </button>
+      </div>
+    </div>
   `,
-  materialize: `
-    <a class="btn">Button</a>
-    <a class="waves-effect waves-light btn">Button - Click</a>
-    <a class="btn disabled">Disabled</a>
-  `,
+  materialize: null,
   uikit: `
-    <button class="uk-button uk-button-default">Button</button>
-    <button class="uk-button uk-button-primary">Button</button>
-    <button class="uk-button uk-button-danger">Danger</button>
-    <button class="uk-button uk-button-default" disabled>Disabled</button>
+    <div style="width: 50%; display: inline-block">
+      <div class="uk-alert-primary" uk-alert>
+        <a class="uk-alert-close"></a>
+        Sample alert text!
+      </div>
+      <div class="uk-alert-success" uk-alert>
+        <a class="uk-alert-close"></a>
+        Sample alert text!
+      </div>
+      <div class="uk-alert-warning" uk-alert>
+        <a class="uk-alert-close" uk-close></a>
+        Sample alert text!
+      </div>
+      <div class="uk-alert-danger" uk-alert>
+        <a class="uk-alert-close" uk-close></a>
+        Sample alert text!
+      </div>
+    </div>
   `,
   foundation: `
-    <a class="button">Button</a>
-    <a class="button success">Success</a>
-    <a class="button alert">Danger</a>
-    <button type="button" class="button primary" disabled>Disabled</button>
-    <button class="hollow button" href="#">Outlined</button>
+    <div style="width: 50%; display: inline-block">
+      <div class="primary callout">
+      <p>Sample alert text!</p>
+      </div>
+      <div class="success callout">
+        <p>Sample alert text!</p>
+      </div>
+      <div class="warning callout" data-closable>
+        <p>Sample alert text!</p>
+          <button style="outline: none;" class="close-button" aria-label="Dismiss alert" type="button" data-close>
+            <span aria-hidden="true">&times;</span>
+          </button>
+      </div>
+      <div class="alert callout" data-closable="slide-out-right">
+        <p>Sample alert text!</p>
+        <button style="outline: none;" class="close-button" aria-label="Dismiss alert" type="button" data-close>
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+    </div>
     `,
   bulma: `
-    <button class="button is-link">Button</button>
-    <button class="button is-success">Success</button>
-    <button class="button is-danger">Danger</button>
-    <button class="button is-link" title="Disabled button" disabled>Disabled</button>
-    <button class="button is-link is-outlined">Outlined</button>
-    <button class="button is-link is-rounded">Rounded</button>
+    <div style="width: 50%; display: inline-block">
+      <div class="notification is-info">
+        Sample alert text!
+      </div>
+      <div class="notification is-success">
+        Sample alert text!
+      </div>
+      <div class="notification is-warning is-light">
+        <button class="delete"></button>
+        Sample alert text - light!
+      </div>
+      <div class="notification is-danger is-light">
+        <button class="delete"></button>
+        Sample alert text - light!
+      </div>
+    </div>
   `,
   semantic: `
-    <button class="ui primary button">Button</button>
-    <button class="ui green button">Success</button>
-    <button class="ui red button">Danger</button>
-    <button class="ui disabled button">Disabled</button>
-    <button class="ui primary basic button">Outlined</button>
+    <div style="width: 50%; display: inline-block">
+      <div class="ui info message">
+        Sample alert text!
+      </div>
+      <div class="ui positive message">
+        Sample alert text!
+      </div>
+      <div class="ui warning message">
+        <i class="close icon"></i>
+        Sample alert text!
+      </div>
+      <div class="ui negative message">
+        <i class="close icon"></i>
+        Sample alert text!
+      </div>
+    </div>
   `,
-  pure: `
-    <button class="pure-button pure-button-primary">Button</button>
-    <button class="button-success pure-button">Success</button>
-    <button class="button-error pure-button">Danger</button>
-    <button class="pure-button" disabled="">Disabled</button>
-    `,
-  skeleton: `
-    <button>Button</button>
-    <button class="button-primary">Button</button>
-  `,
-  milligram: `
-    <button class="button">Button</button>
-    <button class="button button-outline">Outlined</button>
-  `,
-  spectre: `
-    <button class="btn btn-primary">Button</button>
-    <button class="btn btn-success">Success</button>
-    <button class="btn btn-error">Danger</button>
-    <button class="btn disabled" tabindex="-1">Disabled</button>
-    <button class="btn">Outlined</button>
-  `,
+  pure: null,
+  skeleton: null,
+  milligram: null,
+  spectre: null,
   primer: `<button class="btn mr-2" type="button">
   <!-- <%= octicon "search" %> -->
   <svg class="octicon octicon-search" viewBox="0 0 16 16" version="1.1" width="16" height="16" aria-hidden="true"><path fill-rule="evenodd" d="M15.7 13.3l-3.81-3.83A5.93 5.93 0 0013 6c0-3.31-2.69-6-6-6S1 2.69 1 6s2.69 6 6 6c1.3 0 2.48-.41 3.47-1.11l3.83 3.81c.19.2.45.3.7.3.25 0 .52-.09.7-.3a.996.996 0 000-1.41v.01zM7 10.7c-2.59 0-4.7-2.11-4.7-4.7 0-2.59 2.11-4.7 4.7-4.7 2.59 0 4.7 2.11 4.7 4.7 0 2.59-2.11 4.7-4.7 4.7z"></path></svg>

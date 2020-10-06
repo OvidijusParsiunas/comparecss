@@ -1,66 +1,68 @@
-import { ContentMarkup } from '../interfaces/ContentMarkupInterface';
+import { ContentMarkup } from '../../interfaces/contentMarkupInterface';
 
+// bootstrap button height
 export default {
   bootstrap: `
-    <span class="badge badge-primary">Primary</span>
-    <span class="badge badge-success">Success</span>
-    <span class="badge badge-danger">Danger</span>
-    <span class="badge badge-pill badge-primary">Rounded</span>
-    <span class="badge badge-pill badge-primary">1</span>
+    <button type="button" class="btn btn-primary">Button</button>
+    <button type="button" class="btn btn-secondary">Button</button>
+    <button type="button" class="btn btn-success">Success</button>
+    <button type="button" class="btn btn-danger">Danger</button>
+    <button type="button" class="btn btn-primary" disabled>Disabled</button>
+    <button type="button" class="btn btn-outline-primary">Outlined</button>
   `,
   materialize: `
-    <div style="display: inline-flex"> 
-      <span class="new badge blue" data-badge-caption="Primary"></span>
-      <span class="new badge" data-badge-caption="Success"></span>
-      <span class="new badge red" data-badge-caption="Danger"></span>
-    </div>
+    <a class="btn">Button</a>
+    <a class="waves-effect waves-light btn">Button - Click</a>
+    <a class="btn disabled">Disabled</a>
   `,
   uikit: `
-    <span class="uk-label">Primary</span>
-    <span class="uk-badge">Rounded</span>
-    <span class="uk-badge">1</span>
+    <button class="uk-button uk-button-default">Button</button>
+    <button class="uk-button uk-button-primary">Button</button>
+    <button class="uk-button uk-button-danger">Danger</button>
+    <button class="uk-button uk-button-default" disabled>Disabled</button>
   `,
   foundation: `
-    <span class="label primary">Primary</span>
-    <span class="label success">Success</span>
-    <span class="label alert">Danger</span>
-    <span class="badge primary">1</span>
-  `,
+    <a class="button">Button</a>
+    <a class="button success">Success</a>
+    <a class="button alert">Danger</a>
+    <button type="button" class="button primary" disabled>Disabled</button>
+    <button class="hollow button" href="#">Outlined</button>
+    `,
   bulma: `
-    <div style="display: inline-flex">
-      <span class="tag is-link">Primary</span>
-      <span style="margin-left: 5px" class="tag is-success">Success</span>
-      <span style="margin-left: 5px" class="tag is-danger">Danger</span>
-      <div style="margin-left: 5px" class="tags has-addons">
-        <!-- <span class="tag">Package</span>
-        <span class="tag is-primary">Bulma</span> -->
-        <span class="tag is-dark">Build</span>
-        <span class="tag is-success">Passing</span>
-      </div>
-      </div>
-    </div>
+    <button class="button is-link">Button</button>
+    <button class="button is-success">Success</button>
+    <button class="button is-danger">Danger</button>
+    <button class="button is-link" title="Disabled button" disabled>Disabled</button>
+    <button class="button is-link is-outlined">Outlined</button>
+    <button class="button is-link is-rounded">Rounded</button>
   `,
   semantic: `
-    <a class="ui blue label">Primary</a>
-    <a class="ui green label">Success</a>
-    <a class="ui red label">Danger</a>
-    <a class="ui blue circular label">Rounded</a>
-    <a class="ui blue circular label">1</a>
+    <button class="ui primary button">Button</button>
+    <button class="ui green button">Success</button>
+    <button class="ui red button">Danger</button>
+    <button class="ui disabled button">Disabled</button>
+    <button class="ui primary basic button">Outlined</button>
   `,
-  pure: null,
-  skeleton: null,
-  milligram: null,
+  pure: `
+    <button class="pure-button pure-button-primary">Button</button>
+    <button class="button-success pure-button">Success</button>
+    <button class="button-error pure-button">Danger</button>
+    <button class="pure-button" disabled="">Disabled</button>
+    `,
+  skeleton: `
+    <button>Button</button>
+    <button class="button-primary">Button</button>
+  `,
+  milligram: `
+    <button class="button">Button</button>
+    <button class="button button-outline">Outlined</button>
+  `,
   spectre: `
-    <div style="display: inline-flex">
-      <span class="label label-primary">Primary</span>
-      <span style="margin-left: 5px" class="label label-success">Success</span>
-      <span style="margin-left: 5px" class="label label-error">Danger</span>
-      <span style="margin-left: 5px" class="label label-rounded label-primary">Rounded</span>
-      <div style="margin-left: 5px">Notifications</div>
-        <span class="badge" data-badge="1"></span>
-      </div>
-      <button style="border: none" class="btn"></button>
-    </div>
+    <button class="btn btn-primary">Button</button>
+    <button class="btn btn-success">Success</button>
+    <button class="btn btn-error">Danger</button>
+    <button class="btn disabled" tabindex="-1">Disabled</button>
+    <button class="btn">Outlined</button>
   `,
   primer: `<button class="btn mr-2" type="button">
   <!-- <%= octicon "search" %> -->

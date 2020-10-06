@@ -1,7 +1,7 @@
 .bulma {
   box-sizing: border-box;
   @import "node_modules/bulma/bulma.sass";
-  @import "../assets/scss/bulma/bulma-accordion.scss";
+  @import "../../assets/scss/bulma/bulma-accordion.scss";
   .modal {
     font-family: BlinkMacSystemFont,-apple-system,"Segoe UI",Roboto,Oxygen,Ubuntu,Cantarell,"Fira Sans","Droid Sans","Helvetica Neue",Helvetica,Arial,sans-serif;
   }
@@ -12,5 +12,5 @@
     line-height: 1.5;
   }
 }
-@import "../assets/scss/bulma/bulma-tooltip.scss";
-@import "../assets/scss/bulma/bulma-modal.scss";
+@import "../../assets/scss/bulma/bulma-tooltip.scss";
+@import "../../assets/scss/bulma/bulma-modal.scss";
