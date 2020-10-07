@@ -1,6 +1,8 @@
 fix bulma accordion css
 fix folder highercy
 
+reference css component versions - uikit v3
+
 have a mode where the user can select a framework, select a component, and construct that component - width and so on
 can then build multiple components and compare them, can add icons to buttons etc - will have to download specific scripts for this
 

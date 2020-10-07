@@ -17,77 +17,77 @@ import { ContentMarkup } from '../../interfaces/contentMarkupInterface';
 // Submit button (optional)
 export default {
   bootstrap: `
-  <div style="width: 50%; display: inline-flex">
-    <form style="width: 100%">
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="inputUsername4">Username</label>
-          <input class="form-control" id="inputUsername4" placeholder="Username">
+    <div style="width: 50%; display: inline-flex">
+      <form style="width: 100%">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="inputUsername4">Username</label>
+            <input class="form-control" id="inputUsername4" placeholder="Username">
+          </div>
+          <div class="form-group col-md-6">
+            <label for="inputPassword4">Password</label>
+            <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+          </div>
         </div>
-        <div class="form-group col-md-6">
-          <label for="inputPassword4">Password</label>
-          <input type="password" class="form-control" id="inputPassword4" placeholder="Password">
+        <div class="form-row">
+          <div class="form-group col-md-6">
+            <label for="inputState">Continent</label>
+            <select id="inputState" class="form-control">
+              <option selected>Europe</option>
+              <option>North America</option>
+              <option>South America</option>
+              <option>Asia</option>
+              <option>Australia</option>
+              <option>Africa</option>
+              <option>Antarctica</option>
+            </select>
+          </div>
+          <div class="form-group col-md-6">
+            <fieldset disabled>
+              <label for="disabledTextInput">Disabled input</label>
+              <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled input">
+            </fieldset>
+          </div>
         </div>
-      </div>
-      <div class="form-row">
-        <div class="form-group col-md-6">
-          <label for="inputState">Continent</label>
-          <select id="inputState" class="form-control">
-            <option selected>Europe</option>
-            <option>North America</option>
-            <option>South America</option>
-            <option>Asia</option>
-            <option>Australia</option>
-            <option>Africa</option>
-            <option>Antarctica</option>
-          </select>
+        <div class="form-group" style="text-align: left">
+          <label for="exampleFormControlTextarea1">Comments</label>
+          <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
         </div>
-        <div class="form-group col-md-6">
-          <fieldset disabled>
-            <label for="disabledTextInput">Disabled input</label>
-            <input type="text" id="disabledTextInput" class="form-control" placeholder="Disabled input">
-          </fieldset>
-        </div>
-      </div>
-      <div class="form-group" style="text-align: left">
-        <label for="exampleFormControlTextarea1">Comments</label>
-        <textarea class="form-control" id="exampleFormControlTextarea1" rows="3"></textarea>
-      </div>
-      <div class="form-row">
-        <div class="form-group col-md-4">
-            <div class="form-check">
-              <input class="form-check-input" type="checkbox" id="gridCheck">
-              <label class="form-check-label" for="gridCheck">
-                Save information
-              </label>
+        <div class="form-row">
+          <div class="form-group col-md-4">
+              <div class="form-check">
+                <input class="form-check-input" type="checkbox" id="gridCheck">
+                <label class="form-check-label" for="gridCheck">
+                  Save information
+                </label>
+              </div>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="custom-control custom-switch">
+              <input type="checkbox" class="custom-control-input" id="customSwitch1">
+              <label class="custom-control-label" for="customSwitch1">Subscribe</label>
             </div>
-        </div>
-        <div class="form-group col-md-4">
-          <div class="custom-control custom-switch">
-            <input type="checkbox" class="custom-control-input" id="customSwitch1">
-            <label class="custom-control-label" for="customSwitch1">Subscribe</label>
+          </div>
+          <div class="form-group col-md-4">
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
+              <label class="form-check-label" for="inlineRadio1">1</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
+              <label class="form-check-label" for="inlineRadio2">2</label>
+            </div>
+            <div class="form-check form-check-inline">
+              <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
+              <label class="form-check-label" for="inlineRadio3">3</label>
+            </div>
           </div>
         </div>
-        <div class="form-group col-md-4">
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1" value="option1">
-            <label class="form-check-label" for="inlineRadio1">1</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2" value="option2">
-            <label class="form-check-label" for="inlineRadio2">2</label>
-          </div>
-          <div class="form-check form-check-inline">
-            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3" value="option3">
-            <label class="form-check-label" for="inlineRadio3">3</label>
-          </div>
+        <div class="form-group" style="text-align: left">
+          <input type="range" class="form-control-range" id="formControlRange">
         </div>
-      </div>
-      <div class="form-group" style="text-align: left">
-        <input type="range" class="form-control-range" id="formControlRange">
-      </div>
-    </form>
-  </div>
+      </form>
+    </div>
   `,
   materialize: `
     <div style="width: 50%; display: inline-flex">
@@ -106,12 +106,13 @@ export default {
           <div class="input-field col s6">
             <select class="materialize-select">
               <option value="" disabled selected>Continent</option>
-              <option value="1">North America</option>
-              <option value="2">South America</option>
-              <option value="3">Asia</option>
-              <option value="4">Australia</option>
-              <option value="5">Africa</option>
-              <option value="6">Antarctica</option>
+              <option value="1">Europe</option>
+              <option value="2">North America</option>
+              <option value="3">South America</option>
+              <option value="4">Asia</option>
+              <option value="5">Australia</option>
+              <option value="6">Africa</option>
+              <option value="7">Antarctica</option>
             </select>
           </div>
           <div class="input-field col s6">
@@ -129,7 +130,7 @@ export default {
           <div class="col s4">
             <p>
               <label>
-                <input type="checkbox" class="filled-in" checked="checked" />
+                <input type="checkbox" class="filled-in"/>
                 <span>Save information</span>
               </label>
             </p>
@@ -149,15 +150,15 @@ export default {
             <p>
               <label>
                 <input name="group1" type="radio" />
-                <span>1</span>
+                <span style="padding-left: 25px; margin-right: 5px">1</span>
               </label>
               <label>
                 <input name="group1" type="radio" />
-                <span>2</span>
+                <span style="padding-left: 25px; margin-right: 5px">2</span>
               </label>
               <label>
                 <input name="group1" type="radio" />
-                <span>3</span>
+                <span style="padding-left: 25px; margin-right: 5px">3</span>
               </label>
             </p>
           </div>
@@ -173,42 +174,47 @@ export default {
     </div>
   `,
   uikit: `
-  <form>
-  <fieldset class="uk-fieldset">
-
-      <legend class="uk-legend">Legend</legend>
-
-      <div class="uk-margin">
-          <input class="uk-input" type="text" placeholder="Input">
-      </div>
-
-      <div class="uk-margin">
-          <select class="uk-select">
-              <option>Option 01</option>
-              <option>Option 02</option>
-          </select>
-      </div>
-
-      <div class="uk-margin">
-          <textarea class="uk-textarea" rows="5" placeholder="Textarea"></textarea>
-      </div>
-
-      <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-          <label><input class="uk-radio" type="radio" name="radio2" checked> A</label>
-          <label><input class="uk-radio" type="radio" name="radio2"> B</label>
-      </div>
-
-      <div class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-          <label><input class="uk-checkbox" type="checkbox" checked> A</label>
-          <label><input class="uk-checkbox" type="checkbox"> B</label>
-      </div>
-
-      <div class="uk-margin">
-          <input class="uk-range" type="range" value="2" min="0" max="10" step="0.1">
-      </div>
-
-  </fieldset>
-</form>
+    <div style="width: 50%; display: inline-flex">
+      <form style="width: 100%">
+        <fieldset class="uk-fieldset">
+          <div class="uk-margin">
+            <input class="uk-input" type="text" placeholder="Username">
+          </div>
+          <div class="uk-column-1-2@s">
+            <div class="uk-margin">
+              <select class="uk-select">
+              <option>Europe</option>
+              <option>North America</option>
+              <option>South America</option>
+              <option>Asia</option>
+              <option>Australia</option>
+              <option>Africa</option>
+              <option>Antarctica</option>
+              </select>
+            </div>
+            <div class="uk-margin">
+              <input class="uk-input" type="text" disabled placeholder="Disabled input">
+          </div>
+          </div>
+          <div class="uk-margin">
+            <textarea class="uk-textarea" rows="5" placeholder="Textarea"></textarea>
+          </div>
+          <div class="uk-column-1-2@s">
+            <div style="display: inline-flex" class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+              <label><input style="margin-right: 10px" class="uk-checkbox" type="checkbox">Save information</label>
+            </div>
+            <div style="display: inherit; margin-bottom: 0px" class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
+              <label><input style="margin-right: 5px" class="uk-radio" type="radio" name="radio2" checked>1</label>
+              <label><input style="margin-right: 5px" class="uk-radio" type="radio" name="radio2">2</label>
+              <label><input style="margin-right: 5px" class="uk-radio" type="radio" name="radio2">3</label>
+            </div>
+          </div>
+          <div class="uk-margin">
+            <input class="uk-range" type="range" value="5" min="0" max="10" step="0.1">
+          </div>
+        </fieldset>
+      </form>
+    </div>
   `,
   foundation: `
   <form>
