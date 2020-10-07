@@ -38,6 +38,11 @@ export default class CssFrameworksJSFunctionality {
           window.cssFrameworksJsFunctionality.pureDropdown();
           window.cssFrameworksJsFunctionality.semanticDropdown();
         };
+      case BUTTON_NAMES.FORMS:
+        return () => {
+          window.cssFrameworksJsFunctionality.materializeUpdateTextFields();
+          window.cssFrameworksJsFunctionality.materializeFormSelect();
+        };
       case BUTTON_NAMES.MODALS:
         return () => {
           window.cssFrameworksJsFunctionality.bulmaModal();

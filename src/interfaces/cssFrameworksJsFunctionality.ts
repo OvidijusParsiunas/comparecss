@@ -7,8 +7,10 @@ export interface CssFrameworksJsFunctionality {
     foundationTrigger: () => void;
     materializeAccordion: () => void;
     materializeDropdown: () => void;
+    materializeFormSelect: () => void;
     materializeModal: () => void;
     materializeTooltip: () => void;
+    materializeUpdateTextFields: () => void;
     pureDropdown: () => void;
     semanticAccordion: () => void;
     semanticAlert: () => void;

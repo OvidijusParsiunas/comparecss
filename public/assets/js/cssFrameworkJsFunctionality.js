@@ -55,6 +55,13 @@ function materializeDropdown() {
   }
 }
 
+function materializeFormSelect() {
+  var elems = document.querySelectorAll('.materialize-select');
+  if (elems.length > 0) {
+    M.FormSelect.init(elems, {});
+  }
+}
+
 function materializeModal() {
   var elems = document.querySelectorAll('.modal');
   if (elems.length > 0) {
@@ -67,6 +74,10 @@ function materializeTooltip() {
   if (elems.length > 0) {
     M.Tooltip.init(elems, {});
   }
+}
+
+function materializeUpdateTextFields() {
+  M.updateTextFields();
 }
 
 function semanticAccordion() {
@@ -124,8 +135,10 @@ window.cssFrameworksJsFunctionality = {
     foundationTrigger,
     materializeAccordion,
     materializeDropdown,
+    materializeFormSelect,
     materializeModal,
     materializeTooltip,
+    materializeUpdateTextFields,
     semanticAccordion,
     semanticAlert,
     semanticDropdown,
