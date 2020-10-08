@@ -43,6 +43,8 @@ export default class CssFrameworksJSFunctionality {
           window.cssFrameworksJsFunctionality.materializeUpdateTextFields();
           window.cssFrameworksJsFunctionality.materializeFormSelect();
           window.cssFrameworksJsFunctionality.foundationTrigger();
+          window.cssFrameworksJsFunctionality.semanticDropdown();
+          window.cssFrameworksJsFunctionality.semanticCheckbox();
         };
       case BUTTON_NAMES.MODALS:
         return () => {

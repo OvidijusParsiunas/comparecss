@@ -14,6 +14,7 @@ export interface CssFrameworksJsFunctionality {
     pureDropdown: () => void;
     semanticAccordion: () => void;
     semanticAlert: () => void;
+    semanticCheckbox: () => void;
     semanticDropdown: () => void;
     semanticModal: () => void;
     spectreModal: () => void;

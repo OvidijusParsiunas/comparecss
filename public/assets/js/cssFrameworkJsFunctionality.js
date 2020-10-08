@@ -90,6 +90,10 @@ function semanticAlert() {
   });
 }
 
+function semanticCheckbox() {
+  $('.ui.checkbox').checkbox();
+}
+
 function semanticDropdown() {
   $('.ui.dropdown').dropdown();
 }
@@ -141,6 +145,7 @@ window.cssFrameworksJsFunctionality = {
     materializeUpdateTextFields,
     semanticAccordion,
     semanticAlert,
+    semanticCheckbox,
     semanticDropdown,
     semanticModal,
     spectreModal,
