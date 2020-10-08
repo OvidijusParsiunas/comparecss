@@ -183,13 +183,13 @@ export default {
           <div class="uk-column-1-2@s">
             <div class="uk-margin">
               <select class="uk-select">
-              <option>Europe</option>
-              <option>North America</option>
-              <option>South America</option>
-              <option>Asia</option>
-              <option>Australia</option>
-              <option>Africa</option>
-              <option>Antarctica</option>
+                <option>Europe</option>
+                <option>North America</option>
+                <option>South America</option>
+                <option>Asia</option>
+                <option>Australia</option>
+                <option>Africa</option>
+                <option>Antarctica</option>
               </select>
             </div>
             <div class="uk-margin">
@@ -217,108 +217,170 @@ export default {
     </div>
   `,
   foundation: `
-  <form>
-  <div class="grid-container">
-    <div class="grid-x grid-padding-x">
-      <div class="medium-6 cell">
-        <label>Input Label
-          <input type="text" placeholder=".medium-6.cell">
-        </label>
-      </div>
-      <div class="medium-6 cell">
-        <label>Input Label
-          <input type="text" placeholder=".medium-6.cell">
-        </label>
-      </div>
+    <div style="width: 50%; display: inline-flex">
+      <form style="width: 100%">
+        <div class="grid-container">
+          <div class="grid-x grid-padding-x">
+            <div class="medium-12 cell">
+              <label>Username
+                <input type="text" placeholder="Username">
+              </label>
+            </div>
+          </div>
+          <div style="margin-top: 5px" class="grid-x grid-padding-x">
+            <div class="medium-6 cell">
+              <label>Continent
+              <select>
+                <option value="Europe">Europe</option>
+                <option value="North America">North America</option>
+                <option value="South America">South America</option>
+                <option value="Asia">Asia</option>
+                <option value="Australia">Australia</option>
+                <option value="Africa">Africa</option>
+                <option value="Antarctica">Antarctica</option>
+              </select>
+            </label>
+          </div>
+          <div class="medium-6 cell">
+            <label>Disabled input
+              <input type="text" disabled placeholder="Disabled input">
+            </label>
+          </div>
+        </div>
+        <div style="margin-top: 5px" class="grid-x grid-padding-x">
+          <div style="width: 100%" class="medium-12 cell">
+            <label>
+              Comments
+              <textarea placeholder="Comments"></textarea>
+            </label>
+          </div>
+        </div>
+        <div style="margin-top: 22px" class="grid-x grid-padding-x">
+          <fieldset class="large-4 cell">
+            <input id="checkbox1" type="checkbox"><label for="checkbox1">Save information</label>
+          </fieldset>
+          <div class="switch small large-4 cell">
+            <div style="display: inline-block">
+              <input class="switch-input" id="exampleSwitch" type="checkbox" name="exampleSwitch">
+              <label style="float: left" class="switch-paddle" for="exampleSwitch">
+                <span class="show-for-sr">Download Kittens</span>
+              </label>
+              <label style="float: left; margin-left: 10px;" for="checkbox1">Subscribe</label>
+            </div>
+          </div>
+          <fieldset class="large-4 cell">
+            <input type="radio" name="pokemon" value="Red" id="pokemonRed" required><label for="pokemonRed">1</label>
+            <input type="radio" name="pokemon" value="Blue" id="pokemonBlue"><label for="pokemonBlue">2</label>
+            <input type="radio" name="pokemon" value="Yellow" id="pokemonYellow"><label for="pokemonYellow">3</label>
+          </fieldset>
+        </div>
+        <div style="margin-top: 5px" class="grid-x grid-padding-x">
+          <div class="slider large-12 cell" data-slider data-initial-start="100" data-end="200">
+            <span class="slider-handle"  data-slider-handle role="slider" tabindex="1"></span>
+            <span class="slider-fill" data-slider-fill></span>
+            <input type="hidden">
+          </div>
+        </div>
+      </form>
     </div>
-  </div>
-</form>
     `,
   bulma: `
-  <div class="field">
-  <label class="label">Name</label>
-  <div class="control">
-    <input class="input" type="text" placeholder="Text input">
-  </div>
-</div>
-
-<div class="field">
-  <label class="label">Username</label>
-  <div class="control has-icons-left has-icons-right">
-    <input class="input is-success" type="text" placeholder="Text input" value="bulma">
-    <span class="icon is-small is-left">
-      <i class="fas fa-user"></i>
-    </span>
-    <span class="icon is-small is-right">
-      <i class="fas fa-check"></i>
-    </span>
-  </div>
-  <p class="help is-success">This username is available</p>
-</div>
-
-<div class="field">
-  <label class="label">Email</label>
-  <div class="control has-icons-left has-icons-right">
-    <input class="input is-danger" type="email" placeholder="Email input" value="hello@">
-    <span class="icon is-small is-left">
-      <i class="fas fa-envelope"></i>
-    </span>
-    <span class="icon is-small is-right">
-      <i class="fas fa-exclamation-triangle"></i>
-    </span>
-  </div>
-  <p class="help is-danger">This email is invalid</p>
-</div>
-
-<div class="field">
-  <label class="label">Subject</label>
-  <div class="control">
-    <div class="select">
-      <select>
-        <option>Select dropdown</option>
-        <option>With options</option>
-      </select>
+    <div style="width: 50%; display: inline-block">
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <label class="label">Username</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="Username">
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label">Password</label>
+            <p class="control has-icons-left">
+              <input class="input" type="password" placeholder="Password">
+              <span class="icon is-small is-left">
+                <i class="fas fa-lock"></i>
+              </span>
+            </p>
+          </div>
+        </div>
+      </div>
+      <div class="columns">
+        <div class="column">
+          <div class="field">
+            <label class="label">Continent</label>
+            <div class="control">
+              <div style="width: 100%" class="select">
+                <select style="width: 100%">
+                  <option>Europe</option>
+                  <option>North America</option>
+                  <option>South America</option>
+                  <option>Asia</option>
+                  <option>Australia</option>
+                  <option>Africa</option>
+                  <option>Antarctica</option>
+                </select>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <label class="label">Disabled input</label>
+            <div class="control">
+              <input class="input" type="text" placeholder="Disabled input" disabled>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label class="label">Comments</label>
+        <div class="control">
+          <textarea class="textarea" placeholder="Comments"></textarea>
+        </div>
+      </div>
+      <div style="margin-top: 10px" class="columns">
+        <div class="column">
+          <div class="field">
+            <div class="control">
+              <label class="checkbox">
+                <input type="checkbox">
+                Save information
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <input id="switchExample" type="checkbox" name="switchColorInfo" class="switch is-info">
+            <label for="switchExample">Subscribe</label>
+          </div>
+        </div>
+        <div class="column">
+          <div class="field">
+            <div class="control">
+              <label class="radio">
+                <input type="radio" name="question">
+                1
+              </label>
+              <label class="radio">
+                <input type="radio" name="question">
+                2
+              </label>
+              <label class="radio">
+                <input type="radio" name="question">
+                3
+              </label>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="field is-grouped">
+        <input style="width: 100%" class="slider is-fullwidth" step="1" min="0" max="100" value="50" type="range">
+      </div>
     </div>
-  </div>
-</div>
-
-<div class="field">
-  <label class="label">Message</label>
-  <div class="control">
-    <textarea class="textarea" placeholder="Textarea"></textarea>
-  </div>
-</div>
-
-<div class="field">
-  <div class="control">
-    <label class="checkbox">
-      <input type="checkbox">
-      I agree to the <a href="#">terms and conditions</a>
-    </label>
-  </div>
-</div>
-
-<div class="field">
-  <div class="control">
-    <label class="radio">
-      <input type="radio" name="question">
-      Yes
-    </label>
-    <label class="radio">
-      <input type="radio" name="question">
-      No
-    </label>
-  </div>
-</div>
-
-<div class="field is-grouped">
-  <div class="control">
-    <button class="button is-link">Submit</button>
-  </div>
-  <div class="control">
-    <button class="button is-link is-light">Cancel</button>
-  </div>
-</div>
   `,
   semantic: `
   <form class="ui form">

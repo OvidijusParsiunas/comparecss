@@ -42,6 +42,7 @@ export default class CssFrameworksJSFunctionality {
         return () => {
           window.cssFrameworksJsFunctionality.materializeUpdateTextFields();
           window.cssFrameworksJsFunctionality.materializeFormSelect();
+          window.cssFrameworksJsFunctionality.foundationTrigger();
         };
       case BUTTON_NAMES.MODALS:
         return () => {
