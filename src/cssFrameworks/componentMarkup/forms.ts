@@ -1,20 +1,5 @@
 import { ContentMarkup } from '../../interfaces/contentMarkupInterface';
 
-// inputs + disabled + with preview
-// checkboxes
-// radio
-// progress
-// general, and then individual ones
-
-// Name - Normal - should contain a placeholder
-// Password - hidden
-// Disabled Field
-// Text Area
-// Radio
-// Checkbox - One should be ok
-// Range
-// Switch
-// Submit button (optional)
 export default {
   bootstrap: `
     <div style="width: 50%; display: inline-flex">
@@ -177,8 +162,13 @@ export default {
     <div style="width: 50%; display: inline-flex">
       <form style="width: 100%">
         <fieldset class="uk-fieldset">
-          <div class="uk-margin">
-            <input class="uk-input" type="text" placeholder="Username">
+          <div class="uk-column-1-2@s">
+            <div class="uk-margin">
+              <input class="uk-input" type="text" placeholder="Username">
+            </div>
+            <div class="uk-margin">
+              <input class="uk-input" type="password" placeholder="Password">
+            </div>
           </div>
           <div class="uk-column-1-2@s">
             <div class="uk-margin">
@@ -204,7 +194,7 @@ export default {
               <label><input style="margin-right: 10px" class="uk-checkbox" type="checkbox">Save information</label>
             </div>
             <div style="display: inherit; margin-bottom: 0px" class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
-              <label><input style="margin-right: 5px" class="uk-radio" type="radio" name="radio2" checked>1</label>
+              <label><input style="margin-right: 5px" class="uk-radio" type="radio" name="radio2">1</label>
               <label><input style="margin-right: 5px" class="uk-radio" type="radio" name="radio2">2</label>
               <label><input style="margin-right: 5px" class="uk-radio" type="radio" name="radio2">3</label>
             </div>
@@ -221,9 +211,14 @@ export default {
       <form style="width: 100%">
         <div class="grid-container">
           <div class="grid-x grid-padding-x">
-            <div class="medium-12 cell">
+            <div class="medium-6 cell">
               <label>Username
                 <input type="text" placeholder="Username">
+              </label>
+            </div>
+            <div class="medium-6 cell">
+              <label>Password
+                <input type="text" placeholder="Password">
               </label>
             </div>
           </div>
@@ -439,7 +434,7 @@ export default {
               <div class="inline fields">
             <div class="field">
               <div class="ui radio checkbox">
-                <input type="radio" name="fruit" checked="" tabindex="0" class="hidden">
+                <input type="radio" name="fruit" tabindex="0" class="hidden">
                 <label>1</label>
               </div>
             </div>
@@ -500,7 +495,7 @@ export default {
             <div style="margin-top: 15px" class="pure-u-1 pure-u-md-1-2">
               <div style="display: inline-flex">
                 <label for="checkbox-radio-option-two" class="pure-radio">
-                <input type="radio" id="checkbox-radio-option-two" name="optionsRadios" value="option1" checked="" />1</label>
+                <input type="radio" id="checkbox-radio-option-two" name="optionsRadios" value="option1" />1</label>
                 <label style="margin-left: 15px" for="checkbox-radio-option-three" class="pure-radio">
                 <input type="radio" id="checkbox-radio-option-three" name="optionsRadios" value="option2" />2</label>
                 <label style="margin-left: 15px" for="checkbox-radio-option-four" class="pure-radio">
@@ -683,13 +678,13 @@ export default {
         </div>
         <div style="padding: 6px 10px;" class="col-4 col-xs-12">
           <label class="form-radio form-inline">
-            <input type="radio" name="gender" checked=""><i class="form-icon"></i> 1
+            <input type="radio" name="gender"><i class="form-icon"></i> 1
           </label>
           <label class="form-radio form-inline">
             <input type="radio" name="gender"><i class="form-icon"></i> 2
           </label>
           <label class="form-radio form-inline">
-            <input type="radio" name="gender" checked=""><i class="form-icon"></i> 3
+            <input type="radio" name="gender"><i class="form-icon"></i> 3
           </label>
         </div>
       </div>
