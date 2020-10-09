@@ -1,5 +1,6 @@
 .pure {
   @import 'node_modules/purecss-sass/vendor/assets/stylesheets/purecss.scss';
+  @import "../../assets/scss/pure/pure-form.scss";
   .button-success,
   .button-error,
   .button-warning,
