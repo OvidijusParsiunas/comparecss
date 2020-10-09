@@ -633,23 +633,68 @@ export default {
     </div>
   `,
   spectre: `
-  <div class="form-group">
-  <label class="form-radio form-inline">
-    <input type="radio" name="gender" checked=""><i class="form-icon"></i> Male
-  </label>
-  <label class="form-radio form-inline">
-    <input type="radio" name="gender"><i class="form-icon"></i> Female
-  </label>
-</div>
-
-<div class="form-group">
-  <label class="form-checkbox form-inline">
-    <input type="checkbox"><i class="form-icon"></i> Checkbox 1
-  </label>
-  <label class="form-checkbox form-inline">
-    <input type="checkbox" checked=""><i class="form-icon"></i> Checkbox 2
-  </label>
-</div>
+    <div style="width: 50%; display: inline-block">
+      <div class="columns">
+        <div style="padding: 6px 10px;" class="col-6 col-xs-12">
+          <label class="form-label" for="input-example-1">Username</label>
+          <input class="form-input" type="text" id="input-example-1" placeholder="Username">
+        </div>
+        <div style="padding: 6px 10px;" class="col-6 col-xs-12">
+          <label class="form-label" for="input-example-1">Password</label>
+          <input class="form-input" id="input-example-12" type="password" placeholder="Password">
+        </div>
+      </div>
+      <div class="columns">
+        <div style="padding: 6px 10px;" class="col-6 col-xs-12">
+          <label class="form-label" for="spectre-select">Continent</label>
+          <select class="form-select">
+            <option>Europe</option>
+            <option>North America</option>
+            <option>South America</option>
+            <option>Asia</option>
+            <option>Australia</option>
+            <option>Africa</option>
+            <option>Antarctica</option>
+          </select>
+        </div>
+        <div style="padding: 6px 10px;" class="col-6 col-xs-12">
+          <label class="form-label" for="input-example-1">Disabled input</label>
+          <input class="form-input" id="input-example-14" type="password" placeholder="Disabled input" disabled >
+        </div>
+      </div>
+      <label style="margin-top: 10px" class="form-label" for="input-example-3">Comments</label>
+      <textarea class="form-input" id="input-example-3" placeholder="Comments" rows="3"></textarea>
+      <div style="margin-top: 10px" class="columns">
+        <div style="padding: 6px 10px;" class="col-4 col-xs-12">
+          <div style="display: inline-flex">
+            <label class="form-checkbox">
+              <input type="checkbox">
+              <i class="form-icon"></i> Save information
+            </label>
+          </div>
+        </div>
+        <div style="padding: 6px 10px;" class="col-4 col-xs-12">
+          <div style="display: inline-flex">
+            <label class="form-switch">
+              <input type="checkbox">
+              <i class="form-icon"></i> Subscribe
+            </label>
+          </div>
+        </div>
+        <div style="padding: 6px 10px;" class="col-4 col-xs-12">
+          <label class="form-radio form-inline">
+            <input type="radio" name="gender" checked=""><i class="form-icon"></i> 1
+          </label>
+          <label class="form-radio form-inline">
+            <input type="radio" name="gender"><i class="form-icon"></i> 2
+          </label>
+          <label class="form-radio form-inline">
+            <input type="radio" name="gender" checked=""><i class="form-icon"></i> 3
+          </label>
+        </div>
+      </div>
+      <input style="max-width: 100%; margin-top: 10px" class="slider tooltip" type="range" min="0" max="100" value="50" oninput="this.setAttribute('value', this.value);">
+    </div>
   `,
   primer: `<button class="btn mr-2" type="button">
   <!-- <%= octicon "search" %> -->
