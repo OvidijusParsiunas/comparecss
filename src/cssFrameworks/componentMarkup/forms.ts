@@ -197,7 +197,7 @@ export default {
           </div>
           </div>
           <div class="uk-margin">
-            <textarea class="uk-textarea" rows="5" placeholder="Textarea"></textarea>
+            <textarea class="uk-textarea" rows="5" placeholder="Comments"></textarea>
           </div>
           <div class="uk-column-1-2@s">
             <div style="display: inline-flex" class="uk-margin uk-grid-small uk-child-width-auto uk-grid">
@@ -418,7 +418,7 @@ export default {
         </div>
         <div class="field">
           <label>Comments</label>
-          <textarea></textarea>
+          <textarea placeholder="Comments"></textarea>
         </div>
         <div class="fields">
           <div class="six wide field">
@@ -513,50 +513,124 @@ export default {
     </div>
     `,
   skeleton: `
-  <form>
-  <div class="row">
-    <div class="six columns">
-      <label for="exampleEmailInput">Your email</label>
-      <input class="u-full-width" type="email" placeholder="test@mailbox.com" id="exampleEmailInput">
+    <div style="width: 50%; display: inline-block">
+      <form>
+        <div class="row">
+          <div class="six columns">
+            <label for="exampleEmailInput1">Username</label>
+            <input class="u-full-width" type="email" placeholder="Username" id="exampleEmailInput1">
+          </div>
+          <div class="six columns">
+            <label for="exampleEmailInput2">Password</label>
+            <input class="u-full-width" type="password" placeholder="Password" id="exampleEmailInput2">
+          </div>
+        </div>
+        <div class="row">
+          <div class="six columns">
+            <label for="exampleRecipientInput">Continent</label>
+            <select class="u-full-width" id="exampleRecipientInput">
+              <option value="Option 1">Europe</option>
+              <option value="Option 2">North America</option>
+              <option value="Option 3">South America</option>
+              <option value="Option 4">Asia</option>
+              <option value="Option 5">Australia</option>
+              <option value="Option 6">Africa</option>
+              <option value="Option 7">Antarctica</option>
+            </select>
+          </div>
+          <div class="six columns">
+            <label for="exampleEmailInput3">Disabled input</label>
+            <input disabled class="u-full-width" type="email" placeholder="Disabled input" id="exampleEmailInput3">
+          </div>
+        </div>
+        <label for="exampleMessage">Comments</label>
+        <textarea class="u-full-width" placeholder="Comments" id="exampleMessage"></textarea>
+        <div class="row">
+          <div class="six columns">
+            <label class="example-send-yourself-copy">
+              <input type="checkbox">
+              <span class="label-body">Save information</span>
+            </label>
+          </div>
+          <div class="six columns">
+            <div style="display: inline-flex">
+              <label class="radio">
+                <input type="radio" name="question">
+                1
+              </label>
+              <label style="margin-left: 15px" class="radio">
+                <input type="radio" name="question">
+                2
+              </label>
+              <label style="margin-left: 15px" class="radio">
+                <input type="radio" name="question">
+                3
+              </label>
+            </div>
+          </div>
+        </div>
+      </form>
     </div>
-    <div class="six columns">
-      <label for="exampleRecipientInput">Reason for contacting</label>
-      <select class="u-full-width" id="exampleRecipientInput">
-        <option value="Option 1">Questions</option>
-        <option value="Option 2">Admiration</option>
-        <option value="Option 3">Can I get your number?</option>
-      </select>
-    </div>
-  </div>
-  <label for="exampleMessage">Message</label>
-  <textarea class="u-full-width" placeholder="Hi Dave …" id="exampleMessage"></textarea>
-  <label class="example-send-yourself-copy">
-    <input type="checkbox">
-    <span class="label-body">Send a copy to yourself</span>
-  </label>
-  <input class="button-prima
   `,
   milligram: `
-  <form>
-  <fieldset>
-    <label for="nameField">Name</label>
-    <input type="text" placeholder="CJ Patoilo" id="nameField">
-    <label for="ageRangeField">Age Range</label>
-    <select id="ageRangeField">
-      <option value="0-13">0-13</option>
-      <option value="14-17">14-17</option>
-      <option value="18-23">18-23</option>
-      <option value="24+">24+</option>
-    </select>
-    <label for="commentField">Comment</label>
-    <textarea placeholder="Hi CJ …" id="commentField"></textarea>
-    <div class="float-right">
-      <input type="checkbox" id="confirmField">
-      <label class="label-inline" for="confirmField">Send a copy to yourself</label>
+    <div style="width: 50%; display: inline-block">
+      <form>
+        <fieldset>
+          <div class="row">
+            <div class="column">
+              <label style="font-size: 16px" for="nameField">Name</label>
+              <input style="height: 38px; border-width: 1px; padding: 6px 10px 7px; border-radius: 5px;" type="text" placeholder="Username" id="nameField">
+            </div>
+            <div class="column">
+              <label style="font-size: 16px" for="nameField">Password</label>
+              <input style="height: 38px; border-width: 1px; padding: 6px 10px 7px; border-radius: 5px;" type="password" placeholder="Password" id="nameField1">
+            </div>
+          </div>
+          <div class="row">
+            <div class="column">
+              <label style="font-size: 16px" for="ageRangeField">Continent</label>
+              <select style="height: 38px; border-width: 1px; padding: 6px 10px 7px; border-radius: 5px;" id="ageRangeField">
+                <option value="Europe">Europe</option>
+                <option value="North America">North America</option>
+                <option value="South America">South America</option>
+                <option value="Asia">Asia</option>
+                <option value="Australia">Australia</option>
+                <option value="Africa">Africa</option>
+                <option value="Antarctica">Antarctica</option>
+              </select>
+            </div>
+            <div class="column">
+              <label style="font-size: 16px" for="nameField">Disabled input</label>
+              <input style="height: 38px; border-width: 1px; padding: 6px 10px 7px; border-radius: 5px;" type="text" placeholder="Disabled input" disabled id="nameField2">
+            </div>
+          </div>
+          <label style="font-size: 16px" for="commentField">Comments</label>
+          <textarea style="height: 38px; border-width: 1px; padding: 6px 10px 7px; border-radius: 5px; font-family: 'Roboto', 'Helvetica Neue', 'Helvetica', 'Arial', sans-serif;" placeholder="Comments" id="commentField"></textarea>
+          <div class="row">
+            <div class="column">
+              <input type="checkbox" id="confirmField">
+              <label style="height: 38px; font-size: 16px; display: contents" class="label-inline" for="confirmField">Send a copy to yourself</label>
+            </div>
+            <div class="column">
+              <div style="display: inline-flex">
+                <label style="height: 38px; font-size: 16px; margin-left: 15px" class="radio">
+                  <input type="radio" name="question">
+                  1
+                </label>
+                <label style="height: 38px; font-size: 16px; margin-left: 15px" class="radio">
+                  <input type="radio" name="question">
+                  2
+                </label>
+                <label style="height: 38px; font-size: 16px; margin-left: 15px" class="radio">
+                  <input type="radio" name="question">
+                  3
+                </label>
+              </div>
+            </div>
+          </div>
+        </fieldset>
+      </form>
     </div>
-    <input class="button-primary" type="submit" value="Send">
-  </fieldset>
-</form>
   `,
   spectre: `
   <div class="form-group">
