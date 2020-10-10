@@ -47,21 +47,7 @@
                 <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.DROPDOWNS)">Dropdowns</a>
             </li>
             <li>
-                <a href="#homeSubmenuasdsad" data-toggle="collapse"
-                aria-expanded="false" class="dropdown-toggle" @click="buttonClick(BUTTON_NAMES.FORMS)">
-                Forms
-                </a>
-                <ul class="collapse list-unstyled" id="homeSubmenuasdsad">
-                    <li>
-                        <a href="#">Home 1</a>
-                    </li>
-                    <li>
-                        <a href="#">Home 2</a>
-                    </li>
-                    <li>
-                        <a href="#">Home 3</a>
-                    </li>
-                </ul>
+                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.FORMS)">Forms</a>
             </li>
             <li>
                 <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.MODALS)">Modals</a>
