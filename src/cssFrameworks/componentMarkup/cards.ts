@@ -223,9 +223,9 @@ export default {
       </div>
     </div>
     <div class="ui card" style="width: 18rem; text-align: left; display: inline-block; vertical-align: top">
-      <div class="ui slide masked reveal image">
-        <img style="width: 288px; height: 180px" src="../assets/images/card-picture.webp" class="visible content">
-        <img style="width: 288px; height: 180px" src="../assets/images/card-picture.webp" class="hidden content">
+      <div style="top: 0; left: -0.5px" class="ui slide masked reveal image">
+        <img style="width: 288px; height: 181px" src="../assets/images/card-picture.webp" class="visible content">
+        <img style="width: 288px; height: 181px" src="../assets/images/card-picture.webp" class="hidden content">
       </div>
       <div class="content">
         <a class="header">Card Title</a>
@@ -234,8 +234,8 @@ export default {
         </div>
       </div>
       <div class="extra content">
-        <a>
-          Bottom text
+        <a href="#!">
+          Link
         </a>
       </div>
     </div>
