@@ -105,7 +105,7 @@ export default {
 
 <style lang="scss" scoped>
 $navbar-background:#7a7a7a;
-// $navbar-background: #7a7a7a
+// $navbar-background: #e97b7b
 #comparecss-sidenav ul li.active > a[data-v-fcd8c16e], #comparecss-sidenav a[aria-expanded=true][data-v-fcd8c16e] {
   background: $navbar-background;
 }

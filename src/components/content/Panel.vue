@@ -1,7 +1,7 @@
 <template>
   <div style="width: 80%; margin: auto">
     <div class="panel" v-if="componentMarkup">
-      <div style="padding: 10px 15px 20px; background-color: white; box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 20px 0px;">
+      <div style="padding: 10px 15px 20px; background-color: white; box-shadow: rgba(0, 0, 0, 0.05) 0px 4px 20px 0px; border-radius: 10px">
         <!-- <div style="padding: 10px 15px 20px; background-color: white; box-shadow: rgba(130, 136, 148, 0.12) 0px 0px 0px 1px, rgba(130, 136, 148, 0.28) 0px 4px 8px -2px">  --> 
         <div style="height: 27px">
           <img :style="{ width: customIconWidthPx }" style="float: left; margin-right: 10px;" :src="iconSrc"> 

@@ -1,7 +1,6 @@
 fix bulma accordion css
-fix folder highercy
 
-reference css component versions - uikit v3
+reference css component versions - uikit v3 - in popover when hovering logo
 
 have a mode where the user can select a framework, select a component, and construct that component - width and so on
 can then build multiple components and compare them, can add icons to buttons etc - will have to download specific scripts for this
@@ -14,7 +13,7 @@ when an alert close button doesn't work - have a toaster message appear to say t
 
 https://startbootstrap.com/previews/simple-sidebar/ - phone feature
 
-make the panelels order switchable via options popover or drag and drop
+make the panels order switchable via options popover or drag and drop
 https://www.youtube.com/watch?v=RA7sO_9V3vw&ab_channel=ProgramWithErik
 
 https://vuetifyjs.com/en/
