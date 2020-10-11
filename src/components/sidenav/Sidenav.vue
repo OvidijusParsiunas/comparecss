@@ -5,23 +5,6 @@
         </div>
         <ul class="list-unstyled components">
             <p>Dummy Heading</p>
-            <li class="active">
-                <a href="#homeSubmenu" data-toggle="collapse"
-                aria-expanded="false" class="dropdown-toggle" @click="buttonClick('Home')">
-                Home
-                </a>
-                <ul class="collapse list-unstyled" id="homeSubmenu">
-                    <li>
-                        <a href="#">Home 1</a>
-                    </li>
-                    <li>
-                        <a href="#">Home 2</a>
-                    </li>
-                    <li>
-                        <a href="#">Home 3</a>
-                    </li>
-                </ul>
-            </li>
             <li>
                 <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.ACCORDIONS)">Accordions</a>
             </li>
@@ -121,10 +104,18 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+$navbar-background:#7a7a7a;
+// $navbar-background: #7a7a7a
+#comparecss-sidenav ul li.active > a[data-v-fcd8c16e], #comparecss-sidenav a[aria-expanded=true][data-v-fcd8c16e] {
+  background: $navbar-background;
+}
+#comparecss-sidenav .sidenav-header[data-v-fcd8c16e] {
+  background: $navbar-background;
+}
 #comparecss-sidenav {
     min-width: 250px;
     max-width: 250px;
-    background: #7386D5;
+    background: $navbar-background;
     color: #fff;
     transition: all 0.3s;
     p {

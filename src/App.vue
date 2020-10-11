@@ -84,7 +84,7 @@ export default class App extends Vue {
 body {
   margin: 0px;
   font-family: 'Poppins', sans-serif;
-  background: #fafafa;
+  background: white;
   /* background: #f5f5f5 */
 }
 </style>
