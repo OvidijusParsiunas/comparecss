@@ -11,7 +11,7 @@ import Contents from './components/content/Content.vue';
 import Sidenav from './components/sidenav/Sidenav.vue';
 import markupManager from './services/markupManager';
 import scripts from './services/scripts';
-import { ContentMarkup } from './interfaces/Contentmarkupinterface';
+import { ContentMarkup } from './interfaces/ContentMarkupInterface';
 import { BUTTON_NAMES } from './consts/buttonNames.enum';
 import { Options, Vue } from 'vue-class-component';
 
