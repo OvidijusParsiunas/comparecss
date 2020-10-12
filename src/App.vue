@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <Sidenav @sidenav-button-clicked="updateContent($event)"/>
-    <Content :activeButton="clickedButtonName"/>
+    <Content :activeButton="clickedButton"/>
   </div>
 </template>
 
@@ -10,7 +10,7 @@ import Content from './components/content/Content.vue';
 import Sidenav from './components/sidenav/Sidenav.vue';
 import scripts from './services/scripts';
 import { Options, Vue } from 'vue-class-component';
-import { BUTTON_NAMES } from '@/consts/buttonNames.enum';
+import { NavbarButton } from './interfaces/navbarButton';
 
 // https://vuejsdevelopers.com/2020/03/16/vue-js-tutorial/
 @Options({
@@ -23,12 +23,12 @@ import { BUTTON_NAMES } from '@/consts/buttonNames.enum';
   }
 })
 export default class App extends Vue {
-  private clickedButtonName: BUTTON_NAMES = null;
+  private clickedButton: NavbarButton = null;
 
-  private updateContent(clickedButtonName: BUTTON_NAMES) {
-    this.clickedButtonName = clickedButtonName;
+  private updateContent(clickedButton: NavbarButton) {
+    this.clickedButton = clickedButton;
   }
-  
+
   private addScriptsToDOM(): void {
     scripts.addScriptsToHead(
       'assets/js/jquery/jquery-3.5.1.slim.min.js', 'assets/js/jquery/jquery.js', 'assets/js/mui/mui.min.js',

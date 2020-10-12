@@ -5,7 +5,6 @@ import Breadcrumbs from '../cssFrameworks/componentMarkup/breadCrumbs';
 import Buttons from '../cssFrameworks/componentMarkup/buttons';
 import ButtonGroups from '../cssFrameworks/componentMarkup/buttonGroups';
 import Progress from '../cssFrameworks/componentMarkup/progress';
-import { BUTTON_NAMES } from '../consts/buttonNames.enum';
 import Cards from '../cssFrameworks/componentMarkup/cards';
 import Accordions from '../cssFrameworks/componentMarkup/accordions';
 import Dropdowns from '../cssFrameworks/componentMarkup/dropdowns';
@@ -14,37 +13,38 @@ import Modals from '../cssFrameworks/componentMarkup/modals';
 import Navbar from '../cssFrameworks/componentMarkup/navbars';
 import Pagination from '../cssFrameworks/componentMarkup/pagination';
 import Tooltips from '../cssFrameworks/componentMarkup/tooltips';
+import { NAVBAR_SUB_MENU_BUTTONS } from '../consts/navbarSubMenuButtons.enum';
 
 export default class MarkupManager {
-  static getContentMarkup(clickedButtonName: BUTTON_NAMES): ContentMarkup {
+  static getContentMarkup(clickedButtonName: NAVBAR_SUB_MENU_BUTTONS): ContentMarkup {
     switch (clickedButtonName) {
-      case BUTTON_NAMES.ACCORDIONS:
+      case NAVBAR_SUB_MENU_BUTTONS.ACCORDIONS:
         return Accordions;
-      case BUTTON_NAMES.ALERTS:
+      case NAVBAR_SUB_MENU_BUTTONS.ALERTS:
         return Alerts;
-      case BUTTON_NAMES.BADGES:
+      case NAVBAR_SUB_MENU_BUTTONS.BADGES:
         return Badges;
-      case BUTTON_NAMES.BREAD_CRUMBS:
+      case NAVBAR_SUB_MENU_BUTTONS.BREAD_CRUMBS:
         return Breadcrumbs;
-      case BUTTON_NAMES.BUTTONS:
+      case NAVBAR_SUB_MENU_BUTTONS.BUTTONS:
         return Buttons;
-      case BUTTON_NAMES.BUTTON_GROUPS:
+      case NAVBAR_SUB_MENU_BUTTONS.BUTTON_GROUPS:
         return ButtonGroups;
-      case BUTTON_NAMES.CARDS:
+      case NAVBAR_SUB_MENU_BUTTONS.CARDS:
         return Cards;
-      case BUTTON_NAMES.DROPDOWNS:
+      case NAVBAR_SUB_MENU_BUTTONS.DROPDOWNS:
         return Dropdowns;
-      case BUTTON_NAMES.FORMS:
+      case NAVBAR_SUB_MENU_BUTTONS.FORMS:
         return Forms;
-      case BUTTON_NAMES.MODALS:
+      case NAVBAR_SUB_MENU_BUTTONS.MODALS:
         return Modals;        
-      case BUTTON_NAMES.NAVBARS:
+      case NAVBAR_SUB_MENU_BUTTONS.NAVBARS:
         return Navbar;    
-      case BUTTON_NAMES.PAGINATION:
+      case NAVBAR_SUB_MENU_BUTTONS.PAGINATION:
         return Pagination;    
-      case BUTTON_NAMES.PROGRESS:
+      case NAVBAR_SUB_MENU_BUTTONS.PROGRESS:
         return Progress;
-      case BUTTON_NAMES.TOOLTIPS:
+      case NAVBAR_SUB_MENU_BUTTONS.TOOLTIPS:
         return Tooltips;
       default: {
         return {

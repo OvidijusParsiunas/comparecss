@@ -6,53 +6,56 @@
         <ul class="list-unstyled components">
             <p>Dummy Heading</p>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.ACCORDIONS)">Workshop</a>
+                <a style="cursor: pointer" @click="buttonClick(NAVBAR_MENU_BUTTONS.HOMEPAGE)">Homepage</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.ACCORDIONS)">Accordions</a>
+                <a style="cursor: pointer" @click="buttonClick(NAVBAR_MENU_BUTTONS.COMPONENTS, NAVBAR_SUB_MENU_BUTTONS.ACCORDIONS)">Workshop</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.ALERTS)">Alerts</a>
+                <a style="cursor: pointer" @click="buttonClick(NAVBAR_MENU_BUTTONS.COMPONENTS, NAVBAR_SUB_MENU_BUTTONS.ACCORDIONS)">Accordions</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.BADGES)">Badges</a>
+                <a style="cursor: pointer" @click="buttonClick(NAVBAR_MENU_BUTTONS.COMPONENTS, NAVBAR_SUB_MENU_BUTTONS.ALERTS)">Alerts</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.BREAD_CRUMBS)">Bread crumbs</a>
+                <a style="cursor: pointer" @click="buttonClick(NAVBAR_MENU_BUTTONS.COMPONENTS, NAVBAR_SUB_MENU_BUTTONS.BADGES)">Badges</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.BUTTONS)">Buttons</a>
+                <a style="cursor: pointer" @click="buttonClick(NAVBAR_MENU_BUTTONS.COMPONENTS, NAVBAR_SUB_MENU_BUTTONS.BREAD_CRUMBS)">Bread crumbs</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.BUTTON_GROUPS)">Button groups</a>
+                <a style="cursor: pointer" @click="buttonClick(NAVBAR_MENU_BUTTONS.COMPONENTS, NAVBAR_SUB_MENU_BUTTONS.BUTTONS)">Buttons</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.CARDS)">Cards</a>
+                <a style="cursor: pointer" @click="buttonClick(NAVBAR_MENU_BUTTONS.COMPONENTS, NAVBAR_SUB_MENU_BUTTONS.BUTTON_GROUPS)">Button groups</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.DROPDOWNS)">Dropdowns</a>
+                <a style="cursor: pointer" @click="buttonClick(NAVBAR_MENU_BUTTONS.COMPONENTS, NAVBAR_SUB_MENU_BUTTONS.CARDS)">Cards</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.FORMS)">Forms</a>
+                <a style="cursor: pointer" @click="buttonClick(NAVBAR_MENU_BUTTONS.COMPONENTS, NAVBAR_SUB_MENU_BUTTONS.DROPDOWNS)">Dropdowns</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.MODALS)">Modals</a>
+                <a style="cursor: pointer" @click="buttonClick(NAVBAR_MENU_BUTTONS.COMPONENTS, NAVBAR_SUB_MENU_BUTTONS.FORMS)">Forms</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.NAVBARS)">Navbars</a>
+                <a style="cursor: pointer" @click="buttonClick(NAVBAR_MENU_BUTTONS.COMPONENTS, NAVBAR_SUB_MENU_BUTTONS.MODALS)">Modals</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.PAGINATION)">Pagination</a>
+                <a style="cursor: pointer" @click="buttonClick(NAVBAR_MENU_BUTTONS.COMPONENTS, NAVBAR_SUB_MENU_BUTTONS.NAVBARS)">Navbars</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.PROGRESS)">Progress</a>
+                <a style="cursor: pointer" @click="buttonClick(NAVBAR_MENU_BUTTONS.COMPONENTS, NAVBAR_SUB_MENU_BUTTONS.PAGINATION)">Pagination</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.TOOLTIPS)">Tooltips</a>
+                <a style="cursor: pointer" @click="buttonClick(NAVBAR_MENU_BUTTONS.COMPONENTS, NAVBAR_SUB_MENU_BUTTONS.PROGRESS)">Progress</a>
+            </li>
+            <li>
+                <a style="cursor: pointer" @click="buttonClick(NAVBAR_MENU_BUTTONS.COMPONENTS, NAVBAR_SUB_MENU_BUTTONS.TOOLTIPS)">Tooltips</a>
             </li>
             <li>
                 <a href="#pageSubmenu" data-toggle="collapse"
-                aria-expanded="false" class="dropdown-toggle" @click="buttonClick('Pages')"
+                aria-expanded="false" class="dropdown-toggle" @click="buttonClick('components', 'Pages')"
                 >Pages
                 </a>
                 <ul class="collapse list-unstyled" id="pageSubmenu">
@@ -87,22 +90,25 @@
 </template>
 
 <script lang="ts">
+interface Data {
+  NAVBAR_MENU_BUTTONS,
+  NAVBAR_SUB_MENU_BUTTONS
+}
 
-import { BUTTON_NAMES } from '../../consts/buttonNames.enum';
+import { NAVBAR_MENU_BUTTONS } from '../../consts/navbarMenuButtons.enum';
+import { NAVBAR_SUB_MENU_BUTTONS } from '../../consts/navbarSubMenuButtons.enum';
+import { NavbarButton } from '../../interfaces/navbarButton';
 
 export default {
   methods: {
-    buttonClick(buttonName: BUTTON_NAMES): void {
-      this.$emit('sidenav-button-clicked', buttonName);
+    buttonClick(navbarMenuButton: NAVBAR_MENU_BUTTONS, navbarSubMenuButton?: NAVBAR_SUB_MENU_BUTTONS): void {
+      this.$emit('sidenav-button-clicked', { navbarMenuButton, navbarSubMenuButton } as NavbarButton);
     },
   },
-  data(): {
-      BUTTON_NAMES
-  } {
-    return {
-      BUTTON_NAMES,
-    }
-  },
+  data: (): Data  =>({
+    NAVBAR_MENU_BUTTONS,
+    NAVBAR_SUB_MENU_BUTTONS
+  }),
 };
 </script>
 

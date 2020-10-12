@@ -1,6 +1,11 @@
 <template>
   <div id="content">
-    <Components :markup="markup"/>
+    <div v-if="currentView === NAVBAR_MENU_BUTTONS.HOMEPAGE">
+      <Homepage/>
+    </div>
+    <div v-if="currentView == NAVBAR_MENU_BUTTONS.COMPONENTS">
+      <Components :markup="markup"/>
+    </div>
   </div>
 </template>
 
@@ -12,18 +17,22 @@
 
 <script lang="ts">
 interface Data {
+  currentView: NAVBAR_MENU_BUTTONS,
   markup: ContentMarkup,
+  NAVBAR_MENU_BUTTONS,
 }
 interface Props {
-  activeButton: BUTTON_NAMES,
+  activeButton: NavbarButton,
 }
 
 import Components from './Components.vue';
-import { BUTTON_NAMES } from '@/consts/buttonNames.enum';
+import Homepage from './Homepage.vue';
 import cssFrameworksJSFunctionality from '../../services/cssFrameworksJSFunctionality';
 import markupManager from '../../services/markupManager';
 import { ContentMarkup } from '@/interfaces/contentMarkupInterface';
 import { onUpdated, nextTick } from 'vue'
+import { NavbarButton } from '../../interfaces/navbarButton';
+import { NAVBAR_MENU_BUTTONS } from '../../consts/navbarMenuButtons.enum';
 
 export default {
   // https://v3.vuejs.org/guide/composition-api-setup.html#context
@@ -31,29 +40,37 @@ export default {
   setup(props: Props): void {
     onUpdated(() => {
       nextTick(() => {
-        const triggerCssFrameworksJs = cssFrameworksJSFunctionality.getTriggers(props.activeButton);
-        if (triggerCssFrameworksJs) { triggerCssFrameworksJs(); }
+        if (props.activeButton.navbarMenuButton === NAVBAR_MENU_BUTTONS.COMPONENTS && props.activeButton.navbarSubMenuButton) {
+          const triggerCssFrameworksJs = cssFrameworksJSFunctionality.getTriggers(props.activeButton.navbarSubMenuButton);
+          if (triggerCssFrameworksJs) { triggerCssFrameworksJs(); }
+        }
       })
     })
   },
   components: {
     Components,
+    Homepage,
   },
   props: {
     activeButton: null,
   },
   data: (): Data => ({
+    currentView: NAVBAR_MENU_BUTTONS.HOMEPAGE,
     markup:  {
       bootstrap: '<button type="button" class="btn btn-primary">Primary</button>',
       materialize: '<button type="button" class="btn btn-primary">Primary</button>',
       uikit: '<button class="uk-button uk-button-default">Primary</button>',
       foundation: '<a class="button">Primary</a>',
       bulma: '<button class="button">Button</button>',
-    }
+    },
+    NAVBAR_MENU_BUTTONS,
   }),
   watch: {
-    activeButton(clickedButtonName: BUTTON_NAMES): void {
-      this.markup = markupManager.getContentMarkup(clickedButtonName);
+    activeButton(activeButton: NavbarButton): void {
+      if (activeButton.navbarMenuButton === NAVBAR_MENU_BUTTONS.COMPONENTS && activeButton.navbarSubMenuButton) {
+        this.markup = markupManager.getContentMarkup(activeButton.navbarSubMenuButton);
+      }
+      this.currentView = activeButton.navbarMenuButton;
     }
   },
 };

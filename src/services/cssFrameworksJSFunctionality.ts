@@ -1,5 +1,5 @@
 import { CssFrameworksJsFunctionality } from '../interfaces/cssFrameworksJsFunctionality';
-import { BUTTON_NAMES } from '../consts/buttonNames.enum';
+import { NAVBAR_SUB_MENU_BUTTONS } from '../consts/navbarSubMenuButtons.enum';
 
 declare global {
   interface Window {
@@ -16,9 +16,9 @@ export default class CssFrameworksJSFunctionality {
   // Therefore the current solution is to execute the line below from an outside script file
   // (<any>$(".ui.accordion")).accordion();
 
-  static getTriggers(clickedButtonName: BUTTON_NAMES): () => void {
+  static getTriggers(clickedButtonName: NAVBAR_SUB_MENU_BUTTONS): () => void {
     switch (clickedButtonName) {
-      case BUTTON_NAMES.ACCORDIONS:
+      case NAVBAR_SUB_MENU_BUTTONS.ACCORDIONS:
         return () => {
           window.cssFrameworksJsFunctionality.bulmaAccordion();
           window.cssFrameworksJsFunctionality.bulmaTrigger();
@@ -26,19 +26,19 @@ export default class CssFrameworksJSFunctionality {
           window.cssFrameworksJsFunctionality.materializeAccordion();
           window.cssFrameworksJsFunctionality.semanticAccordion();
         };
-      case BUTTON_NAMES.ALERTS:
+      case NAVBAR_SUB_MENU_BUTTONS.ALERTS:
         return () => {
           window.cssFrameworksJsFunctionality.bulmaAlert();
           window.cssFrameworksJsFunctionality.semanticAlert();
         };
-      case BUTTON_NAMES.DROPDOWNS:
+      case NAVBAR_SUB_MENU_BUTTONS.DROPDOWNS:
         return () => {
           window.cssFrameworksJsFunctionality.foundationTrigger();
           window.cssFrameworksJsFunctionality.materializeDropdown();
           window.cssFrameworksJsFunctionality.pureDropdown();
           window.cssFrameworksJsFunctionality.semanticDropdown();
         };
-      case BUTTON_NAMES.FORMS:
+      case NAVBAR_SUB_MENU_BUTTONS.FORMS:
         return () => {
           window.cssFrameworksJsFunctionality.materializeUpdateTextFields();
           window.cssFrameworksJsFunctionality.materializeFormSelect();
@@ -46,7 +46,7 @@ export default class CssFrameworksJSFunctionality {
           window.cssFrameworksJsFunctionality.semanticDropdown();
           window.cssFrameworksJsFunctionality.semanticCheckbox();
         };
-      case BUTTON_NAMES.MODALS:
+      case NAVBAR_SUB_MENU_BUTTONS.MODALS:
         return () => {
           window.cssFrameworksJsFunctionality.bulmaModal();
           window.cssFrameworksJsFunctionality.foundationTrigger();
@@ -54,11 +54,11 @@ export default class CssFrameworksJSFunctionality {
           window.cssFrameworksJsFunctionality.semanticModal();
           window.cssFrameworksJsFunctionality.spectreModal();
         };
-      case BUTTON_NAMES.NAVBARS:
+      case NAVBAR_SUB_MENU_BUTTONS.NAVBARS:
         return () => {
           window.cssFrameworksJsFunctionality.foundationTrigger();
         };
-      case BUTTON_NAMES.TOOLTIPS:
+      case NAVBAR_SUB_MENU_BUTTONS.TOOLTIPS:
         return () => {
           window.cssFrameworksJsFunctionality.bootstrapTooltip();
           window.cssFrameworksJsFunctionality.foundationTrigger();
