@@ -6,6 +6,9 @@
         <ul class="list-unstyled components">
             <p>Dummy Heading</p>
             <li>
+                <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.ACCORDIONS)">Workshop</a>
+            </li>
+            <li>
                 <a style="cursor: pointer" @click="buttonClick(BUTTON_NAMES.ACCORDIONS)">Accordions</a>
             </li>
             <li>

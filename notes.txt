@@ -3,6 +3,13 @@ fix bulma accordion css
 reference css component versions - uikit v3 - in popover when hovering logo
 
 have a mode where the user can select a framework, select a component, and construct that component - width and so on
+if building a framework:
+    choose component
+        properties
+    show current size of framework
+
+
+
 can then build multiple components and compare them, can add icons to buttons etc - will have to download specific scripts for this
 
 try to use css asset files so you can lazy load them

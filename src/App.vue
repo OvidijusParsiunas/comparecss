@@ -1,54 +1,34 @@
 <template>
   <div id="app">
-    <Sidenav @sidenav-button-clicked="sideNavButtonClick($event)"/>
-    <Contents :markup="markup"/>
+    <Sidenav @sidenav-button-clicked="updateContent($event)"/>
+    <Content :activeButton="clickedButtonName"/>
   </div>
 </template>
 
 <script lang="ts">
-import cssFrameworksJSFunctionality from './services/cssFrameworksJSFunctionality';
-import Contents from './components/content/Content.vue';
+import Content from './components/content/Content.vue';
 import Sidenav from './components/sidenav/Sidenav.vue';
-import markupManager from './services/markupManager';
 import scripts from './services/scripts';
-import { ContentMarkup } from './interfaces/ContentMarkupInterface';
-import { BUTTON_NAMES } from './consts/buttonNames.enum';
 import { Options, Vue } from 'vue-class-component';
+import { BUTTON_NAMES } from '@/consts/buttonNames.enum';
 
 // https://vuejsdevelopers.com/2020/03/16/vue-js-tutorial/
 @Options({
   components: {
-    Contents,
+    Content,
     Sidenav,
   },
   mounted() {
     this.addScriptsToDOM();
-  },
-  updated() {
-    this.$nextTick(() => {
-      if (this.triggerCssFrameworksJs) {
-        this.triggerCssFrameworksJs();
-        this.triggerCssFrameworksJs = null;
-      }
-    })
   }
 })
 export default class App extends Vue {
-  // data variables have been moved here to allow typing
-  triggerCssFrameworksJs: () => void = null;
-  private markup: ContentMarkup = {
-    bootstrap: '<button type="button" class="btn btn-primary">Primary</button>',
-    materialize: '<button type="button" class="btn btn-primary">Primary</button>',
-    uikit: '<button class="uk-button uk-button-default">Primary</button>',
-    foundation: '<a class="button">Primary</a>',
-    bulma: '<button class="button">Button</button>',
-  };
+  private clickedButtonName: BUTTON_NAMES = null;
 
-  private sideNavButtonClick(clickedButtonName: BUTTON_NAMES): void {
-    this.triggerCssFrameworksJs = cssFrameworksJSFunctionality.getTriggers(clickedButtonName);
-    this.markup = markupManager.getContentMarkup(clickedButtonName);
+  private updateContent(clickedButtonName: BUTTON_NAMES) {
+    this.clickedButtonName = clickedButtonName;
   }
-
+  
   private addScriptsToDOM(): void {
     scripts.addScriptsToHead(
       'assets/js/jquery/jquery-3.5.1.slim.min.js', 'assets/js/jquery/jquery.js', 'assets/js/mui/mui.min.js',

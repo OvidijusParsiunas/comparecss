@@ -1,4 +1,4 @@
-import { ContentMarkup } from '../interfaces/ContentMarkupInterface';
+import { ContentMarkup } from '../interfaces/contentMarkupInterface';
 import Alerts from '../cssFrameworks/componentMarkup/alerts';
 import Badges from '../cssFrameworks/componentMarkup/badges';
 import Breadcrumbs from '../cssFrameworks/componentMarkup/breadCrumbs';

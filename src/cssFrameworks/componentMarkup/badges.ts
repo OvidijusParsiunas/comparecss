@@ -1,4 +1,4 @@
-import { ContentMarkup } from '../../interfaces/ContentMarkupInterface';
+import { ContentMarkup } from '../../interfaces/contentMarkupInterface';
 
 export default {
   bootstrap: `

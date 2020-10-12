@@ -1,4 +1,4 @@
-import { ContentMarkup } from '../../interfaces/ContentMarkupInterface';
+import { ContentMarkup } from '../../interfaces/contentMarkupInterface';
 
 // bootstrap button height
 export default {
