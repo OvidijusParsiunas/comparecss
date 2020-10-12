@@ -39,7 +39,7 @@ export default {
   setup(props: Props): void {
     onUpdated(() => {
       nextTick(() => {
-        if (props.activeButton.navbarMenuButton === NAVBAR_MENU_BUTTONS.COMPONENTS && props.activeButton.navbarSubMenuButton) {
+        if (props.activeButton.navbarMenuButton === NAVBAR_MENU_BUTTONS.COMPONENTS && props.activeButton.navbarSubMenuButton !== undefined) {
           const triggerCssFrameworksJs = cssFrameworksJSFunctionality.getTriggers(props.activeButton.navbarSubMenuButton);
           if (triggerCssFrameworksJs) { triggerCssFrameworksJs(); }
         }
@@ -66,7 +66,7 @@ export default {
   }),
   watch: {
     activeButton(activeButton: NavbarButton): void {
-      if (activeButton.navbarMenuButton === NAVBAR_MENU_BUTTONS.COMPONENTS && activeButton.navbarSubMenuButton) {
+      if (activeButton.navbarMenuButton === NAVBAR_MENU_BUTTONS.COMPONENTS && activeButton.navbarSubMenuButton !== undefined) {
         this.componentMarkup = componentMarkupManager.getComponentMarkup(activeButton.navbarSubMenuButton);
       }
       this.currentView = activeButton.navbarMenuButton;

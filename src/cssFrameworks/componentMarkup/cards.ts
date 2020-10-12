@@ -3,7 +3,7 @@ import { ComponentMarkup } from '../../interfaces/componentMarkup';
 export default {
   bootstrap: `
     <div class="card" style="width: 18rem; display: inline-block; vertical-align: top; margin-bottom: 10px">
-      <img style="width: 286px; height: 180px" class="card-img-top" src="../assets/images/card-picture.webp" alt="Card image cap">
+      <img style="width: 286px; height: 180px" class="card-img-top" src="assets/images/card-picture.webp" alt="Card image cap">
       <div style="text-align: left" class="card-body">
         <h5 class="card-title">Card Title</h5>
         <p class="card-text">Example text to build on the card title and make up the bulk of the card's content.</p>
@@ -34,7 +34,7 @@ export default {
     <div class="col s12 m7" style="width: 18rem; display: inline-flex; text-align: left; vertical-align: top">
       <div class="card">
         <div class="card-image">
-          <img style="width: 286px; height: 180px" src="../assets/images/card-picture.webp">
+          <img style="width: 286px; height: 180px" src="assets/images/card-picture.webp">
           <span class="card-title">Card Title</span>
         </div>
         <div class="card-content">
@@ -48,7 +48,7 @@ export default {
     <div class="col s12 m6" style="width: 18rem; display: inline-flex; text-align: left; vertical-align: top">
       <div class="card">
         <div class="card-image">
-          <img style="width: 286px; height: 180px" src="../assets/images/card-picture.webp">
+          <img style="width: 286px; height: 180px" src="assets/images/card-picture.webp">
           <span class="card-title">Card Title</span>
           <a class="btn-floating halfway-fab waves-effect waves-light red"><i class="material-icons">add</i></a>
         </div>
@@ -74,7 +74,7 @@ export default {
     <div style="width: 18rem; display: inline-flex; text-align: left; vertical-align: top; margin-bottom: 10px">
       <div class="uk-card uk-card-default">
         <div class="uk-card-media-top">
-          <img style="width: 286px; height: 180px" src="../assets/images/card-picture.webp" alt="">
+          <img style="width: 286px; height: 180px" src="assets/images/card-picture.webp" alt="">
         </div>
         <div class="uk-card-body">
           <h3 class="uk-card-title">Card Title</h3>
@@ -87,7 +87,7 @@ export default {
         <div class="uk-card-header">
           <div class="uk-grid-small uk-flex-middle" uk-grid>
             <div class="uk-width-auto">
-              <img style="height: 40px" class="uk-border-circle" width="40" height="40" src="../assets/images/profile-picture.png">
+              <img style="height: 40px" class="uk-border-circle" width="40" height="40" src="assets/images/profile-picture.png">
             </div>
             <div class="uk-width-expand">
               <h3 class="uk-card-title uk-margin-remove-bottom">Card Title</h3>
@@ -115,14 +115,14 @@ export default {
       <div class="card-divider">
         Card Header
       </div>
-      <img style="width: 286px; height: 180px" src="../assets/images/card-picture.webp">
+      <img style="width: 286px; height: 180px" src="assets/images/card-picture.webp">
       <div class="card-section">
         <h4>Card Title</h4>
         <p>Example text to build on the card title and make up the bulk of the card's content.</p>
       </div>
     </div>
     <div class="card" style="width: 18rem; display: inline-flex; text-align: left; vertical-align: top">
-      <img style="width: 286px; height: 180px" src="../assets/images/card-picture.webp">
+      <img style="width: 286px; height: 180px" src="assets/images/card-picture.webp">
       <div class="card-section">
         <p>Example text to build on the card title and make up the bulk of the card's content.</p>
       </div>
@@ -132,14 +132,14 @@ export default {
     <div class="card" style="width: 18rem; text-align: left; display: inline-block; vertical-align: top; margin-bottom: 10px">
       <div class="card-image">
         <figure class="image is-4by3">
-          <img src="../assets/images/card-picture.webp" alt="Placeholder image">
+          <img src="assets/images/card-picture.webp" alt="Placeholder image">
         </figure>
       </div>
       <div class="card-content">
         <div class="media">
           <div class="media-left">
             <figure class="image is-48x48">
-              <img style="height: 48px" src="../assets/images/profile-picture.png" alt="Placeholder image">
+              <img style="height: 48px" src="assets/images/profile-picture.png" alt="Placeholder image">
             </figure>
           </div>
           <div class="media-content">
@@ -201,7 +201,7 @@ export default {
     <div class="ui link cards" style="width: 18rem; text-align: left; display: inline-block; margin-right: 10px; margin-top: 0px; vertical-align: top">
       <div class="card">
         <div class="image">
-          <img style="width: 288px; height: 180px" src="../assets/images/card-picture.webp">
+          <img style="width: 288px; height: 180px" src="assets/images/card-picture.webp">
         </div>
         <div class="content">
           <div class="header">Card Title</div>
@@ -224,8 +224,8 @@ export default {
     </div>
     <div class="ui card" style="width: 18rem; text-align: left; display: inline-block; vertical-align: top">
       <div style="top: 0; left: -0.5px" class="ui slide masked reveal image">
-        <img style="width: 288px; height: 181px" src="../assets/images/card-picture.webp" class="visible content">
-        <img style="width: 288px; height: 181px" src="../assets/images/card-picture.webp" class="hidden content">
+        <img style="width: 288px; height: 181px" src="assets/images/card-picture.webp" class="visible content">
+        <img style="width: 288px; height: 181px" src="assets/images/card-picture.webp" class="hidden content">
       </div>
       <div class="content">
         <a class="header">Card Title</a>
@@ -242,7 +242,7 @@ export default {
     <div class="ui card" style="width: 18rem; text-align: left; display: inline-block; vertical-align: top">
       <div class="content">
         <div class="right floated meta">14h</div>
-          <img class="ui avatar image" src="../assets/images/card-picture.webp">Ovisource
+          <img class="ui avatar image" src="assets/images/card-picture.webp">Ovisource
       </div>
       <div class="image">
         <img>
