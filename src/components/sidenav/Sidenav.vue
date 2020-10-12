@@ -94,7 +94,6 @@ interface Data {
   NAVBAR_MENU_BUTTONS,
   NAVBAR_SUB_MENU_BUTTONS
 }
-
 import { NAVBAR_MENU_BUTTONS } from '../../consts/navbarMenuButtons.enum';
 import { NAVBAR_SUB_MENU_BUTTONS } from '../../consts/navbarSubMenuButtons.enum';
 import { NavbarButton } from '../../interfaces/navbarButton';

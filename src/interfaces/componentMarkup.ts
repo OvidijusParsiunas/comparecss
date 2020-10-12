@@ -1,4 +1,4 @@
-export interface ContentMarkup {
+export interface ComponentMarkup {
   bootstrap: string | null;
   materialize: string | null;
   uikit: string | null;

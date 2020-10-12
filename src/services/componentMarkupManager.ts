@@ -1,4 +1,4 @@
-import { ContentMarkup } from '../interfaces/contentMarkupInterface';
+import { ComponentMarkup } from '../interfaces/componentMarkup';
 import Alerts from '../cssFrameworks/componentMarkup/alerts';
 import Badges from '../cssFrameworks/componentMarkup/badges';
 import Breadcrumbs from '../cssFrameworks/componentMarkup/breadCrumbs';
@@ -15,8 +15,8 @@ import Pagination from '../cssFrameworks/componentMarkup/pagination';
 import Tooltips from '../cssFrameworks/componentMarkup/tooltips';
 import { NAVBAR_SUB_MENU_BUTTONS } from '../consts/navbarSubMenuButtons.enum';
 
-export default class MarkupManager {
-  static getContentMarkup(clickedButtonName: NAVBAR_SUB_MENU_BUTTONS): ContentMarkup {
+export default class ComponentMarkupManager {
+  static getComponentMarkup(clickedButtonName: NAVBAR_SUB_MENU_BUTTONS): ComponentMarkup {
     switch (clickedButtonName) {
       case NAVBAR_SUB_MENU_BUTTONS.ACCORDIONS:
         return Accordions;

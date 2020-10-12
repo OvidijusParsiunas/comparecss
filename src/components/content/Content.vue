@@ -4,7 +4,7 @@
       <Homepage/>
     </div>
     <div v-if="currentView == NAVBAR_MENU_BUTTONS.COMPONENTS">
-      <Components :markup="markup"/>
+      <Components :componentMarkup="componentMarkup"/>
     </div>
   </div>
 </template>
@@ -17,19 +17,18 @@
 
 <script lang="ts">
 interface Data {
-  currentView: NAVBAR_MENU_BUTTONS,
-  markup: ContentMarkup,
   NAVBAR_MENU_BUTTONS,
+  currentView: NAVBAR_MENU_BUTTONS,
+  componentMarkup: ComponentMarkup,
 }
 interface Props {
   activeButton: NavbarButton,
 }
-
 import Components from './Components.vue';
 import Homepage from './Homepage.vue';
 import cssFrameworksJSFunctionality from '../../services/cssFrameworksJSFunctionality';
-import markupManager from '../../services/markupManager';
-import { ContentMarkup } from '@/interfaces/contentMarkupInterface';
+import componentMarkupManager from '../../services/componentMarkupManager';
+import { ComponentMarkup } from '../../interfaces/componentMarkup';
 import { onUpdated, nextTick } from 'vue'
 import { NavbarButton } from '../../interfaces/navbarButton';
 import { NAVBAR_MENU_BUTTONS } from '../../consts/navbarMenuButtons.enum';
@@ -55,20 +54,20 @@ export default {
     activeButton: null,
   },
   data: (): Data => ({
+    NAVBAR_MENU_BUTTONS,
     currentView: NAVBAR_MENU_BUTTONS.HOMEPAGE,
-    markup:  {
+    componentMarkup:  {
       bootstrap: '<button type="button" class="btn btn-primary">Primary</button>',
       materialize: '<button type="button" class="btn btn-primary">Primary</button>',
       uikit: '<button class="uk-button uk-button-default">Primary</button>',
       foundation: '<a class="button">Primary</a>',
       bulma: '<button class="button">Button</button>',
     },
-    NAVBAR_MENU_BUTTONS,
   }),
   watch: {
     activeButton(activeButton: NavbarButton): void {
       if (activeButton.navbarMenuButton === NAVBAR_MENU_BUTTONS.COMPONENTS && activeButton.navbarSubMenuButton) {
-        this.markup = markupManager.getContentMarkup(activeButton.navbarSubMenuButton);
+        this.componentMarkup = componentMarkupManager.getComponentMarkup(activeButton.navbarSubMenuButton);
       }
       this.currentView = activeButton.navbarMenuButton;
     }
