@@ -12,6 +12,13 @@
     font-weight: 400;
     line-height: 1.5;
   }
+  .accordion-header p {
+    color: white;
+    font-family: BlinkMacSystemFont,-apple-system,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue","Helvetica","Arial",sans-serif;
+  }
+  .accordion-content {
+    font-family: BlinkMacSystemFont,-apple-system,"Segoe UI","Roboto","Oxygen","Ubuntu","Cantarell","Fira Sans","Droid Sans","Helvetica Neue","Helvetica","Arial",sans-serif;
+  }
 }
 @import "../../assets/scss/bulma/bulma-tooltip.scss";
 @import "../../assets/scss/bulma/bulma-modal.scss";

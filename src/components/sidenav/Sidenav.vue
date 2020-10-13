@@ -170,7 +170,7 @@ $navbar-background:#7a7a7a;
 
     .sidenav-header {
         padding: 20px;
-        background: #6d7fcc;
+        background:#7a7a7a;
     }
 
     ul.components {
@@ -197,7 +197,7 @@ $navbar-background:#7a7a7a;
     ul li.active>a,
     a[aria-expanded="true"] {
         color: #fff;
-        background: #6d7fcc;
+        background:#7a7a7a;
     }
 
     a[data-toggle="collapse"] {
@@ -215,7 +215,7 @@ $navbar-background:#7a7a7a;
     ul ul a {
         font-size: 0.9em !important;
         padding-left: 30px !important;
-        background: #6d7fcc;
+        background:#7a7a7a;
     }
 
     ul.CTAs {
@@ -237,7 +237,7 @@ $navbar-background:#7a7a7a;
 
     a.article,
     a.article:hover {
-        background: #6d7fcc !important;
+        background:#7a7a7a !important;
         color: #fff !important;
     }
 
