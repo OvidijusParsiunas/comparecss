@@ -6,6 +6,9 @@
     <div v-if="currentView == NAVBAR_MENU_BUTTONS.COMPONENTS">
       <Components :componentMarkup="componentMarkup"/>
     </div>
+    <div v-if="currentView == NAVBAR_MENU_BUTTONS.WORKSHOP">
+      <Workshop/>
+    </div>
   </div>
 </template>
 
@@ -26,6 +29,7 @@ interface Props {
 }
 import Components from './Components.vue';
 import Homepage from './Homepage.vue';
+import Workshop from './workshop/Workshop.vue';
 import cssFrameworksJSFunctionality from '../../services/cssFrameworksJSFunctionality';
 import componentMarkupManager from '../../services/componentMarkupManager';
 import { ComponentMarkup } from '../../interfaces/componentMarkup';
@@ -49,6 +53,7 @@ export default {
   components: {
     Components,
     Homepage,
+    Workshop,
   },
   props: {
     activeButton: null,

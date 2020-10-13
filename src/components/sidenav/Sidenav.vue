@@ -9,7 +9,7 @@
                 <a style="cursor: pointer" @click="buttonClick(NAVBAR_MENU_BUTTONS.HOMEPAGE)">Homepage</a>
             </li>
             <li>
-                <a style="cursor: pointer" @click="buttonClick(NAVBAR_MENU_BUTTONS.COMPONENTS, NAVBAR_SUB_MENU_BUTTONS.ACCORDIONS)">Workshop</a>
+                <a style="cursor: pointer" @click="buttonClick(NAVBAR_MENU_BUTTONS.WORKSHOP)">Workshop</a>
             </li>
             <li>
                 <a style="cursor: pointer" @click="buttonClick(NAVBAR_MENU_BUTTONS.COMPONENTS, NAVBAR_SUB_MENU_BUTTONS.ACCORDIONS)">Accordions</a>

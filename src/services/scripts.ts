@@ -1,4 +1,3 @@
-
 export default class Scripts {
   static addScriptsToHead(...path: string[]): Promise<string[]> {
     const promises = [];
