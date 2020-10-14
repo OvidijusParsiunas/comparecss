@@ -1,3 +1,6 @@
+
+use native implementation of vuesax when it is compatible with vue 3
+
 have a mode where the user can select a framework, select a component, and construct that component - width and so on
 if building a framework:
     choose component
