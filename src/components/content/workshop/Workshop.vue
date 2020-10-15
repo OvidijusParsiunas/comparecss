@@ -65,7 +65,7 @@
             <div style="width: 30%; position: relative">
               <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
                 <div style="text-align: center; margin-bottom: 5px">Size: 0kb</div>
-                <button type="button" class="btn btn-success">Download</button>
+                <button type="button" class="btn btn-success" @click="downloadCSSFile">Download</button>
               </div>
             </div>
           </div>
@@ -108,7 +108,7 @@
           </form>
             </div>
             <div class="modal-footer">
-              <button v-on:click="addNewComponent('Alert')" type="button" class="btn btn-primary"  data-dismiss="modal">Add</button>
+              <button v-on:click="addNewComponent('Alert')" type="button" class="btn btn-primary" data-dismiss="modal">Add</button>
             </div>
           </div>
         </div>
@@ -133,6 +133,7 @@ interface Data {
 }
 import newComponentModalService from '../../../services/workshop/newComponentModal';
 import 'vuesax/dist/vuesax.css' //Vuesax styles
+import downloadFiles from '../../../services/workshop/downloadFiles';
 
 export default {
   data: (): Data => ({
@@ -150,6 +151,9 @@ export default {
     },
     selectComponentCard: function(componentName: string): void {
       this.currentlySelectedComponent = componentName;
+    },
+    downloadCSSFile: (): void => {
+      downloadFiles.downloadZip('.uniquebutton { background-color: yellow }');
     }
   }
 };

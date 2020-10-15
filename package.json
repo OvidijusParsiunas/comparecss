@@ -32,6 +32,7 @@
     "eslint-plugin-import": "^2.22.0",
     "eslint-plugin-vue": "^7.0.0-0",
     "hiq": "^4.0.2",
+    "jszip": "^3.5.0",
     "materialize-css": "^1.0.0",
     "milligram-sass": "^1.4.1",
     "muicss": "^0.10.2",
