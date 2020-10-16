@@ -29,13 +29,17 @@
         </div>
         <div style="width: 70%">
           <!-- new component -->
-          <div style="height: 20%; position: relative; display: flex">
+          <div style="height: 15%; position: relative; display: flex">
             <div style="margin: 0; margin-left: 5%; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%); width: 80%"> 
-              <button type="button" class="btn btn-primary">Primary</button>
-              <button type="button" class="btn btn-secondary">Secondary</button>
-              <button type="button" class="btn btn-success">Success</button>
-              <button type="button" class="btn btn-danger">Danger</button>
-              <button type="button" class="btn btn-warning">Warning</button>
+              <!-- <button type="button" class="btn btn-light">Light</button> -->
+              <button type="button" class="btn btn-outline-secondary edit-component-button">Border</button>
+              <button type="button" class="btn btn-outline-secondary edit-component-button">Color</button>
+              <button type="button" class="btn btn-outline-secondary edit-component-button">Shadow</button>
+              <button type="button" class="btn btn-outline-secondary edit-component-button">Size</button>
+              <button type="button" class="btn btn-outline-secondary edit-component-button">Padding</button>
+              <button type="button" class="btn btn-outline-secondary edit-component-button">margin</button>
+              <button type="button" class="btn btn-outline-secondary edit-component-button">Shadow</button>
+              <button type="button" class="btn btn-outline-primary edit-component-button">Text</button>
             </div>
             <div style="width: 20%; margin-left: 80%; position: relative">
               <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
@@ -43,24 +47,19 @@
               </div>
             </div>
           </div>
-          <div style="height: 60%; position: relative;">
+          <div style="height: 17%; position: relative; display: flex">
+            <div style="margin: 0; margin-left: 5%; border: 1px solid grey"> 
+              <!-- <button type="button" class="btn btn-light">Light</button> -->
+              <button type="button" class="btn btn-outline-secondary edit-component-button">Border</button>
+            </div>
+          </div>
+          <div style="height: 50%; position: relative;">
             <div v-html="currentlySelectedComponent" style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);" class="foundation">
             </div>
           </div>
-          <div style="height: 20%; display: flex">
-            <div style="width: 70%; position: relative">
-              <div style="width: 100%; margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); text-align: center">
-                <div>
-                  Class name
-                  <input class="form-control" id="exampleInputEmail1" style="display: inline-block; width: 50%" aria-describedby="emailHelp" placeholder="Enter email">
-                </div>
-                <button type="button" class="btn btn-primary">Primary</button>
-                <button type="button" class="btn btn-secondary">Secondary</button>
-                <button type="button" class="btn btn-success">Success</button>
-                <button type="button" class="btn btn-danger">Danger</button>
-                <button type="button" class="btn btn-warning">Warning</button>
-              </div>
-            </div>
+          <div style="height: 18%; display: flex">
+            <!-- This should probably be moved to the top as it looks better -->
+            
             <div style="width: 30%; position: relative">
               <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
                 <div style="text-align: center; margin-bottom: 5px">Size: 0kb</div>
@@ -177,5 +176,14 @@ export default {
   }
   .add-card:focus {
     border: 1px dashed #2e2e2e !important;
+  }
+  .btn-outline-secondary:hover {
+    background-color: #d6d6d6 !important;
+    color: black !important;
+  }
+  .edit-component-button {
+    margin-right: 8px;
+    border-color: #9d9d9d !important;
+    background-color: white !important;
   }
 </style>
