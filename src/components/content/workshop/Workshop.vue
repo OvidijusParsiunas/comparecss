@@ -5,11 +5,11 @@
         <div style="width: 30%; position: relative">
           <div id="component-cards" style="background-color: rgb(251 251 251); display: grid; border-radius: 20px; height: 95%; width: 90%; margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); text-align: center">
             <div id="component-cards-container" style="margin-top: 5px">
-              <div v-for="componentName in components" :key="componentName">
+              <div v-for="componentTuple in componentCards" :key="componentTuple">
                 <!-- new component -->
-                <div style="cursor: move; width: 18rem; margin: auto; margin-top: 5px" class="card component-card" v-on:click="selectComponentCard(componentName)" tabindex="0">
+                <div style="cursor: move; width: 18rem; margin: auto; margin-top: 5px" class="card component-card" v-on:click="selectComponentCard(componentTuple[1])" tabindex="0">
                   <div class="card-body">
-                    <h5 style="float: left" class="card-title">{{componentName}}</h5>
+                    <h5 style="float: left" class="card-title">{{componentTuple[0]}}</h5>
                     <a style="float: right" href="#" class="btn btn-danger">Delete</a>
                   </div>
                 </div>
@@ -17,7 +17,7 @@
               <div style="cursor: move; width: 18rem; margin: auto; outline: none; margin-top: 5px" class="add-card card" data-toggle="modal" data-target="#exampleModal" tabindex="0">
                 <div style="text-align: center" class="card-body">
                   <div style="height: 38px; padding-top: 6px">
-                      Add +
+                    Add +
                   </div>
                 </div>
               </div>
@@ -44,8 +44,7 @@
             </div>
           </div>
           <div style="height: 60%; position: relative;">
-            <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
-              {{ currentlySelectedComponent }}
+            <div v-html="currentlySelectedComponent" style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);" class="foundation">
             </div>
           </div>
           <div style="height: 20%; display: flex">
@@ -127,7 +126,7 @@
 <script lang="ts">
 interface Data {
   previewImage: string,
-  components: string[],
+  componentCards: [string, string][],
   currentlySelectedComponent: string,
   value: string,
 }
@@ -138,7 +137,7 @@ import downloadFiles from '../../../services/workshop/downloadFiles';
 export default {
   data: (): Data => ({
     previewImage: 'previewImage',
-    components: ['Button'],
+    componentCards: [['Button', `<a class="button">Button</a>`]],
     currentlySelectedComponent: null,
     value: '',
   }),
@@ -146,8 +145,8 @@ export default {
     setComponentPreviewImage: function(componentName: string): void {
       this.previewImage = newComponentModalService.getPreviewImage(componentName);
     },
-    addNewComponent: function(componentName: string): void {
-      this.components.push(componentName);
+    addNewComponent: function(componentName: string, componentHTML: string): void {
+      this.componentCards.push([componentName, componentHTML]);
     },
     selectComponentCard: function(componentName: string): void {
       this.currentlySelectedComponent = componentName;

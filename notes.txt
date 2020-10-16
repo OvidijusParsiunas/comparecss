@@ -1,16 +1,9 @@
-
 use native implementation of vuesax when it is compatible with vue 3
 
-have a mode where the user can select a framework, select a component, and construct that component - width and so on
-if building a framework:
-    choose component
-        properties
-    show current size of framework
+https://www.bannersnack.com/generator.html
+
 
 reference css component versions - uikit v3 - in popover when hovering logo
-
-
-can then build multiple components and compare them, can add icons to buttons etc - will have to download specific scripts for this
 
 try to use css asset files so you can lazy load them
 statistics should include size and github popularity
