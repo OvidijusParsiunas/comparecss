@@ -27,43 +27,23 @@
             <button type="button" style="margin-left: 7px; margin-bottom: 10px" class="btn btn-warning btn-sm">Explore icon</button>
           </div>
         </div>
-        <div style="width: 70%">
-          <!-- new component -->
-          <div style="height: 15%; position: relative; display: flex">
-            <div style="margin: 0; margin-left: 5%; position: absolute; top: 50%; -ms-transform: translateY(-50%); transform: translateY(-50%); width: 80%"> 
-              <!-- <button type="button" class="btn btn-light">Light</button> -->
-              <button type="button" class="btn btn-outline-secondary edit-component-button">Border</button>
-              <button type="button" class="btn btn-outline-secondary edit-component-button">Color</button>
-              <button type="button" class="btn btn-outline-secondary edit-component-button">Shadow</button>
-              <button type="button" class="btn btn-outline-secondary edit-component-button">Size</button>
-              <button type="button" class="btn btn-outline-secondary edit-component-button">Padding</button>
-              <button type="button" class="btn btn-outline-secondary edit-component-button">margin</button>
-              <button type="button" class="btn btn-outline-secondary edit-component-button">Shadow</button>
-              <button type="button" class="btn btn-outline-primary edit-component-button">Text</button>
-            </div>
-            <div style="width: 20%; margin-left: 80%; position: relative">
-              <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
-                <button type="button" class="btn btn-secondary">Import</button>
+        <div style="width: 70%; position: relative">
+          <div style="border-radius: 20px; height: 95%; width: 100%; margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); text-align: center"> 
+            
+            <toolbar/>
+
+            <div style="height: 50%; position: relative;">
+              <div v-html="currentlySelectedComponent" style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);" class="foundation">
               </div>
             </div>
-          </div>
-          <div style="height: 17%; position: relative; display: flex">
-            <div style="margin: 0; margin-left: 5%; border: 1px solid grey"> 
-              <!-- <button type="button" class="btn btn-light">Light</button> -->
-              <button type="button" class="btn btn-outline-secondary edit-component-button">Border</button>
-            </div>
-          </div>
-          <div style="height: 50%; position: relative;">
-            <div v-html="currentlySelectedComponent" style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);" class="foundation">
-            </div>
-          </div>
-          <div style="height: 18%; display: flex">
-            <!-- This should probably be moved to the top as it looks better -->
-            
-            <div style="width: 30%; position: relative">
-              <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
-                <div style="text-align: center; margin-bottom: 5px">Size: 0kb</div>
-                <button type="button" class="btn btn-success" @click="downloadCSSFile">Download</button>
+            <div style="height: 18%; display: flex">
+              <!-- This should probably be moved to the top as it looks better -->
+              
+              <div style="width: 30%; position: relative">
+                <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
+                  <div style="text-align: center; margin-bottom: 5px">Size: 0kb</div>
+                  <button type="button" class="btn btn-success" @click="downloadCSSFile">Download</button>
+                </div>
               </div>
             </div>
           </div>
@@ -132,6 +112,7 @@ interface Data {
 import newComponentModalService from '../../../services/workshop/newComponentModal';
 import 'vuesax/dist/vuesax.css' //Vuesax styles
 import downloadFiles from '../../../services/workshop/downloadFiles';
+import toolbar from './toolbar/Toolbar.vue';
 
 export default {
   data: (): Data => ({
@@ -152,7 +133,13 @@ export default {
     },
     downloadCSSFile: (): void => {
       downloadFiles.downloadZip('.uniquebutton { background-color: yellow }');
+    },
+    updateValue: (value1: KeyboardEvent): void => {
+      console.log((value1.target as HTMLInputElement).value);
     }
+  },
+  components: {
+    toolbar,
   }
 };
 
@@ -185,5 +172,9 @@ export default {
     margin-right: 8px;
     border-color: #9d9d9d !important;
     background-color: white !important;
+  }
+  #formControlRange {
+    margin-top: 0.25rem !important;
+    margin-bottom: 0.25rem !important;
   }
 </style>
