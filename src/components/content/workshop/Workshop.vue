@@ -5,11 +5,11 @@
         <div style="width: 30%; position: relative">
           <div id="component-cards" style="background-color: rgb(251 251 251); display: grid; border-radius: 20px; height: 95%; width: 90%; margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); text-align: center">
             <div id="component-cards-container" style="margin-top: 5px">
-              <div v-for="componentTuple in componentCards" :key="componentTuple">
+              <div v-for="component in components" :key="component">
                 <!-- new component -->
-                <div style="cursor: move; width: 18rem; margin: auto; margin-top: 5px" class="card component-card" v-on:click="selectComponentCard(componentTuple[1])" tabindex="0">
+                <div style="cursor: move; width: 18rem; margin: auto; margin-top: 5px" class="card component-card" v-on:click="selectComponentCard(component)" tabindex="0">
                   <div class="card-body">
-                    <h5 style="float: left" class="card-title">{{componentTuple[0]}}</h5>
+                    <h5 style="float: left" class="card-title">{{component.className}}</h5>
                     <a style="float: right" href="#" class="btn btn-danger">Delete</a>
                   </div>
                 </div>
@@ -30,11 +30,15 @@
         <div style="width: 70%; position: relative">
           <div style="border-radius: 20px; height: 95%; width: 100%; margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); text-align: center"> 
             
-            <toolbar/>
+            <!--
+              use this syntax when working with multiple values v-model:currentlySelectedComponent="currentlySelectedComponent"
+              https://v3.vuejs.org/guide/migration/v-model.html#_3-x-syntax
+              <toolbar v-model:currentlySelectedComponent="currentlySelectedComponent"/>
+            -->
+            <toolbar v-model="currentlySelectedComponent.componentProperties.customCss"/>
 
             <div style="height: 50%; position: relative;">
-              <div v-html="currentlySelectedComponent" style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);" class="foundation">
-              </div>
+              <componentPreview :componentProperties="currentlySelectedComponent.componentProperties" />
             </div>
             <div style="height: 18%; display: flex">
               <!-- This should probably be moved to the top as it looks better -->
@@ -48,9 +52,8 @@
             </div>
           </div>
         </div>
+        Text
       </div>
-
-      
       <!-- new component -->
       <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -105,28 +108,52 @@
 <script lang="ts">
 interface Data {
   previewImage: string,
-  componentCards: [string, string][],
-  currentlySelectedComponent: string,
-  value: string,
+  components: [WorkshopComponent],
+  currentlySelectedComponent: WorkshopComponent;
 }
 import newComponentModalService from '../../../services/workshop/newComponentModal';
 import 'vuesax/dist/vuesax.css' //Vuesax styles
 import downloadFiles from '../../../services/workshop/downloadFiles';
 import toolbar from './toolbar/Toolbar.vue';
+import { WorkshopComponent } from '../../../interfaces/workshopComponent';
+import componentPreview from './Component.vue';
 
 export default {
   data: (): Data => ({
     previewImage: 'previewImage',
-    componentCards: [['Button', `<a class="button">Button</a>`]],
-    currentlySelectedComponent: null,
-    value: '',
+    components: [
+      {
+        cardProperties: {
+          type: 'Button',
+        },
+        componentProperties: {
+          frameworkClass: 'foundation',
+          componentClass: 'button',
+          innerHtml: 'button',
+          customCss: {},
+        },
+      className: 'button'
+      },
+    ],
+    currentlySelectedComponent: {
+        cardProperties: {
+          type: 'Button',
+        },
+        componentProperties: {
+          frameworkClass: 'foundation',
+          componentClass: 'button',
+          innerHtml: 'button',
+          customCss: {},
+        },
+      className: 'button'
+      },
   }),
   methods: {
     setComponentPreviewImage: function(componentName: string): void {
       this.previewImage = newComponentModalService.getPreviewImage(componentName);
     },
     addNewComponent: function(componentName: string, componentHTML: string): void {
-      this.componentCards.push([componentName, componentHTML]);
+      this.components.push([componentName, componentHTML]);
     },
     selectComponentCard: function(componentName: string): void {
       this.currentlySelectedComponent = componentName;
@@ -134,12 +161,10 @@ export default {
     downloadCSSFile: (): void => {
       downloadFiles.downloadZip('.uniquebutton { background-color: yellow }');
     },
-    updateValue: (value1: KeyboardEvent): void => {
-      console.log((value1.target as HTMLInputElement).value);
-    }
   },
   components: {
     toolbar,
+    componentPreview,
   }
 };
 

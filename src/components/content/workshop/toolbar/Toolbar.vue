@@ -3,8 +3,10 @@
     <div style="display: flex; background-color: rgb(251 251 251); border-radius: 20px;">
       <div style="margin-left: 10px; padding: 5px">
         <div style="margin-top: 10px; display: flex"> 
-          <button type="button" class="btn btn-outline-secondary edit-component-button">Border</button>
-          <button type="button" class="btn btn-outline-secondary edit-component-button">Color</button>
+          <button type="button" class="btn btn-outline-secondary edit-component-button">Default</button>
+          <button type="button" class="btn btn-outline-secondary edit-component-button">Button</button>
+          <button type="button" class="btn btn-outline-secondary edit-component-button">Code</button>
+          <button type="button" class="btn btn-outline-secondary edit-component-button">Preview</button>
         </div>
         <div style="margin-top: 10px; margin-bottom: 10px"> 
           <button type="button" class="btn btn-outline-secondary edit-component-button">Border</button>
@@ -37,10 +39,10 @@
             </div>
             <div style="width: 85%">
               <div>
-                <input type="range" style="width: 30%;" class="form-control-range" id="formControlRange" value="50" @input="updateValue">
+                <input type="range" style="width: 30%;" class="form-control-range" id="formControlRange" value="50" @input="updateRangeValue">
               </div>
               <div style="margin-top: 14px">
-                <input type="range" style="width: 30%" class="form-control-range" id="formControlRange" value="50" @input="updateValue">
+                <input type="range" style="width: 30%" class="form-control-range" id="formControlRange" value="50" @input="updateRangeValue">
               </div>
             </div>
           </div>
@@ -52,16 +54,27 @@
 
 <script lang="ts">
 interface Data {
-  data?: string,
+  customCss: WorkshopComponentCss;
 }
+import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCss';
 
 export default {
   data: (): Data => ({
+    customCss: {},
   }),
+  mounted(): void {
+    this.customCss = this.modelValue;
+  },
   methods: {
-    updateValue: (value1: KeyboardEvent): void => {
-      console.log((value1.target as HTMLInputElement).value);
+    updateRangeValue(rangeValue: KeyboardEvent): void {
+      this.customCss.borderWidth = `${(rangeValue.target as HTMLInputElement).value}px`;
+      this.customCss.borderStyle = 'solid';
+      this.customCss.borderColor = 'red';
+      this.$emit('update:modelValue', this.customCss);
     }
+  },
+  props: {
+    modelValue: Object,
   }
 };
 
