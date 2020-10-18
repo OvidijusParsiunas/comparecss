@@ -39,7 +39,7 @@
             </div>
             <div style="width: 85%">
               <div>
-                <input type="range" style="width: 30%;" class="form-control-range" id="formControlRange" value="50" @input="updateRangeValue">
+                <input type="range" style="width: 30%;" class="form-control-range" id="formControlRange" min="0" max="100" value="0" @input="updateRangeValue">
               </div>
               <div style="margin-top: 14px">
                 <input type="range" style="width: 30%" class="form-control-range" id="formControlRange" value="50" @input="updateRangeValue">
@@ -67,9 +67,7 @@ export default {
   },
   methods: {
     updateRangeValue(rangeValue: KeyboardEvent): void {
-      this.customCss.borderWidth = `${(rangeValue.target as HTMLInputElement).value}px`;
-      this.customCss.borderStyle = 'solid';
-      this.customCss.borderColor = 'red';
+      this.customCss.borderRadius = `${(rangeValue.target as HTMLInputElement).value as unknown as number / 4}px`;
       this.$emit('update:modelValue', this.customCss);
     }
   },
