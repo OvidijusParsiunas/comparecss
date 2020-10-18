@@ -29,17 +29,13 @@
         </div>
         <div style="width: 70%; position: relative">
           <div style="border-radius: 20px; height: 95%; width: 100%; margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); text-align: center"> 
-            
             <!--
               use this syntax when working with multiple values v-model:currentlySelectedComponent="currentlySelectedComponent"
               https://v3.vuejs.org/guide/migration/v-model.html#_3-x-syntax
               <toolbar v-model:currentlySelectedComponent="currentlySelectedComponent"/>
             -->
             <toolbar v-model="currentlySelectedComponent.componentProperties.customCss"/>
-
-            <div style="height: 50%; position: relative;">
-              <componentPreview :componentProperties="currentlySelectedComponent.componentProperties" />
-            </div>
+            <componentContents style="height: 50%" :componentProperties="currentlySelectedComponent.componentProperties"/>
             <div style="height: 18%; display: flex">
               <!-- This should probably be moved to the top as it looks better -->
               
@@ -52,7 +48,6 @@
             </div>
           </div>
         </div>
-        Text
       </div>
       <!-- new component -->
       <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
@@ -115,8 +110,8 @@ import newComponentModalService from '../../../services/workshop/newComponentMod
 import 'vuesax/dist/vuesax.css' //Vuesax styles
 import downloadFiles from '../../../services/workshop/downloadFiles';
 import toolbar from './toolbar/Toolbar.vue';
+import componentContents from './componentPreview/ComponentPreview.vue';
 import { WorkshopComponent } from '../../../interfaces/workshopComponent';
-import componentPreview from './Component.vue';
 
 export default {
   data: (): Data => ({
@@ -164,7 +159,7 @@ export default {
   },
   components: {
     toolbar,
-    componentPreview,
+    componentContents,
   }
 };
 
