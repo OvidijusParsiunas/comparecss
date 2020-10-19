@@ -138,7 +138,10 @@ export default {
           frameworkClass: 'foundation',
           componentClass: 'button',
           innerHtml: 'button',
-          customCss: {},
+          customCss: {
+            borderRadius: '0px',
+            borderWidth: '0px',
+          },
         },
       className: 'button'
       },
