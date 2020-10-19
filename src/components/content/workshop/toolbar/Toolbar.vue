@@ -22,58 +22,64 @@
     </div>
     <div style="position: relative; display: flex; margin-top: 10px">
       <div style="padding: 15px; background-color: rgb(251 251 251); border-radius: 20px; margin: 0; width: 100%"> 
-        <div class="container">
-          <div class="row">
-            <div style="padding-riggt: 15px; text-align: left">
-              <div>
-                Radius
+        <div class="container" style="display: flex">
+            <div style="width: 40%; display: inherit">
+              <div style="padding-right: 15px; text-align: left">
+                <div>
+                  Radius
+                </div>
+                <div style="margin-top: 5px; padding-right: 15px">
+                  Width
+                </div>
               </div>
-              <div style="margin-top: 5px; padding-right: 15px">
-                Width
-              </div>
-              <div style="margin-top: 5px; padding-right: 15px">
-                Style
-              </div>
-              <div style="margin-top: 5px; padding-right: 15px">
-                Color
+              <div style="width: 85%">
+                <div style="position: relative; width: 70%">
+                  <div v-if="customCss.borderRadius" class="range-popover">
+                    {{customCss.borderRadius}}
+                  </div>
+                  <input type="range" class="form-control-range" id="formControlRange" min="0" max="100" value="0" @mousedown="rangeMouseDown" @mouseup="rangeMouseUp" @input="updateRadius">
+                </div>
+                <div style="position: relative; margin-top: 14px; width: 70%">
+                  <div v-if="customCss.borderWidth" class="range-popover">
+                    {{customCss.borderWidth}}
+                  </div>
+                  <input type="range" class="form-control-range" id="formControlRange"  min="0" max="100" value="0" @mousedown="rangeMouseDown" @mouseup="rangeMouseUp" @input="updateWidth">
+                </div>
               </div>
             </div>
-            <div style="width: 85%">
-              <div style="position: relative; width: 30%">
-                <div v-if="customCss.borderRadius" class="range-popover">
-                  {{customCss.borderRadius}}
+            <div style="width: 50%; display: inherit">
+              <div style="padding-right: 15px; text-align: left">
+                <div style="margin-top: 5px; padding-right: 15px">
+                  Style
                 </div>
-                <input type="range" class="form-control-range" id="formControlRange" min="0" max="100" value="0" @mousedown="rangeMouseDown" @mouseup="rangeMouseUp" @input="updateRadius">
-              </div>
-              <div style="position: relative; margin-top: 14px; width: 30%">
-                <div v-if="customCss.borderWidth" class="range-popover">
-                  {{customCss.borderWidth}}
+                <div style="margin-top: 5px; padding-right: 15px">
+                  Color
                 </div>
-                <input type="range" class="form-control-range" id="formControlRange"  min="0" max="100" value="0" @mousedown="rangeMouseDown" @mouseup="rangeMouseUp" @input="updateWidth">
               </div>
-              <select id="inputState" class="form-control" style="width: 30%; height: 30px; padding: 0">
-                <option selected>none</option>
-                <option @mouseover="styleMouseOver('hidden')">hidden</option>
-                <option @mouseover="styleMouseOver('dotted')">dotted</option>
-                <option>dashed</option>
-                <option>solid</option>
-                <option>double</option>
-                <option>groove</option>
-                <option>ridge</option>
-                <option>inset</option>
-                <option>outset</option>
-                <option>initial</option>
-                <option>inherit</option>
-              </select>
-              <!--
-                IE Compatibility
-                <input type="text" name="clr1" value="" style="display:none"/>
-                <button onclick="var s = Dlg.ChooseColorDlg(clr1.value); window.event.srcElement.style.color = s; clr1.value = s">&#9608;&#9608;&#9608;&#9608;&#9608;</button>
-                <object id="Dlg" classid="CLSID:3050F819-98B5-11CF-BB82-00AA00BDCE0B" width="0" height="0"></object>
-              -->
-              <input @input="colorChanged" style="float: left" type="color" name="clr1" value=""/>
+              <div style="width: 85%;">
+                <select id="inputState" class="form-control" style="width: 30%; height: 30px; padding: 0">
+                  <option selected>none</option>
+                  <option @mouseover="styleMouseOver('hidden')">hidden</option>
+                  <option @mouseover="styleMouseOver('dotted')">dotted</option>
+                  <option>dashed</option>
+                  <option>solid</option>
+                  <option>double</option>
+                  <option>groove</option>
+                  <option>ridge</option>
+                  <option>inset</option>
+                  <option>outset</option>
+                  <option>initial</option>
+                  <option>inherit</option>
+                </select>
+                <!--
+                  IE Compatibility
+                  <input type="text" name="clr1" value="" style="display:none"/>
+                  <button onclick="var s = Dlg.ChooseColorDlg(clr1.value); window.event.srcElement.style.color = s; clr1.value = s">&#9608;&#9608;&#9608;&#9608;&#9608;</button>
+                  <object id="Dlg" classid="CLSID:3050F819-98B5-11CF-BB82-00AA00BDCE0B" width="0" height="0"></object>
+                -->
+                <input @input="colorChanged" style="float: left" type="color" name="clr1" value=""/>
+              </div>
             </div>
-          </div>
         </div>
       </div>
     </div>
