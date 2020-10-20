@@ -1,0 +1,3 @@
+export enum WORKSHOP_TOOLBAR_OPTIONS {
+  BORDER,
+}
