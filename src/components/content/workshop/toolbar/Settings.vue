@@ -55,19 +55,13 @@
 
 <script lang="ts">
 interface Data {
-  customCss: WorkshopComponentCss;
   selectorNewValues: unknown;
 }
-import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCss';
 
 export default {
   data: (): Data => ({
-    customCss: { borderRadius: '0px', borderWidth: '0px'},
     selectorNewValues: {},
   }),
-  mounted(): void {
-    this.customCss = this.modelValue;
-  },
   methods: {
     updateRange(event: KeyboardEvent, cssProperty: string, triggers: any, smoothingDivisible?: number): void {
       (triggers || []).forEach((trigger) => {
@@ -80,13 +74,11 @@ export default {
       });
       const rangeValue = (event.target as HTMLInputElement).value;
       this.customCss[cssProperty] = `${smoothingDivisible ? Math.floor(rangeValue as unknown as number / smoothingDivisible) : rangeValue}px`;
-      this.$emit('update:modelValue', this.customCss);
     },
     updateWidth(event: KeyboardEvent): void {
       if (!this.customCss.borderColor) {this.customCss.borderColor = 'black'}
       this.customCss.borderWidth = `${(event.target as HTMLInputElement).value}px`;
       this.customCss.borderStyle = 'solid';
-      this.$emit('update:modelValue', this.customCss);
     },
     rangeMouseDown(event: KeyboardEvent): void {
       ((event.target as HTMLInputElement).parentElement.childNodes[0] as HTMLElement).style.opacity = '1';
@@ -106,14 +98,13 @@ export default {
     },
     colorChanged(event: KeyboardEvent, cssProperty: string): void {
       this.customCss[cssProperty] = (event.target as HTMLInputElement).value;
-      this.$emit('update:modelValue', this.customCss);
     },
     colorInputClick(): void {
       this.customCss.transition = 'unset';
     }
   },
   props: {
-    modelValue: Object,
+    customCss: Object,
     settings: Object,
   }
 };

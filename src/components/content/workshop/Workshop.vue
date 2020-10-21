@@ -29,16 +29,15 @@
         </div>
         <div style="width: 70%; position: relative">
           <div style="border-radius: 20px; height: 95%; width: 100%; margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); text-align: center"> 
+            <!-- USE V-MODEL when passing down a primitive, otherwise can manipulate the object via reference -->
             <!--
               use this syntax when working with multiple values v-model:currentlySelectedComponent="currentlySelectedComponent"
               https://v3.vuejs.org/guide/migration/v-model.html#_3-x-syntax
               <toolbar v-model:currentlySelectedComponent="currentlySelectedComponent"/>
             -->
-            <toolbar v-model="currentlySelectedComponent.componentProperties.customCss"/>
+            <toolbar :customCss="currentlySelectedComponent.componentProperties.customCss"/>
             <componentContents style="height: 50%" :componentProperties="currentlySelectedComponent.componentProperties"/>
-            <div style="height: 18%; display: flex">
-              <!-- This should probably be moved to the top as it looks better -->
-              
+            <div style="height: 18%; display: flex">              
               <div style="width: 30%; position: relative">
                 <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
                   <div style="text-align: center; margin-bottom: 5px">Size: 0kb</div>

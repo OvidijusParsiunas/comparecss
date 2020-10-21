@@ -11,7 +11,7 @@
         <options @option-clicked="updateSettings($event)"/>
       </div>
     </div>
-    <settings v-model="modelValue" :settings="activeSettings"/>
+    <settings :customCss="customCss" :settings="activeSettings"/>
   </div>
 </template>
 
@@ -33,7 +33,7 @@ export default {
     options,
   },
   props: {
-    modelValue: Object,
+    customCss: Object,
   },
   methods: {
     updateSettings(newSettings: WORKSHOP_TOOLBAR_OPTIONS): void {
