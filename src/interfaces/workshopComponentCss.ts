@@ -4,4 +4,5 @@ export interface WorkshopComponentCss {
   borderColor?: string;
   borderRadius?: string;
   transition?: string;
+  boxShadow?: string;
 }

@@ -11,10 +11,10 @@
                   {{setting.spec.name}}
                 </div>
                 <div style="position: relative; float: left">
-                  <div v-if="customCss[setting.spec.cssProperty]" class="range-popover">
-                    {{customCss[setting.spec.cssProperty]}}
+                  <div class="range-popover">
+                    {{setting.spec.partialCss !== undefined && customCss[setting.spec.cssProperty] ? customCss[setting.spec.cssProperty].split(' ')[setting.spec.partialCss.position] : customCss[setting.spec.cssProperty]}}
                   </div>
-                  <input type="range" class="form-control-range" id="formControlRange" v-bind:min="setting.spec.scale[0]" v-bind:max="setting.spec.scale[1]" v-model="setting.spec.default" @mousedown="rangeMouseDown" @mouseup="rangeMouseUp" @input="updateRange($event, setting.spec.cssProperty, setting.triggers, setting.spec.smoothingDivisible)">
+                  <input type="range" class="form-control-range" id="formControlRange" v-bind:min="setting.spec.scale[0]" v-bind:max="setting.spec.scale[1]" v-model="setting.spec.default" @mousedown="rangeMouseDown" @mouseup="rangeMouseUp" @input="updateRange($event, setting)">
                 </div>
               </div>
 
@@ -42,7 +42,7 @@
                   <button onclick="var s = Dlg.ChooseColorDlg(clr1.value); window.event.srcElement.style.color = s; clr1.value = s">&#9608;&#9608;&#9608;&#9608;&#9608;</button>
                   <object id="Dlg" classid="CLSID:3050F819-98B5-11CF-BB82-00AA00BDCE0B" width="0" height="0"></object>
                 -->
-                <input @click="colorInputClick" @input="colorChanged($event, setting.spec.cssProperty)" style="float: left" type="color" name="clr1" value=""/>
+                <input @click="colorInputClick" @input="colorChanged($event, setting)" style="float: left" type="color" name="clr1" value=""/>
               </div>
 
             </div>
@@ -63,7 +63,9 @@ export default {
     selectorNewValues: {},
   }),
   methods: {
-    updateRange(event: KeyboardEvent, cssProperty: string, triggers: any, smoothingDivisible?: number): void {
+    updateRange(event: KeyboardEvent, setting: any): void {
+      const {triggers, spec} = setting;
+      const {cssProperty, smoothingDivisible, partialCss } = spec;
       (triggers || []).forEach((trigger) => {
         trigger.conditions.forEach((condition) => {
           if (this.customCss[trigger.cssProperty] === condition) {
@@ -73,12 +75,18 @@ export default {
         });
       });
       const rangeValue = (event.target as HTMLInputElement).value;
-      this.customCss[cssProperty] = `${smoothingDivisible ? Math.floor(rangeValue as unknown as number / smoothingDivisible) : rangeValue}px`;
-    },
-    updateWidth(event: KeyboardEvent): void {
-      if (!this.customCss.borderColor) {this.customCss.borderColor = 'black'}
-      this.customCss.borderWidth = `${(event.target as HTMLInputElement).value}px`;
-      this.customCss.borderStyle = 'solid';
+      if (partialCss.position != undefined) {
+        if (this.customCss[cssProperty] === undefined) {
+          partialCss.fullDefaultValues[partialCss.position] = rangeValue;
+          this.customCss[cssProperty] = partialCss.fullDefaultValues.join(' ');
+        } else {
+          const cssPropertyValues = this.customCss[cssProperty].split(' ');
+          cssPropertyValues[partialCss.position] = `${rangeValue}px`;
+          this.customCss[cssProperty] = cssPropertyValues.join(' ');
+        }
+      } else {
+        this.customCss[cssProperty] = `${smoothingDivisible ? Math.floor(rangeValue as unknown as number / smoothingDivisible) : rangeValue}px`;
+      }
     },
     rangeMouseDown(event: KeyboardEvent): void {
       ((event.target as HTMLInputElement).parentElement.childNodes[0] as HTMLElement).style.opacity = '1';
@@ -96,8 +104,21 @@ export default {
       this.customCss[cssProperty] = option;
       this.selectorNewValues[cssProperty] = option;
     },
-    colorChanged(event: KeyboardEvent, cssProperty: string): void {
-      this.customCss[cssProperty] = (event.target as HTMLInputElement).value;
+    colorChanged(event: KeyboardEvent, setting: any): void {
+      const {cssProperty, partialCss } = setting.spec;
+      const colorPickerValue = (event.target as HTMLInputElement).value;
+      if (partialCss != undefined) {
+        if (this.customCss[cssProperty] === undefined) {
+          partialCss.fullDefaultValues[partialCss.position] = colorPickerValue;
+          this.customCss[cssProperty] = partialCss.fullDefaultValues.join(' ');
+        } else {
+          const cssPropertyValues = this.customCss[cssProperty].split(' ');
+          cssPropertyValues[partialCss.position] = colorPickerValue;
+          this.customCss[cssProperty] = cssPropertyValues.join(' ');
+        }
+      } else {
+        this.customCss[cssProperty] = colorPickerValue;
+      }
     },
     colorInputClick(): void {
       this.customCss.transition = 'unset';
