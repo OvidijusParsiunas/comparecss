@@ -1,7 +1,7 @@
 <template>
   <div style="margin-top: 10px; margin-bottom: 10px"> 
     <button type="button" class="btn btn-outline-secondary edit-component-button" @click="optionClick(WORKSHOP_TOOLBAR_OPTIONS.BORDER)">Border</button>
-    <button type="button" class="btn btn-outline-secondary edit-component-button">Color</button>
+    <button type="button" class="btn btn-outline-secondary edit-component-button" @click="optionClick(WORKSHOP_TOOLBAR_OPTIONS.COLOR)">Color</button>
     <button type="button" class="btn btn-outline-secondary edit-component-button">Shadow</button>
     <button type="button" class="btn btn-outline-secondary edit-component-button">Size</button>
     <button type="button" class="btn btn-outline-secondary edit-component-button">Padding</button>

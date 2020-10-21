@@ -127,7 +127,7 @@ export default {
           innerHtml: 'button',
           customCss: {},
         },
-      className: 'button'
+        className: 'button'
       },
     ],
     currentlySelectedComponent: {
@@ -143,7 +143,7 @@ export default {
             borderWidth: '0px',
           },
         },
-      className: 'button'
+        className: 'button'
       },
   }),
   methods: {

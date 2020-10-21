@@ -42,7 +42,7 @@
                   <button onclick="var s = Dlg.ChooseColorDlg(clr1.value); window.event.srcElement.style.color = s; clr1.value = s">&#9608;&#9608;&#9608;&#9608;&#9608;</button>
                   <object id="Dlg" classid="CLSID:3050F819-98B5-11CF-BB82-00AA00BDCE0B" width="0" height="0"></object>
                 -->
-                <input @input="colorChanged($event, setting.spec.cssProperty)" style="float: left" type="color" name="clr1" value=""/>
+                <input @click="colorInputClick" @input="colorChanged($event, setting.spec.cssProperty)" style="float: left" type="color" name="clr1" value=""/>
               </div>
 
             </div>
@@ -107,6 +107,9 @@ export default {
     colorChanged(event: KeyboardEvent, cssProperty: string): void {
       this.customCss[cssProperty] = (event.target as HTMLInputElement).value;
       this.$emit('update:modelValue', this.customCss);
+    },
+    colorInputClick(): void {
+      this.customCss.transition = 'unset';
     }
   },
   props: {
