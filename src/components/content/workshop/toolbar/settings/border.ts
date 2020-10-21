@@ -38,7 +38,7 @@ export default {
       type: 'select',
       spec: {
         name: 'Style',
-        options: ['none', 'hidden', 'dotted', 'dashed', 'solid'],
+        options: ['none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset'],
         default: 'none',
         cssProperty: 'borderStyle'
       },

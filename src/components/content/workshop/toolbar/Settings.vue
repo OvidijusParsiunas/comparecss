@@ -75,7 +75,7 @@ export default {
         });
       });
       const rangeValue = (event.target as HTMLInputElement).value;
-      if (partialCss.position != undefined) {
+      if (partialCss != undefined) {
         if (this.customCss[cssProperty] === undefined) {
           partialCss.fullDefaultValues[partialCss.position] = rangeValue;
           this.customCss[cssProperty] = partialCss.fullDefaultValues.join(' ');
