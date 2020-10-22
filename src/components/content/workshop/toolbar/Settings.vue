@@ -27,7 +27,7 @@
                     {{selectorNewValues[setting.spec.cssProperty] || setting.spec.default}}
                   </button>
                   <div class="dropdown-menu" @mouseleave="selectMenuMouseLeave(setting.spec.cssProperty)" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" @mouseover="selectOptionMouseOver(option, setting.spec.cssProperty)" @click="selectOptionClick(option, setting.spec.cssProperty)" v-for="option in setting.spec.options" :key="option">{{option}}</a>
+                    <a class="dropdown-item" @mouseover="selectOptionMouseOver(option, setting.spec.cssProperty)" @click="selectOptionClick(option, setting.spec)" v-for="option in setting.spec.options" :key="option">{{option}}</a>
                   </div>
                 </div>
               </div>
@@ -67,12 +67,25 @@ export default {
       const {triggers, spec} = setting;
       const {cssProperty, smoothingDivisible, partialCss } = spec;
       (triggers || []).forEach((trigger) => {
-        trigger.conditions.forEach((condition) => {
-          if (this.customCss[trigger.cssProperty] === condition) {
-            this.customCss[trigger.cssProperty] = trigger.defaultValue;
-            if (trigger.selector) { this.selectorNewValues[trigger.cssProperty] = trigger.defaultValue; }
-          }
-        });
+        if (trigger.indirectCssPropertySelector) {
+          this.settings.options.forEach((setting) => {
+              if (setting.cssPlaceholder === trigger.cssProperty) {
+                trigger.conditions.forEach((condition) => {
+                  if (setting.spec.default === condition) {
+                    setting.spec.default = trigger.defaultValue;
+                  }
+                }); 
+              }
+            }
+          )
+        } else {
+          trigger.conditions.forEach((condition) => {
+            if (this.customCss[trigger.cssProperty] === condition) {
+              this.customCss[trigger.cssProperty] = trigger.defaultValue;
+              if (trigger.selector) { this.selectorNewValues[trigger.cssProperty] = trigger.defaultValue; }
+            }
+          }); 
+        }
       });
       const rangeValue = (event.target as HTMLInputElement).value;
       if (partialCss != undefined) {
@@ -100,9 +113,26 @@ export default {
     selectMenuMouseLeave(cssProperty: string): void {
       this.customCss[cssProperty] = this.selectorNewValues[cssProperty];
     },
-    selectOptionClick(option: string, cssProperty: string): void {
-      this.customCss[cssProperty] = option;
-      this.selectorNewValues[cssProperty] = option;
+    selectOptionClick(option: string, spec: any): void {
+      const { cssProperty, triggers, } = spec;
+      if (cssProperty) {
+        this.customCss[cssProperty] = option;
+        this.selectorNewValues[cssProperty] = option;
+      } else if (triggers) {
+        (triggers || []).forEach((trigger) => {
+          if (trigger.option === option) {
+            trigger.newChanges.forEach((change) => {
+              this.customCss[change.cssProperty] = change.value;
+              this.settings.options.forEach((setting) => {
+                if (setting.spec.cssProperty === change.cssProperty) {
+                  setting.spec.default = change.defaultValue;
+                }
+              })
+            })
+          }
+        });
+        spec.default = option;
+      }
     },
     colorChanged(event: KeyboardEvent, setting: any): void {
       const {cssProperty, partialCss } = setting.spec;

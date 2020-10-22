@@ -1,6 +1,6 @@
 <template>
   <div style="position: relative">
-    <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); text-align: center"> 
+    <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); z-index: -1; text-align: center;"> 
       <div :class="componentProperties.frameworkClass">
           <a @mouseover="componentMouseOver(componentProperties.customCss)" :class="componentProperties.componentClass" :style="componentProperties.customCss" v-html="componentProperties.innerHtml"></a>
       </div>

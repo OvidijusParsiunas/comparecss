@@ -3,9 +3,9 @@
     <button type="button" class="btn btn-outline-secondary edit-component-button" @click="optionClick(WORKSHOP_TOOLBAR_OPTIONS.BORDER)">Border</button>
     <button type="button" class="btn btn-outline-secondary edit-component-button" @click="optionClick(WORKSHOP_TOOLBAR_OPTIONS.COLOR)">Color</button>
     <button type="button" class="btn btn-outline-secondary edit-component-button" @click="optionClick(WORKSHOP_TOOLBAR_OPTIONS.SHADOW)">Shadow</button>
-    <button type="button" class="btn btn-outline-secondary edit-component-button">Size</button>
-    <button type="button" class="btn btn-outline-secondary edit-component-button">Padding</button>
-    <button type="button" class="btn btn-outline-secondary edit-component-button">margin</button>
+    <button type="button" class="btn btn-outline-secondary edit-component-button" @click="optionClick(WORKSHOP_TOOLBAR_OPTIONS.SIZE)">Size</button>
+    <button type="button" class="btn btn-outline-secondary edit-component-button" @click="optionClick(WORKSHOP_TOOLBAR_OPTIONS.PADDING)">Padding</button>
+    <button type="button" class="btn btn-outline-secondary edit-component-button" @click="optionClick(WORKSHOP_TOOLBAR_OPTIONS.MARGIN)">Margin</button>
     <button type="button" class="btn btn-outline-secondary edit-component-button">Shadow</button>
     <button type="button" class="btn btn-outline-primary edit-component-button">Text</button>
   </div>
