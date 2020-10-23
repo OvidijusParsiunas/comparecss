@@ -5,4 +5,5 @@ export enum WORKSHOP_TOOLBAR_OPTIONS {
   SIZE,
   PADDING,
   MARGIN,
+  TEXT,
 }

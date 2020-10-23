@@ -6,8 +6,7 @@
     <button type="button" class="btn btn-outline-secondary edit-component-button" @click="optionClick(WORKSHOP_TOOLBAR_OPTIONS.SIZE)">Size</button>
     <button type="button" class="btn btn-outline-secondary edit-component-button" @click="optionClick(WORKSHOP_TOOLBAR_OPTIONS.PADDING)">Padding</button>
     <button type="button" class="btn btn-outline-secondary edit-component-button" @click="optionClick(WORKSHOP_TOOLBAR_OPTIONS.MARGIN)">Margin</button>
-    <button type="button" class="btn btn-outline-secondary edit-component-button">Shadow</button>
-    <button type="button" class="btn btn-outline-primary edit-component-button">Text</button>
+    <button type="button" class="btn btn-outline-primary edit-component-button" @click="optionClick(WORKSHOP_TOOLBAR_OPTIONS.TEXT)">Text</button>
   </div>
 </template>
 

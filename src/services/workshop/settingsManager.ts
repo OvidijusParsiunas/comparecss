@@ -4,6 +4,7 @@ import Shadow from '../../components/content/workshop/toolbar/settings/shadow';
 import Size from '../../components/content/workshop/toolbar/settings/size';
 import Padding from '../../components/content/workshop/toolbar/settings/padding';
 import Margin from '../../components/content/workshop/toolbar/settings/margin';
+import Text from '../../components/content/workshop/toolbar/settings/text';
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../consts/workshopToolbarOptions';
 
 export default class SettingsManager {
@@ -21,6 +22,8 @@ export default class SettingsManager {
         return Padding;
       case WORKSHOP_TOOLBAR_OPTIONS.MARGIN:
         return Margin;
+      case WORKSHOP_TOOLBAR_OPTIONS.TEXT:
+        return Text;
       default:
         return 'placeholder'
     }
