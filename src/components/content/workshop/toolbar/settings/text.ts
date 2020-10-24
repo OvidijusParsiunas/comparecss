@@ -12,38 +12,6 @@ export default {
         },
       },
       { 
-        type: 'range',
-        spec: {
-          name: 'Width',
-          default: 0,
-          scale: [0, 100],
-          smoothingDivisible: 4,
-          cssProperty: 'borderWidth'
-        },
-        triggers: [
-          {
-            cssProperty: 'borderColor',
-            defaultValue: 'black',
-            conditions: [undefined],
-          },
-          {
-            cssProperty: 'borderStyle',
-            defaultValue: 'solid',
-            conditions: [undefined, 'none', 'hidden'],
-            selector: true,
-          }
-        ]
-      },
-      { 
-        type: 'select',
-        spec: {
-          name: 'Style',
-          options: ['none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset'],
-          default: 'none',
-          cssProperty: 'borderStyle'
-        },
-      },
-      { 
         type: 'colorPicker',
         spec: {
           name: 'Color',
@@ -54,11 +22,23 @@ export default {
       { 
         type: 'inputDropdown',
         spec: {
-          name: 'font',
+          name: 'Font',
           options: ['Poppins', 'Accordion', 'Lato', 'cursive', 'sans-serif', 'groove', 'ridge', 'inset', 'outset'],
           cssProperty: 'fontFamily'
         },
-      }
+      },
+      {
+        type: 'checkbox',
+        spec: {
+          name: 'Centered',
+          default: false,
+          conditionalStyle: {
+            truthy: 'table-cell',
+            falsy: '',
+          },
+          cssProperty: 'display'
+        },
+      },
     ]
   };
   

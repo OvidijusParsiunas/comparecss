@@ -59,6 +59,13 @@
                   </div>
                 </div>
               </div>
+
+              <div style="display: flex" v-if="setting.type === 'checkbox'">
+                <div style="text-align: left">
+                  {{setting.spec.name}}
+                </div>
+                <input type="checkbox" id="exampleCheck1" v-model="setting.spec.default" @click="check(setting.spec.default, setting.spec)">
+              </div>
             </div>
           </div>
         </div>
@@ -190,6 +197,11 @@ export default {
     },
     colorInputClick(): void {
       this.customCss.transition = 'unset';
+    },
+    check(previousCheckboxValue: boolean, spec: any): void {
+      const { conditionalStyle, cssProperty} = spec;
+      const cssValue = !previousCheckboxValue ? conditionalStyle.truthy : conditionalStyle.falsy;
+      this.customCss[cssProperty] = cssValue;
     }
   },
   props: {

@@ -25,3 +25,9 @@ export default {
   }
 };
 </script>
+
+<style css="scoped">
+  .foundation .button {
+    margin: unset !important;
+  }
+</style>

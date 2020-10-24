@@ -1,3 +1,6 @@
+button to switch between px, em
+if button height exceeds certain threshold - only then should the 'Centered' setting be displayed in the 'Text' panel
+
 use native implementation of vuesax when it is compatible with vue 3
 
 https://www.bannersnack.com/generator.html
