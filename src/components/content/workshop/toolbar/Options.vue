@@ -1,20 +1,28 @@
 <template>
-  <div style="margin-top: 10px; margin-bottom: 10px"> 
-    <button type="button" class="btn btn-outline-secondary edit-component-button" @click="optionClick(WORKSHOP_TOOLBAR_OPTIONS.BORDER)">Border</button>
-    <button type="button" class="btn btn-outline-secondary edit-component-button" @click="optionClick(WORKSHOP_TOOLBAR_OPTIONS.COLOR)">Color</button>
-    <button type="button" class="btn btn-outline-secondary edit-component-button" @click="optionClick(WORKSHOP_TOOLBAR_OPTIONS.SHADOW)">Shadow</button>
-    <button type="button" class="btn btn-outline-secondary edit-component-button" @click="optionClick(WORKSHOP_TOOLBAR_OPTIONS.SIZE)">Size</button>
-    <button type="button" class="btn btn-outline-secondary edit-component-button" @click="optionClick(WORKSHOP_TOOLBAR_OPTIONS.PADDING)">Padding</button>
-    <button type="button" class="btn btn-outline-secondary edit-component-button" @click="optionClick(WORKSHOP_TOOLBAR_OPTIONS.MARGIN)">Margin</button>
-    <button type="button" class="btn btn-outline-primary edit-component-button" @click="optionClick(WORKSHOP_TOOLBAR_OPTIONS.TEXT)">Text</button>
+  <div style="margin-top: 10px; margin-bottom: 10px">
+    <div style="float: left" class="edit-component-button">
+      <select class="form-control" v-model="selectedMode" @change="dropdownValueChange">
+        <option>Default</option>
+        <option>Hover</option>
+        <option>Click</option>
+      </select>
+    </div>
+    <button v-for="(option) in buttonOptions[selectedMode]" :key="option"
+      type="button" class="btn btn-outline-secondary edit-component-button"
+      @click="optionClick(...option.clickParams)">
+        {{option.buttonName}}
+    </button>
   </div>
 </template>
 
 <script lang="ts">
+import buttonOptions from './options/button';
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOptions';
 export default {
-  data: (): {WORKSHOP_TOOLBAR_OPTIONS} => ({
+  data: (): {WORKSHOP_TOOLBAR_OPTIONS, buttonOptions, selectedMode: string} => ({
     WORKSHOP_TOOLBAR_OPTIONS,
+    selectedMode: 'Default',
+    buttonOptions,
   }),
   props: {
     modelValue: Object,
@@ -22,6 +30,9 @@ export default {
   methods: {
     optionClick(option: WORKSHOP_TOOLBAR_OPTIONS): void {
       this.$emit('option-clicked', option);
+    },
+    dropdownValueChange(event: Event): void {
+      console.log((event.target as HTMLInputElement).value);
     }
   }
 };
