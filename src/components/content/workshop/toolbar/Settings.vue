@@ -12,7 +12,9 @@
                 </div>
                 <div style="position: relative; float: left">
                   <div class="range-popover">
-                    {{setting.spec.partialCss !== undefined && componentProperties.customCss[componentProperties.customCssActiveMode][setting.spec.cssProperty] ? componentProperties.customCss[componentProperties.customCssActiveMode][setting.spec.cssProperty].split(' ')[setting.spec.partialCss.position] : componentProperties.customCss[componentProperties.customCssActiveMode][setting.spec.cssProperty]}}
+                    {{setting.spec.partialCss !== undefined && componentProperties.customCss[componentProperties.customCssActiveMode][setting.spec.cssProperty]
+                      ? componentProperties.customCss[componentProperties.customCssActiveMode][setting.spec.cssProperty].split(' ')[setting.spec.partialCss.position]
+                      : componentProperties.customCss[componentProperties.customCssActiveMode][setting.spec.cssProperty]}}
                   </div>
                   <input type="range" class="form-control-range" id="formControlRange" v-bind:min="setting.spec.scale[0]" v-bind:max="setting.spec.scale[1]" v-model="setting.spec.default" @mousedown="rangeMouseDown" @mouseup="rangeMouseUp" @input="updateRange($event, setting)">
                 </div>
@@ -42,7 +44,7 @@
                   <button onclick="var s = Dlg.ChooseColorDlg(clr1.value); window.event.srcElement.style.color = s; clr1.value = s">&#9608;&#9608;&#9608;&#9608;&#9608;</button>
                   <object id="Dlg" classid="CLSID:3050F819-98B5-11CF-BB82-00AA00BDCE0B" width="0" height="0"></object>
                 -->
-                <input @click="colorInputClick" @input="colorChanged($event, setting)" style="float: left" type="color" name="clr1" value=""/>
+                <input @click="colorInputClick" @input="colorChanged($event, setting)" style="float: left" type="color" name="clr1" v-bind:value="setting.spec.default"/>
               </div>
 
               <div style="display: flex" v-if="setting.type === 'inputDropdown'">
@@ -79,12 +81,24 @@
 interface Data {
   selectorNewValues: unknown;
   inputDropdownNewValues: unknown;
+  resetSettings: () => void;
 }
 
 export default {
   data: (): Data => ({
     selectorNewValues: {},
     inputDropdownNewValues: {},
+    resetSettings: function() {
+      (this.settings.options || []).forEach((setting) => {
+        if (setting.type === 'range') {
+          const currentValue = this.componentProperties.customCss[this.componentProperties.customCssActiveMode][setting.spec.cssProperty];
+          if (currentValue) { setting.spec.default = parseInt(currentValue.substring(0, currentValue.length - 2), 10) * setting.spec.smoothingDivisible; }
+        } else if (setting.type === 'colorPicker') {
+          const currentValue = this.componentProperties.customCss[this.componentProperties.customCssActiveMode][setting.spec.cssProperty];
+          if (currentValue) { setting.spec.default = setting.spec.partialCss ? currentValue.split(' ')[setting.spec.partialCss.position] : currentValue }
+        }
+      })
+    }
   }),
   methods: {
     updateRange(event: KeyboardEvent, setting: any): void {
@@ -122,7 +136,7 @@ export default {
           this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] = cssPropertyValues.join(' ');
         }
       } else {
-        this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] = `${smoothingDivisible ? Math.floor(rangeValue as unknown as number / smoothingDivisible) : rangeValue}px`;
+        this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] = `${Math.floor(rangeValue as unknown as number / smoothingDivisible)}px`;
       }
     },
     rangeMouseDown(event: KeyboardEvent): void {
@@ -208,6 +222,15 @@ export default {
   props: {
     componentProperties: Object,
     settings: Object,
+    settingsResetTriggered: Boolean,
+  },
+  watch: {
+    settings(): void {
+      this.resetSettings();
+    },
+    settingsResetTriggered(): void {
+      this.resetSettings();
+    }
   }
 };
 

@@ -5,7 +5,7 @@ export default {
       type: 'colorPicker',
       spec: {
         name: 'Background Color',
-        default: 'black',
+        default: '#000000',
         cssProperty: 'backgroundColor'
       },
     }

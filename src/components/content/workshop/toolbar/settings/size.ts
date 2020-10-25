@@ -7,6 +7,7 @@ export default {
         name: 'Width',
         default: 0,
         scale: [0, 250],
+        smoothingDivisible: 1,
         cssProperty: 'width'
       },
       triggers: [
@@ -24,6 +25,7 @@ export default {
         name: 'Height',
         default: 0,
         scale: [0, 250],
+        smoothingDivisible: 1,
         cssProperty: 'height'
       },
       triggers: [

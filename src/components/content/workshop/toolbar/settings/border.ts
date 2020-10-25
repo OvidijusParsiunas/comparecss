@@ -23,7 +23,7 @@ export default {
       triggers: [
         {
           cssProperty: 'borderColor',
-          defaultValue: 'black',
+          defaultValue: '#000000',
           conditions: [undefined],
         },
         {

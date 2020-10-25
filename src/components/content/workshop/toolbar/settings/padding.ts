@@ -7,6 +7,7 @@ export default {
         name: 'Left',
         default: 0,
         scale: [0, 250],
+        smoothingDivisible: 1,
         cssProperty: 'paddingLeft'
       },
       triggers: [
@@ -24,6 +25,7 @@ export default {
         name: 'Top',
         default: 0,
         scale: [0, 250],
+        smoothingDivisible: 1,
         cssProperty: 'paddingTop'
       },
       triggers: [
@@ -41,6 +43,7 @@ export default {
         name: 'Right',
         default: 0,
         scale: [0, 250],
+        smoothingDivisible: 1,
         cssProperty: 'paddingRight'
       },
       triggers: [
@@ -58,6 +61,7 @@ export default {
         name: 'Bottom',
         default: 0,
         scale: [0, 250],
+        smoothingDivisible: 1,
         cssProperty: 'paddingBottom'
       },
       triggers: [

@@ -11,7 +11,7 @@
         <options :componentProperties="componentProperties" @option-clicked="updateSettings" @mode-clicked="updateMode"/>
       </div>
     </div>
-    <settings :componentProperties="componentProperties" :settings="activeSettings"/>
+    <settings :componentProperties="componentProperties" :settings="activeSettings" :settingsResetTriggered="settingsResetTriggered"/>
   </div>
 </template>
 
@@ -19,6 +19,7 @@
 interface Data {
   activeSettings: any,
   activeMode: BUTTON_COMPONENT_MODES,
+  settingsResetTriggered: boolean,
 }
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOptions';
 import { BUTTON_COMPONENT_MODES } from '../../../../consts/buttonComponentModes.enum';
@@ -30,6 +31,7 @@ export default {
   data: (): Data => ({
     activeSettings: {},
     activeMode: BUTTON_COMPONENT_MODES.DEFAULT,
+    settingsResetTriggered: null,
   }),
   components: {
     settings,
@@ -42,6 +44,7 @@ export default {
     updateSettings(newSettings: WORKSHOP_TOOLBAR_OPTIONS): void {
       if (newSettings === WORKSHOP_TOOLBAR_OPTIONS.RESET) {
         SettingsManager.resetComponentProperties(this.componentProperties, this.activeMode);
+        this.settingsResetTriggered = !this.settingsResetTriggered;
       } else {
         this.activeSettings = SettingsManager.getSettings(newSettings);
       }
