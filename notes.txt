@@ -1,6 +1,6 @@
-reset button
 margin assistance
-material style click animationdf
+material style click animation
+starting data
 
 button to switch between px, em
 if button height exceeds certain threshold - only then should the 'Centered' setting be displayed in the 'Text' panel

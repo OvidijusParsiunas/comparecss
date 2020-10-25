@@ -6,6 +6,8 @@ import Padding from '../../components/content/workshop/toolbar/settings/padding'
 import Margin from '../../components/content/workshop/toolbar/settings/margin';
 import Text from '../../components/content/workshop/toolbar/settings/text';
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../consts/workshopToolbarOptions';
+import { BUTTON_COMPONENT_MODES } from '../../consts/buttonComponentModes.enum';
+import { ComponentProperties } from '../../interfaces/workshopComponent';
 
 export default class SettingsManager {
   static getSettings(clickedOptionName: WORKSHOP_TOOLBAR_OPTIONS): any {
@@ -27,6 +29,10 @@ export default class SettingsManager {
       default:
         return 'placeholder'
     }
+  }
+
+  static resetComponentProperties(componentProperties: ComponentProperties, activeMode: BUTTON_COMPONENT_MODES): any {
+    componentProperties.customCss[activeMode] = { ...componentProperties.initialCss[activeMode] };
   }
 }
   

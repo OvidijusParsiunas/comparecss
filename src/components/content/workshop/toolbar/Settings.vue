@@ -208,13 +208,6 @@ export default {
   props: {
     componentProperties: Object,
     settings: Object,
-    activeModeChange: String,
-  },
-  // may potentially have to remove this
-  watch: {
-    activeModeChange(): void {
-      console.log('potentially removed');
-    }
   }
 };
 

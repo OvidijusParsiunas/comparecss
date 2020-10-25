@@ -134,6 +134,14 @@ export default {
             [BUTTON_COMPONENT_MODES.HOVER]: {},
             [BUTTON_COMPONENT_MODES.CLICK]: {},
           },
+          initialCss: {
+            [BUTTON_COMPONENT_MODES.DEFAULT]: {
+              borderRadius: '0px',
+              borderWidth: '0px',
+            },
+            [BUTTON_COMPONENT_MODES.HOVER]: {},
+            [BUTTON_COMPONENT_MODES.CLICK]: {},
+          },
           customCssActiveMode: BUTTON_COMPONENT_MODES.DEFAULT,
         },
         className: 'button'
@@ -148,6 +156,22 @@ export default {
         componentClass: 'button',
         innerHtml: 'button',
         customCss: {
+          [BUTTON_COMPONENT_MODES.DEFAULT]: {
+            borderRadius: '0px',
+            borderWidth: '0px',
+          },
+          [BUTTON_COMPONENT_MODES.HOVER]: {
+            borderRadius: '0px',
+            borderWidth: '0px',
+            backgroundColor: 'blue',
+          },
+          [BUTTON_COMPONENT_MODES.CLICK]: {
+            borderRadius: '0px',
+            borderWidth: '0px',
+            backgroundColor: 'green',
+          },
+        },
+        initialCss: {
           [BUTTON_COMPONENT_MODES.DEFAULT]: {
             borderRadius: '0px',
             borderWidth: '0px',

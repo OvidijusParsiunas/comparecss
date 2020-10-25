@@ -2,14 +2,15 @@ import { WorkshopComponentCss } from './workshopComponentCss';
 import { BUTTON_COMPONENT_MODES } from '../consts/buttonComponentModes.enum';
 
 type CustomCss = {
-  [key in BUTTON_COMPONENT_MODES]?: WorkshopComponentCss
+  [key in BUTTON_COMPONENT_MODES]?: WorkshopComponentCss;
 }
 
-interface ComponentProperties {
+export interface ComponentProperties {
   frameworkClass: string;
   componentClass: string;
   innerHtml: string;
   customCss: CustomCss;
+  initialCss: CustomCss;
   customCssActiveMode?: BUTTON_COMPONENT_MODES;
 }
 

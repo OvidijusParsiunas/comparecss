@@ -11,7 +11,7 @@
         <options :componentProperties="componentProperties" @option-clicked="updateSettings" @mode-clicked="updateMode"/>
       </div>
     </div>
-    <settings :componentProperties="componentProperties" :settings="activeSettings" :activeModeChange="activeMode"/>
+    <settings :componentProperties="componentProperties" :settings="activeSettings"/>
   </div>
 </template>
 
@@ -40,9 +40,14 @@ export default {
   },
   methods: {
     updateSettings(newSettings: WORKSHOP_TOOLBAR_OPTIONS): void {
-      this.activeSettings = SettingsManager.getSettings(newSettings);
+      if (newSettings === WORKSHOP_TOOLBAR_OPTIONS.RESET) {
+        SettingsManager.resetComponentProperties(this.componentProperties, this.activeMode);
+      } else {
+        this.activeSettings = SettingsManager.getSettings(newSettings);
+      }
     },
-    updateMode(): void {
+    updateMode(event: WORKSHOP_TOOLBAR_OPTIONS): void {
+      this.activeMode = event;
       this.activeSettings = {};
     }
   }

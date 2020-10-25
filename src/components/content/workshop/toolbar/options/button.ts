@@ -32,6 +32,10 @@ export default {
       buttonName: 'Text',
       clickParams: [ WORKSHOP_TOOLBAR_OPTIONS.TEXT ]
     },
+    {
+      buttonName: 'Reset',
+      clickParams: [ WORKSHOP_TOOLBAR_OPTIONS.RESET ]
+    },
   ],
   [BUTTON_COMPONENT_MODES.HOVER]: [
     {
@@ -50,6 +54,10 @@ export default {
       buttonName: 'Text',
       clickParams: [ WORKSHOP_TOOLBAR_OPTIONS.TEXT ]
     },
+    {
+      buttonName: 'Reset',
+      clickParams: [ WORKSHOP_TOOLBAR_OPTIONS.RESET ]
+    },
   ],
   [BUTTON_COMPONENT_MODES.CLICK]: [
     {
@@ -67,6 +75,10 @@ export default {
     {
       buttonName: 'Text',
       clickParams: [ WORKSHOP_TOOLBAR_OPTIONS.TEXT ]
+    },
+    {
+      buttonName: 'Reset',
+      clickParams: [ WORKSHOP_TOOLBAR_OPTIONS.RESET ]
     },
   ],
 };

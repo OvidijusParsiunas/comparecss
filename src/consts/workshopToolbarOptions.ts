@@ -6,4 +6,5 @@ export enum WORKSHOP_TOOLBAR_OPTIONS {
   PADDING,
   MARGIN,
   TEXT,
+  RESET,
 }
