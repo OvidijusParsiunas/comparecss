@@ -5,6 +5,8 @@
         <a
           @mouseover="componentMouseOver(componentProperties.customCss)"
           @mouseleave="componentMouseLeave(componentProperties.customCss)"
+          @mousedown="componentMouseDown(componentProperties.customCss)"
+          @mouseup="componentMouseUp(componentProperties.customCss)"
           :class="componentProperties.componentClass"
           :style="componentProperties.customCss[componentProperties.customCssActiveMode]"
           v-html="componentProperties.innerHtml">
@@ -19,8 +21,9 @@ import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCs
 import { BUTTON_COMPONENT_MODES } from '../../../../consts/buttonComponentModes.enum';
 
 export default {
-  data: (): { overwrittenDefaultPropertiesByHover: unknown } => ({
+  data: (): { overwrittenDefaultPropertiesByHover: unknown, overwrittenDefaultPropertiesByClick: unknown } => ({
     overwrittenDefaultPropertiesByHover: {},
+    overwrittenDefaultPropertiesByClick: {},
   }),
   methods: {
     componentMouseOver(customCss: WorkshopComponentCss): void {
@@ -34,11 +37,22 @@ export default {
         Object.keys(customCss[BUTTON_COMPONENT_MODES.HOVER]).forEach((key) => {
           this.overwrittenDefaultPropertiesByHover[key] = customCss[BUTTON_COMPONENT_MODES.DEFAULT][key];
           customCss[BUTTON_COMPONENT_MODES.DEFAULT][key] = customCss[BUTTON_COMPONENT_MODES.HOVER][key];
-        })
+        });
       }
     },
     componentMouseLeave(customCss: WorkshopComponentCss): void {
       customCss[BUTTON_COMPONENT_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByHover };
+    },
+    componentMouseDown(customCss: WorkshopComponentCss): void {
+      if (this.componentProperties.customCssActiveMode === BUTTON_COMPONENT_MODES.DEFAULT) {
+        Object.keys(customCss[BUTTON_COMPONENT_MODES.CLICK]).forEach((key) => {
+          this.overwrittenDefaultPropertiesByClick[key] = customCss[BUTTON_COMPONENT_MODES.DEFAULT][key];
+          customCss[BUTTON_COMPONENT_MODES.DEFAULT][key] = customCss[BUTTON_COMPONENT_MODES.CLICK][key];
+        });
+      }
+    },
+    componentMouseUp(customCss: WorkshopComponentCss): void {
+      customCss[BUTTON_COMPONENT_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByClick };
     }
   },
   props: {
