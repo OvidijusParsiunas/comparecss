@@ -151,14 +151,17 @@ export default {
           [BUTTON_COMPONENT_MODES.DEFAULT]: {
             borderRadius: '0px',
             borderWidth: '0px',
-            backgroundColor: 'red',
           },
           [BUTTON_COMPONENT_MODES.HOVER]: {
             borderRadius: '0px',
             borderWidth: '0px',
             backgroundColor: 'blue',
           },
-          [BUTTON_COMPONENT_MODES.CLICK]: {},
+          [BUTTON_COMPONENT_MODES.CLICK]: {
+            borderRadius: '0px',
+            borderWidth: '0px',
+            backgroundColor: 'green',
+          },
         },
         customCssActiveMode: BUTTON_COMPONENT_MODES.DEFAULT,
       },
