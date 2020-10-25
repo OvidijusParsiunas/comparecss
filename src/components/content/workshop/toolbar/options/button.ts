@@ -1,8 +1,9 @@
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../consts/workshopToolbarOptions';
+import { BUTTON_COMPONENT_MODES } from '../../../../../consts/buttonComponentModes.enum';
 
 // use consts for Default, Hover, Click properties
 export default {
-  Default: [
+  [BUTTON_COMPONENT_MODES.DEFAULT]: [
     {
       buttonName: 'Border',
       clickParams: [ WORKSHOP_TOOLBAR_OPTIONS.BORDER ]
@@ -32,7 +33,7 @@ export default {
       clickParams: [ WORKSHOP_TOOLBAR_OPTIONS.TEXT ]
     },
   ],
-  Hover: [
+  [BUTTON_COMPONENT_MODES.HOVER]: [
     {
       buttonName: 'Border',
       clickParams: [ WORKSHOP_TOOLBAR_OPTIONS.BORDER ]
@@ -50,7 +51,7 @@ export default {
       clickParams: [ WORKSHOP_TOOLBAR_OPTIONS.TEXT ]
     },
   ],
-  Click: [
+  [BUTTON_COMPONENT_MODES.CLICK]: [
     {
       buttonName: 'Border',
       clickParams: [ WORKSHOP_TOOLBAR_OPTIONS.BORDER ]

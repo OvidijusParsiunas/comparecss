@@ -34,8 +34,9 @@
               use this syntax when working with multiple values v-model:currentlySelectedComponent="currentlySelectedComponent"
               https://v3.vuejs.org/guide/migration/v-model.html#_3-x-syntax
               <toolbar v-model:currentlySelectedComponent="currentlySelectedComponent"/>
+              'vue/no-v-model-argument': 'off',
             -->
-            <toolbar :customCss="currentlySelectedComponent.componentProperties.customCss"/>
+            <toolbar :componentProperties="currentlySelectedComponent.componentProperties"/>
             <componentContents style="height: 50%" :componentProperties="currentlySelectedComponent.componentProperties"/>
             <div style="height: 18%; display: flex">              
               <div style="width: 30%; position: relative">
@@ -111,6 +112,7 @@ import downloadFiles from '../../../services/workshop/downloadFiles';
 import toolbar from './toolbar/Toolbar.vue';
 import componentContents from './componentPreview/ComponentPreview.vue';
 import { WorkshopComponent } from '../../../interfaces/workshopComponent';
+import { BUTTON_COMPONENT_MODES } from '../../../consts/buttonComponentModes.enum';
 
 export default {
   data: (): Data => ({
@@ -124,26 +126,44 @@ export default {
           frameworkClass: 'foundation',
           componentClass: 'button',
           innerHtml: 'button',
-          customCss: {},
+          customCss: {
+            [BUTTON_COMPONENT_MODES.DEFAULT]: {
+              borderRadius: '0px',
+              borderWidth: '0px',
+            },
+            [BUTTON_COMPONENT_MODES.HOVER]: {},
+            [BUTTON_COMPONENT_MODES.CLICK]: {},
+          },
+          customCssActiveMode: BUTTON_COMPONENT_MODES.DEFAULT,
         },
         className: 'button'
       },
     ],
     currentlySelectedComponent: {
-        cardProperties: {
-          type: 'Button',
-        },
-        componentProperties: {
-          frameworkClass: 'foundation',
-          componentClass: 'button',
-          innerHtml: 'button',
-          customCss: {
+      cardProperties: {
+        type: 'Button',
+      },
+      componentProperties: {
+        frameworkClass: 'foundation',
+        componentClass: 'button',
+        innerHtml: 'button',
+        customCss: {
+          [BUTTON_COMPONENT_MODES.DEFAULT]: {
             borderRadius: '0px',
             borderWidth: '0px',
+            backgroundColor: 'red',
           },
+          [BUTTON_COMPONENT_MODES.HOVER]: {
+            borderRadius: '0px',
+            borderWidth: '0px',
+            backgroundColor: 'blue',
+          },
+          [BUTTON_COMPONENT_MODES.CLICK]: {},
         },
-        className: 'button'
+        customCssActiveMode: BUTTON_COMPONENT_MODES.DEFAULT,
       },
+      className: 'button'
+    },
   }),
   methods: {
     setComponentPreviewImage: function(componentName: string): void {

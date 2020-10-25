@@ -2,7 +2,13 @@
   <div style="position: relative">
     <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); z-index: 0; text-align: center;"> 
       <div :class="componentProperties.frameworkClass">
-          <a @mouseover="componentMouseOver(componentProperties.customCss)" @mouseleave="componentMouseLeave(componentProperties.customCss)" :class="componentProperties.componentClass" :style="componentProperties.customCss" v-html="componentProperties.innerHtml"></a>
+        <a
+          @mouseover="componentMouseOver(componentProperties.customCss[componentProperties.customCssActiveMode])"
+          @mouseleave="componentMouseLeave(componentProperties.customCss[componentProperties.customCssActiveMode])"
+          :class="componentProperties.componentClass"
+          :style="componentProperties.customCss[componentProperties.customCssActiveMode]"
+          v-html="componentProperties.innerHtml">
+        </a>
       </div>
     </div>
   </div>

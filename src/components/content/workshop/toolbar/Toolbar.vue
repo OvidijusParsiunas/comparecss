@@ -8,18 +8,20 @@
           <button type="button" class="btn btn-outline-secondary edit-component-button">Code</button>
           <button type="button" class="btn btn-outline-secondary edit-component-button">Preview</button>
         </div>
-        <options @option-clicked="updateSettings($event)"/>
+        <options :componentProperties="componentProperties" @option-clicked="updateSettings" @mode-clicked="updateMode"/>
       </div>
     </div>
-    <settings :customCss="customCss" :settings="activeSettings"/>
+    <settings :componentProperties="componentProperties" :settings="activeSettings" :activeModeChange="activeMode"/>
   </div>
 </template>
 
 <script lang="ts">
 interface Data {
   activeSettings: any,
+  activeMode: BUTTON_COMPONENT_MODES,
 }
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOptions';
+import { BUTTON_COMPONENT_MODES } from '../../../../consts/buttonComponentModes.enum';
 import SettingsManager from '../../../../services/workshop/settingsManager';
 import settings from './Settings.vue';
 import options from './Options.vue';
@@ -27,17 +29,21 @@ import options from './Options.vue';
 export default {
   data: (): Data => ({
     activeSettings: {},
+    activeMode: BUTTON_COMPONENT_MODES.DEFAULT,
   }),
   components: {
     settings,
     options,
   },
   props: {
-    customCss: Object,
+    componentProperties: Object,
   },
   methods: {
     updateSettings(newSettings: WORKSHOP_TOOLBAR_OPTIONS): void {
       this.activeSettings = SettingsManager.getSettings(newSettings);
+    },
+    updateMode(): void {
+      this.activeSettings = {};
     }
   }
 };
