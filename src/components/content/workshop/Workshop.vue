@@ -183,7 +183,7 @@ export default {
             backgroundColor: '#1779ba',
             borderColor: '#1779ba',
             boxShadow: '0px 0px 0px 0px #000000',
-         },
+          },
           [BUTTON_COMPONENT_MODES.HOVER]: {
             borderRadius: '0px',
             borderWidth: '0px',

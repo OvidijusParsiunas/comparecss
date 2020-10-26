@@ -6,4 +6,6 @@ export interface WorkshopComponentCss {
   transition?: string;
   boxShadow?: string;
   backgroundColor?: string;
+  width?: string;
+  height?: string;
 }

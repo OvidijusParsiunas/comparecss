@@ -49,12 +49,12 @@ export default {
             newChanges: [
               {
                 cssProperty: 'width',
-                value: 'auto',
+                value: '',
                 defaultValue: 0,
               },
               {
                 cssProperty: 'height',
-                value: 'auto',
+                value: '',
                 defaultValue: 0,
               }
             ],

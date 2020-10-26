@@ -89,10 +89,29 @@ export default {
     selectorNewValues: {},
     inputDropdownNewValues: {},
     resetSettings: function() {
+      this.selectorNewValues = {};
+      this.inputDropdownNewValues = {};
       (this.settings.options || []).forEach((setting) => {
         if (setting.type === 'range') {
           const currentValue = this.componentProperties.customCss[this.componentProperties.customCssActiveMode][setting.spec.cssProperty];
-          if (currentValue) { setting.spec.default = parseInt(currentValue.substring(0, currentValue.length - 2), 10) * setting.spec.smoothingDivisible; }
+          if (currentValue) {
+            if (setting.triggers) {
+              setting.triggers.forEach((trigger) => {
+                trigger.conditions.forEach((condition) => {
+                  if (this.componentProperties.customCss[this.componentProperties.customCssActiveMode][trigger.cssProperty] === condition) {
+                     this.componentProperties.customCss[this.componentProperties.customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
+                     this.selectorNewValues[setting.spec.cssProperty] = trigger.defaultValue;
+                  }
+                })
+              })
+            }
+            setting.spec.default = parseInt(currentValue.substring(0, currentValue.length - 2), 10) * setting.spec.smoothingDivisible;
+          }
+        } else if(setting.type === 'select') {
+          // default value for range is currently setting the select value, not the select value for ranges
+          // potential race condition where range sets the select value and range may set it to something incorrect
+          const currentValue = this.componentProperties.customCss[this.componentProperties.customCssActiveMode][setting.spec.cssProperty];
+          if (currentValue) { this.selectorNewValues[setting.spec.cssProperty] = currentValue }
         } else if (setting.type === 'colorPicker') {
           const currentValue = this.componentProperties.customCss[this.componentProperties.customCssActiveMode][setting.spec.cssProperty];
           if (currentValue) { setting.spec.default = setting.spec.partialCss ? currentValue.split(' ')[setting.spec.partialCss.position] : currentValue }

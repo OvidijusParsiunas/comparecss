@@ -47,7 +47,7 @@ export default {
       type: 'colorPicker',
       spec: {
         name: 'Color',
-        default: 'black',
+        default: '#000000',
         cssProperty: 'borderColor'
       },
     }

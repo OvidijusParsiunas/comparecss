@@ -1,6 +1,7 @@
 margin assistance
 material style click animation
 starting data
+potentially have the button text always centered
 
 button to switch between px, em
 if button height exceeds certain threshold - only then should the 'Centered' setting be displayed in the 'Text' panel
