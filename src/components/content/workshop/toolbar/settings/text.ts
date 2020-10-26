@@ -27,18 +27,6 @@ export default {
           cssProperty: 'fontFamily'
         },
       },
-      {
-        type: 'checkbox',
-        spec: {
-          name: 'Centered',
-          default: false,
-          conditionalStyle: {
-            truthy: 'table-cell',
-            falsy: '',
-          },
-          cssProperty: 'display'
-        },
-      },
     ]
   };
   
