@@ -8,4 +8,6 @@ export interface WorkshopComponentCss {
   backgroundColor?: string;
   width?: string;
   height?: string;
+  fontFamily?: string;
+  display?: string;
 }

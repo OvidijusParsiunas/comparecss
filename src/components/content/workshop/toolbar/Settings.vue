@@ -44,7 +44,7 @@
                   <button onclick="var s = Dlg.ChooseColorDlg(clr1.value); window.event.srcElement.style.color = s; clr1.value = s">&#9608;&#9608;&#9608;&#9608;&#9608;</button>
                   <object id="Dlg" classid="CLSID:3050F819-98B5-11CF-BB82-00AA00BDCE0B" width="0" height="0"></object>
                 -->
-                <input @click="colorInputClick" @input="colorChanged($event, setting)" style="float: left" type="color" name="clr1" v-bind:value="setting.spec.default"/>
+                <input @click="colorInputClick" @input="colorChanged($event, setting)" style="float: left" type="color" name="clr1" v-model="setting.spec.default"/>
               </div>
 
               <div style="display: flex" v-if="setting.type === 'inputDropdown'">
@@ -66,7 +66,7 @@
                 <div style="text-align: left">
                   {{setting.spec.name}}
                 </div>
-                <input type="checkbox" id="exampleCheck1" v-model="setting.spec.default" @click="check(setting.spec.default, setting.spec)">
+                <input type="checkbox" v-model="setting.spec.default" @click="check(setting.spec.default, setting.spec)">
               </div>
             </div>
             
@@ -107,14 +107,20 @@ export default {
             }
             setting.spec.default = parseInt(currentValue.substring(0, currentValue.length - 2), 10) * setting.spec.smoothingDivisible;
           }
-        } else if(setting.type === 'select') {
+        } else if (setting.type === 'select') {
           // default value for range is currently setting the select value, not the select value for ranges
           // potential race condition where range sets the select value and range may set it to something incorrect
           const currentValue = this.componentProperties.customCss[this.componentProperties.customCssActiveMode][setting.spec.cssProperty];
-          if (currentValue) { this.selectorNewValues[setting.spec.cssProperty] = currentValue }
+          if (currentValue) { this.selectorNewValues[setting.spec.cssProperty] = currentValue; }
         } else if (setting.type === 'colorPicker') {
           const currentValue = this.componentProperties.customCss[this.componentProperties.customCssActiveMode][setting.spec.cssProperty];
-          if (currentValue) { setting.spec.default = setting.spec.partialCss ? currentValue.split(' ')[setting.spec.partialCss.position] : currentValue }
+          if (currentValue) { setting.spec.default = setting.spec.partialCss ? currentValue.split(' ')[setting.spec.partialCss.position] : currentValue; }
+        } else if (setting.type === 'inputDropdown') {
+          const currentValue = this.componentProperties.customCss[this.componentProperties.customCssActiveMode][setting.spec.cssProperty];
+          if (currentValue) { this.inputDropdownNewValues[setting.spec.cssProperty] = currentValue; }
+        } else if (setting.type === 'checkbox') {
+          const currentValue = this.componentProperties.customCss[this.componentProperties.customCssActiveMode][setting.spec.cssProperty];
+          if (currentValue) { setting.spec.default = (currentValue === setting.spec.conditionalStyle.truthy); }
         }
       })
     }
