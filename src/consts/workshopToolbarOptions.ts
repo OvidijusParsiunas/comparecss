@@ -7,4 +7,5 @@ export enum WORKSHOP_TOOLBAR_OPTIONS {
   MARGIN,
   TEXT,
   RESET,
+  DESIGN,
 }

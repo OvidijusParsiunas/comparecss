@@ -66,7 +66,7 @@
                 <div style="text-align: left">
                   {{setting.spec.name}}
                 </div>
-                <input type="checkbox" v-model="setting.spec.default" @click="check(setting.spec.default, setting.spec)">
+                <input type="checkbox" v-model="setting.spec.default" @click="checkboxMouseClick(setting.spec.default, setting.spec)">
               </div>
             </div>
             
@@ -238,10 +238,14 @@ export default {
     colorInputClick(): void {
       this.componentProperties.customCss[this.componentProperties.customCssActiveMode].transition = 'unset';
     },
-    check(previousCheckboxValue: boolean, spec: any): void {
-      const { conditionalStyle, cssProperty} = spec;
-      const cssValue = !previousCheckboxValue ? conditionalStyle.truthy : conditionalStyle.falsy;
-      this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] = cssValue;
+    checkboxMouseClick(previousCheckboxValue: boolean, spec: any): void {
+      const { conditionalStyle, cssProperty, executeJS} = spec;
+      if (executeJS) {
+        executeJS();
+      } else {
+        const cssValue = !previousCheckboxValue ? conditionalStyle.truthy : conditionalStyle.falsy;
+        this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] = cssValue;
+      }
     }
   },
   props: {

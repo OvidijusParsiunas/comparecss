@@ -5,6 +5,7 @@ import Size from '../../components/content/workshop/toolbar/settings/size';
 import Padding from '../../components/content/workshop/toolbar/settings/padding';
 import Margin from '../../components/content/workshop/toolbar/settings/margin';
 import Text from '../../components/content/workshop/toolbar/settings/text';
+import Design from '../../components/content/workshop/toolbar/settings/design';
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../consts/workshopToolbarOptions';
 import { BUTTON_COMPONENT_MODES } from '../../consts/buttonComponentModes.enum';
 import { ComponentProperties } from '../../interfaces/workshopComponent';
@@ -26,6 +27,8 @@ export default class SettingsManager {
         return Margin;
       case WORKSHOP_TOOLBAR_OPTIONS.TEXT:
         return Text;
+      case WORKSHOP_TOOLBAR_OPTIONS.DESIGN:
+        return Design;
       default:
         return 'placeholder'
     }

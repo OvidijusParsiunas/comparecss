@@ -80,6 +80,10 @@ export default {
       buttonName: 'Reset',
       clickParams: [ WORKSHOP_TOOLBAR_OPTIONS.RESET ]
     },
+    {
+      buttonName: 'Design',
+      clickParams: [ WORKSHOP_TOOLBAR_OPTIONS.DESIGN ]
+    },
   ],
 };
   
