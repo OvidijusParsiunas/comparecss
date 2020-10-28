@@ -55,7 +55,7 @@ export default {
           falsy: '',
         },
         executeJS: addMaterializeRipple,
-        removeJS: removeMaterializeRipple,
+        revokeJS: removeMaterializeRipple,
       },
     },
   ]
