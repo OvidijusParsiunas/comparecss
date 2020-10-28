@@ -82,21 +82,21 @@ export default {
     border-radius: 50%;
   }
 
-  @keyframes hideMe {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
-  }
-
-  @keyframes ripple {
+  @keyframes displayRipple {
     from {
       transform: scale(0.5);
     }
     to {
       transform: scale(4);
+    }
+  }
+
+   @keyframes fadeRipple {
+    from {
+      opacity: 1;
+    }
+    to {
+      opacity: 0;
     }
   }
 </style>

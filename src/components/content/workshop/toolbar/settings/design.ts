@@ -16,6 +16,8 @@ export default {
             // https://codepen.io/BretCameron/pen/mdPMVaW
             const animationDurationMs = 1000;
             const rippleElements = [];
+            const displayAnimationName = 'displayRipple';
+            const fadeAnimationName = 'fadeRipple';
 
             function createRipple(event) {
               const rippleElement = document.createElement("span");
@@ -24,7 +26,7 @@ export default {
               rippleElement.style.width = rippleElement.style.height = `${diameter}px`;
               rippleElement.style.left = `${event.offsetX - radius}px`;
               rippleElement.style.top = `${event.offsetY - radius}px`;
-              rippleElement.style.animation = `ripple ${animationDurationMs}ms forwards`;
+              rippleElement.style.animation = `${displayAnimationName} ${animationDurationMs}ms forwards`;
               button.appendChild(rippleElement);
               rippleElements.push(rippleElement);
             }
@@ -32,7 +34,7 @@ export default {
             function removeRipple() {
               if (rippleElements.length > 0) {
                 const lastRippleElement = rippleElements.pop();
-                lastRippleElement.style.animation = `ripple ${animationDurationMs}ms forwards, hideMe ${animationDurationMs}ms forwards`;
+                lastRippleElement.style.animation = `${fadeAnimationName} ${animationDurationMs}ms forwards, ${displayAnimationName} ${animationDurationMs}ms forwards`;
                 setTimeout(() => {
                   button.removeChild(lastRippleElement);
                 }, animationDurationMs);
