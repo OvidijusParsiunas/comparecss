@@ -1,8 +1,8 @@
 <template>
   <div style="position: relative">
     <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); z-index: 0; text-align: center;"> 
-      <div :class="componentProperties.frameworkClass">
-        <a id="previewComponent"
+      <div id="previewComponentContainer" :class="componentProperties.frameworkClass">
+        <a
           @mouseover="componentMouseOver(componentProperties.customCss)"
           @mouseleave="componentMouseLeave(componentProperties.customCss)"
           @mousedown="componentMouseDown(componentProperties.customCss)"
@@ -71,11 +71,8 @@ export default {
   .foundation .button {
     margin: unset !important;
   }
-  #findOut {
-  position: relative;
-  overflow: hidden;
-  }
-  span {
+
+  .ripple {
     background-color: rgba(255, 255, 255, 0.5);
     pointer-events: none;
     position: absolute;

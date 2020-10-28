@@ -239,11 +239,16 @@ export default {
       this.componentProperties.customCss[this.componentProperties.customCssActiveMode].transition = 'unset';
     },
     checkboxMouseClick(previousCheckboxValue: boolean, spec: any): void {
-      const { conditionalStyle, cssProperty, executeJS} = spec;
+      const { conditionalStyle, cssProperty, executeJS, removeJS } = spec;
+      const newCheckboxValue = !previousCheckboxValue;
       if (executeJS) {
-        executeJS();
+        if (newCheckboxValue) {
+          executeJS();
+        } else {
+          removeJS();
+        }
       } else {
-        const cssValue = !previousCheckboxValue ? conditionalStyle.truthy : conditionalStyle.falsy;
+        const cssValue = newCheckboxValue ? conditionalStyle.truthy : conditionalStyle.falsy;
         this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] = cssValue;
       }
     }
