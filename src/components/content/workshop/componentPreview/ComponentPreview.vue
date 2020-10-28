@@ -2,7 +2,7 @@
   <div style="position: relative">
     <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); z-index: 0; text-align: center;"> 
       <div :class="componentProperties.frameworkClass">
-        <a id="findOut"
+        <a id="previewComponent"
           @mouseover="componentMouseOver(componentProperties.customCss)"
           @mouseleave="componentMouseLeave(componentProperties.customCss)"
           @mousedown="componentMouseDown(componentProperties.customCss)"
@@ -80,11 +80,6 @@ export default {
     pointer-events: none;
     position: absolute;
     border-radius: 50%;
-    transform: scale(0);
-}
-
-  span.fadeOut {
-      animation: hideMe 2s forwards;
   }
 
   @keyframes hideMe {
@@ -96,64 +91,12 @@ export default {
     }
   }
 
-  span.ripple {
-    animation: ripple 600ms forwards;
-  }
-
   @keyframes ripple {
+    from {
+      transform: scale(0.5);
+    }
     to {
       transform: scale(4);
     }
   }
-  
-  /* span.ripple {
-    position: absolute;
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-    animation: hideMe 2s forwards;
-    background-color: rgba(255, 255, 255, 0.5);
-    pointer-events: none;
-  }
-  @keyframes hideMe {
-  to {
-      opacity: 0;
-    }
-  }
-
-  @keyframes ripple {
-    to {
-      transform: scale(4);
-      opacity: 0;
-    }
-  } */
-
-  /* span {
-    position: absolute;
-    border-radius: 50%;
-    width: 100px;
-    height: 100px;
-    background-color: rgba(255, 255, 255, 0.5);
-  }
-  span.ripple {
-    position: absolute;
-    border-radius: 50%;
-    transform: scale(0);
-    animation: ripple 600ms linear;
-    background-color: rgba(255, 255, 255, 0.5);
-    pointer-events: none;
-  }
-  span.fading {
-    animation: fading 100ms linear;
-  }
-
-  @keyframes ripple {
-    to {
-      transform: scale(4);
-    }
-  }
-  @keyframes fading {
-     0%   { opacity: 1; }
-      100% { opacity: 0; }
-  } */
 </style>

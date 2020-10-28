@@ -14,36 +14,35 @@ export default {
             // https://material-components.github.io/material-components-web-catalog/#/component/ripple
             // https://css-tricks.com/how-to-recreate-the-ripple-effect-of-material-design-buttons/
             // https://codepen.io/BretCameron/pen/mdPMVaW
-            const shearableElements = { buttons: [] }
+            const animationDurationMs = 1000;
+            const rippleElements = [];
+
             function createRipple(event) {
-              const button = event.currentTarget;
-        
-              const circle = document.createElement("span");
+              const rippleElement = document.createElement("span");
               const diameter = Math.max(button.clientWidth, button.clientHeight);
               const radius = diameter / 2;
-              circle.style.width = circle.style.height = `${diameter}px`;
-              circle.style.left = `${event.offsetX - radius}px`;
-              circle.style.top = `${event.offsetY - radius}px`;
-              circle.classList.add("ripple");
-
-              button.appendChild(circle);
-              console.log(this);
-              this.buttons.push(circle);
-              // setTimeout(() => {
-              //   button.removeChild(circle);
-              // }, 4000);
+              rippleElement.style.width = rippleElement.style.height = `${diameter}px`;
+              rippleElement.style.left = `${event.offsetX - radius}px`;
+              rippleElement.style.top = `${event.offsetY - radius}px`;
+              rippleElement.style.animation = `ripple ${animationDurationMs}ms forwards`;
+              button.appendChild(rippleElement);
+              rippleElements.push(rippleElement);
             }
 
-            function removeRipple(event) {
-              const lastRippleElement = this.buttons.pop();
-              lastRippleElement.classList.add('fadeOut');
-              // lastRippleElement.classList.remove('ripple');
-              // console.log(lastRippleElement);
+            function removeRipple() {
+              if (rippleElements.length > 0) {
+                const lastRippleElement = rippleElements.pop();
+                lastRippleElement.style.animation = `ripple ${animationDurationMs}ms forwards, hideMe ${animationDurationMs}ms forwards`;
+                setTimeout(() => {
+                  button.removeChild(lastRippleElement);
+                }, animationDurationMs);
+              }
             }
           
-              const button = document.getElementById("findOut");
-              button.addEventListener("mousedown", createRipple.bind(shearableElements));
-              button.addEventListener('mouseup', removeRipple.bind(shearableElements))
+            const button = document.getElementById("previewComponent");
+            button.addEventListener("mousedown", createRipple);
+            button.addEventListener('mouseup', removeRipple);
+            button.addEventListener('mouseleave', removeRipple);
           },
         },
       },
