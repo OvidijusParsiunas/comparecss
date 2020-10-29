@@ -10,4 +10,12 @@ export interface WorkshopComponentCss {
   height?: string;
   fontFamily?: string;
   display?: string;
+  outline: string;
+  paddingTop?: string;
+  paddingBottom?: string;
+  marginLeft?: string;
+  marginTop?: string;
+  marginRight?: string;
+  marginBottom?: string;
+  lineHeight?: string;
 }

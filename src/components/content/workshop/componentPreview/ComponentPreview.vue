@@ -2,15 +2,35 @@
   <div style="position: relative">
     <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); z-index: 0; text-align: center;"> 
       <div id="previewComponentContainer" :class="componentProperties.frameworkClass">
-        <a
-          @mouseover="componentMouseOver(componentProperties.customCss)"
-          @mouseleave="componentMouseLeave(componentProperties.customCss)"
-          @mousedown="componentMouseDown(componentProperties.customCss)"
-          @mouseup="componentMouseUp(componentProperties.customCss)"
-          :class="componentProperties.componentClass"
-          :style="componentProperties.customCss[componentProperties.customCssActiveMode]"
-          v-html="componentProperties.innerHtml">
-        </a>
+        <div class="grid-container">
+          <div class="grid-item"></div>
+          <div class="grid-item">
+            <div style="width: 100%; height: 10px; bottom: 0; position: absolute" class="margin-marker"></div>
+          </div>
+          <div class="grid-item"></div>  
+          <div class="grid-item">
+            <div style="width: 10px; height: 100%; float: right" class="margin-marker"></div>
+          </div>
+          <div class="grid-item">
+            <button
+              @mouseover="componentMouseOver(componentProperties.customCss)"
+              @mouseleave="componentMouseLeave(componentProperties.customCss)"
+              @mousedown="componentMouseDown(componentProperties.customCss)"
+              @mouseup="componentMouseUp(componentProperties.customCss)"
+              :class="componentProperties.componentClass"
+              :style="componentProperties.customCss[componentProperties.customCssActiveMode]"
+              v-html="componentProperties.innerHtml">
+            </button>
+          </div>
+          <div class="grid-item">
+            <div style="width: 10px; height: 100%" class="margin-marker"></div>
+          </div>  
+          <div class="grid-item"></div>
+          <div class="grid-item">
+            <div style="width: 100%; height: 10px" class="margin-marker"></div>
+          </div>
+          <div class="grid-item"></div>  
+        </div>
       </div>
     </div>
   </div>
@@ -65,11 +85,74 @@ export default {
     }
   }
 };
+
+// the border is the same size as the component
+/*
+<div class="grid-container">
+  <div class="grid-item"></div>
+  <div class="grid-item">
+    <div style="height: 10px; background-color: green; position: absolute; bottom: 0"
+      :style="{
+        width: componentProperties.customCss[componentProperties.customCssActiveMode].width,
+        marginLeft: componentProperties.customCss[componentProperties.customCssActiveMode].marginLeft,
+        marginRight: componentProperties.customCss[componentProperties.customCssActiveMode].marginRight,
+      }"></div>
+  </div>
+  <div class="grid-item"></div>  
+  <div class="grid-item">
+    <div style="width: 10px; background-color: green; float: right"
+      :style="{
+        height: componentProperties.customCss[componentProperties.customCssActiveMode].height,
+        marginTop: componentProperties.customCss[componentProperties.customCssActiveMode].marginTop,
+        marginBottom: componentProperties.customCss[componentProperties.customCssActiveMode].marginBottom,
+      }"></div>
+  </div>
+  <div class="grid-item">
+    <button
+      @mouseover="componentMouseOver(componentProperties.customCss)"
+      @mouseleave="componentMouseLeave(componentProperties.customCss)"
+      @mousedown="componentMouseDown(componentProperties.customCss)"
+      @mouseup="componentMouseUp(componentProperties.customCss)"
+      :class="componentProperties.componentClass"
+      :style="componentProperties.customCss[componentProperties.customCssActiveMode]"
+      v-html="componentProperties.innerHtml">
+    </button>
+  </div>
+  <div class="grid-item">
+    <div style="width: 10px; background-color: green"
+      :style="{
+        height: componentProperties.customCss[componentProperties.customCssActiveMode].height,
+        marginTop: componentProperties.customCss[componentProperties.customCssActiveMode].marginTop,
+        marginBottom: componentProperties.customCss[componentProperties.customCssActiveMode].marginBottom,
+      }"></div>
+  </div>  
+  <div class="grid-item"></div>
+  <div class="grid-item">
+    <div style="width: 100%; height: 10px; background-color: green"
+      :style="{
+          width: componentProperties.customCss[componentProperties.customCssActiveMode].width,
+          marginLeft: componentProperties.customCss[componentProperties.customCssActiveMode].marginLeft,
+          marginRight: componentProperties.customCss[componentProperties.customCssActiveMode].marginRight,
+        }"></div>
+  </div>
+  <div class="grid-item"></div>  
+</div>
+*/
 </script>
 
 <style lang="css">
-  .foundation .button {
-    margin: unset !important;
+  .grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+    background-color: #2196F3;
+  }
+  
+  .grid-item {
+    position: relative;
+  }
+
+  .margin-marker {
+    background-color: green !important;
   }
 
   .ripple {

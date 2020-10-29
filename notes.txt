@@ -1,6 +1,10 @@
+check why materialize button is not working
+when clicked on an option, the new div shouldn't affect the screen
+when there is no hover property - should work fine (fix)
 margin assistance
-material style click animation
+unsetting transitions sometimes (need to fix it)
 
+font-awesome pictures on buttons
 button to switch between px, em
 if button height exceeds certain threshold - only then should the 'Centered' setting be displayed in the 'Text' panel
 
