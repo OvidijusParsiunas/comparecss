@@ -1,7 +1,7 @@
 <template>
   <div style="position: relative">
     <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); z-index: 0; text-align: center;"> 
-      <div id="previewComponentContainer" :class="componentProperties.frameworkClass">
+      <div :class="componentProperties.frameworkClass">
         <div class="grid-container">
           <div class="grid-item"></div>
           <div class="grid-item">
@@ -12,7 +12,7 @@
             <div style="width: 10px; height: 100%; float: right" class="margin-marker"></div>
           </div>
           <div class="grid-item">
-            <button
+            <button id="demoComponent"
               @mouseover="componentMouseOver(componentProperties.customCss)"
               @mouseleave="componentMouseLeave(componentProperties.customCss)"
               @mousedown="componentMouseDown(componentProperties.customCss)"
@@ -153,6 +153,11 @@ export default {
 
   .margin-marker {
     background-color: green !important;
+  }
+
+  #demoComponent {
+    overflow: hidden;
+    position: relative;
   }
 
   .ripple {
