@@ -5,13 +5,17 @@
         <div class="grid-container">
           <div class="grid-item"></div>
           <div class="grid-item">
-            <div style="width: 100%; height: 10px; bottom: 0; position: absolute" class="margin-marker"></div>
+              <transition name="top-slide-fade">
+                <div v-if="componentPreviewAssistance.margin" style="width: 100%; height: 10px; bottom: 0; position: absolute; border-bottom: 1px solid #b9b9b9; border-radius: 5px" class="margin-marker"></div>
+              </transition>
           </div>
           <div class="grid-item"></div>  
           <div class="grid-item">
-            <div style="width: 10px; height: 100%; float: right" class="margin-marker"></div>
+              <transition name="left-slide-fade">
+                <div v-if="componentPreviewAssistance.margin" style="width: 10px; height: 100%; float: right; border-right: 1px solid #b9b9b9; border-radius: 5px" class="margin-marker"></div>
+              </transition>
           </div>
-          <div class="grid-item">
+          <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item">
             <button id="demoComponent"
               @mouseover="componentMouseOver(componentProperties.customCss)"
               @mouseleave="componentMouseLeave(componentProperties.customCss)"
@@ -23,12 +27,16 @@
             </button>
           </div>
           <div class="grid-item">
-            <div style="width: 10px; height: 100%" class="margin-marker"></div>
-          </div>  
+            <transition name="right-slide-fade">
+              <div v-if="componentPreviewAssistance.margin" style="width: 10px; height: 100%; border-left: 1px solid #b9b9b9; border-radius: 5px" class="margin-marker"></div>
+            </transition>
+         </div>  
           <div class="grid-item"></div>
           <div class="grid-item">
-            <div style="width: 100%; height: 10px" class="margin-marker"></div>
-          </div>
+            <transition name="bottom-slide-fade">
+              <div v-if="componentPreviewAssistance.margin" style="width: 100%; height: 10px; border-top: 1px solid #b9b9b9; border-radius: 5px" class="margin-marker"></div>
+            </transition>
+         </div>
           <div class="grid-item"></div>  
         </div>
       </div>
@@ -61,7 +69,9 @@ export default {
       }
     },
     componentMouseLeave(customCss: WorkshopComponentCss): void {
-      customCss[BUTTON_COMPONENT_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByHover };
+      if (this.componentProperties.customCssActiveMode === BUTTON_COMPONENT_MODES.DEFAULT) {
+        customCss[BUTTON_COMPONENT_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByHover };
+      }
     },
     componentMouseDown(customCss: WorkshopComponentCss): void {
       if (this.componentProperties.customCssActiveMode === BUTTON_COMPONENT_MODES.DEFAULT) {
@@ -77,13 +87,8 @@ export default {
   },
   props: {
     componentProperties: Object,
-    executeJavaScript: Function,
+    componentPreviewAssistance: Object,
   },
-  watch: {
-    executeJavaScript(): void {
-      this.executeJavaScript();
-    }
-  }
 };
 
 // the border is the same size as the component
@@ -140,6 +145,44 @@ export default {
 */
 </script>
 
+<style lang="scss" scoped>
+/* Enter and leave animations can use different */
+/* durations and timing functions.              */
+.left-slide-fade-enter-active,
+.left-slide-fade-leave-active,
+.top-slide-fade-enter-active,
+.top-slide-fade-leave-active,
+.right-slide-fade-enter-active,
+.right-slide-fade-leave-active,
+.bottom-slide-fade-enter-active,
+.bottom-slide-fade-leave-active {
+  transition: all 0.4s ease-out;
+}
+
+.left-slide-fade-enter-from,
+.left-slide-fade-leave-to {
+  transform: translateX(-20px);
+  opacity: 0;
+}
+
+.top-slide-fade-enter-from,
+.top-slide-fade-leave-to {
+  transform: translateY(-20px);
+  opacity: 0;
+}
+
+.right-slide-fade-enter-from,
+.right-slide-fade-leave-to {
+  transform: translateX(20px);
+  opacity: 0;
+}
+
+.bottom-slide-fade-enter-from,
+.bottom-slide-fade-leave-to {
+  transform: translateY(20px);
+  opacity: 0;
+}
+</style>
 <style lang="css">
   .grid-container {
     display: grid;
@@ -152,7 +195,7 @@ export default {
   }
 
   .margin-marker {
-    background-color: green !important;
+    background-color: rgb(194 194 194 / 50%) !important;
   }
 
   #demoComponent {

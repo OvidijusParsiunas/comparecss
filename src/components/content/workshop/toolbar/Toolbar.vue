@@ -39,6 +39,7 @@ export default {
   },
   props: {
     componentProperties: Object,
+    componentPreviewAssistance: Object,
   },
   methods: {
     updateSettings(newSettings: WORKSHOP_TOOLBAR_OPTIONS): void {
@@ -47,11 +48,13 @@ export default {
         this.settingsResetTriggered = !this.settingsResetTriggered;
       } else {
         this.activeSettings = SettingsManager.getSettings(newSettings);
+        this.componentPreviewAssistance.margin = newSettings === WORKSHOP_TOOLBAR_OPTIONS.MARGIN;
       }
     },
     updateMode(event: WORKSHOP_TOOLBAR_OPTIONS): void {
       this.activeMode = event;
       this.activeSettings = {};
+      this.componentPreviewAssistance.margin = false;
     }
   }
 };

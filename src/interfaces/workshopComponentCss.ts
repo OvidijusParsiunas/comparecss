@@ -18,4 +18,5 @@ export interface WorkshopComponentCss {
   marginRight?: string;
   marginBottom?: string;
   lineHeight?: string;
+  color?: string;
 }

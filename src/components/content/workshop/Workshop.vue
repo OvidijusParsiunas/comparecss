@@ -36,9 +36,9 @@
               <toolbar v-model:currentlySelectedComponent="currentlySelectedComponent"/>
               'vue/no-v-model-argument': 'off',
             -->
-            <toolbar :componentProperties="currentlySelectedComponent.componentProperties"/>
-            <componentContents style="height: 50%" :componentProperties="currentlySelectedComponent.componentProperties"/>
-            <div style="height: 18%; display: flex">              
+            <toolbar :componentProperties="currentlySelectedComponent.componentProperties" :componentPreviewAssistance="componentPreviewAssistance"/>
+            <componentContents style="height: 50%" :componentProperties="currentlySelectedComponent.componentProperties" :componentPreviewAssistance="componentPreviewAssistance"/>
+            <div style="height: 18%; display: flex">
               <div style="width: 30%; position: relative">
                 <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
                   <div style="text-align: center; margin-bottom: 5px">Size: 0kb</div>
@@ -105,6 +105,7 @@ interface Data {
   previewImage: string,
   components: [WorkshopComponent],
   currentlySelectedComponent: WorkshopComponent;
+  componentPreviewAssistance: { margin: boolean };
 }
 import newComponentModalService from '../../../services/workshop/newComponentModal';
 import 'vuesax/dist/vuesax.css' //Vuesax styles
@@ -117,6 +118,7 @@ import { BUTTON_COMPONENT_MODES } from '../../../consts/buttonComponentModes.enu
 export default {
   data: (): Data => ({
     previewImage: 'previewImage',
+    componentPreviewAssistance: { margin: false },
     components: [
       {
         cardProperties: {
@@ -180,7 +182,7 @@ export default {
             borderWidth: '0px',
             borderColor: '#1779ba',
             boxShadow: '0px 0px 0px 0px #000000',
-            backgroundColor: 'red',
+            backgroundColor: '#ff0000',
             outline: 'none',
             lineHeight: '0',
             paddingTop: '19px',
@@ -206,6 +208,7 @@ export default {
             marginBottom: '0px',
             width: '69px',
             height: '38px',
+            lineHeight: '0',
           },
         },
         initialCss: {
@@ -222,6 +225,7 @@ export default {
             marginBottom: '0px',
             width: '69px',
             height: '38px',
+            lineHeight: '0',
           },
           [BUTTON_COMPONENT_MODES.HOVER]: {
             borderRadius: '0px',
@@ -235,6 +239,7 @@ export default {
             marginBottom: '0px',
             width: '69px',
             height: '38px',
+            lineHeight: '0',
           },
           [BUTTON_COMPONENT_MODES.CLICK]: {
             borderRadius: '0px',
@@ -248,6 +253,7 @@ export default {
             marginBottom: '0px',
             width: '69px',
             height: '38px',
+            lineHeight: '0',
           },
         },
         customCssActiveMode: BUTTON_COMPONENT_MODES.DEFAULT,

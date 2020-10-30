@@ -1,17 +1,29 @@
 check why materialize button is not working
 when clicked on an option, the new div shouldn't affect the screen
 when there is no hover property - should work fine (fix)
-margin assistance
 unsetting transitions sometimes (need to fix it)
 
 font-awesome pictures on buttons
+material design examples should have nice hover, and shadow increase events on mouse click
 button to switch between px, em
 if button height exceeds certain threshold - only then should the 'Centered' setting be displayed in the 'Text' panel
+
+
+---------------------------------------------------
+
+Future work 
+
+Allow the button to have its text vertically centered for all heights via the use of a class without the need for it to be applied to a button tag:
+Currently works with the button tag only, this is due to the fact that if we are using <div> or <a> - we need to use display: table-cell property which does not allow for the use of margins.
+One solution would be to automatically apply padding as the button height is increased - so as to make the text look like it is vertically centered.
+This would use the following equation: (total button height - text height) / 2 = padding top and padding bottom pixels.
+
+
+--------------------------------------------------
 
 use native implementation of vuesax when it is compatible with vue 3
 
 https://www.bannersnack.com/generator.html
-
 
 reference css component versions - uikit v3 - in popover when hovering logo
 
@@ -26,6 +38,8 @@ https://startbootstrap.com/previews/simple-sidebar/ - phone feature
 make the panels order switchable via options popover or drag and drop
 https://www.youtube.com/watch?v=RA7sO_9V3vw&ab_channel=ProgramWithErik
 
+Maybe have multiple cards flying randomly with different framework logos
+https://lobe.ai/examples
 https://vuetifyjs.com/en/
 https://lusaxweb.github.io/vuesax/development/
 https://mdbootstrap.com/docs/jquery/design-blocks/
