@@ -31,7 +31,7 @@ export default {
   data: (): Data => ({
     activeSettings: {},
     activeMode: BUTTON_COMPONENT_MODES.DEFAULT,
-    settingsResetTriggered: null,
+    settingsResetTriggered: false,
   }),
   components: {
     settings,

@@ -7,13 +7,13 @@
           <div class="grid-item">
               <!-- https://v3.vuejs.org/guide/transitions-enterleave.html#css-transitions -->
               <transition name="top-slide-fade">
-                <div v-if="componentPreviewAssistance.margin" style="border-radius: 5px 5px 0px 0px;width: 100%; height: 10px; bottom: 0; position: absolute; border-bottom: 1px solid #b9b9b9; border-radius: 5px" class="margin-marker"></div>
+                <div id="margin-assistance-top" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
               </transition>
           </div>
           <div class="grid-item"></div>  
           <div class="grid-item">
               <transition name="left-slide-fade">
-                <div v-if="componentPreviewAssistance.margin" style="border-radius: 5px 0px 0px 5px; width: 10px; height: 100%; float: right; border-right: 1px solid #b9b9b9; border-radius: 5px" class="margin-marker"></div>
+                <div id="margin-assistance-left" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
               </transition>
           </div>
           <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item">
@@ -29,13 +29,13 @@
           </div>
           <div class="grid-item">
             <transition name="right-slide-fade">
-              <div v-if="componentPreviewAssistance.margin" style="border-radius: 0px 5px 5px 0px; width: 10px; height: 100%; border-left: 1px solid #b9b9b9; border-radius: 5px" class="margin-marker"></div>
+              <div id="margin-assistance-right" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
             </transition>
          </div>  
           <div class="grid-item"></div>
           <div class="grid-item">
             <transition name="bottom-slide-fade">
-              <div v-if="componentPreviewAssistance.margin" style="border-radius: 0px 0px 5px 5px; width: 100%; height: 10px; border-top: 1px solid #b9b9b9; border-radius: 5px" class="margin-marker"></div>
+              <div id="margin-assistance-bottom" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
             </transition>
          </div>
           <div class="grid-item"></div>  
@@ -147,6 +147,37 @@ export default {
 </script>
 
 <style lang="css" scoped>
+  #margin-assistance-left {
+    border-radius: 5px 2px 2px 5px;
+    width: 10px;
+    height: 100%;
+    float: right;
+    border-right: 1px solid #b9b9b9
+  }
+
+  #margin-assistance-top {
+    border-radius: 5px 5px 2px 2px;
+    width: 100%;
+    height: 10px;
+    bottom: 0;
+    position: absolute;
+    border-bottom: 1px solid #b9b9b9;
+  }
+  
+  #margin-assistance-right {
+    border-radius: 2px 5px 5px 2px;
+    width: 10px;
+    height: 100%;
+    border-left: 1px solid #b9b9b9;
+  }
+  
+  #margin-assistance-bottom {
+    border-radius: 2px 2px 5px 5px;
+    width: 100%;
+    height: 10px;
+    border-top: 1px solid #b9b9b9;
+  }
+
   .left-slide-fade-enter-active,
   .left-slide-fade-leave-active,
   .top-slide-fade-enter-active,
