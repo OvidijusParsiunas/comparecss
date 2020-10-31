@@ -175,6 +175,7 @@ export default {
     border-radius: 2px 2px 5px 5px;
     width: 100%;
     height: 10px;
+    position: absolute;
     border-top: 1px solid #b9b9b9;
   }
 

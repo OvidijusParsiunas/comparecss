@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 98.5%">
+  <div style="width: 98.5%; height: 228px">
     <div style="display: flex; background-color: rgb(251 251 251); border-radius: 20px;">
       <div style="margin-left: 10px; padding: 5px">
         <div style="margin-top: 10px; display: flex"> 
