@@ -5,14 +5,15 @@
         <div class="grid-container">
           <div class="grid-item"></div>
           <div class="grid-item">
+              <!-- https://v3.vuejs.org/guide/transitions-enterleave.html#css-transitions -->
               <transition name="top-slide-fade">
-                <div v-if="componentPreviewAssistance.margin" style="width: 100%; height: 10px; bottom: 0; position: absolute; border-bottom: 1px solid #b9b9b9; border-radius: 5px" class="margin-marker"></div>
+                <div v-if="componentPreviewAssistance.margin" style="border-radius: 5px 5px 0px 0px;width: 100%; height: 10px; bottom: 0; position: absolute; border-bottom: 1px solid #b9b9b9; border-radius: 5px" class="margin-marker"></div>
               </transition>
           </div>
           <div class="grid-item"></div>  
           <div class="grid-item">
               <transition name="left-slide-fade">
-                <div v-if="componentPreviewAssistance.margin" style="width: 10px; height: 100%; float: right; border-right: 1px solid #b9b9b9; border-radius: 5px" class="margin-marker"></div>
+                <div v-if="componentPreviewAssistance.margin" style="border-radius: 5px 0px 0px 5px; width: 10px; height: 100%; float: right; border-right: 1px solid #b9b9b9; border-radius: 5px" class="margin-marker"></div>
               </transition>
           </div>
           <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item">
@@ -28,13 +29,13 @@
           </div>
           <div class="grid-item">
             <transition name="right-slide-fade">
-              <div v-if="componentPreviewAssistance.margin" style="width: 10px; height: 100%; border-left: 1px solid #b9b9b9; border-radius: 5px" class="margin-marker"></div>
+              <div v-if="componentPreviewAssistance.margin" style="border-radius: 0px 5px 5px 0px; width: 10px; height: 100%; border-left: 1px solid #b9b9b9; border-radius: 5px" class="margin-marker"></div>
             </transition>
          </div>  
           <div class="grid-item"></div>
           <div class="grid-item">
             <transition name="bottom-slide-fade">
-              <div v-if="componentPreviewAssistance.margin" style="width: 100%; height: 10px; border-top: 1px solid #b9b9b9; border-radius: 5px" class="margin-marker"></div>
+              <div v-if="componentPreviewAssistance.margin" style="border-radius: 0px 0px 5px 5px; width: 100%; height: 10px; border-top: 1px solid #b9b9b9; border-radius: 5px" class="margin-marker"></div>
             </transition>
          </div>
           <div class="grid-item"></div>  
@@ -145,43 +146,41 @@ export default {
 */
 </script>
 
-<style lang="scss" scoped>
-/* Enter and leave animations can use different */
-/* durations and timing functions.              */
-.left-slide-fade-enter-active,
-.left-slide-fade-leave-active,
-.top-slide-fade-enter-active,
-.top-slide-fade-leave-active,
-.right-slide-fade-enter-active,
-.right-slide-fade-leave-active,
-.bottom-slide-fade-enter-active,
-.bottom-slide-fade-leave-active {
-  transition: all 0.4s ease-out;
-}
+<style lang="css" scoped>
+  .left-slide-fade-enter-active,
+  .left-slide-fade-leave-active,
+  .top-slide-fade-enter-active,
+  .top-slide-fade-leave-active,
+  .right-slide-fade-enter-active,
+  .right-slide-fade-leave-active,
+  .bottom-slide-fade-enter-active,
+  .bottom-slide-fade-leave-active {
+    transition: all 0.4s ease-out;
+  }
 
-.left-slide-fade-enter-from,
-.left-slide-fade-leave-to {
-  transform: translateX(-20px);
-  opacity: 0;
-}
+  .left-slide-fade-enter-from,
+  .left-slide-fade-leave-to {
+    transform: translateX(-20px);
+    opacity: 0;
+  }
 
-.top-slide-fade-enter-from,
-.top-slide-fade-leave-to {
-  transform: translateY(-20px);
-  opacity: 0;
-}
+  .top-slide-fade-enter-from,
+  .top-slide-fade-leave-to {
+    transform: translateY(-20px);
+    opacity: 0;
+  }
 
-.right-slide-fade-enter-from,
-.right-slide-fade-leave-to {
-  transform: translateX(20px);
-  opacity: 0;
-}
+  .right-slide-fade-enter-from,
+  .right-slide-fade-leave-to {
+    transform: translateX(20px);
+    opacity: 0;
+  }
 
-.bottom-slide-fade-enter-from,
-.bottom-slide-fade-leave-to {
-  transform: translateY(20px);
-  opacity: 0;
-}
+  .bottom-slide-fade-enter-from,
+  .bottom-slide-fade-leave-to {
+    transform: translateY(20px);
+    opacity: 0;
+  }
 </style>
 <style lang="css">
   .grid-container {

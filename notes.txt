@@ -3,6 +3,8 @@ when clicked on an option, the new div shouldn't affect the screen
 when there is no hover property - should work fine (fix)
 unsetting transitions sometimes (need to fix it)
 
+sometimes setting to auto option like the margin does not set desired results, potentially remove it - or set beginner components (in modal) to have no margin as auto
+
 font-awesome pictures on buttons
 material design examples should have nice hover, and shadow increase events on mouse click
 button to switch between px, em
