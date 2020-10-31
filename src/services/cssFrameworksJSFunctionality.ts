@@ -31,6 +31,10 @@ export default class CssFrameworksJSFunctionality {
           window.cssFrameworksJsFunctionality.bulmaAlert();
           window.cssFrameworksJsFunctionality.semanticAlert();
         };
+      case NAVBAR_SUB_MENU_BUTTONS.BUTTONS:
+        return () => {
+          window.cssFrameworksJsFunctionality.materializeButton();
+        }
       case NAVBAR_SUB_MENU_BUTTONS.DROPDOWNS:
         return () => {
           window.cssFrameworksJsFunctionality.foundationTrigger();

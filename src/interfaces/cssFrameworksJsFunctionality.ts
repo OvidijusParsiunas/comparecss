@@ -6,6 +6,7 @@ export interface CssFrameworksJsFunctionality {
     bulmaTrigger: () => void;
     foundationTrigger: () => void;
     materializeAccordion: () => void;
+    materializeButton: () => void;
     materializeDropdown: () => void;
     materializeFormSelect: () => void;
     materializeModal: () => void;
