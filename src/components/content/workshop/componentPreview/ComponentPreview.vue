@@ -83,7 +83,9 @@ export default {
       }
     },
     componentMouseUp(customCss: WorkshopComponentCss): void {
-      customCss[BUTTON_COMPONENT_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByClick };
+      if (this.componentProperties.customCssActiveMode === BUTTON_COMPONENT_MODES.DEFAULT) {
+        customCss[BUTTON_COMPONENT_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByClick };
+      }
     }
   },
   props: {
