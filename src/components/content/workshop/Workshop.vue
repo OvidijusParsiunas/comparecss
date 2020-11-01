@@ -129,6 +129,7 @@ export default {
           frameworkClass: 'foundation',
           componentClass: 'button',
           innerHtml: 'button',
+          transition: {},
           customCss: {
             [BUTTON_COMPONENT_MODES.DEFAULT]: {
               borderRadius: '0px',
@@ -160,6 +161,7 @@ export default {
         frameworkClass: 'foundation',
         componentClass: 'button',
         innerHtml: 'button',
+        transition: 'all 0.25s ease-out',
         customCss: {
           [BUTTON_COMPONENT_MODES.DEFAULT]: {
             borderRadius: '0px',
@@ -178,6 +180,7 @@ export default {
             width: '40px',
             height: '38px',
             boxSizing: 'content-box',
+            transition: 'unset',
           },
           [BUTTON_COMPONENT_MODES.HOVER]: {
             borderRadius: '0px',
@@ -196,7 +199,7 @@ export default {
             width: '40px',
             height: '38px',
             boxSizing: 'content-box',
-         },
+          },
           [BUTTON_COMPONENT_MODES.CLICK]: {
             borderRadius: '0px',
             borderWidth: '0px',
@@ -233,7 +236,8 @@ export default {
             width: '40px',
             height: '38px',
             boxSizing: 'content-box',
-         },
+            transition: 'none',
+          },
           [BUTTON_COMPONENT_MODES.HOVER]: {
             borderRadius: '0px',
             borderWidth: '0px',
@@ -250,7 +254,7 @@ export default {
             marginBottom: '0px',
             width: '40px',
             height: '38px',
-            boxSizing: 'content-box',
+            transition: 'none',
           },
           [BUTTON_COMPONENT_MODES.CLICK]: {
             borderRadius: '0px',
@@ -268,6 +272,7 @@ export default {
             height: '38px',
             lineHeight: '0',
             boxSizing: 'content-box',
+            transition: 'none',
           },
         },
         customCssActiveMode: BUTTON_COMPONENT_MODES.DEFAULT,

@@ -99,8 +99,8 @@ export default {
               setting.triggers.forEach((trigger) => {
                 trigger.conditions.forEach((condition) => {
                   if (this.componentProperties.customCss[this.componentProperties.customCssActiveMode][trigger.cssProperty] === condition) {
-                     this.componentProperties.customCss[this.componentProperties.customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
-                     this.selectorNewValues[setting.spec.cssProperty] = trigger.defaultValue;
+                    this.componentProperties.customCss[this.componentProperties.customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
+                    this.selectorNewValues[setting.spec.cssProperty] = trigger.defaultValue;
                   }
                 })
               })
@@ -125,6 +125,8 @@ export default {
       })
     }
   }),
+  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+  // put these methods into services
   methods: {
     updateRange(event: KeyboardEvent, setting: any): void {
       const {triggers, spec} = setting;

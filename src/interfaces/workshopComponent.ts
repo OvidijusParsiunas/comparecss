@@ -12,6 +12,7 @@ export interface ComponentProperties {
   customCss: CustomCss;
   initialCss: CustomCss;
   customCssActiveMode?: BUTTON_COMPONENT_MODES;
+  transition: any;
 }
 
 interface CardProperties {

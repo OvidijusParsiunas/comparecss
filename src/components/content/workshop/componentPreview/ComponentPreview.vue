@@ -1,5 +1,5 @@
 <template>
-  <div style="position: relative">
+  <div style="position: relative" @mouseleave="componentPreviewMouseLeave(componentProperties.customCss)">
     <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); z-index: 0; text-align: center;"> 
       <div :class="componentProperties.frameworkClass">
         <div class="grid-container">
@@ -18,9 +18,9 @@
           </div>
           <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item">
             <button id="demoComponent"
-              @mouseover="componentMouseOver(componentProperties.customCss)"
+              @mouseover="componentMouseOver(componentProperties)"
               @mouseleave="componentMouseLeave(componentProperties.customCss)"
-              @mousedown="componentMouseDown(componentProperties.customCss)"
+              @mousedown="componentMouseDown(componentProperties)"
               @mouseup="componentMouseUp(componentProperties.customCss)"
               :class="componentProperties.componentClass"
               :style="componentProperties.customCss[componentProperties.customCssActiveMode]"
@@ -47,6 +47,7 @@
 
 <script lang="ts">
 import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCss';
+import { ComponentProperties } from '../../../../interfaces/workshopComponent';
 import { BUTTON_COMPONENT_MODES } from '../../../../consts/buttonComponentModes.enum';
 
 export default {
@@ -55,18 +56,11 @@ export default {
     overwrittenDefaultPropertiesByClick: {},
   }),
   methods: {
-    componentMouseOver(customCss: WorkshopComponentCss): void {
-      // the following is used to reset the transition animation property if it was unset by the settings
-      if (customCss[this.componentProperties.customCssActiveMode].transition === 'unset') {
-        customCss[this.componentProperties.customCssActiveMode].transition = '';
-      }
+    componentMouseOver(componentProperties: ComponentProperties): void {
+      const { customCss, transition } = componentProperties;
       if (this.componentProperties.customCssActiveMode === BUTTON_COMPONENT_MODES.DEFAULT) {
-        // reason can't use a spread is because there are some properties that hover has and default does not
-        // this.overwrittenDefaultPropertiesByHover = { ...customCss[BUTTON_COMPONENT_MODES.DEFAULT] };
-        Object.keys(customCss[BUTTON_COMPONENT_MODES.HOVER]).forEach((key) => {
-          this.overwrittenDefaultPropertiesByHover[key] = customCss[BUTTON_COMPONENT_MODES.DEFAULT][key];
-          customCss[BUTTON_COMPONENT_MODES.DEFAULT][key] = customCss[BUTTON_COMPONENT_MODES.HOVER][key];
-        });
+        this.overwrittenDefaultPropertiesByHover = { ...customCss[BUTTON_COMPONENT_MODES.DEFAULT], transition };
+        customCss[BUTTON_COMPONENT_MODES.DEFAULT] = { ...customCss[BUTTON_COMPONENT_MODES.HOVER], transition };
       }
     },
     componentMouseLeave(customCss: WorkshopComponentCss): void {
@@ -74,18 +68,20 @@ export default {
         customCss[BUTTON_COMPONENT_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByHover };
       }
     },
-    componentMouseDown(customCss: WorkshopComponentCss): void {
+    componentMouseDown(componentProperties: ComponentProperties): void {
+      const { customCss, transition } = componentProperties;
       if (this.componentProperties.customCssActiveMode === BUTTON_COMPONENT_MODES.DEFAULT) {
-        Object.keys(customCss[BUTTON_COMPONENT_MODES.CLICK]).forEach((key) => {
-          this.overwrittenDefaultPropertiesByClick[key] = customCss[BUTTON_COMPONENT_MODES.DEFAULT][key];
-          customCss[BUTTON_COMPONENT_MODES.DEFAULT][key] = customCss[BUTTON_COMPONENT_MODES.CLICK][key];
-        });
+        this.overwrittenDefaultPropertiesByClick = { ...customCss[BUTTON_COMPONENT_MODES.DEFAULT], transition };
+        customCss[BUTTON_COMPONENT_MODES.DEFAULT] = { ...customCss[BUTTON_COMPONENT_MODES.CLICK], transition };
       }
     },
     componentMouseUp(customCss: WorkshopComponentCss): void {
       if (this.componentProperties.customCssActiveMode === BUTTON_COMPONENT_MODES.DEFAULT) {
         customCss[BUTTON_COMPONENT_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByClick };
       }
+    },
+    componentPreviewMouseLeave(customCss: WorkshopComponentCss): void {
+      customCss[BUTTON_COMPONENT_MODES.DEFAULT].transition = 'unset';
     }
   },
   props: {
