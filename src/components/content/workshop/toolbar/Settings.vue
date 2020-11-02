@@ -78,9 +78,12 @@
 </template>
 
 <script lang="ts">
+import { BUTTON_COMPONENT_MODES } from '../../../../consts/buttonComponentModes.enum';
+
 interface Data {
   selectorNewValues: unknown;
   inputDropdownNewValues: unknown;
+  getCurrentValue: (param1, param2) => void;
   resetSettings: () => void;
 }
 
@@ -88,38 +91,54 @@ export default {
   data: (): Data => ({
     selectorNewValues: {},
     inputDropdownNewValues: {},
+    getCurrentValue: function(activeMode, cssProperty) {
+      switch (activeMode) {
+        case (BUTTON_COMPONENT_MODES.CLICK):
+          if (this.componentProperties.customCss[BUTTON_COMPONENT_MODES.CLICK][cssProperty]) {
+            return this.componentProperties.customCss[BUTTON_COMPONENT_MODES.CLICK][cssProperty];
+          }
+        case (BUTTON_COMPONENT_MODES.HOVER || BUTTON_COMPONENT_MODES.CLICK):
+          if (this.componentProperties.customCss[BUTTON_COMPONENT_MODES.HOVER][cssProperty]) {
+            return this.componentProperties.customCss[BUTTON_COMPONENT_MODES.HOVER][cssProperty];
+          }
+        case (BUTTON_COMPONENT_MODES.DEFAULT || BUTTON_COMPONENT_MODES.HOVER || BUTTON_COMPONENT_MODES.CLICK):
+          if (this.componentProperties.customCss[BUTTON_COMPONENT_MODES.DEFAULT][cssProperty]) {
+            return this.componentProperties.customCss[BUTTON_COMPONENT_MODES.DEFAULT][cssProperty];
+          }
+        default:
+          return undefined;
+      }
+    },
     resetSettings: function() {
       this.selectorNewValues = {};
       this.inputDropdownNewValues = {};
       (this.settings.options || []).forEach((setting) => {
         if (setting.type === 'range') {
-          const currentValue = this.componentProperties.customCss[this.componentProperties.customCssActiveMode][setting.spec.cssProperty];
-          if (currentValue) {
-            if (setting.triggers) {
-              setting.triggers.forEach((trigger) => {
-                trigger.conditions.forEach((condition) => {
-                  if (this.componentProperties.customCss[this.componentProperties.customCssActiveMode][trigger.cssProperty] === condition) {
-                    this.componentProperties.customCss[this.componentProperties.customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
-                    this.selectorNewValues[setting.spec.cssProperty] = trigger.defaultValue;
-                  }
-                })
+          const currentValue = this.getCurrentValue(this.componentProperties.customCssActiveMode, setting.spec.cssProperty);
+          if (currentValue !== undefined) {
+            (setting.triggers || []).forEach((trigger) => {
+              trigger.conditions.forEach((condition) => {
+                if (this.getCurrentValue(this.componentProperties.customCssActiveMode, trigger.cssProperty) === condition) {
+                  this.componentProperties.customCss[this.componentProperties.customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
+                  this.selectorNewValues[setting.spec.cssProperty] = trigger.defaultValue;
+                }
               })
-            }
+            })
             setting.spec.default = parseInt(currentValue.substring(0, currentValue.length - 2), 10) * setting.spec.smoothingDivisible;
           }
         } else if (setting.type === 'select') {
           // default value for range is currently setting the select value, not the select value for ranges
-          // potential race condition where range sets the select value and range may set it to something incorrect
-          const currentValue = this.componentProperties.customCss[this.componentProperties.customCssActiveMode][setting.spec.cssProperty];
+          // potential race condition where range sets the select value and select may set it to something incorrect
+          const currentValue = this.getCurrentValue(this.componentProperties.customCssActiveMode, setting.spec.cssProperty);
           if (currentValue) { this.selectorNewValues[setting.spec.cssProperty] = currentValue; }
         } else if (setting.type === 'colorPicker') {
-          const currentValue = this.componentProperties.customCss[this.componentProperties.customCssActiveMode][setting.spec.cssProperty];
+          const currentValue = this.getCurrentValue(this.componentProperties.customCssActiveMode, setting.spec.cssProperty);
           if (currentValue) { setting.spec.default = setting.spec.partialCss ? currentValue.split(' ')[setting.spec.partialCss.position] : currentValue; }
         } else if (setting.type === 'inputDropdown') {
-          const currentValue = this.componentProperties.customCss[this.componentProperties.customCssActiveMode][setting.spec.cssProperty];
+          const currentValue = this.getCurrentValue(this.componentProperties.customCssActiveMode, setting.spec.cssProperty);
           if (currentValue) { this.inputDropdownNewValues[setting.spec.cssProperty] = currentValue; }
         } else if (setting.type === 'checkbox') {
-          const currentValue = this.componentProperties.customCss[this.componentProperties.customCssActiveMode][setting.spec.cssProperty];
+          const currentValue = this.getCurrentValue(this.componentProperties.customCssActiveMode, setting.spec.cssProperty);
           if (currentValue) { setting.spec.default = (currentValue === setting.spec.conditionalStyle.truthy); }
         }
       })

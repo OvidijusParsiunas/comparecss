@@ -110,9 +110,11 @@ interface Data {
 import newComponentModalService from '../../../services/workshop/newComponentModal';
 import 'vuesax/dist/vuesax.css' //Vuesax styles
 import downloadFiles from '../../../services/workshop/downloadFiles';
+import cssBuilder from '../../../services/workshop/cssBuilder';
 import toolbar from './toolbar/Toolbar.vue';
 import componentContents from './componentPreview/ComponentPreview.vue';
 import { WorkshopComponent } from '../../../interfaces/workshopComponent';
+import { WorkshopComponentCss } from '../../../interfaces/workshopComponentCss';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { BUTTON_COMPONENT_MODES } from '../../../consts/buttonComponentModes.enum';
 
@@ -181,41 +183,13 @@ export default {
             height: '38px',
             boxSizing: 'content-box',
             transition: 'unset',
+            color: '#ffffff',
           },
           [BUTTON_COMPONENT_MODES.HOVER]: {
-            borderRadius: '0px',
-            borderWidth: '0px',
-            borderColor: '#1779ba',
-            boxShadow: '0px 0px 0px 0px #000000',
             backgroundColor: '#ff0000',
-            outline: 'none',
-            lineHeight: '0',
-            paddingTop: '0px',
-            paddingBottom: '0px',
-            marginLeft: '0px',
-            marginTop: '0px',
-            marginRight: '0px',
-            marginBottom: '0px',
-            width: '40px',
-            height: '38px',
-            boxSizing: 'content-box',
           },
           [BUTTON_COMPONENT_MODES.CLICK]: {
-            borderRadius: '0px',
-            borderWidth: '0px',
             backgroundColor: '#409441',
-            boxShadow: '0px 0px 0px 0px #000000',
-            outline: 'none',
-            paddingTop: '0px',
-            paddingBottom: '0px',
-            marginLeft: '0px',
-            marginTop: '0px',
-            marginRight: '0px',
-            marginBottom: '0px',
-            width: '40px',
-            height: '38px',
-            lineHeight: '0',
-            boxSizing: 'content-box',
           },
         },
         initialCss: {
@@ -237,42 +211,13 @@ export default {
             height: '38px',
             boxSizing: 'content-box',
             transition: 'none',
+            color: '#ffffff',
           },
           [BUTTON_COMPONENT_MODES.HOVER]: {
-            borderRadius: '0px',
-            borderWidth: '0px',
-            borderColor: '#1779ba',
-            boxShadow: '0px 0px 0px 0px #000000',
             backgroundColor: '#ff0000',
-            outline: 'none',
-            lineHeight: '0',
-            paddingTop: '0px',
-            paddingBottom: '0px',
-            marginLeft: '0px',
-            marginTop: '0px',
-            marginRight: '0px',
-            marginBottom: '0px',
-            width: '40px',
-            height: '38px',
-            transition: 'none',
           },
           [BUTTON_COMPONENT_MODES.CLICK]: {
-            borderRadius: '0px',
-            borderWidth: '0px',
             backgroundColor: '#409441',
-            boxShadow: '0px 0px 0px 0px #000000',
-            outline: 'none',
-            paddingTop: '0px',
-            paddingBottom: '0px',
-            marginLeft: '0px',
-            marginTop: '0px',
-            marginRight: '0px',
-            marginBottom: '0px',
-            width: '40px',
-            height: '38px',
-            lineHeight: '0',
-            boxSizing: 'content-box',
-            transition: 'none',
           },
         },
         customCssActiveMode: BUTTON_COMPONENT_MODES.DEFAULT,
@@ -290,8 +235,21 @@ export default {
     selectComponentCard: function(componentName: string): void {
       this.currentlySelectedComponent = componentName;
     },
-    downloadCSSFile: (): void => {
-      downloadFiles.downloadZip('.uniquebutton { background-color: yellow }');
+    downloadCSSFile: function(): void {
+      const inherentCustomCssForButtons = {
+        cursor: 'pointer',
+        display: 'inline-block',
+        verticalAlign: 'middle',
+        paddingLeft: '0.85em',
+        paddingRight: '0.85em',
+        fontSize: '14px',
+        textAlign: 'center',
+        fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
+        transition: 'all 0.25s ease-out',
+      } as WorkshopComponentCss;
+      const resultCss = cssBuilder.build('mock-class-name', inherentCustomCssForButtons,
+        this.currentlySelectedComponent.componentProperties.customCss);
+      downloadFiles.downloadZip(resultCss);
     },
   },
   components: {

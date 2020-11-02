@@ -23,7 +23,9 @@
               @mousedown="componentMouseDown(componentProperties)"
               @mouseup="componentMouseUp(componentProperties.customCss)"
               :class="componentProperties.componentClass"
-              :style="componentProperties.customCss[componentProperties.customCssActiveMode]"
+              :style="componentProperties.customCssActiveMode === BUTTON_COMPONENT_MODES.CLICK
+                ? [componentProperties.customCss[BUTTON_COMPONENT_MODES.DEFAULT], componentProperties.customCss[BUTTON_COMPONENT_MODES.HOVER], componentProperties.customCss[BUTTON_COMPONENT_MODES.CLICK]]
+                : [componentProperties.customCss[BUTTON_COMPONENT_MODES.DEFAULT], componentProperties.customCss[componentProperties.customCssActiveMode]]"
               v-html="componentProperties.innerHtml">
             </button>
           </div>
@@ -31,13 +33,13 @@
             <transition name="right-slide-fade">
               <div id="margin-assistance-right" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
             </transition>
-         </div>  
+          </div>
           <div class="grid-item"></div>
           <div class="grid-item">
             <transition name="bottom-slide-fade">
               <div id="margin-assistance-bottom" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
             </transition>
-         </div>
+          </div>
           <div class="grid-item"></div>  
         </div>
       </div>
@@ -49,18 +51,24 @@
 import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCss';
 import { ComponentProperties } from '../../../../interfaces/workshopComponent';
 import { BUTTON_COMPONENT_MODES } from '../../../../consts/buttonComponentModes.enum';
-
+interface Data {
+  overwrittenDefaultPropertiesByHover: unknown,
+  overwrittenDefaultPropertiesByClick: unknown,
+  BUTTON_COMPONENT_MODES,
+}
 export default {
-  data: (): { overwrittenDefaultPropertiesByHover: unknown, overwrittenDefaultPropertiesByClick: unknown } => ({
+  data: (): Data => ({
     overwrittenDefaultPropertiesByHover: {},
     overwrittenDefaultPropertiesByClick: {},
+    BUTTON_COMPONENT_MODES,
   }),
   methods: {
+    // important to note that default can have properties that hover and click modes do not, but hover and click cannot have properties that default doesn't
     componentMouseOver(componentProperties: ComponentProperties): void {
       const { customCss, transition } = componentProperties;
       if (this.componentProperties.customCssActiveMode === BUTTON_COMPONENT_MODES.DEFAULT) {
         this.overwrittenDefaultPropertiesByHover = { ...customCss[BUTTON_COMPONENT_MODES.DEFAULT], transition };
-        customCss[BUTTON_COMPONENT_MODES.DEFAULT] = { ...customCss[BUTTON_COMPONENT_MODES.HOVER], transition };
+        customCss[BUTTON_COMPONENT_MODES.DEFAULT] = { ...customCss[BUTTON_COMPONENT_MODES.DEFAULT], ...customCss[BUTTON_COMPONENT_MODES.HOVER], transition };
       }
     },
     componentMouseLeave(customCss: WorkshopComponentCss): void {
@@ -72,7 +80,7 @@ export default {
       const { customCss, transition } = componentProperties;
       if (this.componentProperties.customCssActiveMode === BUTTON_COMPONENT_MODES.DEFAULT) {
         this.overwrittenDefaultPropertiesByClick = { ...customCss[BUTTON_COMPONENT_MODES.DEFAULT], transition };
-        customCss[BUTTON_COMPONENT_MODES.DEFAULT] = { ...customCss[BUTTON_COMPONENT_MODES.CLICK], transition };
+        customCss[BUTTON_COMPONENT_MODES.DEFAULT] = { ...customCss[BUTTON_COMPONENT_MODES.DEFAULT], ...customCss[BUTTON_COMPONENT_MODES.CLICK], transition };
       }
     },
     componentMouseUp(customCss: WorkshopComponentCss): void {

@@ -9,10 +9,14 @@ export interface WorkshopComponentCss {
   width?: string;
   height?: string;
   fontFamily?: string;
+  textAlign?: string;
+  fontSize?: string;
   display?: string;
-  outline: string;
+  outline?: string;
   paddingTop?: string;
   paddingBottom?: string;
+  paddingLeft?: string;
+  paddingRight?: string;
   marginLeft?: string;
   marginTop?: string;
   marginRight?: string;
@@ -20,4 +24,6 @@ export interface WorkshopComponentCss {
   lineHeight?: string;
   color?: string;
   boxSizing?: string;
+  cursor?: string;
+  verticalAlign?: string;
 }

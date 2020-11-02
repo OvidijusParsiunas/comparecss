@@ -2,7 +2,7 @@ import JSZip from 'jszip';
 
 export default class Downloadfiles {
 
-  static cssFileName = 'cssimphony';
+  private static cssFileName = 'cssimphony';
 
   private static createZipFolder(cssFileContent: string): JSZip {
     const zip = new JSZip();
@@ -24,7 +24,7 @@ export default class Downloadfiles {
     });
   }
 
-  // cssFileContent will need to be an object containing relative css content
+  // cssFileContent will need to be an object containing relevant css content
   static downloadZip(cssFileContent: string): void {
     this.download(this.createZipFolder(cssFileContent));
   }
