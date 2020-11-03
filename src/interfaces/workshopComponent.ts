@@ -13,6 +13,7 @@ export interface ComponentProperties {
   initialCss: CustomCss;
   customCssActiveMode?: BUTTON_COMPONENT_MODES;
   transition: any;
+  customJS: any,
 }
 
 interface CardProperties {
@@ -24,4 +25,3 @@ export interface WorkshopComponent {
   componentProperties: ComponentProperties;
   className: string;
 }
-  

@@ -2,13 +2,11 @@ import JSZip from 'jszip';
 
 export default class Downloadfiles {
 
-  private static cssFileName = 'cssimphony';
+  private static fileName = 'cssymphony';
 
-  private static createZipFolder(cssFileContent: string): JSZip {
+  private static createZipFolder(): JSZip {
     const zip = new JSZip();
-    const zipFolder = zip.folder('cssimphony');
-    zipFolder.file(`${this.cssFileName}.css`, cssFileContent);
-    zipFolder.file(`${this.cssFileName}.min.css`, cssFileContent);
+    const zipFolder = zip.folder('cssymphony');
     return zipFolder;
   }
 
@@ -24,8 +22,29 @@ export default class Downloadfiles {
     });
   }
 
-  // cssFileContent will need to be an object containing relevant css content
-  static downloadZip(cssFileContent: string): void {
-    this.download(this.createZipFolder(cssFileContent));
+  private static addJSFiles(downloadableJS: string, zipFolder: JSZip): string {
+    let allCssForJS = '';
+    let allJS = '';
+    Object.keys(downloadableJS).forEach((key) => {
+      const { cssFileContent, jsFileContent } = downloadableJS[key];
+      allCssForJS += cssFileContent + ' ';
+      allJS += jsFileContent + ' ';
+    });
+    zipFolder.file(`${this.fileName}.js`, allJS);
+    zipFolder.file(`${this.fileName}.min.js`, allJS);
+    return allCssForJS;
+  }
+
+  private static addCSSFiles(customCss: string, cssForJS: string, zipFolder: JSZip): void {
+    const allCss = customCss + cssForJS;
+    zipFolder.file(`${this.fileName}.css`, allCss);
+    zipFolder.file(`${this.fileName}.min.css`, allCss);
+  }
+
+  static downloadZip(customCss: string, customJS: any): void {
+    const zipFolder = this.createZipFolder();
+    const cssForJS = this.addJSFiles(customJS, zipFolder);
+    this.addCSSFiles(customCss, cssForJS, zipFolder);
+    this.download(zipFolder);
   }
 }

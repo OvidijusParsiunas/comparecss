@@ -146,11 +146,12 @@ export default {
               borderRadius: '0px',
               borderWidth: '0px',
               outline: 'none',
-          },
+            },
             [BUTTON_COMPONENT_MODES.HOVER]: { outline: 'none' },
             [BUTTON_COMPONENT_MODES.CLICK]: { outline: 'none' },
           },
           customCssActiveMode: BUTTON_COMPONENT_MODES.DEFAULT,
+          customJS: {},
         },
         className: 'button'
       },
@@ -220,6 +221,7 @@ export default {
             backgroundColor: '#409441',
           },
         },
+        customJS: {},
         customCssActiveMode: BUTTON_COMPONENT_MODES.DEFAULT,
       },
       className: 'button'
@@ -249,7 +251,7 @@ export default {
       } as WorkshopComponentCss;
       const resultCss = cssBuilder.build('mock-class-name', inherentCustomCssForButtons,
         this.currentlySelectedComponent.componentProperties.customCss);
-      downloadFiles.downloadZip(resultCss);
+      downloadFiles.downloadZip(resultCss, this.currentlySelectedComponent.componentProperties.customJS);
     },
   },
   components: {
