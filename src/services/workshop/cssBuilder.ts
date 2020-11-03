@@ -10,13 +10,13 @@ export default class CssBuilder {
   }
 
   private static buildCssString(cssModeProperties: WorkshopComponentCss): string {
-    return Object.keys(cssModeProperties).map((key) => `${this.camelToKebabCase(key)}: ${cssModeProperties[key]};`).join(' ');
+    return Object.keys(cssModeProperties).map((key) => `  ${this.camelToKebabCase(key)}: ${cssModeProperties[key]};`).join('\r\n');
   }
 
   private static buildPseudoClass(className: string, pseudoClassName: string, cssModeProperties: WorkshopComponentCss): string {
     const hoverKeys = Object.keys(cssModeProperties);
     if (hoverKeys.length) {
-      return `.${className}:${pseudoClassName} {${this.buildCssString(cssModeProperties)}} `
+      return `\r\n\r\n.${className}:${pseudoClassName} {\r\n${this.buildCssString(cssModeProperties)}\r\n}`
     }
     return '';
   }
@@ -31,7 +31,7 @@ export default class CssBuilder {
   private static buildDefaultCss(className: string, inherentCss: WorkshopComponentCss, cssModeProperties: WorkshopComponentCss): string {
     const inherentCssString = this.buildCssString(inherentCss);
     const customCssString = this.buildCssString(cssModeProperties);
-    return `.${className} { ${customCssString} ${inherentCssString} }`;
+    return `.${className} {\r\n${customCssString} ${inherentCssString}\r\n}`;
   }
 
   static build(className: string, inherentCss: WorkshopComponentCss, customCss: WorkshopComponent): string {

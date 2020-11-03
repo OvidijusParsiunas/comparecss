@@ -65,29 +65,30 @@ const downloadableJS = `
   ${showEffect.toString()}
   (${init.toString()})();
 `;
-const downloadableCSS = `
-  .csssymphony-ripples {
-    overflow: hidden;
-    position: relative;
-  }
-  
-  @keyframes displayRipple {
-    from {
-      transform: scale(0.5);
-    }
-    to {
-      transform: scale(4);
-    }
-  }
 
-  @keyframes fadeRipple {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
+const downloadableCSS = `
+.csssymphony-ripples {
+  overflow: hidden;
+  position: relative;
+}
+
+@keyframes displayRipple {
+  from {
+    transform: scale(0.5);
   }
+  to {
+    transform: scale(4);
+  }
+}
+
+@keyframes fadeRipple {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+  }
+}
 `;
 
 // create an optional interface

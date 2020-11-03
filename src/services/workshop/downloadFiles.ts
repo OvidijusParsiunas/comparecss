@@ -27,8 +27,8 @@ export default class Downloadfiles {
     let allJS = '';
     Object.keys(downloadableJS).forEach((key) => {
       const { cssFileContent, jsFileContent } = downloadableJS[key];
-      allCssForJS += cssFileContent + ' ';
-      allJS += jsFileContent + ' ';
+      allCssForJS += '\r\n' + cssFileContent;
+      allJS += '\r\n' + jsFileContent;
     });
     if (allJS.trim().length === 0) return '';
     zipFolder.file(`${this.fileName}.js`, allJS);
