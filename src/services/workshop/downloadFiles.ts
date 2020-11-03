@@ -30,6 +30,7 @@ export default class Downloadfiles {
       allCssForJS += cssFileContent + ' ';
       allJS += jsFileContent + ' ';
     });
+    if (allJS.trim().length === 0) return '';
     zipFolder.file(`${this.fileName}.js`, allJS);
     zipFolder.file(`${this.fileName}.min.js`, allJS);
     return allCssForJS;
