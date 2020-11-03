@@ -58,12 +58,15 @@ function init() {
   document.body.addEventListener('mousedown', showEffect, false);
 }
 
-const downloadableJS = `
-  var vars = ${JSON.stringify(vars)};
-  ${createRipple.toString()}
-  ${removeRipple.toString()}
-  ${showEffect.toString()}
-  (${init.toString()})();
+const downloadableJS = `var vars = ${JSON.stringify(vars)};
+
+${createRipple.toString()}
+
+${removeRipple.toString()}
+
+${showEffect.toString()}
+
+(${init.toString()})();
 `;
 
 const downloadableCSS = `

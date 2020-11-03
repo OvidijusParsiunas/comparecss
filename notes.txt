@@ -1,4 +1,5 @@
 color active toolkit button
+multiplejs objects may need a different structure to be defined in a single js file
 sometimes setting to auto option like the margin does not set desired results, potentially remove it - or set beginner components (in modal) to have no margin as auto
 
 font-awesome pictures on buttons
