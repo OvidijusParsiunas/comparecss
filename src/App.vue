@@ -40,7 +40,27 @@ export default class App extends Vue {
     }).then(() => {
       return scripts.addScriptsToHead('assets/js/foundation/foundation.min.js');
     }).then(() => {
-      scripts.addScriptsToHead('assets/js/cssFrameworkJsFunctionality.js');
+      return scripts.addScriptsToHead('assets/js/cssFrameworkJsFunctionality.js');
+    }).then(() => {
+      return scripts.addScriptsToHead('assets/js/uglifyjs/utils.js')
+    }).then(() => {
+      return scripts.addScriptsToHead('assets/js/uglifyjs/ast.js')
+    }).then(() => {
+      return scripts.addScriptsToHead('assets/js/uglifyjs/minify.js')
+    }).then(() => {
+      return scripts.addScriptsToHead('assets/js/uglifyjs/output.js')
+    }).then(() => {
+      return scripts.addScriptsToHead('assets/js/uglifyjs/parse.js')
+    }).then(() => {
+      return scripts.addScriptsToHead('assets/js/uglifyjs/propmangle.js')
+    }).then(() => {
+      return scripts.addScriptsToHead('assets/js/uglifyjs/scope.js')
+    }).then(() => {
+      return scripts.addScriptsToHead('assets/js/uglifyjs/sourcemap.js')
+    }).then(() => {
+      return scripts.addScriptsToHead('assets/js/uglifyjs/transform.js')
+    }).then(() => {
+      scripts.addScriptsToHead('assets/js/uglifyjs/compress.js')
     }).catch((e) => {
       console.log('Failed to load a script:')
       console.log(e);

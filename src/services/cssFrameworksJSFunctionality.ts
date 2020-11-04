@@ -1,11 +1,4 @@
-import { CssFrameworksJsFunctionality } from '../interfaces/cssFrameworksJsFunctionality';
 import { NAVBAR_SUB_MENU_BUTTONS } from '../consts/navbarSubMenuButtons.enum';
-
-declare global {
-  interface Window {
-    cssFrameworksJsFunctionality: CssFrameworksJsFunctionality;
-  }
-}
 
 export default class CssFrameworksJSFunctionality {
   // tried to use the code below along with an imported jquery library, but accordion function was not found

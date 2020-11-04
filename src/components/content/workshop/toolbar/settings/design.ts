@@ -58,6 +58,7 @@ function init() {
   document.body.addEventListener('mousedown', showEffect, false);
 }
 
+// downloadableJS and downloadableCSS embody the below structure in order to be formatted correctly for the output file
 const downloadableJS = `var vars = ${JSON.stringify(vars)};
 
 ${createRipple.toString()}

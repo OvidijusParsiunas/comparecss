@@ -240,13 +240,6 @@ export default {
     position: relative;
   }
 
-  .ripple {
-    background-color: rgba(255, 255, 255, 0.5);
-    pointer-events: none;
-    position: absolute;
-    border-radius: 50%;
-  }
-
   @keyframes displayRipple {
     from {
       transform: scale(0.5);

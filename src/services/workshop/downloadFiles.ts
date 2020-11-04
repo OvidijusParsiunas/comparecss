@@ -1,4 +1,6 @@
 import JSZip from 'jszip';
+import CleanCSS from 'clean-css';
+import uglifyjsOptions from '../../consts/uglifyjsOptions';
 
 export default class Downloadfiles {
 
@@ -32,14 +34,16 @@ export default class Downloadfiles {
     });
     if (allJS.trim().length === 0) return '';
     zipFolder.file(`${this.fileName}.js`, allJS);
-    zipFolder.file(`${this.fileName}.min.js`, allJS);
+    const allJSMinified = window.minify(allJS, uglifyjsOptions);
+    if (!allJSMinified.error) { zipFolder.file(`${this.fileName}.min.js`, allJSMinified.code); }
     return allCssForJS;
   }
 
   private static addCSSFiles(customCss: string, cssForJS: string, zipFolder: JSZip): void {
     const allCss = customCss + cssForJS;
     zipFolder.file(`${this.fileName}.css`, allCss);
-    zipFolder.file(`${this.fileName}.min.css`, allCss);
+    const allCssMinified = new CleanCSS({}).minify(allCss);
+    if (!allCssMinified.errors.length) { zipFolder.file(`${this.fileName}.min.css`, allCssMinified.styles); }
   }
 
   static downloadZip(customCss: string, customJS: any): void {
