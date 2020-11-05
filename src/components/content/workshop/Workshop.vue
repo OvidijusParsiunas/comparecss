@@ -3,26 +3,7 @@
     <div style="height: 100vh" class="bootstrap">
       <div style="height: 100%; margin-left: 0px; margin-right: 0px; display: flex">
         <div style="width: 30%; position: relative">
-          <div id="component-cards" style="background-color: rgb(251 251 251); display: grid; border-radius: 20px; height: 95%; width: 90%; margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); text-align: center">
-            <div id="component-cards-container" style="margin-top: 5px">
-              <div v-for="component in components" :key="component">
-                <!-- new component -->
-                <div style="cursor: move; width: 18rem; margin: auto; margin-top: 5px" class="card component-card" v-on:click="selectComponentCard(component)" tabindex="0">
-                  <div class="card-body">
-                    <h5 style="float: left" class="card-title">{{component.className}}</h5>
-                    <a style="float: right" href="#" class="btn btn-danger">Delete</a>
-                  </div>
-                </div>
-              </div>
-              <div style="cursor: move; width: 18rem; margin: auto; outline: none; margin-top: 5px" class="add-card card" data-toggle="modal" data-target="#exampleModal" tabindex="0">
-                <div style="text-align: center" class="card-body">
-                  <div style="height: 38px; padding-top: 6px">
-                    Add +
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          <componentList :componentList="components" @component-card-selected="componentCardSelected($event)"/>
           <div style="position: absolute; bottom: 0">
             <button type="button" style="margin-left: 7px; margin-bottom: 10px" class="btn btn-warning btn-sm">Explore icon</button>
           </div>
@@ -122,6 +103,7 @@ import downloadFiles from '../../../services/workshop/downloadFiles';
 import cssBuilder from '../../../services/workshop/cssBuilder';
 import toolbar from './toolbar/Toolbar.vue';
 import componentContents from './componentPreview/ComponentPreview.vue';
+import componentList from './componentList/ComponentList.vue';
 import { WorkshopComponent } from '../../../interfaces/workshopComponent';
 import { WorkshopComponentCss } from '../../../interfaces/workshopComponentCss';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
@@ -243,8 +225,8 @@ export default {
     addNewComponent: function(componentName: string, componentHTML: string): void {
       this.components.push([componentName, componentHTML]);
     },
-    selectComponentCard: function(componentName: string): void {
-      this.currentlySelectedComponent = componentName;
+    componentCardSelected: function(selectedComponentCard: WorkshopComponent): void {
+      this.currentlySelectedComponent = selectedComponentCard;
     },
     downloadCSSFile: function(): void {
       const inherentCustomCssForButtons = {
@@ -265,6 +247,7 @@ export default {
   },
   components: {
     toolbar,
+    componentList,
     componentContents,
   }
 };
@@ -272,24 +255,6 @@ export default {
 </script>
 
 <style lang="css" scoped>
-  .component-card:hover {
-    border-color: #d1d5da!important;
-    box-shadow: 0 1px 3px rgba(106,115,125,.3)!important;
-  }
-  .component-card:focus {
-    outline: none;
-    border-color: #2188ff!important;
-    box-shadow: 0 0 0 .2em rgba(3,102,214,.3)!important;
-  }
-  .add-card {
-    border: 1px dashed #c2c2c2 !important;
-  }
-  .add-card:hover {
-    border: 1px dashed #949494 !important;
-  }
-  .add-card:focus {
-    border: 1px dashed #2e2e2e !important;
-  }
   .btn-outline-secondary:hover {
     background-color: #d6d6d6 !important;
     color: black !important;
