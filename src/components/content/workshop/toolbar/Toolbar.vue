@@ -2,12 +2,10 @@
   <div style="width: 98.5%; height: 228px">
     <div style="display: flex; background-color: rgb(251 251 251); border-radius: 20px;">
       <div style="margin-left: 10px; padding: 5px">
-        <div style="margin-top: 10px; display: flex"> 
-          <button type="button" class="btn btn-outline-secondary edit-component-button">Default</button>
-          <button type="button" class="btn btn-outline-secondary edit-component-button">Button</button>
+        <!-- <div style="margin-top: 10px; display: flex"> 
+          <button type="button" class="btn btn-outline-secondary edit-component-button">Edit</button>
           <button type="button" class="btn btn-outline-secondary edit-component-button">Code</button>
-          <button type="button" class="btn btn-outline-secondary edit-component-button">Preview</button>
-        </div>
+        </div> -->
         <options :componentProperties="componentProperties" @option-clicked="updateSettings" @mode-clicked="updateMode"/>
       </div>
     </div>

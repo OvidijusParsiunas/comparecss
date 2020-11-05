@@ -38,14 +38,23 @@
             -->
             <toolbar :componentProperties="currentlySelectedComponent.componentProperties" :componentPreviewAssistance="componentPreviewAssistance"/>
             <componentContents style="height: 50%" :componentProperties="currentlySelectedComponent.componentProperties" :componentPreviewAssistance="componentPreviewAssistance"/>
-            <div style="height: 18%; display: flex">
+            <div style="height: 18%; display: flex; float: right; margin-right: 10px; margin-top: 105px">
+              <div style="position: relative">
+                <div>
+                  <!-- <div style="text-align: center; margin-bottom: 5px">Size: 0kb</div> -->
+                  <button type="button" class="btn btn-outline-secondary edit-component-button" @click="downloadCSSFile">&lt;&gt;</button>
+                  <button type="button" class="btn btn-success" @click="downloadCSSFile">&darr;</button>
+                </div>
+              </div>
+            </div>
+            <!-- <div style="height: 18%; display: flex">
               <div style="width: 30%; position: relative">
                 <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
                   <div style="text-align: center; margin-bottom: 5px">Size: 0kb</div>
                   <button type="button" class="btn btn-success" @click="downloadCSSFile">Download</button>
                 </div>
               </div>
-            </div>
+            </div> -->
           </div>
         </div>
       </div>
