@@ -8,9 +8,10 @@
 <script lang="ts">
 import Content from './components/content/Content.vue';
 import Sidenav from './components/sidenav/Sidenav.vue';
-import scripts from './services/scripts';
+import scriptService from './services/scripts';
 import { Options, Vue } from 'vue-class-component';
 import { NavbarButton } from './interfaces/navbarButton';
+import { DOM_LOCATIONS } from './consts/domLocations.enum';
 
 // https://vuejsdevelopers.com/2020/03/16/vue-js-tutorial/
 @Options({
@@ -30,42 +31,18 @@ export default class App extends Vue {
   }
 
   private addScriptsToDOM(): void {
-    scripts.addScriptsToHead(
-      'assets/js/jquery/jquery-3.5.1.slim.min.js', 'assets/js/jquery/jquery.js', 'assets/js/mui/mui.min.js',
-      'assets/js/uikit/uikit.min.js', 'assets/js/popper/popper.min.js', 'assets/js/materialize/materialize.min.js'
-    ).then(() => {
-      return scripts.addScriptsToHead('assets/js/bootstrap/bootstrap.min.js');
-    }).then(() => {
-      return scripts.addScriptsToHead('assets/js/semantic/semantic.min.js');
-    }).then(() => {
-      return scripts.addScriptsToHead('assets/js/foundation/foundation.min.js');
-    }).then(() => {
-      return scripts.addScriptsToHead('assets/js/cssFrameworkJsFunctionality.js');
-    }).then(() => {
-      return scripts.addScriptsToHead('assets/js/uglifyjs/utils.js')
-    }).then(() => {
-      return scripts.addScriptsToHead('assets/js/uglifyjs/ast.js')
-    }).then(() => {
-      return scripts.addScriptsToHead('assets/js/uglifyjs/minify.js')
-    }).then(() => {
-      return scripts.addScriptsToHead('assets/js/uglifyjs/output.js')
-    }).then(() => {
-      return scripts.addScriptsToHead('assets/js/uglifyjs/parse.js')
-    }).then(() => {
-      return scripts.addScriptsToHead('assets/js/uglifyjs/propmangle.js')
-    }).then(() => {
-      return scripts.addScriptsToHead('assets/js/uglifyjs/scope.js')
-    }).then(() => {
-      return scripts.addScriptsToHead('assets/js/uglifyjs/sourcemap.js')
-    }).then(() => {
-      return scripts.addScriptsToHead('assets/js/uglifyjs/transform.js')
-    }).then(() => {
-      scripts.addScriptsToHead('assets/js/uglifyjs/compress.js')
-    }).catch((e) => {
-      console.log('Failed to load a script:')
-      console.log(e);
-    });
-    // if we fail to load a certain script, display that as a toaster alert and do not show the component
+    const scripts = [
+      [
+        'assets/js/jquery/jquery-3.5.1.slim.min.js', 'assets/js/jquery/jquery.js', 'assets/js/mui/mui.min.js',
+        'assets/js/uikit/uikit.min.js', 'assets/js/popper/popper.min.js', 'assets/js/materialize/materialize.min.js'
+      ],
+      'assets/js/bootstrap/bootstrap.min.js', 'assets/js/semantic/semantic.min.js', 'assets/js/foundation/foundation.min.js',
+      'assets/js/cssFrameworkJsFunctionality.js', 'assets/js/uglifyjs/utils.js', 'assets/js/uglifyjs/ast.js',
+      'assets/js/uglifyjs/minify.js', 'assets/js/uglifyjs/output.js', 'assets/js/uglifyjs/parse.js',
+      'assets/js/uglifyjs/propmangle.js', 'assets/js/uglifyjs/scope.js', 'assets/js/uglifyjs/sourcemap.js',
+      'assets/js/uglifyjs/transform.js', 'assets/js/uglifyjs/compress.js',
+      ];
+      scriptService.addScriptsSequentially(scripts, DOM_LOCATIONS.HEAD);
   }
 }
 </script>
