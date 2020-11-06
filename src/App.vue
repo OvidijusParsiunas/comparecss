@@ -31,6 +31,9 @@ export default class App extends Vue {
   }
 
   private addScriptsToDOM(): void {
+    // use a builder pattern
+    // https://www.youtube.com/watch?v=VuQaS0FFUFY&feature=youtu.be&fbclid=IwAR2camtL_W1Igt6Ltz5Eu2zsk-DXcwDPKJ_n6D_VcCNlh4VK0qc9GxTlsHE&ab_channel=MLTArtificialIntelligence
+    // 6:54
     const scripts = [
       [
         'assets/js/jquery/jquery-3.5.1.slim.min.js', 'assets/js/jquery/jquery.js', 'assets/js/mui/mui.min.js',

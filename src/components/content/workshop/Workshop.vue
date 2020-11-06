@@ -39,46 +39,7 @@
           </div>
         </div>
       </div>
-      <!-- new component -->
-      <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog" role="document">
-          <div class="modal-content">
-            <div class="modal-header">
-              <h5 class="modal-title" id="exampleModalLabel">Add new component</h5>
-              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div class="modal-body">
-              <form style="width: 100%">
-          <div class="form-row">
-            <div class="form-group col-md-6">
-              <div class="form-group">
-                <label for="exampleFormControlSelect2">Example multiple select</label>
-                <select multiple class="form-control" id="exampleFormControlSelect2">
-                  <option v-on:mouseenter="setComponentPreviewImage('Button')">Button</option>
-                  <option v-on:mouseenter="setComponentPreviewImage('Alert')">Alert</option>
-                  <option v-on:mouseenter="setComponentPreviewImage('Button')">Button</option>
-                  <option v-on:mouseenter="setComponentPreviewImage('Alert')">Alert</option>
-                  <option v-on:mouseenter="setComponentPreviewImage('Button')">Button</option>
-                  <option v-on:mouseenter="setComponentPreviewImage('Alert')">Alert</option>
-                  <option v-on:mouseenter="setComponentPreviewImage('Button')">Button</option>
-                  <option v-on:mouseenter="setComponentPreviewImage('Alert')">Alert</option>
-                </select>
-              </div>
-            </div>
-            <div class="form-group col-md-6">
-              {{previewImage}}
-            </div>
-          </div>
-          </form>
-            </div>
-            <div class="modal-footer">
-              <button v-on:click="addNewComponent('Alert')" type="button" class="btn btn-primary" data-dismiss="modal">Add</button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <newComponentModal @add-new-component="addNewComponent($event)"/>
     </div>
     <div class="center">
       <button class="vs-button vs-button--null vs-button--size-null vs-button--primary vs-button--default">
@@ -92,17 +53,16 @@
 
 <script lang="ts">
 interface Data {
-  previewImage: string,
   components: [WorkshopComponent],
   currentlySelectedComponent: WorkshopComponent;
   componentPreviewAssistance: ComponentPreviewAssistance;
 }
-import newComponentModalService from '../../../services/workshop/newComponentModal';
 import 'vuesax/dist/vuesax.css' //Vuesax styles
 import downloadFiles from '../../../services/workshop/downloadFiles';
 import cssBuilder from '../../../services/workshop/cssBuilder';
 import toolbar from './toolbar/Toolbar.vue';
 import componentContents from './componentPreview/ComponentPreview.vue';
+import newComponentModal from './newComponent/Modal.vue';
 import componentList from './componentList/ComponentList.vue';
 import { WorkshopComponent } from '../../../interfaces/workshopComponent';
 import { WorkshopComponentCss } from '../../../interfaces/workshopComponentCss';
@@ -111,7 +71,6 @@ import { BUTTON_COMPONENT_MODES } from '../../../consts/buttonComponentModes.enu
 
 export default {
   data: (): Data => ({
-    previewImage: 'previewImage',
     componentPreviewAssistance: { margin: false },
     components: [
       {
@@ -219,11 +178,8 @@ export default {
     },
   }),
   methods: {
-    setComponentPreviewImage: function(componentName: string): void {
-      this.previewImage = newComponentModalService.getPreviewImage(componentName);
-    },
-    addNewComponent: function(componentName: string, componentHTML: string): void {
-      this.components.push([componentName, componentHTML]);
+    addNewComponent: function(newComponent: WorkshopComponent): void {
+      this.components.push(newComponent);
     },
     componentCardSelected: function(selectedComponentCard: WorkshopComponent): void {
       this.currentlySelectedComponent = selectedComponentCard;
@@ -249,6 +205,7 @@ export default {
     toolbar,
     componentList,
     componentContents,
+    newComponentModal,
   }
 };
 

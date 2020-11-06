@@ -4,6 +4,7 @@
       <div v-for="component in componentList" :key="component">
         <componentCard :component="component" @component-card-selected="componentCardSelected($event)"/>
       </div>
+      <!-- link id to the modal via workshop -->
       <div style="cursor: move; width: 18rem; margin: auto; outline: none; margin-top: 5px" class="add-card card" data-toggle="modal" data-target="#exampleModal" tabindex="0">
         <div style="text-align: center" class="card-body">
           <div style="height: 38px; padding-top: 6px">
