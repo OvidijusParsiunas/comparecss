@@ -35,7 +35,7 @@
 
 <script lang="ts">
 import newComponentModalService from '../../../../services/workshop/newComponentModal';
-import { newComponentContainer } from '../../../../services/workshop/newComponent/newComponentContainer';
+import newComponentContainer from '../../../../services/workshop/newComponent/newComponentContainer';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { NEW_COMPONENT_STYLES } from '../../../../consts/newComponentStyles.enum';
 

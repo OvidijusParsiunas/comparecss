@@ -1,10 +1,9 @@
 import { WorkshopComponent } from '../../interfaces/workshopComponent';
 import { BUTTON_COMPONENT_MODES } from '../../consts/buttonComponentModes.enum';
+import { NEW_COMPONENT_TYPES } from '../../consts/newComponentTypes.enum';
 
 export default {
-  cardProperties: {
-    type: 'Button',
-  },
+  type: NEW_COMPONENT_TYPES.BUTTON,
   componentProperties: {
     frameworkClass: 'foundation',
     componentClass: 'button',

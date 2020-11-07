@@ -17,7 +17,7 @@
               <toolbar v-model:currentlySelectedComponent="currentlySelectedComponent"/>
               'vue/no-v-model-argument': 'off',
             -->
-            <toolbar ref="toolbar" :componentProperties="currentlySelectedComponent.componentProperties" :componentPreviewAssistance="componentPreviewAssistance"/>
+            <toolbar ref="toolbar" :component="currentlySelectedComponent" :componentPreviewAssistance="componentPreviewAssistance"/>
             <componentContents style="height: 50%" :componentProperties="currentlySelectedComponent.componentProperties" :componentPreviewAssistance="componentPreviewAssistance"/>
             <div style="height: 18%; display: flex; float: right; margin-right: 10px; margin-top: 105px">
               <div style="position: relative">
@@ -68,15 +68,15 @@ import { WorkshopComponent } from '../../../interfaces/workshopComponent';
 import { WorkshopComponentCss } from '../../../interfaces/workshopComponentCss';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { BUTTON_COMPONENT_MODES } from '../../../consts/buttonComponentModes.enum';
+import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
+import { UpdateMode } from '../../../interfaces/updateMode';
 
 export default {
   data: (): Data => ({
     componentPreviewAssistance: { margin: false },
     components: [
       {
-        cardProperties: {
-          type: 'Button',
-        },
+        type: NEW_COMPONENT_TYPES.BUTTON,
         componentProperties: {
           frameworkClass: 'foundation',
           componentClass: 'button',
@@ -145,9 +145,7 @@ export default {
       },
     ],
     currentlySelectedComponent: {
-      cardProperties: {
-        type: 'Button',
-      },
+      type: NEW_COMPONENT_TYPES.BUTTON,
       componentProperties: {
         frameworkClass: 'foundation',
         componentClass: 'button',
@@ -223,7 +221,7 @@ export default {
       if (this.currentlySelectedComponent.componentProperties.hasOwnProperty('customCssActiveMode')) {
         this.currentlySelectedComponent.componentProperties.customCssActiveMode = BUTTON_COMPONENT_MODES.DEFAULT;
       }
-      this.$refs.toolbar.updateMode(BUTTON_COMPONENT_MODES.DEFAULT);
+      this.$refs.toolbar.updateMode([BUTTON_COMPONENT_MODES.DEFAULT] as UpdateMode);
       this.currentlySelectedComponent = selectedComponentCard;
     },
     downloadCSSFile: function(): void {
