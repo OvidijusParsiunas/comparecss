@@ -54,7 +54,7 @@ export default {
       this.previewImage = newComponentModalService.getPreviewImage(componentName);
     },
     addNewComponent: function(newComponentType: NEW_COMPONENT_TYPES): void {
-      const newComponent = newComponentContainer[newComponentType][NEW_COMPONENT_STYLES.DEFAULT];
+      const newComponent = newComponentContainer[newComponentType][NEW_COMPONENT_STYLES.DEFAULT].getNewComponent();
       this.$emit('add-new-component', newComponent);
     },
   }

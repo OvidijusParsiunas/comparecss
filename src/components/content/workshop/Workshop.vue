@@ -216,13 +216,15 @@ export default {
   methods: {
     addNewComponent: function(newComponent: WorkshopComponent): void {
       this.components.push(newComponent);
+      this.currentlySelectedComponent = newComponent;
+      this.$refs.toolbar.updateMode([BUTTON_COMPONENT_MODES.DEFAULT] as UpdateMode);
     },
     componentCardSelected: function(selectedComponentCard: WorkshopComponent): void {
       if (this.currentlySelectedComponent.componentProperties.hasOwnProperty('customCssActiveMode')) {
         this.currentlySelectedComponent.componentProperties.customCssActiveMode = BUTTON_COMPONENT_MODES.DEFAULT;
       }
       this.$refs.toolbar.updateMode([BUTTON_COMPONENT_MODES.DEFAULT] as UpdateMode);
-      this.currentlySelectedComponent = selectedComponentCard;
+      if (this.currentlySelectedComponent !== selectedComponentCard) { this.currentlySelectedComponent = selectedComponentCard; }
     },
     downloadCSSFile: function(): void {
       const inherentCustomCssForButtons = {
