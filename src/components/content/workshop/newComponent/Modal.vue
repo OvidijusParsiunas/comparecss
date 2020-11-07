@@ -15,15 +15,7 @@
                 <div class="form-group">
                   <label for="exampleFormControlSelect2">Example multiple select</label>
                   <select multiple class="form-control" id="exampleFormControlSelect2">
-                    <!-- store these in a const file -->
-                    <option v-on:mouseenter="setComponentPreviewImage('Button')">Button</option>
-                    <option v-on:mouseenter="setComponentPreviewImage('Alert')">Alert</option>
-                    <option v-on:mouseenter="setComponentPreviewImage('Button')">Button</option>
-                    <option v-on:mouseenter="setComponentPreviewImage('Alert')">Alert</option>
-                    <option v-on:mouseenter="setComponentPreviewImage('Button')">Button</option>
-                    <option v-on:mouseenter="setComponentPreviewImage('Alert')">Alert</option>
-                    <option v-on:mouseenter="setComponentPreviewImage('Button')">Button</option>
-                    <option v-on:mouseenter="setComponentPreviewImage('Alert')">Alert</option>
+                    <option v-for="newComponentType in NEW_COMPONENT_TYPES" :key="newComponentType" v-on:mouseenter="setComponentPreviewImage(newComponentType)">{{newComponentType}}</option>
                   </select>
                 </div>
               </div>
@@ -43,21 +35,26 @@
 
 <script lang="ts">
 import newComponentModalService from '../../../../services/workshop/newComponentModal';
-import newComponentManager from '../../../../services/workshop/newComponent/newComponentManager';
+import { newComponentContainer } from '../../../../services/workshop/newComponent/newComponentContainer';
+import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
+import { NEW_COMPONENT_STYLES } from '../../../../consts/newComponentStyles.enum';
+
 interface Data {
   previewImage: string;
+  NEW_COMPONENT_TYPES,
 }
 
 export default {
   data: (): Data => ({
     previewImage: 'previewImage',
+    NEW_COMPONENT_TYPES,
   }),
   methods: {
     setComponentPreviewImage: function(componentName: string): void {
       this.previewImage = newComponentModalService.getPreviewImage(componentName);
     },
-    addNewComponent: function(componentName: string): void {
-      const newComponent = newComponentManager.getNewComponentProperties(componentName);
+    addNewComponent: function(newComponentType: NEW_COMPONENT_TYPES): void {
+      const newComponent = newComponentContainer[newComponentType][NEW_COMPONENT_STYLES.DEFAULT];
       this.$emit('add-new-component', newComponent);
     },
   }
