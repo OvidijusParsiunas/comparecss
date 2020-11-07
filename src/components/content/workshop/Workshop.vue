@@ -17,7 +17,7 @@
               <toolbar v-model:currentlySelectedComponent="currentlySelectedComponent"/>
               'vue/no-v-model-argument': 'off',
             -->
-            <toolbar :componentProperties="currentlySelectedComponent.componentProperties" :componentPreviewAssistance="componentPreviewAssistance"/>
+            <toolbar ref="toolbar" :componentProperties="currentlySelectedComponent.componentProperties" :componentPreviewAssistance="componentPreviewAssistance"/>
             <componentContents style="height: 50%" :componentProperties="currentlySelectedComponent.componentProperties" :componentPreviewAssistance="componentPreviewAssistance"/>
             <div style="height: 18%; display: flex; float: right; margin-right: 10px; margin-top: 105px">
               <div style="position: relative">
@@ -81,27 +81,65 @@ export default {
           frameworkClass: 'foundation',
           componentClass: 'button',
           innerHtml: 'button',
-          transition: {},
+          transition: 'all 0.25s ease-out',
           customCss: {
             [BUTTON_COMPONENT_MODES.DEFAULT]: {
               borderRadius: '0px',
               borderWidth: '0px',
+              borderColor: '#1779ba',
+              backgroundColor: '#1779ba',
+              boxShadow: '0px 0px 0px 0px #000000',
               outline: 'none',
+              lineHeight: '0',
+              paddingTop: '0px',
+              paddingBottom: '0px',
+              marginLeft: '0px',
+              marginTop: '0px',
+              marginRight: '0px',
+              marginBottom: '0px',
+              width: '40px',
+              height: '38px',
+              boxSizing: 'content-box',
+              transition: 'unset',
+              color: '#ffffff',
             },
-            [BUTTON_COMPONENT_MODES.HOVER]: { outline: 'none' },
-            [BUTTON_COMPONENT_MODES.CLICK]: { outline: 'none' },
+            [BUTTON_COMPONENT_MODES.HOVER]: {
+              backgroundColor: '#ff0000',
+            },
+            [BUTTON_COMPONENT_MODES.CLICK]: {
+              backgroundColor: '#409441',
+            },
           },
           initialCss: {
             [BUTTON_COMPONENT_MODES.DEFAULT]: {
               borderRadius: '0px',
               borderWidth: '0px',
+              borderColor: '#1779ba',
+              backgroundColor: '#1779ba',
+              boxShadow: '0px 0px 0px 0px #000000',
               outline: 'none',
+              lineHeight: '0',
+              paddingTop: '0px',
+              paddingBottom: '0px',
+              marginLeft: '0px',
+              marginTop: '0px',
+              marginRight: '0px',
+              marginBottom: '0px',
+              width: '40px',
+              height: '38px',
+              boxSizing: 'content-box',
+              transition: 'none',
+              color: '#ffffff',
             },
-            [BUTTON_COMPONENT_MODES.HOVER]: { outline: 'none' },
-            [BUTTON_COMPONENT_MODES.CLICK]: { outline: 'none' },
+            [BUTTON_COMPONENT_MODES.HOVER]: {
+              backgroundColor: '#ff0000',
+            },
+            [BUTTON_COMPONENT_MODES.CLICK]: {
+              backgroundColor: '#409441',
+            },
           },
-          customCssActiveMode: BUTTON_COMPONENT_MODES.DEFAULT,
           customJS: {},
+          customCssActiveMode: BUTTON_COMPONENT_MODES.DEFAULT,
         },
         className: 'button'
       },
@@ -182,6 +220,10 @@ export default {
       this.components.push(newComponent);
     },
     componentCardSelected: function(selectedComponentCard: WorkshopComponent): void {
+      if (this.currentlySelectedComponent.componentProperties.hasOwnProperty('customCssActiveMode')) {
+        this.currentlySelectedComponent.componentProperties.customCssActiveMode = BUTTON_COMPONENT_MODES.DEFAULT;
+      }
+      this.$refs.toolbar.updateMode(BUTTON_COMPONENT_MODES.DEFAULT);
       this.currentlySelectedComponent = selectedComponentCard;
     },
     downloadCSSFile: function(): void {

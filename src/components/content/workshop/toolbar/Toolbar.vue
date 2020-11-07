@@ -49,7 +49,7 @@ export default {
         this.componentPreviewAssistance.margin = newSettings === WORKSHOP_TOOLBAR_OPTIONS.MARGIN;
       }
     },
-    updateMode(event: WORKSHOP_TOOLBAR_OPTIONS): void {
+    updateMode(event: BUTTON_COMPONENT_MODES): void {
       this.activeMode = event;
       this.activeSettings = {};
       this.componentPreviewAssistance.margin = false;

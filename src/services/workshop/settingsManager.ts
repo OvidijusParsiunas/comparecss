@@ -11,6 +11,8 @@ import { BUTTON_COMPONENT_MODES } from '../../consts/buttonComponentModes.enum';
 import { ComponentProperties } from '../../interfaces/workshopComponent';
 
 export default class SettingsManager {
+  
+  // should be refactored into a container
   static getSettings(clickedOptionName: WORKSHOP_TOOLBAR_OPTIONS): any {
     switch (clickedOptionName) {
       case WORKSHOP_TOOLBAR_OPTIONS.BORDER:
