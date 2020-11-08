@@ -2,7 +2,7 @@
   <div id="component-cards" style="background-color: rgb(251 251 251); display: grid; border-radius: 20px; height: 95%; width: 90%; margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); text-align: center">
     <div id="component-cards-container" style="margin-top: 5px">
       <div v-for="component in componentList" :key="component">
-        <componentCard :component="component" @component-card-selected="componentCardSelected($event)"/>
+        <componentCard :component="component" @component-card-selected="componentCardSelected($event)" @component-card-copied="componentCardCopied($event)"/>
       </div>
       <!-- link id to the modal via workshop -->
       <div style="cursor: move; width: 18rem; margin: auto; outline: none; margin-top: 5px" class="add-card card" data-toggle="modal" data-target="#exampleModal" tabindex="0">
@@ -27,6 +27,9 @@ export default {
   methods: {
     componentCardSelected(selectedComponentCard: WorkshopComponent): void {
       this.$emit('component-card-selected', selectedComponentCard);
+    },
+    componentCardCopied(selectComponentCard: WorkshopComponent): void {
+      this.$emit('component-card-copied', selectComponentCard);
     }
   },
   props: {

@@ -3,7 +3,7 @@
     <div style="height: 100vh" class="bootstrap">
       <div style="height: 100%; margin-left: 0px; margin-right: 0px; display: flex">
         <div style="width: 30%; position: relative">
-          <componentList :componentList="components" @component-card-selected="componentCardSelected($event)"/>
+          <componentList :componentList="components" @component-card-selected="componentCardSelected($event)" @component-card-copied="componentCardCopied($event)"/>
           <div style="position: absolute; bottom: 0">
             <button type="button" style="margin-left: 7px; margin-bottom: 10px" class="btn btn-warning btn-sm">Explore icon</button>
           </div>
@@ -225,6 +225,9 @@ export default {
       }
       this.$refs.toolbar.updateMode([BUTTON_COMPONENT_MODES.DEFAULT] as UpdateMode);
       if (this.currentlySelectedComponent !== selectedComponentCard) { this.currentlySelectedComponent = selectedComponentCard; }
+    },
+    componentCardCopied(selectComponentCard: WorkshopComponent): void {
+      this.addNewComponent(JSON.parse(JSON.stringify(selectComponentCard)));
     },
     downloadCSSFile: function(): void {
       const inherentCustomCssForButtons = {

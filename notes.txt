@@ -1,6 +1,7 @@
 copy component
 
 color active toolkit button
+color active component card
 multiplejs objects may need a different structure to be defined in a single js file - have a js file builder service
 sometimes setting to auto option like the margin does not set desired results, potentially remove it - or set beginner components (in modal) to have no margin as auto
 decide where the display code and download buttons should go

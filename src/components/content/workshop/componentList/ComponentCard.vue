@@ -2,7 +2,8 @@
   <div style="cursor: move; width: 18rem; margin: auto; margin-top: 5px" class="card component-card" v-on:click="selectComponentCard(component)" tabindex="0">
     <div class="card-body">
       <h5 style="float: left" class="card-title">{{component.className}}</h5>
-      <a style="float: right" href="#!" class="btn btn-danger">Delete</a>
+      <a class="btn btn-warning" v-on:click="copyComponentCard(component)">Copy</a>
+      <a style="float: right" class="btn btn-danger">Delete</a>
     </div>
   </div>
 </template>
@@ -14,6 +15,9 @@ export default {
   methods: {
     selectComponentCard(selectedComponentCard: WorkshopComponent): void {
       this.$emit('component-card-selected', selectedComponentCard);
+    },
+    copyComponentCard(selectComponentCard: WorkshopComponent): void {
+      this.$emit('component-card-copied', selectComponentCard);
     }
   },
   props: {
