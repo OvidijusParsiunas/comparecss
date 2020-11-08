@@ -21,7 +21,7 @@
               'vue/no-v-model-argument': 'off',
             -->
             <toolbar ref="toolbar" :component="currentlySelectedComponent" :componentPreviewAssistance="componentPreviewAssistance"/>
-            <componentContents style="height: 50%" :componentProperties="currentlySelectedComponent.componentProperties" :componentPreviewAssistance="componentPreviewAssistance"/>
+            <componentContents style="height: 50%" :component="currentlySelectedComponent" :componentPreviewAssistance="componentPreviewAssistance"/>
             <div style="height: 18%; display: flex; float: right; margin-right: 10px; margin-top: 105px">
               <div style="position: relative">
                 <div>
@@ -56,7 +56,7 @@
 
 <script lang="ts">
 interface Data {
-  components: [WorkshopComponent],
+  components: WorkshopComponent[],
   currentlySelectedComponent: WorkshopComponent;
   componentPreviewAssistance: ComponentPreviewAssistance;
 }
@@ -67,7 +67,7 @@ import toolbar from './toolbar/Toolbar.vue';
 import componentContents from './componentPreview/ComponentPreview.vue';
 import newComponentModal from './newComponent/Modal.vue';
 import componentList from './componentList/ComponentList.vue';
-import { WorkshopComponent } from '../../../interfaces/workshopComponent';
+import { WorkshopComponent, ComponentProperties } from '../../../interfaces/workshopComponent';
 import { WorkshopComponentCss } from '../../../interfaces/workshopComponentCss';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { BUTTON_COMPONENT_MODES } from '../../../consts/buttonComponentModes.enum';
@@ -215,33 +215,48 @@ export default {
       },
       className: 'button'
     },
+    // components: [],
+    // currentlySelectedComponent: undefined,
   }),
   methods: {
+    setCustomCssActiveMode: (componentProperties: ComponentProperties, mode: BUTTON_COMPONENT_MODES): void => {
+      if (componentProperties.hasOwnProperty('customCssActiveMode')) {
+        componentProperties.customCssActiveMode = mode;
+      }
+    },
     addNewComponent: function(newComponent: WorkshopComponent): void {
+      if (this.components.length) {
+        this.setCustomCssActiveMode(this.currentlySelectedComponent.componentProperties, BUTTON_COMPONENT_MODES.DEFAULT);
+      }
       this.components.push(newComponent);
       this.currentlySelectedComponent = newComponent;
-      this.$refs.toolbar.updateMode([BUTTON_COMPONENT_MODES.DEFAULT] as UpdateMode);
+      if (this.components.length > 1) { this.$refs.toolbar.updateMode([this.currentlySelectedComponent.componentProperties.customCssActiveMode] as UpdateMode) }
     },
     componentCardSelected: function(selectedComponentCard: WorkshopComponent): void {
-      if (this.currentlySelectedComponent.componentProperties.hasOwnProperty('customCssActiveMode')) {
-        this.currentlySelectedComponent.componentProperties.customCssActiveMode = BUTTON_COMPONENT_MODES.DEFAULT;
+      if (this.currentlySelectedComponent !== selectedComponentCard) {
+        this.setCustomCssActiveMode(this.currentlySelectedComponent.componentProperties, BUTTON_COMPONENT_MODES.DEFAULT);
+        this.currentlySelectedComponent = selectedComponentCard;
+        this.$refs.toolbar.updateMode([this.currentlySelectedComponent.componentProperties.customCssActiveMode] as UpdateMode);
       }
-      this.$refs.toolbar.updateMode([BUTTON_COMPONENT_MODES.DEFAULT] as UpdateMode);
-      if (this.currentlySelectedComponent !== selectedComponentCard) { this.currentlySelectedComponent = selectedComponentCard; }
     },
     componentCardCopied(selectComponentCard: WorkshopComponent): void {
+      this.setCustomCssActiveMode(selectComponentCard.componentProperties, BUTTON_COMPONENT_MODES.DEFAULT);
       this.addNewComponent(JSON.parse(JSON.stringify(selectComponentCard)));
     },
     componentCardDeleted(selectComponentCard: WorkshopComponent): void {
       const componentMatch = (component) => selectComponentCard === component;
       const componentIndex = this.components.findIndex(componentMatch);
       this.components.splice(componentIndex, 1);
+      if (this.components.length === 0) {
+        this.currentlySelectedComponent = undefined;
+        return;
+      }
       if (componentIndex === this.components.length) {
         this.currentlySelectedComponent = this.components[componentIndex - 1];
       } else {
         this.currentlySelectedComponent = this.components[componentIndex];
       }
-      this.$refs.toolbar.updateMode([BUTTON_COMPONENT_MODES.DEFAULT] as UpdateMode);
+      this.$refs.toolbar.updateMode([this.currentlySelectedComponent.componentProperties.customCssActiveMode] as UpdateMode);
     },
     downloadCSSFile: function(): void {
       const inherentCustomCssForButtons = {

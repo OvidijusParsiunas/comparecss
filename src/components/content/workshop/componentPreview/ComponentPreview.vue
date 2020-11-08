@@ -1,46 +1,48 @@
 <template>
-  <div style="position: relative" @mouseleave="componentPreviewMouseLeave(componentProperties.customCss)">
-    <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); z-index: 0; text-align: center;"> 
-      <div :class="componentProperties.frameworkClass">
-        <div class="grid-container">
-          <div class="grid-item"></div>
-          <div class="grid-item">
-              <!-- https://v3.vuejs.org/guide/transitions-enterleave.html#css-transitions -->
-              <transition name="top-slide-fade">
-                <div id="margin-assistance-top" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
+  <div v-if="component">
+    <div style="position: relative" @mouseleave="componentPreviewMouseLeave()">
+      <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); z-index: 0; text-align: center;"> 
+        <div :class="component.componentProperties.frameworkClass">
+          <div class="grid-container">
+            <div class="grid-item"></div>
+            <div class="grid-item">
+                <!-- https://v3.vuejs.org/guide/transitions-enterleave.html#css-transitions -->
+                <transition name="top-slide-fade">
+                  <div id="margin-assistance-top" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
+                </transition>
+            </div>
+            <div class="grid-item"></div>
+            <div class="grid-item">
+                <transition name="left-slide-fade">
+                  <div id="margin-assistance-left" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
+                </transition>
+            </div>
+            <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item">
+              <button id="demoComponent"
+                @mouseover="componentMouseOver()"
+                @mouseleave="componentMouseLeave()"
+                @mousedown="componentMouseDown()"
+                @mouseup="componentMouseUp()"
+                :class="component.componentProperties.componentClass"
+                :style="component.componentProperties.customCssActiveMode === BUTTON_COMPONENT_MODES.CLICK
+                  ? [component.componentProperties.customCss[BUTTON_COMPONENT_MODES.DEFAULT], component.componentProperties.customCss[BUTTON_COMPONENT_MODES.HOVER], component.componentProperties.customCss[BUTTON_COMPONENT_MODES.CLICK]]
+                  : [component.componentProperties.customCss[BUTTON_COMPONENT_MODES.DEFAULT], component.componentProperties.customCss[component.componentProperties.customCssActiveMode]]"
+                v-html="component.componentProperties.innerHtml">
+              </button>
+            </div>
+            <div class="grid-item">
+              <transition name="right-slide-fade">
+                <div id="margin-assistance-right" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
               </transition>
-          </div>
-          <div class="grid-item"></div>  
-          <div class="grid-item">
-              <transition name="left-slide-fade">
-                <div id="margin-assistance-left" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
+            </div>
+            <div class="grid-item"></div>
+            <div class="grid-item">
+              <transition name="bottom-slide-fade">
+                <div id="margin-assistance-bottom" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
               </transition>
+            </div>
+            <div class="grid-item"></div>
           </div>
-          <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item">
-            <button id="demoComponent"
-              @mouseover="componentMouseOver(componentProperties)"
-              @mouseleave="componentMouseLeave(componentProperties.customCss)"
-              @mousedown="componentMouseDown(componentProperties)"
-              @mouseup="componentMouseUp(componentProperties.customCss)"
-              :class="componentProperties.componentClass"
-              :style="componentProperties.customCssActiveMode === BUTTON_COMPONENT_MODES.CLICK
-                ? [componentProperties.customCss[BUTTON_COMPONENT_MODES.DEFAULT], componentProperties.customCss[BUTTON_COMPONENT_MODES.HOVER], componentProperties.customCss[BUTTON_COMPONENT_MODES.CLICK]]
-                : [componentProperties.customCss[BUTTON_COMPONENT_MODES.DEFAULT], componentProperties.customCss[componentProperties.customCssActiveMode]]"
-              v-html="componentProperties.innerHtml">
-            </button>
-          </div>
-          <div class="grid-item">
-            <transition name="right-slide-fade">
-              <div id="margin-assistance-right" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
-            </transition>
-          </div>
-          <div class="grid-item"></div>
-          <div class="grid-item">
-            <transition name="bottom-slide-fade">
-              <div id="margin-assistance-bottom" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
-            </transition>
-          </div>
-          <div class="grid-item"></div>  
         </div>
       </div>
     </div>
@@ -48,14 +50,14 @@
 </template>
 
 <script lang="ts">
-import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCss';
-import { ComponentProperties } from '../../../../interfaces/workshopComponent';
 import { BUTTON_COMPONENT_MODES } from '../../../../consts/buttonComponentModes.enum';
+
 interface Data {
   overwrittenDefaultPropertiesByHover: unknown,
   overwrittenDefaultPropertiesByClick: unknown,
   BUTTON_COMPONENT_MODES,
 }
+
 export default {
   data: (): Data => ({
     overwrittenDefaultPropertiesByHover: {},
@@ -64,36 +66,38 @@ export default {
   }),
   methods: {
     // important to note that default can have properties that hover and click modes do not, but hover and click cannot have properties that default doesn't
-    componentMouseOver(componentProperties: ComponentProperties): void {
-      const { customCss, transition } = componentProperties;
-      if (this.componentProperties.customCssActiveMode === BUTTON_COMPONENT_MODES.DEFAULT) {
+    componentMouseOver(): void {
+      const { customCss, transition, customCssActiveMode } = this.component.componentProperties;
+      if (customCssActiveMode === BUTTON_COMPONENT_MODES.DEFAULT) {
         this.overwrittenDefaultPropertiesByHover = { ...customCss[BUTTON_COMPONENT_MODES.DEFAULT], transition };
         customCss[BUTTON_COMPONENT_MODES.DEFAULT] = { ...customCss[BUTTON_COMPONENT_MODES.DEFAULT], ...customCss[BUTTON_COMPONENT_MODES.HOVER], transition };
       }
     },
-    componentMouseLeave(customCss: WorkshopComponentCss): void {
-      if (this.componentProperties.customCssActiveMode === BUTTON_COMPONENT_MODES.DEFAULT) {
+    componentMouseLeave(): void {
+      const { customCss, customCssActiveMode } = this.component.componentProperties;
+      if (customCssActiveMode === BUTTON_COMPONENT_MODES.DEFAULT) {
         customCss[BUTTON_COMPONENT_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByHover };
       }
     },
-    componentMouseDown(componentProperties: ComponentProperties): void {
-      const { customCss, transition } = componentProperties;
-      if (this.componentProperties.customCssActiveMode === BUTTON_COMPONENT_MODES.DEFAULT) {
+    componentMouseDown(): void {
+      const { customCss, transition, customCssActiveMode } = this.component.componentProperties;
+      if (customCssActiveMode === BUTTON_COMPONENT_MODES.DEFAULT) {
         this.overwrittenDefaultPropertiesByClick = { ...customCss[BUTTON_COMPONENT_MODES.DEFAULT], transition };
         customCss[BUTTON_COMPONENT_MODES.DEFAULT] = { ...customCss[BUTTON_COMPONENT_MODES.DEFAULT], ...customCss[BUTTON_COMPONENT_MODES.CLICK], transition };
       }
     },
-    componentMouseUp(customCss: WorkshopComponentCss): void {
-      if (this.componentProperties.customCssActiveMode === BUTTON_COMPONENT_MODES.DEFAULT) {
+    componentMouseUp(): void {
+      const { customCss, customCssActiveMode } = this.component.componentProperties;
+      if (customCssActiveMode === BUTTON_COMPONENT_MODES.DEFAULT) {
         customCss[BUTTON_COMPONENT_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByClick };
       }
     },
-    componentPreviewMouseLeave(customCss: WorkshopComponentCss): void {
-      customCss[BUTTON_COMPONENT_MODES.DEFAULT].transition = 'unset';
+    componentPreviewMouseLeave(): void {
+      this.component.componentProperties.customCss[BUTTON_COMPONENT_MODES.DEFAULT].transition = 'unset';
     }
   },
   props: {
-    componentProperties: Object,
+    component: Object,
     componentPreviewAssistance: Object,
   },
 };
