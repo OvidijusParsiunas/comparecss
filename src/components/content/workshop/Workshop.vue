@@ -3,7 +3,10 @@
     <div style="height: 100vh" class="bootstrap">
       <div style="height: 100%; margin-left: 0px; margin-right: 0px; display: flex">
         <div style="width: 30%; position: relative">
-          <componentList :componentList="components" @component-card-selected="componentCardSelected($event)" @component-card-copied="componentCardCopied($event)"/>
+          <componentList :componentList="components"
+            @component-card-selected="componentCardSelected($event)"
+            @component-card-copied="componentCardCopied($event)"
+            @component-card-deleted="componentCardDeleted($event)"/>
           <div style="position: absolute; bottom: 0">
             <button type="button" style="margin-left: 7px; margin-bottom: 10px" class="btn btn-warning btn-sm">Explore icon</button>
           </div>
@@ -228,6 +231,17 @@ export default {
     },
     componentCardCopied(selectComponentCard: WorkshopComponent): void {
       this.addNewComponent(JSON.parse(JSON.stringify(selectComponentCard)));
+    },
+    componentCardDeleted(selectComponentCard: WorkshopComponent): void {
+      const componentMatch = (component) => selectComponentCard === component;
+      const componentIndex = this.components.findIndex(componentMatch);
+      this.components.splice(componentIndex, 1);
+      if (componentIndex === this.components.length) {
+        this.currentlySelectedComponent = this.components[componentIndex - 1];
+      } else {
+        this.currentlySelectedComponent = this.components[componentIndex];
+      }
+      this.$refs.toolbar.updateMode([BUTTON_COMPONENT_MODES.DEFAULT] as UpdateMode);
     },
     downloadCSSFile: function(): void {
       const inherentCustomCssForButtons = {
