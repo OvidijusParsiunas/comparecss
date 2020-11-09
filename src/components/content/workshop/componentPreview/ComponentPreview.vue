@@ -23,10 +23,18 @@
                 @mouseleave="componentMouseLeave()"
                 @mousedown="componentMouseDown()"
                 @mouseup="componentMouseUp()"
-                :class="component.componentProperties.componentClass"
                 :style="component.componentProperties.customCssActiveMode === BUTTON_COMPONENT_MODES.CLICK
-                  ? [component.componentProperties.customCss[BUTTON_COMPONENT_MODES.DEFAULT], component.componentProperties.customCss[BUTTON_COMPONENT_MODES.HOVER], component.componentProperties.customCss[BUTTON_COMPONENT_MODES.CLICK]]
-                  : [component.componentProperties.customCss[BUTTON_COMPONENT_MODES.DEFAULT], component.componentProperties.customCss[component.componentProperties.customCssActiveMode]]"
+                  ? [
+                      component.componentProperties.inheritedCss.css,
+                      component.componentProperties.customCss[BUTTON_COMPONENT_MODES.DEFAULT],
+                      component.componentProperties.customCss[BUTTON_COMPONENT_MODES.HOVER],
+                      component.componentProperties.customCss[BUTTON_COMPONENT_MODES.CLICK],
+                    ]
+                  : [
+                      component.componentProperties.inheritedCss.css,
+                      component.componentProperties.customCss[BUTTON_COMPONENT_MODES.DEFAULT],
+                      component.componentProperties.customCss[component.componentProperties.customCssActiveMode],
+                    ]"
                 v-html="component.componentProperties.innerHtml">
               </button>
             </div>

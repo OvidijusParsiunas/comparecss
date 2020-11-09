@@ -5,7 +5,8 @@
         <componentCard :component="component"
           @component-card-selected="componentCardSelected($event)"
           @component-card-copied="componentCardCopied($event)"
-          @component-card-deleted="componentCardDeleted($event)"/>
+          @component-card-deleted="componentCardDeleted($event)"
+          @stop-editing-class-name-callback="stopEditingClassName($event)"/>
       </div>
       <!-- link id to the modal via workshop -->
       <div style="cursor: move; width: 18rem; margin: auto; outline: none; margin-top: 5px" class="add-card card" data-toggle="modal" data-target="#exampleModal" tabindex="0">
@@ -37,6 +38,9 @@ export default {
     componentCardDeleted(selectComponentCard: WorkshopComponent): void {
       this.$emit('component-card-deleted', selectComponentCard);
     },
+    stopEditingClassName(callback: () => boolean): void {
+      this.$emit('stop-editing-class-name-callback', callback);
+    }
   },
   props: {
     componentList: Array,

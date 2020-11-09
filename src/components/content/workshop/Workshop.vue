@@ -1,12 +1,13 @@
 <template>
-  <div>
+  <div @mousedown="triggerWorkshopEventCallbacks" @keydown.enter="triggerWorkshopEventCallbacks">
     <div style="height: 100vh" class="bootstrap">
       <div style="height: 100%; margin-left: 0px; margin-right: 0px; display: flex">
         <div style="width: 30%; position: relative">
           <componentList :componentList="components"
             @component-card-selected="componentCardSelected($event)"
             @component-card-copied="componentCardCopied($event)"
-            @component-card-deleted="componentCardDeleted($event)"/>
+            @component-card-deleted="componentCardDeleted($event)"
+            @stop-editing-class-name-callback="stopEditingClassName($event)"/>
           <div style="position: absolute; bottom: 0">
             <button type="button" style="margin-left: 7px; margin-bottom: 10px" class="btn btn-warning btn-sm">Explore icon</button>
           </div>
@@ -59,6 +60,7 @@ interface Data {
   components: WorkshopComponent[],
   currentlySelectedComponent: WorkshopComponent;
   componentPreviewAssistance: ComponentPreviewAssistance;
+  workshopEventCallbacks: (() => boolean)[];
 }
 import 'vuesax/dist/vuesax.css' //Vuesax styles
 import downloadFiles from '../../../services/workshop/downloadFiles';
@@ -68,11 +70,11 @@ import componentContents from './componentPreview/ComponentPreview.vue';
 import newComponentModal from './newComponent/Modal.vue';
 import componentList from './componentList/ComponentList.vue';
 import { WorkshopComponent, ComponentProperties } from '../../../interfaces/workshopComponent';
-import { WorkshopComponentCss } from '../../../interfaces/workshopComponentCss';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { BUTTON_COMPONENT_MODES } from '../../../consts/buttonComponentModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
 import { UpdateMode } from '../../../interfaces/updateMode';
+import inheritedButtonCss from '../../../newComponents/buttons/inheritedCss';
 
 export default {
   data: (): Data => ({
@@ -141,8 +143,10 @@ export default {
               backgroundColor: '#409441',
             },
           },
+          tempCustomCss: new Set(['transition']),
           customJS: {},
           customCssActiveMode: BUTTON_COMPONENT_MODES.DEFAULT,
+          inheritedCss: inheritedButtonCss,
         },
         className: 'button'
       },
@@ -210,13 +214,16 @@ export default {
             backgroundColor: '#409441',
           },
         },
+        tempCustomCss: new Set(['transition']),
         customJS: {},
         customCssActiveMode: BUTTON_COMPONENT_MODES.DEFAULT,
+        inheritedCss: inheritedButtonCss,
       },
       className: 'button'
     },
     // components: [],
     // currentlySelectedComponent: undefined,
+    workshopEventCallbacks: [],
   }),
   methods: {
     setCustomCssActiveMode: (componentProperties: ComponentProperties, mode: BUTTON_COMPONENT_MODES): void => {
@@ -259,21 +266,22 @@ export default {
       this.$refs.toolbar.updateMode([this.currentlySelectedComponent.componentProperties.customCssActiveMode] as UpdateMode);
     },
     downloadCSSFile: function(): void {
-      const inherentCustomCssForButtons = {
-        cursor: 'pointer',
-        display: 'inline-block',
-        verticalAlign: 'middle',
-        paddingLeft: '0.85em',
-        paddingRight: '0.85em',
-        fontSize: '14px',
-        textAlign: 'center',
-        fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
-        transition: 'all 0.25s ease-out',
-      } as WorkshopComponentCss;
-      const resultCss = cssBuilder.build('mock-class-name', inherentCustomCssForButtons,
-        this.currentlySelectedComponent.componentProperties.customCss);
+      const resultCss = `${cssBuilder.build(this.components).trim()}\r\n`;
       downloadFiles.downloadZip(resultCss, this.currentlySelectedComponent.componentProperties.customJS);
     },
+    triggerWorkshopEventCallbacks: function(): void {
+      if (this.workshopEventCallbacks.length > 0) {
+        const remainingCallbacks = [];
+        this.workshopEventCallbacks.forEach((callback) => {
+          const keepCallback = callback(event);
+          if (keepCallback) remainingCallbacks.push(callback);
+        });
+        this.workshopEventCallbacks = remainingCallbacks;
+      }
+    },
+    stopEditingClassName: function(callback: () => void): void {
+      this.workshopEventCallbacks.push(callback);
+    }
   },
   components: {
     toolbar,

@@ -2,6 +2,7 @@ import { WorkshopComponent } from '../../interfaces/workshopComponent';
 import { NewComponent } from '../../interfaces/newComponent';
 import { BUTTON_COMPONENT_MODES } from '../../consts/buttonComponentModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../consts/newComponentTypes.enum';
+import inheritedButtonCss from './inheritedCss';
 
 export default {
   getNewComponent(): WorkshopComponent {
@@ -70,8 +71,10 @@ export default {
         },
         customJS: {},
         customCssActiveMode: BUTTON_COMPONENT_MODES.DEFAULT,
+        tempCustomCss: new Set(['transition']),
+        inheritedCss: inheritedButtonCss,
       },
-      className: 'button'
+      className: 'default-class-name',
     }
   },
 } as NewComponent;
