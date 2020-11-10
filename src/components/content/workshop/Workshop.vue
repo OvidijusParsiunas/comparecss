@@ -7,7 +7,7 @@
             @component-card-selected="componentCardSelected($event)"
             @component-card-copied="componentCardCopied($event)"
             @component-card-deleted="componentCardDeleted($event)"
-            @stop-editing-class-name-callback="stopEditingClassName($event)"/>
+            @stop-editing-class-name-callback="addWorkshopEventCallback($event)"/>
           <div style="position: absolute; bottom: 0">
             <button type="button" style="margin-left: 7px; margin-bottom: 10px" class="btn btn-warning btn-sm">Explore icon</button>
           </div>
@@ -43,7 +43,9 @@
           </div>
         </div>
       </div>
-      <newComponentModal @add-new-component="addNewComponent($event)"/>
+      <newComponentModal
+        @add-new-component="addNewComponent($event)"
+        @stop-editing-class-name-callback="addWorkshopEventCallback($event)"/>
     </div>
     <div class="center">
       <button class="vs-button vs-button--null vs-button--size-null vs-button--primary vs-button--default">
@@ -70,6 +72,7 @@ import componentContents from './componentPreview/ComponentPreview.vue';
 import newComponentModal from './newComponent/Modal.vue';
 import componentList from './componentList/ComponentList.vue';
 import { WorkshopComponent, ComponentProperties } from '../../../interfaces/workshopComponent';
+import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { BUTTON_COMPONENT_MODES } from '../../../consts/buttonComponentModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
@@ -231,7 +234,7 @@ export default {
         componentProperties.customCssActiveMode = mode;
       }
     },
-    addNewComponent: function(newComponent: WorkshopComponent): void {
+    addNewComponent(newComponent: WorkshopComponent): void {
       if (this.components.length) {
         this.setCustomCssActiveMode(this.currentlySelectedComponent.componentProperties, BUTTON_COMPONENT_MODES.DEFAULT);
       }
@@ -239,7 +242,7 @@ export default {
       this.currentlySelectedComponent = newComponent;
       if (this.components.length > 1) { this.$refs.toolbar.updateMode([this.currentlySelectedComponent.componentProperties.customCssActiveMode] as UpdateMode) }
     },
-    componentCardSelected: function(selectedComponentCard: WorkshopComponent): void {
+    componentCardSelected(selectedComponentCard: WorkshopComponent): void {
       if (this.currentlySelectedComponent !== selectedComponentCard) {
         this.setCustomCssActiveMode(this.currentlySelectedComponent.componentProperties, BUTTON_COMPONENT_MODES.DEFAULT);
         this.currentlySelectedComponent = selectedComponentCard;
@@ -265,21 +268,22 @@ export default {
       }
       this.$refs.toolbar.updateMode([this.currentlySelectedComponent.componentProperties.customCssActiveMode] as UpdateMode);
     },
-    downloadCSSFile: function(): void {
+    downloadCSSFile(): void {
       const resultCss = `${cssBuilder.build(this.components).trim()}\r\n`;
       downloadFiles.downloadZip(resultCss, this.currentlySelectedComponent.componentProperties.customJS);
     },
-    triggerWorkshopEventCallbacks: function(): void {
+    triggerWorkshopEventCallbacks(): void {
       if (this.workshopEventCallbacks.length > 0) {
         const remainingCallbacks = [];
         this.workshopEventCallbacks.forEach((callback) => {
-          const keepCallback = callback(event);
-          if (keepCallback) remainingCallbacks.push(callback);
+          const callbackCompleted: WorkshopEventCallbackReturn = callback(event);
+          if (callbackCompleted.shouldRepeat) remainingCallbacks.push(callback);
+          if (callbackCompleted.newCallback) remainingCallbacks.push(callbackCompleted.newCallback);
         });
         this.workshopEventCallbacks = remainingCallbacks;
       }
     },
-    stopEditingClassName: function(callback: () => void): void {
+    addWorkshopEventCallback(callback: () => void): void {
       this.workshopEventCallbacks.push(callback);
     }
   },
@@ -289,8 +293,7 @@ export default {
     componentContents,
     newComponentModal,
   }
-};
-
+}
 </script>
 
 <style lang="css" scoped>

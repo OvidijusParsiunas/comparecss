@@ -1,7 +1,10 @@
 <template>
   <div style="cursor: move; width: 18rem; margin: auto; margin-top: 5px" class="card component-card" v-on:click="selectComponentCard(component)" tabindex="0">
     <div class="card-body">
-      <input ref="componentCardClassNameEditorInput" v-if="isEditingClassName" style="float: left" class="card-title" :placeholder="component.className" v-model="className" @input="changeClassName">
+      <input ref="componentCardClassNameEditorInput" v-if="isEditingClassName" style="float: left" class="card-title"
+        :placeholder="component.className" v-model="className"
+        @input="processClassName"
+        >
       <h5 v-else style="float: left" class="card-title">{{component.className}}</h5>
       <a ref="componentCardClassNameEditorButton" class="btn btn-success" v-on:click.stop="editClassName(component)">Edit</a>
       <a class="btn btn-warning" v-on:click.stop="copyComponentCard(component)">Copy</a>
@@ -11,8 +14,9 @@
 </template>
 
 <script lang="ts">
+import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
 import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
-import processClassName from '../newComponent/processorClassName';
+import processClassName from '../newComponent/processClassName';
 
 interface Data {
   className: string,
@@ -32,29 +36,37 @@ export default {
         this.editorButtonClickedOnStopEditing = false;
         return;
       }
+      this.className = this.component.className;
       this.isEditingClassName = !this.isEditingClassName;
       this.$emit('stop-editing-class-name-callback', this.stopEditingClassName);
     },
-    stopEditingClassName(event: Event | KeyboardEvent): boolean {
+    stopEditingClassName(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
       if (event instanceof KeyboardEvent) {
         if (event.key === 'Enter') {
           this.isEditingClassName = false;
-          this.component.className = this.className;
-          return false;
+          this.finishEditingClassName();
+          return { shouldRepeat: false };
         }
-        return true;
+        return { shouldRepeat: true };
       }
       if (event.target !== this.$refs.componentCardClassNameEditorInput) {
         this.isEditingClassName = false;
         if (this.className && this.className.length) {
-          this.component.className = this.className;
+          this.finishEditingClassName();
         } 
         if (event.target === this.$refs.componentCardClassNameEditorButton) {
           this.editorButtonClickedOnStopEditing = true;
+          return { shouldRepeat: false, newCallback: this.clearEditClassName };
         }
-        return false;
+        return { shouldRepeat: false };
       }
-      return true;
+      return { shouldRepeat: true };
+    },
+    clearEditClassName(): WorkshopEventCallbackReturn {
+      if (this.editorButtonClickedOnStopEditing) {
+        this.editorButtonClickedOnStopEditing = false;
+      }
+      return { shouldRepeat: false};
     },
     selectComponentCard(selectedComponentCard: WorkshopComponent): void {
       this.$emit('component-card-selected', selectedComponentCard);
@@ -65,9 +77,13 @@ export default {
     deleteComponentCard(selectComponentCard: WorkshopComponent): void {
       this.$emit('component-card-deleted', selectComponentCard);
     },
-    changeClassName(): void {
+    processClassName(): void {
       this.className = processClassName(this.className);
-    }
+    },
+    finishEditingClassName(): void {
+      if (this.className.length === 1) { this.className = this.component.className; }
+      this.component.className = this.className;
+    },
   },
   props: {
     component: Object,

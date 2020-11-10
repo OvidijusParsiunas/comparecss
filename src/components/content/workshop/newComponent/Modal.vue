@@ -10,7 +10,9 @@
         </div>
         <div class="modal-body">
           <form style="width: 100%">
-            <input style="width: 50%" class="form-control" type="text" :placeholder="classNamePlaceholder" v-model="className" @input="changeClassName" @keydown.enter="stopEditingClassName">
+            <input ref="modalClassNameEditorInput" style="width: 50%" class="form-control" type="text" :placeholder="classNamePlaceholder" v-model="className"
+             @input="changeClassName"
+             @keydown.enter="blurClassNameEditorInput" @click="editClassName(component)">
             <div class="form-row">
               <div class="form-group col-md-6">
                 <div class="form-group">
@@ -39,12 +41,12 @@ import newComponentModalService from '../../../../services/workshop/newComponent
 import newComponentContainer from '../../../../services/workshop/newComponent/newComponentContainer';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { NEW_COMPONENT_STYLES } from '../../../../consts/newComponentStyles.enum';
-import processClassName from './processorClassName';
+import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
+import processClassName from './processClassName';
 
 interface Data {
   previewImage: string;
   NEW_COMPONENT_TYPES,
-  latestComponentIndex: number,
   className: string;
   classNamePlaceholder: string;
   classNameIndex: number;
@@ -54,28 +56,47 @@ export default {
   data: (): Data => ({
     previewImage: 'previewImage',
     NEW_COMPONENT_TYPES,
-    latestComponentIndex: 1,
     className: null,
-    classNamePlaceholder: `Component-1`,
+    classNamePlaceholder: `component-1`,
     classNameIndex: 2,
   }),
   methods: {
-    setComponentPreviewImage: function(componentName: string): void {
+    setComponentPreviewImage(componentName: string): void {
       this.previewImage = newComponentModalService.getPreviewImage(componentName);
     },
-    addNewComponent: function(newComponentType: NEW_COMPONENT_TYPES): void {
+    addNewComponent(newComponentType: NEW_COMPONENT_TYPES): void {
       const newComponent = newComponentContainer[newComponentType][NEW_COMPONENT_STYLES.DEFAULT].getNewComponent();
       newComponent.className = this.className || this.classNamePlaceholder;
       this.$emit('add-new-component', newComponent);
       this.className = null;
-      this.classNamePlaceholder = `Component-${this.classNameIndex++}`;
+      this.classNamePlaceholder = `component-${this.classNameIndex++}`;
     },
-    changeClassName: function(): void {
+    changeClassName(): void {
       this.className = processClassName(this.className);
     },
-    stopEditingClassName: (event: KeyboardEvent): void => {
+    blurClassNameEditorInput: (event: KeyboardEvent): void => {
       event.preventDefault();
       (event.target as HTMLInputElement).blur();
+    },
+    editClassName(): void {
+      this.$emit('stop-editing-class-name-callback', this.stopEditingClassName);
+    },
+    stopEditingClassName(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
+      if (event instanceof KeyboardEvent) {
+        if (event.key === 'Enter') {
+          this.resetIfClassNameTooShort();
+          return { shouldRepeat: false };
+        }
+        return { shouldRepeat: true };
+      }
+      if (event.target !== this.$refs.modalClassNameEditorInput) {
+        this.resetIfClassNameTooShort();
+        return { shouldRepeat: false };
+      }
+      return { shouldRepeat: true };
+    },
+    resetIfClassNameTooShort(): void {
+      if (this.className && this.className.length === 1) { this.className = this.classNamePlaceholder; }
     }
   },
 };
