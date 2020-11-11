@@ -3,7 +3,6 @@ import { WorkshopComponent } from '../../../interfaces/workshopComponent';
 export default class ProcessClassedName {
   
   private static minClassLength = 1;
-  private static duplicateClassNamePostfix = '2';
 
   private static insertSubstringIntoClassName(className: string, insertedString: string, index: number): string {
     return className.substring(0, index) + insertedString + className.substring(index + 1)
@@ -41,24 +40,39 @@ export default class ProcessClassedName {
     return className.toLowerCase();
   }
 
-  static addPostfixIfClassNameTaken(className: string, components: WorkshopComponent[], originalClasName?: string): string {
+  private static buildClassNameWithPostfix(className: string, postfixNumber: number): string {
+    return `${className}-${postfixNumber}`;
+  }
+
+  private static postfixAddition(className: string, components: WorkshopComponent[], postfixNumber: number, originalClassName?: string): string {
+    // this checker is required incase the new postfix results in the original class name
+    if (className === originalClassName) return className;
+    if (components.map((component) => component.className).includes(this.buildClassNameWithPostfix(className, postfixNumber))) {
+      postfixNumber += 1;
+      return this.postfixAddition(className, components, postfixNumber, originalClassName);
+    }
+    return this.buildClassNameWithPostfix(className, postfixNumber);
+  }
+
+  static addPostfixIfClassNameTaken(className: string, components: WorkshopComponent[], postfixString: string, originalClassName?: string): string {
+    if (className === originalClassName) return className;
     if (components.map((component) => component.className).includes(className)) {
-      if (className === originalClasName) return className;
-      className = `${className}${this.duplicateClassNamePostfix}`;
-      return this.addPostfixIfClassNameTaken(className, components, originalClasName);
+      className = `${className}${postfixString}`;
+      const initialPostfixNumber = 2;
+      return this.postfixAddition(className, components, initialPostfixNumber, originalClassName);
     }
     return className;
   }
 
-  private static resetIfClassNameTooShort(className: string, placeholder: string): string{
-    return className && className.length === this.minClassLength ? placeholder : className;
+  private static resetIfClassNameTooShort(className: string, placeholder: string): [string, boolean] {
+    return className && className.length === this.minClassLength ? [placeholder, true] : [className, false];
   }
 
-  static finalize(className: string | null, placeholder: string, components: WorkshopComponent[], originalClasName?: string): string {
-    if (className === originalClasName) return className;
-    className = this.resetIfClassNameTooShort(className, placeholder);
-    className = this.addPostfixIfClassNameTaken(className, components, originalClasName);
-    return className;
+  static finalize(className: string | null, placeholder: string, components: WorkshopComponent[], originalClassName?: string): string {
+    if (className === originalClassName) return className;
+    const [resultClassName, isReset] = this.resetIfClassNameTooShort(className, placeholder);
+    if (isReset) return resultClassName;
+    return this.addPostfixIfClassNameTaken(resultClassName, components, '', originalClassName);
   }
 }
 

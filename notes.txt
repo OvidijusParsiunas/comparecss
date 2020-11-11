@@ -1,10 +1,10 @@
+the modal seems to update its values (to whatever they should be after close) during its close animation, see if that can be fixed
+
 color active toolkit button
 color active component card
 multiplejs objects may need a different structure to be defined in a single js file - have a js file builder service
 sometimes setting to auto option like the margin does not set desired results, potentially remove it - or set beginner components (in modal) to have no margin as auto
 decide where the display code and download buttons should go
-use composition functions to make them shearable - https://www.netlify.com/blog/2020/03/10/reactivity-in-vue-3/ https://composition-api.vuejs.org/#logic-extraction-and-reuse
-  note: they are only good for utilising lifecycle handlers like onMounted and onUnmounted within the function
 
 font-awesome pictures on buttons
 material design examples should have nice hover, and shadow increase events on mouse click
@@ -24,6 +24,9 @@ This would use the following equation: (total button height - text height) / 2 =
 
 
 --------------------------------------------------
+
+use composition functions to make them shearable - https://www.netlify.com/blog/2020/03/10/reactivity-in-vue-3/ https://composition-api.vuejs.org/#logic-extraction-and-reuse
+  note: they are only good for utilising lifecycle handlers like onMounted and onUnmounted within the function
 
 use native implementation of vuesax when it is compatible with vue 3
 

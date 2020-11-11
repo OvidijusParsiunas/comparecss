@@ -255,7 +255,7 @@ export default {
     componentCardCopied(selectComponentCard: WorkshopComponent): void {
       this.setCustomCssActiveMode(selectComponentCard.componentProperties, BUTTON_COMPONENT_MODES.DEFAULT);
       const newComponent = JSON.parse(JSON.stringify(selectComponentCard));
-      newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className, this.components);
+      newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className, this.components, '-copy');
       this.addNewComponent(newComponent);
     },
     componentCardDeleted(selectComponentCard: WorkshopComponent): void {
