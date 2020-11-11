@@ -3,7 +3,8 @@
     <div style="height: 100vh" class="bootstrap">
       <div style="height: 100%; margin-left: 0px; margin-right: 0px; display: flex">
         <div style="width: 30%; position: relative">
-          <componentList :componentList="components"
+          <componentList
+            :components="components"
             @component-card-selected="componentCardSelected($event)"
             @component-card-copied="componentCardCopied($event)"
             @component-card-deleted="componentCardDeleted($event)"
@@ -44,6 +45,7 @@
         </div>
       </div>
       <newComponentModal
+        :components="components"
         @add-new-component="addNewComponent($event)"
         @stop-editing-class-name-callback="addWorkshopEventCallback($event)"/>
     </div>

@@ -10,9 +10,11 @@
         </div>
         <div class="modal-body">
           <form style="width: 100%">
-            <input ref="modalClassNameEditorInput" style="width: 50%" class="form-control" type="text" :placeholder="classNamePlaceholder" v-model="className"
-             @input="changeClassName"
-             @keydown.enter="blurClassNameEditorInput" @click="editClassName(component)">
+            <input ref="modalClassNameEditorInput" style="width: 50%" class="form-control" type="text"
+              :placeholder="classNamePlaceholder" v-model="className"
+              @input="changeClassName"
+              @keydown.enter="blurClassNameEditorInput"
+              @click="editClassName(component)">
             <div class="form-row">
               <div class="form-group col-md-6">
                 <div class="form-group">
@@ -42,7 +44,7 @@ import newComponentContainer from '../../../../services/workshop/newComponent/ne
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { NEW_COMPONENT_STYLES } from '../../../../consts/newComponentStyles.enum';
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
-import processClassName from './processClassName';
+import ProcessClassName from '../../../../services/workshop/newComponent/processClassName';
 
 interface Data {
   previewImage: string;
@@ -72,7 +74,7 @@ export default {
       this.classNamePlaceholder = `component-${this.classNameIndex++}`;
     },
     changeClassName(): void {
-      this.className = processClassName(this.className);
+      this.className = ProcessClassName.process(this.className);
     },
     blurClassNameEditorInput: (event: KeyboardEvent): void => {
       event.preventDefault();
@@ -84,20 +86,20 @@ export default {
     stopEditingClassName(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
       if (event instanceof KeyboardEvent) {
         if (event.key === 'Enter') {
-          this.resetIfClassNameTooShort();
+          this.className = ProcessClassName.finalize(this.className, this.placeholder, this.components);
           return { shouldRepeat: false };
         }
         return { shouldRepeat: true };
       }
       if (event.target !== this.$refs.modalClassNameEditorInput) {
-        this.resetIfClassNameTooShort();
+        this.className = ProcessClassName.finalize(this.className, this.placeholder, this.components);
         return { shouldRepeat: false };
       }
       return { shouldRepeat: true };
     },
-    resetIfClassNameTooShort(): void {
-      if (this.className && this.className.length === 1) { this.className = this.classNamePlaceholder; }
-    }
+  },
+  props: {
+    components: Object,
   },
 };
 </script>

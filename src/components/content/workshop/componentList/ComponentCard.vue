@@ -1,14 +1,14 @@
 <template>
-  <div style="cursor: move; width: 18rem; margin: auto; margin-top: 5px" class="card component-card" v-on:click="selectComponentCard(component)" tabindex="0">
+  <div style="cursor: move; width: 18rem; margin: auto; margin-top: 5px" class="card component-card" v-on:click="selectComponentCard(thisComponent)" tabindex="0">
     <div class="card-body">
       <input ref="componentCardClassNameEditorInput" v-if="isEditingClassName" style="float: left" class="card-title"
-        :placeholder="component.className" v-model="className"
+        :placeholder="thisComponent.className" v-model="className"
         @input="processClassName"
         >
-      <h5 v-else style="float: left" class="card-title">{{component.className}}</h5>
-      <a ref="componentCardClassNameEditorButton" class="btn btn-success" v-on:click.stop="editClassName(component)">Edit</a>
-      <a class="btn btn-warning" v-on:click.stop="copyComponentCard(component)">Copy</a>
-      <a style="float: right" class="btn btn-danger" v-on:click.stop="deleteComponentCard(component)">Delete</a>
+      <h5 v-else style="float: left" class="card-title">{{thisComponent.className}}</h5>
+      <a ref="componentCardClassNameEditorButton" class="btn btn-success" v-on:click.stop="editClassName(thisComponent)">Edit</a>
+      <a class="btn btn-warning" v-on:click.stop="copyComponentCard(thisComponent)">Copy</a>
+      <a style="float: right" class="btn btn-danger" v-on:click.stop="deleteComponentCard(thisComponent)">Delete</a>
     </div>
   </div>
 </template>
@@ -16,7 +16,7 @@
 <script lang="ts">
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
 import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
-import processClassName from '../newComponent/processClassName';
+import ProcessClassName from '../../../../services/workshop/newComponent/processClassName';
 
 interface Data {
   className: string,
@@ -36,7 +36,7 @@ export default {
         this.editorButtonClickedOnStopEditing = false;
         return;
       }
-      this.className = this.component.className;
+      this.className = this.thisComponent.className;
       this.isEditingClassName = !this.isEditingClassName;
       this.$emit('stop-editing-class-name-callback', this.stopEditingClassName);
     },
@@ -44,7 +44,7 @@ export default {
       if (event instanceof KeyboardEvent) {
         if (event.key === 'Enter') {
           this.isEditingClassName = false;
-          this.finishEditingClassName();
+          this.thisComponent.className = ProcessClassName.finalize(this.className, this.thisComponent.className, this.allComponents, this.thisComponent.className);
           return { shouldRepeat: false };
         }
         return { shouldRepeat: true };
@@ -52,7 +52,7 @@ export default {
       if (event.target !== this.$refs.componentCardClassNameEditorInput) {
         this.isEditingClassName = false;
         if (this.className && this.className.length) {
-          this.finishEditingClassName();
+          this.thisComponent.className = ProcessClassName.finalize(this.className, this.thisComponent.className, this.allComponents, this.thisComponent.className);
         } 
         if (event.target === this.$refs.componentCardClassNameEditorButton) {
           this.editorButtonClickedOnStopEditing = true;
@@ -78,15 +78,16 @@ export default {
       this.$emit('component-card-deleted', selectComponentCard);
     },
     processClassName(): void {
-      this.className = processClassName(this.className);
+      this.className = ProcessClassName.process(this.className);
     },
     finishEditingClassName(): void {
-      if (this.className.length === 1) { this.className = this.component.className; }
-      this.component.className = this.className;
+      if (this.className.length === 1) { this.className = this.thisComponent.className; }
+      this.thisComponent.className = this.className;
     },
   },
   props: {
-    component: Object,
+    thisComponent: Object,
+    allComponents: Object,
   }
 };
 </script>

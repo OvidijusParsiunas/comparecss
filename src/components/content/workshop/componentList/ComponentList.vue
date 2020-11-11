@@ -1,8 +1,10 @@
 <template>
   <div id="component-cards" style="background-color: rgb(251 251 251); display: grid; border-radius: 20px; height: 95%; width: 90%; margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); text-align: center">
     <div id="component-cards-container" style="margin-top: 5px">
-      <div v-for="component in componentList" :key="component">
-        <componentCard :component="component"
+      <div v-for="component in components" :key="component">
+        <componentCard
+          :thisComponent="component"
+          :allComponents="components"
           @component-card-selected="componentCardSelected($event)"
           @component-card-copied="componentCardCopied($event)"
           @component-card-deleted="componentCardDeleted($event)"
@@ -43,7 +45,7 @@ export default {
     }
   },
   props: {
-    componentList: Array,
+    components: Array,
   },
 };
 </script>
