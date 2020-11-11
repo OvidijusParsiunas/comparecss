@@ -41,7 +41,7 @@ export default class ProcessClassedName {
     return className.toLowerCase();
   }
 
-  private static addPostfixIfClassNameTaken(className: string, components: WorkshopComponent[], originalClasName?: string): string {
+  static addPostfixIfClassNameTaken(className: string, components: WorkshopComponent[], originalClasName?: string): string {
     if (components.map((component) => component.className).includes(className)) {
       if (className === originalClasName) return className;
       className = `${className}${this.duplicateClassNamePostfix}`;

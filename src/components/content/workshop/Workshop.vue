@@ -80,6 +80,7 @@ import { BUTTON_COMPONENT_MODES } from '../../../consts/buttonComponentModes.enu
 import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
 import { UpdateMode } from '../../../interfaces/updateMode';
 import inheritedButtonCss from '../../../newComponents/buttons/inheritedCss';
+import ProcessClassName from '../../../services/workshop/newComponent/processClassName';
 
 export default {
   data: (): Data => ({
@@ -253,7 +254,9 @@ export default {
     },
     componentCardCopied(selectComponentCard: WorkshopComponent): void {
       this.setCustomCssActiveMode(selectComponentCard.componentProperties, BUTTON_COMPONENT_MODES.DEFAULT);
-      this.addNewComponent(JSON.parse(JSON.stringify(selectComponentCard)));
+      const newComponent = JSON.parse(JSON.stringify(selectComponentCard));
+      newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className, this.components);
+      this.addNewComponent(newComponent);
     },
     componentCardDeleted(selectComponentCard: WorkshopComponent): void {
       const componentMatch = (component) => selectComponentCard === component;

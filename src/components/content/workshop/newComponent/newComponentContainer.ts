@@ -1,5 +1,5 @@
-import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum'
-import { NewComponentStylesContainer } from '../../../interfaces/newComponentStylesContainer';
+import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum'
+import { NewComponentStylesContainer } from '../../../../interfaces/newComponentStylesContainer';
 import newButtonStylesContainer from './newButtonStylesContainer';
 
 type NewComponentContainer = {
