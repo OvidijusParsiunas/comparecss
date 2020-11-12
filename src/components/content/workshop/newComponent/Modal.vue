@@ -70,7 +70,7 @@ export default {
       const newComponent = newComponentContainer[newComponentType][NEW_COMPONENT_STYLES.DEFAULT].getNewComponent();
       newComponent.className = this.className || this.classNamePlaceholder;
       this.$emit('add-new-component', newComponent);
-      // do not update modal until it has closed
+      // updates modal only after it has closed
       setTimeout(() => {
         this.className = null;
         this.classNamePlaceholder = `component-${this.classNameIndex++}`;

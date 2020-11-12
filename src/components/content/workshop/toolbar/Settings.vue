@@ -138,8 +138,12 @@ export default {
           const currentValue = this.getCurrentValue(this.componentProperties.customCssActiveMode, setting.spec.cssProperty);
           if (currentValue) { this.inputDropdownNewValues[setting.spec.cssProperty] = currentValue; }
         } else if (setting.type === 'checkbox') {
-          const currentValue = this.getCurrentValue(this.componentProperties.customCssActiveMode, setting.spec.cssProperty);
-          if (currentValue) { setting.spec.default = (currentValue === setting.spec.conditionalStyle.truthy); }
+          if (setting.javascript) {
+            setting.spec.default = this.componentProperties[setting.spec.name];
+          } else {
+            const currentValue = this.getCurrentValue(this.componentProperties.customCssActiveMode, setting.spec.cssProperty);
+            if (currentValue) { setting.spec.default = (currentValue === setting.spec.conditionalStyle.truthy); }
+          }
         }
       })
     }

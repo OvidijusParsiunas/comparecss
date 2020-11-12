@@ -112,6 +112,7 @@ export default {
               height: '38px',
               boxSizing: 'content-box',
               transition: 'unset',
+              fontSize: '14px',
               color: '#ffffff',
             },
             [BUTTON_COMPONENT_MODES.HOVER]: {
@@ -183,6 +184,7 @@ export default {
             height: '38px',
             boxSizing: 'content-box',
             transition: 'unset',
+            fontSize: '14px',
             color: '#ffffff',
           },
           [BUTTON_COMPONENT_MODES.HOVER]: {
@@ -211,6 +213,7 @@ export default {
             height: '38px',
             boxSizing: 'content-box',
             transition: 'none',
+            fontSize: '14px',
             color: '#ffffff',
           },
           [BUTTON_COMPONENT_MODES.HOVER]: {

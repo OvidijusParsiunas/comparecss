@@ -41,7 +41,8 @@ export default class ProcessClassedName {
   }
 
   private static buildClassNameWithPostfix(className: string, postfixNumber: number): string {
-    return `${className}-${postfixNumber}`;
+    // do not add postfix if it is 1
+    return `${className}${postfixNumber === 1 ? '' : `-${postfixNumber}`}`;
   }
 
   private static postfixAddition(className: string, components: WorkshopComponent[], postfixNumber: number, originalClassName?: string): string {
@@ -58,8 +59,8 @@ export default class ProcessClassedName {
     if (className === originalClassName) return className;
     if (components.map((component) => component.className).includes(className)) {
       className = `${className}${postfixString}`;
-      const initialPostfixNumber = 2;
-      return this.postfixAddition(className, components, initialPostfixNumber, originalClassName);
+      const initialAppendedPostfixNumber = 1;
+      return this.postfixAddition(className, components, initialAppendedPostfixNumber, originalClassName);
     }
     return className;
   }

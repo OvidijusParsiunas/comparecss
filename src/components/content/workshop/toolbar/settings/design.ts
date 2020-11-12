@@ -100,11 +100,12 @@ export default {
   options: [
     {
       type: 'checkbox',
+      javascript: true,
       spec: {
         name: 'Material',
         default: false,
         conditionalStyle: {
-          truthy: 'table-cell',
+          truthy: '',
           falsy: '',
         },
         executeJS: addMaterializeRipple,
