@@ -70,8 +70,11 @@ export default {
       const newComponent = newComponentContainer[newComponentType][NEW_COMPONENT_STYLES.DEFAULT].getNewComponent();
       newComponent.className = this.className || this.classNamePlaceholder;
       this.$emit('add-new-component', newComponent);
-      this.className = null;
-      this.classNamePlaceholder = `component-${this.classNameIndex++}`;
+      // do not update modal until it has closed
+      setTimeout(() => {
+        this.className = null;
+        this.classNamePlaceholder = `component-${this.classNameIndex++}`;
+      }, 500);
     },
     changeClassName(): void {
       this.className = ProcessClassName.process(this.className);
