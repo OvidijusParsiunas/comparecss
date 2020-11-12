@@ -1,56 +1,54 @@
 <template>
-  <div v-if="component">
-    <div style="position: relative" @mouseleave="componentPreviewMouseLeave()">
-      <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); z-index: 0; text-align: center;"> 
-        <div :class="component.componentProperties.frameworkClass">
-          <div class="grid-container">
-            <div class="grid-item"></div>
-            <div class="grid-item">
-                <!-- https://v3.vuejs.org/guide/transitions-enterleave.html#css-transitions -->
-                <transition name="top-slide-fade">
-                  <div id="margin-assistance-top" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
-                </transition>
-            </div>
-            <div class="grid-item"></div>
-            <div class="grid-item">
-                <transition name="left-slide-fade">
-                  <div id="margin-assistance-left" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
-                </transition>
-            </div>
-            <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item">
-              <button id="demoComponent"
-                @mouseover="componentMouseOver()"
-                @mouseleave="componentMouseLeave()"
-                @mousedown="componentMouseDown()"
-                @mouseup="componentMouseUp()"
-                :style="component.componentProperties.customCssActiveMode === BUTTON_COMPONENT_MODES.CLICK
-                  ? [
-                      component.componentProperties.inheritedCss.css,
-                      component.componentProperties.customCss[BUTTON_COMPONENT_MODES.DEFAULT],
-                      component.componentProperties.customCss[BUTTON_COMPONENT_MODES.HOVER],
-                      component.componentProperties.customCss[BUTTON_COMPONENT_MODES.CLICK],
-                    ]
-                  : [
-                      component.componentProperties.inheritedCss.css,
-                      component.componentProperties.customCss[BUTTON_COMPONENT_MODES.DEFAULT],
-                      component.componentProperties.customCss[component.componentProperties.customCssActiveMode],
-                    ]"
-                v-html="component.componentProperties.innerHtml">
-              </button>
-            </div>
-            <div class="grid-item">
-              <transition name="right-slide-fade">
-                <div id="margin-assistance-right" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
-              </transition>
-            </div>
-            <div class="grid-item"></div>
-            <div class="grid-item">
-              <transition name="bottom-slide-fade">
-                <div id="margin-assistance-bottom" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
-              </transition>
-            </div>
-            <div class="grid-item"></div>
+  <div v-if="component" style="position: relative" @mouseleave="componentPreviewMouseLeave()">
+    <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); z-index: 0; text-align: center;"> 
+      <div :class="component.componentProperties.frameworkClass">
+        <div class="grid-container">
+          <div class="grid-item"></div>
+          <div class="grid-item">
+            <!-- https://v3.vuejs.org/guide/transitions-enterleave.html#css-transitions -->
+            <transition name="top-slide-fade">
+              <div id="margin-assistance-top" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
+            </transition>
           </div>
+          <div class="grid-item"></div>
+          <div class="grid-item">
+            <transition name="left-slide-fade">
+              <div id="margin-assistance-left" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
+            </transition>
+          </div>
+          <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item">
+            <button id="demoComponent"
+              @mouseover="componentMouseOver()"
+              @mouseleave="componentMouseLeave()"
+              @mousedown="componentMouseDown()"
+              @mouseup="componentMouseUp()"
+              :style="component.componentProperties.customCssActiveMode === BUTTON_COMPONENT_MODES.CLICK
+                ? [
+                    component.componentProperties.inheritedCss.css,
+                    component.componentProperties.customCss[BUTTON_COMPONENT_MODES.DEFAULT],
+                    component.componentProperties.customCss[BUTTON_COMPONENT_MODES.HOVER],
+                    component.componentProperties.customCss[BUTTON_COMPONENT_MODES.CLICK],
+                  ]
+                : [
+                    component.componentProperties.inheritedCss.css,
+                    component.componentProperties.customCss[BUTTON_COMPONENT_MODES.DEFAULT],
+                    component.componentProperties.customCss[component.componentProperties.customCssActiveMode],
+                  ]"
+              v-html="component.componentProperties.innerHtml">
+            </button>
+          </div>
+          <div class="grid-item">
+            <transition name="right-slide-fade">
+              <div id="margin-assistance-right" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
+            </transition>
+          </div>
+          <div class="grid-item"></div>
+          <div class="grid-item">
+            <transition name="bottom-slide-fade">
+              <div id="margin-assistance-bottom" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
+            </transition>
+          </div>
+          <div class="grid-item"></div>
         </div>
       </div>
     </div>
