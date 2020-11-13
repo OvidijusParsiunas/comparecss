@@ -6,8 +6,7 @@
           <options ref="options" :component="component" @option-clicked="updateSettings" @mode-clicked="updateMode"/>
         </div>
       </div>
-      <!-- call the method instead of triggering it that way -->
-      <settings :componentProperties="component.componentProperties" :settings="activeSettings" :settingsResetTriggered="settingsResetTriggered"/>
+      <settings ref="settings" :componentProperties="component.componentProperties" :settings="activeSettings"/>
     </div>
   </div>
 </template>
@@ -16,7 +15,6 @@
 interface Data {
   activeSettings: any,
   activeMode: BUTTON_COMPONENT_MODES,
-  settingsResetTriggered: boolean,
 }
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOptions';
 import { BUTTON_COMPONENT_MODES } from '../../../../consts/buttonComponentModes.enum';
@@ -29,7 +27,6 @@ export default {
   data: (): Data => ({
     activeSettings: {},
     activeMode: BUTTON_COMPONENT_MODES.DEFAULT,
-    settingsResetTriggered: false,
   }),
   components: {
     settings,
@@ -39,7 +36,7 @@ export default {
     updateSettings(newSettings: WORKSHOP_TOOLBAR_OPTIONS): void {
       if (newSettings === WORKSHOP_TOOLBAR_OPTIONS.RESET) {
         SettingsManager.resetComponentProperties(this.component.componentProperties, this.activeMode);
-        this.settingsResetTriggered = !this.settingsResetTriggered;
+        this.$refs.settings.resetSettings();
       } else {
         this.activeSettings = SettingsManager.getSettings(newSettings);
         this.componentPreviewAssistance.margin = newSettings === WORKSHOP_TOOLBAR_OPTIONS.MARGIN;
@@ -55,7 +52,7 @@ export default {
         this.activeSettings = {};
         this.componentPreviewAssistance.margin = false;
       }
-      this.settingsResetTriggered = !this.settingsResetTriggered;
+      this.$refs.settings.resetSettings();
     }
   },
   props: {
