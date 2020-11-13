@@ -5,4 +5,3 @@ export interface NavbarButton {
   navbarMenuButton: NAVBAR_MENU_BUTTONS;
   navbarSubMenuButton?: NAVBAR_SUB_MENU_BUTTONS;
 }
-  

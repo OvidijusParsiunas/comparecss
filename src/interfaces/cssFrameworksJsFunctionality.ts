@@ -1,22 +1,22 @@
 export interface CssFrameworksJsFunctionality {
-    bootstrapTooltip: () => void;
-    bulmaAlert: () => void;
-    bulmaAccordion: () => void;
-    bulmaModal: () => void;
-    bulmaTrigger: () => void;
-    foundationTrigger: () => void;
-    materializeAccordion: () => void;
-    materializeButton: () => void;
-    materializeDropdown: () => void;
-    materializeFormSelect: () => void;
-    materializeModal: () => void;
-    materializeTooltip: () => void;
-    materializeUpdateTextFields: () => void;
-    pureDropdown: () => void;
-    semanticAccordion: () => void;
-    semanticAlert: () => void;
-    semanticCheckbox: () => void;
-    semanticDropdown: () => void;
-    semanticModal: () => void;
-    spectreModal: () => void;
-  }
+  bootstrapTooltip: () => void;
+  bulmaAlert: () => void;
+  bulmaAccordion: () => void;
+  bulmaModal: () => void;
+  bulmaTrigger: () => void;
+  foundationTrigger: () => void;
+  materializeAccordion: () => void;
+  materializeButton: () => void;
+  materializeDropdown: () => void;
+  materializeFormSelect: () => void;
+  materializeModal: () => void;
+  materializeTooltip: () => void;
+  materializeUpdateTextFields: () => void;
+  pureDropdown: () => void;
+  semanticAccordion: () => void;
+  semanticAlert: () => void;
+  semanticCheckbox: () => void;
+  semanticDropdown: () => void;
+  semanticModal: () => void;
+  spectreModal: () => void;
+}

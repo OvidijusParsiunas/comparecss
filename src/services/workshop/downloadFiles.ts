@@ -1,16 +1,10 @@
 import JSZip from 'jszip';
 import CleanCSS from 'clean-css';
-import uglifyjsOptions from '../../consts/uglifyjsOptions';
+import { JSBuilder } from '../../interfaces/jsBuilder';
 
 export default class Downloadfiles {
 
   private static fileName = 'cssymphony';
-
-  private static createZipFolder(): JSZip {
-    const zip = new JSZip();
-    const zipFolder = zip.folder('cssymphony');
-    return zipFolder;
-  }
 
   private static download(folder: JSZip): void {
     const pom = document.createElement('a');
@@ -24,21 +18,6 @@ export default class Downloadfiles {
     });
   }
 
-  private static addJSFiles(downloadableJS: string, zipFolder: JSZip): string {
-    let allCssForJS = '';
-    let allJS = '';
-    Object.keys(downloadableJS).forEach((key) => {
-      const { cssFileContent, jsFileContent } = downloadableJS[key];
-      allCssForJS += '\r\n' + cssFileContent;
-      allJS += jsFileContent;
-    });
-    if (allJS.trim().length === 0) return '';
-    zipFolder.file(`${this.fileName}.js`, allJS);
-    const allJSMinified = window.minify(allJS, uglifyjsOptions);
-    if (!allJSMinified.error) { zipFolder.file(`${this.fileName}.min.js`, allJSMinified.code); }
-    return allCssForJS;
-  }
-
   private static addCSSFiles(customCss: string, cssForJS: string, zipFolder: JSZip): void {
     const allCss = customCss + cssForJS;
     zipFolder.file(`${this.fileName}.css`, allCss);
@@ -46,10 +25,22 @@ export default class Downloadfiles {
     if (!allCssMinified.errors.length) { zipFolder.file(`${this.fileName}.min.css`, allCssMinified.styles); }
   }
 
-  static downloadZip(customCss: string, customJS: any): void {
+  private static addJSFiles(js: string, jsmin: string, zipFolder: JSZip): void {
+    if (js) zipFolder.file(`${this.fileName}.js`, js);
+    if (jsmin) { zipFolder.file(`${this.fileName}.min.js`, jsmin); }
+  }
+
+  private static createZipFolder(): JSZip {
+    const zip = new JSZip();
+    const zipFolder = zip.folder('cssymphony');
+    return zipFolder;
+  }
+
+  static downloadZip(customCss: string, customJS: JSBuilder): void {
     const zipFolder = this.createZipFolder();
-    const cssForJS = this.addJSFiles(customJS, zipFolder);
-    this.addCSSFiles(customCss, cssForJS, zipFolder);
+    const { js, jsmin, cssForJs } = customJS;
+    this.addJSFiles(js, jsmin, zipFolder);
+    this.addCSSFiles(customCss, cssForJs, zipFolder);
     this.download(zipFolder);
   }
 }

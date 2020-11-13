@@ -6,6 +6,7 @@
           <options ref="options" :component="component" @option-clicked="updateSettings" @mode-clicked="updateMode"/>
         </div>
       </div>
+      <!-- call the method instead of triggering it that way -->
       <settings :componentProperties="component.componentProperties" :settings="activeSettings" :settingsResetTriggered="settingsResetTriggered"/>
     </div>
   </div>

@@ -28,8 +28,8 @@
               <div style="position: relative">
                 <div>
                   <!-- <div style="text-align: center; margin-bottom: 5px">Size: 0kb</div> -->
-                  <button type="button" class="btn btn-outline-secondary edit-component-button" @click="downloadCSSFile">&lt;&gt;</button>
-                  <button type="button" class="btn btn-success" @click="downloadCSSFile">&darr;</button>
+                  <button type="button" class="btn btn-outline-secondary edit-component-button" @click="download">&lt;&gt;</button>
+                  <button type="button" class="btn btn-success" @click="download">&darr;</button>
                 </div>
               </div>
             </div>
@@ -37,7 +37,7 @@
               <div style="width: 30%; position: relative">
                 <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
                   <div style="text-align: center; margin-bottom: 5px">Size: 0kb</div>
-                  <button type="button" class="btn btn-success" @click="downloadCSSFile">Download</button>
+                  <button type="button" class="btn btn-success" @click="download">Download</button>
                 </div>
               </div>
             </div> -->
@@ -69,6 +69,7 @@ interface Data {
 import 'vuesax/dist/vuesax.css' //Vuesax styles
 import downloadFiles from '../../../services/workshop/downloadFiles';
 import cssBuilder from '../../../services/workshop/cssBuilder';
+import jsBuilder from '../../../services/workshop/jsBuilder';
 import toolbar from './toolbar/Toolbar.vue';
 import componentContents from './componentPreview/ComponentPreview.vue';
 import newComponentModal from './newComponent/Modal.vue';
@@ -81,6 +82,8 @@ import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
 import { UpdateMode } from '../../../interfaces/updateMode';
 import inheritedButtonCss from '../../../newComponents/buttons/inheritedCss';
 import ProcessClassName from '../../../services/workshop/newComponent/processClassName';
+import JavaScriptContainer from './toolbar/javascript/javascriptContainer';
+import { JavascriptCode } from '../../../interfaces/javascriptCode';
 
 export default {
   data: (): Data => ({
@@ -151,7 +154,7 @@ export default {
             },
           },
           tempCustomCss: new Set(['transition']),
-          customJS: {},
+          jsClasses: [],
           customCssActiveMode: BUTTON_COMPONENT_MODES.DEFAULT,
           inheritedCss: inheritedButtonCss,
         },
@@ -224,7 +227,7 @@ export default {
           },
         },
         tempCustomCss: new Set(['transition']),
-        customJS: {},
+        jsClasses: [],
         customCssActiveMode: BUTTON_COMPONENT_MODES.DEFAULT,
         inheritedCss: inheritedButtonCss,
       },
@@ -235,6 +238,27 @@ export default {
     workshopEventCallbacks: [],
   }),
   methods: {
+    manipulateComponentJS(jsManipulationProperty: 'revokeJS' | 'executeJS'): void {
+      JavaScriptContainer[this.currentlySelectedComponent.type].content.forEach((javascript) => {
+        javascript.code[jsManipulationProperty]();
+      });
+    },
+    manipulateComponetJSClasses(classManipulationProperty: 'add' | 'remove'): void {
+      this.currentlySelectedComponent.componentProperties.jsClasses.forEach((jsClass) => {
+        document.getElementById(JavaScriptContainer[this.currentlySelectedComponent.type].componentId).classList[classManipulationProperty](jsClass);
+      });
+    },
+    switchActiveComponent(newComponent: WorkshopComponent): void {
+      if (this.currentlySelectedComponent) {
+        if (this.currentlySelectedComponent.type !== newComponent.type) {
+          this.manipulateComponentJS('revokeJS');
+        }
+        this.manipulateComponetJSClasses('remove');
+      }
+      this.currentlySelectedComponent = newComponent;
+      this.manipulateComponentJS('executeJS');
+      this.manipulateComponetJSClasses('add');
+    },
     setCustomCssActiveMode: (componentProperties: ComponentProperties, mode: BUTTON_COMPONENT_MODES): void => {
       if (componentProperties.hasOwnProperty('customCssActiveMode')) {
         componentProperties.customCssActiveMode = mode;
@@ -245,13 +269,13 @@ export default {
         this.setCustomCssActiveMode(this.currentlySelectedComponent.componentProperties, BUTTON_COMPONENT_MODES.DEFAULT);
       }
       this.components.push(newComponent);
-      this.currentlySelectedComponent = newComponent;
+      this.switchActiveComponent(newComponent);
       if (this.components.length > 1) { this.$refs.toolbar.updateMode([this.currentlySelectedComponent.componentProperties.customCssActiveMode] as UpdateMode) }
     },
     componentCardSelected(selectedComponentCard: WorkshopComponent): void {
       if (this.currentlySelectedComponent !== selectedComponentCard) {
         this.setCustomCssActiveMode(this.currentlySelectedComponent.componentProperties, BUTTON_COMPONENT_MODES.DEFAULT);
-        this.currentlySelectedComponent = selectedComponentCard;
+        this.switchActiveComponent(selectedComponentCard);
         this.$refs.toolbar.updateMode([this.currentlySelectedComponent.componentProperties.customCssActiveMode] as UpdateMode);
       }
     },
@@ -266,19 +290,22 @@ export default {
       const componentIndex = this.components.findIndex(componentMatch);
       this.components.splice(componentIndex, 1);
       if (this.components.length === 0) {
+        this.manipulateComponentJS('revokeJS');
+        this.manipulateComponetJSClasses('remove');
         this.currentlySelectedComponent = undefined;
         return;
       }
       if (componentIndex === this.components.length) {
-        this.currentlySelectedComponent = this.components[componentIndex - 1];
+        this.switchActiveComponent(this.components[componentIndex - 1]);
       } else {
-        this.currentlySelectedComponent = this.components[componentIndex];
+        this.switchActiveComponent(this.components[componentIndex]);
       }
       this.$refs.toolbar.updateMode([this.currentlySelectedComponent.componentProperties.customCssActiveMode] as UpdateMode);
     },
-    downloadCSSFile(): void {
+    download(): void {
       const resultCss = `${cssBuilder.build(this.components).trim()}\r\n`;
-      downloadFiles.downloadZip(resultCss, this.currentlySelectedComponent.componentProperties.customJS);
+      const resultJs = jsBuilder.build(this.components);
+      downloadFiles.downloadZip(resultCss, resultJs);
     },
     triggerWorkshopEventCallbacks(): void {
       if (this.workshopEventCallbacks.length > 0) {

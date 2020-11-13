@@ -66,7 +66,7 @@
                 <div style="text-align: left">
                   {{setting.spec.name}}
                 </div>
-                <input type="checkbox" v-model="setting.spec.default" @click="checkboxMouseClick(setting.spec.default, setting.spec, componentProperties.customJS)">
+                <input type="checkbox" v-model="setting.spec.default" @click="checkboxMouseClick(setting.spec, setting.spec.default)">
               </div>
             </div>
             
@@ -138,8 +138,8 @@ export default {
           const currentValue = this.getCurrentValue(this.componentProperties.customCssActiveMode, setting.spec.cssProperty);
           if (currentValue) { this.inputDropdownNewValues[setting.spec.cssProperty] = currentValue; }
         } else if (setting.type === 'checkbox') {
-          if (setting.javascript) {
-            setting.spec.default = this.componentProperties[setting.spec.name];
+          if (setting.spec.javascript) {
+            setting.spec.default = this.componentProperties.jsClasses.includes(setting.spec.jsClassName);
           } else {
             const currentValue = this.getCurrentValue(this.componentProperties.customCssActiveMode, setting.spec.cssProperty);
             if (currentValue) { setting.spec.default = (currentValue === setting.spec.conditionalStyle.truthy); }
@@ -263,16 +263,16 @@ export default {
     colorInputClick(): void {
       this.componentProperties.customCss[this.componentProperties.customCssActiveMode].transition = 'unset';
     },
-    checkboxMouseClick(previousCheckboxValue: boolean, spec: any, customJS: any): void {
-      const { conditionalStyle, cssProperty, executeJS, revokeJS, downloadables } = spec;
+    checkboxMouseClick(spec: any, previousCheckboxValue: boolean): void {
+      const { conditionalStyle, cssProperty, javascript, jsClassName, componentId } = spec;
       const newCheckboxValue = !previousCheckboxValue;
-      if (executeJS) {
+      if (javascript) {
         if (newCheckboxValue) {
-          if (!customJS[downloadables.scriptName]) { customJS[downloadables.scriptName] = downloadables; }
-          executeJS();
+          document.getElementById(componentId).classList.add(jsClassName);
+          this.componentProperties.jsClasses.push(jsClassName);
         } else {
-          delete customJS[downloadables.scriptName];
-          revokeJS();
+          document.getElementById(componentId).classList.remove(jsClassName);
+          this.componentProperties.jsClasses.splice(this.componentProperties.jsClasses.indexOf(jsClassName), 1);
         }
       } else {
         const cssValue = newCheckboxValue ? conditionalStyle.truthy : conditionalStyle.falsy;

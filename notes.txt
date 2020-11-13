@@ -1,3 +1,5 @@
+place settings and options components in their folders
+
 color active toolkit button
 color active component card
 multiplejs objects may need a different structure to be defined in a single js file - have a js file builder service

@@ -2,6 +2,7 @@ import { WorkshopComponent } from '../../interfaces/workshopComponent';
 import { NewComponent } from '../../interfaces/newComponent';
 import { BUTTON_COMPONENT_MODES } from '../../consts/buttonComponentModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../consts/newComponentTypes.enum';
+import { BUTTON_JAVASCRIPT_CLASSES } from '../../components/content/workshop/toolbar/javascript/buttonJavaScriptClasses.enum';
 import inheritedButtonCss from './inheritedCss';
 
 export default {
@@ -69,7 +70,7 @@ export default {
             backgroundColor: '#409441',
           },
         },
-        customJS: {},
+        jsClasses: [BUTTON_JAVASCRIPT_CLASSES.RIPPLES],
         customCssActiveMode: BUTTON_COMPONENT_MODES.DEFAULT,
         tempCustomCss: new Set(['transition']),
         inheritedCss: inheritedButtonCss,
