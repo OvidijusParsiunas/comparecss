@@ -10,7 +10,6 @@ export type CustomCss = {
 
 export interface ComponentProperties {
   frameworkClass: string;
-  componentClass: string;
   innerHtml: string;
   customCss: CustomCss;
   initialCss: CustomCss;

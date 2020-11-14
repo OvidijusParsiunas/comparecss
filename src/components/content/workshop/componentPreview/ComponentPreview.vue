@@ -135,7 +135,6 @@ export default {
       @mouseleave="componentMouseLeave(componentProperties.customCss)"
       @mousedown="componentMouseDown(componentProperties.customCss)"
       @mouseup="componentMouseUp(componentProperties.customCss)"
-      :class="componentProperties.componentClass"
       :style="componentProperties.customCss[componentProperties.customCssActiveMode]"
       v-html="componentProperties.innerHtml">
     </button>

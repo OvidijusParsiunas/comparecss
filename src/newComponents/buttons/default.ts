@@ -11,7 +11,6 @@ export default {
       type: NEW_COMPONENT_TYPES.BUTTON,
       componentProperties: {
         frameworkClass: 'foundation',
-        componentClass: 'button',
         innerHtml: 'button',
         transition: 'all 0.25s ease-out',
         customCss: {

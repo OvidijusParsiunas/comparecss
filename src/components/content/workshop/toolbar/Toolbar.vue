@@ -6,7 +6,7 @@
           <options ref="options" :component="component" @option-clicked="updateSettings" @mode-clicked="updateMode"/>
         </div>
       </div>
-      <settings ref="settings" :componentProperties="component.componentProperties" :settings="activeSettings"/>
+      <settings :componentProperties="component.componentProperties" :settings="activeSettings" :settingsResetTriggered="settingsResetTriggered"/>
     </div>
   </div>
 </template>
@@ -15,6 +15,7 @@
 interface Data {
   activeSettings: any,
   activeMode: BUTTON_COMPONENT_MODES,
+  settingsResetTriggered: boolean,
 }
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOptions';
 import { BUTTON_COMPONENT_MODES } from '../../../../consts/buttonComponentModes.enum';
@@ -27,6 +28,7 @@ export default {
   data: (): Data => ({
     activeSettings: {},
     activeMode: BUTTON_COMPONENT_MODES.DEFAULT,
+    settingsResetTriggered: false,
   }),
   components: {
     settings,
@@ -36,7 +38,7 @@ export default {
     updateSettings(newSettings: WORKSHOP_TOOLBAR_OPTIONS): void {
       if (newSettings === WORKSHOP_TOOLBAR_OPTIONS.RESET) {
         SettingsManager.resetComponentProperties(this.component.componentProperties, this.activeMode);
-        this.$refs.settings.resetSettings();
+        this.triggerSettingsReset();
       } else {
         this.activeSettings = SettingsManager.getSettings(newSettings);
         this.componentPreviewAssistance.margin = newSettings === WORKSHOP_TOOLBAR_OPTIONS.MARGIN;
@@ -52,7 +54,13 @@ export default {
         this.activeSettings = {};
         this.componentPreviewAssistance.margin = false;
       }
-      this.$refs.settings.resetSettings();
+      this.triggerSettingsReset();
+    },
+    triggerSettingsReset(): void {
+      // this trigger type is used instead of a ref method because this will only trigger the settings-reset when
+      // the props (more specifically the component properties) have updated first (via the watch property)
+      // whereas directly calling the reset method via ref invokes it before the props have been updated
+      this.settingsResetTriggered = !this.settingsResetTriggered;
     }
   },
   props: {

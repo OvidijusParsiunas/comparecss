@@ -83,7 +83,6 @@ import { UpdateMode } from '../../../interfaces/updateMode';
 import inheritedButtonCss from '../../../newComponents/buttons/inheritedCss';
 import ProcessClassName from '../../../services/workshop/newComponent/processClassName';
 import JavaScriptContainer from './toolbar/javascript/javascriptContainer';
-import { JavascriptCode } from '../../../interfaces/javascriptCode';
 
 export default {
   data: (): Data => ({
@@ -93,7 +92,6 @@ export default {
         type: NEW_COMPONENT_TYPES.BUTTON,
         componentProperties: {
           frameworkClass: 'foundation',
-          componentClass: 'button',
           innerHtml: 'button',
           transition: 'all 0.25s ease-out',
           customCss: {
@@ -165,7 +163,6 @@ export default {
       type: NEW_COMPONENT_TYPES.BUTTON,
       componentProperties: {
         frameworkClass: 'foundation',
-        componentClass: 'button',
         innerHtml: 'button',
         transition: 'all 0.25s ease-out',
         customCss: {
@@ -270,7 +267,7 @@ export default {
       }
       this.components.push(newComponent);
       this.switchActiveComponent(newComponent);
-      if (this.components.length > 1) { this.$refs.toolbar.updateMode([this.currentlySelectedComponent.componentProperties.customCssActiveMode] as UpdateMode) }
+      if (this.components.length > 1) { this.$refs.toolbar.updateMode([this.currentlySelectedComponent.componentProperties.customCssActiveMode] as UpdateMode); }
     },
     componentCardSelected(selectedComponentCard: WorkshopComponent): void {
       if (this.currentlySelectedComponent !== selectedComponentCard) {
