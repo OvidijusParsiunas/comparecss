@@ -37,7 +37,7 @@ export default {
   methods: {
     updateSettings(newSettings: WORKSHOP_TOOLBAR_OPTIONS): void {
       if (newSettings === WORKSHOP_TOOLBAR_OPTIONS.RESET) {
-        SettingsManager.resetComponentProperties(this.component.componentProperties, this.activeMode);
+        SettingsManager.resetComponentProperties(this.component, this.activeMode);
         this.triggerSettingsReset();
       } else {
         this.activeSettings = SettingsManager.getSettings(newSettings);

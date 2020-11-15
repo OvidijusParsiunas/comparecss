@@ -1,5 +1,5 @@
 place settings and options components in their folders
-reset button not working for JavaScript
+consider not resetting to default when moving between components
 consider placing javascript unique to the classes it was used on
 
 color active toolkit button

@@ -82,7 +82,7 @@ import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
 import { UpdateMode } from '../../../interfaces/updateMode';
 import inheritedButtonCss from '../../../newComponents/buttons/inheritedCss';
 import ProcessClassName from '../../../services/workshop/newComponent/processClassName';
-import JavaScriptContainer from './toolbar/javascript/javascriptContainer';
+import ComponentJs from '../../../services/workshop/componentJs';
 
 export default {
   data: (): Data => ({
@@ -153,6 +153,7 @@ export default {
           },
           tempCustomCss: new Set(['transition']),
           jsClasses: [],
+          initialJsClasses: [],
           customCssActiveMode: BUTTON_COMPONENT_MODES.DEFAULT,
           inheritedCss: inheritedButtonCss,
         },
@@ -225,6 +226,7 @@ export default {
         },
         tempCustomCss: new Set(['transition']),
         jsClasses: [],
+        initialJsClasses: [],
         customCssActiveMode: BUTTON_COMPONENT_MODES.DEFAULT,
         inheritedCss: inheritedButtonCss,
       },
@@ -235,26 +237,18 @@ export default {
     workshopEventCallbacks: [],
   }),
   methods: {
-    manipulateComponentJS(jsManipulationProperty: 'revokeJS' | 'executeJS'): void {
-      JavaScriptContainer[this.currentlySelectedComponent.type].content.forEach((javascript) => {
-        javascript.code[jsManipulationProperty]();
-      });
-    },
-    manipulateComponetJSClasses(classManipulationProperty: 'add' | 'remove'): void {
-      this.currentlySelectedComponent.componentProperties.jsClasses.forEach((jsClass) => {
-        document.getElementById(JavaScriptContainer[this.currentlySelectedComponent.type].componentId).classList[classManipulationProperty](jsClass);
-      });
-    },
     switchActiveComponent(newComponent: WorkshopComponent): void {
       if (this.currentlySelectedComponent) {
         if (this.currentlySelectedComponent.type !== newComponent.type) {
-          this.manipulateComponentJS('revokeJS');
+          ComponentJs.manipulateJS(this.currentlySelectedComponent.type, 'revokeJS');
         }
-        this.manipulateComponetJSClasses('remove');
+        ComponentJs.manipulateJSClasses(this.currentlySelectedComponent.componentProperties.jsClasses,
+          this.currentlySelectedComponent.type, 'remove');
       }
       this.currentlySelectedComponent = newComponent;
-      this.manipulateComponentJS('executeJS');
-      this.manipulateComponetJSClasses('add');
+      ComponentJs.manipulateJS(this.currentlySelectedComponent.type, 'executeJS');
+      ComponentJs.manipulateJSClasses(this.currentlySelectedComponent.componentProperties.jsClasses,
+          this.currentlySelectedComponent.type, 'add');
     },
     setCustomCssActiveMode: (componentProperties: ComponentProperties, mode: BUTTON_COMPONENT_MODES): void => {
       if (componentProperties.hasOwnProperty('customCssActiveMode')) {
@@ -287,8 +281,9 @@ export default {
       const componentIndex = this.components.findIndex(componentMatch);
       this.components.splice(componentIndex, 1);
       if (this.components.length === 0) {
-        this.manipulateComponentJS('revokeJS');
-        this.manipulateComponetJSClasses('remove');
+        ComponentJs.manipulateJS(this.currentlySelectedComponent.type, 'revokeJS');
+        ComponentJs.manipulateJSClasses(this.currentlySelectedComponent.componentProperties.jsClasses,
+          this.currentlySelectedComponent.type, 'remove');
         this.currentlySelectedComponent = undefined;
         return;
       }

@@ -18,6 +18,7 @@ export interface ComponentProperties {
   customCssActiveMode?: BUTTON_COMPONENT_MODES;
   transition: any;
   jsClasses: BUTTON_JAVASCRIPT_CLASSES[],
+  initialJsClasses: BUTTON_JAVASCRIPT_CLASSES[],
 }
 
 export interface WorkshopComponent {

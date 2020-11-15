@@ -70,6 +70,7 @@ export default {
           },
         },
         jsClasses: [BUTTON_JAVASCRIPT_CLASSES.RIPPLES],
+        initialJsClasses: [BUTTON_JAVASCRIPT_CLASSES.RIPPLES],
         customCssActiveMode: BUTTON_COMPONENT_MODES.DEFAULT,
         tempCustomCss: new Set(['transition']),
         inheritedCss: inheritedButtonCss,
