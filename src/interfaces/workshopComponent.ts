@@ -1,12 +1,14 @@
 import { BUTTON_JAVASCRIPT_CLASSES } from '../components/content/workshop/toolbar/javascript/buttonJavaScriptClasses.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
-import { BUTTON_COMPONENT_MODES } from '../consts/buttonComponentModes.enum';
 import { NEW_COMPONENT_TYPES } from '../consts/newComponentTypes.enum';
 import { InheritedCss } from './inheritedCss';
+import { COMPONENT_MODES } from '../consts/componentModes.enum';
 
 export type CustomCss = {
-  [key in BUTTON_COMPONENT_MODES]?: WorkshopComponentCss;
+  [key in COMPONENT_MODES]?: WorkshopComponentCss;
 }
+
+type COMPONENT_JS_CLASSES = BUTTON_JAVASCRIPT_CLASSES;
 
 export interface ComponentProperties {
   frameworkClass: string;
@@ -15,10 +17,10 @@ export interface ComponentProperties {
   initialCss: CustomCss;
   tempCustomCss?: Set<string>;
   inheritedCss?: InheritedCss;
-  customCssActiveMode?: BUTTON_COMPONENT_MODES;
+  customCssActiveMode?: COMPONENT_MODES;
   transition: any;
-  jsClasses: BUTTON_JAVASCRIPT_CLASSES[],
-  initialJsClasses: BUTTON_JAVASCRIPT_CLASSES[],
+  jsClasses: COMPONENT_JS_CLASSES[],
+  initialJsClasses: COMPONENT_JS_CLASSES[],
 }
 
 export interface WorkshopComponent {

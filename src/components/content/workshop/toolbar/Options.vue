@@ -2,7 +2,7 @@
   <div style="margin-top: 10px; margin-bottom: 10px">
     <div style="float: left" class="edit-component-button">
       <select class="form-control" v-model="component.componentProperties.customCssActiveMode" @change="modeClick">
-        <option v-for="mode in BUTTON_COMPONENT_MODES" :key="mode">{{mode}}</option>
+        <option v-for="mode in componentModesContainer[component.type]" :key="mode">{{mode}}</option>
       </select>
     </div>
     <button
@@ -17,22 +17,25 @@
 
 <script lang="ts">
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOptions';
-import { BUTTON_COMPONENT_MODES } from '../../../../consts/buttonComponentModes.enum';
+import { COMPONENT_MODES } from '../../../../consts/componentModes.enum';
 import componentOptionsContainer from './options/componentOptionsContainer';
+import componentModesContainer from '../componentModesContainer';
 import { UpdateMode } from '../../../../interfaces/updateMode';
 
 interface Data {
   WORKSHOP_TOOLBAR_OPTIONS;
-  BUTTON_COMPONENT_MODES;
-  componentOptionsContainer,
+  COMPONENT_MODES;
+  componentOptionsContainer;
+  componentModesContainer;
   activeOptionIdentifier: WORKSHOP_TOOLBAR_OPTIONS;
 }
 
 export default {
   data: (): Data => ({
     WORKSHOP_TOOLBAR_OPTIONS,
-    BUTTON_COMPONENT_MODES,
+    COMPONENT_MODES,
     componentOptionsContainer,
+    componentModesContainer,
     activeOptionIdentifier: null,
   }),
   methods: {

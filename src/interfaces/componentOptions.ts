@@ -1,10 +1,10 @@
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../consts/workshopToolbarOptions';
-import { BUTTON_COMPONENT_MODES } from '../consts/buttonComponentModes.enum';
+import { COMPONENT_MODES } from '../consts/componentModes.enum';
 
 export type ComponentOptions = {
-  [key in BUTTON_COMPONENT_MODES]?:
-  {
-    buttonName: string,
-    identifier: WORKSHOP_TOOLBAR_OPTIONS,
-  }[];
+  [key in COMPONENT_MODES]?:
+    {
+      buttonName: string,
+      identifier: WORKSHOP_TOOLBAR_OPTIONS,
+    }[];
 }

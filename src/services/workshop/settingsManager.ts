@@ -8,8 +8,8 @@ import Text from '../../components/content/workshop/toolbar/settings/text';
 import Design from '../../components/content/workshop/toolbar/settings/design';
 import { NEW_COMPONENT_TYPES } from '../../consts/newComponentTypes.enum';
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../consts/workshopToolbarOptions';
-import { BUTTON_COMPONENT_MODES } from '../../consts/buttonComponentModes.enum';
 import { WorkshopComponent, ComponentProperties } from '../../interfaces/workshopComponent';
+import { COMPONENT_MODES } from '../../consts/componentModes.enum';
 import ComponentJs from './componentJs';
 
 export default class SettingsManager {
@@ -46,11 +46,11 @@ export default class SettingsManager {
     componentProperties.jsClasses = [ ...componentProperties.initialJsClasses ];
   }
 
-  private static resetCss(componentProperties: ComponentProperties, activeMode: BUTTON_COMPONENT_MODES): void {
+  private static resetCss(componentProperties: ComponentProperties, activeMode: COMPONENT_MODES): void {
     componentProperties.customCss[activeMode] = { ...componentProperties.initialCss[activeMode] };
   }
 
-  static resetComponentProperties(component: WorkshopComponent, activeMode: BUTTON_COMPONENT_MODES): void {
+  static resetComponentProperties(component: WorkshopComponent, activeMode: COMPONENT_MODES): void {
     const { type, componentProperties } = component;
     this.resetCss(componentProperties, activeMode);
     this.resetJs(componentProperties, type);

@@ -1,4 +1,4 @@
-import { BUTTON_COMPONENT_MODES } from '../../consts/buttonComponentModes.enum';
+import { COMPONENT_MODES } from '../../consts/componentModes.enum';
 import { WorkshopComponent, CustomCss } from '../../interfaces/workshopComponent';
 import { WorkshopComponentCss } from '../../interfaces/workshopComponentCss';
 
@@ -36,8 +36,8 @@ export default class CssBuilder {
   private static buildPseudoCss(className: string, customCss: CustomCss,
       tempCustomCss?: Set<string>): string {
     let pseudoCssString = '';
-    pseudoCssString += this.buildPseudoClass(className, pseudoClasses.HOVER, customCss[BUTTON_COMPONENT_MODES.HOVER], tempCustomCss);
-    pseudoCssString += this.buildPseudoClass(className, pseudoClasses.ACTIVE, customCss[BUTTON_COMPONENT_MODES.CLICK], tempCustomCss);
+    pseudoCssString += this.buildPseudoClass(className, pseudoClasses.HOVER, customCss[COMPONENT_MODES.HOVER], tempCustomCss);
+    pseudoCssString += this.buildPseudoClass(className, pseudoClasses.ACTIVE, customCss[COMPONENT_MODES.CLICK], tempCustomCss);
     return pseudoCssString;
   }
 
@@ -49,7 +49,7 @@ export default class CssBuilder {
   }
 
   private static buildCustomCss(className: string, customCss: CustomCss, tempCustomCss?: Set<string>): string {
-    const defaultCss = this.buildDefaultCss(className, customCss[BUTTON_COMPONENT_MODES.DEFAULT], tempCustomCss);
+    const defaultCss = this.buildDefaultCss(className, customCss[COMPONENT_MODES.DEFAULT], tempCustomCss);
     const pseudoCss = this.buildPseudoCss(className, customCss, tempCustomCss);
     return (defaultCss + ' ' + pseudoCss).trim();
   }

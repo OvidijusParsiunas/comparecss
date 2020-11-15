@@ -10,5 +10,3 @@ type ComponentOptionsContainer = {
 export default {
   [NEW_COMPONENT_TYPES.BUTTON]: buttonOptions,
 } as ComponentOptionsContainer;
-
-  

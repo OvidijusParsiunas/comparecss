@@ -78,7 +78,7 @@
 </template>
 
 <script lang="ts">
-import { BUTTON_COMPONENT_MODES } from '../../../../consts/buttonComponentModes.enum';
+import { COMPONENT_MODES } from '../../../../consts/componentModes.enum';
 
 interface Data {
   selectorNewValues: unknown;
@@ -93,17 +93,17 @@ export default {
     inputDropdownNewValues: {},
     getCurrentValue: function(activeMode, cssProperty) {
       switch (activeMode) {
-        case (BUTTON_COMPONENT_MODES.CLICK):
-          if (this.componentProperties.customCss[BUTTON_COMPONENT_MODES.CLICK][cssProperty]) {
-            return this.componentProperties.customCss[BUTTON_COMPONENT_MODES.CLICK][cssProperty];
+        case (COMPONENT_MODES.CLICK):
+          if (this.componentProperties.customCss[COMPONENT_MODES.CLICK][cssProperty]) {
+            return this.componentProperties.customCss[COMPONENT_MODES.CLICK][cssProperty];
           }
-        case (BUTTON_COMPONENT_MODES.HOVER || BUTTON_COMPONENT_MODES.CLICK):
-          if (this.componentProperties.customCss[BUTTON_COMPONENT_MODES.HOVER][cssProperty]) {
-            return this.componentProperties.customCss[BUTTON_COMPONENT_MODES.HOVER][cssProperty];
+        case (COMPONENT_MODES.HOVER || COMPONENT_MODES.CLICK):
+          if (this.componentProperties.customCss[COMPONENT_MODES.HOVER][cssProperty]) {
+            return this.componentProperties.customCss[COMPONENT_MODES.HOVER][cssProperty];
           }
-        case (BUTTON_COMPONENT_MODES.DEFAULT || BUTTON_COMPONENT_MODES.HOVER || BUTTON_COMPONENT_MODES.CLICK):
-          if (this.componentProperties.customCss[BUTTON_COMPONENT_MODES.DEFAULT][cssProperty]) {
-            return this.componentProperties.customCss[BUTTON_COMPONENT_MODES.DEFAULT][cssProperty];
+        case (COMPONENT_MODES.DEFAULT || COMPONENT_MODES.HOVER || COMPONENT_MODES.CLICK):
+          if (this.componentProperties.customCss[COMPONENT_MODES.DEFAULT][cssProperty]) {
+            return this.componentProperties.customCss[COMPONENT_MODES.DEFAULT][cssProperty];
           }
         default:
           return undefined;

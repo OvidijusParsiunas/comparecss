@@ -1,4 +1,4 @@
-import { BUTTON_COMPONENT_MODES } from '../consts/buttonComponentModes.enum';
+import { COMPONENT_MODES } from '../consts/componentModes.enum';
 
-export type UpdateMode = [BUTTON_COMPONENT_MODES, boolean?]
+export type UpdateMode = [COMPONENT_MODES?, boolean?]
   

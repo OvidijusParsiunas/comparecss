@@ -1,4 +1,4 @@
-export enum BUTTON_COMPONENT_MODES {
+export enum COMPONENT_MODES {
   DEFAULT = 'Default',
   HOVER = 'Hover',
   CLICK = 'Click',

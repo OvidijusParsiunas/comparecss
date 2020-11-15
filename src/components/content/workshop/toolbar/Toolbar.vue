@@ -14,20 +14,20 @@
 <script lang="ts">
 interface Data {
   activeSettings: any,
-  activeMode: BUTTON_COMPONENT_MODES,
+  activeMode: COMPONENT_MODES,
   settingsResetTriggered: boolean,
 }
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOptions';
-import { BUTTON_COMPONENT_MODES } from '../../../../consts/buttonComponentModes.enum';
-import SettingsManager from '../../../../services/workshop/settingsManager';
+import { COMPONENT_MODES } from '../../../../consts/componentModes.enum';
 import { UpdateMode } from '../../../../interfaces/updateMode';
+import SettingsManager from '../../../../services/workshop/settingsManager';
 import settings from './Settings.vue';
 import options from './Options.vue';
 
 export default {
   data: (): Data => ({
     activeSettings: {},
-    activeMode: BUTTON_COMPONENT_MODES.DEFAULT,
+    activeMode: COMPONENT_MODES.DEFAULT,
     settingsResetTriggered: false,
   }),
   components: {
@@ -44,9 +44,9 @@ export default {
         this.componentPreviewAssistance.margin = newSettings === WORKSHOP_TOOLBAR_OPTIONS.MARGIN;
       }
     },
-    updateMode(event: UpdateMode): void {
-      this.activeMode = event[0];
-      let newModeContainsActiveOption = event[1];
+    updateMode(updateMode: UpdateMode): void {
+      if (updateMode[0]) this.activeMode = updateMode[0];
+      let newModeContainsActiveOption = updateMode[1];
       if (newModeContainsActiveOption === undefined) {
         newModeContainsActiveOption = this.$refs.options.getNewModeContainsActiveOptionState();
       }

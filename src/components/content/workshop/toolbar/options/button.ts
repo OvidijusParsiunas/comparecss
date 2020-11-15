@@ -1,9 +1,9 @@
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../consts/workshopToolbarOptions';
-import { BUTTON_COMPONENT_MODES } from '../../../../../consts/buttonComponentModes.enum';
+import buttonComponentModes from '../../../../../interfaces/buttonComponentModes';
 import { ComponentOptions } from '../../../../../interfaces/componentOptions';
 
 export default {
-  [BUTTON_COMPONENT_MODES.DEFAULT]: [
+  [buttonComponentModes.default]: [
     {
       buttonName: 'Border',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.BORDER,
@@ -37,7 +37,7 @@ export default {
       identifier: WORKSHOP_TOOLBAR_OPTIONS.RESET,
     },
   ],
-  [BUTTON_COMPONENT_MODES.HOVER]: [
+  [buttonComponentModes.hover]: [
     {
       buttonName: 'Border',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.BORDER,
@@ -59,7 +59,7 @@ export default {
       identifier: WORKSHOP_TOOLBAR_OPTIONS.RESET,
     },
   ],
-  [BUTTON_COMPONENT_MODES.CLICK]: [
+  [buttonComponentModes.click]: [
     {
       buttonName: 'Border',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.BORDER,
@@ -86,4 +86,3 @@ export default {
     },
   ],
 } as ComponentOptions;
-  
