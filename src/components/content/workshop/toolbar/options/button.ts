@@ -2,8 +2,8 @@ import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../consts/workshopToolbarO
 import buttonComponentModes from '../../../../../interfaces/buttonComponentModes';
 import { ComponentOptions } from '../../../../../interfaces/componentOptions';
 
-export default {
-  [buttonComponentModes.default]: [
+export const buttonOptions: ComponentOptions<typeof buttonComponentModes> = {
+  default: [
     {
       buttonName: 'Border',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.BORDER,
@@ -37,7 +37,7 @@ export default {
       identifier: WORKSHOP_TOOLBAR_OPTIONS.RESET,
     },
   ],
-  [buttonComponentModes.hover]: [
+  hover: [
     {
       buttonName: 'Border',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.BORDER,
@@ -59,7 +59,7 @@ export default {
       identifier: WORKSHOP_TOOLBAR_OPTIONS.RESET,
     },
   ],
-  [buttonComponentModes.click]: [
+  click: [
     {
       buttonName: 'Border',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.BORDER,
@@ -85,4 +85,4 @@ export default {
       identifier: WORKSHOP_TOOLBAR_OPTIONS.DESIGN,
     },
   ],
-} as ComponentOptions;
+};

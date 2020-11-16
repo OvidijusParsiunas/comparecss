@@ -1,10 +1,10 @@
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../consts/workshopToolbarOptions';
 import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum';
 import { ComponentOptions } from '../../../../../interfaces/componentOptions';
-import buttonOptions from './button';
+import { buttonOptions } from './button';
 
 type ComponentOptionsContainer = {
-  [key in WORKSHOP_TOOLBAR_OPTIONS]?: ComponentOptions;
+  [key in WORKSHOP_TOOLBAR_OPTIONS]?: ComponentOptions<unknown>;
 }
 
 export default {
