@@ -1,11 +1,8 @@
+import { SpecificComponentModes } from './specificComponentModes';
 import { COMPONENT_MODES } from '../consts/componentModes.enum';
 import { ComponentModes } from './componentModes';
 
-type SpecificButtonComponentModes = Required<Pick<ComponentModes, 'default' | 'hover' | 'click'>>
-
-type ButtonComponentModes = {
-  [key in keyof SpecificButtonComponentModes]: COMPONENT_MODES;
-}
+type keys = 'default' | 'hover' | 'click';
 
 const buttonComponentModes: ComponentModes = {
   default: COMPONENT_MODES.DEFAULT,
@@ -13,4 +10,4 @@ const buttonComponentModes: ComponentModes = {
   click: COMPONENT_MODES.CLICK,
 }
 
-export default buttonComponentModes as ButtonComponentModes;
+export default buttonComponentModes as SpecificComponentModes<keys>;
