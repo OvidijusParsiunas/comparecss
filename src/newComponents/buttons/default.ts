@@ -1,9 +1,9 @@
 import { WorkshopComponent } from '../../interfaces/workshopComponent';
 import { NewComponent } from '../../interfaces/newComponent';
-import buttonComponentModes from '../../interfaces/buttonComponentModes';
 import { NEW_COMPONENT_TYPES } from '../../consts/newComponentTypes.enum';
 import { BUTTON_JAVASCRIPT_CLASSES } from '../../components/content/workshop/toolbar/javascript/buttonJavaScriptClasses.enum';
 import inheritedButtonCss from './inheritedCss';
+import { COMPONENT_MODES } from '@/consts/componentModes.enum';
 
 export default {
   getNewComponent(): WorkshopComponent {
@@ -14,7 +14,7 @@ export default {
         innerHtml: 'button',
         transition: 'all 0.25s ease-out',
         customCss: {
-          [buttonComponentModes.default]: {
+          [COMPONENT_MODES.DEFAULT]: {
             borderRadius: '0px',
             borderWidth: '0px',
             borderColor: '#1779ba',
@@ -34,15 +34,15 @@ export default {
             transition: 'unset',
             color: '#ffffff',
           },
-          [buttonComponentModes.hover]: {
+          [COMPONENT_MODES.HOVER]: {
             backgroundColor: '#ff0000',
           },
-          [buttonComponentModes.click]: {
+          [COMPONENT_MODES.CLICK]: {
             backgroundColor: '#409441',
           },
         },
         initialCss: {
-          [buttonComponentModes.default]: {
+          [COMPONENT_MODES.DEFAULT]: {
             borderRadius: '0px',
             borderWidth: '0px',
             borderColor: '#1779ba',
@@ -62,16 +62,16 @@ export default {
             transition: 'none',
             color: '#ffffff',
           },
-          [buttonComponentModes.hover]: {
+          [COMPONENT_MODES.HOVER]: {
             backgroundColor: '#ff0000',
           },
-          [buttonComponentModes.click]: {
+          [COMPONENT_MODES.CLICK]: {
             backgroundColor: '#409441',
           },
         },
         jsClasses: [BUTTON_JAVASCRIPT_CLASSES.RIPPLES],
         initialJsClasses: [BUTTON_JAVASCRIPT_CLASSES.RIPPLES],
-        customCssActiveMode: buttonComponentModes.default,
+        customCssActiveMode: COMPONENT_MODES.DEFAULT,
         tempCustomCss: new Set(['transition']),
         inheritedCss: inheritedButtonCss,
       },

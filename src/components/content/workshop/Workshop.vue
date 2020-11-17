@@ -77,7 +77,6 @@ import componentList from './componentList/ComponentList.vue';
 import { WorkshopComponent, ComponentProperties } from '../../../interfaces/workshopComponent';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
-import buttonComponentModes from '../../../interfaces/buttonComponentModes';
 import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
 import { UpdateMode } from '../../../interfaces/updateMode';
 import inheritedButtonCss from '../../../newComponents/buttons/inheritedCss';
@@ -97,7 +96,7 @@ export default {
           innerHtml: 'button',
           transition: 'all 0.25s ease-out',
           customCss: {
-            [buttonComponentModes.default]: {
+            [COMPONENT_MODES.DEFAULT]: {
               borderRadius: '0px',
               borderWidth: '0px',
               borderColor: '#1779ba',
@@ -118,15 +117,15 @@ export default {
               fontSize: '14px',
               color: '#ffffff',
             },
-            [buttonComponentModes.hover]: {
+            [COMPONENT_MODES.HOVER]: {
               backgroundColor: '#ff0000',
             },
-            [buttonComponentModes.click]: {
+            [COMPONENT_MODES.CLICK]: {
               backgroundColor: '#409441',
             },
           },
           initialCss: {
-            [buttonComponentModes.default]: {
+            [COMPONENT_MODES.DEFAULT]: {
               borderRadius: '0px',
               borderWidth: '0px',
               borderColor: '#1779ba',
@@ -146,17 +145,17 @@ export default {
               transition: 'none',
               color: '#ffffff',
             },
-            [buttonComponentModes.hover]: {
+            [COMPONENT_MODES.HOVER]: {
               backgroundColor: '#ff0000',
             },
-            [buttonComponentModes.click]: {
+            [COMPONENT_MODES.CLICK]: {
               backgroundColor: '#409441',
             },
           },
           tempCustomCss: new Set(['transition']),
           jsClasses: [],
           initialJsClasses: [],
-          customCssActiveMode: buttonComponentModes.default,
+          customCssActiveMode: COMPONENT_MODES.DEFAULT,
           inheritedCss: inheritedButtonCss,
         },
         className: 'button'
@@ -169,7 +168,7 @@ export default {
         innerHtml: 'button',
         transition: 'all 0.25s ease-out',
         customCss: {
-          [buttonComponentModes.default]: {
+          [COMPONENT_MODES.DEFAULT]: {
             borderRadius: '0px',
             borderWidth: '0px',
             borderColor: '#1779ba',
@@ -190,15 +189,15 @@ export default {
             fontSize: '14px',
             color: '#ffffff',
           },
-          [buttonComponentModes.hover]: {
+          [COMPONENT_MODES.HOVER]: {
             backgroundColor: '#ff0000',
           },
-          [buttonComponentModes.click]: {
+          [COMPONENT_MODES.CLICK]: {
             backgroundColor: '#409441',
           },
         },
         initialCss: {
-          [buttonComponentModes.default]: {
+          [COMPONENT_MODES.DEFAULT]: {
             borderRadius: '0px',
             borderWidth: '0px',
             borderColor: '#1779ba',
@@ -219,17 +218,17 @@ export default {
             fontSize: '14px',
             color: '#ffffff',
           },
-          [buttonComponentModes.hover]: {
+          [COMPONENT_MODES.HOVER]: {
             backgroundColor: '#ff0000',
           },
-          [buttonComponentModes.click]: {
+          [COMPONENT_MODES.CLICK]: {
             backgroundColor: '#409441',
           },
         },
         tempCustomCss: new Set(['transition']),
         jsClasses: [],
         initialJsClasses: [],
-        customCssActiveMode: buttonComponentModes.default,
+        customCssActiveMode: COMPONENT_MODES.DEFAULT,
         inheritedCss: inheritedButtonCss,
       },
       className: 'button'
@@ -259,7 +258,7 @@ export default {
     },
     addNewComponent(newComponent: WorkshopComponent): void {
       if (this.components.length) {
-        this.setCustomCssActiveMode(this.currentlySelectedComponent.componentProperties, buttonComponentModes.default);
+        this.setCustomCssActiveMode(this.currentlySelectedComponent.componentProperties, COMPONENT_MODES.DEFAULT);
       }
       this.components.push(newComponent);
       this.switchActiveComponent(newComponent);
@@ -268,7 +267,7 @@ export default {
     componentCardSelected(selectedComponentCard: WorkshopComponent): void {
       if (this.currentlySelectedComponent !== selectedComponentCard) {
         const previousActiveMode = this.currentlySelectedComponent.componentProperties.customCssActiveMode;
-        this.setCustomCssActiveMode(this.currentlySelectedComponent.componentProperties, buttonComponentModes.default);
+        this.setCustomCssActiveMode(this.currentlySelectedComponent.componentProperties, COMPONENT_MODES.DEFAULT);
         if (Object.values(componentModesContainer[selectedComponentCard.type]).includes(previousActiveMode)) {
           selectedComponentCard.componentProperties.customCssActiveMode = previousActiveMode;
         } else {
@@ -279,7 +278,7 @@ export default {
       }
     },
     componentCardCopied(selectComponentCard: WorkshopComponent): void {
-      this.setCustomCssActiveMode(selectComponentCard.componentProperties, buttonComponentModes.default);
+      this.setCustomCssActiveMode(selectComponentCard.componentProperties, COMPONENT_MODES.DEFAULT);
       const newComponent = JSON.parse(JSON.stringify(selectComponentCard));
       newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className, this.components, '-copy');
       this.addNewComponent(newComponent);
