@@ -1,7 +1,6 @@
 import { InheritedCss } from '../../interfaces/inheritedCss';
-import { WorkshopComponentCss } from '../../interfaces/workshopComponentCss';
 
-export default {
+export const inheritedButtonCss: InheritedCss = {
   typeName: 'buttons',
   css: {
     cursor: 'pointer',
@@ -13,5 +12,5 @@ export default {
     textAlign: 'center',
     fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
     transition: 'all 0.25s ease-out',
-  } as WorkshopComponentCss,
-} as InheritedCss;
+  },
+};

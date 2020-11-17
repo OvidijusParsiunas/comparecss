@@ -1,6 +1,6 @@
 import { ComponentMarkup } from '../../interfaces/componentMarkup';
 
-export default {
+export const badges: ComponentMarkup =  {
   bootstrap: `
     <span class="badge badge-primary">Primary</span>
     <span class="badge badge-success">Success</span>
@@ -176,4 +176,4 @@ export default {
   <button class="pf-c-button pf-m-warning" type="button">Warning</button>`,
   bootflat: `<h1>Test bootflat</h1>
   <a class="btn btn-primary">Primary</a>`,
-} as ComponentMarkup;
+};

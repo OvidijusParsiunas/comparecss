@@ -48,7 +48,7 @@ export default {
       if (updateMode[0]) this.activeMode = updateMode[0];
       let newModeContainsActiveOption = updateMode[1];
       if (newModeContainsActiveOption === undefined) {
-        newModeContainsActiveOption = this.$refs.options.getNewModeContainsActiveOptionState();
+        newModeContainsActiveOption = this.$refs.options.getNewModeContainsActiveOptionState(this.activeMode);
       }
       if (Object.keys(this.activeSettings).length && !newModeContainsActiveOption) {
         this.activeSettings = {};

@@ -1,6 +1,6 @@
 import { ComponentMarkup } from '../../interfaces/componentMarkup';
 
-export default {
+export const cards: ComponentMarkup =  {
   bootstrap: `
     <div class="card" style="width: 18rem; display: inline-block; vertical-align: top; margin-bottom: 10px">
       <img style="width: 286px; height: 180px" class="card-img-top" src="assets/images/card-picture.webp" alt="Card image cap">
@@ -385,4 +385,4 @@ export default {
   <button class="pf-c-button pf-m-warning" type="button">Warning</button>`,
   bootflat: `<h1>Test bootflat</h1>
   <a class="btn btn-primary">Primary</a>`,
-} as ComponentMarkup;
+};

@@ -1,6 +1,6 @@
 import { ComponentMarkup } from '../../interfaces/componentMarkup';
 
-export default {
+export const dropdowns: ComponentMarkup =  {
   bootstrap: `
     <div style="display: inline-flex">
       <div style="margin-left: 5px" class="dropdown">
@@ -314,4 +314,4 @@ export default {
   <button class="pf-c-button pf-m-warning" type="button">Warning</button>`,
   bootflat: `<h1>Test bootflat</h1>
   <a class="btn btn-primary">Primary</a>`,
-} as ComponentMarkup;
+};

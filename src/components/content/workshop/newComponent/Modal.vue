@@ -40,7 +40,7 @@
 
 <script lang="ts">
 import newComponentModalService from '../../../../services/workshop/newComponentModal';
-import newComponentContainer from './newComponentContainer';
+import { newComponentContainer } from './newComponentContainer';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { NEW_COMPONENT_STYLES } from '../../../../consts/newComponentStyles.enum';
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';

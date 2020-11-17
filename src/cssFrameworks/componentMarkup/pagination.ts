@@ -1,6 +1,6 @@
 import { ComponentMarkup } from '../../interfaces/componentMarkup';
 
-export default {
+export const pagination: ComponentMarkup =  {
   bootstrap: `
     <nav style="display: inline-flex" aria-label="Page navigation example">
       <ul class="pagination">
@@ -223,4 +223,4 @@ export default {
   <button class="pf-c-button pf-m-warning" type="button">Warning</button>`,
   bootflat: `<h1>Test bootflat</h1>
   <a class="btn btn-primary">Primary</a>`,
-} as ComponentMarkup;
+};

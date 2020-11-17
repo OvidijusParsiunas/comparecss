@@ -1,6 +1,6 @@
 import { BUTTON_JAVASCRIPT_CLASSES } from '../javascript/buttonJavaScriptClasses.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum';
-import JavaScriptContainer from '../../toolbar/javascript/javascriptContainer';
+import { javaScriptContainer } from '../../toolbar/javascript/javascriptContainer';
 
 // create an optional interface
 export default {
@@ -12,7 +12,7 @@ export default {
         javascript: true,
         default: false,
         jsClassName: BUTTON_JAVASCRIPT_CLASSES.RIPPLES,
-        componentId: JavaScriptContainer[NEW_COMPONENT_TYPES.BUTTON].componentId,
+        componentId: javaScriptContainer[NEW_COMPONENT_TYPES.BUTTON].componentId,
       },
       // spec: {
       //   name: 'Material',

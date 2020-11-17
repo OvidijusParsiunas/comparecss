@@ -101,7 +101,8 @@ import { NavbarButton } from '../../interfaces/navbarButton';
 export default {
   methods: {
     buttonClick(navbarMenuButton: NAVBAR_MENU_BUTTONS, navbarSubMenuButton?: NAVBAR_SUB_MENU_BUTTONS): void {
-      this.$emit('sidenav-button-clicked', { navbarMenuButton, navbarSubMenuButton } as NavbarButton);
+      const navbarButton: NavbarButton = { navbarMenuButton, navbarSubMenuButton };
+      this.$emit('sidenav-button-clicked', navbarButton);
     },
   },
   data: (): Data  =>({

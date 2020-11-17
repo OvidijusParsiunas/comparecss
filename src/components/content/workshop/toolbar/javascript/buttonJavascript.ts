@@ -1,10 +1,10 @@
 import { ComponentTypeJavascript } from '../../../../../interfaces/componentTypeJavascript';
 import { BUTTON_JAVASCRIPT_CLASSES } from './buttonJavaScriptClasses.enum';
-import RippleCode from './ripples';
+import { ripplesCode } from './ripples';
 
-export default [
+export const buttonJavascript: ComponentTypeJavascript[] = [
   {
     className: BUTTON_JAVASCRIPT_CLASSES.RIPPLES,
-    code: RippleCode,
+    code: ripplesCode,
   }
-] as ComponentTypeJavascript[];
+];

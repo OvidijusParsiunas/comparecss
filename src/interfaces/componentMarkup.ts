@@ -4,4 +4,19 @@ export interface ComponentMarkup {
   uikit: string | null;
   foundation: string | null;
   bulma: string | null;
+  semantic: string | null;
+  pure: string | null;
+  skeleton: string | null;
+  milligram: string | null;
+  spectre: string | null;
+  primer: string | null;
+  nes: string | null;
+  picnic: string | null;
+  chota: string | null;
+  cirrus: string | null;
+  turret: string | null;
+  hiq: string | null;
+  mui: string | null;
+  patternfly: string | null;
+  bootflat: string | null;
 }

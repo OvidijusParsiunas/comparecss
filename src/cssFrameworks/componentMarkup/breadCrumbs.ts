@@ -1,6 +1,6 @@
 import { ComponentMarkup } from '../../interfaces/componentMarkup';
 
-export default {
+export const breadCrumbs: ComponentMarkup =  {
   bootstrap: `
   <ol style="display: inline-flex; background-color: white; height: 20px;" class="breadcrumb">
     <li class="breadcrumb-item"><a href="#!">First</a></li>
@@ -177,4 +177,4 @@ export default {
   <button class="pf-c-button pf-m-warning" type="button">Warning</button>`,
   bootflat: `<h1>Test bootflat</h1>
   <a class="btn btn-primary">Primary</a>`,
-} as ComponentMarkup;
+};

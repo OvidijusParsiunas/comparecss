@@ -18,7 +18,7 @@
 <script lang="ts">
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOptions';
 import { COMPONENT_MODES } from '../../../../consts/componentModes.enum';
-import componentOptionsContainer from './options/componentOptionsContainer';
+import { componentOptionsContainer } from './options/componentOptionsContainer';
 import { UpdateMode } from '../../../../interfaces/updateMode';
 
 interface Data {
@@ -43,9 +43,9 @@ export default {
     modeClick(): void {
       this.$emit('mode-clicked', [this.component.componentProperties.customCssActiveMode, this.getNewModeContainsActiveOptionState()] as UpdateMode);
     },
-    getNewModeContainsActiveOptionState(): boolean {
-      return componentOptionsContainer[this.component.type][this.component.componentProperties.customCssActiveMode]
-        .some((option) => option.identifier === this.activeOption );
+    getNewModeContainsActiveOptionState(activeMode?: COMPONENT_MODES): boolean {
+      const activeModeOptions = componentOptionsContainer[this.component.type][activeMode || this.component.componentProperties.customCssActiveMode];
+      return activeModeOptions.some((option) => option.identifier === this.activeOption);
     }
   },
   props: {

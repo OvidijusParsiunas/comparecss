@@ -1,5 +1,5 @@
-import JavaScriptContainer from '../../components/content/workshop/toolbar/javascript/javascriptContainer';
 import uglifyjsOptions from '../../consts/uglifyjsOptions';
+import { javaScriptContainer } from '../../components/content/workshop/toolbar/javascript/javascriptContainer';
 import { JSBuilder as JSBuilderInterface } from '../../interfaces/jsBuilder';
 import { WorkshopComponent } from '../../interfaces/workshopComponent';
 import { JavascriptCode } from '../../interfaces/javascriptCode';
@@ -17,7 +17,7 @@ export default class JSBuilder {
     components.forEach((component) => {
       component.componentProperties.jsClasses.forEach((jsClass) => {
         if (utilisedJavascriptCode[jsClass]) return;
-        JavaScriptContainer[component.type].content.forEach((componentJavaScript) => {
+        javaScriptContainer[component.type].content.forEach((componentJavaScript) => {
           if (componentJavaScript.className === jsClass) { utilisedJavascriptCode[jsClass] = componentJavaScript.code; }
         })
       })

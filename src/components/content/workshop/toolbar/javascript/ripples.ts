@@ -87,11 +87,11 @@ const downloadableCSS = `
 }
 `;
 
-export default {
+export const ripplesCode: JavascriptCode = {
   executeJS: initializeScript,
   revokeJS: removeScript,
   downloadables: {
     jsFileContent: downloadableJS,
     cssFileContent: downloadableCSS,
   }
-} as JavascriptCode;
+};

@@ -1,6 +1,6 @@
 import { ComponentMarkup } from '../../interfaces/componentMarkup';
 
-export default {
+export const accordions: ComponentMarkup = {
   bootstrap: `
     <div id="accordion" style="text-align: left; width: 51%; display: inline-block">
       <div class="card">
@@ -286,4 +286,4 @@ export default {
   <button class="pf-c-button pf-m-warning" type="button">Warning</button>`,
   bootflat: `<h1>Test bootflat</h1>
   <a class="btn btn-primary">Primary</a>`,
-} as ComponentMarkup;
+};

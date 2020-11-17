@@ -79,11 +79,11 @@ import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCa
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
 import { UpdateMode } from '../../../interfaces/updateMode';
-import inheritedButtonCss from '../../../newComponents/buttons/inheritedCss';
+import { inheritedButtonCss } from '../../../newComponents/buttons/inheritedCss';
 import ProcessClassName from '../../../services/workshop/newComponent/processClassName';
 import ComponentJs from '../../../services/workshop/componentJs';
 import { COMPONENT_MODES } from '../../../consts/componentModes.enum';
-import ComponentOptionsContainer from './toolbar/options/componentOptionsContainer';
+import { componentOptionsContainer } from './toolbar/options/componentOptionsContainer';
 
 export default {
   data: (): Data => ({
@@ -268,7 +268,7 @@ export default {
       if (this.currentlySelectedComponent !== selectedComponentCard) {
         const previousActiveMode = this.currentlySelectedComponent.componentProperties.customCssActiveMode;
         this.setCustomCssActiveMode(this.currentlySelectedComponent.componentProperties, COMPONENT_MODES.DEFAULT);
-        if (Object.keys(ComponentOptionsContainer[selectedComponentCard.type]).includes(previousActiveMode)) {
+        if (Object.keys(componentOptionsContainer[selectedComponentCard.type]).includes(previousActiveMode)) {
           selectedComponentCard.componentProperties.customCssActiveMode = previousActiveMode;
         } else {
           selectedComponentCard.componentProperties.customCssActiveMode = COMPONENT_MODES.DEFAULT;

@@ -1,6 +1,6 @@
 import { ComponentMarkup } from '../../interfaces/componentMarkup';
 
-export default {
+export const alerts: ComponentMarkup = {
   bootstrap: `
     <div style="width: 50%; display: inline-block">
       <div class="alert alert-primary" role="alert">
@@ -220,4 +220,4 @@ export default {
   <button class="pf-c-button pf-m-warning" type="button">Warning</button>`,
   bootflat: `<h1>Test bootflat</h1>
   <a class="btn btn-primary">Primary</a>`,
-} as ComponentMarkup;
+};

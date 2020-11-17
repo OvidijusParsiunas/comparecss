@@ -1,7 +1,6 @@
 import { ComponentMarkup } from '../../interfaces/componentMarkup';
 
-// bootstrap button height
-export default {
+export const buttons: ComponentMarkup =  {
   bootstrap: `
     <button type="button" class="btn btn-primary">Button</button>
     <button type="button" class="btn btn-secondary">Button</button>
@@ -178,4 +177,4 @@ export default {
   <button class="pf-c-button pf-m-warning" type="button">Warning</button>`,
   bootflat: `<h1>Test bootflat</h1>
   <a class="btn btn-primary">Primary</a>`,
-} as ComponentMarkup;
+};

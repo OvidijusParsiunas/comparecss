@@ -1,6 +1,6 @@
 import { ComponentMarkup } from '../../interfaces/componentMarkup';
 
-export default {
+export const tooltips: ComponentMarkup =  {
   bootstrap: `
     <button type="button" class="btn btn-secondary" data-toggle="bootstrapTooltip" data-placement="left" title="Tooltip text">Left</button>
     <button type="button" class="btn btn-secondary" data-toggle="bootstrapTooltip" data-placement="top" title="Tooltip text">Top</button>
@@ -162,4 +162,4 @@ export default {
   <button class="pf-c-button pf-m-warning" type="button">Warning</button>`,
   bootflat: `<h1>Test bootflat</h1>
   <a class="btn btn-primary">Primary</a>`,
-} as ComponentMarkup;
+};

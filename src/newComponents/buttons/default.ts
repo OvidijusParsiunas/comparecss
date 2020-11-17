@@ -2,10 +2,10 @@ import { WorkshopComponent } from '../../interfaces/workshopComponent';
 import { NewComponent } from '../../interfaces/newComponent';
 import { NEW_COMPONENT_TYPES } from '../../consts/newComponentTypes.enum';
 import { BUTTON_JAVASCRIPT_CLASSES } from '../../components/content/workshop/toolbar/javascript/buttonJavaScriptClasses.enum';
-import inheritedButtonCss from './inheritedCss';
+import { inheritedButtonCss } from './inheritedCss';
 import { COMPONENT_MODES } from '@/consts/componentModes.enum';
 
-export default {
+export const defaultButton: NewComponent = {
   getNewComponent(): WorkshopComponent {
     return {
       type: NEW_COMPONENT_TYPES.BUTTON,
@@ -78,4 +78,4 @@ export default {
       className: 'default-class-name',
     }
   },
-} as NewComponent;
+};
