@@ -47,9 +47,6 @@ export const badges: ComponentMarkup =  {
     <a class="ui blue circular label">Rounded</a>
     <a class="ui blue circular label">1</a>
   `,
-  pure: null,
-  skeleton: null,
-  milligram: null,
   spectre: `
     <div style="display: inline-flex">
       <span class="label label-primary">Primary</span>

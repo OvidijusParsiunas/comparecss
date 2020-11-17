@@ -157,8 +157,6 @@ export const navbars: ComponentMarkup =  {
       </ul>
     </div>
   `,
-  skeleton: null,
-  milligram: null,
   spectre: `
     <div style="width: 50%; display: inline-flex; background-color: #fbfbfb" class="navbar">
       <div class="navbar-section">

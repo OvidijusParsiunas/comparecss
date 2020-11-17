@@ -47,28 +47,7 @@ export default class ComponentMarkupManager {
       case NAVBAR_SUB_MENU_BUTTONS.TOOLTIPS:
         return tooltips;
       default: {
-        return {
-          bootstrap: '',
-          materialize: '',
-          uikit: '',
-          foundation: '',
-          bulma: '',
-          semantic: '',
-          pure: '',
-          skeleton: '',
-          milligram: '',
-          spectre: '',
-          primer: '',
-          nes: '',
-          picnic: '',
-          chota: '',
-          cirrus: '',
-          turret: '',
-          hiq: '',
-          mui: '',
-          patternfly: '',
-          bootflat: '',
-        };
+        return {};
       }
     }
   }

@@ -8,7 +8,6 @@ export const buttonGroups: ComponentMarkup =  {
       <button type="button" class="btn btn-secondary">Right</button>
     </div>
   `,
-  materialize: null,
   uikit: `
     <div class="uk-margin-small">
       <div class="uk-button-group">
@@ -46,8 +45,6 @@ export const buttonGroups: ComponentMarkup =  {
       <button class="pure-button">Right</button>
     </div>
     `,
-  skeleton: null,
-  milligram: null,
   spectre: `
     <div class="btn-group btn-group-block" style="width: 15%; display: inline-flex">
       <button class="btn">Left</button>

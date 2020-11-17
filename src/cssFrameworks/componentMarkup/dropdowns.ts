@@ -78,7 +78,6 @@ export const dropdowns: ComponentMarkup =  {
       </ul>
     </div>
     `,
-  bulma: null,
   semantic: `
     <select class="ui dropdown">
       <option value="">Select Dropdown</option>
@@ -176,8 +175,6 @@ export const dropdowns: ComponentMarkup =  {
       </div>
     </div>
     `,
-  skeleton: null,
-  milligram: null,
   spectre: `
     <div style="display: inline-flex">
       <div class="column col-xs-12">

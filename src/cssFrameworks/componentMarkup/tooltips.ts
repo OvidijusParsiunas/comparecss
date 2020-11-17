@@ -39,9 +39,6 @@ export const tooltips: ComponentMarkup =  {
     <div class="ui button" semantic-tooltip="Tooltip text" data-position="bottom center">Bottom</div>
     <div class="ui button" semantic-tooltip="Tooltip text" data-position="right center">Right</div>
   `,
-  pure: null,
-  skeleton: null,
-  milligram: null,
   spectre: `
     <button class="btn btn-primary spectre-tooltip tooltip-left" spectre-tooltip="Tooltip text">Left</button>
     <button class="btn btn-primary spectre-tooltip" spectre-tooltip="Tooltip text">Top</button>

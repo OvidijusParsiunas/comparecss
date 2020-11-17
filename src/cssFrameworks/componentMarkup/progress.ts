@@ -87,9 +87,6 @@ export const progress: ComponentMarkup =  {
       </div>
     </div>
   `,
-  pure: null,
-  skeleton: null,
-  milligram: null,
   spectre: `
     <div style="width: 50%; display: inline-block">
       <progress class="progress" value="50" max="100"></progress>

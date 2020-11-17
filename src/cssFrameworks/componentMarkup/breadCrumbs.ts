@@ -19,7 +19,6 @@ export const breadCrumbs: ComponentMarkup =  {
       </div>
     </nav>
   `,
-  uikit: null,
   foundation: `
     <nav style="display: inline-flex" role="navigation">
       <ul class="breadcrumbs">
@@ -47,9 +46,6 @@ export const breadCrumbs: ComponentMarkup =  {
       <div class="active section">Third</div>
     </div>
   `,
-  pure: null,
-  skeleton: null,
-  milligram: null,
   spectre: `
     <ul class="breadcrumb">
       <li class="breadcrumb-item">

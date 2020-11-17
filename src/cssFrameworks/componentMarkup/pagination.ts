@@ -81,9 +81,6 @@ export const pagination: ComponentMarkup =  {
       <a class="item">5</a>
     </div>
   `,
-  pure: null,
-  skeleton: null,
-  milligram: null,
   spectre: `
     <ul style="display: inline-flex" class="pagination">
       <li class="page-item">

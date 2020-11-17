@@ -103,9 +103,6 @@ export const modals: ComponentMarkup =  {
       </div>
     </div>
   `,
-  pure: null,
-  skeleton: null,
-  milligram: null,
   spectre: `
     <button class="btn btn-primary modal-toggle" data-modal="#spectreModal">Modal</button>
     <div id="spectreModal" style="text-align: left" class="modal">
