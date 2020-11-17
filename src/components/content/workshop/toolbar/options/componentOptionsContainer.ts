@@ -2,11 +2,10 @@ import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../consts/workshopToolbarO
 import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum';
 import { ComponentOptions } from '../../../../../interfaces/componentOptions';
 import { buttonOptions } from './button';
-import { SpecificComponentModes } from '../../../../../interfaces/specificComponentModes';
-import { ComponentModes } from '@/interfaces/componentModes';
+import { ComponentModes } from '../../../../../interfaces/componentModes';
 
 type ComponentOptionsContainer = {
-  [key in WORKSHOP_TOOLBAR_OPTIONS]?: ComponentOptions<SpecificComponentModes<keyof ComponentModes>>;
+  [key in WORKSHOP_TOOLBAR_OPTIONS]?: ComponentOptions<keyof ComponentModes>;
 }
 
 export default {

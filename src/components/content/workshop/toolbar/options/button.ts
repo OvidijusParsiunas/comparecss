@@ -1,9 +1,10 @@
 import { COMPONENT_MODES } from '../../../../../consts/componentModes.enum';
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../consts/workshopToolbarOptions';
-import buttonComponentModes from '../../../../../interfaces/buttonComponentModes';
 import { ComponentOptions } from '../../../../../interfaces/componentOptions';
 
-export const buttonOptions: ComponentOptions<typeof buttonComponentModes> = {
+type buttonOptionsModes = COMPONENT_MODES.DEFAULT | COMPONENT_MODES.HOVER | COMPONENT_MODES.CLICK;
+
+export const buttonOptions: ComponentOptions<buttonOptionsModes> = {
   [COMPONENT_MODES.DEFAULT]: [
     {
       buttonName: 'Border',
