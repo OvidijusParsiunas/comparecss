@@ -1,4 +1,4 @@
-import { InheritedCss } from '../../interfaces/inheritedCss';
+import { InheritedCss } from '../../../../../../../interfaces/inheritedCss';
 
 export const inheritedButtonCss: InheritedCss = {
   typeName: 'buttons',

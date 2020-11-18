@@ -1,9 +1,9 @@
-import { WorkshopComponent } from '../../interfaces/workshopComponent';
-import { NewComponent } from '../../interfaces/newComponent';
-import { NEW_COMPONENT_TYPES } from '../../consts/newComponentTypes.enum';
+import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { NewComponent } from '../../../../../../../interfaces/newComponent';
+import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { inheritedButtonCss } from './inheritedCss';
-import { COMPONENT_MODES } from '../../consts/componentModes.enum';
-import { JAVASCRIPT_CLASSES } from '../../consts/javascriptClasses.enum';
+import { COMPONENT_MODES } from '../../../../../../../consts/componentModes.enum';
+import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 
 export const defaultButton: NewComponent = {
   getNewComponent(): WorkshopComponent {

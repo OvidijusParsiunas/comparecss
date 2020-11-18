@@ -2,10 +2,10 @@ import uglifyjsOptions from '../../consts/uglifyjsOptions';
 import { JSBuilder as JSBuilderInterface } from '../../interfaces/jsBuilder';
 import { WorkshopComponent } from '../../interfaces/workshopComponent';
 import { JavascriptCode } from '../../interfaces/javascriptCode';
-import { javascriptClassesToCode } from '../../components/content/workshop/toolbar/javascript/javascriptClassToCode';
+import { javascriptClassesToCode } from '../../components/content/workshop/toolbar/settings/javascript/javascriptClassToCode';
 import { JAVASCRIPT_CLASSES } from '../../consts/javascriptClasses.enum';
 
-type UtilisedJavascriptCodeContainer = {
+type JavascriptClassesToCode = {
   [key in JAVASCRIPT_CLASSES]?: JavascriptCode;
 }
 
@@ -14,7 +14,7 @@ export default class JSBuilder {
   static build(components: WorkshopComponent[]): JSBuilderInterface {
     let allCssForJS = '';
     let allJS = '';
-    const utilisedJavascriptCode: UtilisedJavascriptCodeContainer = {};
+    const utilisedJavascriptCode: JavascriptClassesToCode = {};
     components.forEach((component) => {
       component.componentProperties.jsClasses.forEach((jsClass) => {
         if (!utilisedJavascriptCode[jsClass]) { utilisedJavascriptCode[jsClass] = javascriptClassesToCode[jsClass] }

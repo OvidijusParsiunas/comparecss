@@ -18,11 +18,12 @@ interface Data {
   settingsResetTriggered: boolean,
 }
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOptions';
+import { optionToSettings } from './settings/types/optionToSettings';
 import { COMPONENT_MODES } from '../../../../consts/componentModes.enum';
 import { UpdateMode } from '../../../../interfaces/updateMode';
 import SettingsManager from '../../../../services/workshop/settingsManager';
-import settings from './Settings.vue';
-import options from './Options.vue';
+import settings from './settings/Settings.vue';
+import options from './options/Options.vue';
 
 export default {
   data: (): Data => ({
@@ -40,7 +41,7 @@ export default {
         SettingsManager.resetComponentProperties(this.component, this.activeMode);
         this.triggerSettingsReset();
       } else {
-        this.activeSettings = SettingsManager.getSettings(newSettings);
+        this.activeSettings = optionToSettings[newSettings];
         this.componentPreviewAssistance.margin = newSettings === WORKSHOP_TOOLBAR_OPTIONS.MARGIN;
       }
     },
@@ -50,7 +51,7 @@ export default {
       if (newModeContainsActiveOption === undefined) {
         newModeContainsActiveOption = this.$refs.options.getNewModeContainsActiveOptionState(this.activeMode);
       }
-      if (Object.keys(this.activeSettings).length && !newModeContainsActiveOption) {
+      if (this.activeSettings && Object.keys(this.activeSettings).length && !newModeContainsActiveOption) {
         this.activeSettings = {};
         this.componentPreviewAssistance.margin = false;
       }

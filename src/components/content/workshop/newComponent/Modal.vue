@@ -40,7 +40,7 @@
 
 <script lang="ts">
 import newComponentModalService from '../../../../services/workshop/newComponentModal';
-import { newComponentContainer } from './newComponentContainer';
+import { componentTypeToStyles } from './types/componentTypeToStyles';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { NEW_COMPONENT_STYLES } from '../../../../consts/newComponentStyles.enum';
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
@@ -67,7 +67,7 @@ export default {
       this.previewImage = newComponentModalService.getPreviewImage(componentName);
     },
     addNewComponent(newComponentType: NEW_COMPONENT_TYPES): void {
-      const newComponent = newComponentContainer[newComponentType][NEW_COMPONENT_STYLES.DEFAULT].getNewComponent();
+      const newComponent = componentTypeToStyles[newComponentType][NEW_COMPONENT_STYLES.DEFAULT].getNewComponent();
       newComponent.className = this.className || this.classNamePlaceholder;
       this.$emit('add-new-component', newComponent);
       // updates modal only after it has closed

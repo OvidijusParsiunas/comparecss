@@ -1,6 +1,6 @@
-import { JAVASCRIPT_CLASSES } from '../../../../../consts/javascriptClasses.enum';
-import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum';
-import { javascriptContainer } from '../../toolbar/javascript/javascriptContainer';
+import { JAVASCRIPT_CLASSES } from '../../../../../../consts/javascriptClasses.enum';
+import { NEW_COMPONENT_TYPES } from '../../../../../../consts/newComponentTypes.enum';
+import { componentTypeToJavascriptClasses } from '../javascript/componentTypeToJavascriptClasses';
 
 // create an optional interface
 export default {
@@ -12,7 +12,7 @@ export default {
         javascript: true,
         default: false,
         jsClassName: JAVASCRIPT_CLASSES.RIPPLES,
-        componentId: javascriptContainer[NEW_COMPONENT_TYPES.BUTTON].componentId,
+        componentId: componentTypeToJavascriptClasses[NEW_COMPONENT_TYPES.BUTTON].componentId,
       },
       // spec: {
       //   name: 'Material',

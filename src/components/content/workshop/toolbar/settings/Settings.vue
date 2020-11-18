@@ -78,7 +78,7 @@
 </template>
 
 <script lang="ts">
-import { COMPONENT_MODES } from '../../../../consts/componentModes.enum';
+import { COMPONENT_MODES } from '../../../../../consts/componentModes.enum';
 
 interface Data {
   selectorNewValues: unknown;

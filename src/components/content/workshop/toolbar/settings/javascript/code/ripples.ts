@@ -1,4 +1,4 @@
-import { JavascriptCode } from '../../../../../interfaces/javascriptCode';
+import { JavascriptCode } from '../../../../../../../interfaces/javascriptCode';
 
 const vars = {
   animationDurationMs: 1000,
