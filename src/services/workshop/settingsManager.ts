@@ -39,11 +39,11 @@ export default class SettingsManager {
   }
 
   private static resetJs(componentProperties: ComponentProperties, type: NEW_COMPONENT_TYPES): void {
-    const classesToBeRemoved = componentProperties.jsClasses.filter((jsClass) => !componentProperties.initialJsClasses.includes(jsClass));
-    const classesToBeAdded = componentProperties.initialJsClasses.filter((jsClass) => !componentProperties.jsClasses.includes(jsClass));
+    const classesToBeRemoved = [ ...componentProperties.jsClasses ].filter((jsClass) => !componentProperties.initialJsClasses.has(jsClass));
+    const classesToBeAdded = [ ...componentProperties.jsClasses ].filter((jsClass) => !componentProperties.jsClasses.has(jsClass));
     ComponentJs.manipulateJSClasses(classesToBeRemoved, type, 'remove');
     ComponentJs.manipulateJSClasses(classesToBeAdded, type, 'add');
-    componentProperties.jsClasses = [ ...componentProperties.initialJsClasses ];
+    componentProperties.jsClasses = new Set(componentProperties.initialJsClasses);
   }
 
   private static resetCss(componentProperties: ComponentProperties, activeMode: COMPONENT_MODES): void {

@@ -1,10 +1,4 @@
-import { ComponentTypeJavascript } from '../../../../../interfaces/componentTypeJavascript';
-import { BUTTON_JAVASCRIPT_CLASSES } from './buttonJavaScriptClasses.enum';
-import { ripplesCode } from './ripples';
+import { ComponentJavascriptClasses } from '../../../../../interfaces/componentJavascriptClasses';
+import { JAVASCRIPT_CLASSES } from '../../../../../consts/javascriptClasses.enum';
 
-export const buttonJavascript: ComponentTypeJavascript[] = [
-  {
-    className: BUTTON_JAVASCRIPT_CLASSES.RIPPLES,
-    code: ripplesCode,
-  }
-];
+export const buttonJavascriptClasses: ComponentJavascriptClasses = new Set([JAVASCRIPT_CLASSES.RIPPLES]);

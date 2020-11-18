@@ -139,7 +139,7 @@ export default {
           if (currentValue) { this.inputDropdownNewValues[setting.spec.cssProperty] = currentValue; }
         } else if (setting.type === 'checkbox') {
           if (setting.spec.javascript) {
-            setting.spec.default = this.componentProperties.jsClasses.includes(setting.spec.jsClassName);
+            setting.spec.default = this.componentProperties.jsClasses.has(setting.spec.jsClassName);
           } else {
             const currentValue = this.getCurrentValue(this.componentProperties.customCssActiveMode, setting.spec.cssProperty);
             if (currentValue) { setting.spec.default = (currentValue === setting.spec.conditionalStyle.truthy); }
@@ -269,10 +269,10 @@ export default {
       if (javascript) {
         if (newCheckboxValue) {
           document.getElementById(componentId).classList.add(jsClassName);
-          this.componentProperties.jsClasses.push(jsClassName);
+          this.componentProperties.jsClasses.add(jsClassName);
         } else {
           document.getElementById(componentId).classList.remove(jsClassName);
-          this.componentProperties.jsClasses.splice(this.componentProperties.jsClasses.indexOf(jsClassName), 1);
+          this.componentProperties.jsClasses.delete(jsClassName);
         }
       } else {
         const cssValue = newCheckboxValue ? conditionalStyle.truthy : conditionalStyle.falsy;

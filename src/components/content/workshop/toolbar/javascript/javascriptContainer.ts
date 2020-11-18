@@ -1,15 +1,17 @@
+import { ComponentJavascriptClasses } from '../../../../../interfaces/componentJavascriptClasses';
 import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum'
-import { buttonJavascript } from './buttonJavascript';
+import { buttonJavascriptClasses } from './buttonJavascript';
 
-type JavaScriptContainer = {
+type JavascriptContainer = {
   [key in NEW_COMPONENT_TYPES]?: {
-    content: any[], componentId: string,
+    javascriptClasses: ComponentJavascriptClasses,
+    componentId: string,
   };
 }
 
-export const javaScriptContainer: JavaScriptContainer = {
+export const javascriptContainer: JavascriptContainer = {
   [NEW_COMPONENT_TYPES.BUTTON]: {
-    content: buttonJavascript,
+    javascriptClasses: buttonJavascriptClasses,
     componentId: 'demoComponent',
   },
 };

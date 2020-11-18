@@ -1,3 +1,4 @@
+import { TempCustomCss } from '../../interfaces/tempCustomCss';
 import { COMPONENT_MODES } from '../../consts/componentModes.enum';
 import { WorkshopComponent, CustomCss } from '../../interfaces/workshopComponent';
 import { WorkshopComponentCss } from '../../interfaces/workshopComponentCss';
@@ -24,7 +25,7 @@ export default class CssBuilder {
   }
 
   private static buildPseudoClass(className: string, pseudoClassName: string,
-      cssModeProperties: WorkshopComponentCss, tempCustomCss?: Set<string>): string {
+      cssModeProperties: WorkshopComponentCss, tempCustomCss?: TempCustomCss): string {
     for (const cssProperty of tempCustomCss) { delete cssModeProperties[cssProperty]; }
     const hoverKeys = Object.keys(cssModeProperties);
     if (hoverKeys.length) {
@@ -34,7 +35,7 @@ export default class CssBuilder {
   }
 
   private static buildPseudoCss(className: string, customCss: CustomCss,
-      tempCustomCss?: Set<string>): string {
+      tempCustomCss?: TempCustomCss): string {
     let pseudoCssString = '';
     pseudoCssString += this.buildPseudoClass(className, pseudoClasses.HOVER, customCss[COMPONENT_MODES.HOVER], tempCustomCss);
     pseudoCssString += this.buildPseudoClass(className, pseudoClasses.ACTIVE, customCss[COMPONENT_MODES.CLICK], tempCustomCss);
@@ -42,13 +43,13 @@ export default class CssBuilder {
   }
 
   private static buildDefaultCss(className: string, cssModeProperties: WorkshopComponentCss,
-      tempCustomCss?: Set<string>): string {
+      tempCustomCss?: TempCustomCss): string {
     for (const cssProperty of tempCustomCss) { delete cssModeProperties[cssProperty]; }
     const customCssString = this.buildCssString(cssModeProperties);
     return `.${className} {\r\n${customCssString}\r\n}`;
   }
 
-  private static buildCustomCss(className: string, customCss: CustomCss, tempCustomCss?: Set<string>): string {
+  private static buildCustomCss(className: string, customCss: CustomCss, tempCustomCss?: TempCustomCss): string {
     const defaultCss = this.buildDefaultCss(className, customCss[COMPONENT_MODES.DEFAULT], tempCustomCss);
     const pseudoCss = this.buildPseudoCss(className, customCss, tempCustomCss);
     return (defaultCss + ' ' + pseudoCss).trim();

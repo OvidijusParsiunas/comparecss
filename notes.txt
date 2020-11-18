@@ -1,4 +1,3 @@
-decouple js (in workshop component interface)
 expect errors when adding new component types as they may not have hover, or click modes
 place settings and options components in their folders
 consider placing javascript unique to the css classes it was used on

@@ -1,9 +1,9 @@
 import { WorkshopComponent } from '../../interfaces/workshopComponent';
 import { NewComponent } from '../../interfaces/newComponent';
 import { NEW_COMPONENT_TYPES } from '../../consts/newComponentTypes.enum';
-import { BUTTON_JAVASCRIPT_CLASSES } from '../../components/content/workshop/toolbar/javascript/buttonJavaScriptClasses.enum';
 import { inheritedButtonCss } from './inheritedCss';
-import { COMPONENT_MODES } from '@/consts/componentModes.enum';
+import { COMPONENT_MODES } from '../../consts/componentModes.enum';
+import { JAVASCRIPT_CLASSES } from '../../consts/javascriptClasses.enum';
 
 export const defaultButton: NewComponent = {
   getNewComponent(): WorkshopComponent {
@@ -69,8 +69,8 @@ export const defaultButton: NewComponent = {
             backgroundColor: '#409441',
           },
         },
-        jsClasses: [BUTTON_JAVASCRIPT_CLASSES.RIPPLES],
-        initialJsClasses: [BUTTON_JAVASCRIPT_CLASSES.RIPPLES],
+        jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
+        initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
         customCssActiveMode: COMPONENT_MODES.DEFAULT,
         tempCustomCss: new Set(['transition']),
         inheritedCss: inheritedButtonCss,
