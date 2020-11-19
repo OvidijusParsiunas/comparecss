@@ -11,7 +11,8 @@ export type CustomCss = {
 
 export interface ComponentProperties {
   frameworkClass: string;
-  innerHtml: string;
+  componentTag: string;
+  innerHtmlText: string;
   customCss: CustomCss;
   initialCss: CustomCss;
   tempCustomCss?: TempCustomCss;

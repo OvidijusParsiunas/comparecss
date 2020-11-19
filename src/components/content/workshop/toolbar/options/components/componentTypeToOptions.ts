@@ -4,9 +4,10 @@ import { buttonOptions } from './button';
 import { ComponentModes } from '../../../../../../interfaces/componentModes';
 
 type ComponentTypeToOptions = {
-  [key in NEW_COMPONENT_TYPES]?: ComponentOptions<keyof ComponentModes>;
+  [key in NEW_COMPONENT_TYPES]: ComponentOptions<keyof ComponentModes>;
 }
 
 export const componentTypeToOptions: ComponentTypeToOptions = {
   [NEW_COMPONENT_TYPES.BUTTON]: buttonOptions,
+  [NEW_COMPONENT_TYPES.ALERT]: buttonOptions,
 };

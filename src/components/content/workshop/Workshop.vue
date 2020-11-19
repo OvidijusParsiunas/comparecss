@@ -93,7 +93,8 @@ export default {
         type: NEW_COMPONENT_TYPES.BUTTON,
         componentProperties: {
           frameworkClass: 'foundation',
-          innerHtml: 'button',
+          innerHtmlText: 'button',
+          componentTag: 'button',
           transition: 'all 0.25s ease-out',
           customCss: {
             [COMPONENT_MODES.DEFAULT]: {
@@ -165,7 +166,8 @@ export default {
       type: NEW_COMPONENT_TYPES.BUTTON,
       componentProperties: {
         frameworkClass: 'foundation',
-        innerHtml: 'button',
+        componentTag: 'button',
+        innerHtmlText: 'button',
         transition: 'all 0.25s ease-out',
         customCss: {
           [COMPONENT_MODES.DEFAULT]: {

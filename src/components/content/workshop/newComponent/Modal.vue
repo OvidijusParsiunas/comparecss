@@ -31,7 +31,7 @@
         </form>
         </div>
         <div class="modal-footer">
-          <button v-on:click="addNewComponent('Button')" type="button" class="btn btn-primary" data-dismiss="modal">Add</button>
+          <button v-on:click="addNewComponent(NEW_COMPONENT_TYPES.ALERT)" type="button" class="btn btn-primary" data-dismiss="modal">Add</button>
         </div>
       </div>
     </div>

@@ -17,25 +17,25 @@
             </transition>
           </div>
           <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item">
-            <button id="demoComponent"
+            <component :is="component.componentProperties.componentTag" id="demoComponent"
               @mouseover="componentMouseOver()"
               @mouseleave="componentMouseLeave()"
               @mousedown="componentMouseDown()"
               @mouseup="componentMouseUp()"
               :style="component.componentProperties.customCssActiveMode === COMPONENT_MODES.CLICK
                 ? [
-                    component.componentProperties.inheritedCss.css,
+                    [ component.componentProperties.inheritedCss ? component.componentProperties.inheritedCss.css: '' ],
                     component.componentProperties.customCss[COMPONENT_MODES.DEFAULT],
                     component.componentProperties.customCss[COMPONENT_MODES.HOVER],
                     component.componentProperties.customCss[COMPONENT_MODES.CLICK],
                   ]
                 : [
-                    component.componentProperties.inheritedCss.css,
+                    [ component.componentProperties.inheritedCss ? component.componentProperties.inheritedCss.css: '' ],
                     component.componentProperties.customCss[COMPONENT_MODES.DEFAULT],
                     component.componentProperties.customCss[component.componentProperties.customCssActiveMode],
                   ]"
-              v-html="component.componentProperties.innerHtml">
-            </button>
+              v-html="component.componentProperties.innerHtmlText">
+            </component>
           </div>
           <div class="grid-item">
             <transition name="right-slide-fade">
@@ -233,7 +233,6 @@ export default {
   .grid-container {
     display: grid;
     grid-template-columns: auto auto auto;
-    background-color: #2196F3;
   }
   
   .grid-item {
