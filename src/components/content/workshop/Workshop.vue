@@ -159,6 +159,10 @@ export default {
           customCssActiveMode: COMPONENT_MODES.DEFAULT,
           inheritedCss: inheritedButtonCss,
         },
+        customSettingsProperties: {
+          width: [0, 250],
+          height: [0, 250],
+        },
         className: 'button'
       },
     ],
@@ -232,6 +236,10 @@ export default {
         initialJsClasses: new Set(),
         customCssActiveMode: COMPONENT_MODES.DEFAULT,
         inheritedCss: inheritedButtonCss,
+      },
+      customSettingsProperties: {
+        width: [0, 250],
+        height: [0, 250],
       },
       className: 'button'
     },

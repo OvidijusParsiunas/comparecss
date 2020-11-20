@@ -76,6 +76,10 @@ export const defaultButton: NewComponent = {
         tempCustomCss: new Set(['transition']),
         inheritedCss: inheritedButtonCss,
       },
+      customSettingsProperties: {
+        width: [0, 250],
+        height: [0, 250],
+      },
       className: 'default-class-name',
     }
   },

@@ -16,7 +16,10 @@
                       ? componentProperties.customCss[componentProperties.customCssActiveMode][setting.spec.cssProperty].split(' ')[setting.spec.partialCss.position]
                       : componentProperties.customCss[componentProperties.customCssActiveMode][setting.spec.cssProperty]}}
                   </div>
-                  <input type="range" class="form-control-range" id="formControlRange" v-bind:min="setting.spec.scale[0]" v-bind:max="setting.spec.scale[1]" v-model="setting.spec.default" @mousedown="rangeMouseDown" @mouseup="rangeMouseUp" @input="updateRange($event, setting)">
+                  <input type="range" class="form-control-range" id="formControlRange"
+                    v-bind:min="customSettingsProperties[setting.spec.cssProperty] ? customSettingsProperties[setting.spec.cssProperty][0] : setting.spec.scale[0]"
+                    v-bind:max="customSettingsProperties[setting.spec.cssProperty] ? customSettingsProperties[setting.spec.cssProperty][1] : setting.spec.scale[1]"
+                    v-model="setting.spec.default" @mousedown="rangeMouseDown" @mouseup="rangeMouseUp" @input="updateRange($event, setting)">
                 </div>
               </div>
 
@@ -282,6 +285,7 @@ export default {
   },
   props: {
     componentProperties: Object,
+    customSettingsProperties: Object,
     settings: Object,
     settingsResetTriggered: Boolean,
   },
@@ -291,6 +295,11 @@ export default {
     },
     settingsResetTriggered(): void {
       this.resetSettings();
+      // forcing a settings re-render when changing to a different component
+      // cannot use nextTick() because it is triggered when anything in settings does change
+      setTimeout(() => {
+        this.componentProperties.customCss[this.componentProperties.customCssActiveMode] = { ...this.componentProperties.customCss[this.componentProperties.customCssActiveMode]} ;
+      });
     }
   }
 };

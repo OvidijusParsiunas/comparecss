@@ -5,6 +5,7 @@ color active component card
 consider placing javascript unique to the css classes it was used on
 sometimes setting to auto option like the margin does not set desired results, potentially remove it - or set beginner components (in modal) to have no margin as auto
 decide where the display code and download buttons should go
+reset a particular setting option, instead of them all
 
 font-awesome pictures on buttons
 material design examples should have nice hover, and shadow increase events on mouse click

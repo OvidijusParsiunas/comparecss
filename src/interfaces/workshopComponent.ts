@@ -23,8 +23,14 @@ export interface ComponentProperties {
   initialJsClasses: ComponentJavascriptClasses,
 }
 
+export interface customSettingsProperties {
+  width: number[],
+  height: number[],
+}
+
 export interface WorkshopComponent {
   type: NEW_COMPONENT_TYPES;
   componentProperties: ComponentProperties;
   className: string;
+  customSettingsProperties?: customSettingsProperties
 }

@@ -6,7 +6,7 @@
           <options ref="options" :component="component" @option-clicked="updateSettings" @mode-clicked="updateMode"/>
         </div>
       </div>
-      <settings :componentProperties="component.componentProperties" :settings="activeSettings" :settingsResetTriggered="settingsResetTriggered"/>
+      <settings :componentProperties="component.componentProperties" :customSettingsProperties="component.customSettingsProperties" :settings="activeSettings" :settingsResetTriggered="settingsResetTriggered"/>
     </div>
   </div>
 </template>
