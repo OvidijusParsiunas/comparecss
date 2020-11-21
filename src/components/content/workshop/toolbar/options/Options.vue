@@ -1,7 +1,7 @@
 <template>
   <div style="margin-top: 10px; margin-bottom: 10px">
     <div style="float: left" class="edit-component-button">
-      <select class="form-control" v-model="component.componentProperties.customCssActiveMode" @change="modeClick">
+      <select v-if="Object.keys(componentTypeToOptions[component.type]).length > 1" class="form-control" v-model="component.componentProperties.customCssActiveMode" @change="modeClick">
         <option v-for="(mode, propertyName) in componentTypeToOptions[component.type]" :key="propertyName">{{propertyName}}</option>
       </select>
     </div>
