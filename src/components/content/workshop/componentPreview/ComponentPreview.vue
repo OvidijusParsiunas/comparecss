@@ -18,7 +18,7 @@
           </div>
           <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item">
             <component :is="component.componentProperties.componentTag" id="demoComponent"
-              @mouseover="componentMouseOver()"
+              @mouseenter="componentMouseEnter()"
               @mouseleave="componentMouseLeave()"
               @mousedown="componentMouseDown()"
               @mouseup="componentMouseUp()"
@@ -33,8 +33,10 @@
                     [ component.componentProperties.inheritedCss ? component.componentProperties.inheritedCss.css: '' ],
                     component.componentProperties.customCss[COMPONENT_MODES.DEFAULT],
                     component.componentProperties.customCss[component.componentProperties.customCssActiveMode],
-                  ]"
-              v-html="component.componentProperties.innerHtmlText">
+                  ]">
+              {{ component.type === NEW_COMPONENT_TYPES.BUTTON ? component.componentProperties.innerHtmlText : '' }}
+              <divInnerHtml :componentType="component.type" :innerHTML="component.componentProperties.innerHtmlText"/>
+              <!-- <auxiliaryRightSideElements :componentType="component.type"/> -->
             </component>
           </div>
           <div class="grid-item">
@@ -57,11 +59,15 @@
 
 <script lang="ts">
 import { COMPONENT_MODES } from '../../../../consts/componentModes.enum';
+import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
+import auxiliaryRightSideElements from './AuxiliaryRightSideElements.vue';
+import divInnerHtml from './divInnerHTML.vue';
 
 interface Data {
   overwrittenDefaultPropertiesByHover: unknown,
   overwrittenDefaultPropertiesByClick: unknown,
   COMPONENT_MODES,
+  NEW_COMPONENT_TYPES,
 }
 
 export default {
@@ -69,10 +75,11 @@ export default {
     overwrittenDefaultPropertiesByHover: {},
     overwrittenDefaultPropertiesByClick: {},
     COMPONENT_MODES,
+    NEW_COMPONENT_TYPES,
   }),
   methods: {
     // important to note that default can have properties that hover and click modes do not, but hover and click cannot have properties that default doesn't
-    componentMouseOver(): void {
+    componentMouseEnter(): void {
       const { customCss, transition, customCssActiveMode } = this.component.componentProperties;
       if (customCssActiveMode === COMPONENT_MODES.DEFAULT) {
         this.overwrittenDefaultPropertiesByHover = { ...customCss[COMPONENT_MODES.DEFAULT], transition };
@@ -101,6 +108,10 @@ export default {
     componentPreviewMouseLeave(): void {
       this.component.componentProperties.customCss[COMPONENT_MODES.DEFAULT].transition = 'unset';
     }
+  },
+  components: {
+    auxiliaryRightSideElements,
+    divInnerHtml,
   },
   props: {
     component: Object,
