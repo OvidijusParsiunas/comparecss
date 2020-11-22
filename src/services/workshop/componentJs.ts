@@ -6,12 +6,14 @@ import { JAVASCRIPT_CLASSES } from '../../consts/javascriptClasses.enum';
 export default class ComponentJs {
 
   static manipulateJSClasses(jsClasses: JAVASCRIPT_CLASSES[], componentType: NEW_COMPONENT_TYPES, classManipulationProperty: 'add'|'remove'): void {
+    if (!componentTypeToJavascriptClasses[componentType]) return;
     jsClasses.forEach((jsClass) => {
       document.getElementById(componentTypeToJavascriptClasses[componentType].componentId).classList[classManipulationProperty](jsClass);
     });
   }
   
   static manipulateJS(componentType: NEW_COMPONENT_TYPES, jsManipulationProperty: 'revokeJS' | 'executeJS'): void {
+    if (!componentTypeToJavascriptClasses[componentType]) return;
     componentTypeToJavascriptClasses[componentType].javascriptClasses.forEach((javascriptClass) => {
       javascriptClassesToCode[javascriptClass][jsManipulationProperty]();
     });

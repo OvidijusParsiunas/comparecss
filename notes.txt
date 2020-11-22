@@ -2,6 +2,8 @@ calculate the alert height size after the css file has been exported
 calculate height by:
   (current height - default height) / 2 = padding
   current padding - padding = new padding
+reset button for each setting
+consider removing the auto mode
 
 color active toolkit button
 color active component card

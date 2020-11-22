@@ -29,12 +29,6 @@ export const defaultAlert: NewComponent = {
             width: '400px',
             height: '48px',
           },
-          [COMPONENT_MODES.HOVER]: {
-            backgroundColor: '#ff0000',
-          },
-          [COMPONENT_MODES.CLICK]: {
-            backgroundColor: '#409441',
-          },
         },
         initialCss: {
           [COMPONENT_MODES.DEFAULT]: {
@@ -49,12 +43,6 @@ export const defaultAlert: NewComponent = {
             borderStyle: 'solid',
             borderRadius: '4px',
             width: '400px',
-          },
-          [COMPONENT_MODES.HOVER]: {
-            backgroundColor: '#ff0000',
-          },
-          [COMPONENT_MODES.CLICK]: {
-            backgroundColor: '#409441',
           },
         },
         jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
