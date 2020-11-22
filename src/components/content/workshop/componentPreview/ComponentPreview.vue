@@ -36,7 +36,7 @@
                   ]">
               {{ component.type === NEW_COMPONENT_TYPES.BUTTON ? component.componentProperties.innerHtmlText : '' }}
               <divInnerHtml :componentType="component.type" :innerHTML="component.componentProperties.innerHtmlText"/>
-              <!-- <auxiliaryRightSideElements :componentType="component.type"/> -->
+              <auxiliary-right-side-elements :componentType="component.type"/>
             </component>
           </div>
           <div class="grid-item">

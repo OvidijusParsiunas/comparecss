@@ -3,7 +3,7 @@
     <div style="height: 100vh" class="bootstrap">
       <div style="height: 100%; margin-left: 0px; margin-right: 0px; display: flex">
         <div style="width: 30%; position: relative">
-          <componentList
+          <component-list
             :components="components"
             @component-card-selected="componentCardSelected($event)"
             @component-card-copied="componentCardCopied($event)"
@@ -23,7 +23,7 @@
               'vue/no-v-model-argument': 'off',
             -->
             <toolbar ref="toolbar" :component="currentlySelectedComponent" :componentPreviewAssistance="componentPreviewAssistance"/>
-            <componentContents style="height: 50%" :component="currentlySelectedComponent" :componentPreviewAssistance="componentPreviewAssistance"/>
+            <component-contents style="height: 50%" :component="currentlySelectedComponent" :componentPreviewAssistance="componentPreviewAssistance"/>
             <div style="height: 18%; display: flex; float: right; margin-right: 10px; margin-top: 105px">
               <div style="position: relative">
                 <div>
@@ -44,7 +44,7 @@
           </div>
         </div>
       </div>
-      <newComponentModal
+      <new-component-modal
         :components="components"
         @add-new-component="addNewComponent($event)"
         @stop-editing-class-name-callback="addWorkshopEventCallback($event)"/>

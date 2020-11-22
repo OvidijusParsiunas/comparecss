@@ -100,11 +100,11 @@ export default {
           if (this.componentProperties.customCss[COMPONENT_MODES.CLICK][cssProperty]) {
             return this.componentProperties.customCss[COMPONENT_MODES.CLICK][cssProperty];
           }
-        case (COMPONENT_MODES.HOVER || COMPONENT_MODES.CLICK):
+        case (COMPONENT_MODES.HOVER):
           if (this.componentProperties.customCss[COMPONENT_MODES.HOVER][cssProperty]) {
             return this.componentProperties.customCss[COMPONENT_MODES.HOVER][cssProperty];
           }
-        case (COMPONENT_MODES.DEFAULT || COMPONENT_MODES.HOVER || COMPONENT_MODES.CLICK):
+        case (COMPONENT_MODES.DEFAULT):
           if (this.componentProperties.customCss[COMPONENT_MODES.DEFAULT][cssProperty]) {
             return this.componentProperties.customCss[COMPONENT_MODES.DEFAULT][cssProperty];
           }

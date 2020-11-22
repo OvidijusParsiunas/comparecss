@@ -9,7 +9,6 @@ type ComponentTypeToJavascriptClasses = {
   };
 }
 
-// may need to make the javascript for certain components optional
 export const componentTypeToJavascriptClasses: ComponentTypeToJavascriptClasses = {
   [NEW_COMPONENT_TYPES.BUTTON]: {
     javascriptClasses: buttonJavascriptClasses,

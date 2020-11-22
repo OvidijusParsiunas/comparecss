@@ -27,7 +27,7 @@ export const defaultAlert: NewComponent = {
             borderStyle: 'solid',
             borderRadius: '4px',
             width: '400px',
-            height: '48px',
+            height: '50px',
           },
         },
         initialCss: {
@@ -43,6 +43,7 @@ export const defaultAlert: NewComponent = {
             borderStyle: 'solid',
             borderRadius: '4px',
             width: '400px',
+            height: '50px',
           },
         },
         jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),

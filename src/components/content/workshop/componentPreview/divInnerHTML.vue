@@ -1,6 +1,6 @@
 <template>
-  <div v-if="componentType === NEW_COMPONENT_TYPES.ALERT" class="container">
-    <div class="inner">
+  <div v-if="componentType === NEW_COMPONENT_TYPES.ALERT" class="HTMLContainer">
+    <div class="HTMLContents">
       {{ innerHTML }}
     </div>
   </div>
@@ -25,11 +25,11 @@ export default {
 </script>
 
 <style lang="css" scoped>
-  .container {
+  .HTMLContainer {
     position: relative;
     height: 100%;
   }
-  .inner {
+  .HTMLContents {
     position: absolute;
     top: 50%;
     left: 50%;

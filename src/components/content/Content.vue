@@ -1,13 +1,13 @@
 <template>
   <div id="content">
     <div v-if="currentView === NAVBAR_MENU_BUTTONS.HOMEPAGE">
-      <Homepage/>
+      <homepage/>
     </div>
     <div v-if="currentView == NAVBAR_MENU_BUTTONS.COMPONENTS">
-      <Components :componentMarkup="componentMarkup"/>
+      <components :componentMarkup="componentMarkup"/>
     </div>
     <div v-if="currentView == NAVBAR_MENU_BUTTONS.WORKSHOP">
-      <Workshop/>
+      <workshop/>
     </div>
   </div>
 </template>
@@ -27,9 +27,9 @@ interface Data {
 interface Props {
   activeButton: NavbarButton,
 }
-import Components from './Components.vue';
-import Homepage from './Homepage.vue';
-import Workshop from './workshop/Workshop.vue';
+import components from './Components.vue';
+import homepage from './Homepage.vue';
+import workshop from './workshop/Workshop.vue';
 import cssFrameworksJSFunctionality from '../../services/cssFrameworksJSFunctionality';
 import componentMarkupManager from '../../services/componentMarkupManager';
 import { ComponentMarkup } from '../../interfaces/componentMarkup';
@@ -51,9 +51,9 @@ export default {
     })
   },
   components: {
-    Components,
-    Homepage,
-    Workshop,
+    components,
+    homepage,
+    workshop,
   },
   props: {
     activeButton: null,

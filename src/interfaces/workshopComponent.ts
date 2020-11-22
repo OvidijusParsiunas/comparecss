@@ -32,5 +32,5 @@ export interface WorkshopComponent {
   type: NEW_COMPONENT_TYPES;
   componentProperties: ComponentProperties;
   className: string;
-  customSettingsProperties?: customSettingsProperties
+  customSettingsProperties?: customSettingsProperties;
 }
