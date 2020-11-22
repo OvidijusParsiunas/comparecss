@@ -1,7 +1,7 @@
 <template>
   <div v-if="component" style="position: relative" @mouseleave="componentPreviewMouseLeave()">
     <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); z-index: 0; text-align: center;"> 
-      <div :class="component.componentProperties.frameworkClass">
+      <div :class="component.subcomponents[component.subcomponentsActiveMode].frameworkClass">
         <div class="grid-container">
           <div class="grid-item"></div>
           <div class="grid-item">
@@ -17,25 +17,25 @@
             </transition>
           </div>
           <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item">
-            <component :is="component.componentProperties.componentTag" id="demoComponent"
+            <component :is="component.subcomponents[component.subcomponentsActiveMode].componentTag" id="demoComponent"
               @mouseenter="componentMouseEnter()"
               @mouseleave="componentMouseLeave()"
               @mousedown="componentMouseDown()"
               @mouseup="componentMouseUp()"
-              :style="component.componentProperties.customCssActiveMode === COMPONENT_MODES.CLICK
+              :style="component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode === COMPONENT_MODES.CLICK
                 ? [
-                    [ component.componentProperties.inheritedCss ? component.componentProperties.inheritedCss.css: '' ],
-                    component.componentProperties.customCss[COMPONENT_MODES.DEFAULT],
-                    component.componentProperties.customCss[COMPONENT_MODES.HOVER],
-                    component.componentProperties.customCss[COMPONENT_MODES.CLICK],
+                    [ component.subcomponents[component.subcomponentsActiveMode].inheritedCss ? component.subcomponents[component.subcomponentsActiveMode].inheritedCss.css: '' ],
+                    component.subcomponents[component.subcomponentsActiveMode].customCss[COMPONENT_MODES.DEFAULT],
+                    component.subcomponents[component.subcomponentsActiveMode].customCss[COMPONENT_MODES.HOVER],
+                    component.subcomponents[component.subcomponentsActiveMode].customCss[COMPONENT_MODES.CLICK],
                   ]
                 : [
-                    [ component.componentProperties.inheritedCss ? component.componentProperties.inheritedCss.css: '' ],
-                    component.componentProperties.customCss[COMPONENT_MODES.DEFAULT],
-                    component.componentProperties.customCss[component.componentProperties.customCssActiveMode],
+                    [ component.subcomponents[component.subcomponentsActiveMode].inheritedCss ? component.subcomponents[component.subcomponentsActiveMode].inheritedCss.css: '' ],
+                    component.subcomponents[component.subcomponentsActiveMode].customCss[COMPONENT_MODES.DEFAULT],
+                    component.subcomponents[component.subcomponentsActiveMode].customCss[component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode],
                   ]">
-              {{ component.type === NEW_COMPONENT_TYPES.BUTTON ? component.componentProperties.innerHtmlText : '' }}
-              <divInnerHtml :componentType="component.type" :innerHTML="component.componentProperties.innerHtmlText"/>
+              {{ component.type === NEW_COMPONENT_TYPES.BUTTON ? component.subcomponents[component.subcomponentsActiveMode].innerHtmlText : '' }}
+              <divInnerHtml :componentType="component.type" :innerHTML="component.subcomponents[component.subcomponentsActiveMode].innerHtmlText"/>
               <auxiliary-right-side-elements :componentType="component.type"/>
             </component>
           </div>
@@ -80,33 +80,33 @@ export default {
   methods: {
     // important to note that default can have properties that hover and click modes do not, but hover and click cannot have properties that default doesn't
     componentMouseEnter(): void {
-      const { customCss, transition, customCssActiveMode } = this.component.componentProperties;
+      const { customCss, transition, customCssActiveMode } = this.component.subcomponents[this.component.subcomponentsActiveMode];
       if (customCssActiveMode === COMPONENT_MODES.DEFAULT) {
         this.overwrittenDefaultPropertiesByHover = { ...customCss[COMPONENT_MODES.DEFAULT], transition };
         customCss[COMPONENT_MODES.DEFAULT] = { ...customCss[COMPONENT_MODES.DEFAULT], ...customCss[COMPONENT_MODES.HOVER], transition };
       }
     },
     componentMouseLeave(): void {
-      const { customCss, customCssActiveMode } = this.component.componentProperties;
+      const { customCss, customCssActiveMode } = this.component.subcomponents[this.component.subcomponentsActiveMode];
       if (customCssActiveMode === COMPONENT_MODES.DEFAULT) {
         customCss[COMPONENT_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByHover };
       }
     },
     componentMouseDown(): void {
-      const { customCss, transition, customCssActiveMode } = this.component.componentProperties;
+      const { customCss, transition, customCssActiveMode } = this.component.subcomponents[this.component.subcomponentsActiveMode];
       if (customCssActiveMode === COMPONENT_MODES.DEFAULT) {
         this.overwrittenDefaultPropertiesByClick = { ...customCss[COMPONENT_MODES.DEFAULT], transition };
         customCss[COMPONENT_MODES.DEFAULT] = { ...customCss[COMPONENT_MODES.DEFAULT], ...customCss[COMPONENT_MODES.CLICK], transition };
       }
     },
     componentMouseUp(): void {
-      const { customCss, customCssActiveMode } = this.component.componentProperties;
+      const { customCss, customCssActiveMode } = this.component.subcomponents[this.component.subcomponentsActiveMode];
       if (customCssActiveMode === COMPONENT_MODES.DEFAULT) {
         customCss[COMPONENT_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByClick };
       }
     },
     componentPreviewMouseLeave(): void {
-      this.component.componentProperties.customCss[COMPONENT_MODES.DEFAULT].transition = 'unset';
+      this.component.subcomponents[this.component.subcomponentsActiveMode].customCss[COMPONENT_MODES.DEFAULT].transition = 'unset';
     }
   },
   components: {
@@ -126,45 +126,45 @@ export default {
   <div class="grid-item">
     <div style="height: 10px; background-color: green; position: absolute; bottom: 0"
       :style="{
-        width: componentProperties.customCss[componentProperties.customCssActiveMode].width,
-        marginLeft: componentProperties.customCss[componentProperties.customCssActiveMode].marginLeft,
-        marginRight: componentProperties.customCss[componentProperties.customCssActiveMode].marginRight,
+        width: subcomponents.customCss[subcomponents.customCssActiveMode].width,
+        marginLeft: subcomponents.customCss[subcomponents.customCssActiveMode].marginLeft,
+        marginRight: subcomponents.customCss[subcomponents.customCssActiveMode].marginRight,
       }"></div>
   </div>
   <div class="grid-item"></div>  
   <div class="grid-item">
     <div style="width: 10px; background-color: green; float: right"
       :style="{
-        height: componentProperties.customCss[componentProperties.customCssActiveMode].height,
-        marginTop: componentProperties.customCss[componentProperties.customCssActiveMode].marginTop,
-        marginBottom: componentProperties.customCss[componentProperties.customCssActiveMode].marginBottom,
+        height: subcomponents.customCss[subcomponents.customCssActiveMode].height,
+        marginTop: subcomponents.customCss[subcomponents.customCssActiveMode].marginTop,
+        marginBottom: subcomponents.customCss[subcomponents.customCssActiveMode].marginBottom,
       }"></div>
   </div>
   <div class="grid-item">
     <button
-      @mouseover="componentMouseOver(componentProperties.customCss)"
-      @mouseleave="componentMouseLeave(componentProperties.customCss)"
-      @mousedown="componentMouseDown(componentProperties.customCss)"
-      @mouseup="componentMouseUp(componentProperties.customCss)"
-      :style="componentProperties.customCss[componentProperties.customCssActiveMode]"
-      v-html="componentProperties.innerHtml">
+      @mouseover="componentMouseOver(subcomponents.customCss)"
+      @mouseleave="componentMouseLeave(subcomponents.customCss)"
+      @mousedown="componentMouseDown(subcomponents.customCss)"
+      @mouseup="componentMouseUp(subcomponents.customCss)"
+      :style="subcomponents.customCss[subcomponents.customCssActiveMode]"
+      v-html="subcomponents.innerHtml">
     </button>
   </div>
   <div class="grid-item">
     <div style="width: 10px; background-color: green"
       :style="{
-        height: componentProperties.customCss[componentProperties.customCssActiveMode].height,
-        marginTop: componentProperties.customCss[componentProperties.customCssActiveMode].marginTop,
-        marginBottom: componentProperties.customCss[componentProperties.customCssActiveMode].marginBottom,
+        height: subcomponents.customCss[subcomponents.customCssActiveMode].height,
+        marginTop: subcomponents.customCss[subcomponents.customCssActiveMode].marginTop,
+        marginBottom: subcomponents.customCss[subcomponents.customCssActiveMode].marginBottom,
       }"></div>
   </div>  
   <div class="grid-item"></div>
   <div class="grid-item">
     <div style="width: 100%; height: 10px; background-color: green"
       :style="{
-          width: componentProperties.customCss[componentProperties.customCssActiveMode].width,
-          marginLeft: componentProperties.customCss[componentProperties.customCssActiveMode].marginLeft,
-          marginRight: componentProperties.customCss[componentProperties.customCssActiveMode].marginRight,
+          width: subcomponents.customCss[subcomponents.customCssActiveMode].width,
+          marginLeft: subcomponents.customCss[subcomponents.customCssActiveMode].marginLeft,
+          marginRight: subcomponents.customCss[subcomponents.customCssActiveMode].marginRight,
         }"></div>
   </div>
   <div class="grid-item"></div>  

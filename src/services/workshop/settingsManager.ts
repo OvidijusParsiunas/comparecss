@@ -1,26 +1,26 @@
+import { WorkshopComponent, SubcomponentProperties } from '../../interfaces/workshopComponent';
 import { NEW_COMPONENT_TYPES } from '../../consts/newComponentTypes.enum';
-import { WorkshopComponent, ComponentProperties } from '../../interfaces/workshopComponent';
 import { COMPONENT_MODES } from '../../consts/componentModes.enum';
 import ComponentJs from './componentJs';
 
 export default class SettingsManager {
 
-  private static resetJs(componentProperties: ComponentProperties, type: NEW_COMPONENT_TYPES): void {
-    const classesToBeRemoved = [ ...componentProperties.jsClasses ].filter((jsClass) => !componentProperties.initialJsClasses.has(jsClass));
-    const classesToBeAdded = [ ...componentProperties.jsClasses ].filter((jsClass) => !componentProperties.jsClasses.has(jsClass));
+  private static resetJs(subcomponentProperties: SubcomponentProperties, type: NEW_COMPONENT_TYPES): void {
+    const classesToBeRemoved = [ ...subcomponentProperties.jsClasses ].filter((jsClass) => !subcomponentProperties.initialJsClasses.has(jsClass));
+    const classesToBeAdded = [ ...subcomponentProperties.jsClasses ].filter((jsClass) => !subcomponentProperties.jsClasses.has(jsClass));
     ComponentJs.manipulateJSClasses(classesToBeRemoved, type, 'remove');
     ComponentJs.manipulateJSClasses(classesToBeAdded, type, 'add');
-    componentProperties.jsClasses = new Set(componentProperties.initialJsClasses);
+    subcomponentProperties.jsClasses = new Set(subcomponentProperties.initialJsClasses);
   }
 
-  private static resetCss(componentProperties: ComponentProperties, activeMode: COMPONENT_MODES): void {
-    componentProperties.customCss[activeMode] = { ...componentProperties.initialCss[activeMode] };
+  private static resetCss(subcomponentProperties: SubcomponentProperties, activeMode: COMPONENT_MODES): void {
+    subcomponentProperties.customCss[activeMode] = { ...subcomponentProperties.initialCss[activeMode] };
   }
 
   static resetComponentProperties(component: WorkshopComponent, activeMode: COMPONENT_MODES): void {
-    const { type, componentProperties } = component;
-    this.resetCss(componentProperties, activeMode);
-    this.resetJs(componentProperties, type);
+    const { type, subcomponents, subcomponentsActiveMode } = component;
+    this.resetCss(subcomponents[subcomponentsActiveMode], activeMode);
+    this.resetJs(subcomponents[subcomponentsActiveMode], type);
   }
 }
   

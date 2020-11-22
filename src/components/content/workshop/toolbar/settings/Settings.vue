@@ -12,9 +12,9 @@
                 </div>
                 <div style="position: relative; float: left">
                   <div class="range-popover">
-                    {{setting.spec.partialCss !== undefined && componentProperties.customCss[componentProperties.customCssActiveMode][setting.spec.cssProperty]
-                      ? componentProperties.customCss[componentProperties.customCssActiveMode][setting.spec.cssProperty].split(' ')[setting.spec.partialCss.position]
-                      : componentProperties.customCss[componentProperties.customCssActiveMode][setting.spec.cssProperty]}}
+                    {{setting.spec.partialCss !== undefined && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]
+                      ? subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty].split(' ')[setting.spec.partialCss.position]
+                      : subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]}}
                   </div>
                   <input type="range" class="form-control-range" id="formControlRange"
                     v-bind:min="customSettingsProperties[setting.spec.cssProperty] ? customSettingsProperties[setting.spec.cssProperty][0] : setting.spec.scale[0]"
@@ -55,7 +55,7 @@
                   {{setting.spec.name}}
                 </div>
                 <div class="input-group">
-                  <input type="text" class="form-control" aria-label="Text input with dropdown button" v-bind:value="inputDropdownNewValues[setting.spec.cssProperty] || componentProperties.customCss[componentProperties.customCssActiveMode][setting.spec.cssProperty]" @input="inputDropdownKeyboardInput($event, setting.spec.cssProperty)" :ref="`elementReference${settingIndex}`" @keyup.enter="blurInputDropdown(`elementReference${settingIndex}`)">
+                  <input type="text" class="form-control" aria-label="Text input with dropdown button" v-bind:value="inputDropdownNewValues[setting.spec.cssProperty] || subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]" @input="inputDropdownKeyboardInput($event, setting.spec.cssProperty)" :ref="`elementReference${settingIndex}`" @keyup.enter="blurInputDropdown(`elementReference${settingIndex}`)">
                   <div class="input-group-append">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="openDropdown(setting.spec.cssProperty)"></button>
                     <div class="dropdown-menu" @mouseleave="inputDropdownOptionMouseLeave(setting.spec.cssProperty)">
@@ -95,34 +95,36 @@ export default {
     selectorNewValues: {},
     inputDropdownNewValues: {},
     getCurrentValue: function(activeMode, cssProperty) {
+      const { customCss } = this.subcomponentproperties;
       switch (activeMode) {
         case (COMPONENT_MODES.CLICK):
-          if (this.componentProperties.customCss[COMPONENT_MODES.CLICK][cssProperty]) {
-            return this.componentProperties.customCss[COMPONENT_MODES.CLICK][cssProperty];
+          if (customCss[COMPONENT_MODES.CLICK][cssProperty]) {
+            return customCss[COMPONENT_MODES.CLICK][cssProperty];
           }
         case (COMPONENT_MODES.HOVER):
-          if (this.componentProperties.customCss[COMPONENT_MODES.HOVER][cssProperty]) {
-            return this.componentProperties.customCss[COMPONENT_MODES.HOVER][cssProperty];
+          if (customCss[COMPONENT_MODES.HOVER][cssProperty]) {
+            return customCss[COMPONENT_MODES.HOVER][cssProperty];
           }
         case (COMPONENT_MODES.DEFAULT):
-          if (this.componentProperties.customCss[COMPONENT_MODES.DEFAULT][cssProperty]) {
-            return this.componentProperties.customCss[COMPONENT_MODES.DEFAULT][cssProperty];
+          if (customCss[COMPONENT_MODES.DEFAULT][cssProperty]) {
+            return customCss[COMPONENT_MODES.DEFAULT][cssProperty];
           }
         default:
           return undefined;
       }
     },
     resetSettings: function() {
+      const { customCss, customCssActiveMode, jsClasses } = this.subcomponentproperties;
       this.selectorNewValues = {};
       this.inputDropdownNewValues = {};
       (this.settings.options || []).forEach((setting) => {
         if (setting.type === 'range') {
-          const currentValue = this.getCurrentValue(this.componentProperties.customCssActiveMode, setting.spec.cssProperty);
+          const currentValue = this.getCurrentValue(customCssActiveMode, setting.spec.cssProperty);
           if (currentValue !== undefined) {
             (setting.triggers || []).forEach((trigger) => {
               trigger.conditions.forEach((condition) => {
-                if (this.getCurrentValue(this.componentProperties.customCssActiveMode, trigger.cssProperty) === condition) {
-                  this.componentProperties.customCss[this.componentProperties.customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
+                if (this.getCurrentValue(customCssActiveMode, trigger.cssProperty) === condition) {
+                  customCss[customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
                   this.selectorNewValues[setting.spec.cssProperty] = trigger.defaultValue;
                 }
               })
@@ -132,19 +134,19 @@ export default {
         } else if (setting.type === 'select') {
           // default value for range is currently setting the select value, not the select value for ranges
           // potential race condition where range sets the select value and select may set it to something incorrect
-          const currentValue = this.getCurrentValue(this.componentProperties.customCssActiveMode, setting.spec.cssProperty);
+          const currentValue = this.getCurrentValue(customCssActiveMode, setting.spec.cssProperty);
           if (currentValue) { this.selectorNewValues[setting.spec.cssProperty] = currentValue; }
         } else if (setting.type === 'colorPicker') {
-          const currentValue = this.getCurrentValue(this.componentProperties.customCssActiveMode, setting.spec.cssProperty);
+          const currentValue = this.getCurrentValue(customCssActiveMode, setting.spec.cssProperty);
           if (currentValue) { setting.spec.default = setting.spec.partialCss ? currentValue.split(' ')[setting.spec.partialCss.position] : currentValue; }
         } else if (setting.type === 'inputDropdown') {
-          const currentValue = this.getCurrentValue(this.componentProperties.customCssActiveMode, setting.spec.cssProperty);
+          const currentValue = this.getCurrentValue(customCssActiveMode, setting.spec.cssProperty);
           if (currentValue) { this.inputDropdownNewValues[setting.spec.cssProperty] = currentValue; }
         } else if (setting.type === 'checkbox') {
           if (setting.spec.javascript) {
-            setting.spec.default = this.componentProperties.jsClasses.has(setting.spec.jsClassName);
+            setting.spec.default = jsClasses.has(setting.spec.jsClassName);
           } else {
-            const currentValue = this.getCurrentValue(this.componentProperties.customCssActiveMode, setting.spec.cssProperty);
+            const currentValue = this.getCurrentValue(customCssActiveMode, setting.spec.cssProperty);
             if (currentValue) { setting.spec.default = (currentValue === setting.spec.conditionalStyle.truthy); }
           }
         }
@@ -157,6 +159,7 @@ export default {
     updateRange(event: KeyboardEvent, setting: any): void {
       const {triggers, spec} = setting;
       const {cssProperty, smoothingDivisible, partialCss } = spec;
+      const { customCss, customCssActiveMode } = this.subcomponentproperties;
       (triggers || []).forEach((trigger) => {
         if (trigger.indirectCssPropertySelector) {
           this.settings.options.forEach((setting) => {
@@ -171,8 +174,8 @@ export default {
           )
         } else {
           trigger.conditions.forEach((condition) => {
-            if (this.componentProperties.customCss[this.componentProperties.customCssActiveMode][trigger.cssProperty] === condition) {
-              this.componentProperties.customCss[this.componentProperties.customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
+            if (customCss[customCssActiveMode][trigger.cssProperty] === condition) {
+              customCss[customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
               if (trigger.selector) { this.selectorNewValues[trigger.cssProperty] = trigger.defaultValue; }
             }
           }); 
@@ -180,16 +183,16 @@ export default {
       });
       const rangeValue = (event.target as HTMLInputElement).value;
       if (partialCss != undefined) {
-        if (this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] === undefined) {
+        if (customCss[customCssActiveMode][cssProperty] === undefined) {
           partialCss.fullDefaultValues[partialCss.position] = rangeValue;
-          this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] = partialCss.fullDefaultValues.join(' ');
+          customCss[customCssActiveMode][cssProperty] = partialCss.fullDefaultValues.join(' ');
         } else {
-          const cssPropertyValues = this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty].split(' ');
+          const cssPropertyValues = customCss[customCssActiveMode][cssProperty].split(' ');
           cssPropertyValues[partialCss.position] = `${rangeValue}px`;
-          this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] = cssPropertyValues.join(' ');
+          customCss[customCssActiveMode][cssProperty] = cssPropertyValues.join(' ');
         }
       } else {
-        this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] = `${Math.floor(rangeValue as unknown as number / smoothingDivisible)}px`;
+        customCss[customCssActiveMode][cssProperty] = `${Math.floor(rangeValue as unknown as number / smoothingDivisible)}px`;
       }
     },
     rangeMouseDown(event: KeyboardEvent): void {
@@ -199,24 +202,25 @@ export default {
       ((event.target as HTMLInputElement).parentElement.childNodes[0] as HTMLElement).style.opacity = '0';
     },
     selectOptionMouseOver(option: string, cssProperty: string): void {
-      this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] = option;
+      this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = option;
     },
     selectMenuMouseLeave(cssProperty: string): void {
-      this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] = this.selectorNewValues[cssProperty];
+      this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = this.selectorNewValues[cssProperty];
     },
     openDropdown(cssProperty: string): void {
-      this.inputDropdownNewValues[cssProperty] = this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty];
+      this.inputDropdownNewValues[cssProperty] = this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty];
     },
     selectOptionClick(option: string, spec: any): void {
       const { cssProperty, triggers, } = spec;
+      const { customCss, customCssActiveMode } = this.subcomponentproperties;
       if (cssProperty) {
-        this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] = option;
+        customCss[customCssActiveMode][cssProperty] = option;
         this.selectorNewValues[cssProperty] = option;
       } else if (triggers) {
         (triggers || []).forEach((trigger) => {
           if (trigger.option === option) {
             trigger.newChanges.forEach((change) => {
-              this.componentProperties.customCss[this.componentProperties.customCssActiveMode][change.cssProperty] = change.value;
+              customCss[customCssActiveMode][change.cssProperty] = change.value;
               this.settings.options.forEach((setting) => {
                 if (setting.spec.cssProperty === change.cssProperty) {
                   setting.spec.default = change.defaultValue;
@@ -229,20 +233,20 @@ export default {
       }
     },
     inputDropdownOptionClick(option: string, cssProperty: string): void {
-      this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] = option;
+      this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = option;
       this.inputDropdownNewValues[cssProperty] = '';
     },
     inputDropdownOptionMouseOver(option: string, cssProperty: string): void {
-      this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] = option;
+      this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = option;
     },
     inputDropdownOptionMouseLeave(cssProperty: string): void {
       if (this.inputDropdownNewValues[cssProperty]) {
-        this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] = this.inputDropdownNewValues[cssProperty];
+        this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = this.inputDropdownNewValues[cssProperty];
         this.inputDropdownNewValues[cssProperty] = '';
       }
     },
     inputDropdownKeyboardInput(event: KeyboardEvent, cssProperty: string): void {
-      this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] = (event.target as HTMLInputElement).value;
+      this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = (event.target as HTMLInputElement).value;
     },
     blurInputDropdown(referenceId: string): void {
       this.$refs[referenceId].blur();
@@ -250,41 +254,43 @@ export default {
     colorChanged(event: KeyboardEvent, setting: any): void {
       const {cssProperty, partialCss } = setting.spec;
       const colorPickerValue = (event.target as HTMLInputElement).value;
+      const { customCss, customCssActiveMode } = this.subcomponentproperties;
       if (partialCss != undefined) {
-        if (this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] === undefined) {
+        if (customCss[customCssActiveMode][cssProperty] === undefined) {
           partialCss.fullDefaultValues[partialCss.position] = colorPickerValue;
-          this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] = partialCss.fullDefaultValues.join(' ');
+          customCss[customCssActiveMode][cssProperty] = partialCss.fullDefaultValues.join(' ');
         } else {
-          const cssPropertyValues = this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty].split(' ');
+          const cssPropertyValues = customCss[customCssActiveMode][cssProperty].split(' ');
           cssPropertyValues[partialCss.position] = colorPickerValue;
-          this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] = cssPropertyValues.join(' ');
+          customCss[customCssActiveMode][cssProperty] = cssPropertyValues.join(' ');
         }
       } else {
-        this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] = colorPickerValue;
+        customCss[customCssActiveMode][cssProperty] = colorPickerValue;
       }
     },
     colorInputClick(): void {
-      this.componentProperties.customCss[this.componentProperties.customCssActiveMode].transition = 'unset';
+      this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode].transition = 'unset';
     },
     checkboxMouseClick(spec: any, previousCheckboxValue: boolean): void {
       const { conditionalStyle, cssProperty, javascript, jsClassName, componentId } = spec;
+      const { customCss, customCssActiveMode, jsClasses } = this.subcomponentproperties;
       const newCheckboxValue = !previousCheckboxValue;
       if (javascript) {
         if (newCheckboxValue) {
           document.getElementById(componentId).classList.add(jsClassName);
-          this.componentProperties.jsClasses.add(jsClassName);
+          jsClasses.add(jsClassName);
         } else {
           document.getElementById(componentId).classList.remove(jsClassName);
-          this.componentProperties.jsClasses.delete(jsClassName);
+          jsClasses.delete(jsClassName);
         }
       } else {
         const cssValue = newCheckboxValue ? conditionalStyle.truthy : conditionalStyle.falsy;
-        this.componentProperties.customCss[this.componentProperties.customCssActiveMode][cssProperty] = cssValue;
+        customCss[customCssActiveMode][cssProperty] = cssValue;
       }
     }
   },
   props: {
-    componentProperties: Object,
+    subcomponentproperties: Object,
     customSettingsProperties: Object,
     settings: Object,
     settingsResetTriggered: Boolean,
@@ -298,7 +304,7 @@ export default {
       // forcing a settings re-render when changing to a different component
       // cannot use nextTick() because it is triggered when anything in settings does change
       setTimeout(() => {
-        this.componentProperties.customCss[this.componentProperties.customCssActiveMode] = { ...this.componentProperties.customCss[this.componentProperties.customCssActiveMode]} ;
+        this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode] = { ...this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode]} ;
       });
     }
   }

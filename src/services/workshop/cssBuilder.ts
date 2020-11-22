@@ -68,13 +68,13 @@ export default class CssBuilder {
     let customCss = '';
     const uniqueInheritedCss: UniqueInheritedCss = {};
     components.forEach((component) => {
-      const { className, componentProperties } = component;
-      customCss += `${this.buildCustomCss(className, componentProperties.customCss, componentProperties.tempCustomCss)}\r\n`;
-      if (!componentProperties.inheritedCss) return;
-      if (!uniqueInheritedCss.hasOwnProperty(componentProperties.inheritedCss.typeName)) {
-        uniqueInheritedCss[componentProperties.inheritedCss.typeName] = { classes: [`.${className}`], css: componentProperties.inheritedCss.css };
+      const { className, subcomponents, subcomponentsActiveMode } = component;
+      customCss += `${this.buildCustomCss(className, subcomponents[subcomponentsActiveMode].customCss, subcomponents[subcomponentsActiveMode].tempCustomCss)}\r\n`;
+      if (!subcomponents[subcomponentsActiveMode].inheritedCss) return;
+      if (!uniqueInheritedCss.hasOwnProperty(subcomponents[subcomponentsActiveMode].inheritedCss.typeName)) {
+        uniqueInheritedCss[subcomponents[subcomponentsActiveMode].inheritedCss.typeName] = { classes: [`.${className}`], css: subcomponents[subcomponentsActiveMode].inheritedCss.css };
       } else {
-        uniqueInheritedCss[componentProperties.inheritedCss.typeName].classes.push(`.${className}`);
+        uniqueInheritedCss[subcomponents[subcomponentsActiveMode].inheritedCss.typeName].classes.push(`.${className}`);
       }
     });
     return [customCss, uniqueInheritedCss];

@@ -4,12 +4,13 @@ import { InheritedCss } from './inheritedCss';
 import { COMPONENT_MODES } from '../consts/componentModes.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { TempCustomCss } from './tempCustomCss';
+import { SUB_COMPONENTS } from '../consts/subcomponentModes.enum';
 
 export type CustomCss = {
   [key in COMPONENT_MODES]?: WorkshopComponentCss;
 }
 
-export interface ComponentProperties {
+export interface SubcomponentProperties {
   frameworkClass: string;
   componentTag: string;
   innerHtmlText: string;
@@ -19,8 +20,8 @@ export interface ComponentProperties {
   inheritedCss?: InheritedCss;
   customCssActiveMode?: COMPONENT_MODES;
   transition: any;
-  jsClasses: ComponentJavascriptClasses,
-  initialJsClasses: ComponentJavascriptClasses,
+  jsClasses: ComponentJavascriptClasses;
+  initialJsClasses: ComponentJavascriptClasses;
 }
 
 export interface customSettingsProperties {
@@ -28,9 +29,14 @@ export interface customSettingsProperties {
   height: number[],
 }
 
+type subcomponents = {
+  [property in SUB_COMPONENTS]?: SubcomponentProperties;
+}
+
 export interface WorkshopComponent {
   type: NEW_COMPONENT_TYPES;
-  componentProperties: ComponentProperties;
+  subcomponents: subcomponents;
+  subcomponentsActiveMode: SUB_COMPONENTS,
   className: string;
   customSettingsProperties?: customSettingsProperties;
 }

@@ -3,10 +3,17 @@
     <div style="width: 98.5%; height: 228px">
       <div style="display: flex; background-color: rgb(251 251 251); border-radius: 20px;">
         <div style="margin-left: 10px; padding: 5px">
-          <options ref="options" :component="component" @option-clicked="updateSettings" @mode-clicked="updateMode"/>
+          <options ref="options"
+            :component="component"
+            @option-clicked="updateSettings"
+            @mode-clicked="updateMode"/>
         </div>
       </div>
-      <settings :componentProperties="component.componentProperties" :customSettingsProperties="component.customSettingsProperties" :settings="activeSettings" :settingsResetTriggered="settingsResetTriggered"/>
+      <settings
+        :subcomponentproperties="component.subcomponents[component.subcomponentsActiveMode]"
+        :customSettingsProperties="component.customSettingsProperties"
+        :settings="activeSettings"
+        :settingsResetTriggered="settingsResetTriggered"/>
     </div>
   </div>
 </template>
