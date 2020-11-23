@@ -1,3 +1,4 @@
+when hovering a subcomponent mode option, should highlight the area
 calculate the alert height size after the css file has been exported
 calculate height by:
   (current height - default height) / 2 = padding

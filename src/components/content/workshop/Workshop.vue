@@ -79,7 +79,7 @@ import { inheritedButtonCss } from './newComponent/types/buttons/properties/inhe
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
-import { UpdateCssMode } from '../../../interfaces/updateCssMode';
+import { UpdateOptionsMode } from '../../../interfaces/updateCssMode';
 import ProcessClassName from '../../../services/workshop/newComponent/processClassName';
 import ComponentJs from '../../../services/workshop/componentJs';
 import { SUB_COMPONENT_CSS_MODES } from '../../../consts/subcomponentCssModes.enum';
@@ -280,7 +280,7 @@ export default {
       }
       this.components.push(newComponent);
       this.switchActiveComponent(newComponent);
-      if (this.components.length > 1) { this.$refs.toolbar.updateMode([subcomponents[subcomponentsActiveMode].customCssActiveMode] as UpdateCssMode); }
+      if (this.components.length > 1) { this.$refs.toolbar.updateCssMode([subcomponents[subcomponentsActiveMode].customCssActiveMode] as UpdateOptionsMode); }
     },
     componentCardSelected(selectedComponent: WorkshopComponent): void {
       if (this.currentlySelectedComponent !== selectedComponent) {
@@ -293,7 +293,7 @@ export default {
           selectedComponent.subcomponents[selectedComponent.subcomponentsActiveMode].customCssActiveMode = SUB_COMPONENT_CSS_MODES.DEFAULT;
         }
         this.switchActiveComponent(selectedComponent);
-        this.$refs.toolbar.updateMode([subcomponents[subcomponentsActiveMode].customCssActiveMode] as UpdateCssMode);
+        this.$refs.toolbar.updateCssMode([subcomponents[subcomponentsActiveMode].customCssActiveMode] as UpdateOptionsMode);
       }
     },
     componentCardCopied(selectComponentCard: WorkshopComponent): void {
@@ -318,7 +318,7 @@ export default {
       } else {
         this.switchActiveComponent(this.components[componentIndex]);
       }
-      this.$refs.toolbar.updateMode([subcomponents[subcomponentsActiveMode].customCssActiveMode] as UpdateCssMode);
+      this.$refs.toolbar.updateCssMode([subcomponents[subcomponentsActiveMode].customCssActiveMode] as UpdateOptionsMode);
     },
     download(): void {
       const resultCss = `${cssBuilder.build(this.components).trim()}\r\n`;

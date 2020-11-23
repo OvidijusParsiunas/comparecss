@@ -1,53 +1,78 @@
 <template>
-  <div>
-    <div v-if="componentType === NEW_COMPONENT_TYPES.ALERT">
-      <button class="alert-close-button" type="button" aria-label="Close">
-        <span aria-hidden="true">×</span>
-      </button>
-    </div>
+  <div v-if="componentType === NEW_COMPONENT_TYPES.ALERT">
+    <button type="button" aria-label="Close"
+      @mouseenter="componentMouseEnter()"
+      @mouseleave="componentMouseLeave()"
+      @mousedown="componentMouseDown()"
+      @mouseup="componentMouseUp()"
+      :style="subcomponent.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
+        ? [
+            [ subcomponent.inheritedCss ? subcomponent.inheritedCss.css: '' ],
+            subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+            subcomponent.customCss[SUB_COMPONENT_CSS_MODES.HOVER],
+            subcomponent.customCss[SUB_COMPONENT_CSS_MODES.CLICK],
+          ]
+        : [
+            [ subcomponent.inheritedCss ? subcomponent.inheritedCss.css: '' ],
+            subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+            subcomponent.customCss[subcomponent.customCssActiveMode],
+          ]">
+      <div aria-hidden="true" id="demoComponent2">×</div>
+    </button>
   </div>
 </template>
 
 <script lang="ts">
+import { SUB_COMPONENT_CSS_MODES } from '@/consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
+import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 
 interface Data {
-  NEW_COMPONENT_TYPES,
+  SUB_COMPONENT_CSS_MODES;
+  NEW_COMPONENT_TYPES;
+  SUB_COMPONENTS;
 }
 
 export default {
   data: (): Data => ({
+    SUB_COMPONENT_CSS_MODES,
     NEW_COMPONENT_TYPES,
+    SUB_COMPONENTS,
   }),
+  methods: {
+    componentMouseEnter(): void {
+      const { customCss, transition, customCssActiveMode } = this.subcomponent;
+      if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
+        this.overwrittenDefaultPropertiesByHover = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], transition };
+        customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], ...customCss[SUB_COMPONENT_CSS_MODES.HOVER], transition };
+      }
+    },
+    componentMouseLeave(): void {
+      const { customCss, customCssActiveMode } = this.subcomponent;
+      if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
+        customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByHover };
+      }
+    },
+    componentMouseDown(): void {
+      const { customCss, transition, customCssActiveMode } = this.subcomponent;
+      if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
+        this.overwrittenDefaultPropertiesByClick = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], transition };
+        customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], ...customCss[SUB_COMPONENT_CSS_MODES.CLICK], transition };
+      }
+    },
+    componentMouseUp(): void {
+      const { customCss, customCssActiveMode } = this.subcomponent;
+      if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
+        customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByClick };
+      }
+    },
+    componentPreviewMouseLeave(): void {
+      this.subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].transition = 'unset';
+    }
+  },
   props: {
     componentType: String,
+    subcomponent: Object,
   }
 }
 </script>
-
-<style lang="css" scoped>
-  .alert-close-button {
-    outline: none;
-    -webkit-tap-highlight-color: rgba(0,0,0,0);
-    box-sizing: border-box;
-    border-radius: 0;
-    margin: 0;
-    overflow: visible;
-    text-transform: none;
-    font-family: -apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol;
-    float: right;
-    font-size: 1.5rem;
-    font-weight: 700;
-    line-height: 1;
-    text-shadow: 0 1px 0 #fff;
-    opacity: .5;
-    background-color: transparent;
-    border: 0;
-    cursor: pointer;
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 12px 20px;
-    color: inherit;
-  }
-</style>

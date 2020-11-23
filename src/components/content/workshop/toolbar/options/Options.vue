@@ -24,7 +24,7 @@
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../consts/workshopToolbarOptions';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import { componentTypeToOptions } from '../options/components/componentTypeToOptions';
-import { UpdateCssMode } from '../../../../../interfaces/updateCssMode';
+import { UpdateOptionsMode } from '../../../../../interfaces/updateCssMode';
 
 interface Data {
   WORKSHOP_TOOLBAR_OPTIONS;
@@ -46,10 +46,10 @@ export default {
       this.$emit('option-clicked', option);
     },
     subcomponentsModeClick(): void {
-      this.$emit('subcomponents-mode-clicked', [this.component.subcomponents[this.component.subcomponentsActiveMode].customCssActiveMode, this.getNewCssModeContainsActiveOptionState()] as UpdateCssMode);
+      this.$emit('subcomponents-mode-clicked', [this.component.subcomponentsActiveMode, this.getNewCssModeContainsActiveOptionState()] as UpdateOptionsMode);
     },
     cssModeClick(): void {
-      this.$emit('css-mode-clicked', [this.component.subcomponents[this.component.subcomponentsActiveMode].customCssActiveMode, this.getNewCssModeContainsActiveOptionState()] as UpdateCssMode);
+      this.$emit('css-mode-clicked', [this.component.subcomponents[this.component.subcomponentsActiveMode].customCssActiveMode, this.getNewCssModeContainsActiveOptionState()] as UpdateOptionsMode);
     },
     getNewCssModeContainsActiveOptionState(activeMode?: SUB_COMPONENT_CSS_MODES): boolean {
       const { subcomponents, subcomponentsActiveMode, type } = this.component;

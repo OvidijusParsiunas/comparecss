@@ -22,21 +22,21 @@
               @mouseleave="componentMouseLeave()"
               @mousedown="componentMouseDown()"
               @mouseup="componentMouseUp()"
-              :style="component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
+              :style="component.subcomponents[SUB_COMPONENTS.CONTAINER].customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
                 ? [
-                    [ component.subcomponents[component.subcomponentsActiveMode].inheritedCss ? component.subcomponents[component.subcomponentsActiveMode].inheritedCss.css: '' ],
-                    component.subcomponents[component.subcomponentsActiveMode].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
-                    component.subcomponents[component.subcomponentsActiveMode].customCss[SUB_COMPONENT_CSS_MODES.HOVER],
-                    component.subcomponents[component.subcomponentsActiveMode].customCss[SUB_COMPONENT_CSS_MODES.CLICK],
+                    [ component.subcomponents[SUB_COMPONENTS.CONTAINER].inheritedCss ? component.subcomponents[SUB_COMPONENTS.CONTAINER].inheritedCss.css: '' ],
+                    component.subcomponents[SUB_COMPONENTS.CONTAINER].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+                    component.subcomponents[SUB_COMPONENTS.CONTAINER].customCss[SUB_COMPONENT_CSS_MODES.HOVER],
+                    component.subcomponents[SUB_COMPONENTS.CONTAINER].customCss[SUB_COMPONENT_CSS_MODES.CLICK],
                   ]
                 : [
-                    [ component.subcomponents[component.subcomponentsActiveMode].inheritedCss ? component.subcomponents[component.subcomponentsActiveMode].inheritedCss.css: '' ],
-                    component.subcomponents[component.subcomponentsActiveMode].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
-                    component.subcomponents[component.subcomponentsActiveMode].customCss[component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode],
+                    [ component.subcomponents[SUB_COMPONENTS.CONTAINER].inheritedCss ? component.subcomponents[SUB_COMPONENTS.CONTAINER].inheritedCss.css: '' ],
+                    component.subcomponents[SUB_COMPONENTS.CONTAINER].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+                    component.subcomponents[SUB_COMPONENTS.CONTAINER].customCss[component.subcomponents[SUB_COMPONENTS.CONTAINER].customCssActiveMode],
                   ]">
-              {{ component.type === NEW_COMPONENT_TYPES.BUTTON ? component.subcomponents[component.subcomponentsActiveMode].innerHtmlText : '' }}
+              {{ component.type === NEW_COMPONENT_TYPES.BUTTON ? component.subcomponents[SUB_COMPONENTS.CONTAINER].innerHtmlText : '' }}
               <divInnerHtml :componentType="component.type" :innerHTML="component.subcomponents[component.subcomponentsActiveMode].innerHtmlText"/>
-              <auxiliary-right-side-elements :componentType="component.type"/>
+              <auxiliary-right-side-elements :componentType="component.type" :subcomponent="component.subcomponents[SUB_COMPONENTS.CLOSE]"/>
             </component>
           </div>
           <div class="grid-item">
@@ -60,6 +60,7 @@
 <script lang="ts">
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
+import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import auxiliaryRightSideElements from './AuxiliaryRightSideElements.vue';
 import divInnerHtml from './divInnerHTML.vue';
 
@@ -68,6 +69,7 @@ interface Data {
   overwrittenDefaultPropertiesByClick: unknown,
   SUB_COMPONENT_CSS_MODES,
   NEW_COMPONENT_TYPES,
+  SUB_COMPONENTS,
 }
 
 export default {
@@ -76,6 +78,7 @@ export default {
     overwrittenDefaultPropertiesByClick: {},
     SUB_COMPONENT_CSS_MODES,
     NEW_COMPONENT_TYPES,
+    SUB_COMPONENTS,
   }),
   methods: {
     // important to note that default can have properties that hover and click modes do not, but hover and click cannot have properties that default doesn't

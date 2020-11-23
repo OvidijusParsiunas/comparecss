@@ -28,7 +28,7 @@ interface Data {
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOptions';
 import { optionToSettings } from './settings/types/optionToSettings';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
-import { UpdateCssMode } from '../../../../interfaces/updateCssMode';
+import { UpdateOptionsMode } from '../../../../interfaces/updateCssMode';
 import SettingsManager from '../../../../services/workshop/settingsManager';
 import settings from './settings/Settings.vue';
 import options from './options/Options.vue';
@@ -53,7 +53,7 @@ export default {
         this.componentPreviewAssistance.margin = newSettings === WORKSHOP_TOOLBAR_OPTIONS.MARGIN;
       }
     },
-    updateCssMode(newCssMode: UpdateCssMode): void {
+    updateCssMode(newCssMode: UpdateOptionsMode): void {
       if (newCssMode[0]) this.activeCssMode = newCssMode[0];
       let newCssModeContainsActiveOption = newCssMode[1];
       if (newCssModeContainsActiveOption === undefined) {
@@ -65,8 +65,8 @@ export default {
       }
       this.triggerSettingsReset();
     },
-    updateSubcomponentsMode(updateSubcomponentsMode: any): void {
-
+    updateSubcomponentsMode(updateSubcomponentsMode: UpdateOptionsMode): void {
+      this.triggerSettingsReset();
     },
     triggerSettingsReset(): void {
       // this trigger type is used instead of a ref method because this will only trigger the settings-reset when

@@ -11,6 +11,7 @@ export interface WorkshopComponentCss {
   fontFamily?: string;
   textAlign?: string;
   fontSize?: string;
+  fontWeight?: string;
   display?: string;
   outline?: string;
   paddingTop?: string;
@@ -26,4 +27,8 @@ export interface WorkshopComponentCss {
   boxSizing?: string;
   cursor?: string;
   verticalAlign?: string;
+  position?: string;
+  top?: string;
+  right?: string;
+  float?: string;
 }
