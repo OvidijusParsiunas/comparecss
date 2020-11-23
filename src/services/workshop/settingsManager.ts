@@ -1,6 +1,6 @@
 import { WorkshopComponent, SubcomponentProperties } from '../../interfaces/workshopComponent';
 import { NEW_COMPONENT_TYPES } from '../../consts/newComponentTypes.enum';
-import { COMPONENT_MODES } from '../../consts/componentModes.enum';
+import { SUB_COMPONENT_CSS_MODES } from '../../consts/subcomponentCssModes.enum';
 import ComponentJs from './componentJs';
 
 export default class SettingsManager {
@@ -13,11 +13,11 @@ export default class SettingsManager {
     subcomponentProperties.jsClasses = new Set(subcomponentProperties.initialJsClasses);
   }
 
-  private static resetCss(subcomponentProperties: SubcomponentProperties, activeMode: COMPONENT_MODES): void {
+  private static resetCss(subcomponentProperties: SubcomponentProperties, activeMode: SUB_COMPONENT_CSS_MODES): void {
     subcomponentProperties.customCss[activeMode] = { ...subcomponentProperties.initialCss[activeMode] };
   }
 
-  static resetComponentProperties(component: WorkshopComponent, activeMode: COMPONENT_MODES): void {
+  static resetComponentProperties(component: WorkshopComponent, activeMode: SUB_COMPONENT_CSS_MODES): void {
     const { type, subcomponents, subcomponentsActiveMode } = component;
     this.resetCss(subcomponents[subcomponentsActiveMode], activeMode);
     this.resetJs(subcomponents[subcomponentsActiveMode], type);

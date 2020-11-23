@@ -81,7 +81,7 @@
 </template>
 
 <script lang="ts">
-import { COMPONENT_MODES } from '../../../../../consts/componentModes.enum';
+import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 
 interface Data {
   selectorNewValues: unknown;
@@ -97,17 +97,17 @@ export default {
     getCurrentValue: function(activeMode, cssProperty) {
       const { customCss } = this.subcomponentproperties;
       switch (activeMode) {
-        case (COMPONENT_MODES.CLICK):
-          if (customCss[COMPONENT_MODES.CLICK][cssProperty]) {
-            return customCss[COMPONENT_MODES.CLICK][cssProperty];
+        case (SUB_COMPONENT_CSS_MODES.CLICK):
+          if (customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty]) {
+            return customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
           }
-        case (COMPONENT_MODES.HOVER):
-          if (customCss[COMPONENT_MODES.HOVER][cssProperty]) {
-            return customCss[COMPONENT_MODES.HOVER][cssProperty];
+        case (SUB_COMPONENT_CSS_MODES.HOVER):
+          if (customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty]) {
+            return customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
           }
-        case (COMPONENT_MODES.DEFAULT):
-          if (customCss[COMPONENT_MODES.DEFAULT][cssProperty]) {
-            return customCss[COMPONENT_MODES.DEFAULT][cssProperty];
+        case (SUB_COMPONENT_CSS_MODES.DEFAULT):
+          if (customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty]) {
+            return customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty];
           }
         default:
           return undefined;

@@ -1,11 +1,11 @@
-import { COMPONENT_MODES } from '../../../../../../consts/componentModes.enum';
-import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../../consts/workshopToolbarOptions';
-import { ComponentOptions } from '../../../../../../interfaces/componentOptions';
+import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
+import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../../../consts/workshopToolbarOptions';
+import { ComponentOptions } from '../../../../../../../interfaces/componentOptions';
 
-type ButtonOptionsModes = COMPONENT_MODES.DEFAULT | COMPONENT_MODES.HOVER | COMPONENT_MODES.CLICK;
+type alertCloseOptionsModes = SUB_COMPONENT_CSS_MODES.DEFAULT | SUB_COMPONENT_CSS_MODES.HOVER | SUB_COMPONENT_CSS_MODES.CLICK;
 
-export const buttonOptions: ComponentOptions<ButtonOptionsModes> = {
-  [COMPONENT_MODES.DEFAULT]: [
+export const alertCloseOptions: ComponentOptions<alertCloseOptionsModes> = {
+  [SUB_COMPONENT_CSS_MODES.DEFAULT]: [
     {
       buttonName: 'Border',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.BORDER,
@@ -39,7 +39,7 @@ export const buttonOptions: ComponentOptions<ButtonOptionsModes> = {
       identifier: WORKSHOP_TOOLBAR_OPTIONS.RESET,
     },
   ],
-  [COMPONENT_MODES.HOVER]: [
+  [SUB_COMPONENT_CSS_MODES.HOVER]: [
     {
       buttonName: 'Border',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.BORDER,
@@ -61,7 +61,7 @@ export const buttonOptions: ComponentOptions<ButtonOptionsModes> = {
       identifier: WORKSHOP_TOOLBAR_OPTIONS.RESET,
     },
   ],
-  [COMPONENT_MODES.CLICK]: [
+  [SUB_COMPONENT_CSS_MODES.CLICK]: [
     {
       buttonName: 'Border',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.BORDER,

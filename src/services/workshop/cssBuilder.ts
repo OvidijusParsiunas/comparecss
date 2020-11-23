@@ -1,5 +1,5 @@
 import { TempCustomCss } from '../../interfaces/tempCustomCss';
-import { COMPONENT_MODES } from '../../consts/componentModes.enum';
+import { SUB_COMPONENT_CSS_MODES } from '../../consts/subcomponentCssModes.enum';
 import { WorkshopComponent, CustomCss } from '../../interfaces/workshopComponent';
 import { WorkshopComponentCss } from '../../interfaces/workshopComponentCss';
 
@@ -37,8 +37,8 @@ export default class CssBuilder {
   private static buildPseudoCss(className: string, customCss: CustomCss,
       tempCustomCss?: TempCustomCss): string {
     let pseudoCssString = '';
-    pseudoCssString += this.buildPseudoClass(className, pseudoClasses.HOVER, customCss[COMPONENT_MODES.HOVER], tempCustomCss);
-    pseudoCssString += this.buildPseudoClass(className, pseudoClasses.ACTIVE, customCss[COMPONENT_MODES.CLICK], tempCustomCss);
+    pseudoCssString += this.buildPseudoClass(className, pseudoClasses.HOVER, customCss[SUB_COMPONENT_CSS_MODES.HOVER], tempCustomCss);
+    pseudoCssString += this.buildPseudoClass(className, pseudoClasses.ACTIVE, customCss[SUB_COMPONENT_CSS_MODES.CLICK], tempCustomCss);
     return pseudoCssString;
   }
 
@@ -50,7 +50,7 @@ export default class CssBuilder {
   }
 
   private static buildCustomCss(className: string, customCss: CustomCss, tempCustomCss?: TempCustomCss): string {
-    const defaultCss = this.buildDefaultCss(className, customCss[COMPONENT_MODES.DEFAULT], tempCustomCss);
+    const defaultCss = this.buildDefaultCss(className, customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], tempCustomCss);
     const pseudoCss = this.buildPseudoCss(className, customCss, tempCustomCss);
     return (defaultCss + ' ' + pseudoCss).trim();
   }

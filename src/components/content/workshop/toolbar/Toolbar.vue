@@ -6,7 +6,8 @@
           <options ref="options"
             :component="component"
             @option-clicked="updateSettings"
-            @mode-clicked="updateMode"/>
+            @subcomponents-mode-clicked="updateSubcomponentsMode"
+            @css-mode-clicked="updateCssMode"/>
         </div>
       </div>
       <settings
@@ -21,13 +22,13 @@
 <script lang="ts">
 interface Data {
   activeSettings: any,
-  activeMode: COMPONENT_MODES,
+  activeCssMode: SUB_COMPONENT_CSS_MODES,
   settingsResetTriggered: boolean,
 }
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOptions';
 import { optionToSettings } from './settings/types/optionToSettings';
-import { COMPONENT_MODES } from '../../../../consts/componentModes.enum';
-import { UpdateMode } from '../../../../interfaces/updateMode';
+import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
+import { UpdateCssMode } from '../../../../interfaces/updateCssMode';
 import SettingsManager from '../../../../services/workshop/settingsManager';
 import settings from './settings/Settings.vue';
 import options from './options/Options.vue';
@@ -35,7 +36,7 @@ import options from './options/Options.vue';
 export default {
   data: (): Data => ({
     activeSettings: {},
-    activeMode: COMPONENT_MODES.DEFAULT,
+    activeCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
     settingsResetTriggered: false,
   }),
   components: {
@@ -45,24 +46,27 @@ export default {
   methods: {
     updateSettings(newSettings: WORKSHOP_TOOLBAR_OPTIONS): void {
       if (newSettings === WORKSHOP_TOOLBAR_OPTIONS.RESET) {
-        SettingsManager.resetComponentProperties(this.component, this.activeMode);
+        SettingsManager.resetComponentProperties(this.component, this.activeCssMode);
         this.triggerSettingsReset();
       } else {
         this.activeSettings = optionToSettings[newSettings];
         this.componentPreviewAssistance.margin = newSettings === WORKSHOP_TOOLBAR_OPTIONS.MARGIN;
       }
     },
-    updateMode(updateMode: UpdateMode): void {
-      if (updateMode[0]) this.activeMode = updateMode[0];
-      let newModeContainsActiveOption = updateMode[1];
-      if (newModeContainsActiveOption === undefined) {
-        newModeContainsActiveOption = this.$refs.options.getNewModeContainsActiveOptionState(this.activeMode);
+    updateCssMode(newCssMode: UpdateCssMode): void {
+      if (newCssMode[0]) this.activeCssMode = newCssMode[0];
+      let newCssModeContainsActiveOption = newCssMode[1];
+      if (newCssModeContainsActiveOption === undefined) {
+        newCssModeContainsActiveOption = this.$refs.options.getNewCssModeContainsActiveOptionState(this.activeCssMode);
       }
-      if (this.activeSettings && Object.keys(this.activeSettings).length && !newModeContainsActiveOption) {
+      if (this.activeSettings && Object.keys(this.activeSettings).length && !newCssModeContainsActiveOption) {
         this.activeSettings = {};
         this.componentPreviewAssistance.margin = false;
       }
       this.triggerSettingsReset();
+    },
+    updateSubcomponentsMode(updateSubcomponentsMode: any): void {
+
     },
     triggerSettingsReset(): void {
       // this trigger type is used instead of a ref method because this will only trigger the settings-reset when

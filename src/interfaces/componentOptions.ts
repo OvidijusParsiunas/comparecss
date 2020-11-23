@@ -1,7 +1,7 @@
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../consts/workshopToolbarOptions';
-import { ComponentModes } from './componentModes';
+import { SubcomponentCssModes } from './subcomponentCssModes';
 
-export type ComponentOptions<T extends keyof ComponentModes> = {
+export type ComponentOptions<T extends keyof SubcomponentCssModes> = {
   [key in T]:
     {
       buttonName: string,

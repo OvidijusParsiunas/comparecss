@@ -22,16 +22,16 @@
               @mouseleave="componentMouseLeave()"
               @mousedown="componentMouseDown()"
               @mouseup="componentMouseUp()"
-              :style="component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode === COMPONENT_MODES.CLICK
+              :style="component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
                 ? [
                     [ component.subcomponents[component.subcomponentsActiveMode].inheritedCss ? component.subcomponents[component.subcomponentsActiveMode].inheritedCss.css: '' ],
-                    component.subcomponents[component.subcomponentsActiveMode].customCss[COMPONENT_MODES.DEFAULT],
-                    component.subcomponents[component.subcomponentsActiveMode].customCss[COMPONENT_MODES.HOVER],
-                    component.subcomponents[component.subcomponentsActiveMode].customCss[COMPONENT_MODES.CLICK],
+                    component.subcomponents[component.subcomponentsActiveMode].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+                    component.subcomponents[component.subcomponentsActiveMode].customCss[SUB_COMPONENT_CSS_MODES.HOVER],
+                    component.subcomponents[component.subcomponentsActiveMode].customCss[SUB_COMPONENT_CSS_MODES.CLICK],
                   ]
                 : [
                     [ component.subcomponents[component.subcomponentsActiveMode].inheritedCss ? component.subcomponents[component.subcomponentsActiveMode].inheritedCss.css: '' ],
-                    component.subcomponents[component.subcomponentsActiveMode].customCss[COMPONENT_MODES.DEFAULT],
+                    component.subcomponents[component.subcomponentsActiveMode].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
                     component.subcomponents[component.subcomponentsActiveMode].customCss[component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode],
                   ]">
               {{ component.type === NEW_COMPONENT_TYPES.BUTTON ? component.subcomponents[component.subcomponentsActiveMode].innerHtmlText : '' }}
@@ -58,7 +58,7 @@
 </template>
 
 <script lang="ts">
-import { COMPONENT_MODES } from '../../../../consts/componentModes.enum';
+import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import auxiliaryRightSideElements from './AuxiliaryRightSideElements.vue';
 import divInnerHtml from './divInnerHTML.vue';
@@ -66,7 +66,7 @@ import divInnerHtml from './divInnerHTML.vue';
 interface Data {
   overwrittenDefaultPropertiesByHover: unknown,
   overwrittenDefaultPropertiesByClick: unknown,
-  COMPONENT_MODES,
+  SUB_COMPONENT_CSS_MODES,
   NEW_COMPONENT_TYPES,
 }
 
@@ -74,39 +74,39 @@ export default {
   data: (): Data => ({
     overwrittenDefaultPropertiesByHover: {},
     overwrittenDefaultPropertiesByClick: {},
-    COMPONENT_MODES,
+    SUB_COMPONENT_CSS_MODES,
     NEW_COMPONENT_TYPES,
   }),
   methods: {
     // important to note that default can have properties that hover and click modes do not, but hover and click cannot have properties that default doesn't
     componentMouseEnter(): void {
       const { customCss, transition, customCssActiveMode } = this.component.subcomponents[this.component.subcomponentsActiveMode];
-      if (customCssActiveMode === COMPONENT_MODES.DEFAULT) {
-        this.overwrittenDefaultPropertiesByHover = { ...customCss[COMPONENT_MODES.DEFAULT], transition };
-        customCss[COMPONENT_MODES.DEFAULT] = { ...customCss[COMPONENT_MODES.DEFAULT], ...customCss[COMPONENT_MODES.HOVER], transition };
+      if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
+        this.overwrittenDefaultPropertiesByHover = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], transition };
+        customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], ...customCss[SUB_COMPONENT_CSS_MODES.HOVER], transition };
       }
     },
     componentMouseLeave(): void {
       const { customCss, customCssActiveMode } = this.component.subcomponents[this.component.subcomponentsActiveMode];
-      if (customCssActiveMode === COMPONENT_MODES.DEFAULT) {
-        customCss[COMPONENT_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByHover };
+      if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
+        customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByHover };
       }
     },
     componentMouseDown(): void {
       const { customCss, transition, customCssActiveMode } = this.component.subcomponents[this.component.subcomponentsActiveMode];
-      if (customCssActiveMode === COMPONENT_MODES.DEFAULT) {
-        this.overwrittenDefaultPropertiesByClick = { ...customCss[COMPONENT_MODES.DEFAULT], transition };
-        customCss[COMPONENT_MODES.DEFAULT] = { ...customCss[COMPONENT_MODES.DEFAULT], ...customCss[COMPONENT_MODES.CLICK], transition };
+      if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
+        this.overwrittenDefaultPropertiesByClick = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], transition };
+        customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], ...customCss[SUB_COMPONENT_CSS_MODES.CLICK], transition };
       }
     },
     componentMouseUp(): void {
       const { customCss, customCssActiveMode } = this.component.subcomponents[this.component.subcomponentsActiveMode];
-      if (customCssActiveMode === COMPONENT_MODES.DEFAULT) {
-        customCss[COMPONENT_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByClick };
+      if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
+        customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByClick };
       }
     },
     componentPreviewMouseLeave(): void {
-      this.component.subcomponents[this.component.subcomponentsActiveMode].customCss[COMPONENT_MODES.DEFAULT].transition = 'unset';
+      this.component.subcomponents[this.component.subcomponentsActiveMode].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].transition = 'unset';
     }
   },
   components: {

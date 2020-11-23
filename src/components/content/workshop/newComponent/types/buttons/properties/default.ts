@@ -2,7 +2,7 @@ import { WorkshopComponent } from '../../../../../../../interfaces/workshopCompo
 import { NewComponent } from '../../../../../../../interfaces/newComponent';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { inheritedButtonCss } from './inheritedCss';
-import { COMPONENT_MODES } from '../../../../../../../consts/componentModes.enum';
+import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
 
@@ -17,7 +17,7 @@ export const defaultButton: NewComponent = {
           innerHtmlText: 'button',
           transition: 'all 0.25s ease-out',
           customCss: {
-            [COMPONENT_MODES.DEFAULT]: {
+            [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
               borderRadius: '0px',
               borderWidth: '0px',
               borderColor: '#1779ba',
@@ -37,15 +37,15 @@ export const defaultButton: NewComponent = {
               transition: 'unset',
               color: '#ffffff',
             },
-            [COMPONENT_MODES.HOVER]: {
+            [SUB_COMPONENT_CSS_MODES.HOVER]: {
               backgroundColor: '#ff0000',
             },
-            [COMPONENT_MODES.CLICK]: {
+            [SUB_COMPONENT_CSS_MODES.CLICK]: {
               backgroundColor: '#409441',
             },
           },
           initialCss: {
-            [COMPONENT_MODES.DEFAULT]: {
+            [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
               borderRadius: '0px',
               borderWidth: '0px',
               borderColor: '#1779ba',
@@ -65,16 +65,16 @@ export const defaultButton: NewComponent = {
               transition: 'none',
               color: '#ffffff',
             },
-            [COMPONENT_MODES.HOVER]: {
+            [SUB_COMPONENT_CSS_MODES.HOVER]: {
               backgroundColor: '#ff0000',
             },
-            [COMPONENT_MODES.CLICK]: {
+            [SUB_COMPONENT_CSS_MODES.CLICK]: {
               backgroundColor: '#409441',
             },
           },
           jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
           initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
-          customCssActiveMode: COMPONENT_MODES.DEFAULT,
+          customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
           tempCustomCss: new Set(['transition']),
           inheritedCss: inheritedButtonCss,
         },

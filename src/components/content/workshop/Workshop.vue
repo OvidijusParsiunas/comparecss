@@ -79,10 +79,10 @@ import { inheritedButtonCss } from './newComponent/types/buttons/properties/inhe
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
-import { UpdateMode } from '../../../interfaces/updateMode';
+import { UpdateCssMode } from '../../../interfaces/updateCssMode';
 import ProcessClassName from '../../../services/workshop/newComponent/processClassName';
 import ComponentJs from '../../../services/workshop/componentJs';
-import { COMPONENT_MODES } from '../../../consts/componentModes.enum';
+import { SUB_COMPONENT_CSS_MODES } from '../../../consts/subcomponentCssModes.enum';
 import { componentTypeToOptions } from './toolbar/options/components/componentTypeToOptions';
 import { SUB_COMPONENTS } from '../../../consts/subcomponentModes.enum';
 
@@ -99,7 +99,7 @@ export default {
             componentTag: 'button',
             transition: 'all 0.25s ease-out',
             customCss: {
-              [COMPONENT_MODES.DEFAULT]: {
+              [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
                 borderRadius: '0px',
                 borderWidth: '0px',
                 borderColor: '#1779ba',
@@ -120,15 +120,15 @@ export default {
                 fontSize: '14px',
                 color: '#ffffff',
               },
-              [COMPONENT_MODES.HOVER]: {
+              [SUB_COMPONENT_CSS_MODES.HOVER]: {
                 backgroundColor: '#ff0000',
               },
-              [COMPONENT_MODES.CLICK]: {
+              [SUB_COMPONENT_CSS_MODES.CLICK]: {
                 backgroundColor: '#409441',
               },
             },
             initialCss: {
-              [COMPONENT_MODES.DEFAULT]: {
+              [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
                 borderRadius: '0px',
                 borderWidth: '0px',
                 borderColor: '#1779ba',
@@ -148,17 +148,17 @@ export default {
                 transition: 'none',
                 color: '#ffffff',
               },
-              [COMPONENT_MODES.HOVER]: {
+              [SUB_COMPONENT_CSS_MODES.HOVER]: {
                 backgroundColor: '#ff0000',
               },
-              [COMPONENT_MODES.CLICK]: {
+              [SUB_COMPONENT_CSS_MODES.CLICK]: {
                 backgroundColor: '#409441',
               },
             },
             tempCustomCss: new Set(['transition']),
             jsClasses: new Set(),
             initialJsClasses: new Set(),
-            customCssActiveMode: COMPONENT_MODES.DEFAULT,
+            customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
             inheritedCss: inheritedButtonCss,
           }
         },
@@ -179,7 +179,7 @@ export default {
           innerHtmlText: 'button',
           transition: 'all 0.25s ease-out',
           customCss: {
-            [COMPONENT_MODES.DEFAULT]: {
+            [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
               borderRadius: '0px',
               borderWidth: '0px',
               borderColor: '#1779ba',
@@ -200,15 +200,15 @@ export default {
               fontSize: '14px',
               color: '#ffffff',
             },
-            [COMPONENT_MODES.HOVER]: {
+            [SUB_COMPONENT_CSS_MODES.HOVER]: {
               backgroundColor: '#ff0000',
             },
-            [COMPONENT_MODES.CLICK]: {
+            [SUB_COMPONENT_CSS_MODES.CLICK]: {
               backgroundColor: '#409441',
             },
           },
           initialCss: {
-            [COMPONENT_MODES.DEFAULT]: {
+            [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
               borderRadius: '0px',
               borderWidth: '0px',
               borderColor: '#1779ba',
@@ -229,17 +229,17 @@ export default {
               fontSize: '14px',
               color: '#ffffff',
             },
-            [COMPONENT_MODES.HOVER]: {
+            [SUB_COMPONENT_CSS_MODES.HOVER]: {
               backgroundColor: '#ff0000',
             },
-            [COMPONENT_MODES.CLICK]: {
+            [SUB_COMPONENT_CSS_MODES.CLICK]: {
               backgroundColor: '#409441',
             },
           },
           tempCustomCss: new Set(['transition']),
           jsClasses: new Set(),
           initialJsClasses: new Set(),
-          customCssActiveMode: COMPONENT_MODES.DEFAULT,
+          customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
           inheritedCss: inheritedButtonCss,
         }
       },
@@ -268,7 +268,7 @@ export default {
       ComponentJs.manipulateJS(type, 'executeJS');
       ComponentJs.manipulateJSClasses(subcomponents[subcomponentsActiveMode].jsClasses, type, 'add');
     },
-    setCustomCssActiveMode: (subcomponentProperties: SubcomponentProperties, mode: COMPONENT_MODES): void => {
+    setCustomCssActiveMode: (subcomponentProperties: SubcomponentProperties, mode: SUB_COMPONENT_CSS_MODES): void => {
       if (subcomponentProperties.hasOwnProperty('customCssActiveMode')) {
         subcomponentProperties.customCssActiveMode = mode;
       }
@@ -276,28 +276,28 @@ export default {
     addNewComponent(newComponent: WorkshopComponent): void {
       const { subcomponents, subcomponentsActiveMode } = this.currentlySelectedComponent;
       if (this.components.length) {
-        this.setCustomCssActiveMode(subcomponents[subcomponentsActiveMode], COMPONENT_MODES.DEFAULT);
+        this.setCustomCssActiveMode(subcomponents[subcomponentsActiveMode], SUB_COMPONENT_CSS_MODES.DEFAULT);
       }
       this.components.push(newComponent);
       this.switchActiveComponent(newComponent);
-      if (this.components.length > 1) { this.$refs.toolbar.updateMode([subcomponents[subcomponentsActiveMode].customCssActiveMode] as UpdateMode); }
+      if (this.components.length > 1) { this.$refs.toolbar.updateMode([subcomponents[subcomponentsActiveMode].customCssActiveMode] as UpdateCssMode); }
     },
     componentCardSelected(selectedComponent: WorkshopComponent): void {
       if (this.currentlySelectedComponent !== selectedComponent) {
         const { subcomponents, subcomponentsActiveMode } = this.currentlySelectedComponent;
         const previousActiveMode = subcomponents[subcomponentsActiveMode].customCssActiveMode;
-        this.setCustomCssActiveMode(subcomponents[subcomponentsActiveMode], COMPONENT_MODES.DEFAULT);
+        this.setCustomCssActiveMode(subcomponents[subcomponentsActiveMode], SUB_COMPONENT_CSS_MODES.DEFAULT);
         if (Object.keys(componentTypeToOptions[selectedComponent.type]).includes(previousActiveMode)) {
           selectedComponent.subcomponents[selectedComponent.subcomponentsActiveMode].customCssActiveMode = previousActiveMode;
         } else {
-          selectedComponent.subcomponents[selectedComponent.subcomponentsActiveMode].customCssActiveMode = COMPONENT_MODES.DEFAULT;
+          selectedComponent.subcomponents[selectedComponent.subcomponentsActiveMode].customCssActiveMode = SUB_COMPONENT_CSS_MODES.DEFAULT;
         }
         this.switchActiveComponent(selectedComponent);
-        this.$refs.toolbar.updateMode([subcomponents[subcomponentsActiveMode].customCssActiveMode] as UpdateMode);
+        this.$refs.toolbar.updateMode([subcomponents[subcomponentsActiveMode].customCssActiveMode] as UpdateCssMode);
       }
     },
     componentCardCopied(selectComponentCard: WorkshopComponent): void {
-      this.setCustomCssActiveMode(selectComponentCard.subcomponents[selectComponentCard.subcomponentsActiveMode], COMPONENT_MODES.DEFAULT);
+      this.setCustomCssActiveMode(selectComponentCard.subcomponents[selectComponentCard.subcomponentsActiveMode], SUB_COMPONENT_CSS_MODES.DEFAULT);
       const newComponent = JSON.parse(JSON.stringify(selectComponentCard));
       newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className, this.components, '-copy');
       this.addNewComponent(newComponent);
@@ -318,7 +318,7 @@ export default {
       } else {
         this.switchActiveComponent(this.components[componentIndex]);
       }
-      this.$refs.toolbar.updateMode([subcomponents[subcomponentsActiveMode].customCssActiveMode] as UpdateMode);
+      this.$refs.toolbar.updateMode([subcomponents[subcomponentsActiveMode].customCssActiveMode] as UpdateCssMode);
     },
     download(): void {
       const resultCss = `${cssBuilder.build(this.components).trim()}\r\n`;

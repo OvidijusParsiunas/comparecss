@@ -1,7 +1,7 @@
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { NewComponent } from '../../../../../../../interfaces/newComponent';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
-import { COMPONENT_MODES } from '../../../../../../../consts/componentModes.enum';
+import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
 // import { inheritedButtonCss } from './inheritedCss';
@@ -17,7 +17,7 @@ export const defaultAlert: NewComponent = {
           innerHtmlText: 'Alert',
           transition: 'all 0.25s ease-out',
           customCss: {
-            [COMPONENT_MODES.DEFAULT]: {
+            [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
               color: '#004085',
               backgroundColor: '#cce5ff',
               borderColor: '#b8daff',
@@ -33,7 +33,7 @@ export const defaultAlert: NewComponent = {
             },
           },
           initialCss: {
-            [COMPONENT_MODES.DEFAULT]: {
+            [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
               color: '#004085',
               backgroundColor: '#cce5ff',
               borderColor: '#b8daff',
@@ -50,7 +50,7 @@ export const defaultAlert: NewComponent = {
           },
           jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
           initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
-          customCssActiveMode: COMPONENT_MODES.DEFAULT,
+          customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
           tempCustomCss: new Set(['transition']),
         },
         [SUB_COMPONENTS.CLOSE]: {
@@ -59,7 +59,7 @@ export const defaultAlert: NewComponent = {
           innerHtmlText: 'Alert',
           transition: 'all 0.25s ease-out',
           customCss: {
-            [COMPONENT_MODES.DEFAULT]: {
+            [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
               color: '#004085',
               backgroundColor: '#cce5ff',
               borderColor: '#b8daff',
@@ -73,9 +73,12 @@ export const defaultAlert: NewComponent = {
               width: '400px',
               height: '50px',
             },
+            [SUB_COMPONENT_CSS_MODES.HOVER]: {
+              color: '#ff0000',
+            },
           },
           initialCss: {
-            [COMPONENT_MODES.DEFAULT]: {
+            [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
               color: '#004085',
               backgroundColor: '#cce5ff',
               borderColor: '#b8daff',
@@ -88,11 +91,14 @@ export const defaultAlert: NewComponent = {
               borderRadius: '4px',
               width: '400px',
               height: '50px',
+            },
+            [SUB_COMPONENT_CSS_MODES.HOVER]: {
+              color: '#ff0000',
             },
           },
           jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
           initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
-          customCssActiveMode: COMPONENT_MODES.DEFAULT,
+          customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
           tempCustomCss: new Set(['transition']),
         },
       },

@@ -1,11 +1,11 @@
-import { COMPONENT_MODES } from '../../../../../../consts/componentModes.enum';
-import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../../consts/workshopToolbarOptions';
-import { ComponentOptions } from '../../../../../../interfaces/componentOptions';
+import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
+import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../../../consts/workshopToolbarOptions';
+import { ComponentOptions } from '../../../../../../../interfaces/componentOptions';
 
-type AlertOptionsModes = COMPONENT_MODES.DEFAULT;
+type AlertContainerOptionsModes = SUB_COMPONENT_CSS_MODES.DEFAULT;
 
-export const alertOptions: ComponentOptions<AlertOptionsModes> = {
-  [COMPONENT_MODES.DEFAULT]: [
+export const alertContainerOptions: ComponentOptions<AlertContainerOptionsModes> = {
+  [SUB_COMPONENT_CSS_MODES.DEFAULT]: [
     {
       buttonName: 'Border',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.BORDER,
