@@ -11,7 +11,7 @@
                   {{setting.spec.name}}
                 </div>
                 <div style="position: relative; float: left">
-                  <div class="range-popover">
+                  <div v-if="subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode]" class="range-popover">
                     {{setting.spec.partialCss !== undefined && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]
                       ? subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty].split(' ')[setting.spec.partialCss.position]
                       : subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]}}
@@ -86,7 +86,7 @@ import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssMo
 interface Data {
   selectorNewValues: unknown;
   inputDropdownNewValues: unknown;
-  getCurrentValue: (param1, param2) => void;
+  getActiveModeCssPropertyValue: (param1, param2) => void;
   resetSettings: () => void;
 }
 
@@ -94,18 +94,19 @@ export default {
   data: (): Data => ({
     selectorNewValues: {},
     inputDropdownNewValues: {},
-    getCurrentValue: function(activeMode, cssProperty) {
+    getActiveModeCssPropertyValue: function(activeMode, cssProperty): string {
       const { customCss } = this.subcomponentproperties;
+      // the following allows multiple cases to be checked in one execution
       switch (activeMode) {
         case (SUB_COMPONENT_CSS_MODES.CLICK):
-          if (customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty]) {
+          if (customCss[SUB_COMPONENT_CSS_MODES.CLICK] && customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty]) {
             return customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
           }
-        case (SUB_COMPONENT_CSS_MODES.HOVER):
-          if (customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty]) {
+        case (SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
+          if (customCss[SUB_COMPONENT_CSS_MODES.HOVER] && customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty]) {
             return customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
           }
-        case (SUB_COMPONENT_CSS_MODES.DEFAULT):
+        case (SUB_COMPONENT_CSS_MODES.DEFAULT || SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
           if (customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty]) {
             return customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty];
           }
@@ -113,41 +114,41 @@ export default {
           return undefined;
       }
     },
-    resetSettings: function() {
+    resetSettings: function(): void {
       const { customCss, customCssActiveMode, jsClasses } = this.subcomponentproperties;
       this.selectorNewValues = {};
       this.inputDropdownNewValues = {};
       (this.settings.options || []).forEach((setting) => {
         if (setting.type === 'range') {
-          const currentValue = this.getCurrentValue(customCssActiveMode, setting.spec.cssProperty);
-          if (currentValue !== undefined) {
+          const cssPropertyValue = this.getActiveModeCssPropertyValue(customCssActiveMode, setting.spec.cssProperty);
+          if (cssPropertyValue !== undefined) {
             (setting.triggers || []).forEach((trigger) => {
               trigger.conditions.forEach((condition) => {
-                if (this.getCurrentValue(customCssActiveMode, trigger.cssProperty) === condition) {
+                if (this.getActiveModeCssPropertyValue(customCssActiveMode, trigger.cssProperty) === condition) {
                   customCss[customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
                   this.selectorNewValues[setting.spec.cssProperty] = trigger.defaultValue;
                 }
               })
             })
-            setting.spec.default = parseInt(currentValue.substring(0, currentValue.length - 2), 10) * setting.spec.smoothingDivisible;
+            setting.spec.default = parseInt(cssPropertyValue.substring(0, cssPropertyValue.length - 2), 10) * setting.spec.smoothingDivisible;
           }
         } else if (setting.type === 'select') {
           // default value for range is currently setting the select value, not the select value for ranges
           // potential race condition where range sets the select value and select may set it to something incorrect
-          const currentValue = this.getCurrentValue(customCssActiveMode, setting.spec.cssProperty);
-          if (currentValue) { this.selectorNewValues[setting.spec.cssProperty] = currentValue; }
+          const cssPropertyValue = this.getActiveModeCssPropertyValue(customCssActiveMode, setting.spec.cssProperty);
+          if (cssPropertyValue) { this.selectorNewValues[setting.spec.cssProperty] = cssPropertyValue; }
         } else if (setting.type === 'colorPicker') {
-          const currentValue = this.getCurrentValue(customCssActiveMode, setting.spec.cssProperty);
-          if (currentValue) { setting.spec.default = setting.spec.partialCss ? currentValue.split(' ')[setting.spec.partialCss.position] : currentValue; }
+          const cssPropertyValue = this.getActiveModeCssPropertyValue(customCssActiveMode, setting.spec.cssProperty);
+          if (cssPropertyValue) { setting.spec.default = setting.spec.partialCss ? cssPropertyValue.split(' ')[setting.spec.partialCss.position] : cssPropertyValue; }
         } else if (setting.type === 'inputDropdown') {
-          const currentValue = this.getCurrentValue(customCssActiveMode, setting.spec.cssProperty);
-          if (currentValue) { this.inputDropdownNewValues[setting.spec.cssProperty] = currentValue; }
+          const cssPropertyValue = this.getActiveModeCssPropertyValue(customCssActiveMode, setting.spec.cssProperty);
+          if (cssPropertyValue) { this.inputDropdownNewValues[setting.spec.cssProperty] = cssPropertyValue; }
         } else if (setting.type === 'checkbox') {
           if (setting.spec.javascript) {
             setting.spec.default = jsClasses.has(setting.spec.jsClassName);
           } else {
-            const currentValue = this.getCurrentValue(customCssActiveMode, setting.spec.cssProperty);
-            if (currentValue) { setting.spec.default = (currentValue === setting.spec.conditionalStyle.truthy); }
+            const cssPropertyValue = this.getActiveModeCssPropertyValue(customCssActiveMode, setting.spec.cssProperty);
+            if (cssPropertyValue) { setting.spec.default = (cssPropertyValue === setting.spec.conditionalStyle.truthy); }
           }
         }
       })

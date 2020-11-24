@@ -65,11 +65,12 @@ import auxiliaryRightSideElements from './AuxiliaryRightSideElements.vue';
 import divInnerHtml from './divInnerHTML.vue';
 
 interface Data {
-  overwrittenDefaultPropertiesByHover: unknown,
-  overwrittenDefaultPropertiesByClick: unknown,
-  SUB_COMPONENT_CSS_MODES,
-  NEW_COMPONENT_TYPES,
-  SUB_COMPONENTS,
+  overwrittenDefaultPropertiesByHover: unknown;
+  overwrittenDefaultPropertiesByClick: unknown;
+  SUB_COMPONENT_CSS_MODES;
+  NEW_COMPONENT_TYPES;
+  SUB_COMPONENTS;
+  componentsThatShouldNotBeChangedHere: Set<SUB_COMPONENTS>;
 }
 
 export default {
@@ -79,10 +80,12 @@ export default {
     SUB_COMPONENT_CSS_MODES,
     NEW_COMPONENT_TYPES,
     SUB_COMPONENTS,
+    componentsThatShouldNotBeChangedHere: new Set([SUB_COMPONENTS.CLOSE]),
   }),
   methods: {
     // important to note that default can have properties that hover and click modes do not, but hover and click cannot have properties that default doesn't
     componentMouseEnter(): void {
+      if (this.componentsThatShouldNotBeChangedHere.has(this.component.subcomponentsActiveMode)) return;
       const { customCss, transition, customCssActiveMode } = this.component.subcomponents[this.component.subcomponentsActiveMode];
       if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
         this.overwrittenDefaultPropertiesByHover = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], transition };
@@ -90,12 +93,14 @@ export default {
       }
     },
     componentMouseLeave(): void {
+      if (this.componentsThatShouldNotBeChangedHere.has(this.component.subcomponentsActiveMode)) return;
       const { customCss, customCssActiveMode } = this.component.subcomponents[this.component.subcomponentsActiveMode];
       if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
         customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByHover };
       }
     },
     componentMouseDown(): void {
+      if (this.componentsThatShouldNotBeChangedHere.has(this.component.subcomponentsActiveMode)) return;
       const { customCss, transition, customCssActiveMode } = this.component.subcomponents[this.component.subcomponentsActiveMode];
       if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
         this.overwrittenDefaultPropertiesByClick = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], transition };
@@ -103,12 +108,14 @@ export default {
       }
     },
     componentMouseUp(): void {
+      if (this.componentsThatShouldNotBeChangedHere.has(this.component.subcomponentsActiveMode)) return;
       const { customCss, customCssActiveMode } = this.component.subcomponents[this.component.subcomponentsActiveMode];
       if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
         customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByClick };
       }
     },
     componentPreviewMouseLeave(): void {
+      if (this.componentsThatShouldNotBeChangedHere.has(this.component.subcomponentsActiveMode)) return;
       this.component.subcomponents[this.component.subcomponentsActiveMode].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].transition = 'unset';
     }
   },

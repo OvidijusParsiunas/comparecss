@@ -1,24 +1,23 @@
 <template>
   <div v-if="componentType === NEW_COMPONENT_TYPES.ALERT">
-    <button class="close-button" type="button" aria-label="Close"
-      @mouseenter="componentMouseEnter()"
-      @mouseleave="componentMouseLeave()"
-      @mousedown="componentMouseDown()"
-      @mouseup="componentMouseUp()"
-      >
+    <button class="close-button" type="button" aria-label="Close">
       <div aria-hidden="true"
+        @mouseenter="componentMouseEnter()"
+        @mouseleave="componentMouseLeave()"
+        @mousedown="componentMouseDown()"
+        @mouseup="componentMouseUp()"
         :style="subcomponent.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
-        ? [
-            [ subcomponent.inheritedCss ? subcomponent.inheritedCss.css: '' ],
-            subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
-            subcomponent.customCss[SUB_COMPONENT_CSS_MODES.HOVER],
-            subcomponent.customCss[SUB_COMPONENT_CSS_MODES.CLICK],
-          ]
-        : [
-            [ subcomponent.inheritedCss ? subcomponent.inheritedCss.css: '' ],
-            subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
-            subcomponent.customCss[subcomponent.customCssActiveMode],
-          ]"
+          ? [
+              [ subcomponent.inheritedCss ? subcomponent.inheritedCss.css: '' ],
+              subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+              subcomponent.customCss[SUB_COMPONENT_CSS_MODES.HOVER],
+              subcomponent.customCss[SUB_COMPONENT_CSS_MODES.CLICK],
+            ]
+          : [
+              [ subcomponent.inheritedCss ? subcomponent.inheritedCss.css: '' ],
+              subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+              subcomponent.customCss[subcomponent.customCssActiveMode],
+            ]"
         >×</div>
     </button>
   </div>
@@ -77,26 +76,23 @@ export default {
     subcomponent: Object,
   }
 }
+
+// fix transition only on hover
+// transition: all 0.25s ease-out 0s;
 </script>
 
 <style lang="css" scoped>
   .close-button {
-    box-sizing: border-box;
-    border-radius: 0px;
-    margin: 0px;
-    float: right;
-    font-size: 24px;
-    font-weight: 700;
-    line-height: 1.8;
-    cursor: pointer;
     position: absolute;
     top: 0px;
     right: 0px;
+    /* the close button height will remain the same */
     height: 48px;
-    transition: all 0.25s ease-out 0s;
-    color: rgb(0, 64, 133);
     background-color: inherit;
     border: none;
+    cursor: default !important;
+  }
+  .close-button:focus {
     outline: none;
   }
 </style>
