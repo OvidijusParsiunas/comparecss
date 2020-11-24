@@ -11,15 +11,12 @@ const initialContainerButtonCss: CustomCss = {
     color: '#004085',
     backgroundColor: '#cce5ff',
     borderColor: '#b8daff',
-    paddingTop: '12px',
-    paddingRight: '20px',
-    paddingBottom: '12px',
-    paddingLeft: '20px',
     borderWidth: '1px',
     borderStyle: 'solid',
     borderRadius: '4px',
-    width: '400px',
+    width: '440px',
     height: '50px',
+    boxSizing: 'unset',
   },
 }
 
@@ -28,6 +25,7 @@ const initialCloseButtonCss: CustomCss = {
     height: '13px',
     lineHeight: '0.6',
     cursor: 'pointer',
+    boxSizing: 'unset',
   },
 }
 
