@@ -1,4 +1,4 @@
-import { ComponentStyleToProperties } from '../../../../../../interfaces/ComponentStyleToProperties'
+import { ComponentStyleToProperties } from '../../../../../../interfaces/componentStyleToProperties'
 import { NEW_COMPONENT_STYLES } from '../../../../../../consts/newComponentStyles.enum'
 import { defaultAlert } from './properties/default';  
 

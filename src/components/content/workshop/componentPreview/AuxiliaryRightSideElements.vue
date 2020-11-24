@@ -1,11 +1,13 @@
 <template>
   <div v-if="componentType === NEW_COMPONENT_TYPES.ALERT">
-    <button type="button" aria-label="Close"
+    <button class="close-button" type="button" aria-label="Close"
       @mouseenter="componentMouseEnter()"
       @mouseleave="componentMouseLeave()"
       @mousedown="componentMouseDown()"
       @mouseup="componentMouseUp()"
-      :style="subcomponent.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
+      >
+      <div aria-hidden="true"
+        :style="subcomponent.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
         ? [
             [ subcomponent.inheritedCss ? subcomponent.inheritedCss.css: '' ],
             subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
@@ -16,8 +18,8 @@
             [ subcomponent.inheritedCss ? subcomponent.inheritedCss.css: '' ],
             subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
             subcomponent.customCss[subcomponent.customCssActiveMode],
-          ]">
-      <div aria-hidden="true" id="demoComponent2">×</div>
+          ]"
+        >×</div>
     </button>
   </div>
 </template>
@@ -76,3 +78,25 @@ export default {
   }
 }
 </script>
+
+<style lang="css" scoped>
+  .close-button {
+    box-sizing: border-box;
+    border-radius: 0px;
+    margin: 0px;
+    float: right;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.8;
+    cursor: pointer;
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    height: 48px;
+    transition: all 0.25s ease-out 0s;
+    color: rgb(0, 64, 133);
+    background-color: inherit;
+    border: none;
+    outline: none;
+  }
+</style>
