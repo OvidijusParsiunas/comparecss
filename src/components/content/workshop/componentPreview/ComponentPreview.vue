@@ -3,21 +3,21 @@
     <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); z-index: 0; text-align: center;"> 
       <div :class="component.subcomponents[component.subcomponentsActiveMode].frameworkClass">
         <div class="grid-container">
-          <div class="grid-item"></div>
-          <div class="grid-item">
+          <div class="grid-item grid-item-position"></div>
+          <div class="grid-item grid-item-position">
             <!-- https://v3.vuejs.org/guide/transitions-enterleave.html#css-transitions -->
             <transition name="top-slide-fade">
-              <div id="margin-assistance-top" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
+              <div id="margin-assistance-top" v-if="componentPreviewAssistance.margin" class="margin-marker grid-item-position"></div>
             </transition>
           </div>
           <div class="grid-item"></div>
-          <div class="grid-item">
+          <div class="grid-item grid-item-position">
             <transition name="left-slide-fade">
-              <div id="margin-assistance-left" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
+              <div id="margin-assistance-left" v-if="componentPreviewAssistance.margin" class="margin-marker grid-item-position"></div>
             </transition>
           </div>
-          <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item">
-            <component :is="component.subcomponents[component.subcomponentsActiveMode].componentTag" id="demoComponent"
+          <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item grid-item-position">
+            <component :is="component.subcomponents[component.subcomponentsActiveMode].componentTag" id="demoComponent" class="grid-item-position"
               @mouseenter="componentMouseEnter()"
               @mouseleave="componentMouseLeave()"
               @mousedown="componentMouseDown()"
@@ -39,18 +39,18 @@
               <auxiliary-right-side-elements :componentType="component.type" :subcomponent="component.subcomponents[SUB_COMPONENTS.CLOSE]"/>
             </component>
           </div>
-          <div class="grid-item">
+          <div class="grid-item grid-item-position">
             <transition name="right-slide-fade">
-              <div id="margin-assistance-right" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
+              <div id="margin-assistance-right" v-if="componentPreviewAssistance.margin" class="margin-marker grid-item-position"></div>
             </transition>
           </div>
-          <div class="grid-item"></div>
-          <div class="grid-item">
+          <div class="grid-item grid-item-position"></div>
+          <div class="grid-item grid-item-position">
             <transition name="bottom-slide-fade">
-              <div id="margin-assistance-bottom" v-if="componentPreviewAssistance.margin" class="margin-marker"></div>
+              <div id="margin-assistance-bottom" v-if="componentPreviewAssistance.margin" class="margin-marker grid-item-position"></div>
             </transition>
           </div>
-          <div class="grid-item"></div>
+          <div class="grid-item grid-item-position"></div>
         </div>
       </div>
     </div>
@@ -257,15 +257,19 @@ export default {
   }
   
   .grid-item {
-    position: relative;
+    background: none !important;
   }
 
   .margin-marker {
-    background-color: rgb(194 194 194 / 50%) !important;
+    background-color: rgb(225 225 225) !important;
+    z-index: 2;
   }
 
   #demoComponent {
     overflow: hidden;
+  }
+  
+  .grid-item-position {
     position: relative;
   }
 

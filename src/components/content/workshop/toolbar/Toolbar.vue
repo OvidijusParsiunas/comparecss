@@ -21,9 +21,10 @@
 
 <script lang="ts">
 interface Data {
-  activeSettings: any,
-  activeCssMode: SUB_COMPONENT_CSS_MODES,
-  settingsResetTriggered: boolean,
+  activeOption: WORKSHOP_TOOLBAR_OPTIONS;
+  activeSettings: any;
+  activeCssMode: SUB_COMPONENT_CSS_MODES;
+  settingsResetTriggered: boolean;
 }
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOptions';
 import { optionToSettings } from './settings/types/optionToSettings';
@@ -32,13 +33,16 @@ import { UpdateOptionsMode } from '../../../../interfaces/updateCssMode';
 import SettingsManager from '../../../../services/workshop/settingsManager';
 import settings from './settings/Settings.vue';
 import options from './options/Options.vue';
+import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 
 export default {
   data: (): Data => ({
+    activeOption: null,
     activeSettings: {},
     activeCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
     settingsResetTriggered: false,
   }),
+  
   components: {
     settings,
     options,
@@ -49,8 +53,10 @@ export default {
         SettingsManager.resetComponentProperties(this.component, this.activeCssMode);
         this.triggerSettingsReset();
       } else {
+        this.activeOption = newSettings;
         this.activeSettings = optionToSettings[newSettings];
-        this.componentPreviewAssistance.margin = newSettings === WORKSHOP_TOOLBAR_OPTIONS.MARGIN;
+        this.componentPreviewAssistance.margin = (newSettings === WORKSHOP_TOOLBAR_OPTIONS.MARGIN)
+          && (this.component.subcomponentsActiveMode !== SUB_COMPONENTS.CLOSE);
       }
     },
     updateCssMode(newCssMode: UpdateOptionsMode): void {
@@ -73,6 +79,11 @@ export default {
       // the props (more specifically the component properties) have updated first (via the watch property)
       // whereas directly calling the reset method via ref invokes it before the props have been updated
       this.settingsResetTriggered = !this.settingsResetTriggered;
+      this.$nextTick(() => {
+        if (this.activeOption === WORKSHOP_TOOLBAR_OPTIONS.MARGIN) {
+           this.componentPreviewAssistance.margin = !(this.component.subcomponentsActiveMode === SUB_COMPONENTS.CLOSE);
+        }
+      });
     }
   },
   props: {

@@ -302,9 +302,7 @@ export default {
     },
     settingsResetTriggered(): void {
       this.resetSettings();
-      // forcing a settings re-render when changing to a different component
-      // cannot use nextTick() because it is triggered when anything in settings does change
-      setTimeout(() => {
+      this.$nextTick(() => {
         this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode] = { ...this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode]} ;
       });
     }
