@@ -22,19 +22,19 @@
               @mouseleave="componentMouseLeave()"
               @mousedown="componentMouseDown()"
               @mouseup="componentMouseUp()"
-              :style="component.subcomponents[SUB_COMPONENTS.CONTAINER].customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
+              :style="component.subcomponents[SUB_COMPONENTS.BASE].customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
                 ? [
-                    [ component.subcomponents[SUB_COMPONENTS.CONTAINER].inheritedCss ? component.subcomponents[SUB_COMPONENTS.CONTAINER].inheritedCss.css: '' ],
-                    component.subcomponents[SUB_COMPONENTS.CONTAINER].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
-                    component.subcomponents[SUB_COMPONENTS.CONTAINER].customCss[SUB_COMPONENT_CSS_MODES.HOVER],
-                    component.subcomponents[SUB_COMPONENTS.CONTAINER].customCss[SUB_COMPONENT_CSS_MODES.CLICK],
+                    [ component.subcomponents[SUB_COMPONENTS.BASE].inheritedCss ? component.subcomponents[SUB_COMPONENTS.BASE].inheritedCss.css: '' ],
+                    component.subcomponents[SUB_COMPONENTS.BASE].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+                    component.subcomponents[SUB_COMPONENTS.BASE].customCss[SUB_COMPONENT_CSS_MODES.HOVER],
+                    component.subcomponents[SUB_COMPONENTS.BASE].customCss[SUB_COMPONENT_CSS_MODES.CLICK],
                   ]
                 : [
-                    [ component.subcomponents[SUB_COMPONENTS.CONTAINER].inheritedCss ? component.subcomponents[SUB_COMPONENTS.CONTAINER].inheritedCss.css: '' ],
-                    component.subcomponents[SUB_COMPONENTS.CONTAINER].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
-                    component.subcomponents[SUB_COMPONENTS.CONTAINER].customCss[component.subcomponents[SUB_COMPONENTS.CONTAINER].customCssActiveMode],
+                    [ component.subcomponents[SUB_COMPONENTS.BASE].inheritedCss ? component.subcomponents[SUB_COMPONENTS.BASE].inheritedCss.css: '' ],
+                    component.subcomponents[SUB_COMPONENTS.BASE].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+                    component.subcomponents[SUB_COMPONENTS.BASE].customCss[component.subcomponents[SUB_COMPONENTS.BASE].customCssActiveMode],
                   ]">
-              {{ component.type === NEW_COMPONENT_TYPES.BUTTON ? component.subcomponents[SUB_COMPONENTS.CONTAINER].innerHtmlText : '' }}
+              {{ component.type === NEW_COMPONENT_TYPES.BUTTON ? component.subcomponents[SUB_COMPONENTS.BASE].innerHtmlText : '' }}
               <divInnerHtml :componentType="component.type" :innerHTML="component.subcomponents[component.subcomponentsActiveMode].innerHtmlText"/>
               <auxiliary-right-side-elements :componentType="component.type" :subcomponent="component.subcomponents[SUB_COMPONENTS.CLOSE]"/>
             </component>

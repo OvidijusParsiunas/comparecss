@@ -93,7 +93,7 @@ export default {
       {
         type: NEW_COMPONENT_TYPES.BUTTON,
         subcomponents: {
-          [SUB_COMPONENTS.CONTAINER]: {
+          [SUB_COMPONENTS.BASE]: {
             frameworkClass: 'foundation',
             innerHtmlText: 'button',
             componentTag: 'button',
@@ -163,7 +163,7 @@ export default {
             inheritedCss: inheritedButtonCss,
           }
         },
-        subcomponentsActiveMode: SUB_COMPONENTS.CONTAINER,
+        subcomponentsActiveMode: SUB_COMPONENTS.BASE,
         customSettingsProperties: {
           width: [0, 250],
           height: [0, 250],
@@ -174,7 +174,7 @@ export default {
     currentlySelectedComponent: {
       type: NEW_COMPONENT_TYPES.BUTTON,
       subcomponents: {
-        [SUB_COMPONENTS.CONTAINER]: {
+        [SUB_COMPONENTS.BASE]: {
           frameworkClass: 'foundation',
           componentTag: 'button',
           innerHtmlText: 'button',
@@ -245,7 +245,7 @@ export default {
           inheritedCss: inheritedButtonCss,
         }
       },
-      subcomponentsActiveMode: SUB_COMPONENTS.CONTAINER,
+      subcomponentsActiveMode: SUB_COMPONENTS.BASE,
       customSettingsProperties: {
         width: [0, 250],
         height: [0, 250],

@@ -1,5 +1,5 @@
 export enum SUB_COMPONENTS {
-  CONTAINER = 'Container',
+  BASE = 'Base',
   CLOSE = 'Close',
 }
   

@@ -16,10 +16,10 @@ type ComponentTypeToOptions = {
 
 export const componentTypeToOptions: ComponentTypeToOptions = {
   [NEW_COMPONENT_TYPES.BUTTON]: {
-    [SUB_COMPONENTS.CONTAINER]: buttonContainerOptions as ComponentOptions<keyof SubcomponentCssModes>,
+    [SUB_COMPONENTS.BASE]: buttonContainerOptions as ComponentOptions<keyof SubcomponentCssModes>,
   },
   [NEW_COMPONENT_TYPES.ALERT]: {
-    [SUB_COMPONENTS.CONTAINER]: alertContainerOptions as ComponentOptions<keyof SubcomponentCssModes>,
+    [SUB_COMPONENTS.BASE]: alertContainerOptions as ComponentOptions<keyof SubcomponentCssModes>,
     [SUB_COMPONENTS.CLOSE]: alertCloseOptions as ComponentOptions<keyof SubcomponentCssModes>,
   },
 };

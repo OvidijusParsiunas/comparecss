@@ -19,6 +19,10 @@ const initialContainerButtonCss: CustomCss = {
     boxSizing: 'unset',
     fontSize: '16px',
     fontFamily: '"Poppins", sans-serif',
+    paddingLeft: '0px',
+    paddingRight: '0px',
+    paddingTop: '0px',
+    paddingBottom: '0px',
   },
 }
 
@@ -38,7 +42,7 @@ export const defaultAlert: NewComponent = {
     return {
       type: NEW_COMPONENT_TYPES.ALERT,
       subcomponents: {
-        [SUB_COMPONENTS.CONTAINER]: {
+        [SUB_COMPONENTS.BASE]: {
           frameworkClass: 'bootstrap',
           componentTag: 'div',
           innerHtmlText: 'Alert',
@@ -63,7 +67,7 @@ export const defaultAlert: NewComponent = {
           tempCustomCss: new Set(['transition']),
         },
       },
-      subcomponentsActiveMode: SUB_COMPONENTS.CONTAINER,
+      subcomponentsActiveMode: SUB_COMPONENTS.BASE,
       customSettingsProperties: {
         width: [10, 80],
         height: [10, 80],

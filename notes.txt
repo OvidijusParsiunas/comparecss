@@ -1,4 +1,6 @@
 design option is not working for the x button
+particular ranges for each subcomponent
+reset doesn't reset the mode dropdown (probably gonna be removed)
 option to remove close background colour
 when hovering a subcomponent mode option, should highlight the area
 calculate the alert height size after the css file has been exported

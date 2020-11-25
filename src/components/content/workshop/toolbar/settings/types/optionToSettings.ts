@@ -1,24 +1,28 @@
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../../consts/workshopToolbarOptions';
-import Border from './border';
-import Color from './color';
-import Shadow from './shadow';
-import Size from './size';
-import Padding from './padding';
-import Margin from './margin';
-import Text from './text';
-import Design from './design';
+import border from './border';
+import color from './color';
+import shadow from './shadow';
+import size from './size';
+import padding from './padding';
+import margin from './margin';
+import text from './text';
+import textIcon from './textBasedIcon';
+import design from './design';
+import background from './background';
 
 type OptionToSettings = {
   [key in WORKSHOP_TOOLBAR_OPTIONS]?: any;
 }
 
 export const optionToSettings: OptionToSettings = {
-  [WORKSHOP_TOOLBAR_OPTIONS.BORDER]: Border,
-  [WORKSHOP_TOOLBAR_OPTIONS.COLOR]: Color,
-  [WORKSHOP_TOOLBAR_OPTIONS.SHADOW]: Shadow,
-  [WORKSHOP_TOOLBAR_OPTIONS.SIZE]: Size,
-  [WORKSHOP_TOOLBAR_OPTIONS.PADDING]: Padding,
-  [WORKSHOP_TOOLBAR_OPTIONS.MARGIN]: Margin,
-  [WORKSHOP_TOOLBAR_OPTIONS.TEXT]: Text,
-  [WORKSHOP_TOOLBAR_OPTIONS.DESIGN]: Design,
+  [WORKSHOP_TOOLBAR_OPTIONS.BORDER]: border,
+  [WORKSHOP_TOOLBAR_OPTIONS.COLOR]: color,
+  [WORKSHOP_TOOLBAR_OPTIONS.SHADOW]: shadow,
+  [WORKSHOP_TOOLBAR_OPTIONS.SIZE]: size,
+  [WORKSHOP_TOOLBAR_OPTIONS.PADDING]: padding,
+  [WORKSHOP_TOOLBAR_OPTIONS.MARGIN]: margin,
+  [WORKSHOP_TOOLBAR_OPTIONS.TEXT]: text,
+  [WORKSHOP_TOOLBAR_OPTIONS.TEXT_BASED_ICON]: textIcon,
+  [WORKSHOP_TOOLBAR_OPTIONS.DESIGN]: design,
+  [WORKSHOP_TOOLBAR_OPTIONS.BACKGROUND]: background,
 };
