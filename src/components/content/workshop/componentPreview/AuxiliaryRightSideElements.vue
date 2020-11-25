@@ -40,6 +40,7 @@ export default {
     NEW_COMPONENT_TYPES,
     SUB_COMPONENTS,
   }),
+  // repeated code as in component preview
   methods: {
     componentMouseEnter(): void {
       const { customCss, transition, customCssActiveMode } = this.subcomponent;
@@ -82,6 +83,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
+  /* this will need to be inherited css */
   .close-button {
     position: absolute;
     top: 0px;

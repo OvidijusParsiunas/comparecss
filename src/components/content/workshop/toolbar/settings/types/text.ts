@@ -23,7 +23,7 @@ export default {
       type: 'inputDropdown',
       spec: {
         name: 'Font',
-        options: ['Poppins', 'Accordion', 'Lato', 'cursive', 'sans-serif', 'groove', 'ridge', 'inset', 'outset'],
+        options: ['Poppins', 'Accordion', 'Lato', 'cursive', 'sans-serif', 'groove', 'ridge', 'inset', 'outset', '"Poppins", sans-serif', '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif'],
         cssProperty: 'fontFamily'
       },
     },

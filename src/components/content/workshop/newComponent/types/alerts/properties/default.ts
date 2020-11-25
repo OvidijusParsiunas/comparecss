@@ -17,6 +17,8 @@ const initialContainerButtonCss: CustomCss = {
     width: '440px',
     height: '50px',
     boxSizing: 'unset',
+    fontSize: '16px',
+    fontFamily: '"Poppins", sans-serif',
   },
 }
 
@@ -26,6 +28,8 @@ const initialCloseButtonCss: CustomCss = {
     lineHeight: '0.6',
     cursor: 'pointer',
     boxSizing: 'unset',
+    fontSize: '16px',
+    color: '#ff0000',
   },
 }
 

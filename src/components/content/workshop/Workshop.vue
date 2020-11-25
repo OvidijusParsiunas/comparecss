@@ -119,6 +119,7 @@ export default {
                 transition: 'unset',
                 fontSize: '14px',
                 color: '#ffffff',
+                fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
               },
               [SUB_COMPONENT_CSS_MODES.HOVER]: {
                 backgroundColor: '#ff0000',
@@ -199,6 +200,7 @@ export default {
               transition: 'unset',
               fontSize: '14px',
               color: '#ffffff',
+              fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
             },
             [SUB_COMPONENT_CSS_MODES.HOVER]: {
               backgroundColor: '#ff0000',

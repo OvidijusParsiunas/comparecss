@@ -11,16 +11,12 @@ export const alertCloseOptions: ComponentOptions<alertCloseOptionsModes> = {
       identifier: WORKSHOP_TOOLBAR_OPTIONS.BORDER,
     },
     {
-      buttonName: 'Color',
+      buttonName: 'Background color',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.COLOR,
     },
     {
       buttonName: 'Shadow',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.SHADOW,
-    },
-    {
-      buttonName: 'Size',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.SIZE,
     },
     {
       buttonName: 'Padding',
@@ -31,8 +27,12 @@ export const alertCloseOptions: ComponentOptions<alertCloseOptionsModes> = {
       identifier: WORKSHOP_TOOLBAR_OPTIONS.MARGIN,
     },
     {
-      buttonName: 'Text',
+      buttonName: 'X Size',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.TEXT,
+    },
+    {
+      buttonName: 'Button Size',
+      identifier: WORKSHOP_TOOLBAR_OPTIONS.SIZE,
     },
     {
       buttonName: 'Reset',
@@ -45,7 +45,7 @@ export const alertCloseOptions: ComponentOptions<alertCloseOptionsModes> = {
       identifier: WORKSHOP_TOOLBAR_OPTIONS.BORDER,
     },
     {
-      buttonName: 'Color',
+      buttonName: 'Background color',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.COLOR,
     },
     {
@@ -53,7 +53,7 @@ export const alertCloseOptions: ComponentOptions<alertCloseOptionsModes> = {
       identifier: WORKSHOP_TOOLBAR_OPTIONS.SHADOW,
     },
     {
-      buttonName: 'Text',
+      buttonName: 'X Size',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.TEXT,
     },
     {
@@ -67,7 +67,7 @@ export const alertCloseOptions: ComponentOptions<alertCloseOptionsModes> = {
       identifier: WORKSHOP_TOOLBAR_OPTIONS.BORDER,
     },
     {
-      buttonName: 'Color',
+      buttonName: 'Background color',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.COLOR,
     },
     {
@@ -75,7 +75,7 @@ export const alertCloseOptions: ComponentOptions<alertCloseOptionsModes> = {
       identifier: WORKSHOP_TOOLBAR_OPTIONS.SHADOW,
     },
     {
-      buttonName: 'Text',
+      buttonName: 'X Size',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.TEXT,
     },
     {

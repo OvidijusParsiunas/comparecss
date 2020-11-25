@@ -42,11 +42,6 @@ export default {
     activeCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
     settingsResetTriggered: false,
   }),
-  
-  components: {
-    settings,
-    options,
-  },
   methods: {
     updateSettings(newSettings: WORKSHOP_TOOLBAR_OPTIONS): void {
       if (newSettings === WORKSHOP_TOOLBAR_OPTIONS.RESET) {
@@ -72,6 +67,7 @@ export default {
       this.triggerSettingsReset();
     },
     updateSubcomponentsMode(updateSubcomponentsMode: UpdateOptionsMode): void {
+      // verify if settings here are in fact retriggered
       this.triggerSettingsReset();
     },
     triggerSettingsReset(): void {
@@ -89,6 +85,10 @@ export default {
   props: {
     component: Object,
     componentPreviewAssistance: Object,
+  },
+  components: {
+    settings,
+    options,
   },
 };
 </script>

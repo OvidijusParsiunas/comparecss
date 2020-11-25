@@ -1,3 +1,4 @@
+design option is not working for the x button
 option to remove close background colour
 when hovering a subcomponent mode option, should highlight the area
 calculate the alert height size after the css file has been exported
@@ -9,6 +10,7 @@ consider removing the auto mode
 
 color active toolkit button
 color active component card
+option to see what the actual css looks like and to edit it
 consider placing javascript unique to the css classes it was used on
 sometimes setting to auto option like the margin does not set desired results, potentially remove it - or set beginner components (in modal) to have no margin as auto
 decide where the display code and download buttons should go
