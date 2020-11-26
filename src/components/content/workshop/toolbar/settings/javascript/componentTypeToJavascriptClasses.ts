@@ -3,16 +3,10 @@ import { NEW_COMPONENT_TYPES } from '../../../../../../consts/newComponentTypes.
 import { buttonJavascriptClasses } from './componentsClasses/button';
 
 type ComponentTypeToJavascriptClasses = {
-  [key in NEW_COMPONENT_TYPES]?: {
-    javascriptClasses: ComponentJavascriptClasses,
-  };
+  [key in NEW_COMPONENT_TYPES]?: ComponentJavascriptClasses;
 }
 
 export const componentTypeToJavascriptClasses: ComponentTypeToJavascriptClasses = {
-  [NEW_COMPONENT_TYPES.BUTTON]: {
-    javascriptClasses: buttonJavascriptClasses,
-  },
-  [NEW_COMPONENT_TYPES.ALERT]: {
-    javascriptClasses: buttonJavascriptClasses,
-  },
+  [NEW_COMPONENT_TYPES.BUTTON]: buttonJavascriptClasses,
+  [NEW_COMPONENT_TYPES.ALERT]: buttonJavascriptClasses,
 };

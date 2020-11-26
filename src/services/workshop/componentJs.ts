@@ -6,7 +6,7 @@ export default class ComponentJs {
   
   static manipulateJS(componentType: NEW_COMPONENT_TYPES, jsManipulationProperty: 'revokeJS' | 'executeJS'): void {
     if (!componentTypeToJavascriptClasses[componentType]) return;
-    componentTypeToJavascriptClasses[componentType].javascriptClasses.forEach((javascriptClass) => {
+    componentTypeToJavascriptClasses[componentType].forEach((javascriptClass) => {
       javascriptClassesToCode[javascriptClass][jsManipulationProperty]();
     });
   }
