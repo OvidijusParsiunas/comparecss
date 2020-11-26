@@ -5,13 +5,14 @@ import { buttonJavascriptClasses } from './componentsClasses/button';
 type ComponentTypeToJavascriptClasses = {
   [key in NEW_COMPONENT_TYPES]?: {
     javascriptClasses: ComponentJavascriptClasses,
-    componentId: string,
   };
 }
 
 export const componentTypeToJavascriptClasses: ComponentTypeToJavascriptClasses = {
   [NEW_COMPONENT_TYPES.BUTTON]: {
     javascriptClasses: buttonJavascriptClasses,
-    componentId: 'demoComponent',
+  },
+  [NEW_COMPONENT_TYPES.ALERT]: {
+    javascriptClasses: buttonJavascriptClasses,
   },
 };

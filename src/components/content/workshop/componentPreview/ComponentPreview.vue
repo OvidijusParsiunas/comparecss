@@ -17,7 +17,8 @@
             </transition>
           </div>
           <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item grid-item-position">
-            <component :is="component.subcomponents[component.subcomponentsActiveMode].componentTag" id="demoComponent" class="grid-item-position"
+            <component :is="component.subcomponents[component.subcomponentsActiveMode].componentTag" id="demoComponent"
+              class="grid-item-position" :class="[ ...component.subcomponents[SUB_COMPONENTS.BASE].jsClasses ]"
               @mouseenter="componentMouseEnter()"
               @mouseleave="componentMouseLeave()"
               @mousedown="componentMouseDown()"

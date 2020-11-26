@@ -31,4 +31,5 @@ export interface WorkshopComponentCss {
   top?: string;
   right?: string;
   float?: string;
+  overflow?: string;
 }

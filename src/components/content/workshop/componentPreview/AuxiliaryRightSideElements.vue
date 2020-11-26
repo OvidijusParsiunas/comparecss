@@ -1,7 +1,7 @@
 <template>
-  <div v-if="componentType === NEW_COMPONENT_TYPES.ALERT">
-    <button class="close-button" type="button" aria-label="Close">
-      <div aria-hidden="true"
+  <div v-if="componentType === NEW_COMPONENT_TYPES.ALERT" @mouseleave="componentPreviewMouseLeave()">
+    <button id="close-button-parent" type="button" aria-label="Close">
+      <div aria-hidden="true" id="close-button" :class="[ ...subcomponent.jsClasses ]"
         @mouseenter="componentMouseEnter()"
         @mouseleave="componentMouseLeave()"
         @mousedown="componentMouseDown()"
@@ -84,7 +84,11 @@ export default {
 
 <style lang="css" scoped>
   /* this will need to be inherited css */
-  .close-button {
+  #close-button {
+    position: relative;
+    overflow: hidden;
+  }
+  #close-button-parent {
     position: absolute;
     top: 0px;
     right: 0px;
@@ -94,7 +98,7 @@ export default {
     border: none;
     cursor: default !important;
   }
-  .close-button:focus {
+  #close-button-parent:focus {
     outline: none;
   }
 </style>

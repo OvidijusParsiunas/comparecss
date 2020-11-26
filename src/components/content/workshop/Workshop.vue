@@ -259,16 +259,13 @@ export default {
   methods: {
     switchActiveComponent(newComponent: WorkshopComponent): void {
       if (this.currentlySelectedComponent) {
-        const { subcomponents, subcomponentsActiveMode, type } = this.currentlySelectedComponent;
+        const { type } = this.currentlySelectedComponent;
         if (type !== newComponent.type) {
           ComponentJs.manipulateJS(type, 'revokeJS');
         }
-        ComponentJs.manipulateJSClasses(subcomponents[subcomponentsActiveMode].jsClasses, type, 'remove');
       }
       this.currentlySelectedComponent = newComponent;
-      const { subcomponents, subcomponentsActiveMode, type } = this.currentlySelectedComponent;
-      ComponentJs.manipulateJS(type, 'executeJS');
-      ComponentJs.manipulateJSClasses(subcomponents[subcomponentsActiveMode].jsClasses, type, 'add');
+      ComponentJs.manipulateJS(this.currentlySelectedComponent.type, 'executeJS');
     },
     setCustomCssActiveMode: (subcomponentProperties: SubcomponentProperties, mode: SUB_COMPONENT_CSS_MODES): void => {
       if (subcomponentProperties.hasOwnProperty('customCssActiveMode')) {
@@ -311,7 +308,6 @@ export default {
       const { subcomponents, subcomponentsActiveMode, type } = this.currentlySelectedComponent;
       if (this.components.length === 0) {
         ComponentJs.manipulateJS(type, 'revokeJS');
-        ComponentJs.manipulateJSClasses(subcomponents[subcomponentsActiveMode].jsClasses, type, 'remove');
         this.currentlySelectedComponent = undefined;
         return;
       }

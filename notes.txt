@@ -1,4 +1,5 @@
 design option is not working for the x button
+stretch x height so that it would remain in the middle
 particular ranges for each subcomponent
 reset doesn't reset the mode dropdown (probably gonna be removed)
 option to remove close background colour
@@ -9,6 +10,7 @@ calculate height by:
   current padding - padding = new padding
 reset button for each setting
 consider removing the auto mode
+test export with shadow and other properties, questionable if it works correctly
 
 color active toolkit button
 color active component card

@@ -19,7 +19,7 @@ export interface SubcomponentProperties {
   tempCustomCss?: TempCustomCss;
   inheritedCss?: InheritedCss;
   customCssActiveMode?: SUB_COMPONENT_CSS_MODES;
-  transition: any;
+  transition: string;
   jsClasses: ComponentJavascriptClasses;
   initialJsClasses: ComponentJavascriptClasses;
 }

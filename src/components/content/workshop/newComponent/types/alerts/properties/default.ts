@@ -4,8 +4,8 @@ import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTyp
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
-// import { inheritedButtonCss } from './inheritedCss';
 
+// need to fill in properly so that the 'reset' option would work
 const initialContainerButtonCss: CustomCss = {
   [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
     color: '#004085',
@@ -23,6 +23,7 @@ const initialContainerButtonCss: CustomCss = {
     paddingRight: '0px',
     paddingTop: '0px',
     paddingBottom: '0px',
+    transition: 'unset',
   },
 }
 
@@ -49,8 +50,8 @@ export const defaultAlert: NewComponent = {
           transition: 'all 0.25s ease-out',
           customCss: { ...initialContainerButtonCss },
           initialCss: { ...initialContainerButtonCss },
-          jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
-          initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
+          jsClasses: new Set(),
+          initialJsClasses: new Set(),
           customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
           tempCustomCss: new Set(['transition']),
         },
