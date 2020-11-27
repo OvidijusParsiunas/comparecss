@@ -98,6 +98,10 @@ export default {
             innerHtmlText: 'button',
             componentTag: 'button',
             transition: 'all 0.25s ease-out',
+            customSettingsProperties: {
+              width: [0, 250],
+              height: [0, 250],
+            },
             customCss: {
               [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
                 borderRadius: '0px',
@@ -164,10 +168,6 @@ export default {
           }
         },
         subcomponentsActiveMode: SUB_COMPONENTS.BASE,
-        customSettingsProperties: {
-          width: [0, 250],
-          height: [0, 250],
-        },
         className: 'button',
       },
     ],
@@ -179,6 +179,10 @@ export default {
           componentTag: 'button',
           innerHtmlText: 'button',
           transition: 'all 0.25s ease-out',
+          customSettingsProperties: {
+            width: [0, 250],
+            height: [0, 250],
+          },
           customCss: {
             [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
               borderRadius: '0px',
@@ -246,10 +250,6 @@ export default {
         }
       },
       subcomponentsActiveMode: SUB_COMPONENTS.BASE,
-      customSettingsProperties: {
-        width: [0, 250],
-        height: [0, 250],
-      },
       className: 'button',
     },
     // components: new Set(),

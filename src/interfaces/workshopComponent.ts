@@ -10,6 +10,11 @@ export type CustomCss = {
   [key in SUB_COMPONENT_CSS_MODES]?: WorkshopComponentCss;
 }
 
+export interface customSettingsProperties {
+  width?: number[],
+  height: number[],
+}
+
 export interface SubcomponentProperties {
   frameworkClass: string;
   componentTag: string;
@@ -22,11 +27,7 @@ export interface SubcomponentProperties {
   transition: string;
   jsClasses: ComponentJavascriptClasses;
   initialJsClasses: ComponentJavascriptClasses;
-}
-
-export interface customSettingsProperties {
-  width: number[],
-  height: number[],
+  customSettingsProperties?: customSettingsProperties;
 }
 
 type subcomponents = {
@@ -38,5 +39,4 @@ export interface WorkshopComponent {
   subcomponents: subcomponents;
   subcomponentsActiveMode: SUB_COMPONENTS,
   className: string;
-  customSettingsProperties?: customSettingsProperties;
 }

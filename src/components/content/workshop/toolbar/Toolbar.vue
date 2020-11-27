@@ -12,7 +12,6 @@
       </div>
       <settings
         :subcomponentproperties="component.subcomponents[component.subcomponentsActiveMode]"
-        :customSettingsProperties="component.customSettingsProperties"
         :settings="activeSettings"
         :settingsResetTriggered="settingsResetTriggered"/>
     </div>

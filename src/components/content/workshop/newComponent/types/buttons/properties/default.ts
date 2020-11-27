@@ -16,6 +16,10 @@ export const defaultButton: NewComponent = {
           componentTag: 'button',
           innerHtmlText: 'button',
           transition: 'all 0.25s ease-out',
+          customSettingsProperties: {
+            width: [0, 250],
+            height: [0, 250],
+          },
           customCss: {
             [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
               borderRadius: '0px',
@@ -80,10 +84,6 @@ export const defaultButton: NewComponent = {
         },
       },
       subcomponentsActiveMode: SUB_COMPONENTS.BASE,
-      customSettingsProperties: {
-        width: [0, 250],
-        height: [0, 250],
-      },
       className: 'default-class-name',
     }
   },

@@ -48,6 +48,10 @@ export const defaultAlert: NewComponent = {
           componentTag: 'div',
           innerHtmlText: 'Alert',
           transition: 'all 0.25s ease-out',
+          customSettingsProperties: {
+            width: [100, 700],
+            height: [30, 200],
+          },
           customCss: { ...initialContainerButtonCss },
           initialCss: { ...initialContainerButtonCss },
           jsClasses: new Set(),
@@ -60,6 +64,10 @@ export const defaultAlert: NewComponent = {
           componentTag: 'div',
           innerHtmlText: 'Alert',
           transition: 'all 0.25s ease-out',
+          customSettingsProperties: {
+            width: [10, 80],
+            height: [10, 80],
+          },
           customCss: { ...initialCloseButtonCss },
           initialCss: { ...initialCloseButtonCss },
           jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
@@ -69,10 +77,6 @@ export const defaultAlert: NewComponent = {
         },
       },
       subcomponentsActiveMode: SUB_COMPONENTS.BASE,
-      customSettingsProperties: {
-        width: [10, 80],
-        height: [10, 80],
-      },
       className: 'default-class-name',
     }
   },
