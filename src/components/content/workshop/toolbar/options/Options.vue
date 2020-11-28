@@ -1,7 +1,7 @@
 <template>
   <div style="margin-top: 10px; margin-bottom: 10px">
     <div style="float: left" class="option-button">
-      <select v-if="Object.keys(component.subcomponents).length > 1" class="form-control" v-model="component.subcomponentsActiveMode" @change="subcomponentsModeClick">
+      <select v-if="Object.keys(component.subcomponents).length > 1" class="form-control" v-model="activeSubcomponentMode" @change="subcomponentsModeClick">
         <option v-for="(mode, propertyName) in component.subcomponents" :key="propertyName">{{propertyName}}</option>
       </select>
     </div>
@@ -25,12 +25,14 @@ import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../consts/workshopToolbarO
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import { componentTypeToOptions } from '../options/components/componentTypeToOptions';
 import { UpdateOptionsMode } from '../../../../../interfaces/updateCssMode';
+import { SUB_COMPONENTS } from '@/consts/subcomponentModes.enum';
 
 interface Data {
   WORKSHOP_TOOLBAR_OPTIONS;
   SUB_COMPONENT_CSS_MODES;
   componentTypeToOptions;
   activeOptionIdentifier: WORKSHOP_TOOLBAR_OPTIONS;
+  activeSubcomponentMode: SUB_COMPONENTS;
 }
 
 export default {
@@ -39,13 +41,19 @@ export default {
     SUB_COMPONENT_CSS_MODES,
     componentTypeToOptions,
     activeOptionIdentifier: null,
+    activeSubcomponentMode: null,
   }),
+  mounted(): void {
+    this.activeSubcomponentMode = this.component.subcomponentsActiveMode;
+  },
   methods: {
     optionClick(option: WORKSHOP_TOOLBAR_OPTIONS): void {
       this.activeOption = option;
       this.$emit('option-clicked', option);
     },
     subcomponentsModeClick(): void {
+      console.log('triggered second');
+      this.component.subcomponentsActiveMode = this.activeSubcomponentMode;
       this.$emit('subcomponents-mode-clicked', [this.component.subcomponentsActiveMode, this.getNewCssModeContainsActiveOptionState()] as UpdateOptionsMode);
     },
     cssModeClick(): void {
@@ -60,6 +68,11 @@ export default {
   props: {
     component: Object,
   },
+  watch: {
+    activeSubcomponentMode(newSubcomponentMode: SUB_COMPONENTS, oldSubcomponentMode: SUB_COMPONENTS): void {
+      if (oldSubcomponentMode) { this.component.subcomponents[oldSubcomponentMode].customCssActiveMode = SUB_COMPONENT_CSS_MODES.DEFAULT; }
+    },
+  }
 };
 </script>
 

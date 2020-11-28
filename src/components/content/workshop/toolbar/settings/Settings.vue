@@ -50,7 +50,10 @@
                   <button onclick="var s = Dlg.ChooseColorDlg(clr1.value); window.event.srcElement.style.color = s; clr1.value = s">&#9608;&#9608;&#9608;&#9608;&#9608;</button>
                   <object id="Dlg" classid="CLSID:3050F819-98B5-11CF-BB82-00AA00BDCE0B" width="0" height="0"></object>
                 -->
-                <input @click="colorInputClick" @input="colorChanged($event, setting)" style="float: left" type="color" name="clr1" v-model="setting.spec.default"/>
+                <input style="float: left" type="color" name="clr1" 
+                  @click="colorInputClick(subcomponentproperties.customCssActiveMode, setting.spec.cssProperty, setting.spec.default)"
+                  @input="colorChanged($event, setting)"
+                  v-model="setting.spec.default"/>
               </div>
 
               <div style="display: flex" v-if="setting.type === 'inputDropdown'">
@@ -89,15 +92,16 @@ import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssMo
 interface Data {
   selectorCurrentValues: unknown;
   inputDropdownCurrentValues: unknown;
-  getActiveModeCssPropertyValue: (param1, param2) => void;
+  getActiveModeCssPropertyValue: (param1: SUB_COMPONENT_CSS_MODES, param2) => void;
   resetSettings: () => void;
+  addDefaultValueIfCssModeMissing: (param1: SUB_COMPONENT_CSS_MODES, param2: string, param3: string) => void;
 }
 
 export default {
   data: (): Data => ({
     selectorCurrentValues: {},
     inputDropdownCurrentValues: {},
-    getActiveModeCssPropertyValue: function(activeMode, cssProperty): string {
+    getActiveModeCssPropertyValue: function(activeMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): string {
       const { customCss } = this.subcomponentproperties;
       // the following allows multiple cases to be checked in one execution
       switch (activeMode) {
@@ -155,8 +159,13 @@ export default {
               if (cssPropertyValue) { setting.spec.default = (cssPropertyValue === setting.spec.conditionalStyle.truthy); }
             }
           }
-        })
+        });
       });
+    },
+    addDefaultValueIfCssModeMissing: function(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string, defaultValue: string): void {
+      if (!this.subcomponentproperties.customCss[customCssActiveMode]) {
+        this.subcomponentproperties.customCss[customCssActiveMode] = { [cssProperty]: defaultValue };
+      }
     }
   }),
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -202,9 +211,7 @@ export default {
       }
     },
     rangeMouseDown(event: KeyboardEvent, customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string, defaultValue: number): void {
-      if (!this.subcomponentproperties.customCss[customCssActiveMode]) {
-        this.subcomponentproperties.customCss[customCssActiveMode] = { [cssProperty]: `${defaultValue}px` };
-      }
+      this.addDefaultValueIfCssModeMissing(customCssActiveMode, cssProperty, `${defaultValue}px`);
       setTimeout(() => {
         const popoverElement = (event.target as HTMLInputElement).parentElement.childNodes[0] as HTMLElement;
         if (popoverElement.style) { popoverElement.style.opacity = '1'; }
@@ -263,7 +270,7 @@ export default {
       this.$refs[referenceId].blur();
     },
     colorChanged(event: KeyboardEvent, setting: any): void {
-      const {cssProperty, partialCss } = setting.spec;
+      const { cssProperty, partialCss } = setting.spec;
       const colorPickerValue = (event.target as HTMLInputElement).value;
       const { customCss, customCssActiveMode } = this.subcomponentproperties;
       if (partialCss != undefined) {
@@ -279,7 +286,8 @@ export default {
         customCss[customCssActiveMode][cssProperty] = colorPickerValue;
       }
     },
-    colorInputClick(): void {
+    colorInputClick(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string, defaultValue: string): void {
+      this.addDefaultValueIfCssModeMissing(customCssActiveMode, cssProperty, defaultValue);
       this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode].transition = 'unset';
     },
     checkboxMouseClick(spec: any, previousCheckboxValue: boolean): void {
@@ -296,7 +304,7 @@ export default {
         const cssValue = newCheckboxValue ? conditionalStyle.truthy : conditionalStyle.falsy;
         customCss[customCssActiveMode][cssProperty] = cssValue;
       }
-    }
+    },
   },
   props: {
     subcomponentproperties: Object,
