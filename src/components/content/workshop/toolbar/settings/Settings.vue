@@ -19,7 +19,10 @@
                   <input type="range" class="form-control-range" id="formControlRange"
                     v-bind:min="subcomponentproperties.customSettingsProperties && subcomponentproperties.customSettingsProperties[setting.spec.cssProperty] ? subcomponentproperties.customSettingsProperties[setting.spec.cssProperty][0] : setting.spec.scale[0]"
                     v-bind:max="subcomponentproperties.customSettingsProperties && subcomponentproperties.customSettingsProperties[setting.spec.cssProperty] ? subcomponentproperties.customSettingsProperties[setting.spec.cssProperty][1] : setting.spec.scale[1]"
-                    v-model="setting.spec.default" @mousedown="rangeMouseDown" @mouseup="rangeMouseUp" @input="updateRange($event, setting)">
+                    v-model="setting.spec.default"
+                    @mousedown="rangeMouseDown($event, subcomponentproperties.customCssActiveMode, setting.spec.cssProperty, setting.spec.default)"
+                    @mouseup="rangeMouseUp"
+                    @input="updateRange($event, setting)">
                 </div>
               </div>
 
@@ -198,8 +201,14 @@ export default {
         customCss[customCssActiveMode][cssProperty] = `${Math.floor(rangeValue as unknown as number / smoothingDivisible)}px`;
       }
     },
-    rangeMouseDown(event: KeyboardEvent): void {
-      ((event.target as HTMLInputElement).parentElement.childNodes[0] as HTMLElement).style.opacity = '1';
+    rangeMouseDown(event: KeyboardEvent, customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string, defaultValue: number): void {
+      if (!this.subcomponentproperties.customCss[customCssActiveMode]) {
+        this.subcomponentproperties.customCss[customCssActiveMode] = { [cssProperty]: `${defaultValue}px` };
+      }
+      setTimeout(() => {
+        const popoverElement = (event.target as HTMLInputElement).parentElement.childNodes[0] as HTMLElement;
+        if (popoverElement.style) { popoverElement.style.opacity = '1'; }
+      })
     },
     rangeMouseUp(event: KeyboardEvent): void {
       ((event.target as HTMLInputElement).parentElement.childNodes[0] as HTMLElement).style.opacity = '0';

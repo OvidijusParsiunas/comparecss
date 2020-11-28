@@ -42,14 +42,14 @@ export default {
     settingsResetTriggered: false,
   }),
   methods: {
-    updateSettings(newSettings: WORKSHOP_TOOLBAR_OPTIONS): void {
-      if (newSettings === WORKSHOP_TOOLBAR_OPTIONS.RESET) {
+    updateSettings(newOption: WORKSHOP_TOOLBAR_OPTIONS): void {
+      if (newOption === WORKSHOP_TOOLBAR_OPTIONS.RESET) {
         SettingsManager.resetComponentProperties(this.component, this.activeCssMode);
         this.triggerSettingsReset();
       } else {
-        this.activeOption = newSettings;
-        this.activeSettings = optionToSettings[newSettings];
-        this.componentPreviewAssistance.margin = (newSettings === WORKSHOP_TOOLBAR_OPTIONS.MARGIN)
+        this.activeOption = newOption;
+        this.activeSettings = optionToSettings[newOption];
+        this.componentPreviewAssistance.margin = (newOption === WORKSHOP_TOOLBAR_OPTIONS.MARGIN)
           && (this.component.subcomponentsActiveMode !== SUB_COMPONENTS.CLOSE);
       }
     },
@@ -60,13 +60,14 @@ export default {
         newCssModeContainsActiveOption = this.$refs.options.getNewCssModeContainsActiveOptionState(this.activeCssMode);
       }
       if (this.activeSettings && Object.keys(this.activeSettings).length && !newCssModeContainsActiveOption) {
-        this.activeSettings = {};
-        this.componentPreviewAssistance.margin = false;
+        this.hideSettings();
       }
       this.triggerSettingsReset();
     },
     updateSubcomponentsMode(updateSubcomponentsMode: UpdateOptionsMode): void {
-      // verify if settings here are in fact retriggered
+      if (!updateSubcomponentsMode[1]) {
+        this.hideSettings();
+      }
       this.triggerSettingsReset();
     },
     triggerSettingsReset(): void {
@@ -79,6 +80,10 @@ export default {
            this.componentPreviewAssistance.margin = !(this.component.subcomponentsActiveMode === SUB_COMPONENTS.CLOSE);
         }
       });
+    },
+    hideSettings(): void {
+      this.activeSettings = {};
+      this.componentPreviewAssistance.margin = false;
     }
   },
   props: {
