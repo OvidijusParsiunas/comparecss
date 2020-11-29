@@ -29,13 +29,24 @@ const initialContainerButtonCss: CustomCss = {
 
 const initialCloseButtonCss: CustomCss = {
   [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-    height: '13px',
-    lineHeight: '0.6',
+    height: '12px',
+    width: '14px',
+    borderRadius: '15px',
+    lineHeight: '1px',
     cursor: 'pointer',
     boxSizing: 'unset',
     fontSize: '16px',
     color: '#ff0000',
     boxShadow: '0px 0px 0px 0px #000000',
+    borderWidth: '0px',
+    backgroundColor: 'inherit',
+    outline: 'none',
+    paddingTop: '1px',
+    paddingLeft: '0px',
+    paddingRight: '0px',
+    paddingBottom: '0px',
+    marginTop: '18px',
+    marginRight: '5px',
   },
 }
 
@@ -66,7 +77,7 @@ export const defaultAlert: NewComponent = {
           innerHtmlText: 'Alert',
           transition: 'all 0.25s ease-out',
           customSettingsProperties: {
-            width: [10, 80],
+            width: [14, 80],
             height: [10, 80],
           },
           customCss: { ...initialCloseButtonCss },

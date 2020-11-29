@@ -1,7 +1,7 @@
 <template>
   <div v-if="componentType === NEW_COMPONENT_TYPES.ALERT" @mouseleave="componentPreviewMouseLeave()">
-    <button id="close-button-parent" type="button" aria-label="Close">
-      <div aria-hidden="true" id="close-button" :class="[ ...subcomponent.jsClasses ]"
+    <div id="close-button-parent" type="button" aria-label="Close">
+      <button aria-hidden="true" id="close-button" :class="[ ...subcomponent.jsClasses ]"
         @mouseenter="componentMouseEnter()"
         @mouseleave="componentMouseLeave()"
         @mousedown="componentMouseDown()"
@@ -18,8 +18,8 @@
               subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
               subcomponent.customCss[subcomponent.customCssActiveMode],
             ]"
-        >×</div>
-    </button>
+        ><div style="display: table; pointer-events: none; margin-left: auto; margin-right: auto;">×</div></button>
+    </div>
   </div>
 </template>
 
@@ -92,10 +92,6 @@ export default {
     position: absolute;
     top: 0px;
     right: 0px;
-    /* the close button height will remain the same */
-    height: 48px;
-    background-color: inherit;
-    border: none;
     cursor: default !important;
   }
   #close-button-parent:focus {

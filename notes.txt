@@ -1,8 +1,8 @@
-stretch x height so that it would remain in the middle
 ability to remove the icon
 reset doesn't reset the mode dropdown (probably gonna be removed)
 option to remove close background colour
 when hovering a subcomponent mode option, should highlight the area
+if close button css will remain static, consider placing them into a separate object that can be used when exporting the file
 calculate the alert height size after the css file has been exported
 calculate height by:
   (current height - default height) / 2 = padding
