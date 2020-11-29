@@ -35,6 +35,7 @@ const initialCloseButtonCss: CustomCss = {
     boxSizing: 'unset',
     fontSize: '16px',
     color: '#ff0000',
+    boxShadow: '0px 0px 0px 0px #000000',
   },
 }
 

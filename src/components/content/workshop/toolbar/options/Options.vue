@@ -43,16 +43,12 @@ export default {
     activeOptionIdentifier: null,
     activeSubcomponentMode: null,
   }),
-  mounted(): void {
-    this.activeSubcomponentMode = this.component.subcomponentsActiveMode;
-  },
   methods: {
     optionClick(option: WORKSHOP_TOOLBAR_OPTIONS): void {
       this.activeOption = option;
       this.$emit('option-clicked', option);
     },
     subcomponentsModeClick(): void {
-      console.log('triggered second');
       this.component.subcomponentsActiveMode = this.activeSubcomponentMode;
       this.$emit('subcomponents-mode-clicked', [this.component.subcomponentsActiveMode, this.getNewCssModeContainsActiveOptionState()] as UpdateOptionsMode);
     },
@@ -70,8 +66,13 @@ export default {
   },
   watch: {
     activeSubcomponentMode(newSubcomponentMode: SUB_COMPONENTS, oldSubcomponentMode: SUB_COMPONENTS): void {
-      if (oldSubcomponentMode) { this.component.subcomponents[oldSubcomponentMode].customCssActiveMode = SUB_COMPONENT_CSS_MODES.DEFAULT; }
+      if (oldSubcomponentMode && this.component.subcomponents[oldSubcomponentMode]) {
+        this.component.subcomponents[oldSubcomponentMode].customCssActiveMode = SUB_COMPONENT_CSS_MODES.DEFAULT;
+      }
     },
+    component(): void {
+      this.activeSubcomponentMode = this.component.subcomponentsActiveMode;
+    }
   }
 };
 </script>

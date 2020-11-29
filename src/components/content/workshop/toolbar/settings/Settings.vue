@@ -20,7 +20,7 @@
                     v-bind:min="subcomponentproperties.customSettingsProperties && subcomponentproperties.customSettingsProperties[setting.spec.cssProperty] ? subcomponentproperties.customSettingsProperties[setting.spec.cssProperty][0] : setting.spec.scale[0]"
                     v-bind:max="subcomponentproperties.customSettingsProperties && subcomponentproperties.customSettingsProperties[setting.spec.cssProperty] ? subcomponentproperties.customSettingsProperties[setting.spec.cssProperty][1] : setting.spec.scale[1]"
                     v-model="setting.spec.default"
-                    @mousedown="rangeMouseDown($event, subcomponentproperties.customCssActiveMode, setting.spec.cssProperty, setting.spec.default)"
+                    @mousedown="rangeMouseDown($event, subcomponentproperties.customCssActiveMode, setting.spec)"
                     @mouseup="rangeMouseUp"
                     @input="updateRange($event, setting)">
                 </div>
@@ -92,9 +92,10 @@ import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssMo
 interface Data {
   selectorCurrentValues: unknown;
   inputDropdownCurrentValues: unknown;
-  getActiveModeCssPropertyValue: (param1: SUB_COMPONENT_CSS_MODES, param2) => void;
+  getActiveModeCssPropertyValue: (param1: SUB_COMPONENT_CSS_MODES, param2: string) => void;
   resetSettings: () => void;
   addDefaultValueIfCssModeMissing: (param1: SUB_COMPONENT_CSS_MODES, param2: string, param3: string) => void;
+  parseRangeValue: (param1: string, param2: number) => number;
 }
 
 export default {
@@ -138,7 +139,8 @@ export default {
                   }
                 })
               })
-              setting.spec.default = parseInt(cssPropertyValue.substring(0, cssPropertyValue.length - 2), 10) * setting.spec.smoothingDivisible;
+              const singlePropertyValue = setting.spec.partialCss ? cssPropertyValue.split(' ')[setting.spec.partialCss.position] : cssPropertyValue;
+              setting.spec.default = this.parseRangeValue(singlePropertyValue, setting.spec.smoothingDivisible);
             }
           } else if (setting.type === 'select') {
             // default value for range is currently setting the select value, not the select value for ranges
@@ -166,6 +168,9 @@ export default {
       if (!this.subcomponentproperties.customCss[customCssActiveMode]) {
         this.subcomponentproperties.customCss[customCssActiveMode] = { [cssProperty]: defaultValue };
       }
+    },
+    parseRangeValue(value: string, smoothingDivisible: number): number {
+      return parseInt(value.substring(0, value.length - 2), 10) * smoothingDivisible;
     }
   }),
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -199,8 +204,9 @@ export default {
       const rangeValue = (event.target as HTMLInputElement).value;
       if (partialCss != undefined) {
         if (customCss[customCssActiveMode][cssProperty] === undefined) {
-          partialCss.fullDefaultValues[partialCss.position] = rangeValue;
-          customCss[customCssActiveMode][cssProperty] = partialCss.fullDefaultValues.join(' ');
+          const defaultValues = [ ...partialCss.fullDefaultValues ];
+          defaultValues[partialCss.position] = rangeValue;
+          customCss[customCssActiveMode][cssProperty] = defaultValues.join(' ');
         } else {
           const cssPropertyValues = customCss[customCssActiveMode][cssProperty].split(' ');
           cssPropertyValues[partialCss.position] = `${rangeValue}px`;
@@ -210,8 +216,10 @@ export default {
         customCss[customCssActiveMode][cssProperty] = `${Math.floor(rangeValue as unknown as number / smoothingDivisible)}px`;
       }
     },
-    rangeMouseDown(event: KeyboardEvent, customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string, defaultValue: number): void {
-      this.addDefaultValueIfCssModeMissing(customCssActiveMode, cssProperty, `${defaultValue}px`);
+    rangeMouseDown(event: KeyboardEvent, customCssActiveMode: SUB_COMPONENT_CSS_MODES, spec: any): void {
+      const { cssProperty, defaultValue, partialCss } = spec;
+      const settingSpecificDefaultValue = partialCss ? defaultValue : `${defaultValue}px`;
+      this.addDefaultValueIfCssModeMissing(customCssActiveMode, cssProperty, settingSpecificDefaultValue);
       setTimeout(() => {
         const popoverElement = (event.target as HTMLInputElement).parentElement.childNodes[0] as HTMLElement;
         if (popoverElement.style) { popoverElement.style.opacity = '1'; }
@@ -275,8 +283,9 @@ export default {
       const { customCss, customCssActiveMode } = this.subcomponentproperties;
       if (partialCss != undefined) {
         if (customCss[customCssActiveMode][cssProperty] === undefined) {
-          partialCss.fullDefaultValues[partialCss.position] = colorPickerValue;
-          customCss[customCssActiveMode][cssProperty] = partialCss.fullDefaultValues.join(' ');
+          const defaultValues = [ ...partialCss.fullDefaultValues ];
+          defaultValues[partialCss.position] = colorPickerValue;
+          customCss[customCssActiveMode][cssProperty] = defaultValues.join(' ');
         } else {
           const cssPropertyValues = customCss[customCssActiveMode][cssProperty].split(' ');
           cssPropertyValues[partialCss.position] = colorPickerValue;

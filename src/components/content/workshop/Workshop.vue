@@ -286,13 +286,14 @@ export default {
         const { subcomponents, subcomponentsActiveMode } = this.currentlySelectedComponent;
         const previousActiveMode = subcomponents[subcomponentsActiveMode].customCssActiveMode;
         this.setCustomCssActiveMode(subcomponents[subcomponentsActiveMode], SUB_COMPONENT_CSS_MODES.DEFAULT);
-        if (Object.keys(componentTypeToOptions[selectedComponent.type]).includes(previousActiveMode)) {
-          selectedComponent.subcomponents[selectedComponent.subcomponentsActiveMode].customCssActiveMode = previousActiveMode;
-        } else {
-          selectedComponent.subcomponents[selectedComponent.subcomponentsActiveMode].customCssActiveMode = SUB_COMPONENT_CSS_MODES.DEFAULT;
-        }
+        const activeSubcomponentOptions = componentTypeToOptions[selectedComponent.type][selectedComponent.subcomponentsActiveMode];
+        selectedComponent.subcomponents[selectedComponent.subcomponentsActiveMode]
+          .customCssActiveMode = (activeSubcomponentOptions && Object.keys(activeSubcomponentOptions).includes(previousActiveMode))
+          ? previousActiveMode : SUB_COMPONENT_CSS_MODES.DEFAULT;
         this.switchActiveComponent(selectedComponent);
-        this.$refs.toolbar.updateCssMode([subcomponents[subcomponentsActiveMode].customCssActiveMode] as UpdateOptionsMode);
+        setTimeout(() => {
+          this.$refs.toolbar.updateCssMode([selectedComponent.subcomponents[selectedComponent.subcomponentsActiveMode].customCssActiveMode] as UpdateOptionsMode);
+        })
       }
     },
     componentCardCopied(selectComponentCard: WorkshopComponent): void {

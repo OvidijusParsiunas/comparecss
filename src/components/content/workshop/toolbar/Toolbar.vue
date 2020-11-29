@@ -54,7 +54,7 @@ export default {
       }
     },
     updateCssMode(newCssMode: UpdateOptionsMode): void {
-      if (newCssMode[0]) this.activeCssMode = newCssMode[0];
+      if (newCssMode[0]) { this.activeCssMode = newCssMode[0]; }
       let newCssModeContainsActiveOption = newCssMode[1];
       if (newCssModeContainsActiveOption === undefined) {
         newCssModeContainsActiveOption = this.$refs.options.getNewCssModeContainsActiveOptionState(this.activeCssMode);
@@ -76,8 +76,8 @@ export default {
       // whereas directly calling the reset method via ref invokes it before the props have been updated
       this.settingsResetTriggered = !this.settingsResetTriggered;
       this.$nextTick(() => {
-        if (this.activeOption === WORKSHOP_TOOLBAR_OPTIONS.MARGIN) {
-           this.componentPreviewAssistance.margin = !(this.component.subcomponentsActiveMode === SUB_COMPONENTS.CLOSE);
+        if (this.activeOption === WORKSHOP_TOOLBAR_OPTIONS.MARGIN && Object.keys(this.activeSettings).length > 0) {
+          this.componentPreviewAssistance.margin = !(this.component.subcomponentsActiveMode === SUB_COMPONENTS.CLOSE);
         }
       });
     },
