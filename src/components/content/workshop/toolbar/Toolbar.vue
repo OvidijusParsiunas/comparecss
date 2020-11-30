@@ -2,7 +2,7 @@
   <div v-if="component">
     <div style="width: 98.5%; height: 228px">
       <div style="display: flex; background-color: rgb(251 251 251); border-radius: 20px;">
-        <div style="margin-left: 10px; padding: 5px; width: 100%">
+        <div style="margin-left: 10px; padding: 5px; width: 100%; display: grid">
           <options ref="options"
             :component="component"
             @option-clicked="updateSettings"
