@@ -1,22 +1,32 @@
 <template>
-  <div style="margin-top: 10px; margin-bottom: 10px">
-    <div style="float: left" class="option-button">
+  <div class="options-container">
+    <div class="option-button">
       <select v-if="Object.keys(component.subcomponents).length > 1" class="form-control" v-model="activeSubcomponentMode" @change="subcomponentsModeClick">
-        <option v-for="(mode, propertyName) in component.subcomponents" :key="propertyName">{{propertyName}}</option>
+        <option v-for="(mode, subcomponentMode) in component.subcomponents" :key="subcomponentMode">{{subcomponentMode}}</option>
       </select>
     </div>
-    <div style="float: left" class="option-button">
-      <select v-if="Object.keys(componentTypeToOptions[component.type][component.subcomponentsActiveMode]).length > 1" class="form-control" v-model="component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode" @change="cssModeClick">
-        <option v-for="(mode, propertyName) in componentTypeToOptions[component.type][component.subcomponentsActiveMode]" :key="propertyName">{{propertyName}}</option>
-      </select>
+    <div class="option-button">
+      <button v-if="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent"
+        type="button" class="btn view-option"
+        :class="[ component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying ? 'display-toggle-remove' : 'display-toggle-add' ]"
+        @click="toggleSubcomponentDisplay(component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent)">
+          {{ component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying ? 'Remove' : 'Add' }}
+      </button>
     </div>
-    <button
-      type="button"
-      v-for="(option) in componentTypeToOptions[component.type][component.subcomponentsActiveMode][component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode]" :key="option"
-      class="btn btn-outline-secondary option-button"
-      @click="optionClick(option.identifier)">
-        {{option.buttonName}}
-    </button>
+    <div v-if="!component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent || component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying"> 
+      <div class="option-button">
+        <select v-if="Object.keys(componentTypeToOptions[component.type][component.subcomponentsActiveMode]).length > 1" class="form-control" v-model="component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode" @change="cssModeClick">
+          <option v-for="(mode, cssMode) in componentTypeToOptions[component.type][component.subcomponentsActiveMode]" :key="cssMode">{{cssMode}}</option>
+        </select>
+      </div>
+      <button
+        type="button"
+        v-for="(option) in componentTypeToOptions[component.type][component.subcomponentsActiveMode][component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode]" :key="option"
+        class="btn btn-outline-secondary option-button"
+        @click="optionClick(option.identifier)">
+          {{option.buttonName}}
+      </button>
+    </div>
   </div>
 </template>
 
@@ -25,7 +35,8 @@ import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../consts/workshopToolbarO
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import { componentTypeToOptions } from '../options/components/componentTypeToOptions';
 import { UpdateOptionsMode } from '../../../../../interfaces/updateCssMode';
-import { SUB_COMPONENTS } from '@/consts/subcomponentModes.enum';
+import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
+import { OptionalSubcomponent } from '../../../../../interfaces/workshopComponent';
 
 interface Data {
   WORKSHOP_TOOLBAR_OPTIONS;
@@ -59,6 +70,9 @@ export default {
       const { subcomponents, subcomponentsActiveMode, type } = this.component;
       const activeModeOptions = componentTypeToOptions[type][subcomponentsActiveMode][activeMode || subcomponents[subcomponentsActiveMode].customCssActiveMode];
       return activeModeOptions.some((option) => option.identifier === this.activeOption);
+    },
+    toggleSubcomponentDisplay(optionalSubcomponent: OptionalSubcomponent): void {
+      optionalSubcomponent.currentlyDisplaying = !optionalSubcomponent.currentlyDisplaying;
     }
   },
   props: {
@@ -78,13 +92,32 @@ export default {
 </script>
 
 <style lang="css" scoped>
+  .options-container {
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+  }
+  .view-option {
+    color: black !important;
+    border-color: #ced4da !important;
+  }
   .btn-outline-secondary:hover {
     background-color: #d6d6d6 !important;
     color: black !important;
   }
   .option-button {
+    float: left;
     margin-right: 8px;
     border-color: #9d9d9d !important;
     background-color: white !important;
+  }
+  .display-toggle-remove:hover {
+    background-color: #fffdfd;
+    border-color: red !important;
+    color: red !important;
+  }
+  .display-toggle-add:hover {
+    background-color: #f8fff8;
+    border-color: green !important;
+    color: green !important;
   }
 </style>

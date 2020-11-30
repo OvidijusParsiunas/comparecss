@@ -15,6 +15,10 @@ export interface customSettingsProperties {
   height: number[],
 }
 
+export interface OptionalSubcomponent {
+  currentlyDisplaying: boolean;
+}
+
 export interface SubcomponentProperties {
   frameworkClass: string;
   componentTag: string;
@@ -28,6 +32,7 @@ export interface SubcomponentProperties {
   jsClasses: ComponentJavascriptClasses;
   initialJsClasses: ComponentJavascriptClasses;
   customSettingsProperties?: customSettingsProperties;
+  optionalSubcomponent?: OptionalSubcomponent;
 }
 
 type subcomponents = {

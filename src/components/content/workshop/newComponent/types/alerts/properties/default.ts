@@ -86,6 +86,7 @@ export const defaultAlert: NewComponent = {
           initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
           customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
           tempCustomCss: new Set(['transition']),
+          optionalSubcomponent: { currentlyDisplaying: true }
         },
       },
       subcomponentsActiveMode: SUB_COMPONENTS.BASE,

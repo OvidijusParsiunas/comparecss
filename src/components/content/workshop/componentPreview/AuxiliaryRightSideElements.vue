@@ -1,5 +1,7 @@
 <template>
-  <div v-if="componentType === NEW_COMPONENT_TYPES.ALERT" @mouseleave="componentPreviewMouseLeave()">
+  <div v-if="componentType === NEW_COMPONENT_TYPES.ALERT
+      && (!subcomponent.optionalSubcomponent || subcomponent.optionalSubcomponent.currentlyDisplaying)"
+    @mouseleave="componentPreviewMouseLeave()">
     <div id="close-button-parent" type="button" aria-label="Close">
       <button aria-hidden="true" id="close-button" :class="[ ...subcomponent.jsClasses ]"
         @mouseenter="componentMouseEnter()"
@@ -24,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { SUB_COMPONENT_CSS_MODES } from '@/consts/subcomponentCssModes.enum';
+import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 
@@ -77,9 +79,6 @@ export default {
     subcomponent: Object,
   }
 }
-
-// fix transition only on hover
-// transition: all 0.25s ease-out 0s;
 </script>
 
 <style lang="css" scoped>
