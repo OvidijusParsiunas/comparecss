@@ -85,6 +85,9 @@
             </div>
             
           </div>
+          <button class="reset-button" @click="resetProperties(settings.options)">
+            &#8634;
+          </button>
         </div>
       </div>
     </div>
@@ -323,6 +326,13 @@ export default {
         customCss[customCssActiveMode][cssProperty] = cssValue;
       }
     },
+    resetProperties(options: any): void {
+      options.forEach((option) => {
+        const { cssProperty } = option.spec;
+        this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = this.subcomponentproperties.initialCss[this.subcomponentproperties.customCssActiveMode][cssProperty];
+      });
+      this.resetSettings();
+    }
   },
   props: {
     subcomponentproperties: Object,
@@ -393,6 +403,21 @@ export default {
     opacity: 0.7;    
   }
   .unset-color-button:focus {
+    outline: none;
+  }
+  .reset-button {
+    font-size: 17px;
+    opacity: 0.6;
+    position: absolute;
+    right: 15px;
+    top: 10px;
+    border: none;
+    background: unset
+  }
+  .reset-button:hover {
+    opacity: 0.9;
+  }
+  .reset-button:focus {
     outline: none;
   }
 </style>
