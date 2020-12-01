@@ -30,10 +30,6 @@ export const alertCloseOptions: ComponentOptions<alertCloseOptionsModes> = {
       buttonName: 'Shadow',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.SHADOW,
     },
-    {
-      buttonName: 'Reset',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.RESET,
-    },
   ],
   [SUB_COMPONENT_CSS_MODES.HOVER]: [
     {
@@ -59,10 +55,6 @@ export const alertCloseOptions: ComponentOptions<alertCloseOptionsModes> = {
     {
       buttonName: 'Shadow',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.SHADOW,
-    },
-    {
-      buttonName: 'Reset',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.RESET,
     },
   ],
   [SUB_COMPONENT_CSS_MODES.CLICK]: [
@@ -93,10 +85,6 @@ export const alertCloseOptions: ComponentOptions<alertCloseOptionsModes> = {
     {
       buttonName: 'Design',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.DESIGN,
-    },
-    {
-      buttonName: 'Reset',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.RESET,
     },
   ],
 };

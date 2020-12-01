@@ -34,10 +34,6 @@ export const buttonContainerOptions: ComponentOptions<ButtonOptionsModes> = {
       buttonName: 'Text',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.TEXT,
     },
-    {
-      buttonName: 'Reset',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.RESET,
-    },
   ],
   [SUB_COMPONENT_CSS_MODES.HOVER]: [
     {
@@ -56,10 +52,6 @@ export const buttonContainerOptions: ComponentOptions<ButtonOptionsModes> = {
       buttonName: 'Text',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.TEXT,
     },
-    {
-      buttonName: 'Reset',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.RESET,
-    },
   ],
   [SUB_COMPONENT_CSS_MODES.CLICK]: [
     {
@@ -77,10 +69,6 @@ export const buttonContainerOptions: ComponentOptions<ButtonOptionsModes> = {
     {
       buttonName: 'Text',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.TEXT,
-    },
-    {
-      buttonName: 'Reset',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.RESET,
     },
     {
       buttonName: 'Design',

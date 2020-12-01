@@ -34,9 +34,5 @@ export const alertContainerOptions: ComponentOptions<AlertContainerOptionsModes>
       buttonName: 'Text',
       identifier: WORKSHOP_TOOLBAR_OPTIONS.TEXT,
     },
-    {
-      buttonName: 'Reset',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.RESET,
-    },
   ],
 };

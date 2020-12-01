@@ -42,8 +42,15 @@ export default {
         default: 'none',
         cssProperty: 'borderStyle'
       },
+      triggers: {
+        none: {
+          cssProperty: 'borderWidth',
+          defaultValue: '0px',
+          negativeConditions: [0, undefined],
+        },
+      },
     },
-    { 
+    {
       type: 'colorPicker',
       spec: {
         name: 'Color',

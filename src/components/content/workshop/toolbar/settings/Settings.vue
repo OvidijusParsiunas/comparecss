@@ -35,7 +35,7 @@
                     {{selectorCurrentValues[setting.spec.cssProperty] || setting.spec.default}}
                   </button>
                   <div class="dropdown-menu" @mouseleave="selectMenuMouseLeave(setting.spec.cssProperty)" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" @mouseover="selectOptionMouseOver(option, setting.spec.cssProperty)" @click="selectOptionClick(option, setting.spec)" v-for="option in setting.spec.options" :key="option">{{option}}</a>
+                    <a class="dropdown-item" @mouseover="selectOptionMouseOver(option, setting.spec.cssProperty)" @click="selectOptionClick(option, setting)" v-for="option in setting.spec.options" :key="option">{{option}}</a>
                   </div>
                 </div>
               </div>
@@ -189,25 +189,12 @@ export default {
       const {cssProperty, smoothingDivisible, partialCss } = spec;
       const { customCss, customCssActiveMode } = this.subcomponentproperties;
       (triggers || []).forEach((trigger) => {
-        if (trigger.indirectCssPropertySelector) {
-          this.settings.options.forEach((setting) => {
-              if (setting.cssPlaceholder === trigger.cssProperty) {
-                trigger.conditions.forEach((condition) => {
-                  if (setting.spec.default === condition) {
-                    setting.spec.default = trigger.defaultValue;
-                  }
-                });
-              }
-            }
-          )
-        } else {
-          trigger.conditions.forEach((condition) => {
-            if (customCss[customCssActiveMode][trigger.cssProperty] === condition) {
-              customCss[customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
-              if (trigger.selector) { this.selectorCurrentValues[trigger.cssProperty] = trigger.defaultValue; }
-            }
-          }); 
-        }
+        trigger.conditions.forEach((condition) => {
+          if (customCss[customCssActiveMode][trigger.cssProperty] === condition) {
+            customCss[customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
+            if (trigger.selector) { this.selectorCurrentValues[trigger.cssProperty] = trigger.defaultValue; }
+          }
+        }); 
       });
       const rangeValue = (event.target as HTMLInputElement).value;
       if (partialCss != undefined) {
@@ -245,26 +232,35 @@ export default {
     openDropdown(cssProperty: string): void {
       this.inputDropdownCurrentValues[cssProperty] = this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty];
     },
-    selectOptionClick(option: string, spec: any): void {
-      const { cssProperty, triggers, } = spec;
+    selectOptionClick(option: string, setting: any): void {
+      const {triggers, spec} = setting;
       const { customCss, customCssActiveMode } = this.subcomponentproperties;
-      if (cssProperty) {
-        customCss[customCssActiveMode][cssProperty] = option;
-        this.selectorCurrentValues[cssProperty] = option;
-      } else if (triggers) {
-        (triggers || []).forEach((trigger) => {
-          if (trigger.option === option) {
-            trigger.newChanges.forEach((change) => {
-              customCss[customCssActiveMode][change.cssProperty] = change.value;
-              this.settings.options.forEach((setting) => {
-                if (setting.spec.cssProperty === change.cssProperty) {
-                  setting.spec.default = change.defaultValue;
-                }
-              })
-            })
+      customCss[customCssActiveMode][spec.cssProperty] = option;
+      this.selectorCurrentValues[spec.cssProperty] = option;
+      if (triggers && triggers[option]) {
+        const { conditions, negativeConditions, cssProperty: triggerCssProperty, defaultValue } = triggers[option];
+        function iterateThroughConditions(conditions: (number | string | undefined)[], comparator: (param1, param2) => boolean): boolean {
+          if (conditions) {
+            for (let i = 0; i < conditions.length; i += 1) {
+              const conditionValue = typeof conditions[i] === 'string' ? parseInt(conditions[i] as string) : conditions[i];
+              if (comparator(customCss[customCssActiveMode][triggerCssProperty], conditionValue)) {
+                return true;
+              }
+            }
           }
-        });
-        spec.default = option;
+          return false;
+        }
+        let conditionMet = iterateThroughConditions(conditions, (param1, param2): boolean => param1 === param2);
+        if (!conditionMet) { conditionMet = iterateThroughConditions(negativeConditions, (param1, param2): boolean => param1 !== param2) }
+        if (conditionMet) {
+          for (let i = 0; i < this.settings.options.length; i += 1) {
+            if (this.settings.options[i].spec.cssProperty === triggerCssProperty) {
+              const rawDefaultValue = typeof defaultValue === 'string' ? parseInt(defaultValue) : defaultValue;
+              this.settings.options[i].spec.default = rawDefaultValue;
+              customCss[customCssActiveMode][triggerCssProperty] = defaultValue;
+            }
+          }
+        }
       }
     },
     inputDropdownOptionClick(option: string, cssProperty: string): void {

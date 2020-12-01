@@ -29,7 +29,6 @@ import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOpti
 import { optionToSettings } from './settings/types/optionToSettings';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { UpdateOptionsMode } from '../../../../interfaces/updateCssMode';
-import SettingsManager from '../../../../services/workshop/settingsManager';
 import settings from './settings/Settings.vue';
 import options from './options/Options.vue';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
@@ -43,15 +42,10 @@ export default {
   }),
   methods: {
     updateSettings(newOption: WORKSHOP_TOOLBAR_OPTIONS): void {
-      if (newOption === WORKSHOP_TOOLBAR_OPTIONS.RESET) {
-        SettingsManager.resetComponentProperties(this.component, this.activeCssMode);
-        this.triggerSettingsReset();
-      } else {
-        this.activeOption = newOption;
-        this.activeSettings = optionToSettings[newOption];
-        this.componentPreviewAssistance.margin = (newOption === WORKSHOP_TOOLBAR_OPTIONS.MARGIN)
-          && (this.component.subcomponentsActiveMode !== SUB_COMPONENTS.CLOSE);
-      }
+      this.activeOption = newOption;
+      this.activeSettings = optionToSettings[newOption];
+      this.componentPreviewAssistance.margin = (newOption === WORKSHOP_TOOLBAR_OPTIONS.MARGIN)
+        && (this.component.subcomponentsActiveMode !== SUB_COMPONENTS.CLOSE);
     },
     updateCssMode(newCssMode: UpdateOptionsMode): void {
       if (newCssMode[0]) { this.activeCssMode = newCssMode[0]; }
