@@ -54,6 +54,11 @@
                   @click="colorInputClick(subcomponentproperties.customCssActiveMode, setting.spec.cssProperty, setting.spec.default)"
                   @input="colorChanged($event, setting)"
                   v-model="setting.spec.default"/>
+                <button class="unset-color-button" id="dropdownMenuButton"
+                  :style="{ display: subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty] === 'inherit' ? 'none' : 'block'}"
+                  @click="removeColor(setting.spec)">
+                  &times;
+                </button>
               </div>
 
               <div style="display: flex" v-if="setting.type === 'inputDropdown'">
@@ -188,7 +193,7 @@ export default {
                   if (setting.spec.default === condition) {
                     setting.spec.default = trigger.defaultValue;
                   }
-                }); 
+                });
               }
             }
           )
@@ -299,6 +304,10 @@ export default {
       this.addDefaultValueIfCssModeMissing(customCssActiveMode, cssProperty, defaultValue);
       this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode].transition = 'unset';
     },
+    removeColor(spec: any): void {
+      spec.default = '';
+      this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][spec.cssProperty] = 'inherit';
+    },
     checkboxMouseClick(spec: any, previousCheckboxValue: boolean): void {
       const { conditionalStyle, cssProperty, javascript, jsClassName } = spec;
       const { customCss, customCssActiveMode, jsClasses } = this.subcomponentproperties;
@@ -368,5 +377,22 @@ export default {
   }
   .dropdown-toggle::after {
     vertical-align: 0.15em !important;
+  }
+  .unset-color-button {
+    font-size: 1.1em;
+    line-height: 15px;
+    padding-top: 2px;
+    float: left;
+    background-color: unset;
+    border: unset;
+    font-weight: 700;
+    opacity: 0.5;
+    outline: none;
+  }
+  .unset-color-button:hover {
+    opacity: 0.7;    
+  }
+  .unset-color-button:focus {
+    outline: none;
   }
 </style>
