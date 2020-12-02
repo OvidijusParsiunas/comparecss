@@ -21,6 +21,8 @@
               subcomponent.customCss[subcomponent.customCssActiveMode],
             ]"
         ><div style="display: table; pointer-events: none; margin-left: auto; margin-right: auto;">×</div></button>
+      <button id="close-subcomponent-preview" style="display: none" :style="subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]" class="subcomponent-preview">
+      </button>
     </div>
   </div>
 </template>
@@ -95,5 +97,10 @@ export default {
   }
   #close-button-parent:focus {
     outline: none;
+  }
+  .subcomponent-preview {
+    background-color: rgb(40 255 20 / 43%) !important;
+    position: absolute !important;
+    top: 0px !important;
   }
 </style>

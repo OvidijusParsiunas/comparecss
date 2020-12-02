@@ -1,4 +1,3 @@
-reset doesn't reset the mode dropdown (probably gonna be removed)
 export color values that are set to inherit
 when hovering a subcomponent mode option, should highlight the area
 if close button css will remain static, consider placing them into a separate object that can be used when exporting the file
@@ -6,10 +5,10 @@ calculate the alert height size after the css file has been exported
 calculate height by:
   (current height - default height) / 2 = padding
   current padding - padding = new padding
-consider removing the auto mode
 test export with shadow and other properties, questionable if it works correctly
 setting types should an enum
 potentially have animation for when optional subcomponent options buttons appear and are hidden
+firefox color selector
 
 cursor that allows user to hover over component's parts and upon clicking would direct to the rightful settings
 color active toolkit button

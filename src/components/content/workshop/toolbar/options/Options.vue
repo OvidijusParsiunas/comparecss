@@ -1,6 +1,17 @@
 <template>
   <div class="options-container">
     <div class="option-button">
+      <div class="dropdown">
+        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Dropdown button
+          <i class="fa fa-heart"></i>
+        </button>
+        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a @mouseenter="mouseEnterFunc" @mouseleave="mouseLeaveFunc" class="dropdown-item" href="#">Action</a>
+          <a class="dropdown-item" href="#">Another action</a>
+          <a class="dropdown-item" href="#">Something else here</a>
+        </div>
+      </div>
       <select v-if="Object.keys(component.subcomponents).length > 1" class="form-control" v-model="activeSubcomponentMode" @change="subcomponentsModeClick">
         <option v-for="(mode, subcomponentMode) in component.subcomponents" :key="subcomponentMode">{{subcomponentMode}}</option>
       </select>
@@ -55,6 +66,12 @@ export default {
     activeSubcomponentMode: null,
   }),
   methods: {
+    mouseEnterFunc(): void {
+      document.getElementById('close-subcomponent-preview').style.display = 'block';
+    },
+    mouseLeaveFunc(): void {
+      document.getElementById('close-subcomponent-preview').style.display = 'none';
+    },
     optionClick(option: WORKSHOP_TOOLBAR_OPTIONS): void {
       this.activeOption = option;
       this.$emit('option-clicked', option);
@@ -120,4 +137,7 @@ export default {
     border-color: green !important;
     color: green !important;
   }
+  .dropdown-toggle::after {
+    display: none !important;
+}
 </style>
