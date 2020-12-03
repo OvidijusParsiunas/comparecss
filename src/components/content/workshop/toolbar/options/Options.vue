@@ -1,20 +1,18 @@
 <template>
   <div class="options-container">
     <div class="option-button">
-      <div class="dropdown">
-        <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Dropdown button
-          <i class="fa fa-heart"></i>
+      <div class="dropdown" v-if="Object.keys(component.subcomponents).length > 1">
+        <button @click="openSubcomponentDropdownMenu" class="btn form-control dropdown-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <div class="dropdown-button-text">{{activeSubcomponentMode}}</div><i class="fa fa-angle-double-down dropdown-button-icon"></i>
         </button>
-        <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a @mouseenter="mouseEnterFunc" @mouseleave="mouseLeaveFunc" class="dropdown-item" href="#">Action</a>
-          <a class="dropdown-item" href="#">Another action</a>
-          <a class="dropdown-item" href="#">Something else here</a>
+        <div ref="dropdownMenu" id="subcomponents-dropdown" class="dropdown-menu subcomponents-dropdown-menu" aria-labelledby="dropdownMenuButton">
+          <a v-for="(mode, subcomponentMode) in component.subcomponents" :key="subcomponentMode"
+            class="dropdown-item subcomponents-dropdown-item" 
+            @click="subcomponentModeClick" @mouseenter="mouseEnterFunc" @mouseleave="mouseLeaveFunc">
+              {{subcomponentMode}}
+            </a>
         </div>
       </div>
-      <select v-if="Object.keys(component.subcomponents).length > 1" class="form-control" v-model="activeSubcomponentMode" @change="subcomponentsModeClick">
-        <option v-for="(mode, subcomponentMode) in component.subcomponents" :key="subcomponentMode">{{subcomponentMode}}</option>
-      </select>
     </div>
     <div class="option-button">
       <button v-if="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent"
@@ -55,6 +53,8 @@ interface Data {
   componentTypeToOptions;
   activeOptionIdentifier: WORKSHOP_TOOLBAR_OPTIONS;
   activeSubcomponentMode: SUB_COMPONENTS;
+  activeSubcomponentModeElement: HTMLElement,
+  lastHoveredSubcomponentModeOptionElement: HTMLElement;
 }
 
 export default {
@@ -63,22 +63,46 @@ export default {
     SUB_COMPONENT_CSS_MODES,
     componentTypeToOptions,
     activeOptionIdentifier: null,
-    activeSubcomponentMode: null,
+    activeSubcomponentMode: SUB_COMPONENTS.BASE,
+    activeSubcomponentModeElement: null,
+    lastHoveredSubcomponentModeOptionElement: null,
   }),
   methods: {
+
+
+    subcomponentModeClick(): void {
+      this.activeSubcomponentMode = (event.target as HTMLInputElement).innerHTML;
+      this.activeSubcomponentModeElement = event.target;
+      this.component.subcomponentsActiveMode = this.activeSubcomponentMode;
+      this.$emit('subcomponents-mode-clicked', [this.component.subcomponentsActiveMode, this.getNewCssModeContainsActiveOptionState()] as UpdateOptionsMode);
+    },
     mouseEnterFunc(): void {
-      document.getElementById('close-subcomponent-preview').style.display = 'block';
+      if (this.activeSubcomponentModeElement) this.activeSubcomponentModeElement.classList.remove('active');
+      if (this.lastHoveredSubcomponentModeOptionElement) this.lastHoveredSubcomponentModeOptionElement.classList.remove('active');
+      this.lastHoveredSubcomponentModeOptionElement = event.target;
+      (event.target as HTMLInputElement).classList.add('active');
+      // document.getElementById('close-subcomponent-preview').style.display = 'block';
     },
     mouseLeaveFunc(): void {
-      document.getElementById('close-subcomponent-preview').style.display = 'none';
+      // (event.target as HTMLInputElement).classList.remove('active');
+      // document.getElementById('close-subcomponent-preview').style.display = 'none';
     },
+    openSubcomponentDropdownMenu(): void {
+      if (!this.activeSubcomponentModeElement) {
+        const indexOfSubcompontModeInComponent = Object.keys(this.component.subcomponents).indexOf(this.component.subcomponentsActiveMode);
+        const dropdownItemelement = this.$refs.dropdownMenu.childNodes[indexOfSubcompontModeInComponent + 1];
+        dropdownItemelement.classList.add('active');
+      }
+      if (this.lastHoveredSubcomponentModeOptionElement) this.lastHoveredSubcomponentModeOptionElement.classList.remove('active');
+      this.lastHoveredSubcomponentModeOptionElement = null;
+      if (this.activeSubcomponentModeElement) this.activeSubcomponentModeElement.classList.add('active');
+    },
+
+
+  
     optionClick(option: WORKSHOP_TOOLBAR_OPTIONS): void {
       this.activeOption = option;
       this.$emit('option-clicked', option);
-    },
-    subcomponentsModeClick(): void {
-      this.component.subcomponentsActiveMode = this.activeSubcomponentMode;
-      this.$emit('subcomponents-mode-clicked', [this.component.subcomponentsActiveMode, this.getNewCssModeContainsActiveOptionState()] as UpdateOptionsMode);
     },
     cssModeClick(): void {
       this.$emit('css-mode-clicked', [this.component.subcomponents[this.component.subcomponentsActiveMode].customCssActiveMode, this.getNewCssModeContainsActiveOptionState()] as UpdateOptionsMode);
@@ -102,6 +126,7 @@ export default {
       }
     },
     component(): void {
+      this.activeSubcomponentModeElement = null;
       this.activeSubcomponentMode = this.component.subcomponentsActiveMode;
     }
   }
@@ -137,7 +162,33 @@ export default {
     border-color: green !important;
     color: green !important;
   }
-  .dropdown-toggle::after {
-    display: none !important;
-}
+  .dropdown-button {
+    font-family: 'Poppins', sans-serif;
+    min-width: 6.5rem;
+    border: 1px solid #ced4da !important;
+    background-color: white !important;
+  }
+  .dropdown-button-text {
+    float: left;
+    padding-left: 2px
+  }
+  .dropdown-button-icon {
+    float: right;
+    margin-top: 0.3em
+  }
+  .subcomponents-dropdown-menu {
+    padding: 0px !important;
+    padding-top: 2px !important;
+    padding-bottom: 2px !important;
+    margin-top: 0px !important;
+    min-width: 6.5rem !important;
+  }
+  .subcomponents-dropdown-item {
+    padding: 0.08rem 1rem !important;
+  }
+/* .newsomething:after {
+  content: attr(data-button-icon);
+  float: right;
+  padding-left: 1em;
+} */
 </style>

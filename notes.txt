@@ -1,3 +1,4 @@
+concider using dropdown instead of select in options
 export color values that are set to inherit
 when hovering a subcomponent mode option, should highlight the area
 if close button css will remain static, consider placing them into a separate object that can be used when exporting the file
@@ -10,6 +11,7 @@ setting types should an enum
 potentially have animation for when optional subcomponent options buttons appear and are hidden
 firefox color selector
 
+potentially replace the Remove component icon text to a trashcan
 cursor that allows user to hover over component's parts and upon clicking would direct to the rightful settings
 color active toolkit button
 color active component card

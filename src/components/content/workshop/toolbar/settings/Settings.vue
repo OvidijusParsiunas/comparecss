@@ -55,7 +55,11 @@
                   @input="colorChanged($event, setting)"
                   v-model="setting.spec.default"/>
                 <button class="unset-color-button" id="dropdownMenuButton"
-                  :style="{ display: subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty] === 'inherit' ? 'none' : 'block'}"
+                  :style="{ display: 
+                  (!subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode]
+                    || !subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]
+                    || subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty] === 'inherit')
+                      ? 'none' : 'block'}"
                   @click="removeColor(setting.spec)">
                   &times;
                 </button>
@@ -139,14 +143,16 @@ export default {
           if (setting.type === 'range') {
             const cssPropertyValue = this.getActiveModeCssPropertyValue(customCssActiveMode, setting.spec.cssProperty);
             if (cssPropertyValue !== undefined) {
-              (setting.triggers || []).forEach((trigger) => {
-                trigger.conditions.forEach((condition) => {
-                  if (this.getActiveModeCssPropertyValue(customCssActiveMode, trigger.cssProperty) === condition) {
-                    customCss[customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
-                    this.selectorCurrentValues[setting.spec.cssProperty] = trigger.defaultValue;
-                  }
-                })
-              })
+              if (customCss[customCssActiveMode]) {
+                (setting.triggers || []).forEach((trigger) => {
+                  trigger.conditions.forEach((condition) => {
+                    if (this.getActiveModeCssPropertyValue(customCssActiveMode, trigger.cssProperty) === condition) {
+                      customCss[customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
+                      this.selectorCurrentValues[setting.spec.cssProperty] = trigger.defaultValue;
+                    }
+                  });
+                });
+              }
               const singlePropertyValue = setting.spec.partialCss ? cssPropertyValue.split(' ')[setting.spec.partialCss.position] : cssPropertyValue;
               setting.spec.default = this.parseRangeValue(singlePropertyValue, setting.spec.smoothingDivisible);
             }
@@ -323,6 +329,7 @@ export default {
       }
     },
     resetProperties(options: any): void {
+      // js classes?
       options.forEach((option) => {
         const { cssProperty } = option.spec;
         this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = this.subcomponentproperties.initialCss[this.subcomponentproperties.customCssActiveMode][cssProperty];

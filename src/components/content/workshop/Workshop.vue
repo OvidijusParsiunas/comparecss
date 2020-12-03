@@ -85,6 +85,7 @@ import ComponentJs from '../../../services/workshop/componentJs';
 import { SUB_COMPONENT_CSS_MODES } from '../../../consts/subcomponentCssModes.enum';
 import { componentTypeToOptions } from './toolbar/options/components/componentTypeToOptions';
 import { SUB_COMPONENTS } from '../../../consts/subcomponentModes.enum';
+import JSONManipulation from '../../../services/workshop/jsonManipulation';
 
 export default {
   data: (): Data => ({
@@ -298,7 +299,7 @@ export default {
     },
     componentCardCopied(selectComponentCard: WorkshopComponent): void {
       this.setCustomCssActiveMode(selectComponentCard.subcomponents[selectComponentCard.subcomponentsActiveMode], SUB_COMPONENT_CSS_MODES.DEFAULT);
-      const newComponent = JSON.parse(JSON.stringify(selectComponentCard));
+      const newComponent = JSONManipulation.deepCopy(selectComponentCard);
       newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className, this.components, '-copy');
       this.addNewComponent(newComponent);
     },

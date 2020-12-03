@@ -4,6 +4,7 @@ import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTyp
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
+import JSONManipulation from '../../../../../../../services/workshop/jsonManipulation';
 
 // need to fill in properly so that the 'reset' option would work
 const initialContainerButtonCss: CustomCss = {
@@ -64,8 +65,8 @@ export const defaultAlert: NewComponent = {
             width: [100, 700],
             height: [30, 200],
           },
-          customCss: { ...initialContainerButtonCss },
-          initialCss: { ...initialContainerButtonCss },
+          customCss: JSONManipulation.deepCopy(initialContainerButtonCss),
+          initialCss: JSONManipulation.deepCopy(initialContainerButtonCss),
           jsClasses: new Set(),
           initialJsClasses: new Set(),
           customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -80,8 +81,8 @@ export const defaultAlert: NewComponent = {
             width: [14, 80],
             height: [10, 80],
           },
-          customCss: { ...initialCloseButtonCss },
-          initialCss: { ...initialCloseButtonCss },
+          customCss: JSONManipulation.deepCopy(initialCloseButtonCss),
+          initialCss: JSONManipulation.deepCopy(initialCloseButtonCss),
           jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
           initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
           customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
