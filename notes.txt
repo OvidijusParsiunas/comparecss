@@ -1,4 +1,4 @@
-concider using dropdown instead of select in options
+consider using dropdown instead of select in options
 export color values that are set to inherit
 when hovering a subcomponent mode option, should highlight the area
 if close button css will remain static, consider placing them into a separate object that can be used when exporting the file
@@ -10,6 +10,16 @@ test export with shadow and other properties, questionable if it works correctly
 setting types should an enum
 potentially have animation for when optional subcomponent options buttons appear and are hidden
 firefox color selector
+
+figure out if we are setting the settings correctly, check colours as well
+reset js classes does not work
+removing a subcomponent does not remove the settings
+figure out if we need to watch the activeSubcomponentMode variable
+highlight the subcomponent on hover
+export the dropdown as a separate component
+
+
+either define all default mode css in the beginning, or will have to change code to automatically default missing css with the default setting spec values to help display the settings pane correctly too (preview mode will also need to contain default values)
 
 potentially replace the Remove component icon text to a trashcan
 cursor that allows user to hover over component's parts and upon clicking would direct to the rightful settings

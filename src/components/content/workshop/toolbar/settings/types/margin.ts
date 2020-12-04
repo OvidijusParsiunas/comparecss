@@ -11,7 +11,7 @@ export default {
         cssProperty: 'marginLeft'
       },
     },
-    { 
+    {
       type: 'range',
       spec: {
         name: 'Top',

@@ -11,10 +11,14 @@
                   {{setting.spec.name}}
                 </div>
                 <div style="position: relative; float: left">
-                  <div v-if="subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode]" class="range-popover">
+                  <div v-if="subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode]
+                    && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]" class="range-popover">
                     {{setting.spec.partialCss !== undefined && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]
                       ? subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty].split(' ')[setting.spec.partialCss.position]
                       : subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]}}
+                  </div>
+                  <div v-else class="range-popover">
+                    {{setting.spec.default}}px
                   </div>
                   <input type="range" class="form-control-range" id="formControlRange"
                     v-bind:min="subcomponentproperties.customSettingsProperties && subcomponentproperties.customSettingsProperties[setting.spec.cssProperty] ? subcomponentproperties.customSettingsProperties[setting.spec.cssProperty][0] : setting.spec.scale[0]"
@@ -179,8 +183,31 @@ export default {
       });
     },
     addDefaultValueIfCssModeMissing: function(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string, defaultValue: string): void {
+      let customCss = null;
+      switch (customCssActiveMode) {
+        case (SUB_COMPONENT_CSS_MODES.CLICK): {
+          if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK] && this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty]) {
+            customCss = this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
+            break;
+          }
+        }
+        case (SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
+          if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] && this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty]) {
+            customCss = this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
+            break;
+          }
+        case (SUB_COMPONENT_CSS_MODES.DEFAULT || SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
+          if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] && this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty]) {
+            customCss = this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty];
+            break;
+          }
+        default:
+          break;
+      }
       if (!this.subcomponentproperties.customCss[customCssActiveMode]) {
-        this.subcomponentproperties.customCss[customCssActiveMode] = { [cssProperty]: defaultValue };
+        this.subcomponentproperties.customCss[customCssActiveMode] = { [cssProperty]: customCss || defaultValue };
+      } else {
+        this.subcomponentproperties.customCss[customCssActiveMode][cssProperty] = customCss || defaultValue;
       }
     },
     parseRangeValue(value: string, smoothingDivisible: number): number {
@@ -218,7 +245,8 @@ export default {
       }
     },
     rangeMouseDown(event: KeyboardEvent, customCssActiveMode: SUB_COMPONENT_CSS_MODES, spec: any): void {
-      const { cssProperty, defaultValue, partialCss } = spec;
+      const { cssProperty, partialCss } = spec;
+      const defaultValue = spec.default / spec.smoothingDivisible;
       const settingSpecificDefaultValue = partialCss ? defaultValue : `${defaultValue}px`;
       this.addDefaultValueIfCssModeMissing(customCssActiveMode, cssProperty, settingSpecificDefaultValue);
       setTimeout(() => {
@@ -330,9 +358,35 @@ export default {
     },
     resetProperties(options: any): void {
       // js classes?
+      // check if need to devide the range by 4
       options.forEach((option) => {
-        const { cssProperty } = option.spec;
-        this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = this.subcomponentproperties.initialCss[this.subcomponentproperties.customCssActiveMode][cssProperty];
+        const { cssProperty, defaultValue } = option.spec;
+        let customCss = null;
+          switch (this.subcomponentproperties.customCssActiveMode) {
+            case (SUB_COMPONENT_CSS_MODES.CLICK): {
+              if (this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.CLICK] && this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty]) {
+                customCss = this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
+                break;
+              }
+            }
+            case (SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
+              if (this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.HOVER] && this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty]) {
+                customCss = this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
+                break;
+              }
+            case (SUB_COMPONENT_CSS_MODES.DEFAULT || SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
+              if (this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT] && this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty]) {
+                customCss = this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty];
+                break;
+              }
+            default:
+              break;
+          }
+          if (!this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode]) {
+            this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode] = { [cssProperty]: customCss || defaultValue };
+          } else {
+            this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = customCss || defaultValue;
+          }
       });
       this.resetSettings();
     }
