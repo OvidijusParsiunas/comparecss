@@ -1,7 +1,6 @@
 <template>
   <div v-if="componentType === NEW_COMPONENT_TYPES.ALERT
-      && (!subcomponent.optionalSubcomponent || subcomponent.optionalSubcomponent.currentlyDisplaying)"
-    @mouseleave="componentPreviewMouseLeave()">
+      && (!subcomponent.optionalSubcomponent || subcomponent.optionalSubcomponent.currentlyDisplaying)">
     <div id="close-button-parent" type="button" aria-label="Close">
       <button aria-hidden="true" id="close-button" :class="[ ...subcomponent.jsClasses ]"
         @mouseenter="componentMouseEnter()"
@@ -72,9 +71,6 @@ export default {
         customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByClick };
       }
     },
-    componentPreviewMouseLeave(): void {
-      this.subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].transition = 'unset';
-    }
   },
   props: {
     componentType: String,

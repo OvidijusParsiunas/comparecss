@@ -116,7 +116,6 @@ export default {
       }
     },
     componentPreviewMouseLeave(): void {
-      if (this.componentsThatShouldNotBeChangedHere.has(this.component.subcomponentsActiveMode)) return;
       this.component.subcomponents[this.component.subcomponentsActiveMode].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].transition = 'unset';
     }
   },

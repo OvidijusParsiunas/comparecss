@@ -59,12 +59,10 @@
                   @input="colorChanged($event, setting)"
                   v-model="setting.spec.default"/>
                 <button class="unset-color-button" id="dropdownMenuButton"
-                  v-if="setting.spec.unsetColorButtonAvailable"
-                  :style="{ display: 
-                  (!subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode]
-                    || !subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]
-                    || subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty] === 'inherit')
-                      ? 'none' : 'block'}"
+                  v-if="setting.spec.unsetColorButtonAvailable && 
+                    (subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode]
+                      && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]
+                      && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty] !== 'inherit')"
                   @click="removeColor(setting.spec)">
                   &times;
                 </button>
