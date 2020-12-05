@@ -222,7 +222,28 @@ export default {
       const { customCss, customCssActiveMode } = this.subcomponentproperties;
       (triggers || []).forEach((trigger) => {
         trigger.conditions.forEach((condition) => {
-          if (customCss[customCssActiveMode][trigger.cssProperty] === condition) {
+          let customCss12 = undefined;
+          switch (this.subcomponentproperties.customCssActiveMode) {
+            case (SUB_COMPONENT_CSS_MODES.CLICK): {
+              if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK] && this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK].hasOwnProperty([trigger.cssProperty])) {
+                customCss12 = this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][trigger.cssProperty];
+                break;
+              }
+            }
+            case (SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
+              if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] && this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER].hasOwnProperty([trigger.cssProperty])) {
+                customCss12 = this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][trigger.cssProperty];
+                break;
+              }
+            case (SUB_COMPONENT_CSS_MODES.DEFAULT || SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
+              if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] && this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].hasOwnProperty([trigger.cssProperty])) {
+                customCss12 = this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][trigger.cssProperty];
+                break;
+              }
+            default:
+              break;
+          }
+          if (customCss12 === condition) {
             customCss[customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
             if (trigger.selector) { this.selectorCurrentValues[trigger.cssProperty] = trigger.defaultValue; }
           }
@@ -354,10 +375,9 @@ export default {
     },
     resetProperties(options: any): void {
       // js classes?
-      // check if need to devide the range by 4
       options.forEach((option) => {
         const { cssProperty } = option.spec;
-        let customCss = null;
+        let customCss = undefined;
           switch (this.subcomponentproperties.customCssActiveMode) {
             case (SUB_COMPONENT_CSS_MODES.CLICK): {
               if (this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.CLICK] && this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty]) {
