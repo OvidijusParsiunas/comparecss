@@ -55,7 +55,7 @@
                   <object id="Dlg" classid="CLSID:3050F819-98B5-11CF-BB82-00AA00BDCE0B" width="0" height="0"></object>
                 -->
                 <input style="float: left" type="color" name="clr1" 
-                  @click="colorInputClick(subcomponentproperties.customCssActiveMode, setting.spec.cssProperty, setting.spec.default)"
+                  @click="colorInputClick(subcomponentproperties.customCssActiveMode, setting.spec.cssProperty)"
                   @input="colorChanged($event, setting)"
                   v-model="setting.spec.default"/>
                 <button class="unset-color-button" id="dropdownMenuButton"
@@ -110,7 +110,7 @@ interface Data {
   inputDropdownCurrentValues: unknown;
   getActiveModeCssPropertyValue: (param1: SUB_COMPONENT_CSS_MODES, param2: string) => void;
   resetSettings: () => void;
-  addDefaultValueIfCssModeMissing: (param1: SUB_COMPONENT_CSS_MODES, param2: string, param3: string) => void;
+  addDefaultValueIfCssModeMissing: (param1: SUB_COMPONENT_CSS_MODES, param2: string) => void;
   parseRangeValue: (param1: string, param2: number) => number;
 }
 
@@ -182,7 +182,7 @@ export default {
         });
       });
     },
-    addDefaultValueIfCssModeMissing: function(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string, defaultValue: string): void {
+    addDefaultValueIfCssModeMissing: function(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): void {
       let customCss = null;
       switch (customCssActiveMode) {
         case (SUB_COMPONENT_CSS_MODES.CLICK): {
@@ -205,9 +205,9 @@ export default {
           break;
       }
       if (!this.subcomponentproperties.customCss[customCssActiveMode]) {
-        this.subcomponentproperties.customCss[customCssActiveMode] = { [cssProperty]: customCss || defaultValue };
+        this.subcomponentproperties.customCss[customCssActiveMode] = { [cssProperty]: customCss };
       } else {
-        this.subcomponentproperties.customCss[customCssActiveMode][cssProperty] = customCss || defaultValue;
+        this.subcomponentproperties.customCss[customCssActiveMode][cssProperty] = customCss;
       }
     },
     parseRangeValue(value: string, smoothingDivisible: number): number {
@@ -245,10 +245,7 @@ export default {
       }
     },
     rangeMouseDown(event: KeyboardEvent, customCssActiveMode: SUB_COMPONENT_CSS_MODES, spec: any): void {
-      const { cssProperty, partialCss } = spec;
-      const defaultValue = spec.default / spec.smoothingDivisible;
-      const settingSpecificDefaultValue = partialCss ? defaultValue : `${defaultValue}px`;
-      this.addDefaultValueIfCssModeMissing(customCssActiveMode, cssProperty, settingSpecificDefaultValue);
+      this.addDefaultValueIfCssModeMissing(customCssActiveMode, spec.cssProperty);
       setTimeout(() => {
         const popoverElement = (event.target as HTMLInputElement).parentElement.childNodes[0] as HTMLElement;
         if (popoverElement.style) { popoverElement.style.opacity = '1'; }
@@ -333,8 +330,8 @@ export default {
         customCss[customCssActiveMode][cssProperty] = colorPickerValue;
       }
     },
-    colorInputClick(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string, defaultValue: string): void {
-      this.addDefaultValueIfCssModeMissing(customCssActiveMode, cssProperty, defaultValue);
+    colorInputClick(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): void {
+      this.addDefaultValueIfCssModeMissing(customCssActiveMode, cssProperty);
       this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode].transition = 'unset';
     },
     removeColor(spec: any): void {
@@ -360,7 +357,7 @@ export default {
       // js classes?
       // check if need to devide the range by 4
       options.forEach((option) => {
-        const { cssProperty, defaultValue } = option.spec;
+        const { cssProperty } = option.spec;
         let customCss = null;
           switch (this.subcomponentproperties.customCssActiveMode) {
             case (SUB_COMPONENT_CSS_MODES.CLICK): {
@@ -383,9 +380,9 @@ export default {
               break;
           }
           if (!this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode]) {
-            this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode] = { [cssProperty]: customCss || defaultValue };
+            this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode] = { [cssProperty]: customCss };
           } else {
-            this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = customCss || defaultValue;
+            this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = customCss;
           }
       });
       this.resetSettings();
