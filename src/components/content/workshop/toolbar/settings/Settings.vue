@@ -59,6 +59,7 @@
                   @input="colorChanged($event, setting)"
                   v-model="setting.spec.default"/>
                 <button class="unset-color-button" id="dropdownMenuButton"
+                  v-if="setting.spec.unsetColorButtonAvailable"
                   :style="{ display: 
                   (!subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode]
                     || !subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]

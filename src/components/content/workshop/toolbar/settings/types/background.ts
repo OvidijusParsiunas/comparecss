@@ -26,7 +26,8 @@ export default {
       spec: {
         name: 'Color',
         default: '#000000',
-        cssProperty: 'backgroundColor'
+        cssProperty: 'backgroundColor',
+        unsetColorButtonAvailable: true,
       },
     }
   ]

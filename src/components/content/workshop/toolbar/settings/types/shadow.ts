@@ -66,7 +66,8 @@ export default {
           position: 4,
           fullDefaultValues: ['0px', '0px', '0px', '0px', '#000000'],
         }, 
-        cssProperty: 'boxShadow'
+        cssProperty: 'boxShadow',
+        unsetColorButtonAvailable: false,
       },
     }
   ]

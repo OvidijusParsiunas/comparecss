@@ -55,7 +55,8 @@ export default {
       spec: {
         name: 'Color',
         default: '#000000',
-        cssProperty: 'borderColor'
+        cssProperty: 'borderColor',
+        unsetColorButtonAvailable: true,
       },
     }
   ]
