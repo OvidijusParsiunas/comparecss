@@ -60,13 +60,19 @@
                   v-model="setting.spec.default"/>
                 <button class="unset-color-button" id="dropdownMenuButton"
                   v-if="setting.spec.unsetColorButtonAvailable && 
-                    (subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode]
+                    ((subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode]
                       && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]
                       && ((!subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX]
                             && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty] !== 'inherit')
                           || 
                           (subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX]
-                            && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX] === UNSET_COLOR_BUTTON_DISPLAYED_STATE.DISPLAY)))"
+                            && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX] === UNSET_COLOR_BUTTON_DISPLAYED_STATE.DISPLAY)))
+                    || ((subcomponentproperties.customCssActiveMode === SUB_COMPONENT_CSS_MODES.HOVER || subcomponentproperties.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK)
+                       && 
+                        (!subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode]
+                          || !subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty])
+                       )
+                    )"
                   @click="removeColor(setting.spec)">
                   &times;
                 </button>
@@ -112,6 +118,7 @@ import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssMo
 interface Data {
   selectorCurrentValues: unknown;
   inputDropdownCurrentValues: unknown;
+  SUB_COMPONENT_CSS_MODES;
   UNSET_COLOR_BUTTON_DISPLAYED_STATE;
   UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX;
   getActiveModeCssPropertyValue: (param1: SUB_COMPONENT_CSS_MODES, param2: string) => void;
@@ -124,6 +131,7 @@ export default {
   data: (): Data => ({
     selectorCurrentValues: {},
     inputDropdownCurrentValues: {},
+    SUB_COMPONENT_CSS_MODES,
     UNSET_COLOR_BUTTON_DISPLAYED_STATE,
     UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX,
     getActiveModeCssPropertyValue: function(activeMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): string {
@@ -365,7 +373,11 @@ export default {
     },
     removeColor(spec: any): void {
       spec.default = '';
-      this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][spec.cssProperty] = 'inherit';
+      if (!this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode]) {
+        this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode] = { [spec.cssProperty]: 'inherit'};
+      } else {
+        this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][spec.cssProperty] = 'inherit';
+      }
     },
     checkboxMouseClick(spec: any, previousCheckboxValue: boolean): void {
       const { conditionalStyle, cssProperty, javascript, jsClassName } = spec;
