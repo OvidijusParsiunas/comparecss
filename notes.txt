@@ -11,13 +11,14 @@ setting types should an enum
 potentially have animation for when optional subcomponent options buttons appear and are hidden
 firefox color selector
 
-figure out if we are setting the settings correctly, check colours as well
+when click color does not exist, it automatically inherets the hover colour but the unset button does not display
 reset js classes does not work
 removing a subcomponent does not remove the settings
 figure out if we need to watch the activeSubcomponentMode variable
 highlight the subcomponent on hover
 export the dropdown as a separate component
-
+need are you sure you want to remove the component modal, and upon clicking add - it should add a new modal
+check copy of component still works the way it is expected
 
 either define all default mode css in the beginning, or will have to change code to automatically default missing css with the default setting spec values to help display the settings pane correctly too (preview mode will also need to contain default values)
 

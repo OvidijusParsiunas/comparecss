@@ -62,7 +62,11 @@
                   v-if="setting.spec.unsetColorButtonAvailable && 
                     (subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode]
                       && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]
-                      && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty] !== 'inherit')"
+                      && ((!subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX]
+                            && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty] !== 'inherit')
+                          || 
+                          (subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX]
+                            && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX] === UNSET_COLOR_BUTTON_DISPLAYED_STATE.DISPLAY)))"
                   @click="removeColor(setting.spec)">
                   &times;
                 </button>
@@ -102,11 +106,14 @@
 </template>
 
 <script lang="ts">
+import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../../consts/unsetColotButtonDisplayed';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 
 interface Data {
   selectorCurrentValues: unknown;
   inputDropdownCurrentValues: unknown;
+  UNSET_COLOR_BUTTON_DISPLAYED_STATE;
+  UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX;
   getActiveModeCssPropertyValue: (param1: SUB_COMPONENT_CSS_MODES, param2: string) => void;
   resetSettings: () => void;
   addDefaultValueIfCssModeMissing: (param1: SUB_COMPONENT_CSS_MODES, param2: string) => void;
@@ -117,6 +124,8 @@ export default {
   data: (): Data => ({
     selectorCurrentValues: {},
     inputDropdownCurrentValues: {},
+    UNSET_COLOR_BUTTON_DISPLAYED_STATE,
+    UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX,
     getActiveModeCssPropertyValue: function(activeMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): string {
       const { customCss } = this.subcomponentproperties;
       // the following allows multiple cases to be checked in one execution
