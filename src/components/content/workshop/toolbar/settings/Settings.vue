@@ -67,10 +67,16 @@
                           || 
                           (subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX]
                             && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX] === UNSET_COLOR_BUTTON_DISPLAYED_STATE.DISPLAY)))
-                    || ((subcomponentproperties.customCssActiveMode === SUB_COMPONENT_CSS_MODES.HOVER || subcomponentproperties.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK)
-                       && 
-                        (!subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode]
-                          || !subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty])
+                    || ((subcomponentproperties.customCssActiveMode === SUB_COMPONENT_CSS_MODES.HOVER
+                        && ((subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] && subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty] && subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty] !== 'inherit')
+                          || ((!subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] || !subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty])
+                            && subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][setting.spec.cssProperty] !== 'inherit'))
+                        )
+                        || (subcomponentproperties.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
+                          && ((subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK] && subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][setting.spec.cssProperty] && subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][setting.spec.cssProperty] !== 'inherit')
+                            || ((!subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK] || !subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][setting.spec.cssProperty])
+                                  && (((!subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] || !subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty]) && subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][setting.spec.cssProperty] !== 'inherit')
+                                      || (subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] && subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty] && subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty] !== 'inherit')))))
                        )
                     )"
                   @click="removeColor(setting.spec)">
@@ -399,16 +405,29 @@ export default {
       options.forEach((option) => {
         const { cssProperty } = option.spec;
         let customCss = undefined;
+        let propertyRemoved = false;
           switch (this.subcomponentproperties.customCssActiveMode) {
             case (SUB_COMPONENT_CSS_MODES.CLICK): {
               if (this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.CLICK] && this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty]) {
                 customCss = this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
                 break;
               }
+              if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK]) {
+                delete this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
+                propertyRemoved = true;
+                break;
+              }
             }
             case (SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
               if (this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.HOVER] && this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty]) {
                 customCss = this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
+                break;
+              }
+              if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] && this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty]) {
+                if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] && this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty]) {
+                  delete this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
+                }
+                propertyRemoved = true;
                 break;
               }
             case (SUB_COMPONENT_CSS_MODES.DEFAULT || SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
@@ -419,6 +438,7 @@ export default {
             default:
               break;
           }
+          if (propertyRemoved) return;
           if (!this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode]) {
             this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode] = { [cssProperty]: customCss };
           } else {
