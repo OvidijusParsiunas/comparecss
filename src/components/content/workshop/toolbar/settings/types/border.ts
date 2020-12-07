@@ -24,12 +24,12 @@ export default {
         {
           cssProperty: 'borderColor',
           defaultValue: '#000000',
-          conditions: [undefined],
+          conditions: new Set([undefined]),
         },
         {
           cssProperty: 'borderStyle',
           defaultValue: 'solid',
-          conditions: [undefined, 'none', 'hidden'],
+          conditions: new Set([undefined, 'none', 'hidden']),
           selector: true,
         }
       ]
@@ -46,7 +46,7 @@ export default {
         none: {
           cssProperty: 'borderWidth',
           defaultValue: '0px',
-          negativeConditions: [0, undefined],
+          negativeConditions: new Set([0, undefined]),
         },
       },
     },

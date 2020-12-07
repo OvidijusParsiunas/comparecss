@@ -171,12 +171,10 @@ export default {
             if (cssPropertyValue !== undefined) {
               if (customCss[customCssActiveMode]) {
                 (setting.triggers || []).forEach((trigger) => {
-                  trigger.conditions.forEach((condition) => {
-                    if (this.getActiveModeCssPropertyValue(customCssActiveMode, trigger.cssProperty) === condition) {
-                      customCss[customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
-                      this.selectorCurrentValues[setting.spec.cssProperty] = trigger.defaultValue;
-                    }
-                  });
+                  if (trigger.conditions.has(this.getActiveModeCssPropertyValue(customCssActiveMode, trigger.cssProperty))) {
+                    customCss[customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
+                    this.selectorCurrentValues[setting.spec.cssProperty] = trigger.defaultValue;
+                  }
                 });
               }
               const singlePropertyValue = setting.spec.partialCss ? cssPropertyValue.split(' ')[setting.spec.partialCss.position] : cssPropertyValue;
@@ -244,7 +242,6 @@ export default {
       const {cssProperty, smoothingDivisible, partialCss } = spec;
       const { customCss, customCssActiveMode } = this.subcomponentproperties;
       (triggers || []).forEach((trigger) => {
-        trigger.conditions.forEach((condition) => {
           let customCss12 = undefined;
           switch (this.subcomponentproperties.customCssActiveMode) {
             case (SUB_COMPONENT_CSS_MODES.CLICK): {
@@ -266,11 +263,10 @@ export default {
             default:
               break;
           }
-          if (customCss12 === condition) {
+          if (trigger.conditions.has(customCss12)) {
             customCss[customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
             if (trigger.selector) { this.selectorCurrentValues[trigger.cssProperty] = trigger.defaultValue; }
           }
-        }); 
       });
       const rangeValue = (event.target as HTMLInputElement).value;
       if (partialCss != undefined) {
@@ -313,19 +309,10 @@ export default {
       this.selectorCurrentValues[spec.cssProperty] = option;
       if (triggers && triggers[option]) {
         const { conditions, negativeConditions, cssProperty: triggerCssProperty, defaultValue } = triggers[option];
-        function iterateThroughConditions(conditions: (number | string | undefined)[], comparator: (param1, param2) => boolean): boolean {
-          if (conditions) {
-            for (let i = 0; i < conditions.length; i += 1) {
-              const conditionValue = typeof conditions[i] === 'string' ? parseInt(conditions[i] as string) : conditions[i];
-              if (comparator(customCss[customCssActiveMode][triggerCssProperty], conditionValue)) {
-                return true;
-              }
-            }
-          }
-          return false;
-        }
-        let conditionMet = iterateThroughConditions(conditions, (param1, param2): boolean => param1 === param2);
-        if (!conditionMet) { conditionMet = iterateThroughConditions(negativeConditions, (param1, param2): boolean => param1 !== param2) }
+        const extractedTriggerCssProperty = customCss[customCssActiveMode][triggerCssProperty];
+        const conditionValue = typeof extractedTriggerCssProperty === 'string' ? parseInt(extractedTriggerCssProperty) : extractedTriggerCssProperty;
+        let conditionMet = conditions ? conditions.has(conditionValue) : false;
+        if (!conditionMet && negativeConditions) { conditionMet = !negativeConditions.has(conditionValue); }
         if (conditionMet) {
           for (let i = 0; i < this.settings.options.length; i += 1) {
             if (this.settings.options[i].spec.cssProperty === triggerCssProperty) {
