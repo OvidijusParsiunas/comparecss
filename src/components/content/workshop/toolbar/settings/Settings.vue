@@ -401,9 +401,13 @@ export default {
       }
     },
     resetProperties(options: any): void {
-      // js classes?
       options.forEach((option) => {
-        const { cssProperty } = option.spec;
+        const { cssProperty, jsClassName } = option.spec;
+        if (jsClassName) {
+          this.subcomponentproperties.jsClasses = new Set([...this.subcomponentproperties.initialJsClasses]);
+          return;
+        }
+        
         let customCss = undefined;
         let propertyRemoved = false;
           switch (this.subcomponentproperties.customCssActiveMode) {
