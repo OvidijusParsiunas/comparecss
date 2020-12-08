@@ -59,80 +59,33 @@
 </template>
 
 <script lang="ts">
-import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../consts/unsetColotButtonDisplayed';
+import useComponentPreviewEventHandlers from './compositionAPI/useComponentPreviewEventHandlers';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import auxiliaryRightSideElements from './AuxiliaryRightSideElements.vue';
-import { CustomCss } from '../../../../interfaces/workshopComponent';
+import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import divInnerHtml from './divInnerHTML.vue';
 
 interface Data {
-  overwrittenDefaultPropertiesByHover: unknown;
-  overwrittenDefaultPropertiesByClick: unknown;
   SUB_COMPONENT_CSS_MODES;
   NEW_COMPONENT_TYPES;
   SUB_COMPONENTS;
-  componentsThatShouldNotBeChangedHere: Set<SUB_COMPONENTS>;
-  isUnsetButtonDisplayedForColorInputs: unknown;
-  setDefaultUnsetButtonStatesForColorInputs: (customCss: CustomCss) => void;
 }
 
 export default {
   data: (): Data => ({
-    overwrittenDefaultPropertiesByHover: {},
-    overwrittenDefaultPropertiesByClick: {},
     SUB_COMPONENT_CSS_MODES,
     NEW_COMPONENT_TYPES,
     SUB_COMPONENTS,
-    componentsThatShouldNotBeChangedHere: new Set([SUB_COMPONENTS.CLOSE]),
-    isUnsetButtonDisplayedForColorInputs: {},
-    setDefaultUnsetButtonStatesForColorInputs: function(customCss: CustomCss): void {
-      Object.keys(customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]).forEach((key) => {
-        if (customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][key] === 'inherit' || customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][key].charAt(0) === '#') {
-          this.isUnsetButtonDisplayedForColorInputs[key + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX] = customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][key] === 'inherit'
-            ?  UNSET_COLOR_BUTTON_DISPLAYED_STATE.DO_NOT_DISPLAY : UNSET_COLOR_BUTTON_DISPLAYED_STATE.DISPLAY;
-        }
-      });
-    },
   }),
+  setup(props: { component: WorkshopComponent }): { componentMouseEnter, componentMouseLeave, componentMouseDown, componentMouseUp } {
+    return useComponentPreviewEventHandlers(props.component, new Set([SUB_COMPONENTS.CLOSE]));
+  },
   methods: {
-    // important to note that default can have properties that hover and click modes do not, but hover and click cannot have properties that default doesn't
-    componentMouseEnter(): void {
-      if (this.componentsThatShouldNotBeChangedHere.has(this.component.subcomponentsActiveMode)) return;
-      const { customCss, transition, customCssActiveMode } = this.component.subcomponents[this.component.subcomponentsActiveMode];
-      if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
-        this.setDefaultUnsetButtonStatesForColorInputs(customCss);
-        this.overwrittenDefaultPropertiesByHover = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], transition };
-        customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], ...customCss[SUB_COMPONENT_CSS_MODES.HOVER], transition, ...this.isUnsetButtonDisplayedForColorInputs };
-      }
-    },
-    componentMouseLeave(): void {
-      if (this.componentsThatShouldNotBeChangedHere.has(this.component.subcomponentsActiveMode)) return;
-      const { customCss, customCssActiveMode } = this.component.subcomponents[this.component.subcomponentsActiveMode];
-      if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
-        customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByHover };
-      }
-      this.isUnsetButtonDisplayedForColorInputs = {};
-    },
-    componentMouseDown(): void {
-      if (this.componentsThatShouldNotBeChangedHere.has(this.component.subcomponentsActiveMode)) return;
-      const { customCss, transition, customCssActiveMode } = this.component.subcomponents[this.component.subcomponentsActiveMode];
-      if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
-        this.overwrittenDefaultPropertiesByClick = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], transition };
-        customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], ...customCss[SUB_COMPONENT_CSS_MODES.CLICK], transition, ...this.isUnsetButtonDisplayedForColorInputs };
-      }
-    },
-    componentMouseUp(): void {
-      if (this.componentsThatShouldNotBeChangedHere.has(this.component.subcomponentsActiveMode)) return;
-      const { customCss, customCssActiveMode } = this.component.subcomponents[this.component.subcomponentsActiveMode];
-      if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
-        customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...this.overwrittenDefaultPropertiesByClick };
-      }
-    },
     componentPreviewMouseLeave(): void {
       this.component.subcomponents[this.component.subcomponentsActiveMode].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].transition = 'unset';
-    }
+    },
   },
   components: {
     auxiliaryRightSideElements,

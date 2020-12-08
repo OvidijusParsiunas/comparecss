@@ -13,7 +13,7 @@
       <settings
         :subcomponentproperties="component.subcomponents[component.subcomponentsActiveMode]"
         :settings="activeSettings"
-        :settingsResetTriggered="settingsResetTriggered"/>
+        :settingsUpdateTriggered="settingsUpdateTriggered"/>
     </div>
   </div>
 </template>
@@ -23,7 +23,7 @@ interface Data {
   activeOption: WORKSHOP_TOOLBAR_OPTIONS;
   activeSettings: any;
   activeCssMode: SUB_COMPONENT_CSS_MODES;
-  settingsResetTriggered: boolean;
+  settingsUpdateTriggered: boolean;
 }
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOptions';
 import { optionToSettings } from './settings/types/optionToSettings';
@@ -38,7 +38,7 @@ export default {
     activeOption: null,
     activeSettings: {},
     activeCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-    settingsResetTriggered: false,
+    settingsUpdateTriggered: false,
   }),
   methods: {
     updateSettings(newOption: WORKSHOP_TOOLBAR_OPTIONS): void {
@@ -68,7 +68,7 @@ export default {
       // this trigger type is used instead of a ref method because this will only trigger the settings-reset when
       // the props (more specifically the component properties) have updated first (via the watch property)
       // whereas directly calling the reset method via ref invokes it before the props have been updated
-      this.settingsResetTriggered = !this.settingsResetTriggered;
+      this.settingsUpdateTriggered = !this.settingsUpdateTriggered;
       this.$nextTick(() => {
         if (this.activeOption === WORKSHOP_TOOLBAR_OPTIONS.MARGIN && Object.keys(this.activeSettings).length > 0) {
           this.componentPreviewAssistance.margin = !(this.component.subcomponentsActiveMode === SUB_COMPONENTS.CLOSE);

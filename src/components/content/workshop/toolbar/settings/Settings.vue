@@ -108,7 +108,7 @@
             </div>
             
           </div>
-          <button class="reset-button" @click="resetProperties(settings.options)">
+          <button class="reset-button" @click="resetSubcomponentProperties(settings.options)">
             &#8634;
           </button>
         </div>
@@ -127,10 +127,11 @@ interface Data {
   SUB_COMPONENT_CSS_MODES;
   UNSET_COLOR_BUTTON_DISPLAYED_STATE;
   UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX;
-  getActiveModeCssPropertyValue: (param1: SUB_COMPONENT_CSS_MODES, param2: string) => void;
-  resetSettings: () => void;
+  getActiveModeCssPropertyValue: (param1: SUB_COMPONENT_CSS_MODES, param2: string) => string;
+  updateSettings: () => void;
   addDefaultValueIfCssModeMissing: (param1: SUB_COMPONENT_CSS_MODES, param2: string) => void;
   parseRangeValue: (param1: string, param2: number) => number;
+  resetJs: () => void;
 }
 
 export default {
@@ -140,27 +141,27 @@ export default {
     SUB_COMPONENT_CSS_MODES,
     UNSET_COLOR_BUTTON_DISPLAYED_STATE,
     UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX,
-    getActiveModeCssPropertyValue: function(activeMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): string {
+    getActiveModeCssPropertyValue(activeMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): string {
       const { customCss } = this.subcomponentproperties;
       // the following allows multiple cases to be checked in one execution
       switch (activeMode) {
         case (SUB_COMPONENT_CSS_MODES.CLICK):
-          if (customCss[SUB_COMPONENT_CSS_MODES.CLICK] && customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty]) {
+          if (customCss[SUB_COMPONENT_CSS_MODES.CLICK] && customCss[SUB_COMPONENT_CSS_MODES.CLICK].hasOwnProperty([cssProperty])) {
             return customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
           }
         case (SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
-          if (customCss[SUB_COMPONENT_CSS_MODES.HOVER] && customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty]) {
+          if (customCss[SUB_COMPONENT_CSS_MODES.HOVER] && customCss[SUB_COMPONENT_CSS_MODES.HOVER].hasOwnProperty([cssProperty])) {
             return customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
           }
         case (SUB_COMPONENT_CSS_MODES.DEFAULT || SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
-          if (customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty]) {
+          if (customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty] && customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].hasOwnProperty([cssProperty])) {
             return customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty];
           }
         default:
           return undefined;
       }
     },
-    resetSettings: function(): void {
+    updateSettings(): void {
       this.$nextTick(() => {
         const { customCss, customCssActiveMode, jsClasses } = this.subcomponentproperties;
         this.selectorCurrentValues = {};
@@ -202,28 +203,8 @@ export default {
         });
       });
     },
-    addDefaultValueIfCssModeMissing: function(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): void {
-      let customCss = null;
-      switch (customCssActiveMode) {
-        case (SUB_COMPONENT_CSS_MODES.CLICK): {
-          if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK] && this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty]) {
-            customCss = this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
-            break;
-          }
-        }
-        case (SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
-          if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] && this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty]) {
-            customCss = this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
-            break;
-          }
-        case (SUB_COMPONENT_CSS_MODES.DEFAULT || SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
-          if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] && this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty]) {
-            customCss = this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty];
-            break;
-          }
-        default:
-          break;
-      }
+    addDefaultValueIfCssModeMissing(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): void {
+      const customCss = this.getActiveModeCssPropertyValue(SUB_COMPONENT_CSS_MODES.CLICK, cssProperty);
       if (!this.subcomponentproperties.customCss[customCssActiveMode]) {
         this.subcomponentproperties.customCss[customCssActiveMode] = { [cssProperty]: customCss };
       } else {
@@ -232,7 +213,10 @@ export default {
     },
     parseRangeValue(value: string, smoothingDivisible: number): number {
       return parseInt(value.substring(0, value.length - 2), 10) * smoothingDivisible;
-    }
+    },
+    resetJs(): void {
+      this.subcomponentproperties.jsClasses = new Set([...this.subcomponentproperties.initialJsClasses]);
+    },
   }),
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   // put these methods into services
@@ -242,28 +226,8 @@ export default {
       const {cssProperty, smoothingDivisible, partialCss } = spec;
       const { customCss, customCssActiveMode } = this.subcomponentproperties;
       (triggers || []).forEach((trigger) => {
-          let customCss12 = undefined;
-          switch (this.subcomponentproperties.customCssActiveMode) {
-            case (SUB_COMPONENT_CSS_MODES.CLICK): {
-              if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK] && this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK].hasOwnProperty([trigger.cssProperty])) {
-                customCss12 = this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][trigger.cssProperty];
-                break;
-              }
-            }
-            case (SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
-              if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] && this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER].hasOwnProperty([trigger.cssProperty])) {
-                customCss12 = this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][trigger.cssProperty];
-                break;
-              }
-            case (SUB_COMPONENT_CSS_MODES.DEFAULT || SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
-              if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] && this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].hasOwnProperty([trigger.cssProperty])) {
-                customCss12 = this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][trigger.cssProperty];
-                break;
-              }
-            default:
-              break;
-          }
-          if (trigger.conditions.has(customCss12)) {
+          const customCss = this.getActiveModeCssPropertyValue(SUB_COMPONENT_CSS_MODES.CLICK, trigger.cssProperty);
+          if (trigger.conditions.has(customCss)) {
             customCss[customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
             if (trigger.selector) { this.selectorCurrentValues[trigger.cssProperty] = trigger.defaultValue; }
           }
@@ -387,69 +351,68 @@ export default {
         customCss[customCssActiveMode][cssProperty] = cssValue;
       }
     },
-    resetProperties(options: any): void {
+    resetSubcomponentProperties(options: any): void {
       options.forEach((option) => {
         const { cssProperty, jsClassName } = option.spec;
         if (jsClassName) {
-          this.subcomponentproperties.jsClasses = new Set([...this.subcomponentproperties.initialJsClasses]);
+          this.resetJs();
           return;
         }
-        
         let customCss = undefined;
         let propertyRemoved = false;
-          switch (this.subcomponentproperties.customCssActiveMode) {
-            case (SUB_COMPONENT_CSS_MODES.CLICK): {
-              if (this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.CLICK] && this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty]) {
-                customCss = this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
-                break;
-              }
-              if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK]) {
-                delete this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
-                propertyRemoved = true;
-                break;
-              }
-            }
-            case (SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
-              if (this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.HOVER] && this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty]) {
-                customCss = this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
-                break;
-              }
-              if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] && this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty]) {
-                if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] && this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty]) {
-                  delete this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
-                }
-                propertyRemoved = true;
-                break;
-              }
-            case (SUB_COMPONENT_CSS_MODES.DEFAULT || SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
-              if (this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT] && this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty]) {
-                customCss = this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty];
-                break;
-              }
-            default:
+        switch (this.subcomponentproperties.customCssActiveMode) {
+          case (SUB_COMPONENT_CSS_MODES.CLICK): {
+            if (this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.CLICK] && this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty]) {
+              customCss = this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
               break;
+            }
+            if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK]) {
+              delete this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
+              propertyRemoved = true;
+              break;
+            }
           }
-          if (propertyRemoved) return;
-          if (!this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode]) {
-            this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode] = { [cssProperty]: customCss };
-          } else {
-            this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = customCss;
-          }
+          case (SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
+            if (this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.HOVER] && this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty]) {
+              customCss = this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
+              break;
+            }
+            if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] && this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty]) {
+              if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] && this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty]) {
+                delete this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
+              }
+              propertyRemoved = true;
+              break;
+            }
+          case (SUB_COMPONENT_CSS_MODES.DEFAULT || SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
+            if (this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT] && this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty]) {
+              customCss = this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty];
+              break;
+            }
+          default:
+            break;
+        }
+        if (propertyRemoved) return;
+        if (!this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode]) {
+          this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode] = { [cssProperty]: customCss };
+        } else {
+          this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = customCss;
+        }
       });
-      this.resetSettings();
+      this.updateSettings();
     }
   },
   props: {
     subcomponentproperties: Object,
     settings: Object,
-    settingsResetTriggered: Boolean,
+    settingsUpdateTriggered: Boolean,
   },
   watch: {
     settings(): void {
-      this.resetSettings();
+      this.updateSettings();
     },
-    settingsResetTriggered(): void {
-      this.resetSettings();
+    settingsUpdateTriggered(): void {
+      this.updateSettings();
     }
   }
 };
