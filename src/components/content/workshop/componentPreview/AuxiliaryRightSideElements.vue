@@ -27,10 +27,10 @@
 </template>
 
 <script lang="ts">
+import useComponentPreviewEventHandlers, { UseComponentPreviewEventHandlers } from './compositionAPI/useComponentPreviewEventHandlers';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
-import useComponentPreviewEventHandlers from './compositionAPI/useComponentPreviewEventHandlers';
 
 interface Data {
   SUB_COMPONENT_CSS_MODES;
@@ -42,7 +42,7 @@ export default {
     SUB_COMPONENT_CSS_MODES,
     NEW_COMPONENT_TYPES,
   }),
-  setup(props: { subcomponent: WorkshopComponent }): { componentMouseEnter, componentMouseLeave, componentMouseDown, componentMouseUp } {
+  setup(props: { subcomponent: WorkshopComponent }): UseComponentPreviewEventHandlers {
     return useComponentPreviewEventHandlers(props.subcomponent);
   },
   props: {

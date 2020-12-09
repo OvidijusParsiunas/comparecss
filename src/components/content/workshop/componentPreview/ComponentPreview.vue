@@ -59,7 +59,7 @@
 </template>
 
 <script lang="ts">
-import useComponentPreviewEventHandlers from './compositionAPI/useComponentPreviewEventHandlers';
+import useComponentPreviewEventHandlers, { UseComponentPreviewEventHandlers } from './compositionAPI/useComponentPreviewEventHandlers';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
@@ -79,7 +79,7 @@ export default {
     NEW_COMPONENT_TYPES,
     SUB_COMPONENTS,
   }),
-  setup(props: { component: WorkshopComponent }): { componentMouseEnter, componentMouseLeave, componentMouseDown, componentMouseUp } {
+  setup(props: { component: WorkshopComponent }): UseComponentPreviewEventHandlers {
     return useComponentPreviewEventHandlers(props.component, new Set([SUB_COMPONENTS.CLOSE]));
   },
   methods: {

@@ -4,12 +4,18 @@ import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
 import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { ref } from 'vue';
 
-export default function useComponentPreviewEventHandlers(component: SubcomponentProperties | WorkshopComponent, componentsThatShouldNotBeAffected?: Set<SUB_COMPONENTS>) {
+export interface UseComponentPreviewEventHandlers {
+  componentMouseEnter: () => void,
+  componentMouseLeave: () => void,
+  componentMouseDown: () => void,
+  componentMouseUp: () => void
+}
 
-  let overwrittenDefaultPropertiesByHover = ref({});
-  let overwrittenDefaultPropertiesByClick = ref({});
-  let isUnsetButtonDisplayedForColorInputs = ref({});
+export default function useComponentPreviewEventHandlers(component: SubcomponentProperties | WorkshopComponent, componentsThatShouldNotBeAffected?: Set<SUB_COMPONENTS>): UseComponentPreviewEventHandlers {
 
+  const overwrittenDefaultPropertiesByHover = ref({});
+  const overwrittenDefaultPropertiesByClick = ref({});
+  const isUnsetButtonDisplayedForColorInputs = ref({});
 
   function setDefaultUnsetButtonStatesForColorInputs(customCss: CustomCss): void {
     Object.keys(customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]).forEach((key) => {
