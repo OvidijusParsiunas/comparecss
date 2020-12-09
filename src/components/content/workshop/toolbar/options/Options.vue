@@ -18,7 +18,7 @@
       <button v-if="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent"
         type="button" class="btn view-option"
         :class="[ component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying ? 'display-toggle-remove' : 'display-toggle-add' ]"
-        @click="toggleSubcomponentDisplay(component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent)">
+        @click="toggleSubcomponent(component.subcomponents[component.subcomponentsActiveMode])">
           {{ component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying ? 'Remove' : 'Add' }}
       </button>
     </div>
@@ -45,13 +45,13 @@ import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssMo
 import { componentTypeToOptions } from '../options/components/componentTypeToOptions';
 import { UpdateOptionsMode } from '../../../../../interfaces/updateCssMode';
 import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
-import { OptionalSubcomponent } from '../../../../../interfaces/workshopComponent';
+import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
+import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
 
 interface Data {
   WORKSHOP_TOOLBAR_OPTIONS;
   SUB_COMPONENT_CSS_MODES;
   componentTypeToOptions;
-  activeOptionIdentifier: WORKSHOP_TOOLBAR_OPTIONS;
   activeSubcomponentMode: SUB_COMPONENTS;
   activeSubcomponentModeElement: HTMLElement,
   lastHoveredSubcomponentModeOptionElement: HTMLElement;
@@ -62,7 +62,6 @@ export default {
     WORKSHOP_TOOLBAR_OPTIONS,
     SUB_COMPONENT_CSS_MODES,
     componentTypeToOptions,
-    activeOptionIdentifier: null,
     activeSubcomponentMode: SUB_COMPONENTS.BASE,
     activeSubcomponentModeElement: null,
     lastHoveredSubcomponentModeOptionElement: null,
@@ -112,7 +111,12 @@ export default {
       const activeModeOptions = componentTypeToOptions[type][subcomponentsActiveMode][activeMode || subcomponents[subcomponentsActiveMode].customCssActiveMode];
       return activeModeOptions.some((option) => option.identifier === this.activeOption);
     },
-    toggleSubcomponentDisplay(optionalSubcomponent: OptionalSubcomponent): void {
+    toggleSubcomponent(subcomponent: SubcomponentProperties): void {
+      const { optionalSubcomponent, initialCss } = subcomponent;
+      if (optionalSubcomponent.currentlyDisplaying) {
+        subcomponent.customCss = JSONManipulation.deepCopy(initialCss);
+        this.$emit('hide-settings');
+      }
       optionalSubcomponent.currentlyDisplaying = !optionalSubcomponent.currentlyDisplaying;
     }
   },

@@ -32,7 +32,6 @@ export default function useComponentPreviewEventHandlers(component: Subcomponent
       setDefaultUnsetButtonStatesForColorInputs(customCss);
       overwrittenDefaultPropertiesByHover.value = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], transition };
       customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], ...customCss[SUB_COMPONENT_CSS_MODES.HOVER], transition, ...isUnsetButtonDisplayedForColorInputs.value };
-      console.log(customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]);
     }
   }
   

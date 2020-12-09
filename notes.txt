@@ -9,9 +9,9 @@ calculate height by:
 test export with shadow and other properties, questionable if it works correctly
 setting types should an enum
 potentially have animation for when optional subcomponent options buttons appear and are hidden
+consider freezing the settings view instead of removing it when options don't match or a subcomponent is removed
 firefox color selector
 
-removing a subcomponent does not remove the settings
 figure out if we need to watch the activeSubcomponentMode variable
 highlight the subcomponent on hover
 export the dropdown as a separate component

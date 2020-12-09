@@ -7,7 +7,8 @@
             :component="component"
             @option-clicked="updateSettings"
             @subcomponents-mode-clicked="updateSubcomponentsMode"
-            @css-mode-clicked="updateCssMode"/>
+            @css-mode-clicked="updateCssMode"
+            @hide-settings="hideSettings"/>
         </div>
       </div>
       <settings
