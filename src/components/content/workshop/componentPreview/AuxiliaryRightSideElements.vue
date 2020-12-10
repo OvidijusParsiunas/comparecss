@@ -30,11 +30,16 @@
 import useComponentPreviewEventHandlers, { UseComponentPreviewEventHandlers } from './compositionAPI/useComponentPreviewEventHandlers';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
-import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
+import { SubcomponentProperties } from '../../../../interfaces/workshopComponent';
+import { Ref, ref, watch } from 'vue';
 
 interface Data {
   SUB_COMPONENT_CSS_MODES;
   NEW_COMPONENT_TYPES;
+}
+
+interface Props {
+  subcomponent?: SubcomponentProperties;
 }
 
 export default {
@@ -42,8 +47,12 @@ export default {
     SUB_COMPONENT_CSS_MODES,
     NEW_COMPONENT_TYPES,
   }),
-  setup(props: { subcomponent: WorkshopComponent }): UseComponentPreviewEventHandlers {
-    return useComponentPreviewEventHandlers(props.subcomponent);
+  setup(props: { subcomponent: SubcomponentProperties }): UseComponentPreviewEventHandlers {
+    const subcomponentRef: Ref<Props['subcomponent']> = ref(props.subcomponent);
+    watch(() => props.subcomponent, (newSubcomponent: Props['subcomponent']) => {
+      subcomponentRef.value = newSubcomponent;
+    });
+    return useComponentPreviewEventHandlers(subcomponentRef);
   },
   props: {
     componentType: String,

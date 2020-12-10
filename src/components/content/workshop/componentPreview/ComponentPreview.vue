@@ -66,11 +66,16 @@ import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import auxiliaryRightSideElements from './AuxiliaryRightSideElements.vue';
 import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import divInnerHtml from './divInnerHTML.vue';
+import { Ref, ref, watch } from 'vue';
 
 interface Data {
   SUB_COMPONENT_CSS_MODES;
   NEW_COMPONENT_TYPES;
   SUB_COMPONENTS;
+}
+
+interface Props {
+  component?: WorkshopComponent;
 }
 
 export default {
@@ -80,7 +85,11 @@ export default {
     SUB_COMPONENTS,
   }),
   setup(props: { component: WorkshopComponent }): UseComponentPreviewEventHandlers {
-    return useComponentPreviewEventHandlers(props.component, new Set([SUB_COMPONENTS.CLOSE]));
+    const componentRef: Ref<Props['component']> = ref(props.component);
+    watch(() => props.component, (newComponent: Props['component']) => {
+      componentRef.value = newComponent;
+    });
+    return useComponentPreviewEventHandlers(componentRef, new Set([SUB_COMPONENTS.CLOSE]));
   },
   methods: {
     componentPreviewMouseLeave(): void {

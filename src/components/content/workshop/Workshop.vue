@@ -284,14 +284,14 @@ export default {
     },
     componentCardSelected(selectedComponent: WorkshopComponent): void {
       if (this.currentlySelectedComponent !== selectedComponent) {
-        const { subcomponents: currentComponentSubcomponents, subcomponentsActiveMode: currentSubcomponentMode } = this.currentlySelectedComponent;
+        const { subcomponents: previousComponentSubcomponents, subcomponentsActiveMode: previousSubcomponentMode } = this.currentlySelectedComponent;
         const { subcomponents: newComponentSubcomponents, type: newComponenType } = selectedComponent;
         // do not switch subcomponent if the new component also contains the previous#
-        if (newComponentSubcomponents.hasOwnProperty(currentSubcomponentMode)) {
-          selectedComponent.subcomponentsActiveMode = currentSubcomponentMode;
+        if (newComponentSubcomponents.hasOwnProperty(previousSubcomponentMode)) {
+          selectedComponent.subcomponentsActiveMode = previousSubcomponentMode;
         }
         // do not switch cssMode if the new component also contains the previous
-        const previousActiveMode = currentComponentSubcomponents[currentSubcomponentMode].customCssActiveMode;
+        const previousActiveMode = previousComponentSubcomponents[previousSubcomponentMode].customCssActiveMode;
         const currentSubcomponentOptions = componentTypeToOptions[newComponenType][selectedComponent.subcomponentsActiveMode];
         newComponentSubcomponents[selectedComponent.subcomponentsActiveMode]
           .customCssActiveMode = Object.keys(currentSubcomponentOptions).includes(previousActiveMode) ? previousActiveMode : SUB_COMPONENT_CSS_MODES.DEFAULT;
