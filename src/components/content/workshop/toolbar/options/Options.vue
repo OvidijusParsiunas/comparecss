@@ -3,7 +3,7 @@
     <div class="option-button">
       <div class="dropdown" v-if="Object.keys(component.subcomponents).length > 1">
         <button @click="openSubcomponentDropdownMenu" class="btn form-control dropdown-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <div class="dropdown-button-text">{{activeSubcomponentMode}}</div><i class="fa fa-angle-double-down dropdown-button-icon"></i>
+          <div class="dropdown-button-text">{{component.subcomponentsActiveMode}}</div><i class="fa fa-angle-double-down dropdown-button-icon"></i>
         </button>
         <div ref="dropdownMenu" id="subcomponents-dropdown" class="dropdown-menu subcomponents-dropdown-menu" aria-labelledby="dropdownMenuButton">
           <a v-for="(mode, subcomponentMode) in component.subcomponents" :key="subcomponentMode"
@@ -44,7 +44,6 @@ import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../consts/workshopToolbarO
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import { componentTypeToOptions } from '../options/components/componentTypeToOptions';
 import { UpdateOptionsMode } from '../../../../../interfaces/updateCssMode';
-import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
 
@@ -52,7 +51,6 @@ interface Data {
   WORKSHOP_TOOLBAR_OPTIONS;
   SUB_COMPONENT_CSS_MODES;
   componentTypeToOptions;
-  activeSubcomponentMode: SUB_COMPONENTS;
   activeSubcomponentModeElement: HTMLElement,
   lastHoveredSubcomponentModeOptionElement: HTMLElement;
 }
@@ -62,7 +60,6 @@ export default {
     WORKSHOP_TOOLBAR_OPTIONS,
     SUB_COMPONENT_CSS_MODES,
     componentTypeToOptions,
-    activeSubcomponentMode: SUB_COMPONENTS.BASE,
     activeSubcomponentModeElement: null,
     lastHoveredSubcomponentModeOptionElement: null,
   }),
@@ -70,9 +67,8 @@ export default {
 
 
     subcomponentModeClick(): void {
-      this.activeSubcomponentMode = (event.target as HTMLInputElement).innerHTML;
       this.activeSubcomponentModeElement = event.target;
-      this.component.subcomponentsActiveMode = this.activeSubcomponentMode;
+      this.component.subcomponentsActiveMode = (event.target as HTMLInputElement).innerHTML;
       this.$emit('subcomponents-mode-clicked', [this.component.subcomponentsActiveMode, this.getNewCssModeContainsActiveOptionState()] as UpdateOptionsMode);
     },
     mouseEnterFunc(): void {
@@ -124,14 +120,8 @@ export default {
     component: Object,
   },
   watch: {
-    activeSubcomponentMode(newSubcomponentMode: SUB_COMPONENTS, oldSubcomponentMode: SUB_COMPONENTS): void {
-      if (oldSubcomponentMode && this.component.subcomponents[oldSubcomponentMode]) {
-        this.component.subcomponents[oldSubcomponentMode].customCssActiveMode = SUB_COMPONENT_CSS_MODES.DEFAULT;
-      }
-    },
     component(): void {
       this.activeSubcomponentModeElement = null;
-      this.activeSubcomponentMode = this.component.subcomponentsActiveMode;
     }
   }
 };

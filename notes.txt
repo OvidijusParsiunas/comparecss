@@ -12,6 +12,11 @@ potentially have animation for when optional subcomponent options buttons appear
 consider freezing the settings view instead of removing it when options don't match or a subcomponent is removed
 firefox color selector
 
+bug where upon changing the hover mode in close subcomponent, moving to a different close component, going back to default and swithcing back to the changed component does not activate
+the hover properties when mouse is over the clode component
+the subcomponent dropdown is not always working
+setCustomCssActiveMode may not be required anymore
+
 figure out if we need to watch the activeSubcomponentMode variable
 highlight the subcomponent on hover
 export the dropdown as a separate component

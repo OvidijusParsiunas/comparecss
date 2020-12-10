@@ -284,16 +284,20 @@ export default {
     },
     componentCardSelected(selectedComponent: WorkshopComponent): void {
       if (this.currentlySelectedComponent !== selectedComponent) {
-        const { subcomponents, subcomponentsActiveMode } = this.currentlySelectedComponent;
-        const previousActiveMode = subcomponents[subcomponentsActiveMode].customCssActiveMode;
-        this.setCustomCssActiveMode(subcomponents[subcomponentsActiveMode], SUB_COMPONENT_CSS_MODES.DEFAULT);
-        const activeSubcomponentOptions = componentTypeToOptions[selectedComponent.type][selectedComponent.subcomponentsActiveMode];
-        selectedComponent.subcomponents[selectedComponent.subcomponentsActiveMode]
-          .customCssActiveMode = (activeSubcomponentOptions && Object.keys(activeSubcomponentOptions).includes(previousActiveMode))
-          ? previousActiveMode : SUB_COMPONENT_CSS_MODES.DEFAULT;
+        const { subcomponents: currentComponentSubcomponents, subcomponentsActiveMode: currentSubcomponentMode } = this.currentlySelectedComponent;
+        const { subcomponents: newComponentSubcomponents, type: newComponenType } = selectedComponent;
+        // do not switch subcomponent if the new component also contains the previous#
+        if (newComponentSubcomponents.hasOwnProperty(currentSubcomponentMode)) {
+          selectedComponent.subcomponentsActiveMode = currentSubcomponentMode;
+        }
+        // do not switch cssMode if the new component also contains the previous
+        const previousActiveMode = currentComponentSubcomponents[currentSubcomponentMode].customCssActiveMode;
+        const currentSubcomponentOptions = componentTypeToOptions[newComponenType][selectedComponent.subcomponentsActiveMode];
+        newComponentSubcomponents[selectedComponent.subcomponentsActiveMode]
+          .customCssActiveMode = Object.keys(currentSubcomponentOptions).includes(previousActiveMode) ? previousActiveMode : SUB_COMPONENT_CSS_MODES.DEFAULT;
         this.switchActiveComponent(selectedComponent);
         setTimeout(() => {
-          this.$refs.toolbar.updateCssMode([selectedComponent.subcomponents[selectedComponent.subcomponentsActiveMode].customCssActiveMode] as UpdateOptionsMode);
+          this.$refs.toolbar.updateCssMode([newComponentSubcomponents[selectedComponent.subcomponentsActiveMode].customCssActiveMode] as UpdateOptionsMode);
         })
       }
     },
