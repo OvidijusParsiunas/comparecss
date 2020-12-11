@@ -12,13 +12,12 @@ potentially have animation for when optional subcomponent options buttons appear
 consider freezing the settings view instead of removing it when options don't match or a subcomponent is removed
 firefox color selector
 
-setCustomCssActiveMode may not be required anymore
-
-figure out if we need to watch the activeSubcomponentMode variable
+when the options of new components do not match, default to the first option
+when the user clicks on the drodpown with the mousepad and clicks on it again, the dropdown is stuttering
+right click of the mousepad on the range persists the px popover
 highlight the subcomponent on hover
 export the dropdown as a separate component
 need are you sure you want to remove the component modal, and upon clicking add - it should add a new modal
-check copy of component still works the way it is expected
 
 either define all default mode css in the beginning, or will have to change code to automatically default missing css with the default setting spec values to help display the settings pane correctly too (preview mode will also need to contain default values)
 

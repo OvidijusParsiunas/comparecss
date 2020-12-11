@@ -259,11 +259,8 @@ export default {
   }),
   methods: {
     switchActiveComponent(newComponent: WorkshopComponent): void {
-      if (this.currentlySelectedComponent) {
-        const { type } = this.currentlySelectedComponent;
-        if (type !== newComponent.type) {
-          ComponentJs.manipulateJS(type, 'revokeJS');
-        }
+      if (this.currentlySelectedComponent && this.currentlySelectedComponent.type !== newComponent.type) {
+        ComponentJs.manipulateJS(this.currentlySelectedComponent.type, 'revokeJS');
       }
       this.currentlySelectedComponent = newComponent;
       ComponentJs.manipulateJS(this.currentlySelectedComponent.type, 'executeJS');
