@@ -26,8 +26,8 @@ export default function useComponentPreviewEventHandlers(componentRef: Ref<Subco
     });
   }
 
-  // typescript requires componentRef to be passed in as an argument to this function to validate the type,
-  // and allow the next two functions to behave as required (validated by the linter)
+  // typescript requires componentRef to be passed in as an argument to this function to validate the type
+  // and allow the next two functions to behave as required (also validated by the linter)
   function isComponentProperties(componentRef: Ref<SubcomponentProperties> | Ref<WorkshopComponent>): componentRef is Ref<SubcomponentProperties> {
     return (componentRef as Ref<SubcomponentProperties>).value.customCss !== undefined;
   }

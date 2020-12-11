@@ -72,10 +72,12 @@ export default {
       this.$emit('subcomponents-mode-clicked', [this.component.subcomponentsActiveMode, this.getNewCssModeContainsActiveOptionState()] as UpdateOptionsMode);
     },
     mouseEnterFunc(): void {
+      // when dropdown is opened for the first time, there is no lastHoveredSubcomponentModeOptionElement and the first hovered option may
+      // not be activeSubcomponentModeElement, hence the active is removed from it
       if (this.activeSubcomponentModeElement) this.activeSubcomponentModeElement.classList.remove('active');
       if (this.lastHoveredSubcomponentModeOptionElement) this.lastHoveredSubcomponentModeOptionElement.classList.remove('active');
       this.lastHoveredSubcomponentModeOptionElement = event.target;
-      (event.target as HTMLInputElement).classList.add('active');
+      this.lastHoveredSubcomponentModeOptionElement.classList.add('active');
       // document.getElementById('close-subcomponent-preview').style.display = 'block';
     },
     mouseLeaveFunc(): void {
@@ -83,14 +85,21 @@ export default {
       // document.getElementById('close-subcomponent-preview').style.display = 'none';
     },
     openSubcomponentDropdownMenu(): void {
-      if (!this.activeSubcomponentModeElement) {
-        const indexOfSubcompontModeInComponent = Object.keys(this.component.subcomponents).indexOf(this.component.subcomponentsActiveMode);
-        const dropdownItemelement = this.$refs.dropdownMenu.childNodes[indexOfSubcompontModeInComponent + 1];
-        dropdownItemelement.classList.add('active');
-      }
+      // this function is always re-run everytime the dropdown is open
       if (this.lastHoveredSubcomponentModeOptionElement) this.lastHoveredSubcomponentModeOptionElement.classList.remove('active');
-      this.lastHoveredSubcomponentModeOptionElement = null;
-      if (this.activeSubcomponentModeElement) this.activeSubcomponentModeElement.classList.add('active');
+      // if none of the dropdown elements are active, set the current component's subcomponentsActiveMode as the default active element
+      if (!this.activeSubcomponentModeElement) {
+        setTimeout(() => {
+          const indexOfSubcompontModeInComponent = Object.keys(this.component.subcomponents).indexOf(this.component.subcomponentsActiveMode);
+          const dropdownItemElement = this.$refs.dropdownMenu.childNodes[indexOfSubcompontModeInComponent + 1];
+          dropdownItemElement.classList.add('active');
+          this.activeSubcomponentModeElement = dropdownItemElement;
+        });
+      } else {
+        // the following line removes last hovered incase the user closed the modal without selecting a new active mode
+        this.lastHoveredSubcomponentModeOptionElement = this.activeSubcomponentModeElement;
+        this.lastHoveredSubcomponentModeOptionElement.classList.add('active');
+      }
     },
 
 
@@ -121,6 +130,7 @@ export default {
   },
   watch: {
     component(): void {
+      if (this.activeSubcomponentModeElement) this.activeSubcomponentModeElement.classList.remove('active');
       this.activeSubcomponentModeElement = null;
     }
   }
