@@ -293,6 +293,8 @@ export default {
     componentCardCopied(selectComponentCard: WorkshopComponent): void {
       const newComponent = JSONManipulation.deepCopy(selectComponentCard);
       newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className, this.components, '-copy');
+      newComponent.subcomponentsActiveMode = SUB_COMPONENTS.BASE;
+      newComponent.subcomponents[SUB_COMPONENTS.BASE].customCssActiveMode = SUB_COMPONENT_CSS_MODES.DEFAULT;
       this.addNewComponent(newComponent);
     },
     componentCardDeleted(selectComponentCard: WorkshopComponent): void {
