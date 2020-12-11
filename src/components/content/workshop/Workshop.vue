@@ -268,16 +268,8 @@ export default {
       this.currentlySelectedComponent = newComponent;
       ComponentJs.manipulateJS(this.currentlySelectedComponent.type, 'executeJS');
     },
-    setCustomCssActiveMode: (subcomponentProperties: SubcomponentProperties, mode: SUB_COMPONENT_CSS_MODES): void => {
-      if (subcomponentProperties.hasOwnProperty('customCssActiveMode')) {
-        subcomponentProperties.customCssActiveMode = mode;
-      }
-    },
     addNewComponent(newComponent: WorkshopComponent): void {
       const { subcomponents, subcomponentsActiveMode } = this.currentlySelectedComponent;
-      if (this.components.length) {
-        this.setCustomCssActiveMode(subcomponents[subcomponentsActiveMode], SUB_COMPONENT_CSS_MODES.DEFAULT);
-      }
       this.components.push(newComponent);
       this.switchActiveComponent(newComponent);
       if (this.components.length > 1) { this.$refs.toolbar.updateCssMode([subcomponents[subcomponentsActiveMode].customCssActiveMode] as UpdateOptionsMode); }
@@ -302,7 +294,6 @@ export default {
       }
     },
     componentCardCopied(selectComponentCard: WorkshopComponent): void {
-      this.setCustomCssActiveMode(selectComponentCard.subcomponents[selectComponentCard.subcomponentsActiveMode], SUB_COMPONENT_CSS_MODES.DEFAULT);
       const newComponent = JSONManipulation.deepCopy(selectComponentCard);
       newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className, this.components, '-copy');
       this.addNewComponent(newComponent);
