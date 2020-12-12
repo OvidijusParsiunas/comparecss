@@ -33,6 +33,7 @@ import { UpdateOptionsMode } from '../../../../interfaces/updateCssMode';
 import settings from './settings/Settings.vue';
 import options from './options/Options.vue';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
+import { componentTypeToOptions } from './options/components/componentTypeToOptions';
 
 export default {
   data: (): Data => ({
@@ -55,13 +56,13 @@ export default {
         newCssModeContainsActiveOption = this.$refs.options.getNewCssModeContainsActiveOptionState(this.activeCssMode);
       }
       if (this.activeSettings && Object.keys(this.activeSettings).length && !newCssModeContainsActiveOption) {
-        this.hideSettings();
+        this.setDefaultOption();
       }
       this.triggerSettingsReset();
     },
     updateSubcomponentsMode(updateSubcomponentsMode: UpdateOptionsMode): void {
       if (!updateSubcomponentsMode[1]) {
-        this.hideSettings();
+        this.setDefaultOption();
       }
       this.triggerSettingsReset();
     },
@@ -75,6 +76,13 @@ export default {
           this.componentPreviewAssistance.margin = !(this.component.subcomponentsActiveMode === SUB_COMPONENTS.CLOSE);
         }
       });
+    },
+    setDefaultOption(): void {
+      const availableOptions = componentTypeToOptions[this.component.type]
+        [this.component.subcomponentsActiveMode]
+        [this.component.subcomponents[this.component.subcomponentsActiveMode].customCssActiveMode];
+      const firstOption = Object.keys(availableOptions)[0];
+      this.updateSettings(firstOption);
     },
     hideSettings(): void {
       this.activeSettings = {};
