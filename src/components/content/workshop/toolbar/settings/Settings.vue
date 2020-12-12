@@ -25,6 +25,7 @@
                     v-bind:max="subcomponentproperties.customSettingsProperties && subcomponentproperties.customSettingsProperties[setting.spec.cssProperty] ? subcomponentproperties.customSettingsProperties[setting.spec.cssProperty][1] : setting.spec.scale[1]"
                     v-model="setting.spec.default"
                     @mousedown="rangeMouseDown($event, subcomponentproperties.customCssActiveMode, setting.spec)"
+                    @contextmenu="preventRightClickEvent"
                     @mouseup="rangeMouseUp"
                     @input="updateRange($event, setting)">
                 </div>
@@ -256,6 +257,9 @@ export default {
     },
     rangeMouseUp(event: KeyboardEvent): void {
       ((event.target as HTMLInputElement).parentElement.childNodes[0] as HTMLElement).style.opacity = '0';
+    },
+    preventRightClickEvent(event: KeyboardEvent): void {
+      event.preventDefault();
     },
     selectOptionMouseOver(option: string, cssProperty: string): void {
       this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = option;

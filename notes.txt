@@ -12,7 +12,6 @@ potentially have animation for when optional subcomponent options buttons appear
 consider freezing the settings view instead of removing it when options don't match or a subcomponent is removed
 firefox color selector
 
-right click of the mousepad on the range persists the px popover
 highlight the subcomponent on hover
 export the dropdown as a separate component
 need are you sure you want to remove the component modal, and upon clicking add - it should add a new modal
