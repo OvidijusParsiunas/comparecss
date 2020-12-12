@@ -74,7 +74,7 @@ import toolbar from './toolbar/Toolbar.vue';
 import componentContents from './componentPreview/ComponentPreview.vue';
 import newComponentModal from './newComponent/Modal.vue';
 import componentList from './componentList/ComponentList.vue';
-import { WorkshopComponent, SubcomponentProperties } from '../../../interfaces/workshopComponent';
+import { WorkshopComponent } from '../../../interfaces/workshopComponent';
 import { inheritedButtonCss } from './newComponent/types/buttons/properties/inheritedCss';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
@@ -275,10 +275,8 @@ export default {
       if (this.currentlySelectedComponent !== selectedComponent) {
         const { subcomponents: previousComponentSubcomponents, subcomponentsActiveMode: previousSubcomponentMode } = this.currentlySelectedComponent;
         const { subcomponents: newComponentSubcomponents, type: newComponenType } = selectedComponent;
-        // do not switch subcomponent if the new component also contains the previous#
-        if (newComponentSubcomponents.hasOwnProperty(previousSubcomponentMode)) {
-          selectedComponent.subcomponentsActiveMode = previousSubcomponentMode;
-        }
+        // set the base subcomponent mode to default when switching to a new component mode
+        selectedComponent.subcomponentsActiveMode = SUB_COMPONENTS.BASE;
         // do not switch cssMode if the new component also contains the previous
         const previousActiveMode = previousComponentSubcomponents[previousSubcomponentMode].customCssActiveMode;
         const currentSubcomponentOptions = componentTypeToOptions[newComponenType][selectedComponent.subcomponentsActiveMode];

@@ -25,6 +25,7 @@ interface Data {
   activeSettings: any;
   activeCssMode: SUB_COMPONENT_CSS_MODES;
   settingsUpdateTriggered: boolean;
+  settingsOpenedOnce: boolean;
 }
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOptions';
 import { optionToSettings } from './settings/types/optionToSettings';
@@ -41,6 +42,7 @@ export default {
     activeSettings: {},
     activeCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
     settingsUpdateTriggered: false,
+    settingsOpenedOnce: false,
   }),
   methods: {
     updateSettings(newOption: WORKSHOP_TOOLBAR_OPTIONS): void {
@@ -48,20 +50,23 @@ export default {
       this.activeSettings = optionToSettings[newOption];
       this.componentPreviewAssistance.margin = (newOption === WORKSHOP_TOOLBAR_OPTIONS.MARGIN)
         && (this.component.subcomponentsActiveMode !== SUB_COMPONENTS.CLOSE);
+      this.settingsOpenedOnce = true;
     },
     updateCssMode(newCssMode: UpdateOptionsMode): void {
-      if (newCssMode[0]) { this.activeCssMode = newCssMode[0]; }
-      let newCssModeContainsActiveOption = newCssMode[1];
-      if (newCssModeContainsActiveOption === undefined) {
-        newCssModeContainsActiveOption = this.$refs.options.getNewCssModeContainsActiveOptionState(this.activeCssMode);
-      }
-      if (this.activeSettings && Object.keys(this.activeSettings).length && !newCssModeContainsActiveOption) {
-        this.setDefaultOption();
-      }
-      this.triggerSettingsReset();
+      this.$nextTick(() => {
+        if (newCssMode[0]) { this.activeCssMode = newCssMode[0]; }
+        let newCssModeContainsActiveOption = newCssMode[1];
+        if (newCssModeContainsActiveOption === undefined) {
+          newCssModeContainsActiveOption = this.$refs.options.getNewCssModeContainsActiveOptionState(this.activeCssMode);
+        }
+        if (this.activeSettings && Object.keys(this.activeSettings).length && !newCssModeContainsActiveOption) {
+          this.setDefaultOption();
+        }
+        this.triggerSettingsReset();
+      });
     },
     updateSubcomponentsMode(updateSubcomponentsMode: UpdateOptionsMode): void {
-      if (!updateSubcomponentsMode[1]) {
+      if (!updateSubcomponentsMode[1] && this.settingsOpenedOnce) {
         this.setDefaultOption();
       }
       this.triggerSettingsReset();
