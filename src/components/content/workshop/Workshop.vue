@@ -48,13 +48,9 @@
         :components="components"
         @add-new-component="addNewComponent($event)"
         @stop-editing-class-name-callback="addWorkshopEventCallback($event)"/>
-    </div>
-    <div class="center">
-      <button class="vs-button vs-button--null vs-button--size-null vs-button--primary vs-button--default">
-        <div class="vs-button__content">
-          Add +
-        </div>
-      </button>
+      <remove-subcomponent-modal
+        @remove-subcomponent="$refs.toolbar.hideSettings()"
+        :component="currentlySelectedComponent"/>
     </div>
   </div>
 </template>
@@ -72,7 +68,8 @@ import cssBuilder from '../../../services/workshop/cssBuilder';
 import jsBuilder from '../../../services/workshop/jsBuilder';
 import toolbar from './toolbar/Toolbar.vue';
 import componentContents from './componentPreview/ComponentPreview.vue';
-import newComponentModal from './newComponent/Modal.vue';
+import newComponentModal from './newComponent/NewComponentModal.vue';
+import removeSubcomponentModal from './toolbar/options/modal/RemoveSubcomponentModal.vue';
 import componentList from './componentList/ComponentList.vue';
 import { WorkshopComponent } from '../../../interfaces/workshopComponent';
 import { inheritedButtonCss } from './newComponent/types/buttons/properties/inheritedCss';
@@ -339,6 +336,7 @@ export default {
     componentList,
     componentContents,
     newComponentModal,
+    removeSubcomponentModal,
   }
 }
 </script>

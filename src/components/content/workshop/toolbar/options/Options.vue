@@ -8,7 +8,7 @@
       @dropdown-option-clicked="$emit('subcomponents-mode-clicked', [$event, getNewCssModeContainsActiveOptionState()])"/>
     <div class="option-button">
       <button v-if="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent"
-        type="button" class="btn view-option"
+        type="button" class="btn view-option" data-toggle="modal" :data-target="removeSubcomponentModalId"
         :class="[ component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying ? 'display-toggle-remove' : 'display-toggle-add' ]"
         @click="toggleSubcomponent(component.subcomponents[component.subcomponentsActiveMode])">
           {{ component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying ? 'Remove' : 'Add' }}
@@ -37,13 +37,15 @@ import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../consts/workshopToolbarO
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import { componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
-import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
+import { getIsDoNotShowAgainTickedState } from './modal/state';
+
 import dropdown from './dropdown/Dropdown.vue';
 
 interface Data {
   WORKSHOP_TOOLBAR_OPTIONS;
   SUB_COMPONENT_CSS_MODES;
   componentTypeToOptions;
+  removeSubcomponentModalId: string;
 }
 
 export default {
@@ -51,6 +53,7 @@ export default {
     WORKSHOP_TOOLBAR_OPTIONS,
     SUB_COMPONENT_CSS_MODES,
     componentTypeToOptions,
+    removeSubcomponentModalId: null,
   }),
   methods: {  
     optionClick(option: WORKSHOP_TOOLBAR_OPTIONS): void {
@@ -63,12 +66,14 @@ export default {
       return activeModeOptions && activeModeOptions.some((option) => option.identifier === this.activeOption);
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
-      const { optionalSubcomponent, initialCss } = subcomponent;
-      if (optionalSubcomponent.currentlyDisplaying) {
-        subcomponent.customCss = JSONManipulation.deepCopy(initialCss);
-        this.$emit('hide-settings');
+      const { optionalSubcomponent } = subcomponent;
+      console.log(getIsDoNotShowAgainTickedState());
+      if (!optionalSubcomponent.currentlyDisplaying) {
+        optionalSubcomponent.currentlyDisplaying = !optionalSubcomponent.currentlyDisplaying;
+        this.removeSubcomponentModalId = '';
+      } else {
+        this.removeSubcomponentModalId = '#removeSubcomponentModal';
       }
-      optionalSubcomponent.currentlyDisplaying = !optionalSubcomponent.currentlyDisplaying;
     }
   },
   props: {
