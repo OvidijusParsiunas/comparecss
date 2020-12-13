@@ -266,10 +266,12 @@ export default {
       ComponentJs.manipulateJS(this.currentlySelectedComponent.type, 'executeJS');
     },
     addNewComponent(newComponent: WorkshopComponent): void {
-      const { subcomponents, subcomponentsActiveMode } = this.currentlySelectedComponent;
       this.components.push(newComponent);
       this.switchActiveComponent(newComponent);
-      if (this.components.length > 1) { this.$refs.toolbar.updateCssMode([subcomponents[subcomponentsActiveMode].customCssActiveMode] as UpdateOptionsMode); }
+      if (this.currentlySelectedComponent) {
+        const { subcomponents, subcomponentsActiveMode } = this.currentlySelectedComponent;
+        if (this.components.length > 1) { this.$refs.toolbar.updateCssMode([subcomponents[subcomponentsActiveMode].customCssActiveMode] as UpdateOptionsMode); } 
+      }
     },
     componentCardSelected(selectedComponent: WorkshopComponent): void {
       if (this.currentlySelectedComponent !== selectedComponent) {
