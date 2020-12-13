@@ -1,19 +1,11 @@
 <template>
   <div class="options-container">
-    <div class="option-button">
-      <div class="dropdown" v-if="Object.keys(component.subcomponents).length > 1">
-        <button @click="openSubcomponentDropdownMenu" class="btn form-control dropdown-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          <div class="dropdown-button-text">{{component.subcomponentsActiveMode}}</div><i class="fa fa-angle-double-down dropdown-button-icon"></i>
-        </button>
-        <div ref="dropdownMenu" id="subcomponents-dropdown" class="dropdown-menu subcomponents-dropdown-menu" aria-labelledby="dropdownMenuButton">
-          <a v-for="(mode, subcomponentMode) in component.subcomponents" :key="subcomponentMode"
-            class="dropdown-item subcomponents-dropdown-item" 
-            @click="subcomponentModeClick" @mouseenter="mouseEnterFunc" @mouseleave="mouseLeaveFunc">
-              {{subcomponentMode}}
-            </a>
-        </div>
-      </div>
-    </div>
+    <dropdown class="option-button"
+      :dropdownOptions="component.subcomponents"
+      :objectContainingActiveOption="component"
+      :activeModePropertyKeyName="'subcomponentsActiveMode'"
+      :fontAwesomeIconClassName="'fa-angle-double-down'"
+      @dropdown-option-clicked="$emit('subcomponents-mode-clicked', [$event, getNewCssModeContainsActiveOptionState()])"/>
     <div class="option-button">
       <button v-if="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent"
         type="button" class="btn view-option"
@@ -23,11 +15,12 @@
       </button>
     </div>
     <div v-if="!component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent || component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying"> 
-      <div class="option-button">
-        <select v-if="Object.keys(componentTypeToOptions[component.type][component.subcomponentsActiveMode]).length > 1" class="form-control" v-model="component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode" @change="cssModeClick">
-          <option v-for="(mode, cssMode) in componentTypeToOptions[component.type][component.subcomponentsActiveMode]" :key="cssMode">{{cssMode}}</option>
-        </select>
-      </div>
+      <dropdown class="option-button"
+      :dropdownOptions="componentTypeToOptions[component.type][component.subcomponentsActiveMode]"
+      :objectContainingActiveOption="component.subcomponents[component.subcomponentsActiveMode]"
+      :activeModePropertyKeyName="'customCssActiveMode'"
+      :fontAwesomeIconClassName="'fa-angle-down'"
+      @dropdown-option-clicked="this.$emit('css-mode-clicked', [$event, this.getNewCssModeContainsActiveOptionState()])"/>
       <button
         type="button"
         v-for="(option) in componentTypeToOptions[component.type][component.subcomponentsActiveMode][component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode]" :key="option"
@@ -43,16 +36,14 @@
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../consts/workshopToolbarOptions';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import { componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
-import { UpdateOptionsMode } from '../../../../../interfaces/updateCssMode';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
+import dropdown from './dropdown/Dropdown.vue';
 
 interface Data {
   WORKSHOP_TOOLBAR_OPTIONS;
   SUB_COMPONENT_CSS_MODES;
   componentTypeToOptions;
-  activeSubcomponentModeElement: HTMLElement,
-  lastHoveredSubcomponentModeOptionElement: HTMLElement;
 }
 
 export default {
@@ -60,61 +51,16 @@ export default {
     WORKSHOP_TOOLBAR_OPTIONS,
     SUB_COMPONENT_CSS_MODES,
     componentTypeToOptions,
-    activeSubcomponentModeElement: null,
-    lastHoveredSubcomponentModeOptionElement: null,
   }),
-  methods: {
-
-
-    subcomponentModeClick(): void {
-      this.activeSubcomponentModeElement = event.target;
-      this.component.subcomponentsActiveMode = (event.target as HTMLInputElement).innerHTML;
-      this.$emit('subcomponents-mode-clicked', [this.component.subcomponentsActiveMode, this.getNewCssModeContainsActiveOptionState()] as UpdateOptionsMode);
-    },
-    mouseEnterFunc(): void {
-      // when dropdown is opened for the first time, there is no lastHoveredSubcomponentModeOptionElement and the first hovered option may
-      // not be activeSubcomponentModeElement, hence the active is removed from it
-      if (this.activeSubcomponentModeElement) this.activeSubcomponentModeElement.classList.remove('active');
-      if (this.lastHoveredSubcomponentModeOptionElement) this.lastHoveredSubcomponentModeOptionElement.classList.remove('active');
-      this.lastHoveredSubcomponentModeOptionElement = event.target;
-      this.lastHoveredSubcomponentModeOptionElement.classList.add('active');
-      // document.getElementById('close-subcomponent-preview').style.display = 'block';
-    },
-    mouseLeaveFunc(): void {
-      // (event.target as HTMLInputElement).classList.remove('active');
-      // document.getElementById('close-subcomponent-preview').style.display = 'none';
-    },
-    openSubcomponentDropdownMenu(): void {
-      // this function is always re-run everytime the dropdown is open
-      if (this.lastHoveredSubcomponentModeOptionElement) this.lastHoveredSubcomponentModeOptionElement.classList.remove('active');
-      // if none of the dropdown elements are active, set the current component's subcomponentsActiveMode as the default active element
-      if (!this.activeSubcomponentModeElement) {
-        setTimeout(() => {
-          const indexOfSubcompontModeInComponent = Object.keys(this.component.subcomponents).indexOf(this.component.subcomponentsActiveMode);
-          const dropdownItemElement = this.$refs.dropdownMenu.childNodes[indexOfSubcompontModeInComponent + 1];
-          dropdownItemElement.classList.add('active');
-          this.activeSubcomponentModeElement = dropdownItemElement;
-        });
-      } else {
-        // the following line removes last hovered incase the user closed the modal without selecting a new active mode
-        this.lastHoveredSubcomponentModeOptionElement = this.activeSubcomponentModeElement;
-        this.lastHoveredSubcomponentModeOptionElement.classList.add('active');
-      }
-    },
-
-
-  
+  methods: {  
     optionClick(option: WORKSHOP_TOOLBAR_OPTIONS): void {
       this.activeOption = option;
       this.$emit('option-clicked', option);
     },
-    cssModeClick(): void {
-      this.$emit('css-mode-clicked', [this.component.subcomponents[this.component.subcomponentsActiveMode].customCssActiveMode, this.getNewCssModeContainsActiveOptionState()] as UpdateOptionsMode);
-    },
     getNewCssModeContainsActiveOptionState(activeMode?: SUB_COMPONENT_CSS_MODES): boolean {
       const { subcomponents, subcomponentsActiveMode, type } = this.component;
       const activeModeOptions = componentTypeToOptions[type][subcomponentsActiveMode][activeMode || subcomponents[subcomponentsActiveMode].customCssActiveMode];
-      return activeModeOptions.some((option) => option.identifier === this.activeOption);
+      return activeModeOptions && activeModeOptions.some((option) => option.identifier === this.activeOption);
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
       const { optionalSubcomponent, initialCss } = subcomponent;
@@ -128,11 +74,8 @@ export default {
   props: {
     component: Object,
   },
-  watch: {
-    component(): void {
-      if (this.activeSubcomponentModeElement) this.activeSubcomponentModeElement.classList.remove('active');
-      this.activeSubcomponentModeElement = null;
-    }
+  components: {
+    dropdown,
   }
 };
 </script>
@@ -166,33 +109,4 @@ export default {
     border-color: green !important;
     color: green !important;
   }
-  .dropdown-button {
-    font-family: 'Poppins', sans-serif;
-    min-width: 6.5rem;
-    border: 1px solid #ced4da !important;
-    background-color: white !important;
-  }
-  .dropdown-button-text {
-    float: left;
-    padding-left: 2px
-  }
-  .dropdown-button-icon {
-    float: right;
-    margin-top: 0.3em
-  }
-  .subcomponents-dropdown-menu {
-    padding: 0px !important;
-    padding-top: 2px !important;
-    padding-bottom: 2px !important;
-    margin-top: 0px !important;
-    min-width: 6.5rem !important;
-  }
-  .subcomponents-dropdown-item {
-    padding: 0.08rem 1rem !important;
-  }
-/* .newsomething:after {
-  content: attr(data-button-icon);
-  float: right;
-  padding-left: 1em;
-} */
 </style>
