@@ -34,7 +34,7 @@ import { UpdateOptionsMode } from '../../../../interfaces/updateCssMode';
 import settings from './settings/Settings.vue';
 import options from './options/Options.vue';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
-import { componentTypeToOptions } from './options/components/componentTypeToOptions';
+import { componentTypeToOptions } from './options/componentOptions/componentTypeToOptions';
 
 export default {
   data: (): Data => ({

@@ -83,7 +83,7 @@ import { UpdateOptionsMode } from '../../../interfaces/updateCssMode';
 import ProcessClassName from '../../../services/workshop/newComponent/processClassName';
 import ComponentJs from '../../../services/workshop/componentJs';
 import { SUB_COMPONENT_CSS_MODES } from '../../../consts/subcomponentCssModes.enum';
-import { componentTypeToOptions } from './toolbar/options/components/componentTypeToOptions';
+import { componentTypeToOptions } from './toolbar/options/componentOptions/componentTypeToOptions';
 import { SUB_COMPONENTS } from '../../../consts/subcomponentModes.enum';
 import JSONManipulation from '../../../services/workshop/jsonManipulation';
 

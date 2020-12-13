@@ -1,9 +1,9 @@
-import { NEW_COMPONENT_TYPES } from '../../../../../../consts/newComponentTypes.enum';
-import { ComponentOptions } from '../../../../../../interfaces/componentOptions';
 import { SubcomponentCssModes } from '../../../../../../interfaces/subcomponentCssModes';
+import { NEW_COMPONENT_TYPES } from '../../../../../../consts/newComponentTypes.enum';
+import { SUB_COMPONENTS } from '../../../../../../consts/subcomponentModes.enum';
+import { ComponentOptions } from '../../../../../../interfaces/componentOptions';
 import { buttonContainerOptions } from './button/container';
 import { alertContainerOptions } from './alert/container';
-import { SUB_COMPONENTS } from '@/consts/subcomponentModes.enum';
 import { alertCloseOptions } from './alert/close';
 
 type subcomponentTypeToOptions = {

@@ -42,7 +42,7 @@
 <script lang="ts">
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../consts/workshopToolbarOptions';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
-import { componentTypeToOptions } from '../options/components/componentTypeToOptions';
+import { componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import { UpdateOptionsMode } from '../../../../../interfaces/updateCssMode';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
