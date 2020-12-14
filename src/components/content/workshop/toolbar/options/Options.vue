@@ -16,11 +16,11 @@
     </div>
     <div v-if="!component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent || component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying"> 
       <dropdown class="option-button"
-      :dropdownOptions="componentTypeToOptions[component.type][component.subcomponentsActiveMode]"
-      :objectContainingActiveOption="component.subcomponents[component.subcomponentsActiveMode]"
-      :activeModePropertyKeyName="'customCssActiveMode'"
-      :fontAwesomeIconClassName="'fa-angle-down'"
-      @dropdown-option-clicked="this.$emit('css-mode-clicked', [$event, this.getNewCssModeContainsActiveOptionState()])"/>
+        :dropdownOptions="componentTypeToOptions[component.type][component.subcomponentsActiveMode]"
+        :objectContainingActiveOption="component.subcomponents[component.subcomponentsActiveMode]"
+        :activeModePropertyKeyName="'customCssActiveMode'"
+        :fontAwesomeIconClassName="'fa-angle-down'"
+        @dropdown-option-clicked="this.$emit('css-mode-clicked', [$event, this.getNewCssModeContainsActiveOptionState()])"/>
       <button
         type="button"
         v-for="(option) in componentTypeToOptions[component.type][component.subcomponentsActiveMode][component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode]" :key="option"
@@ -37,8 +37,8 @@ import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../consts/workshopToolbarO
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import { componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
-import { getIsDoNotShowAgainTickedState } from './modal/state';
-
+import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
+import { getIsDoNotShowModalAgainState } from './modal/state';
 import dropdown from './dropdown/Dropdown.vue';
 
 interface Data {
@@ -53,7 +53,7 @@ export default {
     WORKSHOP_TOOLBAR_OPTIONS,
     SUB_COMPONENT_CSS_MODES,
     componentTypeToOptions,
-    removeSubcomponentModalId: null,
+    removeSubcomponentModalId: '',
   }),
   methods: {  
     optionClick(option: WORKSHOP_TOOLBAR_OPTIONS): void {
@@ -66,13 +66,18 @@ export default {
       return activeModeOptions && activeModeOptions.some((option) => option.identifier === this.activeOption);
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
-      const { optionalSubcomponent } = subcomponent;
-      console.log(getIsDoNotShowAgainTickedState());
+      this.removeSubcomponentModalId = '';
+      const { optionalSubcomponent, initialCss } = subcomponent;
       if (!optionalSubcomponent.currentlyDisplaying) {
         optionalSubcomponent.currentlyDisplaying = !optionalSubcomponent.currentlyDisplaying;
-        this.removeSubcomponentModalId = '';
       } else {
-        this.removeSubcomponentModalId = '#removeSubcomponentModal';
+        if (!getIsDoNotShowModalAgainState()){
+          this.removeSubcomponentModalId = '#removeSubcomponentModal';
+        } else {
+          subcomponent.customCss = JSONManipulation.deepCopy(initialCss);
+          optionalSubcomponent.currentlyDisplaying = !optionalSubcomponent.currentlyDisplaying;
+          this.$emit('hide-settings');
+        }
       }
     }
   },

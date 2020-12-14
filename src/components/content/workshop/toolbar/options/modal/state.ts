@@ -1,14 +1,14 @@
-let isDoNotShowAgainTickedState = false;
+let setIsDoNotShowAgainState = false;
 
-function getIsDoNotShowAgainTickedState(): boolean {
-  return isDoNotShowAgainTickedState;
+function getIsDoNotShowModalAgainState(): boolean {
+  return setIsDoNotShowAgainState;
 }
 
-function setIsDoNotShowAgainTickedState(state: boolean): void {
-  isDoNotShowAgainTickedState = state;
+function setIsDoNotShowModalAgainState(state: boolean): void {
+  setIsDoNotShowAgainState = state;
 }
 
 export {
-  getIsDoNotShowAgainTickedState,
-  setIsDoNotShowAgainTickedState,
+  getIsDoNotShowModalAgainState,
+  setIsDoNotShowModalAgainState,
 }
