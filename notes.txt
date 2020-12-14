@@ -13,10 +13,10 @@ consider freezing the settings view instead of removing it when options don't ma
 firefox color selector
 
 highlight the subcomponent on hover
+solve the initial hover of the subcomponent toggle button problem where it has not loaded up
 
 either define all default mode css in the beginning, or will have to change code to automatically default missing css with the default setting spec values to help display the settings pane correctly too (preview mode will also need to contain default values)
 
-potentially replace the Remove component icon text to a trashcan
 cursor that allows user to hover over component's parts and upon clicking would direct to the rightful settings
 color active toolkit button
 color active component card

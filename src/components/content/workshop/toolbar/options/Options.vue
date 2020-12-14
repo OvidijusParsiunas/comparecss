@@ -11,7 +11,6 @@
         type="button" class="btn view-option" data-toggle="modal" :data-target="removeSubcomponentModalId"
         :class="[ component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying ? 'display-toggle-remove' : 'display-toggle-add' ]"
         @click="toggleSubcomponent(component.subcomponents[component.subcomponentsActiveMode])">
-          {{ component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying ? 'Remove' : 'Add' }}
       </button>
     </div>
     <div v-if="!component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent || component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying"> 
@@ -109,14 +108,33 @@ export default {
     border-color: #9d9d9d !important;
     background-color: white !important;
   }
+  .display-toggle-remove {
+    width: 3em;
+    height: 38px;
+    background: url('../../../../../assets/svg/rubbish-can-default.svg') center no-repeat;
+    background-size: 17px auto;
+    transition: 0.1s ease-in-out !important;
+  }
   .display-toggle-remove:hover {
     background-color: #fffdfd;
     border-color: red !important;
     color: red !important;
+    background: url('../../../../../assets/svg/rubbish-can-red.svg') center no-repeat;
+    background-size: 17px auto;
+  }
+  .display-toggle-add {
+    width: 3em;
+    height: 38px;
+    background: url('../../../../../assets/svg/plus-default.svg') center no-repeat;
+    background-size: 16px auto;
+    /* transition removed due to stuttering in the plus svgs */
+    /* transition: 0.1s ease-in-out !important; */
   }
   .display-toggle-add:hover {
     background-color: #f8fff8;
     border-color: green !important;
     color: green !important;
+    background: url('../../../../../assets/svg/plus-green.svg') center no-repeat;
+    background-size: 16px auto;
   }
 </style>
