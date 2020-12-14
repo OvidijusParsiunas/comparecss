@@ -5,6 +5,7 @@
       :objectContainingActiveOption="component"
       :activeModePropertyKeyName="'subcomponentsActiveMode'"
       :fontAwesomeIconClassName="'fa-angle-double-down'"
+      :highlightSubcomponents="true"
       @dropdown-option-clicked="$emit('subcomponents-mode-clicked', [$event, getNewCssModeContainsActiveOptionState()])"/>
     <div class="option-button">
       <button v-if="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent"

@@ -19,8 +19,12 @@
               subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
               subcomponent.customCss[subcomponent.customCssActiveMode],
             ]"
-        ><div style="display: table; pointer-events: none; margin-left: auto; margin-right: auto;">×</div></button>
-      <button id="close-subcomponent-preview" style="display: none" :style="subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]" class="subcomponent-preview">
+        ><div style="display: table; pointer-events: none; margin-left: auto; margin-right: auto;">×</div>
+      </button>
+      <button
+        :id="SUB_COMPONENT_PREVIEW_ELEMENT_IDS.CLOSE"
+        style="display: none" :style="subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
+        class="subcomponent-preview">
       </button>
     </div>
   </div>
@@ -28,12 +32,14 @@
 
 <script lang="ts">
 import useComponentPreviewEventHandlers, { UseComponentPreviewEventHandlers } from './compositionAPI/useComponentPreviewEventHandlers';
+import { SUB_COMPONENT_PREVIEW_ELEMENT_IDS } from '../../../../consts/subcomponentPreviewElementIds.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { SubcomponentProperties } from '../../../../interfaces/workshopComponent';
 import { Ref, ref, watch } from 'vue';
 
 interface Data {
+  SUB_COMPONENT_PREVIEW_ELEMENT_IDS;
   SUB_COMPONENT_CSS_MODES;
   NEW_COMPONENT_TYPES;
 }
@@ -44,6 +50,7 @@ interface Props {
 
 export default {
   data: (): Data => ({
+    SUB_COMPONENT_PREVIEW_ELEMENT_IDS,
     SUB_COMPONENT_CSS_MODES,
     NEW_COMPONENT_TYPES,
   }),
@@ -75,10 +82,5 @@ export default {
   }
   #close-button-parent:focus {
     outline: none;
-  }
-  .subcomponent-preview {
-    background-color: rgb(40 255 20 / 43%) !important;
-    position: absolute !important;
-    top: 0px !important;
   }
 </style>

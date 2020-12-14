@@ -1,12 +1,17 @@
 <template>
   <div class="dropdown" v-if="Object.keys(dropdownOptions).length > 1">
-    <button @click="openDropdown" class="btn form-control dropdown-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    <button  class="btn form-control dropdown-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+      @click="openDropdown"
+      @mouseenter="mouseEnterButton"
+      @mouseleave="mouseLeaveButton">
       <div class="dropdown-button-text">{{objectContainingActiveOption[activeModePropertyKeyName]}}</div><i :class="['fa', 'dropdown-button-icon', fontAwesomeIconClassName]"></i>
     </button>
     <div ref="dropdownMenu" class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton">
       <a v-for="(optionValue, optionName) in dropdownOptions" :key="optionName"
         class="dropdown-item custom-dropdown-item" 
-        @click="optionClick" @mouseenter="mouseEnterFunc">
+        @click="optionClick"
+        @mouseenter="mouseEnterOption"
+        @mouseleave="mouseLeaveOption">
           {{optionName}}
         </a>
     </div>
@@ -14,6 +19,7 @@
 </template>
 
 <script lang="ts">
+import { subcomponentTypeToPreviewId } from '../componentOptions/subcomponentTypeToPreviewId';
 import { UpdateOptionsMode } from '../../../../../../interfaces/updateCssMode';
 
 interface Data {
@@ -29,16 +35,26 @@ export default {
   methods: {
     optionClick(): void {
       this.activeOptionElement = event.target;
-      this.objectContainingActiveOption[this.activeModePropertyKeyName] = (event.target as HTMLInputElement).innerHTML;
+      this.objectContainingActiveOption[this.activeModePropertyKeyName] = (event.target as HTMLElement).innerHTML;
       this.$emit('dropdown-option-clicked', [this.objectContainingActiveOption[this.activeModePropertyKeyName]] as UpdateOptionsMode);
     },
-    mouseEnterFunc(): void {
+    mouseEnterButton(): void {
+      this.toggleSubcomponentPreviewDisplay(((event.target as HTMLElement).childNodes[0] as HTMLElement).innerHTML, 'block');
+    },
+    mouseLeaveButton(): void {
+      this.toggleSubcomponentPreviewDisplay(((event.target as HTMLElement).childNodes[0] as HTMLElement).innerHTML, 'none');
+    },
+    mouseEnterOption(): void {
       // when dropdown is opened for the first time, there is no lastHoveredOptionElement and the first hovered option may
       // not be activeOptionElement, hence the active is removed from it
+      this.toggleSubcomponentPreviewDisplay((event.target as HTMLInputElement).innerHTML, 'block');
       if (this.activeOptionElement) this.activeOptionElement.classList.remove('active');
       if (this.lastHoveredOptionElement) this.lastHoveredOptionElement.classList.remove('active');
       this.lastHoveredOptionElement = event.target;
       this.lastHoveredOptionElement.classList.add('active');
+    },
+    mouseLeaveOption(): void {
+      this.toggleSubcomponentPreviewDisplay((event.target as HTMLElement).innerHTML, 'none');
     },
     openDropdown(): void {
       // this function is always re-run everytime the dropdown is open
@@ -57,12 +73,19 @@ export default {
         this.lastHoveredOptionElement.classList.add('active');
       }
     },
+    toggleSubcomponentPreviewDisplay(subcomponentType: string, displayValue: 'block'|'none'): void {
+      if (!this.highlightSubcomponent) return;
+      const subcomponentPreviewElementId = subcomponentTypeToPreviewId[subcomponentType];
+      const subcomponentPreviewElement = document.getElementById(subcomponentPreviewElementId);
+      if (subcomponentPreviewElement) subcomponentPreviewElement.style.display = displayValue;
+    }
   },
   props: {
     dropdownOptions: Object,
     objectContainingActiveOption: Object,
     activeModePropertyKeyName: String,
     fontAwesomeIconClassName: String,
+    highlightSubcomponents: Boolean,
   },
   watch: {
     objectContainingActiveOption(): void {

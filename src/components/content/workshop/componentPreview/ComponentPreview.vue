@@ -39,6 +39,11 @@
               <divInnerHtml :componentType="component.type" :innerHTML="component.subcomponents[component.subcomponentsActiveMode].innerHtmlText"/>
               <auxiliary-right-side-elements :componentType="component.type" :subcomponent="component.subcomponents[SUB_COMPONENTS.CLOSE]"/>
             </component>
+            <component :is="component.subcomponents[component.subcomponentsActiveMode].componentTag"
+              :id="SUB_COMPONENT_PREVIEW_ELEMENT_IDS.BASE"
+              style="display: none" :style="component.subcomponents[SUB_COMPONENTS.BASE].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
+              class="subcomponent-preview">
+            </component>
           </div>
           <div class="grid-item grid-item-position">
             <transition name="right-slide-fade">
@@ -60,6 +65,7 @@
 
 <script lang="ts">
 import useComponentPreviewEventHandlers, { UseComponentPreviewEventHandlers } from './compositionAPI/useComponentPreviewEventHandlers';
+import { SUB_COMPONENT_PREVIEW_ELEMENT_IDS } from '../../../../consts/subcomponentPreviewElementIds.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
@@ -72,6 +78,7 @@ interface Data {
   SUB_COMPONENT_CSS_MODES;
   NEW_COMPONENT_TYPES;
   SUB_COMPONENTS;
+  SUB_COMPONENT_PREVIEW_ELEMENT_IDS;
 }
 
 interface Props {
@@ -80,6 +87,7 @@ interface Props {
 
 export default {
   data: (): Data => ({
+    SUB_COMPONENT_PREVIEW_ELEMENT_IDS,
     SUB_COMPONENT_CSS_MODES,
     NEW_COMPONENT_TYPES,
     SUB_COMPONENTS,
@@ -167,7 +175,6 @@ export default {
     float: right;
     border-right: 1px solid #b9b9b9
   }
-
   #margin-assistance-top {
     border-radius: 5px 5px 2px 2px;
     width: 100%;
@@ -176,14 +183,12 @@ export default {
     position: absolute;
     border-bottom: 1px solid #b9b9b9;
   }
-  
   #margin-assistance-right {
     border-radius: 2px 5px 5px 2px;
     width: 10px;
     height: 100%;
     border-left: 1px solid #b9b9b9;
   }
-  
   #margin-assistance-bottom {
     border-radius: 2px 2px 5px 5px;
     width: 100%;
@@ -191,7 +196,6 @@ export default {
     position: absolute;
     border-top: 1px solid #b9b9b9;
   }
-
   .left-slide-fade-enter-active,
   .left-slide-fade-leave-active,
   .top-slide-fade-enter-active,
@@ -202,25 +206,21 @@ export default {
   .bottom-slide-fade-leave-active {
     transition: all 0.4s ease-out;
   }
-
   .left-slide-fade-enter-from,
   .left-slide-fade-leave-to {
     transform: translateX(-20px);
     opacity: 0;
   }
-
   .top-slide-fade-enter-from,
   .top-slide-fade-leave-to {
     transform: translateY(-20px);
     opacity: 0;
   }
-
   .right-slide-fade-enter-from,
   .right-slide-fade-leave-to {
     transform: translateX(20px);
     opacity: 0;
   }
-
   .bottom-slide-fade-enter-from,
   .bottom-slide-fade-leave-to {
     transform: translateY(20px);
@@ -232,22 +232,23 @@ export default {
     display: grid;
     grid-template-columns: auto auto auto;
   }
-  
   .grid-item {
     background: none !important;
   }
-
   .margin-marker {
     background-color: rgb(225 225 225) !important;
     z-index: 2;
   }
-
   #demoComponent {
     overflow: hidden;
   }
-  
   .grid-item-position {
     position: relative;
+  }
+  .subcomponent-preview {
+    background-color: rgb(40 255 20 / 43%) !important;
+    position: absolute !important;
+    top: 0px !important;
   }
 
   @keyframes displayRipple {
@@ -259,7 +260,7 @@ export default {
     }
   }
 
-   @keyframes fadeRipple {
+  @keyframes fadeRipple {
     from {
       opacity: 1;
     }

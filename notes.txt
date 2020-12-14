@@ -12,7 +12,6 @@ potentially have animation for when optional subcomponent options buttons appear
 consider freezing the settings view instead of removing it when options don't match or a subcomponent is removed
 firefox color selector
 
-highlight the subcomponent on hover
 solve the initial hover of the subcomponent toggle button problem where it has not loaded up
 
 either define all default mode css in the beginning, or will have to change code to automatically default missing css with the default setting spec values to help display the settings pane correctly too (preview mode will also need to contain default values)
