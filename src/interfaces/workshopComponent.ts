@@ -6,6 +6,12 @@ import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { TempCustomCss } from './tempCustomCss';
 import { SUB_COMPONENTS } from '../consts/subcomponentModes.enum';
 
+export interface NestedCss {
+  elements?: Set<string>;
+  classes?: Set<string>;
+  css: WorkshopComponentCss;
+}
+
 export type CustomCss = {
   [key in SUB_COMPONENT_CSS_MODES]?: WorkshopComponentCss;
 }
@@ -25,8 +31,12 @@ export interface SubcomponentProperties {
   innerHtmlText: string;
   customCss: CustomCss;
   initialCss: CustomCss;
+  // this css is used in this website only and will be removed in output file
   tempCustomCss?: TempCustomCss;
+  // this css is not configured by the user and comes along with the component
   inheritedCss?: InheritedCss;
+  // this css is used for nested classes or elements e.g. .my-component div {
+  nestedCss?: NestedCss;
   customCssActiveMode: SUB_COMPONENT_CSS_MODES;
   transition: string;
   jsClasses: ComponentJavascriptClasses;

@@ -29,7 +29,9 @@ export interface WorkshopComponentCss {
   verticalAlign?: string;
   position?: string;
   top?: string;
+  left?: string;
   right?: string;
   float?: string;
   overflow?: string;
+  transform?: string;
 }

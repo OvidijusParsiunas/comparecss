@@ -26,6 +26,7 @@ export default class CssBuilder {
 
   private static buildPseudoClass(className: string, pseudoClassName: string,
       cssModeProperties: WorkshopComponentCss, tempCustomCss?: TempCustomCss): string {
+    if (!cssModeProperties) return '';
     for (const cssProperty of tempCustomCss) { delete cssModeProperties[cssProperty]; }
     const hoverKeys = Object.keys(cssModeProperties);
     if (hoverKeys.length) {
@@ -34,8 +35,7 @@ export default class CssBuilder {
     return '';
   }
 
-  private static buildPseudoCss(className: string, customCss: CustomCss,
-      tempCustomCss?: TempCustomCss): string {
+  private static buildPseudoCss(className: string, customCss: CustomCss, tempCustomCss?: TempCustomCss): string {
     let pseudoCssString = '';
     pseudoCssString += this.buildPseudoClass(className, pseudoClasses.HOVER, customCss[SUB_COMPONENT_CSS_MODES.HOVER], tempCustomCss);
     pseudoCssString += this.buildPseudoClass(className, pseudoClasses.ACTIVE, customCss[SUB_COMPONENT_CSS_MODES.CLICK], tempCustomCss);

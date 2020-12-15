@@ -1,13 +1,14 @@
-import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, NestedCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { NewComponent } from '../../../../../../../interfaces/newComponent';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
 import JSONManipulation from '../../../../../../../services/workshop/jsonManipulation';
+import { inheritedAlertBaseCss } from './inheritedCss';
 
 // need to fill in properly so that the 'reset' option would work
-const initialContainerButtonCss: CustomCss = {
+const initialBaseCss: CustomCss = {
   [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
     color: '#004085',
     backgroundColor: '#cce5ff',
@@ -51,6 +52,18 @@ const initialCloseButtonCss: CustomCss = {
   },
 }
 
+const nestedContainerCss: NestedCss = {
+  elements: new Set('div'),
+  css: {
+    position: 'absolute',
+    top: '50%',
+    left: '50%',
+    transform: 'translate(-50%,-50%)',
+    width: '200px',
+    textAlign: 'center',
+  }
+}
+
 export const defaultAlert: NewComponent = {
   getNewComponent(): WorkshopComponent {
     return {
@@ -65,12 +78,14 @@ export const defaultAlert: NewComponent = {
             width: [100, 700],
             height: [30, 200],
           },
-          customCss: JSONManipulation.deepCopy(initialContainerButtonCss),
-          initialCss: JSONManipulation.deepCopy(initialContainerButtonCss),
+          customCss: JSONManipulation.deepCopy(initialBaseCss),
+          initialCss: JSONManipulation.deepCopy(initialBaseCss),
           jsClasses: new Set(),
           initialJsClasses: new Set(),
           customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
           tempCustomCss: new Set(['transition']),
+          inheritedCss: inheritedAlertBaseCss,
+          nestedCss: nestedContainerCss,
         },
         [SUB_COMPONENTS.CLOSE]: {
           frameworkClass: 'bootstrap',

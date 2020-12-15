@@ -1,4 +1,3 @@
-consider using dropdown instead of select in options
 export color values that are set to inherit
 when hovering a subcomponent mode option, should highlight the area
 if close button css will remain static, consider placing them into a separate object that can be used when exporting the file
@@ -9,7 +8,6 @@ calculate height by:
 test export with shadow and other properties, questionable if it works correctly
 setting types should an enum
 potentially have animation for when optional subcomponent options buttons appear and are hidden
-consider freezing the settings view instead of removing it when options don't match or a subcomponent is removed
 firefox color selector
 
 solve the initial hover of the subcomponent toggle button problem where it has not loaded up
