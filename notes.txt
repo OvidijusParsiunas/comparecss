@@ -1,5 +1,4 @@
 check if shared inherited css is required when exporting only one component
-fix InheritedCss type to not require typeName
 export color values that are set to inherit
 when hovering a subcomponent mode option, should highlight the area
 if close button css will remain static, consider placing them into a separate object that can be used when exporting the file
