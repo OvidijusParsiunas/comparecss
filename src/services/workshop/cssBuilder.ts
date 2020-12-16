@@ -69,18 +69,13 @@ export default class CssBuilder {
   private static buildSharedDescendantCss(uniqueDescendantCss: UniqueDescendantCss): string {
     let sharedDescendantCss = '';
     Object.keys(uniqueDescendantCss).forEach((key) => {
-      let descendantSelector = '';
-      let descendantSelectorChilren = '';
       const { descendantElements, descendantClasses, css } = uniqueDescendantCss[key];
+      let descendantSelectorChilren = '';
       if (descendantElements && descendantElements.length > 0) descendantSelectorChilren += ` ${descendantElements.join(' ')}`;
       if (descendantClasses && descendantClasses.length > 0) descendantSelectorChilren += ` .${descendantClasses.join(' .')}`;
-      // uniqueDescendantCss[key].classes.forEach((rootClass) => {
-      //   descendantSelector += `${rootClass}${descendantSelectorChilren}, `;
-      // });
-      descendantSelector += uniqueDescendantCss[key].classes.map((rootClass) => `${rootClass}${descendantSelectorChilren}, `).join('');
+      let descendantSelector = uniqueDescendantCss[key].classes.map((rootClass) => `${rootClass}${descendantSelectorChilren}, `).join('');
       const processedDescendantSelector = descendantSelector.substring(0, descendantSelector.length - 2);
       sharedDescendantCss += `${processedDescendantSelector} {\r\n${this.buildCssString(css)}\r\n}\r\n`;
-      console.log(sharedDescendantCss);
     });
     return sharedDescendantCss;
   }
