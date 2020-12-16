@@ -5,15 +5,6 @@ import { WorkshopComponentCss } from '../../interfaces/workshopComponentCss';
 
 enum pseudoClasses { HOVER = 'hover', ACTIVE = 'active' }
 
-interface UniqueInheritedCssProperties {
-  classes: string[],
-  css: WorkshopComponentCss,
-}
-
-interface UniqueInheritedCss {
-  [property: string]: UniqueInheritedCssProperties;
-}
-
 interface UniqueDescendantCssProperties {
   classes: string[],
   descendantElements: string[],
@@ -23,6 +14,21 @@ interface UniqueDescendantCssProperties {
 
 interface UniqueDescendantCss {
   [property: string]: UniqueDescendantCssProperties;
+}
+
+interface UniqueInheritedCssProperties {
+  classes: string[],
+  css: WorkshopComponentCss,
+}
+
+interface UniqueInheritedCss {
+  [property: string]: UniqueInheritedCssProperties;
+}
+
+interface InitialCssBuild {
+  customCss: string;
+  uniqueInheritedCss: UniqueInheritedCss;
+  uniqueDescendantCss: UniqueDescendantCss;
 }
 
 export default class CssBuilder {
@@ -73,7 +79,7 @@ export default class CssBuilder {
       let descendantSelectorChilren = '';
       if (descendantElements && descendantElements.length > 0) descendantSelectorChilren += ` ${descendantElements.join(' ')}`;
       if (descendantClasses && descendantClasses.length > 0) descendantSelectorChilren += ` .${descendantClasses.join(' .')}`;
-      let descendantSelector = uniqueDescendantCss[key].classes.map((rootClass) => `${rootClass}${descendantSelectorChilren}, `).join('');
+      const descendantSelector = uniqueDescendantCss[key].classes.map((rootClass) => `${rootClass}${descendantSelectorChilren}, `).join('');
       const processedDescendantSelector = descendantSelector.substring(0, descendantSelector.length - 2);
       sharedDescendantCss += `${processedDescendantSelector} {\r\n${this.buildCssString(css)}\r\n}\r\n`;
     });
@@ -100,7 +106,7 @@ export default class CssBuilder {
     return '';
   }
 
-  private static buildCustomCssAndAggregateInheritedCss(components: WorkshopComponent[]): [string, UniqueInheritedCss, UniqueDescendantCss] {
+  private static buildCustomCssAndAggregateInheritedCss(components: WorkshopComponent[]): InitialCssBuild {
     let customCss = '';
     const uniqueInheritedCss: UniqueInheritedCss = {};
     const uniqueDescendantCss: UniqueDescendantCss = {};
@@ -129,12 +135,28 @@ export default class CssBuilder {
       }
       if (subcomponents[subcomponentsActiveMode].descendantCss) { customCss += `${this.buildDescendantCss(className, subcomponents[subcomponentsActiveMode].descendantCss)}\r\n`; }
     });
-    return [customCss, uniqueInheritedCss, uniqueDescendantCss];
+    return { customCss, uniqueInheritedCss, uniqueDescendantCss };
   }
 
+  // private static identifyIfInheritedAndDescendantCssCanBeShared(components: WorkshopComponent[]) {
+  //   const inheritedCss = {};
+  //   components.forEach((component) => {
+  //     const { className, subcomponents, subcomponentsActiveMode, type } = component;
+  //     if (!inheritedCss[])
+  //   })
+  // }
+
   static build(components: WorkshopComponent[]): string {
+    // build shared css classes
+    // if there is only one, will need to append to a string
+      // maybe can build the shared ones first then append them
+
+      // if inherited add type
+      // iterate through types to see if any have more than 1 class
+      // if they do, do not append in the actual class css and do after, if they don't, append to the class
     // alternatively instead of using inherited css we can potentially use css variables
-    const [customCss, uniqueInheritedCss, uniqueDescendantCss] = this.buildCustomCssAndAggregateInheritedCss(components);
+    
+    const { customCss, uniqueInheritedCss, uniqueDescendantCss } = this.buildCustomCssAndAggregateInheritedCss(components);
     const sharedInhertedCss = this.buildSharedInheritedCss(uniqueInheritedCss);
     const sharedDescendantCss = this.buildSharedDescendantCss(uniqueDescendantCss);
     return `${customCss}${sharedInhertedCss}`;

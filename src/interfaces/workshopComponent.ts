@@ -23,6 +23,7 @@ export interface customSettingsProperties {
 
 export interface OptionalSubcomponent {
   currentlyDisplaying: boolean;
+  classPostfix: string;
 }
 
 export interface SubcomponentProperties {
