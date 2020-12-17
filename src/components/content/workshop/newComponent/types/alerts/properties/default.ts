@@ -104,7 +104,7 @@ export const defaultAlert: NewComponent = {
           tempCustomCss: new Set(['transition']),
           optionalSubcomponent: {
             currentlyDisplaying: true,
-            classPostfix: 'close',
+            classPostfix: '-close',
           }
         },
       },

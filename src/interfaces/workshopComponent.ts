@@ -6,6 +6,14 @@ import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { TempCustomCss } from './tempCustomCss';
 import { SUB_COMPONENTS } from '../consts/subcomponentModes.enum';
 
+interface ChildCss {
+  elementTag: string;
+  childNumber: number;
+  css: WorkshopComponentCss;
+  // the array is used to allow multiple childCss values at a particular level
+  nestedChildCss?: ChildCss[];
+}
+
 export interface DescendantCss {
   elements?: Set<string>;
   classes?: Set<string>;
@@ -38,6 +46,8 @@ export interface SubcomponentProperties {
   inheritedCss?: InheritedCss;
   // this css is used for nested classes or element tags e.g. .my-component div {
   descendantCss?: DescendantCss;
+  // this css is used for particular nested children (.default-class-name > div:nth-child(2))
+  childCss?: ChildCss[];
   customCssActiveMode: SUB_COMPONENT_CSS_MODES;
   transition: string;
   jsClasses: ComponentJavascriptClasses;
