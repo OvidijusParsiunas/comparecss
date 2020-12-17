@@ -1,7 +1,7 @@
-import { TempCustomCss } from '../../interfaces/tempCustomCss';
+import { WorkshopComponent, CustomCss, DescendantCss, ChildCss } from '../../interfaces/workshopComponent';
 import { SUB_COMPONENT_CSS_MODES } from '../../consts/subcomponentCssModes.enum';
-import { WorkshopComponent, CustomCss, DescendantCss } from '../../interfaces/workshopComponent';
 import { WorkshopComponentCss } from '../../interfaces/workshopComponentCss';
+import { TempCustomCss } from '../../interfaces/tempCustomCss';
 
 enum pseudoClasses { HOVER = 'hover', ACTIVE = 'active' }
 
@@ -61,7 +61,9 @@ export default class CssBuilder {
 
   private static buildDefaultCss(className: string, cssModeProperties: WorkshopComponentCss,
       tempCustomCss?: TempCustomCss): string {
-    for (const cssProperty of tempCustomCss) { delete cssModeProperties[cssProperty]; }
+    if (tempCustomCss) {
+      for (const cssProperty of tempCustomCss) { delete cssModeProperties[cssProperty]; }
+    }
     const customCssString = this.buildCssString(cssModeProperties);
     return `.${className} {\r\n${customCssString}\r\n}`;
   }
@@ -106,6 +108,18 @@ export default class CssBuilder {
     return '';
   }
 
+  private static buildChildCss(nestedChildCss: ChildCss[], classCombinator: string, subcomponentCustomCss: CustomCss): string {
+    let resultCss = '';
+    nestedChildCss.forEach((childCssContents) => {
+      const { elementTag, childNumber, customCss, inheritedCss, nestedChildCss } = childCssContents;
+      const uniqueClassCombinator =  `${classCombinator} > ${elementTag}:nth-child(${childNumber})`;
+      if (customCss) { resultCss += `${this.buildCustomCss(uniqueClassCombinator, subcomponentCustomCss)}\r\n\r\n` }
+      if (inheritedCss) { resultCss += `.${uniqueClassCombinator} {\r\n${this.buildCssString(inheritedCss)}\r\n}\r\n\r\n`; }
+      if (nestedChildCss) { resultCss += this.buildChildCss(nestedChildCss, uniqueClassCombinator, subcomponentCustomCss); }
+    });
+    return resultCss;
+  }
+
   private static buildCustomCssAndAggregateInheritedCss(components: WorkshopComponent[]): InitialCssBuild {
     let customCss = '';
     const uniqueInheritedCss: UniqueInheritedCss = {};
@@ -114,30 +128,35 @@ export default class CssBuilder {
       const { className, subcomponents, subcomponentsActiveMode, type } = component;
       Object.keys(subcomponents).forEach((key) => {
         const subcomponent = subcomponents[key];
-        if (subcomponent.optionalSubcomponent && !subcomponent.optionalSubcomponent.currentlyDisplaying) return;
-        const subcomponentClassName = subcomponent.optionalSubcomponent ? className + subcomponent.optionalSubcomponent.classPostfix : className;
-        customCss += `${this.buildCustomCss(subcomponentClassName, subcomponent.customCss, subcomponent.tempCustomCss)}\r\n\r\n`;
-        // this will stop nestedcss logic from working
-        if (!subcomponent.inheritedCss) return;
+        if (subcomponent.optionalSubcomponent && !subcomponent.optionalSubcomponent.currentlyDisplaying) {
+          return;
+        }
+        if (subcomponent.childCss) {
+          customCss += this.buildChildCss(subcomponent.childCss, className, subcomponent.customCss);
+          return;
+        }
+        customCss += `${this.buildCustomCss(className, subcomponent.customCss, subcomponent.tempCustomCss)}\r\n\r\n`;
         // export to a different function
-        if (!uniqueInheritedCss.hasOwnProperty(subcomponent.inheritedCss.typeName)) {
-          uniqueInheritedCss[subcomponent.inheritedCss.typeName] = { classes: [`.${subcomponentClassName}`], css: subcomponent.inheritedCss.css };
-        } else {
-          uniqueInheritedCss[subcomponent.inheritedCss.typeName].classes.push(`.${subcomponentClassName}`);
+        if (subcomponent.inheritedCss) {
+          if (!uniqueInheritedCss.hasOwnProperty(subcomponent.inheritedCss.typeName)) {
+            uniqueInheritedCss[subcomponent.inheritedCss.typeName] = { classes: [`.${className}`], css: subcomponent.inheritedCss.css };
+          } else {
+            uniqueInheritedCss[subcomponent.inheritedCss.typeName].classes.push(`.${className}`);
+          }
         }
         // reduce redundant css for same components
-        if (subcomponent.descendantCss && !uniqueDescendantCss.hasOwnProperty(type)) {
-          const { elements, classes, css } = subcomponent.descendantCss;
-          uniqueDescendantCss[type] = {
-            classes: [`.${subcomponentClassName}`],
-            descendantElements: [...elements],
-            descendantClasses: [...classes],
-            css,
-          }
-        } else {
-          uniqueDescendantCss[type].classes.push(`.${subcomponentClassName}`);
-        }
-        if (subcomponents[subcomponentsActiveMode].descendantCss) { customCss += `${this.buildDescendantCss(subcomponentClassName, subcomponents[subcomponentsActiveMode].descendantCss)}\r\n`; }
+        // if (subcomponent.descendantCss && !uniqueDescendantCss.hasOwnProperty(type)) {
+        //   const { elements, classes, css } = subcomponent.descendantCss;
+        //   uniqueDescendantCss[type] = {
+        //     classes: [`.${className}`],
+        //     descendantElements: [...elements],
+        //     descendantClasses: [...classes],
+        //     css,
+        //   }
+        // } else {
+        //   uniqueDescendantCss[type].classes.push(`.${className}`);
+        // }
+        // if (subcomponents[subcomponentsActiveMode].descendantCss) { customCss += `${this.buildDescendantCss(className, subcomponents[subcomponentsActiveMode].descendantCss)}\r\n`; }
       });
     });
     return { customCss, uniqueInheritedCss, uniqueDescendantCss };

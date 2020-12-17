@@ -1,4 +1,4 @@
-import { CustomCss, DescendantCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { ChildCss, CustomCss, DescendantCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { NewComponent } from '../../../../../../../interfaces/newComponent';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
@@ -64,6 +64,50 @@ const nestedContainerCss: DescendantCss = {
   }
 }
 
+const childCss: ChildCss[] = [
+  {
+    elementTag: 'div',
+    childNumber: 1,
+    inheritedCss: {
+      position: 'absolute',
+      top: '50%',
+      left: '50%',
+      transform: 'translate(-50%,-50%)',
+      width: '200px',
+      textAlign: 'center',
+    },
+  },
+  {
+    elementTag: 'div',
+    childNumber: 2,
+    inheritedCss: {
+      position: 'absolute',
+      top: '0px',
+      right: '0px',
+      cursor: 'default !important',
+    },
+    nestedChildCss: [{
+      elementTag: 'button',
+      childNumber: 1,
+      customCss: true,
+      inheritedCss: {
+        position: 'relative',
+        overflow: 'hidden',
+      },
+      nestedChildCss: [{
+        elementTag: 'div',
+        childNumber: 1,
+        inheritedCss: {
+          display: 'table',
+          pointerEvents: 'none',
+          marginLeft: 'auto',
+          marginRight: 'auto',
+        }
+      }]
+    }]
+  } 
+]
+
 export const defaultAlert: NewComponent = {
   getNewComponent(): WorkshopComponent {
     return {
@@ -102,10 +146,8 @@ export const defaultAlert: NewComponent = {
           initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
           customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
           tempCustomCss: new Set(['transition']),
-          optionalSubcomponent: {
-            currentlyDisplaying: true,
-            classPostfix: '-close',
-          }
+          childCss,
+          optionalSubcomponent: { currentlyDisplaying: true },
         },
       },
       subcomponentsActiveMode: SUB_COMPONENTS.BASE,

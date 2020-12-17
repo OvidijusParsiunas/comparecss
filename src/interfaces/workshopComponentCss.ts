@@ -34,4 +34,5 @@ export interface WorkshopComponentCss {
   float?: string;
   overflow?: string;
   transform?: string;
+  pointerEvents?: string;
 }

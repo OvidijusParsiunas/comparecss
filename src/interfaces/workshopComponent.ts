@@ -6,10 +6,11 @@ import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { TempCustomCss } from './tempCustomCss';
 import { SUB_COMPONENTS } from '../consts/subcomponentModes.enum';
 
-interface ChildCss {
+export interface ChildCss {
   elementTag: string;
   childNumber: number;
-  css: WorkshopComponentCss;
+  customCss?: boolean;
+  inheritedCss: WorkshopComponentCss;
   // the array is used to allow multiple childCss values at a particular level
   nestedChildCss?: ChildCss[];
 }
@@ -31,7 +32,6 @@ export interface customSettingsProperties {
 
 export interface OptionalSubcomponent {
   currentlyDisplaying: boolean;
-  classPostfix: string;
 }
 
 export interface SubcomponentProperties {

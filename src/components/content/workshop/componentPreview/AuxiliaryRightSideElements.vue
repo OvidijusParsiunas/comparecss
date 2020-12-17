@@ -19,7 +19,7 @@
               subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
               subcomponent.customCss[subcomponent.customCssActiveMode],
             ]"
-        ><div style="display: table; pointer-events: none; margin-left: auto; margin-right: auto;">×</div>
+        ><div id="close-button-icon">×</div>
       </button>
       <button
         :id="SUB_COMPONENT_PREVIEW_ELEMENT_IDS.CLOSE"
@@ -82,5 +82,11 @@ export default {
   }
   #close-button-parent:focus {
     outline: none;
+  }
+  #close-button-icon {
+    display: table;
+    pointer-events: none;
+    margin-left: auto;
+    margin-right: auto;
   }
 </style>
