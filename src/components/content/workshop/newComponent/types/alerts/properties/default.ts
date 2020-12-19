@@ -1,4 +1,4 @@
-import { ChildCss, CustomCss, DescendantCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { ChildCss, CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { NewComponent } from '../../../../../../../interfaces/newComponent';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
@@ -50,18 +50,6 @@ const initialCloseButtonCss: CustomCss = {
     marginTop: '18px',
     marginRight: '5px',
   },
-}
-
-const nestedContainerCss: DescendantCss = {
-  elements: new Set(['div']),
-  css: {
-    position: 'absolute',
-    top: '50%',
-    left: '50%',
-    transform: 'translate(-50%,-50%)',
-    width: '200px',
-    textAlign: 'center',
-  }
 }
 
 const childCss: ChildCss[] = [
@@ -129,7 +117,6 @@ export const defaultAlert: NewComponent = {
           customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
           tempCustomCss: new Set(['transition']),
           inheritedCss: inheritedAlertBaseCss,
-          descendantCss: nestedContainerCss,
         },
         [SUB_COMPONENTS.CLOSE]: {
           frameworkClass: 'bootstrap',

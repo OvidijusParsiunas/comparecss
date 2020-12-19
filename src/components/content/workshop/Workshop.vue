@@ -149,18 +149,6 @@ export default {
             customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
             tempCustomCss: new Set(['transition']),
             inheritedCss: inheritedAlertBaseCss,
-            // descendantCss: {
-            //   elements: new Set(['div']),
-            //   classes: new Set(),
-            //   css: {
-            //     position: 'absolute',
-            //     top: '50%',
-            //     left: '50%',
-            //     transform: 'translate(-50%,-50%)',
-            //     width: '200px',
-            //     textAlign: 'center',
-            //   }
-            // }
           },
           [SUB_COMPONENTS.CLOSE]: {
             frameworkClass: 'bootstrap',
