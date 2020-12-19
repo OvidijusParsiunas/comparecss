@@ -93,6 +93,7 @@ const childCss: ChildCss[] = [
       inheritedCss: {
         position: 'relative',
         overflow: 'hidden',
+        transition: 'all 0.25s ease-out',
       },
       nestedChildCss: [{
         elementTag: 'div',
@@ -117,7 +118,6 @@ export const defaultAlert: NewComponent = {
           frameworkClass: 'bootstrap',
           componentTag: 'div',
           innerHtmlText: 'Alert',
-          transition: 'all 0.25s ease-out',
           customSettingsProperties: {
             width: [100, 700],
             height: [30, 200],
@@ -135,7 +135,6 @@ export const defaultAlert: NewComponent = {
           frameworkClass: 'bootstrap',
           componentTag: 'div',
           innerHtmlText: 'Alert',
-          transition: 'all 0.25s ease-out',
           customSettingsProperties: {
             width: [14, 80],
             height: [10, 80],
@@ -145,6 +144,7 @@ export const defaultAlert: NewComponent = {
           jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
           initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
           customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+          subcomponentPreviewTransition: 'all 0.25s ease-out',
           tempCustomCss: new Set(['transition']),
           childCss,
           optionalSubcomponent: { currentlyDisplaying: true },

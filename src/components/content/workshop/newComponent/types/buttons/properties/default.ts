@@ -15,7 +15,6 @@ export const defaultButton: NewComponent = {
           frameworkClass: 'foundation',
           componentTag: 'button',
           innerHtmlText: 'button',
-          transition: 'all 0.25s ease-out',
           customSettingsProperties: {
             width: [0, 250],
             height: [0, 250],
@@ -79,6 +78,7 @@ export const defaultButton: NewComponent = {
           jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
           initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
           customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+          subcomponentPreviewTransition: 'all 0.25s ease-out',
           tempCustomCss: new Set(['transition']),
           inheritedCss: inheritedButtonCss,
         },

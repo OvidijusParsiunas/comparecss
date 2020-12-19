@@ -49,7 +49,7 @@ export interface SubcomponentProperties {
   // this css is used for particular nested children (.default-class-name > div:nth-child(2))
   childCss?: ChildCss[];
   customCssActiveMode: SUB_COMPONENT_CSS_MODES;
-  transition: string;
+  subcomponentPreviewTransition?: string;
   jsClasses: ComponentJavascriptClasses;
   initialJsClasses: ComponentJavascriptClasses;
   customSettingsProperties?: customSettingsProperties;

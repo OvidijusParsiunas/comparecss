@@ -43,9 +43,10 @@ export default function useComponentPreviewEventHandlers(componentRef: Ref<Subco
   const componentMouseEnter = (): void => {
     if (shouldThisComponentNotBeAffected()) return;
     const componentProperties = parseComponentProperties();
-    const { customCss, transition, customCssActiveMode } = componentProperties;
+    const { customCss, subcomponentPreviewTransition, customCssActiveMode } = componentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
       setDefaultUnsetButtonStatesForColorInputs(customCss);
+      const transition = subcomponentPreviewTransition || 'unset';
       overwrittenDefaultPropertiesByHover = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], transition };
       customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], ...customCss[SUB_COMPONENT_CSS_MODES.HOVER], transition, ...isUnsetButtonDisplayedForColorInputs };
     }
@@ -64,8 +65,9 @@ export default function useComponentPreviewEventHandlers(componentRef: Ref<Subco
   const componentMouseDown = (): void => {
     if (shouldThisComponentNotBeAffected()) return;
     const componentProperties = parseComponentProperties();
-    const { customCss, transition, customCssActiveMode } = componentProperties;
+    const { customCss, subcomponentPreviewTransition, customCssActiveMode } = componentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
+      const transition = subcomponentPreviewTransition || 'unset';
       overwrittenDefaultPropertiesByClick = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], transition };
       customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], ...customCss[SUB_COMPONENT_CSS_MODES.CLICK], transition, ...isUnsetButtonDisplayedForColorInputs };
     }
