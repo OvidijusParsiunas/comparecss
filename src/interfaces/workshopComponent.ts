@@ -9,7 +9,7 @@ import { SUB_COMPONENTS } from '../consts/subcomponentModes.enum';
 export interface ChildCss {
   elementTag: string;
   childNumber: number;
-  customCss?: boolean;
+  hasCustomCss?: boolean;
   inheritedCss: WorkshopComponentCss;
   // the array is used to allow multiple childCss values at a particular level
   nestedChildCss?: ChildCss[];

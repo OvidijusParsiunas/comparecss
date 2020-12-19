@@ -1,6 +1,6 @@
 import { WorkshopComponent } from "../../../interfaces/workshopComponent";
-import cssBuilder from "./contentBuilders/cssBuilder";
-import jsBuilder from "./contentBuilders/jsBuilder";
+import cssBuilder from "./contentBuilders/css/cssBuilder";
+import jsBuilder from "./contentBuilders/js/jsBuilder";
 import zip from "./zip/zip";
 
 export default class ExportFiles {

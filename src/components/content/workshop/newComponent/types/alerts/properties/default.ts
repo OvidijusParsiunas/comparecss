@@ -89,7 +89,7 @@ const childCss: ChildCss[] = [
     nestedChildCss: [{
       elementTag: 'button',
       childNumber: 1,
-      customCss: true,
+      hasCustomCss: true,
       inheritedCss: {
         position: 'relative',
         overflow: 'hidden',

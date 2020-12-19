@@ -1,9 +1,9 @@
-import uglifyjsOptions from '../../../../consts/uglifyjsOptions';
-import { JSBuilderResult } from '../../../../interfaces/jsBuilderResult';
-import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
-import { JavascriptCode } from '../../../../interfaces/javascriptCode';
-import { javascriptClassesToCode } from '../../../../components/content/workshop/toolbar/settings/javascript/javascriptClassToCode';
-import { JAVASCRIPT_CLASSES } from '../../../../consts/javascriptClasses.enum';
+import { javascriptClassesToCode } from '../../../../../components/content/workshop/toolbar/settings/javascript/javascriptClassToCode';
+import { JAVASCRIPT_CLASSES } from '../../../../../consts/javascriptClasses.enum';
+import { WorkshopComponent } from '../../../../../interfaces/workshopComponent';
+import { JSBuilderResult } from '../../../../../interfaces/jsBuilderResult';
+import { JavascriptCode } from '../../../../../interfaces/javascriptCode';
+import uglifyjsOptions from '../../../../../consts/uglifyjsOptions';
 
 type JavascriptClassesToCode = {
   [key in JAVASCRIPT_CLASSES]?: JavascriptCode;

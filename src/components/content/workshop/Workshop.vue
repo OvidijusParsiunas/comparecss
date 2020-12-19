@@ -28,8 +28,8 @@
               <div style="position: relative">
                 <div>
                   <!-- <div style="text-align: center; margin-bottom: 5px">Size: 0kb</div> -->
-                  <button type="button" class="btn btn-outline-secondary edit-component-button" @click="download">&lt;&gt;</button>
-                  <button type="button" class="btn btn-success" @click="download">&darr;</button>
+                  <button type="button" class="btn btn-outline-secondary edit-component-button" @click="exportFiles">&lt;&gt;</button>
+                  <button type="button" class="btn btn-success" @click="exportFiles">&darr;</button>
                 </div>
               </div>
             </div>
@@ -37,7 +37,7 @@
               <div style="width: 30%; position: relative">
                 <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%);">
                   <div style="text-align: center; margin-bottom: 5px">Size: 0kb</div>
-                  <button type="button" class="btn btn-success" @click="download">Download</button>
+                  <button type="button" class="btn btn-success" @click="exportFiles">exportFiles</button>
                 </div>
               </div>
             </div> -->
@@ -70,7 +70,6 @@ import removeSubcomponentModal from './toolbar/options/modal/RemoveSubcomponentM
 import componentList from './componentList/ComponentList.vue';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
 import { CustomCss, WorkshopComponent } from '../../../interfaces/workshopComponent';
-import { inheritedButtonCss } from './newComponent/types/buttons/properties/inheritedCss';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
@@ -203,7 +202,7 @@ export default {
                 nestedChildCss: [{
                   elementTag: 'button',
                   childNumber: 1,
-                  customCss: true,
+                  hasCustomCss: true,
                   inheritedCss: {
                     position: 'relative',
                     overflow: 'hidden',
@@ -292,7 +291,7 @@ export default {
                 nestedChildCss: [{
                   elementTag: 'button',
                   childNumber: 1,
-                  customCss: true,
+                  hasCustomCss: true,
                   inheritedCss: {
                     position: 'relative',
                     overflow: 'hidden',
@@ -378,8 +377,8 @@ export default {
       }
       this.$refs.toolbar.updateCssMode([subcomponents[subcomponentsActiveMode].customCssActiveMode] as UpdateOptionsMode);
     },
-    download(): void {
-      exportFiles.export(this.subcomponents);
+    exportFiles(): void {
+      exportFiles.export(this.components);
     },
     triggerWorkshopEventCallbacks(): void {
       if (this.workshopEventCallbacks.length > 0) {
