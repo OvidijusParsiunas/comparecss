@@ -1,9 +1,9 @@
-import { WorkshopComponent, CustomCss, DescendantCss, ChildCss, SubcomponentProperties } from '../../interfaces/workshopComponent';
-import { SUB_COMPONENT_CSS_MODES } from '../../consts/subcomponentCssModes.enum';
-import { WorkshopComponentCss } from '../../interfaces/workshopComponentCss';
-import { TempCustomCss } from '../../interfaces/tempCustomCss';
-import { NEW_COMPONENT_TYPES } from '../../consts/newComponentTypes.enum';
-import { SUB_COMPONENTS } from '../../consts/subcomponentModes.enum';
+import { WorkshopComponent, CustomCss, DescendantCss, ChildCss, SubcomponentProperties } from '../../../../interfaces/workshopComponent';
+import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
+import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCss';
+import { TempCustomCss } from '../../../../interfaces/tempCustomCss';
+import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
+import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 
 enum pseudoClasses { HOVER = 'hover', ACTIVE = 'active' }
 

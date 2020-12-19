@@ -63,15 +63,13 @@ interface Data {
   workshopEventCallbacks: (() => boolean)[];
 }
 import 'vuesax/dist/vuesax.css' //Vuesax styles
-import downloadFiles from '../../../services/workshop/downloadFiles';
-import cssBuilder from '../../../services/workshop/cssBuilder';
-import jsBuilder from '../../../services/workshop/jsBuilder';
 import toolbar from './toolbar/Toolbar.vue';
 import componentContents from './componentPreview/ComponentPreview.vue';
 import newComponentModal from './newComponent/NewComponentModal.vue';
 import removeSubcomponentModal from './toolbar/options/modal/RemoveSubcomponentModal.vue';
 import componentList from './componentList/ComponentList.vue';
-import { WorkshopComponent } from '../../../interfaces/workshopComponent';
+import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
+import { CustomCss, WorkshopComponent } from '../../../interfaces/workshopComponent';
 import { inheritedButtonCss } from './newComponent/types/buttons/properties/inheritedCss';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
@@ -83,173 +81,242 @@ import { SUB_COMPONENT_CSS_MODES } from '../../../consts/subcomponentCssModes.en
 import { componentTypeToOptions } from './toolbar/options/componentOptions/componentTypeToOptions';
 import { SUB_COMPONENTS } from '../../../consts/subcomponentModes.enum';
 import JSONManipulation from '../../../services/workshop/jsonManipulation';
+import { JAVASCRIPT_CLASSES } from '@/consts/javascriptClasses.enum';
+import { inheritedAlertBaseCss } from './newComponent/types/alerts/properties/inheritedCss';
+
+const initialContainerButtonCss: CustomCss = {
+  [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+    color: '#004085',
+    backgroundColor: '#cce5ff',
+    borderColor: '#b8daff',
+    borderWidth: '1px',
+    borderStyle: 'solid',
+    borderRadius: '4px',
+    width: '440px',
+    height: '50px',
+    boxSizing: 'unset',
+    fontSize: '16px',
+    fontFamily: '"Poppins", sans-serif',
+    paddingLeft: '0px',
+    paddingRight: '0px',
+    paddingTop: '0px',
+    paddingBottom: '0px',
+    transition: 'unset',
+  },
+}
+
+const initialCloseButtonCss: CustomCss = {
+  [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+    height: '12px',
+    width: '14px',
+    borderRadius: '15px',
+    lineHeight: '1px',
+    cursor: 'pointer',
+    boxSizing: 'unset',
+    fontSize: '16px',
+    color: '#ff0000',
+    boxShadow: '0px 0px 0px 0px #000000',
+    borderWidth: '0px',
+    backgroundColor: 'inherit',
+    outline: 'none',
+    paddingTop: '1px',
+    paddingLeft: '0px',
+    paddingRight: '0px',
+    paddingBottom: '0px',
+    marginTop: '18px',
+    marginRight: '5px',
+  },
+}
 
 export default {
   data: (): Data => ({
     componentPreviewAssistance: { margin: false },
     components: [
       {
-        type: NEW_COMPONENT_TYPES.BUTTON,
+        type: NEW_COMPONENT_TYPES.ALERT,
         subcomponents: {
           [SUB_COMPONENTS.BASE]: {
-            frameworkClass: 'foundation',
-            innerHtmlText: 'button',
-            componentTag: 'button',
-            transition: 'all 0.25s ease-out',
+            frameworkClass: 'bootstrap',
+            componentTag: 'div',
+            innerHtmlText: 'Alert',
             customSettingsProperties: {
-              width: [0, 250],
-              height: [0, 250],
+              width: [100, 700],
+              height: [30, 200],
             },
-            customCss: {
-              [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-                borderRadius: '0px',
-                borderWidth: '0px',
-                borderColor: '#1779ba',
-                backgroundColor: '#1779ba',
-                boxShadow: '0px 0px 0px 0px #000000',
-                outline: 'none',
-                lineHeight: '0',
-                paddingTop: '0px',
-                paddingBottom: '0px',
-                marginLeft: '0px',
-                marginTop: '0px',
-                marginRight: '0px',
-                marginBottom: '0px',
-                width: '40px',
-                height: '38px',
-                boxSizing: 'content-box',
-                transition: 'unset',
-                fontSize: '14px',
-                color: '#ffffff',
-                fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
-              },
-              [SUB_COMPONENT_CSS_MODES.HOVER]: {
-                backgroundColor: '#ff0000',
-              },
-              [SUB_COMPONENT_CSS_MODES.CLICK]: {
-                backgroundColor: '#409441',
-              },
-            },
-            initialCss: {
-              [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-                borderRadius: '0px',
-                borderWidth: '0px',
-                borderColor: '#1779ba',
-                backgroundColor: '#1779ba',
-                boxShadow: '0px 0px 0px 0px #000000',
-                outline: 'none',
-                lineHeight: '0',
-                paddingTop: '0px',
-                paddingBottom: '0px',
-                marginLeft: '0px',
-                marginTop: '0px',
-                marginRight: '0px',
-                marginBottom: '0px',
-                width: '40px',
-                height: '38px',
-                boxSizing: 'content-box',
-                transition: 'none',
-                color: '#ffffff',
-              },
-              [SUB_COMPONENT_CSS_MODES.HOVER]: {
-                backgroundColor: '#ff0000',
-              },
-              [SUB_COMPONENT_CSS_MODES.CLICK]: {
-                backgroundColor: '#409441',
-              },
-            },
-            tempCustomCss: new Set(['transition']),
+            customCss: JSONManipulation.deepCopy(initialContainerButtonCss),
+            initialCss: JSONManipulation.deepCopy(initialContainerButtonCss),
             jsClasses: new Set(),
             initialJsClasses: new Set(),
             customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-            inheritedCss: inheritedButtonCss,
-          }
+            tempCustomCss: new Set(['transition']),
+            inheritedCss: inheritedAlertBaseCss,
+            // descendantCss: {
+            //   elements: new Set(['div']),
+            //   classes: new Set(),
+            //   css: {
+            //     position: 'absolute',
+            //     top: '50%',
+            //     left: '50%',
+            //     transform: 'translate(-50%,-50%)',
+            //     width: '200px',
+            //     textAlign: 'center',
+            //   }
+            // }
+          },
+          [SUB_COMPONENTS.CLOSE]: {
+            frameworkClass: 'bootstrap',
+            componentTag: 'div',
+            innerHtmlText: 'Alert',
+            customSettingsProperties: {
+              width: [14, 80],
+              height: [10, 80],
+            },
+            customCss: JSONManipulation.deepCopy(initialCloseButtonCss),
+            initialCss: JSONManipulation.deepCopy(initialCloseButtonCss),
+            jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
+            initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
+            customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+            subcomponentPreviewTransition: 'all 0.25s ease-out',
+            tempCustomCss: new Set(['transition']),
+            childCss: [
+              {
+                elementTag: 'div',
+                childNumber: 1,
+                inheritedCss: {
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%,-50%)',
+                  width: '200px',
+                  textAlign: 'center',
+                },
+              },
+              {
+                elementTag: 'div',
+                childNumber: 2,
+                inheritedCss: {
+                  position: 'absolute',
+                  top: '0px',
+                  right: '0px',
+                  cursor: 'default !important',
+                },
+                nestedChildCss: [{
+                  elementTag: 'button',
+                  childNumber: 1,
+                  customCss: true,
+                  inheritedCss: {
+                    position: 'relative',
+                    overflow: 'hidden',
+                    transition: 'all 0.25s ease-out',
+                  },
+                  nestedChildCss: [{
+                    elementTag: 'div',
+                    childNumber: 1,
+                    inheritedCss: {
+                      display: 'table',
+                      pointerEvents: 'none',
+                      marginLeft: 'auto',
+                      marginRight: 'auto',
+                    }
+                  }]
+                }]
+              }
+            ],
+            optionalSubcomponent: { currentlyDisplaying: true },
+          },
         },
         subcomponentsActiveMode: SUB_COMPONENTS.BASE,
-        className: 'button',
-      },
+        className: 'default-class-name',
+      }
+  //     elementTag: string;
+  // childNumber: number;
+  // css: WorkshopComponentCss;
+  // // the array is used to allow multiple childCss values at a particular level
+  // nestedChildCss?: ChildCss[];
     ],
     currentlySelectedComponent: {
-      type: NEW_COMPONENT_TYPES.BUTTON,
-      subcomponents: {
-        [SUB_COMPONENTS.BASE]: {
-          frameworkClass: 'foundation',
-          componentTag: 'button',
-          innerHtmlText: 'button',
-          transition: 'all 0.25s ease-out',
-          customSettingsProperties: {
-            width: [0, 250],
-            height: [0, 250],
+        type: NEW_COMPONENT_TYPES.ALERT,
+        subcomponents: {
+          [SUB_COMPONENTS.BASE]: {
+            frameworkClass: 'bootstrap',
+            componentTag: 'div',
+            innerHtmlText: 'Alert',
+            customSettingsProperties: {
+              width: [100, 700],
+              height: [30, 200],
+            },
+            customCss: JSONManipulation.deepCopy(initialContainerButtonCss),
+            initialCss: JSONManipulation.deepCopy(initialContainerButtonCss),
+            jsClasses: new Set(),
+            initialJsClasses: new Set(),
+            customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+            tempCustomCss: new Set(['transition']),
           },
-          customCss: {
-            [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-              borderRadius: '0px',
-              borderWidth: '0px',
-              borderColor: '#1779ba',
-              backgroundColor: '#1779ba',
-              boxShadow: '0px 0px 0px 0px #000000',
-              outline: 'none',
-              lineHeight: '0',
-              paddingTop: '0px',
-              paddingBottom: '0px',
-              marginLeft: '0px',
-              marginTop: '0px',
-              marginRight: '0px',
-              marginBottom: '0px',
-              width: '40px',
-              height: '38px',
-              boxSizing: 'content-box',
-              transition: 'unset',
-              fontSize: '14px',
-              color: '#ffffff',
-              fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
+          [SUB_COMPONENTS.CLOSE]: {
+            frameworkClass: 'bootstrap',
+            componentTag: 'div',
+            innerHtmlText: 'Alert',
+            customSettingsProperties: {
+              width: [14, 80],
+              height: [10, 80],
             },
-            [SUB_COMPONENT_CSS_MODES.HOVER]: {
-              backgroundColor: '#ff0000',
-            },
-            [SUB_COMPONENT_CSS_MODES.CLICK]: {
-              backgroundColor: '#409441',
-            },
+            customCss: JSONManipulation.deepCopy(initialCloseButtonCss),
+            initialCss: JSONManipulation.deepCopy(initialCloseButtonCss),
+            jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
+            initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
+            customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+            subcomponentPreviewTransition: 'all 0.25s ease-out',
+            tempCustomCss: new Set(['transition']),
+            childCss: [
+              {
+                elementTag: 'div',
+                childNumber: 1,
+                inheritedCss: {
+                  position: 'absolute',
+                  top: '50%',
+                  left: '50%',
+                  transform: 'translate(-50%,-50%)',
+                  width: '200px',
+                  textAlign: 'center',
+                },
+              },
+              {
+                elementTag: 'div',
+                childNumber: 2,
+                inheritedCss: {
+                  position: 'absolute',
+                  top: '0px',
+                  right: '0px',
+                  cursor: 'default !important',
+                },
+                nestedChildCss: [{
+                  elementTag: 'button',
+                  childNumber: 1,
+                  customCss: true,
+                  inheritedCss: {
+                    position: 'relative',
+                    overflow: 'hidden',
+                    transition: 'all 0.25s ease-out',
+                  },
+                  nestedChildCss: [{
+                    elementTag: 'div',
+                    childNumber: 1,
+                    inheritedCss: {
+                      display: 'table',
+                      pointerEvents: 'none',
+                      marginLeft: 'auto',
+                      marginRight: 'auto',
+                    }
+                  }]
+                }]
+              } 
+            ],
+            optionalSubcomponent: { currentlyDisplaying: true },
           },
-          initialCss: {
-            [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-              borderRadius: '0px',
-              borderWidth: '0px',
-              borderColor: '#1779ba',
-              backgroundColor: '#1779ba',
-              boxShadow: '0px 0px 0px 0px #000000',
-              outline: 'none',
-              lineHeight: '0',
-              paddingTop: '0px',
-              paddingBottom: '0px',
-              marginLeft: '0px',
-              marginTop: '0px',
-              marginRight: '0px',
-              marginBottom: '0px',
-              width: '40px',
-              height: '38px',
-              boxSizing: 'content-box',
-              transition: 'none',
-              fontSize: '14px',
-              color: '#ffffff',
-            },
-            [SUB_COMPONENT_CSS_MODES.HOVER]: {
-              backgroundColor: '#ff0000',
-            },
-            [SUB_COMPONENT_CSS_MODES.CLICK]: {
-              backgroundColor: '#409441',
-            },
-          },
-          tempCustomCss: new Set(['transition']),
-          jsClasses: new Set(),
-          initialJsClasses: new Set(),
-          customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-          inheritedCss: inheritedButtonCss,
-        }
+        },
+        subcomponentsActiveMode: SUB_COMPONENTS.BASE,
+        className: 'default-class-name',
       },
-      subcomponentsActiveMode: SUB_COMPONENTS.BASE,
-      className: 'button',
-    },
     // components: new Set(),
     // currentlySelectedComponent: undefined,
     workshopEventCallbacks: [],
@@ -312,9 +379,7 @@ export default {
       this.$refs.toolbar.updateCssMode([subcomponents[subcomponentsActiveMode].customCssActiveMode] as UpdateOptionsMode);
     },
     download(): void {
-      const resultCss = `${cssBuilder.build(this.components).trim()}\r\n`;
-      const resultJs = jsBuilder.build(this.components);
-      downloadFiles.downloadZip(resultCss, resultJs);
+      exportFiles.export(this.subcomponents);
     },
     triggerWorkshopEventCallbacks(): void {
       if (this.workshopEventCallbacks.length > 0) {

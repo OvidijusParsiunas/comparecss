@@ -1,12 +1,12 @@
-import JSZip from 'jszip';
+import { JSBuilderResult } from '../../../../interfaces/jsBuilderResult';
 import CleanCSS from 'clean-css';
-import { JSBuilder } from '../../interfaces/jsBuilder';
+import JSZip from 'jszip';
 
 export default class Downloadfiles {
 
   private static fileName = 'cssymphony';
 
-  private static download(folder: JSZip): void {
+  private static export(folder: JSZip): void {
     const pom = document.createElement('a');
     folder.generateAsync({ type: 'blob' }).then((blob) => {
       pom.setAttribute('href', window.URL.createObjectURL(blob));
@@ -36,11 +36,11 @@ export default class Downloadfiles {
     return zipFolder;
   }
 
-  static downloadZip(customCss: string, customJS: JSBuilder): void {
+  public static exportZip(customCss: string, customJS: JSBuilderResult): void {
     const zipFolder = this.createZipFolder();
     const { js, jsmin, cssForJs } = customJS;
     this.addJSFiles(js, jsmin, zipFolder);
     this.addCSSFiles(customCss, cssForJs, zipFolder);
-    this.download(zipFolder);
+    this.export(zipFolder);
   }
 }

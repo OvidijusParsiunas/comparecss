@@ -1,4 +1,4 @@
-export interface JSBuilder {
+export interface JSBuilderResult {
   js?: string;
   jsmin?: string;
   cssForJs?: string;

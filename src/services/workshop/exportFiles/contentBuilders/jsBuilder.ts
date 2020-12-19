@@ -1,9 +1,9 @@
-import uglifyjsOptions from '../../consts/uglifyjsOptions';
-import { JSBuilder as JSBuilderInterface } from '../../interfaces/jsBuilder';
-import { WorkshopComponent } from '../../interfaces/workshopComponent';
-import { JavascriptCode } from '../../interfaces/javascriptCode';
-import { javascriptClassesToCode } from '../../components/content/workshop/toolbar/settings/javascript/javascriptClassToCode';
-import { JAVASCRIPT_CLASSES } from '../../consts/javascriptClasses.enum';
+import uglifyjsOptions from '../../../../consts/uglifyjsOptions';
+import { JSBuilderResult } from '../../../../interfaces/jsBuilderResult';
+import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
+import { JavascriptCode } from '../../../../interfaces/javascriptCode';
+import { javascriptClassesToCode } from '../../../../components/content/workshop/toolbar/settings/javascript/javascriptClassToCode';
+import { JAVASCRIPT_CLASSES } from '../../../../consts/javascriptClasses.enum';
 
 type JavascriptClassesToCode = {
   [key in JAVASCRIPT_CLASSES]?: JavascriptCode;
@@ -11,7 +11,7 @@ type JavascriptClassesToCode = {
 
 export default class JSBuilder {
 
-  static build(components: WorkshopComponent[]): JSBuilderInterface {
+  static build(components: WorkshopComponent[]): JSBuilderResult {
     let allCssForJS = '';
     let allJS = '';
     const utilisedJavascriptCode: JavascriptClassesToCode = {};
