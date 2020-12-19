@@ -11,6 +11,8 @@ setting types should an enum
 potentially have animation for when optional subcomponent options buttons appear and are hidden
 firefox color selector
 
+not exporting js unless hover is used
+the alert button ripple circle does not look like it is in the correct position
 create a new component that is alert, go to the close subcomponent, move to hover, border, open up settings and begin editing throws an error
 solve the initial hover of the subcomponent toggle button problem where it has not loaded up
 
