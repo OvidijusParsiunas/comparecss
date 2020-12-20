@@ -19,9 +19,9 @@ export default class Downloadfiles {
   }
 
   private static addCSSFiles(customCss: string, cssForJS: string, zipFolder: JSZip): void {
-    const allCss = customCss + cssForJS;
-    zipFolder.file(`${this.fileName}.css`, allCss);
-    const allCssMinified = new CleanCSS({}).minify(allCss);
+    if (cssForJS) customCss += cssForJS;
+    zipFolder.file(`${this.fileName}.css`, customCss);
+    const allCssMinified = new CleanCSS({}).minify(customCss);
     if (!allCssMinified.errors.length) { zipFolder.file(`${this.fileName}.min.css`, allCssMinified.styles); }
   }
 

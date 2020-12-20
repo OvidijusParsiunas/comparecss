@@ -45,6 +45,7 @@ export interface SubcomponentProperties {
   // this css is not configured by the user and comes along with the component
   inheritedCss?: InheritedCss;
   // this css is used for nested classes or element tags e.g. .my-component div {
+  // the code to export this has been removed on the 19th of Dec 2020 - commit id: f6391eb61305106001709130ce4f45877226069b, remove if all component types added and this is not needed
   descendantCss?: DescendantCss;
   // this css is used for particular nested children (.default-class-name > div:nth-child(2))
   childCss?: ChildCss[];

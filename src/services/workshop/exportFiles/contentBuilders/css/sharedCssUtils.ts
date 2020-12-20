@@ -1,21 +1,45 @@
+import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
+import { CustomCssWithInheritedCss, SharedInheritedCss } from '../../../../../interfaces/cssBuilder';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
-import { CustomCss } from '../../../../../interfaces/workshopComponent';
-import { SharedInheritedCss } from './cssBuilder';
-import CssBuilderUtils from './cssBuilderUtils';
+import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum';
+import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
+import GeneralUtils from './generalUtils';
 
 export default class SharedCssUtils {
 
+  private static purgeUniqueSubcomponents = (subcomponent: unknown): void => { Object.keys(subcomponent).map((key) => { if (subcomponent[key] < 2) delete subcomponent[key] })};
+
+  // this is required as components can share subcomponent types: e.g. BASE
+  public static generateComponentToSubcomponentId = (componentType: NEW_COMPONENT_TYPES, subcomponentType: SUB_COMPONENTS): string => componentType + subcomponentType;
+
+  public static identifyRepeatedSubcomponents(components: WorkshopComponent[]): unknown {
+    const repeatedSubcomponents = {};
+    components.forEach((component) => {
+      const { subcomponents, type } = component;
+      Object.keys(subcomponents).forEach((key: SUB_COMPONENTS) => {
+        const subcomponent: SubcomponentProperties = subcomponents[key];
+        if (subcomponent.optionalSubcomponent && !subcomponent.optionalSubcomponent.currentlyDisplaying) return;
+        const componentToSubcomponentId = this.generateComponentToSubcomponentId(type, key);
+        repeatedSubcomponents[componentToSubcomponentId] = repeatedSubcomponents[componentToSubcomponentId] ? repeatedSubcomponents[componentToSubcomponentId] + 1 : 1;
+      });
+    });
+    this.purgeUniqueSubcomponents(repeatedSubcomponents);
+    return repeatedSubcomponents;
+  }
+  
   public static buildSharedInheritedCss(sharedInheritedCss: SharedInheritedCss, numberOfNewLines: number): string {
     let resultCss = '';
     Object.keys(sharedInheritedCss).forEach((key) => {
       const classes = sharedInheritedCss[key].classes.join(', ');
-      resultCss += `${classes} {\r\n${CssBuilderUtils.buildCssString(sharedInheritedCss[key].css)}\r\n}${'\r\n'.repeat(numberOfNewLines)}`;
+      resultCss += `${classes} {\r\n${GeneralUtils.buildCssString(sharedInheritedCss[key].css)}\r\n}${'\r\n'.repeat(numberOfNewLines)}`;
     });
     return resultCss;
   }
 
+  // this method is used to either create a tuple with custom and inherited css if there is only one component with that particular type (sharedCssId) or
+  // add the inherited css to the sharedCssObj which will be processed at the end and return customCss only
   public static allocateSharedInheritedCss(customCss: CustomCss, inheritedCss: WorkshopComponentCss, isCssShared: boolean,
-    sharedCssObj: SharedInheritedCss, sharedCssId: string, classCombinator: string): [CustomCss, WorkshopComponentCss?] {
+    sharedCssObj: SharedInheritedCss, sharedCssId: string, classCombinator: string): CustomCssWithInheritedCss {
     if (inheritedCss) {
       if (isCssShared) {
         if (!sharedCssObj.hasOwnProperty(sharedCssId)) {
