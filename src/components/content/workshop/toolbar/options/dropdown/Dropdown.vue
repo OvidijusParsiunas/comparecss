@@ -1,17 +1,21 @@
 <template>
   <div class="dropdown" v-if="Object.keys(dropdownOptions).length > 1">
-    <button  class="btn form-control dropdown-button" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+    <button class="btn form-control dropdown-button" type="button" data-toggle="dropdown"
       @click="openDropdown"
       @mouseenter="mouseEnterButton"
       @mouseleave="mouseLeaveButton">
       <div class="dropdown-button-text">{{objectContainingActiveOption[activeModePropertyKeyName]}}</div><i :class="['fa', 'dropdown-button-icon', fontAwesomeIconClassName]"></i>
     </button>
-    <div ref="dropdownMenu" class="dropdown-menu custom-dropdown-menu" aria-labelledby="dropdownMenuButton">
+    <div class="auxiliary-padding"
+      @mouseenter="mouseEnterOption(isAuxiliaryPadding = true)"
+      @mouseleave="mouseLeaveOption(isAuxiliaryPadding = true)">
+    </div>
+    <div ref="dropdownMenu" class="dropdown-menu custom-dropdown-menu">
       <a v-for="(optionValue, optionName) in dropdownOptions" :key="optionName"
         class="dropdown-item custom-dropdown-item" 
         @click="optionClick"
-        @mouseenter="mouseEnterOption"
-        @mouseleave="mouseLeaveOption">
+        @mouseenter="mouseEnterOption(isAuxiliaryPadding = false)"
+        @mouseleave="mouseLeaveOption(isAuxiliaryPadding = false)">
           {{optionName}}
         </a>
     </div>
@@ -44,17 +48,19 @@ export default {
     mouseLeaveButton(): void {
       this.toggleSubcomponentPreviewDisplay(((event.target as HTMLElement).childNodes[0] as HTMLElement).innerHTML, 'none');
     },
-    mouseEnterOption(): void {
+    mouseEnterOption(isAuxiliaryPadding: boolean): void {
       // when dropdown is opened for the first time, there is no lastHoveredOptionElement and the first hovered option may
       // not be activeOptionElement, hence the active is removed from it
-      this.toggleSubcomponentPreviewDisplay((event.target as HTMLInputElement).innerHTML, 'block');
+      const highlightedOption = isAuxiliaryPadding ? (event.target as HTMLInputElement).nextSibling.childNodes[1] : event.target;
+      this.toggleSubcomponentPreviewDisplay((highlightedOption as HTMLInputElement).innerHTML, 'block');
       if (this.activeOptionElement) this.activeOptionElement.classList.remove('active');
       if (this.lastHoveredOptionElement) this.lastHoveredOptionElement.classList.remove('active');
-      this.lastHoveredOptionElement = event.target;
+      this.lastHoveredOptionElement = highlightedOption;
       this.lastHoveredOptionElement.classList.add('active');
     },
-    mouseLeaveOption(): void {
-      this.toggleSubcomponentPreviewDisplay((event.target as HTMLElement).innerHTML, 'none');
+    mouseLeaveOption(isAuxiliaryPadding: boolean): void {
+      const highlightedOption = isAuxiliaryPadding ? (event.target as HTMLInputElement).nextSibling.childNodes[1] : event.target;
+      this.toggleSubcomponentPreviewDisplay((highlightedOption as HTMLElement).innerHTML, 'none');
     },
     openDropdown(): void {
       // this function is always re-run everytime the dropdown is open
@@ -74,7 +80,7 @@ export default {
       }
     },
     toggleSubcomponentPreviewDisplay(subcomponentType: string, displayValue: 'block'|'none'): void {
-      if (!this.highlightSubcomponent) return;
+      if (!this.highlightSubcomponents) return;
       const subcomponentPreviewElementId = subcomponentTypeToPreviewId[subcomponentType];
       const subcomponentPreviewElement = document.getElementById(subcomponentPreviewElementId);
       if (subcomponentPreviewElement) subcomponentPreviewElement.style.display = displayValue;
@@ -120,5 +126,12 @@ export default {
   }
   .custom-dropdown-item {
     padding: 0.08rem 1rem !important;
+  }
+  .auxiliary-padding {
+    top: 36px;
+    height: 4px;
+    width: 100%;
+    z-index: 9990;
+    position: absolute;
   }
 </style>
