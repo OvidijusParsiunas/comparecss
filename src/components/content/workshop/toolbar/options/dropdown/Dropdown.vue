@@ -129,7 +129,7 @@ export default {
   }
   .auxiliary-padding {
     top: 36px;
-    height: 4px;
+    height: 5px;
     width: 100%;
     z-index: 9990;
     position: absolute;
