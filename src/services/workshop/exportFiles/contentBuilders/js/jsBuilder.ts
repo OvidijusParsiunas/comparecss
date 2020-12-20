@@ -16,9 +16,11 @@ export default class JSBuilder {
     let allJS = '';
     const utilisedJavascriptCode: JavascriptClassesToCode = {};
     components.forEach((component) => {
-      component.subcomponents[component.subcomponentsActiveMode].jsClasses.forEach((jsClass) => {
-        if (!utilisedJavascriptCode[jsClass]) { utilisedJavascriptCode[jsClass] = javascriptClassesToCode[jsClass] }
-      })
+      Object.keys(component.subcomponents).forEach((key) => {
+        component.subcomponents[key].jsClasses.forEach((jsClass) => {
+          if (!utilisedJavascriptCode[jsClass]) { utilisedJavascriptCode[jsClass] = javascriptClassesToCode[jsClass] }
+        });
+      });
     });
     Object.keys(utilisedJavascriptCode).forEach((key) => {
       const { cssFileContent, jsFileContent } = utilisedJavascriptCode[key].downloadables;

@@ -215,11 +215,6 @@ export default {
         subcomponentsActiveMode: SUB_COMPONENTS.BASE,
         className: 'default-class-name',
       }
-  //     elementTag: string;
-  // childNumber: number;
-  // css: WorkshopComponentCss;
-  // // the array is used to allow multiple childCss values at a particular level
-  // nestedChildCss?: ChildCss[];
     ],
     currentlySelectedComponent: {
         type: NEW_COMPONENT_TYPES.ALERT,
@@ -304,8 +299,6 @@ export default {
         subcomponentsActiveMode: SUB_COMPONENTS.BASE,
         className: 'default-class-name',
       },
-    // components: new Set(),
-    // currentlySelectedComponent: undefined,
     workshopEventCallbacks: [],
   }),
   methods: {
