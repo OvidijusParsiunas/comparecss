@@ -4,5 +4,6 @@ export const inheritedAlertBaseCss: InheritedCss = {
   typeName: 'alert',
   css: {
     position: 'relative',
+    overflow: 'hidden',
   },
 };

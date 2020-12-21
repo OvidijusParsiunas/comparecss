@@ -5,6 +5,8 @@ setting types should an enum
 potentially have animation for when optional subcomponent options buttons appear and are hidden
 firefox color selector
 
+some inheritedCss for alert is located within different files some is not, establish consistency and have it all in the same file
+the close button does not seem to position itself in the same place in the exported output
 when using padding in the close button, the preview does not seem to follow it (the css appears to be out of date)
 when close border is unset, then proceed to increase width - it is using the 'color' property instead
 alert text align on the left side or right side
@@ -14,7 +16,6 @@ when creating a new component, found an instance where it does not switch view t
 when deleting the components and switching to existing ones, sometimes the view does switch to default subcomponent
 when switching components and having their subcomponents in specific modes behaves weirdly
 the modal edit class name is also weird
-the alert button ripple circle does not look like it is in the correct position
 the alert button ripple does not seem to work properly when there are many components
 create a new component that is alert, go to the close subcomponent, move to hover, border, open up settings and begin editing throws an error
 solve the initial hover of the subcomponent toggle button problem where it has not loaded up
