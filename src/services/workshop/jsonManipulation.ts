@@ -17,7 +17,7 @@ export default class JSONManipulation {
       return copy;
     }
     if (object instanceof Set) {
-      return new Set([{...object}]);
+      return new Set([...object]);
     }
     if (object instanceof Object) {
       const copy = {};
