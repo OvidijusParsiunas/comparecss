@@ -1,14 +1,12 @@
 export color values that are set to inherit
 if close button css will remain static, consider placing them into a separate object that can be used when exporting the file
-calculate the alert height size after the css file has been exported
-calculate height by:
-  (current height - default height) / 2 = padding
-  current padding - padding = new padding
 test export with shadow and other properties, questionable if it works correctly
 setting types should an enum
 potentially have animation for when optional subcomponent options buttons appear and are hidden
 firefox color selector
 
+issue where javascriptClassesToCode[jsClass] in jsbuilder returned undefined
+alert text align on the left side or right side
 when on close button default mode - the hover does not seem to work
 when clicking the edit component button, should immediately highlight the name or have the cursor at the end
 when creating a new component, found an instance where it does not switch view to the default subcomponent

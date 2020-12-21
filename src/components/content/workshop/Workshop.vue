@@ -170,7 +170,7 @@ export default {
                 elementTag: 'div',
                 childNumber: 1,
                 inheritedCss: {
-                  position: 'absolute',
+                  position: 'relative',
                   top: '50%',
                   left: '50%',
                   transform: 'translate(-50%,-50%)',
@@ -254,7 +254,7 @@ export default {
                 elementTag: 'div',
                 childNumber: 1,
                 inheritedCss: {
-                  position: 'absolute',
+                  position: 'relative',
                   top: '50%',
                   left: '50%',
                   transform: 'translate(-50%,-50%)',
