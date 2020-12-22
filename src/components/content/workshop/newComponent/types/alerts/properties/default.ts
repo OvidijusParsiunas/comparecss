@@ -20,6 +20,7 @@ const initialBaseCss: CustomCss = {
     height: '50px',
     boxSizing: 'unset',
     fontSize: '16px',
+    boxShadow: '0px 0px 0px 0px #000000',
     fontFamily: '"Poppins", sans-serif',
     paddingLeft: '0px',
     paddingRight: '0px',

@@ -51,7 +51,8 @@ export default {
     mouseEnterOption(isAuxiliaryPadding: boolean): void {
       // when dropdown is opened for the first time, there is no lastHoveredOptionElement and the first hovered option may
       // not be activeOptionElement, hence the active is removed from it
-      const highlightedOption = isAuxiliaryPadding ? (event.target as HTMLInputElement).nextSibling.childNodes[1] : event.target;
+      if (isAuxiliaryPadding && !this.$refs.dropdownMenu.offsetParent) return;
+      const highlightedOption = isAuxiliaryPadding ? this.$refs.dropdownMenu.childNodes[1] : event.target;
       this.toggleSubcomponentPreviewDisplay((highlightedOption as HTMLInputElement).innerHTML, 'block');
       if (this.activeOptionElement) this.activeOptionElement.classList.remove('active');
       if (this.lastHoveredOptionElement) this.lastHoveredOptionElement.classList.remove('active');
