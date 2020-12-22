@@ -11,7 +11,7 @@ export default {
         cssProperty: 'borderRadius'
       },
     },
-    { 
+    {
       type: 'range',
       spec: {
         name: 'Width',
@@ -56,7 +56,7 @@ export default {
         name: 'Color',
         default: '#000000',
         cssProperty: 'borderColor',
-        unsetColorButtonAvailable: true,
+        unsetColorButtonAvailable: false,
       },
     }
   ]

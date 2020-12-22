@@ -5,10 +5,10 @@ setting types should an enum
 potentially have animation for when optional subcomponent options buttons appear and are hidden
 firefox color selector
 
+double check with ux that showing x only for some color pickers is ok
+undo button for shadow section does not work
 some inheritedCss for alert is located within different files some is not, establish consistency and have it all in the same file
-the close button does not seem to position itself in the same place in the exported output
 when using padding in the close button, the preview does not seem to follow it (the css appears to be out of date)
-when close border is unset, then proceed to increase width - it is using the 'color' property instead
 alert text align on the left side or right side
 when on close button default mode - the hover does not seem to work
 when clicking the edit component button, should immediately highlight the name or have the cursor at the end
