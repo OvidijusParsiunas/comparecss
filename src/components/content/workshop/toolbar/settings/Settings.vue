@@ -11,14 +11,23 @@
                   {{setting.spec.name}}
                 </div>
                 <div style="position: relative; float: left">
-                  <div v-if="subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode]
-                    && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]" class="range-popover">
-                    {{setting.spec.partialCss !== undefined && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]
-                      ? subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty].split(' ')[setting.spec.partialCss.position]
-                      : subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]}}
-                  </div>
-                  <div v-else class="range-popover">
-                    {{setting.spec.default}}px
+                  <div class="range-popover">
+                    <!-- the boxShadow range properties are set to 'unset' when all are 0px (for firefox) -->
+                    <div v-if="subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode]
+                      && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]
+                      && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty] !== 'unset'">
+                      {{setting.spec.partialCss !== undefined && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]
+                        ? subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty].split(' ')[setting.spec.partialCss.position]
+                        : subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]}}
+                    </div>
+                    <div v-else-if="subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode]
+                      && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]
+                      && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty] === 'unset'">
+                      0px
+                    </div>
+                    <div v-else>
+                      {{setting.spec.default}}px
+                    </div>
                   </div>
                   <input type="range" class="form-control-range" id="formControlRange"
                     v-bind:min="subcomponentproperties.customSettingsProperties && subcomponentproperties.customSettingsProperties[setting.spec.cssProperty] ? subcomponentproperties.customSettingsProperties[setting.spec.cssProperty][0] : setting.spec.scale[0]"
@@ -121,6 +130,7 @@
 <script lang="ts">
 import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../../consts/unsetColotButtonDisplayed';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
+import CssPolyfill from './utils/cssPolyfill';
 
 interface Data {
   selectorCurrentValues: unknown;
@@ -179,8 +189,11 @@ export default {
                   }
                 });
               }
-              const singlePropertyValue = setting.spec.partialCss ? cssPropertyValue.split(' ')[setting.spec.partialCss.position] : cssPropertyValue;
-              setting.spec.default = this.parseRangeValue(singlePropertyValue, setting.spec.smoothingDivisible);
+              const hasBoxShadowBeenSet = setting.spec.cssProperty === 'boxShadow' && CssPolyfill.setBoxShadowSettingsRangeValue(cssPropertyValue, setting.spec);
+              if (!hasBoxShadowBeenSet) {
+                const singlePropertyValue = setting.spec.partialCss ? cssPropertyValue.split(' ')[setting.spec.partialCss.position] : cssPropertyValue;
+                setting.spec.default = this.parseRangeValue(singlePropertyValue, setting.spec.smoothingDivisible); 
+              }
             }
           } else if (setting.type === 'select') {
             // default value for range is currently setting the select value, not the select value for ranges
@@ -235,15 +248,18 @@ export default {
       });
       const rangeValue = (event.target as HTMLInputElement).value;
       if (partialCss != undefined) {
+        // test if default css mode property is undefined
         if (customCss[customCssActiveMode][cssProperty] === undefined) {
           const defaultValues = [ ...partialCss.fullDefaultValues ];
           defaultValues[partialCss.position] = rangeValue;
           customCss[customCssActiveMode][cssProperty] = defaultValues.join(' ');
         } else {
+          if (cssProperty === 'boxShadow') CssPolyfill.setUnsetBoxShadowPropertiesToZero(customCss[customCssActiveMode]);
           const cssPropertyValues = customCss[customCssActiveMode][cssProperty].split(' ');
           cssPropertyValues[partialCss.position] = `${rangeValue}px`;
           customCss[customCssActiveMode][cssProperty] = cssPropertyValues.join(' ');
         }
+        if (cssProperty === 'boxShadow') CssPolyfill.setZeroBoxShadowPropertiesToUnset(customCss[customCssActiveMode]);
       } else {
         customCss[customCssActiveMode][cssProperty] = `${Math.floor(rangeValue as unknown as number / smoothingDivisible)}px`;
       }
