@@ -130,6 +130,7 @@
 <script lang="ts">
 import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../../consts/unsetColotButtonDisplayed';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
+import { CustomCss } from '../../../../../interfaces/workshopComponent';
 import CssPolyfill from './utils/cssPolyfill';
 
 interface Data {
@@ -138,7 +139,7 @@ interface Data {
   SUB_COMPONENT_CSS_MODES;
   UNSET_COLOR_BUTTON_DISPLAYED_STATE;
   UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX;
-  getActiveModeCssPropertyValue: (param1: SUB_COMPONENT_CSS_MODES, param2: string) => string;
+  getActiveModeCssPropertyValue: (param1: CustomCss, param2: SUB_COMPONENT_CSS_MODES, param3: string) => string;
   updateSettings: () => void;
   addDefaultValueIfCssModeMissing: (param1: SUB_COMPONENT_CSS_MODES, param2: string) => void;
   parseRangeValue: (param1: string, param2: number) => number;
@@ -152,21 +153,21 @@ export default {
     SUB_COMPONENT_CSS_MODES,
     UNSET_COLOR_BUTTON_DISPLAYED_STATE,
     UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX,
-    getActiveModeCssPropertyValue(activeMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): string {
-      const { customCss } = this.subcomponentproperties;
+    getActiveModeCssPropertyValue(css: CustomCss, activeMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): string {
       // the following allows multiple cases to be checked in one execution
+      if (!css) return undefined;
       switch (activeMode) {
         case (SUB_COMPONENT_CSS_MODES.CLICK):
-          if (customCss[SUB_COMPONENT_CSS_MODES.CLICK] && customCss[SUB_COMPONENT_CSS_MODES.CLICK].hasOwnProperty([cssProperty])) {
-            return customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
+          if (css[SUB_COMPONENT_CSS_MODES.CLICK] && css[SUB_COMPONENT_CSS_MODES.CLICK].hasOwnProperty(cssProperty)) {
+            return css[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
           }
         case (SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
-          if (customCss[SUB_COMPONENT_CSS_MODES.HOVER] && customCss[SUB_COMPONENT_CSS_MODES.HOVER].hasOwnProperty([cssProperty])) {
-            return customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
+          if (css[SUB_COMPONENT_CSS_MODES.HOVER] && css[SUB_COMPONENT_CSS_MODES.HOVER].hasOwnProperty(cssProperty)) {
+            return css[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
           }
         case (SUB_COMPONENT_CSS_MODES.DEFAULT || SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
-          if (customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty] && customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].hasOwnProperty([cssProperty])) {
-            return customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty];
+          if (css[SUB_COMPONENT_CSS_MODES.DEFAULT] && css[SUB_COMPONENT_CSS_MODES.DEFAULT].hasOwnProperty(cssProperty)) {
+            return css[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty];
           }
         default:
           return undefined;
@@ -174,16 +175,16 @@ export default {
     },
     updateSettings(): void {
       this.$nextTick(() => {
-        const { customCss, customCssActiveMode, jsClasses } = this.subcomponentproperties;
+        const { customCss, customCssActiveMode, jsClasses, auxiliaryPartialCss } = this.subcomponentproperties;
         this.selectorCurrentValues = {};
         this.inputDropdownCurrentValues = {};
         (this.settings.options || []).forEach((setting) => {
           if (setting.type === 'range') {
-            const cssPropertyValue = this.getActiveModeCssPropertyValue(customCssActiveMode, setting.spec.cssProperty);
+            const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
             if (cssPropertyValue !== undefined) {
               if (customCss[customCssActiveMode]) {
                 (setting.triggers || []).forEach((trigger) => {
-                  if (trigger.conditions.has(this.getActiveModeCssPropertyValue(customCssActiveMode, trigger.cssProperty))) {
+                  if (trigger.conditions.has(this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, trigger.cssProperty))) {
                     customCss[customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
                     this.selectorCurrentValues[setting.spec.cssProperty] = trigger.defaultValue;
                   }
@@ -198,19 +199,22 @@ export default {
           } else if (setting.type === 'select') {
             // default value for range is currently setting the select value, not the select value for ranges
             // potential race condition where range sets the select value and select may set it to something incorrect
-            const cssPropertyValue = this.getActiveModeCssPropertyValue(customCssActiveMode, setting.spec.cssProperty);
+            const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
             if (cssPropertyValue) { this.selectorCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
           } else if (setting.type === 'colorPicker') {
-            const cssPropertyValue = this.getActiveModeCssPropertyValue(customCssActiveMode, setting.spec.cssProperty);
+            let cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
+            if (cssPropertyValue === 'unset') {
+              cssPropertyValue = this.getActiveModeCssPropertyValue(auxiliaryPartialCss, customCssActiveMode, setting.spec.cssProperty) || '#000000';
+            }
             if (cssPropertyValue) { setting.spec.default = setting.spec.partialCss ? cssPropertyValue.split(' ')[setting.spec.partialCss.position] : cssPropertyValue; }
           } else if (setting.type === 'inputDropdown') {
-            const cssPropertyValue = this.getActiveModeCssPropertyValue(customCssActiveMode, setting.spec.cssProperty);
+            const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
             if (cssPropertyValue) { this.inputDropdownCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
           } else if (setting.type === 'checkbox') {
             if (setting.spec.javascript) {
               setting.spec.default = jsClasses.has(setting.spec.jsClassName);
             } else {
-              const cssPropertyValue = this.getActiveModeCssPropertyValue(customCssActiveMode, setting.spec.cssProperty);
+              const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
               if (cssPropertyValue) { setting.spec.default = (cssPropertyValue === setting.spec.conditionalStyle.truthy); }
             }
           }
@@ -218,7 +222,7 @@ export default {
       });
     },
     addDefaultValueIfCssModeMissing(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): void {
-      const customCss = this.getActiveModeCssPropertyValue(SUB_COMPONENT_CSS_MODES.CLICK, cssProperty);
+      const customCss = this.getActiveModeCssPropertyValue(this.subcomponentproperties.customCss, SUB_COMPONENT_CSS_MODES.CLICK, cssProperty);
       if (!this.subcomponentproperties.customCss[customCssActiveMode]) {
         this.subcomponentproperties.customCss[customCssActiveMode] = { [cssProperty]: customCss };
       } else {
@@ -236,30 +240,29 @@ export default {
   // put these methods into services
   methods: {
     updateRange(event: KeyboardEvent, setting: any): void {
-      const {triggers, spec} = setting;
-      const {cssProperty, smoothingDivisible, partialCss } = spec;
-      const { customCss, customCssActiveMode } = this.subcomponentproperties;
+      const { triggers, spec } = setting;
+      const { cssProperty, smoothingDivisible, partialCss } = spec;
+      const { customCss, customCssActiveMode, auxiliaryPartialCss } = this.subcomponentproperties;
       (triggers || []).forEach((trigger) => {
-          const customCss = this.getActiveModeCssPropertyValue(SUB_COMPONENT_CSS_MODES.CLICK, trigger.cssProperty);
-          if (trigger.conditions.has(customCss)) {
+          const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, SUB_COMPONENT_CSS_MODES.CLICK, trigger.cssProperty);
+          if (trigger.conditions.has(cssPropertyValue)) {
             customCss[customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
             if (trigger.selector) { this.selectorCurrentValues[trigger.cssProperty] = trigger.defaultValue; }
           }
       });
       const rangeValue = (event.target as HTMLInputElement).value;
       if (partialCss != undefined) {
-        // test if default css mode property is undefined
         if (customCss[customCssActiveMode][cssProperty] === undefined) {
           const defaultValues = [ ...partialCss.fullDefaultValues ];
           defaultValues[partialCss.position] = rangeValue;
           customCss[customCssActiveMode][cssProperty] = defaultValues.join(' ');
         } else {
-          if (cssProperty === 'boxShadow') CssPolyfill.setUnsetBoxShadowPropertiesToZero(customCss[customCssActiveMode]);
+          if (cssProperty === 'boxShadow') CssPolyfill.setUnsetBoxShadowPropertiesToZero(customCss, auxiliaryPartialCss, customCssActiveMode);
           const cssPropertyValues = customCss[customCssActiveMode][cssProperty].split(' ');
           cssPropertyValues[partialCss.position] = `${rangeValue}px`;
           customCss[customCssActiveMode][cssProperty] = cssPropertyValues.join(' ');
         }
-        if (cssProperty === 'boxShadow') CssPolyfill.setZeroBoxShadowPropertiesToUnset(customCss[customCssActiveMode]);
+        if (cssProperty === 'boxShadow') CssPolyfill.setZeroBoxShadowPropertiesToUnset(this.subcomponentproperties);
       } else {
         customCss[customCssActiveMode][cssProperty] = `${Math.floor(rangeValue as unknown as number / smoothingDivisible)}px`;
       }
@@ -330,17 +333,47 @@ export default {
       const { cssProperty, partialCss } = setting.spec;
       const colorPickerValue = (event.target as HTMLInputElement).value;
       const { customCss, customCssActiveMode } = this.subcomponentproperties;
-      if (partialCss != undefined) {
+      if (partialCss !== undefined) {
         if (customCss[customCssActiveMode][cssProperty] === undefined) {
           const defaultValues = [ ...partialCss.fullDefaultValues ];
           defaultValues[partialCss.position] = colorPickerValue;
-          customCss[customCssActiveMode][cssProperty] = defaultValues.join(' ');
+          if (cssProperty === 'boxShadow' && customCss[customCssActiveMode][cssProperty] === 'unset') {
+            if (!this.subcomponentproperties.auxiliaryPartialCss) {
+              this.subcomponentproperties.auxiliaryPartialCss = {};
+            }
+            if (!this.subcomponentproperties.auxiliaryPartialCss[customCssActiveMode]) {
+              this.subcomponentproperties.auxiliaryPartialCss[customCssActiveMode] = {};
+            }
+            this.subcomponentproperties.auxiliaryPartialCss[customCssActiveMode][cssProperty] = `0px 0px 0px 0px ${colorPickerValue}`;
+          } else {
+            customCss[customCssActiveMode][cssProperty] = defaultValues.join(' ');
+          }
         } else {
-          const cssPropertyValues = customCss[customCssActiveMode][cssProperty].split(' ');
-          cssPropertyValues[partialCss.position] = colorPickerValue;
-          customCss[customCssActiveMode][cssProperty] = cssPropertyValues.join(' ');
+          if (cssProperty === 'boxShadow' && customCss[customCssActiveMode][cssProperty] === 'unset') {
+            if (!this.subcomponentproperties.auxiliaryPartialCss) {
+              this.subcomponentproperties.auxiliaryPartialCss = {};
+            }
+            if (!this.subcomponentproperties.auxiliaryPartialCss[customCssActiveMode]) {
+              this.subcomponentproperties.auxiliaryPartialCss[customCssActiveMode] = {};
+            }
+            this.subcomponentproperties.auxiliaryPartialCss[customCssActiveMode][cssProperty] = `0px 0px 0px 0px ${colorPickerValue}`;
+          } else {
+            const cssPropertyValues = customCss[customCssActiveMode][cssProperty].split(' ');
+            cssPropertyValues[partialCss.position] = colorPickerValue;
+            customCss[customCssActiveMode][cssProperty] = cssPropertyValues.join(' ');
+            if (cssProperty === 'boxShadow') {
+              if (!this.subcomponentproperties.auxiliaryPartialCss) {
+                this.subcomponentproperties.auxiliaryPartialCss = {};
+              }
+              if (!this.subcomponentproperties.auxiliaryPartialCss[customCssActiveMode]) {
+                this.subcomponentproperties.auxiliaryPartialCss[customCssActiveMode] = {};
+              }
+              this.subcomponentproperties.auxiliaryPartialCss[customCssActiveMode][cssProperty] = `0px 0px 0px 0px ${colorPickerValue}`; 
+            }
+          }
         }
       } else {
+        console.log(customCss[customCssActiveMode]);
         customCss[customCssActiveMode][cssProperty] = colorPickerValue;
       }
     },
