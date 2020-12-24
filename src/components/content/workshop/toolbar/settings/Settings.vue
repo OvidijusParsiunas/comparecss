@@ -204,6 +204,7 @@ export default {
           } else if (setting.type === 'colorPicker') {
             let cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
             if (cssPropertyValue === 'unset') {
+              // FIX - use a const here - '#000000'
               cssPropertyValue = this.getActiveModeCssPropertyValue(auxiliaryPartialCss, customCssActiveMode, setting.spec.cssProperty) || '#000000';
             }
             if (cssPropertyValue) { setting.spec.default = setting.spec.partialCss ? cssPropertyValue.split(' ')[setting.spec.partialCss.position] : cssPropertyValue; }
@@ -252,6 +253,7 @@ export default {
       });
       const rangeValue = (event.target as HTMLInputElement).value;
       if (partialCss != undefined) {
+        // FIX - test when default css mode property is undefined
         if (customCss[customCssActiveMode][cssProperty] === undefined) {
           const defaultValues = [ ...partialCss.fullDefaultValues ];
           defaultValues[partialCss.position] = rangeValue;
@@ -337,6 +339,7 @@ export default {
         if (customCss[customCssActiveMode][cssProperty] === undefined) {
           const defaultValues = [ ...partialCss.fullDefaultValues ];
           defaultValues[partialCss.position] = colorPickerValue;
+          // FIX - fix the setters
           if (cssProperty === 'boxShadow' && customCss[customCssActiveMode][cssProperty] === 'unset') {
             if (!this.subcomponentproperties.auxiliaryPartialCss) {
               this.subcomponentproperties.auxiliaryPartialCss = {};

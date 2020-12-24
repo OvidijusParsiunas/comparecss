@@ -16,6 +16,7 @@ export default class CssPolyfill {
   public static setZeroBoxShadowPropertiesToUnset(subcomponentproperties: SubcomponentProperties): void {
     const { customCss, customCssActiveMode } = subcomponentproperties;
     if (customCss[customCssActiveMode].boxShadow.startsWith('0px 0px 0px 0px')) {
+      // FIX - fix the setters
       if (!subcomponentproperties.auxiliaryPartialCss) {
         subcomponentproperties.auxiliaryPartialCss = {};
       }
