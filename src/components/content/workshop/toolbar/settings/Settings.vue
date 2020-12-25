@@ -131,7 +131,7 @@
 import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../../consts/unsetColotButtonDisplayed';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import { CustomCss } from '../../../../../interfaces/workshopComponent';
-import CssPolyfill from './utils/cssPolyfill';
+import BoxShadowUtils from './utils/boxShadowUtils';
 
 interface Data {
   selectorCurrentValues: unknown;
@@ -190,7 +190,7 @@ export default {
                   }
                 });
               }
-              const hasBoxShadowBeenSet = setting.spec.cssProperty === 'boxShadow' && CssPolyfill.setBoxShadowSettingsRangeValue(cssPropertyValue, setting.spec);
+              const hasBoxShadowBeenSet = setting.spec.cssProperty === 'boxShadow' && BoxShadowUtils.setBoxShadowSettingsRangeValue(cssPropertyValue, setting.spec);
               if (!hasBoxShadowBeenSet) {
                 const singlePropertyValue = setting.spec.partialCss ? cssPropertyValue.split(' ')[setting.spec.partialCss.position] : cssPropertyValue;
                 setting.spec.default = this.parseRangeValue(singlePropertyValue, setting.spec.smoothingDivisible); 
@@ -239,6 +239,9 @@ export default {
   }),
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   // put these methods into services
+
+  // if the Settings.vue component logic is too coupled with 'boxShadow' (especially if there is another partialCss property introduced),
+  // refactor it to extract the logic into a partialCss util file
   methods: {
     updateRange(event: KeyboardEvent, setting: any): void {
       const { triggers, spec } = setting;
@@ -259,12 +262,12 @@ export default {
           defaultValues[partialCss.position] = rangeValue;
           customCss[customCssActiveMode][cssProperty] = defaultValues.join(' ');
         } else {
-          if (cssProperty === 'boxShadow') CssPolyfill.setUnsetBoxShadowPropertiesToZero(customCss, auxiliaryPartialCss, customCssActiveMode);
+          if (cssProperty === 'boxShadow') BoxShadowUtils.setUnsetBoxShadowPropertiesToZero(customCss, auxiliaryPartialCss, customCssActiveMode);
           const cssPropertyValues = customCss[customCssActiveMode][cssProperty].split(' ');
           cssPropertyValues[partialCss.position] = `${rangeValue}px`;
           customCss[customCssActiveMode][cssProperty] = cssPropertyValues.join(' ');
         }
-        if (cssProperty === 'boxShadow') CssPolyfill.setZeroBoxShadowPropertiesToUnset(this.subcomponentproperties);
+        if (cssProperty === 'boxShadow') BoxShadowUtils.setZeroBoxShadowPropertiesToUnset(this.subcomponentproperties);
       } else {
         customCss[customCssActiveMode][cssProperty] = `${Math.floor(rangeValue as unknown as number / smoothingDivisible)}px`;
       }
@@ -340,10 +343,9 @@ export default {
           const defaultValues = [ ...partialCss.fullDefaultValues ];
           defaultValues[partialCss.position] = colorPickerValue;
           if (cssProperty === 'boxShadow' && customCss[customCssActiveMode][cssProperty] === 'unset') {
-            CssPolyfill.setAuxiliaryBoxShadowPropertyWithCustomColor(this.subcomponentproperties, colorPickerValue);
+            BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(this.subcomponentproperties, colorPickerValue);
           } else {
-            // FIX - setting default values is not appropriate for firefox
-            customCss[customCssActiveMode][cssProperty] = defaultValues.join(' ');
+            customCss[customCssActiveMode][cssProperty] = cssProperty === 'boxShadow' ? 'unset' : defaultValues.join(' ');
           }
         } else {
           if (customCss[customCssActiveMode][cssProperty] !== 'unset') {
@@ -351,7 +353,7 @@ export default {
             cssPropertyValues[partialCss.position] = colorPickerValue;
             customCss[customCssActiveMode][cssProperty] = cssPropertyValues.join(' ');
           } else if (cssProperty === 'boxShadow') {
-            CssPolyfill.setAuxiliaryBoxShadowPropertyWithCustomColor(this.subcomponentproperties, colorPickerValue);
+            BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(this.subcomponentproperties, colorPickerValue);
           }
         }
       } else {
@@ -427,7 +429,6 @@ export default {
           default:
             break;
         }
-        // FIX - place this in the polyfill file if appropriate
         if (auxiliaryPartialCss && auxiliaryPartialCss[customCssActiveMode] && auxiliaryPartialCss[customCssActiveMode][cssProperty]) {
           delete auxiliaryPartialCss[customCssActiveMode][cssProperty];
         }

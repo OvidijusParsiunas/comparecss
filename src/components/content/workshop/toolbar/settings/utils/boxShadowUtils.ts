@@ -2,7 +2,7 @@ import { CustomCss, SubcomponentProperties } from '../../../../../../interfaces/
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../consts/subcomponentCssModes.enum';
 
 // this is mostly used for firefox as it has been identified that shadow values of 0px 0px 0px 0px still displays a partial shadow
-export default class CssPolyfill {
+export default class BoxShadowUtils {
   
   // use consts for 0px 0px 0px 0px;
   public static setUnsetBoxShadowPropertiesToZero(customCss: CustomCss, auxiliaryPartialCss: CustomCss, customCssActiveMode: SUB_COMPONENT_CSS_MODES): void {
@@ -22,7 +22,6 @@ export default class CssPolyfill {
   }
 
   public static setAuxiliaryBoxShadowPropertyWithCustomColor(subcomponentproperties: SubcomponentProperties, colorPickerValue: string): void {
-    console.log(colorPickerValue);
     if (!subcomponentproperties.auxiliaryPartialCss) {
       subcomponentproperties.auxiliaryPartialCss = {};
     }
