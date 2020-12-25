@@ -10,7 +10,7 @@ some inheritedCss for alert is located within different files some is not, estab
 alert text align on the left side or right side
 when on close button default mode - the hover does not seem to work
 when clicking the edit component button, should immediately highlight the name or have the cursor at the end
-when creating a new component, found an instance where it does not switch view to the default subcomponent
+when creating a new component, found an instance where it does not switch view to the default subcomponent (or switching to a component)
 when deleting the components and switching to existing ones, sometimes the view does switch to default subcomponent
 when switching components and having their subcomponents in specific modes behaves weirdly
 the modal edit class name is also weird

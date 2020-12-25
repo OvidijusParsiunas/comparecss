@@ -223,7 +223,7 @@ export default {
       });
     },
     addDefaultValueIfCssModeMissing(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): void {
-      const customCss = this.getActiveModeCssPropertyValue(this.subcomponentproperties.customCss, SUB_COMPONENT_CSS_MODES.CLICK, cssProperty);
+      const customCss = this.getActiveModeCssPropertyValue(this.subcomponentproperties.customCss, customCssActiveMode, cssProperty);
       if (!this.subcomponentproperties.customCss[customCssActiveMode]) {
         this.subcomponentproperties.customCss[customCssActiveMode] = { [cssProperty]: customCss };
       } else if (!this.subcomponentproperties.customCss[customCssActiveMode][cssProperty]) {
@@ -339,41 +339,19 @@ export default {
         if (customCss[customCssActiveMode][cssProperty] === undefined) {
           const defaultValues = [ ...partialCss.fullDefaultValues ];
           defaultValues[partialCss.position] = colorPickerValue;
-          // FIX - fix the setters
           if (cssProperty === 'boxShadow' && customCss[customCssActiveMode][cssProperty] === 'unset') {
-            if (!this.subcomponentproperties.auxiliaryPartialCss) {
-              this.subcomponentproperties.auxiliaryPartialCss = {};
-            }
-            if (!this.subcomponentproperties.auxiliaryPartialCss[customCssActiveMode]) {
-              this.subcomponentproperties.auxiliaryPartialCss[customCssActiveMode] = {};
-            }
-            this.subcomponentproperties.auxiliaryPartialCss[customCssActiveMode][cssProperty] = `0px 0px 0px 0px ${colorPickerValue}`;
+            CssPolyfill.setAuxiliaryBoxShadowPropertyWithCustomColor(this.subcomponentproperties, colorPickerValue);
           } else {
             // FIX - setting default values is not appropriate for firefox
             customCss[customCssActiveMode][cssProperty] = defaultValues.join(' ');
           }
         } else {
-          if (cssProperty === 'boxShadow' && customCss[customCssActiveMode][cssProperty] === 'unset') {
-            if (!this.subcomponentproperties.auxiliaryPartialCss) {
-              this.subcomponentproperties.auxiliaryPartialCss = {};
-            }
-            if (!this.subcomponentproperties.auxiliaryPartialCss[customCssActiveMode]) {
-              this.subcomponentproperties.auxiliaryPartialCss[customCssActiveMode] = {};
-            }
-            this.subcomponentproperties.auxiliaryPartialCss[customCssActiveMode][cssProperty] = `0px 0px 0px 0px ${colorPickerValue}`;
-          } else {
+          if (customCss[customCssActiveMode][cssProperty] !== 'unset') {
             const cssPropertyValues = customCss[customCssActiveMode][cssProperty].split(' ');
             cssPropertyValues[partialCss.position] = colorPickerValue;
             customCss[customCssActiveMode][cssProperty] = cssPropertyValues.join(' ');
-            if (cssProperty === 'boxShadow') {
-              if (!this.subcomponentproperties.auxiliaryPartialCss) {
-                this.subcomponentproperties.auxiliaryPartialCss = {};
-              }
-              if (!this.subcomponentproperties.auxiliaryPartialCss[customCssActiveMode]) {
-                this.subcomponentproperties.auxiliaryPartialCss[customCssActiveMode] = {};
-              }
-              this.subcomponentproperties.auxiliaryPartialCss[customCssActiveMode][cssProperty] = `0px 0px 0px 0px ${colorPickerValue}`; 
-            }
+          } else if (cssProperty === 'boxShadow') {
+            CssPolyfill.setAuxiliaryBoxShadowPropertyWithCustomColor(this.subcomponentproperties, colorPickerValue);
           }
         }
       } else {
@@ -414,45 +392,50 @@ export default {
           this.resetJs();
           return;
         }
-        let customCss = undefined;
+        let cssValue = undefined;
         let propertyRemoved = false;
-        switch (this.subcomponentproperties.customCssActiveMode) {
+        const { customCss, initialCss, auxiliaryPartialCss, customCssActiveMode } = this.subcomponentproperties;
+        switch (customCssActiveMode) {
           case (SUB_COMPONENT_CSS_MODES.CLICK): {
-            if (this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.CLICK] && this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty]) {
-              customCss = this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
+            if (initialCss[SUB_COMPONENT_CSS_MODES.CLICK] && initialCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty]) {
+              cssValue = initialCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
               break;
             }
-            if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK]) {
-              delete this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
+            if (customCss[SUB_COMPONENT_CSS_MODES.CLICK]) {
+              delete customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
               propertyRemoved = true;
               break;
             }
           }
           case (SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
-            if (this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.HOVER] && this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty]) {
-              customCss = this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
+            if (initialCss[SUB_COMPONENT_CSS_MODES.HOVER] && initialCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty]) {
+              cssValue = initialCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
               break;
             }
-            if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] && this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty]) {
-              if (this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] && this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty]) {
-                delete this.subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
+            if (customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] && customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty]) {
+              if (customCss[SUB_COMPONENT_CSS_MODES.HOVER] && customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty]) {
+                delete customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
               }
               propertyRemoved = true;
               break;
             }
           case (SUB_COMPONENT_CSS_MODES.DEFAULT || SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
-            if (this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT] && this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty]) {
-              customCss = this.subcomponentproperties.initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty];
+            if (initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT] && initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty]) {
+              cssValue = initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty];
               break;
             }
           default:
             break;
         }
+        // FIX - place this in the polyfill file if appropriate
+        if (auxiliaryPartialCss && auxiliaryPartialCss[customCssActiveMode] && auxiliaryPartialCss[customCssActiveMode][cssProperty]) {
+          delete auxiliaryPartialCss[customCssActiveMode][cssProperty];
+        }
         if (propertyRemoved) return;
-        if (!this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode]) {
-          this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode] = { [cssProperty]: customCss };
+        if (!customCss[customCssActiveMode]) {
+          customCss[customCssActiveMode] = { [cssProperty]: cssValue };
         } else {
-          this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = customCss;
+          customCss[customCssActiveMode][cssProperty] = cssValue;
         }
       });
       this.updateSettings();

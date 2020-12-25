@@ -16,17 +16,20 @@ export default class CssPolyfill {
   public static setZeroBoxShadowPropertiesToUnset(subcomponentproperties: SubcomponentProperties): void {
     const { customCss, customCssActiveMode } = subcomponentproperties;
     if (customCss[customCssActiveMode].boxShadow.startsWith('0px 0px 0px 0px')) {
-      // FIX - fix the setters
-      if (!subcomponentproperties.auxiliaryPartialCss) {
-        subcomponentproperties.auxiliaryPartialCss = {};
-      }
-      if (!subcomponentproperties.auxiliaryPartialCss[customCssActiveMode]) {
-        subcomponentproperties.auxiliaryPartialCss[customCssActiveMode] = {};
-      }
-      subcomponentproperties.auxiliaryPartialCss[customCssActiveMode].boxShadow = customCss[customCssActiveMode].boxShadow;
-      customCss[customCssActiveMode].boxShadow = 'unset';
-      
+      this.setAuxiliaryBoxShadowPropertyWithCustomColor(subcomponentproperties, customCss[customCssActiveMode].boxShadow.split(' ').pop());
+      customCss[customCssActiveMode].boxShadow = 'unset';     
     }
+  }
+
+  public static setAuxiliaryBoxShadowPropertyWithCustomColor(subcomponentproperties: SubcomponentProperties, colorPickerValue: string): void {
+    console.log(colorPickerValue);
+    if (!subcomponentproperties.auxiliaryPartialCss) {
+      subcomponentproperties.auxiliaryPartialCss = {};
+    }
+    if (!subcomponentproperties.auxiliaryPartialCss[subcomponentproperties.customCssActiveMode]) {
+      subcomponentproperties.auxiliaryPartialCss[subcomponentproperties.customCssActiveMode] = {};
+    }
+    subcomponentproperties.auxiliaryPartialCss[subcomponentproperties.customCssActiveMode].boxShadow = `0px 0px 0px 0px ${colorPickerValue}`;
   }
 
   public static setBoxShadowSettingsRangeValue(cssPropertyValue: string, settingsSpec: any): boolean {
