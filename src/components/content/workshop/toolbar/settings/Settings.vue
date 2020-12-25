@@ -226,7 +226,7 @@ export default {
       const customCss = this.getActiveModeCssPropertyValue(this.subcomponentproperties.customCss, SUB_COMPONENT_CSS_MODES.CLICK, cssProperty);
       if (!this.subcomponentproperties.customCss[customCssActiveMode]) {
         this.subcomponentproperties.customCss[customCssActiveMode] = { [cssProperty]: customCss };
-      } else {
+      } else if (!this.subcomponentproperties.customCss[customCssActiveMode][cssProperty]) {
         this.subcomponentproperties.customCss[customCssActiveMode][cssProperty] = customCss;
       }
     },
@@ -349,6 +349,7 @@ export default {
             }
             this.subcomponentproperties.auxiliaryPartialCss[customCssActiveMode][cssProperty] = `0px 0px 0px 0px ${colorPickerValue}`;
           } else {
+            // FIX - setting default values is not appropriate for firefox
             customCss[customCssActiveMode][cssProperty] = defaultValues.join(' ');
           }
         } else {
@@ -376,7 +377,6 @@ export default {
           }
         }
       } else {
-        console.log(customCss[customCssActiveMode]);
         customCss[customCssActiveMode][cssProperty] = colorPickerValue;
       }
     },
