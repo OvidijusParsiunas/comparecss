@@ -62,7 +62,7 @@ import { ComponentPreviewAssistance } from '../../../interfaces/componentPreview
 import { inheritedAlertBaseCss } from './newComponent/types/alerts/properties/inheritedCss';
 import removeSubcomponentModal from './toolbar/options/modal/RemoveSubcomponentModal.vue';
 import ProcessClassName from '../../../services/workshop/newComponent/processClassName';
-import { CustomCss, WorkshopComponent } from '../../../interfaces/workshopComponent';
+import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../interfaces/workshopComponent';
 import { SUB_COMPONENT_CSS_MODES } from '../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
@@ -306,7 +306,15 @@ export default {
     workshopEventCallbacks: [],
   }),
   methods: {
+    resetComponentModes(previousComponent: WorkshopComponent): void {
+      previousComponent.subcomponentsActiveMode = Object.keys(previousComponent.subcomponents)[0] as SUB_COMPONENTS;
+      Object.keys(previousComponent.subcomponents).forEach((key) => {
+        const subcomponent: SubcomponentProperties = previousComponent.subcomponents[key];
+        subcomponent.customCssActiveMode = Object.keys(subcomponent.customCss)[0] as SUB_COMPONENT_CSS_MODES;
+      });
+    },
     switchActiveComponent(newComponent: WorkshopComponent): void {
+      this.resetComponentModes(this.currentlySelectedComponent);
       if (this.currentlySelectedComponent && this.currentlySelectedComponent.type !== newComponent.type) {
         ComponentJs.manipulateJS(this.currentlySelectedComponent.type, 'revokeJS');
       }
@@ -323,18 +331,9 @@ export default {
     },
     componentCardSelected(selectedComponent: WorkshopComponent): void {
       if (this.currentlySelectedComponent !== selectedComponent) {
-        const { subcomponents: previousComponentSubcomponents, subcomponentsActiveMode: previousSubcomponentMode } = this.currentlySelectedComponent;
-        const { subcomponents: newComponentSubcomponents, type: newComponenType } = selectedComponent;
-        // set the base subcomponent mode to default when switching to a new component mode
-        selectedComponent.subcomponentsActiveMode = SUB_COMPONENTS.BASE;
-        // do not switch cssMode if the new component also contains the previous
-        const previousActiveMode = previousComponentSubcomponents[previousSubcomponentMode].customCssActiveMode;
-        const currentSubcomponentOptions = componentTypeToOptions[newComponenType][selectedComponent.subcomponentsActiveMode];
-        newComponentSubcomponents[selectedComponent.subcomponentsActiveMode]
-          .customCssActiveMode = Object.keys(currentSubcomponentOptions).includes(previousActiveMode) ? previousActiveMode : SUB_COMPONENT_CSS_MODES.DEFAULT;
         this.switchActiveComponent(selectedComponent);
         setTimeout(() => {
-          this.$refs.toolbar.updateCssMode([newComponentSubcomponents[selectedComponent.subcomponentsActiveMode].customCssActiveMode] as UpdateOptionsMode);
+          this.$refs.toolbar.updateCssMode([selectedComponent.subcomponents[selectedComponent.subcomponentsActiveMode].customCssActiveMode] as UpdateOptionsMode);
         })
       }
     },
