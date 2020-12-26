@@ -307,6 +307,7 @@ export default {
   }),
   methods: {
     resetComponentModes(previousComponent: WorkshopComponent): void {
+      if (!previousComponent) return;
       previousComponent.subcomponentsActiveMode = Object.keys(previousComponent.subcomponents)[0] as SUB_COMPONENTS;
       Object.keys(previousComponent.subcomponents).forEach((key) => {
         const subcomponent: SubcomponentProperties = previousComponent.subcomponents[key];

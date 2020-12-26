@@ -24,7 +24,6 @@
 
 <script lang="ts">
 import { subcomponentTypeToPreviewId } from '../componentOptions/subcomponentTypeToPreviewId';
-import { UpdateOptionsMode } from '../../../../../../interfaces/updateCssMode';
 
 interface Data {
   activeOptionElement: HTMLElement,
@@ -39,8 +38,8 @@ export default {
   methods: {
     optionClick(): void {
       this.activeOptionElement = event.target;
-      this.objectContainingActiveOption[this.activeModePropertyKeyName] = (event.target as HTMLElement).innerHTML;
-      this.$emit('dropdown-option-clicked', [this.objectContainingActiveOption[this.activeModePropertyKeyName]] as UpdateOptionsMode);
+      if (this.objectContainingActiveOption[this.activeModePropertyKeyName] === (event.target as HTMLElement).innerHTML) return;
+      this.$emit('new-dropdown-option-clicked', (event.target as HTMLElement).innerHTML);
     },
     mouseEnterButton(): void {
       this.toggleSubcomponentPreviewDisplay(((event.target as HTMLElement).childNodes[0] as HTMLElement).innerHTML, 'block');

@@ -6,7 +6,7 @@
       :activeModePropertyKeyName="'subcomponentsActiveMode'"
       :fontAwesomeIconClassName="'fa-angle-double-down'"
       :highlightSubcomponents="true"
-      @dropdown-option-clicked="$emit('subcomponents-mode-clicked', [$event, getNewCssModeContainsActiveOptionState()])"/>
+      @new-dropdown-option-clicked="newSubcomponentsModeClicked($event)"/>
     <div class="option-button">
       <button v-if="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent"
         type="button" class="btn view-option" data-toggle="modal" :data-target="removeSubcomponentModalId"
@@ -20,7 +20,7 @@
         :objectContainingActiveOption="component.subcomponents[component.subcomponentsActiveMode]"
         :activeModePropertyKeyName="'customCssActiveMode'"
         :fontAwesomeIconClassName="'fa-angle-down'"
-        @dropdown-option-clicked="this.$emit('css-mode-clicked', [$event, this.getNewCssModeContainsActiveOptionState()])"/>
+        @new-dropdown-option-clicked="newCssModeClicked($event)"/>
       <button
         type="button"
         v-for="(option) in componentTypeToOptions[component.type][component.subcomponentsActiveMode][component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode]" :key="option"
@@ -38,6 +38,8 @@ import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssMo
 import { componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
+import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
+import { UpdateOptionsMode } from '../../../../../interfaces/updateCssMode';
 import { getIsDoNotShowModalAgainState } from './modal/state';
 import dropdown from './dropdown/Dropdown.vue';
 
@@ -55,10 +57,20 @@ export default {
     componentTypeToOptions,
     removeSubcomponentModalId: '',
   }),
-  methods: {  
+  methods: {
     optionClick(option: WORKSHOP_TOOLBAR_OPTIONS): void {
       this.activeOption = option;
       this.$emit('option-clicked', option);
+    },
+    newSubcomponentsModeClicked(newSubComponent: SUB_COMPONENTS): void {
+      // reset css mode of the previous subcomponent to the first one
+      this.component.subcomponents[this.component.subcomponentsActiveMode].customCssActiveMode = Object.keys(this.component.subcomponents[this.component.subcomponentsActiveMode].customCss)[0];
+      this.component.subcomponentsActiveMode = newSubComponent;
+      this.$emit('subcomponents-mode-clicked', [newSubComponent, this.getNewCssModeContainsActiveOptionState()] as UpdateOptionsMode)
+    },
+    newCssModeClicked(newCssMode: SUB_COMPONENT_CSS_MODES): void {
+      this.component.subcomponents[this.component.subcomponentsActiveMode].customCssActiveMode = newCssMode;
+      this.$emit('css-mode-clicked', [newCssMode, this.getNewCssModeContainsActiveOptionState()] as UpdateOptionsMode)
     },
     getNewCssModeContainsActiveOptionState(activeMode?: SUB_COMPONENT_CSS_MODES): boolean {
       const { subcomponents, subcomponentsActiveMode, type } = this.component;

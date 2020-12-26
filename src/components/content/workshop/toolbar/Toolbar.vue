@@ -66,13 +66,13 @@ export default {
       });
     },
     updateSubcomponentsMode(updateSubcomponentsMode: UpdateOptionsMode): void {
-      // when a subcomponent is not present
+      // when an optional subcomponent is set to not display, hide settings
       if (this.component.subcomponents[this.component.subcomponentsActiveMode].optionalSubcomponent
         && !this.component.subcomponents[this.component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying) {
         this.hideSettings();
         return;   
       }
-      // when the subcomponent does not contain an option or settings are not displayed (if subcomponent is removed)
+      // when the subcomponent does not contain an option or settings are not displayed (if subcomponent is removed), display default option
       if ((!updateSubcomponentsMode[1] || Object.keys(this.activeSettings).length === 0) && this.settingsOpenedOnce) {
         this.setDefaultOption();
       }
