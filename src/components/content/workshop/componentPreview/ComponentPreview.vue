@@ -101,7 +101,12 @@ export default {
   },
   methods: {
     componentPreviewMouseLeave(): void {
-      this.component.subcomponents[this.component.subcomponentsActiveMode].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].transition = 'unset';
+      Object.keys(this.component.subcomponents).forEach((key) => {
+        const subcomponent = this.component.subcomponents[key];
+        if (subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].transition) {
+          subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].transition = 'unset';
+        }
+      });
     },
   },
   components: {
