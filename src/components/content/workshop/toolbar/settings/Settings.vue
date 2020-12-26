@@ -255,7 +255,6 @@ export default {
       });
       const rangeValue = (event.target as HTMLInputElement).value;
       if (partialCss != undefined) {
-        // FIX - test when default css mode property is undefined
         if (customCss[customCssActiveMode][cssProperty] === undefined) {
           const defaultValues = [ ...partialCss.fullDefaultValues ];
           defaultValues[partialCss.position] = rangeValue;

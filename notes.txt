@@ -8,7 +8,6 @@ firefox color selector
 double check with ux that showing x only for some color pickers is ok
 some inheritedCss for alert is located within different files some is not, establish consistency and have it all in the same file
 alert text align on the left side or right side
-when on close button default mode - the hover does not seem to work
 when clicking the edit component button, should immediately highlight the name or have the cursor at the end
 when creating a new component, found an instance where it does not switch view to the default subcomponent (or switching to a component)
 when deleting the components and switching to existing ones, sometimes the view does switch to default subcomponent
@@ -17,6 +16,7 @@ the modal edit class name is also weird
 the alert button ripple does not seem to work properly when there are many components
 create a new component that is alert, go to the close subcomponent, move to hover, border, open up settings and begin editing throws an error
 solve the initial hover of the subcomponent toggle button problem where it has not loaded up
+clean up css after export, such as 0px values, bordershadow being unset - be careful not to remove transition
 
 either define all default mode css in the beginning, or will have to change code to automatically default missing css with the default setting spec values to help display the settings pane correctly too (preview mode will also need to contain default values)
 

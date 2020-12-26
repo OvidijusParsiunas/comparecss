@@ -4,7 +4,7 @@ export interface WorkshopComponentCss {
   borderColor?: string;
   borderRadius?: string;
   transition?: string;
-  boxShadow?: string;
+  boxShadow?: string; // should not start with '0px 0px 0px 0px'
   backgroundColor?: string;
   width?: string;
   height?: string;

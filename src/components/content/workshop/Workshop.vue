@@ -56,32 +56,33 @@
 </template>
 
 <script lang="ts">
+import { componentTypeToOptions } from './toolbar/options/componentOptions/componentTypeToOptions';
+import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
+import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
+import { inheritedAlertBaseCss } from './newComponent/types/alerts/properties/inheritedCss';
+import removeSubcomponentModal from './toolbar/options/modal/RemoveSubcomponentModal.vue';
+import ProcessClassName from '../../../services/workshop/newComponent/processClassName';
+import { CustomCss, WorkshopComponent } from '../../../interfaces/workshopComponent';
+import { SUB_COMPONENT_CSS_MODES } from '../../../consts/subcomponentCssModes.enum';
+import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
+import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
+import { JAVASCRIPT_CLASSES } from '../../../consts/javascriptClasses.enum';
+import JSONManipulation from '../../../services/workshop/jsonManipulation';
+import componentContents from './componentPreview/ComponentPreview.vue';
+import { SUB_COMPONENTS } from '../../../consts/subcomponentModes.enum';
+import { UpdateOptionsMode } from '../../../interfaces/updateCssMode';
+import newComponentModal from './newComponent/NewComponentModal.vue';
+import ComponentJs from '../../../services/workshop/componentJs';
+import componentList from './componentList/ComponentList.vue';
+import toolbar from './toolbar/Toolbar.vue';
+import 'vuesax/dist/vuesax.css' //Vuesax styles
+
 interface Data {
   components: WorkshopComponent[],
   currentlySelectedComponent: WorkshopComponent;
   componentPreviewAssistance: ComponentPreviewAssistance;
   workshopEventCallbacks: (() => boolean)[];
 }
-import 'vuesax/dist/vuesax.css' //Vuesax styles
-import toolbar from './toolbar/Toolbar.vue';
-import componentContents from './componentPreview/ComponentPreview.vue';
-import newComponentModal from './newComponent/NewComponentModal.vue';
-import removeSubcomponentModal from './toolbar/options/modal/RemoveSubcomponentModal.vue';
-import componentList from './componentList/ComponentList.vue';
-import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
-import { CustomCss, WorkshopComponent } from '../../../interfaces/workshopComponent';
-import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
-import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
-import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
-import { UpdateOptionsMode } from '../../../interfaces/updateCssMode';
-import ProcessClassName from '../../../services/workshop/newComponent/processClassName';
-import ComponentJs from '../../../services/workshop/componentJs';
-import { SUB_COMPONENT_CSS_MODES } from '../../../consts/subcomponentCssModes.enum';
-import { componentTypeToOptions } from './toolbar/options/componentOptions/componentTypeToOptions';
-import { SUB_COMPONENTS } from '../../../consts/subcomponentModes.enum';
-import JSONManipulation from '../../../services/workshop/jsonManipulation';
-import { JAVASCRIPT_CLASSES } from '@/consts/javascriptClasses.enum';
-import { inheritedAlertBaseCss } from './newComponent/types/alerts/properties/inheritedCss';
 
 const initialContainerButtonCss: CustomCss = {
   [SUB_COMPONENT_CSS_MODES.DEFAULT]: {

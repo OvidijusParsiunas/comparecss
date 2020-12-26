@@ -1,10 +1,10 @@
-import { WorkshopComponentCss } from './workshopComponentCss';
-import { NEW_COMPONENT_TYPES } from '../consts/newComponentTypes.enum';
-import { InheritedCss } from './inheritedCss';
 import { SUB_COMPONENT_CSS_MODES } from '../consts/subcomponentCssModes.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
-import { TempCustomCss } from './tempCustomCss';
+import { NEW_COMPONENT_TYPES } from '../consts/newComponentTypes.enum';
 import { SUB_COMPONENTS } from '../consts/subcomponentModes.enum';
+import { WorkshopComponentCss } from './workshopComponentCss';
+import { TempCustomCss } from './tempCustomCss';
+import { InheritedCss } from './inheritedCss';
 
 export interface ChildCss {
   elementTag: string;
