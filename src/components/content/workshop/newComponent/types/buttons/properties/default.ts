@@ -53,7 +53,7 @@ export const defaultButton: NewComponent = {
               borderWidth: '0px',
               borderColor: '#1779ba',
               backgroundColor: '#1779ba',
-              boxShadow: '0px 0px 0px 0px #000000',
+              boxShadow: 'unset',
               outline: 'none',
               lineHeight: '0',
               paddingTop: '0px',

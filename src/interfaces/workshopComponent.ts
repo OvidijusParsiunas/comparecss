@@ -40,7 +40,8 @@ export interface SubcomponentProperties {
   innerHtmlText: string;
   customCss: CustomCss;
   initialCss: CustomCss;
-  // this css is used in instances where a partialCss has been overwrittern by a single value, but a fraction of it must be retained for settings - boxShadow
+  // this css is used in instances where partialCss has been overwrittern by a single value, but a fraction of it
+  // must be retained for use by settings - boxShadow (to note, this is mostly used by the app in runtime)
   auxiliaryPartialCss?: CustomCss;
   // this css is used in this website only and will be removed in output file
   tempCustomCss?: TempCustomCss;

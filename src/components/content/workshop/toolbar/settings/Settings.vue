@@ -203,9 +203,8 @@ export default {
             if (cssPropertyValue) { this.selectorCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
           } else if (setting.type === 'colorPicker') {
             let cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
-            if (cssPropertyValue === 'unset') {
-              // FIX - use a const here - '#000000'
-              cssPropertyValue = this.getActiveModeCssPropertyValue(auxiliaryPartialCss, customCssActiveMode, setting.spec.cssProperty) || '#000000';
+            if (setting.spec.cssProperty === 'boxShadow' && cssPropertyValue === 'unset') {
+              cssPropertyValue = this.getActiveModeCssPropertyValue(auxiliaryPartialCss, customCssActiveMode, setting.spec.cssProperty) || BoxShadowUtils.DEFAULT_BOX_SHADOW_COLOR_VALUE;
             }
             if (cssPropertyValue) { setting.spec.default = setting.spec.partialCss ? cssPropertyValue.split(' ')[setting.spec.partialCss.position] : cssPropertyValue; }
           } else if (setting.type === 'inputDropdown') {
@@ -348,7 +347,7 @@ export default {
             customCss[customCssActiveMode][cssProperty] = cssProperty === 'boxShadow' ? 'unset' : defaultValues.join(' ');
           }
         } else {
-          if (customCss[customCssActiveMode][cssProperty] !== 'unset') {
+          if (cssProperty !== 'boxShadow' || (cssProperty === 'boxShadow' && customCss[customCssActiveMode][cssProperty] !== 'unset')) {
             const cssPropertyValues = customCss[customCssActiveMode][cssProperty].split(' ');
             cssPropertyValues[partialCss.position] = colorPickerValue;
             customCss[customCssActiveMode][cssProperty] = cssPropertyValues.join(' ');

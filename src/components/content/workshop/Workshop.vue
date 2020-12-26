@@ -150,11 +150,6 @@ export default {
             customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
             tempCustomCss: new Set(['transition']),
             inheritedCss: inheritedAlertBaseCss,
-            auxiliaryPartialCss: { 
-              [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-                boxShadow: '0px 0px 0px 0px #000000',
-              },
-            },
           },
           [SUB_COMPONENTS.CLOSE]: {
             frameworkClass: 'bootstrap',
@@ -240,11 +235,6 @@ export default {
             initialJsClasses: new Set(),
             customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
             tempCustomCss: new Set(['transition']),
-            auxiliaryPartialCss: { 
-              [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-                boxShadow: '0px 0px 0px 0px #000000',
-              },
-            },
           },
           [SUB_COMPONENTS.CLOSE]: {
             frameworkClass: 'bootstrap',

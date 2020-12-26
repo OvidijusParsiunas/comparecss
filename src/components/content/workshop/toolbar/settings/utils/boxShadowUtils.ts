@@ -3,21 +3,24 @@ import { SUB_COMPONENT_CSS_MODES } from '../../../../../../consts/subcomponentCs
 
 // this is mostly used for firefox as it has been identified that shadow values of 0px 0px 0px 0px still displays a partial shadow
 export default class BoxShadowUtils {
+
+  private static DEFAULT_BOX_SHADOW_PIXEL_VALUES = '0px 0px 0px 0px';
+  private static DEFAULT_BOX_SHADOW_UNSET_VALUE = 'unset';
+  public static DEFAULT_BOX_SHADOW_COLOR_VALUE = '#000000';
+  private static DEFAULT_BOX_SHADOW_SETTINGS_RANGE_VALUE = '0';
   
-  // use consts for 0px 0px 0px 0px;
   public static setUnsetBoxShadowPropertiesToZero(customCss: CustomCss, auxiliaryPartialCss: CustomCss, customCssActiveMode: SUB_COMPONENT_CSS_MODES): void {
-    // try to retain the colour
-    if (customCss[customCssActiveMode].boxShadow === 'unset') {
+    if (customCss[customCssActiveMode].boxShadow === this.DEFAULT_BOX_SHADOW_UNSET_VALUE) {
       customCss[customCssActiveMode].boxShadow = auxiliaryPartialCss && auxiliaryPartialCss[customCssActiveMode] && auxiliaryPartialCss[customCssActiveMode].boxShadow
-        ? auxiliaryPartialCss[customCssActiveMode].boxShadow : '0px 0px 0px 0px #000000';
+        ? auxiliaryPartialCss[customCssActiveMode].boxShadow : `${this.DEFAULT_BOX_SHADOW_PIXEL_VALUES} ${this.DEFAULT_BOX_SHADOW_COLOR_VALUE}`;
     }
   }
 
   public static setZeroBoxShadowPropertiesToUnset(subcomponentproperties: SubcomponentProperties): void {
     const { customCss, customCssActiveMode } = subcomponentproperties;
-    if (customCss[customCssActiveMode].boxShadow.startsWith('0px 0px 0px 0px')) {
+    if (customCss[customCssActiveMode].boxShadow.startsWith(this.DEFAULT_BOX_SHADOW_PIXEL_VALUES)) {
       this.setAuxiliaryBoxShadowPropertyWithCustomColor(subcomponentproperties, customCss[customCssActiveMode].boxShadow.split(' ').pop());
-      customCss[customCssActiveMode].boxShadow = 'unset';     
+      customCss[customCssActiveMode].boxShadow = this.DEFAULT_BOX_SHADOW_UNSET_VALUE;     
     }
   }
 
@@ -28,12 +31,12 @@ export default class BoxShadowUtils {
     if (!subcomponentproperties.auxiliaryPartialCss[subcomponentproperties.customCssActiveMode]) {
       subcomponentproperties.auxiliaryPartialCss[subcomponentproperties.customCssActiveMode] = {};
     }
-    subcomponentproperties.auxiliaryPartialCss[subcomponentproperties.customCssActiveMode].boxShadow = `0px 0px 0px 0px ${colorPickerValue}`;
+    subcomponentproperties.auxiliaryPartialCss[subcomponentproperties.customCssActiveMode].boxShadow = `${this.DEFAULT_BOX_SHADOW_PIXEL_VALUES} ${colorPickerValue}`;
   }
 
   public static setBoxShadowSettingsRangeValue(cssPropertyValue: string, settingsSpec: any): boolean {
-    if (cssPropertyValue === 'unset') {
-      settingsSpec.default = '0';
+    if (cssPropertyValue === this.DEFAULT_BOX_SHADOW_UNSET_VALUE) {
+      settingsSpec.default = this.DEFAULT_BOX_SHADOW_SETTINGS_RANGE_VALUE;
       return true;
     }
     return false;
