@@ -1,20 +1,20 @@
 <template>
-  <div class="modal fade" id="newComponentModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
+  <div class="modal fade" id="newComponentModal">
+    <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Add new component</h5>
-          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-            <span aria-hidden="true">&times;</span>
+          <button type="button" class="close" data-dismiss="modal">
+            <span>&times;</span>
           </button>
         </div>
         <div class="modal-body">
           <form style="width: 100%">
             <input ref="modalClassNameEditorInput" style="width: 50%" class="form-control" type="text"
-              :placeholder="classNamePlaceholder" v-model="className"
+              v-model="className"
               @input="changeClassName"
               @keydown.enter="blurClassNameEditorInput"
-              @click="editClassName(component)">
+              @mousedown="editClassName(component)">
             <div class="form-row">
               <div class="form-group col-md-6">
                 <div class="form-group">
@@ -48,38 +48,57 @@ import ProcessClassName from '../../../../services/workshop/newComponent/process
 
 interface Data {
   previewImage: string;
-  NEW_COMPONENT_TYPES,
+  classNameIndex: number;
   className: string;
   classNamePlaceholder: string;
-  classNameIndex: number;
+}
+
+interface Consts {
+  MODAL_FADE_MILLISECONDS: number;
+  CLASS_NAME_PREFIX: string;
+  NEW_COMPONENT_TYPES,
 }
 
 export default {
+  setup(): Consts {
+    return {
+      MODAL_FADE_MILLISECONDS: 500,
+      CLASS_NAME_PREFIX: 'component-',
+      NEW_COMPONENT_TYPES,
+    };
+  },
   data: (): Data => ({
     previewImage: 'previewImage',
-    NEW_COMPONENT_TYPES,
+    classNameIndex: 1,
     className: null,
-    classNamePlaceholder: `component-1`,
-    classNameIndex: 2,
+    classNamePlaceholder: null,
   }),
+  created(): void {
+    if (!this.className) { this.className = this.createClassName(this.classNameIndex); }
+    if (!this.classNamePlaceholder) { this.classNamePlaceholder = this.createClassName(this.classNameIndex); }
+  },
   methods: {
+    createClassName(classNameIndex: number): string {
+      return `${this.CLASS_NAME_PREFIX}${classNameIndex}`;
+    },
     setComponentPreviewImage(componentName: string): void {
       this.previewImage = newComponentModalService.getPreviewImage(componentName);
     },
     addNewComponent(newComponentType: NEW_COMPONENT_TYPES): void {
       const newComponent = componentTypeToStyles[newComponentType][NEW_COMPONENT_STYLES.DEFAULT].getNewComponent();
-      newComponent.className = this.className || this.classNamePlaceholder;
+      newComponent.className = this.className;
       this.$emit('add-new-component', newComponent);
       // updates modal only after it has closed
       setTimeout(() => {
-        this.className = null;
-        this.classNamePlaceholder = `component-${this.classNameIndex++}`;
-      }, 500);
+        this.classNameIndex++;
+        this.className = this.createClassName(this.classNameIndex);
+        this.classNamePlaceholder = this.createClassName(this.classNameIndex);
+      }, this.MODAL_FADE_MILLISECONDS);
     },
     changeClassName(): void {
       this.className = ProcessClassName.process(this.className);
     },
-    blurClassNameEditorInput: (event: KeyboardEvent): void => {
+    blurClassNameEditorInput(event: KeyboardEvent): void {
       event.preventDefault();
       (event.target as HTMLInputElement).blur();
     },
@@ -89,13 +108,13 @@ export default {
     stopEditingClassName(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
       if (event instanceof KeyboardEvent) {
         if (event.key === 'Enter') {
-          this.className = ProcessClassName.finalize(this.className, this.placeholder, this.components);
+          this.className = ProcessClassName.finalize(this.className, this.classNamePlaceholder, this.components);
           return { shouldRepeat: false };
         }
         return { shouldRepeat: true };
       }
       if (event.target !== this.$refs.modalClassNameEditorInput) {
-        this.className = ProcessClassName.finalize(this.className, this.placeholder, this.components);
+        this.className = ProcessClassName.finalize(this.className, this.classNamePlaceholder, this.components);
         return { shouldRepeat: false };
       }
       return { shouldRepeat: true };
@@ -106,3 +125,13 @@ export default {
   },
 };
 </script>
+
+<style lang="css" scoped>
+  input:focus, select:focus {
+    box-shadow: none !important;
+    border-color: #b5b5b5 !important;
+  }
+  button:focus {
+    box-shadow: none !important;
+  }
+</style>
