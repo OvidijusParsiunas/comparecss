@@ -56,13 +56,13 @@
 </template>
 
 <script lang="ts">
-import { componentTypeToOptions } from './toolbar/options/componentOptions/componentTypeToOptions';
+import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../interfaces/workshopComponent';
+import { inheritedCloseChildCss } from './newComponent/types/alerts/properties/inheritedCloseChildCss';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { inheritedAlertBaseCss } from './newComponent/types/alerts/properties/inheritedCss';
 import removeSubcomponentModal from './toolbar/options/modal/RemoveSubcomponentModal.vue';
 import ProcessClassName from '../../../services/workshop/newComponent/processClassName';
-import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../interfaces/workshopComponent';
 import { SUB_COMPONENT_CSS_MODES } from '../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
@@ -167,51 +167,7 @@ export default {
             customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
             subcomponentPreviewTransition: 'all 0.25s ease-out',
             tempCustomCss: new Set(['transition']),
-            childCss: [
-              {
-                elementTag: 'div',
-                childNumber: 1,
-                inheritedCss: {
-                  position: 'relative',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%,-50%)',
-                  width: '200px',
-                  textAlign: 'center',
-                },
-              },
-              {
-                elementTag: 'div',
-                childNumber: 2,
-                inheritedCss: {
-                  position: 'absolute',
-                  top: '0px',
-                  right: '0px',
-                  cursor: 'default !important',
-                },
-                nestedChildCss: [{
-                  elementTag: 'button',
-                  childNumber: 1,
-                  hasCustomCss: true,
-                  inheritedCss: {
-                    position: 'relative',
-                    overflow: 'hidden',
-                    transition: 'all 0.25s ease-out',
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-                  },
-                  nestedChildCss: [{
-                    elementTag: 'div',
-                    childNumber: 1,
-                    inheritedCss: {
-                      display: 'table',
-                      pointerEvents: 'none',
-                      marginLeft: 'auto',
-                      marginRight: 'auto',
-                    }
-                  }]
-                }]
-              }
-            ],
+            childCss: inheritedCloseChildCss,
             optionalSubcomponent: { currentlyDisplaying: true },
           },
         },
@@ -252,51 +208,7 @@ export default {
             customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
             subcomponentPreviewTransition: 'all 0.25s ease-out',
             tempCustomCss: new Set(['transition']),
-            childCss: [
-              {
-                elementTag: 'div',
-                childNumber: 1,
-                inheritedCss: {
-                  position: 'relative',
-                  top: '50%',
-                  left: '50%',
-                  transform: 'translate(-50%,-50%)',
-                  width: '200px',
-                  textAlign: 'center',
-                },
-              },
-              {
-                elementTag: 'div',
-                childNumber: 2,
-                inheritedCss: {
-                  position: 'absolute',
-                  top: '0px',
-                  right: '0px',
-                  cursor: 'default !important',
-                },
-                nestedChildCss: [{
-                  elementTag: 'button',
-                  childNumber: 1,
-                  hasCustomCss: true,
-                  inheritedCss: {
-                    position: 'relative',
-                    overflow: 'hidden',
-                    transition: 'all 0.25s ease-out',
-                    fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-                  },
-                  nestedChildCss: [{
-                    elementTag: 'div',
-                    childNumber: 1,
-                    inheritedCss: {
-                      display: 'table',
-                      pointerEvents: 'none',
-                      marginLeft: 'auto',
-                      marginRight: 'auto',
-                    }
-                  }]
-                }]
-              } 
-            ],
+            childCss: inheritedCloseChildCss,
             optionalSubcomponent: { currentlyDisplaying: true },
           },
         },

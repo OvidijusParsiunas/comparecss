@@ -1,13 +1,14 @@
-import { ChildCss, CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { NewComponent } from '../../../../../../../interfaces/newComponent';
-import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
+import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
+import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
-import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
 import JSONManipulation from '../../../../../../../services/workshop/jsonManipulation';
+import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
+import { NewComponent } from '../../../../../../../interfaces/newComponent';
+import { inheritedCloseChildCss } from './inheritedCloseChildCss';
 import { inheritedAlertBaseCss } from './inheritedCss';
 
-// need to fill in properly so that the 'reset' option would work
+// all default css needs to be filled in as to be able to 'reset' correctly
 const initialBaseCss: CustomCss = {
   [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
     color: '#004085',
@@ -53,52 +54,6 @@ const initialCloseButtonCss: CustomCss = {
   },
 }
 
-const childCss: ChildCss[] = [
-  {
-    elementTag: 'div',
-    childNumber: 1,
-    inheritedCss: {
-      position: 'absolute',
-      top: '50%',
-      left: '50%',
-      transform: 'translate(-50%,-50%)',
-      width: '200px',
-      textAlign: 'center',
-    },
-  },
-  {
-    elementTag: 'div',
-    childNumber: 2,
-    inheritedCss: {
-      position: 'absolute',
-      top: '0px',
-      right: '0px',
-      cursor: 'default !important',
-    },
-    nestedChildCss: [{
-      elementTag: 'button',
-      childNumber: 1,
-      hasCustomCss: true,
-      inheritedCss: {
-        position: 'relative',
-        overflow: 'hidden',
-        transition: 'all 0.25s ease-out',
-        fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
-      },
-      nestedChildCss: [{
-        elementTag: 'div',
-        childNumber: 1,
-        inheritedCss: {
-          display: 'table',
-          pointerEvents: 'none',
-          marginLeft: 'auto',
-          marginRight: 'auto',
-        }
-      }]
-    }]
-  } 
-]
-
 export const defaultAlert: NewComponent = {
   getNewComponent(): WorkshopComponent {
     return {
@@ -135,7 +90,7 @@ export const defaultAlert: NewComponent = {
           customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
           subcomponentPreviewTransition: 'all 0.25s ease-out',
           tempCustomCss: new Set(['transition']),
-          childCss,
+          childCss: inheritedCloseChildCss,
           optionalSubcomponent: { currentlyDisplaying: true },
         },
       },
