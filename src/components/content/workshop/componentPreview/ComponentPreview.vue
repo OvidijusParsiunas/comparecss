@@ -74,7 +74,7 @@ import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import divInnerHtml from './divInnerHTML.vue';
 import { Ref, ref, watch } from 'vue';
 
-interface Data {
+interface Consts {
   SUB_COMPONENT_CSS_MODES;
   NEW_COMPONENT_TYPES;
   SUB_COMPONENTS;
@@ -82,22 +82,22 @@ interface Data {
 }
 
 interface Props {
-  component?: WorkshopComponent;
+  component: WorkshopComponent;
 }
 
 export default {
-  data: (): Data => ({
-    SUB_COMPONENT_PREVIEW_ELEMENT_IDS,
-    SUB_COMPONENT_CSS_MODES,
-    NEW_COMPONENT_TYPES,
-    SUB_COMPONENTS,
-  }),
-  setup(props: { component: WorkshopComponent }): UseComponentPreviewEventHandlers {
+  setup(props: Props): UseComponentPreviewEventHandlers & Consts {
     const componentRef: Ref<Props['component']> = ref(props.component);
     watch(() => props.component, (newComponent: Props['component']) => {
       componentRef.value = newComponent;
     });
-    return useComponentPreviewEventHandlers(componentRef, new Set([SUB_COMPONENTS.CLOSE]));
+    return {
+      ...useComponentPreviewEventHandlers(componentRef, new Set([SUB_COMPONENTS.CLOSE])),
+      SUB_COMPONENT_PREVIEW_ELEMENT_IDS,
+      SUB_COMPONENT_CSS_MODES,
+      NEW_COMPONENT_TYPES,
+      SUB_COMPONENTS,
+    };
   },
   methods: {
     componentPreviewMouseLeave(): void {

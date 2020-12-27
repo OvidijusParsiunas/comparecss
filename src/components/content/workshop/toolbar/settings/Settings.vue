@@ -133,9 +133,7 @@ import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssMo
 import { CustomCss } from '../../../../../interfaces/workshopComponent';
 import BoxShadowUtils from './utils/boxShadowUtils';
 
-interface Data {
-  selectorCurrentValues: unknown;
-  inputDropdownCurrentValues: unknown;
+interface Consts {
   SUB_COMPONENT_CSS_MODES;
   UNSET_COLOR_BUTTON_DISPLAYED_STATE;
   UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX;
@@ -146,95 +144,105 @@ interface Data {
   resetJs: () => void;
 }
 
+interface Data {
+  selectorCurrentValues: unknown;
+  inputDropdownCurrentValues: unknown;
+}
+
+// can be placed into composition API?
 export default {
+  setup(): Consts {
+    return {
+      SUB_COMPONENT_CSS_MODES,
+      UNSET_COLOR_BUTTON_DISPLAYED_STATE,
+      UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX,
+      getActiveModeCssPropertyValue(css: CustomCss, activeMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): string {
+        // the following allows multiple cases to be checked in one execution
+        if (!css) return undefined;
+        switch (activeMode) {
+          case (SUB_COMPONENT_CSS_MODES.CLICK):
+            if (css[SUB_COMPONENT_CSS_MODES.CLICK] && css[SUB_COMPONENT_CSS_MODES.CLICK].hasOwnProperty(cssProperty)) {
+              return css[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
+            }
+          case (SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
+            if (css[SUB_COMPONENT_CSS_MODES.HOVER] && css[SUB_COMPONENT_CSS_MODES.HOVER].hasOwnProperty(cssProperty)) {
+              return css[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
+            }
+          case (SUB_COMPONENT_CSS_MODES.DEFAULT || SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
+            if (css[SUB_COMPONENT_CSS_MODES.DEFAULT] && css[SUB_COMPONENT_CSS_MODES.DEFAULT].hasOwnProperty(cssProperty)) {
+              return css[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty];
+            }
+          default:
+            return undefined;
+        }
+      },
+      updateSettings(): void {
+        this.$nextTick(() => {
+          const { customCss, customCssActiveMode, jsClasses, auxiliaryPartialCss } = this.subcomponentproperties;
+          this.selectorCurrentValues = {};
+          this.inputDropdownCurrentValues = {};
+          (this.settings.options || []).forEach((setting) => {
+            if (setting.type === 'range') {
+              const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
+              if (cssPropertyValue !== undefined) {
+                if (customCss[customCssActiveMode]) {
+                  (setting.triggers || []).forEach((trigger) => {
+                    if (trigger.conditions.has(this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, trigger.cssProperty))) {
+                      customCss[customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
+                      this.selectorCurrentValues[setting.spec.cssProperty] = trigger.defaultValue;
+                    }
+                  });
+                }
+                const hasBoxShadowBeenSet = setting.spec.cssProperty === 'boxShadow' && BoxShadowUtils.setBoxShadowSettingsRangeValue(cssPropertyValue, setting.spec);
+                if (!hasBoxShadowBeenSet) {
+                  const singlePropertyValue = setting.spec.partialCss ? cssPropertyValue.split(' ')[setting.spec.partialCss.position] : cssPropertyValue;
+                  setting.spec.default = this.parseRangeValue(singlePropertyValue, setting.spec.smoothingDivisible); 
+                }
+              }
+            } else if (setting.type === 'select') {
+              // default value for range is currently setting the select value, not the select value for ranges
+              // potential race condition where range sets the select value and select may set it to something incorrect
+              const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
+              if (cssPropertyValue) { this.selectorCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
+            } else if (setting.type === 'colorPicker') {
+              let cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
+              if (setting.spec.cssProperty === 'boxShadow' && cssPropertyValue === 'unset') {
+                cssPropertyValue = this.getActiveModeCssPropertyValue(auxiliaryPartialCss, customCssActiveMode, setting.spec.cssProperty) || BoxShadowUtils.DEFAULT_BOX_SHADOW_COLOR_VALUE;
+              }
+              if (cssPropertyValue) { setting.spec.default = setting.spec.partialCss ? cssPropertyValue.split(' ')[setting.spec.partialCss.position] : cssPropertyValue; }
+            } else if (setting.type === 'inputDropdown') {
+              const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
+              if (cssPropertyValue) { this.inputDropdownCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
+            } else if (setting.type === 'checkbox') {
+              if (setting.spec.javascript) {
+                setting.spec.default = jsClasses.has(setting.spec.jsClassName);
+              } else {
+                const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
+                if (cssPropertyValue) { setting.spec.default = (cssPropertyValue === setting.spec.conditionalStyle.truthy); }
+              }
+            }
+          });
+        });
+      },
+      addDefaultValueIfCssModeMissing(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): void {
+        const customCss = this.getActiveModeCssPropertyValue(this.subcomponentproperties.customCss, customCssActiveMode, cssProperty);
+        if (!this.subcomponentproperties.customCss[customCssActiveMode]) {
+          this.subcomponentproperties.customCss[customCssActiveMode] = { [cssProperty]: customCss };
+        } else if (!this.subcomponentproperties.customCss[customCssActiveMode][cssProperty]) {
+          this.subcomponentproperties.customCss[customCssActiveMode][cssProperty] = customCss;
+        }
+      },
+      parseRangeValue(value: string, smoothingDivisible: number): number {
+        return parseInt(value.substring(0, value.length - 2), 10) * smoothingDivisible;
+      },
+      resetJs(): void {
+        this.subcomponentproperties.jsClasses = new Set([...this.subcomponentproperties.initialJsClasses]);
+      },
+    };
+  },
   data: (): Data => ({
     selectorCurrentValues: {},
     inputDropdownCurrentValues: {},
-    SUB_COMPONENT_CSS_MODES,
-    UNSET_COLOR_BUTTON_DISPLAYED_STATE,
-    UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX,
-    getActiveModeCssPropertyValue(css: CustomCss, activeMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): string {
-      // the following allows multiple cases to be checked in one execution
-      if (!css) return undefined;
-      switch (activeMode) {
-        case (SUB_COMPONENT_CSS_MODES.CLICK):
-          if (css[SUB_COMPONENT_CSS_MODES.CLICK] && css[SUB_COMPONENT_CSS_MODES.CLICK].hasOwnProperty(cssProperty)) {
-            return css[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
-          }
-        case (SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
-          if (css[SUB_COMPONENT_CSS_MODES.HOVER] && css[SUB_COMPONENT_CSS_MODES.HOVER].hasOwnProperty(cssProperty)) {
-            return css[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
-          }
-        case (SUB_COMPONENT_CSS_MODES.DEFAULT || SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
-          if (css[SUB_COMPONENT_CSS_MODES.DEFAULT] && css[SUB_COMPONENT_CSS_MODES.DEFAULT].hasOwnProperty(cssProperty)) {
-            return css[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty];
-          }
-        default:
-          return undefined;
-      }
-    },
-    updateSettings(): void {
-      this.$nextTick(() => {
-        const { customCss, customCssActiveMode, jsClasses, auxiliaryPartialCss } = this.subcomponentproperties;
-        this.selectorCurrentValues = {};
-        this.inputDropdownCurrentValues = {};
-        (this.settings.options || []).forEach((setting) => {
-          if (setting.type === 'range') {
-            const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
-            if (cssPropertyValue !== undefined) {
-              if (customCss[customCssActiveMode]) {
-                (setting.triggers || []).forEach((trigger) => {
-                  if (trigger.conditions.has(this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, trigger.cssProperty))) {
-                    customCss[customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
-                    this.selectorCurrentValues[setting.spec.cssProperty] = trigger.defaultValue;
-                  }
-                });
-              }
-              const hasBoxShadowBeenSet = setting.spec.cssProperty === 'boxShadow' && BoxShadowUtils.setBoxShadowSettingsRangeValue(cssPropertyValue, setting.spec);
-              if (!hasBoxShadowBeenSet) {
-                const singlePropertyValue = setting.spec.partialCss ? cssPropertyValue.split(' ')[setting.spec.partialCss.position] : cssPropertyValue;
-                setting.spec.default = this.parseRangeValue(singlePropertyValue, setting.spec.smoothingDivisible); 
-              }
-            }
-          } else if (setting.type === 'select') {
-            // default value for range is currently setting the select value, not the select value for ranges
-            // potential race condition where range sets the select value and select may set it to something incorrect
-            const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
-            if (cssPropertyValue) { this.selectorCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
-          } else if (setting.type === 'colorPicker') {
-            let cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
-            if (setting.spec.cssProperty === 'boxShadow' && cssPropertyValue === 'unset') {
-              cssPropertyValue = this.getActiveModeCssPropertyValue(auxiliaryPartialCss, customCssActiveMode, setting.spec.cssProperty) || BoxShadowUtils.DEFAULT_BOX_SHADOW_COLOR_VALUE;
-            }
-            if (cssPropertyValue) { setting.spec.default = setting.spec.partialCss ? cssPropertyValue.split(' ')[setting.spec.partialCss.position] : cssPropertyValue; }
-          } else if (setting.type === 'inputDropdown') {
-            const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
-            if (cssPropertyValue) { this.inputDropdownCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
-          } else if (setting.type === 'checkbox') {
-            if (setting.spec.javascript) {
-              setting.spec.default = jsClasses.has(setting.spec.jsClassName);
-            } else {
-              const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
-              if (cssPropertyValue) { setting.spec.default = (cssPropertyValue === setting.spec.conditionalStyle.truthy); }
-            }
-          }
-        });
-      });
-    },
-    addDefaultValueIfCssModeMissing(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): void {
-      const customCss = this.getActiveModeCssPropertyValue(this.subcomponentproperties.customCss, customCssActiveMode, cssProperty);
-      if (!this.subcomponentproperties.customCss[customCssActiveMode]) {
-        this.subcomponentproperties.customCss[customCssActiveMode] = { [cssProperty]: customCss };
-      } else if (!this.subcomponentproperties.customCss[customCssActiveMode][cssProperty]) {
-        this.subcomponentproperties.customCss[customCssActiveMode][cssProperty] = customCss;
-      }
-    },
-    parseRangeValue(value: string, smoothingDivisible: number): number {
-      return parseInt(value.substring(0, value.length - 2), 10) * smoothingDivisible;
-    },
-    resetJs(): void {
-      this.subcomponentproperties.jsClasses = new Set([...this.subcomponentproperties.initialJsClasses]);
-    },
   }),
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   // put these methods into services

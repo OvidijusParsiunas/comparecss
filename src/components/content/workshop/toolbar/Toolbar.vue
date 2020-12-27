@@ -20,6 +20,15 @@
 </template>
 
 <script lang="ts">
+import { componentTypeToOptions } from './options/componentOptions/componentTypeToOptions';
+import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
+import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOptions';
+import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
+import { UpdateOptionsMode } from '../../../../interfaces/updateCssMode';
+import { optionToSettings } from './settings/types/optionToSettings';
+import settings from './settings/Settings.vue';
+import options from './options/Options.vue';
+
 interface Data {
   activeOption: WORKSHOP_TOOLBAR_OPTIONS;
   activeSettings: any;
@@ -27,14 +36,6 @@ interface Data {
   settingsUpdateTriggered: boolean;
   settingsOpenedOnce: boolean;
 }
-import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOptions';
-import { optionToSettings } from './settings/types/optionToSettings';
-import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
-import { UpdateOptionsMode } from '../../../../interfaces/updateCssMode';
-import settings from './settings/Settings.vue';
-import options from './options/Options.vue';
-import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
-import { componentTypeToOptions } from './options/componentOptions/componentTypeToOptions';
 
 export default {
   data: (): Data => ({

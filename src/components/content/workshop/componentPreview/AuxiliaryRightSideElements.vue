@@ -38,28 +38,28 @@ import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { SubcomponentProperties } from '../../../../interfaces/workshopComponent';
 import { Ref, ref, watch } from 'vue';
 
-interface Data {
+interface Consts {
   SUB_COMPONENT_PREVIEW_ELEMENT_IDS;
   SUB_COMPONENT_CSS_MODES;
   NEW_COMPONENT_TYPES;
 }
 
 interface Props {
-  subcomponent?: SubcomponentProperties;
+  subcomponent: SubcomponentProperties;
 }
 
 export default {
-  data: (): Data => ({
-    SUB_COMPONENT_PREVIEW_ELEMENT_IDS,
-    SUB_COMPONENT_CSS_MODES,
-    NEW_COMPONENT_TYPES,
-  }),
-  setup(props: { subcomponent: SubcomponentProperties }): UseComponentPreviewEventHandlers {
+  setup(props: Props): UseComponentPreviewEventHandlers & Consts {
     const subcomponentRef: Ref<Props['subcomponent']> = ref(props.subcomponent);
     watch(() => props.subcomponent, (newSubcomponent: Props['subcomponent']) => {
       subcomponentRef.value = newSubcomponent;
     });
-    return useComponentPreviewEventHandlers(subcomponentRef);
+    return {
+      ...useComponentPreviewEventHandlers(subcomponentRef),
+      SUB_COMPONENT_PREVIEW_ELEMENT_IDS,
+      SUB_COMPONENT_CSS_MODES,
+      NEW_COMPONENT_TYPES,
+    };
   },
   props: {
     componentType: String,

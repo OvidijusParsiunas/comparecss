@@ -11,7 +11,7 @@
           @stop-editing-class-name-callback="stopEditingClassName($event)"/>
       </div>
       <!-- link id to the modal via workshop -->
-      <div style="cursor: move; width: 18rem; margin: auto; outline: none; margin-top: 5px" class="add-card card" data-toggle="modal" data-target="#newComponentModal" tabindex="0">
+      <div style="cursor: move; width: 18rem; margin: auto; outline: none; margin-top: 5px" class="add-card card" data-toggle="modal" :data-target="`#${NEW_COMPONENT_MODAL_ID}`" tabindex="0">
         <div style="text-align: center" class="card-body">
           <div style="height: 38px; padding-top: 6px">
             Add +
@@ -23,12 +23,19 @@
 </template>
 
 <script lang="ts">
-import componentCard from './ComponentCard.vue';
 import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
+import { NEW_COMPONENT_MODAL_ID } from '../../../../consts/elementIds';
+import componentCard from './ComponentCard.vue';
+
+interface Consts {
+  NEW_COMPONENT_MODAL_ID,
+}
 
 export default {
-  components: {
-    componentCard,
+  setup(): Consts {
+    return {
+      NEW_COMPONENT_MODAL_ID,
+    }
   },
   methods: {
     componentCardSelected(selectedComponentCard: WorkshopComponent): void {
@@ -43,6 +50,9 @@ export default {
     stopEditingClassName(callback: () => boolean): void {
       this.$emit('stop-editing-class-name-callback', callback);
     }
+  },
+  components: {
+    componentCard,
   },
   props: {
     components: Array,

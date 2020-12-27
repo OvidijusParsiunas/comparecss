@@ -293,11 +293,11 @@ export default {
     }
   },
   components: {
-    toolbar,
-    componentList,
-    componentContents,
-    newComponentModal,
     removeSubcomponentModal,
+    newComponentModal,
+    componentContents,
+    componentList,
+    toolbar,
   }
 }
 </script>

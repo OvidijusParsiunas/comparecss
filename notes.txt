@@ -5,8 +5,6 @@ setting types should an enum
 potentially have animation for when optional subcomponent options buttons appear and are hidden
 firefox color selector
 
-should add an interface for the { shouldRepeat: false } api
-use the consts pattern in NewComponentModal.vue
 alert text align on the left side or right side
 the alert button ripple does not seem to work properly when there are many components
 solve the initial hover of the subcomponent toggle button problem where it has not loaded up

@@ -1,5 +1,5 @@
 <template>
-  <div class="modal fade" id="newComponentModal">
+  <div class="modal fade" :id="NEW_COMPONENT_MODAL_ID">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -39,12 +39,13 @@
 </template>
 
 <script lang="ts">
-import newComponentModalService from '../../../../services/workshop/newComponentModal';
-import { componentTypeToStyles } from './types/componentTypeToStyles';
-import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
-import { NEW_COMPONENT_STYLES } from '../../../../consts/newComponentStyles.enum';
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
 import ProcessClassName from '../../../../services/workshop/newComponent/processClassName';
+import newComponentModalService from '../../../../services/workshop/newComponentModal';
+import { NEW_COMPONENT_STYLES } from '../../../../consts/newComponentStyles.enum';
+import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
+import { NEW_COMPONENT_MODAL_ID } from '../../../../consts/elementIds';
+import { componentTypeToStyles } from './types/componentTypeToStyles';
 
 interface Data {
   previewImage: string;
@@ -57,6 +58,7 @@ interface Consts {
   MODAL_FADE_MILLISECONDS: number;
   CLASS_NAME_PREFIX: string;
   NEW_COMPONENT_TYPES,
+  NEW_COMPONENT_MODAL_ID,
 }
 
 export default {
@@ -65,6 +67,7 @@ export default {
       MODAL_FADE_MILLISECONDS: 500,
       CLASS_NAME_PREFIX: 'component-',
       NEW_COMPONENT_TYPES,
+      NEW_COMPONENT_MODAL_ID,
     };
   },
   data: (): Data => ({

@@ -90,79 +90,82 @@
 </template>
 
 <script lang="ts">
-interface Data {
-  NAVBAR_MENU_BUTTONS,
-  NAVBAR_SUB_MENU_BUTTONS
-}
-import { NAVBAR_MENU_BUTTONS } from '../../consts/navbarMenuButtons.enum';
 import { NAVBAR_SUB_MENU_BUTTONS } from '../../consts/navbarSubMenuButtons.enum';
+import { NAVBAR_MENU_BUTTONS } from '../../consts/navbarMenuButtons.enum';
 import { NavbarButton } from '../../interfaces/navbarButton';
 
+interface Consts {
+  NAVBAR_MENU_BUTTONS;
+  NAVBAR_SUB_MENU_BUTTONS;
+}
+
 export default {
+  setup(): Consts {
+    return {
+      NAVBAR_MENU_BUTTONS,
+      NAVBAR_SUB_MENU_BUTTONS,
+    };
+  },
   methods: {
     buttonClick(navbarMenuButton: NAVBAR_MENU_BUTTONS, navbarSubMenuButton?: NAVBAR_SUB_MENU_BUTTONS): void {
       const navbarButton: NavbarButton = { navbarMenuButton, navbarSubMenuButton };
       this.$emit('sidenav-button-clicked', navbarButton);
     },
   },
-  data: (): Data  =>({
-    NAVBAR_MENU_BUTTONS,
-    NAVBAR_SUB_MENU_BUTTONS
-  }),
 };
 </script>
 
 <style lang="scss" scoped>
 $navbar-background:#7a7a7a;
-// $navbar-background: #e97b7b
-#comparecss-sidenav ul li.active > a[data-v-fcd8c16e], #comparecss-sidenav a[aria-expanded=true][data-v-fcd8c16e] {
-  background: $navbar-background;
-}
-#comparecss-sidenav .sidenav-header[data-v-fcd8c16e] {
-  background: $navbar-background;
-}
-#comparecss-sidenav {
+  // $navbar-background: #e97b7b
+  #comparecss-sidenav ul li.active > a[data-v-fcd8c16e], #comparecss-sidenav a[aria-expanded=true][data-v-fcd8c16e] {
+    background: $navbar-background;
+  }
+  #comparecss-sidenav .sidenav-header[data-v-fcd8c16e] {
+    background: $navbar-background;
+  }
+  #comparecss-sidenav {
     min-width: 250px;
     max-width: 250px;
     background: $navbar-background;
     color: #fff;
     transition: all 0.3s;
     p {
-        font-family: 'Poppins', sans-serif;
-        font-size: 1.1em;
-        font-weight: 300;
-        line-height: 1.7em;
-        color: #999;
+      font-family: 'Poppins', sans-serif;
+      font-size: 1.1em;
+      font-weight: 300;
+      line-height: 1.7em;
+      color: #999;
     }
 
     a,
     a:hover,
     a:focus {
-        color: inherit;
-        text-decoration: none;
-        transition: all 0.3s;
+      color: inherit;
+      text-decoration: none;
+      transition: all 0.3s;
     }
 
     .navbar {
-        padding: 15px 10px;
-        background: #fff;
-        border: none;
-        border-radius: 0;
-        margin-bottom: 40px;
-        box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
+      padding: 15px 10px;
+      background: #fff;
+      border: none;
+      border-radius: 0;
+      margin-bottom: 40px;
+      box-shadow: 1px 1px 3px rgba(0, 0, 0, 0.1);
     }
 
     .navbar-btn {
-        box-shadow: none;
-        outline: none !important;
-        border: none;
+      box-shadow: none;
+      outline: none !important;
+      border: none;
     }
 
     .line {
-        width: 100%;
-        height: 1px;
-        border-bottom: 1px dashed #ddd;
-        margin: 40px 0;
+      width: 100%;
+      height: 1px;
+      border-bottom: 1px dashed #ddd;
+      margin: 40px 0;
     }
 
     /* ---------------------------------------------------
@@ -170,76 +173,76 @@ $navbar-background:#7a7a7a;
     ----------------------------------------------------- */
 
     .sidenav-header {
-        padding: 20px;
-        background:#7a7a7a;
+      padding: 20px;
+      background:#7a7a7a;
     }
 
     ul.components {
-        padding: 20px 0;
-        border-bottom: 1px solid #47748b;
+      padding: 20px 0;
+      border-bottom: 1px solid #47748b;
     }
 
     ul p {
-        color: #fff;
-        padding: 10px;
+      color: #fff;
+      padding: 10px;
     }
 
     ul li a {
-        padding: 10px;
-        font-size: 1.1em;
-        display: block;
+      padding: 10px;
+      font-size: 1.1em;
+      display: block;
     }
 
     ul li a:hover {
-        color: #7386D5;
-        background: #fff;
+      color: #7386D5;
+      background: #fff;
     }
 
     ul li.active>a,
     a[aria-expanded="true"] {
-        color: #fff;
-        background:#7a7a7a;
+      color: #fff;
+      background:#7a7a7a;
     }
 
     a[data-toggle="collapse"] {
-        position: relative;
+      position: relative;
     }
 
     .dropdown-toggle::after {
-        display: block;
-        position: absolute;
-        top: 50%;
-        right: 20px;
-        transform: translateY(-50%);
+      display: block;
+      position: absolute;
+      top: 50%;
+      right: 20px;
+      transform: translateY(-50%);
     }
 
     ul ul a {
-        font-size: 0.9em !important;
-        padding-left: 30px !important;
-        background:#7a7a7a;
+      font-size: 0.9em !important;
+      padding-left: 30px !important;
+      background:#7a7a7a;
     }
 
     ul.CTAs {
-        padding: 20px;
+      padding: 20px;
     }
 
     ul.CTAs a {
-        text-align: center;
-        font-size: 0.9em !important;
-        display: block;
-        border-radius: 5px;
-        margin-bottom: 5px;
+      text-align: center;
+      font-size: 0.9em !important;
+      display: block;
+      border-radius: 5px;
+      margin-bottom: 5px;
     }
 
     a.download {
-        background: #fff;
-        color: #7386D5;
+      background: #fff;
+      color: #7386D5;
     }
 
     a.article,
     a.article:hover {
-        background:#7a7a7a !important;
-        color: #fff !important;
+      background:#7a7a7a !important;
+      color: #fff !important;
     }
 
     /* ---------------------------------------------------
@@ -247,14 +250,14 @@ $navbar-background:#7a7a7a;
     ----------------------------------------------------- */
 
     @media (max-width: 768px) {
-            margin-left: -250px;
-        .active {
-            margin-left: 0;
-        }
-        #sidenavCollapse span {
-            display: none;
-        }
+        margin-left: -250px;
+      .active {
+        margin-left: 0;
+      }
+      #sidenavCollapse span {
+        display: none;
+      }
     }
-}
+  }
 
 </style>

@@ -9,14 +9,16 @@
 <script lang="ts">
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 
-interface Data {
+interface Consts {
   NEW_COMPONENT_TYPES,
 }
 
 export default {
-  data: (): Data => ({
-    NEW_COMPONENT_TYPES,
-  }),
+  setup(): Consts {
+    return {
+      NEW_COMPONENT_TYPES,
+    };
+  },
   props: {
     componentType: String,
     innerHTML: String,

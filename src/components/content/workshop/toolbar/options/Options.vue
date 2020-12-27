@@ -43,18 +43,25 @@ import { UpdateOptionsMode } from '../../../../../interfaces/updateCssMode';
 import { getIsDoNotShowModalAgainState } from './modal/state';
 import dropdown from './dropdown/Dropdown.vue';
 
-interface Data {
+interface Consts {
   WORKSHOP_TOOLBAR_OPTIONS;
   SUB_COMPONENT_CSS_MODES;
   componentTypeToOptions;
+}
+
+interface Data {
   removeSubcomponentModalId: string;
 }
 
 export default {
+  setup(): Consts {
+    return {
+      WORKSHOP_TOOLBAR_OPTIONS,
+      SUB_COMPONENT_CSS_MODES,
+      componentTypeToOptions,
+    };
+  },
   data: (): Data => ({
-    WORKSHOP_TOOLBAR_OPTIONS,
-    SUB_COMPONENT_CSS_MODES,
-    componentTypeToOptions,
     removeSubcomponentModalId: '',
   }),
   methods: {
