@@ -1,8 +1,10 @@
+import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
+
 // create an optional interface
 export default {
   options: [
     { 
-      type: 'range',
+      type: SETTINGS_TYPES.RANGE,
       spec: {
         name: 'Width',
         default: 0,
@@ -12,7 +14,7 @@ export default {
       },
     },
     { 
-      type: 'range',
+      type: SETTINGS_TYPES.RANGE,
       spec: {
         name: 'Height',
         default: 0,

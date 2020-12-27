@@ -1,8 +1,10 @@
+import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
+
 // create an optional interface
 export default {
   options: [
     { 
-      type: 'range',
+      type: SETTINGS_TYPES.RANGE,
       spec: {
         name: 'Radius',
         default: 0,
@@ -12,7 +14,7 @@ export default {
       },
     },
     {
-      type: 'range',
+      type: SETTINGS_TYPES.RANGE,
       spec: {
         name: 'Width',
         default: 0,
@@ -35,7 +37,7 @@ export default {
       ]
     },
     { 
-      type: 'select',
+      type: SETTINGS_TYPES.SELECT,
       spec: {
         name: 'Style',
         options: ['none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset'],
@@ -51,7 +53,7 @@ export default {
       },
     },
     {
-      type: 'colorPicker',
+      type: SETTINGS_TYPES.COLOR_PICKER,
       spec: {
         name: 'Color',
         default: '#000000',

@@ -1,7 +1,5 @@
 export color values that are set to inherit
-if close button css will remain static, consider placing them into a separate object that can be used when exporting the file
 test export with shadow and other properties, questionable if it works correctly
-setting types should an enum
 potentially have animation for when optional subcomponent options buttons appear and are hidden
 firefox color selector
 

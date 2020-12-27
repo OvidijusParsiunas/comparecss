@@ -6,7 +6,7 @@
           <div style="display: grid; grid-template-columns: 50% 50%; width: 80%">
             <div v-for="(setting, settingIndex) in settings.options" :key="setting">
 
-              <div v-if="setting.type === 'range'">
+              <div v-if="setting.type === SETTINGS_TYPES.RANGE">
                 <div style="text-align: left; float: left">
                   {{setting.spec.name}}
                 </div>
@@ -40,7 +40,7 @@
                 </div>
               </div>
 
-              <div v-if="setting.type === 'select'">
+              <div v-if="setting.type === SETTINGS_TYPES.SELECT">
                 <div style="text-align: left; float: left">
                   {{setting.spec.name}}
                 </div>
@@ -54,7 +54,7 @@
                 </div>
               </div>
               
-              <div v-if="setting.type === 'colorPicker'">
+              <div v-if="setting.type === SETTINGS_TYPES.COLOR_PICKER">
                 <div style="text-align: left; float: left">
                   {{setting.spec.name}}
                 </div>
@@ -94,7 +94,7 @@
                 </button>
               </div>
 
-              <div style="display: flex" v-if="setting.type === 'inputDropdown'">
+              <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.INPUT_DROPDOWN">
                 <div style="text-align: left">
                   {{setting.spec.name}}
                 </div>
@@ -109,7 +109,7 @@
                 </div>
               </div>
 
-              <div style="display: flex" v-if="setting.type === 'checkbox'">
+              <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.CHECKBOX">
                 <div style="text-align: left">
                   {{setting.spec.name}}
                 </div>
@@ -130,10 +130,12 @@
 <script lang="ts">
 import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../../consts/unsetColotButtonDisplayed';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
+import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
 import { CustomCss } from '../../../../../interfaces/workshopComponent';
 import BoxShadowUtils from './utils/boxShadowUtils';
 
 interface Consts {
+  SETTINGS_TYPES;
   SUB_COMPONENT_CSS_MODES;
   UNSET_COLOR_BUTTON_DISPLAYED_STATE;
   UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX;
@@ -153,6 +155,7 @@ interface Data {
 export default {
   setup(): Consts {
     return {
+      SETTINGS_TYPES,
       SUB_COMPONENT_CSS_MODES,
       UNSET_COLOR_BUTTON_DISPLAYED_STATE,
       UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX,
@@ -182,7 +185,7 @@ export default {
           this.selectorCurrentValues = {};
           this.inputDropdownCurrentValues = {};
           (this.settings.options || []).forEach((setting) => {
-            if (setting.type === 'range') {
+            if (setting.type === SETTINGS_TYPES.RANGE) {
               const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
               if (cssPropertyValue !== undefined) {
                 if (customCss[customCssActiveMode]) {
@@ -199,21 +202,21 @@ export default {
                   setting.spec.default = this.parseRangeValue(singlePropertyValue, setting.spec.smoothingDivisible); 
                 }
               }
-            } else if (setting.type === 'select') {
+            } else if (setting.type === SETTINGS_TYPES.SELECT) {
               // default value for range is currently setting the select value, not the select value for ranges
               // potential race condition where range sets the select value and select may set it to something incorrect
               const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
               if (cssPropertyValue) { this.selectorCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
-            } else if (setting.type === 'colorPicker') {
+            } else if (setting.type === SETTINGS_TYPES.COLOR_PICKER) {
               let cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
               if (setting.spec.cssProperty === 'boxShadow' && cssPropertyValue === 'unset') {
                 cssPropertyValue = this.getActiveModeCssPropertyValue(auxiliaryPartialCss, customCssActiveMode, setting.spec.cssProperty) || BoxShadowUtils.DEFAULT_BOX_SHADOW_COLOR_VALUE;
               }
               if (cssPropertyValue) { setting.spec.default = setting.spec.partialCss ? cssPropertyValue.split(' ')[setting.spec.partialCss.position] : cssPropertyValue; }
-            } else if (setting.type === 'inputDropdown') {
+            } else if (setting.type === SETTINGS_TYPES.INPUT_DROPDOWN) {
               const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
               if (cssPropertyValue) { this.inputDropdownCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
-            } else if (setting.type === 'checkbox') {
+            } else if (setting.type === SETTINGS_TYPES.CHECKBOX) {
               if (setting.spec.javascript) {
                 setting.spec.default = jsClasses.has(setting.spec.jsClassName);
               } else {
