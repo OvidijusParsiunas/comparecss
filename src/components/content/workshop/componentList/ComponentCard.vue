@@ -1,14 +1,15 @@
 <template>
-  <div style="cursor: move; width: 18rem; margin: auto; margin-top: 5px" class="card component-card" v-on:click="selectComponentCard(thisComponent)" tabindex="0">
+  <div class="card component-card" v-on:click="selectComponentCard(thisComponent)">
     <div class="card-body">
-      <input ref="componentCardClassNameEditorInput" v-if="isEditingClassName" style="float: left" class="card-title"
-        :placeholder="thisComponent.className" v-model="className"
-        @input="processClassName"
+      <input v-if="isEditingClassName" ref="componentCardClassNameEditorInput" class="card-title component-card-title"
+        v-model="className"
+        :placeholder="thisComponent.className"
+        @input="classNameInputEvent"
         >
-      <h5 v-else style="float: left" class="card-title">{{thisComponent.className}}</h5>
-      <a ref="componentCardClassNameEditorButton" class="btn btn-success" v-on:click.stop="editClassName(thisComponent)">Edit</a>
+      <h5 v-else class="card-title component-card-title">{{thisComponent.className}}</h5>
+      <a ref="componentCardClassNameEditorButton" class="btn btn-success" v-on:click="editClassName(thisComponent)">Edit</a>
       <a class="btn btn-warning" v-on:click.stop="copyComponentCard(thisComponent)">Copy</a>
-      <a style="float: right" class="btn btn-danger" v-on:click.stop="deleteComponentCard(thisComponent)">Delete</a>
+      <a class="btn btn-danger component-card-delete" v-on:click.stop="deleteComponentCard(thisComponent)">Delete</a>
     </div>
   </div>
 </template>
@@ -17,6 +18,7 @@
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
 import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import ProcessClassName from '../../../../services/workshop/newComponent/processClassName';
+import { nextTick } from 'vue';
 
 interface Data {
   className: string,
@@ -39,6 +41,15 @@ export default {
       this.className = this.thisComponent.className;
       this.isEditingClassName = !this.isEditingClassName;
       this.$emit('stop-editing-class-name-callback', this.stopEditingClassName);
+      if (this.isEditingClassName) this.focusClassNameInput();
+    },
+    focusClassNameInput(): void {
+      nextTick(() => {
+        const inputElement = this.$refs.componentCardClassNameEditorInput;
+        const inputElementValueLength = inputElement.value.length;
+        inputElement.focus();
+        inputElement.setSelectionRange(inputElementValueLength, inputElementValueLength);
+      });
     },
     stopEditingClassName(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
       if (event instanceof KeyboardEvent) {
@@ -77,12 +88,8 @@ export default {
     deleteComponentCard(selectComponentCard: WorkshopComponent): void {
       this.$emit('component-card-deleted', selectComponentCard);
     },
-    processClassName(): void {
+    classNameInputEvent(): void {
       this.className = ProcessClassName.process(this.className);
-    },
-    finishEditingClassName(): void {
-      if (this.className.length === 1) { this.className = this.thisComponent.className; }
-      this.thisComponent.className = this.className;
     },
   },
   props: {
@@ -93,6 +100,12 @@ export default {
 </script>
 
 <style lang="css" scoped>
+  .component-card {
+    cursor: move;
+    width: 18rem;
+    margin: auto;
+    margin-top: 5px
+  }
   .component-card:hover {
     border-color: #d1d5da!important;
     box-shadow: 0 1px 3px rgba(106,115,125,.3)!important;
@@ -101,5 +114,11 @@ export default {
     outline: none;
     border-color: #2188ff!important;
     box-shadow: 0 0 0 .2em rgba(3,102,214,.3)!important;
+  }
+  .component-card-title {
+    float: left;
+  }
+  .component-card-delete {
+    float: right;
   }
 </style>

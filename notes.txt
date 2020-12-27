@@ -6,7 +6,6 @@ potentially have animation for when optional subcomponent options buttons appear
 firefox color selector
 
 alert text align on the left side or right side
-when clicking the edit component button, should immediately highlight the name or have the cursor at the end
 the modal edit class name is also weird
 the alert button ripple does not seem to work properly when there are many components
 solve the initial hover of the subcomponent toggle button problem where it has not loaded up
