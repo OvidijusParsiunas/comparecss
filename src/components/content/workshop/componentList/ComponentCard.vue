@@ -9,28 +9,36 @@
       <h5 v-else class="card-title component-card-title">{{thisComponent.className}}</h5>
       <a ref="componentCardClassNameEditorButton" class="btn btn-success" v-on:click="editClassName(thisComponent)">Edit</a>
       <a class="btn btn-warning" v-on:click.stop="copyComponentCard(thisComponent)">Copy</a>
-      <a class="btn btn-danger component-card-delete" v-on:click.stop="deleteComponentCard(thisComponent)">Delete</a>
+      <a class="btn btn-danger component-card-delete" data-toggle="modal" :data-target="removeComponentModalId" @click="deleteComponentCard">Delete</a>
     </div>
   </div>
 </template>
 
 <script lang="ts">
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
-import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
+import { RemovalModalState } from '../../../../interfaces/removalModalState';
 import ProcessClassName from '../../../../services/workshop/newComponent/processClassName';
+import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
+import { REMOVE_COMPONENT_MODAL_ID } from '../../../../consts/elementIds';
+import { removeComponentModalState } from './modal/state';
 import { nextTick } from 'vue';
 
 interface Data {
-  className: string,
-  isEditingClassName: boolean,
-  editorButtonClickedOnStopEditing: boolean
+  className: string;
+  isEditingClassName: boolean;
+  removeComponentModalId: string;
+  editorButtonClickedOnStopEditing: boolean;
 }
 
 export default {
+  setup(): RemovalModalState {
+    return { ...removeComponentModalState };
+  },
   data: (): Data => ({
     className: null,
     isEditingClassName: false,
     editorButtonClickedOnStopEditing: false,
+    removeComponentModalId: '',
   }),
   methods: {
     editClassName(): void {
@@ -85,8 +93,13 @@ export default {
     copyComponentCard(selectComponentCard: WorkshopComponent): void {
       this.$emit('component-card-copied', selectComponentCard);
     },
-    deleteComponentCard(selectComponentCard: WorkshopComponent): void {
-      this.$emit('component-card-deleted', selectComponentCard);
+    deleteComponentCard(): void {
+      if (!this.getIsDoNotShowModalAgainState()){
+        this.removeComponentModalId = `#${REMOVE_COMPONENT_MODAL_ID}`;
+        setTimeout(() => { this.removeComponentModalId = ''; });
+      } else {
+        this.$emit('component-card-deleted');
+      }
     },
     classNameInputEvent(): void {
       this.className = ProcessClassName.process(this.className);

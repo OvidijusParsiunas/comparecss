@@ -45,6 +45,7 @@ interface Consts {
 }
 
 interface Props {
+  componentType: string,
   subcomponent: SubcomponentProperties;
 }
 

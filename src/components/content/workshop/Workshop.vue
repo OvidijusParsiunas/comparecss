@@ -7,7 +7,7 @@
             :components="components"
             @component-card-selected="componentCardSelected($event)"
             @component-card-copied="componentCardCopied($event)"
-            @component-card-deleted="componentCardDeleted($event)"
+            @component-card-deleted="componentCardDeleted"
             @stop-editing-class-name-callback="addWorkshopEventCallback($event)"/>
           <div style="position: absolute; bottom: 0">
             <button type="button" style="margin-left: 7px; margin-bottom: 10px" class="btn btn-warning btn-sm">Explore icon</button>
@@ -48,9 +48,20 @@
         :components="components"
         @add-new-component="addNewComponent($event)"
         @stop-editing-class-name-callback="addWorkshopEventCallback($event)"/>
-      <remove-subcomponent-modal
-        @remove-subcomponent="$refs.toolbar.hideSettings()"
-        :component="currentlySelectedComponent"/>
+      <removal-modal-template
+        :modalId="REMOVE_COMPONENT_MODAL_ID"
+        :removeEventName="'remove-component'"
+        :removalModalState="removeComponentModalState"
+        @remove-component="componentCardDeleted">
+        Are you sure you want to remove this component?
+      </removal-modal-template>
+      <removal-modal-template
+        :modalId="REMOVE_SUBCOMPONENT_MODAL_ID"
+        :removeEventName="'remove-subcomponent'"
+        :removalModalState="removeSubcomponentModalState"
+        @remove-component="$refs.toolbar.hideSettings()">
+        Are you sure you want to remove this subcomponent?
+      </removal-modal-template>
     </div>
   </div>
 </template>
@@ -58,10 +69,10 @@
 <script lang="ts">
 import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../interfaces/workshopComponent';
 import { inheritedCloseChildCss } from './newComponent/types/alerts/properties/inheritedCloseChildCss';
+import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { inheritedAlertBaseCss } from './newComponent/types/alerts/properties/inheritedCss';
-import removeSubcomponentModal from './toolbar/options/modal/RemoveSubcomponentModal.vue';
 import ProcessClassName from '../../../services/workshop/newComponent/processClassName';
 import { SUB_COMPONENT_CSS_MODES } from '../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
@@ -70,12 +81,22 @@ import { JAVASCRIPT_CLASSES } from '../../../consts/javascriptClasses.enum';
 import JSONManipulation from '../../../services/workshop/jsonManipulation';
 import componentContents from './componentPreview/ComponentPreview.vue';
 import { SUB_COMPONENTS } from '../../../consts/subcomponentModes.enum';
+import { removeSubcomponentModalState } from './toolbar/options/modal/state';
+import removalModalTemplate from './templates/RemovalModalTemplate.vue';
 import { UpdateOptionsMode } from '../../../interfaces/updateCssMode';
 import newComponentModal from './newComponent/NewComponentModal.vue';
+import { removeComponentModalState } from './componentList/modal/state';
 import ComponentJs from '../../../services/workshop/componentJs';
 import componentList from './componentList/ComponentList.vue';
 import toolbar from './toolbar/Toolbar.vue';
 import 'vuesax/dist/vuesax.css' //Vuesax styles
+
+interface Consts {
+  removeComponentModalState;
+  removeSubcomponentModalState;
+  REMOVE_COMPONENT_MODAL_ID;
+  REMOVE_SUBCOMPONENT_MODAL_ID;
+}
 
 interface Data {
   components: WorkshopComponent[],
@@ -92,16 +113,17 @@ const initialContainerButtonCss: CustomCss = {
     borderWidth: '1px',
     borderStyle: 'solid',
     borderRadius: '4px',
-    width: '440px',
+    width: '400px',
     height: '50px',
     boxSizing: 'unset',
     fontSize: '16px',
     boxShadow: 'unset',
-    fontFamily: '"Poppins", sans-serif',
-    paddingLeft: '0px',
-    paddingRight: '0px',
+    paddingLeft: '20px',
+    paddingRight: '20px',
     paddingTop: '0px',
     paddingBottom: '0px',
+    fontFamily: '"Poppins", sans-serif',
+    textAlign: 'center',
     transition: 'unset',
   },
 }
@@ -130,6 +152,14 @@ const initialCloseButtonCss: CustomCss = {
 }
 
 export default {
+  setup(): Consts {
+    return { 
+      removeComponentModalState,
+      removeSubcomponentModalState,
+      REMOVE_COMPONENT_MODAL_ID,
+      REMOVE_SUBCOMPONENT_MODAL_ID,
+     };
+  },
   data: (): Data => ({
     componentPreviewAssistance: { margin: false },
     components: [
@@ -257,8 +287,8 @@ export default {
       newComponent.subcomponents[SUB_COMPONENTS.BASE].customCssActiveMode = SUB_COMPONENT_CSS_MODES.DEFAULT;
       this.addNewComponent(newComponent);
     },
-    componentCardDeleted(selectComponentCard: WorkshopComponent): void {
-      const componentMatch = (component) => selectComponentCard === component;
+    componentCardDeleted(): void {
+      const componentMatch = (component) => this.currentlySelectedComponent === component;
       const componentIndex = this.components.findIndex(componentMatch);
       this.components.splice(componentIndex, 1);
       const { subcomponents, subcomponentsActiveMode, type } = this.currentlySelectedComponent;
@@ -290,10 +320,15 @@ export default {
     },
     addWorkshopEventCallback(callback: () => void): void {
       this.workshopEventCallbacks.push(callback);
+    },
+    removeSubcomponentPreCopyEvent(): void {
+      this.component.subcomponents[this.component.subcomponentsActiveMode].customCss = JSONManipulation.deepCopy(
+        this.component.subcomponents[this.component.subcomponentsActiveMode].initialCss);
+      this.component.subcomponents[this.component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying = false;
     }
   },
   components: {
-    removeSubcomponentModal,
+    removalModalTemplate,
     newComponentModal,
     componentContents,
     componentList,

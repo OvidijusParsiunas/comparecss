@@ -3,7 +3,7 @@ import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 // create an optional interface
 export default {
   options: [
-    { 
+    {
       type: SETTINGS_TYPES.RANGE,
       spec: {
         name: 'Size',
@@ -13,7 +13,7 @@ export default {
         cssProperty: 'fontSize'
       },
     },
-    { 
+    {
       type: SETTINGS_TYPES.COLOR_PICKER,
       spec: {
         name: 'Color',
@@ -22,12 +22,21 @@ export default {
         unsetColorButtonAvailable: true,
       },
     },
-    { 
+    {
       type: SETTINGS_TYPES.INPUT_DROPDOWN,
       spec: {
         name: 'Font',
         options: ['Poppins', 'Accordion', 'Lato', 'cursive', 'sans-serif', 'groove', 'ridge', 'inset', 'outset', '"Poppins", sans-serif', '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif'],
         cssProperty: 'fontFamily'
+      },
+    },
+    {
+      type: SETTINGS_TYPES.SELECT,
+      spec: {
+        name: 'Align',
+        options: ['left', 'center', 'right'],
+        default: 'center',
+        cssProperty: 'textAlign'
       },
     },
   ]

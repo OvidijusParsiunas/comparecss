@@ -33,14 +33,16 @@
 </template>
 
 <script lang="ts">
-import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../consts/workshopToolbarOptions';
-import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import { componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
+import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
+import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../consts/workshopToolbarOptions';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
+import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
+import { RemovalModalState } from '../../../../../interfaces/removalModalState';
 import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
 import { UpdateOptionsMode } from '../../../../../interfaces/updateCssMode';
-import { getIsDoNotShowModalAgainState } from './modal/state';
+import { removeSubcomponentModalState } from './modal/state';
 import dropdown from './dropdown/Dropdown.vue';
 
 interface Consts {
@@ -54,8 +56,9 @@ interface Data {
 }
 
 export default {
-  setup(): Consts {
+  setup(): RemovalModalState & Consts {
     return {
+      ...removeSubcomponentModalState,
       WORKSHOP_TOOLBAR_OPTIONS,
       SUB_COMPONENT_CSS_MODES,
       componentTypeToOptions,
@@ -85,13 +88,13 @@ export default {
       return activeModeOptions && activeModeOptions.some((option) => option.identifier === this.activeOption);
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
-      this.removeSubcomponentModalId = '';
       const { optionalSubcomponent, initialCss } = subcomponent;
       if (!optionalSubcomponent.currentlyDisplaying) {
         optionalSubcomponent.currentlyDisplaying = !optionalSubcomponent.currentlyDisplaying;
       } else {
-        if (!getIsDoNotShowModalAgainState()){
-          this.removeSubcomponentModalId = '#removeSubcomponentModal';
+        if (!this.getIsDoNotShowModalAgainState()){
+          this.removeSubcomponentModalId = `#${REMOVE_SUBCOMPONENT_MODAL_ID}`;
+          setTimeout(() => { this.removeSubcomponentModalId = ''; });
         } else {
           subcomponent.customCss = JSONManipulation.deepCopy(initialCss);
           optionalSubcomponent.currentlyDisplaying = !optionalSubcomponent.currentlyDisplaying;

@@ -36,7 +36,7 @@
                     component.subcomponents[SUB_COMPONENTS.BASE].customCss[component.subcomponents[SUB_COMPONENTS.BASE].customCssActiveMode],
                   ]">
               {{ component.type === NEW_COMPONENT_TYPES.BUTTON ? component.subcomponents[SUB_COMPONENTS.BASE].innerHtmlText : '' }}
-              <divInnerHtml :componentType="component.type" :innerHTML="component.subcomponents[component.subcomponentsActiveMode].innerHtmlText"/>
+              <div-inner-html :componentType="component.type" :innerHTML="component.subcomponents[component.subcomponentsActiveMode].innerHtmlText"/>
               <auxiliary-right-side-elements :componentType="component.type" :subcomponent="component.subcomponents[SUB_COMPONENTS.CLOSE]"/>
             </component>
             <component :is="component.subcomponents[component.subcomponentsActiveMode].componentTag"
@@ -66,6 +66,7 @@
 <script lang="ts">
 import useComponentPreviewEventHandlers, { UseComponentPreviewEventHandlers } from './compositionAPI/useComponentPreviewEventHandlers';
 import { SUB_COMPONENT_PREVIEW_ELEMENT_IDS } from '../../../../consts/subcomponentPreviewElementIds.enum';
+import { ComponentPreviewAssistance } from '../../../../interfaces/componentPreviewAssistance';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
@@ -83,6 +84,7 @@ interface Consts {
 
 interface Props {
   component: WorkshopComponent;
+  componentPreviewAssistance: ComponentPreviewAssistance,
 }
 
 export default {

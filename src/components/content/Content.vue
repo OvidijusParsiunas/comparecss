@@ -19,23 +19,25 @@
   </panel-slot> -->
 
 <script lang="ts">
+import cssFrameworksJSFunctionality from '../../services/cssFrameworksJSFunctionality';
+import componentMarkupManager from '../../services/componentMarkupManager';
+import { NAVBAR_MENU_BUTTONS } from '../../consts/navbarMenuButtons.enum';
+import { ComponentMarkup } from '../../interfaces/componentMarkup';
+import { NavbarButton } from '../../interfaces/navbarButton';
+import workshop from './workshop/Workshop.vue';
+import components from './Components.vue';
+import { onUpdated, nextTick } from 'vue'
+import homepage from './Homepage.vue';
+
 interface Data {
   NAVBAR_MENU_BUTTONS,
   currentView: NAVBAR_MENU_BUTTONS,
   componentMarkup: ComponentMarkup,
 }
+
 interface Props {
   activeButton: NavbarButton,
 }
-import components from './Components.vue';
-import homepage from './Homepage.vue';
-import workshop from './workshop/Workshop.vue';
-import cssFrameworksJSFunctionality from '../../services/cssFrameworksJSFunctionality';
-import componentMarkupManager from '../../services/componentMarkupManager';
-import { ComponentMarkup } from '../../interfaces/componentMarkup';
-import { onUpdated, nextTick } from 'vue'
-import { NavbarButton } from '../../interfaces/navbarButton';
-import { NAVBAR_MENU_BUTTONS } from '../../consts/navbarMenuButtons.enum';
 
 export default {
   // https://v3.vuejs.org/guide/composition-api-setup.html#context
@@ -49,14 +51,6 @@ export default {
         }
       })
     })
-  },
-  components: {
-    components,
-    homepage,
-    workshop,
-  },
-  props: {
-    activeButton: null,
   },
   data: (): Data => ({
     NAVBAR_MENU_BUTTONS,
@@ -84,6 +78,14 @@ export default {
       bootflat: '',
     },
   }),
+  components: {
+    components,
+    homepage,
+    workshop,
+  },
+  props: {
+    activeButton: null,
+  },
   watch: {
     activeButton(activeButton: NavbarButton): void {
       if (activeButton.navbarMenuButton === NAVBAR_MENU_BUTTONS.COMPONENTS && activeButton.navbarSubMenuButton !== undefined) {

@@ -1,4 +1,4 @@
-import { RemovalModalState } from '../../../../../../interfaces/removalModalState';
+import { RemovalModalState } from '../../../../../interfaces/removalModalState';
 
 let setIsDoNotShowAgainState = false;
 
@@ -10,7 +10,7 @@ function setIsDoNotShowModalAgainState(state: boolean): void {
   setIsDoNotShowAgainState = state;
 }
 
-export const removeSubcomponentModalState: RemovalModalState = {
+export const removeComponentModalState: RemovalModalState = {
   getIsDoNotShowModalAgainState,
   setIsDoNotShowModalAgainState,
 }
