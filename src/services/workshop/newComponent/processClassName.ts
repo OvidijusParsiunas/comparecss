@@ -9,7 +9,9 @@ export default class ProcessClassedName {
   }
   
   private static replaceEverythingExceptAlphanumericHyphenAndUnderscoreFromIndex(className: string, replaceWith: string, index: number): string {
-    const noLetterNumberHyphenUnderscoreRegex = /[^A-Z0-9-_]/i;
+    // The following regex utilises a global expression flag. If exported outside of the function scope, execute the line below before each use:
+    // noLetterNumberHyphenUnderscoreRegex.lastIndex = 0;
+    const noLetterNumberHyphenUnderscoreRegex = /[^A-Z0-9-_]/gi;
     const processedSubString = className.substring(index).replace(noLetterNumberHyphenUnderscoreRegex, replaceWith);
     return className.substring(0, index) + processedSubString;
   }
@@ -31,7 +33,7 @@ export default class ProcessClassedName {
     return this.insertSubstringIntoClassName(className, replacedCharacter, index);
   }
 
-  static process(className: string): string {
+  public static process(className: string): string {
     className = this.replaceDigitsAtIndex(className, '-', 0);
     if (className.charAt(0) === '-') {
       className = this.removeConsecutiveNumbersAndSymbolsAtIndex(className, 1);
@@ -69,7 +71,7 @@ export default class ProcessClassedName {
     return className && className.length === this.minClassLength ? [placeholder, true] : [className, false];
   }
 
-  static finalize(className: string | null, placeholder: string, components: WorkshopComponent[], originalClassName?: string): string {
+  public static finalize(className: string | null, placeholder: string, components: WorkshopComponent[], originalClassName?: string): string {
     if (className === originalClassName) return className;
     const [resultClassName, isReset] = this.resetIfClassNameTooShort(className, placeholder);
     if (isReset) return resultClassName;

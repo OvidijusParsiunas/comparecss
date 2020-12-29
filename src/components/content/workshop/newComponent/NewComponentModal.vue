@@ -99,7 +99,10 @@ export default {
       }, this.MODAL_FADE_MILLISECONDS);
     },
     changeClassName(): void {
+      const inputElement = event.target as HTMLInputElement;
+      const initialStartPosition = inputElement.selectionStart;
       this.className = ProcessClassName.process(this.className);
+      setTimeout(() => { inputElement.setSelectionRange(initialStartPosition, initialStartPosition); });
     },
     blurClassNameEditorInput(event: KeyboardEvent): void {
       event.preventDefault();

@@ -102,7 +102,10 @@ export default {
       }
     },
     classNameInputEvent(): void {
+      const inputElement = event.target as HTMLInputElement;
+      const initialStartPosition = inputElement.selectionStart;
       this.className = ProcessClassName.process(this.className);
+      setTimeout(() => { inputElement.setSelectionRange(initialStartPosition, initialStartPosition); });
     },
   },
   props: {
