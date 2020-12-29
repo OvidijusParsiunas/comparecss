@@ -149,15 +149,15 @@ export default {
     width: 3em;
     height: 38px;
     background: url('../../../../../assets/svg/plus-default.svg') center no-repeat;
-    background-size: 16px auto;
+    background-size: 14px auto;
     /* transition removed due to stuttering in the plus svgs */
     /* transition: 0.1s ease-in-out !important; */
   }
   .display-toggle-add:hover {
     background-color: #f8fff8;
-    border-color: green !important;
-    color: green !important;
+    border-color: #069906 !important;
+    color: #069906 !important;
     background: url('../../../../../assets/svg/plus-green.svg') center no-repeat;
-    background-size: 16px auto;
+    background-size: 14px auto;
   }
 </style>

@@ -8,7 +8,6 @@ the alert button ripple does not seem to work properly when there are many compo
 solve the initial hover of the subcomponent toggle button problem where it has not loaded up
 clean up css after export, such as 0px values, bordershadow being unset - be careful not to remove transition
 
-the plus icon should fade slower than the button border
 cursor that allows user to hover over component's parts and upon clicking would direct to the rightful settings
 color active toolkit button
 color active component card

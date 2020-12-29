@@ -74,16 +74,16 @@ import { inheritedAlertBaseCss } from './newComponent/types/alerts/properties/in
 import ProcessClassName from '../../../services/workshop/newComponent/processClassName';
 import { SUB_COMPONENT_CSS_MODES } from '../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
+import { removeSubcomponentModalState } from './toolbar/options/modal/state';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
 import { JAVASCRIPT_CLASSES } from '../../../consts/javascriptClasses.enum';
 import JSONManipulation from '../../../services/workshop/jsonManipulation';
+import { removeComponentModalState } from './componentList/modal/state';
 import componentContents from './componentPreview/ComponentPreview.vue';
 import { SUB_COMPONENTS } from '../../../consts/subcomponentModes.enum';
-import { removeSubcomponentModalState } from './toolbar/options/modal/state';
 import removalModalTemplate from './templates/RemovalModalTemplate.vue';
 import { UpdateOptionsMode } from '../../../interfaces/updateCssMode';
 import newComponentModal from './newComponent/NewComponentModal.vue';
-import { removeComponentModalState } from './componentList/modal/state';
 import ComponentJs from '../../../services/workshop/componentJs';
 import componentList from './componentList/ComponentList.vue';
 import toolbar from './toolbar/Toolbar.vue';
