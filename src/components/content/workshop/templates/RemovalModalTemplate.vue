@@ -29,8 +29,6 @@ import { RemovalModalState } from '../../../../interfaces/removalModalState';
 
 interface Props {
   modalId: string;
-  removeEventName: string;
-  funcBeforeRemoveEvent: () => void,
   removalModalState: RemovalModalState,
 }
 
@@ -47,8 +45,7 @@ export default {
   }),
   methods: {
     remove(): void {
-      if (this.funcBeforeRemoveEvent) this.funcBeforeRemoveEvent();
-      this.$emit(this.removeEventName);
+      this.$emit('remove-event');
     },
     doNotShowAgainSelected(state?: boolean): void {
       if (typeof state === 'boolean') this.isDoNotShowAgainSelected = state;
@@ -57,8 +54,6 @@ export default {
   },
   props: {
     modalId: String,
-    removeEventName: String,
-    funcBeforeRemoveEvent: Function,
     removalModalState: Object,
   }
 };

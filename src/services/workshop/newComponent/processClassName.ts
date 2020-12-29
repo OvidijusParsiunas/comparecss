@@ -7,7 +7,7 @@ export default class ProcessClassedName {
   private static insertSubstringIntoClassName(className: string, insertedString: string, index: number): string {
     return className.substring(0, index) + insertedString + className.substring(index + 1)
   }
-  
+
   private static replaceEverythingExceptAlphanumericHyphenAndUnderscoreFromIndex(className: string, replaceWith: string, index: number): string {
     // The following regex utilises a global expression flag. If exported outside of the function scope, execute the line below before each use:
     // noLetterNumberHyphenUnderscoreRegex.lastIndex = 0;
@@ -26,7 +26,7 @@ export default class ProcessClassedName {
     }
     return className;
   }
-  
+
   private static replaceDigitsAtIndex(className: string, replaceWith: string, index: number): string {
     const noLetterHyphenUnderscoreRegex = /[^A-Z-_]/i;
     const replacedCharacter = className.charAt(index).replace(noLetterHyphenUnderscoreRegex, replaceWith);

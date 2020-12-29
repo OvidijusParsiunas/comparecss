@@ -50,16 +50,14 @@
         @stop-editing-class-name-callback="addWorkshopEventCallback($event)"/>
       <removal-modal-template
         :modalId="REMOVE_COMPONENT_MODAL_ID"
-        :removeEventName="'remove-component'"
         :removalModalState="removeComponentModalState"
-        @remove-component="componentCardDeleted">
+        @remove-event="componentCardDeleted">
         Are you sure you want to remove this component?
       </removal-modal-template>
       <removal-modal-template
         :modalId="REMOVE_SUBCOMPONENT_MODAL_ID"
-        :removeEventName="'remove-subcomponent'"
         :removalModalState="removeSubcomponentModalState"
-        @remove-component="$refs.toolbar.hideSettings()">
+        @remove-event="removeSubcomponentEventHandler">
         Are you sure you want to remove this subcomponent?
       </removal-modal-template>
     </div>
@@ -321,10 +319,11 @@ export default {
     addWorkshopEventCallback(callback: () => void): void {
       this.workshopEventCallbacks.push(callback);
     },
-    removeSubcomponentPreCopyEvent(): void {
-      this.component.subcomponents[this.component.subcomponentsActiveMode].customCss = JSONManipulation.deepCopy(
-        this.component.subcomponents[this.component.subcomponentsActiveMode].initialCss);
-      this.component.subcomponents[this.component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying = false;
+    removeSubcomponentEventHandler(): void {
+      this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.subcomponentsActiveMode].customCss = JSONManipulation.deepCopy(
+        this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.subcomponentsActiveMode].initialCss);
+      this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying = false;
+      this.$refs.toolbar.hideSettings();
     }
   },
   components: {
