@@ -5,7 +5,6 @@ firefox color selector
 
 alert text align on the left side or right side
 the alert button ripple does not seem to work properly when there are many components
-solve the initial hover of the subcomponent toggle button problem where it has not loaded up
 clean up css after export, such as 0px values, bordershadow being unset - be careful not to remove transition
 
 cursor that allows user to hover over component's parts and upon clicking would direct to the rightful settings
