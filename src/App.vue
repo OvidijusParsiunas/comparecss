@@ -8,10 +8,10 @@
 <script lang="ts">
 import Content from './components/content/Content.vue';
 import Sidenav from './components/sidenav/Sidenav.vue';
-import scriptService from './services/scripts';
+import ScriptService from './services/scripts';
+import ImageService from './services/images';
 import { Options, Vue } from 'vue-class-component';
 import { NavbarButton } from './interfaces/navbarButton';
-import { DOM_LOCATIONS } from './consts/domLocations.enum';
 
 // https://vuejsdevelopers.com/2020/03/16/vue-js-tutorial/
 @Options({
@@ -21,6 +21,7 @@ import { DOM_LOCATIONS } from './consts/domLocations.enum';
   },
   mounted() {
     this.addScriptsToDOM();
+    this.preloadImages();
   }
 })
 export default class App extends Vue {
@@ -34,7 +35,7 @@ export default class App extends Vue {
     // use a builder pattern
     // https://www.youtube.com/watch?v=VuQaS0FFUFY&feature=youtu.be&fbclid=IwAR2camtL_W1Igt6Ltz5Eu2zsk-DXcwDPKJ_n6D_VcCNlh4VK0qc9GxTlsHE&ab_channel=MLTArtificialIntelligence
     // 6:54
-    const scripts = [
+    const scriptPaths = [
       [
         'assets/js/jquery/jquery-3.5.1.slim.min.js', 'assets/js/jquery/jquery.js', 'assets/js/mui/mui.min.js',
         'assets/js/uikit/uikit.min.js', 'assets/js/popper/popper.min.js', 'assets/js/materialize/materialize.min.js'
@@ -44,8 +45,18 @@ export default class App extends Vue {
       'assets/js/uglifyjs/minify.js', 'assets/js/uglifyjs/output.js', 'assets/js/uglifyjs/parse.js',
       'assets/js/uglifyjs/propmangle.js', 'assets/js/uglifyjs/scope.js', 'assets/js/uglifyjs/sourcemap.js',
       'assets/js/uglifyjs/transform.js', 'assets/js/uglifyjs/compress.js',
-      ];
-      scriptService.addScriptsSequentially(scripts, DOM_LOCATIONS.HEAD);
+    ];
+    ScriptService.addScriptsSequentially(scriptPaths);
+  }
+
+  private preloadImages(): void {
+    const imagePaths = [
+      '/img/rubbish-can-red.d8f85fb8.svg',
+      '/img/rubbish-asdsadcan-default.f84052ba.svg',
+      '/img/plus-default.1d7fd202.svg',
+      '/img/plus-green.e04a38b6.svg',
+    ];
+    ImageService.preload(imagePaths);
   }
 }
 </script>

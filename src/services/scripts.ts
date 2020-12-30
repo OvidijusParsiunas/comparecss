@@ -1,14 +1,12 @@
-import { DOM_LOCATIONS } from '../consts/domLocations.enum';
-
 export default class Scripts {
-  static addScripts(...path: string[]): Promise<string[]> {
+  public static addScripts(...paths: string[]): Promise<string[]> {
     const promises = [];
-    for (let i = 0; i < path.length; i += 1) {
+    for (let i = 0; i < paths.length; i += 1) {
       const promise = new Promise((resolve, reject) => {
         const scriptElement = document.createElement('script');
-        scriptElement.onload = () => resolve();
+        scriptElement.onload = () => resolve('success');
         scriptElement.onerror = () => reject();
-        scriptElement.setAttribute('src', path[i]);
+        scriptElement.setAttribute('src', paths[i]);
         document.head.appendChild(scriptElement);
       });
       promises.push(promise);
@@ -16,17 +14,16 @@ export default class Scripts {
     return Promise.all(promises);
   }
 
-  static addScriptsSequentially(scripts: (string | string[])[], location: DOM_LOCATIONS, indexArg?: number): void {
-    let index = indexArg;
+  public static addScriptsSequentially(paths: (string | string[])[], index?: number): void {
     if (index === undefined) { index = 0; }
-    if (index >= scripts.length) return;
-    const test = Array.isArray(scripts[index]) ? scripts[index] : [scripts[index]];
-    this.addScripts.apply(null, test)
+    if (index >= paths.length) return;
+    const extractedPaths = Array.isArray(paths[index]) ? paths[index] : [paths[index]];
+    this.addScripts.apply(null, extractedPaths)
     .then(() => {
-      this.addScriptsSequentially(scripts, location, index + 1);
+      this.addScriptsSequentially(paths, index + 1);
     })
-    .catch((e) => {
-      console.log('Failed to load a script:')
+    .catch((e: HTMLScriptElement) => {
+      console.log('Failed to load the following script:')
       console.log(e);
     });
   // if we fail to load a certain script, display that as a toaster alert and do not show the component
