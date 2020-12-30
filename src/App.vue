@@ -47,10 +47,10 @@ export default {
     },
     preloadImages(): void {
       const imagePaths = [
-        '/img/rubbish-can-red.d8f85fb8.svg',
-        '/img/rubbish-can-default.f84052ba.svg',
-        '/img/plus-default.1d7fd202.svg',
-        '/img/plus-green.e04a38b6.svg',
+        'img/rubbish-can-red.d8f85fb8.svg',
+        'img/rubbish-can-default.f84052ba.svg',
+        'img/plus-default.1d7fd202.svg',
+        'img/plus-green.e04a38b6.svg',
       ];
       ImageService.preload(imagePaths);
     }
