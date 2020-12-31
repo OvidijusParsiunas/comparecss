@@ -61,6 +61,12 @@
         Are you sure you want to remove this subcomponent?
       </removal-modal-template>
     </div>
+    <div id="preloadedImages"></div>
+    <div :id="preloadedIconsElementId">
+      <div id="preloadedIconsOverlay"></div>
+      <i class="fa fa-angle-down"></i>
+      <i class="fa fa-angle-double-down"></i>
+    </div>
   </div>
 </template>
 
@@ -90,6 +96,7 @@ import toolbar from './toolbar/Toolbar.vue';
 import 'vuesax/dist/vuesax.css' //Vuesax styles
 
 interface Consts {
+  preloadedIconsElementId: string;
   removeComponentModalState;
   removeSubcomponentModalState;
   REMOVE_COMPONENT_MODAL_ID;
@@ -97,6 +104,7 @@ interface Consts {
 }
 
 interface Data {
+  isIconsPreloaded: boolean;
   components: WorkshopComponent[],
   currentlySelectedComponent: WorkshopComponent;
   componentPreviewAssistance: ComponentPreviewAssistance;
@@ -151,7 +159,8 @@ const initialCloseButtonCss: CustomCss = {
 
 export default {
   setup(): Consts {
-    return { 
+    return {
+      preloadedIconsElementId: 'preloadedIcons',
       removeComponentModalState,
       removeSubcomponentModalState,
       REMOVE_COMPONENT_MODAL_ID,
@@ -159,6 +168,7 @@ export default {
      };
   },
   data: (): Data => ({
+    isIconsPreloaded: false,
     componentPreviewAssistance: { margin: false },
     components: [
       {
@@ -203,48 +213,12 @@ export default {
         className: 'default-class-name',
       }
     ],
-    currentlySelectedComponent: {
-        type: NEW_COMPONENT_TYPES.ALERT,
-        subcomponents: {
-          [SUB_COMPONENTS.BASE]: {
-            frameworkClass: 'bootstrap',
-            componentTag: 'div',
-            innerHtmlText: 'Alert',
-            customSettingsProperties: {
-              width: [100, 700],
-              height: [30, 200],
-            },
-            customCss: JSONManipulation.deepCopy(initialContainerButtonCss),
-            initialCss: JSONManipulation.deepCopy(initialContainerButtonCss),
-            jsClasses: new Set(),
-            initialJsClasses: new Set(),
-            customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-            tempCustomCss: new Set(['transition']),
-          },
-          [SUB_COMPONENTS.CLOSE]: {
-            frameworkClass: 'bootstrap',
-            componentTag: 'div',
-            innerHtmlText: 'Alert',
-            customSettingsProperties: {
-              width: [14, 80],
-              height: [10, 80],
-            },
-            customCss: JSONManipulation.deepCopy(initialCloseButtonCss),
-            initialCss: JSONManipulation.deepCopy(initialCloseButtonCss),
-            jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
-            initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
-            customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-            subcomponentPreviewTransition: 'all 0.25s ease-out',
-            tempCustomCss: new Set(['transition']),
-            childCss: inheritedCloseChildCss,
-            optionalSubcomponent: { currentlyDisplaying: true },
-          },
-        },
-        subcomponentsActiveMode: SUB_COMPONENTS.BASE,
-        className: 'default-class-name',
-      },
+    currentlySelectedComponent: null,
     workshopEventCallbacks: [],
   }),
+  mounted(): void {
+    this.preloadIcons();
+  },
   methods: {
     resetComponentModes(previousComponent: WorkshopComponent): void {
       if (!previousComponent) return;
@@ -324,6 +298,15 @@ export default {
         this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.subcomponentsActiveMode].initialCss);
       this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying = false;
       this.$refs.toolbar.hideSettings();
+    },
+    preloadIcons(): void {
+      const WAIT_TO_START_DOWNLOADING_ICON_ICONS = 5;
+      if (!this.isIconsPreloaded) {
+        setTimeout(() => {
+          document.getElementById(this.preloadedIconsElementId).style.display = 'none';
+          this.isIconsPreloaded = true;
+        }, WAIT_TO_START_DOWNLOADING_ICON_ICONS);
+      }
     }
   },
   components: {
@@ -349,5 +332,29 @@ export default {
   #formControlRange {
     margin-top: 0.25rem !important;
     margin-bottom: 0.25rem !important;
+  }
+  #preloadedImages {
+    /* this is used to preload images when the workshop component is rendered instead of attempting to fetch them exactly when
+       they are needed - and so causing flickering. Downloading these images in run-time by appending <img> tags to the head
+       element does not work because those images need to be in the public folder, however the ones referenced in the css within
+       the <styles> tags are located in the src file and referenced with a unique file hash in compile time */
+    background: url('../../../assets/svg/plus-default.svg'),
+                url('../../../assets/svg/plus-hover.svg'),
+                url('../../../assets/svg/plus-active.svg'),
+                url('../../../assets/svg/rubbish-can-default.svg'),
+                url('../../../assets/svg/rubbish-can-hover-active.svg');
+  }
+  #preloadedIcons {
+    /* originally used the browser to preload the font awesome styles, however this is not supported in FireFox:
+      <link rel="preload" as="style" href="https://use.fontawesome.com/releases/v5.0.12/css/all.css" onload="this.rel='stylesheet'">
+      <link rel="preload" as="font" type="font/woff2" crossorigin="anonymous" href="https://use.fontawesome.com/releases/v5.0.12/webfonts/fa-solid-900.woff2">*/
+    top: 0;
+    position: absolute;
+  }
+  #preloadedIconsOverlay {
+    width: 100%;
+    height: 100%;
+    background-color: white;
+    position: absolute;
   }
 </style>

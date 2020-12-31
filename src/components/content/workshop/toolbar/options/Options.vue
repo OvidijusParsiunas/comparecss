@@ -139,10 +139,17 @@ export default {
     transition: 0.1s ease-in-out !important;
   }
   .display-toggle-remove:hover {
-    background-color: #fffdfd;
-    border-color: red !important;
+    background-color: #fffdfd !important;
+    border-color: #ff2f20 !important;
+    color:#ff2f20 !important;
+    background: url('../../../../../assets/svg/rubbish-can-hover-active.svg') center no-repeat;
+    background-size: 17px auto;
+  }
+  .display-toggle-remove:active {
+    background-color: #fff6f6 !important;
+    border-color:red !important;
     color: red !important;
-    background: url('../../../../../assets/svg/rubbish-can-red.svg') center no-repeat;
+    background: url('../../../../../assets/svg/rubbish-can-hover-active.svg') center no-repeat;
     background-size: 17px auto;
   }
   .display-toggle-add {
@@ -154,10 +161,17 @@ export default {
     /* transition: 0.1s ease-in-out !important; */
   }
   .display-toggle-add:hover {
-    background-color: #f8fff8;
+    background-color: #f7fff7 !important;
     border-color: #069906 !important;
     color: #069906 !important;
-    background: url('../../../../../assets/svg/plus-green.svg') center no-repeat;
+    background: url('../../../../../assets/svg/plus-hover.svg') center no-repeat;
+    background-size: 14px auto;
+  }
+  .display-toggle-add:active {
+    background-color: #f4fff4 !important;
+    border-color: #00b400 !important;
+    color: #0db80d !important;
+    background: url('../../../../../assets/svg/plus-active.svg') center no-repeat;
     background-size: 14px auto;
   }
 </style>

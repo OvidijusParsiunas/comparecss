@@ -10,7 +10,6 @@ import { NavbarButton } from './interfaces/navbarButton';
 import Content from './components/content/Content.vue';
 import Sidenav from './components/sidenav/Sidenav.vue';
 import ScriptService from './services/scripts';
-import ImageService from './services/images';
 
 interface Data {
   clickedButton: NavbarButton;
@@ -22,7 +21,6 @@ export default {
   }),
   mounted(): void {
     this.addScriptsToDOM();
-    this.preloadImages();
   },
   methods: {
     updateContent(clickedButton: NavbarButton): void {
@@ -43,17 +41,8 @@ export default {
         'assets/js/uglifyjs/propmangle.js', 'assets/js/uglifyjs/scope.js', 'assets/js/uglifyjs/sourcemap.js',
         'assets/js/uglifyjs/transform.js', 'assets/js/uglifyjs/compress.js',
       ];
-      ScriptService.addScriptsSequentially(scriptPaths);
+      ScriptService.addScriptsInBatches(scriptPaths);
     },
-    preloadImages(): void {
-      const imagePaths = [
-        'img/rubbish-can-red.d8f85fb8.svg',
-        'img/rubbish-can-default.f84052ba.svg',
-        'img/plus-default.1d7fd202.svg',
-        'img/plus-green.e04a38b6.svg',
-      ];
-      ImageService.preload(imagePaths);
-    }
   },
   components: {
     Content,
