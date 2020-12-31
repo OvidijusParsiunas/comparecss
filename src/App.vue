@@ -52,11 +52,12 @@ export default {
 </script>
 
 <style lang="css">
+  /* Potentially store these in the app itself */
   @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
   @import "https://fonts.googleapis.com/css?family=Press+Start+2P";
   @import url('https://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic&subset=latin');
   @import url('https://fonts.googleapis.com/icon?family=Material+Icons');
-  @import "https://use.fontawesome.com/releases/v5.0.12/css/all.css";  /* is this needed? */
+  @import "https://use.fontawesome.com/releases/v5.0.12/css/all.css";
   #app {
     display: flex;
     width: 100%;

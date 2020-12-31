@@ -1,13 +1,9 @@
-export color values that are set to inherit
-test export with shadow and other properties, questionable if it works correctly
 potentially have animation for when optional subcomponent options buttons appear and are hidden
-firefox color selector
 
-alert text align on the left side or right side
 the alert button ripple does not seem to work properly when there are many components
 clean up css after export, such as 0px values, bordershadow being unset - be careful not to remove transition
 
-cursor that allows user to hover over component's parts and upon clicking would direct to the rightful settings
+cursor that allows user to hover over component's parts and upon clicking would direct to the rightful settings (similar to what chrome has)
 color active toolkit button
 color active component card
 option to see what the actual css looks like and to edit it
@@ -15,10 +11,9 @@ consider placing javascript unique to the css classes it was used on
 sometimes setting to auto option like the margin does not set desired results, potentially remove it - or set beginner components (in modal) to have no margin as auto
 decide where the display code and download buttons should go
 
-double check with ux that showing x only for some color pickers is ok
 font-awesome pictures on buttons
 material design examples should have nice hover, and shadow increase events on mouse click
-button to switch between px, em
+button to switch between px, em (at the moment optimization is only configured for px)
 if button height exceeds certain threshold - only then should the 'Centered' setting be displayed in the 'Text' panel
 
 
