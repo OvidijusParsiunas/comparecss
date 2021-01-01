@@ -6,6 +6,7 @@ import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
 import { TempCustomCss } from '../../../../../interfaces/tempCustomCss';
 import SharedCssUtils from './sharedCssUtils';
 import GeneralUtils from './generalUtils';
+import CleanCss from './cleanCss';
 
 enum pseudoClasses { HOVER = 'hover', ACTIVE = 'active' }
 
@@ -45,30 +46,10 @@ export default class CssBuilder {
     return `.${className} {\r\n${customCssString}\r\n}`;
   }
 
-  private static clean(customCss: CustomCss): WorkshopComponentCss | undefined {
-    const newCustomCss: WorkshopComponentCss = {};
-    let isBorderEmitted = false;
-    if (!customCss[SUB_COMPONENT_CSS_MODES.HOVER] && !customCss[SUB_COMPONENT_CSS_MODES.CLICK]) {
-      console.log(customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]);
-      Object.keys(customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]).forEach((key: string) => {
-        const css = customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][key];
-        if (key === 'boxShadow') { 
-          if (css.startsWith('0px 0px 0px 0px')) return;
-        } else if ((key === 'borderStyle' && (css === 'none' || isBorderEmitted)) || (key === 'borderWidth' && (css === '0px' || isBorderEmitted))) {
-          isBorderEmitted = true;
-          return;
-        } else if (css === '0px' || css === 'unset' || css === '0%') {
-          return;
-        }
-        newCustomCss[key] = 'css';
-      });
-    }
-    return Object.keys(newCustomCss).length > 0 ? newCustomCss : undefined;
-  }
-
   private static buildCustomCss(className: string, customCss: CustomCssWithInheritedCss, tempCustomCss: TempCustomCss): string {
-    const optimizedCss = this.clean(customCss[0]);
-    const defaultCss = this.buildDefaultCss(className, [optimizedCss || customCss[0][SUB_COMPONENT_CSS_MODES.DEFAULT], customCss[1]], tempCustomCss);
+    const cleanedCss = CleanCss.clean(customCss[0]);
+    console.log(cleanedCss);
+    const defaultCss = this.buildDefaultCss(className, [cleanedCss || customCss[0][SUB_COMPONENT_CSS_MODES.DEFAULT], customCss[1]], tempCustomCss);
     const pseudoCss = this.buildPseudoCss(className, customCss[0], tempCustomCss);
     return (defaultCss + ' ' + pseudoCss).trim();
   }
