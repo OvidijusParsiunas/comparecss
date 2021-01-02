@@ -1,4 +1,5 @@
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
+import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { CustomCss } from '../../../../../interfaces/workshopComponent';
 
 interface BorderPropertiesStatus {
@@ -7,10 +8,33 @@ interface BorderPropertiesStatus {
 
 export default class CleanCss {
 
-  private static removeUnusedCssModes(cleanCss: CustomCss): void {
-    Object.keys(cleanCss).forEach((cssMode: SUB_COMPONENT_CSS_MODES) => {
-      console.log(`deleting ${cssMode}`);
-      if (Object.keys(cleanCss[cssMode]).length === 0) delete cleanCss[cssMode];
+  private static shorthandProperties(css: WorkshopComponentCss, properties: any): void {
+    // if the property does not exist, can't replace it with '0px' because it could be inheriting the value from the previous css mode
+    // not shorthanding 3 css properties because the 4th one (left) would not be able to inherit
+    const { top, right, bottom, left, shorthandPropertyName } = properties;
+    if (css[top] && css[right] && css[bottom] && css[left]) {
+      if (css[top] === css[bottom] && css[left] === css[right]) {
+        if (css[top] === css[right]) {
+          css[shorthandPropertyName] = css[top];
+        } else {
+          css[shorthandPropertyName] = `${css[top]} ${css[right]}`;
+        }
+      } else {
+        css[shorthandPropertyName] = `${css[top]} ${css[right]} ${css[bottom]} ${css[left]}`;
+      }
+    }
+  }
+
+  private static shorthandCss(cleanedCss: CustomCss): void {
+    Object.keys(cleanedCss).forEach((cssMode: SUB_COMPONENT_CSS_MODES) => {
+      this.shorthandProperties(cleanedCss[cssMode], { top: 'marginTop', right: 'marginRight', bottom: 'marginBottom', left: 'marginLeft', shorthandPropertyName: 'margin' });
+      this.shorthandProperties(cleanedCss[cssMode], { top: 'paddingTop', right: 'paddingRight', bottom: 'paddingBottom', left: 'paddingLeft', shorthandPropertyName: 'padding' });
+    });
+  }
+
+  private static removeUnusedCssModes(cleanedCss: CustomCss): void {
+    Object.keys(cleanedCss).forEach((cssMode: SUB_COMPONENT_CSS_MODES) => {
+      if (Object.keys(cleanedCss[cssMode]).length === 0) delete cleanedCss[cssMode];
     });
   }
 
@@ -35,7 +59,7 @@ export default class CleanCss {
 
   private static cleanBorderPropertiesForCssMode(cleanedCss: CustomCss, customCss: CustomCss, cssMode: SUB_COMPONENT_CSS_MODES): void {
     if (!cleanedCss[cssMode]) return;
-    // if borderWidth exists - then the border must be present and borderStyle is not set to 'none', this is enforced by the UI 
+    // if borderWidth exists then the border must be present and borderStyle is not set to 'none', this is enforced in the UI
     if (cleanedCss[cssMode].hasOwnProperty('borderWidth')) {
       if (!cleanedCss[cssMode].hasOwnProperty('borderStyle') && !this.getCssValueAppropriateToMode(cssMode, cleanedCss, 'borderStyle')) {
         cleanedCss[cssMode].borderStyle = this.getCssValueAppropriateToMode(cssMode, customCss, 'borderStyle');
@@ -49,7 +73,7 @@ export default class CleanCss {
   }
 
   private static cleanBorderCss(cleanedCss: CustomCss, customCss: CustomCss): void {
-    Object.values(SUB_COMPONENT_CSS_MODES).forEach((cssMode) => {
+    Object.keys(cleanedCss).forEach((cssMode: SUB_COMPONENT_CSS_MODES) => {
       this.cleanBorderPropertiesForCssMode(cleanedCss, customCss, cssMode);
     });
   }
@@ -125,9 +149,7 @@ export default class CleanCss {
     });
     this.removeUnusedCssModes(cleanedCss);
     this.cleanBorderCss(cleanedCss, customCss);
-    console.log(cleanedCss);
-    // need to place padding/margin inside one property
-    // remove the empty mode objects
+    this.shorthandCss(cleanedCss);
     return cleanedCss;
   }
 }

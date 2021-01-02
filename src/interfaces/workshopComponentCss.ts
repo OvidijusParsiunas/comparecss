@@ -22,6 +22,7 @@ export interface WorkshopComponentCss {
   marginTop?: string;
   marginRight?: string;
   marginBottom?: string;
+  margin?: string;
   lineHeight?: string;
   color?: string;
   boxSizing?: string;
