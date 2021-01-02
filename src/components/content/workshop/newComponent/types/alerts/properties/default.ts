@@ -44,6 +44,7 @@ const initialCloseButtonCss: CustomCss = {
     color: '#ff0000',
     boxShadow: 'unset',
     borderWidth: '0px',
+    borderStyle: 'solid',
     backgroundColor: 'inherit',
     outline: 'none',
     paddingTop: '1px',
