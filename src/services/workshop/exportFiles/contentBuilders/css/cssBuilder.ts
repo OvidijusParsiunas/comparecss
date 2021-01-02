@@ -47,10 +47,9 @@ export default class CssBuilder {
   }
 
   private static buildCustomCss(className: string, customCss: CustomCssWithInheritedCss, tempCustomCss: TempCustomCss): string {
-    const cleanedCss = CleanCss.clean(customCss[0]);
-    console.log(cleanedCss);
-    const defaultCss = this.buildDefaultCss(className, [cleanedCss || customCss[0][SUB_COMPONENT_CSS_MODES.DEFAULT], customCss[1]], tempCustomCss);
-    const pseudoCss = this.buildPseudoCss(className, customCss[0], tempCustomCss);
+    const cleanedCustomCss = CleanCss.clean(customCss[0]);
+    const defaultCss = this.buildDefaultCss(className, [cleanedCustomCss[SUB_COMPONENT_CSS_MODES.DEFAULT], customCss[1]], tempCustomCss);
+    const pseudoCss = this.buildPseudoCss(className, cleanedCustomCss, tempCustomCss);
     return (defaultCss + ' ' + pseudoCss).trim();
   }
 

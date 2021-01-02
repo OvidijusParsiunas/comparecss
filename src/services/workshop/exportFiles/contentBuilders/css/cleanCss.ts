@@ -1,5 +1,4 @@
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
-import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { CustomCss } from '../../../../../interfaces/workshopComponent';
 
 interface BorderPropertiesStatus {
@@ -7,41 +6,35 @@ interface BorderPropertiesStatus {
 }
 
 export default class CleanCss {
-  
-  // if default and (hover || click) are ALSO in the shouldBeRemoved list, remove the default
-  private static shouldPropertyBeRemovedWhenUsedInPseudoClasses(propertyName: string, propertyValue: string, borderPropertiesStatus: BorderPropertiesStatus): boolean {
-    if (propertyValue === '0px' || propertyValue === 'unset' || propertyValue === '0%') {
-      if (customCss[SUB_COMPONENT_CSS_MODES.HOVER] && customCss[SUB_COMPONENT_CSS_MODES.HOVER][propertyName]) {
-        if (customCss[SUB_COMPONENT_CSS_MODES.HOVER][propertyName] == propertyValue) {
-          if (customCss[SUB_COMPONENT_CSS_MODES.CLICK] && customCss[SUB_COMPONENT_CSS_MODES.CLICK][propertyName]) {
-            if (customCss[SUB_COMPONENT_CSS_MODES.CLICK][propertyName] == propertyValue) {
-              return true;
-            } else {
-              return false;
-            }
-          } else {
-            return true; 
-          }
-        } else {
-          return false;
-        }
-      } else if (customCss[SUB_COMPONENT_CSS_MODES.CLICK] && customCss[SUB_COMPONENT_CSS_MODES.CLICK][propertyName]) {
-        if (customCss[SUB_COMPONENT_CSS_MODES.CLICK][propertyName] == propertyValue) {
+
+  private static retainPseudoCss(customCss: CustomCss, cleanedCss: CustomCss, propertyName: string,
+    targetMode: SUB_COMPONENT_CSS_MODES, previousMode: SUB_COMPONENT_CSS_MODES): boolean {
+    if (customCss[targetMode] && customCss[targetMode].hasOwnProperty(propertyName)
+        && customCss[previousMode][propertyName] !== customCss[targetMode][propertyName]) {
+          cleanedCss[targetMode][propertyName] = customCss[targetMode][propertyName];
           return true;
-        } else {
-          return false;
-        }
-      }
+    }
+    return false;
+  }
+
+  private static cleanPseudoCss(customCss: CustomCss, cleanedCss: CustomCss, propertyName: string): void {
+    // attempt to retain the hover value
+    if (this.retainPseudoCss(customCss, cleanedCss, propertyName, SUB_COMPONENT_CSS_MODES.HOVER, SUB_COMPONENT_CSS_MODES.DEFAULT)) {
+      // if hover value retained, attempt to retain the click value if it is different to hover
+      this.retainPseudoCss(customCss, cleanedCss, propertyName, SUB_COMPONENT_CSS_MODES.CLICK, SUB_COMPONENT_CSS_MODES.HOVER)
     } else {
-      return false;
+      // if hover value has not been retained, attempt to retain click value if it is different to default
+      this.retainPseudoCss(customCss, cleanedCss, propertyName, SUB_COMPONENT_CSS_MODES.CLICK, SUB_COMPONENT_CSS_MODES.DEFAULT)
     }
   }
 
-  // the current strategy is to remove redundant properties only if they are not used in hover and click
   private static shouldPropertyBeRemoved(propertyName: string, propertyValue: string, borderPropertiesStatus: BorderPropertiesStatus): boolean {
     switch(propertyName) {
       case 'boxShadow':
-        if (propertyValue.startsWith('0px 0px 0px 0px')) return true;
+        if (propertyValue.startsWith('0px 0px 0px 0px') || propertyValue === 'unset') {
+          return true;
+        }
+        return false;
       case 'borderStyle':
         if (propertyValue === 'none') {
           borderPropertiesStatus.isBorderEmitted = true;
@@ -49,6 +42,7 @@ export default class CleanCss {
         } else if (borderPropertiesStatus.isBorderEmitted) {
           return true;
         }
+        return false;
       case 'borderWidth':
         if (propertyValue === '0px') {
           borderPropertiesStatus.isBorderEmitted = true;
@@ -56,30 +50,35 @@ export default class CleanCss {
         } else if (borderPropertiesStatus.isBorderEmitted) {
           return true;
         }
+        return false;
       default:
         if (propertyValue === '0px' || propertyValue === 'unset' || propertyValue === '0%') {
           return true;
         }
+        return false;
     }
-    return false;
   }
 
-  // can also get rid of redundant css in hover && click if the default is redundant - identified by the shouldPropertyBeRemovedWhenUsedInPseudoClassesd method
-  public static clean(customCss: CustomCss): WorkshopComponentCss | undefined {
-    const newCustomCss: WorkshopComponentCss = {};
+  public static clean(customCss: CustomCss): CustomCss {
+    const cleanedCss: CustomCss = {
+      [SUB_COMPONENT_CSS_MODES.DEFAULT]: {},
+      [SUB_COMPONENT_CSS_MODES.HOVER]: {},
+      [SUB_COMPONENT_CSS_MODES.CLICK]: {},
+    };
     const borderPropertiesStatus: BorderPropertiesStatus = { isBorderEmitted: false };
-    Object.keys(customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]).forEach((key: string) => {
-      const css = customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][key];
-      if ((customCss[SUB_COMPONENT_CSS_MODES.HOVER] && customCss[SUB_COMPONENT_CSS_MODES.HOVER][key])
-        || (customCss[SUB_COMPONENT_CSS_MODES.CLICK] && customCss[SUB_COMPONENT_CSS_MODES.CLICK][key])) {
-          
-        } else if (!this.shouldPropertyBeRemoved(key, css, borderPropertiesStatus)) {
-          newCustomCss[key] = css; 
-        }
+    Object.keys(customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]).forEach((propertyName: string) => {
+      const defaultPropertyValue = customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][propertyName];
+      if (!this.shouldPropertyBeRemoved(propertyName, defaultPropertyValue, borderPropertiesStatus)) {
+        cleanedCss[SUB_COMPONENT_CSS_MODES.DEFAULT][propertyName] = defaultPropertyValue;
+      }
+      this.cleanPseudoCss(customCss, cleanedCss, propertyName);
     });
-    if (borderPropertiesStatus.isBorderEmitted && newCustomCss.hasOwnProperty('borderColor')) {
-      delete newCustomCss.borderColor;
+    // need to do this for other pseudo classes
+    if (borderPropertiesStatus.isBorderEmitted && cleanedCss[SUB_COMPONENT_CSS_MODES.DEFAULT].hasOwnProperty('borderColor')) {
+      delete cleanedCss[SUB_COMPONENT_CSS_MODES.DEFAULT].borderColor;
     }
-    return Object.keys(newCustomCss).length > 0 ? newCustomCss : undefined;
+    // need to place padding/margin inside one property
+    // remove the empty mode objects
+    return cleanedCss;
   }
 }
