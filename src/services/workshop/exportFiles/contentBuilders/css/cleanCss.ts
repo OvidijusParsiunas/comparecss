@@ -7,6 +7,13 @@ interface BorderPropertiesStatus {
 
 export default class CleanCss {
 
+  private static removeUnusedCssModes(cleanCss: CustomCss): void {
+    Object.keys(cleanCss).forEach((cssMode: SUB_COMPONENT_CSS_MODES) => {
+      console.log(`deleting ${cssMode}`);
+      if (Object.keys(cleanCss[cssMode]).length === 0) delete cleanCss[cssMode];
+    });
+  }
+
   private static getCssValueAppropriateToMode(cssMode: SUB_COMPONENT_CSS_MODES, customCss: CustomCss, cssProperty: string): string | undefined {
     switch (cssMode) {
       case (SUB_COMPONENT_CSS_MODES.CLICK):
@@ -28,6 +35,7 @@ export default class CleanCss {
 
   private static cleanBorderPropertiesForCssMode(cleanedCss: CustomCss, customCss: CustomCss, cssMode: SUB_COMPONENT_CSS_MODES): void {
     if (!cleanedCss[cssMode]) return;
+    // if borderWidth exists - then the border must be present and borderStyle is not set to 'none', this is enforced by the UI 
     if (cleanedCss[cssMode].hasOwnProperty('borderWidth')) {
       if (!cleanedCss[cssMode].hasOwnProperty('borderStyle') && !this.getCssValueAppropriateToMode(cssMode, cleanedCss, 'borderStyle')) {
         cleanedCss[cssMode].borderStyle = this.getCssValueAppropriateToMode(cssMode, customCss, 'borderStyle');
@@ -115,7 +123,9 @@ export default class CleanCss {
       this.cleanDefaultCss(customCss, cleanedCss, propertyName, defultBorderPropertiesStatus);
       this.cleanPseudoCss(customCss, cleanedCss, propertyName);
     });
+    this.removeUnusedCssModes(cleanedCss);
     this.cleanBorderCss(cleanedCss, customCss);
+    console.log(cleanedCss);
     // need to place padding/margin inside one property
     // remove the empty mode objects
     return cleanedCss;
