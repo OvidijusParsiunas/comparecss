@@ -6,29 +6,39 @@ interface BorderPropertiesStatus {
   areBorderPropertiesRetained: boolean;
 }
 
+interface ShorthandPropertyNames {
+  top: string;
+  right: string;
+  bottom: string;
+  left: string;
+  shorthandProperty: string;
+}
+
 export default class CleanCss {
 
-  private static shorthandProperties(css: WorkshopComponentCss, properties: any): void {
-    // if the property does not exist, can't replace it with '0px' because it could be inheriting the value from the previous css mode
-    // not shorthanding 3 css properties because the 4th one (left) would not be able to inherit
-    const { top, right, bottom, left, shorthandPropertyName } = properties;
+  private static shorthandProperties(css: WorkshopComponentCss, properties: ShorthandPropertyNames): void {
+    // if the property does not exist, cannot replace it with '0px' because it could be inheriting the value from the previous css mode
+    // not shorthanding 3 css properties because the 4th one (left) would not be able to inherit from the previous css mode
+    const { top, right, bottom, left, shorthandProperty } = properties;
     if (css[top] && css[right] && css[bottom] && css[left]) {
       if (css[top] === css[bottom] && css[left] === css[right]) {
         if (css[top] === css[right]) {
-          css[shorthandPropertyName] = css[top];
+          css[shorthandProperty] = css[top];
         } else {
-          css[shorthandPropertyName] = `${css[top]} ${css[right]}`;
+          css[shorthandProperty] = `${css[top]} ${css[right]}`;
         }
       } else {
-        css[shorthandPropertyName] = `${css[top]} ${css[right]} ${css[bottom]} ${css[left]}`;
+        css[shorthandProperty] = `${css[top]} ${css[right]} ${css[bottom]} ${css[left]}`;
       }
     }
   }
 
   private static shorthandCss(cleanedCss: CustomCss): void {
     Object.keys(cleanedCss).forEach((cssMode: SUB_COMPONENT_CSS_MODES) => {
-      this.shorthandProperties(cleanedCss[cssMode], { top: 'marginTop', right: 'marginRight', bottom: 'marginBottom', left: 'marginLeft', shorthandPropertyName: 'margin' });
-      this.shorthandProperties(cleanedCss[cssMode], { top: 'paddingTop', right: 'paddingRight', bottom: 'paddingBottom', left: 'paddingLeft', shorthandPropertyName: 'padding' });
+      // https://www.w3schools.com/css/css_margin.asp
+      this.shorthandProperties(cleanedCss[cssMode], { top: 'marginTop', right: 'marginRight', bottom: 'marginBottom', left: 'marginLeft', shorthandProperty: 'margin' });
+      // https://www.w3schools.com/css/css_padding.asp
+      this.shorthandProperties(cleanedCss[cssMode], { top: 'paddingTop', right: 'paddingRight', bottom: 'paddingBottom', left: 'paddingLeft', shorthandProperty: 'padding' });
     });
   }
 
