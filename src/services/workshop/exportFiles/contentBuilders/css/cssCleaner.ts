@@ -14,6 +14,15 @@ interface ShorthandPropertyNames {
   shorthandProperty: string;
 }
 
+interface SubcomponentDimensions {
+  width: number;
+  paddingLeft: number;
+  paddingRight: number;
+  height: number;
+  paddingTop: number;
+  paddingBottom: number;
+}
+
 export default class CssCleaner {
 
   private static shorthandProperties(css: WorkshopComponentCss, properties: ShorthandPropertyNames): void {
@@ -92,12 +101,22 @@ export default class CssCleaner {
     });
   }
 
+  private static retrieveSubcomponentDimensions(customCss: CustomCss, cssMode: SUB_COMPONENT_CSS_MODES): SubcomponentDimensions {
+    const subcomponentDimensions = { width: 0, paddingLeft: 0, paddingRight: 0, height: 0, paddingTop: 0, paddingBottom: 0 };
+    Object.keys(subcomponentDimensions).map((key) => {
+      subcomponentDimensions[key] = customCss[cssMode].hasOwnProperty[key] ? Number.parseInt(customCss[cssMode][key]) : Number.parseInt(this.getCssValueAppropriateToMode(cssMode, customCss, key));
+    })
+    return subcomponentDimensions;
+  } 
+
   private static cleanBorderRadiusCss(customCss: CustomCss, cssMode: SUB_COMPONENT_CSS_MODES): string {
-    const width = customCss[cssMode].width ? Number.parseInt(customCss[cssMode].width) : Number.parseInt(this.getCssValueAppropriateToMode(cssMode, customCss, 'width'));
-    const height = customCss[cssMode].height ? Number.parseInt(customCss[cssMode].height) : Number.parseInt(this.getCssValueAppropriateToMode(cssMode, customCss, 'height'));
-    const borderRadiusValue = customCss[cssMode].borderRadius;
-    const lowerDimension = width < height ? width : height;
-    return Number.parseInt(borderRadiusValue) > (lowerDimension / 2) ? '50%' : borderRadiusValue;
+    // if the border radius is above half of the shortest dimension - the pixels are no longer effective, hence 50% rounds it to the fullest
+    const { width, height, paddingLeft, paddingRight, paddingTop, paddingBottom } = this.retrieveSubcomponentDimensions(customCss, cssMode);
+    const { borderRadius } = customCss[cssMode];
+    const totalWidth = width + paddingLeft + paddingRight;
+    const totalHeight = height + paddingTop + paddingBottom;
+    const shortestDimension = totalWidth < totalHeight ? totalWidth : totalHeight;
+    return Number.parseInt(borderRadius) > (shortestDimension / 2) ? '50%' : borderRadius;
   }
   
   private static retainPseudoCss(customCss: CustomCss, cleanedCss: CustomCss, propertyName: string,
