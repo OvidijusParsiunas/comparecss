@@ -29,6 +29,7 @@ export const inheritedCloseChildCss: ChildCss[] = [
         overflow: 'hidden',
         transition: 'all 0.25s ease-out',
         fontFamily: '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol"',
+        boxSizing: 'unset',
       },
       nestedChildCss: [{
         elementTag: 'div',

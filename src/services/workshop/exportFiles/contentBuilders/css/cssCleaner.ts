@@ -14,7 +14,7 @@ interface ShorthandPropertyNames {
   shorthandProperty: string;
 }
 
-export default class CleanCss {
+export default class CssCleaner {
 
   private static shorthandProperties(css: WorkshopComponentCss, properties: ShorthandPropertyNames): void {
     // if the property does not exist, cannot replace it with '0px' because it could be inheriting the value from the previous css mode
@@ -30,6 +30,10 @@ export default class CleanCss {
       } else {
         css[shorthandProperty] = `${css[top]} ${css[right]} ${css[bottom]} ${css[left]}`;
       }
+      delete css[top];
+      delete css[right];
+      delete css[bottom];
+      delete css[left];
     }
   }
 
@@ -48,19 +52,19 @@ export default class CleanCss {
     });
   }
 
-  private static getCssValueAppropriateToMode(cssMode: SUB_COMPONENT_CSS_MODES, customCss: CustomCss, cssProperty: string): string | undefined {
+  private static getCssValueAppropriateToMode(cssMode: SUB_COMPONENT_CSS_MODES, customCss: CustomCss, cssPropertyName: string): string | undefined {
     switch (cssMode) {
       case (SUB_COMPONENT_CSS_MODES.CLICK):
-        if (customCss[SUB_COMPONENT_CSS_MODES.CLICK] && customCss[SUB_COMPONENT_CSS_MODES.CLICK].hasOwnProperty(cssProperty)) {
-          return customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
+        if (customCss[SUB_COMPONENT_CSS_MODES.CLICK] && customCss[SUB_COMPONENT_CSS_MODES.CLICK].hasOwnProperty(cssPropertyName)) {
+          return customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssPropertyName];
         }
       case (SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
-        if (customCss[SUB_COMPONENT_CSS_MODES.HOVER] && customCss[SUB_COMPONENT_CSS_MODES.HOVER].hasOwnProperty(cssProperty)) {
-          return customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
+        if (customCss[SUB_COMPONENT_CSS_MODES.HOVER] && customCss[SUB_COMPONENT_CSS_MODES.HOVER].hasOwnProperty(cssPropertyName)) {
+          return customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssPropertyName];
         }
       case (SUB_COMPONENT_CSS_MODES.DEFAULT || SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
-        if (customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] && customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].hasOwnProperty(cssProperty)) {
-          return customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty];
+        if (customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] && customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].hasOwnProperty(cssPropertyName)) {
+          return customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssPropertyName];
         }
       default:
         return undefined;
@@ -87,12 +91,22 @@ export default class CleanCss {
       this.cleanBorderPropertiesForCssMode(cleanedCss, customCss, cssMode);
     });
   }
+
+  private static cleanBorderRadiusCss(customCss: CustomCss, cssMode: SUB_COMPONENT_CSS_MODES): string {
+    const width = customCss[cssMode].width ? Number.parseInt(customCss[cssMode].width) : Number.parseInt(this.getCssValueAppropriateToMode(cssMode, customCss, 'width'));
+    const height = customCss[cssMode].height ? Number.parseInt(customCss[cssMode].height) : Number.parseInt(this.getCssValueAppropriateToMode(cssMode, customCss, 'height'));
+    const borderRadiusValue = customCss[cssMode].borderRadius;
+    const lowerDimension = width < height ? width : height;
+    return Number.parseInt(borderRadiusValue) > (lowerDimension / 2) ? '50%' : borderRadiusValue;
+  }
   
   private static retainPseudoCss(customCss: CustomCss, cleanedCss: CustomCss, propertyName: string,
     targetMode: SUB_COMPONENT_CSS_MODES, previousMode: SUB_COMPONENT_CSS_MODES): boolean {
     if (customCss[targetMode] && customCss[targetMode].hasOwnProperty(propertyName)
         && customCss[previousMode][propertyName] !== customCss[targetMode][propertyName]) {
-          cleanedCss[targetMode][propertyName] = customCss[targetMode][propertyName];
+          let customCssValue = customCss[targetMode][propertyName];
+          if (propertyName === 'borderRadius') { customCssValue = this.cleanBorderRadiusCss(customCss, targetMode); }
+          cleanedCss[targetMode][propertyName] = customCssValue;
           return true;
     }
     return false;
@@ -110,6 +124,11 @@ export default class CleanCss {
 
   private static shouldPropertyBeRetained(propertyName: string, propertyValue: string, borderPropertiesStatus: BorderPropertiesStatus): boolean {
     switch(propertyName) {
+      case 'paddingTop':
+      case 'paddingRight':
+      case 'paddingBottom':
+      case 'paddingLeft':
+        return true;
       case 'boxShadow':
         if (propertyValue.startsWith('0px 0px 0px 0px') || propertyValue === 'unset') {
           return false;
@@ -126,7 +145,7 @@ export default class CleanCss {
       case 'borderWidth':
         if (propertyValue === '0px') {
           borderPropertiesStatus.areBorderPropertiesRetained = false;
-          return false;
+          return true;
         } else if (!borderPropertiesStatus.areBorderPropertiesRetained) {
           return false;
         }
@@ -140,8 +159,9 @@ export default class CleanCss {
   }
 
   private static cleanDefaultCss(customCss: CustomCss, cleanedCss: CustomCss, propertyName: string, borderPropertiesStatus: BorderPropertiesStatus): void {
-    const defaultPropertyValue = customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][propertyName];
+    let defaultPropertyValue = customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][propertyName];
     if (this.shouldPropertyBeRetained(propertyName, defaultPropertyValue, borderPropertiesStatus)) {
+      if (propertyName === 'borderRadius') { defaultPropertyValue = this.cleanBorderRadiusCss(customCss, SUB_COMPONENT_CSS_MODES.DEFAULT); }
       cleanedCss[SUB_COMPONENT_CSS_MODES.DEFAULT][propertyName] = defaultPropertyValue;
     }
   }

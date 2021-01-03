@@ -8,7 +8,7 @@ export default {
       spec: {
         name: 'Radius',
         default: 0,
-        scale: [0, 100],
+        scale: [0, 120],
         smoothingDivisible: 4,
         cssProperty: 'borderRadius'
       },
