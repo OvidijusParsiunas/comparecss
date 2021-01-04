@@ -1,5 +1,5 @@
 <template>
-  <div @mousedown="triggerWorkshopEventCallbacks" @keydown.enter="triggerWorkshopEventCallbacks">
+  <div @mousedown="triggerWorkshopEventCallbacks" @keydown.enter="triggerWorkshopEventCallbacks" @keydown.esc="triggerWorkshopEventCallbacks">
     <div style="height: 100vh" class="bootstrap">
       <div style="height: 100%; margin-left: 0px; margin-right: 0px; display: flex">
         <div style="width: 30%; position: relative">

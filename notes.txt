@@ -1,6 +1,5 @@
 potentially have animation for when optional subcomponent options buttons appear and are hidden
-new component modal placeholder?
-esc button
+create a custom select options element in new component modal body
 
 the alert button ripple does not seem to work properly when there are many components
 clean up css after export, such as 0px values, bordershadow being unset - be careful not to remove transition

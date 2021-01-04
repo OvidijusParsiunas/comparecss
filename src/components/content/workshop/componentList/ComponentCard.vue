@@ -61,7 +61,7 @@ export default {
     },
     stopEditingClassName(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
       if (event instanceof KeyboardEvent) {
-        if (event.key === 'Enter') {
+        if (event.key === 'Enter' || event.key === 'Escape') {
           this.isEditingClassName = false;
           this.thisComponent.className = ProcessClassName.finalize(this.className || this.thisComponent.className, this.thisComponent.className, this.allComponents, this.thisComponent.className);
           return { shouldRepeat: false };

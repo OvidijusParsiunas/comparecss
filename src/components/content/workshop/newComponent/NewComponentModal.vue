@@ -11,17 +11,23 @@
         <div class="modal-body">
           <form style="width: 100%">
             <label style="margin-bottom: 1px">Class name:</label>
-            <input ref="modalClassNameEditorInput" style="width: 50%" class="form-control" type="text"
+            <input ref="modalClassNameEditor" style="width: 50%" class="form-control" type="text"
               v-model="className"
+              :placeholder="classNamePlaceholder"
               @input="changeClassName"
-              @keydown.enter="blurClassNameEditorInput"
-              @mousedown="editClassName(component)">
+              @keydown.enter="blurClassNameEditor"
+              @blur="blurClassNameEditor"
+              @click="prepareToEditClassNameEditor">
             <div class="form-row">
               <div class="form-group col-md-6">
                 <div class="form-group">
                   <label style="margin-bottom: 1px; margin-top: 5px">Component type:</label>
-                  <select multiple class="form-control" id="exampleFormControlSelect2">
-                    <option v-for="newComponentType in NEW_COMPONENT_TYPES" :key="newComponentType" v-on:mouseenter="setComponentPreviewImage(newComponentType)">{{newComponentType}}</option>
+                  <select class="custom-select" size="5">
+                    <option v-for="newComponentType in NEW_COMPONENT_TYPES" :key="newComponentType"
+                      @mouseenter="setComponentPreviewImage(newComponentType)"
+                      @click="selectComponentType(newComponentType)">
+                      {{newComponentType}}
+                    </option>
                   </select>
                 </div>
               </div>
@@ -32,7 +38,10 @@
         </form>
         </div>
         <div class="modal-footer">
-          <button v-on:click="addNewComponent(NEW_COMPONENT_TYPES.ALERT)" type="button" class="btn btn-primary" data-dismiss="modal">Add</button>
+          <button type="button" class="btn btn-primary" data-dismiss="modal"
+            @click="addNewComponent">
+              Add
+          </button>
         </div>
       </div>
     </div>
@@ -53,13 +62,14 @@ interface Data {
   classNameIndex: number;
   className: string;
   classNamePlaceholder: string;
+  currentlySelectedComponentType: NEW_COMPONENT_TYPES;
 }
 
 interface Consts {
   MODAL_FADE_MILLISECONDS: number;
   CLASS_NAME_PREFIX: string;
-  NEW_COMPONENT_TYPES,
-  NEW_COMPONENT_MODAL_ID,
+  NEW_COMPONENT_TYPES;
+  NEW_COMPONENT_MODAL_ID;
 }
 
 export default {
@@ -76,10 +86,12 @@ export default {
     classNameIndex: 1,
     className: null,
     classNamePlaceholder: null,
+    currentlySelectedComponentType: null,
   }),
   created(): void {
     if (!this.className) { this.className = this.createClassName(this.classNameIndex); }
     if (!this.classNamePlaceholder) { this.classNamePlaceholder = this.createClassName(this.classNameIndex); }
+    if (!this.currentlySelectedComponentType) { this.currentlySelectedComponentType = Object.values(this.NEW_COMPONENT_TYPES)[0]; }
   },
   methods: {
     createClassName(classNameIndex: number): string {
@@ -88,8 +100,8 @@ export default {
     setComponentPreviewImage(componentName: string): void {
       this.previewImage = newComponentModalService.getPreviewImage(componentName);
     },
-    addNewComponent(newComponentType: NEW_COMPONENT_TYPES): void {
-      const newComponent = componentTypeToStyles[newComponentType][NEW_COMPONENT_STYLES.DEFAULT].getNewComponent();
+    addNewComponent(): void {
+      const newComponent = componentTypeToStyles[this.currentlySelectedComponentType][NEW_COMPONENT_STYLES.DEFAULT].getNewComponent();
       newComponent.className = this.className;
       this.$emit('add-new-component', newComponent);
       // updates modal only after it has closed
@@ -105,29 +117,36 @@ export default {
       this.className = ProcessClassName.process(this.className);
       setTimeout(() => { inputElement.setSelectionRange(initialStartPosition, initialStartPosition); });
     },
-    blurClassNameEditorInput(event: KeyboardEvent): void {
+    blurClassNameEditor(event: KeyboardEvent): void {
       event.preventDefault();
-      (event.target as HTMLInputElement).blur();
+      this.isClassNameTextHighlighted = false;
+      // prevents the following: when text is highlighted, user clicks on a component type option then clicks on input again - causing the highlight to flicker
+      window.getSelection().removeAllRanges();
     },
-    editClassName(): void {
+    prepareToEditClassNameEditor(): void {
+      if (this.className === this.classNamePlaceholder && !this.isClassNameTextHighlighted && (!window.getSelection || window.getSelection().type !== 'Range')) {
+        this.isClassNameTextHighlighted = true;
+        (event.target as HTMLInputElement).select();
+      }
       this.$emit('stop-editing-class-name-callback', this.stopEditingClassName);
     },
     stopEditingClassName(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
       if (event instanceof KeyboardEvent) {
-        if (event.key === 'Enter') {
+        if (event.key === 'Enter' || event.key === 'Escape') {
           this.className = ProcessClassName.finalize(this.className || this.classNamePlaceholder, this.classNamePlaceholder, this.components);
           return { shouldRepeat: false };
         }
         return { shouldRepeat: true };
       }
-      if (event.target !== this.$refs.modalClassNameEditorInput) {
-        setTimeout(() => {
-          this.className = ProcessClassName.finalize(this.className || this.classNamePlaceholder, this.classNamePlaceholder, this.components);
-        }, this.MODAL_FADE_MILLISECONDS);
+      if (event.target !== this.$refs.modalClassNameEditor) {
+        this.className = ProcessClassName.finalize(this.className || this.classNamePlaceholder, this.classNamePlaceholder, this.components);
         return { shouldRepeat: false };
       }
       return { shouldRepeat: true };
     },
+    selectComponentType(componentType: NEW_COMPONENT_TYPES): void {
+      this.currentlySelectedComponentType = componentType;
+    }
   },
   props: {
     components: Object,
