@@ -110,13 +110,15 @@ export default class CssCleaner {
   } 
 
   private static cleanBorderRadiusCss(customCss: CustomCss, cssMode: SUB_COMPONENT_CSS_MODES): string {
-    // if the border radius is above half of the shortest dimension - the pixels are no longer effective, hence 50% rounds it to the fullest
+    // if the subcomponent's dimensions are short (less than 19px) and the border radius is large (more than half of the shortest dimension),
+    // change it to 50% in order to fully smoothen it
     const { width, height, paddingLeft, paddingRight, paddingTop, paddingBottom } = this.retrieveSubcomponentDimensions(customCss, cssMode);
     const { borderRadius } = customCss[cssMode];
     const totalWidth = width + paddingLeft + paddingRight;
     const totalHeight = height + paddingTop + paddingBottom;
+    if (totalWidth > 19 || totalHeight > 19) return;
     const shortestDimension = totalWidth < totalHeight ? totalWidth : totalHeight;
-    return Number.parseInt(borderRadius) > (shortestDimension / 2) ? '50%' : borderRadius;
+    return Number.parseInt(borderRadius) >= (Math.ceil(shortestDimension / 2)) ? '50%' : borderRadius;
   }
   
   private static retainPseudoCss(customCss: CustomCss, cleanedCss: CustomCss, propertyName: string,

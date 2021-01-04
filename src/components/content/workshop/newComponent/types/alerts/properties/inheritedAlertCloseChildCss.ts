@@ -1,16 +1,6 @@
 import { ChildCss } from "../../../../../../../interfaces/workshopComponent";
 
-export const inheritedCloseChildCss: ChildCss[] = [
-  {
-    elementTag: 'div',
-    childNumber: 1,
-    inheritedCss: {
-      position: 'absolute',
-      top: '50%',
-      transform: 'translateY(-50%)',
-      width: 'inherit',
-    },
-  },
+export const inheritedAlertCloseChildCss: ChildCss[] = [
   {
     elementTag: 'div',
     childNumber: 2,

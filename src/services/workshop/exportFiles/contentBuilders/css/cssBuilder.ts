@@ -81,6 +81,12 @@ export default class CssBuilder {
       const { className, subcomponents, type } = component;
       Object.keys(subcomponents).forEach((key: SUB_COMPONENTS) => {
         const subcomponent: SubcomponentProperties = subcomponents[key];
+        if (!subcomponent.optionalSubcomponent) {
+          const componentToSubcomponentId = SharedCssUtils.generateComponentToSubcomponentId(type, key);
+          const processedCustomCss: CustomCssWithInheritedCss = SharedCssUtils.allocateSharedInheritedCss(subcomponent.customCss,
+            (subcomponent.inheritedCss ? subcomponent.inheritedCss.css : undefined), repeatedSubcomponents[componentToSubcomponentId], sharedInheritedParentCss, type, className);
+          customCss += `${this.buildCustomCss(className, processedCustomCss, subcomponent.tempCustomCss)}\r\n\r\n`;
+        }
         if (subcomponent.optionalSubcomponent && !subcomponent.optionalSubcomponent.currentlyDisplaying) return;
         if (subcomponent.childCss) {
           const componentToSubcomponentId = SharedCssUtils.generateComponentToSubcomponentId(type, key);
@@ -88,10 +94,6 @@ export default class CssBuilder {
             repeatedSubcomponents[componentToSubcomponentId], sharedInhertedChildCss, subcomponent.tempCustomCss);
           return;
         }
-        const componentToSubcomponentId = SharedCssUtils.generateComponentToSubcomponentId(type, key);
-        const processedCustomCss: CustomCssWithInheritedCss = SharedCssUtils.allocateSharedInheritedCss(subcomponent.customCss,
-          (subcomponent.inheritedCss ? subcomponent.inheritedCss.css : undefined), repeatedSubcomponents[componentToSubcomponentId], sharedInheritedParentCss, type, className);
-        customCss += `${this.buildCustomCss(className, processedCustomCss, subcomponent.tempCustomCss)}\r\n\r\n`;
       });
     });
     return { customCss, sharedInheritedParentCss, sharedInhertedChildCss };

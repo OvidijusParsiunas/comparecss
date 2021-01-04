@@ -72,7 +72,8 @@
 
 <script lang="ts">
 import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../interfaces/workshopComponent';
-import { inheritedCloseChildCss } from './newComponent/types/alerts/properties/inheritedCloseChildCss';
+import { inheritedAlertCloseChildCss } from './newComponent/types/alerts/properties/inheritedAlertCloseChildCss';
+import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
@@ -191,6 +192,7 @@ export default {
             customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
             tempCustomCss: new Set(['transition']),
             inheritedCss: inheritedAlertBaseCss,
+            childCss: inheritedAlertBaseChildCss,
           },
           [SUB_COMPONENTS.CLOSE]: {
             frameworkClass: 'bootstrap',
@@ -207,7 +209,7 @@ export default {
             customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
             subcomponentPreviewTransition: 'all 0.25s ease-out',
             tempCustomCss: new Set(['transition']),
-            childCss: inheritedCloseChildCss,
+            childCss: inheritedAlertCloseChildCss,
             optionalSubcomponent: { currentlyDisplaying: true },
           },
         },

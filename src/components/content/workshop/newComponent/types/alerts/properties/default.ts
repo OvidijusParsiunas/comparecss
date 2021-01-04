@@ -5,7 +5,8 @@ import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasse
 import JSONManipulation from '../../../../../../../services/workshop/jsonManipulation';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
 import { NewComponent } from '../../../../../../../interfaces/newComponent';
-import { inheritedCloseChildCss } from './inheritedCloseChildCss';
+import { inheritedAlertCloseChildCss } from './inheritedAlertCloseChildCss';
+import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';
 import { inheritedAlertBaseCss } from './inheritedCss';
 
 // all default css needs to be filled in as to be able to 'reset' correctly
@@ -77,6 +78,7 @@ export const defaultAlert: NewComponent = {
           customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
           tempCustomCss: new Set(['transition']),
           inheritedCss: inheritedAlertBaseCss,
+          childCss: inheritedAlertBaseChildCss,
         },
         [SUB_COMPONENTS.CLOSE]: {
           frameworkClass: 'bootstrap',
@@ -93,7 +95,7 @@ export const defaultAlert: NewComponent = {
           customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
           subcomponentPreviewTransition: 'all 0.25s ease-out',
           tempCustomCss: new Set(['transition']),
-          childCss: inheritedCloseChildCss,
+          childCss: inheritedAlertCloseChildCss,
           optionalSubcomponent: { currentlyDisplaying: true },
         },
       },
