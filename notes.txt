@@ -1,5 +1,4 @@
 potentially have animation for when optional subcomponent options buttons appear and are hidden
-create a new option that does not have the text align feature
 
 the alert button ripple does not seem to work properly when there are many components
 clean up css after export, such as 0px values, bordershadow being unset - be careful not to remove transition

@@ -32,7 +32,7 @@ export const buttonContainerOptions: ComponentOptions<ButtonOptionsModes> = {
     },
     {
       buttonName: 'Text',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.TEXT,
+      identifier: WORKSHOP_TOOLBAR_OPTIONS.TEXT_DEFAULT,
     },
   ],
   [SUB_COMPONENT_CSS_MODES.HOVER]: [
@@ -50,7 +50,7 @@ export const buttonContainerOptions: ComponentOptions<ButtonOptionsModes> = {
     },
     {
       buttonName: 'Text',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.TEXT,
+      identifier: WORKSHOP_TOOLBAR_OPTIONS.TEXT_DEFAULT,
     },
   ],
   [SUB_COMPONENT_CSS_MODES.CLICK]: [
@@ -68,7 +68,7 @@ export const buttonContainerOptions: ComponentOptions<ButtonOptionsModes> = {
     },
     {
       buttonName: 'Text',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.TEXT,
+      identifier: WORKSHOP_TOOLBAR_OPTIONS.TEXT_DEFAULT,
     },
     {
       buttonName: 'Design',
