@@ -14,7 +14,7 @@
             <input ref="modalClassNameEditor" style="width: 50%" class="form-control" type="text"
               v-model="className"
               :placeholder="classNamePlaceholder"
-              @input="changeClassName"
+              @input="inputValueIntoClassNameEditor"
               @keydown.enter="blurClassNameEditor"
               @blur="blurClassNameEditor"
               @click="prepareToEditClassNameEditor">
@@ -40,7 +40,7 @@
         <div class="modal-footer">
           <button type="button" class="btn btn-primary" data-dismiss="modal"
             @click="addNewComponent">
-              Add
+            Add
           </button>
         </div>
       </div>
@@ -100,31 +100,10 @@ export default {
     setComponentPreviewImage(componentName: string): void {
       this.previewImage = newComponentModalService.getPreviewImage(componentName);
     },
-    addNewComponent(): void {
-      const newComponent = componentTypeToStyles[this.currentlySelectedComponentType][NEW_COMPONENT_STYLES.DEFAULT].getNewComponent();
-      newComponent.className = this.className;
-      this.$emit('add-new-component', newComponent);
-      // updates modal only after it has closed
-      setTimeout(() => {
-        this.classNameIndex++;
-        this.className = this.createClassName(this.classNameIndex);
-        this.classNamePlaceholder = this.createClassName(this.classNameIndex);
-      }, this.MODAL_FADE_MILLISECONDS);
-    },
-    changeClassName(): void {
-      const inputElement = event.target as HTMLInputElement;
-      const initialStartPosition = inputElement.selectionStart;
-      this.className = ProcessClassName.process(this.className);
-      setTimeout(() => { inputElement.setSelectionRange(initialStartPosition, initialStartPosition); });
-    },
-    blurClassNameEditor(event: KeyboardEvent): void {
-      event.preventDefault();
-      this.isClassNameTextHighlighted = false;
-      // prevents the following: when text is highlighted, user clicks on a component type option then clicks on input again - causing the highlight to flicker
-      window.getSelection().removeAllRanges();
-    },
     prepareToEditClassNameEditor(): void {
-      if (this.className === this.classNamePlaceholder && !this.isClassNameTextHighlighted && (!window.getSelection || window.getSelection().type !== 'Range')) {
+      // selectionStart and selectionEnd are used to make sure the user has not already highlighted the text themselves
+      const { selectionStart, selectionEnd } = this.$refs.modalClassNameEditor;
+      if (this.className === this.classNamePlaceholder && !this.isClassNameTextHighlighted && (selectionStart === selectionEnd)) {
         this.isClassNameTextHighlighted = true;
         (event.target as HTMLInputElement).select();
       }
@@ -144,8 +123,31 @@ export default {
       }
       return { shouldRepeat: true };
     },
+    inputValueIntoClassNameEditor(): void {
+      const inputElement = event.target as HTMLInputElement;
+      const initialStartPosition = inputElement.selectionStart;
+      this.className = ProcessClassName.process(this.className);
+      setTimeout(() => { inputElement.setSelectionRange(initialStartPosition, initialStartPosition); });
+    },
+    blurClassNameEditor(event: KeyboardEvent): void {
+      event.preventDefault();
+      this.isClassNameTextHighlighted = false;
+      // prevents the following: when text is highlighted, user clicks on a component type option then clicks on input again - causing the highlight to flicker
+      if (window.getSelection) window.getSelection().removeAllRanges();
+    },
     selectComponentType(componentType: NEW_COMPONENT_TYPES): void {
       this.currentlySelectedComponentType = componentType;
+    },
+    addNewComponent(): void {
+      const newComponent = componentTypeToStyles[this.currentlySelectedComponentType][NEW_COMPONENT_STYLES.DEFAULT].getNewComponent();
+      newComponent.className = this.className;
+      this.$emit('add-new-component', newComponent);
+      // updates modal only after it has closed
+      setTimeout(() => {
+        this.classNameIndex++;
+        this.className = this.createClassName(this.classNameIndex);
+        this.classNamePlaceholder = this.createClassName(this.classNameIndex);
+      }, this.MODAL_FADE_MILLISECONDS);
     }
   },
   props: {

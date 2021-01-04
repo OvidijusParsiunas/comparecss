@@ -4,7 +4,7 @@ import { ComponentOptions } from '../../../../../../../interfaces/componentOptio
 
 type ButtonOptionsModes = SUB_COMPONENT_CSS_MODES.DEFAULT | SUB_COMPONENT_CSS_MODES.HOVER | SUB_COMPONENT_CSS_MODES.CLICK;
 
-export const buttonContainerOptions: ComponentOptions<ButtonOptionsModes> = {
+export const buttonBaseOptions: ComponentOptions<ButtonOptionsModes> = {
   [SUB_COMPONENT_CSS_MODES.DEFAULT]: [
     {
       buttonName: 'Border',

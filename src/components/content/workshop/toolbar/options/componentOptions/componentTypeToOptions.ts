@@ -2,8 +2,8 @@ import { SubcomponentCssModes } from '../../../../../../interfaces/subcomponentC
 import { NEW_COMPONENT_TYPES } from '../../../../../../consts/newComponentTypes.enum';
 import { SUB_COMPONENTS } from '../../../../../../consts/subcomponentModes.enum';
 import { ComponentOptions } from '../../../../../../interfaces/componentOptions';
-import { buttonContainerOptions } from './button/container';
-import { alertContainerOptions } from './alert/container';
+import { buttonBaseOptions } from './button/base';
+import { alertBaseOptions } from './alert/base';
 import { alertCloseOptions } from './alert/close';
 
 type subcomponentTypeToOptions = {
@@ -16,10 +16,10 @@ type ComponentTypeToOptions = {
 
 export const componentTypeToOptions: ComponentTypeToOptions = {
   [NEW_COMPONENT_TYPES.BUTTON]: {
-    [SUB_COMPONENTS.BASE]: buttonContainerOptions as ComponentOptions<keyof SubcomponentCssModes>,
+    [SUB_COMPONENTS.BASE]: buttonBaseOptions as ComponentOptions<keyof SubcomponentCssModes>,
   },
   [NEW_COMPONENT_TYPES.ALERT]: {
-    [SUB_COMPONENTS.BASE]: alertContainerOptions as ComponentOptions<keyof SubcomponentCssModes>,
+    [SUB_COMPONENTS.BASE]: alertBaseOptions as ComponentOptions<keyof SubcomponentCssModes>,
     [SUB_COMPONENTS.CLOSE]: alertCloseOptions as ComponentOptions<keyof SubcomponentCssModes>,
   },
 };
