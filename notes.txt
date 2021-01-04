@@ -1,8 +1,11 @@
 potentially have animation for when optional subcomponent options buttons appear and are hidden
+new component modal placeholder?
+esc button
 
 the alert button ripple does not seem to work properly when there are many components
 clean up css after export, such as 0px values, bordershadow being unset - be careful not to remove transition
 
+need to investigate how to set default settings values (min max, select options) for each subcomponent
 cursor that allows user to hover over component's parts and upon clicking would direct to the rightful settings (similar to what chrome has)
 color active toolkit button
 color active component card

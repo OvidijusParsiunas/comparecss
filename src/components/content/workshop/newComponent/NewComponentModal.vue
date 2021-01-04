@@ -10,6 +10,7 @@
         </div>
         <div class="modal-body">
           <form style="width: 100%">
+            <label style="margin-bottom: 1px">Class name:</label>
             <input ref="modalClassNameEditorInput" style="width: 50%" class="form-control" type="text"
               v-model="className"
               @input="changeClassName"
@@ -18,7 +19,7 @@
             <div class="form-row">
               <div class="form-group col-md-6">
                 <div class="form-group">
-                  <label for="exampleFormControlSelect2">Example multiple select</label>
+                  <label style="margin-bottom: 1px; margin-top: 5px">Component type:</label>
                   <select multiple class="form-control" id="exampleFormControlSelect2">
                     <option v-for="newComponentType in NEW_COMPONENT_TYPES" :key="newComponentType" v-on:mouseenter="setComponentPreviewImage(newComponentType)">{{newComponentType}}</option>
                   </select>
@@ -114,13 +115,15 @@ export default {
     stopEditingClassName(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
       if (event instanceof KeyboardEvent) {
         if (event.key === 'Enter') {
-          this.className = ProcessClassName.finalize(this.className, this.classNamePlaceholder, this.components);
+          this.className = ProcessClassName.finalize(this.className || this.classNamePlaceholder, this.classNamePlaceholder, this.components);
           return { shouldRepeat: false };
         }
         return { shouldRepeat: true };
       }
       if (event.target !== this.$refs.modalClassNameEditorInput) {
-        this.className = ProcessClassName.finalize(this.className, this.classNamePlaceholder, this.components);
+        setTimeout(() => {
+          this.className = ProcessClassName.finalize(this.className || this.classNamePlaceholder, this.classNamePlaceholder, this.components);
+        }, this.MODAL_FADE_MILLISECONDS);
         return { shouldRepeat: false };
       }
       return { shouldRepeat: true };

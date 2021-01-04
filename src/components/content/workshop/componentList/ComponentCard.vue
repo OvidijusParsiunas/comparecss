@@ -63,7 +63,7 @@ export default {
       if (event instanceof KeyboardEvent) {
         if (event.key === 'Enter') {
           this.isEditingClassName = false;
-          this.thisComponent.className = ProcessClassName.finalize(this.className, this.thisComponent.className, this.allComponents, this.thisComponent.className);
+          this.thisComponent.className = ProcessClassName.finalize(this.className || this.thisComponent.className, this.thisComponent.className, this.allComponents, this.thisComponent.className);
           return { shouldRepeat: false };
         }
         return { shouldRepeat: true };
@@ -72,7 +72,7 @@ export default {
         this.isEditingClassName = false;
         if (this.className && this.className.length) {
           this.thisComponent.className = ProcessClassName.finalize(this.className, this.thisComponent.className, this.allComponents, this.thisComponent.className);
-        } 
+        }
         if (event.target === this.$refs.componentCardClassNameEditorButton) {
           this.editorButtonClickedOnStopEditing = true;
           return { shouldRepeat: false, newCallback: this.clearEditClassName };

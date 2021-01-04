@@ -68,7 +68,7 @@ export default class ProcessClassedName {
   }
 
   private static resetIfClassNameTooShort(className: string, placeholder: string): [string, boolean] {
-    return className && className.length === this.minClassLength ? [placeholder, true] : [className, false];
+    return className && className.length <= this.minClassLength ? [placeholder, true] : [className, false];
   }
 
   public static finalize(className: string | null, placeholder: string, components: WorkshopComponent[], originalClassName?: string): string {
