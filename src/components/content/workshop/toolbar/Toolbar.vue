@@ -32,21 +32,33 @@ import options from './options/Options.vue';
 interface Data {
   activeOption: WORKSHOP_TOOLBAR_OPTIONS;
   activeSettings: any;
+  customSettingsOriginalSpecs: CustomSettingOriginalSpec[];
   activeCssMode: SUB_COMPONENT_CSS_MODES;
   settingsUpdateTriggered: boolean;
   settingsOpenedOnce: boolean;
+}
+
+interface CustomSettingOriginalSpec { 
+  spec: any;
+  originalValues:
+  {
+    name: string;
+    value: number[];
+  }
 }
 
 export default {
   data: (): Data => ({
     activeOption: null,
     activeSettings: {},
+    customSettingsOriginalSpecs: [],
     activeCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
     settingsUpdateTriggered: false,
     settingsOpenedOnce: false,
   }),
   methods: {
     updateSettings(newOption: WORKSHOP_TOOLBAR_OPTIONS): void {
+      this.setCustomSettings(newOption);
       this.activeOption = newOption;
       this.activeSettings = optionToSettings[newOption];
       this.componentPreviewAssistance.margin = (newOption === WORKSHOP_TOOLBAR_OPTIONS.MARGIN)
@@ -83,6 +95,7 @@ export default {
       // this trigger type is used instead of a ref method because this will only trigger the settings-reset when
       // the props (more specifically the component properties) have updated first (via the watch property)
       // whereas directly calling the reset method via ref invokes it before the props have been updated
+      this.setCustomSettings(this.activeOption);
       this.settingsUpdateTriggered = !this.settingsUpdateTriggered;
       this.$nextTick(() => {
         if (this.activeOption === WORKSHOP_TOOLBAR_OPTIONS.MARGIN && Object.keys(this.activeSettings).length > 0) {
@@ -100,6 +113,29 @@ export default {
     hideSettings(): void {
       this.activeSettings = {};
       this.componentPreviewAssistance.margin = false;
+    },
+    setCustomSettings(option: WORKSHOP_TOOLBAR_OPTIONS): void {
+      this.resetCustomSettings();
+      this.setNewCustomSettings(option);
+    },
+    resetCustomSettings(): void {
+      this.customSettingsOriginalSpecs.forEach((customSetting: CustomSettingOriginalSpec) => {
+        customSetting.spec[customSetting.originalValues.name] = customSetting.originalValues.value;
+      });
+      this.customSettingsOriginalSpecs = [];
+    },
+    setNewCustomSettings(option: WORKSHOP_TOOLBAR_OPTIONS): void {
+      const { customSettings } = this.component.subcomponents[this.component.subcomponentsActiveMode];
+      if (customSettings && customSettings[option]) {
+        const { cssProperty, scale } = customSettings[option];
+        optionToSettings[option].options.forEach((setting) => {
+          if (setting.spec.cssProperty === cssProperty) {
+            const customSettingOriginalSpec: CustomSettingOriginalSpec = { spec: setting.spec, originalValues: { name: 'scale', value: setting.spec.scale }};
+            this.customSettingsOriginalSpecs.push(customSettingOriginalSpec);
+            setting.spec.scale = scale;
+          }
+        });
+      }
     }
   },
   props: {

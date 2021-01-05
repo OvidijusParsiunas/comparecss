@@ -1,10 +1,10 @@
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../../../consts/workshopToolbarOptions';
-import { ComponentOptions } from '../../../../../../../interfaces/componentOptions';
+import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
 
 type AlertBaseOptionsModes = SUB_COMPONENT_CSS_MODES.DEFAULT;
 
-export const alertBaseOptions: ComponentOptions<AlertBaseOptionsModes> = {
+export const alertBaseOptions: SubcomponentOptions<AlertBaseOptionsModes> = {
   [SUB_COMPONENT_CSS_MODES.DEFAULT]: [
     {
       buttonName: 'Border',

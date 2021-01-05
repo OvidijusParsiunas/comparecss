@@ -18,6 +18,8 @@ const initialButtonCss: CustomCss = {
     lineHeight: '0',
     paddingTop: '0px',
     paddingBottom: '0px',
+    paddingLeft: '12px',
+    paddingRight: '12px',
     marginLeft: '0px',
     marginTop: '0px',
     marginRight: '0px',

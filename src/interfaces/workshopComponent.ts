@@ -1,4 +1,5 @@
 import { SUB_COMPONENT_CSS_MODES } from '../consts/subcomponentCssModes.enum';
+import { WORKSHOP_TOOLBAR_OPTIONS } from '../consts/workshopToolbarOptions';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { NEW_COMPONENT_TYPES } from '../consts/newComponentTypes.enum';
 import { SUB_COMPONENTS } from '../consts/subcomponentModes.enum';
@@ -34,6 +35,13 @@ export interface OptionalSubcomponent {
   currentlyDisplaying: boolean;
 }
 
+export type CustomSettings = {
+  [key in WORKSHOP_TOOLBAR_OPTIONS]?: {
+    cssProperty: string,
+    scale?: [number, number],
+  };
+}
+
 export interface SubcomponentProperties {
   frameworkClass: string;
   componentTag: string;
@@ -58,6 +66,8 @@ export interface SubcomponentProperties {
   initialJsClasses: ComponentJavascriptClasses;
   customSettingsProperties?: customSettingsProperties;
   optionalSubcomponent?: OptionalSubcomponent;
+  // the reason why custom css is attached here is to not have to keep multiple unique settings for each and every subcomponent in memory all at once
+  customSettings?: CustomSettings;
 }
 
 type subcomponents = {

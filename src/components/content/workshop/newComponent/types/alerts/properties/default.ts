@@ -7,6 +7,7 @@ import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.en
 import { NewComponent } from '../../../../../../../interfaces/newComponent';
 import { inheritedAlertCloseChildCss } from './inheritedAlertCloseChildCss';
 import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';
+import { alertBaseCustomSettings } from './alertBaseCustomSettings';
 import { inheritedAlertBaseCss } from './inheritedCss';
 
 // all default css needs to be filled in as to be able to 'reset' correctly
@@ -79,6 +80,7 @@ export const defaultAlert: NewComponent = {
           tempCustomCss: new Set(['transition']),
           inheritedCss: inheritedAlertBaseCss,
           childCss: inheritedAlertBaseChildCss,
+          customSettings: alertBaseCustomSettings,
         },
         [SUB_COMPONENTS.CLOSE]: {
           frameworkClass: 'bootstrap',

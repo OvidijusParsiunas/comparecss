@@ -1,13 +1,13 @@
 import { SubcomponentCssModes } from '../../../../../../interfaces/subcomponentCssModes';
 import { NEW_COMPONENT_TYPES } from '../../../../../../consts/newComponentTypes.enum';
+import { SubcomponentOptions } from '../../../../../../interfaces/componentOptions';
 import { SUB_COMPONENTS } from '../../../../../../consts/subcomponentModes.enum';
-import { ComponentOptions } from '../../../../../../interfaces/componentOptions';
 import { buttonBaseOptions } from './button/base';
-import { alertBaseOptions } from './alert/base';
 import { alertCloseOptions } from './alert/close';
+import { alertBaseOptions } from './alert/base';
 
 type subcomponentTypeToOptions = {
-  [key in SUB_COMPONENTS]?: ComponentOptions<keyof SubcomponentCssModes>;
+  [key in SUB_COMPONENTS]?: SubcomponentOptions<keyof SubcomponentCssModes>;
 }
 
 type ComponentTypeToOptions = {
@@ -16,10 +16,10 @@ type ComponentTypeToOptions = {
 
 export const componentTypeToOptions: ComponentTypeToOptions = {
   [NEW_COMPONENT_TYPES.BUTTON]: {
-    [SUB_COMPONENTS.BASE]: buttonBaseOptions as ComponentOptions<keyof SubcomponentCssModes>,
+    [SUB_COMPONENTS.BASE]: buttonBaseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
   },
   [NEW_COMPONENT_TYPES.ALERT]: {
-    [SUB_COMPONENTS.BASE]: alertBaseOptions as ComponentOptions<keyof SubcomponentCssModes>,
-    [SUB_COMPONENTS.CLOSE]: alertCloseOptions as ComponentOptions<keyof SubcomponentCssModes>,
+    [SUB_COMPONENTS.BASE]: alertBaseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
+    [SUB_COMPONENTS.CLOSE]: alertCloseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
   },
 };

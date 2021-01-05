@@ -1,10 +1,10 @@
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../../../consts/workshopToolbarOptions';
-import { ComponentOptions } from '../../../../../../../interfaces/componentOptions';
+import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
 
 type ButtonOptionsModes = SUB_COMPONENT_CSS_MODES.DEFAULT | SUB_COMPONENT_CSS_MODES.HOVER | SUB_COMPONENT_CSS_MODES.CLICK;
 
-export const buttonBaseOptions: ComponentOptions<ButtonOptionsModes> = {
+export const buttonBaseOptions: SubcomponentOptions<ButtonOptionsModes> = {
   [SUB_COMPONENT_CSS_MODES.DEFAULT]: [
     {
       buttonName: 'Border',
