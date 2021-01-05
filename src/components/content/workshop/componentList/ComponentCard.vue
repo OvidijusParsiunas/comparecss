@@ -16,8 +16,8 @@
 
 <script lang="ts">
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
-import { RemovalModalState } from '../../../../interfaces/removalModalState';
 import ProcessClassName from '../../../../services/workshop/newComponent/processClassName';
+import { RemovalModalState } from '../../../../interfaces/removalModalState';
 import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { REMOVE_COMPONENT_MODAL_ID } from '../../../../consts/elementIds';
 import { removeComponentModalState } from './modal/state';
@@ -98,7 +98,7 @@ export default {
         this.removeComponentModalId = `#${REMOVE_COMPONENT_MODAL_ID}`;
         setTimeout(() => { this.removeComponentModalId = ''; });
       } else {
-        this.$emit('component-card-deleted');
+        this.$emit('component-card-deleted', this.thisComponent);
       }
     },
     classNameInputEvent(): void {

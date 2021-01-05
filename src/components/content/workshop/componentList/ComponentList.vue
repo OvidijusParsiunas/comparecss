@@ -44,8 +44,8 @@ export default {
     componentCardCopied(selectComponentCard: WorkshopComponent): void {
       this.$emit('component-card-copied', selectComponentCard);
     },
-    componentCardDeleted(selectComponentCard: WorkshopComponent): void {
-      this.$emit('component-card-deleted', selectComponentCard);
+    componentCardDeleted(componentCard: WorkshopComponent): void {
+      this.$emit('component-card-deleted', componentCard);
     },
     stopEditingClassName(callback: () => boolean): void {
       this.$emit('stop-editing-class-name-callback', callback);

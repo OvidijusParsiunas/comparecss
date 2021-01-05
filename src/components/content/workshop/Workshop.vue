@@ -7,7 +7,7 @@
             :components="components"
             @component-card-selected="componentCardSelected($event)"
             @component-card-copied="componentCardCopied($event)"
-            @component-card-deleted="componentCardDeleted"
+            @component-card-deleted="componentCardDeleted($event)"
             @stop-editing-class-name-callback="addWorkshopEventCallback($event)"/>
           <div style="position: absolute; bottom: 0">
             <button type="button" style="margin-left: 7px; margin-bottom: 10px" class="btn btn-warning btn-sm">Explore icon</button>
@@ -263,11 +263,14 @@ export default {
       newComponent.subcomponents[SUB_COMPONENTS.BASE].customCssActiveMode = SUB_COMPONENT_CSS_MODES.DEFAULT;
       this.addNewComponent(newComponent);
     },
-    componentCardDeleted(): void {
-      const componentMatch = (component) => this.currentlySelectedComponent === component;
+    componentCardDeleted(selectedComponentCard: WorkshopComponent): void {
+      // the modal does not have a reference to the selected component card but we can be sure that currentlySelectedComponent is the one being deleted,
+      // however, when the the don't show again checkbox is ticked and the user clicks on delete without selecting a modal, need to have its reference passed here
+      const deletedComponent = selectedComponentCard || this.currentlySelectedComponent;
+      const componentMatch = (component) => deletedComponent === component;
       const componentIndex = this.components.findIndex(componentMatch);
       this.components.splice(componentIndex, 1);
-      const { subcomponents, subcomponentsActiveMode, type } = this.currentlySelectedComponent;
+      const { subcomponents, subcomponentsActiveMode, type } = deletedComponent;
       if (this.components.length === 0) {
         ComponentJs.manipulateJS(type, 'revokeJS');
         this.currentlySelectedComponent = undefined;
