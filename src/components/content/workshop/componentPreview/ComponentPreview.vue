@@ -36,7 +36,6 @@
                   component.componentPreviewStructure.baseCss.customCss[component.componentPreviewStructure.baseCss.customCssActiveMode],
                 ]">
               <div v-for="layer in component.componentPreviewStructure.layers" :key="layer" class="layer">
-                {{ component.type === NEW_COMPONENT_TYPES.BUTTON ? layer.innerHtmlText : '' }}
                 <div-inner-html v-if="layer.text" :innerHTML="layer.text"/>
                 <auxiliary-right-side-elements v-if="layer[SUB_COMPONENTS.CLOSE] !== undefined" :subcomponent="layer[SUB_COMPONENTS.CLOSE]"/>
               </div>

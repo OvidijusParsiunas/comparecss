@@ -181,7 +181,6 @@ export default {
           [SUB_COMPONENTS.BASE]: {
             frameworkClass: 'bootstrap',
             componentTag: 'div',
-            innerHtmlText: 'Alert',
             customSettingsProperties: {
               width: [100, 700],
               height: [30, 200],
@@ -198,7 +197,6 @@ export default {
           [SUB_COMPONENTS.CLOSE]: {
             frameworkClass: 'bootstrap',
             componentTag: 'div',
-            innerHtmlText: 'Alert',
             customSettingsProperties: {
               width: [14, 80],
               height: [10, 80],

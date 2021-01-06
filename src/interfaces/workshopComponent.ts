@@ -45,7 +45,6 @@ export type CustomSettings = {
 export interface SubcomponentProperties {
   frameworkClass: string;
   componentTag: string;
-  innerHtmlText: string;
   customCss: CustomCss;
   initialCss: CustomCss;
   // this css is used in instances where partialCss has been overwrittern by a single value, but a fraction of it

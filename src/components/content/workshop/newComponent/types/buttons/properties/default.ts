@@ -43,7 +43,6 @@ const subcomponents = {
   [SUB_COMPONENTS.BASE]: {
     frameworkClass: 'foundation',
     componentTag: 'button',
-    innerHtmlText: 'button',
     customSettingsProperties: {
       width: [0, 250],
       height: [0, 250],
