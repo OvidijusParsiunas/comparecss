@@ -5,6 +5,7 @@
         <component-card
           :thisComponent="component"
           :allComponents="components"
+          :activeComponent="activeComponent"
           @component-card-selected="componentCardSelected($event)"
           @component-card-copied="componentCardCopied($event)"
           @component-card-deleted="componentCardDeleted($event)"
@@ -56,6 +57,7 @@ export default {
   },
   props: {
     components: Array,
+    activeComponent: Object,
   },
 };
 </script>

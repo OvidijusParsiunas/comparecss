@@ -1,5 +1,5 @@
 <template>
-  <div class="card component-card" v-on:click="selectComponentCard(thisComponent)">
+  <div :class="[ thisComponent === activeComponent ? 'active' : '' ]" class="card component-card" @mousedown="selectComponentCard(thisComponent)">
     <div class="card-body">
       <input v-if="isEditingClassName" ref="componentCardClassNameEditorInput" class="card-title component-card-title"
         v-model="className"
@@ -7,9 +7,9 @@
         @input="classNameInputEvent"
         >
       <h5 v-else class="card-title component-card-title">{{thisComponent.className}}</h5>
-      <a ref="componentCardClassNameEditorButton" class="btn btn-success" v-on:click="editClassName(thisComponent)">Edit</a>
-      <a class="btn btn-warning" v-on:click.stop="copyComponentCard(thisComponent)">Copy</a>
-      <a class="btn btn-danger component-card-delete" data-toggle="modal" :data-target="removeComponentModalId" @click="deleteComponentCard">Delete</a>
+      <a ref="componentCardClassNameEditorButton" class="btn btn-success" @mousedown="preventBubbling" @mouseup="editClassName">Edit</a>
+      <a class="btn btn-warning" @mousedown="preventBubbling" @mouseup="copyComponentCard">Copy</a>
+      <a class="btn btn-danger component-card-delete" data-toggle="modal" :data-target="removeComponentModalId" @mousedown="preventBubbling" @mouseup="deleteComponentCard">Delete</a>
     </div>
   </div>
 </template>
@@ -18,7 +18,6 @@
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
 import ProcessClassName from '../../../../services/workshop/newComponent/processClassName';
 import { RemovalModalState } from '../../../../interfaces/removalModalState';
-import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { REMOVE_COMPONENT_MODAL_ID } from '../../../../consts/elementIds';
 import { removeComponentModalState } from './modal/state';
 import { nextTick } from 'vue';
@@ -42,6 +41,7 @@ export default {
   }),
   methods: {
     editClassName(): void {
+      this.selectComponentCard();
       if (this.editorButtonClickedOnStopEditing) {
         this.editorButtonClickedOnStopEditing = false;
         return;
@@ -87,14 +87,18 @@ export default {
       }
       return { shouldRepeat: false};
     },
-    selectComponentCard(selectedComponentCard: WorkshopComponent): void {
-      this.$emit('component-card-selected', selectedComponentCard);
+    selectComponentCard(): void {
+      this.$emit('component-card-selected', this.thisComponent);
     },
-    copyComponentCard(selectComponentCard: WorkshopComponent): void {
-      this.$emit('component-card-copied', selectComponentCard);
+    preventBubbling(): void {
+      event.stopPropagation();
+    },
+    copyComponentCard(): void {
+      this.$emit('component-card-copied', this.thisComponent);
     },
     deleteComponentCard(): void {
       if (!this.getIsDoNotShowModalAgainState()){
+        this.selectComponentCard();
         this.removeComponentModalId = `#${REMOVE_COMPONENT_MODAL_ID}`;
         setTimeout(() => { this.removeComponentModalId = ''; });
       } else {
@@ -111,6 +115,7 @@ export default {
   props: {
     thisComponent: Object,
     allComponents: Object,
+    activeComponent: Object,
   }
 };
 </script>
@@ -136,5 +141,17 @@ export default {
   }
   .component-card-delete {
     float: right;
+  }
+  .active, .active:hover {
+    box-shadow: 0 0 1px rgb(93, 153, 192) !important;
+    border-color: #a3cdff !important;
+    background-color: rgb(250, 253, 255) !important;
+    /* can set the background to grey */
+    /* box-shadow: 0 0 1px rgb(221, 221, 221) !important;
+    border-color: rgb(190, 190, 190) !important;
+    background-color: rgb(247, 247, 247) !important; */
+  }
+  .active:hover {
+    border-color: #72abf0 !important;
   }
 </style>

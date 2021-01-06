@@ -5,6 +5,7 @@
         <div style="width: 30%; position: relative">
           <component-list
             :components="components"
+            :activeComponent="currentlySelectedComponent"
             @component-card-selected="componentCardSelected($event)"
             @component-card-copied="componentCardCopied($event)"
             @component-card-deleted="componentCardDeleted($event)"
