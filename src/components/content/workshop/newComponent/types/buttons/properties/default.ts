@@ -39,29 +39,42 @@ const initialButtonCss: CustomCss = {
   },
 }
 
+const subcomponents = {
+  [SUB_COMPONENTS.BASE]: {
+    frameworkClass: 'foundation',
+    componentTag: 'button',
+    innerHtmlText: 'button',
+    customSettingsProperties: {
+      width: [0, 250],
+      height: [0, 250],
+    },
+    customCss: JSONManipulation.deepCopy(initialButtonCss),
+    initialCss: JSONManipulation.deepCopy(initialButtonCss),
+    jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
+    initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
+    customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+    subcomponentPreviewTransition: 'all 0.25s ease-out',
+    tempCustomCss: new Set(['transition']),
+    inheritedCss: inheritedButtonCss,
+  },
+}
+
+const componentPreviewStructure = {
+  baseCss: subcomponents[SUB_COMPONENTS.BASE],
+  layeringType: 'vertical',
+  layers: [
+    {
+      'text': 'button',
+    },
+  ],
+}
+
 export const defaultButton: NewComponent = {
-  getNewComponent(): WorkshopComponent {
+  getNewComponent(): any {
     return {
       type: NEW_COMPONENT_TYPES.BUTTON,
-      subcomponents: {
-        [SUB_COMPONENTS.BASE]: {
-          frameworkClass: 'foundation',
-          componentTag: 'button',
-          innerHtmlText: 'button',
-          customSettingsProperties: {
-            width: [0, 250],
-            height: [0, 250],
-          },
-          customCss: JSONManipulation.deepCopy(initialButtonCss),
-          initialCss: JSONManipulation.deepCopy(initialButtonCss),
-          jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
-          initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
-          customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-          subcomponentPreviewTransition: 'all 0.25s ease-out',
-          tempCustomCss: new Set(['transition']),
-          inheritedCss: inheritedButtonCss,
-        },
-      },
+      subcomponents,
+      componentPreviewStructure,
       subcomponentsActiveMode: SUB_COMPONENTS.BASE,
       className: 'default-class-name',
     }

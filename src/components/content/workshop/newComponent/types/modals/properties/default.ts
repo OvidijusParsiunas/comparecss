@@ -109,7 +109,7 @@ const componentPreviewStructure = {
   ],
 }
 
-export const defaultAlert: NewComponent = {
+export const defaultModal: NewComponent = {
   getNewComponent(): any {
     return {
       type: NEW_COMPONENT_TYPES.ALERT,

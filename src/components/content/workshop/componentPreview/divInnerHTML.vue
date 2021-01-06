@@ -1,5 +1,5 @@
 <template>
-  <div v-if="componentType === NEW_COMPONENT_TYPES.ALERT" class="HTMLContainer">
+  <div class="HTMLContainer">
     <div class="HTMLContents">
       {{ innerHTML }}
     </div>
@@ -20,7 +20,6 @@ export default {
     };
   },
   props: {
-    componentType: String,
     innerHTML: String,
   }
 }

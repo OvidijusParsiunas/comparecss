@@ -1,63 +1,64 @@
 <template>
   <div v-if="component" style="position: relative" @mouseleave="componentPreviewMouseLeave()">
     <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); z-index: 0; text-align: center;"> 
-      <div :class="component.subcomponents[component.subcomponentsActiveMode].frameworkClass">
-        <div class="grid-container">
-          <div class="grid-item grid-item-position"></div>
-          <div class="grid-item grid-item-position">
-            <!-- https://v3.vuejs.org/guide/transitions-enterleave.html#css-transitions -->
-            <transition name="top-slide-fade">
-              <div id="margin-assistance-top" v-if="componentPreviewAssistance.margin" class="margin-marker grid-item-position"></div>
-            </transition>
-          </div>
-          <div class="grid-item"></div>
-          <div class="grid-item grid-item-position">
-            <transition name="left-slide-fade">
-              <div id="margin-assistance-left" v-if="componentPreviewAssistance.margin" class="margin-marker grid-item-position"></div>
-            </transition>
-          </div>
-          <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item grid-item-position">
-            <component :is="component.subcomponents[component.subcomponentsActiveMode].componentTag" id="demoComponent"
-              class="grid-item-position" :class="[ ...component.subcomponents[SUB_COMPONENTS.BASE].jsClasses ]"
-              @mouseenter="componentMouseEnter()"
-              @mouseleave="componentMouseLeave()"
-              @mousedown="componentMouseDown()"
-              @mouseup="componentMouseUp()"
-              :style="component.subcomponents[SUB_COMPONENTS.BASE].customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
-                ? [
-                    [ component.subcomponents[SUB_COMPONENTS.BASE].inheritedCss ? component.subcomponents[SUB_COMPONENTS.BASE].inheritedCss.css: '' ],
-                    component.subcomponents[SUB_COMPONENTS.BASE].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
-                    component.subcomponents[SUB_COMPONENTS.BASE].customCss[SUB_COMPONENT_CSS_MODES.HOVER],
-                    component.subcomponents[SUB_COMPONENTS.BASE].customCss[SUB_COMPONENT_CSS_MODES.CLICK],
-                  ]
-                : [
-                    [ component.subcomponents[SUB_COMPONENTS.BASE].inheritedCss ? component.subcomponents[SUB_COMPONENTS.BASE].inheritedCss.css: '' ],
-                    component.subcomponents[SUB_COMPONENTS.BASE].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
-                    component.subcomponents[SUB_COMPONENTS.BASE].customCss[component.subcomponents[SUB_COMPONENTS.BASE].customCssActiveMode],
-                  ]">
-              {{ component.type === NEW_COMPONENT_TYPES.BUTTON ? component.subcomponents[SUB_COMPONENTS.BASE].innerHtmlText : '' }}
-              <div-inner-html :componentType="component.type" :innerHTML="component.subcomponents[component.subcomponentsActiveMode].innerHtmlText"/>
-              <auxiliary-right-side-elements :componentType="component.type" :subcomponent="component.subcomponents[SUB_COMPONENTS.CLOSE]"/>
-            </component>
-            <component :is="component.subcomponents[component.subcomponentsActiveMode].componentTag"
-              :id="SUB_COMPONENT_PREVIEW_ELEMENT_IDS.BASE"
-              style="display: none" :style="component.subcomponents[SUB_COMPONENTS.BASE].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
-              class="subcomponent-preview">
-            </component>
-          </div>
-          <div class="grid-item grid-item-position">
-            <transition name="right-slide-fade">
-              <div id="margin-assistance-right" v-if="componentPreviewAssistance.margin" class="margin-marker grid-item-position"></div>
-            </transition>
-          </div>
-          <div class="grid-item grid-item-position"></div>
-          <div class="grid-item grid-item-position">
-            <transition name="bottom-slide-fade">
-              <div id="margin-assistance-bottom" v-if="componentPreviewAssistance.margin" class="margin-marker grid-item-position"></div>
-            </transition>
-          </div>
-          <div class="grid-item grid-item-position"></div>
+      <div class="grid-container">
+        <div class="grid-item grid-item-position"></div>
+        <div class="grid-item grid-item-position">
+          <!-- https://v3.vuejs.org/guide/transitions-enterleave.html#css-transitions -->
+          <transition name="top-slide-fade">
+            <div id="margin-assistance-top" v-if="componentPreviewAssistance.margin" class="margin-marker grid-item-position"></div>
+          </transition>
         </div>
+        <div class="grid-item"></div>
+        <div class="grid-item grid-item-position">
+          <transition name="left-slide-fade">
+            <div id="margin-assistance-left" v-if="componentPreviewAssistance.margin" class="margin-marker grid-item-position"></div>
+          </transition>
+        </div>
+        <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item grid-item-position">
+          <!-- parent component -->
+          <component :is="component.componentPreviewStructure.baseCss.componentTag" id="demoComponent"
+            class="grid-item-position" :class="[ ...component.componentPreviewStructure.baseCss.jsClasses ]"
+            @mouseenter="componentMouseEnter()"
+            @mouseleave="componentMouseLeave()"
+            @mousedown="componentMouseDown()"
+            @mouseup="componentMouseUp()"
+            :style="component.componentPreviewStructure.baseCss.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
+              ? [
+                  [ component.componentPreviewStructure.baseCss.inheritedCss ? component.componentPreviewStructure.baseCss.inheritedCss.css: '' ],
+                  component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+                  component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.HOVER],
+                  component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.CLICK],
+                ]
+              : [
+                  [ component.componentPreviewStructure.baseCss.inheritedCss ? component.componentPreviewStructure.baseCss.inheritedCss.css: '' ],
+                  component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+                  component.componentPreviewStructure.baseCss.customCss[component.componentPreviewStructure.baseCss.customCssActiveMode],
+                ]">
+              <div v-for="layer in component.componentPreviewStructure.layers" :key="layer" class="layer">
+                {{ component.type === NEW_COMPONENT_TYPES.BUTTON ? layer.innerHtmlText : '' }}
+                <div-inner-html v-if="layer.text" :innerHTML="layer.text"/>
+                <auxiliary-right-side-elements v-if="layer[SUB_COMPONENTS.CLOSE] !== undefined" :subcomponent="layer[SUB_COMPONENTS.CLOSE]"/>
+              </div>
+          </component>
+          <component :is="component.componentPreviewStructure.baseCss.componentTag"
+            :id="SUB_COMPONENT_PREVIEW_ELEMENT_IDS.BASE"
+            style="display: none" :style="component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
+            class="subcomponent-preview">
+          </component>
+        </div>
+        <div class="grid-item grid-item-position">
+          <transition name="right-slide-fade">
+            <div id="margin-assistance-right" v-if="componentPreviewAssistance.margin" class="margin-marker grid-item-position"></div>
+          </transition>
+        </div>
+        <div class="grid-item grid-item-position"></div>
+        <div class="grid-item grid-item-position">
+          <transition name="bottom-slide-fade">
+            <div id="margin-assistance-bottom" v-if="componentPreviewAssistance.margin" class="margin-marker grid-item-position"></div>
+          </transition>
+        </div>
+        <div class="grid-item grid-item-position"></div>
       </div>
     </div>
   </div>
@@ -120,58 +121,6 @@ export default {
     componentPreviewAssistance: Object,
   },
 };
-
-// the border is the same size as the component
-/*
-<div class="grid-container">
-  <div class="grid-item"></div>
-  <div class="grid-item">
-    <div style="height: 10px; background-color: green; position: absolute; bottom: 0"
-      :style="{
-        width: subcomponents.customCss[subcomponents.customCssActiveMode].width,
-        marginLeft: subcomponents.customCss[subcomponents.customCssActiveMode].marginLeft,
-        marginRight: subcomponents.customCss[subcomponents.customCssActiveMode].marginRight,
-      }"></div>
-  </div>
-  <div class="grid-item"></div>  
-  <div class="grid-item">
-    <div style="width: 10px; background-color: green; float: right"
-      :style="{
-        height: subcomponents.customCss[subcomponents.customCssActiveMode].height,
-        marginTop: subcomponents.customCss[subcomponents.customCssActiveMode].marginTop,
-        marginBottom: subcomponents.customCss[subcomponents.customCssActiveMode].marginBottom,
-      }"></div>
-  </div>
-  <div class="grid-item">
-    <button
-      @mouseover="componentMouseOver(subcomponents.customCss)"
-      @mouseleave="componentMouseLeave(subcomponents.customCss)"
-      @mousedown="componentMouseDown(subcomponents.customCss)"
-      @mouseup="componentMouseUp(subcomponents.customCss)"
-      :style="subcomponents.customCss[subcomponents.customCssActiveMode]"
-      v-html="subcomponents.innerHtml">
-    </button>
-  </div>
-  <div class="grid-item">
-    <div style="width: 10px; background-color: green"
-      :style="{
-        height: subcomponents.customCss[subcomponents.customCssActiveMode].height,
-        marginTop: subcomponents.customCss[subcomponents.customCssActiveMode].marginTop,
-        marginBottom: subcomponents.customCss[subcomponents.customCssActiveMode].marginBottom,
-      }"></div>
-  </div>  
-  <div class="grid-item"></div>
-  <div class="grid-item">
-    <div style="width: 100%; height: 10px; background-color: green"
-      :style="{
-          width: subcomponents.customCss[subcomponents.customCssActiveMode].width,
-          marginLeft: subcomponents.customCss[subcomponents.customCssActiveMode].marginLeft,
-          marginRight: subcomponents.customCss[subcomponents.customCssActiveMode].marginRight,
-        }"></div>
-  </div>
-  <div class="grid-item"></div>  
-</div>
-*/
 </script>
 
 <style lang="css" scoped>
@@ -232,6 +181,9 @@ export default {
   .bottom-slide-fade-leave-to {
     transform: translateY(20px);
     opacity: 0;
+  }
+  .layer {
+    height: 100%;
   }
 </style>
 <style lang="css">

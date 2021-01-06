@@ -1,6 +1,5 @@
 <template>
-  <div v-if="componentType === NEW_COMPONENT_TYPES.ALERT
-      && (!subcomponent.optionalSubcomponent || subcomponent.optionalSubcomponent.currentlyDisplaying)">
+  <div v-if="!subcomponent.optionalSubcomponent || subcomponent.optionalSubcomponent.currentlyDisplaying">
     <div id="close-button-parent" type="button" aria-label="Close">
       <button aria-hidden="true" id="close-button" :class="[ ...subcomponent.jsClasses ]"
         @mouseenter="componentMouseEnter()"
@@ -45,7 +44,6 @@ interface Consts {
 }
 
 interface Props {
-  componentType: string,
   subcomponent: SubcomponentProperties;
 }
 
@@ -63,7 +61,6 @@ export default {
     };
   },
   props: {
-    componentType: String,
     subcomponent: Object,
   }
 }
