@@ -2,10 +2,22 @@ import { SUB_COMPONENT_CSS_MODES } from '../consts/subcomponentCssModes.enum';
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../consts/workshopToolbarOptions';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { NEW_COMPONENT_TYPES } from '../consts/newComponentTypes.enum';
+import { PSEUDO_COMPONENTS } from '../consts/pseudoComponents.enum';
 import { SUB_COMPONENTS } from '../consts/subcomponentModes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { TempCustomCss } from './tempCustomCss';
 import { InheritedCss } from './inheritedCss';
+
+type Layer = {
+  [key in PSEUDO_COMPONENTS | SUB_COMPONENTS]?: SubcomponentProperties | string;
+}
+
+export interface ComponentPreviewStructure {
+  baseCss: SubcomponentProperties,
+  // will be used in the future, can be horizontal or vertical
+  layeringType?: string,
+  layers: Layer[],
+}
 
 export interface ChildCss {
   elementTag: string;
@@ -69,13 +81,14 @@ export interface SubcomponentProperties {
   customSettings?: CustomSettings;
 }
 
-type subcomponents = {
+export type Subcomponents = {
   [property in SUB_COMPONENTS]?: SubcomponentProperties;
 }
 
 export interface WorkshopComponent {
   type: NEW_COMPONENT_TYPES;
-  subcomponents: subcomponents;
+  subcomponents: Subcomponents;
   subcomponentsActiveMode: SUB_COMPONENTS,
+  componentPreviewStructure: ComponentPreviewStructure,
   className: string;
 }

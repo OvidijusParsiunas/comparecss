@@ -1,8 +1,10 @@
-import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import JSONManipulation from '../../../../../../../services/workshop/jsonManipulation';
+import { PSEUDO_COMPONENTS } from '../../../../../../../consts/pseudoComponents.enum';
+import createButtonComponentPreviewStructure from './buttonComponentPreviewStructure';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
 import { NewComponent } from '../../../../../../../interfaces/newComponent';
 import { inheritedButtonCss } from './inheritedCss';
@@ -39,7 +41,7 @@ const initialButtonCss: CustomCss = {
   },
 }
 
-const subcomponents = {
+const subcomponents: Subcomponents = {
   [SUB_COMPONENTS.BASE]: {
     frameworkClass: 'foundation',
     componentTag: 'button',
@@ -60,21 +62,20 @@ const subcomponents = {
 
 const componentPreviewStructure = {
   baseCss: subcomponents[SUB_COMPONENTS.BASE],
-  layeringType: 'vertical',
   layers: [
     {
-      'text': 'button',
+      [PSEUDO_COMPONENTS.TEXT]: 'button',
     },
   ],
 }
 
 export const defaultButton: NewComponent = {
-  getNewComponent(): any {
+  getNewComponent(): WorkshopComponent {
     return {
       type: NEW_COMPONENT_TYPES.BUTTON,
       subcomponents,
-      componentPreviewStructure,
       subcomponentsActiveMode: SUB_COMPONENTS.BASE,
+      componentPreviewStructure: createButtonComponentPreviewStructure(subcomponents[SUB_COMPONENTS.BASE]),
       className: 'default-class-name',
     }
   },

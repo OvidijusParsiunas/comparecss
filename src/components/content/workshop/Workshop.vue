@@ -72,9 +72,11 @@
 </template>
 
 <script lang="ts">
-import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../interfaces/workshopComponent';
+import { CustomCss, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../interfaces/workshopComponent';
+import createAlertComponentPreviewStructure from './newComponent/types/modals/properties/alertComponentPreviewStructure';
 import { inheritedAlertCloseChildCss } from './newComponent/types/alerts/properties/inheritedAlertCloseChildCss';
 import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
+import { alertBaseCustomSettings } from './newComponent/types/alerts/properties/alertBaseCustomSettings';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
@@ -113,7 +115,7 @@ interface Data {
   workshopEventCallbacks: (() => boolean)[];
 }
 
-const initialContainerButtonCss: CustomCss = {
+const initialBaseCss: CustomCss = {
   [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
     color: '#004085',
     backgroundColor: '#cce5ff',
@@ -161,6 +163,43 @@ const initialCloseButtonCss: CustomCss = {
   },
 }
 
+const subcomponents: Subcomponents = {
+  [SUB_COMPONENTS.BASE]: {
+    frameworkClass: 'bootstrap',
+    componentTag: 'div',
+    customSettingsProperties: {
+      width: [100, 700],
+      height: [30, 200],
+    },
+    customCss: JSONManipulation.deepCopy(initialBaseCss),
+    initialCss: JSONManipulation.deepCopy(initialBaseCss),
+    jsClasses: new Set(),
+    initialJsClasses: new Set(),
+    customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+    tempCustomCss: new Set(['transition']),
+    inheritedCss: inheritedAlertBaseCss,
+    childCss: inheritedAlertBaseChildCss,
+    customSettings: alertBaseCustomSettings,
+  },
+  [SUB_COMPONENTS.CLOSE]: {
+    frameworkClass: 'bootstrap',
+    componentTag: 'div',
+    customSettingsProperties: {
+      width: [14, 80],
+      height: [10, 80],
+    },
+    customCss: JSONManipulation.deepCopy(initialCloseButtonCss),
+    initialCss: JSONManipulation.deepCopy(initialCloseButtonCss),
+    jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
+    initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
+    customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+    subcomponentPreviewTransition: 'all 0.25s ease-out',
+    tempCustomCss: new Set(['transition']),
+    childCss: inheritedAlertCloseChildCss,
+    optionalSubcomponent: { currentlyDisplaying: true },
+  },
+}
+
 export default {
   setup(): Consts {
     return {
@@ -177,42 +216,9 @@ export default {
     components: [
       {
         type: NEW_COMPONENT_TYPES.ALERT,
-        subcomponents: {
-          [SUB_COMPONENTS.BASE]: {
-            frameworkClass: 'bootstrap',
-            componentTag: 'div',
-            customSettingsProperties: {
-              width: [100, 700],
-              height: [30, 200],
-            },
-            customCss: JSONManipulation.deepCopy(initialContainerButtonCss),
-            initialCss: JSONManipulation.deepCopy(initialContainerButtonCss),
-            jsClasses: new Set(),
-            initialJsClasses: new Set(),
-            customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-            tempCustomCss: new Set(['transition']),
-            inheritedCss: inheritedAlertBaseCss,
-            childCss: inheritedAlertBaseChildCss,
-          },
-          [SUB_COMPONENTS.CLOSE]: {
-            frameworkClass: 'bootstrap',
-            componentTag: 'div',
-            customSettingsProperties: {
-              width: [14, 80],
-              height: [10, 80],
-            },
-            customCss: JSONManipulation.deepCopy(initialCloseButtonCss),
-            initialCss: JSONManipulation.deepCopy(initialCloseButtonCss),
-            jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
-            initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
-            customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-            subcomponentPreviewTransition: 'all 0.25s ease-out',
-            tempCustomCss: new Set(['transition']),
-            childCss: inheritedAlertCloseChildCss,
-            optionalSubcomponent: { currentlyDisplaying: true },
-          },
-        },
+        subcomponents,
         subcomponentsActiveMode: SUB_COMPONENTS.BASE,
+        componentPreviewStructure: createAlertComponentPreviewStructure(subcomponents[SUB_COMPONENTS.BASE], subcomponents[SUB_COMPONENTS.CLOSE]),
         className: 'default-class-name',
       }
     ],

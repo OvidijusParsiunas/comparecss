@@ -3,6 +3,8 @@ Have a default button, then when it is clicked, have the modal
 Activate button, that turns into lock when active and you hover over it
 customSettingsProperties may not be required anymore
 
+option to import an existing button style!
+
 potentially have animation for when optional subcomponent options buttons appear and are hidden
 create a custom select options element in new component modal body
 

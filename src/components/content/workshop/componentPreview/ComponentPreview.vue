@@ -36,7 +36,7 @@
                   component.componentPreviewStructure.baseCss.customCss[component.componentPreviewStructure.baseCss.customCssActiveMode],
                 ]">
               <div v-for="layer in component.componentPreviewStructure.layers" :key="layer" class="layer">
-                <div-inner-html v-if="layer.text" :innerHTML="layer.text"/>
+                <div-inner-html v-if="layer[PSEUDO_COMPONENTS.TEXT]" :innerHTML="layer[PSEUDO_COMPONENTS.TEXT]"/>
                 <auxiliary-right-side-elements v-if="layer[SUB_COMPONENTS.CLOSE] !== undefined" :subcomponent="layer[SUB_COMPONENTS.CLOSE]"/>
               </div>
           </component>
@@ -69,9 +69,10 @@ import { SUB_COMPONENT_PREVIEW_ELEMENT_IDS } from '../../../../consts/subcompone
 import { ComponentPreviewAssistance } from '../../../../interfaces/componentPreviewAssistance';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
+import { PSEUDO_COMPONENTS } from '../../../../consts/pseudoComponents.enum';
+import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import auxiliaryRightSideElements from './AuxiliaryRightSideElements.vue';
-import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import divInnerHtml from './divInnerHTML.vue';
 import { Ref, ref, watch } from 'vue';
 
@@ -80,6 +81,7 @@ interface Consts {
   NEW_COMPONENT_TYPES;
   SUB_COMPONENTS;
   SUB_COMPONENT_PREVIEW_ELEMENT_IDS;
+  PSEUDO_COMPONENTS;
 }
 
 interface Props {
@@ -98,6 +100,7 @@ export default {
       SUB_COMPONENT_PREVIEW_ELEMENT_IDS,
       SUB_COMPONENT_CSS_MODES,
       NEW_COMPONENT_TYPES,
+      PSEUDO_COMPONENTS,
       SUB_COMPONENTS,
     };
   },

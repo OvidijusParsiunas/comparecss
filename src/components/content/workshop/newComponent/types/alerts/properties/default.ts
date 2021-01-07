@@ -1,9 +1,10 @@
-import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import JSONManipulation from '../../../../../../../services/workshop/jsonManipulation';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
+import createAlertComponentPreviewStructure from './alertComponentPreviewStructure';
 import { NewComponent } from '../../../../../../../interfaces/newComponent';
 import { inheritedAlertCloseChildCss } from './inheritedAlertCloseChildCss';
 import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';
@@ -59,7 +60,7 @@ const initialCloseButtonCss: CustomCss = {
   },
 }
 
-const subcomponents = {
+const subcomponents: Subcomponents = {
   [SUB_COMPONENTS.BASE]: {
     frameworkClass: 'bootstrap',
     componentTag: 'div',
@@ -96,24 +97,13 @@ const subcomponents = {
   },
 }
 
-const componentPreviewStructure = {
-  baseCss: subcomponents[SUB_COMPONENTS.BASE],
-  layeringType: 'vertical',
-  layers: [
-    {
-      'text': 'Alert',
-      [SUB_COMPONENTS.CLOSE]: subcomponents[SUB_COMPONENTS.CLOSE],
-    },
-  ],
-}
-
 export const defaultAlert: NewComponent = {
-  getNewComponent(): any {
+  getNewComponent(): WorkshopComponent {
     return {
       type: NEW_COMPONENT_TYPES.ALERT,
       subcomponents,
-      componentPreviewStructure,
       subcomponentsActiveMode: SUB_COMPONENTS.BASE,
+      componentPreviewStructure: createAlertComponentPreviewStructure(subcomponents[SUB_COMPONENTS.BASE], subcomponents[SUB_COMPONENTS.CLOSE]),
       className: 'default-class-name',
     }
   },
