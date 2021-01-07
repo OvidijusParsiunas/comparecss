@@ -73,7 +73,7 @@
 
 <script lang="ts">
 import { CustomCss, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../interfaces/workshopComponent';
-import createAlertComponentPreviewStructure from './newComponent/types/modals/properties/alertComponentPreviewStructure';
+import createModalComponentPreviewStructure from './newComponent/types/modals/properties/modalComponentPreviewStructure';
 import { inheritedAlertCloseChildCss } from './newComponent/types/alerts/properties/inheritedAlertCloseChildCss';
 import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
 import { alertBaseCustomSettings } from './newComponent/types/alerts/properties/alertBaseCustomSettings';
@@ -115,89 +115,106 @@ interface Data {
   workshopEventCallbacks: (() => boolean)[];
 }
 
-const initialBaseCss: CustomCss = {
-  [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-    color: '#004085',
-    backgroundColor: '#cce5ff',
-    borderColor: '#b8daff',
-    borderWidth: '1px',
-    borderStyle: 'solid',
-    borderRadius: '4px',
-    width: '400px',
-    height: '50px',
-    boxSizing: 'unset',
-    fontSize: '16px',
-    boxShadow: 'unset',
-    paddingLeft: '20px',
-    paddingRight: '20px',
-    paddingTop: '0px',
-    paddingBottom: '0px',
-    fontFamily: '"Poppins", sans-serif',
-    textAlign: 'center',
-    transition: 'unset',
-  },
+function createInitialBaseCss(): CustomCss {
+  return {
+    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+      color: '#004085',
+      backgroundColor: '#cce5ff',
+      borderColor: '#b8daff',
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      borderRadius: '4px',
+      width: '400px',
+      height: '50px',
+      boxSizing: 'unset',
+      fontSize: '16px',
+      boxShadow: 'unset',
+      paddingLeft: '20px',
+      paddingRight: '20px',
+      paddingTop: '0px',
+      paddingBottom: '0px',
+      fontFamily: '"Poppins", sans-serif',
+      textAlign: 'center',
+      transition: 'unset',
+    },
+  }
 }
 
-const initialCloseButtonCss: CustomCss = {
-  [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-    height: '12px',
-    width: '14px',
-    borderRadius: '15px',
-    lineHeight: '1px',
-    cursor: 'pointer',
-    boxSizing: 'unset',
-    fontSize: '16px',
-    color: '#ff0000',
-    boxShadow: 'unset',
-    borderWidth: '0px',
-    borderStyle: 'solid',
-    borderColor: '#000000',
-    backgroundColor: 'inherit',
-    outline: 'none',
-    paddingTop: '1px',
-    paddingLeft: '0px',
-    paddingRight: '0px',
-    paddingBottom: '0px',
-    marginTop: '18px',
-    marginRight: '5px',
-  },
+function createInitialCloseButtonCss(): CustomCss {
+  return {
+    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+      height: '12px',
+      width: '14px',
+      borderRadius: '15px',
+      lineHeight: '1px',
+      cursor: 'pointer',
+      boxSizing: 'unset',
+      fontSize: '16px',
+      color: '#ff0000',
+      boxShadow: 'unset',
+      borderWidth: '0px',
+      borderStyle: 'solid',
+      borderColor: '#000000',
+      backgroundColor: 'inherit',
+      outline: 'none',
+      paddingTop: '1px',
+      paddingLeft: '0px',
+      paddingRight: '0px',
+      paddingBottom: '0px',
+      marginTop: '18px',
+      marginRight: '5px',
+    },
+  }
 }
 
-const subcomponents: Subcomponents = {
-  [SUB_COMPONENTS.BASE]: {
-    frameworkClass: 'bootstrap',
-    componentTag: 'div',
-    customSettingsProperties: {
-      width: [100, 700],
-      height: [30, 200],
+function createSubcomponents(): Subcomponents {
+  return {
+    [SUB_COMPONENTS.BASE]: {
+      frameworkClass: 'bootstrap',
+      componentTag: 'div',
+      customSettingsProperties: {
+        width: [100, 700],
+        height: [30, 200],
+      },
+      customCss: createInitialBaseCss(),
+      initialCss: createInitialBaseCss(),
+      jsClasses: new Set(),
+      initialJsClasses: new Set(),
+      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      tempCustomCss: new Set(['transition']),
+      inheritedCss: inheritedAlertBaseCss,
+      childCss: inheritedAlertBaseChildCss,
+      customSettings: alertBaseCustomSettings,
     },
-    customCss: JSONManipulation.deepCopy(initialBaseCss),
-    initialCss: JSONManipulation.deepCopy(initialBaseCss),
-    jsClasses: new Set(),
-    initialJsClasses: new Set(),
-    customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-    tempCustomCss: new Set(['transition']),
-    inheritedCss: inheritedAlertBaseCss,
-    childCss: inheritedAlertBaseChildCss,
-    customSettings: alertBaseCustomSettings,
-  },
-  [SUB_COMPONENTS.CLOSE]: {
-    frameworkClass: 'bootstrap',
-    componentTag: 'div',
-    customSettingsProperties: {
-      width: [14, 80],
-      height: [10, 80],
+    [SUB_COMPONENTS.CLOSE]: {
+      frameworkClass: 'bootstrap',
+      componentTag: 'div',
+      customSettingsProperties: {
+        width: [14, 80],
+        height: [10, 80],
+      },
+      customCss: createInitialCloseButtonCss(),
+      initialCss: createInitialCloseButtonCss(),
+      jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
+      initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
+      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      subcomponentPreviewTransition: 'all 0.25s ease-out',
+      tempCustomCss: new Set(['transition']),
+      childCss: inheritedAlertCloseChildCss,
+      optionalSubcomponent: { currentlyDisplaying: true },
     },
-    customCss: JSONManipulation.deepCopy(initialCloseButtonCss),
-    initialCss: JSONManipulation.deepCopy(initialCloseButtonCss),
-    jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
-    initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
-    customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-    subcomponentPreviewTransition: 'all 0.25s ease-out',
-    tempCustomCss: new Set(['transition']),
-    childCss: inheritedAlertCloseChildCss,
-    optionalSubcomponent: { currentlyDisplaying: true },
-  },
+  }
+}
+
+function getNewComponent(): WorkshopComponent {
+  const subcomponents = createSubcomponents();
+  return {
+    type: NEW_COMPONENT_TYPES.MODAL,
+    subcomponents,
+    subcomponentsActiveMode: SUB_COMPONENTS.BASE,
+    componentPreviewStructure: createModalComponentPreviewStructure(subcomponents[SUB_COMPONENTS.BASE], subcomponents[SUB_COMPONENTS.CLOSE]),
+    className: 'default-class-name',
+  }
 }
 
 export default {
@@ -214,13 +231,7 @@ export default {
     isIconsPreloaded: false,
     componentPreviewAssistance: { margin: false },
     components: [
-      {
-        type: NEW_COMPONENT_TYPES.ALERT,
-        subcomponents,
-        subcomponentsActiveMode: SUB_COMPONENTS.BASE,
-        componentPreviewStructure: createAlertComponentPreviewStructure(subcomponents[SUB_COMPONENTS.BASE], subcomponents[SUB_COMPONENTS.CLOSE]),
-        className: 'default-class-name',
-      }
+      getNewComponent(),
     ],
     currentlySelectedComponent: null,
     workshopEventCallbacks: [],

@@ -35,9 +35,9 @@
                   component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
                   component.componentPreviewStructure.baseCss.customCss[component.componentPreviewStructure.baseCss.customCssActiveMode],
                 ]">
-              <div v-for="layer in component.componentPreviewStructure.layers" :key="layer" class="layer">
-                <div-inner-html v-if="layer[PSEUDO_COMPONENTS.TEXT]" :innerHTML="layer[PSEUDO_COMPONENTS.TEXT]"/>
-                <auxiliary-right-side-elements v-if="layer[SUB_COMPONENTS.CLOSE] !== undefined" :subcomponent="layer[SUB_COMPONENTS.CLOSE]"/>
+              <div v-for="layer in component.componentPreviewStructure.layers" :key="layer" :style="layer.css">
+                <div-inner-html v-if="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]" :innerHTML="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]"/>
+                <auxiliary-right-side-elements v-if="layer.subcomponents[SUB_COMPONENTS.CLOSE] !== undefined" :subcomponent="layer.subcomponents[SUB_COMPONENTS.CLOSE]"/>
               </div>
           </component>
           <component :is="component.componentPreviewStructure.baseCss.componentTag"
@@ -183,9 +183,6 @@ export default {
   .bottom-slide-fade-leave-to {
     transform: translateY(20px);
     opacity: 0;
-  }
-  .layer {
-    height: 100%;
   }
 </style>
 <style lang="css">

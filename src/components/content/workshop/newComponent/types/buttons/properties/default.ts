@@ -2,75 +2,70 @@ import { CustomCss, Subcomponents, WorkshopComponent } from '../../../../../../.
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
-import JSONManipulation from '../../../../../../../services/workshop/jsonManipulation';
-import { PSEUDO_COMPONENTS } from '../../../../../../../consts/pseudoComponents.enum';
 import createButtonComponentPreviewStructure from './buttonComponentPreviewStructure';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
 import { NewComponent } from '../../../../../../../interfaces/newComponent';
 import { inheritedButtonCss } from './inheritedCss';
 
-const initialButtonCss: CustomCss = {
-  [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-    borderRadius: '0px',
-    borderWidth: '0px',
-    borderColor: '#1779ba',
-    backgroundColor: '#1779ba',
-    boxShadow: 'unset',
-    outline: 'none',
-    lineHeight: '0',
-    paddingTop: '0px',
-    paddingBottom: '0px',
-    paddingLeft: '12px',
-    paddingRight: '12px',
-    marginLeft: '0px',
-    marginTop: '0px',
-    marginRight: '0px',
-    marginBottom: '0px',
-    width: '40px',
-    height: '38px',
-    boxSizing: 'content-box',
-    transition: 'unset',
-    color: '#ffffff',
-    fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
-  },
-  [SUB_COMPONENT_CSS_MODES.HOVER]: {
-    backgroundColor: '#ff0000',
-  },
-  [SUB_COMPONENT_CSS_MODES.CLICK]: {
-    backgroundColor: '#409441',
-  },
+// all default css needs to be filled in as to be able to 'reset' correctly
+function createInitialBaseCss(): CustomCss {
+  return {
+    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+      borderRadius: '0px',
+      borderWidth: '0px',
+      borderColor: '#1779ba',
+      backgroundColor: '#1779ba',
+      boxShadow: 'unset',
+      outline: 'none',
+      lineHeight: '0',
+      paddingTop: '0px',
+      paddingBottom: '0px',
+      paddingLeft: '12px',
+      paddingRight: '12px',
+      marginLeft: '0px',
+      marginTop: '0px',
+      marginRight: '0px',
+      marginBottom: '0px',
+      width: '40px',
+      height: '38px',
+      boxSizing: 'content-box',
+      transition: 'unset',
+      color: '#ffffff',
+      fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
+    },
+    [SUB_COMPONENT_CSS_MODES.HOVER]: {
+      backgroundColor: '#ff0000',
+    },
+    [SUB_COMPONENT_CSS_MODES.CLICK]: {
+      backgroundColor: '#409441',
+    },
+  }
 }
 
-const subcomponents: Subcomponents = {
-  [SUB_COMPONENTS.BASE]: {
-    frameworkClass: 'foundation',
-    componentTag: 'button',
-    customSettingsProperties: {
-      width: [0, 250],
-      height: [0, 250],
+function createSubcomponents(): Subcomponents {
+  return {
+    [SUB_COMPONENTS.BASE]: {
+      frameworkClass: 'foundation',
+      componentTag: 'button',
+      customSettingsProperties: {
+        width: [0, 250],
+        height: [0, 250],
+      },
+      customCss: createInitialBaseCss(),
+      initialCss: createInitialBaseCss(),
+      jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
+      initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
+      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      subcomponentPreviewTransition: 'all 0.25s ease-out',
+      tempCustomCss: new Set(['transition']),
+      inheritedCss: inheritedButtonCss,
     },
-    customCss: JSONManipulation.deepCopy(initialButtonCss),
-    initialCss: JSONManipulation.deepCopy(initialButtonCss),
-    jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
-    initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
-    customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-    subcomponentPreviewTransition: 'all 0.25s ease-out',
-    tempCustomCss: new Set(['transition']),
-    inheritedCss: inheritedButtonCss,
-  },
-}
-
-const componentPreviewStructure = {
-  baseCss: subcomponents[SUB_COMPONENTS.BASE],
-  layers: [
-    {
-      [PSEUDO_COMPONENTS.TEXT]: 'button',
-    },
-  ],
+  }
 }
 
 export const defaultButton: NewComponent = {
   getNewComponent(): WorkshopComponent {
+    const subcomponents = createSubcomponents();
     return {
       type: NEW_COMPONENT_TYPES.BUTTON,
       subcomponents,

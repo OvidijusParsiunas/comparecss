@@ -9,7 +9,8 @@ import { TempCustomCss } from './tempCustomCss';
 import { InheritedCss } from './inheritedCss';
 
 type Layer = {
-  [key in PSEUDO_COMPONENTS | SUB_COMPONENTS]?: SubcomponentProperties | string;
+  css: WorkshopComponentCss;
+  subcomponents: { [key in PSEUDO_COMPONENTS | SUB_COMPONENTS]?: SubcomponentProperties | string };
 }
 
 export interface ComponentPreviewStructure {

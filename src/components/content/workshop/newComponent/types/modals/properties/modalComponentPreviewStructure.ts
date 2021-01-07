@@ -8,8 +8,13 @@ export default function createAlertComponentPreviewStructure(baseComponent: Subc
     layeringType: 'vertical',
     layers: [
       {
-        [PSEUDO_COMPONENTS.TEXT]: 'Alert',
-        [SUB_COMPONENTS.CLOSE]: closeComponent,
+        css: {
+          position: 'relative',
+        },
+        subcomponents: {
+          [PSEUDO_COMPONENTS.TEXT]: 'Alert',
+          [SUB_COMPONENTS.CLOSE]: closeComponent,
+        }
       },
     ],
   }

@@ -5,8 +5,13 @@ export default function createButtonComponentPreviewStructure(baseComponent: Sub
   return {
     baseCss: baseComponent,
     layers: [
-      {
-        [PSEUDO_COMPONENTS.TEXT]: 'button',
+      { 
+        css: {
+          height: '100%',
+        },
+        subcomponents: {
+          [PSEUDO_COMPONENTS.TEXT]: 'button',
+        },
       },
     ],
   }
