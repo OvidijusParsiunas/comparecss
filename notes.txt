@@ -24,7 +24,7 @@ font-awesome pictures on buttons
 material design examples should have nice hover, and shadow increase events on mouse click
 button to switch between px, em (at the moment optimization is only configured for px)
 if button height exceeds certain threshold - only then should the 'Centered' setting be displayed in the 'Text' panel
-
+not far from a website builder, all we need is the ability to add subcomponents and that's it
 
 ---------------------------------------------------
 

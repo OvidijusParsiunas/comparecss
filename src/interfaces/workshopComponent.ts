@@ -1,3 +1,4 @@
+import { SUB_COMPONENT_PREVIEW_ELEMENT_IDS } from '../consts/subcomponentPreviewElementIds.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../consts/subcomponentCssModes.enum';
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../consts/workshopToolbarOptions';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
@@ -9,7 +10,8 @@ import { TempCustomCss } from './tempCustomCss';
 import { InheritedCss } from './inheritedCss';
 
 type Layer = {
-  css: WorkshopComponentCss;
+  id?: SUB_COMPONENT_PREVIEW_ELEMENT_IDS,
+  css: WorkshopComponentCss | SubcomponentProperties;
   subcomponents: { [key in PSEUDO_COMPONENTS | SUB_COMPONENTS]?: SubcomponentProperties | string };
 }
 

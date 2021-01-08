@@ -35,10 +35,11 @@
                   component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
                   component.componentPreviewStructure.baseCss.customCss[component.componentPreviewStructure.baseCss.customCssActiveMode],
                 ]">
-              <div v-for="layer in component.componentPreviewStructure.layers" :key="layer" :style="layer.css">
+              <div v-for="layer in component.componentPreviewStructure.layers" :key="layer" :style="layer.css.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]">
                 <div-inner-html v-if="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]" :innerHTML="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]"/>
                 <auxiliary-right-side-elements v-if="layer.subcomponents[SUB_COMPONENTS.CLOSE] !== undefined" :subcomponent="layer.subcomponents[SUB_COMPONENTS.CLOSE]"/>
               </div>
+              <!-- Previews here -->
           </component>
           <component :is="component.componentPreviewStructure.baseCss.componentTag"
             :id="SUB_COMPONENT_PREVIEW_ELEMENT_IDS.BASE"

@@ -2,6 +2,12 @@ export interface WorkshopComponentCss {
   borderWidth?: string;
   borderStyle?: string;
   borderColor?: string;
+  borderBottomWidth?: string;
+  borderBottomStyle?: string;
+  borderBottomColor?: string;
+  borderTopWidth?: string;
+  borderTopStyle?: string;
+  borderTopColor?: string;
   borderRadius?: string;
   transition?: string;
   boxShadow?: string; // should not start with '0px 0px 0px 0px'

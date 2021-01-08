@@ -25,5 +25,8 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
   [NEW_COMPONENT_TYPES.MODAL]: {
     [SUB_COMPONENTS.BASE]: alertBaseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
     [SUB_COMPONENTS.CLOSE]: alertCloseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
+    [SUB_COMPONENTS.LAYER_1]: alertBaseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
+    [SUB_COMPONENTS.LAYER_2]: alertCloseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
+    [SUB_COMPONENTS.LAYER_3]: alertBaseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
   },
 };
