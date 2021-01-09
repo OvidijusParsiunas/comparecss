@@ -1,7 +1,7 @@
 import { ComponentPreviewStructure, SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent'
+import { SUB_COMPONENT_PREVIEW_ELEMENT_IDS } from '../../../../../../../consts/subcomponentPreviewElementIds.enum'
 import { PSEUDO_COMPONENTS } from '../../../../../../../consts/pseudoComponents.enum'
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum'
-import { SUB_COMPONENT_PREVIEW_ELEMENT_IDS } from '@/consts/subcomponentPreviewElementIds.enum'
 
 export default function createAlertComponentPreviewStructure(
   baseComponent: SubcomponentProperties, closeComponent: SubcomponentProperties, layer1Component?: SubcomponentProperties, layer2Component?: SubcomponentProperties, layer3Component?: SubcomponentProperties): ComponentPreviewStructure {

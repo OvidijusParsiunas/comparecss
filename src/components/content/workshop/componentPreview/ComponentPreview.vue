@@ -38,7 +38,18 @@
               <div v-for="layer in component.componentPreviewStructure.layers" :key="layer" :style="layer.css.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]">
                 <div-inner-html v-if="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]" :innerHTML="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]"/>
                 <auxiliary-right-side-elements v-if="layer.subcomponents[SUB_COMPONENTS.CLOSE] !== undefined" :subcomponent="layer.subcomponents[SUB_COMPONENTS.CLOSE]"/>
+                <div
+                :id="layer.id"
+                style="display: none; width: 100%" :style="layer.css.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
+                class="subcomponent-preview">
               </div>
+              </div>
+              <!-- <div
+                v-for="layer in component.componentPreviewStructure.layers" :key="layer"
+                :id="layer.id"
+                style="display: none; width: 100%" :style="layer.css.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
+                class="subcomponent-preview">
+              </div> -->
               <!-- Previews here -->
           </component>
           <component :is="component.componentPreviewStructure.baseCss.componentTag"

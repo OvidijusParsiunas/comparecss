@@ -8,6 +8,7 @@ import { layerTopOptions } from './layer/layerTop';
 import { buttonBaseOptions } from './button/base';
 import { alertCloseOptions } from './alert/close';
 import { alertBaseOptions } from './alert/base';
+import { modalBaseOptions } from './modal/base';
 
 type subcomponentTypeToOptions = {
   [key in SUB_COMPONENTS]?: SubcomponentOptions<keyof SubcomponentCssModes>;
@@ -26,7 +27,7 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
     [SUB_COMPONENTS.CLOSE]: alertCloseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
   },
   [NEW_COMPONENT_TYPES.MODAL]: {
-    [SUB_COMPONENTS.BASE]: alertBaseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
+    [SUB_COMPONENTS.BASE]: modalBaseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
     [SUB_COMPONENTS.CLOSE]: alertCloseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
     [SUB_COMPONENTS.LAYER_1]: layerTopOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
     [SUB_COMPONENTS.LAYER_2]: layerMiddleOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
