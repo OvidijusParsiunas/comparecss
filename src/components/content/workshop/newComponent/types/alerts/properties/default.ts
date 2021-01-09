@@ -66,7 +66,6 @@ function createInitialCloseButtonCss(): CustomCss {
 function createSubcomponents(): Subcomponents {
   return {
     [SUB_COMPONENTS.BASE]: {
-      frameworkClass: 'bootstrap',
       componentTag: 'div',
       customSettingsProperties: {
         width: [100, 700],
@@ -83,7 +82,6 @@ function createSubcomponents(): Subcomponents {
       customSettings: alertBaseCustomSettings,
     },
     [SUB_COMPONENTS.CLOSE]: {
-      frameworkClass: 'bootstrap',
       componentTag: 'div',
       customSettingsProperties: {
         width: [14, 80],

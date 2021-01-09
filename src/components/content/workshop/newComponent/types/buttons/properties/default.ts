@@ -45,7 +45,6 @@ function createInitialBaseCss(): CustomCss {
 function createSubcomponents(): Subcomponents {
   return {
     [SUB_COMPONENTS.BASE]: {
-      frameworkClass: 'foundation',
       componentTag: 'button',
       customSettingsProperties: {
         width: [0, 250],

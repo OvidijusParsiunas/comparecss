@@ -74,11 +74,11 @@
 <script lang="ts">
 import { CustomCss, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../interfaces/workshopComponent';
 import createModalComponentPreviewStructure from './newComponent/types/modals/properties/modalComponentPreviewStructure';
+import { modalLayerBottomCustomSettings } from './newComponent/types/modals/properties/modalLayerBottomCustomSettings';
 import { inheritedAlertCloseChildCss } from './newComponent/types/alerts/properties/inheritedAlertCloseChildCss';
+import { modalLayerTopCustomSettings } from './newComponent/types/modals/properties/modalLayerTopCustomSettings';
 import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
 import { alertBaseCustomSettings } from './newComponent/types/alerts/properties/alertBaseCustomSettings';
-import { modalLayerTopCustomSettings } from './newComponent/types/modals/properties/modalLayerTopCustomSettings';
-import { modalLayerBottomCustomSettings } from './newComponent/types/modals/properties/modalLayerBottomCustomSettings';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
@@ -166,7 +166,6 @@ function createInitialCloseButtonCss(): CustomCss {
 function createSubcomponents(): Subcomponents {
   return {
     [SUB_COMPONENTS.BASE]: {
-      frameworkClass: 'bootstrap',
       componentTag: 'div',
       customSettingsProperties: {
         width: [100, 700],
@@ -183,7 +182,6 @@ function createSubcomponents(): Subcomponents {
       customSettings: alertBaseCustomSettings,
     },
     [SUB_COMPONENTS.LAYER_1]: {
-      frameworkClass: 'bootstrap',
       componentTag: 'div',
       customSettingsProperties: {
         width: [14, 80],
@@ -223,7 +221,6 @@ function createSubcomponents(): Subcomponents {
       customSettings: modalLayerTopCustomSettings,
     },
     [SUB_COMPONENTS.LAYER_2]: {
-      frameworkClass: 'bootstrap',
       componentTag: 'div',
       customSettingsProperties: {
         width: [14, 80],
@@ -254,7 +251,6 @@ function createSubcomponents(): Subcomponents {
       tempCustomCss: new Set(['transition']),
     },
     [SUB_COMPONENTS.LAYER_3]: {
-      frameworkClass: 'bootstrap',
       componentTag: 'div',
       customSettingsProperties: {
         width: [14, 80],
@@ -290,7 +286,6 @@ function createSubcomponents(): Subcomponents {
       customSettings: modalLayerBottomCustomSettings,
     },
     [SUB_COMPONENTS.CLOSE]: {
-      frameworkClass: 'bootstrap',
       componentTag: 'div',
       customSettingsProperties: {
         width: [14, 80],

@@ -59,7 +59,6 @@ export type CustomSettings = {
 }
 
 export interface SubcomponentProperties {
-  frameworkClass: string;
   componentTag: string;
   customCss: CustomCss;
   initialCss: CustomCss;
