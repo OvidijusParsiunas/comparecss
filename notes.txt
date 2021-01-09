@@ -1,7 +1,6 @@
 Modal:
 Have a default button, then when it is clicked, have the modal
 Activate button, that turns into lock when active and you hover over it
-customSettingsProperties may not be required anymore
 consider having a dropdown to choose which border side to edit
 have a builder for contents within the settings
 

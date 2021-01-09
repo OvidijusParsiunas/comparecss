@@ -7,6 +7,7 @@ import createAlertComponentPreviewStructure from './alertComponentPreviewStructu
 import { NewComponent } from '../../../../../../../interfaces/newComponent';
 import { inheritedAlertCloseChildCss } from './inheritedAlertCloseChildCss';
 import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';
+import { alertCloseCustomSettings } from './alertCloseCustomSettings';
 import { alertBaseCustomSettings } from './alertBaseCustomSettings';
 import { inheritedAlertBaseCss } from './inheritedCss';
 
@@ -67,10 +68,6 @@ function createSubcomponents(): Subcomponents {
   return {
     [SUB_COMPONENTS.BASE]: {
       componentTag: 'div',
-      customSettingsProperties: {
-        width: [100, 700],
-        height: [30, 200],
-      },
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
       jsClasses: new Set(),
@@ -83,10 +80,6 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.CLOSE]: {
       componentTag: 'div',
-      customSettingsProperties: {
-        width: [14, 80],
-        height: [10, 80],
-      },
       customCss: createInitialCloseButtonCss(),
       initialCss: createInitialCloseButtonCss(),
       jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
@@ -96,6 +89,7 @@ function createSubcomponents(): Subcomponents {
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
       optionalSubcomponent: { currentlyDisplaying: true },
+      customSettings: alertCloseCustomSettings,
     },
   }
 }

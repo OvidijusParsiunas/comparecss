@@ -41,20 +41,15 @@ export type CustomCss = {
   [key in SUB_COMPONENT_CSS_MODES]?: WorkshopComponentCss;
 }
 
-export interface customSettingsProperties {
-  width?: number[],
-  height: number[],
-}
-
 export interface OptionalSubcomponent {
   currentlyDisplaying: boolean;
 }
 
 export type CustomSettings = {
   [key in WORKSHOP_TOOLBAR_OPTIONS]?: {
-    cssProperty: string,
-    scale?: [number, number],
-    partialCssPosition?: number,
+    [cssPropertyName: string]: {
+      scale?: [number, number],
+    }
   };
 }
 
@@ -78,7 +73,6 @@ export interface SubcomponentProperties {
   subcomponentPreviewTransition?: string;
   jsClasses: ComponentJavascriptClasses;
   initialJsClasses: ComponentJavascriptClasses;
-  customSettingsProperties?: customSettingsProperties;
   optionalSubcomponent?: OptionalSubcomponent;
   // the reason why custom css is attached here is to not have to keep multiple unique settings for each and every subcomponent in memory all at once
   customSettings?: CustomSettings;

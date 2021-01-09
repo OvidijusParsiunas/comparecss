@@ -78,6 +78,7 @@ import { modalLayerBottomCustomSettings } from './newComponent/types/modals/prop
 import { inheritedAlertCloseChildCss } from './newComponent/types/alerts/properties/inheritedAlertCloseChildCss';
 import { modalLayerTopCustomSettings } from './newComponent/types/modals/properties/modalLayerTopCustomSettings';
 import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
+import { alertCloseCustomSettings } from './newComponent/types/alerts/properties/alertCloseCustomSettings';
 import { alertBaseCustomSettings } from './newComponent/types/alerts/properties/alertBaseCustomSettings';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
@@ -167,10 +168,6 @@ function createSubcomponents(): Subcomponents {
   return {
     [SUB_COMPONENTS.BASE]: {
       componentTag: 'div',
-      customSettingsProperties: {
-        width: [100, 700],
-        height: [30, 200],
-      },
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
       jsClasses: new Set(),
@@ -183,10 +180,6 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.LAYER_1]: {
       componentTag: 'div',
-      customSettingsProperties: {
-        width: [14, 80],
-        height: [10, 80],
-      },
       customCss: {
         [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
           position: 'relative',
@@ -222,10 +215,6 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.LAYER_2]: {
       componentTag: 'div',
-      customSettingsProperties: {
-        width: [14, 80],
-        height: [10, 80],
-      },
       customCss: {
         [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
           position: 'relative',
@@ -252,10 +241,6 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.LAYER_3]: {
       componentTag: 'div',
-      customSettingsProperties: {
-        width: [14, 80],
-        height: [10, 80],
-      },
       customCss: {
         [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
           position: 'relative',
@@ -287,10 +272,6 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.CLOSE]: {
       componentTag: 'div',
-      customSettingsProperties: {
-        width: [14, 80],
-        height: [10, 80],
-      },
       customCss: createInitialCloseButtonCss(),
       initialCss: createInitialCloseButtonCss(),
       jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
@@ -300,6 +281,7 @@ function createSubcomponents(): Subcomponents {
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
       optionalSubcomponent: { currentlyDisplaying: true },
+      customSettings: alertCloseCustomSettings,
     },
   }
 }

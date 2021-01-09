@@ -21,6 +21,7 @@
 
 <script lang="ts">
 import { componentTypeToOptions } from './options/componentOptions/componentTypeToOptions';
+import PartialCssCustomSettingsUtils from './settings/utils/partialCssCustomSettingsUtils';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOptions';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
@@ -127,13 +128,13 @@ export default {
     setNewCustomSettings(option: WORKSHOP_TOOLBAR_OPTIONS): void {
       const { customSettings } = this.component.subcomponents[this.component.subcomponentsActiveMode];
       if (customSettings && customSettings[option]) {
-        const { cssProperty, scale, partialCssPosition } = customSettings[option];
         optionToSettings[option].options.forEach((setting) => {
-          if (partialCssPosition && setting.spec.partialCss && setting.spec.partialCss.position !== partialCssPosition) return;
-          if (setting.spec.cssProperty === cssProperty) {
+          const cssPropertyName = setting.spec.partialCss
+          ? PartialCssCustomSettingsUtils.generateCustomPartialCssPropertyName(setting.spec.cssProperty, setting.spec.partialCss.position) : setting.spec.cssProperty;
+          if (customSettings[option][cssPropertyName]) {
             const customSettingOriginalSpec: CustomSettingOriginalSpec = { spec: setting.spec, originalValues: { name: 'scale', value: setting.spec.scale }};
             this.customSettingsOriginalSpecs.push(customSettingOriginalSpec);
-            setting.spec.scale = scale;
+            setting.spec.scale = customSettings[option][cssPropertyName].scale;
           }
         });
       }

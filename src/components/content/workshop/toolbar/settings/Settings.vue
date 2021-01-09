@@ -30,8 +30,8 @@
                     </div>
                   </div>
                   <input type="range" class="form-control-range" id="formControlRange"
-                    v-bind:min="subcomponentproperties.customSettingsProperties && subcomponentproperties.customSettingsProperties[setting.spec.cssProperty] ? subcomponentproperties.customSettingsProperties[setting.spec.cssProperty][0] : setting.spec.scale[0]"
-                    v-bind:max="subcomponentproperties.customSettingsProperties && subcomponentproperties.customSettingsProperties[setting.spec.cssProperty] ? subcomponentproperties.customSettingsProperties[setting.spec.cssProperty][1] : setting.spec.scale[1]"
+                    v-bind:min="setting.spec.scale[0]"
+                    v-bind:max="setting.spec.scale[1]"
                     v-model="setting.spec.default"
                     @mousedown="rangeMouseDown($event, subcomponentproperties.customCssActiveMode, setting.spec)"
                     @contextmenu="preventRightClickEvent"

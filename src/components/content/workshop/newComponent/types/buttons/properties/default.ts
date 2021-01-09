@@ -5,6 +5,7 @@ import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasse
 import createButtonComponentPreviewStructure from './buttonComponentPreviewStructure';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
 import { NewComponent } from '../../../../../../../interfaces/newComponent';
+import { buttonCustomSettings } from './buttonCustomSettings';
 import { inheritedButtonCss } from './inheritedCss';
 
 // all default css needs to be filled in as to be able to 'reset' correctly
@@ -46,10 +47,6 @@ function createSubcomponents(): Subcomponents {
   return {
     [SUB_COMPONENTS.BASE]: {
       componentTag: 'button',
-      customSettingsProperties: {
-        width: [0, 250],
-        height: [0, 250],
-      },
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
       jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
@@ -58,6 +55,7 @@ function createSubcomponents(): Subcomponents {
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedButtonCss,
+      customSettings: buttonCustomSettings,
     },
   }
 }
