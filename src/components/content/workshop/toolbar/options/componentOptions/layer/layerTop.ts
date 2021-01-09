@@ -20,7 +20,7 @@ export const layerTopOptions: SubcomponentOptions<LayerOptionsModes> = {
     },
     {
       buttonName: 'Size',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.SIZE,
+      identifier: WORKSHOP_TOOLBAR_OPTIONS.SIZE_HEIGHT,
     },
     {
       buttonName: 'Padding',
