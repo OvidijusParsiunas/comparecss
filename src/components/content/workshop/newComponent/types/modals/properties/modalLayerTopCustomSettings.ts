@@ -1,9 +1,10 @@
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../../../consts/workshopToolbarOptions';
 import { CustomSettings } from '../../../../../../../interfaces/workshopComponent';
 
-export const alertBaseCustomSettings: CustomSettings = {
-  [WORKSHOP_TOOLBAR_OPTIONS.PADDING]: {
-    cssProperty: 'paddingLeft',
+export const modalLayerTopCustomSettings: CustomSettings = {
+  [WORKSHOP_TOOLBAR_OPTIONS.SHADOW]: {
+    partialCssPosition: 1,
+    cssProperty: 'boxShadow',
     scale: [0, 100],
-  }
+  },
 }

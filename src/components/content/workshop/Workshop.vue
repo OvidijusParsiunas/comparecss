@@ -77,6 +77,8 @@ import createModalComponentPreviewStructure from './newComponent/types/modals/pr
 import { inheritedAlertCloseChildCss } from './newComponent/types/alerts/properties/inheritedAlertCloseChildCss';
 import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
 import { alertBaseCustomSettings } from './newComponent/types/alerts/properties/alertBaseCustomSettings';
+import { modalLayerTopCustomSettings } from './newComponent/types/modals/properties/modalLayerTopCustomSettings';
+import { modalLayerBottomCustomSettings } from './newComponent/types/modals/properties/modalLayerBottomCustomSettings';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
@@ -218,6 +220,7 @@ function createSubcomponents(): Subcomponents {
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
+      customSettings: modalLayerTopCustomSettings,
     },
     [SUB_COMPONENTS.LAYER_2]: {
       frameworkClass: 'bootstrap',
@@ -284,6 +287,7 @@ function createSubcomponents(): Subcomponents {
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
+      customSettings: modalLayerBottomCustomSettings,
     },
     [SUB_COMPONENTS.CLOSE]: {
       frameworkClass: 'bootstrap',

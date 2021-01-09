@@ -54,6 +54,7 @@ export type CustomSettings = {
   [key in WORKSHOP_TOOLBAR_OPTIONS]?: {
     cssProperty: string,
     scale?: [number, number],
+    partialCssPosition?: number,
   };
 }
 

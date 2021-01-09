@@ -2,6 +2,9 @@ import { SubcomponentCssModes } from '../../../../../../interfaces/subcomponentC
 import { NEW_COMPONENT_TYPES } from '../../../../../../consts/newComponentTypes.enum';
 import { SubcomponentOptions } from '../../../../../../interfaces/componentOptions';
 import { SUB_COMPONENTS } from '../../../../../../consts/subcomponentModes.enum';
+import { layerBottomOptions } from './layer/layerBottom';
+import { layerMiddleOptions } from './layer/layerMiddle';
+import { layerTopOptions } from './layer/layerTop';
 import { buttonBaseOptions } from './button/base';
 import { alertCloseOptions } from './alert/close';
 import { alertBaseOptions } from './alert/base';
@@ -25,8 +28,8 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
   [NEW_COMPONENT_TYPES.MODAL]: {
     [SUB_COMPONENTS.BASE]: alertBaseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
     [SUB_COMPONENTS.CLOSE]: alertCloseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
-    [SUB_COMPONENTS.LAYER_1]: alertBaseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
-    [SUB_COMPONENTS.LAYER_2]: alertCloseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
-    [SUB_COMPONENTS.LAYER_3]: alertBaseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
+    [SUB_COMPONENTS.LAYER_1]: layerTopOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
+    [SUB_COMPONENTS.LAYER_2]: layerMiddleOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
+    [SUB_COMPONENTS.LAYER_3]: layerBottomOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
   },
 };

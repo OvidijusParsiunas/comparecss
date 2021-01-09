@@ -127,8 +127,9 @@ export default {
     setNewCustomSettings(option: WORKSHOP_TOOLBAR_OPTIONS): void {
       const { customSettings } = this.component.subcomponents[this.component.subcomponentsActiveMode];
       if (customSettings && customSettings[option]) {
-        const { cssProperty, scale } = customSettings[option];
+        const { cssProperty, scale, partialCssPosition } = customSettings[option];
         optionToSettings[option].options.forEach((setting) => {
+          if (partialCssPosition && setting.spec.partialCss && setting.spec.partialCss.position !== partialCssPosition) return;
           if (setting.spec.cssProperty === cssProperty) {
             const customSettingOriginalSpec: CustomSettingOriginalSpec = { spec: setting.spec, originalValues: { name: 'scale', value: setting.spec.scale }};
             this.customSettingsOriginalSpecs.push(customSettingOriginalSpec);
