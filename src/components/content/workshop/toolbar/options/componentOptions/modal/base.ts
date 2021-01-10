@@ -20,11 +20,7 @@ export const modalBaseOptions: SubcomponentOptions<ModalBaseOptionsModes> = {
     },
     {
       buttonName: 'Size',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.SIZE,
-    },
-    {
-      buttonName: 'Padding',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.PADDING,
+      identifier: WORKSHOP_TOOLBAR_OPTIONS.SIZE_WIDTH,
     },
     {
       buttonName: 'Margin',

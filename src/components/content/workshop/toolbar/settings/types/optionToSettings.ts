@@ -6,6 +6,7 @@ import color from './color';
 import shadow from './shadow';
 import shadowVertical from './shadowVertical';
 import size from './size';
+import sizeWidth from './sizeWidth';
 import sizeHeight from './sizeHeight';
 import padding from './padding';
 import margin from './margin';
@@ -27,6 +28,7 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTIONS.SHADOW]: shadow,
   [WORKSHOP_TOOLBAR_OPTIONS.SHADOW_VERTICAL]: shadowVertical,
   [WORKSHOP_TOOLBAR_OPTIONS.SIZE]: size,
+  [WORKSHOP_TOOLBAR_OPTIONS.SIZE_WIDTH]: sizeWidth,
   [WORKSHOP_TOOLBAR_OPTIONS.SIZE_HEIGHT]: sizeHeight,
   [WORKSHOP_TOOLBAR_OPTIONS.PADDING]: padding,
   [WORKSHOP_TOOLBAR_OPTIONS.MARGIN]: margin,

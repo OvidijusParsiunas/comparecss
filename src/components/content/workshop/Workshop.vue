@@ -79,7 +79,7 @@ import { inheritedAlertCloseChildCss } from './newComponent/types/alerts/propert
 import { modalLayerTopCustomSettings } from './newComponent/types/modals/properties/modalLayerTopCustomSettings';
 import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
 import { alertCloseCustomSettings } from './newComponent/types/alerts/properties/alertCloseCustomSettings';
-import { alertBaseCustomSettings } from './newComponent/types/alerts/properties/alertBaseCustomSettings';
+import { modalBaseCustomSettings } from './newComponent/types/modals/properties/modalBaseCustomSettings';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
@@ -176,7 +176,7 @@ function createSubcomponents(): Subcomponents {
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
-      customSettings: alertBaseCustomSettings,
+      customSettings: modalBaseCustomSettings,
     },
     [SUB_COMPONENTS.LAYER_1]: {
       componentTag: 'div',

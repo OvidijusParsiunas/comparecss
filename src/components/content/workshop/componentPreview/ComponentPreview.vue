@@ -35,27 +35,18 @@
                   component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
                   component.componentPreviewStructure.baseCss.customCss[component.componentPreviewStructure.baseCss.customCssActiveMode],
                 ]">
-              <div v-for="layer in component.componentPreviewStructure.layers" :key="layer" :style="layer.css.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]">
-                <div-inner-html v-if="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]" :innerHTML="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]"/>
-                <auxiliary-right-side-elements v-if="layer.subcomponents[SUB_COMPONENTS.CLOSE] !== undefined" :subcomponent="layer.subcomponents[SUB_COMPONENTS.CLOSE]"/>
-                <div
-                :id="layer.id"
-                style="display: none; width: 100%" :style="layer.css.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
-                class="subcomponent-preview">
+              <div v-for="layer in component.componentPreviewStructure.layers" :key="layer" class="parent-layer">
+                <div :style="layer.css">
+                  <div-inner-html v-if="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]" :innerHTML="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]"/>
+                  <auxiliary-right-side-elements v-if="layer.subcomponents[SUB_COMPONENTS.CLOSE] !== undefined" :subcomponent="layer.subcomponents[SUB_COMPONENTS.CLOSE]"/>
+                </div>
+                <div :id="layer.id" style="display: none" :style="layer.css" class="subcomponent-preview"></div>
               </div>
-              </div>
-              <!-- <div
-                v-for="layer in component.componentPreviewStructure.layers" :key="layer"
-                :id="layer.id"
-                style="display: none; width: 100%" :style="layer.css.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
-                class="subcomponent-preview">
-              </div> -->
-              <!-- Previews here -->
           </component>
           <component :is="component.componentPreviewStructure.baseCss.componentTag"
             :id="SUB_COMPONENT_PREVIEW_ELEMENT_IDS.BASE"
             style="display: none" :style="component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
-            class="subcomponent-preview">
+            class="subcomponent-preview base-component-preview">
           </component>
         </div>
         <div class="grid-item grid-item-position">
@@ -219,6 +210,14 @@ export default {
     background-color: rgb(40 255 20 / 43%) !important;
     position: absolute !important;
     top: 0px !important;
+    width: 100%;
+  }
+  .base-component-preview {
+    height: 99%;
+  }
+  .parent-layer {
+    position: relative;
+    height: 100%;
   }
 
   @keyframes displayRipple {
