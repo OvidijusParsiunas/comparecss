@@ -13,10 +13,10 @@
     <div ref="dropdownMenu" class="dropdown-menu custom-dropdown-menu">
       <a v-for="(optionValue, optionName) in dropdownOptions" :key="optionName"
         class="dropdown-item custom-dropdown-item" 
-        @click="optionClick"
+        @click="optionClick(optionName)"
         @mouseenter="mouseEnterOption(isAuxiliaryPadding = false)"
         @mouseleave="mouseLeaveOption(isAuxiliaryPadding = false)">
-          {{optionName}}
+          <div>{{optionName}}</div><i :class="['fa', 'arrow-right', 'fa-angle-right']"></i>
         </a>
     </div>
   </div>
@@ -36,31 +36,35 @@ export default {
     lastHoveredOptionElement: null,
   }),
   methods: {
-    optionClick(): void {
-      this.activeOptionElement = event.target;
-      if (this.objectContainingActiveOption[this.activeModePropertyKeyName] === (event.target as HTMLElement).innerHTML) return;
-      this.$emit('new-dropdown-option-clicked', (event.target as HTMLElement).innerHTML);
+    getOptionNameFromElement(highlightedOptionElement: HTMLElement): string {
+      return (highlightedOptionElement.childNodes[0] as HTMLElement).innerHTML;
+    },
+    optionClick(optionName: string): void {
+      this.activeOptionElement = event.currentTarget;
+      if (this.objectContainingActiveOption[this.activeModePropertyKeyName] === optionName) return;
+      this.$emit('new-dropdown-option-clicked', optionName);
     },
     mouseEnterButton(): void {
-      this.toggleSubcomponentPreviewDisplay(((event.target as HTMLElement).childNodes[0] as HTMLElement).innerHTML, 'block');
+      this.toggleSubcomponentPreviewDisplay(this.objectContainingActiveOption[this.activeModePropertyKeyName], 'block');
     },
     mouseLeaveButton(): void {
-      this.toggleSubcomponentPreviewDisplay(((event.target as HTMLElement).childNodes[0] as HTMLElement).innerHTML, 'none');
+      this.toggleSubcomponentPreviewDisplay(this.objectContainingActiveOption[this.activeModePropertyKeyName], 'none');
     },
     mouseEnterOption(isAuxiliaryPadding: boolean): void {
+      // could not pass down option name for enter and leave because highlightedOptionElement is reused and traversing html was cleaner
       // when dropdown is opened for the first time, there is no lastHoveredOptionElement and the first hovered option may
       // not be activeOptionElement, hence the active is removed from it
-      if (isAuxiliaryPadding && !this.$refs.dropdownMenu.offsetParent) return;
-      const highlightedOption = isAuxiliaryPadding ? this.$refs.dropdownMenu.childNodes[1] : event.target;
-      this.toggleSubcomponentPreviewDisplay((highlightedOption as HTMLInputElement).innerHTML, 'block');
+      if (!isAuxiliaryPadding && !this.$refs.dropdownMenu.offsetParent) return;
+      const highlightedOptionElement = isAuxiliaryPadding ? this.$refs.dropdownMenu.childNodes[1] : event.target;
+      this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(highlightedOptionElement), 'block');
       if (this.activeOptionElement) this.activeOptionElement.classList.remove('active');
       if (this.lastHoveredOptionElement) this.lastHoveredOptionElement.classList.remove('active');
-      this.lastHoveredOptionElement = highlightedOption;
+      this.lastHoveredOptionElement = highlightedOptionElement;
       this.lastHoveredOptionElement.classList.add('active');
     },
     mouseLeaveOption(isAuxiliaryPadding: boolean): void {
-      const highlightedOption = isAuxiliaryPadding ? (event.target as HTMLInputElement).nextSibling.childNodes[1] : event.target;
-      this.toggleSubcomponentPreviewDisplay((highlightedOption as HTMLElement).innerHTML, 'none');
+      const highlightedOptionElement = isAuxiliaryPadding ? (event.target as HTMLInputElement).nextSibling.childNodes[1] : event.target;
+      this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(highlightedOptionElement), 'none');
     },
     openDropdown(): void {
       // this function is always re-run everytime the dropdown is open
@@ -126,6 +130,10 @@ export default {
   }
   .custom-dropdown-item {
     padding: 0.08rem 1rem !important;
+    cursor: pointer;
+    display: flex !important;
+    align-items: center;
+    padding-bottom: 2px
   }
   .auxiliary-padding {
     top: 36px;
@@ -133,5 +141,14 @@ export default {
     width: 100%;
     z-index: 9990;
     position: absolute;
+  }
+  .arrow-right {
+    padding-left: 3px;
+    position: absolute;
+    right: 10px;
+    font-size: 14px;
+    vertical-align: middle !important;
+    float: right;
+    color: grey;
   }
 </style>

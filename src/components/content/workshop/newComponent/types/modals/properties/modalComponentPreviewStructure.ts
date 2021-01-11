@@ -11,7 +11,7 @@ export default function createAlertComponentPreviewStructure(
     layeringType: 'vertical',
     layers: [
       {
-        id: SUB_COMPONENT_PREVIEW_ELEMENT_IDS.LAYER_1,
+        subcomponentPreviewId: SUB_COMPONENT_PREVIEW_ELEMENT_IDS.LAYER_1,
         css: layer1Component.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
         subcomponents: {
           [PSEUDO_COMPONENTS.TEXT]: 'Modal title',
@@ -19,14 +19,14 @@ export default function createAlertComponentPreviewStructure(
         }
       },
       {
-        id: SUB_COMPONENT_PREVIEW_ELEMENT_IDS.LAYER_2,
+        subcomponentPreviewId: SUB_COMPONENT_PREVIEW_ELEMENT_IDS.LAYER_2,
         css: layer2Component.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
         subcomponents: {
           [PSEUDO_COMPONENTS.TEXT]: 'Modal body text',
         }
       },
       {
-        id: SUB_COMPONENT_PREVIEW_ELEMENT_IDS.LAYER_3,
+        subcomponentPreviewId: SUB_COMPONENT_PREVIEW_ELEMENT_IDS.LAYER_3,
         css: layer3Component.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
         subcomponents: {
           [PSEUDO_COMPONENTS.TEXT]: 'Modal footer',

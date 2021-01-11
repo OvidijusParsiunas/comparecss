@@ -40,7 +40,7 @@
                   <div-inner-html v-if="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]" :innerHTML="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]"/>
                   <auxiliary-right-side-elements v-if="layer.subcomponents[SUB_COMPONENTS.CLOSE] !== undefined" :subcomponent="layer.subcomponents[SUB_COMPONENTS.CLOSE]"/>
                 </div>
-                <div :id="layer.id" style="display: none" :style="layer.css" class="subcomponent-preview"></div>
+                <div v-if="layer.subcomponentPreviewId" :id="layer.subcomponentPreviewId" style="display: none" :style="layer.css" class="subcomponent-preview"></div>
               </div>
           </component>
           <component :is="component.componentPreviewStructure.baseCss.componentTag"
