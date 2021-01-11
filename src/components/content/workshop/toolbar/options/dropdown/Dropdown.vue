@@ -54,7 +54,7 @@ export default {
       // could not pass down option name for enter and leave because highlightedOptionElement is reused and traversing html was cleaner
       // when dropdown is opened for the first time, there is no lastHoveredOptionElement and the first hovered option may
       // not be activeOptionElement, hence the active is removed from it
-      if (!isAuxiliaryPadding && !this.$refs.dropdownMenu.offsetParent) return;
+      if (isAuxiliaryPadding && !this.$refs.dropdownMenu.offsetParent) return;
       const highlightedOptionElement = isAuxiliaryPadding ? this.$refs.dropdownMenu.childNodes[1] : event.target;
       this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(highlightedOptionElement), 'block');
       if (this.activeOptionElement) this.activeOptionElement.classList.remove('active');
@@ -141,6 +141,7 @@ export default {
     width: 100%;
     z-index: 9990;
     position: absolute;
+    cursor: pointer;
   }
   .arrow-right {
     padding-left: 3px;

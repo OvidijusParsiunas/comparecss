@@ -108,7 +108,7 @@ export default {
       const availableOptions = componentTypeToOptions[this.component.type]
         [this.component.subcomponentsActiveMode]
         [this.component.subcomponents[this.component.subcomponentsActiveMode].customCssActiveMode];
-      const firstOption = Object.keys(availableOptions)[0];
+      const firstOption = availableOptions[0].identifier;
       this.updateSettings(firstOption);
     },
     hideSettings(): void {
