@@ -1,11 +1,12 @@
 <template>
   <div class="options-container">
     <dropdown class="option-button"
-      :dropdownOptions="component.subcomponents"
+      :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
       :objectContainingActiveOption="component"
       :activeModePropertyKeyName="'subcomponentsActiveMode'"
       :fontAwesomeIconClassName="'fa-angle-double-down'"
       :highlightSubcomponents="true"
+      @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
       @new-dropdown-option-clicked="newSubcomponentsModeClicked($event)"/>
     <div class="option-button">
       <button v-if="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent"

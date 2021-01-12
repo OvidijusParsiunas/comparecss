@@ -5,7 +5,7 @@ import { alertBaseCustomSettings } from '../../alerts/properties/alertBaseCustom
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
-import createAlertComponentPreviewStructure from './modalComponentPreviewStructure';
+import createModalComponentPreviewStructure from './modalComponentPreviewStructure';
 import { modalLayerBottomCustomSettings } from './modalLayerBottomCustomSettings';
 import { NewComponent } from '../../../../../../../interfaces/newComponent';
 import { inheritedAlertCloseChildCss } from './inheritedAlertCloseChildCss';
@@ -189,7 +189,9 @@ export const defaultModal: NewComponent = {
       type: NEW_COMPONENT_TYPES.MODAL,
       subcomponents,
       subcomponentsActiveMode: SUB_COMPONENTS.BASE,
-      componentPreviewStructure: createAlertComponentPreviewStructure(subcomponents[SUB_COMPONENTS.BASE], subcomponents[SUB_COMPONENTS.CLOSE]),
+      componentPreviewStructure: createModalComponentPreviewStructure(
+        subcomponents[SUB_COMPONENTS.BASE], subcomponents[SUB_COMPONENTS.CLOSE],
+        subcomponents[SUB_COMPONENTS.LAYER_1], subcomponents[SUB_COMPONENTS.LAYER_2], subcomponents[SUB_COMPONENTS.LAYER_3]),
       className: 'default-class-name',
     }
   },

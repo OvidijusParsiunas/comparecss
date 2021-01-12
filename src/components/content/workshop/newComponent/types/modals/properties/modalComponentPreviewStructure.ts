@@ -4,8 +4,9 @@ import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponen
 import { PSEUDO_COMPONENTS } from '../../../../../../../consts/pseudoComponents.enum'
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum'
 
-export default function createAlertComponentPreviewStructure(
-  baseComponent: SubcomponentProperties, closeComponent: SubcomponentProperties, layer1Component?: SubcomponentProperties, layer2Component?: SubcomponentProperties, layer3Component?: SubcomponentProperties): ComponentPreviewStructure {
+// TODO - add type
+export default function createModalComponentPreviewStructure(
+  baseComponent: SubcomponentProperties, closeComponent: SubcomponentProperties, layer1Component: SubcomponentProperties, layer2Component: SubcomponentProperties, layer3Component: SubcomponentProperties): any {
   return {
     baseCss: baseComponent,
     layeringType: 'vertical',
@@ -33,5 +34,16 @@ export default function createAlertComponentPreviewStructure(
         }
       },
     ],
+    subcomponentDropdownStructure: {
+      [SUB_COMPONENTS.BASE]: {
+        [SUB_COMPONENTS.LAYER_1]: undefined,
+        [SUB_COMPONENTS.LAYER_2]: {
+          [SUB_COMPONENTS.CLOSE]: undefined,
+          [SUB_COMPONENTS.LAYER_1]: undefined,
+          [SUB_COMPONENTS.LAYER_3]: undefined,
+        },
+        [SUB_COMPONENTS.LAYER_3]: undefined,
+      },
+    }
   }
 }

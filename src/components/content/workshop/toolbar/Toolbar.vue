@@ -8,7 +8,8 @@
             @option-clicked="updateSettings"
             @subcomponents-mode-clicked="updateSubcomponentsMode"
             @css-mode-clicked="updateCssMode"
-            @hide-settings="hideSettings"/>
+            @hide-settings="hideSettings"
+            @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"/>
         </div>
       </div>
       <settings

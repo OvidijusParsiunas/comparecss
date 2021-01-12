@@ -4,6 +4,8 @@ Activate button, that turns into lock when active and you hover over it
 consider having a dropdown to choose which border side to edit
 have a builder for contents within the settings
 modal default margin will need to have a special option type to reflect the margin of the actual position, also an option to center it automatically
+Potentially used for the other dropdown
+  if (isAuxiliaryPadding && !this.$refs.dropdownMenu.offsetParent) return;
 
 option to import an existing button style!
 
@@ -30,6 +32,7 @@ if button height exceeds certain threshold - only then should the 'Centered' set
 not far from a website builder, all we need is the ability to add subcomponents and that's it
 at the moment there are finite layers per component as we need to know which one is the first, last etc in order to set the correct settings such as border property - top/bottom and shadow
 that can easily be changed to allow user to set border for any side they want (dropdown for border), shadow can allow any side offset (already used in components)
+the current infrastructure does not support layers within layers in the component preview and the subcomponent dropdown
 
 ---------------------------------------------------
 

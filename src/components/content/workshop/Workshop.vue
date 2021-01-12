@@ -1,5 +1,6 @@
 <template>
-  <div @mousedown="triggerWorkshopEventCallbacks" @keydown.enter="triggerWorkshopEventCallbacks" @keydown.esc="triggerWorkshopEventCallbacks">
+  <!-- TODO use one queue which is activated at different events -->
+  <div @mousedown="triggerWorkshopEventCallbacks" @mouseup="triggerMouseUpWorkshopEventCallbacks" @keydown.enter="triggerWorkshopEventCallbacks" @keydown.esc="triggerWorkshopEventCallbacks">
     <div style="height: 100vh" class="bootstrap">
       <div style="height: 100%; margin-left: 0px; margin-right: 0px; display: flex">
         <div style="width: 30%; position: relative">
@@ -23,7 +24,11 @@
               <toolbar v-model:currentlySelectedComponent="currentlySelectedComponent"/>
               'vue/no-v-model-argument': 'off',
             -->
-            <toolbar ref="toolbar" :component="currentlySelectedComponent" :componentPreviewAssistance="componentPreviewAssistance"/>
+            <toolbar
+              ref="toolbar"
+              :component="currentlySelectedComponent"
+              :componentPreviewAssistance="componentPreviewAssistance"
+              @hide-dropdown-menu-callback="addMouseUpWorkshopCallback($event)"/>
             <component-contents style="height: 50%" :component="currentlySelectedComponent" :componentPreviewAssistance="componentPreviewAssistance"/>
             <div style="height: 18%; display: flex; float: right; margin-right: 10px; margin-top: 105px">
               <div style="position: relative">
@@ -116,6 +121,7 @@ interface Data {
   currentlySelectedComponent: WorkshopComponent;
   componentPreviewAssistance: ComponentPreviewAssistance;
   workshopEventCallbacks: (() => boolean)[];
+  mouseUpWorkshopEventCallbacks: (() => boolean)[];
 }
 
 function createInitialBaseCss(): CustomCss {
@@ -361,6 +367,7 @@ export default {
     ],
     currentlySelectedComponent: null,
     workshopEventCallbacks: [],
+    mouseUpWorkshopEventCallbacks: [],
   }),
   mounted(): void {
     this.preloadIcons();
@@ -439,8 +446,22 @@ export default {
         this.workshopEventCallbacks = remainingCallbacks;
       }
     },
+    triggerMouseUpWorkshopEventCallbacks(): void {
+      if (this.mouseUpWorkshopEventCallbacks.length > 0) {
+        const remainingCallbacks = [];
+        this.mouseUpWorkshopEventCallbacks.forEach((callback) => {
+          const callbackCompleted: WorkshopEventCallbackReturn = callback(event);
+          if (callbackCompleted.shouldRepeat) remainingCallbacks.push(callback);
+          if (callbackCompleted.newCallback) remainingCallbacks.push(callbackCompleted.newCallback);
+        });
+        this.mouseUpWorkshopEventCallbacks = remainingCallbacks;
+      }
+    },
     addWorkshopEventCallback(callback: () => void): void {
       this.workshopEventCallbacks.push(callback);
+    },
+    addMouseUpWorkshopCallback(callback: () => void): void {
+      this.mouseUpWorkshopEventCallbacks.push(callback);
     },
     removeSubcomponentEventHandler(): void {
       this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.subcomponentsActiveMode].customCss = JSONManipulation.deepCopy(
