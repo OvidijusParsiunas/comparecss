@@ -17,6 +17,8 @@
 <script lang="ts">
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
 import ProcessClassName from '../../../../services/workshop/newComponent/processClassName';
+import { DOM_EVENT_TRIGGER_KEYS } from '../../../../consts/domEventTriggerKeys.enum';
+import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
 import { RemovalModalState } from '../../../../interfaces/removalModalState';
 import { REMOVE_COMPONENT_MODAL_ID } from '../../../../consts/elementIds';
 import { removeComponentModalState } from './modal/state';
@@ -48,7 +50,9 @@ export default {
       }
       this.className = this.thisComponent.className;
       this.isEditingClassName = !this.isEditingClassName;
-      this.$emit('stop-editing-class-name-callback', this.stopEditingClassName);
+      const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
+      const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.stopEditingClassName};
+      this.$emit('stop-editing-class-name-callback', workshopEventCallback);
       if (this.isEditingClassName) this.focusClassNameInput();
     },
     focusClassNameInput(): void {

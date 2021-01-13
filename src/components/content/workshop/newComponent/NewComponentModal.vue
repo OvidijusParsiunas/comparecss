@@ -52,6 +52,8 @@
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
 import ProcessClassName from '../../../../services/workshop/newComponent/processClassName';
 import newComponentModalService from '../../../../services/workshop/newComponentModal';
+import { DOM_EVENT_TRIGGER_KEYS } from '../../../../consts/domEventTriggerKeys.enum';
+import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
 import { NEW_COMPONENT_STYLES } from '../../../../consts/newComponentStyles.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { NEW_COMPONENT_MODAL_ID } from '../../../../consts/elementIds';
@@ -107,7 +109,9 @@ export default {
         this.isClassNameTextHighlighted = true;
         (event.target as HTMLInputElement).select();
       }
-      this.$emit('stop-editing-class-name-callback', this.stopEditingClassName);
+      const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
+      const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.stopEditingClassName};
+      this.$emit('stop-editing-class-name-callback', workshopEventCallback);
     },
     stopEditingClassName(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
       if (event instanceof KeyboardEvent) {

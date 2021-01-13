@@ -24,6 +24,7 @@
 </template>
 
 <script lang="ts">
+import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
 import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { NEW_COMPONENT_MODAL_ID } from '../../../../consts/elementIds';
 import componentCard from './ComponentCard.vue';
@@ -48,7 +49,7 @@ export default {
     componentCardDeleted(componentCard: WorkshopComponent): void {
       this.$emit('component-card-deleted', componentCard);
     },
-    stopEditingClassName(callback: () => boolean): void {
+    stopEditingClassName(callback: WorkshopEventCallback): void {
       this.$emit('stop-editing-class-name-callback', callback);
     }
   },

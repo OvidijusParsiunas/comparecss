@@ -25,13 +25,16 @@
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
 import { subcomponentTypeToPreviewId } from '../componentOptions/subcomponentTypeToPreviewId';
 import { OptionMouseEvent } from '../../../../../../interfaces/dropdownMenuMouseEvent';
+import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
 import dropdownMenu from './DropdownMenu.vue';
+import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTriggerKeys.enum';
 
 // TODO dropdowns should not be an array of strings
 interface Data {
   activeOptionElement: HTMLElement,
   lastHoveredOptionElement: HTMLElement;
   dropdowns: string[];
+  enterButtonClicked: boolean;
 }
 
 export default {
@@ -39,6 +42,7 @@ export default {
     activeOptionElement: null,
     lastHoveredOptionElement: null,
     dropdowns: [],
+    enterButtonClicked: false,
   }),
   mounted(): void {
     this.dropdowns.push(this.dropdownOptions);
@@ -83,10 +87,10 @@ export default {
         const currentDropdownMenuWidth = dropdownMenuElement.offsetWidth;
         const optionHeight = (event.currentTarget as HTMLElement).offsetHeight;
         setTimeout(() => {
-          const newDropdownIndex = dropdownMenuIndex + 1;
-          this.$refs.dropdownMenus.childNodes[newDropdownIndex + 1].style.top = `calc(100% + ${(dropdownOptionIndex * optionHeight) + topStyleValueParsed}px)`;
-          this.$refs.dropdownMenus.childNodes[newDropdownIndex + 1].style.left = `${currentDropdownMenuWidth + leftStyleValueParsed}px`;
-          this.$refs.dropdownMenus.childNodes[newDropdownIndex + 1].style.display = 'block';
+          const newChildDropdownMenuElemIndex = dropdownMenuIndex + 2;
+          this.$refs.dropdownMenus.childNodes[newChildDropdownMenuElemIndex].style.top = `calc(100% + ${(dropdownOptionIndex * optionHeight) + topStyleValueParsed}px)`;
+          this.$refs.dropdownMenus.childNodes[newChildDropdownMenuElemIndex].style.left = `${currentDropdownMenuWidth + leftStyleValueParsed}px`;
+          this.$refs.dropdownMenus.childNodes[newChildDropdownMenuElemIndex].style.display = 'block';
         });
       }
     },
@@ -106,6 +110,10 @@ export default {
       this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(highlightedOptionElement), 'none');
     },
     openDropdown(): void {
+      if (this.enterButtonClicked) {
+        this.enterButtonClicked = false;
+        return;
+      }
       this.$refs.dropdownMenus.childNodes[1].style.display = 'block';
       if (this.lastHoveredOptionElement) this.lastHoveredOptionElement.classList.remove('active');
       // if none of the dropdown elements are active, set the current active mode as the default active element
@@ -121,21 +129,21 @@ export default {
         this.lastHoveredOptionElement = this.activeOptionElement;
         this.lastHoveredOptionElement.classList.add('active');
       }
-      this.$emit('hide-dropdown-menu-callback', this.hideDropdownMenu);
+      const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
+      const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.hideDropdownMenu};
+      this.$emit('hide-dropdown-menu-callback', workshopEventCallback);
     },
     hideDropdownMenu(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
       // TODO keyboard events
-      // if (event instanceof KeyboardEvent) {
-      //   if (event.key === 'Enter' || event.key === 'Escape') {
-      //     this.isEditingClassName = false;
-      //     this.thisComponent.className = ProcessClassName.finalize(this.className || this.thisComponent.className, this.thisComponent.className, this.allComponents, this.thisComponent.className);
-      //     return { shouldRepeat: false };
-      //   }
-      //   return { shouldRepeat: true };
-      // }
+      if (event instanceof KeyboardEvent) {
+        if (event.key === DOM_EVENT_TRIGGER_KEYS.ENTER) {
+          this.enterButtonClicked = true;
+        }
+      }
       // for (let i = 2; i < this.dropdowns.length; i+=1) {
       //   this.$refs.dropdownMenus.removeChild(this.$refs.dropdownMenus.childNodes[2]);
       // }
+      // TODO the preview highlight should be removed
       this.activeOptionElement = this.lastHoveredOptionElement;
       const optionName = this.activeOptionElement.childNodes[0].innerHTML;
       if (this.objectContainingActiveOption[this.activeModePropertyKeyName] !== optionName) {
