@@ -111,7 +111,7 @@ export default {
     prepareToEditClassNameEditor(): void {
       // selectionStart and selectionEnd are used to make sure the user has not already highlighted the text themselves
       const { selectionStart, selectionEnd } = this.$refs.modalClassNameEditor;
-      if (this.className === this.classNamePlaceholder && !this.isClassNameTextHighlighted && (selectionStart === selectionEnd)) {
+      if (!this.isClassNameTextHighlighted && (selectionStart === selectionEnd)) {
         this.isClassNameTextHighlighted = true;
         this.$refs.modalClassNameEditor.select();
       }
