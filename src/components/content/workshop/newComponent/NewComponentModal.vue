@@ -4,7 +4,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title" id="exampleModalLabel">Add new component</h5>
-          <button type="button" class="close" data-dismiss="modal">
+          <button ref="closeButton" type="button" class="close" data-dismiss="modal">
             <span>&times;</span>
           </button>
         </div>
@@ -16,8 +16,8 @@
               :placeholder="classNamePlaceholder"
               @input="inputValueIntoClassNameEditor"
               @keydown.enter="blurClassNameEditor"
-              @blur="blurClassNameEditor"
-              @click="prepareToEditClassNameEditor">
+              @click="prepareToEditClassNameEditor"
+              @keydown.esc.stop="stopEditingClassName">
             <div class="form-row">
               <div class="form-group col-md-6">
                 <div class="form-group">
@@ -96,6 +96,12 @@ export default {
     if (!this.currentlySelectedComponentType) { this.currentlySelectedComponentType = Object.values(this.NEW_COMPONENT_TYPES)[0]; }
   },
   methods: {
+    prepare(): void {
+      const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
+      const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.stopEditingClassName};
+      this.$emit('new-component-modal-callback', workshopEventCallback);
+      this.isClassNameTextHighlighted = false;
+    },
     createClassName(classNameIndex: number): string {
       return `${this.CLASS_NAME_PREFIX}${classNameIndex}`;
     },
@@ -107,22 +113,22 @@ export default {
       const { selectionStart, selectionEnd } = this.$refs.modalClassNameEditor;
       if (this.className === this.classNamePlaceholder && !this.isClassNameTextHighlighted && (selectionStart === selectionEnd)) {
         this.isClassNameTextHighlighted = true;
-        (event.target as HTMLInputElement).select();
+        this.$refs.modalClassNameEditor.select();
       }
-      const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
-      const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.stopEditingClassName};
-      this.$emit('stop-editing-class-name-callback', workshopEventCallback);
     },
     stopEditingClassName(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
-      if (event instanceof KeyboardEvent) {
-        if (event.key === 'Enter' || event.key === 'Escape') {
-          this.className = ProcessClassName.finalize(this.className || this.classNamePlaceholder, this.classNamePlaceholder, this.components);
-          return { shouldRepeat: false };
+      if (this.$refs.modalClassNameEditor === document.activeElement) {
+        this.$refs.modalClassNameEditor.blur();
+        if (event instanceof KeyboardEvent) {
+          if (event.key === 'Enter' || event.key === 'Escape') {
+            this.className = ProcessClassName.finalize(this.className || this.classNamePlaceholder, this.classNamePlaceholder, this.components);
+          }
         }
-        return { shouldRepeat: true };
-      }
-      if (event.target !== this.$refs.modalClassNameEditor) {
-        this.className = ProcessClassName.finalize(this.className || this.classNamePlaceholder, this.classNamePlaceholder, this.components);
+        if (event.target !== this.$refs.modalClassNameEditor) {
+          this.className = ProcessClassName.finalize(this.className || this.classNamePlaceholder, this.classNamePlaceholder, this.components);
+        }
+      } else if (event instanceof KeyboardEvent && event.key ==='Escape') {
+        this.$refs.closeButton.click();
         return { shouldRepeat: false };
       }
       return { shouldRepeat: true };

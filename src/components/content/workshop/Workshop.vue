@@ -1,6 +1,5 @@
 <template>
-  <!-- TODO use one queue which is activated at different events -->
-  <div @mousedown="triggerWorkshopEventCallbacks" @mouseup="triggerWorkshopEventCallbacks" @keydown.enter="triggerWorkshopEventCallbacks" @keydown.esc="triggerWorkshopEventCallbacks">
+  <div>
     <div style="height: 100vh" class="bootstrap">
       <div style="height: 100%; margin-left: 0px; margin-right: 0px; display: flex">
         <div style="width: 30%; position: relative">
@@ -10,7 +9,8 @@
             @component-card-selected="componentCardSelected($event)"
             @component-card-copied="componentCardCopied($event)"
             @component-card-deleted="componentCardDeleted($event)"
-            @stop-editing-class-name-callback="addWorkshopEventCallback($event)"/>
+            @stop-editing-class-name-callback="addWorkshopEventCallback($event)"
+            @prepare-new-component-modal="$refs.newComponentModal.prepare()"/>
           <div style="position: absolute; bottom: 0">
             <button type="button" style="margin-left: 7px; margin-bottom: 10px" class="btn btn-warning btn-sm">Explore icon</button>
           </div>
@@ -50,10 +50,10 @@
           </div>
         </div>
       </div>
-      <new-component-modal
+      <new-component-modal ref="newComponentModal"
         :components="components"
         @add-new-component="addNewComponent($event)"
-        @stop-editing-class-name-callback="addWorkshopEventCallback($event)"/>
+        @new-component-modal-callback="addWorkshopEventCallback($event)"/>
       <removal-modal-template
         :modalId="REMOVE_COMPONENT_MODAL_ID"
         :removalModalState="removeComponentModalState"
@@ -371,6 +371,9 @@ export default {
   }),
   mounted(): void {
     this.preloadIcons();
+    document.addEventListener('keydown', this.triggerWorkshopEventCallbacks);
+    document.addEventListener('mousedown', this.triggerWorkshopEventCallbacks);
+    document.addEventListener('mouseup', this.triggerWorkshopEventCallbacks);
   },
   methods: {
     resetComponentModes(previousComponent: WorkshopComponent): void {

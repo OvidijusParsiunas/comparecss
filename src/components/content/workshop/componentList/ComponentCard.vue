@@ -48,7 +48,11 @@ export default {
         this.editorButtonClickedOnStopEditing = false;
         return;
       }
-      this.className = this.thisComponent.className;
+      if (this.isEditingClassName) {
+        this.thisComponent.className = this.className;
+      } else {
+        this.className = this.thisComponent.className;
+      }
       this.isEditingClassName = !this.isEditingClassName;
       const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
       const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.stopEditingClassName};

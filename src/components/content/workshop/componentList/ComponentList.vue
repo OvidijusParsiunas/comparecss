@@ -12,7 +12,9 @@
           @stop-editing-class-name-callback="stopEditingClassName($event)"/>
       </div>
       <!-- link id to the modal via workshop -->
-      <div style="cursor: move; width: 18rem; margin: auto; outline: none; margin-top: 5px" class="add-card card" data-toggle="modal" :data-target="`#${NEW_COMPONENT_MODAL_ID}`" tabindex="0">
+      <div style="cursor: move; width: 18rem; margin: auto; outline: none; margin-top: 5px" class="add-card card"
+        data-toggle="modal" :data-target="`#${NEW_COMPONENT_MODAL_ID}`"
+        @click="prepareNewComponentModal">
         <div style="text-align: center" class="card-body">
           <div style="height: 38px; padding-top: 6px">
             Add +
@@ -51,6 +53,9 @@ export default {
     },
     stopEditingClassName(callback: WorkshopEventCallback): void {
       this.$emit('stop-editing-class-name-callback', callback);
+    },
+    prepareNewComponentModal(): void {
+      this.$emit('prepare-new-component-modal');
     }
   },
   components: {
