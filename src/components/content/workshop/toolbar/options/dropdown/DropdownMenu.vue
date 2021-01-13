@@ -1,20 +1,30 @@
 <template>
   <div ref="dropdownMenu" class="dropdown-menu custom-dropdown-menu">
-    <a v-for="(optionValue, optionName, index) in dropdownOptions" :key="optionName"
-      class="dropdown-item custom-dropdown-item" 
-      @mouseenter="$emit('mouse-enter-option', [isAuxiliaryPadding = false, optionValue, nestedDropdownIndex, index])"
-      @mouseleave="$emit('mouse-leave-option', [isAuxiliaryPadding = false, optionValue, nestedDropdownIndex])">
-        <div>{{optionName}}</div><i v-if="optionValue" :class="['fa', 'arrow-right', 'fa-angle-right']"></i>
+    <a v-for="(dropdownValues, optionName, optionIndex) in dropdownOptions" :key="optionName"
+      class="dropdown-item custom-dropdown-item"
+      @mouseenter="mouseEnter(dropdownValues, optionIndex)"
+      @mouseleave="mouseLeave">
+        <div>{{optionName}}</div><i v-if="dropdownValues" :class="['fa', 'arrow-right', 'fa-angle-right']"></i>
     </a>
   </div>
 </template>
 
 <script lang="ts">
+import { OptionMouseEvent } from '../../../../../../interfaces/dropdownMenuMouseEvent'
+
 export default {
+  methods: {
+    // TODO need type
+    mouseEnter(dropdownValues: any, optionIndex: number): void {
+      this.$emit('mouse-enter-option', [false, dropdownValues, this.nestedDropdownIndex, optionIndex] as OptionMouseEvent);
+    },
+    mouseLeave(): void {
+      this.$emit('mouse-leave-option', [false] as OptionMouseEvent);
+    }
+  },
   props: {
     dropdownOptions: Object,
     nestedDropdownIndex: Number,
-    dropdownButtonWidth: Number,
   },
 };
 </script>

@@ -6,6 +6,7 @@ have a builder for contents within the settings
 modal default margin will need to have a special option type to reflect the margin of the actual position, also an option to center it automatically
 Potentially used for the other dropdown
   if (isAuxiliaryPadding && !this.$refs.dropdownMenu.offsetParent) return;
+The arrow right position does not show very well when the dropdown menu option text is long
 
 option to import an existing button style!
 
