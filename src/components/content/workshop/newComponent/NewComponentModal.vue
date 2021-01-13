@@ -117,6 +117,7 @@ export default {
       }
     },
     stopEditingClassName(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
+      if (!this.$refs.modalClassNameEditor.offsetParent) return { shouldRepeat: false };
       if (this.$refs.modalClassNameEditor === document.activeElement) {
         this.$refs.modalClassNameEditor.blur();
         if (event instanceof KeyboardEvent) {
