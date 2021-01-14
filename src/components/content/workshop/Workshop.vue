@@ -8,9 +8,10 @@
             :activeComponent="currentlySelectedComponent"
             @component-card-selected="componentCardSelected($event)"
             @component-card-copied="componentCardCopied($event)"
-            @component-card-deleted="componentCardDeleted($event)"
+            @component-card-removed="componentCardRemoved($event)"
             @stop-editing-class-name-callback="addWorkshopEventCallback($event)"
-            @prepare-new-component-modal="$refs.newComponentModal.prepare()"/>
+            @prepare-new-component-modal="$refs.newComponentModal.prepare()"
+            @prepare-remove-component-modal="$refs.removeComponentModal.prepare()"/>
           <div style="position: absolute; bottom: 0">
             <button type="button" style="margin-left: 7px; margin-bottom: 10px" class="btn btn-warning btn-sm">Explore icon</button>
           </div>
@@ -28,7 +29,8 @@
               ref="toolbar"
               :component="currentlySelectedComponent"
               :componentPreviewAssistance="componentPreviewAssistance"
-              @hide-dropdown-menu-callback="addWorkshopEventCallback($event)"/>
+              @hide-dropdown-menu-callback="addWorkshopEventCallback($event)"
+              @prepare-remove-subcomponent-modal="$refs.removeSubcomponentModal.prepare()"/>
             <component-contents style="height: 50%" :component="currentlySelectedComponent" :componentPreviewAssistance="componentPreviewAssistance"/>
             <div style="height: 18%; display: flex; float: right; margin-right: 10px; margin-top: 105px">
               <div style="position: relative">
@@ -50,20 +52,25 @@
           </div>
         </div>
       </div>
-      <new-component-modal ref="newComponentModal"
+      <new-component-modal
+        ref="newComponentModal"
         :components="components"
         @add-new-component="addNewComponent($event)"
         @new-component-modal-callback="addWorkshopEventCallback($event)"/>
       <removal-modal-template
+        ref="removeComponentModal"
         :modalId="REMOVE_COMPONENT_MODAL_ID"
         :removalModalState="removeComponentModalState"
-        @remove-event="componentCardDeleted">
+        @remove-event="componentCardRemoved"
+        @remove-modal-template-callback="addWorkshopEventCallback($event)">
         Are you sure you want to remove this component?
       </removal-modal-template>
       <removal-modal-template
+        ref="removeSubcomponentModal"
         :modalId="REMOVE_SUBCOMPONENT_MODAL_ID"
         :removalModalState="removeSubcomponentModalState"
-        @remove-event="removeSubcomponentEventHandler">
+        @remove-event="removeSubcomponentEventHandler"
+        @remove-modal-template-callback="addWorkshopEventCallback($event)">
         Are you sure you want to remove this subcomponent?
       </removal-modal-template>
     </div>
@@ -415,14 +422,14 @@ export default {
       newComponent.subcomponents[SUB_COMPONENTS.BASE].customCssActiveMode = SUB_COMPONENT_CSS_MODES.DEFAULT;
       this.addNewComponent(newComponent);
     },
-    componentCardDeleted(selectedComponentCard: WorkshopComponent): void {
-      // the modal does not have a reference to the selected component card but we can be sure that currentlySelectedComponent is the one being deleted,
-      // however, when the the don't show again checkbox is ticked and the user clicks on delete without selecting a modal, need to have its reference passed here
-      const deletedComponent = selectedComponentCard || this.currentlySelectedComponent;
-      const componentMatch = (component) => deletedComponent === component;
+    componentCardRemoved(selectedComponentCard: WorkshopComponent): void {
+      // the modal does not have a reference to the selected component card but we can be sure that currentlySelectedComponent is the one being removed,
+      // however, when the the don't show again checkbox is ticked and the user clicks on removed without selecting a modal, need to have its reference passed here
+      const removedComponent = selectedComponentCard || this.currentlySelectedComponent;
+      const componentMatch = (component) => removedComponent === component;
       const componentIndex = this.components.findIndex(componentMatch);
       this.components.splice(componentIndex, 1);
-      const { subcomponents, subcomponentsActiveMode, type } = deletedComponent;
+      const { subcomponents, subcomponentsActiveMode, type } = removedComponent;
       if (this.components.length === 0) {
         ComponentJs.manipulateJS(type, 'revokeJS');
         this.currentlySelectedComponent = undefined;

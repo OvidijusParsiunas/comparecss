@@ -101,6 +101,7 @@ export default {
           optionalSubcomponent.currentlyDisplaying = !optionalSubcomponent.currentlyDisplaying;
           this.$emit('hide-settings');
         }
+        this.$emit('prepare-remove-subcomponent-modal');
       }
     }
   },

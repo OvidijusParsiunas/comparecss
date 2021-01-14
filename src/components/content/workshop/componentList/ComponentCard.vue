@@ -9,7 +9,7 @@
       <h5 v-else class="card-title component-card-title">{{thisComponent.className}}</h5>
       <a ref="componentCardClassNameEditorButton" class="btn btn-success" @mousedown="preventBubbling" @mouseup="editClassName">Edit</a>
       <a class="btn btn-warning" @mousedown="preventBubbling" @mouseup="copyComponentCard">Copy</a>
-      <a class="btn btn-danger component-card-delete" data-toggle="modal" :data-target="removeComponentModalId" @mousedown="preventBubbling" @mouseup="deleteComponentCard">Delete</a>
+      <a class="btn btn-danger component-card-remove" data-toggle="modal" :data-target="removeComponentModalId" @mousedown="preventBubbling" @mouseup="removeComponentCard">Remove</a>
     </div>
   </div>
 </template>
@@ -104,13 +104,14 @@ export default {
     copyComponentCard(): void {
       this.$emit('component-card-copied', this.thisComponent);
     },
-    deleteComponentCard(): void {
+    removeComponentCard(): void {
       if (!this.getIsDoNotShowModalAgainState()){
         this.selectComponentCard();
         this.removeComponentModalId = `#${REMOVE_COMPONENT_MODAL_ID}`;
+        this.$emit('prepare-remove-component-modal');
         setTimeout(() => { this.removeComponentModalId = ''; });
       } else {
-        this.$emit('component-card-deleted', this.thisComponent);
+        this.$emit('component-card-removed', this.thisComponent);
       }
     },
     classNameInputEvent(): void {
@@ -147,7 +148,7 @@ export default {
   .component-card-title {
     float: left;
   }
-  .component-card-delete {
+  .component-card-remove {
     float: right;
   }
   .active, .active:hover {

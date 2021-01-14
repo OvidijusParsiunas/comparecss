@@ -4,7 +4,7 @@
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title modal-text">Remove</h5>
-          <button class="close" data-dismiss="modal">
+          <button ref="closeButton" class="close" data-dismiss="modal">
             <span>&times;</span>
           </button>
         </div>
@@ -16,7 +16,7 @@
             <input type="checkbox" class="form-check-input modal-form-check-input" v-model="isDoNotShowAgainSelected" @change="doNotShowAgainSelected">
             <label class="form-check-label modal-text modal-footer-text" @click="doNotShowAgainSelected(!isDoNotShowAgainSelected)">Do not show again</label>
           </div>
-          <button @click="remove" type="button" class="btn btn-primary" data-dismiss="modal">Remove</button>
+          <button ref="removeButton" @click="remove" type="button" class="btn btn-primary" data-dismiss="modal">Remove</button>
           <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
         </div>
       </div>
@@ -25,11 +25,14 @@
 </template>
 
 <script lang="ts">
+import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
+import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
+import { DOM_EVENT_TRIGGER_KEYS } from '../../../../consts/domEventTriggerKeys.enum';
 import { RemovalModalState } from '../../../../interfaces/removalModalState';
 
 interface Props {
   modalId: string;
-  removalModalState: RemovalModalState,
+  removalModalState: RemovalModalState;
 }
 
 interface Data {
@@ -44,6 +47,26 @@ export default {
     isDoNotShowAgainSelected: false,
   }),
   methods: {
+    prepare(): void {
+      const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
+      const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.closeModal };
+      this.$emit('remove-modal-template-callback', workshopEventCallback);
+      this.isClassNameTextHighlighted = false;
+    },
+    closeModal(): WorkshopEventCallbackReturn {
+      if (!this.$refs.closeButton.offsetParent) return { shouldRepeat: false };
+      if (event instanceof KeyboardEvent) {
+        if (event.key === DOM_EVENT_TRIGGER_KEYS.ESCAPE) {
+          this.$refs.closeButton.click();
+          return { shouldRepeat: false };
+        }
+        if (event.key === DOM_EVENT_TRIGGER_KEYS.ENTER) {
+          this.$refs.removeButton.click();
+          return { shouldRepeat: false };
+        }
+      }
+      return { shouldRepeat: true };
+    },
     remove(): void {
       this.$emit('remove-event');
     },

@@ -8,8 +8,9 @@
           :activeComponent="activeComponent"
           @component-card-selected="componentCardSelected($event)"
           @component-card-copied="componentCardCopied($event)"
-          @component-card-deleted="componentCardDeleted($event)"
-          @stop-editing-class-name-callback="stopEditingClassName($event)"/>
+          @component-card-removed="componentCardRemoved($event)"
+          @stop-editing-class-name-callback="stopEditingClassName($event)"
+          @prepare-remove-component-modal="prepareRemoveComponentModal"/>
       </div>
       <!-- link id to the modal via workshop -->
       <div style="cursor: move; width: 18rem; margin: auto; outline: none; margin-top: 5px" class="add-card card"
@@ -48,14 +49,17 @@ export default {
     componentCardCopied(selectComponentCard: WorkshopComponent): void {
       this.$emit('component-card-copied', selectComponentCard);
     },
-    componentCardDeleted(componentCard: WorkshopComponent): void {
-      this.$emit('component-card-deleted', componentCard);
+    componentCardRemoved(componentCard: WorkshopComponent): void {
+      this.$emit('component-card-removed', componentCard);
     },
     stopEditingClassName(callback: WorkshopEventCallback): void {
       this.$emit('stop-editing-class-name-callback', callback);
     },
     prepareNewComponentModal(): void {
       this.$emit('prepare-new-component-modal');
+    },
+    prepareRemoveComponentModal(): void {
+      this.$emit('prepare-remove-component-modal');
     }
   },
   components: {

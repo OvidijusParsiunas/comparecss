@@ -24,10 +24,10 @@
 <script lang="ts">
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
 import { subcomponentTypeToPreviewId } from '../componentOptions/subcomponentTypeToPreviewId';
-import { OptionMouseEvent } from '../../../../../../interfaces/dropdownMenuMouseEvent';
-import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
-import dropdownMenu from './DropdownMenu.vue';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTriggerKeys.enum';
+import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
+import { OptionMouseEvent } from '../../../../../../interfaces/dropdownMenuMouseEvent';
+import dropdownMenu from './DropdownMenu.vue';
 
 // TODO dropdowns should not be an array of strings
 interface Data {

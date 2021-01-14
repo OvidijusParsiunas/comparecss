@@ -38,7 +38,8 @@
         </form>
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-primary" data-dismiss="modal"
+          <button ref="addButton"
+            type="button" class="btn btn-primary" data-dismiss="modal"
             @click="addNewComponent">
             Add
           </button>
@@ -98,7 +99,7 @@ export default {
   methods: {
     prepare(): void {
       const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
-      const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.stopEditingClassName};
+      const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.keyEventHandler };
       this.$emit('new-component-modal-callback', workshopEventCallback);
       this.isClassNameTextHighlighted = false;
     },
@@ -116,21 +117,27 @@ export default {
         this.$refs.modalClassNameEditor.select();
       }
     },
-    stopEditingClassName(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
+    keyEventHandler(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
       if (!this.$refs.modalClassNameEditor.offsetParent) return { shouldRepeat: false };
       if (this.$refs.modalClassNameEditor === document.activeElement) {
         this.$refs.modalClassNameEditor.blur();
         if (event instanceof KeyboardEvent) {
-          if (event.key === 'Enter' || event.key === 'Escape') {
+          if (event.key === DOM_EVENT_TRIGGER_KEYS.ENTER || event.key === DOM_EVENT_TRIGGER_KEYS.ESCAPE) {
             this.className = ProcessClassName.finalize(this.className || this.classNamePlaceholder, this.classNamePlaceholder, this.components);
           }
         }
         if (event.target !== this.$refs.modalClassNameEditor) {
           this.className = ProcessClassName.finalize(this.className || this.classNamePlaceholder, this.classNamePlaceholder, this.components);
         }
-      } else if (event instanceof KeyboardEvent && event.key ==='Escape') {
-        this.$refs.closeButton.click();
-        return { shouldRepeat: false };
+      } else if (event instanceof KeyboardEvent) {
+        if (event.key === DOM_EVENT_TRIGGER_KEYS.ESCAPE) {
+          this.$refs.closeButton.click();
+          return { shouldRepeat: false };
+        }
+        if (event.key === DOM_EVENT_TRIGGER_KEYS.ENTER) {
+          this.$refs.addButton.click();
+          return { shouldRepeat: false };
+        }
       }
       return { shouldRepeat: true };
     },
@@ -170,7 +177,7 @@ export default {
 <style lang="css" scoped>
   input:focus, select:focus {
     box-shadow: none !important;
-    border-color: #b5b5b5 !important;
+    border-color: #8f8f8f !important;
   }
   button:focus {
     box-shadow: none !important;
