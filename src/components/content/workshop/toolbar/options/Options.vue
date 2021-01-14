@@ -1,6 +1,6 @@
 <template>
   <div class="options-container">
-    <dropdown class="option-button"
+    <dropdown v-if="component.componentPreviewStructure.subcomponentDropdownStructure" class="option-button"
       :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
       :objectContainingActiveOption="component"
       :activeModePropertyKeyName="'subcomponentsActiveMode'"

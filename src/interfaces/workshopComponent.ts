@@ -15,9 +15,8 @@ type Layer = {
   subcomponentPreviewId?: SUB_COMPONENT_PREVIEW_ELEMENT_IDS,
 }
 
-// TODO - add enum to end
 export type SubcomponentDropdownStructure = {
-  [key in SUB_COMPONENTS]?: SubcomponentDropdownStructure | undefined;
+  [key in SUB_COMPONENTS]?: SubcomponentDropdownStructure | null;
 }
 
 export interface ComponentPreviewStructure {
@@ -25,7 +24,6 @@ export interface ComponentPreviewStructure {
   // will be used in the future, can be horizontal or vertical
   layeringType?: string,
   layers: Layer[],
-  // TODO - make this mandatory
   subcomponentDropdownStructure?: SubcomponentDropdownStructure,
 }
 

@@ -35,13 +35,11 @@ export default function createModalComponentPreviewStructure(
     ],
     subcomponentDropdownStructure: {
       [SUB_COMPONENTS.BASE]: {
-        [SUB_COMPONENTS.LAYER_1]: undefined,
-        [SUB_COMPONENTS.LAYER_2]: {
-          [SUB_COMPONENTS.CLOSE]: undefined,
-          [SUB_COMPONENTS.LAYER_1]: undefined,
-          [SUB_COMPONENTS.LAYER_3]: undefined,
+        [SUB_COMPONENTS.LAYER_1]: {
+          [SUB_COMPONENTS.CLOSE]: null,
         },
-        [SUB_COMPONENTS.LAYER_3]: undefined,
+        [SUB_COMPONENTS.LAYER_2]: null,
+        [SUB_COMPONENTS.LAYER_3]: null,
       },
     }
   }

@@ -1,10 +1,10 @@
 <template>
   <div ref="dropdownMenu" class="dropdown-menu custom-dropdown-menu">
-    <a v-for="(dropdownValues, optionName, optionIndex) in dropdownOptions" :key="optionName"
+    <a v-for="(innerDropdownOptions, optionName, optionIndex) in dropdownOptions" :key="optionName"
       class="dropdown-item custom-dropdown-item"
-      @mouseenter="mouseEnter(dropdownValues, optionIndex)"
+      @mouseenter="mouseEnter(innerDropdownOptions, optionIndex)"
       @mouseleave="mouseLeave">
-        <div>{{optionName}}</div><i v-if="dropdownValues" :class="['fa', 'arrow-right', 'fa-angle-right']"></i>
+        <div>{{optionName}}</div><i v-if="innerDropdownOptions" :class="['fa', 'arrow-right', 'fa-angle-right']"></i>
     </a>
   </div>
 </template>
@@ -15,8 +15,8 @@ import { OptionMouseEvent } from '../../../../../../interfaces/dropdownMenuMouse
 
 export default {
   methods: {
-    mouseEnter(dropdownValues: SubcomponentDropdownStructure, optionIndex: number): void {
-      this.$emit('mouse-enter-option', [false, dropdownValues, this.nestedDropdownIndex, optionIndex] as OptionMouseEvent);
+    mouseEnter(innerDropdownOptions: SubcomponentDropdownStructure, optionIndex: number): void {
+      this.$emit('mouse-enter-option', [false, innerDropdownOptions, this.nestedDropdownIndex, optionIndex] as OptionMouseEvent);
     },
     mouseLeave(): void {
       this.$emit('mouse-leave-option', [false] as OptionMouseEvent);

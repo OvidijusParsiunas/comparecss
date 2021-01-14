@@ -12,8 +12,8 @@
       @mouseleave="mouseLeaveOption(isAuxiliaryPadding = true)">
     </div> -->
     <div ref="dropdownMenus">
-      <dropdown-menu v-for="(dropdown, index) in dropdowns" :key="dropdown" ref="dropdownMenu"
-        :dropdownOptions="dropdown"
+      <dropdown-menu v-for="(dropdownOptions, index) in dropdowns" :key="dropdownOptions" ref="dropdownMenu"
+        :dropdownOptions="dropdownOptions"
         :nestedDropdownIndex="index"
         @mouse-enter-option="mouseEnterOption"
         @mouse-leave-option="mouseLeaveOption"/>
@@ -66,9 +66,9 @@ export default {
       this.toggleSubcomponentPreviewDisplay(this.objectContainingActiveOption[this.activeModePropertyKeyName], 'none');
     },
     mouseEnterOption(optionMouseEnterEvent: OptionMouseEvent): void {
-      const [isAuxiliaryPadding, optionValue, dropdownMenuIndex, dropdownOptionIndex] = optionMouseEnterEvent;
+      const [isAuxiliaryPadding, dropdownOptions, dropdownMenuIndex, dropdownOptionIndex] = optionMouseEnterEvent;
       this.removeChildDropdownMenus(dropdownMenuIndex);
-      this.displayChildDropdownMenu(optionValue, dropdownMenuIndex, dropdownOptionIndex);
+      this.displayChildDropdownMenu(dropdownOptions, dropdownMenuIndex, dropdownOptionIndex);
       this.highlightOption(isAuxiliaryPadding);
     },
     removeChildDropdownMenus(dropdownMenuIndex: number): void {
@@ -173,6 +173,7 @@ export default {
   },
   watch: {
     objectContainingActiveOption(): void {
+      this.dropdowns = [this.dropdownOptions];
       if (this.activeOptionElement) this.activeOptionElement.classList.remove('active');
       this.activeOptionElement = null;
     }
