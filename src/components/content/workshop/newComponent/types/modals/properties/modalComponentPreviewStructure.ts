@@ -4,9 +4,8 @@ import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponen
 import { PSEUDO_COMPONENTS } from '../../../../../../../consts/pseudoComponents.enum'
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum'
 
-// TODO - add type - also use an enum instead of undefined
 export default function createModalComponentPreviewStructure(
-  baseComponent: SubcomponentProperties, closeComponent: SubcomponentProperties, layer1Component: SubcomponentProperties, layer2Component: SubcomponentProperties, layer3Component: SubcomponentProperties): any {
+  baseComponent: SubcomponentProperties, closeComponent: SubcomponentProperties, layer1Component: SubcomponentProperties, layer2Component: SubcomponentProperties, layer3Component: SubcomponentProperties): ComponentPreviewStructure {
   return {
     baseCss: baseComponent,
     layeringType: 'vertical',

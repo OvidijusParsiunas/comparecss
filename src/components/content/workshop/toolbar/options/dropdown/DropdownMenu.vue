@@ -10,12 +10,12 @@
 </template>
 
 <script lang="ts">
+import { SubcomponentDropdownStructure } from '../../../../../../interfaces/workshopComponent';
 import { OptionMouseEvent } from '../../../../../../interfaces/dropdownMenuMouseEvent'
 
 export default {
   methods: {
-    // TODO need type
-    mouseEnter(dropdownValues: any, optionIndex: number): void {
+    mouseEnter(dropdownValues: SubcomponentDropdownStructure, optionIndex: number): void {
       this.$emit('mouse-enter-option', [false, dropdownValues, this.nestedDropdownIndex, optionIndex] as OptionMouseEvent);
     },
     mouseLeave(): void {

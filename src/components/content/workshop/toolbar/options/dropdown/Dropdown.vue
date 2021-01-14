@@ -23,12 +23,15 @@
 
 <script lang="ts">
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
+import { SubcomponentDropdownStructure } from '../../../../../../interfaces/workshopComponent';
 import { subcomponentTypeToPreviewId } from '../componentOptions/subcomponentTypeToPreviewId';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
 import { OptionMouseEvent } from '../../../../../../interfaces/dropdownMenuMouseEvent';
 import dropdownMenu from './DropdownMenu.vue';
 
+// TODO use composition API for the dropdowns
+// TODO display the correct option on-start
 // TODO dropdowns should not be an array of strings
 interface Data {
   activeOptionElement: HTMLElement,
@@ -74,8 +77,7 @@ export default {
         this.dropdowns.splice(removableDropdownMenusIndex, this.dropdowns.length);
       }
     },
-    // TODO will need to add a type here
-    displayChildDropdownMenu(dropdownOptions: any, dropdownMenuIndex: number, dropdownOptionIndex: number): void {
+    displayChildDropdownMenu(dropdownOptions: SubcomponentDropdownStructure, dropdownMenuIndex: number, dropdownOptionIndex: number): void {
       if (dropdownOptions) {
         this.dropdowns.push(dropdownOptions);
         const startOfAggegatedLeftNumber = 11;
@@ -134,24 +136,23 @@ export default {
       this.$emit('hide-dropdown-menu-callback', workshopEventCallback);
     },
     hideDropdownMenu(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
-      // TODO keyboard events
       if (event instanceof KeyboardEvent) {
         if (event.key === DOM_EVENT_TRIGGER_KEYS.ENTER) {
           this.enterButtonClicked = true;
         }
       }
-      // for (let i = 2; i < this.dropdowns.length; i+=1) {
-      //   this.$refs.dropdownMenus.removeChild(this.$refs.dropdownMenus.childNodes[2]);
-      // }
-      // TODO the preview highlight should be removed
       this.activeOptionElement = this.lastHoveredOptionElement;
       const optionName = this.activeOptionElement.childNodes[0].innerHTML;
       if (this.objectContainingActiveOption[this.activeModePropertyKeyName] !== optionName) {
         this.$emit('new-dropdown-option-clicked', optionName);
       }
+      this.hideMenuAssets();
+      return { shouldRepeat: false };
+    },
+    hideMenuAssets(): void {
+      this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(this.activeOptionElement), 'none');
       this.dropdowns.splice(1, this.dropdowns.length);
       this.$refs.dropdownMenus.childNodes[1].style.display = 'none';
-      return { shouldRepeat: false };
     },
     toggleSubcomponentPreviewDisplay(subcomponentType: string, displayValue: 'block'|'none'): void {
       if (!this.highlightSubcomponents) return;

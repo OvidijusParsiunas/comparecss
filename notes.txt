@@ -7,6 +7,7 @@ modal default margin will need to have a special option type to reflect the marg
 Potentially used for the other dropdown
   if (isAuxiliaryPadding && !this.$refs.dropdownMenu.offsetParent) return;
 The arrow right position does not show very well when the dropdown menu option text is long
+javascript to close the alert message
 
 option to import an existing button style!
 
@@ -16,10 +17,12 @@ create a custom select options element in new component modal body
 the alert button ripple does not seem to work properly when there are many components
 clean up css after export, such as 0px values, bordershadow being unset - be careful not to remove transition
 
+UX: 
+  enter behaviour ok in new componant modal?
+
 need to investigate how to set default settings values (min max, select options) for each subcomponent
 cursor that allows user to hover over component's parts and upon clicking would direct to the rightful settings (similar to what chrome has)
 color active toolkit button
-color active component card
 option to see what the actual css looks like and to edit it
 consider placing javascript unique to the css classes it was used on
 sometimes setting to auto option like the margin does not set desired results, potentially remove it - or set beginner components (in modal) to have no margin as auto
