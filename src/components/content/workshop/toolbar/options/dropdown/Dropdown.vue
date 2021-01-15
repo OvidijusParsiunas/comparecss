@@ -6,13 +6,12 @@
       @mouseleave="mouseLeaveButton">
       <div class="dropdown-button-text">{{objectContainingActiveOption[activeModePropertyKeyName]}}</div><i :class="['fa', 'dropdown-button-icon', fontAwesomeIconClassName]"></i>
     </button>
-    <!-- TODO -->
-    <!-- <div class="auxiliary-padding"
-      @mouseenter="mouseEnterOption(isAuxiliaryPadding = true)"
-      @mouseleave="mouseLeaveOption(isAuxiliaryPadding = true)">
-    </div> -->
+    <div class="auxiliary-padding"
+      @mouseenter="mouseEnterAuxiliaryPadding"
+      @mouseleave="mouseLeaveAuxiliaryPadding">
+    </div>
     <div ref="dropdownMenus">
-      <dropdown-menu v-for="(dropdownOptions, index) in dropdowns" :key="dropdownOptions" ref="dropdownMenu"
+      <dropdown-menu v-for="(dropdownOptions, index) in dropdowns" :key="dropdownOptions"
         :dropdownOptions="dropdownOptions"
         :nestedDropdownIndex="index"
         @mouse-enter-option="mouseEnterOption"
@@ -22,21 +21,21 @@
 </template>
 
 <script lang="ts">
+import { OptionMouseEnter, OptionMouseLeave } from '../../../../../../interfaces/dropdownMenuMouseEvents';
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
 import { SubcomponentDropdownStructure } from '../../../../../../interfaces/workshopComponent';
 import { subcomponentTypeToPreviewId } from '../componentOptions/subcomponentTypeToPreviewId';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
-import { OptionMouseEvent } from '../../../../../../interfaces/dropdownMenuMouseEvent';
 import dropdownMenu from './DropdownMenu.vue';
 
+// TODO when the dropdown is being used, upon hovering other dropdowns, they open
 // TODO use composition API for the dropdowns
 // TODO display the correct option on-start
-// TODO dropdowns should not be an array of strings
 interface Data {
   activeOptionElement: HTMLElement,
   lastHoveredOptionElement: HTMLElement;
-  dropdowns: string[];
+  dropdowns: SubcomponentDropdownStructure[];
   enterButtonClicked: boolean;
 }
 
@@ -65,11 +64,21 @@ export default {
     mouseLeaveButton(): void {
       this.toggleSubcomponentPreviewDisplay(this.objectContainingActiveOption[this.activeModePropertyKeyName], 'none');
     },
-    mouseEnterOption(optionMouseEnterEvent: OptionMouseEvent): void {
-      const [isAuxiliaryPadding, dropdownOptions, dropdownMenuIndex, dropdownOptionIndex] = optionMouseEnterEvent;
+    mouseEnterAuxiliaryPadding(): void {
+      this.removeChildDropdownMenus(0);
+      this.displayChildDropdownMenu(this.dropdownOptions[Object.keys(this.dropdownOptions)[0]], 0, 0);
+      this.highlightOption(this.$refs.dropdownMenus.childNodes[1].childNodes[1]);
+    },
+    mouseLeaveAuxiliaryPadding(): void {
+      const blurredOptionElement = (event.target as HTMLInputElement).nextSibling.childNodes[1];
+      this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(blurredOptionElement), 'none');
+    },
+    mouseEnterOption(optionMouseEnterEvent: OptionMouseEnter): void {
+      const [dropdownOptions, dropdownMenuIndex, dropdownOptionIndex] = optionMouseEnterEvent;
       this.removeChildDropdownMenus(dropdownMenuIndex);
+      
       this.displayChildDropdownMenu(dropdownOptions, dropdownMenuIndex, dropdownOptionIndex);
-      this.highlightOption(isAuxiliaryPadding);
+      this.highlightOption(event.target);
     },
     removeChildDropdownMenus(dropdownMenuIndex: number): void {
       const removableDropdownMenusIndex = dropdownMenuIndex + 1;
@@ -96,20 +105,17 @@ export default {
         });
       }
     },
-    highlightOption(isAuxiliaryPadding: boolean): void {
+    highlightOption(optionElementToBeHighlighted: HTMLElement): void {
       // when dropdown is opened for the first time, there is no lastHoveredOptionElement and the first hovered option may
       // not be activeOptionElement, hence the active is removed from it
-      const highlightedOptionElement = isAuxiliaryPadding ? this.$refs.dropdownMenu.childNodes[1] : event.target;
-      this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(highlightedOptionElement), 'block');
+      this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(optionElementToBeHighlighted), 'block');
       if (this.activeOptionElement) this.activeOptionElement.classList.remove('active');
       if (this.lastHoveredOptionElement) this.lastHoveredOptionElement.classList.remove('active');
-      this.lastHoveredOptionElement = highlightedOptionElement;
+      this.lastHoveredOptionElement = optionElementToBeHighlighted;
       this.lastHoveredOptionElement.classList.add('active');
     },
-    mouseLeaveOption(optionMouseLeaveEvent: OptionMouseEvent): void {
-      const [isAuxiliaryPadding] = optionMouseLeaveEvent;
-      const highlightedOptionElement = isAuxiliaryPadding ? (event.target as HTMLInputElement).nextSibling.childNodes[1] : event.target;
-      this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(highlightedOptionElement), 'none');
+    mouseLeaveOption(blurredOptionElement: OptionMouseLeave): void {
+      this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(blurredOptionElement), 'none');
     },
     openDropdown(): void {
       if (this.enterButtonClicked) {
@@ -195,5 +201,12 @@ export default {
   .dropdown-button-icon {
     float: right;
     margin-top: 0.3em
+  }
+  .auxiliary-padding {
+    top: 36px;
+    height: 5px;
+    width: 100%;
+    z-index: 9990;
+    position: absolute;
   }
 </style>

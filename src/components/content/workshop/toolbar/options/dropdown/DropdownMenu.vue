@@ -10,16 +10,16 @@
 </template>
 
 <script lang="ts">
+import { OptionMouseEnter, OptionMouseLeave } from '../../../../../../interfaces/dropdownMenuMouseEvents'
 import { SubcomponentDropdownStructure } from '../../../../../../interfaces/workshopComponent';
-import { OptionMouseEvent } from '../../../../../../interfaces/dropdownMenuMouseEvent'
 
 export default {
   methods: {
     mouseEnter(innerDropdownOptions: SubcomponentDropdownStructure, optionIndex: number): void {
-      this.$emit('mouse-enter-option', [false, innerDropdownOptions, this.nestedDropdownIndex, optionIndex] as OptionMouseEvent);
+      this.$emit('mouse-enter-option', [innerDropdownOptions, this.nestedDropdownIndex, optionIndex] as OptionMouseEnter);
     },
     mouseLeave(): void {
-      this.$emit('mouse-leave-option', [false] as OptionMouseEvent);
+      this.$emit('mouse-leave-option', event.target as OptionMouseLeave);
     }
   },
   props: {
