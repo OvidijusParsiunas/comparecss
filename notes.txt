@@ -33,6 +33,8 @@ material design examples should have nice hover, and shadow increase events on m
 button to switch between px, em (at the moment optimization is only configured for px)
 if button height exceeds certain threshold - only then should the 'Centered' setting be displayed in the 'Text' panel
 
+when designing a component library the users may want to use the same component and define different styles for it using a parameter
+
 not far from a website builder, all we need is the ability to add subcomponents and that's it
 at the moment there are finite layers per component as we need to know which one is the first, last etc in order to set the correct settings such as border property - top/bottom and shadow
 that can easily be changed to allow user to set border for any side they want (dropdown for border), shadow can allow any side offset (already used in components)

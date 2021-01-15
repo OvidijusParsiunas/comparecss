@@ -1,10 +1,10 @@
 <template>
-  <div ref="dropdownMenu" class="dropdown-menu custom-dropdown-menu">
+  <div ref="dropdownMenu" class="dropdown-menu custom-dropdown-menu dropdown-menu-options-marker">
     <a v-for="(innerDropdownOptions, optionName, optionIndex) in dropdownOptions" :key="optionName"
-      class="dropdown-item custom-dropdown-item"
+      class="dropdown-item custom-dropdown-item dropdown-menu-options-marker"
       @mouseenter="mouseEnter(innerDropdownOptions, optionIndex)"
       @mouseleave="mouseLeave">
-        <div>{{optionName}}</div><i v-if="innerDropdownOptions" :class="['fa', 'arrow-right', 'fa-angle-right']"></i>
+        <div class="dropdown-menu-options-marker">{{optionName}}</div><i v-if="innerDropdownOptions" class="dropdown-menu-options-marker" :class="['fa', 'arrow-right', 'fa-angle-right']"></i>
     </a>
   </div>
 </template>

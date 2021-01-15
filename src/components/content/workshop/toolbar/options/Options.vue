@@ -1,6 +1,7 @@
 <template>
   <div class="options-container">
     <dropdown v-if="component.componentPreviewStructure.subcomponentDropdownStructure" class="option-button"
+      :uniqueIdentifier="'subcomponentsDropdown'"
       :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
       :objectContainingActiveOption="component"
       :activeModePropertyKeyName="'subcomponentsActiveMode'"
@@ -17,6 +18,7 @@
     </div>
     <div v-if="!component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent || component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying"> 
       <dropdown class="option-button"
+        :uniqueIdentifier="'cssModesDropdown'"
         :dropdownOptions="componentTypeToOptions[component.type][component.subcomponentsActiveMode]"
         :objectContainingActiveOption="component.subcomponents[component.subcomponentsActiveMode]"
         :activeModePropertyKeyName="'customCssActiveMode'"

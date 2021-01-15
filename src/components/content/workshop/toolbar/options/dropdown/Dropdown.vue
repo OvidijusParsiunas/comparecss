@@ -1,12 +1,12 @@
 <template>
   <div class="dropdown">
-    <button class="btn form-control dropdown-button" type="button" data-toggle="dropdown"
+    <button class="btn form-control dropdown-button" :class="uniqueIdentifier" type="button" data-toggle="dropdown"
       @click="openDropdown"
       @mouseenter="mouseEnterButton"
       @mouseleave="mouseLeaveButton">
-      <div class="dropdown-button-text">{{objectContainingActiveOption[activeModePropertyKeyName]}}</div><i :class="['fa', 'dropdown-button-icon', fontAwesomeIconClassName]"></i>
+      <div class="dropdown-button-text dropdown-button-marker" :class="uniqueIdentifier" >{{objectContainingActiveOption[activeModePropertyKeyName]}}</div><i class="dropdown-button-marker" :class="['fa', 'dropdown-button-icon', fontAwesomeIconClassName, uniqueIdentifier]"></i>
     </button>
-    <div class="auxiliary-padding"
+    <div class="auxiliary-padding dropdown-menu-options-marker"
       @mouseenter="mouseEnterAuxiliaryPadding"
       @mouseleave="mouseLeaveAuxiliaryPadding">
     </div>
@@ -29,7 +29,6 @@ import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTrigger
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
 import dropdownMenu from './DropdownMenu.vue';
 
-// TODO when the dropdown is being used, upon hovering other dropdowns, they open
 // TODO use composition API for the dropdowns
 // TODO display the correct option on-start
 interface Data {
@@ -37,6 +36,7 @@ interface Data {
   lastHoveredOptionElement: HTMLElement;
   dropdowns: SubcomponentDropdownStructure[];
   enterButtonClicked: boolean;
+  firstMenuOpen: boolean;
 }
 
 export default {
@@ -45,6 +45,7 @@ export default {
     lastHoveredOptionElement: null,
     dropdowns: [],
     enterButtonClicked: false,
+    firstMenuOpen: false,
   }),
   mounted(): void {
     this.dropdowns.push(this.dropdownOptions);
@@ -65,18 +66,21 @@ export default {
       this.toggleSubcomponentPreviewDisplay(this.objectContainingActiveOption[this.activeModePropertyKeyName], 'none');
     },
     mouseEnterAuxiliaryPadding(): void {
-      this.removeChildDropdownMenus(0);
-      this.displayChildDropdownMenu(this.dropdownOptions[Object.keys(this.dropdownOptions)[0]], 0, 0);
-      this.highlightOption(this.$refs.dropdownMenus.childNodes[1].childNodes[1]);
+      if (this.firstMenuOpen) {
+        this.removeChildDropdownMenus(0);
+        this.displayChildDropdownMenu(this.dropdownOptions[Object.keys(this.dropdownOptions)[0]], 0, 0);
+        this.highlightOption(this.$refs.dropdownMenus.childNodes[1].childNodes[1]);
+      }
     },
     mouseLeaveAuxiliaryPadding(): void {
-      const blurredOptionElement = (event.target as HTMLInputElement).nextSibling.childNodes[1];
-      this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(blurredOptionElement), 'none');
+      if (this.firstMenuOpen) {
+        const blurredOptionElement = this.$refs.dropdownMenus.childNodes[1].childNodes[1];
+        this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(blurredOptionElement), 'none');
+      }
     },
     mouseEnterOption(optionMouseEnterEvent: OptionMouseEnter): void {
       const [dropdownOptions, dropdownMenuIndex, dropdownOptionIndex] = optionMouseEnterEvent;
       this.removeChildDropdownMenus(dropdownMenuIndex);
-      
       this.displayChildDropdownMenu(dropdownOptions, dropdownMenuIndex, dropdownOptionIndex);
       this.highlightOption(event.target);
     },
@@ -122,7 +126,8 @@ export default {
         this.enterButtonClicked = false;
         return;
       }
-      this.$refs.dropdownMenus.childNodes[1].style.display = 'block';
+      this.firstMenuOpen = true;
+      if (this.$refs.dropdownMenus.childNodes[1].style.display === 'none') this.$refs.dropdownMenus.childNodes[1].style.display = 'block';
       if (this.lastHoveredOptionElement) this.lastHoveredOptionElement.classList.remove('active');
       // if none of the dropdown elements are active, set the current active mode as the default active element
       if (!this.activeOptionElement) {
@@ -145,20 +150,30 @@ export default {
       if (event instanceof KeyboardEvent) {
         if (event.key === DOM_EVENT_TRIGGER_KEYS.ENTER) {
           this.enterButtonClicked = true;
+        } else if (event.key === DOM_EVENT_TRIGGER_KEYS.ESCAPE) {
+          this.hideFirstMenu();
         }
       }
-      this.activeOptionElement = this.lastHoveredOptionElement;
-      const optionName = this.activeOptionElement.childNodes[0].innerHTML;
-      if (this.objectContainingActiveOption[this.activeModePropertyKeyName] !== optionName) {
-        this.$emit('new-dropdown-option-clicked', optionName);
+      if ((event.target as HTMLElement).classList.contains('dropdown-menu-options-marker') || this.enterButtonClicked) {
+        this.activeOptionElement = this.lastHoveredOptionElement;
+        const optionName = this.activeOptionElement.childNodes[0].innerHTML;
+        if (this.objectContainingActiveOption[this.activeModePropertyKeyName] !== optionName) {
+          this.$emit('new-dropdown-option-clicked', optionName);
+        }
       }
-      this.hideMenuAssets();
+      if (!(event.target as HTMLElement).classList.contains(this.uniqueIdentifier) || this.enterButtonClicked) {
+        this.hideFirstMenu();
+      }
+      this.hideChildMenusAndComponentPreviews();
+      this.firstMenuOpen = false;
       return { shouldRepeat: false };
     },
-    hideMenuAssets(): void {
-      this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(this.activeOptionElement), 'none');
-      this.dropdowns.splice(1, this.dropdowns.length);
+    hideFirstMenu(): void {
       this.$refs.dropdownMenus.childNodes[1].style.display = 'none';
+    },
+    hideChildMenusAndComponentPreviews(): void {
+      if (this.lastHoveredOptionElement) this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(this.lastHoveredOptionElement), 'none');
+      this.dropdowns.splice(1, this.dropdowns.length);
     },
     toggleSubcomponentPreviewDisplay(subcomponentType: string, displayValue: 'block'|'none'): void {
       if (!this.highlightSubcomponents) return;
@@ -176,6 +191,8 @@ export default {
     activeModePropertyKeyName: String,
     fontAwesomeIconClassName: String,
     highlightSubcomponents: Boolean,
+    // this is used to allow the dropdown to close when clicked on other dropdowns
+    uniqueIdentifier: String,
   },
   watch: {
     objectContainingActiveOption(): void {
