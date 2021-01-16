@@ -37,6 +37,7 @@ interface Data {
   dropdowns: SubcomponentDropdownStructure[];
   enterButtonClicked: boolean;
   firstMenuOpen: boolean;
+  clickedButton: boolean;
 }
 
 export default {
@@ -46,6 +47,7 @@ export default {
     dropdowns: [],
     enterButtonClicked: false,
     firstMenuOpen: false,
+    clickedButton: false,
   }),
   mounted(): void {
     this.dropdowns.push(this.dropdownOptions);
@@ -53,11 +55,6 @@ export default {
   methods: {
     getOptionNameFromElement(highlightedOptionElement: HTMLElement): string {
       return (highlightedOptionElement.childNodes[0] as HTMLElement).innerHTML;
-    },
-    optionClick(optionName: string): void {
-      this.activeOptionElement = event.currentTarget;
-      if (this.objectContainingActiveOption[this.activeModePropertyKeyName] === optionName) return;
-      this.$emit('new-dropdown-option-clicked', optionName);
     },
     mouseEnterButton(): void {
       this.toggleSubcomponentPreviewDisplay(this.objectContainingActiveOption[this.activeModePropertyKeyName], 'block');
@@ -122,12 +119,14 @@ export default {
       this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(blurredOptionElement), 'none');
     },
     openDropdown(): void {
+      // the reason why the open and hide dropdown menu logic is so complicated is because the first dropdown menu is controlled by bootststrap js
+      // which opens and closes it itself until we start using other menus
       if (this.enterButtonClicked) {
         this.enterButtonClicked = false;
         return;
       }
       this.firstMenuOpen = true;
-      if (this.$refs.dropdownMenus.childNodes[1].style.display === 'none') this.$refs.dropdownMenus.childNodes[1].style.display = 'block';
+      if (this.$refs.dropdownMenus.childNodes[1].style.display === 'none' && !this.clickedButton) this.$refs.dropdownMenus.childNodes[1].style.display = 'block';
       if (this.lastHoveredOptionElement) this.lastHoveredOptionElement.classList.remove('active');
       // if none of the dropdown elements are active, set the current active mode as the default active element
       if (!this.activeOptionElement) {
@@ -144,7 +143,8 @@ export default {
       }
       const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
       const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.hideDropdownMenu};
-      this.$emit('hide-dropdown-menu-callback', workshopEventCallback);
+      if (!this.clickedButton) this.$emit('hide-dropdown-menu-callback', workshopEventCallback);
+      this.clickedButton = false;
     },
     hideDropdownMenu(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
       if (event instanceof KeyboardEvent) {
@@ -155,11 +155,17 @@ export default {
         }
       }
       if ((event.target as HTMLElement).classList.contains('dropdown-menu-options-marker') || this.enterButtonClicked) {
-        this.activeOptionElement = this.lastHoveredOptionElement;
-        const optionName = this.activeOptionElement.childNodes[0].innerHTML;
-        if (this.objectContainingActiveOption[this.activeModePropertyKeyName] !== optionName) {
-          this.$emit('new-dropdown-option-clicked', optionName);
+        if (this.lastHoveredOptionElement) {
+          this.activeOptionElement = this.lastHoveredOptionElement;
+          const optionName = this.activeOptionElement.childNodes[0].innerHTML;
+          if (this.objectContainingActiveOption[this.activeModePropertyKeyName] !== optionName) {
+            this.$emit('new-dropdown-option-clicked', optionName);
+          }
         }
+      }
+      if ((event.target as HTMLElement).classList.contains(this.uniqueIdentifier) && !this.enterButtonClicked) {
+        this.clickedButton = true;
+        if (this.$refs.dropdownMenus.childNodes[1].style.display === 'block') this.hideFirstMenu();
       }
       if (!(event.target as HTMLElement).classList.contains(this.uniqueIdentifier) || this.enterButtonClicked) {
         this.hideFirstMenu();
