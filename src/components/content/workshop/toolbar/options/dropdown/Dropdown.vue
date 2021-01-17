@@ -126,12 +126,13 @@ export default {
     openDropdown(): void {
       // the open and hide dropdown menu logic is complex due the fact that the first dropdown menu is controlled by the bootststrap js library which assigns its styling,
       // and automatically opens and closes it on button click, this behaviour is then changed when other child menus are introduced and used
-      if (this.enterButtonClicked) {
+      if (this.enterButtonClicked || this.clickedButton) {
         this.enterButtonClicked = false;
+        this.clickedButton = false;
         return;
       }
-      if (!this.clickedButton) this.firstMenuOpen = true;
-      if (this.$refs.dropdownMenus.childNodes[1].style.display === 'none' && !this.clickedButton) {
+      this.firstMenuOpen = true;
+      if (this.$refs.dropdownMenus.childNodes[1].style.display === 'none') {
         this.$refs.dropdownMenus.childNodes[1].style.display = 'block';
         this.displayHighlightedOptionAndParentMenus();
       }
@@ -152,8 +153,7 @@ export default {
       }
       const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
       const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.hideDropdownMenu};
-      if (!this.clickedButton) this.$emit('hide-dropdown-menu-callback', workshopEventCallback);
-      this.clickedButton = false;
+      this.$emit('hide-dropdown-menu-callback', workshopEventCallback);
     },
     displayHighlightedOptionAndParentMenus(): void {
       const results: SearchForOptionResult = this.searchForOpion(this.dropdownOptions, this.objectContainingActiveOption[this.activeModePropertyKeyName], 0);
