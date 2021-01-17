@@ -27,6 +27,7 @@ import { SubcomponentDropdownStructure } from '../../../../../../interfaces/work
 import { subcomponentTypeToPreviewId } from '../componentOptions/subcomponentTypeToPreviewId';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
+import { SUB_COMPONENTS } from '../../../../../../consts/subcomponentModes.enum';
 import dropdownMenu from './DropdownMenu.vue';
 
 // TODO use composition API for the dropdowns
@@ -39,6 +40,13 @@ interface Data {
   firstMenuOpen: boolean;
   clickedButton: boolean;
 }
+
+interface SearchForOptionResultData {
+  dropdowns: SubcomponentDropdownStructure[];
+  optionIndexes: number[];
+}
+
+type SearchForOptionResult = SearchForOptionResultData | null;
 
 export default {
   data: (): Data => ({
@@ -65,8 +73,8 @@ export default {
     mouseEnterAuxiliaryPadding(): void {
       if (this.firstMenuOpen) {
         this.removeChildDropdownMenus(0);
-        this.displayChildDropdownMenu(this.dropdownOptions[Object.keys(this.dropdownOptions)[0]], 0, 0);
-        this.highlightOption(this.$refs.dropdownMenus.childNodes[1].childNodes[1]);
+        this.displayChildDropdownMenu(this.dropdownOptions[Object.keys(this.dropdownOptions)[0]], 0, 0, event.currentTarget);
+        this.highlightOptionAndPreview(this.$refs.dropdownMenus.childNodes[1].childNodes[1]);
       }
     },
     mouseLeaveAuxiliaryPadding(): void {
@@ -78,8 +86,8 @@ export default {
     mouseEnterOption(optionMouseEnterEvent: OptionMouseEnter): void {
       const [dropdownOptions, dropdownMenuIndex, dropdownOptionIndex] = optionMouseEnterEvent;
       this.removeChildDropdownMenus(dropdownMenuIndex);
-      this.displayChildDropdownMenu(dropdownOptions, dropdownMenuIndex, dropdownOptionIndex);
-      this.highlightOption(event.target);
+      this.displayChildDropdownMenu(dropdownOptions, dropdownMenuIndex, dropdownOptionIndex, event.currentTarget);
+      this.highlightOptionAndPreview(event.target);
     },
     removeChildDropdownMenus(dropdownMenuIndex: number): void {
       const removableDropdownMenusIndex = dropdownMenuIndex + 1;
@@ -87,17 +95,17 @@ export default {
         this.dropdowns.splice(removableDropdownMenusIndex, this.dropdowns.length);
       }
     },
-    displayChildDropdownMenu(dropdownOptions: SubcomponentDropdownStructure, dropdownMenuIndex: number, dropdownOptionIndex: number): void {
+    displayChildDropdownMenu(dropdownOptions: SubcomponentDropdownStructure, dropdownMenuIndex: number, dropdownOptionIndex: number, hoveredOptionElement: HTMLElement): void {
       if (dropdownOptions) {
         this.dropdowns.push(dropdownOptions);
         const startOfAggegatedLeftNumber = 11;
-        const dropdownMenuElement = (event.currentTarget as HTMLElement).parentNode as HTMLElement;
+        const dropdownMenuElement = hoveredOptionElement.parentNode as HTMLElement;
         const topStyleValueRaw = dropdownMenuElement.style.top;
         const leftStyleValueRaw = dropdownMenuElement.style.left;
-        const topStyleValueParsed = Number.parseInt(topStyleValueRaw.substring(startOfAggegatedLeftNumber,topStyleValueRaw.length)) || 0;
+        const topStyleValueParsed = Number.parseInt(topStyleValueRaw.substring(startOfAggegatedLeftNumber, topStyleValueRaw.length)) || 0;
         const leftStyleValueParsed = Number.parseInt(leftStyleValueRaw) || 0;
         const currentDropdownMenuWidth = dropdownMenuElement.offsetWidth;
-        const optionHeight = (event.currentTarget as HTMLElement).offsetHeight;
+        const optionHeight = hoveredOptionElement.offsetHeight;
         setTimeout(() => {
           const newChildDropdownMenuElemIndex = dropdownMenuIndex + 2;
           this.$refs.dropdownMenus.childNodes[newChildDropdownMenuElemIndex].style.top = `calc(100% + ${(dropdownOptionIndex * optionHeight) + topStyleValueParsed}px)`;
@@ -106,45 +114,94 @@ export default {
         });
       }
     },
-    highlightOption(optionElementToBeHighlighted: HTMLElement): void {
+    highlightOptionAndPreview(optionElementToBeHighlighted: HTMLElement): void {
       // when dropdown is opened for the first time, there is no lastHoveredOptionElement and the first hovered option may
       // not be activeOptionElement, hence the active is removed from it
+      this.highlightOption(optionElementToBeHighlighted);
       this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(optionElementToBeHighlighted), 'block');
-      if (this.activeOptionElement) this.activeOptionElement.classList.remove('active');
-      if (this.lastHoveredOptionElement) this.lastHoveredOptionElement.classList.remove('active');
-      this.lastHoveredOptionElement = optionElementToBeHighlighted;
-      this.lastHoveredOptionElement.classList.add('active');
     },
     mouseLeaveOption(blurredOptionElement: OptionMouseLeave): void {
       this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(blurredOptionElement), 'none');
     },
     openDropdown(): void {
-      // the reason why the open and hide dropdown menu logic is so complicated is because the first dropdown menu is controlled by bootststrap js
-      // which opens and closes it itself until we start using other menus
+      // the open and hide dropdown menu logic is complex due the fact that the first dropdown menu is controlled by the bootststrap js library which assigns its styling,
+      // and automatically opens and closes it on button click, this behaviour is then changed when other child menus are introduced and used
       if (this.enterButtonClicked) {
         this.enterButtonClicked = false;
         return;
       }
-      this.firstMenuOpen = true;
-      if (this.$refs.dropdownMenus.childNodes[1].style.display === 'none' && !this.clickedButton) this.$refs.dropdownMenus.childNodes[1].style.display = 'block';
+      if (!this.clickedButton) this.firstMenuOpen = true;
+      if (this.$refs.dropdownMenus.childNodes[1].style.display === 'none' && !this.clickedButton) {
+        this.$refs.dropdownMenus.childNodes[1].style.display = 'block';
+        this.displayHighlightedOptionAndParentMenus();
+      }
       if (this.lastHoveredOptionElement) this.lastHoveredOptionElement.classList.remove('active');
-      // if none of the dropdown elements are active, set the current active mode as the default active element
+      // refactor
+      // Remove the following code as soon as the drodpown trigger argument is removed
       if (!this.activeOptionElement) {
         setTimeout(() => {
           const indexOfActiveModeInOptions = Object.keys(this.dropdownOptions).indexOf(this.objectContainingActiveOption[this.activeModePropertyKeyName]);
           const dropdownItemElement = this.$refs.dropdownMenus.childNodes[1].childNodes[indexOfActiveModeInOptions + 1];
-          dropdownItemElement.classList.add('active');
+          // dropdownItemElement.classList.add('active');
           this.activeOptionElement = dropdownItemElement;
         });
       } else {
         // the following line removes last hovered incase the user closed the modal without selecting a new active mode
         this.lastHoveredOptionElement = this.activeOptionElement;
-        this.lastHoveredOptionElement.classList.add('active');
+        // this.lastHoveredOptionElement.classList.add('active');
       }
       const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
       const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.hideDropdownMenu};
       if (!this.clickedButton) this.$emit('hide-dropdown-menu-callback', workshopEventCallback);
       this.clickedButton = false;
+    },
+    displayHighlightedOptionAndParentMenus(): void {
+      const results: SearchForOptionResult = this.searchForOpion(this.dropdownOptions, this.objectContainingActiveOption[this.activeModePropertyKeyName], 0);
+      if (results) {
+        const { dropdowns, optionIndexes } = results;
+        const displayDropdownDelayMilliseconds = 10;
+        for (let i = 1; i < dropdowns.length; i++) {
+          const dropdown = dropdowns[i];
+          const dropdownIndex = i - 1;
+          const parentOptionIndex = optionIndexes[i - 1];
+          setTimeout(() => {
+            const parentOptionElement = this.$refs.dropdownMenus.childNodes[dropdownIndex + 1].childNodes[parentOptionIndex + 1];
+            this.displayChildDropdownMenu(dropdown, dropdownIndex, parentOptionIndex, parentOptionElement);
+          }, i * displayDropdownDelayMilliseconds);
+        }
+        setTimeout(() => {
+          const optionElementSubjectToHighlight = this.$refs.dropdownMenus.childNodes[dropdowns.length].childNodes[optionIndexes[optionIndexes.length - 1] + 1];
+          this.highlightOption(optionElementSubjectToHighlight);
+        }, (dropdowns.length - 1) * displayDropdownDelayMilliseconds);
+      }
+    },
+    highlightOption(optionElementToBeHighlighted: HTMLElement): void {
+      if (this.activeOptionElement) this.activeOptionElement.classList.remove('active');
+      if (this.lastHoveredOptionElement) this.lastHoveredOptionElement.classList.remove('active');
+      this.activeOptionElement = optionElementToBeHighlighted;
+      this.lastHoveredOptionElement = optionElementToBeHighlighted;
+      optionElementToBeHighlighted.classList.add('active');
+    },
+    searchForOpion(dropdownOptions: SubcomponentDropdownStructure, subjectOptionName: SUB_COMPONENTS, dropdownOptionsIndex: number): SearchForOptionResult {
+      if (!dropdownOptions) return null;
+      if (dropdownOptions[subjectOptionName] !== undefined) {
+        return { dropdowns: [dropdownOptions], optionIndexes: [Object.keys(dropdownOptions).indexOf(subjectOptionName)] };
+      } else {
+        const optionNames = Object.keys(dropdownOptions);
+        const childDropdownIndex = dropdownOptionsIndex + 1;
+        for (let i = 0; i <= optionNames.length; i += 1) {
+          const optionName = optionNames[i];
+          if (optionName !== subjectOptionName) {
+            const result: SearchForOptionResult = this.searchForOpion(dropdownOptions[optionName], subjectOptionName, childDropdownIndex);
+            if (result) {
+              result.dropdowns.unshift(dropdownOptions);
+              result.optionIndexes.unshift(i);
+              return result;
+            }
+          }
+        }
+      }
+      return null;
     },
     hideDropdownMenu(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
       if (event instanceof KeyboardEvent) {
