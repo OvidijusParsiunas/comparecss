@@ -28,16 +28,17 @@ import { subcomponentTypeToPreviewId } from '../componentOptions/subcomponentTyp
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
 import { SUB_COMPONENTS } from '../../../../../../consts/subcomponentModes.enum';
+import BrowserType from '../../../../../../services/workshop/browserType';
 import dropdownMenu from './DropdownMenu.vue';
 
 // TODO use composition API for the dropdowns
-// ESC is requried to be clicked twice
 interface Data {
   lastHoveredOptionElement: HTMLElement;
   dropdowns: SubcomponentDropdownStructure[];
   enterButtonClicked: boolean;
   areMenusDisplayed: boolean;
   clickedButton: boolean;
+  dropdownDisplayDelayMilliseconds: number;
 }
 
 interface SearchForOptionResultData {
@@ -54,6 +55,7 @@ export default {
     enterButtonClicked: false,
     areMenusDisplayed: false,
     clickedButton: false,
+    dropdownDisplayDelayMilliseconds: BrowserType.isChromium() ? 10 : 13,
   }),
   methods: {
     getOptionNameFromElement(highlightedOptionElement: HTMLElement): string {
@@ -76,9 +78,7 @@ export default {
       const results: SearchForOptionResult = this.searchForOpion(this.dropdownOptions, this.objectContainingActiveOption[this.activeModePropertyKeyName], 0);
       if (results) {
         const { dropdowns, optionIndexes } = results;
-        // IS FIREFOX - 13 If chrome do 10, also set this during setup
-        // logic for if not displayed yet, add extra milliseconds
-        const displayDropdownDelayMilliseconds = 13;
+        console.log(this.dropdownDisplayDelayMilliseconds);
         for (let i = 0; i < dropdowns.length; i++) {
           const dropdown = dropdowns[i];
           const parentDropdownIndex = i - 1;
@@ -90,12 +90,12 @@ export default {
             } else {
               this.displayChildDropdownMenu(parentOptionElement, parentDropdownIndex, parentOptionIndex, dropdown);
             }
-          }, i * displayDropdownDelayMilliseconds);
+          }, i * this.dropdownDisplayDelayMilliseconds);
         }
         setTimeout(() => {
           const optionElementSubjectToHighlight = this.$refs.dropdownMenus.childNodes[dropdowns.length].childNodes[optionIndexes[optionIndexes.length - 1] + 1];
           this.highlightOption(optionElementSubjectToHighlight);
-        }, (dropdowns.length - 1) * displayDropdownDelayMilliseconds);
+        }, (dropdowns.length - 1) * this.dropdownDisplayDelayMilliseconds);
       }
     },
     searchForOpion(dropdownOptions: SubcomponentDropdownStructure, subjectOptionName: SUB_COMPONENTS, dropdownOptionsIndex: number): SearchForOptionResult {
@@ -188,12 +188,12 @@ export default {
       this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(blurredOptionElement), 'none');
     },
     hideDropdownMenu(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
+      let closedViaKey = false;
       if (event instanceof KeyboardEvent) {
         if (event.key === DOM_EVENT_TRIGGER_KEYS.ENTER) {
           this.enterButtonClicked = true;
-        } else if (event.key === DOM_EVENT_TRIGGER_KEYS.ESCAPE) {
-          this.hideFirstMenu();
         }
+        closedViaKey = true;
       }
       if ((event.target as HTMLElement).classList.contains('dropdown-menu-options-marker') || this.enterButtonClicked) {
         if (this.lastHoveredOptionElement) {
@@ -203,7 +203,7 @@ export default {
           }
         }
       }
-      if ((event.target as HTMLElement).classList.contains(this.uniqueIdentifier) && !this.enterButtonClicked) {
+      if ((event.target as HTMLElement).classList.contains(this.uniqueIdentifier) && !closedViaKey) {
         this.clickedButton = true;
       }
       this.hideMenusAndComponentPreviews();
