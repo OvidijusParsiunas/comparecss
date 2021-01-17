@@ -4,7 +4,7 @@
       class="dropdown-item custom-dropdown-item dropdown-menu-options-marker"
       @mouseenter="mouseEnter(innerDropdownOptions, optionIndex)"
       @mouseleave="mouseLeave">
-        <div class="dropdown-menu-options-marker">{{optionName}}</div><i v-if="innerDropdownOptions" class="dropdown-menu-options-marker" :class="['fa', 'arrow-right', 'fa-angle-right']"></i>
+        <div class="option-text dropdown-menu-options-marker">{{optionName}}</div><i v-if="innerDropdownOptions" class="dropdown-menu-options-marker" :class="['fa', 'arrow-right', 'fa-angle-right']"></i>
     </a>
   </div>
 </template>
@@ -44,13 +44,8 @@ export default {
     align-items: center;
     padding-bottom: 2px
   }
-  .auxiliary-padding {
-    top: 36px;
-    height: 5px;
-    width: 100%;
-    z-index: 9990;
-    position: absolute;
-    cursor: pointer;
+  .option-text {
+    padding-right: 10px;
   }
   .arrow-right {
     padding-left: 3px;

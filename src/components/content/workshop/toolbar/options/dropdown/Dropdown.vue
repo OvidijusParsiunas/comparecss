@@ -68,7 +68,6 @@ export default {
         return;
       }
       this.displayHighlightedOptionAndParentMenus();
-      if (this.lastHoveredOptionElement) this.lastHoveredOptionElement.classList.remove('active');
       const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
       const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.hideDropdownMenu};
       this.$emit('hide-dropdown-menu-callback', workshopEventCallback);
@@ -78,7 +77,6 @@ export default {
       const results: SearchForOptionResult = this.searchForOpion(this.dropdownOptions, this.objectContainingActiveOption[this.activeModePropertyKeyName], 0);
       if (results) {
         const { dropdowns, optionIndexes } = results;
-        console.log(this.dropdownDisplayDelayMilliseconds);
         for (let i = 0; i < dropdowns.length; i++) {
           const dropdown = dropdowns[i];
           const parentDropdownIndex = i - 1;
@@ -180,9 +178,19 @@ export default {
       this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(optionElementToBeHighlighted), 'block');
     },
     highlightOption(optionElementToBeHighlighted: HTMLElement): void {
-      if (this.lastHoveredOptionElement) this.lastHoveredOptionElement.classList.remove('active');
+      if (this.lastHoveredOptionElement) { 
+        this.lastHoveredOptionElement.classList.remove('active');
+        this.changeOptionArrowColor(this.lastHoveredOptionElement, 'grey');
+      }
       this.lastHoveredOptionElement = optionElementToBeHighlighted;
       optionElementToBeHighlighted.classList.add('active');
+      this.changeOptionArrowColor(optionElementToBeHighlighted, 'white');
+    },
+    changeOptionArrowColor(optionElement: Element, newColor: 'white'|'grey'): void {
+      const arrowElement = optionElement.childNodes[1];
+      if (arrowElement instanceof Element || arrowElement instanceof HTMLDocument) {
+        (arrowElement as HTMLElement).style.color = newColor;
+      }
     },
     mouseLeaveOption(blurredOptionElement: OptionMouseLeave): void {
       this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(blurredOptionElement), 'none');
