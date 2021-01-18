@@ -27,6 +27,7 @@ import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDrop
 import { subcomponentTypeToPreviewId } from '../componentOptions/subcomponentTypeToPreviewId';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
+import { COMPONENT_CARD_MARKER } from '../../../../../../consts/elementClassMarkers';
 import BrowserType from '../../../../../../services/workshop/browserType';
 import dropdownMenu from './DropdownMenu.vue';
 
@@ -72,7 +73,7 @@ export default {
         return;
       }
       this.displayHighlightedOptionAndParentMenus();
-      const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
+      const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
       const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.hideDropdownMenu};
       this.$emit('hide-dropdown-menu-callback', workshopEventCallback);
       this.areMenusDisplayed = true;
@@ -209,6 +210,9 @@ export default {
       this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(blurredOptionElement), 'none');
     },
     hideDropdownMenu(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
+      if (event.type === 'mousedown' && !(event.target as HTMLElement).classList.contains(COMPONENT_CARD_MARKER)) {
+        return { shouldRepeat: true };
+      }
       let closedViaKey = false;
       if (event instanceof KeyboardEvent) {
         if (event.key === DOM_EVENT_TRIGGER_KEYS.ENTER) {
@@ -216,7 +220,7 @@ export default {
         }
         closedViaKey = true;
       }
-      if ((event.target as HTMLElement).classList.contains('dropdown-menu-options-marker') || this.enterButtonClicked) {
+      if ((event.target as HTMLElement).classList.contains(COMPONENT_CARD_MARKER) || this.enterButtonClicked) {
         if (this.lastHoveredOptionElement) {
           const optionName = this.lastHoveredOptionElement.childNodes[0].innerHTML;
           if (this.objectContainingActiveOption[this.activeModePropertyKeyName] !== optionName) {

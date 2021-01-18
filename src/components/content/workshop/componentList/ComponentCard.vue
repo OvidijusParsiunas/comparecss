@@ -1,6 +1,6 @@
 <template>
-  <div :class="[ thisComponent === activeComponent ? 'active' : '' ]" class="card component-card" @mousedown="selectComponentCard(thisComponent)">
-    <div class="card-body">
+  <div :class="[ thisComponent === activeComponent ? 'active' : '', COMPONENT_CARD_MARKER ]" class="card component-card" @mousedown="selectComponentCard(thisComponent)">
+    <div class="card-body" :class="COMPONENT_CARD_MARKER">
       <input v-if="isEditingClassName" ref="componentCardClassNameEditorInput" class="card-title component-card-title"
         v-model="className"
         :placeholder="thisComponent.className"
@@ -19,6 +19,7 @@ import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEven
 import ProcessClassName from '../../../../services/workshop/newComponent/processClassName';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
+import { COMPONENT_CARD_MARKER } from '../../../../consts/elementClassMarkers';
 import { RemovalModalState } from '../../../../interfaces/removalModalState';
 import { REMOVE_COMPONENT_MODAL_ID } from '../../../../consts/elementIds';
 import { removeComponentModalState } from './modal/state';
@@ -29,6 +30,7 @@ interface Data {
   isEditingClassName: boolean;
   removeComponentModalId: string;
   editorButtonClickedOnStopEditing: boolean;
+  COMPONENT_CARD_MARKER,
 }
 
 export default {
@@ -40,6 +42,7 @@ export default {
     isEditingClassName: false,
     editorButtonClickedOnStopEditing: false,
     removeComponentModalId: '',
+    COMPONENT_CARD_MARKER,
   }),
   methods: {
     editClassName(): void {
