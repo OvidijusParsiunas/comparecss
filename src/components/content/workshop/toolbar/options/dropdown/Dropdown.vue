@@ -21,13 +21,13 @@
 </template>
 
 <script lang="ts">
+import { COMPONENT_CARD_MARKER, DROPDOWN_OPTION_MARKER } from '../../../../../../consts/elementClassMarkers';
 import { OptionMouseEnter, OptionMouseLeave } from '../../../../../../interfaces/dropdownMenuMouseEvents';
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { subcomponentTypeToPreviewId } from '../componentOptions/subcomponentTypeToPreviewId';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
-import { COMPONENT_CARD_MARKER } from '../../../../../../consts/elementClassMarkers';
 import BrowserType from '../../../../../../services/workshop/browserType';
 import dropdownMenu from './DropdownMenu.vue';
 
@@ -220,7 +220,7 @@ export default {
         }
         closedViaKey = true;
       }
-      if ((event.target as HTMLElement).classList.contains(COMPONENT_CARD_MARKER) || this.enterButtonClicked) {
+      if ((event.target as HTMLElement).classList.contains(DROPDOWN_OPTION_MARKER) || this.enterButtonClicked) {
         if (this.lastHoveredOptionElement) {
           const optionName = this.lastHoveredOptionElement.childNodes[0].innerHTML;
           if (this.objectContainingActiveOption[this.activeModePropertyKeyName] !== optionName) {

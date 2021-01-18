@@ -1,10 +1,11 @@
 <template>
-  <div ref="dropdownMenu" class="dropdown-menu custom-dropdown-menu dropdown-menu-options-marker">
+  <div ref="dropdownMenu" class="dropdown-menu custom-dropdown-menu" :class="DROPDOWN_OPTION_MARKER">
     <a v-for="(innerDropdownOptions, optionName, optionIndex) in dropdownOptions" :key="optionName"
-      class="dropdown-item custom-dropdown-item dropdown-menu-options-marker"
+      class="dropdown-item custom-dropdown-item"
+      :class="DROPDOWN_OPTION_MARKER"
       @mouseenter="mouseEnter(innerDropdownOptions, optionIndex)"
       @mouseleave="mouseLeave">
-        <div class="option-text dropdown-menu-options-marker">{{optionName}}</div><i v-if="innerDropdownOptions" class="dropdown-menu-options-marker" :class="['fa', 'arrow-right', 'fa-angle-right']"></i>
+        <div class="option-text" :class="DROPDOWN_OPTION_MARKER">{{optionName}}</div><i v-if="innerDropdownOptions" :class="['fa', 'arrow-right', 'fa-angle-right', DROPDOWN_OPTION_MARKER]"></i>
     </a>
   </div>
 </template>
@@ -12,8 +13,16 @@
 <script lang="ts">
 import { OptionMouseEnter, OptionMouseLeave } from '../../../../../../interfaces/dropdownMenuMouseEvents'
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
+import { DROPDOWN_OPTION_MARKER } from '../../../../../../consts/elementClassMarkers';
+
+interface Data {
+  DROPDOWN_OPTION_MARKER;
+}
 
 export default {
+  data: (): Data => ({
+    DROPDOWN_OPTION_MARKER,
+  }),
   methods: {
     mouseEnter(innerDropdownOptions: NestedDropdownStructure, optionIndex: number): void {
       this.$emit('mouse-enter-option', [innerDropdownOptions, this.nestedDropdownIndex, optionIndex] as OptionMouseEnter);
