@@ -1,5 +1,5 @@
-import { SubcomponentDropdownStructure } from './workshopComponent';
+import { NestedDropdownStructure } from './nestedDropdownStructure';
 
-export type OptionMouseEnter = [SubcomponentDropdownStructure?, number?, number?];
+export type OptionMouseEnter = [NestedDropdownStructure?, number?, number?];
 
 export type OptionMouseLeave = HTMLElement;

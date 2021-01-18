@@ -7,6 +7,7 @@
       :activeModePropertyKeyName="'subcomponentsActiveMode'"
       :fontAwesomeIconClassName="'fa-angle-double-down'"
       :highlightSubcomponents="true"
+      :isNested="true"
       @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
       @new-dropdown-option-clicked="newSubcomponentsModeClicked($event)"/>
     <div class="option-button">
@@ -23,6 +24,8 @@
         :objectContainingActiveOption="component.subcomponents[component.subcomponentsActiveMode]"
         :activeModePropertyKeyName="'customCssActiveMode'"
         :fontAwesomeIconClassName="'fa-angle-down'"
+        :isNested="false"
+        @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
         @new-dropdown-option-clicked="newCssModeClicked($event)"/>
       <button
         type="button"

@@ -4,6 +4,7 @@ import { WORKSHOP_TOOLBAR_OPTIONS } from '../consts/workshopToolbarOptions';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { NEW_COMPONENT_TYPES } from '../consts/newComponentTypes.enum';
 import { PSEUDO_COMPONENTS } from '../consts/pseudoComponents.enum';
+import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { SUB_COMPONENTS } from '../consts/subcomponentModes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { TempCustomCss } from './tempCustomCss';
@@ -15,16 +16,12 @@ type Layer = {
   subcomponentPreviewId?: SUB_COMPONENT_PREVIEW_ELEMENT_IDS,
 }
 
-export type SubcomponentDropdownStructure = {
-  [key in SUB_COMPONENTS]?: SubcomponentDropdownStructure | null;
-}
-
 export interface ComponentPreviewStructure {
   baseCss: SubcomponentProperties,
   // will be used in the future, can be horizontal or vertical
   layeringType?: string,
   layers: Layer[],
-  subcomponentDropdownStructure?: SubcomponentDropdownStructure,
+  subcomponentDropdownStructure?: NestedDropdownStructure,
 }
 
 export interface ChildCss {

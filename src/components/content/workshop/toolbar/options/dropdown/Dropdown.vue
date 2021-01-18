@@ -4,7 +4,7 @@
       @click="openDropdown"
       @mouseenter="mouseEnterButton"
       @mouseleave="mouseLeaveButton">
-      <div class="dropdown-button-text dropdown-button-marker" :class="uniqueIdentifier" >{{objectContainingActiveOption[activeModePropertyKeyName]}}</div><i class="dropdown-button-marker" :class="['fa', 'dropdown-button-icon', fontAwesomeIconClassName, uniqueIdentifier]"></i>
+      <div class="dropdown-button-text dropdown-button-marker" :class="uniqueIdentifier">{{objectContainingActiveOption[activeModePropertyKeyName]}}</div><i class="dropdown-button-marker" :class="['fa', 'dropdown-button-icon', fontAwesomeIconClassName, uniqueIdentifier]"></i>
     </button>
     <div class="auxiliary-padding dropdown-menu-options-marker"
       @mouseenter="mouseEnterAuxiliaryPadding"
@@ -23,26 +23,28 @@
 <script lang="ts">
 import { OptionMouseEnter, OptionMouseLeave } from '../../../../../../interfaces/dropdownMenuMouseEvents';
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
-import { SubcomponentDropdownStructure } from '../../../../../../interfaces/workshopComponent';
+import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { subcomponentTypeToPreviewId } from '../componentOptions/subcomponentTypeToPreviewId';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
-import { SUB_COMPONENTS } from '../../../../../../consts/subcomponentModes.enum';
 import BrowserType from '../../../../../../services/workshop/browserType';
 import dropdownMenu from './DropdownMenu.vue';
 
+// The button should be grey when the element is not displayed
 // TODO use composition API for the dropdowns
 interface Data {
   lastHoveredOptionElement: HTMLElement;
-  dropdowns: SubcomponentDropdownStructure[];
+  dropdowns: NestedDropdownStructure[];
   enterButtonClicked: boolean;
   areMenusDisplayed: boolean;
   clickedButton: boolean;
   dropdownDisplayDelayMilliseconds: number;
+  areDropdownOptionsProcessed: boolean;
+  processedOptions: NestedDropdownStructure[];
 }
 
 interface SearchForOptionResultData {
-  dropdowns: SubcomponentDropdownStructure[];
+  dropdowns: NestedDropdownStructure[];
   optionIndexes: number[];
 }
 
@@ -56,11 +58,13 @@ export default {
     areMenusDisplayed: false,
     clickedButton: false,
     dropdownDisplayDelayMilliseconds: BrowserType.isChromium() ? 10 : 13,
+    areDropdownOptionsProcessed: false,
+    processedOptions: [],
   }),
+  mounted(): void {
+    if (!this.areDropdownOptionsProcessed) this.processDropdownOptions();
+  },
   methods: {
-    getOptionNameFromElement(highlightedOptionElement: HTMLElement): string {
-      return (highlightedOptionElement.childNodes[0] as HTMLElement).innerHTML;
-    },
     openDropdown(): void {
       if (this.enterButtonClicked || this.clickedButton) {
         this.enterButtonClicked = false;
@@ -74,7 +78,7 @@ export default {
       this.areMenusDisplayed = true;
     },
     displayHighlightedOptionAndParentMenus(): void {
-      const results: SearchForOptionResult = this.searchForOpion(this.dropdownOptions, this.objectContainingActiveOption[this.activeModePropertyKeyName], 0);
+      const results: SearchForOptionResult = this.searchForOpion(this.processedOptions, this.objectContainingActiveOption[this.activeModePropertyKeyName], 0);
       if (results) {
         const { dropdowns, optionIndexes } = results;
         for (let i = 0; i < dropdowns.length; i++) {
@@ -96,7 +100,7 @@ export default {
         }, (dropdowns.length - 1) * this.dropdownDisplayDelayMilliseconds);
       }
     },
-    searchForOpion(dropdownOptions: SubcomponentDropdownStructure, subjectOptionName: SUB_COMPONENTS, dropdownOptionsIndex: number): SearchForOptionResult {
+    searchForOpion(dropdownOptions: NestedDropdownStructure, subjectOptionName: string, dropdownOptionsIndex: number): SearchForOptionResult {
       if (!dropdownOptions) return null;
       if (dropdownOptions[subjectOptionName] !== undefined) {
         return { dropdowns: [dropdownOptions], optionIndexes: [Object.keys(dropdownOptions).indexOf(subjectOptionName)] };
@@ -117,16 +121,19 @@ export default {
       }
       return null;
     },
+    // REFACTOR: can be exported to an others callback
     mouseEnterButton(): void {
       this.toggleSubcomponentPreviewDisplay(this.objectContainingActiveOption[this.activeModePropertyKeyName], 'block');
     },
+    // REFACTOR: can be exported to an others callback
     mouseLeaveButton(): void {
       this.toggleSubcomponentPreviewDisplay(this.objectContainingActiveOption[this.activeModePropertyKeyName], 'none');
     },
     mouseEnterAuxiliaryPadding(): void {
       if (this.areMenusDisplayed) {
         this.removeChildDropdownMenus(0);
-        this.displayChildDropdownMenu(event.currentTarget, 0, 0, this.dropdownOptions[Object.keys(this.dropdownOptions)[0]]);
+        this.displayChildDropdownMenu(event.currentTarget, 0, 0, this.processedOptions[Object.keys(this.processedOptions)[0]]);
+        // REFACTOR: can be exported to an others callback
         this.highlightOptionAndPreview(this.$refs.dropdownMenus.childNodes[1].childNodes[1]);
       }
     },
@@ -140,6 +147,7 @@ export default {
       const [dropdownOptions, dropdownMenuIndex, dropdownOptionIndex] = optionMouseEnterEvent;
       this.removeChildDropdownMenus(dropdownMenuIndex);
       this.displayChildDropdownMenu(event.currentTarget, dropdownMenuIndex, dropdownOptionIndex, dropdownOptions);
+      // REFACTOR: can be exported to an others callback
       this.highlightOptionAndPreview(event.target);
     },
     removeChildDropdownMenus(dropdownMenuIndex: number): void {
@@ -149,12 +157,12 @@ export default {
       }
     },
     displayParentMenu(): void {
-      this.dropdowns.push(this.dropdownOptions);
+      this.dropdowns.push(this.processedOptions);
       setTimeout(() => {
         this.$refs.dropdownMenus.childNodes[1].style.display = 'block';
       });
     },
-    displayChildDropdownMenu(parentOptionElement: HTMLElement, parentDropdownMenuIndex: number, parentDropdownOptionIndex: number, childDropdownOptions: SubcomponentDropdownStructure): void {
+    displayChildDropdownMenu(parentOptionElement: HTMLElement, parentDropdownMenuIndex: number, parentDropdownOptionIndex: number, childDropdownOptions: NestedDropdownStructure): void {
       if (childDropdownOptions) {
         this.dropdowns.push(childDropdownOptions);
         const startOfAggegatedLeftNumber = 11;
@@ -173,6 +181,7 @@ export default {
         });
       }
     },
+    // REFACTOR: can be exported
     highlightOptionAndPreview(optionElementToBeHighlighted: HTMLElement): void {
       this.highlightOption(optionElementToBeHighlighted);
       this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(optionElementToBeHighlighted), 'block');
@@ -186,12 +195,16 @@ export default {
       optionElementToBeHighlighted.classList.add('active');
       this.changeOptionArrowColor(optionElementToBeHighlighted, 'white');
     },
+    getOptionNameFromElement(highlightedOptionElement: HTMLElement): string {
+      return (highlightedOptionElement.childNodes[0] as HTMLElement).innerHTML;
+    },
     changeOptionArrowColor(optionElement: Element, newColor: 'white'|'grey'): void {
       const arrowElement = optionElement.childNodes[1];
       if (arrowElement instanceof Element || arrowElement instanceof HTMLDocument) {
         (arrowElement as HTMLElement).style.color = newColor;
       }
     },
+    // REFACTOR: can be exported
     mouseLeaveOption(blurredOptionElement: OptionMouseLeave): void {
       this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(blurredOptionElement), 'none');
     },
@@ -214,6 +227,7 @@ export default {
       if ((event.target as HTMLElement).classList.contains(this.uniqueIdentifier) && !closedViaKey) {
         this.clickedButton = true;
       }
+      // REFACTOR: other handlers callback
       this.hideMenusAndComponentPreviews();
       this.areMenusDisplayed = false;
       return { shouldRepeat: false };
@@ -222,16 +236,35 @@ export default {
       this.$refs.dropdownMenus.childNodes[1].style.display = 'none';
     },
      // That rhimes!
+    // REFACTOR: can be exported
     hideMenusAndComponentPreviews(): void {
       this.dropdowns = [];
       if (this.lastHoveredOptionElement) this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(this.lastHoveredOptionElement), 'none');
     },
+    // REFACTOR: can be exported
     toggleSubcomponentPreviewDisplay(subcomponentType: string, displayValue: 'block'|'none'): void {
       if (!this.highlightSubcomponents) return;
       const subcomponentPreviewElementId = subcomponentTypeToPreviewId[subcomponentType];
       const subcomponentPreviewElement = document.getElementById(subcomponentPreviewElementId);
       if (subcomponentPreviewElement) subcomponentPreviewElement.style.display = displayValue;
-    }
+    },
+    processDropdownOptions(): void {
+      if (this.dropdownOptions) {
+        if (!this.isNested) {
+          this.changeDropdownOptionsToAppropriateStructure();
+        } else {
+          this.processedOptions = this.dropdownOptions;
+        }
+        this.areDropdownOptionsProcessed = true;
+      }
+    },
+    changeDropdownOptionsToAppropriateStructure(): void {
+      const resultObject = {};
+      Object.keys(this.dropdownOptions).forEach((keyName) => {
+        resultObject[keyName] = null;
+      });
+      this.processedOptions = resultObject;
+    },
   },
   components: {
     dropdownMenu,
@@ -244,11 +277,15 @@ export default {
     highlightSubcomponents: Boolean,
     // this is used to allow the dropdown to close when clicked on other dropdowns
     uniqueIdentifier: String,
+    isNested: {
+      type: Boolean,
+      default: true,
+    }
   },
   watch: {
     objectContainingActiveOption(): void {
-      this.dropdowns = [this.dropdownOptions];
-    }
+      this.processDropdownOptions();
+    },
   }
 };
 </script>

@@ -11,11 +11,11 @@
 
 <script lang="ts">
 import { OptionMouseEnter, OptionMouseLeave } from '../../../../../../interfaces/dropdownMenuMouseEvents'
-import { SubcomponentDropdownStructure } from '../../../../../../interfaces/workshopComponent';
+import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 
 export default {
   methods: {
-    mouseEnter(innerDropdownOptions: SubcomponentDropdownStructure, optionIndex: number): void {
+    mouseEnter(innerDropdownOptions: NestedDropdownStructure, optionIndex: number): void {
       this.$emit('mouse-enter-option', [innerDropdownOptions, this.nestedDropdownIndex, optionIndex] as OptionMouseEnter);
     },
     mouseLeave(): void {
