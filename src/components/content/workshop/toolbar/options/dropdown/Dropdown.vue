@@ -1,5 +1,5 @@
 <template>
-  <div class="dropdown">
+  <div v-if="isComponentDisplayed" class="dropdown">
     <button class="btn form-control dropdown-button" :class="uniqueIdentifier" type="button"
       @click="openDropdown"
       @mouseenter="mouseEnterButton"
@@ -33,8 +33,8 @@ import dropdownMenu from './DropdownMenu.vue';
 import { Ref, ref, watch } from 'vue';
 
 // The button should be grey when the element is not displayed
-// do not display styles dropdown if only one
 interface ImmediateData {
+  isComponentDisplayed: boolean;
   dropdowns: NestedDropdownStructure[];
 }
 
@@ -68,6 +68,7 @@ type SearchForOptionResult = SearchForOptionResultData | null;
 
 export default {
   data: (): ImmediateData => ({
+    isComponentDisplayed: true,
     dropdowns: [],
   }),
   setup(props: Props): DropdownCompositionAPI & Data {
@@ -102,6 +103,7 @@ export default {
   },
   mounted(): void {
     if (!this.areDropdownOptionsProcessed) this.processDropdownOptions();
+    this.toggleDropdownDisplay();
   },
   methods: {
     openDropdown(): void {
@@ -287,6 +289,13 @@ export default {
       });
       this.processedOptions = resultObject;
     },
+    toggleDropdownDisplay(): void {
+      if (!this.isNested) {
+        this.isComponentDisplayed = !!this.dropdownOptions;
+      } else {
+        this.isComponentDisplayed = Object.keys(this.dropdownOptions).length > 1;
+      }
+    }
   },
   components: {
     dropdownMenu,
@@ -309,6 +318,9 @@ export default {
     objectContainingActiveOption(): void {
       this.processDropdownOptions();
     },
+    dropdownOptions(): void {
+      this.toggleDropdownDisplay();
+    }
   }
 };
 </script>

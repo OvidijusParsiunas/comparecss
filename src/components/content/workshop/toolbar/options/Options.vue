@@ -1,6 +1,6 @@
 <template>
   <div class="options-container">
-    <dropdown v-if="component.componentPreviewStructure.subcomponentDropdownStructure" class="option-button"
+    <dropdown class="option-button"
       :uniqueIdentifier="'subcomponentsDropdown'"
       :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
       :objectContainingActiveOption="component"
