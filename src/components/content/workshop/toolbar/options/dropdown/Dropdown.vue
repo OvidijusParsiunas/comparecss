@@ -41,7 +41,7 @@ interface ImmediateData {
 interface Data {
   lastHoveredOptionElement: HTMLElement;
   enterButtonClicked: boolean;
-  areMenusDisplayed: { value: boolean };
+  areMenusDisplayed: boolean;
   clickedButton: boolean;
   dropdownDisplayDelayMilliseconds: number;
   areDropdownOptionsProcessed: boolean;
@@ -71,7 +71,8 @@ export default {
     dropdowns: [],
   }),
   setup(props: Props): DropdownCompositionAPI & Data {
-    const areMenusDisplayed = { value: false };
+    // If you want to pass down a data variable into compositionAPI, use the code below and pass areMenusDisplayed into the customEventHandlers function and return customEventHandlers
+    // const areMenusDisplayed: Ref<boolean> = ref(false);
     const objectContainingActiveOptionRef: Ref<Props['objectContainingActiveOption']> = ref(props.objectContainingActiveOption);
     const activeModePropertyKeyNameRef: Ref<Props['activeModePropertyKeyName']> = ref(props.activeModePropertyKeyName);
     const highlightSubcomponentsRef: Ref<Props['highlightSubcomponents']> = ref(props.highlightSubcomponents);
@@ -90,7 +91,7 @@ export default {
     }
     return {
       ...customEventHandlers,
-      areMenusDisplayed,
+      areMenusDisplayed: false,
       clickedButton: false,
       processedOptions: [],
       enterButtonClicked: false,
@@ -113,7 +114,7 @@ export default {
       const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
       const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.hideDropdownMenu};
       this.$emit('hide-dropdown-menu-callback', workshopEventCallback);
-      this.areMenusDisplayed.value = true;
+      this.areMenusDisplayed = true;
     },
     displayHighlightedOptionAndParentMenus(): void {
       const results: SearchForOptionResult = this.searchForOpion(this.processedOptions, this.objectContainingActiveOption[this.activeModePropertyKeyName], 0);
@@ -166,7 +167,7 @@ export default {
       if (this.buttonMouseLeaveEventHandler) { this.buttonMouseLeaveEventHandler(); }
     },
     mouseEnterAuxiliaryPadding(): void {
-      if (this.areMenusDisplayed.value) {
+      if (this.areMenusDisplayed) {
         this.removeChildDropdownMenus(0);
         this.displayChildDropdownMenu(event.currentTarget, 0, 0, this.processedOptions[Object.keys(this.processedOptions)[0]]);
         const optionElementToBeHighlighted = this.$refs.dropdownMenus.childNodes[1].childNodes[1];
@@ -175,7 +176,7 @@ export default {
       }
     },
     mouseLeaveAuxiliaryPadding(): void {
-      if (this.areMenusDisplayed.value) {
+      if (this.areMenusDisplayed) {
         const blurredOptionElement = this.$refs.dropdownMenus.childNodes[1].childNodes[1];
         if (this.mouseLeaveAuxiliaryPaddingEventHandler) this.mouseLeaveAuxiliaryPaddingEventHandler(blurredOptionElement);
       }
@@ -262,7 +263,7 @@ export default {
         this.clickedButton = true;
       }
       this.dropdowns = [];
-      this.areMenusDisplayed.value = false;
+      this.areMenusDisplayed = false;
       if (this.hideDropdownMenuEventHandler && this.lastHoveredOptionElement) this.hideDropdownMenuEventHandler(this.lastHoveredOptionElement);
       return { shouldRepeat: false };
     },
