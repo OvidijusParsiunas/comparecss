@@ -6,7 +6,7 @@
         :placeholder="thisComponent.className"
         @input="classNameInputEvent"
         >
-      <h5 v-else class="card-title component-card-title">{{thisComponent.className}}</h5>
+      <h5 v-else class="card-title component-card-title" :class="COMPONENT_CARD_MARKER">{{thisComponent.className}}</h5>
       <a ref="componentCardClassNameEditorButton" class="btn btn-success" @mousedown="preventBubbling" @mouseup="editClassName">Edit</a>
       <a class="btn btn-warning" @mousedown="preventBubbling" @mouseup="copyComponentCard">Copy</a>
       <a class="btn btn-danger component-card-remove" data-toggle="modal" :data-target="removeComponentModalId" @mousedown="preventBubbling" @mouseup="removeComponentCard">Remove</a>

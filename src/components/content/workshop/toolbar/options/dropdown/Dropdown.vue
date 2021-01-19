@@ -183,8 +183,7 @@ export default {
     mouseEnterOption(optionMouseEnterEvent: OptionMouseEnter): void {
       const [dropdownOptions, dropdownMenuIndex, dropdownOptionIndex] = optionMouseEnterEvent;
       this.removeChildDropdownMenus(dropdownMenuIndex);
-      // change this value here
-      this.displayChildDropdownMenu(event.currentTarget, dropdownMenuIndex, dropdownOptionIndex, dropdownOptions);
+      this.displayChildDropdownMenu(event.target, dropdownMenuIndex, dropdownOptionIndex, dropdownOptions);
       this.highlightOption(event.target);
       if (this.mouseEnterOptionEventHandler) this.mouseEnterOptionEventHandler(event.target);
     },
