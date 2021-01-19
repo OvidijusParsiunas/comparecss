@@ -33,8 +33,8 @@
 import useComponentPreviewEventHandlers, { UseComponentPreviewEventHandlers } from './compositionAPI/useComponentPreviewEventHandlers';
 import { SUB_COMPONENT_PREVIEW_ELEMENT_IDS } from '../../../../consts/subcomponentPreviewElementIds.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
-import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { SubcomponentProperties } from '../../../../interfaces/workshopComponent';
+import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { Ref, ref, watch } from 'vue';
 
 interface Consts {

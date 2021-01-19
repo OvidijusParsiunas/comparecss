@@ -8,6 +8,7 @@
       :fontAwesomeIconClassName="'fa-angle-double-down'"
       :highlightSubcomponents="true"
       :isNested="true"
+      :customEventHandlers="useComponentPreviewEventHandlers"
       @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
       @new-dropdown-option-clicked="newSubcomponentsModeClicked($event)"/>
     <div class="option-button">
@@ -39,6 +40,7 @@
 </template>
 
 <script lang="ts">
+import useComponentPreviewEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../consts/workshopToolbarOptions';
@@ -55,6 +57,7 @@ interface Consts {
   WORKSHOP_TOOLBAR_OPTIONS;
   SUB_COMPONENT_CSS_MODES;
   componentTypeToOptions;
+  useComponentPreviewEventHandlers;
 }
 
 interface Data {
@@ -68,6 +71,7 @@ export default {
       WORKSHOP_TOOLBAR_OPTIONS,
       SUB_COMPONENT_CSS_MODES,
       componentTypeToOptions,
+      useComponentPreviewEventHandlers,
     };
   },
   data: (): Data => ({

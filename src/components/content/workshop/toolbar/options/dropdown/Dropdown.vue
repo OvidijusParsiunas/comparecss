@@ -25,23 +25,38 @@ import { COMPONENT_CARD_MARKER, DROPDOWN_OPTION_MARKER } from '../../../../../..
 import { OptionMouseEnter, OptionMouseLeave } from '../../../../../../interfaces/dropdownMenuMouseEvents';
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
-import { subcomponentTypeToPreviewId } from '../componentOptions/subcomponentTypeToPreviewId';
+import { DropdownCompositionAPI } from '../../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
 import BrowserType from '../../../../../../services/workshop/browserType';
 import dropdownMenu from './DropdownMenu.vue';
+import { Ref, ref, watch } from 'vue';
 
 // The button should be grey when the element is not displayed
-// TODO use composition API for the dropdowns
+// do not display styles dropdown if only one
+interface ImmediateData {
+  dropdowns: NestedDropdownStructure[];
+}
+
 interface Data {
   lastHoveredOptionElement: HTMLElement;
-  dropdowns: NestedDropdownStructure[];
   enterButtonClicked: boolean;
-  areMenusDisplayed: boolean;
+  areMenusDisplayed: { value: boolean };
   clickedButton: boolean;
   dropdownDisplayDelayMilliseconds: number;
   areDropdownOptionsProcessed: boolean;
   processedOptions: NestedDropdownStructure[];
+}
+
+interface Props {
+  customEventHandlers: (param1: Ref<unknown>, param2: Ref<string>, param3: Ref<boolean>) => DropdownCompositionAPI,
+  dropdownOptions: NestedDropdownStructure,
+  objectContainingActiveOption: unknown,
+  activeModePropertyKeyName: string,
+  fontAwesomeIconClassName: string,
+  highlightSubcomponents: boolean,
+  uniqueIdentifier: string,
+  isNested: boolean,
 }
 
 interface SearchForOptionResultData {
@@ -52,16 +67,38 @@ interface SearchForOptionResultData {
 type SearchForOptionResult = SearchForOptionResultData | null;
 
 export default {
-  data: (): Data => ({
-    lastHoveredOptionElement: null,
+  data: (): ImmediateData => ({
     dropdowns: [],
-    enterButtonClicked: false,
-    areMenusDisplayed: false,
-    clickedButton: false,
-    dropdownDisplayDelayMilliseconds: BrowserType.isChromium() ? 10 : 13,
-    areDropdownOptionsProcessed: false,
-    processedOptions: [],
   }),
+  setup(props: Props): DropdownCompositionAPI & Data {
+    const areMenusDisplayed = { value: false };
+    const objectContainingActiveOptionRef: Ref<Props['objectContainingActiveOption']> = ref(props.objectContainingActiveOption);
+    const activeModePropertyKeyNameRef: Ref<Props['activeModePropertyKeyName']> = ref(props.activeModePropertyKeyName);
+    const highlightSubcomponentsRef: Ref<Props['highlightSubcomponents']> = ref(props.highlightSubcomponents);
+    let customEventHandlers = {} as DropdownCompositionAPI;
+    if (props.customEventHandlers) {
+      watch(() => props.objectContainingActiveOption, (newObjectContainingActiveOption) => {
+      objectContainingActiveOptionRef.value = newObjectContainingActiveOption;
+      });
+      watch(() => props.activeModePropertyKeyName, (newActiveModePropertyKeyName) => {
+        activeModePropertyKeyNameRef.value = newActiveModePropertyKeyName;
+      });
+      watch(() => props.highlightSubcomponents, (newHighlightSubcomponents) => {
+        highlightSubcomponentsRef.value = newHighlightSubcomponents;
+      });
+      customEventHandlers = props.customEventHandlers(objectContainingActiveOptionRef, activeModePropertyKeyNameRef, highlightSubcomponentsRef);
+    }
+    return {
+      ...customEventHandlers,
+      areMenusDisplayed,
+      clickedButton: false,
+      processedOptions: [],
+      enterButtonClicked: false,
+      lastHoveredOptionElement: null,
+      areDropdownOptionsProcessed: false,
+      dropdownDisplayDelayMilliseconds: BrowserType.isChromium() ? 10 : 13,
+    };
+  },
   mounted(): void {
     if (!this.areDropdownOptionsProcessed) this.processDropdownOptions();
   },
@@ -76,7 +113,7 @@ export default {
       const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
       const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.hideDropdownMenu};
       this.$emit('hide-dropdown-menu-callback', workshopEventCallback);
-      this.areMenusDisplayed = true;
+      this.areMenusDisplayed.value = true;
     },
     displayHighlightedOptionAndParentMenus(): void {
       const results: SearchForOptionResult = this.searchForOpion(this.processedOptions, this.objectContainingActiveOption[this.activeModePropertyKeyName], 0);
@@ -122,34 +159,34 @@ export default {
       }
       return null;
     },
-    // REFACTOR: can be exported to an others callback
     mouseEnterButton(): void {
-      this.toggleSubcomponentPreviewDisplay(this.objectContainingActiveOption[this.activeModePropertyKeyName], 'block');
+      if (this.buttonMouseEnterEventHandler) { this.buttonMouseEnterEventHandler(); }
     },
-    // REFACTOR: can be exported to an others callback
     mouseLeaveButton(): void {
-      this.toggleSubcomponentPreviewDisplay(this.objectContainingActiveOption[this.activeModePropertyKeyName], 'none');
+      if (this.buttonMouseLeaveEventHandler) { this.buttonMouseLeaveEventHandler(); }
     },
     mouseEnterAuxiliaryPadding(): void {
-      if (this.areMenusDisplayed) {
+      if (this.areMenusDisplayed.value) {
         this.removeChildDropdownMenus(0);
         this.displayChildDropdownMenu(event.currentTarget, 0, 0, this.processedOptions[Object.keys(this.processedOptions)[0]]);
-        // REFACTOR: can be exported to an others callback
-        this.highlightOptionAndPreview(this.$refs.dropdownMenus.childNodes[1].childNodes[1]);
+        const optionElementToBeHighlighted = this.$refs.dropdownMenus.childNodes[1].childNodes[1];
+        this.highlightOption(optionElementToBeHighlighted);
+        if (this.mouseEnterAuxiliaryPaddingEventHandler) this.mouseEnterAuxiliaryPaddingEventHandler(optionElementToBeHighlighted);
       }
     },
     mouseLeaveAuxiliaryPadding(): void {
-      if (this.areMenusDisplayed) {
+      if (this.areMenusDisplayed.value) {
         const blurredOptionElement = this.$refs.dropdownMenus.childNodes[1].childNodes[1];
-        this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(blurredOptionElement), 'none');
+        if (this.mouseLeaveAuxiliaryPaddingEventHandler) this.mouseLeaveAuxiliaryPaddingEventHandler(blurredOptionElement);
       }
     },
     mouseEnterOption(optionMouseEnterEvent: OptionMouseEnter): void {
       const [dropdownOptions, dropdownMenuIndex, dropdownOptionIndex] = optionMouseEnterEvent;
       this.removeChildDropdownMenus(dropdownMenuIndex);
+      // change this value here
       this.displayChildDropdownMenu(event.currentTarget, dropdownMenuIndex, dropdownOptionIndex, dropdownOptions);
-      // REFACTOR: can be exported to an others callback
-      this.highlightOptionAndPreview(event.target);
+      this.highlightOption(event.target);
+      if (this.mouseEnterOptionEventHandler) this.mouseEnterOptionEventHandler(event.target);
     },
     removeChildDropdownMenus(dropdownMenuIndex: number): void {
       const removableDropdownMenusIndex = dropdownMenuIndex + 1;
@@ -182,11 +219,6 @@ export default {
         });
       }
     },
-    // REFACTOR: can be exported
-    highlightOptionAndPreview(optionElementToBeHighlighted: HTMLElement): void {
-      this.highlightOption(optionElementToBeHighlighted);
-      this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(optionElementToBeHighlighted), 'block');
-    },
     highlightOption(optionElementToBeHighlighted: HTMLElement): void {
       if (this.lastHoveredOptionElement) { 
         this.lastHoveredOptionElement.classList.remove('active');
@@ -205,9 +237,8 @@ export default {
         (arrowElement as HTMLElement).style.color = newColor;
       }
     },
-    // REFACTOR: can be exported
     mouseLeaveOption(blurredOptionElement: OptionMouseLeave): void {
-      this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(blurredOptionElement), 'none');
+      if (this.mouseLeaveOptionEventHandler) this.mouseLeaveOptionEventHandler(blurredOptionElement);
     },
     hideDropdownMenu(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
       if (event.type === 'mousedown' && !(event.target as HTMLElement).classList.contains(COMPONENT_CARD_MARKER)) {
@@ -231,26 +262,13 @@ export default {
       if ((event.target as HTMLElement).classList.contains(this.uniqueIdentifier) && !closedViaKey) {
         this.clickedButton = true;
       }
-      // REFACTOR: other handlers callback
-      this.hideMenusAndComponentPreviews();
-      this.areMenusDisplayed = false;
+      this.dropdowns = [];
+      this.areMenusDisplayed.value = false;
+      if (this.hideDropdownMenuEventHandler && this.lastHoveredOptionElement) this.hideDropdownMenuEventHandler(this.lastHoveredOptionElement);
       return { shouldRepeat: false };
     },
     hideFirstMenu(): void {
       this.$refs.dropdownMenus.childNodes[1].style.display = 'none';
-    },
-     // That rhimes!
-    // REFACTOR: can be exported
-    hideMenusAndComponentPreviews(): void {
-      this.dropdowns = [];
-      if (this.lastHoveredOptionElement) this.toggleSubcomponentPreviewDisplay(this.getOptionNameFromElement(this.lastHoveredOptionElement), 'none');
-    },
-    // REFACTOR: can be exported
-    toggleSubcomponentPreviewDisplay(subcomponentType: string, displayValue: 'block'|'none'): void {
-      if (!this.highlightSubcomponents) return;
-      const subcomponentPreviewElementId = subcomponentTypeToPreviewId[subcomponentType];
-      const subcomponentPreviewElement = document.getElementById(subcomponentPreviewElementId);
-      if (subcomponentPreviewElement) subcomponentPreviewElement.style.display = displayValue;
     },
     processDropdownOptions(): void {
       if (this.dropdownOptions) {
@@ -281,6 +299,7 @@ export default {
     highlightSubcomponents: Boolean,
     // this is used to allow the dropdown to close when clicked on other dropdowns
     uniqueIdentifier: String,
+    customEventHandlers: Function,
     isNested: {
       type: Boolean,
       default: true,
