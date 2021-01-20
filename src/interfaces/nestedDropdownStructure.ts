@@ -1,3 +1,5 @@
+import { OptionalSubcomponent } from './workshopComponent';
+
 export type NestedDropdownStructure = {
-  [key in string]: NestedDropdownStructure | null;
+  [key in string]: NestedDropdownStructure | OptionalSubcomponent;
 }

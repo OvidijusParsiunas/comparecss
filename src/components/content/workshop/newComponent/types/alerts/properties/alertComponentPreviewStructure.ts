@@ -19,7 +19,7 @@ export default function createAlertComponentPreviewStructure(baseComponent: Subc
     ],
     subcomponentDropdownStructure: {
       [SUB_COMPONENTS.BASE]: {
-        [SUB_COMPONENTS.CLOSE]: null,
+        [SUB_COMPONENTS.CLOSE]: closeComponent.optionalSubcomponent,
       },
     }
   }

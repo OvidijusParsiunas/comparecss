@@ -2,10 +2,11 @@
   <div ref="dropdownMenu" class="dropdown-menu custom-dropdown-menu" :class="DROPDOWN_OPTION_MARKER">
     <a v-for="(innerDropdownOptions, optionName, optionIndex) in dropdownOptions" :key="optionName"
       class="dropdown-item custom-dropdown-item"
+      :style="{ color: [(typeof innerDropdownOptions.currentlyDisplaying !== 'boolean' || (typeof innerDropdownOptions.currentlyDisplaying == 'boolean' && innerDropdownOptions.currentlyDisplaying)) ? 'black' : 'grey' ]}"
       :class="DROPDOWN_OPTION_MARKER"
       @mouseenter="mouseEnter(innerDropdownOptions, optionIndex)"
       @mouseleave="mouseLeave">
-        <div class="option-text" :class="DROPDOWN_OPTION_MARKER">{{optionName}}</div><i v-if="innerDropdownOptions" :class="['fa', 'arrow-right', 'fa-angle-right', DROPDOWN_OPTION_MARKER]"></i>
+        <div class="option-text" :class="DROPDOWN_OPTION_MARKER">{{optionName}}</div><i v-if="typeof innerDropdownOptions.currentlyDisplaying !== 'boolean'" :class="['fa', 'arrow-right', 'fa-angle-right', DROPDOWN_OPTION_MARKER]"></i>
     </a>
   </div>
 </template>

@@ -32,13 +32,9 @@ import BrowserType from '../../../../../../services/workshop/browserType';
 import dropdownMenu from './DropdownMenu.vue';
 import { Ref, ref, watch } from 'vue';
 
-// The button should be grey when the element is not displayed
-interface ImmediateData {
+interface Data {
   isComponentDisplayed: boolean;
   dropdowns: NestedDropdownStructure[];
-}
-
-interface Data {
   lastHoveredOptionElement: HTMLElement;
   enterButtonClicked: boolean;
   areMenusDisplayed: boolean;
@@ -46,17 +42,18 @@ interface Data {
   dropdownDisplayDelayMilliseconds: number;
   areDropdownOptionsProcessed: boolean;
   processedOptions: NestedDropdownStructure[];
+  lastHoveredOptionElementDropdownMenuIndex: number;
 }
 
 interface Props {
-  customEventHandlers: (param1: Ref<unknown>, param2: Ref<string>, param3: Ref<boolean>) => DropdownCompositionAPI,
-  dropdownOptions: NestedDropdownStructure,
-  objectContainingActiveOption: unknown,
-  activeModePropertyKeyName: string,
-  fontAwesomeIconClassName: string,
-  highlightSubcomponents: boolean,
-  uniqueIdentifier: string,
-  isNested: boolean,
+  isNested: boolean;
+  uniqueIdentifier: string;
+  highlightSubcomponents: boolean;
+  fontAwesomeIconClassName: string;
+  activeModePropertyKeyName: string;
+  objectContainingActiveOption: unknown;
+  dropdownOptions: NestedDropdownStructure;
+  customEventHandlers: (param1: Ref<unknown>, param2: Ref<string>, param3: Ref<boolean>) => DropdownCompositionAPI;
 }
 
 interface SearchForOptionResultData {
@@ -67,11 +64,19 @@ interface SearchForOptionResultData {
 type SearchForOptionResult = SearchForOptionResultData | null;
 
 export default {
-  data: (): ImmediateData => ({
-    isComponentDisplayed: true,
+  data: (): Data => ({
     dropdowns: [],
+    clickedButton: false,
+    processedOptions: [],
+    areMenusDisplayed: false,
+    enterButtonClicked: false,
+    isComponentDisplayed: true,
+    lastHoveredOptionElement: null,
+    areDropdownOptionsProcessed: false,
+    lastHoveredOptionElementDropdownMenuIndex: 0,
+    dropdownDisplayDelayMilliseconds: BrowserType.isChromium() ? 10 : 13,
   }),
-  setup(props: Props): DropdownCompositionAPI & Data {
+  setup(props: Props): DropdownCompositionAPI {
     // If you want to pass down a data variable into compositionAPI, use the code below and pass areMenusDisplayed into the customEventHandlers function and return customEventHandlers
     // const areMenusDisplayed: Ref<boolean> = ref(false);
     const objectContainingActiveOptionRef: Ref<Props['objectContainingActiveOption']> = ref(props.objectContainingActiveOption);
@@ -92,13 +97,6 @@ export default {
     }
     return {
       ...customEventHandlers,
-      areMenusDisplayed: false,
-      clickedButton: false,
-      processedOptions: [],
-      enterButtonClicked: false,
-      lastHoveredOptionElement: null,
-      areDropdownOptionsProcessed: false,
-      dropdownDisplayDelayMilliseconds: BrowserType.isChromium() ? 10 : 13,
     };
   },
   mounted(): void {
@@ -137,7 +135,10 @@ export default {
         }
         setTimeout(() => {
           const optionElementSubjectToHighlight = this.$refs.dropdownMenus.childNodes[dropdowns.length].childNodes[optionIndexes[optionIndexes.length - 1] + 1];
-          this.highlightOption(optionElementSubjectToHighlight);
+          if (this.displayHighligtedOptionAndParentMenusEventHandler) {
+            this.displayHighligtedOptionAndParentMenusEventHandler(this.dropdowns, optionElementSubjectToHighlight, this.dropdowns.length - 1, this.lastHoveredOptionElement, this.lastHoveredOptionElementDropdownMenuIndex);
+          }
+          this.highlightOption(optionElementSubjectToHighlight, dropdowns.length - 1);
         }, (dropdowns.length - 1) * this.dropdownDisplayDelayMilliseconds);
       }
     },
@@ -173,8 +174,10 @@ export default {
         this.removeChildDropdownMenus(0);
         this.displayChildDropdownMenu(event.currentTarget, 0, 0, this.processedOptions[Object.keys(this.processedOptions)[0]]);
         const optionElementToBeHighlighted = this.$refs.dropdownMenus.childNodes[1].childNodes[1];
-        this.highlightOption(optionElementToBeHighlighted);
-        if (this.mouseEnterAuxiliaryPaddingEventHandler) this.mouseEnterAuxiliaryPaddingEventHandler(optionElementToBeHighlighted);
+        if (this.mouseEnterAuxiliaryPaddingEventHandler) { 
+          this.mouseEnterAuxiliaryPaddingEventHandler(this.dropdowns, optionElementToBeHighlighted, 0, this.lastHoveredOptionElement, this.lastHoveredOptionElementDropdownMenuIndex);
+        }
+        this.highlightOption(optionElementToBeHighlighted, 0);
       }
     },
     mouseLeaveAuxiliaryPadding(): void {
@@ -187,8 +190,10 @@ export default {
       const [dropdownOptions, dropdownMenuIndex, dropdownOptionIndex] = optionMouseEnterEvent;
       this.removeChildDropdownMenus(dropdownMenuIndex);
       this.displayChildDropdownMenu(event.target, dropdownMenuIndex, dropdownOptionIndex, dropdownOptions);
-      this.highlightOption(event.target);
-      if (this.mouseEnterOptionEventHandler) this.mouseEnterOptionEventHandler(event.target);
+      if (this.mouseEnterOptionEventHandler) {
+        this.mouseEnterOptionEventHandler(this.dropdowns, event.target, dropdownMenuIndex, this.lastHoveredOptionElement, this.lastHoveredOptionElementDropdownMenuIndex);
+      }
+      this.highlightOption(event.target, dropdownMenuIndex);
     },
     removeChildDropdownMenus(dropdownMenuIndex: number): void {
       const removableDropdownMenusIndex = dropdownMenuIndex + 1;
@@ -203,7 +208,7 @@ export default {
       });
     },
     displayChildDropdownMenu(parentOptionElement: HTMLElement, parentDropdownMenuIndex: number, parentDropdownOptionIndex: number, childDropdownOptions: NestedDropdownStructure): void {
-      if (childDropdownOptions) {
+      if (typeof childDropdownOptions.currentlyDisplaying !== 'boolean') {
         this.dropdowns.push(childDropdownOptions);
         const startOfAggegatedLeftNumber = 11;
         const dropdownMenuElement = parentOptionElement.parentNode as HTMLElement;
@@ -221,13 +226,15 @@ export default {
         });
       }
     },
-    highlightOption(optionElementToBeHighlighted: HTMLElement): void {
-      if (this.lastHoveredOptionElement) { 
+    highlightOption(optionElementToBeHighlighted: HTMLElement, dropdownMenuIndex: number): void {
+      if (this.lastHoveredOptionElement) {
         this.lastHoveredOptionElement.classList.remove('active');
         this.changeOptionArrowColor(this.lastHoveredOptionElement, 'grey');
       }
       this.lastHoveredOptionElement = optionElementToBeHighlighted;
+      this.lastHoveredOptionElementDropdownMenuIndex = dropdownMenuIndex;
       optionElementToBeHighlighted.classList.add('active');
+      optionElementToBeHighlighted.style.color = 'white';
       this.changeOptionArrowColor(optionElementToBeHighlighted, 'white');
     },
     getOptionNameFromElement(highlightedOptionElement: HTMLElement): string {
@@ -285,12 +292,12 @@ export default {
     changeDropdownOptionsToAppropriateStructure(): void {
       const resultObject = {};
       Object.keys(this.dropdownOptions).forEach((keyName) => {
-        resultObject[keyName] = null;
+        resultObject[keyName] = true;
       });
       this.processedOptions = resultObject;
     },
     toggleDropdownDisplay(): void {
-      if (!this.isNested) {
+      if (this.isNested) {
         this.isComponentDisplayed = !!this.dropdownOptions;
       } else {
         this.isComponentDisplayed = Object.keys(this.dropdownOptions).length > 1;

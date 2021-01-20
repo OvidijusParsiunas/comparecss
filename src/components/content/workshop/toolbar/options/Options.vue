@@ -102,15 +102,15 @@ export default {
       if (!optionalSubcomponent.currentlyDisplaying) {
         optionalSubcomponent.currentlyDisplaying = !optionalSubcomponent.currentlyDisplaying;
       } else {
-        if (!this.getIsDoNotShowModalAgainState()){
+        if (!this.getIsDoNotShowModalAgainState()) {
           this.removeSubcomponentModalId = `#${REMOVE_SUBCOMPONENT_MODAL_ID}`;
           setTimeout(() => { this.removeSubcomponentModalId = ''; });
+          this.$emit('prepare-remove-subcomponent-modal');
         } else {
           subcomponent.customCss = JSONManipulation.deepCopy(initialCss);
           optionalSubcomponent.currentlyDisplaying = !optionalSubcomponent.currentlyDisplaying;
           this.$emit('hide-settings');
         }
-        this.$emit('prepare-remove-subcomponent-modal');
       }
     }
   },
