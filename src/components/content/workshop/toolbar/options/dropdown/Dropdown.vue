@@ -1,6 +1,6 @@
 <template>
   <div v-if="isComponentDisplayed" class="dropdown">
-    <button class="btn form-control dropdown-button" :class="uniqueIdentifier" type="button"
+    <button class="btn form-control dropdown-button" :class="[uniqueIdentifier, { 'button-group-border': isButtonGroup }]" type="button"
       @click="openDropdown"
       @mouseenter="mouseEnterButton"
       @mouseleave="mouseLeaveButton">
@@ -47,6 +47,7 @@ interface Data {
 
 interface Props {
   isNested: boolean;
+  isButtonGroup: boolean,
   uniqueIdentifier: string;
   highlightSubcomponents: boolean;
   fontAwesomeIconClassName: string;
@@ -302,6 +303,7 @@ export default {
       } else {
         this.isComponentDisplayed = Object.keys(this.dropdownOptions).length > 1;
       }
+      this.$emit('is-component-displayed', this.isComponentDisplayed);
     }
   },
   components: {
@@ -316,6 +318,10 @@ export default {
     // this is used to allow the dropdown to close when clicked on other dropdowns
     uniqueIdentifier: String,
     customEventHandlers: Function,
+    isButtonGroup: {
+      type: Boolean,
+      default: false,
+    },
     isNested: {
       type: Boolean,
       default: true,
@@ -353,5 +359,9 @@ export default {
     width: 100%;
     z-index: 9990;
     position: absolute;
+    cursor: pointer;
+  }
+  .button-group-border {
+    border-radius: 0px 0.25rem 0.25rem 0px !important;
   }
 </style>

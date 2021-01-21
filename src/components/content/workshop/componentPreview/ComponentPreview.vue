@@ -17,10 +17,11 @@
         </div>
         <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item grid-item-position">
           <!-- parent component -->
+          <!-- TO-DO -->
+          <!-- @mouseenter="componentMouseEnter()"
+            @mouseleave="componentMouseLeave()" -->
           <component :is="component.componentPreviewStructure.baseCss.componentTag" id="demoComponent"
             class="grid-item-position" :class="[ ...component.componentPreviewStructure.baseCss.jsClasses ]"
-            @mouseenter="componentMouseEnter()"
-            @mouseleave="componentMouseLeave()"
             @mousedown="componentMouseDown()"
             @mouseup="componentMouseUp()"
             :style="component.componentPreviewStructure.baseCss.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
@@ -40,14 +41,16 @@
                   <div-inner-html v-if="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]" :innerHTML="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]"/>
                   <auxiliary-right-side-elements v-if="layer.subcomponents[SUB_COMPONENTS.CLOSE] !== undefined" :subcomponent="layer.subcomponents[SUB_COMPONENTS.CLOSE]"/>
                 </div>
-                <div v-if="layer.subcomponentPreviewId" :id="layer.subcomponentPreviewId" style="display: none" :style="layer.css" class="subcomponent-preview"></div>
+                <div v-if="layer.subcomponentPreviewId" :id="layer.subcomponentPreviewId" style="display: none" :style="[layer.css, { zIndex: layer.previewZIndex }]" class="subcomponent-preview"></div>
               </div>
           </component>
           <component :is="component.componentPreviewStructure.baseCss.componentTag"
             :id="SUB_COMPONENT_PREVIEW_ELEMENT_IDS.BASE"
-            style="display: none" :style="component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
+            style="display: none" :style="[component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], { zIndex: BASE_PREVIEW_Z_INDEX }]"
             class="subcomponent-preview base-component-preview">
           </component>
+          <!-- UX - SUBCOMPONENT SELECT - set this to appropriate dimensions when the event is fired -->
+          <div ref="selectSubcomponentOverlay1" style="display: none; width: 1000px; height: 700px; background-color: #ff010100; position: absolute; border: 0px; top: -221px; left: -220px; z-index: 1; cursor: pointer;"></div>
         </div>
         <div class="grid-item grid-item-position">
           <transition name="right-slide-fade">
@@ -68,6 +71,7 @@
 
 <script lang="ts">
 import useComponentPreviewEventHandlers, { UseComponentPreviewEventHandlers } from './compositionAPI/useComponentPreviewEventHandlers';
+import { subcomponentPreviewZIndexes } from '../toolbar/options/componentOptions/subcomponentPreviewZIndexes';
 import { SUB_COMPONENT_PREVIEW_ELEMENT_IDS } from '../../../../consts/subcomponentPreviewElementIds.enum';
 import { ComponentPreviewAssistance } from '../../../../interfaces/componentPreviewAssistance';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
@@ -80,6 +84,7 @@ import divInnerHtml from './divInnerHTML.vue';
 import { Ref, ref, watch } from 'vue';
 
 interface Consts {
+  BASE_PREVIEW_Z_INDEX: number;
   SUB_COMPONENT_CSS_MODES;
   NEW_COMPONENT_TYPES;
   SUB_COMPONENTS;
@@ -100,6 +105,7 @@ export default {
     });
     return {
       ...useComponentPreviewEventHandlers(componentRef, new Set([SUB_COMPONENTS.CLOSE])),
+      BASE_PREVIEW_Z_INDEX: subcomponentPreviewZIndexes[SUB_COMPONENTS.BASE],
       SUB_COMPONENT_PREVIEW_ELEMENT_IDS,
       SUB_COMPONENT_CSS_MODES,
       NEW_COMPONENT_TYPES,
@@ -116,6 +122,10 @@ export default {
         }
       });
     },
+    // UX - SUBCOMPONENT SELECT - set this to appropriate dimensions when the event is fired
+    prepareSubcomponentSelectMode(): void {
+      this.$refs.selectSubcomponentOverlay1.style.display = 'block';
+    }
   },
   components: {
     auxiliaryRightSideElements,
@@ -211,6 +221,15 @@ export default {
     position: absolute !important;
     top: 0px !important;
     width: 100%;
+    cursor: pointer;
+  }
+  .subcomponent-preview-select-in-progress {
+    background-color: #ffffff00 !important;
+    border-color: #ffffff00 !important;
+    position: absolute !important;
+    top: 0px !important;
+    width: 100%;
+    cursor: pointer;
   }
   .base-component-preview {
     height: 99%;

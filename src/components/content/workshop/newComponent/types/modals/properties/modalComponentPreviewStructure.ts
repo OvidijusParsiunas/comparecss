@@ -1,3 +1,4 @@
+import { subcomponentPreviewZIndexes } from '../../../../toolbar/options/componentOptions/subcomponentPreviewZIndexes'
 import { ComponentPreviewStructure, SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent'
 import { SUB_COMPONENT_PREVIEW_ELEMENT_IDS } from '../../../../../../../consts/subcomponentPreviewElementIds.enum'
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum'
@@ -12,6 +13,7 @@ export default function createModalComponentPreviewStructure(
     layers: [
       {
         subcomponentPreviewId: SUB_COMPONENT_PREVIEW_ELEMENT_IDS.LAYER_1,
+        previewZIndex: subcomponentPreviewZIndexes[SUB_COMPONENTS.LAYER_1],
         css: layer1Component.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
         subcomponents: {
           [PSEUDO_COMPONENTS.TEXT]: 'Modal title',
@@ -20,6 +22,7 @@ export default function createModalComponentPreviewStructure(
       },
       {
         subcomponentPreviewId: SUB_COMPONENT_PREVIEW_ELEMENT_IDS.LAYER_2,
+        previewZIndex: subcomponentPreviewZIndexes[SUB_COMPONENTS.LAYER_2],
         css: layer2Component.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
         subcomponents: {
           [PSEUDO_COMPONENTS.TEXT]: 'Modal body text',
@@ -27,6 +30,7 @@ export default function createModalComponentPreviewStructure(
       },
       {
         subcomponentPreviewId: SUB_COMPONENT_PREVIEW_ELEMENT_IDS.LAYER_3,
+        previewZIndex: subcomponentPreviewZIndexes[SUB_COMPONENTS.LAYER_3],
         css: layer3Component.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
         subcomponents: {
           [PSEUDO_COMPONENTS.TEXT]: 'Modal footer',

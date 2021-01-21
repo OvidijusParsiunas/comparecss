@@ -10,10 +10,11 @@
             @css-mode-clicked="updateCssMode"
             @hide-settings="hideSettings"
             @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-            @prepare-remove-subcomponent-modal="$emit('prepare-remove-subcomponent-modal')"/>
+            @prepare-remove-subcomponent-modal="$emit('prepare-remove-subcomponent-modal')"
+            @prepare-subcomponent-select-mode="prepareSubcomponentSelectMode"/>
         </div>
       </div>
-      <settings
+      <settings ref="settings"
         :subcomponentproperties="component.subcomponents[component.subcomponentsActiveMode]"
         :settings="activeSettings"
         :settingsUpdateTriggered="settingsUpdateTriggered"/>
@@ -140,6 +141,10 @@ export default {
           }
         });
       }
+    },
+    prepareSubcomponentSelectMode(): void {
+      this.$emit('prepare-subcomponent-select-mode');
+      this.$refs.settings.prepareSubcomponentSelectMode();
     }
   },
   props: {

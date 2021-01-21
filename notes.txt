@@ -4,10 +4,12 @@ Activate button, that turns into lock when active and you hover over it
 consider having a dropdown to choose which border side to edit
 have a builder for contents within the settings
 modal default margin will need to have a special option type to reflect the margin of the actual position, also an option to center it automatically
-Potentially used for the other dropdown
-  if (isAuxiliaryPadding && !this.$refs.dropdownMenu.offsetParent) return;
 javascript to close the alert message
 test in slower pc if the child dropdowns displays options correctly - chrome/firefox
+when clicking option button then dragging mouse out, text disappears
+
+fix issue where the css dropdown events are not being passed down correctly
+redundant mapping for subcomponentTypeToPreviewId, just do string theres
 
 option to import an existing button style!
 
@@ -17,7 +19,8 @@ create a custom select options element in new component modal body
 the alert button ripple does not seem to work properly when there are many components
 clean up css after export, such as 0px values, bordershadow being unset - be careful not to remove transition
 
-UX: 
+UX:
+  on using the select key for picking a subcomponent, check whether the mouse should always be a pointer, marked with UX - SUBCOMPONENT SELECT
   enter behaviour ok in new componant modal?
   check if switching component modes to default but leaving same option is ok for UX
 

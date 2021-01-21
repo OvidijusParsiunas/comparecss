@@ -124,6 +124,8 @@
         </div>
       </div>
     </div>
+    <!-- UX - SUBCOMPONENT SELECT - set this to appropriate dimensions when the event is fired -->
+    <div ref="selectSubcomponentOverlay2" style="display: none; width: 1000px; height: 110px; background-color: #ff010100; position: absolute; border: 0px; top: 53px; z-index: 2; cursor: pointer;"></div>
   </div>
 </template>
 
@@ -449,6 +451,10 @@ export default {
         }
       });
       this.updateSettings();
+    },
+    // UX - SUBCOMPONENT SELECT
+    prepareSubcomponentSelectMode(): void {
+      this.$refs.selectSubcomponentOverlay2.style.display = 'block';
     }
   },
   props: {

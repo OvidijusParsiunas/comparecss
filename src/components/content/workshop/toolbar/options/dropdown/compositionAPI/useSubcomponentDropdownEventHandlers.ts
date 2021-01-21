@@ -35,7 +35,7 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
       changeOptionThemeBySubcomponentDisplayStatus(dropdowns, lastHoveredOptionElement, lastHoveredOptionElementDropdownMenuIndex,
         'color', 'grey', 'black', 'backgroundColor', '');
     }
-    changeOptionThemeBySubcomponentDisplayStatus(dropdowns, optionElementToBeHighlighted, dropdownMenuIndex, 'backgroundColor', '#d4dfe9');
+    changeOptionThemeBySubcomponentDisplayStatus(dropdowns, optionElementToBeHighlighted, dropdownMenuIndex, 'backgroundColor', '#d8dde3');
   }
 
   const buttonMouseEnterEventHandler = (): void => {

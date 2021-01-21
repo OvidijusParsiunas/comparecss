@@ -22,7 +22,7 @@
       </button>
       <button
         :id="SUB_COMPONENT_PREVIEW_ELEMENT_IDS.CLOSE"
-        style="display: none" :style="subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
+        style="display: none" :style="[subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], { zIndex: CLOSE_PREVIEW_Z_INDEX }]"
         class="subcomponent-preview">
       </button>
     </div>
@@ -31,13 +31,16 @@
 
 <script lang="ts">
 import useComponentPreviewEventHandlers, { UseComponentPreviewEventHandlers } from './compositionAPI/useComponentPreviewEventHandlers';
+import { subcomponentPreviewZIndexes } from '../toolbar/options/componentOptions/subcomponentPreviewZIndexes';
 import { SUB_COMPONENT_PREVIEW_ELEMENT_IDS } from '../../../../consts/subcomponentPreviewElementIds.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { SubcomponentProperties } from '../../../../interfaces/workshopComponent';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
+import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import { Ref, ref, watch } from 'vue';
 
 interface Consts {
+  CLOSE_PREVIEW_Z_INDEX: number;
   SUB_COMPONENT_PREVIEW_ELEMENT_IDS;
   SUB_COMPONENT_CSS_MODES;
   NEW_COMPONENT_TYPES;
@@ -55,6 +58,7 @@ export default {
     });
     return {
       ...useComponentPreviewEventHandlers(subcomponentRef),
+      CLOSE_PREVIEW_Z_INDEX: subcomponentPreviewZIndexes[SUB_COMPONENTS.CLOSE],
       SUB_COMPONENT_PREVIEW_ELEMENT_IDS,
       SUB_COMPONENT_CSS_MODES,
       NEW_COMPONENT_TYPES,

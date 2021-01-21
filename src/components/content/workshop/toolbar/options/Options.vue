@@ -1,16 +1,25 @@
 <template>
   <div class="options-container">
-    <dropdown class="option-button"
-      :uniqueIdentifier="'subcomponentsDropdown'"
-      :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
-      :objectContainingActiveOption="component"
-      :activeModePropertyKeyName="'subcomponentsActiveMode'"
-      :fontAwesomeIconClassName="'fa-angle-double-down'"
-      :highlightSubcomponents="true"
-      :isNested="true"
-      :customEventHandlers="useComponentPreviewEventHandlers"
-      @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-      @new-dropdown-option-clicked="newSubcomponentsModeClicked($event)"/>
+    <div class="btn-group option-button">
+      <button v-if="isSubcomponentSelectModeButtonDisplayed"
+        id="component-select-button" type="button" class="btn"
+        @click="toggleSubcomponentSelectMode">
+        1
+      </button>
+      <dropdown
+        :uniqueIdentifier="'subcomponentsDropdown'"
+        :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
+        :objectContainingActiveOption="component"
+        :activeModePropertyKeyName="'subcomponentsActiveMode'"
+        :fontAwesomeIconClassName="'fa-angle-double-down'"
+        :highlightSubcomponents="true"
+        :isButtonGroup="true"
+        :isNested="true"
+        :customEventHandlers="useComponentPreviewEventHandlers"
+        @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
+        @new-dropdown-option-clicked="newSubcomponentsModeClicked($event)"
+        @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
+    </div>
     <div class="option-button">
       <button v-if="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent"
         type="button" class="btn view-option" data-toggle="modal" :data-target="removeSubcomponentModalId"
@@ -41,6 +50,7 @@
 
 <script lang="ts">
 import useComponentPreviewEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
+import { SUBCOMPONENT_PREVIEW_CLASSES } from '../../../../../consts/subcomponentPreviewClasses';
 import { componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../consts/workshopToolbarOptions';
@@ -62,6 +72,7 @@ interface Consts {
 
 interface Data {
   removeSubcomponentModalId: string;
+  isSubcomponentSelectModeButtonDisplayed: boolean;
 }
 
 export default {
@@ -76,8 +87,47 @@ export default {
   },
   data: (): Data => ({
     removeSubcomponentModalId: '',
+    isSubcomponentSelectModeButtonDisplayed: false,
   }),
   methods: {
+    toggleSubcomponentSelectMode(): void {
+      const subcomponentPreviewElements = document.getElementsByClassName(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT);
+      [...subcomponentPreviewElements].forEach((element) => {
+        element.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT);
+        element.classList.add(SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN);
+        (element as HTMLElement).style.display = 'block';
+        element.addEventListener('mouseover', () => {
+          const hoverElement = event.target as HTMLElement;
+          hoverElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN);
+          hoverElement.classList.add(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT);
+        });
+        element.addEventListener('mouseleave', () => {
+          const blurredElement = event.target as HTMLElement;
+          blurredElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT);
+          blurredElement.classList.add(SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN);
+        });
+      });
+      // UX - SUBCOMPONENT SELECT - set this to appropriate dimensions when the event is fired
+      this.$emit('prepare-subcomponent-select-mode');
+    },
+    // TO-DO
+    // traverseAllDropdownOptions(dropdownOptions): void {
+    //   const optionNames = Object.keys(dropdownOptions);
+    //   for (let i = 0; i < optionNames.length; i += 1) {
+    //     if (typeof dropdownOptions[optionNames[i]].currentlyDisplaying !== 'boolean') {
+    //       this.traverseAllDropdownOptions(dropdownOptions[optionNames[i]]);
+    //     }
+    //     this.toggleSubcomponentPreviewDisplay(optionNames[i]);
+    //   }
+    // },
+    // toggleSubcomponentPreviewDisplay(subcomponentType: string): void {
+    //   const subcomponentPreviewElementId = subcomponentTypeToPreviewId[subcomponentType];
+    //   const subcomponentPreviewElement = document.getElementById(subcomponentPreviewElementId);
+    //   if (subcomponentPreviewElement) {
+    //     subcomponentPreviewElement.style.backgroundColor = 'unset !important';
+    //     subcomponentPreviewElement.style.display = 'block';
+    //   }
+    // },
     optionClick(option: WORKSHOP_TOOLBAR_OPTIONS): void {
       this.activeOption = option;
       this.$emit('option-clicked', option);
@@ -112,6 +162,9 @@ export default {
           this.$emit('hide-settings');
         }
       }
+    },
+    toggleSubcomponentSelectModeButtonDisplay(isDropdownDisplayed: boolean): void {
+      this.isSubcomponentSelectModeButtonDisplayed = isDropdownDisplayed;
     }
   },
   props: {
@@ -127,6 +180,10 @@ export default {
   .options-container {
     margin-top: 10px !important;
     margin-bottom: 10px !important;
+  }
+  #component-select-button {
+    border: 1px solid #ced4da !important;
+    background-color: white !important;
   }
   .view-option {
     color: black !important;
