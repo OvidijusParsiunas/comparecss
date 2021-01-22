@@ -454,7 +454,7 @@ export default {
     },
     // UX - SUBCOMPONENT SELECT
     prepareSubcomponentSelectMode(): void {
-      this.$refs.selectSubcomponentOverlay2.style.display = 'block';
+      // this.$refs.selectSubcomponentOverlay2.style.display = 'block';
     }
   },
   props: {

@@ -17,11 +17,10 @@
         </div>
         <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item grid-item-position">
           <!-- parent component -->
-          <!-- TO-DO -->
-          <!-- @mouseenter="componentMouseEnter()"
-            @mouseleave="componentMouseLeave()" -->
           <component :is="component.componentPreviewStructure.baseCss.componentTag" id="demoComponent"
             class="grid-item-position" :class="[ ...component.componentPreviewStructure.baseCss.jsClasses ]"
+            @mouseenter="componentMouseEnter()"
+            @mouseleave="componentMouseLeave()"
             @mousedown="componentMouseDown()"
             @mouseup="componentMouseUp()"
             :style="component.componentPreviewStructure.baseCss.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
@@ -50,7 +49,7 @@
             class="subcomponent-preview base-component-preview">
           </component>
           <!-- UX - SUBCOMPONENT SELECT - set this to appropriate dimensions when the event is fired -->
-          <div ref="selectSubcomponentOverlay1" style="display: none; width: 1000px; height: 700px; background-color: #ff010100; position: absolute; border: 0px; top: -221px; left: -220px; z-index: 1; cursor: pointer;"></div>
+          <!-- <div ref="selectSubcomponentOverlay1" style="width: 1000px; height: 700px; background-color: #ff010100; position: absolute; border: 0px; top: -221px; left: -220px; z-index: 1; cursor: pointer;"></div> -->
         </div>
         <div class="grid-item grid-item-position">
           <transition name="right-slide-fade">
@@ -124,7 +123,8 @@ export default {
     },
     // UX - SUBCOMPONENT SELECT - set this to appropriate dimensions when the event is fired
     prepareSubcomponentSelectMode(): void {
-      this.$refs.selectSubcomponentOverlay1.style.display = 'block';
+      // this.$refs.selectSubcomponentOverlay1.style.display = 'block';
+      this.setSubcomponentSelectModeInProgressState(true);
     }
   },
   components: {
