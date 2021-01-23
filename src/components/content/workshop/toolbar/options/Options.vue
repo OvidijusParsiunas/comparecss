@@ -91,7 +91,7 @@ export default {
   }),
   methods: {
     initiateSubcomponentSelectMode(): void {
-      const workshopEventCallback = SubcomponentSelectMode.initiate(this.component);
+      const workshopEventCallback = SubcomponentSelectMode.initiate(this.component, this.newSubcomponentsModeClicked);
       this.$emit('prepare-subcomponent-select-mode', workshopEventCallback);
     },
     optionClick(option: WORKSHOP_TOOLBAR_OPTIONS): void {

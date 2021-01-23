@@ -5,12 +5,9 @@ import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTrigger
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SUB_COMPONENTS } from '../../../../../../consts/subcomponentModes.enum';
+import JsUtils from '../../../../../../services/jsUtils/jsUtils';
 
 export default class SubcomponentSelectMode {
-  
-  private static getKeyByValue(object: unknown, value: unknown): string {
-    return Object.keys(object).find(key => object[key] === value);
-  }
   
   private static mouseOverSubcomponentPreviewElementHandler(): void {
     const hoveredElement = event.target as HTMLElement;
@@ -40,26 +37,27 @@ export default class SubcomponentSelectMode {
     previewElement.addEventListener('mouseleave', this.mouseLeaveSubcomponentPreviewElementHandler);
   }
 
-  private static end(component: WorkshopComponent): WorkshopEventCallbackReturn {
+  private static end(component: WorkshopComponent, newSubcomponentsModeClickedFunc: (param1: SUB_COMPONENTS) => void): WorkshopEventCallbackReturn {
     const previewElement = event.target as HTMLElement;
     if (previewElement.classList.contains(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT)) {
       this.removeSubcomponentPreviewProprerties(previewElement);
-      component.subcomponentsActiveMode = this.getKeyByValue(subcomponentTypeToPreviewId, previewElement.id) as SUB_COMPONENTS;
       const subcomponentPreviewElements = document.getElementsByClassName(SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN);
       [...subcomponentPreviewElements].forEach((element: HTMLElement) => {
         this.removeSubcomponentPreviewProprerties(element);
       });
+      component.subcomponentsActiveMode = JsUtils.getKeyByValue(subcomponentTypeToPreviewId, previewElement.id) as SUB_COMPONENTS;
+      newSubcomponentsModeClickedFunc(component.subcomponentsActiveMode);
     }
     return { shouldRepeat: false };
   }
 
-  public static initiate(component: WorkshopComponent): WorkshopEventCallback {
+  public static initiate(component: WorkshopComponent, newSubcomponentsModeClickedFunc: (param1: SUB_COMPONENTS) => void): WorkshopEventCallback {
     const subcomponentPreviewElements = document.getElementsByClassName(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT);
     [...subcomponentPreviewElements].forEach((element: HTMLElement) => {
       this.prepareSubcomponentPreviewProperties(element);
     });
     const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
-    const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.end.bind(this, component)};
+    const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.end.bind(this, component, newSubcomponentsModeClickedFunc)};
     return workshopEventCallback;
   }
 }
