@@ -11,7 +11,7 @@
             @hide-settings="hideSettings"
             @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
             @prepare-remove-subcomponent-modal="$emit('prepare-remove-subcomponent-modal')"
-            @prepare-subcomponent-select-mode="prepareSubcomponentSelectMode"/>
+            @prepare-subcomponent-select-mode="prepareSubcomponentSelectMode($event)"/>
         </div>
       </div>
       <settings ref="settings"
@@ -27,6 +27,7 @@ import { componentTypeToOptions } from './options/componentOptions/componentType
 import PartialCssCustomSettingsUtils from './settings/utils/partialCssCustomSettingsUtils';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOptions';
+import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import { UpdateOptionsMode } from '../../../../interfaces/updateCssMode';
 import { optionToSettings } from './settings/types/optionToSettings';
@@ -142,8 +143,8 @@ export default {
         });
       }
     },
-    prepareSubcomponentSelectMode(): void {
-      this.$emit('prepare-subcomponent-select-mode');
+    prepareSubcomponentSelectMode(callback: WorkshopEventCallback): void {
+      this.$emit('prepare-subcomponent-select-mode', callback);
       this.$refs.settings.prepareSubcomponentSelectMode();
     }
   },

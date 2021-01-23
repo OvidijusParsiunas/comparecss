@@ -31,7 +31,7 @@
               :componentPreviewAssistance="componentPreviewAssistance"
               @hide-dropdown-menu-callback="addWorkshopEventCallback($event)"
               @prepare-remove-subcomponent-modal="$refs.removeSubcomponentModal.prepare()"
-              @prepare-subcomponent-select-mode="$refs.contents.prepareSubcomponentSelectMode()"/>
+              @prepare-subcomponent-select-mode="prepareSubcomponentSelectMode($event)"/>
             <component-contents ref="contents" style="height: 50%" :component="currentlySelectedComponent" :componentPreviewAssistance="componentPreviewAssistance"/>
             <div style="height: 18%; display: flex; float: right; margin-right: 10px; margin-top: 105px">
               <div style="position: relative">
@@ -479,7 +479,11 @@ export default {
           this.isIconsPreloaded = true;
         }, WAIT_TO_START_DOWNLOADING_ICON_ICONS);
       }
-    }
+    },
+    prepareSubcomponentSelectMode(callback: WorkshopEventCallback): void {
+      this.$refs.contents.prepareSubcomponentSelectMode();
+      this.addWorkshopEventCallback(callback);
+    },
   },
   components: {
     removalModalTemplate,

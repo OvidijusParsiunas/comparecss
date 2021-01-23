@@ -65,7 +65,7 @@ export default function useComponentPreviewEventHandlers(componentRef: Ref<Subco
   }
   
   const componentMouseDown = (): void => {
-    if (shouldThisComponentNotBeAffected()) return;
+    if (shouldThisComponentNotBeAffected() || subcomponentSelectModeInProgressState) return;
     const componentProperties = parseComponentProperties();
     const { customCss, subcomponentPreviewTransition, customCssActiveMode } = componentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
@@ -76,7 +76,7 @@ export default function useComponentPreviewEventHandlers(componentRef: Ref<Subco
   }
   
   const componentMouseUp = (): void => {
-    if (shouldThisComponentNotBeAffected()) return;
+    if (shouldThisComponentNotBeAffected() || subcomponentSelectModeInProgressState) return;
     const componentProperties = parseComponentProperties();
     const { customCss, customCssActiveMode } = componentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
