@@ -71,6 +71,7 @@
 <script lang="ts">
 import useComponentPreviewEventHandlers, { UseComponentPreviewEventHandlers } from './compositionAPI/useComponentPreviewEventHandlers';
 import { subcomponentPreviewZIndexes } from '../toolbar/options/componentOptions/subcomponentPreviewZIndexes';
+import { ToggleSubcomponentSelectModeEvent } from '../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { SUB_COMPONENT_PREVIEW_ELEMENT_IDS } from '../../../../consts/subcomponentPreviewElementIds.enum';
 import { ComponentPreviewAssistance } from '../../../../interfaces/componentPreviewAssistance';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
@@ -122,9 +123,10 @@ export default {
       });
     },
     // UX - SUBCOMPONENT SELECT - set this to appropriate dimensions when the event is fired
-    prepareSubcomponentSelectMode(): void {
+    toggleSubcomponentSelectMode(toggleSubcomponentSelectModeEvent: ToggleSubcomponentSelectModeEvent): void {
+      const [isInitiated] = toggleSubcomponentSelectModeEvent;
       // this.$refs.selectSubcomponentOverlay1.style.display = 'block';
-      this.setSubcomponentSelectModeInProgressState(true);
+      this.setSubcomponentSelectModeInProgressState(isInitiated);
     }
   },
   components: {

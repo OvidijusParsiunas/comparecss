@@ -11,7 +11,7 @@
             @hide-settings="hideSettings"
             @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
             @prepare-remove-subcomponent-modal="$emit('prepare-remove-subcomponent-modal')"
-            @prepare-subcomponent-select-mode="prepareSubcomponentSelectMode($event)"/>
+            @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"/>
         </div>
       </div>
       <settings ref="settings"
@@ -23,11 +23,11 @@
 </template>
 
 <script lang="ts">
+import { ToggleSubcomponentSelectModeEvent } from '../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { componentTypeToOptions } from './options/componentOptions/componentTypeToOptions';
 import PartialCssCustomSettingsUtils from './settings/utils/partialCssCustomSettingsUtils';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOptions';
-import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import { UpdateOptionsMode } from '../../../../interfaces/updateCssMode';
 import { optionToSettings } from './settings/types/optionToSettings';
@@ -143,9 +143,9 @@ export default {
         });
       }
     },
-    prepareSubcomponentSelectMode(callback: WorkshopEventCallback): void {
-      this.$emit('prepare-subcomponent-select-mode', callback);
-      this.$refs.settings.prepareSubcomponentSelectMode();
+    toggleSubcomponentSelectMode(toggleSubcomponentSelectModeEvent: ToggleSubcomponentSelectModeEvent): void {
+      this.$emit('toggle-subcomponent-select-mode', toggleSubcomponentSelectModeEvent);
+      this.$refs.settings.toggleSubcomponentSelectMode();
     }
   },
   props: {

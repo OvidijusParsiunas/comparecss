@@ -1,3 +1,4 @@
+import { SUBCOMPONENT_PREVIEW_CLASSES } from '../../../../../../../consts/subcomponentPreviewClasses';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { subcomponentTypeToPreviewId } from '../../componentOptions/subcomponentTypeToPreviewId';
 import { DropdownCompositionAPI } from '../../../../../../../interfaces/dropdownCompositionAPI';
@@ -5,11 +6,26 @@ import { Ref } from 'vue';
 
 export default function useSubcomponentDropdownEventHandlers(objectContainingActiveOption: Ref<unknown>, activeModePropertyKeyName: Ref<string>, highlightSubcomponents: Ref<boolean>): DropdownCompositionAPI {
 
+  function switchSubcomponentPreviewModeToggle(subcomponentPreviewElement: HTMLElement, displayValue: 'block'|'none'): void {
+    if (displayValue === 'block') {
+      if (subcomponentPreviewElement.classList.contains(SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN)) {
+        subcomponentPreviewElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN);
+        subcomponentPreviewElement.classList.add(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT);
+      }
+     } else if (displayValue === 'none') {
+       if (subcomponentPreviewElement.classList.contains(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT)) {
+        subcomponentPreviewElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT);
+        subcomponentPreviewElement.classList.add(SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN);
+       }
+     }
+  }
+  
   function toggleSubcomponentPreviewDisplay(subcomponentType: string, displayValue: 'block'|'none'): void {
     if (!highlightSubcomponents.value) return;
     const subcomponentPreviewElementId = subcomponentTypeToPreviewId[subcomponentType];
     const subcomponentPreviewElement = document.getElementById(subcomponentPreviewElementId);
-    if (subcomponentPreviewElement) subcomponentPreviewElement.style.display = displayValue;
+    switchSubcomponentPreviewModeToggle(subcomponentPreviewElement, displayValue);
+     if (subcomponentPreviewElement) subcomponentPreviewElement.style.display = displayValue;
   }
 
   function getOptionNameFromElement(highlightedOptionElement: HTMLElement): string {

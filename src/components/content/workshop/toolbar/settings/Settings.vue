@@ -453,7 +453,7 @@ export default {
       this.updateSettings();
     },
     // UX - SUBCOMPONENT SELECT
-    prepareSubcomponentSelectMode(): void {
+    toggleSubcomponentSelectMode(): void {
       // this.$refs.selectSubcomponentOverlay2.style.display = 'block';
     }
   },

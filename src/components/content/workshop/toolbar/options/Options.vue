@@ -4,7 +4,7 @@
       <button v-if="isSubcomponentSelectModeButtonDisplayed"
         id="component-select-button" type="button" class="btn"
         @click="initiateSubcomponentSelectMode">
-        1
+        <i class="fa fa-mouse-pointer"></i>
       </button>
       <dropdown
         :uniqueIdentifier="'subcomponentsDropdown'"
@@ -49,6 +49,7 @@
 </template>
 
 <script lang="ts">
+import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import useComponentPreviewEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
@@ -91,8 +92,9 @@ export default {
   }),
   methods: {
     initiateSubcomponentSelectMode(): void {
-      const workshopEventCallback = SubcomponentSelectMode.initiate(this.component, this.newSubcomponentsModeClicked);
-      this.$emit('prepare-subcomponent-select-mode', workshopEventCallback);
+      const buttonElement = event.currentTarget as HTMLElement;
+      const workshopEventCallback = SubcomponentSelectMode.initiate(buttonElement, this.component, this.newSubcomponentsModeClicked, this.$emit, 'toggle-subcomponent-select-mode');
+      this.$emit('toggle-subcomponent-select-mode', [true, workshopEventCallback] as ToggleSubcomponentSelectModeEvent);
     },
     optionClick(option: WORKSHOP_TOOLBAR_OPTIONS): void {
       this.activeOption = option;
@@ -150,6 +152,10 @@ export default {
   #component-select-button {
     border: 1px solid #ced4da !important;
     background-color: white !important;
+    padding-left: 10px !important;
+    padding-right: 8px !important;
+    font-size: 13px !important;
+    color: #5c5c5c;
   }
   .view-option {
     color: black !important;

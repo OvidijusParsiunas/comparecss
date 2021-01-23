@@ -31,7 +31,7 @@
               :componentPreviewAssistance="componentPreviewAssistance"
               @hide-dropdown-menu-callback="addWorkshopEventCallback($event)"
               @prepare-remove-subcomponent-modal="$refs.removeSubcomponentModal.prepare()"
-              @prepare-subcomponent-select-mode="prepareSubcomponentSelectMode($event)"/>
+              @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"/>
             <component-contents ref="contents" style="height: 50%" :component="currentlySelectedComponent" :componentPreviewAssistance="componentPreviewAssistance"/>
             <div style="height: 18%; display: flex; float: right; margin-right: 10px; margin-top: 105px">
               <div style="position: relative">
@@ -92,6 +92,7 @@ import { inheritedAlertCloseChildCss } from './newComponent/types/alerts/propert
 import { modalLayerTopCustomSettings } from './newComponent/types/modals/properties/modalLayerTopCustomSettings';
 import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
 import { alertCloseCustomSettings } from './newComponent/types/alerts/properties/alertCloseCustomSettings';
+import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { modalBaseCustomSettings } from './newComponent/types/modals/properties/modalBaseCustomSettings';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
@@ -480,9 +481,12 @@ export default {
         }, WAIT_TO_START_DOWNLOADING_ICON_ICONS);
       }
     },
-    prepareSubcomponentSelectMode(callback: WorkshopEventCallback): void {
-      this.$refs.contents.prepareSubcomponentSelectMode();
-      this.addWorkshopEventCallback(callback);
+    toggleSubcomponentSelectMode(toggleSubcomponentSelectModeEvent: ToggleSubcomponentSelectModeEvent): void {
+      const [isInitiated, workshopEventCallback] = toggleSubcomponentSelectModeEvent;
+      if (isInitiated) {
+        this.addWorkshopEventCallback(workshopEventCallback); 
+      }
+      this.$refs.contents.toggleSubcomponentSelectMode(toggleSubcomponentSelectModeEvent);
     },
   },
   components: {

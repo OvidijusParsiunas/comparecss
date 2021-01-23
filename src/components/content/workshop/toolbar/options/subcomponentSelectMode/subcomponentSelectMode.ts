@@ -1,3 +1,4 @@
+import { ToggleSubcomponentSelectModeEvent } from '../../../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
 import { SUBCOMPONENT_PREVIEW_CLASSES } from '../../../../../../consts/subcomponentPreviewClasses';
 import { subcomponentTypeToPreviewId } from '../componentOptions/subcomponentTypeToPreviewId';
@@ -9,6 +10,10 @@ import JsUtils from '../../../../../../services/jsUtils/jsUtils';
 
 export default class SubcomponentSelectMode {
   
+  private static activeButtonColor = '#3de342';
+  private static defaultButtonColor = '';
+  // blue - #00a1ff'
+
   private static mouseOverSubcomponentPreviewElementHandler(): void {
     const hoveredElement = event.target as HTMLElement;
     hoveredElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN);
@@ -37,7 +42,8 @@ export default class SubcomponentSelectMode {
     previewElement.addEventListener('mouseleave', this.mouseLeaveSubcomponentPreviewElementHandler);
   }
 
-  private static end(component: WorkshopComponent, newSubcomponentsModeClickedFunc: (param1: SUB_COMPONENTS) => void): WorkshopEventCallbackReturn {
+  private static end(buttonElement: HTMLElement, component: WorkshopComponent, newSubcomponentsModeClickedFunc: (param1: SUB_COMPONENTS) => void,
+      emitCallbackFunc: (param1: string, param2: ToggleSubcomponentSelectModeEvent) => void, eventName: string): WorkshopEventCallbackReturn {
     const previewElement = event.target as HTMLElement;
     if (previewElement.classList.contains(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT)) {
       this.removeSubcomponentPreviewProprerties(previewElement);
@@ -48,16 +54,20 @@ export default class SubcomponentSelectMode {
       component.subcomponentsActiveMode = JsUtils.getKeyByValue(subcomponentTypeToPreviewId, previewElement.id) as SUB_COMPONENTS;
       newSubcomponentsModeClickedFunc(component.subcomponentsActiveMode);
     }
+    buttonElement.style.color = this.defaultButtonColor;
+    emitCallbackFunc(eventName, [false] as ToggleSubcomponentSelectModeEvent);
     return { shouldRepeat: false };
   }
 
-  public static initiate(component: WorkshopComponent, newSubcomponentsModeClickedFunc: (param1: SUB_COMPONENTS) => void): WorkshopEventCallback {
+  public static initiate(buttonElement: HTMLElement, component: WorkshopComponent, newSubcomponentsModeClickedFunc: (param1: SUB_COMPONENTS) => void,
+      emitCallbackFunc: (param1: string, param2: ToggleSubcomponentSelectModeEvent) => void, eventName: string): WorkshopEventCallback {
     const subcomponentPreviewElements = document.getElementsByClassName(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT);
     [...subcomponentPreviewElements].forEach((element: HTMLElement) => {
       this.prepareSubcomponentPreviewProperties(element);
     });
+    buttonElement.style.color = this.activeButtonColor;
     const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
-    const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.end.bind(this, component, newSubcomponentsModeClickedFunc)};
+    const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.end.bind(this, buttonElement, component, newSubcomponentsModeClickedFunc, emitCallbackFunc, eventName)};
     return workshopEventCallback;
   }
 }
