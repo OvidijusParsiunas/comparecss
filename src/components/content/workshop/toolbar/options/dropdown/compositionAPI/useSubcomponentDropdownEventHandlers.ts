@@ -33,26 +33,30 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
     return (highlightedOptionElement.childNodes[0] as HTMLElement).innerHTML;
   }
 
-  function changeOptionThemeBySubcomponentDisplayStatus(dropdowns: NestedDropdownStructure[], optionElement: HTMLElement, dropdownMenuIndex: number, styleProperty: string, valueIfChange: string, valueIfNoChange?: string,
-    defaultStyleProperty?: string, defaultValue?: string): void {
+  function isOptionInactive(dropdowns: NestedDropdownStructure[], optionElement: HTMLElement, dropdownMenuIndex: number): boolean {
+    return typeof dropdowns[dropdownMenuIndex][(optionElement.childNodes[0] as HTMLElement).innerHTML].currentlyDisplaying === 'boolean'
+      && !dropdowns[dropdownMenuIndex][((optionElement.childNodes[0] as HTMLElement)).innerHTML].currentlyDisplaying
+  }
+
+  function resetOptionThemeBySubcomponentDisplayStatus(dropdowns: NestedDropdownStructure[], optionElement: HTMLElement, dropdownMenuIndex: number): void {
     if (dropdownMenuIndex !== undefined && dropdowns[dropdownMenuIndex]) {
-      if (typeof dropdowns[dropdownMenuIndex][(optionElement.childNodes[0] as HTMLElement).innerHTML].currentlyDisplaying === 'boolean'
-          && !dropdowns[dropdownMenuIndex][((optionElement.childNodes[0] as HTMLElement)).innerHTML].currentlyDisplaying) {
-        optionElement.style[styleProperty] = valueIfChange;
-      } else {
-        if (valueIfNoChange !== undefined) optionElement.style[styleProperty] = valueIfNoChange;
-      }
-      if (defaultValue !== undefined) optionElement.style[defaultStyleProperty] = defaultValue;
+      optionElement.style.color = isOptionInactive(dropdowns, optionElement, dropdownMenuIndex) ? 'grey' : 'black';
+      optionElement.classList.remove('custom-dropdown-item-inactive');
+    }
+  }
+
+  function changeOptionThemeBySubcomponentDisplayStatus(dropdowns: NestedDropdownStructure[], optionElement: HTMLElement, dropdownMenuIndex: number): void {
+    if (dropdownMenuIndex !== undefined && dropdowns[dropdownMenuIndex] && isOptionInactive(dropdowns, optionElement, dropdownMenuIndex)) {
+      optionElement.classList.add('custom-dropdown-item-inactive');
     }
   }
 
   function changeOptionHighlightColours(dropdowns: NestedDropdownStructure[], optionElementToBeHighlighted: HTMLElement, dropdownMenuIndex: number,
       lastHoveredOptionElement: HTMLElement, lastHoveredOptionElementDropdownMenuIndex: number): void {
     if (lastHoveredOptionElement) {
-      changeOptionThemeBySubcomponentDisplayStatus(dropdowns, lastHoveredOptionElement, lastHoveredOptionElementDropdownMenuIndex,
-        'color', 'grey', 'black', 'backgroundColor', '');
+      resetOptionThemeBySubcomponentDisplayStatus(dropdowns, lastHoveredOptionElement, lastHoveredOptionElementDropdownMenuIndex);
     }
-    changeOptionThemeBySubcomponentDisplayStatus(dropdowns, optionElementToBeHighlighted, dropdownMenuIndex, 'backgroundColor', '#d8dde3');
+    changeOptionThemeBySubcomponentDisplayStatus(dropdowns, optionElementToBeHighlighted, dropdownMenuIndex);
   }
 
   const buttonMouseEnterEventHandler = (): void => {

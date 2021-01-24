@@ -229,12 +229,13 @@ export default {
     },
     highlightOption(optionElementToBeHighlighted: HTMLElement, dropdownMenuIndex: number): void {
       if (this.lastHoveredOptionElement) {
-        this.lastHoveredOptionElement.classList.remove('active');
+        this.lastHoveredOptionElement.classList.remove('custom-dropdown-item-active');
+        this.lastHoveredOptionElement.classList.add('custom-dropdown-item-default');
         this.changeOptionArrowColor(this.lastHoveredOptionElement, 'grey');
       }
       this.lastHoveredOptionElement = optionElementToBeHighlighted;
       this.lastHoveredOptionElementDropdownMenuIndex = dropdownMenuIndex;
-      optionElementToBeHighlighted.classList.add('active');
+      optionElementToBeHighlighted.classList.add('custom-dropdown-item-active');
       optionElementToBeHighlighted.style.color = 'white';
       this.changeOptionArrowColor(optionElementToBeHighlighted, 'white');
     },

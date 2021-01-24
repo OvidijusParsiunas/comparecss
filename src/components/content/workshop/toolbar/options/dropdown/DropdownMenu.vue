@@ -54,8 +54,18 @@ export default {
     align-items: center;
     padding-bottom: 2px
   }
+  .custom-dropdown-item-default {
+    background-color: white !important;
+  }
+  .custom-dropdown-item-active {
+    background-color: #007bff !important;
+  }
+  .custom-dropdown-item-inactive {
+    background-color: #d8dde3 !important;
+  }
   .option-text {
     padding-right: 10px;
+    user-select: none;
   }
   .arrow-right {
     padding-left: 3px;
