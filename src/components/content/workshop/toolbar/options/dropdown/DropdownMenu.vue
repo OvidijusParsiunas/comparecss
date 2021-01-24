@@ -1,5 +1,5 @@
 <template>
-  <div ref="dropdownMenu" class="dropdown-menu custom-dropdown-menu" :class="DROPDOWN_OPTION_MARKER">
+  <div ref="dropdownMenu" class="dropdown-menu custom-dropdown-menu" :class="DROPDOWN_OPTION_MARKER" :style="BROWSER_SPECIFIC_DROPDOWN_MENU_STYLE">
     <a v-for="(innerDropdownOptions, optionName, optionIndex) in dropdownOptions" :key="optionName"
       class="dropdown-item custom-dropdown-item"
       :style="{ color: [(typeof innerDropdownOptions.currentlyDisplaying !== 'boolean' || (typeof innerDropdownOptions.currentlyDisplaying == 'boolean' && innerDropdownOptions.currentlyDisplaying)) ? 'black' : 'grey' ]}"
@@ -14,16 +14,22 @@
 <script lang="ts">
 import { OptionMouseEnter, OptionMouseLeave } from '../../../../../../interfaces/dropdownMenuMouseEvents'
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
+import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { DROPDOWN_OPTION_MARKER } from '../../../../../../consts/elementClassMarkers';
+import BrowserType from '../../../../../../services/workshop/browserType';
 
-interface Data {
+interface Consts {
   DROPDOWN_OPTION_MARKER;
+  BROWSER_SPECIFIC_DROPDOWN_MENU_STYLE: WorkshopComponentCss;
 }
 
 export default {
-  data: (): Data => ({
-    DROPDOWN_OPTION_MARKER,
-  }),
+  setup(): Consts {
+    return {
+      DROPDOWN_OPTION_MARKER,
+      BROWSER_SPECIFIC_DROPDOWN_MENU_STYLE: { paddingBottom: BrowserType.isFirefox() ? '1px !important' : '2px !important' },
+    };
+  },
   methods: {
     mouseEnter(innerDropdownOptions: NestedDropdownStructure, optionIndex: number): void {
       this.$emit('mouse-enter-option', [innerDropdownOptions, this.nestedDropdownIndex, optionIndex] as OptionMouseEnter);
@@ -43,7 +49,6 @@ export default {
   .custom-dropdown-menu {
     padding: 0px !important;
     padding-top: 2px !important;
-    padding-bottom: 2px !important;
     margin-top: 0px !important;
     min-width: 6.5rem !important;
   }

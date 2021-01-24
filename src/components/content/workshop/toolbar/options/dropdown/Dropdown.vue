@@ -230,7 +230,8 @@ export default {
     highlightOption(optionElementToBeHighlighted: HTMLElement, dropdownMenuIndex: number): void {
       if (this.lastHoveredOptionElement) {
         this.lastHoveredOptionElement.classList.remove('custom-dropdown-item-active');
-        this.lastHoveredOptionElement.classList.add('custom-dropdown-item-default');
+        // bug fix for resetting option colour when user clicks and drags an option
+        if (!document.activeElement.classList.contains(this.uniqueIdentifier)) this.lastHoveredOptionElement.classList.add('custom-dropdown-item-default');
         this.changeOptionArrowColor(this.lastHoveredOptionElement, 'grey');
       }
       this.lastHoveredOptionElement = optionElementToBeHighlighted;
