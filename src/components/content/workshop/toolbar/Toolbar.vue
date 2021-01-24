@@ -23,7 +23,6 @@
 </template>
 
 <script lang="ts">
-import { ToggleSubcomponentSelectModeEvent } from '../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { componentTypeToOptions } from './options/componentOptions/componentTypeToOptions';
 import PartialCssCustomSettingsUtils from './settings/utils/partialCssCustomSettingsUtils';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
@@ -33,6 +32,7 @@ import { UpdateOptionsMode } from '../../../../interfaces/updateCssMode';
 import { optionToSettings } from './settings/types/optionToSettings';
 import settings from './settings/Settings.vue';
 import options from './options/Options.vue';
+import { WorkshopEventCallback } from '@/interfaces/workshopEventCallback';
 
 interface Data {
   activeOption: WORKSHOP_TOOLBAR_OPTIONS;
@@ -143,8 +143,8 @@ export default {
         });
       }
     },
-    toggleSubcomponentSelectMode(toggleSubcomponentSelectModeEvent: ToggleSubcomponentSelectModeEvent): void {
-      this.$emit('toggle-subcomponent-select-mode', toggleSubcomponentSelectModeEvent);
+    toggleSubcomponentSelectMode(callback: WorkshopEventCallback): void {
+      this.$emit('toggle-subcomponent-select-mode', callback);
       this.$refs.settings.toggleSubcomponentSelectMode();
     }
   },

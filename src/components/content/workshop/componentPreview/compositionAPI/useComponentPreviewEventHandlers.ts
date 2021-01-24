@@ -1,5 +1,6 @@
 import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../../consts/unsetColotButtonDisplayed';
 import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
+import { subcomponentSelectModeState } from '../../toolbar/options/subcomponentSelectMode/state';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
 import { Ref } from 'vue';
@@ -9,7 +10,6 @@ export interface UseComponentPreviewEventHandlers {
   componentMouseLeave: () => void,
   componentMouseDown: () => void,
   componentMouseUp: () => void,
-  setSubcomponentSelectModeInProgressState?: (param: boolean) => void,
 }
 
 export default function useComponentPreviewEventHandlers(componentRef: Ref<SubcomponentProperties> | Ref<WorkshopComponent>, componentsThatShouldNotBeAffected?: Set<SUB_COMPONENTS>): UseComponentPreviewEventHandlers {
@@ -17,7 +17,6 @@ export default function useComponentPreviewEventHandlers(componentRef: Ref<Subco
   let overwrittenDefaultPropertiesByHover = {};
   let overwrittenDefaultPropertiesByClick = {};
   let isUnsetButtonDisplayedForColorInputs = {};
-  let subcomponentSelectModeInProgressState = false;
 
   function setDefaultUnsetButtonStatesForColorInputs(customCss: CustomCss): void {
     Object.keys(customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]).forEach((key) => {
@@ -43,7 +42,7 @@ export default function useComponentPreviewEventHandlers(componentRef: Ref<Subco
   }
 
   const componentMouseEnter = (): void => {
-    if (shouldThisComponentNotBeAffected() || subcomponentSelectModeInProgressState) return;
+    if (shouldThisComponentNotBeAffected() || subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
     const componentProperties = parseComponentProperties();
     const { customCss, subcomponentPreviewTransition, customCssActiveMode } = componentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
@@ -55,7 +54,7 @@ export default function useComponentPreviewEventHandlers(componentRef: Ref<Subco
   }
   
   const componentMouseLeave = (): void => {
-    if (shouldThisComponentNotBeAffected() || subcomponentSelectModeInProgressState) return;
+    if (shouldThisComponentNotBeAffected() || subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
     const componentProperties = parseComponentProperties();
     const { customCss, customCssActiveMode } = componentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
@@ -65,7 +64,7 @@ export default function useComponentPreviewEventHandlers(componentRef: Ref<Subco
   }
   
   const componentMouseDown = (): void => {
-    if (shouldThisComponentNotBeAffected() || subcomponentSelectModeInProgressState) return;
+    if (shouldThisComponentNotBeAffected() || subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
     const componentProperties = parseComponentProperties();
     const { customCss, subcomponentPreviewTransition, customCssActiveMode } = componentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
@@ -76,16 +75,12 @@ export default function useComponentPreviewEventHandlers(componentRef: Ref<Subco
   }
   
   const componentMouseUp = (): void => {
-    if (shouldThisComponentNotBeAffected() || subcomponentSelectModeInProgressState) return;
+    if (shouldThisComponentNotBeAffected() || subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
     const componentProperties = parseComponentProperties();
     const { customCss, customCssActiveMode } = componentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
       customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick };
     }
-  }
-
-  const setSubcomponentSelectModeInProgressState = (state: boolean): void => {
-    subcomponentSelectModeInProgressState = state;
   }
   
   return {
@@ -93,6 +88,5 @@ export default function useComponentPreviewEventHandlers(componentRef: Ref<Subco
     componentMouseLeave,
     componentMouseDown,
     componentMouseUp,
-    setSubcomponentSelectModeInProgressState,
   };
 }

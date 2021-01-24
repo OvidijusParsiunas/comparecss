@@ -2,11 +2,12 @@ import { SUBCOMPONENT_PREVIEW_CLASSES } from '../../../../../../../consts/subcom
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { subcomponentTypeToPreviewId } from '../../componentOptions/subcomponentTypeToPreviewId';
 import { DropdownCompositionAPI } from '../../../../../../../interfaces/dropdownCompositionAPI';
+import { subcomponentSelectModeState } from '../../subcomponentSelectMode/state';
 import { Ref } from 'vue';
 
 export default function useSubcomponentDropdownEventHandlers(objectContainingActiveOption: Ref<unknown>, activeModePropertyKeyName: Ref<string>, highlightSubcomponents: Ref<boolean>): DropdownCompositionAPI {
 
-  function switchSubcomponentPreviewModeToggle(subcomponentPreviewElement: HTMLElement, displayValue: 'block'|'none'): void {
+  function switchSubcomponentPreviewElementClasses(subcomponentPreviewElement: HTMLElement, displayValue: 'block'|'none'): void {
     if (displayValue === 'block') {
       if (subcomponentPreviewElement.classList.contains(SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN)) {
         subcomponentPreviewElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN);
@@ -24,8 +25,8 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
     if (!highlightSubcomponents.value) return;
     const subcomponentPreviewElementId = subcomponentTypeToPreviewId[subcomponentType];
     const subcomponentPreviewElement = document.getElementById(subcomponentPreviewElementId);
-    switchSubcomponentPreviewModeToggle(subcomponentPreviewElement, displayValue);
-     if (subcomponentPreviewElement) subcomponentPreviewElement.style.display = displayValue;
+    if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) switchSubcomponentPreviewElementClasses(subcomponentPreviewElement, displayValue);
+    if (subcomponentPreviewElement) subcomponentPreviewElement.style.display = displayValue;
   }
 
   function getOptionNameFromElement(highlightedOptionElement: HTMLElement): string {

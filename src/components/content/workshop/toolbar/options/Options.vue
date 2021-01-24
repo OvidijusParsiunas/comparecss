@@ -2,9 +2,9 @@
   <div class="options-container">
     <div class="btn-group option-button">
       <button v-if="isSubcomponentSelectModeButtonDisplayed"
-        id="component-select-button" type="button" class="btn"
+        id="component-select-button" type="button" class="btn" :class="SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER"
         @click="initiateSubcomponentSelectMode">
-        <i class="fa fa-mouse-pointer"></i>
+        <i class="fa fa-mouse-pointer" :class="SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER"></i>
       </button>
       <dropdown
         :uniqueIdentifier="'subcomponentsDropdown'"
@@ -49,8 +49,8 @@
 </template>
 
 <script lang="ts">
-import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import useComponentPreviewEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
+import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER } from '../../../../../consts/elementClassMarkers';
 import { componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../consts/workshopToolbarOptions';
@@ -60,6 +60,7 @@ import JSONManipulation from '../../../../../services/workshop/jsonManipulation'
 import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
 import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
+import { subcomponentSelectModeState } from './subcomponentSelectMode/state';
 import { UpdateOptionsMode } from '../../../../../interfaces/updateCssMode';
 import { removeSubcomponentModalState } from './modal/state';
 import dropdown from './dropdown/Dropdown.vue';
@@ -69,6 +70,7 @@ interface Consts {
   SUB_COMPONENT_CSS_MODES;
   componentTypeToOptions;
   useComponentPreviewEventHandlers;
+  SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
 }
 
 interface Data {
@@ -84,6 +86,7 @@ export default {
       SUB_COMPONENT_CSS_MODES,
       componentTypeToOptions,
       useComponentPreviewEventHandlers,
+      SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
     };
   },
   data: (): Data => ({
@@ -92,9 +95,14 @@ export default {
   }),
   methods: {
     initiateSubcomponentSelectMode(): void {
+      if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) {
+        subcomponentSelectModeState.setIsSubcomponentSelectModeActiveState(false);
+        return;
+      }
       const buttonElement = event.currentTarget as HTMLElement;
-      const workshopEventCallback = SubcomponentSelectMode.initiate(buttonElement, this.component, this.newSubcomponentsModeClicked, this.$emit, 'toggle-subcomponent-select-mode');
-      this.$emit('toggle-subcomponent-select-mode', [true, workshopEventCallback] as ToggleSubcomponentSelectModeEvent);
+      const workshopEventCallback = SubcomponentSelectMode.initiate(buttonElement, this.component, this.newSubcomponentsModeClicked);
+      subcomponentSelectModeState.setIsSubcomponentSelectModeActiveState(true);
+      this.$emit('toggle-subcomponent-select-mode', workshopEventCallback);
     },
     optionClick(option: WORKSHOP_TOOLBAR_OPTIONS): void {
       this.activeOption = option;

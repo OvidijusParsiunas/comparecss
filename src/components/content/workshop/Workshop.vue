@@ -92,10 +92,10 @@ import { inheritedAlertCloseChildCss } from './newComponent/types/alerts/propert
 import { modalLayerTopCustomSettings } from './newComponent/types/modals/properties/modalLayerTopCustomSettings';
 import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
 import { alertCloseCustomSettings } from './newComponent/types/alerts/properties/alertCloseCustomSettings';
-import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { modalBaseCustomSettings } from './newComponent/types/modals/properties/modalBaseCustomSettings';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
+import { subcomponentSelectModeState } from './toolbar/options/subcomponentSelectMode/state';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { inheritedAlertBaseCss } from './newComponent/types/alerts/properties/inheritedCss';
 import ProcessClassName from '../../../services/workshop/newComponent/processClassName';
@@ -481,12 +481,11 @@ export default {
         }, WAIT_TO_START_DOWNLOADING_ICON_ICONS);
       }
     },
-    toggleSubcomponentSelectMode(toggleSubcomponentSelectModeEvent: ToggleSubcomponentSelectModeEvent): void {
-      const [isInitiated, workshopEventCallback] = toggleSubcomponentSelectModeEvent;
-      if (isInitiated) {
-        this.addWorkshopEventCallback(workshopEventCallback); 
+    toggleSubcomponentSelectMode(callback: WorkshopEventCallback): void {
+      if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) {
+        this.addWorkshopEventCallback(callback); 
       }
-      this.$refs.contents.toggleSubcomponentSelectMode(toggleSubcomponentSelectModeEvent);
+      this.$refs.contents.toggleSubcomponentSelectMode();
     },
   },
   components: {
