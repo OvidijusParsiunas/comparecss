@@ -14,8 +14,8 @@ export interface UseComponentPreviewEventHandlers {
 
 export default function useComponentPreviewEventHandlers(componentRef: Ref<SubcomponentProperties> | Ref<WorkshopComponent>, componentsThatShouldNotBeAffected?: Set<SUB_COMPONENTS>): UseComponentPreviewEventHandlers {
 
-  let overwrittenDefaultPropertiesByHover = {};
-  let overwrittenDefaultPropertiesByClick = {};
+  let overwrittenDefaultPropertiesByHover = { hasBeenSet: false, css: {} };
+  let overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
   let isUnsetButtonDisplayedForColorInputs = {};
 
   function setDefaultUnsetButtonStatesForColorInputs(customCss: CustomCss): void {
@@ -48,7 +48,7 @@ export default function useComponentPreviewEventHandlers(componentRef: Ref<Subco
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
       setDefaultUnsetButtonStatesForColorInputs(customCss);
       const transition = subcomponentPreviewTransition || 'unset';
-      overwrittenDefaultPropertiesByHover = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], transition };
+      overwrittenDefaultPropertiesByHover = { hasBeenSet: true, css: { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], transition } };
       customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], ...customCss[SUB_COMPONENT_CSS_MODES.HOVER], transition, ...isUnsetButtonDisplayedForColorInputs };
     }
   }
@@ -57,8 +57,9 @@ export default function useComponentPreviewEventHandlers(componentRef: Ref<Subco
     if (shouldThisComponentNotBeAffected() || subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
     const componentProperties = parseComponentProperties();
     const { customCss, customCssActiveMode } = componentProperties;
-    if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
-      customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...overwrittenDefaultPropertiesByHover };
+    if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT && overwrittenDefaultPropertiesByHover.hasBeenSet) {
+      customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...overwrittenDefaultPropertiesByHover.css };
+      overwrittenDefaultPropertiesByHover = { hasBeenSet: false, css: {} };
     }
     isUnsetButtonDisplayedForColorInputs = {};
   }
@@ -69,7 +70,7 @@ export default function useComponentPreviewEventHandlers(componentRef: Ref<Subco
     const { customCss, subcomponentPreviewTransition, customCssActiveMode } = componentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
       const transition = subcomponentPreviewTransition || 'unset';
-      overwrittenDefaultPropertiesByClick = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], transition };
+      overwrittenDefaultPropertiesByClick = { hasBeenSet: true, css: { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], transition } };
       customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], ...customCss[SUB_COMPONENT_CSS_MODES.CLICK], transition, ...isUnsetButtonDisplayedForColorInputs };
     }
   }
@@ -78,8 +79,9 @@ export default function useComponentPreviewEventHandlers(componentRef: Ref<Subco
     if (shouldThisComponentNotBeAffected() || subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
     const componentProperties = parseComponentProperties();
     const { customCss, customCssActiveMode } = componentProperties;
-    if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
-      customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick };
+    if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT && overwrittenDefaultPropertiesByClick.hasBeenSet) {
+      customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };
+      overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
     }
   }
   
