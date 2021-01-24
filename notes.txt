@@ -8,7 +8,7 @@ javascript to close the alert message
 test in slower pc if the child dropdowns displays options correctly - chrome/firefox
 when clicking option button then dragging mouse out, text disappears
 
-fix issue where the css dropdown events are not being passed down correctly
+do not default to initial option if the same option button names match
 redundant mapping for subcomponentTypeToPreviewId, just do string theres
 
 option to import an existing button style!

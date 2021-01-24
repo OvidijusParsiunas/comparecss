@@ -59,6 +59,7 @@ import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectM
 import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
 import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
+import { SettingProperties } from '../../../../../interfaces/componentOptions';
 import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/state';
 import { UpdateOptionsMode } from '../../../../../interfaces/updateCssMode';
@@ -105,8 +106,11 @@ export default {
       this.$emit('toggle-subcomponent-select-mode', workshopEventCallback);
     },
     optionClick(option: WORKSHOP_TOOLBAR_OPTIONS): void {
-      this.activeOption = option;
+      this.setNewActiveOption(option);
       this.$emit('option-clicked', option);
+    },
+    setNewActiveOption(option: WORKSHOP_TOOLBAR_OPTIONS): void {
+      this.activeOption = option;
     },
     newSubcomponentsModeClicked(newSubComponent: SUB_COMPONENTS): void {
       // reset css mode of the previous subcomponent to the first one
@@ -121,7 +125,7 @@ export default {
     getNewCssModeContainsActiveOptionState(activeMode?: SUB_COMPONENT_CSS_MODES): boolean {
       const { subcomponents, subcomponentsActiveMode, type } = this.component;
       const activeModeOptions = componentTypeToOptions[type][subcomponentsActiveMode][activeMode || subcomponents[subcomponentsActiveMode].customCssActiveMode];
-      return activeModeOptions && activeModeOptions.some((option) => option.identifier === this.activeOption);
+      return activeModeOptions && activeModeOptions.some((option: SettingProperties) => option.identifier === this.activeOption);
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
       const { optionalSubcomponent, initialCss } = subcomponent;

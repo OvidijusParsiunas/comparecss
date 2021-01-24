@@ -114,6 +114,7 @@ export default {
         [this.component.subcomponents[this.component.subcomponentsActiveMode].customCssActiveMode];
       const firstOption = availableOptions[0].identifier;
       this.updateSettings(firstOption);
+      this.$refs.options.setNewActiveOption(firstOption);
     },
     hideSettings(): void {
       this.activeSettings = {};
