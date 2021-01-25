@@ -11,7 +11,7 @@ import { subcomponentSelectModeState } from './state';
 
 export default class SubcomponentSelectMode {
   
-  private static activeButtonColor = '#3de342';
+  private static activeButtonColor = '#54a9f1';
   private static defaultButtonColor = '';
   // blue - #00a1ff'
 

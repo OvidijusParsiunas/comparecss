@@ -216,7 +216,7 @@ export default {
     position: relative;
   }
   .subcomponent-preview {
-    background-color: rgb(40 255 20 / 43%) !important;
+    background-color: rgb(22 184 255 / 30%) !important;
     position: absolute !important;
     top: 0px !important;
     width: 100%;

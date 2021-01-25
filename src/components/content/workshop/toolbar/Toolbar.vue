@@ -16,8 +16,7 @@
       </div>
       <settings ref="settings"
         :subcomponentproperties="component.subcomponents[component.subcomponentsActiveMode]"
-        :settings="activeSettings"
-        :settingsUpdateTriggered="settingsUpdateTriggered"/>
+        :settings="activeSettings"/>
     </div>
   </div>
 </template>
@@ -39,7 +38,6 @@ interface Data {
   activeSettings: any;
   customSettingsOriginalSpecs: CustomSettingOriginalSpec[];
   activeCssMode: SUB_COMPONENT_CSS_MODES;
-  settingsUpdateTriggered: boolean;
   settingsOpenedOnce: boolean;
 }
 
@@ -58,7 +56,6 @@ export default {
     activeSettings: {},
     customSettingsOriginalSpecs: [],
     activeCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-    settingsUpdateTriggered: false,
     settingsOpenedOnce: false,
   }),
   methods: {
@@ -101,7 +98,7 @@ export default {
       // the props (more specifically the component properties) have updated first (via the watch property)
       // whereas directly calling the reset method via ref invokes it before the props have been updated
       this.setCustomSettings(this.activeOption);
-      this.settingsUpdateTriggered = !this.settingsUpdateTriggered;
+      this.$refs.settings.updateSettings();
       this.$nextTick(() => {
         if (this.activeOption === WORKSHOP_TOOLBAR_OPTIONS.MARGIN && Object.keys(this.activeSettings).length > 0) {
           this.componentPreviewAssistance.margin = !(this.component.subcomponentsActiveMode === SUB_COMPONENTS.CLOSE);

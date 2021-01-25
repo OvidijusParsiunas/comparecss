@@ -40,7 +40,8 @@
       <button
         type="button"
         v-for="(option) in componentTypeToOptions[component.type][component.subcomponentsActiveMode][component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode]" :key="option"
-        class="btn btn-outline-secondary option-button"
+        class="btn btn-outline-secondary option-button option-default"
+        :class="[option.identifier === activeOption ? 'active-option' : '']"
         @click="optionClick(option.identifier)">
           {{option.buttonName}}
       </button>
@@ -77,6 +78,7 @@ interface Consts {
 interface Data {
   removeSubcomponentModalId: string;
   isSubcomponentSelectModeButtonDisplayed: boolean;
+  activeOption: WORKSHOP_TOOLBAR_OPTIONS,
 }
 
 export default {
@@ -93,6 +95,7 @@ export default {
   data: (): Data => ({
     removeSubcomponentModalId: '',
     isSubcomponentSelectModeButtonDisplayed: false,
+    activeOption: null,
   }),
   methods: {
     initiateSubcomponentSelectMode(): void {
@@ -131,16 +134,14 @@ export default {
       const { optionalSubcomponent, initialCss } = subcomponent;
       if (!optionalSubcomponent.currentlyDisplaying) {
         optionalSubcomponent.currentlyDisplaying = !optionalSubcomponent.currentlyDisplaying;
+      } else if (!this.getIsDoNotShowModalAgainState()) {
+        this.removeSubcomponentModalId = `#${REMOVE_SUBCOMPONENT_MODAL_ID}`;
+        setTimeout(() => { this.removeSubcomponentModalId = ''; });
+        this.$emit('prepare-remove-subcomponent-modal');
       } else {
-        if (!this.getIsDoNotShowModalAgainState()) {
-          this.removeSubcomponentModalId = `#${REMOVE_SUBCOMPONENT_MODAL_ID}`;
-          setTimeout(() => { this.removeSubcomponentModalId = ''; });
-          this.$emit('prepare-remove-subcomponent-modal');
-        } else {
-          subcomponent.customCss = JSONManipulation.deepCopy(initialCss);
-          optionalSubcomponent.currentlyDisplaying = !optionalSubcomponent.currentlyDisplaying;
-          this.$emit('hide-settings');
-        }
+        subcomponent.customCss = JSONManipulation.deepCopy(initialCss);
+        optionalSubcomponent.currentlyDisplaying = !optionalSubcomponent.currentlyDisplaying;
+        this.$emit('hide-settings');
       }
     },
     toggleSubcomponentSelectModeButtonDisplay(isDropdownDisplayed: boolean): void {
@@ -225,5 +226,29 @@ export default {
     color: #0db80d !important;
     background: url('../../../../../assets/svg/plus-active.svg') center no-repeat;
     background-size: 14px auto;
+  }
+  .option-default {
+    border-color: rgb(204, 204, 204) !important;
+  }
+  .option-default:hover {
+    background-color: #ebebeb !important;
+    color: rgb(85, 85, 85) !important;
+  }
+  .option-default:active {
+    background-color: #d8d8d8 !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  .active-option {
+    border-color: #8abfff !important;
+    background-color: rgb(245, 251, 255) !important;
+    color: #4a84ab !important;
+  }
+  .active-option:hover {
+    background-color: rgb(227, 245, 255) !important;
+    color: rgb(87, 109, 156) !important;
+  }
+  .active-option:active {
+    background-color: rgb(204, 237, 255) !important;
   }
 </style>

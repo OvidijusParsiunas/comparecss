@@ -460,15 +460,11 @@ export default {
   props: {
     subcomponentproperties: Object,
     settings: Object,
-    settingsUpdateTriggered: Boolean,
   },
   watch: {
     settings(): void {
       this.updateSettings();
     },
-    settingsUpdateTriggered(): void {
-      this.updateSettings();
-    }
   }
 };
 
