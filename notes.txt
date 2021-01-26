@@ -8,7 +8,8 @@ javascript to close the alert message
 test in slower pc if the child dropdowns displays options correctly - chrome/firefox
 when clicking option button then dragging mouse out, text disappears
 
-do not default to initial option if the same option button names match
+firefox colour picker does not change the colour
+hover, active subcomponent mode select and dropdown colours
 redundant mapping for subcomponentTypeToPreviewId, just do string theres
 
 option to import an existing button style!
@@ -21,6 +22,7 @@ clean up css after export, such as 0px values, bordershadow being unset - be car
 
 UX:
   on using the select key for picking a subcomponent, check whether the mouse should always be a pointer, marked with UX - SUBCOMPONENT SELECT
+  is the new blue color preview good enough
   enter behaviour ok in new componant modal?
   check if switching component modes to default but leaving same option is ok for UX
 

@@ -13,12 +13,12 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
         subcomponentPreviewElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN);
         subcomponentPreviewElement.classList.add(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT);
       }
-     } else if (displayValue === 'none') {
-       if (subcomponentPreviewElement.classList.contains(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT)) {
+    } else if (displayValue === 'none') {
+      if (subcomponentPreviewElement.classList.contains(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT)) {
         subcomponentPreviewElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT);
         subcomponentPreviewElement.classList.add(SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN);
-       }
-     }
+      }
+    }
   }
   
   function toggleSubcomponentPreviewDisplay(subcomponentType: string, displayValue: 'block'|'none'): void {
@@ -26,7 +26,7 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
     const subcomponentPreviewElementId = subcomponentTypeToPreviewId[subcomponentType];
     const subcomponentPreviewElement = document.getElementById(subcomponentPreviewElementId);
     if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) switchSubcomponentPreviewElementClasses(subcomponentPreviewElement, displayValue);
-    if (subcomponentPreviewElement) subcomponentPreviewElement.style.display = displayValue;
+    if (subcomponentPreviewElement && !subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) subcomponentPreviewElement.style.display = displayValue;
   }
 
   function getOptionNameFromElement(highlightedOptionElement: HTMLElement): string {

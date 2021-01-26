@@ -1,5 +1,6 @@
+import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../..//consts/workshopToolbarOptionButtonNames.enum';
+import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
-import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../../../consts/workshopToolbarOptions';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
 
 type ModalBaseOptionsModes = SUB_COMPONENT_CSS_MODES.DEFAULT;
@@ -7,24 +8,24 @@ type ModalBaseOptionsModes = SUB_COMPONENT_CSS_MODES.DEFAULT;
 export const modalBaseOptions: SubcomponentOptions<ModalBaseOptionsModes> = {
   [SUB_COMPONENT_CSS_MODES.DEFAULT]: [
     {
-      buttonName: 'Border',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.BORDER,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER,
     },
     {
-      buttonName: 'Color',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.COLOR,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.COLOR,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.COLOR,
     },
     {
-      buttonName: 'Shadow',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.SHADOW,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SHADOW,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW,
     },
     {
-      buttonName: 'Size',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.SIZE_WIDTH,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SIZE,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH,
     },
     {
-      buttonName: 'Margin',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.MARGIN,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
     },
   ],
 };

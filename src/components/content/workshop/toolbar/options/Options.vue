@@ -41,8 +41,8 @@
         type="button"
         v-for="(option) in componentTypeToOptions[component.type][component.subcomponentsActiveMode][component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode]" :key="option"
         class="btn btn-outline-secondary option-button option-default"
-        :class="[option.identifier === activeOption ? 'active-option' : '']"
-        @click="optionClick(option.identifier)">
+        :class="[option.buttonName === activeOptionButtonName ? 'active-option' : '']"
+        @click="optionClick(option.buttonName, option.type)">
           {{option.buttonName}}
       </button>
     </div>
@@ -51,10 +51,10 @@
 
 <script lang="ts">
 import useComponentPreviewEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
+import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER } from '../../../../../consts/elementClassMarkers';
 import { componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
-import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../consts/workshopToolbarOptions';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectMode';
 import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
@@ -68,7 +68,7 @@ import { removeSubcomponentModalState } from './modal/state';
 import dropdown from './dropdown/Dropdown.vue';
 
 interface Consts {
-  WORKSHOP_TOOLBAR_OPTIONS;
+  WORKSHOP_TOOLBAR_OPTION_TYPES;
   SUB_COMPONENT_CSS_MODES;
   componentTypeToOptions;
   useComponentPreviewEventHandlers;
@@ -78,14 +78,14 @@ interface Consts {
 interface Data {
   removeSubcomponentModalId: string;
   isSubcomponentSelectModeButtonDisplayed: boolean;
-  activeOption: WORKSHOP_TOOLBAR_OPTIONS,
+  activeOptionButtonName: WORKSHOP_TOOLBAR_OPTION_TYPES,
 }
 
 export default {
   setup(): RemovalModalState & Consts {
     return {
       ...removeSubcomponentModalState,
-      WORKSHOP_TOOLBAR_OPTIONS,
+      WORKSHOP_TOOLBAR_OPTION_TYPES,
       SUB_COMPONENT_CSS_MODES,
       componentTypeToOptions,
       useComponentPreviewEventHandlers,
@@ -95,7 +95,7 @@ export default {
   data: (): Data => ({
     removeSubcomponentModalId: '',
     isSubcomponentSelectModeButtonDisplayed: false,
-    activeOption: null,
+    activeOptionButtonName: null,
   }),
   methods: {
     initiateSubcomponentSelectMode(): void {
@@ -108,12 +108,12 @@ export default {
       subcomponentSelectModeState.setIsSubcomponentSelectModeActiveState(true);
       this.$emit('toggle-subcomponent-select-mode', workshopEventCallback);
     },
-    optionClick(option: WORKSHOP_TOOLBAR_OPTIONS): void {
-      this.setNewActiveOption(option);
-      this.$emit('option-clicked', option);
+    optionClick(optionButtonName: string, optionIdentifier: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
+      this.setNewActiveOption(optionButtonName);
+      this.$emit('option-clicked', optionIdentifier);
     },
-    setNewActiveOption(option: WORKSHOP_TOOLBAR_OPTIONS): void {
-      this.activeOption = option;
+    setNewActiveOption(optionButtonName: string): void {
+      this.activeOptionButtonName = optionButtonName;
     },
     newSubcomponentsModeClicked(newSubComponent: SUB_COMPONENTS): void {
       // reset css mode of the previous subcomponent to the first one
@@ -128,7 +128,7 @@ export default {
     getNewCssModeContainsActiveOptionState(activeMode?: SUB_COMPONENT_CSS_MODES): boolean {
       const { subcomponents, subcomponentsActiveMode, type } = this.component;
       const activeModeOptions = componentTypeToOptions[type][subcomponentsActiveMode][activeMode || subcomponents[subcomponentsActiveMode].customCssActiveMode];
-      return activeModeOptions && activeModeOptions.some((option: SettingProperties) => option.identifier === this.activeOption);
+      return activeModeOptions && activeModeOptions.some((option: SettingProperties) => option.buttonName === this.activeOptionButtonName);
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
       const { optionalSubcomponent, initialCss } = subcomponent;
@@ -235,12 +235,12 @@ export default {
     color: rgb(85, 85, 85) !important;
   }
   .option-default:active {
-    background-color: #d8d8d8 !important;
+    background-color: #e4e4e4 !important;
     outline: none !important;
     box-shadow: none !important;
   }
   .active-option {
-    border-color: #8abfff !important;
+    border-color: #84bbff !important;
     background-color: rgb(245, 251, 255) !important;
     color: #4a84ab !important;
   }

@@ -1,8 +1,8 @@
-import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../../../consts/workshopToolbarOptions';
+import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { CustomSettings } from '../../../../../../../interfaces/workshopComponent';
 
 export const modalBaseCustomSettings: CustomSettings = {
-  [WORKSHOP_TOOLBAR_OPTIONS.SIZE_WIDTH]: {
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH]: {
     'width': { scale: [170, 700] },
   },
 }

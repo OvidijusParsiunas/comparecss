@@ -1,6 +1,6 @@
 import { SUB_COMPONENT_PREVIEW_ELEMENT_IDS } from '../consts/subcomponentPreviewElementIds.enum';
+import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../consts/workshopToolbarOptionTypes.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../consts/subcomponentCssModes.enum';
-import { WORKSHOP_TOOLBAR_OPTIONS } from '../consts/workshopToolbarOptions';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { NEW_COMPONENT_TYPES } from '../consts/newComponentTypes.enum';
 import { PSEUDO_COMPONENTS } from '../consts/pseudoComponents.enum';
@@ -49,7 +49,7 @@ export interface OptionalSubcomponent {
 }
 
 export type CustomSettings = {
-  [key in WORKSHOP_TOOLBAR_OPTIONS]?: {
+  [key in WORKSHOP_TOOLBAR_OPTION_TYPES]?: {
     [cssPropertyName: string]: {
       scale?: [number, number],
     }

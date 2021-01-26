@@ -1,9 +1,10 @@
-import { WORKSHOP_TOOLBAR_OPTIONS } from '../consts/workshopToolbarOptions';
+import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../consts/workshopToolbarOptionButtonNames.enum';
+import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../consts/workshopToolbarOptionTypes.enum';
 import { SubcomponentCssModes } from './subcomponentCssModes';
 
 export interface SettingProperties {
-  buttonName: string,
-  identifier: WORKSHOP_TOOLBAR_OPTIONS,
+  buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES,
+  type: WORKSHOP_TOOLBAR_OPTION_TYPES,
 }
 
 export type SubcomponentOptions<T extends keyof SubcomponentCssModes> = {

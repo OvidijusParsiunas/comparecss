@@ -46,7 +46,7 @@
           <component :is="component.componentPreviewStructure.baseCss.componentTag"
             :id="SUB_COMPONENT_PREVIEW_ELEMENT_IDS.BASE"
             style="display: none" :style="[component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], { zIndex: BASE_PREVIEW_Z_INDEX }]"
-            class="subcomponent-preview base-component-preview">
+            class="subcomponent-preview subcomponent-preview-with-no-border-but-with-height">
           </component>
           <!-- UX - SUBCOMPONENT SELECT - set this to appropriate dimensions when the event is fired -->
           <!-- <div ref="selectSubcomponentOverlay1" style="width: 1000px; height: 700px; background-color: #ff010100; position: absolute; border: 0px; top: -221px; left: -220px; z-index: 1; cursor: pointer;"></div> -->
@@ -216,7 +216,7 @@ export default {
     position: relative;
   }
   .subcomponent-preview {
-    background-color: rgb(22 184 255 / 30%) !important;
+    background-color: rgb(64 197 255 / 43%) !important;
     position: absolute !important;
     top: 0px !important;
     width: 100%;
@@ -230,8 +230,11 @@ export default {
     width: 100%;
     cursor: pointer;
   }
-  .base-component-preview {
-    height: 99%;
+  .subcomponent-preview-with-no-border-but-with-height {
+    border-color: rgb(64 197 255 / 0%) !important;
+    border-top-width: 0px !important;
+    border-bottom-width: 0px !important;
+    height: 100%;
   }
   .parent-layer {
     position: relative;

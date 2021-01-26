@@ -1,5 +1,6 @@
+import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../../consts/workshopToolbarOptionButtonNames.enum';
+import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
-import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../../../consts/workshopToolbarOptions';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
 
 type AlertBaseOptionsModes = SUB_COMPONENT_CSS_MODES.DEFAULT;
@@ -7,32 +8,32 @@ type AlertBaseOptionsModes = SUB_COMPONENT_CSS_MODES.DEFAULT;
 export const alertBaseOptions: SubcomponentOptions<AlertBaseOptionsModes> = {
   [SUB_COMPONENT_CSS_MODES.DEFAULT]: [
     {
-      buttonName: 'Border',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.BORDER,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER,
     },
     {
-      buttonName: 'Color',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.COLOR,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.COLOR,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.COLOR,
     },
     {
-      buttonName: 'Shadow',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.SHADOW,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SHADOW,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW,
     },
     {
-      buttonName: 'Size',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.SIZE,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SIZE,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE,
     },
     {
-      buttonName: 'Padding',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.PADDING,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.PADDING,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING,
     },
     {
-      buttonName: 'Margin',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.MARGIN,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
     },
     {
-      buttonName: 'Text',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.TEXT_WTH_ALIGN,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.TEXT,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_WTH_ALIGN,
     },
   ],
 };

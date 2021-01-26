@@ -1,5 +1,6 @@
+import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../../consts/workshopToolbarOptionButtonNames.enum';
+import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
-import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../../../../consts/workshopToolbarOptions';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
 
 type alertCloseOptionsModes = SUB_COMPONENT_CSS_MODES.DEFAULT | SUB_COMPONENT_CSS_MODES.HOVER | SUB_COMPONENT_CSS_MODES.CLICK;
@@ -7,84 +8,84 @@ type alertCloseOptionsModes = SUB_COMPONENT_CSS_MODES.DEFAULT | SUB_COMPONENT_CS
 export const alertCloseOptions: SubcomponentOptions<alertCloseOptionsModes> = {
   [SUB_COMPONENT_CSS_MODES.DEFAULT]: [
     {
-      buttonName: 'Icon',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.TEXT_BASED_ICON,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ICON,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_BASED_ICON,
     },
     {
-      buttonName: 'Background',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.BACKGROUND,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BACKGROUND,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND,
     },
     {
-      buttonName: 'Border',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.BORDER,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER,
     },
     {
-      buttonName: 'Padding',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.PADDING,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.PADDING,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING,
     },
     {
-      buttonName: 'Margin',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.MARGIN,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
     },
     {
-      buttonName: 'Shadow',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.SHADOW,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SHADOW,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW,
     },
   ],
   [SUB_COMPONENT_CSS_MODES.HOVER]: [
     {
-      buttonName: 'Icon',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.TEXT_BASED_ICON,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ICON,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_BASED_ICON,
     },
     {
-      buttonName: 'Background',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.BACKGROUND,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BACKGROUND,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND,
     },
     {
-      buttonName: 'Border',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.BORDER,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER,
     },
     {
-      buttonName: 'Padding',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.PADDING,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.PADDING,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING,
     },
     {
-      buttonName: 'Margin',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.MARGIN,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
     },
     {
-      buttonName: 'Shadow',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.SHADOW,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SHADOW,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW,
     },
   ],
   [SUB_COMPONENT_CSS_MODES.CLICK]: [
     {
-      buttonName: 'Icon',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.TEXT_BASED_ICON,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ICON,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_BASED_ICON,
     },
     {
-      buttonName: 'Background',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.BACKGROUND,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BACKGROUND,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND,
     },
     {
-      buttonName: 'Border',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.BORDER,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER,
     },
     {
-      buttonName: 'Padding',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.PADDING,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.PADDING,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING,
     },
     {
-      buttonName: 'Margin',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.MARGIN,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
     },
     {
-      buttonName: 'Shadow',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.SHADOW,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SHADOW,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW,
     },
     {
-      buttonName: 'Design',
-      identifier: WORKSHOP_TOOLBAR_OPTIONS.DESIGN,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.DESIGN,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.DESIGN,
     },
   ],
 };

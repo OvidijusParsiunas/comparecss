@@ -22,10 +22,10 @@
 </template>
 
 <script lang="ts">
+import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../consts/workshopToolbarOptionTypes.enum';
 import { componentTypeToOptions } from './options/componentOptions/componentTypeToOptions';
 import PartialCssCustomSettingsUtils from './settings/utils/partialCssCustomSettingsUtils';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
-import { WORKSHOP_TOOLBAR_OPTIONS } from '../../../../consts/workshopToolbarOptions';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import { UpdateOptionsMode } from '../../../../interfaces/updateCssMode';
 import { optionToSettings } from './settings/types/optionToSettings';
@@ -34,7 +34,7 @@ import options from './options/Options.vue';
 import { WorkshopEventCallback } from '@/interfaces/workshopEventCallback';
 
 interface Data {
-  activeOption: WORKSHOP_TOOLBAR_OPTIONS;
+  activeOption: WORKSHOP_TOOLBAR_OPTION_TYPES;
   activeSettings: any;
   customSettingsOriginalSpecs: CustomSettingOriginalSpec[];
   activeCssMode: SUB_COMPONENT_CSS_MODES;
@@ -59,11 +59,11 @@ export default {
     settingsOpenedOnce: false,
   }),
   methods: {
-    updateSettings(newOption: WORKSHOP_TOOLBAR_OPTIONS): void {
+    updateSettings(newOption: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
       this.setCustomSettings(newOption);
       this.activeOption = newOption;
       this.activeSettings = optionToSettings[newOption];
-      this.componentPreviewAssistance.margin = (newOption === WORKSHOP_TOOLBAR_OPTIONS.MARGIN)
+      this.componentPreviewAssistance.margin = (newOption === WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN)
         && (this.component.subcomponentsActiveMode !== SUB_COMPONENTS.CLOSE);
       this.settingsOpenedOnce = true;
     },
@@ -100,7 +100,7 @@ export default {
       this.setCustomSettings(this.activeOption);
       this.$refs.settings.updateSettings();
       this.$nextTick(() => {
-        if (this.activeOption === WORKSHOP_TOOLBAR_OPTIONS.MARGIN && Object.keys(this.activeSettings).length > 0) {
+        if (this.activeOption === WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN && Object.keys(this.activeSettings).length > 0) {
           this.componentPreviewAssistance.margin = !(this.component.subcomponentsActiveMode === SUB_COMPONENTS.CLOSE);
         }
       });
@@ -109,15 +109,15 @@ export default {
       const availableOptions = componentTypeToOptions[this.component.type]
         [this.component.subcomponentsActiveMode]
         [this.component.subcomponents[this.component.subcomponentsActiveMode].customCssActiveMode];
-      const firstOption = availableOptions[0].identifier;
-      this.updateSettings(firstOption);
-      this.$refs.options.setNewActiveOption(firstOption);
+      const firstOption = availableOptions[0];
+      this.updateSettings(firstOption.type);
+      this.$refs.options.setNewActiveOption(firstOption.buttonName);
     },
     hideSettings(): void {
       this.activeSettings = {};
       this.componentPreviewAssistance.margin = false;
     },
-    setCustomSettings(option: WORKSHOP_TOOLBAR_OPTIONS): void {
+    setCustomSettings(option: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
       this.resetCustomSettings();
       this.setNewCustomSettings(option);
     },
@@ -127,7 +127,7 @@ export default {
       });
       this.customSettingsOriginalSpecs = [];
     },
-    setNewCustomSettings(option: WORKSHOP_TOOLBAR_OPTIONS): void {
+    setNewCustomSettings(option: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
       const { customSettings } = this.component.subcomponents[this.component.subcomponentsActiveMode];
       if (customSettings && customSettings[option]) {
         optionToSettings[option].options.forEach((setting) => {
