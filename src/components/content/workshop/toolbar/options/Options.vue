@@ -163,7 +163,7 @@ export default {
     margin-bottom: 10px !important;
   }
   #component-select-button {
-    border: 1px solid #acacac !important;
+    border: 1px solid #aaaaaa !important;
     background-color: white !important;
     padding-left: 10px !important;
     padding-right: 9px !important;
