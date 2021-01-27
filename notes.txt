@@ -9,7 +9,6 @@ test in slower pc if the child dropdowns displays options correctly - chrome/fir
 when clicking option button then dragging mouse out, text disappears
 
 firefox colour picker does not change the colour
-hover, active subcomponent mode select and dropdown colours
 redundant mapping for subcomponentTypeToPreviewId, just do string theres
 
 option to import an existing button style!

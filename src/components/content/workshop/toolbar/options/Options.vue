@@ -1,12 +1,12 @@
 <template>
   <div class="options-container">
     <div class="btn-group option-button">
-      <button v-if="isSubcomponentSelectModeButtonDisplayed" :style="BROWSER_SPECIFIC_COMPONENT_SELECT_BUTTON_STYLE"
+      <button v-if="isSubcomponentSelectModeButtonDisplayed"
         id="component-select-button" type="button" class="btn" :class="SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER"
         @click="initiateSubcomponentSelectMode">
         <i class="fa fa-mouse-pointer" :class="SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER"></i>
       </button>
-      <dropdown
+      <dropdown class="button-group-secondary-component"
         :uniqueIdentifier="'subcomponentsDropdown'"
         :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
         :objectContainingActiveOption="component"
@@ -55,7 +55,6 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToo
 import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER } from '../../../../../consts/elementClassMarkers';
 import { componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
-import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectMode';
 import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
@@ -65,7 +64,6 @@ import { SettingProperties } from '../../../../../interfaces/componentOptions';
 import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/state';
 import { UpdateOptionsMode } from '../../../../../interfaces/updateCssMode';
-import BrowserType from '../../../../../services/workshop/browserType';
 import { removeSubcomponentModalState } from './modal/state';
 import dropdown from './dropdown/Dropdown.vue';
 
@@ -75,7 +73,6 @@ interface Consts {
   componentTypeToOptions;
   useComponentPreviewEventHandlers;
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
-  BROWSER_SPECIFIC_COMPONENT_SELECT_BUTTON_STYLE: WorkshopComponentCss,
 }
 
 interface Data {
@@ -93,7 +90,6 @@ export default {
       componentTypeToOptions,
       useComponentPreviewEventHandlers,
       SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
-      BROWSER_SPECIFIC_COMPONENT_SELECT_BUTTON_STYLE: !BrowserType.isChromium() ? { borderRightWidth: '0px !important' } : {},
     };
   },
   data: (): Data => ({
@@ -166,13 +162,11 @@ export default {
     margin-top: 10px !important;
     margin-bottom: 10px !important;
   }
-  /* css strategy for chromium - use joined buttons for borders */
-  /* css strategy for firefox - use individual buttons for borders */
   #component-select-button {
-    border: 1px solid #a7a7a7 !important;
+    border: 1px solid #acacac !important;
     background-color: white !important;
     padding-left: 10px !important;
-    padding-right: 8px !important;
+    padding-right: 9px !important;
     font-size: 13px !important;
     color: #5c5c5c;
   }
@@ -265,5 +259,8 @@ export default {
     background-color: #e4e4e4 !important;
     outline: none !important;
     box-shadow: none !important;
+  }
+  .button-group-secondary-component {
+    left: -1px;
   }
 </style>

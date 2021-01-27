@@ -345,7 +345,7 @@ export default {
   .dropdown-button {
     font-family: 'Poppins', sans-serif;
     min-width: 6.5rem;
-    border: 1px solid #a7a7a7 !important;
+    border: 1px solid #acacac !important;
     background-color: white !important;
   }
   .dropdown-button-text {
