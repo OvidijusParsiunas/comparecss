@@ -1,6 +1,6 @@
 <template>
   <div v-if="isComponentDisplayed" class="dropdown">
-    <button class="btn form-control dropdown-button" :class="[uniqueIdentifier, { 'button-group-border': isButtonGroup }]" type="button"
+    <button class="btn form-control dropdown-button option-default" :class="[uniqueIdentifier, { 'button-group-border': isButtonGroup }]" type="button"
       @click="openDropdown"
       @mouseenter="mouseEnterButton"
       @mouseleave="mouseLeaveButton">
@@ -345,7 +345,7 @@ export default {
   .dropdown-button {
     font-family: 'Poppins', sans-serif;
     min-width: 6.5rem;
-    border: 1px solid #ced4da !important;
+    border: 1px solid #a7a7a7 !important;
     background-color: white !important;
   }
   .dropdown-button-text {

@@ -8,6 +8,7 @@ export interface WorkshopComponentCss {
   borderTopWidth?: string;
   borderTopStyle?: string;
   borderTopColor?: string;
+  borderRightWidth?: string;
   borderRadius?: string;
   transition?: string;
   boxShadow?: string; // should not start with '0px 0px 0px 0px'

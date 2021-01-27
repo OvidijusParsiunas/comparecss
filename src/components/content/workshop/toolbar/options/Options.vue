@@ -1,7 +1,7 @@
 <template>
   <div class="options-container">
     <div class="btn-group option-button">
-      <button v-if="isSubcomponentSelectModeButtonDisplayed"
+      <button v-if="isSubcomponentSelectModeButtonDisplayed" :style="BROWSER_SPECIFIC_COMPONENT_SELECT_BUTTON_STYLE"
         id="component-select-button" type="button" class="btn" :class="SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER"
         @click="initiateSubcomponentSelectMode">
         <i class="fa fa-mouse-pointer" :class="SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER"></i>
@@ -55,6 +55,7 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToo
 import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER } from '../../../../../consts/elementClassMarkers';
 import { componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
+import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectMode';
 import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
@@ -64,6 +65,7 @@ import { SettingProperties } from '../../../../../interfaces/componentOptions';
 import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/state';
 import { UpdateOptionsMode } from '../../../../../interfaces/updateCssMode';
+import BrowserType from '../../../../../services/workshop/browserType';
 import { removeSubcomponentModalState } from './modal/state';
 import dropdown from './dropdown/Dropdown.vue';
 
@@ -73,6 +75,7 @@ interface Consts {
   componentTypeToOptions;
   useComponentPreviewEventHandlers;
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
+  BROWSER_SPECIFIC_COMPONENT_SELECT_BUTTON_STYLE: WorkshopComponentCss,
 }
 
 interface Data {
@@ -90,6 +93,7 @@ export default {
       componentTypeToOptions,
       useComponentPreviewEventHandlers,
       SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
+      BROWSER_SPECIFIC_COMPONENT_SELECT_BUTTON_STYLE: !BrowserType.isChromium() ? { borderRightWidth: '0px !important' } : {},
     };
   },
   data: (): Data => ({
@@ -162,13 +166,21 @@ export default {
     margin-top: 10px !important;
     margin-bottom: 10px !important;
   }
+  /* css strategy for chromium - use joined buttons for borders */
+  /* css strategy for firefox - use individual buttons for borders */
   #component-select-button {
-    border: 1px solid #ced4da !important;
+    border: 1px solid #a7a7a7 !important;
     background-color: white !important;
     padding-left: 10px !important;
     padding-right: 8px !important;
     font-size: 13px !important;
     color: #5c5c5c;
+  }
+  #component-select-button:hover {
+    background-color: #ebebeb !important;
+  }
+  #component-select-button:active {
+    background-color: #e4e4e4 !important;
   }
   .view-option {
     color: black !important;
@@ -227,18 +239,6 @@ export default {
     background: url('../../../../../assets/svg/plus-active.svg') center no-repeat;
     background-size: 14px auto;
   }
-  .option-default {
-    border-color: rgb(204, 204, 204) !important;
-  }
-  .option-default:hover {
-    background-color: #ebebeb !important;
-    color: rgb(85, 85, 85) !important;
-  }
-  .option-default:active {
-    background-color: #e4e4e4 !important;
-    outline: none !important;
-    box-shadow: none !important;
-  }
   .active-option {
     border-color: #84bbff !important;
     background-color: rgb(245, 251, 255) !important;
@@ -250,5 +250,20 @@ export default {
   }
   .active-option:active {
     background-color: rgb(204, 237, 255) !important;
+  }
+</style>
+
+<style lang="css">
+  .option-default {
+    border-color: rgb(204, 204, 204) !important;
+  }
+  .option-default:hover {
+    background-color: #ebebeb !important;
+    color: rgb(85, 85, 85) !important;
+  }
+  .option-default:active {
+    background-color: #e4e4e4 !important;
+    outline: none !important;
+    box-shadow: none !important;
   }
 </style>
