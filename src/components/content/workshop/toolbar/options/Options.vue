@@ -1,8 +1,8 @@
 <template>
   <div class="options-container">
-    <div class="btn-group option-button">
+    <div class="btn-group option-component-button">
       <button v-if="isSubcomponentSelectModeButtonDisplayed"
-        id="component-select-button" type="button" class="btn special-option" :class="SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER"
+        id="component-select-button" type="button" class="btn option-action-button" :class="SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER"
         @click="initiateSubcomponentSelectMode">
         <i class="fa fa-mouse-pointer" :class="SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER"></i>
       </button>
@@ -20,15 +20,15 @@
         @new-dropdown-option-clicked="newSubcomponentsModeClicked($event)"
         @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
     </div>
-    <div class="option-button">
+    <div class="option-component-button">
       <button v-if="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent"
-        type="button" class="btn special-option" data-toggle="modal" :data-target="removeSubcomponentModalId"
+        type="button" class="btn option-action-button" data-toggle="modal" :data-target="removeSubcomponentModalId"
         :class="[ component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying ? 'display-toggle-remove' : 'display-toggle-add' ]"
         @click="toggleSubcomponent(component.subcomponents[component.subcomponentsActiveMode])">
       </button>
     </div>
     <div v-if="!component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent || component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying"> 
-      <dropdown class="option-button"
+      <dropdown class="option-component-button"
         :uniqueIdentifier="'cssModesDropdown'"
         :dropdownOptions="componentTypeToOptions[component.type][component.subcomponentsActiveMode]"
         :objectContainingActiveOption="component.subcomponents[component.subcomponentsActiveMode]"
@@ -40,8 +40,8 @@
       <button
         type="button"
         v-for="(option) in componentTypeToOptions[component.type][component.subcomponentsActiveMode][component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode]" :key="option"
-        class="btn btn-outline-secondary option-button option-default"
-        :class="[option.buttonName === activeOptionButtonName ? 'active-option' : '']"
+        class="btn btn-outline-secondary option-component-button option-select-button-default"
+        :class="[option.buttonName === activeOptionButtonName ? 'option-select-button-active' : '']"
         @click="optionClick(option.buttonName, option.type)">
           {{option.buttonName}}
       </button>
@@ -66,6 +66,8 @@ import { subcomponentSelectModeState } from './subcomponentSelectMode/state';
 import { UpdateOptionsMode } from '../../../../../interfaces/updateCssMode';
 import { removeSubcomponentModalState } from './modal/state';
 import dropdown from './dropdown/Dropdown.vue';
+import { subcomponentTypeToPreviewId } from './componentOptions/subcomponentTypeToPreviewId';
+import { SUBCOMPONENT_PREVIEW_CLASSES } from '../../../../../consts/subcomponentPreviewClasses';
 
 interface Consts {
   WORKSHOP_TOOLBAR_OPTION_TYPES;
@@ -168,15 +170,35 @@ export default {
     font-size: 13px !important;
     color: #5c5c5c;
   }
-  .btn-outline-secondary:hover {
-    background-color: #d6d6d6 !important;
-    color: black !important;
-  }
-  .option-button {
+  .option-component-button {
     float: left;
     margin-right: 8px;
     border-color: #9d9d9d !important;
     background-color: white !important;
+  }
+  .option-select-button-default {
+    color:#616161 !important;
+  }
+  .option-select-button-default:hover {
+    background-color: #ebebeb !important;
+    color: rgb(85, 85, 85) !important;
+  }
+  .option-select-button-default:active {
+    background-color: #e4e4e4 !important;
+    outline: none !important;
+    box-shadow: none !important;
+  }
+  .option-select-button-active {
+    border-color: #84bbff !important;
+    background-color: rgb(245, 251, 255) !important;
+    color: #4a84ab !important;
+  }
+  .option-select-button-active:hover {
+    background-color: rgb(227, 245, 255) !important;
+    color: rgb(87, 109, 156) !important;
+  }
+  .option-select-button-active:active {
+    background-color: rgb(204, 237, 255) !important;
   }
   .display-toggle-remove {
     width: 3em;
@@ -201,43 +223,19 @@ export default {
   .display-toggle-add:active {
     background-color: #e9f5e9 !important;
   }
-  .active-option {
-    border-color: #84bbff !important;
-    background-color: rgb(245, 251, 255) !important;
-    color: #4a84ab !important;
-  }
-  .active-option:hover {
-    background-color: rgb(227, 245, 255) !important;
-    color: rgb(87, 109, 156) !important;
-  }
-  .active-option:active {
-    background-color: rgb(204, 237, 255) !important;
-  }
 </style>
 
 <style lang="css">
-  .option-default {
-    border-color: rgb(204, 204, 204) !important;
-  }
-  .option-default:hover {
-    background-color: #ebebeb !important;
-    color: rgb(85, 85, 85) !important;
-  }
-  .option-default:active {
-    background-color: #e4e4e4 !important;
-    outline: none !important;
-    box-shadow: none !important;
-  }
   .button-group-secondary-component {
     left: -1px;
   }
-  .special-option {
+  .option-action-button {
     border: 1px solid #aaaaaa !important;
   }
-  .special-option:hover {
+  .option-action-button:hover {
     background-color: #ebebeb !important;
   }
-  .special-option:active {
+  .option-action-button:active {
     background-color: #e4e4e4 !important;
   }
 </style>

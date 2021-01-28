@@ -1,6 +1,6 @@
 <template>
   <div v-if="isComponentDisplayed" class="dropdown">
-    <button class="btn form-control dropdown-button special-option" :class="[uniqueIdentifier, { 'button-group-border': isButtonGroup }]" type="button"
+    <button class="btn form-control dropdown-button option-action-button" :class="[uniqueIdentifier, { 'button-group-border': isButtonGroup }]" type="button"
       @click="openDropdown"
       @mouseenter="mouseEnterButton"
       @mouseleave="mouseLeaveButton">
