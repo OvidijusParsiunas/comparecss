@@ -518,10 +518,7 @@ export default {
        element does not work because those images need to be in the public folder, however the ones referenced in the css within
        the <styles> tags are located in the src file and referenced with a unique file hash in compile time */
     background: url('../../../assets/svg/plus-default.svg'),
-                url('../../../assets/svg/plus-hover.svg'),
-                url('../../../assets/svg/plus-active.svg'),
                 url('../../../assets/svg/rubbish-can-default.svg'),
-                url('../../../assets/svg/rubbish-can-hover-active.svg');
   }
   #preloadedIcons {
     /* originally used the browser to preload the font awesome styles, however this is not supported in FireFox:

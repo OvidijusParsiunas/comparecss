@@ -24,6 +24,7 @@ UX:
   is the new blue color preview good enough
   enter behaviour ok in new componant modal?
   check if switching component modes to default but leaving same option is ok for UX
+  see if the subcomponent add and subcomponent remove hover and active css is ok
 
 need to investigate how to set default settings values (min max, select options) for each subcomponent
 cursor that allows user to hover over component's parts and upon clicking would direct to the rightful settings (similar to what chrome has)

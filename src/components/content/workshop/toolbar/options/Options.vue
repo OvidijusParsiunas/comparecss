@@ -2,7 +2,7 @@
   <div class="options-container">
     <div class="btn-group option-button">
       <button v-if="isSubcomponentSelectModeButtonDisplayed"
-        id="component-select-button" type="button" class="btn" :class="SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER"
+        id="component-select-button" type="button" class="btn special-option" :class="SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER"
         @click="initiateSubcomponentSelectMode">
         <i class="fa fa-mouse-pointer" :class="SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER"></i>
       </button>
@@ -22,7 +22,7 @@
     </div>
     <div class="option-button">
       <button v-if="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent"
-        type="button" class="btn view-option" data-toggle="modal" :data-target="removeSubcomponentModalId"
+        type="button" class="btn special-option" data-toggle="modal" :data-target="removeSubcomponentModalId"
         :class="[ component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying ? 'display-toggle-remove' : 'display-toggle-add' ]"
         @click="toggleSubcomponent(component.subcomponents[component.subcomponentsActiveMode])">
       </button>
@@ -163,22 +163,10 @@ export default {
     margin-bottom: 10px !important;
   }
   #component-select-button {
-    border: 1px solid #aaaaaa !important;
-    background-color: white !important;
     padding-left: 10px !important;
     padding-right: 9px !important;
     font-size: 13px !important;
     color: #5c5c5c;
-  }
-  #component-select-button:hover {
-    background-color: #ebebeb !important;
-  }
-  #component-select-button:active {
-    background-color: #e4e4e4 !important;
-  }
-  .view-option {
-    color: black !important;
-    border-color: #ced4da !important;
   }
   .btn-outline-secondary:hover {
     background-color: #d6d6d6 !important;
@@ -197,19 +185,9 @@ export default {
     background-size: 17px auto;
     transition: 0.1s ease-in-out !important;
   }
-  .display-toggle-remove:hover {
-    background-color: #fffdfd !important;
-    border-color: #ff2f20 !important;
-    color:#ff2f20 !important;
-    background: url('../../../../../assets/svg/rubbish-can-hover-active.svg') center no-repeat;
-    background-size: 17px auto;
-  }
+  /* remove this if the red colour is a little distracting - UX */
   .display-toggle-remove:active {
-    background-color: #fff6f6 !important;
-    border-color:red !important;
-    color: red !important;
-    background: url('../../../../../assets/svg/rubbish-can-hover-active.svg') center no-repeat;
-    background-size: 17px auto;
+    background-color: #f3eded !important;
   }
   .display-toggle-add {
     width: 3em;
@@ -219,19 +197,9 @@ export default {
     /* transition removed due to stuttering in the plus svgs */
     /* transition: 0.1s ease-in-out !important; */
   }
-  .display-toggle-add:hover {
-    background-color: #f7fff7 !important;
-    border-color: #069906 !important;
-    color: #069906 !important;
-    background: url('../../../../../assets/svg/plus-hover.svg') center no-repeat;
-    background-size: 14px auto;
-  }
+  /* remove this if the green colour is a little distracting - UX */
   .display-toggle-add:active {
-    background-color: #f4fff4 !important;
-    border-color: #00b400 !important;
-    color: #0db80d !important;
-    background: url('../../../../../assets/svg/plus-active.svg') center no-repeat;
-    background-size: 14px auto;
+    background-color: #e9f5e9 !important;
   }
   .active-option {
     border-color: #84bbff !important;
@@ -262,5 +230,14 @@ export default {
   }
   .button-group-secondary-component {
     left: -1px;
+  }
+  .special-option {
+    border: 1px solid #aaaaaa !important;
+  }
+  .special-option:hover {
+    background-color: #ebebeb !important;
+  }
+  .special-option:active {
+    background-color: #e4e4e4 !important;
   }
 </style>

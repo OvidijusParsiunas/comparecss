@@ -51,6 +51,7 @@ export default {
     padding-top: 2px !important;
     margin-top: 0px !important;
     min-width: 6.5rem !important;
+    border-color: #c7c7c7 !important;
   }
   .custom-dropdown-item {
     padding: 0.08rem 1rem !important;
