@@ -40,13 +40,13 @@
                   <div-inner-html v-if="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]" :innerHTML="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]"/>
                   <auxiliary-right-side-elements v-if="layer.subcomponents[SUB_COMPONENTS.CLOSE] !== undefined" :subcomponent="layer.subcomponents[SUB_COMPONENTS.CLOSE]"/>
                 </div>
-                <div v-if="layer.subcomponentPreviewId" :id="layer.subcomponentPreviewId" style="display: none" :style="[layer.css, { zIndex: layer.previewZIndex }]" class="subcomponent-preview"></div>
+                <div v-if="layer.subcomponentPreviewId" :id="layer.subcomponentPreviewId" style="display: none" :style="[layer.css, { zIndex: layer.previewZIndex }]" class="subcomponent-preview-default"></div>
               </div>
           </component>
           <component :is="component.componentPreviewStructure.baseCss.componentTag"
             :id="SUB_COMPONENT_PREVIEW_ELEMENT_IDS.BASE"
             style="display: none" :style="[component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], { zIndex: BASE_PREVIEW_Z_INDEX }]"
-            class="subcomponent-preview subcomponent-preview-with-no-border-but-with-height">
+            class="subcomponent-preview-default subcomponent-preview-with-no-border-property-but-with-height">
           </component>
           <!-- UX - SUBCOMPONENT SELECT - set this to appropriate dimensions when the event is fired -->
           <!-- <div ref="selectSubcomponentOverlay1" style="width: 1000px; height: 700px; background-color: #ff010100; position: absolute; border: 0px; top: -221px; left: -220px; z-index: 1; cursor: pointer;"></div> -->
@@ -215,12 +215,18 @@ export default {
   .grid-item-position {
     position: relative;
   }
-  .subcomponent-preview {
+  .subcomponent-preview-default {
     background-color: rgb(64 197 255 / 43%) !important;
     position: absolute !important;
     top: 0px !important;
     width: 100%;
     cursor: pointer;
+  }
+  .subcomponent-preview-remove {
+    background-color: rgb(255 29 29 / 43%) !important;
+  }
+  .subcomponent-preview-add {
+    background-color: rgb(8 235 31 / 43%) !important;
   }
   .subcomponent-preview-select-in-progress {
     background-color: #ffffff00 !important;
@@ -230,7 +236,7 @@ export default {
     width: 100%;
     cursor: pointer;
   }
-  .subcomponent-preview-with-no-border-but-with-height {
+  .subcomponent-preview-with-no-border-property-but-with-height {
     border-color: rgb(64 197 255 / 0%) !important;
     border-top-width: 0px !important;
     border-bottom-width: 0px !important;

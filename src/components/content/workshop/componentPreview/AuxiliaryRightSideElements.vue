@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!subcomponent.optionalSubcomponent || subcomponent.optionalSubcomponent.currentlyDisplaying">
+  <div v-if="!subcomponent.optionalSubcomponent || subcomponent.optionalSubcomponent.currentlyDisplaying || subcomponent.optionalSubcomponent.displayPreviewOnly">
     <div id="close-button-parent" type="button" aria-label="Close">
       <button aria-hidden="true" id="close-button" :class="[ ...subcomponent.jsClasses ]"
         @mouseenter="componentMouseEnter()"
@@ -18,12 +18,12 @@
               subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
               subcomponent.customCss[subcomponent.customCssActiveMode],
             ]"
-        ><div id="close-button-icon">×</div>
+        ><div v-if="!subcomponent.optionalSubcomponent.displayPreviewOnly" id="close-button-icon">×</div>
       </button>
       <button
         :id="SUB_COMPONENT_PREVIEW_ELEMENT_IDS.CLOSE"
         style="display: none" :style="[subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], { zIndex: CLOSE_PREVIEW_Z_INDEX }]"
-        class="subcomponent-preview">
+        class="subcomponent-preview-default">
       </button>
     </div>
   </div>

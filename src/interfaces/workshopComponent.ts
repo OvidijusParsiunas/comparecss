@@ -46,6 +46,8 @@ export type CustomCss = {
 
 export interface OptionalSubcomponent {
   currentlyDisplaying: boolean;
+  // appended at app runtime
+  displayPreviewOnly?: boolean;
 }
 
 export type CustomSettings = {

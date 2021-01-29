@@ -22,8 +22,10 @@
     </div>
     <div class="option-component-button">
       <button v-if="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent"
-        type="button" class="btn option-action-button" data-toggle="modal" :data-target="removeSubcomponentModalId"
+        type="button" class="btn option-action-button" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
         :class="[ component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying ? 'display-toggle-remove' : 'display-toggle-add' ]"
+        @mouseenter="subcomponentMouseEnterHandler"
+        @mouseleave="subcomponentMouseLeaveHandler"
         @click="toggleSubcomponent(component.subcomponents[component.subcomponentsActiveMode])">
       </button>
     </div>
@@ -53,6 +55,8 @@
 import useComponentPreviewEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER } from '../../../../../consts/elementClassMarkers';
+import { SUBCOMPONENT_PREVIEW_CLASSES } from '../../../../../consts/subcomponentPreviewClasses';
+import SubcomponentToggleService from './subcomponentToggleService/subcomponentToggleService';
 import { componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
@@ -66,8 +70,6 @@ import { subcomponentSelectModeState } from './subcomponentSelectMode/state';
 import { UpdateOptionsMode } from '../../../../../interfaces/updateCssMode';
 import { removeSubcomponentModalState } from './modal/state';
 import dropdown from './dropdown/Dropdown.vue';
-import { subcomponentTypeToPreviewId } from './componentOptions/subcomponentTypeToPreviewId';
-import { SUBCOMPONENT_PREVIEW_CLASSES } from '../../../../../consts/subcomponentPreviewClasses';
 
 interface Consts {
   WORKSHOP_TOOLBAR_OPTION_TYPES;
@@ -75,10 +77,11 @@ interface Consts {
   componentTypeToOptions;
   useComponentPreviewEventHandlers;
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
+  REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: string,
 }
 
 interface Data {
-  removeSubcomponentModalId: string;
+  currentRemoveSubcomponentModalTargetId: string;
   isSubcomponentSelectModeButtonDisplayed: boolean;
   activeOptionButtonName: WORKSHOP_TOOLBAR_OPTION_TYPES,
 }
@@ -92,10 +95,11 @@ export default {
       componentTypeToOptions,
       useComponentPreviewEventHandlers,
       SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
+      REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: `#${REMOVE_SUBCOMPONENT_MODAL_ID}`,
     };
   },
   data: (): Data => ({
-    removeSubcomponentModalId: '',
+    currentRemoveSubcomponentModalTargetId: '',
     isSubcomponentSelectModeButtonDisplayed: false,
     activeOptionButtonName: null,
   }),
@@ -136,19 +140,30 @@ export default {
       const { optionalSubcomponent, initialCss } = subcomponent;
       if (!optionalSubcomponent.currentlyDisplaying) {
         optionalSubcomponent.currentlyDisplaying = !optionalSubcomponent.currentlyDisplaying;
+        SubcomponentToggleService.changeSubcomponentPreviewClass(optionalSubcomponent, this.component.subcomponentsActiveMode, false,
+          SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_TOGGLE_ADD, SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
       } else if (!this.getIsDoNotShowModalAgainState()) {
-        this.removeSubcomponentModalId = `#${REMOVE_SUBCOMPONENT_MODAL_ID}`;
-        setTimeout(() => { this.removeSubcomponentModalId = ''; });
+        this.currentRemoveSubcomponentModalTargetId = this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID;
+        setTimeout(() => { this.currentRemoveSubcomponentModalTargetId = ''; });
         this.$emit('prepare-remove-subcomponent-modal');
       } else {
         subcomponent.customCss = JSONManipulation.deepCopy(initialCss);
         optionalSubcomponent.currentlyDisplaying = !optionalSubcomponent.currentlyDisplaying;
         this.$emit('hide-settings');
+        SubcomponentToggleService.changeSubcomponentPreviewClass(optionalSubcomponent, this.component.subcomponentsActiveMode, true,
+          SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE, SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
       }
+    },
+    subcomponentMouseEnterHandler(): void {
+      SubcomponentToggleService.displaySubcomponentPreview(this.component, subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState());
+    },
+    subcomponentMouseLeaveHandler(): void {
+      if (this.currentRemoveSubcomponentModalTargetId === this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID) return;
+      SubcomponentToggleService.hideSubcomponentPreview(this.component, subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState());
     },
     toggleSubcomponentSelectModeButtonDisplay(isDropdownDisplayed: boolean): void {
       this.isSubcomponentSelectModeButtonDisplayed = isDropdownDisplayed;
-    }
+    },
   },
   props: {
     component: Object,

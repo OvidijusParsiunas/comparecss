@@ -1,11 +1,11 @@
 <template>
-  <div class="modal fade" :id="modalId">
+  <div class="modal fade cancel-element" @click="closeModal" :id="modalId">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title modal-text">Remove</h5>
-          <button ref="closeButton" class="close" data-dismiss="modal">
-            <span>&times;</span>
+          <button ref="closeButton" class="close cancel-element" data-dismiss="modal">
+            <span class="cancel-element">&times;</span>
           </button>
         </div>
         <div class="modal-body modal-text">
@@ -17,7 +17,7 @@
             <label class="form-check-label modal-text modal-footer-text" @click="doNotShowAgainSelected(!isDoNotShowAgainSelected)">Do not show again</label>
           </div>
           <button ref="removeButton" @click="remove" type="button" class="btn btn-primary" data-dismiss="modal">Remove</button>
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
+          <button type="button" class="btn btn-secondary cancel-element" data-dismiss="modal">Cancel</button>
         </div>
       </div>
     </div>
@@ -35,13 +35,20 @@ interface Props {
   removalModalState: RemovalModalState;
 }
 
+interface Consts {
+  CANCEL_ELEMENT_CLASS: string;
+}
+
 interface Data {
   isDoNotShowAgainSelected: boolean;
 }
 
 export default {
-  setup(props: Props): RemovalModalState {
-    return props.removalModalState;
+  setup(props: Props): RemovalModalState & Consts {
+    return {
+      ...props.removalModalState,
+      CANCEL_ELEMENT_CLASS: 'cancel-element',
+    };
   },
   data: (): Data => ({
     isDoNotShowAgainSelected: false,
@@ -49,23 +56,24 @@ export default {
   methods: {
     prepare(): void {
       const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
-      const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.closeModal };
+      const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.closeModalCallback };
       this.$emit('remove-modal-template-callback', workshopEventCallback);
       this.isClassNameTextHighlighted = false;
     },
-    closeModal(): WorkshopEventCallbackReturn {
+    closeModalCallback(): WorkshopEventCallbackReturn {
+      // if the modal is closed and event still lives
       if (!this.$refs.closeButton.offsetParent) return { shouldRepeat: false };
-      if (event instanceof KeyboardEvent) {
-        if (event.key === DOM_EVENT_TRIGGER_KEYS.ESCAPE) {
-          this.$refs.closeButton.click();
-          return { shouldRepeat: false };
-        }
-        if (event.key === DOM_EVENT_TRIGGER_KEYS.ENTER) {
-          this.$refs.removeButton.click();
-          return { shouldRepeat: false };
-        }
+      if (event instanceof KeyboardEvent && (event.key === DOM_EVENT_TRIGGER_KEYS.ESCAPE || event.key === DOM_EVENT_TRIGGER_KEYS.ENTER)) {
+        this.$refs.closeButton.click();
+        this.$emit('cancel-event');
+        return { shouldRepeat: false };
       }
       return { shouldRepeat: true };
+    },
+    closeModal(): void {
+      if ((event.target as HTMLElement).classList.contains(this.CANCEL_ELEMENT_CLASS)) {
+        this.$emit('cancel-event');
+      }
     },
     remove(): void {
       this.$emit('remove-event');

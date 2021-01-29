@@ -17,18 +17,18 @@ export default class SubcomponentSelectMode {
 
   private static mouseOverSubcomponentPreviewElementHandler(): void {
     const hoveredElement = event.target as HTMLElement;
-    hoveredElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN);
+    hoveredElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.SELECT_MODE_HIDDEN);
     hoveredElement.classList.add(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT);
   }
   
   private static mouseLeaveSubcomponentPreviewElementHandler(): void {
     const blurredElement = event.target as HTMLElement;
     blurredElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT);
-    blurredElement.classList.add(SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN);
+    blurredElement.classList.add(SUBCOMPONENT_PREVIEW_CLASSES.SELECT_MODE_HIDDEN);
   }
 
   private static removeSubcomponentPreviewProprerties(previewElement: HTMLElement): void {
-    previewElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN);
+    previewElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.SELECT_MODE_HIDDEN);
     previewElement.classList.add(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT);
     previewElement.style.display = 'none';
     previewElement.removeEventListener('mouseover', this.mouseOverSubcomponentPreviewElementHandler);
@@ -37,7 +37,7 @@ export default class SubcomponentSelectMode {
 
   private static prepareSubcomponentPreviewProperties(previewElement: HTMLElement): void {
     previewElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT);
-    previewElement.classList.add(SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN);
+    previewElement.classList.add(SUBCOMPONENT_PREVIEW_CLASSES.SELECT_MODE_HIDDEN);
     previewElement.style.display = 'block';
     previewElement.addEventListener('mouseover', this.mouseOverSubcomponentPreviewElementHandler);
     previewElement.addEventListener('mouseleave', this.mouseLeaveSubcomponentPreviewElementHandler);
@@ -50,7 +50,7 @@ export default class SubcomponentSelectMode {
       component.subcomponentsActiveMode = JsUtils.getKeyByValue(subcomponentTypeToPreviewId, clickedElement.id) as SUB_COMPONENTS;
       newSubcomponentsModeClickedFunc(component.subcomponentsActiveMode);
     }
-    const subcomponentPreviewElements = document.getElementsByClassName(SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN);
+    const subcomponentPreviewElements = document.getElementsByClassName(SUBCOMPONENT_PREVIEW_CLASSES.SELECT_MODE_HIDDEN);
     [...subcomponentPreviewElements].forEach((element: HTMLElement) => {
       this.removeSubcomponentPreviewProprerties(element);
     });

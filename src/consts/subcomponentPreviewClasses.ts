@@ -1,5 +1,6 @@
 export enum SUBCOMPONENT_PREVIEW_CLASSES {
-  SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN = 'subcomponent-preview-select-in-progress',
-  DEFAULT = 'subcomponent-preview',
+  SELECT_MODE_HIDDEN = 'subcomponent-preview-select-in-progress',
+  SUBCOMPONENT_TOGGLE_REMOVE = 'subcomponent-preview-remove',
+  SUBCOMPONENT_TOGGLE_ADD = 'subcomponent-preview-add',
+  DEFAULT = 'subcomponent-preview-default',
 }
-  

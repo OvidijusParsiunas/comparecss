@@ -9,14 +9,14 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
 
   function switchSubcomponentPreviewElementClasses(subcomponentPreviewElement: HTMLElement, displayValue: 'block'|'none'): void {
     if (displayValue === 'block') {
-      if (subcomponentPreviewElement.classList.contains(SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN)) {
-        subcomponentPreviewElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN);
+      if (subcomponentPreviewElement.classList.contains(SUBCOMPONENT_PREVIEW_CLASSES.SELECT_MODE_HIDDEN)) {
+        subcomponentPreviewElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.SELECT_MODE_HIDDEN);
         subcomponentPreviewElement.classList.add(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT);
       }
     } else if (displayValue === 'none') {
       if (subcomponentPreviewElement.classList.contains(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT)) {
         subcomponentPreviewElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT);
-        subcomponentPreviewElement.classList.add(SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_SELECT_MODE_IN_PROGRESS_HIDDEN);
+        subcomponentPreviewElement.classList.add(SUBCOMPONENT_PREVIEW_CLASSES.SELECT_MODE_HIDDEN);
       }
     }
   }

@@ -71,6 +71,7 @@
         :modalId="REMOVE_SUBCOMPONENT_MODAL_ID"
         :removalModalState="removeSubcomponentModalState"
         @remove-event="removeSubcomponentEventHandler"
+        @cancel-event="cancelSubcomponentRemovalEventHandler"
         @remove-modal-template-callback="addWorkshopEventCallback($event)">
         Are you sure you want to remove this subcomponent?
       </removal-modal-template>
@@ -91,6 +92,7 @@ import { modalLayerBottomCustomSettings } from './newComponent/types/modals/prop
 import { inheritedAlertCloseChildCss } from './newComponent/types/alerts/properties/inheritedAlertCloseChildCss';
 import { modalLayerTopCustomSettings } from './newComponent/types/modals/properties/modalLayerTopCustomSettings';
 import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
+import SubcomponentToggleService from './toolbar/options/subcomponentToggleService/subcomponentToggleService';
 import { alertCloseCustomSettings } from './newComponent/types/alerts/properties/alertCloseCustomSettings';
 import { modalBaseCustomSettings } from './newComponent/types/modals/properties/modalBaseCustomSettings';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
@@ -98,6 +100,7 @@ import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCa
 import { subcomponentSelectModeState } from './toolbar/options/subcomponentSelectMode/state';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { inheritedAlertBaseCss } from './newComponent/types/alerts/properties/inheritedCss';
+import { SUBCOMPONENT_PREVIEW_CLASSES } from '../../../consts/subcomponentPreviewClasses';
 import ProcessClassName from '../../../services/workshop/newComponent/processClassName';
 import { SUB_COMPONENT_CSS_MODES } from '../../../consts/subcomponentCssModes.enum';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
@@ -471,6 +474,10 @@ export default {
         this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.subcomponentsActiveMode].initialCss);
       this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying = false;
       this.$refs.toolbar.hideSettings();
+    },
+    cancelSubcomponentRemovalEventHandler(): void {
+      SubcomponentToggleService.hideSubcomponentPreviewBySelectModeStatus(false, this.currentlySelectedComponent.subcomponentsActiveMode,
+        SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
     },
     preloadIcons(): void {
       const WAIT_TO_START_DOWNLOADING_ICON_ICONS = 5;
