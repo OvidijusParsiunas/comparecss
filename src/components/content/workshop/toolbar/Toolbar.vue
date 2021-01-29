@@ -26,12 +26,12 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../consts/workshopToolba
 import { componentTypeToOptions } from './options/componentOptions/componentTypeToOptions';
 import PartialCssCustomSettingsUtils from './settings/utils/partialCssCustomSettingsUtils';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
+import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import { UpdateOptionsMode } from '../../../../interfaces/updateCssMode';
 import { optionToSettings } from './settings/types/optionToSettings';
 import settings from './settings/Settings.vue';
 import options from './options/Options.vue';
-import { WorkshopEventCallback } from '@/interfaces/workshopEventCallback';
 
 interface Data {
   activeOption: WORKSHOP_TOOLBAR_OPTION_TYPES;

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="!subcomponent.optionalSubcomponent || subcomponent.optionalSubcomponent.currentlyDisplaying || subcomponent.optionalSubcomponent.displayPreviewOnly">
+  <div v-if="subcomponent.optionalSubcomponent.currentlyDisplaying || subcomponent.optionalSubcomponent.displayPreviewOnly">
     <div id="close-button-parent" type="button" aria-label="Close">
       <button aria-hidden="true" id="close-button" :class="[ ...subcomponent.jsClasses ]"
         @mouseenter="componentMouseEnter()"
