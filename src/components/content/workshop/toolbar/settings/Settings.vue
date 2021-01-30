@@ -288,7 +288,7 @@ export default {
       setTimeout(() => {
         const popoverElement = (event.target as HTMLInputElement).parentElement.childNodes[0] as HTMLElement;
         if (popoverElement.style) { popoverElement.style.opacity = '1'; }
-      })
+      });
     },
     rangeMouseUp(event: KeyboardEvent): void {
       ((event.target as HTMLInputElement).parentElement.childNodes[0] as HTMLElement).style.opacity = '0';
@@ -306,7 +306,7 @@ export default {
       this.inputDropdownCurrentValues[cssProperty] = this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty];
     },
     selectOptionClick(option: string, setting: any): void {
-      const {triggers, spec} = setting;
+      const { triggers, spec } = setting;
       const { customCss, customCssActiveMode } = this.subcomponentproperties;
       customCss[customCssActiveMode][spec.cssProperty] = option;
       this.selectorCurrentValues[spec.cssProperty] = option;

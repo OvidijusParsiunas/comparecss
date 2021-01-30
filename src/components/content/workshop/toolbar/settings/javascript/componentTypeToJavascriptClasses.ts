@@ -9,4 +9,5 @@ type ComponentTypeToJavascriptClasses = {
 export const componentTypeToJavascriptClasses: ComponentTypeToJavascriptClasses = {
   [NEW_COMPONENT_TYPES.BUTTON]: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
   [NEW_COMPONENT_TYPES.ALERT]: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
+  [NEW_COMPONENT_TYPES.MODAL]: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
 };

@@ -21,7 +21,9 @@ export interface ComponentPreviewStructure {
   baseCss: SubcomponentProperties,
   // will be used in the future, can be horizontal or vertical
   layeringType?: string,
-  layers: Layer[],
+  layers?: Layer[],
+  // if the text is contained in the base component itself without any inner layering
+  [PSEUDO_COMPONENTS.TEXT]?: string,
   subcomponentDropdownStructure?: NestedDropdownStructure,
 }
 

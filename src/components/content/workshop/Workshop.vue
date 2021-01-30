@@ -183,6 +183,10 @@ function createInitialCloseButtonCss(): CustomCss {
   }
 }
 
+function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
+  return new Set([JAVASCRIPT_CLASSES.RIPPLES])
+}
+
 function createSubcomponents(): Subcomponents {
   return {
     [SUB_COMPONENTS.BASE]: {
@@ -337,8 +341,8 @@ function createSubcomponents(): Subcomponents {
       componentTag: 'div',
       customCss: createInitialCloseButtonCss(),
       initialCss: createInitialCloseButtonCss(),
-      jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
-      initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
+      jsClasses: createInitialCloseButtonJsClasses(),
+      initialJsClasses: createInitialCloseButtonJsClasses(),
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),

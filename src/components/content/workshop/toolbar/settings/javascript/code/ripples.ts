@@ -1,5 +1,15 @@
 import { JavascriptCode } from '../../../../../../../interfaces/javascriptCode';
 
+// TO-DO:
+// Strategy for nested elements where we want scoped nested animations for each button and one for the background element:
+// <div class="csssymphony-ripples">
+//  <button class="csssymphony-ripples"></button>
+//  <button class="csssymphony-ripples"></button>
+// </div>
+// instead of if (event.target.classList.contains(vars.className)) {
+//  traverse the current and parent elements until one of them contains csssymphony-ripples
+//  then proceed to create a ripple on that element
+
 const vars = {
   animationDurationMs: 1000,
   rippleElements: [],

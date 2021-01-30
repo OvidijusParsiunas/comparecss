@@ -43,14 +43,18 @@ function createInitialBaseCss(): CustomCss {
   }
 }
 
+function createInitialButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
+  return new Set([JAVASCRIPT_CLASSES.RIPPLES])
+}
+
 function createSubcomponents(): Subcomponents {
   return {
     [SUB_COMPONENTS.BASE]: {
       componentTag: 'button',
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
-      jsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
-      initialJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]),
+      jsClasses: createInitialButtonJsClasses(),
+      initialJsClasses: createInitialButtonJsClasses(),
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),

@@ -37,11 +37,12 @@
                 ]">
               <div v-for="layer in component.componentPreviewStructure.layers" :key="layer" class="parent-layer">
                 <div :style="layer.css">
-                  <div-inner-html v-if="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]" :innerHTML="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]"/>
+                  <nested-inner-html-text v-if="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]" :innerHTML="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]"/>
                   <auxiliary-right-side-elements v-if="layer.subcomponents[SUB_COMPONENTS.CLOSE] !== undefined" :subcomponent="layer.subcomponents[SUB_COMPONENTS.CLOSE]"/>
                 </div>
                 <div v-if="layer.subcomponentPreviewId" :id="layer.subcomponentPreviewId" style="display: none" :style="[layer.css, { zIndex: layer.previewZIndex }]" class="subcomponent-preview-default"></div>
               </div>
+              {{ component.componentPreviewStructure[PSEUDO_COMPONENTS.TEXT] }}
           </component>
           <component :is="component.componentPreviewStructure.baseCss.componentTag"
             :id="SUB_COMPONENT_PREVIEW_ELEMENT_IDS.BASE"
@@ -79,7 +80,7 @@ import { PSEUDO_COMPONENTS } from '../../../../consts/pseudoComponents.enum';
 import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import auxiliaryRightSideElements from './AuxiliaryRightSideElements.vue';
-import divInnerHtml from './divInnerHTML.vue';
+import nestedInnerHtmlText from './nestedInnerHTMLText.vue';
 import { Ref, ref, watch } from 'vue';
 
 interface Consts {
@@ -128,7 +129,7 @@ export default {
   },
   components: {
     auxiliaryRightSideElements,
-    divInnerHtml,
+    nestedInnerHtmlText,
   },
   props: {
     component: Object,
