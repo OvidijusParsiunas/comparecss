@@ -60,6 +60,71 @@ function createInitialCloseButtonCss(): CustomCss {
   }
 }
 
+function createInitialLayer1Css(): CustomCss {
+  return {
+    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+      position: 'relative',
+      height: '50px',
+      textAlign: 'left',
+      paddingLeft: '20px',
+      paddingTop: '0px',
+      paddingRight: '0px',
+      paddingBottom: '0px',
+      borderBottomWidth: '1px',
+      borderBottomStyle: 'solid',
+      borderBottomColor: '#e9ecef',
+      backgroundColor: 'inherit',
+      fontWeight: '500',
+      fontSize: '20px',
+      boxShadow: 'unset',
+      fontFamily: '"Poppins", sans-serif',
+      color: '#004085',
+      zIndex: 1,
+    },
+  }
+}
+
+function createInitialLayer2Css(): CustomCss {
+  return {
+    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+      position: 'relative',
+      height: '50px',
+      textAlign: 'left',
+      paddingLeft: '20px',
+      paddingTop: '0px',
+      paddingRight: '0px',
+      paddingBottom: '0px',
+      fontWeight: '400',
+      backgroundColor: 'inherit',
+      fontFamily: '"Poppins", sans-serif',
+      fontSize: '16px',
+      color: '#004085',
+    },
+  }
+}
+
+function createInitialLayer3Css(): CustomCss {
+  return {
+    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+      position: 'relative',
+      height: '50px',
+      textAlign: 'right',
+      paddingLeft: '0px',
+      paddingRight: '20px',
+      paddingTop: '0px',
+      paddingBottom: '0px',
+      borderTopWidth: '1px',
+      borderTopStyle: 'solid',
+      borderTopColor: '#e9ecef',
+      backgroundColor: 'inherit',
+      boxShadow: 'unset',
+      fontFamily: '"Poppins", sans-serif',
+      fontSize: '16px',
+      color: '#004085',
+    },
+  }
+}
+
 function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
   return new Set([JAVASCRIPT_CLASSES.RIPPLES])
 }
@@ -80,32 +145,8 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.LAYER_1]: {
       componentTag: 'div',
-      customCss: {
-        [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-          position: 'relative',
-          height: '50px',
-          textAlign: 'left',
-          paddingLeft: '20px',
-          borderBottomWidth: '1px',
-          borderBottomStyle: 'solid',
-          borderBottomColor: '#e9ecef',
-          fontWeight: '500',
-          fontSize: '20px',
-        },
-      },
-      initialCss: {
-        [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-          position: 'relative',
-          height: '50px',
-          textAlign: 'left',
-          paddingLeft: '20px',
-          borderBottomWidth: '1px',
-          borderBottomStyle: 'solid',
-          borderBottomColor: '#e9ecef',
-          fontWeight: '500',
-          fontSize: '20px',
-        },
-      },
+      customCss: createInitialLayer1Css(),
+      initialCss: createInitialLayer1Css(),
       jsClasses: new Set(),
       initialJsClasses: new Set(),
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -115,24 +156,8 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.LAYER_2]: {
       componentTag: 'div',
-      customCss: {
-        [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-          position: 'relative',
-          height: '50px',
-          textAlign: 'left',
-          paddingLeft: '20px',
-          fontWeight: '400',
-        },
-      },
-      initialCss: {
-        [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-          position: 'relative',
-          height: '50px',
-          textAlign: 'left',
-          paddingLeft: '20px',
-          fontWeight: '400',
-        },
-      },
+      customCss: createInitialLayer2Css(),
+      initialCss: createInitialLayer2Css(),
       jsClasses: new Set(),
       initialJsClasses: new Set(),
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -141,28 +166,8 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.LAYER_3]: {
       componentTag: 'div',
-      customCss: {
-        [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-          position: 'relative',
-          height: '50px',
-          textAlign: 'right',
-          paddingRight: '20px',
-          borderTopWidth: '1px',
-          borderTopStyle: 'solid',
-          borderTopColor: '#e9ecef',
-        },
-      },
-      initialCss: {
-        [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-          position: 'relative',
-          height: '50px',
-          textAlign: 'right',
-          paddingRight: '20px',
-          borderTopWidth: '1px',
-          borderTopStyle: 'solid',
-          borderTopColor: '#e9ecef',
-        },
-      },
+      customCss: createInitialLayer3Css(),
+      initialCss: createInitialLayer3Css(),
       jsClasses: new Set(),
       initialJsClasses: new Set(),
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,

@@ -43,7 +43,7 @@
         type="button"
         v-for="(option) in componentTypeToOptions[component.type][component.subcomponentsActiveMode][component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode]" :key="option"
         class="btn btn-outline-secondary option-component-button option-select-button-default"
-        :class="[option.buttonName === activeOptionType ? 'option-select-button-active' : '']"
+        :class="[option.type === activeOptionType ? 'option-select-button-active' : '']"
         @click="optionClick(option.type)">
           {{option.buttonName}}
       </button>
