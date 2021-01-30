@@ -211,16 +211,19 @@ export default {
     displayChildDropdownMenu(parentOptionElement: HTMLElement, parentDropdownMenuIndex: number, parentDropdownOptionIndex: number, childDropdownOptions: NestedDropdownStructure): void {
       if (typeof childDropdownOptions.currentlyDisplaying !== 'boolean') {
         this.dropdowns.push(childDropdownOptions);
-        const startOfAggegatedLeftNumber = 11;
+        const startOfLeftPropertyValueNumber = 11;
         const dropdownMenuElement = parentOptionElement.parentNode as HTMLElement;
         const topStyleValueRaw = dropdownMenuElement.style.top;
         const leftStyleValueRaw = dropdownMenuElement.style.left;
-        const topStyleValueParsed = Number.parseInt(topStyleValueRaw.substring(startOfAggegatedLeftNumber, topStyleValueRaw.length)) || 0;
+        const topStyleValueParsed = Number.parseInt(topStyleValueRaw.substring(startOfLeftPropertyValueNumber, topStyleValueRaw.length)) || 0;
         const leftStyleValueParsed = Number.parseInt(leftStyleValueRaw) || 0;
         const currentDropdownMenuWidth = dropdownMenuElement.offsetWidth;
         const optionHeight = parentOptionElement.offsetHeight;
         setTimeout(() => {
           const newChildDropdownMenuElemIndex = parentDropdownMenuIndex + 2;
+          // if the user moves the mouse into an option that has children and quickly moves it back to its parent dropdown, the new child dropdown that was triggered to display
+          // here no longer exists
+          if (!this.$refs.dropdownMenus.childNodes[newChildDropdownMenuElemIndex].style) return;
           this.$refs.dropdownMenus.childNodes[newChildDropdownMenuElemIndex].style.top = `calc(100% + ${(parentDropdownOptionIndex * optionHeight) + topStyleValueParsed}px)`;
           this.$refs.dropdownMenus.childNodes[newChildDropdownMenuElemIndex].style.left = `${currentDropdownMenuWidth + leftStyleValueParsed}px`;
           this.$refs.dropdownMenus.childNodes[newChildDropdownMenuElemIndex].style.display = 'block';
