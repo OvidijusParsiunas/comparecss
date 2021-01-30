@@ -37,10 +37,12 @@ interface Props {
 
 interface Consts {
   CANCEL_ELEMENT_CLASS: string;
+  MODAL_DISPLAY_ANIMATION_INTERVAL_MILLISECONDS: number,
 }
 
 interface Data {
   isDoNotShowAgainSelected: boolean;
+  modalDisplayAnimationPlaying: boolean;
 }
 
 export default {
@@ -48,10 +50,12 @@ export default {
     return {
       ...props.removalModalState,
       CANCEL_ELEMENT_CLASS: 'cancel-element',
+      MODAL_DISPLAY_ANIMATION_INTERVAL_MILLISECONDS: 500,
     };
   },
   data: (): Data => ({
     isDoNotShowAgainSelected: false,
+    modalDisplayAnimationPlaying: false,
   }),
   methods: {
     prepare(): void {
@@ -59,13 +63,18 @@ export default {
       const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.closeModalCallback };
       this.$emit('remove-modal-template-callback', workshopEventCallback);
       this.isClassNameTextHighlighted = false;
+      this.modalDisplayAnimationPlaying = true;
+      setTimeout(() => {
+        this.modalDisplayAnimationPlaying = false;
+      }, this.MODAL_DISPLAY_ANIMATION_INTERVAL_MILLISECONDS);
     },
     closeModalCallback(): WorkshopEventCallbackReturn {
+      if (this.modalDisplayAnimationPlaying) return { shouldRepeat: true };
       // if the modal is closed and event still lives
       if (!this.$refs.closeButton.offsetParent) return { shouldRepeat: false };
       if (event instanceof KeyboardEvent && (event.key === DOM_EVENT_TRIGGER_KEYS.ESCAPE || event.key === DOM_EVENT_TRIGGER_KEYS.ENTER)) {
+        // triggers data-dismiss and closeModal
         this.$refs.closeButton.click();
-        this.$emit('cancel-event');
         return { shouldRepeat: false };
       }
       return { shouldRepeat: true };
