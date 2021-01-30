@@ -22,7 +22,7 @@ export interface ComponentPreviewStructure {
   // will be used in the future, can be horizontal or vertical
   layeringType?: string,
   layers?: Layer[],
-  // if the text is contained in the base component itself without any inner layering
+  // if the text is contained in the base component without any inner layering
   [PSEUDO_COMPONENTS.TEXT]?: string,
   subcomponentDropdownStructure?: NestedDropdownStructure,
 }

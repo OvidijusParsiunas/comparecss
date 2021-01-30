@@ -218,6 +218,8 @@ export default {
   }
   .subcomponent-preview-default {
     background-color: rgb(64 197 255 / 43%) !important;
+    /* the following color is partially transparent and uses the background color to set its own color */
+    border-color: rgb(64 197 255 / 0%) !important;
     position: absolute !important;
     top: 0px !important;
     width: 100%;
