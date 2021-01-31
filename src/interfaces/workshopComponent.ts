@@ -1,4 +1,3 @@
-import { SUB_COMPONENT_PREVIEW_ELEMENT_IDS } from '../consts/subcomponentPreviewElementIds.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../consts/workshopToolbarOptionTypes.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../consts/subcomponentCssModes.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
@@ -16,7 +15,7 @@ type Layer = {
   css: WorkshopComponentCss | SubcomponentProperties;
   previewZIndex?: number;
   subcomponents: InnerSubcomponents;
-  subcomponentPreviewId?: SUB_COMPONENT_PREVIEW_ELEMENT_IDS;
+  subcomponentPreviewId?: string;
 }
 
 export interface ComponentPreviewStructure {

@@ -21,7 +21,7 @@
         ><div v-if="!subcomponent.optionalSubcomponent.displayPreviewOnly" id="close-button-icon">×</div>
       </button>
       <button
-        :id="SUB_COMPONENT_PREVIEW_ELEMENT_IDS.CLOSE"
+        :id="CLOSE_PREVIEW_ELEMENT_ID"
         style="display: none" :style="[subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], { zIndex: CLOSE_PREVIEW_Z_INDEX }]"
         class="subcomponent-preview-default">
       </button>
@@ -32,16 +32,16 @@
 <script lang="ts">
 import useSubcomponentPreviewEventHandlers, { UseSubcomponentPreviewEventHandlers } from './compositionAPI/useSubcomponentPreviewEventHandlers';
 import { subcomponentPreviewZIndexes } from '../toolbar/options/componentOptions/subcomponentPreviewZIndexes';
-import { SUB_COMPONENT_PREVIEW_ELEMENT_IDS } from '../../../../consts/subcomponentPreviewElementIds.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { SubcomponentProperties } from '../../../../interfaces/workshopComponent';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import { Ref, ref, watch } from 'vue';
+import { subcomponentTypeToPreviewId } from '../toolbar/options/componentOptions/subcomponentTypeToPreviewId';
 
 interface Consts {
   CLOSE_PREVIEW_Z_INDEX: number;
-  SUB_COMPONENT_PREVIEW_ELEMENT_IDS;
+  CLOSE_PREVIEW_ELEMENT_ID: string;
   SUB_COMPONENT_CSS_MODES;
   NEW_COMPONENT_TYPES;
 }
@@ -59,7 +59,7 @@ export default {
     return {
       ...useSubcomponentPreviewEventHandlers(subcomponentRef),
       CLOSE_PREVIEW_Z_INDEX: subcomponentPreviewZIndexes[SUB_COMPONENTS.CLOSE],
-      SUB_COMPONENT_PREVIEW_ELEMENT_IDS,
+      CLOSE_PREVIEW_ELEMENT_ID: subcomponentTypeToPreviewId[SUB_COMPONENTS.BASE],
       SUB_COMPONENT_CSS_MODES,
       NEW_COMPONENT_TYPES,
     };

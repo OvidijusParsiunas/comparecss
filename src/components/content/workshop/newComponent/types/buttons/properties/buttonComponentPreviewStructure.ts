@@ -7,5 +7,5 @@ export default function createButtonComponentPreviewStructure(baseComponent: Sub
     shallowSubcomponents: {
       [PSEUDO_COMPONENTS.TEXT]: 'button',
     },
-  }
+  };
 }

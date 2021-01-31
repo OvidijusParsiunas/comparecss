@@ -1,14 +1,13 @@
-import { SUB_COMPONENT_PREVIEW_ELEMENT_IDS } from '../../../../../../consts/subcomponentPreviewElementIds.enum';
 import { SUB_COMPONENTS } from '../../../../../../consts/subcomponentModes.enum';
 
 type SubcomponentTypeToPreviewId = {
-  [key in SUB_COMPONENTS]: SUB_COMPONENT_PREVIEW_ELEMENT_IDS;
-}
+  [key in SUB_COMPONENTS]: string;
+};
 
 export const subcomponentTypeToPreviewId: SubcomponentTypeToPreviewId = {
-  [SUB_COMPONENTS.BASE]: SUB_COMPONENT_PREVIEW_ELEMENT_IDS.BASE,
-  [SUB_COMPONENTS.CLOSE]: SUB_COMPONENT_PREVIEW_ELEMENT_IDS.CLOSE,
-  [SUB_COMPONENTS.LAYER_1]: SUB_COMPONENT_PREVIEW_ELEMENT_IDS.LAYER_1,
-  [SUB_COMPONENTS.LAYER_2]: SUB_COMPONENT_PREVIEW_ELEMENT_IDS.LAYER_2,
-  [SUB_COMPONENTS.LAYER_3]: SUB_COMPONENT_PREVIEW_ELEMENT_IDS.LAYER_3,
+  [SUB_COMPONENTS.BASE]: 'base-subcomponent-preview',
+  [SUB_COMPONENTS.CLOSE]: 'close-subcomponent-preview',
+  [SUB_COMPONENTS.LAYER_1]: 'layer_1-subcomponent-preview',
+  [SUB_COMPONENTS.LAYER_2]: 'layer_2-subcomponent-preview',
+  [SUB_COMPONENTS.LAYER_3]: 'layer_3-subcomponent-preview',
 };

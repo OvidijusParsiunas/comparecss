@@ -6,18 +6,11 @@ have a builder for contents within the settings
 modal default margin will need to have a special option type to reflect the margin of the actual position, also an option to center it automatically
 javascript to close the alert message
 test in slower pc if the child dropdowns displays options correctly - chrome/firefox
-when clicking option button then dragging mouse out, text disappears
-
-firefox colour picker does not change the colour
-redundant mapping for subcomponentTypeToPreviewId, just do string theres
 
 option to import an existing button style!
 
 potentially have animation for when optional subcomponent options buttons appear and are hidden
-create a custom select options element in new component modal body
-
 the alert button ripple does not seem to work properly when there are many components
-clean up css after export, such as 0px values, bordershadow being unset - be careful not to remove transition
 
 UX:
   on using the select key for picking a subcomponent, check whether the mouse should always be a pointer, marked with UX - SUBCOMPONENT SELECT
@@ -27,7 +20,6 @@ UX:
   see if the subcomponent add and subcomponent remove hover and active css is ok
 
 need to investigate how to set default settings values (min max, select options) for each subcomponent
-cursor that allows user to hover over component's parts and upon clicking would direct to the rightful settings (similar to what chrome has)
 color active toolkit button
 option to see what the actual css looks like and to edit it
 consider placing javascript unique to the css classes it was used on

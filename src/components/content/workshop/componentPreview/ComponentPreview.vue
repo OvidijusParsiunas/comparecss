@@ -48,7 +48,7 @@
                 :subcomponent="component.componentPreviewStructure.shallowSubcomponents[SUB_COMPONENTS.CLOSE]"/>
           </component>
           <component :is="component.componentPreviewStructure.baseCss.componentTag"
-            :id="SUB_COMPONENT_PREVIEW_ELEMENT_IDS.BASE"
+            :id="BASE_PREVIEW_ELEMENT_ID"
             style="display: none" :style="[component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], { zIndex: BASE_PREVIEW_Z_INDEX }]"
             class="subcomponent-preview-default subcomponent-preview-with-no-border-property-but-with-height">
           </component>
@@ -74,8 +74,8 @@
 
 <script lang="ts">
 import useSubcomponentPreviewEventHandlers, { UseSubcomponentPreviewEventHandlers } from './compositionAPI/useSubcomponentPreviewEventHandlers';
+import { subcomponentTypeToPreviewId } from '../toolbar/options/componentOptions/subcomponentTypeToPreviewId';
 import { subcomponentPreviewZIndexes } from '../toolbar/options/componentOptions/subcomponentPreviewZIndexes';
-import { SUB_COMPONENT_PREVIEW_ELEMENT_IDS } from '../../../../consts/subcomponentPreviewElementIds.enum';
 import { ComponentPreviewAssistance } from '../../../../interfaces/componentPreviewAssistance';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
@@ -88,10 +88,10 @@ import { Ref, ref, watch } from 'vue';
 
 interface Consts {
   BASE_PREVIEW_Z_INDEX: number;
+  BASE_PREVIEW_ELEMENT_ID: string;
   SUB_COMPONENT_CSS_MODES;
   NEW_COMPONENT_TYPES;
   SUB_COMPONENTS;
-  SUB_COMPONENT_PREVIEW_ELEMENT_IDS;
   PSEUDO_COMPONENTS;
 }
 
@@ -109,7 +109,7 @@ export default {
     return {
       ...useSubcomponentPreviewEventHandlers(componentRef),
       BASE_PREVIEW_Z_INDEX: subcomponentPreviewZIndexes[SUB_COMPONENTS.BASE],
-      SUB_COMPONENT_PREVIEW_ELEMENT_IDS,
+      BASE_PREVIEW_ELEMENT_ID: subcomponentTypeToPreviewId[SUB_COMPONENTS.BASE],
       SUB_COMPONENT_CSS_MODES,
       NEW_COMPONENT_TYPES,
       PSEUDO_COMPONENTS,

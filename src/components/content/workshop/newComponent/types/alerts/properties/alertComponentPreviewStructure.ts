@@ -24,5 +24,5 @@ export default function createAlertComponentPreviewStructure(baseComponent: Subc
         [SUB_COMPONENTS.CLOSE]: closeComponent.optionalSubcomponent,
       },
     },
-  }
+  };
 }
