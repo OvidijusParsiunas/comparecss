@@ -10,21 +10,23 @@ import { WorkshopComponentCss } from './workshopComponentCss';
 import { TempCustomCss } from './tempCustomCss';
 import { InheritedCss } from './inheritedCss';
 
+type InnerSubcomponents = { [key in PSEUDO_COMPONENTS | SUB_COMPONENTS]?: SubcomponentProperties | string };
+
 type Layer = {
   css: WorkshopComponentCss | SubcomponentProperties;
-  previewZIndex?: number,
-  subcomponents: { [key in PSEUDO_COMPONENTS | SUB_COMPONENTS]?: SubcomponentProperties | string };
-  subcomponentPreviewId?: SUB_COMPONENT_PREVIEW_ELEMENT_IDS,
+  previewZIndex?: number;
+  subcomponents: InnerSubcomponents;
+  subcomponentPreviewId?: SUB_COMPONENT_PREVIEW_ELEMENT_IDS;
 }
 
 export interface ComponentPreviewStructure {
-  baseCss: SubcomponentProperties,
+  baseCss: SubcomponentProperties;
   // will be used in the future, can be horizontal or vertical
-  layeringType?: string,
-  layers?: Layer[],
-  // if the text is contained in the base component without any inner layering
-  [PSEUDO_COMPONENTS.TEXT]?: string,
-  subcomponentDropdownStructure?: NestedDropdownStructure,
+  layeringType?: string;
+  layers?: Layer[];
+  // no nested layering within
+  shallowSubcomponents?: InnerSubcomponents;
+  subcomponentDropdownStructure?: NestedDropdownStructure;
 }
 
 export interface ChildCss {
@@ -55,7 +57,7 @@ export interface OptionalSubcomponent {
 export type CustomSettings = {
   [key in WORKSHOP_TOOLBAR_OPTION_TYPES]?: {
     [cssPropertyName: string]: {
-      scale?: [number, number],
+      scale?: [number, number];
     }
   };
 }
@@ -92,7 +94,7 @@ export type Subcomponents = {
 export interface WorkshopComponent {
   type: NEW_COMPONENT_TYPES;
   subcomponents: Subcomponents;
-  subcomponentsActiveMode: SUB_COMPONENTS,
-  componentPreviewStructure: ComponentPreviewStructure,
+  subcomponentsActiveMode: SUB_COMPONENTS;
+  componentPreviewStructure: ComponentPreviewStructure;
   className: string;
 }

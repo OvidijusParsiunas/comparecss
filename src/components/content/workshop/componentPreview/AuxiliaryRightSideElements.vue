@@ -30,7 +30,7 @@
 </template>
 
 <script lang="ts">
-import useComponentPreviewEventHandlers, { UseComponentPreviewEventHandlers } from './compositionAPI/useComponentPreviewEventHandlers';
+import useSubcomponentPreviewEventHandlers, { UseSubcomponentPreviewEventHandlers } from './compositionAPI/useSubcomponentPreviewEventHandlers';
 import { subcomponentPreviewZIndexes } from '../toolbar/options/componentOptions/subcomponentPreviewZIndexes';
 import { SUB_COMPONENT_PREVIEW_ELEMENT_IDS } from '../../../../consts/subcomponentPreviewElementIds.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
@@ -51,13 +51,13 @@ interface Props {
 }
 
 export default {
-  setup(props: Props): UseComponentPreviewEventHandlers & Consts {
+  setup(props: Props): UseSubcomponentPreviewEventHandlers & Consts {
     const subcomponentRef: Ref<Props['subcomponent']> = ref(props.subcomponent);
     watch(() => props.subcomponent, (newSubcomponent: Props['subcomponent']) => {
       subcomponentRef.value = newSubcomponent;
     });
     return {
-      ...useComponentPreviewEventHandlers(subcomponentRef),
+      ...useSubcomponentPreviewEventHandlers(subcomponentRef),
       CLOSE_PREVIEW_Z_INDEX: subcomponentPreviewZIndexes[SUB_COMPONENTS.CLOSE],
       SUB_COMPONENT_PREVIEW_ELEMENT_IDS,
       SUB_COMPONENT_CSS_MODES,

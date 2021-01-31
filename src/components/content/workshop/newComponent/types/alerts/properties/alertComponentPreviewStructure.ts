@@ -13,14 +13,16 @@ export default function createAlertComponentPreviewStructure(baseComponent: Subc
         },
         subcomponents: {
           [PSEUDO_COMPONENTS.TEXT]: 'Alert',
-          [SUB_COMPONENTS.CLOSE]: closeComponent,
         }
       },
     ],
+    shallowSubcomponents: {
+      [SUB_COMPONENTS.CLOSE]: closeComponent,
+    },
     subcomponentDropdownStructure: {
       [SUB_COMPONENTS.BASE]: {
         [SUB_COMPONENTS.CLOSE]: closeComponent.optionalSubcomponent,
       },
-    }
+    },
   }
 }

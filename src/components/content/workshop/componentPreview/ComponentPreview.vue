@@ -42,7 +42,10 @@
                 </div>
                 <div v-if="layer.subcomponentPreviewId" :id="layer.subcomponentPreviewId" style="display: none" :style="[layer.css, { zIndex: layer.previewZIndex }]" class="subcomponent-preview-default"></div>
               </div>
-              {{ component.componentPreviewStructure[PSEUDO_COMPONENTS.TEXT] }}
+              <!-- shallow subcomponents -->
+              {{ component.componentPreviewStructure.shallowSubcomponents ? component.componentPreviewStructure.shallowSubcomponents[PSEUDO_COMPONENTS.TEXT] : ''}}
+              <auxiliary-right-side-elements v-if="component.componentPreviewStructure.shallowSubcomponents && component.componentPreviewStructure.shallowSubcomponents[SUB_COMPONENTS.CLOSE]"
+                :subcomponent="component.componentPreviewStructure.shallowSubcomponents[SUB_COMPONENTS.CLOSE]"/>
           </component>
           <component :is="component.componentPreviewStructure.baseCss.componentTag"
             :id="SUB_COMPONENT_PREVIEW_ELEMENT_IDS.BASE"
@@ -70,7 +73,7 @@
 </template>
 
 <script lang="ts">
-import useComponentPreviewEventHandlers, { UseComponentPreviewEventHandlers } from './compositionAPI/useComponentPreviewEventHandlers';
+import useSubcomponentPreviewEventHandlers, { UseSubcomponentPreviewEventHandlers } from './compositionAPI/useSubcomponentPreviewEventHandlers';
 import { subcomponentPreviewZIndexes } from '../toolbar/options/componentOptions/subcomponentPreviewZIndexes';
 import { SUB_COMPONENT_PREVIEW_ELEMENT_IDS } from '../../../../consts/subcomponentPreviewElementIds.enum';
 import { ComponentPreviewAssistance } from '../../../../interfaces/componentPreviewAssistance';
@@ -98,13 +101,13 @@ interface Props {
 }
 
 export default {
-  setup(props: Props): UseComponentPreviewEventHandlers & Consts {
+  setup(props: Props): UseSubcomponentPreviewEventHandlers & Consts {
     const componentRef: Ref<Props['component']> = ref(props.component);
     watch(() => props.component, (newComponent: Props['component']) => {
       componentRef.value = newComponent;
     });
     return {
-      ...useComponentPreviewEventHandlers(componentRef),
+      ...useSubcomponentPreviewEventHandlers(componentRef),
       BASE_PREVIEW_Z_INDEX: subcomponentPreviewZIndexes[SUB_COMPONENTS.BASE],
       SUB_COMPONENT_PREVIEW_ELEMENT_IDS,
       SUB_COMPONENT_CSS_MODES,

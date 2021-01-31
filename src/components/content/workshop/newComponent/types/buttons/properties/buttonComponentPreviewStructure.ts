@@ -4,6 +4,8 @@ import { PSEUDO_COMPONENTS } from '../../../../../../../consts/pseudoComponents.
 export default function createButtonComponentPreviewStructure(baseComponent: SubcomponentProperties): ComponentPreviewStructure {
   return {
     baseCss: baseComponent,
-    [PSEUDO_COMPONENTS.TEXT]: 'button',
+    shallowSubcomponents: {
+      [PSEUDO_COMPONENTS.TEXT]: 'button',
+    },
   }
 }

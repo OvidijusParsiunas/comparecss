@@ -4,14 +4,14 @@ import { subcomponentSelectModeState } from '../../toolbar/options/subcomponentS
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import { Ref } from 'vue';
 
-export interface UseComponentPreviewEventHandlers {
+export interface UseSubcomponentPreviewEventHandlers {
   componentMouseEnter: () => void,
   componentMouseLeave: () => void,
   componentMouseDown: () => void,
   componentMouseUp: () => void,
 }
 
-export default function useComponentPreviewEventHandlers(componentRef: Ref<SubcomponentProperties> | Ref<WorkshopComponent>): UseComponentPreviewEventHandlers {
+export default function useSubcomponentPreviewEventHandlers(componentRef: Ref<SubcomponentProperties> | Ref<WorkshopComponent>): UseSubcomponentPreviewEventHandlers {
 
   let overwrittenDefaultPropertiesByHover = { hasBeenSet: false, css: {} };
   let overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
