@@ -2,7 +2,6 @@ import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_
 import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { subcomponentSelectModeState } from '../../toolbar/options/subcomponentSelectMode/state';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
-import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
 import { Ref } from 'vue';
 
 export interface UseComponentPreviewEventHandlers {
@@ -12,7 +11,7 @@ export interface UseComponentPreviewEventHandlers {
   componentMouseUp: () => void,
 }
 
-export default function useComponentPreviewEventHandlers(componentRef: Ref<SubcomponentProperties> | Ref<WorkshopComponent>, componentsThatShouldNotBeAffected?: Set<SUB_COMPONENTS>): UseComponentPreviewEventHandlers {
+export default function useComponentPreviewEventHandlers(componentRef: Ref<SubcomponentProperties> | Ref<WorkshopComponent>): UseComponentPreviewEventHandlers {
 
   let overwrittenDefaultPropertiesByHover = { hasBeenSet: false, css: {} };
   let overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
@@ -20,7 +19,8 @@ export default function useComponentPreviewEventHandlers(componentRef: Ref<Subco
 
   function setDefaultUnsetButtonStatesForColorInputs(customCss: CustomCss): void {
     Object.keys(customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]).forEach((key) => {
-      if (customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][key] === 'inherit' || customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][key].charAt(0) === '#') {
+      if (customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][key] === 'inherit' ||
+        (typeof customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][key] === 'string' && customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][key].charAt(0) === '#')) {
         isUnsetButtonDisplayedForColorInputs[key + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX] = customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][key] === 'inherit'
           ?  UNSET_COLOR_BUTTON_DISPLAYED_STATE.DO_NOT_DISPLAY : UNSET_COLOR_BUTTON_DISPLAYED_STATE.DISPLAY;
       }
@@ -37,12 +37,12 @@ export default function useComponentPreviewEventHandlers(componentRef: Ref<Subco
     return isComponentProperties(componentRef) ? componentRef.value : componentRef.value.subcomponents[componentRef.value.subcomponentsActiveMode];
   }
 
-  function shouldThisComponentNotBeAffected(): boolean {
-    return !isComponentProperties(componentRef) && componentsThatShouldNotBeAffected && componentsThatShouldNotBeAffected.has(componentRef.value.subcomponentsActiveMode);
+  function shouldThisComponentNotBeAffected(event): boolean {
+    return !isComponentProperties(componentRef) && event.target !== componentRef;
   }
 
   const componentMouseEnter = (): void => {
-    if (shouldThisComponentNotBeAffected() || subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
+    if (shouldThisComponentNotBeAffected(event) || subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
     const componentProperties = parseComponentProperties();
     const { customCss, subcomponentPreviewTransition, customCssActiveMode } = componentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
@@ -54,7 +54,7 @@ export default function useComponentPreviewEventHandlers(componentRef: Ref<Subco
   }
   
   const componentMouseLeave = (): void => {
-    if (shouldThisComponentNotBeAffected() || subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
+    if (shouldThisComponentNotBeAffected(event) || subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
     const componentProperties = parseComponentProperties();
     const { customCss, customCssActiveMode } = componentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT && overwrittenDefaultPropertiesByHover.hasBeenSet) {
@@ -65,7 +65,7 @@ export default function useComponentPreviewEventHandlers(componentRef: Ref<Subco
   }
   
   const componentMouseDown = (): void => {
-    if (shouldThisComponentNotBeAffected() || subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
+    if (shouldThisComponentNotBeAffected(event) || subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
     const componentProperties = parseComponentProperties();
     const { customCss, subcomponentPreviewTransition, customCssActiveMode } = componentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
@@ -76,7 +76,7 @@ export default function useComponentPreviewEventHandlers(componentRef: Ref<Subco
   }
   
   const componentMouseUp = (): void => {
-    if (shouldThisComponentNotBeAffected() || subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
+    if (shouldThisComponentNotBeAffected(event) || subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
     const componentProperties = parseComponentProperties();
     const { customCss, customCssActiveMode } = componentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT && overwrittenDefaultPropertiesByClick.hasBeenSet) {

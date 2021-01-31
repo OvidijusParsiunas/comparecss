@@ -15,7 +15,7 @@
         :highlightSubcomponents="true"
         :isButtonGroup="true"
         :isNested="true"
-        :customEventHandlers="useComponentPreviewEventHandlers"
+        :customEventHandlers="useSubcomponentDropdownEventHandlers"
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
         @new-dropdown-option-clicked="newSubcomponentsModeClicked($event)"
         @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
@@ -52,7 +52,7 @@
 </template>
 
 <script lang="ts">
-import useComponentPreviewEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
+import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER } from '../../../../../consts/elementClassMarkers';
 import { SUBCOMPONENT_PREVIEW_CLASSES } from '../../../../../consts/subcomponentPreviewClasses';
@@ -75,7 +75,7 @@ interface Consts {
   WORKSHOP_TOOLBAR_OPTION_TYPES;
   SUB_COMPONENT_CSS_MODES;
   componentTypeToOptions;
-  useComponentPreviewEventHandlers;
+  useSubcomponentDropdownEventHandlers;
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
   REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: string,
 }
@@ -93,7 +93,7 @@ export default {
       WORKSHOP_TOOLBAR_OPTION_TYPES,
       SUB_COMPONENT_CSS_MODES,
       componentTypeToOptions,
-      useComponentPreviewEventHandlers,
+      useSubcomponentDropdownEventHandlers,
       SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
       REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: `#${REMOVE_SUBCOMPONENT_MODAL_ID}`,
     };

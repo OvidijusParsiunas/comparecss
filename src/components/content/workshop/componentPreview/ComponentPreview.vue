@@ -104,7 +104,7 @@ export default {
       componentRef.value = newComponent;
     });
     return {
-      ...useComponentPreviewEventHandlers(componentRef, new Set([SUB_COMPONENTS.CLOSE])),
+      ...useComponentPreviewEventHandlers(componentRef),
       BASE_PREVIEW_Z_INDEX: subcomponentPreviewZIndexes[SUB_COMPONENTS.BASE],
       SUB_COMPONENT_PREVIEW_ELEMENT_IDS,
       SUB_COMPONENT_CSS_MODES,
