@@ -10,7 +10,7 @@
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
         @prepare-remove-subcomponent-modal="$emit('prepare-remove-subcomponent-modal')"
         @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
-        @expand-modal-component="expandModalComponent"/>
+        @expand-modal-component="expandModalComponent($event)"/>
       <settings ref="settings"
         :subcomponentproperties="component.subcomponents[component.subcomponentsActiveMode]"
         :settings="activeSettings"/>
@@ -142,10 +142,15 @@ export default {
       this.$emit('toggle-subcomponent-select-mode', callback);
       this.$refs.settings.toggleSubcomponentSelectMode();
     },
-    expandModalComponent(): void {
-      this.$refs.toolbarContainer.classList.replace('toolbar-container-default', 'toolbar-container-modal');
-      this.$refs.toolbarContainerInner.classList.add('toolbar-container-inner-modal');
-      this.$emit('expand-modal-component');
+    expandModalComponent(isExpandedModalPreviewModeActive: boolean): void {
+      if (isExpandedModalPreviewModeActive) {
+        this.$refs.toolbarContainer.classList.replace('toolbar-container-default', 'toolbar-container-modal');
+        this.$refs.toolbarContainerInner.classList.add('toolbar-container-inner-modal');
+      } else {
+        this.$refs.toolbarContainer.classList.replace('toolbar-container-modal', 'toolbar-container-default');
+        this.$refs.toolbarContainerInner.classList.remove('toolbar-container-inner-modal');
+      }
+      this.$emit('expand-modal-component', isExpandedModalPreviewModeActive);
     }
   },
   props: {

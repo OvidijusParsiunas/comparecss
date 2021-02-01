@@ -130,9 +130,14 @@ export default {
     toggleSubcomponentSelectMode(): void {
       // this.$refs.selectSubcomponentOverlay1.style.display = 'block';
     },
-    expandModalComponent(): void {
-      this.$refs.componentPreviewContainer.classList.replace('component-preview-container-default', 'component-preview-container-modal');
-      document.getElementById('comparecss-sidenav').style.display = 'none';
+    expandModalComponent(isExpandedModalPreviewModeActive: boolean): void {
+      if (isExpandedModalPreviewModeActive) {
+        this.$refs.componentPreviewContainer.classList.replace('component-preview-container-default', 'component-preview-container-modal');
+        document.getElementById('comparecss-sidenav').style.display = 'none'; 
+      } else {
+        this.$refs.componentPreviewContainer.classList.replace('component-preview-container-modal', 'component-preview-container-default');
+        document.getElementById('comparecss-sidenav').style.display = 'block';
+      }
     }
   },
   components: {
