@@ -25,7 +25,7 @@
         <button
           type="button" class="btn option-action-button"
           @click="toggleModalExpandMode">
-          <i class="dropdown-button-marker" :class="['fa', 'fa-expand']"></i>
+          <i class="dropdown-button-marker" :class="['fa', isExpandedModalPreviewModeActive ? 'fa-compress' : 'fa-expand']"></i>
         </button>
       </div>
       <div class="option-component-button">
@@ -51,7 +51,10 @@
           type="button"
           v-for="(option) in componentTypeToOptions[component.type][component.subcomponentsActiveMode][component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode]" :key="option"
           class="btn btn-outline-secondary option-component-button option-select-button-default"
-          :class="[option.type === activeOptionType ? 'option-select-button-active' : '']"
+          :disabled="option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive"
+          :class="[
+            option.type === activeOptionType ? 'option-select-button-active' : '',
+            option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive ? 'option-select-button-default-disabled' : 'option-select-button-default-enabled',]"
           @click="optionClick(option.type)">
             {{option.buttonName}}
         </button>
@@ -85,14 +88,15 @@ interface Consts {
   SUB_COMPONENT_CSS_MODES;
   componentTypeToOptions;
   useSubcomponentDropdownEventHandlers;
-  SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
-  REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: string,
+  SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER;
+  REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: string;
 }
 
 interface Data {
   currentRemoveSubcomponentModalTargetId: string;
   isSubcomponentSelectModeButtonDisplayed: boolean;
-  activeOptionType: WORKSHOP_TOOLBAR_OPTION_TYPES,
+  activeOptionType: WORKSHOP_TOOLBAR_OPTION_TYPES;
+  isExpandedModalPreviewModeActive: boolean;
 }
 
 export default {
@@ -111,6 +115,7 @@ export default {
     currentRemoveSubcomponentModalTargetId: '',
     isSubcomponentSelectModeButtonDisplayed: false,
     activeOptionType: null,
+    isExpandedModalPreviewModeActive: false,
   }),
   methods: {
     initiateSubcomponentSelectMode(): void {
@@ -174,7 +179,8 @@ export default {
       this.isSubcomponentSelectModeButtonDisplayed = isDropdownDisplayed;
     },
     toggleModalExpandMode(): void {
-      this.$emit('expand-modal-component');
+      this.isExpandedModalPreviewModeActive = !this.isExpandedModalPreviewModeActive;
+      this.$emit('expand-modal-component', this.isExpandedModalPreviewModeActive);
     },
   },
   props: {
@@ -214,14 +220,20 @@ export default {
   .option-select-button-default {
     color:#616161 !important;
   }
-  .option-select-button-default:hover {
+  .option-select-button-default-enabled {
+    cursor: pointer;
+  }
+  .option-select-button-default-enabled:hover {
     background-color: #ebebeb !important;
     color: rgb(85, 85, 85) !important;
   }
-  .option-select-button-default:active {
+  .option-select-button-default-enabled:active {
     background-color: #e4e4e4 !important;
     outline: none !important;
     box-shadow: none !important;
+  }
+  .option-select-button-default-disabled {
+    cursor: default;
   }
   .option-select-button-active {
     border-color: #84bbff !important;
