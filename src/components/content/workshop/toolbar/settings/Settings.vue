@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 98.5%">
+  <div>
     <div v-if="settings.options" style="position: relative; display: flex; margin-top: 10px; z-index: 1">
       <div style="padding: 15px; background-color: rgb(251 251 251); border-radius: 20px; margin: 0; width: 100%"> 
         <div class="container" style="display: flex">
@@ -120,6 +120,7 @@
           </div>
           <button class="reset-button" @click="resetSubcomponentProperties(settings.options)">
             &#8634;
+            <!-- <i :class="['fa', 'fa-history']"></i> -->
           </button>
         </div>
       </div>

@@ -1,5 +1,6 @@
 <template>
-  <div v-if="component" style="position: relative" @mouseleave="componentPreviewMouseLeave()">
+  <div ref="componentPreviewContainer" v-if="component" class="component-preview-container-default"
+    @mouseleave="componentPreviewMouseLeave()">
     <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); z-index: 0; text-align: center;"> 
       <div class="grid-container">
         <div class="grid-item grid-item-position"></div>
@@ -128,6 +129,10 @@ export default {
     // UX - SUBCOMPONENT SELECT - set this to appropriate dimensions when the event is fired
     toggleSubcomponentSelectMode(): void {
       // this.$refs.selectSubcomponentOverlay1.style.display = 'block';
+    },
+    expandModalComponent(): void {
+      this.$refs.componentPreviewContainer.classList.replace('component-preview-container-default', 'component-preview-container-modal');
+      document.getElementById('comparecss-sidenav').style.display = 'none';
     }
   },
   components: {
@@ -142,6 +147,18 @@ export default {
 </script>
 
 <style lang="css" scoped>
+  .component-preview-container-default {
+    position: relative;
+    height: 50%;
+  }
+  .component-preview-container-modal {
+    position: relative;
+    background-color: red;
+    height: 106%;
+    top: -2.6%;
+    left: -30vw;
+    width: 100vw;
+  }
   #margin-assistance-left {
     border-radius: 5px 2px 2px 5px;
     width: 10px;

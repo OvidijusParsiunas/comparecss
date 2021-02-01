@@ -1,19 +1,16 @@
 <template>
-  <div v-if="component">
-    <div style="width: 98.5%; height: 228px">
-      <div style="display: flex; background-color: rgb(251 251 251); border-radius: 20px;">
-        <div style="margin-left: 10px; padding: 5px; width: 100%; display: grid">
-          <options ref="options"
-            :component="component"
-            @option-clicked="updateSettings"
-            @subcomponents-mode-clicked="updateSubcomponentsMode"
-            @css-mode-clicked="updateCssMode"
-            @hide-settings="hideSettings"
-            @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-            @prepare-remove-subcomponent-modal="$emit('prepare-remove-subcomponent-modal')"
-            @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"/>
-        </div>
-      </div>
+  <div v-if="component" ref="toolbarContainer" class="toolbar-container-default">
+    <div ref="toolbarContainerInner">
+      <options ref="options"
+        :component="component"
+        @option-clicked="updateSettings"
+        @subcomponents-mode-clicked="updateSubcomponentsMode"
+        @css-mode-clicked="updateCssMode"
+        @hide-settings="hideSettings"
+        @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
+        @prepare-remove-subcomponent-modal="$emit('prepare-remove-subcomponent-modal')"
+        @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
+        @expand-modal-component="expandModalComponent"/>
       <settings ref="settings"
         :subcomponentproperties="component.subcomponents[component.subcomponentsActiveMode]"
         :settings="activeSettings"/>
@@ -144,6 +141,11 @@ export default {
     toggleSubcomponentSelectMode(callback: WorkshopEventCallback): void {
       this.$emit('toggle-subcomponent-select-mode', callback);
       this.$refs.settings.toggleSubcomponentSelectMode();
+    },
+    expandModalComponent(): void {
+      this.$refs.toolbarContainer.classList.replace('toolbar-container-default', 'toolbar-container-modal');
+      this.$refs.toolbarContainerInner.classList.add('toolbar-container-inner-modal');
+      this.$emit('expand-modal-component');
     }
   },
   props: {
@@ -158,6 +160,22 @@ export default {
 </script>
 
 <style lang="css" scoped>
+  .toolbar-container-default {
+    width: 98.5%;
+    height: 228px;
+  }
+  .toolbar-container-modal {
+    width: 100vw;
+    height: 228px;
+    position: absolute;
+    left: -30vw;
+    z-index: 1;
+  }
+  .toolbar-container-inner-modal {
+    width: 50%;
+    margin-left: auto;
+    margin-right: auto;
+  }
   .btn-outline-secondary:hover {
     background-color: #d6d6d6 !important;
     color: black !important;

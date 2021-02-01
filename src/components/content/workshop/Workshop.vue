@@ -31,8 +31,9 @@
               :componentPreviewAssistance="componentPreviewAssistance"
               @hide-dropdown-menu-callback="addWorkshopEventCallback($event)"
               @prepare-remove-subcomponent-modal="$refs.removeSubcomponentModal.prepare()"
-              @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"/>
-            <component-contents ref="contents" style="height: 50%" :component="currentlySelectedComponent" :componentPreviewAssistance="componentPreviewAssistance"/>
+              @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
+              @expand-modal-component="$refs.contents.expandModalComponent()"/>
+            <component-contents ref="contents" :component="currentlySelectedComponent" :componentPreviewAssistance="componentPreviewAssistance"/>
             <div style="height: 18%; display: flex; float: right; margin-right: 10px; margin-top: 105px">
               <div style="position: relative">
                 <div>

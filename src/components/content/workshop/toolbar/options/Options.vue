@@ -1,52 +1,61 @@
 <template>
   <div class="options-container">
-    <div class="btn-group option-component-button">
-      <button v-if="isSubcomponentSelectModeButtonDisplayed"
-        id="component-select-button" type="button" class="btn option-action-button" :class="SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER"
-        @click="initiateSubcomponentSelectMode">
-        <i class="fa fa-mouse-pointer" :class="SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER"></i>
-      </button>
-      <dropdown class="button-group-secondary-component"
-        :uniqueIdentifier="'subcomponentsDropdown'"
-        :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
-        :objectContainingActiveOption="component"
-        :activeModePropertyKeyName="'subcomponentsActiveMode'"
-        :fontAwesomeIconClassName="'fa-angle-double-down'"
-        :highlightSubcomponents="true"
-        :isButtonGroup="true"
-        :isNested="true"
-        :customEventHandlers="useSubcomponentDropdownEventHandlers"
-        @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-        @new-dropdown-option-clicked="newSubcomponentsModeClicked($event)"
-        @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
-    </div>
-    <div class="option-component-button">
-      <button v-if="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent"
-        type="button" class="btn option-action-button" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
-        :class="[ component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying ? 'display-toggle-remove' : 'display-toggle-add' ]"
-        @mouseenter="subcomponentMouseEnterHandler"
-        @mouseleave="subcomponentMouseLeaveHandler"
-        @click="toggleSubcomponent(component.subcomponents[component.subcomponentsActiveMode])">
-      </button>
-    </div>
-    <div v-if="!component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent || component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying"> 
-      <dropdown class="option-component-button"
-        :uniqueIdentifier="'cssModesDropdown'"
-        :dropdownOptions="componentTypeToOptions[component.type][component.subcomponentsActiveMode]"
-        :objectContainingActiveOption="component.subcomponents[component.subcomponentsActiveMode]"
-        :activeModePropertyKeyName="'customCssActiveMode'"
-        :fontAwesomeIconClassName="'fa-angle-down'"
-        :isNested="false"
-        @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-        @new-dropdown-option-clicked="newCssModeClicked($event)"/>
-      <button
-        type="button"
-        v-for="(option) in componentTypeToOptions[component.type][component.subcomponentsActiveMode][component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode]" :key="option"
-        class="btn btn-outline-secondary option-component-button option-select-button-default"
-        :class="[option.type === activeOptionType ? 'option-select-button-active' : '']"
-        @click="optionClick(option.type)">
-          {{option.buttonName}}
-      </button>
+    <div class="options-container-inner">
+      <div class="btn-group option-component-button">
+        <button v-if="isSubcomponentSelectModeButtonDisplayed"
+          id="component-select-button" type="button" class="btn option-action-button" :class="SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER"
+          @click="initiateSubcomponentSelectMode">
+          <i class="fa fa-mouse-pointer" :class="SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER"></i>
+        </button>
+        <dropdown class="button-group-secondary-component"
+          :uniqueIdentifier="'subcomponentsDropdown'"
+          :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
+          :objectContainingActiveOption="component"
+          :activeModePropertyKeyName="'subcomponentsActiveMode'"
+          :fontAwesomeIconClassName="'fa-angle-double-down'"
+          :highlightSubcomponents="true"
+          :isButtonGroup="true"
+          :isNested="true"
+          :customEventHandlers="useSubcomponentDropdownEventHandlers"
+          @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
+          @new-dropdown-option-clicked="newSubcomponentsModeClicked($event)"
+          @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
+      </div>
+      <div class="option-component-button">
+        <button
+          type="button" class="btn option-action-button"
+          @click="toggleModalExpandMode">
+          <i class="dropdown-button-marker" :class="['fa', 'fa-expand']"></i>
+        </button>
+      </div>
+      <div class="option-component-button">
+        <button v-if="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent"
+          type="button" class="btn option-action-button" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
+          :class="[ component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying ? 'display-toggle-remove' : 'display-toggle-add' ]"
+          @mouseenter="subcomponentMouseEnterHandler"
+          @mouseleave="subcomponentMouseLeaveHandler"
+          @click="toggleSubcomponent(component.subcomponents[component.subcomponentsActiveMode])">
+        </button>
+      </div>
+      <div v-if="!component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent || component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying"> 
+        <dropdown class="option-component-button"
+          :uniqueIdentifier="'cssModesDropdown'"
+          :dropdownOptions="componentTypeToOptions[component.type][component.subcomponentsActiveMode]"
+          :objectContainingActiveOption="component.subcomponents[component.subcomponentsActiveMode]"
+          :activeModePropertyKeyName="'customCssActiveMode'"
+          :fontAwesomeIconClassName="'fa-angle-down'"
+          :isNested="false"
+          @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
+          @new-dropdown-option-clicked="newCssModeClicked($event)"/>
+        <button
+          type="button"
+          v-for="(option) in componentTypeToOptions[component.type][component.subcomponentsActiveMode][component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode]" :key="option"
+          class="btn btn-outline-secondary option-component-button option-select-button-default"
+          :class="[option.type === activeOptionType ? 'option-select-button-active' : '']"
+          @click="optionClick(option.type)">
+            {{option.buttonName}}
+        </button>
+      </div>
     </div>
   </div>
 </template>
@@ -164,6 +173,9 @@ export default {
     toggleSubcomponentSelectModeButtonDisplay(isDropdownDisplayed: boolean): void {
       this.isSubcomponentSelectModeButtonDisplayed = isDropdownDisplayed;
     },
+    toggleModalExpandMode(): void {
+      this.$emit('expand-modal-component');
+    },
   },
   props: {
     component: Object,
@@ -176,6 +188,14 @@ export default {
 
 <style lang="css" scoped>
   .options-container {
+    padding: 5px;
+    padding-left: 15px;
+    width: 100%;
+    display: grid;
+    background-color: rgb(251 251 251);
+    border-radius: 20px;
+  }
+  .options-container-inner {
     margin-top: 10px !important;
     margin-bottom: 10px !important;
   }
