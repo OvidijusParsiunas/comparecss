@@ -369,21 +369,15 @@ export default {
       }
       this.currentlySelectedComponent = newComponent;
       ComponentJs.manipulateJS(this.currentlySelectedComponent.type, 'executeJS');
+      this.$refs.toolbar.updateToolbarForNewComponent();
     },
     addNewComponent(newComponent: WorkshopComponent): void {
       this.components.push(newComponent);
       this.switchActiveComponent(newComponent);
-      if (this.currentlySelectedComponent) {
-        const { subcomponents, subcomponentsActiveMode } = this.currentlySelectedComponent;
-        if (this.components.length > 1) { this.$refs.toolbar.updateCssMode([subcomponents[subcomponentsActiveMode].customCssActiveMode] as UpdateOptionsMode); } 
-      }
     },
     componentCardSelected(selectedComponent: WorkshopComponent): void {
       if (this.currentlySelectedComponent !== selectedComponent) {
         this.switchActiveComponent(selectedComponent);
-        setTimeout(() => {
-          this.$refs.toolbar.updateCssMode([selectedComponent.subcomponents[selectedComponent.subcomponentsActiveMode].customCssActiveMode] as UpdateOptionsMode);
-        })
       }
     },
     componentCardCopied(selectComponentCard: WorkshopComponent): void {
@@ -400,9 +394,8 @@ export default {
       const componentMatch = (component) => removedComponent === component;
       const componentIndex = this.components.findIndex(componentMatch);
       this.components.splice(componentIndex, 1);
-      const { subcomponents, subcomponentsActiveMode, type } = removedComponent;
       if (this.components.length === 0) {
-        ComponentJs.manipulateJS(type, 'revokeJS');
+        ComponentJs.manipulateJS(removedComponent.type, 'revokeJS');
         this.currentlySelectedComponent = undefined;
         return;
       }
@@ -411,7 +404,6 @@ export default {
       } else {
         this.switchActiveComponent(this.components[componentIndex]);
       }
-      this.$refs.toolbar.updateCssMode([subcomponents[subcomponentsActiveMode].customCssActiveMode] as UpdateOptionsMode);
     },
     exportFiles(): void {
       exportFiles.export(this.components);

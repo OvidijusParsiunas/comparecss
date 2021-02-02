@@ -20,10 +20,10 @@
 
 <script lang="ts">
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../consts/workshopToolbarOptionTypes.enum';
-import { componentTypeToOptions } from './options/componentOptions/componentTypeToOptions';
 import PartialCssCustomSettingsUtils from './settings/utils/partialCssCustomSettingsUtils';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
+import { SettingProperties } from '../../../../interfaces/componentOptions';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import { UpdateOptionsMode } from '../../../../interfaces/updateCssMode';
 import { optionToSettings } from './settings/types/optionToSettings';
@@ -31,7 +31,6 @@ import settings from './settings/Settings.vue';
 import options from './options/Options.vue';
 
 interface Data {
-  activeOption: WORKSHOP_TOOLBAR_OPTION_TYPES;
   activeSettings: any;
   customSettingsOriginalSpecs: CustomSettingOriginalSpec[];
   activeCssMode: SUB_COMPONENT_CSS_MODES;
@@ -49,30 +48,33 @@ interface CustomSettingOriginalSpec {
 
 export default {
   data: (): Data => ({
-    activeOption: null,
     activeSettings: {},
     customSettingsOriginalSpecs: [],
     activeCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
     settingsOpenedOnce: false,
   }),
   methods: {
-    updateSettings(newOption: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
-      this.setCustomSettings(newOption);
-      this.activeOption = newOption;
-      this.activeSettings = optionToSettings[newOption];
-      this.componentPreviewAssistance.margin = (newOption === WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN)
+    updateSettings(newOption: SettingProperties): void {
+      this.setCustomSettings(newOption.type);
+      this.activeSettings = optionToSettings[newOption.type];
+      // TO-DO should not be managed here
+      this.componentPreviewAssistance.margin = (newOption.type === WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN)
         && (this.component.subcomponentsActiveMode !== SUB_COMPONENTS.CLOSE);
       this.settingsOpenedOnce = true;
+    },
+    updateToolbarForNewComponent(): void {
+      this.$nextTick(() => {
+        const activeOption = this.$refs.options.updateOptionsForNewComponent(Object.keys(this.activeSettings).length);
+        if (activeOption) { this.updateSettings(activeOption); }
+        this.triggerSettingsReset();
+      });
     },
     updateCssMode(newCssMode: UpdateOptionsMode): void {
       this.$nextTick(() => {
         if (newCssMode[0]) { this.activeCssMode = newCssMode[0]; }
-        let newCssModeContainsActiveOption = newCssMode[1];
-        if (newCssModeContainsActiveOption === undefined) {
-          newCssModeContainsActiveOption = this.$refs.options.getNewCssModeContainsActiveOptionState(this.activeCssMode);
-        }
-        if (this.activeSettings && Object.keys(this.activeSettings).length && !newCssModeContainsActiveOption) {
-          this.setDefaultOption();
+        // TO-DO this.settingsOpenedOnce? 
+        if (newCssMode[1] && this.activeSettings && Object.keys(this.activeSettings).length) {
+          this.updateSettings(newCssMode[1]);
         }
         this.triggerSettingsReset();
       });
@@ -82,11 +84,12 @@ export default {
       if (this.component.subcomponents[this.component.subcomponentsActiveMode].optionalSubcomponent
         && !this.component.subcomponents[this.component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying) {
         this.hideSettings();
-        return;   
+        // TO-DO should be done in the options component
+        return;
       }
-      // when the subcomponent does not contain an option or settings are not displayed (if subcomponent is removed), display default option
-      if ((!updateSubcomponentsMode[1] || Object.keys(this.activeSettings).length === 0) && this.settingsOpenedOnce) {
-        this.setDefaultOption();
+      // TO-DO Object.keys(this.activeSettings).length?
+      if (updateSubcomponentsMode[1] && this.settingsOpenedOnce) {
+        this.updateSettings(updateSubcomponentsMode[1]);
       }
       this.triggerSettingsReset();
     },
@@ -94,29 +97,23 @@ export default {
       // this trigger type is used instead of a ref method because this will only trigger the settings-reset when
       // the props (more specifically the component properties) have updated first (via the watch property)
       // whereas directly calling the reset method via ref invokes it before the props have been updated
-      this.setCustomSettings(this.activeOption);
+      const activeOption = this.$refs.options.getActiveOption();
+      this.setCustomSettings(activeOption.type);
       this.$refs.settings.updateSettings();
+      // TO-DO should not be managed here
       this.$nextTick(() => {
-        if (this.activeOption === WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN && Object.keys(this.activeSettings).length > 0) {
+        if (activeOption.type === WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN && Object.keys(this.activeSettings).length > 0) {
           this.componentPreviewAssistance.margin = !(this.component.subcomponentsActiveMode === SUB_COMPONENTS.CLOSE);
         }
       });
-    },
-    setDefaultOption(): void {
-      const availableOptions = componentTypeToOptions[this.component.type]
-        [this.component.subcomponentsActiveMode]
-        [this.component.subcomponents[this.component.subcomponentsActiveMode].customCssActiveMode];
-      const firstOption = availableOptions[0];
-      this.updateSettings(firstOption.type);
-      this.$refs.options.setNewActiveOption(firstOption.type);
     },
     hideSettings(): void {
       this.activeSettings = {};
       this.componentPreviewAssistance.margin = false;
     },
-    setCustomSettings(option: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
+    setCustomSettings(optionType: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
       this.resetCustomSettings();
-      this.setNewCustomSettings(option);
+      this.setNewCustomSettings(optionType);
     },
     resetCustomSettings(): void {
       this.customSettingsOriginalSpecs.forEach((customSetting: CustomSettingOriginalSpec) => {
@@ -124,16 +121,16 @@ export default {
       });
       this.customSettingsOriginalSpecs = [];
     },
-    setNewCustomSettings(option: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
+    setNewCustomSettings(optionType: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
       const { customSettings } = this.component.subcomponents[this.component.subcomponentsActiveMode];
-      if (customSettings && customSettings[option]) {
-        optionToSettings[option].options.forEach((setting) => {
+      if (customSettings && customSettings[optionType]) {
+        optionToSettings[optionType].options.forEach((setting) => {
           const cssPropertyName = setting.spec.partialCss
           ? PartialCssCustomSettingsUtils.generateCustomPartialCssPropertyName(setting.spec.cssProperty, setting.spec.partialCss.position) : setting.spec.cssProperty;
-          if (customSettings[option][cssPropertyName]) {
+          if (customSettings[optionType][cssPropertyName]) {
             const customSettingOriginalSpec: CustomSettingOriginalSpec = { spec: setting.spec, originalValues: { name: 'scale', value: setting.spec.scale }};
             this.customSettingsOriginalSpecs.push(customSettingOriginalSpec);
-            setting.spec.scale = customSettings[option][cssPropertyName].scale;
+            setting.spec.scale = customSettings[optionType][cssPropertyName].scale;
           }
         });
       }

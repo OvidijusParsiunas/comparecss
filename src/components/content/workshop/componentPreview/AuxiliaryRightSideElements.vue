@@ -31,13 +31,13 @@
 
 <script lang="ts">
 import useSubcomponentPreviewEventHandlers, { UseSubcomponentPreviewEventHandlers } from './compositionAPI/useSubcomponentPreviewEventHandlers';
+import { subcomponentTypeToPreviewId } from '../toolbar/options/componentOptions/subcomponentTypeToPreviewId';
 import { subcomponentPreviewZIndexes } from '../toolbar/options/componentOptions/subcomponentPreviewZIndexes';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { SubcomponentProperties } from '../../../../interfaces/workshopComponent';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import { Ref, ref, watch } from 'vue';
-import { subcomponentTypeToPreviewId } from '../toolbar/options/componentOptions/subcomponentTypeToPreviewId';
 
 interface Consts {
   CLOSE_PREVIEW_Z_INDEX: number;
@@ -59,7 +59,7 @@ export default {
     return {
       ...useSubcomponentPreviewEventHandlers(subcomponentRef),
       CLOSE_PREVIEW_Z_INDEX: subcomponentPreviewZIndexes[SUB_COMPONENTS.CLOSE],
-      CLOSE_PREVIEW_ELEMENT_ID: subcomponentTypeToPreviewId[SUB_COMPONENTS.BASE],
+      CLOSE_PREVIEW_ELEMENT_ID: subcomponentTypeToPreviewId[SUB_COMPONENTS.CLOSE],
       SUB_COMPONENT_CSS_MODES,
       NEW_COMPONENT_TYPES,
     };

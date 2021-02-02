@@ -7,6 +7,10 @@ modal default margin will need to have a special option type to reflect the marg
 javascript to close the alert message
 test in slower pc if the child dropdowns displays options correctly - chrome/firefox
 toolbar position
+margin assistance
+change the emitted event name
+in the workshop, make sure to update only the required stuff
+switching subcomponents (modal is not expanded) does activate the button that should be set to disable
 
 option to import an existing button style!
 
