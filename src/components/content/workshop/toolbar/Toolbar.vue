@@ -21,11 +21,9 @@
 <script lang="ts">
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../consts/workshopToolbarOptionTypes.enum';
 import PartialCssCustomSettingsUtils from './settings/utils/partialCssCustomSettingsUtils';
-import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
 import { SettingProperties } from '../../../../interfaces/componentOptions';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
-import { UpdateOptionsMode } from '../../../../interfaces/updateCssMode';
 import { optionToSettings } from './settings/types/optionToSettings';
 import settings from './settings/Settings.vue';
 import options from './options/Options.vue';
@@ -33,7 +31,6 @@ import options from './options/Options.vue';
 interface Data {
   activeSettings: any;
   customSettingsOriginalSpecs: CustomSettingOriginalSpec[];
-  activeCssMode: SUB_COMPONENT_CSS_MODES;
   settingsOpenedOnce: boolean;
 }
 
@@ -50,7 +47,6 @@ export default {
   data: (): Data => ({
     activeSettings: {},
     customSettingsOriginalSpecs: [],
-    activeCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
     settingsOpenedOnce: false,
   }),
   methods: {
@@ -69,17 +65,16 @@ export default {
         this.triggerSettingsReset();
       });
     },
-    updateCssMode(newCssMode: UpdateOptionsMode): void {
+    updateCssMode(newOption: SettingProperties): void {
       this.$nextTick(() => {
-        if (newCssMode[0]) { this.activeCssMode = newCssMode[0]; }
         // TO-DO this.settingsOpenedOnce? 
-        if (newCssMode[1] && this.activeSettings && Object.keys(this.activeSettings).length) {
-          this.updateSettings(newCssMode[1]);
+        if (newOption && this.activeSettings && Object.keys(this.activeSettings).length) {
+          this.updateSettings(newOption);
         }
         this.triggerSettingsReset();
       });
     },
-    updateSubcomponentsMode(updateSubcomponentsMode: UpdateOptionsMode): void {
+    updateSubcomponentsMode(newOption: SettingProperties): void {
       // when an optional subcomponent is set to not display, hide settings
       if (this.component.subcomponents[this.component.subcomponentsActiveMode].optionalSubcomponent
         && !this.component.subcomponents[this.component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying) {
@@ -88,8 +83,8 @@ export default {
         return;
       }
       // TO-DO Object.keys(this.activeSettings).length?
-      if (updateSubcomponentsMode[1] && this.settingsOpenedOnce) {
-        this.updateSettings(updateSubcomponentsMode[1]);
+      if (newOption && this.settingsOpenedOnce) {
+        this.updateSettings(newOption);
       }
       this.triggerSettingsReset();
     },

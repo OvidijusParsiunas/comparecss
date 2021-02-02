@@ -155,12 +155,12 @@ export default {
       } else {
         newOption = this.activeOption.buttonName ? this.updateOption() : undefined;
       }
-      this.$emit('subcomponents-mode-clicked', [newSubComponent, newOption] as UpdateOptionsMode);
+      this.$emit('subcomponents-mode-clicked', newOption);
     },
     newCssModeClicked(newCssMode: SUB_COMPONENT_CSS_MODES): void {
       this.component.subcomponents[this.component.subcomponentsActiveMode].customCssActiveMode = newCssMode;
       const newOption: SettingProperties = this.activeOption.buttonName ? this.updateOption() : undefined;
-      this.$emit('css-mode-clicked', [newCssMode, newOption] as UpdateOptionsMode);
+      this.$emit('css-mode-clicked', newOption);
     },
     updateOptionsForNewComponent(activeSettings: any): SettingProperties {
       return activeSettings ? this.updateOption() : undefined;
