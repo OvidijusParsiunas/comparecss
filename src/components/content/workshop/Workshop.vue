@@ -88,14 +88,14 @@
 
 <script lang="ts">
 import { CustomCss, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../interfaces/workshopComponent';
+import { modalLayerBottomSpecificSettings } from './newComponent/types/modals/properties/modalLayerBottomSpecificSettings';
 import createModalComponentPreviewStructure from './newComponent/types/modals/properties/modalComponentPreviewStructure';
-import { modalLayerBottomCustomSettings } from './newComponent/types/modals/properties/modalLayerBottomCustomSettings';
+import { modalLayerTopSpecificSettings } from './newComponent/types/modals/properties/modalLayerTopSpecificSettings';
 import { inheritedAlertCloseChildCss } from './newComponent/types/alerts/properties/inheritedAlertCloseChildCss';
-import { modalLayerTopCustomSettings } from './newComponent/types/modals/properties/modalLayerTopCustomSettings';
 import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
+import { alertCloseSpecificSettings } from './newComponent/types/alerts/properties/alertCloseSpecificSettings';
 import SubcomponentToggleService from './toolbar/options/subcomponentToggleService/subcomponentToggleService';
-import { alertCloseCustomSettings } from './newComponent/types/alerts/properties/alertCloseCustomSettings';
-import { modalBaseCustomSettings } from './newComponent/types/modals/properties/modalBaseCustomSettings';
+import { modalBaseSpecificSettings } from './newComponent/types/modals/properties/modalBaseSpecificSettings';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { subcomponentSelectModeState } from './toolbar/options/subcomponentSelectMode/state';
@@ -264,7 +264,7 @@ function createSubcomponents(): Subcomponents {
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
-      customSettings: modalBaseCustomSettings,
+      subcomponentSpecificSettings: modalBaseSpecificSettings,
     },
     [SUB_COMPONENTS.LAYER_1]: {
       componentTag: 'div',
@@ -275,7 +275,7 @@ function createSubcomponents(): Subcomponents {
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
-      customSettings: modalLayerTopCustomSettings,
+      subcomponentSpecificSettings: modalLayerTopSpecificSettings,
     },
     [SUB_COMPONENTS.LAYER_2]: {
       componentTag: 'div',
@@ -296,7 +296,7 @@ function createSubcomponents(): Subcomponents {
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
-      customSettings: modalLayerBottomCustomSettings,
+      subcomponentSpecificSettings: modalLayerBottomSpecificSettings,
     },
     [SUB_COMPONENTS.CLOSE]: {
       componentTag: 'div',
@@ -309,7 +309,7 @@ function createSubcomponents(): Subcomponents {
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
       optionalSubcomponent: { currentlyDisplaying: true },
-      customSettings: alertCloseCustomSettings,
+      subcomponentSpecificSettings: alertCloseSpecificSettings,
     },
   }
 }

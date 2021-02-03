@@ -8,10 +8,8 @@ javascript to close the alert message
 test in slower pc if the child dropdowns displays options correctly - chrome/firefox
 toolbar position
 margin assistance
-change the emitted event name
-in the workshop, make sure to update only the required stuff
+when moving from modal to alert and size is selected, we switch to default even thought the option name is the same
 switching subcomponents (modal is not expanded) does activate the button that should be set to disable
-settings are not refreshed when re-adding an optional subcomponent
 
 when in a subcomponent of current component and removing another component, the current subcomponent should not be set back to default again
 option to import an existing button style!

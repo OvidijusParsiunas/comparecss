@@ -7,8 +7,8 @@ import createAlertComponentPreviewStructure from './alertComponentPreviewStructu
 import { NewComponent } from '../../../../../../../interfaces/newComponent';
 import { inheritedAlertCloseChildCss } from './inheritedAlertCloseChildCss';
 import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';
-import { alertCloseCustomSettings } from './alertCloseCustomSettings';
-import { alertBaseCustomSettings } from './alertBaseCustomSettings';
+import { alertCloseSpecificSettings } from './alertCloseSpecificSettings';
+import { alertBaseSpecificSettings } from './alertBaseSpecificSettings';
 import { inheritedAlertBaseCss } from './inheritedCss';
 
 // all default css needs to be filled in as to be able to 'reset' correctly
@@ -80,7 +80,7 @@ function createSubcomponents(): Subcomponents {
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
-      customSettings: alertBaseCustomSettings,
+      subcomponentSpecificSettings: alertBaseSpecificSettings,
     },
     [SUB_COMPONENTS.CLOSE]: {
       componentTag: 'div',
@@ -93,7 +93,7 @@ function createSubcomponents(): Subcomponents {
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
       optionalSubcomponent: { currentlyDisplaying: true },
-      customSettings: alertCloseCustomSettings,
+      subcomponentSpecificSettings: alertCloseSpecificSettings,
     },
   }
 }

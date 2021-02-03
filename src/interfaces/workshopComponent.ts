@@ -53,7 +53,7 @@ export interface OptionalSubcomponent {
   displayPreviewOnly?: boolean;
 }
 
-export type CustomSettings = {
+export type SubcomponentSpecificSettings = {
   [key in WORKSHOP_TOOLBAR_OPTION_TYPES]?: {
     [cssPropertyName: string]: {
       scale?: [number, number];
@@ -83,7 +83,7 @@ export interface SubcomponentProperties {
   initialJsClasses: ComponentJavascriptClasses;
   optionalSubcomponent?: OptionalSubcomponent;
   // the reason why custom css is attached here is to not have to keep multiple unique settings for each and every subcomponent in memory all at once
-  customSettings?: CustomSettings;
+  subcomponentSpecificSettings?: SubcomponentSpecificSettings;
 }
 
 export type Subcomponents = {

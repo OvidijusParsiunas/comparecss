@@ -19,7 +19,6 @@
 
 <script lang="ts">
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../consts/workshopToolbarOptionTypes.enum';
-import PartialCssCustomSettingsUtils from './settings/utils/partialCssCustomSettingsUtils';
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
 import { optionToSettings } from './settings/types/optionToSettings';
 import { Option } from '../../../../interfaces/componentOptions';
@@ -28,23 +27,12 @@ import options from './options/Options.vue';
 
 interface Data {
   isSettingsDisplayed: boolean;
-  customSettingsOriginalSpecs: CustomSettingOriginalSpec[];
   lastActiveOptionPriorToAllComponentsDeletion: Option;
-}
-
-interface CustomSettingOriginalSpec { 
-  spec: any;
-  originalValues:
-  {
-    name: string;
-    value: number[];
-  }
 }
 
 export default {
   data: (): Data => ({
     isSettingsDisplayed: false,
-    customSettingsOriginalSpecs: [],
     lastActiveOptionPriorToAllComponentsDeletion: null,
   }),
   methods: {
@@ -58,39 +46,14 @@ export default {
       this.lastActiveOptionPriorToAllComponentsDeletion = this.$refs.options.getActiveOption();
     },
     triggerSettingsReset(newOptionType: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
-      this.setCustomSettings(newOptionType);
       const newSettings = optionToSettings[newOptionType];
       this.isSettingsDisplayed = true;
       this.$nextTick(() => {
-        this.$refs.settings.updateSettings(newSettings);
+        this.$refs.settings.updateSettings(newSettings, newOptionType);
       });
     },
     hideSettings(): void {
       this.isSettingsDisplayed = false;
-    },
-    setCustomSettings(optionType: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
-      this.resetCustomSettings();
-      this.setNewCustomSettings(optionType);
-    },
-    resetCustomSettings(): void {
-      this.customSettingsOriginalSpecs.forEach((customSetting: CustomSettingOriginalSpec) => {
-        customSetting.spec[customSetting.originalValues.name] = customSetting.originalValues.value;
-      });
-      this.customSettingsOriginalSpecs = [];
-    },
-    setNewCustomSettings(optionType: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
-      const { customSettings } = this.component.subcomponents[this.component.subcomponentsActiveMode];
-      if (customSettings && customSettings[optionType]) {
-        optionToSettings[optionType].options.forEach((setting) => {
-          const cssPropertyName = setting.spec.partialCss
-          ? PartialCssCustomSettingsUtils.generateCustomPartialCssPropertyName(setting.spec.cssProperty, setting.spec.partialCss.position) : setting.spec.cssProperty;
-          if (customSettings[optionType][cssPropertyName]) {
-            const customSettingOriginalSpec: CustomSettingOriginalSpec = { spec: setting.spec, originalValues: { name: 'scale', value: setting.spec.scale }};
-            this.customSettingsOriginalSpecs.push(customSettingOriginalSpec);
-            setting.spec.scale = customSettings[optionType][cssPropertyName].scale;
-          }
-        });
-      }
     },
     toggleSubcomponentSelectMode(callback: WorkshopEventCallback): void {
       this.$emit('toggle-subcomponent-select-mode', callback);

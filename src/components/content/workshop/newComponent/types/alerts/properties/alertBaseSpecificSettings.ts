@@ -1,7 +1,7 @@
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
-import { CustomSettings } from '../../../../../../../interfaces/workshopComponent';
+import { SubcomponentSpecificSettings } from '../../../../../../../interfaces/workshopComponent';
 
-export const alertBaseCustomSettings: CustomSettings = {
+export const alertBaseSpecificSettings: SubcomponentSpecificSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING]: {
     'paddingLeft': { scale: [0, 100] },
   },
