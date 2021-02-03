@@ -55,7 +55,7 @@
           :class="[
             option.type === activeOption.type ? 'option-select-button-active' : '',
             option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive ? 'option-select-button-default-disabled' : 'option-select-button-default-enabled',]"
-          @click="optionClick(option)">
+          @click="selectOption(option)">
             {{option.buttonName}}
         </button>
       </div>
@@ -128,9 +128,9 @@ export default {
       subcomponentSelectModeState.setIsSubcomponentSelectModeActiveState(true);
       this.$emit('toggle-subcomponent-select-mode', workshopEventCallback);
     },
-    optionClick(option: SettingProperties): void {
-      this.setNewActiveOption(option);
-      this.$emit('option-clicked', option);
+    selectOption(option: SettingProperties): void {
+      if (option) this.setNewActiveOption(option);
+      this.$emit('new-option', option);
       this.resetComponentPreviewMarginAssistance();
     },
     setNewActiveOption(newOption: SettingProperties): void {
@@ -149,37 +149,40 @@ export default {
         this.hideSettings();
         return;
       }
-      const newOption: SettingProperties = this.activeOption.buttonName ? this.updateOption() : undefined;
-      this.updateSettingsWithNewOption(newOption);
+      this.newOptionOnNewModeSelect();
     },
     newCssModeClicked(newCssMode: SUB_COMPONENT_CSS_MODES): void {
       this.component.subcomponents[this.component.subcomponentsActiveMode].customCssActiveMode = newCssMode;
-      const newOption: SettingProperties = this.activeOption.buttonName ? this.updateOption() : undefined;
-      this.updateSettingsWithNewOption(newOption);
+      this.newOptionOnNewModeSelect();
     },
-    updateOptionsForNewComponent(lastActiveOptionPriorToAllComponentsDeletion: SettingProperties): SettingProperties {
+    newOptionOnNewModeSelect(): void {
+      if (this.activeOption.buttonName) {
+        const newOption = this.getNewSuitableOption();
+        this.selectOption(newOption);
+      }
+    },
+    updateOptionsForNewComponent(lastActiveOptionPriorToAllComponentsDeletion: SettingProperties): void {
       if (lastActiveOptionPriorToAllComponentsDeletion) this.activeOption = lastActiveOptionPriorToAllComponentsDeletion;
       this.resetComponentPreviewMarginAssistance();
-      return this.isSettingsDisplayed ? this.updateOption() : undefined;
+      if (this.isSettingsDisplayed) {
+        const newOption = this.getNewSuitableOption();
+        this.setNewActiveOption(newOption);
+      }
     },
-    updateOption(activeCssMode?: SUB_COMPONENT_CSS_MODES): SettingProperties {
-      const { subcomponents, subcomponentsActiveMode, type } = this.component;
-      const activeModeOptions = componentTypeToOptions[type][subcomponentsActiveMode][activeCssMode || subcomponents[subcomponentsActiveMode].customCssActiveMode];
+    getNewSuitableOption(): SettingProperties {
+      const activeModeOptions = this.getActiveModeOptions();
       const activeOption = activeModeOptions.find((option: SettingProperties) => {
         return option.type === this.activeOption.type
           && (this.isExpandedModalPreviewModeActive || option.enabledOnExpandedModalPreviewMode === this.activeOption.enabledOnExpandedModalPreviewMode);
       });
-      const newOption = activeOption || activeModeOptions[0];
-      this.setNewActiveOption(newOption);
-      return newOption;
+      return activeOption || activeModeOptions[0];
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
       const { optionalSubcomponent, initialCss } = subcomponent;
       if (!optionalSubcomponent.currentlyDisplaying) {
         optionalSubcomponent.currentlyDisplaying = true;
         const defaultOption = this.getDefaultOption();
-        this.setNewActiveOption(defaultOption);
-        this.updateSettingsWithNewOption(defaultOption);
+        this.selectOption(defaultOption);
         SubcomponentToggleService.changeSubcomponentPreviewClass(optionalSubcomponent, this.component.subcomponentsActiveMode, false,
           SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_TOGGLE_ADD, SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
       } else if (!this.getIsDoNotShowModalAgainState()) {
@@ -212,13 +215,11 @@ export default {
       this.$emit('expand-modal-component', this.isExpandedModalPreviewModeActive);
     },
     getDefaultOption(): SettingProperties {
-      const { subcomponents, subcomponentsActiveMode, type } = this.component;
-      const activeModeOptions = componentTypeToOptions[type][subcomponentsActiveMode][subcomponents[subcomponentsActiveMode].customCssActiveMode];
-      return activeModeOptions[0];
+      return this.getActiveModeOptions()[0];
     },
-    updateSettingsWithNewOption(newOption: SettingProperties): void {
-      this.$emit('new-option', newOption);
-      this.resetComponentPreviewMarginAssistance();
+    getActiveModeOptions(): SettingProperties[] {
+      const { subcomponents, subcomponentsActiveMode, type } = this.component;
+      return componentTypeToOptions[type][subcomponentsActiveMode][subcomponents[subcomponentsActiveMode].customCssActiveMode];
     },
     hideSettings(): void {
       this.$emit('hide-settings');

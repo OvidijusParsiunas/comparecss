@@ -13,6 +13,7 @@ in the workshop, make sure to update only the required stuff
 switching subcomponents (modal is not expanded) does activate the button that should be set to disable
 settings are not refreshed when re-adding an optional subcomponent
 
+when in a subcomponent of current component and removing another component, the current subcomponent should not be set back to default again
 option to import an existing button style!
 
 potentially have animation for when optional subcomponent options buttons appear and are hidden

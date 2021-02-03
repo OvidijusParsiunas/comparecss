@@ -5,7 +5,6 @@
         :component="component"
         :isSettingsDisplayed="isSettingsDisplayed"
         :componentPreviewAssistance="componentPreviewAssistance"
-        @option-clicked="updateSettings"
         @new-option="newOption"
         @hide-settings="hideSettings"
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
@@ -13,8 +12,7 @@
         @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
         @expand-modal-component="expandModalComponent($event)"/>
       <settings v-if="isSettingsDisplayed" ref="settings"
-        :subcomponentproperties="component.subcomponents[component.subcomponentsActiveMode]"
-        :settings="activeSettings"/>
+        :subcomponentproperties="component.subcomponents[component.subcomponentsActiveMode]"/>
     </div>
   </div>
 </template>
@@ -29,7 +27,6 @@ import settings from './settings/Settings.vue';
 import options from './options/Options.vue';
 
 interface Data {
-  activeSettings: any;
   isSettingsDisplayed: boolean;
   customSettingsOriginalSpecs: CustomSettingOriginalSpec[];
   lastActiveOptionPriorToAllComponentsDeletion: SettingProperties;
@@ -46,45 +43,36 @@ interface CustomSettingOriginalSpec {
 
 export default {
   data: (): Data => ({
-    // TO-Do active settings should be managed in the settings component
-    activeSettings: {},
     isSettingsDisplayed: false,
     customSettingsOriginalSpecs: [],
     lastActiveOptionPriorToAllComponentsDeletion: null,
   }),
   methods: {
-    updateSettings(newOption: SettingProperties): void {
-      this.setCustomSettings(newOption.type);
-      this.activeSettings = optionToSettings[newOption.type];
-      this.isSettingsDisplayed = Object.keys(this.activeSettings).length > 0;
-    },
     updateToolbarForNewComponent(): void {
       this.$nextTick(() => {
-        const activeOption = this.$refs.options.updateOptionsForNewComponent(this.lastActiveOptionPriorToAllComponentsDeletion);
-        if (activeOption) { this.updateSettings(activeOption); }
+        this.$refs.options.updateOptionsForNewComponent(this.lastActiveOptionPriorToAllComponentsDeletion);
+        if (this.isSettingsDisplayed) {
+          this.triggerSettingsReset();
+        }
         if (this.lastActiveOptionPriorToAllComponentsDeletion) { this.lastActiveOptionPriorToAllComponentsDeletion = null; }
-        this.triggerSettingsReset();
       });
     },
     saveLastActiveOptionPriorToAllComponentsDeletion(): void {
       this.lastActiveOptionPriorToAllComponentsDeletion = this.$refs.options.getActiveOption();
     },
-    newOption(newOption: SettingProperties): void {
-      this.$nextTick(() => {
-        if (newOption) { this.updateSettings(newOption); }
-        this.triggerSettingsReset();
-      });
+    newOption(forceOpenSettings: boolean): void {
+      this.$nextTick(() => { if (this.isSettingsDisplayed || forceOpenSettings) { this.triggerSettingsReset(); }});
     },
     triggerSettingsReset(): void {
-      // this trigger type is used instead of a ref method because this will only trigger the settings-reset when
-      // the props (more specifically the component properties) have updated first (via the watch property)
-      // whereas directly calling the reset method via ref invokes it before the props have been updated
       const activeOption = this.$refs.options.getActiveOption();
       this.setCustomSettings(activeOption.type);
-      if (this.$refs.settings) this.$refs.settings.updateSettings();
+      const newSettings = optionToSettings[activeOption.type];
+      this.isSettingsDisplayed = true;
+      setTimeout(() => {
+        this.$refs.settings.updateSettings(newSettings);
+      })
     },
     hideSettings(): void {
-      this.activeSettings = {};
       this.isSettingsDisplayed = false;
     },
     setCustomSettings(optionType: WORKSHOP_TOOLBAR_OPTION_TYPES): void {

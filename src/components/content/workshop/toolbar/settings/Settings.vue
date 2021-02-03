@@ -143,13 +143,14 @@ interface Consts {
   UNSET_COLOR_BUTTON_DISPLAYED_STATE;
   UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX;
   getActiveModeCssPropertyValue: (param1: CustomCss, param2: SUB_COMPONENT_CSS_MODES, param3: string) => string;
-  updateSettings: () => void;
+  updateSettings: (param1: any) => void;
   addDefaultValueIfCssModeMissing: (param1: SUB_COMPONENT_CSS_MODES, param2: string) => void;
   parseRangeValue: (param1: string, param2: number) => number;
   resetJs: () => void;
 }
 
 interface Data {
+  settings: any;
   selectorCurrentValues: unknown;
   inputDropdownCurrentValues: unknown;
 }
@@ -182,7 +183,8 @@ export default {
             return undefined;
         }
       },
-      updateSettings(): void {
+      updateSettings(newSettings?: any): void {
+        this.settings = newSettings;
         this.$nextTick(() => {
           const { customCss, customCssActiveMode, jsClasses, auxiliaryPartialCss } = this.subcomponentproperties;
           this.selectorCurrentValues = {};
@@ -249,6 +251,7 @@ export default {
   data: (): Data => ({
     selectorCurrentValues: {},
     inputDropdownCurrentValues: {},
+    settings: {},
   }),
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   // put these methods into services
@@ -460,13 +463,7 @@ export default {
   },
   props: {
     subcomponentproperties: Object,
-    settings: Object,
   },
-  watch: {
-    settings(): void {
-      this.updateSettings();
-    },
-  }
 };
 
 </script>
