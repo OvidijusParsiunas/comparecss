@@ -3,15 +3,16 @@
     <div ref="toolbarContainerInner">
       <options ref="options"
         :component="component"
+        :isSettingsDisplayed="isSettingsDisplayed"
+        :componentPreviewAssistance="componentPreviewAssistance"
         @option-clicked="updateSettings"
-        @subcomponents-mode-clicked="updateSubcomponentsMode"
-        @css-mode-clicked="updateCssMode"
+        @new-option="newOption"
         @hide-settings="hideSettings"
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
         @prepare-remove-subcomponent-modal="$emit('prepare-remove-subcomponent-modal')"
         @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
         @expand-modal-component="expandModalComponent($event)"/>
-      <settings ref="settings"
+      <settings v-if="isSettingsDisplayed" ref="settings"
         :subcomponentproperties="component.subcomponents[component.subcomponentsActiveMode]"
         :settings="activeSettings"/>
     </div>
@@ -23,15 +24,14 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../consts/workshopToolba
 import PartialCssCustomSettingsUtils from './settings/utils/partialCssCustomSettingsUtils';
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
 import { SettingProperties } from '../../../../interfaces/componentOptions';
-import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import { optionToSettings } from './settings/types/optionToSettings';
 import settings from './settings/Settings.vue';
 import options from './options/Options.vue';
 
 interface Data {
   activeSettings: any;
+  isSettingsDisplayed: boolean;
   customSettingsOriginalSpecs: CustomSettingOriginalSpec[];
-  settingsOpenedOnce: boolean;
 }
 
 interface CustomSettingOriginalSpec { 
@@ -45,18 +45,16 @@ interface CustomSettingOriginalSpec {
 
 export default {
   data: (): Data => ({
+    // TO-Do active settings should be managed in the settings component
     activeSettings: {},
+    isSettingsDisplayed: false,
     customSettingsOriginalSpecs: [],
-    settingsOpenedOnce: false,
   }),
   methods: {
     updateSettings(newOption: SettingProperties): void {
       this.setCustomSettings(newOption.type);
       this.activeSettings = optionToSettings[newOption.type];
-      // TO-DO should not be managed here
-      this.componentPreviewAssistance.margin = (newOption.type === WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN)
-        && (this.component.subcomponentsActiveMode !== SUB_COMPONENTS.CLOSE);
-      this.settingsOpenedOnce = true;
+      this.isSettingsDisplayed = Object.keys(this.activeSettings).length > 0;
     },
     updateToolbarForNewComponent(): void {
       this.$nextTick(() => {
@@ -65,28 +63,11 @@ export default {
         this.triggerSettingsReset();
       });
     },
-    updateCssMode(newOption: SettingProperties): void {
+    newOption(newOption: SettingProperties): void {
       this.$nextTick(() => {
-        // TO-DO this.settingsOpenedOnce? 
-        if (newOption && this.activeSettings && Object.keys(this.activeSettings).length) {
-          this.updateSettings(newOption);
-        }
+        if (newOption && this.isSettingsDisplayed) { this.updateSettings(newOption); }
         this.triggerSettingsReset();
       });
-    },
-    updateSubcomponentsMode(newOption: SettingProperties): void {
-      // when an optional subcomponent is set to not display, hide settings
-      if (this.component.subcomponents[this.component.subcomponentsActiveMode].optionalSubcomponent
-        && !this.component.subcomponents[this.component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying) {
-        this.hideSettings();
-        // TO-DO should be done in the options component
-        return;
-      }
-      // TO-DO Object.keys(this.activeSettings).length?
-      if (newOption && this.settingsOpenedOnce) {
-        this.updateSettings(newOption);
-      }
-      this.triggerSettingsReset();
     },
     triggerSettingsReset(): void {
       // this trigger type is used instead of a ref method because this will only trigger the settings-reset when
@@ -94,17 +75,10 @@ export default {
       // whereas directly calling the reset method via ref invokes it before the props have been updated
       const activeOption = this.$refs.options.getActiveOption();
       this.setCustomSettings(activeOption.type);
-      this.$refs.settings.updateSettings();
-      // TO-DO should not be managed here
-      this.$nextTick(() => {
-        if (activeOption.type === WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN && Object.keys(this.activeSettings).length > 0) {
-          this.componentPreviewAssistance.margin = !(this.component.subcomponentsActiveMode === SUB_COMPONENTS.CLOSE);
-        }
-      });
+      if (this.$refs.settings) this.$refs.settings.updateSettings();
     },
     hideSettings(): void {
       this.activeSettings = {};
-      this.componentPreviewAssistance.margin = false;
     },
     setCustomSettings(optionType: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
       this.resetCustomSettings();

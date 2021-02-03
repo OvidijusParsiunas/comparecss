@@ -395,6 +395,7 @@ export default {
       const componentIndex = this.components.findIndex(componentMatch);
       this.components.splice(componentIndex, 1);
       if (this.components.length === 0) {
+        this.componentPreviewAssistance.margin = false;
         ComponentJs.manipulateJS(removedComponent.type, 'revokeJS');
         this.currentlySelectedComponent = undefined;
         return;

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div v-if="settings.options" style="position: relative; display: flex; margin-top: 10px; z-index: 1">
+    <div style="position: relative; display: flex; margin-top: 10px; z-index: 1">
       <div style="padding: 15px; background-color: rgb(251 251 251); border-radius: 20px; margin: 0; width: 100%"> 
         <div class="container" style="display: flex">
           <div style="display: grid; grid-template-columns: 50% 50%; width: 80%">

@@ -131,6 +131,7 @@ export default {
     optionClick(option: SettingProperties): void {
       this.setNewActiveOption(option);
       this.$emit('option-clicked', option);
+      this.resetComponentPreviewMarginAssistance();
     },
     setNewActiveOption(newOption: SettingProperties): void {
       this.activeOption = newOption;
@@ -144,6 +145,11 @@ export default {
       oldActiveSubcomponent.customCssActiveMode = Object.keys(oldActiveSubcomponent.customCss)[0];
       this.component.subcomponentsActiveMode = newSubComponent;
       let newOption: SettingProperties = null;
+      if (this.component.subcomponents[this.component.subcomponentsActiveMode].optionalSubcomponent
+          && !this.component.subcomponents[this.component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying) {
+        this.hideSettings();
+        return;
+      }
       const newActiveSubcomponent = this.component.subcomponents[newSubComponent];
       if (newActiveSubcomponent.optionalSubcomponent && !newActiveSubcomponent.optionalSubcomponent.currentlyDisplaying) {
         const { subcomponents, subcomponentsActiveMode, type } = this.component;
@@ -155,14 +161,15 @@ export default {
       } else {
         newOption = this.activeOption.buttonName ? this.updateOption() : undefined;
       }
-      this.$emit('subcomponents-mode-clicked', newOption);
+      this.updateSettingsWithNewOption(newOption);
     },
     newCssModeClicked(newCssMode: SUB_COMPONENT_CSS_MODES): void {
       this.component.subcomponents[this.component.subcomponentsActiveMode].customCssActiveMode = newCssMode;
       const newOption: SettingProperties = this.activeOption.buttonName ? this.updateOption() : undefined;
-      this.$emit('css-mode-clicked', newOption);
+      this.updateSettingsWithNewOption(newOption);
     },
     updateOptionsForNewComponent(activeSettings: any): SettingProperties {
+      this.resetComponentPreviewMarginAssistance();
       return activeSettings ? this.updateOption() : undefined;
     },
     updateOption(activeCssMode?: SUB_COMPONENT_CSS_MODES): SettingProperties {
@@ -189,9 +196,9 @@ export default {
       } else {
         subcomponent.customCss = JSONManipulation.deepCopy(initialCss);
         optionalSubcomponent.currentlyDisplaying = false;
-        this.$emit('hide-settings');
         SubcomponentToggleService.changeSubcomponentPreviewClass(optionalSubcomponent, this.component.subcomponentsActiveMode, true,
           SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE, SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
+        this.hideSettings();
       }
     },
     subcomponentMouseEnterHandler(): void {
@@ -213,9 +220,25 @@ export default {
       }
       this.$emit('expand-modal-component', this.isExpandedModalPreviewModeActive);
     },
+    updateSettingsWithNewOption(newOption: SettingProperties): void {
+      this.$emit('new-option', newOption);
+      this.resetComponentPreviewMarginAssistance();
+    },
+    hideSettings(): void {
+      this.$emit('hide-settings');
+      this.resetComponentPreviewMarginAssistance();
+    },
+    resetComponentPreviewMarginAssistance(): void {
+      this.$nextTick(() => {
+        this.componentPreviewAssistance.margin = this.activeOption.type === WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN
+          && this.isSettingsDisplayed && this.component.subcomponentsActiveMode !== SUB_COMPONENTS.CLOSE;
+      });
+    }
   },
   props: {
     component: Object,
+    isSettingsDisplayed: Boolean,
+    componentPreviewAssistance: Object,
   },
   components: {
     dropdown,
