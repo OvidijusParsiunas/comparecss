@@ -5,12 +5,12 @@
         :component="component"
         :isSettingsDisplayed="isSettingsDisplayed"
         :componentPreviewAssistance="componentPreviewAssistance"
-        @new-option="newOption"
+        @trigger-settings-reset="triggerSettingsReset"
         @hide-settings="hideSettings"
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
         @prepare-remove-subcomponent-modal="$emit('prepare-remove-subcomponent-modal')"
         @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
-        @expand-modal-component="expandModalComponent($event)"/>
+        @toggle-expanded-modal-preview-mode="expandModalComponent($event)"/>
       <settings v-if="isSettingsDisplayed" ref="settings"
         :subcomponentproperties="component.subcomponents[component.subcomponentsActiveMode]"/>
     </div>
@@ -21,15 +21,15 @@
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../consts/workshopToolbarOptionTypes.enum';
 import PartialCssCustomSettingsUtils from './settings/utils/partialCssCustomSettingsUtils';
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
-import { SettingProperties } from '../../../../interfaces/componentOptions';
 import { optionToSettings } from './settings/types/optionToSettings';
+import { Option } from '../../../../interfaces/componentOptions';
 import settings from './settings/Settings.vue';
 import options from './options/Options.vue';
 
 interface Data {
   isSettingsDisplayed: boolean;
   customSettingsOriginalSpecs: CustomSettingOriginalSpec[];
-  lastActiveOptionPriorToAllComponentsDeletion: SettingProperties;
+  lastActiveOptionPriorToAllComponentsDeletion: Option;
 }
 
 interface CustomSettingOriginalSpec { 
@@ -51,26 +51,19 @@ export default {
     updateToolbarForNewComponent(): void {
       this.$nextTick(() => {
         this.$refs.options.updateOptionsForNewComponent(this.lastActiveOptionPriorToAllComponentsDeletion);
-        if (this.isSettingsDisplayed) {
-          this.triggerSettingsReset();
-        }
         if (this.lastActiveOptionPriorToAllComponentsDeletion) { this.lastActiveOptionPriorToAllComponentsDeletion = null; }
       });
     },
     saveLastActiveOptionPriorToAllComponentsDeletion(): void {
       this.lastActiveOptionPriorToAllComponentsDeletion = this.$refs.options.getActiveOption();
     },
-    newOption(forceOpenSettings: boolean): void {
-      this.$nextTick(() => { if (this.isSettingsDisplayed || forceOpenSettings) { this.triggerSettingsReset(); }});
-    },
-    triggerSettingsReset(): void {
-      const activeOption = this.$refs.options.getActiveOption();
-      this.setCustomSettings(activeOption.type);
-      const newSettings = optionToSettings[activeOption.type];
+    triggerSettingsReset(newOptionType: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
+      this.setCustomSettings(newOptionType);
+      const newSettings = optionToSettings[newOptionType];
       this.isSettingsDisplayed = true;
-      setTimeout(() => {
+      this.$nextTick(() => {
         this.$refs.settings.updateSettings(newSettings);
-      })
+      });
     },
     hideSettings(): void {
       this.isSettingsDisplayed = false;
@@ -111,7 +104,7 @@ export default {
         this.$refs.toolbarContainer.classList.replace('toolbar-container-modal', 'toolbar-container-default');
         this.$refs.toolbarContainerInner.classList.remove('toolbar-container-inner-modal');
       }
-      this.$emit('expand-modal-component', isExpandedModalPreviewModeActive);
+      this.$emit('toggle-expanded-modal-preview-mode', isExpandedModalPreviewModeActive);
     }
   },
   props: {

@@ -32,7 +32,7 @@
               @hide-dropdown-menu-callback="addWorkshopEventCallback($event)"
               @prepare-remove-subcomponent-modal="$refs.removeSubcomponentModal.prepare()"
               @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
-              @expand-modal-component="$refs.contents.expandModalComponent($event)"/>
+              @toggle-expanded-modal-preview-mode="$refs.contents.expandModalComponent($event)"/>
             <component-contents ref="contents" :component="currentlySelectedComponent" :componentPreviewAssistance="componentPreviewAssistance"/>
             <div style="height: 18%; display: flex; float: right; margin-right: 10px; margin-top: 105px">
               <div style="position: relative">
@@ -115,7 +115,6 @@ import { removeComponentModalState } from './componentList/modal/state';
 import componentContents from './componentPreview/ComponentPreview.vue';
 import { SUB_COMPONENTS } from '../../../consts/subcomponentModes.enum';
 import removalModalTemplate from './templates/RemovalModalTemplate.vue';
-import { UpdateOptionsMode } from '../../../interfaces/updateCssMode';
 import newComponentModal from './newComponent/NewComponentModal.vue';
 import ComponentJs from '../../../services/workshop/componentJs';
 import componentList from './componentList/ComponentList.vue';

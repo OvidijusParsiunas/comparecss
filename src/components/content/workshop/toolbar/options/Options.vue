@@ -76,10 +76,9 @@ import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectM
 import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
 import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
-import { SettingProperties } from '../../../../../interfaces/componentOptions';
 import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/state';
-import { UpdateOptionsMode } from '../../../../../interfaces/updateCssMode';
+import { Option } from '../../../../../interfaces/componentOptions';
 import { removeSubcomponentModalState } from './modal/state';
 import dropdown from './dropdown/Dropdown.vue';
 
@@ -95,7 +94,7 @@ interface Consts {
 interface Data {
   currentRemoveSubcomponentModalTargetId: string;
   isSubcomponentSelectModeButtonDisplayed: boolean;
-  activeOption: SettingProperties;
+  activeOption: Option;
   isExpandedModalPreviewModeActive: boolean;
 }
 
@@ -128,15 +127,15 @@ export default {
       subcomponentSelectModeState.setIsSubcomponentSelectModeActiveState(true);
       this.$emit('toggle-subcomponent-select-mode', workshopEventCallback);
     },
-    selectOption(option: SettingProperties): void {
-      if (option) this.setNewActiveOption(option);
-      this.$emit('new-option', option);
+    selectOption(option: Option): void {
+      this.setNewActiveOption(option);
+      this.$emit('trigger-settings-reset', option.type);
       this.resetComponentPreviewMarginAssistance();
     },
-    setNewActiveOption(newOption: SettingProperties): void {
+    setNewActiveOption(newOption: Option): void {
       this.activeOption = newOption;
     },
-    getActiveOption(): SettingProperties {
+    getActiveOption(): Option {
       return this.activeOption;
     },
     newSubcomponentsModeClicked(newSubComponent: SUB_COMPONENTS): void {
@@ -155,23 +154,19 @@ export default {
       this.component.subcomponents[this.component.subcomponentsActiveMode].customCssActiveMode = newCssMode;
       this.newOptionOnNewModeSelect();
     },
+    updateOptionsForNewComponent(lastActiveOptionPriorToAllComponentsDeletion: Option): void {
+      if (lastActiveOptionPriorToAllComponentsDeletion) this.activeOption = lastActiveOptionPriorToAllComponentsDeletion;
+      this.newOptionOnNewModeSelect()
+    },
     newOptionOnNewModeSelect(): void {
       if (this.activeOption.buttonName) {
         const newOption = this.getNewSuitableOption();
         this.selectOption(newOption);
       }
     },
-    updateOptionsForNewComponent(lastActiveOptionPriorToAllComponentsDeletion: SettingProperties): void {
-      if (lastActiveOptionPriorToAllComponentsDeletion) this.activeOption = lastActiveOptionPriorToAllComponentsDeletion;
-      this.resetComponentPreviewMarginAssistance();
-      if (this.isSettingsDisplayed) {
-        const newOption = this.getNewSuitableOption();
-        this.setNewActiveOption(newOption);
-      }
-    },
-    getNewSuitableOption(): SettingProperties {
+    getNewSuitableOption(): Option {
       const activeModeOptions = this.getActiveModeOptions();
-      const activeOption = activeModeOptions.find((option: SettingProperties) => {
+      const activeOption = activeModeOptions.find((option: Option) => {
         return option.type === this.activeOption.type
           && (this.isExpandedModalPreviewModeActive || option.enabledOnExpandedModalPreviewMode === this.activeOption.enabledOnExpandedModalPreviewMode);
       });
@@ -212,12 +207,12 @@ export default {
       if (!this.isExpandedModalPreviewModeActive && this.activeOption.enabledOnExpandedModalPreviewMode) {
         this.setNewActiveOption(this.getDefaultOption());
       }
-      this.$emit('expand-modal-component', this.isExpandedModalPreviewModeActive);
+      this.$emit('toggle-expanded-modal-preview-mode', this.isExpandedModalPreviewModeActive);
     },
-    getDefaultOption(): SettingProperties {
+    getDefaultOption(): Option {
       return this.getActiveModeOptions()[0];
     },
-    getActiveModeOptions(): SettingProperties[] {
+    getActiveModeOptions(): Option[] {
       const { subcomponents, subcomponentsActiveMode, type } = this.component;
       return componentTypeToOptions[type][subcomponentsActiveMode][subcomponents[subcomponentsActiveMode].customCssActiveMode];
     },
