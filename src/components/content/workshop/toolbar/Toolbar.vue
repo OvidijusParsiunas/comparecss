@@ -32,6 +32,7 @@ interface Data {
   activeSettings: any;
   isSettingsDisplayed: boolean;
   customSettingsOriginalSpecs: CustomSettingOriginalSpec[];
+  lastActiveOptionPriorToAllComponentsDeletion: SettingProperties;
 }
 
 interface CustomSettingOriginalSpec { 
@@ -49,6 +50,7 @@ export default {
     activeSettings: {},
     isSettingsDisplayed: false,
     customSettingsOriginalSpecs: [],
+    lastActiveOptionPriorToAllComponentsDeletion: null,
   }),
   methods: {
     updateSettings(newOption: SettingProperties): void {
@@ -58,14 +60,18 @@ export default {
     },
     updateToolbarForNewComponent(): void {
       this.$nextTick(() => {
-        const activeOption = this.$refs.options.updateOptionsForNewComponent(Object.keys(this.activeSettings).length);
+        const activeOption = this.$refs.options.updateOptionsForNewComponent(this.lastActiveOptionPriorToAllComponentsDeletion);
         if (activeOption) { this.updateSettings(activeOption); }
+        if (this.lastActiveOptionPriorToAllComponentsDeletion) { this.lastActiveOptionPriorToAllComponentsDeletion = null; }
         this.triggerSettingsReset();
       });
     },
+    saveLastActiveOptionPriorToAllComponentsDeletion(): void {
+      this.lastActiveOptionPriorToAllComponentsDeletion = this.$refs.options.getActiveOption();
+    },
     newOption(newOption: SettingProperties): void {
       this.$nextTick(() => {
-        if (newOption && this.isSettingsDisplayed) { this.updateSettings(newOption); }
+        if (newOption) { this.updateSettings(newOption); }
         this.triggerSettingsReset();
       });
     },
@@ -79,6 +85,7 @@ export default {
     },
     hideSettings(): void {
       this.activeSettings = {};
+      this.isSettingsDisplayed = false;
     },
     setCustomSettings(optionType: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
       this.resetCustomSettings();
