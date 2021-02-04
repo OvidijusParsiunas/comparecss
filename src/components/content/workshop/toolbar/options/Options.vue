@@ -129,7 +129,7 @@ export default {
     },
     selectOption(option: Option): void {
       this.setNewActiveOption(option);
-      this.$emit('trigger-settings-reset', option.type);
+      this.$emit('trigger-settings-refresh', option.type);
       this.resetComponentPreviewMarginAssistance();
     },
     setNewActiveOption(newOption: Option): void {

@@ -5,7 +5,7 @@
         :component="component"
         :isSettingsDisplayed="isSettingsDisplayed"
         :componentPreviewAssistance="componentPreviewAssistance"
-        @trigger-settings-reset="triggerSettingsReset"
+        @trigger-settings-refresh="triggerSettingsRefresh"
         @hide-settings="hideSettings"
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
         @prepare-remove-subcomponent-modal="$emit('prepare-remove-subcomponent-modal')"
@@ -45,7 +45,7 @@ export default {
     saveLastActiveOptionPriorToAllComponentsDeletion(): void {
       this.lastActiveOptionPriorToAllComponentsDeletion = this.$refs.options.getActiveOption();
     },
-    triggerSettingsReset(newOptionType: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
+    triggerSettingsRefresh(newOptionType: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
       const newSettings = optionToSettings[newOptionType];
       this.isSettingsDisplayed = true;
       this.$nextTick(() => {

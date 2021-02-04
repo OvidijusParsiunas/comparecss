@@ -134,7 +134,7 @@
 import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../../consts/unsetColotButtonDisplayed';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
-import SubcomponentSpecificSettingsUtils from './utils/subcomponentSpecificSettingsUtils';
+import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSettingsState';
 import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
 import { CustomCss } from '../../../../../interfaces/workshopComponent';
 import BoxShadowUtils from './utils/boxShadowUtils';
@@ -145,7 +145,7 @@ interface Consts {
   UNSET_COLOR_BUTTON_DISPLAYED_STATE;
   UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX;
   getActiveModeCssPropertyValue: (param1: CustomCss, param2: SUB_COMPONENT_CSS_MODES, param3: string) => string;
-  updateSettings: (param1: any, param2: WORKSHOP_TOOLBAR_OPTION_TYPES) => void;
+  updateSettings: (param1?: any, param2?: WORKSHOP_TOOLBAR_OPTION_TYPES) => void;
   addDefaultValueIfCssModeMissing: (param1: SUB_COMPONENT_CSS_MODES, param2: string) => void;
   parseRangeValue: (param1: string, param2: number) => number;
   resetJs: () => void;
@@ -187,7 +187,7 @@ export default {
       },
       updateSettings(newSettings?: any, optionType?: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
         if (newSettings) this.settings = newSettings;
-        if (optionType) SubcomponentSpecificSettingsUtils.setSubcomponentSpecificSettings(optionType,
+        if (optionType) SubcomponentSpecificSettingsState.setSubcomponentSpecificSettings(optionType,
           this.subcomponentproperties.subcomponentSpecificSettings, this.settings.options);
         this.$nextTick(() => {
           const { customCss, customCssActiveMode, jsClasses, auxiliaryPartialCss } = this.subcomponentproperties;
