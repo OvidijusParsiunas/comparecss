@@ -1,5 +1,5 @@
 <template>
-  <div ref="componentPreviewContainer" v-if="component" class="component-preview-container-default"
+  <div v-if="component" ref="componentPreviewContainer" class="component-preview-container-default" :style="EXPANDED_MODAL_INITIAL_FADE_OUT_ANIMATION_VALUES"
     @mouseleave="componentPreviewMouseLeave()">
     <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); z-index: 0; text-align: center;"> 
       <div class="grid-container">
@@ -74,6 +74,7 @@
 </template>
 
 <script lang="ts">
+import ExpandedModalPreviewMode, { TransitionAnimation } from '../../../../services/workshop/expandedModalPreviewMode/expandedModalPreviewMode';
 import useSubcomponentPreviewEventHandlers, { UseSubcomponentPreviewEventHandlers } from './compositionAPI/useSubcomponentPreviewEventHandlers';
 import { subcomponentTypeToPreviewId } from '../toolbar/options/componentOptions/subcomponentTypeToPreviewId';
 import { subcomponentPreviewZIndexes } from '../toolbar/options/componentOptions/subcomponentPreviewZIndexes';
@@ -88,6 +89,7 @@ import nestedInnerHtmlText from './nestedInnerHTMLText.vue';
 import { Ref, ref, watch } from 'vue';
 
 interface Consts {
+  EXPANDED_MODAL_INITIAL_FADE_OUT_ANIMATION_VALUES: TransitionAnimation;
   BASE_PREVIEW_Z_INDEX: number;
   BASE_PREVIEW_ELEMENT_ID: string;
   SUB_COMPONENT_CSS_MODES;
@@ -109,6 +111,7 @@ export default {
     });
     return {
       ...useSubcomponentPreviewEventHandlers(componentRef),
+      EXPANDED_MODAL_INITIAL_FADE_OUT_ANIMATION_VALUES: ExpandedModalPreviewMode.expandedModalInitialFadeOutAnimationValues,
       BASE_PREVIEW_Z_INDEX: subcomponentPreviewZIndexes[SUB_COMPONENTS.BASE],
       BASE_PREVIEW_ELEMENT_ID: subcomponentTypeToPreviewId[SUB_COMPONENTS.BASE],
       SUB_COMPONENT_CSS_MODES,
@@ -132,8 +135,12 @@ export default {
     },
     expandModalComponent(isExpandedModalPreviewModeActive: boolean): void {
       if (isExpandedModalPreviewModeActive) {
-        this.$refs.componentPreviewContainer.classList.replace('component-preview-container-default', 'component-preview-container-modal');
-        document.getElementById('comparecss-sidenav').style.display = 'none'; 
+        this.$refs.componentPreviewContainer.style.opacity = '0';
+        setTimeout(() => {
+          this.$refs.componentPreviewContainer.classList.replace('component-preview-container-default', 'component-preview-container-modal');
+          document.getElementById('comparecss-sidenav').style.display = 'none';
+          this.$refs.componentPreviewContainer.style.opacity = '1';
+        }, ExpandedModalPreviewMode.expandedModalInitialFadeOutAnimationDurationMilliseconds);
       } else {
         this.$refs.componentPreviewContainer.classList.replace('component-preview-container-modal', 'component-preview-container-default');
         document.getElementById('comparecss-sidenav').style.display = 'block';
@@ -158,7 +165,7 @@ export default {
   }
   .component-preview-container-modal {
     position: relative;
-    background-color: red;
+    background-color: rgb(109 109 109 / 80%);
     height: 106%;
     top: -2.6%;
     left: -30vw;
