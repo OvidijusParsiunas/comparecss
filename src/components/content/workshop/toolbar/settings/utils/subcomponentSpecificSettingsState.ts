@@ -16,7 +16,7 @@ export default class SubcomponentSpecificSettingsState {
 
   private static resetOverwrittenSettings(): void {
     // best way to test this functionality is to observe settings that contain a subcomponent specific property and then opening up a component that contains
-    // the same setting property that is not specific. The resulting setting property should be the default value defined within the specs.
+    // the same setting property which is not specific to a subcomponent. The result setting property should be the default value defined within the specs.
     this.overwrittenSettingsDefaultValues.forEach((overwrittenSettingDefaultValues: OverwrittenSettingDefaultValues) => {
       overwrittenSettingDefaultValues.spec[overwrittenSettingDefaultValues.originalValues.name] = overwrittenSettingDefaultValues.originalValues.value;
     });

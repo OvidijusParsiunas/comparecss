@@ -386,25 +386,30 @@ export default {
       newComponent.subcomponents[SUB_COMPONENTS.BASE].customCssActiveMode = SUB_COMPONENT_CSS_MODES.DEFAULT;
       this.addNewComponent(newComponent);
     },
-    componentCardRemoved(selectedComponentCard: WorkshopComponent): void {
+    componentCardRemoved(componentToBeRemovedWithoutSelecting: WorkshopComponent): void {
       // the modal does not have a reference to the selected component card but we can be sure that currentlySelectedComponent is the one being removed,
-      // however, when the the don't show again checkbox is ticked and the user clicks on removed without selecting a modal, need to have its reference passed here
-      const removedComponent = selectedComponentCard || this.currentlySelectedComponent;
-      const componentMatch = (component) => removedComponent === component;
-      const componentIndex = this.components.findIndex(componentMatch);
-      this.components.splice(componentIndex, 1);
+      // however, when the don't show again checkbox is ticked and the user clicks on remove without selecting a modal, need to have its reference
+      // passed in through the componentToBeRemovedWithoutSelecting argument
+      const componentToBeRemoved = componentToBeRemovedWithoutSelecting || this.currentlySelectedComponent;
+      const componentMatch = (component: WorkshopComponent) => componentToBeRemoved === component;
+      const componentToBeRemovedIndex = this.components.findIndex(componentMatch);
+      this.components.splice(componentToBeRemovedIndex, 1);
       if (this.components.length === 0) {
         this.$refs.toolbar.saveLastActiveOptionPriorToAllComponentsDeletion();
         this.componentPreviewAssistance.margin = false;
-        ComponentJs.manipulateJS(removedComponent.type, 'revokeJS');
+        ComponentJs.manipulateJS(componentToBeRemoved.type, 'revokeJS');
         this.currentlySelectedComponent = undefined;
         return;
       }
-      if (componentIndex === this.components.length) {
-        this.switchActiveComponent(this.components[componentIndex - 1]);
-      } else {
-        this.switchActiveComponent(this.components[componentIndex]);
+      // only switch after using the removal modal (componentToBeRemovedWithoutSelecting is undefined)
+      // or not using the modal but directly removing the component that is currently selected
+      if (!componentToBeRemovedWithoutSelecting || componentToBeRemovedWithoutSelecting === this.currentlySelectedComponent) {
+        this.selectNextComponentAfterRemoving(componentToBeRemovedIndex);
       }
+    },
+    selectNextComponentAfterRemoving(removedComponentIndex: number): void {
+      const nextComponentIndex = removedComponentIndex === this.components.length ? removedComponentIndex - 1 : removedComponentIndex
+      this.switchActiveComponent(this.components[nextComponentIndex]);
     },
     exportFiles(): void {
       exportFiles.export(this.components);

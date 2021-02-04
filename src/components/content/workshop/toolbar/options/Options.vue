@@ -21,7 +21,7 @@
           @new-dropdown-option-clicked="newSubcomponentsModeClicked($event)"
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       </div>
-      <div class="option-component-button">
+      <div v-if="component.type === MODAL_COMPONENT_TYPE" class="option-component-button">
         <button
           type="button" class="btn option-action-button"
           @click="toggleModalExpandMode">
@@ -73,6 +73,7 @@ import { componentTypeToOptions } from '../options/componentOptions/componentTyp
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectMode';
+import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum';
 import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
 import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
@@ -88,6 +89,7 @@ interface Consts {
   componentTypeToOptions;
   useSubcomponentDropdownEventHandlers;
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER;
+  MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES;
   REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: string;
 }
 
@@ -107,6 +109,7 @@ export default {
       componentTypeToOptions,
       useSubcomponentDropdownEventHandlers,
       SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
+      MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES.MODAL,
       REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: `#${REMOVE_SUBCOMPONENT_MODAL_ID}`,
     };
   },
@@ -167,7 +170,7 @@ export default {
     getNewSuitableOption(): Option {
       const activeModeOptions = this.getActiveModeOptions();
       const activeOption = activeModeOptions.find((option: Option) => {
-        return option.type === this.activeOption.type
+        return option.buttonName === this.activeOption.buttonName
           && (this.isExpandedModalPreviewModeActive || option.enabledOnExpandedModalPreviewMode === this.activeOption.enabledOnExpandedModalPreviewMode);
       });
       return activeOption || activeModeOptions[0];
@@ -205,7 +208,7 @@ export default {
     toggleModalExpandMode(): void {
       this.isExpandedModalPreviewModeActive = !this.isExpandedModalPreviewModeActive;
       if (!this.isExpandedModalPreviewModeActive && this.activeOption.enabledOnExpandedModalPreviewMode) {
-        this.setNewActiveOption(this.getDefaultOption());
+        this.selectOption(this.getDefaultOption());
       }
       this.$emit('toggle-expanded-modal-preview-mode', this.isExpandedModalPreviewModeActive);
     },
@@ -223,7 +226,9 @@ export default {
     resetComponentPreviewMarginAssistance(): void {
       this.$nextTick(() => {
         this.componentPreviewAssistance.margin = this.activeOption.type === WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN
-          && this.isSettingsDisplayed && this.component.subcomponentsActiveMode !== SUB_COMPONENTS.CLOSE;
+          && this.isSettingsDisplayed
+          && this.component.subcomponentsActiveMode !== SUB_COMPONENTS.CLOSE
+          && !this.isExpandedModalPreviewModeActive;
       });
     }
   },

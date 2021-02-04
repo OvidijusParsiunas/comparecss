@@ -7,11 +7,7 @@ modal default margin will need to have a special option type to reflect the marg
 javascript to close the alert message
 test in slower pc if the child dropdowns displays options correctly - chrome/firefox
 toolbar position
-margin assistance
-when moving from modal to alert and size is selected, we switch to default even thought the option name is the same
-switching subcomponents (modal is not expanded) does activate the button that should be set to disable
 
-when in a subcomponent of current component and removing another component, the current subcomponent should not be set back to default again
 option to import an existing button style!
 
 potentially have animation for when optional subcomponent options buttons appear and are hidden
@@ -24,8 +20,6 @@ UX:
   check if switching component modes to default but leaving same option is ok for UX
   see if the subcomponent add and subcomponent remove hover and active css is ok
 
-need to investigate how to set default settings values (min max, select options) for each subcomponent
-color active toolkit button
 option to see what the actual css looks like and to edit it
 consider placing javascript unique to the css classes it was used on
 sometimes setting to auto option like the margin does not set desired results, potentially remove it - or set beginner components (in modal) to have no margin as auto
