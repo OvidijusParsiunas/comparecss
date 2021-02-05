@@ -18,13 +18,13 @@
         </div>
         <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item grid-item-position">
           <!-- parent component -->
-          <component :is="component.componentPreviewStructure.baseCss.componentTag" id="demoComponent"
+          <component ref="componentPreview" :is="component.componentPreviewStructure.baseCss.componentTag" id="demoComponent"
             class="grid-item-position" :class="[ ...component.componentPreviewStructure.baseCss.jsClasses ]"
             @mouseenter="componentMouseEnter()"
             @mouseleave="componentMouseLeave()"
             @mousedown="componentMouseDown()"
             @mouseup="componentMouseUp()"
-            :style="component.componentPreviewStructure.baseCss.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
+            :style="[component.componentPreviewStructure.baseCss.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
               ? [
                   [ component.componentPreviewStructure.baseCss.inheritedCss ? component.componentPreviewStructure.baseCss.inheritedCss.css: '' ],
                   component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
@@ -35,7 +35,7 @@
                   [ component.componentPreviewStructure.baseCss.inheritedCss ? component.componentPreviewStructure.baseCss.inheritedCss.css: '' ],
                   component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
                   component.componentPreviewStructure.baseCss.customCss[component.componentPreviewStructure.baseCss.customCssActiveMode],
-                ]">
+                ], EXPANDED_MODAL_INITIAL_FADE_OUT_ANIMATION_VALUES]">
               <div v-for="layer in component.componentPreviewStructure.layers" :key="layer" class="parent-layer">
                 <div :style="layer.css">
                   <nested-inner-html-text v-if="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]" :innerHTML="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]"/>
@@ -135,15 +135,28 @@ export default {
     },
     expandModalComponent(isExpandedModalPreviewModeActive: boolean): void {
       if (isExpandedModalPreviewModeActive) {
+        // strategies
+        // https://tympanus.net/codrops/2013/06/25/nifty-modal-window-effects/
         this.$refs.componentPreviewContainer.style.opacity = '0';
+        this.$refs.componentPreview.style.opacity = '0';
         setTimeout(() => {
           this.$refs.componentPreviewContainer.classList.replace('component-preview-container-default', 'component-preview-container-modal');
-          document.getElementById('comparecss-sidenav').style.display = 'none';
           this.$refs.componentPreviewContainer.style.opacity = '1';
+          // background appearance time
+          this.$refs.componentPreviewContainer.style.transitionDuration = '0.1s';
+          // initial position of the modal
+          this.$refs.componentPreview.style.marginTop = '-50.4vh';
+          this.$refs.componentPreview.style.top = '0px';
         }, ExpandedModalPreviewMode.expandedModalInitialFadeOutAnimationDurationMilliseconds);
+        setTimeout(() => {
+          this.$refs.componentPreview.style.opacity = '1';
+          this.$refs.componentPreview.style.top = '40px';
+          this.$refs.componentPreview.style.transitionDuration = '0.3s';
+          this.$refs.componentPreview.style.transitionProperty = 'all';
+          this.$refs.componentPreview.style.transitionTimingFunction = 'linear';
+        }, 300);
       } else {
         this.$refs.componentPreviewContainer.classList.replace('component-preview-container-modal', 'component-preview-container-default');
-        document.getElementById('comparecss-sidenav').style.display = 'block';
       }
     }
   },

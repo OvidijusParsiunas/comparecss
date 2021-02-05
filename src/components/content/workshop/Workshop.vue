@@ -347,6 +347,7 @@ export default {
     workshopEventCallbacks: [],
   }),
   mounted(): void {
+    document.getElementById('comparecss-sidenav').style.display = 'none';
     this.preloadIcons();
     document.addEventListener('keydown', this.triggerWorkshopEventCallbacks);
     document.addEventListener('mousedown', this.triggerWorkshopEventCallbacks);
