@@ -1,5 +1,5 @@
 <template>
-  <div v-if="component" ref="componentPreviewContainer" class="component-preview-container-default" :style="EXPANDED_MODAL_INITIAL_FADE_OUT_ANIMATION_VALUES"
+  <div v-if="component" ref="componentPreviewContainer" class="component-preview-container-default"
     @mouseleave="componentPreviewMouseLeave()">
     <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); z-index: 0; text-align: center;"> 
       <div class="grid-container">
@@ -24,7 +24,7 @@
             @mouseleave="componentMouseLeave()"
             @mousedown="componentMouseDown()"
             @mouseup="componentMouseUp()"
-            :style="[component.componentPreviewStructure.baseCss.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
+            :style="component.componentPreviewStructure.baseCss.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
               ? [
                   [ component.componentPreviewStructure.baseCss.inheritedCss ? component.componentPreviewStructure.baseCss.inheritedCss.css: '' ],
                   component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
@@ -35,7 +35,7 @@
                   [ component.componentPreviewStructure.baseCss.inheritedCss ? component.componentPreviewStructure.baseCss.inheritedCss.css: '' ],
                   component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
                   component.componentPreviewStructure.baseCss.customCss[component.componentPreviewStructure.baseCss.customCssActiveMode],
-                ], EXPANDED_MODAL_INITIAL_FADE_OUT_ANIMATION_VALUES]">
+                ]">
               <div v-for="layer in component.componentPreviewStructure.layers" :key="layer" class="parent-layer">
                 <div :style="layer.css">
                   <nested-inner-html-text v-if="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]" :innerHTML="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]"/>
@@ -74,7 +74,6 @@
 </template>
 
 <script lang="ts">
-import ExpandedModalPreviewMode, { TransitionAnimation } from '../../../../services/workshop/expandedModalPreviewMode/expandedModalPreviewMode';
 import useSubcomponentPreviewEventHandlers, { UseSubcomponentPreviewEventHandlers } from './compositionAPI/useSubcomponentPreviewEventHandlers';
 import EntranceTransitions from '../../../../services/workshop/expandedModalPreviewMode/transitions/entranceTransitions';
 import InitialTransition from '../../../../services/workshop/expandedModalPreviewMode/transitions/initialTransition';
@@ -91,7 +90,6 @@ import nestedInnerHtmlText from './nestedInnerHTMLText.vue';
 import { Ref, ref, watch } from 'vue';
 
 interface Consts {
-  EXPANDED_MODAL_INITIAL_FADE_OUT_ANIMATION_VALUES: TransitionAnimation;
   BASE_PREVIEW_Z_INDEX: number;
   BASE_PREVIEW_ELEMENT_ID: string;
   SUB_COMPONENT_CSS_MODES;
@@ -113,7 +111,6 @@ export default {
     });
     return {
       ...useSubcomponentPreviewEventHandlers(componentRef),
-      EXPANDED_MODAL_INITIAL_FADE_OUT_ANIMATION_VALUES: ExpandedModalPreviewMode.expandedModalInitialFadeOutAnimationValues,
       BASE_PREVIEW_Z_INDEX: subcomponentPreviewZIndexes[SUB_COMPONENTS.BASE],
       BASE_PREVIEW_ELEMENT_ID: subcomponentTypeToPreviewId[SUB_COMPONENTS.BASE],
       SUB_COMPONENT_CSS_MODES,
@@ -139,7 +136,7 @@ export default {
       if (isExpandedModalPreviewModeActive) {
         // strategies
         // https://tympanus.net/codrops/2013/06/25/nifty-modal-window-effects/
-        InitialTransition.start(this.$refs.componentPreviewContainer, this.$refs.componentPreview, EntranceTransitions.applySlideIn);
+        InitialTransition.startPreview(this.$refs.componentPreviewContainer, this.$refs.componentPreview, EntranceTransitions.applySlideIn);
       } else {
         this.$refs.componentPreviewContainer.classList.replace('component-preview-container-modal', 'component-preview-container-default');
       }

@@ -1,5 +1,5 @@
 <template>
-  <div v-if="component" ref="toolbarContainer" class="toolbar-container-default" :style="EXPANDED_MODAL_INITIAL_FADE_OUT_ANIMATION_VALUES">
+  <div v-if="component" ref="toolbarContainer" class="toolbar-container-default">
     <div ref="toolbarContainerInner">
       <options ref="options"
         :component="component"
@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import ExpandedModalPreviewMode, { TransitionAnimation } from'../../../../services/workshop/expandedModalPreviewMode/expandedModalPreviewMode';
+import InitialTransition from '../../../../services/workshop/expandedModalPreviewMode/transitions/initialTransition';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../consts/workshopToolbarOptionTypes.enum';
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
 import { optionToSettings } from './settings/types/optionToSettings';
@@ -26,21 +26,12 @@ import { Option } from '../../../../interfaces/componentOptions';
 import settings from './settings/Settings.vue';
 import options from './options/Options.vue';
 
-interface Consts {
-  EXPANDED_MODAL_INITIAL_FADE_OUT_ANIMATION_VALUES: TransitionAnimation;
-}
-
 interface Data {
   isSettingsDisplayed: boolean;
   lastActiveOptionPriorToAllComponentsDeletion: Option;
 }
 
 export default {
-  setup(): Consts {
-    return {
-      EXPANDED_MODAL_INITIAL_FADE_OUT_ANIMATION_VALUES: ExpandedModalPreviewMode.expandedModalInitialFadeOutAnimationValues,
-    };
-  },
   data: (): Data => ({
     isSettingsDisplayed: false,
     lastActiveOptionPriorToAllComponentsDeletion: null,
@@ -71,12 +62,7 @@ export default {
     },
     expandModalComponent(isExpandedModalPreviewModeActive: boolean): void {
       if (isExpandedModalPreviewModeActive) {
-        this.$refs.toolbarContainer.style.opacity = '0';
-        setTimeout(() => {
-          this.$refs.toolbarContainer.classList.replace('toolbar-container-default', 'toolbar-container-modal');
-          this.$refs.toolbarContainerInner.classList.add('toolbar-container-inner-modal');
-          // this.$refs.toolbarContainer.style.opacity = '1';
-        }, ExpandedModalPreviewMode.expandedModalInitialFadeOutAnimationDurationMilliseconds);
+        InitialTransition.startToolbar(this.$refs.toolbarContainer, this.$refs.toolbarContainerInner);
       } else {
         this.$refs.toolbarContainer.classList.replace('toolbar-container-modal', 'toolbar-container-default');
         this.$refs.toolbarContainerInner.classList.remove('toolbar-container-inner-modal');
