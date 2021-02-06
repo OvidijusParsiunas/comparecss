@@ -75,7 +75,7 @@ export default {
         setTimeout(() => {
           this.$refs.toolbarContainer.classList.replace('toolbar-container-default', 'toolbar-container-modal');
           this.$refs.toolbarContainerInner.classList.add('toolbar-container-inner-modal');
-          this.$refs.toolbarContainer.style.opacity = '1';
+          // this.$refs.toolbarContainer.style.opacity = '1';
         }, ExpandedModalPreviewMode.expandedModalInitialFadeOutAnimationDurationMilliseconds);
       } else {
         this.$refs.toolbarContainer.classList.replace('toolbar-container-modal', 'toolbar-container-default');

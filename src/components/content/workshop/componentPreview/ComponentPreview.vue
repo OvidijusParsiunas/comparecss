@@ -76,6 +76,8 @@
 <script lang="ts">
 import ExpandedModalPreviewMode, { TransitionAnimation } from '../../../../services/workshop/expandedModalPreviewMode/expandedModalPreviewMode';
 import useSubcomponentPreviewEventHandlers, { UseSubcomponentPreviewEventHandlers } from './compositionAPI/useSubcomponentPreviewEventHandlers';
+import EntranceTransitions from '../../../../services/workshop/expandedModalPreviewMode/transitions/entranceTransitions';
+import InitialTransition from '../../../../services/workshop/expandedModalPreviewMode/transitions/initialTransition';
 import { subcomponentTypeToPreviewId } from '../toolbar/options/componentOptions/subcomponentTypeToPreviewId';
 import { subcomponentPreviewZIndexes } from '../toolbar/options/componentOptions/subcomponentPreviewZIndexes';
 import { ComponentPreviewAssistance } from '../../../../interfaces/componentPreviewAssistance';
@@ -137,24 +139,7 @@ export default {
       if (isExpandedModalPreviewModeActive) {
         // strategies
         // https://tympanus.net/codrops/2013/06/25/nifty-modal-window-effects/
-        this.$refs.componentPreviewContainer.style.opacity = '0';
-        this.$refs.componentPreview.style.opacity = '0';
-        setTimeout(() => {
-          this.$refs.componentPreviewContainer.classList.replace('component-preview-container-default', 'component-preview-container-modal');
-          this.$refs.componentPreviewContainer.style.opacity = '1';
-          // background appearance time
-          this.$refs.componentPreviewContainer.style.transitionDuration = '0.1s';
-          // initial position of the modal
-          this.$refs.componentPreview.style.marginTop = '-50.4vh';
-          this.$refs.componentPreview.style.top = '0px';
-        }, ExpandedModalPreviewMode.expandedModalInitialFadeOutAnimationDurationMilliseconds);
-        setTimeout(() => {
-          this.$refs.componentPreview.style.opacity = '1';
-          this.$refs.componentPreview.style.top = '40px';
-          this.$refs.componentPreview.style.transitionDuration = '0.3s';
-          this.$refs.componentPreview.style.transitionProperty = 'all';
-          this.$refs.componentPreview.style.transitionTimingFunction = 'linear';
-        }, 300);
+        InitialTransition.start(this.$refs.componentPreviewContainer, this.$refs.componentPreview, EntranceTransitions.applySlideIn);
       } else {
         this.$refs.componentPreviewContainer.classList.replace('component-preview-container-modal', 'component-preview-container-default');
       }
