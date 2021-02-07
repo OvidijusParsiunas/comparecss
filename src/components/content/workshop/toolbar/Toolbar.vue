@@ -18,7 +18,7 @@
 </template>
 
 <script lang="ts">
-import InitialTransition from '../../../../services/workshop/expandedModalPreviewMode/transitions/initialTransition';
+import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../consts/workshopToolbarOptionTypes.enum';
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
 import { optionToSettings } from './settings/types/optionToSettings';
@@ -60,14 +60,9 @@ export default {
       this.$emit('toggle-subcomponent-select-mode', callback);
       this.$refs.settings.toggleSubcomponentSelectMode();
     },
-    expandModalComponent(isExpandedModalPreviewModeActive: boolean): void {
-      if (isExpandedModalPreviewModeActive) {
-        InitialTransition.startToolbar(this.$refs.toolbarContainer, this.$refs.toolbarContainerInner);
-      } else {
-        this.$refs.toolbarContainer.classList.replace('toolbar-container-modal', 'toolbar-container-default');
-        this.$refs.toolbarContainerInner.classList.remove('toolbar-container-inner-modal');
-      }
-      this.$emit('toggle-expanded-modal-preview-mode', isExpandedModalPreviewModeActive);
+    expandModalComponent(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {
+      this.$emit('toggle-expanded-modal-preview-mode',
+        [toggleExpandedModalPreviewModeEvent[0], this.$refs.toolbarContainer, this.$refs.toolbarContainerInner] as ToggleExpandedModalPreviewModeEvent);
     }
   },
   props: {

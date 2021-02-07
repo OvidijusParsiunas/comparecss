@@ -64,6 +64,7 @@
 </template>
 
 <script lang="ts">
+import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER } from '../../../../../consts/elementClassMarkers';
@@ -210,7 +211,7 @@ export default {
       if (!this.isExpandedModalPreviewModeActive && this.activeOption.enabledOnExpandedModalPreviewMode) {
         this.selectOption(this.getDefaultOption());
       }
-      this.$emit('toggle-expanded-modal-preview-mode', this.isExpandedModalPreviewModeActive);
+      this.$emit('toggle-expanded-modal-preview-mode', [this.isExpandedModalPreviewModeActive] as ToggleExpandedModalPreviewModeEvent);
     },
     getDefaultOption(): Option {
       return this.getActiveModeOptions()[0];

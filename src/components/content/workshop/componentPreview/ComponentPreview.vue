@@ -75,8 +75,9 @@
 
 <script lang="ts">
 import useSubcomponentPreviewEventHandlers, { UseSubcomponentPreviewEventHandlers } from './compositionAPI/useSubcomponentPreviewEventHandlers';
-import EntranceTransitions from '../../../../services/workshop/expandedModalPreviewMode/transitions/entranceTransitions';
-import InitialTransition from '../../../../services/workshop/expandedModalPreviewMode/transitions/initialTransition';
+import ModeToggleTransitions from '../../../../services/workshop/expandedModalPreviewMode/transitions/modeToggleTransitions';
+import SlideTransitions from '../../../../services/workshop/expandedModalPreviewMode/transitions/slideTransitions';
+import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { subcomponentTypeToPreviewId } from '../toolbar/options/componentOptions/subcomponentTypeToPreviewId';
 import { subcomponentPreviewZIndexes } from '../toolbar/options/componentOptions/subcomponentPreviewZIndexes';
 import { ComponentPreviewAssistance } from '../../../../interfaces/componentPreviewAssistance';
@@ -132,13 +133,19 @@ export default {
     toggleSubcomponentSelectMode(): void {
       // this.$refs.selectSubcomponentOverlay1.style.display = 'block';
     },
-    expandModalComponent(isExpandedModalPreviewModeActive: boolean): void {
+    expandModalComponent(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {
+      const [isExpandedModalPreviewModeActive, toolbarElement, toolbarInnerElement] = toggleExpandedModalPreviewModeEvent;
+      const slideTransitions = new SlideTransitions();
       if (isExpandedModalPreviewModeActive) {
         // strategies
         // https://tympanus.net/codrops/2013/06/25/nifty-modal-window-effects/
-        InitialTransition.startPreview(this.$refs.componentPreviewContainer, this.$refs.componentPreview, EntranceTransitions.applySlideIn);
+        ModeToggleTransitions.startPreview(
+          this.$refs.componentPreviewContainer, this.$refs.componentPreview,
+          toolbarElement, toolbarInnerElement, slideTransitions);
       } else {
-        this.$refs.componentPreviewContainer.classList.replace('component-preview-container-modal', 'component-preview-container-default');
+        ModeToggleTransitions.exitPreview(
+          this.$refs.componentPreviewContainer, this.$refs.componentPreview,
+          toolbarElement, toolbarInnerElement, slideTransitions);
       }
     }
   },
