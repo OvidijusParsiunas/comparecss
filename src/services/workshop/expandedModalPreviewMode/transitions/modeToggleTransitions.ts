@@ -1,5 +1,5 @@
 import { OPACITY_INVISIBLE, OPACITY_VISIBLE, LINEAR_SPEED_TRANSITION, OPACITY_PROPERTY } from './sharedConsts';
-import { ModalTransitions, ExitPreviewCallback } from '../../../../interfaces/modalTransitions';
+import { ModalTransitions, ExitCallback } from '../../../../interfaces/modalTransitions';
 
 export interface TransitionAnimationProperties {
   transitionDuration?: string;
@@ -49,16 +49,16 @@ export default class ModeToggleTransitions {
     }, ModeToggleTransitions.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
   }
 
-  private static exitPreviewCallback(backgroundElement: HTMLElement, modalElement: HTMLElement,
+  private static exitCallback(backgroundElement: HTMLElement, modalElement: HTMLElement,
       toolbarElement: HTMLElement, innerToolbarElement: HTMLElement): void {
     ModeToggleTransitions.exitPreviewTransition(backgroundElement, modalElement);
     ModeToggleTransitions.exitToolbarTransition(toolbarElement, innerToolbarElement);
   }
 
-  public static exitPreview(backgroundElement: HTMLElement, modalElement: HTMLElement,
+  public static exit(backgroundElement: HTMLElement, modalElement: HTMLElement,
       toolbarElement: HTMLElement, innerToolbarElement: HTMLElement, modalTransitions: ModalTransitions): void {
     ModeToggleTransitions.opacityFadeAnimation(OPACITY_INVISIBLE, ModeToggleTransitions.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS, toolbarElement);
-    modalTransitions.exit(backgroundElement, modalElement, toolbarElement, innerToolbarElement, ModeToggleTransitions.exitPreviewCallback as ExitPreviewCallback);
+    modalTransitions.exit(backgroundElement, modalElement, toolbarElement, innerToolbarElement, ModeToggleTransitions.exitCallback as ExitCallback);
   }
 
   private static startToolbarTransition(toolbarElement: HTMLElement, innerToolbarElement: HTMLElement): void {
@@ -79,7 +79,7 @@ export default class ModeToggleTransitions {
     }, ModeToggleTransitions.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
   }
 
-  public static startPreview(backgroundElement: HTMLElement, modalElement: HTMLElement,
+  public static initiate(backgroundElement: HTMLElement, modalElement: HTMLElement,
       toolbarElement: HTMLElement, innerToolbarElement: HTMLElement, modalTransitions: ModalTransitions): void {
     ModeToggleTransitions.startPreviewTransition(backgroundElement, modalElement, modalTransitions);
     ModeToggleTransitions.startToolbarTransition(toolbarElement, innerToolbarElement);

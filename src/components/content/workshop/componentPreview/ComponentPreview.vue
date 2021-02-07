@@ -139,11 +139,11 @@ export default {
       if (isExpandedModalPreviewModeActive) {
         // strategies
         // https://tympanus.net/codrops/2013/06/25/nifty-modal-window-effects/
-        ModeToggleTransitions.startPreview(
+        ModeToggleTransitions.initiate(
           this.$refs.componentPreviewContainer, this.$refs.componentPreview,
           toolbarElement, toolbarInnerElement, slideTransitions);
       } else {
-        ModeToggleTransitions.exitPreview(
+        ModeToggleTransitions.exit(
           this.$refs.componentPreviewContainer, this.$refs.componentPreview,
           toolbarElement, toolbarInnerElement, slideTransitions);
       }
