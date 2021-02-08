@@ -1,6 +1,6 @@
 <template>
-  <div v-if="component" ref="toolbarContainer" class="toolbar-container-default">
-    <div ref="toolbarContainerInner">
+  <div v-if="component" ref="toolbarContainer" class="toolbar-container-default toolbar-container-position-top">
+    <div ref="toolbar">
       <options ref="options"
         :component="component"
         :isSettingsDisplayed="isSettingsDisplayed"
@@ -62,7 +62,7 @@ export default {
     },
     expandModalComponent(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {
       this.$emit('toggle-expanded-modal-preview-mode',
-        [toggleExpandedModalPreviewModeEvent[0], this.$refs.toolbarContainer, this.$refs.toolbarContainerInner] as ToggleExpandedModalPreviewModeEvent);
+        [toggleExpandedModalPreviewModeEvent[0], this.$refs.toolbarContainer, this.$refs.toolbar] as ToggleExpandedModalPreviewModeEvent);
     }
   },
   props: {
@@ -79,16 +79,21 @@ export default {
 <style lang="css" scoped>
   .toolbar-container-default {
     width: 98.5%;
-    height: 228px;
   }
-  .toolbar-container-modal {
+  .toolbar-container-modal-preview-active {
     width: 100vw;
-    height: 228px;
     position: absolute;
     left: -30vw;
     z-index: 1;
   }
-  .toolbar-container-inner-modal {
+  .toolbar-container-position-top {
+    height: 228px;
+  }
+  .toolbar-container-modal-preview-active-position-bottom {
+    bottom: 0px;
+    height: 170px;
+  }
+  .toolbar-modal-preview-active {
     width: 50%;
     margin-left: auto;
     margin-right: auto;
