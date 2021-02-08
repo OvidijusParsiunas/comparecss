@@ -58,7 +58,7 @@ export default {
     },
     toggleSubcomponentSelectMode(callback: WorkshopEventCallback): void {
       this.$emit('toggle-subcomponent-select-mode', callback);
-      this.$refs.settings.toggleSubcomponentSelectMode();
+      if (this.$refs.settings) this.$refs.settings.toggleSubcomponentSelectMode();
     },
     expandModalComponent(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {
       this.$emit('toggle-expanded-modal-preview-mode',

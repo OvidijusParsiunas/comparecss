@@ -77,6 +77,7 @@
 import useSubcomponentPreviewEventHandlers, { UseSubcomponentPreviewEventHandlers } from './compositionAPI/useSubcomponentPreviewEventHandlers';
 import ModeToggleTransitions from '../../../../services/workshop/expandedModalPreviewMode/transitions/modeToggleTransitions';
 import SlideTransitions from '../../../../services/workshop/expandedModalPreviewMode/transitions/slideTransitions';
+import FadeTransitions from '../../../../services/workshop/expandedModalPreviewMode/transitions/fadeTransitions';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { subcomponentTypeToPreviewId } from '../toolbar/options/componentOptions/subcomponentTypeToPreviewId';
 import { subcomponentPreviewZIndexes } from '../toolbar/options/componentOptions/subcomponentPreviewZIndexes';
@@ -134,18 +135,18 @@ export default {
       // this.$refs.selectSubcomponentOverlay1.style.display = 'block';
     },
     expandModalComponent(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {
-      const [isExpandedModalPreviewModeActive, toolbarElement, toolbarInnerElement] = toggleExpandedModalPreviewModeEvent;
-      const slideTransitions = new SlideTransitions();
+      const [isExpandedModalPreviewModeActive, toolbarContainerElement, toolbarElement] = toggleExpandedModalPreviewModeEvent;
+      const fadeTransitions = new FadeTransitions();
       if (isExpandedModalPreviewModeActive) {
         // strategies
         // https://tympanus.net/codrops/2013/06/25/nifty-modal-window-effects/
         ModeToggleTransitions.initiate(
           this.$refs.componentPreviewContainer, this.$refs.componentPreview,
-          toolbarElement, toolbarInnerElement, slideTransitions);
+          toolbarContainerElement, toolbarElement, fadeTransitions);
       } else {
         ModeToggleTransitions.exit(
           this.$refs.componentPreviewContainer, this.$refs.componentPreview,
-          toolbarElement, toolbarInnerElement, slideTransitions);
+          toolbarContainerElement, toolbarElement, fadeTransitions);
       }
     }
   },

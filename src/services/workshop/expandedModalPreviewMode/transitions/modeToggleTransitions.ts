@@ -76,7 +76,7 @@ export default class ModeToggleTransitions {
       if (toolbarPositionDuringModalPreviewState.getToolbarPositionDuringModalPreviewState() === TOOLBAR_POSITIONS_DURING_MODAL_PREVIEW.BOTTOM) {
         toolbarContainerElement.classList.replace(ModeToggleTransitions.TOOLBAR_CONTAINER_ELEMENT_POSITION_TOP_CLASS, ModeToggleTransitions.TOOLBAR_CONTAINER_ELEMENT_POSITION_BOTTOM_CLASS);
       }
-      toolbarElement.style.opacity = OPACITY_VISIBLE;
+      toolbarContainerElement.style.opacity = OPACITY_VISIBLE;
     }, ModeToggleTransitions.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
   }
   
