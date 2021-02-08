@@ -18,6 +18,7 @@ export default class ModeToggleTransitions {
   private static EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS = 150;
   private static START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS = `${ModeToggleTransitions.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS / 1000}s`;
   private static EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS = `${ModeToggleTransitions.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS / 1000}s`;
+  private static EXIT_EXPANDED_MODAL_MODE_TRANSITION_DELAY_MILLISECONDS = 50; // if this value is increased, will need to prevent highlighting of subcomponents (test with fade)
   private static INTIIAL_EXPANDED_MODAL_TRANSITION_VALUES: TransitionAnimationProperties = {
     transitionProperty: OPACITY_PROPERTY,
     transitionTimingFunction: LINEAR_SPEED_TRANSITION,
@@ -38,7 +39,7 @@ export default class ModeToggleTransitions {
       toolbarElement.classList.replace(ModeToggleTransitions.TOOLBAR_ELEMENT_ACTIVE_MODE_CLASS, ModeToggleTransitions.TOOLBAR_ELEMENT_DEFAULT_CLASS);
       setTimeout(() => {
         ModeToggleTransitions.opacityFadeAnimation(OPACITY_VISIBLE, ModeToggleTransitions.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS, toolbarElement);
-      }, ModeToggleTransitions.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
+      }, ModeToggleTransitions.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DELAY_MILLISECONDS);
   }
 
   private static exitPreviewTransition(backgroundElement: HTMLElement, modalElement: HTMLElement): void {
@@ -46,7 +47,7 @@ export default class ModeToggleTransitions {
     setTimeout(() => {
       ModeToggleTransitions.opacityFadeAnimation(OPACITY_VISIBLE, ModeToggleTransitions.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS,
         backgroundElement, modalElement);
-    }, ModeToggleTransitions.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
+    }, ModeToggleTransitions.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DELAY_MILLISECONDS);
   }
 
   private static exitCallback(backgroundElement: HTMLElement, modalElement: HTMLElement,

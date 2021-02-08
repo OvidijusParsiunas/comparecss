@@ -89,9 +89,11 @@
 <script lang="ts">
 import { CustomCss, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../interfaces/workshopComponent';
 import { modalLayerBottomSpecificSettings } from './newComponent/types/modals/properties/modalLayerBottomSpecificSettings';
+import { removeSubcomponentModalState } from './toolbar/options/removeSubcomponentModalState/removeSubcomponentModalState';
 import createModalComponentPreviewStructure from './newComponent/types/modals/properties/modalComponentPreviewStructure';
 import { modalLayerTopSpecificSettings } from './newComponent/types/modals/properties/modalLayerTopSpecificSettings';
 import { inheritedAlertCloseChildCss } from './newComponent/types/alerts/properties/inheritedAlertCloseChildCss';
+import { removeComponentModalState } from './componentList/removeComponentModalState/removeComponentModalState';
 import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
 import { alertCloseSpecificSettings } from './newComponent/types/alerts/properties/alertCloseSpecificSettings';
 import SubcomponentToggleService from './toolbar/options/subcomponentToggleService/subcomponentToggleService';
@@ -107,11 +109,9 @@ import { SUB_COMPONENT_CSS_MODES } from '../../../consts/subcomponentCssModes.en
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../consts/domEventTriggerKeys.enum';
 import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
-import { removeSubcomponentModalState } from './toolbar/options/modal/state';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
 import { JAVASCRIPT_CLASSES } from '../../../consts/javascriptClasses.enum';
 import JSONManipulation from '../../../services/workshop/jsonManipulation';
-import { removeComponentModalState } from './componentList/modal/state';
 import componentContents from './componentPreview/ComponentPreview.vue';
 import { SUB_COMPONENTS } from '../../../consts/subcomponentModes.enum';
 import removalModalTemplate from './templates/RemovalModalTemplate.vue';

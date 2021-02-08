@@ -15,6 +15,7 @@
 </template>
 
 <script lang="ts">
+import { removeComponentModalState } from './removeComponentModalState/removeComponentModalState';
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
 import ProcessClassName from '../../../../services/workshop/newComponent/processClassName';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../consts/domEventTriggerKeys.enum';
@@ -22,7 +23,6 @@ import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallb
 import { COMPONENT_CARD_MARKER } from '../../../../consts/elementClassMarkers';
 import { RemovalModalState } from '../../../../interfaces/removalModalState';
 import { REMOVE_COMPONENT_MODAL_ID } from '../../../../consts/elementIds';
-import { removeComponentModalState } from './modal/state';
 import { nextTick } from 'vue';
 
 interface Data {

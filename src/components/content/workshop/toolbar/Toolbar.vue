@@ -5,7 +5,7 @@
         :component="component"
         :isSettingsDisplayed="isSettingsDisplayed"
         :componentPreviewAssistance="componentPreviewAssistance"
-        @trigger-settings-refresh="triggerSettingsRefresh"
+        @trigger-settings-refresh="triggerSettingsRefresh($event)"
         @hide-settings="hideSettings"
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
         @prepare-remove-subcomponent-modal="$emit('prepare-remove-subcomponent-modal')"

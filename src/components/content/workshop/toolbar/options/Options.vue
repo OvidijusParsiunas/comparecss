@@ -66,6 +66,7 @@
 <script lang="ts">
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
+import { removeSubcomponentModalState } from './removeSubcomponentModalState/removeSubcomponentModalState';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER } from '../../../../../consts/elementClassMarkers';
 import { SUBCOMPONENT_PREVIEW_CLASSES } from '../../../../../consts/subcomponentPreviewClasses';
@@ -81,7 +82,6 @@ import { RemovalModalState } from '../../../../../interfaces/removalModalState';
 import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/state';
 import { Option } from '../../../../../interfaces/componentOptions';
-import { removeSubcomponentModalState } from './modal/state';
 import dropdown from './dropdown/Dropdown.vue';
 
 interface Consts {
