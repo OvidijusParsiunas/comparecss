@@ -37,12 +37,8 @@ export default function useSubcomponentPreviewEventHandlers(componentRef: Ref<Su
     return isComponentProperties(componentRef) ? componentRef.value : componentRef.value.subcomponents[componentRef.value.subcomponentsActiveMode];
   }
 
-  function shouldThisComponentNotBeAffected(event): boolean {
-    return !isComponentProperties(componentRef) && event.target !== componentRef;
-  }
-
   const componentMouseEnter = (): void => {
-    if (shouldThisComponentNotBeAffected(event) || subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
+    if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
     const componentProperties = parseComponentProperties();
     const { customCss, subcomponentPreviewTransition, customCssActiveMode } = componentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
@@ -54,7 +50,7 @@ export default function useSubcomponentPreviewEventHandlers(componentRef: Ref<Su
   }
   
   const componentMouseLeave = (): void => {
-    if (shouldThisComponentNotBeAffected(event) || subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
+    if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
     const componentProperties = parseComponentProperties();
     const { customCss, customCssActiveMode } = componentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT && overwrittenDefaultPropertiesByHover.hasBeenSet) {
@@ -65,7 +61,7 @@ export default function useSubcomponentPreviewEventHandlers(componentRef: Ref<Su
   }
   
   const componentMouseDown = (): void => {
-    if (shouldThisComponentNotBeAffected(event) || subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
+    if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
     const componentProperties = parseComponentProperties();
     const { customCss, subcomponentPreviewTransition, customCssActiveMode } = componentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
@@ -76,7 +72,7 @@ export default function useSubcomponentPreviewEventHandlers(componentRef: Ref<Su
   }
   
   const componentMouseUp = (): void => {
-    if (shouldThisComponentNotBeAffected(event) || subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
+    if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
     const componentProperties = parseComponentProperties();
     const { customCss, customCssActiveMode } = componentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT && overwrittenDefaultPropertiesByClick.hasBeenSet) {
