@@ -8,5 +8,5 @@ export interface DropdownCompositionAPI {
   hideDropdownMenuEventHandler: (param1: HTMLElement) => void,
   mouseEnterAuxiliaryPaddingEventHandler: (param1: NestedDropdownStructure[], param2: HTMLElement, param3: number, param4: HTMLElement, param5: number) => void,
   mouseLeaveAuxiliaryPaddingEventHandler: (param1: HTMLElement) => void,
-  displayHighligtedOptionAndParentMenusEventHandler: (param1: NestedDropdownStructure[], param2: HTMLElement, param3: number, param4: HTMLElement, param5: number) => void,
+  displayHighlightedOptionAndParentMenusEventHandler: (param1: NestedDropdownStructure[], param2: HTMLElement, param3: number, param4: HTMLElement, param5: number) => void,
 }

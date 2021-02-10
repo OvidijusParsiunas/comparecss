@@ -136,8 +136,8 @@ export default {
         }
         setTimeout(() => {
           const optionElementSubjectToHighlight = this.$refs.dropdownMenus.childNodes[dropdowns.length].childNodes[optionIndexes[optionIndexes.length - 1] + 1];
-          if (this.displayHighligtedOptionAndParentMenusEventHandler) {
-            this.displayHighligtedOptionAndParentMenusEventHandler(this.dropdowns, optionElementSubjectToHighlight, this.dropdowns.length - 1, this.lastHoveredOptionElement, this.lastHoveredOptionElementDropdownMenuIndex);
+          if (this.displayHighlightedOptionAndParentMenusEventHandler) {
+            this.displayHighlightedOptionAndParentMenusEventHandler(this.dropdowns, optionElementSubjectToHighlight, this.dropdowns.length - 1, this.lastHoveredOptionElement, this.lastHoveredOptionElementDropdownMenuIndex);
           }
           this.highlightOption(optionElementSubjectToHighlight, dropdowns.length - 1);
         }, (dropdowns.length - 1) * this.dropdownDisplayDelayMilliseconds);

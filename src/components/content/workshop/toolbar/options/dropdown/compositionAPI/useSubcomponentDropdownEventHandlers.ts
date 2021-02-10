@@ -91,7 +91,7 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
     toggleSubcomponentPreviewDisplay(getOptionNameFromElement(blurredOptionElement), 'none');
   }
 
-  const displayHighligtedOptionAndParentMenusEventHandler = (dropdowns: NestedDropdownStructure[], optionElementToBeHighlighted: HTMLElement, dropdownMenuIndex: number,
+  const displayHighlightedOptionAndParentMenusEventHandler = (dropdowns: NestedDropdownStructure[], optionElementToBeHighlighted: HTMLElement, dropdownMenuIndex: number,
     lastHoveredOptionElement: HTMLElement, lastHoveredOptionElementDropdownMenuIndex: number): void => {
     changeOptionHighlightColours(dropdowns, optionElementToBeHighlighted, dropdownMenuIndex, lastHoveredOptionElement, lastHoveredOptionElementDropdownMenuIndex);
   }
@@ -104,6 +104,6 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
     hideDropdownMenuEventHandler,
     mouseEnterAuxiliaryPaddingEventHandler,
     mouseLeaveAuxiliaryPaddingEventHandler,
-    displayHighligtedOptionAndParentMenusEventHandler,
+    displayHighlightedOptionAndParentMenusEventHandler,
   };
 }
