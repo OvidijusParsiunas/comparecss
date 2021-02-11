@@ -10,6 +10,7 @@ toolbar position
 subcomponent select x button doesn't work properly
 when clicking the subcomponent select dropdown twice - the preview disappears
 when transition is taking place, should not be able to highlight
+when close button has no color and hover does, the default mode color selector displays an x button when hovering
 the subcomponent select button weird styling - firefox
 
 option to import an existing button style!
