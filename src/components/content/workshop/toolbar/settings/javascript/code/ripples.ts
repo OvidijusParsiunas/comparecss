@@ -52,8 +52,7 @@ function showEffect(event) {
 }
 
 function removeScript() {
-  const button = document.getElementById('demoComponent');
-  button.removeEventListener('mousedown', showEffect);
+  document.body.removeEventListener('mousedown', showEffect);
 }
 
 function initializeScript() {
