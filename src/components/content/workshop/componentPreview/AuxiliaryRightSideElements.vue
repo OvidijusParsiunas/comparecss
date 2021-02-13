@@ -1,11 +1,11 @@
 <template>
-  <div v-if="subcomponent.optionalSubcomponent.currentlyDisplaying || subcomponent.optionalSubcomponent.displayPreviewOnly">
-    <div id="close-button-parent" type="button" aria-label="Close">
-      <button aria-hidden="true" id="close-button" :class="[ ...subcomponent.jsClasses ]"
-        @mouseenter="componentMouseEnter()"
-        @mouseleave="componentMouseLeave()"
-        @mousedown="componentMouseDown()"
-        @mouseup="componentMouseUp()"
+  <div v-if="subcomponent.optionalSubcomponent.currentlyDisplaying || subcomponent.optionalSubcomponent.displayOverlayOnly">
+    <div id="close-button-parent" :class="SUBCOMPONENT_CURSOR_DEFAULT_CLASS" type="button" aria-label="Close">
+      <button aria-hidden="true" :id="elementIds.subcomponentId" class="close-button" :class="[ ...subcomponent.jsClasses ]"
+        @mouseenter="mouseEvents.subcomponentMouseEnter()"
+        @mouseleave="mouseEvents.subcomponentMouseLeave()"
+        @mousedown="mouseEvents.subcomponentMouseDown()"
+        @mouseup="mouseEvents.subcomponentMouseUp()"
         :style="subcomponent.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
           ? [
               [ subcomponent.inheritedCss ? subcomponent.inheritedCss.css: '' ],
@@ -18,61 +18,47 @@
               subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
               subcomponent.customCss[subcomponent.customCssActiveMode],
             ]"
-        ><div v-if="!subcomponent.optionalSubcomponent.displayPreviewOnly" id="close-button-icon">×</div>
+        ><div v-if="!subcomponent.optionalSubcomponent.displayOverlayOnly" id="close-button-icon">×</div>
       </button>
       <button
-        :id="CLOSE_PREVIEW_ELEMENT_ID"
-        style="display: none" :style="[subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], { zIndex: CLOSE_PREVIEW_Z_INDEX }]"
-        class="subcomponent-preview-default">
+        :id="elementIds.overlayId"
+        style="display: none" :style="subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
+        :class="OVERLAY_DEFAULT_CLASS">
       </button>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import useSubcomponentPreviewEventHandlers, { UseSubcomponentPreviewEventHandlers } from './compositionAPI/useSubcomponentPreviewEventHandlers';
-import { subcomponentTypeToPreviewId } from '../toolbar/options/componentOptions/subcomponentTypeToPreviewId';
-import { subcomponentPreviewZIndexes } from '../toolbar/options/componentOptions/subcomponentPreviewZIndexes';
+import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
+import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../consts/subcomponentCursorClasses.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
-import { SubcomponentProperties } from '../../../../interfaces/workshopComponent';
-import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
-import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
-import { Ref, ref, watch } from 'vue';
 
 interface Consts {
-  CLOSE_PREVIEW_Z_INDEX: number;
-  CLOSE_PREVIEW_ELEMENT_ID: string;
+  SUBCOMPONENT_CURSOR_DEFAULT_CLASS: string;
+  OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
   SUB_COMPONENT_CSS_MODES;
-  NEW_COMPONENT_TYPES;
-}
-
-interface Props {
-  subcomponent: SubcomponentProperties;
 }
 
 export default {
-  setup(props: Props): UseSubcomponentPreviewEventHandlers & Consts {
-    const subcomponentRef: Ref<Props['subcomponent']> = ref(props.subcomponent);
-    watch(() => props.subcomponent, (newSubcomponent: Props['subcomponent']) => {
-      subcomponentRef.value = newSubcomponent;
-    });
+  setup(): Consts {
     return {
-      ...useSubcomponentPreviewEventHandlers(subcomponentRef),
-      CLOSE_PREVIEW_Z_INDEX: subcomponentPreviewZIndexes[SUB_COMPONENTS.CLOSE],
-      CLOSE_PREVIEW_ELEMENT_ID: subcomponentTypeToPreviewId[SUB_COMPONENTS.CLOSE],
+      SUBCOMPONENT_CURSOR_DEFAULT_CLASS: SUBCOMPONENT_CURSOR_CLASSES.DEFAULT,
+      OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT,
       SUB_COMPONENT_CSS_MODES,
-      NEW_COMPONENT_TYPES,
     };
   },
   props: {
     subcomponent: Object,
+    elementIds: Object,
+    mouseEvents: Object,
   }
 }
 </script>
 
 <style lang="css" scoped>
   /* this will need to be inherited css */
-  #close-button {
+  .close-button {
     position: relative;
     overflow: hidden;
   }
@@ -80,7 +66,6 @@ export default {
     position: absolute;
     top: 0px;
     right: 0px;
-    cursor: default !important;
   }
   #close-button-parent:focus {
     outline: none;

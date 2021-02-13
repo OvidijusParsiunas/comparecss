@@ -19,8 +19,8 @@
 
 <script lang="ts">
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
+import { ToggleSubcomponentSelectModeEvent } from '../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../consts/workshopToolbarOptionTypes.enum';
-import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
 import { optionToSettings } from './settings/types/optionToSettings';
 import { Option } from '../../../../interfaces/componentOptions';
 import settings from './settings/Settings.vue';
@@ -56,8 +56,8 @@ export default {
     hideSettings(): void {
       this.isSettingsDisplayed = false;
     },
-    toggleSubcomponentSelectMode(callback: WorkshopEventCallback): void {
-      this.$emit('toggle-subcomponent-select-mode', callback);
+    toggleSubcomponentSelectMode(toggleSubcomponentSelectModeEvent: ToggleSubcomponentSelectModeEvent): void {
+      this.$emit('toggle-subcomponent-select-mode', toggleSubcomponentSelectModeEvent);
       if (this.$refs.settings) this.$refs.settings.toggleSubcomponentSelectMode();
     },
     expandModalComponent(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {

@@ -1,5 +1,5 @@
 <template>
-  <div class="HTMLContainer">
+  <div class="HTMLContainer" :class="SUBCOMPONENT_CURSOR_AUTO_CLASS">
     <div class="HTMLContents">
       {{ innerHTML }}
     </div>
@@ -7,16 +7,16 @@
 </template>
 
 <script lang="ts">
-import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
+import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../consts/subcomponentCursorClasses.enum';
 
 interface Consts {
-  NEW_COMPONENT_TYPES,
+  SUBCOMPONENT_CURSOR_AUTO_CLASS: string;
 }
 
 export default {
   setup(): Consts {
     return {
-      NEW_COMPONENT_TYPES,
+      SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES.AUTO,
     };
   },
   props: {

@@ -22,6 +22,7 @@
 
 <script lang="ts">
 import { COMPONENT_CARD_MARKER, DROPDOWN_OPTION_MARKER } from '../../../../../../consts/elementClassMarkers';
+import { CUSTOM_DROPDOWN_OPTION_CLASSES } from '../../../../../../consts/customDropdownOptionClasses.enum';
 import { OptionMouseEnter, OptionMouseLeave } from '../../../../../../interfaces/dropdownMenuMouseEvents';
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
@@ -165,10 +166,10 @@ export default {
       return null;
     },
     mouseEnterButton(): void {
-      if (this.buttonMouseEnterEventHandler) { this.buttonMouseEnterEventHandler(); }
+      if (this.mouseEnterButtonEventHandler) { this.mouseEnterButtonEventHandler(); }
     },
     mouseLeaveButton(): void {
-      if (this.buttonMouseLeaveEventHandler) { this.buttonMouseLeaveEventHandler(); }
+      if (this.mouseLeaveButtonEventHandler) { this.mouseLeaveButtonEventHandler(); }
     },
     mouseEnterAuxiliaryPadding(): void {
       if (this.areMenusDisplayed) {
@@ -232,15 +233,15 @@ export default {
     },
     highlightOption(optionElementToBeHighlighted: HTMLElement, dropdownMenuIndex: number): void {
       if (this.lastHoveredOptionElement) {
-        this.lastHoveredOptionElement.classList.remove('custom-dropdown-item-active');
+        this.lastHoveredOptionElement.classList.remove(CUSTOM_DROPDOWN_OPTION_CLASSES.ACTIVE);
         this.lastHoveredOptionElement.style.color = 'black';
         // bug fix for resetting option colour when user clicks and drags an option
-        if (!document.activeElement.classList.contains(this.uniqueIdentifier)) this.lastHoveredOptionElement.classList.add('custom-dropdown-item-default');
+        if (!document.activeElement.classList.contains(this.uniqueIdentifier)) this.lastHoveredOptionElement.classList.add(CUSTOM_DROPDOWN_OPTION_CLASSES.DEFAULT);
         this.changeOptionArrowColor(this.lastHoveredOptionElement, 'grey');
       }
       this.lastHoveredOptionElement = optionElementToBeHighlighted;
       this.lastHoveredOptionElementDropdownMenuIndex = dropdownMenuIndex;
-      optionElementToBeHighlighted.classList.add('custom-dropdown-item-active');
+      optionElementToBeHighlighted.classList.add(CUSTOM_DROPDOWN_OPTION_CLASSES.ACTIVE);
       optionElementToBeHighlighted.style.color = 'white';
       this.changeOptionArrowColor(optionElementToBeHighlighted, 'white');
     },

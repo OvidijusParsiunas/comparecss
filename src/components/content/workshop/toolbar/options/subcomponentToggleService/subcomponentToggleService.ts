@@ -1,59 +1,51 @@
+import { subcomponentAndOverlayElementIdsState } from '../subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import { OptionalSubcomponent, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { SUBCOMPONENT_PREVIEW_CLASSES } from '../../../../../../consts/subcomponentPreviewClasses';
-import { subcomponentTypeToPreviewId } from '../componentOptions/subcomponentTypeToPreviewId';
+import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../../consts/subcomponentOverlayClasses.enum';
 import { SUB_COMPONENTS } from '../../../../../../consts/subcomponentModes.enum';
 
 export default class SubcomponentSelectModeService {
 
-  private static getActiveSubcomponentPreviewElement(subcomponentsActiveMode: SUB_COMPONENTS): HTMLElement {
-    const subcomponentPreviewElementId = subcomponentTypeToPreviewId[subcomponentsActiveMode];
-    return document.getElementById(subcomponentPreviewElementId);
+  private static getActiveSubcomponentOverlayElement(subcomponentsActiveMode: SUB_COMPONENTS): HTMLElement {
+    const subcomponentOverlayElementId = subcomponentAndOverlayElementIdsState.getOverlayIdViaSubcomponentType(subcomponentsActiveMode);
+    return document.getElementById(subcomponentOverlayElementId);
   }
 
-  private static displaySubcomponentPreviewBySelectModeStatus(isSelectModeActive: boolean, subcomponentsActiveMode: SUB_COMPONENTS, previewClassToBeAdded: SUBCOMPONENT_PREVIEW_CLASSES): void {
-    const subcomponentPreviewElement = this.getActiveSubcomponentPreviewElement(subcomponentsActiveMode);
-    if (isSelectModeActive) {
-      subcomponentPreviewElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.SELECT_MODE_HIDDEN);
-    }
-    subcomponentPreviewElement.classList.add(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT, previewClassToBeAdded);
-    subcomponentPreviewElement.style.display = 'block';
+  private static displaySubcomponentOverlayBySelectModeStatus(subcomponentsActiveMode: SUB_COMPONENTS, overlayClassToBeAdded: SUBCOMPONENT_OVERLAY_CLASSES): void {
+    const subcomponentOverlayElementId = this.getActiveSubcomponentOverlayElement(subcomponentsActiveMode);
+    subcomponentOverlayElementId.classList.add(overlayClassToBeAdded);
+    subcomponentOverlayElementId.style.display = 'block';
   }
 
-  public static hideSubcomponentPreviewBySelectModeStatus(isSelectModeActive: boolean, subcomponentsActiveMode: SUB_COMPONENTS, previewClassToBeRemoved: SUBCOMPONENT_PREVIEW_CLASSES): void {
-    const subcomponentPreviewElement = this.getActiveSubcomponentPreviewElement(subcomponentsActiveMode);
-    if (isSelectModeActive) {
-      subcomponentPreviewElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT, previewClassToBeRemoved);
-      subcomponentPreviewElement.classList.add(SUBCOMPONENT_PREVIEW_CLASSES.SELECT_MODE_HIDDEN);
-    } else {
-      subcomponentPreviewElement.classList.remove(previewClassToBeRemoved);
-      subcomponentPreviewElement.style.display = 'none';
-    }
+  public static hideSubcomponentOverlayBySelectModeStatus(subcomponentsActiveMode: SUB_COMPONENTS, overlayClassToBeRemoved: SUBCOMPONENT_OVERLAY_CLASSES): void {
+    const subcomponentOverlayElement = this.getActiveSubcomponentOverlayElement(subcomponentsActiveMode);
+    subcomponentOverlayElement.classList.remove(overlayClassToBeRemoved);
+    subcomponentOverlayElement.style.display = 'none';
   }
 
-  public static displaySubcomponentPreview(component: WorkshopComponent, isSelectModeActive: boolean): void {
+  public static displaySubcomponentOverlay(component: WorkshopComponent): void {
     const { optionalSubcomponent } = component.subcomponents[component.subcomponentsActiveMode];
     if (!optionalSubcomponent.currentlyDisplaying) {
-      optionalSubcomponent.displayPreviewOnly = true;
+      optionalSubcomponent.displayOverlayOnly = true;
       setTimeout(() => {
-        this.displaySubcomponentPreviewBySelectModeStatus(isSelectModeActive, component.subcomponentsActiveMode, SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
+        this.displaySubcomponentOverlayBySelectModeStatus(component.subcomponentsActiveMode, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
       });
     } else {
-      this.displaySubcomponentPreviewBySelectModeStatus(isSelectModeActive, component.subcomponentsActiveMode, SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
+      this.displaySubcomponentOverlayBySelectModeStatus(component.subcomponentsActiveMode, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
     }
   }
 
-  public static hideSubcomponentPreview(component: WorkshopComponent, isSelectModeActive: boolean): void {
+  public static hideSubcomponentOverlay(component: WorkshopComponent): void {
     const { optionalSubcomponent } = component.subcomponents[component.subcomponentsActiveMode];
-    optionalSubcomponent.displayPreviewOnly = false;
-    this.hideSubcomponentPreviewBySelectModeStatus(isSelectModeActive, component.subcomponentsActiveMode,
-      optionalSubcomponent.currentlyDisplaying ? SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE : SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
+    optionalSubcomponent.displayOverlayOnly = false;
+    this.hideSubcomponentOverlayBySelectModeStatus(component.subcomponentsActiveMode,
+      optionalSubcomponent.currentlyDisplaying ? SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE : SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
   }
 
-  public static changeSubcomponentPreviewClass(optionalSubcomponent: OptionalSubcomponent, subcomponentsActiveMode: SUB_COMPONENTS, displayPreviewOnlyState: boolean,
-      classToBeReplaced: SUBCOMPONENT_PREVIEW_CLASSES, newClass: SUBCOMPONENT_PREVIEW_CLASSES): void {
-    optionalSubcomponent.displayPreviewOnly = displayPreviewOnlyState;
-    const subcomponentPreviewElement = this.getActiveSubcomponentPreviewElement(subcomponentsActiveMode);
-    subcomponentPreviewElement.classList.replace(classToBeReplaced, newClass);
-    setTimeout(() => { subcomponentPreviewElement.style.display = 'block'; });
+  public static changeSubcomponentOverlayClass(optionalSubcomponent: OptionalSubcomponent, subcomponentsActiveMode: SUB_COMPONENTS, displayOverlayOnlyState: boolean,
+      classToBeReplaced: SUBCOMPONENT_OVERLAY_CLASSES, newClass: SUBCOMPONENT_OVERLAY_CLASSES): void {
+    optionalSubcomponent.displayOverlayOnly = displayOverlayOnlyState;
+    const subcomponentOverlayElement = this.getActiveSubcomponentOverlayElement(subcomponentsActiveMode);
+    subcomponentOverlayElement.classList.replace(classToBeReplaced, newClass);
+    setTimeout(() => { subcomponentOverlayElement.style.display = 'block'; });
   }
 }

@@ -18,12 +18,13 @@
         </div>
         <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item grid-item-position">
           <!-- parent component -->
-          <component ref="componentPreview" :is="component.componentPreviewStructure.baseCss.componentTag" id="demoComponent"
-            class="grid-item-position" :class="[ ...component.componentPreviewStructure.baseCss.jsClasses ]"
-            @mouseenter="componentMouseEnter()"
-            @mouseleave="componentMouseLeave()"
-            @mousedown="componentMouseDown()"
-            @mouseup="componentMouseUp()"
+          <component ref="componentPreview" :is="component.componentPreviewStructure.baseCss.componentTag"
+            :id="subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId"
+            class="base-component grid-item-position" :class="[ SUBCOMPONENT_CURSOR_AUTO_CLASS, ...component.componentPreviewStructure.baseCss.jsClasses ]"
+            @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId].subcomponentMouseEnter()"
+            @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId].subcomponentMouseLeave()"
+            @mousedown="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId].subcomponentMouseDown()"
+            @mouseup="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId].subcomponentMouseUp()"
             :style="component.componentPreviewStructure.baseCss.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
               ? [
                   [ component.componentPreviewStructure.baseCss.inheritedCss ? component.componentPreviewStructure.baseCss.inheritedCss.css: '' ],
@@ -37,21 +38,35 @@
                   component.componentPreviewStructure.baseCss.customCss[component.componentPreviewStructure.baseCss.customCssActiveMode],
                 ]">
               <div v-for="layer in component.componentPreviewStructure.layers" :key="layer" class="parent-layer">
-                <div :style="layer.css">
+                <div :style="[layer.css, { pointerEvents: component.componentPreviewStructure.shallowSubcomponents ? 'none': 'auto' }]"
+                  :id="subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId"
+                  @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseEnter()"
+                  @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseLeave()"
+                  @mousedown="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseDown()"
+                  @mouseup="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseUp()">
                   <nested-inner-html-text v-if="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]" :innerHTML="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]"/>
-                  <auxiliary-right-side-elements v-if="layer.subcomponents[SUB_COMPONENTS.CLOSE] !== undefined" :subcomponent="layer.subcomponents[SUB_COMPONENTS.CLOSE]"/>
+                  <auxiliary-right-side-elements
+                    v-if="layer.subcomponents[SUB_COMPONENTS.CLOSE] !== undefined"
+                    :subcomponent="layer.subcomponents[SUB_COMPONENTS.CLOSE]"
+                    :elementIds="subcomponentAndOverlayElementIds[SUB_COMPONENTS.CLOSE]"
+                    :mouseEvents="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.CLOSE].subcomponentId]"/>
                 </div>
-                <div v-if="layer.subcomponentPreviewId" :id="layer.subcomponentPreviewId" style="display: none" :style="[layer.css, { zIndex: layer.previewZIndex }]" class="subcomponent-preview-default"></div>
+                <div :id="subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].overlayId"
+                  style="display: none" :style="layer.css"
+                  :class="OVERLAY_DEFAULT_CLASS"></div>
               </div>
               <!-- shallow subcomponents -->
               {{ component.componentPreviewStructure.shallowSubcomponents ? component.componentPreviewStructure.shallowSubcomponents[PSEUDO_COMPONENTS.TEXT] : ''}}
               <auxiliary-right-side-elements v-if="component.componentPreviewStructure.shallowSubcomponents && component.componentPreviewStructure.shallowSubcomponents[SUB_COMPONENTS.CLOSE]"
-                :subcomponent="component.componentPreviewStructure.shallowSubcomponents[SUB_COMPONENTS.CLOSE]"/>
+                :subcomponent="component.componentPreviewStructure.shallowSubcomponents[SUB_COMPONENTS.CLOSE]"
+                :elementIds="subcomponentAndOverlayElementIds[SUB_COMPONENTS.CLOSE]"
+                :mouseEvents="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.CLOSE].subcomponentId]"/>
           </component>
           <component :is="component.componentPreviewStructure.baseCss.componentTag"
-            :id="BASE_PREVIEW_ELEMENT_ID"
-            style="display: none" :style="[component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], { zIndex: BASE_PREVIEW_Z_INDEX }]"
-            class="subcomponent-preview-default subcomponent-preview-with-no-border-property-but-with-height">
+            :id="subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].overlayId"
+            style="display: none" :style="component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
+            class="subcomponent-overlay-with-no-border-property-but-with-height"
+            :class="OVERLAY_DEFAULT_CLASS">
           </component>
           <!-- UX - SUBCOMPONENT SELECT - set this to appropriate dimensions when the event is fired -->
           <!-- <div ref="selectSubcomponentOverlay1" style="width: 1000px; height: 700px; background-color: #ff010100; position: absolute; border: 0px; top: -221px; left: -220px; z-index: 1; cursor: pointer;"></div> -->
@@ -74,53 +89,49 @@
 </template>
 
 <script lang="ts">
-import useSubcomponentPreviewEventHandlers, { UseSubcomponentPreviewEventHandlers } from './compositionAPI/useSubcomponentPreviewEventHandlers';
+import { subcomponentAndOverlayElementIdsState } from '../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import ModeToggleTransitions from '../../../../services/workshop/expandedModalPreviewMode/transitions/modeToggleTransitions';
 import SlideTransitions from '../../../../services/workshop/expandedModalPreviewMode/transitions/slideTransitions';
 import FadeTransitions from '../../../../services/workshop/expandedModalPreviewMode/transitions/fadeTransitions';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
-import { subcomponentTypeToPreviewId } from '../toolbar/options/componentOptions/subcomponentTypeToPreviewId';
-import { subcomponentPreviewZIndexes } from '../toolbar/options/componentOptions/subcomponentPreviewZIndexes';
-import { ComponentPreviewAssistance } from '../../../../interfaces/componentPreviewAssistance';
+import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
+import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
+import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
+import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../consts/subcomponentCursorClasses.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
-import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { PSEUDO_COMPONENTS } from '../../../../consts/pseudoComponents.enum';
-import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import auxiliaryRightSideElements from './AuxiliaryRightSideElements.vue';
+import ComponentPreviewUtils from './utils/componentPreviewUtils';
 import nestedInnerHtmlText from './nestedInnerHTMLText.vue';
-import { Ref, ref, watch } from 'vue';
 
 interface Consts {
-  BASE_PREVIEW_Z_INDEX: number;
-  BASE_PREVIEW_ELEMENT_ID: string;
+  SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES,
+  OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
   SUB_COMPONENT_CSS_MODES;
-  NEW_COMPONENT_TYPES;
-  SUB_COMPONENTS;
   PSEUDO_COMPONENTS;
+  SUB_COMPONENTS;
 }
 
-interface Props {
-  component: WorkshopComponent;
-  componentPreviewAssistance: ComponentPreviewAssistance,
+interface Data {
+  subcomponentAndOverlayElementIds: SubcomponentAndOverlayElementIds,
+  mouseEvents: SubcomponentPreviewMouseEvents,
 }
 
 export default {
-  setup(props: Props): UseSubcomponentPreviewEventHandlers & Consts {
-    const componentRef: Ref<Props['component']> = ref(props.component);
-    watch(() => props.component, (newComponent: Props['component']) => {
-      componentRef.value = newComponent;
-    });
+  setup(): Consts {
     return {
-      ...useSubcomponentPreviewEventHandlers(componentRef),
-      BASE_PREVIEW_Z_INDEX: subcomponentPreviewZIndexes[SUB_COMPONENTS.BASE],
-      BASE_PREVIEW_ELEMENT_ID: subcomponentTypeToPreviewId[SUB_COMPONENTS.BASE],
+      SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES.AUTO,
+      OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT,
       SUB_COMPONENT_CSS_MODES,
-      NEW_COMPONENT_TYPES,
       PSEUDO_COMPONENTS,
       SUB_COMPONENTS,
     };
   },
+  data: (): Data => ({
+    subcomponentAndOverlayElementIds: null,
+    mouseEvents: {},
+  }),
   methods: {
     componentPreviewMouseLeave(): void {
       Object.keys(this.component.subcomponents).forEach((key) => {
@@ -131,8 +142,15 @@ export default {
       });
     },
     // UX - SUBCOMPONENT SELECT - set this to appropriate dimensions when the event is fired
-    toggleSubcomponentSelectMode(): void {
+    toggleSubcomponentSelectMode(isActivated: boolean): void {
       // this.$refs.selectSubcomponentOverlay1.style.display = 'block';
+      if (isActivated) {
+        ComponentPreviewUtils.setAllSubcomponentsCursorsToPointer();
+        this.mouseEvents = ComponentPreviewUtils.generateSubcomponentSelectModeMouseEvents(this.subcomponentAndOverlayElementIds);
+      } else {
+        ComponentPreviewUtils.unsetAllSubcomponentsCursorsFromPointer();
+        this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(this.subcomponentAndOverlayElementIds, this.component.subcomponents);
+      }
     },
     expandModalComponent(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {
       const [isExpandedModalPreviewModeActive, toolbarContainerElement, toolbarElement] = toggleExpandedModalPreviewModeEvent;
@@ -158,10 +176,21 @@ export default {
     component: Object,
     componentPreviewAssistance: Object,
   },
+  watch: {
+    component(): void {
+      const subcomponentAndOverlayElementIds = ComponentPreviewUtils.generateSubcomponentAndOverlayIds(this.component.subcomponents);
+      this.subcomponentAndOverlayElementIds = subcomponentAndOverlayElementIds;
+      subcomponentAndOverlayElementIdsState.setSubcomponentAndOverlayElementIdsState(subcomponentAndOverlayElementIds);
+      this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(subcomponentAndOverlayElementIds, this.component.subcomponents);
+    }
+  }
 };
 </script>
 
 <style lang="css" scoped>
+  .base-component {
+    overflow: hidden;
+  }
   .component-preview-container-default {
     position: relative;
     height: 50%;
@@ -173,6 +202,24 @@ export default {
     top: -2.6%;
     left: -30vw;
     width: 100vw;
+  }  
+  .parent-layer {
+    position: relative;
+    height: 100%;
+  }
+  .grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto;
+  }
+  .grid-item {
+    background: none !important;
+  }
+  .margin-marker {
+    background-color: rgb(225 225 225) !important;
+    z-index: 2;
+  }
+  .grid-item-position {
+    position: relative;
   }
   #margin-assistance-left {
     border-radius: 5px 2px 2px 5px;
@@ -234,55 +281,35 @@ export default {
   }
 </style>
 <style lang="css">
-  .grid-container {
-    display: grid;
-    grid-template-columns: auto auto auto;
-  }
-  .grid-item {
-    background: none !important;
-  }
-  .margin-marker {
-    background-color: rgb(225 225 225) !important;
-    z-index: 2;
-  }
-  #demoComponent {
-    overflow: hidden;
-  }
-  .grid-item-position {
-    position: relative;
-  }
-  .subcomponent-preview-default {
+  .subcomponent-overlay-default {
     background-color: rgb(64 197 255 / 43%) !important;
     /* the following color is partially transparent and uses the background color to set its own color */
     border-color: rgb(64 197 255 / 0%) !important;
     position: absolute !important;
     top: 0px !important;
     width: 100%;
-    cursor: pointer;
+    pointer-events: none;
   }
-  .subcomponent-preview-remove {
+  .subcomponent-overlay-remove {
     background-color: rgb(255 29 29 / 43%) !important;
   }
-  .subcomponent-preview-add {
+  .subcomponent-overlay-add {
     background-color: rgb(8 235 31 / 43%) !important;
   }
-  .subcomponent-preview-select-in-progress {
-    background-color: #ffffff00 !important;
-    border-color: #ffffff00 !important;
-    position: absolute !important;
-    top: 0px !important;
-    width: 100%;
-    cursor: pointer;
-  }
-  .subcomponent-preview-with-no-border-property-but-with-height {
+  .subcomponent-overlay-with-no-border-property-but-with-height {
     border-color: rgb(64 197 255 / 0%) !important;
     border-top-width: 0px !important;
     border-bottom-width: 0px !important;
     height: 100%;
   }
-  .parent-layer {
-    position: relative;
-    height: 100%;
+  .subcomponent-cursor-auto {
+    cursor: auto;
+  }
+  .subcomponent-cursor-default {
+    cursor: default !important;
+  }
+  .subcomponent-cursor-select-mode {
+    cursor: pointer !important;
   }
 
   @keyframes displayRipple {

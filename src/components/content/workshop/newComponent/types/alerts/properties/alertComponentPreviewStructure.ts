@@ -8,6 +8,7 @@ export default function createAlertComponentPreviewStructure(baseComponent: Subc
     layeringType: 'vertical',
     layers: [
       {
+        subcomponentType: SUB_COMPONENTS.LAYER_1,
         css: {
           height: '100%',
         },

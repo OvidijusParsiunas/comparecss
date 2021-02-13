@@ -1,32 +1,17 @@
-import { SUBCOMPONENT_PREVIEW_CLASSES } from '../../../../../../../consts/subcomponentPreviewClasses';
+import { subcomponentAndOverlayElementIdsState } from '../../subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
+import { CUSTOM_DROPDOWN_OPTION_CLASSES } from '../../../../../../../consts/customDropdownOptionClasses.enum';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
-import { subcomponentTypeToPreviewId } from '../../componentOptions/subcomponentTypeToPreviewId';
 import { DropdownCompositionAPI } from '../../../../../../../interfaces/dropdownCompositionAPI';
-import { subcomponentSelectModeState } from '../../subcomponentSelectMode/state';
+import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
 import { Ref } from 'vue';
 
 export default function useSubcomponentDropdownEventHandlers(objectContainingActiveOption: Ref<unknown>, activeModePropertyKeyName: Ref<string>, highlightSubcomponents: Ref<boolean>): DropdownCompositionAPI {
 
-  function switchSubcomponentPreviewElementClasses(subcomponentPreviewElement: HTMLElement, displayValue: 'block'|'none'): void {
-    if (displayValue === 'block') {
-      if (subcomponentPreviewElement.classList.contains(SUBCOMPONENT_PREVIEW_CLASSES.SELECT_MODE_HIDDEN)) {
-        subcomponentPreviewElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.SELECT_MODE_HIDDEN);
-        subcomponentPreviewElement.classList.add(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT);
-      }
-    } else if (displayValue === 'none') {
-      if (subcomponentPreviewElement.classList.contains(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT)) {
-        subcomponentPreviewElement.classList.remove(SUBCOMPONENT_PREVIEW_CLASSES.DEFAULT);
-        subcomponentPreviewElement.classList.add(SUBCOMPONENT_PREVIEW_CLASSES.SELECT_MODE_HIDDEN);
-      }
-    }
-  }
-  
-  function toggleSubcomponentPreviewDisplay(subcomponentType: string, displayValue: 'block'|'none'): void {
+  function toggleSubcomponentOverlayDisplay(subcomponentType: string, displayValue: 'block'|'none'): void {
     if (!highlightSubcomponents.value) return;
-    const subcomponentPreviewElementId = subcomponentTypeToPreviewId[subcomponentType];
-    const subcomponentPreviewElement = document.getElementById(subcomponentPreviewElementId);
-    if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) switchSubcomponentPreviewElementClasses(subcomponentPreviewElement, displayValue);
-    if (subcomponentPreviewElement && !subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) subcomponentPreviewElement.style.display = displayValue;
+    const subcomponentOverlayElementId = subcomponentAndOverlayElementIdsState.getOverlayIdViaSubcomponentType(subcomponentType as SUB_COMPONENTS);
+    const subcomponentOverlayElement = document.getElementById(subcomponentOverlayElementId);
+    if (subcomponentOverlayElement) subcomponentOverlayElement.style.display = displayValue;
   }
 
   function getOptionNameFromElement(highlightedOptionElement: HTMLElement): string {
@@ -41,13 +26,13 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
   function resetOptionThemeBySubcomponentDisplayStatus(dropdowns: NestedDropdownStructure[], optionElement: HTMLElement, dropdownMenuIndex: number): void {
     if (dropdownMenuIndex !== undefined && dropdowns[dropdownMenuIndex]) {
       optionElement.style.color = isOptionInactive(dropdowns, optionElement, dropdownMenuIndex) ? 'grey' : 'black';
-      optionElement.classList.remove('custom-dropdown-item-inactive');
+      optionElement.classList.remove(CUSTOM_DROPDOWN_OPTION_CLASSES.INACTIVE);
     }
   }
 
   function changeOptionThemeBySubcomponentDisplayStatus(dropdowns: NestedDropdownStructure[], optionElement: HTMLElement, dropdownMenuIndex: number): void {
     if (dropdownMenuIndex !== undefined && dropdowns[dropdownMenuIndex] && isOptionInactive(dropdowns, optionElement, dropdownMenuIndex)) {
-      optionElement.classList.add('custom-dropdown-item-inactive');
+      optionElement.classList.add(CUSTOM_DROPDOWN_OPTION_CLASSES.INACTIVE);
     }
   }
 
@@ -59,36 +44,36 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
     changeOptionThemeBySubcomponentDisplayStatus(dropdowns, optionElementToBeHighlighted, dropdownMenuIndex);
   }
 
-  const buttonMouseEnterEventHandler = (): void => {
-    toggleSubcomponentPreviewDisplay(objectContainingActiveOption.value[activeModePropertyKeyName.value], 'block');
+  const mouseEnterButtonEventHandler = (): void => {
+    toggleSubcomponentOverlayDisplay(objectContainingActiveOption.value[activeModePropertyKeyName.value], 'block');
   }
   
-  const buttonMouseLeaveEventHandler = (): void => {
-    toggleSubcomponentPreviewDisplay(objectContainingActiveOption.value[activeModePropertyKeyName.value], 'none');
+  const mouseLeaveButtonEventHandler = (): void => {
+    toggleSubcomponentOverlayDisplay(objectContainingActiveOption.value[activeModePropertyKeyName.value], 'none');
   }
 
   const mouseEnterOptionEventHandler = (dropdowns: NestedDropdownStructure[], optionElementToBeHighlighted: HTMLElement, dropdownMenuIndex: number,
       lastHoveredOptionElement: HTMLElement, lastHoveredOptionElementDropdownMenuIndex: number): void => {
-    toggleSubcomponentPreviewDisplay(getOptionNameFromElement(optionElementToBeHighlighted), 'block');
+    toggleSubcomponentOverlayDisplay(getOptionNameFromElement(optionElementToBeHighlighted), 'block');
     changeOptionHighlightColours(dropdowns, optionElementToBeHighlighted, dropdownMenuIndex, lastHoveredOptionElement, lastHoveredOptionElementDropdownMenuIndex);
   }
 
   const mouseLeaveOptionEventHandler = (optionElementToBeHighlighted: HTMLElement): void => {
-    toggleSubcomponentPreviewDisplay(getOptionNameFromElement(optionElementToBeHighlighted), 'none');
+    toggleSubcomponentOverlayDisplay(getOptionNameFromElement(optionElementToBeHighlighted), 'none');
   }
 
   const hideDropdownMenuEventHandler = (optionElementToBeHighlighted: HTMLElement): void => {
-    toggleSubcomponentPreviewDisplay(getOptionNameFromElement(optionElementToBeHighlighted), 'none');
+    toggleSubcomponentOverlayDisplay(getOptionNameFromElement(optionElementToBeHighlighted), 'none');
   }
 
   const mouseEnterAuxiliaryPaddingEventHandler = (dropdowns: NestedDropdownStructure[], optionElementToBeHighlighted: HTMLElement, dropdownMenuIndex: number,
       lastHoveredOptionElement: HTMLElement, lastHoveredOptionElementDropdownMenuIndex: number): void => {
-    toggleSubcomponentPreviewDisplay(getOptionNameFromElement(optionElementToBeHighlighted), 'block');
+    toggleSubcomponentOverlayDisplay(getOptionNameFromElement(optionElementToBeHighlighted), 'block');
     changeOptionHighlightColours(dropdowns, optionElementToBeHighlighted, dropdownMenuIndex, lastHoveredOptionElement, lastHoveredOptionElementDropdownMenuIndex);
   }
 
   const mouseLeaveAuxiliaryPaddingEventHandler = (blurredOptionElement: HTMLElement): void => {
-    toggleSubcomponentPreviewDisplay(getOptionNameFromElement(blurredOptionElement), 'none');
+    toggleSubcomponentOverlayDisplay(getOptionNameFromElement(blurredOptionElement), 'none');
   }
 
   const displayHighlightedOptionAndParentMenusEventHandler = (dropdowns: NestedDropdownStructure[], optionElementToBeHighlighted: HTMLElement, dropdownMenuIndex: number,
@@ -97,8 +82,8 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
   }
   
   return {
-    buttonMouseEnterEventHandler,
-    buttonMouseLeaveEventHandler,
+    mouseEnterButtonEventHandler,
+    mouseLeaveButtonEventHandler,
     mouseEnterOptionEventHandler,
     mouseLeaveOptionEventHandler,
     hideDropdownMenuEventHandler,

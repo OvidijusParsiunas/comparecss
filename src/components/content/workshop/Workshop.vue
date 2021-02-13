@@ -98,12 +98,12 @@ import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properti
 import { alertCloseSpecificSettings } from './newComponent/types/alerts/properties/alertCloseSpecificSettings';
 import SubcomponentToggleService from './toolbar/options/subcomponentToggleService/subcomponentToggleService';
 import { modalBaseSpecificSettings } from './newComponent/types/modals/properties/modalBaseSpecificSettings';
+import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
+import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../consts/subcomponentOverlayClasses.enum';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
-import { subcomponentSelectModeState } from './toolbar/options/subcomponentSelectMode/state';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { inheritedAlertBaseCss } from './newComponent/types/alerts/properties/inheritedCss';
-import { SUBCOMPONENT_PREVIEW_CLASSES } from '../../../consts/subcomponentPreviewClasses';
 import ProcessClassName from '../../../services/workshop/newComponent/processClassName';
 import { SUB_COMPONENT_CSS_MODES } from '../../../consts/subcomponentCssModes.enum';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
@@ -441,8 +441,8 @@ export default {
       this.$refs.toolbar.hideSettings();
     },
     cancelSubcomponentRemovalEventHandler(): void {
-      SubcomponentToggleService.hideSubcomponentPreviewBySelectModeStatus(false, this.currentlySelectedComponent.subcomponentsActiveMode,
-        SUBCOMPONENT_PREVIEW_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
+      SubcomponentToggleService.hideSubcomponentOverlayBySelectModeStatus(this.currentlySelectedComponent.subcomponentsActiveMode,
+        SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
     },
     preloadIcons(): void {
       const WAIT_TO_START_DOWNLOADING_ICON_ICONS = 5;
@@ -453,11 +453,12 @@ export default {
         }, WAIT_TO_START_DOWNLOADING_ICON_ICONS);
       }
     },
-    toggleSubcomponentSelectMode(callback: WorkshopEventCallback): void {
-      if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) {
-        this.addWorkshopEventCallback(callback); 
-      }
-      this.$refs.contents.toggleSubcomponentSelectMode();
+    toggleSubcomponentSelectMode(toggleSubcomponentSelectModeEvent: ToggleSubcomponentSelectModeEvent): void {
+      const [SubcomponentSelectModeCallbackFunction, keyTriggers, buttonElement, optionsSubcomponentsModeClickedFunc] = toggleSubcomponentSelectModeEvent;
+      const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: SubcomponentSelectModeCallbackFunction.bind(this,
+        buttonElement, optionsSubcomponentsModeClickedFunc, this.$refs.contents.toggleSubcomponentSelectMode)};
+      this.addWorkshopEventCallback(workshopEventCallback); 
+      this.$refs.contents.toggleSubcomponentSelectMode(true);
     },
   },
   components: {

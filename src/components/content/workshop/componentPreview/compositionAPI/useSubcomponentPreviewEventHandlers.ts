@@ -1,17 +1,10 @@
 import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../../consts/unsetColotButtonDisplayed';
-import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
-import { subcomponentSelectModeState } from '../../toolbar/options/subcomponentSelectMode/state';
+import { subcomponentSelectModeState } from '../../toolbar/options/subcomponentSelectMode/subcomponentSelectModeState';
+import { UseSubcomponentPreviewEventHandlers } from '../../../../../interfaces/useSubcomponentPreviewEventHandlers';
+import { CustomCss, SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
-import { Ref } from 'vue';
 
-export interface UseSubcomponentPreviewEventHandlers {
-  componentMouseEnter: () => void,
-  componentMouseLeave: () => void,
-  componentMouseDown: () => void,
-  componentMouseUp: () => void,
-}
-
-export default function useSubcomponentPreviewEventHandlers(componentRef: Ref<SubcomponentProperties> | Ref<WorkshopComponent>): UseSubcomponentPreviewEventHandlers {
+export default function useSubcomponentPreviewEventHandlers(subcomponentProperties: SubcomponentProperties): UseSubcomponentPreviewEventHandlers {
 
   let overwrittenDefaultPropertiesByHover = { hasBeenSet: false, css: {} };
   let overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
@@ -27,20 +20,9 @@ export default function useSubcomponentPreviewEventHandlers(componentRef: Ref<Su
     });
   }
 
-  // typescript requires componentRef to be passed in as an argument to this function to validate the type
-  // and allow the next two functions to behave as required (also validated by the linter)
-  function isComponentProperties(componentRef: Ref<SubcomponentProperties> | Ref<WorkshopComponent>): componentRef is Ref<SubcomponentProperties> {
-    return (componentRef as Ref<SubcomponentProperties>).value.customCss !== undefined;
-  }
-
-  function parseComponentProperties(): SubcomponentProperties {
-    return isComponentProperties(componentRef) ? componentRef.value : componentRef.value.subcomponents[componentRef.value.subcomponentsActiveMode];
-  }
-
-  const componentMouseEnter = (): void => {
+  const subcomponentMouseEnter = (): void => {
     if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
-    const componentProperties = parseComponentProperties();
-    const { customCss, subcomponentPreviewTransition, customCssActiveMode } = componentProperties;
+    const { customCss, subcomponentPreviewTransition, customCssActiveMode } = subcomponentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
       setDefaultUnsetButtonStatesForColorInputs(customCss);
       const transition = subcomponentPreviewTransition || 'unset';
@@ -49,10 +31,9 @@ export default function useSubcomponentPreviewEventHandlers(componentRef: Ref<Su
     }
   }
   
-  const componentMouseLeave = (): void => {
+  const subcomponentMouseLeave = (): void => {
     if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
-    const componentProperties = parseComponentProperties();
-    const { customCss, customCssActiveMode } = componentProperties;
+    const { customCss, customCssActiveMode } = subcomponentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT && overwrittenDefaultPropertiesByHover.hasBeenSet) {
       customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...overwrittenDefaultPropertiesByHover.css };
       overwrittenDefaultPropertiesByHover = { hasBeenSet: false, css: {} };
@@ -60,10 +41,9 @@ export default function useSubcomponentPreviewEventHandlers(componentRef: Ref<Su
     isUnsetButtonDisplayedForColorInputs = {};
   }
   
-  const componentMouseDown = (): void => {
+  const subcomponentMouseDown = (): void => {
     if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
-    const componentProperties = parseComponentProperties();
-    const { customCss, subcomponentPreviewTransition, customCssActiveMode } = componentProperties;
+    const { customCss, subcomponentPreviewTransition, customCssActiveMode } = subcomponentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
       const transition = subcomponentPreviewTransition || 'unset';
       overwrittenDefaultPropertiesByClick = { hasBeenSet: true, css: { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], transition } };
@@ -71,10 +51,9 @@ export default function useSubcomponentPreviewEventHandlers(componentRef: Ref<Su
     }
   }
   
-  const componentMouseUp = (): void => {
+  const subcomponentMouseUp = (): void => {
     if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) return;
-    const componentProperties = parseComponentProperties();
-    const { customCss, customCssActiveMode } = componentProperties;
+    const { customCss, customCssActiveMode } = subcomponentProperties;
     if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT && overwrittenDefaultPropertiesByClick.hasBeenSet) {
       customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };
       overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
@@ -82,9 +61,9 @@ export default function useSubcomponentPreviewEventHandlers(componentRef: Ref<Su
   }
   
   return {
-    componentMouseEnter,
-    componentMouseLeave,
-    componentMouseDown,
-    componentMouseUp,
+    subcomponentMouseEnter,
+    subcomponentMouseLeave,
+    subcomponentMouseDown,
+    subcomponentMouseUp,
   };
 }

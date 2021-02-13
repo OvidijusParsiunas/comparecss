@@ -12,10 +12,9 @@ import { InheritedCss } from './inheritedCss';
 type InnerSubcomponents = { [key in PSEUDO_COMPONENTS | SUB_COMPONENTS]?: SubcomponentProperties | string };
 
 type Layer = {
+  subcomponentType: SUB_COMPONENTS;
   css: WorkshopComponentCss | SubcomponentProperties;
-  previewZIndex?: number;
   subcomponents: InnerSubcomponents;
-  subcomponentPreviewId?: string;
 }
 
 export interface ComponentPreviewStructure {
@@ -50,7 +49,7 @@ export type CustomCss = {
 export interface OptionalSubcomponent {
   currentlyDisplaying: boolean;
   // appended at app runtime
-  displayPreviewOnly?: boolean;
+  displayOverlayOnly?: boolean;
 }
 
 export type SubcomponentSpecificSettings = {
@@ -95,5 +94,6 @@ export interface WorkshopComponent {
   subcomponents: Subcomponents;
   subcomponentsActiveMode: SUB_COMPONENTS;
   componentPreviewStructure: ComponentPreviewStructure;
+  // class name for the component
   className: string;
 }
