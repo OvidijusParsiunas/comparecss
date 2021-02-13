@@ -276,12 +276,15 @@ export default {
           }
         }
       }
-      if ((event.target as HTMLElement).classList.contains(this.uniqueIdentifier) && !closedViaKey) {
+      const isDropdownButtonClicked = (event.target as HTMLElement).classList.contains(this.uniqueIdentifier);
+      if (isDropdownButtonClicked && !closedViaKey) {
         this.clickedButton = true;
+      }
+      if (!isDropdownButtonClicked && this.hideDropdownMenuEventHandler && this.lastHoveredOptionElement) {
+        this.hideDropdownMenuEventHandler(this.lastHoveredOptionElement);
       }
       this.dropdowns = [];
       this.areMenusDisplayed = false;
-      if (this.hideDropdownMenuEventHandler && this.lastHoveredOptionElement) this.hideDropdownMenuEventHandler(this.lastHoveredOptionElement);
       return { shouldRepeat: false };
     },
     hideFirstMenu(): void {
