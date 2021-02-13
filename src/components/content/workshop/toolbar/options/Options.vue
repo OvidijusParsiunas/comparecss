@@ -8,7 +8,7 @@
           <i class="fa fa-mouse-pointer" :class="SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER"></i>
         </button>
         <dropdown class="button-group-secondary-component"
-          :uniqueIdentifier="'subcomponentsDropdown'"
+          :uniqueIdentifier="SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
           :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
           :objectContainingActiveOption="component"
           :activeModePropertyKeyName="'subcomponentsActiveMode'"
@@ -39,7 +39,7 @@
       </div>
       <div v-if="!component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent || component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying"> 
         <dropdown class="option-component-button"
-          :uniqueIdentifier="'cssModesDropdown'"
+          :uniqueIdentifier="CSS_MODES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
           :dropdownOptions="componentTypeToOptions[component.type][component.subcomponentsActiveMode]"
           :objectContainingActiveOption="component.subcomponents[component.subcomponentsActiveMode]"
           :activeModePropertyKeyName="'customCssActiveMode'"
@@ -64,6 +64,7 @@
 </template>
 
 <script lang="ts">
+import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
@@ -94,6 +95,8 @@ interface Consts {
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER;
   MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES;
   REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: string;
+  SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
+  CSS_MODES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
 }
 
 interface Data {
@@ -114,6 +117,8 @@ export default {
       SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
       MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES.MODAL,
       REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: `#${REMOVE_SUBCOMPONENT_MODAL_ID}`,
+      SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS,
+      CSS_MODES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.CSS_MODES,
     };
   },
   data: (): Data => ({

@@ -1,5 +1,6 @@
 <template>
   <div v-if="component" ref="componentPreviewContainer" class="component-preview-container-default"
+    @mouseenter="componentPreviewMouseEnter()"
     @mouseleave="componentPreviewMouseLeave()">
     <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); z-index: 0; text-align: center;"> 
       <div class="grid-container">
@@ -91,6 +92,7 @@
 <script lang="ts">
 import { subcomponentAndOverlayElementIdsState } from '../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import ModeToggleTransitions from '../../../../services/workshop/expandedModalPreviewMode/transitions/modeToggleTransitions';
+import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import SlideTransitions from '../../../../services/workshop/expandedModalPreviewMode/transitions/slideTransitions';
 import FadeTransitions from '../../../../services/workshop/expandedModalPreviewMode/transitions/fadeTransitions';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
@@ -106,7 +108,7 @@ import ComponentPreviewUtils from './utils/componentPreviewUtils';
 import nestedInnerHtmlText from './nestedInnerHTMLText.vue';
 
 interface Consts {
-  SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES,
+  SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES;
   OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
   SUB_COMPONENT_CSS_MODES;
   PSEUDO_COMPONENTS;
@@ -114,8 +116,9 @@ interface Consts {
 }
 
 interface Data {
-  subcomponentAndOverlayElementIds: SubcomponentAndOverlayElementIds,
-  mouseEvents: SubcomponentPreviewMouseEvents,
+  subcomponentAndOverlayElementIds: SubcomponentAndOverlayElementIds;
+  mouseEvents: SubcomponentPreviewMouseEvents;
+  changeMouseEventsToDefaultOnComponentPreviewMouseEnter: boolean;
 }
 
 export default {
@@ -131,6 +134,7 @@ export default {
   data: (): Data => ({
     subcomponentAndOverlayElementIds: null,
     mouseEvents: {},
+    changeMouseEventsToDefaultOnComponentPreviewMouseEnter: false,
   }),
   methods: {
     componentPreviewMouseLeave(): void {
@@ -141,6 +145,12 @@ export default {
         }
       });
     },
+    componentPreviewMouseEnter(): void {
+      if (this.changeMouseEventsToDefaultOnComponentPreviewMouseEnter) {
+        this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(this.subcomponentAndOverlayElementIds, this.component.subcomponents);
+        this.changeMouseEventsToDefaultOnComponentPreviewMouseEnter = false;
+      }
+    },
     // UX - SUBCOMPONENT SELECT - set this to appropriate dimensions when the event is fired
     toggleSubcomponentSelectMode(isActivated: boolean): void {
       // this.$refs.selectSubcomponentOverlay1.style.display = 'block';
@@ -149,7 +159,14 @@ export default {
         this.mouseEvents = ComponentPreviewUtils.generateSubcomponentSelectModeMouseEvents(this.subcomponentAndOverlayElementIds);
       } else {
         ComponentPreviewUtils.unsetAllSubcomponentsCursorsFromPointer();
-        this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(this.subcomponentAndOverlayElementIds, this.component.subcomponents);
+        if ((event.target as HTMLElement).classList.contains(CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS)) {
+          // bug fix - when in select subcomponent mode and click on the subcomponent dropdown button, the overlay disappears
+          // this is caused by mouseEvents object being reasigned, which in turn causes the component markup to re-render
+          // and resetting the subcomponents display properties to 'none' - style="display: none"
+          this.changeMouseEventsToDefaultOnComponentPreviewMouseEnter = true;
+        } else {
+          this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(this.subcomponentAndOverlayElementIds, this.component.subcomponents);
+        }
       }
     },
     expandModalComponent(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {

@@ -20,7 +20,7 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
 
   function isOptionInactive(dropdowns: NestedDropdownStructure[], optionElement: HTMLElement, dropdownMenuIndex: number): boolean {
     return typeof dropdowns[dropdownMenuIndex][(optionElement.childNodes[0] as HTMLElement).innerHTML].currentlyDisplaying === 'boolean'
-      && !dropdowns[dropdownMenuIndex][((optionElement.childNodes[0] as HTMLElement)).innerHTML].currentlyDisplaying
+      && !dropdowns[dropdownMenuIndex][(optionElement.childNodes[0] as HTMLElement).innerHTML].currentlyDisplaying
   }
 
   function resetOptionThemeBySubcomponentDisplayStatus(dropdowns: NestedDropdownStructure[], optionElement: HTMLElement, dropdownMenuIndex: number): void {
