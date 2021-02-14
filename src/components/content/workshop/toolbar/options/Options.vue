@@ -338,6 +338,7 @@ export default {
 <style lang="css">
   .button-group-secondary-component {
     left: -1px;
+    z-index: 1;
   }
   .option-action-button {
     border: 1px solid #aaaaaa !important;

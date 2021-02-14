@@ -8,7 +8,6 @@ javascript to close the alert message
 test in slower pc if the child dropdowns displays options correctly - chrome/firefox
 toolbar position
 when transition is taking place, should not be able to highlight
-the subcomponent select button weird styling - firefox
 
 option to import an existing button style!
 
