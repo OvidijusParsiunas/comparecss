@@ -1,6 +1,7 @@
 import { toolbarPositionDuringModalPreviewState, TOOLBAR_POSITIONS_DURING_MODAL_PREVIEW } from '../../../../components/content/workshop/toolbar/positionDuringModalPreviewModeState/positionDuringModalPreviewModeState';
 import { OPACITY_INVISIBLE, OPACITY_VISIBLE, LINEAR_SPEED_TRANSITION, OPACITY_PROPERTY } from './sharedConsts';
 import { ModalTransitions, ExitCallback } from '../../../../interfaces/modalTransitions';
+import { transitionState } from './transitionState';
 
 export interface TransitionAnimationProperties {
   transitionDuration?: string;
@@ -53,6 +54,7 @@ export default class ModeToggleTransitions {
     setTimeout(() => {
       ModeToggleTransitions.opacityFadeAnimation(OPACITY_VISIBLE, ModeToggleTransitions.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS,
         backgroundElement, modalElement);
+      transitionState.setIsTransitionInProgressState(false);
     }, ModeToggleTransitions.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DELAY_MILLISECONDS);
   }
 
@@ -93,5 +95,6 @@ export default class ModeToggleTransitions {
       toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, modalTransitions: ModalTransitions): void {
     ModeToggleTransitions.startPreviewTransition(backgroundElement, modalElement, modalTransitions);
     ModeToggleTransitions.startToolbarTransition(toolbarContainerElement, toolbarElement);
+    transitionState.setIsTransitionInProgressState(true);
   }
 }
