@@ -65,7 +65,7 @@
           </component>
           <component :is="component.componentPreviewStructure.baseCss.componentTag"
             :id="subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].overlayId"
-            style="display: none" :style="component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
+            style="display: none" :style="[component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], { height: '100% !important' }]"
             class="subcomponent-overlay-with-no-border-property-but-with-height"
             :class="OVERLAY_DEFAULT_CLASS">
           </component>
