@@ -157,6 +157,7 @@ export default {
       if (isActivated) {
         ComponentPreviewUtils.setAllSubcomponentsCursorsToPointer();
         this.mouseEvents = ComponentPreviewUtils.generateSubcomponentSelectModeMouseEvents(this.subcomponentAndOverlayElementIds);
+        this.changeMouseEventsToDefaultOnComponentPreviewMouseEnter = false;
       } else {
         ComponentPreviewUtils.unsetAllSubcomponentsCursorsFromPointer();
         if ((event.target as HTMLElement).classList.contains(CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS)) {
