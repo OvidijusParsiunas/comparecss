@@ -189,8 +189,10 @@ export default {
       const { optionalSubcomponent, initialCss } = subcomponent;
       if (!optionalSubcomponent.currentlyDisplaying) {
         optionalSubcomponent.currentlyDisplaying = true;
-        const defaultOption = this.getDefaultOption();
-        this.selectOption(defaultOption);
+        if (this.activeOption.buttonName) {
+          const defaultOption = this.getDefaultOption();
+          this.selectOption(defaultOption); 
+        }
         SubcomponentToggleService.changeSubcomponentOverlayClass(optionalSubcomponent, this.component.subcomponentsActiveMode, false,
           SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
       } else if (!this.getIsDoNotShowModalAgainState()) {
