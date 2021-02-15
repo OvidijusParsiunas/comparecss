@@ -31,7 +31,7 @@
       <div class="option-component-button">
         <button v-if="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent"
           type="button" class="btn option-action-button" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
-          :class="[ component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying ? 'display-toggle-remove' : 'display-toggle-add' ]"
+          :class="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add'"
           @mouseenter="subcomponentMouseEnterHandler"
           @mouseleave="subcomponentMouseLeaveHandler"
           @click="toggleSubcomponent(component.subcomponents[component.subcomponentsActiveMode])">
@@ -55,8 +55,15 @@
           :class="[
             option.type === activeOption.type ? 'option-select-button-active' : '',
             option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive ? 'option-select-button-default-disabled' : 'option-select-button-default-enabled',]"
-          @click="selectOption(option)">
+            @click="selectOption(option)">
             {{option.buttonName}}
+        </button>
+      </div>
+      <div style="display: none" ref="toolbarPositionToggle" class="toolbar-position-toggle-container">
+        <button
+          type="button" class="btn toolbar-position-toggle"
+          @click="$emit('toggle-toolbar-position')">
+          <i class="dropdown-button-marker" :class="['fa', 'fa-sort']"></i>
         </button>
       </div>
     </div>
@@ -222,7 +229,8 @@ export default {
       if (!this.isExpandedModalPreviewModeActive && this.activeOption.enabledOnExpandedModalPreviewMode) {
         this.selectOption(this.getDefaultOption());
       }
-      this.$emit('toggle-expanded-modal-preview-mode', [this.isExpandedModalPreviewModeActive] as ToggleExpandedModalPreviewModeEvent);
+      this.$emit('toggle-expanded-modal-preview-mode',
+        [this.isExpandedModalPreviewModeActive, this.$refs.toolbarPositionToggle] as ToggleExpandedModalPreviewModeEvent);
     },
     getDefaultOption(): Option {
       return this.getActiveModeOptions()[0];
@@ -310,7 +318,7 @@ export default {
   .option-select-button-active:active {
     background-color: rgb(204, 237, 255) !important;
   }
-  .display-toggle-remove {
+  .subcomponent-display-toggle-remove {
     width: 3em;
     height: 38px;
     background: url('../../../../../assets/svg/rubbish-can-default.svg') center no-repeat;
@@ -318,10 +326,10 @@ export default {
     transition: 0.1s ease-in-out !important;
   }
   /* remove this if the red colour is a little distracting - UX */
-  .display-toggle-remove:active {
+  .subcomponent-display-toggle-remove:active {
     background-color: #f3eded !important;
   }
-  .display-toggle-add {
+  .subcomponent-display-toggle-add {
     width: 3em;
     height: 38px;
     background: url('../../../../../assets/svg/plus-default.svg') center no-repeat;
@@ -330,8 +338,25 @@ export default {
     /* transition: 0.1s ease-in-out !important; */
   }
   /* remove this if the green colour is a little distracting - UX */
-  .display-toggle-add:active {
+  .subcomponent-display-toggle-add:active {
     background-color: #e9f5e9 !important;
+  }
+  .toolbar-position-toggle-container {
+    position: relative;
+  }
+  .toolbar-position-toggle {
+    position: absolute;
+    right: 7px;
+    border: unset !important;
+    font-size: 15px !important;
+    padding: 4px !important;
+    display: inline-flex !important;
+    height: 20px;
+    top: 7px;
+    color: #848484 !important;
+  }
+  .toolbar-position-toggle:hover {
+    color: black !important;
   }
 </style>
 

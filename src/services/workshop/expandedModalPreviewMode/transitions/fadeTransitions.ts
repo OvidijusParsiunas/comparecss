@@ -23,7 +23,7 @@ export default class FadeTransition implements ModalTransitions {
   }
 
   public exit(backgroundElement: HTMLElement, modalElement: HTMLElement, toolbarElement: HTMLElement,
-      innerToolbarElement: HTMLElement, exitCallback: ExitCallback): void {
+      innerToolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement, exitCallback: ExitCallback): void {
     modalElement.style.transitionProperty = ALL_PROPERTIES;
     modalElement.style.opacity = OPACITY_INVISIBLE;
     modalElement.style.transitionDuration = this.SLIDE_OUT_MODAL_TRANSITION_DURATION_SECONDS;
@@ -33,7 +33,7 @@ export default class FadeTransition implements ModalTransitions {
       backgroundElement.style.transitionDuration = this.SLIDE_OUT_BACKGROUND_TRANSITION_DURATION_SECONDS;
       modalElement.style.marginTop = UNSET;
       modalElement.style.top = UNSET;
-      exitCallback(backgroundElement, modalElement, toolbarElement, innerToolbarElement);
+      exitCallback(backgroundElement, modalElement, toolbarElement, innerToolbarElement, toolbarPositionToggleElement);
     }, this.SLIDE_OUT_MODAL_TRANSITION_DURATION_MILLISECONDS);
   }
 }

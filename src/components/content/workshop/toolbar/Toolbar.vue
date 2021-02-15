@@ -10,7 +10,8 @@
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
         @prepare-remove-subcomponent-modal="$emit('prepare-remove-subcomponent-modal')"
         @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
-        @toggle-expanded-modal-preview-mode="expandModalComponent($event)"/>
+        @toggle-expanded-modal-preview-mode="expandModalComponent($event)"
+        @toggle-toolbar-position="toggleToolbarPosition"/>
       <settings v-if="isSettingsDisplayed" ref="settings"
         :subcomponentproperties="component.subcomponents[component.subcomponentsActiveMode]"/>
     </div>
@@ -18,6 +19,7 @@
 </template>
 
 <script lang="ts">
+import ExpandedModalPreviewModeTransitionsService from '../../../../services/workshop/expandedModalPreviewMode/transitions/transitionsService';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../consts/workshopToolbarOptionTypes.enum';
@@ -62,7 +64,10 @@ export default {
     },
     expandModalComponent(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {
       this.$emit('toggle-expanded-modal-preview-mode',
-        [toggleExpandedModalPreviewModeEvent[0], this.$refs.toolbarContainer, this.$refs.toolbar] as ToggleExpandedModalPreviewModeEvent);
+        toggleExpandedModalPreviewModeEvent.concat(this.$refs.toolbarContainer, this.$refs.toolbar) as ToggleExpandedModalPreviewModeEvent);
+    },
+    toggleToolbarPosition(): void {
+      ExpandedModalPreviewModeTransitionsService.toggleToolbarPosition(this.$refs.toolbarContainer);
     }
   },
   props: {
@@ -91,7 +96,6 @@ export default {
   }
   .toolbar-container-modal-preview-active-position-bottom {
     bottom: 0px;
-    height: 170px;
   }
   .toolbar-modal-preview-active {
     width: 50%;

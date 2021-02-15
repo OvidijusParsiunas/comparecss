@@ -1,1 +1,1 @@
-export type ToggleExpandedModalPreviewModeEvent = [boolean, HTMLElement?, HTMLElement?];
+export type ToggleExpandedModalPreviewModeEvent = [boolean, HTMLElement?, HTMLElement?, HTMLElement?];

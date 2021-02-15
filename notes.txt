@@ -6,7 +6,6 @@ have a builder for contents within the settings
 modal default margin will need to have a special option type to reflect the margin of the actual position, also an option to center it automatically
 javascript to close the alert message
 test in slower pc if the child dropdowns displays options correctly - chrome/firefox
-toolbar position
 
 option to import an existing button style!
 

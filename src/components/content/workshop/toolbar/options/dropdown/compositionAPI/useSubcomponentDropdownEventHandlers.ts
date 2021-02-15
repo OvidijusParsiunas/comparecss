@@ -1,4 +1,4 @@
-import { transitionState } from '../../../../../../../services/workshop/expandedModalPreviewMode/transitions/transitionState';
+import { expandedModalPreviewModeState } from '../../../../../../../services/workshop/expandedModalPreviewMode/expandedModalPreviewModeState';
 import { subcomponentAndOverlayElementIdsState } from '../../subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import { CUSTOM_DROPDOWN_OPTION_CLASSES } from '../../../../../../../consts/customDropdownOptionClasses.enum';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
@@ -46,7 +46,7 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
   }
 
   const mouseEnterButtonEventHandler = (): void => {
-    if (!transitionState.getIsTransitionInProgressState()) {
+    if (!expandedModalPreviewModeState.getIsTransitionInProgressState()) {
       toggleSubcomponentOverlayDisplay(objectContainingActiveOption.value[activeModePropertyKeyName.value], 'block'); 
     }
   }

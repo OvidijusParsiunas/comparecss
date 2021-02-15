@@ -90,8 +90,8 @@
 </template>
 
 <script lang="ts">
+import ExpandedModalPreviewModeTransitionsService from '../../../../services/workshop/expandedModalPreviewMode/transitions/transitionsService';
 import { subcomponentAndOverlayElementIdsState } from '../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
-import ModeToggleTransitions from '../../../../services/workshop/expandedModalPreviewMode/transitions/modeToggleTransitions';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import SlideTransitions from '../../../../services/workshop/expandedModalPreviewMode/transitions/slideTransitions';
 import FadeTransitions from '../../../../services/workshop/expandedModalPreviewMode/transitions/fadeTransitions';
@@ -173,18 +173,18 @@ export default {
       }
     },
     expandModalComponent(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {
-      const [isExpandedModalPreviewModeActive, toolbarContainerElement, toolbarElement] = toggleExpandedModalPreviewModeEvent;
+      const [isExpandedModalPreviewModeActive, toolbarPositionToggleElement, toolbarContainerElement, toolbarElement] = toggleExpandedModalPreviewModeEvent;
       const fadeTransitions = new FadeTransitions();
       if (isExpandedModalPreviewModeActive) {
         // strategies
         // https://tympanus.net/codrops/2013/06/25/nifty-modal-window-effects/
-        ModeToggleTransitions.initiate(
+        ExpandedModalPreviewModeTransitionsService.initiate(
           this.$refs.componentPreviewContainer, this.$refs.componentPreview,
-          toolbarContainerElement, toolbarElement, fadeTransitions);
+          toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, fadeTransitions);
       } else {
-        ModeToggleTransitions.exit(
+        ExpandedModalPreviewModeTransitionsService.exit(
           this.$refs.componentPreviewContainer, this.$refs.componentPreview,
-          toolbarContainerElement, toolbarElement, fadeTransitions);
+          toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, fadeTransitions);
       }
     }
   },
