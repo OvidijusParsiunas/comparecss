@@ -9,4 +9,5 @@ export enum WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES {
   DESIGN = 'Design',
   BACKGROUND = 'Background',
   ICON = 'Icon',
+  TRANSITIONS = 'Transitions',
 }

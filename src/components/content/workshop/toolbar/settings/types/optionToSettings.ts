@@ -10,11 +10,12 @@ import sizeWidth from './sizeWidth';
 import sizeHeight from './sizeHeight';
 import padding from './padding';
 import margin from './margin';
-import textDefault from './text-default';
-import textWthAlign from './text-wth-align';
+import textDefault from './textDefault';
+import textWthAlign from './textWithAlign';
 import textIcon from './textBasedIcon';
 import design from './design';
 import background from './background';
+import transitions from './transitions';
 
 type OptionToSettings = {
   [key in WORKSHOP_TOOLBAR_OPTION_TYPES]?: any;
@@ -37,4 +38,5 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_BASED_ICON]: textIcon,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.DESIGN]: design,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND]: background,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.TRANSITIONS]: transitions,
 };

@@ -7,6 +7,7 @@ modal default margin will need to have a special option type to reflect the marg
 javascript to close the alert message
 test in slower pc if the child dropdowns displays options correctly - chrome/firefox
 ability to remove the layers
+the x button should close the modal
 
 option to import an existing button style!
 

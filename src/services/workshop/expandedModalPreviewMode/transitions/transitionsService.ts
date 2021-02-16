@@ -43,9 +43,7 @@ export default class TransitionsService {
       toolbarContainerElement.classList.replace(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM, EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.TOP);
     }
     toolbarPositionToggleElement.style.display = 'none';
-    setTimeout(() => {
-      TransitionsService.opacityFadeAnimation(OPACITY_VISIBLE, TransitionsService.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
-    }, TransitionsService.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DELAY_MILLISECONDS);
+    TransitionsService.opacityFadeAnimation(OPACITY_VISIBLE, TransitionsService.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
   }
 
   private static exitPreviewTransition(backgroundElement: HTMLElement, modalElement: HTMLElement): void {

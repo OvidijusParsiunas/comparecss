@@ -352,7 +352,7 @@ export default {
     padding: 4px !important;
     display: inline-flex !important;
     height: 20px;
-    top: 10px;
+    top: 9px;
     color: #848484 !important;
   }
   .toolbar-position-toggle:hover {

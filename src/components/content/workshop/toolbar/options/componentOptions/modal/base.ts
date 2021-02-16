@@ -28,5 +28,10 @@ export const modalBaseOptions: SubcomponentOptions<ModalBaseOptionsModes> = {
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
       enabledOnExpandedModalPreviewMode: true,
     },
+    {
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.TRANSITIONS,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TRANSITIONS,
+      enabledOnExpandedModalPreviewMode: true,
+    },
   ],
 };

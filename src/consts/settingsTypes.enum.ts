@@ -1,7 +1,8 @@
 export enum SETTINGS_TYPES {
-	INPUT_DROPDOWN,
-	COLOR_PICKER,
-	CHECKBOX,
-	SELECT,
-	RANGE,
+  INPUT_DROPDOWN,
+  ACTIONS_DROPDOWN, // for transition animations etc
+  COLOR_PICKER,
+  CHECKBOX,
+  SELECT,
+  RANGE,
 }
