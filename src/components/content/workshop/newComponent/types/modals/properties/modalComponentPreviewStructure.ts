@@ -1,5 +1,4 @@
 import { ComponentPreviewStructure, SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent'
-import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum'
 import { PSEUDO_COMPONENTS } from '../../../../../../../consts/pseudoComponents.enum'
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum'
 
@@ -11,7 +10,7 @@ export default function createModalComponentPreviewStructure(
     layers: [
       {
         subcomponentType: SUB_COMPONENTS.LAYER_1,
-        css: layer1Component.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+        customCss: layer1Component.customCss,
         subcomponents: {
           [PSEUDO_COMPONENTS.TEXT]: 'Modal title',
           [SUB_COMPONENTS.CLOSE]: closeComponent,
@@ -19,14 +18,14 @@ export default function createModalComponentPreviewStructure(
       },
       {
         subcomponentType: SUB_COMPONENTS.LAYER_2,
-        css: layer2Component.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+        customCss: layer2Component.customCss,
         subcomponents: {
           [PSEUDO_COMPONENTS.TEXT]: 'Modal body text',
         }
       },
       {
         subcomponentType: SUB_COMPONENTS.LAYER_3,
-        css: layer3Component.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+        customCss: layer3Component.customCss,
         subcomponents: {
           [PSEUDO_COMPONENTS.TEXT]: 'Modal footer',
         }

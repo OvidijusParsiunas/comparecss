@@ -6,6 +6,7 @@ have a builder for contents within the settings
 modal default margin will need to have a special option type to reflect the margin of the actual position, also an option to center it automatically
 javascript to close the alert message
 test in slower pc if the child dropdowns displays options correctly - chrome/firefox
+ability to remove the layers
 
 option to import an existing button style!
 
@@ -19,6 +20,7 @@ UX:
   check if switching component modes to default but leaving same option is ok for UX
   see if the subcomponent add and subcomponent remove hover and active css is ok
 
+ability to group the components
 option to see what the actual css looks like and to edit it
 consider placing javascript unique to the css classes it was used on
 sometimes setting to auto option like the margin does not set desired results, potentially remove it - or set beginner components (in modal) to have no margin as auto

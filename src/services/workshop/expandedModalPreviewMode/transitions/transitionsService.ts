@@ -20,7 +20,7 @@ export default class TransitionsService {
   private static EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS = 150;
   private static START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS = `${TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS / 1000}s`;
   private static EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS = `${TransitionsService.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS / 1000}s`;
-  private static EXIT_EXPANDED_MODAL_MODE_TRANSITION_DELAY_MILLISECONDS = 50; // if this value is increased, will need to prevent highlighting of subcomponents (test with fade)
+  private static EXIT_EXPANDED_MODAL_MODE_TRANSITION_DELAY_MILLISECONDS = 50;
   private static INTIIAL_EXPANDED_MODAL_TRANSITION_VALUES: TransitionAnimationProperties = {
     transitionProperty: OPACITY_PROPERTY,
     transitionTimingFunction: LINEAR_SPEED_TRANSITION,
@@ -75,7 +75,7 @@ export default class TransitionsService {
       toolbarElement.classList.add(TransitionsService.TOOLBAR_ELEMENT_ACTIVE_MODE_CLASS);
       toolbarContainerElement.classList.replace(TransitionsService.TOOLBAR_CONTAINER_ELEMENT_DEFAULT_CLASS, TransitionsService.TOOLBAR_CONTAINER_ELEMENT_ACTIVE_MODE_CLASS);
       if (expandedModalPreviewModeState.getExpandedModalModeToolbarContainerPositionState() === EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM) {
-        toolbarContainerElement.classList.replace(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM, EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.TOP);
+        toolbarContainerElement.classList.replace(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.TOP, EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM);
       }
       toolbarPositionToggleElement.style.display = 'block';
       toolbarContainerElement.style.opacity = OPACITY_VISIBLE;

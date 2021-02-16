@@ -2,16 +2,15 @@ import { ComponentPreviewStructure, SubcomponentProperties } from '../../../../.
 import { PSEUDO_COMPONENTS } from '../../../../../../../consts/pseudoComponents.enum'
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum'
 
-export default function createAlertComponentPreviewStructure(baseComponent: SubcomponentProperties, closeComponent: SubcomponentProperties): ComponentPreviewStructure {
+export default function createAlertComponentPreviewStructure(baseComponent: SubcomponentProperties,
+    closeComponent: SubcomponentProperties, layerComponent: SubcomponentProperties): ComponentPreviewStructure {
   return {
     baseCss: baseComponent,
     layeringType: 'vertical',
     layers: [
       {
         subcomponentType: SUB_COMPONENTS.LAYER_1,
-        css: {
-          height: '100%',
-        },
+        customCss: layerComponent.customCss,
         subcomponents: {
           [PSEUDO_COMPONENTS.TEXT]: 'Alert',
         }

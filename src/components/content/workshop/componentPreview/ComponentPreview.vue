@@ -39,8 +39,8 @@
                   component.componentPreviewStructure.baseCss.customCss[component.componentPreviewStructure.baseCss.customCssActiveMode],
                 ]">
               <div v-for="layer in component.componentPreviewStructure.layers" :key="layer" class="parent-layer">
-                <div :style="[layer.css, { pointerEvents: component.componentPreviewStructure.shallowSubcomponents ? 'none': 'auto' }]"
-                  :id="subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId"
+                <div :style="[layer.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], { pointerEvents: component.componentPreviewStructure.shallowSubcomponents ? 'none': 'auto' }]"
+                :id="subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId"
                   @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseEnter()"
                   @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseLeave()"
                   @mousedown="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseDown()"
@@ -53,7 +53,7 @@
                     :mouseEvents="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.CLOSE].subcomponentId]"/>
                 </div>
                 <div :id="subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].overlayId"
-                  style="display: none" :style="layer.css"
+                  style="display: none" :style="layer.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
                   :class="OVERLAY_DEFAULT_CLASS"></div>
               </div>
               <!-- shallow subcomponents -->
@@ -309,6 +309,7 @@ export default {
     top: 0px !important;
     width: 100%;
     pointer-events: none;
+    z-index: 1;
   }
   .subcomponent-overlay-remove {
     background-color: rgb(255 29 29 / 43%) !important;

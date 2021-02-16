@@ -13,7 +13,7 @@ type InnerSubcomponents = { [key in PSEUDO_COMPONENTS | SUB_COMPONENTS]?: Subcom
 
 type Layer = {
   subcomponentType: SUB_COMPONENTS;
-  css: WorkshopComponentCss | SubcomponentProperties;
+  customCss: CustomCss;
   subcomponents: InnerSubcomponents;
 }
 
@@ -67,7 +67,7 @@ export interface SubcomponentProperties {
   // this css is used in instances where partialCss has been overwrittern by a single value, but a fraction of it
   // must be retained for use by settings - boxShadow (to note, this is mostly used by the app in runtime)
   auxiliaryPartialCss?: CustomCss;
-  // this css is used in this website only and will be removed in output file
+  // this is used to signify css that gets used within the app only and gets removed when exporing
   tempCustomCss?: TempCustomCss;
   // this css is not configured by the user and comes along with the component
   inheritedCss?: InheritedCss;

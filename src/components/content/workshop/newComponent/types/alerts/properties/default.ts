@@ -64,6 +64,14 @@ function createInitialCloseButtonCss(): CustomCss {
   }
 }
 
+function createInitialLayerCss(): CustomCss {
+  return {
+    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+      height: '100%',
+    },
+  }
+}
+
 function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
   return new Set([JAVASCRIPT_CLASSES.RIPPLES])
 }
@@ -95,6 +103,15 @@ function createSubcomponents(): Subcomponents {
       optionalSubcomponent: { currentlyDisplaying: true },
       subcomponentSpecificSettings: alertCloseSpecificSettings,
     },
+    [SUB_COMPONENTS.LAYER_1]: {
+      componentTag: 'div',
+      customCss: createInitialLayerCss(),
+      initialCss: createInitialLayerCss(),
+      jsClasses: new Set(),
+      initialJsClasses: new Set(),
+      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      tempCustomCss: new Set(['transition']),
+    },
   }
 }
 
@@ -105,7 +122,8 @@ export const defaultAlert: NewComponent = {
       type: NEW_COMPONENT_TYPES.ALERT,
       subcomponents,
       subcomponentsActiveMode: SUB_COMPONENTS.BASE,
-      componentPreviewStructure: createAlertComponentPreviewStructure(subcomponents[SUB_COMPONENTS.BASE], subcomponents[SUB_COMPONENTS.CLOSE]),
+      componentPreviewStructure: createAlertComponentPreviewStructure(subcomponents[SUB_COMPONENTS.BASE],
+        subcomponents[SUB_COMPONENTS.CLOSE], subcomponents[SUB_COMPONENTS.LAYER_1]),
       className: 'default-class-name',
     }
   },
