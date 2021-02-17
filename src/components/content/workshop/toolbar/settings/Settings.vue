@@ -99,7 +99,11 @@
                   {{setting.spec.name}}
                 </div>
                 <div class="input-group">
-                  <input type="text" class="form-control" aria-label="Text input with dropdown button" v-bind:value="inputDropdownCurrentValues[setting.spec.cssProperty] || subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]" @input="inputDropdownKeyboardInput($event, setting.spec.cssProperty)" :ref="`elementReference${settingIndex}`" @keyup.enter="blurInputDropdown(`elementReference${settingIndex}`)">
+                  <input type="text" class="form-control" aria-label="Text input with dropdown button"
+                    :ref="`elementReference${settingIndex}`"
+                    v-bind:value="inputDropdownCurrentValues[setting.spec.cssProperty] || subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]"
+                    @input="inputDropdownKeyboardInput($event, setting.spec.cssProperty)"
+                    @keyup.enter="blurInputDropdown(`elementReference${settingIndex}`)">
                   <div class="input-group-append">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="openDropdown(setting.spec.cssProperty)"></button>
                     <div class="dropdown-menu" @mouseleave="inputDropdownOptionMouseLeave(setting.spec.cssProperty)">
@@ -107,6 +111,23 @@
                     </div>
                   </div>
                 </div>
+              </div>
+
+              <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.ACTIONS_DROPDOWN">
+                <div style="text-align: left">
+                  {{setting.spec.name}}
+                </div>
+                <!-- set the unique identifier here -->
+                <dropdown class="option-component-button"
+                  :uniqueIdentifier="'uniqueIdentifier'"
+                  :dropdownOptions="setting.spec.options"
+                  :objectContainingActiveOption="activeTransition"
+                  :activeModePropertyKeyName="'activeMode'"
+                  :fontAwesomeIconClassName="'fa-caret-down'"
+                  :isNested="false"
+                  @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
+                  @mouse-enter-option="optionMouseEnter"
+                  @mouse-click-new-option="optionMouseClickNewOption"/>
               </div>
 
               <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.CHECKBOX">
@@ -135,8 +156,10 @@ import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSettingsState';
+import { ModalEntranceTransition } from '../../../../../interfaces/modalTransitions';
 import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
 import { CustomCss } from '../../../../../interfaces/workshopComponent';
+import dropdown from '../options/dropdown/Dropdown.vue';
 import BoxShadowUtils from './utils/boxShadowUtils';
 
 interface Consts {
@@ -153,6 +176,7 @@ interface Consts {
 
 interface Data {
   settings: any;
+  activeTransition: {'activeMode': string},
   selectorCurrentValues: unknown;
   inputDropdownCurrentValues: unknown;
 }
@@ -256,6 +280,7 @@ export default {
     selectorCurrentValues: {},
     inputDropdownCurrentValues: {},
     settings: {},
+    activeTransition: {'activeMode': 'Fade in'},
   }),
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   // put these methods into services
@@ -263,6 +288,12 @@ export default {
   // if the Settings.vue component logic is too coupled with 'boxShadow' (especially if there is another partialCss property introduced),
   // refactor it to extract the logic into a partialCss util file
   methods: {
+    optionMouseEnter(event: any): void {
+      // console.log(event);
+    },
+    optionMouseClickNewOption(event: ModalEntranceTransition): void {
+      this.activeTransition.activeMode = event;
+    },
     updateRange(event: KeyboardEvent, setting: any): void {
       const { triggers, spec } = setting;
       const { cssProperty, smoothingDivisible, partialCss } = spec;
@@ -468,6 +499,9 @@ export default {
   props: {
     subcomponentproperties: Object,
   },
+  components: {
+    dropdown,
+  }
 };
 
 </script>

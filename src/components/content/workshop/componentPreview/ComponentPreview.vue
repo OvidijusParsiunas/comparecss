@@ -174,17 +174,16 @@ export default {
     },
     expandModalComponent(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {
       const [isExpandedModalPreviewModeActive, toolbarPositionToggleElement, toolbarContainerElement, toolbarElement] = toggleExpandedModalPreviewModeEvent;
-      const fadeTransitions = new FadeTransitions();
       if (isExpandedModalPreviewModeActive) {
         // strategies
         // https://tympanus.net/codrops/2013/06/25/nifty-modal-window-effects/
         ExpandedModalPreviewModeTransitionsService.initiate(
           this.$refs.componentPreviewContainer, this.$refs.componentPreview,
-          toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, fadeTransitions);
+          toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, FadeTransitions.initiate);
       } else {
         ExpandedModalPreviewModeTransitionsService.exit(
           this.$refs.componentPreviewContainer, this.$refs.componentPreview,
-          toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, fadeTransitions);
+          toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, FadeTransitions.initiate);
       }
     }
   },

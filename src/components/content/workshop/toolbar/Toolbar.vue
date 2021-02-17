@@ -13,7 +13,8 @@
         @toggle-expanded-modal-preview-mode="expandModalComponent($event)"
         @toggle-toolbar-position="toggleToolbarPosition"/>
       <settings v-if="isSettingsDisplayed" ref="settings"
-        :subcomponentproperties="component.subcomponents[component.subcomponentsActiveMode]"/>
+        :subcomponentproperties="component.subcomponents[component.subcomponentsActiveMode]"
+        @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"/>
     </div>
   </div>
 </template>

@@ -1,6 +1,6 @@
 import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES } from '../../../../consts/expandedModalToolbarContainerPositionClasses.enum';
+import { ExitCallback, ModalEntranceTransition, ModalExitTransition } from '../../../../interfaces/modalTransitions';
 import { OPACITY_INVISIBLE, OPACITY_VISIBLE, LINEAR_SPEED_TRANSITION, OPACITY_PROPERTY } from './sharedConsts';
-import { ModalTransitions, ExitCallback } from '../../../../interfaces/modalTransitions';
 import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
 
 export interface TransitionAnimationProperties {
@@ -48,9 +48,9 @@ export default class TransitionsService {
 
   private static exitPreviewTransition(backgroundElement: HTMLElement, modalElement: HTMLElement): void {
     backgroundElement.classList.replace(TransitionsService.BACKGROUND_ELEMENT_ACTIVE_MODE_CLASS, TransitionsService.BACKGROUND_ELEMENT_DEFAULT_CLASS);
+    TransitionsService.opacityFadeAnimation(OPACITY_VISIBLE, TransitionsService.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS,
+      backgroundElement, modalElement);
     setTimeout(() => {
-      TransitionsService.opacityFadeAnimation(OPACITY_VISIBLE, TransitionsService.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS,
-        backgroundElement, modalElement);
       expandedModalPreviewModeState.setIsTransitionInProgressState(false);
     }, TransitionsService.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DELAY_MILLISECONDS);
   }
@@ -62,9 +62,9 @@ export default class TransitionsService {
   }
 
   public static exit(backgroundElement: HTMLElement, modalElement: HTMLElement, toolbarContainerElement: HTMLElement,
-      toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement, modalTransitions: ModalTransitions): void {
+      toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement, modalExitTransition: ModalExitTransition): void {
     TransitionsService.opacityFadeAnimation(OPACITY_INVISIBLE, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
-    modalTransitions.exit(backgroundElement, modalElement, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, TransitionsService.exitCallback as ExitCallback);
+    modalExitTransition(backgroundElement, modalElement, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, TransitionsService.exitCallback as ExitCallback);
   }
 
   private static startToolbarTransition(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
@@ -80,18 +80,18 @@ export default class TransitionsService {
     }, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
   }
   
-  private static startPreviewTransition(backgroundElement: HTMLElement, modalElement: HTMLElement, modalTransitions: ModalTransitions): void {
+  private static startPreviewTransition(backgroundElement: HTMLElement, modalElement: HTMLElement, modalEntranceTransition: ModalEntranceTransition): void {
     TransitionsService.opacityFadeAnimation(OPACITY_INVISIBLE, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS,
       backgroundElement, modalElement);
     setTimeout(() => {
       backgroundElement.classList.replace(TransitionsService.BACKGROUND_ELEMENT_DEFAULT_CLASS, TransitionsService.BACKGROUND_ELEMENT_ACTIVE_MODE_CLASS);
-      modalTransitions.initiate(backgroundElement, modalElement);
+      modalEntranceTransition(backgroundElement, modalElement);
     }, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
   }
 
   public static initiate(backgroundElement: HTMLElement, modalElement: HTMLElement, toolbarContainerElement: HTMLElement,
-      toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement, modalTransitions: ModalTransitions): void {
-    TransitionsService.startPreviewTransition(backgroundElement, modalElement, modalTransitions);
+      toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement, modalEntranceTransition: ModalEntranceTransition): void {
+    TransitionsService.startPreviewTransition(backgroundElement, modalElement, modalEntranceTransition);
     TransitionsService.startToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
     expandedModalPreviewModeState.setIsTransitionInProgressState(true);
   }

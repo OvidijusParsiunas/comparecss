@@ -195,6 +195,7 @@ export default {
       if (this.mouseEnterOptionEventHandler) {
         this.mouseEnterOptionEventHandler(this.dropdowns, event.target, dropdownMenuIndex, this.lastHoveredOptionElement, this.lastHoveredOptionElementDropdownMenuIndex);
       }
+      this.$emit('mouse-enter-option', ((event.target as HTMLElement).childNodes[0] as HTMLElement).innerHTML);
       this.highlightOption(event.target, dropdownMenuIndex);
     },
     removeChildDropdownMenus(dropdownMenuIndex: number): void {
@@ -272,7 +273,7 @@ export default {
         if (this.lastHoveredOptionElement) {
           const optionName = this.lastHoveredOptionElement.childNodes[0].innerHTML;
           if (this.objectContainingActiveOption[this.activeModePropertyKeyName] !== optionName) {
-            this.$emit('new-dropdown-option-clicked', optionName);
+            this.$emit('mouse-click-new-option', optionName);
           }
         }
       }
@@ -327,6 +328,8 @@ export default {
     highlightSubcomponents: Boolean,
     // this is used to allow the dropdown to close when clicked on other dropdowns
     uniqueIdentifier: String,
+    // the dev has two options, either insert custom event handlers object via composition API (which should adhere to DropdownCompositionAPI)
+    // or listen to the emitted events
     customEventHandlers: Function,
     isButtonGroup: {
       type: Boolean,

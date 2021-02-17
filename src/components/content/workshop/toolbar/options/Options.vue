@@ -18,7 +18,7 @@
           :isNested="true"
           :customEventHandlers="useSubcomponentDropdownEventHandlers"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-          @new-dropdown-option-clicked="newSubcomponentsModeClicked($event)"
+          @mouse-click-new-option="newSubcomponentsModeClicked($event)"
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       </div>
       <div v-if="component.type === MODAL_COMPONENT_TYPE" class="option-component-button">
@@ -46,7 +46,7 @@
           :fontAwesomeIconClassName="'fa-angle-down'"
           :isNested="false"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-          @new-dropdown-option-clicked="newCssModeClicked($event)"/>
+          @mouse-click-new-option="newCssModeClicked($event)"/>
         <button
           type="button"
           v-for="(option) in componentTypeToOptions[component.type][component.subcomponentsActiveMode][component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode]" :key="option"
