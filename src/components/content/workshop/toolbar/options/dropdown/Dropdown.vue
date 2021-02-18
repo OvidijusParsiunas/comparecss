@@ -337,7 +337,7 @@ export default {
     },
     isNested: {
       type: Boolean,
-      default: true,
+      default: false,
     }
   },
   watch: {

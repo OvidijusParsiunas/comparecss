@@ -44,7 +44,6 @@
           :objectContainingActiveOption="component.subcomponents[component.subcomponentsActiveMode]"
           :activeModePropertyKeyName="'customCssActiveMode'"
           :fontAwesomeIconClassName="'fa-angle-down'"
-          :isNested="false"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
           @mouse-click-new-option="newCssModeClicked($event)"/>
         <button

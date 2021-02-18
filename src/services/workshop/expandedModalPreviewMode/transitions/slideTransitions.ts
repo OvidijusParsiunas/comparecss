@@ -15,7 +15,8 @@ export default class SlideTransitions {
   private static SLIDE_OUT_MODAL_TRANSITION_DURATION_SECONDS = `${SlideTransitions.SLIDE_OUT_MODAL_TRANSITION_DURATION_MILLISECONDS / 1000}s`;
   private static SLIDE_OUT_BACKGROUND_TRANSITION_DURATION_SECONDS = '0.15s';
 
-  public static initiate(backgroundElement: HTMLElement, modalElement: HTMLElement): void {
+  public static initiate(modalElement: HTMLElement, unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void,
+      backgroundElement?: HTMLElement): void {
     backgroundElement.style.opacity = OPACITY_VISIBLE;
     backgroundElement.style.transitionDuration = SlideTransitions.SLIDE_IN_BACKGROUND_TRANSITION_DURATION_SECONDS;
     modalElement.style.marginTop = SlideTransitions.MODAL_TOP_POSITION_DELTA;
@@ -26,6 +27,7 @@ export default class SlideTransitions {
       modalElement.style.top = SlideTransitions.SLIDE_IN_FINAL_MODAL_TOP_POSITION;
       modalElement.style.transitionDuration = SlideTransitions.SLIDE_IN_MODAL_TRANSITION_DURATION_SECONDS;
       modalElement.style.transitionTimingFunction = LINEAR_SPEED_TRANSITION;
+      unsetTransitionPropertiesCallback(modalElement, backgroundElement);
     }, SlideTransitions.SLIDE_IN_MODAL_TRANSITION_DELAY_MILLISECONDS);
   }
 

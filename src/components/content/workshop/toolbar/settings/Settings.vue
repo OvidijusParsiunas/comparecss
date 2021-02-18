@@ -121,10 +121,9 @@
                 <dropdown class="option-component-button"
                   :uniqueIdentifier="'uniqueIdentifier'"
                   :dropdownOptions="setting.spec.options"
-                  :objectContainingActiveOption="activeTransition"
-                  :activeModePropertyKeyName="'activeMode'"
+                  :objectContainingActiveOption="subcomponentproperties.transitions"
+                  :activeModePropertyKeyName="'entrance'"
                   :fontAwesomeIconClassName="'fa-caret-down'"
-                  :isNested="false"
                   @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
                   @mouse-enter-option="optionMouseEnter"
                   @mouse-click-new-option="optionMouseClickNewOption"/>
@@ -153,10 +152,11 @@
 
 <script lang="ts">
 import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../../consts/unsetColotButtonDisplayed';
+import { PlayPreviewTransitionAnimationEvent } from '../../../../../interfaces/playPreviewTransitionAnimationEvent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
+import { MODAL_TRANSITION_ENTRANCE_TYPES } from '../../../../../consts/modalTransitionTypes.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSettingsState';
-import { ModalEntranceTransition } from '../../../../../interfaces/modalTransitions';
 import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
 import { CustomCss } from '../../../../../interfaces/workshopComponent';
 import dropdown from '../options/dropdown/Dropdown.vue';
@@ -176,7 +176,6 @@ interface Consts {
 
 interface Data {
   settings: any;
-  activeTransition: {'activeMode': string},
   selectorCurrentValues: unknown;
   inputDropdownCurrentValues: unknown;
 }
@@ -280,7 +279,6 @@ export default {
     selectorCurrentValues: {},
     inputDropdownCurrentValues: {},
     settings: {},
-    activeTransition: {'activeMode': 'Fade in'},
   }),
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   // put these methods into services
@@ -288,11 +286,11 @@ export default {
   // if the Settings.vue component logic is too coupled with 'boxShadow' (especially if there is another partialCss property introduced),
   // refactor it to extract the logic into a partialCss util file
   methods: {
-    optionMouseEnter(event: any): void {
-      // console.log(event);
+    optionMouseEnter(event: MODAL_TRANSITION_ENTRANCE_TYPES): void {
+      this.$emit('play-preview-transition-animation', [event, true] as PlayPreviewTransitionAnimationEvent)
     },
-    optionMouseClickNewOption(event: ModalEntranceTransition): void {
-      this.activeTransition.activeMode = event;
+    optionMouseClickNewOption(event: MODAL_TRANSITION_ENTRANCE_TYPES): void {
+      this.subcomponentproperties.transitions.entrance = event;
     },
     updateRange(event: KeyboardEvent, setting: any): void {
       const { triggers, spec } = setting;

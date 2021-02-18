@@ -90,12 +90,12 @@
 </template>
 
 <script lang="ts">
+import { transitionTypeToFunctionality } from '../../../../services/workshop/expandedModalPreviewMode/transitions/transitionTypeToFunctionality';
 import ExpandedModalPreviewModeTransitionsService from '../../../../services/workshop/expandedModalPreviewMode/transitions/transitionsService';
 import { subcomponentAndOverlayElementIdsState } from '../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
-import SlideTransitions from '../../../../services/workshop/expandedModalPreviewMode/transitions/slideTransitions';
-import FadeTransitions from '../../../../services/workshop/expandedModalPreviewMode/transitions/fadeTransitions';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
+import { PlayPreviewTransitionAnimationEvent } from '../../../../interfaces/playPreviewTransitionAnimationEvent';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
@@ -178,12 +178,19 @@ export default {
         // strategies
         // https://tympanus.net/codrops/2013/06/25/nifty-modal-window-effects/
         ExpandedModalPreviewModeTransitionsService.initiate(
-          this.$refs.componentPreviewContainer, this.$refs.componentPreview,
-          toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, FadeTransitions.initiate);
+          transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.entrance], this.$refs.componentPreview, this.$refs.componentPreviewContainer,
+          toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
       } else {
         ExpandedModalPreviewModeTransitionsService.exit(
-          this.$refs.componentPreviewContainer, this.$refs.componentPreview,
-          toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, FadeTransitions.initiate);
+          transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.exit], this.$refs.componentPreviewContainer, this.$refs.componentPreview,
+          toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
+      }
+    },
+    playPreviewTransitionAnimation(playPreviewTransitionAnimationEvent: PlayPreviewTransitionAnimationEvent): void {
+      const [transitionAnimation, isEntranceAnimation] = playPreviewTransitionAnimationEvent;
+      if (isEntranceAnimation) {
+        this.$refs.componentPreview.style.opacity = 0;
+        transitionTypeToFunctionality[transitionAnimation](this.$refs.componentPreview, ExpandedModalPreviewModeTransitionsService.unsetTransitionProperties);
       }
     }
   },

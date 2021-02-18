@@ -26,6 +26,15 @@ export default class TransitionsService {
     transitionTimingFunction: LINEAR_SPEED_TRANSITION,
   };
 
+  public static unsetTransitionProperties(...elements: HTMLElement[]): void {
+    elements.forEach((element) => {
+      if (!element) return;
+      element.style.transitionDuration = 'unset';
+      element.style.transitionProperty = 'unset';
+      element.style.transitionTimingFunction = 'unset';
+    });
+  }
+
   private static opacityFadeAnimation(opacity: string, transitionDuration: string, ...elements: HTMLElement[]): void {
     const { transitionProperty, transitionTimingFunction } = TransitionsService.INTIIAL_EXPANDED_MODAL_TRANSITION_VALUES;
     elements.forEach((element) => {
@@ -58,11 +67,11 @@ export default class TransitionsService {
   private static exitCallback(backgroundElement: HTMLElement, modalElement: HTMLElement,
       toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
     TransitionsService.exitPreviewTransition(backgroundElement, modalElement);
-    TransitionsService.exitToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
+    if (toolbarContainerElement) TransitionsService.exitToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
   }
 
-  public static exit(backgroundElement: HTMLElement, modalElement: HTMLElement, toolbarContainerElement: HTMLElement,
-      toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement, modalExitTransition: ModalExitTransition): void {
+  public static exit(modalExitTransition: ModalExitTransition, backgroundElement: HTMLElement, modalElement: HTMLElement,
+      toolbarContainerElement?: HTMLElement, toolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
     TransitionsService.opacityFadeAnimation(OPACITY_INVISIBLE, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
     modalExitTransition(backgroundElement, modalElement, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, TransitionsService.exitCallback as ExitCallback);
   }
@@ -77,22 +86,25 @@ export default class TransitionsService {
       }
       toolbarPositionToggleElement.style.display = 'block';
       toolbarContainerElement.style.opacity = OPACITY_VISIBLE;
+      setTimeout(() => {
+        TransitionsService.unsetTransitionProperties(toolbarContainerElement);
+      }, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
     }, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
   }
-  
+
   private static startPreviewTransition(backgroundElement: HTMLElement, modalElement: HTMLElement, modalEntranceTransition: ModalEntranceTransition): void {
     TransitionsService.opacityFadeAnimation(OPACITY_INVISIBLE, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS,
       backgroundElement, modalElement);
     setTimeout(() => {
       backgroundElement.classList.replace(TransitionsService.BACKGROUND_ELEMENT_DEFAULT_CLASS, TransitionsService.BACKGROUND_ELEMENT_ACTIVE_MODE_CLASS);
-      modalEntranceTransition(backgroundElement, modalElement);
+      modalEntranceTransition(modalElement, TransitionsService.unsetTransitionProperties, backgroundElement);
     }, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
   }
 
-  public static initiate(backgroundElement: HTMLElement, modalElement: HTMLElement, toolbarContainerElement: HTMLElement,
-      toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement, modalEntranceTransition: ModalEntranceTransition): void {
+  public static initiate(modalEntranceTransition: ModalEntranceTransition, modalElement: HTMLElement, backgroundElement: HTMLElement,
+      toolbarContainerElement?: HTMLElement, toolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
     TransitionsService.startPreviewTransition(backgroundElement, modalElement, modalEntranceTransition);
-    TransitionsService.startToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
+    if (toolbarContainerElement) TransitionsService.startToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
     expandedModalPreviewModeState.setIsTransitionInProgressState(true);
   }
 
@@ -104,7 +116,7 @@ export default class TransitionsService {
     TransitionsService.opacityFadeAnimation(OPACITY_INVISIBLE, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
     setTimeout(() => {
       toolbarContainerElement.classList.replace(expandedModalPreviewModeState.getExpandedModalModeToolbarContainerPositionState(),
-      newExpandedModalModeToolbarContainerPositionState);
+        newExpandedModalModeToolbarContainerPositionState);
       expandedModalPreviewModeState.setExpandedModalModeToolbarContainerPositionState(newExpandedModalModeToolbarContainerPositionState);
       TransitionsService.opacityFadeAnimation(OPACITY_VISIBLE, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
     }, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);

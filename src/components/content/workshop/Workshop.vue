@@ -32,7 +32,8 @@
               @hide-dropdown-menu-callback="addWorkshopEventCallback($event)"
               @prepare-remove-subcomponent-modal="$refs.removeSubcomponentModal.prepare()"
               @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
-              @toggle-expanded-modal-preview-mode="$refs.contents.expandModalComponent($event)"/>
+              @toggle-expanded-modal-preview-mode="$refs.contents.expandModalComponent($event)"
+              @play-preview-transition-animation="$refs.contents.playPreviewTransitionAnimation($event)"/>
             <component-contents ref="contents" :component="currentlySelectedComponent" :componentPreviewAssistance="componentPreviewAssistance"/>
             <div style="height: 18%; display: flex; float: right; margin-right: 10px; margin-top: 105px">
               <div style="position: relative">
@@ -90,6 +91,7 @@
 import { CustomCss, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../interfaces/workshopComponent';
 import { modalLayerBottomSpecificSettings } from './newComponent/types/modals/properties/modalLayerBottomSpecificSettings';
 import { removeSubcomponentModalState } from './toolbar/options/removeSubcomponentModalState/removeSubcomponentModalState';
+import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../consts/modalTransitionTypes.enum';
 import createModalComponentPreviewStructure from './newComponent/types/modals/properties/modalComponentPreviewStructure';
 import { modalLayerTopSpecificSettings } from './newComponent/types/modals/properties/modalLayerTopSpecificSettings';
 import { inheritedAlertCloseChildCss } from './newComponent/types/alerts/properties/inheritedAlertCloseChildCss';
@@ -265,6 +267,10 @@ function createSubcomponents(): Subcomponents {
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
       subcomponentSpecificSettings: modalBaseSpecificSettings,
+      transitions: {
+        entrance: MODAL_TRANSITION_ENTRANCE_TYPES.FADE_IN,
+        exit: MODAL_TRANSITION_EXIT_TYPES.FADE_OUT,
+      },
     },
     [SUB_COMPONENTS.LAYER_1]: {
       componentTag: 'div',

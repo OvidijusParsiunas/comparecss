@@ -1,3 +1,4 @@
+import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../consts/modalTransitionTypes.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../consts/workshopToolbarOptionTypes.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../consts/subcomponentCssModes.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
@@ -60,6 +61,11 @@ export type SubcomponentSpecificSettings = {
   };
 }
 
+interface ComponentTransitions {
+  entrance: MODAL_TRANSITION_ENTRANCE_TYPES,
+  exit: MODAL_TRANSITION_EXIT_TYPES,
+}
+
 export interface SubcomponentProperties {
   componentTag: string;
   customCss: CustomCss;
@@ -83,6 +89,7 @@ export interface SubcomponentProperties {
   optionalSubcomponent?: OptionalSubcomponent;
   // the reason why custom css is attached here is to not have to keep multiple unique settings for each and every subcomponent in memory all at once
   subcomponentSpecificSettings?: SubcomponentSpecificSettings;
+  transitions?: ComponentTransitions
 }
 
 export type Subcomponents = {
