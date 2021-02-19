@@ -190,7 +190,7 @@ export default {
       const [transitionAnimation, isEntranceAnimation] = playPreviewTransitionAnimationEvent;
       if (isEntranceAnimation) {
         this.$refs.componentPreview.style.opacity = 0;
-        transitionTypeToFunctionality[transitionAnimation](this.$refs.componentPreview, ExpandedModalPreviewModeTransitionsService.unsetTransitionProperties);
+        ExpandedModalPreviewModeTransitionsService.initiateEntracePreview(transitionTypeToFunctionality[transitionAnimation], this.$refs.componentPreview)
       }
     }
   },

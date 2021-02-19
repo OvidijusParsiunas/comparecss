@@ -26,6 +26,8 @@ export default class TransitionsService {
     transitionTimingFunction: LINEAR_SPEED_TRANSITION,
   };
 
+  // the modal transition animation gets unset by subcomponentMouseEnter event handler
+  // should be private and functionality moved here from component previews
   public static unsetTransitionProperties(...elements: HTMLElement[]): void {
     elements.forEach((element) => {
       if (!element) return;
@@ -52,6 +54,9 @@ export default class TransitionsService {
       toolbarContainerElement.classList.replace(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM, EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.TOP);
     }
     toolbarPositionToggleElement.style.display = 'none';
+    setTimeout(() => {
+      TransitionsService.unsetTransitionProperties(toolbarContainerElement);
+    }, TransitionsService.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
     TransitionsService.opacityFadeAnimation(OPACITY_VISIBLE, TransitionsService.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
   }
 
@@ -60,6 +65,7 @@ export default class TransitionsService {
     TransitionsService.opacityFadeAnimation(OPACITY_VISIBLE, TransitionsService.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS,
       backgroundElement, modalElement);
     setTimeout(() => {
+      TransitionsService.unsetTransitionProperties(backgroundElement);
       expandedModalPreviewModeState.setIsTransitionInProgressState(false);
     }, TransitionsService.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DELAY_MILLISECONDS);
   }
@@ -106,6 +112,11 @@ export default class TransitionsService {
     TransitionsService.startPreviewTransition(backgroundElement, modalElement, modalEntranceTransition);
     if (toolbarContainerElement) TransitionsService.startToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
     expandedModalPreviewModeState.setIsTransitionInProgressState(true);
+  }
+
+  public static initiateEntracePreview(modalEntranceTransition: ModalEntranceTransition, modalElement: HTMLElement): void {
+    modalElement.style.opacity = OPACITY_INVISIBLE;
+    modalEntranceTransition(modalElement, TransitionsService.unsetTransitionProperties)
   }
 
   public static toggleToolbarPosition(toolbarContainerElement: HTMLElement): void {
