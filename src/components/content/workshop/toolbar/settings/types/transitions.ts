@@ -7,7 +7,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Entrance',
-        options: { 'Fade in': null, 'Slide in': null },
+        options: { 'Fade out': null, 'Slide out': null },
         cssProperty: 'dsfsdf'
       },
     },

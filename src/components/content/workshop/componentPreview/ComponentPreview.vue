@@ -189,8 +189,9 @@ export default {
     playPreviewTransitionAnimation(playPreviewTransitionAnimationEvent: PlayPreviewTransitionAnimationEvent): void {
       const [transitionAnimation, isEntranceAnimation] = playPreviewTransitionAnimationEvent;
       if (isEntranceAnimation) {
-        this.$refs.componentPreview.style.opacity = 0;
-        ExpandedModalPreviewModeTransitionsService.initiateEntracePreview(transitionTypeToFunctionality[transitionAnimation], this.$refs.componentPreview)
+        ExpandedModalPreviewModeTransitionsService.initiateEntraceTransitionPreview(transitionTypeToFunctionality[transitionAnimation], this.$refs.componentPreview);
+      } else {
+        ExpandedModalPreviewModeTransitionsService.initiateExitTransitionPreview(transitionTypeToFunctionality[transitionAnimation], this.$refs.componentPreview);
       }
     }
   },
