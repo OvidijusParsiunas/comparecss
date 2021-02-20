@@ -24,8 +24,8 @@ export default class TransitionsService {
   private static START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS = `${TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS / 1000}s`;
   private static EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS = `${TransitionsService.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS / 1000}s`;
   private static EXIT_EXPANDED_MODAL_MODE_TRANSITION_DELAY_MILLISECONDS = 50;
-  private static RESET_MODAL_AFTER_EXIT_TRANSITION_TIMEOUT_MILLISECONDS = 400;
-  private static EXIT_TRANSITION_TIMEOUT_AFTER_TRANSITION_PROPERTIES_UNSET_MILLISECONDS = 5;
+  private static RESET_MODAL_AFTER_EXIT_TRANSITION_PREVIEW_TIMEOUT_MILLISECONDS = 400;
+  private static EXIT_TRANSITION_PREVIEW_TIMEOUT_MILLISECONDS = 200;
   private static INITIAL_EXPANDED_MODAL_TRANSITION_VALUES: TransitionProperties = {
     transitionProperty: OPACITY_PROPERTY,
     transitionTimingFunction: LINEAR_SPEED_TRANSITION,
@@ -81,11 +81,9 @@ export default class TransitionsService {
     });
   }
 
-  private static setCurrentExitTransitionModalPropertiesBackToDefault(modalElement: HTMLElement, numberOfCurrentlyInstantiatedExitTransitions: number): void {
-    if (numberOfCurrentlyInstantiatedExitTransitions > 0) {
-      const exitTransitionModalDefaultProperties = expandedModalPreviewModeState.getCurrentExitTransitionModalDefaultPropertiesState();
-      TransitionsService.setModalPropertiesAfterExitTransition(modalElement, exitTransitionModalDefaultProperties);
-    }
+  private static setCurrentExitTransitionModalPropertiesBackToDefault(modalElement: HTMLElement): void {
+    const exitTransitionModalDefaultProperties = expandedModalPreviewModeState.getCurrentExitTransitionModalDefaultPropertiesState();
+    TransitionsService.setModalPropertiesAfterExitTransition(modalElement, exitTransitionModalDefaultProperties);
   }
 
   private static exitCallback(setOptionToDefaultCallback: () => void, modalElement: HTMLElement, backgroundElement: HTMLElement,
@@ -99,8 +97,7 @@ export default class TransitionsService {
 
   public static exit(modalExitTransition: ModalExitTransition, setOptionToDefaultCallback: () => void, backgroundElement: HTMLElement, modalElement: HTMLElement,
       toolbarContainerElement?: HTMLElement, toolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
-    const numberOfCurrentlyInstantiatedExitTransitions = expandedModalPreviewModeState.getNumberOfCurrentlyInstantiatedExitTransitionsState();
-    TransitionsService.setCurrentExitTransitionModalPropertiesBackToDefault(modalElement, numberOfCurrentlyInstantiatedExitTransitions);
+    if (expandedModalPreviewModeState.getIsTransitionInProgressState()) { TransitionsService.setCurrentExitTransitionModalPropertiesBackToDefault(modalElement); }
     TransitionsService.opacityFadeTransition(OPACITY_INVISIBLE, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
     modalExitTransition(modalElement, TransitionsService.exitCallback.bind(this, setOptionToDefaultCallback) as ExitCallback,
       backgroundElement, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
@@ -144,29 +141,30 @@ export default class TransitionsService {
     modalEntranceTransition(modalElement, TransitionsService.unsetTransitionProperties)
   }
 
+  public static cancelCurrentExitTransition(modalElement: HTMLElement): void {
+    if (expandedModalPreviewModeState.getIsTransitionInProgressState()) {
+      TransitionsService.setCurrentExitTransitionModalPropertiesBackToDefault(modalElement);
+      TransitionsService.unsetTransitionProperties(modalElement);
+      expandedModalPreviewModeState.removePendingExitTransitionsState();
+      expandedModalPreviewModeState.setIsTransitionInProgressState(false);
+      modalElement.style.opacity = OPACITY_VISIBLE;
+    }
+  }
+  
   public static initiateExitTransitionPreviewCallback(modalElement: HTMLElement): void {
-    setTimeout(() => {
-      const numberOfCurrentlyInstantiatedExitTransitions = expandedModalPreviewModeState.getNumberOfCurrentlyInstantiatedExitTransitionsState();
-      TransitionsService.setCurrentExitTransitionModalPropertiesBackToDefault(modalElement, numberOfCurrentlyInstantiatedExitTransitions);
-      if (numberOfCurrentlyInstantiatedExitTransitions === 1) {
-        TransitionsService.unsetTransitionProperties(modalElement);
-        expandedModalPreviewModeState.setIsTransitionInProgressState(false);
-        modalElement.style.opacity = OPACITY_VISIBLE;
-      }
-      expandedModalPreviewModeState.setNumberOfCurrentlyInstantiatedExitTransitionsState(numberOfCurrentlyInstantiatedExitTransitions - 1);
-    }, TransitionsService.RESET_MODAL_AFTER_EXIT_TRANSITION_TIMEOUT_MILLISECONDS); 
+    const pendingPropertyResetAfterExitState = setTimeout(() => {
+      TransitionsService.cancelCurrentExitTransition(modalElement);
+    }, TransitionsService.RESET_MODAL_AFTER_EXIT_TRANSITION_PREVIEW_TIMEOUT_MILLISECONDS); 
+    expandedModalPreviewModeState.setPendingPropertyResetAfterExitState(pendingPropertyResetAfterExitState);
   }
 
   public static initiateExitTransitionPreview(modalEntranceTransition: ModalExitTransition, modalElement: HTMLElement): void {
+    TransitionsService.cancelCurrentExitTransition(modalElement);
     expandedModalPreviewModeState.setIsTransitionInProgressState(true);
-    const numberOfCurrentlyInstantiatedExitTransitions = expandedModalPreviewModeState.getNumberOfCurrentlyInstantiatedExitTransitionsState();
-    TransitionsService.setCurrentExitTransitionModalPropertiesBackToDefault(modalElement, numberOfCurrentlyInstantiatedExitTransitions);
-    TransitionsService.unsetTransitionProperties(modalElement);
-    expandedModalPreviewModeState.setNumberOfCurrentlyInstantiatedExitTransitionsState(numberOfCurrentlyInstantiatedExitTransitions + 1);
-    modalElement.style.opacity = OPACITY_VISIBLE;
-    setTimeout(() => {
-      modalEntranceTransition(modalElement, TransitionsService.initiateExitTransitionPreviewCallback);
-    }, TransitionsService.EXIT_TRANSITION_TIMEOUT_AFTER_TRANSITION_PROPERTIES_UNSET_MILLISECONDS);
+    const pendingExitTransition = setTimeout(() => { 
+      modalEntranceTransition(modalElement, TransitionsService.initiateExitTransitionPreviewCallback)
+    }, TransitionsService.EXIT_TRANSITION_PREVIEW_TIMEOUT_MILLISECONDS);
+    expandedModalPreviewModeState.setPendingExitTransitionState(pendingExitTransition);
   }
 
   public static toggleToolbarPosition(toolbarContainerElement: HTMLElement): void {

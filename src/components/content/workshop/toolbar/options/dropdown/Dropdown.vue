@@ -10,7 +10,8 @@
       @mouseenter="mouseEnterAuxiliaryPadding"
       @mouseleave="mouseLeaveAuxiliaryPadding">
     </div>
-    <div ref="dropdownMenus">
+    <div ref="dropdownMenus"
+      @mouseleave="mouseLeaveDropdown">
       <dropdown-menu v-for="(dropdownOptions, index) in dropdowns" :key="dropdownOptions"
         :dropdownOptions="dropdownOptions"
         :nestedDropdownIndex="index"
@@ -187,6 +188,9 @@ export default {
         const blurredOptionElement = this.$refs.dropdownMenus.childNodes[1].childNodes[1];
         if (this.mouseLeaveAuxiliaryPaddingEventHandler) this.mouseLeaveAuxiliaryPaddingEventHandler(blurredOptionElement);
       }
+    },
+    mouseLeaveDropdown(): void {
+      this.$emit('mouse-leave-dropdown');
     },
     mouseEnterOption(optionMouseEnterEvent: OptionMouseEnter): void {
       const [dropdownOptions, dropdownMenuIndex, dropdownOptionIndex] = optionMouseEnterEvent;

@@ -126,6 +126,7 @@
                   :fontAwesomeIconClassName="'fa-caret-down'"
                   @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
                   @mouse-enter-option="optionMouseEnter"
+                  @mouse-leave-dropdown="mouseLeaveDropdown"
                   @mouse-click-new-option="optionMouseClickNewOption"/>
               </div>
 
@@ -291,6 +292,9 @@ export default {
     },
     optionMouseClickNewOption(event: MODAL_TRANSITION_ENTRANCE_TYPES | MODAL_TRANSITION_EXIT_TYPES): void {
       this.subcomponentproperties.transitions.exit = event;
+    },
+    mouseLeaveDropdown(): void {
+      this.$emit('stop-preview-transition-animation');
     },
     updateRange(event: KeyboardEvent, setting: any): void {
       const { triggers, spec } = setting;

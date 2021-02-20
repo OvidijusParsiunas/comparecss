@@ -3,8 +3,10 @@ import { ElementStyleProperties } from '../../../interfaces/elementStyleProperti
 
 let isTransitionInProgressState = false;
 let expandedModalModeToolbarContainerPositionState = EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.TOP;
-let numberOfCurrentlyInstantiatedExitTransitions = 0;
 let currentExitTransitionModalDefaultPropertiesState = {};
+let currentlyPendingExitTransitionState = null;
+let currentlyPendingDefaultTransitionAfterExitState = null;
+let currentlyPendingPropertyResetAfterExitState = null;
 
 function getIsTransitionInProgressState(): boolean {
   return isTransitionInProgressState;
@@ -22,12 +24,22 @@ function setExpandedModalModeToolbarContainerPositionState(state: EXPANDED_MODAL
   expandedModalModeToolbarContainerPositionState = state;
 }
 
-function getNumberOfCurrentlyInstantiatedExitTransitionsState(): number {
-  return numberOfCurrentlyInstantiatedExitTransitions;
+function removePendingExitTransitionsState(): void {
+  clearTimeout(currentlyPendingExitTransitionState);
+  clearTimeout(currentlyPendingDefaultTransitionAfterExitState);
+  clearTimeout(currentlyPendingPropertyResetAfterExitState);
 }
 
-function setNumberOfCurrentlyInstantiatedExitTransitionsState(state: number): void {
-  numberOfCurrentlyInstantiatedExitTransitions = state;
+function setPendingExitTransitionState(state: any): void {
+  currentlyPendingExitTransitionState = state;
+}
+
+function setPendingDefaultTransitionAfterExitState(state: any): void {
+  currentlyPendingDefaultTransitionAfterExitState = state;
+}
+
+function setPendingPropertyResetAfterExitState(state: any): void {
+  currentlyPendingPropertyResetAfterExitState = state;
 }
 
 function getCurrentExitTransitionModalDefaultPropertiesState(): ElementStyleProperties {
@@ -41,8 +53,10 @@ function setCurrentExitTransitionModalDefaultPropertiesState(state: ElementStyle
 export const expandedModalPreviewModeState = {
   getIsTransitionInProgressState,
   setIsTransitionInProgressState,
-  getNumberOfCurrentlyInstantiatedExitTransitionsState,
-  setNumberOfCurrentlyInstantiatedExitTransitionsState,
+  removePendingExitTransitionsState,
+  setPendingExitTransitionState,
+  setPendingDefaultTransitionAfterExitState,
+  setPendingPropertyResetAfterExitState,
   getCurrentExitTransitionModalDefaultPropertiesState,
   setCurrentExitTransitionModalDefaultPropertiesState,
   getExpandedModalModeToolbarContainerPositionState,

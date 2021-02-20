@@ -21,7 +21,7 @@ export default class SlideTransitions {
     backgroundElement.style.opacity = OPACITY_VISIBLE;
     backgroundElement.style.transitionDuration = SlideTransitions.SLIDE_IN_BACKGROUND_TRANSITION_DURATION_SECONDS;
   }
-  
+
   public static initiate(modalElement: HTMLElement, unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void,
       backgroundElement?: HTMLElement): void {
     if (backgroundElement) SlideTransitions.displayBackground(backgroundElement);
@@ -45,7 +45,7 @@ export default class SlideTransitions {
     backgroundElement.style.opacity = OPACITY_INVISIBLE;
     backgroundElement.style.transitionDuration = SlideTransitions.SLIDE_OUT_BACKGROUND_TRANSITION_DURATION_SECONDS;
   }
-  
+
   public static exit(modalElement: HTMLElement, exitCallback: ExitCallback, backgroundElement: HTMLElement,
       toolbarElement: HTMLElement, innerToolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
     expandedModalPreviewModeState.setCurrentExitTransitionModalDefaultPropertiesState({top: '0px'});
@@ -54,9 +54,10 @@ export default class SlideTransitions {
     modalElement.style.transitionDuration = SlideTransitions.SLIDE_OUT_MODAL_TRANSITION_DURATION_SECONDS;
     modalElement.style.transitionTimingFunction = LINEAR_SPEED_TRANSITION;
     modalElement.style.top = '-40px';
-    setTimeout(() => {
+    const pendingDefaultTransitionAfterExit = setTimeout(() => {
       if (backgroundElement) SlideTransitions.hideBackground(backgroundElement);
       exitCallback(modalElement, backgroundElement, toolbarElement, innerToolbarElement, toolbarPositionToggleElement);
     }, SlideTransitions.SLIDE_OUT_MODAL_TRANSITION_DURATION_MILLISECONDS);
+    expandedModalPreviewModeState.setPendingDefaultTransitionAfterExitState(pendingDefaultTransitionAfterExit);
   }
 }

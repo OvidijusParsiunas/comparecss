@@ -196,6 +196,9 @@ export default {
       } else {
         ExpandedModalPreviewModeTransitionsService.initiateExitTransitionPreview(transitionTypeToFunctionality[transitionAnimation], this.$refs.componentPreview);
       }
+    },
+    stopPreviewTransitionAnimation(): void {
+      ExpandedModalPreviewModeTransitionsService.cancelCurrentExitTransition(this.$refs.componentPreview);
     }
   },
   components: {

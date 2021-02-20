@@ -33,7 +33,8 @@
               @prepare-remove-subcomponent-modal="$refs.removeSubcomponentModal.prepare()"
               @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
               @toggle-expanded-modal-preview-mode="$refs.contents.expandModalComponent($event)"
-              @play-preview-transition-animation="$refs.contents.playPreviewTransitionAnimation($event)"/>
+              @play-preview-transition-animation="$refs.contents.playPreviewTransitionAnimation($event)"
+              @stop-preview-transition-animation="$refs.contents.stopPreviewTransitionAnimation()"/>
             <component-contents ref="contents" :component="currentlySelectedComponent" :componentPreviewAssistance="componentPreviewAssistance"/>
             <div style="height: 18%; display: flex; float: right; margin-right: 10px; margin-top: 105px">
               <div style="position: relative">

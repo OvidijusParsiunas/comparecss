@@ -44,9 +44,10 @@ export default class FadeTransitions {
     modalElement.style.opacity = OPACITY_INVISIBLE;
     modalElement.style.transitionDuration = FadeTransitions.SLIDE_OUT_MODAL_TRANSITION_DURATION_SECONDS;
     modalElement.style.transitionTimingFunction = LINEAR_SPEED_TRANSITION;
-    setTimeout(() => {
+    const pendingDefaultTransitionAfterExit = setTimeout(() => {
       if (backgroundElement) FadeTransitions.hideBackground(backgroundElement);
       exitCallback(modalElement, backgroundElement, toolbarElement, innerToolbarElement, toolbarPositionToggleElement);
     }, FadeTransitions.SLIDE_OUT_MODAL_TRANSITION_DURATION_MILLISECONDS);
+    expandedModalPreviewModeState.setPendingDefaultTransitionAfterExitState(pendingDefaultTransitionAfterExit);
   }
 }

@@ -15,7 +15,8 @@
       <settings v-if="isSettingsDisplayed" ref="settings"
         :subcomponentproperties="component.subcomponents[component.subcomponentsActiveMode]"
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-        @play-preview-transition-animation="$emit('play-preview-transition-animation', $event)"/>
+        @play-preview-transition-animation="$emit('play-preview-transition-animation', $event)"
+        @stop-preview-transition-animation="$emit('stop-preview-transition-animation')"/>
     </div>
   </div>
 </template>
