@@ -154,6 +154,7 @@ function createInitialBaseCss(): CustomCss {
       boxShadow: 'unset',
       fontFamily: '"Poppins", sans-serif',
       transition: 'unset',
+      top: '0px',
     },
   }
 }

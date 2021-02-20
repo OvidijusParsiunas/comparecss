@@ -48,7 +48,7 @@ export default class SlideTransitions {
   
   public static exit(modalElement: HTMLElement, exitCallback: ExitCallback, backgroundElement: HTMLElement,
       toolbarElement: HTMLElement, innerToolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
-    expandedModalPreviewModeState.setCurrentExitTransitionModalDefaultPropertiesState({top: UNSET});
+    expandedModalPreviewModeState.setCurrentExitTransitionModalDefaultPropertiesState({top: '0px'});
     modalElement.style.transitionProperty = ALL_PROPERTIES;
     modalElement.style.opacity = OPACITY_INVISIBLE;
     modalElement.style.transitionDuration = SlideTransitions.SLIDE_OUT_MODAL_TRANSITION_DURATION_SECONDS;

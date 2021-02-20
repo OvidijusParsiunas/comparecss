@@ -1,6 +1,6 @@
 import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES } from '../../../../consts/expandedModalToolbarContainerPositionClasses.enum';
+import { OPACITY_INVISIBLE, OPACITY_VISIBLE, LINEAR_SPEED_TRANSITION, OPACITY_PROPERTY, UNSET } from './sharedConsts';
 import { ExitCallback, ModalEntranceTransition, ModalExitTransition } from '../../../../interfaces/modalTransitions';
-import { OPACITY_INVISIBLE, OPACITY_VISIBLE, LINEAR_SPEED_TRANSITION, OPACITY_PROPERTY } from './sharedConsts';
 import { ElementStyleProperties } from '../../../../interfaces/elementStyleProperties';
 import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
 
@@ -36,9 +36,9 @@ export default class TransitionsService {
   public static unsetTransitionProperties(...elements: HTMLElement[]): void {
     elements.forEach((element) => {
       if (!element) return;
-      element.style.transitionDuration = 'unset';
-      element.style.transitionProperty = 'unset';
-      element.style.transitionTimingFunction = 'unset';
+      element.style.transitionDuration = UNSET;
+      element.style.transitionProperty = UNSET;
+      element.style.transitionTimingFunction = UNSET;
     });
   }
 
@@ -157,8 +157,6 @@ export default class TransitionsService {
     TransitionsService.unsetTransitionProperties(modalElement);
     expandedModalPreviewModeState.setNumberOfCurrentlyInstantiatedExitTransitionsState(numberOfCurrentlyInstantiatedExitTransitions + 1);
     modalElement.style.opacity = OPACITY_VISIBLE;
-    // the value here will not be required as it will always be the current modal position value
-    modalElement.style.top = '0px';
     setTimeout(() => {
       modalEntranceTransition(modalElement, TransitionsService.initiateExitTransitionPreviewCallback);
     }, TransitionsService.EXIT_TRANSITION_TIMEOUT_AFTER_TRANSITION_PROPERTIES_UNSET_MILLISECONDS);
