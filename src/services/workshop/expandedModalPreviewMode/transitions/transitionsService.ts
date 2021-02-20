@@ -88,20 +88,22 @@ export default class TransitionsService {
     }
   }
 
-  private static exitCallback(modalElement: HTMLElement, backgroundElement: HTMLElement,
+  private static exitCallback(setOptionToDefaultCallback: () => void, modalElement: HTMLElement, backgroundElement: HTMLElement,
       toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
+    setOptionToDefaultCallback();
     const exitTransitionModalDefaultProperties = expandedModalPreviewModeState.getCurrentExitTransitionModalDefaultPropertiesState();
     TransitionsService.setModalPropertiesAfterExitTransition(modalElement, exitTransitionModalDefaultProperties);
     TransitionsService.exitPreviewTransition(backgroundElement, modalElement);
     if (toolbarContainerElement) TransitionsService.exitToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
   }
 
-  public static exit(modalExitTransition: ModalExitTransition, backgroundElement: HTMLElement, modalElement: HTMLElement,
+  public static exit(modalExitTransition: ModalExitTransition, setOptionToDefaultCallback: () => void, backgroundElement: HTMLElement, modalElement: HTMLElement,
       toolbarContainerElement?: HTMLElement, toolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
     const numberOfCurrentlyInstantiatedExitTransitions = expandedModalPreviewModeState.getNumberOfCurrentlyInstantiatedExitTransitionsState();
     TransitionsService.setCurrentExitTransitionModalPropertiesBackToDefault(modalElement, numberOfCurrentlyInstantiatedExitTransitions);
     TransitionsService.opacityFadeTransition(OPACITY_INVISIBLE, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
-    modalExitTransition(modalElement, TransitionsService.exitCallback as ExitCallback, backgroundElement, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
+    modalExitTransition(modalElement, TransitionsService.exitCallback.bind(this, setOptionToDefaultCallback) as ExitCallback,
+      backgroundElement, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
     expandedModalPreviewModeState.setIsTransitionInProgressState(true);
   }
 

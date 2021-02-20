@@ -173,16 +173,19 @@ export default {
       }
     },
     expandModalComponent(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {
-      const [isExpandedModalPreviewModeActive, toolbarPositionToggleElement, toolbarContainerElement, toolbarElement] = toggleExpandedModalPreviewModeEvent;
+      const [isExpandedModalPreviewModeActive, setOptionToDefaultCallback, toolbarPositionToggleElement,
+        toolbarContainerElement, toolbarElement] = toggleExpandedModalPreviewModeEvent;
       if (isExpandedModalPreviewModeActive) {
         // strategies
         // https://tympanus.net/codrops/2013/06/25/nifty-modal-window-effects/
         ExpandedModalPreviewModeTransitionsService.initiate(
-          transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.entrance], this.$refs.componentPreview, this.$refs.componentPreviewContainer,
+          transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.entrance],
+          this.$refs.componentPreview, this.$refs.componentPreviewContainer,
           toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
       } else {
         ExpandedModalPreviewModeTransitionsService.exit(
-          transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.exit], this.$refs.componentPreviewContainer, this.$refs.componentPreview,
+          transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.exit],
+          setOptionToDefaultCallback, this.$refs.componentPreviewContainer, this.$refs.componentPreview,
           toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
       }
     },

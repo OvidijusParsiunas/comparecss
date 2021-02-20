@@ -225,11 +225,10 @@ export default {
     },
     toggleModalExpandMode(): void {
       this.isExpandedModalPreviewModeActive = !this.isExpandedModalPreviewModeActive;
-      if (!this.isExpandedModalPreviewModeActive && this.activeOption.enabledOnExpandedModalPreviewMode) {
-        this.selectOption(this.getDefaultOption());
-      }
+      const setOptionToDefaultCallback = !this.isExpandedModalPreviewModeActive && this.activeOption.enabledOnExpandedModalPreviewMode
+        ? this.selectOption.bind(this, this.getDefaultOption()) : () => { return; };
       this.$emit('toggle-expanded-modal-preview-mode',
-        [this.isExpandedModalPreviewModeActive, this.$refs.toolbarPositionToggle] as ToggleExpandedModalPreviewModeEvent);
+        [this.isExpandedModalPreviewModeActive, setOptionToDefaultCallback, this.$refs.toolbarPositionToggle] as ToggleExpandedModalPreviewModeEvent);
     },
     getDefaultOption(): Option {
       return this.getActiveModeOptions()[0];
