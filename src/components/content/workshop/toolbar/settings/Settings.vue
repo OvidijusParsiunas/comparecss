@@ -125,6 +125,8 @@
                   :activeModePropertyKeyName="'exit'"
                   :fontAwesomeIconClassName="'fa-caret-down'"
                   @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
+                  @mouse-enter-button="mouseEnterButton(subcomponentproperties.transitions.exit)"
+                  @mouse-leave-button="mouseLeaveButton"
                   @mouse-enter-option="optionMouseEnter"
                   @mouse-leave-dropdown="mouseLeaveDropdown"
                   @mouse-click-new-option="optionMouseClickNewOption"/>
@@ -287,6 +289,12 @@ export default {
   // if the Settings.vue component logic is too coupled with 'boxShadow' (especially if there is another partialCss property introduced),
   // refactor it to extract the logic into a partialCss util file
   methods: {
+    mouseEnterButton(event: MODAL_TRANSITION_ENTRANCE_TYPES | MODAL_TRANSITION_EXIT_TYPES): void {
+      this.$emit('play-preview-transition-animation', [event, false] as PlayPreviewTransitionAnimationEvent)
+    },
+    mouseLeaveButton(): void {
+      this.$emit('stop-preview-transition-animation');
+    },
     optionMouseEnter(event: MODAL_TRANSITION_ENTRANCE_TYPES | MODAL_TRANSITION_EXIT_TYPES): void {
       this.$emit('play-preview-transition-animation', [event, false] as PlayPreviewTransitionAnimationEvent)
     },

@@ -168,9 +168,11 @@ export default {
     },
     mouseEnterButton(): void {
       if (this.mouseEnterButtonEventHandler) { this.mouseEnterButtonEventHandler(); }
+      this.$emit('mouse-enter-button');
     },
     mouseLeaveButton(): void {
       if (this.mouseLeaveButtonEventHandler) { this.mouseLeaveButtonEventHandler(); }
+      this.$emit('mouse-leave-button');
     },
     mouseEnterAuxiliaryPadding(): void {
       if (this.areMenusDisplayed) {
