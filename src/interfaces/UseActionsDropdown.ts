@@ -6,5 +6,5 @@ export interface UseActionsDropdown {
   mouseLeaveButton: (settingsComponent: ComponentOptions, event: unknown, callback: ActionsDropdownMouseEventCallback) => void;
   mouseEnterOption: (settingsComponent: ComponentOptions, event: unknown, callback: ActionsDropdownMouseEventCallback) => void;
   mouseLeaveDropdown: (settingsComponent: ComponentOptions, event: unknown, callback: ActionsDropdownMouseEventCallback) => void;
-  optionMouseClickNewOption: (objectContainingActiveOption: unknown, activeModePropertyKeyName: string, event: unknown) => void;
+  optionMouseClickNewOption: (objectContainingActiveOption: unknown, activeOptionPropertyKeyName: string, event: unknown) => void;
 }

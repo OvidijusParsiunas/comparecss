@@ -179,12 +179,14 @@ export default {
         // strategies
         // https://tympanus.net/codrops/2013/06/25/nifty-modal-window-effects/
         ExpandedModalPreviewModeTransitionsService.initiate(
-          transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.entrance],
+          transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.entrance.type],
+          this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.entrance.duration,
           this.$refs.componentPreview, this.$refs.componentPreviewContainer,
           toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
       } else {
         ExpandedModalPreviewModeTransitionsService.exit(
-          transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.exit],
+          transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.exit.type],
+          this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.exit.duration,
           setOptionToDefaultCallback, this.$refs.componentPreviewContainer, this.$refs.componentPreview,
           toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
       }
@@ -192,9 +194,11 @@ export default {
     playPreviewTransitionAnimation(playPreviewTransitionAnimationEvent: PlayPreviewTransitionAnimationEvent): void {
       const [transitionAnimation, isEntranceAnimation] = playPreviewTransitionAnimationEvent;
       if (isEntranceAnimation) {
-        ExpandedModalPreviewModeTransitionsService.initiateEntraceTransitionPreview(transitionTypeToFunctionality[transitionAnimation], this.$refs.componentPreview);
+        ExpandedModalPreviewModeTransitionsService.initiateEntraceTransitionPreview(transitionTypeToFunctionality[transitionAnimation],
+          this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.entrance.duration, this.$refs.componentPreview);
       } else {
-        ExpandedModalPreviewModeTransitionsService.initiateExitTransitionPreview(transitionTypeToFunctionality[transitionAnimation], this.$refs.componentPreview);
+        ExpandedModalPreviewModeTransitionsService.initiateExitTransitionPreview(transitionTypeToFunctionality[transitionAnimation],
+          this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.exit.duration, this.$refs.componentPreview);
       }
     },
     stopPreviewTransitionAnimation(): void {

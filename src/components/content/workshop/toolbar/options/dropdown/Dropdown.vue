@@ -4,7 +4,10 @@
       @click="openDropdown"
       @mouseenter="mouseEnterButton"
       @mouseleave="mouseLeaveButton">
-      <div class="dropdown-button-text dropdown-button-marker" :class="uniqueIdentifier">{{objectContainingActiveOption[activeModePropertyKeyName]}}</div><i class="dropdown-button-marker" :class="['fa', 'dropdown-button-icon', fontAwesomeIconClassName, uniqueIdentifier]"></i>
+      <div class="dropdown-button-text dropdown-button-marker" :class="uniqueIdentifier">
+        {{objectContainingActiveOption[activeOptionPropertyKeyName]}}
+      </div>
+      <i class="dropdown-button-marker" :class="['fa', 'dropdown-button-icon', fontAwesomeIconClassName, uniqueIdentifier]"></i>
     </button>
     <div class="auxiliary-padding dropdown-menu-options-marker"
       @mouseenter="mouseEnterAuxiliaryPadding"
@@ -53,7 +56,7 @@ interface Props {
   uniqueIdentifier: string;
   highlightSubcomponents: boolean;
   fontAwesomeIconClassName: string;
-  activeModePropertyKeyName: string;
+  activeOptionPropertyKeyName: string;
   objectContainingActiveOption: unknown;
   dropdownOptions: NestedDropdownStructure;
   customEventHandlers: (param1: Ref<unknown>, param2: Ref<string>, param3: Ref<boolean>) => DropdownCompositionAPI;
@@ -83,14 +86,14 @@ export default {
     // If you want to pass down a data variable into compositionAPI, use the code below and pass areMenusDisplayed into the customEventHandlers function and return customEventHandlers
     // const areMenusDisplayed: Ref<boolean> = ref(false);
     const objectContainingActiveOptionRef: Ref<Props['objectContainingActiveOption']> = ref(props.objectContainingActiveOption);
-    const activeModePropertyKeyNameRef: Ref<Props['activeModePropertyKeyName']> = ref(props.activeModePropertyKeyName);
+    const activeModePropertyKeyNameRef: Ref<Props['activeOptionPropertyKeyName']> = ref(props.activeOptionPropertyKeyName);
     const highlightSubcomponentsRef: Ref<Props['highlightSubcomponents']> = ref(props.highlightSubcomponents);
     let customEventHandlers = {} as DropdownCompositionAPI;
     if (props.customEventHandlers) {
       watch(() => props.objectContainingActiveOption, (newObjectContainingActiveOption) => {
       objectContainingActiveOptionRef.value = newObjectContainingActiveOption;
       });
-      watch(() => props.activeModePropertyKeyName, (newActiveModePropertyKeyName) => {
+      watch(() => props.activeOptionPropertyKeyName, (newActiveModePropertyKeyName) => {
         activeModePropertyKeyNameRef.value = newActiveModePropertyKeyName;
       });
       watch(() => props.highlightSubcomponents, (newHighlightSubcomponents) => {
@@ -120,7 +123,7 @@ export default {
       this.areMenusDisplayed = true;
     },
     displayHighlightedOptionAndParentMenus(): void {
-      const results: SearchForOptionResult = this.searchForOpion(this.processedOptions, this.objectContainingActiveOption[this.activeModePropertyKeyName], 0);
+      const results: SearchForOptionResult = this.searchForOpion(this.processedOptions, this.objectContainingActiveOption[this.activeOptionPropertyKeyName], 0);
       if (results) {
         const { dropdowns, optionIndexes } = results;
         for (let i = 0; i < dropdowns.length; i++) {
@@ -278,7 +281,7 @@ export default {
       if ((event.target as HTMLElement).classList.contains(DROPDOWN_OPTION_MARKER) || this.enterButtonClicked) {
         if (this.lastHoveredOptionElement) {
           const optionName = this.lastHoveredOptionElement.childNodes[0].innerHTML;
-          if (this.objectContainingActiveOption[this.activeModePropertyKeyName] !== optionName) {
+          if (this.objectContainingActiveOption[this.activeOptionPropertyKeyName] !== optionName) {
             this.$emit('mouse-click-new-option', optionName);
           }
         }
@@ -329,7 +332,7 @@ export default {
   props: {
     dropdownOptions: Object,
     objectContainingActiveOption: Object,
-    activeModePropertyKeyName: String,
+    activeOptionPropertyKeyName: String,
     fontAwesomeIconClassName: String,
     highlightSubcomponents: Boolean,
     // this is used to allow the dropdown to close when clicked on other dropdowns

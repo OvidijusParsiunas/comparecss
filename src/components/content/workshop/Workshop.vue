@@ -270,8 +270,14 @@ function createSubcomponents(): Subcomponents {
       childCss: inheritedAlertBaseChildCss,
       subcomponentSpecificSettings: modalBaseSpecificSettings,
       transitions: {
-        entrance: MODAL_TRANSITION_ENTRANCE_TYPES.FADE_IN,
-        exit: MODAL_TRANSITION_EXIT_TYPES.FADE_OUT,
+        entrance: {
+          type: MODAL_TRANSITION_ENTRANCE_TYPES.FADE_IN,
+          duration: '0.3s',
+        },
+        exit: {
+          type: MODAL_TRANSITION_EXIT_TYPES.FADE_OUT,
+          duration: '0.25s',
+        },
       },
     },
     [SUB_COMPONENTS.LAYER_1]: {
@@ -488,10 +494,6 @@ export default {
     margin-right: 8px;
     border-color: #9d9d9d !important;
     background-color: white !important;
-  }
-  #formControlRange {
-    margin-top: 0.25rem !important;
-    margin-bottom: 0.25rem !important;
   }
   #preloadedImages {
     /* this is used to preload images when the workshop component is rendered instead of attempting to fetch them exactly when

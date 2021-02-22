@@ -12,8 +12,11 @@
                 </div>
                 <div style="position: relative; float: left">
                   <div class="range-popover">
+                    <div v-if="setting.spec.subcomponentPropertiesObject">
+                      {{subcomponentproperties[setting.spec.subcomponentPropertiesObject][setting.spec.objectContainingActiveOption][setting.spec.activeOptionPropertyKeyName]}}
+                    </div>
                     <!-- the boxShadow range properties are set to 'unset' when all are 0px (for firefox) -->
-                    <div v-if="subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode]
+                    <div v-else-if="subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode]
                       && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]
                       && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty] !== 'unset'">
                       {{setting.spec.partialCss !== undefined && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]
@@ -29,13 +32,13 @@
                       {{setting.spec.default}}px
                     </div>
                   </div>
-                  <input type="range" class="form-control-range" id="formControlRange"
+                  <input type="range" id="formControlRange" class="form-control-range"
                     v-bind:min="setting.spec.scale[0]"
                     v-bind:max="setting.spec.scale[1]"
                     v-model="setting.spec.default"
                     @mousedown="rangeMouseDown($event, subcomponentproperties.customCssActiveMode, setting.spec)"
-                    @contextmenu="preventRightClickEvent"
                     @mouseup="rangeMouseUp"
+                    @contextmenu="preventRightClickEvent"
                     @input="updateRange($event, setting)">
                 </div>
               </div>
@@ -121,15 +124,21 @@
                 <dropdown class="option-component-button"
                   :uniqueIdentifier="`${ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX}${settingIndex}`"
                   :dropdownOptions="setting.spec.options"
-                  :objectContainingActiveOption="subcomponentproperties[setting.spec.objectContainingActiveOption]"
-                  :activeModePropertyKeyName="setting.spec.activeModePropertyKeyName"
+                  :objectContainingActiveOption="setting.spec.subcomponentPropertiesObject
+                    ? subcomponentproperties[setting.spec.subcomponentPropertiesObject][setting.spec.objectContainingActiveOption]
+                    : subcomponentproperties[setting.spec.objectContainingActiveOption]"
+                  :activeOptionPropertyKeyName="setting.spec.activeOptionPropertyKeyName"
                   :fontAwesomeIconClassName="'fa-caret-down'"
                   @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-                  @mouse-enter-button="mouseEnterButton(this, subcomponentproperties[setting.spec.objectContainingActiveOption][setting.spec.activeModePropertyKeyName], setting.spec.mouseEnterButtonCallback)"
+                  @mouse-enter-button="mouseEnterButton(this, setting.spec.subcomponentPropertiesObject
+                    ? subcomponentproperties[setting.spec.subcomponentPropertiesObject][setting.spec.objectContainingActiveOption][setting.spec.activeOptionPropertyKeyName]
+                    : subcomponentproperties[setting.spec.objectContainingActiveOption][setting.spec.activeOptionPropertyKeyName], setting.spec.mouseEnterButtonCallback)"
                   @mouse-leave-button="mouseLeaveButton(this, $event, setting.spec.mouseLeaveButtonCallback)"
                   @mouse-enter-option="mouseEnterOption(this, $event, setting.spec.mouseEnterOptionCallback)"
                   @mouse-leave-dropdown="mouseLeaveDropdown(this, $event, setting.spec.mouseLeaveDropdownCallback)"
-                  @mouse-click-new-option="optionMouseClickNewOption(subcomponentproperties[setting.spec.objectContainingActiveOption], setting.spec.activeModePropertyKeyName, $event)"/>
+                  @mouse-click-new-option="optionMouseClickNewOption(setting.spec.subcomponentPropertiesObject
+                    ? subcomponentproperties[setting.spec.subcomponentPropertiesObject][setting.spec.objectContainingActiveOption]
+                    : subcomponentproperties[setting.spec.objectContainingActiveOption], setting.spec.activeOptionPropertyKeyName, $event)"/>
               </div>
 
               <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.CHECKBOX">
@@ -174,7 +183,7 @@ interface Consts {
   getActiveModeCssPropertyValue: (param1: CustomCss, param2: SUB_COMPONENT_CSS_MODES, param3: string) => string;
   updateSettings: (param1?: any, param2?: WORKSHOP_TOOLBAR_OPTION_TYPES) => void;
   addDefaultValueIfCssModeMissing: (param1: SUB_COMPONENT_CSS_MODES, param2: string) => void;
-  parseRangeValue: (param1: string, param2: number) => number;
+  parseRangeValue: (param1: string, param2: number, param3: number) => number;
   resetJs: () => void;
 }
 
@@ -236,8 +245,11 @@ export default {
                 const hasBoxShadowBeenSet = setting.spec.cssProperty === 'boxShadow' && BoxShadowUtils.setBoxShadowSettingsRangeValue(cssPropertyValue, setting.spec);
                 if (!hasBoxShadowBeenSet) {
                   const singlePropertyValue = setting.spec.partialCss ? cssPropertyValue.split(' ')[setting.spec.partialCss.position] : cssPropertyValue;
-                  setting.spec.default = this.parseRangeValue(singlePropertyValue, setting.spec.smoothingDivisible); 
+                  setting.spec.default = this.parseRangeValue(singlePropertyValue, setting.spec.smoothingDivisible, 2); 
                 }
+              } else if (setting.spec.subcomponentPropertiesObject) {
+                const value = this.subcomponentproperties[setting.spec.subcomponentPropertiesObject][setting.spec.objectContainingActiveOption][setting.spec.activeOptionPropertyKeyName];
+                setting.spec.default = this.parseRangeValue(value, setting.spec.smoothingDivisible, 1);
               }
             } else if (setting.type === SETTINGS_TYPES.SELECT) {
               // default value for range is currently setting the select value, not the select value for ranges
@@ -272,8 +284,8 @@ export default {
           this.subcomponentproperties.customCss[customCssActiveMode][cssProperty] = customCss;
         }
       },
-      parseRangeValue(value: string, smoothingDivisible: number): number {
-        return parseInt(value.substring(0, value.length - 2), 10) * smoothingDivisible;
+      parseRangeValue(value: string, smoothingDivisible: number, postfixLength: number): number {
+        return parseFloat(value.substring(0, value.length - postfixLength)) * smoothingDivisible;
       },
       resetJs(): void {
         this.subcomponentproperties.jsClasses = new Set([...this.subcomponentproperties.initialJsClasses]);
@@ -294,7 +306,7 @@ export default {
   methods: {
     updateRange(event: KeyboardEvent, setting: any): void {
       const { triggers, spec } = setting;
-      const { cssProperty, smoothingDivisible, partialCss } = spec;
+      const { cssProperty, smoothingDivisible, partialCss, isTime, subcomponentPropertiesObject, objectContainingActiveOption, activeOptionPropertyKeyName } = spec;
       const { customCss, customCssActiveMode, auxiliaryPartialCss } = this.subcomponentproperties;
       (triggers || []).forEach((trigger) => {
           const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, SUB_COMPONENT_CSS_MODES.CLICK, trigger.cssProperty);
@@ -316,8 +328,11 @@ export default {
           customCss[customCssActiveMode][cssProperty] = cssPropertyValues.join(' ');
         }
         if (cssProperty === 'boxShadow') BoxShadowUtils.setZeroBoxShadowPropertiesToUnset(this.subcomponentproperties);
+      } else if (subcomponentPropertiesObject) {
+          this.subcomponentproperties[subcomponentPropertiesObject][objectContainingActiveOption]
+            [activeOptionPropertyKeyName] = `${rangeValue as unknown as number / smoothingDivisible}${isTime ? 's': 'px'}`;
       } else {
-        customCss[customCssActiveMode][cssProperty] = `${Math.floor(rangeValue as unknown as number / smoothingDivisible)}px`;
+        customCss[customCssActiveMode][cssProperty] = `${Math.floor(rangeValue as unknown as number / smoothingDivisible)}${isTime ? 's': 'px'}`;
       }
     },
     rangeMouseDown(event: KeyboardEvent, customCssActiveMode: SUB_COMPONENT_CSS_MODES, spec: any): void {

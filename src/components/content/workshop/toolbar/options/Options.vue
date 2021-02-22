@@ -11,7 +11,7 @@
           :uniqueIdentifier="SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
           :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
           :objectContainingActiveOption="component"
-          :activeModePropertyKeyName="'subcomponentsActiveMode'"
+          :activeOptionPropertyKeyName="'subcomponentsActiveMode'"
           :fontAwesomeIconClassName="'fa-angle-double-down'"
           :highlightSubcomponents="true"
           :isButtonGroup="true"
@@ -42,7 +42,7 @@
           :uniqueIdentifier="CSS_MODES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
           :dropdownOptions="componentTypeToOptions[component.type][component.subcomponentsActiveMode]"
           :objectContainingActiveOption="component.subcomponents[component.subcomponentsActiveMode]"
-          :activeModePropertyKeyName="'customCssActiveMode'"
+          :activeOptionPropertyKeyName="'customCssActiveMode'"
           :fontAwesomeIconClassName="'fa-angle-down'"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
           @mouse-click-new-option="newCssModeClicked($event)"/>

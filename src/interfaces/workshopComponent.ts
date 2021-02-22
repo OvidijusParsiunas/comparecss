@@ -62,8 +62,14 @@ export type SubcomponentSpecificSettings = {
 }
 
 interface ComponentTransitions {
-  entrance: MODAL_TRANSITION_ENTRANCE_TYPES,
-  exit: MODAL_TRANSITION_EXIT_TYPES,
+  entrance: {
+    type: MODAL_TRANSITION_ENTRANCE_TYPES,
+    duration: string;
+  },
+  exit: {
+    type: MODAL_TRANSITION_EXIT_TYPES,
+    duration: string;
+  },
 }
 
 export interface SubcomponentProperties {

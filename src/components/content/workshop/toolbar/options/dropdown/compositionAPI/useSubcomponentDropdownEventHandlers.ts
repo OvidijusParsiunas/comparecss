@@ -6,7 +6,7 @@ import { DropdownCompositionAPI } from '../../../../../../../interfaces/dropdown
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
 import { Ref } from 'vue';
 
-export default function useSubcomponentDropdownEventHandlers(objectContainingActiveOption: Ref<unknown>, activeModePropertyKeyName: Ref<string>, highlightSubcomponents: Ref<boolean>): DropdownCompositionAPI {
+export default function useSubcomponentDropdownEventHandlers(objectContainingActiveOption: Ref<unknown>, activeOptionPropertyKeyName: Ref<string>, highlightSubcomponents: Ref<boolean>): DropdownCompositionAPI {
 
   function toggleSubcomponentOverlayDisplay(subcomponentType: string, displayValue: 'block'|'none'): void {
     if (!highlightSubcomponents.value) return;
@@ -47,12 +47,12 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
 
   const mouseEnterButtonEventHandler = (): void => {
     if (!expandedModalPreviewModeState.getIsTransitionInProgressState()) {
-      toggleSubcomponentOverlayDisplay(objectContainingActiveOption.value[activeModePropertyKeyName.value], 'block'); 
+      toggleSubcomponentOverlayDisplay(objectContainingActiveOption.value[activeOptionPropertyKeyName.value], 'block'); 
     }
   }
   
   const mouseLeaveButtonEventHandler = (): void => {
-    toggleSubcomponentOverlayDisplay(objectContainingActiveOption.value[activeModePropertyKeyName.value], 'none');
+    toggleSubcomponentOverlayDisplay(objectContainingActiveOption.value[activeOptionPropertyKeyName.value], 'none');
   }
 
   const mouseEnterOptionEventHandler = (dropdowns: NestedDropdownStructure[], optionElementToBeHighlighted: HTMLElement, dropdownMenuIndex: number,

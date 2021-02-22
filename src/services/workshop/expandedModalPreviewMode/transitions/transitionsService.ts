@@ -95,10 +95,10 @@ export default class TransitionsService {
     if (toolbarContainerElement) TransitionsService.exitToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
   }
 
-  public static exit(modalExitTransition: ModalExitTransition, setOptionToDefaultCallback: () => void, backgroundElement: HTMLElement, modalElement: HTMLElement,
+  public static exit(modalExitTransition: ModalExitTransition, transitionDuration: string, setOptionToDefaultCallback: () => void, backgroundElement: HTMLElement, modalElement: HTMLElement,
       toolbarContainerElement?: HTMLElement, toolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
     TransitionsService.opacityFadeTransition(OPACITY_INVISIBLE, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
-    modalExitTransition(modalElement, TransitionsService.exitCallback.bind(this, setOptionToDefaultCallback) as ExitCallback,
+    modalExitTransition(transitionDuration, modalElement, TransitionsService.exitCallback.bind(this, setOptionToDefaultCallback) as ExitCallback,
       backgroundElement, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
     expandedModalPreviewModeState.setIsTransitionInProgressState(true);
   }
@@ -119,18 +119,19 @@ export default class TransitionsService {
     }, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
   }
 
-  private static startPreviewTransition(backgroundElement: HTMLElement, modalElement: HTMLElement, modalEntranceTransition: ModalEntranceTransition): void {
+  private static startPreviewTransition(backgroundElement: HTMLElement, modalElement: HTMLElement,
+      modalEntranceTransition: ModalEntranceTransition, transitionDuration: string): void {
     TransitionsService.opacityFadeTransition(OPACITY_INVISIBLE, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS,
       backgroundElement, modalElement);
     setTimeout(() => {
       backgroundElement.classList.replace(TransitionsService.BACKGROUND_ELEMENT_DEFAULT_CLASS, TransitionsService.BACKGROUND_ELEMENT_ACTIVE_MODE_CLASS);
-      modalEntranceTransition(modalElement, TransitionsService.unsetTransitionProperties, backgroundElement);
+      modalEntranceTransition(transitionDuration, modalElement, TransitionsService.unsetTransitionProperties, backgroundElement);
     }, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
   }
 
-  public static initiate(modalEntranceTransition: ModalEntranceTransition, modalElement: HTMLElement, backgroundElement: HTMLElement,
+  public static initiate(modalEntranceTransition: ModalEntranceTransition, transitionDuration: string, modalElement: HTMLElement, backgroundElement: HTMLElement,
       toolbarContainerElement?: HTMLElement, toolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
-    TransitionsService.startPreviewTransition(backgroundElement, modalElement, modalEntranceTransition);
+    TransitionsService.startPreviewTransition(backgroundElement, modalElement, modalEntranceTransition, transitionDuration);
     if (toolbarContainerElement) TransitionsService.startToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
     expandedModalPreviewModeState.setIsTransitionInProgressState(true);
   }
@@ -145,11 +146,11 @@ export default class TransitionsService {
     }
   }
 
-  public static initiateEntraceTransitionPreview(modalEntranceTransition: ModalEntranceTransition, modalElement: HTMLElement): void {
+  public static initiateEntraceTransitionPreview(modalEntranceTransition: ModalEntranceTransition, transitionDuration: string, modalElement: HTMLElement): void {
     TransitionsService.cancelCurrentExitTransition(modalElement);
     modalElement.style.opacity = OPACITY_INVISIBLE;
     expandedModalPreviewModeState.setIsTransitionInProgressState(true);
-    modalEntranceTransition(modalElement, TransitionsService.unsetTransitionProperties);
+    modalEntranceTransition(transitionDuration, modalElement, TransitionsService.unsetTransitionProperties);
   }
   
   public static initiateExitTransitionPreviewCallback(modalElement: HTMLElement): void {
@@ -159,11 +160,11 @@ export default class TransitionsService {
     expandedModalPreviewModeState.setPendingPropertyResetAfterExitState(pendingPropertyResetAfterExitState);
   }
 
-  public static initiateExitTransitionPreview(modalEntranceTransition: ModalExitTransition, modalElement: HTMLElement): void {
+  public static initiateExitTransitionPreview(modalEntranceTransition: ModalExitTransition, transitionDuration: string, modalElement: HTMLElement): void {
     TransitionsService.cancelCurrentExitTransition(modalElement);
     expandedModalPreviewModeState.setIsTransitionInProgressState(true);
     const pendingTransitionInit = setTimeout(() => { 
-      modalEntranceTransition(modalElement, TransitionsService.initiateExitTransitionPreviewCallback)
+      modalEntranceTransition(transitionDuration, modalElement, TransitionsService.initiateExitTransitionPreviewCallback)
     }, TransitionsService.EXIT_TRANSITION_PREVIEW_TIMEOUT_MILLISECONDS);
     expandedModalPreviewModeState.setPendingTransitionInitState(pendingTransitionInit);
   }

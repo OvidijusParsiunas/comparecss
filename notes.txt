@@ -11,6 +11,9 @@ the x button should close the modal
 maybe clicking outside of the modal should close it too
 esc button
 enter - submit/cancel - potential
+when clicked option on size, move to a differnet option, then click back - the size is no longer accurate
+option for no animation
+when hovering over option that only works in expanded modal view - higlight the toggle for it
 
 option to import an existing button style!
 

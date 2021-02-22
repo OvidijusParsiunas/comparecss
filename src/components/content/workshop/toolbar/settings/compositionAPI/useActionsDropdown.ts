@@ -20,8 +20,8 @@ export default function useActionsDropdown(): UseActionsDropdown {
     callback(settingsComponent, event);
   }
   
-  const optionMouseClickNewOption = (objectContainingActiveOption: unknown, activeModePropertyKeyName: string, event: unknown): void => {
-    objectContainingActiveOption[activeModePropertyKeyName] = event;
+  const optionMouseClickNewOption = (objectContainingActiveOption: unknown, activeOptionPropertyKeyName: string, event: unknown): void => {
+    objectContainingActiveOption[activeOptionPropertyKeyName] = event;
   }
   
   return {
