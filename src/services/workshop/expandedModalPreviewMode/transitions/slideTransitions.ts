@@ -24,20 +24,24 @@ export default class SlideTransitions {
   public static initiate(modalElement: HTMLElement, unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void,
       backgroundElement?: HTMLElement): void {
     if (backgroundElement) SlideTransitions.displayBackground(backgroundElement);
+    expandedModalPreviewModeState.setCurrentExitTransitionModalDefaultPropertiesState({top: '0px'});
     modalElement.style.top = '-40px';
     // modalElement.style.marginTop = SlideTransitions.MODAL_TOP_POSITION_DELTA;
     // modalElement.style.top = SlideTransitions.SLIDE_IN_INITIAL_MODAL_TOP_POSITION;
-    setTimeout(() => {
+    const pendingTransitionInit = setTimeout(() => {
       modalElement.style.opacity = OPACITY_VISIBLE;
       modalElement.style.transitionProperty = ALL_PROPERTIES;
       modalElement.style.top = '0px';
       modalElement.style.transitionDuration = SlideTransitions.SLIDE_IN_MODAL_TRANSITION_DURATION_SECONDS;
       modalElement.style.transitionTimingFunction = LINEAR_SPEED_TRANSITION;
-      setTimeout(() => {
+      const pendingTransitionEnding = setTimeout(() => {
         if (unsetTransitionPropertiesCallback) unsetTransitionPropertiesCallback(modalElement, backgroundElement);
+        // the reason why the transition progress is set to false here, because there is no good callback
         expandedModalPreviewModeState.setIsTransitionInProgressState(false);
       }, SlideTransitions.SLIDE_IN_MODAL_TRANSITION_DURATION_SECONDS_MILLISECONDS);
+      expandedModalPreviewModeState.setPendingTransitionEndingState(pendingTransitionEnding);
     }, ENTRANCE_TRANSITION_DELAY_MILLISECONDS);
+    expandedModalPreviewModeState.setPendingTransitionInitState(pendingTransitionInit);
   }
 
   private static hideBackground(backgroundElement: HTMLElement) {
@@ -53,10 +57,10 @@ export default class SlideTransitions {
     modalElement.style.transitionDuration = SlideTransitions.SLIDE_OUT_MODAL_TRANSITION_DURATION_SECONDS;
     modalElement.style.transitionTimingFunction = LINEAR_SPEED_TRANSITION;
     modalElement.style.top = '-40px';
-    const pendingDefaultTransitionAfterExit = setTimeout(() => {
+    const pendingTransitionEnding = setTimeout(() => {
       if (backgroundElement) SlideTransitions.hideBackground(backgroundElement);
       exitCallback(modalElement, backgroundElement, toolbarElement, innerToolbarElement, toolbarPositionToggleElement);
     }, SlideTransitions.SLIDE_OUT_MODAL_TRANSITION_DURATION_MILLISECONDS);
-    expandedModalPreviewModeState.setPendingDefaultTransitionAfterExitState(pendingDefaultTransitionAfterExit);
+    expandedModalPreviewModeState.setPendingTransitionEndingState(pendingTransitionEnding);
   }
 }

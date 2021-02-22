@@ -4,8 +4,8 @@ import { ElementStyleProperties } from '../../../interfaces/elementStyleProperti
 let isTransitionInProgressState = false;
 let expandedModalModeToolbarContainerPositionState = EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.TOP;
 let currentExitTransitionModalDefaultPropertiesState = {};
-let currentlyPendingExitTransitionState = null;
-let currentlyPendingDefaultTransitionAfterExitState = null;
+let currentlyPendingTransitionInitState = null;
+let currentlyPendingTransitionEndingState = null;
 let currentlyPendingPropertyResetAfterExitState = null;
 
 function getIsTransitionInProgressState(): boolean {
@@ -25,17 +25,17 @@ function setExpandedModalModeToolbarContainerPositionState(state: EXPANDED_MODAL
 }
 
 function removePendingExitTransitionsState(): void {
-  clearTimeout(currentlyPendingExitTransitionState);
-  clearTimeout(currentlyPendingDefaultTransitionAfterExitState);
+  clearTimeout(currentlyPendingTransitionInitState);
+  clearTimeout(currentlyPendingTransitionEndingState);
   clearTimeout(currentlyPendingPropertyResetAfterExitState);
 }
 
-function setPendingExitTransitionState(state: any): void {
-  currentlyPendingExitTransitionState = state;
+function setPendingTransitionInitState(state: any): void {
+  currentlyPendingTransitionInitState = state;
 }
 
-function setPendingDefaultTransitionAfterExitState(state: any): void {
-  currentlyPendingDefaultTransitionAfterExitState = state;
+function setPendingTransitionEndingState(state: any): void {
+  currentlyPendingTransitionEndingState = state;
 }
 
 function setPendingPropertyResetAfterExitState(state: any): void {
@@ -54,8 +54,8 @@ export const expandedModalPreviewModeState = {
   getIsTransitionInProgressState,
   setIsTransitionInProgressState,
   removePendingExitTransitionsState,
-  setPendingExitTransitionState,
-  setPendingDefaultTransitionAfterExitState,
+  setPendingTransitionInitState,
+  setPendingTransitionEndingState,
   setPendingPropertyResetAfterExitState,
   getCurrentExitTransitionModalDefaultPropertiesState,
   setCurrentExitTransitionModalDefaultPropertiesState,

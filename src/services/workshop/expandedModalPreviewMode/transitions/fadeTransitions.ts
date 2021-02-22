@@ -20,16 +20,19 @@ export default class FadeTransitions {
   public static initiate(modalElement: HTMLElement, unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void,
       backgroundElement?: HTMLElement): void {
     if (backgroundElement) FadeTransitions.displayBackground(backgroundElement);
-    setTimeout(() => {
+    const pendingTransitionInit = setTimeout(() => {
       modalElement.style.opacity = OPACITY_VISIBLE;
       modalElement.style.transitionProperty = ALL_PROPERTIES;
       modalElement.style.transitionDuration = FadeTransitions.SLIDE_IN_MODAL_TRANSITION_DURATION_SECONDS;
       modalElement.style.transitionTimingFunction = LINEAR_SPEED_TRANSITION;
-      setTimeout(() => {
+      const pendingTransitionEnding = setTimeout(() => {
         if (unsetTransitionPropertiesCallback) unsetTransitionPropertiesCallback(modalElement, backgroundElement);
+        // the reason why the transition progress is set to false here, because there is no good callback
         expandedModalPreviewModeState.setIsTransitionInProgressState(false);
       }, FadeTransitions.SLIDE_IN_MODAL_TRANSITION_DURATION_SECONDS_MILLISECONDS);
+      expandedModalPreviewModeState.setPendingTransitionEndingState(pendingTransitionEnding);
     }, ENTRANCE_TRANSITION_DELAY_MILLISECONDS);
+    expandedModalPreviewModeState.setPendingTransitionInitState(pendingTransitionInit);
   }
 
   private static hideBackground(backgroundElement: HTMLElement) {
@@ -43,10 +46,10 @@ export default class FadeTransitions {
     modalElement.style.opacity = OPACITY_INVISIBLE;
     modalElement.style.transitionDuration = FadeTransitions.SLIDE_OUT_MODAL_TRANSITION_DURATION_SECONDS;
     modalElement.style.transitionTimingFunction = LINEAR_SPEED_TRANSITION;
-    const pendingDefaultTransitionAfterExit = setTimeout(() => {
+    const pendingTransitionEnding = setTimeout(() => {
       if (backgroundElement) FadeTransitions.hideBackground(backgroundElement);
       exitCallback(modalElement, backgroundElement, toolbarElement, innerToolbarElement, toolbarPositionToggleElement);
     }, FadeTransitions.SLIDE_OUT_MODAL_TRANSITION_DURATION_MILLISECONDS);
-    expandedModalPreviewModeState.setPendingDefaultTransitionAfterExitState(pendingDefaultTransitionAfterExit);
+    expandedModalPreviewModeState.setPendingTransitionEndingState(pendingTransitionEnding);
   }
 }

@@ -8,6 +8,9 @@ javascript to close the alert message
 test in slower pc if the child dropdowns displays options correctly - chrome/firefox
 ability to remove the layers
 the x button should close the modal
+maybe clicking outside of the modal should close it too
+esc button
+enter - submit/cancel - potential
 
 option to import an existing button style!
 
