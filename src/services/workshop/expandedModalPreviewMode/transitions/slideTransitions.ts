@@ -1,4 +1,4 @@
-import { OPACITY_INVISIBLE, OPACITY_VISIBLE, ALL_PROPERTIES, LINEAR_SPEED_TRANSITION, UNSET } from './sharedConsts';
+import { OPACITY_INVISIBLE, OPACITY_VISIBLE, ALL_PROPERTIES, LINEAR_SPEED_TRANSITION, ENTRANCE_TRANSITION_DELAY_MILLISECONDS } from './sharedConsts';
 import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
 import { ExitCallback } from '../../../../interfaces/modalTransitions';
 
@@ -9,7 +9,6 @@ export default class SlideTransitions {
   private static SLIDE_IN_INITIAL_MODAL_TOP_POSITION = '0px';
   private static SLIDE_IN_FINAL_MODAL_TOP_POSITION = '40px';
   private static SLIDE_IN_BACKGROUND_TRANSITION_DURATION_SECONDS = '0.1s';
-  private static SLIDE_IN_MODAL_TRANSITION_DELAY_MILLISECONDS = 150;
   private static SLIDE_IN_MODAL_TRANSITION_DURATION_SECONDS_MILLISECONDS = 300;
   private static SLIDE_IN_MODAL_TRANSITION_DURATION_SECONDS = `${SlideTransitions.SLIDE_IN_MODAL_TRANSITION_DURATION_SECONDS_MILLISECONDS / 1000}s`;
 
@@ -38,7 +37,7 @@ export default class SlideTransitions {
         if (unsetTransitionPropertiesCallback) unsetTransitionPropertiesCallback(modalElement, backgroundElement);
         expandedModalPreviewModeState.setIsTransitionInProgressState(false);
       }, SlideTransitions.SLIDE_IN_MODAL_TRANSITION_DURATION_SECONDS_MILLISECONDS);
-    }, SlideTransitions.SLIDE_IN_MODAL_TRANSITION_DELAY_MILLISECONDS);
+    }, ENTRANCE_TRANSITION_DELAY_MILLISECONDS);
   }
 
   private static hideBackground(backgroundElement: HTMLElement) {

@@ -119,17 +119,17 @@
                 </div>
                 <!-- set the unique identifier here -->
                 <dropdown class="option-component-button"
-                  :uniqueIdentifier="'uniqueIdentifier'"
+                  :uniqueIdentifier="`${ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX}${settingIndex}`"
                   :dropdownOptions="setting.spec.options"
-                  :objectContainingActiveOption="subcomponentproperties.transitions"
-                  :activeModePropertyKeyName="'exit'"
+                  :objectContainingActiveOption="subcomponentproperties[setting.spec.objectContainingActiveOption]"
+                  :activeModePropertyKeyName="setting.spec.activeModePropertyKeyName"
                   :fontAwesomeIconClassName="'fa-caret-down'"
                   @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-                  @mouse-enter-button="mouseEnterButton(subcomponentproperties.transitions.exit)"
-                  @mouse-leave-button="mouseLeaveButton"
-                  @mouse-enter-option="optionMouseEnter"
-                  @mouse-leave-dropdown="mouseLeaveDropdown"
-                  @mouse-click-new-option="optionMouseClickNewOption"/>
+                  @mouse-enter-button="mouseEnterButton(this, subcomponentproperties[setting.spec.objectContainingActiveOption][setting.spec.activeModePropertyKeyName], setting.spec.mouseEnterButtonCallback)"
+                  @mouse-leave-button="mouseLeaveButton(this, $event, setting.spec.mouseLeaveButtonCallback)"
+                  @mouse-enter-option="mouseEnterOption(this, $event, setting.spec.mouseEnterOptionCallback)"
+                  @mouse-leave-dropdown="mouseLeaveDropdown(this, $event, setting.spec.mouseLeaveDropdownCallback)"
+                  @mouse-click-new-option="optionMouseClickNewOption(subcomponentproperties[setting.spec.objectContainingActiveOption], setting.spec.activeModePropertyKeyName, $event)"/>
               </div>
 
               <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.CHECKBOX">
@@ -155,13 +155,13 @@
 
 <script lang="ts">
 import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../../consts/unsetColotButtonDisplayed';
-import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../../../consts/modalTransitionTypes.enum';
-import { PlayPreviewTransitionAnimationEvent } from '../../../../../interfaces/playPreviewTransitionAnimationEvent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSettingsState';
+import { UseActionsDropdown } from '../../../../../interfaces/UseActionsDropdown';
 import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
 import { CustomCss } from '../../../../../interfaces/workshopComponent';
+import useActionsDropdown from './compositionAPI/useActionsDropdown';
 import dropdown from '../options/dropdown/Dropdown.vue';
 import BoxShadowUtils from './utils/boxShadowUtils';
 
@@ -170,6 +170,7 @@ interface Consts {
   SUB_COMPONENT_CSS_MODES;
   UNSET_COLOR_BUTTON_DISPLAYED_STATE;
   UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX;
+  ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX: string;
   getActiveModeCssPropertyValue: (param1: CustomCss, param2: SUB_COMPONENT_CSS_MODES, param3: string) => string;
   updateSettings: (param1?: any, param2?: WORKSHOP_TOOLBAR_OPTION_TYPES) => void;
   addDefaultValueIfCssModeMissing: (param1: SUB_COMPONENT_CSS_MODES, param2: string) => void;
@@ -185,12 +186,13 @@ interface Data {
 
 // can be placed into composition API?
 export default {
-  setup(): Consts {
+  setup(): Consts & UseActionsDropdown {
     return {
       SETTINGS_TYPES,
       SUB_COMPONENT_CSS_MODES,
       UNSET_COLOR_BUTTON_DISPLAYED_STATE,
       UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX,
+      ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX: 'actionsDropdown-',
       getActiveModeCssPropertyValue(css: CustomCss, activeMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): string {
         // the following allows multiple cases to be checked in one execution
         if (!css) return undefined;
@@ -276,6 +278,7 @@ export default {
       resetJs(): void {
         this.subcomponentproperties.jsClasses = new Set([...this.subcomponentproperties.initialJsClasses]);
       },
+      ...useActionsDropdown(),
     };
   },
   data: (): Data => ({
@@ -289,21 +292,6 @@ export default {
   // if the Settings.vue component logic is too coupled with 'boxShadow' (especially if there is another partialCss property introduced),
   // refactor it to extract the logic into a partialCss util file
   methods: {
-    mouseEnterButton(event: MODAL_TRANSITION_ENTRANCE_TYPES | MODAL_TRANSITION_EXIT_TYPES): void {
-      this.$emit('play-preview-transition-animation', [event, false] as PlayPreviewTransitionAnimationEvent)
-    },
-    mouseLeaveButton(): void {
-      this.$emit('stop-preview-transition-animation');
-    },
-    optionMouseEnter(event: MODAL_TRANSITION_ENTRANCE_TYPES | MODAL_TRANSITION_EXIT_TYPES): void {
-      this.$emit('play-preview-transition-animation', [event, false] as PlayPreviewTransitionAnimationEvent)
-    },
-    optionMouseClickNewOption(event: MODAL_TRANSITION_ENTRANCE_TYPES | MODAL_TRANSITION_EXIT_TYPES): void {
-      this.subcomponentproperties.transitions.exit = event;
-    },
-    mouseLeaveDropdown(): void {
-      this.$emit('stop-preview-transition-animation');
-    },
     updateRange(event: KeyboardEvent, setting: any): void {
       const { triggers, spec } = setting;
       const { cssProperty, smoothingDivisible, partialCss } = spec;
