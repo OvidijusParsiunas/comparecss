@@ -287,7 +287,7 @@ export default {
         }
       },
       parseRangeValue(value: string, smoothingDivisible: number, postfixLength: number): number {
-        return parseFloat(value.substring(0, value.length - postfixLength)) * smoothingDivisible;
+        return Number.parseFloat(value.substring(0, value.length - postfixLength)) * smoothingDivisible;
       },
       resetJs(): void {
         this.subcomponentproperties.jsClasses = new Set([...this.subcomponentproperties.initialJsClasses]);

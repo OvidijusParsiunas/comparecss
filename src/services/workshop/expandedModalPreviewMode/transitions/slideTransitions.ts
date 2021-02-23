@@ -5,12 +5,9 @@ import TransitionsUtils from './utils/transitionsUtils';
 
 export default class SlideTransitions {
 
-  private static MODAL_TOP_POSITION_DELTA = '-50.4vh';
-
-  private static SLIDE_IN_INITIAL_MODAL_TOP_POSITION = '0px';
-  private static SLIDE_IN_FINAL_MODAL_TOP_POSITION = '40px';
   private static SLIDE_IN_BACKGROUND_TRANSITION_DURATION_SECONDS = '0.1s';
   private static SLIDE_OUT_BACKGROUND_TRANSITION_DURATION_SECONDS = '0.15s';
+  private static SLIDE_DISTANCE_NUMBER = 40;
 
   private static displayBackground(backgroundElement: HTMLElement) {
     backgroundElement.style.opacity = OPACITY_VISIBLE;
@@ -20,14 +17,14 @@ export default class SlideTransitions {
   public static initiate(transitionDuration: string, modalElement: HTMLElement,
       unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void, backgroundElement?: HTMLElement): void {
     if (backgroundElement) SlideTransitions.displayBackground(backgroundElement);
-    expandedModalPreviewModeState.setCurrentExitTransitionModalDefaultPropertiesState({top: '0px'});
-    modalElement.style.top = '-40px';
-    // modalElement.style.marginTop = SlideTransitions.MODAL_TOP_POSITION_DELTA;
-    // modalElement.style.top = SlideTransitions.SLIDE_IN_INITIAL_MODAL_TOP_POSITION;
+    const currentTopStyleValue = modalElement.style.top;
+    const currentTopStyleValueNumber = Number.parseInt(currentTopStyleValue);
+    expandedModalPreviewModeState.setCurrentExitTransitionModalDefaultPropertiesState({top: currentTopStyleValue});
+    modalElement.style.top = `${currentTopStyleValueNumber - SlideTransitions.SLIDE_DISTANCE_NUMBER}px`;
     const pendingTransitionInit = setTimeout(() => {
       modalElement.style.opacity = OPACITY_VISIBLE;
       modalElement.style.transitionProperty = ALL_PROPERTIES;
-      modalElement.style.top = '0px';
+      modalElement.style.top = currentTopStyleValue;
       modalElement.style.transitionDuration = transitionDuration;
       modalElement.style.transitionTimingFunction = LINEAR_SPEED_TRANSITION;
       const pendingTransitionEnding = setTimeout(() => {
@@ -47,12 +44,14 @@ export default class SlideTransitions {
 
   public static exit(transitionDuration: string, modalElement: HTMLElement, exitCallback: ExitCallback, backgroundElement: HTMLElement,
       toolbarElement: HTMLElement, innerToolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
-    expandedModalPreviewModeState.setCurrentExitTransitionModalDefaultPropertiesState({top: '0px'});
+    const currentTopStyleValue = modalElement.style.top;
+    const currentTopStyleValueNumber = Number.parseInt(currentTopStyleValue);
+    expandedModalPreviewModeState.setCurrentExitTransitionModalDefaultPropertiesState({top: currentTopStyleValue});
     modalElement.style.transitionProperty = ALL_PROPERTIES;
     modalElement.style.opacity = OPACITY_INVISIBLE;
     modalElement.style.transitionDuration = transitionDuration;
     modalElement.style.transitionTimingFunction = LINEAR_SPEED_TRANSITION;
-    modalElement.style.top = '-40px';
+    modalElement.style.top = `${currentTopStyleValueNumber - SlideTransitions.SLIDE_DISTANCE_NUMBER}px`;
     const pendingTransitionEnding = setTimeout(() => {
       if (backgroundElement) SlideTransitions.hideBackground(backgroundElement);
       exitCallback(modalElement, backgroundElement, toolbarElement, innerToolbarElement, toolbarPositionToggleElement);
