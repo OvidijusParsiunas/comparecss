@@ -7,4 +7,5 @@ export interface ActionsDropdownMouseEventCallbacks {
   mouseLeaveButtonCallback: ActionsDropdownMouseEventCallback,
   mouseEnterOptionCallback: ActionsDropdownMouseEventCallback,
   mouseLeaveDropdownCallback: ActionsDropdownMouseEventCallback,
+  mouseClickOptionCallback: ActionsDropdownMouseEventCallback,
 }

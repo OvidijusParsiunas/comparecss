@@ -284,6 +284,7 @@ export default {
           if (this.objectContainingActiveOption[this.activeOptionPropertyKeyName] !== optionName) {
             this.$emit('mouse-click-new-option', optionName);
           }
+          this.$emit('mouse-click-option', optionName);
         }
       }
       const isDropdownButtonClicked = (event.target as HTMLElement).classList.contains(this.uniqueIdentifier);

@@ -136,6 +136,7 @@
                   @mouse-leave-button="mouseLeaveButton(this, $event, setting.spec.mouseLeaveButtonCallback)"
                   @mouse-enter-option="mouseEnterOption(this, $event, setting.spec.mouseEnterOptionCallback)"
                   @mouse-leave-dropdown="mouseLeaveDropdown(this, $event, setting.spec.mouseLeaveDropdownCallback)"
+                  @mouse-click-option="mouseClickOption(this, $event, setting.spec.mouseClickOptionCallback)"
                   @mouse-click-new-option="optionMouseClickNewOption(setting.spec.subcomponentPropertiesObject
                     ? subcomponentproperties[setting.spec.subcomponentPropertiesObject][setting.spec.objectContainingActiveOption]
                     : subcomponentproperties[setting.spec.objectContainingActiveOption], setting.spec.activeOptionPropertyKeyName, $event)"/>

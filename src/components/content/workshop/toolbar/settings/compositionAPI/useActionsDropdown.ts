@@ -19,6 +19,10 @@ export default function useActionsDropdown(): UseActionsDropdown {
   const mouseLeaveDropdown = (settingsComponent: ComponentOptions, event: unknown, callback: ActionsDropdownMouseEventCallback): void => {
     callback(settingsComponent, event);
   }
+
+  const mouseClickOption = (settingsComponent: ComponentOptions, event: unknown, callback: ActionsDropdownMouseEventCallback): void => {
+    callback(settingsComponent, event);
+  }
   
   const optionMouseClickNewOption = (objectContainingActiveOption: unknown, activeOptionPropertyKeyName: string, event: unknown): void => {
     objectContainingActiveOption[activeOptionPropertyKeyName] = event;
@@ -29,6 +33,7 @@ export default function useActionsDropdown(): UseActionsDropdown {
     mouseLeaveButton,
     mouseEnterOption,
     mouseLeaveDropdown,
+    mouseClickOption,
     optionMouseClickNewOption,
   };
 }

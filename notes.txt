@@ -13,7 +13,6 @@ esc button
 enter - submit/cancel - potential
 when clicked option on size, move to a differnet option, then click back - the size is no longer accurate
 margin for modal does not refresh correctly
-when the user clicks animation it is still active and the user can do what they want - dangerous when animation is long
 option for no animation
 when hovering over option that only works in expanded modal view - higlight the toggle for it
 potentially rename initial to default convention

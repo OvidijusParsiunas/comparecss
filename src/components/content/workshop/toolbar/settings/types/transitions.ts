@@ -17,7 +17,10 @@ function generateMouseEventCallbacks(isEntranceAnimation: boolean): ActionsDropd
     },
     mouseLeaveDropdownCallback: (settingsComponent: ComponentOptions) => {
       settingsComponent.$emit('stop-preview-transition-animation');
-    }, 
+    },
+    mouseClickOptionCallback: (settingsComponent: ComponentOptions) => {
+      settingsComponent.$emit('stop-preview-transition-animation');
+    },
   }
 }
 
