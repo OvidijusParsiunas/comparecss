@@ -15,6 +15,7 @@ import textWthAlign from './textWithAlign';
 import textIcon from './textBasedIcon';
 import design from './design';
 import background from './background';
+import modalPosition from './modalPosition';
 import transitions from './transitions';
 
 type OptionToSettings = {
@@ -38,5 +39,6 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_BASED_ICON]: textIcon,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.DESIGN]: design,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND]: background,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_POSITION]: modalPosition,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TRANSITIONS]: transitions,
 };

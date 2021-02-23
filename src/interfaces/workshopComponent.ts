@@ -61,15 +61,25 @@ export type SubcomponentSpecificSettings = {
   };
 }
 
-interface ComponentTransitions {
+export interface ComponentTransitions {
   entrance: {
-    type: MODAL_TRANSITION_ENTRANCE_TYPES,
+    type: MODAL_TRANSITION_ENTRANCE_TYPES;
     duration: string;
   },
   exit: {
-    type: MODAL_TRANSITION_EXIT_TYPES,
+    type: MODAL_TRANSITION_EXIT_TYPES;
     duration: string;
   },
+}
+
+export interface ComponentCenteringInParent {
+  vertical: boolean;
+  horizontal: boolean;
+}
+
+export interface DefaultProperties {
+  componentCenteringInParent: ComponentCenteringInParent;
+  transitions: ComponentTransitions;
 }
 
 export interface SubcomponentProperties {
@@ -95,7 +105,10 @@ export interface SubcomponentProperties {
   optionalSubcomponent?: OptionalSubcomponent;
   // the reason why custom css is attached here is to not have to keep multiple unique settings for each and every subcomponent in memory all at once
   subcomponentSpecificSettings?: SubcomponentSpecificSettings;
-  transitions?: ComponentTransitions
+  // currently used to position modal either in the center of the screen or the top
+  componentCenteringInParent?: ComponentCenteringInParent;
+  transitions?: ComponentTransitions;
+  defaultProperties?: DefaultProperties;
 }
 
 export type Subcomponents = {

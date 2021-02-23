@@ -7,7 +7,7 @@
       <div class="dropdown-button-text dropdown-button-marker" :class="uniqueIdentifier">
         {{objectContainingActiveOption[activeOptionPropertyKeyName]}}
       </div>
-      <i class="dropdown-button-marker" style="padding-left: 7px" :class="['fa', 'dropdown-button-icon', fontAwesomeIconClassName, uniqueIdentifier]"></i>
+      <i class="dropdown-button-marker" :class="['fa', 'dropdown-button-icon', fontAwesomeIconClassName, uniqueIdentifier]"></i>
     </button>
     <div class="auxiliary-padding dropdown-menu-options-marker"
       @mouseenter="mouseEnterAuxiliaryPadding"

@@ -268,6 +268,8 @@ export default {
             } else if (setting.type === SETTINGS_TYPES.CHECKBOX) {
               if (setting.spec.javascript) {
                 setting.spec.default = jsClasses.has(setting.spec.jsClassName);
+              }  else if (setting.spec.subcomponentPropertiesObject) {
+                setting.spec.default = this.subcomponentproperties[setting.spec.subcomponentPropertiesObject][setting.spec.propertyKeyName];
               } else {
                 const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
                 if (cssPropertyValue) { setting.spec.default = (cssPropertyValue === setting.spec.conditionalStyle.truthy); }
@@ -436,7 +438,7 @@ export default {
       }
     },
     checkboxMouseClick(spec: any, previousCheckboxValue: boolean): void {
-      const { conditionalStyle, cssProperty, javascript, jsClassName } = spec;
+      const { conditionalStyle, cssProperty, javascript, jsClassName, subcomponentPropertiesObject, propertyKeyName } = spec;
       const { customCss, customCssActiveMode, jsClasses } = this.subcomponentproperties;
       const newCheckboxValue = !previousCheckboxValue;
       if (javascript) {
@@ -445,14 +447,28 @@ export default {
         } else {
           jsClasses.delete(jsClassName);
         }
+      } else if (subcomponentPropertiesObject) {
+        this.subcomponentproperties[subcomponentPropertiesObject][propertyKeyName] = newCheckboxValue;
       } else {
+        // this functionality may no longer be required
         const cssValue = newCheckboxValue ? conditionalStyle.truthy : conditionalStyle.falsy;
         customCss[customCssActiveMode][cssProperty] = cssValue;
       }
     },
     resetSubcomponentProperties(options: any): void {
       options.forEach((option) => {
-        const { cssProperty, jsClassName } = option.spec;
+        const { cssProperty, jsClassName, subcomponentPropertiesObject, objectContainingActiveOption, activeOptionPropertyKeyName, propertyKeyName } = option.spec;
+        if (subcomponentPropertiesObject) {
+          if (activeOptionPropertyKeyName) {
+            this.subcomponentproperties[subcomponentPropertiesObject]
+              [objectContainingActiveOption][activeOptionPropertyKeyName] = this.subcomponentproperties.defaultProperties[subcomponentPropertiesObject]
+                [objectContainingActiveOption][activeOptionPropertyKeyName];
+          } if (propertyKeyName) {
+            this.subcomponentproperties[subcomponentPropertiesObject]
+              [propertyKeyName] = this.subcomponentproperties.defaultProperties[subcomponentPropertiesObject][propertyKeyName];
+          }
+          return;
+        }
         if (jsClassName) {
           this.resetJs();
           return;

@@ -2,7 +2,11 @@
   <div v-if="component" ref="componentPreviewContainer" class="component-preview-container-default"
     @mouseenter="componentPreviewMouseEnter()"
     @mouseleave="componentPreviewMouseLeave()">
-    <div style="margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); z-index: 0; text-align: center;"> 
+    <div style="margin: 0; position: absolute; z-index: 0; text-align: center;"
+      :class="[(component.subcomponents[SUB_COMPONENTS.BASE].componentCenteringInParent &&
+                (component.subcomponents[SUB_COMPONENTS.BASE].componentCenteringInParent.vertical && !component.subcomponents[SUB_COMPONENTS.BASE].componentCenteringInParent.horizontal ? 'component-preview-centered-vertically' : false
+                  || component.subcomponents[SUB_COMPONENTS.BASE].componentCenteringInParent.horizontal && !component.subcomponents[SUB_COMPONENTS.BASE].componentCenteringInParent.vertical ? 'component-preview-centered-horizontally': false
+                )) || 'component-preview-centered']"> 
       <div class="grid-container">
         <div class="grid-item grid-item-position"></div>
         <div class="grid-item grid-item-position">
@@ -225,9 +229,6 @@ export default {
 </script>
 
 <style lang="css" scoped>
-  .base-component {
-    overflow: hidden;
-  }
   .component-preview-container-default {
     position: relative;
     height: 50%;
@@ -239,7 +240,23 @@ export default {
     top: -2.6%;
     left: -30vw;
     width: 100vw;
-  }  
+  }
+  .component-preview-centered {
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+  }
+  .component-preview-centered-horizontally {
+    left: 50%;
+    transform: translateX(-50%);
+  }
+  .component-preview-centered-vertically {
+    top: 50%;
+    transform: translateY(-50%);
+  }
+  .base-component {
+    overflow: hidden;
+  }
   .parent-layer {
     position: relative;
     height: 100%;

@@ -24,8 +24,8 @@ export const modalBaseOptions: SubcomponentOptions<ModalBaseOptionsModes> = {
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH,
     },
     {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_POSITION,
       enabledOnExpandedModalPreviewMode: true,
     },
     {

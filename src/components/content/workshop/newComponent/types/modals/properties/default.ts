@@ -1,4 +1,5 @@
-import { CustomCss, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { ComponentCenteringInParent, ComponentTransitions, CustomCss, DefaultProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../../../../../consts/modalTransitionTypes.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { alertCloseSpecificSettings } from '../../alerts/properties/alertCloseSpecificSettings';
 import { alertBaseSpecificSettings } from '../../alerts/properties/alertBaseSpecificSettings';
@@ -12,6 +13,33 @@ import { NewComponent } from '../../../../../../../interfaces/newComponent';
 import { inheritedAlertCloseChildCss } from './inheritedAlertCloseChildCss';
 import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';
 import { inheritedAlertBaseCss } from './inheritedCss';
+
+function createDefaultTransitionsProperties(): ComponentTransitions {
+  return {
+    entrance: {
+      type: MODAL_TRANSITION_ENTRANCE_TYPES.FADE_IN,
+      duration: '0.3s',
+    },
+    exit: {
+      type: MODAL_TRANSITION_EXIT_TYPES.FADE_OUT,
+      duration: '0.25s',
+    },
+  };
+}
+
+function createDefaultComponentCenteringInParent(): ComponentCenteringInParent {
+  return {
+    vertical: true,
+    horizontal: true,
+  };
+}
+
+function createDefaultBaseProperties(): DefaultProperties {
+  return {
+    componentCenteringInParent: createDefaultComponentCenteringInParent(),
+    transitions: createDefaultTransitionsProperties(),
+  }
+}
 
 // all default css needs to be filled in as to be able to 'reset' correctly
 function createInitialBaseCss(): CustomCss {
@@ -29,6 +57,7 @@ function createInitialBaseCss(): CustomCss {
       boxShadow: 'unset',
       fontFamily: '"Poppins", sans-serif',
       transition: 'unset',
+      top: '0px',
     },
   }
 }
@@ -142,6 +171,9 @@ function createSubcomponents(): Subcomponents {
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
       subcomponentSpecificSettings: alertBaseSpecificSettings,
+      componentCenteringInParent: createDefaultComponentCenteringInParent(),
+      transitions: createDefaultTransitionsProperties(),
+      defaultProperties: createDefaultBaseProperties(),
     },
     [SUB_COMPONENTS.LAYER_1]: {
       componentTag: 'div',

@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import { CustomCss, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../interfaces/workshopComponent';
+import { ComponentCenteringInParent, ComponentTransitions, CustomCss, DefaultProperties, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../interfaces/workshopComponent';
 import { modalLayerBottomSpecificSettings } from './newComponent/types/modals/properties/modalLayerBottomSpecificSettings';
 import { removeSubcomponentModalState } from './toolbar/options/removeSubcomponentModalState/removeSubcomponentModalState';
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../consts/modalTransitionTypes.enum';
@@ -140,6 +140,33 @@ interface Data {
   workshopEventCallbacks: (() => boolean)[];
 }
 
+function createDefaultTransitionsProperties(): ComponentTransitions {
+  return {
+    entrance: {
+      type: MODAL_TRANSITION_ENTRANCE_TYPES.FADE_IN,
+      duration: '0.3s',
+    },
+    exit: {
+      type: MODAL_TRANSITION_EXIT_TYPES.FADE_OUT,
+      duration: '0.25s',
+    },
+  };
+}
+
+function createDefaultComponentCenteringInParent(): ComponentCenteringInParent {
+  return {
+    vertical: true,
+    horizontal: true,
+  };
+}
+
+function createDefaultBaseProperties(): DefaultProperties {
+  return {
+    componentCenteringInParent: createDefaultComponentCenteringInParent(),
+    transitions: createDefaultTransitionsProperties(),
+  }
+}
+
 function createInitialBaseCss(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
@@ -157,7 +184,7 @@ function createInitialBaseCss(): CustomCss {
       transition: 'unset',
       top: '0px',
     },
-  }
+  };
 }
 
 function createInitialCloseButtonCss(): CustomCss {
@@ -184,7 +211,7 @@ function createInitialCloseButtonCss(): CustomCss {
       marginTop: '18px',
       marginRight: '10px',
     },
-  }
+  };
 }
 
 function createInitialLayer1Css(): CustomCss {
@@ -208,7 +235,7 @@ function createInitialLayer1Css(): CustomCss {
       color: '#004085',
       zIndex: 1,
     },
-  }
+  };
 }
 
 function createInitialLayer2Css(): CustomCss {
@@ -227,7 +254,7 @@ function createInitialLayer2Css(): CustomCss {
       fontSize: '16px',
       color: '#004085',
     },
-  }
+  };
 }
 
 function createInitialLayer3Css(): CustomCss {
@@ -249,7 +276,7 @@ function createInitialLayer3Css(): CustomCss {
       fontSize: '16px',
       color: '#004085',
     },
-  }
+  };
 }
 
 function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
@@ -269,16 +296,9 @@ function createSubcomponents(): Subcomponents {
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
       subcomponentSpecificSettings: modalBaseSpecificSettings,
-      transitions: {
-        entrance: {
-          type: MODAL_TRANSITION_ENTRANCE_TYPES.FADE_IN,
-          duration: '0.3s',
-        },
-        exit: {
-          type: MODAL_TRANSITION_EXIT_TYPES.FADE_OUT,
-          duration: '0.25s',
-        },
-      },
+      componentCenteringInParent: createDefaultComponentCenteringInParent(),
+      transitions: createDefaultTransitionsProperties(),
+      defaultProperties: createDefaultBaseProperties(),
     },
     [SUB_COMPONENTS.LAYER_1]: {
       componentTag: 'div',
