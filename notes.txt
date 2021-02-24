@@ -19,6 +19,7 @@ potentially rename initial to default convention
 
 option to import an existing button style!
 
+when changing the range and clicking the right mouse button causes the popover to disappear
 potentially have animation for when optional subcomponent options buttons appear and are hidden
 the alert button ripple does not seem to work properly when there are many components
 
@@ -28,6 +29,7 @@ UX:
   enter behaviour ok in new componant modal?
   check if switching component modes to default but leaving same option is ok for UX
   see if the subcomponent add and subcomponent remove hover and active css is ok
+  check if position option in the modal is ok to use
 
 ability to group the components
 option to see what the actual css looks like and to edit it

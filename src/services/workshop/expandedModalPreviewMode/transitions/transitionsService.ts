@@ -129,8 +129,13 @@ export default class TransitionsService {
     }, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
   }
 
+  private static setPropertiesThatAreNotInCustomCssButAreRequiredForTransitions(modalElement: HTMLElement): void {
+    modalElement.style.top = modalElement.style.top === '' ? '0px' : modalElement.style.top;
+  }
+
   public static initiate(modalEntranceTransition: ModalEntranceTransition, transitionDuration: string, modalElement: HTMLElement, backgroundElement: HTMLElement,
       toolbarContainerElement?: HTMLElement, toolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
+    TransitionsService.setPropertiesThatAreNotInCustomCssButAreRequiredForTransitions(modalElement);
     TransitionsService.startPreviewTransition(backgroundElement, modalElement, modalEntranceTransition, transitionDuration);
     if (toolbarContainerElement) TransitionsService.startToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
     expandedModalPreviewModeState.setIsTransitionInProgressState(true);

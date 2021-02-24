@@ -146,7 +146,7 @@
                 <div style="text-align: left">
                   {{setting.spec.name}}
                 </div>
-                <input type="checkbox" v-model="setting.spec.default" @click="checkboxMouseClick(setting.spec, setting.spec.default)">
+                <input type="checkbox" v-model="setting.spec.default" @click="checkboxMouseClick(setting.spec, setting.spec.default, setting.triggers)">
               </div>
             </div>
             
@@ -170,10 +170,11 @@ import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssMo
 import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSettingsState';
 import { UseActionsDropdown } from '../../../../../interfaces/UseActionsDropdown';
 import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
-import { CustomCss } from '../../../../../interfaces/workshopComponent';
 import useActionsDropdown from './compositionAPI/useActionsDropdown';
 import dropdown from '../options/dropdown/Dropdown.vue';
 import BoxShadowUtils from './utils/boxShadowUtils';
+import SharedUtils from './utils/sharedUtils';
+import RangeUtils from './utils/rangeUtils'
 
 interface Consts {
   SETTINGS_TYPES;
@@ -181,10 +182,8 @@ interface Consts {
   UNSET_COLOR_BUTTON_DISPLAYED_STATE;
   UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX;
   ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX: string;
-  getActiveModeCssPropertyValue: (param1: CustomCss, param2: SUB_COMPONENT_CSS_MODES, param3: string) => string;
   updateSettings: (param1?: any, param2?: WORKSHOP_TOOLBAR_OPTION_TYPES) => void;
   addDefaultValueIfCssModeMissing: (param1: SUB_COMPONENT_CSS_MODES, param2: string) => void;
-  parseRangeValue: (param1: string, param2: number, param3: number) => number;
   resetJs: () => void;
 }
 
@@ -203,26 +202,6 @@ export default {
       UNSET_COLOR_BUTTON_DISPLAYED_STATE,
       UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX,
       ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX: 'actionsDropdown-',
-      getActiveModeCssPropertyValue(css: CustomCss, activeMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): string {
-        // the following allows multiple cases to be checked in one execution
-        if (!css) return undefined;
-        switch (activeMode) {
-          case (SUB_COMPONENT_CSS_MODES.CLICK):
-            if (css[SUB_COMPONENT_CSS_MODES.CLICK] && css[SUB_COMPONENT_CSS_MODES.CLICK].hasOwnProperty(cssProperty)) {
-              return css[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
-            }
-          case (SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
-            if (css[SUB_COMPONENT_CSS_MODES.HOVER] && css[SUB_COMPONENT_CSS_MODES.HOVER].hasOwnProperty(cssProperty)) {
-              return css[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
-            }
-          case (SUB_COMPONENT_CSS_MODES.DEFAULT || SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
-            if (css[SUB_COMPONENT_CSS_MODES.DEFAULT] && css[SUB_COMPONENT_CSS_MODES.DEFAULT].hasOwnProperty(cssProperty)) {
-              return css[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty];
-            }
-          default:
-            return undefined;
-        }
-      },
       updateSettings(newSettings?: any, optionType?: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
         if (newSettings) this.settings = newSettings;
         if (optionType) SubcomponentSpecificSettingsState.setSubcomponentSpecificSettings(optionType,
@@ -233,38 +212,20 @@ export default {
           this.inputDropdownCurrentValues = {};
           (this.settings.options || []).forEach((setting) => {
             if (setting.type === SETTINGS_TYPES.RANGE) {
-              const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
-              if (cssPropertyValue !== undefined) {
-                if (customCss[customCssActiveMode]) {
-                  (setting.triggers || []).forEach((trigger) => {
-                    if (trigger.conditions.has(this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, trigger.cssProperty))) {
-                      customCss[customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
-                      this.selectorCurrentValues[setting.spec.cssProperty] = trigger.defaultValue;
-                    }
-                  });
-                }
-                const hasBoxShadowBeenSet = setting.spec.cssProperty === 'boxShadow' && BoxShadowUtils.setBoxShadowSettingsRangeValue(cssPropertyValue, setting.spec);
-                if (!hasBoxShadowBeenSet) {
-                  const singlePropertyValue = setting.spec.partialCss ? cssPropertyValue.split(' ')[setting.spec.partialCss.position] : cssPropertyValue;
-                  setting.spec.default = this.parseRangeValue(singlePropertyValue, setting.spec.smoothingDivisible, 2); 
-                }
-              } else if (setting.spec.subcomponentPropertiesObject) {
-                const value = this.subcomponentproperties[setting.spec.subcomponentPropertiesObject][setting.spec.objectContainingActiveOption][setting.spec.activeOptionPropertyKeyName];
-                setting.spec.default = this.parseRangeValue(value, setting.spec.smoothingDivisible, 1);
-              }
+              RangeUtils.updateSettings(setting, this.settings, customCss, customCssActiveMode, this.subcomponentproperties, this.selectorCurrentValues);
             } else if (setting.type === SETTINGS_TYPES.SELECT) {
               // default value for range is currently setting the select value, not the select value for ranges
               // potential race condition where range sets the select value and select may set it to something incorrect
-              const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
+              const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
               if (cssPropertyValue) { this.selectorCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
             } else if (setting.type === SETTINGS_TYPES.COLOR_PICKER) {
-              let cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
+              let cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
               if (setting.spec.cssProperty === 'boxShadow' && cssPropertyValue === 'unset') {
-                cssPropertyValue = this.getActiveModeCssPropertyValue(auxiliaryPartialCss, customCssActiveMode, setting.spec.cssProperty) || BoxShadowUtils.DEFAULT_BOX_SHADOW_COLOR_VALUE;
+                cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(auxiliaryPartialCss, customCssActiveMode, setting.spec.cssProperty) || BoxShadowUtils.DEFAULT_BOX_SHADOW_COLOR_VALUE;
               }
               if (cssPropertyValue) { setting.spec.default = setting.spec.partialCss ? cssPropertyValue.split(' ')[setting.spec.partialCss.position] : cssPropertyValue; }
             } else if (setting.type === SETTINGS_TYPES.INPUT_DROPDOWN) {
-              const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
+              const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
               if (cssPropertyValue) { this.inputDropdownCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
             } else if (setting.type === SETTINGS_TYPES.CHECKBOX) {
               if (setting.spec.javascript) {
@@ -272,7 +233,7 @@ export default {
               }  else if (setting.spec.subcomponentPropertiesObject) {
                 setting.spec.default = this.subcomponentproperties[setting.spec.subcomponentPropertiesObject][setting.spec.propertyKeyName];
               } else {
-                const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
+                const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
                 if (cssPropertyValue) { setting.spec.default = (cssPropertyValue === setting.spec.conditionalStyle.truthy); }
               }
             }
@@ -280,15 +241,12 @@ export default {
         });
       },
       addDefaultValueIfCssModeMissing(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): void {
-        const customCss = this.getActiveModeCssPropertyValue(this.subcomponentproperties.customCss, customCssActiveMode, cssProperty);
+        const customCss = SharedUtils.getActiveModeCssPropertyValue(this.subcomponentproperties.customCss, customCssActiveMode, cssProperty);
         if (!this.subcomponentproperties.customCss[customCssActiveMode]) {
           this.subcomponentproperties.customCss[customCssActiveMode] = { [cssProperty]: customCss };
         } else if (!this.subcomponentproperties.customCss[customCssActiveMode][cssProperty]) {
           this.subcomponentproperties.customCss[customCssActiveMode][cssProperty] = customCss;
         }
-      },
-      parseRangeValue(value: string, smoothingDivisible: number, postfixLength: number): number {
-        return Number.parseFloat(value.substring(0, value.length - postfixLength)) * smoothingDivisible;
       },
       resetJs(): void {
         this.subcomponentproperties.jsClasses = new Set([...this.subcomponentproperties.initialJsClasses]);
@@ -307,36 +265,8 @@ export default {
   // if the Settings.vue component logic is too coupled with 'boxShadow' (especially if there is another partialCss property introduced),
   // refactor it to extract the logic into a partialCss util file
   methods: {
-    updateRange(event: KeyboardEvent, setting: any): void {
-      const { triggers, spec } = setting;
-      const { cssProperty, smoothingDivisible, partialCss, isTime, subcomponentPropertiesObject, objectContainingActiveOption, activeOptionPropertyKeyName } = spec;
-      const { customCss, customCssActiveMode, auxiliaryPartialCss } = this.subcomponentproperties;
-      (triggers || []).forEach((trigger) => {
-          const cssPropertyValue = this.getActiveModeCssPropertyValue(customCss, SUB_COMPONENT_CSS_MODES.CLICK, trigger.cssProperty);
-          if (trigger.conditions.has(cssPropertyValue)) {
-            customCss[customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
-            if (trigger.selector) { this.selectorCurrentValues[trigger.cssProperty] = trigger.defaultValue; }
-          }
-      });
-      const rangeValue = (event.target as HTMLInputElement).value;
-      if (partialCss != undefined) {
-        if (customCss[customCssActiveMode][cssProperty] === undefined) {
-          const defaultValues = [ ...partialCss.fullDefaultValues ];
-          defaultValues[partialCss.position] = rangeValue;
-          customCss[customCssActiveMode][cssProperty] = defaultValues.join(' ');
-        } else {
-          if (cssProperty === 'boxShadow') BoxShadowUtils.setUnsetBoxShadowPropertiesToZero(customCss, auxiliaryPartialCss, customCssActiveMode);
-          const cssPropertyValues = customCss[customCssActiveMode][cssProperty].split(' ');
-          cssPropertyValues[partialCss.position] = `${rangeValue}px`;
-          customCss[customCssActiveMode][cssProperty] = cssPropertyValues.join(' ');
-        }
-        if (cssProperty === 'boxShadow') BoxShadowUtils.setZeroBoxShadowPropertiesToUnset(this.subcomponentproperties);
-      } else if (subcomponentPropertiesObject) {
-          this.subcomponentproperties[subcomponentPropertiesObject][objectContainingActiveOption]
-            [activeOptionPropertyKeyName] = `${rangeValue as unknown as number / smoothingDivisible}${isTime ? 's': 'px'}`;
-      } else {
-        customCss[customCssActiveMode][cssProperty] = `${Math.floor(rangeValue as unknown as number / smoothingDivisible)}${isTime ? 's': 'px'}`;
-      }
+    updateRange(event: MouseEvent, setting: any): void {
+      RangeUtils.updateProperties(event, setting, this.settings, this.subcomponentproperties, this.selectorCurrentValues);
     },
     rangeMouseDown(event: KeyboardEvent, customCssActiveMode: SUB_COMPONENT_CSS_MODES, spec: any): void {
       this.addDefaultValueIfCssModeMissing(customCssActiveMode, spec.cssProperty);
@@ -438,7 +368,7 @@ export default {
         this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][spec.cssProperty] = 'inherit';
       }
     },
-    checkboxMouseClick(spec: any, previousCheckboxValue: boolean): void {
+    checkboxMouseClick(spec: any, previousCheckboxValue: boolean, triggers: any): void {
       const { conditionalStyle, cssProperty, javascript, jsClassName, subcomponentPropertiesObject, propertyKeyName } = spec;
       const { customCss, customCssActiveMode, jsClasses } = this.subcomponentproperties;
       const newCheckboxValue = !previousCheckboxValue;
@@ -454,6 +384,17 @@ export default {
         // this functionality may no longer be required
         const cssValue = newCheckboxValue ? conditionalStyle.truthy : conditionalStyle.falsy;
         customCss[customCssActiveMode][cssProperty] = cssValue;
+      }
+      // export
+      if (triggers && triggers[newCheckboxValue.toString()]) {
+        const triggerValues = triggers[newCheckboxValue.toString()];
+        customCss[customCssActiveMode][triggerValues.cssProperty] = triggerValues.value;
+        for (let i = 0; i < this.settings.options.length; i += 1) {
+            if (this.settings.options[i].spec.cssProperty
+                && this.settings.options[i].spec.cssProperty === triggerValues.cssProperty) {
+              this.settings.options[i].spec.default = parseInt(triggerValues.value) || 0;
+            }
+          }
       }
     },
     resetSubcomponentProperties(options: any): void {

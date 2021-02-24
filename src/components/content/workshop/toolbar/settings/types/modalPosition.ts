@@ -4,23 +4,37 @@ import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 export default {
   options: [
     {
-      type: SETTINGS_TYPES.RANGE,
-      spec: {
-        name: 'Top',
-        default: 0,
-        scale: [0, 100],
-        smoothingDivisible: 4,
-        cssProperty: 'top',
-      },
-    },
-    {
       type: SETTINGS_TYPES.CHECKBOX,
       spec: {
-        name: 'Vertically Centred',
+        name: 'Center',
         subcomponentPropertiesObject: 'componentCenteringInParent',
         propertyKeyName: 'vertical',
         default: false,
       },
-    }
+      triggers: {
+        true: {
+          cssProperty: 'top',
+          value: undefined,
+        }
+      },
+    },
+    {
+      type: SETTINGS_TYPES.RANGE,
+      spec: {
+        name: 'Top',
+        default: 0,
+        scale: [0, 2000],
+        smoothingDivisible: 4,
+        cssProperty: 'top',
+      },
+      triggers: [
+        {
+          subcomponentPropertiesObject: 'componentCenteringInParent',
+          propertyKeyName: 'vertical',
+          defaultValue: false,
+          conditions: new Set([true]),
+        },
+      ]
+    },
   ]
 };
