@@ -14,7 +14,7 @@ export default {
       triggers: {
         true: {
           cssProperty: 'top',
-          value: undefined,
+          defaultValue: undefined,
         }
       },
     },

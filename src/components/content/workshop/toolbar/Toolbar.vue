@@ -1,5 +1,5 @@
 <template>
-  <div v-if="component" ref="toolbarContainer" class="toolbar-container-default toolbar-container-position-top">
+  <div v-if="component" ref="toolbarContainer" class="toolbar-container-default">
     <div ref="toolbar">
       <options ref="options"
         :component="component"
@@ -13,7 +13,7 @@
         @toggle-expanded-modal-preview-mode="expandModalComponent($event)"
         @toggle-toolbar-position="toggleToolbarPosition"/>
       <settings v-if="isSettingsDisplayed" ref="settings"
-        :subcomponentproperties="component.subcomponents[component.subcomponentsActiveMode]"
+        :subcomponentProperties="component.subcomponents[component.subcomponentsActiveMode]"
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
         @play-preview-transition-animation="$emit('play-preview-transition-animation', $event)"
         @stop-preview-transition-animation="$emit('stop-preview-transition-animation')"/>
@@ -87,15 +87,13 @@ export default {
 <style lang="css" scoped>
   .toolbar-container-default {
     width: 98.5%;
+    height: 228px;
   }
   .toolbar-container-modal-preview-active {
     width: 100vw;
     position: absolute;
     left: -30vw;
     z-index: 1;
-  }
-  .toolbar-container-position-top {
-    height: 228px;
   }
   .toolbar-container-modal-preview-active-position-bottom {
     bottom: 0px;

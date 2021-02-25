@@ -1,8 +1,8 @@
-import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES } from '../../../consts/expandedModalToolbarContainerPositionClasses.enum';
+import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES } from '../../../consts/expandedModalModeClasses';
 import { ElementStyleProperties } from '../../../interfaces/elementStyleProperties';
 
 let isTransitionInProgressState = false;
-let expandedModalModeToolbarContainerPositionState = EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.TOP;
+let expandedModalModeToolbarContainerPositionState = EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.DEFAULT;
 let currentExitTransitionModalDefaultPropertiesState = {};
 let currentlyPendingTransitionInitState = null;
 let currentlyPendingTransitionEndingState = null;

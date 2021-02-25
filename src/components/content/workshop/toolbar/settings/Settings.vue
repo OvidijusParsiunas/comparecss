@@ -3,7 +3,7 @@
     <div style="position: relative; display: flex; margin-top: 10px;">
       <div style="padding: 15px; background-color: rgb(251 251 251); border-radius: 20px; margin: 0; width: 100%"> 
         <div class="container" style="display: flex">
-          <div v-if="areSettingsVisible" style="display: grid; grid-template-columns: 50% 50%; width: 80%">
+          <div v-if="settingsVisible" style="display: grid; grid-template-columns: 50% 50%; width: 80%">
             <div v-for="(setting, settingIndex) in settings.options" :key="setting">
 
               <div v-if="setting.type === SETTINGS_TYPES.RANGE">
@@ -13,19 +13,19 @@
                 <div style="position: relative; float: left">
                   <div class="range-popover">
                     <div v-if="setting.spec.subcomponentPropertiesObject">
-                      {{subcomponentproperties[setting.spec.subcomponentPropertiesObject][setting.spec.objectContainingActiveOption][setting.spec.activeOptionPropertyKeyName]}}
+                      {{subcomponentProperties[setting.spec.subcomponentPropertiesObject][setting.spec.objectContainingActiveOption][setting.spec.activeOptionPropertyKeyName]}}
                     </div>
                     <!-- the boxShadow range properties are set to 'unset' when all are 0px (for firefox) -->
-                    <div v-else-if="subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode]
-                      && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]
-                      && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty] !== 'unset'">
-                      {{setting.spec.partialCss !== undefined && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]
-                        ? subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty].split(' ')[setting.spec.partialCss.position]
-                        : subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]}}
+                    <div v-else-if="subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode]
+                      && subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode][setting.spec.cssProperty]
+                      && subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode][setting.spec.cssProperty] !== 'unset'">
+                      {{setting.spec.partialCss !== undefined && subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode][setting.spec.cssProperty]
+                        ? subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode][setting.spec.cssProperty].split(' ')[setting.spec.partialCss.position]
+                        : subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode][setting.spec.cssProperty]}}
                     </div>
-                    <div v-else-if="subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode]
-                      && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]
-                      && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty] === 'unset'">
+                    <div v-else-if="subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode]
+                      && subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode][setting.spec.cssProperty]
+                      && subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode][setting.spec.cssProperty] === 'unset'">
                       0px
                     </div>
                     <div v-else>
@@ -36,7 +36,7 @@
                     v-bind:min="setting.spec.scale[0]"
                     v-bind:max="setting.spec.scale[1]"
                     v-model="setting.spec.default"
-                    @mousedown="rangeMouseDown($event, subcomponentproperties.customCssActiveMode, setting.spec)"
+                    @mousedown="rangeMouseDown($event, subcomponentProperties.customCssActiveMode, setting.spec)"
                     @mouseup="rangeMouseUp"
                     @contextmenu="preventRightClickEvent"
                     @input="updateRange($event, setting)">
@@ -68,28 +68,28 @@
                   <object id="Dlg" classid="CLSID:3050F819-98B5-11CF-BB82-00AA00BDCE0B" width="0" height="0"></object>
                 -->
                 <input style="float: left" type="color" name="clr1" 
-                  @click="colorInputClick(subcomponentproperties.customCssActiveMode, setting.spec.cssProperty)"
+                  @click="colorInputClick(subcomponentProperties.customCssActiveMode, setting.spec.cssProperty)"
                   @input="colorChanged($event, setting)"
                   v-model="setting.spec.default"/>
                 <button class="unset-color-button" id="dropdownMenuButton"
                   v-if="setting.spec.unsetColorButtonAvailable && 
-                    ((subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode]
-                      && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]
-                      && ((!subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX]
-                            && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty] !== 'inherit')
+                    ((subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode]
+                      && subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode][setting.spec.cssProperty]
+                      && ((!subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX]
+                            && subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode][setting.spec.cssProperty] !== 'inherit')
                           || 
-                          (subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX]
-                            && subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX] === UNSET_COLOR_BUTTON_DISPLAYED_STATE.DISPLAY)))
-                    || ((subcomponentproperties.customCssActiveMode === SUB_COMPONENT_CSS_MODES.HOVER
-                        && ((subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] && subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty] && subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty] !== 'inherit')
-                          || ((!subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] || !subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty])
-                            && subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][setting.spec.cssProperty] !== 'inherit'))
+                          (subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX]
+                            && subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX] === UNSET_COLOR_BUTTON_DISPLAYED_STATE.DISPLAY)))
+                    || ((subcomponentProperties.customCssActiveMode === SUB_COMPONENT_CSS_MODES.HOVER
+                        && ((subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty] && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty] !== 'inherit')
+                          || ((!subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] || !subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty])
+                            && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][setting.spec.cssProperty] !== 'inherit'))
                         )
-                        || (subcomponentproperties.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
-                          && ((subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK] && subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][setting.spec.cssProperty] && subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][setting.spec.cssProperty] !== 'inherit')
-                            || ((!subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK] || !subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][setting.spec.cssProperty])
-                                  && (((!subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] || !subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty]) && subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][setting.spec.cssProperty] !== 'inherit')
-                                      || (subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] && subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty] && subcomponentproperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty] !== 'inherit')))))
+                        || (subcomponentProperties.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
+                          && ((subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK] && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][setting.spec.cssProperty] && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][setting.spec.cssProperty] !== 'inherit')
+                            || ((!subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK] || !subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][setting.spec.cssProperty])
+                                  && (((!subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] || !subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty]) && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][setting.spec.cssProperty] !== 'inherit')
+                                      || (subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty] && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty] !== 'inherit')))))
                        )
                     )"
                   @click="removeColor(setting.spec)">
@@ -104,7 +104,7 @@
                 <div class="input-group">
                   <input type="text" class="form-control" aria-label="Text input with dropdown button"
                     :ref="`elementReference${settingIndex}`"
-                    v-bind:value="inputDropdownCurrentValues[setting.spec.cssProperty] || subcomponentproperties.customCss[subcomponentproperties.customCssActiveMode][setting.spec.cssProperty]"
+                    v-bind:value="inputDropdownCurrentValues[setting.spec.cssProperty] || subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode][setting.spec.cssProperty]"
                     @input="inputDropdownKeyboardInput($event, setting.spec.cssProperty)"
                     @keyup.enter="blurInputDropdown(`elementReference${settingIndex}`)">
                   <div class="input-group-append">
@@ -125,21 +125,21 @@
                   :uniqueIdentifier="`${ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX}${settingIndex}`"
                   :dropdownOptions="setting.spec.options"
                   :objectContainingActiveOption="setting.spec.subcomponentPropertiesObject
-                    ? subcomponentproperties[setting.spec.subcomponentPropertiesObject][setting.spec.objectContainingActiveOption]
-                    : subcomponentproperties[setting.spec.objectContainingActiveOption]"
+                    ? subcomponentProperties[setting.spec.subcomponentPropertiesObject][setting.spec.objectContainingActiveOption]
+                    : subcomponentProperties[setting.spec.objectContainingActiveOption]"
                   :activeOptionPropertyKeyName="setting.spec.activeOptionPropertyKeyName"
                   :fontAwesomeIconClassName="'fa-caret-down'"
                   @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
                   @mouse-enter-button="mouseEnterButton(this, setting.spec.subcomponentPropertiesObject
-                    ? subcomponentproperties[setting.spec.subcomponentPropertiesObject][setting.spec.objectContainingActiveOption][setting.spec.activeOptionPropertyKeyName]
-                    : subcomponentproperties[setting.spec.objectContainingActiveOption][setting.spec.activeOptionPropertyKeyName], setting.spec.mouseEnterButtonCallback)"
+                    ? subcomponentProperties[setting.spec.subcomponentPropertiesObject][setting.spec.objectContainingActiveOption][setting.spec.activeOptionPropertyKeyName]
+                    : subcomponentProperties[setting.spec.objectContainingActiveOption][setting.spec.activeOptionPropertyKeyName], setting.spec.mouseEnterButtonCallback)"
                   @mouse-leave-button="mouseLeaveButton(this, $event, setting.spec.mouseLeaveButtonCallback)"
                   @mouse-enter-option="mouseEnterOption(this, $event, setting.spec.mouseEnterOptionCallback)"
                   @mouse-leave-dropdown="mouseLeaveDropdown(this, $event, setting.spec.mouseLeaveDropdownCallback)"
                   @mouse-click-option="mouseClickOption(this, $event, setting.spec.mouseClickOptionCallback)"
                   @mouse-click-new-option="optionMouseClickNewOption(setting.spec.subcomponentPropertiesObject
-                    ? subcomponentproperties[setting.spec.subcomponentPropertiesObject][setting.spec.objectContainingActiveOption]
-                    : subcomponentproperties[setting.spec.objectContainingActiveOption], setting.spec.activeOptionPropertyKeyName, $event)"/>
+                    ? subcomponentProperties[setting.spec.subcomponentPropertiesObject][setting.spec.objectContainingActiveOption]
+                    : subcomponentProperties[setting.spec.objectContainingActiveOption], setting.spec.activeOptionPropertyKeyName, $event)"/>
               </div>
 
               <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.CHECKBOX">
@@ -173,8 +173,9 @@ import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
 import useActionsDropdown from './compositionAPI/useActionsDropdown';
 import dropdown from '../options/dropdown/Dropdown.vue';
 import BoxShadowUtils from './utils/boxShadowUtils';
+import CheckboxUtils from './utils/checkboxUtils';
 import SharedUtils from './utils/sharedUtils';
-import RangeUtils from './utils/rangeUtils'
+import RangeUtils from './utils/rangeUtils';
 
 interface Consts {
   SETTINGS_TYPES;
@@ -191,7 +192,7 @@ interface Data {
   settings: any;
   selectorCurrentValues: unknown;
   inputDropdownCurrentValues: unknown;
-  areSettingsVisible: boolean;
+  settingsVisible: boolean;
 }
 
 // can be placed into composition API?
@@ -206,14 +207,14 @@ export default {
       updateSettings(newSettings?: any, optionType?: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
         if (newSettings) this.settings = newSettings;
         if (optionType) SubcomponentSpecificSettingsState.setSubcomponentSpecificSettings(optionType,
-          this.subcomponentproperties.subcomponentSpecificSettings, this.settings.options);
+          this.subcomponentProperties.subcomponentSpecificSettings, this.settings.options);
         this.$nextTick(() => {
-          const { customCss, customCssActiveMode, jsClasses, auxiliaryPartialCss } = this.subcomponentproperties;
+          const { customCss, customCssActiveMode, jsClasses, auxiliaryPartialCss } = this.subcomponentProperties;
           this.selectorCurrentValues = {};
           this.inputDropdownCurrentValues = {};
           (this.settings.options || []).forEach((setting) => {
             if (setting.type === SETTINGS_TYPES.RANGE) {
-              RangeUtils.updateSettings(setting, this.settings, customCss, customCssActiveMode, this.subcomponentproperties, this.selectorCurrentValues);
+              RangeUtils.updateSettings(setting, this.settings, customCss, customCssActiveMode, this.subcomponentProperties, this.selectorCurrentValues);
             } else if (setting.type === SETTINGS_TYPES.SELECT) {
               // default value for range is currently setting the select value, not the select value for ranges
               // potential race condition where range sets the select value and select may set it to something incorrect
@@ -229,33 +230,26 @@ export default {
               const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
               if (cssPropertyValue) { this.inputDropdownCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
             } else if (setting.type === SETTINGS_TYPES.CHECKBOX) {
-              if (setting.spec.javascript) {
-                setting.spec.default = jsClasses.has(setting.spec.jsClassName);
-              }  else if (setting.spec.subcomponentPropertiesObject) {
-                setting.spec.default = this.subcomponentproperties[setting.spec.subcomponentPropertiesObject][setting.spec.propertyKeyName];
-              } else {
-                const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
-                if (cssPropertyValue) { setting.spec.default = (cssPropertyValue === setting.spec.conditionalStyle.truthy); }
-              }
+              CheckboxUtils.updateSettings(setting, jsClasses, this.subcomponentProperties);
             }
           });
           // this is a bug fix where the range would not re-render even though setting.spec.default was updated correctly
-          this.areSettingsVisible = false;
-          this.areSettingsVisible = true;
-          // if using this.areSettingsVisible flag to re-render settings is slow/stuttery, use the following to trigger a rerender
-          // this.subcomponentproperties.customCss[customCssActiveMode] = { ...this.subcomponentproperties.customCss[customCssActiveMode] };
+          this.settingsVisible = false;
+          this.settingsVisible = true;
+          // if using this.settingsVisible flag to re-render settings is slow/stuttery, use the following to trigger a rerender
+          // this.subcomponentProperties.customCss[customCssActiveMode] = { ...this.subcomponentProperties.customCss[customCssActiveMode] };
         });
       },
       addDefaultValueIfCssModeMissing(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): void {
-        const customCss = SharedUtils.getActiveModeCssPropertyValue(this.subcomponentproperties.customCss, customCssActiveMode, cssProperty);
-        if (!this.subcomponentproperties.customCss[customCssActiveMode]) {
-          this.subcomponentproperties.customCss[customCssActiveMode] = { [cssProperty]: customCss };
-        } else if (!this.subcomponentproperties.customCss[customCssActiveMode][cssProperty]) {
-          this.subcomponentproperties.customCss[customCssActiveMode][cssProperty] = customCss;
+        const customCss = SharedUtils.getActiveModeCssPropertyValue(this.subcomponentProperties.customCss, customCssActiveMode, cssProperty);
+        if (!this.subcomponentProperties.customCss[customCssActiveMode]) {
+          this.subcomponentProperties.customCss[customCssActiveMode] = { [cssProperty]: customCss };
+        } else if (!this.subcomponentProperties.customCss[customCssActiveMode][cssProperty]) {
+          this.subcomponentProperties.customCss[customCssActiveMode][cssProperty] = customCss;
         }
       },
       resetJs(): void {
-        this.subcomponentproperties.jsClasses = new Set([...this.subcomponentproperties.initialJsClasses]);
+        this.subcomponentProperties.jsClasses = new Set([...this.subcomponentProperties.initialJsClasses]);
       },
       ...useActionsDropdown(),
     };
@@ -264,7 +258,7 @@ export default {
     selectorCurrentValues: {},
     inputDropdownCurrentValues: {},
     settings: {},
-    areSettingsVisible: true,
+    settingsVisible: true,
   }),
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   // put these methods into services
@@ -273,7 +267,7 @@ export default {
   // refactor it to extract the logic into a partialCss util file
   methods: {
     updateRange(event: MouseEvent, setting: any): void {
-      RangeUtils.updateProperties(event, setting, this.settings, this.subcomponentproperties, this.selectorCurrentValues);
+      RangeUtils.updateProperties(event, setting, this.settings, this.subcomponentProperties, this.selectorCurrentValues);
     },
     rangeMouseDown(event: KeyboardEvent, customCssActiveMode: SUB_COMPONENT_CSS_MODES, spec: any): void {
       this.addDefaultValueIfCssModeMissing(customCssActiveMode, spec.cssProperty);
@@ -289,17 +283,17 @@ export default {
       event.preventDefault();
     },
     selectOptionMouseOver(option: string, cssProperty: string): void {
-      this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = option;
+      this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode][cssProperty] = option;
     },
     selectMenuMouseLeave(cssProperty: string): void {
-      this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = this.selectorCurrentValues[cssProperty];
+      this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode][cssProperty] = this.selectorCurrentValues[cssProperty];
     },
     openDropdown(cssProperty: string): void {
-      this.inputDropdownCurrentValues[cssProperty] = this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty];
+      this.inputDropdownCurrentValues[cssProperty] = this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode][cssProperty];
     },
     selectOptionClick(option: string, setting: any): void {
       const { triggers, spec } = setting;
-      const { customCss, customCssActiveMode } = this.subcomponentproperties;
+      const { customCss, customCssActiveMode } = this.subcomponentProperties;
       customCss[customCssActiveMode][spec.cssProperty] = option;
       this.selectorCurrentValues[spec.cssProperty] = option;
       if (triggers && triggers[option]) {
@@ -320,19 +314,19 @@ export default {
       }
     },
     inputDropdownOptionClick(option: string, cssProperty: string): void {
-      this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = option;
+      this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode][cssProperty] = option;
       this.inputDropdownCurrentValues[cssProperty] = '';
     },
     inputDropdownOptionMouseOver(option: string, cssProperty: string): void {
-      this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = option;
+      this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode][cssProperty] = option;
     },
     inputDropdownOptionMouseLeave(cssProperty: string): void {
       if (this.inputDropdownCurrentValues[cssProperty]) {
-        this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = this.inputDropdownCurrentValues[cssProperty];
+        this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode][cssProperty] = this.inputDropdownCurrentValues[cssProperty];
       }
     },
     inputDropdownKeyboardInput(event: KeyboardEvent, cssProperty: string): void {
-      this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][cssProperty] = (event.target as HTMLInputElement).value;
+      this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode][cssProperty] = (event.target as HTMLInputElement).value;
     },
     blurInputDropdown(referenceId: string): void {
       this.$refs[referenceId].blur();
@@ -340,13 +334,13 @@ export default {
     colorChanged(event: KeyboardEvent, setting: any): void {
       const { cssProperty, partialCss } = setting.spec;
       const colorPickerValue = (event.target as HTMLInputElement).value;
-      const { customCss, customCssActiveMode } = this.subcomponentproperties;
+      const { customCss, customCssActiveMode } = this.subcomponentProperties;
       if (partialCss !== undefined) {
         if (customCss[customCssActiveMode][cssProperty] === undefined) {
           const defaultValues = [ ...partialCss.fullDefaultValues ];
           defaultValues[partialCss.position] = colorPickerValue;
           if (cssProperty === 'boxShadow' && customCss[customCssActiveMode][cssProperty] === 'unset') {
-            BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(this.subcomponentproperties, colorPickerValue);
+            BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(this.subcomponentProperties, colorPickerValue);
           } else {
             customCss[customCssActiveMode][cssProperty] = cssProperty === 'boxShadow' ? 'unset' : defaultValues.join(' ');
           }
@@ -356,7 +350,7 @@ export default {
             cssPropertyValues[partialCss.position] = colorPickerValue;
             customCss[customCssActiveMode][cssProperty] = cssPropertyValues.join(' ');
           } else if (cssProperty === 'boxShadow') {
-            BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(this.subcomponentproperties, colorPickerValue);
+            BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(this.subcomponentProperties, colorPickerValue);
           }
         }
       } else {
@@ -365,56 +359,30 @@ export default {
     },
     colorInputClick(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): void {
       this.addDefaultValueIfCssModeMissing(customCssActiveMode, cssProperty);
-      this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode].transition = 'unset';
+      this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode].transition = 'unset';
     },
     removeColor(spec: any): void {
       spec.default = '';
-      if (!this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode]) {
-        this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode] = { [spec.cssProperty]: 'inherit'};
+      if (!this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode]) {
+        this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode] = { [spec.cssProperty]: 'inherit'};
       } else {
-        this.subcomponentproperties.customCss[this.subcomponentproperties.customCssActiveMode][spec.cssProperty] = 'inherit';
+        this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode][spec.cssProperty] = 'inherit';
       }
     },
     checkboxMouseClick(spec: any, previousCheckboxValue: boolean, triggers: any): void {
-      const { conditionalStyle, cssProperty, javascript, jsClassName, subcomponentPropertiesObject, propertyKeyName } = spec;
-      const { customCss, customCssActiveMode, jsClasses } = this.subcomponentproperties;
-      const newCheckboxValue = !previousCheckboxValue;
-      if (javascript) {
-        if (newCheckboxValue) {
-          jsClasses.add(jsClassName);
-        } else {
-          jsClasses.delete(jsClassName);
-        }
-      } else if (subcomponentPropertiesObject) {
-        this.subcomponentproperties[subcomponentPropertiesObject][propertyKeyName] = newCheckboxValue;
-      } else {
-        // this functionality may no longer be required
-        const cssValue = newCheckboxValue ? conditionalStyle.truthy : conditionalStyle.falsy;
-        customCss[customCssActiveMode][cssProperty] = cssValue;
-      }
-      // export
-      if (triggers && triggers[newCheckboxValue.toString()]) {
-        const triggerValues = triggers[newCheckboxValue.toString()];
-        customCss[customCssActiveMode][triggerValues.cssProperty] = triggerValues.value;
-        for (let i = 0; i < this.settings.options.length; i += 1) {
-            if (this.settings.options[i].spec.cssProperty
-                && this.settings.options[i].spec.cssProperty === triggerValues.cssProperty) {
-              this.settings.options[i].spec.default = parseInt(triggerValues.value) || 0;
-            }
-          }
-      }
+      CheckboxUtils.updateProperties(previousCheckboxValue, spec, triggers, this.subcomponentProperties, this.settings)
     },
     resetSubcomponentProperties(options: any): void {
       options.forEach((option) => {
         const { cssProperty, jsClassName, subcomponentPropertiesObject, objectContainingActiveOption, activeOptionPropertyKeyName, propertyKeyName } = option.spec;
         if (subcomponentPropertiesObject) {
           if (activeOptionPropertyKeyName) {
-            this.subcomponentproperties[subcomponentPropertiesObject]
-              [objectContainingActiveOption][activeOptionPropertyKeyName] = this.subcomponentproperties.defaultProperties[subcomponentPropertiesObject]
+            this.subcomponentProperties[subcomponentPropertiesObject]
+              [objectContainingActiveOption][activeOptionPropertyKeyName] = this.subcomponentProperties.defaultProperties[subcomponentPropertiesObject]
                 [objectContainingActiveOption][activeOptionPropertyKeyName];
           } if (propertyKeyName) {
-            this.subcomponentproperties[subcomponentPropertiesObject]
-              [propertyKeyName] = this.subcomponentproperties.defaultProperties[subcomponentPropertiesObject][propertyKeyName];
+            this.subcomponentProperties[subcomponentPropertiesObject]
+              [propertyKeyName] = this.subcomponentProperties.defaultProperties[subcomponentPropertiesObject][propertyKeyName];
           }
           return;
         }
@@ -424,7 +392,7 @@ export default {
         }
         let cssValue = undefined;
         let propertyRemoved = false;
-        const { customCss, initialCss, auxiliaryPartialCss, customCssActiveMode } = this.subcomponentproperties;
+        const { customCss, initialCss, auxiliaryPartialCss, customCssActiveMode } = this.subcomponentProperties;
         switch (customCssActiveMode) {
           case (SUB_COMPONENT_CSS_MODES.CLICK): {
             if (initialCss[SUB_COMPONENT_CSS_MODES.CLICK] && initialCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty]) {
@@ -475,7 +443,7 @@ export default {
     }
   },
   props: {
-    subcomponentproperties: Object,
+    subcomponentProperties: Object,
   },
   components: {
     dropdown,

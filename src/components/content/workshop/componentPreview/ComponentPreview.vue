@@ -229,6 +229,12 @@ export default {
 </script>
 
 <style lang="css" scoped>
+  .static-position {
+    top: 0px !important;
+    left: 0px !important;
+    bottom: 0px !important;
+    right: 0px !important;
+  }
   .component-preview-container-default {
     position: relative;
     height: 50%;
@@ -340,7 +346,7 @@ export default {
     /* the following color is partially transparent and uses the background color to set its own color */
     border-color: rgb(64 197 255 / 0%) !important;
     position: absolute !important;
-    top: 0px !important;
+    top: 0px;
     width: 100%;
     pointer-events: none;
     z-index: 1;

@@ -1,4 +1,4 @@
-import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES } from '../../../../consts/expandedModalToolbarContainerPositionClasses.enum';
+import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES, STATIC_POSITION_CLASS } from '../../../../consts/expandedModalModeClasses';
 import { OPACITY_INVISIBLE, OPACITY_VISIBLE, LINEAR_SPEED_TRANSITION, OPACITY_PROPERTY, UNSET } from './sharedConsts';
 import { ExitCallback, ModalEntranceTransition, ModalExitTransition } from '../../../../interfaces/modalTransitions';
 import { ElementStyleProperties } from '../../../../interfaces/elementStyleProperties';
@@ -56,7 +56,7 @@ export default class TransitionsService {
     toolbarElement.classList.remove(TransitionsService.TOOLBAR_ELEMENT_ACTIVE_MODE_CLASS);
     toolbarContainerElement.classList.replace(TransitionsService.TOOLBAR_CONTAINER_ELEMENT_ACTIVE_MODE_CLASS, TransitionsService.TOOLBAR_CONTAINER_ELEMENT_DEFAULT_CLASS);
     if (expandedModalPreviewModeState.getExpandedModalModeToolbarContainerPositionState() === EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM) {
-      toolbarContainerElement.classList.replace(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM, EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.TOP);
+      toolbarContainerElement.classList.remove(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM);
     }
     toolbarPositionToggleElement.style.display = 'none';
     setTimeout(() => {
@@ -88,6 +88,7 @@ export default class TransitionsService {
 
   private static exitCallback(setOptionToDefaultCallback: () => void, modalElement: HTMLElement, backgroundElement: HTMLElement,
       toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
+    TransitionsService.toggleModalStaticPosition(modalElement, 'add');
     setOptionToDefaultCallback();
     const exitTransitionModalDefaultProperties = expandedModalPreviewModeState.getCurrentExitTransitionModalDefaultPropertiesState();
     TransitionsService.setModalPropertiesAfterExitTransition(modalElement, exitTransitionModalDefaultProperties);
@@ -109,7 +110,7 @@ export default class TransitionsService {
       toolbarElement.classList.add(TransitionsService.TOOLBAR_ELEMENT_ACTIVE_MODE_CLASS);
       toolbarContainerElement.classList.replace(TransitionsService.TOOLBAR_CONTAINER_ELEMENT_DEFAULT_CLASS, TransitionsService.TOOLBAR_CONTAINER_ELEMENT_ACTIVE_MODE_CLASS);
       if (expandedModalPreviewModeState.getExpandedModalModeToolbarContainerPositionState() === EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM) {
-        toolbarContainerElement.classList.replace(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.TOP, EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM);
+        toolbarContainerElement.classList.add(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM);
       }
       toolbarPositionToggleElement.style.display = 'block';
       toolbarContainerElement.style.opacity = OPACITY_VISIBLE;
@@ -119,11 +120,16 @@ export default class TransitionsService {
     }, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
   }
 
+  private static toggleModalStaticPosition(modalElement: HTMLElement, toggleName: 'add' | 'remove'): void {
+    modalElement.classList[toggleName](STATIC_POSITION_CLASS);
+  }
+
   private static startPreviewTransition(backgroundElement: HTMLElement, modalElement: HTMLElement,
       modalEntranceTransition: ModalEntranceTransition, transitionDuration: string): void {
     TransitionsService.opacityFadeTransition(OPACITY_INVISIBLE, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS,
       backgroundElement, modalElement);
     setTimeout(() => {
+      TransitionsService.toggleModalStaticPosition(modalElement, 'remove');
       backgroundElement.classList.replace(TransitionsService.BACKGROUND_ELEMENT_DEFAULT_CLASS, TransitionsService.BACKGROUND_ELEMENT_ACTIVE_MODE_CLASS);
       modalEntranceTransition(transitionDuration, modalElement, TransitionsService.unsetTransitionProperties, backgroundElement);
     }, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
@@ -175,15 +181,15 @@ export default class TransitionsService {
   }
 
   public static toggleToolbarPosition(toolbarContainerElement: HTMLElement): void {
-    const newExpandedModalModeToolbarContainerPositionState = expandedModalPreviewModeState.
-      getExpandedModalModeToolbarContainerPositionState() === EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM
-      ? EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.TOP
-      : EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM;
     TransitionsService.opacityFadeTransition(OPACITY_INVISIBLE, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
     setTimeout(() => {
-      toolbarContainerElement.classList.replace(expandedModalPreviewModeState.getExpandedModalModeToolbarContainerPositionState(),
-        newExpandedModalModeToolbarContainerPositionState);
-      expandedModalPreviewModeState.setExpandedModalModeToolbarContainerPositionState(newExpandedModalModeToolbarContainerPositionState);
+      if (expandedModalPreviewModeState.getExpandedModalModeToolbarContainerPositionState() === EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM) {
+        toolbarContainerElement.classList.remove(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM);
+        expandedModalPreviewModeState.setExpandedModalModeToolbarContainerPositionState(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.DEFAULT);
+      } else {
+        toolbarContainerElement.classList.add(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM);
+        expandedModalPreviewModeState.setExpandedModalModeToolbarContainerPositionState(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM);
+      }
       TransitionsService.opacityFadeTransition(OPACITY_VISIBLE, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
     }, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
   }
