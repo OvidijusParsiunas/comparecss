@@ -3,7 +3,7 @@
     <div style="position: relative; display: flex; margin-top: 10px;">
       <div style="padding: 15px; background-color: rgb(251 251 251); border-radius: 20px; margin: 0; width: 100%"> 
         <div class="container" style="display: flex">
-          <div style="display: grid; grid-template-columns: 50% 50%; width: 80%">
+          <div v-if="areSettingsVisible" style="display: grid; grid-template-columns: 50% 50%; width: 80%">
             <div v-for="(setting, settingIndex) in settings.options" :key="setting">
 
               <div v-if="setting.type === SETTINGS_TYPES.RANGE">
@@ -191,6 +191,7 @@ interface Data {
   settings: any;
   selectorCurrentValues: unknown;
   inputDropdownCurrentValues: unknown;
+  areSettingsVisible: boolean;
 }
 
 // can be placed into composition API?
@@ -238,6 +239,11 @@ export default {
               }
             }
           });
+          // this is a bug fix where the range would not re-render even though setting.spec.default was updated correctly
+          this.areSettingsVisible = false;
+          this.areSettingsVisible = true;
+          // if using this.areSettingsVisible flag to re-render settings is slow/stuttery, use the following to trigger a rerender
+          // this.subcomponentproperties.customCss[customCssActiveMode] = { ...this.subcomponentproperties.customCss[customCssActiveMode] };
         });
       },
       addDefaultValueIfCssModeMissing(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): void {
@@ -258,6 +264,7 @@ export default {
     selectorCurrentValues: {},
     inputDropdownCurrentValues: {},
     settings: {},
+    areSettingsVisible: true,
   }),
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
   // put these methods into services
