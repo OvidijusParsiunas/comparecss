@@ -1,5 +1,5 @@
 <template>
-  <div v-if="component" ref="toolbarContainer" class="toolbar-container-default">
+  <div v-if="component" ref="toolbarContainer" :class="TOOLBAR_CONTAINER_DEFAULT_CLASS">
     <div ref="toolbar">
       <options ref="options"
         :component="component"
@@ -26,10 +26,15 @@ import ExpandedModalPreviewModeTransitionsService from '../../../../services/wor
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../consts/workshopToolbarOptionTypes.enum';
+import { TOOLBAR_CONTAINER_GENERAL_CLASSES } from '../../../../consts/toolbarClasses';
 import { optionToSettings } from './settings/types/optionToSettings';
 import { Option } from '../../../../interfaces/componentOptions';
 import settings from './settings/Settings.vue';
 import options from './options/Options.vue';
+
+interface Consts {
+  TOOLBAR_CONTAINER_DEFAULT_CLASS: TOOLBAR_CONTAINER_GENERAL_CLASSES;
+}
 
 interface Data {
   isSettingsDisplayed: boolean;
@@ -37,6 +42,11 @@ interface Data {
 }
 
 export default {
+  setup(): Consts {
+    return {
+      TOOLBAR_CONTAINER_DEFAULT_CLASS: TOOLBAR_CONTAINER_GENERAL_CLASSES.DEFAULT,
+    };
+  },
   data: (): Data => ({
     isSettingsDisplayed: false,
     lastActiveOptionPriorToAllComponentsDeletion: null,

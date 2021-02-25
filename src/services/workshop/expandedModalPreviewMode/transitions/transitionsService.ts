@@ -1,8 +1,9 @@
-import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES, STATIC_POSITION_CLASS } from '../../../../consts/expandedModalModeClasses';
+import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES, TOOLBAR_CONTAINER_GENERAL_CLASSES } from '../../../../consts/toolbarClasses';
 import { OPACITY_INVISIBLE, OPACITY_VISIBLE, LINEAR_SPEED_TRANSITION, OPACITY_PROPERTY, UNSET } from './sharedConsts';
 import { ExitCallback, ModalEntranceTransition, ModalExitTransition } from '../../../../interfaces/modalTransitions';
 import { ElementStyleProperties } from '../../../../interfaces/elementStyleProperties';
 import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
+import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 
 export interface TransitionProperties {
   transitionDuration?: string;
@@ -16,8 +17,6 @@ export default class TransitionsService {
   // TO-DO these values will probably need to be placed in a const area as they will be used to set everything back to normal
   private static BACKGROUND_ELEMENT_DEFAULT_CLASS = 'component-preview-container-default';
   private static BACKGROUND_ELEMENT_ACTIVE_MODE_CLASS = 'component-preview-container-modal';
-  private static TOOLBAR_CONTAINER_ELEMENT_DEFAULT_CLASS = 'toolbar-container-default';
-  private static TOOLBAR_CONTAINER_ELEMENT_ACTIVE_MODE_CLASS = 'toolbar-container-modal-preview-active';
   private static TOOLBAR_ELEMENT_ACTIVE_MODE_CLASS = 'toolbar-modal-preview-active';
   private static START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS = 150;
   private static EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS = 150;
@@ -54,7 +53,7 @@ export default class TransitionsService {
 
   private static exitToolbarTransition(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
     toolbarElement.classList.remove(TransitionsService.TOOLBAR_ELEMENT_ACTIVE_MODE_CLASS);
-    toolbarContainerElement.classList.replace(TransitionsService.TOOLBAR_CONTAINER_ELEMENT_ACTIVE_MODE_CLASS, TransitionsService.TOOLBAR_CONTAINER_ELEMENT_DEFAULT_CLASS);
+    toolbarContainerElement.classList.replace(TOOLBAR_CONTAINER_GENERAL_CLASSES.EXPANDED_MODAL_MODE_ACTIVE, TOOLBAR_CONTAINER_GENERAL_CLASSES.DEFAULT);
     if (expandedModalPreviewModeState.getExpandedModalModeToolbarContainerPositionState() === EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM) {
       toolbarContainerElement.classList.remove(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM);
     }
@@ -108,7 +107,7 @@ export default class TransitionsService {
     TransitionsService.opacityFadeTransition(OPACITY_INVISIBLE, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
     setTimeout(() => {
       toolbarElement.classList.add(TransitionsService.TOOLBAR_ELEMENT_ACTIVE_MODE_CLASS);
-      toolbarContainerElement.classList.replace(TransitionsService.TOOLBAR_CONTAINER_ELEMENT_DEFAULT_CLASS, TransitionsService.TOOLBAR_CONTAINER_ELEMENT_ACTIVE_MODE_CLASS);
+      toolbarContainerElement.classList.replace(TOOLBAR_CONTAINER_GENERAL_CLASSES.DEFAULT, TOOLBAR_CONTAINER_GENERAL_CLASSES.EXPANDED_MODAL_MODE_ACTIVE);
       if (expandedModalPreviewModeState.getExpandedModalModeToolbarContainerPositionState() === EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM) {
         toolbarContainerElement.classList.add(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM);
       }

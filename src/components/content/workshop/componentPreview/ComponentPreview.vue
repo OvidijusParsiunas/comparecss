@@ -25,7 +25,8 @@
           <!-- parent component -->
           <component ref="componentPreview" :is="component.componentPreviewStructure.baseCss.componentTag"
             :id="subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId"
-            class="base-component grid-item-position" :class="[ SUBCOMPONENT_CURSOR_AUTO_CLASS, ...component.componentPreviewStructure.baseCss.jsClasses ]"
+            class="base-component grid-item-position" :class="[ SUBCOMPONENT_CURSOR_AUTO_CLASS,
+              ...component.componentPreviewStructure.baseCss.jsClasses, STATIC_POSITION_CLASS ]"
             @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId].subcomponentMouseEnter()"
             @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId].subcomponentMouseLeave()"
             @mousedown="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId].subcomponentMouseDown()"
@@ -108,6 +109,7 @@ import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes
 import { PSEUDO_COMPONENTS } from '../../../../consts/pseudoComponents.enum';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import auxiliaryRightSideElements from './AuxiliaryRightSideElements.vue';
+import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 import ComponentPreviewUtils from './utils/componentPreviewUtils';
 import nestedInnerHtmlText from './nestedInnerHTMLText.vue';
 
@@ -117,6 +119,7 @@ interface Consts {
   SUB_COMPONENT_CSS_MODES;
   PSEUDO_COMPONENTS;
   SUB_COMPONENTS;
+  STATIC_POSITION_CLASS: string;
 }
 
 interface Data {
@@ -133,6 +136,7 @@ export default {
       SUB_COMPONENT_CSS_MODES,
       PSEUDO_COMPONENTS,
       SUB_COMPONENTS,
+      STATIC_POSITION_CLASS: STATIC_POSITION_CLASS,
     };
   },
   data: (): Data => ({
