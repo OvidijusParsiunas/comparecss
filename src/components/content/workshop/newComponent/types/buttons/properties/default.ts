@@ -54,7 +54,6 @@ function createSubcomponents(): Subcomponents {
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
       jsClasses: createInitialButtonJsClasses(),
-      initialJsClasses: createInitialButtonJsClasses(),
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),

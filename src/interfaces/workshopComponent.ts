@@ -78,8 +78,9 @@ export interface ComponentCenteringInParent {
 }
 
 export interface DefaultProperties {
-  componentCenteringInParent: ComponentCenteringInParent;
-  transitions: ComponentTransitions;
+  componentCenteringInParent?: ComponentCenteringInParent;
+  transitions?: ComponentTransitions;
+  jsClasses?: ComponentJavascriptClasses;
 }
 
 export interface SubcomponentProperties {
@@ -101,7 +102,6 @@ export interface SubcomponentProperties {
   customCssActiveMode: SUB_COMPONENT_CSS_MODES;
   subcomponentPreviewTransition?: string;
   jsClasses: ComponentJavascriptClasses;
-  initialJsClasses: ComponentJavascriptClasses;
   optionalSubcomponent?: OptionalSubcomponent;
   // the reason why custom css is attached here is to not have to keep multiple unique settings for each and every subcomponent in memory all at once
   subcomponentSpecificSettings?: SubcomponentSpecificSettings;

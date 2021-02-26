@@ -146,7 +146,7 @@
                 <div style="text-align: left">
                   {{setting.spec.name}}
                 </div>
-                <input type="checkbox" v-model="setting.spec.default" @click="checkboxMouseClick(setting.spec, setting.spec.default, setting.triggers)">
+                <input type="checkbox" v-model="setting.spec.default" @click="checkboxMouseClick(setting.spec, setting.spec.default)">
               </div>
             </div>
             
@@ -185,7 +185,6 @@ interface Consts {
   ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX: string;
   updateSettings: (param1?: any, param2?: WORKSHOP_TOOLBAR_OPTION_TYPES) => void;
   addDefaultValueIfCssModeMissing: (param1: SUB_COMPONENT_CSS_MODES, param2: string) => void;
-  resetJs: () => void;
 }
 
 interface Data {
@@ -209,7 +208,7 @@ export default {
         if (optionType) SubcomponentSpecificSettingsState.setSubcomponentSpecificSettings(optionType,
           this.subcomponentProperties.subcomponentSpecificSettings, this.settings.options);
         this.$nextTick(() => {
-          const { customCss, customCssActiveMode, jsClasses, auxiliaryPartialCss } = this.subcomponentProperties;
+          const { customCss, customCssActiveMode, auxiliaryPartialCss } = this.subcomponentProperties;
           this.selectorCurrentValues = {};
           this.inputDropdownCurrentValues = {};
           (this.settings.options || []).forEach((setting) => {
@@ -230,7 +229,7 @@ export default {
               const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
               if (cssPropertyValue) { this.inputDropdownCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
             } else if (setting.type === SETTINGS_TYPES.CHECKBOX) {
-              CheckboxUtils.updateSettings(setting, jsClasses, this.subcomponentProperties);
+              CheckboxUtils.updateSettings(setting.spec, this.subcomponentProperties);
             }
           });
           // this is a bug fix where the range would not re-render even though setting.spec.default was updated correctly
@@ -247,9 +246,6 @@ export default {
         } else if (!this.subcomponentProperties.customCss[customCssActiveMode][cssProperty]) {
           this.subcomponentProperties.customCss[customCssActiveMode][cssProperty] = customCss;
         }
-      },
-      resetJs(): void {
-        this.subcomponentProperties.jsClasses = new Set([...this.subcomponentProperties.initialJsClasses]);
       },
       ...useActionsDropdown(),
     };
@@ -369,12 +365,12 @@ export default {
         this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode][spec.cssProperty] = 'inherit';
       }
     },
-    checkboxMouseClick(spec: any, previousCheckboxValue: boolean, triggers: any): void {
-      CheckboxUtils.updateProperties(previousCheckboxValue, spec, triggers, this.subcomponentProperties, this.settings)
+    checkboxMouseClick(spec: any, previousCheckboxValue: boolean): void {
+      CheckboxUtils.updateProperties(previousCheckboxValue, spec, this.subcomponentProperties, this.settings);
     },
     resetSubcomponentProperties(options: any): void {
       options.forEach((option) => {
-        const { cssProperty, jsClassName, subcomponentPropertiesObject, objectContainingActiveOption, activeOptionPropertyKeyName, propertyKeyName } = option.spec;
+        const { cssProperty, subcomponentPropertiesObject, objectContainingActiveOption, activeOptionPropertyKeyName, propertyKeyName, isSet } = option.spec;
         if (subcomponentPropertiesObject) {
           if (activeOptionPropertyKeyName) {
             this.subcomponentProperties[subcomponentPropertiesObject]
@@ -383,11 +379,11 @@ export default {
           } if (propertyKeyName) {
             this.subcomponentProperties[subcomponentPropertiesObject]
               [propertyKeyName] = this.subcomponentProperties.defaultProperties[subcomponentPropertiesObject][propertyKeyName];
+          } else {
+            if (isSet) {
+              this.subcomponentProperties[subcomponentPropertiesObject] = new Set([...this.subcomponentProperties.defaultProperties[subcomponentPropertiesObject]]);
+            }
           }
-          return;
-        }
-        if (jsClassName) {
-          this.resetJs();
           return;
         }
         let cssValue = undefined;

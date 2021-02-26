@@ -6,22 +6,22 @@ export default {
     {
       type: SETTINGS_TYPES.CHECKBOX,
       spec: {
-        name: 'Center',
+        name: 'Vertically Centered',
         subcomponentPropertiesObject: 'componentCenteringInParent',
-        propertyKeyName: 'vertical',
+        activeOptionPropertyKeyName: 'vertical',
         default: false,
-      },
-      triggers: {
-        true: {
-          cssProperty: 'top',
-          defaultValue: undefined,
-        }
+        handlers: {
+          true: {
+            cssProperty: 'top',
+            newValue: undefined,
+          }
+        },
       },
     },
     {
       type: SETTINGS_TYPES.RANGE,
       spec: {
-        name: 'Top',
+        name: 'Vertical-Offset',
         default: 0,
         scale: [0, 2000],
         smoothingDivisible: 4,
@@ -30,7 +30,7 @@ export default {
       triggers: [
         {
           subcomponentPropertiesObject: 'componentCenteringInParent',
-          propertyKeyName: 'vertical',
+          activeOptionPropertyKeyName: 'vertical',
           defaultValue: false,
           conditions: new Set([true]),
         },

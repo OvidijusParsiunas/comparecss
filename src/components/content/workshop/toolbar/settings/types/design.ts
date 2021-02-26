@@ -10,7 +10,9 @@ export default {
         name: 'Ripples',
         javascript: true,
         default: false,
-        jsClassName: JAVASCRIPT_CLASSES.RIPPLES,
+        subcomponentPropertiesObject: 'jsClasses',
+        isSet: true,
+        setValue: JAVASCRIPT_CLASSES.RIPPLES,
       },
       // spec: {
       //   name: 'Material',

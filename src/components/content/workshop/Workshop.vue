@@ -167,6 +167,12 @@ function createDefaultBaseProperties(): DefaultProperties {
   }
 }
 
+function createDefaultCloseProperties(): DefaultProperties {
+  return {
+    jsClasses: createInitialCloseButtonJsClasses(),
+  }
+}
+
 function createInitialBaseCss(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
@@ -290,7 +296,6 @@ function createSubcomponents(): Subcomponents {
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
       jsClasses: new Set(),
-      initialJsClasses: new Set(),
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedAlertBaseCss,
@@ -305,7 +310,6 @@ function createSubcomponents(): Subcomponents {
       customCss: createInitialLayer1Css(),
       initialCss: createInitialLayer1Css(),
       jsClasses: new Set(),
-      initialJsClasses: new Set(),
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
@@ -316,7 +320,6 @@ function createSubcomponents(): Subcomponents {
       customCss: createInitialLayer2Css(),
       initialCss: createInitialLayer2Css(),
       jsClasses: new Set(),
-      initialJsClasses: new Set(),
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
@@ -326,7 +329,6 @@ function createSubcomponents(): Subcomponents {
       customCss: createInitialLayer3Css(),
       initialCss: createInitialLayer3Css(),
       jsClasses: new Set(),
-      initialJsClasses: new Set(),
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
@@ -337,13 +339,13 @@ function createSubcomponents(): Subcomponents {
       customCss: createInitialCloseButtonCss(),
       initialCss: createInitialCloseButtonCss(),
       jsClasses: createInitialCloseButtonJsClasses(),
-      initialJsClasses: createInitialCloseButtonJsClasses(),
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
       optionalSubcomponent: { currentlyDisplaying: true },
       subcomponentSpecificSettings: alertCloseSpecificSettings,
+      defaultProperties: createDefaultCloseProperties(),
     },
   }
 }
