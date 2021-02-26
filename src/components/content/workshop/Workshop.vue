@@ -295,6 +295,7 @@ function createSubcomponents(): Subcomponents {
       componentTag: 'div',
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
+      // should be optional
       jsClasses: new Set(),
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       tempCustomCss: new Set(['transition']),

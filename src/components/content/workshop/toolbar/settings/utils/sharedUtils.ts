@@ -1,5 +1,5 @@
+import { CustomCss, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../consts/subcomponentCssModes.enum';
-import { CustomCss } from '../../../../../../interfaces/workshopComponent';
 
 export default class SharedUtils {
   
@@ -22,5 +22,23 @@ export default class SharedUtils {
       default:
         return undefined;
     }
+  }
+
+   public static getSubcomponentPropertyObject(subcomponentProperties: SubcomponentProperties, spec: any): any {
+    const { subcomponentPropertiesObject, activeOptionPropertyKeyName } = spec;
+    if (activeOptionPropertyKeyName) {
+      return subcomponentProperties[subcomponentPropertiesObject][activeOptionPropertyKeyName];
+    }
+    return subcomponentProperties[subcomponentPropertiesObject];
+  }
+
+  public static setSubcomponentPropertyObject(newValue: boolean, spec: any, subcomponentProperties: SubcomponentProperties): void {
+    const { subcomponentPropertiesObject, activeOptionPropertyKeyName } = spec;
+    if (activeOptionPropertyKeyName) {
+      subcomponentProperties[subcomponentPropertiesObject][activeOptionPropertyKeyName] = newValue;
+      return;
+    }
+    subcomponentProperties[subcomponentPropertiesObject] = newValue;
+    return;
   }
 }

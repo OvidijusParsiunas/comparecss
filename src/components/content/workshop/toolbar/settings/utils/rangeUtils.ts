@@ -18,13 +18,13 @@ export default class RangeUtils {
 
   private static activateTriggersForCustomSubcomponentProperties(trigger: any,
       subcomponentProperties: SubcomponentProperties, allSettings: any): void {
-    const value = subcomponentProperties[trigger.subcomponentPropertiesObject][trigger.propertyKeyName];
+    const value = subcomponentProperties[trigger.subcomponentPropertiesObject][trigger.activeOptionPropertyKeyName];
     if (!trigger.conditions.has(value)) return;
     for (let i = 0; i < allSettings.options.length; i += 1) {
       if (allSettings.options[i].spec.subcomponentPropertiesObject
           && allSettings.options[i].spec.subcomponentPropertiesObject === trigger.subcomponentPropertiesObject) {
         allSettings.options[i].spec.default = trigger.defaultValue;
-        subcomponentProperties[trigger.subcomponentPropertiesObject][trigger.propertyKeyName] = trigger.defaultValue;
+        subcomponentProperties[trigger.subcomponentPropertiesObject][trigger.activeOptionPropertyKeyName] = trigger.defaultValue;
       }
     }
   }

@@ -8,7 +8,6 @@ export default {
       type: SETTINGS_TYPES.CHECKBOX,
       spec: {
         name: 'Ripples',
-        javascript: true,
         default: false,
         subcomponentPropertiesObject: 'jsClasses',
         isSet: true,

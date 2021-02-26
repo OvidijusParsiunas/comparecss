@@ -370,15 +370,16 @@ export default {
     },
     resetSubcomponentProperties(options: any): void {
       options.forEach((option) => {
-        const { cssProperty, subcomponentPropertiesObject, objectContainingActiveOption, activeOptionPropertyKeyName, propertyKeyName, isSet } = option.spec;
+        const { cssProperty, subcomponentPropertiesObject, objectContainingActiveOption, activeOptionPropertyKeyName, isSet } = option.spec;
         if (subcomponentPropertiesObject) {
-          if (activeOptionPropertyKeyName) {
+          if (objectContainingActiveOption && activeOptionPropertyKeyName) {
+            this.subcomponentProperties[subcomponentPropertiesObject][objectContainingActiveOption][activeOptionPropertyKeyName] = this.subcomponentProperties.defaultProperties[subcomponentPropertiesObject][objectContainingActiveOption][activeOptionPropertyKeyName];
+          } else if (activeOptionPropertyKeyName) {
             this.subcomponentProperties[subcomponentPropertiesObject]
-              [objectContainingActiveOption][activeOptionPropertyKeyName] = this.subcomponentProperties.defaultProperties[subcomponentPropertiesObject]
-                [objectContainingActiveOption][activeOptionPropertyKeyName];
-          } if (propertyKeyName) {
+              [activeOptionPropertyKeyName] = this.subcomponentProperties.defaultProperties[subcomponentPropertiesObject][activeOptionPropertyKeyName];
+          } else if (objectContainingActiveOption) {
             this.subcomponentProperties[subcomponentPropertiesObject]
-              [propertyKeyName] = this.subcomponentProperties.defaultProperties[subcomponentPropertiesObject][propertyKeyName];
+              [objectContainingActiveOption] = this.subcomponentProperties.defaultProperties[subcomponentPropertiesObject][objectContainingActiveOption];
           } else {
             if (isSet) {
               this.subcomponentProperties[subcomponentPropertiesObject] = new Set([...this.subcomponentProperties.defaultProperties[subcomponentPropertiesObject]]);

@@ -31,6 +31,8 @@ UX:
   see if the subcomponent add and subcomponent remove hover and active css is ok
   check if position option in the modal is ok to use
 
+need a color for when settings are partially-disabled (the user can change them which will turn them to the original color) - this is more-so for cases where the modal is
+  set to be centered and the top range is not used and vice versa, also would provide use for disabling modal animations etc as no good way to disable that at the moment
 ability to group the components
 option to see what the actual css looks like and to edit it
 consider placing javascript unique to the css classes it was used on

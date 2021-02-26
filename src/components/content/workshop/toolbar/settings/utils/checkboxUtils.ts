@@ -17,28 +17,11 @@ export default class CheckboxUtils {
     }
   }
 
-  // these two methods may be extracted into sharedUtils if used by other utils
-  private static getSubcomponentPropertyObject(subcomponentProperties: SubcomponentProperties, spec: any): any {
-    const { subcomponentPropertiesObject, activeOptionPropertyKeyName } = spec;
-    if (activeOptionPropertyKeyName) {
-      return subcomponentProperties[subcomponentPropertiesObject][activeOptionPropertyKeyName];
-    }
-    return subcomponentProperties[subcomponentPropertiesObject];
-  }
-
-  private static setSubcomponentPropertyObject(newCheckboxValue: boolean, spec: any, subcomponentProperties: SubcomponentProperties): void {
-    const { subcomponentPropertiesObject, activeOptionPropertyKeyName } = spec;
-    if (activeOptionPropertyKeyName) {
-      subcomponentProperties[subcomponentPropertiesObject][activeOptionPropertyKeyName] = newCheckboxValue;
-      return;
-    }
-    subcomponentProperties[subcomponentPropertiesObject] = newCheckboxValue;
-    return;
-  }
+ 
 
   private static setSetObject(newCheckboxValue: boolean, spec: any, subcomponentProperties: SubcomponentProperties): void {
     const { setValue } = spec;
-    const property = CheckboxUtils.getSubcomponentPropertyObject(subcomponentProperties, spec);
+    const property = SharedUtils.getSubcomponentPropertyObject(subcomponentProperties, spec);
     if (newCheckboxValue) {
       property.add(setValue);
     } else {
@@ -50,7 +33,7 @@ export default class CheckboxUtils {
     if (spec.isSet) {
       CheckboxUtils.setSetObject(newCheckboxValue, spec, subcomponentProperties);
     } else {
-      CheckboxUtils.setSubcomponentPropertyObject(newCheckboxValue, spec, subcomponentProperties);
+      SharedUtils.setSubcomponentPropertyObject(newCheckboxValue, spec, subcomponentProperties);
     }
   }
 
@@ -69,9 +52,9 @@ export default class CheckboxUtils {
   public static updateSettings(updatedSettingSpec: any, subcomponentProperties: SubcomponentProperties): void {
     if (updatedSettingSpec.subcomponentPropertiesObject) {
       if (updatedSettingSpec.isSet) {
-        updatedSettingSpec.default = CheckboxUtils.getSubcomponentPropertyObject(subcomponentProperties, updatedSettingSpec).has(updatedSettingSpec.setValue);
+        updatedSettingSpec.default = SharedUtils.getSubcomponentPropertyObject(subcomponentProperties, updatedSettingSpec).has(updatedSettingSpec.setValue);
       } else {
-        updatedSettingSpec.default = CheckboxUtils.getSubcomponentPropertyObject(subcomponentProperties, updatedSettingSpec);
+        updatedSettingSpec.default = SharedUtils.getSubcomponentPropertyObject(subcomponentProperties, updatedSettingSpec);
       }
     } else {
       CheckboxUtils.updateSettingThatUsesCustomCss(updatedSettingSpec, subcomponentProperties);
