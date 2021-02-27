@@ -13,12 +13,7 @@
                 <div style="position: relative; float: left">
                   <div class="range-popover">
                     <div v-if="setting.spec.subcomponentPropertyObjectKeys">
-                      <!-- call function -->
-                      <!-- https://v3.vuejs.org/guide/transitions-overview.html#transitions-with-style-bindings -->
-                      {{(setting.spec.subcomponentPropertyObjectKeys[2] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]][setting.spec.subcomponentPropertyObjectKeys[1]][setting.spec.subcomponentPropertyObjectKeys[2]])
-                        || (setting.spec.subcomponentPropertyObjectKeys[1] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]][setting.spec.subcomponentPropertyObjectKeys[1]]
-                        || (setting.spec.subcomponentPropertyObjectKeys[0] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]])
-                      )}}
+                      {{rangeSubcomponentPropertyObjectValue}}
                     </div>
                     <!-- the boxShadow range properties are set to 'unset' when all are 0px (for firefox) -->
                     <div v-else-if="subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode]
@@ -41,7 +36,7 @@
                     v-bind:min="setting.spec.scale[0]"
                     v-bind:max="setting.spec.scale[1]"
                     v-model="setting.spec.default"
-                    @mousedown="rangeMouseDown($event, subcomponentProperties.customCssActiveMode, setting.spec)"
+                    @mousedown="rangeMouseDown($event, subcomponentProperties.customCssActiveMode, setting)"
                     @mouseup="rangeMouseUp"
                     @contextmenu="preventRightClickEvent"
                     @input="updateRange($event, setting)">
@@ -128,25 +123,16 @@
                 <dropdown class="option-component-button"
                   :uniqueIdentifier="`${ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX}${settingIndex}`"
                   :dropdownOptions="setting.spec.options"
-                  :objectContainingActiveOption="(setting.spec.subcomponentPropertyObjectKeys[2] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]][setting.spec.subcomponentPropertyObjectKeys[1]])
-                    || (setting.spec.subcomponentPropertyObjectKeys[1] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]])"
+                  :objectContainingActiveOption="getObjectContainingActiveOption(setting.spec.subcomponentPropertyObjectKeys, subcomponentProperties)"
                   :activeOptionPropertyKeyName="setting.spec.activeOptionPropertyKeyName"
                   :fontAwesomeIconClassName="'fa-caret-down'"
                   @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-                  @mouse-enter-button="mouseEnterButton(this,
-                    (setting.spec.subcomponentPropertyObjectKeys[2] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]][setting.spec.subcomponentPropertyObjectKeys[1]][setting.spec.subcomponentPropertyObjectKeys[2]])
-                    || (setting.spec.subcomponentPropertyObjectKeys[1] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]][setting.spec.subcomponentPropertyObjectKeys[1]]
-                    || (setting.spec.subcomponentPropertyObjectKeys[0] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]])),
-                    setting.spec.mouseEnterButtonCallback)"
-                  @mouse-leave-button="mouseLeaveButton(this, $event, setting.spec.mouseLeaveButtonCallback)"
-                  @mouse-enter-option="mouseEnterOption(this, $event, setting.spec.mouseEnterOptionCallback)"
-                  @mouse-leave-dropdown="mouseLeaveDropdown(this, $event, setting.spec.mouseLeaveDropdownCallback)"
-                  @mouse-click-option="mouseClickOption(this, $event, setting.spec.mouseClickOptionCallback)"
-                  @mouse-click-new-option="optionMouseClickNewOption(
-                    (setting.spec.subcomponentPropertyObjectKeys[2] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]][setting.spec.subcomponentPropertyObjectKeys[1]][setting.spec.subcomponentPropertyObjectKeys[2]])
-                    || (setting.spec.subcomponentPropertyObjectKeys[1] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]][setting.spec.subcomponentPropertyObjectKeys[1]]
-                    || (setting.spec.subcomponentPropertyObjectKeys[0] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]])),
-                    setting.spec.activeOptionPropertyKeyName, $event)"/>
+                  @mouse-enter-button="mouseEnterActionsDropdownButton(this, setting.spec, subcomponentProperties)"
+                  @mouse-leave-button="mouseLeaveActionsDropdownButton(this, $event, setting.spec.mouseLeaveButtonCallback)"
+                  @mouse-enter-option="mouseEnterActionsDropdownOption(this, $event, setting.spec.mouseEnterOptionCallback)"
+                  @mouse-leave-dropdown="mouseLeaveActionsDropdown(this, $event, setting.spec.mouseLeaveDropdownCallback)"
+                  @mouse-click-option="mouseClickActionsDropdownOption(this, $event, setting.spec.mouseClickOptionCallback)"
+                  @mouse-click-new-option="mouseClickActionsDropdownNewOption($event, setting.spec.subcomponentPropertyObjectKeys, subcomponentProperties)"/>
               </div>
 
               <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.CHECKBOX">
@@ -198,6 +184,7 @@ interface Data {
   settings: any;
   selectorCurrentValues: unknown;
   inputDropdownCurrentValues: unknown;
+  rangeSubcomponentPropertyObjectValue: unknown;
   settingsVisible: boolean;
 }
 
@@ -260,6 +247,7 @@ export default {
   data: (): Data => ({
     selectorCurrentValues: {},
     inputDropdownCurrentValues: {},
+    rangeSubcomponentPropertyObjectValue: null,
     settings: {},
     settingsVisible: true,
   }),
@@ -270,10 +258,16 @@ export default {
   // refactor it to extract the logic into a partialCss util file
   methods: {
     updateRange(event: MouseEvent, setting: any): void {
+      if (setting.spec.subcomponentPropertyObjectKeys) this.rangeSubcomponentPropertyObjectValue = SharedUtils.getSubcomponentPropertyValue(
+        setting.spec.subcomponentPropertyObjectKeys, this.subcomponentProperties);
       RangeUtils.updateProperties(event, setting, this.settings, this.subcomponentProperties, this.selectorCurrentValues);
     },
-    rangeMouseDown(event: KeyboardEvent, customCssActiveMode: SUB_COMPONENT_CSS_MODES, spec: any): void {
-      this.addDefaultValueIfCssModeMissing(customCssActiveMode, spec.cssProperty);
+    rangeMouseDown(event: KeyboardEvent, customCssActiveMode: SUB_COMPONENT_CSS_MODES, setting: any): void {
+      if (setting.spec.subcomponentPropertyObjectKeys) { 
+        this.rangeSubcomponentPropertyObjectValue = SharedUtils.getSubcomponentPropertyValue(setting.spec.subcomponentPropertyObjectKeys, this.subcomponentProperties);
+      } else {
+        this.addDefaultValueIfCssModeMissing(customCssActiveMode, setting.spec.cssProperty);
+      }
       setTimeout(() => {
         const popoverElement = (event.target as HTMLInputElement).parentElement.childNodes[0] as HTMLElement;
         if (popoverElement.style) { popoverElement.style.opacity = '1'; }
