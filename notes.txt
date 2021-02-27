@@ -10,10 +10,7 @@ ability to remove the layers
 the x button should close the modal
 maybe clicking outside of the modal should close it too
 esc button
-enter - submit/cancel - potential
-when clicked option on size, move to a differnet option, then click back - the size is no longer accurate
-margin for modal does not refresh correctly
-option for no animation
+enter - submit/cancel - potential - call the option 'actions'
 when hovering over option that only works in expanded modal view - higlight the toggle for it
 potentially rename initial to default convention
 

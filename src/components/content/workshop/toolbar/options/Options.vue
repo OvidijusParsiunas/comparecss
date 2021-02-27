@@ -28,8 +28,8 @@
           <i class="dropdown-button-marker" :class="['fa', isExpandedModalPreviewModeActive ? 'fa-compress' : 'fa-expand']"></i>
         </button>
       </div>
-      <div class="option-component-button">
-        <button v-if="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent"
+      <div class="option-component-button" v-if="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent">
+        <button
           type="button" class="btn option-action-button" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
           :class="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add'"
           @mouseenter="subcomponentMouseEnterHandler"
@@ -271,6 +271,7 @@ export default {
     border-radius: 20px;
   }
   .options-container-inner {
+    display: flex;
     margin-top: 10px !important;
     margin-bottom: 10px !important;
   }
@@ -341,6 +342,7 @@ export default {
   }
   .toolbar-position-toggle-container {
     position: relative;
+    padding-left: 22px;
   }
   .toolbar-position-toggle {
     position: absolute;

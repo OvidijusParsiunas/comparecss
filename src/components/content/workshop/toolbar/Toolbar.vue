@@ -109,7 +109,7 @@ export default {
     bottom: 0px;
   }
   .toolbar-modal-preview-active {
-    width: 50%;
+    width: fit-content;
     margin-left: auto;
     margin-right: auto;
   }
