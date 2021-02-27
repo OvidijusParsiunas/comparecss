@@ -21,7 +21,7 @@ function generateMouseEventCallbacks(isEntranceAnimation: boolean): ActionsDropd
     mouseClickOptionCallback: (settingsComponent: ComponentOptions) => {
       settingsComponent.$emit('stop-preview-transition-animation');
     },
-  }
+  };
 }
 
 // create an optional interface
@@ -32,9 +32,8 @@ export default {
       spec: {
         name: 'Entrance',
         options: { [MODAL_TRANSITION_ENTRANCE_TYPES.FADE_IN]: null, [MODAL_TRANSITION_ENTRANCE_TYPES.SLIDE_IN]: null },
-        subcomponentPropertiesObject: 'transitions',
-        objectContainingActiveOption: 'entrance',
         activeOptionPropertyKeyName: 'type',
+        subcomponentPropertyObjectKeys: ['transitions', 'entrance', 'type'],
         ...generateMouseEventCallbacks(true),
       },
     },
@@ -43,9 +42,8 @@ export default {
       spec: {
         name: 'Exit',
         options: { [MODAL_TRANSITION_EXIT_TYPES.FADE_OUT]: null, [MODAL_TRANSITION_EXIT_TYPES.SLIDE_OUT]: null },
-        subcomponentPropertiesObject: 'transitions',
-        objectContainingActiveOption: 'exit',
         activeOptionPropertyKeyName: 'type',
+        subcomponentPropertyObjectKeys: ['transitions', 'exit', 'type'],
         ...generateMouseEventCallbacks(false),
       },
     },
@@ -57,9 +55,7 @@ export default {
         scale: [0, 30],
         smoothingDivisible: 10,
         isTime: true,
-        subcomponentPropertiesObject: 'transitions',
-        objectContainingActiveOption: 'entrance',
-        activeOptionPropertyKeyName: 'duration',
+        subcomponentPropertyObjectKeys: ['transitions', 'entrance', 'duration'],
       },
     },
     { 
@@ -70,9 +66,7 @@ export default {
         scale: [0, 30],
         smoothingDivisible: 10,
         isTime: true,
-        subcomponentPropertiesObject: 'transitions',
-        objectContainingActiveOption: 'exit',
-        activeOptionPropertyKeyName: 'duration',
+        subcomponentPropertyObjectKeys: ['transitions', 'exit', 'duration'],
       },
     },
   ]

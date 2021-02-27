@@ -12,8 +12,13 @@
                 </div>
                 <div style="position: relative; float: left">
                   <div class="range-popover">
-                    <div v-if="setting.spec.subcomponentPropertiesObject">
-                      {{subcomponentProperties[setting.spec.subcomponentPropertiesObject][setting.spec.objectContainingActiveOption][setting.spec.activeOptionPropertyKeyName]}}
+                    <div v-if="setting.spec.subcomponentPropertyObjectKeys">
+                      <!-- call function -->
+                      <!-- https://v3.vuejs.org/guide/transitions-overview.html#transitions-with-style-bindings -->
+                      {{(setting.spec.subcomponentPropertyObjectKeys[2] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]][setting.spec.subcomponentPropertyObjectKeys[1]][setting.spec.subcomponentPropertyObjectKeys[2]])
+                        || (setting.spec.subcomponentPropertyObjectKeys[1] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]][setting.spec.subcomponentPropertyObjectKeys[1]]
+                        || (setting.spec.subcomponentPropertyObjectKeys[0] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]])
+                      )}}
                     </div>
                     <!-- the boxShadow range properties are set to 'unset' when all are 0px (for firefox) -->
                     <div v-else-if="subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode]
@@ -120,26 +125,28 @@
                 <div style="text-align: left">
                   {{setting.spec.name}}
                 </div>
-                <!-- set the unique identifier here -->
                 <dropdown class="option-component-button"
                   :uniqueIdentifier="`${ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX}${settingIndex}`"
                   :dropdownOptions="setting.spec.options"
-                  :objectContainingActiveOption="setting.spec.subcomponentPropertiesObject
-                    ? subcomponentProperties[setting.spec.subcomponentPropertiesObject][setting.spec.objectContainingActiveOption]
-                    : subcomponentProperties[setting.spec.objectContainingActiveOption]"
+                  :objectContainingActiveOption="(setting.spec.subcomponentPropertyObjectKeys[2] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]][setting.spec.subcomponentPropertyObjectKeys[1]])
+                    || (setting.spec.subcomponentPropertyObjectKeys[1] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]])"
                   :activeOptionPropertyKeyName="setting.spec.activeOptionPropertyKeyName"
                   :fontAwesomeIconClassName="'fa-caret-down'"
                   @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-                  @mouse-enter-button="mouseEnterButton(this, setting.spec.subcomponentPropertiesObject
-                    ? subcomponentProperties[setting.spec.subcomponentPropertiesObject][setting.spec.objectContainingActiveOption][setting.spec.activeOptionPropertyKeyName]
-                    : subcomponentProperties[setting.spec.objectContainingActiveOption][setting.spec.activeOptionPropertyKeyName], setting.spec.mouseEnterButtonCallback)"
+                  @mouse-enter-button="mouseEnterButton(this,
+                    (setting.spec.subcomponentPropertyObjectKeys[2] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]][setting.spec.subcomponentPropertyObjectKeys[1]][setting.spec.subcomponentPropertyObjectKeys[2]])
+                    || (setting.spec.subcomponentPropertyObjectKeys[1] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]][setting.spec.subcomponentPropertyObjectKeys[1]]
+                    || (setting.spec.subcomponentPropertyObjectKeys[0] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]])),
+                    setting.spec.mouseEnterButtonCallback)"
                   @mouse-leave-button="mouseLeaveButton(this, $event, setting.spec.mouseLeaveButtonCallback)"
                   @mouse-enter-option="mouseEnterOption(this, $event, setting.spec.mouseEnterOptionCallback)"
                   @mouse-leave-dropdown="mouseLeaveDropdown(this, $event, setting.spec.mouseLeaveDropdownCallback)"
                   @mouse-click-option="mouseClickOption(this, $event, setting.spec.mouseClickOptionCallback)"
-                  @mouse-click-new-option="optionMouseClickNewOption(setting.spec.subcomponentPropertiesObject
-                    ? subcomponentProperties[setting.spec.subcomponentPropertiesObject][setting.spec.objectContainingActiveOption]
-                    : subcomponentProperties[setting.spec.objectContainingActiveOption], setting.spec.activeOptionPropertyKeyName, $event)"/>
+                  @mouse-click-new-option="optionMouseClickNewOption(
+                    (setting.spec.subcomponentPropertyObjectKeys[2] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]][setting.spec.subcomponentPropertyObjectKeys[1]][setting.spec.subcomponentPropertyObjectKeys[2]])
+                    || (setting.spec.subcomponentPropertyObjectKeys[1] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]][setting.spec.subcomponentPropertyObjectKeys[1]]
+                    || (setting.spec.subcomponentPropertyObjectKeys[0] && subcomponentProperties[setting.spec.subcomponentPropertyObjectKeys[0]])),
+                    setting.spec.activeOptionPropertyKeyName, $event)"/>
               </div>
 
               <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.CHECKBOX">
@@ -370,21 +377,11 @@ export default {
     },
     resetSubcomponentProperties(options: any): void {
       options.forEach((option) => {
-        const { cssProperty, subcomponentPropertiesObject, objectContainingActiveOption, activeOptionPropertyKeyName, isSet } = option.spec;
-        if (subcomponentPropertiesObject) {
-          if (objectContainingActiveOption && activeOptionPropertyKeyName) {
-            this.subcomponentProperties[subcomponentPropertiesObject][objectContainingActiveOption][activeOptionPropertyKeyName] = this.subcomponentProperties.defaultProperties[subcomponentPropertiesObject][objectContainingActiveOption][activeOptionPropertyKeyName];
-          } else if (activeOptionPropertyKeyName) {
-            this.subcomponentProperties[subcomponentPropertiesObject]
-              [activeOptionPropertyKeyName] = this.subcomponentProperties.defaultProperties[subcomponentPropertiesObject][activeOptionPropertyKeyName];
-          } else if (objectContainingActiveOption) {
-            this.subcomponentProperties[subcomponentPropertiesObject]
-              [objectContainingActiveOption] = this.subcomponentProperties.defaultProperties[subcomponentPropertiesObject][objectContainingActiveOption];
-          } else {
-            if (isSet) {
-              this.subcomponentProperties[subcomponentPropertiesObject] = new Set([...this.subcomponentProperties.defaultProperties[subcomponentPropertiesObject]]);
-            }
-          }
+        const { cssProperty, isSet, subcomponentPropertyObjectKeys } = option.spec;
+        if (subcomponentPropertyObjectKeys) {
+          const defaultValue = SharedUtils.getSubcomponentPropertyValue(subcomponentPropertyObjectKeys, this.subcomponentProperties.defaultProperties);
+          const appropriateTypeDefaultValue = isSet ? new Set([...(defaultValue as Set<undefined>)]) : defaultValue;
+          SharedUtils.setSubcomponentPropertyValue(subcomponentPropertyObjectKeys, this.subcomponentProperties, appropriateTypeDefaultValue);
           return;
         }
         let cssValue = undefined;

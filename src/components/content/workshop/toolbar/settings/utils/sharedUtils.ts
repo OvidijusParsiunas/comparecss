@@ -24,21 +24,23 @@ export default class SharedUtils {
     }
   }
 
-   public static getSubcomponentPropertyObject(subcomponentProperties: SubcomponentProperties, spec: any): any {
-    const { subcomponentPropertiesObject, activeOptionPropertyKeyName } = spec;
-    if (activeOptionPropertyKeyName) {
-      return subcomponentProperties[subcomponentPropertiesObject][activeOptionPropertyKeyName];
+  public static getSubcomponentPropertyValue(subcomponentPropertyObjectKeys: string[], currentObject: unknown): unknown {
+    if (subcomponentPropertyObjectKeys.length === 0) {
+      return currentObject;
+    } else {
+      const nestedObject = currentObject[subcomponentPropertyObjectKeys[0]];
+      const newSubcomponentPropertiesObjectKeysArray = subcomponentPropertyObjectKeys.slice(1, subcomponentPropertyObjectKeys.length);
+      return SharedUtils.getSubcomponentPropertyValue(newSubcomponentPropertiesObjectKeysArray, nestedObject);
     }
-    return subcomponentProperties[subcomponentPropertiesObject];
   }
 
-  public static setSubcomponentPropertyObject(newValue: boolean, spec: any, subcomponentProperties: SubcomponentProperties): void {
-    const { subcomponentPropertiesObject, activeOptionPropertyKeyName } = spec;
-    if (activeOptionPropertyKeyName) {
-      subcomponentProperties[subcomponentPropertiesObject][activeOptionPropertyKeyName] = newValue;
-      return;
+  public static setSubcomponentPropertyValue(subcomponentPropertyObjectKeys: string[], currentObject: unknown, newValue: unknown): void {
+    if (subcomponentPropertyObjectKeys.length === 1) {
+      currentObject[subcomponentPropertyObjectKeys[0]] = newValue;
+    } else {
+      const nestedObject = currentObject[subcomponentPropertyObjectKeys[0]];
+      const newSubcomponentPropertiesObjectKeysArray = subcomponentPropertyObjectKeys.slice(1, subcomponentPropertyObjectKeys.length);
+      SharedUtils.setSubcomponentPropertyValue(newSubcomponentPropertiesObjectKeysArray, nestedObject, newValue);
     }
-    subcomponentProperties[subcomponentPropertiesObject] = newValue;
-    return;
   }
 }

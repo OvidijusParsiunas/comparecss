@@ -7,10 +7,9 @@ export default {
       type: SETTINGS_TYPES.CHECKBOX,
       spec: {
         name: 'Vertically Centered',
-        subcomponentPropertiesObject: 'componentCenteringInParent',
-        activeOptionPropertyKeyName: 'vertical',
+        subcomponentPropertyObjectKeys: ['componentCenteringInParent', 'vertical'],
         default: false,
-        handlers: {
+        changeOtherProperties: {
           true: {
             cssProperty: 'top',
             newValue: undefined,
@@ -29,8 +28,7 @@ export default {
       },
       triggers: [
         {
-          subcomponentPropertiesObject: 'componentCenteringInParent',
-          activeOptionPropertyKeyName: 'vertical',
+          subcomponentPropertyObjectKeys: ['componentCenteringInParent', 'vertical'],
           defaultValue: false,
           conditions: new Set([true]),
         },
