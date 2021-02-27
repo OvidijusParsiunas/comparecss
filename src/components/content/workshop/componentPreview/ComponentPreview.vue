@@ -245,11 +245,15 @@ export default {
   }
   .component-preview-container-modal {
     position: relative;
-    background-color: rgb(109 109 109 / 80%);
+    background-color: red;
     height: 106%;
     top: -2.6%;
     left: -30vw;
     width: 100vw;
+  }
+  .component-preview-container-modal::before {
+    position: relative;
+    opacity: 0.5 !important;
   }
   .component-preview-centered {
     top: 50%;

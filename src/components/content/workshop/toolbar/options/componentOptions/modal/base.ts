@@ -29,6 +29,11 @@ export const modalBaseOptions: SubcomponentOptions<ModalBaseOptionsModes> = {
       enabledOnExpandedModalPreviewMode: true,
     },
     {
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BACKDROP,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BACKDROP,
+      enabledOnExpandedModalPreviewMode: true,
+    },
+    {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.TRANSITIONS,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.TRANSITIONS,
       enabledOnExpandedModalPreviewMode: true,

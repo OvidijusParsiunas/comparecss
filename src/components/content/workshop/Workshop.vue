@@ -295,7 +295,6 @@ function createSubcomponents(): Subcomponents {
       componentTag: 'div',
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
-      // should be optional
       jsClasses: new Set(),
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       tempCustomCss: new Set(['transition']),
@@ -304,6 +303,7 @@ function createSubcomponents(): Subcomponents {
       subcomponentSpecificSettings: modalBaseSpecificSettings,
       componentCenteringInParent: createDefaultComponentCenteringInParent(),
       transitions: createDefaultTransitionsProperties(),
+      backdropColor: '#6d6d6dcc',
       defaultProperties: createDefaultBaseProperties(),
     },
     [SUB_COMPONENTS.LAYER_1]: {

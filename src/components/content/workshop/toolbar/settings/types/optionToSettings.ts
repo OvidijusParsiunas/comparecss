@@ -17,6 +17,7 @@ import design from './design';
 import background from './background';
 import modalPosition from './modalPosition';
 import transitions from './transitions';
+import backdrop from './backdrop';
 
 type OptionToSettings = {
   [key in WORKSHOP_TOOLBAR_OPTION_TYPES]?: any;
@@ -41,4 +42,5 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND]: background,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_POSITION]: modalPosition,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TRANSITIONS]: transitions,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKDROP]: backdrop,
 };
