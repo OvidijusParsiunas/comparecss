@@ -252,7 +252,7 @@ export default {
     settingsVisible: true,
   }),
   // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // put these methods into services
+  // put these methods into utils
 
   // if the Settings.vue component logic is too coupled with 'boxShadow' (especially if there is another partialCss property introduced),
   // refactor it to extract the logic into a partialCss util file
@@ -371,10 +371,10 @@ export default {
     },
     resetSubcomponentProperties(options: any): void {
       options.forEach((option) => {
-        const { cssProperty, isSet, subcomponentPropertyObjectKeys } = option.spec;
+        const { cssProperty, valueInSetObject, subcomponentPropertyObjectKeys } = option.spec;
         if (subcomponentPropertyObjectKeys) {
           const defaultValue = SharedUtils.getSubcomponentPropertyValue(subcomponentPropertyObjectKeys, this.subcomponentProperties.defaultProperties);
-          const appropriateTypeDefaultValue = isSet ? new Set([...(defaultValue as Set<undefined>)]) : defaultValue;
+          const appropriateTypeDefaultValue = valueInSetObject ? new Set([...(defaultValue as Set<undefined>)]) : defaultValue;
           SharedUtils.setSubcomponentPropertyValue(subcomponentPropertyObjectKeys, this.subcomponentProperties, appropriateTypeDefaultValue);
           return;
         }

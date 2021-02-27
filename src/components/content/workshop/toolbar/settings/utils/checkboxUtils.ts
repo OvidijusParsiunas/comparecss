@@ -3,10 +3,9 @@ import SharedUtils from './sharedUtils';
 
 export default class CheckboxUtils {
 
-  private static updateOtherProperties(newCheckboxValue: boolean, spec: any, subcomponentProperties: SubcomponentProperties, allSettings: any): void {
-    const { customCss, customCssActiveMode } = subcomponentProperties;
-    const { changeOtherProperties } = spec;
-    if (changeOtherProperties && changeOtherProperties[newCheckboxValue.toString()]) {
+  private static updateOtherProperties(newCheckboxValue: boolean, changeOtherProperties: any, subcomponentProperties: SubcomponentProperties, allSettings: any): void {
+    if (changeOtherProperties[newCheckboxValue.toString()]) {
+      const { customCss, customCssActiveMode } = subcomponentProperties;
       const handler = changeOtherProperties[newCheckboxValue.toString()];
       customCss[customCssActiveMode][handler.cssProperty] = handler.newValue;
       for (let i = 0; i < allSettings.options.length; i += 1) {
@@ -17,20 +16,19 @@ export default class CheckboxUtils {
     }
   }
 
-  private static setSetObject(newCheckboxValue: boolean, spec: any, subcomponentProperties: SubcomponentProperties): void {
-    const { setValue } = spec;
-    const property = SharedUtils.getSubcomponentPropertyValue(spec.subcomponentPropertyObjectKeys, subcomponentProperties) as Set<undefined>;
+  private static setSetObject(newCheckboxValue: boolean, valueInSetObject: any, subcomponentPropertyObjectKeys: any[], subcomponentProperties: SubcomponentProperties): void {
+    const property = SharedUtils.getSubcomponentPropertyValue(subcomponentPropertyObjectKeys, subcomponentProperties) as Set<undefined>;
     if (newCheckboxValue) {
-      property.add(setValue);
+      property.add(valueInSetObject);
     } else {
-      property.delete(setValue);
+      property.delete(valueInSetObject);
     }
   }
 
   private static updateCustomSubcomponentProperties(newCheckboxValue: boolean, spec: any, subcomponentProperties: SubcomponentProperties): void {
-    const { subcomponentPropertyObjectKeys, isSet } = spec;
-    if (isSet) {
-      CheckboxUtils.setSetObject(newCheckboxValue, spec, subcomponentProperties);
+    const { valueInSetObject, subcomponentPropertyObjectKeys } = spec;
+    if (valueInSetObject) {
+      CheckboxUtils.setSetObject(newCheckboxValue, valueInSetObject, subcomponentPropertyObjectKeys, subcomponentProperties);
     } else {
       SharedUtils.setSubcomponentPropertyValue(subcomponentPropertyObjectKeys, subcomponentProperties, newCheckboxValue);
     }
@@ -39,7 +37,7 @@ export default class CheckboxUtils {
   public static updateProperties(previousCheckboxValue: boolean, spec: any, subcomponentProperties: SubcomponentProperties, allSettings: any): void {
     const newCheckboxValue = !previousCheckboxValue;
     if (spec.subcomponentPropertyObjectKeys) { CheckboxUtils.updateCustomSubcomponentProperties(newCheckboxValue, spec, subcomponentProperties); }
-    CheckboxUtils.updateOtherProperties(newCheckboxValue, spec, subcomponentProperties, allSettings);
+    if (spec.changeOtherProperties) { CheckboxUtils.updateOtherProperties(newCheckboxValue, spec.changeOtherProperties, subcomponentProperties, allSettings); }
   }
 
   private static updateSettingThatUsesCustomCss(updatedSettingSpec: any, subcomponentProperties: SubcomponentProperties): void {
@@ -49,10 +47,10 @@ export default class CheckboxUtils {
   }
 
   private static updateSettingThatUsesASubcomponentProperty(updatedSettingSpec: any, subcomponentProperties: SubcomponentProperties): void {
-    if (updatedSettingSpec.isSet) {
+    if (updatedSettingSpec.valueInSetObject) {
       updatedSettingSpec.default = (
         SharedUtils.getSubcomponentPropertyValue(updatedSettingSpec.subcomponentPropertyObjectKeys, subcomponentProperties) as Set<undefined>
-      ).has(updatedSettingSpec.setValue);
+      ).has(updatedSettingSpec.valueInSetObject);
     } else {
       updatedSettingSpec.default = SharedUtils.getSubcomponentPropertyValue(updatedSettingSpec.subcomponentPropertyObjectKeys, subcomponentProperties);
     }

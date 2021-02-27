@@ -11,8 +11,7 @@ export default {
         default: false,
         subcomponentPropertiesObject: 'jsClasses',
         subcomponentPropertyObjectKeys: ['jsClasses'],
-        isSet: true,
-        setValue: JAVASCRIPT_CLASSES.RIPPLES,
+        valueInSetObject: JAVASCRIPT_CLASSES.RIPPLES,
       },
       // spec: {
       //   name: 'Material',
