@@ -3,6 +3,7 @@ import { OPACITY_INVISIBLE, OPACITY_VISIBLE, LINEAR_SPEED_TRANSITION, OPACITY_PR
 import { ExitCallback, ModalEntranceTransition, ModalExitTransition } from '../../../../interfaces/modalTransitions';
 import { ElementStyleProperties } from '../../../../interfaces/elementStyleProperties';
 import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
+import { BackdropProperties } from '../../../../interfaces/workshopComponent';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 
 export interface TransitionProperties {
@@ -63,9 +64,14 @@ export default class TransitionsService {
     }, TransitionsService.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
     TransitionsService.opacityFadeTransition(OPACITY_VISIBLE, TransitionsService.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
   }
-
-  private static exitPreviewTransition(backdropElement: HTMLElement, modalElement: HTMLElement): void {
+  
+  private static unsetBackdropStyle(backdropElement: HTMLElement, backdropProperties: BackdropProperties): void {
     backdropElement.classList.replace(TransitionsService.BACKGROUND_ELEMENT_ACTIVE_MODE_CLASS, TransitionsService.BACKGROUND_ELEMENT_DEFAULT_CLASS);
+    backdropProperties.visible = false;
+  }
+
+  private static exitPreviewTransition(backdropElement: HTMLElement, backdropProperties: BackdropProperties, modalElement: HTMLElement): void {
+    this.unsetBackdropStyle(backdropElement, backdropProperties);
     TransitionsService.opacityFadeTransition(OPACITY_VISIBLE, TransitionsService.EXIT_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS,
       backdropElement, modalElement);
     setTimeout(() => {
@@ -86,20 +92,21 @@ export default class TransitionsService {
   }
 
   private static exitCallback(setOptionToDefaultCallback: () => void, modalElement: HTMLElement, backdropElement: HTMLElement,
-      toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
+      backdropProperties: BackdropProperties, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
     TransitionsService.toggleModalStaticPosition(modalElement, 'add');
     setOptionToDefaultCallback();
     const exitTransitionModalDefaultProperties = expandedModalPreviewModeState.getCurrentExitTransitionModalDefaultPropertiesState();
     TransitionsService.setModalPropertiesAfterExitTransition(modalElement, exitTransitionModalDefaultProperties);
-    TransitionsService.exitPreviewTransition(backdropElement, modalElement);
+    TransitionsService.exitPreviewTransition(backdropElement, backdropProperties, modalElement);
     if (toolbarContainerElement) TransitionsService.exitToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
   }
 
-  public static exit(modalExitTransition: ModalExitTransition, transitionDuration: string, setOptionToDefaultCallback: () => void, backdropElement: HTMLElement, modalElement: HTMLElement,
-      toolbarContainerElement?: HTMLElement, toolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
+  public static exit(modalExitTransition: ModalExitTransition, transitionDuration: string, setOptionToDefaultCallback: () => void,
+      backdropElement: HTMLElement, backdropProperties: BackdropProperties, modalElement: HTMLElement, toolbarContainerElement?: HTMLElement,
+      toolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
     TransitionsService.opacityFadeTransition(OPACITY_INVISIBLE, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
     modalExitTransition(transitionDuration, modalElement, TransitionsService.exitCallback.bind(this, setOptionToDefaultCallback) as ExitCallback,
-      backdropElement, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
+      backdropElement, backdropProperties, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
     expandedModalPreviewModeState.setIsTransitionInProgressState(true);
   }
 
@@ -123,13 +130,18 @@ export default class TransitionsService {
     modalElement.classList[toggleName](STATIC_POSITION_CLASS);
   }
 
-  private static startPreviewTransition(backdropElement: HTMLElement, modalElement: HTMLElement,
+  private static setBackdropStyle(backdropElement: HTMLElement, backdropProperties: BackdropProperties): void {
+    backdropElement.classList.replace(TransitionsService.BACKGROUND_ELEMENT_DEFAULT_CLASS, TransitionsService.BACKGROUND_ELEMENT_ACTIVE_MODE_CLASS);
+    backdropProperties.visible = true;
+  }
+
+  private static startPreviewTransition(backdropElement: HTMLElement, modalElement: HTMLElement, backdropProperties: BackdropProperties,
       modalEntranceTransition: ModalEntranceTransition, transitionDuration: string): void {
     TransitionsService.opacityFadeTransition(OPACITY_INVISIBLE, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS,
       backdropElement, modalElement);
     setTimeout(() => {
       TransitionsService.toggleModalStaticPosition(modalElement, 'remove');
-      backdropElement.classList.replace(TransitionsService.BACKGROUND_ELEMENT_DEFAULT_CLASS, TransitionsService.BACKGROUND_ELEMENT_ACTIVE_MODE_CLASS);
+      TransitionsService.setBackdropStyle(backdropElement, backdropProperties);
       modalEntranceTransition(transitionDuration, modalElement, TransitionsService.unsetTransitionProperties, backdropElement);
     }, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
   }
@@ -138,10 +150,10 @@ export default class TransitionsService {
     modalElement.style.top = modalElement.style.top === '' ? '0px' : modalElement.style.top;
   }
 
-  public static initiate(modalEntranceTransition: ModalEntranceTransition, transitionDuration: string, modalElement: HTMLElement, backdropElement: HTMLElement,
-      toolbarContainerElement?: HTMLElement, toolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
+  public static initiate(modalEntranceTransition: ModalEntranceTransition, transitionDuration: string, backdropProperties: BackdropProperties, modalElement: HTMLElement,
+      backdropElement: HTMLElement, toolbarContainerElement?: HTMLElement, toolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
     TransitionsService.setPropertiesThatAreNotInCustomCssButAreRequiredForTransitions(modalElement);
-    TransitionsService.startPreviewTransition(backdropElement, modalElement, modalEntranceTransition, transitionDuration);
+    TransitionsService.startPreviewTransition(backdropElement, modalElement, backdropProperties, modalEntranceTransition, transitionDuration);
     if (toolbarContainerElement) TransitionsService.startToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
     expandedModalPreviewModeState.setIsTransitionInProgressState(true);
   }

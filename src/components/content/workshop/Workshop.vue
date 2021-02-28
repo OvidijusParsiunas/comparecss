@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import { ComponentCenteringInParent, ComponentTransitions, CustomCss, DefaultProperties, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../interfaces/workshopComponent';
+import { BackdropProperties, ComponentCenteringInParent, ComponentTransitions, CustomCss, DefaultProperties, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../interfaces/workshopComponent';
 import { modalLayerBottomSpecificSettings } from './newComponent/types/modals/properties/modalLayerBottomSpecificSettings';
 import { removeSubcomponentModalState } from './toolbar/options/removeSubcomponentModalState/removeSubcomponentModalState';
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../consts/modalTransitionTypes.enum';
@@ -160,8 +160,17 @@ function createDefaultComponentCenteringInParent(): ComponentCenteringInParent {
   };
 }
 
+function createDefaultBackdropProperties(): BackdropProperties {
+  return {
+    color: '#f40101cc',
+    alpha: 0.8,
+    visible: false,
+  }
+}
+
 function createDefaultBaseProperties(): DefaultProperties {
   return {
+    backdrop: createDefaultBackdropProperties(),
     componentCenteringInParent: createDefaultComponentCenteringInParent(),
     transitions: createDefaultTransitionsProperties(),
   }
@@ -303,7 +312,7 @@ function createSubcomponents(): Subcomponents {
       subcomponentSpecificSettings: modalBaseSpecificSettings,
       componentCenteringInParent: createDefaultComponentCenteringInParent(),
       transitions: createDefaultTransitionsProperties(),
-      backdropColor: '#6d6d6dcc',
+      backdrop: createDefaultBackdropProperties(),
       defaultProperties: createDefaultBaseProperties(),
     },
     [SUB_COMPONENTS.LAYER_1]: {

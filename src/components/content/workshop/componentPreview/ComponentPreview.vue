@@ -1,5 +1,8 @@
 <template>
-  <div v-if="component" ref="componentPreviewContainer" class="component-preview-container-default"
+  <div v-if="component" ref="componentPreviewContainer"
+    class="component-preview-container-default"
+    :style="{backgroundColor: component.subcomponents[SUB_COMPONENTS.BASE].backdrop && component.subcomponents[SUB_COMPONENTS.BASE].backdrop.visible
+      ? component.subcomponents[SUB_COMPONENTS.BASE].backdrop.color : 'unset'}"
     @mouseenter="componentPreviewMouseEnter()"
     @mouseleave="componentPreviewMouseLeave()">
     <div style="margin: 0; position: absolute; z-index: 0; text-align: center;"
@@ -103,6 +106,7 @@ import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/togg
 import { PlayPreviewTransitionAnimationEvent } from '../../../../interfaces/playPreviewTransitionAnimationEvent';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
+import { ModalEntranceTransition, ModalExitTransition } from '../../../../interfaces/modalTransitions';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
 import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../consts/subcomponentCursorClasses.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
@@ -189,23 +193,27 @@ export default {
         ExpandedModalPreviewModeTransitionsService.initiate(
           transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.entrance.type],
           this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.entrance.duration,
+          this.component.subcomponents[SUB_COMPONENTS.BASE].backdrop,
           this.$refs.componentPreview, this.$refs.componentPreviewContainer,
           toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
       } else {
         ExpandedModalPreviewModeTransitionsService.exit(
           transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.exit.type],
           this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.exit.duration,
-          setOptionToDefaultCallback, this.$refs.componentPreviewContainer, this.$refs.componentPreview,
+          setOptionToDefaultCallback, this.$refs.componentPreviewContainer,
+          this.component.subcomponents[SUB_COMPONENTS.BASE].backdrop, this.$refs.componentPreview,
           toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
       }
     },
     playPreviewTransitionAnimation(playPreviewTransitionAnimationEvent: PlayPreviewTransitionAnimationEvent): void {
       const [transitionAnimation, isEntranceAnimation] = playPreviewTransitionAnimationEvent;
       if (isEntranceAnimation) {
-        ExpandedModalPreviewModeTransitionsService.initiateEntraceTransitionPreview(transitionTypeToFunctionality[transitionAnimation],
+        ExpandedModalPreviewModeTransitionsService.initiateEntraceTransitionPreview(
+          transitionTypeToFunctionality[transitionAnimation] as ModalEntranceTransition,
           this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.entrance.duration, this.$refs.componentPreview);
       } else {
-        ExpandedModalPreviewModeTransitionsService.initiateExitTransitionPreview(transitionTypeToFunctionality[transitionAnimation],
+        ExpandedModalPreviewModeTransitionsService.initiateExitTransitionPreview(
+          transitionTypeToFunctionality[transitionAnimation] as ModalExitTransition,
           this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.exit.duration, this.$refs.componentPreview);
       }
     },
@@ -245,15 +253,10 @@ export default {
   }
   .component-preview-container-modal {
     position: relative;
-    background-color: red;
     height: 106%;
     top: -2.6%;
     left: -30vw;
     width: 100vw;
-  }
-  .component-preview-container-modal::before {
-    position: relative;
-    opacity: 0.5 !important;
   }
   .component-preview-centered {
     top: 50%;

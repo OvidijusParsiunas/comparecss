@@ -1,5 +1,6 @@
 import { OPACITY_INVISIBLE, OPACITY_VISIBLE, ALL_PROPERTIES, LINEAR_SPEED_TRANSITION, ENTRANCE_TRANSITION_DELAY_MILLISECONDS } from './sharedConsts';
 import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
+import { BackdropProperties } from '../../../../interfaces/workshopComponent';
 import { ExitCallback } from '../../../../interfaces/modalTransitions';
 import TransitionsUtils from './utils/transitionsUtils';
 
@@ -37,14 +38,14 @@ export default class FadeTransitions {
   }
 
   public static exit(transitionDuration: string, modalElement: HTMLElement, exitCallback: ExitCallback, backdropElement: HTMLElement,
-      toolbarElement: HTMLElement, innerToolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
+      backdropProperties: BackdropProperties, toolbarElement: HTMLElement, innerToolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
     modalElement.style.transitionProperty = ALL_PROPERTIES;
     modalElement.style.opacity = OPACITY_INVISIBLE;
     modalElement.style.transitionDuration = transitionDuration;
     modalElement.style.transitionTimingFunction = LINEAR_SPEED_TRANSITION;
     const pendingTransitionEnding = setTimeout(() => {
       if (backdropElement) FadeTransitions.hideBackdrop(backdropElement);
-      exitCallback(modalElement, backdropElement, toolbarElement, innerToolbarElement, toolbarPositionToggleElement);
+      exitCallback(modalElement, backdropElement, backdropProperties, toolbarElement, innerToolbarElement, toolbarPositionToggleElement);
     }, TransitionsUtils.secondsStringToMillisecondsNumber(transitionDuration));
     expandedModalPreviewModeState.setPendingTransitionEndingState(pendingTransitionEnding);
   }

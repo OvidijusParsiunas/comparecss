@@ -8,7 +8,8 @@ export default {
       spec: {
         name: 'Color',
         default: '#000000',
-        cssProperty: 'backgroundColor',
+        alphaValueSubcomponentPropertyObjectKeys: ['backdrop', 'alpha'],
+        subcomponentPropertyObjectKeys: ['backdrop', 'color'],
         unsetColorButtonAvailable: true,
       },
     }

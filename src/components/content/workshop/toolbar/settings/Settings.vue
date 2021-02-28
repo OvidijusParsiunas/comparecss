@@ -91,7 +91,7 @@
                                   && (((!subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] || !subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty]) && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][setting.spec.cssProperty] !== 'inherit')
                                       || (subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty] && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty] !== 'inherit')))))
                        )
-                    )"
+                    || (setting.spec.subcomponentPropertyObjectKeys && (setting.spec.default !== '' && setting.spec.default !== '#000000')))"
                   @click="removeColor(setting.spec)">
                   &times;
                 </button>
@@ -214,6 +214,11 @@ export default {
               const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
               if (cssPropertyValue) { this.selectorCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
             } else if (setting.type === SETTINGS_TYPES.COLOR_PICKER) {
+              if (setting.spec.subcomponentPropertyObjectKeys) {
+                const hexColorValue = SharedUtils.getSubcomponentPropertyValue(setting.spec.subcomponentPropertyObjectKeys, this.subcomponentProperties) as string;
+                setting.spec.default = setting.spec.alphaValueSubcomponentPropertyObjectKeys ? hexColorValue.substring(0, hexColorValue.length - 2) : hexColorValue;
+                return;
+              }
               let cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
               if (setting.spec.cssProperty === 'boxShadow' && cssPropertyValue === 'unset') {
                 cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(auxiliaryPartialCss, customCssActiveMode, setting.spec.cssProperty) || BoxShadowUtils.DEFAULT_BOX_SHADOW_COLOR_VALUE;
@@ -328,10 +333,24 @@ export default {
     blurInputDropdown(referenceId: string): void {
       this.$refs[referenceId].blur();
     },
+    convertDecimalAlphaToHex(decimaAlpha: number): string {
+      const hexAlpha = Math.round(decimaAlpha * 255).toString(16);
+      return hexAlpha.length === 1 ? '0' + hexAlpha : hexAlpha;
+    },
+    // put into a utils file
     colorChanged(event: KeyboardEvent, setting: any): void {
-      const { cssProperty, partialCss } = setting.spec;
+      const { cssProperty, partialCss, subcomponentPropertyObjectKeys, alphaValueSubcomponentPropertyObjectKeys } = setting.spec;
       const colorPickerValue = (event.target as HTMLInputElement).value;
       const { customCss, customCssActiveMode } = this.subcomponentProperties;
+      if (subcomponentPropertyObjectKeys) {
+        let completeColorPickerValue = colorPickerValue;
+        if (alphaValueSubcomponentPropertyObjectKeys) {
+          const alphaValue = SharedUtils.getSubcomponentPropertyValue(alphaValueSubcomponentPropertyObjectKeys, this.subcomponentProperties);
+          completeColorPickerValue += this.convertDecimalAlphaToHex(alphaValue);
+        }
+        SharedUtils.setSubcomponentPropertyValue(subcomponentPropertyObjectKeys, this.subcomponentProperties, completeColorPickerValue);
+        return;
+      }
       if (partialCss !== undefined) {
         if (customCss[customCssActiveMode][cssProperty] === undefined) {
           const defaultValues = [ ...partialCss.fullDefaultValues ];
@@ -359,11 +378,17 @@ export default {
       this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode].transition = 'unset';
     },
     removeColor(spec: any): void {
+      const { cssProperty, subcomponentPropertyObjectKeys, alphaValueSubcomponentPropertyObjectKeys } = spec;
       spec.default = '';
+      if (subcomponentPropertyObjectKeys) {
+        const completeColorPickerValue = alphaValueSubcomponentPropertyObjectKeys ? '#00000000' : '#000000';
+        SharedUtils.setSubcomponentPropertyValue(subcomponentPropertyObjectKeys, this.subcomponentProperties, completeColorPickerValue);
+        return;
+      }
       if (!this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode]) {
-        this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode] = { [spec.cssProperty]: 'inherit'};
+        this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode] = { [cssProperty]: 'inherit'};
       } else {
-        this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode][spec.cssProperty] = 'inherit';
+        this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode][cssProperty] = 'inherit';
       }
     },
     checkboxMouseClick(spec: any, previousCheckboxValue: boolean): void {

@@ -1,5 +1,6 @@
 import { OPACITY_INVISIBLE, OPACITY_VISIBLE, ALL_PROPERTIES, LINEAR_SPEED_TRANSITION, ENTRANCE_TRANSITION_DELAY_MILLISECONDS } from './sharedConsts';
 import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
+import { BackdropProperties } from '../../../../interfaces/workshopComponent';
 import { ExitCallback } from '../../../../interfaces/modalTransitions';
 import TransitionsUtils from './utils/transitionsUtils';
 
@@ -43,7 +44,7 @@ export default class SlideTransitions {
   }
 
   public static exit(transitionDuration: string, modalElement: HTMLElement, exitCallback: ExitCallback, backdropElement: HTMLElement,
-      toolbarElement: HTMLElement, innerToolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
+      backdropProperties: BackdropProperties, toolbarElement: HTMLElement, innerToolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
     const currentTopStyleValue = modalElement.style.top;
     const currentTopStyleValueNumber = Number.parseInt(currentTopStyleValue);
     expandedModalPreviewModeState.setCurrentExitTransitionModalDefaultPropertiesState({top: currentTopStyleValue});
@@ -54,7 +55,7 @@ export default class SlideTransitions {
     modalElement.style.top = `${currentTopStyleValueNumber - SlideTransitions.SLIDE_DISTANCE_NUMBER}px`;
     const pendingTransitionEnding = setTimeout(() => {
       if (backdropElement) SlideTransitions.hideBackdrop(backdropElement);
-      exitCallback(modalElement, backdropElement, toolbarElement, innerToolbarElement, toolbarPositionToggleElement);
+      exitCallback(modalElement, backdropElement, backdropProperties, toolbarElement, innerToolbarElement, toolbarPositionToggleElement);
     }, TransitionsUtils.secondsStringToMillisecondsNumber(transitionDuration));
     expandedModalPreviewModeState.setPendingTransitionEndingState(pendingTransitionEnding);
   }
