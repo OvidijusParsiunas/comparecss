@@ -9,12 +9,14 @@ export default {
         name: 'Vertically Centered',
         subcomponentPropertyObjectKeys: ['componentCenteringInParent', 'vertical'],
         default: false,
-        changeOtherProperties: {
-          true: {
+      },
+      triggers: {
+        true: [
+          {
             cssProperty: 'top',
             newValue: undefined,
           }
-        },
+        ],
       },
     },
     {

@@ -2,18 +2,18 @@ import { SubcomponentProperties } from '../../../../../../interfaces/workshopCom
 import SharedUtils from './sharedUtils';
 
 export default class CheckboxUtils {
-
-  private static updateOtherProperties(newCheckboxValue: boolean, changeOtherProperties: any, subcomponentProperties: SubcomponentProperties, allSettings: any): void {
-    if (changeOtherProperties[newCheckboxValue.toString()]) {
-      const { customCss, customCssActiveMode } = subcomponentProperties;
-      const handler = changeOtherProperties[newCheckboxValue.toString()];
-      customCss[customCssActiveMode][handler.cssProperty] = handler.newValue;
+  
+  private static activateTriggers(newCheckboxValue: boolean, triggers: any, subcomponentProperties: SubcomponentProperties, allSettings: any): void {
+    const { customCss, customCssActiveMode } = subcomponentProperties;
+    (triggers[newCheckboxValue.toString()] || []).forEach((trigger) => {
+      const { cssProperty, newValue } = trigger;
+      customCss[customCssActiveMode][cssProperty] = newValue;
       for (let i = 0; i < allSettings.options.length; i += 1) {
-        if (allSettings.options[i].spec.cssProperty && allSettings.options[i].spec.cssProperty === handler.cssProperty) {
-          allSettings.options[i].spec.default = parseInt(handler.newValue) || 0;
+        if (allSettings.options[i].spec.cssProperty && allSettings.options[i].spec.cssProperty === cssProperty) {
+          allSettings.options[i].spec.default = parseInt(newValue) || 0;
         }
       }
-    }
+    });
   }
 
   private static setSetObject(newCheckboxValue: boolean, valueInSetObject: any, subcomponentPropertyObjectKeys: any[], subcomponentProperties: SubcomponentProperties): void {
@@ -34,10 +34,10 @@ export default class CheckboxUtils {
     }
   }
 
-  public static updateProperties(previousCheckboxValue: boolean, spec: any, subcomponentProperties: SubcomponentProperties, allSettings: any): void {
-    const newCheckboxValue = !previousCheckboxValue;
+  public static updateProperties(spec: any, triggers: any, subcomponentProperties: SubcomponentProperties, allSettings: any): void {
+    const newCheckboxValue = !spec.default;
     if (spec.subcomponentPropertyObjectKeys) { CheckboxUtils.updateCustomSubcomponentProperties(newCheckboxValue, spec, subcomponentProperties); }
-    if (spec.changeOtherProperties) { CheckboxUtils.updateOtherProperties(newCheckboxValue, spec.changeOtherProperties, subcomponentProperties, allSettings); }
+    if (triggers) { CheckboxUtils.activateTriggers(newCheckboxValue, triggers, subcomponentProperties, allSettings) }
   }
 
   private static updateSettingThatUsesCustomCss(updatedSettingSpec: any, subcomponentProperties: SubcomponentProperties): void {

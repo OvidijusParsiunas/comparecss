@@ -139,7 +139,7 @@
                 <div style="text-align: left">
                   {{setting.spec.name}}
                 </div>
-                <input type="checkbox" v-model="setting.spec.default" @click="checkboxMouseClick(setting.spec, setting.spec.default)">
+                <input type="checkbox" v-model="setting.spec.default" @click="checkboxMouseClick(setting.spec, setting.triggers)">
               </div>
             </div>
             
@@ -397,8 +397,8 @@ export default {
         }
       });
     },
-    checkboxMouseClick(spec: any, previousCheckboxValue: boolean): void {
-      CheckboxUtils.updateProperties(previousCheckboxValue, spec, this.subcomponentProperties, this.settings);
+    checkboxMouseClick(spec: any, triggers: any): void {
+      CheckboxUtils.updateProperties(spec, triggers, this.subcomponentProperties, this.settings);
     },
     resetSubcomponentProperties(options: any): void {
       options.forEach((option) => {
