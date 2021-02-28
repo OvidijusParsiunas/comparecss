@@ -12,8 +12,14 @@ export default {
         subcomponentPropertyObjectKeys: ['backdrop', 'color'],
         unsetColorButtonAvailable: true,
       },
+      removeColorTriggers: [
+        {
+          subcomponentPropertyObjectKeys: ['backdrop', 'alpha'],
+          defaultValue: '0',
+        },
+      ]
     },
-    { 
+    {
       type: SETTINGS_TYPES.RANGE,
       spec: {
         name: 'Opacity',
@@ -24,6 +30,13 @@ export default {
         subcomponentPropertyObjectKeys: ['backdrop', 'alpha'],
         postfix: '',
       },
+      triggers: [
+        {
+          subcomponentPropertyObjectKeys: ['backdrop', 'color'],
+          defaultValue: '#00000000',
+          conditions: new Set(['unset']),
+        },
+      ]
     },
   ]
 };

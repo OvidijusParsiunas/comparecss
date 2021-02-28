@@ -31,6 +31,7 @@ UX:
 update the range using the scroll wheel
 need a color for when settings are partially-disabled (the user can change them which will turn them to the original color) - this is more-so for cases where the modal is
   set to be centered and the top range is not used and vice versa, also would provide use for disabling modal animations etc as no good way to disable that at the moment
+  this would also be useful for just partially disabling backdrop opacity when the color is romoved instead of setting it to 0
 ability to group the components
 option to see what the actual css looks like and to edit it
 consider placing javascript unique to the css classes it was used on

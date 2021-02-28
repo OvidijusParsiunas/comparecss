@@ -91,8 +91,8 @@
                                   && (((!subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] || !subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty]) && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][setting.spec.cssProperty] !== 'inherit')
                                       || (subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty] && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty] !== 'inherit')))))
                        )
-                    || (setting.spec.subcomponentPropertyObjectKeys && (setting.spec.default !== '' && setting.spec.default !== '#000000')))"
-                  @click="removeColor(setting.spec)">
+                    || (setting.spec.subcomponentPropertyObjectKeys && (setting.spec.default !== 'unset')))"
+                  @click="removeColor(setting.spec, setting.removeColorTriggers)">
                   &times;
                 </button>
               </div>
@@ -158,6 +158,7 @@
 
 <script lang="ts">
 import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../../consts/unsetColotButtonDisplayed';
+import GeneralUtils from '../../../../../services/workshop/exportFiles/contentBuilders/css/generalUtils';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSettingsState';
@@ -216,7 +217,7 @@ export default {
             } else if (setting.type === SETTINGS_TYPES.COLOR_PICKER) {
               if (setting.spec.subcomponentPropertyObjectKeys) {
                 const hexColorValue = SharedUtils.getSubcomponentPropertyValue(setting.spec.subcomponentPropertyObjectKeys, this.subcomponentProperties) as string;
-                setting.spec.default = setting.spec.alphaValueSubcomponentPropertyObjectKeys ? hexColorValue.substring(0, hexColorValue.length - 2) : hexColorValue;
+                setting.spec.default = setting.spec.alphaValueSubcomponentPropertyObjectKeys && hexColorValue !== 'unset' ? hexColorValue.substring(0, hexColorValue.length - 2) : hexColorValue;
                 return;
               }
               let cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
@@ -372,19 +373,29 @@ export default {
       this.addDefaultValueIfCssModeMissing(customCssActiveMode, cssProperty);
       this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode].transition = 'unset';
     },
-    removeColor(spec: any): void {
-      const { cssProperty, subcomponentPropertyObjectKeys, alphaValueSubcomponentPropertyObjectKeys } = spec;
-      spec.default = '';
+    removeColor(spec: any, removeColorTriggers: any): void {
+      const { cssProperty, subcomponentPropertyObjectKeys } = spec;
       if (subcomponentPropertyObjectKeys) {
-        const completeColorPickerValue = alphaValueSubcomponentPropertyObjectKeys ? '#00000000' : '#000000';
-        SharedUtils.setSubcomponentPropertyValue(subcomponentPropertyObjectKeys, this.subcomponentProperties, completeColorPickerValue);
-        return;
-      }
-      if (!this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode]) {
+        spec.default = 'unset';
+        SharedUtils.setSubcomponentPropertyValue(subcomponentPropertyObjectKeys, this.subcomponentProperties, 'unset');
+      } else if (!this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode]) {
+        spec.default = '';
         this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode] = { [cssProperty]: 'inherit'};
       } else {
+        spec.default = '';
         this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode][cssProperty] = 'inherit';
       }
+      (removeColorTriggers || []).forEach((trigger) => {
+        const { subcomponentPropertyObjectKeys, defaultValue } = trigger;
+        if (subcomponentPropertyObjectKeys) {
+          for (let i = 0; i < this.settings.options.length; i += 1) {
+            if (GeneralUtils.areArraysEqual(this.settings.options[i].spec.subcomponentPropertyObjectKeys, trigger.subcomponentPropertyObjectKeys)) {
+              this.settings.options[i].spec.default = trigger.defaultValue;
+              SharedUtils.setSubcomponentPropertyValue(subcomponentPropertyObjectKeys, this.subcomponentProperties, defaultValue);
+            }
+          }
+        }
+      });
     },
     checkboxMouseClick(spec: any, previousCheckboxValue: boolean): void {
       CheckboxUtils.updateProperties(previousCheckboxValue, spec, this.subcomponentProperties, this.settings);
