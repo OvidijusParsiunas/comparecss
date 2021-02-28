@@ -10,7 +10,8 @@ export default {
         default: 0,
         scale: [0, 120],
         smoothingDivisible: 4,
-        cssProperty: 'borderRadius'
+        cssProperty: 'borderRadius',
+        postfix: 'px',
       },
     },
     {
@@ -20,7 +21,8 @@ export default {
         default: 0,
         scale: [0, 100],
         smoothingDivisible: 4,
-        cssProperty: 'borderWidth'
+        cssProperty: 'borderWidth',
+        postfix: 'px',
       },
       triggers: [
         {

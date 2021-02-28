@@ -10,7 +10,8 @@ export default {
         default: 0,
         scale: [0, 250],
         smoothingDivisible: 1,
-        cssProperty: 'width'
+        cssProperty: 'width',
+        postfix: 'px',
       },
     },
     { 
@@ -20,7 +21,8 @@ export default {
         default: 0,
         scale: [0, 250],
         smoothingDivisible: 1,
-        cssProperty: 'height'
+        cssProperty: 'height',
+        postfix: 'px',
       },
     },
     { 

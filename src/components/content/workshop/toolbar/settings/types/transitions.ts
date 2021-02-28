@@ -54,8 +54,8 @@ export default {
         default: 0,
         scale: [0, 30],
         smoothingDivisible: 10,
-        isTime: true,
         subcomponentPropertyObjectKeys: ['transitions', 'entrance', 'duration'],
+        postfix: 's',
       },
     },
     { 
@@ -65,8 +65,8 @@ export default {
         default: 0,
         scale: [0, 30],
         smoothingDivisible: 10,
-        isTime: true,
         subcomponentPropertyObjectKeys: ['transitions', 'exit', 'duration'],
+        postfix: 's',
       },
     },
   ]

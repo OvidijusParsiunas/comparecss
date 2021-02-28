@@ -25,6 +25,7 @@ export default {
         scale: [0, 2000],
         smoothingDivisible: 4,
         cssProperty: 'top',
+        postfix: 'px',
       },
       triggers: [
         {

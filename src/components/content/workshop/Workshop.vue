@@ -162,7 +162,7 @@ function createDefaultComponentCenteringInParent(): ComponentCenteringInParent {
 
 function createDefaultBackdropProperties(): BackdropProperties {
   return {
-    color: '#f40101cc',
+    color: '#6d6d6dcc',
     alpha: 0.8,
     visible: false,
   }
@@ -304,12 +304,14 @@ function createSubcomponents(): Subcomponents {
       componentTag: 'div',
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
+      // should be optional ----
       jsClasses: new Set(),
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
       subcomponentSpecificSettings: modalBaseSpecificSettings,
+      // these will probably be placed into a full object
       componentCenteringInParent: createDefaultComponentCenteringInParent(),
       transitions: createDefaultTransitionsProperties(),
       backdrop: createDefaultBackdropProperties(),

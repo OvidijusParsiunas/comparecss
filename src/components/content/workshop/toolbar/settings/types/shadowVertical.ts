@@ -14,7 +14,8 @@ export default {
           position: 1,
           fullDefaultValues: ['0px', '0px', '0px', '0px', '#000000'],
         }, 
-        cssProperty: 'boxShadow'
+        cssProperty: 'boxShadow',
+        postfix: 'px',
       },
     },
     { 
@@ -28,7 +29,8 @@ export default {
           position: 2,
           fullDefaultValues: ['0px', '0px', '0px', '0px', '#000000'],
         }, 
-        cssProperty: 'boxShadow'
+        cssProperty: 'boxShadow',
+        postfix: 'px',
       },
     },
     { 
@@ -42,7 +44,8 @@ export default {
           position: 3,
           fullDefaultValues: ['0px', '0px', '0px', '0px', '#000000'],
         }, 
-        cssProperty: 'boxShadow'
+        cssProperty: 'boxShadow',
+        postfix: 'px',
       },
     },
     { 

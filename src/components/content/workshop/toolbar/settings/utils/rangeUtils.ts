@@ -41,15 +41,25 @@ export default class RangeUtils {
   }
 
   private static updateCustomCss(rangeValue: string, spec: any, subcomponentProperties: SubcomponentProperties): void {
-    const { cssProperty, smoothingDivisible, isTime } = spec;
+    const { cssProperty, smoothingDivisible, postfix } = spec;
     const { customCss, customCssActiveMode } = subcomponentProperties;
-    customCss[customCssActiveMode][cssProperty] = `${Math.floor(rangeValue as unknown as number / smoothingDivisible)}${isTime ? 's': 'px'}`;
+    customCss[customCssActiveMode][cssProperty] = `${Math.floor(rangeValue as unknown as number / smoothingDivisible)}${postfix}`;
+  }
+
+  private static updateColorValueinCustomSubcomponentProperties(rangeValue: string, spec: any, subcomponentProperties: SubcomponentProperties): void {
+    const colorValue = SharedUtils.getSubcomponentPropertyValue(spec.colorValueSubcomponentPropertyObjectKeys, subcomponentProperties) as string;
+    const alphaHexStringValue = SharedUtils.convertAlphaDecimalToHexString(rangeValue as unknown as number / spec.smoothingDivisible);
+    const newColorvalue = `${colorValue.substring(0, colorValue.length - alphaHexStringValue.length)}${alphaHexStringValue}`;
+    SharedUtils.setSubcomponentPropertyValue(spec.colorValueSubcomponentPropertyObjectKeys, subcomponentProperties, newColorvalue);
   }
 
   private static updateCustomSubcomponentProperties(rangeValue: string, spec: any, subcomponentProperties: SubcomponentProperties): void {
-    const { smoothingDivisible, isTime, subcomponentPropertyObjectKeys } = spec;
-    const newRangeValue = `${rangeValue as unknown as number / smoothingDivisible}${isTime ? 's': 'px'}`;
+    const { smoothingDivisible, postfix, subcomponentPropertyObjectKeys } = spec;
+    const newRangeValue = `${rangeValue as unknown as number / smoothingDivisible}${postfix}`;
     SharedUtils.setSubcomponentPropertyValue(subcomponentPropertyObjectKeys, subcomponentProperties, newRangeValue);
+    if (spec.colorValueSubcomponentPropertyObjectKeys) {
+      RangeUtils.updateColorValueinCustomSubcomponentProperties(rangeValue, spec, subcomponentProperties);
+    }
   }
 
   private static updatePartialCss(rangeValue: string, spec: any, subcomponentProperties: SubcomponentProperties): void {

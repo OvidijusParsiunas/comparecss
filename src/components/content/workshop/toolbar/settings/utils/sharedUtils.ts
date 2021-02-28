@@ -43,4 +43,9 @@ export default class SharedUtils {
       SharedUtils.setSubcomponentPropertyValue(newSubcomponentPropertiesObjectKeysArray, nestedObject, newValue);
     }
   }
+
+  public static convertAlphaDecimalToHexString(decimaAlpha: number): string {
+    const hexAlpha = Math.round(decimaAlpha * 255).toString(16);
+    return hexAlpha.length === 1 ? '0' + hexAlpha : hexAlpha;
+  }
 }

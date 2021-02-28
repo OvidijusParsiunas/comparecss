@@ -10,7 +10,8 @@ export default {
         default: 0,
         scale: [0, 250],
         smoothingDivisible: 1,
-        cssProperty: 'marginLeft'
+        cssProperty: 'marginLeft',
+        postfix: 'px',
       },
     },
     {
@@ -20,7 +21,8 @@ export default {
         default: 0,
         scale: [0, 250],
         smoothingDivisible: 1,
-        cssProperty: 'marginTop'
+        cssProperty: 'marginTop',
+        postfix: 'px',
       },
     },
     { 
@@ -30,7 +32,8 @@ export default {
         default: 0,
         scale: [0, 250],
         smoothingDivisible: 1,
-        cssProperty: 'marginRight'
+        cssProperty: 'marginRight',
+        postfix: 'px',
       },
     },
     { 
@@ -40,7 +43,8 @@ export default {
         default: 0,
         scale: [0, 250],
         smoothingDivisible: 1,
-        cssProperty: 'marginBottom'
+        cssProperty: 'marginBottom',
+        postfix: 'px',
       },
     },
   ]

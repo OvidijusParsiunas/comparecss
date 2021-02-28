@@ -263,9 +263,9 @@ export default {
   // refactor it to extract the logic into a partialCss util file
   methods: {
     updateRange(event: MouseEvent, setting: any): void {
+      RangeUtils.updateProperties(event, setting, this.settings, this.subcomponentProperties, this.selectorCurrentValues);
       if (setting.spec.subcomponentPropertyObjectKeys) this.rangeSubcomponentPropertyObjectValue = SharedUtils.getSubcomponentPropertyValue(
         setting.spec.subcomponentPropertyObjectKeys, this.subcomponentProperties);
-      RangeUtils.updateProperties(event, setting, this.settings, this.subcomponentProperties, this.selectorCurrentValues);
     },
     rangeMouseDown(event: KeyboardEvent, customCssActiveMode: SUB_COMPONENT_CSS_MODES, setting: any): void {
       if (setting.spec.subcomponentPropertyObjectKeys) { 
@@ -333,11 +333,6 @@ export default {
     blurInputDropdown(referenceId: string): void {
       this.$refs[referenceId].blur();
     },
-    convertDecimalAlphaToHex(decimaAlpha: number): string {
-      const hexAlpha = Math.round(decimaAlpha * 255).toString(16);
-      return hexAlpha.length === 1 ? '0' + hexAlpha : hexAlpha;
-    },
-    // put into a utils file
     colorChanged(event: KeyboardEvent, setting: any): void {
       const { cssProperty, partialCss, subcomponentPropertyObjectKeys, alphaValueSubcomponentPropertyObjectKeys } = setting.spec;
       const colorPickerValue = (event.target as HTMLInputElement).value;
@@ -345,8 +340,8 @@ export default {
       if (subcomponentPropertyObjectKeys) {
         let completeColorPickerValue = colorPickerValue;
         if (alphaValueSubcomponentPropertyObjectKeys) {
-          const alphaValue = SharedUtils.getSubcomponentPropertyValue(alphaValueSubcomponentPropertyObjectKeys, this.subcomponentProperties);
-          completeColorPickerValue += this.convertDecimalAlphaToHex(alphaValue);
+          const alphaValue = SharedUtils.getSubcomponentPropertyValue(alphaValueSubcomponentPropertyObjectKeys, this.subcomponentProperties) as number;
+          completeColorPickerValue += SharedUtils.convertAlphaDecimalToHexString(alphaValue);
         }
         SharedUtils.setSubcomponentPropertyValue(subcomponentPropertyObjectKeys, this.subcomponentProperties, completeColorPickerValue);
         return;

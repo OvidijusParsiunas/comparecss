@@ -10,7 +10,8 @@ export default {
         default: 0,
         scale: [0, 250],
         smoothingDivisible: 1,
-        cssProperty: 'paddingLeft'
+        cssProperty: 'paddingLeft',
+        postfix: 'px',
       },
     },
     { 
@@ -20,7 +21,8 @@ export default {
         default: 0,
         scale: [0, 250],
         smoothingDivisible: 1,
-        cssProperty: 'paddingTop'
+        cssProperty: 'paddingTop',
+        postfix: 'px',
       },
     },
     { 
@@ -30,7 +32,8 @@ export default {
         default: 0,
         scale: [0, 250],
         smoothingDivisible: 1,
-        cssProperty: 'paddingRight'
+        cssProperty: 'paddingRight',
+        postfix: 'px',
       },
     },
     { 
@@ -40,7 +43,8 @@ export default {
         default: 0,
         scale: [0, 250],
         smoothingDivisible: 1,
-        cssProperty: 'paddingBottom'
+        cssProperty: 'paddingBottom',
+        postfix: 'px',
       },
     },
   ]

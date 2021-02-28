@@ -11,6 +11,7 @@ export default {
         scale: [0, 100],
         smoothingDivisible: 4,
         cssProperty: 'borderTopWidth',
+        postfix: 'px',
       },
       triggers: [
         {
