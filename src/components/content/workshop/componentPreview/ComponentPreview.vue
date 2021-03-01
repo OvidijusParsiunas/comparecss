@@ -29,7 +29,7 @@
           <component ref="componentPreview" :is="component.componentPreviewStructure.baseCss.componentTag"
             :id="subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId"
             class="base-component grid-item-position" :class="[ SUBCOMPONENT_CURSOR_AUTO_CLASS,
-              ...component.componentPreviewStructure.baseCss.jsClasses, STATIC_POSITION_CLASS ]"
+              ...(component.componentPreviewStructure.baseCss.jsClasses || []), STATIC_POSITION_CLASS ]"
             @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId].subcomponentMouseEnter()"
             @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId].subcomponentMouseLeave()"
             @mousedown="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId].subcomponentMouseDown()"

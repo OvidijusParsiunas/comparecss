@@ -17,7 +17,7 @@ export default class JSBuilder {
     const utilisedJavascriptCode: JavascriptClassesToCode = {};
     components.forEach((component) => {
       Object.keys(component.subcomponents).forEach((key) => {
-        component.subcomponents[key].jsClasses.forEach((jsClass) => {
+        (component.subcomponents[key].jsClasses || []).forEach((jsClass) => {
           if (!utilisedJavascriptCode[jsClass]) { utilisedJavascriptCode[jsClass] = javascriptClassesToCode[jsClass] }
         });
       });
