@@ -7,33 +7,11 @@ export default class ColorPickerUtils {
   public static UNSET_SUBCOMPONENT_PROPERTY_COLOR_VALUE = 'unset';
   public static INHERIT_SUBCOMPONENT_PROPERTY_COLOR_VALUE = 'inherit';
 
-  private static updatePartialCustomCss(hexColor: string, updatedSettingSpec: any, subcomponentProperties: SubcomponentProperties): void {
-    const { cssProperty, partialCss } = updatedSettingSpec;
-    const { customCss, customCssActiveMode } = subcomponentProperties;
-    if (customCss[customCssActiveMode][cssProperty] === undefined) {
-      const defaultValues = [ ...partialCss.fullDefaultValues ];
-      defaultValues[partialCss.position] = hexColor;
-      if (cssProperty === 'boxShadow' && customCss[customCssActiveMode][cssProperty] === 'unset') {
-        BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(subcomponentProperties, hexColor);
-      } else {
-        customCss[customCssActiveMode][cssProperty] = cssProperty === 'boxShadow' ? 'unset' : defaultValues.join(' ');
-      }
-    } else {
-      if (cssProperty !== 'boxShadow' || (cssProperty === 'boxShadow' && customCss[customCssActiveMode][cssProperty] !== 'unset')) {
-        const cssPropertyValues = customCss[customCssActiveMode][cssProperty].split(' ');
-        cssPropertyValues[partialCss.position] = hexColor;
-        customCss[customCssActiveMode][cssProperty] = cssPropertyValues.join(' ');
-      } else if (cssProperty === 'boxShadow') {
-        BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(subcomponentProperties, hexColor);
-      }
-    }
-  }
-
   private static updateCustomCss(hexColor: string, updatedSettingSpec: any, subcomponentProperties: SubcomponentProperties): void {
     const { cssProperty, partialCss } = updatedSettingSpec;
     const { customCss, customCssActiveMode } = subcomponentProperties;
     if (partialCss !== undefined) {
-      ColorPickerUtils.updatePartialCustomCss(hexColor, updatedSettingSpec, subcomponentProperties);
+      if (cssProperty === 'boxShadow') BoxShadowUtils.updateBoxShadowColorValue(hexColor, updatedSettingSpec, subcomponentProperties);
     } else {
       customCss[customCssActiveMode][cssProperty] = hexColor;
     }
@@ -98,13 +76,13 @@ export default class ColorPickerUtils {
   }
 
   private static updateSettingThatUsesCustomCss(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
-    const { customCss, customCssActiveMode, auxiliaryPartialCss } = subcomponentProperties;
+    const { customCss, customCssActiveMode } = subcomponentProperties;
     let cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, settingToBeUpdatedSpec.cssProperty);
-    if (settingToBeUpdatedSpec.cssProperty === 'boxShadow' && cssPropertyValue === 'unset') {
-      cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(auxiliaryPartialCss, customCssActiveMode, settingToBeUpdatedSpec.cssProperty) || BoxShadowUtils.DEFAULT_BOX_SHADOW_COLOR_VALUE;
+    if (settingToBeUpdatedSpec.cssProperty === 'boxShadow') {
+      BoxShadowUtils.setBoxShadowSettingsColorValue(cssPropertyValue, settingToBeUpdatedSpec, subcomponentProperties);
+    } else {
+      settingToBeUpdatedSpec.default = cssPropertyValue;
     }
-    if (cssPropertyValue) { settingToBeUpdatedSpec.default = settingToBeUpdatedSpec.partialCss
-      ? cssPropertyValue.split(' ')[settingToBeUpdatedSpec.partialCss.position] : cssPropertyValue; }
   }
 
   private static updateSettingThatUsesASubcomponentProperty(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {

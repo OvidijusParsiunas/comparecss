@@ -57,29 +57,13 @@ export default class RangeUtils {
     }
   }
 
-  private static updatePartialCss(rangeValue: string, spec: any, subcomponentProperties: SubcomponentProperties): void {
-    const {cssProperty, partialCss} = spec;
-    const { customCss, customCssActiveMode, auxiliaryPartialCss } = subcomponentProperties;
-    if (customCss[customCssActiveMode][cssProperty] === undefined) {
-      const defaultValues = [ ...partialCss.fullDefaultValues ];
-      defaultValues[partialCss.position] = rangeValue;
-      customCss[customCssActiveMode][cssProperty] = defaultValues.join(' ');
-    } else {
-      if (cssProperty === 'boxShadow') BoxShadowUtils.setUnsetBoxShadowPropertiesToZero(customCss, auxiliaryPartialCss, customCssActiveMode);
-      const cssPropertyValues = customCss[customCssActiveMode][cssProperty].split(' ');
-      cssPropertyValues[partialCss.position] = `${rangeValue}px`;
-      customCss[customCssActiveMode][cssProperty] = cssPropertyValues.join(' ');
-    }
-    if (cssProperty === 'boxShadow') BoxShadowUtils.setZeroBoxShadowPropertiesToUnset(subcomponentProperties);
-  }
-
   public static updateProperties(event: MouseEvent, updatedSetting: any, allSettings: any,
       subcomponentProperties: SubcomponentProperties, selectorCurrentValues: unknown): void {
     const { triggers, spec } = updatedSetting;
     RangeUtils.activateTriggers(triggers, subcomponentProperties, allSettings, selectorCurrentValues);
     const rangeValue = (event.target as HTMLInputElement).value;
     if (spec.partialCss != undefined) {
-      RangeUtils.updatePartialCss(rangeValue, spec, subcomponentProperties);
+      if (spec.cssProperty === 'boxShadow') BoxShadowUtils.updateBoxShadowRangeValue(rangeValue, spec, subcomponentProperties);
     } else if (spec.subcomponentPropertyObjectKeys) {
       RangeUtils.updateCustomSubcomponentProperties(rangeValue, spec, subcomponentProperties);
     } else {
