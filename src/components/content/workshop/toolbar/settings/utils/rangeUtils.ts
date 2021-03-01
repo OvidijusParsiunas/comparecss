@@ -1,6 +1,5 @@
-import GeneralUtils from '../../../../../../services/workshop/exportFiles/contentBuilders/css/generalUtils';
-import { CustomCss, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../consts/subcomponentCssModes.enum';
+import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import BoxShadowUtils from './boxShadowUtils';
 import SharedUtils from './sharedUtils';
 
@@ -19,14 +18,10 @@ export default class RangeUtils {
 
   private static activateTriggersForCustomSubcomponentProperties(trigger: any, subcomponentProperties: SubcomponentProperties,
       allSettings: any): void {
-    const subcomponentPropertyValue = SharedUtils.getSubcomponentPropertyValue(trigger.subcomponentPropertyObjectKeys, subcomponentProperties);
-    if (!trigger.conditions.has(subcomponentPropertyValue)) return;
-    for (let i = 0; i < allSettings.options.length; i += 1) {
-      if (GeneralUtils.areArraysEqual(allSettings.options[i].spec.subcomponentPropertyObjectKeys, trigger.subcomponentPropertyObjectKeys)) {
-        allSettings.options[i].spec.default = trigger.defaultValue;
-        SharedUtils.setSubcomponentPropertyValue(trigger.subcomponentPropertyObjectKeys, subcomponentProperties, trigger.defaultValue);
-      }
-    }
+    const { conditions, subcomponentPropertyObjectKeys } = trigger;
+    const subcomponentPropertyValue = SharedUtils.getSubcomponentPropertyValue(subcomponentPropertyObjectKeys, subcomponentProperties);
+    if (!conditions.has(subcomponentPropertyValue)) return;
+    SharedUtils.setSubcomponentPropertyValueSetting(trigger, subcomponentProperties, allSettings);
   }
 
   private static activateTriggers(triggers: any, subcomponentProperties: SubcomponentProperties,
@@ -96,27 +91,28 @@ export default class RangeUtils {
     return Number.parseFloat(value) * smoothingDivisible;
   }
 
-  private static updateSettingThatUsesASubcomponentProperty(updatedSetting: any, subcomponentProperties: SubcomponentProperties): void {
-    const rangeValue = SharedUtils.getSubcomponentPropertyValue(updatedSetting.spec.subcomponentPropertyObjectKeys, subcomponentProperties) as string;
-    updatedSetting.spec.default = RangeUtils.parseString(rangeValue, updatedSetting.spec.smoothingDivisible);
+  private static updateSettingThatUsesASubcomponentProperty(settingToBeUpdated: any, subcomponentProperties: SubcomponentProperties): void {
+    const rangeValue = SharedUtils.getSubcomponentPropertyValue(settingToBeUpdated.spec.subcomponentPropertyObjectKeys, subcomponentProperties) as string;
+    settingToBeUpdated.spec.default = RangeUtils.parseString(rangeValue, settingToBeUpdated.spec.smoothingDivisible);
   }
 
-  private static updateSettingThatUsesCustomCss(updatedSetting: any, cssPropertyValue: string): void {
-    const singlePropertyValue = updatedSetting.spec.partialCss ? cssPropertyValue.split(' ')[updatedSetting.spec.partialCss.position] : cssPropertyValue;
-    updatedSetting.spec.default = RangeUtils.parseString(singlePropertyValue, updatedSetting.spec.smoothingDivisible); 
+  private static updateSettingThatUsesCustomCss(settingToBeUpdated: any, cssPropertyValue: string): void {
+    const singlePropertyValue = settingToBeUpdated.spec.partialCss
+      ? cssPropertyValue.split(' ')[settingToBeUpdated.spec.partialCss.position] : cssPropertyValue;
+    settingToBeUpdated.spec.default = RangeUtils.parseString(singlePropertyValue, settingToBeUpdated.spec.smoothingDivisible); 
   }
 
-  public static updateSettings(updatedSetting: any, allSettings: any, customCss: CustomCss,
-      customCssActiveMode: SUB_COMPONENT_CSS_MODES, subcomponentProperties: SubcomponentProperties, selectorCurrentValues: unknown): void {
-    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, updatedSetting.spec.cssProperty);
+  public static updateSettings(settingToBeUpdated: any, allSettings: any, subcomponentProperties: SubcomponentProperties, selectorCurrentValues: unknown): void {
+    const { customCss, customCssActiveMode } = subcomponentProperties;
+    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, settingToBeUpdated.spec.cssProperty);
     if (cssPropertyValue !== undefined) {
-      if (customCss[customCssActiveMode]) RangeUtils.activateTriggers(updatedSetting.triggers, subcomponentProperties, allSettings, selectorCurrentValues);
-      const hasBoxShadowBeenSet = updatedSetting.spec.cssProperty === 'boxShadow' && BoxShadowUtils.setBoxShadowSettingsRangeValue(cssPropertyValue, updatedSetting.spec);
-      if (!hasBoxShadowBeenSet) { RangeUtils.updateSettingThatUsesCustomCss(updatedSetting, cssPropertyValue); }
-    } else if (updatedSetting.spec.subcomponentPropertyObjectKeys) {
-      RangeUtils.updateSettingThatUsesASubcomponentProperty(updatedSetting, subcomponentProperties);
+      if (customCss[customCssActiveMode]) RangeUtils.activateTriggers(settingToBeUpdated.triggers, subcomponentProperties, allSettings, selectorCurrentValues);
+      const hasBoxShadowBeenSet = settingToBeUpdated.spec.cssProperty === 'boxShadow' && BoxShadowUtils.setBoxShadowSettingsRangeValue(cssPropertyValue, settingToBeUpdated.spec);
+      if (!hasBoxShadowBeenSet) { RangeUtils.updateSettingThatUsesCustomCss(settingToBeUpdated, cssPropertyValue); }
+    } else if (settingToBeUpdated.spec.subcomponentPropertyObjectKeys) {
+      RangeUtils.updateSettingThatUsesASubcomponentProperty(settingToBeUpdated, subcomponentProperties);
     } else {
-      updatedSetting.spec.default = RangeUtils.DEFAULT_RANGE_VALUE;
+      settingToBeUpdated.spec.default = RangeUtils.DEFAULT_RANGE_VALUE;
     }
   }
 }

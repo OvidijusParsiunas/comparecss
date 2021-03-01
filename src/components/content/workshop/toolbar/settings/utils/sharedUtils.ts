@@ -1,3 +1,4 @@
+import GeneralUtils from '../../../../../../services/workshop/exportFiles/contentBuilders/css/generalUtils';
 import { CustomCss, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../consts/subcomponentCssModes.enum';
 
@@ -44,6 +45,17 @@ export default class SharedUtils {
     }
   }
 
+  public static setSubcomponentPropertyValueSetting(trigger: any, subcomponentProperties: SubcomponentProperties, allSettings: any): void {
+    const { subcomponentPropertyObjectKeys, defaultValue } = trigger;
+    for (let i = 0; i < allSettings.options.length; i += 1) {
+      if (GeneralUtils.areArraysEqual(allSettings.options[i].spec.subcomponentPropertyObjectKeys, subcomponentPropertyObjectKeys)) {
+        allSettings.options[i].spec.default = defaultValue;
+        SharedUtils.setSubcomponentPropertyValue(subcomponentPropertyObjectKeys, subcomponentProperties, defaultValue);
+        return;
+      }
+    }
+  }
+  
   public static convertAlphaDecimalToHexString(decimaAlpha: number): string {
     const hexAlpha = Math.round(decimaAlpha * 255).toString(16);
     return hexAlpha.length === 1 ? '0' + hexAlpha : hexAlpha;

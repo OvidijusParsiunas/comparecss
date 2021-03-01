@@ -13,6 +13,7 @@ esc button
 enter - submit/cancel - potential - call the option 'actions'
 when hovering over option that only works in expanded modal view - higlight the toggle for it
 potentially rename initial to default convention
+potentially add x button to border coloring
 
 option to import an existing button style!
 

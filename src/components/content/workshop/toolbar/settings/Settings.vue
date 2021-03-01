@@ -76,14 +76,14 @@
                     ((subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode]
                       && subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode][setting.spec.cssProperty]
                       && ((!subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX]
-                            && subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode][setting.spec.cssProperty] !== 'inherit')
+                            && subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode][setting.spec.cssProperty] !== INHERIT_SUBCOMPONENT_PROPERTY_COLOR_VALUE)
                           || 
                           (subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX]
                             && subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX] === UNSET_COLOR_BUTTON_DISPLAYED_STATE.DISPLAY)))
                     || ((subcomponentProperties.customCssActiveMode === SUB_COMPONENT_CSS_MODES.HOVER
                         && ((subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty] && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty] !== 'inherit')
                           || ((!subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] || !subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty])
-                            && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][setting.spec.cssProperty] !== 'inherit'))
+                            && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][setting.spec.cssProperty] !== INHERIT_SUBCOMPONENT_PROPERTY_COLOR_VALUE))
                         )
                         || (subcomponentProperties.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
                           && ((subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK] && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][setting.spec.cssProperty] && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK][setting.spec.cssProperty] !== 'inherit')
@@ -91,7 +91,7 @@
                                   && (((!subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] || !subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty]) && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][setting.spec.cssProperty] !== 'inherit')
                                       || (subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER] && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty] && subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER][setting.spec.cssProperty] !== 'inherit')))))
                        )
-                    || (setting.spec.subcomponentPropertyObjectKeys && (setting.spec.default !== 'unset')))"
+                    || (setting.spec.subcomponentPropertyObjectKeys && (setting.spec.default !== UNSET_SUBCOMPONENT_PROPERTY_COLOR_VALUE)))"
                   @click="removeColor(setting.spec, setting.removeColorTriggers)">
                   &times;
                 </button>
@@ -158,7 +158,6 @@
 
 <script lang="ts">
 import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../../consts/unsetColotButtonDisplayed';
-import GeneralUtils from '../../../../../services/workshop/exportFiles/contentBuilders/css/generalUtils';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSettingsState';
@@ -166,7 +165,7 @@ import { UseActionsDropdown } from '../../../../../interfaces/UseActionsDropdown
 import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
 import useActionsDropdown from './compositionAPI/useActionsDropdown';
 import dropdown from '../options/dropdown/Dropdown.vue';
-import BoxShadowUtils from './utils/boxShadowUtils';
+import ColorPickerUtils from './utils/colorPickerUtils';
 import CheckboxUtils from './utils/checkboxUtils';
 import SharedUtils from './utils/sharedUtils';
 import RangeUtils from './utils/rangeUtils';
@@ -177,6 +176,8 @@ interface Consts {
   UNSET_COLOR_BUTTON_DISPLAYED_STATE;
   UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX;
   ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX: string;
+  UNSET_SUBCOMPONENT_PROPERTY_COLOR_VALUE: string;
+  INHERIT_SUBCOMPONENT_PROPERTY_COLOR_VALUE: string;
   updateSettings: (param1?: any, param2?: WORKSHOP_TOOLBAR_OPTION_TYPES) => void;
   addDefaultValueIfCssModeMissing: (param1: SUB_COMPONENT_CSS_MODES, param2: string) => void;
 }
@@ -198,33 +199,26 @@ export default {
       UNSET_COLOR_BUTTON_DISPLAYED_STATE,
       UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX,
       ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX: 'actionsDropdown-',
+      UNSET_SUBCOMPONENT_PROPERTY_COLOR_VALUE: ColorPickerUtils.UNSET_SUBCOMPONENT_PROPERTY_COLOR_VALUE,
+      INHERIT_SUBCOMPONENT_PROPERTY_COLOR_VALUE: ColorPickerUtils.INHERIT_SUBCOMPONENT_PROPERTY_COLOR_VALUE,
       updateSettings(newSettings?: any, optionType?: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
         if (newSettings) this.settings = newSettings;
         if (optionType) SubcomponentSpecificSettingsState.setSubcomponentSpecificSettings(optionType,
           this.subcomponentProperties.subcomponentSpecificSettings, this.settings.options);
         this.$nextTick(() => {
-          const { customCss, customCssActiveMode, auxiliaryPartialCss } = this.subcomponentProperties;
+          const { customCss, customCssActiveMode } = this.subcomponentProperties;
           this.selectorCurrentValues = {};
           this.inputDropdownCurrentValues = {};
           (this.settings.options || []).forEach((setting) => {
             if (setting.type === SETTINGS_TYPES.RANGE) {
-              RangeUtils.updateSettings(setting, this.settings, customCss, customCssActiveMode, this.subcomponentProperties, this.selectorCurrentValues);
+              RangeUtils.updateSettings(setting, this.settings, this.subcomponentProperties, this.selectorCurrentValues);
             } else if (setting.type === SETTINGS_TYPES.SELECT) {
               // default value for range is currently setting the select value, not the select value for ranges
               // potential race condition where range sets the select value and select may set it to something incorrect
               const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
               if (cssPropertyValue) { this.selectorCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
             } else if (setting.type === SETTINGS_TYPES.COLOR_PICKER) {
-              if (setting.spec.subcomponentPropertyObjectKeys) {
-                const hexColorValue = SharedUtils.getSubcomponentPropertyValue(setting.spec.subcomponentPropertyObjectKeys, this.subcomponentProperties) as string;
-                setting.spec.default = setting.spec.alphaValueSubcomponentPropertyObjectKeys && hexColorValue !== 'unset' ? hexColorValue.substring(0, hexColorValue.length - 2) : hexColorValue;
-                return;
-              }
-              let cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
-              if (setting.spec.cssProperty === 'boxShadow' && cssPropertyValue === 'unset') {
-                cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(auxiliaryPartialCss, customCssActiveMode, setting.spec.cssProperty) || BoxShadowUtils.DEFAULT_BOX_SHADOW_COLOR_VALUE;
-              }
-              if (cssPropertyValue) { setting.spec.default = setting.spec.partialCss ? cssPropertyValue.split(' ')[setting.spec.partialCss.position] : cssPropertyValue; }
+              ColorPickerUtils.updateSettings(setting.spec, this.subcomponentProperties);
             } else if (setting.type === SETTINGS_TYPES.INPUT_DROPDOWN) {
               const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
               if (cssPropertyValue) { this.inputDropdownCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
@@ -334,68 +328,16 @@ export default {
     blurInputDropdown(referenceId: string): void {
       this.$refs[referenceId].blur();
     },
-    colorChanged(event: KeyboardEvent, setting: any): void {
-      const { cssProperty, partialCss, subcomponentPropertyObjectKeys, alphaValueSubcomponentPropertyObjectKeys } = setting.spec;
-      const colorPickerValue = (event.target as HTMLInputElement).value;
-      const { customCss, customCssActiveMode } = this.subcomponentProperties;
-      if (subcomponentPropertyObjectKeys) {
-        let completeColorPickerValue = colorPickerValue;
-        if (alphaValueSubcomponentPropertyObjectKeys) {
-          const alphaValue = SharedUtils.getSubcomponentPropertyValue(alphaValueSubcomponentPropertyObjectKeys, this.subcomponentProperties) as number;
-          completeColorPickerValue += SharedUtils.convertAlphaDecimalToHexString(alphaValue);
-        }
-        SharedUtils.setSubcomponentPropertyValue(subcomponentPropertyObjectKeys, this.subcomponentProperties, completeColorPickerValue);
-        return;
-      }
-      if (partialCss !== undefined) {
-        if (customCss[customCssActiveMode][cssProperty] === undefined) {
-          const defaultValues = [ ...partialCss.fullDefaultValues ];
-          defaultValues[partialCss.position] = colorPickerValue;
-          if (cssProperty === 'boxShadow' && customCss[customCssActiveMode][cssProperty] === 'unset') {
-            BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(this.subcomponentProperties, colorPickerValue);
-          } else {
-            customCss[customCssActiveMode][cssProperty] = cssProperty === 'boxShadow' ? 'unset' : defaultValues.join(' ');
-          }
-        } else {
-          if (cssProperty !== 'boxShadow' || (cssProperty === 'boxShadow' && customCss[customCssActiveMode][cssProperty] !== 'unset')) {
-            const cssPropertyValues = customCss[customCssActiveMode][cssProperty].split(' ');
-            cssPropertyValues[partialCss.position] = colorPickerValue;
-            customCss[customCssActiveMode][cssProperty] = cssPropertyValues.join(' ');
-          } else if (cssProperty === 'boxShadow') {
-            BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(this.subcomponentProperties, colorPickerValue);
-          }
-        }
-      } else {
-        customCss[customCssActiveMode][cssProperty] = colorPickerValue;
-      }
+    // extract logic
+    colorChanged(event: MouseEvent, setting: any): void {
+      ColorPickerUtils.updateProperties(event, setting.spec, this.subcomponentProperties);
     },
     colorInputClick(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): void {
       this.addDefaultValueIfCssModeMissing(customCssActiveMode, cssProperty);
       this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode].transition = 'unset';
     },
     removeColor(spec: any, removeColorTriggers: any): void {
-      const { cssProperty, subcomponentPropertyObjectKeys } = spec;
-      if (subcomponentPropertyObjectKeys) {
-        spec.default = 'unset';
-        SharedUtils.setSubcomponentPropertyValue(subcomponentPropertyObjectKeys, this.subcomponentProperties, 'unset');
-      } else if (!this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode]) {
-        spec.default = '';
-        this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode] = { [cssProperty]: 'inherit'};
-      } else {
-        spec.default = '';
-        this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode][cssProperty] = 'inherit';
-      }
-      (removeColorTriggers || []).forEach((trigger) => {
-        const { subcomponentPropertyObjectKeys, defaultValue } = trigger;
-        if (subcomponentPropertyObjectKeys) {
-          for (let i = 0; i < this.settings.options.length; i += 1) {
-            if (GeneralUtils.areArraysEqual(this.settings.options[i].spec.subcomponentPropertyObjectKeys, trigger.subcomponentPropertyObjectKeys)) {
-              this.settings.options[i].spec.default = trigger.defaultValue;
-              SharedUtils.setSubcomponentPropertyValue(subcomponentPropertyObjectKeys, this.subcomponentProperties, defaultValue);
-            }
-          }
-        }
-      });
+      ColorPickerUtils.removeColor(spec, removeColorTriggers, this.subcomponentProperties, this.settings);
     },
     checkboxMouseClick(spec: any, triggers: any): void {
       CheckboxUtils.updateProperties(spec, triggers, this.subcomponentProperties, this.settings);
