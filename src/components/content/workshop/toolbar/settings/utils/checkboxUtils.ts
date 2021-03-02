@@ -1,4 +1,4 @@
-import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
+import { CustomFeatures, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import SharedUtils from './sharedUtils';
 
 export default class CheckboxUtils {
@@ -16,8 +16,8 @@ export default class CheckboxUtils {
     });
   }
 
-  private static setSetObject(newCheckboxValue: boolean, valueInSetObject: any, subcomponentPropertyObjectKeys: any[], subcomponentProperties: SubcomponentProperties): void {
-    const property = SharedUtils.getSubcomponentPropertyValue(subcomponentPropertyObjectKeys, subcomponentProperties) as Set<undefined>;
+  private static setSetObject(newCheckboxValue: boolean, valueInSetObject: any, customFeatureObjectKeys: string[], subcomponentProperties: SubcomponentProperties): void {
+    const property = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures) as Set<undefined>;
     if (newCheckboxValue) {
       property.add(valueInSetObject);
     } else {
@@ -25,42 +25,42 @@ export default class CheckboxUtils {
     }
   }
 
-  private static updateCustomSubcomponentProperties(newCheckboxValue: boolean, spec: any, subcomponentProperties: SubcomponentProperties): void {
-    const { valueInSetObject, subcomponentPropertyObjectKeys } = spec;
+  private static updateCustomFeature(newCheckboxValue: boolean, spec: any, subcomponentProperties: SubcomponentProperties): void {
+    const { valueInSetObject, customFeatureObjectKeys } = spec;
     if (valueInSetObject) {
-      CheckboxUtils.setSetObject(newCheckboxValue, valueInSetObject, subcomponentPropertyObjectKeys, subcomponentProperties);
+      CheckboxUtils.setSetObject(newCheckboxValue, valueInSetObject, customFeatureObjectKeys, subcomponentProperties);
     } else {
-      SharedUtils.setSubcomponentPropertyValue(subcomponentPropertyObjectKeys, subcomponentProperties, newCheckboxValue);
+      SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures, newCheckboxValue);
     }
   }
 
   public static updateProperties(spec: any, triggers: any, subcomponentProperties: SubcomponentProperties, allSettings: any): void {
     const newCheckboxValue = !spec.default;
-    if (spec.subcomponentPropertyObjectKeys) { CheckboxUtils.updateCustomSubcomponentProperties(newCheckboxValue, spec, subcomponentProperties); }
+    if (spec.customFeatureObjectKeys) { CheckboxUtils.updateCustomFeature(newCheckboxValue, spec, subcomponentProperties); }
     if (triggers) { CheckboxUtils.activateTriggers(newCheckboxValue, triggers, subcomponentProperties, allSettings) }
   }
 
-  private static updateSettingThatUsesCustomCss(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
+  private static updateCustomCssSetting(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
     const { customCss, customCssActiveMode } = subcomponentProperties;
     const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, settingToBeUpdatedSpec.cssProperty);
     if (cssPropertyValue) { settingToBeUpdatedSpec.default = (cssPropertyValue === settingToBeUpdatedSpec.conditionalStyle.truthy); }
   }
 
-  private static updateSettingThatUsesASubcomponentProperty(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
+  private static updateCustomFeatureSetting(settingToBeUpdatedSpec: any, customFeatures: CustomFeatures): void {
     if (settingToBeUpdatedSpec.valueInSetObject) {
       settingToBeUpdatedSpec.default = (
-        SharedUtils.getSubcomponentPropertyValue(settingToBeUpdatedSpec.subcomponentPropertyObjectKeys, subcomponentProperties) as Set<undefined>
+        SharedUtils.getCustomFeatureValue(settingToBeUpdatedSpec.customFeatureObjectKeys, customFeatures) as Set<undefined>
       ).has(settingToBeUpdatedSpec.valueInSetObject);
     } else {
-      settingToBeUpdatedSpec.default = SharedUtils.getSubcomponentPropertyValue(settingToBeUpdatedSpec.subcomponentPropertyObjectKeys, subcomponentProperties);
+      settingToBeUpdatedSpec.default = SharedUtils.getCustomFeatureValue(settingToBeUpdatedSpec.customFeatureObjectKeys, customFeatures);
     }
   }
 
   public static updateSettings(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
-    if (settingToBeUpdatedSpec.subcomponentPropertyObjectKeys) {
-      CheckboxUtils.updateSettingThatUsesASubcomponentProperty(settingToBeUpdatedSpec, subcomponentProperties);
+    if (settingToBeUpdatedSpec.customFeatureObjectKeys) {
+      CheckboxUtils.updateCustomFeatureSetting(settingToBeUpdatedSpec, subcomponentProperties.customFeatures);
     } else {
-      CheckboxUtils.updateSettingThatUsesCustomCss(settingToBeUpdatedSpec, subcomponentProperties);
+      CheckboxUtils.updateCustomCssSetting(settingToBeUpdatedSpec, subcomponentProperties);
     }
   }
 }

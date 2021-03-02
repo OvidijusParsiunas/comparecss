@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import { BackdropProperties, ComponentCenteringInParent, ComponentTransitions, CustomCss, DefaultProperties, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../interfaces/workshopComponent';
+import { BackdropProperties, ComponentCenteringInParent, ComponentTransitions, CustomCss, CustomFeatures, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../interfaces/workshopComponent';
 import { modalLayerBottomSpecificSettings } from './newComponent/types/modals/properties/modalLayerBottomSpecificSettings';
 import { removeSubcomponentModalState } from './toolbar/options/removeSubcomponentModalState/removeSubcomponentModalState';
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../consts/modalTransitionTypes.enum';
@@ -168,15 +168,15 @@ function createDefaultBackdropProperties(): BackdropProperties {
   }
 }
 
-function createDefaultBaseProperties(): DefaultProperties {
+function createDefaultBaseCustomFeatures(): CustomFeatures {
   return {
-    backdrop: createDefaultBackdropProperties(),
     componentCenteringInParent: createDefaultComponentCenteringInParent(),
     transitions: createDefaultTransitionsProperties(),
+    backdrop: createDefaultBackdropProperties(),
   }
 }
 
-function createDefaultCloseProperties(): DefaultProperties {
+function createDefaultCloseButtonCustomFeatures(): CustomFeatures {
   return {
     jsClasses: createInitialCloseButtonJsClasses(),
   }
@@ -309,11 +309,8 @@ function createSubcomponents(): Subcomponents {
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
       subcomponentSpecificSettings: modalBaseSpecificSettings,
-    // these will probably be placed into a full object
-      componentCenteringInParent: createDefaultComponentCenteringInParent(),
-      transitions: createDefaultTransitionsProperties(),
-      backdrop: createDefaultBackdropProperties(),
-      defaultProperties: createDefaultBaseProperties(),
+      customFeatures: createDefaultBaseCustomFeatures(),
+      defaultCustomFeatures: createDefaultBaseCustomFeatures(),
     },
     [SUB_COMPONENTS.LAYER_1]: {
       componentTag: 'div',
@@ -345,14 +342,14 @@ function createSubcomponents(): Subcomponents {
       componentTag: 'div',
       customCss: createInitialCloseButtonCss(),
       initialCss: createInitialCloseButtonCss(),
-      jsClasses: createInitialCloseButtonJsClasses(),
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
       optionalSubcomponent: { currentlyDisplaying: true },
       subcomponentSpecificSettings: alertCloseSpecificSettings,
-      defaultProperties: createDefaultCloseProperties(),
+      customFeatures: createDefaultCloseButtonCustomFeatures(),
+      defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
   }
 }

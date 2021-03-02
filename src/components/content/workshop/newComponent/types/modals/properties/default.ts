@@ -1,8 +1,7 @@
-import { ComponentCenteringInParent, ComponentTransitions, CustomCss, DefaultProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { BackdropProperties, ComponentCenteringInParent, ComponentTransitions, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../../../../../consts/modalTransitionTypes.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { alertCloseSpecificSettings } from '../../alerts/properties/alertCloseSpecificSettings';
-import { alertBaseSpecificSettings } from '../../alerts/properties/alertBaseSpecificSettings';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { modalLayerBottomSpecificSettings } from './modalLayerBottomSpecificSettings';
@@ -12,6 +11,7 @@ import { modalLayerTopSpecificSettings } from './modalLayerTopSpecificSettings';
 import { NewComponent } from '../../../../../../../interfaces/newComponent';
 import { inheritedAlertCloseChildCss } from './inheritedAlertCloseChildCss';
 import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';
+import { modalBaseSpecificSettings } from './modalBaseSpecificSettings';
 import { inheritedAlertBaseCss } from './inheritedCss';
 
 function createDefaultTransitionsProperties(): ComponentTransitions {
@@ -34,14 +34,28 @@ function createDefaultComponentCenteringInParent(): ComponentCenteringInParent {
   };
 }
 
-function createDefaultBaseProperties(): DefaultProperties {
+function createDefaultBackdropProperties(): BackdropProperties {
   return {
-    componentCenteringInParent: createDefaultComponentCenteringInParent(),
-    transitions: createDefaultTransitionsProperties(),
+    color: '#6d6d6dcc',
+    alpha: 0.8,
+    visible: false,
   }
 }
 
-// all default css needs to be filled in as to be able to 'reset' correctly
+function createDefaultBaseCustomFeatures(): CustomFeatures {
+  return {
+    componentCenteringInParent: createDefaultComponentCenteringInParent(),
+    transitions: createDefaultTransitionsProperties(),
+    backdrop: createDefaultBackdropProperties(),
+  }
+}
+
+function createDefaultCloseButtonCustomFeatures(): CustomFeatures {
+  return {
+    jsClasses: createInitialCloseButtonJsClasses(),
+  }
+}
+
 function createInitialBaseCss(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
@@ -57,9 +71,9 @@ function createInitialBaseCss(): CustomCss {
       boxShadow: 'unset',
       fontFamily: '"Poppins", sans-serif',
       transition: 'unset',
-      top: '0px',
+      top: undefined,
     },
-  }
+  };
 }
 
 function createInitialCloseButtonCss(): CustomCss {
@@ -86,7 +100,7 @@ function createInitialCloseButtonCss(): CustomCss {
       marginTop: '18px',
       marginRight: '10px',
     },
-  }
+  };
 }
 
 function createInitialLayer1Css(): CustomCss {
@@ -110,7 +124,7 @@ function createInitialLayer1Css(): CustomCss {
       color: '#004085',
       zIndex: 1,
     },
-  }
+  };
 }
 
 function createInitialLayer2Css(): CustomCss {
@@ -129,7 +143,7 @@ function createInitialLayer2Css(): CustomCss {
       fontSize: '16px',
       color: '#004085',
     },
-  }
+  };
 }
 
 function createInitialLayer3Css(): CustomCss {
@@ -151,7 +165,7 @@ function createInitialLayer3Css(): CustomCss {
       fontSize: '16px',
       color: '#004085',
     },
-  }
+  };
 }
 
 function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
@@ -168,10 +182,9 @@ function createSubcomponents(): Subcomponents {
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
-      subcomponentSpecificSettings: alertBaseSpecificSettings,
-      componentCenteringInParent: createDefaultComponentCenteringInParent(),
-      transitions: createDefaultTransitionsProperties(),
-      defaultProperties: createDefaultBaseProperties(),
+      subcomponentSpecificSettings: modalBaseSpecificSettings,
+      customFeatures: createDefaultBaseCustomFeatures(),
+      defaultCustomFeatures: createDefaultBaseCustomFeatures(),
     },
     [SUB_COMPONENTS.LAYER_1]: {
       componentTag: 'div',
@@ -203,13 +216,14 @@ function createSubcomponents(): Subcomponents {
       componentTag: 'div',
       customCss: createInitialCloseButtonCss(),
       initialCss: createInitialCloseButtonCss(),
-      jsClasses: createInitialCloseButtonJsClasses(),
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
       optionalSubcomponent: { currentlyDisplaying: true },
       subcomponentSpecificSettings: alertCloseSpecificSettings,
+      customFeatures: createDefaultCloseButtonCustomFeatures(),
+      defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
   }
 }

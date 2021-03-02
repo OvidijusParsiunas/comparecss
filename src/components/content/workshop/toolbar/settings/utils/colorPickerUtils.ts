@@ -1,11 +1,11 @@
-import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
+import { CustomFeatures, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import BoxShadowUtils from './boxShadowUtils';
 import SharedUtils from './sharedUtils';
 
 export default class ColorPickerUtils {
 
-  public static UNSET_SUBCOMPONENT_PROPERTY_COLOR_VALUE = 'unset';
-  public static INHERIT_SUBCOMPONENT_PROPERTY_COLOR_VALUE = 'inherit';
+  public static UNSET_CUSTOM_FEATURE_COLOR_VALUE = 'unset';
+  public static INHERIT_CUSTOM_FEATURE_COLOR_VALUE = 'inherit';
 
   private static updateCustomCss(hexColor: string, updatedSettingSpec: any, subcomponentProperties: SubcomponentProperties): void {
     const { cssProperty, partialCss } = updatedSettingSpec;
@@ -17,65 +17,33 @@ export default class ColorPickerUtils {
     }
   }
 
-  private static updateCustomSubcomponentProperties(hexColor: string, updatedSettingSpec: any,
-      subcomponentProperties: SubcomponentProperties): void {
-    const { subcomponentPropertyObjectKeys, alphaValueSubcomponentPropertyObjectKeys } = updatedSettingSpec;
-    if (alphaValueSubcomponentPropertyObjectKeys) {
-      const alphaValue = SharedUtils.getSubcomponentPropertyValue(alphaValueSubcomponentPropertyObjectKeys, subcomponentProperties) as number;
+  private static updateCustomFeature(hexColor: string, updatedSettingSpec: any, customFeatures: CustomFeatures): void {
+    const { customFeatureObjectKeys, alphaValueCustomFeatureObjectKeys } = updatedSettingSpec;
+    if (alphaValueCustomFeatureObjectKeys) {
+      const alphaValue = SharedUtils.getCustomFeatureValue(alphaValueCustomFeatureObjectKeys, customFeatures) as number;
       hexColor += SharedUtils.convertAlphaDecimalToHexString(alphaValue);
     }
-    SharedUtils.setSubcomponentPropertyValue(subcomponentPropertyObjectKeys, subcomponentProperties, hexColor);
+    SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, customFeatures, hexColor);
   }
 
   public static updateProperties(event: MouseEvent, updatedSettingSpec: any, subcomponentProperties: SubcomponentProperties): void {
     const hexColor = (event.target as HTMLInputElement).value;
-    if (updatedSettingSpec.subcomponentPropertyObjectKeys) {
-      ColorPickerUtils.updateCustomSubcomponentProperties(hexColor, updatedSettingSpec, subcomponentProperties);
+    if (updatedSettingSpec.customFeatureObjectKeys) {
+      ColorPickerUtils.updateCustomFeature(hexColor, updatedSettingSpec, subcomponentProperties.customFeatures);
     } else {
       ColorPickerUtils.updateCustomCss(hexColor, updatedSettingSpec, subcomponentProperties);
     }
   }
 
-  private static activateRemoveColorTriggers(removeColorTriggers: any, subcomponentProperties: SubcomponentProperties,
-      allSettings: any): void {
+  private static activateRemoveColorTriggers(removeColorTriggers: any, customFeatures: CustomFeatures, allSettings: any): void {
     (removeColorTriggers || []).forEach((trigger) => {
-      if (trigger.subcomponentPropertyObjectKeys) {
-        SharedUtils.setSubcomponentPropertyValueSetting(trigger, subcomponentProperties, allSettings);
+      if (trigger.customFeatureObjectKeys) {
+        SharedUtils.setCustomFeatureSetting(trigger, customFeatures, allSettings);
       }
     });
   }
 
-  private static setCustomCssColorToInherit(updatedSettingSpec: any, subcomponentProperties: SubcomponentProperties): void {
-    const { cssProperty } = updatedSettingSpec;
-    updatedSettingSpec.default = '';
-    if (!subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode]) {
-      subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode] = {
-        [cssProperty]: ColorPickerUtils.INHERIT_SUBCOMPONENT_PROPERTY_COLOR_VALUE};
-    } else {
-      subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode]
-        [cssProperty] = ColorPickerUtils.INHERIT_SUBCOMPONENT_PROPERTY_COLOR_VALUE;
-    }
-  }
-
-  private static setCustomSubcomponentPropertyToUnset(updatedSettingSpec: any, subcomponentProperties: SubcomponentProperties): void {
-    const { subcomponentPropertyObjectKeys } = updatedSettingSpec;
-    updatedSettingSpec.default = ColorPickerUtils.UNSET_SUBCOMPONENT_PROPERTY_COLOR_VALUE;
-    SharedUtils.setSubcomponentPropertyValue(subcomponentPropertyObjectKeys, subcomponentProperties,
-      ColorPickerUtils.UNSET_SUBCOMPONENT_PROPERTY_COLOR_VALUE);
-  }
-
-  public static removeColor(updatedSettingSpec: any, removeColorTriggers: any,
-      subcomponentProperties: SubcomponentProperties, allSettings: any): void {
-    const { subcomponentPropertyObjectKeys } = updatedSettingSpec;
-    if (subcomponentPropertyObjectKeys) {
-      ColorPickerUtils.setCustomSubcomponentPropertyToUnset(updatedSettingSpec, subcomponentProperties);
-    } else {
-      ColorPickerUtils.setCustomCssColorToInherit(updatedSettingSpec, subcomponentProperties);
-    }
-    ColorPickerUtils.activateRemoveColorTriggers(removeColorTriggers, subcomponentProperties, allSettings);
-  }
-
-  private static updateSettingThatUsesCustomCss(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
+  private static updateCustomCssSetting(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
     const { customCss, customCssActiveMode } = subcomponentProperties;
     let cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, settingToBeUpdatedSpec.cssProperty);
     if (settingToBeUpdatedSpec.cssProperty === 'boxShadow') {
@@ -85,17 +53,47 @@ export default class ColorPickerUtils {
     }
   }
 
-  private static updateSettingThatUsesASubcomponentProperty(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
-    const hexColorValue = SharedUtils.getSubcomponentPropertyValue(settingToBeUpdatedSpec.subcomponentPropertyObjectKeys, subcomponentProperties) as string;
-    settingToBeUpdatedSpec.default = settingToBeUpdatedSpec.alphaValueSubcomponentPropertyObjectKeys && hexColorValue !== 'unset'
+  private static updateCustomFeatureSetting(settingToBeUpdatedSpec: any, customFeatures: CustomFeatures): void {
+    const hexColorValue = SharedUtils.getCustomFeatureValue(settingToBeUpdatedSpec.customFeatureObjectKeys, customFeatures) as string;
+    settingToBeUpdatedSpec.default = settingToBeUpdatedSpec.alphaValueCustomFeatureObjectKeys && hexColorValue !== 'unset'
       ? hexColorValue.substring(0, hexColorValue.length - 2) : hexColorValue;
   }
 
   public static updateSettings(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
-    if (settingToBeUpdatedSpec.subcomponentPropertyObjectKeys) {
-      ColorPickerUtils.updateSettingThatUsesASubcomponentProperty(settingToBeUpdatedSpec, subcomponentProperties);
+    if (settingToBeUpdatedSpec.customFeatureObjectKeys) {
+      ColorPickerUtils.updateCustomFeatureSetting(settingToBeUpdatedSpec, subcomponentProperties.customFeatures);
     } else {
-      ColorPickerUtils.updateSettingThatUsesCustomCss(settingToBeUpdatedSpec, subcomponentProperties);
+      ColorPickerUtils.updateCustomCssSetting(settingToBeUpdatedSpec, subcomponentProperties);
     }
+  }
+
+  private static setCustomCssColorToInherit(updatedSettingSpec: any, subcomponentProperties: SubcomponentProperties): void {
+    const { cssProperty } = updatedSettingSpec;
+    updatedSettingSpec.default = '';
+    if (!subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode]) {
+      subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode] = {
+        [cssProperty]: ColorPickerUtils.INHERIT_CUSTOM_FEATURE_COLOR_VALUE};
+    } else {
+      subcomponentProperties.customCss[subcomponentProperties.customCssActiveMode]
+        [cssProperty] = ColorPickerUtils.INHERIT_CUSTOM_FEATURE_COLOR_VALUE;
+    }
+  }
+
+  private static setCustomFeatureToUnset(updatedSettingSpec: any, subcomponentProperties: SubcomponentProperties): void {
+    const { customFeatureObjectKeys } = updatedSettingSpec;
+    updatedSettingSpec.default = ColorPickerUtils.UNSET_CUSTOM_FEATURE_COLOR_VALUE;
+    SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures,
+      ColorPickerUtils.UNSET_CUSTOM_FEATURE_COLOR_VALUE);
+  }
+
+  public static removeColor(updatedSettingSpec: any, removeColorTriggers: any,
+      subcomponentProperties: SubcomponentProperties, allSettings: any): void {
+    const { customFeatureObjectKeys } = updatedSettingSpec;
+    if (customFeatureObjectKeys) {
+      ColorPickerUtils.setCustomFeatureToUnset(updatedSettingSpec, subcomponentProperties);
+    } else {
+      ColorPickerUtils.setCustomCssColorToInherit(updatedSettingSpec, subcomponentProperties);
+    }
+    ColorPickerUtils.activateRemoveColorTriggers(removeColorTriggers, subcomponentProperties.customFeatures, allSettings);
   }
 }

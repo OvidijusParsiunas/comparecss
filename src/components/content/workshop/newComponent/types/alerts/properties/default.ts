@@ -1,4 +1,4 @@
-import { CustomCss, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
@@ -76,6 +76,12 @@ function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
   return new Set([JAVASCRIPT_CLASSES.RIPPLES])
 }
 
+function createDefaultCloseButtonCustomFeatures(): CustomFeatures {
+  return {
+    jsClasses: createInitialCloseButtonJsClasses(),
+  }
+}
+
 function createSubcomponents(): Subcomponents {
   return {
     [SUB_COMPONENTS.BASE]: {
@@ -92,13 +98,14 @@ function createSubcomponents(): Subcomponents {
       componentTag: 'div',
       customCss: createInitialCloseButtonCss(),
       initialCss: createInitialCloseButtonCss(),
-      jsClasses: createInitialCloseButtonJsClasses(),
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
       optionalSubcomponent: { currentlyDisplaying: true },
       subcomponentSpecificSettings: alertCloseSpecificSettings,
+      customFeatures: createDefaultCloseButtonCustomFeatures(),
+      defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
     [SUB_COMPONENTS.LAYER_1]: {
       componentTag: 'div',

@@ -3,7 +3,7 @@
     <div id="close-button-parent" :class="SUBCOMPONENT_CURSOR_DEFAULT_CLASS" type="button" aria-label="Close">
       <button aria-hidden="true"
         :id="elementIds.subcomponentId"
-        class="close-button" :class="[ ...(subcomponent.jsClasses || []) ]"
+        class="close-button" :class="[ ...((subcomponent.customFeatures && subcomponent.customFeatures.jsClasses) || []) ]"
         @mouseenter="mouseEvents.subcomponentMouseEnter()"
         @mouseleave="mouseEvents.subcomponentMouseLeave()"
         @mousedown="mouseEvents.subcomponentMouseDown()"

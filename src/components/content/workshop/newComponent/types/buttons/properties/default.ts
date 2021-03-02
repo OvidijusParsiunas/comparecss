@@ -1,4 +1,4 @@
-import { CustomCss, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
@@ -47,18 +47,25 @@ function createInitialButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
   return new Set([JAVASCRIPT_CLASSES.RIPPLES])
 }
 
+function createDefaultButtonCustomFeatures(): CustomFeatures {
+  return {
+    jsClasses: createInitialButtonJsClasses(),
+  }
+}
+
 function createSubcomponents(): Subcomponents {
   return {
     [SUB_COMPONENTS.BASE]: {
       componentTag: 'button',
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
-      jsClasses: createInitialButtonJsClasses(),
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedButtonCss,
       subcomponentSpecificSettings: buttonSpecificSettings,
+      customFeatures: createDefaultButtonCustomFeatures(),
+      defaultCustomFeatures: createDefaultButtonCustomFeatures(),
     },
   }
 }

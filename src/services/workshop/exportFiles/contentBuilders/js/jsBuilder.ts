@@ -16,9 +16,10 @@ export default class JSBuilder {
     let allJS = '';
     const utilisedJavascriptCode: JavascriptClassesToCode = {};
     components.forEach((component) => {
-      Object.keys(component.subcomponents).forEach((key) => {
-        (component.subcomponents[key].jsClasses || []).forEach((jsClass) => {
-          if (!utilisedJavascriptCode[jsClass]) { utilisedJavascriptCode[jsClass] = javascriptClassesToCode[jsClass] }
+      Object.keys(component.subcomponents).forEach((key: string) => {
+        ((component.subcomponents[key].customFeatures && component.subcomponents[key].customFeatures.jsClasses) || [])
+          .forEach((jsClass: string) => {
+            if (!utilisedJavascriptCode[jsClass]) { utilisedJavascriptCode[jsClass] = javascriptClassesToCode[jsClass] }
         });
       });
     });

@@ -1,15 +1,24 @@
 <template>
   <div v-if="component" ref="componentPreviewContainer"
     class="component-preview-container-default"
-    :style="{backgroundColor: component.subcomponents[SUB_COMPONENTS.BASE].backdrop && component.subcomponents[SUB_COMPONENTS.BASE].backdrop.visible
-      ? component.subcomponents[SUB_COMPONENTS.BASE].backdrop.color : 'unset'}"
+    :style="{backgroundColor: component.subcomponents[SUB_COMPONENTS.BASE].customFeatures
+      && component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.backdrop
+      && component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.backdrop.visible
+      ? component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.backdrop.color : 'unset'}"
     @mouseenter="componentPreviewMouseEnter()"
     @mouseleave="componentPreviewMouseLeave()">
     <div style="margin: 0; position: absolute; z-index: 0; text-align: center;"
-      :class="[(component.subcomponents[SUB_COMPONENTS.BASE].componentCenteringInParent &&
-                (component.subcomponents[SUB_COMPONENTS.BASE].componentCenteringInParent.vertical && !component.subcomponents[SUB_COMPONENTS.BASE].componentCenteringInParent.horizontal ? 'component-preview-centered-vertically' : false
-                  || component.subcomponents[SUB_COMPONENTS.BASE].componentCenteringInParent.horizontal && !component.subcomponents[SUB_COMPONENTS.BASE].componentCenteringInParent.vertical ? 'component-preview-centered-horizontally': false
-                )) || 'component-preview-centered']"> 
+      :class="[
+        (component.subcomponents[SUB_COMPONENTS.BASE].customFeatures
+          && component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.componentCenteringInParent
+          && ((component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.componentCenteringInParent.vertical
+              && !component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.componentCenteringInParent.horizontal
+                ? 'component-preview-centered-vertically' : false)
+              || (component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.componentCenteringInParent.horizontal 
+                && !component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.componentCenteringInParent.vertical
+                ? 'component-preview-centered-horizontally': false)
+        ))
+        || 'component-preview-centered']"> 
       <div class="grid-container">
         <div class="grid-item grid-item-position"></div>
         <div class="grid-item grid-item-position">
@@ -28,8 +37,10 @@
           <!-- parent component -->
           <component ref="componentPreview" :is="component.componentPreviewStructure.baseCss.componentTag"
             :id="subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId"
-            class="base-component grid-item-position" :class="[ SUBCOMPONENT_CURSOR_AUTO_CLASS,
-              ...(component.componentPreviewStructure.baseCss.jsClasses || []), STATIC_POSITION_CLASS ]"
+            class="base-component grid-item-position"
+            :class="[ SUBCOMPONENT_CURSOR_AUTO_CLASS,
+              ...((component.componentPreviewStructure.baseCss.customFeatures && component.componentPreviewStructure.baseCss.customFeatures.jsClasses) || []),
+              STATIC_POSITION_CLASS ]"
             @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId].subcomponentMouseEnter()"
             @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId].subcomponentMouseLeave()"
             @mousedown="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId].subcomponentMouseDown()"
@@ -191,17 +202,17 @@ export default {
         // strategies
         // https://tympanus.net/codrops/2013/06/25/nifty-modal-window-effects/
         ExpandedModalPreviewModeTransitionsService.initiate(
-          transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.entrance.type],
-          this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.entrance.duration,
-          this.component.subcomponents[SUB_COMPONENTS.BASE].backdrop,
+          transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.entrance.type],
+          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.entrance.duration,
+          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.backdrop,
           this.$refs.componentPreview, this.$refs.componentPreviewContainer,
           toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
       } else {
         ExpandedModalPreviewModeTransitionsService.exit(
-          transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.exit.type],
-          this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.exit.duration,
+          transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.exit.type],
+          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.exit.duration,
           setOptionToDefaultCallback, this.$refs.componentPreviewContainer,
-          this.component.subcomponents[SUB_COMPONENTS.BASE].backdrop, this.$refs.componentPreview,
+          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.backdrop, this.$refs.componentPreview,
           toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
       }
     },
@@ -210,11 +221,11 @@ export default {
       if (isEntranceAnimation) {
         ExpandedModalPreviewModeTransitionsService.initiateEntraceTransitionPreview(
           transitionTypeToFunctionality[transitionAnimation] as ModalEntranceTransition,
-          this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.entrance.duration, this.$refs.componentPreview);
+          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.entrance.duration, this.$refs.componentPreview);
       } else {
         ExpandedModalPreviewModeTransitionsService.initiateExitTransitionPreview(
           transitionTypeToFunctionality[transitionAnimation] as ModalExitTransition,
-          this.component.subcomponents[SUB_COMPONENTS.BASE].transitions.exit.duration, this.$refs.componentPreview);
+          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.exit.duration, this.$refs.componentPreview);
       }
     },
     stopPreviewTransitionAnimation(): void {

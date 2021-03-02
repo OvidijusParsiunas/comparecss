@@ -78,13 +78,14 @@ export interface ComponentCenteringInParent {
 }
 
 export interface BackdropProperties {
-  color: string,
-  alpha: number,
-  visible: boolean,
+  color: string;
+  alpha: number;
+  visible: boolean;
 }
 
-export interface DefaultProperties {
+export interface CustomFeatures {
   backdrop?: BackdropProperties;
+  // currently used to position modal either in the center of the screen or the top
   componentCenteringInParent?: ComponentCenteringInParent;
   transitions?: ComponentTransitions;
   jsClasses?: ComponentJavascriptClasses;
@@ -108,15 +109,11 @@ export interface SubcomponentProperties {
   childCss?: ChildCss[];
   customCssActiveMode: SUB_COMPONENT_CSS_MODES;
   subcomponentPreviewTransition?: string;
-  jsClasses?: ComponentJavascriptClasses;
   optionalSubcomponent?: OptionalSubcomponent;
   // the reason why custom css is attached here is to not have to keep multiple unique settings for each and every subcomponent in memory all at once
   subcomponentSpecificSettings?: SubcomponentSpecificSettings;
-  backdrop?: BackdropProperties;
-  // currently used to position modal either in the center of the screen or the top
-  componentCenteringInParent?: ComponentCenteringInParent;
-  transitions?: ComponentTransitions;
-  defaultProperties?: DefaultProperties;
+  customFeatures?: CustomFeatures;
+  defaultCustomFeatures?: CustomFeatures;
 }
 
 export type Subcomponents = {

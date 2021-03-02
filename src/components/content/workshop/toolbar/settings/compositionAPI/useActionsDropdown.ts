@@ -1,19 +1,19 @@
 import { ActionsDropdownMouseEventCallback } from '../../../../../../interfaces/ActionsDropdownMouseEventCallbacks';
-import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import { UseActionsDropdown } from '../../../../../../interfaces/UseActionsDropdown';
-import { ComponentOptions } from 'vue';
+import { CustomFeatures, } from '../../../../../../interfaces/workshopComponent';
 import SharedUtils from '../utils/sharedUtils';
+import { ComponentOptions } from 'vue';
 
 export default function useActionsDropdown(): UseActionsDropdown {
 
-  const getObjectContainingActiveOption = (subcomponentPropertyObjectKeys: any, subcomponentProperties: SubcomponentProperties): unknown => {
-    return (subcomponentPropertyObjectKeys[2] && subcomponentProperties[subcomponentPropertyObjectKeys[0]][subcomponentPropertyObjectKeys[1]])
-      || (subcomponentPropertyObjectKeys[1] && subcomponentProperties[subcomponentPropertyObjectKeys[0]]);
+  const getObjectContainingActiveOption = (customFeatureObjectKeys: string[], customFeatures: CustomFeatures): unknown => {
+    return (customFeatureObjectKeys[2] && customFeatures[customFeatureObjectKeys[0]][customFeatureObjectKeys[1]])
+      || (customFeatureObjectKeys[1] && customFeatures[customFeatureObjectKeys[0]]);
   }
 
-  const mouseEnterActionsDropdownButton = (settingsComponent: ComponentOptions, settingSpec: any, subcomponentProperties: SubcomponentProperties): void => {
-    const { subcomponentPropertyObjectKeys, mouseEnterButtonCallback } = settingSpec;
-    const activeOption = SharedUtils.getSubcomponentPropertyValue(subcomponentPropertyObjectKeys, subcomponentProperties);
+  const mouseEnterActionsDropdownButton = (settingsComponent: ComponentOptions, settingSpec: any, customFeatures: CustomFeatures): void => {
+    const { customFeatureObjectKeys, mouseEnterButtonCallback } = settingSpec;
+    const activeOption = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, customFeatures);
     mouseEnterButtonCallback(settingsComponent, activeOption);
   }
   
@@ -33,8 +33,8 @@ export default function useActionsDropdown(): UseActionsDropdown {
     callback(settingsComponent, event);
   }
   
-  const mouseClickActionsDropdownNewOption = (event: unknown, subcomponentPropertyObjectKeys: any[], subcomponentProperties: SubcomponentProperties): void => {
-    SharedUtils.setSubcomponentPropertyValue(subcomponentPropertyObjectKeys, subcomponentProperties, event);
+  const mouseClickActionsDropdownNewOption = (event: unknown, customFeatureObjectKeys: string[], customFeatures: CustomFeatures): void => {
+    SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, customFeatures, event);
   }
   
   return {

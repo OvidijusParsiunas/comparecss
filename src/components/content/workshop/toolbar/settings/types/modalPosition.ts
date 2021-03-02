@@ -7,7 +7,7 @@ export default {
       type: SETTINGS_TYPES.CHECKBOX,
       spec: {
         name: 'Vertically Centered',
-        subcomponentPropertyObjectKeys: ['componentCenteringInParent', 'vertical'],
+        customFeatureObjectKeys: ['componentCenteringInParent', 'vertical'],
         default: false,
       },
       triggers: {
@@ -31,7 +31,7 @@ export default {
       },
       triggers: [
         {
-          subcomponentPropertyObjectKeys: ['componentCenteringInParent', 'vertical'],
+          customFeatureObjectKeys: ['componentCenteringInParent', 'vertical'],
           defaultValue: false,
           conditions: new Set([true]),
         },
