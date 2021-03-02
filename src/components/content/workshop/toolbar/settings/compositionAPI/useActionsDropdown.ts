@@ -10,7 +10,7 @@ export default function useActionsDropdown(): UseActionsDropdown {
 
   const currentCustomCssPropertyValue = { value: null };
 
-  const getObjectContainingActiveOption = (subcomponentProperties: SubcomponentProperties, settingSpec: any): unknown => {
+  const getObjectContainingActiveOption = (settingSpec: any, subcomponentProperties: SubcomponentProperties): unknown => {
     const { customFeatureObjectKeys } = settingSpec;
     if (customFeatureObjectKeys) {
       return CustomFeaturesUtils.getObjectContainingActiveOption(subcomponentProperties.customFeatures, customFeatureObjectKeys);
@@ -18,8 +18,8 @@ export default function useActionsDropdown(): UseActionsDropdown {
     return CustomCssUtils.getObjectContainingActiveOption(subcomponentProperties);
   }
 
-  const mouseEnterActionsDropdownButton = (settingsComponent: ComponentOptions, subcomponentProperties: SubcomponentProperties,
-     settingSpec: any): void => {
+  const mouseEnterActionsDropdownButton = (settingsComponent: ComponentOptions, settingSpec: any,
+      subcomponentProperties: SubcomponentProperties): void => {
     const { mouseEnterButtonCallback, cssProperty } = settingSpec;
     if (cssProperty) CustomCssUtils.mouseEnterActionsDropdownButton(currentCustomCssPropertyValue,
       subcomponentProperties, settingSpec.cssProperty);
@@ -29,8 +29,8 @@ export default function useActionsDropdown(): UseActionsDropdown {
     }
   }
  
-  const mouseLeaveActionsDropdownButton = (settingsComponent: ComponentOptions, subcomponentProperties: SubcomponentProperties,
-      settingSpec: any): void => {
+  const mouseLeaveActionsDropdownButton = (settingsComponent: ComponentOptions, settingSpec: any,
+      subcomponentProperties: SubcomponentProperties): void => {
     const { mouseLeaveButtonCallback } = settingSpec;
     if (mouseLeaveButtonCallback) {
       const triggeredOptionName = GeneralUtils.getTriggeredOptionName(subcomponentProperties, settingSpec);
@@ -39,7 +39,7 @@ export default function useActionsDropdown(): UseActionsDropdown {
   }
   
   const mouseEnterActionsDropdownOption = (settingsComponent: ComponentOptions, triggeredOptionName: string,
-      subcomponentProperties: SubcomponentProperties, settingSpec: any): void => {
+      settingSpec: any, subcomponentProperties: SubcomponentProperties): void => {
     const { mouseEnterOptionCallback, cssProperty } = settingSpec;
     if (cssProperty) CustomCssUtils.mouseEnterActionsDropdownOption(currentCustomCssPropertyValue,
       triggeredOptionName, subcomponentProperties, settingSpec);
@@ -47,20 +47,20 @@ export default function useActionsDropdown(): UseActionsDropdown {
   }
   
   const mouseLeaveActionsDropdown = (settingsComponent: ComponentOptions, triggeredOptionName: string,
-      subcomponentProperties: SubcomponentProperties, settingSpec: any): void => {
+    settingSpec: any, subcomponentProperties: SubcomponentProperties): void => {
     const { mouseLeaveDropdownCallback, cssProperty } = settingSpec;
     if (cssProperty) CustomCssUtils.mouseLeaveActionsDropdown(currentCustomCssPropertyValue, subcomponentProperties, settingSpec);
     if (mouseLeaveDropdownCallback) mouseLeaveDropdownCallback({subcomponentProperties, settingsComponent, triggeredOptionName});
   }
 
   const mouseClickActionsDropdownOption = (settingsComponent: ComponentOptions, triggeredOptionName: string,
-      subcomponentProperties: SubcomponentProperties, settingSpec: any): void => {
+    settingSpec: any, subcomponentProperties: SubcomponentProperties): void => {
     const { mouseClickOptionCallback } = settingSpec;
     if (mouseClickOptionCallback) mouseClickOptionCallback({subcomponentProperties, settingsComponent, triggeredOptionName});
   }
   
-  const mouseClickActionsDropdownNewOption = (triggeredOptionName: string, subcomponentProperties: SubcomponentProperties,
-      settingSpec: any): void => {
+  const mouseClickActionsDropdownNewOption = (triggeredOptionName: string, settingSpec: any,
+      subcomponentProperties: SubcomponentProperties): void => {
     const { customFeatures } = subcomponentProperties;
     const { customFeatureObjectKeys, cssProperty } = settingSpec;
     if (cssProperty) CustomCssUtils.mouseClickActionsDropdownNewOption(currentCustomCssPropertyValue, triggeredOptionName,

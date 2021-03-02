@@ -123,16 +123,16 @@
                 <dropdown class="option-component-button"
                   :uniqueIdentifier="`${ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX}${settingIndex}`"
                   :dropdownOptions="setting.spec.options"
-                  :objectContainingActiveOption="setting.spec.tempCustomCssObject || getObjectContainingActiveOption(subcomponentProperties, setting.spec)"
+                  :objectContainingActiveOption="setting.spec.tempCustomCssObject || getObjectContainingActiveOption(setting.spec, subcomponentProperties)"
                   :activeOptionPropertyKeyName="setting.spec.cssProperty || setting.spec.activeOptionPropertyKeyName"
                   :fontAwesomeIconClassName="'fa-caret-down'"
                   @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-                  @mouse-enter-button="mouseEnterActionsDropdownButton(this, subcomponentProperties, setting.spec)"
-                  @mouse-leave-button="mouseLeaveActionsDropdownButton(this, subcomponentProperties, setting.spec)"
-                  @mouse-enter-option="mouseEnterActionsDropdownOption(this, $event, subcomponentProperties, setting.spec)"
-                  @mouse-leave-dropdown="mouseLeaveActionsDropdown(this, $event, subcomponentProperties, setting.spec)"
-                  @mouse-click-option="mouseClickActionsDropdownOption(this, $event, subcomponentProperties, setting.spec)"
-                  @mouse-click-new-option="mouseClickActionsDropdownNewOption($event, subcomponentProperties, setting.spec)"/>
+                  @mouse-enter-button="mouseEnterActionsDropdownButton(this, setting.spec, subcomponentProperties)"
+                  @mouse-leave-button="mouseLeaveActionsDropdownButton(this, setting.spec, subcomponentProperties)"
+                  @mouse-enter-option="mouseEnterActionsDropdownOption(this, $event, setting.spec, subcomponentProperties)"
+                  @mouse-leave-dropdown="mouseLeaveActionsDropdown(this, $event, setting.spec, subcomponentProperties)"
+                  @mouse-click-option="mouseClickActionsDropdownOption(this, $event, setting.spec, subcomponentProperties)"
+                  @mouse-click-new-option="mouseClickActionsDropdownNewOption($event, setting.spec, subcomponentProperties)"/>
               </div>
 
               <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.CHECKBOX">

@@ -2,11 +2,11 @@ import { SubcomponentProperties } from './workshopComponent';
 import { ComponentOptions } from 'vue';
 
 export interface UseActionsDropdown {
-  getObjectContainingActiveOption: (subcomponentProperties: SubcomponentProperties, settingSpecs: any) => unknown;
-  mouseEnterActionsDropdownButton: (settingsComponent: ComponentOptions, subcomponentProperties: SubcomponentProperties, settingSpec: any) => void;
-  mouseLeaveActionsDropdownButton: (settingsComponent: ComponentOptions, subcomponentProperties: SubcomponentProperties, settingSpecs: any) => void;
-  mouseEnterActionsDropdownOption: (settingsComponent: ComponentOptions, triggeredOptionName: string, subcomponentProperties: SubcomponentProperties, settingSpecs: any) => void;
-  mouseLeaveActionsDropdown: (settingsComponent: ComponentOptions, triggeredOptionName: string, subcomponentProperties: SubcomponentProperties, settingSpecs: any) => void;
-  mouseClickActionsDropdownOption: (settingsComponent: ComponentOptions, triggeredOptionName: string, subcomponentProperties: SubcomponentProperties, settingSpecs: any) => void;
-  mouseClickActionsDropdownNewOption: (event: unknown, subcomponentProperties: SubcomponentProperties, settingSpec: any) => void;
+  getObjectContainingActiveOption: (settingSpecs: any, subcomponentProperties: SubcomponentProperties) => unknown;
+  mouseEnterActionsDropdownButton: (settingsComponent: ComponentOptions, settingSpecs: any, subcomponentProperties: SubcomponentProperties) => void;
+  mouseLeaveActionsDropdownButton: (settingsComponent: ComponentOptions, settingSpecs: any, subcomponentProperties: SubcomponentProperties) => void;
+  mouseEnterActionsDropdownOption: (settingsComponent: ComponentOptions, triggeredOptionName: string, settingSpecs: any, subcomponentProperties: SubcomponentProperties) => void;
+  mouseLeaveActionsDropdown: (settingsComponent: ComponentOptions, triggeredOptionName: string, settingSpecs: any, subcomponentProperties: SubcomponentProperties) => void;
+  mouseClickActionsDropdownOption: (settingsComponent: ComponentOptions, triggeredOptionName: string, settingSpecs: any, subcomponentProperties: SubcomponentProperties) => void;
+  mouseClickActionsDropdownNewOption: (event: unknown, settingSpecs: any, subcomponentProperties: SubcomponentProperties) => void;
 }
