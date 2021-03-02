@@ -39,12 +39,12 @@ export default {
       ]
     },
     { 
-      type: SETTINGS_TYPES.SELECT,
+      type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Style',
-        options: ['none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset'],
+        options: {'none': null, 'hidden': null, 'dotted': null, 'dashed': null, 'solid': null, 'double': null, 'groove': null, 'ridge': null, 'inset': null, 'outset': null },
         default: 'none',
-        cssProperty: 'borderStyle'
+        cssProperty: 'borderStyle',
       },
       triggers: {
         none: {

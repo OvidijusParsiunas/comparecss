@@ -1,40 +1,71 @@
-import { ActionsDropdownMouseEventCallback } from '../../../../../../interfaces/ActionsDropdownMouseEventCallbacks';
+import { SubcomponentProperties, } from '../../../../../../interfaces/workshopComponent';
 import { UseActionsDropdown } from '../../../../../../interfaces/UseActionsDropdown';
-import { CustomFeatures, } from '../../../../../../interfaces/workshopComponent';
+import CustomFeaturesUtils from './utils/customFeaturesUtils';
+import CustomCssUtils from './utils/customCssUtils';
+import GeneralUtils from './utils/generalUtils';
 import SharedUtils from '../utils/sharedUtils';
 import { ComponentOptions } from 'vue';
 
 export default function useActionsDropdown(): UseActionsDropdown {
 
-  const getObjectContainingActiveOption = (customFeatureObjectKeys: string[], customFeatures: CustomFeatures): unknown => {
-    return (customFeatureObjectKeys[2] && customFeatures[customFeatureObjectKeys[0]][customFeatureObjectKeys[1]])
-      || (customFeatureObjectKeys[1] && customFeatures[customFeatureObjectKeys[0]]);
+  const currentCustomCssPropertyValue = { value: null };
+
+  const getObjectContainingActiveOption = (subcomponentProperties: SubcomponentProperties, settingSpec: any): unknown => {
+    const { customFeatureObjectKeys } = settingSpec;
+    if (customFeatureObjectKeys) {
+      return CustomFeaturesUtils.getObjectContainingActiveOption(subcomponentProperties.customFeatures, customFeatureObjectKeys);
+    }
+    return CustomCssUtils.getObjectContainingActiveOption(subcomponentProperties);
   }
 
-  const mouseEnterActionsDropdownButton = (settingsComponent: ComponentOptions, settingSpec: any, customFeatures: CustomFeatures): void => {
-    const { customFeatureObjectKeys, mouseEnterButtonCallback } = settingSpec;
-    const activeOption = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, customFeatures);
-    mouseEnterButtonCallback(settingsComponent, activeOption);
+  const mouseEnterActionsDropdownButton = (settingsComponent: ComponentOptions, subcomponentProperties: SubcomponentProperties,
+     settingSpec: any): void => {
+    const { mouseEnterButtonCallback, cssProperty } = settingSpec;
+    if (cssProperty) CustomCssUtils.mouseEnterActionsDropdownButton(currentCustomCssPropertyValue,
+      subcomponentProperties, settingSpec.cssProperty);
+    if (mouseEnterButtonCallback) {
+      const triggeredOptionName = GeneralUtils.getTriggeredOptionName(subcomponentProperties, settingSpec);
+      mouseEnterButtonCallback({subcomponentProperties, settingsComponent, triggeredOptionName});
+    }
+  }
+ 
+  const mouseLeaveActionsDropdownButton = (settingsComponent: ComponentOptions, subcomponentProperties: SubcomponentProperties,
+      settingSpec: any): void => {
+    const { mouseLeaveButtonCallback } = settingSpec;
+    if (mouseLeaveButtonCallback) {
+      const triggeredOptionName = GeneralUtils.getTriggeredOptionName(subcomponentProperties, settingSpec);
+      mouseLeaveButtonCallback({subcomponentProperties, settingsComponent, triggeredOptionName});
+    }
   }
   
-  const mouseLeaveActionsDropdownButton = (settingsComponent: ComponentOptions, event: unknown, callback: ActionsDropdownMouseEventCallback): void => {
-    callback(settingsComponent, event);
+  const mouseEnterActionsDropdownOption = (settingsComponent: ComponentOptions, triggeredOptionName: string,
+      subcomponentProperties: SubcomponentProperties, settingSpec: any): void => {
+    const { mouseEnterOptionCallback, cssProperty } = settingSpec;
+    if (cssProperty) CustomCssUtils.mouseEnterActionsDropdownOption(currentCustomCssPropertyValue,
+      triggeredOptionName, subcomponentProperties, settingSpec);
+    if (mouseEnterOptionCallback) mouseEnterOptionCallback({subcomponentProperties, settingsComponent, triggeredOptionName});
   }
   
-  const mouseEnterActionsDropdownOption = (settingsComponent: ComponentOptions, event: unknown, callback: ActionsDropdownMouseEventCallback): void => {
-    callback(settingsComponent, event);
-  }
-  
-  const mouseLeaveActionsDropdown = (settingsComponent: ComponentOptions, event: unknown, callback: ActionsDropdownMouseEventCallback): void => {
-    callback(settingsComponent, event);
+  const mouseLeaveActionsDropdown = (settingsComponent: ComponentOptions, triggeredOptionName: string,
+      subcomponentProperties: SubcomponentProperties, settingSpec: any): void => {
+    const { mouseLeaveDropdownCallback, cssProperty } = settingSpec;
+    if (cssProperty) CustomCssUtils.mouseLeaveActionsDropdown(currentCustomCssPropertyValue, subcomponentProperties, settingSpec);
+    if (mouseLeaveDropdownCallback) mouseLeaveDropdownCallback({subcomponentProperties, settingsComponent, triggeredOptionName});
   }
 
-  const mouseClickActionsDropdownOption = (settingsComponent: ComponentOptions, event: unknown, callback: ActionsDropdownMouseEventCallback): void => {
-    callback(settingsComponent, event);
+  const mouseClickActionsDropdownOption = (settingsComponent: ComponentOptions, triggeredOptionName: string,
+      subcomponentProperties: SubcomponentProperties, settingSpec: any): void => {
+    const { mouseClickOptionCallback } = settingSpec;
+    if (mouseClickOptionCallback) mouseClickOptionCallback({subcomponentProperties, settingsComponent, triggeredOptionName});
   }
   
-  const mouseClickActionsDropdownNewOption = (event: unknown, customFeatureObjectKeys: string[], customFeatures: CustomFeatures): void => {
-    SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, customFeatures, event);
+  const mouseClickActionsDropdownNewOption = (triggeredOptionName: string, subcomponentProperties: SubcomponentProperties,
+      settingSpec: any): void => {
+    const { customFeatures } = subcomponentProperties;
+    const { customFeatureObjectKeys, cssProperty } = settingSpec;
+    if (cssProperty) CustomCssUtils.mouseClickActionsDropdownNewOption(currentCustomCssPropertyValue, triggeredOptionName,
+      subcomponentProperties, settingSpec);
+    if (customFeatureObjectKeys) SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, customFeatures, triggeredOptionName);
   }
   
   return {
