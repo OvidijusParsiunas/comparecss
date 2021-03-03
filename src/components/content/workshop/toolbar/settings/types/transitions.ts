@@ -1,4 +1,4 @@
-import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallbacks } from '../../../../../../interfaces/ActionsDropdownMouseEventCallbacks';
+import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallbacks } from '../../../../../../interfaces/actionsDropdownMouseEventCallbacks';
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../../../../consts/modalTransitionTypes.enum';
 import { PlayPreviewTransitionAnimationEvent } from '../../../../../../interfaces/playPreviewTransitionAnimationEvent';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';

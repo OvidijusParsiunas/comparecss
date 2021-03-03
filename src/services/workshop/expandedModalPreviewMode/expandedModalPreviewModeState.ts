@@ -1,12 +1,21 @@
 import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES } from '../../../consts/toolbarClasses';
 import { ElementStyleProperties } from '../../../interfaces/elementStyleProperties';
 
+let isModeToggleTransitionInProgressState = false;
 let isTransitionInProgressState = false;
 let expandedModalModeToolbarContainerPositionState = EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.DEFAULT;
 let currentExitTransitionModalDefaultPropertiesState = {};
 let currentlyPendingTransitionInitState = null;
 let currentlyPendingTransitionEndingState = null;
 let currentlyPendingPropertyResetAfterExitState = null;
+
+function getIsModeToggleTransitionInProgressState(): boolean {
+  return isModeToggleTransitionInProgressState;
+}
+
+function setIsModeToggleTransitionInProgressState(state: boolean): void {
+  isModeToggleTransitionInProgressState = state;
+}
 
 function getIsTransitionInProgressState(): boolean {
   return isTransitionInProgressState;
@@ -51,6 +60,8 @@ function setCurrentExitTransitionModalDefaultPropertiesState(state: ElementStyle
 }
 
 export const expandedModalPreviewModeState = {
+  getIsModeToggleTransitionInProgressState,
+  setIsModeToggleTransitionInProgressState,
   getIsTransitionInProgressState,
   setIsTransitionInProgressState,
   removePendingExitTransitionsState,

@@ -1,6 +1,6 @@
+import { CustomCss, CustomFeatures, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import GeneralUtils from '../../../../../../services/workshop/exportFiles/contentBuilders/css/generalUtils';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../consts/subcomponentCssModes.enum';
-import { CustomCss, CustomFeatures } from '../../../../../../interfaces/workshopComponent';
 
 export default class SharedUtils {
   
@@ -59,5 +59,15 @@ export default class SharedUtils {
   public static convertAlphaDecimalToHexString(decimaAlpha: number): string {
     const hexAlpha = Math.round(decimaAlpha * 255).toString(16);
     return hexAlpha.length === 1 ? '0' + hexAlpha : hexAlpha;
+  }
+
+  public static addDefaultValueIfCssModeMissing(cssPropertyName: string, subcomponentProperties: SubcomponentProperties): void {
+    const { customCss, customCssActiveMode } = subcomponentProperties;
+    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(subcomponentProperties.customCss, customCssActiveMode, cssPropertyName);
+    if (!customCss[customCssActiveMode]) {
+      customCss[customCssActiveMode] = { [cssPropertyName]: cssPropertyValue };
+    } else if (!customCss[customCssActiveMode][cssPropertyName]) {
+      customCss[customCssActiveMode][cssPropertyName] = cssPropertyValue;
+    }
   }
 }

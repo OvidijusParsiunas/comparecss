@@ -36,7 +36,7 @@
                     v-bind:min="setting.spec.scale[0]"
                     v-bind:max="setting.spec.scale[1]"
                     v-model="setting.spec.default"
-                    @mousedown="rangeMouseDown($event, subcomponentProperties.customCssActiveMode, setting)"
+                    @mousedown="rangeMouseDown($event, setting.spec)"
                     @mouseup="rangeMouseUp"
                     @contextmenu="preventRightClickEvent"
                     @input="updateRange($event, setting)">
@@ -54,7 +54,7 @@
                   <object id="Dlg" classid="CLSID:3050F819-98B5-11CF-BB82-00AA00BDCE0B" width="0" height="0"></object>
                 -->
                 <input style="float: left" type="color" name="clr1" 
-                  @click="colorInputClick(subcomponentProperties.customCssActiveMode, setting.spec.cssProperty)"
+                  @click="colorInputClick(setting.spec.cssProperty)"
                   @input="colorChanged($event, setting)"
                   v-model="setting.spec.default"/>
                 <button class="unset-color-button" id="dropdownMenuButton"
@@ -166,7 +166,6 @@ interface Consts {
   UNSET_CUSTOM_FEATURE_COLOR_VALUE: string;
   INHERIT_CUSTOM_FEATURE_COLOR_VALUE: string;
   updateSettings: (param1?: any, param2?: WORKSHOP_TOOLBAR_OPTION_TYPES) => void;
-  addDefaultValueIfCssModeMissing: (param1: SUB_COMPONENT_CSS_MODES, param2: string) => void;
 }
 
 interface Data {
@@ -217,14 +216,6 @@ export default {
           // this.subcomponentProperties.customCss[customCssActiveMode] = { ...this.subcomponentProperties.customCss[customCssActiveMode] };
         });
       },
-      addDefaultValueIfCssModeMissing(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): void {
-        const customCss = SharedUtils.getActiveModeCssPropertyValue(this.subcomponentProperties.customCss, customCssActiveMode, cssProperty);
-        if (!this.subcomponentProperties.customCss[customCssActiveMode]) {
-          this.subcomponentProperties.customCss[customCssActiveMode] = { [cssProperty]: customCss };
-        } else if (!this.subcomponentProperties.customCss[customCssActiveMode][cssProperty]) {
-          this.subcomponentProperties.customCss[customCssActiveMode][cssProperty] = customCss;
-        }
-      },
       ...useActionsDropdown(),
     };
   },
@@ -235,23 +226,18 @@ export default {
     settings: {},
     settingsVisible: true,
   }),
-  // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-  // put these methods into utils
-
-  // if the Settings.vue component logic is too coupled with 'boxShadow' (especially if there is another partialCss property introduced),
-  // refactor it to extract the logic into a partialCss util file
   methods: {
     updateRange(event: MouseEvent, setting: any): void {
       RangeUtils.updateProperties(event, setting, this.settings, this.subcomponentProperties, this.selectorCurrentValues);
       if (setting.spec.customFeatureObjectKeys) this.customFeatureRangeValue = SharedUtils.getCustomFeatureValue(
         setting.spec.customFeatureObjectKeys, this.subcomponentProperties.customFeatures);
     },
-    rangeMouseDown(event: KeyboardEvent, customCssActiveMode: SUB_COMPONENT_CSS_MODES, setting: any): void {
-      if (setting.spec.customFeatureObjectKeys) { 
-        this.customFeatureRangeValue = SharedUtils.getCustomFeatureValue(setting.spec.customFeatureObjectKeys,
+    rangeMouseDown(event: KeyboardEvent, settingSpec: any): void {
+      if (settingSpec.customFeatureObjectKeys) { 
+        this.customFeatureRangeValue = SharedUtils.getCustomFeatureValue(settingSpec.customFeatureObjectKeys,
           this.subcomponentProperties.customFeatures);
       } else {
-        this.addDefaultValueIfCssModeMissing(customCssActiveMode, setting.spec.cssProperty);
+        SharedUtils.addDefaultValueIfCssModeMissing(settingSpec.cssProperty, this.subcomponentProperties);
       }
       setTimeout(() => {
         const popoverElement = (event.target as HTMLInputElement).parentElement.childNodes[0] as HTMLElement;
@@ -288,8 +274,8 @@ export default {
     colorChanged(event: MouseEvent, setting: any): void {
       ColorPickerUtils.updateProperties(event, setting.spec, this.subcomponentProperties);
     },
-    colorInputClick(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): void {
-      this.addDefaultValueIfCssModeMissing(customCssActiveMode, cssProperty);
+    colorInputClick(cssProperty: string): void {
+      SharedUtils.addDefaultValueIfCssModeMissing(cssProperty, this.subcomponentProperties);
       this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode].transition = 'unset';
     },
     removeColor(spec: any, removeColorTriggers: any): void {

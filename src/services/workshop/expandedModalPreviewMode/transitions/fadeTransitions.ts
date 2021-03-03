@@ -24,7 +24,8 @@ export default class FadeTransitions {
       modalElement.style.transitionTimingFunction = LINEAR_SPEED_TRANSITION;
       const pendingTransitionEnding = setTimeout(() => {
         if (unsetTransitionPropertiesCallback) unsetTransitionPropertiesCallback(modalElement, backdropElement);
-        // the reason why the transition progress is set to false here, because there is no good callback
+        // the reason why the states are set to false here, because there is no callback
+        expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(false);
         expandedModalPreviewModeState.setIsTransitionInProgressState(false);
       }, TransitionsUtils.secondsStringToMillisecondsNumber(transitionDuration));
       expandedModalPreviewModeState.setPendingTransitionEndingState(pendingTransitionEnding);

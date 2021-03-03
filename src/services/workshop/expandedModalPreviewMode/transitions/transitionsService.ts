@@ -104,6 +104,7 @@ export default class TransitionsService {
   public static exit(modalExitTransition: ModalExitTransition, transitionDuration: string, setOptionToDefaultCallback: () => void,
       backdropElement: HTMLElement, backdropProperties: BackdropProperties, modalElement: HTMLElement, toolbarContainerElement?: HTMLElement,
       toolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
+    expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(true);
     TransitionsService.opacityFadeTransition(OPACITY_INVISIBLE, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
     modalExitTransition(transitionDuration, modalElement, TransitionsService.exitCallback.bind(this, setOptionToDefaultCallback) as ExitCallback,
       backdropElement, backdropProperties, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
@@ -125,6 +126,26 @@ export default class TransitionsService {
       }, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
     }, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
   }
+
+  /* UX - EXPANDED MODAL TOGGLE TRANSITION
+    private static startToolbarTransition(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement, transitionDuration: string): void {
+      TransitionsService.opacityFadeTransition(OPACITY_INVISIBLE, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
+      setTimeout(() => {
+        toolbarElement.classList.add(TransitionsService.TOOLBAR_ELEMENT_ACTIVE_MODE_CLASS);
+        toolbarContainerElement.classList.replace(TOOLBAR_CONTAINER_GENERAL_CLASSES.DEFAULT, TOOLBAR_CONTAINER_GENERAL_CLASSES.EXPANDED_MODAL_MODE_ACTIVE);
+        if (expandedModalPreviewModeState.getExpandedModalModeToolbarContainerPositionState() === EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM) {
+          toolbarContainerElement.classList.add(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM);
+        }
+        toolbarPositionToggleElement.style.display = 'block';
+        setTimeout(() => {
+          TransitionsService.opacityFadeTransition(OPACITY_VISIBLE, transitionDuration, toolbarContainerElement);
+          setTimeout(() => {
+            TransitionsService.unsetTransitionProperties(toolbarContainerElement);
+          }, TransitionsUtils.secondsStringToMillisecondsNumber(transitionDuration));
+        }, ENTRANCE_TRANSITION_DELAY_MILLISECONDS);
+      }, TransitionsService.START_EXPANDED_MODAL_MODE_TRANSITION_DURATION_MILLISECONDS);
+    }
+  */
 
   private static toggleModalStaticPosition(modalElement: HTMLElement, toggleName: 'add' | 'remove'): void {
     modalElement.classList[toggleName](STATIC_POSITION_CLASS);
@@ -152,6 +173,7 @@ export default class TransitionsService {
 
   public static initiate(modalEntranceTransition: ModalEntranceTransition, transitionDuration: string, backdropProperties: BackdropProperties, modalElement: HTMLElement,
       backdropElement: HTMLElement, toolbarContainerElement?: HTMLElement, toolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
+    expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(true);
     TransitionsService.setPropertiesThatAreNotInCustomCssButAreRequiredForTransitions(modalElement);
     TransitionsService.startPreviewTransition(backdropElement, modalElement, backdropProperties, modalEntranceTransition, transitionDuration);
     if (toolbarContainerElement) TransitionsService.startToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);

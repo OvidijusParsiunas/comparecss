@@ -25,9 +25,7 @@ export default class ComponentPreviewUtils {
   public static generateMouseEvents(subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds, subcomponents: Subcomponents): SubcomponentPreviewMouseEvents {
     const mouseEvents: SubcomponentPreviewMouseEvents = {};
     Object.keys(subcomponentAndOverlayElementIdsObject).forEach((subcomponentType: SUB_COMPONENTS) => {
-      mouseEvents[subcomponentAndOverlayElementIdsObject[subcomponentType].subcomponentId] = {
-        ...useSubcomponentPreviewEventHandlers(subcomponents[subcomponentType])
-      };
+      mouseEvents[subcomponentAndOverlayElementIdsObject[subcomponentType].subcomponentId] = { ...useSubcomponentPreviewEventHandlers(subcomponents[subcomponentType]) };
     });
     return mouseEvents;
   }
