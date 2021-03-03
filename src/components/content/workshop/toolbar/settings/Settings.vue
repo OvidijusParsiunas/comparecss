@@ -131,7 +131,7 @@
                   @mouse-leave-button="mouseLeaveActionsDropdownButton(this, setting.spec, subcomponentProperties)"
                   @mouse-enter-option="mouseEnterActionsDropdownOption(this, $event, setting.spec, subcomponentProperties)"
                   @mouse-leave-dropdown="mouseLeaveActionsDropdown(this, $event, setting.spec, subcomponentProperties)"
-                  @mouse-click-option="mouseClickActionsDropdownOption(this, $event, setting.spec, subcomponentProperties)"
+                  @mouse-click-option="mouseClickActionsDropdownOption(this, $event, setting, settings, subcomponentProperties)"
                   @mouse-click-new-option="mouseClickActionsDropdownNewOption($event, setting.spec, subcomponentProperties)"/>
               </div>
 
@@ -164,6 +164,7 @@ import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSetti
 import { UseActionsDropdown } from '../../../../../interfaces/UseActionsDropdown';
 import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
 import useActionsDropdown from './compositionAPI/useActionsDropdown';
+import ActionsDropdownUtils from './utils/actionsDropdownUtils';
 import dropdown from '../options/dropdown/Dropdown.vue';
 import ColorPickerUtils from './utils/colorPickerUtils';
 import CheckboxUtils from './utils/checkboxUtils';
@@ -213,6 +214,7 @@ export default {
             if (setting.type === SETTINGS_TYPES.RANGE) {
               RangeUtils.updateSettings(setting, this.settings, this.subcomponentProperties, this.selectorCurrentValues);
             } else if (setting.type === SETTINGS_TYPES.SELECT) {
+              // extract
               // default value for range is currently setting the select value, not the select value for ranges
               // potential race condition where range sets the select value and select may set it to something incorrect
               const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
@@ -222,6 +224,8 @@ export default {
             } else if (setting.type === SETTINGS_TYPES.INPUT_DROPDOWN) {
               const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
               if (cssPropertyValue) { this.inputDropdownCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
+            } else if (setting.type === SETTINGS_TYPES.ACTIONS_DROPDOWN) {
+              ActionsDropdownUtils.updateSettings(setting.spec, this.subcomponentProperties);
             } else if (setting.type === SETTINGS_TYPES.CHECKBOX) {
               CheckboxUtils.updateSettings(setting.spec, this.subcomponentProperties);
             }
@@ -233,6 +237,7 @@ export default {
           // this.subcomponentProperties.customCss[customCssActiveMode] = { ...this.subcomponentProperties.customCss[customCssActiveMode] };
         });
       },
+      // ?
       addDefaultValueIfCssModeMissing(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): void {
         const customCss = SharedUtils.getActiveModeCssPropertyValue(this.subcomponentProperties.customCss, customCssActiveMode, cssProperty);
         if (!this.subcomponentProperties.customCss[customCssActiveMode]) {
@@ -290,6 +295,7 @@ export default {
       this.inputDropdownCurrentValues[cssProperty] = this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode][cssProperty];
     },
     selectOptionClick(option: string, setting: any): void {
+      // extract
       const { triggers, spec } = setting;
       const { customCss, customCssActiveMode } = this.subcomponentProperties;
       customCss[customCssActiveMode][spec.cssProperty] = option;

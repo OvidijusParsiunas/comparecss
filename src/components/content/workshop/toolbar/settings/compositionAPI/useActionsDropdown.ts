@@ -53,9 +53,10 @@ export default function useActionsDropdown(): UseActionsDropdown {
     if (mouseLeaveDropdownCallback) mouseLeaveDropdownCallback({subcomponentProperties, settingsComponent, triggeredOptionName});
   }
 
-  const mouseClickActionsDropdownOption = (settingsComponent: ComponentOptions, triggeredOptionName: string,
-    settingSpec: any, subcomponentProperties: SubcomponentProperties): void => {
-    const { mouseClickOptionCallback } = settingSpec;
+  const mouseClickActionsDropdownOption = (settingsComponent: ComponentOptions, triggeredOptionName: string, setting: any,
+      allSettings: any, subcomponentProperties: SubcomponentProperties): void => {
+    const { mouseClickOptionCallback, cssProperty } = setting.spec;
+    if (cssProperty) CustomCssUtils.mouseClickActionsDropdownOption(triggeredOptionName, setting, allSettings, subcomponentProperties);
     if (mouseClickOptionCallback) mouseClickOptionCallback({subcomponentProperties, settingsComponent, triggeredOptionName});
   }
   

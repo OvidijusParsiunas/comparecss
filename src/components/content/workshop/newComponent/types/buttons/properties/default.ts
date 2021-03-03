@@ -16,6 +16,7 @@ function createInitialBaseCss(): CustomCss {
       borderWidth: '0px',
       borderColor: '#1779ba',
       backgroundColor: '#1779ba',
+      borderStyle: 'solid',
       boxShadow: 'unset',
       outline: 'none',
       lineHeight: '0',
