@@ -38,11 +38,11 @@ export default {
         }
       ]
     },
-    { 
+    {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Style',
-        options: {'none': null, 'hidden': null, 'dotted': null, 'dashed': null, 'solid': null, 'double': null, 'groove': null, 'ridge': null, 'inset': null, 'outset': null },
+        options: { 'none': null, 'hidden': null, 'dotted': null, 'dashed': null, 'solid': null, 'double': null, 'groove': null, 'ridge': null, 'inset': null, 'outset': null },
         default: 'none',
         cssProperty: 'borderStyle',
       },

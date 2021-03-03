@@ -1,8 +1,7 @@
 export enum SETTINGS_TYPES {
   INPUT_DROPDOWN,
-  ACTIONS_DROPDOWN, // for transition animations etc
+  ACTIONS_DROPDOWN, // dropdown that triggers something on mouse events
   COLOR_PICKER,
   CHECKBOX,
-  SELECT,
   RANGE,
 }

@@ -31,13 +31,13 @@ export default {
         cssProperty: 'fontFamily'
       },
     },
-    {
-      type: SETTINGS_TYPES.SELECT,
+    { 
+      type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Align',
-        options: ['left', 'center', 'right'],
+        options: { 'left': null, 'center': null, 'right': null },
         default: 'center',
-        cssProperty: 'textAlign'
+        cssProperty: 'textAlign',
       },
     },
   ]

@@ -43,20 +43,6 @@
                 </div>
               </div>
 
-              <div v-if="setting.type === SETTINGS_TYPES.SELECT">
-                <div style="text-align: left; float: left">
-                  {{setting.spec.name}}
-                </div>
-                <div style="float: left" class="dropdown">
-                  <button style="padding-top: 0px; padding-bottom: 2px" class="align-text-top btn btn-outline-secondary edit-component-button dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    {{selectorCurrentValues[setting.spec.cssProperty] || setting.spec.default}}
-                  </button>
-                  <div class="dropdown-menu" @mouseleave="selectMenuMouseLeave(setting.spec.cssProperty)" aria-labelledby="dropdownMenuButton">
-                    <a class="dropdown-item" @mouseover="selectOptionMouseOver(option, setting.spec.cssProperty)" @click="selectOptionClick(option, setting)" v-for="option in setting.spec.options" :key="option">{{option}}</a>
-                  </div>
-                </div>
-              </div>
-              
               <div v-if="setting.type === SETTINGS_TYPES.COLOR_PICKER">
                 <div style="text-align: left; float: left">
                   {{setting.spec.name}}
@@ -213,12 +199,6 @@ export default {
           (this.settings.options || []).forEach((setting) => {
             if (setting.type === SETTINGS_TYPES.RANGE) {
               RangeUtils.updateSettings(setting, this.settings, this.subcomponentProperties, this.selectorCurrentValues);
-            } else if (setting.type === SETTINGS_TYPES.SELECT) {
-              // extract
-              // default value for range is currently setting the select value, not the select value for ranges
-              // potential race condition where range sets the select value and select may set it to something incorrect
-              const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, setting.spec.cssProperty);
-              if (cssPropertyValue) { this.selectorCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
             } else if (setting.type === SETTINGS_TYPES.COLOR_PICKER) {
               ColorPickerUtils.updateSettings(setting.spec, this.subcomponentProperties);
             } else if (setting.type === SETTINGS_TYPES.INPUT_DROPDOWN) {
@@ -237,7 +217,6 @@ export default {
           // this.subcomponentProperties.customCss[customCssActiveMode] = { ...this.subcomponentProperties.customCss[customCssActiveMode] };
         });
       },
-      // ?
       addDefaultValueIfCssModeMissing(customCssActiveMode: SUB_COMPONENT_CSS_MODES, cssProperty: string): void {
         const customCss = SharedUtils.getActiveModeCssPropertyValue(this.subcomponentProperties.customCss, customCssActiveMode, cssProperty);
         if (!this.subcomponentProperties.customCss[customCssActiveMode]) {
@@ -285,37 +264,8 @@ export default {
     preventRightClickEvent(event: KeyboardEvent): void {
       event.preventDefault();
     },
-    selectOptionMouseOver(option: string, cssProperty: string): void {
-      this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode][cssProperty] = option;
-    },
-    selectMenuMouseLeave(cssProperty: string): void {
-      this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode][cssProperty] = this.selectorCurrentValues[cssProperty];
-    },
     openDropdown(cssProperty: string): void {
       this.inputDropdownCurrentValues[cssProperty] = this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode][cssProperty];
-    },
-    selectOptionClick(option: string, setting: any): void {
-      // extract
-      const { triggers, spec } = setting;
-      const { customCss, customCssActiveMode } = this.subcomponentProperties;
-      customCss[customCssActiveMode][spec.cssProperty] = option;
-      this.selectorCurrentValues[spec.cssProperty] = option;
-      if (triggers && triggers[option]) {
-        const { conditions, negativeConditions, cssProperty: triggerCssProperty, defaultValue } = triggers[option];
-        const extractedTriggerCssProperty = customCss[customCssActiveMode][triggerCssProperty];
-        const conditionValue = typeof extractedTriggerCssProperty === 'string' ? parseInt(extractedTriggerCssProperty) : extractedTriggerCssProperty;
-        let conditionMet = conditions ? conditions.has(conditionValue) : false;
-        if (!conditionMet && negativeConditions) { conditionMet = !negativeConditions.has(conditionValue); }
-        if (conditionMet) {
-          for (let i = 0; i < this.settings.options.length; i += 1) {
-            if (this.settings.options[i].spec.cssProperty === triggerCssProperty) {
-              const rawDefaultValue = typeof defaultValue === 'string' ? parseInt(defaultValue) : defaultValue;
-              this.settings.options[i].spec.default = rawDefaultValue;
-              customCss[customCssActiveMode][triggerCssProperty] = defaultValue;
-            }
-          }
-        }
-      }
     },
     inputDropdownOptionClick(option: string, cssProperty: string): void {
       this.subcomponentProperties.customCss[this.subcomponentProperties.customCssActiveMode][cssProperty] = option;
