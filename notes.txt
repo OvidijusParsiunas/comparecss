@@ -16,6 +16,8 @@ potentially rename initial to default convention
 potentially add x button to border coloring
 clicking on an option again to remove settings panel
 the auxiliary padding at the bottom prevents the dropdown from opening
+slide transitions
+disable toolbar side switch during the toggle mode animations
 
 option to import an existing button style!
 

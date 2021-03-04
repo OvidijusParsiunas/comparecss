@@ -1,3 +1,4 @@
+import { expandedModalPreviewModeState } from '../../../../../../services/workshop/expandedModalPreviewMode/expandedModalPreviewModeState';
 import { DropdownCustomCssProperty } from '../../../../../../interfaces/dropdownCustomCssProperty';
 import { SubcomponentProperties, } from '../../../../../../interfaces/workshopComponent';
 import { UseActionsDropdown } from '../../../../../../interfaces/UseActionsDropdown';
@@ -6,7 +7,6 @@ import CustomCssUtils from './utils/customCssUtils';
 import GeneralUtils from './utils/generalUtils';
 import SharedUtils from '../utils/sharedUtils';
 import { ComponentOptions } from 'vue';
-import { expandedModalPreviewModeState } from '@/services/workshop/expandedModalPreviewMode/expandedModalPreviewModeState';
 
 export default function useActionsDropdown(): UseActionsDropdown {
 
