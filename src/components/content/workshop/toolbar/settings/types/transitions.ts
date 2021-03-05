@@ -1,24 +1,24 @@
 import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallbacks } from '../../../../../../interfaces/actionsDropdownMouseEventCallbacks';
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../../../../consts/modalTransitionTypes.enum';
-import { PlayPreviewTransitionAnimationEvent } from '../../../../../../interfaces/playPreviewTransitionAnimationEvent';
+import { PlayTransitionPreviewEvent } from '../../../../../../interfaces/playTransitionPreviewEvent';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 
 function generateMouseEventCallbacks(isEntranceAnimation: boolean): ActionsDropdownMouseEventCallbacks {
   return {
     mouseEnterButtonCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
-      event.settingsComponent.$emit('play-preview-transition-animation', [event.triggeredOptionName, isEntranceAnimation] as PlayPreviewTransitionAnimationEvent)
+      event.settingsComponent.$emit('play-transition-preview', [event.triggeredOptionName, isEntranceAnimation] as PlayTransitionPreviewEvent)
     },
     mouseLeaveButtonCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
-      event.settingsComponent.$emit('stop-preview-transition-animation');
+      event.settingsComponent.$emit('stop-transition-preview');
     },
     mouseEnterOptionCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
-      event.settingsComponent.$emit('play-preview-transition-animation', [event.triggeredOptionName, isEntranceAnimation] as PlayPreviewTransitionAnimationEvent)
+      event.settingsComponent.$emit('play-transition-preview', [event.triggeredOptionName, isEntranceAnimation] as PlayTransitionPreviewEvent)
     },
     mouseLeaveDropdownCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
-      event.settingsComponent.$emit('stop-preview-transition-animation');
+      event.settingsComponent.$emit('stop-transition-preview');
     },
     mouseClickOptionCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
-      event.settingsComponent.$emit('stop-preview-transition-animation');
+      event.settingsComponent.$emit('stop-transition-preview');
     },
   };
 }

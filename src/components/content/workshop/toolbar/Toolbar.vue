@@ -15,14 +15,14 @@
       <settings v-if="isSettingsDisplayed" ref="settings"
         :subcomponentProperties="component.subcomponents[component.subcomponentsActiveMode]"
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-        @play-preview-transition-animation="$emit('play-preview-transition-animation', $event)"
-        @stop-preview-transition-animation="$emit('stop-preview-transition-animation')"/>
+        @play-transition-preview="$emit('play-transition-preview', $event)"
+        @stop-transition-preview="$emit('stop-transition-preview')"/>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import ExpandedModalPreviewModeTransitionsService from '../../../../services/workshop/expandedModalPreviewMode/transitions/transitionsService';
+import ToolbarTogglesService from '../../../../services/workshop/expandedModalPreviewMode/services/toolbarTogglesService';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../consts/workshopToolbarOptionTypes.enum';
@@ -80,7 +80,7 @@ export default {
         toggleExpandedModalPreviewModeEvent.concat(this.$refs.toolbarContainer, this.$refs.toolbar) as ToggleExpandedModalPreviewModeEvent);
     },
     toggleToolbarPosition(): void {
-      ExpandedModalPreviewModeTransitionsService.toggleToolbarPosition(this.$refs.toolbarContainer);
+      ToolbarTogglesService.toggleToolbarPosition(this.$refs.toolbarContainer);
     }
   },
   props: {

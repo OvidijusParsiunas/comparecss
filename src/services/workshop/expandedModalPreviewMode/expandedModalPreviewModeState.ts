@@ -1,13 +1,28 @@
 import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES } from '../../../consts/toolbarClasses';
 import { ElementStyleProperties } from '../../../interfaces/elementStyleProperties';
 
+let beginningTimeOfTransitionState = 0;
 let isModeToggleTransitionInProgressState = false;
-let isTransitionInProgressState = false;
+let isModeToggleInitialFadeOutTransitionInProgress = false;
+let isTransitionPreviewInProgressState = false;
 let expandedModalModeToolbarContainerPositionState = EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.DEFAULT;
 let currentExitTransitionModalDefaultPropertiesState = {};
-let currentlyPendingTransitionInitState = null;
-let currentlyPendingTransitionEndingState = null;
-let currentlyPendingPropertyResetAfterExitState = null;
+
+let pendingToolbarStyleChangesState = null;
+let pendingToolbarTransitionState = null;
+let pendingToolbarStyleUnsetState = null;
+
+let pendingTransitionInitState = null;
+let pendingTransitionEndingState = null;
+let pendingPropertyResetAfterExitState = null;
+
+function markBeginningTimeOfTransitionState(): void {
+  beginningTimeOfTransitionState = performance.now();
+}
+
+function getElapsedAnimationTime(): number {
+  return performance.now() - beginningTimeOfTransitionState;
+}
 
 function getIsModeToggleTransitionInProgressState(): boolean {
   return isModeToggleTransitionInProgressState;
@@ -17,12 +32,20 @@ function setIsModeToggleTransitionInProgressState(state: boolean): void {
   isModeToggleTransitionInProgressState = state;
 }
 
-function getIsTransitionInProgressState(): boolean {
-  return isTransitionInProgressState;
+function setIsModeToggleInitialFadeOutTransitionInProgress(state: boolean): void {
+  isModeToggleInitialFadeOutTransitionInProgress = state;
 }
 
-function setIsTransitionInProgressState(state: boolean): void {
-  isTransitionInProgressState = state;
+function getIsModeToggleInitialFadeOutTransitionInProgress(): boolean {
+  return isModeToggleInitialFadeOutTransitionInProgress;
+}
+
+function getIsTransitionPreviewInProgressState(): boolean {
+  return isTransitionPreviewInProgressState;
+}
+
+function setIsPreviewTransitionInProgressState(state: boolean): void {
+  isTransitionPreviewInProgressState = state;
 }
 
 function getExpandedModalModeToolbarContainerPositionState(): EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES {
@@ -33,22 +56,40 @@ function setExpandedModalModeToolbarContainerPositionState(state: EXPANDED_MODAL
   expandedModalModeToolbarContainerPositionState = state;
 }
 
-function removePendingExitTransitionsState(): void {
-  clearTimeout(currentlyPendingTransitionInitState);
-  clearTimeout(currentlyPendingTransitionEndingState);
-  clearTimeout(currentlyPendingPropertyResetAfterExitState);
+function removePendingEntraceTimeouts(): void {
+  clearTimeout(pendingToolbarStyleChangesState);
+  clearTimeout(pendingToolbarTransitionState);
+  clearTimeout(pendingToolbarStyleUnsetState);
 }
 
-function setPendingTransitionInitState(state: any): void {
-  currentlyPendingTransitionInitState = state;
+function setPendingToolbarStyleChangesState(state: number): void {
+  pendingToolbarStyleChangesState = state;
 }
 
-function setPendingTransitionEndingState(state: any): void {
-  currentlyPendingTransitionEndingState = state;
+function setPendingToolbarTransitionState(state: number): void {
+  pendingToolbarTransitionState = state;
 }
 
-function setPendingPropertyResetAfterExitState(state: any): void {
-  currentlyPendingPropertyResetAfterExitState = state;
+function setPendingToolbarStyleUnsetState(state: number): void {
+  pendingToolbarStyleUnsetState = state;
+}
+
+function removePendingExitTransitions(): void {
+  clearTimeout(pendingTransitionInitState);
+  clearTimeout(pendingTransitionEndingState);
+  clearTimeout(pendingPropertyResetAfterExitState);
+}
+
+function setPendingTransitionInitState(state: number): void {
+  pendingTransitionInitState = state;
+}
+
+function setPendingTransitionEndingState(state: number): void {
+  pendingTransitionEndingState = state;
+}
+
+function setPendingPropertyResetAfterExitState(state: number): void {
+  pendingPropertyResetAfterExitState = state;
 }
 
 function getCurrentExitTransitionModalDefaultPropertiesState(): ElementStyleProperties {
@@ -60,11 +101,19 @@ function setCurrentExitTransitionModalDefaultPropertiesState(state: ElementStyle
 }
 
 export const expandedModalPreviewModeState = {
+  removePendingEntraceTimeouts,
+  setPendingToolbarStyleChangesState,
+  setPendingToolbarTransitionState,
+  setPendingToolbarStyleUnsetState,
+  markBeginningTimeOfTransitionState,
+  getElapsedAnimationTime,
   getIsModeToggleTransitionInProgressState,
   setIsModeToggleTransitionInProgressState,
-  getIsTransitionInProgressState,
-  setIsTransitionInProgressState,
-  removePendingExitTransitionsState,
+  setIsModeToggleInitialFadeOutTransitionInProgress,
+  getIsModeToggleInitialFadeOutTransitionInProgress,
+  getIsTransitionPreviewInProgressState,
+  setIsPreviewTransitionInProgressState,
+  removePendingExitTransitions,
   setPendingTransitionInitState,
   setPendingTransitionEndingState,
   setPendingPropertyResetAfterExitState,

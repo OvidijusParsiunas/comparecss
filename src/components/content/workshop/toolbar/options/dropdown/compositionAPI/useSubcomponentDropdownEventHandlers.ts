@@ -46,7 +46,7 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
   }
 
   const mouseEnterButtonEventHandler = (): void => {
-    if (!expandedModalPreviewModeState.getIsTransitionInProgressState()) {
+    if (!expandedModalPreviewModeState.getIsTransitionPreviewInProgressState()) {
       toggleSubcomponentOverlayDisplay(objectContainingActiveOption.value[activeOptionPropertyKeyName.value], 'block'); 
     }
   }

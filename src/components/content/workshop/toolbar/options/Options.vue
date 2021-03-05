@@ -70,6 +70,7 @@
 </template>
 
 <script lang="ts">
+import { expandedModalPreviewModeState } from '../../../../../services/workshop/expandedModalPreviewMode/expandedModalPreviewModeState';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
@@ -224,6 +225,7 @@ export default {
       this.isSubcomponentSelectModeButtonDisplayed = isDropdownDisplayed;
     },
     toggleModalExpandMode(): void {
+      if (expandedModalPreviewModeState.getIsModeToggleInitialFadeOutTransitionInProgress()) return;
       this.isExpandedModalPreviewModeActive = !this.isExpandedModalPreviewModeActive;
       const setOptionToDefaultCallback = !this.isExpandedModalPreviewModeActive && this.activeOption.enabledOnExpandedModalPreviewMode
         ? this.selectOption.bind(this, this.getDefaultOption()) : () => { return; };

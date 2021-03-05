@@ -4,8 +4,9 @@ export type ModalEntranceTransition = (transitionDuration: string, modalElement:
   unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void, backgroundElement?: HTMLElement) => void;
 
 export type ModalExitTransition = (transitionDuration: string, modalElement: HTMLElement,
-  exitCallback: ExitCallback, backgroundElement?: HTMLElement, backdropProperties?: BackdropProperties,
-  toolbarElement?: HTMLElement, innerToolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement) => void;
+  exitTransitionCallback: ExitTransitionCallback, backgroundElement?: HTMLElement, backdropProperties?: BackdropProperties,
+  toolbarElement?: HTMLElement, innerToolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement,
+  wasPreviousTransitionInterrupted?: boolean) => void;
 
-export type ExitCallback = (modalElement: HTMLElement, backgroundElement?: HTMLElement, backdropProperties?: BackdropProperties,
+export type ExitTransitionCallback = (modalElement: HTMLElement, backgroundElement?: HTMLElement, backdropProperties?: BackdropProperties,
   toolbarElement?: HTMLElement, innerToolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement) => void;
