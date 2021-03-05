@@ -34,10 +34,10 @@ export default class ModeToggleEntranceTransitionService {
 
   private static toolbarFadeInTransition(toolbarContainerElement: HTMLElement, transitionDuration: string): void {
     TransitionsUtils.opacityFadeTransition(OPACITY_VISIBLE, transitionDuration, toolbarContainerElement);
-    const pendingToolbarStyleUnset = window.setTimeout(() => {
+    const pendingToolbarEntranceTransitionUnset = window.setTimeout(() => {
       TransitionsUtils.unsetTransitionProperties(toolbarContainerElement);
     }, TransitionsUtils.secondsStringToMillisecondsNumber(transitionDuration));
-    expandedModalPreviewModeState.setPendingToolbarStyleUnsetState(pendingToolbarStyleUnset);
+    expandedModalPreviewModeState.setPendingToolbarEntranceTransitionUnsetState(pendingToolbarEntranceTransitionUnset);
   }
 
   // UX - EXPANDED MODAL TOGGLE TRANSITION
@@ -48,18 +48,17 @@ export default class ModeToggleEntranceTransitionService {
       toolbarContainerElement.classList.add(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM);
     }
     toolbarPositionToggleElement.style.display = 'block';
-    const pendingToolbarTransition = window.setTimeout(() => {
+    const pendingToolbarEntranceFadeInTransition = window.setTimeout(() => {
       ModeToggleEntranceTransitionService.toolbarFadeInTransition(toolbarContainerElement, transitionDuration);
     }, ENTRANCE_TRANSITION_DELAY_MILLISECONDS);
-    expandedModalPreviewModeState.setPendingToolbarTransitionState(pendingToolbarTransition);
+    expandedModalPreviewModeState.setPendingToolbarEntranceFadeInTransitionState(pendingToolbarEntranceFadeInTransition);
   }
 
   private static startToolbarTransitionWithFadeOut(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement, transitionDuration: string): void {
     TransitionsUtils.opacityFadeTransition(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
-    const pendingToolbarStyleSet = window.setTimeout(() => {
+    window.setTimeout(() => {
       ModeToggleEntranceTransitionService.startToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, transitionDuration);
     }, MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS);
-    expandedModalPreviewModeState.setPendingToolbarStyleChangesState(pendingToolbarStyleSet);
   }
 
   private static setBackdropStyle(backdropElement: HTMLElement, backdropProperties: BackdropProperties): void {

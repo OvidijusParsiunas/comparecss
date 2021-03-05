@@ -8,13 +8,12 @@ let isTransitionPreviewInProgressState = false;
 let expandedModalModeToolbarContainerPositionState = EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.DEFAULT;
 let currentExitTransitionModalDefaultPropertiesState = {};
 
-let pendingToolbarStyleChangesState = null;
-let pendingToolbarTransitionState = null;
-let pendingToolbarStyleUnsetState = null;
+let pendingToolbarEntranceFadeInTransitionState = null;
+let pendingToolbarEntranceTransitionUnsetState = null;
 
-let pendingTransitionInitState = null;
-let pendingTransitionEndingState = null;
-let pendingPropertyResetAfterExitState = null;
+let pendingModalTransitionStartState = null;
+let pendingModalTransitionEndState = null;
+let pendingModalTransitionPreviewUnsetState = null;
 
 function markBeginningTimeOfTransitionState(): void {
   beginningTimeOfTransitionState = performance.now();
@@ -57,39 +56,34 @@ function setExpandedModalModeToolbarContainerPositionState(state: EXPANDED_MODAL
 }
 
 function removePendingEntraceTimeouts(): void {
-  clearTimeout(pendingToolbarStyleChangesState);
-  clearTimeout(pendingToolbarTransitionState);
-  clearTimeout(pendingToolbarStyleUnsetState);
+  clearTimeout(pendingToolbarEntranceFadeInTransitionState);
+  clearTimeout(pendingToolbarEntranceTransitionUnsetState);
 }
 
-function setPendingToolbarStyleChangesState(state: number): void {
-  pendingToolbarStyleChangesState = state;
+function setPendingToolbarEntranceFadeInTransitionState(state: number): void {
+  pendingToolbarEntranceFadeInTransitionState = state;
 }
 
-function setPendingToolbarTransitionState(state: number): void {
-  pendingToolbarTransitionState = state;
-}
-
-function setPendingToolbarStyleUnsetState(state: number): void {
-  pendingToolbarStyleUnsetState = state;
+function setPendingToolbarEntranceTransitionUnsetState(state: number): void {
+  pendingToolbarEntranceTransitionUnsetState = state;
 }
 
 function removePendingExitTransitions(): void {
-  clearTimeout(pendingTransitionInitState);
-  clearTimeout(pendingTransitionEndingState);
-  clearTimeout(pendingPropertyResetAfterExitState);
+  clearTimeout(pendingModalTransitionStartState);
+  clearTimeout(pendingModalTransitionEndState);
+  clearTimeout(pendingModalTransitionPreviewUnsetState);
 }
 
-function setPendingTransitionInitState(state: number): void {
-  pendingTransitionInitState = state;
+function setPendingModalTransitionStartState(state: number): void {
+  pendingModalTransitionStartState = state;
 }
 
-function setPendingTransitionEndingState(state: number): void {
-  pendingTransitionEndingState = state;
+function setPendingModalTransitionEndState(state: number): void {
+  pendingModalTransitionEndState = state;
 }
 
-function setPendingPropertyResetAfterExitState(state: number): void {
-  pendingPropertyResetAfterExitState = state;
+function setPendingModalTransitionPreviewUnsetState(state: number): void {
+  pendingModalTransitionPreviewUnsetState = state;
 }
 
 function getCurrentExitTransitionModalDefaultPropertiesState(): ElementStyleProperties {
@@ -102,9 +96,8 @@ function setCurrentExitTransitionModalDefaultPropertiesState(state: ElementStyle
 
 export const expandedModalPreviewModeState = {
   removePendingEntraceTimeouts,
-  setPendingToolbarStyleChangesState,
-  setPendingToolbarTransitionState,
-  setPendingToolbarStyleUnsetState,
+  setPendingToolbarEntranceFadeInTransitionState,
+  setPendingToolbarEntranceTransitionUnsetState,
   markBeginningTimeOfTransitionState,
   getElapsedAnimationTime,
   getIsModeToggleTransitionInProgressState,
@@ -114,9 +107,9 @@ export const expandedModalPreviewModeState = {
   getIsTransitionPreviewInProgressState,
   setIsPreviewTransitionInProgressState,
   removePendingExitTransitions,
-  setPendingTransitionInitState,
-  setPendingTransitionEndingState,
-  setPendingPropertyResetAfterExitState,
+  setPendingModalTransitionStartState,
+  setPendingModalTransitionEndState,
+  setPendingModalTransitionPreviewUnsetState,
   getCurrentExitTransitionModalDefaultPropertiesState,
   setCurrentExitTransitionModalDefaultPropertiesState,
   getExpandedModalModeToolbarContainerPositionState,

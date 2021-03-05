@@ -60,7 +60,6 @@ export default class ModeToggleExitTransitionService {
   }
 
   public static cancelPendingTransitionFunctionality(): void {
-    // are both needed here
     expandedModalPreviewModeState.removePendingExitTransitions();
     expandedModalPreviewModeState.removePendingEntraceTimeouts();
   }

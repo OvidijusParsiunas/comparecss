@@ -22,7 +22,7 @@ export default class SlideTransitions {
     const currentTopStyleValueNumber = Number.parseInt(currentTopStyleValue);
     expandedModalPreviewModeState.setCurrentExitTransitionModalDefaultPropertiesState({top: currentTopStyleValue});
     modalElement.style.top = `${currentTopStyleValueNumber - SlideTransitions.SLIDE_DISTANCE_NUMBER}px`;
-    const pendingTransitionInit = window.setTimeout(() => {
+    const pendingModalEntranceTransition = window.setTimeout(() => {
       expandedModalPreviewModeState.setIsModeToggleInitialFadeOutTransitionInProgress(false);
       modalElement.style.opacity = OPACITY_VISIBLE;
       modalElement.style.transitionProperty = ALL_PROPERTIES;
@@ -30,15 +30,15 @@ export default class SlideTransitions {
       modalElement.style.transitionDuration = transitionDuration;
       modalElement.style.transitionTimingFunction = LINEAR_SPEED_TRANSITION;
       expandedModalPreviewModeState.markBeginningTimeOfTransitionState();
-      const pendingTransitionEnding = window.setTimeout(() => {
+      const pendingModalTransitionEnd = window.setTimeout(() => {
         if (unsetTransitionPropertiesCallback) unsetTransitionPropertiesCallback(modalElement, backdropElement);
         // the reason why the states are set to false here, because there is no callback
         expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(false);
         expandedModalPreviewModeState.setIsPreviewTransitionInProgressState(false);
       }, TransitionsUtils.secondsStringToMillisecondsNumber(transitionDuration));
-      expandedModalPreviewModeState.setPendingTransitionEndingState(pendingTransitionEnding);
+      expandedModalPreviewModeState.setPendingModalTransitionEndState(pendingModalTransitionEnd);
     }, ENTRANCE_TRANSITION_DELAY_MILLISECONDS);
-    expandedModalPreviewModeState.setPendingTransitionInitState(pendingTransitionInit);
+    expandedModalPreviewModeState.setPendingModalTransitionStartState(pendingModalEntranceTransition);
   }
 
   private static hideBackdrop(backdropElement: HTMLElement) {
@@ -57,10 +57,10 @@ export default class SlideTransitions {
     modalElement.style.transitionTimingFunction = LINEAR_SPEED_TRANSITION;
     modalElement.style.top = `${currentTopStyleValueNumber - SlideTransitions.SLIDE_DISTANCE_NUMBER}px`;
     expandedModalPreviewModeState.markBeginningTimeOfTransitionState();
-    const pendingTransitionEnding = window.setTimeout(() => {
+    const pendingModalTransitionEnd = window.setTimeout(() => {
       if (backdropElement) SlideTransitions.hideBackdrop(backdropElement);
       exitTransitionCallback(modalElement, backdropElement, backdropProperties, toolbarElement, innerToolbarElement, toolbarPositionToggleElement);
     }, TransitionsUtils.secondsStringToMillisecondsNumber(transitionDuration));
-    expandedModalPreviewModeState.setPendingTransitionEndingState(pendingTransitionEnding);
+    expandedModalPreviewModeState.setPendingModalTransitionEndState(pendingModalTransitionEnd);
   }
 }

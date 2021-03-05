@@ -8,18 +8,18 @@ export default class ExitTransitionPreviewService {
   private static RESET_MODAL_AFTER_EXIT_TRANSITION_PREVIEW_TIMEOUT_MILLISECONDS = 400;
 
   public static exitTransitionPreviewCallback(modalElement: HTMLElement): void {
-    const pendingPropertyResetAfterExitState = window.setTimeout(() => {
+    const pendingModalTransitionPreviewUnset = window.setTimeout(() => {
       TransitionsUtils.cancelModalTransitionPreview(modalElement);
     }, ExitTransitionPreviewService.RESET_MODAL_AFTER_EXIT_TRANSITION_PREVIEW_TIMEOUT_MILLISECONDS); 
-    expandedModalPreviewModeState.setPendingPropertyResetAfterExitState(pendingPropertyResetAfterExitState);
+    expandedModalPreviewModeState.setPendingModalTransitionPreviewUnsetState(pendingModalTransitionPreviewUnset);
   }
 
-  public static start(modalEntranceTransition: ModalExitTransition, transitionDuration: string, modalElement: HTMLElement): void {
+  public static start(modalExitTransition: ModalExitTransition, transitionDuration: string, modalElement: HTMLElement): void {
     TransitionsUtils.cancelModalTransitionPreview(modalElement);
     expandedModalPreviewModeState.setIsPreviewTransitionInProgressState(true);
-    const pendingTransitionInit = window.setTimeout(() => { 
-      modalEntranceTransition(transitionDuration, modalElement, ExitTransitionPreviewService.exitTransitionPreviewCallback);
+    const pendingModalTransitionStart = window.setTimeout(() => { 
+      modalExitTransition(transitionDuration, modalElement, ExitTransitionPreviewService.exitTransitionPreviewCallback);
     }, ExitTransitionPreviewService.EXIT_TRANSITION_PREVIEW_TIMEOUT_MILLISECONDS);
-    expandedModalPreviewModeState.setPendingTransitionInitState(pendingTransitionInit);
+    expandedModalPreviewModeState.setPendingModalTransitionStartState(pendingModalTransitionStart);
   }
 }
