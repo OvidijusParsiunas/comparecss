@@ -2,14 +2,15 @@
 import { ModalEntranceTransition } from '../../../../../interfaces/modalTransitions';
 import { expandedModalPreviewModeState } from '../../expandedModalPreviewModeState';
 import { OPACITY_INVISIBLE } from '../../utils/sharedConsts';
-import TransitionsUtils from '../../utils/transitionsUtils';
+import TransitionUtils from '../../utils/transitionUtils';
+import GeneralUtils from '../../utils/generalUtils';
 
 export default class EntranceTransitionPreviewService {
 
   public static start(modalEntranceTransition: ModalEntranceTransition, transitionDuration: string, modalElement: HTMLElement): void {
-    TransitionsUtils.cancelModalTransitionPreview(modalElement);
+    TransitionUtils.cancelModalTransitionPreview(modalElement);
     modalElement.style.opacity = OPACITY_INVISIBLE;
     expandedModalPreviewModeState.setIsPreviewTransitionInProgressState(true);
-    modalEntranceTransition(transitionDuration, modalElement, TransitionsUtils.unsetTransitionProperties);
+    modalEntranceTransition(transitionDuration, modalElement, GeneralUtils.unsetTransitionProperties);
   }
 }

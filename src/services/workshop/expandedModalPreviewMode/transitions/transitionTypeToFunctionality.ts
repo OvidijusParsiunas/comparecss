@@ -10,8 +10,8 @@ type ModalTransitionEntranceTypesToSettings = {
 }
 
 export const transitionTypeToFunctionality: ModalTransitionEntranceTypesToSettings = {
-  [MODAL_TRANSITION_ENTRANCE_TYPES.FADE_IN]: FadeTransitions.initiate,
-  [MODAL_TRANSITION_ENTRANCE_TYPES.SLIDE_IN]: SlideTransitions.initiate,
-  [MODAL_TRANSITION_EXIT_TYPES.FADE_OUT]: FadeTransitions.exit,
-  [MODAL_TRANSITION_EXIT_TYPES.SLIDE_OUT]: SlideTransitions.exit,
+  [MODAL_TRANSITION_ENTRANCE_TYPES.FADE_IN]: FadeTransitions.startEntranceTransition,
+  [MODAL_TRANSITION_ENTRANCE_TYPES.SLIDE_IN]: SlideTransitions.startEntranceTransition,
+  [MODAL_TRANSITION_EXIT_TYPES.FADE_OUT]: FadeTransitions.startExitTransition,
+  [MODAL_TRANSITION_EXIT_TYPES.SLIDE_OUT]: SlideTransitions.startExitTransition,
 };

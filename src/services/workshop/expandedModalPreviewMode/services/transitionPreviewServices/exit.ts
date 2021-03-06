@@ -1,6 +1,6 @@
 import { expandedModalPreviewModeState } from '../../expandedModalPreviewModeState';
 import { ModalExitTransition } from '../../../../../interfaces/modalTransitions';
-import TransitionsUtils from '../../utils/transitionsUtils';
+import TransitionUtils from '../../utils/transitionUtils';
 
 export default class ExitTransitionPreviewService {
 
@@ -9,13 +9,13 @@ export default class ExitTransitionPreviewService {
 
   public static exitTransitionPreviewCallback(modalElement: HTMLElement): void {
     const pendingModalTransitionPreviewUnset = window.setTimeout(() => {
-      TransitionsUtils.cancelModalTransitionPreview(modalElement);
+      TransitionUtils.cancelModalTransitionPreview(modalElement);
     }, ExitTransitionPreviewService.RESET_MODAL_AFTER_EXIT_TRANSITION_PREVIEW_TIMEOUT_MILLISECONDS); 
     expandedModalPreviewModeState.setPendingModalTransitionPreviewUnsetState(pendingModalTransitionPreviewUnset);
   }
 
   public static start(modalExitTransition: ModalExitTransition, transitionDuration: string, modalElement: HTMLElement): void {
-    TransitionsUtils.cancelModalTransitionPreview(modalElement);
+    TransitionUtils.cancelModalTransitionPreview(modalElement);
     expandedModalPreviewModeState.setIsPreviewTransitionInProgressState(true);
     const pendingModalTransitionStart = window.setTimeout(() => { 
       modalExitTransition(transitionDuration, modalElement, ExitTransitionPreviewService.exitTransitionPreviewCallback);

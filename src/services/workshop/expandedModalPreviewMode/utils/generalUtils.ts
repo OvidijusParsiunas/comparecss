@@ -1,9 +1,9 @@
-import { INITIAL_EXPANDED_MODAL_TRANSITION_VALUES, OPACITY_VISIBLE, UNSET } from './sharedConsts';
 import { ElementStyleProperties } from '../../../../interfaces/elementStyleProperties';
+import { INITIAL_EXPANDED_MODAL_TRANSITION_VALUES, UNSET } from './sharedConsts';
 import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 
-export default class TransitionsUtils {
+export default class GeneralUtils {
 
   public static secondsStringToMillisecondsNumber(seconds: string): number {
     return Number.parseFloat(seconds) * 1000;
@@ -33,27 +33,17 @@ export default class TransitionsUtils {
   }
 
   public static getNewTransitionDuration(): string {
-    return `${expandedModalPreviewModeState.getElapsedAnimationTime() / 1000}s`;
+    return `${expandedModalPreviewModeState.getElapsedTransitionTime() / 1000}s`;
   }
 
-  private static setModalProperties(modalElement: HTMLElement, modalProperties: ElementStyleProperties) {
+  public static cancelAllPendingTransitionFunctionality(): void {
+    expandedModalPreviewModeState.cancelPendingModalTransitionFunctionality();
+    expandedModalPreviewModeState.cancelPendingToolbarTransitionFunctionality();
+  }
+
+  public static setModalProperties(modalElement: HTMLElement, modalProperties: ElementStyleProperties) {
     Object.keys(modalProperties).forEach((propertyKey: string) => {
       modalElement.style[propertyKey] = modalProperties[propertyKey];
     });
-  }
-
-  private static setModalPropertiesBackToDefault(element: HTMLElement): void {
-    const defaultModalProperties = expandedModalPreviewModeState.getCurrentExitTransitionModalDefaultPropertiesState();
-    TransitionsUtils.setModalProperties(element, defaultModalProperties);
-  }
-  
-  public static cancelModalTransitionPreview(modalElement: HTMLElement): void {
-    if (expandedModalPreviewModeState.getIsTransitionPreviewInProgressState()) {
-      TransitionsUtils.setModalPropertiesBackToDefault(modalElement);
-      TransitionsUtils.unsetTransitionProperties(modalElement);
-      expandedModalPreviewModeState.removePendingExitTransitions();
-      expandedModalPreviewModeState.setIsPreviewTransitionInProgressState(false);
-      modalElement.style.opacity = OPACITY_VISIBLE;
-    }
   }
 }

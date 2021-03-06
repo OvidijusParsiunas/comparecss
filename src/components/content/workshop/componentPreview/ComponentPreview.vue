@@ -117,8 +117,8 @@ import ExitTransitionPreviewService from '../../../../services/workshop/expanded
 import { subcomponentAndOverlayElementIdsState } from '../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
-import TransitionsUtils from '../../../../services/workshop/expandedModalPreviewMode/utils/transitionsUtils';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
+import TransitionUtils from '../../../../services/workshop/expandedModalPreviewMode/utils/transitionUtils';
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
 import { ModalEntranceTransition, ModalExitTransition } from '../../../../interfaces/modalTransitions';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
@@ -233,7 +233,7 @@ export default {
       }
     },
     stopTransitionPreview(): void {
-      TransitionsUtils.cancelModalTransitionPreview(this.$refs.componentPreview);
+      TransitionUtils.cancelModalTransitionPreview(this.$refs.componentPreview);
     }
   },
   components: {
