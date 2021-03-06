@@ -31,11 +31,11 @@ export default class SlideTransitions {
 
   public static startExitTransition(transitionDuration: string, modalElement: HTMLElement, exitTransitionCallback: ExitTransitionCallback,
       backdropElement: HTMLElement, backdropProperties: BackdropProperties, toolbarElement: HTMLElement, innerToolbarElement: HTMLElement,
-      toolbarPositionToggleElement: HTMLElement, wasPreviousTransitionInterrupted?: boolean): void {
+      toolbarPositionToggleElement: HTMLElement, modalOverlayElement: HTMLElement, wasPreviousTransitionInterrupted?: boolean): void {
     const currentTopStyleValueNumber = SlideTransitions.prepareExitTransition(modalElement);
     const modalElementProperties = { top: `${currentTopStyleValueNumber - SlideTransitions.SLIDE_DISTANCE_NUMBER}px` };
     TransitionUtils.startModalAndBackdropExitTransition(transitionDuration, modalElement, exitTransitionCallback,
-      backdropElement, backdropProperties, toolbarElement, innerToolbarElement, toolbarPositionToggleElement,
+      backdropElement, backdropProperties, toolbarElement, innerToolbarElement, toolbarPositionToggleElement, modalOverlayElement,
       wasPreviousTransitionInterrupted, modalElementProperties);
   }
 }

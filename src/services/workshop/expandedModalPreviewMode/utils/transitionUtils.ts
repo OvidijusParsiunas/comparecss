@@ -75,10 +75,10 @@ export default class TransitionUtils {
   
   private static finishModalExitTransition(modalElement: HTMLElement, exitTransitionCallback: ExitTransitionCallback,
       backdropElement: HTMLElement, backdropProperties: BackdropProperties, toolbarElement: HTMLElement,
-      innerToolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
+      innerToolbarElement: HTMLElement, modalOverlayElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
     if (backdropElement) TransitionUtils.startBackdropHideTransition(backdropElement);
     exitTransitionCallback(modalElement, backdropElement, backdropProperties, toolbarElement,
-      innerToolbarElement, toolbarPositionToggleElement);
+      innerToolbarElement, modalOverlayElement, toolbarPositionToggleElement);
   }
 
   private static calculateTransitionDurationMilliseconds(wasPreviousTransitionInterrupted: boolean, transitionDuration: string): number {
@@ -90,13 +90,14 @@ export default class TransitionUtils {
 
   public static startModalAndBackdropExitTransition(transitionDuration: string, modalElement: HTMLElement, exitTransitionCallback: ExitTransitionCallback,
       backdropElement: HTMLElement, backdropProperties: BackdropProperties, toolbarElement: HTMLElement, innerToolbarElement: HTMLElement,
-      toolbarPositionToggleElement: HTMLElement, wasPreviousTransitionInterrupted: boolean, modalElementProperties?: ElementStyleProperties): void {
+      toolbarPositionToggleElement: HTMLElement, modalOverlayElement?: HTMLElement, wasPreviousTransitionInterrupted?: boolean,
+      modalElementProperties?: ElementStyleProperties): void {
     TransitionUtils.setModalTransitionProperties(modalElement, OPACITY_INVISIBLE, ALL_PROPERTIES, transitionDuration,
       LINEAR_SPEED_TRANSITION, modalElementProperties);
     expandedModalPreviewModeState.markBeginningTimeOfTransitionState();
     const pendingModalTransitionEnd = window.setTimeout(() => {
       TransitionUtils.finishModalExitTransition(modalElement, exitTransitionCallback, backdropElement, backdropProperties, toolbarElement,
-        innerToolbarElement, toolbarPositionToggleElement);
+        innerToolbarElement, modalOverlayElement, toolbarPositionToggleElement);
     }, TransitionUtils.calculateTransitionDurationMilliseconds(wasPreviousTransitionInterrupted, transitionDuration));
     expandedModalPreviewModeState.setPendingModalTransitionEndState(pendingModalTransitionEnd);
   }

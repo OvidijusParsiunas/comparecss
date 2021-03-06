@@ -11,8 +11,8 @@ export default class FadeTransitions {
 
   public static startExitTransition(transitionDuration: string, modalElement: HTMLElement, exitTransitionCallback: ExitTransitionCallback,
       backdropElement: HTMLElement, backdropProperties: BackdropProperties, toolbarElement: HTMLElement, innerToolbarElement: HTMLElement,
-      toolbarPositionToggleElement: HTMLElement, wasPreviousTransitionInterrupted?: boolean): void {
+      toolbarPositionToggleElement: HTMLElement, modalOverlayElement: HTMLElement, wasPreviousTransitionInterrupted?: boolean): void {
     TransitionUtils.startModalAndBackdropExitTransition(transitionDuration, modalElement, exitTransitionCallback, backdropElement,
-      backdropProperties, toolbarElement, innerToolbarElement, toolbarPositionToggleElement, wasPreviousTransitionInterrupted);
+      backdropProperties, toolbarElement, innerToolbarElement, toolbarPositionToggleElement, modalOverlayElement, wasPreviousTransitionInterrupted);
   }
 }

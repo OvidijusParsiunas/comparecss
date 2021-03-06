@@ -66,31 +66,35 @@ export default class ModeToggleEntranceTransitionService {
     backdropProperties.visible = true;
   }
 
-  private static startModalAndBackdropTransition(backdropElement: HTMLElement, modalElement: HTMLElement, backdropProperties: BackdropProperties,
-      modalEntranceTransition: ModalEntranceTransition, transitionDuration: string): void {
-    GeneralUtils.toggleModalStaticPosition(modalElement, 'remove');
+  private static startModalAndBackdropTransition(backdropElement: HTMLElement, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
+      backdropProperties: BackdropProperties, modalEntranceTransition: ModalEntranceTransition, transitionDuration: string): void {
+    GeneralUtils.toggleModalStaticPosition(modalElement, modalOverlayElement, 'remove');
     ModeToggleEntranceTransitionService.setBackdropStyle(backdropElement, backdropProperties);
     setTimeout(() => { modalEntranceTransition(transitionDuration, modalElement, GeneralUtils.unsetTransitionProperties, backdropElement); });
   }
 
-  private static startModalAndBackdropTransitionWithFadeOut(backdropElement: HTMLElement, modalElement: HTMLElement, backdropProperties: BackdropProperties,
-      modalEntranceTransition: ModalEntranceTransition, transitionDuration: string): void {
+  private static startModalAndBackdropTransitionWithFadeOut(backdropElement: HTMLElement, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
+      backdropProperties: BackdropProperties, modalEntranceTransition: ModalEntranceTransition, transitionDuration: string): void {
     GeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS,  backdropElement, modalElement);
     window.setTimeout(() => {
-      ModeToggleEntranceTransitionService.startModalAndBackdropTransition(backdropElement, modalElement, backdropProperties, modalEntranceTransition, transitionDuration);
+      ModeToggleEntranceTransitionService.startModalAndBackdropTransition(backdropElement, modalElement, modalOverlayElement,
+        backdropProperties, modalEntranceTransition, transitionDuration);
     }, MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS);
   }
 
-  public static start(modalEntranceTransition: ModalEntranceTransition, transitionDuration: string, backdropProperties: BackdropProperties, modalElement: HTMLElement,
-      backdropElement: HTMLElement, toolbarContainerElement: HTMLElement, toolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
+  public static start(modalEntranceTransition: ModalEntranceTransition, transitionDuration: string, backdropProperties: BackdropProperties,
+      modalElement: HTMLElement, modalOverlayElement: HTMLElement, backdropElement: HTMLElement, toolbarContainerElement: HTMLElement,
+      toolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
     if (expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState()) {
       GeneralUtils.cancelAllPendingTransitionFunctionality(modalElement);
       const newTransitionDuration = GeneralUtils.getNewTransitionDuration();
-      ModeToggleEntranceTransitionService.startModalAndBackdropTransition(backdropElement, modalElement, backdropProperties, modalEntranceTransition, newTransitionDuration);
+      ModeToggleEntranceTransitionService.startModalAndBackdropTransition(backdropElement, modalElement, modalOverlayElement,
+        backdropProperties, modalEntranceTransition, newTransitionDuration);
       ModeToggleEntranceTransitionService.startToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, newTransitionDuration);
     } else {
       expandedModalPreviewModeState.setIsModeToggleInitialFadeOutTransitionInProgress(true);
-      ModeToggleEntranceTransitionService.startModalAndBackdropTransitionWithFadeOut(backdropElement, modalElement, backdropProperties, modalEntranceTransition, transitionDuration);
+      ModeToggleEntranceTransitionService.startModalAndBackdropTransitionWithFadeOut(backdropElement, modalElement, modalOverlayElement,
+        backdropProperties, modalEntranceTransition, transitionDuration);
       ModeToggleEntranceTransitionService.startToolbarTransitionWithFadeOut(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, transitionDuration);
     }
     expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(true);

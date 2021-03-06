@@ -82,11 +82,11 @@
                 :elementIds="subcomponentAndOverlayElementIds[SUB_COMPONENTS.CLOSE]"
                 :mouseEvents="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.CLOSE].subcomponentId]"/>
           </component>
-          <component :is="component.componentPreviewStructure.baseCss.componentTag"
+          <component ref="componentPreviewOverlay" :is="component.componentPreviewStructure.baseCss.componentTag"
             :id="subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].overlayId"
             style="display: none" :style="[component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], { height: '100% !important' }]"
             class="subcomponent-overlay-with-no-border-property-but-with-height"
-            :class="OVERLAY_DEFAULT_CLASS">
+            :class="[OVERLAY_DEFAULT_CLASS, STATIC_POSITION_CLASS]">
           </component>
           <!-- UX - SUBCOMPONENT SELECT - set this to appropriate dimensions when the event is fired -->
           <!-- <div ref="selectSubcomponentOverlay1" style="width: 1000px; height: 700px; background-color: #ff010100; position: absolute; border: 0px; top: -221px; left: -220px; z-index: 1; cursor: pointer;"></div> -->
@@ -208,16 +208,16 @@ export default {
         ExpandedModalPreviewModeToggleEntranceTransitionService.start(
           transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.entrance.type],
           this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.entrance.duration,
-          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.backdrop,
-          this.$refs.componentPreview, this.$refs.componentPreviewContainer,
-          toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
+          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.backdrop, this.$refs.componentPreview,
+          this.$refs.componentPreviewOverlay, this.$refs.componentPreviewContainer, toolbarContainerElement,
+          toolbarElement, toolbarPositionToggleElement);
       } else {
         ExpandedModalPreviewModeToggleExitTransitionService.start(
           transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.exit.type],
-          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.exit.duration,
-          setOptionToDefaultCallback, this.$refs.componentPreviewContainer,
-          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.backdrop, this.$refs.componentPreview,
-          toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
+          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.exit.duration, setOptionToDefaultCallback,
+          this.$refs.componentPreviewContainer, this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.backdrop,
+          this.$refs.componentPreview, this.$refs.componentPreviewOverlay, toolbarContainerElement, toolbarElement,
+          toolbarPositionToggleElement);
       }
     },
     playTransitionPreview(playTransitionPreviewEvent: PlayTransitionPreviewEvent): void {

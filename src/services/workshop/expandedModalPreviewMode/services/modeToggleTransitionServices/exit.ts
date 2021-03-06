@@ -43,9 +43,10 @@ export default class ModeToggleExitTransitionService {
 
 
   private static exitTransitionCallback(setOptionToDefaultCallback: () => void, modalElement: HTMLElement, backdropElement: HTMLElement,
-      backdropProperties: BackdropProperties, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
+      backdropProperties: BackdropProperties, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
+      modalOverlayElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
     expandedModalPreviewModeState.setIsModeToggleInitialFadeOutTransitionInProgress(true);
-    GeneralUtils.toggleModalStaticPosition(modalElement, 'add');
+    GeneralUtils.toggleModalStaticPosition(modalElement, modalOverlayElement, 'add');
     setOptionToDefaultCallback();
     const exitTransitionModalDefaultProperties = expandedModalPreviewModeState.getCurrentExitTransitionModalDefaultPropertiesState();
     GeneralUtils.setModalProperties(modalElement, exitTransitionModalDefaultProperties);
@@ -54,8 +55,8 @@ export default class ModeToggleExitTransitionService {
   }
 
   public static start(modalExitTransition: ModalExitTransition, transitionDuration: string, setOptionToDefaultCallback: () => void,
-      backdropElement: HTMLElement, backdropProperties: BackdropProperties, modalElement: HTMLElement, toolbarContainerElement: HTMLElement,
-      toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
+      backdropElement: HTMLElement, backdropProperties: BackdropProperties, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
+      toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
     let wasPreviousTransitionInterrupted = false;
     if (expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState()) {
       GeneralUtils.cancelAllPendingTransitionFunctionality(modalElement);
@@ -64,7 +65,7 @@ export default class ModeToggleExitTransitionService {
     }
     GeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, transitionDuration, toolbarContainerElement);
     modalExitTransition(transitionDuration, modalElement, ModeToggleExitTransitionService.exitTransitionCallback.bind(this, setOptionToDefaultCallback) as ExitTransitionCallback,
-      backdropElement, backdropProperties, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, wasPreviousTransitionInterrupted);
+      backdropElement, backdropProperties, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, modalOverlayElement, wasPreviousTransitionInterrupted);
     expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(true);
   }
 }

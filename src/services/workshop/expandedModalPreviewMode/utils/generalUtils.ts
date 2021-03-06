@@ -28,8 +28,9 @@ export default class GeneralUtils {
     });
   }
 
-  public static toggleModalStaticPosition(modalElement: HTMLElement, toggleName: 'add' | 'remove'): void {
+  public static toggleModalStaticPosition(modalElement: HTMLElement, modalOverlayElement: HTMLElement, toggleName: 'add' | 'remove'): void {
     modalElement.classList[toggleName](STATIC_POSITION_CLASS);
+    modalOverlayElement.classList[toggleName](STATIC_POSITION_CLASS);
   }
 
   public static getNewTransitionDuration(): string {
