@@ -70,7 +70,7 @@ export default class ModeToggleEntranceTransitionService {
       modalEntranceTransition: ModalEntranceTransition, transitionDuration: string): void {
     GeneralUtils.toggleModalStaticPosition(modalElement, 'remove');
     ModeToggleEntranceTransitionService.setBackdropStyle(backdropElement, backdropProperties);
-    modalEntranceTransition(transitionDuration, modalElement, GeneralUtils.unsetTransitionProperties, backdropElement);
+    setTimeout(() => { modalEntranceTransition(transitionDuration, modalElement, GeneralUtils.unsetTransitionProperties, backdropElement); });
   }
 
   private static startModalAndBackdropTransitionWithFadeOut(backdropElement: HTMLElement, modalElement: HTMLElement, backdropProperties: BackdropProperties,
@@ -81,15 +81,10 @@ export default class ModeToggleEntranceTransitionService {
     }, MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS);
   }
 
-  private static setPropertiesThatAreNotInCustomCssButAreRequiredForTransitions(modalElement: HTMLElement): void {
-    modalElement.style.top = modalElement.style.top === '' ? '0px' : modalElement.style.top;
-  }
-
   public static start(modalEntranceTransition: ModalEntranceTransition, transitionDuration: string, backdropProperties: BackdropProperties, modalElement: HTMLElement,
       backdropElement: HTMLElement, toolbarContainerElement: HTMLElement, toolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
-    ModeToggleEntranceTransitionService.setPropertiesThatAreNotInCustomCssButAreRequiredForTransitions(modalElement);
     if (expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState()) {
-      GeneralUtils.cancelAllPendingTransitionFunctionality();
+      GeneralUtils.cancelAllPendingTransitionFunctionality(modalElement);
       const newTransitionDuration = GeneralUtils.getNewTransitionDuration();
       ModeToggleEntranceTransitionService.startModalAndBackdropTransition(backdropElement, modalElement, backdropProperties, modalEntranceTransition, newTransitionDuration);
       ModeToggleEntranceTransitionService.startToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, newTransitionDuration);

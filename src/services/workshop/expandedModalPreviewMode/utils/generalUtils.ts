@@ -36,9 +36,15 @@ export default class GeneralUtils {
     return `${expandedModalPreviewModeState.getElapsedTransitionTime() / 1000}s`;
   }
 
-  public static cancelAllPendingTransitionFunctionality(): void {
+  public static setModalPropertiesBackToDefault(modalElement: HTMLElement): void {
+    const defaultModalProperties = expandedModalPreviewModeState.getCurrentExitTransitionModalDefaultPropertiesState();
+    GeneralUtils.setModalProperties(modalElement, defaultModalProperties);
+  }
+
+  public static cancelAllPendingTransitionFunctionality(modalElement: HTMLElement): void {
     expandedModalPreviewModeState.cancelPendingModalTransitionFunctionality();
     expandedModalPreviewModeState.cancelPendingToolbarTransitionFunctionality();
+    GeneralUtils.setModalPropertiesBackToDefault(modalElement);
   }
 
   public static setModalProperties(modalElement: HTMLElement, modalProperties: ElementStyleProperties) {

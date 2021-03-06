@@ -58,7 +58,7 @@ export default class ModeToggleExitTransitionService {
       toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
     let wasPreviousTransitionInterrupted = false;
     if (expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState()) {
-      GeneralUtils.cancelAllPendingTransitionFunctionality();
+      GeneralUtils.cancelAllPendingTransitionFunctionality(modalElement);
       transitionDuration = GeneralUtils.getNewTransitionDuration();
       wasPreviousTransitionInterrupted = true;
     }

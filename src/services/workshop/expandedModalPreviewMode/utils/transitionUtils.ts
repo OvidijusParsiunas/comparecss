@@ -10,15 +10,10 @@ import GeneralUtils from './generalUtils';
 
 export default class TransitionUtils {
 
-  private static setModalPropertiesBackToDefault(element: HTMLElement): void {
-    const defaultModalProperties = expandedModalPreviewModeState.getCurrentExitTransitionModalDefaultPropertiesState();
-    GeneralUtils.setModalProperties(element, defaultModalProperties);
-  }
-  
   public static cancelModalTransitionPreview(modalElement: HTMLElement): void {
     if (expandedModalPreviewModeState.getIsTransitionPreviewInProgressState()) {
       GeneralUtils.unsetTransitionProperties(modalElement);
-      TransitionUtils.setModalPropertiesBackToDefault(modalElement);
+      GeneralUtils.setModalPropertiesBackToDefault(modalElement);
       expandedModalPreviewModeState.cancelPendingModalTransitionFunctionality();
       expandedModalPreviewModeState.setIsPreviewTransitionInProgressState(false);
       modalElement.style.opacity = OPACITY_VISIBLE;
