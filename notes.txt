@@ -18,6 +18,8 @@ clicking on an option again to remove settings panel
 the auxiliary padding at the bottom prevents the dropdown from opening
 didn't I add functionality to stop the modal from being highlighted when mode exits
 disable toolbar side switch during the toggle mode animations
+allow the user to set the animation delay
+if the delay is less than TOOLBAR_FADE_IN_TRANSITION_DURATION_MILLISECONDS, then use the lower value
 
 option to import an existing button style!
 

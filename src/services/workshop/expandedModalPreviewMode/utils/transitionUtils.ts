@@ -61,11 +61,8 @@ export default class TransitionUtils {
       unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void,
       backdropElement?: HTMLElement, modalElementProperties?: ElementStyleProperties): void {
     if (backdropElement) TransitionUtils.startBackdropDisplayTransition(backdropElement);
-    const pendingModalEntranceTransition = window.setTimeout(() => {
-      TransitionUtils.startModalEntranceTransition(
-        transitionDuration, modalElement, unsetTransitionPropertiesCallback, backdropElement, modalElementProperties);  
-    }, ENTRANCE_TRANSITION_DELAY_MILLISECONDS);
-    expandedModalPreviewModeState.setPendingModalTransitionStartState(pendingModalEntranceTransition);
+    TransitionUtils.startModalEntranceTransition(
+      transitionDuration, modalElement, unsetTransitionPropertiesCallback, backdropElement, modalElementProperties);  
   }
 
   private static startBackdropHideTransition(backdropElement: HTMLElement) {
