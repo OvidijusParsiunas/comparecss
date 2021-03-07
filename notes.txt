@@ -16,7 +16,6 @@ potentially rename initial to default convention
 potentially add x button to border coloring
 clicking on an option again to remove settings panel
 the auxiliary padding at the bottom prevents the dropdown from opening
-disable toolbar side switch during the toggle mode animations
 allow the user to set the animation delay
 if the delay is less than TOOLBAR_FADE_IN_TRANSITION_DURATION_MILLISECONDS, then use the lower value
 

@@ -61,7 +61,9 @@
       <div style="display: none" ref="toolbarPositionToggle" class="toolbar-position-toggle-container">
         <button
           type="button" class="btn toolbar-position-toggle"
-          @click="$emit('toggle-toolbar-position')">
+          @click="toolbarPositionToggleMouseClick(this)"
+          @mouseenter="toolbarPositionToggleMouseEnter($event)"
+          @mouseleave="toolbarPositionToggleMouseLeave($event)">
           <i class="dropdown-button-marker" :class="['fa', 'fa-sort']"></i>
         </button>
       </div>
@@ -81,6 +83,7 @@ import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponent
 import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER } from '../../../../../consts/elementClassMarkers';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
 import SubcomponentSelectModeService from './subcomponentSelectMode/subcomponentSelectModeService';
+import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import SubcomponentToggleService from './subcomponentToggleService/subcomponentToggleService';
 import { componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
@@ -88,6 +91,7 @@ import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKey
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum';
 import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
+import useToolbarPositionToggle from './compositionApi/useToolbarPositionToggle';
 import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
 import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
@@ -114,7 +118,7 @@ interface Data {
 }
 
 export default {
-  setup(): RemovalModalState & Consts {
+  setup(): RemovalModalState & Consts & UseToolbarPositionToggle {
     return {
       ...removeSubcomponentModalState,
       WORKSHOP_TOOLBAR_OPTION_TYPES,
@@ -126,6 +130,7 @@ export default {
       REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: `#${REMOVE_SUBCOMPONENT_MODAL_ID}`,
       SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS,
       CSS_MODES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.CSS_MODES,
+      ...useToolbarPositionToggle(),
     };
   },
   data: (): Data => ({
@@ -250,7 +255,7 @@ export default {
           && this.component.subcomponentsActiveMode !== SUB_COMPONENTS.CLOSE
           && !this.isExpandedModalPreviewModeActive;
       });
-    }
+    },
   },
   props: {
     component: Object,
@@ -357,7 +362,7 @@ export default {
     top: 9px;
     color: #848484 !important;
   }
-  .toolbar-position-toggle:hover {
+  .toolbar-position-toggle-hover {
     color: black !important;
   }
 </style>

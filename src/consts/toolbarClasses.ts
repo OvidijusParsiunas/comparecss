@@ -9,3 +9,5 @@ export enum EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES {
 }
 
 export const TOOLBAR_ELEMENT_ACTIVE_EXPANDED_MODAL_MODE_CLASS = 'toolbar-modal-preview-active';
+
+export const TOOLBAR_POSITION_TOGGLE_HOVER_CLASS = 'toolbar-position-toggle-hover';
