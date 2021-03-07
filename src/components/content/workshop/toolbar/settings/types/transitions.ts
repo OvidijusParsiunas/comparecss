@@ -51,7 +51,7 @@ export default {
       spec: {
         name: 'Duration',
         default: 0,
-        scale: [0, 30],
+        scale: [0, 20],
         smoothingDivisible: 10,
         customFeatureObjectKeys: ['transitions', 'entrance', 'duration'],
         postfix: 's',
@@ -62,7 +62,7 @@ export default {
       spec: {
         name: 'Duration',
         default: 0,
-        scale: [0, 30],
+        scale: [0, 20],
         smoothingDivisible: 10,
         customFeatureObjectKeys: ['transitions', 'exit', 'duration'],
         postfix: 's',

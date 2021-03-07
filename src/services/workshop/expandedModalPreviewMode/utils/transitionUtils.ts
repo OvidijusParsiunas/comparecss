@@ -1,6 +1,7 @@
 import {
-  ENTRANCE_TRANSITION_DELAY_MILLISECONDS, OPACITY_INVISIBLE, OPACITY_VISIBLE, BACKDROP_FADE_OUT_TRANSITION_DURATION_SECONDS, ALL_PROPERTIES,
-  LINEAR_SPEED_TRANSITION, BACKDROP_FADE_IN_TRANSITION_DURATION_SECONDS, EXIT_TRANSITION_DURATION_REDUCTION_ON_NEW_DURATION_MILLISECONDS,
+  BACKDROP_FADE_IN_TRANSITION_DURATION_SECONDS, EXIT_TRANSITION_DURATION_REDUCTION_ON_NEW_DURATION_MILLISECONDS,
+  OPACITY_INVISIBLE, OPACITY_VISIBLE, BACKDROP_FADE_OUT_TRANSITION_DURATION_SECONDS, ALL_PROPERTIES,
+  LINEAR_SPEED_TRANSITION, ENTRANCE_TRANSITION_DELAY_MILLISECONDS,
 } from './sharedConsts';
 import { ElementStyleProperties } from '../../../../interfaces/elementStyleProperties';
 import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
@@ -60,9 +61,11 @@ export default class TransitionUtils {
   public static startModalAndBackdropEntranceTransition(transitionDuration: string, modalElement: HTMLElement, 
       unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void,
       backdropElement?: HTMLElement, modalElementProperties?: ElementStyleProperties): void {
-    if (backdropElement) TransitionUtils.startBackdropDisplayTransition(backdropElement);
-    TransitionUtils.startModalEntranceTransition(
-      transitionDuration, modalElement, unsetTransitionPropertiesCallback, backdropElement, modalElementProperties);  
+    setTimeout(() => {
+      if (backdropElement) TransitionUtils.startBackdropDisplayTransition(backdropElement);
+      TransitionUtils.startModalEntranceTransition(
+        transitionDuration, modalElement, unsetTransitionPropertiesCallback, backdropElement, modalElementProperties); 
+    }, backdropElement ? 0 : ENTRANCE_TRANSITION_DELAY_MILLISECONDS);
   }
 
   private static startBackdropHideTransition(backdropElement: HTMLElement) {
