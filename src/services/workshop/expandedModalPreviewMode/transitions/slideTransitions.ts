@@ -16,11 +16,11 @@ export default class SlideTransitions {
   }
 
   public static startEntranceTransition(transitionDuration: string, modalElement: HTMLElement,
-      unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void, backdropElement?: HTMLElement): void {
+      unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void, backdropElement?: HTMLElement, transitionDelay?: string): void {
     const currentTopValue = SlideTransitions.prepareEntranceTransition(modalElement);
     const modalElementProperties = { top: currentTopValue };
     TransitionUtils.startModalAndBackdropEntranceTransition(
-      transitionDuration, modalElement, unsetTransitionPropertiesCallback, backdropElement, modalElementProperties);
+      transitionDuration, modalElement, unsetTransitionPropertiesCallback, backdropElement, transitionDelay, modalElementProperties);
   }
 
   private static prepareExitTransition(modalElement: HTMLElement): number {

@@ -5,8 +5,8 @@ import TransitionUtils from '../utils/transitionUtils';
 export default class FadeTransitions {
 
   public static startEntranceTransition(transitionDuration: string, modalElement: HTMLElement,
-      unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void, backdropElement?: HTMLElement): void {
-    TransitionUtils.startModalAndBackdropEntranceTransition( transitionDuration, modalElement, unsetTransitionPropertiesCallback, backdropElement);  
+      unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void, backdropElement?: HTMLElement, transitionDelay?: string): void {
+    TransitionUtils.startModalAndBackdropEntranceTransition(transitionDuration, modalElement, unsetTransitionPropertiesCallback, backdropElement, transitionDelay);  
   }
 
   public static startExitTransition(transitionDuration: string, modalElement: HTMLElement, exitTransitionCallback: ExitTransitionCallback,

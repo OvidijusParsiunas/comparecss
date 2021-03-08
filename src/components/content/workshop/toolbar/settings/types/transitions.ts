@@ -68,5 +68,16 @@ export default {
         postfix: 's',
       },
     },
+    { 
+      type: SETTINGS_TYPES.RANGE,
+      spec: {
+        name: 'Entrance Delay',
+        default: 0,
+        scale: [0, 40],
+        smoothingDivisible: 20,
+        customFeatureObjectKeys: ['transitions', 'entrance', 'delay'],
+        postfix: 's',
+      },
+    },
   ]
 };

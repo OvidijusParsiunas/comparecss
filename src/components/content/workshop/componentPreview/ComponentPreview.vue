@@ -208,6 +208,7 @@ export default {
         ExpandedModalPreviewModeToggleEntranceTransitionService.start(
           transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.entrance.type],
           this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.entrance.duration,
+          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.entrance.delay,
           this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.backdrop, this.$refs.componentPreview,
           this.$refs.componentPreviewOverlay, this.$refs.componentPreviewContainer, toolbarContainerElement,
           toolbarElement, toolbarPositionToggleElement);

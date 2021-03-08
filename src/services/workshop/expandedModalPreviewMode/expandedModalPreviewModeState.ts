@@ -5,12 +5,14 @@ let beginningTimeOfTransitionState = 0;
 let isModeToggleTransitionInProgressState = false;
 let isModeToggleInitialFadeOutTransitionInProgress = false;
 let isTransitionPreviewInProgressState = false;
+let isWaitingTransitionDelayState = false;
 let expandedModalModeToolbarContainerPositionState = EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.DEFAULT;
 let currentExitTransitionModalDefaultPropertiesState = {};
 
 let pendingToolbarEntranceFadeInTransitionState = null;
 let pendingToolbarEntranceTransitionUnsetState = null;
 
+let modalTransitionDelayState = null;
 let pendingModalTransitionStartState = null;
 let pendingModalTransitionEndState = null;
 let pendingModalTransitionPreviewUnsetState = null;
@@ -76,6 +78,19 @@ function cancelPendingToolbarTransitionFunctionality(): void {
   clearTimeout(pendingToolbarEntranceTransitionUnsetState);
 }
 
+function setModalTransitionDelayState(state: number): void {
+  modalTransitionDelayState = state;
+  setIsWaitingTransitionDelayState(true);
+}
+
+function getIsWaitingTransitionDelayState(): boolean {
+  return isWaitingTransitionDelayState;
+}
+
+function setIsWaitingTransitionDelayState(state: boolean): void {
+  isWaitingTransitionDelayState = state;
+}
+
 function setPendingModalTransitionStartState(state: number): void {
   pendingModalTransitionStartState = state;
 }
@@ -92,6 +107,7 @@ function cancelPendingModalTransitionFunctionality(): void {
   clearTimeout(pendingModalTransitionStartState);
   clearTimeout(pendingModalTransitionEndState);
   clearTimeout(pendingModalTransitionPreviewUnsetState);
+  clearTimeout(modalTransitionDelayState);
 }
 
 export const expandedModalPreviewModeState = {
@@ -110,6 +126,9 @@ export const expandedModalPreviewModeState = {
   setPendingToolbarEntranceFadeInTransitionState,
   setPendingToolbarEntranceTransitionUnsetState,
   cancelPendingToolbarTransitionFunctionality,
+  setModalTransitionDelayState,
+  getIsWaitingTransitionDelayState,
+  setIsWaitingTransitionDelayState,
   setPendingModalTransitionStartState,
   setPendingModalTransitionEndState,
   setPendingModalTransitionPreviewUnsetState,

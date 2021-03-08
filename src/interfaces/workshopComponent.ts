@@ -65,6 +65,7 @@ export interface ComponentTransitions {
   entrance: {
     type: MODAL_TRANSITION_ENTRANCE_TYPES;
     duration: string;
+    delay: string;
   },
   exit: {
     type: MODAL_TRANSITION_EXIT_TYPES;

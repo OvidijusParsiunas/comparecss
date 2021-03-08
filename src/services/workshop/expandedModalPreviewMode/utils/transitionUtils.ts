@@ -43,7 +43,7 @@ export default class TransitionUtils {
   private static startModalEntranceTransition(transitionDuration: string, modalElement: HTMLElement, 
       unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void,
       backdropElement?: HTMLElement, modalElementProperties?: ElementStyleProperties): void {
-    expandedModalPreviewModeState.setIsModeToggleInitialFadeOutTransitionInProgress(false);
+    expandedModalPreviewModeState.setIsWaitingTransitionDelayState(false);
     TransitionUtils.setModalTransitionProperties(modalElement, OPACITY_VISIBLE,
       ALL_PROPERTIES, transitionDuration, LINEAR_SPEED_TRANSITION, modalElementProperties);
     expandedModalPreviewModeState.markBeginningTimeOfTransitionState();
@@ -58,14 +58,27 @@ export default class TransitionUtils {
     backdropElement.style.transitionDuration = BACKDROP_FADE_IN_TRANSITION_DURATION_SECONDS;
   }
 
+  private static calculateTransitionDelay(backdropElement: HTMLElement, transitionDelay?: string): number {
+    // if the backdrop element is present - we can assume that this is a mode toggle transition
+    if (backdropElement) {
+      if (transitionDelay) {
+        return GeneralUtils.secondsStringToMillisecondsNumber(transitionDelay);
+      }
+      return 0;
+    }
+    return ENTRANCE_TRANSITION_DELAY_MILLISECONDS;
+  }
+
   public static startModalAndBackdropEntranceTransition(transitionDuration: string, modalElement: HTMLElement, 
-      unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void,
-      backdropElement?: HTMLElement, modalElementProperties?: ElementStyleProperties): void {
-    setTimeout(() => {
-      if (backdropElement) TransitionUtils.startBackdropDisplayTransition(backdropElement);
+      unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void, backdropElement?: HTMLElement,
+      transitionDelay?: string, modalElementProperties?: ElementStyleProperties): void {
+    if (backdropElement) TransitionUtils.startBackdropDisplayTransition(backdropElement);
+    expandedModalPreviewModeState.setIsModeToggleInitialFadeOutTransitionInProgress(false);
+    const modalTransitionDelay = window.setTimeout(() => { 
       TransitionUtils.startModalEntranceTransition(
         transitionDuration, modalElement, unsetTransitionPropertiesCallback, backdropElement, modalElementProperties); 
-    }, backdropElement ? 0 : ENTRANCE_TRANSITION_DELAY_MILLISECONDS);
+    }, TransitionUtils.calculateTransitionDelay(backdropElement, transitionDelay));
+    expandedModalPreviewModeState.setModalTransitionDelayState(modalTransitionDelay);
   }
 
   private static startBackdropHideTransition(backdropElement: HTMLElement) {

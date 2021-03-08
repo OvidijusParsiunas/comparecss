@@ -1,7 +1,7 @@
 import { BackdropProperties } from './workshopComponent';
 
 export type ModalEntranceTransition = (transitionDuration: string, modalElement: HTMLElement,
-  unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void, backgroundElement?: HTMLElement) => void;
+  unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void, backgroundElement?: HTMLElement, transitionDelay?: string) => void;
 
 export type ModalExitTransition = (transitionDuration: string, modalElement: HTMLElement,
   exitTransitionCallback: ExitTransitionCallback, backgroundElement?: HTMLElement, backdropProperties?: BackdropProperties,

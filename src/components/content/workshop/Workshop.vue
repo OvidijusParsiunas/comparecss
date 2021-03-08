@@ -145,6 +145,7 @@ function createDefaultTransitionsProperties(): ComponentTransitions {
     entrance: {
       type: MODAL_TRANSITION_ENTRANCE_TYPES.FADE_IN,
       duration: '0.3s',
+      delay: '0.15s',
     },
     exit: {
       type: MODAL_TRANSITION_EXIT_TYPES.FADE_OUT,
