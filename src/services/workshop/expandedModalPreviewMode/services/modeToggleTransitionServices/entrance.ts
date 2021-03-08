@@ -3,9 +3,9 @@ import {
   EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES,
 } from '../../../../../consts/toolbarClasses';
 import {
-  MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, ENTRANCE_TRANSITION_DELAY_MILLISECONDS,
-  OPACITY_INVISIBLE, OPACITY_VISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS,
   TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS, TOOLBAR_FADE_TRANSITION_DURATION_SECONDS, 
+  MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS, OPACITY_VISIBLE,
+  MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, OPACITY_INVISIBLE,
 } from '../../utils/sharedConsts';
 import { COMPONENT_PREVIEW_CLASSES } from '../../../../../consts/componentPreviewClasses';
 import { ModalEntranceTransition } from '../../../../../interfaces/modalTransitions';
@@ -34,31 +34,48 @@ export default class ModeToggleEntranceTransitionService {
   //   ModeToggleEntranceTransitionService.toolbarFadeInTransition(toolbarContainerElement, transitionDuration);
   // }
 
-  private static toolbarFadeInTransition(toolbarContainerElement: HTMLElement): void {
-    GeneralUtils.opacityFadeTransition(OPACITY_VISIBLE, TOOLBAR_FADE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
+  private static toolbarFadeInTransition(toolbarContainerElement: HTMLElement, transitionDurationSeconds: string, transitionDurationMilliseconds: number): void {
+    GeneralUtils.opacityFadeTransition(OPACITY_VISIBLE, transitionDurationSeconds, toolbarContainerElement);
     const pendingToolbarEntranceTransitionUnset = window.setTimeout(() => {
       GeneralUtils.unsetTransitionProperties(toolbarContainerElement);
-    }, TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS);
+    }, transitionDurationMilliseconds);
     expandedModalPreviewModeState.setPendingToolbarEntranceTransitionUnsetState(pendingToolbarEntranceTransitionUnset);
   }
 
-  private static startToolbarTransition(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
+  private static getNewToolbarTransitionDuration(modalTransitionDelay: string): [string, number] {
+    const modalTransitionDelayMilliseconds = GeneralUtils.secondsStringToMillisecondsNumber(modalTransitionDelay);
+    if (modalTransitionDelayMilliseconds < TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS) {
+      return [modalTransitionDelay, modalTransitionDelayMilliseconds];
+    }
+    return [TOOLBAR_FADE_TRANSITION_DURATION_SECONDS, TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS];
+  }
+
+  private static prepareToolbarTransition(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
+      toolbarPositionToggleElement: HTMLElement): void {
     toolbarElement.classList.add(TOOLBAR_ELEMENT_ACTIVE_EXPANDED_MODAL_MODE_CLASS);
     toolbarContainerElement.classList.replace(TOOLBAR_CONTAINER_GENERAL_CLASSES.DEFAULT, TOOLBAR_CONTAINER_GENERAL_CLASSES.EXPANDED_MODAL_MODE_ACTIVE);
     if (expandedModalPreviewModeState.getExpandedModalModeToolbarContainerPositionState() === EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM) {
       toolbarContainerElement.classList.add(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM);
     }
     toolbarPositionToggleElement.style.display = 'block';
+  }
+
+  private static startToolbarTransition(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
+      toolbarPositionToggleElement: HTMLElement, transitionDelay: string): void {
+    ModeToggleEntranceTransitionService.prepareToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
+    const [toolbarTransitionDurationSeconds, toolbarTransitionDurationMilliseconds] = ModeToggleEntranceTransitionService
+      .getNewToolbarTransitionDuration(transitionDelay);
     const pendingToolbarEntranceFadeInTransition = window.setTimeout(() => {
-      ModeToggleEntranceTransitionService.toolbarFadeInTransition(toolbarContainerElement);
-    }, ENTRANCE_TRANSITION_DELAY_MILLISECONDS);
+      ModeToggleEntranceTransitionService.toolbarFadeInTransition(toolbarContainerElement, toolbarTransitionDurationSeconds, toolbarTransitionDurationMilliseconds);
+    }, toolbarTransitionDurationMilliseconds);
     expandedModalPreviewModeState.setPendingToolbarEntranceFadeInTransitionState(pendingToolbarEntranceFadeInTransition);
   }
 
-  private static startToolbarTransitionWithFadeOut(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
+  private static startToolbarTransitionWithFadeOut(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
+      toolbarPositionToggleElement: HTMLElement, transitionDelay: string): void {
     GeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
     window.setTimeout(() => {
-      ModeToggleEntranceTransitionService.startToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
+      ModeToggleEntranceTransitionService.startToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, transitionDelay);
     }, MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS);
   }
 
@@ -91,12 +108,13 @@ export default class ModeToggleEntranceTransitionService {
       const newTransitionDuration = GeneralUtils.getNewTransitionDuration();
       ModeToggleEntranceTransitionService.startModalAndBackdropTransition(backdropElement, modalElement, modalOverlayElement,
         backdropProperties, modalEntranceTransition, newTransitionDuration);
-      ModeToggleEntranceTransitionService.startToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
+      ModeToggleEntranceTransitionService.startToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, transitionDelay);
     } else {
       expandedModalPreviewModeState.setIsModeToggleInitialFadeOutTransitionInProgress(true);
       ModeToggleEntranceTransitionService.startModalAndBackdropTransitionWithFadeOut(backdropElement, modalElement, modalOverlayElement,
         backdropProperties, modalEntranceTransition, transitionDuration, transitionDelay);
-      ModeToggleEntranceTransitionService.startToolbarTransitionWithFadeOut(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
+      ModeToggleEntranceTransitionService.startToolbarTransitionWithFadeOut(toolbarContainerElement, toolbarElement,
+        toolbarPositionToggleElement, transitionDelay);
     }
     expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(true);
   }
