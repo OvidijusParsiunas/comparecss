@@ -3,7 +3,7 @@ import {
   TOOLBAR_ELEMENT_ACTIVE_EXPANDED_MODAL_MODE_CLASS,
 } from '../../../../../consts/toolbarClasses';
 import {
-  TOOLBAR_FADE_IN_TRANSITION_DURATION_SECONDS, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS,
+  TOOLBAR_FADE_TRANSITION_DURATION_SECONDS, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS,
   OPACITY_INVISIBLE, OPACITY_VISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS,
   TOOLBAR_FADE_TRANSITION_DURATION_ON_DELAY_CANCELSECONDS,
 } from '../../utils/sharedConsts';
@@ -95,7 +95,7 @@ export default class ModeToggleExitTransitionService {
       transitionDuration = newTransitionDuration || TOOLBAR_FADE_TRANSITION_DURATION_ON_DELAY_CANCELSECONDS;
       wasPreviousTransitionInterrupted = true;
     }
-    GeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, TOOLBAR_FADE_IN_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
+    GeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, TOOLBAR_FADE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
     modalExitTransition(transitionDuration, modalElement, ModeToggleExitTransitionService.exitTransitionCallback.bind(this, setOptionToDefaultCallback) as ExitTransitionCallback,
       backdropElement, backdropProperties, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, modalOverlayElement, wasPreviousTransitionInterrupted);
     expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(true);

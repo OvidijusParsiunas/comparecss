@@ -5,7 +5,7 @@ import {
 import {
   MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, ENTRANCE_TRANSITION_DELAY_MILLISECONDS,
   OPACITY_INVISIBLE, OPACITY_VISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS,
-  TOOLBAR_FADE_IN_TRANSITION_DURATION_MILLISECONDS, TOOLBAR_FADE_IN_TRANSITION_DURATION_SECONDS, 
+  TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS, TOOLBAR_FADE_TRANSITION_DURATION_SECONDS, 
 } from '../../utils/sharedConsts';
 import { COMPONENT_PREVIEW_CLASSES } from '../../../../../consts/componentPreviewClasses';
 import { ModalEntranceTransition } from '../../../../../interfaces/modalTransitions';
@@ -35,10 +35,10 @@ export default class ModeToggleEntranceTransitionService {
   // }
 
   private static toolbarFadeInTransition(toolbarContainerElement: HTMLElement): void {
-    GeneralUtils.opacityFadeTransition(OPACITY_VISIBLE, TOOLBAR_FADE_IN_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
+    GeneralUtils.opacityFadeTransition(OPACITY_VISIBLE, TOOLBAR_FADE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
     const pendingToolbarEntranceTransitionUnset = window.setTimeout(() => {
       GeneralUtils.unsetTransitionProperties(toolbarContainerElement);
-    }, TOOLBAR_FADE_IN_TRANSITION_DURATION_MILLISECONDS);
+    }, TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS);
     expandedModalPreviewModeState.setPendingToolbarEntranceTransitionUnsetState(pendingToolbarEntranceTransitionUnset);
   }
 

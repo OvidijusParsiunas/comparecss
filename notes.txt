@@ -17,7 +17,7 @@ potentially add x button to border coloring
 clicking on an option again to remove settings panel
 the auxiliary padding at the bottom prevents the dropdown from opening
 allow the user to set the animation delay
-if the delay is less than TOOLBAR_FADE_IN_TRANSITION_DURATION_MILLISECONDS, then use the lower value
+if the delay is less than TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS, then use the lower value
 
 option to import an existing button style!
 
