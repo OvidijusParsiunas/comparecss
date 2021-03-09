@@ -38,6 +38,7 @@ export default class ModeToggleEntranceTransitionService {
     GeneralUtils.opacityFadeTransition(OPACITY_VISIBLE, transitionDurationSeconds, toolbarContainerElement);
     const pendingToolbarEntranceTransitionUnset = window.setTimeout(() => {
       GeneralUtils.unsetTransitionProperties(toolbarContainerElement);
+      expandedModalPreviewModeState.setIsToolbarFadeTransitionInProgressState(false);
     }, transitionDurationMilliseconds);
     expandedModalPreviewModeState.setPendingToolbarEntranceTransitionUnsetState(pendingToolbarEntranceTransitionUnset);
   }
@@ -110,7 +111,7 @@ export default class ModeToggleEntranceTransitionService {
         backdropProperties, modalEntranceTransition, newTransitionDuration);
       ModeToggleEntranceTransitionService.startToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, transitionDelay);
     } else {
-      expandedModalPreviewModeState.setIsModeToggleInitialFadeOutTransitionInProgress(true);
+      expandedModalPreviewModeState.setIsModeToggleInitialFadeTransitionInProgressState(true);
       ModeToggleEntranceTransitionService.startModalAndBackdropTransitionWithFadeOut(backdropElement, modalElement, modalOverlayElement,
         backdropProperties, modalEntranceTransition, transitionDuration, transitionDelay);
       ModeToggleEntranceTransitionService.startToolbarTransitionWithFadeOut(toolbarContainerElement, toolbarElement,

@@ -3,7 +3,9 @@ import { ElementStyleProperties } from '../../../interfaces/elementStyleProperti
 
 let beginningTimeOfTransitionState = 0;
 let isModeToggleTransitionInProgressState = false;
-let isModeToggleInitialFadeOutTransitionInProgress = false;
+// moving to and from the default mode
+let isModeToggleInitialFadeTransitionInProgressState = false;
+let isToolbarFadeTransitionInProgress = false;
 let isTransitionPreviewInProgressState = false;
 let isWaitingTransitionDelayState = false;
 let expandedModalModeToolbarContainerPositionState = EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.DEFAULT;
@@ -33,12 +35,20 @@ function setIsModeToggleTransitionInProgressState(state: boolean): void {
   isModeToggleTransitionInProgressState = state;
 }
 
-function getIsModeToggleInitialFadeOutTransitionInProgress(): boolean {
-  return isModeToggleInitialFadeOutTransitionInProgress;
+function getIsModeToggleInitialFadeTransitionInProgressState(): boolean {
+  return isModeToggleInitialFadeTransitionInProgressState;
 }
 
-function setIsModeToggleInitialFadeOutTransitionInProgress(state: boolean): void {
-  isModeToggleInitialFadeOutTransitionInProgress = state;
+function setIsModeToggleInitialFadeTransitionInProgressState(state: boolean): void {
+  isModeToggleInitialFadeTransitionInProgressState = state;
+}
+
+function getIsToolbarFadeTransitionInProgressState(): boolean {
+  return isToolbarFadeTransitionInProgress;
+}
+
+function setIsToolbarFadeTransitionInProgressState(state: boolean): void {
+  isToolbarFadeTransitionInProgress = state;
 }
 
 function getIsTransitionPreviewInProgressState(): boolean {
@@ -71,6 +81,7 @@ function setPendingToolbarEntranceFadeInTransitionState(state: number): void {
 
 function setPendingToolbarEntranceTransitionUnsetState(state: number): void {
   pendingToolbarEntranceTransitionUnsetState = state;
+  setIsToolbarFadeTransitionInProgressState(true);
 }
 
 function cancelPendingToolbarTransitionFunctionality(): void {
@@ -115,8 +126,10 @@ export const expandedModalPreviewModeState = {
   getElapsedTransitionTime,
   getIsModeToggleTransitionInProgressState,
   setIsModeToggleTransitionInProgressState,
-  setIsModeToggleInitialFadeOutTransitionInProgress,
-  getIsModeToggleInitialFadeOutTransitionInProgress,
+  setIsModeToggleInitialFadeTransitionInProgressState,
+  getIsToolbarFadeTransitionInProgressState,
+  setIsToolbarFadeTransitionInProgressState,
+  getIsModeToggleInitialFadeTransitionInProgressState,
   getIsTransitionPreviewInProgressState,
   setIsPreviewTransitionInProgressState,
   getExpandedModalModeToolbarContainerPositionState,

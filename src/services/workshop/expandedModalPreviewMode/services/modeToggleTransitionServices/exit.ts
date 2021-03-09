@@ -18,7 +18,7 @@ export default class ModeToggleExitTransitionService {
 
   private static setTransitionStateToFalse(): void {
     expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(false);
-    expandedModalPreviewModeState.setIsModeToggleInitialFadeOutTransitionInProgress(false);
+    expandedModalPreviewModeState.setIsModeToggleInitialFadeTransitionInProgressState(false);
   }
 
   private static toolbarFadeInTransition(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
@@ -53,7 +53,7 @@ export default class ModeToggleExitTransitionService {
   private static exitTransitionCallback(setOptionToDefaultCallback: () => void, modalElement: HTMLElement, backdropElement: HTMLElement,
       backdropProperties: BackdropProperties, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
       modalOverlayElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
-    expandedModalPreviewModeState.setIsModeToggleInitialFadeOutTransitionInProgress(true);
+    expandedModalPreviewModeState.setIsModeToggleInitialFadeTransitionInProgressState(true);
     GeneralUtils.toggleModalStaticPosition(modalElement, modalOverlayElement, 'add');
     setOptionToDefaultCallback();
     const exitTransitionModalDefaultProperties = expandedModalPreviewModeState.getCurrentExitTransitionModalDefaultPropertiesState();
@@ -88,6 +88,14 @@ export default class ModeToggleExitTransitionService {
   //   expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(true);
   // }
 
+  private static toolbarFadeOutTransition(toolbarContainerElement: HTMLElement): void {
+    GeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, TOOLBAR_FADE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
+    expandedModalPreviewModeState.setIsToolbarFadeTransitionInProgressState(true);
+    window.setTimeout(() => {
+      expandedModalPreviewModeState.setIsToolbarFadeTransitionInProgressState(false);
+    }, GeneralUtils.secondsStringToMillisecondsNumber(TOOLBAR_FADE_TRANSITION_DURATION_SECONDS));
+  }
+
   public static start(modalExitTransition: ModalExitTransition, transitionDuration: string, setOptionToDefaultCallback: () => void,
       backdropElement: HTMLElement, backdropProperties: BackdropProperties, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
       toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
@@ -96,7 +104,7 @@ export default class ModeToggleExitTransitionService {
       transitionDuration = ModeToggleExitTransitionService.cancelEntranceTransitionFunctionality(modalElement);
       wasPreviousTransitionInterrupted = true;
     }
-    GeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, TOOLBAR_FADE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
+    ModeToggleExitTransitionService.toolbarFadeOutTransition(toolbarContainerElement);
     modalExitTransition(transitionDuration, modalElement, ModeToggleExitTransitionService.exitTransitionCallback.bind(this, setOptionToDefaultCallback) as ExitTransitionCallback,
       backdropElement, backdropProperties, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, modalOverlayElement, wasPreviousTransitionInterrupted);
     expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(true);

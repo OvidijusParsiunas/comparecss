@@ -230,7 +230,7 @@ export default {
       this.isSubcomponentSelectModeButtonDisplayed = isDropdownDisplayed;
     },
     toggleModalExpandMode(): void {
-      if (expandedModalPreviewModeState.getIsModeToggleInitialFadeOutTransitionInProgress()) return;
+      if (expandedModalPreviewModeState.getIsModeToggleInitialFadeTransitionInProgressState()) return;
       this.isExpandedModalPreviewModeActive = !this.isExpandedModalPreviewModeActive;
       const setOptionToDefaultCallback = !this.isExpandedModalPreviewModeActive && this.activeOption.enabledOnExpandedModalPreviewMode
         ? this.selectOption.bind(this, this.getDefaultOption()) : () => { return; };
