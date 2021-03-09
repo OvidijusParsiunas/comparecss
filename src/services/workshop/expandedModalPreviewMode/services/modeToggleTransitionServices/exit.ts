@@ -5,7 +5,6 @@ import {
 import {
   TOOLBAR_FADE_TRANSITION_DURATION_SECONDS, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS,
   OPACITY_INVISIBLE, OPACITY_VISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS,
-  TOOLBAR_FADE_TRANSITION_DURATION_ON_DELAY_CANCELSECONDS,
 } from '../../utils/sharedConsts';
 import { ExitTransitionCallback, ModalExitTransition } from '../../../../../interfaces/modalTransitions';
 import { COMPONENT_PREVIEW_CLASSES } from '../../../../../consts/componentPreviewClasses';
@@ -14,6 +13,8 @@ import { BackdropProperties } from '../../../../../interfaces/workshopComponent'
 import GeneralUtils from '../../utils/generalUtils';
 
 export default class ModeToggleExitTransitionService {
+
+  private static TOOLBAR_FADE_DURATION_ON_DELAY_CANCEL_SECONDS = `0.6s`;
 
   private static setTransitionStateToFalse(): void {
     expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(false);
@@ -61,15 +62,16 @@ export default class ModeToggleExitTransitionService {
     ModeToggleExitTransitionService.toolbarFadeInTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
   }
 
-  private static cancelEntranceTransitionFunctionality(modalElement: HTMLElement): string | undefined {
+  private static cancelEntranceTransitionFunctionality(modalElement: HTMLElement): string {
     GeneralUtils.cancelAllPendingTransitionFunctionality(modalElement);
     if (expandedModalPreviewModeState.getIsWaitingTransitionDelayState()) {
       expandedModalPreviewModeState.setIsWaitingTransitionDelayState(false);
+      return ModeToggleExitTransitionService.TOOLBAR_FADE_DURATION_ON_DELAY_CANCEL_SECONDS;
     } else {
       return GeneralUtils.getNewTransitionDuration();
     }
   }
-  
+
   // UX - EXPANDED MODAL TOGGLE TRANSITION
   // public static start(modalExitTransition: ModalExitTransition, transitionDuration: string, setOptionToDefaultCallback: () => void,
   //     backdropElement: HTMLElement, backdropProperties: BackdropProperties, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
@@ -91,8 +93,7 @@ export default class ModeToggleExitTransitionService {
       toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
     let wasPreviousTransitionInterrupted = false;
     if (expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState()) {
-      const newTransitionDuration = ModeToggleExitTransitionService.cancelEntranceTransitionFunctionality(modalElement);
-      transitionDuration = newTransitionDuration || TOOLBAR_FADE_TRANSITION_DURATION_ON_DELAY_CANCELSECONDS;
+      transitionDuration = ModeToggleExitTransitionService.cancelEntranceTransitionFunctionality(modalElement);
       wasPreviousTransitionInterrupted = true;
     }
     GeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, TOOLBAR_FADE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);

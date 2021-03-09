@@ -1,8 +1,4 @@
-import {
-  BACKDROP_FADE_IN_TRANSITION_DURATION_SECONDS, EXIT_TRANSITION_DURATION_REDUCTION_ON_NEW_DURATION_MILLISECONDS,
-  OPACITY_INVISIBLE, OPACITY_VISIBLE, BACKDROP_FADE_OUT_TRANSITION_DURATION_SECONDS, ALL_PROPERTIES,
-  LINEAR_SPEED_TRANSITION, ENTRANCE_TRANSITION_DELAY_MILLISECONDS,
-} from './sharedConsts';
+import { OPACITY_INVISIBLE, OPACITY_VISIBLE, ALL_PROPERTIES, LINEAR_SPEED_TRANSITION } from './sharedConsts';
 import { ElementStyleProperties } from '../../../../interfaces/elementStyleProperties';
 import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
 import { ExitTransitionCallback } from '../../../../interfaces/modalTransitions';
@@ -10,6 +6,11 @@ import { BackdropProperties } from '../../../../interfaces/workshopComponent';
 import GeneralUtils from './generalUtils';
 
 export default class TransitionUtils {
+
+  private static ENTRANCE_TRANSITION_PREVIEW_DELAY_MILLISECONDS = 150;
+  private static BACKDROP_FADE_IN_TRANSITION_DURATION_SECONDS = '0.1s';
+  private static BACKDROP_FADE_OUT_TRANSITION_DURATION_SECONDS = '0.15s';
+  private static EXIT_TRANSITION_DURATION_REDUCTION_ON_NEW_DURATION_MILLISECONDS = 420;
 
   public static cancelModalTransitionPreview(modalElement: HTMLElement): void {
     if (expandedModalPreviewModeState.getIsTransitionPreviewInProgressState()) {
@@ -55,7 +56,7 @@ export default class TransitionUtils {
 
   private static startBackdropDisplayTransition(backdropElement: HTMLElement) {
     backdropElement.style.opacity = OPACITY_VISIBLE;
-    backdropElement.style.transitionDuration = BACKDROP_FADE_IN_TRANSITION_DURATION_SECONDS;
+    backdropElement.style.transitionDuration = TransitionUtils.BACKDROP_FADE_IN_TRANSITION_DURATION_SECONDS;
   }
 
   private static calculateTransitionDelay(backdropElement: HTMLElement, transitionDelay?: string): number {
@@ -66,7 +67,7 @@ export default class TransitionUtils {
       }
       return 0;
     }
-    return ENTRANCE_TRANSITION_DELAY_MILLISECONDS;
+    return TransitionUtils.ENTRANCE_TRANSITION_PREVIEW_DELAY_MILLISECONDS;
   }
 
   public static startModalAndBackdropEntranceTransition(transitionDuration: string, modalElement: HTMLElement, 
@@ -83,7 +84,7 @@ export default class TransitionUtils {
 
   private static startBackdropHideTransition(backdropElement: HTMLElement) {
     backdropElement.style.opacity = OPACITY_INVISIBLE;
-    backdropElement.style.transitionDuration = BACKDROP_FADE_OUT_TRANSITION_DURATION_SECONDS;
+    backdropElement.style.transitionDuration = TransitionUtils.BACKDROP_FADE_OUT_TRANSITION_DURATION_SECONDS;
   }
   
   private static finishModalExitTransition(modalElement: HTMLElement, exitTransitionCallback: ExitTransitionCallback,
@@ -97,7 +98,7 @@ export default class TransitionUtils {
   private static calculateTransitionDurationMilliseconds(wasPreviousTransitionInterrupted: boolean, transitionDuration: string): number {
     const transitionDurationMilliseconds = GeneralUtils.secondsStringToMillisecondsNumber(transitionDuration);
     return wasPreviousTransitionInterrupted
-      ? transitionDurationMilliseconds - EXIT_TRANSITION_DURATION_REDUCTION_ON_NEW_DURATION_MILLISECONDS
+      ? transitionDurationMilliseconds - TransitionUtils.EXIT_TRANSITION_DURATION_REDUCTION_ON_NEW_DURATION_MILLISECONDS
       : transitionDurationMilliseconds;
   }
 
