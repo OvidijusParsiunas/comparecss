@@ -32,5 +32,7 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
     [SUB_COMPONENTS.LAYER_1]: layerTopOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
     [SUB_COMPONENTS.LAYER_2]: layerMiddleOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
     [SUB_COMPONENTS.LAYER_3]: layerBottomOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
+    [SUB_COMPONENTS.BUTTON_1]: buttonBaseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
+    [SUB_COMPONENTS.BUTTON_2]: buttonBaseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
   },
 };

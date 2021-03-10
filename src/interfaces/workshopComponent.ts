@@ -23,7 +23,7 @@ export interface ComponentPreviewStructure {
   // will be used in the future, can be horizontal or vertical
   layeringType?: string;
   layers?: Layer[];
-  // no nested layering within
+  // contents not in layers
   shallowSubcomponents?: InnerSubcomponents;
   subcomponentDropdownStructure?: NestedDropdownStructure;
 }
@@ -94,6 +94,7 @@ export interface CustomFeatures {
 
 export interface SubcomponentProperties {
   componentTag: string;
+  componentText?: string;
   customCss: CustomCss;
   initialCss: CustomCss;
   // this css is used in instances where partialCss has been overwrittern by a single value, but a fraction of it

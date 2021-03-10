@@ -70,6 +70,11 @@
                     :subcomponent="layer.subcomponents[SUB_COMPONENTS.CLOSE]"
                     :elementIds="subcomponentAndOverlayElementIds[SUB_COMPONENTS.CLOSE]"
                     :mouseEvents="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.CLOSE].subcomponentId]"/>
+                  <right-side-elements
+                    v-if="layer.nestedSubcomponents"
+                    :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
+                    :nestedSubcomponents="layer.nestedSubcomponents"
+                    :mouseEvents="mouseEvents"/>
                 </div>
                 <div :id="subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].overlayId"
                   style="display: none" :style="layer.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
@@ -131,6 +136,7 @@ import auxiliaryRightSideElements from './AuxiliaryRightSideElements.vue';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 import ComponentPreviewUtils from './utils/componentPreviewUtils';
 import nestedInnerHtmlText from './nestedInnerHTMLText.vue';
+import rightSideElements from './RightSideElements.vue';
 
 interface Consts {
   SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES;
@@ -240,6 +246,7 @@ export default {
   components: {
     auxiliaryRightSideElements,
     nestedInnerHtmlText,
+    rightSideElements,
   },
   props: {
     component: Object,

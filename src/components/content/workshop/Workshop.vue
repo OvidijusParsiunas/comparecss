@@ -230,6 +230,41 @@ function createInitialCloseButtonCss(): CustomCss {
   };
 }
 
+function createInitialButton1Css(): CustomCss {
+  return {
+    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+      borderRadius: '0px',
+      borderWidth: '0px',
+      borderColor: '#1779ba',
+      backgroundColor: '#1779ba',
+      borderStyle: 'solid',
+      boxShadow: 'unset',
+      outline: 'none',
+      lineHeight: '0',
+      paddingTop: '0px',
+      paddingBottom: '0px',
+      paddingLeft: '12px',
+      paddingRight: '12px',
+      marginLeft: '30px',
+      marginTop: '0px',
+      marginRight: '0px',
+      marginBottom: '0px',
+      width: '40px',
+      height: '38px',
+      boxSizing: 'content-box',
+      transition: 'unset',
+      color: '#ffffff',
+      fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
+    },
+    [SUB_COMPONENT_CSS_MODES.HOVER]: {
+      backgroundColor: '#ff0000',
+    },
+    [SUB_COMPONENT_CSS_MODES.CLICK]: {
+      backgroundColor: '#409441',
+    },
+  }
+}
+
 function createInitialLayer1Css(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
@@ -280,7 +315,7 @@ function createInitialLayer3Css(): CustomCss {
       height: '50px',
       textAlign: 'right',
       paddingLeft: '0px',
-      paddingRight: '20px',
+      paddingRight: '0px',
       paddingTop: '0px',
       paddingBottom: '0px',
       borderTopWidth: '1px',
@@ -352,6 +387,34 @@ function createSubcomponents(): Subcomponents {
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
+    [SUB_COMPONENTS.BUTTON_1]: {
+      componentTag: 'button',
+      componentText: 'Submit',
+      customCss: createInitialButton1Css(),
+      initialCss: createInitialButton1Css(),
+      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      subcomponentPreviewTransition: 'all 0.25s ease-out',
+      tempCustomCss: new Set(['transition']),
+      childCss: inheritedAlertCloseChildCss,
+      optionalSubcomponent: { currentlyDisplaying: true },
+      subcomponentSpecificSettings: alertCloseSpecificSettings,
+      customFeatures: createDefaultCloseButtonCustomFeatures(),
+      defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
+    },
+    [SUB_COMPONENTS.BUTTON_2]: {
+      componentTag: 'button',
+      componentText: 'Cancel',
+      customCss: createInitialButton1Css(),
+      initialCss: createInitialButton1Css(),
+      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      subcomponentPreviewTransition: 'all 0.25s ease-out',
+      tempCustomCss: new Set(['transition']),
+      childCss: inheritedAlertCloseChildCss,
+      optionalSubcomponent: { currentlyDisplaying: true },
+      subcomponentSpecificSettings: alertCloseSpecificSettings,
+      customFeatures: createDefaultCloseButtonCustomFeatures(),
+      defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
+    },
   }
 }
 
@@ -362,7 +425,7 @@ function getNewComponent(): WorkshopComponent {
     subcomponents,
     subcomponentsActiveMode: SUB_COMPONENTS.BASE,
     componentPreviewStructure: createModalComponentPreviewStructure(
-      subcomponents[SUB_COMPONENTS.BASE], subcomponents[SUB_COMPONENTS.CLOSE],
+      subcomponents[SUB_COMPONENTS.BASE], subcomponents[SUB_COMPONENTS.CLOSE], subcomponents[SUB_COMPONENTS.BUTTON_1], subcomponents[SUB_COMPONENTS.BUTTON_2],
       subcomponents[SUB_COMPONENTS.LAYER_1], subcomponents[SUB_COMPONENTS.LAYER_2], subcomponents[SUB_COMPONENTS.LAYER_3]),
     className: 'default-class-name',
   }

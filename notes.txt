@@ -16,6 +16,7 @@ potentially rename initial to default convention
 potentially add x button to border coloring
 clicking on an option again to remove settings panel
 the auxiliary padding at the bottom prevents the dropdown from opening
+button size is not set in settings correctly
 
 option to import an existing button style!
 
