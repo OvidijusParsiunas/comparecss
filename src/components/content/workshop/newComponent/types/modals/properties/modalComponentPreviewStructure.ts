@@ -27,10 +27,6 @@ export default function createModalComponentPreviewStructure(
       {
         subcomponentType: SUB_COMPONENTS.LAYER_3,
         customCss: layer3Component.customCss,
-        subcomponents: {
-          [SUB_COMPONENTS.BUTTON_1]: button1Component,
-          [SUB_COMPONENTS.BUTTON_2]: button2Component,
-        },
         nestedSubcomponents: {
           [SUB_COMPONENTS.BUTTON_1]: button1Component,
           [SUB_COMPONENTS.BUTTON_2]: button2Component,

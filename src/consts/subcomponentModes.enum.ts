@@ -7,4 +7,3 @@ export enum SUB_COMPONENTS {
   BUTTON_1 = 'Button 1',
   BUTTON_2 = 'Button 2',
 }
-  

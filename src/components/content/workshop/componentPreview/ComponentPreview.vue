@@ -64,9 +64,9 @@
                   @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseLeave()"
                   @mousedown="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseDown()"
                   @mouseup="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseUp()">
-                  <nested-inner-html-text v-if="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]" :innerHTML="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]"/>
+                  <nested-inner-html-text v-if="layer.subcomponents && layer.subcomponents[PSEUDO_COMPONENTS.TEXT]" :innerHTML="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]"/>
                   <auxiliary-right-side-elements
-                    v-if="layer.subcomponents[SUB_COMPONENTS.CLOSE] !== undefined"
+                    v-if="layer.subcomponents && layer.subcomponents[SUB_COMPONENTS.CLOSE] !== undefined"
                     :subcomponent="layer.subcomponents[SUB_COMPONENTS.CLOSE]"
                     :elementIds="subcomponentAndOverlayElementIds[SUB_COMPONENTS.CLOSE]"
                     :mouseEvents="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.CLOSE].subcomponentId]"/>
