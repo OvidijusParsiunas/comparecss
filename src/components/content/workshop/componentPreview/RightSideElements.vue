@@ -1,7 +1,9 @@
 <template>
   <div class="right-side-element-parent-container">
     <div class="right-side-element-parent" :class="SUBCOMPONENT_CURSOR_DEFAULT_CLASS" type="button">
-      <button v-for="(nestedsubcomponent, name) in nestedSubcomponents" :key="nestedsubcomponent" aria-hidden="true"
+    <div v-for="(nestedsubcomponent, name) in nestedSubcomponents" :key="nestedsubcomponent"
+      :style="{ display: nestedsubcomponent.optionalSubcomponent.currentlyDisplaying || nestedsubcomponent.optionalSubcomponent.displayOverlayOnly ? 'inline-block': 'none' }">
+       <button aria-hidden="true"
         :id="subcomponentAndOverlayElementIds[name].subcomponentId"
         class="close-button" :class="[ ...((nestedsubcomponent.customFeatures && nestedsubcomponent.customFeatures.jsClasses) || []) ]"
         @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseEnter()"
@@ -19,14 +21,15 @@
               [ nestedsubcomponent.inheritedCss ? nestedsubcomponent.inheritedCss.css: '' ],
               nestedsubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
               nestedsubcomponent.customCss[nestedsubcomponent.customCssActiveMode],
-            { display: nestedsubcomponent.optionalSubcomponent.currentlyDisplaying || nestedsubcomponent.optionalSubcomponent.displayOverlayOnly ? 'inline-block': 'none' } ]"
+            ]"
         >{{nestedsubcomponent.componentText || ''}}
       </button>
-      <button v-for="(nestedsubcomponent, name) in nestedSubcomponents" :key="nestedsubcomponent" 
+      <button
         :id="subcomponentAndOverlayElementIds[name].overlayId"
         style="display: none" :style="nestedsubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
         :class="OVERLAY_DEFAULT_CLASS">
       </button>
+    </div>
     </div>
   </div>
 </template>
