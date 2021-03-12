@@ -224,7 +224,7 @@ function createInitialCloseButtonCss(): CustomCss {
       paddingLeft: '0px',
       paddingRight: '0px',
       paddingBottom: '0px',
-      marginTop: '18px',
+      top: '18px',
       marginRight: '10px',
     },
   };
@@ -246,7 +246,7 @@ function createInitialButton1Css(): CustomCss {
       paddingLeft: '12px',
       paddingRight: '12px',
       marginLeft: '30px',
-      marginTop: '0px',
+      top: '0px',
       marginRight: '0px',
       marginBottom: '0px',
       width: '40px',
@@ -376,6 +376,7 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.CLOSE]: {
       componentTag: 'div',
+      componentText: '×',
       customCss: createInitialCloseButtonCss(),
       initialCss: createInitialCloseButtonCss(),
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,

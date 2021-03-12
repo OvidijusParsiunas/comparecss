@@ -12,7 +12,7 @@ export default function createModalComponentPreviewStructure(
       {
         subcomponentType: SUB_COMPONENTS.LAYER_1,
         customCss: layer1Component.customCss,
-        subcomponents: {
+        nestedSubcomponents: {
           [PSEUDO_COMPONENTS.TEXT]: 'Modal title',
           [SUB_COMPONENTS.CLOSE]: closeComponent,
         }
