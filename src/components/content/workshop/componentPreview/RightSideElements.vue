@@ -1,15 +1,26 @@
 <template>
   <div class="right-side-element-parent-container">
-    <div class="right-side-element-parent" :class="SUBCOMPONENT_CURSOR_DEFAULT_CLASS" type="button">
-      <div v-for="(nestedSubcomponent, name) in nestedSubcomponents" :key="nestedSubcomponent"
-        :style="[{
-          display: 
-            !nestedSubcomponent.optionalSubcomponent
-            || (nestedSubcomponent.optionalSubcomponent && (nestedSubcomponent.optionalSubcomponent.currentlyDisplaying || nestedSubcomponent.optionalSubcomponent.displayOverlayOnly))
-            ? 'inline-block': 'none' }]">
-        <button v-if="name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE" aria-hidden="true"
+    <div class="right-side-element-parent" :class="SUBCOMPONENT_CURSOR_DEFAULT_CLASS" type="button" style="height: 100%">
+      
+        <div v-for="(nestedSubcomponent, name) in nestedSubcomponents" :key="nestedSubcomponent" style="height: 100%; background-color: green; display: inline-flex">
+          <div v-if="name === PSEUDO_COMPONENTS.TEXT" class="right-side-element">{{ nestedSubcomponent }}</div>
+        </div>
+
+        
+            <div v-for="(nestedSubcomponent, name) in nestedSubcomponents" :key="nestedSubcomponent"
+              style="height: 100%; background-color: green; display: inline-flex"
+              :style="[
+              {
+              marginLeft: (name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE) ? nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].marginLeft : '0px',
+              marginRight: (name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE) ? nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].marginRight : '0px'}]">
+<div style="height: 100%; box-sizing: content-box;" :style="{
+  width: (name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE) ? nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].width : '0px',
+              paddingLeft: (name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE) ? nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].paddingLeft : '0px',
+              paddingRight: (name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE) ? nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].paddingRight : '0px'
+              }"></div>
+<button v-if="name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE" aria-hidden="true"
           :id="subcomponentAndOverlayElementIds[name].subcomponentId"
-          class="close-button" :class="[ ...((nestedSubcomponent.customFeatures && nestedSubcomponent.customFeatures.jsClasses) || []) ]"
+          class="close-button right-side-element" :class="[ ...((nestedSubcomponent.customFeatures && nestedSubcomponent.customFeatures.jsClasses) || []) ]"
           @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseEnter()"
           @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseLeave()"
           @mousedown="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseDown()"
@@ -31,10 +42,40 @@
         <button v-if="name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE" 
           :id="subcomponentAndOverlayElementIds[name].overlayId"
           style="display: none" :style="nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
+          class="right-side-element"
           :class="OVERLAY_DEFAULT_CLASS">
         </button>
-        <div v-if="name === PSEUDO_COMPONENTS.TEXT">{{ nestedSubcomponent }}</div>
       </div>
+
+      <!-- <div v-for="(nestedSubcomponent, name) in nestedSubcomponents" :key="nestedSubcomponent" style="height: 100%"> -->
+        <!-- <button v-if="name === SUB_COMPONENTS.CLOSE" aria-hidden="true"
+          :id="subcomponentAndOverlayElementIds[name].subcomponentId"
+          class="close-button" :class="[ ...((nestedSubcomponent.customFeatures && nestedSubcomponent.customFeatures.jsClasses) || []) ]"
+          @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseEnter()"
+          @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseLeave()"
+          @mousedown="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseDown()"
+          @mouseup="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseUp()"
+          :style="nestedSubcomponent.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
+            ? [
+                [ nestedSubcomponent.inheritedCss ? nestedSubcomponent.inheritedCss.css: '' ],
+                nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+                nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.HOVER],
+                nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.CLICK],
+              ]
+            : [
+                [ nestedSubcomponent.inheritedCss ? nestedSubcomponent.inheritedCss.css: '' ],
+                nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+                nestedSubcomponent.customCss[nestedSubcomponent.customCssActiveMode],
+              ]"
+          >{{nestedSubcomponent.componentText || ''}}
+        </button> -->
+        <!-- <button v-if="name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE" 
+          :id="subcomponentAndOverlayElementIds[name].overlayId"
+          style="display: none" :style="nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
+          :class="OVERLAY_DEFAULT_CLASS">
+        </button>
+        <div v-if="name === PSEUDO_COMPONENTS.TEXT">{{ nestedSubcomponent }}</div> -->
+      <!-- </div> -->
     </div>
   </div>
 </template>
@@ -89,6 +130,13 @@ export default {
     width: max-content;
     min-width: 100%;
     text-align: right;
+  }
+  .right-side-element {
+    position: absolute;
+    transform: translateY(-50%);
+    top: 50% !important;
+    margin-left: 0px !important;
+    margin-right: 0px !important;
   }
   #close-button-parent:focus {
     outline: none;

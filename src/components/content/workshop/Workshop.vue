@@ -224,7 +224,7 @@ function createInitialCloseButtonCss(): CustomCss {
       paddingLeft: '0px',
       paddingRight: '0px',
       paddingBottom: '0px',
-      top: '18px',
+      marginTop: '10px',
       marginRight: '10px',
     },
   };
@@ -246,7 +246,7 @@ function createInitialButton1Css(): CustomCss {
       paddingLeft: '12px',
       paddingRight: '12px',
       marginLeft: '30px',
-      top: '0px',
+      marginTop: '0px',
       marginRight: '0px',
       marginBottom: '0px',
       width: '40px',
