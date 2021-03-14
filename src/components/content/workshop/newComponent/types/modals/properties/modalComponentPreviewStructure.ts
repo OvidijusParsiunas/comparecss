@@ -13,8 +13,12 @@ export default function createModalComponentPreviewStructure(
         subcomponentType: SUB_COMPONENTS.LAYER_1,
         customCss: layer1Component.customCss,
         nestedSubcomponents: {
-          [PSEUDO_COMPONENTS.TEXT]: 'Modal title',
-          [SUB_COMPONENTS.CLOSE]: closeComponent,
+          text: {
+            [PSEUDO_COMPONENTS.TEXT]: 'Modal title',
+          },
+          subcomponents: {
+            [SUB_COMPONENTS.CLOSE]: closeComponent,
+          }
         }
       },
       {
@@ -28,8 +32,10 @@ export default function createModalComponentPreviewStructure(
         subcomponentType: SUB_COMPONENTS.LAYER_3,
         customCss: layer3Component.customCss,
         nestedSubcomponents: {
-          [SUB_COMPONENTS.BUTTON_1]: button1Component,
-          [SUB_COMPONENTS.BUTTON_2]: button2Component,
+          subcomponents: {
+            [SUB_COMPONENTS.BUTTON_1]: button1Component,
+            [SUB_COMPONENTS.BUTTON_2]: button2Component,
+          }
         }
       },
     ],

@@ -1,18 +1,17 @@
 <template>
   <div class="right-side-element-parent-container">
     <div class="right-side-element-parent" :class="SUBCOMPONENT_CURSOR_DEFAULT_CLASS" type="button" style="height: 100%">
-      
-        <div v-for="(nestedSubcomponent, name) in nestedSubcomponents" :key="nestedSubcomponent" style="height: 100%; background-color: green; display: inline-flex">
-          <div v-if="name === PSEUDO_COMPONENTS.TEXT" class="right-side-element">{{ nestedSubcomponent }}</div>
+      <!-- https://developer.mozilla.org/en-US/docs/Web/CSS/CSS_Flexible_Box_Layout/Ordering_Flex_Items -->
+        <div v-for="(nestedSubcomponent, name) in nestedSubcomponents.text" :key="nestedSubcomponent" style="height: 100%; background-color: green; display: inline-flex">
+          <div v-if="name === PSEUDO_COMPONENTS.TEXT" style="position: relative; display: inline-table;" class="close-button right-side-element">{{ nestedSubcomponent }}</div>
         </div>
-
-        
-            <div v-for="(nestedSubcomponent, name) in nestedSubcomponents" :key="nestedSubcomponent"
-              style="height: 100%; background-color: green; display: inline-flex"
+            <div v-for="(nestedSubcomponent, name) in nestedSubcomponents.subcomponents" :key="nestedSubcomponent"
+              style="height: 100%; background-color: green; display: inline-flex;"
               :style="[
               {
               marginLeft: (name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE) ? nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].marginLeft : '0px',
-              marginRight: (name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE) ? nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].marginRight : '0px'}]">
+              marginRight: (name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE) ? nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].marginRight : '0px'}]"
+              class="layer-subcomponent">
 <div style="height: 100%; box-sizing: content-box;" :style="{
   width: (name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE) ? nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].width : '0px',
               paddingLeft: (name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE) ? nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].paddingLeft : '0px',
@@ -146,5 +145,8 @@ export default {
     pointer-events: none;
     margin-left: auto;
     margin-right: auto;
+  }
+  .layer-subcomponent:last-child {
+    float: right;
   }
 </style>
