@@ -110,6 +110,8 @@ export interface SubcomponentProperties {
   // this css is used for particular nested children (.default-class-name > div:nth-child(2))
   childCss?: ChildCss[];
   customCssActiveMode: SUB_COMPONENT_CSS_MODES;
+  // this is used to add an animation effect when hovering or clicking a subcomponent to display their new custom css
+  // it is currently not being used during css export and instead added explicitly using inherited css files
   subcomponentPreviewTransition?: string;
   optionalSubcomponent?: OptionalSubcomponent;
   // the reason why custom css is attached here is to not have to keep multiple unique settings for each and every subcomponent in memory all at once

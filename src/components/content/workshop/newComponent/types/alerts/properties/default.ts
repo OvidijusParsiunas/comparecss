@@ -15,7 +15,6 @@ import { inheritedAlertBaseCss } from './inheritedCss';
 function createInitialBaseCss(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-      transition: 'unset',
     },
   }
 }
@@ -67,7 +66,6 @@ function createInitialLayerCss(): CustomCss {
       paddingBottom: '0px',
       fontFamily: '"Poppins", sans-serif',
       textAlign: 'center',
-      transition: 'unset',
     },
   }
 }

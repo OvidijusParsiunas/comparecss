@@ -31,7 +31,6 @@ function createInitialBaseCss(): CustomCss {
       width: '40px',
       height: '38px',
       boxSizing: 'content-box',
-      transition: 'unset',
       color: '#ffffff',
       fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
     },
