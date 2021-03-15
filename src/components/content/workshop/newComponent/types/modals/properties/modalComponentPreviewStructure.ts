@@ -13,29 +13,43 @@ export default function createModalComponentPreviewStructure(
         subcomponentType: SUB_COMPONENTS.LAYER_1,
         customCss: layer1Component.customCss,
         nestedSubcomponents: {
-          text: {
-            [PSEUDO_COMPONENTS.TEXT]: 'Modal title',
+          alignedSections: {
+            left: {
+              [PSEUDO_COMPONENTS.TEXT]: 'Modal title',
+            },
+            center: {
+            },
+            right: {
+              [SUB_COMPONENTS.CLOSE]: closeComponent,
+            },
           },
-          subcomponents: {
-            [SUB_COMPONENTS.CLOSE]: closeComponent,
-          }
+          // gives the user an option to customise the borders
+          // equalSplitSections: {
+            
+          // },
         }
       },
       {
         subcomponentType: SUB_COMPONENTS.LAYER_2,
         customCss: layer2Component.customCss,
-        subcomponents: {
-          [PSEUDO_COMPONENTS.TEXT]: 'Modal body text',
-        }
+        nestedSubcomponents: {
+          alignedSections: {
+            left: {
+              [PSEUDO_COMPONENTS.TEXT]: 'Modal body text',
+            },
+          },
+        },
       },
       {
         subcomponentType: SUB_COMPONENTS.LAYER_3,
         customCss: layer3Component.customCss,
         nestedSubcomponents: {
-          subcomponents: {
-            [SUB_COMPONENTS.BUTTON_1]: button1Component,
-            [SUB_COMPONENTS.BUTTON_2]: button2Component,
-          }
+          alignedSections: {
+            right: {
+              [SUB_COMPONENTS.BUTTON_1]: button1Component,
+              [SUB_COMPONENTS.BUTTON_2]: button2Component,
+            },
+          },
         }
       },
     ],
