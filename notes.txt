@@ -18,6 +18,7 @@ clicking on an option again to remove settings panel
 the auxiliary padding at the bottom prevents the dropdown from opening
 button size is not set in settings correctly
 weird behaviour with the subcomponent dropdown where the second layer appears to move and also can get a "read property 'currentlyDisplaying' of undefined" error when clicking button
+maybe each equal section should be selectable
 
 option to import an existing button style!
 
