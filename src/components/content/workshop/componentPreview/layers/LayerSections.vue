@@ -38,11 +38,11 @@
 </template>
                     
 <script lang="ts">
-import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
-import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../consts/subcomponentCursorClasses.enum';
-import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
-import { PSEUDO_COMPONENTS } from '../../../../consts/pseudoComponents.enum';
-import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
+import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
+import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../../consts/subcomponentCursorClasses.enum';
+import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
+import { PSEUDO_COMPONENTS } from '../../../../../consts/pseudoComponents.enum';
+import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
 import layerSection from './LayerSection.vue';
 
 interface Consts {

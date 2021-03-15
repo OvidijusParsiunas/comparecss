@@ -15,23 +15,6 @@ import { inheritedAlertBaseCss } from './inheritedCss';
 function createInitialBaseCss(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-      color: '#004085',
-      backgroundColor: '#cce5ff',
-      borderColor: '#b8daff',
-      borderWidth: '1px',
-      borderStyle: 'solid',
-      borderRadius: '4px',
-      width: '400px',
-      height: '50px',
-      boxSizing: 'unset',
-      fontSize: '16px',
-      boxShadow: 'unset',
-      paddingLeft: '20px',
-      paddingRight: '20px',
-      paddingTop: '0px',
-      paddingBottom: '0px',
-      fontFamily: '"Poppins", sans-serif',
-      textAlign: 'center',
       transition: 'unset',
     },
   }
@@ -67,7 +50,24 @@ function createInitialCloseButtonCss(): CustomCss {
 function createInitialLayerCss(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-      height: '100%',
+      color: '#004085',
+      backgroundColor: '#cce5ff',
+      borderColor: '#b8daff',
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      borderRadius: '4px',
+      width: '400px',
+      height: '50px',
+      boxSizing: 'unset',
+      fontSize: '16px',
+      boxShadow: 'unset',
+      paddingLeft: '20px',
+      paddingRight: '20px',
+      paddingTop: '0px',
+      paddingBottom: '0px',
+      fontFamily: '"Poppins", sans-serif',
+      textAlign: 'center',
+      transition: 'unset',
     },
   }
 }
@@ -96,6 +96,7 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.CLOSE]: {
       componentTag: 'div',
+      componentText: '×',
       customCss: createInitialCloseButtonCss(),
       initialCss: createInitialCloseButtonCss(),
       customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -107,7 +108,7 @@ function createSubcomponents(): Subcomponents {
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
-    [SUB_COMPONENTS.LAYER_1]: {
+    [SUB_COMPONENTS.SINGLE_LAYER_BASE]: {
       componentTag: 'div',
       customCss: createInitialLayerCss(),
       initialCss: createInitialLayerCss(),
@@ -123,9 +124,9 @@ export const defaultAlert: NewComponent = {
     return {
       type: NEW_COMPONENT_TYPES.ALERT,
       subcomponents,
-      subcomponentsActiveMode: SUB_COMPONENTS.BASE,
+      subcomponentsActiveMode: SUB_COMPONENTS.SINGLE_LAYER_BASE,
       componentPreviewStructure: createAlertComponentPreviewStructure(subcomponents[SUB_COMPONENTS.BASE],
-        subcomponents[SUB_COMPONENTS.CLOSE], subcomponents[SUB_COMPONENTS.LAYER_1]),
+        subcomponents[SUB_COMPONENTS.CLOSE], subcomponents[SUB_COMPONENTS.SINGLE_LAYER_BASE]),
       className: 'default-class-name',
     }
   },

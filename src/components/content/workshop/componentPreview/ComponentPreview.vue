@@ -57,29 +57,12 @@
                   component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
                   component.componentPreviewStructure.baseCss.customCss[component.componentPreviewStructure.baseCss.customCssActiveMode],
                 ]">
-              <div v-for="layer in component.componentPreviewStructure.layers" :key="layer" class="parent-layer">
-                <div :id="subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId"
-                  :style="[layer.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], { pointerEvents: component.componentPreviewStructure.shallowSubcomponents ? 'none': 'auto' }]"
-                  @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseEnter()"
-                  @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseLeave()"
-                  @mousedown="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseDown()"
-                  @mouseup="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseUp()">
-                  <nested-inner-html-text v-if="layer.subcomponents && layer.subcomponents[PSEUDO_COMPONENTS.TEXT]" :innerHTML="layer.subcomponents[PSEUDO_COMPONENTS.TEXT]"/>
-                  <auxiliary-right-side-elements
-                    v-if="layer.subcomponents && layer.subcomponents[SUB_COMPONENTS.CLOSE] !== undefined"
-                    :subcomponent="layer.subcomponents[SUB_COMPONENTS.CLOSE]"
-                    :elementIds="subcomponentAndOverlayElementIds[SUB_COMPONENTS.CLOSE]"
-                    :mouseEvents="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.CLOSE].subcomponentId]"/>
-                  <right-side-elements
-                    v-if="layer.nestedSubcomponents"
-                    :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-                    :nestedSubcomponents="layer.nestedSubcomponents"
-                    :mouseEvents="mouseEvents"/>
-                </div>
-                <div :id="subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].overlayId"
-                  style="display: none" :style="layer.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
-                  :class="OVERLAY_DEFAULT_CLASS"></div>
-              </div>
+                <layers
+                  :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
+                  :mouseEvents="mouseEvents"
+                  :layers="component.componentPreviewStructure.layers"
+                  :isShallowSubcomponents="component.componentPreviewStructure.shallowSubcomponents"
+                />
               <!-- shallow subcomponents -->
               {{ component.componentPreviewStructure.shallowSubcomponents ? component.componentPreviewStructure.shallowSubcomponents[PSEUDO_COMPONENTS.TEXT] : ''}}
               <auxiliary-right-side-elements v-if="component.componentPreviewStructure.shallowSubcomponents && component.componentPreviewStructure.shallowSubcomponents[SUB_COMPONENTS.CLOSE]"
@@ -135,8 +118,7 @@ import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import auxiliaryRightSideElements from './AuxiliaryRightSideElements.vue';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 import ComponentPreviewUtils from './utils/componentPreviewUtils';
-import nestedInnerHtmlText from './nestedInnerHTMLText.vue';
-import rightSideElements from './RightSideElements.vue';
+import layers from './layers/Layers.vue';
 
 interface Consts {
   SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES;
@@ -245,8 +227,7 @@ export default {
   },
   components: {
     auxiliaryRightSideElements,
-    nestedInnerHtmlText,
-    rightSideElements,
+    layers,
   },
   props: {
     component: Object,
@@ -296,10 +277,6 @@ export default {
   }
   .base-component {
     overflow: hidden;
-  }
-  .parent-layer {
-    position: relative;
-    height: 100%;
   }
   .grid-container {
     display: grid;

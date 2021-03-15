@@ -3,24 +3,28 @@ import { PSEUDO_COMPONENTS } from '../../../../../../../consts/pseudoComponents.
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum'
 
 export default function createAlertComponentPreviewStructure(baseComponent: SubcomponentProperties,
-    closeComponent: SubcomponentProperties, layerComponent: SubcomponentProperties): ComponentPreviewStructure {
+    closeComponent: SubcomponentProperties, layerComponent: SubcomponentProperties): any {
   return {
     baseCss: baseComponent,
     layeringType: 'vertical',
     layers: [
       {
-        subcomponentType: SUB_COMPONENTS.LAYER_1,
+        subcomponentType: SUB_COMPONENTS.SINGLE_LAYER_BASE,
         customCss: layerComponent.customCss,
-        subcomponents: {
-          [PSEUDO_COMPONENTS.TEXT]: 'Alert',
-        }
+        nestedSubcomponents: {
+          alignedSections: {
+            center: {
+              [PSEUDO_COMPONENTS.TEXT]: 'Alert',
+            },
+            right: {
+              [SUB_COMPONENTS.CLOSE]: closeComponent,
+            },
+          },
+        },
       },
     ],
-    shallowSubcomponents: {
-      [SUB_COMPONENTS.CLOSE]: closeComponent,
-    },
     subcomponentDropdownStructure: {
-      [SUB_COMPONENTS.BASE]: {
+      [SUB_COMPONENTS.SINGLE_LAYER_BASE]: {
         [SUB_COMPONENTS.CLOSE]: closeComponent.optionalSubcomponent,
       },
     },
