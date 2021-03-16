@@ -65,10 +65,6 @@
                 />
               <!-- shallow subcomponents -->
               {{ component.componentPreviewStructure.shallowSubcomponents ? component.componentPreviewStructure.shallowSubcomponents[PSEUDO_COMPONENTS.TEXT] : ''}}
-              <auxiliary-right-side-elements v-if="component.componentPreviewStructure.shallowSubcomponents && component.componentPreviewStructure.shallowSubcomponents[SUB_COMPONENTS.CLOSE]"
-                :subcomponent="component.componentPreviewStructure.shallowSubcomponents[SUB_COMPONENTS.CLOSE]"
-                :elementIds="subcomponentAndOverlayElementIds[SUB_COMPONENTS.CLOSE]"
-                :mouseEvents="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.CLOSE].subcomponentId]"/>
           </component>
           <component ref="componentPreviewOverlay" :is="component.componentPreviewStructure.baseCss.componentTag"
             :id="subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].overlayId"
@@ -115,7 +111,6 @@ import { PlayTransitionPreviewEvent } from '../../../../interfaces/playTransitio
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { PSEUDO_COMPONENTS } from '../../../../consts/pseudoComponents.enum';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
-import auxiliaryRightSideElements from './AuxiliaryRightSideElements.vue';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 import ComponentPreviewUtils from './utils/componentPreviewUtils';
 import layers from './layers/Layers.vue';
@@ -226,7 +221,6 @@ export default {
     }
   },
   components: {
-    auxiliaryRightSideElements,
     layers,
   },
   props: {

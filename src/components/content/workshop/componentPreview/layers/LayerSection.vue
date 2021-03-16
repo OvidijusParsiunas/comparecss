@@ -79,6 +79,16 @@ export default {
 </script>
 
 <style lang="css" scoped>
+  /* use this to position the close button correctly */
+  /*#close-button-parent:focus {
+    outline: none;
+  }
+  #close-button-icon {
+    display: table;
+    pointer-events: none;
+    margin-left: auto;
+    margin-right: auto;
+  } */
   /* this will need to be inherited css */
   .center-subcomponent {
     height: 100%; background-color: green; display: flex; justify-content: center; pointer-events: all;
