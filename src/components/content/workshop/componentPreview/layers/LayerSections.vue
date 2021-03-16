@@ -5,7 +5,7 @@
       :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
       :nestedSubcomponents="nestedSubcomponents.alignedSections.center"
       :mouseEvents="mouseEvents"
-      :subcomponentClass="'center-subcomponent'"/>
+      :subcomponentElementContainerClass="'center-section-subcomponent'"/>
     <div class="default-sections-container" :class="SUBCOMPONENT_CURSOR_DEFAULT_CLASS">
       <!-- left -->
       <layer-section v-if="nestedSubcomponents.alignedSections && nestedSubcomponents.alignedSections.left"
@@ -13,23 +13,21 @@
         style="order: 0"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
         :nestedSubcomponents="nestedSubcomponents.alignedSections.left"
-        :mouseEvents="mouseEvents"
-        :subcomponentClass="'side-subcomponent'"/>
+        :mouseEvents="mouseEvents"/>
       <!-- right -->
       <layer-section v-if="nestedSubcomponents.alignedSections && nestedSubcomponents.alignedSections.right"
         class="default-section right-section"
         style="order: 1"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
         :nestedSubcomponents="nestedSubcomponents.alignedSections.right"
-        :mouseEvents="mouseEvents"
-        :subcomponentClass="'side-subcomponent'"/>
+        :mouseEvents="mouseEvents"/>
       <!-- equal split sections -->
       <layer-section v-if="nestedSubcomponents.equalSplitSections"
-        class="default-section equal-split-section"
+        class="default-section equal-split-sections-container"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
         :nestedSubcomponents="nestedSubcomponents.equalSplitSections"
         :mouseEvents="mouseEvents"
-        :subcomponentClass="'equal-split-subcomponent'"/>
+        :subcomponentElementContainerClass="'equal-split-section'"/>
     </div>
   </div>
 </template>
@@ -92,7 +90,7 @@ export default {
   .right-section {
     margin-left: auto;
   }
-  .equal-split-section {
+  .equal-split-sections-container {
     width: 100%;
   }
 </style>

@@ -1,58 +1,49 @@
 <template>
   <div>
-      <div v-for="(nestedSubcomponent, name, index) in nestedSubcomponents" :key="nestedSubcomponent"
-        :style="[
-        {
-        marginLeft: (name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE) ? nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].marginLeft : '0px',
-        marginRight: (name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE) ? nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].marginRight : '0px'},
-        {order: `${index}`}]"
-        :class="subcomponentClass">
-          <div v-if="name === PSEUDO_COMPONENTS.TEXT" style="position: relative; display: inline-table;" class="close-button right-side-element">{{ nestedSubcomponent }}</div>
-<div v-if="name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE" style="height: 100%; box-sizing: content-box;" :style="{
-  width: (name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE) ? nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].width : '0px',
-              paddingLeft: (name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE) ? nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].paddingLeft : '0px',
-              paddingRight: (name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE) ? nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].paddingRight : '0px',}">
-          </div>
-<button v-if="name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE" aria-hidden="true"
-          :id="subcomponentAndOverlayElementIds[name].subcomponentId"
-          class="close-button right-side-element" :class="[ ...((nestedSubcomponent.customFeatures && nestedSubcomponent.customFeatures.jsClasses) || []) ]"
-          @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseEnter()"
-          @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseLeave()"
-          @mousedown="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseDown()"
-          @mouseup="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseUp()"
-          :style="nestedSubcomponent.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
-            ? [
-                [ nestedSubcomponent.inheritedCss ? nestedSubcomponent.inheritedCss.css: '' ],
-                nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
-                nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.HOVER],
-                nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.CLICK],
-              ]
-            : [
-                [ nestedSubcomponent.inheritedCss ? nestedSubcomponent.inheritedCss.css: '' ],
-                nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
-                nestedSubcomponent.customCss[nestedSubcomponent.customCssActiveMode],
-              ]"
-          >{{nestedSubcomponent.componentText || ''}}
-        </button>
-        <button v-if="name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE" 
-          :id="subcomponentAndOverlayElementIds[name].overlayId"
-          style="display: none" :style="nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
-          class="right-side-element"
-          :class="OVERLAY_DEFAULT_CLASS">
-        </button>
-          </div>
-      </div>
+    <div v-for="(nestedSubcomponent, name, index) in nestedSubcomponents" :key="nestedSubcomponent"
+      :style="{order: `${index}`}"
+      class="subcomponent-element-container"
+      :class="subcomponentElementContainerClass">
+      <div v-if="name === PSEUDO_COMPONENTS.TEXT" class="subcomponent-element text-subcomponent-element">{{ nestedSubcomponent }}</div>
+      <button v-if="name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE" aria-hidden="true"
+        :id="subcomponentAndOverlayElementIds[name].subcomponentId"
+        class="subcomponent-element"
+        :class="[ ...((nestedSubcomponent.customFeatures && nestedSubcomponent.customFeatures.jsClasses) || []) ]"
+        @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseEnter()"
+        @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseLeave()"
+        @mousedown="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseDown()"
+        @mouseup="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseUp()"
+        :style="nestedSubcomponent.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
+          ? [
+              [ nestedSubcomponent.inheritedCss ? nestedSubcomponent.inheritedCss.css: '' ],
+              nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+              nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.HOVER],
+              nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.CLICK],
+            ]
+          : [
+              [ nestedSubcomponent.inheritedCss ? nestedSubcomponent.inheritedCss.css: '' ],
+              nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+              nestedSubcomponent.customCss[nestedSubcomponent.customCssActiveMode],
+            ]"
+        >{{ nestedSubcomponent.componentText || '' }}
+      </button>
+      <button v-if="name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE" 
+        :id="subcomponentAndOverlayElementIds[name].overlayId"
+        style="display: none" :style="nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
+        class="subcomponent-element"
+        :class="OVERLAY_DEFAULT_CLASS">
+      </button>
+    </div>
+  </div>
 </template>
                     
 <script lang="ts">
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
-import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../../consts/subcomponentCursorClasses.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import { PSEUDO_COMPONENTS } from '../../../../../consts/pseudoComponents.enum';
 import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
 
 interface Consts {
-  SUBCOMPONENT_CURSOR_DEFAULT_CLASS: string;
   OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
   SUB_COMPONENT_CSS_MODES;
   PSEUDO_COMPONENTS;
@@ -62,7 +53,6 @@ interface Consts {
 export default {
   setup(): Consts {
     return {
-      SUBCOMPONENT_CURSOR_DEFAULT_CLASS: SUBCOMPONENT_CURSOR_CLASSES.DEFAULT,
       OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT,
       SUB_COMPONENT_CSS_MODES,
       PSEUDO_COMPONENTS,
@@ -73,7 +63,7 @@ export default {
     subcomponentAndOverlayElementIds: Object,
     nestedSubcomponents: Object,
     mouseEvents: Object,
-    subcomponentClass: String,
+    subcomponentElementContainerClass: String,
   }
 }
 </script>
@@ -89,46 +79,33 @@ export default {
     margin-left: auto;
     margin-right: auto;
   } */
-  /* this will need to be inherited css */
-  .center-subcomponent {
-    height: 100%; background-color: green; display: flex; justify-content: center; pointer-events: all;
-  }
-  .side-subcomponent {
-    height: 100%; background-color: green; display: inline-flex;
-  }
-  .equal-split-subcomponent {
-    height: 100%; background-color: green; display: flex; flex: 1 1 0px; justify-content: center;
-  }
+  /*
   .close-button {
     position: relative;
     overflow: hidden;
+  } */
+  /* this will need to be inherited css */
+  .center-section-subcomponent {
+    justify-content: center;
+    pointer-events: all;
   }
-  .right-side-element-parent-container {
-    position: relative;
+  .equal-split-section {
+    flex: 1 1 0px;
+    justify-content: center;
+  }
+  .subcomponent-element-container {
     height: 100%;
+    background-color: green;
+    display: flex;
   }
-  .right-side-element-parent {
-    position: absolute;
-    transform: translateY(-50%);
-    top: 50%;
-    width: max-content;
-    min-width: 100%;
-    text-align: right;
-  }
-  .right-side-element {
-    position: absolute;
+  .subcomponent-element {
+    position: relative;
     transform: translateY(-50%);
     top: 50% !important;
-    margin-left: 0px !important;
-    margin-right: 0px !important;
+    position: relative;
+    overflow: hidden;
   }
-  #close-button-parent:focus {
-    outline: none;
-  }
-  #close-button-icon {
-    display: table;
-    pointer-events: none;
-    margin-left: auto;
-    margin-right: auto;
+  .text-subcomponent-element {
+    display: inline-table;
   }
 </style>
