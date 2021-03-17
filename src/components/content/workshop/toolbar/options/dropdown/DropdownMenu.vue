@@ -6,7 +6,11 @@
       :class="DROPDOWN_OPTION_MARKER"
       @mouseenter="mouseEnter(innerDropdownOptions, optionIndex)"
       @mouseleave="mouseLeave">
-        <div class="option-text" :class="DROPDOWN_OPTION_MARKER">{{optionName}}</div><i v-if="typeof innerDropdownOptions.currentlyDisplaying !== 'boolean'" :class="['fa', 'arrow-right', 'fa-angle-right', DROPDOWN_OPTION_MARKER]"></i>
+        <div class="option-text" :class="DROPDOWN_OPTION_MARKER">{{optionName}}</div>
+        <font-awesome-icon v-if="(typeof innerDropdownOptions.currentlyDisplaying !== 'boolean')"
+          class="dropdown-button-marker arrow-right-icon"
+          :class="DROPDOWN_OPTION_MARKER"
+          icon="angle-right"/>
     </a>
   </div>
 </template>
@@ -73,13 +77,15 @@ export default {
     padding-right: 10px;
     user-select: none;
   }
-  .arrow-right {
+  .arrow-right-icon {
     padding-left: 3px;
     position: absolute;
     right: 10px;
     font-size: 14px;
     vertical-align: middle !important;
     float: right;
-    color: grey;
+  width: 11px;
+    color: #6d6d6d;
+    height: 15px;
   }
 </style>

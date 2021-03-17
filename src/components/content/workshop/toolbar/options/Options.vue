@@ -12,7 +12,7 @@
           :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
           :objectContainingActiveOption="component"
           :activeOptionPropertyKeyName="'subcomponentsActiveMode'"
-          :fontAwesomeIconClassName="'fa-angle-double-down'"
+          :fontAwesomeIconClassName="'angle-double-down'"
           :highlightSubcomponents="true"
           :isButtonGroup="true"
           :isNested="true"
@@ -23,9 +23,10 @@
       </div>
       <div v-if="component.type === MODAL_COMPONENT_TYPE" class="option-component-button">
         <button
-          type="button" class="btn option-action-button"
+          type="button" class="btn option-action-button expanded-modal-preview-mode-button"
           @click="toggleModalExpandMode">
-          <i class="dropdown-button-marker" :class="['fa', isExpandedModalPreviewModeActive ? 'fa-compress' : 'fa-expand']"></i>
+          <font-awesome-icon v-if="isExpandedModalPreviewModeActive" class="expand-icon dropdown-button-marker" icon="compress-alt"/>
+          <font-awesome-icon v-else class="expand-icon dropdown-button-marker" icon="expand-alt"/>
         </button>
       </div>
       <div class="option-component-button" v-if="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent">
@@ -43,7 +44,7 @@
           :dropdownOptions="componentTypeToOptions[component.type][component.subcomponentsActiveMode]"
           :objectContainingActiveOption="component.subcomponents[component.subcomponentsActiveMode]"
           :activeOptionPropertyKeyName="'customCssActiveMode'"
-          :fontAwesomeIconClassName="'fa-angle-down'"
+          :fontAwesomeIconClassName="'angle-down'"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
           @mouse-click-new-option="newCssModeClicked($event)"/>
         <button
@@ -364,6 +365,15 @@ export default {
   }
   .toolbar-position-toggle-hover {
     color: black !important;
+  }
+  .expanded-modal-preview-mode-button {
+    font: normal normal normal 14px/1 FontAwesome !important;
+    width: 39px;
+  }
+  .expand-icon {
+    height: 24px;
+    width: 12.5px;
+    color: #4b4d4b;
   }
 </style>
 

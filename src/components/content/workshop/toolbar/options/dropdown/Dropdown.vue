@@ -7,7 +7,7 @@
       <div class="dropdown-button-text dropdown-button-marker" :class="uniqueIdentifier">
         {{objectContainingActiveOption[activeOptionPropertyKeyName]}}
       </div>
-      <i class="dropdown-button-marker" :class="['fa', 'dropdown-button-icon', fontAwesomeIconClassName, uniqueIdentifier]"></i>
+      <font-awesome-icon class="arrow-down-icon dropdown-button-marker" :icon="fontAwesomeIconClassName"/>
     </button>
     <div class="auxiliary-padding dropdown-menu-options-marker"
       @mouseenter="mouseEnterAuxiliaryPadding"
@@ -247,7 +247,7 @@ export default {
         this.lastHoveredOptionElement.style.color = 'black';
         // bug fix for resetting option colour when user clicks and drags an option
         if (!document.activeElement.classList.contains(this.uniqueIdentifier)) this.lastHoveredOptionElement.classList.add(CUSTOM_DROPDOWN_OPTION_CLASSES.DEFAULT);
-        this.changeOptionArrowColor(this.lastHoveredOptionElement, 'grey');
+        this.changeOptionArrowColor(this.lastHoveredOptionElement, '#6d6d6d');
       }
       this.lastHoveredOptionElement = optionElementToBeHighlighted;
       this.lastHoveredOptionElementDropdownMenuIndex = dropdownMenuIndex;
@@ -258,7 +258,7 @@ export default {
     getOptionNameFromElement(highlightedOptionElement: HTMLElement): string {
       return (highlightedOptionElement.childNodes[0] as HTMLElement).innerHTML;
     },
-    changeOptionArrowColor(optionElement: Element, newColor: 'white'|'grey'): void {
+    changeOptionArrowColor(optionElement: Element, newColor: 'white'|'#6d6d6d'): void {
       const arrowElement = optionElement.childNodes[1];
       if (arrowElement instanceof Element || arrowElement instanceof HTMLDocument) {
         (arrowElement as HTMLElement).style.color = newColor;
@@ -372,10 +372,12 @@ export default {
     float: left;
     padding-left: 2px;
   }
-  .dropdown-button-icon {
+  .arrow-down-icon {
     float: right;
     margin-top: 0.3em;
     padding-left: 7px;
+    width: 16.5px;
+    color: #4b4d4b;
   }
   .auxiliary-padding {
     top: 36px;
