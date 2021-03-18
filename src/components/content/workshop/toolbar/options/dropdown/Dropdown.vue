@@ -47,7 +47,6 @@ interface Data {
   dropdownDisplayDelayMilliseconds: number;
   areDropdownOptionsProcessed: boolean;
   processedOptions: NestedDropdownStructure[];
-  lastHoveredOptionElementDropdownMenuIndex: number;
 }
 
 interface Props {
@@ -79,7 +78,6 @@ export default {
     isComponentDisplayed: true,
     lastHoveredOptionElement: null,
     areDropdownOptionsProcessed: false,
-    lastHoveredOptionElementDropdownMenuIndex: 0,
     dropdownDisplayDelayMilliseconds: BrowserType.isChromium() ? 10 : 13,
   }),
   setup(props: Props): DropdownCompositionAPI {
@@ -140,11 +138,8 @@ export default {
           }, i * this.dropdownDisplayDelayMilliseconds);
         }
         setTimeout(() => {
-          const optionElementSubjectToHighlight = this.$refs.dropdownMenus.childNodes[dropdowns.length].childNodes[optionIndexes[optionIndexes.length - 1] + 1];
-          if (this.displayHighlightedOptionAndParentMenusEventHandler) {
-            this.displayHighlightedOptionAndParentMenusEventHandler(this.dropdowns, optionElementSubjectToHighlight, this.dropdowns.length - 1, this.lastHoveredOptionElement, this.lastHoveredOptionElementDropdownMenuIndex);
-          }
-          this.highlightOption(optionElementSubjectToHighlight, dropdowns.length - 1);
+          const optionElementToBeHighlighted = this.$refs.dropdownMenus.childNodes[dropdowns.length].childNodes[optionIndexes[optionIndexes.length - 1] + 1];
+          this.highlightNewOption(optionElementToBeHighlighted, dropdowns.length - 1);
         }, (dropdowns.length - 1) * this.dropdownDisplayDelayMilliseconds);
       }
     },
@@ -182,10 +177,8 @@ export default {
         this.removeChildDropdownMenus(0);
         this.displayChildDropdownMenu(event.currentTarget, 0, 0, this.processedOptions[Object.keys(this.processedOptions)[0]]);
         const optionElementToBeHighlighted = this.$refs.dropdownMenus.childNodes[1].childNodes[1];
-        if (this.mouseEnterAuxiliaryPaddingEventHandler) { 
-          this.mouseEnterAuxiliaryPaddingEventHandler(this.dropdowns, optionElementToBeHighlighted, 0, this.lastHoveredOptionElement, this.lastHoveredOptionElementDropdownMenuIndex);
-        }
-        this.highlightOption(optionElementToBeHighlighted, 0);
+        if (this.mouseEnterAuxiliaryPaddingEventHandler) { this.mouseEnterAuxiliaryPaddingEventHandler(optionElementToBeHighlighted); }
+        this.highlightNewOption(optionElementToBeHighlighted, 0);
       }
     },
     mouseLeaveAuxiliaryPadding(): void {
@@ -201,11 +194,9 @@ export default {
       const [dropdownOptions, dropdownMenuIndex, dropdownOptionIndex] = optionMouseEnterEvent;
       this.removeChildDropdownMenus(dropdownMenuIndex);
       this.displayChildDropdownMenu(event.target, dropdownMenuIndex, dropdownOptionIndex, dropdownOptions);
-      if (this.mouseEnterOptionEventHandler) {
-        this.mouseEnterOptionEventHandler(this.dropdowns, event.target, dropdownMenuIndex, this.lastHoveredOptionElement, this.lastHoveredOptionElementDropdownMenuIndex);
-      }
+      if (this.mouseEnterOptionEventHandler) { this.mouseEnterOptionEventHandler(event.target); }
       this.$emit('mouse-enter-option', ((event.target as HTMLElement).childNodes[0] as HTMLElement).innerHTML);
-      this.highlightOption(event.target, dropdownMenuIndex);
+      this.highlightNewOption(event.target, dropdownMenuIndex);
     },
     removeChildDropdownMenus(dropdownMenuIndex: number): void {
       const removableDropdownMenusIndex = dropdownMenuIndex + 1;
@@ -241,28 +232,43 @@ export default {
         });
       }
     },
-    highlightOption(optionElementToBeHighlighted: HTMLElement, dropdownMenuIndex: number): void {
-      if (this.lastHoveredOptionElement) {
-        this.lastHoveredOptionElement.classList.remove(CUSTOM_DROPDOWN_OPTION_CLASSES.ACTIVE);
-        this.lastHoveredOptionElement.style.color = 'black';
-        // bug fix for resetting option colour when user clicks and drags an option
-        if (!document.activeElement.classList.contains(this.uniqueIdentifier)) this.lastHoveredOptionElement.classList.add(CUSTOM_DROPDOWN_OPTION_CLASSES.DEFAULT);
-        this.changeOptionArrowColor(this.lastHoveredOptionElement, '#6d6d6d');
-      }
+    highlightNewOption(optionElementToBeHighlighted: HTMLElement, dropdownMenuIndex: number): void {
+      if (this.lastHoveredOptionElement) { this.resetLastHighlightedOptionStyle(); }
+      this.setNewHighligtedOptionStyle(this.dropdowns, optionElementToBeHighlighted, dropdownMenuIndex);
       this.lastHoveredOptionElement = optionElementToBeHighlighted;
-      this.lastHoveredOptionElementDropdownMenuIndex = dropdownMenuIndex;
-      optionElementToBeHighlighted.classList.add(CUSTOM_DROPDOWN_OPTION_CLASSES.ACTIVE);
+    },
+    resetLastHighlightedOptionStyle(): void {
+      this.lastHoveredOptionElement.classList.remove(CUSTOM_DROPDOWN_OPTION_CLASSES.ACTIVE);
+      if (this.lastHoveredOptionElement.classList.contains(CUSTOM_DROPDOWN_OPTION_CLASSES.INACTIVE)) {
+        this.lastHoveredOptionElement.style.color = 'grey';
+        this.lastHoveredOptionElement.classList.remove(CUSTOM_DROPDOWN_OPTION_CLASSES.INACTIVE);
+      } else {
+        this.lastHoveredOptionElement.style.color = 'black';
+      }
+      // bug fix for resetting option colour when user clicks and drags an option
+      if (!document.activeElement.classList.contains(this.uniqueIdentifier)) this.lastHoveredOptionElement.classList.add(CUSTOM_DROPDOWN_OPTION_CLASSES.DEFAULT);
+      this.changeOptionArrowColor(this.lastHoveredOptionElement, '#6d6d6d');
+    },
+    setNewHighligtedOptionStyle(dropdowns: NestedDropdownStructure[], optionElementToBeHighlighted: HTMLElement, dropdownMenuIndex: number): void {
+      const highlightedElementBackgroundClass = dropdownMenuIndex !== undefined && dropdowns[dropdownMenuIndex]
+        && this.isOptionInactive(dropdowns, optionElementToBeHighlighted, dropdownMenuIndex)
+        ? CUSTOM_DROPDOWN_OPTION_CLASSES.INACTIVE : CUSTOM_DROPDOWN_OPTION_CLASSES.ACTIVE;
+      optionElementToBeHighlighted.classList.add(highlightedElementBackgroundClass);
       optionElementToBeHighlighted.style.color = 'white';
       this.changeOptionArrowColor(optionElementToBeHighlighted, 'white');
     },
-    getOptionNameFromElement(highlightedOptionElement: HTMLElement): string {
-      return (highlightedOptionElement.childNodes[0] as HTMLElement).innerHTML;
+    isOptionInactive(dropdowns: NestedDropdownStructure[], optionElement: HTMLElement, dropdownMenuIndex: number): boolean {
+      return typeof dropdowns[dropdownMenuIndex][(optionElement.childNodes[0] as HTMLElement).innerHTML].currentlyDisplaying === 'boolean'
+        && !dropdowns[dropdownMenuIndex][(optionElement.childNodes[0] as HTMLElement).innerHTML].currentlyDisplaying;
     },
     changeOptionArrowColor(optionElement: Element, newColor: 'white'|'#6d6d6d'): void {
       const arrowElement = optionElement.childNodes[1];
       if (arrowElement instanceof Element || arrowElement instanceof HTMLDocument) {
         (arrowElement as HTMLElement).style.color = newColor;
       }
+    },
+    getOptionNameFromElement(highlightedOptionElement: HTMLElement): string {
+      return (highlightedOptionElement.childNodes[0] as HTMLElement).innerHTML;
     },
     mouseLeaveOption(blurredOptionElement: OptionMouseLeave): void {
       if (this.mouseLeaveOptionEventHandler) this.mouseLeaveOptionEventHandler(blurredOptionElement);
