@@ -7,7 +7,7 @@
       <div class="dropdown-button-text dropdown-button-marker" :class="uniqueIdentifier">
         {{objectContainingActiveOption[activeOptionPropertyKeyName]}}
       </div>
-      <font-awesome-icon class="arrow-down-icon dropdown-button-marker" :icon="fontAwesomeIconClassName"/>
+      <font-awesome-icon class="arrow-down-icon dropdown-button-marker" :icon="fontAwesomeIcon"/>
     </button>
     <div class="auxiliary-padding dropdown-menu-options-marker"
       @mouseenter="mouseEnterAuxiliaryPadding"
@@ -54,7 +54,7 @@ interface Props {
   isButtonGroup: boolean,
   uniqueIdentifier: string;
   highlightSubcomponents: boolean;
-  fontAwesomeIconClassName: string;
+  fontAwesomeIcon: string;
   activeOptionPropertyKeyName: string;
   objectContainingActiveOption: unknown;
   dropdownOptions: NestedDropdownStructure;
@@ -340,7 +340,7 @@ export default {
     dropdownOptions: Object,
     objectContainingActiveOption: Object,
     activeOptionPropertyKeyName: String,
-    fontAwesomeIconClassName: String,
+    fontAwesomeIcon: String,
     highlightSubcomponents: Boolean,
     // this is used to allow the dropdown to close when clicked on other dropdowns
     uniqueIdentifier: String,

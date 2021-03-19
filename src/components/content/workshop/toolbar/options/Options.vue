@@ -12,7 +12,7 @@
           :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
           :objectContainingActiveOption="component"
           :activeOptionPropertyKeyName="'subcomponentsActiveMode'"
-          :fontAwesomeIconClassName="'angle-double-down'"
+          :fontAwesomeIcon="'angle-double-down'"
           :highlightSubcomponents="true"
           :isButtonGroup="true"
           :isNested="true"
@@ -44,7 +44,7 @@
           :dropdownOptions="componentTypeToOptions[component.type][component.subcomponentsActiveMode]"
           :objectContainingActiveOption="component.subcomponents[component.subcomponentsActiveMode]"
           :activeOptionPropertyKeyName="'customCssActiveMode'"
-          :fontAwesomeIconClassName="'angle-down'"
+          :fontAwesomeIcon="'angle-down'"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
           @mouse-click-new-option="newCssModeClicked($event)"/>
         <button
