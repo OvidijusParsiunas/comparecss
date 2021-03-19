@@ -5,7 +5,10 @@
       class="subcomponent-element-container"
       :class="subcomponentElementContainerClass">
       <div v-if="name === PSEUDO_COMPONENTS.TEXT" class="subcomponent-element text-subcomponent-element">{{ nestedSubcomponent }}</div>
-      <button v-if="name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE" aria-hidden="true"
+      <button v-if="
+          nestedSubcomponent.optionalSubcomponent
+          && (nestedSubcomponent.optionalSubcomponent.currentlyDisplaying || nestedSubcomponent.optionalSubcomponent.displayOverlayOnly)
+          && (name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE)" aria-hidden="true"
         :id="subcomponentAndOverlayElementIds[name].subcomponentId"
         class="subcomponent-element"
         :class="[ ...((nestedSubcomponent.customFeatures && nestedSubcomponent.customFeatures.jsClasses) || []) ]"
@@ -25,7 +28,8 @@
               nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
               nestedSubcomponent.customCss[nestedSubcomponent.customCssActiveMode],
             ]"
-        >{{ nestedSubcomponent.componentText || '' }}
+        >{{ nestedSubcomponent.optionalSubcomponent && !nestedSubcomponent.optionalSubcomponent.displayOverlayOnly
+            && nestedSubcomponent.componentText ? nestedSubcomponent.componentText : '' }}
       </button>
       <button v-if="name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE" 
         :id="subcomponentAndOverlayElementIds[name].overlayId"

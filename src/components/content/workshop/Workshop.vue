@@ -134,7 +134,7 @@ interface Consts {
 
 interface Data {
   isIconsPreloaded: boolean;
-  components: WorkshopComponent[],
+  components: WorkshopComponent[];
   currentlySelectedComponent: WorkshopComponent;
   componentPreviewAssistance: ComponentPreviewAssistance;
   workshopEventCallbacks: (() => boolean)[];
@@ -166,7 +166,7 @@ function createDefaultBackdropProperties(): BackdropProperties {
     color: '#6d6d6dcc',
     alpha: 0.8,
     visible: false,
-  }
+  };
 }
 
 function createDefaultBaseCustomFeatures(): CustomFeatures {
@@ -174,13 +174,13 @@ function createDefaultBaseCustomFeatures(): CustomFeatures {
     componentCenteringInParent: createDefaultComponentCenteringInParent(),
     transitions: createDefaultTransitionsProperties(),
     backdrop: createDefaultBackdropProperties(),
-  }
+  };
 }
 
 function createDefaultCloseButtonCustomFeatures(): CustomFeatures {
   return {
     jsClasses: createInitialCloseButtonJsClasses(),
-  }
+  };
 }
 
 function createInitialBaseCss(): CustomCss {
@@ -260,7 +260,7 @@ function createInitialButton1Css(): CustomCss {
     [SUB_COMPONENT_CSS_MODES.CLICK]: {
       backgroundColor: '#409441',
     },
-  }
+  };
 }
 
 function createInitialLayer1Css(): CustomCss {
@@ -329,7 +329,7 @@ function createInitialLayer3Css(): CustomCss {
 }
 
 function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
-  return new Set([JAVASCRIPT_CLASSES.RIPPLES])
+  return new Set([JAVASCRIPT_CLASSES.RIPPLES]);
 }
 
 function createSubcomponents(): Subcomponents {
@@ -378,7 +378,7 @@ function createSubcomponents(): Subcomponents {
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
-      optionalSubcomponent: { currentlyDisplaying: true },
+      optionalSubcomponent: { currentlyDisplaying: false },
       subcomponentSpecificSettings: alertCloseSpecificSettings,
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
@@ -411,7 +411,7 @@ function createSubcomponents(): Subcomponents {
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
-  }
+  };
 }
 
 function getNewComponent(): WorkshopComponent {
@@ -424,7 +424,7 @@ function getNewComponent(): WorkshopComponent {
       subcomponents[SUB_COMPONENTS.BASE], subcomponents[SUB_COMPONENTS.CLOSE], subcomponents[SUB_COMPONENTS.BUTTON_1], subcomponents[SUB_COMPONENTS.BUTTON_2],
       subcomponents[SUB_COMPONENTS.LAYER_1], subcomponents[SUB_COMPONENTS.LAYER_2], subcomponents[SUB_COMPONENTS.LAYER_3]),
     className: 'default-class-name',
-  }
+  };
 }
 
 export default {
