@@ -175,8 +175,8 @@ export default {
     mouseEnterAuxiliaryPadding(): void {
       if (this.areMenusDisplayed) {
         this.removeChildDropdownMenus(0);
-        this.displayChildDropdownMenu(event.currentTarget, 0, 0, this.processedOptions[Object.keys(this.processedOptions)[0]]);
         const optionElementToBeHighlighted = this.$refs.dropdownMenus.childNodes[1].childNodes[1];
+        this.displayChildDropdownMenu(optionElementToBeHighlighted, 0, 0, this.processedOptions[Object.keys(this.processedOptions)[0]]);
         if (this.mouseEnterAuxiliaryPaddingEventHandler) { this.mouseEnterAuxiliaryPaddingEventHandler(optionElementToBeHighlighted); }
         this.highlightNewOption(optionElementToBeHighlighted, 0);
       }
