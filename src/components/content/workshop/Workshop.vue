@@ -338,7 +338,8 @@ function createSubcomponents(): Subcomponents {
       componentTag: 'div',
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
-      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
@@ -350,7 +351,8 @@ function createSubcomponents(): Subcomponents {
       componentTag: 'div',
       customCss: createInitialLayer1Css(),
       initialCss: createInitialLayer1Css(),
-      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       tempCustomCss: new Set(['transition']),
       subcomponentSpecificSettings: modalLayerTopSpecificSettings,
     },
@@ -358,14 +360,16 @@ function createSubcomponents(): Subcomponents {
       componentTag: 'div',
       customCss: createInitialLayer2Css(),
       initialCss: createInitialLayer2Css(),
-      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       tempCustomCss: new Set(['transition']),
     },
     [SUB_COMPONENTS.LAYER_3]: {
       componentTag: 'div',
       customCss: createInitialLayer3Css(),
       initialCss: createInitialLayer3Css(),
-      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       tempCustomCss: new Set(['transition']),
       subcomponentSpecificSettings: modalLayerBottomSpecificSettings,
     },
@@ -374,11 +378,12 @@ function createSubcomponents(): Subcomponents {
       componentText: '×',
       customCss: createInitialCloseButtonCss(),
       initialCss: createInitialCloseButtonCss(),
-      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
-      optionalSubcomponent: { currentlyDisplaying: false },
+      optionalSubcomponent: { currentlyDisplaying: true },
       subcomponentSpecificSettings: alertCloseSpecificSettings,
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
@@ -388,7 +393,8 @@ function createSubcomponents(): Subcomponents {
       componentText: 'Submit',
       customCss: createInitialButton1Css(),
       initialCss: createInitialButton1Css(),
-      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
@@ -402,7 +408,8 @@ function createSubcomponents(): Subcomponents {
       componentText: 'Cancel',
       customCss: createInitialButton1Css(),
       initialCss: createInitialButton1Css(),
-      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
@@ -419,7 +426,8 @@ function getNewComponent(): WorkshopComponent {
   return {
     type: NEW_COMPONENT_TYPES.MODAL,
     subcomponents,
-    subcomponentsActiveMode: SUB_COMPONENTS.BASE,
+    activeSubcomponentMode: SUB_COMPONENTS.BASE,
+    defaultSubcomponentMode: SUB_COMPONENTS.BASE,
     componentPreviewStructure: createModalComponentPreviewStructure(
       subcomponents[SUB_COMPONENTS.BASE], subcomponents[SUB_COMPONENTS.CLOSE], subcomponents[SUB_COMPONENTS.BUTTON_1], subcomponents[SUB_COMPONENTS.BUTTON_2],
       subcomponents[SUB_COMPONENTS.LAYER_1], subcomponents[SUB_COMPONENTS.LAYER_2], subcomponents[SUB_COMPONENTS.LAYER_3]),
@@ -456,10 +464,10 @@ export default {
   methods: {
     resetComponentModes(previousComponent: WorkshopComponent): void {
       if (!previousComponent) return;
-      previousComponent.subcomponentsActiveMode = Object.keys(previousComponent.subcomponents)[0] as SUB_COMPONENTS;
+      previousComponent.activeSubcomponentMode = previousComponent.defaultSubcomponentMode;
       Object.keys(previousComponent.subcomponents).forEach((key) => {
         const subcomponent: SubcomponentProperties = previousComponent.subcomponents[key];
-        subcomponent.customCssActiveMode = Object.keys(subcomponent.customCss)[0] as SUB_COMPONENT_CSS_MODES;
+        subcomponent.activeCustomCssMode = subcomponent.defaultCustomCssMode;
       });
     },
     switchActiveComponent(newComponent: WorkshopComponent): void {
@@ -483,8 +491,8 @@ export default {
     componentCardCopied(selectComponentCard: WorkshopComponent): void {
       const newComponent = JSONManipulation.deepCopy(selectComponentCard);
       newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className, this.components, '-copy');
-      newComponent.subcomponentsActiveMode = SUB_COMPONENTS.BASE;
-      newComponent.subcomponents[SUB_COMPONENTS.BASE].customCssActiveMode = SUB_COMPONENT_CSS_MODES.DEFAULT;
+      newComponent.activeSubcomponentMode = SUB_COMPONENTS.BASE;
+      newComponent.subcomponents[SUB_COMPONENTS.BASE].activeCustomCssMode = SUB_COMPONENT_CSS_MODES.DEFAULT;
       this.addNewComponent(newComponent);
     },
     componentCardRemoved(componentToBeRemovedWithoutSelecting: WorkshopComponent): void {
@@ -535,13 +543,13 @@ export default {
       this.workshopEventCallbacks.push(callback);
     },
     removeSubcomponentEventHandler(): void {
-      this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.subcomponentsActiveMode].customCss = JSONManipulation.deepCopy(
-        this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.subcomponentsActiveMode].initialCss);
-      this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying = false;
+      this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.activeSubcomponentMode].customCss = JSONManipulation.deepCopy(
+        this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.activeSubcomponentMode].initialCss);
+      this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.activeSubcomponentMode].optionalSubcomponent.currentlyDisplaying = false;
       this.$refs.toolbar.hideSettings();
     },
     cancelSubcomponentRemovalEventHandler(): void {
-      SubcomponentToggleService.hideSubcomponentOverlayBySelectModeStatus(this.currentlySelectedComponent.subcomponentsActiveMode,
+      SubcomponentToggleService.hideSubcomponentOverlayBySelectModeStatus(this.currentlySelectedComponent.activeSubcomponentMode,
         SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
     },
     preloadIcons(): void {
@@ -554,9 +562,9 @@ export default {
       }
     },
     toggleSubcomponentSelectMode(toggleSubcomponentSelectModeEvent: ToggleSubcomponentSelectModeEvent): void {
-      const [SubcomponentSelectModeCallbackFunction, keyTriggers, buttonElement, optionsSubcomponentsModeClickedFunc] = toggleSubcomponentSelectModeEvent;
+      const [SubcomponentSelectModeCallbackFunction, keyTriggers, buttonElement, optionsSubcomponentModeClickedFunc] = toggleSubcomponentSelectModeEvent;
       const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: SubcomponentSelectModeCallbackFunction.bind(this,
-        buttonElement, optionsSubcomponentsModeClickedFunc, this.$refs.contents.toggleSubcomponentSelectMode)};
+        buttonElement, optionsSubcomponentModeClickedFunc, this.$refs.contents.toggleSubcomponentSelectMode)};
       this.addWorkshopEventCallback(workshopEventCallback); 
       this.$refs.contents.toggleSubcomponentSelectMode(true);
     },

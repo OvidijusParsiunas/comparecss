@@ -62,12 +62,12 @@ export default class SharedUtils {
   }
 
   public static addDefaultValueIfCssModeMissing(cssPropertyName: string, subcomponentProperties: SubcomponentProperties): void {
-    const { customCss, customCssActiveMode } = subcomponentProperties;
-    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(subcomponentProperties.customCss, customCssActiveMode, cssPropertyName);
-    if (!customCss[customCssActiveMode]) {
-      customCss[customCssActiveMode] = { [cssPropertyName]: cssPropertyValue };
-    } else if (!customCss[customCssActiveMode][cssPropertyName]) {
-      customCss[customCssActiveMode][cssPropertyName] = cssPropertyValue;
+    const { customCss, activeCustomCssMode } = subcomponentProperties;
+    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(subcomponentProperties.customCss, activeCustomCssMode, cssPropertyName);
+    if (!customCss[activeCustomCssMode]) {
+      customCss[activeCustomCssMode] = { [cssPropertyName]: cssPropertyValue };
+    } else if (!customCss[activeCustomCssMode][cssPropertyName]) {
+      customCss[activeCustomCssMode][cssPropertyName] = cssPropertyValue;
     }
   }
 }

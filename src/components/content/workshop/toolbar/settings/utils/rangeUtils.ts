@@ -8,10 +8,10 @@ export default class RangeUtils {
   private static DEFAULT_RANGE_VALUE = 0;
 
   private static activeTriggersForCustomCss(trigger: any, subcomponentProperties: SubcomponentProperties, selectorCurrentValues: unknown): void {
-    const { customCss, customCssActiveMode } = subcomponentProperties;
+    const { customCss, activeCustomCssMode } = subcomponentProperties;
     const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, SUB_COMPONENT_CSS_MODES.CLICK, trigger.cssProperty);
     if (trigger.conditions.has(cssPropertyValue)) {
-      customCss[customCssActiveMode][trigger.cssProperty] = trigger.defaultValue;
+      customCss[activeCustomCssMode][trigger.cssProperty] = trigger.defaultValue;
       if (trigger.selector) { selectorCurrentValues[trigger.cssProperty] = trigger.defaultValue; }
     }
   }
@@ -37,8 +37,8 @@ export default class RangeUtils {
 
   private static updateCustomCss(rangeValue: string, spec: any, subcomponentProperties: SubcomponentProperties): void {
     const { cssProperty, smoothingDivisible, postfix } = spec;
-    const { customCss, customCssActiveMode } = subcomponentProperties;
-    customCss[customCssActiveMode][cssProperty] = `${Math.floor(rangeValue as unknown as number / smoothingDivisible)}${postfix}`;
+    const { customCss, activeCustomCssMode } = subcomponentProperties;
+    customCss[activeCustomCssMode][cssProperty] = `${Math.floor(rangeValue as unknown as number / smoothingDivisible)}${postfix}`;
   }
 
   private static updateColorValueInCustomFeatureProperties(rangeValue: string, spec: any, customFeatures: CustomFeatures): void {
@@ -87,10 +87,10 @@ export default class RangeUtils {
   }
 
   public static updateSettings(settingToBeUpdated: any, allSettings: any, subcomponentProperties: SubcomponentProperties, selectorCurrentValues: unknown): void {
-    const { customCss, customCssActiveMode } = subcomponentProperties;
-    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, customCssActiveMode, settingToBeUpdated.spec.cssProperty);
+    const { customCss, activeCustomCssMode } = subcomponentProperties;
+    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCustomCssMode, settingToBeUpdated.spec.cssProperty);
     if (cssPropertyValue !== undefined) {
-      if (customCss[customCssActiveMode]) RangeUtils.activateTriggers(settingToBeUpdated.triggers, subcomponentProperties, allSettings, selectorCurrentValues);
+      if (customCss[activeCustomCssMode]) RangeUtils.activateTriggers(settingToBeUpdated.triggers, subcomponentProperties, allSettings, selectorCurrentValues);
       const hasBoxShadowBeenSet = settingToBeUpdated.spec.cssProperty === 'boxShadow' && BoxShadowUtils.setBoxShadowSettingsRangeValue(cssPropertyValue, settingToBeUpdated.spec);
       if (!hasBoxShadowBeenSet) { RangeUtils.updateCustomCssSetting(settingToBeUpdated, cssPropertyValue); }
     } else if (settingToBeUpdated.spec.customFeatureObjectKeys) {

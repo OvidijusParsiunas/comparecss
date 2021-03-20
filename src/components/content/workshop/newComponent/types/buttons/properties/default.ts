@@ -59,7 +59,8 @@ function createSubcomponents(): Subcomponents {
       componentTag: 'button',
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
-      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedButtonCss,
@@ -76,7 +77,8 @@ export const defaultButton: NewComponent = {
     return {
       type: NEW_COMPONENT_TYPES.BUTTON,
       subcomponents,
-      subcomponentsActiveMode: SUB_COMPONENTS.BASE,
+      activeSubcomponentMode: SUB_COMPONENTS.BASE,
+      defaultSubcomponentMode: SUB_COMPONENTS.BASE,
       componentPreviewStructure: createButtonComponentPreviewStructure(subcomponents[SUB_COMPONENTS.BASE]),
       className: 'default-class-name',
     }

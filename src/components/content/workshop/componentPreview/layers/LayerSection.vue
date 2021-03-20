@@ -16,7 +16,7 @@
         @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseLeave()"
         @mousedown="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseDown()"
         @mouseup="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseUp()"
-        :style="nestedSubcomponent.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
+        :style="nestedSubcomponent.activeCustomCssMode === SUB_COMPONENT_CSS_MODES.CLICK
           ? [
               [ nestedSubcomponent.inheritedCss ? nestedSubcomponent.inheritedCss.css: '' ],
               nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
@@ -26,7 +26,7 @@
           : [
               [ nestedSubcomponent.inheritedCss ? nestedSubcomponent.inheritedCss.css: '' ],
               nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
-              nestedSubcomponent.customCss[nestedSubcomponent.customCssActiveMode],
+              nestedSubcomponent.customCss[nestedSubcomponent.activeCustomCssMode],
             ]"
         >{{ nestedSubcomponent.optionalSubcomponent && !nestedSubcomponent.optionalSubcomponent.displayOverlayOnly
             && nestedSubcomponent.componentText ? nestedSubcomponent.componentText : '' }}

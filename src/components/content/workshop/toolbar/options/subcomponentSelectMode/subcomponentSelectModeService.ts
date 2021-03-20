@@ -6,7 +6,7 @@ import { subcomponentSelectModeState } from './subcomponentSelectModeState';
 
 export type SubcomponentSelectModeCallbackFunction = (
     buttonElement: HTMLElement,
-    optionsSubcomponentsModeClickedFunc: (param1: SUB_COMPONENTS) => void,
+    optionsSubcomponentModeClickedFunc: (param1: SUB_COMPONENTS) => void,
     componentPreviewTriggerCallback: (param1: boolean) => void,
   ) => WorkshopEventCallbackReturn;
 
@@ -16,13 +16,13 @@ export default class SubcomponentSelectModeService {
   private static defaultButtonColor = '';
   // blue - #00a1ff'
 
-  private static end(buttonElement: HTMLElement, optionsSubcomponentsModeClickedFunc: (param1: SUB_COMPONENTS) => void,
+  private static end(buttonElement: HTMLElement, optionsSubcomponentModeClickedFunc: (param1: SUB_COMPONENTS) => void,
       componentPreviewTriggerCallback: (param1: boolean) => void): WorkshopEventCallbackReturn {
     const lastHighlightedOverlayElement = subcomponentSelectModeState.getLastHighlightedOverlayElementState();
     if (lastHighlightedOverlayElement) {
       lastHighlightedOverlayElement.style.display = 'none';
       const subcomponentType = subcomponentAndOverlayElementIdsState.getSubcomponentTypeViaOverlayId(lastHighlightedOverlayElement.id);
-      optionsSubcomponentsModeClickedFunc(subcomponentType);
+      optionsSubcomponentModeClickedFunc(subcomponentType);
     }
     buttonElement.style.color = SubcomponentSelectModeService.defaultButtonColor;
     subcomponentSelectModeState.removeAllHighlightedOverlayElementsFromState();

@@ -97,7 +97,7 @@ function createInitialCloseButtonCss(): CustomCss {
       paddingLeft: '0px',
       paddingRight: '0px',
       paddingBottom: '0px',
-      marginTop: '18px',
+      marginTop: '10px',
       marginRight: '10px',
     },
   };
@@ -134,7 +134,7 @@ function createInitialButton1Css(): CustomCss {
     [SUB_COMPONENT_CSS_MODES.CLICK]: {
       backgroundColor: '#409441',
     },
-  }
+  };
 }
 
 function createInitialLayer1Css(): CustomCss {
@@ -203,16 +203,17 @@ function createInitialLayer3Css(): CustomCss {
 }
 
 function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
-  return new Set([JAVASCRIPT_CLASSES.RIPPLES])
+  return new Set([JAVASCRIPT_CLASSES.RIPPLES]);
 }
 
-function createSubcomponents(): any {
+function createSubcomponents(): Subcomponents {
   return {
     [SUB_COMPONENTS.BASE]: {
       componentTag: 'div',
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
-      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
@@ -224,7 +225,8 @@ function createSubcomponents(): any {
       componentTag: 'div',
       customCss: createInitialLayer1Css(),
       initialCss: createInitialLayer1Css(),
-      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       tempCustomCss: new Set(['transition']),
       subcomponentSpecificSettings: modalLayerTopSpecificSettings,
     },
@@ -232,22 +234,26 @@ function createSubcomponents(): any {
       componentTag: 'div',
       customCss: createInitialLayer2Css(),
       initialCss: createInitialLayer2Css(),
-      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       tempCustomCss: new Set(['transition']),
     },
     [SUB_COMPONENTS.LAYER_3]: {
       componentTag: 'div',
       customCss: createInitialLayer3Css(),
       initialCss: createInitialLayer3Css(),
-      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       tempCustomCss: new Set(['transition']),
       subcomponentSpecificSettings: modalLayerBottomSpecificSettings,
     },
     [SUB_COMPONENTS.CLOSE]: {
       componentTag: 'div',
+      componentText: '×',
       customCss: createInitialCloseButtonCss(),
       initialCss: createInitialCloseButtonCss(),
-      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
@@ -261,7 +267,8 @@ function createSubcomponents(): any {
       componentText: 'Submit',
       customCss: createInitialButton1Css(),
       initialCss: createInitialButton1Css(),
-      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
@@ -275,7 +282,8 @@ function createSubcomponents(): any {
       componentText: 'Cancel',
       customCss: createInitialButton1Css(),
       initialCss: createInitialButton1Css(),
-      customCssActiveMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
@@ -284,7 +292,7 @@ function createSubcomponents(): any {
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
-  }
+  };
 }
 
 export const defaultModal: NewComponent = {
@@ -293,7 +301,8 @@ export const defaultModal: NewComponent = {
     return {
       type: NEW_COMPONENT_TYPES.MODAL,
       subcomponents,
-      subcomponentsActiveMode: SUB_COMPONENTS.BASE,
+      activeSubcomponentMode: SUB_COMPONENTS.BASE,
+      defaultSubcomponentMode: SUB_COMPONENTS.BASE,
       componentPreviewStructure: createModalComponentPreviewStructure(
         subcomponents[SUB_COMPONENTS.BASE], subcomponents[SUB_COMPONENTS.CLOSE], subcomponents[SUB_COMPONENTS.BUTTON_1], subcomponents[SUB_COMPONENTS.BUTTON_2],
         subcomponents[SUB_COMPONENTS.LAYER_1], subcomponents[SUB_COMPONENTS.LAYER_2], subcomponents[SUB_COMPONENTS.LAYER_3]),

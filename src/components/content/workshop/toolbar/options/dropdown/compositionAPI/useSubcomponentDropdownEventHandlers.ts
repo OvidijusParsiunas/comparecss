@@ -10,7 +10,9 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
     if (!highlightSubcomponents.value) return;
     const subcomponentOverlayElementId = subcomponentAndOverlayElementIdsState.getOverlayIdViaSubcomponentType(subcomponentType as SUB_COMPONENTS);
     const subcomponentOverlayElement = document.getElementById(subcomponentOverlayElementId);
-    if (subcomponentOverlayElement) subcomponentOverlayElement.style.display = displayValue;
+    if (subcomponentOverlayElement) { 
+      subcomponentOverlayElement.style.display = displayValue;
+    }
   }
 
   function getOptionNameFromElement(highlightedOptionElement: HTMLElement): string {

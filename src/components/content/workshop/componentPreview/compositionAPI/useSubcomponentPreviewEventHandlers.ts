@@ -23,8 +23,8 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
 
   const subcomponentMouseEnter = (): void => {
     if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState() || expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState()) return;
-    const { customCss, subcomponentPreviewTransition, customCssActiveMode } = subcomponentProperties;
-    if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
+    const { customCss, subcomponentPreviewTransition, activeCustomCssMode } = subcomponentProperties;
+    if (activeCustomCssMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
       setDefaultUnsetButtonStatesForColorInputs(customCss);
       const transition = subcomponentPreviewTransition || 'unset';
       overwrittenDefaultPropertiesByHover = { hasBeenSet: true, css: { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], transition } };
@@ -35,8 +35,8 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   
   const subcomponentMouseLeave = (): void => {
     if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState() || expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState()) return;
-    const { customCss, customCssActiveMode } = subcomponentProperties;
-    if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT && overwrittenDefaultPropertiesByHover.hasBeenSet) {
+    const { customCss, activeCustomCssMode } = subcomponentProperties;
+    if (activeCustomCssMode === SUB_COMPONENT_CSS_MODES.DEFAULT && overwrittenDefaultPropertiesByHover.hasBeenSet) {
       customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...overwrittenDefaultPropertiesByHover.css };
       overwrittenDefaultPropertiesByHover = { hasBeenSet: false, css: {} };
     }
@@ -45,8 +45,8 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   
   const subcomponentMouseDown = (): void => {
     if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState() || expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState()) return;
-    const { customCss, subcomponentPreviewTransition, customCssActiveMode } = subcomponentProperties;
-    if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
+    const { customCss, subcomponentPreviewTransition, activeCustomCssMode } = subcomponentProperties;
+    if (activeCustomCssMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
       const transition = subcomponentPreviewTransition || 'unset';
       overwrittenDefaultPropertiesByClick = { hasBeenSet: true, css: { ...customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], transition } };
       customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = {
@@ -56,8 +56,8 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   
   const subcomponentMouseUp = (): void => {
     if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState() || expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState()) return;
-    const { customCss, customCssActiveMode } = subcomponentProperties;
-    if (customCssActiveMode === SUB_COMPONENT_CSS_MODES.DEFAULT && overwrittenDefaultPropertiesByClick.hasBeenSet) {
+    const { customCss, activeCustomCssMode } = subcomponentProperties;
+    if (activeCustomCssMode === SUB_COMPONENT_CSS_MODES.DEFAULT && overwrittenDefaultPropertiesByClick.hasBeenSet) {
       customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };
       overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
     }

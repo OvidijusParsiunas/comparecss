@@ -18,7 +18,6 @@ clicking on an option again to remove settings panel
 the auxiliary padding at the bottom prevents the dropdown from opening
 button size is not set in settings correctly
 maybe each equal section should be selectable
-open dropdown and create a new subcomponent when it is opened, then attempt to open after creating and an error will be thrown
 create an alert component, open the close subcomponent, select the click css mode, click border and an error will be thrown!
 
 option to import an existing button style!

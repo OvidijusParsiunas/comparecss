@@ -9,7 +9,7 @@ function setSubcomponentAndOverlayElementIdsState(state: SubcomponentAndOverlayE
 }
 
 function getOverlayIdViaSubcomponentType(subcomponentType: SUB_COMPONENTS): string {
-  return subcomponentAndOverlayElementIdsObject[subcomponentType].overlayId;
+  return subcomponentAndOverlayElementIdsObject[subcomponentType] && subcomponentAndOverlayElementIdsObject[subcomponentType].overlayId;
 }
 
 function getSubcomponentTypeViaOverlayId(overlayId: string): SUB_COMPONENTS {

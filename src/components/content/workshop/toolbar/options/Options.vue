@@ -11,14 +11,14 @@
           :uniqueIdentifier="SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
           :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
           :objectContainingActiveOption="component"
-          :activeOptionPropertyKeyName="'subcomponentsActiveMode'"
+          :activeOptionPropertyKeyName="'activeSubcomponentMode'"
           :fontAwesomeIcon="'angle-double-down'"
           :highlightSubcomponents="true"
           :isButtonGroup="true"
           :isNested="true"
           :customEventHandlers="useSubcomponentDropdownEventHandlers"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-          @mouse-click-new-option="newSubcomponentsModeClicked($event)"
+          @mouse-click-new-option="newSubcomponentModeClicked($event)"
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       </div>
       <div v-if="component.type === MODAL_COMPONENT_TYPE" class="option-component-button">
@@ -29,27 +29,27 @@
           <font-awesome-icon v-else class="expand-icon dropdown-button-marker" icon="expand-alt"/>
         </button>
       </div>
-      <div class="option-component-button" v-if="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent">
+      <div class="option-component-button" v-if="component.subcomponents[component.activeSubcomponentMode].optionalSubcomponent">
         <button
           type="button" class="btn option-action-button" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
-          :class="component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add'"
+          :class="component.subcomponents[component.activeSubcomponentMode].optionalSubcomponent.currentlyDisplaying ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add'"
           @mouseenter="subcomponentMouseEnterHandler"
           @mouseleave="subcomponentMouseLeaveHandler"
-          @click="toggleSubcomponent(component.subcomponents[component.subcomponentsActiveMode])">
+          @click="toggleSubcomponent(component.subcomponents[component.activeSubcomponentMode])">
         </button>
       </div>
-      <div v-if="!component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent || component.subcomponents[component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying"> 
+      <div v-if="!component.subcomponents[component.activeSubcomponentMode].optionalSubcomponent || component.subcomponents[component.activeSubcomponentMode].optionalSubcomponent.currentlyDisplaying"> 
         <dropdown class="option-component-button"
           :uniqueIdentifier="CSS_MODES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
-          :dropdownOptions="componentTypeToOptions[component.type][component.subcomponentsActiveMode]"
-          :objectContainingActiveOption="component.subcomponents[component.subcomponentsActiveMode]"
-          :activeOptionPropertyKeyName="'customCssActiveMode'"
+          :dropdownOptions="componentTypeToOptions[component.type][component.activeSubcomponentMode]"
+          :objectContainingActiveOption="component.subcomponents[component.activeSubcomponentMode]"
+          :activeOptionPropertyKeyName="'activeCustomCssMode'"
           :fontAwesomeIcon="'angle-down'"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
           @mouse-click-new-option="newCssModeClicked($event)"/>
         <button
           type="button"
-          v-for="(option) in componentTypeToOptions[component.type][component.subcomponentsActiveMode][component.subcomponents[component.subcomponentsActiveMode].customCssActiveMode]" :key="option"
+          v-for="(option) in componentTypeToOptions[component.type][component.activeSubcomponentMode][component.subcomponents[component.activeSubcomponentMode].activeCustomCssMode]" :key="option"
           :disabled="option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive"
           class="btn btn-outline-secondary option-component-button option-select-button-default"
           :class="[
@@ -149,9 +149,9 @@ export default {
       const buttonElement = event.currentTarget as HTMLElement;
       const subcomponentSelectModeCallbackFunction = SubcomponentSelectModeService.initiate(buttonElement);
       const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
-      const subcomponentsModeClickedFunc = this.newSubcomponentsModeClicked;
+      const subcomponentModeClickedFunc = this.newSubcomponentModeClicked;
       this.$emit('toggle-subcomponent-select-mode',
-        [subcomponentSelectModeCallbackFunction, keyTriggers, buttonElement, subcomponentsModeClickedFunc] as ToggleSubcomponentSelectModeEvent);
+        [subcomponentSelectModeCallbackFunction, keyTriggers, buttonElement, subcomponentModeClickedFunc] as ToggleSubcomponentSelectModeEvent);
     },
     selectOption(option: Option): void {
       this.setNewActiveOption(option);
@@ -164,20 +164,20 @@ export default {
     getActiveOption(): Option {
       return this.activeOption;
     },
-    newSubcomponentsModeClicked(newSubComponent: SUB_COMPONENTS): void {
+    newSubcomponentModeClicked(newSubComponent: SUB_COMPONENTS): void {
       // reset css mode of the previous subcomponent to the first one
-      const oldActiveSubcomponent = this.component.subcomponents[this.component.subcomponentsActiveMode];
-      oldActiveSubcomponent.customCssActiveMode = Object.keys(oldActiveSubcomponent.customCss)[0];
-      this.component.subcomponentsActiveMode = newSubComponent;
-      if (this.component.subcomponents[this.component.subcomponentsActiveMode].optionalSubcomponent
-          && !this.component.subcomponents[this.component.subcomponentsActiveMode].optionalSubcomponent.currentlyDisplaying) {
+      const oldActiveSubcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentMode];
+      oldActiveSubcomponent.activeCustomCssMode = oldActiveSubcomponent.defaultCustomCssMode;
+      this.component.activeSubcomponentMode = newSubComponent;
+      if (this.component.subcomponents[this.component.activeSubcomponentMode].optionalSubcomponent
+          && !this.component.subcomponents[this.component.activeSubcomponentMode].optionalSubcomponent.currentlyDisplaying) {
         this.hideSettings();
         return;
       }
       this.newOptionOnNewModeSelect();
     },
     newCssModeClicked(newCssMode: SUB_COMPONENT_CSS_MODES): void {
-      this.component.subcomponents[this.component.subcomponentsActiveMode].customCssActiveMode = newCssMode;
+      this.component.subcomponents[this.component.activeSubcomponentMode].activeCustomCssMode = newCssMode;
       this.newOptionOnNewModeSelect();
     },
     updateOptionsForNewComponent(lastActiveOptionPriorToAllComponentsDeletion: Option): void {
@@ -206,7 +206,7 @@ export default {
           const defaultOption = this.getDefaultOption();
           this.selectOption(defaultOption); 
         }
-        SubcomponentToggleService.changeSubcomponentOverlayClass(optionalSubcomponent, this.component.subcomponentsActiveMode, false,
+        SubcomponentToggleService.changeSubcomponentOverlayClass(optionalSubcomponent, this.component.activeSubcomponentMode, false,
           SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
       } else if (!this.getIsDoNotShowModalAgainState()) {
         this.currentRemoveSubcomponentModalTargetId = this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID;
@@ -215,7 +215,7 @@ export default {
       } else {
         subcomponent.customCss = JSONManipulation.deepCopy(initialCss);
         optionalSubcomponent.currentlyDisplaying = false;
-        SubcomponentToggleService.changeSubcomponentOverlayClass(optionalSubcomponent, this.component.subcomponentsActiveMode, true,
+        SubcomponentToggleService.changeSubcomponentOverlayClass(optionalSubcomponent, this.component.activeSubcomponentMode, true,
           SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
         this.hideSettings();
       }
@@ -242,8 +242,8 @@ export default {
       return this.getActiveModeOptions()[0];
     },
     getActiveModeOptions(): Option[] {
-      const { subcomponents, subcomponentsActiveMode, type } = this.component;
-      return componentTypeToOptions[type][subcomponentsActiveMode][subcomponents[subcomponentsActiveMode].customCssActiveMode];
+      const { subcomponents, activeSubcomponentMode, type } = this.component;
+      return componentTypeToOptions[type][activeSubcomponentMode][subcomponents[activeSubcomponentMode].activeCustomCssMode];
     },
     hideSettings(): void {
       this.$emit('hide-settings');
@@ -253,7 +253,7 @@ export default {
       this.$nextTick(() => {
         this.componentPreviewAssistance.margin = this.activeOption.type === WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN
           && this.isSettingsDisplayed
-          && this.component.subcomponentsActiveMode !== SUB_COMPONENTS.CLOSE
+          && this.component.activeSubcomponentMode !== SUB_COMPONENTS.CLOSE
           && !this.isExpandedModalPreviewModeActive;
       });
     },

@@ -45,7 +45,7 @@
             @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId].subcomponentMouseLeave()"
             @mousedown="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId].subcomponentMouseDown()"
             @mouseup="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId].subcomponentMouseUp()"
-            :style="component.componentPreviewStructure.baseCss.customCssActiveMode === SUB_COMPONENT_CSS_MODES.CLICK
+            :style="component.componentPreviewStructure.baseCss.activeCustomCssMode === SUB_COMPONENT_CSS_MODES.CLICK
               ? [
                   [ component.componentPreviewStructure.baseCss.inheritedCss ? component.componentPreviewStructure.baseCss.inheritedCss.css: '' ],
                   component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
@@ -55,7 +55,7 @@
               : [
                   [ component.componentPreviewStructure.baseCss.inheritedCss ? component.componentPreviewStructure.baseCss.inheritedCss.css: '' ],
                   component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
-                  component.componentPreviewStructure.baseCss.customCss[component.componentPreviewStructure.baseCss.customCssActiveMode],
+                  component.componentPreviewStructure.baseCss.customCss[component.componentPreviewStructure.baseCss.activeCustomCssMode],
                 ]">
                 <layers
                   :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
