@@ -15,7 +15,6 @@ when hovering over option that only works in expanded modal view - higlight the 
 potentially rename initial to default convention
 potentially add x button to border coloring
 clicking on an option again to remove settings panel
-the auxiliary padding at the bottom prevents the dropdown from opening
 button size is not set in settings correctly
 maybe each equal section should be selectable
 create an alert component, open the close subcomponent, select the click css mode, click border and an error will be thrown!

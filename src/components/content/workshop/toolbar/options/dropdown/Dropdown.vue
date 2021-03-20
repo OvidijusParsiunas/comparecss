@@ -9,7 +9,8 @@
       </div>
       <font-awesome-icon class="arrow-down-icon dropdown-button-marker" :icon="fontAwesomeIcon"/>
     </button>
-    <div class="auxiliary-padding dropdown-menu-options-marker"
+    <div class="auxiliary-padding dropdown-menu-options-marker" :class="uniqueIdentifier"
+      @click="openDropdown"
       @mouseenter="mouseEnterAuxiliaryPadding"
       @mouseleave="mouseLeaveAuxiliaryPadding">
     </div>
