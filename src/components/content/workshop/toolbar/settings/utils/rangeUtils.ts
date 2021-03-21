@@ -83,8 +83,10 @@ export default class RangeUtils {
   private static updateCustomCssSetting(settingToBeUpdated: any, cssPropertyValue: string): void {
     const singlePropertyValue = settingToBeUpdated.spec.partialCss
       ? cssPropertyValue.split(' ')[settingToBeUpdated.spec.partialCss.position] : cssPropertyValue;
-    // change
-    settingToBeUpdated.spec.default = RangeUtils.parseString(singlePropertyValue, settingToBeUpdated.spec.smoothingDivisible); 
+    const newRangeValue = RangeUtils.parseString(singlePropertyValue, settingToBeUpdated.spec.smoothingDivisible);
+    if (Math.abs(Number.parseFloat(settingToBeUpdated.spec.default) - newRangeValue) >= settingToBeUpdated.spec.smoothingDivisible) {
+      settingToBeUpdated.spec.default = RangeUtils.parseString(singlePropertyValue, settingToBeUpdated.spec.smoothingDivisible); 
+    }
   }
 
   public static updateSettings(settingToBeUpdated: any, allSettings: any, subcomponentProperties: SubcomponentProperties, selectorCurrentValues: unknown): void {
