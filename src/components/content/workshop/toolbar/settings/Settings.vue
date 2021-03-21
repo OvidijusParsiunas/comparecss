@@ -169,8 +169,6 @@ interface Consts {
 
 interface Data {
   settings: any;
-  // change - is this still needed // does the trigger still work
-  selectorCurrentValues: unknown;
   inputDropdownCurrentValues: unknown;
   customFeatureRangeValue: unknown;
   settingsVisible: boolean;
@@ -193,11 +191,10 @@ export default {
           this.subcomponentProperties.subcomponentSpecificSettings, this.settings.options);
         this.$nextTick(() => {
           const { customCss, activeCustomCssMode } = this.subcomponentProperties;
-          this.selectorCurrentValues = {};
           this.inputDropdownCurrentValues = {};
           (this.settings.options || []).forEach((setting) => {
             if (setting.type === SETTINGS_TYPES.RANGE) {
-              RangeUtils.updateSettings(setting, this.settings, this.subcomponentProperties, this.selectorCurrentValues);
+              RangeUtils.updateSettings(setting, this.settings, this.subcomponentProperties);
             } else if (setting.type === SETTINGS_TYPES.COLOR_PICKER) {
               ColorPickerUtils.updateSettings(setting.spec, this.subcomponentProperties);
             } else if (setting.type === SETTINGS_TYPES.INPUT_DROPDOWN) {
@@ -218,7 +215,6 @@ export default {
     };
   },
   data: (): Data => ({
-    selectorCurrentValues: {},
     inputDropdownCurrentValues: {},
     customFeatureRangeValue: null,
     settings: {},
@@ -226,7 +222,7 @@ export default {
   }),
   methods: {
     updateRange(event: MouseEvent, setting: any): void {
-      RangeUtils.updateProperties(event, setting, this.settings, this.subcomponentProperties, this.selectorCurrentValues);
+      RangeUtils.updateProperties(event, setting, this.settings, this.subcomponentProperties);
       if (setting.spec.customFeatureObjectKeys) this.customFeatureRangeValue = SharedUtils.getCustomFeatureValue(
         setting.spec.customFeatureObjectKeys, this.subcomponentProperties.customFeatures);
     },

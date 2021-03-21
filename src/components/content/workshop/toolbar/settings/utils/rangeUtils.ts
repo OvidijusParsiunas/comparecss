@@ -7,12 +7,11 @@ export default class RangeUtils {
 
   private static DEFAULT_RANGE_VALUE = 0;
 
-  private static activeTriggersForCustomCss(trigger: any, subcomponentProperties: SubcomponentProperties, selectorCurrentValues: unknown): void {
+  private static activeTriggersForCustomCss(trigger: any, subcomponentProperties: SubcomponentProperties): void {
     const { customCss, activeCustomCssMode } = subcomponentProperties;
     const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, SUB_COMPONENT_CSS_MODES.CLICK, trigger.cssProperty);
     if (trigger.conditions.has(cssPropertyValue)) {
       customCss[activeCustomCssMode][trigger.cssProperty] = trigger.defaultValue;
-      if (trigger.selector) { selectorCurrentValues[trigger.cssProperty] = trigger.defaultValue; }
     }
   }
 
@@ -25,12 +24,12 @@ export default class RangeUtils {
   }
 
   private static activateTriggers(triggers: any, subcomponentProperties: SubcomponentProperties,
-      allSettings: any, selectorCurrentValues: unknown): void {
+      allSettings: any): void {
     (triggers || []).forEach((trigger) => {
       if (trigger.customFeatureObjectKeys) {
         RangeUtils.activateTriggersForCustomSubcomponentProperties(trigger, subcomponentProperties.customFeatures, allSettings);
       } else {
-        RangeUtils.activeTriggersForCustomCss(trigger, subcomponentProperties, selectorCurrentValues);
+        RangeUtils.activeTriggersForCustomCss(trigger, subcomponentProperties);
       }
     });
   }
@@ -58,9 +57,9 @@ export default class RangeUtils {
   }
 
   public static updateProperties(event: MouseEvent, updatedSetting: any, allSettings: any,
-      subcomponentProperties: SubcomponentProperties, selectorCurrentValues: unknown): void {
+      subcomponentProperties: SubcomponentProperties): void {
     const { triggers, spec } = updatedSetting;
-    RangeUtils.activateTriggers(triggers, subcomponentProperties, allSettings, selectorCurrentValues);
+    RangeUtils.activateTriggers(triggers, subcomponentProperties, allSettings);
     const rangeValue = (event.target as HTMLInputElement).value;
     if (spec.partialCss != undefined) {
       if (spec.cssProperty === 'boxShadow') BoxShadowUtils.updateBoxShadowRangeValue(rangeValue, spec, subcomponentProperties);
@@ -89,11 +88,11 @@ export default class RangeUtils {
     }
   }
 
-  public static updateSettings(settingToBeUpdated: any, allSettings: any, subcomponentProperties: SubcomponentProperties, selectorCurrentValues: unknown): void {
+  public static updateSettings(settingToBeUpdated: any, allSettings: any, subcomponentProperties: SubcomponentProperties): void {
     const { customCss, activeCustomCssMode } = subcomponentProperties;
     const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCustomCssMode, settingToBeUpdated.spec.cssProperty);
     if (cssPropertyValue !== undefined) {
-      if (customCss[activeCustomCssMode]) RangeUtils.activateTriggers(settingToBeUpdated.triggers, subcomponentProperties, allSettings, selectorCurrentValues);
+      if (customCss[activeCustomCssMode]) RangeUtils.activateTriggers(settingToBeUpdated.triggers, subcomponentProperties, allSettings);
       const hasBoxShadowBeenSet = settingToBeUpdated.spec.cssProperty === 'boxShadow' && BoxShadowUtils.setBoxShadowSettingsRangeValue(cssPropertyValue, settingToBeUpdated.spec);
       if (!hasBoxShadowBeenSet) { RangeUtils.updateCustomCssSetting(settingToBeUpdated, cssPropertyValue); }
     } else if (settingToBeUpdated.spec.customFeatureObjectKeys) {
