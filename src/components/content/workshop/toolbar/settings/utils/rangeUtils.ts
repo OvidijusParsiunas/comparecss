@@ -83,6 +83,7 @@ export default class RangeUtils {
   private static updateCustomCssSetting(settingToBeUpdated: any, cssPropertyValue: string): void {
     const singlePropertyValue = settingToBeUpdated.spec.partialCss
       ? cssPropertyValue.split(' ')[settingToBeUpdated.spec.partialCss.position] : cssPropertyValue;
+    // change
     settingToBeUpdated.spec.default = RangeUtils.parseString(singlePropertyValue, settingToBeUpdated.spec.smoothingDivisible); 
   }
 

@@ -150,7 +150,6 @@ import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSetti
 import { UseActionsDropdown } from '../../../../../interfaces/UseActionsDropdown';
 import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
 import useActionsDropdown from './compositionAPI/useActionsDropdown';
-import ActionsDropdownUtils from './utils/actionsDropdownUtils';
 import dropdown from '../options/dropdown/Dropdown.vue';
 import ColorPickerUtils from './utils/colorPickerUtils';
 import CheckboxUtils from './utils/checkboxUtils';
@@ -170,6 +169,7 @@ interface Consts {
 
 interface Data {
   settings: any;
+  // change - is this still needed // does the trigger still work
   selectorCurrentValues: unknown;
   inputDropdownCurrentValues: unknown;
   customFeatureRangeValue: unknown;
@@ -203,8 +203,6 @@ export default {
             } else if (setting.type === SETTINGS_TYPES.INPUT_DROPDOWN) {
               const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCustomCssMode, setting.spec.cssProperty);
               if (cssPropertyValue) { this.inputDropdownCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
-            } else if (setting.type === SETTINGS_TYPES.ACTIONS_DROPDOWN) {
-              ActionsDropdownUtils.updateSettings(setting.spec, this.subcomponentProperties);
             } else if (setting.type === SETTINGS_TYPES.CHECKBOX) {
               CheckboxUtils.updateSettings(setting.spec, this.subcomponentProperties);
             }
@@ -286,6 +284,7 @@ export default {
     },
     resetSubcomponentProperties(options: any): void {
       options.forEach((option) => {
+        // change - if default has not been touched and hover has, on click mode - resetting also resets the hover
         const { cssProperty, valueInSetObject, customFeatureObjectKeys } = option.spec;
         if (customFeatureObjectKeys) {
           const defaultValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, this.subcomponentProperties.defaultCustomFeatures);

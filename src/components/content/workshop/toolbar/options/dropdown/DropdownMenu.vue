@@ -23,7 +23,7 @@ import { DROPDOWN_OPTION_MARKER } from '../../../../../../consts/elementClassMar
 import BrowserType from '../../../../../../services/workshop/browserType';
 
 interface Consts {
-  DROPDOWN_OPTION_MARKER;
+  DROPDOWN_OPTION_MARKER: string;
   BROWSER_SPECIFIC_DROPDOWN_MENU_STYLE: WorkshopComponentCss;
 }
 

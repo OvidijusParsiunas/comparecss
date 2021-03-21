@@ -28,11 +28,10 @@ export default class SharedUtils {
   public static getCustomFeatureValue(customFeatureObjectKeys: string[], customFeatures: CustomFeatures): unknown {
     if (customFeatureObjectKeys.length === 0) {
       return customFeatures;
-    } else {
-      const innerCustomFeaturesObject = customFeatures[customFeatureObjectKeys[0]];
-      const newCustomFeatureObjectKeysArray = customFeatureObjectKeys.slice(1, customFeatureObjectKeys.length);
-      return SharedUtils.getCustomFeatureValue(newCustomFeatureObjectKeysArray, innerCustomFeaturesObject);
     }
+    const innerCustomFeaturesObject = customFeatures[customFeatureObjectKeys[0]];
+    const newCustomFeatureObjectKeysArray = customFeatureObjectKeys.slice(1, customFeatureObjectKeys.length);
+    return SharedUtils.getCustomFeatureValue(newCustomFeatureObjectKeysArray, innerCustomFeaturesObject);
   }
 
   public static setCustomFeatureValue(customFeatureObjectKeys: string[], customFeatures: CustomFeatures, newValue: unknown): void {

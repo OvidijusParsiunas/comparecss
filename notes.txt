@@ -17,7 +17,7 @@ potentially add x button to border coloring
 clicking on an option again to remove settings panel
 button size is not set in settings correctly
 maybe each equal section should be selectable
-create an alert component, open the close subcomponent, select the click css mode, click border and an error will be thrown!
+mouse down on range should maybe close the dropdowns
 
 option to import an existing button style!
 
