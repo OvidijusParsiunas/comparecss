@@ -152,6 +152,7 @@ import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
 import useActionsDropdown from './compositionAPI/useActionsDropdown';
 import dropdown from '../options/dropdown/Dropdown.vue';
 import ColorPickerUtils from './utils/colorPickerUtils';
+import SettingsUtils from './utils/settingsUtils';
 import CheckboxUtils from './utils/checkboxUtils';
 import SharedUtils from './utils/sharedUtils';
 import RangeUtils from './utils/rangeUtils';
@@ -279,61 +280,7 @@ export default {
       CheckboxUtils.updateProperties(spec, triggers, this.subcomponentProperties, this.settings);
     },
     resetSubcomponentProperties(options: any): void {
-      options.forEach((option) => {
-        // change - if default has not been touched and hover has, on click mode - resetting also resets the hover
-        const { cssProperty, valueInSetObject, customFeatureObjectKeys } = option.spec;
-        if (customFeatureObjectKeys) {
-          const defaultValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, this.subcomponentProperties.defaultCustomFeatures);
-          const appropriateTypeDefaultValue = valueInSetObject ? new Set([...(defaultValue as Set<undefined>)]) : defaultValue;
-          SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, this.subcomponentProperties.customFeatures,
-            appropriateTypeDefaultValue);
-          return;
-        }
-        let cssValue = undefined;
-        let propertyRemoved = false;
-        const { customCss, initialCss, auxiliaryPartialCss, activeCustomCssMode } = this.subcomponentProperties;
-        switch (activeCustomCssMode) {
-          case (SUB_COMPONENT_CSS_MODES.CLICK): {
-            if (initialCss[SUB_COMPONENT_CSS_MODES.CLICK] && initialCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty]) {
-              cssValue = initialCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
-              break;
-            }
-            if (customCss[SUB_COMPONENT_CSS_MODES.CLICK]) {
-              delete customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
-              propertyRemoved = true;
-              break;
-            }
-          }
-          case (SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
-            if (initialCss[SUB_COMPONENT_CSS_MODES.HOVER] && initialCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty]) {
-              cssValue = initialCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
-              break;
-            }
-            if (customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] && customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty]) {
-              if (customCss[SUB_COMPONENT_CSS_MODES.HOVER] && customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty]) {
-                delete customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
-              }
-              propertyRemoved = true;
-              break;
-            }
-          case (SUB_COMPONENT_CSS_MODES.DEFAULT || SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
-            if (initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT] && initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty]) {
-              cssValue = initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty];
-              break;
-            }
-          default:
-            break;
-        }
-        if (auxiliaryPartialCss && auxiliaryPartialCss[activeCustomCssMode] && auxiliaryPartialCss[activeCustomCssMode][cssProperty]) {
-          delete auxiliaryPartialCss[activeCustomCssMode][cssProperty];
-        }
-        if (propertyRemoved) return;
-        if (!customCss[activeCustomCssMode]) {
-          customCss[activeCustomCssMode] = { [cssProperty]: cssValue };
-        } else {
-          customCss[activeCustomCssMode][cssProperty] = cssValue;
-        }
-      });
+      SettingsUtils.resetSubcomponentProperties(options, this.subcomponentProperties);
       this.updateSettings();
     },
     // UX - SUBCOMPONENT SELECT
