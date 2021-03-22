@@ -109,7 +109,7 @@
                 <dropdown class="option-component-button"
                   :uniqueIdentifier="`${ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX}${settingIndex}`"
                   :dropdownOptions="setting.spec.options"
-                  :objectContainingActiveOption="setting.spec.tempCustomCssObject || getObjectContainingActiveOption(setting.spec, subcomponentProperties)"
+                  :objectContainingActiveOption="setting.spec.tempCustomCssObject || actionsDropdownCurrentObjects[setting.spec.cssProperty || setting.spec.name] || {}"
                   :activeOptionPropertyKeyName="setting.spec.cssProperty || setting.spec.activeOptionPropertyKeyName"
                   :fontAwesomeIcon="'caret-down'"
                   @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
@@ -118,7 +118,7 @@
                   @mouse-enter-option="mouseEnterActionsDropdownOption(this, $event, setting.spec, subcomponentProperties)"
                   @mouse-leave-dropdown="mouseLeaveActionsDropdown(this, $event, setting.spec, subcomponentProperties)"
                   @mouse-click-option="mouseClickActionsDropdownOption(this, $event, setting, settings, subcomponentProperties)"
-                  @mouse-click-new-option="mouseClickActionsDropdownNewOption($event, setting.spec, subcomponentProperties)"/>
+                  @mouse-click-new-option="mouseClickActionsDropdownNewOption($event, setting.spec, subcomponentProperties, actionsDropdownCurrentObjects[setting.spec.cssProperty || setting.spec.activeOptionPropertyKeyName])"/>
               </div>
 
               <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.CHECKBOX">
@@ -171,6 +171,7 @@ interface Consts {
 interface Data {
   settings: any;
   inputDropdownCurrentValues: unknown;
+  actionsDropdownCurrentObjects: unknown;
   customFeatureRangeValue: unknown;
   settingsVisible: boolean;
 }
@@ -201,6 +202,9 @@ export default {
             } else if (setting.type === SETTINGS_TYPES.INPUT_DROPDOWN) {
               const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCustomCssMode, setting.spec.cssProperty);
               if (cssPropertyValue) { this.inputDropdownCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
+            } else if (setting.type === SETTINGS_TYPES.ACTIONS_DROPDOWN) {
+              const cssPropertyValue = this.getObjectContainingActiveOption(setting.spec, this.subcomponentProperties);
+              if (cssPropertyValue) { this.actionsDropdownCurrentObjects[setting.spec.cssProperty || setting.spec.name] = cssPropertyValue; }
             } else if (setting.type === SETTINGS_TYPES.CHECKBOX) {
               CheckboxUtils.updateSettings(setting.spec, this.subcomponentProperties);
             }
@@ -217,6 +221,7 @@ export default {
   },
   data: (): Data => ({
     inputDropdownCurrentValues: {},
+    actionsDropdownCurrentObjects: {},
     customFeatureRangeValue: null,
     settings: {},
     settingsVisible: true,

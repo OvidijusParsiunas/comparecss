@@ -68,12 +68,12 @@ export default function useActionsDropdown(): UseActionsDropdown {
   }
   
   const mouseClickActionsDropdownNewOption = (triggeredOptionName: string, settingSpec: any,
-      subcomponentProperties: SubcomponentProperties): void => {
+      subcomponentProperties: SubcomponentProperties, activeOptionsObject: any): void => {
     if (expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState()) return;
     const { customFeatures } = subcomponentProperties;
     const { customFeatureObjectKeys, cssProperty } = settingSpec;
     if (cssProperty) ActionsDropdownUtils.mouseClickActionsDropdownNewOption(dropdownCustomCssProperty, triggeredOptionName,
-      subcomponentProperties, settingSpec);
+      subcomponentProperties, settingSpec, activeOptionsObject);
     if (customFeatureObjectKeys) SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, customFeatures, triggeredOptionName);
   }
   
