@@ -12,11 +12,11 @@ export default class SharedUtils {
         if (css[SUB_COMPONENT_CSS_MODES.CLICK] && css[SUB_COMPONENT_CSS_MODES.CLICK].hasOwnProperty(cssProperty)) {
           return css[SUB_COMPONENT_CSS_MODES.CLICK][cssProperty];
         }
-      case (SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
+      case (SUB_COMPONENT_CSS_MODES.HOVER):
         if (css[SUB_COMPONENT_CSS_MODES.HOVER] && css[SUB_COMPONENT_CSS_MODES.HOVER].hasOwnProperty(cssProperty)) {
           return css[SUB_COMPONENT_CSS_MODES.HOVER][cssProperty];
         }
-      case (SUB_COMPONENT_CSS_MODES.DEFAULT || SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
+      case (SUB_COMPONENT_CSS_MODES.DEFAULT):
         if (css[SUB_COMPONENT_CSS_MODES.DEFAULT] && css[SUB_COMPONENT_CSS_MODES.DEFAULT].hasOwnProperty(cssProperty)) {
           return css[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty];
         }

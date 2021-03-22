@@ -67,11 +67,11 @@ export default class CssCleaner {
         if (customCss[SUB_COMPONENT_CSS_MODES.CLICK] && customCss[SUB_COMPONENT_CSS_MODES.CLICK].hasOwnProperty(cssPropertyName)) {
           return customCss[SUB_COMPONENT_CSS_MODES.CLICK][cssPropertyName];
         }
-      case (SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
+      case (SUB_COMPONENT_CSS_MODES.HOVER):
         if (customCss[SUB_COMPONENT_CSS_MODES.HOVER] && customCss[SUB_COMPONENT_CSS_MODES.HOVER].hasOwnProperty(cssPropertyName)) {
           return customCss[SUB_COMPONENT_CSS_MODES.HOVER][cssPropertyName];
         }
-      case (SUB_COMPONENT_CSS_MODES.DEFAULT || SUB_COMPONENT_CSS_MODES.HOVER || SUB_COMPONENT_CSS_MODES.CLICK):
+      case (SUB_COMPONENT_CSS_MODES.DEFAULT):
         if (customCss[SUB_COMPONENT_CSS_MODES.DEFAULT] && customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].hasOwnProperty(cssPropertyName)) {
           return customCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssPropertyName];
         }
