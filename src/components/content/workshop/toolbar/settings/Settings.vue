@@ -32,7 +32,9 @@
                       {{setting.spec.default}}px
                     </div>
                   </div>
-                  <input type="range" id="formControlRange" class="form-control-range"
+                  <input type="range" id="formControlRange"
+                    class="form-control-range"
+                    :class="RANGE_SETTING_MARKER"
                     v-bind:min="setting.spec.scale[0]"
                     v-bind:max="setting.spec.scale[1]"
                     v-model="setting.spec.default"
@@ -88,7 +90,8 @@
                   {{setting.spec.name}}
                 </div>
                 <div class="input-group">
-                  <input type="text" class="form-control" aria-label="Text input with dropdown button"
+                  <input type="text"
+                    class="form-control"
                     :ref="`elementReference${settingIndex}`"
                     v-bind:value="inputDropdownsValues[setting.spec.cssProperty] || subcomponentProperties.customCss[subcomponentProperties.activeCustomCssMode][setting.spec.cssProperty]"
                     @input="inputDropdownKeyboardInput($event, setting.spec.cssProperty)"
@@ -148,6 +151,7 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToo
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSettingsState';
 import { UseActionsDropdown } from '../../../../../interfaces/UseActionsDropdown';
+import { RANGE_SETTING_MARKER } from '../../../../../consts/elementClassMarkers';
 import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
 import useActionsDropdown from './compositionAPI/useActionsDropdown';
 import dropdown from '../options/dropdown/Dropdown.vue';
@@ -159,6 +163,7 @@ import RangeUtils from './utils/rangeUtils';
 
 interface Consts {
   SETTINGS_TYPES;
+  RANGE_SETTING_MARKER: string;
   SUB_COMPONENT_CSS_MODES;
   UNSET_COLOR_BUTTON_DISPLAYED_STATE;
   UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX;
@@ -181,6 +186,7 @@ export default {
   setup(): Consts & UseActionsDropdown {
     return {
       SETTINGS_TYPES,
+      RANGE_SETTING_MARKER,
       SUB_COMPONENT_CSS_MODES,
       UNSET_COLOR_BUTTON_DISPLAYED_STATE,
       UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX,

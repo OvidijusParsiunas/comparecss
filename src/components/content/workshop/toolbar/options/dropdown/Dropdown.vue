@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { COMPONENT_CARD_MARKER, DROPDOWN_OPTION_MARKER } from '../../../../../../consts/elementClassMarkers';
+import { COMPONENT_CARD_MARKER, DROPDOWN_OPTION_MARKER, RANGE_SETTING_MARKER } from '../../../../../../consts/elementClassMarkers';
 import { CUSTOM_DROPDOWN_OPTION_CLASSES } from '../../../../../../consts/customDropdownOptionClasses.enum';
 import { OptionMouseEnter, OptionMouseLeave } from '../../../../../../interfaces/dropdownMenuMouseEvents';
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
@@ -275,7 +275,7 @@ export default {
       if (this.mouseLeaveOptionEventHandler) this.mouseLeaveOptionEventHandler(blurredOptionElement);
     },
     hideDropdownMenu(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
-      if (event.type === 'mousedown' && !(event.target as HTMLElement).classList.contains(COMPONENT_CARD_MARKER)) {
+      if (event.type === 'mousedown' && this.isIgnoreOnMouseDown((event.target as HTMLElement).classList)) {
         return { shouldRepeat: true };
       }
       let closedViaKey = false;
@@ -304,6 +304,9 @@ export default {
       this.dropdowns = [];
       this.areMenusDisplayed = false;
       return { shouldRepeat: false };
+    },
+    isIgnoreOnMouseDown(targetElementClassList: DOMTokenList): boolean {
+      return !targetElementClassList.contains(COMPONENT_CARD_MARKER) && !targetElementClassList.contains(RANGE_SETTING_MARKER);
     },
     hideFirstMenu(): void {
       this.$refs.dropdownMenus.childNodes[1].style.display = 'none';
