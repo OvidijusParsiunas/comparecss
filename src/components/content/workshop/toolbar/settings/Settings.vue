@@ -90,7 +90,7 @@
                 <div class="input-group">
                   <input type="text" class="form-control" aria-label="Text input with dropdown button"
                     :ref="`elementReference${settingIndex}`"
-                    v-bind:value="inputDropdownCurrentValues[setting.spec.cssProperty] || subcomponentProperties.customCss[subcomponentProperties.activeCustomCssMode][setting.spec.cssProperty]"
+                    v-bind:value="inputDropdownsValues[setting.spec.cssProperty] || subcomponentProperties.customCss[subcomponentProperties.activeCustomCssMode][setting.spec.cssProperty]"
                     @input="inputDropdownKeyboardInput($event, setting.spec.cssProperty)"
                     @keyup.enter="blurInputDropdown(`elementReference${settingIndex}`)">
                   <div class="input-group-append">
@@ -109,7 +109,7 @@
                 <dropdown class="option-component-button"
                   :uniqueIdentifier="`${ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX}${settingIndex}`"
                   :dropdownOptions="setting.spec.options"
-                  :objectContainingActiveOption="setting.spec.tempCustomCssObject || actionsDropdownCurrentObjects[setting.spec.cssProperty || setting.spec.name] || {}"
+                  :objectContainingActiveOption="setting.spec.tempCustomCssObject || actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.name] || {}"
                   :activeOptionPropertyKeyName="setting.spec.cssProperty || setting.spec.activeOptionPropertyKeyName"
                   :fontAwesomeIcon="'caret-down'"
                   @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
@@ -118,7 +118,7 @@
                   @mouse-enter-option="mouseEnterActionsDropdownOption(this, $event, setting.spec, subcomponentProperties)"
                   @mouse-leave-dropdown="mouseLeaveActionsDropdown(this, $event, setting.spec, subcomponentProperties)"
                   @mouse-click-option="mouseClickActionsDropdownOption(this, $event, setting, settings, subcomponentProperties)"
-                  @mouse-click-new-option="mouseClickActionsDropdownNewOption($event, setting.spec, subcomponentProperties, actionsDropdownCurrentObjects[setting.spec.cssProperty || setting.spec.activeOptionPropertyKeyName])"/>
+                  @mouse-click-new-option="mouseClickActionsDropdownNewOption($event, setting.spec, subcomponentProperties, actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.activeOptionPropertyKeyName])"/>
               </div>
 
               <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.CHECKBOX">
@@ -170,8 +170,8 @@ interface Consts {
 
 interface Data {
   settings: any;
-  inputDropdownCurrentValues: unknown;
-  actionsDropdownCurrentObjects: unknown;
+  inputDropdownsValues: unknown;
+  actionsDropdownsObjects: unknown;
   customFeatureRangeValue: unknown;
   settingsVisible: boolean;
 }
@@ -193,18 +193,18 @@ export default {
           this.subcomponentProperties.subcomponentSpecificSettings, this.settings.options);
         this.$nextTick(() => {
           const { customCss, activeCustomCssMode } = this.subcomponentProperties;
-          this.inputDropdownCurrentValues = {};
+          this.inputDropdownsValues = {};
           (this.settings.options || []).forEach((setting) => {
             if (setting.type === SETTINGS_TYPES.RANGE) {
-              RangeUtils.updateSettings(setting, this.settings, this.subcomponentProperties);
+              RangeUtils.updateSettings(setting, this.subcomponentProperties);
             } else if (setting.type === SETTINGS_TYPES.COLOR_PICKER) {
               ColorPickerUtils.updateSettings(setting.spec, this.subcomponentProperties);
             } else if (setting.type === SETTINGS_TYPES.INPUT_DROPDOWN) {
               const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCustomCssMode, setting.spec.cssProperty);
-              if (cssPropertyValue) { this.inputDropdownCurrentValues[setting.spec.cssProperty] = cssPropertyValue; }
+              if (cssPropertyValue) { this.inputDropdownsValues[setting.spec.cssProperty] = cssPropertyValue; }
             } else if (setting.type === SETTINGS_TYPES.ACTIONS_DROPDOWN) {
               const cssPropertyValue = this.getObjectContainingActiveOption(setting.spec, this.subcomponentProperties);
-              if (cssPropertyValue) { this.actionsDropdownCurrentObjects[setting.spec.cssProperty || setting.spec.name] = cssPropertyValue; }
+              if (cssPropertyValue) { this.actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.name] = cssPropertyValue; }
             } else if (setting.type === SETTINGS_TYPES.CHECKBOX) {
               CheckboxUtils.updateSettings(setting.spec, this.subcomponentProperties);
             }
@@ -220,15 +220,15 @@ export default {
     };
   },
   data: (): Data => ({
-    inputDropdownCurrentValues: {},
-    actionsDropdownCurrentObjects: {},
+    inputDropdownsValues: {},
+    actionsDropdownsObjects: {},
     customFeatureRangeValue: null,
     settings: {},
     settingsVisible: true,
   }),
   methods: {
     updateRange(event: MouseEvent, setting: any): void {
-      RangeUtils.updateProperties(event, setting, this.settings, this.subcomponentProperties);
+      RangeUtils.updateProperties(event, setting, this.settings, this.subcomponentProperties, this.actionsDropdownsObjects);
       if (setting.spec.customFeatureObjectKeys) this.customFeatureRangeValue = SharedUtils.getCustomFeatureValue(
         setting.spec.customFeatureObjectKeys, this.subcomponentProperties.customFeatures);
     },
@@ -251,18 +251,18 @@ export default {
       event.preventDefault();
     },
     openDropdown(cssProperty: string): void {
-      this.inputDropdownCurrentValues[cssProperty] = this.subcomponentProperties.customCss[this.subcomponentProperties.activeCustomCssMode][cssProperty];
+      this.inputDropdownsValues[cssProperty] = this.subcomponentProperties.customCss[this.subcomponentProperties.activeCustomCssMode][cssProperty];
     },
     inputDropdownOptionClick(option: string, cssProperty: string): void {
       this.subcomponentProperties.customCss[this.subcomponentProperties.activeCustomCssMode][cssProperty] = option;
-      this.inputDropdownCurrentValues[cssProperty] = '';
+      this.inputDropdownsValues[cssProperty] = '';
     },
     inputDropdownOptionMouseOver(option: string, cssProperty: string): void {
       this.subcomponentProperties.customCss[this.subcomponentProperties.activeCustomCssMode][cssProperty] = option;
     },
     inputDropdownOptionMouseLeave(cssProperty: string): void {
-      if (this.inputDropdownCurrentValues[cssProperty]) {
-        this.subcomponentProperties.customCss[this.subcomponentProperties.activeCustomCssMode][cssProperty] = this.inputDropdownCurrentValues[cssProperty];
+      if (this.inputDropdownsValues[cssProperty]) {
+        this.subcomponentProperties.customCss[this.subcomponentProperties.activeCustomCssMode][cssProperty] = this.inputDropdownsValues[cssProperty];
       }
     },
     inputDropdownKeyboardInput(event: KeyboardEvent, cssProperty: string): void {

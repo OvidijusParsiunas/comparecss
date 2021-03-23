@@ -7,11 +7,13 @@ export default class RangeUtils {
 
   private static DEFAULT_RANGE_VALUE = 0;
 
-  private static activeTriggersForCustomCss(trigger: any, subcomponentProperties: SubcomponentProperties): void {
+  private static activeTriggersForCustomCss(trigger: any, subcomponentProperties: SubcomponentProperties,
+      actionsDropdownsObjects: unknown): void {
     const { customCss, activeCustomCssMode } = subcomponentProperties;
     const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, SUB_COMPONENT_CSS_MODES.CLICK, trigger.cssProperty);
     if (trigger.conditions.has(cssPropertyValue)) {
       customCss[activeCustomCssMode][trigger.cssProperty] = trigger.defaultValue;
+      actionsDropdownsObjects[trigger.cssProperty][trigger.cssProperty] = trigger.defaultValue;
     }
   }
 
@@ -24,12 +26,12 @@ export default class RangeUtils {
   }
 
   private static activateTriggers(triggers: any, subcomponentProperties: SubcomponentProperties,
-      allSettings: any): void {
+      allSettings: any, actionsDropdownsObjects: unknown): void {
     (triggers || []).forEach((trigger) => {
       if (trigger.customFeatureObjectKeys) {
         RangeUtils.activateTriggersForCustomSubcomponentProperties(trigger, subcomponentProperties.customFeatures, allSettings);
       } else {
-        RangeUtils.activeTriggersForCustomCss(trigger, subcomponentProperties);
+        RangeUtils.activeTriggersForCustomCss(trigger, subcomponentProperties, actionsDropdownsObjects);
       }
     });
   }
@@ -57,9 +59,9 @@ export default class RangeUtils {
   }
 
   public static updateProperties(event: MouseEvent, updatedSetting: any, allSettings: any,
-      subcomponentProperties: SubcomponentProperties): void {
+      subcomponentProperties: SubcomponentProperties, actionsDropdownsObjects: unknown): void {
     const { triggers, spec } = updatedSetting;
-    RangeUtils.activateTriggers(triggers, subcomponentProperties, allSettings);
+    RangeUtils.activateTriggers(triggers, subcomponentProperties, allSettings, actionsDropdownsObjects);
     const rangeValue = (event.target as HTMLInputElement).value;
     if (spec.partialCss != undefined) {
       if (spec.cssProperty === 'boxShadow') BoxShadowUtils.updateBoxShadowRangeValue(rangeValue, spec, subcomponentProperties);
@@ -88,11 +90,10 @@ export default class RangeUtils {
     }
   }
 
-  public static updateSettings(settingToBeUpdated: any, allSettings: any, subcomponentProperties: SubcomponentProperties): void {
+  public static updateSettings(settingToBeUpdated: any, subcomponentProperties: SubcomponentProperties): void {
     const { customCss, activeCustomCssMode } = subcomponentProperties;
     const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCustomCssMode, settingToBeUpdated.spec.cssProperty);
     if (cssPropertyValue !== undefined) {
-      if (customCss[activeCustomCssMode]) RangeUtils.activateTriggers(settingToBeUpdated.triggers, subcomponentProperties, allSettings);
       const hasBoxShadowBeenSet = settingToBeUpdated.spec.cssProperty === 'boxShadow' && BoxShadowUtils.setBoxShadowSettingsRangeValue(cssPropertyValue, settingToBeUpdated.spec);
       if (!hasBoxShadowBeenSet) { RangeUtils.updateCustomCssSetting(settingToBeUpdated, cssPropertyValue); }
     } else if (settingToBeUpdated.spec.customFeatureObjectKeys) {

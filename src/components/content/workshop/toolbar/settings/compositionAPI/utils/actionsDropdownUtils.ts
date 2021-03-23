@@ -70,7 +70,7 @@ export default class ActionsDropdownUtils {
   private static activateTriggers(trigger: any, allSettings: any, subcomponentProperties: SubcomponentProperties): void {
     const { customCss, activeCustomCssMode } = subcomponentProperties;
     const { conditions, negativeConditions, cssProperty: triggerCssProperty } = trigger;
-    const extractedTriggerCssProperty = customCss[activeCustomCssMode][triggerCssProperty];
+    const extractedTriggerCssProperty = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCustomCssMode, triggerCssProperty);
     const conditionValue = typeof extractedTriggerCssProperty === 'string' ? Number.parseInt(extractedTriggerCssProperty) : extractedTriggerCssProperty;
     const conditionMet = (conditions && conditions.has(conditionValue)) || (negativeConditions && !negativeConditions.has(conditionValue));
     if (conditionMet) {
