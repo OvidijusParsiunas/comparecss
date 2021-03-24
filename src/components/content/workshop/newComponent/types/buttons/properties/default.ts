@@ -103,6 +103,8 @@ function createSubcomponents(): Subcomponents {
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
+      customFeatures: createDefaultButtonCustomFeatures(),
+      defaultCustomFeatures: createDefaultButtonCustomFeatures(),
     },
   }
 }

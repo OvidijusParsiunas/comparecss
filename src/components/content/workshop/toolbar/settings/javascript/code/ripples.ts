@@ -32,13 +32,14 @@ function createRipple(event, buttonElement) {
 }
 
 function removeRipple(event) {
-  event.target.removeEventListener('mouseup', removeRipple, false);
-  event.target.removeEventListener('mouseleave', removeRipple, false);
+  event.currentTarget.removeEventListener('mouseup', removeRipple, false);
+  event.currentTarget.removeEventListener('mouseleave', removeRipple, false);
   if (vars.rippleElements.length > 0) {
     const lastRippleElement = vars.rippleElements.shift();
     lastRippleElement.style.animation = `${vars.fadeAnimationName} ${vars.animationDurationMs}ms forwards, ${vars.displayAnimationName} ${vars.animationDurationMs}ms forwards`;
+    const currentTarget = event.currentTarget;
     setTimeout(() => {
-      event.target.removeChild(lastRippleElement);
+      currentTarget.removeChild(lastRippleElement);
     }, vars.animationDurationMs);
   }
 }
