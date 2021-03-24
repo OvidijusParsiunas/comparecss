@@ -89,7 +89,7 @@ function createSubcomponents(): Subcomponents {
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
-      // check this
+      // WORK-1 check this 
       subcomponentSpecificSettings: alertBaseSpecificSettings,
     },
     [SUB_COMPONENTS.CLOSE]: {

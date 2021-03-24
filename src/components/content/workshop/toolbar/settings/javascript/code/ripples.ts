@@ -10,6 +10,8 @@ import { JavascriptCode } from '../../../../../../../interfaces/javascriptCode';
 //  traverse the current and parent elements until one of them contains csssymphony-ripples
 //  then proceed to create a ripple on that element
 
+// WORK-1 click and hold - ripple stays
+
 const vars = {
   animationDurationMs: 1000,
   rippleElements: [],
