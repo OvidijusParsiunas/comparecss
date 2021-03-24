@@ -35,7 +35,7 @@
         </div>
         <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item grid-item-position">
           <!-- parent component -->
-          <component ref="componentPreview" :is="component.componentPreviewStructure.baseCss.componentTag"
+          <div ref="componentPreview"
             :id="subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId"
             class="base-component grid-item-position"
             :class="[ SUBCOMPONENT_CURSOR_AUTO_CLASS,
@@ -65,13 +65,13 @@
                 />
               <!-- shallow subcomponents -->
               {{ component.componentPreviewStructure.shallowSubcomponents ? component.componentPreviewStructure.shallowSubcomponents[PSEUDO_COMPONENTS.TEXT] : ''}}
-          </component>
-          <component ref="componentPreviewOverlay" :is="component.componentPreviewStructure.baseCss.componentTag"
+          </div>
+          <div ref="componentPreviewOverlay"
             :id="subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].overlayId"
             style="display: none" :style="[component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], { height: '100% !important' }]"
             class="subcomponent-overlay-with-no-border-property-but-with-height"
             :class="[OVERLAY_DEFAULT_CLASS, STATIC_POSITION_CLASS]">
-          </component>
+          </div>
           <!-- UX - SUBCOMPONENT SELECT - set this to appropriate dimensions when the event is fired -->
           <!-- <div ref="selectSubcomponentOverlay1" style="width: 1000px; height: 700px; background-color: #ff010100; position: absolute; border: 0px; top: -221px; left: -220px; z-index: 1; cursor: pointer;"></div> -->
         </div>

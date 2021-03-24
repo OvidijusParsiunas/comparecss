@@ -8,7 +8,6 @@ import { NewComponent } from '../../../../../../../interfaces/newComponent';
 import { buttonSpecificSettings } from './buttonSpecificSettings';
 import { inheritedButtonCss } from './inheritedCss';
 
-// all default css needs to be filled in as to be able to 'reset' correctly
 function createInitialBaseCss(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
@@ -32,13 +31,33 @@ function createInitialBaseCss(): CustomCss {
       height: '38px',
       boxSizing: 'content-box',
       color: '#ffffff',
+      fontSize: '14px',
       fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
+      transition: 'unset',
     },
     [SUB_COMPONENT_CSS_MODES.HOVER]: {
       backgroundColor: '#ff0000',
     },
     [SUB_COMPONENT_CSS_MODES.CLICK]: {
       backgroundColor: '#409441',
+    },
+  }
+}
+
+function createLayerCss(): CustomCss {
+  return {
+    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+      height: '100%',
+    },
+  }
+}
+
+function createTextCss(): CustomCss {
+  return {
+    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+      height: '100%',
+      transform: 'unset',
+      overflow: 'unset',
     },
   }
 }
@@ -56,7 +75,6 @@ function createDefaultButtonCustomFeatures(): CustomFeatures {
 function createSubcomponents(): Subcomponents {
   return {
     [SUB_COMPONENTS.BASE]: {
-      componentTag: 'button',
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -67,6 +85,24 @@ function createSubcomponents(): Subcomponents {
       subcomponentSpecificSettings: buttonSpecificSettings,
       customFeatures: createDefaultButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultButtonCustomFeatures(),
+    },
+    [SUB_COMPONENTS.LAYER_1]: {
+      customCss: createLayerCss(),
+      initialCss: createLayerCss(),
+      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      subcomponentPreviewTransition: 'all 0.25s ease-out',
+      tempCustomCss: new Set(['transition']),
+    },
+    [SUB_COMPONENTS.BUTTON_COMPONENT_TEXT]: {
+      componentTag: 'div',
+      componentText: 'button',
+      customCss: createTextCss(),
+      initialCss: createTextCss(),
+      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      subcomponentPreviewTransition: 'all 0.25s ease-out',
+      tempCustomCss: new Set(['transition']),
     },
   }
 }
@@ -79,7 +115,8 @@ export const defaultButton: NewComponent = {
       subcomponents,
       activeSubcomponentMode: SUB_COMPONENTS.BASE,
       defaultSubcomponentMode: SUB_COMPONENTS.BASE,
-      componentPreviewStructure: createButtonComponentPreviewStructure(subcomponents[SUB_COMPONENTS.BASE]),
+      componentPreviewStructure: createButtonComponentPreviewStructure(subcomponents[SUB_COMPONENTS.BASE],
+        subcomponents[SUB_COMPONENTS.LAYER_1], subcomponents[SUB_COMPONENTS.BUTTON_COMPONENT_TEXT]),
       className: 'default-class-name',
     }
   },

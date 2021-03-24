@@ -5,10 +5,12 @@
       class="subcomponent-element-container"
       :class="subcomponentElementContainerClass">
       <div v-if="name === PSEUDO_COMPONENTS.TEXT" class="subcomponent-element text-subcomponent-element">{{ nestedSubcomponent }}</div>
-      <button v-if="
-          nestedSubcomponent.optionalSubcomponent
-          && (nestedSubcomponent.optionalSubcomponent.currentlyDisplaying || nestedSubcomponent.optionalSubcomponent.displayOverlayOnly)
-          && (name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE)" aria-hidden="true"
+      <component v-if="
+          (!nestedSubcomponent.optionalSubcomponent
+          || (nestedSubcomponent.optionalSubcomponent.currentlyDisplaying || nestedSubcomponent.optionalSubcomponent.displayOverlayOnly))
+          && (name !== PSEUDO_COMPONENTS.TEXT)"
+        :is="nestedSubcomponent.componentTag"
+        aria-hidden="true"
         :id="subcomponentAndOverlayElementIds[name].subcomponentId"
         class="subcomponent-element"
         :class="[ ...((nestedSubcomponent.customFeatures && nestedSubcomponent.customFeatures.jsClasses) || []) ]"
@@ -28,15 +30,16 @@
               nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
               nestedSubcomponent.customCss[nestedSubcomponent.activeCustomCssMode],
             ]"
-        >{{ nestedSubcomponent.optionalSubcomponent && !nestedSubcomponent.optionalSubcomponent.displayOverlayOnly
+        >{{ (!nestedSubcomponent.optionalSubcomponent || !nestedSubcomponent.optionalSubcomponent.displayOverlayOnly)
             && nestedSubcomponent.componentText ? nestedSubcomponent.componentText : '' }}
-      </button>
-      <button v-if="name === SUB_COMPONENTS.BUTTON_1 || name === SUB_COMPONENTS.BUTTON_2 || name === SUB_COMPONENTS.CLOSE" 
+      </component>
+      <component v-if="name !== PSEUDO_COMPONENTS.TEXT" 
+        :is="nestedSubcomponent.componentTag"
         :id="subcomponentAndOverlayElementIds[name].overlayId"
         style="display: none" :style="nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
         class="subcomponent-element"
         :class="OVERLAY_DEFAULT_CLASS">
-      </button>
+      </component>
     </div>
   </div>
 </template>
@@ -99,7 +102,7 @@ export default {
   }
   .subcomponent-element-container {
     height: 100%;
-    background-color: green;
+    /* background-color: green; */
     display: flex;
   }
   .subcomponent-element {

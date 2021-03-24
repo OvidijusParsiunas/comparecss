@@ -126,6 +126,7 @@ function createInitialButton1Css(): CustomCss {
       height: '38px',
       boxSizing: 'content-box',
       color: '#ffffff',
+      fontSize: '14px',
       fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
     },
     [SUB_COMPONENT_CSS_MODES.HOVER]: {
@@ -209,7 +210,6 @@ function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
 function createSubcomponents(): Subcomponents {
   return {
     [SUB_COMPONENTS.BASE]: {
-      componentTag: 'div',
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -222,7 +222,6 @@ function createSubcomponents(): Subcomponents {
       defaultCustomFeatures: createDefaultBaseCustomFeatures(),
     },
     [SUB_COMPONENTS.LAYER_1]: {
-      componentTag: 'div',
       customCss: createInitialLayer1Css(),
       initialCss: createInitialLayer1Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -231,7 +230,6 @@ function createSubcomponents(): Subcomponents {
       subcomponentSpecificSettings: modalLayerTopSpecificSettings,
     },
     [SUB_COMPONENTS.LAYER_2]: {
-      componentTag: 'div',
       customCss: createInitialLayer2Css(),
       initialCss: createInitialLayer2Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -239,7 +237,6 @@ function createSubcomponents(): Subcomponents {
       tempCustomCss: new Set(['transition']),
     },
     [SUB_COMPONENTS.LAYER_3]: {
-      componentTag: 'div',
       customCss: createInitialLayer3Css(),
       initialCss: createInitialLayer3Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -248,7 +245,7 @@ function createSubcomponents(): Subcomponents {
       subcomponentSpecificSettings: modalLayerBottomSpecificSettings,
     },
     [SUB_COMPONENTS.CLOSE]: {
-      componentTag: 'div',
+      componentTag: 'button',
       componentText: '×',
       customCss: createInitialCloseButtonCss(),
       initialCss: createInitialCloseButtonCss(),

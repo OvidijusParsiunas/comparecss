@@ -17,6 +17,8 @@ potentially add x button to border coloring
 clicking on an option again to remove settings panel
 button size is not set in settings correctly
 maybe each equal section should be selectable
+remove unused transitions
+change how alert works
 
 option to import an existing button style!
 

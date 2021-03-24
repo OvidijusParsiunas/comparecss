@@ -11,14 +11,13 @@ import { alertCloseSpecificSettings } from './alertCloseSpecificSettings';
 import { alertBaseSpecificSettings } from './alertBaseSpecificSettings';
 import { inheritedAlertBaseCss } from './inheritedCss';
 
-// all default css needs to be filled in as to be able to 'reset' correctly
 function createInitialBaseCss(): CustomCss {
   return {
-    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-    },
+    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {},
   }
 }
 
+// all default css needs to be filled in as to be able to 'reset' correctly
 function createInitialCloseButtonCss(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
@@ -83,7 +82,6 @@ function createDefaultCloseButtonCustomFeatures(): CustomFeatures {
 function createSubcomponents(): Subcomponents {
   return {
     [SUB_COMPONENTS.BASE]: {
-      componentTag: 'div',
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -91,10 +89,11 @@ function createSubcomponents(): Subcomponents {
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
+      // check this
       subcomponentSpecificSettings: alertBaseSpecificSettings,
     },
     [SUB_COMPONENTS.CLOSE]: {
-      componentTag: 'div',
+      componentTag: 'button',
       componentText: '×',
       customCss: createInitialCloseButtonCss(),
       initialCss: createInitialCloseButtonCss(),
@@ -109,7 +108,6 @@ function createSubcomponents(): Subcomponents {
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
     [SUB_COMPONENTS.SINGLE_LAYER_BASE]: {
-      componentTag: 'div',
       customCss: createInitialLayerCss(),
       initialCss: createInitialLayerCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,

@@ -93,14 +93,14 @@ export interface CustomFeatures {
 }
 
 export interface SubcomponentProperties {
-  componentTag: string;
+  componentTag?: string;
   componentText?: string;
   customCss: CustomCss;
   initialCss: CustomCss;
   // this css is used in instances where partialCss has been overwrittern by a single value, but a fraction of it
   // must be retained for use by settings - boxShadow (to note, this is mostly used by the app in runtime)
   auxiliaryPartialCss?: CustomCss;
-  // this is used to signify css that gets used within the app only and gets removed when exporing
+  // this is used to signify css that gets used within the app only and gets removed when exporing - should only be used on subcomponents that will have transition effects
   tempCustomCss?: TempCustomCss;
   // this css is not configured by the user and comes along with the component
   inheritedCss?: InheritedCss;
