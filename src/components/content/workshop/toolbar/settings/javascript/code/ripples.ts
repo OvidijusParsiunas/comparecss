@@ -14,7 +14,7 @@ import { JavascriptCode } from '../../../../../../../interfaces/javascriptCode';
 
 const vars = {
   animationDurationMs: 1000,
-  rippleElements: [],
+  activeElements: [],
   displayAnimationName: 'displayRipple',
   fadeAnimationName: 'fadeRipple',
   className: 'csssymphony-ripples',
@@ -30,18 +30,17 @@ function createRipple(event, buttonElement) {
   rippleElement.style.top = `${event.offsetY - radius}px`;
   rippleElement.style.animation = `${vars.displayAnimationName} ${vars.animationDurationMs}ms forwards`;
   buttonElement.appendChild(rippleElement);
-  vars.rippleElements.push(rippleElement);
+  vars.activeElements.push([buttonElement, rippleElement]);
 }
 
-function removeRipple(event) {
-  event.currentTarget.removeEventListener('mouseup', removeRipple, false);
-  event.currentTarget.removeEventListener('mouseleave', removeRipple, false);
-  if (vars.rippleElements.length > 0) {
-    const lastRippleElement = vars.rippleElements.shift();
+function removeRipple() {
+  if (vars.activeElements.length > 0) {
+    const [buttonElement, lastRippleElement] = vars.activeElements.shift();
+    buttonElement.removeEventListener('mouseup', removeRipple, false);
+    buttonElement.removeEventListener('mouseleave', removeRipple, false);
     lastRippleElement.style.animation = `${vars.fadeAnimationName} ${vars.animationDurationMs}ms forwards, ${vars.displayAnimationName} ${vars.animationDurationMs}ms forwards`;
-    const currentTarget = event.currentTarget;
     setTimeout(() => {
-      currentTarget.removeChild(lastRippleElement);
+      buttonElement.removeChild(lastRippleElement);
     }, vars.animationDurationMs);
   }
 }

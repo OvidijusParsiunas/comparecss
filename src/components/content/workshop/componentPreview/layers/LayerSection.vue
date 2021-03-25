@@ -3,7 +3,10 @@
     <div v-for="(nestedSubcomponent, name, index) in nestedSubcomponents" :key="nestedSubcomponent"
       :style="{order: `${index}`}"
       class="subcomponent-element-container"
-      :class="subcomponentElementContainerClass">
+      :class="[subcomponentElementContainerClass,
+        ...(name === SUB_COMPONENTS.BUTTON_COMPONENT_TEXT
+        && nestedSubcomponent.customFeatures
+        && nestedSubcomponent.customFeatures.jsClasses || [])]">
       <div v-if="name === PSEUDO_COMPONENTS.TEXT" class="subcomponent-element text-subcomponent-element">{{ nestedSubcomponent }}</div>
       <component v-if="
           (!nestedSubcomponent.optionalSubcomponent

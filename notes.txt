@@ -20,6 +20,7 @@ maybe each equal section should be selectable
 remove unused transitions
 change how alert works
 more work: // WORK-1
+figure out why everything is automatically appended with user-select: auto
 
 option to import an existing button style!
 
