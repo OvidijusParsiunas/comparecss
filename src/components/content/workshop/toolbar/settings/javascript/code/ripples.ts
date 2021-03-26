@@ -10,8 +10,6 @@ import { JavascriptCode } from '../../../../../../../interfaces/javascriptCode';
 //  traverse the current and parent elements until one of them contains csssymphony-ripples
 //  then proceed to create a ripple on that element
 
-// WORK-1 click and hold - ripple stays
-
 const vars = {
   animationDurationMs: 1000,
   activeElements: [],
@@ -34,15 +32,16 @@ function createRipple(event, buttonElement) {
 }
 
 function removeRipple() {
-  if (vars.activeElements.length > 0) {
-    const [buttonElement, lastRippleElement] = vars.activeElements.shift();
+  vars.activeElements.forEach((elementTuple) => {
+    const [buttonElement, lastRippleElement] = elementTuple;
     buttonElement.removeEventListener('mouseup', removeRipple, false);
     buttonElement.removeEventListener('mouseleave', removeRipple, false);
     lastRippleElement.style.animation = `${vars.fadeAnimationName} ${vars.animationDurationMs}ms forwards, ${vars.displayAnimationName} ${vars.animationDurationMs}ms forwards`;
     setTimeout(() => {
       buttonElement.removeChild(lastRippleElement);
     }, vars.animationDurationMs);
-  }
+  });
+  vars.activeElements = [];
 }
 
 function showEffect(event) {
