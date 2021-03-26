@@ -23,8 +23,6 @@ export interface ComponentPreviewStructure {
   // will be used in the future, can be horizontal or vertical
   layeringType?: string;
   layers?: Layer[];
-  // contents not in layers
-  shallowSubcomponents?: InnerSubcomponents;
   subcomponentDropdownStructure?: NestedDropdownStructure;
 }
 

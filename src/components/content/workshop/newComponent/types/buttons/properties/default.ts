@@ -58,6 +58,7 @@ function createTextCss(): CustomCss {
       height: '100%',
       transform: 'unset',
       overflow: 'unset',
+      userSelect: 'none',
     },
   }
 }

@@ -43,5 +43,6 @@ export interface WorkshopComponentCss {
   overflow?: string;
   transform?: string;
   pointerEvents?: string;
+  userSelect?: string;
   zIndex?: number;
 }

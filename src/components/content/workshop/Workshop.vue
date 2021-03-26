@@ -254,6 +254,7 @@ function createInitialButton1Css(): CustomCss {
       color: '#ffffff',
       fontSize: '14px',
       fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
+      userSelect: 'none',
     },
     [SUB_COMPONENT_CSS_MODES.HOVER]: {
       backgroundColor: '#ff0000',
