@@ -252,8 +252,8 @@ export default {
     resetComponentPreviewMarginAssistance(): void {
       this.$nextTick(() => {
         this.componentPreviewAssistance.margin = this.activeOption.type === WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN
+          && this.component.activeSubcomponentMode === SUB_COMPONENTS.BASE
           && this.isSettingsDisplayed
-          && this.component.activeSubcomponentMode !== SUB_COMPONENTS.CLOSE
           && !this.isExpandedModalPreviewModeActive;
       });
     },
