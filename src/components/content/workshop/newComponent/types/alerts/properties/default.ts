@@ -13,7 +13,25 @@ import { inheritedAlertBaseCss } from './inheritedCss';
 
 function createInitialBaseCss(): CustomCss {
   return {
-    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {},
+    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+      color: '#004085',
+      backgroundColor: '#cce5ff',
+      borderColor: '#b8daff',
+      borderWidth: '1px',
+      borderStyle: 'solid',
+      borderRadius: '4px',
+      width: '400px',
+      height: '50px',
+      boxSizing: 'unset',
+      fontSize: '16px',
+      boxShadow: 'unset',
+      paddingLeft: '20px',
+      paddingRight: '20px',
+      paddingTop: '0px',
+      paddingBottom: '0px',
+      fontFamily: '"Poppins", sans-serif',
+      textAlign: 'center',
+    },
   }
 }
 
@@ -48,23 +66,7 @@ function createInitialCloseButtonCss(): CustomCss {
 function createInitialLayerCss(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-      color: '#004085',
-      backgroundColor: '#cce5ff',
-      borderColor: '#b8daff',
-      borderWidth: '1px',
-      borderStyle: 'solid',
-      borderRadius: '4px',
-      width: '400px',
-      height: '50px',
-      boxSizing: 'unset',
-      fontSize: '16px',
-      boxShadow: 'unset',
-      paddingLeft: '20px',
-      paddingRight: '20px',
-      paddingTop: '0px',
-      paddingBottom: '0px',
-      fontFamily: '"Poppins", sans-serif',
-      textAlign: 'center',
+      height: '100%',
     },
   }
 }
@@ -76,6 +78,14 @@ function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
 function createDefaultCloseButtonCustomFeatures(): CustomFeatures {
   return {
     jsClasses: createInitialCloseButtonJsClasses(),
+  }
+}
+
+function createTextCss(): CustomCss {
+  return {
+    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+      display: 'inline-table',
+    },
   }
 }
 
@@ -107,11 +117,21 @@ function createSubcomponents(): Subcomponents {
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
-    [SUB_COMPONENTS.SINGLE_LAYER_BASE]: {
+    [SUB_COMPONENTS.LAYER_1]: {
       customCss: createInitialLayerCss(),
       initialCss: createInitialLayerCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      tempCustomCss: new Set(['transition']),
+    },
+    [SUB_COMPONENTS.BUTTON_COMPONENT_TEXT]: {
+      componentTag: 'div',
+      componentText: 'button',
+      customCss: createTextCss(),
+      initialCss: createTextCss(),
+      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
     },
   }
@@ -123,10 +143,10 @@ export const defaultAlert: NewComponent = {
     return {
       type: NEW_COMPONENT_TYPES.ALERT,
       subcomponents,
-      activeSubcomponentMode: SUB_COMPONENTS.SINGLE_LAYER_BASE,
-      defaultSubcomponentMode: SUB_COMPONENTS.SINGLE_LAYER_BASE,
+      activeSubcomponentMode: SUB_COMPONENTS.BASE,
+      defaultSubcomponentMode: SUB_COMPONENTS.BASE,
       componentPreviewStructure: createAlertComponentPreviewStructure(subcomponents[SUB_COMPONENTS.BASE],
-        subcomponents[SUB_COMPONENTS.CLOSE], subcomponents[SUB_COMPONENTS.SINGLE_LAYER_BASE]),
+        subcomponents[SUB_COMPONENTS.CLOSE], subcomponents[SUB_COMPONENTS.LAYER_1], subcomponents[SUB_COMPONENTS.BUTTON_COMPONENT_TEXT]),
       className: 'default-class-name',
     }
   },

@@ -108,7 +108,7 @@ export interface SubcomponentProperties {
   // this css is used for particular nested children (.default-class-name > div:nth-child(2))
   childCss?: ChildCss[];
   activeCustomCssMode: SUB_COMPONENT_CSS_MODES;
-  // the motivator for this is the fact that the first subcomponent should not be assumed to be the default one
+  // the motivator for this is the fact that the first subcomponent css mode should not be assumed to be the default one
   defaultCustomCssMode: SUB_COMPONENT_CSS_MODES;
   // this is used to add an animation effect when hovering or clicking a subcomponent to display their new custom css
   // it is currently not being used during css export and instead added explicitly using inherited css files
@@ -128,7 +128,7 @@ export interface WorkshopComponent {
   type: NEW_COMPONENT_TYPES;
   subcomponents: Subcomponents;
   activeSubcomponentMode: SUB_COMPONENTS;
-  // the motivator for this is the fact that the first subcomponent should not be assumed to be the default one, especially in the case of SUB_COMPONENTS.SINGLE_LAYER_BASE
+  // the motivator for this is the fact that the first subcomponent should not be assumed to be the default one
   defaultSubcomponentMode: SUB_COMPONENTS;
   componentPreviewStructure: ComponentPreviewStructure;
   // class name for the component

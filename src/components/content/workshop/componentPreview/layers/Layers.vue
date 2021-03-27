@@ -2,7 +2,7 @@
   <div class="layers">
     <div v-for="layer in layers" :key="layer" class="layer">
       <div :id="subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId"
-        :style="[layer.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], { pointerEvents: isShallowSubcomponents ? 'none': 'auto' }]"
+        :style="layer.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
         @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseEnter()"
         @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseLeave()"
         @mousedown="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseDown()"
@@ -47,7 +47,6 @@ export default {
     subcomponentAndOverlayElementIds: Object,
     mouseEvents: Object,
     layers: Object,
-    isShallowSubcomponents: Boolean,
   }
 }
 </script>

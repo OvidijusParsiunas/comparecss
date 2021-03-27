@@ -61,10 +61,7 @@
                   :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
                   :mouseEvents="mouseEvents"
                   :layers="component.componentPreviewStructure.layers"
-                  :isShallowSubcomponents="component.componentPreviewStructure.shallowSubcomponents"
                 />
-              <!-- shallow subcomponents -->
-              {{ component.componentPreviewStructure.shallowSubcomponents ? component.componentPreviewStructure.shallowSubcomponents[PSEUDO_COMPONENTS.TEXT] : ''}}
           </div>
           <div ref="componentPreviewOverlay"
             :id="subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].overlayId"
