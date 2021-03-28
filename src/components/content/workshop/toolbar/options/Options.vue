@@ -49,7 +49,7 @@
           @mouse-click-new-option="newCssModeClicked($event)"/>
         <button
           type="button"
-          v-for="(option) in componentTypeToOptions[component.type][component.activeSubcomponentMode][component.subcomponents[component.activeSubcomponentMode].activeCustomCssMode]" :key="option"
+          v-for="option in componentTypeToOptions[component.type][component.activeSubcomponentMode][component.subcomponents[component.activeSubcomponentMode].activeCustomCssMode]" :key="option"
           :disabled="option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive"
           class="btn btn-outline-secondary option-component-button option-select-button-default"
           :class="[
@@ -57,17 +57,6 @@
             option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive ? 'option-select-button-default-disabled' : 'option-select-button-default-enabled']"
             @click="selectOption(option)">
             {{option.buttonName}}
-        </button>
-        <button
-          type="button"
-          v-if="component.activeSubcomponentMode !== SUB_COMPONENTS.BASE
-            && component.activeSubcomponentMode !== SUB_COMPONENTS.LAYER_1
-            && component.activeSubcomponentMode !== SUB_COMPONENTS.LAYER_2
-            && component.activeSubcomponentMode !== SUB_COMPONENTS.LAYER_3"
-          class="btn btn-outline-secondary option-component-button option-select-button-default option-select-button-default-enabled"
-          :class="WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_POSITION === activeOption.type ? 'option-select-button-active' : ''"
-          @click="selectNestedSubcomponentPositionOption()">
-            Position
         </button>
       </div>
       <div style="display: none" ref="toolbarPositionToggle" class="toolbar-position-toggle-container">
@@ -212,20 +201,13 @@ export default {
     },
     getNewSuitableOption(): Option {
       const activeModeOptions = this.getActiveModeOptions();
-      return this.getOptionIfNestedSubcomponentPosition() || this.getOptionFromNewSubcomponent(activeModeOptions) || activeModeOptions[0];
-    },
-    getOptionIfNestedSubcomponentPosition(): Option {
-      // if there is a better way to identified a nested subcomponent - use it
-      return this.component.activeSubcomponentMode !== SUB_COMPONENTS.BASE
-        && this.component.activeSubcomponentMode !== SUB_COMPONENTS.LAYER_1
-        && this.component.activeSubcomponentMode !== SUB_COMPONENTS.LAYER_2
-        && this.component.activeSubcomponentMode !== SUB_COMPONENTS.LAYER_3
-        && this.activeOption.type === WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_POSITION ? this.activeOption : null
+      return this.getOptionFromNewSubcomponent(activeModeOptions) || activeModeOptions[0];
     },
     getOptionFromNewSubcomponent(activeModeOptions: Option[]): Option {
-      return activeModeOptions.find((option: Option) => 
-        option.buttonName === this.activeOption.buttonName
-        && (this.isExpandedModalPreviewModeActive || option.enabledOnExpandedModalPreviewMode === this.activeOption.enabledOnExpandedModalPreviewMode)); 
+      return activeModeOptions.find((option: Option) => {
+        return option.buttonName === this.activeOption.buttonName
+          && (this.isExpandedModalPreviewModeActive || option.enabledOnExpandedModalPreviewMode === this.activeOption.enabledOnExpandedModalPreviewMode);
+      });
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
       const { optionalSubcomponent, initialCss } = subcomponent;

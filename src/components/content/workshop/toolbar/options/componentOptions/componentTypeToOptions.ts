@@ -2,6 +2,7 @@ import { SubcomponentCssModes } from '../../../../../../interfaces/subcomponentC
 import { NEW_COMPONENT_TYPES } from '../../../../../../consts/newComponentTypes.enum';
 import { SubcomponentOptions } from '../../../../../../interfaces/componentOptions';
 import { SUB_COMPONENTS } from '../../../../../../consts/subcomponentModes.enum';
+import { nestedButtonOptions } from './button/nestedBase';
 import { layerBottomOptions } from './layer/layerBottom';
 import { layerMiddleOptions } from './layer/layerMiddle';
 import { layerTopOptions } from './layer/layerTop';
@@ -32,7 +33,7 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
     [SUB_COMPONENTS.LAYER_1]: layerTopOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
     [SUB_COMPONENTS.LAYER_2]: layerMiddleOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
     [SUB_COMPONENTS.LAYER_3]: layerBottomOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
-    [SUB_COMPONENTS.BUTTON_1]: buttonBaseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
-    [SUB_COMPONENTS.BUTTON_2]: buttonBaseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
+    [SUB_COMPONENTS.BUTTON_1]: nestedButtonOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
+    [SUB_COMPONENTS.BUTTON_2]: nestedButtonOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
   },
 };
