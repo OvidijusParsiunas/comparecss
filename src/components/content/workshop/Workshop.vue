@@ -197,7 +197,7 @@ function createInitialBaseCss(): CustomCss {
       fontSize: '16px',
       boxShadow: 'unset',
       fontFamily: '"Poppins", sans-serif',
-      top: undefined,
+      top: undefined, // used in slideTransitions: const currentTopStyleValue = modalElement.style.top || '0px';
     },
   };
 }
@@ -225,6 +225,7 @@ function createInitialCloseButtonCss(): CustomCss {
       paddingBottom: '0px',
       marginTop: '10px',
       marginRight: '10px',
+      top: '50%',
     },
   };
 }
@@ -255,6 +256,7 @@ function createInitialButton1Css(): CustomCss {
       fontSize: '14px',
       fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
       userSelect: 'none',
+      top: '50%',
     },
     [SUB_COMPONENT_CSS_MODES.HOVER]: {
       backgroundColor: '#ff0000',
@@ -334,6 +336,7 @@ function createTextCss(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
       display: 'inline-table',
+      top: '50%',
     },
   }
 }

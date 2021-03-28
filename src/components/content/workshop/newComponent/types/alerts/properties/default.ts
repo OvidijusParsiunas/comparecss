@@ -59,6 +59,7 @@ function createInitialCloseButtonCss(): CustomCss {
       paddingBottom: '0px',
       marginTop: '18px',
       marginRight: '5px',
+      top: '50%',
     },
   }
 }
@@ -67,6 +68,15 @@ function createInitialLayerCss(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
       height: '100%',
+    },
+  }
+}
+
+function createTextCss(): CustomCss {
+  return {
+    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+      display: 'inline-table',
+      top: '50%',
     },
   }
 }
@@ -81,14 +91,6 @@ function createDefaultCloseButtonCustomFeatures(): CustomFeatures {
   }
 }
 
-function createTextCss(): CustomCss {
-  return {
-    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-      display: 'inline-table',
-    },
-  }
-}
-
 function createSubcomponents(): Subcomponents {
   return {
     [SUB_COMPONENTS.BASE]: {
@@ -99,7 +101,7 @@ function createSubcomponents(): Subcomponents {
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
-      // WORK-1 check this
+      // WORK-1 check this!!! 
       subcomponentSpecificSettings: alertBaseSpecificSettings,
     },
     [SUB_COMPONENTS.CLOSE]: {

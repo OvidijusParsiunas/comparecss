@@ -54,9 +54,20 @@
           class="btn btn-outline-secondary option-component-button option-select-button-default"
           :class="[
             option.type === activeOption.type ? 'option-select-button-active' : '',
-            option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive ? 'option-select-button-default-disabled' : 'option-select-button-default-enabled',]"
+            option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive ? 'option-select-button-default-disabled' : 'option-select-button-default-enabled']"
             @click="selectOption(option)">
             {{option.buttonName}}
+        </button>
+        <button
+          type="button"
+          v-if="component.activeSubcomponentMode !== SUB_COMPONENTS.BASE
+            && component.activeSubcomponentMode !== SUB_COMPONENTS.LAYER_1
+            && component.activeSubcomponentMode !== SUB_COMPONENTS.LAYER_2
+            && component.activeSubcomponentMode !== SUB_COMPONENTS.LAYER_3"
+          class="btn btn-outline-secondary option-component-button option-select-button-default option-select-button-default-enabled"
+          :class="WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_POSITION === activeOption.type ? 'option-select-button-active' : ''"
+          @click="selectNestedSubcomponentPositionOption()">
+            Position
         </button>
       </div>
       <div style="display: none" ref="toolbarPositionToggle" class="toolbar-position-toggle-container">
@@ -100,6 +111,7 @@ import { Option } from '../../../../../interfaces/componentOptions';
 import dropdown from './dropdown/Dropdown.vue';
 
 interface Consts {
+  SUB_COMPONENTS,
   WORKSHOP_TOOLBAR_OPTION_TYPES;
   SUB_COMPONENT_CSS_MODES;
   componentTypeToOptions;
@@ -122,6 +134,7 @@ export default {
   setup(): RemovalModalState & Consts & UseToolbarPositionToggle {
     return {
       ...removeSubcomponentModalState,
+      SUB_COMPONENTS,
       WORKSHOP_TOOLBAR_OPTION_TYPES,
       SUB_COMPONENT_CSS_MODES,
       componentTypeToOptions,
@@ -152,6 +165,13 @@ export default {
       const subcomponentModeClickedFunc = this.newSubcomponentModeClicked;
       this.$emit('toggle-subcomponent-select-mode',
         [subcomponentSelectModeCallbackFunction, keyTriggers, buttonElement, subcomponentModeClickedFunc] as ToggleSubcomponentSelectModeEvent);
+    },
+    selectNestedSubcomponentPositionOption(): void {
+      const nestedSubcomponentPositionOption = {
+        buttonName: 'Position',
+        type: WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_POSITION,
+      };
+      this.selectOption(nestedSubcomponentPositionOption);
     },
     selectOption(option: Option): void {
       this.setNewActiveOption(option);
@@ -192,11 +212,20 @@ export default {
     },
     getNewSuitableOption(): Option {
       const activeModeOptions = this.getActiveModeOptions();
-      const activeOption = activeModeOptions.find((option: Option) => {
-        return option.buttonName === this.activeOption.buttonName
-          && (this.isExpandedModalPreviewModeActive || option.enabledOnExpandedModalPreviewMode === this.activeOption.enabledOnExpandedModalPreviewMode);
-      });
-      return activeOption || activeModeOptions[0];
+      return this.getOptionIfNestedSubcomponentPosition() || this.getOptionFromNewSubcomponent(activeModeOptions) || activeModeOptions[0];
+    },
+    getOptionIfNestedSubcomponentPosition(): Option {
+      // if there is a better way to identified a nested subcomponent - use it
+      return this.component.activeSubcomponentMode !== SUB_COMPONENTS.BASE
+        && this.component.activeSubcomponentMode !== SUB_COMPONENTS.LAYER_1
+        && this.component.activeSubcomponentMode !== SUB_COMPONENTS.LAYER_2
+        && this.component.activeSubcomponentMode !== SUB_COMPONENTS.LAYER_3
+        && this.activeOption.type === WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_POSITION ? this.activeOption : null
+    },
+    getOptionFromNewSubcomponent(activeModeOptions: Option[]): Option {
+      return activeModeOptions.find((option: Option) => 
+        option.buttonName === this.activeOption.buttonName
+        && (this.isExpandedModalPreviewModeActive || option.enabledOnExpandedModalPreviewMode === this.activeOption.enabledOnExpandedModalPreviewMode)); 
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
       const { optionalSubcomponent, initialCss } = subcomponent;

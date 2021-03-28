@@ -40,7 +40,7 @@ function createDefaultBackdropProperties(): BackdropProperties {
     color: '#6d6d6dcc',
     alpha: 0.8,
     visible: false,
-  }
+  };
 }
 
 function createDefaultBaseCustomFeatures(): CustomFeatures {
@@ -48,13 +48,13 @@ function createDefaultBaseCustomFeatures(): CustomFeatures {
     componentCenteringInParent: createDefaultComponentCenteringInParent(),
     transitions: createDefaultTransitionsProperties(),
     backdrop: createDefaultBackdropProperties(),
-  }
+  };
 }
 
 function createDefaultCloseButtonCustomFeatures(): CustomFeatures {
   return {
     jsClasses: createInitialCloseButtonJsClasses(),
-  }
+  };
 }
 
 function createInitialBaseCss(): CustomCss {
@@ -71,7 +71,7 @@ function createInitialBaseCss(): CustomCss {
       fontSize: '16px',
       boxShadow: 'unset',
       fontFamily: '"Poppins", sans-serif',
-      top: undefined,
+      top: undefined, // used in slideTransitions: const currentTopStyleValue = modalElement.style.top || '0px';
     },
   };
 }
@@ -99,6 +99,7 @@ function createInitialCloseButtonCss(): CustomCss {
       paddingBottom: '0px',
       marginTop: '10px',
       marginRight: '10px',
+      top: '50%',
     },
   };
 }
@@ -128,6 +129,8 @@ function createInitialButton1Css(): CustomCss {
       color: '#ffffff',
       fontSize: '14px',
       fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
+      userSelect: 'none',
+      top: '50%',
     },
     [SUB_COMPONENT_CSS_MODES.HOVER]: {
       backgroundColor: '#ff0000',
@@ -207,6 +210,7 @@ function createTextCss(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
       display: 'inline-table',
+      top: '50%',
     },
   }
 }

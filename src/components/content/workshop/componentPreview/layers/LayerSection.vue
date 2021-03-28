@@ -32,10 +32,10 @@
               nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
               nestedSubcomponent.customCss[nestedSubcomponent.activeCustomCssMode],
             ]"
-        >{{ (!nestedSubcomponent.optionalSubcomponent || !nestedSubcomponent.optionalSubcomponent.displayOverlayOnly)
+        >{{(!nestedSubcomponent.optionalSubcomponent || !nestedSubcomponent.optionalSubcomponent.displayOverlayOnly)
             && nestedSubcomponent.componentText ? nestedSubcomponent.componentText : '' }}
       </component>
-      <component 
+      <component
         :is="nestedSubcomponent.componentTag"
         :id="subcomponentAndOverlayElementIds[name].overlayId"
         style="display: none" :style="nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
@@ -107,9 +107,11 @@ export default {
   .subcomponent-element {
     position: relative;
     transform: translateY(-50%);
-    top: 50% !important;
     position: relative;
     overflow: hidden;
+    /* may need to be set in the style tag if working with vertically stacked subcomponents */
+    margin-top: unset !important;
+    margin-bottom: unset !important;
   }
   .text-subcomponent-element {
     display: inline-table;
