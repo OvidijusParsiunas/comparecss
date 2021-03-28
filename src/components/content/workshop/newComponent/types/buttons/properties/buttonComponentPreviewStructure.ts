@@ -12,7 +12,7 @@ export default function createButtonComponentPreviewStructure(buttonComponent: S
         nestedSubcomponents: {
           alignedSections: {
             center: {
-              [SUB_COMPONENTS.BUTTON_COMPONENT_TEXT]: textSubcomponent,
+              [SUB_COMPONENTS.TEXT_1]: textSubcomponent,
             },
           },
         },

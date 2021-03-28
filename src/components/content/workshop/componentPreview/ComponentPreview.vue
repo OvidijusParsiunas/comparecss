@@ -106,7 +106,6 @@ import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOve
 import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../consts/subcomponentCursorClasses.enum';
 import { PlayTransitionPreviewEvent } from '../../../../interfaces/playTransitionPreviewEvent';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
-import { PSEUDO_COMPONENTS } from '../../../../consts/pseudoComponents.enum';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 import ComponentPreviewUtils from './utils/componentPreviewUtils';
@@ -117,7 +116,6 @@ interface Consts {
   OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
   STATIC_POSITION_CLASS: string;
   SUB_COMPONENT_CSS_MODES;
-  PSEUDO_COMPONENTS;
   SUB_COMPONENTS;
 }
 
@@ -134,7 +132,6 @@ export default {
       OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT,
       STATIC_POSITION_CLASS: STATIC_POSITION_CLASS,
       SUB_COMPONENT_CSS_MODES,
-      PSEUDO_COMPONENTS,
       SUB_COMPONENTS,
     };
   },

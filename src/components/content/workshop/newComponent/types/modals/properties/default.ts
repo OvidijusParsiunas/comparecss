@@ -203,6 +203,14 @@ function createInitialLayer3Css(): CustomCss {
   };
 }
 
+function createTextCss(): CustomCss {
+  return {
+    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+      display: 'inline-table',
+    },
+  }
+}
+
 function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
   return new Set([JAVASCRIPT_CLASSES.RIPPLES]);
 }
@@ -289,6 +297,26 @@ function createSubcomponents(): Subcomponents {
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
+    [SUB_COMPONENTS.TEXT_1]: {
+      componentTag: 'div',
+      componentText: 'Modal title',
+      customCss: createTextCss(),
+      initialCss: createTextCss(),
+      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      subcomponentPreviewTransition: 'all 0.25s ease-out',
+      tempCustomCss: new Set(['transition']),
+    },
+    [SUB_COMPONENTS.TEXT_2]: {
+      componentTag: 'div',
+      componentText: 'Modal body text',
+      customCss: createTextCss(),
+      initialCss: createTextCss(),
+      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      subcomponentPreviewTransition: 'all 0.25s ease-out',
+      tempCustomCss: new Set(['transition']),
+    },
   };
 }
 
@@ -301,8 +329,9 @@ export const defaultModal: NewComponent = {
       activeSubcomponentMode: SUB_COMPONENTS.BASE,
       defaultSubcomponentMode: SUB_COMPONENTS.BASE,
       componentPreviewStructure: createModalComponentPreviewStructure(
-        subcomponents[SUB_COMPONENTS.BASE], subcomponents[SUB_COMPONENTS.CLOSE], subcomponents[SUB_COMPONENTS.BUTTON_1], subcomponents[SUB_COMPONENTS.BUTTON_2],
-        subcomponents[SUB_COMPONENTS.LAYER_1], subcomponents[SUB_COMPONENTS.LAYER_2], subcomponents[SUB_COMPONENTS.LAYER_3]),
+        subcomponents[SUB_COMPONENTS.BASE], subcomponents[SUB_COMPONENTS.CLOSE], subcomponents[SUB_COMPONENTS.BUTTON_1],
+        subcomponents[SUB_COMPONENTS.BUTTON_2], subcomponents[SUB_COMPONENTS.LAYER_1], subcomponents[SUB_COMPONENTS.LAYER_2],
+        subcomponents[SUB_COMPONENTS.LAYER_3], subcomponents[SUB_COMPONENTS.TEXT_1], subcomponents[SUB_COMPONENTS.TEXT_2]),
       className: 'default-class-name',
     }
   },

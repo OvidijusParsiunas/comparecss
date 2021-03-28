@@ -6,5 +6,6 @@ export enum SUB_COMPONENTS {
   LAYER_3 = 'Layer 3',
   BUTTON_1 = 'Button 1',
   BUTTON_2 = 'Button 2',
-  BUTTON_COMPONENT_TEXT = 'Button component text', // used to explicitly set the text of a component which only has custom css in the base and text in the layer section
+  TEXT_1 = 'Text 1',
+  TEXT_2 = 'Text 2',
 }

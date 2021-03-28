@@ -1,10 +1,10 @@
 import { ComponentPreviewStructure, SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent'
-import { PSEUDO_COMPONENTS } from '../../../../../../../consts/pseudoComponents.enum'
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum'
 
 export default function createModalComponentPreviewStructure(
-  baseComponent: SubcomponentProperties, closeComponent: SubcomponentProperties, button1Component: SubcomponentProperties, button2Component: SubcomponentProperties,
-  layer1Component: SubcomponentProperties, layer2Component: SubcomponentProperties, layer3Component: SubcomponentProperties): any {
+  baseComponent: SubcomponentProperties, closeComponent: SubcomponentProperties, button1Component: SubcomponentProperties,
+  button2Component: SubcomponentProperties, layer1Component: SubcomponentProperties, layer2Component: SubcomponentProperties,
+  layer3Component: SubcomponentProperties, textSubcomponent1: SubcomponentProperties, textSubcomponent2: SubcomponentProperties): any {
   return {
     baseCss: baseComponent,
     layeringType: 'vertical',
@@ -15,7 +15,7 @@ export default function createModalComponentPreviewStructure(
         nestedSubcomponents: {
           alignedSections: {
             left: {
-              [PSEUDO_COMPONENTS.TEXT]: 'Modal title',
+              [SUB_COMPONENTS.TEXT_1]: textSubcomponent1,
             },
             center: {
             },
@@ -35,7 +35,7 @@ export default function createModalComponentPreviewStructure(
         nestedSubcomponents: {
           alignedSections: {
             left: {
-              [PSEUDO_COMPONENTS.TEXT]: 'Modal body text',
+              [SUB_COMPONENTS.TEXT_2]: textSubcomponent2,
             },
           },
         },

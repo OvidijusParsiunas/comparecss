@@ -1,17 +1,16 @@
 <template>
   <div>
+    <!-- jsClasses added for button component -->
     <div v-for="(nestedSubcomponent, name, index) in nestedSubcomponents" :key="nestedSubcomponent"
       :style="{order: `${index}`}"
       class="subcomponent-element-container"
       :class="[subcomponentElementContainerClass,
-        ...(name === SUB_COMPONENTS.BUTTON_COMPONENT_TEXT
-        && nestedSubcomponent.customFeatures
-        && nestedSubcomponent.customFeatures.jsClasses || [])]">
-      <div v-if="name === PSEUDO_COMPONENTS.TEXT" class="subcomponent-element text-subcomponent-element">{{ nestedSubcomponent }}</div>
-      <component v-if="
-          (!nestedSubcomponent.optionalSubcomponent
-          || (nestedSubcomponent.optionalSubcomponent.currentlyDisplaying || nestedSubcomponent.optionalSubcomponent.displayOverlayOnly))
-          && (name !== PSEUDO_COMPONENTS.TEXT)"
+        ...(name === SUB_COMPONENTS.TEXT_1
+          && nestedSubcomponent.customFeatures
+          && nestedSubcomponent.customFeatures.jsClasses || [])]">
+      <component v-if="!nestedSubcomponent.optionalSubcomponent
+          || nestedSubcomponent.optionalSubcomponent.currentlyDisplaying
+          || nestedSubcomponent.optionalSubcomponent.displayOverlayOnly"
         :is="nestedSubcomponent.componentTag"
         aria-hidden="true"
         :id="subcomponentAndOverlayElementIds[name].subcomponentId"
@@ -36,7 +35,7 @@
         >{{ (!nestedSubcomponent.optionalSubcomponent || !nestedSubcomponent.optionalSubcomponent.displayOverlayOnly)
             && nestedSubcomponent.componentText ? nestedSubcomponent.componentText : '' }}
       </component>
-      <component v-if="name !== PSEUDO_COMPONENTS.TEXT" 
+      <component 
         :is="nestedSubcomponent.componentTag"
         :id="subcomponentAndOverlayElementIds[name].overlayId"
         style="display: none" :style="nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
@@ -50,13 +49,11 @@
 <script lang="ts">
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
-import { PSEUDO_COMPONENTS } from '../../../../../consts/pseudoComponents.enum';
 import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
 
 interface Consts {
   OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
   SUB_COMPONENT_CSS_MODES;
-  PSEUDO_COMPONENTS;
   SUB_COMPONENTS;
 }
 
@@ -65,7 +62,6 @@ export default {
     return {
       OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT,
       SUB_COMPONENT_CSS_MODES,
-      PSEUDO_COMPONENTS,
       SUB_COMPONENTS,
     };
   },

@@ -3,14 +3,13 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../consts/workshopToolbarOptionTy
 import { SUB_COMPONENT_CSS_MODES } from '../consts/subcomponentCssModes.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { NEW_COMPONENT_TYPES } from '../consts/newComponentTypes.enum';
-import { PSEUDO_COMPONENTS } from '../consts/pseudoComponents.enum';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { SUB_COMPONENTS } from '../consts/subcomponentModes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { TempCustomCss } from './tempCustomCss';
 import { InheritedCss } from './inheritedCss';
 
-type InnerSubcomponents = { [key in PSEUDO_COMPONENTS | SUB_COMPONENTS]?: SubcomponentProperties | string };
+type InnerSubcomponents = { [key in SUB_COMPONENTS]?: SubcomponentProperties };
 
 type Layer = {
   subcomponentType: SUB_COMPONENTS;

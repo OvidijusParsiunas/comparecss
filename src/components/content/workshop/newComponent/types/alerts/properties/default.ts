@@ -99,7 +99,7 @@ function createSubcomponents(): Subcomponents {
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
-      // WORK-1 check this 
+      // WORK-1 check this
       subcomponentSpecificSettings: alertBaseSpecificSettings,
     },
     [SUB_COMPONENTS.CLOSE]: {
@@ -124,7 +124,7 @@ function createSubcomponents(): Subcomponents {
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       tempCustomCss: new Set(['transition']),
     },
-    [SUB_COMPONENTS.BUTTON_COMPONENT_TEXT]: {
+    [SUB_COMPONENTS.TEXT_1]: {
       componentTag: 'div',
       componentText: 'button',
       customCss: createTextCss(),
@@ -146,7 +146,7 @@ export const defaultAlert: NewComponent = {
       activeSubcomponentMode: SUB_COMPONENTS.BASE,
       defaultSubcomponentMode: SUB_COMPONENTS.BASE,
       componentPreviewStructure: createAlertComponentPreviewStructure(subcomponents[SUB_COMPONENTS.BASE],
-        subcomponents[SUB_COMPONENTS.CLOSE], subcomponents[SUB_COMPONENTS.LAYER_1], subcomponents[SUB_COMPONENTS.BUTTON_COMPONENT_TEXT]),
+        subcomponents[SUB_COMPONENTS.CLOSE], subcomponents[SUB_COMPONENTS.LAYER_1], subcomponents[SUB_COMPONENTS.TEXT_1]),
       className: 'default-class-name',
     }
   },

@@ -13,7 +13,7 @@ export default function createAlertComponentPreviewStructure(baseComponent: Subc
         nestedSubcomponents: {
           alignedSections: {
             center: {
-              [SUB_COMPONENTS.BUTTON_COMPONENT_TEXT]: textSubcomponent,
+              [SUB_COMPONENTS.TEXT_1]: textSubcomponent,
             },
             right: {
               [SUB_COMPONENTS.CLOSE]: closeComponent,

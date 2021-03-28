@@ -95,7 +95,7 @@ function createSubcomponents(): Subcomponents {
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
     },
-    [SUB_COMPONENTS.BUTTON_COMPONENT_TEXT]: {
+    [SUB_COMPONENTS.TEXT_1]: {
       componentTag: 'div',
       componentText: 'button',
       customCss: createTextCss(),
@@ -119,7 +119,7 @@ export const defaultButton: NewComponent = {
       activeSubcomponentMode: SUB_COMPONENTS.BASE,
       defaultSubcomponentMode: SUB_COMPONENTS.BASE,
       componentPreviewStructure: createButtonComponentPreviewStructure(subcomponents[SUB_COMPONENTS.BASE],
-        subcomponents[SUB_COMPONENTS.LAYER_1], subcomponents[SUB_COMPONENTS.BUTTON_COMPONENT_TEXT]),
+        subcomponents[SUB_COMPONENTS.LAYER_1], subcomponents[SUB_COMPONENTS.TEXT_1]),
       className: 'default-class-name',
     }
   },
