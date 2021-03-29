@@ -93,8 +93,6 @@ function createSubcomponents(): Subcomponents {
       initialCss: createLayerCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      subcomponentPreviewTransition: 'all 0.25s ease-out',
-      tempCustomCss: new Set(['transition']),
     },
     [SUB_COMPONENTS.TEXT_1]: {
       componentTag: 'div',
@@ -103,8 +101,6 @@ function createSubcomponents(): Subcomponents {
       initialCss: createTextCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      subcomponentPreviewTransition: 'all 0.25s ease-out',
-      tempCustomCss: new Set(['transition']),
       customFeatures: createDefaultButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultButtonCustomFeatures(),
     },

@@ -351,7 +351,6 @@ function createSubcomponents(): Subcomponents {
       initialCss: createInitialBaseCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
       subcomponentSpecificSettings: modalBaseSpecificSettings,
@@ -363,7 +362,6 @@ function createSubcomponents(): Subcomponents {
       initialCss: createInitialLayer1Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      tempCustomCss: new Set(['transition']),
       subcomponentSpecificSettings: modalLayerTopSpecificSettings,
     },
     [SUB_COMPONENTS.LAYER_2]: {
@@ -371,14 +369,12 @@ function createSubcomponents(): Subcomponents {
       initialCss: createInitialLayer2Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      tempCustomCss: new Set(['transition']),
     },
     [SUB_COMPONENTS.LAYER_3]: {
       customCss: createInitialLayer3Css(),
       initialCss: createInitialLayer3Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      tempCustomCss: new Set(['transition']),
       subcomponentSpecificSettings: modalLayerBottomSpecificSettings,
     },
     [SUB_COMPONENTS.CLOSE]: {
@@ -430,8 +426,6 @@ function createSubcomponents(): Subcomponents {
       initialCss: createTextCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      subcomponentPreviewTransition: 'all 0.25s ease-out',
-      tempCustomCss: new Set(['transition']),
     },
     [SUB_COMPONENTS.TEXT_2]: {
       componentTag: 'div',
@@ -440,8 +434,6 @@ function createSubcomponents(): Subcomponents {
       initialCss: createTextCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      subcomponentPreviewTransition: 'all 0.25s ease-out',
-      tempCustomCss: new Set(['transition']),
     },
   };
 }

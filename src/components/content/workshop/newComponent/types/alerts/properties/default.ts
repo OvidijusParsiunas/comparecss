@@ -97,7 +97,6 @@ function createSubcomponents(): Subcomponents {
       initialCss: createInitialBaseCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
       subcomponentSpecificSettings: alertBaseSpecificSettings,
@@ -121,7 +120,6 @@ function createSubcomponents(): Subcomponents {
       initialCss: createInitialLayerCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      tempCustomCss: new Set(['transition']),
     },
     [SUB_COMPONENTS.TEXT_1]: {
       componentTag: 'div',
@@ -130,8 +128,6 @@ function createSubcomponents(): Subcomponents {
       initialCss: createTextCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      subcomponentPreviewTransition: 'all 0.25s ease-out',
-      tempCustomCss: new Set(['transition']),
     },
   }
 }
