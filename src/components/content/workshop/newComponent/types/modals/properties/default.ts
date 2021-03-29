@@ -70,7 +70,7 @@ function createInitialBaseCss(): CustomCss {
       fontSize: '16px',
       boxShadow: 'unset',
       fontFamily: '"Poppins", sans-serif',
-      top: undefined, // used in slideTransitions: const currentTopStyleValue = modalElement.style.top || '0px';
+      top: '0px',
     },
   };
 }

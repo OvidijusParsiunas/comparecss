@@ -19,7 +19,6 @@ button size is not set in settings correctly
 maybe each equal section should be selectable
 consider making alert and button into a separately generated compontes in component preview as their contents shake when size is changed in firefox
 text alignment not working
-reset vertical offset in modal does not work
 
 option to import an existing button style!
 
