@@ -7,10 +7,10 @@ import createAlertComponentPreviewStructure from './alertComponentPreviewStructu
 import { NewComponent } from '../../../../../../../interfaces/newComponent';
 import { inheritedAlertCloseChildCss } from './inheritedAlertCloseChildCss';
 import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';
-import { alertCloseSpecificSettings } from './alertCloseSpecificSettings';
 import { alertBaseSpecificSettings } from './alertBaseSpecificSettings';
 import { inheritedAlertBaseCss } from './inheritedCss';
 
+// all default css needs to be filled in as to be able to 'reset' correctly
 function createInitialBaseCss(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
@@ -35,7 +35,6 @@ function createInitialBaseCss(): CustomCss {
   }
 }
 
-// all default css needs to be filled in as to be able to 'reset' correctly
 function createInitialCloseButtonCss(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
@@ -101,7 +100,6 @@ function createSubcomponents(): Subcomponents {
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
-      // WORK-1 check this!!! 
       subcomponentSpecificSettings: alertBaseSpecificSettings,
     },
     [SUB_COMPONENTS.CLOSE]: {
@@ -115,7 +113,6 @@ function createSubcomponents(): Subcomponents {
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
       optionalSubcomponent: { currentlyDisplaying: true },
-      subcomponentSpecificSettings: alertCloseSpecificSettings,
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },

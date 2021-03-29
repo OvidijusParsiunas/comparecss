@@ -98,7 +98,6 @@ import { modalLayerTopSpecificSettings } from './newComponent/types/modals/prope
 import { inheritedAlertCloseChildCss } from './newComponent/types/alerts/properties/inheritedAlertCloseChildCss';
 import { removeComponentModalState } from './componentList/removeComponentModalState/removeComponentModalState';
 import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
-import { alertCloseSpecificSettings } from './newComponent/types/alerts/properties/alertCloseSpecificSettings';
 import SubcomponentToggleService from './toolbar/options/subcomponentToggleService/subcomponentToggleService';
 import { modalBaseSpecificSettings } from './newComponent/types/modals/properties/modalBaseSpecificSettings';
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
@@ -393,7 +392,6 @@ function createSubcomponents(): Subcomponents {
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
       optionalSubcomponent: { currentlyDisplaying: true },
-      subcomponentSpecificSettings: alertCloseSpecificSettings,
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
@@ -408,7 +406,6 @@ function createSubcomponents(): Subcomponents {
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
       optionalSubcomponent: { currentlyDisplaying: true },
-      subcomponentSpecificSettings: alertCloseSpecificSettings,
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
@@ -423,7 +420,6 @@ function createSubcomponents(): Subcomponents {
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
       optionalSubcomponent: { currentlyDisplaying: true },
-      subcomponentSpecificSettings: alertCloseSpecificSettings,
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
