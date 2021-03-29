@@ -74,7 +74,6 @@ export default class TransitionUtils {
       unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void, backdropElement?: HTMLElement,
       transitionDelay?: string, modalElementProperties?: ElementStyleProperties): void {
     if (backdropElement) TransitionUtils.startBackdropDisplayTransition(backdropElement);
-    expandedModalPreviewModeState.setIsModeToggleInitialFadeTransitionInProgressState(false);
     const modalTransitionDelay = window.setTimeout(() => { 
       TransitionUtils.startModalEntranceTransition(
         transitionDuration, modalElement, unsetTransitionPropertiesCallback, backdropElement, modalElementProperties); 

@@ -3,8 +3,6 @@ import { ElementStyleProperties } from '../../../interfaces/elementStyleProperti
 
 let beginningTimeOfTransitionState = 0;
 let isModeToggleTransitionInProgressState = false;
-// moving to and from the default mode
-let isModeToggleInitialFadeTransitionInProgressState = false;
 let isToolbarFadeTransitionInProgress = false;
 let isTransitionPreviewInProgressState = false;
 let isWaitingTransitionDelayState = false;
@@ -33,14 +31,6 @@ function getIsModeToggleTransitionInProgressState(): boolean {
 
 function setIsModeToggleTransitionInProgressState(state: boolean): void {
   isModeToggleTransitionInProgressState = state;
-}
-
-function getIsModeToggleInitialFadeTransitionInProgressState(): boolean {
-  return isModeToggleInitialFadeTransitionInProgressState;
-}
-
-function setIsModeToggleInitialFadeTransitionInProgressState(state: boolean): void {
-  isModeToggleInitialFadeTransitionInProgressState = state;
 }
 
 function getIsToolbarFadeTransitionInProgressState(): boolean {
@@ -126,10 +116,8 @@ export const expandedModalPreviewModeState = {
   getElapsedTransitionTime,
   getIsModeToggleTransitionInProgressState,
   setIsModeToggleTransitionInProgressState,
-  setIsModeToggleInitialFadeTransitionInProgressState,
   getIsToolbarFadeTransitionInProgressState,
   setIsToolbarFadeTransitionInProgressState,
-  getIsModeToggleInitialFadeTransitionInProgressState,
   getIsTransitionPreviewInProgressState,
   setIsPreviewTransitionInProgressState,
   getExpandedModalModeToolbarContainerPositionState,

@@ -1,5 +1,8 @@
+import {
+  INITIAL_EXPANDED_MODAL_TRANSITION_VALUES, UNSET, ADD_CLASS,
+  REMOVE_CLASS, POINTER_EVENTS_NONE, POINTER_EVENTS_REMOVE,
+} from './sharedConsts';
 import { ElementStyleProperties } from '../../../../interfaces/elementStyleProperties';
-import { INITIAL_EXPANDED_MODAL_TRANSITION_VALUES, UNSET } from './sharedConsts';
 import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 
@@ -28,7 +31,7 @@ export default class GeneralUtils {
     });
   }
 
-  public static toggleModalStaticPosition(modalElement: HTMLElement, modalOverlayElement: HTMLElement, toggleName: 'add' | 'remove'): void {
+  public static toggleModalStaticPosition(modalElement: HTMLElement, modalOverlayElement: HTMLElement, toggleName: typeof ADD_CLASS | typeof REMOVE_CLASS): void {
     modalElement.classList[toggleName](STATIC_POSITION_CLASS);
     modalOverlayElement.classList[toggleName](STATIC_POSITION_CLASS);
   }
@@ -52,5 +55,9 @@ export default class GeneralUtils {
     Object.keys(modalProperties).forEach((propertyKey: string) => {
       modalElement.style[propertyKey] = modalProperties[propertyKey];
     });
+  }
+
+  public static setToolbarContainerPointerEvents(toolbarContainerElement: HTMLElement, pointerEvents: typeof POINTER_EVENTS_NONE | typeof POINTER_EVENTS_REMOVE): void {
+    toolbarContainerElement.style.pointerEvents = pointerEvents;
   }
 }

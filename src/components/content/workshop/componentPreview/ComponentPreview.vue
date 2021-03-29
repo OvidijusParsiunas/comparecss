@@ -177,9 +177,9 @@ export default {
       }
     },
     expandModalComponent(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {
-      const [isExpandedModalPreviewModeActive, setOptionToDefaultCallback, toolbarPositionToggleElement,
+      const [isToggledExpandedModalPreviewModeToActive, setOptionToDefaultCallback, toolbarPositionToggleElement,
         toolbarContainerElement, toolbarElement] = toggleExpandedModalPreviewModeEvent;
-      if (isExpandedModalPreviewModeActive) {
+      if (isToggledExpandedModalPreviewModeToActive) {
         // strategies
         // https://tympanus.net/codrops/2013/06/25/nifty-modal-window-effects/
         ExpandedModalPreviewModeToggleEntranceTransitionService.start(

@@ -1,12 +1,12 @@
 import {
+  MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, OPACITY_INVISIBLE, REMOVE_CLASS, OPACITY_VISIBLE,
+  MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS, POINTER_EVENTS_NONE, POINTER_EVENTS_REMOVE,
+  TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS, TOOLBAR_FADE_TRANSITION_DURATION_SECONDS, 
+} from '../../utils/sharedConsts';
+import {
   TOOLBAR_ELEMENT_ACTIVE_EXPANDED_MODAL_MODE_CLASS, TOOLBAR_CONTAINER_GENERAL_CLASSES,
   EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES,
 } from '../../../../../consts/toolbarClasses';
-import {
-  TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS, TOOLBAR_FADE_TRANSITION_DURATION_SECONDS, 
-  MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS, OPACITY_VISIBLE,
-  MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, OPACITY_INVISIBLE,
-} from '../../utils/sharedConsts';
 import { COMPONENT_PREVIEW_CLASSES } from '../../../../../consts/componentPreviewClasses';
 import { ModalEntranceTransition } from '../../../../../interfaces/modalTransitions';
 import { expandedModalPreviewModeState } from '../../expandedModalPreviewModeState';
@@ -38,6 +38,7 @@ export default class ModeToggleEntranceTransitionService {
     GeneralUtils.opacityFadeTransition(OPACITY_VISIBLE, transitionDurationSeconds, toolbarContainerElement);
     const pendingToolbarEntranceTransitionUnset = window.setTimeout(() => {
       GeneralUtils.unsetTransitionProperties(toolbarContainerElement);
+      GeneralUtils.setToolbarContainerPointerEvents(toolbarContainerElement, POINTER_EVENTS_REMOVE);
       expandedModalPreviewModeState.setIsToolbarFadeTransitionInProgressState(false);
     }, transitionDurationMilliseconds);
     expandedModalPreviewModeState.setPendingToolbarEntranceTransitionUnsetState(pendingToolbarEntranceTransitionUnset);
@@ -87,7 +88,7 @@ export default class ModeToggleEntranceTransitionService {
 
   private static startModalAndBackdropTransition(backdropElement: HTMLElement, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
       backdropProperties: BackdropProperties, modalEntranceTransition: ModalEntranceTransition, transitionDuration: string, transitionDelay?: string): void {
-    GeneralUtils.toggleModalStaticPosition(modalElement, modalOverlayElement, 'remove');
+    GeneralUtils.toggleModalStaticPosition(modalElement, modalOverlayElement, REMOVE_CLASS);
     ModeToggleEntranceTransitionService.setBackdropStyle(backdropElement, backdropProperties);
     setTimeout(() => { modalEntranceTransition(transitionDuration, modalElement, GeneralUtils.unsetTransitionProperties, backdropElement, transitionDelay); });
   }
@@ -111,7 +112,7 @@ export default class ModeToggleEntranceTransitionService {
         backdropProperties, modalEntranceTransition, newTransitionDuration);
       ModeToggleEntranceTransitionService.startToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, transitionDelay);
     } else {
-      expandedModalPreviewModeState.setIsModeToggleInitialFadeTransitionInProgressState(true);
+      GeneralUtils.setToolbarContainerPointerEvents(toolbarContainerElement, POINTER_EVENTS_NONE);
       ModeToggleEntranceTransitionService.startModalAndBackdropTransitionWithFadeOut(backdropElement, modalElement, modalOverlayElement,
         backdropProperties, modalEntranceTransition, transitionDuration, transitionDelay);
       ModeToggleEntranceTransitionService.startToolbarTransitionWithFadeOut(toolbarContainerElement, toolbarElement,
