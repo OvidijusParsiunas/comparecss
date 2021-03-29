@@ -19,6 +19,9 @@ button size is not set in settings correctly
 maybe each equal section should be selectable
 consider making alert and button into a separately generated compontes in component preview as their contents shake when size is changed in firefox
 text alignment not working
+option for font weight and text overlay, should also have an icon to edit text in-line, also can potentially have an icon for remove
+fix the nested button display layout - to access their text
+dropdown for the button component
 
 option to import an existing button style!
 

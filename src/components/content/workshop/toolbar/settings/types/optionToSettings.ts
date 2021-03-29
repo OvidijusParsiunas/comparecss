@@ -20,6 +20,8 @@ import nestedSubcomponentPosition from './nestedSubcomponentPosition';
 import nestedSubcomponentMargin from './nestedSubcomponentMargin';
 import transitions from './transitions';
 import backdrop from './backdrop';
+import textPosition from './textPosition';
+import textBackground from './textBackground';
 
 type OptionToSettings = {
   [key in WORKSHOP_TOOLBAR_OPTION_TYPES]?: any;
@@ -43,6 +45,8 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.DESIGN]: design,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND]: background,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_POSITION]: modalPosition,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_POSITION]: textPosition,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_BACKGROUND]: textBackground,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_POSITION]: nestedSubcomponentPosition,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_MARGIN]: nestedSubcomponentMargin,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TRANSITIONS]: transitions,

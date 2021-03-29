@@ -76,6 +76,7 @@ function createTextCss(): CustomCss {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
       display: 'inline-table',
       top: '50%',
+      width: 'auto',
     },
   }
 }

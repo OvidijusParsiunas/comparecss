@@ -56,9 +56,12 @@ export default function createModalComponentPreviewStructure(
     subcomponentDropdownStructure: {
       [SUB_COMPONENTS.BASE]: {
         [SUB_COMPONENTS.LAYER_1]: {
+          [SUB_COMPONENTS.TEXT_1]: textSubcomponent1.optionalSubcomponent,
           [SUB_COMPONENTS.CLOSE]: closeComponent.optionalSubcomponent,
         },
-        [SUB_COMPONENTS.LAYER_2]: { currentlyDisplaying: true },
+        [SUB_COMPONENTS.LAYER_2]: { 
+          [SUB_COMPONENTS.TEXT_2]: textSubcomponent2.optionalSubcomponent,
+        },
         [SUB_COMPONENTS.LAYER_3]: {
           [SUB_COMPONENTS.BUTTON_1]: button1Component.optionalSubcomponent,
           [SUB_COMPONENTS.BUTTON_2]: button2Component.optionalSubcomponent,

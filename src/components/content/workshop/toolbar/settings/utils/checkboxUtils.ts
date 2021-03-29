@@ -3,13 +3,15 @@ import SharedUtils from './sharedUtils';
 
 export default class CheckboxUtils {
   
-  private static activateTriggers(newCheckboxValue: boolean, triggers: any, subcomponentProperties: SubcomponentProperties, allSettings: any): void {
+  private static activateTriggers(newCheckboxValue: boolean, triggers: any, subcomponentProperties: SubcomponentProperties,
+      thisSettingSpec: any, allSettings: any): void {
     const { customCss, activeCustomCssMode } = subcomponentProperties;
     (triggers[newCheckboxValue.toString()] || []).forEach((trigger) => {
       const { cssProperty, newValue } = trigger;
       customCss[activeCustomCssMode][cssProperty] = newValue;
       for (let i = 0; i < allSettings.options.length; i += 1) {
-        if (allSettings.options[i].spec.cssProperty && allSettings.options[i].spec.cssProperty === cssProperty) {
+        if (thisSettingSpec !== allSettings.options[i].spec && allSettings.options[i].spec.cssProperty
+            && allSettings.options[i].spec.cssProperty === cssProperty) {
           allSettings.options[i].spec.default = parseInt(newValue) || 0;
         }
       }
@@ -37,7 +39,7 @@ export default class CheckboxUtils {
   public static updateProperties(spec: any, triggers: any, subcomponentProperties: SubcomponentProperties, allSettings: any): void {
     const newCheckboxValue = !spec.default;
     if (spec.customFeatureObjectKeys) { CheckboxUtils.updateCustomFeature(newCheckboxValue, spec, subcomponentProperties); }
-    if (triggers) { CheckboxUtils.activateTriggers(newCheckboxValue, triggers, subcomponentProperties, allSettings) }
+    if (triggers) { CheckboxUtils.activateTriggers(newCheckboxValue, triggers, subcomponentProperties, spec, allSettings) }
   }
 
   private static updateCustomCssSetting(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {

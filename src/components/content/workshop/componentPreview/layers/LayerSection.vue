@@ -1,11 +1,11 @@
 <template>
   <div>
-    <!-- jsClasses added for button component -->
+    <!-- jsClasses added for button components -->
     <div v-for="(nestedSubcomponent, name, index) in nestedSubcomponents" :key="nestedSubcomponent"
       :style="{order: `${index}`}"
       class="subcomponent-element-container"
       :class="[subcomponentElementContainerClass,
-        ...(name === SUB_COMPONENTS.TEXT_1
+        ...((name === SUB_COMPONENTS.TEXT_1 || name === SUB_COMPONENTS.TEXT_2)
           && nestedSubcomponent.customFeatures
           && nestedSubcomponent.customFeatures.jsClasses || [])]">
       <component v-if="!nestedSubcomponent.optionalSubcomponent
@@ -38,9 +38,12 @@
       <component
         :is="nestedSubcomponent.componentTag"
         :id="subcomponentAndOverlayElementIds[name].overlayId"
-        style="display: none" :style="nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
+        :style="[
+          nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+          {display: 'none'}, {color: '#ff000000'}]"
         class="subcomponent-element"
         :class="OVERLAY_DEFAULT_CLASS">
+          {{name === SUB_COMPONENTS.TEXT_1 || name === SUB_COMPONENTS.TEXT_2 ? nestedSubcomponent.componentText : ''}}
       </component>
     </div>
   </div>

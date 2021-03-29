@@ -6,6 +6,7 @@ export enum WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES {
   PADDING = 'Padding',
   MARGIN = 'Margin',
   TEXT = 'Text',
+  FONT = 'Font',
   DESIGN = 'Design',
   BACKGROUND = 'Background',
   ICON = 'Icon',

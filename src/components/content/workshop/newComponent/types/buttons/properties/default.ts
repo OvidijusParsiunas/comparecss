@@ -18,7 +18,6 @@ function createInitialBaseCss(): CustomCss {
       borderStyle: 'solid',
       boxShadow: 'unset',
       outline: 'none',
-      lineHeight: '0',
       paddingTop: '0px',
       paddingBottom: '0px',
       paddingLeft: '12px',
@@ -55,11 +54,11 @@ function createLayerCss(): CustomCss {
 function createTextCss(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-      height: '100%',
-      transform: 'unset',
-      overflow: 'unset',
-      userSelect: 'none',
+      display: 'inline-table',
       top: '50%',
+      width: 'auto',
+      userSelect: 'none',
+      overflow: 'unset',
     },
   }
 }
