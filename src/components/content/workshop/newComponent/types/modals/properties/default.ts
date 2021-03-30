@@ -214,6 +214,7 @@ function createInitialText1Css(): CustomCss {
       fontFamily: '"Poppins", sans-serif',
       color: '#004085',
       textAlign: 'center',
+      backgroundColor: 'inherit',
     },
   }
 }
@@ -229,6 +230,7 @@ function createInitialText2Css(): CustomCss {
       fontSize: '16px',
       color: '#004085',
       textAlign: 'center',
+      backgroundColor: 'inherit',
     },
   }
 }

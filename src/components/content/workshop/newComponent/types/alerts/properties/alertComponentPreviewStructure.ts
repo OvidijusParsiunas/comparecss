@@ -24,6 +24,7 @@ export default function createAlertComponentPreviewStructure(baseComponent: Subc
     ],
     subcomponentDropdownStructure: {
       [SUB_COMPONENTS.BASE]: {
+        [SUB_COMPONENTS.TEXT_1]: { currentlyDisplaying: true },
         [SUB_COMPONENTS.CLOSE]: closeComponent.optionalSubcomponent,
       },
     },

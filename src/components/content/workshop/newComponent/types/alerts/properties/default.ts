@@ -77,6 +77,7 @@ function createTextCss(): CustomCss {
       display: 'inline-table',
       top: '50%',
       width: 'auto',
+      backgroundColor: 'inherit',
     },
   }
 }

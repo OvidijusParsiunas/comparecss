@@ -59,6 +59,7 @@ function createTextCss(): CustomCss {
       width: 'auto',
       userSelect: 'none',
       overflow: 'unset',
+      backgroundColor: 'inherit',
     },
   }
 }
