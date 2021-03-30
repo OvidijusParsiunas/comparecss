@@ -58,6 +58,17 @@ export type SubcomponentSpecificSettings = {
   };
 }
 
+export interface BackdropProperties {
+  color: string;
+  alpha: number;
+  visible: boolean;
+}
+
+export interface ComponentCenteringInParent {
+  vertical: boolean;
+  horizontal: boolean;
+}
+
 export interface ComponentTransitions {
   entrance: {
     type: MODAL_TRANSITION_ENTRANCE_TYPES;
@@ -70,15 +81,8 @@ export interface ComponentTransitions {
   },
 }
 
-export interface ComponentCenteringInParent {
-  vertical: boolean;
-  horizontal: boolean;
-}
-
-export interface BackdropProperties {
-  color: string;
-  alpha: number;
-  visible: boolean;
+export interface AutoWidth {
+  auto: boolean;
 }
 
 export interface CustomFeatures {
@@ -87,6 +91,7 @@ export interface CustomFeatures {
   componentCenteringInParent?: ComponentCenteringInParent;
   transitions?: ComponentTransitions;
   jsClasses?: ComponentJavascriptClasses;
+  autoWidth?: AutoWidth;
 }
 
 export interface SubcomponentProperties {

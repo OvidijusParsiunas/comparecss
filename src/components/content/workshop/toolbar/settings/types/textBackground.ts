@@ -13,16 +13,20 @@ export default {
         cssProperty: 'width',
         postfix: 'px',
       },
+      triggers: [
+        {
+          customFeatureObjectKeys: ['autoWidth', 'auto'],
+          defaultValue: false,
+          conditions: new Set([true]),
+        },
+      ],
     },
     {
       type: SETTINGS_TYPES.CHECKBOX,
       spec: {
         name: 'Width-Auto',
-        cssProperty: 'width',
+        customFeatureObjectKeys: ['autoWidth', 'auto'],
         default: true,
-        conditionalStyle: {
-          truthy: 'auto',
-        }
       },
       triggers: {
         true: [

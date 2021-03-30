@@ -1,4 +1,4 @@
-import { BackdropProperties, ComponentCenteringInParent, ComponentTransitions, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { AutoWidth, BackdropProperties, ComponentCenteringInParent, ComponentTransitions, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../../../../../consts/modalTransitionTypes.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
@@ -56,6 +56,18 @@ function createDefaultCloseButtonCustomFeatures(): CustomFeatures {
   };
 }
 
+function createAutoWidth(): AutoWidth {
+  return {
+    auto: true,
+  };
+}
+
+function createDefaultTextCustomFeatures(): CustomFeatures {
+  return {
+    autoWidth: createAutoWidth(),
+  };
+}
+
 function createInitialBaseCss(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
@@ -67,9 +79,7 @@ function createInitialBaseCss(): CustomCss {
       borderRadius: '4px',
       width: '450px',
       boxSizing: 'unset',
-      fontSize: '16px',
       boxShadow: 'unset',
-      fontFamily: '"Poppins", sans-serif',
       top: '0px',
     },
   };
@@ -113,7 +123,6 @@ function createInitialButton1Css(): CustomCss {
       borderStyle: 'solid',
       boxShadow: 'unset',
       outline: 'none',
-      lineHeight: '0',
       paddingTop: '0px',
       paddingBottom: '0px',
       paddingLeft: '12px',
@@ -154,11 +163,7 @@ function createInitialLayer1Css(): CustomCss {
       borderBottomStyle: 'solid',
       borderBottomColor: '#e9ecef',
       backgroundColor: 'inherit',
-      fontWeight: '500',
-      fontSize: '20px',
       boxShadow: 'unset',
-      fontFamily: '"Poppins", sans-serif',
-      color: '#004085',
       zIndex: 1,
     },
   };
@@ -174,11 +179,7 @@ function createInitialLayer2Css(): CustomCss {
       paddingTop: '0px',
       paddingRight: '0px',
       paddingBottom: '0px',
-      fontWeight: '400',
       backgroundColor: 'inherit',
-      fontFamily: '"Poppins", sans-serif',
-      fontSize: '16px',
-      color: '#004085',
     },
   };
 }
@@ -198,18 +199,36 @@ function createInitialLayer3Css(): CustomCss {
       borderTopColor: '#e9ecef',
       backgroundColor: 'inherit',
       boxShadow: 'unset',
-      fontFamily: '"Poppins", sans-serif',
-      fontSize: '16px',
-      color: '#004085',
     },
   };
 }
 
-function createTextCss(): CustomCss {
+function createInitialText1Css(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
       display: 'inline-table',
       top: '50%',
+      width: 'auto',
+      fontWeight: '500',
+      fontSize: '20px',
+      fontFamily: '"Poppins", sans-serif',
+      color: '#004085',
+      textAlign: 'center',
+    },
+  }
+}
+
+function createInitialText2Css(): CustomCss {
+  return {
+    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+      display: 'inline-table',
+      top: '50%',
+      width: 'auto',
+      fontWeight: '400',
+      fontFamily: '"Poppins", sans-serif',
+      fontSize: '16px',
+      color: '#004085',
+      textAlign: 'center',
     },
   }
 }
@@ -267,7 +286,7 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.BUTTON_1]: {
       componentTag: 'button',
-      componentText: 'Submit',
+      componentText: 'button',
       customCss: createInitialButton1Css(),
       initialCss: createInitialButton1Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -296,18 +315,24 @@ function createSubcomponents(): Subcomponents {
     [SUB_COMPONENTS.TEXT_1]: {
       componentTag: 'div',
       componentText: 'Modal title',
-      customCss: createTextCss(),
-      initialCss: createTextCss(),
+      customCss: createInitialText1Css(),
+      initialCss: createInitialText1Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      optionalSubcomponent: { currentlyDisplaying: true },
+      customFeatures: createDefaultTextCustomFeatures(),
+      defaultCustomFeatures: createDefaultTextCustomFeatures(),
     },
     [SUB_COMPONENTS.TEXT_2]: {
       componentTag: 'div',
       componentText: 'Modal body text',
-      customCss: createTextCss(),
-      initialCss: createTextCss(),
+      customCss: createInitialText2Css(),
+      initialCss: createInitialText2Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      optionalSubcomponent: { currentlyDisplaying: true },
+      customFeatures: createDefaultTextCustomFeatures(),
+      defaultCustomFeatures: createDefaultTextCustomFeatures(),
     },
   };
 }

@@ -89,7 +89,6 @@
 </template>
 
 <script lang="ts">
-import { BackdropProperties, ComponentCenteringInParent, ComponentTransitions, CustomCss, CustomFeatures, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../interfaces/workshopComponent';
 import { modalLayerBottomSpecificSettings } from './newComponent/types/modals/properties/modalLayerBottomSpecificSettings';
 import { removeSubcomponentModalState } from './toolbar/options/removeSubcomponentModalState/removeSubcomponentModalState';
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../consts/modalTransitionTypes.enum';
@@ -122,6 +121,10 @@ import ComponentJs from '../../../services/workshop/componentJs';
 import componentList from './componentList/ComponentList.vue';
 import toolbar from './toolbar/Toolbar.vue';
 import 'vuesax/dist/vuesax.css' //Vuesax styles
+import {
+  CustomCss, CustomFeatures, SubcomponentProperties, Subcomponents, WorkshopComponent,
+  AutoWidth, BackdropProperties, ComponentCenteringInParent, ComponentTransitions,
+} from '../../../interfaces/workshopComponent';
 
 interface Consts {
   preloadedIconsElementId: string;
@@ -179,6 +182,18 @@ function createDefaultBaseCustomFeatures(): CustomFeatures {
 function createDefaultCloseButtonCustomFeatures(): CustomFeatures {
   return {
     jsClasses: createInitialCloseButtonJsClasses(),
+  };
+}
+
+function createAutoWidth(): AutoWidth {
+  return {
+    auto: true,
+  };
+}
+
+function createDefaultTextCustomFeatures(): CustomFeatures {
+  return {
+    autoWidth: createAutoWidth(),
   };
 }
 
@@ -434,6 +449,8 @@ function createSubcomponents(): Subcomponents {
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       optionalSubcomponent: { currentlyDisplaying: true },
+      customFeatures: createDefaultTextCustomFeatures(),
+      defaultCustomFeatures: createDefaultTextCustomFeatures(),
     },
     [SUB_COMPONENTS.TEXT_2]: {
       componentTag: 'div',
@@ -443,6 +460,8 @@ function createSubcomponents(): Subcomponents {
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       optionalSubcomponent: { currentlyDisplaying: true },
+      customFeatures: createDefaultTextCustomFeatures(),
+      defaultCustomFeatures: createDefaultTextCustomFeatures(),
     },
   };
 }

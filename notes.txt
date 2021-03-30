@@ -22,6 +22,7 @@ text alignment not working
 option for font weight and text overlay, should also have an icon to edit text in-line, also can potentially have an icon for remove
 fix the nested button display layout - to access their text
 dropdown for the button component
+remove vuesax
 
 option to import an existing button style!
 

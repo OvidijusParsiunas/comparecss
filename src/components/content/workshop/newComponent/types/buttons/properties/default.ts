@@ -1,4 +1,4 @@
-import { CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
@@ -67,9 +67,16 @@ function createInitialButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
   return new Set([JAVASCRIPT_CLASSES.RIPPLES])
 }
 
+function createAutoWidth(): AutoWidth {
+  return {
+    auto: true,
+  };
+}
+
 function createDefaultButtonCustomFeatures(): CustomFeatures {
   return {
     jsClasses: createInitialButtonJsClasses(),
+    autoWidth: createAutoWidth(),
   }
 }
 

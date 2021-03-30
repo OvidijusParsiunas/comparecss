@@ -1,4 +1,4 @@
-import { CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
@@ -91,6 +91,18 @@ function createDefaultCloseButtonCustomFeatures(): CustomFeatures {
   }
 }
 
+function createAutoWidth(): AutoWidth {
+  return {
+    auto: true,
+  };
+}
+
+function createDefaultTextCustomFeatures(): CustomFeatures {
+  return {
+    autoWidth: createAutoWidth(),
+  };
+}
+
 function createSubcomponents(): Subcomponents {
   return {
     [SUB_COMPONENTS.BASE]: {
@@ -129,6 +141,8 @@ function createSubcomponents(): Subcomponents {
       initialCss: createTextCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      customFeatures: createDefaultTextCustomFeatures(),
+      defaultCustomFeatures: createDefaultTextCustomFeatures(),
     },
   }
 }

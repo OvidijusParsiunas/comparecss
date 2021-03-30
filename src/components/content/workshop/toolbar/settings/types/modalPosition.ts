@@ -35,7 +35,7 @@ export default {
           defaultValue: false,
           conditions: new Set([true]),
         },
-      ]
+      ],
     },
   ]
 };
