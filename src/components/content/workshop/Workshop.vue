@@ -134,6 +134,19 @@ interface Consts {
   REMOVE_SUBCOMPONENT_MODAL_ID;
 }
 
+// WORK1: export these
+enum SUBCOMPONENT_CATEGORIES {
+  BASE, LAYER, NESTED,
+}
+
+enum NESTED_SECTIONS_TYPES {
+  ALIGNED_SECTIONS = 'alignedSections', EQUAL_SPLIT_SECTIONS = 'equalSplitSections',
+}
+
+enum ALIGNED_SECTION_COLUMNS {
+  LEFT = 'left', CENTER = 'center', RIGHT = 'right',
+}
+
 interface Data {
   isIconsPreloaded: boolean;
   components: WorkshopComponent[];
@@ -344,6 +357,12 @@ function createInitialText1Css(): CustomCss {
       color: '#004085',
       textAlign: 'center',
       backgroundColor: 'inherit',
+      paddingTop: '0px',
+      paddingBottom: '0px',
+      paddingLeft: '0px',
+      paddingRight: '0px',
+      marginLeft: '0px',
+      marginRight: '0px',
     },
   }
 }
@@ -360,6 +379,12 @@ function createInitialText2Css(): CustomCss {
       color: '#004085',
       textAlign: 'center',
       backgroundColor: 'inherit',
+      paddingTop: '0px',
+      paddingBottom: '0px',
+      paddingLeft: '0px',
+      paddingRight: '0px',
+      marginLeft: '0px',
+      marginRight: '0px',
     },
   }
 }
@@ -371,6 +396,7 @@ function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
 function createSubcomponents(): Subcomponents {
   return {
     [SUB_COMPONENTS.BASE]: {
+      category: SUBCOMPONENT_CATEGORIES.BASE,
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -382,6 +408,8 @@ function createSubcomponents(): Subcomponents {
       defaultCustomFeatures: createDefaultBaseCustomFeatures(),
     },
     [SUB_COMPONENTS.LAYER_1]: {
+      category: SUBCOMPONENT_CATEGORIES.LAYER,
+      layerSectionsType: NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS,
       customCss: createInitialLayer1Css(),
       initialCss: createInitialLayer1Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -389,12 +417,16 @@ function createSubcomponents(): Subcomponents {
       subcomponentSpecificSettings: modalLayerTopSpecificSettings,
     },
     [SUB_COMPONENTS.LAYER_2]: {
+      category: SUBCOMPONENT_CATEGORIES.LAYER,
+      layerSectionsType: NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS,
       customCss: createInitialLayer2Css(),
       initialCss: createInitialLayer2Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
     },
     [SUB_COMPONENTS.LAYER_3]: {
+      category: SUBCOMPONENT_CATEGORIES.LAYER,
+      layerSectionsType: NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS,
       customCss: createInitialLayer3Css(),
       initialCss: createInitialLayer3Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -402,6 +434,8 @@ function createSubcomponents(): Subcomponents {
       subcomponentSpecificSettings: modalLayerBottomSpecificSettings,
     },
     [SUB_COMPONENTS.CLOSE]: {
+      category: SUBCOMPONENT_CATEGORIES.NESTED,
+      alignedLayerSection: ALIGNED_SECTION_COLUMNS.RIGHT,
       componentTag: 'button',
       componentText: '×',
       customCss: createInitialCloseButtonCss(),
@@ -416,6 +450,8 @@ function createSubcomponents(): Subcomponents {
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
     [SUB_COMPONENTS.BUTTON_1]: {
+      category: SUBCOMPONENT_CATEGORIES.NESTED,
+      alignedLayerSection: ALIGNED_SECTION_COLUMNS.RIGHT,
       componentTag: 'button',
       componentText: 'button',
       customCss: createInitialButton1Css(),
@@ -430,6 +466,8 @@ function createSubcomponents(): Subcomponents {
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
     [SUB_COMPONENTS.BUTTON_2]: {
+      category: SUBCOMPONENT_CATEGORIES.NESTED,
+      alignedLayerSection: ALIGNED_SECTION_COLUMNS.RIGHT,
       componentTag: 'button',
       componentText: 'Cancel',
       customCss: createInitialButton1Css(),
@@ -444,6 +482,8 @@ function createSubcomponents(): Subcomponents {
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
     [SUB_COMPONENTS.TEXT_1]: {
+      category: SUBCOMPONENT_CATEGORIES.NESTED,
+      alignedLayerSection: ALIGNED_SECTION_COLUMNS.LEFT,
       componentTag: 'div',
       componentText: 'Modal title',
       customCss: createInitialText1Css(),
@@ -455,6 +495,8 @@ function createSubcomponents(): Subcomponents {
       defaultCustomFeatures: createDefaultTextCustomFeatures(),
     },
     [SUB_COMPONENTS.TEXT_2]: {
+      category: SUBCOMPONENT_CATEGORIES.NESTED,
+      alignedLayerSection: ALIGNED_SECTION_COLUMNS.LEFT,
       componentTag: 'div',
       componentText: 'Modal body text',
       customCss: createInitialText2Css(),
@@ -468,8 +510,57 @@ function createSubcomponents(): Subcomponents {
   };
 }
 
+function createLayer(layerName: SUB_COMPONENTS, layerSubcomponent: SubcomponentProperties, layerSubcomponentsStructure: any, allSubcomponents: Subcomponents): any {
+  const layerObject = {
+    customCss: layerSubcomponent.customCss,
+    subcomponentType: layerName,
+    nestedSubcomponents: {
+      [layerSubcomponent.layerSectionsType]: {},
+    }
+  };
+  if (layerSubcomponent.layerSectionsType === NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS) {
+    layerObject.nestedSubcomponents[NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_COLUMNS.LEFT] = {};
+    layerObject.nestedSubcomponents[NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_COLUMNS.CENTER] = {};
+    layerObject.nestedSubcomponents[NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_COLUMNS.RIGHT] = {};
+    Object.keys(layerSubcomponentsStructure).forEach((subcomponentName: SUB_COMPONENTS) => {
+      layerObject.nestedSubcomponents[layerSubcomponent.layerSectionsType][allSubcomponents[subcomponentName].alignedLayerSection][subcomponentName] = allSubcomponents[subcomponentName];
+      allSubcomponents[subcomponentName].customFeatures.layerObject = layerObject;
+      allSubcomponents[subcomponentName].defaultCustomFeatures.layerObject = layerObject;
+    });
+  }
+  return layerObject;
+}
+
+function createLayers(subcomponentBase: any, subcomponents: Subcomponents): any {
+  const layers = [];
+  Object.keys(subcomponentBase).forEach((subcomponentName: SUB_COMPONENTS) => {
+    if (subcomponents[subcomponentName].category === SUBCOMPONENT_CATEGORIES.LAYER) {
+      layers.push(createLayer(subcomponentName, subcomponents[subcomponentName], subcomponentBase[subcomponentName], subcomponents));
+    }
+  })
+  return layers;
+}
+
 function getNewComponent(): WorkshopComponent {
   const subcomponents = createSubcomponents();
+  // WORK1: clean
+  const subcomponentDropdownStructure = {
+    [SUB_COMPONENTS.BASE]: {
+      [SUB_COMPONENTS.LAYER_1]: {
+        [SUB_COMPONENTS.TEXT_1]: subcomponents[SUB_COMPONENTS.TEXT_1].optionalSubcomponent,
+        [SUB_COMPONENTS.CLOSE]: subcomponents[SUB_COMPONENTS.CLOSE].optionalSubcomponent,
+      },
+      [SUB_COMPONENTS.LAYER_2]: { 
+        [SUB_COMPONENTS.TEXT_2]: subcomponents[SUB_COMPONENTS.TEXT_2].optionalSubcomponent,
+      },
+      [SUB_COMPONENTS.LAYER_3]: {
+        [SUB_COMPONENTS.BUTTON_1]: subcomponents[SUB_COMPONENTS.BUTTON_1].optionalSubcomponent,
+        [SUB_COMPONENTS.BUTTON_2]: subcomponents[SUB_COMPONENTS.BUTTON_2].optionalSubcomponent,
+      }
+    },
+  }
+  // layers will ne injected into the preview structure
+  const layers = createLayers(subcomponentDropdownStructure[SUB_COMPONENTS.BASE], subcomponents);
   return {
     type: NEW_COMPONENT_TYPES.MODAL,
     subcomponents,

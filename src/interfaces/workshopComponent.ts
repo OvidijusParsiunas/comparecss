@@ -92,9 +92,17 @@ export interface CustomFeatures {
   transitions?: ComponentTransitions;
   jsClasses?: ComponentJavascriptClasses;
   autoWidth?: AutoWidth;
+  // WORK1: create type
+  // appended in run-time
+  layerObject?: any;
 }
 
-export interface SubcomponentProperties {
+  export interface SubcomponentProperties {
+  // WORK1: category may not be required
+  category?: any;
+  // WORK1: add types
+  layerSectionsType?: any;
+  alignedLayerSection?: any;
   componentTag?: string;
   componentText?: string;
   customCss: CustomCss;

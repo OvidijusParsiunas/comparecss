@@ -23,6 +23,8 @@ option for font weight and text overlay, should also have an icon to edit text i
 fix the nested button display layout - to access their text
 dropdown for the button component
 remove vuesax
+need to change subcomponentType - to subcomponentName
+work to be done - WORK1
 
 option to import an existing button style!
 
