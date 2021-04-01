@@ -106,6 +106,7 @@ import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCa
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { inheritedAlertBaseCss } from './newComponent/types/alerts/properties/inheritedCss';
 import ProcessClassName from '../../../services/workshop/newComponent/processClassName';
+import PreviewStructure from '../../../services/workshop/newComponent/previewStructure'
 import { SUB_COMPONENT_CSS_MODES } from '../../../consts/subcomponentCssModes.enum';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../consts/domEventTriggerKeys.enum';
@@ -510,36 +511,7 @@ function createSubcomponents(): Subcomponents {
   };
 }
 
-function createLayer(layerName: SUB_COMPONENTS, layerSubcomponent: SubcomponentProperties, layerSubcomponentsStructure: any, allSubcomponents: Subcomponents): any {
-  const layerObject = {
-    customCss: layerSubcomponent.customCss,
-    subcomponentType: layerName,
-    nestedSubcomponents: {
-      [layerSubcomponent.layerSectionsType]: {},
-    }
-  };
-  if (layerSubcomponent.layerSectionsType === NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS) {
-    layerObject.nestedSubcomponents[NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_COLUMNS.LEFT] = {};
-    layerObject.nestedSubcomponents[NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_COLUMNS.CENTER] = {};
-    layerObject.nestedSubcomponents[NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_COLUMNS.RIGHT] = {};
-    Object.keys(layerSubcomponentsStructure).forEach((subcomponentName: SUB_COMPONENTS) => {
-      layerObject.nestedSubcomponents[layerSubcomponent.layerSectionsType][allSubcomponents[subcomponentName].alignedLayerSection][subcomponentName] = allSubcomponents[subcomponentName];
-      allSubcomponents[subcomponentName].customFeatures.layerObject = layerObject;
-      allSubcomponents[subcomponentName].defaultCustomFeatures.layerObject = layerObject;
-    });
-  }
-  return layerObject;
-}
 
-function createLayers(subcomponentBase: any, subcomponents: Subcomponents): any {
-  const layers = [];
-  Object.keys(subcomponentBase).forEach((subcomponentName: SUB_COMPONENTS) => {
-    if (subcomponents[subcomponentName].category === SUBCOMPONENT_CATEGORIES.LAYER) {
-      layers.push(createLayer(subcomponentName, subcomponents[subcomponentName], subcomponentBase[subcomponentName], subcomponents));
-    }
-  })
-  return layers;
-}
 
 function getNewComponent(): WorkshopComponent {
   const subcomponents = createSubcomponents();
@@ -559,8 +531,7 @@ function getNewComponent(): WorkshopComponent {
       }
     },
   }
-  // layers will ne injected into the preview structure
-  const layers = createLayers(subcomponentDropdownStructure[SUB_COMPONENTS.BASE], subcomponents);
+  const layers = PreviewStructure.createLayers(subcomponentDropdownStructure[SUB_COMPONENTS.BASE], subcomponents);
   return {
     type: NEW_COMPONENT_TYPES.MODAL,
     subcomponents,
