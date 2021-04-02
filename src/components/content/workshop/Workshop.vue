@@ -89,10 +89,10 @@
 </template>
 
 <script lang="ts">
+import createModalSubcomponentDropdownStructure from './newComponent/types/modals/properties/subcomponentDropdownStructure'
 import { modalLayerBottomSpecificSettings } from './newComponent/types/modals/properties/modalLayerBottomSpecificSettings';
 import { removeSubcomponentModalState } from './toolbar/options/removeSubcomponentModalState/removeSubcomponentModalState';
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../consts/modalTransitionTypes.enum';
-import createModalComponentPreviewStructure from './newComponent/types/modals/properties/modalComponentPreviewStructure';
 import { modalLayerTopSpecificSettings } from './newComponent/types/modals/properties/modalLayerTopSpecificSettings';
 import { inheritedAlertCloseChildCss } from './newComponent/types/alerts/properties/inheritedAlertCloseChildCss';
 import { removeComponentModalState } from './componentList/removeComponentModalState/removeComponentModalState';
@@ -511,36 +511,19 @@ function createSubcomponents(): Subcomponents {
   };
 }
 
-
-
 function getNewComponent(): WorkshopComponent {
   const subcomponents = createSubcomponents();
-  // WORK1: clean
-  const subcomponentDropdownStructure = {
-    [SUB_COMPONENTS.BASE]: {
-      [SUB_COMPONENTS.LAYER_1]: {
-        [SUB_COMPONENTS.TEXT_1]: subcomponents[SUB_COMPONENTS.TEXT_1].optionalSubcomponent,
-        [SUB_COMPONENTS.CLOSE]: subcomponents[SUB_COMPONENTS.CLOSE].optionalSubcomponent,
-      },
-      [SUB_COMPONENTS.LAYER_2]: { 
-        [SUB_COMPONENTS.TEXT_2]: subcomponents[SUB_COMPONENTS.TEXT_2].optionalSubcomponent,
-      },
-      [SUB_COMPONENTS.LAYER_3]: {
-        [SUB_COMPONENTS.BUTTON_1]: subcomponents[SUB_COMPONENTS.BUTTON_1].optionalSubcomponent,
-        [SUB_COMPONENTS.BUTTON_2]: subcomponents[SUB_COMPONENTS.BUTTON_2].optionalSubcomponent,
-      }
-    },
-  }
-  const layers = PreviewStructure.createLayers(subcomponentDropdownStructure[SUB_COMPONENTS.BASE], subcomponents);
+  const subcomponentDropdownStructure = createModalSubcomponentDropdownStructure(
+    subcomponents[SUB_COMPONENTS.BUTTON_1], subcomponents[SUB_COMPONENTS.BUTTON_2], subcomponents[SUB_COMPONENTS.CLOSE],
+    subcomponents[SUB_COMPONENTS.TEXT_1], subcomponents[SUB_COMPONENTS.TEXT_2]
+  )
+  const componentPreviewStructure = PreviewStructure.createSubcomponentDropdownDructure(subcomponentDropdownStructure, subcomponents);
   return {
     type: NEW_COMPONENT_TYPES.MODAL,
     subcomponents,
     activeSubcomponentMode: SUB_COMPONENTS.BASE,
     defaultSubcomponentMode: SUB_COMPONENTS.BASE,
-    componentPreviewStructure: createModalComponentPreviewStructure(
-      subcomponents[SUB_COMPONENTS.BASE], subcomponents[SUB_COMPONENTS.CLOSE], subcomponents[SUB_COMPONENTS.BUTTON_1],
-      subcomponents[SUB_COMPONENTS.BUTTON_2], subcomponents[SUB_COMPONENTS.LAYER_1], subcomponents[SUB_COMPONENTS.LAYER_2],
-      subcomponents[SUB_COMPONENTS.LAYER_3], subcomponents[SUB_COMPONENTS.TEXT_1],  subcomponents[SUB_COMPONENTS.TEXT_2]),
+    componentPreviewStructure,
     className: 'default-class-name',
   };
 }

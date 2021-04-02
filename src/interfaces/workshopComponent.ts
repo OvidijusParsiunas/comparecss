@@ -142,7 +142,8 @@ export interface WorkshopComponent {
   activeSubcomponentMode: SUB_COMPONENTS;
   // the motivator for this is the fact that the first subcomponent should not be assumed to be the default one
   defaultSubcomponentMode: SUB_COMPONENTS;
-  componentPreviewStructure: ComponentPreviewStructure;
+  // WORK1
+  componentPreviewStructure: any;
   // class name for the component
   className: string;
 }

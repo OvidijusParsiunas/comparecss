@@ -1,17 +1,34 @@
-import { AutoWidth, BackdropProperties, ComponentCenteringInParent, ComponentTransitions, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../../../../../consts/modalTransitionTypes.enum';
+import PreviewStructure from '../../../../../../../services/workshop/newComponent/previewStructure';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
+import createModalSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { modalLayerBottomSpecificSettings } from './modalLayerBottomSpecificSettings';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
-import createModalComponentPreviewStructure from './modalComponentPreviewStructure';
 import { modalLayerTopSpecificSettings } from './modalLayerTopSpecificSettings';
 import { NewComponent } from '../../../../../../../interfaces/newComponent';
 import { inheritedAlertCloseChildCss } from './inheritedAlertCloseChildCss';
 import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';
 import { modalBaseSpecificSettings } from './modalBaseSpecificSettings';
 import { inheritedAlertBaseCss } from './inheritedCss';
+import {
+  AutoWidth, BackdropProperties, ComponentCenteringInParent, ComponentTransitions,
+  CustomCss, CustomFeatures, Subcomponents, WorkshopComponent,
+} from '../../../../../../../interfaces/workshopComponent';
+
+// WORK1: export these
+enum SUBCOMPONENT_CATEGORIES {
+  BASE, LAYER, NESTED,
+}
+
+enum NESTED_SECTIONS_TYPES {
+  ALIGNED_SECTIONS = 'alignedSections', EQUAL_SPLIT_SECTIONS = 'equalSplitSections',
+}
+
+enum ALIGNED_SECTION_COLUMNS {
+  LEFT = 'left', CENTER = 'center', RIGHT = 'right',
+}
 
 function createDefaultTransitionsProperties(): ComponentTransitions {
   return {
@@ -215,6 +232,12 @@ function createInitialText1Css(): CustomCss {
       color: '#004085',
       textAlign: 'center',
       backgroundColor: 'inherit',
+      paddingTop: '0px',
+      paddingBottom: '0px',
+      paddingLeft: '0px',
+      paddingRight: '0px',
+      marginLeft: '0px',
+      marginRight: '0px',
     },
   }
 }
@@ -231,6 +254,12 @@ function createInitialText2Css(): CustomCss {
       color: '#004085',
       textAlign: 'center',
       backgroundColor: 'inherit',
+      paddingTop: '0px',
+      paddingBottom: '0px',
+      paddingLeft: '0px',
+      paddingRight: '0px',
+      marginLeft: '0px',
+      marginRight: '0px',
     },
   }
 }
@@ -242,6 +271,7 @@ function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
 function createSubcomponents(): Subcomponents {
   return {
     [SUB_COMPONENTS.BASE]: {
+      category: SUBCOMPONENT_CATEGORIES.BASE,
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -253,6 +283,8 @@ function createSubcomponents(): Subcomponents {
       defaultCustomFeatures: createDefaultBaseCustomFeatures(),
     },
     [SUB_COMPONENTS.LAYER_1]: {
+      category: SUBCOMPONENT_CATEGORIES.LAYER,
+      layerSectionsType: NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS,
       customCss: createInitialLayer1Css(),
       initialCss: createInitialLayer1Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -260,12 +292,16 @@ function createSubcomponents(): Subcomponents {
       subcomponentSpecificSettings: modalLayerTopSpecificSettings,
     },
     [SUB_COMPONENTS.LAYER_2]: {
+      category: SUBCOMPONENT_CATEGORIES.LAYER,
+      layerSectionsType: NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS,
       customCss: createInitialLayer2Css(),
       initialCss: createInitialLayer2Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
     },
     [SUB_COMPONENTS.LAYER_3]: {
+      category: SUBCOMPONENT_CATEGORIES.LAYER,
+      layerSectionsType: NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS,
       customCss: createInitialLayer3Css(),
       initialCss: createInitialLayer3Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -273,6 +309,8 @@ function createSubcomponents(): Subcomponents {
       subcomponentSpecificSettings: modalLayerBottomSpecificSettings,
     },
     [SUB_COMPONENTS.CLOSE]: {
+      category: SUBCOMPONENT_CATEGORIES.NESTED,
+      alignedLayerSection: ALIGNED_SECTION_COLUMNS.RIGHT,
       componentTag: 'button',
       componentText: '×',
       customCss: createInitialCloseButtonCss(),
@@ -287,6 +325,8 @@ function createSubcomponents(): Subcomponents {
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
     [SUB_COMPONENTS.BUTTON_1]: {
+      category: SUBCOMPONENT_CATEGORIES.NESTED,
+      alignedLayerSection: ALIGNED_SECTION_COLUMNS.RIGHT,
       componentTag: 'button',
       componentText: 'button',
       customCss: createInitialButton1Css(),
@@ -301,6 +341,8 @@ function createSubcomponents(): Subcomponents {
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
     [SUB_COMPONENTS.BUTTON_2]: {
+      category: SUBCOMPONENT_CATEGORIES.NESTED,
+      alignedLayerSection: ALIGNED_SECTION_COLUMNS.RIGHT,
       componentTag: 'button',
       componentText: 'Cancel',
       customCss: createInitialButton1Css(),
@@ -315,6 +357,8 @@ function createSubcomponents(): Subcomponents {
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
     [SUB_COMPONENTS.TEXT_1]: {
+      category: SUBCOMPONENT_CATEGORIES.NESTED,
+      alignedLayerSection: ALIGNED_SECTION_COLUMNS.LEFT,
       componentTag: 'div',
       componentText: 'Modal title',
       customCss: createInitialText1Css(),
@@ -326,6 +370,8 @@ function createSubcomponents(): Subcomponents {
       defaultCustomFeatures: createDefaultTextCustomFeatures(),
     },
     [SUB_COMPONENTS.TEXT_2]: {
+      category: SUBCOMPONENT_CATEGORIES.NESTED,
+      alignedLayerSection: ALIGNED_SECTION_COLUMNS.LEFT,
       componentTag: 'div',
       componentText: 'Modal body text',
       customCss: createInitialText2Css(),
@@ -342,16 +388,18 @@ function createSubcomponents(): Subcomponents {
 export const defaultModal: NewComponent = {
   getNewComponent(): WorkshopComponent {
     const subcomponents = createSubcomponents();
+    const subcomponentDropdownStructure = createModalSubcomponentDropdownStructure(
+      subcomponents[SUB_COMPONENTS.BUTTON_1], subcomponents[SUB_COMPONENTS.BUTTON_2], subcomponents[SUB_COMPONENTS.CLOSE],
+      subcomponents[SUB_COMPONENTS.TEXT_1], subcomponents[SUB_COMPONENTS.TEXT_2]
+    )
+    const componentPreviewStructure = PreviewStructure.createSubcomponentDropdownDructure(subcomponentDropdownStructure, subcomponents);
     return {
       type: NEW_COMPONENT_TYPES.MODAL,
       subcomponents,
       activeSubcomponentMode: SUB_COMPONENTS.BASE,
       defaultSubcomponentMode: SUB_COMPONENTS.BASE,
-      componentPreviewStructure: createModalComponentPreviewStructure(
-        subcomponents[SUB_COMPONENTS.BASE], subcomponents[SUB_COMPONENTS.CLOSE], subcomponents[SUB_COMPONENTS.BUTTON_1],
-        subcomponents[SUB_COMPONENTS.BUTTON_2], subcomponents[SUB_COMPONENTS.LAYER_1], subcomponents[SUB_COMPONENTS.LAYER_2],
-        subcomponents[SUB_COMPONENTS.LAYER_3], subcomponents[SUB_COMPONENTS.TEXT_1], subcomponents[SUB_COMPONENTS.TEXT_2]),
+      componentPreviewStructure,
       className: 'default-class-name',
-    }
+    };
   },
 };
