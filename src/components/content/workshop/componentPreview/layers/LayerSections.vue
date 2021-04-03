@@ -1,31 +1,32 @@
 <template>
   <div class="layer-sections-container">
-    <layer-section v-if="sections.alignedSections && sections.alignedSections.center"
+    <!-- center -->
+    <layer-section v-if="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS] && sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.CENTER]"
       class="center-section"
       :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-      :nestedSubcomponents="sections.alignedSections.center"
+      :nestedSubcomponents="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.CENTER]"
       :mouseEvents="mouseEvents"
       :subcomponentElementContainerClass="'center-section-subcomponent'"/>
     <div class="default-sections-container" :class="SUBCOMPONENT_CURSOR_DEFAULT_CLASS">
       <!-- left -->
-      <layer-section v-if="sections.alignedSections && sections.alignedSections.left"
+      <layer-section v-if="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS] && sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.LEFT]"
         class="default-section"
         style="order: 0"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-        :nestedSubcomponents="sections.alignedSections.left"
+        :nestedSubcomponents="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.LEFT]"
         :mouseEvents="mouseEvents"/>
       <!-- right -->
-      <layer-section v-if="sections.alignedSections && sections.alignedSections.right"
+      <layer-section v-if="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS] && sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.RIGHT]"
         class="default-section right-section"
         style="order: 1"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-        :nestedSubcomponents="sections.alignedSections.right"
+        :nestedSubcomponents="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.RIGHT]"
         :mouseEvents="mouseEvents"/>
       <!-- equal split sections -->
-      <layer-section v-if="sections.equalSplitSections"
+      <layer-section v-if="sections[LAYER_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS]"
         class="default-section equal-split-sections-container"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-        :nestedSubcomponents="sections.equalSplitSections"
+        :nestedSubcomponents="sections[LAYER_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS]"
         :mouseEvents="mouseEvents"
         :subcomponentElementContainerClass="'equal-split-section'"/>
     </div>
@@ -34,16 +35,21 @@
                     
 <script lang="ts">
 import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../../consts/subcomponentCursorClasses.enum';
+import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../consts/layerSections';
 import layerSection from './LayerSection.vue';
 
 interface Consts {
   SUBCOMPONENT_CURSOR_DEFAULT_CLASS: string;
+  LAYER_SECTIONS_TYPES: typeof LAYER_SECTIONS_TYPES;
+  ALIGNED_SECTION_TYPES: typeof ALIGNED_SECTION_TYPES;
 }
 
 export default {
   setup(): Consts {
     return {
       SUBCOMPONENT_CURSOR_DEFAULT_CLASS: SUBCOMPONENT_CURSOR_CLASSES.DEFAULT,
+      LAYER_SECTIONS_TYPES,
+      ALIGNED_SECTION_TYPES,
     };
   },
   components: {

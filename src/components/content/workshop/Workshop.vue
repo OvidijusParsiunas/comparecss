@@ -105,11 +105,13 @@ import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../consts/subcomponentOverla
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { inheritedAlertBaseCss } from './newComponent/types/alerts/properties/inheritedCss';
+import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../consts/layerSections';
 import ProcessClassName from '../../../services/workshop/newComponent/processClassName';
 import PreviewStructure from '../../../services/workshop/newComponent/previewStructure'
 import { SUB_COMPONENT_CSS_MODES } from '../../../consts/subcomponentCssModes.enum';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../consts/domEventTriggerKeys.enum';
+import { SUBCOMPONENT_CATEGORIES } from '../../../consts/subcomponentCategories';
 import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
 import { JAVASCRIPT_CLASSES } from '../../../consts/javascriptClasses.enum';
@@ -133,19 +135,6 @@ interface Consts {
   removeSubcomponentModalState;
   REMOVE_COMPONENT_MODAL_ID;
   REMOVE_SUBCOMPONENT_MODAL_ID;
-}
-
-// WORK1: export these
-enum SUBCOMPONENT_CATEGORIES {
-  BASE, LAYER, NESTED,
-}
-
-enum NESTED_SECTIONS_TYPES {
-  ALIGNED_SECTIONS = 'alignedSections', EQUAL_SPLIT_SECTIONS = 'equalSplitSections',
-}
-
-enum ALIGNED_SECTION_COLUMNS {
-  LEFT = 'left', CENTER = 'center', RIGHT = 'right',
 }
 
 interface Data {
@@ -410,7 +399,7 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.LAYER_1]: {
       category: SUBCOMPONENT_CATEGORIES.LAYER,
-      layerSectionsType: NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS,
+      layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
       customCss: createInitialLayer1Css(),
       initialCss: createInitialLayer1Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -419,7 +408,7 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.LAYER_2]: {
       category: SUBCOMPONENT_CATEGORIES.LAYER,
-      layerSectionsType: NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS,
+      layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
       customCss: createInitialLayer2Css(),
       initialCss: createInitialLayer2Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -427,7 +416,7 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.LAYER_3]: {
       category: SUBCOMPONENT_CATEGORIES.LAYER,
-      layerSectionsType: NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS,
+      layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
       customCss: createInitialLayer3Css(),
       initialCss: createInitialLayer3Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -436,7 +425,7 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.CLOSE]: {
       category: SUBCOMPONENT_CATEGORIES.NESTED,
-      alignedLayerSection: ALIGNED_SECTION_COLUMNS.RIGHT,
+      alignedLayerSection: ALIGNED_SECTION_TYPES.RIGHT,
       componentTag: 'button',
       componentText: '×',
       customCss: createInitialCloseButtonCss(),
@@ -452,7 +441,7 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.BUTTON_1]: {
       category: SUBCOMPONENT_CATEGORIES.NESTED,
-      alignedLayerSection: ALIGNED_SECTION_COLUMNS.RIGHT,
+      alignedLayerSection: ALIGNED_SECTION_TYPES.RIGHT,
       componentTag: 'button',
       componentText: 'button',
       customCss: createInitialButton1Css(),
@@ -468,7 +457,7 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.BUTTON_2]: {
       category: SUBCOMPONENT_CATEGORIES.NESTED,
-      alignedLayerSection: ALIGNED_SECTION_COLUMNS.RIGHT,
+      alignedLayerSection: ALIGNED_SECTION_TYPES.RIGHT,
       componentTag: 'button',
       componentText: 'Cancel',
       customCss: createInitialButton1Css(),
@@ -484,7 +473,7 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.TEXT_1]: {
       category: SUBCOMPONENT_CATEGORIES.NESTED,
-      alignedLayerSection: ALIGNED_SECTION_COLUMNS.LEFT,
+      alignedLayerSection: ALIGNED_SECTION_TYPES.LEFT,
       componentTag: 'div',
       componentText: 'Modal title',
       customCss: createInitialText1Css(),
@@ -497,7 +486,7 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.TEXT_2]: {
       category: SUBCOMPONENT_CATEGORIES.NESTED,
-      alignedLayerSection: ALIGNED_SECTION_COLUMNS.LEFT,
+      alignedLayerSection: ALIGNED_SECTION_TYPES.LEFT,
       componentTag: 'div',
       componentText: 'Modal body text',
       customCss: createInitialText2Css(),

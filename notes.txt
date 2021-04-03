@@ -24,6 +24,7 @@ fix the nested button display layout - to access their text
 dropdown for the button component
 remove vuesax
 need to change subcomponentType - to subcomponentName
+change subcomponentCategoy - to subcomponentType
 work to be done - WORK1
 when subcomponents are deleted, the overlay should not appear when hovering the subcomponent dropdown
 

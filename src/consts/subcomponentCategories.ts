@@ -1,0 +1,3 @@
+export enum SUBCOMPONENT_CATEGORIES {
+  BASE, LAYER, NESTED,
+}

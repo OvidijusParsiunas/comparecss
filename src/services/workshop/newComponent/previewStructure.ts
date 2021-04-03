@@ -1,20 +1,9 @@
 import { AlignedSections, ComponentPreviewStructure, Layer } from '../../../interfaces/componentPreviewStructure';
 import { SubcomponentProperties, Subcomponents } from '../../../interfaces/workshopComponent';
+import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../consts/layerSections';
 import { NestedDropdownStructure } from '../../../interfaces/nestedDropdownStructure';
+import { SUBCOMPONENT_CATEGORIES } from '../../../consts/subcomponentCategories';
 import { SUB_COMPONENTS } from '../../../consts/subcomponentModes.enum';
-
-// WORK1: export these
-enum SUBCOMPONENT_CATEGORIES {
-  BASE, LAYER, NESTED,
-}
-
-enum NESTED_SECTIONS_TYPES {
-  ALIGNED_SECTIONS = 'alignedSections', EQUAL_SPLIT_SECTIONS = 'equalSplitSections',
-}
-
-enum ALIGNED_SECTION_COLUMNS {
-  LEFT = 'left', CENTER = 'center', RIGHT = 'right',
-}
 
 export default class PreviewStructure {
 
@@ -32,15 +21,15 @@ export default class PreviewStructure {
 
   private static createEmptyAlignedSections(): AlignedSections {
     return {
-      [ALIGNED_SECTION_COLUMNS.LEFT]: {},
-      [ALIGNED_SECTION_COLUMNS.CENTER]: {},
-      [ALIGNED_SECTION_COLUMNS.RIGHT]: {},
+      [ALIGNED_SECTION_TYPES.LEFT]: {},
+      [ALIGNED_SECTION_TYPES.CENTER]: {},
+      [ALIGNED_SECTION_TYPES.RIGHT]: {},
     }
   }
 
   private static populateAlignedSections(layer: Layer, layerSubcomponent: SubcomponentProperties,
       layerSubcomponentsStructure: NestedDropdownStructure, allSubcomponents: Subcomponents): void {
-    layer.sections[NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS] = PreviewStructure.createEmptyAlignedSections();
+    layer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS] = PreviewStructure.createEmptyAlignedSections();
     Object.keys(layerSubcomponentsStructure).forEach((subcomponentName: SUB_COMPONENTS) => {
       PreviewStructure.addSubcomponentToAlignedSection(layer, layerSubcomponent, subcomponentName, allSubcomponents);
       PreviewStructure.addLayerToSubcomponentCustomFeatures(layer, subcomponentName, allSubcomponents);
@@ -60,9 +49,9 @@ export default class PreviewStructure {
   private static createLayer(layerName: SUB_COMPONENTS, layerSubcomponent: SubcomponentProperties,
       layerSubcomponentsStructure: NestedDropdownStructure, allSubcomponents: Subcomponents): Layer {
     const layer = PreviewStructure.createEmptyLayer(layerName, layerSubcomponent);
-    if (layerSubcomponent.layerSectionsType === NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS) {
+    if (layerSubcomponent.layerSectionsType === LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS) {
       PreviewStructure.populateAlignedSections(layer, layerSubcomponent, layerSubcomponentsStructure, allSubcomponents)
-    } else if (layerSubcomponent.layerSectionsType === NESTED_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS) {
+    } else if (layerSubcomponent.layerSectionsType === LAYER_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS) {
       // WORK1
     }
     return layer;

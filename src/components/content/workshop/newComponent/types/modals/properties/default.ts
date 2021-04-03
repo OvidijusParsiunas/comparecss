@@ -1,6 +1,8 @@
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../../../../../consts/modalTransitionTypes.enum';
+import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
 import PreviewStructure from '../../../../../../../services/workshop/newComponent/previewStructure';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
+import { SUBCOMPONENT_CATEGORIES } from '../../../../../../../consts/subcomponentCategories';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import createModalSubcomponentDropdownStructure from './subcomponentDropdownStructure';
@@ -16,19 +18,6 @@ import {
   AutoWidth, BackdropProperties, ComponentCenteringInParent, ComponentTransitions,
   CustomCss, CustomFeatures, Subcomponents, WorkshopComponent,
 } from '../../../../../../../interfaces/workshopComponent';
-
-// WORK1: export these
-enum SUBCOMPONENT_CATEGORIES {
-  BASE, LAYER, NESTED,
-}
-
-enum NESTED_SECTIONS_TYPES {
-  ALIGNED_SECTIONS = 'alignedSections', EQUAL_SPLIT_SECTIONS = 'equalSplitSections',
-}
-
-enum ALIGNED_SECTION_COLUMNS {
-  LEFT = 'left', CENTER = 'center', RIGHT = 'right',
-}
 
 function createDefaultTransitionsProperties(): ComponentTransitions {
   return {
@@ -284,7 +273,7 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.LAYER_1]: {
       category: SUBCOMPONENT_CATEGORIES.LAYER,
-      layerSectionsType: NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS,
+      layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
       customCss: createInitialLayer1Css(),
       initialCss: createInitialLayer1Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -293,7 +282,7 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.LAYER_2]: {
       category: SUBCOMPONENT_CATEGORIES.LAYER,
-      layerSectionsType: NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS,
+      layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
       customCss: createInitialLayer2Css(),
       initialCss: createInitialLayer2Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -301,7 +290,7 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.LAYER_3]: {
       category: SUBCOMPONENT_CATEGORIES.LAYER,
-      layerSectionsType: NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS,
+      layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
       customCss: createInitialLayer3Css(),
       initialCss: createInitialLayer3Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -310,7 +299,7 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.CLOSE]: {
       category: SUBCOMPONENT_CATEGORIES.NESTED,
-      alignedLayerSection: ALIGNED_SECTION_COLUMNS.RIGHT,
+      alignedLayerSection: ALIGNED_SECTION_TYPES.RIGHT,
       componentTag: 'button',
       componentText: '×',
       customCss: createInitialCloseButtonCss(),
@@ -326,7 +315,7 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.BUTTON_1]: {
       category: SUBCOMPONENT_CATEGORIES.NESTED,
-      alignedLayerSection: ALIGNED_SECTION_COLUMNS.RIGHT,
+      alignedLayerSection: ALIGNED_SECTION_TYPES.RIGHT,
       componentTag: 'button',
       componentText: 'button',
       customCss: createInitialButton1Css(),
@@ -342,7 +331,7 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.BUTTON_2]: {
       category: SUBCOMPONENT_CATEGORIES.NESTED,
-      alignedLayerSection: ALIGNED_SECTION_COLUMNS.RIGHT,
+      alignedLayerSection: ALIGNED_SECTION_TYPES.RIGHT,
       componentTag: 'button',
       componentText: 'Cancel',
       customCss: createInitialButton1Css(),
@@ -358,7 +347,7 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.TEXT_1]: {
       category: SUBCOMPONENT_CATEGORIES.NESTED,
-      alignedLayerSection: ALIGNED_SECTION_COLUMNS.LEFT,
+      alignedLayerSection: ALIGNED_SECTION_TYPES.LEFT,
       componentTag: 'div',
       componentText: 'Modal title',
       customCss: createInitialText1Css(),
@@ -371,7 +360,7 @@ function createSubcomponents(): Subcomponents {
     },
     [SUB_COMPONENTS.TEXT_2]: {
       category: SUBCOMPONENT_CATEGORIES.NESTED,
-      alignedLayerSection: ALIGNED_SECTION_COLUMNS.LEFT,
+      alignedLayerSection: ALIGNED_SECTION_TYPES.LEFT,
       componentTag: 'div',
       componentText: 'Modal body text',
       customCss: createInitialText2Css(),
