@@ -3,22 +3,53 @@ import { SubcomponentAndOverlayElementIds } from '../../../../../interfaces/subc
 import { SubcomponentPreviewMouseEvents } from '../../../../../interfaces/subcomponentPreviewMouseEvents';
 import useSubcomponentPreviewEventHandlers from '../compositionAPI/useSubcomponentPreviewEventHandlers';
 import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../../consts/subcomponentCursorClasses.enum';
+import { Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
+import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
 import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
-import { Subcomponents } from '../../../../../interfaces/workshopComponent';
+
+interface Index {
+  number: number;
+}
 
 export default class ComponentPreviewUtils {
   
   private static subcomponentIdPrefix = 'subcomponent-id-';
   private static overlayIdPrefix = 'overlay-id-';
 
-  public static generateSubcomponentAndOverlayIds(subcomponents: Subcomponents): SubcomponentAndOverlayElementIds {
-    const subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds = {};
+  private static addIdsViaTraversalOfSubcomponents(subcomponents: Subcomponents,
+      subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds): void {
     Object.keys(subcomponents).forEach((subcomponent: SUB_COMPONENTS, index: number) => {
       subcomponentAndOverlayElementIdsObject[subcomponent] = {
         subcomponentId: `${ComponentPreviewUtils.subcomponentIdPrefix}${index}`,
         overlayId: `${ComponentPreviewUtils.overlayIdPrefix}${index}`,
       };
     });
+  }
+
+  private static addIdsViaTraversalOfNestedDropdownStructure(subcomponents: NestedDropdownStructure, index: Index,
+      subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds): void {
+    Object.keys(subcomponents).forEach((subcomponentName: SUB_COMPONENTS) => {
+      subcomponentAndOverlayElementIdsObject[subcomponentName] = {
+        subcomponentId: `${ComponentPreviewUtils.subcomponentIdPrefix}${index.number}`,
+        overlayId: `${ComponentPreviewUtils.overlayIdPrefix}${index.number}`,
+      };
+      index.number += 1;
+      if (Object.keys(subcomponents[subcomponentName]).length > 0 && subcomponents[subcomponentName].currentlyDisplaying === undefined) {
+        ComponentPreviewUtils.addIdsViaTraversalOfNestedDropdownStructure(subcomponents[subcomponentName] as NestedDropdownStructure,
+          index, subcomponentAndOverlayElementIdsObject);
+      }
+    });
+  }
+
+  public static generateSubcomponentAndOverlayIds(component: WorkshopComponent): SubcomponentAndOverlayElementIds {
+    const subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds = {};
+    if (component.componentPreviewStructure.subcomponentDropdownStructure) {
+      const index = { number: 0 };
+      ComponentPreviewUtils.addIdsViaTraversalOfNestedDropdownStructure(component.componentPreviewStructure.subcomponentDropdownStructure,
+        index, subcomponentAndOverlayElementIdsObject);
+    } else {
+      ComponentPreviewUtils.addIdsViaTraversalOfSubcomponents(component.subcomponents, subcomponentAndOverlayElementIdsObject);
+    }
     return subcomponentAndOverlayElementIdsObject;
   }
 

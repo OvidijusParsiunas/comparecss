@@ -3,10 +3,10 @@
     <div v-for="layer in layers" :key="layer" class="layer">
       <div :id="subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId"
         :style="layer.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT]"
-        @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseEnter()"
-        @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseLeave()"
-        @mousedown="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseDown()"
-        @mouseup="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseUp()">
+        @mouseenter="subcomponentAndOverlayElementIds[layer.subcomponentType] && mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseEnter()"
+        @mouseleave="subcomponentAndOverlayElementIds[layer.subcomponentType] && mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseLeave()"
+        @mousedown="subcomponentAndOverlayElementIds[layer.subcomponentType] && mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseDown()"
+        @mouseup="subcomponentAndOverlayElementIds[layer.subcomponentType] && mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseUp()">
           <layer-sections
             v-if="layer.sections"
             :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
