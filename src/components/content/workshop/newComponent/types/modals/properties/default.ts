@@ -392,7 +392,7 @@ export const defaultModal: NewComponent = {
       subcomponents[SUB_COMPONENTS.BUTTON_1], subcomponents[SUB_COMPONENTS.BUTTON_2], subcomponents[SUB_COMPONENTS.CLOSE],
       subcomponents[SUB_COMPONENTS.TEXT_1], subcomponents[SUB_COMPONENTS.TEXT_2]
     )
-    const componentPreviewStructure = PreviewStructure.createSubcomponentDropdownDructure(subcomponentDropdownStructure, subcomponents);
+    const componentPreviewStructure = PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents);
     return {
       type: NEW_COMPONENT_TYPES.MODAL,
       subcomponents,

@@ -1,3 +1,4 @@
+import { AlignedSections, ComponentPreviewStructure, Layer } from '../../../interfaces/componentPreviewStructure';
 import { SubcomponentProperties, Subcomponents } from '../../../interfaces/workshopComponent';
 import { NestedDropdownStructure } from '../../../interfaces/nestedDropdownStructure';
 import { SUB_COMPONENTS } from '../../../consts/subcomponentModes.enum';
@@ -17,67 +18,72 @@ enum ALIGNED_SECTION_COLUMNS {
 
 export default class PreviewStructure {
 
-  private static addLayerToSubcomponentCustomFeatures(layerObject: any, subcomponentName: SUB_COMPONENTS,
+  private static addLayerToSubcomponentCustomFeatures(layer: Layer, subcomponentName: SUB_COMPONENTS,
       allSubcomponents: Subcomponents): void {
-    allSubcomponents[subcomponentName].customFeatures.layerObject = layerObject;
-    allSubcomponents[subcomponentName].defaultCustomFeatures.layerObject = layerObject;
+    allSubcomponents[subcomponentName].customFeatures.parentLayer = layer;
+    allSubcomponents[subcomponentName].defaultCustomFeatures.parentLayer = layer;
   }
 
-  private static addSubcomponentToAlignedSection(layerObject: any, layerSubcomponent: SubcomponentProperties,
+  private static addSubcomponentToAlignedSection(layer: Layer, layerSubcomponent: SubcomponentProperties,
       subcomponentName: SUB_COMPONENTS, allSubcomponents: Subcomponents): void {
-    layerObject.nestedSubcomponents[layerSubcomponent.layerSectionsType]
+    layer.sections[layerSubcomponent.layerSectionsType]
       [allSubcomponents[subcomponentName].alignedLayerSection][subcomponentName] = allSubcomponents[subcomponentName];
   }
 
-  private static addEmptyObjectsToAlignedSections(layerObject: any): void {
-    layerObject.nestedSubcomponents[NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_COLUMNS.LEFT] = {};
-    layerObject.nestedSubcomponents[NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_COLUMNS.CENTER] = {};
-    layerObject.nestedSubcomponents[NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_COLUMNS.RIGHT] = {};
+  private static createEmptyAlignedSections(): AlignedSections {
+    return {
+      [ALIGNED_SECTION_COLUMNS.LEFT]: {},
+      [ALIGNED_SECTION_COLUMNS.CENTER]: {},
+      [ALIGNED_SECTION_COLUMNS.RIGHT]: {},
+    }
   }
 
-  private static populateAlignedSections(layerObject: any, layerSubcomponent: SubcomponentProperties, layerSubcomponentsStructure: any,
-      allSubcomponents: Subcomponents): void {
-    PreviewStructure.addEmptyObjectsToAlignedSections(layerObject);
+  private static populateAlignedSections(layer: Layer, layerSubcomponent: SubcomponentProperties,
+      layerSubcomponentsStructure: NestedDropdownStructure, allSubcomponents: Subcomponents): void {
+    layer.sections[NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS] = PreviewStructure.createEmptyAlignedSections();
     Object.keys(layerSubcomponentsStructure).forEach((subcomponentName: SUB_COMPONENTS) => {
-      PreviewStructure.addSubcomponentToAlignedSection(layerObject, layerSubcomponent, subcomponentName, allSubcomponents);
-      PreviewStructure.addLayerToSubcomponentCustomFeatures(layerObject, subcomponentName, allSubcomponents);
+      PreviewStructure.addSubcomponentToAlignedSection(layer, layerSubcomponent, subcomponentName, allSubcomponents);
+      PreviewStructure.addLayerToSubcomponentCustomFeatures(layer, subcomponentName, allSubcomponents);
     });
   }
   
-  private static createLayerObject(layerName: SUB_COMPONENTS, layerSubcomponent: SubcomponentProperties): any {
+  private static createEmptyLayer(layerName: SUB_COMPONENTS, layerSubcomponent: SubcomponentProperties): Layer {
     return {
       customCss: layerSubcomponent.customCss,
       subcomponentType: layerName,
-      nestedSubcomponents: {
+      sections: {
         [layerSubcomponent.layerSectionsType]: {},
       }
     };
   }
 
-  private static createLayer(layerName: SUB_COMPONENTS, layerSubcomponent: SubcomponentProperties, layerSubcomponentsStructure: any,
-      allSubcomponents: Subcomponents): any {
-    const layerObject = PreviewStructure.createLayerObject(layerName, layerSubcomponent);
+  private static createLayer(layerName: SUB_COMPONENTS, layerSubcomponent: SubcomponentProperties,
+      layerSubcomponentsStructure: NestedDropdownStructure, allSubcomponents: Subcomponents): Layer {
+    const layer = PreviewStructure.createEmptyLayer(layerName, layerSubcomponent);
     if (layerSubcomponent.layerSectionsType === NESTED_SECTIONS_TYPES.ALIGNED_SECTIONS) {
-      PreviewStructure.populateAlignedSections(layerObject, layerSubcomponent, layerSubcomponentsStructure, allSubcomponents)
+      PreviewStructure.populateAlignedSections(layer, layerSubcomponent, layerSubcomponentsStructure, allSubcomponents)
     } else if (layerSubcomponent.layerSectionsType === NESTED_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS) {
       // WORK1
     }
-    return layerObject;
+    return layer;
   }
   
-  public static createLayers(subcomponentBase: any, subcomponents: Subcomponents): any {
+  private static createLayers(subcomponentBase: NestedDropdownStructure, subcomponents: Subcomponents): Layer[] {
     const layers = [];
     Object.keys(subcomponentBase).forEach((subcomponentName: SUB_COMPONENTS) => {
       if (subcomponents[subcomponentName].category === SUBCOMPONENT_CATEGORIES.LAYER) {
         layers.push(PreviewStructure.createLayer(subcomponentName, subcomponents[subcomponentName],
-          subcomponentBase[subcomponentName], subcomponents));
+          subcomponentBase[subcomponentName] as NestedDropdownStructure, subcomponents));
       }
+      // else used for button component
     })
     return layers;
   }
 
-  public static createSubcomponentDropdownDructure(subcomponentDropdownStructure: NestedDropdownStructure, subcomponents: Subcomponents): any {
-    const layers = PreviewStructure.createLayers(subcomponentDropdownStructure[SUB_COMPONENTS.BASE], subcomponents);
+  public static createComponentPreviewStructure(subcomponentDropdownStructure: NestedDropdownStructure,
+      subcomponents: Subcomponents): ComponentPreviewStructure {
+    const layers = PreviewStructure.createLayers(
+      subcomponentDropdownStructure[SUB_COMPONENTS.BASE] as NestedDropdownStructure, subcomponents);
     return {
       baseCss: subcomponents[SUB_COMPONENTS.BASE],
       layeringType: 'vertical',

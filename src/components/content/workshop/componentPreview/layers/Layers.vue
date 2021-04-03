@@ -8,9 +8,9 @@
         @mousedown="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseDown()"
         @mouseup="mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseUp()">
           <layer-sections
-            v-if="layer.nestedSubcomponents"
+            v-if="layer.sections"
             :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-            :nestedSubcomponents="layer.nestedSubcomponents"
+            :sections="layer.sections"
             :mouseEvents="mouseEvents"/>
       </div>
       <div :id="subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].overlayId"

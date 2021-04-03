@@ -1,8 +1,9 @@
-import { ComponentPreviewStructure, SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent'
+import { ComponentPreviewStructure } from '../../../../../../../interfaces/componentPreviewStructure';
+import { SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent'
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum'
 
 export default function createAlertComponentPreviewStructure(baseComponent: SubcomponentProperties,
-    closeComponent: SubcomponentProperties, layerComponent: SubcomponentProperties, textSubcomponent: SubcomponentProperties): any {
+    closeComponent: SubcomponentProperties, layerComponent: SubcomponentProperties, textSubcomponent: SubcomponentProperties): ComponentPreviewStructure {
   return {
     baseCss: baseComponent,
     layeringType: 'vertical',
@@ -10,8 +11,10 @@ export default function createAlertComponentPreviewStructure(baseComponent: Subc
       {
         subcomponentType: SUB_COMPONENTS.LAYER_1,
         customCss: layerComponent.customCss,
-        nestedSubcomponents: {
+        sections: {
           alignedSections: {
+            left: {
+            },
             center: {
               [SUB_COMPONENTS.TEXT_1]: textSubcomponent,
             },

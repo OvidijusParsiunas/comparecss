@@ -3,27 +3,11 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../consts/workshopToolbarOptionTy
 import { SUB_COMPONENT_CSS_MODES } from '../consts/subcomponentCssModes.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { NEW_COMPONENT_TYPES } from '../consts/newComponentTypes.enum';
-import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { SUB_COMPONENTS } from '../consts/subcomponentModes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
+import { Layer } from './componentPreviewStructure';
 import { TempCustomCss } from './tempCustomCss';
 import { InheritedCss } from './inheritedCss';
-
-type InnerSubcomponents = { [key in SUB_COMPONENTS]?: SubcomponentProperties };
-
-type Layer = {
-  subcomponentType: SUB_COMPONENTS;
-  customCss: CustomCss;
-  subcomponents: InnerSubcomponents;
-}
-
-export interface ComponentPreviewStructure {
-  baseCss: SubcomponentProperties;
-  // will be used in the future, can be horizontal or vertical
-  layeringType?: string;
-  layers?: Layer[];
-  subcomponentDropdownStructure?: NestedDropdownStructure;
-}
 
 export interface ChildCss {
   elementTag: string;
@@ -92,9 +76,8 @@ export interface CustomFeatures {
   transitions?: ComponentTransitions;
   jsClasses?: ComponentJavascriptClasses;
   autoWidth?: AutoWidth;
-  // WORK1: create type
   // appended in run-time
-  layerObject?: any;
+  parentLayer?: Layer;
 }
 
   export interface SubcomponentProperties {
