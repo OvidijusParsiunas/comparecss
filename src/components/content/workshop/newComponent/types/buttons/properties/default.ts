@@ -1,8 +1,10 @@
 import { AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
+import PreviewStructure from '../../../../../../../services/workshop/newComponent/previewStructure';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
-import createButtonComponentPreviewStructure from './buttonComponentPreviewStructure';
+import getButtonSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
 import { NewComponent } from '../../../../../../../interfaces/newComponent';
 import { buttonSpecificSettings } from './buttonSpecificSettings';
@@ -59,7 +61,15 @@ function createTextCss(): CustomCss {
       width: 'auto',
       userSelect: 'none',
       overflow: 'unset',
+      fontSize: '14px',
+      fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
       backgroundColor: 'inherit',
+      paddingTop: '0px',
+      paddingBottom: '0px',
+      paddingLeft: '0px',
+      paddingRight: '0px',
+      marginLeft: '0px',
+      marginRight: '0px',
     },
   }
 }
@@ -100,6 +110,7 @@ function createSubcomponents(): Subcomponents {
       initialCss: createLayerCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [SUB_COMPONENTS.TEXT_1]: {
       componentTag: 'div',
@@ -110,6 +121,7 @@ function createSubcomponents(): Subcomponents {
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       customFeatures: createDefaultButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultButtonCustomFeatures(),
+      alignedLayerSection: ALIGNED_SECTION_TYPES.CENTER,
     },
   }
 }
@@ -117,13 +129,13 @@ function createSubcomponents(): Subcomponents {
 export const defaultButton: NewComponent = {
   getNewComponent(): WorkshopComponent {
     const subcomponents = createSubcomponents();
+    const subcomponentDropdownStructure = getButtonSubcomponentDropdownStructure();
     return {
       type: NEW_COMPONENT_TYPES.BUTTON,
       subcomponents,
       activeSubcomponentMode: SUB_COMPONENTS.BASE,
       defaultSubcomponentMode: SUB_COMPONENTS.BASE,
-      componentPreviewStructure: createButtonComponentPreviewStructure(subcomponents[SUB_COMPONENTS.BASE],
-        subcomponents[SUB_COMPONENTS.LAYER_1], subcomponents[SUB_COMPONENTS.TEXT_1]),
+      componentPreviewStructure: PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents),
       className: 'default-class-name',
     }
   },

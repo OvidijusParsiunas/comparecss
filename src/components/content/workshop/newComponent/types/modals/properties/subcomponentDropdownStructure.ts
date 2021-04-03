@@ -2,7 +2,7 @@ import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedD
 import { SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
 
-export default function createModalSubcomponentDropdownStructure(
+export default function getModalSubcomponentDropdownStructure(
     button1Component: SubcomponentProperties, button2Component: SubcomponentProperties, closeComponent: SubcomponentProperties,
     textSubcomponent1: SubcomponentProperties, textSubcomponent2: SubcomponentProperties): NestedDropdownStructure {
   return {

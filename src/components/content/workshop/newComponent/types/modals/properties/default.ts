@@ -4,9 +4,9 @@ import PreviewStructure from '../../../../../../../services/workshop/newComponen
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
-import createModalSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { modalLayerBottomSpecificSettings } from './modalLayerBottomSpecificSettings';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
+import getModalSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { modalLayerTopSpecificSettings } from './modalLayerTopSpecificSettings';
 import { NewComponent } from '../../../../../../../interfaces/newComponent';
 import { inheritedAlertCloseChildCss } from './inheritedAlertCloseChildCss';
@@ -367,17 +367,16 @@ function createSubcomponents(): Subcomponents {
 export const defaultModal: NewComponent = {
   getNewComponent(): WorkshopComponent {
     const subcomponents = createSubcomponents();
-    const subcomponentDropdownStructure = createModalSubcomponentDropdownStructure(
+    const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
       subcomponents[SUB_COMPONENTS.BUTTON_1], subcomponents[SUB_COMPONENTS.BUTTON_2], subcomponents[SUB_COMPONENTS.CLOSE],
       subcomponents[SUB_COMPONENTS.TEXT_1], subcomponents[SUB_COMPONENTS.TEXT_2]
     )
-    const componentPreviewStructure = PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents);
     return {
       type: NEW_COMPONENT_TYPES.MODAL,
       subcomponents,
       activeSubcomponentMode: SUB_COMPONENTS.BASE,
       defaultSubcomponentMode: SUB_COMPONENTS.BASE,
-      componentPreviewStructure,
+      componentPreviewStructure: PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents),
       className: 'default-class-name',
     };
   },

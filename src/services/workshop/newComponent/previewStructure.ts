@@ -57,15 +57,16 @@ export default class PreviewStructure {
   }
   
   private static createLayers(subcomponentBase: NestedDropdownStructure, subcomponents: Subcomponents): Layer[] {
-    const layers = [];
-    Object.keys(subcomponentBase).forEach((subcomponentName: SUB_COMPONENTS) => {
-      if (subcomponents[subcomponentName].layerSectionsType) {
-        layers.push(PreviewStructure.createLayer(subcomponentName, subcomponents[subcomponentName],
-          subcomponentBase[subcomponentName] as NestedDropdownStructure, subcomponents));
-      }
-      // else used for button component
-    })
-    return layers;
+    // if subcomponentDropdownStructure contains layers
+    if (subcomponents[Object.keys(subcomponentBase)[0]].layerSectionsType) {
+      return Object.keys(subcomponentBase).map((subcomponentName: SUB_COMPONENTS) =>
+        PreviewStructure.createLayer(subcomponentName, subcomponents[subcomponentName],
+          subcomponentBase[subcomponentName] as NestedDropdownStructure, subcomponents)
+      );
+    }
+    const layerName = SUB_COMPONENTS.LAYER_1;
+    return [PreviewStructure.createLayer(layerName, subcomponents[layerName],
+      subcomponentBase as NestedDropdownStructure, subcomponents)];
   }
 
   public static createComponentPreviewStructure(subcomponentDropdownStructure: NestedDropdownStructure,

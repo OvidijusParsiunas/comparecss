@@ -89,7 +89,7 @@
 </template>
 
 <script lang="ts">
-import createModalSubcomponentDropdownStructure from './newComponent/types/modals/properties/subcomponentDropdownStructure'
+import getModalSubcomponentDropdownStructure from './newComponent/types/modals/properties/subcomponentDropdownStructure'
 import { modalLayerBottomSpecificSettings } from './newComponent/types/modals/properties/modalLayerBottomSpecificSettings';
 import { removeSubcomponentModalState } from './toolbar/options/removeSubcomponentModalState/removeSubcomponentModalState';
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../consts/modalTransitionTypes.enum';
@@ -492,7 +492,7 @@ function createSubcomponents(): Subcomponents {
 
 function getNewComponent(): WorkshopComponent {
   const subcomponents = createSubcomponents();
-  const subcomponentDropdownStructure = createModalSubcomponentDropdownStructure(
+  const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
     subcomponents[SUB_COMPONENTS.BUTTON_1], subcomponents[SUB_COMPONENTS.BUTTON_2], subcomponents[SUB_COMPONENTS.CLOSE],
     subcomponents[SUB_COMPONENTS.TEXT_1], subcomponents[SUB_COMPONENTS.TEXT_2]
   );

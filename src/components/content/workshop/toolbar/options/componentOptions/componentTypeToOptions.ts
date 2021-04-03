@@ -2,6 +2,7 @@ import { SubcomponentCssModes } from '../../../../../../interfaces/subcomponentC
 import { NEW_COMPONENT_TYPES } from '../../../../../../consts/newComponentTypes.enum';
 import { SubcomponentOptions } from '../../../../../../interfaces/componentOptions';
 import { SUB_COMPONENTS } from '../../../../../../consts/subcomponentModes.enum';
+import { textWithNoBackgroundOptions } from './text/textWithNoBackground';
 import { nestedButtonOptions } from './button/nestedBase';
 import { layerBottomOptions } from './layer/layerBottom';
 import { layerMiddleOptions } from './layer/layerMiddle';
@@ -23,6 +24,7 @@ type ComponentTypeToOptions = {
 export const componentTypeToOptions: ComponentTypeToOptions = {
   [NEW_COMPONENT_TYPES.BUTTON]: {
     [SUB_COMPONENTS.BASE]: buttonBaseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
+    [SUB_COMPONENTS.TEXT_1]: textWithNoBackgroundOptions as SubcomponentOptions<keyof SubcomponentCssModes>,
   },
   [NEW_COMPONENT_TYPES.ALERT]: {
     [SUB_COMPONENTS.BASE]: alertBaseOptions as SubcomponentOptions<keyof SubcomponentCssModes>,

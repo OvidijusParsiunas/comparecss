@@ -1,19 +1,15 @@
-import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../..//consts/workshopToolbarOptionButtonNames.enum';
+import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../../consts/workshopToolbarOptionButtonNames.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
 
-type TextOptionsModes = SUB_COMPONENT_CSS_MODES.DEFAULT;
+type TextWithNoBackgroundOptions = SUB_COMPONENT_CSS_MODES.DEFAULT;
 
-export const textOptions: SubcomponentOptions<TextOptionsModes> = {
+export const textWithNoBackgroundOptions: SubcomponentOptions<TextWithNoBackgroundOptions> = {
   [SUB_COMPONENT_CSS_MODES.DEFAULT]: [
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.FONT,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_DEFAULT,
-    },
-    {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BACKGROUND,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_BACKGROUND,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.PADDING,
