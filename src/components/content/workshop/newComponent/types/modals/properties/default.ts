@@ -2,7 +2,6 @@ import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '..
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
 import PreviewStructure from '../../../../../../../services/workshop/newComponent/previewStructure';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
-import { SUBCOMPONENT_CATEGORIES } from '../../../../../../../consts/subcomponentCategories';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import createModalSubcomponentDropdownStructure from './subcomponentDropdownStructure';
@@ -260,7 +259,6 @@ function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
 function createSubcomponents(): Subcomponents {
   return {
     [SUB_COMPONENTS.BASE]: {
-      category: SUBCOMPONENT_CATEGORIES.BASE,
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -272,34 +270,29 @@ function createSubcomponents(): Subcomponents {
       defaultCustomFeatures: createDefaultBaseCustomFeatures(),
     },
     [SUB_COMPONENTS.LAYER_1]: {
-      category: SUBCOMPONENT_CATEGORIES.LAYER,
-      layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
       customCss: createInitialLayer1Css(),
       initialCss: createInitialLayer1Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentSpecificSettings: modalLayerTopSpecificSettings,
+      layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [SUB_COMPONENTS.LAYER_2]: {
-      category: SUBCOMPONENT_CATEGORIES.LAYER,
-      layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
       customCss: createInitialLayer2Css(),
       initialCss: createInitialLayer2Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [SUB_COMPONENTS.LAYER_3]: {
-      category: SUBCOMPONENT_CATEGORIES.LAYER,
-      layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
       customCss: createInitialLayer3Css(),
       initialCss: createInitialLayer3Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       subcomponentSpecificSettings: modalLayerBottomSpecificSettings,
+      layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [SUB_COMPONENTS.CLOSE]: {
-      category: SUBCOMPONENT_CATEGORIES.NESTED,
-      alignedLayerSection: ALIGNED_SECTION_TYPES.RIGHT,
       componentTag: 'button',
       componentText: '×',
       customCss: createInitialCloseButtonCss(),
@@ -312,10 +305,9 @@ function createSubcomponents(): Subcomponents {
       optionalSubcomponent: { currentlyDisplaying: true },
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
+      alignedLayerSection: ALIGNED_SECTION_TYPES.RIGHT,
     },
     [SUB_COMPONENTS.BUTTON_1]: {
-      category: SUBCOMPONENT_CATEGORIES.NESTED,
-      alignedLayerSection: ALIGNED_SECTION_TYPES.RIGHT,
       componentTag: 'button',
       componentText: 'button',
       customCss: createInitialButton1Css(),
@@ -328,10 +320,9 @@ function createSubcomponents(): Subcomponents {
       optionalSubcomponent: { currentlyDisplaying: true },
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
+      alignedLayerSection: ALIGNED_SECTION_TYPES.RIGHT,
     },
     [SUB_COMPONENTS.BUTTON_2]: {
-      category: SUBCOMPONENT_CATEGORIES.NESTED,
-      alignedLayerSection: ALIGNED_SECTION_TYPES.RIGHT,
       componentTag: 'button',
       componentText: 'Cancel',
       customCss: createInitialButton1Css(),
@@ -344,10 +335,9 @@ function createSubcomponents(): Subcomponents {
       optionalSubcomponent: { currentlyDisplaying: true },
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
+      alignedLayerSection: ALIGNED_SECTION_TYPES.RIGHT,
     },
     [SUB_COMPONENTS.TEXT_1]: {
-      category: SUBCOMPONENT_CATEGORIES.NESTED,
-      alignedLayerSection: ALIGNED_SECTION_TYPES.LEFT,
       componentTag: 'div',
       componentText: 'Modal title',
       customCss: createInitialText1Css(),
@@ -357,10 +347,9 @@ function createSubcomponents(): Subcomponents {
       optionalSubcomponent: { currentlyDisplaying: true },
       customFeatures: createDefaultTextCustomFeatures(),
       defaultCustomFeatures: createDefaultTextCustomFeatures(),
+      alignedLayerSection: ALIGNED_SECTION_TYPES.LEFT,
     },
     [SUB_COMPONENTS.TEXT_2]: {
-      category: SUBCOMPONENT_CATEGORIES.NESTED,
-      alignedLayerSection: ALIGNED_SECTION_TYPES.LEFT,
       componentTag: 'div',
       componentText: 'Modal body text',
       customCss: createInitialText2Css(),
@@ -370,6 +359,7 @@ function createSubcomponents(): Subcomponents {
       optionalSubcomponent: { currentlyDisplaying: true },
       customFeatures: createDefaultTextCustomFeatures(),
       defaultCustomFeatures: createDefaultTextCustomFeatures(),
+      alignedLayerSection: ALIGNED_SECTION_TYPES.LEFT,
     },
   };
 }

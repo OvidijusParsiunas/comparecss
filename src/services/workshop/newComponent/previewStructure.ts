@@ -2,7 +2,6 @@ import { AlignedSections, ComponentPreviewStructure, Layer } from '../../../inte
 import { SubcomponentProperties, Subcomponents } from '../../../interfaces/workshopComponent';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../consts/layerSections';
 import { NestedDropdownStructure } from '../../../interfaces/nestedDropdownStructure';
-import { SUBCOMPONENT_CATEGORIES } from '../../../consts/subcomponentCategories';
 import { SUB_COMPONENTS } from '../../../consts/subcomponentModes.enum';
 
 export default class PreviewStructure {
@@ -60,7 +59,7 @@ export default class PreviewStructure {
   private static createLayers(subcomponentBase: NestedDropdownStructure, subcomponents: Subcomponents): Layer[] {
     const layers = [];
     Object.keys(subcomponentBase).forEach((subcomponentName: SUB_COMPONENTS) => {
-      if (subcomponents[subcomponentName].category === SUBCOMPONENT_CATEGORIES.LAYER) {
+      if (subcomponents[subcomponentName].layerSectionsType) {
         layers.push(PreviewStructure.createLayer(subcomponentName, subcomponents[subcomponentName],
           subcomponentBase[subcomponentName] as NestedDropdownStructure, subcomponents));
       }

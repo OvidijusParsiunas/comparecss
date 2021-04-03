@@ -1,11 +1,12 @@
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../consts/modalTransitionTypes.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../consts/workshopToolbarOptionTypes.enum';
+import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections';
+import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { SUB_COMPONENT_CSS_MODES } from '../consts/subcomponentCssModes.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { NEW_COMPONENT_TYPES } from '../consts/newComponentTypes.enum';
 import { SUB_COMPONENTS } from '../consts/subcomponentModes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
-import { Layer } from './componentPreviewStructure';
 import { TempCustomCss } from './tempCustomCss';
 import { InheritedCss } from './inheritedCss';
 
@@ -81,11 +82,6 @@ export interface CustomFeatures {
 }
 
   export interface SubcomponentProperties {
-  // WORK1: category may not be required
-  category?: any;
-  // WORK1: add types
-  layerSectionsType?: any;
-  alignedLayerSection?: any;
   componentTag?: string;
   componentText?: string;
   customCss: CustomCss;
@@ -113,6 +109,8 @@ export interface CustomFeatures {
   subcomponentSpecificSettings?: SubcomponentSpecificSettings;
   customFeatures?: CustomFeatures;
   defaultCustomFeatures?: CustomFeatures;
+  layerSectionsType?: LAYER_SECTIONS_TYPES;
+  alignedLayerSection?: ALIGNED_SECTION_TYPES;
 }
 
 export type Subcomponents = {
@@ -125,8 +123,7 @@ export interface WorkshopComponent {
   activeSubcomponentMode: SUB_COMPONENTS;
   // the motivator for this is the fact that the first subcomponent should not be assumed to be the default one
   defaultSubcomponentMode: SUB_COMPONENTS;
-  // WORK1
-  componentPreviewStructure: any;
+  componentPreviewStructure: ComponentPreviewStructure;
   // class name for the component
   className: string;
 }
