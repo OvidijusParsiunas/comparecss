@@ -12,6 +12,20 @@ export default class PreviewStructure {
     allSubcomponents[subcomponentName].defaultCustomFeatures.parentLayer = layer;
   }
 
+  private static addSubcomponentToEqualSplitSection(layer: Layer, layerSubcomponent: SubcomponentProperties,
+      subcomponentName: SUB_COMPONENTS, allSubcomponents: Subcomponents): void {
+    layer.sections[layerSubcomponent.layerSectionsType][subcomponentName] = allSubcomponents[subcomponentName];
+  }
+
+  private static populateEqualSplitSections(layer: Layer, layerSubcomponent: SubcomponentProperties,
+      layerSubcomponentsStructure: NestedDropdownStructure, allSubcomponents: Subcomponents): void {
+    layer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS] = PreviewStructure.createEmptyAlignedSections();
+    Object.keys(layerSubcomponentsStructure).forEach((subcomponentName: SUB_COMPONENTS) => {
+      PreviewStructure.addSubcomponentToEqualSplitSection(layer, layerSubcomponent, subcomponentName, allSubcomponents);
+      PreviewStructure.addLayerToSubcomponentCustomFeatures(layer, subcomponentName, allSubcomponents);
+    });
+  }
+
   private static addSubcomponentToAlignedSection(layer: Layer, layerSubcomponent: SubcomponentProperties,
       subcomponentName: SUB_COMPONENTS, allSubcomponents: Subcomponents): void {
     layer.sections[layerSubcomponent.layerSectionsType]
@@ -51,7 +65,7 @@ export default class PreviewStructure {
     if (layerSubcomponent.layerSectionsType === LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS) {
       PreviewStructure.populateAlignedSections(layer, layerSubcomponent, layerSubcomponentsStructure, allSubcomponents)
     } else if (layerSubcomponent.layerSectionsType === LAYER_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS) {
-      // WORK1
+      PreviewStructure.populateEqualSplitSections(layer, layerSubcomponent, layerSubcomponentsStructure, allSubcomponents);
     }
     return layer;
   }
