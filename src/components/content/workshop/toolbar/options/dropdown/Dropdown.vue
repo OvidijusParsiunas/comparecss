@@ -28,6 +28,7 @@
 <script lang="ts">
 import { COMPONENT_CARD_MARKER, DROPDOWN_OPTION_MARKER, RANGE_SETTING_MARKER } from '../../../../../../consts/elementClassMarkers';
 import { CUSTOM_DROPDOWN_OPTION_CLASSES } from '../../../../../../consts/customDropdownOptionClasses.enum';
+import { DropdownMouseClickOptionEvent } from '../../../../../../interfaces/dropdownMouseClickOptionEvent';
 import { OptionMouseEnter, OptionMouseLeave } from '../../../../../../interfaces/dropdownMenuMouseEvents';
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
@@ -288,10 +289,11 @@ export default {
       if ((event.target as HTMLElement).classList.contains(DROPDOWN_OPTION_MARKER) || this.enterButtonClicked) {
         if (this.lastHoveredOptionElement) {
           const optionName = this.lastHoveredOptionElement.childNodes[0].innerHTML;
-          if (this.objectContainingActiveOption[this.activeOptionPropertyKeyName] !== optionName) {
+          const previousActiveOptionName = this.objectContainingActiveOption[this.activeOptionPropertyKeyName];
+          if (previousActiveOptionName !== optionName) {
             this.$emit('mouse-click-new-option', optionName);
           }
-          this.$emit('mouse-click-option', optionName);
+          this.$emit('mouse-click-option', [previousActiveOptionName, optionName] as DropdownMouseClickOptionEvent);
         }
       }
       const isDropdownButtonClicked = (event.target as HTMLElement).classList.contains(this.uniqueIdentifier);

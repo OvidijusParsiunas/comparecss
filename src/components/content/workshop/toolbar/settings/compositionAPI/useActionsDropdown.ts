@@ -59,12 +59,12 @@ export default function useActionsDropdown(): UseActionsDropdown {
     if (mouseLeaveDropdownCallback) mouseLeaveDropdownCallback({subcomponentProperties, settingsComponent, triggeredOptionName});
   }
 
-  const mouseClickActionsDropdownOption = (settingsComponent: ComponentOptions, triggeredOptionName: string, setting: any,
+  const mouseClickActionsDropdownOption = (settingsComponent: ComponentOptions, dropdownEvent: any, setting: any,
       allSettings: any, subcomponentProperties: SubcomponentProperties): void => {
     if (expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState()) return;
-    const { mouseClickOptionCallback, cssProperty } = setting.spec;
-    if (cssProperty) ActionsDropdownUtils.mouseClickActionsDropdownOption(triggeredOptionName, setting, allSettings, subcomponentProperties);
-    if (mouseClickOptionCallback) mouseClickOptionCallback({subcomponentProperties, settingsComponent, triggeredOptionName});
+    ActionsDropdownUtils.mouseClickActionsDropdownOption(dropdownEvent, setting, allSettings, subcomponentProperties);
+    const { mouseClickOptionCallback } = setting.spec;
+    if (mouseClickOptionCallback) mouseClickOptionCallback({subcomponentProperties, settingsComponent, triggeredOptionName: dropdownEvent[1]});
   }
   
   const mouseClickActionsDropdownNewOption = (triggeredOptionName: string, settingSpec: any,

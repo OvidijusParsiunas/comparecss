@@ -1,4 +1,4 @@
-import { AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
 import PreviewStructure from '../../../../../../../services/workshop/newComponent/previewStructure';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
@@ -84,6 +84,10 @@ function createTextCss(): CustomCss {
   }
 }
 
+function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayerSection {
+  return { section };
+}
+
 function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
   return new Set([JAVASCRIPT_CLASSES.RIPPLES])
 }
@@ -91,7 +95,8 @@ function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
 function createDefaultCloseButtonCustomFeatures(): CustomFeatures {
   return {
     jsClasses: createInitialCloseButtonJsClasses(),
-  }
+    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
+  };
 }
 
 function createAutoWidth(): AutoWidth {
@@ -103,6 +108,7 @@ function createAutoWidth(): AutoWidth {
 function createDefaultTextCustomFeatures(): CustomFeatures {
   return {
     autoWidth: createAutoWidth(),
+    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
   };
 }
 
@@ -137,7 +143,6 @@ function createSubcomponents(): Subcomponents {
       optionalSubcomponent: { currentlyDisplaying: true },
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
-      alignedLayerSection: ALIGNED_SECTION_TYPES.RIGHT,
     },
     [SUB_COMPONENTS.TEXT_1]: {
       componentTag: 'div',
@@ -149,7 +154,6 @@ function createSubcomponents(): Subcomponents {
       optionalSubcomponent: { currentlyDisplaying: true },
       customFeatures: createDefaultTextCustomFeatures(),
       defaultCustomFeatures: createDefaultTextCustomFeatures(),
-      alignedLayerSection: ALIGNED_SECTION_TYPES.CENTER,
     },
   }
 }

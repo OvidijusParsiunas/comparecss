@@ -1,3 +1,4 @@
+import { DropdownMouseClickOptionEvent } from '../../../../../../../interfaces/dropdownMouseClickOptionEvent';
 import { DropdownCustomCssProperty } from '../../../../../../../interfaces/dropdownCustomCssProperty';
 import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
 import { SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
@@ -55,6 +56,10 @@ export default class ActionsDropdownUtils {
     }
   }
 
+  private static activateCustomFeatureTriggers(trigger: any, oldOptionName: string, newOptionName: string, subcomponentProperties: SubcomponentProperties): void {
+    if (trigger[newOptionName].function) { trigger[newOptionName].function(subcomponentProperties, oldOptionName, newOptionName); }
+  }
+
   private static updateSettingAndPropertyValues(trigger: any, allSettings: any, subcomponentProperties: SubcomponentProperties): void {
     const { customCss, activeCustomCssMode } = subcomponentProperties;
     const { cssProperty: triggerCssProperty, defaultValue } = trigger;
@@ -67,7 +72,7 @@ export default class ActionsDropdownUtils {
     }
   }
 
-  private static activateTriggers(trigger: any, allSettings: any, subcomponentProperties: SubcomponentProperties): void {
+  private static activateCustomCssTriggers(trigger: any, allSettings: any, subcomponentProperties: SubcomponentProperties): void {
     const { customCss, activeCustomCssMode } = subcomponentProperties;
     const { conditions, negativeConditions, cssProperty: triggerCssProperty } = trigger;
     const extractedTriggerCssProperty = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCustomCssMode, triggerCssProperty);
@@ -78,13 +83,18 @@ export default class ActionsDropdownUtils {
     }
   }
 
-  public static mouseClickActionsDropdownOption(triggeredOptionName: string, setting: any, allSettings: any,
+  public static mouseClickActionsDropdownOption(mouseClickOptionEvent: DropdownMouseClickOptionEvent, setting: any, allSettings: any,
       subcomponentProperties: SubcomponentProperties): void {
+    const [oldOptionName, newOptionName] = mouseClickOptionEvent;
     const { triggers, spec } = setting;
-    const { customCss, activeCustomCssMode } = subcomponentProperties;
-    customCss[activeCustomCssMode][spec.cssProperty] = triggeredOptionName;
-    if (triggers && triggers[triggeredOptionName]) {
-      ActionsDropdownUtils.activateTriggers(triggers[triggeredOptionName], allSettings, subcomponentProperties)
+    if (spec.cssProperty) {
+      const { customCss, activeCustomCssMode } = subcomponentProperties;
+      customCss[activeCustomCssMode][spec.cssProperty] = newOptionName;
+      if (triggers && triggers[newOptionName]) {
+        ActionsDropdownUtils.activateCustomCssTriggers(triggers[newOptionName], allSettings, subcomponentProperties);
+      }
+    } else if (spec.customFeatureObjectKeys && triggers && triggers[newOptionName]) {
+      ActionsDropdownUtils.activateCustomFeatureTriggers(triggers, oldOptionName, newOptionName, subcomponentProperties);
     }
   }
 

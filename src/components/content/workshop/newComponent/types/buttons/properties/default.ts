@@ -1,4 +1,4 @@
-import { AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
 import PreviewStructure from '../../../../../../../services/workshop/newComponent/previewStructure';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
@@ -84,10 +84,15 @@ function createAutoWidth(): AutoWidth {
   };
 }
 
+function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayerSection {
+  return { section };
+}
+
 function createDefaultButtonCustomFeatures(): CustomFeatures {
   return {
     jsClasses: createInitialButtonJsClasses(),
     autoWidth: createAutoWidth(),
+    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
   }
 }
 
@@ -121,7 +126,6 @@ function createSubcomponents(): Subcomponents {
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       customFeatures: createDefaultButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultButtonCustomFeatures(),
-      alignedLayerSection: ALIGNED_SECTION_TYPES.CENTER,
     },
   }
 }

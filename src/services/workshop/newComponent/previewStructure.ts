@@ -29,7 +29,7 @@ export default class PreviewStructure {
   private static addSubcomponentToAlignedSection(layer: Layer, layerSubcomponent: SubcomponentProperties,
       subcomponentName: SUB_COMPONENTS, allSubcomponents: Subcomponents): void {
     layer.sections[layerSubcomponent.layerSectionsType]
-      [allSubcomponents[subcomponentName].alignedLayerSection][subcomponentName] = allSubcomponents[subcomponentName];
+      [allSubcomponents[subcomponentName].customFeatures.alignedLayerSection.section][subcomponentName] = allSubcomponents[subcomponentName];
   }
 
   private static createEmptyAlignedSections(): AlignedSections {

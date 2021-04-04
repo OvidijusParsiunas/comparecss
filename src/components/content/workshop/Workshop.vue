@@ -125,7 +125,7 @@ import toolbar from './toolbar/Toolbar.vue';
 import 'vuesax/dist/vuesax.css' //Vuesax styles
 import {
   CustomCss, CustomFeatures, SubcomponentProperties, Subcomponents, WorkshopComponent,
-  AutoWidth, BackdropProperties, ComponentCenteringInParent, ComponentTransitions,
+  AutoWidth, BackdropProperties, ComponentCenteringInParent, ComponentTransitions, AlignedLayerSection,
 } from '../../../interfaces/workshopComponent';
 
 interface Consts {
@@ -181,9 +181,14 @@ function createDefaultBaseCustomFeatures(): CustomFeatures {
   };
 }
 
+function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayerSection {
+  return { section };
+}
+
 function createDefaultCloseButtonCustomFeatures(): CustomFeatures {
   return {
     jsClasses: createInitialCloseButtonJsClasses(),
+    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
   };
 }
 
@@ -196,6 +201,7 @@ function createAutoWidth(): AutoWidth {
 function createDefaultTextCustomFeatures(): CustomFeatures {
   return {
     autoWidth: createAutoWidth(),
+    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
   };
 }
 
@@ -431,7 +437,6 @@ function createSubcomponents(): Subcomponents {
       optionalSubcomponent: { currentlyDisplaying: true },
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
-      alignedLayerSection: ALIGNED_SECTION_TYPES.RIGHT,
     },
     [SUB_COMPONENTS.BUTTON_1]: {
       componentTag: 'button',
@@ -446,7 +451,6 @@ function createSubcomponents(): Subcomponents {
       optionalSubcomponent: { currentlyDisplaying: true },
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
-      alignedLayerSection: ALIGNED_SECTION_TYPES.RIGHT,
     },
     [SUB_COMPONENTS.BUTTON_2]: {
       componentTag: 'button',
@@ -461,7 +465,6 @@ function createSubcomponents(): Subcomponents {
       optionalSubcomponent: { currentlyDisplaying: true },
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
-      alignedLayerSection: ALIGNED_SECTION_TYPES.RIGHT,
     },
     [SUB_COMPONENTS.TEXT_1]: {
       componentTag: 'div',
@@ -473,7 +476,6 @@ function createSubcomponents(): Subcomponents {
       optionalSubcomponent: { currentlyDisplaying: true },
       customFeatures: createDefaultTextCustomFeatures(),
       defaultCustomFeatures: createDefaultTextCustomFeatures(),
-      alignedLayerSection: ALIGNED_SECTION_TYPES.LEFT,
     },
     [SUB_COMPONENTS.TEXT_2]: {
       componentTag: 'div',
@@ -485,7 +487,6 @@ function createSubcomponents(): Subcomponents {
       optionalSubcomponent: { currentlyDisplaying: true },
       customFeatures: createDefaultTextCustomFeatures(),
       defaultCustomFeatures: createDefaultTextCustomFeatures(),
-      alignedLayerSection: ALIGNED_SECTION_TYPES.LEFT,
     },
   };
 }

@@ -70,6 +70,10 @@ export interface AutoWidth {
   auto: boolean;
 }
 
+export interface AlignedLayerSection {
+  section: ALIGNED_SECTION_TYPES;
+}
+
 export interface CustomFeatures {
   backdrop?: BackdropProperties;
   // currently used to position modal either in the center of the screen or the top
@@ -77,6 +81,7 @@ export interface CustomFeatures {
   transitions?: ComponentTransitions;
   jsClasses?: ComponentJavascriptClasses;
   autoWidth?: AutoWidth;
+  alignedLayerSection?: AlignedLayerSection,
   // appended in run-time
   parentLayer?: Layer;
 }
@@ -110,7 +115,6 @@ export interface CustomFeatures {
   customFeatures?: CustomFeatures;
   defaultCustomFeatures?: CustomFeatures;
   layerSectionsType?: LAYER_SECTIONS_TYPES;
-  alignedLayerSection?: ALIGNED_SECTION_TYPES;
 }
 
 export type Subcomponents = {
