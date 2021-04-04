@@ -42,18 +42,22 @@ export default class SettingsUtils {
     }
   }
 
-  private static resetCustomFeatures(customFeatureObjectKeys, valueInSetObject, subcomponentProperties: SubcomponentProperties): void {
+  private static resetCustomFeatures(customFeatureObjectKeys, valueInSetObject, subcomponentProperties: SubcomponentProperties,
+      triggers: any): void {
     const defaultValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.defaultCustomFeatures);
+    const currentValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures);
     const appropriateTypeDefaultValue = valueInSetObject ? new Set([...(defaultValue as Set<undefined>)]) : defaultValue;
-    SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures,
-      appropriateTypeDefaultValue);
+    SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures, appropriateTypeDefaultValue);
+    if (triggers[defaultValue as string]) {
+      SharedUtils.activateCustomFeatureTriggerFunctions(triggers, currentValue as string, defaultValue as string, subcomponentProperties);
+    }
   }
 
   public static resetSubcomponentProperties(options: any, subcomponentProperties: SubcomponentProperties): void {
     options.forEach((option) => {
       const { cssProperty, valueInSetObject, customFeatureObjectKeys } = option.spec;
       if (customFeatureObjectKeys) {
-        SettingsUtils.resetCustomFeatures(customFeatureObjectKeys, valueInSetObject, subcomponentProperties);
+        SettingsUtils.resetCustomFeatures(customFeatureObjectKeys, valueInSetObject, subcomponentProperties, option.triggers);
       } else {
         SettingsUtils.resetCustomCss(subcomponentProperties, cssProperty);
         SettingsUtils.removeAuxiliaryPartialCss(subcomponentProperties, cssProperty);

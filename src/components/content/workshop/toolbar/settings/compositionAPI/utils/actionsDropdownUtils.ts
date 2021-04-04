@@ -56,10 +56,6 @@ export default class ActionsDropdownUtils {
     }
   }
 
-  private static activateCustomFeatureTriggers(trigger: any, oldOptionName: string, newOptionName: string, subcomponentProperties: SubcomponentProperties): void {
-    if (trigger[newOptionName].function) { trigger[newOptionName].function(subcomponentProperties, oldOptionName, newOptionName); }
-  }
-
   private static updateSettingAndPropertyValues(trigger: any, allSettings: any, subcomponentProperties: SubcomponentProperties): void {
     const { customCss, activeCustomCssMode } = subcomponentProperties;
     const { cssProperty: triggerCssProperty, defaultValue } = trigger;
@@ -94,7 +90,7 @@ export default class ActionsDropdownUtils {
         ActionsDropdownUtils.activateCustomCssTriggers(triggers[newOptionName], allSettings, subcomponentProperties);
       }
     } else if (spec.customFeatureObjectKeys && triggers && triggers[newOptionName]) {
-      ActionsDropdownUtils.activateCustomFeatureTriggers(triggers, oldOptionName, newOptionName, subcomponentProperties);
+      SharedUtils.activateCustomFeatureTriggerFunctions(triggers, oldOptionName, newOptionName, subcomponentProperties);
     }
   }
 

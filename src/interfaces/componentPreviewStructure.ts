@@ -3,7 +3,7 @@ import { CustomCss, SubcomponentProperties } from './workshopComponent';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { SUB_COMPONENTS } from '../consts/subcomponentModes.enum';
 
-export type NestedSubcomponent = { 
+export type NestedSubcomponent = {
   name: SUB_COMPONENTS;
   subcomponentProperties: SubcomponentProperties;
 };
