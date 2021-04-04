@@ -69,9 +69,4 @@ export default class SharedUtils {
       customCss[activeCustomCssMode][cssPropertyName] = cssPropertyValue;
     }
   }
-
-  public static activateCustomFeatureTriggerFunctions(trigger: any, oldValue: string, newValue: string,
-      subcomponentProperties: SubcomponentProperties): void {
-    if (trigger[newValue].function) { trigger[newValue].function(subcomponentProperties, oldValue, newValue); }
-  }
 }

@@ -1,5 +1,5 @@
 import { expandedModalPreviewModeState } from '../../../../../../services/workshop/expandedModalPreviewMode/expandedModalPreviewModeState';
-import { DropdownCustomCssProperty } from '../../../../../../interfaces/dropdownCustomCssProperty';
+import { TemporaryDropdownValue } from '../../../../../../interfaces/temporaryDropdownValue';
 import { SubcomponentProperties, } from '../../../../../../interfaces/workshopComponent';
 import { UseActionsDropdown } from '../../../../../../interfaces/UseActionsDropdown';
 import ActionsDropdownUtils from './utils/actionsDropdownUtils';
@@ -10,7 +10,7 @@ import { ComponentOptions } from 'vue';
 
 export default function useActionsDropdown(): UseActionsDropdown {
 
-  const dropdownCustomCssProperty: DropdownCustomCssProperty = { value: ActionsDropdownUtils.NULL_CUSTOM_CSS_VALUE };
+  const temporaryDropdownValue: TemporaryDropdownValue = { value: ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED };
 
   const getObjectContainingActiveOption = (settingSpec: any, subcomponentProperties: SubcomponentProperties): unknown => {
     const { customFeatureObjectKeys, cssProperty } = settingSpec;
@@ -24,7 +24,7 @@ export default function useActionsDropdown(): UseActionsDropdown {
       subcomponentProperties: SubcomponentProperties): void => {
     if (expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState()) return;
     const { mouseEnterButtonCallback, cssProperty } = settingSpec;
-    if (cssProperty) ActionsDropdownUtils.mouseEnterActionsDropdownButton(dropdownCustomCssProperty,
+    if (cssProperty) ActionsDropdownUtils.mouseEnterActionsDropdownButton(temporaryDropdownValue,
       subcomponentProperties, settingSpec.cssProperty);
     if (mouseEnterButtonCallback) {
       const triggeredOptionName = GeneralUtils.getTriggeredOptionName(subcomponentProperties, settingSpec);
@@ -45,26 +45,28 @@ export default function useActionsDropdown(): UseActionsDropdown {
   const mouseEnterActionsDropdownOption = (settingsComponent: ComponentOptions, triggeredOptionName: string,
       settingSpec: any, subcomponentProperties: SubcomponentProperties): void => {
     if (expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState()) return;
-    const { mouseEnterOptionCallback, cssProperty } = settingSpec;
-    if (cssProperty) ActionsDropdownUtils.mouseEnterActionsDropdownOption(dropdownCustomCssProperty,
+    const { cssProperty, customFeatureObjectKeys } = settingSpec;
+    if (cssProperty) ActionsDropdownUtils.mouseEnterActionsDropdownOptionCustomCss(temporaryDropdownValue,
       triggeredOptionName, subcomponentProperties, settingSpec);
-    if (mouseEnterOptionCallback) mouseEnterOptionCallback({subcomponentProperties, settingsComponent, triggeredOptionName});
+    if (customFeatureObjectKeys) ActionsDropdownUtils.mouseEnterActionsDropdownOptionCustomFeature(temporaryDropdownValue,
+      triggeredOptionName, subcomponentProperties, settingSpec, settingsComponent);
   }
   
-  const mouseLeaveActionsDropdown = (settingsComponent: ComponentOptions, triggeredOptionName: string,
-      settingSpec: any, subcomponentProperties: SubcomponentProperties): void => {
+  const mouseLeaveActionsDropdown = (settingsComponent: ComponentOptions, settingSpec: any, subcomponentProperties: SubcomponentProperties): void => {
     if (expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState()) return;
-    const { mouseLeaveDropdownCallback, cssProperty } = settingSpec;
-    if (cssProperty) ActionsDropdownUtils.mouseLeaveActionsDropdown(dropdownCustomCssProperty, subcomponentProperties, settingSpec);
-    if (mouseLeaveDropdownCallback) mouseLeaveDropdownCallback({subcomponentProperties, settingsComponent, triggeredOptionName});
+    const { cssProperty, customFeatureObjectKeys } = settingSpec;
+    if (cssProperty) ActionsDropdownUtils.mouseLeaveActionsDropdownCustomCss(temporaryDropdownValue, subcomponentProperties, settingSpec);
+    if (customFeatureObjectKeys) ActionsDropdownUtils.mouseLeaveActionsDropdownOptionCustomFeature(temporaryDropdownValue,
+      subcomponentProperties, settingSpec, settingsComponent);
   }
 
-  const mouseClickActionsDropdownOption = (settingsComponent: ComponentOptions, dropdownEvent: any, setting: any,
+  const mouseClickActionsDropdownOption = (settingsComponent: ComponentOptions, mouseClickOptionEvent: any, setting: any,
       allSettings: any, subcomponentProperties: SubcomponentProperties): void => {
     if (expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState()) return;
-    ActionsDropdownUtils.mouseClickActionsDropdownOption(dropdownEvent, setting, allSettings, subcomponentProperties);
+    ActionsDropdownUtils.mouseClickActionsDropdownOption(mouseClickOptionEvent, setting, allSettings, subcomponentProperties);
     const { mouseClickOptionCallback } = setting.spec;
-    if (mouseClickOptionCallback) mouseClickOptionCallback({subcomponentProperties, settingsComponent, triggeredOptionName: dropdownEvent[1]});
+    if (mouseClickOptionCallback) mouseClickOptionCallback({
+      subcomponentProperties, settingsComponent, previousOptionName: mouseClickOptionEvent[0], triggeredOptionName: mouseClickOptionEvent[1]});
   }
   
   const mouseClickActionsDropdownNewOption = (triggeredOptionName: string, settingSpec: any,
@@ -72,7 +74,7 @@ export default function useActionsDropdown(): UseActionsDropdown {
     if (expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState()) return;
     const { customFeatures } = subcomponentProperties;
     const { customFeatureObjectKeys, cssProperty } = settingSpec;
-    if (cssProperty) ActionsDropdownUtils.mouseClickActionsDropdownNewOption(dropdownCustomCssProperty, triggeredOptionName,
+    if (cssProperty) ActionsDropdownUtils.mouseClickActionsDropdownNewOption(temporaryDropdownValue, triggeredOptionName,
       subcomponentProperties, settingSpec, activeOptionsObject);
     if (customFeatureObjectKeys) SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, customFeatures, triggeredOptionName);
   }

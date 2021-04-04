@@ -3,8 +3,10 @@ import { ComponentOptions } from 'vue';
 
 export interface ActionsDropdownMouseEventCallbackEvent {
   subcomponentProperties: SubcomponentProperties;
-  settingsComponent: ComponentOptions;
   triggeredOptionName: string;
+  previousOptionName?: string;
+  settingsComponent?: ComponentOptions;
+  isCustomFeatureResetTriggered?: boolean;
 }
 
 export type ActionsDropdownMouseEventCallback = (event: ActionsDropdownMouseEventCallbackEvent) => void;

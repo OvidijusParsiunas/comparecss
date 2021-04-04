@@ -119,7 +119,7 @@
                   @mouse-enter-button="mouseEnterActionsDropdownButton(this, setting.spec, subcomponentProperties)"
                   @mouse-leave-button="mouseLeaveActionsDropdownButton(this, setting.spec, subcomponentProperties)"
                   @mouse-enter-option="mouseEnterActionsDropdownOption(this, $event, setting.spec, subcomponentProperties)"
-                  @mouse-leave-dropdown="mouseLeaveActionsDropdown(this, $event, setting.spec, subcomponentProperties)"
+                  @mouse-leave-dropdown="mouseLeaveActionsDropdown(this, setting.spec, subcomponentProperties)"
                   @mouse-click-option="mouseClickActionsDropdownOption(this, $event, setting, settings, subcomponentProperties)"
                   @mouse-click-new-option="mouseClickActionsDropdownNewOption($event, setting.spec, subcomponentProperties, actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.activeOptionPropertyKeyName])"/>
               </div>

@@ -1,3 +1,4 @@
+import { ActionsDropdownMouseEventCallbackEvent } from '../../../../../../interfaces/actionsDropdownMouseEventCallbacks';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../consts/subcomponentCssModes.enum';
 import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import SharedUtils from './sharedUtils';
@@ -42,22 +43,21 @@ export default class SettingsUtils {
     }
   }
 
-  private static resetCustomFeatures(customFeatureObjectKeys, valueInSetObject, subcomponentProperties: SubcomponentProperties,
-      triggers: any): void {
+  private static resetCustomFeatures(customFeatureObjectKeys: string[], valueInSetObject: string, subcomponentProperties: SubcomponentProperties,
+      mouseClickOptionCallback: (event: ActionsDropdownMouseEventCallbackEvent) => void): void {
     const defaultValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.defaultCustomFeatures);
     const currentValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures);
     const appropriateTypeDefaultValue = valueInSetObject ? new Set([...(defaultValue as Set<undefined>)]) : defaultValue;
     SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures, appropriateTypeDefaultValue);
-    if (triggers[defaultValue as string]) {
-      SharedUtils.activateCustomFeatureTriggerFunctions(triggers, currentValue as string, defaultValue as string, subcomponentProperties);
-    }
+    if (mouseClickOptionCallback) { mouseClickOptionCallback({subcomponentProperties,
+      previousOptionName: currentValue as string, triggeredOptionName: defaultValue as string, isCustomFeatureResetTriggered: true }); }
   }
 
   public static resetSubcomponentProperties(options: any, subcomponentProperties: SubcomponentProperties): void {
     options.forEach((option) => {
-      const { cssProperty, valueInSetObject, customFeatureObjectKeys } = option.spec;
+      const { cssProperty, valueInSetObject, customFeatureObjectKeys, mouseClickOptionCallback } = option.spec;
       if (customFeatureObjectKeys) {
-        SettingsUtils.resetCustomFeatures(customFeatureObjectKeys, valueInSetObject, subcomponentProperties, option.triggers);
+        SettingsUtils.resetCustomFeatures(customFeatureObjectKeys, valueInSetObject, subcomponentProperties, mouseClickOptionCallback);
       } else {
         SettingsUtils.resetCustomCss(subcomponentProperties, cssProperty);
         SettingsUtils.removeAuxiliaryPartialCss(subcomponentProperties, cssProperty);

@@ -18,6 +18,7 @@ function generateMouseEventCallbacks(isEntranceAnimation: boolean): ActionsDropd
       event.settingsComponent.$emit('stop-transition-preview');
     },
     mouseClickOptionCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
+      if (event.isCustomFeatureResetTriggered) return;
       event.settingsComponent.$emit('stop-transition-preview');
     },
   };

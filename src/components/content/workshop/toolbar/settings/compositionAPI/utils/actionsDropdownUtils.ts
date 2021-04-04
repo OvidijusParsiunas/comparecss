@@ -1,8 +1,9 @@
 import { DropdownMouseClickOptionEvent } from '../../../../../../../interfaces/dropdownMouseClickOptionEvent';
-import { DropdownCustomCssProperty } from '../../../../../../../interfaces/dropdownCustomCssProperty';
+import { TemporaryDropdownValue } from '../../../../../../../interfaces/temporaryDropdownValue';
 import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
 import { SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
 import SharedUtils from '../../utils/sharedUtils';
+import { ComponentOptions } from 'vue';
 
 // use this type in the future if tempCustomCssObject will be used in the spec type of setting type
 type TempCustomCssObject = {
@@ -11,7 +12,7 @@ type TempCustomCssObject = {
 
 export default class ActionsDropdownUtils {
 
-  public static NULL_CUSTOM_CSS_VALUE = null;
+  public static TEMPORARY_VALUE_UNUSED = null;
 
   public static getObjectContainingActiveOption(subcomponentProperties: SubcomponentProperties, cssProperty: string): WorkshopComponentCss {
     const { activeCustomCssMode, customCss } = subcomponentProperties;
@@ -21,39 +22,61 @@ export default class ActionsDropdownUtils {
     return { [cssProperty] : SharedUtils.getActiveModeCssPropertyValue(customCss, activeCustomCssMode, cssProperty) };
   }
 
-  public static mouseEnterActionsDropdownButton(dropdownCustomCssProperty: DropdownCustomCssProperty, subcomponentProperties: SubcomponentProperties,
+  public static mouseEnterActionsDropdownButton(temporaryDropdownValue: TemporaryDropdownValue, subcomponentProperties: SubcomponentProperties,
       settingSpecCssProperty: string): void {
-    if (dropdownCustomCssProperty.value === ActionsDropdownUtils.NULL_CUSTOM_CSS_VALUE) {
+    if (temporaryDropdownValue.value === ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED) {
       const { activeCustomCssMode, customCss } = subcomponentProperties;
-      dropdownCustomCssProperty.value = customCss[activeCustomCssMode] && customCss[activeCustomCssMode][settingSpecCssProperty]
+      temporaryDropdownValue.value = customCss[activeCustomCssMode] && customCss[activeCustomCssMode][settingSpecCssProperty]
         ? customCss[activeCustomCssMode][settingSpecCssProperty]
         : SharedUtils.getActiveModeCssPropertyValue(customCss, activeCustomCssMode, settingSpecCssProperty);
     }
   }
 
-  public static mouseEnterActionsDropdownOption(dropdownCustomCssProperty: DropdownCustomCssProperty, triggeredOptionName: string,
+  public static mouseEnterActionsDropdownOptionCustomCss(temporaryDropdownValue: TemporaryDropdownValue, triggeredOptionName: string,
       subcomponentProperties: SubcomponentProperties, settingSpec: any): void {
     const { customCss, activeCustomCssMode } = subcomponentProperties;
     const { cssProperty } = settingSpec;
-    if (dropdownCustomCssProperty.value === ActionsDropdownUtils.NULL_CUSTOM_CSS_VALUE) {
-      dropdownCustomCssProperty.value = (customCss[activeCustomCssMode] && customCss[activeCustomCssMode][cssProperty]) || settingSpec.tempCustomCssObject[cssProperty];
+    if (temporaryDropdownValue.value === ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED) {
+      temporaryDropdownValue.value = (customCss[activeCustomCssMode] && customCss[activeCustomCssMode][cssProperty]) || settingSpec.tempCustomCssObject[cssProperty];
     }
     if (customCss[activeCustomCssMode]) {
       customCss[activeCustomCssMode][cssProperty] = triggeredOptionName;
     } else {
       customCss[activeCustomCssMode] = { [cssProperty]: triggeredOptionName };
     }
-    settingSpec.tempCustomCssObject = { [cssProperty]: dropdownCustomCssProperty.value };
+    settingSpec.tempCustomCssObject = { [cssProperty]: temporaryDropdownValue.value };
   }
 
-  public static mouseLeaveActionsDropdown(dropdownCustomCssProperty: DropdownCustomCssProperty, subcomponentProperties: SubcomponentProperties,
-      settingSpec: any): void {
-    if (dropdownCustomCssProperty.value !== ActionsDropdownUtils.NULL_CUSTOM_CSS_VALUE) {
+  public static mouseLeaveActionsDropdownCustomCss(temporaryDropdownValue: TemporaryDropdownValue,
+      subcomponentProperties: SubcomponentProperties, settingSpec: any): void {
+    if (temporaryDropdownValue.value !== ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED) {
       const { customCss, activeCustomCssMode } = subcomponentProperties;
-      customCss[activeCustomCssMode][settingSpec.cssProperty] = dropdownCustomCssProperty.value;
-      dropdownCustomCssProperty.value = ActionsDropdownUtils.NULL_CUSTOM_CSS_VALUE;
+      customCss[activeCustomCssMode][settingSpec.cssProperty] = temporaryDropdownValue.value;
+      temporaryDropdownValue.value = ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED;
       delete settingSpec.tempCustomCssObject;
     }
+  }
+
+  public static mouseEnterActionsDropdownOptionCustomFeature(temporaryDropdownValue: TemporaryDropdownValue, triggeredOptionName: string,
+      subcomponentProperties: SubcomponentProperties, settingSpec: any, settingsComponent: ComponentOptions): void {
+    const { customFeatureObjectKeys, mouseEnterOptionCallback } = settingSpec;
+    if (temporaryDropdownValue.value === ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED) {
+      temporaryDropdownValue.value = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures) as string;
+    }
+    if (mouseEnterOptionCallback) mouseEnterOptionCallback({subcomponentProperties, settingsComponent,
+      previousOptionName: temporaryDropdownValue.value, triggeredOptionName});
+    temporaryDropdownValue.value = triggeredOptionName;
+  }
+
+  public static mouseLeaveActionsDropdownOptionCustomFeature(temporaryDropdownValue: TemporaryDropdownValue,
+      subcomponentProperties: SubcomponentProperties, settingSpec: any, settingsComponent: ComponentOptions): void {
+    if (temporaryDropdownValue.value !== ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED) {
+      const { customFeatureObjectKeys, mouseLeaveDropdownCallback } = settingSpec;
+      const defaultValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures) as string;
+      if (mouseLeaveDropdownCallback) mouseLeaveDropdownCallback({subcomponentProperties, settingsComponent,
+        previousOptionName: temporaryDropdownValue.value, triggeredOptionName: defaultValue});
+    }
+    temporaryDropdownValue.value = ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED;
   }
 
   private static updateSettingAndPropertyValues(trigger: any, allSettings: any, subcomponentProperties: SubcomponentProperties): void {
@@ -81,7 +104,7 @@ export default class ActionsDropdownUtils {
 
   public static mouseClickActionsDropdownOption(mouseClickOptionEvent: DropdownMouseClickOptionEvent, setting: any, allSettings: any,
       subcomponentProperties: SubcomponentProperties): void {
-    const [oldOptionName, newOptionName] = mouseClickOptionEvent;
+    const [newOptionName] = mouseClickOptionEvent;
     const { triggers, spec } = setting;
     if (spec.cssProperty) {
       const { customCss, activeCustomCssMode } = subcomponentProperties;
@@ -89,18 +112,16 @@ export default class ActionsDropdownUtils {
       if (triggers && triggers[newOptionName]) {
         ActionsDropdownUtils.activateCustomCssTriggers(triggers[newOptionName], allSettings, subcomponentProperties);
       }
-    } else if (spec.customFeatureObjectKeys && triggers && triggers[newOptionName]) {
-      SharedUtils.activateCustomFeatureTriggerFunctions(triggers, oldOptionName, newOptionName, subcomponentProperties);
     }
   }
 
-  public static mouseClickActionsDropdownNewOption(dropdownCustomCssProperty: DropdownCustomCssProperty, triggeredOptionName: string,
+  public static mouseClickActionsDropdownNewOption(temporaryDropdownValue: TemporaryDropdownValue, triggeredOptionName: string,
       subcomponentProperties: SubcomponentProperties, settingSpec: any, activeOptionsObject: any): void {
     const { activeCustomCssMode, customCss } = subcomponentProperties;
     customCss[activeCustomCssMode][settingSpec.cssProperty] = triggeredOptionName;
     activeOptionsObject[settingSpec.cssProperty] = triggeredOptionName;
-    if (dropdownCustomCssProperty.value !== null) {
-      dropdownCustomCssProperty.value = null;
+    if (temporaryDropdownValue.value !== null) {
+      temporaryDropdownValue.value = null;
       delete settingSpec.tempCustomCssObject;
     }
   }
