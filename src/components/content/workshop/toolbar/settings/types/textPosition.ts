@@ -3,11 +3,16 @@ import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 
 function moveSubcomponentToTargetSection(subcomponent: SubcomponentProperties, previousSection: ALIGNED_SECTION_TYPES, targetSection: ALIGNED_SECTION_TYPES): void {
-  const subcomponentName = Object.keys(subcomponent.customFeatures.parentLayer.sections.alignedSections[previousSection]).find((name) =>
-    subcomponent.customFeatures.parentLayer.sections.alignedSections[previousSection][name] === subcomponent
-  );
-  delete subcomponent.customFeatures.parentLayer.sections.alignedSections[previousSection][subcomponentName];
-  subcomponent.customFeatures.parentLayer.sections.alignedSections[targetSection] = { [subcomponentName]: subcomponent, ...subcomponent.customFeatures.parentLayer.sections.alignedSections[targetSection] };
+  let nestedSubcomponentIndex = 0;
+  const previousSectionArray = subcomponent.customFeatures.parentLayer.sections.alignedSections[previousSection];
+  for (let i = 0; i < previousSection.length; i += 1) {
+    if (previousSectionArray[i].subcomponentProperties === subcomponent) {
+      subcomponent.customFeatures.parentLayer.sections.alignedSections[targetSection].unshift(previousSectionArray[i]);
+      nestedSubcomponentIndex = i;
+      break;
+    }
+  }
+  previousSectionArray.splice(nestedSubcomponentIndex, 1);
 }
 
 // create an optional interface

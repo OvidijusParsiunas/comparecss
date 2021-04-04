@@ -1,4 +1,4 @@
-import { AlignedSections, ComponentPreviewStructure, Layer } from '../../../interfaces/componentPreviewStructure';
+import { AlignedSections, ComponentPreviewStructure, Layer, NestedSubcomponent } from '../../../interfaces/componentPreviewStructure';
 import { SubcomponentProperties, Subcomponents } from '../../../interfaces/workshopComponent';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../consts/layerSections';
 import { NestedDropdownStructure } from '../../../interfaces/nestedDropdownStructure';
@@ -14,29 +14,34 @@ export default class PreviewStructure {
 
   private static addSubcomponentToEqualSplitSection(layer: Layer, layerSubcomponent: SubcomponentProperties,
       subcomponentName: SUB_COMPONENTS, allSubcomponents: Subcomponents): void {
-    layer.sections[layerSubcomponent.layerSectionsType][subcomponentName] = allSubcomponents[subcomponentName];
+    (layer.sections[layerSubcomponent.layerSectionsType] as NestedSubcomponent[]).push(
+      PreviewStructure.createNestedSubcomponent(subcomponentName, allSubcomponents[subcomponentName]));
   }
 
   private static populateEqualSplitSections(layer: Layer, layerSubcomponent: SubcomponentProperties,
       layerSubcomponentsStructure: NestedDropdownStructure, allSubcomponents: Subcomponents): void {
-    layer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS] = PreviewStructure.createEmptyAlignedSections();
+    layer.sections[LAYER_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS] = [];
     Object.keys(layerSubcomponentsStructure).forEach((subcomponentName: SUB_COMPONENTS) => {
       PreviewStructure.addSubcomponentToEqualSplitSection(layer, layerSubcomponent, subcomponentName, allSubcomponents);
       PreviewStructure.addLayerToSubcomponentCustomFeatures(layer, subcomponentName, allSubcomponents);
     });
   }
 
+  private static createNestedSubcomponent(name: SUB_COMPONENTS, subcomponentProperties: SubcomponentProperties): NestedSubcomponent {
+    return { name, subcomponentProperties };
+  }
+
   private static addSubcomponentToAlignedSection(layer: Layer, layerSubcomponent: SubcomponentProperties,
       subcomponentName: SUB_COMPONENTS, allSubcomponents: Subcomponents): void {
-    layer.sections[layerSubcomponent.layerSectionsType]
-      [allSubcomponents[subcomponentName].customFeatures.alignedLayerSection.section][subcomponentName] = allSubcomponents[subcomponentName];
+    layer.sections[layerSubcomponent.layerSectionsType][allSubcomponents[subcomponentName].customFeatures.alignedLayerSection.section].push(
+        PreviewStructure.createNestedSubcomponent(subcomponentName, allSubcomponents[subcomponentName]));
   }
 
   private static createEmptyAlignedSections(): AlignedSections {
     return {
-      [ALIGNED_SECTION_TYPES.LEFT]: {},
-      [ALIGNED_SECTION_TYPES.CENTER]: {},
-      [ALIGNED_SECTION_TYPES.RIGHT]: {},
+      [ALIGNED_SECTION_TYPES.LEFT]: [],
+      [ALIGNED_SECTION_TYPES.CENTER]: [],
+      [ALIGNED_SECTION_TYPES.RIGHT]: [],
     }
   }
 

@@ -1,49 +1,49 @@
 <template>
   <div>
     <!-- jsClasses added for button components -->
-    <div v-for="(nestedSubcomponent, name, index) in nestedSubcomponents" :key="nestedSubcomponent"
+    <div v-for="(nestedSubcomponent, index) in nestedSubcomponents" :key="nestedSubcomponent"
       :style="{order: `${index}`}"
       class="subcomponent-element-container"
       :class="[subcomponentElementContainerClass,
-        ...((name === SUB_COMPONENTS.TEXT_1 || name === SUB_COMPONENTS.TEXT_2)
-          && nestedSubcomponent.customFeatures
-          && nestedSubcomponent.customFeatures.jsClasses || [])]">
-      <component v-if="!nestedSubcomponent.optionalSubcomponent
-          || nestedSubcomponent.optionalSubcomponent.currentlyDisplaying
-          || nestedSubcomponent.optionalSubcomponent.displayOverlayOnly"
-        :is="nestedSubcomponent.componentTag"
+        ...((nestedSubcomponent.name === SUB_COMPONENTS.TEXT_1 || nestedSubcomponent.name === SUB_COMPONENTS.TEXT_2)
+          && nestedSubcomponent.subcomponentProperties.customFeatures
+          && nestedSubcomponent.subcomponentProperties.customFeatures.jsClasses || [])]">
+      <component v-if="!nestedSubcomponent.subcomponentProperties.optionalSubcomponent
+          || nestedSubcomponent.subcomponentProperties.optionalSubcomponent.currentlyDisplaying
+          || nestedSubcomponent.subcomponentProperties.optionalSubcomponent.displayOverlayOnly"
+        :is="nestedSubcomponent.subcomponentProperties.componentTag"
         aria-hidden="true"
-        :id="subcomponentAndOverlayElementIds[name].subcomponentId"
+        :id="subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId"
         class="subcomponent-element"
-        :class="[ ...((nestedSubcomponent.customFeatures && nestedSubcomponent.customFeatures.jsClasses) || []) ]"
-        @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseEnter()"
-        @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseLeave()"
-        @mousedown="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseDown()"
-        @mouseup="mouseEvents[subcomponentAndOverlayElementIds[name].subcomponentId].subcomponentMouseUp()"
-        :style="nestedSubcomponent.activeCustomCssMode === SUB_COMPONENT_CSS_MODES.CLICK
+        :class="[ ...((nestedSubcomponent.subcomponentProperties.customFeatures && nestedSubcomponent.subcomponentProperties.customFeatures.jsClasses) || []) ]"
+        @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseEnter()"
+        @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseLeave()"
+        @mousedown="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseDown()"
+        @mouseup="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseUp()"
+        :style="nestedSubcomponent.subcomponentProperties.activeCustomCssMode === SUB_COMPONENT_CSS_MODES.CLICK
           ? [
-              [ nestedSubcomponent.inheritedCss ? nestedSubcomponent.inheritedCss.css: '' ],
-              nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
-              nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.HOVER],
-              nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.CLICK],
+              [ nestedSubcomponent.subcomponentProperties.inheritedCss ? nestedSubcomponent.subcomponentProperties.inheritedCss.css: '' ],
+              nestedSubcomponent.subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+              nestedSubcomponent.subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER],
+              nestedSubcomponent.subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK],
             ]
           : [
-              [ nestedSubcomponent.inheritedCss ? nestedSubcomponent.inheritedCss.css: '' ],
-              nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
-              nestedSubcomponent.customCss[nestedSubcomponent.activeCustomCssMode],
+              [ nestedSubcomponent.subcomponentProperties.inheritedCss ? nestedSubcomponent.subcomponentProperties.inheritedCss.css: '' ],
+              nestedSubcomponent.subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+              nestedSubcomponent.subcomponentProperties.customCss[nestedSubcomponent.subcomponentProperties.activeCustomCssMode],
             ]"
-        >{{(!nestedSubcomponent.optionalSubcomponent || !nestedSubcomponent.optionalSubcomponent.displayOverlayOnly)
-            && nestedSubcomponent.componentText ? nestedSubcomponent.componentText : '' }}
+        >{{(!nestedSubcomponent.subcomponentProperties.optionalSubcomponent || !nestedSubcomponent.subcomponentProperties.optionalSubcomponent.displayOverlayOnly)
+            && nestedSubcomponent.subcomponentProperties.componentText ? nestedSubcomponent.subcomponentProperties.componentText : '' }}
       </component>
       <component
-        :is="nestedSubcomponent.componentTag"
-        :id="subcomponentAndOverlayElementIds[name].overlayId"
+        :is="nestedSubcomponent.subcomponentProperties.componentTag"
+        :id="subcomponentAndOverlayElementIds[nestedSubcomponent.name].overlayId"
         :style="[
-          nestedSubcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+          nestedSubcomponent.subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
           {display: 'none'}, {color: '#ff000000'}]"
         class="subcomponent-element"
         :class="OVERLAY_DEFAULT_CLASS">
-          {{name === SUB_COMPONENTS.TEXT_1 || name === SUB_COMPONENTS.TEXT_2 ? nestedSubcomponent.componentText : ''}}
+          {{nestedSubcomponent.name === SUB_COMPONENTS.TEXT_1 || nestedSubcomponent.name === SUB_COMPONENTS.TEXT_2 ? nestedSubcomponent.subcomponentProperties.componentText : ''}}
       </component>
     </div>
   </div>
