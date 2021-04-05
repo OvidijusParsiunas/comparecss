@@ -5,11 +5,11 @@ import { SubcomponentOptions } from '../../../../../../../interfaces/componentOp
 
 type TextWithNoBackgroundOptions = SUB_COMPONENT_CSS_MODES.DEFAULT;
 
-export const textWithNoBackgroundOptions: SubcomponentOptions<TextWithNoBackgroundOptions> = {
+export const buttonTextOptions: SubcomponentOptions<TextWithNoBackgroundOptions> = {
   [SUB_COMPONENT_CSS_MODES.DEFAULT]: [
     {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.FONT,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_DEFAULT,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.TEXT_FONT,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_FONT,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.PADDING,
@@ -21,7 +21,7 @@ export const textWithNoBackgroundOptions: SubcomponentOptions<TextWithNoBackgrou
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_POSITION,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_POSITION_NO_ALIGN,
     },
   ],
 };

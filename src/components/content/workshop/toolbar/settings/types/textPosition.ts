@@ -18,7 +18,8 @@ function moveSubcomponentToTargetSection(event: ActionsDropdownMouseEventCallbac
 
 function generateMouseEventCallbacks(): ActionsDropdownMouseEventCallbacks {
   return {
-    mouseClickOptionCallback: moveSubcomponentToTargetSection,
+    mouseClickOptionCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
+      if (event.isCustomFeatureResetTriggered) moveSubcomponentToTargetSection(event); },
     mouseEnterOptionCallback: moveSubcomponentToTargetSection,
     mouseLeaveDropdownCallback: moveSubcomponentToTargetSection,
   };

@@ -31,9 +31,5 @@ export const alertBaseOptions: SubcomponentOptions<AlertBaseOptionsModes> = {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
     },
-    {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.TEXT,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_WTH_ALIGN,
-    },
   ],
 };

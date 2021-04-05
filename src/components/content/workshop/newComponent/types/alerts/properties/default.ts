@@ -76,10 +76,20 @@ function createInitialLayerCss(): CustomCss {
 function createTextCss(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-      display: 'inline-table',
       top: '50%',
       width: 'auto',
       backgroundColor: 'inherit',
+      fontWeight: '400',
+      fontFamily: '"Poppins", sans-serif',
+      fontSize: '16px',
+      color: '#004085',
+      textAlign: 'center',
+      paddingTop: '0px',
+      paddingBottom: '0px',
+      paddingLeft: '0px',
+      paddingRight: '0px',
+      marginLeft: '0px',
+      marginRight: '0px',
     },
   }
 }
