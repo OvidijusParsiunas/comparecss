@@ -217,7 +217,6 @@ function createInitialLayer3Css(): CustomCss {
 function createInitialText1Css(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-      display: 'inline-table',
       top: '50%',
       width: 'auto',
       fontWeight: '500',
@@ -239,7 +238,6 @@ function createInitialText1Css(): CustomCss {
 function createInitialText2Css(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-      display: 'inline-table',
       top: '50%',
       width: 'auto',
       fontWeight: '400',

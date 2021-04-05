@@ -106,6 +106,7 @@ export default {
     height: 100%;
     /* background-color: green; */
     display: flex;
+    place-items: baseline;
   }
   .subcomponent-element {
     position: relative;
@@ -115,8 +116,5 @@ export default {
     /* may need to be set in the style tag if working with vertically stacked subcomponents */
     margin-top: unset !important;
     margin-bottom: unset !important;
-  }
-  .text-subcomponent-element {
-    display: inline-table;
   }
 </style>
