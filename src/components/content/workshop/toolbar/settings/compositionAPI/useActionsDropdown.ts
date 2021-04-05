@@ -40,6 +40,7 @@ export default function useActionsDropdown(): UseActionsDropdown {
       const triggeredOptionName = GeneralUtils.getTriggeredOptionName(subcomponentProperties, settingSpec);
       mouseLeaveButtonCallback({subcomponentProperties, settingsComponent, triggeredOptionName});
     }
+    temporaryDropdownValue.value = ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED;
   }
   
   const mouseEnterActionsDropdownOption = (settingsComponent: ComponentOptions, triggeredOptionName: string,
@@ -67,6 +68,7 @@ export default function useActionsDropdown(): UseActionsDropdown {
     const { mouseClickOptionCallback } = setting.spec;
     if (mouseClickOptionCallback) mouseClickOptionCallback({
       subcomponentProperties, settingsComponent, previousOptionName: mouseClickOptionEvent[0], triggeredOptionName: mouseClickOptionEvent[1]});
+    temporaryDropdownValue.value = ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED;
   }
   
   const mouseClickActionsDropdownNewOption = (triggeredOptionName: string, settingSpec: any,

@@ -104,7 +104,7 @@ export default class ActionsDropdownUtils {
 
   public static mouseClickActionsDropdownOption(mouseClickOptionEvent: DropdownMouseClickOptionEvent, setting: any, allSettings: any,
       subcomponentProperties: SubcomponentProperties): void {
-    const [newOptionName] = mouseClickOptionEvent;
+    const newOptionName = mouseClickOptionEvent[1];
     const { triggers, spec } = setting;
     if (spec.cssProperty) {
       const { customCss, activeCustomCssMode } = subcomponentProperties;

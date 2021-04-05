@@ -63,6 +63,7 @@ function createTextCss(): CustomCss {
       fontSize: '14px',
       fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
       backgroundColor: 'inherit',
+      fontWeight: '400',
       paddingTop: '0px',
       paddingBottom: '0px',
       paddingLeft: '0px',

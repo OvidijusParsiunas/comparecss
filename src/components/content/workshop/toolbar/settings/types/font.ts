@@ -15,6 +15,15 @@ export default {
       },
     },
     {
+      type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
+      spec: {
+        name: 'Weight',
+        options: { '100': null, '200': null, '300': null, '400': null, '500': null, '600': null, '700': null, '800': null, '900': null, '1000': null },
+        default: '100',
+        cssProperty: 'fontWeight',
+      },
+    },
+    {
       type: SETTINGS_TYPES.COLOR_PICKER,
       spec: {
         name: 'Color',
