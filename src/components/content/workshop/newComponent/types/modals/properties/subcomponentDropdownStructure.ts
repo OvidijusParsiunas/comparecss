@@ -2,9 +2,10 @@ import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedD
 import { SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
 
+// WORK2: type
 export default function getModalSubcomponentDropdownStructure(
-    button1Component: SubcomponentProperties, button2Component: SubcomponentProperties, closeComponent: SubcomponentProperties,
-    textSubcomponent1: SubcomponentProperties, textSubcomponent2: SubcomponentProperties): NestedDropdownStructure {
+    closeComponent: SubcomponentProperties, textSubcomponent1: SubcomponentProperties, textSubcomponent2: SubcomponentProperties,
+    importedButtonStructure1: any, importedButtonStructure2: any): NestedDropdownStructure {
   return {
     [SUB_COMPONENTS.BASE]: {
       [SUB_COMPONENTS.LAYER_1]: {
@@ -15,10 +16,9 @@ export default function getModalSubcomponentDropdownStructure(
         [SUB_COMPONENTS.TEXT_2]: textSubcomponent2.optionalSubcomponent,
       },
       [SUB_COMPONENTS.LAYER_3]: {
-        [SUB_COMPONENTS.BUTTON_1]: button1Component.optionalSubcomponent,
-        [SUB_COMPONENTS.BUTTON_2]: button2Component.optionalSubcomponent,
-      }
+        [importedButtonStructure1.baseName]: { ...importedButtonStructure1.component[importedButtonStructure1.baseName] },
+        [importedButtonStructure2.baseName]: { ...importedButtonStructure2.component[importedButtonStructure2.baseName] },
+      },
     },
   };
 }
-

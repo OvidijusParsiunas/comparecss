@@ -111,6 +111,7 @@ import PreviewStructure from '../../../services/workshop/newComponent/previewStr
 import { SUB_COMPONENT_CSS_MODES } from '../../../consts/subcomponentCssModes.enum';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../consts/domEventTriggerKeys.enum';
+import { defaultButton } from './newComponent/types/buttons/properties/default';
 import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
 import { JAVASCRIPT_CLASSES } from '../../../consts/javascriptClasses.enum';
@@ -124,8 +125,8 @@ import componentList from './componentList/ComponentList.vue';
 import toolbar from './toolbar/Toolbar.vue';
 import 'vuesax/dist/vuesax.css' //Vuesax styles
 import {
-  CustomCss, CustomFeatures, SubcomponentProperties, Subcomponents, WorkshopComponent,
-  AutoWidth, BackdropProperties, ComponentCenteringInParent, ComponentTransitions, AlignedLayerSection,
+  CustomCss, CustomFeatures, SubcomponentProperties, ComponentTransitions, AlignedLayerSection,
+  AutoWidth, BackdropProperties, ComponentCenteringInParent, WorkshopComponent, Subcomponents,
 } from '../../../interfaces/workshopComponent';
 
 interface Consts {
@@ -379,7 +380,7 @@ function createInitialText2Css(): CustomCss {
       marginLeft: '0px',
       marginRight: '0px',
     },
-  }
+  };
 }
 
 function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
@@ -436,34 +437,6 @@ function createSubcomponents(): Subcomponents {
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
-    [SUB_COMPONENTS.BUTTON_1]: {
-      componentTag: 'button',
-      componentText: 'button',
-      customCss: createInitialButton1Css(),
-      initialCss: createInitialButton1Css(),
-      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      subcomponentPreviewTransition: 'all 0.25s ease-out',
-      tempCustomCss: new Set(['transition']),
-      childCss: inheritedAlertCloseChildCss,
-      optionalSubcomponent: { currentlyDisplaying: true },
-      customFeatures: createDefaultCloseButtonCustomFeatures(),
-      defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
-    },
-    [SUB_COMPONENTS.BUTTON_2]: {
-      componentTag: 'button',
-      componentText: 'Cancel',
-      customCss: createInitialButton1Css(),
-      initialCss: createInitialButton1Css(),
-      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      subcomponentPreviewTransition: 'all 0.25s ease-out',
-      tempCustomCss: new Set(['transition']),
-      childCss: inheritedAlertCloseChildCss,
-      optionalSubcomponent: { currentlyDisplaying: true },
-      customFeatures: createDefaultCloseButtonCustomFeatures(),
-      defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
-    },
     [SUB_COMPONENTS.TEXT_1]: {
       componentTag: 'div',
       componentText: 'Modal title',
@@ -489,11 +462,46 @@ function createSubcomponents(): Subcomponents {
   };
 }
 
+// WORK2: Utils file, types, consts
+function applyTopProperty(importedComponentRef: any, importedComponentName: string): void {
+  const customCssProperties = importedComponentRef.subcomponents[importedComponentName].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT];
+  const defaultCustomCssProperties = importedComponentRef.subcomponents[importedComponentName].initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT];
+  if (!customCssProperties.top) {
+    customCssProperties.top = '50%';
+    defaultCustomCssProperties.top = '50%';
+  }
+}
+
+// Work2: type
+function createImportedSubcomponents(componentBuilder: any, importedComponentName: string, importedComponentId: number): any {
+  const importedComponentRef = componentBuilder.getNewComponent(importedComponentName, importedComponentId);
+  // take into consideration that when importing existing component, the default will need to be recreated
+  applyTopProperty(importedComponentRef, importedComponentName);
+  // referencing the whole component within it's own subcomponent may not be efficient
+  // alternative would be to have a placeholder subcomponent to reference it
+  importedComponentRef.subcomponents[importedComponentName].importedComponent = importedComponentRef;
+  return importedComponentRef.subcomponents;
+}
+
+// WORK2: to utils
+function createImportedSubcomponentStructure(subcomponents: any, baseName: string): any {
+  return {
+    baseName,
+    component: subcomponents[baseName].importedComponent.componentPreviewStructure.subcomponentDropdownStructure,
+  }
+}
+
 function getNewComponent(): WorkshopComponent {
-  const subcomponents = createSubcomponents();
+  // solution for settings is to have types within subcomponent for the type to option mapping
+  const importedButton1Name = SUB_COMPONENTS.BUTTON_1;
+  const importedButton2Name = SUB_COMPONENTS.BUTTON_2;
+  const subcomponents = { ...createSubcomponents(),
+    ...createImportedSubcomponents(defaultButton, importedButton1Name, 1),
+    ...createImportedSubcomponents(defaultButton, importedButton2Name, 2) };
   const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
-    subcomponents[SUB_COMPONENTS.BUTTON_1], subcomponents[SUB_COMPONENTS.BUTTON_2], subcomponents[SUB_COMPONENTS.CLOSE],
-    subcomponents[SUB_COMPONENTS.TEXT_1], subcomponents[SUB_COMPONENTS.TEXT_2]
+    subcomponents[SUB_COMPONENTS.CLOSE], subcomponents[SUB_COMPONENTS.TEXT_1], subcomponents[SUB_COMPONENTS.TEXT_2],
+    createImportedSubcomponentStructure(subcomponents, importedButton1Name),
+    createImportedSubcomponentStructure(subcomponents, importedButton2Name),
   );
   return {
     type: NEW_COMPONENT_TYPES.MODAL,

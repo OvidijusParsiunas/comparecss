@@ -10,6 +10,9 @@ import { NewComponent } from '../../../../../../../interfaces/newComponent';
 import { buttonSpecificSettings } from './buttonSpecificSettings';
 import { inheritedButtonCss } from './inheritedCss';
 
+// WORK2: add type
+const defaultSubcomponentNames = { base: SUB_COMPONENTS.BUTTON_1, layer: SUB_COMPONENTS.LAYER_1, text: SUB_COMPONENTS.TEXT_1};
+
 function createInitialBaseCss(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
@@ -88,6 +91,13 @@ function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayer
   return { section };
 }
 
+function createDefaultButtonBaseCustomFeatures(): any {
+  return {
+    jsClasses: createInitialButtonJsClasses(),
+    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
+  }
+}
+
 function createDefaultButtonCustomFeatures(): CustomFeatures {
   return {
     jsClasses: createInitialButtonJsClasses(),
@@ -96,9 +106,10 @@ function createDefaultButtonCustomFeatures(): CustomFeatures {
   }
 }
 
-function createSubcomponents(): Subcomponents {
+// WORK2: types
+function createSubcomponents(subcomponentNames: any): Subcomponents {
   return {
-    [SUB_COMPONENTS.BASE]: {
+    [subcomponentNames.base]: {
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -107,17 +118,17 @@ function createSubcomponents(): Subcomponents {
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedButtonCss,
       subcomponentSpecificSettings: buttonSpecificSettings,
-      customFeatures: createDefaultButtonCustomFeatures(),
-      defaultCustomFeatures: createDefaultButtonCustomFeatures(),
+      customFeatures: createDefaultButtonBaseCustomFeatures(),
+      defaultCustomFeatures: createDefaultButtonBaseCustomFeatures(),
     },
-    [SUB_COMPONENTS.LAYER_1]: {
+    [subcomponentNames.layer]: {
       customCss: createLayerCss(),
       initialCss: createLayerCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
-    [SUB_COMPONENTS.TEXT_1]: {
+    [subcomponentNames.text]: {
       componentTag: 'div',
       componentText: 'button',
       customCss: createTextCss(),
@@ -130,17 +141,29 @@ function createSubcomponents(): Subcomponents {
   }
 }
 
+// WORK2: Types
+function generateImportedSubcomponentNames(importedSubcomponentBaseName: string, importedSubcomponentId: number): any {
+  const spaces = new Array(importedSubcomponentId).join(' ');
+  // WORK2: need a const prefix
+  return { base: importedSubcomponentBaseName, layer: `Layer ${spaces}`, text: `Text  ${spaces}`};
+}
+
 export const defaultButton: NewComponent = {
-  getNewComponent(): WorkshopComponent {
-    const subcomponents = createSubcomponents();
-    const subcomponentDropdownStructure = getButtonSubcomponentDropdownStructure();
+  getNewComponent(importedSubcomponentBaseName: string, importedSubcomponentId: number): any {
+    // WORK2: need a type
+    const subcomponentNames = importedSubcomponentBaseName
+      ? generateImportedSubcomponentNames(importedSubcomponentBaseName, importedSubcomponentId)
+      : defaultSubcomponentNames;
+    const subcomponents = createSubcomponents(subcomponentNames);
+    const subcomponentDropdownStructure = getButtonSubcomponentDropdownStructure(subcomponentNames);
     return {
       type: NEW_COMPONENT_TYPES.BUTTON,
       subcomponents,
       activeSubcomponentMode: SUB_COMPONENTS.BASE,
       defaultSubcomponentMode: SUB_COMPONENTS.BASE,
-      componentPreviewStructure: PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents),
+      componentPreviewStructure: PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents, subcomponentNames),
       className: 'default-class-name',
-    }
+      subcomponentNames,
+    };
   },
 };

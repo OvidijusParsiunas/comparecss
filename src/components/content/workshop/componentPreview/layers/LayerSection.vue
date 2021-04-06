@@ -5,10 +5,17 @@
       :style="{order: `${index}`}"
       class="subcomponent-element-container"
       :class="[subcomponentElementContainerClass,
-        ...((nestedSubcomponent.name === SUB_COMPONENTS.TEXT_1 || nestedSubcomponent.name === SUB_COMPONENTS.TEXT_2)
-          && nestedSubcomponent.subcomponentProperties.customFeatures
+        ...(nestedSubcomponent.subcomponentProperties.customFeatures
           && nestedSubcomponent.subcomponentProperties.customFeatures.jsClasses || [])]">
-      <component v-if="!nestedSubcomponent.subcomponentProperties.optionalSubcomponent
+        <!-- WORK2: use consts and apply the style via class -->
+      <base-component v-if="nestedSubcomponent.subcomponentProperties.importedComponent"
+        :component="nestedSubcomponent.subcomponentProperties.importedComponent"
+        :mouseEvents="mouseEvents"
+        :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
+        :positionClass="'nested-component'"
+        style="height: 100%"/>
+      <!-- WORK2: try to place in a div so wouldn't need the redundant v-if at the end -->
+      <component v-else-if="!nestedSubcomponent.subcomponentProperties.optionalSubcomponent
           || nestedSubcomponent.subcomponentProperties.optionalSubcomponent.currentlyDisplaying
           || nestedSubcomponent.subcomponentProperties.optionalSubcomponent.displayOverlayOnly"
         :is="nestedSubcomponent.subcomponentProperties.componentTag"
@@ -35,7 +42,7 @@
         >{{(!nestedSubcomponent.subcomponentProperties.optionalSubcomponent || !nestedSubcomponent.subcomponentProperties.optionalSubcomponent.displayOverlayOnly)
             && nestedSubcomponent.subcomponentProperties.componentText ? nestedSubcomponent.subcomponentProperties.componentText : '' }}
       </component>
-      <component
+      <component v-if="!nestedSubcomponent.subcomponentProperties.importedComponent"
         :is="nestedSubcomponent.subcomponentProperties.componentTag"
         :id="subcomponentAndOverlayElementIds[nestedSubcomponent.name].overlayId"
         :style="[
@@ -43,7 +50,7 @@
           {display: 'none'}, {color: '#ff000000'}]"
         class="subcomponent-element"
         :class="OVERLAY_DEFAULT_CLASS">
-          {{nestedSubcomponent.name === SUB_COMPONENTS.TEXT_1 || nestedSubcomponent.name === SUB_COMPONENTS.TEXT_2 ? nestedSubcomponent.subcomponentProperties.componentText : ''}}
+          {{nestedSubcomponent.subcomponentProperties.componentText ? nestedSubcomponent.subcomponentProperties.componentText : ''}}
       </component>
     </div>
   </div>
@@ -73,7 +80,7 @@ export default {
     nestedSubcomponents: Object,
     mouseEvents: Object,
     subcomponentElementContainerClass: String,
-  }
+  },
 }
 </script>
 

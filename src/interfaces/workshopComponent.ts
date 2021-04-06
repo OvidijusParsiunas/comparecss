@@ -121,6 +121,7 @@ export type Subcomponents = {
   [property in SUB_COMPONENTS]?: SubcomponentProperties;
 }
 
+// WORK2: types
 export interface WorkshopComponent {
   type: NEW_COMPONENT_TYPES;
   subcomponents: Subcomponents;
@@ -130,4 +131,6 @@ export interface WorkshopComponent {
   componentPreviewStructure: ComponentPreviewStructure;
   // class name for the component
   className: string;
+  // used for imported components
+  subcomponentNames?: any,
 }

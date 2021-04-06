@@ -75,7 +75,7 @@ export default class PreviewStructure {
     return layer;
   }
   
-  private static createLayers(subcomponentBase: NestedDropdownStructure, subcomponents: Subcomponents): Layer[] {
+  private static createLayers(subcomponentBase: NestedDropdownStructure, subcomponents: Subcomponents, subcomponentNames?: any): Layer[] {
     // if subcomponentDropdownStructure contains layers
     if (subcomponents[Object.keys(subcomponentBase)[0]].layerSectionsType) {
       return Object.keys(subcomponentBase).map((subcomponentName: SUB_COMPONENTS) =>
@@ -83,17 +83,18 @@ export default class PreviewStructure {
           subcomponentBase[subcomponentName] as NestedDropdownStructure, subcomponents)
       );
     }
-    const layerName = SUB_COMPONENTS.LAYER_1;
+    const layerName = subcomponentNames ? subcomponentNames.layer : SUB_COMPONENTS.LAYER_1;
     return [PreviewStructure.createLayer(layerName, subcomponents[layerName],
       subcomponentBase as NestedDropdownStructure, subcomponents)];
   }
 
+  // WORK2: typing
   public static createComponentPreviewStructure(subcomponentDropdownStructure: NestedDropdownStructure,
-      subcomponents: Subcomponents): ComponentPreviewStructure {
+      subcomponents: Subcomponents, subcomponentNames?: any): ComponentPreviewStructure {
     const layers = PreviewStructure.createLayers(
-      subcomponentDropdownStructure[SUB_COMPONENTS.BASE] as NestedDropdownStructure, subcomponents);
+      subcomponentDropdownStructure[subcomponentNames ? subcomponentNames.base : SUB_COMPONENTS.BASE] as NestedDropdownStructure, subcomponents, subcomponentNames);
     return {
-      baseCss: subcomponents[SUB_COMPONENTS.BASE],
+      baseCss: subcomponents[subcomponentNames ? subcomponentNames.base : SUB_COMPONENTS.BASE],
       layeringType: 'vertical',
       layers,
       subcomponentDropdownStructure,

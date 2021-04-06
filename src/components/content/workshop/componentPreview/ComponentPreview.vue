@@ -35,40 +35,10 @@
         </div>
         <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item grid-item-position">
           <!-- parent component -->
-          <div ref="componentPreview"
-            :id="subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId"
-            class="base-component grid-item-position"
-            :class="[ SUBCOMPONENT_CURSOR_AUTO_CLASS,
-              ...((component.componentPreviewStructure.baseCss.customFeatures && component.componentPreviewStructure.baseCss.customFeatures.jsClasses) || []),
-              STATIC_POSITION_CLASS ]"
-            @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId].subcomponentMouseEnter()"
-            @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId].subcomponentMouseLeave()"
-            @mousedown="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId].subcomponentMouseDown()"
-            @mouseup="mouseEvents[subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].subcomponentId].subcomponentMouseUp()"
-            :style="component.componentPreviewStructure.baseCss.activeCustomCssMode === SUB_COMPONENT_CSS_MODES.CLICK
-              ? [
-                  [ component.componentPreviewStructure.baseCss.inheritedCss ? component.componentPreviewStructure.baseCss.inheritedCss.css: '' ],
-                  component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
-                  component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.HOVER],
-                  component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.CLICK],
-                ]
-              : [
-                  [ component.componentPreviewStructure.baseCss.inheritedCss ? component.componentPreviewStructure.baseCss.inheritedCss.css: '' ],
-                  component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
-                  component.componentPreviewStructure.baseCss.customCss[component.componentPreviewStructure.baseCss.activeCustomCssMode],
-                ]">
-                <layers
-                  :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-                  :mouseEvents="mouseEvents"
-                  :layers="component.componentPreviewStructure.layers"
-                />
-          </div>
-          <div ref="componentPreviewOverlay"
-            :id="subcomponentAndOverlayElementIds[SUB_COMPONENTS.BASE].overlayId"
-            style="display: none" :style="[component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], { height: '100% !important' }]"
-            class="subcomponent-overlay-with-no-border-property-but-with-height"
-            :class="[OVERLAY_DEFAULT_CLASS, STATIC_POSITION_CLASS]">
-          </div>
+          <base-component ref="baseComponent"
+            :component="component"
+            :mouseEvents="mouseEvents"
+            :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"/>
           <!-- UX - SUBCOMPONENT SELECT - set this to appropriate dimensions when the event is fired -->
           <!-- <div ref="selectSubcomponentOverlay1" style="width: 1000px; height: 700px; background-color: #ff010100; position: absolute; border: 0px; top: -221px; left: -220px; z-index: 1; cursor: pointer;"></div> -->
         </div>
@@ -109,7 +79,6 @@ import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 import ComponentPreviewUtils from './utils/componentPreviewUtils';
-import layers from './layers/Layers.vue';
 
 interface Consts {
   SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES;
@@ -186,16 +155,16 @@ export default {
           transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.entrance.type],
           this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.entrance.duration,
           this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.entrance.delay,
-          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.backdrop, this.$refs.componentPreview,
-          this.$refs.componentPreviewOverlay, this.$refs.componentPreviewContainer, toolbarContainerElement,
+          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.backdrop, this.$refs.baseComponent.$refs.componentPreview,
+          this.$refs.baseComponent.$refs.componentPreviewOverlay, this.$refs.componentPreviewContainer, toolbarContainerElement,
           toolbarElement, toolbarPositionToggleElement);
       } else {
         ExpandedModalPreviewModeToggleExitTransitionService.start(
           transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.exit.type],
           this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.exit.duration, setOptionToDefaultCallback,
           this.$refs.componentPreviewContainer, this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.backdrop,
-          this.$refs.componentPreview, this.$refs.componentPreviewOverlay, toolbarContainerElement, toolbarElement,
-          toolbarPositionToggleElement);
+          this.$refs.baseComponent.$refs.componentPreview, this.$refs.baseComponent.$refs.componentPreviewOverlay, toolbarContainerElement,
+          toolbarElement, toolbarPositionToggleElement);
       }
     },
     playTransitionPreview(playTransitionPreviewEvent: PlayTransitionPreviewEvent): void {
@@ -203,19 +172,16 @@ export default {
       if (isEntranceAnimation) {
         EntranceTransitionPreviewService.start(
           transitionTypeToFunctionality[transitionAnimation] as ModalEntranceTransition,
-          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.entrance.duration, this.$refs.componentPreview);
+          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.entrance.duration, this.$refs.baseComponent.$refs.componentPreview);
       } else {
         ExitTransitionPreviewService.start(
           transitionTypeToFunctionality[transitionAnimation] as ModalExitTransition,
-          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.exit.duration, this.$refs.componentPreview);
+          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.exit.duration, this.$refs.baseComponent.$refs.componentPreview);
       }
     },
     stopTransitionPreview(): void {
-      TransitionUtils.cancelModalTransitionPreview(this.$refs.componentPreview);
+      TransitionUtils.cancelModalTransitionPreview(this.$refs.baseComponent.$refs.componentPreview);
     }
-  },
-  components: {
-    layers,
   },
   props: {
     component: Object,
@@ -233,6 +199,7 @@ export default {
 </script>
 
 <style lang="css" scoped>
+  /* WORK2: redundant css */
   .static-position {
     top: 0px !important;
     left: 0px !important;
@@ -263,6 +230,7 @@ export default {
     top: 50%;
     transform: translateY(-50%);
   }
+  /* WORK2: change name */
   .base-component {
     overflow: hidden;
   }

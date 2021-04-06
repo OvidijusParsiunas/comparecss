@@ -363,13 +363,11 @@ function createSubcomponents(): Subcomponents {
   };
 }
 
+// WORK2: copy the new modal config over
 export const defaultModal: NewComponent = {
   getNewComponent(): WorkshopComponent {
     const subcomponents = createSubcomponents();
-    const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
-      subcomponents[SUB_COMPONENTS.BUTTON_1], subcomponents[SUB_COMPONENTS.BUTTON_2], subcomponents[SUB_COMPONENTS.CLOSE],
-      subcomponents[SUB_COMPONENTS.TEXT_1], subcomponents[SUB_COMPONENTS.TEXT_2]
-    )
+    const subcomponentDropdownStructure = null;
     return {
       type: NEW_COMPONENT_TYPES.MODAL,
       subcomponents,

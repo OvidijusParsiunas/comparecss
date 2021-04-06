@@ -59,7 +59,7 @@ export default {
     subcomponentAndOverlayElementIds: Object,
     sections: Object,
     mouseEvents: Object,
-  }
+  },
 }
 </script>
 

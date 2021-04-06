@@ -1,11 +1,10 @@
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
-import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
 
-export default function getButtonSubcomponentDropdownStructure(): NestedDropdownStructure {
+// WORK2: need type
+export default function getButtonSubcomponentDropdownStructure(subcomponentNames: any): NestedDropdownStructure {
   return {
-    [SUB_COMPONENTS.BASE]: {
-      [SUB_COMPONENTS.TEXT_1]: { currentlyDisplaying: true },
+    [subcomponentNames.base]: {
+      [subcomponentNames.text]: { currentlyDisplaying: true },
     },
   };
 }
-
