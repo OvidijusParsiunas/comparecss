@@ -2,7 +2,6 @@ import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../.
 import { CustomCssWithInheritedCss, SharedInheritedCss } from '../../../../../interfaces/cssBuilder';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum';
-import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
 import GeneralUtils from './generalUtils';
 
 export default class SharedCssUtils {
@@ -10,16 +9,16 @@ export default class SharedCssUtils {
   private static purgeUniqueSubcomponents = (subcomponent: unknown): void => { Object.keys(subcomponent).map((key) => { if (subcomponent[key] < 2) delete subcomponent[key] })};
 
   // this is required as components can share subcomponent types: e.g. BASE
-  public static generateComponentToSubcomponentId = (componentType: NEW_COMPONENT_TYPES, subcomponentType: SUB_COMPONENTS): string => componentType + subcomponentType;
+  public static generateComponentToSubcomponentId = (componentType: NEW_COMPONENT_TYPES, subcomponentType: string): string => componentType + subcomponentType;
 
   public static identifyRepeatedSubcomponents(components: WorkshopComponent[]): unknown {
     const repeatedSubcomponents = {};
     components.forEach((component) => {
       const { subcomponents, type } = component;
-      Object.keys(subcomponents).forEach((key: SUB_COMPONENTS) => {
-        const subcomponent: SubcomponentProperties = subcomponents[key];
+      Object.keys(subcomponents).forEach((subcomponentNames: string) => {
+        const subcomponent: SubcomponentProperties = subcomponents[subcomponentNames];
         if (subcomponent.optionalSubcomponent && !subcomponent.optionalSubcomponent.currentlyDisplaying) return;
-        const componentToSubcomponentId = this.generateComponentToSubcomponentId(type, key);
+        const componentToSubcomponentId = this.generateComponentToSubcomponentId(type, subcomponentNames);
         repeatedSubcomponents[componentToSubcomponentId] = repeatedSubcomponents[componentToSubcomponentId] ? repeatedSubcomponents[componentToSubcomponentId] + 1 : 1;
       });
     });

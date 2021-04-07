@@ -1,13 +1,13 @@
+import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
-import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
 
 export default function getAlertSubcomponentDropdownStructure(
     closeComponent: SubcomponentProperties, textSubcomponent: SubcomponentProperties): NestedDropdownStructure {
   return {
-    [SUB_COMPONENTS.BASE]: {
-      [SUB_COMPONENTS.TEXT_1]: textSubcomponent.optionalSubcomponent,
-      [SUB_COMPONENTS.CLOSE]: closeComponent.optionalSubcomponent,
+    [CORE_SUBCOMPONENTS_NAMES.BASE]: {
+      [CORE_SUBCOMPONENTS_NAMES.TEXT_1]: textSubcomponent.optionalSubcomponent,
+      [CORE_SUBCOMPONENTS_NAMES.CLOSE]: closeComponent.optionalSubcomponent,
     },
   };
 }

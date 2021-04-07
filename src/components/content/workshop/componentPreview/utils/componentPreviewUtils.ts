@@ -5,7 +5,6 @@ import useSubcomponentPreviewEventHandlers from '../compositionAPI/useSubcompone
 import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../../consts/subcomponentCursorClasses.enum';
 import { Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
-import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
 
 interface Index {
   number: number;
@@ -18,8 +17,8 @@ export default class ComponentPreviewUtils {
 
   private static addIdsViaTraversalOfSubcomponents(subcomponents: Subcomponents,
       subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds): void {
-    Object.keys(subcomponents).forEach((subcomponent: SUB_COMPONENTS, index: number) => {
-      subcomponentAndOverlayElementIdsObject[subcomponent] = {
+    Object.keys(subcomponents).forEach((subcomponentName: string, index: number) => {
+      subcomponentAndOverlayElementIdsObject[subcomponentName] = {
         subcomponentId: `${ComponentPreviewUtils.subcomponentIdPrefix}${index}`,
         overlayId: `${ComponentPreviewUtils.overlayIdPrefix}${index}`,
       };
@@ -28,7 +27,7 @@ export default class ComponentPreviewUtils {
 
   private static addIdsViaTraversalOfNestedDropdownStructure(subcomponents: NestedDropdownStructure, index: Index,
       subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds): void {
-    Object.keys(subcomponents).forEach((subcomponentName: SUB_COMPONENTS) => {
+    Object.keys(subcomponents).forEach((subcomponentName: string) => {
       subcomponentAndOverlayElementIdsObject[subcomponentName] = {
         subcomponentId: `${ComponentPreviewUtils.subcomponentIdPrefix}${index.number}`,
         overlayId: `${ComponentPreviewUtils.overlayIdPrefix}${index.number}`,
@@ -55,16 +54,16 @@ export default class ComponentPreviewUtils {
 
   public static generateMouseEvents(subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds, subcomponents: Subcomponents): SubcomponentPreviewMouseEvents {
     const mouseEvents: SubcomponentPreviewMouseEvents = {};
-    Object.keys(subcomponentAndOverlayElementIdsObject).forEach((subcomponentType: SUB_COMPONENTS) => {
-      mouseEvents[subcomponentAndOverlayElementIdsObject[subcomponentType].subcomponentId] = { ...useSubcomponentPreviewEventHandlers(subcomponents[subcomponentType]) };
+    Object.keys(subcomponentAndOverlayElementIdsObject).forEach((subcomponentName: string) => {
+      mouseEvents[subcomponentAndOverlayElementIdsObject[subcomponentName].subcomponentId] = { ...useSubcomponentPreviewEventHandlers(subcomponents[subcomponentName]) };
     });
     return mouseEvents;
   }
 
   public static generateSubcomponentSelectModeMouseEvents(subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds): SubcomponentPreviewMouseEvents {
     const mouseEvents: SubcomponentPreviewMouseEvents = {};
-    Object.keys(subcomponentAndOverlayElementIdsObject).forEach((subcomponentType: SUB_COMPONENTS) => {
-      mouseEvents[subcomponentAndOverlayElementIdsObject[subcomponentType].subcomponentId] = { ...useSubcomponentPreviewSelectModeEventHandlers() };
+    Object.keys(subcomponentAndOverlayElementIdsObject).forEach((subcomponentName: string) => {
+      mouseEvents[subcomponentAndOverlayElementIdsObject[subcomponentName].subcomponentId] = { ...useSubcomponentPreviewSelectModeEventHandlers() };
     });
     return mouseEvents;
   }

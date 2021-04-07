@@ -1,10 +1,9 @@
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections';
 import { CustomCss, SubcomponentProperties } from './workshopComponent';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
-import { SUB_COMPONENTS } from '../consts/subcomponentModes.enum';
 
 export type NestedSubcomponent = {
-  name: SUB_COMPONENTS;
+  name: string;
   subcomponentProperties: SubcomponentProperties;
 };
 

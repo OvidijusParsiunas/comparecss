@@ -1,11 +1,11 @@
 import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import PreviewStructure from '../../../../../../../services/workshop/componentGenerator/previewStructure';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
+import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
 import getAlertSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { inheritedAlertCloseChildCss } from './inheritedAlertCloseChildCss';
 import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';
@@ -124,7 +124,7 @@ function createDefaultTextCustomFeatures(): CustomFeatures {
 
 function createSubcomponents(): Subcomponents {
   return {
-    [SUB_COMPONENTS.BASE]: {
+    [CORE_SUBCOMPONENTS_NAMES.BASE]: {
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -133,14 +133,14 @@ function createSubcomponents(): Subcomponents {
       childCss: inheritedAlertBaseChildCss,
       subcomponentSpecificSettings: alertBaseSpecificSettings,
     },
-    [SUB_COMPONENTS.LAYER_1]: {
+    [CORE_SUBCOMPONENTS_NAMES.LAYER_1]: {
       customCss: createInitialLayerCss(),
       initialCss: createInitialLayerCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
-    [SUB_COMPONENTS.CLOSE]: {
+    [CORE_SUBCOMPONENTS_NAMES.CLOSE]: {
       componentTag: 'button',
       componentText: '×',
       customCss: createInitialCloseButtonCss(),
@@ -154,7 +154,7 @@ function createSubcomponents(): Subcomponents {
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
-    [SUB_COMPONENTS.TEXT_1]: {
+    [CORE_SUBCOMPONENTS_NAMES.TEXT_1]: {
       componentTag: 'div',
       componentText: 'button',
       customCss: createTextCss(),
@@ -172,12 +172,12 @@ export const defaultAlert: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
     const subcomponents = createSubcomponents();
     const subcomponentDropdownStructure = getAlertSubcomponentDropdownStructure(
-      subcomponents[SUB_COMPONENTS.CLOSE], subcomponents[SUB_COMPONENTS.TEXT_1]);
+      subcomponents[CORE_SUBCOMPONENTS_NAMES.CLOSE], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1]);
     return {
       type: NEW_COMPONENT_TYPES.ALERT,
       subcomponents,
-      activeSubcomponentMode: SUB_COMPONENTS.BASE,
-      defaultSubcomponentMode: SUB_COMPONENTS.BASE,
+      activeSubcomponentMode: CORE_SUBCOMPONENTS_NAMES.BASE,
+      defaultSubcomponentMode: CORE_SUBCOMPONENTS_NAMES.BASE,
       componentPreviewStructure: PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents),
       className: 'default-class-name',
     }

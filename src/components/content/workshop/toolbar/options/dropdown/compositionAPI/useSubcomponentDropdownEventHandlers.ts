@@ -1,14 +1,13 @@
 import { expandedModalPreviewModeState } from '../../../../../../../services/workshop/expandedModalPreviewMode/expandedModalPreviewModeState';
 import { subcomponentAndOverlayElementIdsState } from '../../subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import { DropdownCompositionAPI } from '../../../../../../../interfaces/dropdownCompositionAPI';
-import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
 import { Ref } from 'vue';
 
 export default function useSubcomponentDropdownEventHandlers(objectContainingActiveOption: Ref<unknown>, activeOptionPropertyKeyName: Ref<string>, highlightSubcomponents: Ref<boolean>): DropdownCompositionAPI {
 
-  function toggleSubcomponentOverlayDisplay(subcomponentType: string, displayValue: 'block'|'none'): void {
+  function toggleSubcomponentOverlayDisplay(subcomponentName: string, displayValue: 'block'|'none'): void {
     if (!highlightSubcomponents.value) return;
-    const subcomponentOverlayElementId = subcomponentAndOverlayElementIdsState.getOverlayIdViaSubcomponentType(subcomponentType as SUB_COMPONENTS);
+    const subcomponentOverlayElementId = subcomponentAndOverlayElementIdsState.getOverlayIdViaSubcomponentType(subcomponentName);
     const subcomponentOverlayElement = document.getElementById(subcomponentOverlayElementId);
     if (subcomponentOverlayElement) { 
       subcomponentOverlayElement.style.display = displayValue;

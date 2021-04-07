@@ -74,12 +74,12 @@ import TransitionUtils from '../../../../services/workshop/expandedModalPreviewM
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
 import { ModalEntranceTransition, ModalExitTransition } from '../../../../interfaces/modalTransitions';
 import { PlayTransitionPreviewEvent } from '../../../../interfaces/playTransitionPreviewEvent';
+import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
-import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import ComponentPreviewUtils from './utils/componentPreviewUtils';
 
 interface Consts {
-  BASE_SUB_COMPONENT: SUB_COMPONENTS;
+  BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES;
 }
 
 interface Data {
@@ -91,7 +91,7 @@ interface Data {
 export default {
   setup(): Consts {
     return {
-      BASE_SUB_COMPONENT: SUB_COMPONENTS.BASE,
+      BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES.BASE,
     };
   },
   data: (): Data => ({

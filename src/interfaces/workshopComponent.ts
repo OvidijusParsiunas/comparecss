@@ -118,7 +118,6 @@ export interface CustomFeatures {
   importedComponent?: WorkshopComponent;
 }
 
-// WORK2: make sure SUB_STRING is no longer used
 export type Subcomponents = {
   [subcomponentName: string]: SubcomponentProperties;
 }

@@ -2,7 +2,6 @@ import { WorkshopComponent, CustomCss, ChildCss, SubcomponentProperties } from '
 import { CustomCssWithInheritedCss, InitialCssBuild, SharedInheritedCss } from '../../../../../interfaces/cssBuilder';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
-import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
 import { TempCustomCss } from '../../../../../interfaces/tempCustomCss';
 import SharedCssUtils from './sharedCssUtils';
 import GeneralUtils from './generalUtils';
@@ -79,17 +78,17 @@ export default class CssBuilder {
     const sharedInhertedChildCss: SharedInheritedCss = {};
     components.forEach((component) => {
       const { className, subcomponents, type } = component;
-      Object.keys(subcomponents).forEach((key: SUB_COMPONENTS) => {
-        const subcomponent: SubcomponentProperties = subcomponents[key];
+      Object.keys(subcomponents).forEach((subcomponentName: string) => {
+        const subcomponent: SubcomponentProperties = subcomponents[subcomponentName];
         if (!subcomponent.optionalSubcomponent) {
-          const componentToSubcomponentId = SharedCssUtils.generateComponentToSubcomponentId(type, key);
+          const componentToSubcomponentId = SharedCssUtils.generateComponentToSubcomponentId(type, subcomponentName);
           const processedCustomCss: CustomCssWithInheritedCss = SharedCssUtils.allocateSharedInheritedCss(subcomponent.customCss,
             (subcomponent.inheritedCss ? subcomponent.inheritedCss.css : undefined), repeatedSubcomponents[componentToSubcomponentId], sharedInheritedParentCss, type, className);
           customCss += `${this.buildCustomCss(className, processedCustomCss, subcomponent.tempCustomCss)}\r\n\r\n`;
         }
         if (subcomponent.optionalSubcomponent && !subcomponent.optionalSubcomponent.currentlyDisplaying) return;
         if (subcomponent.childCss) {
-          const componentToSubcomponentId = SharedCssUtils.generateComponentToSubcomponentId(type, key);
+          const componentToSubcomponentId = SharedCssUtils.generateComponentToSubcomponentId(type, subcomponentName);
           customCss += this.buildChildCss(subcomponent.childCss, className, componentToSubcomponentId, subcomponent.customCss,
             repeatedSubcomponents[componentToSubcomponentId], sharedInhertedChildCss, subcomponent.tempCustomCss);
           return;

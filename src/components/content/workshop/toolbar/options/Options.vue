@@ -86,6 +86,7 @@ import SubcomponentSelectModeService from './subcomponentSelectMode/subcomponent
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import SubcomponentToggleService from './subcomponentToggleService/subcomponentToggleService';
 import { componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
+import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
@@ -94,12 +95,11 @@ import JSONManipulation from '../../../../../services/workshop/jsonManipulation'
 import useToolbarPositionToggle from './compositionApi/useToolbarPositionToggle';
 import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
-import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
 import { Option } from '../../../../../interfaces/componentOptions';
 import dropdown from './dropdown/Dropdown.vue';
 
 interface Consts {
-  SUB_COMPONENTS,
+  CORE_SUBCOMPONENTS_NAMES,
   WORKSHOP_TOOLBAR_OPTION_TYPES;
   SUB_COMPONENT_CSS_MODES;
   componentTypeToOptions;
@@ -122,7 +122,7 @@ export default {
   setup(): RemovalModalState & Consts & UseToolbarPositionToggle {
     return {
       ...removeSubcomponentModalState,
-      SUB_COMPONENTS,
+      CORE_SUBCOMPONENTS_NAMES,
       WORKSHOP_TOOLBAR_OPTION_TYPES,
       SUB_COMPONENT_CSS_MODES,
       componentTypeToOptions,
@@ -172,7 +172,7 @@ export default {
     getActiveOption(): Option {
       return this.activeOption;
     },
-    newSubcomponentModeClicked(newSubComponent: SUB_COMPONENTS): void {
+    newSubcomponentModeClicked(newSubComponent: string): void {
       // reset css mode of the previous subcomponent to the first one
       const oldActiveSubcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentMode];
       oldActiveSubcomponent.activeCustomCssMode = oldActiveSubcomponent.defaultCustomCssMode;
@@ -261,7 +261,7 @@ export default {
     resetComponentPreviewMarginAssistance(): void {
       this.$nextTick(() => {
         this.componentPreviewAssistance.margin = this.activeOption.type === WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN
-          && this.component.activeSubcomponentMode === SUB_COMPONENTS.BASE
+          && this.component.activeSubcomponentMode === CORE_SUBCOMPONENTS_NAMES.BASE
           && this.isSettingsDisplayed
           && !this.isExpandedModalPreviewModeActive;
       });

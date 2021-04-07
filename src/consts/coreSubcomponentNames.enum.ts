@@ -1,4 +1,4 @@
-export enum SUB_COMPONENTS {
+export enum CORE_SUBCOMPONENTS_NAMES {
   BASE = 'Base',
   CLOSE = 'Close',
   LAYER_1 = 'Layer 1',

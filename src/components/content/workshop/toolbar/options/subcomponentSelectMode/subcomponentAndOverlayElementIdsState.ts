@@ -1,5 +1,4 @@
 import { SubcomponentAndOverlayElementIds } from '../../../../../../interfaces/subcomponentAndOverlayElementIds';
-import { SUB_COMPONENTS } from '../../../../../../consts/subcomponentModes.enum';
 
 let subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds = {};
 
@@ -12,9 +11,9 @@ function getOverlayIdViaSubcomponentType(subcomponentType: string): string {
   return subcomponentAndOverlayElementIdsObject[subcomponentType] && subcomponentAndOverlayElementIdsObject[subcomponentType].overlayId;
 }
 
-function getSubcomponentTypeViaOverlayId(overlayId: string): SUB_COMPONENTS {
+function getSubcomponentNameViaOverlayId(overlayId: string): string {
   return Object.keys(subcomponentAndOverlayElementIdsObject)
-    .find((key) => { return subcomponentAndOverlayElementIdsObject[key].overlayId === overlayId; }) as SUB_COMPONENTS;
+    .find((key) => { return subcomponentAndOverlayElementIdsObject[key].overlayId === overlayId; });
 }
 
 function getOverlayIdViaSubcomponentId(subcomponentId: string): string {
@@ -29,7 +28,7 @@ function getOverlayIdViaSubcomponentId(subcomponentId: string): string {
 
 export const subcomponentAndOverlayElementIdsState = {
   setSubcomponentAndOverlayElementIdsState,
+  getSubcomponentNameViaOverlayId,
   getOverlayIdViaSubcomponentType,
-  getSubcomponentTypeViaOverlayId,
   getOverlayIdViaSubcomponentId,
 }

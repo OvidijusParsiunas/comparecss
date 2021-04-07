@@ -109,6 +109,7 @@ import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCa
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { inheritedAlertBaseCss } from './newComponent/types/alerts/properties/inheritedCss';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../consts/layerSections';
+import { CORE_SUBCOMPONENTS_NAMES } from '../../../consts/coreSubcomponentNames.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../consts/subcomponentCssModes.enum';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../consts/domEventTriggerKeys.enum';
@@ -119,7 +120,6 @@ import { JAVASCRIPT_CLASSES } from '../../../consts/javascriptClasses.enum';
 import JSONManipulation from '../../../services/workshop/jsonManipulation';
 import { RemovalModalState } from '../../../interfaces/removalModalState';
 import componentContents from './componentPreview/ComponentPreview.vue';
-import { SUB_COMPONENTS } from '../../../consts/subcomponentModes.enum';
 import removalModalTemplate from './templates/RemovalModalTemplate.vue';
 import newComponentModal from './newComponent/NewComponentModal.vue';
 import ComponentJs from '../../../services/workshop/componentJs';
@@ -355,7 +355,7 @@ function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
 
 function createSubcomponents(): Subcomponents {
   return {
-    [SUB_COMPONENTS.BASE]: {
+    [CORE_SUBCOMPONENTS_NAMES.BASE]: {
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -366,7 +366,7 @@ function createSubcomponents(): Subcomponents {
       customFeatures: createDefaultBaseCustomFeatures(),
       defaultCustomFeatures: createDefaultBaseCustomFeatures(),
     },
-    [SUB_COMPONENTS.LAYER_1]: {
+    [CORE_SUBCOMPONENTS_NAMES.LAYER_1]: {
       customCss: createInitialLayer1Css(),
       initialCss: createInitialLayer1Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -374,14 +374,14 @@ function createSubcomponents(): Subcomponents {
       subcomponentSpecificSettings: modalLayerTopSpecificSettings,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
-    [SUB_COMPONENTS.LAYER_2]: {
+    [CORE_SUBCOMPONENTS_NAMES.LAYER_2]: {
       customCss: createInitialLayer2Css(),
       initialCss: createInitialLayer2Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
-    [SUB_COMPONENTS.LAYER_3]: {
+    [CORE_SUBCOMPONENTS_NAMES.LAYER_3]: {
       customCss: createInitialLayer3Css(),
       initialCss: createInitialLayer3Css(),
       activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
@@ -389,7 +389,7 @@ function createSubcomponents(): Subcomponents {
       subcomponentSpecificSettings: modalLayerBottomSpecificSettings,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
-    [SUB_COMPONENTS.CLOSE]: {
+    [CORE_SUBCOMPONENTS_NAMES.CLOSE]: {
       componentTag: 'button',
       componentText: '×',
       customCss: createInitialCloseButtonCss(),
@@ -403,7 +403,7 @@ function createSubcomponents(): Subcomponents {
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
-    [SUB_COMPONENTS.TEXT_1]: {
+    [CORE_SUBCOMPONENTS_NAMES.TEXT_1]: {
       componentTag: 'div',
       componentText: 'Modal title',
       customCss: createInitialText1Css(),
@@ -414,7 +414,7 @@ function createSubcomponents(): Subcomponents {
       customFeatures: createDefaultTextCustomFeatures(),
       defaultCustomFeatures: createDefaultTextCustomFeatures(),
     },
-    [SUB_COMPONENTS.TEXT_2]: {
+    [CORE_SUBCOMPONENTS_NAMES.TEXT_2]: {
       componentTag: 'div',
       componentText: 'Modal body text',
       customCss: createInitialText2Css(),
@@ -430,21 +430,21 @@ function createSubcomponents(): Subcomponents {
 
 function createNewComponent(): WorkshopComponent {
   // solution for settings is to have types within subcomponent for the type to option mapping
-  const importedButton1Name = SUB_COMPONENTS.BUTTON_1;
-  const importedButton2Name = SUB_COMPONENTS.BUTTON_2;
+  const importedButton1Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_1;
+  const importedButton2Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_2;
   const subcomponents = { ...createSubcomponents(),
     ...ImportedCompoment.createImportedSubcomponents(defaultButton, importedButton1Name, 1),
     ...ImportedCompoment.createImportedSubcomponents(defaultButton, importedButton2Name, 2) };
   const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
-    subcomponents[SUB_COMPONENTS.CLOSE], subcomponents[SUB_COMPONENTS.TEXT_1], subcomponents[SUB_COMPONENTS.TEXT_2],
+    subcomponents[CORE_SUBCOMPONENTS_NAMES.CLOSE], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_2],
     ImportedCompoment.createImportedComponentStructure(subcomponents, importedButton1Name),
     ImportedCompoment.createImportedComponentStructure(subcomponents, importedButton2Name),
   );
   return {
     type: NEW_COMPONENT_TYPES.MODAL,
     subcomponents,
-    activeSubcomponentMode: SUB_COMPONENTS.BASE,
-    defaultSubcomponentMode: SUB_COMPONENTS.BASE,
+    activeSubcomponentMode: CORE_SUBCOMPONENTS_NAMES.BASE,
+    defaultSubcomponentMode: CORE_SUBCOMPONENTS_NAMES.BASE,
     componentPreviewStructure: PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents),
     className: 'default-class-name',
   };
@@ -506,8 +506,8 @@ export default {
     componentCardCopied(selectComponentCard: WorkshopComponent): void {
       const newComponent = JSONManipulation.deepCopy(selectComponentCard);
       newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className, this.components, '-copy');
-      newComponent.activeSubcomponentMode = SUB_COMPONENTS.BASE;
-      newComponent.subcomponents[SUB_COMPONENTS.BASE].activeCustomCssMode = SUB_COMPONENT_CSS_MODES.DEFAULT;
+      newComponent.activeSubcomponentMode = CORE_SUBCOMPONENTS_NAMES.BASE;
+      newComponent.subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE].activeCustomCssMode = SUB_COMPONENT_CSS_MODES.DEFAULT;
       this.addNewComponent(newComponent);
     },
     componentCardRemoved(componentToBeRemovedWithoutSelecting: WorkshopComponent): void {

@@ -2,18 +2,18 @@ import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponent
 import ImportedCompoment from '../../../../../../../services/workshop/componentGenerator/importedComponent';
 import PreviewStructure from '../../../../../../../services/workshop/componentGenerator/previewStructure';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
+import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import getButtonSubcomponentDropdownStructure from './subcomponentDropdownStructure';
-import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
 import { buttonSpecificSettings } from './buttonSpecificSettings';
 import { inheritedButtonCss } from './inheritedCss';
 
 const defaultSubcomponentNames: CustomSubcomponentNames = {
-  base: SUB_COMPONENTS.BASE, layer: SUB_COMPONENTS.LAYER_1, text: SUB_COMPONENTS.TEXT_1,
+  base: CORE_SUBCOMPONENTS_NAMES.BASE, layer: CORE_SUBCOMPONENTS_NAMES.LAYER_1, text: CORE_SUBCOMPONENTS_NAMES.TEXT_1,
 };
 
 function createInitialBaseCss(): CustomCss {

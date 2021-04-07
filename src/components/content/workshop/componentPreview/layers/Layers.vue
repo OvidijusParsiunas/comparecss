@@ -23,13 +23,11 @@
 <script lang="ts">
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
-import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
 import layerSections from './LayerSections.vue';
 
 interface Consts {
   OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
   SUB_COMPONENT_CSS_MODES;
-  SUB_COMPONENTS;
 }
 
 export default {
@@ -37,7 +35,6 @@ export default {
     return {
       OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT,
       SUB_COMPONENT_CSS_MODES,
-      SUB_COMPONENTS,
     };
   },
   components: {

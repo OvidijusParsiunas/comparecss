@@ -40,8 +40,8 @@
 <script lang="ts">
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
 import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../consts/subcomponentCursorClasses.enum';
+import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
-import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 import layers from './layers/Layers.vue';
 
@@ -49,7 +49,7 @@ interface Consts {
   SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES;
   OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
   STATIC_POSITION_CLASS: string;
-  BASE_SUB_COMPONENT: SUB_COMPONENTS;
+  BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES;
   SUB_COMPONENT_CSS_MODES: typeof SUB_COMPONENT_CSS_MODES;
 }
 
@@ -59,7 +59,7 @@ export default {
       SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES.AUTO,
       OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT,
       STATIC_POSITION_CLASS: STATIC_POSITION_CLASS,
-      BASE_SUB_COMPONENT: SUB_COMPONENTS.BASE,
+      BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES.BASE,
       SUB_COMPONENT_CSS_MODES,
     };
   },
