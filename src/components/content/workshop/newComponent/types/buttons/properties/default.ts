@@ -6,7 +6,7 @@ import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTyp
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import getButtonSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
-import { NewComponent } from '../../../../../../../interfaces/newComponent';
+import { ComponentGenerator } from '../../../../../../../interfaces/newComponent';
 import { buttonSpecificSettings } from './buttonSpecificSettings';
 import { inheritedButtonCss } from './inheritedCss';
 
@@ -148,8 +148,8 @@ function generateImportedSubcomponentNames(importedSubcomponentBaseName: string,
   return { base: importedSubcomponentBaseName, layer: `Layer ${spaces}`, text: `Text  ${spaces}`};
 }
 
-export const defaultButton: NewComponent = {
-  getNewComponent(importedSubcomponentBaseName: string, importedSubcomponentId: number): any {
+export const defaultButton: ComponentGenerator = {
+  createNewComponent(importedSubcomponentBaseName: string, importedSubcomponentId: number): any {
     // WORK2: need a type
     const subcomponentNames = importedSubcomponentBaseName
       ? generateImportedSubcomponentNames(importedSubcomponentBaseName, importedSubcomponentId)

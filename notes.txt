@@ -27,7 +27,6 @@ when subcomponents are deleted, the overlay should not appear when hovering the 
 delete layer
 delete an imported subcomponent
 ability to automatically update imported subcomponents when the core subcomponent is updated
-getNewComponent -> create/buildNewComponent
 importing existing subcomponent will also need to offer an option from the app defaults
 
 option to import an existing button style!
@@ -71,6 +70,7 @@ the current infrastructure does not support layers within layers in the componen
 
 Future work
 
+Changing the overlay to blurred vision, protanopia atc to show what the users will see with the mew component
 Room for optimising the exported css file contents to reuse repeated css properties
 Allow the button to have its text vertically centered for all heights via the use of a class without the need for it to be applied to a button tag:
 Currently works with the button tag only, this is due to the fact that if we are using <div> or <a> - we need to use display: table-cell property which does not allow for the use of margins.

@@ -1,7 +1,7 @@
-import { ComponentStyleToProperties } from '../../../../../../interfaces/componentStyleToProperties'
+import { ComponentStyleToGenerator } from '../../../../../../interfaces/componentStyleToGenerator'
 import { NEW_COMPONENT_STYLES } from '../../../../../../consts/newComponentStyles.enum'
 import { defaultAlert } from './properties/default';  
 
-export const alertStyleToProperties: ComponentStyleToProperties = {
+export const alertStyleToGenerator: ComponentStyleToGenerator = {
   [NEW_COMPONENT_STYLES.DEFAULT]: defaultAlert,
 };

@@ -6,9 +6,8 @@ import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTyp
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { modalLayerBottomSpecificSettings } from './modalLayerBottomSpecificSettings';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
-import getModalSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { modalLayerTopSpecificSettings } from './modalLayerTopSpecificSettings';
-import { NewComponent } from '../../../../../../../interfaces/newComponent';
+import { ComponentGenerator } from '../../../../../../../interfaces/newComponent';
 import { inheritedAlertCloseChildCss } from './inheritedAlertCloseChildCss';
 import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';
 import { modalBaseSpecificSettings } from './modalBaseSpecificSettings';
@@ -364,8 +363,8 @@ function createSubcomponents(): Subcomponents {
 }
 
 // WORK2: copy the new modal config over
-export const defaultModal: NewComponent = {
-  getNewComponent(): WorkshopComponent {
+export const defaultModal: ComponentGenerator = {
+  createNewComponent(): WorkshopComponent {
     const subcomponents = createSubcomponents();
     const subcomponentDropdownStructure = null;
     return {

@@ -251,42 +251,6 @@ function createInitialCloseButtonCss(): CustomCss {
   };
 }
 
-function createInitialButton1Css(): CustomCss {
-  return {
-    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-      borderRadius: '0px',
-      borderWidth: '0px',
-      borderColor: '#1779ba',
-      backgroundColor: '#1779ba',
-      borderStyle: 'solid',
-      boxShadow: 'unset',
-      outline: 'none',
-      paddingTop: '0px',
-      paddingBottom: '0px',
-      paddingLeft: '12px',
-      paddingRight: '12px',
-      marginLeft: '30px',
-      marginTop: '0px',
-      marginRight: '0px',
-      marginBottom: '0px',
-      width: '40px',
-      height: '38px',
-      boxSizing: 'content-box',
-      color: '#ffffff',
-      fontSize: '14px',
-      fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
-      userSelect: 'none',
-      top: '50%',
-    },
-    [SUB_COMPONENT_CSS_MODES.HOVER]: {
-      backgroundColor: '#ff0000',
-    },
-    [SUB_COMPONENT_CSS_MODES.CLICK]: {
-      backgroundColor: '#409441',
-    },
-  };
-}
-
 function createInitialLayer1Css(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
@@ -474,7 +438,7 @@ function applyTopProperty(importedComponentRef: any, importedComponentName: stri
 
 // Work2: type
 function createImportedSubcomponents(componentBuilder: any, importedComponentName: string, importedComponentId: number): any {
-  const importedComponentRef = componentBuilder.getNewComponent(importedComponentName, importedComponentId);
+  const importedComponentRef = componentBuilder.createNewComponent(importedComponentName, importedComponentId);
   // take into consideration that when importing existing component, the default will need to be recreated
   applyTopProperty(importedComponentRef, importedComponentName);
   // referencing the whole component within it's own subcomponent may not be efficient
@@ -491,7 +455,7 @@ function createImportedSubcomponentStructure(subcomponents: any, baseName: strin
   }
 }
 
-function getNewComponent(): WorkshopComponent {
+function createNewComponent(): WorkshopComponent {
   // solution for settings is to have types within subcomponent for the type to option mapping
   const importedButton1Name = SUB_COMPONENTS.BUTTON_1;
   const importedButton2Name = SUB_COMPONENTS.BUTTON_2;
@@ -527,7 +491,7 @@ export default {
     isIconsPreloaded: false,
     componentPreviewAssistance: { margin: false },
     components: [
-      getNewComponent(),
+      createNewComponent(),
     ],
     currentlySelectedComponent: null,
     workshopEventCallbacks: [],

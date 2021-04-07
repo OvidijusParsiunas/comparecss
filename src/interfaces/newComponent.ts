@@ -1,5 +1,5 @@
 import { WorkshopComponent } from './workshopComponent';
 
-export interface NewComponent {
-  getNewComponent: (baseName?: string, importId?: number) => WorkshopComponent;
+export interface ComponentGenerator {
+  createNewComponent: (baseName?: string, importId?: number) => WorkshopComponent;
 }
