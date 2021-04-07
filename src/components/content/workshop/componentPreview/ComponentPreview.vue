@@ -1,21 +1,21 @@
 <template>
   <div v-if="component" ref="componentPreviewContainer"
     class="component-preview-container-default"
-    :style="{backgroundColor: component.subcomponents[SUB_COMPONENTS.BASE].customFeatures
-      && component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.backdrop
-      && component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.backdrop.visible
-      ? component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.backdrop.color : 'unset'}"
+    :style="{backgroundColor: component.subcomponents[BASE_SUB_COMPONENT].customFeatures
+      && component.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop
+      && component.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.visible
+      ? component.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.color : 'unset'}"
     @mouseenter="componentPreviewMouseEnter()"
     @mouseleave="componentPreviewMouseLeave()">
     <div style="margin: 0; position: absolute; z-index: 0; text-align: center;"
       :class="[
-        (component.subcomponents[SUB_COMPONENTS.BASE].customFeatures
-          && component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.componentCenteringInParent
-          && ((component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.componentCenteringInParent.vertical
-              && !component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.componentCenteringInParent.horizontal
+        (component.subcomponents[BASE_SUB_COMPONENT].customFeatures
+          && component.subcomponents[BASE_SUB_COMPONENT].customFeatures.componentCenteringInParent
+          && ((component.subcomponents[BASE_SUB_COMPONENT].customFeatures.componentCenteringInParent.vertical
+              && !component.subcomponents[BASE_SUB_COMPONENT].customFeatures.componentCenteringInParent.horizontal
                 ? 'component-preview-centered-vertically' : false)
-              || (component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.componentCenteringInParent.horizontal 
-                && !component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.componentCenteringInParent.vertical
+              || (component.subcomponents[BASE_SUB_COMPONENT].customFeatures.componentCenteringInParent.horizontal 
+                && !component.subcomponents[BASE_SUB_COMPONENT].customFeatures.componentCenteringInParent.vertical
                 ? 'component-preview-centered-horizontally': false)
         ))
         || 'component-preview-centered']"> 
@@ -36,6 +36,7 @@
         <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item grid-item-position">
           <!-- parent component -->
           <base-component ref="baseComponent"
+            class="grid-item-position"
             :component="component"
             :mouseEvents="mouseEvents"
             :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"/>
@@ -72,20 +73,13 @@ import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomp
 import TransitionUtils from '../../../../services/workshop/expandedModalPreviewMode/utils/transitionUtils';
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
 import { ModalEntranceTransition, ModalExitTransition } from '../../../../interfaces/modalTransitions';
-import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
-import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../consts/subcomponentCursorClasses.enum';
 import { PlayTransitionPreviewEvent } from '../../../../interfaces/playTransitionPreviewEvent';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
 import { SUB_COMPONENTS } from '../../../../consts/subcomponentModes.enum';
-import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 import ComponentPreviewUtils from './utils/componentPreviewUtils';
 
 interface Consts {
-  SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES;
-  OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
-  STATIC_POSITION_CLASS: string;
-  SUB_COMPONENT_CSS_MODES;
-  SUB_COMPONENTS;
+  BASE_SUB_COMPONENT: SUB_COMPONENTS;
 }
 
 interface Data {
@@ -97,11 +91,7 @@ interface Data {
 export default {
   setup(): Consts {
     return {
-      SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES.AUTO,
-      OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT,
-      STATIC_POSITION_CLASS: STATIC_POSITION_CLASS,
-      SUB_COMPONENT_CSS_MODES,
-      SUB_COMPONENTS,
+      BASE_SUB_COMPONENT: SUB_COMPONENTS.BASE,
     };
   },
   data: (): Data => ({
@@ -152,17 +142,17 @@ export default {
         // strategies
         // https://tympanus.net/codrops/2013/06/25/nifty-modal-window-effects/
         ExpandedModalPreviewModeToggleEntranceTransitionService.start(
-          transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.entrance.type],
-          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.entrance.duration,
-          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.entrance.delay,
-          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.backdrop, this.$refs.baseComponent.$refs.componentPreview,
+          transitionTypeToFunctionality[this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.entrance.type],
+          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.entrance.duration,
+          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.entrance.delay,
+          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.backdrop, this.$refs.baseComponent.$refs.componentPreview,
           this.$refs.baseComponent.$refs.componentPreviewOverlay, this.$refs.componentPreviewContainer, toolbarContainerElement,
           toolbarElement, toolbarPositionToggleElement);
       } else {
         ExpandedModalPreviewModeToggleExitTransitionService.start(
-          transitionTypeToFunctionality[this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.exit.type],
-          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.exit.duration, setOptionToDefaultCallback,
-          this.$refs.componentPreviewContainer, this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.backdrop,
+          transitionTypeToFunctionality[this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.exit.type],
+          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.exit.duration, setOptionToDefaultCallback,
+          this.$refs.componentPreviewContainer, this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.backdrop,
           this.$refs.baseComponent.$refs.componentPreview, this.$refs.baseComponent.$refs.componentPreviewOverlay, toolbarContainerElement,
           toolbarElement, toolbarPositionToggleElement);
       }
@@ -172,11 +162,11 @@ export default {
       if (isEntranceAnimation) {
         EntranceTransitionPreviewService.start(
           transitionTypeToFunctionality[transitionAnimation] as ModalEntranceTransition,
-          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.entrance.duration, this.$refs.baseComponent.$refs.componentPreview);
+          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.entrance.duration, this.$refs.baseComponent.$refs.componentPreview);
       } else {
         ExitTransitionPreviewService.start(
           transitionTypeToFunctionality[transitionAnimation] as ModalExitTransition,
-          this.component.subcomponents[SUB_COMPONENTS.BASE].customFeatures.transitions.exit.duration, this.$refs.baseComponent.$refs.componentPreview);
+          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.exit.duration, this.$refs.baseComponent.$refs.componentPreview);
       }
     },
     stopTransitionPreview(): void {
@@ -199,13 +189,6 @@ export default {
 </script>
 
 <style lang="css" scoped>
-  /* WORK2: redundant css */
-  .static-position {
-    top: 0px !important;
-    left: 0px !important;
-    bottom: 0px !important;
-    right: 0px !important;
-  }
   .component-preview-container-default {
     position: relative;
     height: 50%;
@@ -229,10 +212,6 @@ export default {
   .component-preview-centered-vertically {
     top: 50%;
     transform: translateY(-50%);
-  }
-  /* WORK2: change name */
-  .base-component {
-    overflow: hidden;
   }
   .grid-container {
     display: grid;
@@ -308,53 +287,10 @@ export default {
   }
 </style>
 <style lang="css">
-  .subcomponent-overlay-default {
-    background-color: rgb(64 197 255 / 43%) !important;
-    /* the following color is partially transparent and uses the background color to set its own color */
-    border-color: rgb(64 197 255 / 0%) !important;
-    position: absolute !important;
-    top: 0px;
-    width: 100%;
-    pointer-events: none;
-    z-index: 1;
-  }
-  .subcomponent-overlay-remove {
-    background-color: rgb(255 29 29 / 43%) !important;
-  }
-  .subcomponent-overlay-add {
-    background-color: rgb(8 235 31 / 43%) !important;
-  }
-  .subcomponent-overlay-with-no-border-property-but-with-height {
-    border-color: rgb(64 197 255 / 0%) !important;
-    border-top-width: 0px !important;
-    border-bottom-width: 0px !important;
-    height: 100%;
-  }
-  .subcomponent-cursor-auto {
-    cursor: auto;
-  }
-  .subcomponent-cursor-default {
-    cursor: default !important;
-  }
-  .subcomponent-cursor-select-mode {
-    cursor: pointer !important;
-  }
-
-  @keyframes displayRipple {
-    from {
-      transform: scale(0.5);
-    }
-    to {
-      transform: scale(4);
-    }
-  }
-
-  @keyframes fadeRipple {
-    from {
-      opacity: 1;
-    }
-    to {
-      opacity: 0;
-    }
+  .static-position {
+    top: 0px !important;
+    left: 0px !important;
+    bottom: 0px !important;
+    right: 0px !important;
   }
 </style>

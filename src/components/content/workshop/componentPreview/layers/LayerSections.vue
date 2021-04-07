@@ -6,7 +6,7 @@
       :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
       :nestedSubcomponents="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.CENTER]"
       :mouseEvents="mouseEvents"
-      :subcomponentElementContainerClass="'center-section-subcomponent'"/>
+      :specialisedSectionContainerClass="SPECIALISED_SECTION_CONTAINER_CLASSES.CENTER_SECTION"/>
     <div class="default-sections-container" :class="SUBCOMPONENT_CURSOR_DEFAULT_CLASS">
       <!-- left -->
       <layer-section v-if="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS] && sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.LEFT]"
@@ -24,21 +24,23 @@
         :mouseEvents="mouseEvents"/>
       <!-- equal split sections -->
       <layer-section v-if="sections[LAYER_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS]"
-        class="default-section equal-split-sections-container"
+        class="default-section equal-split-sections"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
         :nestedSubcomponents="sections[LAYER_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS]"
         :mouseEvents="mouseEvents"
-        :subcomponentElementContainerClass="'equal-split-section'"/>
+        :specialisedSectionContainerClass="SPECIALISED_SECTION_CONTAINER_CLASSES.EQUAL_SPLIT_SECTIONS"/>
     </div>
   </div>
 </template>
                     
 <script lang="ts">
+import { SPECIALISED_SECTION_CONTAINER_CLASSES } from '../../../../../consts/specialisedSectionContainerClasses.enum';
 import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../../consts/subcomponentCursorClasses.enum';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../consts/layerSections';
 import layerSection from './LayerSection.vue';
 
 interface Consts {
+  SPECIALISED_SECTION_CONTAINER_CLASSES: typeof SPECIALISED_SECTION_CONTAINER_CLASSES;
   SUBCOMPONENT_CURSOR_DEFAULT_CLASS: string;
   LAYER_SECTIONS_TYPES: typeof LAYER_SECTIONS_TYPES;
   ALIGNED_SECTION_TYPES: typeof ALIGNED_SECTION_TYPES;
@@ -47,6 +49,7 @@ interface Consts {
 export default {
   setup(): Consts {
     return {
+      SPECIALISED_SECTION_CONTAINER_CLASSES: SPECIALISED_SECTION_CONTAINER_CLASSES,
       SUBCOMPONENT_CURSOR_DEFAULT_CLASS: SUBCOMPONENT_CURSOR_CLASSES.DEFAULT,
       LAYER_SECTIONS_TYPES,
       ALIGNED_SECTION_TYPES,
@@ -96,7 +99,7 @@ export default {
   .right-section {
     margin-left: auto;
   }
-  .equal-split-sections-container {
+  .equal-split-sections {
     width: 100%;
   }
 </style>

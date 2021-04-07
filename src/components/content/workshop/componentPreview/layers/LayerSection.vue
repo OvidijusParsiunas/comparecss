@@ -4,17 +4,15 @@
     <div v-for="(nestedSubcomponent, index) in nestedSubcomponents" :key="nestedSubcomponent"
       :style="{order: `${index}`}"
       class="subcomponent-element-container"
-      :class="[subcomponentElementContainerClass,
+      :class="[specialisedSectionContainerClass,
         ...(nestedSubcomponent.subcomponentProperties.customFeatures
           && nestedSubcomponent.subcomponentProperties.customFeatures.jsClasses || [])]">
-        <!-- WORK2: use consts and apply the style via class -->
       <base-component v-if="nestedSubcomponent.subcomponentProperties.importedComponent"
+        class="imported-component-container"
         :component="nestedSubcomponent.subcomponentProperties.importedComponent"
         :mouseEvents="mouseEvents"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-        :positionClass="'nested-component'"
-        style="height: 100%"/>
-      <!-- WORK2: try to place in a div so wouldn't need the redundant v-if at the end -->
+        :isImportedComponent="true"/>
       <component v-else-if="!nestedSubcomponent.subcomponentProperties.optionalSubcomponent
           || nestedSubcomponent.subcomponentProperties.optionalSubcomponent.currentlyDisplaying
           || nestedSubcomponent.subcomponentProperties.optionalSubcomponent.displayOverlayOnly"
@@ -59,12 +57,10 @@
 <script lang="ts">
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
-import { SUB_COMPONENTS } from '../../../../../consts/subcomponentModes.enum';
 
 interface Consts {
   OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
-  SUB_COMPONENT_CSS_MODES;
-  SUB_COMPONENTS;
+  SUB_COMPONENT_CSS_MODES: typeof SUB_COMPONENT_CSS_MODES;
 }
 
 export default {
@@ -72,14 +68,13 @@ export default {
     return {
       OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT,
       SUB_COMPONENT_CSS_MODES,
-      SUB_COMPONENTS,
     };
   },
   props: {
     subcomponentAndOverlayElementIds: Object,
     nestedSubcomponents: Object,
     mouseEvents: Object,
-    subcomponentElementContainerClass: String,
+    specialisedSectionContainerClass: String,
   },
 }
 </script>
@@ -101,17 +96,16 @@ export default {
     overflow: hidden;
   } */
   /* this will need to be inherited css */
-  .center-section-subcomponent {
+  .center-section-container {
     justify-content: center;
     pointer-events: all;
   }
-  .equal-split-section {
+  .equal-split-section-container {
     flex: 1 1 0px;
     justify-content: center;
   }
   .subcomponent-element-container {
     height: 100%;
-    /* background-color: green; */
     display: flex;
     place-items: baseline;
   }
@@ -123,5 +117,8 @@ export default {
     /* may need to be set in the style tag if working with vertically stacked subcomponents */
     margin-top: unset !important;
     margin-bottom: unset !important;
+  }
+  .imported-component-container {
+    height: 100%;
   }
 </style>
