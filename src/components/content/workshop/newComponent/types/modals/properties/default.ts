@@ -3,7 +3,7 @@ import ImportedCompoment from '../../../../../../../services/workshop/componentG
 import PreviewStructure from '../../../../../../../services/workshop/componentGenerator/previewStructure';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
-import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
+import { CSS_STATES } from '../../../../../../../consts/subcomponentCssStates.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -83,7 +83,7 @@ function createDefaultTextCustomFeatures(): CustomFeatures {
 
 function createInitialBaseCss(): CustomCss {
   return {
-    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+    [CSS_STATES.DEFAULT]: {
       color: '#004085',
       backgroundColor: '#ffffff',
       borderColor: '#00000033',
@@ -100,7 +100,7 @@ function createInitialBaseCss(): CustomCss {
 
 function createInitialCloseButtonCss(): CustomCss {
   return {
-    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+    [CSS_STATES.DEFAULT]: {
       height: '12px',
       width: '14px',
       borderRadius: '15px',
@@ -128,7 +128,7 @@ function createInitialCloseButtonCss(): CustomCss {
 
 function createInitialLayer1Css(): CustomCss {
   return {
-    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+    [CSS_STATES.DEFAULT]: {
       position: 'relative',
       height: '50px',
       textAlign: 'left',
@@ -148,7 +148,7 @@ function createInitialLayer1Css(): CustomCss {
 
 function createInitialLayer2Css(): CustomCss {
   return {
-    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+    [CSS_STATES.DEFAULT]: {
       position: 'relative',
       height: '50px',
       textAlign: 'left',
@@ -163,7 +163,7 @@ function createInitialLayer2Css(): CustomCss {
 
 function createInitialLayer3Css(): CustomCss {
   return {
-    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+    [CSS_STATES.DEFAULT]: {
       position: 'relative',
       height: '50px',
       textAlign: 'right',
@@ -182,7 +182,7 @@ function createInitialLayer3Css(): CustomCss {
 
 function createInitialText1Css(): CustomCss {
   return {
-    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+    [CSS_STATES.DEFAULT]: {
       top: '50%',
       width: 'auto',
       fontWeight: '500',
@@ -203,7 +203,7 @@ function createInitialText1Css(): CustomCss {
 
 function createInitialText2Css(): CustomCss {
   return {
-    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+    [CSS_STATES.DEFAULT]: {
       top: '50%',
       width: 'auto',
       fontWeight: '400',
@@ -231,8 +231,8 @@ function createSubcomponents(): Subcomponents {
     [CORE_SUBCOMPONENTS_NAMES.BASE]: {
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
-      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCssState: CSS_STATES.DEFAULT,
+      defaultCssState: CSS_STATES.DEFAULT,
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
       subcomponentSpecificSettings: modalBaseSpecificSettings,
@@ -242,23 +242,23 @@ function createSubcomponents(): Subcomponents {
     [CORE_SUBCOMPONENTS_NAMES.LAYER_1]: {
       customCss: createInitialLayer1Css(),
       initialCss: createInitialLayer1Css(),
-      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCssState: CSS_STATES.DEFAULT,
+      defaultCssState: CSS_STATES.DEFAULT,
       subcomponentSpecificSettings: modalLayerTopSpecificSettings,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [CORE_SUBCOMPONENTS_NAMES.LAYER_2]: {
       customCss: createInitialLayer2Css(),
       initialCss: createInitialLayer2Css(),
-      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCssState: CSS_STATES.DEFAULT,
+      defaultCssState: CSS_STATES.DEFAULT,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [CORE_SUBCOMPONENTS_NAMES.LAYER_3]: {
       customCss: createInitialLayer3Css(),
       initialCss: createInitialLayer3Css(),
-      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCssState: CSS_STATES.DEFAULT,
+      defaultCssState: CSS_STATES.DEFAULT,
       subcomponentSpecificSettings: modalLayerBottomSpecificSettings,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
@@ -267,8 +267,8 @@ function createSubcomponents(): Subcomponents {
       componentText: '×',
       customCss: createInitialCloseButtonCss(),
       initialCss: createInitialCloseButtonCss(),
-      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCssState: CSS_STATES.DEFAULT,
+      defaultCssState: CSS_STATES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
@@ -281,8 +281,8 @@ function createSubcomponents(): Subcomponents {
       componentText: 'Modal title',
       customCss: createInitialText1Css(),
       initialCss: createInitialText1Css(),
-      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCssState: CSS_STATES.DEFAULT,
+      defaultCssState: CSS_STATES.DEFAULT,
       optionalSubcomponent: { currentlyDisplaying: true },
       customFeatures: createDefaultTextCustomFeatures(),
       defaultCustomFeatures: createDefaultTextCustomFeatures(),
@@ -292,8 +292,8 @@ function createSubcomponents(): Subcomponents {
       componentText: 'Modal body text',
       customCss: createInitialText2Css(),
       initialCss: createInitialText2Css(),
-      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCssState: CSS_STATES.DEFAULT,
+      defaultCssState: CSS_STATES.DEFAULT,
       optionalSubcomponent: { currentlyDisplaying: true },
       customFeatures: createDefaultTextCustomFeatures(),
       defaultCustomFeatures: createDefaultTextCustomFeatures(),
@@ -317,8 +317,8 @@ export const defaultModal: ComponentGenerator = {
     return {
       type: NEW_COMPONENT_TYPES.MODAL,
       subcomponents,
-      activeSubcomponentMode: CORE_SUBCOMPONENTS_NAMES.BASE,
-      defaultSubcomponentMode: CORE_SUBCOMPONENTS_NAMES.BASE,
+      activeSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,
+      defaultSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,
       componentPreviewStructure: PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents),
       className: 'default-class-name',
     };

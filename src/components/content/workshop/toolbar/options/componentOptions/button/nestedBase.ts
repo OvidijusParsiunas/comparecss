@@ -1,11 +1,11 @@
 import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../../consts/workshopToolbarOptionButtonNames.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
-import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
+import { CSS_STATES } from '../../../../../../../consts/subcomponentCssStates.enum';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
 import { ComponentOptionsUtils } from '../componentOptionsUtils';
 import { buttonBaseOptions } from './base';
 
-type ButtonOptionsModes = SUB_COMPONENT_CSS_MODES.DEFAULT | SUB_COMPONENT_CSS_MODES.HOVER | SUB_COMPONENT_CSS_MODES.CLICK;
+type ButtonOptionsModes = CSS_STATES.DEFAULT | CSS_STATES.HOVER | CSS_STATES.CLICK;
 
 const nestedSubcomponentSpecificOptions = [
   {
@@ -20,7 +20,7 @@ const nestedSubcomponentSpecificOptions = [
 
 export const nestedButtonOptions: SubcomponentOptions<ButtonOptionsModes> = {
   ...buttonBaseOptions,
-  [SUB_COMPONENT_CSS_MODES.DEFAULT]: [
-    ...ComponentOptionsUtils.overwriteOptions(buttonBaseOptions[SUB_COMPONENT_CSS_MODES.DEFAULT], nestedSubcomponentSpecificOptions),
+  [CSS_STATES.DEFAULT]: [
+    ...ComponentOptionsUtils.overwriteOptions(buttonBaseOptions[CSS_STATES.DEFAULT], nestedSubcomponentSpecificOptions),
   ],
 };

@@ -9,11 +9,11 @@ export default class ColorPickerUtils {
 
   private static updateCustomCss(hexColor: string, updatedSettingSpec: any, subcomponentProperties: SubcomponentProperties): void {
     const { cssProperty, partialCss } = updatedSettingSpec;
-    const { customCss, activeCustomCssMode } = subcomponentProperties;
+    const { customCss, activeCssState } = subcomponentProperties;
     if (partialCss !== undefined) {
       if (cssProperty === 'boxShadow') BoxShadowUtils.updateBoxShadowColorValue(hexColor, updatedSettingSpec, subcomponentProperties);
     } else {
-      customCss[activeCustomCssMode][cssProperty] = hexColor;
+      customCss[activeCssState][cssProperty] = hexColor;
     }
   }
 
@@ -44,8 +44,8 @@ export default class ColorPickerUtils {
   }
 
   private static updateCustomCssSetting(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
-    const { customCss, activeCustomCssMode } = subcomponentProperties;
-    let cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCustomCssMode, settingToBeUpdatedSpec.cssProperty);
+    const { customCss, activeCssState } = subcomponentProperties;
+    let cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssState, settingToBeUpdatedSpec.cssProperty);
     if (settingToBeUpdatedSpec.cssProperty === 'boxShadow') {
       BoxShadowUtils.setBoxShadowSettingsColorValue(cssPropertyValue, settingToBeUpdatedSpec, subcomponentProperties);
     } else {
@@ -70,11 +70,11 @@ export default class ColorPickerUtils {
   private static setCustomCssColorToInherit(updatedSettingSpec: any, subcomponentProperties: SubcomponentProperties): void {
     const { cssProperty } = updatedSettingSpec;
     updatedSettingSpec.default = '';
-    if (!subcomponentProperties.customCss[subcomponentProperties.activeCustomCssMode]) {
-      subcomponentProperties.customCss[subcomponentProperties.activeCustomCssMode] = {
+    if (!subcomponentProperties.customCss[subcomponentProperties.activeCssState]) {
+      subcomponentProperties.customCss[subcomponentProperties.activeCssState] = {
         [cssProperty]: ColorPickerUtils.INHERIT_CUSTOM_FEATURE_COLOR_VALUE};
     } else {
-      subcomponentProperties.customCss[subcomponentProperties.activeCustomCssMode]
+      subcomponentProperties.customCss[subcomponentProperties.activeCssState]
         [cssProperty] = ColorPickerUtils.INHERIT_CUSTOM_FEATURE_COLOR_VALUE;
     }
   }

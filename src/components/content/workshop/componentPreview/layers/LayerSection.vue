@@ -25,17 +25,17 @@
         @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseLeave()"
         @mousedown="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseDown()"
         @mouseup="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseUp()"
-        :style="nestedSubcomponent.subcomponentProperties.activeCustomCssMode === SUB_COMPONENT_CSS_MODES.CLICK
+        :style="nestedSubcomponent.subcomponentProperties.activeCssState === CSS_STATES.CLICK
           ? [
               [ nestedSubcomponent.subcomponentProperties.inheritedCss ? nestedSubcomponent.subcomponentProperties.inheritedCss.css: '' ],
-              nestedSubcomponent.subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
-              nestedSubcomponent.subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.HOVER],
-              nestedSubcomponent.subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.CLICK],
+              nestedSubcomponent.subcomponentProperties.customCss[CSS_STATES.DEFAULT],
+              nestedSubcomponent.subcomponentProperties.customCss[CSS_STATES.HOVER],
+              nestedSubcomponent.subcomponentProperties.customCss[CSS_STATES.CLICK],
             ]
           : [
               [ nestedSubcomponent.subcomponentProperties.inheritedCss ? nestedSubcomponent.subcomponentProperties.inheritedCss.css: '' ],
-              nestedSubcomponent.subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
-              nestedSubcomponent.subcomponentProperties.customCss[nestedSubcomponent.subcomponentProperties.activeCustomCssMode],
+              nestedSubcomponent.subcomponentProperties.customCss[CSS_STATES.DEFAULT],
+              nestedSubcomponent.subcomponentProperties.customCss[nestedSubcomponent.subcomponentProperties.activeCssState],
             ]"
         >{{(!nestedSubcomponent.subcomponentProperties.optionalSubcomponent || !nestedSubcomponent.subcomponentProperties.optionalSubcomponent.displayOverlayOnly)
             && nestedSubcomponent.subcomponentProperties.componentText ? nestedSubcomponent.subcomponentProperties.componentText : '' }}
@@ -44,7 +44,7 @@
         :is="nestedSubcomponent.subcomponentProperties.componentTag"
         :id="subcomponentAndOverlayElementIds[nestedSubcomponent.name].overlayId"
         :style="[
-          nestedSubcomponent.subcomponentProperties.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
+          nestedSubcomponent.subcomponentProperties.customCss[CSS_STATES.DEFAULT],
           {display: 'none'}, {color: '#ff000000'}]"
         class="subcomponent-element"
         :class="OVERLAY_DEFAULT_CLASS">
@@ -56,18 +56,18 @@
                     
 <script lang="ts">
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
-import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
+import { CSS_STATES } from '../../../../../consts/subcomponentCssStates.enum';
 
 interface Consts {
   OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
-  SUB_COMPONENT_CSS_MODES: typeof SUB_COMPONENT_CSS_MODES;
+  CSS_STATES: typeof CSS_STATES;
 }
 
 export default {
   setup(): Consts {
     return {
       OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT,
-      SUB_COMPONENT_CSS_MODES,
+      CSS_STATES,
     };
   },
   props: {

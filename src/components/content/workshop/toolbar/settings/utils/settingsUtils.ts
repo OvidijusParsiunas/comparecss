@@ -1,41 +1,41 @@
 import { ActionsDropdownMouseEventCallbackEvent } from '../../../../../../interfaces/actionsDropdownMouseEventCallbacks';
-import { SUB_COMPONENT_CSS_MODES } from '../../../../../../consts/subcomponentCssModes.enum';
+import { CSS_STATES } from '../../../../../../consts/subcomponentCssStates.enum';
 import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import SharedUtils from './sharedUtils';
 
 export default class SettingsUtils {
 
   private static removeAuxiliaryPartialCss(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
-    const { auxiliaryPartialCss, activeCustomCssMode } = subcomponentProperties;
-    if (auxiliaryPartialCss && auxiliaryPartialCss[activeCustomCssMode] && auxiliaryPartialCss[activeCustomCssMode][cssProperty]) {
-      delete auxiliaryPartialCss[activeCustomCssMode][cssProperty];
+    const { auxiliaryPartialCss, activeCssState } = subcomponentProperties;
+    if (auxiliaryPartialCss && auxiliaryPartialCss[activeCssState] && auxiliaryPartialCss[activeCssState][cssProperty]) {
+      delete auxiliaryPartialCss[activeCssState][cssProperty];
     }
   }
 
   private static resetCssProperties(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
-    const { customCss, initialCss, activeCustomCssMode } = subcomponentProperties;
-    if (initialCss[activeCustomCssMode] && initialCss[activeCustomCssMode][cssProperty]) {
-      const cssValue = initialCss[activeCustomCssMode][cssProperty];
+    const { customCss, initialCss, activeCssState } = subcomponentProperties;
+    if (initialCss[activeCssState] && initialCss[activeCssState][cssProperty]) {
+      const cssValue = initialCss[activeCssState][cssProperty];
       SettingsUtils.setCssProperty(subcomponentProperties, cssProperty, cssValue)
-    } else if (customCss[activeCustomCssMode]) {
-      delete customCss[activeCustomCssMode][cssProperty];
+    } else if (customCss[activeCssState]) {
+      delete customCss[activeCssState][cssProperty];
     }
   }
   
   private static setCssProperty(subcomponentProperties: SubcomponentProperties, cssProperty: string, cssValue: string): void {
-    const { customCss, activeCustomCssMode } = subcomponentProperties;
-    if (!customCss[activeCustomCssMode]) {
-      customCss[activeCustomCssMode] = { [cssProperty]: cssValue };
+    const { customCss, activeCssState } = subcomponentProperties;
+    if (!customCss[activeCssState]) {
+      customCss[activeCssState] = { [cssProperty]: cssValue };
     } else {
-      customCss[activeCustomCssMode][cssProperty] = cssValue;
+      customCss[activeCssState][cssProperty] = cssValue;
     }
   }
 
   private static resetCustomCss(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
-    const { initialCss, activeCustomCssMode } = subcomponentProperties;
-    if (activeCustomCssMode === SUB_COMPONENT_CSS_MODES.DEFAULT) {
-      if (initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty]) {
-        const cssValue = initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT][cssProperty];
+    const { initialCss, activeCssState } = subcomponentProperties;
+    if (activeCssState === CSS_STATES.DEFAULT) {
+      if (initialCss[CSS_STATES.DEFAULT][cssProperty]) {
+        const cssValue = initialCss[CSS_STATES.DEFAULT][cssProperty];
         SettingsUtils.setCssProperty(subcomponentProperties, cssProperty, cssValue);
       }
     } else {

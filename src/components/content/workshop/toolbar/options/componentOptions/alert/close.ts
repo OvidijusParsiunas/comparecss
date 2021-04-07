@@ -1,12 +1,12 @@
 import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../../consts/workshopToolbarOptionButtonNames.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
-import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
+import { CSS_STATES } from '../../../../../../../consts/subcomponentCssStates.enum';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
 
-type alertCloseOptionsModes = SUB_COMPONENT_CSS_MODES.DEFAULT | SUB_COMPONENT_CSS_MODES.HOVER | SUB_COMPONENT_CSS_MODES.CLICK;
+type alertCloseOptionsModes = CSS_STATES.DEFAULT | CSS_STATES.HOVER | CSS_STATES.CLICK;
 
 export const alertCloseOptions: SubcomponentOptions<alertCloseOptionsModes> = {
-  [SUB_COMPONENT_CSS_MODES.DEFAULT]: [
+  [CSS_STATES.DEFAULT]: [
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ICON,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_BASED_ICON,
@@ -36,7 +36,7 @@ export const alertCloseOptions: SubcomponentOptions<alertCloseOptionsModes> = {
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_POSITION,
     },
   ],
-  [SUB_COMPONENT_CSS_MODES.HOVER]: [
+  [CSS_STATES.HOVER]: [
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ICON,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_BASED_ICON,
@@ -66,7 +66,7 @@ export const alertCloseOptions: SubcomponentOptions<alertCloseOptionsModes> = {
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_POSITION,
     },
   ],
-  [SUB_COMPONENT_CSS_MODES.CLICK]: [
+  [CSS_STATES.CLICK]: [
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ICON,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_BASED_ICON,

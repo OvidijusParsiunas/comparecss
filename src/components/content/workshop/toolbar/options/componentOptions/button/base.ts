@@ -1,12 +1,12 @@
 import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../../consts/workshopToolbarOptionButtonNames.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
-import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
+import { CSS_STATES } from '../../../../../../../consts/subcomponentCssStates.enum';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
 
-type ButtonOptionsModes = SUB_COMPONENT_CSS_MODES.DEFAULT | SUB_COMPONENT_CSS_MODES.HOVER | SUB_COMPONENT_CSS_MODES.CLICK;
+type ButtonOptionsModes = CSS_STATES.DEFAULT | CSS_STATES.HOVER | CSS_STATES.CLICK;
 
 export const buttonBaseOptions: SubcomponentOptions<ButtonOptionsModes> = {
-  [SUB_COMPONENT_CSS_MODES.DEFAULT]: [
+  [CSS_STATES.DEFAULT]: [
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER,
@@ -32,7 +32,7 @@ export const buttonBaseOptions: SubcomponentOptions<ButtonOptionsModes> = {
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
     },
   ],
-  [SUB_COMPONENT_CSS_MODES.HOVER]: [
+  [CSS_STATES.HOVER]: [
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER,
@@ -46,7 +46,7 @@ export const buttonBaseOptions: SubcomponentOptions<ButtonOptionsModes> = {
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW,
     },
   ],
-  [SUB_COMPONENT_CSS_MODES.CLICK]: [
+  [CSS_STATES.CLICK]: [
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER,

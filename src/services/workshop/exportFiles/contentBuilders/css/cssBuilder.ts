@@ -1,7 +1,7 @@
 import { WorkshopComponent, CustomCss, ChildCss, SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { CustomCssWithInheritedCss, InitialCssBuild, SharedInheritedCss } from '../../../../../interfaces/cssBuilder';
-import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
+import { CSS_STATES } from '../../../../../consts/subcomponentCssStates.enum';
 import { TempCustomCss } from '../../../../../interfaces/tempCustomCss';
 import SharedCssUtils from './sharedCssUtils';
 import GeneralUtils from './generalUtils';
@@ -20,34 +20,34 @@ export default class CssBuilder {
   }
 
   private static buildPseudoClass(className: string, pseudoClassName: string,
-      cssModeProperties: WorkshopComponentCss, tempCustomCss: TempCustomCss): string {
-    if (!cssModeProperties) return '';
-    if (tempCustomCss) for (const cssProperty of tempCustomCss) { delete cssModeProperties[cssProperty]; }
-    const hoverKeys = Object.keys(cssModeProperties);
+      cssProperties: WorkshopComponentCss, tempCustomCss: TempCustomCss): string {
+    if (!cssProperties) return '';
+    if (tempCustomCss) for (const cssProperty of tempCustomCss) { delete cssProperties[cssProperty]; }
+    const hoverKeys = Object.keys(cssProperties);
     if (hoverKeys.length) {
-      return `\r\n\r\n.${className}:${pseudoClassName} {\r\n${GeneralUtils.buildCssString(cssModeProperties)}\r\n}`
+      return `\r\n\r\n.${className}:${pseudoClassName} {\r\n${GeneralUtils.buildCssString(cssProperties)}\r\n}`
     }
     return '';
   }
 
   private static buildPseudoCss(className: string, customCss: CustomCss, tempCustomCss?: TempCustomCss): string {
     let pseudoCssString = '';
-    pseudoCssString += this.buildPseudoClass(className, pseudoClasses.HOVER, customCss[SUB_COMPONENT_CSS_MODES.HOVER], tempCustomCss);
-    pseudoCssString += this.buildPseudoClass(className, pseudoClasses.ACTIVE, customCss[SUB_COMPONENT_CSS_MODES.CLICK], tempCustomCss);
+    pseudoCssString += this.buildPseudoClass(className, pseudoClasses.HOVER, customCss[CSS_STATES.HOVER], tempCustomCss);
+    pseudoCssString += this.buildPseudoClass(className, pseudoClasses.ACTIVE, customCss[CSS_STATES.CLICK], tempCustomCss);
     return pseudoCssString;
   }
 
-  private static buildDefaultCss(className: string, cssModeProperties: [WorkshopComponentCss, WorkshopComponentCss?],
+  private static buildDefaultCss(className: string, cssProperties: [WorkshopComponentCss, WorkshopComponentCss?],
     tempCustomCss: TempCustomCss): string {
-    if (tempCustomCss) for (const cssProperty of tempCustomCss) { delete cssModeProperties[0][cssProperty]; }
-    let customCssString = GeneralUtils.buildCssString(cssModeProperties[0]);
-    if (cssModeProperties[1]) { customCssString += GeneralUtils.buildCssString(cssModeProperties[1]); }
+    if (tempCustomCss) for (const cssProperty of tempCustomCss) { delete cssProperties[0][cssProperty]; }
+    let customCssString = GeneralUtils.buildCssString(cssProperties[0]);
+    if (cssProperties[1]) { customCssString += GeneralUtils.buildCssString(cssProperties[1]); }
     return `.${className} {\r\n${customCssString}\r\n}`;
   }
 
   private static buildCustomCss(className: string, customCss: CustomCssWithInheritedCss, tempCustomCss: TempCustomCss): string {
     const cleanedCustomCss = CssCleaner.clean(customCss[0]);
-    const defaultCss = this.buildDefaultCss(className, [cleanedCustomCss[SUB_COMPONENT_CSS_MODES.DEFAULT], customCss[1]], tempCustomCss);
+    const defaultCss = this.buildDefaultCss(className, [cleanedCustomCss[CSS_STATES.DEFAULT], customCss[1]], tempCustomCss);
     const pseudoCss = this.buildPseudoCss(className, cleanedCustomCss, tempCustomCss);
     return (defaultCss + ' ' + pseudoCss).trim();
   }

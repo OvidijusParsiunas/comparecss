@@ -1,4 +1,4 @@
-export enum SUB_COMPONENT_CSS_MODES {
+export enum CSS_STATES {
   DEFAULT = 'Default',
   HOVER = 'Hover',
   CLICK = 'Click',

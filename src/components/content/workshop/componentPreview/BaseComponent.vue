@@ -10,17 +10,17 @@
       @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId].subcomponentMouseLeave()"
       @mousedown="mouseEvents[subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId].subcomponentMouseDown()"
       @mouseup="mouseEvents[subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId].subcomponentMouseUp()"
-      :style="component.componentPreviewStructure.baseCss.activeCustomCssMode === SUB_COMPONENT_CSS_MODES.CLICK
+      :style="component.componentPreviewStructure.baseCss.activeCssState === CSS_STATES.CLICK
         ? [
             [ component.componentPreviewStructure.baseCss.inheritedCss ? component.componentPreviewStructure.baseCss.inheritedCss.css: '' ],
-            component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
-            component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.HOVER],
-            component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.CLICK],
+            component.componentPreviewStructure.baseCss.customCss[CSS_STATES.DEFAULT],
+            component.componentPreviewStructure.baseCss.customCss[CSS_STATES.HOVER],
+            component.componentPreviewStructure.baseCss.customCss[CSS_STATES.CLICK],
           ]
         : [
             [ component.componentPreviewStructure.baseCss.inheritedCss ? component.componentPreviewStructure.baseCss.inheritedCss.css: '' ],
-            component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT],
-            component.componentPreviewStructure.baseCss.customCss[component.componentPreviewStructure.baseCss.activeCustomCssMode],
+            component.componentPreviewStructure.baseCss.customCss[CSS_STATES.DEFAULT],
+            component.componentPreviewStructure.baseCss.customCss[component.componentPreviewStructure.baseCss.activeCssState],
           ]">
           <layers
             :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
@@ -30,7 +30,7 @@
     </div>
     <div ref="componentPreviewOverlay"
       :id="subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].overlayId"
-      style="display: none" :style="[component.componentPreviewStructure.baseCss.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT], [isImportedComponent ? {} : { height: '100% !important' }]]"
+      style="display: none" :style="[component.componentPreviewStructure.baseCss.customCss[CSS_STATES.DEFAULT], [isImportedComponent ? {} : { height: '100% !important' }]]"
       class="subcomponent-overlay-with-no-border-property-but-with-height"
       :class="[OVERLAY_DEFAULT_CLASS, (isImportedComponent ? 'imported-component' : STATIC_POSITION_CLASS)]">
     </div>
@@ -41,7 +41,7 @@
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
 import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../consts/subcomponentCursorClasses.enum';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
-import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
+import { CSS_STATES } from '../../../../consts/subcomponentCssStates.enum';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 import layers from './layers/Layers.vue';
 
@@ -50,7 +50,7 @@ interface Consts {
   OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
   STATIC_POSITION_CLASS: string;
   BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES;
-  SUB_COMPONENT_CSS_MODES: typeof SUB_COMPONENT_CSS_MODES;
+  CSS_STATES: typeof CSS_STATES;
 }
 
 export default {
@@ -60,7 +60,7 @@ export default {
       OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT,
       STATIC_POSITION_CLASS: STATIC_POSITION_CLASS,
       BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES.BASE,
-      SUB_COMPONENT_CSS_MODES,
+      CSS_STATES,
     };
   },
   components: {

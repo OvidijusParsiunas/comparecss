@@ -75,7 +75,7 @@ import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcompon
 import { ModalEntranceTransition, ModalExitTransition } from '../../../../interfaces/modalTransitions';
 import { PlayTransitionPreviewEvent } from '../../../../interfaces/playTransitionPreviewEvent';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
-import { SUB_COMPONENT_CSS_MODES } from '../../../../consts/subcomponentCssModes.enum';
+import { CSS_STATES } from '../../../../consts/subcomponentCssStates.enum';
 import ComponentPreviewUtils from './utils/componentPreviewUtils';
 
 interface Consts {
@@ -103,8 +103,8 @@ export default {
     componentPreviewMouseLeave(): void {
       Object.keys(this.component.subcomponents).forEach((key) => {
         const subcomponent = this.component.subcomponents[key];
-        if (subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].transition) {
-          subcomponent.customCss[SUB_COMPONENT_CSS_MODES.DEFAULT].transition = 'unset';
+        if (subcomponent.customCss[CSS_STATES.DEFAULT].transition) {
+          subcomponent.customCss[CSS_STATES.DEFAULT].transition = 'unset';
         }
       });
     },

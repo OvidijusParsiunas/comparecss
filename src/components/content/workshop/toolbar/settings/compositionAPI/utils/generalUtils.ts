@@ -5,9 +5,9 @@ export default class GeneralUtils {
 
   public static getTriggeredOptionName(subcomponentProperties: SubcomponentProperties, settingSpec: any): string {
     const { customFeatureObjectKeys, cssProperty } = settingSpec;
-    const { customCss, activeCustomCssMode } = subcomponentProperties;
+    const { customCss, activeCssState } = subcomponentProperties;
     return customFeatureObjectKeys
       ? SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures)
-      : customCss[activeCustomCssMode][cssProperty];
+      : customCss[activeCssState][cssProperty];
   }
 }

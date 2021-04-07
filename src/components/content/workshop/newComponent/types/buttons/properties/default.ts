@@ -4,7 +4,7 @@ import PreviewStructure from '../../../../../../../services/workshop/componentGe
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
-import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
+import { CSS_STATES } from '../../../../../../../consts/subcomponentCssStates.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -18,7 +18,7 @@ const defaultSubcomponentNames: CustomSubcomponentNames = {
 
 function createInitialBaseCss(): CustomCss {
   return {
-    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+    [CSS_STATES.DEFAULT]: {
       borderRadius: '0px',
       borderWidth: '0px',
       borderColor: '#1779ba',
@@ -42,10 +42,10 @@ function createInitialBaseCss(): CustomCss {
       fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
       transition: 'unset',
     },
-    [SUB_COMPONENT_CSS_MODES.HOVER]: {
+    [CSS_STATES.HOVER]: {
       backgroundColor: '#ff0000',
     },
-    [SUB_COMPONENT_CSS_MODES.CLICK]: {
+    [CSS_STATES.CLICK]: {
       backgroundColor: '#409441',
     },
   }
@@ -53,7 +53,7 @@ function createInitialBaseCss(): CustomCss {
 
 function createLayerCss(): CustomCss {
   return {
-    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+    [CSS_STATES.DEFAULT]: {
       height: '100%',
     },
   }
@@ -61,7 +61,7 @@ function createLayerCss(): CustomCss {
 
 function createTextCss(): CustomCss {
   return {
-    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
+    [CSS_STATES.DEFAULT]: {
       top: '50%',
       width: 'auto',
       userSelect: 'none',
@@ -114,8 +114,8 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
     [subcomponentNames.base]: {
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
-      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCssState: CSS_STATES.DEFAULT,
+      defaultCssState: CSS_STATES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedButtonCss,
@@ -126,8 +126,8 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
     [subcomponentNames.layer]: {
       customCss: createLayerCss(),
       initialCss: createLayerCss(),
-      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCssState: CSS_STATES.DEFAULT,
+      defaultCssState: CSS_STATES.DEFAULT,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [subcomponentNames.text]: {
@@ -135,8 +135,8 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
       componentText: 'button',
       customCss: createTextCss(),
       initialCss: createTextCss(),
-      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
+      activeCssState: CSS_STATES.DEFAULT,
+      defaultCssState: CSS_STATES.DEFAULT,
       customFeatures: createDefaultButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultButtonCustomFeatures(),
     },
@@ -153,8 +153,8 @@ export const defaultButton: ComponentGenerator = {
     return {
       type: NEW_COMPONENT_TYPES.BUTTON,
       subcomponents,
-      activeSubcomponentMode: subcomponentNames.base,
-      defaultSubcomponentMode: subcomponentNames.base,
+      activeSubcomponentName: subcomponentNames.base,
+      defaultSubcomponentName: subcomponentNames.base,
       componentPreviewStructure: PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents, subcomponentNames),
       className: 'default-class-name',
       subcomponentNames,

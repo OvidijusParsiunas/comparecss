@@ -6,8 +6,8 @@ export default class GeneralUtils {
     return propertyString.replace( /([a-z])([A-Z])/g, '$1-$2' ).toLowerCase();
   }
 
-  public static buildCssString(cssModeProperties: WorkshopComponentCss): string {
-    return Object.keys(cssModeProperties).map((key) => `  ${this.camelToKebabCase(key)}: ${cssModeProperties[key]};`).join('\r\n');
+  public static buildCssString(cssProperties: WorkshopComponentCss): string {
+    return Object.keys(cssProperties).map((key) => `  ${this.camelToKebabCase(key)}: ${cssProperties[key]};`).join('\r\n');
   }
 
   public static areArraysEqual(arrayA: unknown[], arrayB: unknown[]): boolean {

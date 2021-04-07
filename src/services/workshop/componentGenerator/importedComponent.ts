@@ -2,7 +2,7 @@ import { CUSTOM_SUBCOMPONENT_NAMES_PREFIXES } from '../../../consts/customSubcom
 import { ImportedComponentStructure } from '../../../interfaces/importedComponentStructure';
 import { Subcomponents, WorkshopComponent } from '../../../interfaces/workshopComponent';
 import { CustomSubcomponentNames } from '../../../interfaces/customSubcomponentNames';
-import { SUB_COMPONENT_CSS_MODES } from '../../../consts/subcomponentCssModes.enum';
+import { CSS_STATES } from '../../../consts/subcomponentCssStates.enum';
 import { ComponentGenerator } from '../../../interfaces/componentGenerator';
 
 export default class ImportedCompoment {
@@ -15,8 +15,8 @@ export default class ImportedCompoment {
   }
 
   private static applyTopProperty(importedComponentRef: WorkshopComponent, importedComponentName: string): void {
-    const customCssProperties = importedComponentRef.subcomponents[importedComponentName].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT];
-    const defaultCustomCssProperties = importedComponentRef.subcomponents[importedComponentName].initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT];
+    const customCssProperties = importedComponentRef.subcomponents[importedComponentName].customCss[CSS_STATES.DEFAULT];
+    const defaultCustomCssProperties = importedComponentRef.subcomponents[importedComponentName].initialCss[CSS_STATES.DEFAULT];
     if (!customCssProperties.top) {
       customCssProperties.top = ImportedCompoment.DEFAULT_TOP_PROPERTY;
       defaultCustomCssProperties.top = ImportedCompoment.DEFAULT_TOP_PROPERTY;

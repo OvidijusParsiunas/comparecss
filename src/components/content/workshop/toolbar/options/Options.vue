@@ -11,14 +11,14 @@
           :uniqueIdentifier="SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
           :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
           :objectContainingActiveOption="component"
-          :activeOptionPropertyKeyName="'activeSubcomponentMode'"
+          :activeOptionPropertyKeyName="'activeSubcomponentName'"
           :fontAwesomeIcon="'angle-double-down'"
           :highlightSubcomponents="true"
           :isButtonGroup="true"
           :isNested="true"
           :customEventHandlers="useSubcomponentDropdownEventHandlers"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-          @mouse-click-new-option="newSubcomponentModeClicked($event)"
+          @mouse-click-new-option="newSubcomponentNameClicked($event)"
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       </div>
       <div v-if="component.type === MODAL_COMPONENT_TYPE" class="option-component-button">
@@ -29,27 +29,27 @@
           <font-awesome-icon v-else class="expand-icon dropdown-button-marker" icon="expand-alt"/>
         </button>
       </div>
-      <div class="option-component-button" v-if="component.subcomponents[component.activeSubcomponentMode].optionalSubcomponent">
+      <div class="option-component-button" v-if="component.subcomponents[component.activeSubcomponentName].optionalSubcomponent">
         <button
           type="button" class="btn option-action-button" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
-          :class="component.subcomponents[component.activeSubcomponentMode].optionalSubcomponent.currentlyDisplaying ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add'"
+          :class="component.subcomponents[component.activeSubcomponentName].optionalSubcomponent.currentlyDisplaying ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add'"
           @mouseenter="subcomponentMouseEnterHandler"
           @mouseleave="subcomponentMouseLeaveHandler"
-          @click="toggleSubcomponent(component.subcomponents[component.activeSubcomponentMode])">
+          @click="toggleSubcomponent(component.subcomponents[component.activeSubcomponentName])">
         </button>
       </div>
-      <div v-if="!component.subcomponents[component.activeSubcomponentMode].optionalSubcomponent || component.subcomponents[component.activeSubcomponentMode].optionalSubcomponent.currentlyDisplaying"> 
+      <div v-if="!component.subcomponents[component.activeSubcomponentName].optionalSubcomponent || component.subcomponents[component.activeSubcomponentName].optionalSubcomponent.currentlyDisplaying"> 
         <dropdown class="option-component-button"
-          :uniqueIdentifier="CSS_MODES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
-          :dropdownOptions="componentTypeToOptions[component.type][component.activeSubcomponentMode]"
-          :objectContainingActiveOption="component.subcomponents[component.activeSubcomponentMode]"
-          :activeOptionPropertyKeyName="'activeCustomCssMode'"
+          :uniqueIdentifier="CSS_STATES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
+          :dropdownOptions="componentTypeToOptions[component.type][component.activeSubcomponentName]"
+          :objectContainingActiveOption="component.subcomponents[component.activeSubcomponentName]"
+          :activeOptionPropertyKeyName="'activeCssState'"
           :fontAwesomeIcon="'angle-down'"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-          @mouse-click-new-option="newCssModeClicked($event)"/>
+          @mouse-click-new-option="newCssStateClicked($event)"/>
         <button
           type="button"
-          v-for="option in componentTypeToOptions[component.type][component.activeSubcomponentMode][component.subcomponents[component.activeSubcomponentMode].activeCustomCssMode]" :key="option"
+          v-for="option in componentTypeToOptions[component.type][component.activeSubcomponentName][component.subcomponents[component.activeSubcomponentName].activeCssState]" :key="option"
           :disabled="option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive"
           class="btn btn-outline-secondary option-component-button option-select-button-default"
           :class="[
@@ -75,6 +75,7 @@
 <script lang="ts">
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
+import { ComponentTypeToOptions, componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { removeSubcomponentModalState } from './removeSubcomponentModalState/removeSubcomponentModalState';
@@ -85,9 +86,8 @@ import { subcomponentSelectModeState } from './subcomponentSelectMode/subcompone
 import SubcomponentSelectModeService from './subcomponentSelectMode/subcomponentSelectModeService';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import SubcomponentToggleService from './subcomponentToggleService/subcomponentToggleService';
-import { componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
-import { SUB_COMPONENT_CSS_MODES } from '../../../../../consts/subcomponentCssModes.enum';
+import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum';
@@ -95,20 +95,20 @@ import JSONManipulation from '../../../../../services/workshop/jsonManipulation'
 import useToolbarPositionToggle from './compositionApi/useToolbarPositionToggle';
 import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
+import { CSS_STATES } from '../../../../../consts/subcomponentCssStates.enum';
 import { Option } from '../../../../../interfaces/componentOptions';
 import dropdown from './dropdown/Dropdown.vue';
+import { Ref } from 'node_modules/vue/dist/vue';
 
 interface Consts {
-  CORE_SUBCOMPONENTS_NAMES,
-  WORKSHOP_TOOLBAR_OPTION_TYPES;
-  SUB_COMPONENT_CSS_MODES;
-  componentTypeToOptions;
-  useSubcomponentDropdownEventHandlers;
-  SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER;
+  componentTypeToOptions: ComponentTypeToOptions;
+  useSubcomponentDropdownEventHandlers: (objectContainingActiveOption: Ref<unknown>, activeOptionPropertyKeyName: Ref<string>, highlightSubcomponents: Ref<boolean>) => DropdownCompositionAPI;
+  BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES;
+  SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER: string;
   MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES;
   REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: string;
   SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
-  CSS_MODES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
+  CSS_STATES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
 }
 
 interface Data {
@@ -121,17 +121,15 @@ interface Data {
 export default {
   setup(): RemovalModalState & Consts & UseToolbarPositionToggle {
     return {
-      ...removeSubcomponentModalState,
-      CORE_SUBCOMPONENTS_NAMES,
-      WORKSHOP_TOOLBAR_OPTION_TYPES,
-      SUB_COMPONENT_CSS_MODES,
       componentTypeToOptions,
       useSubcomponentDropdownEventHandlers,
+      ...removeSubcomponentModalState,
+      BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES.BASE,
       SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
       MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES.MODAL,
       REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: `#${REMOVE_SUBCOMPONENT_MODAL_ID}`,
       SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS,
-      CSS_MODES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.CSS_MODES,
+      CSS_STATES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.CSS_STATES,
       ...useToolbarPositionToggle(),
     };
   },
@@ -150,9 +148,9 @@ export default {
       const buttonElement = event.currentTarget as HTMLElement;
       const subcomponentSelectModeCallbackFunction = SubcomponentSelectModeService.initiate(buttonElement);
       const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
-      const subcomponentModeClickedFunc = this.newSubcomponentModeClicked;
+      const subcomponentNameClickedFunc = this.newSubcomponentNameClicked;
       this.$emit('toggle-subcomponent-select-mode',
-        [subcomponentSelectModeCallbackFunction, keyTriggers, buttonElement, subcomponentModeClickedFunc] as ToggleSubcomponentSelectModeEvent);
+        [subcomponentSelectModeCallbackFunction, keyTriggers, buttonElement, subcomponentNameClickedFunc] as ToggleSubcomponentSelectModeEvent);
     },
     selectNestedSubcomponentPositionOption(): void {
       const nestedSubcomponentPositionOption = {
@@ -172,38 +170,38 @@ export default {
     getActiveOption(): Option {
       return this.activeOption;
     },
-    newSubcomponentModeClicked(newSubComponent: string): void {
-      // reset css mode of the previous subcomponent to the first one
-      const oldActiveSubcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentMode];
-      oldActiveSubcomponent.activeCustomCssMode = oldActiveSubcomponent.defaultCustomCssMode;
-      this.component.activeSubcomponentMode = newSubComponent;
-      if (this.component.subcomponents[this.component.activeSubcomponentMode].optionalSubcomponent
-          && !this.component.subcomponents[this.component.activeSubcomponentMode].optionalSubcomponent.currentlyDisplaying) {
+    newSubcomponentNameClicked(newSubComponent: string): void {
+      // reset css state of the previous subcomponent to the first one
+      const oldActiveSubcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
+      oldActiveSubcomponent.activeCssState = oldActiveSubcomponent.defaultCssState;
+      this.component.activeSubcomponentName = newSubComponent;
+      if (this.component.subcomponents[this.component.activeSubcomponentName].optionalSubcomponent
+          && !this.component.subcomponents[this.component.activeSubcomponentName].optionalSubcomponent.currentlyDisplaying) {
         this.hideSettings();
         return;
       }
-      this.newOptionOnNewModeSelect();
+      this.setNewOptionOnNewDropdownOptionSelect();
     },
-    newCssModeClicked(newCssMode: SUB_COMPONENT_CSS_MODES): void {
-      this.component.subcomponents[this.component.activeSubcomponentMode].activeCustomCssMode = newCssMode;
-      this.newOptionOnNewModeSelect();
+    newCssStateClicked(newCssState: CSS_STATES): void {
+      this.component.subcomponents[this.component.activeSubcomponentName].activeCssState = newCssState;
+      this.setNewOptionOnNewDropdownOptionSelect();
     },
     updateOptionsForNewComponent(lastActiveOptionPriorToAllComponentsDeletion: Option): void {
       if (lastActiveOptionPriorToAllComponentsDeletion) this.activeOption = lastActiveOptionPriorToAllComponentsDeletion;
-      this.newOptionOnNewModeSelect()
+      this.setNewOptionOnNewDropdownOptionSelect()
     },
-    newOptionOnNewModeSelect(): void {
+    setNewOptionOnNewDropdownOptionSelect(): void {
       if (this.activeOption.buttonName) {
         const newOption = this.getNewSuitableOption();
         this.selectOption(newOption);
       }
     },
     getNewSuitableOption(): Option {
-      const activeModeOptions = this.getActiveModeOptions();
-      return this.getOptionFromNewSubcomponent(activeModeOptions) || activeModeOptions[0];
+      const activeOptions = this.getActiveOptions();
+      return this.getOptionFromNewSubcomponent(activeOptions) || activeOptions[0];
     },
-    getOptionFromNewSubcomponent(activeModeOptions: Option[]): Option {
-      return activeModeOptions.find((option: Option) => {
+    getOptionFromNewSubcomponent(activeOptions: Option[]): Option {
+      return activeOptions.find((option: Option) => {
         return option.buttonName === this.activeOption.buttonName
           && (this.isExpandedModalPreviewModeActive || option.enabledOnExpandedModalPreviewMode === this.activeOption.enabledOnExpandedModalPreviewMode);
       });
@@ -216,7 +214,7 @@ export default {
           const defaultOption = this.getDefaultOption();
           this.selectOption(defaultOption); 
         }
-        SubcomponentToggleService.changeSubcomponentOverlayClass(optionalSubcomponent, this.component.activeSubcomponentMode, false,
+        SubcomponentToggleService.changeSubcomponentOverlayClass(optionalSubcomponent, this.component.activeSubcomponentName, false,
           SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
       } else if (!this.getIsDoNotShowModalAgainState()) {
         this.currentRemoveSubcomponentModalTargetId = this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID;
@@ -225,7 +223,7 @@ export default {
       } else {
         subcomponent.customCss = JSONManipulation.deepCopy(initialCss);
         optionalSubcomponent.currentlyDisplaying = false;
-        SubcomponentToggleService.changeSubcomponentOverlayClass(optionalSubcomponent, this.component.activeSubcomponentMode, true,
+        SubcomponentToggleService.changeSubcomponentOverlayClass(optionalSubcomponent, this.component.activeSubcomponentName, true,
           SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
         this.hideSettings();
       }
@@ -248,11 +246,11 @@ export default {
         [this.isExpandedModalPreviewModeActive, setOptionToDefaultCallback, this.$refs.toolbarPositionToggle] as ToggleExpandedModalPreviewModeEvent);
     },
     getDefaultOption(): Option {
-      return this.getActiveModeOptions()[0];
+      return this.getActiveOptions()[0];
     },
-    getActiveModeOptions(): Option[] {
-      const { subcomponents, activeSubcomponentMode, type } = this.component;
-      return componentTypeToOptions[type][activeSubcomponentMode][subcomponents[activeSubcomponentMode].activeCustomCssMode];
+    getActiveOptions(): Option[] {
+      const { subcomponents, activeSubcomponentName, type } = this.component;
+      return componentTypeToOptions[type][activeSubcomponentName][subcomponents[activeSubcomponentName].activeCssState];
     },
     hideSettings(): void {
       this.$emit('hide-settings');
@@ -261,7 +259,7 @@ export default {
     resetComponentPreviewMarginAssistance(): void {
       this.$nextTick(() => {
         this.componentPreviewAssistance.margin = this.activeOption.type === WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN
-          && this.component.activeSubcomponentMode === CORE_SUBCOMPONENTS_NAMES.BASE
+          && this.component.activeSubcomponentName === this.BASE_SUB_COMPONENT
           && this.isSettingsDisplayed
           && !this.isExpandedModalPreviewModeActive;
       });
