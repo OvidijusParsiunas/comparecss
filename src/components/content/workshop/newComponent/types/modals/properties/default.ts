@@ -1,16 +1,19 @@
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../../../../../consts/modalTransitionTypes.enum';
+import ImportedCompoment from '../../../../../../../services/workshop/componentGenerator/importedComponent';
+import PreviewStructure from '../../../../../../../services/workshop/componentGenerator/previewStructure';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
-import PreviewStructure from '../../../../../../../services/workshop/newComponent/previewStructure';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
+import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { modalLayerBottomSpecificSettings } from './modalLayerBottomSpecificSettings';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
+import getModalSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { modalLayerTopSpecificSettings } from './modalLayerTopSpecificSettings';
-import { ComponentGenerator } from '../../../../../../../interfaces/newComponent';
 import { inheritedAlertCloseChildCss } from './inheritedAlertCloseChildCss';
 import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';
 import { modalBaseSpecificSettings } from './modalBaseSpecificSettings';
+import { defaultButton } from '../../buttons/properties/default';
 import { inheritedAlertBaseCss } from './inheritedCss';
 import {
   AutoWidth, BackdropProperties, ComponentCenteringInParent, ComponentTransitions,
@@ -123,42 +126,6 @@ function createInitialCloseButtonCss(): CustomCss {
   };
 }
 
-function createInitialButton1Css(): CustomCss {
-  return {
-    [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
-      borderRadius: '0px',
-      borderWidth: '0px',
-      borderColor: '#1779ba',
-      backgroundColor: '#1779ba',
-      borderStyle: 'solid',
-      boxShadow: 'unset',
-      outline: 'none',
-      paddingTop: '0px',
-      paddingBottom: '0px',
-      paddingLeft: '12px',
-      paddingRight: '12px',
-      marginLeft: '30px',
-      marginTop: '0px',
-      marginRight: '0px',
-      marginBottom: '0px',
-      width: '40px',
-      height: '38px',
-      boxSizing: 'content-box',
-      color: '#ffffff',
-      fontSize: '14px',
-      fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
-      userSelect: 'none',
-      top: '50%',
-    },
-    [SUB_COMPONENT_CSS_MODES.HOVER]: {
-      backgroundColor: '#ff0000',
-    },
-    [SUB_COMPONENT_CSS_MODES.CLICK]: {
-      backgroundColor: '#409441',
-    },
-  };
-}
-
 function createInitialLayer1Css(): CustomCss {
   return {
     [SUB_COMPONENT_CSS_MODES.DEFAULT]: {
@@ -252,7 +219,7 @@ function createInitialText2Css(): CustomCss {
       marginLeft: '0px',
       marginRight: '0px',
     },
-  }
+  };
 }
 
 function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
@@ -309,34 +276,6 @@ function createSubcomponents(): Subcomponents {
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
-    [SUB_COMPONENTS.BUTTON_1]: {
-      componentTag: 'button',
-      componentText: 'button',
-      customCss: createInitialButton1Css(),
-      initialCss: createInitialButton1Css(),
-      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      subcomponentPreviewTransition: 'all 0.25s ease-out',
-      tempCustomCss: new Set(['transition']),
-      childCss: inheritedAlertCloseChildCss,
-      optionalSubcomponent: { currentlyDisplaying: true },
-      customFeatures: createDefaultCloseButtonCustomFeatures(),
-      defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
-    },
-    [SUB_COMPONENTS.BUTTON_2]: {
-      componentTag: 'button',
-      componentText: 'Cancel',
-      customCss: createInitialButton1Css(),
-      initialCss: createInitialButton1Css(),
-      activeCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      defaultCustomCssMode: SUB_COMPONENT_CSS_MODES.DEFAULT,
-      subcomponentPreviewTransition: 'all 0.25s ease-out',
-      tempCustomCss: new Set(['transition']),
-      childCss: inheritedAlertCloseChildCss,
-      optionalSubcomponent: { currentlyDisplaying: true },
-      customFeatures: createDefaultCloseButtonCustomFeatures(),
-      defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
-    },
     [SUB_COMPONENTS.TEXT_1]: {
       componentTag: 'div',
       componentText: 'Modal title',
@@ -362,11 +301,19 @@ function createSubcomponents(): Subcomponents {
   };
 }
 
-// WORK2: copy the new modal config over
 export const defaultModal: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
-    const subcomponents = createSubcomponents();
-    const subcomponentDropdownStructure = null;
+    // solution for settings is to have types within subcomponent for the type to option mapping
+    const importedButton1Name = SUB_COMPONENTS.BUTTON_1;
+    const importedButton2Name = SUB_COMPONENTS.BUTTON_2;
+    const subcomponents = { ...createSubcomponents(),
+      ...ImportedCompoment.createImportedSubcomponents(defaultButton, importedButton1Name, 1),
+      ...ImportedCompoment.createImportedSubcomponents(defaultButton, importedButton2Name, 2) };
+    const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
+      subcomponents[SUB_COMPONENTS.CLOSE], subcomponents[SUB_COMPONENTS.TEXT_1], subcomponents[SUB_COMPONENTS.TEXT_2],
+      ImportedCompoment.createImportedComponentStructure(subcomponents, importedButton1Name),
+      ImportedCompoment.createImportedComponentStructure(subcomponents, importedButton2Name),
+    );
     return {
       type: NEW_COMPONENT_TYPES.MODAL,
       subcomponents,
@@ -376,4 +323,4 @@ export const defaultModal: ComponentGenerator = {
       className: 'default-class-name',
     };
   },
-};
+}

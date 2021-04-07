@@ -16,7 +16,7 @@ interface Sections {
 }
 
 export interface Layer {
-  subcomponentType: SUB_COMPONENTS;
+  subcomponentType: string;
   customCss: CustomCss;
   sections: Sections;
 }

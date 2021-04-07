@@ -8,7 +8,7 @@ function setSubcomponentAndOverlayElementIdsState(state: SubcomponentAndOverlayE
   return subcomponentAndOverlayElementIdsObject = state;
 }
 
-function getOverlayIdViaSubcomponentType(subcomponentType: SUB_COMPONENTS): string {
+function getOverlayIdViaSubcomponentType(subcomponentType: string): string {
   return subcomponentAndOverlayElementIdsObject[subcomponentType] && subcomponentAndOverlayElementIdsObject[subcomponentType].overlayId;
 }
 

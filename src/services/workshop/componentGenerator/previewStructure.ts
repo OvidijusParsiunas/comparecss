@@ -2,6 +2,7 @@ import { AlignedSections, ComponentPreviewStructure, Layer, NestedSubcomponent }
 import { SubcomponentProperties, Subcomponents } from '../../../interfaces/workshopComponent';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../consts/layerSections';
 import { NestedDropdownStructure } from '../../../interfaces/nestedDropdownStructure';
+import { CustomSubcomponentNames } from '../../../interfaces/customSubcomponentNames';
 import { SUB_COMPONENTS } from '../../../consts/subcomponentModes.enum';
 
 export default class PreviewStructure {
@@ -54,7 +55,7 @@ export default class PreviewStructure {
     });
   }
   
-  private static createEmptyLayer(layerName: SUB_COMPONENTS, layerSubcomponent: SubcomponentProperties): Layer {
+  private static createEmptyLayer(layerName: string, layerSubcomponent: SubcomponentProperties): Layer {
     return {
       customCss: layerSubcomponent.customCss,
       subcomponentType: layerName,
@@ -64,7 +65,7 @@ export default class PreviewStructure {
     };
   }
 
-  private static createLayer(layerName: SUB_COMPONENTS, layerSubcomponent: SubcomponentProperties,
+  private static createLayer(layerName: string, layerSubcomponent: SubcomponentProperties,
       layerSubcomponentsStructure: NestedDropdownStructure, allSubcomponents: Subcomponents): Layer {
     const layer = PreviewStructure.createEmptyLayer(layerName, layerSubcomponent);
     if (layerSubcomponent.layerSectionsType === LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS) {
@@ -75,7 +76,7 @@ export default class PreviewStructure {
     return layer;
   }
   
-  private static createLayers(subcomponentBase: NestedDropdownStructure, subcomponents: Subcomponents, subcomponentNames?: any): Layer[] {
+  private static createLayers(subcomponentBase: NestedDropdownStructure, subcomponents: Subcomponents, subcomponentNames?: CustomSubcomponentNames): Layer[] {
     // if subcomponentDropdownStructure contains layers
     if (subcomponents[Object.keys(subcomponentBase)[0]].layerSectionsType) {
       return Object.keys(subcomponentBase).map((subcomponentName: SUB_COMPONENTS) =>
@@ -88,16 +89,16 @@ export default class PreviewStructure {
       subcomponentBase as NestedDropdownStructure, subcomponents)];
   }
 
-  // WORK2: typing
   public static createComponentPreviewStructure(subcomponentDropdownStructure: NestedDropdownStructure,
-      subcomponents: Subcomponents, subcomponentNames?: any): ComponentPreviewStructure {
+      subcomponents: Subcomponents, subcomponentNames?: CustomSubcomponentNames): ComponentPreviewStructure {
     const layers = PreviewStructure.createLayers(
-      subcomponentDropdownStructure[subcomponentNames ? subcomponentNames.base : SUB_COMPONENTS.BASE] as NestedDropdownStructure, subcomponents, subcomponentNames);
+      subcomponentDropdownStructure[subcomponentNames ? subcomponentNames.base : SUB_COMPONENTS.BASE] as NestedDropdownStructure,
+      subcomponents, subcomponentNames);
     return {
       baseCss: subcomponents[subcomponentNames ? subcomponentNames.base : SUB_COMPONENTS.BASE],
       layeringType: 'vertical',
       layers,
       subcomponentDropdownStructure,
-    }
+    };
   }
 }

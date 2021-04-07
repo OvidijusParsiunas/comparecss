@@ -89,10 +89,10 @@
 </template>
 
 <script lang="ts">
-import getModalSubcomponentDropdownStructure from './newComponent/types/modals/properties/subcomponentDropdownStructure'
 import { modalLayerBottomSpecificSettings } from './newComponent/types/modals/properties/modalLayerBottomSpecificSettings';
 import { removeSubcomponentModalState } from './toolbar/options/removeSubcomponentModalState/removeSubcomponentModalState';
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../consts/modalTransitionTypes.enum';
+import getModalSubcomponentDropdownStructure from './newComponent/types/modals/properties/subcomponentDropdownStructure'
 import { modalLayerTopSpecificSettings } from './newComponent/types/modals/properties/modalLayerTopSpecificSettings';
 import { inheritedAlertCloseChildCss } from './newComponent/types/alerts/properties/inheritedAlertCloseChildCss';
 import { removeComponentModalState } from './componentList/removeComponentModalState/removeComponentModalState';
@@ -101,13 +101,14 @@ import SubcomponentToggleService from './toolbar/options/subcomponentToggleServi
 import { modalBaseSpecificSettings } from './newComponent/types/modals/properties/modalBaseSpecificSettings';
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
+import ImportedCompoment from '../../../services/workshop/componentGenerator/importedComponent';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../consts/subcomponentOverlayClasses.enum';
+import ProcessClassName from '../../../services/workshop/componentGenerator/processClassName';
+import PreviewStructure from '../../../services/workshop/componentGenerator/previewStructure'
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { inheritedAlertBaseCss } from './newComponent/types/alerts/properties/inheritedCss';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../consts/layerSections';
-import ProcessClassName from '../../../services/workshop/newComponent/processClassName';
-import PreviewStructure from '../../../services/workshop/newComponent/previewStructure'
 import { SUB_COMPONENT_CSS_MODES } from '../../../consts/subcomponentCssModes.enum';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../consts/domEventTriggerKeys.enum';
@@ -116,6 +117,7 @@ import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
 import { JAVASCRIPT_CLASSES } from '../../../consts/javascriptClasses.enum';
 import JSONManipulation from '../../../services/workshop/jsonManipulation';
+import { RemovalModalState } from '../../../interfaces/removalModalState';
 import componentContents from './componentPreview/ComponentPreview.vue';
 import { SUB_COMPONENTS } from '../../../consts/subcomponentModes.enum';
 import removalModalTemplate from './templates/RemovalModalTemplate.vue';
@@ -131,10 +133,10 @@ import {
 
 interface Consts {
   preloadedIconsElementId: string;
-  removeComponentModalState;
-  removeSubcomponentModalState;
-  REMOVE_COMPONENT_MODAL_ID;
-  REMOVE_SUBCOMPONENT_MODAL_ID;
+  removeComponentModalState: RemovalModalState;
+  removeSubcomponentModalState: RemovalModalState;
+  REMOVE_COMPONENT_MODAL_ID: string;
+  REMOVE_SUBCOMPONENT_MODAL_ID: string;
 }
 
 interface Data {
@@ -426,46 +428,17 @@ function createSubcomponents(): Subcomponents {
   };
 }
 
-// WORK2: Utils file, types, consts
-function applyTopProperty(importedComponentRef: any, importedComponentName: string): void {
-  const customCssProperties = importedComponentRef.subcomponents[importedComponentName].customCss[SUB_COMPONENT_CSS_MODES.DEFAULT];
-  const defaultCustomCssProperties = importedComponentRef.subcomponents[importedComponentName].initialCss[SUB_COMPONENT_CSS_MODES.DEFAULT];
-  if (!customCssProperties.top) {
-    customCssProperties.top = '50%';
-    defaultCustomCssProperties.top = '50%';
-  }
-}
-
-// Work2: type
-function createImportedSubcomponents(componentBuilder: any, importedComponentName: string, importedComponentId: number): any {
-  const importedComponentRef = componentBuilder.createNewComponent(importedComponentName, importedComponentId);
-  // take into consideration that when importing existing component, the default will need to be recreated
-  applyTopProperty(importedComponentRef, importedComponentName);
-  // referencing the whole component within it's own subcomponent may not be efficient
-  // alternative would be to have a placeholder subcomponent to reference it
-  importedComponentRef.subcomponents[importedComponentName].importedComponent = importedComponentRef;
-  return importedComponentRef.subcomponents;
-}
-
-// WORK2: to utils
-function createImportedSubcomponentStructure(subcomponents: any, baseName: string): any {
-  return {
-    baseName,
-    component: subcomponents[baseName].importedComponent.componentPreviewStructure.subcomponentDropdownStructure,
-  }
-}
-
 function createNewComponent(): WorkshopComponent {
   // solution for settings is to have types within subcomponent for the type to option mapping
   const importedButton1Name = SUB_COMPONENTS.BUTTON_1;
   const importedButton2Name = SUB_COMPONENTS.BUTTON_2;
   const subcomponents = { ...createSubcomponents(),
-    ...createImportedSubcomponents(defaultButton, importedButton1Name, 1),
-    ...createImportedSubcomponents(defaultButton, importedButton2Name, 2) };
+    ...ImportedCompoment.createImportedSubcomponents(defaultButton, importedButton1Name, 1),
+    ...ImportedCompoment.createImportedSubcomponents(defaultButton, importedButton2Name, 2) };
   const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
     subcomponents[SUB_COMPONENTS.CLOSE], subcomponents[SUB_COMPONENTS.TEXT_1], subcomponents[SUB_COMPONENTS.TEXT_2],
-    createImportedSubcomponentStructure(subcomponents, importedButton1Name),
-    createImportedSubcomponentStructure(subcomponents, importedButton2Name),
+    ImportedCompoment.createImportedComponentStructure(subcomponents, importedButton1Name),
+    ImportedCompoment.createImportedComponentStructure(subcomponents, importedButton2Name),
   );
   return {
     type: NEW_COMPONENT_TYPES.MODAL,

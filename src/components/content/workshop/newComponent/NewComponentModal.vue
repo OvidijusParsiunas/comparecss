@@ -51,7 +51,7 @@
 
 <script lang="ts">
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
-import ProcessClassName from '../../../../services/workshop/newComponent/processClassName';
+import ProcessClassName from '../../../../services/workshop/componentGenerator/processClassName';
 import newComponentModalService from '../../../../services/workshop/newComponentModal';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';

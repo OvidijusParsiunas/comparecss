@@ -1,7 +1,7 @@
+import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 
-// WORK2: need type
-export default function getButtonSubcomponentDropdownStructure(subcomponentNames: any): NestedDropdownStructure {
+export default function getButtonSubcomponentDropdownStructure(subcomponentNames: CustomSubcomponentNames): NestedDropdownStructure {
   return {
     [subcomponentNames.base]: {
       [subcomponentNames.text]: { currentlyDisplaying: true },

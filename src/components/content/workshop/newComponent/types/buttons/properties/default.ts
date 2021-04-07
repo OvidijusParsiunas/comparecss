@@ -1,17 +1,20 @@
 import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import ImportedCompoment from '../../../../../../../services/workshop/componentGenerator/importedComponent';
+import PreviewStructure from '../../../../../../../services/workshop/componentGenerator/previewStructure';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
-import PreviewStructure from '../../../../../../../services/workshop/newComponent/previewStructure';
+import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { SUB_COMPONENT_CSS_MODES } from '../../../../../../../consts/subcomponentCssModes.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
+import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import getButtonSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
-import { ComponentGenerator } from '../../../../../../../interfaces/newComponent';
 import { buttonSpecificSettings } from './buttonSpecificSettings';
 import { inheritedButtonCss } from './inheritedCss';
 
-// WORK2: add type
-const defaultSubcomponentNames = { base: SUB_COMPONENTS.BUTTON_1, layer: SUB_COMPONENTS.LAYER_1, text: SUB_COMPONENTS.TEXT_1};
+const defaultSubcomponentNames: CustomSubcomponentNames = {
+  base: SUB_COMPONENTS.BASE, layer: SUB_COMPONENTS.LAYER_1, text: SUB_COMPONENTS.TEXT_1,
+};
 
 function createInitialBaseCss(): CustomCss {
   return {
@@ -106,8 +109,7 @@ function createDefaultButtonCustomFeatures(): CustomFeatures {
   }
 }
 
-// WORK2: types
-function createSubcomponents(subcomponentNames: any): Subcomponents {
+function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcomponents {
   return {
     [subcomponentNames.base]: {
       customCss: createInitialBaseCss(),
@@ -141,26 +143,18 @@ function createSubcomponents(subcomponentNames: any): Subcomponents {
   }
 }
 
-// WORK2: Types
-function generateImportedSubcomponentNames(importedSubcomponentBaseName: string, importedSubcomponentId: number): any {
-  const spaces = new Array(importedSubcomponentId).join(' ');
-  // WORK2: need a const prefix
-  return { base: importedSubcomponentBaseName, layer: `Layer ${spaces}`, text: `Text  ${spaces}`};
-}
-
 export const defaultButton: ComponentGenerator = {
-  createNewComponent(importedSubcomponentBaseName: string, importedSubcomponentId: number): any {
-    // WORK2: need a type
+  createNewComponent(importedSubcomponentBaseName: string, importedSubcomponentId: number): WorkshopComponent {
     const subcomponentNames = importedSubcomponentBaseName
-      ? generateImportedSubcomponentNames(importedSubcomponentBaseName, importedSubcomponentId)
+      ? ImportedCompoment.generateImportedSubcomponentNames(importedSubcomponentBaseName, importedSubcomponentId)
       : defaultSubcomponentNames;
     const subcomponents = createSubcomponents(subcomponentNames);
     const subcomponentDropdownStructure = getButtonSubcomponentDropdownStructure(subcomponentNames);
     return {
       type: NEW_COMPONENT_TYPES.BUTTON,
       subcomponents,
-      activeSubcomponentMode: SUB_COMPONENTS.BASE,
-      defaultSubcomponentMode: SUB_COMPONENTS.BASE,
+      activeSubcomponentMode: subcomponentNames.base,
+      defaultSubcomponentMode: subcomponentNames.base,
       componentPreviewStructure: PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents, subcomponentNames),
       className: 'default-class-name',
       subcomponentNames,

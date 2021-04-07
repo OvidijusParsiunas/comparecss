@@ -17,7 +17,7 @@
 <script lang="ts">
 import { removeComponentModalState } from './removeComponentModalState/removeComponentModalState';
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
-import ProcessClassName from '../../../../services/workshop/newComponent/processClassName';
+import ProcessClassName from '../../../../services/workshop/componentGenerator/processClassName';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
 import { COMPONENT_CARD_MARKER } from '../../../../consts/elementClassMarkers';

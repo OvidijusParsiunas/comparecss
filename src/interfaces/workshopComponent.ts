@@ -5,7 +5,7 @@ import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { SUB_COMPONENT_CSS_MODES } from '../consts/subcomponentCssModes.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { NEW_COMPONENT_TYPES } from '../consts/newComponentTypes.enum';
-import { SUB_COMPONENTS } from '../consts/subcomponentModes.enum';
+import { CustomSubcomponentNames } from './customSubcomponentNames';
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { TempCustomCss } from './tempCustomCss';
 import { InheritedCss } from './inheritedCss';
@@ -115,22 +115,23 @@ export interface CustomFeatures {
   customFeatures?: CustomFeatures;
   defaultCustomFeatures?: CustomFeatures;
   layerSectionsType?: LAYER_SECTIONS_TYPES;
+  importedComponent?: WorkshopComponent;
 }
 
+// WORK2: make sure SUB_STRING is no longer used
 export type Subcomponents = {
-  [property in SUB_COMPONENTS]?: SubcomponentProperties;
+  [subcomponentName: string]: SubcomponentProperties;
 }
 
-// WORK2: types
 export interface WorkshopComponent {
   type: NEW_COMPONENT_TYPES;
   subcomponents: Subcomponents;
-  activeSubcomponentMode: SUB_COMPONENTS;
+  activeSubcomponentMode: string;
   // the motivator for this is the fact that the first subcomponent should not be assumed to be the default one
-  defaultSubcomponentMode: SUB_COMPONENTS;
+  defaultSubcomponentMode: string;
   componentPreviewStructure: ComponentPreviewStructure;
   // class name for the component
   className: string;
   // used for imported components
-  subcomponentNames?: any,
+  subcomponentNames?: CustomSubcomponentNames;
 }

@@ -1,11 +1,11 @@
+import { ImportedComponentStructure } from '../../../../../../../interfaces/importedComponentStructure';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
 import { SUB_COMPONENTS } from '../../../../../../../consts/subcomponentModes.enum';
 
-// WORK2: type
 export default function getModalSubcomponentDropdownStructure(
     closeComponent: SubcomponentProperties, textSubcomponent1: SubcomponentProperties, textSubcomponent2: SubcomponentProperties,
-    importedButtonStructure1: any, importedButtonStructure2: any): NestedDropdownStructure {
+    importedButtonStructure1: ImportedComponentStructure, importedButtonStructure2: ImportedComponentStructure): NestedDropdownStructure {
   return {
     [SUB_COMPONENTS.BASE]: {
       [SUB_COMPONENTS.LAYER_1]: {
