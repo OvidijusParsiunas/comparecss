@@ -1,8 +1,8 @@
-import { OPACITY_INVISIBLE, OPACITY_VISIBLE, ALL_PROPERTIES, LINEAR_SPEED_TRANSITION } from './sharedConsts';
-import { ElementStyleProperties } from '../../../../interfaces/elementStyleProperties';
+import { OPACITY_INVISIBLE, OPACITY_VISIBLE, ALL_PROPERTIES, LINEAR_SPEED_TRANSITION } from '../consts/sharedConsts';
+import { ElementStyleProperties } from '../../../../../../../interfaces/elementStyleProperties';
+import { ExitTransitionCallback } from '../../../../../../../interfaces/modalTransitions';
+import { BackdropProperties } from '../../../../../../../interfaces/workshopComponent';
 import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
-import { ExitTransitionCallback } from '../../../../interfaces/modalTransitions';
-import { BackdropProperties } from '../../../../interfaces/workshopComponent';
 import GeneralUtils from './generalUtils';
 
 export default class TransitionUtils {

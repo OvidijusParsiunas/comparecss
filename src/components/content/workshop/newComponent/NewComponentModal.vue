@@ -51,12 +51,12 @@
 
 <script lang="ts">
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
-import ProcessClassName from '../../../../services/workshop/componentGenerator/processClassName';
 import newComponentModalService from '../../../../services/workshop/newComponentModal';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
 import { NEW_COMPONENT_STYLES } from '../../../../consts/newComponentStyles.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
+import ProcessClassName from '../utils/componentGenerator/processClassName';
 import { NEW_COMPONENT_MODAL_ID } from '../../../../consts/elementIds';
 import { componentTypeToStyles } from './types/componentTypeToStyles';
 

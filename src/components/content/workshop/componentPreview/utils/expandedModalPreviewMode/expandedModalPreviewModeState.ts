@@ -1,5 +1,5 @@
-import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES } from '../../../consts/toolbarClasses';
-import { ElementStyleProperties } from '../../../interfaces/elementStyleProperties';
+import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES } from '../../../../../../consts/toolbarClasses';
+import { ElementStyleProperties } from '../../../../../../interfaces/elementStyleProperties';
 
 let beginningTimeOfTransitionState = 0;
 let isModeToggleTransitionInProgressState = false;

@@ -1,4 +1,4 @@
-import { TransitionProperties } from '../../../../interfaces/transitionProperties';
+import { TransitionProperties } from '../../../../../../../interfaces/transitionProperties';
 
 export const OPACITY_INVISIBLE = '0';
 export const OPACITY_VISIBLE = '1';

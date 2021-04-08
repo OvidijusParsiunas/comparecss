@@ -101,10 +101,7 @@ import SubcomponentToggleService from './toolbar/options/subcomponentToggleServi
 import { modalBaseSpecificSettings } from './newComponent/types/modals/properties/modalBaseSpecificSettings';
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
-import ImportedCompoment from '../../../services/workshop/componentGenerator/importedComponent';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../consts/subcomponentOverlayClasses.enum';
-import ProcessClassName from '../../../services/workshop/componentGenerator/processClassName';
-import PreviewStructure from '../../../services/workshop/componentGenerator/previewStructure'
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { inheritedAlertBaseCss } from './newComponent/types/alerts/properties/inheritedCss';
@@ -116,9 +113,12 @@ import { CSS_PSEUDO_CLASSES } from '../../../consts/subcomponentCssClasses.enum'
 import { defaultButton } from './newComponent/types/buttons/properties/default';
 import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
+import ImportedCompoment from './utils/componentGenerator/importedComponent';
 import { JAVASCRIPT_CLASSES } from '../../../consts/javascriptClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../consts/subcomponentTypes.enum';
 import JSONManipulation from '../../../services/workshop/jsonManipulation';
+import ProcessClassName from './utils/componentGenerator/processClassName';
+import PreviewStructure from './utils/componentGenerator/previewStructure'
 import { RemovalModalState } from '../../../interfaces/removalModalState';
 import componentContents from './componentPreview/ComponentPreview.vue';
 import removalModalTemplate from './templates/RemovalModalTemplate.vue';

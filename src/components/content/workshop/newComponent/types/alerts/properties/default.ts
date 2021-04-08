@@ -1,5 +1,4 @@
 import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import PreviewStructure from '../../../../../../../services/workshop/componentGenerator/previewStructure';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -7,6 +6,7 @@ import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTyp
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
+import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getAlertSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { inheritedAlertCloseChildCss } from './inheritedAlertCloseChildCss';
 import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';

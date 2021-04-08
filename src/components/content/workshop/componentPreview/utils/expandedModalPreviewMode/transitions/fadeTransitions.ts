@@ -1,5 +1,5 @@
-import { ExitTransitionCallback } from '../../../../interfaces/modalTransitions';
-import { BackdropProperties } from '../../../../interfaces/workshopComponent';
+import { ExitTransitionCallback } from '../../../../../../../interfaces/modalTransitions';
+import { BackdropProperties } from '../../../../../../../interfaces/workshopComponent';
 import TransitionUtils from '../utils/transitionUtils';
 
 export default class FadeTransitions {

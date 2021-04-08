@@ -1,6 +1,6 @@
+import { ExitTransitionCallback } from '../../../../../../../interfaces/modalTransitions';
+import { BackdropProperties } from '../../../../../../../interfaces/workshopComponent';
 import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
-import { ExitTransitionCallback } from '../../../../interfaces/modalTransitions';
-import { BackdropProperties } from '../../../../interfaces/workshopComponent';
 import TransitionUtils from '../utils/transitionUtils';
 
 export default class SlideTransitions {

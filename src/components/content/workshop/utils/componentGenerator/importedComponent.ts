@@ -1,9 +1,9 @@
-import { CUSTOM_SUBCOMPONENT_NAMES_PREFIXES } from '../../../consts/customSubcomponentNamesPrefixes.enum';
-import { ImportedComponentStructure } from '../../../interfaces/importedComponentStructure';
-import { Subcomponents, WorkshopComponent } from '../../../interfaces/workshopComponent';
-import { CustomSubcomponentNames } from '../../../interfaces/customSubcomponentNames';
-import { CSS_PSEUDO_CLASSES } from '../../../consts/subcomponentCssClasses.enum';
-import { ComponentGenerator } from '../../../interfaces/componentGenerator';
+import { CUSTOM_SUBCOMPONENT_NAMES_PREFIXES } from '../../../../../consts/customSubcomponentNamesPrefixes.enum';
+import { ImportedComponentStructure } from '../../../../../interfaces/importedComponentStructure';
+import { Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
+import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomponentNames';
+import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
+import { ComponentGenerator } from '../../../../../interfaces/componentGenerator';
 
 export default class ImportedCompoment {
 

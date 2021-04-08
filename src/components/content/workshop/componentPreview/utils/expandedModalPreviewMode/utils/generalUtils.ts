@@ -1,10 +1,10 @@
 import {
   INITIAL_EXPANDED_MODAL_TRANSITION_VALUES, UNSET, ADD_CLASS,
   REMOVE_CLASS, POINTER_EVENTS_NONE, POINTER_EVENTS_REMOVE,
-} from './sharedConsts';
-import { ElementStyleProperties } from '../../../../interfaces/elementStyleProperties';
+} from '../consts/sharedConsts';
+import { ElementStyleProperties } from '../../../../../../../interfaces/elementStyleProperties';
+import { STATIC_POSITION_CLASS } from '../../../../../../../consts/sharedClasses';
 import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
-import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 
 export default class GeneralUtils {
 

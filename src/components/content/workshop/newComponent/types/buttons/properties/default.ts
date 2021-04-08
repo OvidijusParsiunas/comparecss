@@ -1,6 +1,4 @@
 import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import ImportedCompoment from '../../../../../../../services/workshop/componentGenerator/importedComponent';
-import PreviewStructure from '../../../../../../../services/workshop/componentGenerator/previewStructure';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
@@ -9,6 +7,8 @@ import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTyp
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
+import ImportedCompoment from '../../../../utils/componentGenerator/importedComponent';
+import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getButtonSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { buttonSpecificSettings } from './buttonSpecificSettings';
 import { inheritedButtonCss } from './inheritedCss';

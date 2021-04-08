@@ -1,5 +1,5 @@
+import { ModalExitTransition } from '../../../../../../../../interfaces/modalTransitions';
 import { expandedModalPreviewModeState } from '../../expandedModalPreviewModeState';
-import { ModalExitTransition } from '../../../../../interfaces/modalTransitions';
 import TransitionUtils from '../../utils/transitionUtils';
 
 export default class ExitTransitionPreviewService {

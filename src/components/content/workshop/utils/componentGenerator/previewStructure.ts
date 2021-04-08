@@ -1,9 +1,9 @@
-import { AlignedSections, ComponentPreviewStructure, Layer, NestedSubcomponent } from '../../../interfaces/componentPreviewStructure';
-import { SubcomponentProperties, Subcomponents } from '../../../interfaces/workshopComponent';
-import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../consts/layerSections';
-import { CORE_SUBCOMPONENTS_NAMES } from '../../../consts/coreSubcomponentNames.enum';
-import { NestedDropdownStructure } from '../../../interfaces/nestedDropdownStructure';
-import { CustomSubcomponentNames } from '../../../interfaces/customSubcomponentNames';
+import { AlignedSections, ComponentPreviewStructure, Layer, NestedSubcomponent } from '../../../../../interfaces/componentPreviewStructure';
+import { SubcomponentProperties, Subcomponents } from '../../../../../interfaces/workshopComponent';
+import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../consts/layerSections';
+import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
+import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
+import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomponentNames';
 
 export default class PreviewStructure {
 

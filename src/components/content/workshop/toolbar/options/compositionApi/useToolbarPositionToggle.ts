@@ -1,4 +1,4 @@
-import { expandedModalPreviewModeState } from '../../../../../../services/workshop/expandedModalPreviewMode/expandedModalPreviewModeState';
+import { expandedModalPreviewModeState } from '../../../componentPreview/utils/expandedModalPreviewMode/expandedModalPreviewModeState';
 import { UseToolbarPositionToggle } from '../../../../../../interfaces/useToolbarPositionToggle';
 import { TOOLBAR_POSITION_TOGGLE_HOVER_CLASS } from '../../../../../../consts/toolbarClasses';
 import { ComponentOptions } from 'vue';

@@ -1,6 +1,6 @@
 <template>
   <div>
-    <!-- WORK3: the if statement for jsClasses in close subcomponent can be closed once types are introduced or close subcomponent converted into a subcomponent -->
+    <!-- WORK3: the if statement for jsClasses may not be required when close subcomponent converted into a subcomponent -->
     <div v-for="(nestedSubcomponent, index, name) in nestedSubcomponents" :key="nestedSubcomponent"
       :style="{order: `${index}`}"
       class="subcomponent-element-container"

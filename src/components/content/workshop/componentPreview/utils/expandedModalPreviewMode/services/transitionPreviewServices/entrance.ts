@@ -1,7 +1,6 @@
-
-import { ModalEntranceTransition } from '../../../../../interfaces/modalTransitions';
+import { ModalEntranceTransition } from '../../../../../../../../interfaces/modalTransitions';
 import { expandedModalPreviewModeState } from '../../expandedModalPreviewModeState';
-import { OPACITY_INVISIBLE } from '../../utils/sharedConsts';
+import { OPACITY_INVISIBLE } from '../../consts/sharedConsts';
 import TransitionUtils from '../../utils/transitionUtils';
 import GeneralUtils from '../../utils/generalUtils';
 

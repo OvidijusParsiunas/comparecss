@@ -1,7 +1,7 @@
 import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../../consts/unsetColotButtonDisplayed';
-import { expandedModalPreviewModeState } from '../../../../../services/workshop/expandedModalPreviewMode/expandedModalPreviewModeState';
 import { subcomponentSelectModeState } from '../../toolbar/options/subcomponentSelectMode/subcomponentSelectModeState';
 import { UseSubcomponentPreviewEventHandlers } from '../../../../../interfaces/useSubcomponentPreviewEventHandlers';
+import { expandedModalPreviewModeState } from '../utils/expandedModalPreviewMode/expandedModalPreviewModeState';
 import { CustomCss, SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 

@@ -1,4 +1,4 @@
-import { expandedModalPreviewModeState } from '../../../../../../services/workshop/expandedModalPreviewMode/expandedModalPreviewModeState';
+import { expandedModalPreviewModeState } from '../../../componentPreview/utils/expandedModalPreviewMode/expandedModalPreviewModeState';
 import { TemporaryDropdownValue } from '../../../../../../interfaces/temporaryDropdownValue';
 import { SubcomponentProperties, } from '../../../../../../interfaces/workshopComponent';
 import { UseActionsDropdown } from '../../../../../../interfaces/UseActionsDropdown';

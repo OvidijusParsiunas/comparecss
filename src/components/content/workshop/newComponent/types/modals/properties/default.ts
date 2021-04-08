@@ -1,13 +1,13 @@
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../../../../../consts/modalTransitionTypes.enum';
-import ImportedCompoment from '../../../../../../../services/workshop/componentGenerator/importedComponent';
-import PreviewStructure from '../../../../../../../services/workshop/componentGenerator/previewStructure';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
+import ImportedCompoment from '../../../../utils/componentGenerator/importedComponent';
 import { modalLayerBottomSpecificSettings } from './modalLayerBottomSpecificSettings';
+import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getModalSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { modalLayerTopSpecificSettings } from './modalLayerTopSpecificSettings';
 import { inheritedAlertCloseChildCss } from './inheritedAlertCloseChildCss';

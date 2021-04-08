@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import ToolbarTogglesService from '../../../../services/workshop/expandedModalPreviewMode/services/toolbarTogglesService';
+import ToolbarTogglesService from '../componentPreview/utils/expandedModalPreviewMode/services/modeToggleTransitionServices/toolbarTogglesService';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../consts/workshopToolbarOptionTypes.enum';

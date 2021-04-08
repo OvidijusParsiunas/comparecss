@@ -29,7 +29,6 @@ delete an imported subcomponent
 ability to automatically update imported subcomponents when the core subcomponent is updated
 close button should be imported
 importing existing subcomponent will also need to offer an option from the app defaults
-workshop services should be placed to utils
 
 option to import an existing button style!
 

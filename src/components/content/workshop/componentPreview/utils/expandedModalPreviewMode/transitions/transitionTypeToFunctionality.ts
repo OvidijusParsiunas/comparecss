@@ -1,5 +1,5 @@
-import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../../consts/modalTransitionTypes.enum';
-import { ModalEntranceTransition, ModalExitTransition } from '../../../../interfaces/modalTransitions';
+import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../../../../../consts/modalTransitionTypes.enum';
+import { ModalEntranceTransition, ModalExitTransition } from '../../../../../../../interfaces/modalTransitions';
 import SlideTransitions from './slideTransitions';
 import FadeTransitions from './fadeTransitions';
 

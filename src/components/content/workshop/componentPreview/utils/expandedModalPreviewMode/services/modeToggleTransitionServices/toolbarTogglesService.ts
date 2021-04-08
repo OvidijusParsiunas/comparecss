@@ -1,7 +1,10 @@
-import { MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, OPACITY_INVISIBLE, OPACITY_VISIBLE } from '../utils/sharedConsts';
-import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES } from '../../../../consts/toolbarClasses';
-import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
-import GeneralUtils from '../utils/generalUtils';
+import {
+  MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS, OPACITY_INVISIBLE,
+  MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, OPACITY_VISIBLE,
+} from '../../consts/sharedConsts';
+import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES } from '../../../../../../../../consts/toolbarClasses';
+import { expandedModalPreviewModeState } from '../../expandedModalPreviewModeState';
+import GeneralUtils from '../../utils/generalUtils';
 
 export default class ToolbarTogglesService {
 

@@ -1,4 +1,4 @@
-import { expandedModalPreviewModeState } from '../../../../../../../services/workshop/expandedModalPreviewMode/expandedModalPreviewModeState';
+import { expandedModalPreviewModeState } from '../../../../componentPreview/utils/expandedModalPreviewMode/expandedModalPreviewModeState';
 import { subcomponentAndOverlayElementIdsState } from '../../subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import { DropdownCompositionAPI } from '../../../../../../../interfaces/dropdownCompositionAPI';
 import { Ref } from 'vue';

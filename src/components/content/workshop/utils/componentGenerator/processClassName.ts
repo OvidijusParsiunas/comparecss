@@ -1,4 +1,4 @@
-import { WorkshopComponent } from '../../../interfaces/workshopComponent';
+import { WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 
 export default class ProcessClassedName {
   
