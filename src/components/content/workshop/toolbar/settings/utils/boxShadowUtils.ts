@@ -1,5 +1,5 @@
 import { CustomCss, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
-import { CSS_STATES } from '../../../../../../consts/subcomponentCssStates.enum';
+import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import SharedUtils from './sharedUtils';
 
 // the use of the auxiliary functionality and unset properties is mostly due to the fact that in firefox
@@ -11,20 +11,20 @@ export default class BoxShadowUtils {
   private static DEFAULT_BOX_SHADOW_COLOR_VALUE = '#000000';
   private static DEFAULT_BOX_SHADOW_SETTINGS_RANGE_VALUE = '0';
   
-  private static setUnsetBoxShadowPropertiesToZero(customCss: CustomCss, auxiliaryPartialCss: CustomCss, activeCssState: CSS_STATES): void {
-    if (customCss[activeCssState].boxShadow === BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE) {
-      customCss[activeCssState].boxShadow = auxiliaryPartialCss
-        && auxiliaryPartialCss[activeCssState] && auxiliaryPartialCss[activeCssState].boxShadow
-        ? auxiliaryPartialCss[activeCssState].boxShadow : `${BoxShadowUtils.DEFAULT_BOX_SHADOW_PIXEL_VALUES} ${BoxShadowUtils.DEFAULT_BOX_SHADOW_COLOR_VALUE}`;
+  private static setUnsetBoxShadowPropertiesToZero(customCss: CustomCss, auxiliaryPartialCss: CustomCss, activeCssPseudoClass: CSS_PSEUDO_CLASSES): void {
+    if (customCss[activeCssPseudoClass].boxShadow === BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE) {
+      customCss[activeCssPseudoClass].boxShadow = auxiliaryPartialCss
+        && auxiliaryPartialCss[activeCssPseudoClass] && auxiliaryPartialCss[activeCssPseudoClass].boxShadow
+        ? auxiliaryPartialCss[activeCssPseudoClass].boxShadow : `${BoxShadowUtils.DEFAULT_BOX_SHADOW_PIXEL_VALUES} ${BoxShadowUtils.DEFAULT_BOX_SHADOW_COLOR_VALUE}`;
     }
   }
 
   private static setZeroBoxShadowPropertiesToUnset(subcomponentproperties: SubcomponentProperties): void {
-    const { customCss, activeCssState } = subcomponentproperties;
-    if (customCss[activeCssState].boxShadow.startsWith(BoxShadowUtils.DEFAULT_BOX_SHADOW_PIXEL_VALUES)) {
-      BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(subcomponentproperties, customCss[activeCssState]
+    const { customCss, activeCssPseudoClass } = subcomponentproperties;
+    if (customCss[activeCssPseudoClass].boxShadow.startsWith(BoxShadowUtils.DEFAULT_BOX_SHADOW_PIXEL_VALUES)) {
+      BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(subcomponentproperties, customCss[activeCssPseudoClass]
         .boxShadow.split(' ').pop());
-      customCss[activeCssState].boxShadow = BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE;     
+      customCss[activeCssPseudoClass].boxShadow = BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE;     
     }
   }
 
@@ -32,44 +32,44 @@ export default class BoxShadowUtils {
     if (!subcomponentproperties.auxiliaryPartialCss) {
       subcomponentproperties.auxiliaryPartialCss = {};
     }
-    if (!subcomponentproperties.auxiliaryPartialCss[subcomponentproperties.activeCssState]) {
-      subcomponentproperties.auxiliaryPartialCss[subcomponentproperties.activeCssState] = {};
+    if (!subcomponentproperties.auxiliaryPartialCss[subcomponentproperties.activeCssPseudoClass]) {
+      subcomponentproperties.auxiliaryPartialCss[subcomponentproperties.activeCssPseudoClass] = {};
     }
-    subcomponentproperties.auxiliaryPartialCss[subcomponentproperties.activeCssState]
+    subcomponentproperties.auxiliaryPartialCss[subcomponentproperties.activeCssPseudoClass]
       .boxShadow = `${BoxShadowUtils.DEFAULT_BOX_SHADOW_PIXEL_VALUES} ${colorPickerValue}`;
   }
 
   public static updateBoxShadowRangeValue(rangeValue: string, spec: any, subcomponentProperties: SubcomponentProperties): void {
     const {cssProperty, partialCss} = spec;
-    const { customCss, activeCssState, auxiliaryPartialCss } = subcomponentProperties;
-    if (customCss[activeCssState][cssProperty] === undefined) {
+    const { customCss, activeCssPseudoClass, auxiliaryPartialCss } = subcomponentProperties;
+    if (customCss[activeCssPseudoClass][cssProperty] === undefined) {
       const defaultValues = [ ...partialCss.fullDefaultValues ];
       defaultValues[partialCss.position] = rangeValue;
-      customCss[activeCssState][cssProperty] = defaultValues.join(' ');
+      customCss[activeCssPseudoClass][cssProperty] = defaultValues.join(' ');
     } else {
-      BoxShadowUtils.setUnsetBoxShadowPropertiesToZero(customCss, auxiliaryPartialCss, activeCssState);
-      const cssPropertyValues = customCss[activeCssState][cssProperty].split(' ');
+      BoxShadowUtils.setUnsetBoxShadowPropertiesToZero(customCss, auxiliaryPartialCss, activeCssPseudoClass);
+      const cssPropertyValues = customCss[activeCssPseudoClass][cssProperty].split(' ');
       cssPropertyValues[partialCss.position] = `${rangeValue}px`;
-      customCss[activeCssState][cssProperty] = cssPropertyValues.join(' ');
+      customCss[activeCssPseudoClass][cssProperty] = cssPropertyValues.join(' ');
     }
     BoxShadowUtils.setZeroBoxShadowPropertiesToUnset(subcomponentProperties);
   }
 
   public static updateBoxShadowColorValue(hexColor: string, updatedSettingSpec: any, subcomponentProperties: SubcomponentProperties): void {
     const { cssProperty, partialCss } = updatedSettingSpec;
-    const { customCss, activeCssState } = subcomponentProperties;
-    if (customCss[activeCssState][cssProperty] === undefined) {
+    const { customCss, activeCssPseudoClass } = subcomponentProperties;
+    if (customCss[activeCssPseudoClass][cssProperty] === undefined) {
       const defaultValues = [ ...partialCss.fullDefaultValues ];
       defaultValues[partialCss.position] = hexColor;
-      if (customCss[activeCssState][cssProperty] === BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE) {
+      if (customCss[activeCssPseudoClass][cssProperty] === BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE) {
         BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(subcomponentProperties, hexColor);
       } else {
-        customCss[activeCssState][cssProperty] = BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE;
+        customCss[activeCssPseudoClass][cssProperty] = BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE;
       }
-    } else if (customCss[activeCssState][cssProperty] !== BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE) {
-      const cssPropertyValues = customCss[activeCssState][cssProperty].split(' ');
+    } else if (customCss[activeCssPseudoClass][cssProperty] !== BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE) {
+      const cssPropertyValues = customCss[activeCssPseudoClass][cssProperty].split(' ');
       cssPropertyValues[partialCss.position] = hexColor;
-      customCss[activeCssState][cssProperty] = cssPropertyValues.join(' ');
+      customCss[activeCssPseudoClass][cssProperty] = cssPropertyValues.join(' ');
     } else {
       BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(subcomponentProperties, hexColor);
     }
@@ -84,9 +84,9 @@ export default class BoxShadowUtils {
   }
 
   public static setBoxShadowSettingsColorValue(cssPropertyValue: string, settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
-    const { activeCssState, auxiliaryPartialCss } = subcomponentProperties;
+    const { activeCssPseudoClass, auxiliaryPartialCss } = subcomponentProperties;
     if (cssPropertyValue === BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE) {
-      cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(auxiliaryPartialCss, activeCssState, settingToBeUpdatedSpec.cssProperty)
+      cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(auxiliaryPartialCss, activeCssPseudoClass, settingToBeUpdatedSpec.cssProperty)
         || BoxShadowUtils.DEFAULT_BOX_SHADOW_COLOR_VALUE;
     }
     settingToBeUpdatedSpec.default = cssPropertyValue.split(' ')[settingToBeUpdatedSpec.partialCss.position];

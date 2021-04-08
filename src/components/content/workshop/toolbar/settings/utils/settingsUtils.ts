@@ -1,41 +1,41 @@
 import { ActionsDropdownMouseEventCallbackEvent } from '../../../../../../interfaces/actionsDropdownMouseEventCallbacks';
-import { CSS_STATES } from '../../../../../../consts/subcomponentCssStates.enum';
+import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import SharedUtils from './sharedUtils';
 
 export default class SettingsUtils {
 
   private static removeAuxiliaryPartialCss(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
-    const { auxiliaryPartialCss, activeCssState } = subcomponentProperties;
-    if (auxiliaryPartialCss && auxiliaryPartialCss[activeCssState] && auxiliaryPartialCss[activeCssState][cssProperty]) {
-      delete auxiliaryPartialCss[activeCssState][cssProperty];
+    const { auxiliaryPartialCss, activeCssPseudoClass } = subcomponentProperties;
+    if (auxiliaryPartialCss && auxiliaryPartialCss[activeCssPseudoClass] && auxiliaryPartialCss[activeCssPseudoClass][cssProperty]) {
+      delete auxiliaryPartialCss[activeCssPseudoClass][cssProperty];
     }
   }
 
   private static resetCssProperties(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
-    const { customCss, initialCss, activeCssState } = subcomponentProperties;
-    if (initialCss[activeCssState] && initialCss[activeCssState][cssProperty]) {
-      const cssValue = initialCss[activeCssState][cssProperty];
+    const { customCss, initialCss, activeCssPseudoClass } = subcomponentProperties;
+    if (initialCss[activeCssPseudoClass] && initialCss[activeCssPseudoClass][cssProperty]) {
+      const cssValue = initialCss[activeCssPseudoClass][cssProperty];
       SettingsUtils.setCssProperty(subcomponentProperties, cssProperty, cssValue)
-    } else if (customCss[activeCssState]) {
-      delete customCss[activeCssState][cssProperty];
+    } else if (customCss[activeCssPseudoClass]) {
+      delete customCss[activeCssPseudoClass][cssProperty];
     }
   }
   
   private static setCssProperty(subcomponentProperties: SubcomponentProperties, cssProperty: string, cssValue: string): void {
-    const { customCss, activeCssState } = subcomponentProperties;
-    if (!customCss[activeCssState]) {
-      customCss[activeCssState] = { [cssProperty]: cssValue };
+    const { customCss, activeCssPseudoClass } = subcomponentProperties;
+    if (!customCss[activeCssPseudoClass]) {
+      customCss[activeCssPseudoClass] = { [cssProperty]: cssValue };
     } else {
-      customCss[activeCssState][cssProperty] = cssValue;
+      customCss[activeCssPseudoClass][cssProperty] = cssValue;
     }
   }
 
   private static resetCustomCss(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
-    const { initialCss, activeCssState } = subcomponentProperties;
-    if (activeCssState === CSS_STATES.DEFAULT) {
-      if (initialCss[CSS_STATES.DEFAULT][cssProperty]) {
-        const cssValue = initialCss[CSS_STATES.DEFAULT][cssProperty];
+    const { initialCss, activeCssPseudoClass } = subcomponentProperties;
+    if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT) {
+      if (initialCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty]) {
+        const cssValue = initialCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty];
         SettingsUtils.setCssProperty(subcomponentProperties, cssProperty, cssValue);
       }
     } else {

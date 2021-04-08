@@ -1,12 +1,12 @@
 import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../../consts/workshopToolbarOptionButtonNames.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
-import { CSS_STATES } from '../../../../../../../consts/subcomponentCssStates.enum';
+import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
 
-type AlertBaseOptionsModes = CSS_STATES.DEFAULT;
+type AlertBaseOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT;
 
 export const alertBaseOptions: SubcomponentOptions<AlertBaseOptionsModes> = {
-  [CSS_STATES.DEFAULT]: [
+  [CSS_PSEUDO_CLASSES.DEFAULT]: [
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER,

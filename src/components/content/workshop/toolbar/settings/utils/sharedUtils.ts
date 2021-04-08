@@ -1,24 +1,24 @@
 import { CustomCss, CustomFeatures, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import GeneralUtils from '../../../../../../services/workshop/exportFiles/contentBuilders/css/generalUtils';
-import { CSS_STATES } from '../../../../../../consts/subcomponentCssStates.enum';
+import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 
 export default class SharedUtils {
   
-  public static getActiveModeCssPropertyValue(css: CustomCss, activeMode: CSS_STATES, cssProperty: string): string {
+  public static getActiveModeCssPropertyValue(css: CustomCss, activeMode: CSS_PSEUDO_CLASSES, cssProperty: string): string {
     // the following allows multiple cases to be checked in one execution
     if (!css) return undefined;
     switch (activeMode) {
-      case (CSS_STATES.CLICK):
-        if (css[CSS_STATES.CLICK] && css[CSS_STATES.CLICK].hasOwnProperty(cssProperty)) {
-          return css[CSS_STATES.CLICK][cssProperty];
+      case (CSS_PSEUDO_CLASSES.CLICK):
+        if (css[CSS_PSEUDO_CLASSES.CLICK] && css[CSS_PSEUDO_CLASSES.CLICK].hasOwnProperty(cssProperty)) {
+          return css[CSS_PSEUDO_CLASSES.CLICK][cssProperty];
         }
-      case (CSS_STATES.HOVER):
-        if (css[CSS_STATES.HOVER] && css[CSS_STATES.HOVER].hasOwnProperty(cssProperty)) {
-          return css[CSS_STATES.HOVER][cssProperty];
+      case (CSS_PSEUDO_CLASSES.HOVER):
+        if (css[CSS_PSEUDO_CLASSES.HOVER] && css[CSS_PSEUDO_CLASSES.HOVER].hasOwnProperty(cssProperty)) {
+          return css[CSS_PSEUDO_CLASSES.HOVER][cssProperty];
         }
-      case (CSS_STATES.DEFAULT):
-        if (css[CSS_STATES.DEFAULT] && css[CSS_STATES.DEFAULT].hasOwnProperty(cssProperty)) {
-          return css[CSS_STATES.DEFAULT][cssProperty];
+      case (CSS_PSEUDO_CLASSES.DEFAULT):
+        if (css[CSS_PSEUDO_CLASSES.DEFAULT] && css[CSS_PSEUDO_CLASSES.DEFAULT].hasOwnProperty(cssProperty)) {
+          return css[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty];
         }
       default:
         return undefined;
@@ -61,12 +61,12 @@ export default class SharedUtils {
   }
 
   public static addDefaultValueIfCssModeMissing(cssPropertyName: string, subcomponentProperties: SubcomponentProperties): void {
-    const { customCss, activeCssState } = subcomponentProperties;
-    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(subcomponentProperties.customCss, activeCssState, cssPropertyName);
-    if (!customCss[activeCssState]) {
-      customCss[activeCssState] = { [cssPropertyName]: cssPropertyValue };
-    } else if (!customCss[activeCssState][cssPropertyName]) {
-      customCss[activeCssState][cssPropertyName] = cssPropertyValue;
+    const { customCss, activeCssPseudoClass } = subcomponentProperties;
+    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(subcomponentProperties.customCss, activeCssPseudoClass, cssPropertyName);
+    if (!customCss[activeCssPseudoClass]) {
+      customCss[activeCssPseudoClass] = { [cssPropertyName]: cssPropertyValue };
+    } else if (!customCss[activeCssPseudoClass][cssPropertyName]) {
+      customCss[activeCssPseudoClass][cssPropertyName] = cssPropertyValue;
     }
   }
 }

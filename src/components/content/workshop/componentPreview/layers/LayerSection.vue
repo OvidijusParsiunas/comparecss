@@ -1,11 +1,11 @@
 <template>
   <div>
-    <!-- jsClasses added for button components -->
-    <div v-for="(nestedSubcomponent, index) in nestedSubcomponents" :key="nestedSubcomponent"
+    <!-- WORK3: the if statement for jsClasses in close subcomponent can be closed once types are introduced or close subcomponent converted into a subcomponent -->
+    <div v-for="(nestedSubcomponent, index, name) in nestedSubcomponents" :key="nestedSubcomponent"
       :style="{order: `${index}`}"
       class="subcomponent-element-container"
       :class="[specialisedSectionContainerClass,
-        ...(nestedSubcomponent.subcomponentProperties.customFeatures
+        ...(name !== CORE_SUBCOMPONENTS_NAMES.CLOSE && nestedSubcomponent.subcomponentProperties.customFeatures
           && nestedSubcomponent.subcomponentProperties.customFeatures.jsClasses || [])]">
       <base-component v-if="nestedSubcomponent.subcomponentProperties.importedComponent"
         class="imported-component-container"
@@ -25,17 +25,17 @@
         @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseLeave()"
         @mousedown="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseDown()"
         @mouseup="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseUp()"
-        :style="nestedSubcomponent.subcomponentProperties.activeCssState === CSS_STATES.CLICK
+        :style="nestedSubcomponent.subcomponentProperties.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK
           ? [
               [ nestedSubcomponent.subcomponentProperties.inheritedCss ? nestedSubcomponent.subcomponentProperties.inheritedCss.css: '' ],
-              nestedSubcomponent.subcomponentProperties.customCss[CSS_STATES.DEFAULT],
-              nestedSubcomponent.subcomponentProperties.customCss[CSS_STATES.HOVER],
-              nestedSubcomponent.subcomponentProperties.customCss[CSS_STATES.CLICK],
+              nestedSubcomponent.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
+              nestedSubcomponent.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER],
+              nestedSubcomponent.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK],
             ]
           : [
               [ nestedSubcomponent.subcomponentProperties.inheritedCss ? nestedSubcomponent.subcomponentProperties.inheritedCss.css: '' ],
-              nestedSubcomponent.subcomponentProperties.customCss[CSS_STATES.DEFAULT],
-              nestedSubcomponent.subcomponentProperties.customCss[nestedSubcomponent.subcomponentProperties.activeCssState],
+              nestedSubcomponent.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
+              nestedSubcomponent.subcomponentProperties.customCss[nestedSubcomponent.subcomponentProperties.activeCssPseudoClass],
             ]"
         >{{(!nestedSubcomponent.subcomponentProperties.optionalSubcomponent || !nestedSubcomponent.subcomponentProperties.optionalSubcomponent.displayOverlayOnly)
             && nestedSubcomponent.subcomponentProperties.componentText ? nestedSubcomponent.subcomponentProperties.componentText : '' }}
@@ -44,7 +44,7 @@
         :is="nestedSubcomponent.subcomponentProperties.componentTag"
         :id="subcomponentAndOverlayElementIds[nestedSubcomponent.name].overlayId"
         :style="[
-          nestedSubcomponent.subcomponentProperties.customCss[CSS_STATES.DEFAULT],
+          nestedSubcomponent.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
           {display: 'none'}, {color: '#ff000000'}]"
         class="subcomponent-element"
         :class="OVERLAY_DEFAULT_CLASS">
@@ -56,18 +56,21 @@
                     
 <script lang="ts">
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
-import { CSS_STATES } from '../../../../../consts/subcomponentCssStates.enum';
+import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
+import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 
 interface Consts {
   OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
-  CSS_STATES: typeof CSS_STATES;
+  CORE_SUBCOMPONENTS_NAMES: typeof CORE_SUBCOMPONENTS_NAMES;
+  CSS_PSEUDO_CLASSES: typeof CSS_PSEUDO_CLASSES;
 }
 
 export default {
   setup(): Consts {
     return {
       OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT,
-      CSS_STATES,
+      CORE_SUBCOMPONENTS_NAMES,
+      CSS_PSEUDO_CLASSES,
     };
   },
   props: {

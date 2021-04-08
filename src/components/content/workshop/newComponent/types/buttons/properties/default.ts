@@ -4,7 +4,7 @@ import PreviewStructure from '../../../../../../../services/workshop/componentGe
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
-import { CSS_STATES } from '../../../../../../../consts/subcomponentCssStates.enum';
+import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -18,7 +18,7 @@ const defaultSubcomponentNames: CustomSubcomponentNames = {
 
 function createInitialBaseCss(): CustomCss {
   return {
-    [CSS_STATES.DEFAULT]: {
+    [CSS_PSEUDO_CLASSES.DEFAULT]: {
       borderRadius: '0px',
       borderWidth: '0px',
       borderColor: '#1779ba',
@@ -42,10 +42,10 @@ function createInitialBaseCss(): CustomCss {
       fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
       transition: 'unset',
     },
-    [CSS_STATES.HOVER]: {
+    [CSS_PSEUDO_CLASSES.HOVER]: {
       backgroundColor: '#ff0000',
     },
-    [CSS_STATES.CLICK]: {
+    [CSS_PSEUDO_CLASSES.CLICK]: {
       backgroundColor: '#409441',
     },
   }
@@ -53,7 +53,7 @@ function createInitialBaseCss(): CustomCss {
 
 function createLayerCss(): CustomCss {
   return {
-    [CSS_STATES.DEFAULT]: {
+    [CSS_PSEUDO_CLASSES.DEFAULT]: {
       height: '100%',
     },
   }
@@ -61,7 +61,7 @@ function createLayerCss(): CustomCss {
 
 function createTextCss(): CustomCss {
   return {
-    [CSS_STATES.DEFAULT]: {
+    [CSS_PSEUDO_CLASSES.DEFAULT]: {
       top: '50%',
       width: 'auto',
       userSelect: 'none',
@@ -114,8 +114,8 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
     [subcomponentNames.base]: {
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
-      activeCssState: CSS_STATES.DEFAULT,
-      defaultCssState: CSS_STATES.DEFAULT,
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedButtonCss,
@@ -126,8 +126,8 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
     [subcomponentNames.layer]: {
       customCss: createLayerCss(),
       initialCss: createLayerCss(),
-      activeCssState: CSS_STATES.DEFAULT,
-      defaultCssState: CSS_STATES.DEFAULT,
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [subcomponentNames.text]: {
@@ -135,8 +135,8 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
       componentText: 'button',
       customCss: createTextCss(),
       initialCss: createTextCss(),
-      activeCssState: CSS_STATES.DEFAULT,
-      defaultCssState: CSS_STATES.DEFAULT,
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       customFeatures: createDefaultButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultButtonCustomFeatures(),
     },

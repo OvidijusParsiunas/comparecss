@@ -2,7 +2,7 @@ import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '..
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../consts/workshopToolbarOptionTypes.enum';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
-import { CSS_STATES } from '../consts/subcomponentCssStates.enum';
+import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { NEW_COMPONENT_TYPES } from '../consts/newComponentTypes.enum';
 import { CustomSubcomponentNames } from './customSubcomponentNames';
@@ -26,7 +26,7 @@ export interface DescendantCss {
 }
 
 export type CustomCss = {
-  [key in CSS_STATES]?: WorkshopComponentCss;
+  [key in CSS_PSEUDO_CLASSES]?: WorkshopComponentCss;
 }
 
 export interface OptionalSubcomponent {
@@ -103,9 +103,9 @@ export interface CustomFeatures {
   descendantCss?: DescendantCss;
   // this css is used for particular nested children (.default-class-name > div:nth-child(2))
   childCss?: ChildCss[];
-  activeCssState: CSS_STATES;
-  // the motivator for this is the fact that the first subcomponent css mode should not be assumed to be the default one
-  defaultCssState: CSS_STATES;
+  activeCssPseudoClass: CSS_PSEUDO_CLASSES;
+  // the motivator for this is the fact that the first subcomponent css pseudo class should not be assumed to be the default one
+  defaultCssPseudoClass: CSS_PSEUDO_CLASSES;
   // this is used to add an animation effect when hovering or clicking a subcomponent to display their new custom css
   // it is currently not being used during css export and instead added explicitly using inherited css files
   subcomponentPreviewTransition?: string;

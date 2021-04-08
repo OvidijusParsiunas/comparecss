@@ -43,13 +43,13 @@
           :uniqueIdentifier="CSS_STATES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
           :dropdownOptions="componentTypeToOptions[component.type][component.activeSubcomponentName]"
           :objectContainingActiveOption="component.subcomponents[component.activeSubcomponentName]"
-          :activeOptionPropertyKeyName="'activeCssState'"
+          :activeOptionPropertyKeyName="'activeCssPseudoClass'"
           :fontAwesomeIcon="'angle-down'"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-          @mouse-click-new-option="newCssStateClicked($event)"/>
+          @mouse-click-new-option="newCssPseudoClassClicked($event)"/>
         <button
           type="button"
-          v-for="option in componentTypeToOptions[component.type][component.activeSubcomponentName][component.subcomponents[component.activeSubcomponentName].activeCssState]" :key="option"
+          v-for="option in componentTypeToOptions[component.type][component.activeSubcomponentName][component.subcomponents[component.activeSubcomponentName].activeCssPseudoClass]" :key="option"
           :disabled="option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive"
           class="btn btn-outline-secondary option-component-button option-select-button-default"
           :class="[
@@ -95,7 +95,7 @@ import JSONManipulation from '../../../../../services/workshop/jsonManipulation'
 import useToolbarPositionToggle from './compositionApi/useToolbarPositionToggle';
 import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
-import { CSS_STATES } from '../../../../../consts/subcomponentCssStates.enum';
+import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { Option } from '../../../../../interfaces/componentOptions';
 import dropdown from './dropdown/Dropdown.vue';
 import { Ref } from 'node_modules/vue/dist/vue';
@@ -129,7 +129,7 @@ export default {
       MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES.MODAL,
       REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: `#${REMOVE_SUBCOMPONENT_MODAL_ID}`,
       SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS,
-      CSS_STATES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.CSS_STATES,
+      CSS_STATES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.CSS_PSEUDO_CLASSES,
       ...useToolbarPositionToggle(),
     };
   },
@@ -147,7 +147,7 @@ export default {
       }
       const buttonElement = event.currentTarget as HTMLElement;
       const subcomponentSelectModeCallbackFunction = SubcomponentSelectModeService.initiate(buttonElement);
-      const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
+      const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.ESCAPE]);
       const subcomponentNameClickedFunc = this.newSubcomponentNameClicked;
       this.$emit('toggle-subcomponent-select-mode',
         [subcomponentSelectModeCallbackFunction, keyTriggers, buttonElement, subcomponentNameClickedFunc] as ToggleSubcomponentSelectModeEvent);
@@ -173,7 +173,7 @@ export default {
     newSubcomponentNameClicked(newSubComponent: string): void {
       // reset css state of the previous subcomponent to the first one
       const oldActiveSubcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
-      oldActiveSubcomponent.activeCssState = oldActiveSubcomponent.defaultCssState;
+      oldActiveSubcomponent.activeCssPseudoClass = oldActiveSubcomponent.defaultCssPseudoClass;
       this.component.activeSubcomponentName = newSubComponent;
       if (this.component.subcomponents[this.component.activeSubcomponentName].optionalSubcomponent
           && !this.component.subcomponents[this.component.activeSubcomponentName].optionalSubcomponent.currentlyDisplaying) {
@@ -182,8 +182,8 @@ export default {
       }
       this.setNewOptionOnNewDropdownOptionSelect();
     },
-    newCssStateClicked(newCssState: CSS_STATES): void {
-      this.component.subcomponents[this.component.activeSubcomponentName].activeCssState = newCssState;
+    newCssPseudoClassClicked(newCssPseudoClass: CSS_PSEUDO_CLASSES): void {
+      this.component.subcomponents[this.component.activeSubcomponentName].activeCssPseudoClass = newCssPseudoClass;
       this.setNewOptionOnNewDropdownOptionSelect();
     },
     updateOptionsForNewComponent(lastActiveOptionPriorToAllComponentsDeletion: Option): void {
@@ -250,7 +250,7 @@ export default {
     },
     getActiveOptions(): Option[] {
       const { subcomponents, activeSubcomponentName, type } = this.component;
-      return componentTypeToOptions[type][activeSubcomponentName][subcomponents[activeSubcomponentName].activeCssState];
+      return componentTypeToOptions[type][activeSubcomponentName][subcomponents[activeSubcomponentName].activeCssPseudoClass];
     },
     hideSettings(): void {
       this.$emit('hide-settings');

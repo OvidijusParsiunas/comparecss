@@ -1,7 +1,7 @@
 import { WorkshopComponent, CustomCss, ChildCss, SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { CustomCssWithInheritedCss, InitialCssBuild, SharedInheritedCss } from '../../../../../interfaces/cssBuilder';
+import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
-import { CSS_STATES } from '../../../../../consts/subcomponentCssStates.enum';
 import { TempCustomCss } from '../../../../../interfaces/tempCustomCss';
 import SharedCssUtils from './sharedCssUtils';
 import GeneralUtils from './generalUtils';
@@ -32,8 +32,8 @@ export default class CssBuilder {
 
   private static buildPseudoCss(className: string, customCss: CustomCss, tempCustomCss?: TempCustomCss): string {
     let pseudoCssString = '';
-    pseudoCssString += this.buildPseudoClass(className, pseudoClasses.HOVER, customCss[CSS_STATES.HOVER], tempCustomCss);
-    pseudoCssString += this.buildPseudoClass(className, pseudoClasses.ACTIVE, customCss[CSS_STATES.CLICK], tempCustomCss);
+    pseudoCssString += this.buildPseudoClass(className, pseudoClasses.HOVER, customCss[CSS_PSEUDO_CLASSES.HOVER], tempCustomCss);
+    pseudoCssString += this.buildPseudoClass(className, pseudoClasses.ACTIVE, customCss[CSS_PSEUDO_CLASSES.CLICK], tempCustomCss);
     return pseudoCssString;
   }
 
@@ -47,7 +47,7 @@ export default class CssBuilder {
 
   private static buildCustomCss(className: string, customCss: CustomCssWithInheritedCss, tempCustomCss: TempCustomCss): string {
     const cleanedCustomCss = CssCleaner.clean(customCss[0]);
-    const defaultCss = this.buildDefaultCss(className, [cleanedCustomCss[CSS_STATES.DEFAULT], customCss[1]], tempCustomCss);
+    const defaultCss = this.buildDefaultCss(className, [cleanedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT], customCss[1]], tempCustomCss);
     const pseudoCss = this.buildPseudoCss(className, cleanedCustomCss, tempCustomCss);
     return (defaultCss + ' ' + pseudoCss).trim();
   }

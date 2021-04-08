@@ -5,10 +5,10 @@ export default class CheckboxUtils {
   
   private static activateTriggers(newCheckboxValue: boolean, triggers: any, subcomponentProperties: SubcomponentProperties,
       thisSettingSpec: any, allSettings: any): void {
-    const { customCss, activeCssState } = subcomponentProperties;
+    const { customCss, activeCssPseudoClass } = subcomponentProperties;
     (triggers[newCheckboxValue.toString()] || []).forEach((trigger) => {
       const { cssProperty, newValue } = trigger;
-      customCss[activeCssState][cssProperty] = newValue;
+      customCss[activeCssPseudoClass][cssProperty] = newValue;
       for (let i = 0; i < allSettings.options.length; i += 1) {
         if (thisSettingSpec !== allSettings.options[i].spec && allSettings.options[i].spec.cssProperty
             && allSettings.options[i].spec.cssProperty === cssProperty) {
@@ -43,8 +43,8 @@ export default class CheckboxUtils {
   }
 
   private static updateCustomCssSetting(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
-    const { customCss, activeCssState } = subcomponentProperties;
-    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssState, settingToBeUpdatedSpec.cssProperty);
+    const { customCss, activeCssPseudoClass } = subcomponentProperties;
+    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClass, settingToBeUpdatedSpec.cssProperty);
     if (cssPropertyValue) { settingToBeUpdatedSpec.default = (cssPropertyValue === settingToBeUpdatedSpec.conditionalStyle.truthy); }
   }
 

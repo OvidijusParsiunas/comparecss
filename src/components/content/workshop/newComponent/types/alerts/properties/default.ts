@@ -2,7 +2,7 @@ import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponent
 import PreviewStructure from '../../../../../../../services/workshop/componentGenerator/previewStructure';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
-import { CSS_STATES } from '../../../../../../../consts/subcomponentCssStates.enum';
+import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -15,7 +15,7 @@ import { inheritedAlertBaseCss } from './inheritedCss';
 // all default css needs to be filled in as to be able to 'reset' correctly
 function createInitialBaseCss(): CustomCss {
   return {
-    [CSS_STATES.DEFAULT]: {
+    [CSS_PSEUDO_CLASSES.DEFAULT]: {
       color: '#004085',
       backgroundColor: '#cce5ff',
       borderColor: '#b8daff',
@@ -39,7 +39,7 @@ function createInitialBaseCss(): CustomCss {
 
 function createInitialCloseButtonCss(): CustomCss {
   return {
-    [CSS_STATES.DEFAULT]: {
+    [CSS_PSEUDO_CLASSES.DEFAULT]: {
       height: '12px',
       width: '14px',
       borderRadius: '15px',
@@ -67,7 +67,7 @@ function createInitialCloseButtonCss(): CustomCss {
 
 function createInitialLayerCss(): CustomCss {
   return {
-    [CSS_STATES.DEFAULT]: {
+    [CSS_PSEUDO_CLASSES.DEFAULT]: {
       height: '100%',
     },
   }
@@ -75,7 +75,7 @@ function createInitialLayerCss(): CustomCss {
 
 function createTextCss(): CustomCss {
   return {
-    [CSS_STATES.DEFAULT]: {
+    [CSS_PSEUDO_CLASSES.DEFAULT]: {
       top: '50%',
       width: 'auto',
       backgroundColor: 'inherit',
@@ -127,8 +127,8 @@ function createSubcomponents(): Subcomponents {
     [CORE_SUBCOMPONENTS_NAMES.BASE]: {
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
-      activeCssState: CSS_STATES.DEFAULT,
-      defaultCssState: CSS_STATES.DEFAULT,
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
       subcomponentSpecificSettings: alertBaseSpecificSettings,
@@ -136,8 +136,8 @@ function createSubcomponents(): Subcomponents {
     [CORE_SUBCOMPONENTS_NAMES.LAYER_1]: {
       customCss: createInitialLayerCss(),
       initialCss: createInitialLayerCss(),
-      activeCssState: CSS_STATES.DEFAULT,
-      defaultCssState: CSS_STATES.DEFAULT,
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [CORE_SUBCOMPONENTS_NAMES.CLOSE]: {
@@ -145,8 +145,8 @@ function createSubcomponents(): Subcomponents {
       componentText: '×',
       customCss: createInitialCloseButtonCss(),
       initialCss: createInitialCloseButtonCss(),
-      activeCssState: CSS_STATES.DEFAULT,
-      defaultCssState: CSS_STATES.DEFAULT,
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
@@ -159,8 +159,8 @@ function createSubcomponents(): Subcomponents {
       componentText: 'button',
       customCss: createTextCss(),
       initialCss: createTextCss(),
-      activeCssState: CSS_STATES.DEFAULT,
-      defaultCssState: CSS_STATES.DEFAULT,
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       optionalSubcomponent: { currentlyDisplaying: true },
       customFeatures: createDefaultTextCustomFeatures(),
       defaultCustomFeatures: createDefaultTextCustomFeatures(),

@@ -112,6 +112,7 @@ import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../consts/lay
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../consts/coreSubcomponentNames.enum';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../consts/domEventTriggerKeys.enum';
+import { CSS_PSEUDO_CLASSES } from '../../../consts/subcomponentCssClasses.enum';
 import { defaultButton } from './newComponent/types/buttons/properties/default';
 import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
@@ -120,7 +121,6 @@ import JSONManipulation from '../../../services/workshop/jsonManipulation';
 import { RemovalModalState } from '../../../interfaces/removalModalState';
 import componentContents from './componentPreview/ComponentPreview.vue';
 import removalModalTemplate from './templates/RemovalModalTemplate.vue';
-import { CSS_STATES } from '../../../consts/subcomponentCssStates.enum';
 import newComponentModal from './newComponent/NewComponentModal.vue';
 import ComponentJs from '../../../services/workshop/componentJs';
 import componentList from './componentList/ComponentList.vue';
@@ -210,7 +210,7 @@ function createDefaultTextCustomFeatures(): CustomFeatures {
 
 function createInitialBaseCss(): CustomCss {
   return {
-    [CSS_STATES.DEFAULT]: {
+    [CSS_PSEUDO_CLASSES.DEFAULT]: {
       color: '#004085',
       backgroundColor: '#ffffff',
       borderColor: '#00000033',
@@ -227,7 +227,7 @@ function createInitialBaseCss(): CustomCss {
 
 function createInitialCloseButtonCss(): CustomCss {
   return {
-    [CSS_STATES.DEFAULT]: {
+    [CSS_PSEUDO_CLASSES.DEFAULT]: {
       height: '12px',
       width: '14px',
       borderRadius: '15px',
@@ -255,7 +255,7 @@ function createInitialCloseButtonCss(): CustomCss {
 
 function createInitialLayer1Css(): CustomCss {
   return {
-    [CSS_STATES.DEFAULT]: {
+    [CSS_PSEUDO_CLASSES.DEFAULT]: {
       position: 'relative',
       height: '50px',
       textAlign: 'left',
@@ -275,7 +275,7 @@ function createInitialLayer1Css(): CustomCss {
 
 function createInitialLayer2Css(): CustomCss {
   return {
-    [CSS_STATES.DEFAULT]: {
+    [CSS_PSEUDO_CLASSES.DEFAULT]: {
       position: 'relative',
       height: '50px',
       textAlign: 'left',
@@ -290,7 +290,7 @@ function createInitialLayer2Css(): CustomCss {
 
 function createInitialLayer3Css(): CustomCss {
   return {
-    [CSS_STATES.DEFAULT]: {
+    [CSS_PSEUDO_CLASSES.DEFAULT]: {
       position: 'relative',
       height: '50px',
       textAlign: 'right',
@@ -309,7 +309,7 @@ function createInitialLayer3Css(): CustomCss {
 
 function createInitialText1Css(): CustomCss {
   return {
-    [CSS_STATES.DEFAULT]: {
+    [CSS_PSEUDO_CLASSES.DEFAULT]: {
       top: '50%',
       width: 'auto',
       fontWeight: '500',
@@ -330,7 +330,7 @@ function createInitialText1Css(): CustomCss {
 
 function createInitialText2Css(): CustomCss {
   return {
-    [CSS_STATES.DEFAULT]: {
+    [CSS_PSEUDO_CLASSES.DEFAULT]: {
       top: '50%',
       width: 'auto',
       fontWeight: '400',
@@ -358,8 +358,8 @@ function createSubcomponents(): Subcomponents {
     [CORE_SUBCOMPONENTS_NAMES.BASE]: {
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
-      activeCssState: CSS_STATES.DEFAULT,
-      defaultCssState: CSS_STATES.DEFAULT,
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
       subcomponentSpecificSettings: modalBaseSpecificSettings,
@@ -369,23 +369,23 @@ function createSubcomponents(): Subcomponents {
     [CORE_SUBCOMPONENTS_NAMES.LAYER_1]: {
       customCss: createInitialLayer1Css(),
       initialCss: createInitialLayer1Css(),
-      activeCssState: CSS_STATES.DEFAULT,
-      defaultCssState: CSS_STATES.DEFAULT,
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       subcomponentSpecificSettings: modalLayerTopSpecificSettings,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [CORE_SUBCOMPONENTS_NAMES.LAYER_2]: {
       customCss: createInitialLayer2Css(),
       initialCss: createInitialLayer2Css(),
-      activeCssState: CSS_STATES.DEFAULT,
-      defaultCssState: CSS_STATES.DEFAULT,
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [CORE_SUBCOMPONENTS_NAMES.LAYER_3]: {
       customCss: createInitialLayer3Css(),
       initialCss: createInitialLayer3Css(),
-      activeCssState: CSS_STATES.DEFAULT,
-      defaultCssState: CSS_STATES.DEFAULT,
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       subcomponentSpecificSettings: modalLayerBottomSpecificSettings,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
@@ -394,8 +394,8 @@ function createSubcomponents(): Subcomponents {
       componentText: '×',
       customCss: createInitialCloseButtonCss(),
       initialCss: createInitialCloseButtonCss(),
-      activeCssState: CSS_STATES.DEFAULT,
-      defaultCssState: CSS_STATES.DEFAULT,
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
@@ -408,8 +408,8 @@ function createSubcomponents(): Subcomponents {
       componentText: 'Modal title',
       customCss: createInitialText1Css(),
       initialCss: createInitialText1Css(),
-      activeCssState: CSS_STATES.DEFAULT,
-      defaultCssState: CSS_STATES.DEFAULT,
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       optionalSubcomponent: { currentlyDisplaying: true },
       customFeatures: createDefaultTextCustomFeatures(),
       defaultCustomFeatures: createDefaultTextCustomFeatures(),
@@ -419,8 +419,8 @@ function createSubcomponents(): Subcomponents {
       componentText: 'Modal body text',
       customCss: createInitialText2Css(),
       initialCss: createInitialText2Css(),
-      activeCssState: CSS_STATES.DEFAULT,
-      defaultCssState: CSS_STATES.DEFAULT,
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       optionalSubcomponent: { currentlyDisplaying: true },
       customFeatures: createDefaultTextCustomFeatures(),
       defaultCustomFeatures: createDefaultTextCustomFeatures(),
@@ -482,7 +482,7 @@ export default {
       previousComponent.activeSubcomponentName = previousComponent.defaultSubcomponentName;
       Object.keys(previousComponent.subcomponents).forEach((key) => {
         const subcomponent: SubcomponentProperties = previousComponent.subcomponents[key];
-        subcomponent.activeCssState = subcomponent.defaultCssState;
+        subcomponent.activeCssPseudoClass = subcomponent.defaultCssPseudoClass;
       });
     },
     switchActiveComponent(newComponent: WorkshopComponent): void {
@@ -507,7 +507,7 @@ export default {
       const newComponent = JSONManipulation.deepCopy(selectComponentCard);
       newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className, this.components, '-copy');
       newComponent.activeSubcomponentName = CORE_SUBCOMPONENTS_NAMES.BASE;
-      newComponent.subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE].activeCssState = CSS_STATES.DEFAULT;
+      newComponent.subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE].activeCssPseudoClass = CSS_PSEUDO_CLASSES.DEFAULT;
       this.addNewComponent(newComponent);
     },
     componentCardRemoved(componentToBeRemovedWithoutSelecting: WorkshopComponent): void {

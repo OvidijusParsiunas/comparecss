@@ -1,5 +1,5 @@
 import { CustomFeatures, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
-import { CSS_STATES } from '../../../../../../consts/subcomponentCssStates.enum';
+import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import BoxShadowUtils from './boxShadowUtils';
 import SharedUtils from './sharedUtils';
 
@@ -9,10 +9,10 @@ export default class RangeUtils {
 
   private static activeTriggersForCustomCss(trigger: any, subcomponentProperties: SubcomponentProperties,
       actionsDropdownsObjects: unknown): void {
-    const { customCss, activeCssState } = subcomponentProperties;
-    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, CSS_STATES.CLICK, trigger.cssProperty);
+    const { customCss, activeCssPseudoClass } = subcomponentProperties;
+    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, CSS_PSEUDO_CLASSES.CLICK, trigger.cssProperty);
     if (trigger.conditions.has(cssPropertyValue)) {
-      customCss[activeCssState][trigger.cssProperty] = trigger.defaultValue;
+      customCss[activeCssPseudoClass][trigger.cssProperty] = trigger.defaultValue;
       actionsDropdownsObjects[trigger.cssProperty][trigger.cssProperty] = trigger.defaultValue;
     }
   }
@@ -38,8 +38,8 @@ export default class RangeUtils {
 
   private static updateCustomCss(rangeValue: string, spec: any, subcomponentProperties: SubcomponentProperties): void {
     const { cssProperty, smoothingDivisible, postfix } = spec;
-    const { customCss, activeCssState } = subcomponentProperties;
-    customCss[activeCssState][cssProperty] = `${Math.floor(rangeValue as unknown as number / smoothingDivisible)}${postfix}`;
+    const { customCss, activeCssPseudoClass } = subcomponentProperties;
+    customCss[activeCssPseudoClass][cssProperty] = `${Math.floor(rangeValue as unknown as number / smoothingDivisible)}${postfix}`;
   }
 
   private static updateColorValueInCustomFeatureProperties(rangeValue: string, spec: any, customFeatures: CustomFeatures): void {
@@ -92,8 +92,8 @@ export default class RangeUtils {
   }
 
   public static updateSettings(settingToBeUpdated: any, subcomponentProperties: SubcomponentProperties): void {
-    const { customCss, activeCssState } = subcomponentProperties;
-    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssState, settingToBeUpdated.spec.cssProperty);
+    const { customCss, activeCssPseudoClass } = subcomponentProperties;
+    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClass, settingToBeUpdated.spec.cssProperty);
     if (cssPropertyValue !== undefined) {
       const hasBoxShadowBeenSet = settingToBeUpdated.spec.cssProperty === 'boxShadow' && BoxShadowUtils.setBoxShadowSettingsRangeValue(cssPropertyValue, settingToBeUpdated.spec);
       if (!hasBoxShadowBeenSet) { RangeUtils.updateCustomCssSetting(settingToBeUpdated, cssPropertyValue); }
