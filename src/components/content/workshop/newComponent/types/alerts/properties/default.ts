@@ -5,6 +5,7 @@ import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcom
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
+import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import getAlertSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { inheritedAlertCloseChildCss } from './inheritedAlertCloseChildCss';
@@ -125,6 +126,7 @@ function createDefaultTextCustomFeatures(): CustomFeatures {
 function createSubcomponents(): Subcomponents {
   return {
     [CORE_SUBCOMPONENTS_NAMES.BASE]: {
+      subcomponentType: SUBCOMPONENT_TYPES.BASE,
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
@@ -141,6 +143,7 @@ function createSubcomponents(): Subcomponents {
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [CORE_SUBCOMPONENTS_NAMES.CLOSE]: {
+      subcomponentType: SUBCOMPONENT_TYPES.CLOSE,
       componentTag: 'button',
       componentText: '×',
       customCss: createInitialCloseButtonCss(),
@@ -155,6 +158,7 @@ function createSubcomponents(): Subcomponents {
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_1]: {
+      subcomponentType: SUBCOMPONENT_TYPES.TEXT,
       componentTag: 'div',
       componentText: 'button',
       customCss: createTextCss(),

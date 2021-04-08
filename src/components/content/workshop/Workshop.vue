@@ -117,6 +117,7 @@ import { defaultButton } from './newComponent/types/buttons/properties/default';
 import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
 import { JAVASCRIPT_CLASSES } from '../../../consts/javascriptClasses.enum';
+import { SUBCOMPONENT_TYPES } from '../../../consts/subcomponentTypes.enum';
 import JSONManipulation from '../../../services/workshop/jsonManipulation';
 import { RemovalModalState } from '../../../interfaces/removalModalState';
 import componentContents from './componentPreview/ComponentPreview.vue';
@@ -356,6 +357,7 @@ function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
 function createSubcomponents(): Subcomponents {
   return {
     [CORE_SUBCOMPONENTS_NAMES.BASE]: {
+      subcomponentType: SUBCOMPONENT_TYPES.BASE,
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
@@ -367,6 +369,7 @@ function createSubcomponents(): Subcomponents {
       defaultCustomFeatures: createDefaultBaseCustomFeatures(),
     },
     [CORE_SUBCOMPONENTS_NAMES.LAYER_1]: {
+      subcomponentType: SUBCOMPONENT_TYPES.LAYER_1,
       customCss: createInitialLayer1Css(),
       initialCss: createInitialLayer1Css(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
@@ -375,6 +378,7 @@ function createSubcomponents(): Subcomponents {
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [CORE_SUBCOMPONENTS_NAMES.LAYER_2]: {
+      subcomponentType: SUBCOMPONENT_TYPES.LAYER_2,
       customCss: createInitialLayer2Css(),
       initialCss: createInitialLayer2Css(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
@@ -382,6 +386,7 @@ function createSubcomponents(): Subcomponents {
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [CORE_SUBCOMPONENTS_NAMES.LAYER_3]: {
+      subcomponentType: SUBCOMPONENT_TYPES.LAYER_3,
       customCss: createInitialLayer3Css(),
       initialCss: createInitialLayer3Css(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
@@ -390,6 +395,7 @@ function createSubcomponents(): Subcomponents {
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [CORE_SUBCOMPONENTS_NAMES.CLOSE]: {
+      subcomponentType: SUBCOMPONENT_TYPES.CLOSE,
       componentTag: 'button',
       componentText: '×',
       customCss: createInitialCloseButtonCss(),
@@ -404,6 +410,7 @@ function createSubcomponents(): Subcomponents {
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_1]: {
+      subcomponentType: SUBCOMPONENT_TYPES.TEXT,
       componentTag: 'div',
       componentText: 'Modal title',
       customCss: createInitialText1Css(),
@@ -415,6 +422,7 @@ function createSubcomponents(): Subcomponents {
       defaultCustomFeatures: createDefaultTextCustomFeatures(),
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_2]: {
+      subcomponentType: SUBCOMPONENT_TYPES.TEXT,
       componentTag: 'div',
       componentText: 'Modal body text',
       customCss: createInitialText2Css(),

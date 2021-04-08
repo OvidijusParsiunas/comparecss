@@ -1,0 +1,10 @@
+export enum SUBCOMPONENT_TYPES {
+  BASE,
+  CLOSE,
+  LAYER_1,
+  LAYER_2,
+  LAYER_3,
+  BUTTON,
+  TEXT,
+  BUTTON_TEXT,
+}

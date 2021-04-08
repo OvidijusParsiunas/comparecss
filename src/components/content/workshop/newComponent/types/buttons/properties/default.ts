@@ -7,6 +7,7 @@ import { CustomSubcomponentNames } from '../../../../../../../interfaces/customS
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
+import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import getButtonSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { buttonSpecificSettings } from './buttonSpecificSettings';
@@ -112,6 +113,7 @@ function createDefaultButtonCustomFeatures(): CustomFeatures {
 function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcomponents {
   return {
     [subcomponentNames.base]: {
+      subcomponentType: SUBCOMPONENT_TYPES.BUTTON,
       customCss: createInitialBaseCss(),
       initialCss: createInitialBaseCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
@@ -131,6 +133,7 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [subcomponentNames.text]: {
+      subcomponentType: SUBCOMPONENT_TYPES.BUTTON_TEXT,
       componentTag: 'div',
       componentText: 'button',
       customCss: createTextCss(),

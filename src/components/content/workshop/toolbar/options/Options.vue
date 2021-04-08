@@ -40,8 +40,8 @@
       </div>
       <div v-if="!component.subcomponents[component.activeSubcomponentName].optionalSubcomponent || component.subcomponents[component.activeSubcomponentName].optionalSubcomponent.currentlyDisplaying"> 
         <dropdown class="option-component-button"
-          :uniqueIdentifier="CSS_STATES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
-          :dropdownOptions="componentTypeToOptions[component.type][component.activeSubcomponentName]"
+          :uniqueIdentifier="CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
+          :dropdownOptions="componentTypeToOptions[component.type][component.subcomponents[component.activeSubcomponentName].subcomponentType]"
           :objectContainingActiveOption="component.subcomponents[component.activeSubcomponentName]"
           :activeOptionPropertyKeyName="'activeCssPseudoClass'"
           :fontAwesomeIcon="'angle-down'"
@@ -49,7 +49,8 @@
           @mouse-click-new-option="newCssPseudoClassClicked($event)"/>
         <button
           type="button"
-          v-for="option in componentTypeToOptions[component.type][component.activeSubcomponentName][component.subcomponents[component.activeSubcomponentName].activeCssPseudoClass]" :key="option"
+          v-for="option in componentTypeToOptions[component.type][component.subcomponents[component.activeSubcomponentName].subcomponentType]
+            [component.subcomponents[component.activeSubcomponentName].activeCssPseudoClass]" :key="option"
           :disabled="option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive"
           class="btn btn-outline-secondary option-component-button option-select-button-default"
           :class="[
@@ -89,16 +90,16 @@ import SubcomponentToggleService from './subcomponentToggleService/subcomponentT
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
+import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum';
 import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
 import useToolbarPositionToggle from './compositionApi/useToolbarPositionToggle';
 import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
-import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { Option } from '../../../../../interfaces/componentOptions';
-import dropdown from './dropdown/Dropdown.vue';
 import { Ref } from 'node_modules/vue/dist/vue';
+import dropdown from './dropdown/Dropdown.vue';
 
 interface Consts {
   componentTypeToOptions: ComponentTypeToOptions;
@@ -108,7 +109,7 @@ interface Consts {
   MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES;
   REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: string;
   SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
-  CSS_STATES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
+  CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
 }
 
 interface Data {
@@ -129,7 +130,7 @@ export default {
       MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES.MODAL,
       REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: `#${REMOVE_SUBCOMPONENT_MODAL_ID}`,
       SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS,
-      CSS_STATES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.CSS_PSEUDO_CLASSES,
+      CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.CSS_PSEUDO_CLASSES,
       ...useToolbarPositionToggle(),
     };
   },
@@ -250,7 +251,8 @@ export default {
     },
     getActiveOptions(): Option[] {
       const { subcomponents, activeSubcomponentName, type } = this.component;
-      return componentTypeToOptions[type][activeSubcomponentName][subcomponents[activeSubcomponentName].activeCssPseudoClass];
+      const { subcomponentType, activeCssPseudoClass } = subcomponents[activeSubcomponentName];
+      return componentTypeToOptions[type][subcomponentType][activeCssPseudoClass];
     },
     hideSettings(): void {
       this.$emit('hide-settings');

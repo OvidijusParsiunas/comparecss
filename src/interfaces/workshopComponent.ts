@@ -5,6 +5,7 @@ import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { NEW_COMPONENT_TYPES } from '../consts/newComponentTypes.enum';
+import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
 import { CustomSubcomponentNames } from './customSubcomponentNames';
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { TempCustomCss } from './tempCustomCss';
@@ -87,6 +88,8 @@ export interface CustomFeatures {
 }
 
   export interface SubcomponentProperties {
+  // used for defining options
+  subcomponentType?: SUBCOMPONENT_TYPES;
   componentTag?: string;
   componentText?: string;
   customCss: CustomCss;
