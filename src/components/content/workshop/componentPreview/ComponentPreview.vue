@@ -61,17 +61,17 @@
 </template>
 
 <script lang="ts">
-import ExpandedModalPreviewModeToggleEntranceTransitionService from './utils/expandedModalPreviewMode/services/modeToggleTransitionServices/entrance';
-import ExpandedModalPreviewModeToggleExitTransitionService from './utils/expandedModalPreviewMode/services/modeToggleTransitionServices/exit';
 import { subcomponentAndOverlayElementIdsState } from '../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
+import { transitionTypeToFunctionality } from './utils/expandedModalPreviewMode/transitionInitializers/transitionTypeToFunctionality';
+import ExpandedModalPreviewModeToggleEntranceTransition from './utils/expandedModalPreviewMode/modeToggleTransitions/entrance';
+import ExpandedModalPreviewModeToggleExitTransitionService from './utils/expandedModalPreviewMode/modeToggleTransitions/exit';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
-import EntranceTransitionPreviewService from './utils/expandedModalPreviewMode/services/transitionPreviewServices/entrance';
-import { transitionTypeToFunctionality } from './utils/expandedModalPreviewMode/transitions/transitionTypeToFunctionality';
-import ExitTransitionPreviewService from './utils/expandedModalPreviewMode/services/transitionPreviewServices/exit';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
+import PreviewEntranceTransition from './utils/expandedModalPreviewMode/previewTransitions/entrance';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
 import { ModalEntranceTransition, ModalExitTransition } from '../../../../interfaces/modalTransitions';
+import PreviewExitTransition from './utils/expandedModalPreviewMode/previewTransitions/exit';
 import { PlayTransitionPreviewEvent } from '../../../../interfaces/playTransitionPreviewEvent';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
 import TransitionUtils from './utils/expandedModalPreviewMode/utils/transitionUtils';
@@ -141,7 +141,7 @@ export default {
       if (isToggledExpandedModalPreviewModeToActive) {
         // strategies
         // https://tympanus.net/codrops/2013/06/25/nifty-modal-window-effects/
-        ExpandedModalPreviewModeToggleEntranceTransitionService.start(
+        ExpandedModalPreviewModeToggleEntranceTransition.start(
           transitionTypeToFunctionality[this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.entrance.type],
           this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.entrance.duration,
           this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.entrance.delay,
@@ -160,11 +160,11 @@ export default {
     playTransitionPreview(playTransitionPreviewEvent: PlayTransitionPreviewEvent): void {
       const [transitionAnimation, isEntranceAnimation] = playTransitionPreviewEvent;
       if (isEntranceAnimation) {
-        EntranceTransitionPreviewService.start(
+        PreviewEntranceTransition.start(
           transitionTypeToFunctionality[transitionAnimation] as ModalEntranceTransition,
           this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.entrance.duration, this.$refs.baseComponent.$refs.componentPreview);
       } else {
-        ExitTransitionPreviewService.start(
+        PreviewExitTransition.start(
           transitionTypeToFunctionality[transitionAnimation] as ModalExitTransition,
           this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.exit.duration, this.$refs.baseComponent.$refs.componentPreview);
       }

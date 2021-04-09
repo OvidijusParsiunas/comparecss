@@ -22,7 +22,7 @@
 </template>
 
 <script lang="ts">
-import ToolbarTogglesService from '../componentPreview/utils/expandedModalPreviewMode/services/modeToggleTransitionServices/toolbarTogglesService';
+import ToolbarToggles from '../componentPreview/utils/expandedModalPreviewMode/modeToggleTransitions/toolbarToggles';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../consts/workshopToolbarOptionTypes.enum';
@@ -80,7 +80,7 @@ export default {
         toggleExpandedModalPreviewModeEvent.concat(this.$refs.toolbarContainer, this.$refs.toolbar) as ToggleExpandedModalPreviewModeEvent);
     },
     toggleToolbarPosition(): void {
-      ToolbarTogglesService.toggleToolbarPosition(this.$refs.toolbarContainer);
+      ToolbarToggles.toggleToolbarPosition(this.$refs.toolbarContainer);
     }
   },
   props: {

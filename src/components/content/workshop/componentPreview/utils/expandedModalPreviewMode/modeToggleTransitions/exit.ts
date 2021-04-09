@@ -2,16 +2,16 @@ import {
   TOOLBAR_FADE_TRANSITION_DURATION_SECONDS, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS,
   OPACITY_INVISIBLE, OPACITY_VISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS,
   ADD_CLASS, POINTER_EVENTS_REMOVE, POINTER_EVENTS_NONE,
-} from '../../consts/sharedConsts';
-import { 
+} from '../consts/sharedConsts';
+import {
   EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES, TOOLBAR_CONTAINER_GENERAL_CLASSES,
   TOOLBAR_ELEMENT_ACTIVE_EXPANDED_MODAL_MODE_CLASS,
-} from '../../../../../../../../consts/toolbarClasses';
-import { ExitTransitionCallback, ModalExitTransition } from '../../../../../../../../interfaces/modalTransitions';
-import { COMPONENT_PREVIEW_CLASSES } from '../../../../../../../../consts/componentPreviewClasses';
-import { BackdropProperties } from '../../../../../../../../interfaces/workshopComponent';
-import { expandedModalPreviewModeState } from '../../expandedModalPreviewModeState';
-import GeneralUtils from '../../utils/generalUtils';
+} from '../../../../../../../consts/toolbarClasses';
+import { ExitTransitionCallback, ModalExitTransition } from '../../../../../../../interfaces/modalTransitions';
+import { COMPONENT_PREVIEW_CLASSES } from '../../../../../../../consts/componentPreviewClasses';
+import { BackdropProperties } from '../../../../../../../interfaces/workshopComponent';
+import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
+import GeneralUtils from '../utils/generalUtils';
 
 export default class ModeToggleExitTransitionService {
 
