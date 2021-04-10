@@ -17,8 +17,9 @@
 </template>
 
 <script lang="ts">
-import { NestedDropdownStructure, ENTITY_DISPLAY_STATUS_REF } from '../../../../../../interfaces/nestedDropdownStructure';
 import { OptionMouseEnter, OptionMouseLeave } from '../../../../../../interfaces/dropdownMenuMouseEvents'
+import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
+import { ENTITY_DISPLAY_STATUS_REF } from '../../../../../../interfaces/entityDisplayStatus';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { DROPDOWN_OPTION_MARKER } from '../../../../../../consts/elementClassMarkers';
 import BrowserType from '../../../../../../services/workshop/browserType';

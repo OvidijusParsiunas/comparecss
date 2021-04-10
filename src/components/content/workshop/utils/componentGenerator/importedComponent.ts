@@ -1,8 +1,8 @@
 import { CUSTOM_SUBCOMPONENT_NAMES_PREFIXES } from '../../../../../consts/customSubcomponentNamesPrefixes.enum';
 import { ImportedComponentStructure } from '../../../../../interfaces/importedComponentStructure';
 import { Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
-import { ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/nestedDropdownStructure';
 import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomponentNames';
+import { ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/entityDisplayStatus';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../interfaces/componentGenerator';
 

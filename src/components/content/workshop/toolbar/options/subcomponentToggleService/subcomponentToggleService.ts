@@ -1,6 +1,6 @@
 import { subcomponentAndOverlayElementIdsState } from '../subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../../consts/subcomponentOverlayClasses.enum';
-import { EntityDisplayStatus, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { SubcomponentDisplayStatus, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 
 export default class SubcomponentSelectModeService {
 
@@ -40,7 +40,7 @@ export default class SubcomponentSelectModeService {
       optionalSubcomponent.currentlyDisplaying ? SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE : SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
   }
 
-  public static changeSubcomponentOverlayClass(optionalSubcomponent: EntityDisplayStatus, activeSubcomponentName: string, displayOverlayOnlyState: boolean,
+  public static changeSubcomponentOverlayClass(optionalSubcomponent: SubcomponentDisplayStatus, activeSubcomponentName: string, displayOverlayOnlyState: boolean,
       classToBeReplaced: SUBCOMPONENT_OVERLAY_CLASSES, newClass: SUBCOMPONENT_OVERLAY_CLASSES): void {
     optionalSubcomponent.displayOverlayOnly = displayOverlayOnlyState;
     const subcomponentOverlayElement = SubcomponentSelectModeService.getActiveSubcomponentOverlayElement(activeSubcomponentName);

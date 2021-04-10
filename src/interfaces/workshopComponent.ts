@@ -8,6 +8,7 @@ import { NEW_COMPONENT_TYPES } from '../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
 import { CustomSubcomponentNames } from './customSubcomponentNames';
 import { WorkshopComponentCss } from './workshopComponentCss';
+import { EntityDisplayStatus } from './entityDisplayStatus';
 import { TempCustomCss } from './tempCustomCss';
 import { InheritedCss } from './inheritedCss';
 
@@ -30,12 +31,11 @@ export type CustomCss = {
   [key in CSS_PSEUDO_CLASSES]?: WorkshopComponentCss;
 }
 
-// export this
-export interface EntityDisplayStatus {
-  currentlyDisplaying: boolean;
-  // appended at app runtime
+interface OverlayDisplayStatus {
   displayOverlayOnly?: boolean;
 }
+
+export type SubcomponentDisplayStatus = EntityDisplayStatus & OverlayDisplayStatus;
 
 export type SubcomponentSpecificSettings = {
   [key in WORKSHOP_TOOLBAR_OPTION_TYPES]?: {
@@ -113,7 +113,7 @@ export interface CustomFeatures {
   // this is used to add an animation effect when hovering or clicking a subcomponent to display their new custom css
   // it is currently not being used during css export and instead added explicitly using inherited css files
   subcomponentPreviewTransition?: string;
-  optionalSubcomponent?: EntityDisplayStatus;
+  optionalSubcomponent?: EntityDisplayStatus & SubcomponentDisplayStatus;
   // the reason why custom css is attached here is to not have to keep multiple unique settings for each and every subcomponent in memory all at once
   subcomponentSpecificSettings?: SubcomponentSpecificSettings;
   customFeatures?: CustomFeatures;

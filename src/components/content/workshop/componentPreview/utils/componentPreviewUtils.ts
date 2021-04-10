@@ -1,10 +1,11 @@
 import useSubcomponentPreviewSelectModeEventHandlers from '../compositionAPI/useSubcomponentPreviewSelectModeEventHandlers';
-import { NestedDropdownStructure, ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/nestedDropdownStructure';
 import { SubcomponentAndOverlayElementIds } from '../../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SubcomponentPreviewMouseEvents } from '../../../../../interfaces/subcomponentPreviewMouseEvents';
 import useSubcomponentPreviewEventHandlers from '../compositionAPI/useSubcomponentPreviewEventHandlers';
 import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../../consts/subcomponentCursorClasses.enum';
 import { Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
+import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
+import { ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/entityDisplayStatus';
 
 interface Index {
   number: number;
