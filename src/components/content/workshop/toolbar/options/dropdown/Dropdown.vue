@@ -26,16 +26,18 @@
 </template>
 
 <script lang="ts">
+import { NestedDropdownStructure, ENTITY_DISPLAY_STATUS_REF, EntityDisplayStatusRef } from '../../../../../../interfaces/nestedDropdownStructure';
 import { COMPONENT_CARD_MARKER, DROPDOWN_OPTION_MARKER, RANGE_SETTING_MARKER } from '../../../../../../consts/elementClassMarkers';
 import { CUSTOM_DROPDOWN_OPTION_CLASSES } from '../../../../../../consts/customDropdownOptionClasses.enum';
 import { DropdownMouseClickOptionEvent } from '../../../../../../interfaces/dropdownMouseClickOptionEvent';
 import { OptionMouseEnter, OptionMouseLeave } from '../../../../../../interfaces/dropdownMenuMouseEvents';
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
-import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { DropdownCompositionAPI } from '../../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
+import { EntityDisplayStatus } from '../../../../../../interfaces/workshopComponent';
 import BrowserType from '../../../../../../services/workshop/browserType';
+import { NestedDropdownUtils } from './utils/nestedDropdownsUtils';
 import dropdownMenu from './DropdownMenu.vue';
 import { Ref, ref, watch } from 'vue';
 
@@ -212,8 +214,10 @@ export default {
         this.$refs.dropdownMenus.childNodes[1].style.display = 'block';
       });
     },
-    displayChildDropdownMenu(parentOptionElement: HTMLElement, parentDropdownMenuIndex: number, parentDropdownOptionIndex: number, childDropdownOptions: NestedDropdownStructure): void {
-      if (typeof childDropdownOptions.currentlyDisplaying !== 'boolean') {
+    displayChildDropdownMenu(parentOptionElement: HTMLElement, parentDropdownMenuIndex: number, parentDropdownOptionIndex: number,
+        childDropdownOptions: NestedDropdownStructure | EntityDisplayStatusRef): void {
+      if (!childDropdownOptions[ENTITY_DISPLAY_STATUS_REF]
+          || (Object.keys(childDropdownOptions).length > 1 && (childDropdownOptions[ENTITY_DISPLAY_STATUS_REF] as EntityDisplayStatus).currentlyDisplaying)) {
         this.dropdowns.push(childDropdownOptions);
         const startOfLeftPropertyValueNumber = 11;
         const dropdownMenuElement = parentOptionElement.parentNode as HTMLElement;
@@ -260,8 +264,8 @@ export default {
       this.changeOptionArrowColor(optionElementToBeHighlighted, 'white');
     },
     isOptionInactive(dropdowns: NestedDropdownStructure[], optionElement: HTMLElement, dropdownMenuIndex: number): boolean {
-      return typeof dropdowns[dropdownMenuIndex][(optionElement.childNodes[0] as HTMLElement).innerHTML].currentlyDisplaying === 'boolean'
-        && !dropdowns[dropdownMenuIndex][(optionElement.childNodes[0] as HTMLElement).innerHTML].currentlyDisplaying;
+      return dropdowns[dropdownMenuIndex][(optionElement.childNodes[0] as HTMLElement).innerHTML][ENTITY_DISPLAY_STATUS_REF]
+        && !(dropdowns[dropdownMenuIndex][(optionElement.childNodes[0] as HTMLElement).innerHTML][ENTITY_DISPLAY_STATUS_REF] as EntityDisplayStatus).currentlyDisplaying;
     },
     changeOptionArrowColor(optionElement: Element, newColor: 'white'|'#6d6d6d'): void {
       const arrowElement = optionElement.childNodes[1];
@@ -326,7 +330,7 @@ export default {
     changeDropdownOptionsToAppropriateStructure(): void {
       const resultObject = {};
       Object.keys(this.dropdownOptions).forEach((keyName) => {
-        resultObject[keyName] = { currentlyDisplaying: true };
+        resultObject[keyName] = NestedDropdownUtils.createEntityDisplayStatusReferenceObject();
       });
       this.processedOptions = resultObject;
     },

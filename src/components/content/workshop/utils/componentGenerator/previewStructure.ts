@@ -1,8 +1,8 @@
 import { AlignedSections, ComponentPreviewStructure, Layer, NestedSubcomponent } from '../../../../../interfaces/componentPreviewStructure';
+import { NestedDropdownStructure, ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/nestedDropdownStructure';
 import { SubcomponentProperties, Subcomponents } from '../../../../../interfaces/workshopComponent';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../consts/layerSections';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
-import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
 import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomponentNames';
 
 export default class PreviewStructure {
@@ -50,6 +50,7 @@ export default class PreviewStructure {
       layerSubcomponentsStructure: NestedDropdownStructure, allSubcomponents: Subcomponents): void {
     layer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS] = PreviewStructure.createEmptyAlignedSections();
     Object.keys(layerSubcomponentsStructure).forEach((subcomponentName: string) => {
+      if (subcomponentName === ENTITY_DISPLAY_STATUS_REF) return;
       PreviewStructure.addSubcomponentToAlignedSection(layer, layerSubcomponent, subcomponentName, allSubcomponents);
       PreviewStructure.addLayerToSubcomponentCustomFeatures(layer, subcomponentName, allSubcomponents);
     });

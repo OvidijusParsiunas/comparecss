@@ -1,10 +1,10 @@
 import useSubcomponentPreviewSelectModeEventHandlers from '../compositionAPI/useSubcomponentPreviewSelectModeEventHandlers';
+import { NestedDropdownStructure, ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/nestedDropdownStructure';
 import { SubcomponentAndOverlayElementIds } from '../../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SubcomponentPreviewMouseEvents } from '../../../../../interfaces/subcomponentPreviewMouseEvents';
 import useSubcomponentPreviewEventHandlers from '../compositionAPI/useSubcomponentPreviewEventHandlers';
 import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../../consts/subcomponentCursorClasses.enum';
 import { Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
-import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
 
 interface Index {
   number: number;
@@ -25,16 +25,17 @@ export default class ComponentPreviewUtils {
     });
   }
 
-  private static addIdsViaTraversalOfNestedDropdownStructure(subcomponents: NestedDropdownStructure, index: Index,
+  private static addIdsViaTraversalOfNestedDropdownStructure(subcomponentDropdownStructure: NestedDropdownStructure, index: Index,
       subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds): void {
-    Object.keys(subcomponents).forEach((subcomponentName: string) => {
+    Object.keys(subcomponentDropdownStructure).forEach((subcomponentName: string) => {
+      if (subcomponentName === ENTITY_DISPLAY_STATUS_REF) return;
       subcomponentAndOverlayElementIdsObject[subcomponentName] = {
         subcomponentId: `${ComponentPreviewUtils.subcomponentIdPrefix}${index.number}`,
         overlayId: `${ComponentPreviewUtils.overlayIdPrefix}${index.number}`,
       };
       index.number += 1;
-      if (Object.keys(subcomponents[subcomponentName]).length > 0 && subcomponents[subcomponentName].currentlyDisplaying === undefined) {
-        ComponentPreviewUtils.addIdsViaTraversalOfNestedDropdownStructure(subcomponents[subcomponentName] as NestedDropdownStructure,
+      if (Object.keys(subcomponentDropdownStructure[subcomponentName]).length > 1 || !subcomponentDropdownStructure[subcomponentName][ENTITY_DISPLAY_STATUS_REF]) {
+        ComponentPreviewUtils.addIdsViaTraversalOfNestedDropdownStructure(subcomponentDropdownStructure[subcomponentName] as NestedDropdownStructure,
           index, subcomponentAndOverlayElementIdsObject);
       }
     });

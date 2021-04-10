@@ -67,12 +67,12 @@ import ExpandedModalPreviewModeToggleEntranceTransition from './utils/expandedMo
 import ExpandedModalPreviewModeToggleExitTransitionService from './utils/expandedModalPreviewMode/modeToggleTransitions/exit';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
-import PreviewEntranceTransition from './utils/expandedModalPreviewMode/previewTransitions/entrance';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
 import { ModalEntranceTransition, ModalExitTransition } from '../../../../interfaces/modalTransitions';
-import PreviewExitTransition from './utils/expandedModalPreviewMode/previewTransitions/exit';
+import PreviewEntranceTransition from './utils/expandedModalPreviewMode/previewTransitions/entrance';
 import { PlayTransitionPreviewEvent } from '../../../../interfaces/playTransitionPreviewEvent';
+import PreviewExitTransition from './utils/expandedModalPreviewMode/previewTransitions/exit';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
 import TransitionUtils from './utils/expandedModalPreviewMode/utils/transitionUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';

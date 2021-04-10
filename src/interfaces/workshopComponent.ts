@@ -30,7 +30,8 @@ export type CustomCss = {
   [key in CSS_PSEUDO_CLASSES]?: WorkshopComponentCss;
 }
 
-export interface OptionalSubcomponent {
+// export this
+export interface EntityDisplayStatus {
   currentlyDisplaying: boolean;
   // appended at app runtime
   displayOverlayOnly?: boolean;
@@ -112,7 +113,7 @@ export interface CustomFeatures {
   // this is used to add an animation effect when hovering or clicking a subcomponent to display their new custom css
   // it is currently not being used during css export and instead added explicitly using inherited css files
   subcomponentPreviewTransition?: string;
-  optionalSubcomponent?: OptionalSubcomponent;
+  optionalSubcomponent?: EntityDisplayStatus;
   // the reason why custom css is attached here is to not have to keep multiple unique settings for each and every subcomponent in memory all at once
   subcomponentSpecificSettings?: SubcomponentSpecificSettings;
   customFeatures?: CustomFeatures;

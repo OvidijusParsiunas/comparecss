@@ -2,12 +2,13 @@
   <div ref="dropdownMenu" class="dropdown-menu custom-dropdown-menu" :class="DROPDOWN_OPTION_MARKER" :style="BROWSER_SPECIFIC_DROPDOWN_MENU_STYLE">
     <a v-for="(innerDropdownOptions, optionName, optionIndex) in dropdownOptions" :key="optionName"
       class="dropdown-item custom-dropdown-item"
-      :style="{ color: [(typeof innerDropdownOptions.currentlyDisplaying !== 'boolean' || (typeof innerDropdownOptions.currentlyDisplaying == 'boolean' && innerDropdownOptions.currentlyDisplaying)) ? 'black' : 'grey' ]}"
+      :style="{ color: (!innerDropdownOptions[ENTITY_DISPLAY_STATUS_REF] || innerDropdownOptions[ENTITY_DISPLAY_STATUS_REF].currentlyDisplaying) ? 'black' : 'grey',
+        display: optionName === ENTITY_DISPLAY_STATUS_REF? 'none !important' : '' }"
       :class="DROPDOWN_OPTION_MARKER"
       @mouseenter="mouseEnter(innerDropdownOptions, optionIndex)"
       @mouseleave="mouseLeave">
         <div class="option-text" :class="DROPDOWN_OPTION_MARKER">{{optionName}}</div>
-        <font-awesome-icon v-if="(typeof innerDropdownOptions.currentlyDisplaying !== 'boolean')"
+        <font-awesome-icon v-if="(!innerDropdownOptions[ENTITY_DISPLAY_STATUS_REF])"
           class="dropdown-button-marker arrow-right-icon"
           :class="DROPDOWN_OPTION_MARKER"
           icon="angle-right"/>
@@ -16,14 +17,15 @@
 </template>
 
 <script lang="ts">
+import { NestedDropdownStructure, ENTITY_DISPLAY_STATUS_REF } from '../../../../../../interfaces/nestedDropdownStructure';
 import { OptionMouseEnter, OptionMouseLeave } from '../../../../../../interfaces/dropdownMenuMouseEvents'
-import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { DROPDOWN_OPTION_MARKER } from '../../../../../../consts/elementClassMarkers';
 import BrowserType from '../../../../../../services/workshop/browserType';
 
 interface Consts {
   DROPDOWN_OPTION_MARKER: string;
+  ENTITY_DISPLAY_STATUS_REF: string;
   BROWSER_SPECIFIC_DROPDOWN_MENU_STYLE: WorkshopComponentCss;
 }
 
@@ -31,6 +33,7 @@ export default {
   setup(): Consts {
     return {
       DROPDOWN_OPTION_MARKER,
+      ENTITY_DISPLAY_STATUS_REF,
       BROWSER_SPECIFIC_DROPDOWN_MENU_STYLE: { paddingBottom: BrowserType.isFirefox() ? '1px !important' : '2px !important' },
     };
   },

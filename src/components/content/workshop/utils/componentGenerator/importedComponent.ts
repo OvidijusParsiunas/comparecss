@@ -1,6 +1,7 @@
 import { CUSTOM_SUBCOMPONENT_NAMES_PREFIXES } from '../../../../../consts/customSubcomponentNamesPrefixes.enum';
 import { ImportedComponentStructure } from '../../../../../interfaces/importedComponentStructure';
 import { Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
+import { ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/nestedDropdownStructure';
 import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../interfaces/componentGenerator';
@@ -23,11 +24,19 @@ export default class ImportedCompoment {
     }
   }
 
+  private static applyOptionalSubcomponentProperty(importedComponentRef: WorkshopComponent, importedComponentName: string): void {
+    const baseSubcomponent = importedComponentRef.subcomponents[importedComponentName];
+    baseSubcomponent.optionalSubcomponent = { currentlyDisplaying: true };
+    importedComponentRef.componentPreviewStructure.subcomponentDropdownStructure
+      [importedComponentName][ENTITY_DISPLAY_STATUS_REF] = baseSubcomponent.optionalSubcomponent;
+  }
+
   public static createImportedSubcomponents(componentGenerator: ComponentGenerator, importedComponentName: string, importedComponentId: number): Subcomponents {
     const importedComponentRef = componentGenerator.createNewComponent(importedComponentName, importedComponentId);
     // WORK3: IMPORT COMPONENT
     // take into consideration that when importing existing component, the default will need to be recreated
     ImportedCompoment.applyTopProperty(importedComponentRef, importedComponentName);
+    ImportedCompoment.applyOptionalSubcomponentProperty(importedComponentRef, importedComponentName);
     // referencing the whole component within it's own subcomponent may not be efficient
     // alternative would be to have a placeholder subcomponent to reference it
     importedComponentRef.subcomponents[importedComponentName].importedComponent = importedComponentRef;
