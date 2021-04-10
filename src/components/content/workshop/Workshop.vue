@@ -101,6 +101,7 @@ import SubcomponentToggleService from './toolbar/options/subcomponentToggleServi
 import { modalBaseSpecificSettings } from './newComponent/types/modals/properties/modalBaseSpecificSettings';
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
+import { EntityDisplayStatusUtils } from './utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../consts/subcomponentOverlayClasses.enum';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
@@ -405,7 +406,7 @@ function createSubcomponents(): Subcomponents {
       subcomponentPreviewTransition: 'all 0.25s ease-out',
       tempCustomCss: new Set(['transition']),
       childCss: inheritedAlertCloseChildCss,
-      optionalSubcomponent: { currentlyDisplaying: true },
+      subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
       customFeatures: createDefaultCloseButtonCustomFeatures(),
       defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
     },
@@ -417,7 +418,7 @@ function createSubcomponents(): Subcomponents {
       initialCss: createInitialText1Css(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      optionalSubcomponent: { currentlyDisplaying: true },
+      subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
       customFeatures: createDefaultTextCustomFeatures(),
       defaultCustomFeatures: createDefaultTextCustomFeatures(),
     },
@@ -429,7 +430,7 @@ function createSubcomponents(): Subcomponents {
       initialCss: createInitialText2Css(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      optionalSubcomponent: { currentlyDisplaying: true },
+      subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
       customFeatures: createDefaultTextCustomFeatures(),
       defaultCustomFeatures: createDefaultTextCustomFeatures(),
     },
@@ -568,7 +569,7 @@ export default {
     removeSubcomponentEventHandler(): void {
       this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.activeSubcomponentName].customCss = JSONManipulation.deepCopy(
         this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.activeSubcomponentName].initialCss);
-      this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.activeSubcomponentName].optionalSubcomponent.currentlyDisplaying = false;
+      this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed = false;
       this.$refs.toolbar.hideSettings();
     },
     cancelSubcomponentRemovalEventHandler(): void {

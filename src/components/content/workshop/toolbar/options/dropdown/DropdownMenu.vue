@@ -2,7 +2,7 @@
   <div ref="dropdownMenu" class="dropdown-menu custom-dropdown-menu" :class="DROPDOWN_OPTION_MARKER" :style="BROWSER_SPECIFIC_DROPDOWN_MENU_STYLE">
     <a v-for="(innerDropdownOptions, optionName, optionIndex) in dropdownOptions" :key="optionName"
       class="dropdown-item custom-dropdown-item"
-      :style="{ color: (!innerDropdownOptions[ENTITY_DISPLAY_STATUS_REF] || innerDropdownOptions[ENTITY_DISPLAY_STATUS_REF].currentlyDisplaying) ? 'black' : 'grey',
+      :style="{ color: (!innerDropdownOptions[ENTITY_DISPLAY_STATUS_REF] || innerDropdownOptions[ENTITY_DISPLAY_STATUS_REF].isDisplayed) ? 'black' : 'grey',
         display: optionName === ENTITY_DISPLAY_STATUS_REF? 'none !important' : '' }"
       :class="DROPDOWN_OPTION_MARKER"
       @mouseenter="mouseEnter(innerDropdownOptions, optionIndex)"

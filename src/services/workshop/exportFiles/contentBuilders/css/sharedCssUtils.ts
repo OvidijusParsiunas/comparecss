@@ -17,7 +17,7 @@ export default class SharedCssUtils {
       const { subcomponents, type } = component;
       Object.keys(subcomponents).forEach((subcomponentNames: string) => {
         const subcomponent: SubcomponentProperties = subcomponents[subcomponentNames];
-        if (subcomponent.optionalSubcomponent && !subcomponent.optionalSubcomponent.currentlyDisplaying) return;
+        if (subcomponent.subcomponentDisplayStatus && !subcomponent.subcomponentDisplayStatus.isDisplayed) return;
         const componentToSubcomponentId = this.generateComponentToSubcomponentId(type, subcomponentNames);
         repeatedSubcomponents[componentToSubcomponentId] = repeatedSubcomponents[componentToSubcomponentId] ? repeatedSubcomponents[componentToSubcomponentId] + 1 : 1;
       });

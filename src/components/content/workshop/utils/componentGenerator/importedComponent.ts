@@ -2,6 +2,7 @@ import { CUSTOM_SUBCOMPONENT_NAMES_PREFIXES } from '../../../../../consts/custom
 import { ImportedComponentStructure } from '../../../../../interfaces/importedComponentStructure';
 import { Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomponentNames';
+import { EntityDisplayStatusUtils } from '../entityDisplayStatus/entityDisplayStatusUtils';
 import { ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/entityDisplayStatus';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../interfaces/componentGenerator';
@@ -26,9 +27,9 @@ export default class ImportedCompoment {
 
   private static applyOptionalSubcomponentProperty(importedComponentRef: WorkshopComponent, importedComponentName: string): void {
     const baseSubcomponent = importedComponentRef.subcomponents[importedComponentName];
-    baseSubcomponent.optionalSubcomponent = { currentlyDisplaying: true };
+    baseSubcomponent.subcomponentDisplayStatus = EntityDisplayStatusUtils.createDefaultEntityDisplayStatus();
     importedComponentRef.componentPreviewStructure.subcomponentDropdownStructure
-      [importedComponentName][ENTITY_DISPLAY_STATUS_REF] = baseSubcomponent.optionalSubcomponent;
+      [importedComponentName][ENTITY_DISPLAY_STATUS_REF] = baseSubcomponent.subcomponentDisplayStatus;
   }
 
   public static createImportedSubcomponents(componentGenerator: ComponentGenerator, importedComponentName: string, importedComponentId: number): Subcomponents {

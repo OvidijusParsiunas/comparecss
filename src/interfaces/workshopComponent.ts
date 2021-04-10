@@ -113,7 +113,7 @@ export interface CustomFeatures {
   // this is used to add an animation effect when hovering or clicking a subcomponent to display their new custom css
   // it is currently not being used during css export and instead added explicitly using inherited css files
   subcomponentPreviewTransition?: string;
-  optionalSubcomponent?: EntityDisplayStatus & SubcomponentDisplayStatus;
+  subcomponentDisplayStatus?: EntityDisplayStatus & SubcomponentDisplayStatus;
   // the reason why custom css is attached here is to not have to keep multiple unique settings for each and every subcomponent in memory all at once
   subcomponentSpecificSettings?: SubcomponentSpecificSettings;
   customFeatures?: CustomFeatures;

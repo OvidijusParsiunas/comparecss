@@ -29,16 +29,16 @@
           <font-awesome-icon v-else class="expand-icon dropdown-button-marker" icon="expand-alt"/>
         </button>
       </div>
-      <div class="option-component-button" v-if="component.subcomponents[component.activeSubcomponentName].optionalSubcomponent">
+      <div class="option-component-button" v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus">
         <button
           type="button" class="btn option-action-button" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
-          :class="component.subcomponents[component.activeSubcomponentName].optionalSubcomponent.currentlyDisplaying ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add'"
+          :class="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add'"
           @mouseenter="subcomponentMouseEnterHandler"
           @mouseleave="subcomponentMouseLeaveHandler"
           @click="toggleSubcomponent(component.subcomponents[component.activeSubcomponentName])">
         </button>
       </div>
-      <div v-if="!component.subcomponents[component.activeSubcomponentName].optionalSubcomponent || component.subcomponents[component.activeSubcomponentName].optionalSubcomponent.currentlyDisplaying"> 
+      <div v-if="!component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus || component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed"> 
         <dropdown class="option-component-button"
           :uniqueIdentifier="CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
           :dropdownOptions="componentTypeToOptions[component.type][component.subcomponents[component.activeSubcomponentName].subcomponentType]"
@@ -176,8 +176,8 @@ export default {
       const oldActiveSubcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
       oldActiveSubcomponent.activeCssPseudoClass = oldActiveSubcomponent.defaultCssPseudoClass;
       this.component.activeSubcomponentName = newSubComponent;
-      if (this.component.subcomponents[this.component.activeSubcomponentName].optionalSubcomponent
-          && !this.component.subcomponents[this.component.activeSubcomponentName].optionalSubcomponent.currentlyDisplaying) {
+      if (this.component.subcomponents[this.component.activeSubcomponentName].subcomponentDisplayStatus
+          && !this.component.subcomponents[this.component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed) {
         this.hideSettings();
         return;
       }
@@ -208,14 +208,14 @@ export default {
       });
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
-      const { optionalSubcomponent, initialCss } = subcomponent;
-      if (!optionalSubcomponent.currentlyDisplaying) {
-        optionalSubcomponent.currentlyDisplaying = true;
+      const { subcomponentDisplayStatus, initialCss } = subcomponent;
+      if (!subcomponentDisplayStatus.isDisplayed) {
+        subcomponentDisplayStatus.isDisplayed = true;
         if (this.activeOption.buttonName) {
           const defaultOption = this.getDefaultOption();
           this.selectOption(defaultOption); 
         }
-        SubcomponentToggleService.changeSubcomponentOverlayClass(optionalSubcomponent, this.component.activeSubcomponentName, false,
+        SubcomponentToggleService.changeSubcomponentOverlayClass(subcomponentDisplayStatus, this.component.activeSubcomponentName, false,
           SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
       } else if (!this.getIsDoNotShowModalAgainState()) {
         this.currentRemoveSubcomponentModalTargetId = this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID;
@@ -223,8 +223,8 @@ export default {
         this.$emit('prepare-remove-subcomponent-modal');
       } else {
         subcomponent.customCss = JSONManipulation.deepCopy(initialCss);
-        optionalSubcomponent.currentlyDisplaying = false;
-        SubcomponentToggleService.changeSubcomponentOverlayClass(optionalSubcomponent, this.component.activeSubcomponentName, true,
+        subcomponentDisplayStatus.isDisplayed = false;
+        SubcomponentToggleService.changeSubcomponentOverlayClass(subcomponentDisplayStatus, this.component.activeSubcomponentName, true,
           SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
         this.hideSettings();
       }

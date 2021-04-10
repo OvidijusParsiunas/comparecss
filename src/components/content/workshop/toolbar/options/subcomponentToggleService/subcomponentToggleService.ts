@@ -22,9 +22,9 @@ export default class SubcomponentSelectModeService {
   }
 
   public static displaySubcomponentOverlay(component: WorkshopComponent): void {
-    const { optionalSubcomponent } = component.subcomponents[component.activeSubcomponentName];
-    if (!optionalSubcomponent.currentlyDisplaying) {
-      optionalSubcomponent.displayOverlayOnly = true;
+    const { subcomponentDisplayStatus } = component.subcomponents[component.activeSubcomponentName];
+    if (!subcomponentDisplayStatus.isDisplayed) {
+      subcomponentDisplayStatus.displayOverlayOnly = true;
       setTimeout(() => {
         SubcomponentSelectModeService.displaySubcomponentOverlayBySelectModeStatus(component.activeSubcomponentName, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
       });
@@ -34,15 +34,15 @@ export default class SubcomponentSelectModeService {
   }
 
   public static hideSubcomponentOverlay(component: WorkshopComponent): void {
-    const { optionalSubcomponent } = component.subcomponents[component.activeSubcomponentName];
-    optionalSubcomponent.displayOverlayOnly = false;
+    const { subcomponentDisplayStatus } = component.subcomponents[component.activeSubcomponentName];
+    subcomponentDisplayStatus.displayOverlayOnly = false;
     SubcomponentSelectModeService.hideSubcomponentOverlayBySelectModeStatus(component.activeSubcomponentName,
-      optionalSubcomponent.currentlyDisplaying ? SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE : SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
+      subcomponentDisplayStatus.isDisplayed ? SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE : SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
   }
 
-  public static changeSubcomponentOverlayClass(optionalSubcomponent: SubcomponentDisplayStatus, activeSubcomponentName: string, displayOverlayOnlyState: boolean,
+  public static changeSubcomponentOverlayClass(subcomponentDisplayStatus: SubcomponentDisplayStatus, activeSubcomponentName: string, displayOverlayOnlyState: boolean,
       classToBeReplaced: SUBCOMPONENT_OVERLAY_CLASSES, newClass: SUBCOMPONENT_OVERLAY_CLASSES): void {
-    optionalSubcomponent.displayOverlayOnly = displayOverlayOnlyState;
+    subcomponentDisplayStatus.displayOverlayOnly = displayOverlayOnlyState;
     const subcomponentOverlayElement = SubcomponentSelectModeService.getActiveSubcomponentOverlayElement(activeSubcomponentName);
     subcomponentOverlayElement.classList.replace(classToBeReplaced, newClass);
     setTimeout(() => { subcomponentOverlayElement.style.display = 'block'; });

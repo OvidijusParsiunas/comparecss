@@ -13,9 +13,9 @@
         :mouseEvents="mouseEvents"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
         :isImportedComponent="true"/>
-      <component v-else-if="!nestedSubcomponent.subcomponentProperties.optionalSubcomponent
-          || nestedSubcomponent.subcomponentProperties.optionalSubcomponent.currentlyDisplaying
-          || nestedSubcomponent.subcomponentProperties.optionalSubcomponent.displayOverlayOnly"
+      <component v-else-if="!nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus
+          || nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus.isDisplayed
+          || nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus.displayOverlayOnly"
         :is="nestedSubcomponent.subcomponentProperties.componentTag"
         aria-hidden="true"
         :id="subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId"
@@ -37,7 +37,7 @@
               nestedSubcomponent.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
               nestedSubcomponent.subcomponentProperties.customCss[nestedSubcomponent.subcomponentProperties.activeCssPseudoClass],
             ]"
-        >{{(!nestedSubcomponent.subcomponentProperties.optionalSubcomponent || !nestedSubcomponent.subcomponentProperties.optionalSubcomponent.displayOverlayOnly)
+        >{{(!nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus || !nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus.displayOverlayOnly)
             && nestedSubcomponent.subcomponentProperties.componentText ? nestedSubcomponent.subcomponentProperties.componentText : '' }}
       </component>
       <component v-if="!nestedSubcomponent.subcomponentProperties.importedComponent"

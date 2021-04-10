@@ -7,5 +7,5 @@ export interface EntityDisplayStatusRef {
 }
 
 export interface EntityDisplayStatus {
-  currentlyDisplaying: boolean;
+  isDisplayed: boolean;
 }

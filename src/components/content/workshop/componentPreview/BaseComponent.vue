@@ -1,9 +1,9 @@
 <template>
   <div>
     <div ref="componentPreview"
-      v-if="(!component.componentPreviewStructure.baseCss.optionalSubcomponent
-        || component.componentPreviewStructure.baseCss.optionalSubcomponent.currentlyDisplaying
-        || component.componentPreviewStructure.baseCss.optionalSubcomponent.displayOverlayOnly)"
+      v-if="(!component.componentPreviewStructure.baseCss.subcomponentDisplayStatus
+        || component.componentPreviewStructure.baseCss.subcomponentDisplayStatus.isDisplayed
+        || component.componentPreviewStructure.baseCss.subcomponentDisplayStatus.displayOverlayOnly)"
       :id="subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId"
       class="parent-component"
       :class="[ SUBCOMPONENT_CURSOR_AUTO_CLASS,
