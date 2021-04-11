@@ -59,9 +59,8 @@ export default class PreviewStructure {
   
   private static createEmptyLayer(layerName: string, layerSubcomponent: SubcomponentProperties): Layer {
     return {
-      customCss: layerSubcomponent.customCss,
-      subcomponentType: layerName,
-      subcomponentDisplayStatus: layerSubcomponent.subcomponentDisplayStatus,
+      name: layerName,
+      subcomponentProperties: layerSubcomponent,
       sections: {
         [layerSubcomponent.layerSectionsType]: {},
       }

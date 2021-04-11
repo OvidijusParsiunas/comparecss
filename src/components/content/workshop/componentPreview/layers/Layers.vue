@@ -1,22 +1,22 @@
 <template>
   <div class="layers">
     <div v-for="layer in layers" :key="layer" class="layer">
-      <div v-if="isSubcomponentDisplayed(layer)"
-        :id="subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId"
-        :style="layer.customCss[DEFAULT_CSS_PSEUDO_CLASS]"
-        @mouseenter="subcomponentAndOverlayElementIds[layer.subcomponentType] && mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseEnter()"
-        @mouseleave="subcomponentAndOverlayElementIds[layer.subcomponentType] && mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseLeave()"
-        @mousedown="subcomponentAndOverlayElementIds[layer.subcomponentType] && mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseDown()"
-        @mouseup="subcomponentAndOverlayElementIds[layer.subcomponentType] && mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseUp()">
+      <div v-if="isSubcomponentDisplayed(layer.subcomponentProperties)"
+        :id="subcomponentAndOverlayElementIds[layer.name] && subcomponentAndOverlayElementIds[layer.name].subcomponentId"
+        :style="layer.subcomponentProperties.customCss[DEFAULT_CSS_PSEUDO_CLASS]"
+        @mouseenter="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentMouseEnter()"
+        @mouseleave="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentMouseLeave()"
+        @mousedown="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentMouseDown()"
+        @mouseup="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentMouseUp()">
           <layer-sections
             v-if="layer.sections"
             :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
             :sections="layer.sections"
             :mouseEvents="mouseEvents"/>
       </div>
-      <div v-if="isSubcomponentDisplayed(layer)"
-        :id="subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].overlayId"
-        style="display: none" :style="layer.customCss[DEFAULT_CSS_PSEUDO_CLASS]"
+      <div v-if="isSubcomponentDisplayed(layer.subcomponentProperties)"
+        :id="subcomponentAndOverlayElementIds[layer.name] && subcomponentAndOverlayElementIds[layer.name].overlayId"
+        style="display: none" :style="layer.subcomponentProperties.customCss[DEFAULT_CSS_PSEUDO_CLASS]"
         :class="OVERLAY_DEFAULT_CLASS"></div>
     </div>
   </div>

@@ -23,7 +23,6 @@ option for font weight and text overlay, should also have an icon to edit text i
 fix the nested button display layout - to access their text
 remove vuesax
 need to change subcomponentType - to subcomponentName
-delete layer
 ability to automatically update imported subcomponents when the core subcomponent is updated
 close button should be imported
 importing existing subcomponent will also need to offer an option from the app defaults
