@@ -1,5 +1,5 @@
+import { CustomCss, SubcomponentDisplayStatus, SubcomponentProperties } from './workshopComponent';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections';
-import { CustomCss, SubcomponentProperties } from './workshopComponent';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 
 export type NestedSubcomponent = {
@@ -18,6 +18,7 @@ export interface Layer {
   subcomponentType: string;
   customCss: CustomCss;
   sections: Sections;
+  subcomponentDisplayStatus?: SubcomponentDisplayStatus;
 }
 
 export interface ComponentPreviewStructure {

@@ -61,6 +61,7 @@ export default class PreviewStructure {
     return {
       customCss: layerSubcomponent.customCss,
       subcomponentType: layerName,
+      subcomponentDisplayStatus: layerSubcomponent.subcomponentDisplayStatus,
       sections: {
         [layerSubcomponent.layerSectionsType]: {},
       }

@@ -1,8 +1,9 @@
 <template>
   <div class="layers">
     <div v-for="layer in layers" :key="layer" class="layer">
-      <div :id="subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId"
-        :style="layer.customCss[CSS_PSEUDO_CLASSES.DEFAULT]"
+      <div v-if="isSubcomponentDisplayed(layer)"
+        :id="subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId"
+        :style="layer.customCss[DEFAULT_CSS_PSEUDO_CLASS]"
         @mouseenter="subcomponentAndOverlayElementIds[layer.subcomponentType] && mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseEnter()"
         @mouseleave="subcomponentAndOverlayElementIds[layer.subcomponentType] && mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseLeave()"
         @mousedown="subcomponentAndOverlayElementIds[layer.subcomponentType] && mouseEvents[subcomponentAndOverlayElementIds[layer.subcomponentType].subcomponentId].subcomponentMouseDown()"
@@ -13,8 +14,9 @@
             :sections="layer.sections"
             :mouseEvents="mouseEvents"/>
       </div>
-      <div :id="subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].overlayId"
-        style="display: none" :style="layer.customCss[CSS_PSEUDO_CLASSES.DEFAULT]"
+      <div v-if="isSubcomponentDisplayed(layer)"
+        :id="subcomponentAndOverlayElementIds[layer.subcomponentType] && subcomponentAndOverlayElementIds[layer.subcomponentType].overlayId"
+        style="display: none" :style="layer.customCss[DEFAULT_CSS_PSEUDO_CLASS]"
         :class="OVERLAY_DEFAULT_CLASS"></div>
     </div>
   </div>
@@ -23,18 +25,22 @@
 <script lang="ts">
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
+import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
+import SubcomponentDisplayUtils from '../utils/subcomponentDisplayUtils';
 import layerSections from './LayerSections.vue';
 
 interface Consts {
   OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
-  CSS_PSEUDO_CLASSES;
+  DEFAULT_CSS_PSEUDO_CLASS: CSS_PSEUDO_CLASSES;
+  isSubcomponentDisplayed: (nestedSubcomponent: SubcomponentProperties) => boolean;
 }
 
 export default {
   setup(): Consts {
     return {
       OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT,
-      CSS_PSEUDO_CLASSES,
+      DEFAULT_CSS_PSEUDO_CLASS: CSS_PSEUDO_CLASSES.DEFAULT,
+      isSubcomponentDisplayed: SubcomponentDisplayUtils.isSubcomponentDisplayed,
     };
   },
   components: {

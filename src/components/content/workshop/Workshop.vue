@@ -385,6 +385,7 @@ function createSubcomponents(): Subcomponents {
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
+      subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
     },
     [CORE_SUBCOMPONENTS_NAMES.LAYER_3]: {
       subcomponentType: SUBCOMPONENT_TYPES.LAYER_3,
@@ -394,6 +395,7 @@ function createSubcomponents(): Subcomponents {
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       subcomponentSpecificSettings: modalLayerBottomSpecificSettings,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
+      subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
     },
     [CORE_SUBCOMPONENTS_NAMES.CLOSE]: {
       subcomponentType: SUBCOMPONENT_TYPES.CLOSE,
@@ -445,6 +447,7 @@ function createNewComponent(): WorkshopComponent {
     ...ImportedCompoment.createImportedSubcomponents(defaultButton, importedButton1Name, 1),
     ...ImportedCompoment.createImportedSubcomponents(defaultButton, importedButton2Name, 2) };
   const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
+    subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_3],
     subcomponents[CORE_SUBCOMPONENTS_NAMES.CLOSE], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_2],
     ImportedCompoment.createImportedComponentStructure(subcomponents, importedButton1Name),
     ImportedCompoment.createImportedComponentStructure(subcomponents, importedButton2Name),
