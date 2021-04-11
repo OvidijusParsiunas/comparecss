@@ -30,7 +30,7 @@
               :component="currentlySelectedComponent"
               :componentPreviewAssistance="componentPreviewAssistance"
               @hide-dropdown-menu-callback="addWorkshopEventCallback($event)"
-              @prepare-remove-subcomponent-modal="$refs.removeSubcomponentModal.prepare()"
+              @prepare-remove-subcomponent-modal="$refs.removeSubcomponentModal.prepare($event)"
               @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
               @toggle-expanded-modal-preview-mode="$refs.contents.expandModalComponent($event)"
               @play-transition-preview="$refs.contents.playTransitionPreview($event)"
@@ -73,7 +73,6 @@
         ref="removeSubcomponentModal"
         :modalId="REMOVE_SUBCOMPONENT_MODAL_ID"
         :removalModalState="removeSubcomponentModalState"
-        @remove-event="removeSubcomponentEventHandler"
         @cancel-event="cancelSubcomponentRemovalEventHandler"
         @remove-modal-template-callback="addWorkshopEventCallback($event)">
         Are you sure you want to remove this subcomponent?
@@ -93,11 +92,11 @@ import { modalLayerBottomSpecificSettings } from './newComponent/types/modals/pr
 import { removeSubcomponentModalState } from './toolbar/options/removeSubcomponentModalState/removeSubcomponentModalState';
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../consts/modalTransitionTypes.enum';
 import getModalSubcomponentDropdownStructure from './newComponent/types/modals/properties/subcomponentDropdownStructure'
+import SubcomponentToggleOverlayUtils from './toolbar/options/subcomponentToggleUtils/subcomponentToggleOverlayUtils';
 import { modalLayerTopSpecificSettings } from './newComponent/types/modals/properties/modalLayerTopSpecificSettings';
 import { inheritedAlertCloseChildCss } from './newComponent/types/alerts/properties/inheritedAlertCloseChildCss';
 import { removeComponentModalState } from './componentList/removeComponentModalState/removeComponentModalState';
 import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
-import SubcomponentToggleService from './toolbar/options/subcomponentToggleService/subcomponentToggleService';
 import { modalBaseSpecificSettings } from './newComponent/types/modals/properties/modalBaseSpecificSettings';
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
@@ -569,14 +568,8 @@ export default {
     addWorkshopEventCallback(callback: WorkshopEventCallback): void {
       this.workshopEventCallbacks.push(callback);
     },
-    removeSubcomponentEventHandler(): void {
-      this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.activeSubcomponentName].customCss = JSONManipulation.deepCopy(
-        this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.activeSubcomponentName].initialCss);
-      this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed = false;
-      this.$refs.toolbar.hideSettings();
-    },
     cancelSubcomponentRemovalEventHandler(): void {
-      SubcomponentToggleService.hideSubcomponentOverlayBySelectModeStatus(this.currentlySelectedComponent.activeSubcomponentName,
+      SubcomponentToggleOverlayUtils.hideSubcomponentOverlayBySelectModeStatus(this.currentlySelectedComponent.activeSubcomponentName,
         SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
     },
     preloadIcons(): void {

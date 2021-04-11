@@ -5,10 +5,10 @@ import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 function moveSubcomponentToTargetSection(event: ActionsDropdownMouseEventCallbackEvent): void {
   const { previousOptionName, triggeredOptionName, subcomponentProperties } = event;
   let nestedSubcomponentIndex = 0;
-  const previousSectionArray = subcomponentProperties.customFeatures.parentLayer.sections.alignedSections[previousOptionName];
+  const previousSectionArray = subcomponentProperties.parentLayer.sections.alignedSections[previousOptionName];
   for (let i = 0; i < previousSectionArray.length; i += 1) {
     if (previousSectionArray[i].subcomponentProperties === subcomponentProperties) {
-      subcomponentProperties.customFeatures.parentLayer.sections.alignedSections[triggeredOptionName].unshift(previousSectionArray[i]);
+      subcomponentProperties.parentLayer.sections.alignedSections[triggeredOptionName].unshift(previousSectionArray[i]);
       nestedSubcomponentIndex = i;
       break;
     }

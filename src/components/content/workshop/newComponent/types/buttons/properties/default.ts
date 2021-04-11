@@ -95,7 +95,7 @@ function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayer
   return { section };
 }
 
-function createDefaultButtonBaseCustomFeatures(): any {
+function createDefaultButtonBaseCustomFeatures(): CustomFeatures {
   return {
     jsClasses: createInitialButtonJsClasses(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),

@@ -81,19 +81,19 @@ import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useS
 import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { removeSubcomponentModalState } from './removeSubcomponentModalState/removeSubcomponentModalState';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
+import SubcomponentToggleOverlayUtils from './subcomponentToggleUtils/subcomponentToggleOverlayUtils';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER } from '../../../../../consts/elementClassMarkers';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
 import SubcomponentSelectModeService from './subcomponentSelectMode/subcomponentSelectModeService';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
-import SubcomponentToggleService from './subcomponentToggleService/subcomponentToggleService';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
+import SubcomponentToggleUtils from './subcomponentToggleUtils/subcomponentToggleUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum';
-import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
 import useToolbarPositionToggle from './compositionApi/useToolbarPositionToggle';
 import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
@@ -208,33 +208,31 @@ export default {
       });
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
-      const { subcomponentDisplayStatus, initialCss } = subcomponent;
+      const { subcomponentDisplayStatus } = subcomponent;
       if (!subcomponentDisplayStatus.isDisplayed) {
         subcomponentDisplayStatus.isDisplayed = true;
         if (this.activeOption.buttonName) {
           const defaultOption = this.getDefaultOption();
           this.selectOption(defaultOption); 
         }
-        SubcomponentToggleService.changeSubcomponentOverlayClass(subcomponentDisplayStatus, this.component.activeSubcomponentName, false,
+        SubcomponentToggleOverlayUtils.changeSubcomponentOverlayClass(subcomponentDisplayStatus, this.component.activeSubcomponentName, false,
           SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
       } else if (!this.getIsDoNotShowModalAgainState()) {
         this.currentRemoveSubcomponentModalTargetId = this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID;
         setTimeout(() => { this.currentRemoveSubcomponentModalTargetId = ''; });
-        this.$emit('prepare-remove-subcomponent-modal');
+        this.$emit('prepare-remove-subcomponent-modal', SubcomponentToggleUtils.removeSubcomponent.bind(this, this.component, this.hideSettings));
       } else {
-        subcomponent.customCss = JSONManipulation.deepCopy(initialCss);
-        subcomponentDisplayStatus.isDisplayed = false;
-        SubcomponentToggleService.changeSubcomponentOverlayClass(subcomponentDisplayStatus, this.component.activeSubcomponentName, true,
+        SubcomponentToggleUtils.removeSubcomponent(this.component, this.hideSettings)
+        SubcomponentToggleOverlayUtils.changeSubcomponentOverlayClass(subcomponentDisplayStatus, this.component.activeSubcomponentName, true,
           SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
-        this.hideSettings();
       }
     },
     subcomponentMouseEnterHandler(): void {
-      SubcomponentToggleService.displaySubcomponentOverlay(this.component);
+      SubcomponentToggleOverlayUtils.displaySubcomponentOverlay(this.component);
     },
     subcomponentMouseLeaveHandler(): void {
       if (this.currentRemoveSubcomponentModalTargetId === this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID) return;
-      SubcomponentToggleService.hideSubcomponentOverlay(this.component);
+      SubcomponentToggleOverlayUtils.hideSubcomponentOverlay(this.component);
     },
     toggleSubcomponentSelectModeButtonDisplay(isDropdownDisplayed: boolean): void {
       this.isSubcomponentSelectModeButtonDisplayed = isDropdownDisplayed;

@@ -84,11 +84,9 @@ export interface CustomFeatures {
   jsClasses?: ComponentJavascriptClasses;
   autoWidth?: AutoWidth;
   alignedLayerSection?: AlignedLayerSection,
-  // appended in run-time
-  parentLayer?: Layer;
 }
 
-  export interface SubcomponentProperties {
+export interface SubcomponentProperties {
   // used for defining options
   subcomponentType?: SUBCOMPONENT_TYPES;
   componentTag?: string;
@@ -120,6 +118,8 @@ export interface CustomFeatures {
   defaultCustomFeatures?: CustomFeatures;
   layerSectionsType?: LAYER_SECTIONS_TYPES;
   importedComponent?: WorkshopComponent;
+  // appended in run-time
+  parentLayer?: Layer;
 }
 
 export type Subcomponents = {

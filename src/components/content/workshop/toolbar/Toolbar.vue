@@ -8,7 +8,7 @@
         @trigger-settings-refresh="triggerSettingsRefresh($event)"
         @hide-settings="hideSettings"
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-        @prepare-remove-subcomponent-modal="$emit('prepare-remove-subcomponent-modal')"
+        @prepare-remove-subcomponent-modal="$emit('prepare-remove-subcomponent-modal', $event)"
         @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
         @toggle-expanded-modal-preview-mode="expandModalComponent($event)"
         @toggle-toolbar-position="toggleToolbarPosition"/>

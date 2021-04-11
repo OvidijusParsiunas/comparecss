@@ -43,6 +43,7 @@ interface Consts {
 interface Data {
   isDoNotShowAgainSelected: boolean;
   modalDisplayAnimationPlaying: boolean;
+  successfulRemoveCallback?: () => void;
 }
 
 export default {
@@ -58,12 +59,13 @@ export default {
     modalDisplayAnimationPlaying: false,
   }),
   methods: {
-    prepare(): void {
+    prepare(successfulRemoveCallback: () => void): void {
       const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
       const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.closeModalCallback };
       this.$emit('remove-modal-template-callback', workshopEventCallback);
       this.isClassNameTextHighlighted = false;
       this.modalDisplayAnimationPlaying = true;
+      this.successfulRemoveCallback = successfulRemoveCallback;
       setTimeout(() => {
         this.modalDisplayAnimationPlaying = false;
       }, this.MODAL_DISPLAY_ANIMATION_INTERVAL_MILLISECONDS);
@@ -85,6 +87,7 @@ export default {
       }
     },
     remove(): void {
+      if (this.successfulRemoveCallback) this.successfulRemoveCallback();
       this.$emit('remove-event');
     },
     doNotShowAgainSelected(state?: boolean): void {

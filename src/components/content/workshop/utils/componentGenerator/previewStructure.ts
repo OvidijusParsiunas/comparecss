@@ -8,12 +8,6 @@ import { ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/entityDispl
 
 export default class PreviewStructure {
 
-  private static addLayerToSubcomponentCustomFeatures(layer: Layer, subcomponentName: string,
-      allSubcomponents: Subcomponents): void {
-    allSubcomponents[subcomponentName].customFeatures.parentLayer = layer;
-    allSubcomponents[subcomponentName].defaultCustomFeatures.parentLayer = layer;
-  }
-
   private static addSubcomponentToEqualSplitSection(layer: Layer, layerSubcomponent: SubcomponentProperties,
       subcomponentName: string, allSubcomponents: Subcomponents): void {
     (layer.sections[layerSubcomponent.layerSectionsType] as NestedSubcomponent[]).push(
@@ -25,7 +19,7 @@ export default class PreviewStructure {
     layer.sections[LAYER_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS] = [];
     Object.keys(layerSubcomponentsStructure).forEach((subcomponentName: string) => {
       PreviewStructure.addSubcomponentToEqualSplitSection(layer, layerSubcomponent, subcomponentName, allSubcomponents);
-      PreviewStructure.addLayerToSubcomponentCustomFeatures(layer, subcomponentName, allSubcomponents);
+      allSubcomponents[subcomponentName].parentLayer = layer;
     });
   }
 
@@ -53,7 +47,7 @@ export default class PreviewStructure {
     Object.keys(layerSubcomponentsStructure).forEach((subcomponentName: string) => {
       if (subcomponentName === ENTITY_DISPLAY_STATUS_REF) return;
       PreviewStructure.addSubcomponentToAlignedSection(layer, layerSubcomponent, subcomponentName, allSubcomponents);
-      PreviewStructure.addLayerToSubcomponentCustomFeatures(layer, subcomponentName, allSubcomponents);
+      allSubcomponents[subcomponentName].parentLayer = layer;
     });
   }
   
