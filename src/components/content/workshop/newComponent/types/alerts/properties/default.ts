@@ -106,6 +106,7 @@ function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
 
 function createDefaultCloseButtonCustomFeatures(): CustomFeatures {
   return {
+    text: '×',
     jsClasses: createInitialCloseButtonJsClasses(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
   };
@@ -119,6 +120,7 @@ function createAutoWidth(): AutoWidth {
 
 function createDefaultTextCustomFeatures(): CustomFeatures {
   return {
+    text: 'button',
     autoWidth: createAutoWidth(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
   };
@@ -146,7 +148,6 @@ function createSubcomponents(): Subcomponents {
     [CORE_SUBCOMPONENTS_NAMES.CLOSE]: {
       subcomponentType: SUBCOMPONENT_TYPES.CLOSE,
       componentTag: 'button',
-      componentText: '×',
       customCss: createInitialCloseButtonCss(),
       initialCss: createInitialCloseButtonCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
@@ -161,7 +162,6 @@ function createSubcomponents(): Subcomponents {
     [CORE_SUBCOMPONENTS_NAMES.TEXT_1]: {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
       componentTag: 'div',
-      componentText: 'button',
       customCss: createTextCss(),
       initialCss: createTextCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,

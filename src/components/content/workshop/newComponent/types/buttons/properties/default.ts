@@ -102,8 +102,9 @@ function createDefaultButtonBaseCustomFeatures(): CustomFeatures {
   }
 }
 
-function createDefaultButtonCustomFeatures(): CustomFeatures {
+function createDefaultTextCustomFeatures(): CustomFeatures {
   return {
+    text: 'button',
     jsClasses: createInitialButtonJsClasses(),
     autoWidth: createAutoWidth(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
@@ -135,13 +136,12 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
     [subcomponentNames.text]: {
       subcomponentType: SUBCOMPONENT_TYPES.BUTTON_TEXT,
       componentTag: 'div',
-      componentText: 'button',
       customCss: createTextCss(),
       initialCss: createTextCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      customFeatures: createDefaultButtonCustomFeatures(),
-      defaultCustomFeatures: createDefaultButtonCustomFeatures(),
+      customFeatures: createDefaultTextCustomFeatures(),
+      defaultCustomFeatures: createDefaultTextCustomFeatures(),
     },
   }
 }

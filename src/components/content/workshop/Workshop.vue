@@ -191,6 +191,7 @@ function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayer
 
 function createDefaultCloseButtonCustomFeatures(): CustomFeatures {
   return {
+    text: '×',
     jsClasses: createInitialCloseButtonJsClasses(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
   };
@@ -202,8 +203,17 @@ function createAutoWidth(): AutoWidth {
   };
 }
 
-function createDefaultTextCustomFeatures(): CustomFeatures {
+function createDefaultText1CustomFeatures(): CustomFeatures {
   return {
+    text: 'Modal title',
+    autoWidth: createAutoWidth(),
+    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
+  };
+}
+
+function createDefaultText2CustomFeatures(): CustomFeatures {
+  return {
+    text: 'Modal body text',
     autoWidth: createAutoWidth(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
   };
@@ -399,7 +409,6 @@ function createSubcomponents(): Subcomponents {
     [CORE_SUBCOMPONENTS_NAMES.CLOSE]: {
       subcomponentType: SUBCOMPONENT_TYPES.CLOSE,
       componentTag: 'button',
-      componentText: '×',
       customCss: createInitialCloseButtonCss(),
       initialCss: createInitialCloseButtonCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
@@ -414,26 +423,24 @@ function createSubcomponents(): Subcomponents {
     [CORE_SUBCOMPONENTS_NAMES.TEXT_1]: {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
       componentTag: 'div',
-      componentText: 'Modal title',
       customCss: createInitialText1Css(),
       initialCss: createInitialText1Css(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
-      customFeatures: createDefaultTextCustomFeatures(),
-      defaultCustomFeatures: createDefaultTextCustomFeatures(),
+      customFeatures: createDefaultText1CustomFeatures(),
+      defaultCustomFeatures: createDefaultText1CustomFeatures(),
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_2]: {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
       componentTag: 'div',
-      componentText: 'Modal body text',
       customCss: createInitialText2Css(),
       initialCss: createInitialText2Css(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
-      customFeatures: createDefaultTextCustomFeatures(),
-      defaultCustomFeatures: createDefaultTextCustomFeatures(),
+      customFeatures: createDefaultText2CustomFeatures(),
+      defaultCustomFeatures: createDefaultText2CustomFeatures(),
     },
   };
 }

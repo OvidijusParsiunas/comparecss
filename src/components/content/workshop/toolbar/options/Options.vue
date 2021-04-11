@@ -85,7 +85,6 @@ import SubcomponentToggleOverlayUtils from './subcomponentToggleUtils/subcompone
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER } from '../../../../../consts/elementClassMarkers';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
-import SubcomponentSelectModeService from './subcomponentSelectMode/subcomponentSelectModeService';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
@@ -93,6 +92,7 @@ import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKey
 import SubcomponentToggleUtils from './subcomponentToggleUtils/subcomponentToggleUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
+import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectMode';
 import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum';
 import useToolbarPositionToggle from './compositionApi/useToolbarPositionToggle';
 import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
@@ -147,7 +147,7 @@ export default {
         return;
       }
       const buttonElement = event.currentTarget as HTMLElement;
-      const subcomponentSelectModeCallbackFunction = SubcomponentSelectModeService.initiate(buttonElement);
+      const subcomponentSelectModeCallbackFunction = SubcomponentSelectMode.initiate(buttonElement);
       const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.ESCAPE]);
       const subcomponentNameClickedFunc = this.newSubcomponentNameClicked;
       this.$emit('toggle-subcomponent-select-mode',

@@ -83,14 +83,14 @@ export interface CustomFeatures {
   transitions?: ComponentTransitions;
   jsClasses?: ComponentJavascriptClasses;
   autoWidth?: AutoWidth;
-  alignedLayerSection?: AlignedLayerSection,
+  alignedLayerSection?: AlignedLayerSection;
+  text?: string;
 }
 
 export interface SubcomponentProperties {
   // used for defining options
   subcomponentType?: SUBCOMPONENT_TYPES;
   componentTag?: string;
-  componentText?: string;
   customCss: CustomCss;
   initialCss: CustomCss;
   // this css is used in instances where partialCss has been overwrittern by a single value, but a fraction of it

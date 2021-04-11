@@ -1,4 +1,4 @@
-import { SubcomponentSelectModeCallbackFunction } from '../components/content/workshop/toolbar/options/subcomponentSelectMode/SubcomponentSelectModeService';
+import { SubcomponentSelectModeCallbackFunction } from '../components/content/workshop/toolbar/options/subcomponentSelectMode/subcomponentSelectMode';
 import { DOM_EVENT_TRIGGER_KEYS } from '../consts/domEventTriggerKeys.enum';
 
 export type ToggleSubcomponentSelectModeEvent = [

@@ -36,7 +36,8 @@
               nestedSubcomponent.subcomponentProperties.customCss[nestedSubcomponent.subcomponentProperties.activeCssPseudoClass],
             ]"
         >{{(!nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus || !nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus.displayOverlayOnly)
-            && nestedSubcomponent.subcomponentProperties.componentText ? nestedSubcomponent.subcomponentProperties.componentText : '' }}
+            && (nestedSubcomponent.subcomponentProperties.customFeatures && nestedSubcomponent.subcomponentProperties.customFeatures.text)
+              ? nestedSubcomponent.subcomponentProperties.customFeatures.text : '' }}
       </component>
       <component v-if="!nestedSubcomponent.subcomponentProperties.importedComponent"
         :is="nestedSubcomponent.subcomponentProperties.componentTag"
@@ -47,7 +48,8 @@
         class="subcomponent-element"
         :class="OVERLAY_DEFAULT_CLASS">
           {{isSubcomponentDisplayed(nestedSubcomponent.subcomponentProperties)
-            && nestedSubcomponent.subcomponentProperties.componentText ? nestedSubcomponent.subcomponentProperties.componentText : ''}}
+            && nestedSubcomponent.subcomponentProperties.customFeatures && nestedSubcomponent.subcomponentProperties.customFeatures.text
+              ? nestedSubcomponent.subcomponentProperties.customFeatures.text : ''}}
       </component>
     </div>
   </div>

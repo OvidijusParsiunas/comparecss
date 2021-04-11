@@ -9,7 +9,7 @@ export type SubcomponentSelectModeCallbackFunction = (
     componentPreviewTriggerCallback: (param1: boolean) => void,
   ) => WorkshopEventCallbackReturn;
 
-export default class SubcomponentSelectModeService {
+export default class SubcomponentSelectMode {
   
   private static activeButtonColor = '#54a9f1';
   private static defaultButtonColor = '';
@@ -23,7 +23,7 @@ export default class SubcomponentSelectModeService {
       const subcomponentName = subcomponentAndOverlayElementIdsState.getSubcomponentNameViaOverlayId(lastHighlightedOverlayElement.id);
       optionsSubcomponentNameClickedFunc(subcomponentName);
     }
-    buttonElement.style.color = SubcomponentSelectModeService.defaultButtonColor;
+    buttonElement.style.color = SubcomponentSelectMode.defaultButtonColor;
     subcomponentSelectModeState.removeAllHighlightedOverlayElementsFromState();
     if (!(event.target as HTMLElement).classList.contains(SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER)) {
       subcomponentSelectModeState.setIsSubcomponentSelectModeActiveState(false);
@@ -35,6 +35,6 @@ export default class SubcomponentSelectModeService {
   public static initiate(buttonElement: HTMLElement): SubcomponentSelectModeCallbackFunction {
     subcomponentSelectModeState.setIsSubcomponentSelectModeActiveState(true);
     buttonElement.style.color = this.activeButtonColor;
-    return SubcomponentSelectModeService.end;
+    return SubcomponentSelectMode.end;
   }
 }
