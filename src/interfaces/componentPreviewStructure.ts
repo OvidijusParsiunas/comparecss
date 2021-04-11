@@ -21,7 +21,7 @@ export interface Layer {
 }
 
 export interface ComponentPreviewStructure {
-  baseCss: SubcomponentProperties;
+  baseSubcomponentProperties: SubcomponentProperties;
   // will be used in the future, can be horizontal or vertical
   layeringType?: string;
   layers?: Layer[];

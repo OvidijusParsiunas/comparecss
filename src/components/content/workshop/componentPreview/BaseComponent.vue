@@ -1,29 +1,27 @@
 <template>
   <div>
     <div ref="componentPreview"
-      v-if="(!component.componentPreviewStructure.baseCss.subcomponentDisplayStatus
-        || component.componentPreviewStructure.baseCss.subcomponentDisplayStatus.isDisplayed
-        || component.componentPreviewStructure.baseCss.subcomponentDisplayStatus.displayOverlayOnly)"
+      v-if="isSubcomponentDisplayed(component.componentPreviewStructure.baseSubcomponentProperties)"
       :id="subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId"
       class="parent-component"
       :class="[ SUBCOMPONENT_CURSOR_AUTO_CLASS,
-        ...((component.componentPreviewStructure.baseCss.customFeatures && component.componentPreviewStructure.baseCss.customFeatures.jsClasses) || []),
+        ...((component.componentPreviewStructure.baseSubcomponentProperties.customFeatures && component.componentPreviewStructure.baseSubcomponentProperties.customFeatures.jsClasses) || []),
         (isImportedComponent ? 'imported-component' : STATIC_POSITION_CLASS) ]"
       @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId].subcomponentMouseEnter()"
       @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId].subcomponentMouseLeave()"
       @mousedown="mouseEvents[subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId].subcomponentMouseDown()"
       @mouseup="mouseEvents[subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId].subcomponentMouseUp()"
-      :style="component.componentPreviewStructure.baseCss.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK
+      :style="component.componentPreviewStructure.baseSubcomponentProperties.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK
         ? [
-            [ component.componentPreviewStructure.baseCss.inheritedCss ? component.componentPreviewStructure.baseCss.inheritedCss.css: '' ],
-            component.componentPreviewStructure.baseCss.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
-            component.componentPreviewStructure.baseCss.customCss[CSS_PSEUDO_CLASSES.HOVER],
-            component.componentPreviewStructure.baseCss.customCss[CSS_PSEUDO_CLASSES.CLICK],
+            [ component.componentPreviewStructure.baseSubcomponentProperties.inheritedCss ? component.componentPreviewStructure.baseSubcomponentProperties.inheritedCss.css: '' ],
+            component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
+            component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER],
+            component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK],
           ]
         : [
-            [ component.componentPreviewStructure.baseCss.inheritedCss ? component.componentPreviewStructure.baseCss.inheritedCss.css: '' ],
-            component.componentPreviewStructure.baseCss.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
-            component.componentPreviewStructure.baseCss.customCss[component.componentPreviewStructure.baseCss.activeCssPseudoClass],
+            [ component.componentPreviewStructure.baseSubcomponentProperties.inheritedCss ? component.componentPreviewStructure.baseSubcomponentProperties.inheritedCss.css: '' ],
+            component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
+            component.componentPreviewStructure.baseSubcomponentProperties.customCss[component.componentPreviewStructure.baseSubcomponentProperties.activeCssPseudoClass],
           ]">
           <layers
             :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
@@ -32,8 +30,9 @@
           />
     </div>
     <div ref="componentPreviewOverlay"
+      v-if="isSubcomponentDisplayed(component.componentPreviewStructure.baseSubcomponentProperties)"
       :id="subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].overlayId"
-      style="display: none" :style="[component.componentPreviewStructure.baseCss.customCss[CSS_PSEUDO_CLASSES.DEFAULT], [isImportedComponent ? {} : { height: '100% !important' }]]"
+      style="display: none" :style="[component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT], [isImportedComponent ? {} : { height: '100% !important' }]]"
       class="subcomponent-overlay-with-no-border-property-but-with-height"
       :class="[OVERLAY_DEFAULT_CLASS, (isImportedComponent ? 'imported-component' : STATIC_POSITION_CLASS)]">
     </div>
@@ -45,7 +44,9 @@ import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOve
 import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../consts/subcomponentCursorClasses.enum';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
+import { SubcomponentProperties } from '../../../../interfaces/workshopComponent';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
+import SubcomponentDisplayUtils from './utils/subcomponentDisplayUtils';
 import layers from './layers/Layers.vue';
 
 interface Consts {
@@ -54,6 +55,7 @@ interface Consts {
   STATIC_POSITION_CLASS: string;
   BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES;
   CSS_PSEUDO_CLASSES: typeof CSS_PSEUDO_CLASSES;
+  isSubcomponentDisplayed: (nestedSubcomponent: SubcomponentProperties) => boolean;
 }
 
 export default {
@@ -64,6 +66,7 @@ export default {
       STATIC_POSITION_CLASS: STATIC_POSITION_CLASS,
       BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES.BASE,
       CSS_PSEUDO_CLASSES,
+      isSubcomponentDisplayed: SubcomponentDisplayUtils.isSubcomponentDisplayed,
     };
   },
   components: {

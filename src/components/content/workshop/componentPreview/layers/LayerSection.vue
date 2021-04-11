@@ -13,9 +13,7 @@
         :mouseEvents="mouseEvents"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
         :isImportedComponent="true"/>
-      <component v-else-if="!nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus
-          || nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus.isDisplayed
-          || nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus.displayOverlayOnly"
+      <component v-else-if="isSubcomponentDisplayed(nestedSubcomponent.subcomponentProperties)"
         :is="nestedSubcomponent.subcomponentProperties.componentTag"
         aria-hidden="true"
         :id="subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId"
@@ -48,7 +46,8 @@
           {display: 'none'}, {color: '#ff000000'}]"
         class="subcomponent-element"
         :class="OVERLAY_DEFAULT_CLASS">
-          {{nestedSubcomponent.subcomponentProperties.componentText ? nestedSubcomponent.subcomponentProperties.componentText : ''}}
+          {{isSubcomponentDisplayed(nestedSubcomponent.subcomponentProperties)
+            && nestedSubcomponent.subcomponentProperties.componentText ? nestedSubcomponent.subcomponentProperties.componentText : ''}}
       </component>
     </div>
   </div>
@@ -58,11 +57,14 @@
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
+import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
+import SubcomponentDisplayUtils from '../utils/subcomponentDisplayUtils';
 
 interface Consts {
   OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
   CORE_SUBCOMPONENTS_NAMES: typeof CORE_SUBCOMPONENTS_NAMES;
   CSS_PSEUDO_CLASSES: typeof CSS_PSEUDO_CLASSES;
+  isSubcomponentDisplayed: (nestedSubcomponent: SubcomponentProperties) => boolean;
 }
 
 export default {
@@ -71,6 +73,7 @@ export default {
       OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT,
       CORE_SUBCOMPONENTS_NAMES,
       CSS_PSEUDO_CLASSES,
+      isSubcomponentDisplayed: SubcomponentDisplayUtils.isSubcomponentDisplayed,
     };
   },
   props: {

@@ -97,7 +97,7 @@ export default class PreviewStructure {
       subcomponentDropdownStructure[subcomponentNames ? subcomponentNames.base : CORE_SUBCOMPONENTS_NAMES.BASE] as NestedDropdownStructure,
       subcomponents, subcomponentNames);
     return {
-      baseCss: subcomponents[subcomponentNames ? subcomponentNames.base : CORE_SUBCOMPONENTS_NAMES.BASE],
+      baseSubcomponentProperties: subcomponents[subcomponentNames ? subcomponentNames.base : CORE_SUBCOMPONENTS_NAMES.BASE],
       layeringType: 'vertical',
       layers,
       subcomponentDropdownStructure,
