@@ -5,21 +5,21 @@ import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcom
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
-import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import ImportedCompoment from '../../../../utils/componentGenerator/importedComponent';
 import { modalLayerBottomSpecificSettings } from './modalLayerBottomSpecificSettings';
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getModalSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { modalLayerTopSpecificSettings } from './modalLayerTopSpecificSettings';
-import { inheritedAlertCloseChildCss } from './inheritedAlertCloseChildCss';
 import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';
+import { modalTextSpecificSettings } from './modalTextSpecificSettings';
 import { modalBaseSpecificSettings } from './modalBaseSpecificSettings';
+import { closeButton } from '../../buttons/properties/closeButton';
 import { defaultButton } from '../../buttons/properties/default';
 import { inheritedAlertBaseCss } from './inheritedCss';
 import {
-  AutoWidth, BackdropProperties, ComponentTransitions,  AlignedLayerSection, Text,
   CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, ComponentCenteringInParent,
+  AutoWidth, BackdropProperties, ComponentTransitions,  AlignedLayerSection, Text,
 } from '../../../../../../../interfaces/workshopComponent';
 
 function createDefaultTransitionsProperties(): ComponentTransitions {
@@ -67,14 +67,6 @@ function createText(text: string): Text {
   return { text };
 }
 
-function createDefaultCloseButtonCustomFeatures(): CustomFeatures {
-  return {
-    subcomponentText: createText('×'),
-    jsClasses: createInitialCloseButtonJsClasses(),
-    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
-  };
-}
-
 function createAutoWidth(): AutoWidth {
   return {
     auto: true,
@@ -110,34 +102,6 @@ function createInitialBaseCss(): CustomCss {
       boxSizing: 'unset',
       boxShadow: 'unset',
       top: '0px',
-    },
-  };
-}
-
-function createInitialCloseButtonCss(): CustomCss {
-  return {
-    [CSS_PSEUDO_CLASSES.DEFAULT]: {
-      height: '12px',
-      width: '14px',
-      borderRadius: '15px',
-      lineHeight: '1px',
-      cursor: 'pointer',
-      boxSizing: 'unset',
-      fontSize: '16px',
-      color: '#ff0000',
-      boxShadow: 'unset',
-      borderWidth: '0px',
-      borderStyle: 'solid',
-      borderColor: '#000000',
-      backgroundColor: 'inherit',
-      outline: 'none',
-      paddingTop: '1px',
-      paddingLeft: '0px',
-      paddingRight: '0px',
-      paddingBottom: '0px',
-      marginTop: '10px',
-      marginRight: '10px',
-      top: '50%',
     },
   };
 }
@@ -238,10 +202,6 @@ function createInitialText2Css(): CustomCss {
   };
 }
 
-function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
-  return new Set([JAVASCRIPT_CLASSES.RIPPLES]);
-}
-
 function createSubcomponents(): Subcomponents {
   return {
     [CORE_SUBCOMPONENTS_NAMES.BASE]: {
@@ -284,20 +244,6 @@ function createSubcomponents(): Subcomponents {
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
       subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
     },
-    [CORE_SUBCOMPONENTS_NAMES.CLOSE]: {
-      subcomponentType: SUBCOMPONENT_TYPES.CLOSE,
-      componentTag: 'button',
-      customCss: createInitialCloseButtonCss(),
-      initialCss: createInitialCloseButtonCss(),
-      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      subcomponentPreviewTransition: 'all 0.25s ease-out',
-      tempCustomCss: new Set(['transition']),
-      childCss: inheritedAlertCloseChildCss,
-      subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
-      customFeatures: createDefaultCloseButtonCustomFeatures(),
-      defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
-    },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_1]: {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
       componentTag: 'div',
@@ -306,6 +252,7 @@ function createSubcomponents(): Subcomponents {
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
+      subcomponentSpecificSettings: modalTextSpecificSettings,
       customFeatures: createDefaultText1CustomFeatures(),
       defaultCustomFeatures: createDefaultText1CustomFeatures(),
     },
@@ -317,6 +264,7 @@ function createSubcomponents(): Subcomponents {
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
+      subcomponentSpecificSettings: modalTextSpecificSettings,
       customFeatures: createDefaultText2CustomFeatures(),
       defaultCustomFeatures: createDefaultText2CustomFeatures(),
     },
@@ -325,15 +273,17 @@ function createSubcomponents(): Subcomponents {
 
 export const defaultModal: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
-    // solution for settings is to have types within subcomponent for the type to option mapping
+    const importedCloseButtonName = CORE_SUBCOMPONENTS_NAMES.CLOSE;
     const importedButton1Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_1;
     const importedButton2Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_2;
     const subcomponents = { ...createSubcomponents(),
-      ...ImportedCompoment.createImportedSubcomponents(defaultButton, importedButton1Name, 1),
-      ...ImportedCompoment.createImportedSubcomponents(defaultButton, importedButton2Name, 2) };
+      ...ImportedCompoment.createImportedSubcomponents(closeButton, importedCloseButtonName, 1),
+      ...ImportedCompoment.createImportedSubcomponents(defaultButton, importedButton1Name, 2),
+      ...ImportedCompoment.createImportedSubcomponents(defaultButton, importedButton2Name, 3) };
     const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
       subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_3],
-      subcomponents[CORE_SUBCOMPONENTS_NAMES.CLOSE], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_2],
+      subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_2],
+      ImportedCompoment.createImportedComponentStructure(subcomponents, importedCloseButtonName),
       ImportedCompoment.createImportedComponentStructure(subcomponents, importedButton1Name),
       ImportedCompoment.createImportedComponentStructure(subcomponents, importedButton2Name),
     );

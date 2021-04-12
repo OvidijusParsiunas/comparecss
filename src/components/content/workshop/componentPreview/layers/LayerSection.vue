@@ -1,11 +1,10 @@
 <template>
   <div>
-    <!-- WORK3: the if statement for jsClasses may not be required when close subcomponent converted into a subcomponent -->
-    <div v-for="(nestedSubcomponent, index, name) in nestedSubcomponents" :key="nestedSubcomponent"
+    <div v-for="(nestedSubcomponent, index) in nestedSubcomponents" :key="nestedSubcomponent"
       :style="{order: `${index}`}"
       class="subcomponent-element-container"
       :class="[specialisedSectionContainerClass,
-        ...(name !== CORE_SUBCOMPONENTS_NAMES.CLOSE && nestedSubcomponent.subcomponentProperties.customFeatures
+        ...(nestedSubcomponent.subcomponentProperties.customFeatures
           && nestedSubcomponent.subcomponentProperties.customFeatures.jsClasses || [])]">
       <base-component v-if="nestedSubcomponent.subcomponentProperties.importedComponent"
         class="imported-component-container"

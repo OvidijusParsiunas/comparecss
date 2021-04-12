@@ -29,7 +29,7 @@ export const componentTypeToOptions: any = {
   [NEW_COMPONENT_TYPES.ALERT]: {
     [SUBCOMPONENT_TYPES.BASE]: alertBaseOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.TEXT]: textOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
-    [SUBCOMPONENT_TYPES.CLOSE]: alertCloseOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+    [SUBCOMPONENT_TYPES.BUTTON]: alertCloseOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
   },
   [NEW_COMPONENT_TYPES.MODAL]: {
     [SUBCOMPONENT_TYPES.BASE]: modalBaseOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,

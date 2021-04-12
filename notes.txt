@@ -20,12 +20,10 @@ consider making alert and button into a separately generated compontes in compon
 text alignment not working
 option for font weight and text overlay, should also have an icon to edit text in-line, also can potentially have an icon for remove
 remove vuesax
-need to change subcomponentType - to subcomponentName
 ability to automatically update imported subcomponents when the core subcomponent is updated
-close button should be imported
 importing existing subcomponent will also need to offer an option from the app defaults
 fix copy
-width - should maybe also be placed in a size option
+close button may need to be a badge
 
 option to import an existing button style!
 

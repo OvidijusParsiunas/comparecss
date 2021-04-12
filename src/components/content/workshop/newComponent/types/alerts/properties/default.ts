@@ -7,12 +7,13 @@ import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTyp
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
+import ImportedCompoment from '../../../../utils/componentGenerator/importedComponent';
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getAlertSubcomponentDropdownStructure from './subcomponentDropdownStructure';
-import { inheritedAlertCloseChildCss } from './inheritedAlertCloseChildCss';
 import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';
 import { alertBaseSpecificSettings } from './alertBaseSpecificSettings';
 import { inheritedAlertBaseCss } from './inheritedCss';
+import { closeButton } from '../../buttons/properties/closeButton';
 
 // all default css needs to be filled in as to be able to 'reset' correctly
 function createInitialBaseCss(): CustomCss {
@@ -149,20 +150,6 @@ function createSubcomponents(): Subcomponents {
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
-    [CORE_SUBCOMPONENTS_NAMES.CLOSE]: {
-      subcomponentType: SUBCOMPONENT_TYPES.CLOSE,
-      componentTag: 'button',
-      customCss: createInitialCloseButtonCss(),
-      initialCss: createInitialCloseButtonCss(),
-      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      subcomponentPreviewTransition: 'all 0.25s ease-out',
-      tempCustomCss: new Set(['transition']),
-      childCss: inheritedAlertCloseChildCss,
-      subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
-      customFeatures: createDefaultCloseButtonCustomFeatures(),
-      defaultCustomFeatures: createDefaultCloseButtonCustomFeatures(),
-    },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_1]: {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
       componentTag: 'div',
@@ -179,9 +166,11 @@ function createSubcomponents(): Subcomponents {
 
 export const defaultAlert: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
-    const subcomponents = createSubcomponents();
-    const subcomponentDropdownStructure = getAlertSubcomponentDropdownStructure(
-      subcomponents[CORE_SUBCOMPONENTS_NAMES.CLOSE], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1]);
+    const importedCloseButtonName = CORE_SUBCOMPONENTS_NAMES.CLOSE;
+    const subcomponents = { ...createSubcomponents(),
+      ...ImportedCompoment.createImportedSubcomponents(closeButton, importedCloseButtonName, 1)};
+    const subcomponentDropdownStructure = getAlertSubcomponentDropdownStructure(subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1],
+      ImportedCompoment.createImportedComponentStructure(subcomponents, importedCloseButtonName));
     return {
       type: NEW_COMPONENT_TYPES.ALERT,
       subcomponents,
