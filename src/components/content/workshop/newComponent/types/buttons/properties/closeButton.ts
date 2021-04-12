@@ -11,6 +11,7 @@ import ImportedCompoment from '../../../../utils/componentGenerator/importedComp
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getButtonSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { buttonSpecificSettings } from './buttonSpecificSettings';
+import { inheritedCloseTextCss } from './inheritedCloseTextCss';
 import { inheritedButtonCss } from './inheritedCss';
 
 const defaultSubcomponentNames: CustomSubcomponentNames = {
@@ -26,7 +27,6 @@ function createInitialBaseCss(): CustomCss {
       cursor: 'pointer',
       boxSizing: 'unset',
       fontSize: '16px',
-      color: '#ff0000',
       boxShadow: 'unset',
       borderWidth: '0px',
       borderStyle: 'solid',
@@ -55,6 +55,7 @@ function createTextCss(): CustomCss {
     [CSS_PSEUDO_CLASSES.DEFAULT]: {
       top: '50%',
       width: 'auto',
+      color: '#ff0000',
       userSelect: 'none',
       overflow: 'unset',
       fontSize: '18px',
@@ -134,7 +135,7 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
       initialCss: createTextCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      inheritedCss: { typeName: 'closebutton', css: { left: '1%'}},
+      inheritedCss: inheritedCloseTextCss,
       customFeatures: createDefaultTextCustomFeatures(),
       defaultCustomFeatures: createDefaultTextCustomFeatures(),
     },

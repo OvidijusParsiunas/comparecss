@@ -10,7 +10,6 @@ import { CustomSubcomponentNames } from './customSubcomponentNames';
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { EntityDisplayStatus } from './entityDisplayStatus';
 import { TempCustomCss } from './tempCustomCss';
-import { InheritedCss } from './inheritedCss';
 
 export interface ChildCss {
   elementTag: string;
@@ -94,6 +93,7 @@ export interface CustomFeatures {
 export interface SubcomponentProperties {
   // used for defining options
   subcomponentType?: SUBCOMPONENT_TYPES;
+  // may not be required if always div
   componentTag?: string;
   customCss: CustomCss;
   initialCss: CustomCss;
@@ -103,7 +103,7 @@ export interface SubcomponentProperties {
   // this is used to signify css that gets used within the app only and gets removed when exporting - should only be used on subcomponents that will have transition effects
   tempCustomCss?: TempCustomCss;
   // this css is not configured by the user and comes along with the component
-  inheritedCss?: InheritedCss;
+  inheritedCss?: WorkshopComponentCss;
   // this css is used for nested classes or element tags e.g. .my-component div {
   // the code to export this has been removed on the 19th of Dec 2020 - commit id: f6391eb61305106001709130ce4f45877226069b, remove if all component types added and this is not needed
   descendantCss?: DescendantCss;

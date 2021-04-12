@@ -4,7 +4,6 @@ import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../.
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
-import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import ImportedCompoment from '../../../../utils/componentGenerator/importedComponent';
@@ -12,8 +11,8 @@ import PreviewStructure from '../../../../utils/componentGenerator/previewStruct
 import getAlertSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';
 import { alertBaseSpecificSettings } from './alertBaseSpecificSettings';
-import { inheritedAlertBaseCss } from './inheritedCss';
 import { closeButton } from '../../buttons/properties/closeButton';
+import { inheritedAlertBaseCss } from './inheritedCss';
 
 // all default css needs to be filled in as to be able to 'reset' correctly
 function createInitialBaseCss(): CustomCss {
@@ -36,34 +35,6 @@ function createInitialBaseCss(): CustomCss {
       paddingBottom: '0px',
       fontFamily: '"Poppins", sans-serif',
       textAlign: 'left',
-    },
-  }
-}
-
-function createInitialCloseButtonCss(): CustomCss {
-  return {
-    [CSS_PSEUDO_CLASSES.DEFAULT]: {
-      height: '12px',
-      width: '14px',
-      borderRadius: '15px',
-      lineHeight: '1px',
-      cursor: 'pointer',
-      boxSizing: 'unset',
-      fontSize: '16px',
-      color: '#ff0000',
-      boxShadow: 'unset',
-      borderWidth: '0px',
-      borderStyle: 'solid',
-      borderColor: '#000000',
-      backgroundColor: 'inherit',
-      outline: 'none',
-      paddingTop: '1px',
-      paddingLeft: '0px',
-      paddingRight: '0px',
-      paddingBottom: '0px',
-      marginTop: '18px',
-      marginRight: '5px',
-      top: '50%',
     },
   }
 }
@@ -101,20 +72,8 @@ function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayer
   return { section };
 }
 
-function createInitialCloseButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
-  return new Set([JAVASCRIPT_CLASSES.RIPPLES])
-}
-
 function createText(text: string): Text {
   return { text };
-}
-
-function createDefaultCloseButtonCustomFeatures(): CustomFeatures {
-  return {
-    subcomponentText: createText('×'),
-    jsClasses: createInitialCloseButtonJsClasses(),
-    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
-  };
 }
 
 function createAutoWidth(): AutoWidth {

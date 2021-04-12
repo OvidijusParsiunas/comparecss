@@ -24,13 +24,13 @@
         @mouseup="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseUp()"
         :style="nestedSubcomponent.subcomponentProperties.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK
           ? [
-              [ nestedSubcomponent.subcomponentProperties.inheritedCss ? nestedSubcomponent.subcomponentProperties.inheritedCss.css: '' ],
+              [ nestedSubcomponent.subcomponentProperties.inheritedCss || '' ],
               nestedSubcomponent.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
               nestedSubcomponent.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER],
               nestedSubcomponent.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK],
             ]
           : [
-              [ nestedSubcomponent.subcomponentProperties.inheritedCss ? nestedSubcomponent.subcomponentProperties.inheritedCss.css: '' ],
+              [ nestedSubcomponent.subcomponentProperties.inheritedCss || '' ],
               nestedSubcomponent.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
               nestedSubcomponent.subcomponentProperties.customCss[nestedSubcomponent.subcomponentProperties.activeCssPseudoClass],
             ]"
@@ -44,7 +44,7 @@
         :style="[
           nestedSubcomponent.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
           {display: 'none'}, {color: '#ff000000'}]"
-        class="subcomponent-element"
+        class="subcomponent-element text-overlay-height"
         :class="OVERLAY_DEFAULT_CLASS">
           {{isSubcomponentDisplayed(nestedSubcomponent.subcomponentProperties)
             && nestedSubcomponent.subcomponentProperties.customFeatures && nestedSubcomponent.subcomponentProperties.customFeatures.subcomponentText.text
@@ -127,5 +127,8 @@ export default {
   }
   .imported-component-container {
     height: 100%;
+  }
+  .text-overlay-height {
+    height: 50%;
   }
 </style>

@@ -83,7 +83,7 @@ export default class CssBuilder {
         if (!subcomponent.subcomponentDisplayStatus) {
           const componentToSubcomponentId = SharedCssUtils.generateComponentToSubcomponentId(type, subcomponentName);
           const processedCustomCss: CustomCssWithInheritedCss = SharedCssUtils.allocateSharedInheritedCss(subcomponent.customCss,
-            (subcomponent.inheritedCss ? subcomponent.inheritedCss.css : undefined), repeatedSubcomponents[componentToSubcomponentId], sharedInheritedParentCss, type, className);
+            (subcomponent.inheritedCss ? subcomponent.inheritedCss : undefined), repeatedSubcomponents[componentToSubcomponentId], sharedInheritedParentCss, type, className);
           customCss += `${this.buildCustomCss(className, processedCustomCss, subcomponent.tempCustomCss)}\r\n\r\n`;
         }
         if (subcomponent.subcomponentDisplayStatus && !subcomponent.subcomponentDisplayStatus.isDisplayed) return;

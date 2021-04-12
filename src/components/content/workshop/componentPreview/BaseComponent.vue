@@ -13,13 +13,13 @@
       @mouseup="mouseEvents[subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId].subcomponentMouseUp()"
       :style="component.componentPreviewStructure.baseSubcomponentProperties.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK
         ? [
-            [ component.componentPreviewStructure.baseSubcomponentProperties.inheritedCss ? component.componentPreviewStructure.baseSubcomponentProperties.inheritedCss.css: '' ],
+            [ component.componentPreviewStructure.baseSubcomponentProperties.inheritedCss || '' ],
             component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
             component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER],
             component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK],
           ]
         : [
-            [ component.componentPreviewStructure.baseSubcomponentProperties.inheritedCss ? component.componentPreviewStructure.baseSubcomponentProperties.inheritedCss.css: '' ],
+            [ component.componentPreviewStructure.baseSubcomponentProperties.inheritedCss || '' ],
             component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
             component.componentPreviewStructure.baseSubcomponentProperties.customCss[component.componentPreviewStructure.baseSubcomponentProperties.activeCssPseudoClass],
           ]">

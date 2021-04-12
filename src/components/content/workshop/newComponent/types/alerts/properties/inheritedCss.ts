@@ -1,9 +1,6 @@
-import { InheritedCss } from '../../../../../../../interfaces/inheritedCss';
+import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
 
-export const inheritedAlertBaseCss: InheritedCss = {
-  typeName: 'alert',
-  css: {
-    position: 'relative',
-    overflow: 'hidden',
-  },
+export const inheritedAlertBaseCss: WorkshopComponentCss = {
+  position: 'relative',
+  overflow: 'hidden',
 };
