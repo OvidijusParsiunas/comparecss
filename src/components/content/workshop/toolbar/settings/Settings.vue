@@ -85,6 +85,20 @@
                 </button>
               </div>
 
+              <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.INPUT">
+                <div style="text-align: left">
+                  {{setting.spec.name}}
+                </div>
+                <div class="input-group">
+                  <input type="text"
+                    class="form-control"
+                    :ref="`elementReference${settingIndex}`"
+                    v-bind:value="inputsValues[setting.spec.name] || setting.spec.default"
+                    @input="inputEventForInput($event, setting.spec.customFeatureObjectKeys)"
+                    @keyup.enter="blurInputDropdown(`elementReference${settingIndex}`)">
+                </div>
+              </div>
+              
               <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.INPUT_DROPDOWN">
                 <div style="text-align: left">
                   {{setting.spec.name}}
@@ -94,7 +108,7 @@
                     class="form-control"
                     :ref="`elementReference${settingIndex}`"
                     v-bind:value="inputDropdownsValues[setting.spec.cssProperty] || subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass][setting.spec.cssProperty]"
-                    @input="inputDropdownKeyboardInput($event, setting.spec.cssProperty)"
+                    @input="inputEventForDropdownInput($event, setting.spec.cssProperty)"
                     @keyup.enter="blurInputDropdown(`elementReference${settingIndex}`)">
                   <div class="input-group-append">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="openDropdown(setting.spec.cssProperty)"></button>
@@ -175,6 +189,7 @@ interface Consts {
 
 interface Data {
   settings: any;
+  inputsValues: unknown;
   inputDropdownsValues: unknown;
   actionsDropdownsObjects: unknown;
   customFeatureRangeValue: unknown;
@@ -205,6 +220,8 @@ export default {
               RangeUtils.updateSettings(setting, this.subcomponentProperties);
             } else if (setting.type === SETTINGS_TYPES.COLOR_PICKER) {
               ColorPickerUtils.updateSettings(setting.spec, this.subcomponentProperties);
+            } else if (setting.type === SETTINGS_TYPES.INPUT) {
+              this.inputsValues[setting.spec.name] = SharedUtils.getCustomFeatureValue(setting.spec.customFeatureObjectKeys, this.subcomponentProperties.customFeatures);
             } else if (setting.type === SETTINGS_TYPES.INPUT_DROPDOWN) {
               const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClass, setting.spec.cssProperty);
               if (cssPropertyValue) { this.inputDropdownsValues[setting.spec.cssProperty] = cssPropertyValue; }
@@ -226,6 +243,7 @@ export default {
     };
   },
   data: (): Data => ({
+    inputsValues: {},
     inputDropdownsValues: {},
     actionsDropdownsObjects: {},
     customFeatureRangeValue: null,
@@ -271,8 +289,11 @@ export default {
         this.subcomponentProperties.customCss[this.subcomponentProperties.activeCssPseudoClass][cssProperty] = this.inputDropdownsValues[cssProperty];
       }
     },
-    inputDropdownKeyboardInput(event: KeyboardEvent, cssProperty: string): void {
+    inputEventForDropdownInput(event: KeyboardEvent, cssProperty: string): void {
       this.subcomponentProperties.customCss[this.subcomponentProperties.activeCssPseudoClass][cssProperty] = (event.target as HTMLInputElement).value;
+    },
+    inputEventForInput(event: KeyboardEvent, customFeatureObjectKeys: string[]): void {
+      SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, this.subcomponentProperties.customFeatures, (event.target as HTMLInputElement).value);
     },
     blurInputDropdown(referenceId: string): void {
       this.$refs[referenceId].blur();

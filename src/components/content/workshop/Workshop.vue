@@ -128,8 +128,8 @@ import componentList from './componentList/ComponentList.vue';
 import toolbar from './toolbar/Toolbar.vue';
 import 'vuesax/dist/vuesax.css' //Vuesax styles
 import {
-  CustomCss, CustomFeatures, SubcomponentProperties, ComponentTransitions, AlignedLayerSection,
-  AutoWidth, BackdropProperties, ComponentCenteringInParent, WorkshopComponent, Subcomponents,
+  AutoWidth, BackdropProperties,  AlignedLayerSection, WorkshopComponent, Subcomponents, Text,
+  CustomCss, SubcomponentProperties, ComponentTransitions, ComponentCenteringInParent, CustomFeatures,
 } from '../../../interfaces/workshopComponent';
 
 interface Consts {
@@ -189,9 +189,13 @@ function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayer
   return { section };
 }
 
+function createText(text: string): Text {
+  return { text };
+}
+
 function createDefaultCloseButtonCustomFeatures(): CustomFeatures {
   return {
-    text: '×',
+    subcomponentText: createText('×'),
     jsClasses: createInitialCloseButtonJsClasses(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
   };
@@ -205,7 +209,7 @@ function createAutoWidth(): AutoWidth {
 
 function createDefaultText1CustomFeatures(): CustomFeatures {
   return {
-    text: 'Modal title',
+    subcomponentText: createText('Modal title'),
     autoWidth: createAutoWidth(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
   };
@@ -213,7 +217,7 @@ function createDefaultText1CustomFeatures(): CustomFeatures {
 
 function createDefaultText2CustomFeatures(): CustomFeatures {
   return {
-    text: 'Modal body text',
+    subcomponentText: createText('Modal body text'),
     autoWidth: createAutoWidth(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
   };

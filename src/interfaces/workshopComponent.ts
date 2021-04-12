@@ -72,6 +72,10 @@ export interface AutoWidth {
   auto: boolean;
 }
 
+export interface Text {
+  text: string;
+}
+
 export interface AlignedLayerSection {
   section: ALIGNED_SECTION_TYPES;
 }
@@ -84,7 +88,7 @@ export interface CustomFeatures {
   jsClasses?: ComponentJavascriptClasses;
   autoWidth?: AutoWidth;
   alignedLayerSection?: AlignedLayerSection;
-  text?: string;
+  subcomponentText?: Text;
 }
 
 export interface SubcomponentProperties {

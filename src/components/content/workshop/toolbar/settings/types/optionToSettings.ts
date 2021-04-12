@@ -22,6 +22,7 @@ import backdrop from './backdrop';
 import textPosition from './textPosition';
 import textPositionNoAlign from './textPositionNoAlign';
 import textBackground from './textBackground';
+import text from './text';
 
 type OptionToSettings = {
   [key in WORKSHOP_TOOLBAR_OPTION_TYPES]?: any;
@@ -39,6 +40,7 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_HEIGHT]: sizeHeight,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING]: padding,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN]: margin,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT]: text,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_FONT]: font,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_BASED_ICON]: textIcon,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.DESIGN]: design,

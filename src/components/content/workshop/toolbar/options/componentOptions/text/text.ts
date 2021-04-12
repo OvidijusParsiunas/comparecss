@@ -27,5 +27,9 @@ export const textOptions: SubcomponentOptions<TextOptionsModes> = {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_POSITION,
     },
+    {
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.TEXT,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT,
+    },
   ],
 };

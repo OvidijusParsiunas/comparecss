@@ -18,8 +18,8 @@ import { modalBaseSpecificSettings } from './modalBaseSpecificSettings';
 import { defaultButton } from '../../buttons/properties/default';
 import { inheritedAlertBaseCss } from './inheritedCss';
 import {
-  AutoWidth, BackdropProperties, ComponentCenteringInParent, ComponentTransitions,
-  CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, AlignedLayerSection,
+  AutoWidth, BackdropProperties, ComponentTransitions,  AlignedLayerSection, Text,
+  CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, ComponentCenteringInParent,
 } from '../../../../../../../interfaces/workshopComponent';
 
 function createDefaultTransitionsProperties(): ComponentTransitions {
@@ -63,9 +63,13 @@ function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayer
   return { section };
 }
 
+function createText(text: string): Text {
+  return { text };
+}
+
 function createDefaultCloseButtonCustomFeatures(): CustomFeatures {
   return {
-    text: '×',
+    subcomponentText: createText('×'),
     jsClasses: createInitialCloseButtonJsClasses(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
   };
@@ -79,7 +83,7 @@ function createAutoWidth(): AutoWidth {
 
 function createDefaultText1CustomFeatures(): CustomFeatures {
   return {
-    text: 'Modal title',
+    subcomponentText: createText('Modal title'),
     autoWidth: createAutoWidth(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
   };
@@ -87,7 +91,7 @@ function createDefaultText1CustomFeatures(): CustomFeatures {
 
 function createDefaultText2CustomFeatures(): CustomFeatures {
   return {
-    text: 'Modal body text',
+    subcomponentText: createText('Modal body text'),
     autoWidth: createAutoWidth(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
   };
