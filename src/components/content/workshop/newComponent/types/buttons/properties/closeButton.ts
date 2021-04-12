@@ -10,6 +10,7 @@ import { ComponentGenerator } from '../../../../../../../interfaces/componentGen
 import ImportedCompoment from '../../../../utils/componentGenerator/importedComponent';
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getButtonSubcomponentDropdownStructure from './subcomponentDropdownStructure';
+import { CLOSE_BUTTON_X_TEXT } from '../../../../../../../consts/closeButtonXText';
 import { buttonSpecificSettings } from './buttonSpecificSettings';
 import { inheritedCloseTextCss } from './inheritedCloseTextCss';
 import { inheritedButtonCss } from './inheritedCss';
@@ -18,7 +19,7 @@ const defaultSubcomponentNames: CustomSubcomponentNames = {
   base: CORE_SUBCOMPONENTS_NAMES.BASE, layer: CORE_SUBCOMPONENTS_NAMES.LAYER_1, text: CORE_SUBCOMPONENTS_NAMES.TEXT_1,
 };
 
-function createInitialBaseCss(): CustomCss {
+function createDefaultBaseCss(): CustomCss {
   return {
     [CSS_PSEUDO_CLASSES.DEFAULT]: {
       height: '18px',
@@ -26,7 +27,6 @@ function createInitialBaseCss(): CustomCss {
       borderRadius: '15px',
       cursor: 'pointer',
       boxSizing: 'unset',
-      fontSize: '16px',
       boxShadow: 'unset',
       borderWidth: '0px',
       borderStyle: 'solid',
@@ -38,6 +38,7 @@ function createInitialBaseCss(): CustomCss {
       paddingRight: '0px',
       paddingBottom: '0px',
       marginRight: '5px',
+      transition: 'unset',
     }
   }
 }
@@ -72,7 +73,7 @@ function createTextCss(): CustomCss {
   }
 }
 
-function createInitialButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
+function createDefaultButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
   return new Set([JAVASCRIPT_CLASSES.RIPPLES])
 }
 
@@ -88,7 +89,7 @@ function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayer
 
 function createDefaultButtonBaseCustomFeatures(): CustomFeatures {
   return {
-    jsClasses: createInitialButtonJsClasses(),
+    jsClasses: createDefaultButtonJsClasses(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
   }
 }
@@ -97,10 +98,16 @@ function createText(text: string): Text {
   return { text };
 }
 
+function createDefaultLayerCustomFeatures(): CustomFeatures {
+  return {
+    jsClasses: createDefaultButtonJsClasses(),
+  }
+}
+
 function createDefaultTextCustomFeatures(): CustomFeatures {
   return {
-    subcomponentText: createText('×'),
-    jsClasses: createInitialButtonJsClasses(),
+    subcomponentText: createText(CLOSE_BUTTON_X_TEXT),
+    jsClasses: createDefaultButtonJsClasses(),
     autoWidth: createAutoWidth(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
   }
@@ -110,8 +117,8 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
   return {
     [subcomponentNames.base]: {
       subcomponentType: SUBCOMPONENT_TYPES.BUTTON,
-      customCss: createInitialBaseCss(),
-      initialCss: createInitialBaseCss(),
+      customCss: createDefaultBaseCss(),
+      defaultCss: createDefaultBaseCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
@@ -123,16 +130,18 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
     },
     [subcomponentNames.layer]: {
       customCss: createLayerCss(),
-      initialCss: createLayerCss(),
+      defaultCss: createLayerCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
+      customFeatures: createDefaultLayerCustomFeatures(),
+      defaultCustomFeatures: createDefaultLayerCustomFeatures(),
     },
     [subcomponentNames.text]: {
       subcomponentType: SUBCOMPONENT_TYPES.BUTTON_TEXT,
       componentTag: 'div',
       customCss: createTextCss(),
-      initialCss: createTextCss(),
+      defaultCss: createTextCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       inheritedCss: inheritedCloseTextCss,

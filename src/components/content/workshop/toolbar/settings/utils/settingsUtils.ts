@@ -13,9 +13,9 @@ export default class SettingsUtils {
   }
 
   private static resetCssProperties(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
-    const { customCss, initialCss, activeCssPseudoClass } = subcomponentProperties;
-    if (initialCss[activeCssPseudoClass] && initialCss[activeCssPseudoClass][cssProperty]) {
-      const cssValue = initialCss[activeCssPseudoClass][cssProperty];
+    const { customCss, defaultCss, activeCssPseudoClass } = subcomponentProperties;
+    if (defaultCss[activeCssPseudoClass] && defaultCss[activeCssPseudoClass][cssProperty]) {
+      const cssValue = defaultCss[activeCssPseudoClass][cssProperty];
       SettingsUtils.setCssProperty(subcomponentProperties, cssProperty, cssValue)
     } else if (customCss[activeCssPseudoClass]) {
       delete customCss[activeCssPseudoClass][cssProperty];
@@ -32,10 +32,10 @@ export default class SettingsUtils {
   }
 
   private static resetCustomCss(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
-    const { initialCss, activeCssPseudoClass } = subcomponentProperties;
+    const { defaultCss, activeCssPseudoClass } = subcomponentProperties;
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT) {
-      if (initialCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty]) {
-        const cssValue = initialCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty];
+      if (defaultCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty]) {
+        const cssValue = defaultCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty];
         SettingsUtils.setCssProperty(subcomponentProperties, cssProperty, cssValue);
       }
     } else {

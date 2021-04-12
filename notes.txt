@@ -12,13 +12,10 @@ maybe clicking outside of the modal should close it too
 esc button
 enter - submit/cancel - potential - call the option 'actions'
 when hovering over option that only works in expanded modal view - higlight the toggle for it
-potentially rename initial to default convention
 potentially add x button to border coloring
 clicking on an option again to remove settings panel
 maybe each equal section should be selectable
 consider making alert and button into a separately generated compontes in component preview as their contents shake when size is changed in firefox
-text alignment not working
-option for font weight and text overlay, should also have an icon to edit text in-line, also can potentially have an icon for remove
 remove vuesax
 ability to automatically update imported subcomponents when the core subcomponent is updated
 importing existing subcomponent will also need to offer an option from the app defaults

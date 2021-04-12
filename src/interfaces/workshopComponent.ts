@@ -96,7 +96,7 @@ export interface SubcomponentProperties {
   // may not be required if always div
   componentTag?: string;
   customCss: CustomCss;
-  initialCss: CustomCss;
+  defaultCss: CustomCss;
   // this css is used in instances where partialCss has been overwrittern by a single value, but a fraction of it
   // must be retained for use by settings - boxShadow (to note, this is mostly used by the app in runtime)
   auxiliaryPartialCss?: CustomCss;

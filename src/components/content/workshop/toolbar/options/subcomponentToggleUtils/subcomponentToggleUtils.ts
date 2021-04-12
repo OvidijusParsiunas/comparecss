@@ -6,7 +6,7 @@ import JSONManipulation from '../../../../../../services/workshop/jsonManipulati
 export default class SubcomponentToggleUtils {
 
   private static resetSubcomponent(activeSubcomponent: SubcomponentProperties): void {
-    activeSubcomponent.customCss = JSONManipulation.deepCopy(activeSubcomponent.initialCss);
+    activeSubcomponent.customCss = JSONManipulation.deepCopy(activeSubcomponent.defaultCss);
     activeSubcomponent.customFeatures = JSONManipulation.deepCopy(activeSubcomponent.defaultCustomFeatures);
   }
 

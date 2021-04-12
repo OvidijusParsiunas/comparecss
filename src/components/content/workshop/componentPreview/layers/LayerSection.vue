@@ -1,5 +1,8 @@
 <template>
   <div>
+    <!-- when clicked on button text - the ripples don't fade far - this can be fixed on export, alternatively to achieve full ripple effect in the app,
+         will have to disable pointer events in the layer sections and have the js class in the layer parent, will also need to find a way to be able to
+         highlight the text in the subcomponent select mode -->
     <div v-for="(nestedSubcomponent, index) in nestedSubcomponents" :key="nestedSubcomponent"
       :style="{order: `${index}`}"
       class="subcomponent-element-container"
@@ -44,8 +47,10 @@
         :style="[
           nestedSubcomponent.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
           {display: 'none'}, {color: '#ff000000'}]"
-        class="subcomponent-element text-overlay-height"
-        :class="OVERLAY_DEFAULT_CLASS">
+        class="subcomponent-element"
+        :class="[OVERLAY_DEFAULT_CLASS,
+          (nestedSubcomponent.subcomponentProperties.customFeatures && nestedSubcomponent.subcomponentProperties.customFeatures.subcomponentText.text) === CLOSE_BUTTON_X_TEXT
+            ? 'close-button-text-overlay-height' : '']">
           {{isSubcomponentDisplayed(nestedSubcomponent.subcomponentProperties)
             && nestedSubcomponent.subcomponentProperties.customFeatures && nestedSubcomponent.subcomponentProperties.customFeatures.subcomponentText.text
               ? nestedSubcomponent.subcomponentProperties.customFeatures.subcomponentText.text : ''}}
@@ -59,11 +64,13 @@ import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponent
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
+import { CLOSE_BUTTON_X_TEXT } from '../../../../../consts/closeButtonXText';
 import SubcomponentDisplayUtils from '../utils/subcomponentDisplayUtils';
 
 interface Consts {
   OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
   CORE_SUBCOMPONENTS_NAMES: typeof CORE_SUBCOMPONENTS_NAMES;
+  CLOSE_BUTTON_X_TEXT: string;
   CSS_PSEUDO_CLASSES: typeof CSS_PSEUDO_CLASSES;
   isSubcomponentDisplayed: (nestedSubcomponent: SubcomponentProperties) => boolean;
 }
@@ -73,6 +80,7 @@ export default {
     return {
       OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT,
       CORE_SUBCOMPONENTS_NAMES,
+      CLOSE_BUTTON_X_TEXT,
       CSS_PSEUDO_CLASSES,
       isSubcomponentDisplayed: SubcomponentDisplayUtils.isSubcomponentDisplayed,
     };
@@ -112,6 +120,7 @@ export default {
     justify-content: center;
   }
   .subcomponent-element-container {
+    width: 100%;
     height: 100%;
     display: flex;
     place-items: baseline;
@@ -128,7 +137,7 @@ export default {
   .imported-component-container {
     height: 100%;
   }
-  .text-overlay-height {
+  .close-button-text-overlay-height {
     height: 50%;
   }
 </style>

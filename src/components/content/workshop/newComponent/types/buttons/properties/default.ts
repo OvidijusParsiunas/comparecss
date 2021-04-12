@@ -17,7 +17,7 @@ const defaultSubcomponentNames: CustomSubcomponentNames = {
   base: CORE_SUBCOMPONENTS_NAMES.BASE, layer: CORE_SUBCOMPONENTS_NAMES.LAYER_1, text: CORE_SUBCOMPONENTS_NAMES.TEXT_1,
 };
 
-function createInitialBaseCss(): CustomCss {
+function createDefaultBaseCss(): CustomCss {
   return {
     [CSS_PSEUDO_CLASSES.DEFAULT]: {
       borderRadius: '0px',
@@ -81,8 +81,14 @@ function createTextCss(): CustomCss {
   }
 }
 
-function createInitialButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
+function createDefaultButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
   return new Set([JAVASCRIPT_CLASSES.RIPPLES])
+}
+
+function createDefaultLayerCustomFeatures(): CustomFeatures {
+  return {
+    jsClasses: createDefaultButtonJsClasses(),
+  }
 }
 
 function createAutoWidth(): AutoWidth {
@@ -97,7 +103,7 @@ function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayer
 
 function createDefaultButtonBaseCustomFeatures(): CustomFeatures {
   return {
-    jsClasses: createInitialButtonJsClasses(),
+    jsClasses: createDefaultButtonJsClasses(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
   }
 }
@@ -109,7 +115,7 @@ function createText(text: string): Text {
 function createDefaultTextCustomFeatures(): CustomFeatures {
   return {
     subcomponentText: createText('button'),
-    jsClasses: createInitialButtonJsClasses(),
+    jsClasses: createDefaultButtonJsClasses(),
     autoWidth: createAutoWidth(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
   }
@@ -119,8 +125,8 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
   return {
     [subcomponentNames.base]: {
       subcomponentType: SUBCOMPONENT_TYPES.BUTTON,
-      customCss: createInitialBaseCss(),
-      initialCss: createInitialBaseCss(),
+      customCss: createDefaultBaseCss(),
+      defaultCss: createDefaultBaseCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
@@ -132,16 +138,18 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
     },
     [subcomponentNames.layer]: {
       customCss: createLayerCss(),
-      initialCss: createLayerCss(),
+      defaultCss: createLayerCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
+      customFeatures: createDefaultLayerCustomFeatures(),
+      defaultCustomFeatures: createDefaultLayerCustomFeatures(),
     },
     [subcomponentNames.text]: {
       subcomponentType: SUBCOMPONENT_TYPES.BUTTON_TEXT,
       componentTag: 'div',
       customCss: createTextCss(),
-      initialCss: createTextCss(),
+      defaultCss: createTextCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       customFeatures: createDefaultTextCustomFeatures(),

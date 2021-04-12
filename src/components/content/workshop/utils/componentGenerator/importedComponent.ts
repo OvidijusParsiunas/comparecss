@@ -18,7 +18,7 @@ export default class ImportedCompoment {
 
   private static applyTopProperty(importedComponentRef: WorkshopComponent, importedComponentName: string): void {
     const customCssProperties = importedComponentRef.subcomponents[importedComponentName].customCss[CSS_PSEUDO_CLASSES.DEFAULT];
-    const defaultCustomCssProperties = importedComponentRef.subcomponents[importedComponentName].initialCss[CSS_PSEUDO_CLASSES.DEFAULT];
+    const defaultCustomCssProperties = importedComponentRef.subcomponents[importedComponentName].defaultCss[CSS_PSEUDO_CLASSES.DEFAULT];
     if (!customCssProperties.top) {
       customCssProperties.top = ImportedCompoment.DEFAULT_TOP_PROPERTY;
       defaultCustomCssProperties.top = ImportedCompoment.DEFAULT_TOP_PROPERTY;

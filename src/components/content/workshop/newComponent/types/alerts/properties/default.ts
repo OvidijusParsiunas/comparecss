@@ -15,7 +15,7 @@ import { closeButton } from '../../buttons/properties/closeButton';
 import { inheritedAlertBaseCss } from './inheritedCss';
 
 // all default css needs to be filled in as to be able to 'reset' correctly
-function createInitialBaseCss(): CustomCss {
+function createDefaultBaseCss(): CustomCss {
   return {
     [CSS_PSEUDO_CLASSES.DEFAULT]: {
       color: '#004085',
@@ -39,7 +39,7 @@ function createInitialBaseCss(): CustomCss {
   }
 }
 
-function createInitialLayerCss(): CustomCss {
+function createDefaultLayerCss(): CustomCss {
   return {
     [CSS_PSEUDO_CLASSES.DEFAULT]: {
       height: '100%',
@@ -94,8 +94,8 @@ function createSubcomponents(): Subcomponents {
   return {
     [CORE_SUBCOMPONENTS_NAMES.BASE]: {
       subcomponentType: SUBCOMPONENT_TYPES.BASE,
-      customCss: createInitialBaseCss(),
-      initialCss: createInitialBaseCss(),
+      customCss: createDefaultBaseCss(),
+      defaultCss: createDefaultBaseCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       inheritedCss: inheritedAlertBaseCss,
@@ -103,8 +103,8 @@ function createSubcomponents(): Subcomponents {
       subcomponentSpecificSettings: alertBaseSpecificSettings,
     },
     [CORE_SUBCOMPONENTS_NAMES.LAYER_1]: {
-      customCss: createInitialLayerCss(),
-      initialCss: createInitialLayerCss(),
+      customCss: createDefaultLayerCss(),
+      defaultCss: createDefaultLayerCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
@@ -113,7 +113,7 @@ function createSubcomponents(): Subcomponents {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
       componentTag: 'div',
       customCss: createTextCss(),
-      initialCss: createTextCss(),
+      defaultCss: createTextCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
