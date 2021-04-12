@@ -34,7 +34,7 @@ function createInitialBaseCss(): CustomCss {
       paddingTop: '0px',
       paddingBottom: '0px',
       fontFamily: '"Poppins", sans-serif',
-      textAlign: 'center',
+      textAlign: 'left',
     },
   }
 }
@@ -85,7 +85,7 @@ function createTextCss(): CustomCss {
       fontFamily: '"Poppins", sans-serif',
       fontSize: '16px',
       color: '#004085',
-      textAlign: 'center',
+      textAlign: 'left',
       paddingTop: '0px',
       paddingBottom: '0px',
       paddingLeft: '0px',

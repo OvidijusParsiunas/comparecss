@@ -98,6 +98,7 @@ import { inheritedAlertCloseChildCss } from './newComponent/types/alerts/propert
 import { removeComponentModalState } from './componentList/removeComponentModalState/removeComponentModalState';
 import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
 import { modalBaseSpecificSettings } from './newComponent/types/modals/properties/modalBaseSpecificSettings';
+import { modalTextSpecificSettings } from './newComponent/types/modals/properties/modalTextSpecificSettings'
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { EntityDisplayStatusUtils } from './utils/entityDisplayStatus/entityDisplayStatusUtils';
@@ -331,7 +332,7 @@ function createInitialText1Css(): CustomCss {
       fontSize: '20px',
       fontFamily: '"Poppins", sans-serif',
       color: '#004085',
-      textAlign: 'center',
+      textAlign: 'left',
       backgroundColor: 'inherit',
       paddingTop: '0px',
       paddingBottom: '0px',
@@ -352,7 +353,7 @@ function createInitialText2Css(): CustomCss {
       fontFamily: '"Poppins", sans-serif',
       fontSize: '16px',
       color: '#004085',
-      textAlign: 'center',
+      textAlign: 'left',
       backgroundColor: 'inherit',
       paddingTop: '0px',
       paddingBottom: '0px',
@@ -432,6 +433,7 @@ function createSubcomponents(): Subcomponents {
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
+      subcomponentSpecificSettings: modalTextSpecificSettings,
       customFeatures: createDefaultText1CustomFeatures(),
       defaultCustomFeatures: createDefaultText1CustomFeatures(),
     },
@@ -443,6 +445,7 @@ function createSubcomponents(): Subcomponents {
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
+      subcomponentSpecificSettings: modalTextSpecificSettings,
       customFeatures: createDefaultText2CustomFeatures(),
       defaultCustomFeatures: createDefaultText2CustomFeatures(),
     },

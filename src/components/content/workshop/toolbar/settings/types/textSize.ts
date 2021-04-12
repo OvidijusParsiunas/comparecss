@@ -37,14 +37,5 @@ export default {
         ],
       },
     },
-    {
-      type: SETTINGS_TYPES.COLOR_PICKER,
-      spec: {
-        name: 'Color',
-        default: '#000000',
-        cssProperty: 'backgroundColor',
-        unsetColorButtonAvailable: true,
-      },
-    }
   ]
 };
