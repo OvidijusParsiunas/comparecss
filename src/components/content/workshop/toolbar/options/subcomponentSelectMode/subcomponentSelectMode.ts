@@ -34,7 +34,7 @@ export default class SubcomponentSelectMode {
 
   public static initiate(buttonElement: HTMLElement): SubcomponentSelectModeCallbackFunction {
     subcomponentSelectModeState.setIsSubcomponentSelectModeActiveState(true);
-    buttonElement.style.color = this.activeButtonColor;
+    buttonElement.style.color = SubcomponentSelectMode.activeButtonColor;
     return SubcomponentSelectMode.end;
   }
 }

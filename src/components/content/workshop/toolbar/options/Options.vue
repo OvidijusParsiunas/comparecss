@@ -25,11 +25,21 @@
         <button
           type="button" class="btn option-action-button expanded-modal-preview-mode-button"
           @click="toggleModalExpandMode">
-          <font-awesome-icon v-if="isExpandedModalPreviewModeActive" class="expand-icon dropdown-button-marker" icon="compress-alt"/>
-          <font-awesome-icon v-else class="expand-icon dropdown-button-marker" icon="expand-alt"/>
+          <font-awesome-icon v-if="isExpandedModalPreviewModeActive" class="expand-icon default-fa-icon-color dropdown-button-marker" icon="compress-alt"/>
+          <font-awesome-icon v-else class="expand-icon default-fa-icon-color dropdown-button-marker" icon="expand-alt"/>
         </button>
       </div>
-      <div class="option-component-button" v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus">
+      <div class="btn-group option-component-button" v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus">
+        <button
+          type="button" class="btn option-action-button"
+          @click="importSubcomponent(component.subcomponents[component.activeSubcomponentName])">
+            <font-awesome-icon class="import-icon default-fa-icon-color" icon="long-arrow-alt-down"/>
+        </button>
+        <button
+          type="button" class="btn option-action-button"
+          @click="toggleSubcomponent(component.subcomponents[component.activeSubcomponentName])">
+            <font-awesome-icon class="sync-icon default-fa-icon-color" icon="sync-alt"/>
+        </button>
         <button
           type="button" class="btn option-action-button" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
           :class="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add'"
@@ -79,6 +89,7 @@ import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/t
 import { ComponentTypeToOptions, componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
+import { ToggleImportSubcomponentModeEvent } from '../../../../../interfaces/toggleImportSubcomponentModeEvent';
 import { removeSubcomponentModalState } from './removeSubcomponentModalState/removeSubcomponentModalState';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import SubcomponentToggleOverlayUtils from './subcomponentToggleUtils/subcomponentToggleOverlayUtils';
@@ -117,6 +128,7 @@ interface Data {
   isSubcomponentSelectModeButtonDisplayed: boolean;
   activeOption: Option;
   isExpandedModalPreviewModeActive: boolean;
+  isImportSubcomponentModeActive: boolean;
 }
 
 export default {
@@ -139,6 +151,7 @@ export default {
     isSubcomponentSelectModeButtonDisplayed: false,
     activeOption: { buttonName: null, type: null },
     isExpandedModalPreviewModeActive: false,
+    isImportSubcomponentModeActive: false,
   }),
   methods: {
     initiateSubcomponentSelectMode(): void {
@@ -206,6 +219,15 @@ export default {
         return option.buttonName === this.activeOption.buttonName
           && (this.isExpandedModalPreviewModeActive || option.enabledOnExpandedModalPreviewMode === this.activeOption.enabledOnExpandedModalPreviewMode);
       });
+    },
+    importSubcomponent(): void {
+      this.isImportSubcomponentModeActive = !this.isImportSubcomponentModeActive;
+      // use const for the color
+      const importButton = (event.currentTarget as HTMLElement).childNodes[0] as HTMLElement;
+      importButton.style.color = this.isImportSubcomponentModeActive ? '#54a9f1' : '';
+      const { subcomponents, activeSubcomponentName } = this.component;
+      this.$emit('toggle-import-subcomponent-mode',
+        [this.isImportSubcomponentModeActive, subcomponents[activeSubcomponentName].importedComponent.type] as ToggleImportSubcomponentModeEvent);
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
       const { subcomponentDisplayStatus } = subcomponent;
@@ -380,6 +402,17 @@ export default {
   .expand-icon {
     height: 24px;
     width: 12.5px;
+  }
+  .import-icon {
+    width: 10px;
+    height: 16px;
+    margin-top: -4px;
+  }
+  .sync-icon {
+    height: 13px;
+    margin-top: -4px;
+  }
+  .default-fa-icon-color {
     color: #4b4d4b;
   }
 </style>

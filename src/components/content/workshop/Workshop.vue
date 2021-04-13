@@ -34,7 +34,8 @@
               @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
               @toggle-expanded-modal-preview-mode="$refs.contents.expandModalComponent($event)"
               @play-transition-preview="$refs.contents.playTransitionPreview($event)"
-              @stop-transition-preview="$refs.contents.stopTransitionPreview()"/>
+              @stop-transition-preview="$refs.contents.stopTransitionPreview()"
+              @toggle-import-subcomponent-mode="toggleImportSubcomponentMode($event)"/>
             <component-contents ref="contents" :component="currentlySelectedComponent" :componentPreviewAssistance="componentPreviewAssistance"/>
             <div style="height: 18%; display: flex; float: right; margin-right: 10px; margin-top: 105px">
               <div style="position: relative">
@@ -98,6 +99,7 @@ import { removeComponentModalState } from './componentList/removeComponentModalS
 import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
 import { modalBaseSpecificSettings } from './newComponent/types/modals/properties/modalBaseSpecificSettings';
 import { modalTextSpecificSettings } from './newComponent/types/modals/properties/modalTextSpecificSettings'
+import { ToggleImportSubcomponentModeEvent } from '../../../interfaces/toggleImportSubcomponentModeEvent';
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { EntityDisplayStatusUtils } from './utils/entityDisplayStatus/entityDisplayStatusUtils';
@@ -143,6 +145,7 @@ interface Consts {
 interface Data {
   isIconsPreloaded: boolean;
   components: WorkshopComponent[];
+  tempComponents: WorkshopComponent[];
   currentlySelectedComponent: WorkshopComponent;
   componentPreviewAssistance: ComponentPreviewAssistance;
   workshopEventCallbacks: (() => boolean)[];
@@ -438,6 +441,7 @@ export default {
     components: [
       createNewComponent(),
     ],
+    tempComponents: [],
     currentlySelectedComponent: null,
     workshopEventCallbacks: [],
   }),
@@ -549,6 +553,16 @@ export default {
       this.addWorkshopEventCallback(workshopEventCallback); 
       this.$refs.contents.toggleSubcomponentSelectMode(true);
     },
+    toggleImportSubcomponentMode(event: ToggleImportSubcomponentModeEvent): void {
+      const [isActive, componentType] = event;
+      if (isActive) {
+        this.tempComponents = this.components;
+        this.components = this.components.filter((component: WorkshopComponent) => component.type === componentType); 
+      } else {
+        this.components = this.tempComponents;
+        this.tempComponents = [];
+      }
+    }
   },
   components: {
     removalModalTemplate,

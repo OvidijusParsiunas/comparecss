@@ -11,7 +11,8 @@
         @prepare-remove-subcomponent-modal="$emit('prepare-remove-subcomponent-modal', $event)"
         @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
         @toggle-expanded-modal-preview-mode="expandModalComponent($event)"
-        @toggle-toolbar-position="toggleToolbarPosition"/>
+        @toggle-toolbar-position="toggleToolbarPosition"
+        @toggle-import-subcomponent-mode="$emit('toggle-import-subcomponent-mode', $event)"/>
       <settings v-if="isSettingsDisplayed" ref="settings"
         :subcomponentProperties="component.subcomponents[component.activeSubcomponentName]"
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
