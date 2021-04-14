@@ -1,4 +1,5 @@
 import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text } from '../../../../../../../interfaces/workshopComponent';
+import ImportedSubcomponentProperties from '../../../../utils/importSubcomponent/importedSubcomponentProperties';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
@@ -7,7 +8,6 @@ import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTyp
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import ImportedCompoment from '../../../../utils/componentGenerator/importedComponent';
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getButtonSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../../../../consts/closeButtonXText';
@@ -154,7 +154,7 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
 export const closeButton: ComponentGenerator = {
   createNewComponent(importedSubcomponentBaseName: string, importedSubcomponentId: number): WorkshopComponent {
     const subcomponentNames = importedSubcomponentBaseName
-      ? ImportedCompoment.generateImportedSubcomponentNames(importedSubcomponentBaseName, importedSubcomponentId)
+      ? ImportedSubcomponentProperties.generateImportedSubcomponentNames(importedSubcomponentBaseName, importedSubcomponentId)
       : defaultSubcomponentNames;
     const subcomponents = createSubcomponents(subcomponentNames);
     const subcomponentDropdownStructure = getButtonSubcomponentDropdownStructure(subcomponentNames);

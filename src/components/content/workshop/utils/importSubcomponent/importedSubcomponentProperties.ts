@@ -7,7 +7,7 @@ import { ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/entityDispl
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../interfaces/componentGenerator';
 
-export default class ImportedCompoment {
+export default class ImportedSubcomponentProperties {
 
   private static DEFAULT_TOP_PROPERTY = '50%';
 
@@ -20,8 +20,8 @@ export default class ImportedCompoment {
     const customCssProperties = importedComponentRef.subcomponents[importedComponentName].customCss[CSS_PSEUDO_CLASSES.DEFAULT];
     const defaultCustomCssProperties = importedComponentRef.subcomponents[importedComponentName].defaultCss[CSS_PSEUDO_CLASSES.DEFAULT];
     if (!customCssProperties.top) {
-      customCssProperties.top = ImportedCompoment.DEFAULT_TOP_PROPERTY;
-      defaultCustomCssProperties.top = ImportedCompoment.DEFAULT_TOP_PROPERTY;
+      customCssProperties.top = ImportedSubcomponentProperties.DEFAULT_TOP_PROPERTY;
+      defaultCustomCssProperties.top = ImportedSubcomponentProperties.DEFAULT_TOP_PROPERTY;
     }
   }
 
@@ -36,8 +36,8 @@ export default class ImportedCompoment {
     const importedComponentRef = componentGenerator.createNewComponent(importedComponentName, importedComponentId);
     // WORK3: IMPORT COMPONENT
     // take into consideration that when importing existing component, the default will need to be recreated
-    ImportedCompoment.applyTopProperty(importedComponentRef, importedComponentName);
-    ImportedCompoment.applyOptionalSubcomponentProperty(importedComponentRef, importedComponentName);
+    ImportedSubcomponentProperties.applyTopProperty(importedComponentRef, importedComponentName);
+    ImportedSubcomponentProperties.applyOptionalSubcomponentProperty(importedComponentRef, importedComponentName);
     // referencing the whole component within it's own subcomponent may not be efficient
     // alternative would be to have a placeholder subcomponent to reference it
     importedComponentRef.subcomponents[importedComponentName].importedComponent = importedComponentRef;

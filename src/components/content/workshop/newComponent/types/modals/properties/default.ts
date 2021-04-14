@@ -1,4 +1,5 @@
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../../../../../consts/modalTransitionTypes.enum';
+import ImportedSubcomponentProperties from '../../../../utils/importSubcomponent/importedSubcomponentProperties';
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
@@ -6,7 +7,6 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssC
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import ImportedCompoment from '../../../../utils/componentGenerator/importedComponent';
 import { modalLayerBottomSpecificSettings } from './modalLayerBottomSpecificSettings';
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getModalSubcomponentDropdownStructure from './subcomponentDropdownStructure';
@@ -277,15 +277,15 @@ export const defaultModal: ComponentGenerator = {
     const importedButton1Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_1;
     const importedButton2Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_2;
     const subcomponents = { ...createSubcomponents(),
-      ...ImportedCompoment.createImportedSubcomponents(closeButton, importedCloseButtonName, 1),
-      ...ImportedCompoment.createImportedSubcomponents(defaultButton, importedButton1Name, 2),
-      ...ImportedCompoment.createImportedSubcomponents(defaultButton, importedButton2Name, 3) };
+      ...ImportedSubcomponentProperties.createImportedSubcomponents(closeButton, importedCloseButtonName, 1),
+      ...ImportedSubcomponentProperties.createImportedSubcomponents(defaultButton, importedButton1Name, 2),
+      ...ImportedSubcomponentProperties.createImportedSubcomponents(defaultButton, importedButton2Name, 3) };
     const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
       subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_3],
       subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_2],
-      ImportedCompoment.createImportedComponentStructure(subcomponents, importedCloseButtonName),
-      ImportedCompoment.createImportedComponentStructure(subcomponents, importedButton1Name),
-      ImportedCompoment.createImportedComponentStructure(subcomponents, importedButton2Name),
+      ImportedSubcomponentProperties.createImportedComponentStructure(subcomponents, importedCloseButtonName),
+      ImportedSubcomponentProperties.createImportedComponentStructure(subcomponents, importedButton1Name),
+      ImportedSubcomponentProperties.createImportedComponentStructure(subcomponents, importedButton2Name),
     );
     return {
       type: NEW_COMPONENT_TYPES.MODAL,

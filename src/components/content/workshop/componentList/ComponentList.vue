@@ -1,19 +1,18 @@
 <template>
   <div id="component-cards" style="background-color: rgb(251 251 251); display: grid; border-radius: 20px; height: 95%; width: 90%; margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); text-align: center">
     <div id="component-cards-container" style="margin-top: 5px">
-      <div v-for="component in components" :key="component">
-        <component-card
-          :thisComponent="component"
-          :allComponents="components"
-          :activeComponent="activeComponent"
-          @component-card-selected="componentCardSelected($event)"
-          @component-card-copied="componentCardCopied($event)"
-          @component-card-removed="componentCardRemoved($event)"
-          @stop-editing-class-name-callback="stopEditingClassName($event)"
-          @prepare-remove-component-modal="prepareRemoveComponentModal"/>
-      </div>
+      <component-card v-for="component in components" :key="component"
+        :thisComponent="component"
+        :allComponents="components"
+        :activeComponent="activeComponent"
+        :isImportSubcomponentModeActive="isImportSubcomponentModeActive"
+        @component-card-selected="componentCardSelected($event)"
+        @component-card-copied="componentCardCopied($event)"
+        @component-card-removed="componentCardRemoved($event)"
+        @stop-editing-class-name-callback="stopEditingClassName($event)"
+        @prepare-remove-component-modal="prepareRemoveComponentModal"/>
       <!-- link id to the modal via workshop -->
-      <div style="cursor: move; width: 18rem; margin: auto; outline: none; margin-top: 5px" class="add-card card"
+      <div v-if="!isImportSubcomponentModeActive" style="cursor: move; width: 18rem; margin: auto; outline: none; margin-top: 5px" class="add-card card"
         data-toggle="modal" :data-target="`#${NEW_COMPONENT_MODAL_ID}`"
         @click="prepareNewComponentModal">
         <div style="text-align: center" class="card-body">
@@ -68,6 +67,7 @@ export default {
   props: {
     components: Array,
     activeComponent: Object,
+    isImportSubcomponentModeActive: Boolean,
   },
 };
 </script>

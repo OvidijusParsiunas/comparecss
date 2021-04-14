@@ -1,4 +1,5 @@
 import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text } from '../../../../../../../interfaces/workshopComponent';
+import ImportedSubcomponentProperties from '../../../../utils/importSubcomponent/importedSubcomponentProperties';
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
@@ -6,7 +7,6 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssC
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import ImportedCompoment from '../../../../utils/componentGenerator/importedComponent';
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getAlertSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';
@@ -127,9 +127,9 @@ export const defaultAlert: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
     const importedCloseButtonName = CORE_SUBCOMPONENTS_NAMES.CLOSE;
     const subcomponents = { ...createSubcomponents(),
-      ...ImportedCompoment.createImportedSubcomponents(closeButton, importedCloseButtonName, 1)};
+      ...ImportedSubcomponentProperties.createImportedSubcomponents(closeButton, importedCloseButtonName, 1)};
     const subcomponentDropdownStructure = getAlertSubcomponentDropdownStructure(subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1],
-      ImportedCompoment.createImportedComponentStructure(subcomponents, importedCloseButtonName));
+      ImportedSubcomponentProperties.createImportedComponentStructure(subcomponents, importedCloseButtonName));
     return {
       type: NEW_COMPONENT_TYPES.ALERT,
       subcomponents,

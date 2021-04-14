@@ -3,9 +3,10 @@
     <div style="height: 100vh" class="bootstrap">
       <div style="height: 100%; margin-left: 0px; margin-right: 0px; display: flex">
         <div style="width: 30%; position: relative">
-          <component-list
+          <component-list ref="componentList"
             :components="components"
             :activeComponent="currentlySelectedComponent"
+            :isImportSubcomponentModeActive="isImportSubcomponentModeActive"
             @component-card-selected="componentCardSelected($event)"
             @component-card-copied="componentCardCopied($event)"
             @component-card-removed="componentCardRemoved($event)"
@@ -25,8 +26,7 @@
               <toolbar v-model:currentlySelectedComponent="currentlySelectedComponent"/>
               'vue/no-v-model-argument': 'off',
             -->
-            <toolbar
-              ref="toolbar"
+            <toolbar ref="toolbar"
               :component="currentlySelectedComponent"
               :componentPreviewAssistance="componentPreviewAssistance"
               @hide-dropdown-menu-callback="addWorkshopEventCallback($event)"
@@ -101,6 +101,7 @@ import { modalBaseSpecificSettings } from './newComponent/types/modals/propertie
 import { modalTextSpecificSettings } from './newComponent/types/modals/properties/modalTextSpecificSettings'
 import { ToggleImportSubcomponentModeEvent } from '../../../interfaces/toggleImportSubcomponentModeEvent';
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
+import ImportedSubcomponentProperties from './utils/importSubcomponent/importedSubcomponentProperties';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { EntityDisplayStatusUtils } from './utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../consts/subcomponentOverlayClasses.enum';
@@ -114,9 +115,9 @@ import { DOM_EVENT_TRIGGER_KEYS } from '../../../consts/domEventTriggerKeys.enum
 import { closeButton } from './newComponent/types/buttons/properties/closeButton';
 import { CSS_PSEUDO_CLASSES } from '../../../consts/subcomponentCssClasses.enum';
 import { defaultButton } from './newComponent/types/buttons/properties/default';
+import ImportSubcomponent from './utils/importSubcomponent/importSubcomponent';
 import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
-import ImportedCompoment from './utils/componentGenerator/importedComponent';
 import { SUBCOMPONENT_TYPES } from '../../../consts/subcomponentTypes.enum';
 import JSONManipulation from '../../../services/workshop/jsonManipulation';
 import ProcessClassName from './utils/componentGenerator/processClassName';
@@ -149,6 +150,7 @@ interface Data {
   currentlySelectedComponent: WorkshopComponent;
   componentPreviewAssistance: ComponentPreviewAssistance;
   workshopEventCallbacks: (() => boolean)[];
+  isImportSubcomponentModeActive: boolean;
 }
 
 function createDefaultTransitionsProperties(): ComponentTransitions {
@@ -307,7 +309,7 @@ function createDefaultText1Css(): CustomCss {
       marginLeft: '0px',
       marginRight: '0px',
     },
-  }
+  };
 }
 
 function createDefaultText2Css(): CustomCss {
@@ -405,15 +407,15 @@ function createNewComponent(): WorkshopComponent {
   const importedButton1Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_1;
   const importedButton2Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_2;
   const subcomponents = { ...createSubcomponents(),
-    ...ImportedCompoment.createImportedSubcomponents(closeButton, importedCloseButtonName, 1),
-    ...ImportedCompoment.createImportedSubcomponents(defaultButton, importedButton1Name, 2),
-    ...ImportedCompoment.createImportedSubcomponents(defaultButton, importedButton2Name, 3) };
+    ...ImportedSubcomponentProperties.createImportedSubcomponents(closeButton, importedCloseButtonName, 1),
+    ...ImportedSubcomponentProperties.createImportedSubcomponents(defaultButton, importedButton1Name, 2),
+    ...ImportedSubcomponentProperties.createImportedSubcomponents(defaultButton, importedButton2Name, 3) };
   const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
     subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_3],
     subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_2],
-    ImportedCompoment.createImportedComponentStructure(subcomponents, importedCloseButtonName),
-    ImportedCompoment.createImportedComponentStructure(subcomponents, importedButton1Name),
-    ImportedCompoment.createImportedComponentStructure(subcomponents, importedButton2Name),
+    ImportedSubcomponentProperties.createImportedComponentStructure(subcomponents, importedCloseButtonName),
+    ImportedSubcomponentProperties.createImportedComponentStructure(subcomponents, importedButton1Name),
+    ImportedSubcomponentProperties.createImportedComponentStructure(subcomponents, importedButton2Name),
   );
   return {
     type: NEW_COMPONENT_TYPES.MODAL,
@@ -444,6 +446,7 @@ export default {
     tempComponents: [],
     currentlySelectedComponent: null,
     workshopEventCallbacks: [],
+    isImportSubcomponentModeActive: false,
   }),
   mounted(): void {
     document.getElementById('comparecss-sidenav').style.display = 'none';
@@ -475,7 +478,9 @@ export default {
       this.switchActiveComponent(newComponent);
     },
     componentCardSelected(selectedComponent: WorkshopComponent): void {
-      if (this.currentlySelectedComponent !== selectedComponent) {
+      if (this.isImportSubcomponentModeActive) {
+        ImportSubcomponent.previewImportSubcomponent(selectedComponent, this.currentlySelectedComponent);
+      } else if (this.currentlySelectedComponent !== selectedComponent) {
         this.switchActiveComponent(selectedComponent);
       }
     },
@@ -538,12 +543,12 @@ export default {
         SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
     },
     preloadIcons(): void {
-      const WAIT_TO_START_DOWNLOADING_ICON_ICONS = 5;
+      const WAIT_TO_START_DOWNLOADING_ICON_ICONS_MILLISECONDS = 5;
       if (!this.isIconsPreloaded) {
         setTimeout(() => {
           document.getElementById(this.preloadedIconsElementId).style.display = 'none';
           this.isIconsPreloaded = true;
-        }, WAIT_TO_START_DOWNLOADING_ICON_ICONS);
+        }, WAIT_TO_START_DOWNLOADING_ICON_ICONS_MILLISECONDS);
       }
     },
     toggleSubcomponentSelectMode(toggleSubcomponentSelectModeEvent: ToggleSubcomponentSelectModeEvent): void {
@@ -557,11 +562,12 @@ export default {
       const [isActive, componentType] = event;
       if (isActive) {
         this.tempComponents = this.components;
-        this.components = this.components.filter((component: WorkshopComponent) => component.type === componentType); 
+        this.components = this.components.filter((component: WorkshopComponent) => component.type === componentType);
       } else {
         this.components = this.tempComponents;
         this.tempComponents = [];
       }
+      this.isImportSubcomponentModeActive = isActive;
     }
   },
   components: {

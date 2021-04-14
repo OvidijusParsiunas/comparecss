@@ -21,6 +21,10 @@ ability to automatically update imported subcomponents when the core subcomponen
 importing existing subcomponent will also need to offer an option from the app defaults
 fix copy
 close button may need to be a badge
+edit card is not closing correctly
+ripple does not seem to shut off
+text
+rename from import component to import subcomponent
 
 option to import an existing button style!
 

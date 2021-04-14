@@ -7,9 +7,16 @@
         @input="classNameInputEvent"
         >
       <h5 v-else class="card-title component-card-title" :class="COMPONENT_CARD_MARKER">{{thisComponent.className}}</h5>
-      <a ref="componentCardClassNameEditorButton" class="btn btn-success" @mousedown="preventBubbling" @mouseup="editClassName">Edit</a>
-      <a class="btn btn-warning" @mousedown="preventBubbling" @mouseup="copyComponentCard">Copy</a>
-      <a class="btn btn-danger component-card-remove" data-toggle="modal" :data-target="removeComponentModalId" @mousedown="preventBubbling" @mouseup="removeComponentCard">Remove</a>
+      <div v-if="!isImportSubcomponentModeActive">
+        <a ref="componentCardClassNameEditorButton" class="btn btn-success" @mousedown="preventBubbling" @mouseup="editClassName">Edit</a>
+        <a class="btn btn-warning" @mousedown="preventBubbling" @mouseup="copyComponentCard">Copy</a>
+        <a class="btn btn-danger component-card-remove" data-toggle="modal" :data-target="removeComponentModalId" @mousedown="preventBubbling" @mouseup="removeComponentCard">Remove</a>
+      </div>
+      <div v-else>
+        <a ref="componentCardClassNameEditorButton" class="btn btn-success" @mousedown="preventBubbling" @mouseup="editClassName">
+          <font-awesome-icon class="import-icon" icon="check"/>
+        </a>
+      </div>
     </div>
   </div>
 </template>
@@ -128,6 +135,7 @@ export default {
     thisComponent: Object,
     allComponents: Object,
     activeComponent: Object,
+    isImportSubcomponentModeActive: Boolean,
   }
 };
 </script>

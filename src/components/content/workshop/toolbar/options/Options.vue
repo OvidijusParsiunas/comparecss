@@ -29,6 +29,7 @@
           <font-awesome-icon v-else :style="{ color: DEFAULT_FONT_AWESOME_COLOR }" class="expand-icon dropdown-button-marker" icon="expand-alt"/>
         </button>
       </div>
+      <!-- WORK3: fix overlaps -->
       <div class="btn-group option-component-button" v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus">
         <button
           type="button" class="btn option-action-button"
