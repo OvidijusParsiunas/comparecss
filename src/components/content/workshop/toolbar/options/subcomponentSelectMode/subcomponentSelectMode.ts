@@ -1,6 +1,7 @@
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
 import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER } from '../../../../../../consts/elementClassMarkers';
 import { subcomponentAndOverlayElementIdsState } from './subcomponentAndOverlayElementIdsState';
+import { FONT_AWESOME_COLORS } from '../../../../../../consts/fontAwesomeColors.enum';
 import { subcomponentSelectModeState } from './subcomponentSelectModeState';
 
 export type SubcomponentSelectModeCallbackFunction = (
@@ -10,10 +11,6 @@ export type SubcomponentSelectModeCallbackFunction = (
   ) => WorkshopEventCallbackReturn;
 
 export default class SubcomponentSelectMode {
-  
-  private static activeButtonColor = '#54a9f1';
-  private static defaultButtonColor = '';
-  // blue - #00a1ff'
 
   private static end(buttonElement: HTMLElement, optionsSubcomponentNameClickedFunc: (param1: string) => void,
       componentPreviewTriggerCallback: (param1: boolean) => void): WorkshopEventCallbackReturn {
@@ -23,7 +20,7 @@ export default class SubcomponentSelectMode {
       const subcomponentName = subcomponentAndOverlayElementIdsState.getSubcomponentNameViaOverlayId(lastHighlightedOverlayElement.id);
       optionsSubcomponentNameClickedFunc(subcomponentName);
     }
-    buttonElement.style.color = SubcomponentSelectMode.defaultButtonColor;
+    buttonElement.style.color = FONT_AWESOME_COLORS.DEFAULT;
     subcomponentSelectModeState.removeAllHighlightedOverlayElementsFromState();
     if (!(event.target as HTMLElement).classList.contains(SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER)) {
       subcomponentSelectModeState.setIsSubcomponentSelectModeActiveState(false);
@@ -34,7 +31,7 @@ export default class SubcomponentSelectMode {
 
   public static initiate(buttonElement: HTMLElement): SubcomponentSelectModeCallbackFunction {
     subcomponentSelectModeState.setIsSubcomponentSelectModeActiveState(true);
-    buttonElement.style.color = SubcomponentSelectMode.activeButtonColor;
+    buttonElement.style.color = FONT_AWESOME_COLORS.ACTIVE;
     return SubcomponentSelectMode.end;
   }
 }

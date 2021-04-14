@@ -8,6 +8,7 @@
       @mouseleave="mouseLeave">
         <div class="option-text" :class="DROPDOWN_OPTION_MARKER">{{optionName}}</div>
         <font-awesome-icon v-if="isArrowDisplayed(innerDropdownOptions)"
+          :style="{ color: PASSIVE_FONT_AWESOME_COLOR }"
           class="dropdown-button-marker arrow-right-icon"
           :class="DROPDOWN_OPTION_MARKER"
           icon="angle-right"/>
@@ -20,6 +21,7 @@ import { EntityDisplayStatus, EntityDisplayStatusRef, ENTITY_DISPLAY_STATUS_REF 
 import { OptionMouseEnter, OptionMouseLeave } from '../../../../../../interfaces/dropdownMenuMouseEvents'
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
+import { FONT_AWESOME_COLORS } from '../../../../../../consts/fontAwesomeColors.enum';
 import { DROPDOWN_OPTION_MARKER } from '../../../../../../consts/elementClassMarkers';
 import BrowserType from '../../../../../../services/workshop/browserType';
 
@@ -27,6 +29,7 @@ interface Consts {
   DROPDOWN_OPTION_MARKER: string;
   ENTITY_DISPLAY_STATUS_REF: string;
   BROWSER_SPECIFIC_DROPDOWN_MENU_STYLE: WorkshopComponentCss;
+  PASSIVE_FONT_AWESOME_COLOR: FONT_AWESOME_COLORS,
   getOptionDisplay: (optionName: string) => string;
   getDefaultTextColor: (innerDropdownOptions: NestedDropdownStructure | EntityDisplayStatusRef) => string;
   isArrowDisplayed: (innerDropdownOptions: NestedDropdownStructure | EntityDisplayStatusRef) => boolean;
@@ -38,6 +41,7 @@ export default {
       DROPDOWN_OPTION_MARKER,
       ENTITY_DISPLAY_STATUS_REF,
       BROWSER_SPECIFIC_DROPDOWN_MENU_STYLE: { paddingBottom: BrowserType.isFirefox() ? '1px !important' : '2px !important' },
+      PASSIVE_FONT_AWESOME_COLOR: FONT_AWESOME_COLORS.PASSIVE,
       getOptionDisplay(optionName: string): string {
         return optionName === ENTITY_DISPLAY_STATUS_REF ? 'none !important' : '';
       },
@@ -101,8 +105,7 @@ export default {
     font-size: 14px;
     vertical-align: middle !important;
     float: right;
-  width: 11px;
-    color: #6d6d6d;
+    width: 11px;
     height: 15px;
   }
 </style>

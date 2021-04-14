@@ -7,7 +7,7 @@
       <div class="dropdown-button-text dropdown-button-marker" :class="uniqueIdentifier">
         {{objectContainingActiveOption[activeOptionPropertyKeyName]}}
       </div>
-      <font-awesome-icon class="arrow-down-icon dropdown-button-marker" :icon="fontAwesomeIcon"/>
+      <font-awesome-icon :style="{ color: DEFAULT_FONT_AWESOME_COLOR }" class="arrow-down-icon dropdown-button-marker" :icon="fontAwesomeIcon"/>
     </button>
     <div class="auxiliary-padding dropdown-menu-options-marker" :class="uniqueIdentifier"
       @click="openDropdown"
@@ -37,6 +37,7 @@ import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDrop
 import { DropdownCompositionAPI } from '../../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
+import { FONT_AWESOME_COLORS } from '../../../../../../consts/fontAwesomeColors.enum';
 import BrowserType from '../../../../../../services/workshop/browserType';
 import dropdownMenu from './DropdownMenu.vue';
 import { Ref, ref, watch } from 'vue';
@@ -51,6 +52,7 @@ interface Data {
   dropdownDisplayDelayMilliseconds: number;
   areDropdownOptionsProcessed: boolean;
   processedOptions: NestedDropdownStructure[];
+  DEFAULT_FONT_AWESOME_COLOR: FONT_AWESOME_COLORS,
 }
 
 interface Props {
@@ -82,6 +84,7 @@ export default {
     isComponentDisplayed: true,
     lastHoveredOptionElement: null,
     areDropdownOptionsProcessed: false,
+    DEFAULT_FONT_AWESOME_COLOR: FONT_AWESOME_COLORS.DEFAULT,
     dropdownDisplayDelayMilliseconds: BrowserType.isChromium() ? 10 : 13,
   }),
   setup(props: Props): DropdownCompositionAPI {
@@ -393,7 +396,6 @@ export default {
     margin-top: 0.3em;
     padding-left: 7px;
     width: 16.5px;
-    color: #4b4d4b;
   }
   .auxiliary-padding {
     top: 36px;

@@ -25,20 +25,20 @@
         <button
           type="button" class="btn option-action-button expanded-modal-preview-mode-button"
           @click="toggleModalExpandMode">
-          <font-awesome-icon v-if="isExpandedModalPreviewModeActive" class="expand-icon default-fa-icon-color dropdown-button-marker" icon="compress-alt"/>
-          <font-awesome-icon v-else class="expand-icon default-fa-icon-color dropdown-button-marker" icon="expand-alt"/>
+          <font-awesome-icon v-if="isExpandedModalPreviewModeActive" :style="{ color: DEFAULT_FONT_AWESOME_COLOR }" class="expand-icon dropdown-button-marker" icon="compress-alt"/>
+          <font-awesome-icon v-else :style="{ color: DEFAULT_FONT_AWESOME_COLOR }" class="expand-icon dropdown-button-marker" icon="expand-alt"/>
         </button>
       </div>
       <div class="btn-group option-component-button" v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus">
         <button
           type="button" class="btn option-action-button"
           @click="importSubcomponent(component.subcomponents[component.activeSubcomponentName])">
-            <font-awesome-icon class="import-icon default-fa-icon-color" icon="long-arrow-alt-down"/>
+            <font-awesome-icon :style="{ color: DEFAULT_FONT_AWESOME_COLOR }" class="import-icon" icon="long-arrow-alt-down"/>
         </button>
         <button
           type="button" class="btn option-action-button"
           @click="toggleSubcomponent(component.subcomponents[component.activeSubcomponentName])">
-            <font-awesome-icon class="sync-icon default-fa-icon-color" icon="sync-alt"/>
+            <font-awesome-icon :style="{ color: DEFAULT_FONT_AWESOME_COLOR }" class="sync-icon" icon="sync-alt"/>
         </button>
         <button
           type="button" class="btn option-action-button" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
@@ -105,6 +105,7 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectMode';
 import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum';
+import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
 import useToolbarPositionToggle from './compositionApi/useToolbarPositionToggle';
 import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
@@ -119,6 +120,7 @@ interface Consts {
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER: string;
   MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES;
   REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: string;
+  DEFAULT_FONT_AWESOME_COLOR: FONT_AWESOME_COLORS;
   SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
   CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
 }
@@ -141,6 +143,7 @@ export default {
       SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
       MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES.MODAL,
       REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: `#${REMOVE_SUBCOMPONENT_MODAL_ID}`,
+      DEFAULT_FONT_AWESOME_COLOR: FONT_AWESOME_COLORS.DEFAULT,
       SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS,
       CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.CSS_PSEUDO_CLASSES,
       ...useToolbarPositionToggle(),
@@ -224,7 +227,7 @@ export default {
       this.isImportSubcomponentModeActive = !this.isImportSubcomponentModeActive;
       // use const for the color
       const importButton = (event.currentTarget as HTMLElement).childNodes[0] as HTMLElement;
-      importButton.style.color = this.isImportSubcomponentModeActive ? '#54a9f1' : '';
+      importButton.style.color = this.isImportSubcomponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT;
       const { subcomponents, activeSubcomponentName } = this.component;
       this.$emit('toggle-import-subcomponent-mode',
         [this.isImportSubcomponentModeActive, subcomponents[activeSubcomponentName].importedComponent.type] as ToggleImportSubcomponentModeEvent);
@@ -411,9 +414,6 @@ export default {
   .sync-icon {
     height: 13px;
     margin-top: -4px;
-  }
-  .default-fa-icon-color {
-    color: #4b4d4b;
   }
 </style>
 
