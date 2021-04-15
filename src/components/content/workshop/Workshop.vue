@@ -559,16 +559,18 @@ export default {
       this.$refs.contents.toggleSubcomponentSelectMode(true);
     },
     toggleImportSubcomponentMode(event: ToggleImportSubcomponentModeEvent): void {
-      const [isActive, componentType] = event;
+      const [isActive, workshopEventCallback] = event;
       if (isActive) {
         this.tempComponents = this.components;
+        const componentType = this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.activeSubcomponentName].importedComponent.type;
         this.components = this.components.filter((component: WorkshopComponent) => component.type === componentType);
+        this.addWorkshopEventCallback(workshopEventCallback);
       } else {
         this.components = this.tempComponents;
         this.tempComponents = [];
       }
       this.isImportSubcomponentModeActive = isActive;
-    }
+    },
   },
   components: {
     removalModalTemplate,

@@ -25,6 +25,8 @@ edit card is not closing correctly
 ripple does not seem to shut off
 text
 rename from import component to import subcomponent
+clicking enter after expanding triggers it again
+close button should probably be imported - but need to work through the logistics of inherited css for it
 
 option to import an existing button style!
 

@@ -1,3 +1,3 @@
-import { NEW_COMPONENT_TYPES } from '../consts/newComponentTypes.enum';
+import { WorkshopEventCallback } from './workshopEventCallback';
 
-export type ToggleImportSubcomponentModeEvent = [boolean, NEW_COMPONENT_TYPES];
+export type ToggleImportSubcomponentModeEvent = [boolean, WorkshopEventCallback?];

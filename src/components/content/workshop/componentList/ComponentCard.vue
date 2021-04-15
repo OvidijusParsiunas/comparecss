@@ -13,7 +13,7 @@
         <a class="btn btn-danger component-card-remove" data-toggle="modal" :data-target="removeComponentModalId" @mousedown="preventBubbling" @mouseup="removeComponentCard">Remove</a>
       </div>
       <div v-else>
-        <a ref="componentCardClassNameEditorButton" class="btn btn-success" @mousedown="preventBubbling" @mouseup="editClassName">
+        <a class="btn btn-success" :class="CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER">
           <font-awesome-icon class="import-icon" icon="check"/>
         </a>
       </div>
@@ -24,6 +24,7 @@
 <script lang="ts">
 import { removeComponentModalState } from './removeComponentModalState/removeComponentModalState';
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
+import { CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER } from '../../../../consts/elementClassMarkers';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
 import { COMPONENT_CARD_MARKER } from '../../../../consts/elementClassMarkers';
@@ -37,7 +38,8 @@ interface Data {
   isEditingClassName: boolean;
   removeComponentModalId: string;
   editorButtonClickedOnStopEditing: boolean;
-  COMPONENT_CARD_MARKER,
+  COMPONENT_CARD_MARKER: string;
+  CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER: string;
 }
 
 export default {
@@ -50,6 +52,7 @@ export default {
     editorButtonClickedOnStopEditing: false,
     removeComponentModalId: '',
     COMPONENT_CARD_MARKER,
+    CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER,
   }),
   methods: {
     editClassName(): void {

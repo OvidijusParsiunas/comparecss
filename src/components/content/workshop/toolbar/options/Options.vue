@@ -3,9 +3,9 @@
     <div class="options-container-inner">
       <div class="btn-group option-component-button">
         <button v-if="isSubcomponentSelectModeButtonDisplayed"
-          id="component-select-button" type="button" class="btn option-action-button" :class="SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER"
+          id="component-select-button" type="button" class="btn option-action-button" :class="[SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
           @click="initiateSubcomponentSelectMode">
-          <i class="fa fa-mouse-pointer" :class="SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER"></i>
+          <i class="fa fa-mouse-pointer" :class="[SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"></i>
         </button>
         <dropdown class="button-group-secondary-component"
           :uniqueIdentifier="SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
@@ -23,27 +23,28 @@
       </div>
       <div v-if="component.type === MODAL_COMPONENT_TYPE" class="option-component-button">
         <button
-          type="button" class="btn option-action-button expanded-modal-preview-mode-button"
+          type="button" class="btn option-action-button expanded-modal-preview-mode-button" :class="OPTION_MENU_BUTTON_MARKER"
           @click="toggleModalExpandMode">
-          <font-awesome-icon v-if="isExpandedModalPreviewModeActive" :style="{ color: DEFAULT_FONT_AWESOME_COLOR }" class="expand-icon dropdown-button-marker" icon="compress-alt"/>
-          <font-awesome-icon v-else :style="{ color: DEFAULT_FONT_AWESOME_COLOR }" class="expand-icon dropdown-button-marker" icon="expand-alt"/>
+          <font-awesome-icon v-if="isExpandedModalPreviewModeActive" :style="{ color: FONT_AWESOME_COLORS.DEFAULT }" class="expand-icon dropdown-button-marker" icon="compress-alt"/>
+          <font-awesome-icon v-else :style="{ color: FONT_AWESOME_COLORS.DEFAULT }" class="expand-icon dropdown-button-marker" icon="expand-alt"/>
         </button>
       </div>
       <!-- WORK3: fix overlaps -->
       <div class="btn-group option-component-button" v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus">
-        <button
-          type="button" class="btn option-action-button"
+        <button ref="importSubcomponentToggle" v-if="component.subcomponents[component.activeSubcomponentName].importedComponent"
+          type="button" class="btn option-action-button" :class="OPTION_MENU_BUTTON_MARKER"
           @click="importSubcomponent(component.subcomponents[component.activeSubcomponentName])">
-            <font-awesome-icon :style="{ color: DEFAULT_FONT_AWESOME_COLOR }" class="import-icon" icon="long-arrow-alt-down"/>
+            <font-awesome-icon :style="{ color: isImportSubcomponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT }" class="import-icon" icon="long-arrow-alt-down"/>
         </button>
-        <button
-          type="button" class="btn option-action-button"
+        <button v-if="component.subcomponents[component.activeSubcomponentName].importedComponent"
+          type="button" class="btn option-action-button" :class="OPTION_MENU_BUTTON_MARKER"
           @click="toggleSubcomponent(component.subcomponents[component.activeSubcomponentName])">
-            <font-awesome-icon :style="{ color: DEFAULT_FONT_AWESOME_COLOR }" class="sync-icon" icon="sync-alt"/>
+            <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.DEFAULT }" class="sync-icon" icon="sync-alt"/>
         </button>
         <button
           type="button" class="btn option-action-button" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
-          :class="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add'"
+          :class="[component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add',
+            OPTION_MENU_BUTTON_MARKER]"
           @mouseenter="subcomponentMouseEnterHandler"
           @mouseleave="subcomponentMouseLeaveHandler"
           @click="toggleSubcomponent(component.subcomponents[component.activeSubcomponentName])">
@@ -66,7 +67,8 @@
           class="btn btn-outline-secondary option-component-button option-select-button-default"
           :class="[
             option.type === activeOption.type ? 'option-select-button-active' : '',
-            option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive ? 'option-select-button-default-disabled' : 'option-select-button-default-enabled']"
+            option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive ? 'option-select-button-default-disabled' : 'option-select-button-default-enabled',
+            OPTION_MENU_BUTTON_MARKER]"
             @click="selectOption(option)">
             {{option.buttonName}}
         </button>
@@ -85,6 +87,7 @@
 </template>
 
 <script lang="ts">
+import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER, CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER } from '../../../../../consts/elementClassMarkers';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ComponentTypeToOptions, componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
@@ -95,13 +98,14 @@ import { removeSubcomponentModalState } from './removeSubcomponentModalState/rem
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import SubcomponentToggleOverlayUtils from './subcomponentToggleUtils/subcomponentToggleOverlayUtils';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
-import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER } from '../../../../../consts/elementClassMarkers';
+import { WorkshopEventCallbackReturn } from '../../../../../interfaces/workshopEventCallbackReturn';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
 import SubcomponentToggleUtils from './subcomponentToggleUtils/subcomponentToggleUtils';
+import { WorkshopEventCallback } from '../../../../../interfaces/workshopEventCallback';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectMode';
@@ -117,11 +121,12 @@ import dropdown from './dropdown/Dropdown.vue';
 interface Consts {
   componentTypeToOptions: ComponentTypeToOptions;
   useSubcomponentDropdownEventHandlers: (objectContainingActiveOption: Ref<unknown>, activeOptionPropertyKeyName: Ref<string>, highlightSubcomponents: Ref<boolean>) => DropdownCompositionAPI;
+  OPTION_MENU_BUTTON_MARKER: string;
+  FONT_AWESOME_COLORS: typeof FONT_AWESOME_COLORS;
   BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES;
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER: string;
   MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES;
   REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: string;
-  DEFAULT_FONT_AWESOME_COLOR: FONT_AWESOME_COLORS;
   SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
   CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
 }
@@ -140,11 +145,12 @@ export default {
       componentTypeToOptions,
       useSubcomponentDropdownEventHandlers,
       ...removeSubcomponentModalState,
+      FONT_AWESOME_COLORS,
+      OPTION_MENU_BUTTON_MARKER,
       BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES.BASE,
       SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
       MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES.MODAL,
       REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: `#${REMOVE_SUBCOMPONENT_MODAL_ID}`,
-      DEFAULT_FONT_AWESOME_COLOR: FONT_AWESOME_COLORS.DEFAULT,
       SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS,
       CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.CSS_PSEUDO_CLASSES,
       ...useToolbarPositionToggle(),
@@ -225,13 +231,56 @@ export default {
       });
     },
     importSubcomponent(): void {
+      if (!(event as PointerEvent).pointerType) return;
       this.isImportSubcomponentModeActive = !this.isImportSubcomponentModeActive;
-      // use const for the color
       const importButton = (event.currentTarget as HTMLElement).childNodes[0] as HTMLElement;
       importButton.style.color = this.isImportSubcomponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT;
-      const { subcomponents, activeSubcomponentName } = this.component;
-      this.$emit('toggle-import-subcomponent-mode',
-        [this.isImportSubcomponentModeActive, subcomponents[activeSubcomponentName].importedComponent.type] as ToggleImportSubcomponentModeEvent);
+      const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
+      const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.endImportSubcomponentMode };
+      if (this.isImportSubcomponentModeActive) {
+        this.hideSettings();
+      } else if (this.activeOption.buttonName) {
+        const defaultOption = this.getDefaultOption();
+        this.selectOption(defaultOption); 
+      }
+      this.$emit('toggle-import-subcomponent-mode', [this.isImportSubcomponentModeActive, workshopEventCallback] as ToggleImportSubcomponentModeEvent);
+    },
+    endImportSubcomponentMode(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
+      if (event instanceof KeyboardEvent) {
+        if (event.key === 'Enter' || event.key === 'Escape') {
+          this.isImportSubcomponentModeActive = !this.isImportSubcomponentModeActive;
+          if (this.activeOption.buttonName) {
+            const defaultOption = this.getDefaultOption();
+            this.selectOption(defaultOption); 
+          }
+          this.$emit('toggle-import-subcomponent-mode', [false] as ToggleImportSubcomponentModeEvent);
+          return { shouldRepeat: false };
+        }
+        return { shouldRepeat: true };
+      }
+      let clickedElement = event.target as HTMLElement;
+      if (clickedElement.tagName === 'path') {
+        clickedElement = clickedElement.parentElement;
+      }
+      if (clickedElement.tagName === 'svg') {
+        clickedElement = clickedElement.parentElement;
+      }
+      if (clickedElement === this.$refs.importSubcomponentToggle) {
+        return { shouldRepeat: false };
+      }
+      if (clickedElement.classList.contains(CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER)
+        || clickedElement.classList.contains(OPTION_MENU_BUTTON_MARKER)
+        || clickedElement.classList.contains(this.SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)
+        || clickedElement.classList.contains(this.CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)) {
+        this.isImportSubcomponentModeActive = !this.isImportSubcomponentModeActive;
+        if (this.activeOption.buttonName) {
+          const defaultOption = this.getDefaultOption();
+          this.selectOption(defaultOption); 
+        }
+        this.$emit('toggle-import-subcomponent-mode', [false] as ToggleImportSubcomponentModeEvent);
+        return { shouldRepeat: false };
+      }
+      return { shouldRepeat: true };
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
       const { subcomponentDisplayStatus } = subcomponent;

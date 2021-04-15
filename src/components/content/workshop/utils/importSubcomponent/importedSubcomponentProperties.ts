@@ -9,7 +9,7 @@ import { ComponentGenerator } from '../../../../../interfaces/componentGenerator
 
 export default class ImportedSubcomponentProperties {
 
-  private static DEFAULT_TOP_PROPERTY = '50%';
+  public static DEFAULT_TOP_PROPERTY = '50%';
 
   public static generateImportedSubcomponentNames(importedSubcomponentBaseName: string, importedSubcomponentId: number): CustomSubcomponentNames {
     const spaces = new Array(importedSubcomponentId).join(' ');

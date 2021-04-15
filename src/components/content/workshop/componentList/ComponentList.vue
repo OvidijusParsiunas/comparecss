@@ -32,7 +32,7 @@ import { NEW_COMPONENT_MODAL_ID } from '../../../../consts/elementIds';
 import componentCard from './ComponentCard.vue';
 
 interface Consts {
-  NEW_COMPONENT_MODAL_ID,
+  NEW_COMPONENT_MODAL_ID: string;
 }
 
 export default {
