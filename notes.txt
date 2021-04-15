@@ -27,6 +27,7 @@ text
 rename from import component to import subcomponent
 clicking enter after expanding triggers it again
 close button should probably be imported - but need to work through the logistics of inherited css for it
+expand modal button could have active color when used
 
 option to import an existing button style!
 

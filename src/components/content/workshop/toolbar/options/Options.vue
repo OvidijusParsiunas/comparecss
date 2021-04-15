@@ -88,6 +88,7 @@
 
 <script lang="ts">
 import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER, CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER } from '../../../../../consts/elementClassMarkers';
+import { TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS } from '../../componentPreview/utils/expandedModalPreviewMode/consts/sharedConsts';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ComponentTypeToOptions, componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
@@ -137,6 +138,7 @@ interface Data {
   activeOption: Option;
   isExpandedModalPreviewModeActive: boolean;
   isImportSubcomponentModeActive: boolean;
+  hasImportSubcomponentModeClosedExpandedModal: boolean;
 }
 
 export default {
@@ -162,6 +164,7 @@ export default {
     activeOption: { buttonName: null, type: null },
     isExpandedModalPreviewModeActive: false,
     isImportSubcomponentModeActive: false,
+    hasImportSubcomponentModeClosedExpandedModal: false,
   }),
   methods: {
     initiateSubcomponentSelectMode(): void {
@@ -230,20 +233,35 @@ export default {
           && (this.isExpandedModalPreviewModeActive || option.enabledOnExpandedModalPreviewMode === this.activeOption.enabledOnExpandedModalPreviewMode);
       });
     },
-    importSubcomponent(): void {
-      if (!(event as PointerEvent).pointerType) return;
+    toggleImportSubcomponentMode(importButton: HTMLElement): void {
       this.isImportSubcomponentModeActive = !this.isImportSubcomponentModeActive;
-      const importButton = (event.currentTarget as HTMLElement).childNodes[0] as HTMLElement;
       importButton.style.color = this.isImportSubcomponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT;
       const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
       const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.endImportSubcomponentMode };
+      this.$emit('toggle-import-subcomponent-mode', [this.isImportSubcomponentModeActive, workshopEventCallback] as ToggleImportSubcomponentModeEvent);
+    },
+    importSubcomponent(): void {
+      if (!(event as PointerEvent).pointerType) return;
+      const importButton = (event.currentTarget as HTMLElement).childNodes[0];
+      let timedOut = false;
+      if (this.isExpandedModalPreviewModeActive) {
+        this.toggleModalExpandMode();
+        this.hasImportSubcomponentModeClosedExpandedModal = true;
+      } else if (this.hasImportSubcomponentModeClosedExpandedModal) {
+        setTimeout(() => {
+          this.toggleImportSubcomponentMode(importButton);
+        }, TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS);
+        this.toggleModalExpandMode();
+        this.hasImportSubcomponentModeClosedExpandedModal = false;
+        timedOut = true;
+      }
       if (this.isImportSubcomponentModeActive) {
         this.hideSettings();
       } else if (this.activeOption.buttonName) {
         const defaultOption = this.getDefaultOption();
         this.selectOption(defaultOption); 
       }
-      this.$emit('toggle-import-subcomponent-mode', [this.isImportSubcomponentModeActive, workshopEventCallback] as ToggleImportSubcomponentModeEvent);
+      if (!timedOut) this.toggleImportSubcomponentMode(importButton);
     },
     endImportSubcomponentMode(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
       if (event instanceof KeyboardEvent) {
@@ -253,7 +271,15 @@ export default {
             const defaultOption = this.getDefaultOption();
             this.selectOption(defaultOption); 
           }
-          this.$emit('toggle-import-subcomponent-mode', [false] as ToggleImportSubcomponentModeEvent);
+          if (this.hasImportSubcomponentModeClosedExpandedModal) {
+            this.toggleModalExpandMode();
+            this.hasImportSubcomponentModeClosedExpandedModal = false;
+            setTimeout(() => {
+              this.$emit('toggle-import-subcomponent-mode', [false] as ToggleImportSubcomponentModeEvent);
+            }, TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS);
+          } else {
+            this.$emit('toggle-import-subcomponent-mode', [false] as ToggleImportSubcomponentModeEvent);
+          }
           return { shouldRepeat: false };
         }
         return { shouldRepeat: true };
@@ -277,7 +303,15 @@ export default {
           const defaultOption = this.getDefaultOption();
           this.selectOption(defaultOption); 
         }
-        this.$emit('toggle-import-subcomponent-mode', [false] as ToggleImportSubcomponentModeEvent);
+        if (this.hasImportSubcomponentModeClosedExpandedModal) {
+          setTimeout(() => {
+            this.$emit('toggle-import-subcomponent-mode', [false] as ToggleImportSubcomponentModeEvent);
+          }, TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS);
+          this.toggleModalExpandMode();
+          this.hasImportSubcomponentModeClosedExpandedModal = false;
+        } else {
+          this.$emit('toggle-import-subcomponent-mode', [false] as ToggleImportSubcomponentModeEvent);
+        }
         return { shouldRepeat: false };
       }
       return { shouldRepeat: true };
