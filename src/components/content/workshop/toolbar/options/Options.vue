@@ -23,7 +23,7 @@
       </div>
       <div v-if="component.type === MODAL_COMPONENT_TYPE" class="option-component-button">
         <button
-          type="button" class="btn option-action-button expanded-modal-preview-mode-button" :class="OPTION_MENU_BUTTON_MARKER"
+          type="button" class="btn option-action-button expanded-modal-preview-mode-button" :class="[OPTION_MENU_BUTTON_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER]"
           @click="toggleModalExpandMode">
           <font-awesome-icon v-if="isExpandedModalPreviewModeActive" :style="{ color: FONT_AWESOME_COLORS.DEFAULT }" class="expand-icon dropdown-button-marker" icon="compress-alt"/>
           <font-awesome-icon v-else :style="{ color: FONT_AWESOME_COLORS.DEFAULT }" class="expand-icon dropdown-button-marker" icon="expand-alt"/>
@@ -33,7 +33,7 @@
       <div class="btn-group option-component-button" v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus">
         <button ref="importSubcomponentToggle" v-if="component.subcomponents[component.activeSubcomponentName].importedComponent"
           type="button" class="btn option-action-button" :class="OPTION_MENU_BUTTON_MARKER"
-          @click="importSubcomponent(component.subcomponents[component.activeSubcomponentName])">
+          @click="toggleSubcomponentImport(component.subcomponents[component.activeSubcomponentName])">
             <font-awesome-icon :style="{ color: isImportSubcomponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT }" class="import-icon" icon="long-arrow-alt-down"/>
         </button>
         <button v-if="component.subcomponents[component.activeSubcomponentName].importedComponent"
@@ -87,26 +87,23 @@
 </template>
 
 <script lang="ts">
-import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER, CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER } from '../../../../../consts/elementClassMarkers';
-import { TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS } from '../../componentPreview/utils/expandedModalPreviewMode/consts/sharedConsts';
+import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER } from '../../../../../consts/elementClassMarkers';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ComponentTypeToOptions, componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
-import { ToggleImportSubcomponentModeEvent } from '../../../../../interfaces/toggleImportSubcomponentModeEvent';
 import { removeSubcomponentModalState } from './removeSubcomponentModalState/removeSubcomponentModalState';
+import ToggleImportSubcomponentMode from '../../utils/importSubcomponent/toggleImportSubcomponentMode';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import SubcomponentToggleOverlayUtils from './subcomponentToggleUtils/subcomponentToggleOverlayUtils';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
-import { WorkshopEventCallbackReturn } from '../../../../../interfaces/workshopEventCallbackReturn';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
 import SubcomponentToggleUtils from './subcomponentToggleUtils/subcomponentToggleUtils';
-import { WorkshopEventCallback } from '../../../../../interfaces/workshopEventCallback';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectMode';
@@ -126,6 +123,7 @@ interface Consts {
   FONT_AWESOME_COLORS: typeof FONT_AWESOME_COLORS;
   BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES;
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER: string;
+  EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER: string;
   MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES;
   REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: string;
   SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
@@ -151,6 +149,7 @@ export default {
       OPTION_MENU_BUTTON_MARKER,
       BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES.BASE,
       SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
+      EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER,
       MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES.MODAL,
       REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: `#${REMOVE_SUBCOMPONENT_MODAL_ID}`,
       SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS,
@@ -233,88 +232,10 @@ export default {
           && (this.isExpandedModalPreviewModeActive || option.enabledOnExpandedModalPreviewMode === this.activeOption.enabledOnExpandedModalPreviewMode);
       });
     },
-    toggleImportSubcomponentMode(importButton: HTMLElement): void {
-      this.isImportSubcomponentModeActive = !this.isImportSubcomponentModeActive;
-      importButton.style.color = this.isImportSubcomponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT;
-      const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
-      const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.endImportSubcomponentMode };
-      this.$emit('toggle-import-subcomponent-mode', [this.isImportSubcomponentModeActive, workshopEventCallback] as ToggleImportSubcomponentModeEvent);
-    },
-    importSubcomponent(): void {
-      if (!(event as PointerEvent).pointerType) return;
-      const importButton = (event.currentTarget as HTMLElement).childNodes[0];
-      let timedOut = false;
-      if (this.isExpandedModalPreviewModeActive) {
-        this.toggleModalExpandMode();
-        this.hasImportSubcomponentModeClosedExpandedModal = true;
-      } else if (this.hasImportSubcomponentModeClosedExpandedModal) {
-        setTimeout(() => {
-          this.toggleImportSubcomponentMode(importButton);
-        }, TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS);
-        this.toggleModalExpandMode();
-        this.hasImportSubcomponentModeClosedExpandedModal = false;
-        timedOut = true;
-      }
-      if (this.isImportSubcomponentModeActive) {
-        this.hideSettings();
-      } else if (this.activeOption.buttonName) {
-        const defaultOption = this.getDefaultOption();
-        this.selectOption(defaultOption); 
-      }
-      if (!timedOut) this.toggleImportSubcomponentMode(importButton);
-    },
-    endImportSubcomponentMode(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
-      if (event instanceof KeyboardEvent) {
-        if (event.key === 'Enter' || event.key === 'Escape') {
-          this.isImportSubcomponentModeActive = !this.isImportSubcomponentModeActive;
-          if (this.activeOption.buttonName) {
-            const defaultOption = this.getDefaultOption();
-            this.selectOption(defaultOption); 
-          }
-          if (this.hasImportSubcomponentModeClosedExpandedModal) {
-            this.toggleModalExpandMode();
-            this.hasImportSubcomponentModeClosedExpandedModal = false;
-            setTimeout(() => {
-              this.$emit('toggle-import-subcomponent-mode', [false] as ToggleImportSubcomponentModeEvent);
-            }, TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS);
-          } else {
-            this.$emit('toggle-import-subcomponent-mode', [false] as ToggleImportSubcomponentModeEvent);
-          }
-          return { shouldRepeat: false };
-        }
-        return { shouldRepeat: true };
-      }
-      let clickedElement = event.target as HTMLElement;
-      if (clickedElement.tagName === 'path') {
-        clickedElement = clickedElement.parentElement;
-      }
-      if (clickedElement.tagName === 'svg') {
-        clickedElement = clickedElement.parentElement;
-      }
-      if (clickedElement === this.$refs.importSubcomponentToggle) {
-        return { shouldRepeat: false };
-      }
-      if (clickedElement.classList.contains(CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER)
-        || clickedElement.classList.contains(OPTION_MENU_BUTTON_MARKER)
-        || clickedElement.classList.contains(this.SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)
-        || clickedElement.classList.contains(this.CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)) {
-        this.isImportSubcomponentModeActive = !this.isImportSubcomponentModeActive;
-        if (this.activeOption.buttonName) {
-          const defaultOption = this.getDefaultOption();
-          this.selectOption(defaultOption); 
-        }
-        if (this.hasImportSubcomponentModeClosedExpandedModal) {
-          setTimeout(() => {
-            this.$emit('toggle-import-subcomponent-mode', [false] as ToggleImportSubcomponentModeEvent);
-          }, TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS);
-          this.toggleModalExpandMode();
-          this.hasImportSubcomponentModeClosedExpandedModal = false;
-        } else {
-          this.$emit('toggle-import-subcomponent-mode', [false] as ToggleImportSubcomponentModeEvent);
-        }
-        return { shouldRepeat: false };
-      }
-      return { shouldRepeat: true };
+    // when esc or import button is clicked, should reset back to the previous one
+    // if clicked anywhere else except the component preview - potentially reset
+    toggleSubcomponentImport(): void {
+      ToggleImportSubcomponentMode.toggleSubcomponentImport(this);
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
       const { subcomponentDisplayStatus } = subcomponent;
