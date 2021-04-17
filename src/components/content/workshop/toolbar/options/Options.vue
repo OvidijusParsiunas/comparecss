@@ -232,8 +232,6 @@ export default {
           && (this.isExpandedModalPreviewModeActive || option.enabledOnExpandedModalPreviewMode === this.activeOption.enabledOnExpandedModalPreviewMode);
       });
     },
-    // when esc or import button is clicked, should reset back to the previous one
-    // if clicked anywhere else except the component preview - potentially reset
     toggleSubcomponentImport(): void {
       ToggleImportSubcomponentMode.toggleSubcomponentImport(this);
     },

@@ -16,6 +16,13 @@ export default class ToggleImportSubcomponentMode {
     }
   }
 
+  private static removeTempCustomProperties(optionsComponent: ComponentOptions): void {
+    const { subcomponents, activeSubcomponentName } = optionsComponent.component;
+    if (subcomponents[activeSubcomponentName].tempCustomProperties) {
+      delete subcomponents[activeSubcomponentName].tempCustomProperties;
+    }
+  }
+
   private static toggleOff(optionsComponent: ComponentOptions): WorkshopEventCallbackReturn {
     optionsComponent.isImportSubcomponentModeActive = !optionsComponent.isImportSubcomponentModeActive;
     ToggleImportSubcomponentMode.displayOptionSettings(optionsComponent);
@@ -28,6 +35,7 @@ export default class ToggleImportSubcomponentMode {
     } else {
       optionsComponent.$emit('toggle-import-subcomponent-mode', [false] as ToggleImportSubcomponentModeEvent);
     }
+    ToggleImportSubcomponentMode.removeTempCustomProperties(optionsComponent);
     return { shouldRepeat: false };
   }
 
@@ -41,15 +49,29 @@ export default class ToggleImportSubcomponentMode {
     return clickedElement;
   }
 
+  private static resetSubcomponent(optionsComponent: ComponentOptions): void {
+    const { subcomponents, activeSubcomponentName } = optionsComponent.component;
+    if (subcomponents[activeSubcomponentName].tempCustomProperties) {
+      const { customCss, customFeatures } = subcomponents[activeSubcomponentName].tempCustomProperties;
+      subcomponents[activeSubcomponentName].customCss = customCss;
+      subcomponents[activeSubcomponentName].customFeatures = customFeatures;
+    }
+  }
+
   private static toggleImportSubcomponentModeOff(optionsComponent: ComponentOptions, event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
     if (event instanceof KeyboardEvent) {
-      if (event.key === DOM_EVENT_TRIGGER_KEYS.ENTER || event.key === DOM_EVENT_TRIGGER_KEYS.ESCAPE) {
+      if (event.key === DOM_EVENT_TRIGGER_KEYS.ESCAPE) {
+        ToggleImportSubcomponentMode.resetSubcomponent(optionsComponent);
+        return ToggleImportSubcomponentMode.toggleOff(optionsComponent);
+      } else if (event.key === DOM_EVENT_TRIGGER_KEYS.ENTER) {
         return ToggleImportSubcomponentMode.toggleOff(optionsComponent);
       }
       return { shouldRepeat: true };
     }
     const buttonElement = ToggleImportSubcomponentMode.getButtonElement(event.target as HTMLElement);
     if (buttonElement === optionsComponent.$refs.importSubcomponentToggle) {
+      ToggleImportSubcomponentMode.resetSubcomponent(optionsComponent);
+      ToggleImportSubcomponentMode.removeTempCustomProperties(optionsComponent);
       return { shouldRepeat: false };
     }
     if (buttonElement.classList.contains(EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER)) {

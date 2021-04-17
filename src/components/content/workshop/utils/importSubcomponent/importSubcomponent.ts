@@ -4,8 +4,18 @@ import ImportedSubcomponentProperties from './importedSubcomponentProperties';
 
 export default class ImportSubcomponent {
 
+  private static moveCustomPropertiesToTempProperties(currentComponents: Subcomponents, currentSubcomponentName: string): void {
+    currentComponents[currentSubcomponentName].tempCustomProperties = { 
+      customCss: currentComponents[currentSubcomponentName].customCss,
+      customFeatures: currentComponents[currentSubcomponentName].customFeatures,
+    };
+  }
+
   private static copySubcomonent(currentComponents: Subcomponents, currentSubcomponentName: string,
       targetSubcomponents: Subcomponents, targetSubcomponentName: string): void {
+    if (!currentComponents[currentSubcomponentName].tempCustomProperties) {
+      ImportSubcomponent.moveCustomPropertiesToTempProperties(currentComponents, currentSubcomponentName);
+    }
     const selectedComponentCustomCss = targetSubcomponents[targetSubcomponentName].customCss;
     currentComponents[currentSubcomponentName].customCss = selectedComponentCustomCss;
     currentComponents[currentSubcomponentName].customFeatures = targetSubcomponents[targetSubcomponentName].customFeatures;

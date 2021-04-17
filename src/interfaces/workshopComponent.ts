@@ -90,6 +90,11 @@ export interface CustomFeatures {
   subcomponentText?: Text;
 }
 
+interface TempCustomProperties {
+  customCss: CustomCss;
+  customFeatures?: CustomFeatures;
+}
+
 export interface SubcomponentProperties {
   // used for defining options
   subcomponentType?: SUBCOMPONENT_TYPES;
@@ -122,8 +127,10 @@ export interface SubcomponentProperties {
   defaultCustomFeatures?: CustomFeatures;
   layerSectionsType?: LAYER_SECTIONS_TYPES;
   importedComponent?: WorkshopComponent;
-  // appended in run-time
+  // appended at run-time
   parentLayer?: Layer;
+  // appended at run-time
+  tempCustomProperties?: TempCustomProperties;
 }
 
 export type Subcomponents = {
