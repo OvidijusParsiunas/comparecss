@@ -106,7 +106,6 @@ export default class ToggleImportSubcomponentMode {
   }
 
   public static toggleSubcomponentImport(optionsComponent: ComponentOptions): void {
-    if (!(event as PointerEvent).pointerType) return;
     optionsComponent.isImportSubcomponentModeActive = !optionsComponent.isImportSubcomponentModeActive;
     const hasBeenToggled = ToggleImportSubcomponentMode.toggleDuringExpandedModalMode(optionsComponent);
     if (optionsComponent.isImportSubcomponentModeActive) {

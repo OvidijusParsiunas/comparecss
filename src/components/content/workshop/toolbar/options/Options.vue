@@ -29,25 +29,24 @@
           <font-awesome-icon v-else :style="{ color: FONT_AWESOME_COLORS.DEFAULT }" class="expand-icon dropdown-button-marker" icon="expand-alt"/>
         </button>
       </div>
-      <!-- WORK3: fix overlaps -->
       <div class="btn-group option-component-button" v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus">
         <button ref="importSubcomponentToggle" v-if="component.subcomponents[component.activeSubcomponentName].importedComponent"
           type="button" class="btn option-action-button" :class="OPTION_MENU_BUTTON_MARKER"
-          @click="toggleSubcomponentImport(component.subcomponents[component.activeSubcomponentName])">
+          @keydown.enter.prevent="$event.preventDefault()" @click="toggleSubcomponentImport(component.subcomponents[component.activeSubcomponentName])">
             <font-awesome-icon :style="{ color: isImportSubcomponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT }" class="import-icon" icon="long-arrow-alt-down"/>
         </button>
         <button v-if="component.subcomponents[component.activeSubcomponentName].importedComponent"
-          type="button" class="btn option-action-button" :class="OPTION_MENU_BUTTON_MARKER"
-          @click="toggleSubcomponent(component.subcomponents[component.activeSubcomponentName])">
+          type="button" class="btn option-action-button button-group-secondary-component" :class="OPTION_MENU_BUTTON_MARKER"
+          @keydown.enter.prevent="$event.preventDefault()" @click="toggleSubcomponent(component.subcomponents[component.activeSubcomponentName])">
             <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.DEFAULT }" class="sync-icon" icon="sync-alt"/>
         </button>
         <button
-          type="button" class="btn option-action-button" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
+          type="button" class="btn option-action-button button-group-secondary-component" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
           :class="[component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add',
             OPTION_MENU_BUTTON_MARKER]"
           @mouseenter="subcomponentMouseEnterHandler"
           @mouseleave="subcomponentMouseLeaveHandler"
-          @click="toggleSubcomponent(component.subcomponents[component.activeSubcomponentName])">
+          @keydown.enter.prevent="$event.preventDefault()" @click="toggleSubcomponent(component.subcomponents[component.activeSubcomponentName])">
         </button>
       </div>
       <div v-if="!component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus || component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed"> 
@@ -424,6 +423,7 @@ export default {
   .button-group-secondary-component {
     left: -1px;
     z-index: 1;
+    background-color: white !important;
   }
   .option-action-button {
     border: 1px solid #aaaaaa !important;
