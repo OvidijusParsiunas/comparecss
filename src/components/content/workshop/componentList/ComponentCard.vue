@@ -1,21 +1,24 @@
 <template>
-  <div :class="[highlightCard(), COMPONENT_CARD_MARKER]" class="card component-card" @mousedown="selectComponentCard(thisComponent)">
-    <div class="card-body" :class="COMPONENT_CARD_MARKER">
-      <input v-if="isEditingClassName" ref="componentCardClassNameEditorInput" class="card-title component-card-title"
-        v-model="className"
-        :placeholder="thisComponent.className"
-        @input="classNameInputEvent"
-        >
-      <h5 v-else class="card-title component-card-title" :class="COMPONENT_CARD_MARKER">{{thisComponent.className}}</h5>
-      <div v-if="!isImportSubcomponentModeActive">
-        <a ref="componentCardClassNameEditorButton" class="btn btn-success" @mousedown="preventBubbling" @mouseup="editClassName">Edit</a>
-        <a class="btn btn-warning" @mousedown="preventBubbling" @mouseup="copyComponentCard">Copy</a>
-        <a class="btn btn-danger component-card-remove" data-toggle="modal" :data-target="removeComponentModalId" @mousedown="preventBubbling" @mouseup="removeComponentCard">Remove</a>
-      </div>
-      <div v-else>
-        <a class="btn btn-success" :class="CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER">
-          <font-awesome-icon class="import-icon" icon="check"/>
-        </a>
+  <div class="component-card" :class="COMPONENT_CARD_MARKER">
+    <div class="component-body-container" :class="[highlightCard(), COMPONENT_CARD_MARKER]"
+      @mousedown="selectComponentCard(thisComponent)">
+      <div class="card-body" :class="COMPONENT_CARD_MARKER">
+        <input v-if="isEditingClassName" ref="componentCardClassNameEditorInput" class="card-title component-card-title"
+          v-model="className"
+          :placeholder="thisComponent.className"
+          @input="classNameInputEvent"
+          >
+        <h5 v-else class="card-title component-card-title" :class="COMPONENT_CARD_MARKER">{{thisComponent.className}}</h5>
+        <div v-if="!isImportSubcomponentModeActive">
+          <a ref="componentCardClassNameEditorButton" class="btn btn-success" @mousedown="preventBubbling" @mouseup="editClassName">Edit</a>
+          <a class="btn btn-warning" @mousedown="preventBubbling" @mouseup="copyComponentCard">Copy</a>
+          <a class="btn btn-danger component-card-remove" data-toggle="modal" :data-target="removeComponentModalId" @mousedown="preventBubbling" @mouseup="removeComponentCard">Remove</a>
+        </div>
+        <div v-else>
+          <a class="btn btn-success" :class="CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER">
+            <font-awesome-icon class="import-icon" icon="check"/>
+          </a>
+        </div>
       </div>
     </div>
   </div>
@@ -154,12 +157,6 @@ export default {
 </script>
 
 <style lang="css" scoped>
-  .component-card {
-    cursor: move;
-    width: 18rem;
-    margin: auto;
-    margin-top: 5px
-  }
   .component-card:hover {
     border-color: #d1d5da!important;
     box-shadow: 0 1px 3px rgba(106,115,125,.3)!important;
