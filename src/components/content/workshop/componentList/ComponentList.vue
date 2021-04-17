@@ -4,8 +4,9 @@
       <component-card v-for="component in components" :key="component"
         :thisComponent="component"
         :allComponents="components"
-        :activeComponent="activeComponent"
+        :currentlySelectedComponent="currentlySelectedComponent"
         :isImportSubcomponentModeActive="isImportSubcomponentModeActive"
+        :currentlySelectedImportComponent="currentlySelectedImportComponent"
         @component-card-selected="componentCardSelected($event)"
         @component-card-copied="componentCardCopied($event)"
         @component-card-removed="componentCardRemoved($event)"
@@ -66,7 +67,8 @@ export default {
   },
   props: {
     components: Array,
-    activeComponent: Object,
+    currentlySelectedComponent: Object,
+    currentlySelectedImportComponent: Object,
     isImportSubcomponentModeActive: Boolean,
   },
 };

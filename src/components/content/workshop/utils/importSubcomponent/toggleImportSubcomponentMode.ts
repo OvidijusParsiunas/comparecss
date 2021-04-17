@@ -4,7 +4,6 @@ import { ToggleImportSubcomponentModeEvent } from '../../../../../interfaces/tog
 import { WorkshopEventCallbackReturn } from '../../../../../interfaces/workshopEventCallbackReturn';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../interfaces/workshopEventCallback';
-import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
 import { ComponentOptions } from 'vue';
 
 export default class ToggleImportSubcomponentMode {
@@ -85,20 +84,19 @@ export default class ToggleImportSubcomponentMode {
     return { shouldRepeat: true };
   }
 
-  private static toggleImportSubcomponentModeOn(optionsComponent: ComponentOptions, importButton: HTMLElement): void {
-    importButton.style.color = optionsComponent.isImportSubcomponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT;
+  private static toggleImportSubcomponentModeOn(optionsComponent: ComponentOptions): void {
     const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
     const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.toggleImportSubcomponentModeOff.bind(this, optionsComponent) };
     optionsComponent.$emit('toggle-import-subcomponent-mode', [optionsComponent.isImportSubcomponentModeActive, workshopEventCallback] as ToggleImportSubcomponentModeEvent);
   }
 
-  private static toggleDuringExpandedModalMode(optionsComponent: ComponentOptions, importButton: HTMLElement): boolean {
+  private static toggleDuringExpandedModalMode(optionsComponent: ComponentOptions): boolean {
     if (optionsComponent.isExpandedModalPreviewModeActive) {
       optionsComponent.toggleModalExpandMode();
       optionsComponent.hasImportSubcomponentModeClosedExpandedModal = true;
     } else if (optionsComponent.hasImportSubcomponentModeClosedExpandedModal) {
       setTimeout(() => {
-        ToggleImportSubcomponentMode.toggleImportSubcomponentModeOn(optionsComponent, importButton);
+        ToggleImportSubcomponentMode.toggleImportSubcomponentModeOn(optionsComponent);
       }, TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS);
       optionsComponent.toggleModalExpandMode();
       optionsComponent.hasImportSubcomponentModeClosedExpandedModal = false;
@@ -110,13 +108,12 @@ export default class ToggleImportSubcomponentMode {
   public static toggleSubcomponentImport(optionsComponent: ComponentOptions): void {
     if (!(event as PointerEvent).pointerType) return;
     optionsComponent.isImportSubcomponentModeActive = !optionsComponent.isImportSubcomponentModeActive;
-    const importButton = (event.currentTarget as HTMLElement).childNodes[0] as HTMLElement;
-    const hasBeenToggled = ToggleImportSubcomponentMode.toggleDuringExpandedModalMode(optionsComponent, importButton);
+    const hasBeenToggled = ToggleImportSubcomponentMode.toggleDuringExpandedModalMode(optionsComponent);
     if (optionsComponent.isImportSubcomponentModeActive) {
       optionsComponent.hideSettings();
     } else {
       ToggleImportSubcomponentMode.displayOptionSettings(optionsComponent);
     }
-    if (!hasBeenToggled) ToggleImportSubcomponentMode.toggleImportSubcomponentModeOn(optionsComponent, importButton);
+    if (!hasBeenToggled) ToggleImportSubcomponentMode.toggleImportSubcomponentModeOn(optionsComponent);
   }
 }

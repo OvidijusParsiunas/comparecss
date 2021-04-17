@@ -4,32 +4,32 @@ import ImportedSubcomponentProperties from './importedSubcomponentProperties';
 
 export default class ImportSubcomponent {
 
-  private static moveCustomPropertiesToTempProperties(currentComponents: Subcomponents, currentSubcomponentName: string): void {
-    currentComponents[currentSubcomponentName].tempCustomProperties = { 
-      customCss: currentComponents[currentSubcomponentName].customCss,
-      customFeatures: currentComponents[currentSubcomponentName].customFeatures,
+  private static moveCustomPropertiesToTempProperties(activeComponentSubcomponents: Subcomponents, activeComponentSubcomponentName: string): void {
+    activeComponentSubcomponents[activeComponentSubcomponentName].tempCustomProperties = { 
+      customCss: activeComponentSubcomponents[activeComponentSubcomponentName].customCss,
+      customFeatures: activeComponentSubcomponents[activeComponentSubcomponentName].customFeatures,
     };
   }
 
-  private static copySubcomonent(currentComponents: Subcomponents, currentSubcomponentName: string,
+  private static copyTargetSubcomponent(activeComponentSubcomponents: Subcomponents, activeComponentSubcomponentName: string,
       targetSubcomponents: Subcomponents, targetSubcomponentName: string): void {
-    if (!currentComponents[currentSubcomponentName].tempCustomProperties) {
-      ImportSubcomponent.moveCustomPropertiesToTempProperties(currentComponents, currentSubcomponentName);
+    if (!activeComponentSubcomponents[activeComponentSubcomponentName].tempCustomProperties) {
+      ImportSubcomponent.moveCustomPropertiesToTempProperties(activeComponentSubcomponents, activeComponentSubcomponentName);
     }
     const selectedComponentCustomCss = targetSubcomponents[targetSubcomponentName].customCss;
-    currentComponents[currentSubcomponentName].customCss = selectedComponentCustomCss;
-    currentComponents[currentSubcomponentName].customFeatures = targetSubcomponents[targetSubcomponentName].customFeatures;
+    activeComponentSubcomponents[activeComponentSubcomponentName].customCss = selectedComponentCustomCss;
+    activeComponentSubcomponents[activeComponentSubcomponentName].customFeatures = targetSubcomponents[targetSubcomponentName].customFeatures;
     if (!selectedComponentCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top) {
       selectedComponentCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top = ImportedSubcomponentProperties.DEFAULT_TOP_PROPERTY;
     }
   }
 
-  public static previewImportSubcomponent(selectedComponent: WorkshopComponent, currentlyActiveComponent: WorkshopComponent): void {
+  public static previewImportSubcomponent(selectedComponent: WorkshopComponent, activeComponent: WorkshopComponent): void {
     const selectedComponentSubcomponentNames = selectedComponent.subcomponentNames;
-    const currentComponentSubcomponentNames = currentlyActiveComponent.subcomponents
-      [currentlyActiveComponent.activeSubcomponentName].importedComponent.subcomponentNames;
-    Object.keys(currentComponentSubcomponentNames).forEach((subcomponentName: string) => {
-      ImportSubcomponent.copySubcomonent(currentlyActiveComponent.subcomponents, currentComponentSubcomponentNames[subcomponentName],
+    const activeComponentSubcomponentNames = activeComponent.subcomponents
+      [activeComponent.activeSubcomponentName].importedComponent.subcomponentNames;
+    Object.keys(activeComponentSubcomponentNames).forEach((subcomponentName: string) => {
+      ImportSubcomponent.copyTargetSubcomponent(activeComponent.subcomponents, activeComponentSubcomponentNames[subcomponentName],
         selectedComponent.subcomponents, selectedComponentSubcomponentNames[subcomponentName]);
     });
   }

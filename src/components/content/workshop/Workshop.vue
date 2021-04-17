@@ -5,8 +5,9 @@
         <div style="width: 30%; position: relative">
           <component-list ref="componentList"
             :components="components"
-            :activeComponent="currentlySelectedComponent"
+            :currentlySelectedComponent="currentlySelectedComponent"
             :isImportSubcomponentModeActive="isImportSubcomponentModeActive"
+            :currentlySelectedImportComponent="currentlySelectedImportComponent"
             @component-card-selected="componentCardSelected($event)"
             @component-card-copied="componentCardCopied($event)"
             @component-card-removed="componentCardRemoved($event)"
@@ -148,6 +149,7 @@ interface Data {
   components: WorkshopComponent[];
   tempComponents: WorkshopComponent[];
   currentlySelectedComponent: WorkshopComponent;
+  currentlySelectedImportComponent: WorkshopComponent;
   componentPreviewAssistance: ComponentPreviewAssistance;
   workshopEventCallbacks: (() => boolean)[];
   isImportSubcomponentModeActive: boolean;
@@ -445,6 +447,7 @@ export default {
     ],
     tempComponents: [],
     currentlySelectedComponent: null,
+    currentlySelectedImportComponent: null,
     workshopEventCallbacks: [],
     isImportSubcomponentModeActive: false,
   }),
@@ -480,6 +483,7 @@ export default {
     componentCardSelected(selectedComponent: WorkshopComponent): void {
       if (this.isImportSubcomponentModeActive) {
         ImportSubcomponent.previewImportSubcomponent(selectedComponent, this.currentlySelectedComponent);
+        this.currentlySelectedImportComponent = selectedComponent;
       } else if (this.currentlySelectedComponent !== selectedComponent) {
         this.switchActiveComponent(selectedComponent);
       }
@@ -568,6 +572,7 @@ export default {
       } else {
         this.components = this.tempComponents;
         this.tempComponents = [];
+        this.currentlySelectedImportComponent = null;
       }
       this.isImportSubcomponentModeActive = isActive;
     },

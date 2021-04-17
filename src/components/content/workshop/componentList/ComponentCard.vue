@@ -1,5 +1,5 @@
 <template>
-  <div :class="[ thisComponent === activeComponent ? 'active' : '', COMPONENT_CARD_MARKER ]" class="card component-card" @mousedown="selectComponentCard(thisComponent)">
+  <div :class="[highlightCard(), COMPONENT_CARD_MARKER]" class="card component-card" @mousedown="selectComponentCard(thisComponent)">
     <div class="card-body" :class="COMPONENT_CARD_MARKER">
       <input v-if="isEditingClassName" ref="componentCardClassNameEditorInput" class="card-title component-card-title"
         v-model="className"
@@ -55,6 +55,15 @@ export default {
     CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER,
   }),
   methods: {
+    highlightCard(): string {
+      if (this.currentlySelectedImportComponent && this.currentlySelectedImportComponent === this.thisComponent) {
+        return 'component-selected-to-import';
+      }
+      if (this.thisComponent === this.currentlySelectedComponent) {
+        return 'component-selected';
+      }
+      return '';
+    },
     editClassName(): void {
       this.selectComponentCard();
       if (this.editorButtonClickedOnStopEditing) {
@@ -137,7 +146,8 @@ export default {
   props: {
     thisComponent: Object,
     allComponents: Object,
-    activeComponent: Object,
+    currentlySelectedComponent: Object,
+    currentlySelectedImportComponent: Object,
     isImportSubcomponentModeActive: Boolean,
   }
 };
@@ -165,7 +175,7 @@ export default {
   .component-card-remove {
     float: right;
   }
-  .active, .active:hover {
+  .component-selected, .component-selected:hover {
     box-shadow: 0 0 1px rgb(93, 153, 192) !important;
     border-color: #a3cdff !important;
     background-color: rgb(250, 253, 255) !important;
@@ -174,7 +184,15 @@ export default {
     border-color: rgb(190, 190, 190) !important;
     background-color: rgb(247, 247, 247) !important; */
   }
-  .active:hover {
+  .component-selected:hover {
     border-color: #72abf0 !important;
+  }
+  .component-selected-to-import, .component-selected-to-import:hover {
+    box-shadow: 0 0 1px rgb(194, 183, 87) !important;
+    border-color: #fff6a3 !important;
+    background-color: rgb(255, 255, 244) !important;
+  }
+  .component-selected-to-import:hover {
+    border-color: #f0e872 !important;
   }
 </style>
