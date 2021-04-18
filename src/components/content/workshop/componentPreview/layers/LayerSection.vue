@@ -11,7 +11,7 @@
           && nestedSubcomponent.subcomponentProperties.customFeatures.jsClasses || [])]">
       <base-component v-if="nestedSubcomponent.subcomponentProperties.importedComponent"
         class="imported-component-container"
-        :component="nestedSubcomponent.subcomponentProperties.importedComponent"
+        :component="nestedSubcomponent.subcomponentProperties.importedComponent.component"
         :mouseEvents="mouseEvents"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
         :isImportedComponent="true"/>

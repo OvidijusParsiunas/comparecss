@@ -95,6 +95,14 @@ interface TempCustomProperties {
   customFeatures?: CustomFeatures;
 }
 
+interface Imported {
+  // cannot reuse this as the lastImportedSubcomponent because its subcomponents are still used when no longer inSync
+  component: WorkshopComponent;
+  inSync: Boolean;
+  lastSelectectedSubcomponentToImport?: WorkshopComponent;
+  lastImportedSubcomponent?: WorkshopComponent;
+}
+
 export interface SubcomponentProperties {
   // used for defining options
   subcomponentType?: SUBCOMPONENT_TYPES;
@@ -126,8 +134,7 @@ export interface SubcomponentProperties {
   customFeatures?: CustomFeatures;
   defaultCustomFeatures?: CustomFeatures;
   layerSectionsType?: LAYER_SECTIONS_TYPES;
-  importedComponent?: WorkshopComponent;
-  // appended at run-time
+  importedComponent?: Imported;
   parentLayer?: Layer;
   // appended at run-time
   tempCustomProperties?: TempCustomProperties;

@@ -2,6 +2,7 @@ import { CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTT
 import { TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS } from '../../componentPreview/utils/expandedModalPreviewMode/consts/sharedConsts';
 import { ToggleImportSubcomponentModeEvent } from '../../../../../interfaces/toggleImportSubcomponentModeEvent';
 import { WorkshopEventCallbackReturn } from '../../../../../interfaces/workshopEventCallbackReturn';
+import { Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../interfaces/workshopEventCallback';
 import { ComponentOptions } from 'vue';
@@ -15,11 +16,20 @@ export default class ToggleImportSubcomponentMode {
     }
   }
 
-  private static removeTempCustomProperties(optionsComponent: ComponentOptions): void {
-    const { subcomponents, activeSubcomponentName } = optionsComponent.component;
-    if (subcomponents[activeSubcomponentName].tempCustomProperties) {
-      delete subcomponents[activeSubcomponentName].tempCustomProperties;
+  private static removeTempCustomProperties(activeComponent: WorkshopComponent): void {
+    const activeComponentSubcomponentNamesObj = activeComponent.subcomponents
+      [activeComponent.activeSubcomponentName].importedComponent.component.subcomponentNames;
+    const activeComponentSubcomponentNamesArr = Object.keys(activeComponentSubcomponentNamesObj);
+    for (let i = 0; i < activeComponentSubcomponentNamesArr.length; i += 1) {
+      if (!activeComponent.subcomponents[activeComponentSubcomponentNamesObj[activeComponentSubcomponentNamesArr[i]]].tempCustomProperties) break;
+      delete activeComponent.subcomponents[activeComponentSubcomponentNamesObj[activeComponentSubcomponentNamesArr[i]]].tempCustomProperties;
     }
+  }
+
+  private static removeTemporaryProperties(optionsComponent: ComponentOptions): void {
+    const { subcomponents, activeSubcomponentName } = optionsComponent.component;
+    ToggleImportSubcomponentMode.removeTempCustomProperties(optionsComponent.component);
+    delete subcomponents[activeSubcomponentName].importedComponent.lastSelectectedSubcomponentToImport;
   }
 
   private static toggleOff(optionsComponent: ComponentOptions): WorkshopEventCallbackReturn {
@@ -34,7 +44,7 @@ export default class ToggleImportSubcomponentMode {
     } else {
       optionsComponent.$emit('toggle-import-subcomponent-mode', [false] as ToggleImportSubcomponentModeEvent);
     }
-    ToggleImportSubcomponentMode.removeTempCustomProperties(optionsComponent);
+    ToggleImportSubcomponentMode.removeTemporaryProperties(optionsComponent);
     return { shouldRepeat: false };
   }
 
@@ -48,35 +58,56 @@ export default class ToggleImportSubcomponentMode {
     return clickedElement;
   }
 
-  private static resetSubcomponent(optionsComponent: ComponentOptions): void {
+  private static setImportedSubcomponentProperties(optionsComponent: ComponentOptions): void {
     const { subcomponents, activeSubcomponentName } = optionsComponent.component;
-    if (subcomponents[activeSubcomponentName].tempCustomProperties) {
-      const { customCss, customFeatures } = subcomponents[activeSubcomponentName].tempCustomProperties;
-      subcomponents[activeSubcomponentName].customCss = customCss;
-      subcomponents[activeSubcomponentName].customFeatures = customFeatures;
+    if (subcomponents[activeSubcomponentName].importedComponent.lastSelectectedSubcomponentToImport) {
+      subcomponents[activeSubcomponentName].importedComponent.lastImportedSubcomponent = subcomponents[activeSubcomponentName].importedComponent.lastSelectectedSubcomponentToImport;
     }
+    subcomponents[activeSubcomponentName].importedComponent.inSync = true;
+  }
+
+  private static moveTempPropertiesToCustomProperties(activeComponentSubcomponents: Subcomponents, activeComponentSubcomponentName: string): void {
+    if (activeComponentSubcomponents[activeComponentSubcomponentName].tempCustomProperties) {
+      activeComponentSubcomponents[activeComponentSubcomponentName].customCss = activeComponentSubcomponents[activeComponentSubcomponentName].tempCustomProperties.customCss;
+      activeComponentSubcomponents[activeComponentSubcomponentName].customFeatures = activeComponentSubcomponents[activeComponentSubcomponentName].tempCustomProperties.customFeatures;
+      delete activeComponentSubcomponents[activeComponentSubcomponentName].tempCustomProperties;
+    }
+  }
+
+  private static resetImportedComponent(activeComponent: WorkshopComponent): void {
+    const activeComponentSubcomponentNames = activeComponent.subcomponents
+      [activeComponent.activeSubcomponentName].importedComponent.component.subcomponentNames;
+    Object.keys(activeComponentSubcomponentNames).forEach((subcomponentName: string) => {
+      ToggleImportSubcomponentMode.moveTempPropertiesToCustomProperties(activeComponent.subcomponents, activeComponentSubcomponentNames[subcomponentName]);
+    });
   }
 
   private static toggleImportSubcomponentModeOff(optionsComponent: ComponentOptions, event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
     if (event instanceof KeyboardEvent) {
       if (event.key === DOM_EVENT_TRIGGER_KEYS.ESCAPE) {
-        ToggleImportSubcomponentMode.resetSubcomponent(optionsComponent);
+        ToggleImportSubcomponentMode.resetImportedComponent(optionsComponent.component);
         return ToggleImportSubcomponentMode.toggleOff(optionsComponent);
       } else if (event.key === DOM_EVENT_TRIGGER_KEYS.ENTER) {
+        ToggleImportSubcomponentMode.setImportedSubcomponentProperties(optionsComponent);
         return ToggleImportSubcomponentMode.toggleOff(optionsComponent);
       }
       return { shouldRepeat: true };
     }
     const buttonElement = ToggleImportSubcomponentMode.getButtonElement(event.target as HTMLElement);
     if (buttonElement === optionsComponent.$refs.importSubcomponentToggle) {
-      ToggleImportSubcomponentMode.resetSubcomponent(optionsComponent);
-      ToggleImportSubcomponentMode.removeTempCustomProperties(optionsComponent);
+      ToggleImportSubcomponentMode.resetImportedComponent(optionsComponent.component);
+      ToggleImportSubcomponentMode.removeTemporaryProperties(optionsComponent);
       return { shouldRepeat: false };
     }
+    if (buttonElement.classList.contains(CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER)) {
+      ToggleImportSubcomponentMode.setImportedSubcomponentProperties(optionsComponent);
+      return ToggleImportSubcomponentMode.toggleOff(optionsComponent);
+    } 
     if (buttonElement.classList.contains(EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER)) {
       optionsComponent.hasImportSubcomponentModeClosedExpandedModal = false;
-    } else if (buttonElement.classList.contains(CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER)
-      || buttonElement.classList.contains(OPTION_MENU_BUTTON_MARKER)
+      return ToggleImportSubcomponentMode.toggleOff(optionsComponent);
+    } 
+    if (buttonElement.classList.contains(OPTION_MENU_BUTTON_MARKER)
       || buttonElement.classList.contains(optionsComponent.SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)
       || buttonElement.classList.contains(optionsComponent.CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)) {
         return ToggleImportSubcomponentMode.toggleOff(optionsComponent);

@@ -1,7 +1,7 @@
 <template>
   <div id="component-cards">
     <div id="component-cards-container">
-      <transition-group :name="listAnimation">
+      <transition-group :name="listAnimationName">
         <component-card v-for="component in components" :key="component"
           class="transition-item"
           :thisComponent="component"
@@ -40,7 +40,7 @@ interface Consts {
 }
 
 interface Data {
-  listAnimation: string,
+  listAnimationName: string,
 }
 
 export default {
@@ -50,7 +50,7 @@ export default {
     }
   },
   data: (): Data => ({
-    listAnimation: 'horizontal-transition',
+    listAnimationName: 'horizontal-transition',
   }),
   methods: {
     componentCardSelected(selectedComponentCard: WorkshopComponent): void {
@@ -83,12 +83,12 @@ export default {
   },
   watch: {
     isImportSubcomponentModeActive(): void {
-      if (this.listAnimation === 'vertical-transition') {
+      if (this.listAnimationName === 'vertical-transition') {
         setTimeout(() => {
-           this.listAnimation = 'horizontal-transition';
+           this.listAnimationName = 'horizontal-transition';
         });
       } else {
-        this.listAnimation = 'vertical-transition';
+        this.listAnimationName = 'vertical-transition';
       }
     }
   }

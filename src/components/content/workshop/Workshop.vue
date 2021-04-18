@@ -566,7 +566,8 @@ export default {
       const [isActive, workshopEventCallback] = event;
       if (isActive) {
         this.tempComponents = this.components;
-        const componentType = this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.activeSubcomponentName].importedComponent.type;
+        const componentType = this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.activeSubcomponentName]
+          .importedComponent.component.type;
         this.components = this.components.filter((component: WorkshopComponent) => component.type === componentType);
         this.addWorkshopEventCallback(workshopEventCallback);
       } else {

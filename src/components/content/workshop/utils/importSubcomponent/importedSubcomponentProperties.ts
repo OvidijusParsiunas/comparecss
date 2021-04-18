@@ -40,14 +40,14 @@ export default class ImportedSubcomponentProperties {
     ImportedSubcomponentProperties.applyOptionalSubcomponentProperty(importedComponentRef, importedComponentName);
     // referencing the whole component within it's own subcomponent may not be efficient
     // alternative would be to have a placeholder subcomponent to reference it
-    importedComponentRef.subcomponents[importedComponentName].importedComponent = importedComponentRef;
+    importedComponentRef.subcomponents[importedComponentName].importedComponent = { component: importedComponentRef, inSync: false };
     return importedComponentRef.subcomponents;
   }
 
   public static createImportedComponentStructure(subcomponents: Subcomponents, baseName: string): ImportedComponentStructure {
     return {
       baseName,
-      component: subcomponents[baseName].importedComponent.componentPreviewStructure.subcomponentDropdownStructure,
+      component: subcomponents[baseName].importedComponent.component.componentPreviewStructure.subcomponentDropdownStructure,
     };
   }
 }

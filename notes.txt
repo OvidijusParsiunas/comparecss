@@ -29,6 +29,7 @@ clicking enter after expanding triggers it again
 close button should probably be imported - but need to work through the logistics of inherited css for it
 expand modal button could have active color when used
 can expand in the import subcomponent mode
+when modal button has a width and curved border - the overlay does not display properly
 
 option to import an existing button style!
 

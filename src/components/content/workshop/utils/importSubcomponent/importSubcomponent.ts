@@ -11,26 +11,36 @@ export default class ImportSubcomponent {
     };
   }
 
-  private static copyTargetSubcomponent(activeComponentSubcomponents: Subcomponents, activeComponentSubcomponentName: string,
-      targetSubcomponents: Subcomponents, targetSubcomponentName: string): void {
+  private static copyTargetSubcomponent(subcomponentsToBeImported: Subcomponents, subcomponentToBeImportedName: string,
+      activeComponentSubcomponents: Subcomponents, activeComponentSubcomponentName: string): void {
     if (!activeComponentSubcomponents[activeComponentSubcomponentName].tempCustomProperties) {
       ImportSubcomponent.moveCustomPropertiesToTempProperties(activeComponentSubcomponents, activeComponentSubcomponentName);
     }
-    const selectedComponentCustomCss = targetSubcomponents[targetSubcomponentName].customCss;
-    activeComponentSubcomponents[activeComponentSubcomponentName].customCss = selectedComponentCustomCss;
-    activeComponentSubcomponents[activeComponentSubcomponentName].customFeatures = targetSubcomponents[targetSubcomponentName].customFeatures;
-    if (!selectedComponentCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top) {
-      selectedComponentCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top = ImportedSubcomponentProperties.DEFAULT_TOP_PROPERTY;
+    const subcomponentToBeImportedCustomCss = subcomponentsToBeImported[subcomponentToBeImportedName].customCss;
+    activeComponentSubcomponents[activeComponentSubcomponentName].customCss = subcomponentToBeImportedCustomCss;
+    activeComponentSubcomponents[activeComponentSubcomponentName].customFeatures = subcomponentsToBeImported[subcomponentToBeImportedName].customFeatures;
+    if (!subcomponentToBeImportedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top) {
+      subcomponentToBeImportedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top = ImportedSubcomponentProperties.DEFAULT_TOP_PROPERTY;
     }
   }
 
-  public static previewImportSubcomponent(selectedComponent: WorkshopComponent, activeComponent: WorkshopComponent): void {
-    const selectedComponentSubcomponentNames = selectedComponent.subcomponentNames;
+  public static setActiveComponentToImportedComponent(componentToBeImported: WorkshopComponent, activeComponent: WorkshopComponent): void {
+    const componentToBeImportedSubcomponentNames = componentToBeImported.subcomponentNames;
     const activeComponentSubcomponentNames = activeComponent.subcomponents
-      [activeComponent.activeSubcomponentName].importedComponent.subcomponentNames;
+      [activeComponent.activeSubcomponentName].importedComponent.component.subcomponentNames;
     Object.keys(activeComponentSubcomponentNames).forEach((subcomponentName: string) => {
-      ImportSubcomponent.copyTargetSubcomponent(activeComponent.subcomponents, activeComponentSubcomponentNames[subcomponentName],
-        selectedComponent.subcomponents, selectedComponentSubcomponentNames[subcomponentName]);
+      ImportSubcomponent.copyTargetSubcomponent(componentToBeImported.subcomponents, componentToBeImportedSubcomponentNames[subcomponentName],
+        activeComponent.subcomponents, activeComponentSubcomponentNames[subcomponentName]);
     });
+  }
+
+  private static setLastSelectectedSubcomponentToImport(componentToBeImported: WorkshopComponent, activeComponent: WorkshopComponent): void {
+    activeComponent.subcomponents
+      [activeComponent.activeSubcomponentName].importedComponent.lastSelectectedSubcomponentToImport = componentToBeImported;
+  }
+
+  public static previewImportSubcomponent(selectedComponent: WorkshopComponent, activeComponent: WorkshopComponent): void {
+    ImportSubcomponent.setActiveComponentToImportedComponent(selectedComponent, activeComponent);
+    ImportSubcomponent.setLastSelectectedSubcomponentToImport(selectedComponent, activeComponent);
   }
 }

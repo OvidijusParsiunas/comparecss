@@ -32,13 +32,18 @@
       <div class="btn-group option-component-button" v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus">
         <button ref="importSubcomponentToggle" v-if="component.subcomponents[component.activeSubcomponentName].importedComponent"
           type="button" class="btn option-action-button" :class="OPTION_MENU_BUTTON_MARKER"
-          @keydown.enter.prevent="$event.preventDefault()" @click="toggleSubcomponentImport(component.subcomponents[component.activeSubcomponentName])">
-            <font-awesome-icon :style="{ color: isImportSubcomponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT }" class="import-icon" icon="long-arrow-alt-down"/>
+          @keydown.enter.prevent="$event.preventDefault()" @click="toggleSubcomponentImport">
+            <font-awesome-icon
+              :style="{ color: isImportSubcomponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT }"
+              class="import-icon" icon="long-arrow-alt-down"/>
         </button>
-        <button v-if="component.subcomponents[component.activeSubcomponentName].importedComponent"
+        <button v-if="component.subcomponents[component.activeSubcomponentName].importedComponent
+            && component.subcomponents[component.activeSubcomponentName].importedComponent.lastImportedSubcomponent"
           type="button" class="btn option-action-button button-group-secondary-component" :class="OPTION_MENU_BUTTON_MARKER"
-          @keydown.enter.prevent="$event.preventDefault()" @click="toggleSubcomponent(component.subcomponents[component.activeSubcomponentName])">
-            <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.DEFAULT }" class="sync-icon" icon="sync-alt"/>
+          @keydown.enter.prevent="$event.preventDefault()" @click="toggleImportedSubcomponentInSync(component.subcomponents[component.activeSubcomponentName])">
+            <font-awesome-icon
+              :style="{ color: component.subcomponents[component.activeSubcomponentName].importedComponent.inSync ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT }"
+              class="sync-icon" icon="sync-alt"/>
         </button>
         <button
           type="button" class="btn option-action-button button-group-secondary-component" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
@@ -108,7 +113,9 @@ import { SubcomponentProperties } from '../../../../../interfaces/workshopCompon
 import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectMode';
 import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum';
 import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
+import ImportSubcomponent from '../../utils/importSubcomponent/importSubcomponent';
 import useToolbarPositionToggle from './compositionApi/useToolbarPositionToggle';
+import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
 import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
 import { Option } from '../../../../../interfaces/componentOptions';
@@ -233,6 +240,16 @@ export default {
     },
     toggleSubcomponentImport(): void {
       ToggleImportSubcomponentMode.toggleSubcomponentImport(this);
+    },
+    // export this
+    toggleImportedSubcomponentInSync(activeSubcomponent: SubcomponentProperties): void {
+      if (activeSubcomponent.importedComponent.inSync) {
+        activeSubcomponent.customCss = JSONManipulation.deepCopy(activeSubcomponent.customCss);
+        activeSubcomponent.customFeatures = JSONManipulation.deepCopy(activeSubcomponent.customFeatures);
+      } else {
+        ImportSubcomponent.setActiveComponentToImportedComponent(activeSubcomponent.importedComponent.lastImportedSubcomponent, this.component);
+      }
+      activeSubcomponent.importedComponent.inSync = !activeSubcomponent.importedComponent.inSync;
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
       const { subcomponentDisplayStatus } = subcomponent;
