@@ -426,6 +426,7 @@ function createNewComponent(): WorkshopComponent {
     defaultSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,
     componentPreviewStructure: PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents),
     className: 'default-class-name',
+    componentStatus: { isRemoved: false },
   };
 }
 
@@ -499,10 +500,11 @@ export default {
       // the modal does not have a reference to the selected component card but we can be sure that currentlySelectedComponent is the one being removed,
       // however, when the don't show again checkbox is ticked and the user clicks on remove without selecting a modal, need to have its reference
       // passed in through the componentToBeRemovedWithoutSelecting argument
-      const componentToBeRemoved = componentToBeRemovedWithoutSelecting || this.currentlySelectedComponent;
+      const componentToBeRemoved: WorkshopComponent = componentToBeRemovedWithoutSelecting || this.currentlySelectedComponent;
       const componentMatch = (component: WorkshopComponent) => componentToBeRemoved === component;
       const componentToBeRemovedIndex = this.components.findIndex(componentMatch);
       this.components.splice(componentToBeRemovedIndex, 1);
+      componentToBeRemoved.componentStatus.isRemoved = true;
       if (this.components.length === 0) {
         this.$refs.toolbar.saveLastActiveOptionPriorToAllComponentsDeletion();
         this.componentPreviewAssistance.margin = false;
@@ -567,7 +569,7 @@ export default {
       if (isActive) {
         this.tempComponents = this.components;
         const componentType = this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.activeSubcomponentName]
-          .importedComponent.component.type;
+          .importedComponent.componentRef.type;
         this.components = this.components.filter((component: WorkshopComponent) => component.type === componentType);
         this.addWorkshopEventCallback(workshopEventCallback);
       } else {

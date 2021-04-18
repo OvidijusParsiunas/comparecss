@@ -137,6 +137,7 @@ export const defaultAlert: ComponentGenerator = {
       defaultSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,
       componentPreviewStructure: PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents),
       className: 'default-class-name',
+      componentStatus: { isRemoved: false },
     }
   },
 };

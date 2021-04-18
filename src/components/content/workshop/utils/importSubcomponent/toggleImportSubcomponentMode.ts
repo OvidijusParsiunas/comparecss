@@ -10,7 +10,8 @@ import { ComponentOptions } from 'vue';
 export default class ToggleImportSubcomponentMode {
 
   private static displayOptionSettings(optionsComponent: ComponentOptions): void {
-    if (optionsComponent.activeOption.buttonName) {
+    const { subcomponents, activeSubcomponentName } = optionsComponent.component;
+    if (optionsComponent.activeOption.buttonName && subcomponents[activeSubcomponentName].subcomponentDisplayStatus.isDisplayed) {
       const defaultOption = optionsComponent.getDefaultOption();
       optionsComponent.selectOption(defaultOption); 
     }
@@ -18,9 +19,10 @@ export default class ToggleImportSubcomponentMode {
 
   private static removeTempCustomProperties(activeComponent: WorkshopComponent): void {
     const activeComponentSubcomponentNamesObj = activeComponent.subcomponents
-      [activeComponent.activeSubcomponentName].importedComponent.component.subcomponentNames;
+      [activeComponent.activeSubcomponentName].importedComponent.componentRef.subcomponentNames;
     const activeComponentSubcomponentNamesArr = Object.keys(activeComponentSubcomponentNamesObj);
     for (let i = 0; i < activeComponentSubcomponentNamesArr.length; i += 1) {
+      // if already removed through moveTempPropertiesToCustomProperties, do not traverse further
       if (!activeComponent.subcomponents[activeComponentSubcomponentNamesObj[activeComponentSubcomponentNamesArr[i]]].tempCustomProperties) break;
       delete activeComponent.subcomponents[activeComponentSubcomponentNamesObj[activeComponentSubcomponentNamesArr[i]]].tempCustomProperties;
     }
@@ -61,9 +63,11 @@ export default class ToggleImportSubcomponentMode {
   private static setImportedSubcomponentProperties(optionsComponent: ComponentOptions): void {
     const { subcomponents, activeSubcomponentName } = optionsComponent.component;
     if (subcomponents[activeSubcomponentName].importedComponent.lastSelectectedSubcomponentToImport) {
-      subcomponents[activeSubcomponentName].importedComponent.lastImportedSubcomponent = subcomponents[activeSubcomponentName].importedComponent.lastSelectectedSubcomponentToImport;
+      subcomponents[activeSubcomponentName].importedComponent.componentRef.componentStatus = subcomponents[activeSubcomponentName]
+        .importedComponent.lastSelectectedSubcomponentToImport.componentStatus;
+      subcomponents[activeSubcomponentName].importedComponent.inSync = true;
     }
-    subcomponents[activeSubcomponentName].importedComponent.inSync = true;
+    subcomponents[activeSubcomponentName].subcomponentDisplayStatus.isDisplayed = true;
   }
 
   private static moveTempPropertiesToCustomProperties(activeComponentSubcomponents: Subcomponents, activeComponentSubcomponentName: string): void {
@@ -76,7 +80,7 @@ export default class ToggleImportSubcomponentMode {
 
   private static resetImportedComponent(activeComponent: WorkshopComponent): void {
     const activeComponentSubcomponentNames = activeComponent.subcomponents
-      [activeComponent.activeSubcomponentName].importedComponent.component.subcomponentNames;
+      [activeComponent.activeSubcomponentName].importedComponent.componentRef.subcomponentNames;
     Object.keys(activeComponentSubcomponentNames).forEach((subcomponentName: string) => {
       ToggleImportSubcomponentMode.moveTempPropertiesToCustomProperties(activeComponent.subcomponents, activeComponentSubcomponentNames[subcomponentName]);
     });

@@ -96,11 +96,9 @@ interface TempCustomProperties {
 }
 
 interface Imported {
-  // cannot reuse this as the lastImportedSubcomponent because its subcomponents are still used when no longer inSync
-  component: WorkshopComponent;
+  componentRef: WorkshopComponent;
   inSync: Boolean;
   lastSelectectedSubcomponentToImport?: WorkshopComponent;
-  lastImportedSubcomponent?: WorkshopComponent;
 }
 
 export interface SubcomponentProperties {
@@ -155,4 +153,6 @@ export interface WorkshopComponent {
   className: string;
   // used for imported components
   subcomponentNames?: CustomSubcomponentNames;
+  // used to update imported subcomponent when it is in sync
+  componentStatus: { isRemoved: Boolean };
 }

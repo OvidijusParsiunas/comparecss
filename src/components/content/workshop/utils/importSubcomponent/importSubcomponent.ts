@@ -27,7 +27,7 @@ export default class ImportSubcomponent {
   public static setActiveComponentToImportedComponent(componentToBeImported: WorkshopComponent, activeComponent: WorkshopComponent): void {
     const componentToBeImportedSubcomponentNames = componentToBeImported.subcomponentNames;
     const activeComponentSubcomponentNames = activeComponent.subcomponents
-      [activeComponent.activeSubcomponentName].importedComponent.component.subcomponentNames;
+      [activeComponent.activeSubcomponentName].importedComponent.componentRef.subcomponentNames;
     Object.keys(activeComponentSubcomponentNames).forEach((subcomponentName: string) => {
       ImportSubcomponent.copyTargetSubcomponent(componentToBeImported.subcomponents, componentToBeImportedSubcomponentNames[subcomponentName],
         activeComponent.subcomponents, activeComponentSubcomponentNames[subcomponentName]);

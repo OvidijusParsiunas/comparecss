@@ -294,6 +294,7 @@ export const defaultModal: ComponentGenerator = {
       defaultSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,
       componentPreviewStructure: PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents),
       className: 'default-class-name',
+      componentStatus: { isRemoved: false },
     };
   },
 }

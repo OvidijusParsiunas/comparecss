@@ -173,6 +173,7 @@ export const defaultButton: ComponentGenerator = {
       componentPreviewStructure: PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents, subcomponentNames),
       className: 'default-class-name',
       subcomponentNames,
+      componentStatus: { isRemoved: false },
     };
   },
 };

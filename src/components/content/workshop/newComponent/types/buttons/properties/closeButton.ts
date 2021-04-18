@@ -166,6 +166,7 @@ export const closeButton: ComponentGenerator = {
       componentPreviewStructure: PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents, subcomponentNames),
       className: 'default-class-name',
       subcomponentNames,
+      componentStatus: { isRemoved: false },
     };
   },
 };
