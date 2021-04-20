@@ -66,8 +66,8 @@ export default class ToggleImportSubcomponentMode {
       subcomponents[activeSubcomponentName].importedComponent.componentRef.componentStatus = subcomponents[activeSubcomponentName]
         .importedComponent.lastSelectectedSubcomponentToImport.componentStatus;
       subcomponents[activeSubcomponentName].importedComponent.inSync = true;
+      subcomponents[activeSubcomponentName].subcomponentDisplayStatus.isDisplayed = true;
     }
-    subcomponents[activeSubcomponentName].subcomponentDisplayStatus.isDisplayed = true;
   }
 
   private static moveTempPropertiesToCustomProperties(activeComponentSubcomponents: Subcomponents, activeComponentSubcomponentName: string): void {
