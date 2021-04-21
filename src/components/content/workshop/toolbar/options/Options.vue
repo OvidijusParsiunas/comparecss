@@ -32,7 +32,7 @@
       <div class="btn-group option-component-button" v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus">
         <transition-group name="vertical-transition">
           <button ref="importSubcomponentToggle" v-if="component.subcomponents[component.activeSubcomponentName].importedComponent"
-            type="button" class="btn-group-option transition-item option-action-button" :class="OPTION_MENU_BUTTON_MARKER"
+            type="button" class="btn-group-option option-action-button" :class="{OPTION_MENU_BUTTON_MARKER, 'transition-item': isTransitionAllowed}"
             @keydown.enter.prevent="$event.preventDefault()" @click="toggleSubcomponentImport">
               <font-awesome-icon
                 :style="{ color: isImportSubcomponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT }"
@@ -41,29 +41,31 @@
           <button v-if="component.subcomponents[component.activeSubcomponentName].importedComponent
               && !component.subcomponents[component.activeSubcomponentName].importedComponent.componentRef.componentStatus.isRemoved
               && component.subcomponents[component.activeSubcomponentName].importedComponent.inSync"
-            type="button" class="btn-group-option transition-item option-action-button button-group-secondary-component" :class="OPTION_MENU_BUTTON_MARKER"
+            type="button" class="btn-group-option option-action-button button-group-secondary-component" :class="{'transition-item': isTransitionAllowed}"
             @keydown.enter.prevent="$event.preventDefault()" @click="toggleImportedSubcomponentInSync(component.subcomponents[component.activeSubcomponentName])">
               <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
           </button>
+          <!-- v-if="true" is used to prevent a transition-group warning being displayed in the browser as each element needs to be keyed and this is a way around it -->
           <button v-if="true"
-            type="button" class="btn-group-option transition-item option-action-button button-group-secondary-component" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
+            type="button" class="btn-group-option option-action-button button-group-secondary-component" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
             :class="[component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add',
-              OPTION_MENU_BUTTON_MARKER]"
+              OPTION_MENU_BUTTON_MARKER, {'transition-item': isTransitionAllowed}]"
             @mouseenter="subcomponentMouseEnterHandler"
             @mouseleave="subcomponentMouseLeaveHandler"
             @keydown.enter.prevent="$event.preventDefault()" @click="toggleSubcomponent(component.subcomponents[component.activeSubcomponentName])">
           </button>
         </transition-group>
       </div>
-      <transition-group name="vertical-transition">
+      <transition-group :name="isTransitionAllowed ? 'vertical-transition' : ''">
         <button v-if="component.subcomponents[component.activeSubcomponentName].importedComponent
             && !component.subcomponents[component.activeSubcomponentName].importedComponent.componentRef.componentStatus.isRemoved
             && component.subcomponents[component.activeSubcomponentName].importedComponent.inSync"
           id="sync-transition-animation-padding"
-          class="transition-item option-action-button button-group-secondary-component">
+          class="option-action-button button-group-secondary-component" :class="{'transition-item': isTransitionAllowed}">
             <font-awesome-icon style="color: #54a9f100" class="sync-icon" icon="sync-alt"/>
         </button>
-        <div class="transition-item" v-if="!component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus || component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed"> 
+        <div v-if="!component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus || component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed"
+          :class="{'transition-item': isTransitionAllowed}" > 
           <dropdown class="option-component-button"
             :uniqueIdentifier="CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
             :dropdownOptions="componentTypeToOptions[component.type][component.subcomponents[component.activeSubcomponentName].subcomponentType]"
@@ -86,7 +88,8 @@
               {{option.buttonName}}
           </button>
         </div>
-        <div v-if="true" style="display: none" ref="toolbarPositionToggle" class="transition-item toolbar-position-toggle-container">
+        <div v-if="true" style="display: none" ref="toolbarPositionToggle"
+          class="toolbar-position-toggle-container" :class="{'transition-item': isTransitionAllowed}">
           <button
             type="button" class="btn toolbar-position-toggle"
             @click="toolbarPositionToggleMouseClick(this)"
@@ -152,6 +155,7 @@ interface Data {
   isExpandedModalPreviewModeActive: boolean;
   isImportSubcomponentModeActive: boolean;
   hasImportSubcomponentModeClosedExpandedModal: boolean;
+  isTransitionAllowed: boolean;
 }
 
 export default {
@@ -179,6 +183,7 @@ export default {
     isExpandedModalPreviewModeActive: false,
     isImportSubcomponentModeActive: false,
     hasImportSubcomponentModeClosedExpandedModal: false,
+    isTransitionAllowed: false,
   }),
   methods: {
     initiateSubcomponentSelectMode(): void {
@@ -252,11 +257,17 @@ export default {
     },
     // export this
     toggleImportedSubcomponentInSync(activeSubcomponent: SubcomponentProperties): void {
-      if (activeSubcomponent.importedComponent.inSync) {
-        activeSubcomponent.customCss = JSONManipulation.deepCopy(activeSubcomponent.customCss);
-        activeSubcomponent.customFeatures = JSONManipulation.deepCopy(activeSubcomponent.customFeatures);
-      }
-      activeSubcomponent.importedComponent.inSync = !activeSubcomponent.importedComponent.inSync;
+      this.isTransitionAllowed = true;
+      setTimeout(() => {
+        if (activeSubcomponent.importedComponent.inSync) {
+          activeSubcomponent.customCss = JSONManipulation.deepCopy(activeSubcomponent.customCss);
+          activeSubcomponent.customFeatures = JSONManipulation.deepCopy(activeSubcomponent.customFeatures);
+        }
+        activeSubcomponent.importedComponent.inSync = !activeSubcomponent.importedComponent.inSync;
+        setTimeout(() => {
+          this.isTransitionAllowed = false;
+        }, 500);
+      });
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
       const { subcomponentDisplayStatus } = subcomponent;
@@ -271,11 +282,23 @@ export default {
       } else if (!this.getIsDoNotShowModalAgainState()) {
         this.currentRemoveSubcomponentModalTargetId = this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID;
         setTimeout(() => { this.currentRemoveSubcomponentModalTargetId = ''; });
-        this.$emit('prepare-remove-subcomponent-modal', SubcomponentToggleUtils.removeSubcomponent.bind(this, this.component, this.hideSettings));
+        this.$emit('prepare-remove-subcomponent-modal', this.removeSubcomponent);
       } else {
-        SubcomponentToggleUtils.removeSubcomponent(this.component, this.hideSettings)
+        this.removeSubcomponent();
         SubcomponentToggleOverlayUtils.changeSubcomponentOverlayClass(subcomponentDisplayStatus, this.component.activeSubcomponentName, true,
           SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
+      }
+    },
+    removeSubcomponent(): void {
+      if (this.component.subcomponents[this.component.activeSubcomponentName].importedComponent.inSync) {
+        this.isTransitionAllowed = true;
+          SubcomponentToggleUtils.removeSubcomponent(this.component, this.hideSettings);
+          // different transitions - should be no transition for the right, and normal transition for the left
+          setTimeout(() => {
+            this.isTransitionAllowed = false;
+          }, 500);
+      } else {
+        SubcomponentToggleUtils.removeSubcomponent(this.component, this.hideSettings);
       }
     },
     subcomponentMouseEnterHandler(): void {
@@ -361,6 +384,7 @@ export default {
     border-top-right-radius: 0.25rem;
     border-bottom-right-radius: 0.25rem;
     border-bottom-left-radius: 0.25rem;
+    background-color: transparent;
   }
   .transition-item {
     transition: all 0.5s ease;
