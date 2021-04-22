@@ -45,7 +45,9 @@ export default class SubcomponentToggleUtils {
     }
     SubcomponentToggleUtils.resetSubcomponent(activeSubcomponent);
     activeSubcomponent.subcomponentDisplayStatus.isDisplayed = false;
-    if (activeSubcomponent.importedComponent) { activeSubcomponent.importedComponent.componentRef.componentStatus = { isRemoved: true }; }
+    setTimeout(() => {
+      if (activeSubcomponent.importedComponent) { activeSubcomponent.importedComponent.componentRef.componentStatus = { isRemoved: true }; }
+    })
     hideSettingsCallback();
   }
 }
