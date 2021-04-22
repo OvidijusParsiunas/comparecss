@@ -29,6 +29,9 @@ clicking enter after expanding triggers it again
 close button should probably be imported - but need to work through the logistics of inherited css for it
 expand modal button could have active color when used
 when modal button has a width and curved border - the overlay does not display properly
+removing last card does not work
+can't get out of the modal expand mode
+using a lot of past tense in the workshop component where they should be present tense
 
 option to import an existing button style!
 

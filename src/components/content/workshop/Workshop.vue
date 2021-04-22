@@ -497,6 +497,17 @@ export default {
       this.addNewComponent(newComponent);
     },
     componentCardRemoved(componentToBeRemovedWithoutSelecting: WorkshopComponent): void {
+      // only switch after using the removal modal (componentToBeRemovedWithoutSelecting is undefined)
+      // or not using the modal but directly removing the component that is currently selected
+      if (!componentToBeRemovedWithoutSelecting || componentToBeRemovedWithoutSelecting === this.currentlySelectedComponent) {
+        const componentToBeRemovedIndex = this.removeComponentCardCallback(componentToBeRemovedWithoutSelecting);
+        if (componentToBeRemovedIndex > -1) this.selectNextComponentAfterRemoving(componentToBeRemovedIndex);
+      } else {
+        this.$refs.toolbar.$refs.options.temporarilyAllowOptionAnimations(
+          this.removeComponentCardCallback.bind(this, componentToBeRemovedWithoutSelecting), true, true);
+      }
+    },
+    removeComponentCardCallback(componentToBeRemovedWithoutSelecting: WorkshopComponent): number {
       // the modal does not have a reference to the selected component card but we can be sure that currentlySelectedComponent is the one being removed,
       // however, when the don't show again checkbox is ticked and the user clicks on remove without selecting a modal, need to have its reference
       // passed in through the componentToBeRemovedWithoutSelecting argument
@@ -510,13 +521,9 @@ export default {
         this.componentPreviewAssistance.margin = false;
         ComponentJs.manipulateJS(componentToBeRemoved.type, 'revokeJS');
         this.currentlySelectedComponent = undefined;
-        return;
+        return -1;
       }
-      // only switch after using the removal modal (componentToBeRemovedWithoutSelecting is undefined)
-      // or not using the modal but directly removing the component that is currently selected
-      if (!componentToBeRemovedWithoutSelecting || componentToBeRemovedWithoutSelecting === this.currentlySelectedComponent) {
-        this.selectNextComponentAfterRemoving(componentToBeRemovedIndex);
-      }
+      return componentToBeRemovedIndex;
     },
     selectNextComponentAfterRemoving(removedComponentIndex: number): void {
       const nextComponentIndex = removedComponentIndex === this.components.length ? removedComponentIndex - 1 : removedComponentIndex

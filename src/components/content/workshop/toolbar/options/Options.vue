@@ -32,7 +32,7 @@
       <div class="btn-group option-component-button" v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus">
         <transition-group name="horizontal-transition">
           <button ref="importSubcomponentToggle" v-if="component.subcomponents[component.activeSubcomponentName].importedComponent"
-            type="button" class="btn-group-option option-action-button" :class="{OPTION_MENU_BUTTON_MARKER, 'transition-item': isSubcomponentButtonTransitionAllowed}"
+            type="button" class="btn-group-option option-action-button" :class="{OPTION_MENU_BUTTON_MARKER, 'transition-item': isSubcomponentButtonsTransitionAllowed}"
             @keydown.enter.prevent="$event.preventDefault()" @click="toggleSubcomponentImport">
               <font-awesome-icon
                 :style="{ color: isImportSubcomponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT }"
@@ -41,7 +41,7 @@
           <button v-if="component.subcomponents[component.activeSubcomponentName].importedComponent
               && !component.subcomponents[component.activeSubcomponentName].importedComponent.componentRef.componentStatus.isRemoved
               && component.subcomponents[component.activeSubcomponentName].importedComponent.inSync"
-            type="button" class="btn-group-option option-action-button button-group-secondary-component" :class="{'transition-item': isSubcomponentButtonTransitionAllowed}"
+            type="button" class="btn-group-option option-action-button button-group-secondary-component" :class="{'transition-item': isSubcomponentButtonsTransitionAllowed}"
             @keydown.enter.prevent="$event.preventDefault()" @click="toggleImportedSubcomponentInSync(component.subcomponents[component.activeSubcomponentName])">
               <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
           </button>
@@ -49,23 +49,23 @@
           <button v-if="true"
             type="button" class="btn-group-option option-action-button button-group-secondary-component" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
             :class="[component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add',
-              OPTION_MENU_BUTTON_MARKER, {'transition-item': isSubcomponentButtonTransitionAllowed}]"
+              OPTION_MENU_BUTTON_MARKER, {'transition-item': isSubcomponentButtonsTransitionAllowed}]"
             @mouseenter="subcomponentMouseEnterHandler"
             @mouseleave="subcomponentMouseLeaveHandler"
             @keydown.enter.prevent="$event.preventDefault()" @click="toggleSubcomponent(component.subcomponents[component.activeSubcomponentName])">
           </button>
         </transition-group>
       </div>
-      <transition-group :name="isDropdownAndOptionButtonTransitionAllowed ? 'horizontal-transition' : ''">
+      <transition-group :name="isDropdownAndOptionButtonsTransitionAllowed ? 'horizontal-transition' : ''">
         <button v-if="component.subcomponents[component.activeSubcomponentName].importedComponent
             && !component.subcomponents[component.activeSubcomponentName].importedComponent.componentRef.componentStatus.isRemoved
             && component.subcomponents[component.activeSubcomponentName].importedComponent.inSync"
           id="sync-transition-animation-padding"
-          class="option-action-button button-group-secondary-component" :class="{'transition-item': isDropdownAndOptionButtonTransitionAllowed}">
+          class="option-action-button button-group-secondary-component" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
             <font-awesome-icon style="color: #54a9f100" class="sync-icon" icon="sync-alt"/>
         </button>
         <div v-if="!component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus || component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed"
-          :class="{'transition-item': isDropdownAndOptionButtonTransitionAllowed}" > 
+          :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}" > 
           <dropdown class="option-component-button"
             :uniqueIdentifier="CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
             :dropdownOptions="componentTypeToOptions[component.type][component.subcomponents[component.activeSubcomponentName].subcomponentType]"
@@ -89,7 +89,7 @@
           </button>
         </div>
         <div v-if="true" style="display: none" ref="toolbarPositionToggle"
-          class="toolbar-position-toggle-container" :class="{'transition-item': isDropdownAndOptionButtonTransitionAllowed}">
+          class="toolbar-position-toggle-container" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
           <button
             type="button" class="btn toolbar-position-toggle"
             @click="toolbarPositionToggleMouseClick(this)"
@@ -156,8 +156,8 @@ interface Data {
   isExpandedModalPreviewModeActive: boolean;
   isImportSubcomponentModeActive: boolean;
   hasImportSubcomponentModeClosedExpandedModal: boolean;
-  isSubcomponentButtonTransitionAllowed: boolean;
-  isDropdownAndOptionButtonTransitionAllowed: boolean;
+  isSubcomponentButtonsTransitionAllowed: boolean;
+  isDropdownAndOptionButtonsTransitionAllowed: boolean;
 }
 
 export default {
@@ -186,8 +186,8 @@ export default {
     isExpandedModalPreviewModeActive: false,
     isImportSubcomponentModeActive: false,
     hasImportSubcomponentModeClosedExpandedModal: false,
-    isSubcomponentButtonTransitionAllowed: false,
-    isDropdownAndOptionButtonTransitionAllowed: false,
+    isSubcomponentButtonsTransitionAllowed: false,
+    isDropdownAndOptionButtonsTransitionAllowed: false,
   }),
   methods: {
     initiateSubcomponentSelectMode(): void {
@@ -259,21 +259,15 @@ export default {
     toggleSubcomponentImport(): void {
       ToggleImportSubcomponentMode.toggleSubcomponentImport(this);
     },
-    // export this
     toggleImportedSubcomponentInSync(activeSubcomponent: SubcomponentProperties): void {
-      this.isSubcomponentButtonTransitionAllowed = true;
-      this.isDropdownAndOptionButtonTransitionAllowed = true;
-      setTimeout(() => {
-        if (activeSubcomponent.importedComponent.inSync) {
-          activeSubcomponent.customCss = JSONManipulation.deepCopy(activeSubcomponent.customCss);
-          activeSubcomponent.customFeatures = JSONManipulation.deepCopy(activeSubcomponent.customFeatures);
-        }
-        activeSubcomponent.importedComponent.inSync = !activeSubcomponent.importedComponent.inSync;
-        setTimeout(() => {
-          this.isSubcomponentButtonTransitionAllowed = false;
-          this.isDropdownAndOptionButtonTransitionAllowed = false;
-        }, this.BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS);
-      });
+      this.temporarilyAllowOptionAnimations(this.toggleImportedSubcomponentInSyncCallback.bind(this, activeSubcomponent), true, true);
+    },
+    toggleImportedSubcomponentInSyncCallback(activeSubcomponent: SubcomponentProperties): void {
+      if (activeSubcomponent.importedComponent.inSync) {
+        activeSubcomponent.customCss = JSONManipulation.deepCopy(activeSubcomponent.customCss);
+        activeSubcomponent.customFeatures = JSONManipulation.deepCopy(activeSubcomponent.customFeatures);
+      }
+      activeSubcomponent.importedComponent.inSync = !activeSubcomponent.importedComponent.inSync;
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
       const { subcomponentDisplayStatus } = subcomponent;
@@ -297,11 +291,7 @@ export default {
     },
     removeSubcomponent(): void {
       if (this.component.subcomponents[this.component.activeSubcomponentName].importedComponent.inSync) {
-        this.isSubcomponentButtonTransitionAllowed = true;
-        SubcomponentToggleUtils.removeSubcomponent(this.component, this.hideSettings);
-        setTimeout(() => {
-          this.isSubcomponentButtonTransitionAllowed = false;
-        }, this.BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS);
+        this.temporarilyAllowOptionAnimations(SubcomponentToggleUtils.removeSubcomponent.bind(this, this.component, this.hideSettings), true, false);
       } else {
         SubcomponentToggleUtils.removeSubcomponent(this.component, this.hideSettings);
       }
@@ -343,6 +333,18 @@ export default {
           && !this.isExpandedModalPreviewModeActive;
       });
     },
+    temporarilyAllowOptionAnimations(callback: () => unknown, isSubcomponentButtonsTransitionAllowed: boolean,
+        isDropdownAndOptionButtonsTransitionAllowed: boolean): void {
+      this.isSubcomponentButtonsTransitionAllowed = isSubcomponentButtonsTransitionAllowed;
+      this.isDropdownAndOptionButtonsTransitionAllowed = isDropdownAndOptionButtonsTransitionAllowed;
+      setTimeout(() => {
+        callback();
+        setTimeout(() => {
+          this.isSubcomponentButtonsTransitionAllowed = false;
+          this.isDropdownAndOptionButtonsTransitionAllowed = false;
+        }, this.BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS);
+      });
+    }
   },
   props: {
     component: Object,
