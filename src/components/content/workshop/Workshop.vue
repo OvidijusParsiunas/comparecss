@@ -8,9 +8,9 @@
             :currentlySelectedComponent="currentlySelectedComponent"
             :isImportSubcomponentModeActive="isImportSubcomponentModeActive"
             :currentlySelectedImportComponent="currentlySelectedImportComponent"
-            @component-card-selected="componentCardSelected($event)"
-            @component-card-copied="componentCardCopied($event)"
-            @component-card-removed="componentCardRemoved($event)"
+            @component-card-selected="selectComponentCard($event)"
+            @component-card-copied="copyComponentCard($event)"
+            @component-card-removed="removeComponentCard($event)"
             @stop-editing-class-name-callback="addWorkshopEventCallback($event)"
             @prepare-new-component-modal="$refs.newComponentModal.prepare()"
             @prepare-remove-component-modal="$refs.removeComponentModal.prepare()"/>
@@ -67,7 +67,7 @@
         ref="removeComponentModal"
         :modalId="REMOVE_COMPONENT_MODAL_ID"
         :removalModalState="removeComponentModalState"
-        @remove-event="componentCardRemoved"
+        @remove-event="removeComponentCard"
         @remove-modal-template-callback="addWorkshopEventCallback($event)">
         Are you sure you want to remove this component?
       </removal-modal-template>
@@ -103,6 +103,7 @@ import { modalTextSpecificSettings } from './newComponent/types/modals/propertie
 import { ToggleImportSubcomponentModeEvent } from '../../../interfaces/toggleImportSubcomponentModeEvent';
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
 import ImportedSubcomponentProperties from './utils/importSubcomponent/importedSubcomponentProperties';
+import ComponentManipulationUtils from './utils/componentManipulationUtils/componentManipulationUtils';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { EntityDisplayStatusUtils } from './utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../consts/subcomponentOverlayClasses.enum';
@@ -116,24 +117,20 @@ import { DOM_EVENT_TRIGGER_KEYS } from '../../../consts/domEventTriggerKeys.enum
 import { closeButton } from './newComponent/types/buttons/properties/closeButton';
 import { CSS_PSEUDO_CLASSES } from '../../../consts/subcomponentCssClasses.enum';
 import { defaultButton } from './newComponent/types/buttons/properties/default';
-import ImportSubcomponent from './utils/importSubcomponent/importSubcomponent';
 import { NEW_COMPONENT_TYPES } from '../../../consts/newComponentTypes.enum';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
 import { SUBCOMPONENT_TYPES } from '../../../consts/subcomponentTypes.enum';
-import JSONManipulation from '../../../services/workshop/jsonManipulation';
-import ProcessClassName from './utils/componentGenerator/processClassName';
 import PreviewStructure from './utils/componentGenerator/previewStructure'
 import { RemovalModalState } from '../../../interfaces/removalModalState';
 import componentContents from './componentPreview/ComponentPreview.vue';
 import removalModalTemplate from './templates/RemovalModalTemplate.vue';
 import newComponentModal from './newComponent/NewComponentModal.vue';
-import ComponentJs from '../../../services/workshop/componentJs';
 import componentList from './componentList/ComponentList.vue';
 import toolbar from './toolbar/Toolbar.vue';
 import 'vuesax/dist/vuesax.css' //Vuesax styles
 import {
-  AutoWidth, BackdropProperties,  AlignedLayerSection, WorkshopComponent, Subcomponents, Text,
-  CustomCss, SubcomponentProperties, ComponentTransitions, ComponentCenteringInParent, CustomFeatures,
+  CustomCss, ComponentTransitions, ComponentCenteringInParent, CustomFeatures, Text,
+  AutoWidth, BackdropProperties,  AlignedLayerSection, WorkshopComponent, Subcomponents,
 } from '../../../interfaces/workshopComponent';
 
 interface Consts {
@@ -460,74 +457,17 @@ export default {
     document.addEventListener('mouseup', this.triggerWorkshopEventCallbacks);
   },
   methods: {
-    resetComponentModes(previousComponent: WorkshopComponent): void {
-      if (!previousComponent) return;
-      previousComponent.activeSubcomponentName = previousComponent.defaultSubcomponentName;
-      Object.keys(previousComponent.subcomponents).forEach((key) => {
-        const subcomponent: SubcomponentProperties = previousComponent.subcomponents[key];
-        subcomponent.activeCssPseudoClass = subcomponent.defaultCssPseudoClass;
-      });
-    },
-    switchActiveComponent(newComponent: WorkshopComponent): void {
-      this.resetComponentModes(this.currentlySelectedComponent);
-      if (this.currentlySelectedComponent && this.currentlySelectedComponent.type !== newComponent.type) {
-        ComponentJs.manipulateJS(this.currentlySelectedComponent.type, 'revokeJS');
-      }
-      this.currentlySelectedComponent = newComponent;
-      ComponentJs.manipulateJS(this.currentlySelectedComponent.type, 'executeJS');
-      this.$refs.toolbar.updateToolbarForNewComponent();
-    },
     addNewComponent(newComponent: WorkshopComponent): void {
-      this.components.push(newComponent);
-      this.switchActiveComponent(newComponent);
+      ComponentManipulationUtils.addNewComponent(this, newComponent);
     },
-    componentCardSelected(selectedComponent: WorkshopComponent): void {
-      if (this.isImportSubcomponentModeActive) {
-        ImportSubcomponent.previewImportSubcomponent(selectedComponent, this.currentlySelectedComponent);
-        this.currentlySelectedImportComponent = selectedComponent;
-      } else if (this.currentlySelectedComponent !== selectedComponent) {
-        this.switchActiveComponent(selectedComponent);
-      }
+    selectComponentCard(selectComponentCard: WorkshopComponent): void {
+      ComponentManipulationUtils.selectComponent(this, selectComponentCard);
     },
-    componentCardCopied(selectComponentCard: WorkshopComponent): void {
-      const newComponent = JSONManipulation.deepCopy(selectComponentCard);
-      newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className, this.components, '-copy');
-      newComponent.activeSubcomponentName = CORE_SUBCOMPONENTS_NAMES.BASE;
-      newComponent.subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE].activeCssPseudoClass = CSS_PSEUDO_CLASSES.DEFAULT;
-      this.addNewComponent(newComponent);
+    copyComponentCard(selectComponentCard: WorkshopComponent): void {
+      ComponentManipulationUtils.copyComponent(this, selectComponentCard);
     },
-    componentCardRemoved(componentToBeRemovedWithoutSelecting: WorkshopComponent): void {
-      // only switch after using the removal modal (componentToBeRemovedWithoutSelecting is undefined)
-      // or not using the modal but directly removing the component that is currently selected
-      if (!componentToBeRemovedWithoutSelecting || componentToBeRemovedWithoutSelecting === this.currentlySelectedComponent) {
-        const componentToBeRemovedIndex = this.removeComponentCardCallback(componentToBeRemovedWithoutSelecting);
-        if (componentToBeRemovedIndex > -1) this.selectNextComponentAfterRemoving(componentToBeRemovedIndex);
-      } else {
-        this.$refs.toolbar.$refs.options.temporarilyAllowOptionAnimations(
-          this.removeComponentCardCallback.bind(this, componentToBeRemovedWithoutSelecting), true, true);
-      }
-    },
-    removeComponentCardCallback(componentToBeRemovedWithoutSelecting: WorkshopComponent): number {
-      // the modal does not have a reference to the selected component card but we can be sure that currentlySelectedComponent is the one being removed,
-      // however, when the don't show again checkbox is ticked and the user clicks on remove without selecting a modal, need to have its reference
-      // passed in through the componentToBeRemovedWithoutSelecting argument
-      const componentToBeRemoved: WorkshopComponent = componentToBeRemovedWithoutSelecting || this.currentlySelectedComponent;
-      const componentMatch = (component: WorkshopComponent) => componentToBeRemoved === component;
-      const componentToBeRemovedIndex = this.components.findIndex(componentMatch);
-      this.components.splice(componentToBeRemovedIndex, 1);
-      componentToBeRemoved.componentStatus.isRemoved = true;
-      if (this.components.length === 0) {
-        this.$refs.toolbar.saveLastActiveOptionPriorToAllComponentsDeletion();
-        this.componentPreviewAssistance.margin = false;
-        ComponentJs.manipulateJS(componentToBeRemoved.type, 'revokeJS');
-        this.currentlySelectedComponent = undefined;
-        return -1;
-      }
-      return componentToBeRemovedIndex;
-    },
-    selectNextComponentAfterRemoving(removedComponentIndex: number): void {
-      const nextComponentIndex = removedComponentIndex === this.components.length ? removedComponentIndex - 1 : removedComponentIndex
-      this.switchActiveComponent(this.components[nextComponentIndex]);
+    removeComponentCard(componentToBeRemovedWithoutSelecting: WorkshopComponent): void {
+      ComponentManipulationUtils.removeComponent(this, componentToBeRemovedWithoutSelecting);
     },
     exportFiles(): void {
       exportFiles.export(this.components);

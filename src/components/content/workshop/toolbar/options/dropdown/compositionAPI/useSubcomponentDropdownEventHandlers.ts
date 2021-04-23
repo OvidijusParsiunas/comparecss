@@ -3,7 +3,8 @@ import { subcomponentAndOverlayElementIdsState } from '../../subcomponentSelectM
 import { DropdownCompositionAPI } from '../../../../../../../interfaces/dropdownCompositionAPI';
 import { Ref } from 'vue';
 
-export default function useSubcomponentDropdownEventHandlers(objectContainingActiveOption: Ref<unknown>, activeOptionPropertyKeyName: Ref<string>, highlightSubcomponents: Ref<boolean>): DropdownCompositionAPI {
+export default function useSubcomponentDropdownEventHandlers(objectContainingActiveOption: Ref<unknown>,
+    activeOptionPropertyKeyName: Ref<string>, highlightSubcomponents: Ref<boolean>): DropdownCompositionAPI {
 
   function toggleSubcomponentOverlayDisplay(subcomponentName: string, displayValue: 'block'|'none'): void {
     if (!highlightSubcomponents.value) return;

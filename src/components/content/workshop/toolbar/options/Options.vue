@@ -111,6 +111,7 @@ import { ComponentTypeToOptions, componentTypeToOptions } from '../options/compo
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { removeSubcomponentModalState } from './removeSubcomponentModalState/removeSubcomponentModalState';
+import ImportSubcomponentToggleUtils from './importSubcomponentToggleUtils/importSubcomponentToggleUtils';
 import ToggleImportSubcomponentMode from '../../utils/importSubcomponent/toggleImportSubcomponentMode';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import SubcomponentToggleOverlayUtils from './subcomponentToggleUtils/subcomponentToggleOverlayUtils';
@@ -127,7 +128,6 @@ import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectM
 import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum';
 import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
 import useToolbarPositionToggle from './compositionApi/useToolbarPositionToggle';
-import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
 import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
 import { Option } from '../../../../../interfaces/componentOptions';
@@ -260,14 +260,7 @@ export default {
       ToggleImportSubcomponentMode.toggleSubcomponentImport(this);
     },
     toggleImportedSubcomponentInSync(activeSubcomponent: SubcomponentProperties): void {
-      this.temporarilyAllowOptionAnimations(this.toggleImportedSubcomponentInSyncCallback.bind(this, activeSubcomponent), true, true);
-    },
-    toggleImportedSubcomponentInSyncCallback(activeSubcomponent: SubcomponentProperties): void {
-      if (activeSubcomponent.importedComponent.inSync) {
-        activeSubcomponent.customCss = JSONManipulation.deepCopy(activeSubcomponent.customCss);
-        activeSubcomponent.customFeatures = JSONManipulation.deepCopy(activeSubcomponent.customFeatures);
-      }
-      activeSubcomponent.importedComponent.inSync = !activeSubcomponent.importedComponent.inSync;
+      this.temporarilyAllowOptionAnimations(ImportSubcomponentToggleUtils.toggleSubcomponentInSync.bind(this, activeSubcomponent), true, true);
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
       const { subcomponentDisplayStatus } = subcomponent;
