@@ -112,7 +112,6 @@ import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useS
 import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { removeSubcomponentModalState } from './removeSubcomponentModalState/removeSubcomponentModalState';
 import ImportSubcomponentToggleUtils from './importSubcomponentToggleUtils/importSubcomponentToggleUtils';
-import ToggleImportSubcomponentMode from '../../utils/importSubcomponent/toggleImportSubcomponentMode';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import SubcomponentToggleOverlayUtils from './subcomponentToggleUtils/subcomponentToggleOverlayUtils';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
@@ -257,7 +256,7 @@ export default {
       });
     },
     toggleSubcomponentImport(): void {
-      ToggleImportSubcomponentMode.toggleSubcomponentImport(this);
+      ImportSubcomponentToggleUtils.toggleSubcomponentImport(this);
     },
     toggleImportedSubcomponentInSync(activeSubcomponent: SubcomponentProperties): void {
       this.temporarilyAllowOptionAnimations(ImportSubcomponentToggleUtils.toggleSubcomponentInSync.bind(this, activeSubcomponent), true, true);
