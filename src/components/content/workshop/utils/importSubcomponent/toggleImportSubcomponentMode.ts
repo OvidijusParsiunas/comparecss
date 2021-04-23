@@ -68,6 +68,7 @@ export default class ToggleImportSubcomponentMode {
       subcomponents[activeSubcomponentName].importedComponent.inSync = true;
       subcomponents[activeSubcomponentName].subcomponentDisplayStatus.isDisplayed = true;
     }
+    ToggleImportSubcomponentMode.toggleOff(optionsComponent);
   }
 
   private static moveTempPropertiesToCustomProperties(activeComponentSubcomponents: Subcomponents, activeComponentSubcomponentName: string): void {
@@ -92,8 +93,8 @@ export default class ToggleImportSubcomponentMode {
         ToggleImportSubcomponentMode.resetImportedComponent(optionsComponent.component);
         return ToggleImportSubcomponentMode.toggleOff(optionsComponent);
       } else if (event.key === DOM_EVENT_TRIGGER_KEYS.ENTER) {
-        ToggleImportSubcomponentMode.setImportedSubcomponentProperties(optionsComponent);
-        return ToggleImportSubcomponentMode.toggleOff(optionsComponent);
+        optionsComponent.temporarilyAllowOptionAnimations(ToggleImportSubcomponentMode.setImportedSubcomponentProperties.bind(this, optionsComponent), true, true);
+        return { shouldRepeat: false };
       }
       return { shouldRepeat: true };
     }
@@ -104,8 +105,8 @@ export default class ToggleImportSubcomponentMode {
       return { shouldRepeat: false };
     }
     if (buttonElement.classList.contains(CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER)) {
-      ToggleImportSubcomponentMode.setImportedSubcomponentProperties(optionsComponent);
-      return ToggleImportSubcomponentMode.toggleOff(optionsComponent);
+      optionsComponent.temporarilyAllowOptionAnimations(ToggleImportSubcomponentMode.setImportedSubcomponentProperties.bind(this, optionsComponent), true, true);
+      return { shouldRepeat: false };
     } 
     if (buttonElement.classList.contains(EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER)) {
       optionsComponent.hasImportSubcomponentModeClosedExpandedModal = false;
