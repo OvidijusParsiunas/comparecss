@@ -41,7 +41,7 @@
                     @mousedown="rangeMouseDown($event, setting.spec)"
                     @mouseup="rangeMouseUp"
                     @contextmenu="preventRightClickEvent"
-                    @input="updateRange($event, setting)">
+                    @input="changeSetting(updateRange.bind(this, $event, setting))">
                 </div>
               </div>
 
@@ -57,7 +57,7 @@
                 -->
                 <input style="float: left" type="color" name="clr1" 
                   @click="colorInputClick(setting.spec.cssProperty)"
-                  @input="colorChanged($event, setting)"
+                  @input="changeSetting(colorChanged.bind(this, $event, setting))"
                   v-model="setting.spec.default"/>
                 <button class="unset-color-button" id="dropdownMenuButton"
                   v-if="setting.spec.unsetColorButtonAvailable && 
@@ -80,7 +80,7 @@
                                       || (subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER] && subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER][setting.spec.cssProperty] && subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER][setting.spec.cssProperty] !== 'inherit')))))
                        )
                     || (setting.spec.customFeatureObjectKeys && (setting.spec.default !== UNSET_CUSTOM_FEATURE_COLOR_VALUE)))"
-                  @click="removeColor(setting.spec, setting.removeColorTriggers)">
+                  @click="changeSetting(removeColor.bind(this, setting.spec, setting.removeColorTriggers))">
                   &times;
                 </button>
               </div>
@@ -94,7 +94,7 @@
                     class="form-control"
                     :ref="`elementReference${settingIndex}`"
                     v-bind:value="inputsValues[setting.spec.name] || setting.spec.default"
-                    @input="inputEventForInput($event, setting.spec.customFeatureObjectKeys)"
+                    @input="changeSetting(inputEventForInput.bind(this, $event, setting.spec.customFeatureObjectKeys))"
                     @keyup.enter="blurInputDropdown(`elementReference${settingIndex}`)">
                 </div>
               </div>
@@ -108,12 +108,16 @@
                     class="form-control"
                     :ref="`elementReference${settingIndex}`"
                     v-bind:value="inputDropdownsValues[setting.spec.cssProperty] || subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass][setting.spec.cssProperty]"
-                    @input="inputEventForDropdownInput($event, setting.spec.cssProperty)"
+                    @input="changeSetting(inputEventForDropdownInput.bind(this, $event, setting.spec.cssProperty))"
                     @keyup.enter="blurInputDropdown(`elementReference${settingIndex}`)">
                   <div class="input-group-append">
                     <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="openDropdown(setting.spec.cssProperty)"></button>
                     <div class="dropdown-menu" @mouseleave="inputDropdownOptionMouseLeave(setting.spec.cssProperty)">
-                      <a class="dropdown-item" @mouseover="inputDropdownOptionMouseOver(option, setting.spec.cssProperty)" @click="inputDropdownOptionClick(option, setting.spec.cssProperty)" v-for="(option) in setting.spec.options" :key="option">{{option}}</a>
+                      <a class="dropdown-item" v-for="(option) in setting.spec.options" :key="option"
+                        @mouseover="inputDropdownOptionMouseOver(option, setting.spec.cssProperty)"
+                        @click="changeSetting(inputDropdownOptionClick.bind(this, option, setting.spec.cssProperty))">
+                          {{option}}
+                      </a>
                     </div>
                   </div>
                 </div>
@@ -134,7 +138,7 @@
                   @mouse-leave-button="mouseLeaveActionsDropdownButton(this, setting.spec, subcomponentProperties)"
                   @mouse-enter-option="mouseEnterActionsDropdownOption(this, $event, setting.spec, subcomponentProperties)"
                   @mouse-leave-dropdown="mouseLeaveActionsDropdown(this, setting.spec, subcomponentProperties)"
-                  @mouse-click-option="mouseClickActionsDropdownOption(this, $event, setting, settings, subcomponentProperties)"
+                  @mouse-click-option="changeSetting(mouseClickActionsDropdownOption.bind(this, this, $event, setting, settings, subcomponentProperties))"
                   @mouse-click-new-option="mouseClickActionsDropdownNewOption($event, setting.spec, subcomponentProperties, actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.activeOptionPropertyKeyName])"/>
               </div>
 
@@ -142,12 +146,12 @@
                 <div style="text-align: left">
                   {{setting.spec.name}}
                 </div>
-                <input type="checkbox" v-model="setting.spec.default" @click="checkboxMouseClick(setting.spec, setting.triggers)">
+                <input type="checkbox" v-model="setting.spec.default" @click="changeSetting(checkboxMouseClick.bind(this, setting.spec, setting.triggers))">
               </div>
             </div>
             
           </div>
-          <button class="reset-button" @click="resetSubcomponentProperties(settings.options)">
+          <button class="reset-button" @click="changeSetting(resetSubcomponentProperties.bind(this, settings.options))">
             &#8634;
             <!-- <i :class="['fa', 'fa-history']"></i> -->
           </button>
@@ -184,7 +188,7 @@ interface Consts {
   ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX: string;
   UNSET_CUSTOM_FEATURE_COLOR_VALUE: string;
   INHERIT_CUSTOM_FEATURE_COLOR_VALUE: string;
-  updateSettings: (param1?: any, param2?: WORKSHOP_TOOLBAR_OPTION_TYPES) => void;
+  refreshSettings: (param1?: any, param2?: WORKSHOP_TOOLBAR_OPTION_TYPES) => void;
 }
 
 interface Data {
@@ -208,7 +212,7 @@ export default {
       ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX: 'actionsDropdown-',
       UNSET_CUSTOM_FEATURE_COLOR_VALUE: ColorPickerUtils.UNSET_CUSTOM_FEATURE_COLOR_VALUE,
       INHERIT_CUSTOM_FEATURE_COLOR_VALUE: ColorPickerUtils.INHERIT_CUSTOM_FEATURE_COLOR_VALUE,
-      updateSettings(newSettings?: any, optionType?: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
+      refreshSettings(newSettings?: any, optionType?: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
         if (newSettings) this.settings = newSettings;
         if (optionType) SubcomponentSpecificSettingsState.setSubcomponentSpecificSettings(optionType,
           this.subcomponentProperties.subcomponentSpecificSettings, this.settings.options);
@@ -313,12 +317,19 @@ export default {
     },
     resetSubcomponentProperties(options: any): void {
       SettingsUtils.resetSubcomponentProperties(options, this.subcomponentProperties);
-      this.updateSettings();
+      this.refreshSettings();
     },
     // UX - SUBCOMPONENT SELECT
     toggleSubcomponentSelectMode(): void {
       // this.$refs.selectSubcomponentOverlay2.style.display = 'block';
-    }
+    },
+    changeSetting(callback: () => void): void {
+      if (this.subcomponentProperties.importedComponent && this.subcomponentProperties.importedComponent.inSync) {
+        this.$emit('remove-insync-option-button', callback);
+      } else {
+        callback();
+      }
+    },
   },
   props: {
     subcomponentProperties: Object,

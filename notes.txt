@@ -32,6 +32,7 @@ when modal button has a width and curved border - the overlay does not display p
 removing last card does not work
 can't get out of the modal expand mode
 using a lot of past tense in the workshop component where they should be present tense
+doubleckick inSync
 
 option to import an existing button style!
 

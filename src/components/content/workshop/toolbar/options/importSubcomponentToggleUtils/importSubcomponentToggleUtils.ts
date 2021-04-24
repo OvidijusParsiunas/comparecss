@@ -10,19 +10,21 @@ import { ComponentOptions } from 'vue';
 
 export default class ImportSubcomponentToggleUtils {
 
-  public static toggleSubcomponentInSync(activeSubcomponent: SubcomponentProperties): void {
+  public static toggleSubcomponentInSync(activeSubcomponent: SubcomponentProperties, callback?: () => void): void {
     if (activeSubcomponent.importedComponent.inSync) {
     activeSubcomponent.customCss = JSONManipulation.deepCopy(activeSubcomponent.customCss);
     activeSubcomponent.customFeatures = JSONManipulation.deepCopy(activeSubcomponent.customFeatures);
     }
     activeSubcomponent.importedComponent.inSync = !activeSubcomponent.importedComponent.inSync;
+    if (callback) callback();
   }
 
   private static displayOptionSettings(optionsComponent: ComponentOptions): void {
     const { subcomponents, activeSubcomponentName } = optionsComponent.component;
     if (optionsComponent.activeOption.buttonName && subcomponents[activeSubcomponentName].subcomponentDisplayStatus.isDisplayed) {
       const defaultOption = optionsComponent.getDefaultOption();
-      optionsComponent.selectOption(defaultOption); 
+      // timeout used for the inSync button animation to work
+      setTimeout(() => { optionsComponent.selectOption(defaultOption);})
     }
   }
 

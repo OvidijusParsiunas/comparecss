@@ -17,7 +17,8 @@
         :subcomponentProperties="component.subcomponents[component.activeSubcomponentName]"
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
         @play-transition-preview="$emit('play-transition-preview', $event)"
-        @stop-transition-preview="$emit('stop-transition-preview')"/>
+        @stop-transition-preview="$emit('stop-transition-preview')"
+        @remove-insync-option-button="$refs.options.toggleImportedSubcomponentInSync($event)"/>
     </div>
   </div>
 </template>
@@ -66,7 +67,7 @@ export default {
       const newSettings = optionToSettings[newOptionType];
       this.isSettingsDisplayed = true;
       this.$nextTick(() => {
-        this.$refs.settings.updateSettings(newSettings, newOptionType);
+        this.$refs.settings.refreshSettings(newSettings, newOptionType);
       });
     },
     hideSettings(): void {

@@ -42,7 +42,7 @@
               && !component.subcomponents[component.activeSubcomponentName].importedComponent.componentRef.componentStatus.isRemoved
               && component.subcomponents[component.activeSubcomponentName].importedComponent.inSync"
             type="button" class="btn-group-option option-action-button button-group-secondary-component" :class="{'transition-item': isSubcomponentButtonsTransitionAllowed}"
-            @keydown.enter.prevent="$event.preventDefault()" @click="toggleImportedSubcomponentInSync(component.subcomponents[component.activeSubcomponentName])">
+            @keydown.enter.prevent="$event.preventDefault()" @click="toggleImportedSubcomponentInSync()">
               <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
           </button>
           <!-- v-if="true" is used to prevent a transition-group warning being displayed in the browser as each element needs to be keyed and this is a way around it -->
@@ -157,6 +157,7 @@ interface Data {
   hasImportSubcomponentModeClosedExpandedModal: boolean;
   isSubcomponentButtonsTransitionAllowed: boolean;
   isDropdownAndOptionButtonsTransitionAllowed: boolean;
+  optionAnimationsInProgress: boolean;
 }
 
 export default {
@@ -187,6 +188,7 @@ export default {
     hasImportSubcomponentModeClosedExpandedModal: false,
     isSubcomponentButtonsTransitionAllowed: false,
     isDropdownAndOptionButtonsTransitionAllowed: false,
+    optionAnimationsInProgress: false,
   }),
   methods: {
     initiateSubcomponentSelectMode(): void {
@@ -258,8 +260,9 @@ export default {
     toggleSubcomponentImport(): void {
       ImportSubcomponentToggleUtils.toggleSubcomponentImport(this);
     },
-    toggleImportedSubcomponentInSync(activeSubcomponent: SubcomponentProperties): void {
-      this.temporarilyAllowOptionAnimations(ImportSubcomponentToggleUtils.toggleSubcomponentInSync.bind(this, activeSubcomponent), true, true);
+    toggleImportedSubcomponentInSync(callback?: () => void): void {
+      const activeSubcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
+      this.temporarilyAllowOptionAnimations(ImportSubcomponentToggleUtils.toggleSubcomponentInSync.bind(this, activeSubcomponent, callback), true, true);
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
       const { subcomponentDisplayStatus } = subcomponent;
@@ -327,6 +330,8 @@ export default {
     },
     temporarilyAllowOptionAnimations(callback: () => unknown, isSubcomponentButtonsTransitionAllowed: boolean,
         isDropdownAndOptionButtonsTransitionAllowed: boolean): void {
+      if (this.optionAnimationsInProgress) return;
+      this.setOptionAnimationsToInProgress();
       this.isSubcomponentButtonsTransitionAllowed = isSubcomponentButtonsTransitionAllowed;
       this.isDropdownAndOptionButtonsTransitionAllowed = isDropdownAndOptionButtonsTransitionAllowed;
       setTimeout(() => {
@@ -336,6 +341,12 @@ export default {
           this.isDropdownAndOptionButtonsTransitionAllowed = false;
         }, this.BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS);
       });
+    },
+    setOptionAnimationsToInProgress(): void {
+      this.optionAnimationsInProgress = true;
+      setTimeout(() => {
+        this.optionAnimationsInProgress = false;
+      }, this.BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS);
     }
   },
   props: {
