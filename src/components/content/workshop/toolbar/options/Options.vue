@@ -41,11 +41,7 @@
                 :style="{ color: isImportSubcomponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT }"
                 class="import-icon" icon="long-arrow-alt-down"/>
           </button>
-          <button v-if="(component.subcomponents[component.activeSubcomponentName].importedComponent
-                && !component.subcomponents[component.activeSubcomponentName].importedComponent.componentRef.componentStatus.isRemoved
-                && component.subcomponents[component.activeSubcomponentName].importedComponent.inSync)
-              || (component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef
-                && component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef.importedComponent.inSync)"
+          <button v-if="isInSyncButtonDisplayed()"
             type="button" class="btn-group-option option-action-button button-group-secondary-component" :class="{'transition-item': isSubcomponentButtonsTransitionAllowed}"
             @keydown.enter.prevent="$event.preventDefault()" @click="toggleImportedSubcomponentInSync()">
               <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
@@ -62,11 +58,7 @@
         </transition-group>
       </div>
       <transition-group :name="isDropdownAndOptionButtonsTransitionAllowed ? 'horizontal-transition' : ''">
-        <button v-if="(component.subcomponents[component.activeSubcomponentName].importedComponent
-              && !component.subcomponents[component.activeSubcomponentName].importedComponent.componentRef.componentStatus.isRemoved
-              && component.subcomponents[component.activeSubcomponentName].importedComponent.inSync) 
-            || (component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef
-              && component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef.importedComponent.inSync)"
+        <button v-if="isInSyncButtonDisplayed()"
           id="sync-transition-animation-padding"
           class="option-action-button button-group-secondary-component" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
             <font-awesome-icon style="color: #54a9f100" class="sync-icon" icon="sync-alt"/>
@@ -359,6 +351,12 @@ export default {
       setTimeout(() => {
         this.optionAnimationsInProgress = false;
       }, this.BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS);
+    },
+    isInSyncButtonDisplayed(): boolean {
+      const activeSubcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
+      return (activeSubcomponent.importedComponent && !activeSubcomponent.importedComponent.componentRef.componentStatus.isRemoved
+          && activeSubcomponent.importedComponent.inSync)
+        || (activeSubcomponent.baseSubcomponentRef && activeSubcomponent.baseSubcomponentRef.importedComponent.inSync)
     }
   },
   props: {
