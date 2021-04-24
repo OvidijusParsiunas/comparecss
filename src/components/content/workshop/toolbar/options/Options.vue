@@ -158,6 +158,7 @@ interface Data {
   isSubcomponentButtonsTransitionAllowed: boolean;
   isDropdownAndOptionButtonsTransitionAllowed: boolean;
   optionAnimationsInProgress: boolean;
+  toolbarPositionToggleRef: HTMLElement;
 }
 
 export default {
@@ -189,7 +190,12 @@ export default {
     isSubcomponentButtonsTransitionAllowed: false,
     isDropdownAndOptionButtonsTransitionAllowed: false,
     optionAnimationsInProgress: false,
+    toolbarPositionToggleRef: null,
   }),
+  mounted(): void {
+    // this is a bug fix where the transition-group is preventing the toolbarPositionToggle from being obtained during the modal expand mode
+    this.toolbarPositionToggleRef = this.$refs.toolbarPositionToggle;
+  },
   methods: {
     initiateSubcomponentSelectMode(): void {
       if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) {
@@ -306,7 +312,7 @@ export default {
       const setOptionToDefaultCallback = !this.isExpandedModalPreviewModeActive && this.activeOption.enabledOnExpandedModalPreviewMode
         ? this.selectOption.bind(this, this.getDefaultOption()) : () => { return; };
       this.$emit('toggle-expanded-modal-preview-mode',
-        [this.isExpandedModalPreviewModeActive, setOptionToDefaultCallback, this.$refs.toolbarPositionToggle] as ToggleExpandedModalPreviewModeEvent);
+        [this.isExpandedModalPreviewModeActive, setOptionToDefaultCallback, this.toolbarPositionToggleRef] as ToggleExpandedModalPreviewModeEvent);
     },
     getDefaultOption(): Option {
       return this.getActiveOptions()[0];
