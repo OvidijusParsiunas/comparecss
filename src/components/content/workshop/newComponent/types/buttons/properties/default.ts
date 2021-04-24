@@ -1,4 +1,4 @@
-import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text } from '../../../../../../../interfaces/workshopComponent';
+import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text, SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
 import ImportedSubcomponentProperties from '../../../../utils/importSubcomponent/importedSubcomponentProperties';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
@@ -16,6 +16,15 @@ import { inheritedButtonCss } from './inheritedCss';
 const defaultSubcomponentNames: CustomSubcomponentNames = {
   base: CORE_SUBCOMPONENTS_NAMES.BASE, layer: CORE_SUBCOMPONENTS_NAMES.LAYER_1, text: CORE_SUBCOMPONENTS_NAMES.TEXT_1,
 };
+
+function appendBaseReferenceToAllChildSubcomponents(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
+  const baseSubcomponent = subcomponents[subcomponentNames.base];
+  Object.keys(subcomponents).forEach((subcomponentName) => {
+    if (subcomponentName !== subcomponentNames.base) {
+      subcomponents[subcomponentName].baseSubcomponentRef = baseSubcomponent;
+    }
+  });
+}
 
 function createDefaultBaseCss(): CustomCss {
   return {
@@ -164,6 +173,7 @@ export const defaultButton: ComponentGenerator = {
       ? ImportedSubcomponentProperties.generateImportedSubcomponentNames(importedSubcomponentBaseName, importedSubcomponentId)
       : defaultSubcomponentNames;
     const subcomponents = createSubcomponents(subcomponentNames);
+    appendBaseReferenceToAllChildSubcomponents(subcomponents, subcomponentNames);
     const subcomponentDropdownStructure = getButtonSubcomponentDropdownStructure(subcomponentNames);
     return {
       type: NEW_COMPONENT_TYPES.BUTTON,

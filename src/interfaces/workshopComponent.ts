@@ -133,6 +133,8 @@ export interface SubcomponentProperties {
   defaultCustomFeatures?: CustomFeatures;
   layerSectionsType?: LAYER_SECTIONS_TYPES;
   importedComponent?: Imported;
+  // used to track the imported component's base inSync property
+  baseSubcomponentRef?: SubcomponentProperties;
   parentLayer?: Layer;
   // appended at run-time
   tempCustomProperties?: TempCustomProperties;

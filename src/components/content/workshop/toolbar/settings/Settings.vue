@@ -324,7 +324,8 @@ export default {
       // this.$refs.selectSubcomponentOverlay2.style.display = 'block';
     },
     changeSetting(callback: () => void): void {
-      if (this.subcomponentProperties.importedComponent && this.subcomponentProperties.importedComponent.inSync) {
+      if ((this.subcomponentProperties.importedComponent && this.subcomponentProperties.importedComponent.inSync)
+          || (this.subcomponentProperties.baseSubcomponentRef && this.subcomponentProperties.baseSubcomponentRef.importedComponent.inSync)) {
         this.$emit('remove-insync-option-button', callback);
       } else {
         callback();

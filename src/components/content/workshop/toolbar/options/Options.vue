@@ -29,24 +29,29 @@
           <font-awesome-icon v-else :style="{ color: FONT_AWESOME_COLORS.DEFAULT }" class="expand-icon dropdown-button-marker" icon="expand-alt"/>
         </button>
       </div>
-      <div class="btn-group option-component-button" v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus">
+      <div class="btn-group option-component-button"
+        :style="{marginRight: component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef ? '2px' : '8px'}"
+        v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus || component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef">
         <transition-group name="horizontal-transition">
-          <button ref="importSubcomponentToggle" v-if="component.subcomponents[component.activeSubcomponentName].importedComponent"
+          <button ref="importSubcomponentToggle"
+            v-if="component.subcomponents[component.activeSubcomponentName].importedComponent && component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus"
             type="button" class="btn-group-option option-action-button" :class="{OPTION_MENU_BUTTON_MARKER, 'transition-item': isSubcomponentButtonsTransitionAllowed}"
             @keydown.enter.prevent="$event.preventDefault()" @click="toggleSubcomponentImport">
               <font-awesome-icon
                 :style="{ color: isImportSubcomponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT }"
                 class="import-icon" icon="long-arrow-alt-down"/>
           </button>
-          <button v-if="component.subcomponents[component.activeSubcomponentName].importedComponent
-              && !component.subcomponents[component.activeSubcomponentName].importedComponent.componentRef.componentStatus.isRemoved
-              && component.subcomponents[component.activeSubcomponentName].importedComponent.inSync"
+          <button v-if="(component.subcomponents[component.activeSubcomponentName].importedComponent
+                && !component.subcomponents[component.activeSubcomponentName].importedComponent.componentRef.componentStatus.isRemoved
+                && component.subcomponents[component.activeSubcomponentName].importedComponent.inSync)
+              || (component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef
+                && component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef.importedComponent.inSync)"
             type="button" class="btn-group-option option-action-button button-group-secondary-component" :class="{'transition-item': isSubcomponentButtonsTransitionAllowed}"
             @keydown.enter.prevent="$event.preventDefault()" @click="toggleImportedSubcomponentInSync()">
               <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
           </button>
           <!-- v-if="true" is used to prevent a transition-group warning being displayed in the browser as each element needs to be keyed and this is a way around it -->
-          <button v-if="true"
+          <button v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus"
             type="button" class="btn-group-option option-action-button button-group-secondary-component" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
             :class="[component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add',
               OPTION_MENU_BUTTON_MARKER, {'transition-item': isSubcomponentButtonsTransitionAllowed}]"
@@ -57,9 +62,11 @@
         </transition-group>
       </div>
       <transition-group :name="isDropdownAndOptionButtonsTransitionAllowed ? 'horizontal-transition' : ''">
-        <button v-if="component.subcomponents[component.activeSubcomponentName].importedComponent
-            && !component.subcomponents[component.activeSubcomponentName].importedComponent.componentRef.componentStatus.isRemoved
-            && component.subcomponents[component.activeSubcomponentName].importedComponent.inSync"
+        <button v-if="(component.subcomponents[component.activeSubcomponentName].importedComponent
+              && !component.subcomponents[component.activeSubcomponentName].importedComponent.componentRef.componentStatus.isRemoved
+              && component.subcomponents[component.activeSubcomponentName].importedComponent.inSync) 
+            || (component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef
+              && component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef.importedComponent.inSync)"
           id="sync-transition-animation-padding"
           class="option-action-button button-group-secondary-component" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
             <font-awesome-icon style="color: #54a9f100" class="sync-icon" icon="sync-alt"/>

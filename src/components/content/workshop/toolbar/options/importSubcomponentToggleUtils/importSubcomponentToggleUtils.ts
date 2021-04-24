@@ -1,8 +1,8 @@
 import { CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER } from '../../../../../../consts/elementClassMarkers';
 import { TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS } from '../../../componentPreview/utils/expandedModalPreviewMode/consts/sharedConsts';
+import { SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ToggleImportSubcomponentModeEvent } from '../../../../../../interfaces/toggleImportSubcomponentModeEvent';
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
-import { Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
 import JSONManipulation from './../../../../../../services/workshop/jsonManipulation';
@@ -10,9 +10,8 @@ import { ComponentOptions } from 'vue';
 
 export default class ImportSubcomponentToggleUtils {
 
-  private static dereferenceImportedComponentCustomProperties(activeComponent: WorkshopComponent): void {
-    const activeComponentSubcomponentNames = activeComponent.subcomponents
-      [activeComponent.activeSubcomponentName].importedComponent.componentRef.subcomponentNames;
+  private static dereferenceImportedComponentCustomProperties(activeComponent: WorkshopComponent, importedComponentBase: SubcomponentProperties): void {
+    const activeComponentSubcomponentNames = importedComponentBase.importedComponent.componentRef.subcomponentNames;
     Object.keys(activeComponentSubcomponentNames).forEach((subcomponentName: string) => {
       const importedSubcomponent = activeComponent.subcomponents[activeComponentSubcomponentNames[subcomponentName]];
       importedSubcomponent.customCss = JSONManipulation.deepCopy(importedSubcomponent.customCss);
@@ -22,8 +21,11 @@ export default class ImportSubcomponentToggleUtils {
 
   public static toggleSubcomponentInSync(activeComponent: WorkshopComponent, callback?: () => void): void {
     const activeSubcomponent = activeComponent.subcomponents[activeComponent.activeSubcomponentName];
-    if (activeSubcomponent.importedComponent.inSync) { ImportSubcomponentToggleUtils.dereferenceImportedComponentCustomProperties(activeComponent); }
-    activeSubcomponent.importedComponent.inSync = !activeSubcomponent.importedComponent.inSync;
+    const importedComponentBase = activeSubcomponent.baseSubcomponentRef || activeSubcomponent;
+    if (importedComponentBase.importedComponent.inSync) {
+      ImportSubcomponentToggleUtils.dereferenceImportedComponentCustomProperties(activeComponent, importedComponentBase);
+    }
+    importedComponentBase.importedComponent.inSync = !importedComponentBase.importedComponent.inSync;
     if (callback) callback();
   }
 
