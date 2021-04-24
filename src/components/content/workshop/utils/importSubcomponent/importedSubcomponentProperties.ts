@@ -34,8 +34,6 @@ export default class ImportedSubcomponentProperties {
 
   public static createImportedSubcomponents(componentGenerator: ComponentGenerator, importedComponentName: string, importedComponentId: number): Subcomponents {
     const importedComponentRef = componentGenerator.createNewComponent(importedComponentName, importedComponentId);
-    // WORK3: IMPORT COMPONENT
-    // take into consideration that when importing existing component, the default will need to be recreated
     ImportedSubcomponentProperties.applyTopProperty(importedComponentRef, importedComponentName);
     ImportedSubcomponentProperties.applyOptionalSubcomponentProperty(importedComponentRef, importedComponentName);
     // referencing the whole component within it's own subcomponent may not be efficient

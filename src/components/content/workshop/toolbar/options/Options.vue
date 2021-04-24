@@ -267,8 +267,7 @@ export default {
       ImportSubcomponentToggleUtils.toggleSubcomponentImport(this);
     },
     toggleImportedSubcomponentInSync(callback?: () => void): void {
-      const activeSubcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
-      this.temporarilyAllowOptionAnimations(ImportSubcomponentToggleUtils.toggleSubcomponentInSync.bind(this, activeSubcomponent, callback), true, true);
+      this.temporarilyAllowOptionAnimations(ImportSubcomponentToggleUtils.toggleSubcomponentInSync.bind(this, this.component, callback), true, true);
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
       const { subcomponentDisplayStatus } = subcomponent;
