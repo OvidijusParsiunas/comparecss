@@ -34,6 +34,7 @@ export default class ComponentManipulationUtils {
   }
 
   public static copyComponent(optionsComponent: ComponentOptions, selectComponentCard: WorkshopComponent): void {
+    // need to copy references dereferenceImportedComponentCustomProperties
     const newComponent = JSONManipulation.deepCopy(selectComponentCard);
     newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className,
       (optionsComponent.components as undefined as WorkshopComponent[]), '-copy');

@@ -146,7 +146,7 @@
                 <div style="text-align: left">
                   {{setting.spec.name}}
                 </div>
-                <input type="checkbox" v-model="setting.spec.default" @click="changeSetting(checkboxMouseClick.bind(this, setting.spec, setting.triggers))">
+                <input type="checkbox" v-model="setting.spec.default" @click="changeSetting(checkboxMouseClick.bind(this, setting.spec.default, setting.spec, setting.triggers))">
               </div>
             </div>
             
@@ -312,8 +312,8 @@ export default {
     removeColor(spec: any, removeColorTriggers: any): void {
       ColorPickerUtils.removeColor(spec, removeColorTriggers, this.subcomponentProperties, this.settings);
     },
-    checkboxMouseClick(spec: any, triggers: any): void {
-      CheckboxUtils.updateProperties(spec, triggers, this.subcomponentProperties, this.settings);
+    checkboxMouseClick(currentCheckboxValue: boolean, spec: any, triggers: any): void {
+      CheckboxUtils.updateProperties(currentCheckboxValue, spec, triggers, this.subcomponentProperties, this.settings);
     },
     resetSubcomponentProperties(options: any): void {
       SettingsUtils.resetSubcomponentProperties(options, this.subcomponentProperties);

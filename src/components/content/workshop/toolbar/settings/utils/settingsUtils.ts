@@ -42,15 +42,24 @@ export default class SettingsUtils {
       SettingsUtils.resetCssProperties(subcomponentProperties, cssProperty);
     }
   }
+  
+  private static resetSetObject(currentValue: Set<undefined>, defaultValue: Set<undefined>): void {
+    currentValue.clear();
+    defaultValue.forEach((value) => currentValue.add(value));
+  }
 
   private static resetCustomFeatures(customFeatureObjectKeys: string[], valueInSetObject: string, subcomponentProperties: SubcomponentProperties,
       mouseClickOptionCallback: (event: ActionsDropdownMouseEventCallbackEvent) => void): void {
     const defaultValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.defaultCustomFeatures);
     const currentValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures);
-    const appropriateTypeDefaultValue = valueInSetObject ? new Set([...(defaultValue as Set<undefined>)]) : defaultValue;
-    SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures, appropriateTypeDefaultValue);
-    if (mouseClickOptionCallback) { mouseClickOptionCallback({subcomponentProperties,
-      previousOptionName: currentValue as string, triggeredOptionName: defaultValue as string, isCustomFeatureResetTriggered: true }); }
+    if (valueInSetObject) {
+      SettingsUtils.resetSetObject(currentValue as Set<undefined>, defaultValue as Set<undefined>)
+    } else {
+      SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures, defaultValue);
+      // only used for actions dropdown
+      if (mouseClickOptionCallback) { mouseClickOptionCallback({subcomponentProperties,
+        previousOptionName: currentValue as string, triggeredOptionName: defaultValue as string, isCustomFeatureResetTriggered: true }); }
+    }
   }
 
   public static resetSubcomponentProperties(options: any, subcomponentProperties: SubcomponentProperties): void {

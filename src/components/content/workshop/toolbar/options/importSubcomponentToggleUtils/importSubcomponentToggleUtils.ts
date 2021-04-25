@@ -3,6 +3,7 @@ import { TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS } from '../../../componen
 import { SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ToggleImportSubcomponentModeEvent } from '../../../../../../interfaces/toggleImportSubcomponentModeEvent';
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
+import { CustomSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
 import JSONManipulation from './../../../../../../services/workshop/jsonManipulation';
@@ -11,11 +12,14 @@ import { ComponentOptions } from 'vue';
 export default class ImportSubcomponentToggleUtils {
 
   private static dereferenceImportedComponentCustomProperties(activeComponent: WorkshopComponent, importedComponentBase: SubcomponentProperties): void {
-    const activeComponentSubcomponentNames = importedComponentBase.importedComponent.componentRef.subcomponentNames;
-    Object.keys(activeComponentSubcomponentNames).forEach((subcomponentName: string) => {
-      const importedSubcomponent = activeComponent.subcomponents[activeComponentSubcomponentNames[subcomponentName]];
+    const { subcomponentNames, referenceSharingExecutables } = importedComponentBase.importedComponent.componentRef;
+    Object.keys(subcomponentNames).forEach((subcomponentName: string) => {
+      const importedSubcomponent = activeComponent.subcomponents[subcomponentNames[subcomponentName]];
       importedSubcomponent.customCss = JSONManipulation.deepCopy(importedSubcomponent.customCss);
       importedSubcomponent.customFeatures = JSONManipulation.deepCopy(importedSubcomponent.customFeatures);
+    });
+    referenceSharingExecutables.forEach((executable: (param1: Subcomponents, param2: CustomSubcomponentNames) => void) => {
+      executable(activeComponent.subcomponents, subcomponentNames);
     });
   }
 

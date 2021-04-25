@@ -86,10 +86,10 @@ export default {
   }
   .center-section {
     position: absolute;
-    width: 100%;
     text-align: center;
-    transform: translateY(-50%);
+    transform: translate(-50%, -50%);
     top: 50%;
+    left: 50%;
     display: flex;
     justify-content: center;
     height: 100%;

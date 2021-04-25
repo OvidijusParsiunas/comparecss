@@ -157,4 +157,6 @@ export interface WorkshopComponent {
   subcomponentNames?: CustomSubcomponentNames;
   // used to update imported subcomponent when it is in sync
   componentStatus: { isRemoved: Boolean };
+  // used to reassign references when the subcomponents have been deep copied
+  referenceSharingExecutables?: ((...any: any) => void)[];
 }

@@ -298,7 +298,8 @@ export default {
       }
     },
     removeSubcomponent(): void {
-      if (this.component.subcomponents[this.component.activeSubcomponentName].importedComponent.inSync) {
+      if (this.component.subcomponents[this.component.activeSubcomponentName].importedComponent
+          && this.component.subcomponents[this.component.activeSubcomponentName].importedComponent.inSync) {
         this.temporarilyAllowOptionAnimations(SubcomponentToggleUtils.removeSubcomponent.bind(this, this.component, this.hideSettings), true, false);
       } else {
         SubcomponentToggleUtils.removeSubcomponent(this.component, this.hideSettings);
@@ -463,14 +464,14 @@ export default {
     height: 16px;
     margin-top: -4px;
   }
+  .sync-icon {
+    height: 13px;
+    margin-top: -4px;
+  }
   #sync-transition-animation-padding {
     z-index: 0;
     background-color: inherit !important;
     border: unset !important;
-  }
-  .sync-icon {
-    height: 13px;
-    margin-top: -4px;
   }
   .subcomponent-display-toggle-remove {
     width: 3em;
@@ -487,8 +488,6 @@ export default {
     height: 38px;
     background: url('../../../../../assets/svg/plus-default.svg') center no-repeat;
     background-size: 14px auto;
-    /* transition removed due to stuttering in the plus svgs */
-    /* transition: 0.1s ease-in-out !important; */
   }
   /* remove this if the green colour is a little distracting - UX */
   .subcomponent-display-toggle-add:active {
