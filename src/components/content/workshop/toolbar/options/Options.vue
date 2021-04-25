@@ -30,7 +30,7 @@
         </button>
       </div>
       <div class="btn-group option-component-button"
-        :style="{marginRight: component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef ? '2px' : '8px'}"
+        :style="{marginRight: component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef ? '0px' : '8px'}"
         v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus || component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef">
         <transition-group name="horizontal-transition">
           <button ref="importSubcomponentToggle"
@@ -60,6 +60,7 @@
       <transition-group :name="isDropdownAndOptionButtonsTransitionAllowed ? 'horizontal-transition' : ''">
         <button v-if="isInSyncButtonDisplayed()"
           id="sync-transition-animation-padding"
+          :style="{marginLeft: component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef ? '-23px' : '-29px'}"
           class="option-action-button button-group-secondary-component" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
             <font-awesome-icon style="color: #54a9f100" class="sync-icon" icon="sync-alt"/>
         </button>
@@ -417,7 +418,6 @@ export default {
     position: absolute !important;
   }
   #sync-transition-animation-padding {
-    margin-left: -25px;
     z-index: 0;
     background-color: inherit !important;
     border: unset !important;
@@ -526,7 +526,7 @@ export default {
     width: 12.5px;
   }
   .import-icon {
-    width: 10px;
+    width: 14px;
     height: 16px;
     margin-top: -4px;
   }
