@@ -372,6 +372,39 @@ export default {
 </script>
 
 <style lang="css" scoped>
+  .options-container {
+    padding: 5px;
+    padding-left: 15px;
+    width: 100%;
+    display: grid;
+    background-color: rgb(251 251 251);
+    border-radius: 20px;
+  }
+  .options-container-inner {
+    display: flex;
+    margin-top: 10px !important;
+    margin-bottom: 10px !important;
+  }
+  #component-select-button {
+    padding-left: 10px !important;
+    padding-right: 9px !important;
+    font-size: 13px !important;
+    color: #5c5c5c;
+  }
+  .option-component-button {
+    float: left;
+    margin-right: 8px;
+    border-color: #9d9d9d !important;
+    background-color: white !important;
+  }
+  .expanded-modal-preview-mode-button {
+    font: normal normal normal 14px/1 FontAwesome !important;
+    width: 39px;
+  }
+  .expand-icon {
+    height: 24px;
+    width: 12.5px;
+  }
   .bootstrap .btn-group > .btn-group-option:not(:last-child):not(.dropdown-toggle) {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
@@ -417,35 +450,41 @@ export default {
   .horizontal-transition-leave-active {
     position: absolute !important;
   }
+  .import-icon {
+    width: 14px;
+    height: 16px;
+    margin-top: -4px;
+  }
   #sync-transition-animation-padding {
     z-index: 0;
     background-color: inherit !important;
     border: unset !important;
   }
-  .options-container {
-    padding: 5px;
-    padding-left: 15px;
-    width: 100%;
-    display: grid;
-    background-color: rgb(251 251 251);
-    border-radius: 20px;
+  .sync-icon {
+    height: 13px;
+    margin-top: -4px;
   }
-  .options-container-inner {
-    display: flex;
-    margin-top: 10px !important;
-    margin-bottom: 10px !important;
+  .subcomponent-display-toggle-remove {
+    width: 3em;
+    height: 38px;
+    background: url('../../../../../assets/svg/rubbish-can-default.svg') center no-repeat;
+    background-size: 17px auto;
   }
-  #component-select-button {
-    padding-left: 10px !important;
-    padding-right: 9px !important;
-    font-size: 13px !important;
-    color: #5c5c5c;
+  /* remove this if the red colour is a little distracting - UX */
+  .subcomponent-display-toggle-remove:active {
+    background-color: #f3eded !important;
   }
-  .option-component-button {
-    float: left;
-    margin-right: 8px;
-    border-color: #9d9d9d !important;
-    background-color: white !important;
+  .subcomponent-display-toggle-add {
+    width: 3em;
+    height: 38px;
+    background: url('../../../../../assets/svg/plus-default.svg') center no-repeat;
+    background-size: 14px auto;
+    /* transition removed due to stuttering in the plus svgs */
+    /* transition: 0.1s ease-in-out !important; */
+  }
+  /* remove this if the green colour is a little distracting - UX */
+  .subcomponent-display-toggle-add:active {
+    background-color: #e9f5e9 !important;
   }
   .option-select-button-default {
     color:#616161 !important;
@@ -477,28 +516,6 @@ export default {
   .option-select-button-active:active {
     background-color: rgb(204, 237, 255) !important;
   }
-  .subcomponent-display-toggle-remove {
-    width: 3em;
-    height: 38px;
-    background: url('../../../../../assets/svg/rubbish-can-default.svg') center no-repeat;
-    background-size: 17px auto;
-  }
-  /* remove this if the red colour is a little distracting - UX */
-  .subcomponent-display-toggle-remove:active {
-    background-color: #f3eded !important;
-  }
-  .subcomponent-display-toggle-add {
-    width: 3em;
-    height: 38px;
-    background: url('../../../../../assets/svg/plus-default.svg') center no-repeat;
-    background-size: 14px auto;
-    /* transition removed due to stuttering in the plus svgs */
-    /* transition: 0.1s ease-in-out !important; */
-  }
-  /* remove this if the green colour is a little distracting - UX */
-  .subcomponent-display-toggle-add:active {
-    background-color: #e9f5e9 !important;
-  }
   .toolbar-position-toggle-container {
     position: relative;
     padding-left: 22px;
@@ -516,23 +533,6 @@ export default {
   }
   .toolbar-position-toggle-hover {
     color: black !important;
-  }
-  .expanded-modal-preview-mode-button {
-    font: normal normal normal 14px/1 FontAwesome !important;
-    width: 39px;
-  }
-  .expand-icon {
-    height: 24px;
-    width: 12.5px;
-  }
-  .import-icon {
-    width: 14px;
-    height: 16px;
-    margin-top: -4px;
-  }
-  .sync-icon {
-    height: 13px;
-    margin-top: -4px;
   }
 </style>
 

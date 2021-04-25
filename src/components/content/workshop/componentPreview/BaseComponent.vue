@@ -32,9 +32,14 @@
     <div ref="componentPreviewOverlay"
       v-if="isSubcomponentDisplayed(component.componentPreviewStructure.baseSubcomponentProperties)"
       :id="subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].overlayId"
-      style="display: none" :style="[component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT], [isImportedComponent ? {} : { height: '100% !important' }]]"
-      class="subcomponent-overlay-with-no-border-property-but-with-height"
-      :class="[OVERLAY_DEFAULT_CLASS, (isImportedComponent ? 'imported-component' : STATIC_POSITION_CLASS)]">
+      style="display: none"
+      :style="[
+        component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
+        isImportedComponent ? {} : { height: '100% !important' }]"
+      :class="[
+        OVERLAY_DEFAULT_CLASS,
+        isImportedComponent ? 'imported-component' : STATIC_POSITION_CLASS,
+        isImportedComponent ? '' : 'subcomponent-overlay-with-no-border-property-but-with-height']">
     </div>
   </div>    
 </template>
@@ -95,6 +100,7 @@ export default {
     background-color: rgb(64 197 255 / 43%) !important;
     /* the following color is partially transparent and uses the background color to set its own color */
     border-color: rgb(64 197 255 / 0%) !important;
+    box-shadow: unset !important;
     position: absolute !important;
     top: 0px;
     width: 100%;
