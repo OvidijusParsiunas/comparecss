@@ -1,4 +1,6 @@
+import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
+import SubcomponentAlignment from './utils/subcomponentAlignment';
 
 // create an optional interface
 export default {
@@ -12,6 +14,16 @@ export default {
         smoothingDivisible: 1,
         cssProperty: 'top',
         postfix: '%',
+      },
+    },
+    { 
+      type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
+      spec: {
+        name: 'Align',
+        options: { [ALIGNED_SECTION_TYPES.LEFT]: null, [ALIGNED_SECTION_TYPES.CENTER]: null, [ALIGNED_SECTION_TYPES.RIGHT]: null },
+        activeOptionPropertyKeyName: 'section',
+        customFeatureObjectKeys: ['alignedLayerSection', 'section'],
+        ...SubcomponentAlignment.generateMouseEventCallbacks(),
       },
     },
   ]

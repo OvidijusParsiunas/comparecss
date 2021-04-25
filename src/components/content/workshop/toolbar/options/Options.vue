@@ -217,13 +217,6 @@ export default {
       this.$emit('toggle-subcomponent-select-mode',
         [subcomponentSelectModeCallbackFunction, keyTriggers, buttonElement, subcomponentNameClickedFunc] as ToggleSubcomponentSelectModeEvent);
     },
-    selectNestedSubcomponentPositionOption(): void {
-      const nestedSubcomponentPositionOption = {
-        buttonName: 'Position',
-        type: WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_POSITION,
-      };
-      this.selectOption(nestedSubcomponentPositionOption);
-    },
     selectOption(option: Option): void {
       this.setNewActiveOption(option);
       this.$emit('trigger-settings-refresh', option.type);

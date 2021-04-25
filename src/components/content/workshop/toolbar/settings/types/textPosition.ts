@@ -1,29 +1,6 @@
-import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallbacks } from '../../../../../../interfaces/actionsDropdownMouseEventCallbacks';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
-
-function moveSubcomponentToTargetSection(event: ActionsDropdownMouseEventCallbackEvent): void {
-  const { previousOptionName, triggeredOptionName, subcomponentProperties } = event;
-  let nestedSubcomponentIndex = 0;
-  const previousSectionArray = subcomponentProperties.parentLayer.sections.alignedSections[previousOptionName];
-  for (let i = 0; i < previousSectionArray.length; i += 1) {
-    if (previousSectionArray[i].subcomponentProperties === subcomponentProperties) {
-      subcomponentProperties.parentLayer.sections.alignedSections[triggeredOptionName].unshift(previousSectionArray[i]);
-      nestedSubcomponentIndex = i;
-      break;
-    }
-  }
-  previousSectionArray.splice(nestedSubcomponentIndex, 1);
-}
-
-function generateMouseEventCallbacks(): ActionsDropdownMouseEventCallbacks {
-  return {
-    mouseClickOptionCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
-      if (event.isCustomFeatureResetTriggered) moveSubcomponentToTargetSection(event); },
-    mouseEnterOptionCallback: moveSubcomponentToTargetSection,
-    mouseLeaveDropdownCallback: moveSubcomponentToTargetSection,
-  };
-}
+import SubcomponentAlignment from './utils/subcomponentAlignment';
 
 // create an optional interface
 export default {
@@ -46,7 +23,7 @@ export default {
         options: { [ALIGNED_SECTION_TYPES.LEFT]: null, [ALIGNED_SECTION_TYPES.CENTER]: null, [ALIGNED_SECTION_TYPES.RIGHT]: null },
         activeOptionPropertyKeyName: 'section',
         customFeatureObjectKeys: ['alignedLayerSection', 'section'],
-        ...generateMouseEventCallbacks(),
+        ...SubcomponentAlignment.generateMouseEventCallbacks(),
       },
     },
   ]
