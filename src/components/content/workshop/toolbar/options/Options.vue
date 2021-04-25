@@ -24,9 +24,13 @@
       <div v-if="component.type === MODAL_COMPONENT_TYPE" class="option-component-button">
         <button
           type="button" class="btn option-action-button expanded-modal-preview-mode-button" :class="[OPTION_MENU_BUTTON_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER]"
-          @click="toggleModalExpandMode">
-          <font-awesome-icon v-if="isExpandedModalPreviewModeActive" :style="{ color: FONT_AWESOME_COLORS.DEFAULT }" class="expand-icon dropdown-button-marker" icon="compress-alt"/>
-          <font-awesome-icon v-else :style="{ color: FONT_AWESOME_COLORS.DEFAULT }" class="expand-icon dropdown-button-marker" icon="expand-alt"/>
+          @keydown.enter.prevent="$event.preventDefault()" @click="toggleModalExpandMode">
+          <font-awesome-icon v-if="isExpandedModalPreviewModeActive"
+            :style="{ color: FONT_AWESOME_COLORS.ACTIVE, ...BROWSER_SPECIFIC_EXPAND_MODAL_PREVIEW_STYLE }"
+            class="expand-icon dropdown-button-marker" icon="compress"/>
+          <font-awesome-icon v-else
+            :style="{ color: FONT_AWESOME_COLORS.DEFAULT, ...BROWSER_SPECIFIC_EXPAND_MODAL_PREVIEW_STYLE }"
+            class="expand-icon dropdown-button-marker" icon="expand"/>
         </button>
       </div>
       <div class="btn-group option-component-button"
@@ -122,6 +126,7 @@ import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompos
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
 import SubcomponentToggleUtils from './subcomponentToggleUtils/subcomponentToggleUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
+import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectMode';
 import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum';
@@ -129,6 +134,7 @@ import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enu
 import useToolbarPositionToggle from './compositionApi/useToolbarPositionToggle';
 import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
+import BrowserType from '../../../../../services/workshop/browserType';
 import { Option } from '../../../../../interfaces/componentOptions';
 import { Ref } from 'node_modules/vue/dist/vue';
 import dropdown from './dropdown/Dropdown.vue';
@@ -144,6 +150,7 @@ interface Consts {
   MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES;
   BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS: number,
   REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: string;
+  BROWSER_SPECIFIC_EXPAND_MODAL_PREVIEW_STYLE: WorkshopComponentCss,
   SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
   CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
 }
@@ -175,6 +182,7 @@ export default {
       MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES.MODAL,
       BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS: 500,
       REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: `#${REMOVE_SUBCOMPONENT_MODAL_ID}`,
+      BROWSER_SPECIFIC_EXPAND_MODAL_PREVIEW_STYLE: { paddingTop: BrowserType.isFirefox() ? '1px' : '' },
       SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS,
       CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.CSS_PSEUDO_CLASSES,
       ...useToolbarPositionToggle(),
@@ -399,11 +407,11 @@ export default {
   }
   .expanded-modal-preview-mode-button {
     font: normal normal normal 14px/1 FontAwesome !important;
-    width: 39px;
+    width: 39.5px;
   }
   .expand-icon {
     height: 24px;
-    width: 12.5px;
+    width: 14px;
   }
   .bootstrap .btn-group > .btn-group-option:not(:last-child):not(.dropdown-toggle) {
     border-top-right-radius: 0;
