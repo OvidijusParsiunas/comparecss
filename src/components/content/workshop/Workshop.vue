@@ -294,7 +294,7 @@ function createDefaultText1Css(): CustomCss {
   return {
     [CSS_PSEUDO_CLASSES.DEFAULT]: {
       top: '50%',
-      width: 'auto',
+      width: 'max-content',
       fontWeight: '500',
       fontSize: '20px',
       fontFamily: '"Poppins", sans-serif',
@@ -315,7 +315,7 @@ function createDefaultText2Css(): CustomCss {
   return {
     [CSS_PSEUDO_CLASSES.DEFAULT]: {
       top: '50%',
-      width: 'auto',
+      width: 'max-content',
       fontWeight: '400',
       fontFamily: '"Poppins", sans-serif',
       fontSize: '16px',

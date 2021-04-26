@@ -358,8 +358,9 @@ export default {
     isInSyncButtonDisplayed(): boolean {
       const activeSubcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
       return (activeSubcomponent.importedComponent && !activeSubcomponent.importedComponent.componentRef.componentStatus.isRemoved
-          && activeSubcomponent.importedComponent.inSync)
-        || (activeSubcomponent.baseSubcomponentRef && activeSubcomponent.baseSubcomponentRef.importedComponent.inSync)
+          && activeSubcomponent.importedComponent.inSync) 
+        || (activeSubcomponent.baseSubcomponentRef && activeSubcomponent.baseSubcomponentRef.importedComponent
+          && activeSubcomponent.baseSubcomponentRef.importedComponent.inSync)
     }
   },
   props: {

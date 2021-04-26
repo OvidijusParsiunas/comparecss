@@ -55,7 +55,7 @@ function createTextCss(): CustomCss {
   return {
     [CSS_PSEUDO_CLASSES.DEFAULT]: {
       top: '50%',
-      width: 'auto',
+      width: 'max-content',
       color: '#ff0000',
       userSelect: 'none',
       overflow: 'unset',

@@ -51,7 +51,7 @@ function createTextCss(): CustomCss {
   return {
     [CSS_PSEUDO_CLASSES.DEFAULT]: {
       top: '50%',
-      width: 'auto',
+      width: 'max-content',
       backgroundColor: 'inherit',
       fontWeight: '400',
       fontFamily: '"Poppins", sans-serif',

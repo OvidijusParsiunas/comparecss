@@ -1,4 +1,4 @@
-import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text, SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
+import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text } from '../../../../../../../interfaces/workshopComponent';
 import ImportedSubcomponentProperties from '../../../../utils/importSubcomponent/importedSubcomponentProperties';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
@@ -64,7 +64,7 @@ function createTextCss(): CustomCss {
   return {
     [CSS_PSEUDO_CLASSES.DEFAULT]: {
       top: '50%',
-      width: 'auto',
+      width: 'max-content',
       userSelect: 'none',
       overflow: 'unset',
       fontSize: '14px',

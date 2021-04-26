@@ -24,7 +24,7 @@ export default {
     {
       type: SETTINGS_TYPES.CHECKBOX,
       spec: {
-        name: 'Width-Auto',
+        name: 'Auto',
         customFeatureObjectKeys: ['autoWidth', 'auto'],
         default: true,
       },
@@ -32,7 +32,7 @@ export default {
         true: [
           {
             cssProperty: 'width',
-            newValue: 'auto',
+            newValue: 'max-content',
           }
         ],
       },

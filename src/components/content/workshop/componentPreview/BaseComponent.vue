@@ -122,9 +122,6 @@ export default {
   .subcomponent-cursor-auto {
     cursor: auto;
   }
-  .subcomponent-cursor-default {
-    cursor: default !important;
-  }
   .subcomponent-cursor-select-mode {
     cursor: pointer !important;
   }

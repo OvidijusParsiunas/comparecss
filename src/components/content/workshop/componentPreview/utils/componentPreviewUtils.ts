@@ -82,7 +82,6 @@ export default class ComponentPreviewUtils {
 
   public static setAllSubcomponentsCursorsToPointer(): void {
     ComponentPreviewUtils.addNewClassToSubcomponentsWithExistingClass(SUBCOMPONENT_CURSOR_CLASSES.AUTO, SUBCOMPONENT_CURSOR_CLASSES.SELECT_MODE);
-    ComponentPreviewUtils.addNewClassToSubcomponentsWithExistingClass(SUBCOMPONENT_CURSOR_CLASSES.DEFAULT, SUBCOMPONENT_CURSOR_CLASSES.SELECT_MODE);
   }
 
   public static unsetAllSubcomponentsCursorsFromPointer(): void {
