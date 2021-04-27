@@ -6,7 +6,6 @@ the x button should close the modal
 maybe clicking outside of the modal should close it too
 esc button
 enter - submit/cancel - potential - call the option 'actions'
-when hovering over option that only works in expanded modal view - higlight the toggle for it
 potentially add x button to border coloring
 clicking on an option again to remove settings panel
 remove vuesax
@@ -25,6 +24,7 @@ the alert button ripple does not seem to work properly when there are many compo
 importing existing subcomponent will also need to offer an option from the app defaults
 
 UX:
+  which expanded modal preview toggle button highlighted style is more preferable, the chromium or firefox one
   on using the select key for picking a subcomponent, check whether the mouse should always be a pointer, marked with UX - SUBCOMPONENT SELECT
   on expanded modal mode toggle open and close transitions, does the toolbar needs to fade in and out with the same duration as modal, marked with UX - EXPANDED MODAL TOGGLE TRANSITION
   is the new blue color preview good enough

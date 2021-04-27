@@ -22,11 +22,11 @@
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       </div>
       <div v-if="component.type === MODAL_COMPONENT_TYPE" class="option-component-button">
-        <button
+        <button ref="expandedModalPreviewModeToggle"
           type="button" class="btn option-action-button expanded-modal-preview-mode-button" :class="[EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
           @keydown.enter.prevent="$event.preventDefault()" @click="toggleModalExpandMode">
           <font-awesome-icon v-if="isExpandedModalPreviewModeActive"
-            :style="{ color: FONT_AWESOME_COLORS.ACTIVE, ...BROWSER_SPECIFIC_EXPAND_MODAL_PREVIEW_STYLE }"
+            :style="{ color: FONT_AWESOME_COLORS.DEFAULT, ...BROWSER_SPECIFIC_EXPAND_MODAL_PREVIEW_STYLE }"
             class="expand-icon dropdown-button-marker" icon="compress"/>
           <font-awesome-icon v-else
             :style="{ color: FONT_AWESOME_COLORS.DEFAULT, ...BROWSER_SPECIFIC_EXPAND_MODAL_PREVIEW_STYLE }"
@@ -79,19 +79,21 @@
             :fontAwesomeIcon="'angle-down'"
             @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
             @mouse-click-new-option="newCssPseudoClassClicked($event)"/>
-          <button
-            type="button"
-            v-for="option in componentTypeToOptions[component.type][component.subcomponents[component.activeSubcomponentName].subcomponentType]
-              [component.subcomponents[component.activeSubcomponentName].activeCssPseudoClass]" :key="option"
-            :disabled="option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive"
-            class="btn btn-outline-secondary option-component-button option-select-button-default"
-            :class="[
-              option.type === activeOption.type ? 'option-select-button-active' : '',
-              option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive ? 'option-select-button-default-disabled' : 'option-select-button-default-enabled',
-              OPTION_MENU_BUTTON_MARKER]"
-              @click="selectOption(option)">
-              {{option.buttonName}}
-          </button>
+          <div v-for="option in componentTypeToOptions[component.type][component.subcomponents[component.activeSubcomponentName].subcomponentType]
+              [component.subcomponents[component.activeSubcomponentName].activeCssPseudoClass]" :key="option" class="option-component-button-container"
+              @mouseenter="mouseHoverOption(option, true)" @mouseleave="mouseHoverOption(option, false)">
+            <button
+              type="button"
+              :disabled="option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive"
+              class="btn btn-outline-secondary option-component-button-child option-select-button-default"
+              :class="[
+                option.type === activeOption.type ? 'option-select-button-active' : '',
+                option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive ? 'option-select-button-default-disabled' : 'option-select-button-default-enabled',
+                OPTION_MENU_BUTTON_MARKER]"
+                @click="selectOption(option)">
+                {{option.buttonName}}
+            </button>
+          </div>
         </div>
         <div v-if="true" style="display: none" ref="toolbarPositionToggle"
           class="toolbar-position-toggle-container" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
@@ -145,13 +147,14 @@ interface Consts {
   useSubcomponentDropdownEventHandlers: (objectContainingActiveOption: Ref<unknown>, activeOptionPropertyKeyName: Ref<string>, highlightSubcomponents: Ref<boolean>) => DropdownCompositionAPI;
   OPTION_MENU_BUTTON_MARKER: string;
   FONT_AWESOME_COLORS: typeof FONT_AWESOME_COLORS;
+  HIGHLIGHTED_OPTION_BUTTON_CLASS: string;
   BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES;
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER: string;
   EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER: string;
   MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES;
-  BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS: number,
+  BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS: number;
   REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: string;
-  BROWSER_SPECIFIC_EXPAND_MODAL_PREVIEW_STYLE: WorkshopComponentCss,
+  BROWSER_SPECIFIC_EXPAND_MODAL_PREVIEW_STYLE: WorkshopComponentCss;
   SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
   CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
 }
@@ -186,6 +189,7 @@ export default {
       BROWSER_SPECIFIC_EXPAND_MODAL_PREVIEW_STYLE: { paddingTop: BrowserType.isFirefox() ? '1px' : '' },
       SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS,
       CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.CSS_PSEUDO_CLASSES,
+      HIGHLIGHTED_OPTION_BUTTON_CLASS: BrowserType.isFirefox() ? 'highlighted-option-button-firefox' : 'highlighted-option-button-chromium',
       ...useToolbarPositionToggle(),
     };
   },
@@ -217,6 +221,15 @@ export default {
       const subcomponentNameClickedFunc = this.newSubcomponentNameClicked;
       this.$emit('toggle-subcomponent-select-mode',
         [subcomponentSelectModeCallbackFunction, keyTriggers, buttonElement, subcomponentNameClickedFunc] as ToggleSubcomponentSelectModeEvent);
+    },
+    mouseHoverOption(option: Option, isEntering: boolean): void {
+      if (!this.isExpandedModalPreviewModeActive && option.enabledOnExpandedModalPreviewMode) {
+        if (isEntering) {
+          this.$refs.expandedModalPreviewModeToggle.classList.replace('option-action-button', this.HIGHLIGHTED_OPTION_BUTTON_CLASS); 
+        } else {
+          this.$refs.expandedModalPreviewModeToggle.classList.replace(this.HIGHLIGHTED_OPTION_BUTTON_CLASS, 'option-action-button'); 
+        }
+      }
     },
     selectOption(option: Option): void {
       this.setNewActiveOption(option);
@@ -395,6 +408,14 @@ export default {
     font-size: 13px !important;
     color: #5c5c5c;
   }
+  .option-component-button-container {
+    float: left;
+    margin-right: 8px;
+  }
+  .option-component-button-child {
+    border-color: #9d9d9d !important;
+    background-color: white !important;
+  }
   .option-component-button {
     float: left;
     margin-right: 8px;
@@ -535,6 +556,19 @@ export default {
   }
   .toolbar-position-toggle-hover {
     color: black !important;
+  }
+  .highlighted-option-button-chromium {
+    transition-duration: 0s !important;
+    box-shadow: #1698e5 0px 0px 3px 0px !important;
+    background-color: rgb(235 249 255) !important;
+    /* transition-duration: 0s !important;
+    box-shadow: rgb(255 217 77) 0px 0px 4px 0px !important;
+    background-color: rgb(255 255 239) !important; */
+  }
+  .highlighted-option-button-firefox {
+    transition-duration: 0s !important;
+    background-color: rgb(255, 255, 220) !important;
+    border-color: rgb(235, 199, 0) !important;
   }
 </style>
 
