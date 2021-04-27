@@ -3,7 +3,7 @@
     <div class="component-body-container" :class="[highlightCard(), COMPONENT_CARD_MARKER]"
       @mousedown="selectComponentCard(thisComponent)">
       <div class="card-body" :class="COMPONENT_CARD_MARKER">
-        <input v-if="isEditingClassName" ref="componentCardClassNameEditorInput" class="card-title component-card-title"
+        <input v-if="isInputElementDisplayed" ref="componentCardClassNameEditorInput" class="card-title component-card-title"
           v-model="className"
           :placeholder="thisComponent.className"
           @input="classNameInputEvent"
@@ -25,37 +25,39 @@
 </template>
 
 <script lang="ts">
-import { removeComponentModalState } from './removeComponentModalState/removeComponentModalState';
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
 import { CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER } from '../../../../consts/elementClassMarkers';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
+import { ClassNameEditState } from '../../../../interfaces/classNameEditState';
 import { COMPONENT_CARD_MARKER } from '../../../../consts/elementClassMarkers';
+import { removeComponentModalState } from './state/removeComponentModalState';
 import { RemovalModalState } from '../../../../interfaces/removalModalState';
 import ProcessClassName from '../utils/componentGenerator/processClassName';
 import { REMOVE_COMPONENT_MODAL_ID } from '../../../../consts/elementIds';
+import { classNameEditState } from './state/classNameEditState';
 import { nextTick } from 'vue';
 
 interface Data {
   className: string;
-  isEditingClassName: boolean;
-  removeComponentModalId: string;
-  editorButtonClickedOnStopEditing: boolean;
   COMPONENT_CARD_MARKER: string;
+  removeComponentModalId: string;
+  isInputElementDisplayed: boolean;
+  editorButtonClickedOnStopEditing: boolean;
   CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER: string;
 }
 
 export default {
-  setup(): RemovalModalState {
-    return { ...removeComponentModalState };
+  setup(): RemovalModalState & ClassNameEditState {
+    return { ...removeComponentModalState, ...classNameEditState };
   },
   data: (): Data => ({
     className: null,
-    isEditingClassName: false,
-    editorButtonClickedOnStopEditing: false,
-    removeComponentModalId: '',
     COMPONENT_CARD_MARKER,
+    removeComponentModalId: '',
+    isInputElementDisplayed: false,
     CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER,
+    editorButtonClickedOnStopEditing: false,
   }),
   methods: {
     highlightCard(): string {
@@ -73,16 +75,18 @@ export default {
         this.editorButtonClickedOnStopEditing = false;
         return;
       }
-      if (this.isEditingClassName) {
+      this.isInputElementDisplayed = this.getIsClassNameEditingInProgressState();
+      if (this.isInputElementDisplayed) {
         this.thisComponent.className = this.className;
       } else {
         this.className = this.thisComponent.className;
       }
-      this.isEditingClassName = !this.isEditingClassName;
+      this.isInputElementDisplayed = !this.isInputElementDisplayed;
+      this.setIsClassNameEditingInProgressState(this.isInputElementDisplayed);
       const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
       const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.stopEditingClassName};
       this.$emit('stop-editing-class-name-callback', workshopEventCallback);
-      if (this.isEditingClassName) this.focusClassNameInput();
+      if (this.isInputElementDisplayed) this.focusClassNameInput();
     },
     focusClassNameInput(): void {
       nextTick(() => {
@@ -95,14 +99,14 @@ export default {
     stopEditingClassName(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
       if (event instanceof KeyboardEvent) {
         if (event.key === 'Enter' || event.key === 'Escape') {
-          this.isEditingClassName = false;
+          this.stopEditing();
           this.thisComponent.className = ProcessClassName.finalize(this.className || this.thisComponent.className, this.thisComponent.className, this.allComponents, this.thisComponent.className);
           return { shouldRepeat: false };
         }
         return { shouldRepeat: true };
       }
       if (event.target !== this.$refs.componentCardClassNameEditorInput) {
-        this.isEditingClassName = false;
+        this.stopEditing();
         if (this.className && this.className.length) {
           this.thisComponent.className = ProcessClassName.finalize(this.className, this.thisComponent.className, this.allComponents, this.thisComponent.className);
         }
@@ -124,6 +128,8 @@ export default {
       this.$emit('component-card-selected', this.thisComponent);
     },
     preventBubbling(): void {
+      if (this.getIsClassNameEditingInProgressState()) return;
+      // remove/copy component without selecting its card
       event.stopPropagation();
     },
     copyComponentCard(): void {
@@ -145,6 +151,10 @@ export default {
       this.className = ProcessClassName.process(this.className);
       setTimeout(() => { inputElement.setSelectionRange(initialStartPosition, initialStartPosition); });
     },
+    stopEditing(): void {
+      this.setIsClassNameEditingInProgressState(false);
+      this.isInputElementDisplayed = false;
+    }
   },
   props: {
     thisComponent: Object,

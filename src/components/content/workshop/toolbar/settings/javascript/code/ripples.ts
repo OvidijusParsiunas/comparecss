@@ -20,7 +20,7 @@ const vars = {
 
 function createRipple(event, buttonElement) {
   const rippleElement = document.createElement('span');
-  rippleElement.style.cssText = 'background-color: rgba(255, 255, 255, 0.5); pointer-events: none; position: absolute; border-radius: 50%;';
+  rippleElement.style.cssText = 'background-color: rgba(255, 255, 255, 0.5); pointer-events: none; position: absolute; border-radius: 50%; z-index; 0';
   const diameter = Math.max(buttonElement.clientWidth, buttonElement.clientHeight);
   const radius = diameter / 2;
   rippleElement.style.width = rippleElement.style.height = `${diameter}px`;

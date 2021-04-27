@@ -1,12 +1,7 @@
 Modal:
 Have a default button, then when it is clicked, have the modal
-Activate button, that turns into lock when active and you hover over it
-consider having a dropdown to choose which border side to edit
-have a builder for contents within the settings
-modal default margin will need to have a special option type to reflect the margin of the actual position, also an option to center it automatically
 javascript to close the alert message
 test in slower pc if the child dropdowns displays options correctly - chrome/firefox
-ability to remove the layers
 the x button should close the modal
 maybe clicking outside of the modal should close it too
 esc button
@@ -14,23 +9,20 @@ enter - submit/cancel - potential - call the option 'actions'
 when hovering over option that only works in expanded modal view - higlight the toggle for it
 potentially add x button to border coloring
 clicking on an option again to remove settings panel
-maybe each equal section should be selectable
-consider making alert and button into a separately generated compontes in component preview as their contents shake when size is changed in firefox
 remove vuesax
-ability to automatically update imported subcomponents when the core subcomponent is updated
-importing existing subcomponent will also need to offer an option from the app defaults
 fix copy
-close button may need to be a badge
-edit card is not closing correctly
-text
 rename from import component to import subcomponent
 close button should probably be imported - but need to work through the logistics of inherited css for it
-removing last card does not work
-when the modal text is in center and the x button is clicked - it strangely becomes blurry
 
+close button may need to be a badge
+consider having a dropdown to choose which border side to edit
+have a builder for contents within the settings
+maybe each equal section should be selectable
+consider making alert and button into a separately generated compontes in component preview as their contents shake when size is changed in firefox
 when changing the range and clicking the right mouse button causes the popover to disappear
 potentially have animation for when optional subcomponent options buttons appear and are hidden
 the alert button ripple does not seem to work properly when there are many components
+importing existing subcomponent will also need to offer an option from the app defaults
 
 UX:
   on using the select key for picking a subcomponent, check whether the mouse should always be a pointer, marked with UX - SUBCOMPONENT SELECT

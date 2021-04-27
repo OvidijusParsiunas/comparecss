@@ -325,7 +325,8 @@ export default {
     },
     changeSetting(callback: () => void): void {
       if ((this.subcomponentProperties.importedComponent && this.subcomponentProperties.importedComponent.inSync)
-          || (this.subcomponentProperties.baseSubcomponentRef && this.subcomponentProperties.baseSubcomponentRef.importedComponent.inSync)) {
+        || (this.subcomponentProperties.baseSubcomponentRef && this.subcomponentProperties.baseSubcomponentRef.importedComponent
+            && this.subcomponentProperties.baseSubcomponentRef.importedComponent.inSync)) {
         this.$emit('remove-insync-option-button', callback);
       } else {
         callback();

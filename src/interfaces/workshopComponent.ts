@@ -95,7 +95,7 @@ interface TempCustomProperties {
   customFeatures?: CustomFeatures;
 }
 
-interface Imported {
+export interface Imported {
   componentRef: WorkshopComponent;
   inSync: Boolean;
   lastSelectectedSubcomponentToImport?: WorkshopComponent;

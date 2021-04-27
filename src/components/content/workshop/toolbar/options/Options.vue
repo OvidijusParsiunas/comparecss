@@ -23,7 +23,7 @@
       </div>
       <div v-if="component.type === MODAL_COMPONENT_TYPE" class="option-component-button">
         <button
-          type="button" class="btn option-action-button expanded-modal-preview-mode-button" :class="[OPTION_MENU_BUTTON_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER]"
+          type="button" class="btn option-action-button expanded-modal-preview-mode-button" :class="[EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
           @keydown.enter.prevent="$event.preventDefault()" @click="toggleModalExpandMode">
           <font-awesome-icon v-if="isExpandedModalPreviewModeActive"
             :style="{ color: FONT_AWESOME_COLORS.ACTIVE, ...BROWSER_SPECIFIC_EXPAND_MODAL_PREVIEW_STYLE }"
@@ -39,14 +39,15 @@
         <transition-group name="horizontal-transition">
           <button ref="importSubcomponentToggle"
             v-if="component.subcomponents[component.activeSubcomponentName].importedComponent && component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus"
-            type="button" class="btn-group-option option-action-button" :class="{OPTION_MENU_BUTTON_MARKER, 'transition-item': isSubcomponentButtonsTransitionAllowed}"
+            type="button" class="btn-group-option option-action-button" :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, OPTION_MENU_BUTTON_MARKER]"
             @keydown.enter.prevent="$event.preventDefault()" @click="toggleSubcomponentImport">
               <font-awesome-icon
                 :style="{ color: isImportSubcomponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT }"
                 class="import-icon" icon="long-arrow-alt-down"/>
           </button>
           <button v-if="isInSyncButtonDisplayed()"
-            type="button" class="btn-group-option option-action-button button-group-secondary-component" :class="{'transition-item': isSubcomponentButtonsTransitionAllowed}"
+            type="button" class="btn-group-option option-action-button button-group-secondary-component"
+            :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, OPTION_MENU_BUTTON_MARKER]"
             @keydown.enter.prevent="$event.preventDefault()" @click="toggleImportedSubcomponentInSync()">
               <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
           </button>
@@ -54,7 +55,7 @@
           <button v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus"
             type="button" class="btn-group-option option-action-button button-group-secondary-component" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
             :class="[component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add',
-              OPTION_MENU_BUTTON_MARKER, {'transition-item': isSubcomponentButtonsTransitionAllowed}]"
+              {'transition-item': isSubcomponentButtonsTransitionAllowed}, OPTION_MENU_BUTTON_MARKER]"
             @mouseenter="subcomponentMouseEnterHandler"
             @mouseleave="subcomponentMouseLeaveHandler"
             @keydown.enter.prevent="$event.preventDefault()" @click="toggleSubcomponent(component.subcomponents[component.activeSubcomponentName])">
@@ -358,9 +359,9 @@ export default {
     isInSyncButtonDisplayed(): boolean {
       const activeSubcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
       return (activeSubcomponent.importedComponent && !activeSubcomponent.importedComponent.componentRef.componentStatus.isRemoved
-          && activeSubcomponent.importedComponent.inSync) 
-        || (activeSubcomponent.baseSubcomponentRef && activeSubcomponent.baseSubcomponentRef.importedComponent
-          && activeSubcomponent.baseSubcomponentRef.importedComponent.inSync)
+            && activeSubcomponent.importedComponent.inSync) 
+          || (activeSubcomponent.baseSubcomponentRef && activeSubcomponent.baseSubcomponentRef.importedComponent
+            && activeSubcomponent.baseSubcomponentRef.importedComponent.inSync)
     }
   },
   props: {
