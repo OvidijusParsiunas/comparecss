@@ -25,6 +25,7 @@ export default class ImportSubcomponentToggleUtils {
 
   public static toggleSubcomponentInSync(activeComponent: WorkshopComponent, callback?: () => void): void {
     const activeSubcomponent = activeComponent.subcomponents[activeComponent.activeSubcomponentName];
+    // use base subcomponent reference if the activeComponent is a child of base or activeSubcomponent if it is the base
     const importedComponentBase = activeSubcomponent.baseSubcomponentRef || activeSubcomponent;
     if (importedComponentBase.importedComponent.inSync) {
       ImportSubcomponentToggleUtils.dereferenceImportedComponentCustomProperties(activeComponent, importedComponentBase);
@@ -175,5 +176,13 @@ export default class ImportSubcomponentToggleUtils {
       ImportSubcomponentToggleUtils.displayOptionSettings(optionsComponent);
     }
     if (!hasBeenToggled) ImportSubcomponentToggleUtils.toggleImportSubcomponentModeOn(optionsComponent);
+  }
+
+  public static isInSyncButtonDisplayed(activeSubcomponent: SubcomponentProperties): boolean {
+    return (activeSubcomponent.importedComponent && !activeSubcomponent.importedComponent.componentRef.componentStatus.isRemoved
+            && activeSubcomponent.importedComponent.inSync) 
+        || (activeSubcomponent.baseSubcomponentRef && activeSubcomponent.baseSubcomponentRef.importedComponent
+            && !activeSubcomponent.baseSubcomponentRef.importedComponent.componentRef.componentStatus.isRemoved
+            && activeSubcomponent.baseSubcomponentRef.importedComponent.inSync);
   }
 }

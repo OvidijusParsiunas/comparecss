@@ -97,7 +97,7 @@ interface TempCustomProperties {
 
 export interface Imported {
   componentRef: WorkshopComponent;
-  inSync: Boolean;
+  inSync: boolean;
   lastSelectectedSubcomponentToImport?: WorkshopComponent;
 }
 

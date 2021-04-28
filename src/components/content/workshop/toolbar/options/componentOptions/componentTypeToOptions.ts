@@ -20,7 +20,7 @@ export type ComponentTypeToOptions = {
   [key in NEW_COMPONENT_TYPES]: SubcomponentTypeToOptions;
 }
 
-export const componentTypeToOptions: any = {
+export const componentTypeToOptions: ComponentTypeToOptions = {
   [NEW_COMPONENT_TYPES.BUTTON]: {
     [SUBCOMPONENT_TYPES.BUTTON]: buttonBaseOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.BUTTON_TEXT]: buttonTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,

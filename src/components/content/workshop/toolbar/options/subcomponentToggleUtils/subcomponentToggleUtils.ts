@@ -6,7 +6,7 @@ import JSONManipulation from '../../../../../../services/workshop/jsonManipulati
 
 export default class SubcomponentToggleUtils {
 
-  private static resetLocalSubcomponent(activeSubcomponent: SubcomponentProperties): void {
+  private static resetSubcomponentProperties(activeSubcomponent: SubcomponentProperties): void {
     activeSubcomponent.customCss = JSONManipulation.deepCopy(activeSubcomponent.defaultCss);
     activeSubcomponent.customFeatures = JSONManipulation.deepCopy(activeSubcomponent.defaultCustomFeatures);
   }
@@ -15,8 +15,7 @@ export default class SubcomponentToggleUtils {
     const { subcomponentNames, referenceSharingExecutables } = importedSubcomponent.componentRef;
     Object.keys(subcomponentNames).forEach((subcomponentName: string) => {
       const importedSubcomponent = activeComponent.subcomponents[subcomponentNames[subcomponentName]];
-      importedSubcomponent.customCss = JSONManipulation.deepCopy(importedSubcomponent.defaultCss);
-      importedSubcomponent.customFeatures = JSONManipulation.deepCopy(importedSubcomponent.defaultCustomFeatures);
+      SubcomponentToggleUtils.resetSubcomponentProperties(importedSubcomponent);
     });
     referenceSharingExecutables.forEach((executable: (param1: Subcomponents, param2: CustomSubcomponentNames) => void) => {
       executable(activeComponent.subcomponents, subcomponentNames);
@@ -32,7 +31,7 @@ export default class SubcomponentToggleUtils {
     if (activeSubcomponent.importedComponent) {
       SubcomponentToggleUtils.resetImportedSubcomponent(activeSubcomponent.importedComponent, activeComponent);
     } else {
-      SubcomponentToggleUtils.resetLocalSubcomponent(activeSubcomponent);
+      SubcomponentToggleUtils.resetSubcomponentProperties(activeSubcomponent);
     }
   }
 
@@ -42,7 +41,7 @@ export default class SubcomponentToggleUtils {
       const subcomponentName = subcomponentDropdownStructureKeys[i];
       if (subcomponentName === ENTITY_DISPLAY_STATUS_REF) return;
       SubcomponentToggleUtils.resetSubcomponent(component.subcomponents[subcomponentName], component);
-      if (Object.keys(subcomponentDropdownStructure[subcomponentName]).length > 0) {
+      if (Object.keys(subcomponentDropdownStructure[subcomponentName]).length > 0 && !component.subcomponents[subcomponentName].importedComponent) {
         SubcomponentToggleUtils.resetChildSubcomponents(subcomponentDropdownStructure[subcomponentName] as NestedDropdownStructure, component);
       }
     }
