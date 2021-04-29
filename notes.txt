@@ -9,7 +9,6 @@ enter - submit/cancel - potential - call the option 'actions'
 potentially add x button to border coloring
 clicking on an option again to remove settings panel
 remove vuesax
-fix copy
 rename from import component to import subcomponent
 close button should probably be imported - but need to work through the logistics of inherited css for it
 

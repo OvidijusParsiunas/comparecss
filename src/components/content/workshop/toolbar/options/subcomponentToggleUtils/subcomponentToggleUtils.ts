@@ -1,7 +1,6 @@
 import { Imported, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
+import ComponentTraversalUtils from '../../../utils/componentTraversal/componentTraversalUtils';
 import { CustomSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
-import { ENTITY_DISPLAY_STATUS_REF } from '../../../../../../interfaces/entityDisplayStatus';
 import JSONManipulation from '../../../../../../services/workshop/jsonManipulation';
 
 export default class SubcomponentToggleUtils {
@@ -27,7 +26,8 @@ export default class SubcomponentToggleUtils {
     });
   }
 
-  private static resetSubcomponent(activeSubcomponent: SubcomponentProperties, activeComponent: WorkshopComponent): void {
+  private static resetSubcomponent(activeSubcomponentName: string, activeComponent: WorkshopComponent): void {
+    const activeSubcomponent = activeComponent.subcomponents[activeSubcomponentName];
     if (activeSubcomponent.importedComponent) {
       SubcomponentToggleUtils.resetImportedSubcomponent(activeSubcomponent.importedComponent, activeComponent);
     } else {
@@ -35,40 +35,14 @@ export default class SubcomponentToggleUtils {
     }
   }
 
-  private static resetChildSubcomponents(subcomponentDropdownStructure: NestedDropdownStructure, component: WorkshopComponent): void {
-    const subcomponentDropdownStructureKeys = Object.keys(subcomponentDropdownStructure);
-    for (let i = 0; i < subcomponentDropdownStructureKeys.length; i += 1) {
-      const subcomponentName = subcomponentDropdownStructureKeys[i];
-      if (subcomponentName === ENTITY_DISPLAY_STATUS_REF) return;
-      SubcomponentToggleUtils.resetSubcomponent(component.subcomponents[subcomponentName], component);
-      if (Object.keys(subcomponentDropdownStructure[subcomponentName]).length > 0 && !component.subcomponents[subcomponentName].importedComponent) {
-        SubcomponentToggleUtils.resetChildSubcomponents(subcomponentDropdownStructure[subcomponentName] as NestedDropdownStructure, component);
-      }
-    }
-  }
-
-  private static findAndResetAllChildSubcomponents(activeSubcomponentName: string, subcomponentDropdownStructure: NestedDropdownStructure,
-      component: WorkshopComponent): void {
-    const subcomponentDropdownStructureKeys = Object.keys(subcomponentDropdownStructure);
-    for (let i = 0; i < subcomponentDropdownStructureKeys.length; i += 1) {
-      const subcomponentName = subcomponentDropdownStructureKeys[i];
-      if (activeSubcomponentName === subcomponentName) {
-        SubcomponentToggleUtils.resetChildSubcomponents(subcomponentDropdownStructure[subcomponentName] as NestedDropdownStructure, component);
-        break;
-      } else if (Object.keys(subcomponentDropdownStructure[subcomponentName]).length > 0) {
-        SubcomponentToggleUtils.findAndResetAllChildSubcomponents(activeSubcomponentName,
-          subcomponentDropdownStructure[subcomponentName] as NestedDropdownStructure, component);
-      }
-    }
-  }
-
   public static removeSubcomponent(component: WorkshopComponent, hideSettingsCallback: () => void): void {
     const activeSubcomponent = component.subcomponents[component.activeSubcomponentName];
     if (activeSubcomponent.layerSectionsType) {
-      SubcomponentToggleUtils.findAndResetAllChildSubcomponents(component.activeSubcomponentName,
-        component.componentPreviewStructure.subcomponentDropdownStructure, component);
+      const resetSubcomponentCallback = SubcomponentToggleUtils.resetSubcomponent;
+      ComponentTraversalUtils.traverseSubcomponentsUsingDropdownStructureStaringWithParticularChild(component.activeSubcomponentName,
+        component.componentPreviewStructure.subcomponentDropdownStructure, component, resetSubcomponentCallback);
     }
-    SubcomponentToggleUtils.resetSubcomponent(activeSubcomponent, component);
+    SubcomponentToggleUtils.resetSubcomponent(component.activeSubcomponentName, component);
     activeSubcomponent.subcomponentDisplayStatus.isDisplayed = false;
     hideSettingsCallback();
   }
