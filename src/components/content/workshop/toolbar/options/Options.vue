@@ -232,6 +232,11 @@ export default {
       }
     },
     selectOption(option: Option): void {
+      if (this.activeOption.buttonName === option.buttonName && this.activeOption.type === option.type) {
+        this.activeOption = { buttonName: null, type: null };
+        this.hideSettings();
+        return;
+      }
       this.setNewActiveOption(option);
       this.$emit('trigger-settings-refresh', option.type);
       this.resetComponentPreviewMarginAssistance();
