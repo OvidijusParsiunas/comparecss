@@ -5,7 +5,7 @@ import { WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 type TraverseSubcomponentsUsingDropdownStructureCallback = (activeSubcomponentName: string, activeComponent: WorkshopComponent) => void;
 
 export default class ComponentTraversalUtils {
-  
+
   public static traverseSubcomponentsUsingDropdownStructure(subcomponentDropdownStructure: NestedDropdownStructure, currentComponent: WorkshopComponent,
       callback: TraverseSubcomponentsUsingDropdownStructureCallback): void {
     const subcomponentDropdownStructureKeys = Object.keys(subcomponentDropdownStructure);

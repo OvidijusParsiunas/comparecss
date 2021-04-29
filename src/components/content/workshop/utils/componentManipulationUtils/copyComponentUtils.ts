@@ -39,11 +39,11 @@ export default class ComponentComponentUtils {
   }
 
   private static copyImportedSubcomponent(importedSubcomponent: Imported, newComponent: WorkshopComponent,
-      copiedComponent: WorkshopComponent): void {
+      componentBeingCopied: WorkshopComponent): void {
     const { subcomponentNames, referenceSharingExecutables } = importedSubcomponent.componentRef;
     Object.keys(subcomponentNames).forEach((subcomponentName: string) => {
       const newSubcomponent = newComponent.subcomponents[subcomponentNames[subcomponentName]];
-      const subcomponentBeingCopied = copiedComponent.subcomponents[subcomponentNames[subcomponentName]];
+      const subcomponentBeingCopied = componentBeingCopied.subcomponents[subcomponentNames[subcomponentName]];
       if (importedSubcomponent.inSync) {
         ComponentComponentUtils.copyInSyncSubcomponent(importedSubcomponent, newSubcomponent, subcomponentBeingCopied);
       } else {
@@ -55,25 +55,25 @@ export default class ComponentComponentUtils {
     });
   }
 
-  private static copySubcomponent(copiedComponent: WorkshopComponent, activeSubcomponentName: string, newComponent: WorkshopComponent): void {
+  private static copySubcomponent(componentBeingCopied: WorkshopComponent, activeSubcomponentName: string, newComponent: WorkshopComponent): void {
     const newSubcomponent = newComponent.subcomponents[activeSubcomponentName];
-    const oldSubcomponent = copiedComponent.subcomponents[activeSubcomponentName];
+    const subcomponentBeingCompied = componentBeingCopied.subcomponents[activeSubcomponentName];
     if (newSubcomponent.importedComponent) {
-      ComponentComponentUtils.copyImportedSubcomponent(oldSubcomponent.importedComponent, newComponent, copiedComponent);
+      ComponentComponentUtils.copyImportedSubcomponent(subcomponentBeingCompied.importedComponent, newComponent, componentBeingCopied);
     } else {
-      ComponentComponentUtils.copySubcomponentProperties(newSubcomponent, oldSubcomponent);
+      ComponentComponentUtils.copySubcomponentProperties(newSubcomponent, subcomponentBeingCompied);
     }
   }
   
-  private static copyComponentProperties(newComponent: WorkshopComponent, selectComponentCard: WorkshopComponent): void {
-    const copySubcomponentCallback = ComponentComponentUtils.copySubcomponent.bind(this, selectComponentCard);
+  private static copyComponentProperties(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
+    const copySubcomponentCallback = ComponentComponentUtils.copySubcomponent.bind(this, componentBeingCopied);
     ComponentTraversalUtils.traverseSubcomponentsUsingDropdownStructure(newComponent.componentPreviewStructure.subcomponentDropdownStructure,
       newComponent, copySubcomponentCallback);
   }
 
-  public static copyComponent(optionsComponent: ComponentOptions, selectComponentCard: WorkshopComponent): WorkshopComponent {
-    const newComponent = componentTypeToStyles[selectComponentCard.type][NEW_COMPONENT_STYLES.DEFAULT].createNewComponent();
-    ComponentComponentUtils.copyComponentProperties(newComponent, selectComponentCard);
+  public static copyComponent(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {
+    const newComponent = componentTypeToStyles[componentBeingCopied.type][NEW_COMPONENT_STYLES.DEFAULT].createNewComponent();
+    ComponentComponentUtils.copyComponentProperties(newComponent, componentBeingCopied);
     newComponent.activeSubcomponentName = CORE_SUBCOMPONENTS_NAMES.BASE;
     newComponent.subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE].activeCssPseudoClass = CSS_PSEUDO_CLASSES.DEFAULT;
     newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className,
