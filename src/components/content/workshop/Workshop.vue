@@ -127,7 +127,6 @@ import removalModalTemplate from './templates/RemovalModalTemplate.vue';
 import newComponentModal from './newComponent/NewComponentModal.vue';
 import componentList from './componentList/ComponentList.vue';
 import toolbar from './toolbar/Toolbar.vue';
-import 'vuesax/dist/vuesax.css' //Vuesax styles
 import {
   CustomCss, ComponentTransitions, ComponentCenteringInParent, CustomFeatures, Text,
   AutoWidth, BackdropProperties,  AlignedLayerSection, WorkshopComponent, Subcomponents,
