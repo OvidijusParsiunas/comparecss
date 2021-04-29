@@ -1,6 +1,6 @@
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
-import ImportSubcomponent from '../importSubcomponent/importSubcomponent';
 import ComponentJs from '../../../../../services/workshop/componentJs';
+import ImportComponent from '../importComponent/importComponent';
 import CopyComponentUtils from './copyComponentUtils';
 import { ComponentOptions } from 'vue';
 
@@ -36,8 +36,8 @@ export default class ComponentManipulationUtils {
   }
 
   public static selectComponent(optionsComponent: ComponentOptions, selectedComponent: WorkshopComponent): void {
-    if (optionsComponent.isImportSubcomponentModeActive) {
-      ImportSubcomponent.previewImportSubcomponent(selectedComponent, optionsComponent.currentlySelectedComponent);
+    if (optionsComponent.isImportComponentModeActive) {
+      ImportComponent.previewImportComponent(selectedComponent, optionsComponent.currentlySelectedComponent);
       optionsComponent.currentlySelectedImportComponent = selectedComponent;
     } else if (optionsComponent.currentlySelectedComponent !== selectedComponent) {
       ComponentManipulationUtils.switchActiveComponent(optionsComponent, selectedComponent);

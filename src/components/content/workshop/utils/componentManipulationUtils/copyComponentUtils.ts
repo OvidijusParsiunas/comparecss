@@ -1,4 +1,4 @@
-import { Imported, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
+import { ImportedComponent, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
@@ -17,11 +17,11 @@ export default class ComponentComponentUtils {
     }
   }
 
-  private static copyInSyncSubcomponent(importedSubcomponent: Imported, newSubcomponent: SubcomponentProperties,
+  private static copyInSyncSubcomponent(importedComponent: ImportedComponent, newSubcomponent: SubcomponentProperties,
       subcomponentBeingCopied: SubcomponentProperties): void {
     if (newSubcomponent.importedComponent) {
       newSubcomponent.importedComponent.inSync = true;
-      newSubcomponent.importedComponent.componentRef.componentStatus = importedSubcomponent.componentRef.componentStatus;
+      newSubcomponent.importedComponent.componentRef.componentStatus = importedComponent.componentRef.componentStatus;
     }
     newSubcomponent.customCss = subcomponentBeingCopied.customCss;
     newSubcomponent.customFeatures = subcomponentBeingCopied.customFeatures;
@@ -38,14 +38,14 @@ export default class ComponentComponentUtils {
     ComponentComponentUtils.copyDisplayStatus(newSubcomponent, subcomponentBeingCopied);
   }
 
-  private static copyImportedSubcomponent(importedSubcomponent: Imported, newComponent: WorkshopComponent,
+  private static copyImportedComponent(importedComponent: ImportedComponent, newComponent: WorkshopComponent,
       componentBeingCopied: WorkshopComponent): void {
-    const { subcomponentNames, referenceSharingExecutables } = importedSubcomponent.componentRef;
+    const { subcomponentNames, referenceSharingExecutables } = importedComponent.componentRef;
     Object.keys(subcomponentNames).forEach((subcomponentName: string) => {
       const newSubcomponent = newComponent.subcomponents[subcomponentNames[subcomponentName]];
       const subcomponentBeingCopied = componentBeingCopied.subcomponents[subcomponentNames[subcomponentName]];
-      if (importedSubcomponent.inSync) {
-        ComponentComponentUtils.copyInSyncSubcomponent(importedSubcomponent, newSubcomponent, subcomponentBeingCopied);
+      if (importedComponent.inSync) {
+        ComponentComponentUtils.copyInSyncSubcomponent(importedComponent, newSubcomponent, subcomponentBeingCopied);
       } else {
         ComponentComponentUtils.copySubcomponentProperties(newSubcomponent, subcomponentBeingCopied);
       }
@@ -59,7 +59,7 @@ export default class ComponentComponentUtils {
     const newSubcomponent = newComponent.subcomponents[activeSubcomponentName];
     const subcomponentBeingCompied = componentBeingCopied.subcomponents[activeSubcomponentName];
     if (newSubcomponent.importedComponent) {
-      ComponentComponentUtils.copyImportedSubcomponent(subcomponentBeingCompied.importedComponent, newComponent, componentBeingCopied);
+      ComponentComponentUtils.copyImportedComponent(subcomponentBeingCompied.importedComponent, newComponent, componentBeingCopied);
     } else {
       ComponentComponentUtils.copySubcomponentProperties(newSubcomponent, subcomponentBeingCompied);
     }

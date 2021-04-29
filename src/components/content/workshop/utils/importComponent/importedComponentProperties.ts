@@ -7,21 +7,21 @@ import { ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/entityDispl
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../interfaces/componentGenerator';
 
-export default class ImportedSubcomponentProperties {
+export default class ImportedComponentProperties {
 
   public static DEFAULT_TOP_PROPERTY = '50%';
 
-  public static generateImportedSubcomponentNames(importedSubcomponentBaseName: string, importedSubcomponentId: number): CustomSubcomponentNames {
-    const spaces = new Array(importedSubcomponentId).join(' ');
-    return { base: importedSubcomponentBaseName, layer: `${CUSTOM_SUBCOMPONENT_NAMES_PREFIXES.LAYER}${spaces}`, text: `${CUSTOM_SUBCOMPONENT_NAMES_PREFIXES.TEXT}${spaces}`};
+  public static generateImportedComponentNames(importedComponentBaseName: string, importedComponentId: number): CustomSubcomponentNames {
+    const spaces = new Array(importedComponentId).join(' ');
+    return { base: importedComponentBaseName, layer: `${CUSTOM_SUBCOMPONENT_NAMES_PREFIXES.LAYER}${spaces}`, text: `${CUSTOM_SUBCOMPONENT_NAMES_PREFIXES.TEXT}${spaces}`};
   }
 
   private static applyTopProperty(importedComponentRef: WorkshopComponent, importedComponentName: string): void {
     const customCssProperties = importedComponentRef.subcomponents[importedComponentName].customCss[CSS_PSEUDO_CLASSES.DEFAULT];
     const defaultCustomCssProperties = importedComponentRef.subcomponents[importedComponentName].defaultCss[CSS_PSEUDO_CLASSES.DEFAULT];
     if (!customCssProperties.top) {
-      customCssProperties.top = ImportedSubcomponentProperties.DEFAULT_TOP_PROPERTY;
-      defaultCustomCssProperties.top = ImportedSubcomponentProperties.DEFAULT_TOP_PROPERTY;
+      customCssProperties.top = ImportedComponentProperties.DEFAULT_TOP_PROPERTY;
+      defaultCustomCssProperties.top = ImportedComponentProperties.DEFAULT_TOP_PROPERTY;
     }
   }
 
@@ -32,10 +32,10 @@ export default class ImportedSubcomponentProperties {
       [importedComponentName][ENTITY_DISPLAY_STATUS_REF] = baseSubcomponent.subcomponentDisplayStatus;
   }
 
-  public static createImportedSubcomponents(componentGenerator: ComponentGenerator, importedComponentName: string, importedComponentId: number): Subcomponents {
+  public static createImportedComponents(componentGenerator: ComponentGenerator, importedComponentName: string, importedComponentId: number): Subcomponents {
     const importedComponentRef = componentGenerator.createNewComponent(importedComponentName, importedComponentId);
-    ImportedSubcomponentProperties.applyTopProperty(importedComponentRef, importedComponentName);
-    ImportedSubcomponentProperties.applyOptionalSubcomponentProperty(importedComponentRef, importedComponentName);
+    ImportedComponentProperties.applyTopProperty(importedComponentRef, importedComponentName);
+    ImportedComponentProperties.applyOptionalSubcomponentProperty(importedComponentRef, importedComponentName);
     // referencing the whole component within it's own subcomponent may not be efficient
     // alternative would be to have a placeholder subcomponent to reference it
     importedComponentRef.subcomponents[importedComponentName].importedComponent = { componentRef: importedComponentRef, inSync: false };

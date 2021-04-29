@@ -1,4 +1,4 @@
-import { Imported, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { ImportedComponent, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import ComponentTraversalUtils from '../../../utils/componentTraversal/componentTraversalUtils';
 import { CustomSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
 import JSONManipulation from '../../../../../../services/workshop/jsonManipulation';
@@ -10,26 +10,26 @@ export default class SubcomponentToggleUtils {
     activeSubcomponent.customFeatures = JSONManipulation.deepCopy(activeSubcomponent.defaultCustomFeatures);
   }
 
-  private static resetImportedSubcomponent(importedSubcomponent: Imported, activeComponent: WorkshopComponent): void {
-    const { subcomponentNames, referenceSharingExecutables } = importedSubcomponent.componentRef;
+  private static resetImportedComponent(importedComponent: ImportedComponent, activeComponent: WorkshopComponent): void {
+    const { subcomponentNames, referenceSharingExecutables } = importedComponent.componentRef;
     Object.keys(subcomponentNames).forEach((subcomponentName: string) => {
-      const importedSubcomponent = activeComponent.subcomponents[subcomponentNames[subcomponentName]];
-      SubcomponentToggleUtils.resetSubcomponentProperties(importedSubcomponent);
+      const importedComponent = activeComponent.subcomponents[subcomponentNames[subcomponentName]];
+      SubcomponentToggleUtils.resetSubcomponentProperties(importedComponent);
     });
     referenceSharingExecutables.forEach((executable: (param1: Subcomponents, param2: CustomSubcomponentNames) => void) => {
       executable(activeComponent.subcomponents, subcomponentNames);
     });
     // the timeout is used to allow the options buttons to disappear before inSync button removal animation begins
     setTimeout(() => {
-      importedSubcomponent.inSync = false;
-      importedSubcomponent.componentRef.componentStatus = { isRemoved: true };
+      importedComponent.inSync = false;
+      importedComponent.componentRef.componentStatus = { isRemoved: true };
     });
   }
 
   private static resetSubcomponent(activeSubcomponentName: string, activeComponent: WorkshopComponent): void {
     const activeSubcomponent = activeComponent.subcomponents[activeSubcomponentName];
     if (activeSubcomponent.importedComponent) {
-      SubcomponentToggleUtils.resetImportedSubcomponent(activeSubcomponent.importedComponent, activeComponent);
+      SubcomponentToggleUtils.resetImportedComponent(activeSubcomponent.importedComponent, activeComponent);
     } else {
       SubcomponentToggleUtils.resetSubcomponentProperties(activeSubcomponent);
     }

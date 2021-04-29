@@ -1,5 +1,5 @@
 import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text } from '../../../../../../../interfaces/workshopComponent';
-import ImportedSubcomponentProperties from '../../../../utils/importSubcomponent/importedSubcomponentProperties';
+import ImportedComponentProperties from '../../../../utils/importComponent/importedComponentProperties';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
@@ -145,9 +145,9 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
 }
 
 export const defaultButton: ComponentGenerator = {
-  createNewComponent(importedSubcomponentBaseName: string, importedSubcomponentId: number): WorkshopComponent {
-    const subcomponentNames = importedSubcomponentBaseName
-      ? ImportedSubcomponentProperties.generateImportedSubcomponentNames(importedSubcomponentBaseName, importedSubcomponentId)
+  createNewComponent(importedComponentBaseName: string, importedComponentId: number): WorkshopComponent {
+    const subcomponentNames = importedComponentBaseName
+      ? ImportedComponentProperties.generateImportedComponentNames(importedComponentBaseName, importedComponentId)
       : defaultSubcomponentNames;
     const subcomponents = createSubcomponents(subcomponentNames);
     ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(subcomponents, subcomponentNames);

@@ -95,7 +95,7 @@ interface TempCustomProperties {
   customFeatures?: CustomFeatures;
 }
 
-export interface Imported {
+export interface ImportedComponent {
   componentRef: WorkshopComponent;
   inSync: boolean;
   lastSelectectedSubcomponentToImport?: WorkshopComponent;
@@ -132,7 +132,7 @@ export interface SubcomponentProperties {
   customFeatures?: CustomFeatures;
   defaultCustomFeatures?: CustomFeatures;
   layerSectionsType?: LAYER_SECTIONS_TYPES;
-  importedComponent?: Imported;
+  importedComponent?: ImportedComponent;
   // used to track the imported component's base inSync property
   baseSubcomponentRef?: SubcomponentProperties;
   parentLayer?: Layer;

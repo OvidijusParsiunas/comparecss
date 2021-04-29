@@ -7,14 +7,14 @@
           :thisComponent="component"
           :allComponents="components"
           :currentlySelectedComponent="currentlySelectedComponent"
-          :isImportSubcomponentModeActive="isImportSubcomponentModeActive"
+          :isImportComponentModeActive="isImportComponentModeActive"
           :currentlySelectedImportComponent="currentlySelectedImportComponent"
           @component-card-selected="componentCardSelected($event)"
           @component-card-copied="componentCardCopied($event)"
           @component-card-removed="componentCardRemoved($event)"
           @stop-editing-class-name-callback="stopEditingClassName($event)"
           @prepare-remove-component-modal="prepareRemoveComponentModal"/>
-        <div v-if="!isImportSubcomponentModeActive"
+        <div v-if="!isImportComponentModeActive"
           class="transition-item component-card component-body-container add-card"
           data-toggle="modal" :data-target="`#${NEW_COMPONENT_MODAL_ID}`"
           @click="prepareNewComponentModal">
@@ -79,10 +79,10 @@ export default {
     components: Array,
     currentlySelectedComponent: Object,
     currentlySelectedImportComponent: Object,
-    isImportSubcomponentModeActive: Boolean,
+    isImportComponentModeActive: Boolean,
   },
   watch: {
-    isImportSubcomponentModeActive(): void {
+    isImportComponentModeActive(): void {
       if (this.listAnimationName === 'vertical-transition') {
         setTimeout(() => {
            this.listAnimationName = 'horizontal-transition';

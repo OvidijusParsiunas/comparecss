@@ -165,7 +165,7 @@
 
 <script lang="ts">
 import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../../consts/unsetColotButtonDisplayed';
-import ImportSubcomponentToggleUtils from '../options/importSubcomponentToggleUtils/importSubcomponentToggleUtils';
+import ImportComponentToggleUtils from '../options/importComponentToggleUtils/importComponentToggleUtils';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSettingsState';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
@@ -325,7 +325,7 @@ export default {
       // this.$refs.selectSubcomponentOverlay2.style.display = 'block';
     },
     changeSetting(callback: () => void): void {
-      if (ImportSubcomponentToggleUtils.isInSyncButtonDisplayed(this.subcomponentProperties)) {
+      if (ImportComponentToggleUtils.isInSyncButtonDisplayed(this.subcomponentProperties)) {
         this.$emit('remove-insync-option-button', callback);
       } else {
         callback();

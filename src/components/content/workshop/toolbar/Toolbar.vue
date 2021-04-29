@@ -18,7 +18,7 @@
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
         @play-transition-preview="$emit('play-transition-preview', $event)"
         @stop-transition-preview="$emit('stop-transition-preview')"
-        @remove-insync-option-button="$refs.options.toggleImportedSubcomponentInSync($event)"/>
+        @remove-insync-option-button="$refs.options.toggleImportedComponentInSync($event)"/>
     </div>
   </div>
 </template>

@@ -9,7 +9,7 @@
           @input="classNameInputEvent"
           >
         <h5 v-else class="card-title component-card-title" :class="COMPONENT_CARD_MARKER">{{thisComponent.className}}</h5>
-        <div v-if="!isImportSubcomponentModeActive">
+        <div v-if="!isImportComponentModeActive">
           <a ref="componentCardClassNameEditorButton" class="btn btn-success" @mousedown="preventBubbling" @mouseup="editClassName">Edit</a>
           <a class="btn btn-warning" @mousedown="preventBubbling" @mouseup="copyComponentCard">Copy</a>
           <a class="btn btn-danger component-card-remove" data-toggle="modal" :data-target="removeComponentModalId" @mousedown="preventBubbling" @mouseup="removeComponentCard">Remove</a>
@@ -161,7 +161,7 @@ export default {
     allComponents: Object,
     currentlySelectedComponent: Object,
     currentlySelectedImportComponent: Object,
-    isImportSubcomponentModeActive: Boolean,
+    isImportComponentModeActive: Boolean,
   }
 };
 </script>

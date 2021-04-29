@@ -37,18 +37,18 @@
         :style="{marginRight: component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef ? '0px' : '8px'}"
         v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus || component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef">
         <transition-group name="horizontal-transition">
-          <button ref="importSubcomponentToggle"
+          <button ref="importComponentToggle"
             v-if="component.subcomponents[component.activeSubcomponentName].importedComponent && component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus"
             type="button" class="btn-group-option option-action-button" :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, OPTION_MENU_BUTTON_MARKER]"
             @keydown.enter.prevent="$event.preventDefault()" @click="toggleSubcomponentImport">
               <font-awesome-icon
-                :style="{ color: isImportSubcomponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT }"
+                :style="{ color: isImportComponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT }"
                 class="import-icon" icon="long-arrow-alt-down"/>
           </button>
           <button v-if="isInSyncButtonDisplayed()"
             type="button" class="btn-group-option option-action-button button-group-secondary-component"
             :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, OPTION_MENU_BUTTON_MARKER]"
-            @keydown.enter.prevent="$event.preventDefault()" @click="toggleImportedSubcomponentInSync()">
+            @keydown.enter.prevent="$event.preventDefault()" @click="toggleImportedComponentInSync()">
               <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
           </button>
           <!-- v-if="true" is used to prevent a transition-group warning being displayed in the browser as each element needs to be keyed and this is a way around it -->
@@ -118,11 +118,11 @@ import { ComponentTypeToOptions, componentTypeToOptions } from '../options/compo
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { removeSubcomponentModalState } from './removeSubcomponentModalState/removeSubcomponentModalState';
-import ImportSubcomponentToggleUtils from './importSubcomponentToggleUtils/importSubcomponentToggleUtils';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import SubcomponentToggleOverlayUtils from './subcomponentToggleUtils/subcomponentToggleOverlayUtils';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
+import ImportComponentToggleUtils from './importComponentToggleUtils/importComponentToggleUtils';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
@@ -164,8 +164,8 @@ interface Data {
   isSubcomponentSelectModeButtonDisplayed: boolean;
   activeOption: Option;
   isExpandedModalPreviewModeActive: boolean;
-  isImportSubcomponentModeActive: boolean;
-  hasImportSubcomponentModeClosedExpandedModal: boolean;
+  isImportComponentModeActive: boolean;
+  hasImportComponentModeClosedExpandedModal: boolean;
   isSubcomponentButtonsTransitionAllowed: boolean;
   isDropdownAndOptionButtonsTransitionAllowed: boolean;
   optionAnimationsInProgress: boolean;
@@ -198,8 +198,8 @@ export default {
     isSubcomponentSelectModeButtonDisplayed: false,
     activeOption: { buttonName: null, type: null },
     isExpandedModalPreviewModeActive: false,
-    isImportSubcomponentModeActive: false,
-    hasImportSubcomponentModeClosedExpandedModal: false,
+    isImportComponentModeActive: false,
+    hasImportComponentModeClosedExpandedModal: false,
     isSubcomponentButtonsTransitionAllowed: false,
     isDropdownAndOptionButtonsTransitionAllowed: false,
     optionAnimationsInProgress: false,
@@ -279,10 +279,10 @@ export default {
       });
     },
     toggleSubcomponentImport(): void {
-      ImportSubcomponentToggleUtils.toggleSubcomponentImport(this);
+      ImportComponentToggleUtils.toggleSubcomponentImport(this);
     },
-    toggleImportedSubcomponentInSync(callback?: () => void): void {
-      this.temporarilyAllowOptionAnimations(ImportSubcomponentToggleUtils.toggleSubcomponentInSync.bind(this, this.component, callback), true, true);
+    toggleImportedComponentInSync(callback?: () => void): void {
+      this.temporarilyAllowOptionAnimations(ImportComponentToggleUtils.toggleSubcomponentInSync.bind(this, this.component, callback), true, true);
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
       const { subcomponentDisplayStatus } = subcomponent;
@@ -371,7 +371,7 @@ export default {
     },
     isInSyncButtonDisplayed(): boolean {
       const activeSubcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
-      return ImportSubcomponentToggleUtils.isInSyncButtonDisplayed(activeSubcomponent);
+      return ImportComponentToggleUtils.isInSyncButtonDisplayed(activeSubcomponent);
     }
   },
   props: {

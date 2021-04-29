@@ -1,6 +1,6 @@
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../../../../../consts/modalTransitionTypes.enum';
-import ImportedSubcomponentProperties from '../../../../utils/importSubcomponent/importedSubcomponentProperties';
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
+import ImportedComponentProperties from '../../../../utils/importComponent/importedComponentProperties';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -277,15 +277,15 @@ export const defaultModal: ComponentGenerator = {
     const importedButton1Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_1;
     const importedButton2Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_2;
     const subcomponents = { ...createSubcomponents(),
-      ...ImportedSubcomponentProperties.createImportedSubcomponents(closeButton, importedCloseButtonName, 1),
-      ...ImportedSubcomponentProperties.createImportedSubcomponents(defaultButton, importedButton1Name, 2),
-      ...ImportedSubcomponentProperties.createImportedSubcomponents(defaultButton, importedButton2Name, 3) };
+      ...ImportedComponentProperties.createImportedComponents(closeButton, importedCloseButtonName, 1),
+      ...ImportedComponentProperties.createImportedComponents(defaultButton, importedButton1Name, 2),
+      ...ImportedComponentProperties.createImportedComponents(defaultButton, importedButton2Name, 3) };
     const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
       subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_3],
       subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_2],
-      ImportedSubcomponentProperties.createImportedComponentStructure(subcomponents, importedCloseButtonName),
-      ImportedSubcomponentProperties.createImportedComponentStructure(subcomponents, importedButton1Name),
-      ImportedSubcomponentProperties.createImportedComponentStructure(subcomponents, importedButton2Name),
+      ImportedComponentProperties.createImportedComponentStructure(subcomponents, importedCloseButtonName),
+      ImportedComponentProperties.createImportedComponentStructure(subcomponents, importedButton1Name),
+      ImportedComponentProperties.createImportedComponentStructure(subcomponents, importedButton2Name),
     );
     return {
       type: NEW_COMPONENT_TYPES.MODAL,
