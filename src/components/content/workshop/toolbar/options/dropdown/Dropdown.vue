@@ -4,10 +4,10 @@
       @click="openDropdown"
       @mouseenter="mouseEnterButton"
       @mouseleave="mouseLeaveButton">
-      <div class="dropdown-button-text dropdown-button-marker" :class="uniqueIdentifier">
+      <div class="dropdown-button-text" :class="uniqueIdentifier">
         {{objectContainingActiveOption[activeOptionPropertyKeyName]}}
       </div>
-      <font-awesome-icon :style="{ color: DEFAULT_FONT_AWESOME_COLOR }" class="arrow-down-icon dropdown-button-marker" :icon="fontAwesomeIcon"/>
+      <font-awesome-icon :style="{ color: DEFAULT_FONT_AWESOME_COLOR }" class="arrow-down-icon" :icon="fontAwesomeIcon"/>
     </button>
     <div class="auxiliary-padding dropdown-menu-options-marker" :class="uniqueIdentifier"
       @click="openDropdown"

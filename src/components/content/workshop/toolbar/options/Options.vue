@@ -7,7 +7,7 @@
           @click="initiateSubcomponentSelectMode">
           <i class="fa fa-mouse-pointer" :class="[SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"></i>
         </button>
-        <dropdown class="button-group-secondary-component"
+        <dropdown class="button-group-secondary-predominant-component"
           :uniqueIdentifier="SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
           :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
           :objectContainingActiveOption="component"
@@ -21,16 +21,28 @@
           @mouse-click-new-option="newSubcomponentNameClicked($event)"
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       </div>
-      <div v-if="component.type === MODAL_COMPONENT_TYPE" class="option-component-button">
+      <div v-if="component.type === MODAL_COMPONENT_TYPE" class="btn-group option-component-button">
         <button ref="expandedModalPreviewModeToggle"
-          type="button" class="btn option-action-button expanded-modal-preview-mode-button" :class="[EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
+          type="button" class="btn btn-group-option option-action-button button-group-first-predominant-component expanded-modal-preview-mode-button"
+          :class="[EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
           @keydown.enter.prevent="$event.preventDefault()" @click="toggleModalExpandMode">
           <font-awesome-icon v-if="isExpandedModalPreviewModeActive"
-            :style="{ color: FONT_AWESOME_COLORS.DEFAULT, ...BROWSER_SPECIFIC_EXPAND_MODAL_PREVIEW_STYLE }"
-            class="expand-icon dropdown-button-marker" icon="compress"/>
+            :style="{ color: FONT_AWESOME_COLORS.DEFAULT, ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
+            class="modal-button-icon expand-icon" icon="compress"/>
           <font-awesome-icon v-else
-            :style="{ color: FONT_AWESOME_COLORS.DEFAULT, ...BROWSER_SPECIFIC_EXPAND_MODAL_PREVIEW_STYLE }"
-            class="expand-icon dropdown-button-marker" icon="expand"/>
+            :style="{ color: FONT_AWESOME_COLORS.DEFAULT, ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
+            class="modal-button-icon expand-icon" icon="expand"/>
+        </button>
+        <button
+          type="button" class="btn btn-group-option option-action-button expanded-modal-preview-mode-button"
+          :class="OPTION_MENU_BUTTON_MARKER"
+          @keydown.enter.prevent="$event.preventDefault()" @click="toggleModalExpandMode">
+          <font-awesome-icon v-if="isExpandedModalPreviewModeActive"
+            :style="{ ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
+            class="modal-button-icon full-modal-preview-icon" icon="pause"/>
+          <font-awesome-icon v-else
+            :style="{ ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
+            class="modal-button-icon full-modal-preview-icon" icon="play"/>
         </button>
       </div>
       <div class="btn-group option-component-button"
@@ -46,14 +58,14 @@
                 class="import-icon" icon="long-arrow-alt-down"/>
           </button>
           <button v-if="isInSyncButtonDisplayed()"
-            type="button" class="btn-group-option option-action-button button-group-secondary-component"
+            type="button" class="btn-group-option option-action-button button-group-secondary-predominant-component"
             :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, OPTION_MENU_BUTTON_MARKER]"
             @keydown.enter.prevent="$event.preventDefault()" @click="toggleImportedComponentInSync()">
               <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
           </button>
           <!-- v-if="true" is used to prevent a transition-group warning being displayed in the browser as each element needs to be keyed and this is a way around it -->
           <button v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus"
-            type="button" class="btn-group-option option-action-button button-group-secondary-component" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
+            type="button" class="btn-group-option option-action-button button-group-secondary-predominant-component" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
             :class="[component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add',
               {'transition-item': isSubcomponentButtonsTransitionAllowed}, OPTION_MENU_BUTTON_MARKER]"
             @mouseenter="subcomponentMouseEnterHandler"
@@ -66,7 +78,7 @@
         <button v-if="isInSyncButtonDisplayed()"
           id="sync-transition-animation-padding"
           :style="{marginLeft: component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef ? '-23px' : '-29px'}"
-          class="option-action-button button-group-secondary-component" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
+          class="option-action-button button-group-secondary-predominant-component" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
             <font-awesome-icon style="color: #54a9f100" class="sync-icon" icon="sync-alt"/>
         </button>
         <div v-if="!component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus || component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed"
@@ -102,7 +114,7 @@
             @click="toolbarPositionToggleMouseClick(this)"
             @mouseenter="toolbarPositionToggleMouseEnter($event)"
             @mouseleave="toolbarPositionToggleMouseLeave($event)">
-            <i class="dropdown-button-marker" :class="['fa', 'fa-sort']"></i>
+            <i :class="['fa', 'fa-sort']"></i>
           </button>
         </div>
       </transition-group>
@@ -154,7 +166,7 @@ interface Consts {
   MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES;
   BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS: number;
   REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: string;
-  BROWSER_SPECIFIC_EXPAND_MODAL_PREVIEW_STYLE: WorkshopComponentCss;
+  BROWSER_SPECIFIC_MODAL_BUTTON_STYLE: WorkshopComponentCss;
   SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
   CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
 }
@@ -186,7 +198,7 @@ export default {
       MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES.MODAL,
       BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS: 500,
       REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: `#${REMOVE_SUBCOMPONENT_MODAL_ID}`,
-      BROWSER_SPECIFIC_EXPAND_MODAL_PREVIEW_STYLE: { paddingTop: BrowserType.isFirefox() ? '1px' : '' },
+      BROWSER_SPECIFIC_MODAL_BUTTON_STYLE: { paddingTop: BrowserType.isFirefox() ? '1px' : '' },
       SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS,
       CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.CSS_PSEUDO_CLASSES,
       HIGHLIGHTED_OPTION_BUTTON_CLASS: BrowserType.isFirefox() ? 'highlighted-option-button-firefox' : 'highlighted-option-button-chromium',
@@ -428,9 +440,15 @@ export default {
     font: normal normal normal 14px/1 FontAwesome !important;
     width: 39.5px;
   }
-  .expand-icon {
+  .modal-button-icon {
     height: 24px;
+  }
+  .expand-icon {
     width: 14px;
+  }
+  .full-modal-preview-icon {
+    width: 10px;
+    color: rgb(92 93 92);
   }
   .bootstrap .btn-group > .btn-group-option:not(:last-child):not(.dropdown-toggle) {
     border-top-right-radius: 0;
@@ -575,7 +593,12 @@ export default {
 </style>
 
 <style lang="css">
-  .button-group-secondary-component {
+  .button-group-first-predominant-component {
+    left: 0px;
+    z-index: 2 !important;
+    background-color: white !important;
+  }
+  .button-group-secondary-predominant-component {
     left: -1px;
     z-index: 1;
     background-color: white !important;

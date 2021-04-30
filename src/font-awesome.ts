@@ -1,5 +1,8 @@
-import { faAngleDoubleDown, faAngleDown, faAngleRight, faCaretDown, faLongArrowAltDown, faSyncAlt, faCheck, faExpand, faCompress } from '@fortawesome/free-solid-svg-icons'
 import { library } from '@fortawesome/fontawesome-svg-core'
+import { 
+  faAngleDoubleDown, faAngleDown, faAngleRight, faCaretDown, faLongArrowAltDown,
+  faSyncAlt, faCheck, faExpand, faCompress, faPlay, faPause,
+} from '@fortawesome/free-solid-svg-icons'
 
 export default function addFontAwesomeIcons(): void {
   library.add(faAngleDown);
@@ -11,4 +14,6 @@ export default function addFontAwesomeIcons(): void {
   library.add(faCheck);
   library.add(faExpand);
   library.add(faCompress);
+  library.add(faPlay);
+  library.add(faPause);
 }

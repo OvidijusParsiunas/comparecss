@@ -9,7 +9,7 @@
         <div class="option-text" :class="DROPDOWN_OPTION_MARKER">{{optionName}}</div>
         <font-awesome-icon v-if="isArrowDisplayed(innerDropdownOptions)"
           :style="{ color: PASSIVE_FONT_AWESOME_COLOR }"
-          class="dropdown-button-marker arrow-right-icon"
+          class="arrow-right-icon"
           :class="DROPDOWN_OPTION_MARKER"
           icon="angle-right"/>
     </a>
