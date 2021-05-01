@@ -84,13 +84,16 @@ export default {
     },
     // MODAL MODE - need event type
     toggleFullModalPreviewMode(event: any): void {
+      const toggleFullModalPreviewModeToolbarCallback = this.toggleFullModalPreviewModeCallback.bind(this, event);
+      this.$emit('toggle-full-modal-preview-mode', event.concat(this.$refs.toolbarContainer, toggleFullModalPreviewModeToolbarCallback));
+    },
+    toggleFullModalPreviewModeCallback(event: any): void {
       const [isToggledOn, isModalPreviewModeOn] = event;
       if (isModalPreviewModeOn && isToggledOn) {
         this.$refs.toolbar.classList.add('toolbar-position-during-expanded-full-modal-preview');
       } else {
         this.$refs.toolbar.classList.remove('toolbar-position-during-expanded-full-modal-preview');
       }
-      this.$emit('toggle-full-modal-preview-mode', event.concat(this.$refs.toolbarContainer));
     },
     toggleToolbarPosition(): void {
       ToolbarToggles.toggleToolbarPosition(this.$refs.toolbarContainer);

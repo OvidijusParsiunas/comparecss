@@ -77,6 +77,7 @@ import PreviewExitTransition from './utils/expandedModalPreviewMode/previewTrans
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
 import TransitionUtils from './utils/expandedModalPreviewMode/utils/transitionUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
+import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import ComponentPreviewUtils from './utils/componentPreviewUtils';
 
 interface Consts {
@@ -87,6 +88,7 @@ interface Data {
   subcomponentAndOverlayElementIds: SubcomponentAndOverlayElementIds;
   mouseEvents: SubcomponentPreviewMouseEvents;
   changeMouseEventsToDefaultOnComponentPreviewMouseEnter: boolean;
+  temporaryModalComponent: WorkshopComponent;
 }
 
 export default {
@@ -99,6 +101,7 @@ export default {
     subcomponentAndOverlayElementIds: null,
     mouseEvents: {},
     changeMouseEventsToDefaultOnComponentPreviewMouseEnter: false,
+    temporaryModalComponent: null,
   }),
   methods: {
     componentPreviewMouseLeave(): void {
@@ -160,11 +163,14 @@ export default {
     },
     // MODAL MODE - need event type
     toggleFullModalPreviewMode(event: any): void {
-      const [isToggledOn, isModalPreviewModeOn, toggleOptionsCallback, toolbarContainerElement] = event;
+      const [isToggledOn, isModalPreviewModeOn, toggleFullModalPreviewModeOptionsCallback,
+        toolbarContainerElement, toggleFullModalPreviewModeToolbarCallback] = event;
       if (isToggledOn) {
-        ToggleFullModalPreviewMode.toggleOn(this, this.$refs.baseComponent.$refs.componentPreview, toolbarContainerElement, toggleOptionsCallback);
+        ToggleFullModalPreviewMode.toggleOn(this, this.$refs.baseComponent.$refs.componentPreview, toolbarContainerElement,
+           isModalPreviewModeOn, toggleFullModalPreviewModeOptionsCallback, toggleFullModalPreviewModeToolbarCallback);
       } else {
-        ToggleFullModalPreviewMode.toggleOff(this, this.$refs.baseComponent.$refs.componentPreview, toolbarContainerElement, toggleOptionsCallback);
+        ToggleFullModalPreviewMode.toggleOff(this, this.$refs.baseComponent.$refs.componentPreview, toolbarContainerElement,
+          isModalPreviewModeOn, toggleFullModalPreviewModeOptionsCallback, toggleFullModalPreviewModeToolbarCallback);
       }
     },
     playTransitionPreview(playTransitionPreviewEvent: PlayTransitionPreviewEvent): void {

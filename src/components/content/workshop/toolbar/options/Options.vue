@@ -223,7 +223,7 @@ export default {
   }),
   mounted(): void {
     // this is a bug fix where the transition-group is preventing the toolbarPositionToggle from being obtained during the modal expand mode
-    this.toolbarPositionToggleRef = this.$refs.toolbarPositionToggle;
+    this.reassignToolbarPositionToggleRef();
   },
   methods: {
     initiateSubcomponentSelectMode(): void {
@@ -350,18 +350,26 @@ export default {
         [this.isExpandedModalPreviewModeActive, setOptionToDefaultCallback, this.toolbarPositionToggleRef] as ToggleExpandedModalPreviewModeEvent);
     },
     toggleFullModalPreviewMode(): void {
-      const toggleOptionsCallback = this.toggleOptionsCallback;
+      const toggleFullModalPreviewModeOptionsCallback = this.toggleFullModalPreviewModeCallback;
       // MODAL MODE - need event type
-      this.$emit('toggle-full-modal-preview-mode', [!this.isFullModalPreviewModeActive, this.isExpandedModalPreviewModeActive, toggleOptionsCallback]);
+      this.$emit('toggle-full-modal-preview-mode', [!this.isFullModalPreviewModeActive,
+        this.isExpandedModalPreviewModeActive, toggleFullModalPreviewModeOptionsCallback]);
     },
-    toggleOptionsCallback(): void {
+    toggleFullModalPreviewModeCallback(): void {
       this.isFullModalPreviewModeActive = !this.isFullModalPreviewModeActive;
       if (this.isFullModalPreviewModeActive) {
         this.hideSettings();
-      } else if (this.activeOption.buttonName &&
-        (!this.component.subcomponents[this.component.activeSubcomponentName].subcomponentDisplayStatus
-        || this.component.subcomponents[this.component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed)) {
-          this.selectDefaultOption();
+      } else {
+        if (this.activeOption.buttonName &&
+          (!this.component.subcomponents[this.component.activeSubcomponentName].subcomponentDisplayStatus
+          || this.component.subcomponents[this.component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed)) {
+            this.selectDefaultOption();
+        }
+        setTimeout(() => {
+          // this is a bug fix where upon toggling the full modal preview mode - the toolbarPositionToggle reference is changed
+          this.reassignToolbarPositionToggleRef();
+          this.toolbarPositionToggleRef.style.display = this.isExpandedModalPreviewModeActive ? 'block' : 'none';
+        })
       }
     },
     selectDefaultOption(): void {
@@ -411,6 +419,9 @@ export default {
     isInSyncButtonDisplayed(): boolean {
       const activeSubcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
       return ImportComponentToggleUtils.isInSyncButtonDisplayed(activeSubcomponent);
+    },
+    reassignToolbarPositionToggleRef(): void {
+      this.toolbarPositionToggleRef = this.$refs.toolbarPositionToggle;
     }
   },
   props: {

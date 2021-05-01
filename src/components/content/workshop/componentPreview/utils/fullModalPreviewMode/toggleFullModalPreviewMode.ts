@@ -7,9 +7,12 @@ import GeneralUtils from "../expandedModalPreviewMode/utils/generalUtils";
 
 export default class ToggleFullModalPreviewMode {
 
-  private static startToolbarTransitionWithFadeOut(toolbarContainerElement: HTMLElement): void {
+  private static startToolbarTransitionWithFadeOut(toolbarContainerElement: HTMLElement, toggleFullModalPreviewModeOptionsCallback: () => void,
+      toggleFullModalPreviewModeToolbarCallback: () => void): void {
     GeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
     window.setTimeout(() => {
+      toggleFullModalPreviewModeOptionsCallback();
+      toggleFullModalPreviewModeToolbarCallback();
       GeneralUtils.setToolbarContainerPointerEvents(toolbarContainerElement, POINTER_EVENTS_REMOVE);
       GeneralUtils.opacityFadeTransition(OPACITY_VISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
     }, MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS);
@@ -17,39 +20,42 @@ export default class ToggleFullModalPreviewMode {
 
   private static switchButtonToModal(componentPreviewComponent: ComponentOptions): void {
     componentPreviewComponent.$emit('temporarily-switch-component-for-full-modal-preview-mode',
-      componentPreviewComponent.modalComponent);
-    delete componentPreviewComponent.modalComponent;
+      componentPreviewComponent.temporaryModalComponent);
+    componentPreviewComponent.temporaryModalComponent = null;
   }
 
   private static switchModalToButton(componentPreviewComponent: ComponentOptions): void {
-    componentPreviewComponent.modalComponent = componentPreviewComponent.component;
+    componentPreviewComponent.temporaryModalComponent = componentPreviewComponent.component;
     componentPreviewComponent.$emit('temporarily-switch-component-for-full-modal-preview-mode',
       componentTypeToStyles[NEW_COMPONENT_TYPES.BUTTON][NEW_COMPONENT_STYLES.DEFAULT].createNewComponent());
   }
 
   private static startModalAndBackdropTransitionWithFadeOut(modalElement: HTMLElement,
-      switchComponentCallback: () => void, toggleOptionsCallback: () => void): void {
+      switchComponentCallback: () => void): void {
     GeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, modalElement);
     window.setTimeout(() => {
-      toggleOptionsCallback();
       switchComponentCallback();
       GeneralUtils.opacityFadeTransition(OPACITY_VISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, modalElement);
     }, MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS);
   }
 
   public static toggleOn(componentPreviewComponent: ComponentOptions, modalElement: HTMLElement,
-      toolbarContainerElement: HTMLElement, toggleOptionsCallback: () => void): void {
+      toolbarContainerElement: HTMLElement, isModalPreviewModeOn: boolean, toggleFullModalPreviewModeOptionsCallback: () => void,
+      toggleFullModalPreviewModeToolbarCallback: () => void): void {
     GeneralUtils.setToolbarContainerPointerEvents(toolbarContainerElement, POINTER_EVENTS_NONE);
-    ToggleFullModalPreviewMode.startModalAndBackdropTransitionWithFadeOut(modalElement,
-      ToggleFullModalPreviewMode.switchModalToButton.bind(this, componentPreviewComponent), toggleOptionsCallback);
-    ToggleFullModalPreviewMode.startToolbarTransitionWithFadeOut(toolbarContainerElement);
+    if (!isModalPreviewModeOn) ToggleFullModalPreviewMode.startModalAndBackdropTransitionWithFadeOut(modalElement,
+      ToggleFullModalPreviewMode.switchModalToButton.bind(this, componentPreviewComponent));
+    ToggleFullModalPreviewMode.startToolbarTransitionWithFadeOut(toolbarContainerElement, toggleFullModalPreviewModeOptionsCallback,
+      toggleFullModalPreviewModeToolbarCallback);
   }
 
   public static toggleOff(componentPreviewComponent: ComponentOptions, modalElement: HTMLElement,
-      toolbarContainerElement: HTMLElement, toggleOptionsCallback: () => void): void {
+      toolbarContainerElement: HTMLElement, isModalPreviewModeOn: boolean, toggleFullModalPreviewModeOptionsCallback: () => void,
+      toggleFullModalPreviewModeToolbarCallback: () => void): void {
     GeneralUtils.setToolbarContainerPointerEvents(toolbarContainerElement, POINTER_EVENTS_NONE);
-    ToggleFullModalPreviewMode.startModalAndBackdropTransitionWithFadeOut(modalElement,
-      ToggleFullModalPreviewMode.switchButtonToModal.bind(this, componentPreviewComponent), toggleOptionsCallback);
-    ToggleFullModalPreviewMode.startToolbarTransitionWithFadeOut(toolbarContainerElement);
+    if (!isModalPreviewModeOn) ToggleFullModalPreviewMode.startModalAndBackdropTransitionWithFadeOut(modalElement,
+      ToggleFullModalPreviewMode.switchButtonToModal.bind(this, componentPreviewComponent));
+    ToggleFullModalPreviewMode.startToolbarTransitionWithFadeOut(toolbarContainerElement, toggleFullModalPreviewModeOptionsCallback,
+      toggleFullModalPreviewModeToolbarCallback);
   }
 }
