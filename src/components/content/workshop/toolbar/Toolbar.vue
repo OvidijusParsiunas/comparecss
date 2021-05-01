@@ -88,8 +88,8 @@ export default {
       this.$emit('toggle-full-modal-preview-mode', event.concat(this.$refs.toolbarContainer, toggleFullModalPreviewModeToolbarCallback));
     },
     toggleFullModalPreviewModeCallback(event: any): void {
-      const [isToggledOn, isModalPreviewModeOn] = event;
-      if (isModalPreviewModeOn && isToggledOn) {
+      const [isToggledOn, isExpandedModalPreviewModeActive] = event;
+      if (isExpandedModalPreviewModeActive && isToggledOn) {
         this.$refs.toolbar.classList.add('toolbar-position-during-expanded-full-modal-preview');
       } else {
         this.$refs.toolbar.classList.remove('toolbar-position-during-expanded-full-modal-preview');

@@ -163,14 +163,14 @@ export default {
     },
     // MODAL MODE - need event type
     toggleFullModalPreviewMode(event: any): void {
-      const [isToggledOn, isModalPreviewModeOn, toggleFullModalPreviewModeOptionsCallback,
+      const [isToggledOn, isExpandedModalPreviewModeActive, toggleFullModalPreviewModeOptionsCallback,
         toolbarContainerElement, toggleFullModalPreviewModeToolbarCallback] = event;
       if (isToggledOn) {
         ToggleFullModalPreviewMode.toggleOn(this, this.$refs.baseComponent.$refs.componentPreview, toolbarContainerElement,
-           isModalPreviewModeOn, toggleFullModalPreviewModeOptionsCallback, toggleFullModalPreviewModeToolbarCallback);
+           isExpandedModalPreviewModeActive, toggleFullModalPreviewModeOptionsCallback, toggleFullModalPreviewModeToolbarCallback);
       } else {
         ToggleFullModalPreviewMode.toggleOff(this, this.$refs.baseComponent.$refs.componentPreview, toolbarContainerElement,
-          isModalPreviewModeOn, toggleFullModalPreviewModeOptionsCallback, toggleFullModalPreviewModeToolbarCallback);
+          isExpandedModalPreviewModeActive, toggleFullModalPreviewModeOptionsCallback, toggleFullModalPreviewModeToolbarCallback);
       }
     },
     playTransitionPreview(playTransitionPreviewEvent: PlayTransitionPreviewEvent): void {
