@@ -1,7 +1,7 @@
 <template>
-  <div class="options-container">
+  <div class="options-container" :class="{'options-container-full-modal-preview': isFullModalPreviewModeActive}">
     <div class="options-container-inner">
-      <div class="btn-group option-component-button">
+      <div v-if="!isFullModalPreviewModeActive" class="btn-group option-component-button">
         <button v-if="isSubcomponentSelectModeButtonDisplayed"
           id="component-select-button" type="button" class="btn option-action-button" :class="[SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
           @click="initiateSubcomponentSelectMode">
@@ -21,8 +21,8 @@
           @mouse-click-new-option="newSubcomponentNameClicked($event)"
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       </div>
-      <div v-if="component.type === MODAL_COMPONENT_TYPE" class="btn-group option-component-button">
-        <button ref="expandedModalPreviewModeToggle"
+      <div v-if="component.type === MODAL_COMPONENT_TYPE || isFullModalPreviewModeActive" class="btn-group option-component-button">
+        <button v-if="!isFullModalPreviewModeActive" ref="expandedModalPreviewModeToggle"
           type="button" class="btn btn-group-option option-action-button button-group-first-predominant-component expanded-modal-preview-mode-button"
           :class="[EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
           @keydown.enter.prevent="$event.preventDefault()" @click="toggleModalExpandMode">
@@ -36,10 +36,10 @@
         <button
           type="button" class="btn btn-group-option option-action-button expanded-modal-preview-mode-button"
           :class="OPTION_MENU_BUTTON_MARKER"
-          @keydown.enter.prevent="$event.preventDefault()" @click="toggleModalExpandMode">
-          <font-awesome-icon v-if="isExpandedModalPreviewModeActive"
+          @keydown.enter.prevent="$event.preventDefault()" @click="toggleFullModalPreviewMode">
+          <font-awesome-icon v-if="isFullModalPreviewModeActive"
             :style="{ ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
-            class="modal-button-icon full-modal-preview-icon" icon="pause"/>
+            class="modal-button-icon full-modal-preview-icon" icon="stop"/>
           <font-awesome-icon v-else
             :style="{ ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
             class="modal-button-icon full-modal-preview-icon" icon="play"/>
@@ -47,7 +47,8 @@
       </div>
       <div class="btn-group option-component-button"
         :style="{marginRight: component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef ? '0px' : '8px'}"
-        v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus || component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef">
+        v-if="!isFullModalPreviewModeActive && 
+          (component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus || component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef)">
         <transition-group name="horizontal-transition">
           <button ref="importComponentToggle"
             v-if="component.subcomponents[component.activeSubcomponentName].importedComponent && component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus"
@@ -63,7 +64,6 @@
             @keydown.enter.prevent="$event.preventDefault()" @click="toggleImportedComponentInSync()">
               <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
           </button>
-          <!-- v-if="true" is used to prevent a transition-group warning being displayed in the browser as each element needs to be keyed and this is a way around it -->
           <button v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus"
             type="button" class="btn-group-option option-action-button button-group-secondary-predominant-component" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
             :class="[component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add',
@@ -75,13 +75,15 @@
         </transition-group>
       </div>
       <transition-group :name="isDropdownAndOptionButtonsTransitionAllowed ? 'horizontal-transition' : ''">
-        <button v-if="isInSyncButtonDisplayed()"
+        <button v-if="!isFullModalPreviewModeActive && isInSyncButtonDisplayed()"
           id="sync-transition-animation-padding"
           :style="{marginLeft: component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef ? '-23px' : '-29px'}"
           class="option-action-button button-group-secondary-predominant-component" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
             <font-awesome-icon style="color: #54a9f100" class="sync-icon" icon="sync-alt"/>
         </button>
-        <div v-if="!component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus || component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed"
+        <div v-if="!isFullModalPreviewModeActive
+            && (!component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus
+              || component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed)"
           :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}" > 
           <dropdown class="option-component-button"
             :uniqueIdentifier="CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
@@ -102,12 +104,12 @@
                 option.type === activeOption.type ? 'option-select-button-active' : '',
                 option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive ? 'option-select-button-default-disabled' : 'option-select-button-default-enabled',
                 OPTION_MENU_BUTTON_MARKER]"
-                @click="selectOption(option)">
+                @click="selectOption(option, true)">
                 {{option.buttonName}}
             </button>
           </div>
         </div>
-        <div v-if="true" style="display: none" ref="toolbarPositionToggle"
+        <div v-if="!isFullModalPreviewModeActive" style="display: none" ref="toolbarPositionToggle"
           class="toolbar-position-toggle-container" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
           <button
             type="button" class="btn toolbar-position-toggle"
@@ -176,6 +178,7 @@ interface Data {
   isSubcomponentSelectModeButtonDisplayed: boolean;
   activeOption: Option;
   isExpandedModalPreviewModeActive: boolean;
+  isFullModalPreviewModeActive: boolean;
   isImportComponentModeActive: boolean;
   hasImportComponentModeClosedExpandedModal: boolean;
   isSubcomponentButtonsTransitionAllowed: boolean;
@@ -210,6 +213,7 @@ export default {
     isSubcomponentSelectModeButtonDisplayed: false,
     activeOption: { buttonName: null, type: null },
     isExpandedModalPreviewModeActive: false,
+    isFullModalPreviewModeActive: false,
     isImportComponentModeActive: false,
     hasImportComponentModeClosedExpandedModal: false,
     isSubcomponentButtonsTransitionAllowed: false,
@@ -243,8 +247,8 @@ export default {
         }
       }
     },
-    selectOption(option: Option): void {
-      if (this.activeOption.buttonName === option.buttonName && this.activeOption.type === option.type) {
+    selectOption(option: Option, isManualSelect: boolean): void {
+      if (isManualSelect && this.activeOption.buttonName === option.buttonName && this.activeOption.type === option.type) {
         this.activeOption = { buttonName: null, type: null };
         this.hideSettings();
         return;
@@ -306,8 +310,7 @@ export default {
       if (!subcomponentDisplayStatus.isDisplayed) {
         subcomponentDisplayStatus.isDisplayed = true;
         if (this.activeOption.buttonName) {
-          const defaultOption = this.getDefaultOption();
-          this.selectOption(defaultOption); 
+          this.selectDefaultOption();
         }
         SubcomponentToggleOverlayUtils.changeSubcomponentOverlayClass(subcomponentDisplayStatus, this.component.activeSubcomponentName, false,
           SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
@@ -342,9 +345,28 @@ export default {
     toggleModalExpandMode(): void {
       this.isExpandedModalPreviewModeActive = !this.isExpandedModalPreviewModeActive;
       const setOptionToDefaultCallback = !this.isExpandedModalPreviewModeActive && this.activeOption.enabledOnExpandedModalPreviewMode
-        ? this.selectOption.bind(this, this.getDefaultOption()) : () => { return; };
+        ? this.selectDefaultOption.bind(this) : () => { return; };
       this.$emit('toggle-expanded-modal-preview-mode',
         [this.isExpandedModalPreviewModeActive, setOptionToDefaultCallback, this.toolbarPositionToggleRef] as ToggleExpandedModalPreviewModeEvent);
+    },
+    toggleFullModalPreviewMode(): void {
+      const toggleOptionsCallback = this.toggleOptionsCallback;
+      // MODAL MODE - need event type
+      this.$emit('toggle-full-modal-preview-mode', [!this.isFullModalPreviewModeActive, this.isExpandedModalPreviewModeActive, toggleOptionsCallback]);
+    },
+    toggleOptionsCallback(): void {
+      this.isFullModalPreviewModeActive = !this.isFullModalPreviewModeActive;
+      if (this.isFullModalPreviewModeActive) {
+        this.hideSettings();
+      } else if (this.activeOption.buttonName &&
+        (!this.component.subcomponents[this.component.activeSubcomponentName].subcomponentDisplayStatus
+        || this.component.subcomponents[this.component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed)) {
+          this.selectDefaultOption();
+      }
+    },
+    selectDefaultOption(): void {
+      const defaultOption = this.getDefaultOption();
+      this.selectOption(defaultOption);
     },
     getDefaultOption(): Option {
       return this.getActiveOptions()[0];
@@ -410,6 +432,12 @@ export default {
     display: grid;
     background-color: rgb(251 251 251);
     border-radius: 20px;
+  }
+  .options-container-full-modal-preview {
+    width: fit-content;
+    right: 0px;
+    margin-right: 0px;
+    float: right
   }
   .options-container-inner {
     display: flex;

@@ -71,6 +71,7 @@ import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomp
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
 import { ModalEntranceTransition, ModalExitTransition } from '../../../../interfaces/modalTransitions';
 import PreviewEntranceTransition from './utils/expandedModalPreviewMode/previewTransitions/entrance';
+import ToggleFullModalPreviewMode from './utils/fullModalPreviewMode/toggleFullModalPreviewMode';
 import { PlayTransitionPreviewEvent } from '../../../../interfaces/playTransitionPreviewEvent';
 import PreviewExitTransition from './utils/expandedModalPreviewMode/previewTransitions/exit';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
@@ -135,7 +136,7 @@ export default {
         }
       }
     },
-    expandModalComponent(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {
+    toggleExpandModalalPreviewMode(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {
       const [isToggledExpandedModalPreviewModeToActive, setOptionToDefaultCallback, toolbarPositionToggleElement,
         toolbarContainerElement, toolbarElement] = toggleExpandedModalPreviewModeEvent;
       if (isToggledExpandedModalPreviewModeToActive) {
@@ -147,14 +148,23 @@ export default {
           this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.entrance.delay,
           this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.backdrop, this.$refs.baseComponent.$refs.componentPreview,
           this.$refs.baseComponent.$refs.componentPreviewOverlay, this.$refs.componentPreviewContainer, toolbarContainerElement,
-          toolbarElement, toolbarPositionToggleElement);
+            toolbarElement, toolbarPositionToggleElement);
       } else {
         ExpandedModalPreviewModeToggleExitTransitionService.start(
           transitionTypeToFunctionality[this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.exit.type],
           this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.exit.duration, setOptionToDefaultCallback,
           this.$refs.componentPreviewContainer, this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.backdrop,
           this.$refs.baseComponent.$refs.componentPreview, this.$refs.baseComponent.$refs.componentPreviewOverlay, toolbarContainerElement,
-          toolbarElement, toolbarPositionToggleElement);
+            toolbarElement, toolbarPositionToggleElement);
+      }
+    },
+    // MODAL MODE - need event type
+    toggleFullModalPreviewMode(event: any): void {
+      const [isToggledOn, isModalPreviewModeOn, toggleOptionsCallback, toolbarContainerElement] = event;
+      if (isToggledOn) {
+        ToggleFullModalPreviewMode.toggleOn(this, this.$refs.baseComponent.$refs.componentPreview, toolbarContainerElement, toggleOptionsCallback);
+      } else {
+        ToggleFullModalPreviewMode.toggleOff(this, this.$refs.baseComponent.$refs.componentPreview, toolbarContainerElement, toggleOptionsCallback);
       }
     },
     playTransitionPreview(playTransitionPreviewEvent: PlayTransitionPreviewEvent): void {

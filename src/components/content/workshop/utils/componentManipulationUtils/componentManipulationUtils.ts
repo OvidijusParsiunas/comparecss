@@ -24,7 +24,15 @@ export default class ComponentManipulationUtils {
     ComponentJs.manipulateJS(optionsComponent.currentlySelectedComponent.type, 'executeJS');
     optionsComponent.$refs.toolbar.updateToolbarForNewComponent();
   }
-  
+
+  public static tempActiveComponentSwitch(optionsComponent: ComponentOptions, newComponent: WorkshopComponent): void {
+    if (optionsComponent.currentlySelectedComponent && optionsComponent.currentlySelectedComponent.type !== newComponent.type) {
+      ComponentJs.manipulateJS(optionsComponent.currentlySelectedComponent.type, 'revokeJS');
+    }
+    optionsComponent.currentlySelectedComponent = newComponent;
+    ComponentJs.manipulateJS(optionsComponent.currentlySelectedComponent.type, 'executeJS');
+  }
+
   public static addNewComponent(optionsComponent: ComponentOptions, newComponent: WorkshopComponent): void {
     (optionsComponent.components as undefined as WorkshopComponent[]).push(newComponent);
     ComponentManipulationUtils.switchActiveComponent(optionsComponent, newComponent);

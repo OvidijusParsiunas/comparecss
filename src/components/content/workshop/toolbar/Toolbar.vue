@@ -10,7 +10,8 @@
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
         @prepare-remove-subcomponent-modal="$emit('prepare-remove-subcomponent-modal', $event)"
         @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
-        @toggle-expanded-modal-preview-mode="expandModalComponent($event)"
+        @toggle-expanded-modal-preview-mode="toggleExpandModalalPreviewMode($event)"
+        @toggle-full-modal-preview-mode="toggleFullModalPreviewMode($event)"
         @toggle-toolbar-position="toggleToolbarPosition"
         @toggle-import-subcomponent-mode="$emit('toggle-import-subcomponent-mode', $event)"/>
       <settings v-if="isSettingsDisplayed" ref="settings"
@@ -77,9 +78,19 @@ export default {
       this.$emit('toggle-subcomponent-select-mode', toggleSubcomponentSelectModeEvent);
       if (this.$refs.settings) this.$refs.settings.toggleSubcomponentSelectMode();
     },
-    expandModalComponent(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {
+    toggleExpandModalalPreviewMode(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {
       this.$emit('toggle-expanded-modal-preview-mode',
         toggleExpandedModalPreviewModeEvent.concat(this.$refs.toolbarContainer, this.$refs.toolbar) as ToggleExpandedModalPreviewModeEvent);
+    },
+    // MODAL MODE - need event type
+    toggleFullModalPreviewMode(event: any): void {
+      const [isToggledOn, isModalPreviewModeOn] = event;
+      if (isModalPreviewModeOn && isToggledOn) {
+        this.$refs.toolbar.classList.add('toolbar-position-during-expanded-full-modal-preview');
+      } else {
+        this.$refs.toolbar.classList.remove('toolbar-position-during-expanded-full-modal-preview');
+      }
+      this.$emit('toggle-full-modal-preview-mode', event.concat(this.$refs.toolbarContainer));
     },
     toggleToolbarPosition(): void {
       ToolbarToggles.toggleToolbarPosition(this.$refs.toolbarContainer);
@@ -123,5 +134,9 @@ export default {
     margin-right: 8px;
     border-color: #9d9d9d !important;
     background-color: white !important;
+  }
+  .toolbar-position-during-expanded-full-modal-preview {
+    float: right;
+    margin-right: 15px;
   }
 </style>

@@ -33,11 +33,15 @@
               @hide-dropdown-menu-callback="addWorkshopEventCallback($event)"
               @prepare-remove-subcomponent-modal="$refs.removeSubcomponentModal.prepare($event)"
               @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
-              @toggle-expanded-modal-preview-mode="$refs.contents.expandModalComponent($event)"
+              @toggle-expanded-modal-preview-mode="$refs.contents.toggleExpandModalalPreviewMode($event)"
+              @toggle-full-modal-preview-mode="$refs.contents.toggleFullModalPreviewMode($event)"
               @play-transition-preview="$refs.contents.playTransitionPreview($event)"
               @stop-transition-preview="$refs.contents.stopTransitionPreview()"
               @toggle-import-subcomponent-mode="toggleImportComponentMode($event)"/>
-            <component-contents ref="contents" :component="currentlySelectedComponent" :componentPreviewAssistance="componentPreviewAssistance"/>
+            <component-contents ref="contents"
+              :component="currentlySelectedComponent"
+              :componentPreviewAssistance="componentPreviewAssistance"
+              @temporarily-switch-component-for-full-modal-preview-mode="tempActiveComponentSwitch($event)"/>
             <div style="height: 18%; display: flex; float: right; margin-right: 10px; margin-top: 105px">
               <div style="position: relative">
                 <div>
@@ -461,6 +465,9 @@ export default {
     },
     selectComponentCard(selectComponentCard: WorkshopComponent): void {
       ComponentManipulationUtils.selectComponent(this, selectComponentCard);
+    },
+    tempActiveComponentSwitch(component: WorkshopComponent): void {
+      ComponentManipulationUtils.tempActiveComponentSwitch(this, component);
     },
     copyComponentCard(selectComponentCard: WorkshopComponent): void {
       ComponentManipulationUtils.copyComponent(this, selectComponentCard);
