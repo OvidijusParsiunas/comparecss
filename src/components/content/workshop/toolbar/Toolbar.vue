@@ -10,7 +10,7 @@
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
         @prepare-remove-subcomponent-modal="$emit('prepare-remove-subcomponent-modal', $event)"
         @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
-        @toggle-expanded-modal-preview-mode="toggleExpandModalalPreviewMode($event)"
+        @toggle-expanded-modal-preview-mode="toggleExpandModalPreviewMode($event)"
         @toggle-full-modal-preview-mode="toggleFullModalPreviewMode($event)"
         @toggle-toolbar-position="toggleToolbarPosition"
         @toggle-import-subcomponent-mode="$emit('toggle-import-subcomponent-mode', $event)"/>
@@ -78,14 +78,15 @@ export default {
       this.$emit('toggle-subcomponent-select-mode', toggleSubcomponentSelectModeEvent);
       if (this.$refs.settings) this.$refs.settings.toggleSubcomponentSelectMode();
     },
-    toggleExpandModalalPreviewMode(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {
+    toggleExpandModalPreviewMode(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {
       this.$emit('toggle-expanded-modal-preview-mode',
         toggleExpandedModalPreviewModeEvent.concat(this.$refs.toolbarContainer, this.$refs.toolbar) as ToggleExpandedModalPreviewModeEvent);
     },
     // MODAL MODE - need event type
     toggleFullModalPreviewMode(event: any): void {
       const toggleFullModalPreviewModeToolbarCallback = this.toggleFullModalPreviewModeCallback.bind(this, event);
-      this.$emit('toggle-full-modal-preview-mode', event.concat(this.$refs.toolbarContainer, toggleFullModalPreviewModeToolbarCallback));
+      this.$emit('toggle-full-modal-preview-mode',
+        event.concat(this.$refs.toolbarContainer, this.$refs.toolbar, toggleFullModalPreviewModeToolbarCallback));
     },
     toggleFullModalPreviewModeCallback(event: any): void {
       const [isToggledOn, isExpandedModalPreviewModeActive] = event;

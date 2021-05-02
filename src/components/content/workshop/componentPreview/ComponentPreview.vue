@@ -60,7 +60,7 @@
     </div>
     <div ref="temporaryComponent"
       class="component-preview-contents component-preview-centered">
-      <base-component v-if="temporaryComponent"
+      <base-component v-if="temporaryComponent && !temporaryComponent.modalDisplayed"
         class="grid-item-position"
         :component="temporaryComponent.component"
         :mouseEvents="temporaryComponent.mouseEvents"
@@ -148,7 +148,7 @@ export default {
         }
       }
     },
-    toggleExpandModalalPreviewMode(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {
+    toggleExpandModalPreviewMode(toggleExpandedModalPreviewModeEvent: ToggleExpandedModalPreviewModeEvent): void {
       const [isToggledExpandedModalPreviewModeToActive, setOptionToDefaultCallback, toolbarPositionToggleElement,
         toolbarContainerElement, toolbarElement] = toggleExpandedModalPreviewModeEvent;
       if (isToggledExpandedModalPreviewModeToActive) {
@@ -173,14 +173,14 @@ export default {
     // MODAL MODE - need event type
     toggleFullModalPreviewMode(event: any): void {
       const [isToggledOn, isExpandedModalPreviewModeActive, toggleFullModalPreviewModeOptionsCallback,
-        toolbarContainerElement, toggleFullModalPreviewModeToolbarCallback] = event;
+        toolbarContainerElement, toolbarElement, toggleFullModalPreviewModeToolbarCallback] = event;
       if (isToggledOn) {
         ToggleFullModalPreviewMode.toggleOn(this, this.$refs.baseComponent.$refs.componentPreview,
-          this.$refs.temporaryComponent, toolbarContainerElement, isExpandedModalPreviewModeActive,
+          this.$refs.temporaryComponent, toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive,
           toggleFullModalPreviewModeOptionsCallback, toggleFullModalPreviewModeToolbarCallback);
       } else {
         ToggleFullModalPreviewMode.toggleOff(this, this.$refs.baseComponent.$refs.componentPreview,
-          this.$refs.temporaryComponent, toolbarContainerElement, isExpandedModalPreviewModeActive,
+          this.$refs.temporaryComponent, toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive,
           toggleFullModalPreviewModeOptionsCallback, toggleFullModalPreviewModeToolbarCallback);
       }
     },

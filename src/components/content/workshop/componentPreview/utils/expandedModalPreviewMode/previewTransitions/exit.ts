@@ -4,8 +4,8 @@ import TransitionUtils from '../utils/transitionUtils';
 
 export default class PreviewExitTransition {
 
-  private static EXIT_TRANSITION_PREVIEW_TIMEOUT_MILLISECONDS = 200;
-  private static RESET_MODAL_AFTER_EXIT_TRANSITION_PREVIEW_TIMEOUT_MILLISECONDS = 400;
+  private static readonly EXIT_TRANSITION_PREVIEW_TIMEOUT_MILLISECONDS = 200;
+  private static readonly RESET_MODAL_AFTER_EXIT_TRANSITION_PREVIEW_TIMEOUT_MILLISECONDS = 400;
 
   private static exitTransitionPreviewCallback(modalElement: HTMLElement): void {
     const pendingModalTransitionPreviewUnset = window.setTimeout(() => {

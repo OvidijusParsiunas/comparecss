@@ -15,7 +15,7 @@ import GeneralUtils from '../utils/generalUtils';
 
 export default class ModeToggleExitTransitionService {
 
-  private static TOOLBAR_FADE_DURATION_ON_DELAY_CANCEL_SECONDS = `0.6s`;
+  private static readonly TOOLBAR_FADE_DURATION_ON_DELAY_CANCEL_SECONDS = '0.6s';
 
   private static toolbarFadeInTransition(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
     toolbarElement.classList.remove(TOOLBAR_ELEMENT_ACTIVE_EXPANDED_MODAL_MODE_CLASS);

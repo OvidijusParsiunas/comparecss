@@ -13,15 +13,15 @@ interface Index {
 
 export default class ComponentPreviewUtils {
   
-  private static subcomponentIdPrefix = 'subcomponent-id-';
-  private static overlayIdPrefix = 'overlay-id-';
+  private static readonly SUBCOMPONENT_ID_PREFIX = 'subcomponent-id-';
+  private static readonly OVERLAY_ID_PREFIX = 'overlay-id-';
 
   private static addIdsViaTraversalOfSubcomponents(subcomponents: Subcomponents,
       subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds): void {
     Object.keys(subcomponents).forEach((subcomponentName: string, index: number) => {
       subcomponentAndOverlayElementIdsObject[subcomponentName] = {
-        subcomponentId: `${ComponentPreviewUtils.subcomponentIdPrefix}${index}`,
-        overlayId: `${ComponentPreviewUtils.overlayIdPrefix}${index}`,
+        subcomponentId: `${ComponentPreviewUtils.SUBCOMPONENT_ID_PREFIX}${index}`,
+        overlayId: `${ComponentPreviewUtils.OVERLAY_ID_PREFIX}${index}`,
       };
     });
   }
@@ -31,8 +31,8 @@ export default class ComponentPreviewUtils {
     Object.keys(subcomponentDropdownStructure).forEach((subcomponentName: string) => {
       if (subcomponentName === ENTITY_DISPLAY_STATUS_REF) return;
       subcomponentAndOverlayElementIdsObject[subcomponentName] = {
-        subcomponentId: `${ComponentPreviewUtils.subcomponentIdPrefix}${index.number}`,
-        overlayId: `${ComponentPreviewUtils.overlayIdPrefix}${index.number}`,
+        subcomponentId: `${ComponentPreviewUtils.SUBCOMPONENT_ID_PREFIX}${index.number}`,
+        overlayId: `${ComponentPreviewUtils.OVERLAY_ID_PREFIX}${index.number}`,
       };
       index.number += 1;
       if (Object.keys(subcomponentDropdownStructure[subcomponentName]).length > 1 || !subcomponentDropdownStructure[subcomponentName][ENTITY_DISPLAY_STATUS_REF]) {

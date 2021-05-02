@@ -109,7 +109,7 @@
             </button>
           </div>
         </div>
-        <!-- have a method instead of isFullModalPreviewModeActive -->
+        <!-- WORK1: have a method instead of using isFullModalPreviewModeActive -->
         <div v-if="!isFullModalPreviewModeActive" style="display: none" ref="toolbarPositionToggle"
           class="toolbar-position-toggle-container" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
           <button
@@ -128,6 +128,7 @@
 <script lang="ts">
 import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER } from '../../../../../consts/elementClassMarkers';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
+import { fullModalPreviewModeState } from '../../componentPreview/utils/fullModalPreviewMode/fullModalPreviewModeState';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ComponentTypeToOptions, componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
@@ -358,6 +359,7 @@ export default {
     },
     toggleFullModalPreviewModeCallback(): void {
       this.isFullModalPreviewModeActive = !this.isFullModalPreviewModeActive;
+      this.isExpandedModalPreviewModeActive = fullModalPreviewModeState.getIsExpandedModalPreviewModeActivated();
       if (this.isFullModalPreviewModeActive) {
         this.hideSettings();
       } else {
@@ -370,7 +372,8 @@ export default {
           // this is a bug fix where upon toggling the full modal preview mode - the toolbarPositionToggle reference is changed
           this.reassignToolbarPositionToggleRef();
           this.toolbarPositionToggleRef.style.display = this.isExpandedModalPreviewModeActive ? 'block' : 'none';
-        })
+        });
+        fullModalPreviewModeState.resetState();
       }
     },
     selectDefaultOption(): void {

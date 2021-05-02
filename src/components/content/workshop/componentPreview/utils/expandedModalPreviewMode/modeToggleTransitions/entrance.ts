@@ -59,7 +59,7 @@ export default class ModeToggleEntranceTransition {
     if (expandedModalPreviewModeState.getExpandedModalModeToolbarContainerPositionState() === EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM) {
       toolbarContainerElement.classList.add(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM);
     }
-    toolbarPositionToggleElement.style.display = 'block';
+    if (toolbarPositionToggleElement) toolbarPositionToggleElement.style.display = 'block';
   }
 
   private static startToolbarTransition(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
@@ -119,5 +119,20 @@ export default class ModeToggleEntranceTransition {
         toolbarPositionToggleElement, transitionDelay);
     }
     expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(true);
+  }
+
+  // WORK1: needs refactoring
+  public static startFullMode(modalEntranceTransition: ModalEntranceTransition, transitionDuration: string, transitionDelay: string, backdropProperties: BackdropProperties,
+      modalElement: HTMLElement, modalOverlayElement: HTMLElement, backdropElement: HTMLElement, toolbarContainerElement: HTMLElement,
+      toolbarElement: HTMLElement): void {
+    GeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, '0s',  backdropElement, modalElement);
+    window.setTimeout(() => {
+      ModeToggleEntranceTransition.startModalAndBackdropTransition(backdropElement, modalElement, modalOverlayElement,
+        backdropProperties, modalEntranceTransition, transitionDuration, transitionDelay);
+    });
+    GeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, '0s', toolbarContainerElement);
+    window.setTimeout(() => {
+      ModeToggleEntranceTransition.startToolbarTransition(toolbarContainerElement, toolbarElement, undefined, transitionDelay);
+    });
   }
 }

@@ -6,10 +6,10 @@ import SharedUtils from './sharedUtils';
 // it has been identified that shadow values of 0px 0px 0px 0px still display a partial shadow
 export default class BoxShadowUtils {
 
-  private static DEFAULT_BOX_SHADOW_PIXEL_VALUES = '0px 0px 0px 0px';
-  private static DEFAULT_BOX_SHADOW_UNSET_VALUE = 'unset';
-  private static DEFAULT_BOX_SHADOW_COLOR_VALUE = '#000000';
-  private static DEFAULT_BOX_SHADOW_SETTINGS_RANGE_VALUE = '0';
+  private static readonly DEFAULT_BOX_SHADOW_PIXEL_VALUES = '0px 0px 0px 0px';
+  private static readonly DEFAULT_BOX_SHADOW_UNSET_VALUE = 'unset';
+  private static readonly DEFAULT_BOX_SHADOW_COLOR_VALUE = '#000000';
+  private static readonly DEFAULT_BOX_SHADOW_SETTINGS_RANGE_VALUE = '0';
   
   private static setUnsetBoxShadowPropertiesToZero(customCss: CustomCss, auxiliaryPartialCss: CustomCss, activeCssPseudoClass: CSS_PSEUDO_CLASSES): void {
     if (customCss[activeCssPseudoClass].boxShadow === BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE) {

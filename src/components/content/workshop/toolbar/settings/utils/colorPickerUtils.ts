@@ -4,8 +4,8 @@ import SharedUtils from './sharedUtils';
 
 export default class ColorPickerUtils {
 
-  public static UNSET_CUSTOM_FEATURE_COLOR_VALUE = 'unset';
-  public static INHERIT_CUSTOM_FEATURE_COLOR_VALUE = 'inherit';
+  public static readonly UNSET_CUSTOM_FEATURE_COLOR_VALUE = 'unset';
+  public static readonly INHERIT_CUSTOM_FEATURE_COLOR_VALUE = 'inherit';
 
   private static updateCustomCss(hexColor: string, updatedSettingSpec: any, subcomponentProperties: SubcomponentProperties): void {
     const { cssProperty, partialCss } = updatedSettingSpec;

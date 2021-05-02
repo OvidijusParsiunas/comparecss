@@ -33,7 +33,7 @@
               @hide-dropdown-menu-callback="addWorkshopEventCallback($event)"
               @prepare-remove-subcomponent-modal="$refs.removeSubcomponentModal.prepare($event)"
               @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
-              @toggle-expanded-modal-preview-mode="$refs.contents.toggleExpandModalalPreviewMode($event)"
+              @toggle-expanded-modal-preview-mode="$refs.contents.toggleExpandModalPreviewMode($event)"
               @toggle-full-modal-preview-mode="$refs.contents.toggleFullModalPreviewMode($event)"
               @play-transition-preview="$refs.contents.playTransitionPreview($event)"
               @stop-transition-preview="$refs.contents.stopTransitionPreview()"

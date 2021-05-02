@@ -5,7 +5,7 @@ import SharedUtils from './sharedUtils';
 
 export default class RangeUtils {
 
-  private static DEFAULT_RANGE_VALUE = 0;
+  private static readonly DEFAULT_RANGE_VALUE = 0;
 
   private static activeTriggersForCustomCss(trigger: any, subcomponentProperties: SubcomponentProperties,
       actionsDropdownsObjects: unknown): void {

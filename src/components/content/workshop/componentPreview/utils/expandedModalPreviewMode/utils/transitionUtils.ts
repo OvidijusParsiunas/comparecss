@@ -7,10 +7,10 @@ import GeneralUtils from './generalUtils';
 
 export default class TransitionUtils {
 
-  private static ENTRANCE_TRANSITION_PREVIEW_DELAY_MILLISECONDS = 150;
-  private static BACKDROP_FADE_IN_TRANSITION_DURATION_SECONDS = '0.1s';
-  private static BACKDROP_FADE_OUT_TRANSITION_DURATION_SECONDS = '0.15s';
-  private static EXIT_TRANSITION_DURATION_REDUCTION_ON_NEW_DURATION_MILLISECONDS = 420;
+  private static readonly ENTRANCE_TRANSITION_PREVIEW_DELAY_MILLISECONDS = 150;
+  private static readonly BACKDROP_FADE_IN_TRANSITION_DURATION_SECONDS = '0.1s';
+  private static readonly BACKDROP_FADE_OUT_TRANSITION_DURATION_SECONDS = '0.15s';
+  private static readonly EXIT_TRANSITION_DURATION_REDUCTION_ON_NEW_DURATION_MILLISECONDS = 420;
 
   public static cancelModalTransitionPreview(modalElement: HTMLElement): void {
     if (expandedModalPreviewModeState.getIsTransitionPreviewInProgressState()) {

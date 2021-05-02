@@ -4,7 +4,7 @@ import JSZip from 'jszip';
 
 export default class Downloadfiles {
 
-  private static fileName = 'cssymphony';
+  private static readonly FILE_NAME = 'cssymphony';
 
   private static export(folder: JSZip): void {
     const pom = document.createElement('a');
@@ -20,14 +20,14 @@ export default class Downloadfiles {
 
   private static addCSSFiles(customCss: string, cssForJS: string, zipFolder: JSZip): void {
     if (cssForJS) customCss += cssForJS;
-    zipFolder.file(`${this.fileName}.css`, customCss);
+    zipFolder.file(`${Downloadfiles.FILE_NAME}.css`, customCss);
     const allCssMinified = new CleanCSS({}).minify(customCss);
-    if (!allCssMinified.errors.length) { zipFolder.file(`${this.fileName}.min.css`, allCssMinified.styles); }
+    if (!allCssMinified.errors.length) { zipFolder.file(`${Downloadfiles.FILE_NAME}.min.css`, allCssMinified.styles); }
   }
 
   private static addJSFiles(js: string, jsmin: string, zipFolder: JSZip): void {
-    if (js) zipFolder.file(`${this.fileName}.js`, js);
-    if (jsmin) { zipFolder.file(`${this.fileName}.min.js`, jsmin); }
+    if (js) zipFolder.file(`${Downloadfiles.FILE_NAME}.js`, js);
+    if (jsmin) { zipFolder.file(`${Downloadfiles.FILE_NAME}.min.js`, jsmin); }
   }
 
   private static createZipFolder(): JSZip {
@@ -37,10 +37,10 @@ export default class Downloadfiles {
   }
 
   public static exportZip(customCss: string, customJS: JSBuilderResult): void {
-    const zipFolder = this.createZipFolder();
+    const zipFolder = Downloadfiles.createZipFolder();
     const { js, jsmin, cssForJs } = customJS;
-    this.addJSFiles(js, jsmin, zipFolder);
-    this.addCSSFiles(customCss, cssForJs, zipFolder);
-    this.export(zipFolder);
+    Downloadfiles.addJSFiles(js, jsmin, zipFolder);
+    Downloadfiles.addCSSFiles(customCss, cssForJs, zipFolder);
+    Downloadfiles.export(zipFolder);
   }
 }

@@ -2,7 +2,7 @@ import { WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 
 export default class ProcessClassedName {
   
-  private static minClassLength = 1;
+  private static readonly MIN_CLASS_LENGTH = 1;
 
   private static insertSubstringIntoClassName(className: string, insertedString: string, index: number): string {
     return className.substring(0, index) + insertedString + className.substring(index + 1)
@@ -20,9 +20,9 @@ export default class ProcessClassedName {
     const noLetterRegex = /[^A-Z]/i;
     const subjectCharacter = className.charAt(index);
     const processedCharacter = (noLetterRegex.test(subjectCharacter) ? '' : subjectCharacter);
-    className = this.insertSubstringIntoClassName(className, processedCharacter, index);
+    className = ProcessClassedName.insertSubstringIntoClassName(className, processedCharacter, index);
     if (noLetterRegex.test(className.charAt(index))) {
-      return this.removeConsecutiveNumbersAndSymbolsAtIndex(className, index);
+      return ProcessClassedName.removeConsecutiveNumbersAndSymbolsAtIndex(className, index);
     }
     return className;
   }
@@ -30,15 +30,15 @@ export default class ProcessClassedName {
   private static replaceDigitsAtIndex(className: string, replaceWith: string, index: number): string {
     const noLetterHyphenUnderscoreRegex = /[^A-Z-_]/i;
     const replacedCharacter = className.charAt(index).replace(noLetterHyphenUnderscoreRegex, replaceWith);
-    return this.insertSubstringIntoClassName(className, replacedCharacter, index);
+    return ProcessClassedName.insertSubstringIntoClassName(className, replacedCharacter, index);
   }
 
   public static process(className: string): string {
-    className = this.replaceDigitsAtIndex(className, '-', 0);
+    className = ProcessClassedName.replaceDigitsAtIndex(className, '-', 0);
     if (className.charAt(0) === '-') {
-      className = this.removeConsecutiveNumbersAndSymbolsAtIndex(className, 1);
+      className = ProcessClassedName.removeConsecutiveNumbersAndSymbolsAtIndex(className, 1);
     }
-    className = this.replaceEverythingExceptAlphanumericHyphenAndUnderscoreFromIndex(className, '-', 1);
+    className = ProcessClassedName.replaceEverythingExceptAlphanumericHyphenAndUnderscoreFromIndex(className, '-', 1);
     return className.toLowerCase();
   }
 
@@ -50,11 +50,11 @@ export default class ProcessClassedName {
   private static postfixAddition(className: string, components: WorkshopComponent[], postfixNumber: number, originalClassName?: string): string {
     // this checker is required incase the new postfix results in the original class name
     if (className === originalClassName) return className;
-    if (components.map((component) => component.className).includes(this.buildClassNameWithPostfix(className, postfixNumber))) {
+    if (components.map((component) => component.className).includes(ProcessClassedName.buildClassNameWithPostfix(className, postfixNumber))) {
       postfixNumber += 1;
-      return this.postfixAddition(className, components, postfixNumber, originalClassName);
+      return ProcessClassedName.postfixAddition(className, components, postfixNumber, originalClassName);
     }
-    return this.buildClassNameWithPostfix(className, postfixNumber);
+    return ProcessClassedName.buildClassNameWithPostfix(className, postfixNumber);
   }
 
   static addPostfixIfClassNameTaken(className: string, components: WorkshopComponent[], postfixString: string, originalClassName?: string): string {
@@ -62,20 +62,20 @@ export default class ProcessClassedName {
     if (components.map((component) => component.className).includes(className)) {
       className = `${className}${postfixString}`;
       const initialAppendedPostfixNumber = 1;
-      return this.postfixAddition(className, components, initialAppendedPostfixNumber, originalClassName);
+      return ProcessClassedName.postfixAddition(className, components, initialAppendedPostfixNumber, originalClassName);
     }
     return className;
   }
 
   private static resetIfClassNameTooShort(className: string, placeholder: string): [string, boolean] {
-    return className && className.length <= this.minClassLength ? [placeholder, true] : [className, false];
+    return className && className.length <= ProcessClassedName.MIN_CLASS_LENGTH ? [placeholder, true] : [className, false];
   }
 
   public static finalize(className: string | null, placeholder: string, components: WorkshopComponent[], originalClassName?: string): string {
     if (className === originalClassName) return className;
-    const [resultClassName, isReset] = this.resetIfClassNameTooShort(className, placeholder);
+    const [resultClassName, isReset] = ProcessClassedName.resetIfClassNameTooShort(className, placeholder);
     if (isReset) return resultClassName;
-    return this.addPostfixIfClassNameTaken(resultClassName, components, '', originalClassName);
+    return ProcessClassedName.addPostfixIfClassNameTaken(resultClassName, components, '', originalClassName);
   }
 }
 

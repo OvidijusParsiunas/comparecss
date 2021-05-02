@@ -5,7 +5,7 @@ import TransitionUtils from '../utils/transitionUtils';
 
 export default class SlideTransitions {
 
-  private static SLIDE_DISTANCE_NUMBER = 40;
+  private static readonly SLIDE_DISTANCE_NUMBER = 40;
 
   private static prepareEntranceTransition(modalElement: HTMLElement): string {
     const currentTopStyleValue = modalElement.style.top || '0px';
