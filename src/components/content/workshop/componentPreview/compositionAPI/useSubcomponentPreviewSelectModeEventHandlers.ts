@@ -33,11 +33,14 @@ export default function useSubcomponentPreviewSelectModeEventHandlers(): UseSubc
   const subcomponentMouseDown = (): void => { return; }
   
   const subcomponentMouseUp = (): void => { return; };
-  
+
+  const subcomponentClick = (): void => { return; };
+
   return {
     subcomponentMouseEnter,
     subcomponentMouseLeave,
     subcomponentMouseDown,
     subcomponentMouseUp,
+    subcomponentClick,
   };
 }

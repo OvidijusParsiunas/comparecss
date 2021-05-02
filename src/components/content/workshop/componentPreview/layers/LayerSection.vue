@@ -25,6 +25,7 @@
         @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseLeave()"
         @mousedown="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseDown()"
         @mouseup="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseUp()"
+        @click="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentClick()"
         :style="nestedSubcomponent.subcomponentProperties.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK
           ? [
               [ nestedSubcomponent.subcomponentProperties.inheritedCss || '' ],

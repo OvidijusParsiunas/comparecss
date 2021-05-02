@@ -3,4 +3,5 @@ export interface UseSubcomponentPreviewEventHandlers {
   subcomponentMouseLeave: () => void;
   subcomponentMouseDown: () => void;
   subcomponentMouseUp: () => void;
+  subcomponentClick: () => void;
 }

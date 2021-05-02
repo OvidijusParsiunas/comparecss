@@ -25,13 +25,6 @@ export default class ComponentManipulationUtils {
     optionsComponent.$refs.toolbar.updateToolbarForNewComponent();
   }
 
-  public static tempActiveComponentSwitch(optionsComponent: ComponentOptions, newComponent: WorkshopComponent): void {
-    // this is used to keep the current component card selected
-    if (optionsComponent.currentlySelectedComponent) optionsComponent.currentlySelectedComponent.currentlyUsedForFullModalPreview = true;
-    delete newComponent.currentlyUsedForFullModalPreview;
-    optionsComponent.currentlySelectedComponent = newComponent;
-  }
-
   public static addNewComponent(optionsComponent: ComponentOptions, newComponent: WorkshopComponent): void {
     (optionsComponent.components as undefined as WorkshopComponent[]).push(newComponent);
     ComponentManipulationUtils.switchActiveComponent(optionsComponent, newComponent);

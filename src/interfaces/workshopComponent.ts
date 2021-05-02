@@ -159,6 +159,4 @@ export interface WorkshopComponent {
   componentStatus: { isRemoved: Boolean };
   // used to reassign references when the subcomponents have been deep copied
   referenceSharingExecutables?: ((...any: any) => void)[];
-  // used to keep the current component card selected when viewing a button in the full modal preview mode
-  currentlyUsedForFullModalPreview?: boolean;
 }

@@ -64,7 +64,7 @@ export default {
       if (this.currentlySelectedImportComponent && this.currentlySelectedImportComponent === this.thisComponent) {
         return 'component-selected-to-import';
       }
-      if (this.thisComponent === this.currentlySelectedComponent || this.thisComponent.currentlyUsedForFullModalPreview) {
+      if (this.thisComponent === this.currentlySelectedComponent) {
         return 'component-selected';
       }
       return '';

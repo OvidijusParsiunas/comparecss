@@ -5,7 +5,8 @@ import { expandedModalPreviewModeState } from '../utils/expandedModalPreviewMode
 import { CustomCss, SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 
-export default function useSubcomponentPreviewEventHandlers(subcomponentProperties: SubcomponentProperties): UseSubcomponentPreviewEventHandlers {
+export default function useSubcomponentPreviewEventHandlers(subcomponentProperties: SubcomponentProperties,
+    clickCallback: () => void): UseSubcomponentPreviewEventHandlers {
 
   let overwrittenDefaultPropertiesByHover = { hasBeenSet: false, css: {} };
   let overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
@@ -62,11 +63,16 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
       overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
     }
   }
-  
+
+  const subcomponentClick = (): void => {
+    if (clickCallback) clickCallback();
+  }
+
   return {
     subcomponentMouseEnter,
     subcomponentMouseLeave,
     subcomponentMouseDown,
     subcomponentMouseUp,
+    subcomponentClick,
   };
 }

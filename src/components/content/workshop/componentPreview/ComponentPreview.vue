@@ -7,7 +7,7 @@
       ? component.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.color : 'unset'}"
     @mouseenter="componentPreviewMouseEnter()"
     @mouseleave="componentPreviewMouseLeave()">
-    <div style="margin: 0; position: absolute; z-index: 0; text-align: center;"
+    <div class="component-preview-contents"
       :class="[
         (component.subcomponents[BASE_SUB_COMPONENT].customFeatures
           && component.subcomponents[BASE_SUB_COMPONENT].customFeatures.componentCenteringInParent
@@ -37,6 +37,7 @@
           <!-- parent component -->
           <base-component ref="baseComponent"
             class="grid-item-position"
+            :style="{display: !temporaryComponent || temporaryComponent.modalDisplayed ? 'block' : 'none'}"
             :component="component"
             :mouseEvents="mouseEvents"
             :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"/>
@@ -56,6 +57,14 @@
         </div>
         <div class="grid-item grid-item-position"></div>
       </div>
+    </div>
+    <div ref="temporaryComponent"
+      class="component-preview-contents component-preview-centered">
+      <base-component v-if="temporaryComponent"
+        class="grid-item-position"
+        :component="temporaryComponent.component"
+        :mouseEvents="temporaryComponent.mouseEvents"
+        :subcomponentAndOverlayElementIds="temporaryComponent.subcomponentAndOverlayElementIds"/>
     </div>
   </div>
 </template>
@@ -77,7 +86,7 @@ import PreviewExitTransition from './utils/expandedModalPreviewMode/previewTrans
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
 import TransitionUtils from './utils/expandedModalPreviewMode/utils/transitionUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
-import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
+import { TemporaryComponent } from '../../../../interfaces/temporaryComponent';
 import ComponentPreviewUtils from './utils/componentPreviewUtils';
 
 interface Consts {
@@ -88,7 +97,7 @@ interface Data {
   subcomponentAndOverlayElementIds: SubcomponentAndOverlayElementIds;
   mouseEvents: SubcomponentPreviewMouseEvents;
   changeMouseEventsToDefaultOnComponentPreviewMouseEnter: boolean;
-  temporaryModalComponent: WorkshopComponent;
+  temporaryComponent: TemporaryComponent;
 }
 
 export default {
@@ -101,7 +110,7 @@ export default {
     subcomponentAndOverlayElementIds: null,
     mouseEvents: {},
     changeMouseEventsToDefaultOnComponentPreviewMouseEnter: false,
-    temporaryModalComponent: null,
+    temporaryComponent: null,
   }),
   methods: {
     componentPreviewMouseLeave(): void {
@@ -166,11 +175,13 @@ export default {
       const [isToggledOn, isExpandedModalPreviewModeActive, toggleFullModalPreviewModeOptionsCallback,
         toolbarContainerElement, toggleFullModalPreviewModeToolbarCallback] = event;
       if (isToggledOn) {
-        ToggleFullModalPreviewMode.toggleOn(this, this.$refs.baseComponent.$refs.componentPreview, toolbarContainerElement,
-           isExpandedModalPreviewModeActive, toggleFullModalPreviewModeOptionsCallback, toggleFullModalPreviewModeToolbarCallback);
+        ToggleFullModalPreviewMode.toggleOn(this, this.$refs.baseComponent.$refs.componentPreview,
+          this.$refs.temporaryComponent, toolbarContainerElement, isExpandedModalPreviewModeActive,
+          toggleFullModalPreviewModeOptionsCallback, toggleFullModalPreviewModeToolbarCallback);
       } else {
-        ToggleFullModalPreviewMode.toggleOff(this, this.$refs.baseComponent.$refs.componentPreview, toolbarContainerElement,
-          isExpandedModalPreviewModeActive, toggleFullModalPreviewModeOptionsCallback, toggleFullModalPreviewModeToolbarCallback);
+        ToggleFullModalPreviewMode.toggleOff(this, this.$refs.baseComponent.$refs.componentPreview,
+          this.$refs.temporaryComponent, toolbarContainerElement, isExpandedModalPreviewModeActive,
+          toggleFullModalPreviewModeOptionsCallback, toggleFullModalPreviewModeToolbarCallback);
       }
     },
     playTransitionPreview(playTransitionPreviewEvent: PlayTransitionPreviewEvent): void {
@@ -216,6 +227,12 @@ export default {
     top: -2.6%;
     left: -30vw;
     width: 100vw;
+  }
+  .component-preview-contents {
+    margin: 0;
+    z-index: 0;
+    position: absolute;
+    text-align: center;
   }
   .component-preview-centered {
     top: 50%;

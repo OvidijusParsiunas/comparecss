@@ -7,7 +7,8 @@
         @mouseenter="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentMouseEnter()"
         @mouseleave="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentMouseLeave()"
         @mousedown="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentMouseDown()"
-        @mouseup="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentMouseUp()">
+        @mouseup="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentMouseUp()"
+        @click="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentClick()">
           <layer-sections
             v-if="layer.sections"
             :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"

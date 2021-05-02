@@ -109,6 +109,7 @@
             </button>
           </div>
         </div>
+        <!-- have a method instead of isFullModalPreviewModeActive -->
         <div v-if="!isFullModalPreviewModeActive" style="display: none" ref="toolbarPositionToggle"
           class="toolbar-position-toggle-container" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
           <button
