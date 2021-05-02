@@ -26,11 +26,10 @@ export default class ComponentManipulationUtils {
   }
 
   public static tempActiveComponentSwitch(optionsComponent: ComponentOptions, newComponent: WorkshopComponent): void {
-    if (optionsComponent.currentlySelectedComponent && optionsComponent.currentlySelectedComponent.type !== newComponent.type) {
-      ComponentJs.manipulateJS(optionsComponent.currentlySelectedComponent.type, 'revokeJS');
-    }
+    // this is used to keep the current component card selected
+    if (optionsComponent.currentlySelectedComponent) optionsComponent.currentlySelectedComponent.currentlyUsedForFullModalPreview = true;
+    delete newComponent.currentlyUsedForFullModalPreview;
     optionsComponent.currentlySelectedComponent = newComponent;
-    ComponentJs.manipulateJS(optionsComponent.currentlySelectedComponent.type, 'executeJS');
   }
 
   public static addNewComponent(optionsComponent: ComponentOptions, newComponent: WorkshopComponent): void {
