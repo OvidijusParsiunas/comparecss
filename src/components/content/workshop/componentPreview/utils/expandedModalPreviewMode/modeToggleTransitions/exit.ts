@@ -13,7 +13,7 @@ import { BackdropProperties } from '../../../../../../../interfaces/workshopComp
 import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
 import GeneralUtils from '../utils/generalUtils';
 
-export default class ModeToggleExitTransitionService {
+export default class ModeToggleExitTransition {
 
   private static readonly TOOLBAR_FADE_DURATION_ON_DELAY_CANCEL_SECONDS = '0.6s';
 
@@ -24,7 +24,7 @@ export default class ModeToggleExitTransitionService {
     if (expandedModalPreviewModeState.getExpandedModalModeToolbarContainerPositionState() === EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM) {
       toolbarContainerElement.classList.remove(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM);
     }
-    toolbarPositionToggleElement.style.display = 'none';
+    if (toolbarPositionToggleElement) toolbarPositionToggleElement.style.display = 'none';
     window.setTimeout(() => {
       GeneralUtils.unsetTransitionProperties(toolbarContainerElement);
       expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(false);
@@ -54,15 +54,15 @@ export default class ModeToggleExitTransitionService {
     setOptionToDefaultCallback();
     const exitTransitionModalDefaultProperties = expandedModalPreviewModeState.getCurrentExitTransitionModalDefaultPropertiesState();
     GeneralUtils.setModalProperties(modalElement, exitTransitionModalDefaultProperties);
-    ModeToggleExitTransitionService.modalAndBackdropFadeInTransition(backdropElement, backdropProperties, modalElement);
-    ModeToggleExitTransitionService.toolbarFadeInTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
+    ModeToggleExitTransition.modalAndBackdropFadeInTransition(backdropElement, backdropProperties, modalElement);
+    ModeToggleExitTransition.toolbarFadeInTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
   }
 
   private static cancelEntranceTransitionFunctionality(modalElement: HTMLElement): string {
     GeneralUtils.cancelAllPendingTransitionFunctionality(modalElement);
     if (expandedModalPreviewModeState.getIsWaitingTransitionDelayState()) {
       expandedModalPreviewModeState.setIsWaitingTransitionDelayState(false);
-      return ModeToggleExitTransitionService.TOOLBAR_FADE_DURATION_ON_DELAY_CANCEL_SECONDS;
+      return ModeToggleExitTransition.TOOLBAR_FADE_DURATION_ON_DELAY_CANCEL_SECONDS;
     } else {
       return GeneralUtils.getNewTransitionDuration();
     }
@@ -74,12 +74,12 @@ export default class ModeToggleExitTransitionService {
   //     toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
   //   let wasPreviousTransitionInterrupted = false;
   //   if (expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState()) {
-  //     const cancelResult = ModeToggleExitTransitionService.cancelEntranceTransitionFunctionality(modalElement);
+  //     const cancelResult = ModeToggleExitTransition.cancelEntranceTransitionFunctionality(modalElement);
   //     if (cancelResult) { transitionDuration = cancelResult; }
   //     wasPreviousTransitionInterrupted = true;
   //   }
   //   GeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, transitionDuration, toolbarContainerElement);
-  //   modalExitTransition(transitionDuration, modalElement, ModeToggleExitTransitionService.exitTransitionCallback.bind(this, setOptionToDefaultCallback) as ExitTransitionCallback,
+  //   modalExitTransition(transitionDuration, modalElement, ModeToggleExitTransition.exitTransitionCallback.bind(this, setOptionToDefaultCallback) as ExitTransitionCallback,
   //     backdropElement, backdropProperties, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, modalOverlayElement, wasPreviousTransitionInterrupted);
   //   expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(true);
   // }
@@ -98,12 +98,21 @@ export default class ModeToggleExitTransitionService {
       toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
     let wasPreviousTransitionInterrupted = false;
     if (expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState()) {
-      transitionDuration = ModeToggleExitTransitionService.cancelEntranceTransitionFunctionality(modalElement);
+      transitionDuration = ModeToggleExitTransition.cancelEntranceTransitionFunctionality(modalElement);
       wasPreviousTransitionInterrupted = true;
     }
-    ModeToggleExitTransitionService.toolbarFadeOutTransition(toolbarContainerElement);
-    modalExitTransition(transitionDuration, modalElement, ModeToggleExitTransitionService.exitTransitionCallback.bind(this, setOptionToDefaultCallback) as ExitTransitionCallback,
+    ModeToggleExitTransition.toolbarFadeOutTransition(toolbarContainerElement);
+    modalExitTransition(transitionDuration, modalElement, ModeToggleExitTransition.exitTransitionCallback.bind(this, setOptionToDefaultCallback) as ExitTransitionCallback,
       backdropElement, backdropProperties, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, modalOverlayElement, wasPreviousTransitionInterrupted);
     expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(true);
+  }
+
+  // WORK1: needs refactoring
+  public static startFullMode(modalExitTransition: ModalExitTransition, transitionDuration: string, setOptionToDefaultCallback: () => void,
+      backdropElement: HTMLElement, backdropProperties: BackdropProperties, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
+      toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
+    GeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, TOOLBAR_FADE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
+    modalExitTransition(transitionDuration, modalElement, ModeToggleExitTransition.exitTransitionCallback.bind(this, setOptionToDefaultCallback) as ExitTransitionCallback,
+      backdropElement, backdropProperties, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, modalOverlayElement);
   }
 }

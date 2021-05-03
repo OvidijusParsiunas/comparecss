@@ -37,10 +37,18 @@
           <!-- parent component -->
           <base-component ref="baseComponent"
             class="grid-item-position"
-            :style="{display: !temporaryComponent || temporaryComponent.modalDisplayed ? 'block' : 'none'}"
+            :style="{display: !temporaryComponent.isFullPreviewModeOn || !temporaryComponent.displayed ? 'block' : 'none'}"
             :component="component"
             :mouseEvents="mouseEvents"
             :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"/>
+          <div ref="temporaryComponent"
+            class="component-preview-contents component-preview-centered">
+            <base-component v-if="temporaryComponent.isFullPreviewModeOn && temporaryComponent.displayed"
+              class="grid-item-position"
+              :component="temporaryComponent.component"
+              :mouseEvents="temporaryComponent.mouseEvents"
+              :subcomponentAndOverlayElementIds="temporaryComponent.subcomponentAndOverlayElementIds"/>
+          </div>
           <!-- UX - SUBCOMPONENT SELECT - set this to appropriate dimensions when the event is fired -->
           <!-- <div ref="selectSubcomponentOverlay1" style="width: 1000px; height: 700px; background-color: #ff010100; position: absolute; border: 0px; top: -221px; left: -220px; z-index: 1; cursor: pointer;"></div> -->
         </div>
@@ -58,14 +66,6 @@
         <div class="grid-item grid-item-position"></div>
       </div>
     </div>
-    <div ref="temporaryComponent"
-      class="component-preview-contents component-preview-centered">
-      <base-component v-if="temporaryComponent && !temporaryComponent.modalDisplayed"
-        class="grid-item-position"
-        :component="temporaryComponent.component"
-        :mouseEvents="temporaryComponent.mouseEvents"
-        :subcomponentAndOverlayElementIds="temporaryComponent.subcomponentAndOverlayElementIds"/>
-    </div>
   </div>
 </template>
 
@@ -73,7 +73,7 @@
 import { subcomponentAndOverlayElementIdsState } from '../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import { transitionTypeToFunctionality } from './utils/expandedModalPreviewMode/transitionInitializers/transitionTypeToFunctionality';
 import ExpandedModalPreviewModeToggleEntranceTransition from './utils/expandedModalPreviewMode/modeToggleTransitions/entrance';
-import ExpandedModalPreviewModeToggleExitTransitionService from './utils/expandedModalPreviewMode/modeToggleTransitions/exit';
+import ExpandedModalPreviewModeToggleExitTransition from './utils/expandedModalPreviewMode/modeToggleTransitions/exit';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
@@ -86,6 +86,9 @@ import PreviewExitTransition from './utils/expandedModalPreviewMode/previewTrans
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
 import TransitionUtils from './utils/expandedModalPreviewMode/utils/transitionUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
+import { componentTypeToStyles } from '../newComponent/types/componentTypeToStyles';
+import { NEW_COMPONENT_STYLES } from '../../../../consts/newComponentStyles.enum';
+import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { TemporaryComponent } from '../../../../interfaces/temporaryComponent';
 import ComponentPreviewUtils from './utils/componentPreviewUtils';
 
@@ -110,7 +113,15 @@ export default {
     subcomponentAndOverlayElementIds: null,
     mouseEvents: {},
     changeMouseEventsToDefaultOnComponentPreviewMouseEnter: false,
-    temporaryComponent: null,
+    // component is created here in order to keep it reactive (enable the css mode changes to be rendered)
+    // the temporaryComponent property can be renamed to allow the creation of multiple temporary components with the same interface
+    temporaryComponent: {
+      isFullPreviewModeOn: false,
+      displayed: false,
+      mouseEvents: null,
+      subcomponentAndOverlayElementIds: null,
+      component: componentTypeToStyles[NEW_COMPONENT_TYPES.BUTTON][NEW_COMPONENT_STYLES.DEFAULT].createNewComponent(),
+    },
   }),
   methods: {
     componentPreviewMouseLeave(): void {
@@ -162,7 +173,7 @@ export default {
           this.$refs.baseComponent.$refs.componentPreviewOverlay, this.$refs.componentPreviewContainer, toolbarContainerElement,
             toolbarElement, toolbarPositionToggleElement);
       } else {
-        ExpandedModalPreviewModeToggleExitTransitionService.start(
+        ExpandedModalPreviewModeToggleExitTransition.start(
           transitionTypeToFunctionality[this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.exit.type],
           this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.exit.duration, setOptionToDefaultCallback,
           this.$refs.componentPreviewContainer, this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.backdrop,

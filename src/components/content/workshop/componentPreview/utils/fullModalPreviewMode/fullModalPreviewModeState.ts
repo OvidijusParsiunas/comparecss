@@ -19,8 +19,8 @@ function getIsExpandedModalPreviewModeActivated(): boolean {
 }
 
 function resetState(): void {
-  isTransitionInProgress = false;
-  isExpandedModalPreviewModeActivated = false;
+  setIsTransitionInProgress(false);
+  setIsExpandedModalPreviewModeActivated(false);
 }
 
 export const fullModalPreviewModeState = {

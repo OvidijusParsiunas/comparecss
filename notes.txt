@@ -8,6 +8,10 @@ esc button
 enter - submit/cancel - potential - call the option 'actions'
 potentially add x button to border coloring
 close button should probably be imported - but need to work through the logistics of inherited css for it
+rename isFullModalPreviewModeActive to is isFullPreviewModeActive
+display the toggle element correctly when exiting the full preview mode
+fix the red button after the modal is closed in the full preview mode
+backdrop transition: opacity 0.15s linear;
 
 close button may need to be a badge
 consider having a dropdown to choose which border side to edit

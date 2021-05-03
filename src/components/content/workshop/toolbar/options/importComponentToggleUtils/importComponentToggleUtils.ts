@@ -76,7 +76,8 @@ export default class ImportComponentToggleUtils {
     return { shouldRepeat: false };
   }
 
-  private static getButtonElement(clickedElement: HTMLElement): HTMLElement {
+  // WORK1 - move this out to another utils file
+  public static getButtonElement(clickedElement: HTMLElement): HTMLElement {
     if (clickedElement.tagName === 'path') {
       clickedElement = clickedElement.parentElement;
     }

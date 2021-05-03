@@ -352,6 +352,9 @@ export default {
         [this.isExpandedModalPreviewModeActive, setOptionToDefaultCallback, this.toolbarPositionToggleRef] as ToggleExpandedModalPreviewModeEvent);
     },
     toggleFullModalPreviewMode(): void {
+      if (this.isFullModalPreviewModeActive) {
+        this.isExpandedModalPreviewModeActive = fullModalPreviewModeState.getIsExpandedModalPreviewModeActivated();
+      }
       const toggleFullModalPreviewModeOptionsCallback = this.toggleFullModalPreviewModeCallback;
       // MODAL MODE - need event type
       this.$emit('toggle-full-modal-preview-mode', [!this.isFullModalPreviewModeActive,
@@ -359,7 +362,6 @@ export default {
     },
     toggleFullModalPreviewModeCallback(): void {
       this.isFullModalPreviewModeActive = !this.isFullModalPreviewModeActive;
-      this.isExpandedModalPreviewModeActive = fullModalPreviewModeState.getIsExpandedModalPreviewModeActivated();
       if (this.isFullModalPreviewModeActive) {
         this.hideSettings();
       } else {

@@ -40,7 +40,8 @@
               @toggle-import-subcomponent-mode="toggleImportComponentMode($event)"/>
             <component-contents ref="contents"
               :component="currentlySelectedComponent"
-              :componentPreviewAssistance="componentPreviewAssistance"/>
+              :componentPreviewAssistance="componentPreviewAssistance"
+              @full-preview-mode-display-modal="addWorkshopEventCallback($event)"/>
             <div style="height: 18%; display: flex; float: right; margin-right: 10px; margin-top: 105px">
               <div style="position: relative">
                 <div>
