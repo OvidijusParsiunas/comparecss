@@ -8,6 +8,7 @@ import { DOM_EVENT_TRIGGER_KEYS } from '@/consts/domEventTriggerKeys.enum';
 import ImportComponentToggleUtils from '../../../toolbar/options/importComponentToggleUtils/importComponentToggleUtils';
 import { WorkshopEventCallback } from '@/interfaces/workshopEventCallback';
 import { OPTION_MENU_BUTTON_MARKER } from '@/consts/elementClassMarkers';
+import { WorkshopEventCallbackUtils } from '../../../toolbar/options/workshopEventCallbackUtils/workshopEventCallbackUtils';
 
 export default class ToggleDisplays {
 
@@ -38,7 +39,7 @@ export default class ToggleDisplays {
       }
       return { shouldRepeat: true };
     }
-    const buttonElement = ImportComponentToggleUtils.getButtonElement(event.target as HTMLElement);
+    const buttonElement = WorkshopEventCallbackUtils.getButtonElement(event.target as HTMLElement);
     if (buttonElement.classList.contains(OPTION_MENU_BUTTON_MARKER)) {
       return { shouldRepeat: false };
     }

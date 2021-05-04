@@ -3,6 +3,7 @@ import { TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS } from '../../../componen
 import { SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ToggleImportComponentModeEvent } from '../../../../../../interfaces/toggleImportComponentModeEvent';
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
+import { WorkshopEventCallbackUtils } from '../workshopEventCallbackUtils/workshopEventCallbackUtils';
 import { CustomSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
@@ -76,17 +77,6 @@ export default class ImportComponentToggleUtils {
     return { shouldRepeat: false };
   }
 
-  // WORK1 - move this out to another utils file
-  public static getButtonElement(clickedElement: HTMLElement): HTMLElement {
-    if (clickedElement.tagName === 'path') {
-      clickedElement = clickedElement.parentElement;
-    }
-    if (clickedElement.tagName === 'svg') {
-      clickedElement = clickedElement.parentElement;
-    }
-    return clickedElement;
-  }
-
   private static setImportedComponentProperties(optionsComponent: ComponentOptions): void {
     const { subcomponents, activeSubcomponentName } = optionsComponent.component;
     if (subcomponents[activeSubcomponentName].importedComponent.lastSelectectedSubcomponentToImport) {
@@ -125,7 +115,7 @@ export default class ImportComponentToggleUtils {
       }
       return { shouldRepeat: true };
     }
-    const buttonElement = ImportComponentToggleUtils.getButtonElement(event.target as HTMLElement);
+    const buttonElement = WorkshopEventCallbackUtils.getButtonElement(event.target as HTMLElement);
     if (buttonElement === optionsComponent.$refs.importComponentToggle) {
       ImportComponentToggleUtils.resetImportedComponent(optionsComponent.component);
       ImportComponentToggleUtils.removeTemporaryProperties(optionsComponent);

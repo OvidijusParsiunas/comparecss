@@ -1,4 +1,4 @@
-// WORK1: will be swapped out for the alredy existing transition state
+// WORK1: will be swapped out for the alredy existing transition state // careful around the mouseevents
 let isTransitionInProgress = false;
 let isExpandedModalPreviewModeActivated = false;
 
