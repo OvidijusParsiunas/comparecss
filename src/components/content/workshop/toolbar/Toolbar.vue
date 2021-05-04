@@ -11,7 +11,7 @@
         @prepare-remove-subcomponent-modal="$emit('prepare-remove-subcomponent-modal', $event)"
         @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
         @toggle-expanded-modal-preview-mode="toggleExpandModalPreviewMode($event)"
-        @toggle-full-modal-preview-mode="toggleFullModalPreviewMode($event)"
+        @toggle-full-preview-mode="toggleFullPreviewMode($event)"
         @toggle-toolbar-position="toggleToolbarPosition"
         @toggle-import-subcomponent-mode="$emit('toggle-import-subcomponent-mode', $event)"/>
       <settings v-if="isSettingsDisplayed" ref="settings"
@@ -25,11 +25,11 @@
 </template>
 
 <script lang="ts">
+import { TOOLBAR_CONTAINER_GENERAL_CLASSES, TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS } from '../../../../consts/toolbarClasses';
 import ToolbarToggles from '../componentPreview/utils/expandedModalPreviewMode/modeToggleTransitions/toolbarToggles';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../consts/workshopToolbarOptionTypes.enum';
-import { TOOLBAR_CONTAINER_GENERAL_CLASSES } from '../../../../consts/toolbarClasses';
 import { optionToSettings } from './settings/types/optionToSettings';
 import { Option } from '../../../../interfaces/componentOptions';
 import settings from './settings/Settings.vue';
@@ -82,18 +82,18 @@ export default {
       this.$emit('toggle-expanded-modal-preview-mode',
         toggleExpandedModalPreviewModeEvent.concat(this.$refs.toolbarContainer, this.$refs.toolbar) as ToggleExpandedModalPreviewModeEvent);
     },
-    // MODAL MODE - need event type
-    toggleFullModalPreviewMode(event: any): void {
-      const toggleFullModalPreviewModeToolbarCallback = this.toggleFullModalPreviewModeCallback.bind(this, event);
-      this.$emit('toggle-full-modal-preview-mode',
-        event.concat(this.$refs.toolbarContainer, this.$refs.toolbar, toggleFullModalPreviewModeToolbarCallback));
+    // WORK1 - need event type
+    toggleFullPreviewMode(event: any): void {
+      const toggleFullPreviewModeToolbarCallback = this.toggleFullPreviewModeCallback.bind(this, event);
+      this.$emit('toggle-full-preview-mode',
+        event.concat(this.$refs.toolbarContainer, this.$refs.toolbar, toggleFullPreviewModeToolbarCallback));
     },
-    toggleFullModalPreviewModeCallback(event: any): void {
+    toggleFullPreviewModeCallback(event: any): void {
       const [isToggledOn, isExpandedModalPreviewModeActive] = event;
       if (isExpandedModalPreviewModeActive && isToggledOn) {
-        this.$refs.toolbar.classList.add('toolbar-position-during-expanded-full-modal-preview');
+        this.$refs.toolbar.classList.add(TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS);
       } else {
-        this.$refs.toolbar.classList.remove('toolbar-position-during-expanded-full-modal-preview');
+        this.$refs.toolbar.classList.remove(TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS);
       }
     },
     toggleToolbarPosition(): void {
@@ -139,7 +139,7 @@ export default {
     border-color: #9d9d9d !important;
     background-color: white !important;
   }
-  .toolbar-position-during-expanded-full-modal-preview {
+  .toolbar-position-full-preview-active {
     float: right;
     margin-right: 15px;
   }

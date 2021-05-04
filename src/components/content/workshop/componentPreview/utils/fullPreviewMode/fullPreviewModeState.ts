@@ -23,7 +23,7 @@ function resetState(): void {
   setIsExpandedModalPreviewModeActivated(false);
 }
 
-export const fullModalPreviewModeState = {
+export const fulPreviewModeState = {
   resetState,
   setIsTransitionInProgress,
   getIsTransitionInProgress,

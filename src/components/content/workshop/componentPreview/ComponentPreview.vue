@@ -80,7 +80,6 @@ import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomp
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
 import { ModalEntranceTransition, ModalExitTransition } from '../../../../interfaces/modalTransitions';
 import PreviewEntranceTransition from './utils/expandedModalPreviewMode/previewTransitions/entrance';
-import ToggleFullModalPreviewMode from './utils/fullModalPreviewMode/toggleFullModalPreviewMode';
 import { PlayTransitionPreviewEvent } from '../../../../interfaces/playTransitionPreviewEvent';
 import PreviewExitTransition from './utils/expandedModalPreviewMode/previewTransitions/exit';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
@@ -88,6 +87,7 @@ import TransitionUtils from './utils/expandedModalPreviewMode/utils/transitionUt
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import { componentTypeToStyles } from '../newComponent/types/componentTypeToStyles';
 import { NEW_COMPONENT_STYLES } from '../../../../consts/newComponentStyles.enum';
+import ToggleFullPreviewMode from './utils/fullPreviewMode/toggleFullPreviewMode';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { TemporaryComponent } from '../../../../interfaces/temporaryComponent';
 import ComponentPreviewUtils from './utils/componentPreviewUtils';
@@ -182,18 +182,18 @@ export default {
             toolbarElement, toolbarPositionToggleElement);
       }
     },
-    // MODAL MODE - need event type
-    toggleFullModalPreviewMode(event: any): void {
-      const [isToggledOn, isExpandedModalPreviewModeActive, toggleFullModalPreviewModeOptionsCallback,
-        toolbarContainerElement, toolbarElement, toggleFullModalPreviewModeToolbarCallback] = event;
+    // WORK1 - need event type
+    toggleFullPreviewMode(event: any): void {
+      const [isToggledOn, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback,
+        toolbarContainerElement, toolbarElement, toggleFullPreviewModeToolbarCallback] = event;
       if (isToggledOn) {
-        ToggleFullModalPreviewMode.toggleOn(this, this.$refs.baseComponent.$refs.componentPreview,
-          this.$refs.temporaryComponent, toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive,
-          toggleFullModalPreviewModeOptionsCallback, toggleFullModalPreviewModeToolbarCallback);
+        ToggleFullPreviewMode.toggleOn(this, this.$refs.baseComponent.$refs.componentPreview, this.$refs.temporaryComponent,
+          toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback,
+          toggleFullPreviewModeToolbarCallback);
       } else {
-        ToggleFullModalPreviewMode.toggleOff(this, this.$refs.baseComponent.$refs.componentPreview,
-          this.$refs.temporaryComponent, toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive,
-          toggleFullModalPreviewModeOptionsCallback, toggleFullModalPreviewModeToolbarCallback);
+        ToggleFullPreviewMode.toggleOff(this, this.$refs.baseComponent.$refs.componentPreview, this.$refs.temporaryComponent,
+          toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback,
+          toggleFullPreviewModeToolbarCallback);
       }
     },
     playTransitionPreview(playTransitionPreviewEvent: PlayTransitionPreviewEvent): void {

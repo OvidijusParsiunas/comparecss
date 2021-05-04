@@ -34,7 +34,7 @@
               @prepare-remove-subcomponent-modal="$refs.removeSubcomponentModal.prepare($event)"
               @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
               @toggle-expanded-modal-preview-mode="$refs.contents.toggleExpandModalPreviewMode($event)"
-              @toggle-full-modal-preview-mode="$refs.contents.toggleFullModalPreviewMode($event)"
+              @toggle-full-preview-mode="$refs.contents.toggleFullPreviewMode($event)"
               @play-transition-preview="$refs.contents.playTransitionPreview($event)"
               @stop-transition-preview="$refs.contents.stopTransitionPreview()"
               @toggle-import-subcomponent-mode="toggleImportComponentMode($event)"/>

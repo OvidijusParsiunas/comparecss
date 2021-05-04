@@ -8,7 +8,6 @@ esc button
 enter - submit/cancel - potential - call the option 'actions'
 potentially add x button to border coloring
 close button should probably be imported - but need to work through the logistics of inherited css for it
-rename isFullModalPreviewModeActive to is isFullPreviewModeActive
 backdrop transition: opacity 0.15s linear;
 clicking enter/escape when using the overlay dropdown does not remove the overlay
 

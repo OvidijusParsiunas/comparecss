@@ -1,7 +1,7 @@
 <template>
-  <div class="options-container" :class="{'options-container-full-modal-preview': isFullModalPreviewModeActive}">
+  <div class="options-container" :class="{'options-container-full-preview-mode': isFullPreviewModeActive}">
     <div class="options-container-inner">
-      <div v-if="!isFullModalPreviewModeActive" class="btn-group option-component-button">
+      <div v-if="!isFullPreviewModeActive" class="btn-group option-component-button">
         <button v-if="isSubcomponentSelectModeButtonDisplayed"
           id="component-select-button" type="button" class="btn option-action-button" :class="[SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
           @click="initiateSubcomponentSelectMode">
@@ -21,8 +21,8 @@
           @mouse-click-new-option="newSubcomponentNameClicked($event)"
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       </div>
-      <div v-if="component.type === MODAL_COMPONENT_TYPE || isFullModalPreviewModeActive" class="btn-group option-component-button">
-        <button v-if="!isFullModalPreviewModeActive" ref="expandedModalPreviewModeToggle"
+      <div v-if="component.type === MODAL_COMPONENT_TYPE || isFullPreviewModeActive" class="btn-group option-component-button">
+        <button v-if="!isFullPreviewModeActive" ref="expandedModalPreviewModeToggle"
           type="button" class="btn btn-group-option option-action-button button-group-first-predominant-component expanded-modal-preview-mode-button"
           :class="[EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
           @keydown.enter.prevent="$event.preventDefault()" @click="toggleModalExpandMode">
@@ -36,18 +36,18 @@
         <button
           type="button" class="btn btn-group-option option-action-button expanded-modal-preview-mode-button"
           :class="OPTION_MENU_BUTTON_MARKER"
-          @keydown.enter.prevent="$event.preventDefault()" @click="toggleFullModalPreviewMode">
-          <font-awesome-icon v-if="isFullModalPreviewModeActive"
+          @keydown.enter.prevent="$event.preventDefault()" @click="toggleFullPreviewMode">
+          <font-awesome-icon v-if="isFullPreviewModeActive"
             :style="{ ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
-            class="modal-button-icon full-modal-preview-icon" icon="stop"/>
+            class="modal-button-icon full-preview-icon" icon="stop"/>
           <font-awesome-icon v-else
             :style="{ ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
-            class="modal-button-icon full-modal-preview-icon" icon="play"/>
+            class="modal-button-icon full-preview-icon" icon="play"/>
         </button>
       </div>
       <div class="btn-group option-component-button"
         :style="{marginRight: component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef ? '0px' : '8px'}"
-        v-if="!isFullModalPreviewModeActive && 
+        v-if="!isFullPreviewModeActive && 
           (component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus || component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef)">
         <transition-group name="horizontal-transition">
           <button ref="importComponentToggle"
@@ -75,13 +75,13 @@
         </transition-group>
       </div>
       <transition-group :name="isDropdownAndOptionButtonsTransitionAllowed ? 'horizontal-transition' : ''">
-        <button v-if="!isFullModalPreviewModeActive && isInSyncButtonDisplayed()"
+        <button v-if="!isFullPreviewModeActive && isInSyncButtonDisplayed()"
           id="sync-transition-animation-padding"
           :style="{marginLeft: component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef ? '-23px' : '-29px'}"
           class="option-action-button button-group-secondary-predominant-component" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
             <font-awesome-icon style="color: #54a9f100" class="sync-icon" icon="sync-alt"/>
         </button>
-        <div v-if="!isFullModalPreviewModeActive
+        <div v-if="!isFullPreviewModeActive
             && (!component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus
               || component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed)"
           :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}" > 
@@ -109,8 +109,8 @@
             </button>
           </div>
         </div>
-        <!-- WORK1: have a method instead of using isFullModalPreviewModeActive -->
-        <div v-if="!isFullModalPreviewModeActive" style="display: none" ref="toolbarPositionToggle"
+        <!-- WORK1: have a method instead of using isFullPreviewModeActive -->
+        <div v-if="!isFullPreviewModeActive" style="display: none" ref="toolbarPositionToggle"
           class="toolbar-position-toggle-container" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
           <button
             type="button" class="btn toolbar-position-toggle"
@@ -128,9 +128,9 @@
 <script lang="ts">
 import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER } from '../../../../../consts/elementClassMarkers';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
-import { fullModalPreviewModeState } from '../../componentPreview/utils/fullModalPreviewMode/fullModalPreviewModeState';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ComponentTypeToOptions, componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
+import { fulPreviewModeState } from '../../componentPreview/utils/fullPreviewMode/fullPreviewModeState';
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { removeSubcomponentModalState } from './removeSubcomponentModalState/removeSubcomponentModalState';
@@ -180,7 +180,7 @@ interface Data {
   isSubcomponentSelectModeButtonDisplayed: boolean;
   activeOption: Option;
   isExpandedModalPreviewModeActive: boolean;
-  isFullModalPreviewModeActive: boolean;
+  isFullPreviewModeActive: boolean;
   isImportComponentModeActive: boolean;
   hasImportComponentModeClosedExpandedModal: boolean;
   isSubcomponentButtonsTransitionAllowed: boolean;
@@ -215,7 +215,7 @@ export default {
     isSubcomponentSelectModeButtonDisplayed: false,
     activeOption: { buttonName: null, type: null },
     isExpandedModalPreviewModeActive: false,
-    isFullModalPreviewModeActive: false,
+    isFullPreviewModeActive: false,
     isImportComponentModeActive: false,
     hasImportComponentModeClosedExpandedModal: false,
     isSubcomponentButtonsTransitionAllowed: false,
@@ -351,18 +351,18 @@ export default {
       this.$emit('toggle-expanded-modal-preview-mode',
         [this.isExpandedModalPreviewModeActive, setOptionToDefaultCallback, this.toolbarPositionToggleRef] as ToggleExpandedModalPreviewModeEvent);
     },
-    toggleFullModalPreviewMode(): void {
-      if (this.isFullModalPreviewModeActive) {
-        this.isExpandedModalPreviewModeActive = fullModalPreviewModeState.getIsExpandedModalPreviewModeActivated();
+    toggleFullPreviewMode(): void {
+      if (this.isFullPreviewModeActive) {
+        this.isExpandedModalPreviewModeActive = fulPreviewModeState.getIsExpandedModalPreviewModeActivated();
       }
-      const toggleFullModalPreviewModeOptionsCallback = this.toggleFullModalPreviewModeCallback;
-      // MODAL MODE - need event type
-      this.$emit('toggle-full-modal-preview-mode', [!this.isFullModalPreviewModeActive,
-        this.isExpandedModalPreviewModeActive, toggleFullModalPreviewModeOptionsCallback]);
+      const toggleFullPreviewModeOptionsCallback = this.toggleFullPreviewModeCallback;
+      // WORK1 - need event type
+      this.$emit('toggle-full-preview-mode', [!this.isFullPreviewModeActive,
+        this.isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback]);
     },
-    toggleFullModalPreviewModeCallback(): void {
-      this.isFullModalPreviewModeActive = !this.isFullModalPreviewModeActive;
-      if (this.isFullModalPreviewModeActive) {
+    toggleFullPreviewModeCallback(): void {
+      this.isFullPreviewModeActive = !this.isFullPreviewModeActive;
+      if (this.isFullPreviewModeActive) {
         this.hideSettings();
       } else {
         if (this.activeOption.buttonName &&
@@ -375,7 +375,7 @@ export default {
           this.reassignToolbarPositionToggleRef();
           this.toolbarPositionToggleRef.style.display = this.isExpandedModalPreviewModeActive ? 'block' : 'none';
         });
-        fullModalPreviewModeState.resetState();
+        fulPreviewModeState.resetState();
       }
     },
     selectDefaultOption(): void {
@@ -450,7 +450,7 @@ export default {
     background-color: rgb(251 251 251);
     border-radius: 20px;
   }
-  .options-container-full-modal-preview {
+  .options-container-full-preview-mode {
     width: fit-content;
     right: 0px;
     margin-right: 0px;
@@ -491,7 +491,7 @@ export default {
   .expand-icon {
     width: 14px;
   }
-  .full-modal-preview-icon {
+  .full-preview-icon {
     width: 10px;
     color: rgb(92 93 92);
   }
