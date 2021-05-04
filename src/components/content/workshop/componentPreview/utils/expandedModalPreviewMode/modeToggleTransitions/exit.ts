@@ -46,8 +46,7 @@ export default class ModeToggleExitTransition {
     }, MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS);
   }
 
-
-  private static exitTransitionCallback(setOptionToDefaultCallback: () => void, modalElement: HTMLElement, backdropElement: HTMLElement,
+  public static exitTransitionCallback(setOptionToDefaultCallback: () => void, modalElement: HTMLElement, backdropElement: HTMLElement,
       backdropProperties: BackdropProperties, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
       modalOverlayElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
     GeneralUtils.toggleModalStaticPosition(modalElement, modalOverlayElement, ADD_CLASS);
@@ -105,14 +104,5 @@ export default class ModeToggleExitTransition {
     modalExitTransition(transitionDuration, modalElement, ModeToggleExitTransition.exitTransitionCallback.bind(this, setOptionToDefaultCallback) as ExitTransitionCallback,
       backdropElement, backdropProperties, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, modalOverlayElement, wasPreviousTransitionInterrupted);
     expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(true);
-  }
-
-  // WORK1: needs refactoring
-  public static startFullMode(modalExitTransition: ModalExitTransition, transitionDuration: string, setOptionToDefaultCallback: () => void,
-      backdropElement: HTMLElement, backdropProperties: BackdropProperties, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
-      toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
-    GeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, TOOLBAR_FADE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
-    modalExitTransition(transitionDuration, modalElement, ModeToggleExitTransition.exitTransitionCallback.bind(this, setOptionToDefaultCallback) as ExitTransitionCallback,
-      backdropElement, backdropProperties, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, modalOverlayElement);
   }
 }

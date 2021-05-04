@@ -62,7 +62,7 @@ export default class ModeToggleEntranceTransition {
     if (toolbarPositionToggleElement) toolbarPositionToggleElement.style.display = 'block';
   }
 
-  private static startToolbarTransition(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
+  public static startToolbarTransition(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
       toolbarPositionToggleElement: HTMLElement, transitionDelay: string): void {
     ModeToggleEntranceTransition.prepareToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
     const [toolbarTransitionDurationSeconds, toolbarTransitionDurationMilliseconds] = ModeToggleEntranceTransition
@@ -86,7 +86,7 @@ export default class ModeToggleEntranceTransition {
     backdropProperties.visible = true;
   }
 
-  private static startModalAndBackdropTransition(backdropElement: HTMLElement, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
+  public static startModalAndBackdropTransition(backdropElement: HTMLElement, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
       backdropProperties: BackdropProperties, modalEntranceTransition: ModalEntranceTransition, transitionDuration: string, transitionDelay?: string): void {
     GeneralUtils.toggleModalStaticPosition(modalElement, modalOverlayElement, REMOVE_CLASS);
     ModeToggleEntranceTransition.setBackdropStyle(backdropElement, backdropProperties);
@@ -119,20 +119,5 @@ export default class ModeToggleEntranceTransition {
         toolbarPositionToggleElement, transitionDelay);
     }
     expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(true);
-  }
-
-  // WORK1: needs refactoring
-  public static startFullMode(modalEntranceTransition: ModalEntranceTransition, transitionDuration: string, transitionDelay: string, backdropProperties: BackdropProperties,
-      modalElement: HTMLElement, modalOverlayElement: HTMLElement, backdropElement: HTMLElement, toolbarContainerElement: HTMLElement,
-      toolbarElement: HTMLElement): void {
-    GeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, '0s',  backdropElement, modalElement);
-    window.setTimeout(() => {
-      ModeToggleEntranceTransition.startModalAndBackdropTransition(backdropElement, modalElement, modalOverlayElement,
-        backdropProperties, modalEntranceTransition, transitionDuration, transitionDelay);
-    });
-    GeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, '0s', toolbarContainerElement);
-    window.setTimeout(() => {
-      ModeToggleEntranceTransition.startToolbarTransition(toolbarContainerElement, toolbarElement, undefined, transitionDelay);
-    });
   }
 }

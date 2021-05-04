@@ -1,14 +1,12 @@
-import ExpandedModalPreviewModeToggleEntranceTransition from '../../utils/expandedModalPreviewMode/modeToggleTransitions/entrance';
-import ExpandedModalPreviewModeToggleExitTransition from '../../utils/expandedModalPreviewMode/modeToggleTransitions/exit';
 import { transitionTypeToFunctionality } from '../expandedModalPreviewMode/transitionInitializers/transitionTypeToFunctionality';
 import { fullModalPreviewModeState } from './fullModalPreviewModeState';
 import { ComponentOptions } from 'vue';
 import { WorkshopEventCallbackReturn } from '@/interfaces/workshopEventCallbackReturn';
 import { DOM_EVENT_TRIGGER_KEYS } from '@/consts/domEventTriggerKeys.enum';
-import ImportComponentToggleUtils from '../../../toolbar/options/importComponentToggleUtils/importComponentToggleUtils';
 import { WorkshopEventCallback } from '@/interfaces/workshopEventCallback';
 import { OPTION_MENU_BUTTON_MARKER } from '@/consts/elementClassMarkers';
 import { WorkshopEventCallbackUtils } from '../../../toolbar/options/workshopEventCallbackUtils/workshopEventCallbackUtils';
+import ToggleTransitions from './toggleTransitions';
 
 export default class ToggleDisplays {
 
@@ -27,7 +25,7 @@ export default class ToggleDisplays {
       if (event.key === DOM_EVENT_TRIGGER_KEYS.ESCAPE) {
         
       } else if (event.key === DOM_EVENT_TRIGGER_KEYS.ENTER) {
-        ExpandedModalPreviewModeToggleExitTransition.startFullMode(
+        ToggleTransitions.toggleExitTransition(
           transitionTypeToFunctionality[componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.transitions.exit.type],
           componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.transitions.exit.duration,
           ToggleDisplays.switchToButton.bind(this, componentPreviewComponent), componentPreviewComponent.$refs.componentPreviewContainer,
@@ -49,7 +47,7 @@ export default class ToggleDisplays {
   // WORK1: needs refactoring
   public static displayModal(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement): void {
     if (!fullModalPreviewModeState.getIsTransitionInProgress()) {
-      ExpandedModalPreviewModeToggleEntranceTransition.startFullMode(
+      ToggleTransitions.toggleEntranceTransition(
         transitionTypeToFunctionality[componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.transitions.entrance.type],
         componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.transitions.entrance.duration,
         componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.transitions.entrance.delay,
