@@ -73,8 +73,8 @@
 import { subcomponentAndOverlayElementIdsState } from '../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import { transitionTypeToFunctionality } from './utils/expandedModalPreviewMode/transitionInitializers/transitionTypeToFunctionality';
 import ExpandedModalPreviewModeToggleEntranceTransition from './utils/expandedModalPreviewMode/modeToggleTransitions/entrance';
-import ExpandedModalPreviewModeToggleExitTransition from './utils/expandedModalPreviewMode/modeToggleTransitions/exit';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
+import ExpandedModalPreviewModeToggleExitTransition from './utils/expandedModalPreviewMode/modeToggleTransitions/exit';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';

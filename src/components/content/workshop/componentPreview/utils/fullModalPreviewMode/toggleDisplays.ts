@@ -11,6 +11,8 @@ import { OPTION_MENU_BUTTON_MARKER } from '@/consts/elementClassMarkers';
 
 export default class ToggleDisplays {
 
+  public static readonly VIEW_CHANGE_MILLISECONDS = 10;
+
   // WORK1: needs refactoring
   private static switchToButton(componentPreviewComponent: ComponentOptions): void {
     componentPreviewComponent.temporaryComponent.displayed = true;
@@ -54,14 +56,17 @@ export default class ToggleDisplays {
         componentPreviewComponent.$refs.baseComponent.$refs.componentPreview,
         componentPreviewComponent.$refs.baseComponent.$refs.componentPreviewOverlay,
         componentPreviewComponent.$refs.componentPreviewContainer,
-        toolbarContainerElement, toolbarElement); 
-      componentPreviewComponent.temporaryComponent.displayed = false;
-      const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
+        toolbarContainerElement, toolbarElement);
+      const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE]);
       const workshopEventCallback: WorkshopEventCallback = {
         keyTriggers, func: ToggleDisplays.hideModal.bind(this, componentPreviewComponent, toolbarContainerElement, toolbarElement) };
       componentPreviewComponent.$emit('full-preview-mode-display-modal', workshopEventCallback);
       toolbarElement.classList.add('toolbar-position-during-expanded-full-modal-preview');
       fullModalPreviewModeState.setIsExpandedModalPreviewModeActivated(true);
+      // the timeout is used to fix a bug where upon clicking the button - the mouse leave and mouse up events do not change back the css correctly
+      setTimeout(() => {
+        componentPreviewComponent.temporaryComponent.displayed = false;
+      }, ToggleDisplays.VIEW_CHANGE_MILLISECONDS);
     }
     fullModalPreviewModeState.setIsTransitionInProgress(true);
   }

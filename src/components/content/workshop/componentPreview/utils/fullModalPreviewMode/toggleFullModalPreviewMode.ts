@@ -15,7 +15,6 @@ import ToggleDisplays from "./toggleDisplays";
 
 export default class ToggleFullModalPreviewMode {
 
-  private static readonly VIEW_CHANGE_MILLISECONDS = 10;
 
   private static startToolbarTransitionWithFadeOut(toolbarContainerElement: HTMLElement, toggleFullModalPreviewModeOptionsCallback: () => void,
       toggleFullModalPreviewModeToolbarCallback: () => void, toolbarContainerPositionCallback: (toolbarContainerElement: HTMLElement) => void): void {
@@ -27,7 +26,7 @@ export default class ToggleFullModalPreviewMode {
       GeneralUtils.setToolbarContainerPointerEvents(toolbarContainerElement, POINTER_EVENTS_REMOVE);
       setTimeout(() => {
         GeneralUtils.opacityFadeTransition(OPACITY_VISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);        
-      }, ToggleFullModalPreviewMode.VIEW_CHANGE_MILLISECONDS);
+      }, ToggleDisplays.VIEW_CHANGE_MILLISECONDS);
     }, MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS);
   }
 
@@ -47,13 +46,14 @@ export default class ToggleFullModalPreviewMode {
 
   private static createButtonForModal(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement,
       toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean): void {
+    componentPreviewComponent.temporaryComponent.displayed = !isExpandedModalPreviewModeActive;
+    componentPreviewComponent.temporaryComponent.isFullPreviewModeOn = true;
+    if (componentPreviewComponent.temporaryComponent.subcomponentAndOverlayElementIds) return;
     const subcomponentAndOverlayElementIds = ComponentPreviewUtils.generateSubcomponentAndOverlayIds(componentPreviewComponent.temporaryComponent.component);
     const mouseEvents = ComponentPreviewUtils.generateMouseEvents(subcomponentAndOverlayElementIds, componentPreviewComponent.temporaryComponent.component.subcomponents,
       ToggleDisplays.displayModal.bind(this, componentPreviewComponent, toolbarContainerElement, toolbarElement));
-    componentPreviewComponent.temporaryComponent.displayed = !isExpandedModalPreviewModeActive;
     componentPreviewComponent.temporaryComponent.subcomponentAndOverlayElementIds = subcomponentAndOverlayElementIds;
     componentPreviewComponent.temporaryComponent.mouseEvents = mouseEvents;
-    componentPreviewComponent.temporaryComponent.isFullPreviewModeOn = true;
   }
 
   private static startModalAndBackdropTransitionWithFadeOut(modalElement: HTMLElement, temporaryComponentElement: HTMLElement,
@@ -65,7 +65,7 @@ export default class ToggleFullModalPreviewMode {
       setTimeout(() => {
         GeneralUtils.opacityFadeTransition(OPACITY_VISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, modalElement);
         GeneralUtils.opacityFadeTransition(OPACITY_VISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, temporaryComponentElement);
-      }, ToggleFullModalPreviewMode.VIEW_CHANGE_MILLISECONDS);
+      }, ToggleDisplays.VIEW_CHANGE_MILLISECONDS);
     }, MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS);
   }
 
