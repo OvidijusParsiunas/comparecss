@@ -41,13 +41,13 @@ export default class ToggleFullModalPreviewMode {
   }
 
   private static switchButtonToModal(componentPreviewComponent: ComponentOptions): void {
-    componentPreviewComponent.temporaryComponent.isFullPreviewModeOn = false;
+    componentPreviewComponent.isFullPreviewModeOn = false;
   }
 
   private static createButtonForModal(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement,
       toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean): void {
     componentPreviewComponent.temporaryComponent.displayed = !isExpandedModalPreviewModeActive;
-    componentPreviewComponent.temporaryComponent.isFullPreviewModeOn = true;
+    componentPreviewComponent.isFullPreviewModeOn = true;
     if (componentPreviewComponent.temporaryComponent.subcomponentAndOverlayElementIds) return;
     const subcomponentAndOverlayElementIds = ComponentPreviewUtils.generateSubcomponentAndOverlayIds(componentPreviewComponent.temporaryComponent.component);
     const mouseEvents = ComponentPreviewUtils.generateMouseEvents(subcomponentAndOverlayElementIds, componentPreviewComponent.temporaryComponent.component.subcomponents,

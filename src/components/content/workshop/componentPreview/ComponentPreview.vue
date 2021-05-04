@@ -37,13 +37,13 @@
           <!-- parent component -->
           <base-component ref="baseComponent"
             class="grid-item-position"
-            :style="{display: !temporaryComponent.isFullPreviewModeOn || !temporaryComponent.displayed ? 'block' : 'none'}"
+            :style="{display: !isFullPreviewModeOn || !temporaryComponent.displayed ? 'block' : 'none'}"
             :component="component"
             :mouseEvents="mouseEvents"
             :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"/>
           <div ref="temporaryComponent"
             class="component-preview-contents component-preview-centered">
-            <base-component v-if="temporaryComponent.isFullPreviewModeOn && temporaryComponent.displayed"
+            <base-component v-if="isFullPreviewModeOn && temporaryComponent.displayed"
               class="grid-item-position"
               :component="temporaryComponent.component"
               :mouseEvents="temporaryComponent.mouseEvents"
@@ -101,6 +101,7 @@ interface Data {
   mouseEvents: SubcomponentPreviewMouseEvents;
   changeMouseEventsToDefaultOnComponentPreviewMouseEnter: boolean;
   temporaryComponent: TemporaryComponent;
+  isFullPreviewModeOn: boolean;
 }
 
 export default {
@@ -113,10 +114,10 @@ export default {
     subcomponentAndOverlayElementIds: null,
     mouseEvents: {},
     changeMouseEventsToDefaultOnComponentPreviewMouseEnter: false,
+    isFullPreviewModeOn: false,
     // component is created here in order to keep it reactive (enable the css mode changes to be rendered)
-    // the temporaryComponent property can be renamed to allow the creation of multiple temporary components with the same interface
+    // the temporaryComponent property can be renamed to allow the creation of multiple temporary components using the same interface
     temporaryComponent: {
-      isFullPreviewModeOn: false,
       displayed: false,
       mouseEvents: null,
       subcomponentAndOverlayElementIds: null,
