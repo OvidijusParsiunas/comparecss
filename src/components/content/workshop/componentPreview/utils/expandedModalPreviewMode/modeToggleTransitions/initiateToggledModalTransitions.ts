@@ -13,7 +13,6 @@ type ExitTransitionCallback = (modalExitTransition: ModalExitTransition, transit
 
 export default class InitiateToggledModalTransitions {
 
-  // add type
   public static startEntranceTransition(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
       transitionCallback: EntranceTransitionCallback, toolbarPositionToggleElement?: HTMLElement): void {
     transitionCallback(

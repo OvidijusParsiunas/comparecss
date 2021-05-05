@@ -5,8 +5,8 @@ import { WorkshopEventCallbackReturn } from '../../../../../../../../interfaces/
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../../../consts/domEventTriggerKeys.enum';
 import { OPTION_MENU_BUTTON_MARKER } from '../../../../../../../../consts/elementClassMarkers';
 import { fulPreviewModeState } from '../../fullPreviewModeState';
-import ToggleTransitions from '../../toggleTransitions';
 import GeneralUtils from '../generalUtils';
+import Transitions from './transitions';
 import { ComponentOptions } from 'vue';
 
 export default class ToggleModal {
@@ -23,7 +23,7 @@ export default class ToggleModal {
         
       } else if (event.key === DOM_EVENT_TRIGGER_KEYS.ENTER) {
         InitiateToggledModalTransitions.startExitTransition(componentPreviewComponent, toolbarContainerElement, toolbarElement,
-          ToggleTransitions.toggleExitTransition, ToggleModal.switchBetweenModalAndButton.bind(this, componentPreviewComponent, true));
+          Transitions.exitTransition, ToggleModal.switchBetweenModalAndButton.bind(this, componentPreviewComponent, true));
         fulPreviewModeState.setIsExpandedModalPreviewModeActivated(false);
         return { shouldRepeat: false };
       }
@@ -36,11 +36,11 @@ export default class ToggleModal {
     return { shouldRepeat: true };
   }
 
-  // WORK1: needs refactoring
   public static displayModal(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement): void {
+    // cannot use expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState() because it has a timeout
     if (!fulPreviewModeState.getIsTransitionInProgress()) {
       InitiateToggledModalTransitions.startEntranceTransition(componentPreviewComponent, toolbarContainerElement, toolbarElement,
-        ToggleTransitions.toggleEntranceTransition);
+        Transitions.entranceTransition);
       GeneralUtils.createWorkshopEventCallback(componentPreviewComponent,
         ToggleModal.hideModal.bind(this, componentPreviewComponent, toolbarContainerElement, toolbarElement))
       toolbarElement.classList.add(TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS);
