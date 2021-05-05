@@ -25,12 +25,12 @@
 </template>
 
 <script lang="ts">
-import { TOOLBAR_CONTAINER_GENERAL_CLASSES, TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS } from '../../../../consts/toolbarClasses';
 import ToolbarToggles from '../componentPreview/utils/expandedModalPreviewMode/modeToggleTransitions/toolbarToggles';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../consts/workshopToolbarOptionTypes.enum';
 import { ToggleFullPreviewModeEvent } from '../../../../interfaces/toggleFullPreviewModeEvent';
+import { TOOLBAR_CONTAINER_GENERAL_CLASSES } from '../../../../consts/toolbarClasses';
 import { optionToSettings } from './settings/types/optionToSettings';
 import { Option } from '../../../../interfaces/componentOptions';
 import settings from './settings/Settings.vue';
@@ -84,17 +84,8 @@ export default {
         toggleExpandedModalPreviewModeEvent.concat(this.$refs.toolbarContainer, this.$refs.toolbar) as ToggleExpandedModalPreviewModeEvent);
     },
     toggleFullPreviewMode(event: ToggleFullPreviewModeEvent): void {
-      const toggleFullPreviewModeToolbarCallback = this.toggleFullPreviewModeCallback.bind(this, event);
       this.$emit('toggle-full-preview-mode',
-        event.concat(this.$refs.toolbarContainer, this.$refs.toolbar, toggleFullPreviewModeToolbarCallback) as ToggleFullPreviewModeEvent);
-    },
-    toggleFullPreviewModeCallback(event: any): void {
-      const [isToggledOn, isExpandedModalPreviewModeActive] = event;
-      if (isExpandedModalPreviewModeActive && isToggledOn) {
-        this.$refs.toolbar.classList.add(TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS);
-      } else {
-        this.$refs.toolbar.classList.remove(TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS);
-      }
+        event.concat(this.$refs.toolbarContainer, this.$refs.toolbar) as ToggleFullPreviewModeEvent);
     },
     toggleToolbarPosition(): void {
       ToolbarToggles.toggleToolbarPosition(this.$refs.toolbarContainer);

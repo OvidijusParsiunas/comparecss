@@ -185,15 +185,13 @@ export default {
     },
     toggleFullPreviewMode(event: ToggleFullPreviewModeEvent): void {
       const [isToggledOn, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback,
-        toolbarContainerElement, toolbarElement, toggleFullPreviewModeToolbarCallback] = event;
+        toolbarContainerElement, toolbarElement] = event;
       if (isToggledOn) {
         ToggleFullPreviewMode.toggleOn(this, this.$refs.baseComponent.$refs.componentPreview, this.$refs.temporaryComponent,
-          toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback,
-          toggleFullPreviewModeToolbarCallback);
+          toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback);
       } else {
         ToggleFullPreviewMode.toggleOff(this, this.$refs.baseComponent.$refs.componentPreview, this.$refs.temporaryComponent,
-          toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback,
-          toggleFullPreviewModeToolbarCallback);
+          toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback);
       }
     },
     playTransitionPreview(playTransitionPreviewEvent: PlayTransitionPreviewEvent): void {
