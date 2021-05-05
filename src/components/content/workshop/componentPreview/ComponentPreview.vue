@@ -72,6 +72,7 @@
 <script lang="ts">
 import { subcomponentAndOverlayElementIdsState } from '../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import { transitionTypeToFunctionality } from './utils/expandedModalPreviewMode/transitionInitializers/transitionTypeToFunctionality';
+import InitiateToggledModalTransitions from './utils/expandedModalPreviewMode/modeToggleTransitions/initiateToggledModalTransitions';
 import ExpandedModalPreviewModeToggleEntranceTransition from './utils/expandedModalPreviewMode/modeToggleTransitions/entrance';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import ExpandedModalPreviewModeToggleExitTransition from './utils/expandedModalPreviewMode/modeToggleTransitions/exit';
@@ -167,20 +168,11 @@ export default {
       if (isToggledExpandedModalPreviewModeToActive) {
         // strategies
         // https://tympanus.net/codrops/2013/06/25/nifty-modal-window-effects/
-        ExpandedModalPreviewModeToggleEntranceTransition.start(
-          transitionTypeToFunctionality[this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.entrance.type],
-          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.entrance.duration,
-          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.entrance.delay,
-          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.backdrop, this.$refs.baseComponent.$refs.componentPreview,
-          this.$refs.baseComponent.$refs.componentPreviewOverlay, this.$refs.componentPreviewContainer, toolbarContainerElement,
-            toolbarElement, toolbarPositionToggleElement);
+        InitiateToggledModalTransitions.startEntranceTransition(this, toolbarContainerElement, toolbarElement,
+          ExpandedModalPreviewModeToggleEntranceTransition.start, toolbarPositionToggleElement);
       } else {
-        ExpandedModalPreviewModeToggleExitTransition.start(
-          transitionTypeToFunctionality[this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.exit.type],
-          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.exit.duration, setOptionToDefaultCallback,
-          this.$refs.componentPreviewContainer, this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.backdrop,
-          this.$refs.baseComponent.$refs.componentPreview, this.$refs.baseComponent.$refs.componentPreviewOverlay, toolbarContainerElement,
-            toolbarElement, toolbarPositionToggleElement);
+        InitiateToggledModalTransitions.startExitTransition(this, toolbarContainerElement, toolbarElement,
+          ExpandedModalPreviewModeToggleExitTransition.start, setOptionToDefaultCallback, toolbarPositionToggleElement);
       }
     },
     toggleFullPreviewMode(event: ToggleFullPreviewModeEvent): void {

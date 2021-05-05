@@ -1,5 +1,5 @@
-import ToggleOff from './utils/toggleMode/toggleOff';
-import ToggleOn from './utils/toggleMode/toggleOn';
+import ToggleOff from './toggleMode/toggleOff';
+import ToggleOn from './toggleMode/toggleOn';
 import { ComponentOptions } from 'vue';
 
 
