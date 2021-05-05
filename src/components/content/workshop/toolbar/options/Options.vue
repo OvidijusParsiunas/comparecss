@@ -138,6 +138,7 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToo
 import SubcomponentToggleOverlayUtils from './subcomponentToggleUtils/subcomponentToggleOverlayUtils';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
+import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFullPreviewModeEvent';
 import ImportComponentToggleUtils from './importComponentToggleUtils/importComponentToggleUtils';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
@@ -356,9 +357,8 @@ export default {
         this.isExpandedModalPreviewModeActive = fulPreviewModeState.getIsExpandedModalPreviewModeActivated();
       }
       const toggleFullPreviewModeOptionsCallback = this.toggleFullPreviewModeCallback;
-      // WORK1 - need event type
-      this.$emit('toggle-full-preview-mode', [!this.isFullPreviewModeActive,
-        this.isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback]);
+      this.$emit('toggle-full-preview-mode',
+        [!this.isFullPreviewModeActive, this.isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback] as ToggleFullPreviewModeEvent);
     },
     toggleFullPreviewModeCallback(): void {
       this.isFullPreviewModeActive = !this.isFullPreviewModeActive;

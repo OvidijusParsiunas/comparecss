@@ -30,6 +30,7 @@ import ToolbarToggles from '../componentPreview/utils/expandedModalPreviewMode/m
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../consts/workshopToolbarOptionTypes.enum';
+import { ToggleFullPreviewModeEvent } from '../../../../interfaces/toggleFullPreviewModeEvent';
 import { optionToSettings } from './settings/types/optionToSettings';
 import { Option } from '../../../../interfaces/componentOptions';
 import settings from './settings/Settings.vue';
@@ -82,11 +83,10 @@ export default {
       this.$emit('toggle-expanded-modal-preview-mode',
         toggleExpandedModalPreviewModeEvent.concat(this.$refs.toolbarContainer, this.$refs.toolbar) as ToggleExpandedModalPreviewModeEvent);
     },
-    // WORK1 - need event type
-    toggleFullPreviewMode(event: any): void {
+    toggleFullPreviewMode(event: ToggleFullPreviewModeEvent): void {
       const toggleFullPreviewModeToolbarCallback = this.toggleFullPreviewModeCallback.bind(this, event);
       this.$emit('toggle-full-preview-mode',
-        event.concat(this.$refs.toolbarContainer, this.$refs.toolbar, toggleFullPreviewModeToolbarCallback));
+        event.concat(this.$refs.toolbarContainer, this.$refs.toolbar, toggleFullPreviewModeToolbarCallback) as ToggleFullPreviewModeEvent);
     },
     toggleFullPreviewModeCallback(event: any): void {
       const [isToggledOn, isExpandedModalPreviewModeActive] = event;

@@ -80,6 +80,7 @@ import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomp
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
 import { ModalEntranceTransition, ModalExitTransition } from '../../../../interfaces/modalTransitions';
 import PreviewEntranceTransition from './utils/expandedModalPreviewMode/previewTransitions/entrance';
+import { ToggleFullPreviewModeEvent } from '../../../../interfaces/toggleFullPreviewModeEvent';
 import { PlayTransitionPreviewEvent } from '../../../../interfaces/playTransitionPreviewEvent';
 import PreviewExitTransition from './utils/expandedModalPreviewMode/previewTransitions/exit';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
@@ -182,8 +183,7 @@ export default {
             toolbarElement, toolbarPositionToggleElement);
       }
     },
-    // WORK1 - need event type
-    toggleFullPreviewMode(event: any): void {
+    toggleFullPreviewMode(event: ToggleFullPreviewModeEvent): void {
       const [isToggledOn, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback,
         toolbarContainerElement, toolbarElement, toggleFullPreviewModeToolbarCallback] = event;
       if (isToggledOn) {
