@@ -109,7 +109,6 @@
             </button>
           </div>
         </div>
-        <!-- WORK1: have a method instead of using isFullPreviewModeActive -->
         <div v-if="!isFullPreviewModeActive" style="display: none" ref="toolbarPositionToggle"
           class="toolbar-position-toggle-container" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
           <button
