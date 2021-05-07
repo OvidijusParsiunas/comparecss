@@ -81,15 +81,19 @@ export default class TransitionUtils {
     expandedModalPreviewModeState.setModalTransitionDelayState(modalTransitionDelay);
   }
 
-  private static startBackdropHideTransition(backdropElement: HTMLElement) {
+  private static startBackdropElementHideTransition(backdropElement: HTMLElement): void {
     backdropElement.style.opacity = OPACITY_INVISIBLE;
     backdropElement.style.transitionDuration = TransitionUtils.BACKDROP_FADE_OUT_TRANSITION_DURATION_SECONDS;
+  }
+
+  private static startBackdropHideTransition(backdropProperties: BackdropProperties): void {
+    backdropProperties.opacity = 0;
   }
   
   private static finishModalExitTransition(modalElement: HTMLElement, exitTransitionCallback: ExitTransitionCallback,
       backdropElement: HTMLElement, backdropProperties: BackdropProperties, toolbarElement: HTMLElement,
       innerToolbarElement: HTMLElement, modalOverlayElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
-    if (backdropElement) TransitionUtils.startBackdropHideTransition(backdropElement);
+    if (backdropElement) TransitionUtils.startBackdropElementHideTransition(backdropElement);
     exitTransitionCallback(modalElement, backdropElement, backdropProperties, toolbarElement,
       innerToolbarElement, modalOverlayElement, toolbarPositionToggleElement);
   }
@@ -105,6 +109,7 @@ export default class TransitionUtils {
       backdropElement: HTMLElement, backdropProperties: BackdropProperties, toolbarElement: HTMLElement, innerToolbarElement: HTMLElement,
       toolbarPositionToggleElement: HTMLElement, modalOverlayElement?: HTMLElement, wasPreviousTransitionInterrupted?: boolean,
       modalElementProperties?: ElementStyleProperties): void {
+    TransitionUtils.startBackdropHideTransition(backdropProperties);
     TransitionUtils.setModalTransitionProperties(modalElement, OPACITY_INVISIBLE, ALL_PROPERTIES, transitionDuration,
       LINEAR_SPEED_TRANSITION, modalElementProperties);
     expandedModalPreviewModeState.markBeginningTimeOfTransitionState();

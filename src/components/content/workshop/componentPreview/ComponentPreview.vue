@@ -1,10 +1,6 @@
 <template>
   <div v-if="component" ref="componentPreviewContainer"
     class="component-preview-container-default"
-    :style="{backgroundColor: component.subcomponents[BASE_SUB_COMPONENT].customFeatures
-      && component.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop
-      && component.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.visible
-      ? component.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.color : 'unset'}"
     @mouseenter="componentPreviewMouseEnter()"
     @mouseleave="componentPreviewMouseLeave()">
     <div class="component-preview-contents"

@@ -1,5 +1,11 @@
 <template>
   <div>
+    <div v-if="isExpandedModalPreviewBackdropVisible()"
+      ref="modalBackdrop" id="modal-backdrop"
+      :style="{
+        backgroundColor: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.color,
+        opacity: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.opacity}">
+    </div>
     <div style="height: 100vh" class="bootstrap">
       <div style="height: 100%; margin-left: 0px; margin-right: 0px; display: flex">
         <div style="width: 30%; position: relative">
@@ -18,7 +24,7 @@
             <button type="button" style="margin-left: 7px; margin-bottom: 10px" class="btn btn-warning btn-sm">Explore icon</button>
           </div>
         </div>
-        <div style="width: 70%; position: relative">
+        <div style="width: 70%; position: relative; z-index: 1">
           <div style="border-radius: 20px; height: 95%; width: 100%; margin: 0; position: absolute; top: 50%; left: 50%; -ms-transform: translate(-50%, -50%); transform: translate(-50%, -50%); text-align: center"> 
             <!-- USE V-MODEL when passing down a primitive, otherwise can manipulate the object via reference -->
             <!--
@@ -142,6 +148,7 @@ interface Consts {
   removeSubcomponentModalState: RemovalModalState;
   REMOVE_COMPONENT_MODAL_ID: string;
   REMOVE_SUBCOMPONENT_MODAL_ID: string;
+  BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES;
 }
 
 interface Data {
@@ -180,6 +187,7 @@ function createDefaultBackdropProperties(): BackdropProperties {
   return {
     color: '#6d6d6dcc',
     alpha: 0.8,
+    opacity: 0,
     visible: false,
   };
 }
@@ -438,6 +446,7 @@ export default {
       removeSubcomponentModalState,
       REMOVE_COMPONENT_MODAL_ID,
       REMOVE_SUBCOMPONENT_MODAL_ID,
+      BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES.BASE,
      };
   },
   data: (): Data => ({
@@ -529,6 +538,11 @@ export default {
       }
       this.isImportComponentModeActive = isActive;
     },
+    isExpandedModalPreviewBackdropVisible(): boolean {
+      return this.currentlySelectedComponent && this.currentlySelectedComponent.subcomponents[this.BASE_SUB_COMPONENT].customFeatures
+        && this.currentlySelectedComponent.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.backdrop
+        && this.currentlySelectedComponent.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.backdrop.visible
+    }
   },
   components: {
     removalModalTemplate,
@@ -570,5 +584,14 @@ export default {
     height: 100%;
     background-color: white;
     position: absolute;
+  }
+  #modal-backdrop {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+    transition-duration: 1.2s;
+    transition-property: opacity;
+    transition-timing-function: linear;
   }
 </style>

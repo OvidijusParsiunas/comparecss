@@ -15,6 +15,8 @@ import GeneralUtils from '../utils/generalUtils';
 
 export default class ModeToggleEntranceTransition {
 
+  private static TIME_FOR_BACKDROP_TO_BE_RENDERED_MILLISECONDS = 10;
+
   // UX - EXPANDED MODAL TOGGLE TRANSITION
   // private static toolbarFadeInTransition(toolbarContainerElement: HTMLElement, transitionDuration: string): void {
   //   GeneralUtils.opacityFadeTransition(OPACITY_VISIBLE, transitionDuration, toolbarContainerElement);
@@ -84,6 +86,9 @@ export default class ModeToggleEntranceTransition {
   private static setBackdropStyle(backdropElement: HTMLElement, backdropProperties: BackdropProperties): void {
     backdropElement.classList.replace(COMPONENT_PREVIEW_CLASSES.DEFAULT, COMPONENT_PREVIEW_CLASSES.EXPANDED_MODAL_MODE_ACTIVE);
     backdropProperties.visible = true;
+    setTimeout(() => {
+      backdropProperties.opacity = 1;
+    }, ModeToggleEntranceTransition.TIME_FOR_BACKDROP_TO_BE_RENDERED_MILLISECONDS);
   }
 
   public static startModalAndBackdropTransition(backdropElement: HTMLElement, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
