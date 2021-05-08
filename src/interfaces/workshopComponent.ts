@@ -47,6 +47,7 @@ export type SubcomponentSpecificSettings = {
 export interface BackdropProperties {
   color: string;
   alpha: number;
+  entranceTransitionDuration: string;
   opacity: number;
   visible: boolean;
 }

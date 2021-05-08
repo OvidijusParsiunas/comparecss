@@ -20,16 +20,58 @@ export default class RangeUtils {
   private static activateTriggersForCustomSubcomponentProperties(trigger: any, customFeatures: CustomFeatures,
       allSettings: any): void {
     const { conditions, customFeatureObjectKeys } = trigger;
-    const scustomFeatureValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, customFeatures);
-    if (!conditions.has(scustomFeatureValue)) return;
+    const customFeatureValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, customFeatures);
+    if (!conditions.has(customFeatureValue)) return;
     SharedUtils.setCustomFeatureSetting(trigger, customFeatures, allSettings);
   }
 
-  private static activateTriggers(triggers: any, subcomponentProperties: SubcomponentProperties,
+  private static parseString(value: string, smoothingDivisible: number): number {
+    return Number.parseFloat(value) * smoothingDivisible;
+  }
+
+  private static getCustomFeatureRangeNumberValue(spec: any, subcomponentProperties: SubcomponentProperties): number {
+    const { customFeatureObjectKeys, smoothingDivisible } = spec;
+    const customFeatureValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures);
+    return RangeUtils.parseString(customFeatureValue as string, smoothingDivisible);
+  }
+
+  private static convertRangeValueNumberViaTargetSmoothingDivisible(rangeValue: number, currentSmoothingDivisible: number,
+      targetSmoothingDivisible: number): number {
+    return rangeValue / (currentSmoothingDivisible / targetSmoothingDivisible);
+  }
+
+  private static getAggregateSettingsTotalValue(aggregateSettingSpecs: any, targetSettingSmoothingDivisible: number, subcomponentProperties: SubcomponentProperties): number {
+    let total = 0;
+    for (let i = 0; i < aggregateSettingSpecs.length; i += 1) {
+      const rangeValue = RangeUtils.getCustomFeatureRangeNumberValue(aggregateSettingSpecs[i], subcomponentProperties);
+      total += RangeUtils.convertRangeValueNumberViaTargetSmoothingDivisible(
+        rangeValue, aggregateSettingSpecs[i].smoothingDivisible, targetSettingSmoothingDivisible);
+    }
+    return total;
+  }
+
+  private static updateAnotherSetting(rangeValue: string, trigger: any, currentSmoothingDivisible: any,
+      subcomponentProperties: SubcomponentProperties): void {
+    const { setting: {spec: targetSettingSpec}, aggregateSettingSpecs } = trigger;
+    const aggregateSettingsTotal = RangeUtils.getAggregateSettingsTotalValue(aggregateSettingSpecs,
+      targetSettingSpec.smoothingDivisible, subcomponentProperties);
+    const totalValue = RangeUtils.convertRangeValueNumberViaTargetSmoothingDivisible(
+      Number.parseFloat(rangeValue), currentSmoothingDivisible, targetSettingSpec.smoothingDivisible) + aggregateSettingsTotal;
+    targetSettingSpec.scale[1] = totalValue;
+    const settingRangeValue = RangeUtils.getCustomFeatureRangeNumberValue(targetSettingSpec, subcomponentProperties);
+    if (totalValue < settingRangeValue) {
+      RangeUtils.updateCustomFeature(totalValue.toString(), targetSettingSpec, subcomponentProperties.customFeatures);
+    }
+  }
+
+  private static activateTriggers(rangeValue: string, updatedSetting: any, subcomponentProperties: SubcomponentProperties,
       allSettings: any, actionsDropdownsObjects: unknown): void {
+    const { triggers, spec } = updatedSetting;
     (triggers || []).forEach((trigger) => {
       if (trigger.customFeatureObjectKeys) {
         RangeUtils.activateTriggersForCustomSubcomponentProperties(trigger, subcomponentProperties.customFeatures, allSettings);
+      } else if (trigger.setting) {
+        RangeUtils.updateAnotherSetting(rangeValue, trigger, spec.smoothingDivisible, subcomponentProperties);
       } else {
         RangeUtils.activeTriggersForCustomCss(trigger, subcomponentProperties, actionsDropdownsObjects);
       }
@@ -60,9 +102,9 @@ export default class RangeUtils {
 
   public static updateProperties(event: MouseEvent, updatedSetting: any, allSettings: any,
       subcomponentProperties: SubcomponentProperties, actionsDropdownsObjects: unknown): void {
-    const { triggers, spec } = updatedSetting;
-    RangeUtils.activateTriggers(triggers, subcomponentProperties, allSettings, actionsDropdownsObjects);
+    const { spec } = updatedSetting;
     const rangeValue = (event.target as HTMLInputElement).value;
+    RangeUtils.activateTriggers(rangeValue, updatedSetting, subcomponentProperties, allSettings, actionsDropdownsObjects);
     if (spec.partialCss != undefined) {
       if (spec.cssProperty === 'boxShadow') BoxShadowUtils.updateBoxShadowRangeValue(rangeValue, spec, subcomponentProperties);
     } else if (spec.customFeatureObjectKeys) {
@@ -70,15 +112,6 @@ export default class RangeUtils {
     } else {
       RangeUtils.updateCustomCss(rangeValue, spec, subcomponentProperties);
     }
-  }
-
-  private static parseString(value: string, smoothingDivisible: number): number {
-    return Number.parseFloat(value) * smoothingDivisible;
-  }
-
-  private static updateCustomFeatureSetting(settingToBeUpdated: any, customFeatures: CustomFeatures): void {
-    const rangeValue = SharedUtils.getCustomFeatureValue(settingToBeUpdated.spec.customFeatureObjectKeys, customFeatures) as string;
-    settingToBeUpdated.spec.default = RangeUtils.parseString(rangeValue, settingToBeUpdated.spec.smoothingDivisible);
   }
 
   private static updateCustomCssSetting(settingToBeUpdated: any, cssPropertyValue: string): void {
@@ -98,7 +131,7 @@ export default class RangeUtils {
       const hasBoxShadowBeenSet = settingToBeUpdated.spec.cssProperty === 'boxShadow' && BoxShadowUtils.setBoxShadowSettingsRangeValue(cssPropertyValue, settingToBeUpdated.spec);
       if (!hasBoxShadowBeenSet) { RangeUtils.updateCustomCssSetting(settingToBeUpdated, cssPropertyValue); }
     } else if (settingToBeUpdated.spec.customFeatureObjectKeys) {
-      RangeUtils.updateCustomFeatureSetting(settingToBeUpdated, subcomponentProperties.customFeatures);
+      settingToBeUpdated.spec.default = RangeUtils.getCustomFeatureRangeNumberValue(settingToBeUpdated.spec, subcomponentProperties);
     } else {
       settingToBeUpdated.spec.default = RangeUtils.DEFAULT_RANGE_VALUE;
     }

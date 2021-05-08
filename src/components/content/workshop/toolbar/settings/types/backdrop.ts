@@ -19,6 +19,7 @@ export default {
         },
       ]
     },
+    // does not edit actual opacity css property
     {
       type: SETTINGS_TYPES.RANGE,
       spec: {
@@ -37,6 +38,17 @@ export default {
           conditions: new Set(['unset']),
         },
       ]
+    },
+    {
+      type: SETTINGS_TYPES.RANGE,
+      spec: {
+        name: 'Transition-Duration',
+        default: 0,
+        scale: [0, 40],
+        smoothingDivisible: 20,
+        customFeatureObjectKeys: ['backdrop', 'entranceTransitionDuration'],
+        postfix: 's',
+      },
     },
   ]
 };

@@ -2,6 +2,7 @@ import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallba
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../../../../consts/modalTransitionTypes.enum';
 import { PlayTransitionPreviewEvent } from '../../../../../../interfaces/playTransitionPreviewEvent';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
+import backdrop from './backdrop';
 
 function generateMouseEventCallbacks(isEntranceAnimation: boolean): ActionsDropdownMouseEventCallbacks {
   return {
@@ -23,6 +24,28 @@ function generateMouseEventCallbacks(isEntranceAnimation: boolean): ActionsDropd
     },
   };
 }
+
+function getBackdropTransitionDurationSetting(): any {
+  return backdrop.options.find((option) => option.spec.name === 'Transition-Duration');
+}
+
+const entranceDurationTransitionSpec = {
+  name: 'Duration',
+  default: 0,
+  scale: [0, 20],
+  smoothingDivisible: 10,
+  customFeatureObjectKeys: ['transitions', 'entrance', 'duration'],
+  postfix: 's'
+};
+
+const entranceDelayTransitionSpec = {
+  name: 'Entrance Delay',
+  default: 0,
+  scale: [0, 40],
+  smoothingDivisible: 20,
+  customFeatureObjectKeys: ['transitions', 'entrance', 'delay'],
+  postfix: 's',
+};
 
 // create an optional interface
 export default {
@@ -49,14 +72,14 @@ export default {
     },
     { 
       type: SETTINGS_TYPES.RANGE,
-      spec: {
-        name: 'Duration',
-        default: 0,
-        scale: [0, 20],
-        smoothingDivisible: 10,
-        customFeatureObjectKeys: ['transitions', 'entrance', 'duration'],
-        postfix: 's',
-      },
+      spec: entranceDurationTransitionSpec,
+      triggers: [
+        {
+          setting: getBackdropTransitionDurationSetting(),
+          aggregateSettingSpecs: [entranceDelayTransitionSpec],
+          // valueLowerThanCurrent
+        },
+      ]
     },
     { 
       type: SETTINGS_TYPES.RANGE,
@@ -71,14 +94,14 @@ export default {
     },
     { 
       type: SETTINGS_TYPES.RANGE,
-      spec: {
-        name: 'Entrance Delay',
-        default: 0,
-        scale: [0, 40],
-        smoothingDivisible: 20,
-        customFeatureObjectKeys: ['transitions', 'entrance', 'delay'],
-        postfix: 's',
-      },
+      spec: entranceDelayTransitionSpec,
+      triggers: [
+        {
+          setting: getBackdropTransitionDurationSetting(),
+          aggregateSettingSpecs: [entranceDurationTransitionSpec],
+          // valueLowerThanCurrent
+        },
+      ]
     },
   ]
 };
