@@ -1,8 +1,9 @@
 import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallbacks } from '../../../../../../interfaces/actionsDropdownMouseEventCallbacks';
 import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../../../../consts/modalTransitionTypes.enum';
+import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { PlayTransitionPreviewEvent } from '../../../../../../interfaces/playTransitionPreviewEvent';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
-import backdrop from './backdrop';
+import { SettingPaths } from '../../../../../../interfaces/settingPaths';
 
 function generateMouseEventCallbacks(isEntranceAnimation: boolean): ActionsDropdownMouseEventCallbacks {
   return {
@@ -25,8 +26,11 @@ function generateMouseEventCallbacks(isEntranceAnimation: boolean): ActionsDropd
   };
 }
 
-function getBackdropTransitionDurationSetting(): any {
-  return backdrop.options.find((option) => option.spec.name === 'Transition-Duration');
+// cannot point to the setting directly due to dependency invertion
+function getSettingPath(): SettingPaths {
+  return [
+    {optionName: WORKSHOP_TOOLBAR_OPTION_TYPES.BACKDROP, settingName: 'Transition-Duration'},
+  ];
 }
 
 const entranceDurationTransitionSpec = {
@@ -75,7 +79,7 @@ export default {
       spec: entranceDurationTransitionSpec,
       triggers: [
         {
-          setting: getBackdropTransitionDurationSetting(),
+          setting: getSettingPath(),
           aggregateSettingSpecs: [entranceDelayTransitionSpec],
           updateIfLower: true,
         },
@@ -97,7 +101,7 @@ export default {
       spec: entranceDelayTransitionSpec,
       triggers: [
         {
-          setting: getBackdropTransitionDurationSetting(),
+          setting: getSettingPath(),
           aggregateSettingSpecs: [entranceDurationTransitionSpec],
           updateIfLower: true,
         },

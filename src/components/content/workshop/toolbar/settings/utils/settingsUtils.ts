@@ -48,13 +48,14 @@ export default class SettingsUtils {
     defaultValue.forEach((value) => currentValue.add(value));
   }
 
-  private static updateAnotherSetting(option: any, subcomponentProperties: SubcomponentProperties): void {
+  private static updateSetting(option: any, subcomponentProperties: SubcomponentProperties): void {
     // currently only being used for range values - hence functionality is currently there
     const { triggers, spec } = option;
     (triggers || []).forEach((trigger) => {
       if (trigger.setting) {
-        const rangeValue = RangeUtils.getCustomFeatureRangeNumberValue(spec, subcomponentProperties);
-        RangeUtils.updateAnotherSetting(rangeValue.toString(), trigger, spec.smoothingDivisible, subcomponentProperties);
+        const { setting, aggregateSettingSpecs } = trigger;
+        const [targetSettingSpecs] = RangeUtils.getAggregatedSettingSpecs(setting);
+        RangeUtils.updateSetting(aggregateSettingSpecs.concat(spec), targetSettingSpecs, true, subcomponentProperties);
       }
     });
   }
@@ -67,7 +68,7 @@ export default class SettingsUtils {
       SettingsUtils.resetSetObject(currentValue as Set<undefined>, defaultValue as Set<undefined>);
     } else {
       SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures, defaultValue);
-      SettingsUtils.updateAnotherSetting(option, subcomponentProperties);
+      SettingsUtils.updateSetting(option, subcomponentProperties);
       // only used for actions dropdown
       if (mouseClickOptionCallback) { mouseClickOptionCallback({subcomponentProperties,
         previousOptionName: currentValue as string, triggeredOptionName: defaultValue as string, isCustomFeatureResetTriggered: true }); }

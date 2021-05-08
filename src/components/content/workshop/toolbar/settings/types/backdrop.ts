@@ -1,4 +1,14 @@
+import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
+import { SettingPaths } from '../../../../../../interfaces/settingPaths';
+
+// cannot point to the setting directly due to dependency invertion
+function getAggregatedSettingsPaths(): SettingPaths {
+  return [
+    {optionName: WORKSHOP_TOOLBAR_OPTION_TYPES.TRANSITIONS, settingName: 'Duration'},
+    {optionName: WORKSHOP_TOOLBAR_OPTION_TYPES.TRANSITIONS, settingName: 'Entrance Delay'}
+  ];
+}
 
 // create an optional interface
 export default {
@@ -48,6 +58,10 @@ export default {
         smoothingDivisible: 20,
         customFeatureObjectKeys: ['backdrop', 'entranceTransitionDuration'],
         postfix: 's',
+        updateSettingSpecViaOtherSettings: {
+          aggregatedSettingPaths: getAggregatedSettingsPaths(),
+          updateIfLower: true,
+        } 
       },
     },
   ]
