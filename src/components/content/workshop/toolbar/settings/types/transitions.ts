@@ -32,8 +32,8 @@ function getBackdropTransitionDurationSetting(): any {
 const entranceDurationTransitionSpec = {
   name: 'Duration',
   default: 0,
-  scale: [0, 20],
-  smoothingDivisible: 10,
+  scale: [0, 40],
+  smoothingDivisible: 20,
   customFeatureObjectKeys: ['transitions', 'entrance', 'duration'],
   postfix: 's'
 };
@@ -77,7 +77,7 @@ export default {
         {
           setting: getBackdropTransitionDurationSetting(),
           aggregateSettingSpecs: [entranceDelayTransitionSpec],
-          // valueLowerThanCurrent
+          updateIfLower: true,
         },
       ]
     },
@@ -86,8 +86,8 @@ export default {
       spec: {
         name: 'Duration',
         default: 0,
-        scale: [0, 20],
-        smoothingDivisible: 10,
+        scale: [0, 40],
+        smoothingDivisible: 20,
         customFeatureObjectKeys: ['transitions', 'exit', 'duration'],
         postfix: 's',
       },
@@ -99,7 +99,7 @@ export default {
         {
           setting: getBackdropTransitionDurationSetting(),
           aggregateSettingSpecs: [entranceDurationTransitionSpec],
-          // valueLowerThanCurrent
+          updateIfLower: true,
         },
       ]
     },

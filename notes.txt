@@ -10,6 +10,7 @@ potentially add x button to border coloring
 close button should probably be imported - but need to work through the logistics of inherited css for it
 backdrop transition: opacity 0.15s linear;
 clicking enter/escape when using the overlay dropdown does not remove the overlay
+display second range value with 2 decimal points
 
 close button may need to be a badge
 consider having a dropdown to choose which border side to edit

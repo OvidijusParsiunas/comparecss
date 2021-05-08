@@ -29,7 +29,7 @@ export default class RangeUtils {
     return Number.parseFloat(value) * smoothingDivisible;
   }
 
-  private static getCustomFeatureRangeNumberValue(spec: any, subcomponentProperties: SubcomponentProperties): number {
+  public static getCustomFeatureRangeNumberValue(spec: any, subcomponentProperties: SubcomponentProperties): number {
     const { customFeatureObjectKeys, smoothingDivisible } = spec;
     const customFeatureValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures);
     return RangeUtils.parseString(customFeatureValue as string, smoothingDivisible);
@@ -40,7 +40,8 @@ export default class RangeUtils {
     return rangeValue / (currentSmoothingDivisible / targetSmoothingDivisible);
   }
 
-  private static getAggregateSettingsTotalValue(aggregateSettingSpecs: any, targetSettingSmoothingDivisible: number, subcomponentProperties: SubcomponentProperties): number {
+  private static getAggregateSettingsTotalValue(aggregateSettingSpecs: any, targetSettingSmoothingDivisible: number,
+      subcomponentProperties: SubcomponentProperties): number {
     let total = 0;
     for (let i = 0; i < aggregateSettingSpecs.length; i += 1) {
       const rangeValue = RangeUtils.getCustomFeatureRangeNumberValue(aggregateSettingSpecs[i], subcomponentProperties);
@@ -50,14 +51,15 @@ export default class RangeUtils {
     return total;
   }
 
-  private static updateAnotherSetting(rangeValue: string, trigger: any, currentSmoothingDivisible: any,
+  public static updateAnotherSetting(rangeValue: string, trigger: any, currentSmoothingDivisible: any,
       subcomponentProperties: SubcomponentProperties): void {
-    const { setting: {spec: targetSettingSpec}, aggregateSettingSpecs } = trigger;
+    const { setting: {spec: targetSettingSpec}, aggregateSettingSpecs, updateIfLower } = trigger;
     const aggregateSettingsTotal = RangeUtils.getAggregateSettingsTotalValue(aggregateSettingSpecs,
       targetSettingSpec.smoothingDivisible, subcomponentProperties);
     const totalValue = RangeUtils.convertRangeValueNumberViaTargetSmoothingDivisible(
       Number.parseFloat(rangeValue), currentSmoothingDivisible, targetSettingSpec.smoothingDivisible) + aggregateSettingsTotal;
     targetSettingSpec.scale[1] = totalValue;
+    if (!updateIfLower) return;
     const settingRangeValue = RangeUtils.getCustomFeatureRangeNumberValue(targetSettingSpec, subcomponentProperties);
     if (totalValue < settingRangeValue) {
       RangeUtils.updateCustomFeature(totalValue.toString(), targetSettingSpec, subcomponentProperties.customFeatures);
