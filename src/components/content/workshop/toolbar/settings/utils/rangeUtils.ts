@@ -13,7 +13,7 @@ export default class RangeUtils {
   public static saveLastSelectedValue(event: MouseEvent, settingSpec: any, subcomponentProperties: SubcomponentProperties): void {
     const rangeValue = (event.target as HTMLInputElement).value;
     if (settingSpec.lastSelectedValueKeys) {
-      RangeUtils.updateCustomFeature(rangeValue, settingSpec, subcomponentProperties.customFeatures);
+      RangeUtils.updateCustomFeature(rangeValue, settingSpec, subcomponentProperties.customFeatures, settingSpec.lastSelectedValueKeys);
     }
   }
 
@@ -21,8 +21,13 @@ export default class RangeUtils {
       targetSettingSpec: any, subcomponentProperties: SubcomponentProperties): void {
     const customFeatureValue = SharedUtils.getCustomFeatureValue(targetSettingSpec.lastSelectedValueKeys, subcomponentProperties.customFeatures);
     const lastSelectedValue = RangeUtils.parseString(customFeatureValue as string, targetSettingSpec.smoothingDivisible);
-    if (lastSelectedValue < totalAggregateAndCurrentSettingRangeValue && targetSettingRangeValue < lastSelectedValue) {
-      RangeUtils.updateCustomFeature(lastSelectedValue.toString(), targetSettingSpec, subcomponentProperties.customFeatures);
+    // Remember that this gets called when the totalAggregateAndCurrentSettingRangeValue is higher than the targetSettingRangeValue
+    if (targetSettingRangeValue < lastSelectedValue) {
+      // instead of using totalAggregateAndCurrentSettingRangeValue as the new value, the following line is used to prevent
+      // an issue where upon selecting a high range value in the current setting (e.g. entrance delay duration),
+      // the totalAggregateAndCurrentSettingRangeValue would be higher than lastSelectedValue
+      const minRangeValue = Math.min(totalAggregateAndCurrentSettingRangeValue, lastSelectedValue);
+      RangeUtils.updateCustomFeature(minRangeValue.toString(), targetSettingSpec, subcomponentProperties.customFeatures);
     }
   }
 
@@ -128,10 +133,10 @@ export default class RangeUtils {
     SharedUtils.setCustomFeatureValue(spec.colorValueCustomFeatureObjectKeys, customFeatures, newColorvalue);
   }
 
-  private static updateCustomFeature(rangeValue: string, spec: any, customFeatures: CustomFeatures): void {
+  private static updateCustomFeature(rangeValue: string, spec: any, customFeatures: CustomFeatures, lastSelectedValueKeys?: string[]): void {
     const { smoothingDivisible, postfix, customFeatureObjectKeys } = spec;
     const newRangeValue = `${rangeValue as unknown as number / smoothingDivisible}${postfix}`;
-    SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, customFeatures, newRangeValue);
+    SharedUtils.setCustomFeatureValue(lastSelectedValueKeys || customFeatureObjectKeys, customFeatures, newRangeValue);
     if (spec.colorValueCustomFeatureObjectKeys) {
       RangeUtils.updateColorValueInCustomFeatureProperties(rangeValue, spec, customFeatures);
     }
