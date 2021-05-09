@@ -8,8 +8,6 @@ import GeneralUtils from './generalUtils';
 export default class TransitionUtils {
 
   private static readonly ENTRANCE_TRANSITION_PREVIEW_DELAY_MILLISECONDS = 150;
-  private static readonly BACKDROP_FADE_IN_TRANSITION_DURATION_SECONDS = '0.1s';
-  private static readonly BACKDROP_FADE_OUT_TRANSITION_DURATION_SECONDS = '0.15s';
   private static readonly EXIT_TRANSITION_DURATION_REDUCTION_ON_NEW_DURATION_MILLISECONDS = 420;
 
   public static cancelModalTransitionPreview(modalElement: HTMLElement): void {
@@ -23,8 +21,8 @@ export default class TransitionUtils {
   }
 
   private static finishModalEntranceTransition(modalElement: HTMLElement,
-      unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void, backdropElement?: HTMLElement): void {
-    if (unsetTransitionPropertiesCallback) unsetTransitionPropertiesCallback(modalElement, backdropElement);
+      unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void): void {
+    if (unsetTransitionPropertiesCallback) unsetTransitionPropertiesCallback(modalElement);
     // the reason why the states are set to false here, because there is no callback
     expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(false);
     expandedModalPreviewModeState.setIsPreviewTransitionInProgressState(false);
@@ -41,27 +39,21 @@ export default class TransitionUtils {
     }
   }
 
-  private static startModalEntranceTransition(transitionDuration: string, modalElement: HTMLElement, 
-      unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void,
-      backdropElement?: HTMLElement, modalElementProperties?: ElementStyleProperties): void {
+  private static startModalEntranceTransitionAfterDelay(transitionDuration: string, modalElement: HTMLElement, 
+      unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void, modalElementProperties?: ElementStyleProperties): void {
     expandedModalPreviewModeState.setIsWaitingTransitionDelayState(false);
     TransitionUtils.setModalTransitionProperties(modalElement, OPACITY_VISIBLE,
       ALL_PROPERTIES, transitionDuration, LINEAR_SPEED_TRANSITION, modalElementProperties);
     expandedModalPreviewModeState.markBeginningTimeOfTransitionState();
     const pendingModalTransitionEnd = window.setTimeout(() => {
-      TransitionUtils.finishModalEntranceTransition(modalElement, unsetTransitionPropertiesCallback, backdropElement);
+      TransitionUtils.finishModalEntranceTransition(modalElement, unsetTransitionPropertiesCallback);
     }, GeneralUtils.secondsStringToMillisecondsNumber(transitionDuration));
     expandedModalPreviewModeState.setPendingModalTransitionEndState(pendingModalTransitionEnd);
   }
 
-  private static startBackdropDisplayTransition(backdropElement: HTMLElement) {
-    backdropElement.style.opacity = OPACITY_VISIBLE;
-    backdropElement.style.transitionDuration = TransitionUtils.BACKDROP_FADE_IN_TRANSITION_DURATION_SECONDS;
-  }
-
-  private static calculateTransitionDelay(backdropElement: HTMLElement, transitionDelay?: string): number {
-    // if the backdrop element is present - we can assume that this is a mode toggle transition
-    if (backdropElement) {
+  private static calculateTransitionDelay(componentPreviewContainerElement: HTMLElement, transitionDelay?: string): number {
+    // if the componentPreviewContainerElement is present - we can assume that this is an expand mode toggle transition
+    if (componentPreviewContainerElement) {
       if (transitionDelay) {
         return GeneralUtils.secondsStringToMillisecondsNumber(transitionDelay);
       }
@@ -70,31 +62,25 @@ export default class TransitionUtils {
     return TransitionUtils.ENTRANCE_TRANSITION_PREVIEW_DELAY_MILLISECONDS;
   }
 
-  public static startModalAndBackdropEntranceTransition(transitionDuration: string, modalElement: HTMLElement, 
-      unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void, backdropElement?: HTMLElement,
+  public static startModalEntranceTransition(transitionDuration: string, modalElement: HTMLElement, 
+      unsetTransitionPropertiesCallback: (...params: HTMLElement[]) => void, componentPreviewContainerElement?: HTMLElement,
       transitionDelay?: string, modalElementProperties?: ElementStyleProperties): void {
-    if (backdropElement) TransitionUtils.startBackdropDisplayTransition(backdropElement);
     const modalTransitionDelay = window.setTimeout(() => { 
-      TransitionUtils.startModalEntranceTransition(
-        transitionDuration, modalElement, unsetTransitionPropertiesCallback, backdropElement, modalElementProperties); 
-    }, TransitionUtils.calculateTransitionDelay(backdropElement, transitionDelay));
+      TransitionUtils.startModalEntranceTransitionAfterDelay(
+        transitionDuration, modalElement, unsetTransitionPropertiesCallback, modalElementProperties); 
+    }, TransitionUtils.calculateTransitionDelay(componentPreviewContainerElement, transitionDelay));
     expandedModalPreviewModeState.setModalTransitionDelayState(modalTransitionDelay);
   }
 
-  private static startBackdropElementHideTransition(backdropElement: HTMLElement): void {
-    backdropElement.style.opacity = OPACITY_INVISIBLE;
-    backdropElement.style.transitionDuration = TransitionUtils.BACKDROP_FADE_OUT_TRANSITION_DURATION_SECONDS;
-  }
-
   private static startBackdropHideTransition(backdropProperties: BackdropProperties): void {
-    backdropProperties.opacity = 0;
+    // MODAL - make change here for the transition time
+    if (backdropProperties) backdropProperties.opacity = 0;
   }
   
   private static finishModalExitTransition(modalElement: HTMLElement, exitTransitionCallback: ExitTransitionCallback,
-      backdropElement: HTMLElement, backdropProperties: BackdropProperties, toolbarElement: HTMLElement,
+      componentPreviewContainerElement: HTMLElement, backdropProperties: BackdropProperties, toolbarElement: HTMLElement,
       innerToolbarElement: HTMLElement, modalOverlayElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
-    if (backdropElement) TransitionUtils.startBackdropElementHideTransition(backdropElement);
-    exitTransitionCallback(modalElement, backdropElement, backdropProperties, toolbarElement,
+    exitTransitionCallback(modalElement, componentPreviewContainerElement, backdropProperties, toolbarElement,
       innerToolbarElement, modalOverlayElement, toolbarPositionToggleElement);
   }
 
@@ -105,16 +91,16 @@ export default class TransitionUtils {
       : transitionDurationMilliseconds;
   }
 
-  public static startModalAndBackdropExitTransition(transitionDuration: string, modalElement: HTMLElement, exitTransitionCallback: ExitTransitionCallback,
-      backdropElement: HTMLElement, backdropProperties: BackdropProperties, toolbarElement: HTMLElement, innerToolbarElement: HTMLElement,
-      toolbarPositionToggleElement: HTMLElement, modalOverlayElement?: HTMLElement, wasPreviousTransitionInterrupted?: boolean,
-      modalElementProperties?: ElementStyleProperties): void {
+  public static startModalAndBackdropExitTransition(transitionDuration: string, modalElement: HTMLElement,
+      exitTransitionCallback: ExitTransitionCallback, componentPreviewContainerElement: HTMLElement, backdropProperties: BackdropProperties,
+      toolbarElement: HTMLElement, innerToolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement, modalOverlayElement?: HTMLElement,
+      wasPreviousTransitionInterrupted?: boolean, modalElementProperties?: ElementStyleProperties): void {
     TransitionUtils.startBackdropHideTransition(backdropProperties);
     TransitionUtils.setModalTransitionProperties(modalElement, OPACITY_INVISIBLE, ALL_PROPERTIES, transitionDuration,
       LINEAR_SPEED_TRANSITION, modalElementProperties);
     expandedModalPreviewModeState.markBeginningTimeOfTransitionState();
     const pendingModalTransitionEnd = window.setTimeout(() => {
-      TransitionUtils.finishModalExitTransition(modalElement, exitTransitionCallback, backdropElement, backdropProperties, toolbarElement,
+      TransitionUtils.finishModalExitTransition(modalElement, exitTransitionCallback, componentPreviewContainerElement, backdropProperties, toolbarElement,
         innerToolbarElement, modalOverlayElement, toolbarPositionToggleElement);
     }, TransitionUtils.calculateTransitionDurationMilliseconds(wasPreviousTransitionInterrupted, transitionDuration));
     expandedModalPreviewModeState.setPendingModalTransitionEndState(pendingModalTransitionEnd);

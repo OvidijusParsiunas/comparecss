@@ -83,42 +83,53 @@ export default class ModeToggleEntranceTransition {
     }, MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS);
   }
 
-  private static setBackdropStyle(backdropElement: HTMLElement, backdropProperties: BackdropProperties): void {
-    backdropElement.classList.replace(COMPONENT_PREVIEW_CLASSES.DEFAULT, COMPONENT_PREVIEW_CLASSES.EXPANDED_MODAL_MODE_ACTIVE);
+  private static displayBackdrop(backdropProperties: BackdropProperties): void {
     backdropProperties.visible = true;
     setTimeout(() => {
       backdropProperties.opacity = 1;
     }, ModeToggleEntranceTransition.TIME_FOR_BACKDROP_TO_BE_RENDERED_MILLISECONDS);
   }
 
-  public static startModalAndBackdropTransition(backdropElement: HTMLElement, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
-      backdropProperties: BackdropProperties, modalEntranceTransition: ModalEntranceTransition, transitionDuration: string, transitionDelay?: string): void {
-    GeneralUtils.toggleModalStaticPosition(modalElement, modalOverlayElement, REMOVE_CLASS);
-    ModeToggleEntranceTransition.setBackdropStyle(backdropElement, backdropProperties);
-    setTimeout(() => { modalEntranceTransition(transitionDuration, modalElement, GeneralUtils.unsetTransitionProperties, backdropElement, transitionDelay); });
+  private static setComponentPreviewContainerToModalView(componentPreviewContainerElement: HTMLElement): void {
+    componentPreviewContainerElement.classList.replace(COMPONENT_PREVIEW_CLASSES.DEFAULT, COMPONENT_PREVIEW_CLASSES.EXPANDED_MODAL_MODE_ACTIVE);
+    setTimeout(() => {
+      componentPreviewContainerElement.style.opacity = OPACITY_VISIBLE;
+    }, ModeToggleEntranceTransition.TIME_FOR_BACKDROP_TO_BE_RENDERED_MILLISECONDS);
   }
 
-  private static startModalAndBackdropTransitionWithFadeOut(backdropElement: HTMLElement, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
-      backdropProperties: BackdropProperties, modalEntranceTransition: ModalEntranceTransition, transitionDuration: string, transitionDelay?: string): void {
-    GeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS,  backdropElement, modalElement);
+  public static startModalAndBackdropTransition(componentPreviewContainerElement: HTMLElement, modalElement: HTMLElement,
+      modalOverlayElement: HTMLElement, backdropProperties: BackdropProperties, modalEntranceTransition: ModalEntranceTransition,
+      transitionDuration: string, transitionDelay?: string): void {
+    GeneralUtils.toggleModalStaticPosition(modalElement, modalOverlayElement, REMOVE_CLASS);
+    ModeToggleEntranceTransition.setComponentPreviewContainerToModalView(componentPreviewContainerElement);
+    ModeToggleEntranceTransition.displayBackdrop(backdropProperties);
+    setTimeout(() => { modalEntranceTransition(transitionDuration, modalElement, GeneralUtils.unsetTransitionProperties,
+      componentPreviewContainerElement, transitionDelay); });
+  }
+
+  private static startModalAndBackdropTransitionWithFadeOut(componentPreviewContainerElement: HTMLElement, modalElement: HTMLElement,
+      modalOverlayElement: HTMLElement, backdropProperties: BackdropProperties, modalEntranceTransition: ModalEntranceTransition,
+      transitionDuration: string, transitionDelay?: string): void {
+    GeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, modalElement);
     window.setTimeout(() => {
-      ModeToggleEntranceTransition.startModalAndBackdropTransition(backdropElement, modalElement, modalOverlayElement,
+      ModeToggleEntranceTransition.startModalAndBackdropTransition(componentPreviewContainerElement, modalElement, modalOverlayElement,
         backdropProperties, modalEntranceTransition, transitionDuration, transitionDelay);
     }, MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS);
   }
 
-  public static start(modalEntranceTransition: ModalEntranceTransition, transitionDuration: string, transitionDelay: string, backdropProperties: BackdropProperties,
-      modalElement: HTMLElement, modalOverlayElement: HTMLElement, backdropElement: HTMLElement, toolbarContainerElement: HTMLElement,
-      toolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
+  public static start(modalEntranceTransition: ModalEntranceTransition, transitionDuration: string, transitionDelay: string,
+      backdropProperties: BackdropProperties, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
+      componentPreviewContainerElement: HTMLElement, toolbarContainerElement: HTMLElement, toolbarElement?: HTMLElement,
+      toolbarPositionToggleElement?: HTMLElement): void {
     if (expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState()) {
       GeneralUtils.cancelAllPendingTransitionFunctionality(modalElement);
       const newTransitionDuration = GeneralUtils.getNewTransitionDuration();
-      ModeToggleEntranceTransition.startModalAndBackdropTransition(backdropElement, modalElement, modalOverlayElement,
+      ModeToggleEntranceTransition.startModalAndBackdropTransition(componentPreviewContainerElement, modalElement, modalOverlayElement,
         backdropProperties, modalEntranceTransition, newTransitionDuration);
       ModeToggleEntranceTransition.startToolbarTransition(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, transitionDelay);
     } else {
       GeneralUtils.setToolbarContainerPointerEvents(toolbarContainerElement, POINTER_EVENTS_NONE);
-      ModeToggleEntranceTransition.startModalAndBackdropTransitionWithFadeOut(backdropElement, modalElement, modalOverlayElement,
+      ModeToggleEntranceTransition.startModalAndBackdropTransitionWithFadeOut(componentPreviewContainerElement, modalElement, modalOverlayElement,
         backdropProperties, modalEntranceTransition, transitionDuration, transitionDelay);
       ModeToggleEntranceTransition.startToolbarTransitionWithFadeOut(toolbarContainerElement, toolbarElement,
         toolbarPositionToggleElement, transitionDelay);

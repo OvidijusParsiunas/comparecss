@@ -18,11 +18,11 @@ export default class ToggleOff {
     componentPreviewComponent.isFullPreviewModeOn = false;
   }
 
-  public static start(componentPreviewComponent: ComponentOptions, modalElement: HTMLElement, temporaryComponentElement: HTMLElement,
+  public static start(componentPreviewComponent: ComponentOptions, componentPreviewElement: HTMLElement, temporaryComponentElement: HTMLElement,
       toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean,
       toggleFullPreviewModeOptionsCallback: () => void): void {
     if (!isExpandedModalPreviewModeActive) {
-      GeneralUtils.startModalAndBackdropTransitionWithFadeOut(modalElement,
+      GeneralUtils.switchComponentsWithFadeOut(componentPreviewElement,
         temporaryComponentElement, ToggleOff.switchButtonToModal.bind(this, componentPreviewComponent));
     } else {
       ToggleOff.switchButtonToModal(componentPreviewComponent);

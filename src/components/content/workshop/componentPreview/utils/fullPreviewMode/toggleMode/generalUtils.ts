@@ -4,13 +4,12 @@ import { WorkshopEventCallback } from '../../../../../../../interfaces/workshopE
 import ExpandedModalModeGeneralUtils from '../../expandedModalPreviewMode/utils/generalUtils';
 import { ComponentOptions } from 'vue';
 import {
-  MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS,
-  OPACITY_INVISIBLE, OPACITY_VISIBLE, POINTER_EVENTS_NONE, POINTER_EVENTS_REMOVE,
+  MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, OPACITY_VISIBLE, OPACITY_INVISIBLE, ELEMENT_CSS_CHANGE_MILLISECONDS, 
+  MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS, POINTER_EVENTS_NONE, POINTER_EVENTS_REMOVE,
 } from '../../expandedModalPreviewMode/consts/sharedConsts';
 
 export default class GeneralUtils {
 
-  public static readonly VIEW_CHANGE_MILLISECONDS = 10;
 
   private static startToolbarTransitionWithFadeOut(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean,
       toggleFullPreviewModeOptionsCallback: () => void, toolbarPositionCallback: (toolbarContainerElement: HTMLElement,
@@ -22,11 +21,11 @@ export default class GeneralUtils {
       ExpandedModalModeGeneralUtils.setToolbarContainerPointerEvents(toolbarContainerElement, POINTER_EVENTS_REMOVE);
       setTimeout(() => {
         ExpandedModalModeGeneralUtils.opacityFadeTransition(OPACITY_VISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);        
-      }, GeneralUtils.VIEW_CHANGE_MILLISECONDS);
+      }, ELEMENT_CSS_CHANGE_MILLISECONDS);
     }, MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS);
   }
 
-  public static startModalAndBackdropTransitionWithFadeOut(modalElement: HTMLElement, temporaryComponentElement: HTMLElement,
+  public static switchComponentsWithFadeOut(modalElement: HTMLElement, temporaryComponentElement: HTMLElement,
       switchComponentCallback: () => void): void {
     ExpandedModalModeGeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, modalElement);
     ExpandedModalModeGeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, temporaryComponentElement);
@@ -35,7 +34,7 @@ export default class GeneralUtils {
       setTimeout(() => {
         ExpandedModalModeGeneralUtils.opacityFadeTransition(OPACITY_VISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, modalElement);
         ExpandedModalModeGeneralUtils.opacityFadeTransition(OPACITY_VISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, temporaryComponentElement);
-      }, GeneralUtils.VIEW_CHANGE_MILLISECONDS);
+      }, ELEMENT_CSS_CHANGE_MILLISECONDS);
     }, MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS);
   }
 

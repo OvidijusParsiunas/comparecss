@@ -38,14 +38,14 @@ export default class ToggleOn {
     }
   }
 
-  public static start(componentPreviewComponent: ComponentOptions, modalElement: HTMLElement, temporaryComponentElement: HTMLElement,
+  public static start(componentPreviewComponent: ComponentOptions, componentPreviewElement: HTMLElement, temporaryComponentElement: HTMLElement,
       toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean,
       toggleFullPreviewModeOptionsCallback: () => void): void {
     ToggleOn.setup(componentPreviewComponent, toolbarContainerElement, toolbarElement);
     const switchButtonToModalComponentFunc = ToggleOn.switchButtonToModalComponent.bind(this,
       componentPreviewComponent, isExpandedModalPreviewModeActive)
     if (!isExpandedModalPreviewModeActive) { 
-      GeneralUtils.startModalAndBackdropTransitionWithFadeOut(modalElement, temporaryComponentElement, switchButtonToModalComponentFunc);
+      GeneralUtils.switchComponentsWithFadeOut(componentPreviewElement, temporaryComponentElement, switchButtonToModalComponentFunc);
     } else {
       switchButtonToModalComponentFunc();
       GeneralUtils.createWorkshopEventCallback(componentPreviewComponent,

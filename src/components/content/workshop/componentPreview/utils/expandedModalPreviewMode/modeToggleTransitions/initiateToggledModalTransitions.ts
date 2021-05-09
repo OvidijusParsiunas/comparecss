@@ -4,11 +4,11 @@ import { BackdropProperties } from '../../../../../../../interfaces/workshopComp
 import { ComponentOptions } from 'vue';
 
 type EntranceTransitionCallback = (modalEntranceTransition: ModalEntranceTransition, transitionDuration: string, transitionDelay: string,
-  backdropProperties: BackdropProperties, modalElement: HTMLElement, modalOverlayElement: HTMLElement, backdropElement: HTMLElement,
+  backdropProperties: BackdropProperties, modalElement: HTMLElement, modalOverlayElement: HTMLElement, componentPreviewContainerElement: HTMLElement,
   toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement?: HTMLElement) => void;
   
 type ExitTransitionCallback = (modalExitTransition: ModalExitTransition, transitionDuration: string, setOptionToDefaultCallback: () => void,
-  backdropElement: HTMLElement, backdropProperties: BackdropProperties, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
+  componentPreviewContainerElement: HTMLElement, backdropProperties: BackdropProperties, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
   toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement?: HTMLElement) => void;
 
 export default class InitiateToggledModalTransitions {

@@ -1,23 +1,23 @@
+import { OPACITY_INVISIBLE, TOOLBAR_FADE_TRANSITION_DURATION_SECONDS, ELEMENT_CSS_CHANGE_MILLISECONDS } from '../../../expandedModalPreviewMode/consts/sharedConsts';
 import { ExitTransitionCallback, ModalEntranceTransition, ModalExitTransition } from '../../../../../../../../interfaces/modalTransitions';
-import { OPACITY_INVISIBLE, TOOLBAR_FADE_TRANSITION_DURATION_SECONDS } from '../../../expandedModalPreviewMode/consts/sharedConsts';
 import { expandedModalPreviewModeState } from '../../../expandedModalPreviewMode/expandedModalPreviewModeState';
 import ModeToggleEntranceTransition from '../../../expandedModalPreviewMode/modeToggleTransitions/entrance';
 import ModeToggleExitTransition from '../../../expandedModalPreviewMode/modeToggleTransitions/exit';
 import ExpandedModalModeGeneralUtils from '../../../expandedModalPreviewMode/utils/generalUtils';
 import { BackdropProperties } from '../../../../../../../../interfaces/workshopComponent';
-import GeneralUtils from '../generalUtils';
   
 export default class Transitions {
 
   private static readonly ENTRANCE_TRANSITION_INITIAL_FADEOUT_DURATION = '0s';
 
   public static entranceTransition(modalEntranceTransition: ModalEntranceTransition, transitionDuration: string, transitionDelay: string,
-      backdropProperties: BackdropProperties, modalElement: HTMLElement, modalOverlayElement: HTMLElement, backdropElement: HTMLElement,
-      toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement): void {
+      backdropProperties: BackdropProperties, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
+      componentPreviewContainerElement: HTMLElement, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement): void {
+    componentPreviewContainerElement.style.opacity = OPACITY_INVISIBLE;
     ExpandedModalModeGeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, Transitions.ENTRANCE_TRANSITION_INITIAL_FADEOUT_DURATION,
-      backdropElement, modalElement, toolbarContainerElement);
+      modalElement, toolbarContainerElement);
     window.setTimeout(() => {
-      ModeToggleEntranceTransition.startModalAndBackdropTransition(backdropElement, modalElement, modalOverlayElement,
+      ModeToggleEntranceTransition.startModalAndBackdropTransition(componentPreviewContainerElement, modalElement, modalOverlayElement,
         backdropProperties, modalEntranceTransition, transitionDuration, transitionDelay);
       ModeToggleEntranceTransition.startToolbarTransition(toolbarContainerElement, toolbarElement, undefined, transitionDelay);
     });
@@ -25,15 +25,15 @@ export default class Transitions {
     // as the setter here also prevents mouse events on subcomponents (required to prevent the transition animation from being stopped)
     setTimeout(() => {
       expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(true);
-    }, GeneralUtils.VIEW_CHANGE_MILLISECONDS);
+    }, ELEMENT_CSS_CHANGE_MILLISECONDS);
   }
 
   public static exitTransition(modalExitTransition: ModalExitTransition, transitionDuration: string, setOptionToDefaultCallback: () => void,
-      backdropElement: HTMLElement, backdropProperties: BackdropProperties, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
-      toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
+      componentPreviewContainerElement: HTMLElement, backdropProperties: BackdropProperties, modalElement: HTMLElement,
+      modalOverlayElement: HTMLElement, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
     ExpandedModalModeGeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, TOOLBAR_FADE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
     modalExitTransition(transitionDuration, modalElement, ModeToggleExitTransition.exitTransitionCallback.bind(this, setOptionToDefaultCallback) as ExitTransitionCallback,
-      backdropElement, backdropProperties, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, modalOverlayElement);
+      componentPreviewContainerElement, backdropProperties, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, modalOverlayElement);
     expandedModalPreviewModeState.setIsModeToggleTransitionInProgressState(true);
   }
 }
