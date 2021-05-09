@@ -47,7 +47,10 @@ function createDefaultBackdropProperties(): BackdropProperties {
   return {
     color: '#6d6d6dcc',
     alpha: 0.8,
-    entranceTransitionDuration: '1.2s',
+    entranceTransitionDuration: {
+      currentValue: '1.2s',
+      lastSelectedValue: '1.2s',
+    },
     opacity: 0,
     visible: false,
   };

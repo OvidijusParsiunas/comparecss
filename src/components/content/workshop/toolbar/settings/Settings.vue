@@ -39,7 +39,7 @@
                     v-bind:max="setting.spec.scale[1]"
                     v-model="setting.spec.default"
                     @mousedown="rangeMouseDown($event, setting.spec)"
-                    @mouseup="rangeMouseUp"
+                    @mouseup="rangeMouseUp($event, setting.spec)"
                     @contextmenu="preventRightClickEvent"
                     @input="changeSetting(updateRange.bind(this, $event, setting))">
                 </div>
@@ -273,7 +273,8 @@ export default {
         if (popoverElement.style) { popoverElement.style.opacity = '1'; }
       });
     },
-    rangeMouseUp(event: KeyboardEvent): void {
+    rangeMouseUp(event: MouseEvent, setting: any): void {
+      RangeUtils.saveLastSelectedValue(event, setting, this.subcomponentProperties);
       ((event.target as HTMLInputElement).parentElement.childNodes[0] as HTMLElement).style.opacity = '0';
     },
     preventRightClickEvent(event: KeyboardEvent): void {

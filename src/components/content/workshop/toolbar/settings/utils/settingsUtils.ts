@@ -53,9 +53,10 @@ export default class SettingsUtils {
     const { triggers, spec } = option;
     (triggers || []).forEach((trigger) => {
       if (trigger.setting) {
-        const { setting, aggregateSettingSpecs } = trigger;
-        const [targetSettingSpecs] = RangeUtils.getAggregatedSettingSpecs(setting);
-        RangeUtils.updateSetting(aggregateSettingSpecs.concat(spec), targetSettingSpecs, true, subcomponentProperties);
+        const rangeValue = RangeUtils.getCustomFeatureRangeNumberValue(spec, subcomponentProperties);
+        const { setting: {spec: targetSettingSpec}, aggregateSettingSpecs } = trigger;
+        RangeUtils.updateSetting(rangeValue.toString(), aggregateSettingSpecs, targetSettingSpec, true,
+          spec.smoothingDivisible, subcomponentProperties);
       }
     });
   }

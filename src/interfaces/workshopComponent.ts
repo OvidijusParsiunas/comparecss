@@ -44,10 +44,15 @@ export type SubcomponentSpecificSettings = {
   };
 }
 
+export interface PreventPermanentEditByOtherSettings {
+  currentValue: string;
+  lastSelectedValue: string;
+}
+
 export interface BackdropProperties {
   color: string;
   alpha: number;
-  entranceTransitionDuration: string;
+  entranceTransitionDuration: PreventPermanentEditByOtherSettings;
   opacity: number;
   visible: boolean;
 }

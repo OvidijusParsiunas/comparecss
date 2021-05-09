@@ -56,7 +56,8 @@ export default {
         default: 0,
         scale: [0, 40],
         smoothingDivisible: 20,
-        customFeatureObjectKeys: ['backdrop', 'entranceTransitionDuration'],
+        customFeatureObjectKeys: ['backdrop', 'entranceTransitionDuration', 'currentValue'],
+        lastSelectedValueKeys: ['backdrop', 'entranceTransitionDuration', 'lastSelectedValue'],
         postfix: 's',
         updateSettingSpecViaOtherSettings: {
           aggregatedSettingPaths: getAggregatedSettingsPaths(),

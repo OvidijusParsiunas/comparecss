@@ -4,7 +4,7 @@
       ref="modalBackdrop" id="modal-backdrop"
       :style="{
         backgroundColor: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.color,
-        transitionDuration: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.entranceTransitionDuration,
+        transitionDuration: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.entranceTransitionDuration.currentValue,
         opacity: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.opacity}">
     </div>
     <div style="height: 100vh" class="bootstrap">
@@ -188,7 +188,10 @@ function createDefaultBackdropProperties(): BackdropProperties {
   return {
     color: '#6d6d6dcc',
     alpha: 0.8,
-    entranceTransitionDuration: '1.2s',
+    entranceTransitionDuration: {
+      currentValue: '1.2s',
+      lastSelectedValue: '1.2s',
+    },
     opacity: 0,
     visible: false,
   };

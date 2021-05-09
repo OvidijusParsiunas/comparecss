@@ -10,6 +10,22 @@ export default class RangeUtils {
 
   private static readonly DEFAULT_RANGE_VALUE = 0;
 
+  public static saveLastSelectedValue(event: MouseEvent, settingSpec: any, subcomponentProperties: SubcomponentProperties): void {
+    const rangeValue = (event.target as HTMLInputElement).value;
+    if (settingSpec.lastSelectedValueKeys) {
+      RangeUtils.updateCustomFeature(rangeValue, settingSpec, subcomponentProperties.customFeatures);
+    }
+  }
+
+  private static attemptToResetLastSelectedValue(totalAggregateAndCurrentSettingRangeValue: number, targetSettingRangeValue: number,
+      targetSettingSpec: any, subcomponentProperties: SubcomponentProperties): void {
+    const customFeatureValue = SharedUtils.getCustomFeatureValue(targetSettingSpec.lastSelectedValueKeys, subcomponentProperties.customFeatures);
+    const lastSelectedValue = RangeUtils.parseString(customFeatureValue as string, targetSettingSpec.smoothingDivisible);
+    if (lastSelectedValue < totalAggregateAndCurrentSettingRangeValue && targetSettingRangeValue < lastSelectedValue) {
+      RangeUtils.updateCustomFeature(lastSelectedValue.toString(), targetSettingSpec, subcomponentProperties.customFeatures);
+    }
+  }
+
   private static activeTriggersForCustomCss(trigger: any, subcomponentProperties: SubcomponentProperties,
       actionsDropdownsObjects: unknown): void {
     const { customCss, activeCssPseudoClass } = subcomponentProperties;
@@ -54,15 +70,21 @@ export default class RangeUtils {
     return total;
   }
 
-  public static updateSetting(aggregateSettingSpecs: any, targetSettingSpec: any, updateIfLower: boolean,
-      subcomponentProperties: SubcomponentProperties): void {
-    const aggregateSettingsTotal = RangeUtils.getAggregateSettingsTotalValue(aggregateSettingSpecs,
+  // need to pass down the current range value as obtaining it through spec does not give the most up to date value
+  public static updateSetting(currentSettingRangeValue: string, aggregateSettingSpecs: any, targetSettingSpec: any, updateIfLower: boolean,
+      currentSmoothingDivisible: any, subcomponentProperties: SubcomponentProperties): void {
+    const totalAggregateSettingValue = RangeUtils.getAggregateSettingsTotalValue(aggregateSettingSpecs,
       targetSettingSpec.smoothingDivisible, subcomponentProperties);
-    targetSettingSpec.scale[1] = aggregateSettingsTotal;
+    const totalAggregateAndCurrentSettingRangeValue = RangeUtils.convertRangeValueNumberViaTargetSmoothingDivisible(
+      Number.parseFloat(currentSettingRangeValue), currentSmoothingDivisible, targetSettingSpec.smoothingDivisible) + totalAggregateSettingValue;
+    targetSettingSpec.scale[1] = totalAggregateAndCurrentSettingRangeValue;
     if (!updateIfLower) return;
-    const settingRangeValue = RangeUtils.getCustomFeatureRangeNumberValue(targetSettingSpec, subcomponentProperties);
-    if (aggregateSettingsTotal < settingRangeValue) {
-      RangeUtils.updateCustomFeature(aggregateSettingsTotal.toString(), targetSettingSpec, subcomponentProperties.customFeatures);
+    const targetSettingRangeValue = RangeUtils.getCustomFeatureRangeNumberValue(targetSettingSpec, subcomponentProperties);
+    if (totalAggregateAndCurrentSettingRangeValue < targetSettingRangeValue) {
+      RangeUtils.updateCustomFeature(totalAggregateAndCurrentSettingRangeValue.toString(), targetSettingSpec, subcomponentProperties.customFeatures);
+    } else if (targetSettingSpec.lastSelectedValueKeys) {
+      RangeUtils.attemptToResetLastSelectedValue(totalAggregateAndCurrentSettingRangeValue, targetSettingRangeValue,
+        targetSettingSpec, subcomponentProperties);
     }
   }
 
@@ -76,16 +98,17 @@ export default class RangeUtils {
     return settingsSpecs;
   }
 
-  private static activateTriggers(updatedSetting: any, subcomponentProperties: SubcomponentProperties, allSettings: any,
+  private static activateTriggers(rangeValue: string, updatedSetting: any, subcomponentProperties: SubcomponentProperties, allSettings: any,
       actionsDropdownsObjects: unknown): void {
     const { triggers, spec } = updatedSetting;
     (triggers || []).forEach((trigger) => {
       if (trigger.customFeatureObjectKeys) {
         RangeUtils.activateTriggersForCustomSubcomponentProperties(trigger, subcomponentProperties.customFeatures, allSettings);
       } else if (trigger.setting) {
-        const { setting, aggregateSettingSpecs } = trigger;
+        const { setting, updateIfLower, aggregateSettingSpecs } = trigger;
         const [targetSettingSpecs] = RangeUtils.getAggregatedSettingSpecs(setting);
-        RangeUtils.updateSetting(aggregateSettingSpecs.concat(spec), targetSettingSpecs, true, subcomponentProperties);
+        RangeUtils.updateSetting(rangeValue, aggregateSettingSpecs, targetSettingSpecs, updateIfLower,
+            spec.smoothingDivisible, subcomponentProperties);
       } else {
         RangeUtils.activeTriggersForCustomCss(trigger, subcomponentProperties, actionsDropdownsObjects);
       }
@@ -118,7 +141,7 @@ export default class RangeUtils {
       subcomponentProperties: SubcomponentProperties, actionsDropdownsObjects: unknown): void {
     const { spec } = updatedSetting;
     const rangeValue = (event.target as HTMLInputElement).value;
-    RangeUtils.activateTriggers(updatedSetting, subcomponentProperties, allSettings, actionsDropdownsObjects);
+    RangeUtils.activateTriggers(rangeValue, updatedSetting, subcomponentProperties, allSettings, actionsDropdownsObjects);
     if (spec.partialCss != undefined) {
       if (spec.cssProperty === 'boxShadow') BoxShadowUtils.updateBoxShadowRangeValue(rangeValue, spec, subcomponentProperties);
     } else if (spec.customFeatureObjectKeys) {
@@ -131,7 +154,8 @@ export default class RangeUtils {
   private static updateSettingSpec(otherSettingsProperties: any, settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
     const { aggregatedSettingPaths, updateIfLower } = otherSettingsProperties;
     const aggregateSettingSpecs = RangeUtils.getAggregatedSettingSpecs(aggregatedSettingPaths);
-    RangeUtils.updateSetting(aggregateSettingSpecs, settingToBeUpdatedSpec, updateIfLower, subcomponentProperties);
+    RangeUtils.updateSetting('0', aggregateSettingSpecs, settingToBeUpdatedSpec, updateIfLower,
+      settingToBeUpdatedSpec.smoothingDivisible, subcomponentProperties);
   }
 
   private static updateCustomCssSetting(settingToBeUpdated: any, cssPropertyValue: string): void {
