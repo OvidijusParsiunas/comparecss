@@ -47,6 +47,8 @@ export type SubcomponentSpecificSettings = {
 export interface PreventPermanentEditByOtherSettings {
   currentValue: string;
   lastSelectedValue: string;
+  // the value is automatically set to the total of modal entrance duration and delay
+  isAuto: boolean;
 }
 
 export interface BackdropProperties {

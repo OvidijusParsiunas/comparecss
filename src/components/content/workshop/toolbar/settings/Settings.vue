@@ -257,7 +257,8 @@ export default {
   }),
   methods: {
     updateRange(event: MouseEvent, setting: any): void {
-      RangeUtils.updateProperties(event, setting, this.settings, this.subcomponentProperties, this.actionsDropdownsObjects);
+      RangeUtils.updateProperties(event, setting, this.settings, this.subcomponentProperties, this.actionsDropdownsObjects,
+        this.refreshSettings.bind(this));
       if (setting.spec.customFeatureObjectKeys) this.customFeatureRangeValue = SharedUtils.getCustomFeatureValue(
         setting.spec.customFeatureObjectKeys, this.subcomponentProperties.customFeatures);
     },
@@ -316,6 +317,7 @@ export default {
     },
     checkboxMouseClick(currentCheckboxValue: boolean, spec: any, triggers: any): void {
       CheckboxUtils.updateProperties(currentCheckboxValue, spec, triggers, this.subcomponentProperties, this.settings);
+      this.refreshSettings();
     },
     resetSubcomponentProperties(options: any): void {
       SettingsUtils.resetSubcomponentProperties(options, this.subcomponentProperties);

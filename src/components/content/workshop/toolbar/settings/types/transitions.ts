@@ -29,7 +29,7 @@ function generateMouseEventCallbacks(isEntranceAnimation: boolean): ActionsDropd
 // cannot point to the setting directly due to dependency invertion
 function getSettingPath(): SettingPaths {
   return [
-    {optionName: WORKSHOP_TOOLBAR_OPTION_TYPES.BACKDROP, settingName: 'Transition-Duration'},
+    {optionName: WORKSHOP_TOOLBAR_OPTION_TYPES.BACKDROP, settingName: 'Transition Duration'},
   ];
 }
 
@@ -81,7 +81,7 @@ export default {
         {
           setting: getSettingPath(),
           aggregateSettingSpecs: [entranceDelayTransitionSpec],
-          updateIfLower: true,
+          updateUsingScaleMax: true,
         },
       ]
     },
@@ -103,7 +103,7 @@ export default {
         {
           setting: getSettingPath(),
           aggregateSettingSpecs: [entranceDurationTransitionSpec],
-          updateIfLower: true,
+          updateUsingScaleMax: true,
         },
       ]
     },

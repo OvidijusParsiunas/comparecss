@@ -12,22 +12,8 @@ export default class RangeUtils {
 
   public static saveLastSelectedValue(event: MouseEvent, settingSpec: any, subcomponentProperties: SubcomponentProperties): void {
     const rangeValue = (event.target as HTMLInputElement).value;
-    if (settingSpec.lastSelectedValueKeys) {
-      RangeUtils.updateCustomFeature(rangeValue, settingSpec, subcomponentProperties.customFeatures, settingSpec.lastSelectedValueKeys);
-    }
-  }
-
-  private static attemptToResetLastSelectedValue(totalAggregateAndCurrentSettingRangeValue: number, targetSettingRangeValue: number,
-      targetSettingSpec: any, subcomponentProperties: SubcomponentProperties): void {
-    const customFeatureValue = SharedUtils.getCustomFeatureValue(targetSettingSpec.lastSelectedValueKeys, subcomponentProperties.customFeatures);
-    const lastSelectedValue = RangeUtils.parseString(customFeatureValue as string, targetSettingSpec.smoothingDivisible);
-    // Remember that this gets called when the totalAggregateAndCurrentSettingRangeValue is higher than the targetSettingRangeValue
-    if (targetSettingRangeValue < lastSelectedValue) {
-      // instead of using totalAggregateAndCurrentSettingRangeValue as the new value, the following line is used to prevent
-      // an issue where upon selecting a high range value in the current setting (e.g. entrance delay duration),
-      // the totalAggregateAndCurrentSettingRangeValue would be higher than lastSelectedValue
-      const minRangeValue = Math.min(totalAggregateAndCurrentSettingRangeValue, lastSelectedValue);
-      RangeUtils.updateCustomFeature(minRangeValue.toString(), targetSettingSpec, subcomponentProperties.customFeatures);
+    if (settingSpec.lastSelectedValueObjectKeys) {
+      RangeUtils.updateCustomFeature(rangeValue, settingSpec, subcomponentProperties.customFeatures, settingSpec.lastSelectedValueObjectKeys);
     }
   }
 
@@ -59,6 +45,38 @@ export default class RangeUtils {
     return RangeUtils.parseString(customFeatureValue as string, smoothingDivisible);
   }
 
+  private static attemptToResetLastSelectedValue(totalAggregateAndCurrentSettingRangeValue: number, targetSettingRangeValue: number,
+      targetSettingSpec: any, subcomponentProperties: SubcomponentProperties, refreshSettingsCallback?: () => void): void {
+    const customFeatureValue = SharedUtils.getCustomFeatureValue(targetSettingSpec.lastSelectedValueObjectKeys, subcomponentProperties.customFeatures);
+    const lastSelectedValue = RangeUtils.parseString(customFeatureValue as string, targetSettingSpec.smoothingDivisible);
+    // Remember that this gets called when the totalAggregateAndCurrentSettingRangeValue is higher than the targetSettingRangeValue
+    if (targetSettingRangeValue < lastSelectedValue) {
+      // instead of using totalAggregateAndCurrentSettingRangeValue as the new value, the following line is used to prevent
+      // an issue where upon selecting a high range value in the current setting (e.g. entrance delay duration),
+      // the totalAggregateAndCurrentSettingRangeValue would be higher than lastSelectedValue
+      const minRangeValue = Math.min(totalAggregateAndCurrentSettingRangeValue, lastSelectedValue);
+      RangeUtils.updateCustomFeature(minRangeValue.toString(), targetSettingSpec, subcomponentProperties.customFeatures);
+      if (refreshSettingsCallback) refreshSettingsCallback();
+    }
+  }
+
+  private static attemptToUpdateOtherSettingFeatureValueViaScaleMax(totalAggregateAndCurrentSettingRangeValue: number, targetSettingSpec: any,
+      subcomponentProperties: SubcomponentProperties, refreshSettingsCallback?: () => void): void {
+    const targetSettingRangeValue = RangeUtils.getCustomFeatureRangeNumberValue(targetSettingSpec, subcomponentProperties);
+    if (totalAggregateAndCurrentSettingRangeValue < targetSettingRangeValue) {
+      RangeUtils.updateCustomFeature(totalAggregateAndCurrentSettingRangeValue.toString(), targetSettingSpec, subcomponentProperties.customFeatures);
+    } else if (targetSettingSpec.isAutoObjectKeys) {
+      const isAuto = SharedUtils.getCustomFeatureValue(targetSettingSpec.isAutoObjectKeys, subcomponentProperties.customFeatures);
+      if (isAuto) {
+        RangeUtils.updateCustomFeature(totalAggregateAndCurrentSettingRangeValue.toString(), targetSettingSpec, subcomponentProperties.customFeatures);
+        if (refreshSettingsCallback) refreshSettingsCallback();
+      } else {
+        RangeUtils.attemptToResetLastSelectedValue(totalAggregateAndCurrentSettingRangeValue, targetSettingRangeValue,
+          targetSettingSpec, subcomponentProperties, refreshSettingsCallback);
+      }
+    }
+  }
+
   private static convertRangeValueNumberViaTargetSmoothingDivisible(rangeValue: number, currentSmoothingDivisible: number,
       targetSmoothingDivisible: number): number {
     return rangeValue / (currentSmoothingDivisible / targetSmoothingDivisible);
@@ -76,21 +94,16 @@ export default class RangeUtils {
   }
 
   // need to pass down the current range value as obtaining it through spec does not give the most up to date value
-  public static updateSetting(currentSettingRangeValue: string, aggregateSettingSpecs: any, targetSettingSpec: any, updateIfLower: boolean,
-      currentSmoothingDivisible: any, subcomponentProperties: SubcomponentProperties): void {
+  public static updateSetting(currentSettingRangeValue: string, aggregateSettingSpecs: any, targetSettingSpec: any, updateUsingScaleMax: boolean,
+      currentSmoothingDivisible: number, subcomponentProperties: SubcomponentProperties, refreshSettingsCallback?: () => void): void {
     const totalAggregateSettingValue = RangeUtils.getAggregateSettingsTotalValue(aggregateSettingSpecs,
       targetSettingSpec.smoothingDivisible, subcomponentProperties);
     const totalAggregateAndCurrentSettingRangeValue = RangeUtils.convertRangeValueNumberViaTargetSmoothingDivisible(
       Number.parseFloat(currentSettingRangeValue), currentSmoothingDivisible, targetSettingSpec.smoothingDivisible) + totalAggregateSettingValue;
     targetSettingSpec.scale[1] = totalAggregateAndCurrentSettingRangeValue;
-    if (!updateIfLower) return;
-    const targetSettingRangeValue = RangeUtils.getCustomFeatureRangeNumberValue(targetSettingSpec, subcomponentProperties);
-    if (totalAggregateAndCurrentSettingRangeValue < targetSettingRangeValue) {
-      RangeUtils.updateCustomFeature(totalAggregateAndCurrentSettingRangeValue.toString(), targetSettingSpec, subcomponentProperties.customFeatures);
-    } else if (targetSettingSpec.lastSelectedValueKeys) {
-      RangeUtils.attemptToResetLastSelectedValue(totalAggregateAndCurrentSettingRangeValue, targetSettingRangeValue,
-        targetSettingSpec, subcomponentProperties);
-    }
+    if (!updateUsingScaleMax) return;
+    RangeUtils.attemptToUpdateOtherSettingFeatureValueViaScaleMax(totalAggregateAndCurrentSettingRangeValue, targetSettingSpec,
+      subcomponentProperties, refreshSettingsCallback);
   }
 
   public static getAggregatedSettingSpecs(aggregatedSettingsPaths: SettingPaths): any {
@@ -104,16 +117,16 @@ export default class RangeUtils {
   }
 
   private static activateTriggers(rangeValue: string, updatedSetting: any, subcomponentProperties: SubcomponentProperties, allSettings: any,
-      actionsDropdownsObjects: unknown): void {
+      actionsDropdownsObjects: unknown, refreshSettingsCallback: () => void): void {
     const { triggers, spec } = updatedSetting;
     (triggers || []).forEach((trigger) => {
       if (trigger.customFeatureObjectKeys) {
         RangeUtils.activateTriggersForCustomSubcomponentProperties(trigger, subcomponentProperties.customFeatures, allSettings);
       } else if (trigger.setting) {
-        const { setting, updateIfLower, aggregateSettingSpecs } = trigger;
+        const { setting, updateUsingScaleMax, aggregateSettingSpecs } = trigger;
         const [targetSettingSpecs] = RangeUtils.getAggregatedSettingSpecs(setting);
-        RangeUtils.updateSetting(rangeValue, aggregateSettingSpecs, targetSettingSpecs, updateIfLower,
-            spec.smoothingDivisible, subcomponentProperties);
+        RangeUtils.updateSetting(rangeValue, aggregateSettingSpecs, targetSettingSpecs, updateUsingScaleMax,
+            spec.smoothingDivisible, subcomponentProperties, refreshSettingsCallback);
       } else {
         RangeUtils.activeTriggersForCustomCss(trigger, subcomponentProperties, actionsDropdownsObjects);
       }
@@ -133,20 +146,20 @@ export default class RangeUtils {
     SharedUtils.setCustomFeatureValue(spec.colorValueCustomFeatureObjectKeys, customFeatures, newColorvalue);
   }
 
-  private static updateCustomFeature(rangeValue: string, spec: any, customFeatures: CustomFeatures, lastSelectedValueKeys?: string[]): void {
+  private static updateCustomFeature(rangeValue: string, spec: any, customFeatures: CustomFeatures, lastSelectedValueObjectKeys?: string[]): void {
     const { smoothingDivisible, postfix, customFeatureObjectKeys } = spec;
     const newRangeValue = `${rangeValue as unknown as number / smoothingDivisible}${postfix}`;
-    SharedUtils.setCustomFeatureValue(lastSelectedValueKeys || customFeatureObjectKeys, customFeatures, newRangeValue);
+    SharedUtils.setCustomFeatureValue(lastSelectedValueObjectKeys || customFeatureObjectKeys, customFeatures, newRangeValue);
     if (spec.colorValueCustomFeatureObjectKeys) {
       RangeUtils.updateColorValueInCustomFeatureProperties(rangeValue, spec, customFeatures);
     }
   }
 
-  public static updateProperties(event: MouseEvent, updatedSetting: any, allSettings: any,
-      subcomponentProperties: SubcomponentProperties, actionsDropdownsObjects: unknown): void {
+  public static updateProperties(event: MouseEvent, updatedSetting: any, allSettings: any, subcomponentProperties: SubcomponentProperties, 
+      actionsDropdownsObjects: unknown, refreshSettingsCallback: () => void): void {
     const { spec } = updatedSetting;
     const rangeValue = (event.target as HTMLInputElement).value;
-    RangeUtils.activateTriggers(rangeValue, updatedSetting, subcomponentProperties, allSettings, actionsDropdownsObjects);
+    RangeUtils.activateTriggers(rangeValue, updatedSetting, subcomponentProperties, allSettings, actionsDropdownsObjects, refreshSettingsCallback);
     if (spec.partialCss != undefined) {
       if (spec.cssProperty === 'boxShadow') BoxShadowUtils.updateBoxShadowRangeValue(rangeValue, spec, subcomponentProperties);
     } else if (spec.customFeatureObjectKeys) {
@@ -156,10 +169,10 @@ export default class RangeUtils {
     }
   }
 
-  private static updateSettingSpec(otherSettingsProperties: any, settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
-    const { aggregatedSettingPaths, updateIfLower } = otherSettingsProperties;
+  public static updateSettingSpec(otherSettingsProperties: any, settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
+    const { aggregatedSettingPaths, updateUsingScaleMax } = otherSettingsProperties;
     const aggregateSettingSpecs = RangeUtils.getAggregatedSettingSpecs(aggregatedSettingPaths);
-    RangeUtils.updateSetting('0', aggregateSettingSpecs, settingToBeUpdatedSpec, updateIfLower,
+    RangeUtils.updateSetting('0', aggregateSettingSpecs, settingToBeUpdatedSpec, updateUsingScaleMax,
       settingToBeUpdatedSpec.smoothingDivisible, subcomponentProperties);
   }
 

@@ -50,6 +50,7 @@ function createDefaultBackdropProperties(): BackdropProperties {
     entranceTransitionDuration: {
       currentValue: '1.2s',
       lastSelectedValue: '1.2s',
+      isAuto: true,
     },
     opacity: 0,
     visible: false,

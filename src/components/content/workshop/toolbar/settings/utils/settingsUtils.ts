@@ -49,13 +49,18 @@ export default class SettingsUtils {
   }
 
   private static updateSetting(option: any, subcomponentProperties: SubcomponentProperties): void {
-    // currently only being used for range values - hence functionality is currently there
+    // only being used to update range values - hence functionality is currently there
     const { triggers, spec } = option;
+    if (!Array.isArray(triggers)) return;
     (triggers || []).forEach((trigger) => {
       if (trigger.setting) {
+        // when resetting back to not auto, the lastSelectedValue is going to be reset to whatever it was set to originally
+        // instead of the max value of the scale. If this is confusing users - will need to activate settings triggers
+        // that have customFeatureObjectKeys within them. 
         const rangeValue = RangeUtils.getCustomFeatureRangeNumberValue(spec, subcomponentProperties);
-        const { setting: {spec: targetSettingSpec}, aggregateSettingSpecs } = trigger;
-        RangeUtils.updateSetting(rangeValue.toString(), aggregateSettingSpecs, targetSettingSpec, true,
+        const { setting, updateUsingScaleMax, aggregateSettingSpecs } = trigger;
+        const [targetSettingSpecs] = RangeUtils.getAggregatedSettingSpecs(setting);
+        RangeUtils.updateSetting(rangeValue.toString(), aggregateSettingSpecs, targetSettingSpecs, updateUsingScaleMax,
           spec.smoothingDivisible, subcomponentProperties);
       }
     });

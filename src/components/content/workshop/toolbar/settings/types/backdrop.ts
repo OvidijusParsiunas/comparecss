@@ -10,6 +10,21 @@ function getAggregatedSettingsPaths(): SettingPaths {
   ];
 }
 
+const backdropTransitionDurationSpec = {
+  name: 'Transition Duration',
+  default: 0,
+  scale: [0, 40],
+  smoothingDivisible: 20,
+  customFeatureObjectKeys: ['backdrop', 'entranceTransitionDuration', 'currentValue'],
+  lastSelectedValueObjectKeys: ['backdrop', 'entranceTransitionDuration', 'lastSelectedValue'],
+  isAutoObjectKeys: ['backdrop', 'entranceTransitionDuration', 'isAuto'],
+  postfix: 's',
+  updateSettingSpecViaOtherSettings: {
+    aggregatedSettingPaths: getAggregatedSettingsPaths(),
+    updateUsingScaleMax: true,
+  },
+};
+
 // create an optional interface
 export default {
   options: [
@@ -51,19 +66,35 @@ export default {
     },
     {
       type: SETTINGS_TYPES.RANGE,
-      spec: {
-        name: 'Transition-Duration',
-        default: 0,
-        scale: [0, 40],
-        smoothingDivisible: 20,
-        customFeatureObjectKeys: ['backdrop', 'entranceTransitionDuration', 'currentValue'],
-        lastSelectedValueKeys: ['backdrop', 'entranceTransitionDuration', 'lastSelectedValue'],
-        postfix: 's',
-        updateSettingSpecViaOtherSettings: {
-          aggregatedSettingPaths: getAggregatedSettingsPaths(),
-          updateIfLower: true,
-        } 
-      },
+      spec: backdropTransitionDurationSpec,
+      triggers: [
+        {
+          customFeatureObjectKeys: ['backdrop', 'entranceTransitionDuration', 'isAuto'],
+          defaultValue: false,
+          conditions: new Set([true]),
+        },
+      ],
     },
+    {
+      type: SETTINGS_TYPES.CHECKBOX,
+      spec: {
+        name: 'Auto',
+        customFeatureObjectKeys: ['backdrop', 'entranceTransitionDuration', 'isAuto'],
+        default: false,
+      },
+      triggers: {
+        true: [
+          {
+            updateSettingSpec: backdropTransitionDurationSpec,
+          }
+        ],
+        false: [
+          {
+            customFeatureObjectKeys: backdropTransitionDurationSpec.lastSelectedValueObjectKeys,
+            updateUsingValueFromAnotherObjectKeys: backdropTransitionDurationSpec.customFeatureObjectKeys,
+          }
+        ]
+      },
+    }
   ]
 };

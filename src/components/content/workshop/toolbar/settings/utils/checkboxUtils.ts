@@ -1,19 +1,43 @@
 import { CustomFeatures, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import SharedUtils from './sharedUtils';
+import RangeUtils from './rangeUtils';
 
 export default class CheckboxUtils {
+
+  private static updateSetting(settingSpec: any, subcomponentProperties: SubcomponentProperties): void {
+    if (settingSpec.updateSettingSpecViaOtherSettings) {
+      RangeUtils.updateSettingSpec(settingSpec.updateSettingSpecViaOtherSettings, settingSpec, subcomponentProperties);
+    }
+  }
+
+  private static updateCustomFeatureViaTrigger(trigger: any, subcomponentProperties: SubcomponentProperties): void {
+    if (trigger.updateUsingValueFromAnotherObjectKeys) {
+      const valueFromAnotherObject = SharedUtils.getCustomFeatureValue(trigger.updateUsingValueFromAnotherObjectKeys, subcomponentProperties.customFeatures);
+      SharedUtils.setCustomFeatureValue(trigger.customFeatureObjectKeys, subcomponentProperties.customFeatures, valueFromAnotherObject);
+    }
+  }
+
+  private static updateCssProperty(trigger: any, subcomponentProperties: SubcomponentProperties, thisSettingSpec: any, allSettings: any): void {
+    const { customCss, activeCssPseudoClass } = subcomponentProperties;
+    const { cssProperty, newValue } = trigger;
+    customCss[activeCssPseudoClass][cssProperty] = newValue;
+    for (let i = 0; i < allSettings.options.length; i += 1) {
+      if (thisSettingSpec !== allSettings.options[i].spec && allSettings.options[i].spec.cssProperty
+          && allSettings.options[i].spec.cssProperty === cssProperty) {
+        allSettings.options[i].spec.default = parseInt(newValue) || 0;
+      }
+    }
+  }
   
   private static activateTriggers(newCheckboxValue: boolean, triggers: any, subcomponentProperties: SubcomponentProperties,
       thisSettingSpec: any, allSettings: any): void {
-    const { customCss, activeCssPseudoClass } = subcomponentProperties;
     (triggers[newCheckboxValue.toString()] || []).forEach((trigger) => {
-      const { cssProperty, newValue } = trigger;
-      customCss[activeCssPseudoClass][cssProperty] = newValue;
-      for (let i = 0; i < allSettings.options.length; i += 1) {
-        if (thisSettingSpec !== allSettings.options[i].spec && allSettings.options[i].spec.cssProperty
-            && allSettings.options[i].spec.cssProperty === cssProperty) {
-          allSettings.options[i].spec.default = parseInt(newValue) || 0;
-        }
+      if (trigger.cssProperty) {
+        CheckboxUtils.updateCssProperty(trigger, subcomponentProperties, thisSettingSpec, allSettings);
+      } else if (trigger.customFeatureObjectKeys) {
+        CheckboxUtils.updateCustomFeatureViaTrigger(trigger, subcomponentProperties)
+      } else if (trigger.updateSettingSpec) {
+        CheckboxUtils.updateSetting(trigger.updateSettingSpec, subcomponentProperties);
       }
     });
   }
@@ -41,7 +65,7 @@ export default class CheckboxUtils {
     // changed by the time this method is called by the following: this.$emit('remove-insync-option-button', callback);
     const newCheckboxValue = !currentCheckboxValue;
     if (spec.customFeatureObjectKeys) { CheckboxUtils.updateCustomFeature(newCheckboxValue, spec, subcomponentProperties); }
-    if (triggers) { CheckboxUtils.activateTriggers(newCheckboxValue, triggers, subcomponentProperties, spec, allSettings) }
+    if (triggers) { CheckboxUtils.activateTriggers(newCheckboxValue, triggers, subcomponentProperties, spec, allSettings); }
   }
 
   private static updateCustomCssSetting(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
