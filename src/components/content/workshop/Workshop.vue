@@ -4,7 +4,8 @@
       ref="modalBackdrop" id="modal-backdrop"
       :style="{
         backgroundColor: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.color,
-        transitionDuration: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.entranceTransitionDuration.currentValue,
+        transitionDuration: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.exitTransitionDuration
+          || currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.entranceTransitionDuration.currentValue,
         opacity: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.opacity}">
     </div>
     <div style="height: 100vh" class="bootstrap">

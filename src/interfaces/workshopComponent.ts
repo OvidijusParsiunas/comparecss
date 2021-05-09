@@ -53,6 +53,7 @@ export interface BackdropProperties {
   color: string;
   alpha: number;
   entranceTransitionDuration: PreventPermanentEditByOtherSettings;
+  exitTransitionDuration?: string;
   opacity: number;
   visible: boolean;
 }

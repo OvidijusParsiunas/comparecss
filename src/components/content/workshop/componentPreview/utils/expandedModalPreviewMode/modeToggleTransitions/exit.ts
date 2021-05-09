@@ -34,6 +34,7 @@ export default class ModeToggleExitTransition {
   
   private static hideBackdrop(backdropProperties: BackdropProperties): void {
     backdropProperties.visible = false;
+    delete backdropProperties.exitTransitionDuration;
   }
 
   private static setComponentPreviewContainerToDefault(componentPreviewContainerElement: HTMLElement): void {

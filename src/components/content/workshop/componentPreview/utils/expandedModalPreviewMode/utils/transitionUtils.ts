@@ -72,9 +72,11 @@ export default class TransitionUtils {
     expandedModalPreviewModeState.setModalTransitionDelayState(modalTransitionDelay);
   }
 
-  private static startBackdropHideTransition(backdropProperties: BackdropProperties): void {
-    // MODAL - make change here for the transition time
-    if (backdropProperties) backdropProperties.opacity = 0;
+  private static startBackdropHideTransition(backdropProperties: BackdropProperties, transitionDuration: string): void {
+    if (backdropProperties) {
+      backdropProperties.exitTransitionDuration = transitionDuration;
+      backdropProperties.opacity = 0;
+    }
   }
   
   private static finishModalExitTransition(modalElement: HTMLElement, exitTransitionCallback: ExitTransitionCallback,
@@ -95,7 +97,7 @@ export default class TransitionUtils {
       exitTransitionCallback: ExitTransitionCallback, componentPreviewContainerElement: HTMLElement, backdropProperties: BackdropProperties,
       toolbarElement: HTMLElement, innerToolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement, modalOverlayElement?: HTMLElement,
       wasPreviousTransitionInterrupted?: boolean, modalElementProperties?: ElementStyleProperties): void {
-    TransitionUtils.startBackdropHideTransition(backdropProperties);
+    TransitionUtils.startBackdropHideTransition(backdropProperties, transitionDuration);
     TransitionUtils.setModalTransitionProperties(modalElement, OPACITY_INVISIBLE, ALL_PROPERTIES, transitionDuration,
       LINEAR_SPEED_TRANSITION, modalElementProperties);
     expandedModalPreviewModeState.markBeginningTimeOfTransitionState();
