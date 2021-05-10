@@ -25,7 +25,7 @@ importing existing subcomponent will also need to offer an option from the app d
 UX:
   which expanded modal preview toggle button highlighted style is more preferable, the chromium or firefox one
   on using the select key for picking a subcomponent, check whether the mouse should always be a pointer, marked with UX - SUBCOMPONENT SELECT
-  on expanded modal mode toggle open and close transitions, does the toolbar needs to fade in and out with the same duration as modal, marked with UX - EXPANDED MODAL TOGGLE TRANSITION
+  on expanded modal mode toggle open and close animations, does the toolbar needs to fade in and out with the same duration as modal, marked with UX - EXPANDED MODAL TOGGLE ANIMATION
   is the new blue color preview good enough
   enter behaviour ok in new componant modal?
   check if switching component modes to default but leaving same option is ok for UX

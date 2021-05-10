@@ -66,24 +66,24 @@
 </template>
 
 <script lang="ts">
+import { modalAnimationTypeToFunctionality } from './utils/expandedModalPreviewMode/animationInitializers/modalAnimationTypeToFunctionality';
 import { subcomponentAndOverlayElementIdsState } from '../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
-import { transitionTypeToFunctionality } from './utils/expandedModalPreviewMode/transitionInitializers/transitionTypeToFunctionality';
-import InitiateToggledModalTransitions from './utils/expandedModalPreviewMode/modeToggleTransitions/initiateToggledModalTransitions';
-import ExpandedModalPreviewModeToggleEntranceTransition from './utils/expandedModalPreviewMode/modeToggleTransitions/entrance';
+import InitiateToggledModalAnimations from './utils/expandedModalPreviewMode/modeToggleAnimations/initiateToggledModalAnimations';
+import ExpandedModalPreviewModeToggleEntranceAnimation from './utils/expandedModalPreviewMode/modeToggleAnimations/entrance';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
-import ExpandedModalPreviewModeToggleExitTransition from './utils/expandedModalPreviewMode/modeToggleTransitions/exit';
+import ExpandedModalPreviewModeToggleExitAnimation from './utils/expandedModalPreviewMode/modeToggleAnimations/exit';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
-import { ModalEntranceTransition, ModalExitTransition } from '../../../../interfaces/modalTransitions';
-import PreviewEntranceTransition from './utils/expandedModalPreviewMode/previewTransitions/entrance';
+import { PlayModalAnimationPreviewEvent } from '../../../../interfaces/playModalAnimationPreviewEvent';
+import { ModalEntranceAnimation, ModalExitAnimation } from '../../../../interfaces/modalAnimations';
+import PreviewEntranceAnimation from './utils/expandedModalPreviewMode/previewAnimations/entrance';
 import { ToggleFullPreviewModeEvent } from '../../../../interfaces/toggleFullPreviewModeEvent';
-import { PlayTransitionPreviewEvent } from '../../../../interfaces/playTransitionPreviewEvent';
-import PreviewExitTransition from './utils/expandedModalPreviewMode/previewTransitions/exit';
+import PreviewExitAnimation from './utils/expandedModalPreviewMode/previewAnimations/exit';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
-import TransitionUtils from './utils/expandedModalPreviewMode/utils/transitionUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import { componentTypeToStyles } from '../newComponent/types/componentTypeToStyles';
+import AnimationUtils from './utils/expandedModalPreviewMode/utils/animationUtils';
 import { NEW_COMPONENT_STYLES } from '../../../../consts/newComponentStyles.enum';
 import ToggleFullPreviewMode from './utils/fullPreviewMode/toggleFullPreviewMode';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
@@ -164,11 +164,11 @@ export default {
       if (isToggledExpandedModalPreviewModeToActive) {
         // strategies
         // https://tympanus.net/codrops/2013/06/25/nifty-modal-window-effects/
-        InitiateToggledModalTransitions.startEntranceTransition(this, toolbarContainerElement, toolbarElement,
-          ExpandedModalPreviewModeToggleEntranceTransition.start, toolbarPositionToggleElement);
+        InitiateToggledModalAnimations.startModalEntranceAnimation(this, toolbarContainerElement, toolbarElement,
+          ExpandedModalPreviewModeToggleEntranceAnimation.start, toolbarPositionToggleElement);
       } else {
-        InitiateToggledModalTransitions.startExitTransition(this, toolbarContainerElement, toolbarElement,
-          ExpandedModalPreviewModeToggleExitTransition.start, setOptionToDefaultCallback, toolbarPositionToggleElement);
+        InitiateToggledModalAnimations.startModalExitAnimation(this, toolbarContainerElement, toolbarElement,
+          ExpandedModalPreviewModeToggleExitAnimation.start, setOptionToDefaultCallback, toolbarPositionToggleElement);
       }
     },
     toggleFullPreviewMode(event: ToggleFullPreviewModeEvent): void {
@@ -182,20 +182,20 @@ export default {
           toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback);
       }
     },
-    playTransitionPreview(playTransitionPreviewEvent: PlayTransitionPreviewEvent): void {
-      const [transitionAnimation, isEntranceAnimation] = playTransitionPreviewEvent;
+    playModalAnimationPreview(playModalAnimationPreviewEvent: PlayModalAnimationPreviewEvent): void {
+      const [animationType, isEntranceAnimation] = playModalAnimationPreviewEvent;
       if (isEntranceAnimation) {
-        PreviewEntranceTransition.start(
-          transitionTypeToFunctionality[transitionAnimation] as ModalEntranceTransition,
-          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.entrance.duration, this.$refs.baseComponent.$refs.componentPreview);
+        PreviewEntranceAnimation.start(
+          modalAnimationTypeToFunctionality[animationType] as ModalEntranceAnimation,
+          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.modalAnimations.entrance.duration, this.$refs.baseComponent.$refs.componentPreview);
       } else {
-        PreviewExitTransition.start(
-          transitionTypeToFunctionality[transitionAnimation] as ModalExitTransition,
-          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.transitions.exit.duration, this.$refs.baseComponent.$refs.componentPreview);
+        PreviewExitAnimation.start(
+          modalAnimationTypeToFunctionality[animationType] as ModalExitAnimation,
+          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.modalAnimations.exit.duration, this.$refs.baseComponent.$refs.componentPreview);
       }
     },
-    stopTransitionPreview(): void {
-      TransitionUtils.cancelModalTransitionPreview(this.$refs.baseComponent.$refs.componentPreview);
+    stopAnimationPreview(): void {
+      AnimationUtils.cancelModalAnimationPreview(this.$refs.baseComponent.$refs.componentPreview);
     }
   },
   props: {

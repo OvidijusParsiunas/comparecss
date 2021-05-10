@@ -1,5 +1,5 @@
 import { CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER } from '../../../../../../consts/elementClassMarkers';
-import { TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS } from '../../../componentPreview/utils/expandedModalPreviewMode/consts/sharedConsts';
+import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../../componentPreview/utils/expandedModalPreviewMode/consts/sharedConsts';
 import { SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ToggleImportComponentModeEvent } from '../../../../../../interfaces/toggleImportComponentModeEvent';
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
@@ -69,7 +69,7 @@ export default class ImportComponentToggleUtils {
       optionsComponent.hasImportComponentModeClosedExpandedModal = false;
       setTimeout(() => {
         optionsComponent.$emit('toggle-import-subcomponent-mode', [false] as ToggleImportComponentModeEvent);
-      }, TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS);
+      }, TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS);
     } else {
       optionsComponent.$emit('toggle-import-subcomponent-mode', [false] as ToggleImportComponentModeEvent);
     }
@@ -150,7 +150,7 @@ export default class ImportComponentToggleUtils {
     } else if (optionsComponent.hasImportComponentModeClosedExpandedModal) {
       setTimeout(() => {
         ImportComponentToggleUtils.toggleImportComponentModeOn(optionsComponent);
-      }, TOOLBAR_FADE_TRANSITION_DURATION_MILLISECONDS);
+      }, TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS);
       optionsComponent.toggleModalExpandMode();
       optionsComponent.hasImportComponentModeClosedExpandedModal = false;
       return true;

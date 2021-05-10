@@ -1,12 +1,12 @@
-let isTransitionInProgress = false;
+let isAnimationInProgress = false;
 let isExpandedModalPreviewModeActivated = false;
 
-function setIsTransitionInProgress(state: boolean): void {
-  isTransitionInProgress = state;
+function setIsAnimationInProgress(state: boolean): void {
+  isAnimationInProgress = state;
 }
 
-function getIsTransitionInProgress(): boolean {
-  return isTransitionInProgress;
+function getIsAnimationInProgress(): boolean {
+  return isAnimationInProgress;
 }
 
 function setIsExpandedModalPreviewModeActivated(state: boolean): void {
@@ -18,14 +18,14 @@ function getIsExpandedModalPreviewModeActivated(): boolean {
 }
 
 function resetState(): void {
-  setIsTransitionInProgress(false);
+  setIsAnimationInProgress(false);
   setIsExpandedModalPreviewModeActivated(false);
 }
 
 export const fulPreviewModeState = {
   resetState,
-  setIsTransitionInProgress,
-  getIsTransitionInProgress,
+  setIsAnimationInProgress,
+  getIsAnimationInProgress,
   setIsExpandedModalPreviewModeActivated,
   getIsExpandedModalPreviewModeActivated,
 }

@@ -1,5 +1,5 @@
 import {
-  INITIAL_EXPANDED_MODAL_TRANSITION_VALUES, UNSET, ADD_CLASS,
+  INITIAL_EXPANDED_MODAL_ANIMATION_PROPERTIES, UNSET, ADD_CLASS,
   REMOVE_CLASS, POINTER_EVENTS_NONE, POINTER_EVENTS_REMOVE,
 } from '../consts/sharedConsts';
 import { ElementStyleProperties } from '../../../../../../../interfaces/elementStyleProperties';
@@ -12,7 +12,7 @@ export default class GeneralUtils {
     return Number.parseFloat(seconds) * 1000;
   }
 
-  public static unsetTransitionProperties(...elements: HTMLElement[]): void {
+  public static unsetAnimationProperties(...elements: HTMLElement[]): void {
     elements.forEach((element) => {
       if (!element) return;
       element.style.transitionDuration = UNSET;
@@ -21,10 +21,10 @@ export default class GeneralUtils {
     });
   }
 
-  public static opacityFadeTransition(opacity: string, transitionDuration: string, ...elements: HTMLElement[]): void {
-    const { transitionProperty, transitionTimingFunction } = INITIAL_EXPANDED_MODAL_TRANSITION_VALUES;
+  public static opacityFadeAnimation(opacity: string, animationDuration: string, ...elements: HTMLElement[]): void {
+    const { transitionProperty, transitionTimingFunction } = INITIAL_EXPANDED_MODAL_ANIMATION_PROPERTIES;
     elements.forEach((element) => {
-      element.style.transitionDuration = transitionDuration;
+      element.style.transitionDuration = animationDuration;
       element.style.transitionProperty = transitionProperty;
       element.style.transitionTimingFunction = transitionTimingFunction;
       element.style.opacity = opacity;
@@ -36,18 +36,18 @@ export default class GeneralUtils {
     modalOverlayElement.classList[toggleName](STATIC_POSITION_CLASS);
   }
 
-  public static getNewTransitionDuration(): string {
-    return `${expandedModalPreviewModeState.getElapsedTransitionTime() / 1000}s`;
+  public static getNewAnimationDuration(): string {
+    return `${expandedModalPreviewModeState.getElapsedAnimationTime() / 1000}s`;
   }
 
   public static setModalPropertiesBackToDefault(modalElement: HTMLElement): void {
-    const defaultModalProperties = expandedModalPreviewModeState.getCurrentExitTransitionModalDefaultPropertiesState();
+    const defaultModalProperties = expandedModalPreviewModeState.setIsPreviewAnimationInProgressState();
     GeneralUtils.setModalProperties(modalElement, defaultModalProperties);
   }
 
-  public static cancelAllPendingTransitionFunctionality(modalElement: HTMLElement): void {
-    expandedModalPreviewModeState.cancelPendingModalTransitionFunctionality();
-    expandedModalPreviewModeState.cancelPendingToolbarTransitionFunctionality();
+  public static startModalAndBackdropAnimationWithFadeOut(modalElement: HTMLElement): void {
+    expandedModalPreviewModeState.cancelPendingModalAnimationFunctionality();
+    expandedModalPreviewModeState.cancelPendingToolbarAnimationFunctionality();
     GeneralUtils.setModalPropertiesBackToDefault(modalElement);
   }
 

@@ -1,4 +1,4 @@
-import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../../../../../consts/modalTransitionTypes.enum';
+import { MODAL_ANIMATION_ENTRANCE_TYPES, MODAL_ANIMATION_EXIT_TYPES } from '../../../../../../../consts/modalAnimationTypes.enum';
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import ImportedComponentProperties from '../../../../utils/importComponent/importedComponentProperties';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
@@ -19,18 +19,18 @@ import { defaultButton } from '../../buttons/properties/default';
 import { inheritedAlertBaseCss } from './inheritedCss';
 import {
   CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, ComponentCenteringInParent,
-  AutoWidth, BackdropProperties, ComponentTransitions,  AlignedLayerSection, Text,
+  AutoWidth, BackdropProperties, ModalAnimations,  AlignedLayerSection, Text,
 } from '../../../../../../../interfaces/workshopComponent';
 
-function createDefaultTransitionsProperties(): ComponentTransitions {
+function createDefaultModalAnimationsProperties(): ModalAnimations {
   return {
     entrance: {
-      type: MODAL_TRANSITION_ENTRANCE_TYPES.FADE_IN,
+      type: MODAL_ANIMATION_ENTRANCE_TYPES.FADE_IN,
       duration: '0.3s',
       delay: '0.15s',
     },
     exit: {
-      type: MODAL_TRANSITION_EXIT_TYPES.FADE_OUT,
+      type: MODAL_ANIMATION_EXIT_TYPES.FADE_OUT,
       duration: '0.25s',
     },
   };
@@ -47,7 +47,7 @@ function createDefaultBackdropProperties(): BackdropProperties {
   return {
     color: '#6d6d6dcc',
     alpha: 0.8,
-    entranceTransitionDuration: {
+    entranceAnimationDuration: {
       currentValue: '1.2s',
       lastSelectedValue: '1.2s',
       isAuto: true,
@@ -60,7 +60,7 @@ function createDefaultBackdropProperties(): BackdropProperties {
 function createDefaultBaseCustomFeatures(): CustomFeatures {
   return {
     componentCenteringInParent: createDefaultComponentCenteringInParent(),
-    transitions: createDefaultTransitionsProperties(),
+    modalAnimations: createDefaultModalAnimationsProperties(),
     backdrop: createDefaultBackdropProperties(),
   };
 }

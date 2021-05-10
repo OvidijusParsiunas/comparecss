@@ -4,38 +4,38 @@ import { WorkshopEventCallback } from '../../../../../../../interfaces/workshopE
 import ExpandedModalModeGeneralUtils from '../../expandedModalPreviewMode/utils/generalUtils';
 import { ComponentOptions } from 'vue';
 import {
-  MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, OPACITY_VISIBLE, OPACITY_INVISIBLE, ELEMENT_CSS_CHANGE_MILLISECONDS, 
-  MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS, POINTER_EVENTS_NONE, POINTER_EVENTS_REMOVE,
+  MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, OPACITY_VISIBLE, OPACITY_INVISIBLE, ELEMENT_CSS_CHANGE_MILLISECONDS, 
+  MODE_TOGGLE_FADE_ANIMATION_DURATION_MILLISECONDS, POINTER_EVENTS_NONE, POINTER_EVENTS_REMOVE,
 } from '../../expandedModalPreviewMode/consts/sharedConsts';
 
 export default class GeneralUtils {
 
 
-  private static startToolbarTransitionWithFadeOut(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean,
+  private static startToolbarAnimationWithFadeOut(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean,
       toggleFullPreviewModeOptionsCallback: () => void, toolbarPositionCallback: (toolbarContainerElement: HTMLElement,
       toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean) => void): void {
-    ExpandedModalModeGeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);
+    ExpandedModalModeGeneralUtils.opacityFadeAnimation(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, toolbarContainerElement);
     window.setTimeout(() => {
       toolbarPositionCallback(toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive);
       toggleFullPreviewModeOptionsCallback();
       ExpandedModalModeGeneralUtils.setToolbarContainerPointerEvents(toolbarContainerElement, POINTER_EVENTS_REMOVE);
       setTimeout(() => {
-        ExpandedModalModeGeneralUtils.opacityFadeTransition(OPACITY_VISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, toolbarContainerElement);        
+        ExpandedModalModeGeneralUtils.opacityFadeAnimation(OPACITY_VISIBLE, MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, toolbarContainerElement);        
       }, ELEMENT_CSS_CHANGE_MILLISECONDS);
-    }, MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS);
+    }, MODE_TOGGLE_FADE_ANIMATION_DURATION_MILLISECONDS);
   }
 
   public static switchComponentsWithFadeOut(modalElement: HTMLElement, temporaryComponentElement: HTMLElement,
       switchComponentCallback: () => void): void {
-    ExpandedModalModeGeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, modalElement);
-    ExpandedModalModeGeneralUtils.opacityFadeTransition(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, temporaryComponentElement);
+    ExpandedModalModeGeneralUtils.opacityFadeAnimation(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, modalElement);
+    ExpandedModalModeGeneralUtils.opacityFadeAnimation(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, temporaryComponentElement);
     window.setTimeout(() => {
       switchComponentCallback();
       setTimeout(() => {
-        ExpandedModalModeGeneralUtils.opacityFadeTransition(OPACITY_VISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, modalElement);
-        ExpandedModalModeGeneralUtils.opacityFadeTransition(OPACITY_VISIBLE, MODE_TOGGLE_FADE_TRANSITION_DURATION_SECONDS, temporaryComponentElement);
+        ExpandedModalModeGeneralUtils.opacityFadeAnimation(OPACITY_VISIBLE, MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, modalElement);
+        ExpandedModalModeGeneralUtils.opacityFadeAnimation(OPACITY_VISIBLE, MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, temporaryComponentElement);
       }, ELEMENT_CSS_CHANGE_MILLISECONDS);
-    }, MODE_TOGGLE_FADE_TRANSITION_DURATION_MILLISECONDS);
+    }, MODE_TOGGLE_FADE_ANIMATION_DURATION_MILLISECONDS);
   }
 
   public static updateToolbarStyle(pointerEvents: typeof POINTER_EVENTS_NONE | typeof POINTER_EVENTS_REMOVE,
@@ -43,7 +43,7 @@ export default class GeneralUtils {
       toggleFullPreviewModeOptionsCallback: () => void, updateToolbarClassesCallback: (toolbarContainerElement: HTMLElement,
         toolbarElement: HTMLElement, isExpandedModalPreviewModeActive?: boolean) => void): void {
     ExpandedModalModeGeneralUtils.setToolbarContainerPointerEvents(toolbarContainerElement, pointerEvents);
-    GeneralUtils.startToolbarTransitionWithFadeOut(toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive,
+    GeneralUtils.startToolbarAnimationWithFadeOut(toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive,
       toggleFullPreviewModeOptionsCallback, updateToolbarClassesCallback);
   }
 

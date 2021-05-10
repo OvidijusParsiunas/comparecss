@@ -1,4 +1,4 @@
-import InitiateToggledModalTransitions from '../../../expandedModalPreviewMode/modeToggleTransitions/initiateToggledModalTransitions';
+import InitiateToggledModalAnimations from '../../../expandedModalPreviewMode/modeToggleAnimations/initiateToggledModalAnimations';
 import { WorkshopEventCallbackUtils } from '../../../../../toolbar/options/workshopEventCallbackUtils/workshopEventCallbackUtils';
 import { TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS } from '../../../../../../../../consts/toolbarClasses';
 import { WorkshopEventCallbackReturn } from '../../../../../../../../interfaces/workshopEventCallbackReturn';
@@ -7,8 +7,8 @@ import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../../../consts/domEventT
 import { OPTION_MENU_BUTTON_MARKER } from '../../../../../../../../consts/elementClassMarkers';
 import { fulPreviewModeState } from '../../fullPreviewModeState';
 import GeneralUtils from '../generalUtils';
-import Transitions from './transitions';
 import { ComponentOptions } from 'vue';
+import Animations from './animations';
 
 export default class ToggleModal {
 
@@ -29,13 +29,13 @@ export default class ToggleModal {
 
   public static hideModal(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement,
       toolbarElement: HTMLElement, event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
-    fulPreviewModeState.setIsTransitionInProgress(false);
+    fulPreviewModeState.setIsAnimationInProgress(false);
     if (event instanceof KeyboardEvent) {
       if (event.key === DOM_EVENT_TRIGGER_KEYS.ESCAPE) {
         
       } else if (event.key === DOM_EVENT_TRIGGER_KEYS.ENTER) {
-        InitiateToggledModalTransitions.startExitTransition(componentPreviewComponent, toolbarContainerElement, toolbarElement,
-          Transitions.exitTransition, ToggleModal.switchBetweenModalAndButton.bind(this, componentPreviewComponent, true));
+        InitiateToggledModalAnimations.startModalExitAnimation(componentPreviewComponent, toolbarContainerElement, toolbarElement,
+          Animations.exitAnimation, ToggleModal.switchBetweenModalAndButton.bind(this, componentPreviewComponent, true));
         fulPreviewModeState.setIsExpandedModalPreviewModeActivated(false);
         return { shouldRepeat: false };
       }
@@ -49,8 +49,8 @@ export default class ToggleModal {
   }
 
   public static displayModal(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement): void {
-    // cannot use expandedModalPreviewModeState.getIsModeToggleTransitionInProgressState() because it has a timeout
-    if (!fulPreviewModeState.getIsTransitionInProgress()) {
+    // cannot use expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState() because it has a timeout
+    if (!fulPreviewModeState.getIsAnimationInProgress()) {
       // the following line is a bug fix for the mouse leave and mouse up events not triggering and thus not changing back the button css
       ToggleModal.setButtonCSsProperties(componentPreviewComponent,
         ToggleModal.TRIGGER_BUTTON_MOUSE_EVENTS_DISPLAY_CSS_PROPERTY, ToggleModal.TRIGGER_BUTTON_MOUSE_EVENTS_TOP_CSS_PROPERTY);
@@ -61,10 +61,10 @@ export default class ToggleModal {
       // the timeout is the second part of the bug fix to allow the mouse events to be triggered and css to be reset
       setTimeout(() => {
         ToggleModal.switchBetweenModalAndButton(componentPreviewComponent, false);
-        InitiateToggledModalTransitions.startEntranceTransition(componentPreviewComponent, toolbarContainerElement, toolbarElement,
-          Transitions.entranceTransition);
+        InitiateToggledModalAnimations.startModalEntranceAnimation(componentPreviewComponent, toolbarContainerElement, toolbarElement,
+          Animations.entranceAnimation);
       }, ELEMENT_CSS_CHANGE_MILLISECONDS);
     }
-    fulPreviewModeState.setIsTransitionInProgress(true);
+    fulPreviewModeState.setIsAnimationInProgress(true);
   }
 }

@@ -4,8 +4,8 @@
       ref="modalBackdrop" id="modal-backdrop"
       :style="{
         backgroundColor: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.color,
-        transitionDuration: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.exitTransitionDuration
-          || currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.entranceTransitionDuration.currentValue,
+        transitionDuration: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.exitAnimationDuration
+          || currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.entranceAnimationDuration.currentValue,
         opacity: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.opacity}">
     </div>
     <div style="height: 100vh" class="bootstrap">
@@ -43,8 +43,8 @@
               @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
               @toggle-expanded-modal-preview-mode="$refs.contents.toggleExpandModalPreviewMode($event)"
               @toggle-full-preview-mode="$refs.contents.toggleFullPreviewMode($event)"
-              @play-transition-preview="$refs.contents.playTransitionPreview($event)"
-              @stop-transition-preview="$refs.contents.stopTransitionPreview()"
+              @play-modal-animation-preview="$refs.contents.playModalAnimationPreview($event)"
+              @stop-modal-animation-preview="$refs.contents.stopAnimationPreview()"
               @toggle-import-subcomponent-mode="toggleImportComponentMode($event)"/>
             <component-contents ref="contents"
               :component="currentlySelectedComponent"
@@ -104,8 +104,8 @@
 <script lang="ts">
 import { modalLayerBottomSpecificSettings } from './newComponent/types/modals/properties/modalLayerBottomSpecificSettings';
 import { removeSubcomponentModalState } from './toolbar/options/removeSubcomponentModalState/removeSubcomponentModalState';
-import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../../../consts/modalTransitionTypes.enum';
 import getModalSubcomponentDropdownStructure from './newComponent/types/modals/properties/subcomponentDropdownStructure'
+import { MODAL_ANIMATION_ENTRANCE_TYPES, MODAL_ANIMATION_EXIT_TYPES } from '../../../consts/modalAnimationTypes.enum';
 import SubcomponentToggleOverlayUtils from './toolbar/options/subcomponentToggleUtils/subcomponentToggleOverlayUtils';
 import { modalLayerTopSpecificSettings } from './newComponent/types/modals/properties/modalLayerTopSpecificSettings';
 import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
@@ -140,7 +140,7 @@ import newComponentModal from './newComponent/NewComponentModal.vue';
 import componentList from './componentList/ComponentList.vue';
 import toolbar from './toolbar/Toolbar.vue';
 import {
-  CustomCss, ComponentTransitions, ComponentCenteringInParent, CustomFeatures, Text,
+  CustomCss, ModalAnimations, ComponentCenteringInParent, CustomFeatures, Text,
   AutoWidth, BackdropProperties,  AlignedLayerSection, WorkshopComponent, Subcomponents,
 } from '../../../interfaces/workshopComponent';
 
@@ -164,15 +164,15 @@ interface Data {
   isImportComponentModeActive: boolean;
 }
 
-function createDefaultTransitionsProperties(): ComponentTransitions {
+function createDefaultModalAnimationsProperties(): ModalAnimations {
   return {
     entrance: {
-      type: MODAL_TRANSITION_ENTRANCE_TYPES.FADE_IN,
+      type: MODAL_ANIMATION_ENTRANCE_TYPES.FADE_IN,
       duration: '0.3s',
       delay: '0.15s',
     },
     exit: {
-      type: MODAL_TRANSITION_EXIT_TYPES.FADE_OUT,
+      type: MODAL_ANIMATION_EXIT_TYPES.FADE_OUT,
       duration: '0.25s',
     },
   };
@@ -189,7 +189,7 @@ function createDefaultBackdropProperties(): BackdropProperties {
   return {
     color: '#6d6d6dcc',
     alpha: 0.8,
-    entranceTransitionDuration: {
+    entranceAnimationDuration: {
       currentValue: '0.45s',
       lastSelectedValue: '0.45s',
       isAuto: true,
@@ -202,7 +202,7 @@ function createDefaultBackdropProperties(): BackdropProperties {
 function createDefaultBaseCustomFeatures(): CustomFeatures {
   return {
     componentCenteringInParent: createDefaultComponentCenteringInParent(),
-    transitions: createDefaultTransitionsProperties(),
+    modalAnimations: createDefaultModalAnimationsProperties(),
     backdrop: createDefaultBackdropProperties(),
   };
 }

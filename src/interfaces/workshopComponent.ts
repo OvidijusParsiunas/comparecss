@@ -1,4 +1,4 @@
-import { MODAL_TRANSITION_ENTRANCE_TYPES, MODAL_TRANSITION_EXIT_TYPES } from '../consts/modalTransitionTypes.enum';
+import { MODAL_ANIMATION_ENTRANCE_TYPES, MODAL_ANIMATION_EXIT_TYPES } from '../consts/modalAnimationTypes.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../consts/workshopToolbarOptionTypes.enum';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
@@ -54,8 +54,8 @@ export interface PreventPermanentEditByOtherSettings {
 export interface BackdropProperties {
   color: string;
   alpha: number;
-  entranceTransitionDuration: PreventPermanentEditByOtherSettings;
-  exitTransitionDuration?: string;
+  entranceAnimationDuration: PreventPermanentEditByOtherSettings;
+  exitAnimationDuration?: string;
   opacity: number;
   visible: boolean;
 }
@@ -65,14 +65,14 @@ export interface ComponentCenteringInParent {
   horizontal: boolean;
 }
 
-export interface ComponentTransitions {
+export interface ModalAnimations {
   entrance: {
-    type: MODAL_TRANSITION_ENTRANCE_TYPES;
+    type: MODAL_ANIMATION_ENTRANCE_TYPES;
     duration: string;
     delay: string;
   },
   exit: {
-    type: MODAL_TRANSITION_EXIT_TYPES;
+    type: MODAL_ANIMATION_EXIT_TYPES;
     duration: string;
   },
 }
@@ -93,7 +93,7 @@ export interface CustomFeatures {
   backdrop?: BackdropProperties;
   // currently used to position modal either in the center of the screen or the top
   componentCenteringInParent?: ComponentCenteringInParent;
-  transitions?: ComponentTransitions;
+  modalAnimations?: ModalAnimations;
   jsClasses?: ComponentJavascriptClasses;
   autoWidth?: AutoWidth;
   alignedLayerSection?: AlignedLayerSection;
