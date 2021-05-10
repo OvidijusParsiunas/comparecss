@@ -7,9 +7,9 @@ export enum WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES {
   MARGIN = 'Margin',
   TEXT = 'Text',
   TEXT_FONT = 'Font',
-  DESIGN = 'Design',
   BACKGROUND = 'Background',
   POSITION = 'Position',
-  TRANSITIONS = 'Transitions',
   BACKDROP = 'Backdrop',
+  BUTTON_ANIMATIONS = 'Animations',
+  MODAL_ANIMATIONS = 'Animations',
 }

@@ -5,8 +5,8 @@ import { SettingPaths } from '../../../../../../interfaces/settingPaths';
 // cannot point to the setting directly due to dependency invertion
 function getAggregatedSettingsPaths(): SettingPaths {
   return [
-    {optionName: WORKSHOP_TOOLBAR_OPTION_TYPES.TRANSITIONS, settingName: 'Duration'},
-    {optionName: WORKSHOP_TOOLBAR_OPTION_TYPES.TRANSITIONS, settingName: 'Entrance Delay'}
+    {optionName: WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ANIMATIONS, settingName: 'Duration'},
+    {optionName: WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ANIMATIONS, settingName: 'Entrance Delay'}
   ];
 }
 

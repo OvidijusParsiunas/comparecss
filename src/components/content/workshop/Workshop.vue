@@ -190,8 +190,8 @@ function createDefaultBackdropProperties(): BackdropProperties {
     color: '#6d6d6dcc',
     alpha: 0.8,
     entranceTransitionDuration: {
-      currentValue: '1.2s',
-      lastSelectedValue: '1.2s',
+      currentValue: '0.45s',
+      lastSelectedValue: '0.45s',
       isAuto: true,
     },
     opacity: 0,

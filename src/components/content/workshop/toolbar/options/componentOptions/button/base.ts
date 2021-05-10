@@ -31,6 +31,10 @@ export const buttonBaseOptions: SubcomponentOptions<ButtonOptionsModes> = {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
     },
+    {
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BUTTON_ANIMATIONS,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS,
+    },
   ],
   [CSS_PSEUDO_CLASSES.HOVER]: [
     {
@@ -58,10 +62,6 @@ export const buttonBaseOptions: SubcomponentOptions<ButtonOptionsModes> = {
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SHADOW,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW,
-    },
-    {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.DESIGN,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.DESIGN,
     },
   ],
 };
