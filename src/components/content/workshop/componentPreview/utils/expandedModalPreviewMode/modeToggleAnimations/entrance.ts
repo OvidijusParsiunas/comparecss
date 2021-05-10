@@ -1,6 +1,7 @@
 import { COMPONENT_PREVIEW_CLASSES } from '../../../../../../../consts/componentPreviewClasses';
 import { ModalEntranceAnimation } from '../../../../../../../interfaces/modalAnimations';
 import { BackdropProperties } from '../../../../../../../interfaces/workshopComponent';
+import { fulPreviewModeState } from '../../fullPreviewMode/fullPreviewModeState';
 import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
 import GeneralUtils from '../utils/generalUtils';
 import {
@@ -58,7 +59,8 @@ export default class ModeToggleEntranceAnimation {
       toolbarPositionToggleElement: HTMLElement): void {
     toolbarElement.classList.add(TOOLBAR_ELEMENT_ACTIVE_EXPANDED_MODAL_MODE_CLASS);
     toolbarContainerElement.classList.replace(TOOLBAR_CONTAINER_GENERAL_CLASSES.DEFAULT, TOOLBAR_CONTAINER_GENERAL_CLASSES.EXPANDED_MODAL_MODE_ACTIVE);
-    if (expandedModalPreviewModeState.getExpandedModalModeToolbarContainerPositionState() === EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM) {
+    if (expandedModalPreviewModeState.getExpandedModalModeToolbarContainerPositionState() === EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM
+        && !fulPreviewModeState.getIsExpandedModalPreviewModeActivated()) {
       toolbarContainerElement.classList.add(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM);
     }
     if (toolbarPositionToggleElement) toolbarPositionToggleElement.style.display = 'block';

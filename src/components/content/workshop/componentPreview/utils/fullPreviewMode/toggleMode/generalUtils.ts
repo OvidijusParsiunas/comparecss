@@ -10,7 +10,6 @@ import {
 
 export default class GeneralUtils {
 
-
   private static startToolbarAnimationWithFadeOut(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean,
       toggleFullPreviewModeOptionsCallback: () => void, toolbarPositionCallback: (toolbarContainerElement: HTMLElement,
       toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean) => void): void {
@@ -41,7 +40,7 @@ export default class GeneralUtils {
   public static updateToolbarStyle(pointerEvents: typeof POINTER_EVENTS_NONE | typeof POINTER_EVENTS_REMOVE,
       toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean,
       toggleFullPreviewModeOptionsCallback: () => void, updateToolbarClassesCallback: (toolbarContainerElement: HTMLElement,
-        toolbarElement: HTMLElement, isExpandedModalPreviewModeActive?: boolean) => void): void {
+      toolbarElement: HTMLElement, isExpandedModalPreviewModeActive?: boolean) => void): void {
     ExpandedModalModeGeneralUtils.setToolbarContainerPointerEvents(toolbarContainerElement, pointerEvents);
     GeneralUtils.startToolbarAnimationWithFadeOut(toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive,
       toggleFullPreviewModeOptionsCallback, updateToolbarClassesCallback);
