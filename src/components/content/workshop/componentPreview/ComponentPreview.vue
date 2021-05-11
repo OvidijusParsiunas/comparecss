@@ -164,11 +164,10 @@ export default {
       if (isToggledExpandedModalPreviewModeToActive) {
         // strategies
         // https://tympanus.net/codrops/2013/06/25/nifty-modal-window-effects/
-        InitiateToggledModalAnimations.startModalEntranceAnimation(this, toolbarContainerElement, toolbarElement,
-          ExpandedModalPreviewModeToggleEntranceAnimation.start, toolbarPositionToggleElement);
+        ExpandedModalPreviewModeToggleEntranceAnimation.start(this, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
       } else {
-        InitiateToggledModalAnimations.startModalExitAnimation(this, toolbarContainerElement, toolbarElement,
-          ExpandedModalPreviewModeToggleExitAnimation.start, setOptionToDefaultCallback, toolbarPositionToggleElement);
+        ExpandedModalPreviewModeToggleExitAnimation.start(this, setOptionToDefaultCallback, toolbarContainerElement, toolbarElement,
+          toolbarPositionToggleElement);
       }
     },
     toggleFullPreviewMode(event: ToggleFullPreviewModeEvent): void {

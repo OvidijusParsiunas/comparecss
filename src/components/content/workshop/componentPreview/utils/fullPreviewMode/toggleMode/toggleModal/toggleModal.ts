@@ -1,4 +1,3 @@
-import InitiateToggledModalAnimations from '../../../expandedModalPreviewMode/modeToggleAnimations/initiateToggledModalAnimations';
 import { WorkshopEventCallbackUtils } from '../../../../../toolbar/options/workshopEventCallbackUtils/workshopEventCallbackUtils';
 import { ELEMENT_CSS_CHANGE_MILLISECONDS, SET_METHODS } from '../../../expandedModalPreviewMode/consts/sharedConsts';
 import { expandedModalPreviewModeState } from '../../../expandedModalPreviewMode/expandedModalPreviewModeState';
@@ -43,8 +42,8 @@ export default class ToggleModal {
 
   private static closeModal(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement,
       toolbarElement: HTMLElement): void {
-    InitiateToggledModalAnimations.startModalExitAnimation(componentPreviewComponent, toolbarContainerElement, toolbarElement,
-      ModeToggleExitAnimation.start, ToggleModal.switchBetweenModalAndButton.bind(this, componentPreviewComponent, true));
+    ModeToggleExitAnimation.start(componentPreviewComponent, ToggleModal.switchBetweenModalAndButton.bind(this, componentPreviewComponent, true),
+      toolbarContainerElement, toolbarElement);
     fulPreviewModeState.setIsExpandedModalPreviewModeActivated(false);
     ToggleModal.changeCloseButtonsJsClasses(componentPreviewComponent, SET_METHODS.REMOVE);
   }
@@ -94,8 +93,7 @@ export default class ToggleModal {
       // the timeout is the second part of the bug fix to allow the mouse events to be triggered and css to be reset
       setTimeout(() => {
         ToggleModal.switchBetweenModalAndButton(componentPreviewComponent, false);
-        InitiateToggledModalAnimations.startModalEntranceAnimation(componentPreviewComponent, toolbarContainerElement, toolbarElement,
-          ModeToggleEntranceAnimation.start);
+        ModeToggleEntranceAnimation.start(componentPreviewComponent, toolbarContainerElement, toolbarElement);
       }, ELEMENT_CSS_CHANGE_MILLISECONDS);
     }
     fulPreviewModeState.setIsAnimationInProgress(true);

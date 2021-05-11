@@ -1,8 +1,10 @@
-import { ExitAnimationCallback, ModalExitAnimation } from '../../../../../../../interfaces/modalAnimations';
 import { COMPONENT_PREVIEW_CLASSES } from '../../../../../../../consts/componentPreviewClasses';
+import { ExitAnimationCallback } from '../../../../../../../interfaces/modalAnimations';
 import { BackdropProperties } from '../../../../../../../interfaces/workshopComponent';
 import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
+import { AssembleAnimationValues } from './utils/assembleAnimationValues';
 import GeneralUtils from '../utils/generalUtils';
+import { ComponentOptions } from 'vue';
 import {
   TOOLBAR_FADE_ANIMATION_DURATION_SECONDS, MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS,
   OPACITY_INVISIBLE, OPACITY_VISIBLE, MODE_TOGGLE_FADE_ANIMATION_DURATION_MILLISECONDS,
@@ -94,16 +96,19 @@ export default class ModeToggleExitAnimation {
     }, GeneralUtils.secondsStringToMillisecondsNumber(TOOLBAR_FADE_ANIMATION_DURATION_SECONDS));
   }
 
-  public static start(modalExitAnimation: ModalExitAnimation, animationDuration: string, setOptionToDefaultCallback: () => void,
-      componentPreviewContainerElement: HTMLElement, backdropProperties: BackdropProperties, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
-      toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
+  public static start(componentPreviewComponent: ComponentOptions, exitAnimationCallback: () => void,
+      toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
     let wasPreviousAnimationInterrupted = false;
+    let reducedAnimationDuration: string;
+    const { modalExitAnimation, animationDuration, setOptionToDefaultCallback, componentPreviewContainerElement, backdropProperties,
+      modalElement, modalOverlayElement } = AssembleAnimationValues.assembleExitAnimationValues(componentPreviewComponent, exitAnimationCallback);
     if (expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState()) {
-      animationDuration = ModeToggleExitAnimation.cancelEntranceAnimationFunctionality(modalElement);
+      reducedAnimationDuration = ModeToggleExitAnimation.cancelEntranceAnimationFunctionality(modalElement);
       wasPreviousAnimationInterrupted = true;
     }
     ModeToggleExitAnimation.toolbarFadeOutAnimation(toolbarContainerElement);
-    modalExitAnimation(animationDuration, modalElement, ModeToggleExitAnimation.exitAnimationCallback.bind(this, setOptionToDefaultCallback) as ExitAnimationCallback,
+    modalExitAnimation(reducedAnimationDuration || animationDuration, modalElement,
+      ModeToggleExitAnimation.exitAnimationCallback.bind(this, setOptionToDefaultCallback) as ExitAnimationCallback,
       componentPreviewContainerElement, backdropProperties, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement,
       modalOverlayElement, wasPreviousAnimationInterrupted);
     expandedModalPreviewModeState.setIsModeToggleAnimationInProgressState(true);

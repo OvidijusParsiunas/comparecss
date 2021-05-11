@@ -3,7 +3,9 @@ import { ModalEntranceAnimation } from '../../../../../../../interfaces/modalAni
 import { BackdropProperties } from '../../../../../../../interfaces/workshopComponent';
 import { fulPreviewModeState } from '../../fullPreviewMode/fullPreviewModeState';
 import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
+import { AssembleAnimationValues } from './utils/assembleAnimationValues';
 import GeneralUtils from '../utils/generalUtils';
+import { ComponentOptions } from 'vue';
 import {
   MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, OPACITY_INVISIBLE, OPACITY_VISIBLE, CLASSLIST_METHODS,
   MODE_TOGGLE_FADE_ANIMATION_DURATION_MILLISECONDS, POINTER_EVENTS_NONE, POINTER_EVENTS_REMOVE,
@@ -119,10 +121,10 @@ export default class ModeToggleEntranceAnimation {
     }, MODE_TOGGLE_FADE_ANIMATION_DURATION_MILLISECONDS);
   }
 
-  public static start(modalEntranceAnimation: ModalEntranceAnimation, animationDuration: string, animationDelay: string,
-      backdropProperties: BackdropProperties, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
-      componentPreviewContainerElement: HTMLElement, toolbarContainerElement: HTMLElement, toolbarElement?: HTMLElement,
+  public static start(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
       toolbarPositionToggleElement?: HTMLElement): void {
+    const { modalEntranceAnimation, animationDuration, animationDelay, backdropProperties, modalElement, modalOverlayElement,
+      componentPreviewContainerElement } = AssembleAnimationValues.assembleEntranceAnimationValues(componentPreviewComponent);
     if (expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState()) {
       GeneralUtils.startModalAndToolbarAnimationWithFadeOut(modalElement);
       const newAnimationDuration = GeneralUtils.getNewAnimationDuration();
