@@ -1,10 +1,10 @@
-import {
-  INITIAL_EXPANDED_MODAL_ANIMATION_PROPERTIES, UNSET, ADD_CLASS,
-  REMOVE_CLASS, POINTER_EVENTS_NONE, POINTER_EVENTS_REMOVE,
-} from '../consts/sharedConsts';
 import { ElementStyleProperties } from '../../../../../../../interfaces/elementStyleProperties';
 import { STATIC_POSITION_CLASS } from '../../../../../../../consts/sharedClasses';
 import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
+import {
+  POINTER_EVENTS_NONE, POINTER_EVENTS_REMOVE, CLASSLIST_METHODS,
+  INITIAL_EXPANDED_MODAL_ANIMATION_PROPERTIES, UNSET,
+} from '../consts/sharedConsts';
 
 export default class GeneralUtils {
 
@@ -31,7 +31,7 @@ export default class GeneralUtils {
     });
   }
 
-  public static toggleModalStaticPosition(modalElement: HTMLElement, modalOverlayElement: HTMLElement, toggleName: typeof ADD_CLASS | typeof REMOVE_CLASS): void {
+  public static toggleModalStaticPosition(modalElement: HTMLElement, modalOverlayElement: HTMLElement, toggleName: CLASSLIST_METHODS): void {
     modalElement.classList[toggleName](STATIC_POSITION_CLASS);
     modalOverlayElement.classList[toggleName](STATIC_POSITION_CLASS);
   }
@@ -51,7 +51,7 @@ export default class GeneralUtils {
     GeneralUtils.setModalPropertiesBackToDefault(modalElement);
   }
 
-  public static setModalProperties(modalElement: HTMLElement, modalProperties: ElementStyleProperties) {
+  public static setModalProperties(modalElement: HTMLElement, modalProperties: ElementStyleProperties): void {
     Object.keys(modalProperties).forEach((propertyKey: string) => {
       modalElement.style[propertyKey] = modalProperties[propertyKey];
     });

@@ -6,7 +6,7 @@ import GeneralUtils from '../utils/generalUtils';
 import {
   TOOLBAR_FADE_ANIMATION_DURATION_SECONDS, MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS,
   OPACITY_INVISIBLE, OPACITY_VISIBLE, MODE_TOGGLE_FADE_ANIMATION_DURATION_MILLISECONDS,
-  ADD_CLASS, POINTER_EVENTS_REMOVE, POINTER_EVENTS_NONE,
+  POINTER_EVENTS_REMOVE, POINTER_EVENTS_NONE, CLASSLIST_METHODS,
 } from '../consts/sharedConsts';
 import {
   EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES, TOOLBAR_CONTAINER_GENERAL_CLASSES,
@@ -51,7 +51,7 @@ export default class ModeToggleExitAnimation {
   public static exitAnimationCallback(setOptionToDefaultCallback: () => void, modalElement: HTMLElement, componentPreviewContainerElement: HTMLElement,
       backdropProperties: BackdropProperties, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
       modalOverlayElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
-    GeneralUtils.toggleModalStaticPosition(modalElement, modalOverlayElement, ADD_CLASS);
+    GeneralUtils.toggleModalStaticPosition(modalElement, modalOverlayElement, CLASSLIST_METHODS.ADD);
     setOptionToDefaultCallback();
     const exitAnimationModalDefaultProperties = expandedModalPreviewModeState.setIsPreviewAnimationInProgressState();
     GeneralUtils.setModalProperties(modalElement, exitAnimationModalDefaultProperties);

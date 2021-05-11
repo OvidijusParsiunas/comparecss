@@ -1,5 +1,5 @@
 import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES, TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS } from '../../../../../../../consts/toolbarClasses';
-import { POINTER_EVENTS_NONE } from '../../expandedModalPreviewMode/consts/sharedConsts';
+import { POINTER_EVENTS_NONE, SET_METHODS } from '../../expandedModalPreviewMode/consts/sharedConsts';
 import ComponentPreviewUtils from '../../componentPreviewUtils';
 import { fulPreviewModeState } from '../fullPreviewModeState';
 import ToggleDisplays from './toggleModal/toggleModal';
@@ -17,7 +17,7 @@ export default class ToggleOn {
     toolbarContainerElement.classList.remove(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM);
   }
 
-  private static switchButtonToModalComponent(componentPreviewComponent: ComponentOptions, isExpandedModalPreviewModeActive: boolean): void {
+  private static prepareFullPreviewMode(componentPreviewComponent: ComponentOptions, isExpandedModalPreviewModeActive: boolean): void {
     componentPreviewComponent.temporaryComponent.displayed = !isExpandedModalPreviewModeActive;
     componentPreviewComponent.isFullPreviewModeOn = true;
   }
@@ -42,14 +42,14 @@ export default class ToggleOn {
       toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean,
       toggleFullPreviewModeOptionsCallback: () => void): void {
     ToggleOn.setup(componentPreviewComponent, toolbarContainerElement, toolbarElement);
-    const switchButtonToModalComponentFunc = ToggleOn.switchButtonToModalComponent.bind(this,
-      componentPreviewComponent, isExpandedModalPreviewModeActive)
+    const prepareFullPreviewModeFunc = ToggleOn.prepareFullPreviewMode.bind(this, componentPreviewComponent, isExpandedModalPreviewModeActive)
     if (!isExpandedModalPreviewModeActive) { 
-      GeneralUtils.switchComponentsWithFadeOut(componentPreviewElement, temporaryComponentElement, switchButtonToModalComponentFunc);
+      GeneralUtils.switchComponentsWithFadeOut(componentPreviewElement, temporaryComponentElement, prepareFullPreviewModeFunc);
     } else {
-      switchButtonToModalComponentFunc();
+      prepareFullPreviewModeFunc();
+      ToggleDisplays.changeCloseButtonsJsClasses(componentPreviewComponent, SET_METHODS.ADD);
       GeneralUtils.createWorkshopEventCallback(componentPreviewComponent,
-        ToggleDisplays.hideModal.bind(this, componentPreviewComponent, toolbarContainerElement, toolbarElement));
+        ToggleDisplays.closeModalCallback.bind(this, componentPreviewComponent, toolbarContainerElement, toolbarElement));
     }
     GeneralUtils.updateToolbarStyle(POINTER_EVENTS_NONE, toolbarContainerElement, toolbarElement,
       isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback, ToggleOn.setToolbarContainerPositionToDefault)

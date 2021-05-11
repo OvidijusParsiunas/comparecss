@@ -5,7 +5,7 @@ import { fulPreviewModeState } from '../../fullPreviewMode/fullPreviewModeState'
 import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
 import GeneralUtils from '../utils/generalUtils';
 import {
-  MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, OPACITY_INVISIBLE, REMOVE_CLASS, OPACITY_VISIBLE,
+  MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, OPACITY_INVISIBLE, OPACITY_VISIBLE, CLASSLIST_METHODS,
   MODE_TOGGLE_FADE_ANIMATION_DURATION_MILLISECONDS, POINTER_EVENTS_NONE, POINTER_EVENTS_REMOVE,
   TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS, TOOLBAR_FADE_ANIMATION_DURATION_SECONDS, 
 } from '../consts/sharedConsts';
@@ -102,7 +102,7 @@ export default class ModeToggleEntranceAnimation {
   public static startModalAndBackdropAnimation(componentPreviewContainerElement: HTMLElement, modalElement: HTMLElement,
       modalOverlayElement: HTMLElement, backdropProperties: BackdropProperties, modalEntranceAnimation: ModalEntranceAnimation,
       animationDuration: string, animationDelay?: string): void {
-    GeneralUtils.toggleModalStaticPosition(modalElement, modalOverlayElement, REMOVE_CLASS);
+    GeneralUtils.toggleModalStaticPosition(modalElement, modalOverlayElement, CLASSLIST_METHODS.REMOVE);
     ModeToggleEntranceAnimation.setComponentPreviewContainerToModalView(componentPreviewContainerElement);
     ModeToggleEntranceAnimation.displayBackdrop(backdropProperties);
     setTimeout(() => { modalEntranceAnimation(animationDuration, modalElement, GeneralUtils.unsetAnimationProperties,

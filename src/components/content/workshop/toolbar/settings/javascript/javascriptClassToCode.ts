@@ -8,4 +8,5 @@ type JavascriptClassesToCode = {
 
 export const javascriptClassesToCode: JavascriptClassesToCode = {
   [JAVASCRIPT_CLASSES.RIPPLES]: ripplesCode,
+  [JAVASCRIPT_CLASSES.CLOSE_MODAL]: ripplesCode, // this is a placeholder and should be changed when implementing the export files functionality
 }
