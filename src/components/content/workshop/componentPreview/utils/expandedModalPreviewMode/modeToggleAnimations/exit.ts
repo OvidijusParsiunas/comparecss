@@ -60,7 +60,7 @@ export default class ModeToggleExitAnimation {
   }
 
   private static cancelEntranceAnimationFunctionality(modalElement: HTMLElement): string {
-    GeneralUtils.startModalAndBackdropAnimationWithFadeOut(modalElement);
+    GeneralUtils.startModalAndToolbarAnimationWithFadeOut(modalElement);
     if (expandedModalPreviewModeState.getIsWaitingAnimationDelayState()) {
       expandedModalPreviewModeState.setIsWaitingAnimationDelayState(false);
       return ModeToggleExitAnimation.TOOLBAR_FADE_DURATION_ON_DELAY_CANCEL_SECONDS;

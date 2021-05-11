@@ -45,7 +45,7 @@ export default class GeneralUtils {
     GeneralUtils.setModalProperties(modalElement, defaultModalProperties);
   }
 
-  public static startModalAndBackdropAnimationWithFadeOut(modalElement: HTMLElement): void {
+  public static startModalAndToolbarAnimationWithFadeOut(modalElement: HTMLElement): void {
     expandedModalPreviewModeState.cancelPendingModalAnimationFunctionality();
     expandedModalPreviewModeState.cancelPendingToolbarAnimationFunctionality();
     GeneralUtils.setModalPropertiesBackToDefault(modalElement);

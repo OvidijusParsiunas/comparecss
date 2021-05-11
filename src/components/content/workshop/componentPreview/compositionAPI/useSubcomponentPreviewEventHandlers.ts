@@ -4,6 +4,7 @@ import { UseSubcomponentPreviewEventHandlers } from '../../../../../interfaces/u
 import { expandedModalPreviewModeState } from '../utils/expandedModalPreviewMode/expandedModalPreviewModeState';
 import { CustomCss, SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
+import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 
 export default function useSubcomponentPreviewEventHandlers(subcomponentProperties: SubcomponentProperties,
     clickCallback: () => void): UseSubcomponentPreviewEventHandlers {
@@ -14,16 +15,20 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
 
   function setDefaultUnsetButtonStatesForColorInputs(customCss: CustomCss): void {
     Object.keys(customCss[CSS_PSEUDO_CLASSES.DEFAULT]).forEach((key) => {
-      if (customCss[CSS_PSEUDO_CLASSES.DEFAULT][key] === 'inherit' ||
-        (typeof customCss[CSS_PSEUDO_CLASSES.DEFAULT][key] === 'string' && customCss[CSS_PSEUDO_CLASSES.DEFAULT][key].charAt(0) === '#')) {
+      if (customCss[CSS_PSEUDO_CLASSES.DEFAULT][key] === 'inherit'
+          || (typeof customCss[CSS_PSEUDO_CLASSES.DEFAULT][key] === 'string' && customCss[CSS_PSEUDO_CLASSES.DEFAULT][key].charAt(0) === '#')) {
         isUnsetButtonDisplayedForColorInputs[key + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX] = customCss[CSS_PSEUDO_CLASSES.DEFAULT][key] === 'inherit'
           ? UNSET_COLOR_BUTTON_DISPLAYED_STATE.DO_NOT_DISPLAY : UNSET_COLOR_BUTTON_DISPLAYED_STATE.DISPLAY;
       }
     });
   }
 
+  // the following condition is used to prevent the modal animation from stopping when the user moves their mouse and triggers the modal's base mouse events
+  // (expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState() && subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE)) return;
+
   const subcomponentMouseEnter = (): void => {
-    if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState() || expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState()) return;
+    if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()
+      || (expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState() && subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE)) return;
     const { customCss, subcomponentPreviewTransition, activeCssPseudoClass } = subcomponentProperties;
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT) {
       setDefaultUnsetButtonStatesForColorInputs(customCss);
@@ -35,7 +40,8 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   }
   
   const subcomponentMouseLeave = (): void => {
-    if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState() || expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState()) return;
+    if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()
+      || (expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState() && subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE)) return;
     const { customCss, activeCssPseudoClass } = subcomponentProperties;
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT && overwrittenDefaultPropertiesByHover.hasBeenSet) {
       customCss[CSS_PSEUDO_CLASSES.DEFAULT] = { ...overwrittenDefaultPropertiesByHover.css };
@@ -45,7 +51,8 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   }
   
   const subcomponentMouseDown = (): void => {
-    if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState() || expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState()) return;
+    if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()
+      || (expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState() && subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE)) return;
     const { customCss, subcomponentPreviewTransition, activeCssPseudoClass } = subcomponentProperties;
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT) {
       const transition = subcomponentPreviewTransition || 'unset';
@@ -56,7 +63,8 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   }
   
   const subcomponentMouseUp = (): void => {
-    if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState() || expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState()) return;
+    if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()
+      || (expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState() && subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE)) return;
     const { customCss, activeCssPseudoClass } = subcomponentProperties;
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT && overwrittenDefaultPropertiesByClick.hasBeenSet) {
       customCss[CSS_PSEUDO_CLASSES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };
