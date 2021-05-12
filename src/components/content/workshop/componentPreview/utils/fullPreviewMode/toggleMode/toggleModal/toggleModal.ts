@@ -11,6 +11,7 @@ import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../../../consts/domEventT
 import { OPTION_MENU_BUTTON_MARKER } from '../../../../../../../../consts/elementClassMarkers';
 import { SubcomponentProperties } from '../../../../../../../../interfaces/workshopComponent';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
+import { CloseTriggers } from '../../../../../../../../interfaces/closeTriggers';
 import { fulPreviewModeState } from '../../fullPreviewModeState';
 import GeneralUtils from '../generalUtils';
 import { ComponentOptions } from 'vue';
@@ -41,37 +42,35 @@ export default class ToggleModal {
   }
 
   private static closeModal(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement,
-      toolbarElement: HTMLElement): void {
+      toolbarElement: HTMLElement): WorkshopEventCallbackReturn {
     ModeToggleExitAnimation.start(componentPreviewComponent, ToggleModal.switchBetweenModalAndButton.bind(this, componentPreviewComponent, true),
       toolbarContainerElement, toolbarElement);
     fulPreviewModeState.setIsExpandedModalPreviewModeActivated(false);
     ToggleModal.changeCloseButtonsJsClasses(componentPreviewComponent, SET_METHODS.REMOVE);
+    return { shouldRepeat: false };
   }
 
   public static closeModalCallback(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement,
       toolbarElement: HTMLElement, event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
     fulPreviewModeState.setIsAnimationInProgress(false);
+    const closeTriggers: CloseTriggers = componentPreviewComponent.component.subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE]
+      .customFeatures.backdrop.closeTriggers;
     if (event instanceof KeyboardEvent) {
-      if (event.key === DOM_EVENT_TRIGGER_KEYS.ESCAPE) {
-        ToggleModal.closeModal(componentPreviewComponent, toolbarContainerElement, toolbarElement);
-        return { shouldRepeat: false };
-      } else if (event.key === DOM_EVENT_TRIGGER_KEYS.ENTER) {
-        ToggleModal.closeModal(componentPreviewComponent, toolbarContainerElement, toolbarElement);
-        return { shouldRepeat: false };
+      if ((event.key === DOM_EVENT_TRIGGER_KEYS.ESCAPE && closeTriggers.escape)
+          || (event.key === DOM_EVENT_TRIGGER_KEYS.ENTER && closeTriggers.enter)) {
+        return ToggleModal.closeModal(componentPreviewComponent, toolbarContainerElement, toolbarElement);
       }
       return { shouldRepeat: true };
     }
     const buttonElement = WorkshopEventCallbackUtils.getButtonElement(event.target as HTMLElement);
     // cannot use the JAVASCRIPT_CLASSES.CLOSE_MODAL on the backdrop because the user can't click on the actual backdrop element in the full preview
     // mode and the componentPreviewContainer element has classes that are being manually switched which get reset when class: is used
-    if (buttonElement.classList.contains(COMPONENT_PREVIEW_CLASSES.EXPANDED_MODAL_MODE_ACTIVE)
-        && !expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState()) {
-      ToggleModal.closeModal(componentPreviewComponent, toolbarContainerElement, toolbarElement);
-      return { shouldRepeat: false };
-    } else if (buttonElement.classList.contains(JAVASCRIPT_CLASSES.CLOSE_MODAL)) {
-      ToggleModal.closeModal(componentPreviewComponent, toolbarContainerElement, toolbarElement);
-      return { shouldRepeat: false };
-    } else if (buttonElement.classList.contains(OPTION_MENU_BUTTON_MARKER)) {
+    if ((buttonElement.classList.contains(COMPONENT_PREVIEW_CLASSES.EXPANDED_MODAL_MODE_ACTIVE)
+          && !expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState() && closeTriggers.backdrop)
+        || (buttonElement.classList.contains(JAVASCRIPT_CLASSES.CLOSE_MODAL))) {
+      return ToggleModal.closeModal(componentPreviewComponent, toolbarContainerElement, toolbarElement);
+    }
+    if (buttonElement.classList.contains(OPTION_MENU_BUTTON_MARKER)) {
       ToggleModal.changeCloseButtonsJsClasses(componentPreviewComponent, SET_METHODS.REMOVE);
       return { shouldRepeat: false };
     }

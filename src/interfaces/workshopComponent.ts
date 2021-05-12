@@ -10,6 +10,7 @@ import { CustomSubcomponentNames } from './customSubcomponentNames';
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { EntityDisplayStatus } from './entityDisplayStatus';
 import { TempCustomCss } from './tempCustomCss';
+import { CloseTriggers } from './closeTriggers';
 
 export interface ChildCss {
   elementTag: string;
@@ -58,6 +59,7 @@ export interface BackdropProperties {
   exitAnimationDuration?: string;
   opacity: number;
   visible: boolean;
+  closeTriggers: CloseTriggers;
 }
 
 export interface ComponentCenteringInParent {

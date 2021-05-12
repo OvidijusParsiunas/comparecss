@@ -196,6 +196,11 @@ function createDefaultBackdropProperties(): BackdropProperties {
     },
     opacity: 0,
     visible: false,
+    closeTriggers: {
+      enter: false,
+      escape: false,
+      backdrop: false,
+    },
   };
 }
 

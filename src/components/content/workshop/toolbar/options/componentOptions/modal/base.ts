@@ -38,5 +38,10 @@ export const modalBaseOptions: SubcomponentOptions<ModalBaseOptionsModes> = {
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ANIMATIONS,
       enabledOnExpandedModalPreviewMode: true,
     },
+    {
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MODAL_ACTIONS,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ACTIONS,
+      enabledOnExpandedModalPreviewMode: true,
+    },
   ],
 };

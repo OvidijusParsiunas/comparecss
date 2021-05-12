@@ -68,7 +68,6 @@
 <script lang="ts">
 import { modalAnimationTypeToFunctionality } from './utils/expandedModalPreviewMode/animationInitializers/modalAnimationTypeToFunctionality';
 import { subcomponentAndOverlayElementIdsState } from '../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
-import InitiateToggledModalAnimations from './utils/expandedModalPreviewMode/modeToggleAnimations/initiateToggledModalAnimations';
 import ExpandedModalPreviewModeToggleEntranceAnimation from './utils/expandedModalPreviewMode/modeToggleAnimations/entrance';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import ExpandedModalPreviewModeToggleExitAnimation from './utils/expandedModalPreviewMode/modeToggleAnimations/exit';
