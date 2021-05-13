@@ -6,11 +6,12 @@
     <div v-for="(nestedSubcomponent, index) in nestedSubcomponents" :key="nestedSubcomponent"
       :style="{order: `${index}`}"
       class="subcomponent-element-container"
-      :class="[specialisedSectionContainerClass,
+      :class="[COMPONENT_PREVIEW_MARKER, specialisedSectionContainerClass,
         ...(nestedSubcomponent.subcomponentProperties.customFeatures
           && nestedSubcomponent.subcomponentProperties.customFeatures.jsClasses || [])]">
       <base-component v-if="nestedSubcomponent.subcomponentProperties.importedComponent"
         class="imported-component-container"
+        :class="COMPONENT_PREVIEW_MARKER"
         :component="nestedSubcomponent.subcomponentProperties.importedComponent.componentRef"
         :mouseEvents="mouseEvents"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
@@ -20,7 +21,7 @@
         aria-hidden="true"
         :id="subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId"
         class="subcomponent-element"
-        :class="[ ...((nestedSubcomponent.subcomponentProperties.customFeatures && nestedSubcomponent.subcomponentProperties.customFeatures.jsClasses) || []) ]"
+        :class="[COMPONENT_PREVIEW_MARKER, ...((nestedSubcomponent.subcomponentProperties.customFeatures && nestedSubcomponent.subcomponentProperties.customFeatures.jsClasses) || []) ]"
         @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseEnter()"
         @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseLeave()"
         @mousedown="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseDown()"
@@ -64,6 +65,7 @@
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
+import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../../consts/closeButtonXText';
 import SubcomponentDisplayUtils from '../utils/subcomponentDisplayUtils';
@@ -71,6 +73,7 @@ import SubcomponentDisplayUtils from '../utils/subcomponentDisplayUtils';
 interface Consts {
   OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
   CORE_SUBCOMPONENTS_NAMES: typeof CORE_SUBCOMPONENTS_NAMES;
+  COMPONENT_PREVIEW_MARKER: string;
   CLOSE_BUTTON_X_TEXT: string;
   CSS_PSEUDO_CLASSES: typeof CSS_PSEUDO_CLASSES;
   isSubcomponentDisplayed: (nestedSubcomponent: SubcomponentProperties) => boolean;
@@ -81,6 +84,7 @@ export default {
     return {
       OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT,
       CORE_SUBCOMPONENTS_NAMES,
+      COMPONENT_PREVIEW_MARKER,
       CLOSE_BUTTON_X_TEXT,
       CSS_PSEUDO_CLASSES,
       isSubcomponentDisplayed: SubcomponentDisplayUtils.isSubcomponentDisplayed,

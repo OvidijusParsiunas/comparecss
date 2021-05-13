@@ -15,6 +15,7 @@ import { CloseTriggers } from '../../../../../../../../interfaces/closeTriggers'
 import { fulPreviewModeState } from '../../fullPreviewModeState';
 import GeneralUtils from '../generalUtils';
 import { ComponentOptions } from 'vue';
+import ToggleOff from '../toggleOff';
 
 export default class ToggleModal {
 
@@ -22,6 +23,8 @@ export default class ToggleModal {
   private static readonly TRIGGER_BUTTON_MOUSE_EVENTS_TOP_CSS_PROPERTY = '100px';
   private static readonly MODAL_BUTTON_NAMES = [CORE_SUBCOMPONENTS_NAMES.BUTTON_1, CORE_SUBCOMPONENTS_NAMES.BUTTON_2, CORE_SUBCOMPONENTS_NAMES.CLOSE];
 
+  // the reason why the class is applied to all of the buttons is because we cannot apply it to the backdrop, hence all of the logic for
+  // determining whether the modal should be closed on mouse/key click is in the closeModalCallback method
   public static changeCloseButtonsJsClasses(componentPreviewComponent: ComponentOptions, methodName: SET_METHODS): void {
     ToggleModal.MODAL_BUTTON_NAMES.forEach((buttonName) => {
       const buttonSubcomponentProperties: SubcomponentProperties = componentPreviewComponent.component.subcomponents[buttonName];
@@ -41,24 +44,41 @@ export default class ToggleModal {
     ToggleModal.setButtonCssProperties(componentPreviewComponent, '', '')
   }
 
-  private static closeModal(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement,
-      toolbarElement: HTMLElement): WorkshopEventCallbackReturn {
-    ModeToggleExitAnimation.start(componentPreviewComponent, ToggleModal.switchBetweenModalAndButton.bind(this, componentPreviewComponent, true),
+  private static modelExitAnimationFinishedCallback(componentPreviewComponent: ComponentOptions, componentPreviewElement: HTMLElement,
+      temporaryComponentElement: HTMLElement, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
+      isExpandedModalPreviewModeActive: boolean, toggleFullPreviewModeOptionsCallback: () => void): void {
+    GeneralUtils.createWorkshopEventCallback(componentPreviewComponent,
+      ToggleOff.toggleOffCallback.bind(this, componentPreviewComponent, componentPreviewElement, temporaryComponentElement,
+        toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive,
+        toggleFullPreviewModeOptionsCallback));
+    ToggleModal.switchBetweenModalAndButton(componentPreviewComponent, true);
+  }
+
+  private static closeModal(componentPreviewComponent: ComponentOptions, componentPreviewElement: HTMLElement,
+      temporaryComponentElement: HTMLElement, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
+      isExpandedModalPreviewModeActive: boolean, toggleFullPreviewModeOptionsCallback: () => void): WorkshopEventCallbackReturn {
+    ModeToggleExitAnimation.start(componentPreviewComponent,
+      ToggleModal.modelExitAnimationFinishedCallback.bind(this,
+        componentPreviewComponent, componentPreviewElement, temporaryComponentElement, toolbarContainerElement,
+        toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback),
       toolbarContainerElement, toolbarElement);
     fulPreviewModeState.setIsExpandedModalPreviewModeActivated(false);
     ToggleModal.changeCloseButtonsJsClasses(componentPreviewComponent, SET_METHODS.REMOVE);
     return { shouldRepeat: false };
   }
 
-  public static closeModalCallback(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement,
-      toolbarElement: HTMLElement, event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
+  public static closeModalCallback(componentPreviewComponent: ComponentOptions, componentPreviewElement: HTMLElement,
+      temporaryComponentElement: HTMLElement, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
+      isExpandedModalPreviewModeActive: boolean, toggleFullPreviewModeOptionsCallback: () => void,
+      event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
     fulPreviewModeState.setIsAnimationInProgress(false);
     const closeTriggers: CloseTriggers = componentPreviewComponent.component.subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE]
       .customFeatures.backdrop.closeTriggers;
     if (event instanceof KeyboardEvent) {
       if ((event.key === DOM_EVENT_TRIGGER_KEYS.ESCAPE && closeTriggers.escape)
           || (event.key === DOM_EVENT_TRIGGER_KEYS.ENTER && closeTriggers.enter)) {
-        return ToggleModal.closeModal(componentPreviewComponent, toolbarContainerElement, toolbarElement);
+        return ToggleModal.closeModal(componentPreviewComponent, componentPreviewElement, temporaryComponentElement,
+          toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback);
       }
       return { shouldRepeat: true };
     }
@@ -68,7 +88,8 @@ export default class ToggleModal {
     if ((buttonElement.classList.contains(COMPONENT_PREVIEW_CLASSES.EXPANDED_MODAL_MODE_ACTIVE)
           && !expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState() && closeTriggers.backdrop)
         || (buttonElement.classList.contains(JAVASCRIPT_CLASSES.CLOSE_MODAL))) {
-      return ToggleModal.closeModal(componentPreviewComponent, toolbarContainerElement, toolbarElement);
+      return ToggleModal.closeModal(componentPreviewComponent, componentPreviewElement, temporaryComponentElement,
+        toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback);
     }
     if (buttonElement.classList.contains(OPTION_MENU_BUTTON_MARKER)) {
       ToggleModal.changeCloseButtonsJsClasses(componentPreviewComponent, SET_METHODS.REMOVE);
@@ -77,7 +98,9 @@ export default class ToggleModal {
     return { shouldRepeat: true };
   }
 
-  public static displayModal(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement): void {
+  public static displayModal(componentPreviewComponent: ComponentOptions, componentPreviewElement: HTMLElement,
+      temporaryComponentElement: HTMLElement, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
+      isExpandedModalPreviewModeActive: boolean, toggleFullPreviewModeOptionsCallback: () => void): void {
     // cannot use expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState() because it has a timeout
     if (!fulPreviewModeState.getIsAnimationInProgress()) {
       ToggleModal.changeCloseButtonsJsClasses(componentPreviewComponent, SET_METHODS.ADD);
@@ -86,7 +109,8 @@ export default class ToggleModal {
       ToggleModal.setButtonCssProperties(componentPreviewComponent,
         ToggleModal.TRIGGER_BUTTON_MOUSE_EVENTS_DISPLAY_CSS_PROPERTY, ToggleModal.TRIGGER_BUTTON_MOUSE_EVENTS_TOP_CSS_PROPERTY);
       GeneralUtils.createWorkshopEventCallback(componentPreviewComponent,
-        ToggleModal.closeModalCallback.bind(this, componentPreviewComponent, toolbarContainerElement, toolbarElement));
+        ToggleModal.closeModalCallback.bind(this, componentPreviewComponent, componentPreviewElement, temporaryComponentElement,
+          toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback));
       toolbarElement.classList.add(TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS);
       fulPreviewModeState.setIsExpandedModalPreviewModeActivated(true);
       // the timeout is the second part of the bug fix to allow the mouse events to be triggered and css to be reset

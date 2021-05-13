@@ -11,6 +11,11 @@ close button should probably be imported - but need to work through the logistic
 clicking enter/escape when using the overlay dropdown does not remove the overlay
 display second range value with 2 decimal points
 names for button and modal buttons
+weird issue with close button toolbar animation
+when importing component and click full preview mode toggle
+when same button imported in two different subcomponents - their animations are the same
+the add subcomponent button should be darker
+when a subcomponent is removed and import preview clicked - should display a preview of the button
 
 close button may need to be a badge
 consider having a dropdown to choose which border side to edit

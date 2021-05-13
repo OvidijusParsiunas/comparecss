@@ -1,30 +1,34 @@
 <template>
-  <div class="layer-sections-container">
+  <div class="layer-sections-container" :class="COMPONENT_PREVIEW_MARKER">
     <!-- center -->
     <layer-section v-if="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS] && sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.CENTER]"
       class="center-section"
+      :class="COMPONENT_PREVIEW_MARKER"
       :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
       :nestedSubcomponents="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.CENTER]"
       :mouseEvents="mouseEvents"
       :specialisedSectionContainerClass="SPECIALISED_SECTION_CONTAINER_CLASSES.CENTER_SECTION"/>
-    <div class="default-sections-container" :class="SUBCOMPONENT_CURSOR_AUTO_CLASS">
+    <div class="default-sections-container" :class="[SUBCOMPONENT_CURSOR_AUTO_CLASS, COMPONENT_PREVIEW_MARKER]">
       <!-- left -->
       <layer-section v-if="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS] && sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.LEFT]"
-        class="default-section"
         style="order: 0"
+        class="default-section"
+        :class="COMPONENT_PREVIEW_MARKER"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
         :nestedSubcomponents="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.LEFT]"
         :mouseEvents="mouseEvents"/>
       <!-- right -->
       <layer-section v-if="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS] && sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.RIGHT]"
-        class="default-section right-section"
         style="order: 1"
+        class="default-section right-section"
+        :class="COMPONENT_PREVIEW_MARKER"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
         :nestedSubcomponents="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.RIGHT]"
         :mouseEvents="mouseEvents"/>
       <!-- equal split sections -->
       <layer-section v-if="sections[LAYER_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS]"
         class="default-section equal-split-sections"
+        :class="COMPONENT_PREVIEW_MARKER"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
         :nestedSubcomponents="sections[LAYER_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS]"
         :mouseEvents="mouseEvents"
@@ -37,13 +41,15 @@
 import { SPECIALISED_SECTION_CONTAINER_CLASSES } from '../../../../../consts/specialisedSectionContainerClasses.enum';
 import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../../consts/subcomponentCursorClasses.enum';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../consts/layerSections';
+import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
 import layerSection from './LayerSection.vue';
 
 interface Consts {
   SPECIALISED_SECTION_CONTAINER_CLASSES: typeof SPECIALISED_SECTION_CONTAINER_CLASSES;
   SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES;
-  LAYER_SECTIONS_TYPES: typeof LAYER_SECTIONS_TYPES;
+  COMPONENT_PREVIEW_MARKER: string;
   ALIGNED_SECTION_TYPES: typeof ALIGNED_SECTION_TYPES;
+  LAYER_SECTIONS_TYPES: typeof LAYER_SECTIONS_TYPES;
 }
 
 export default {
@@ -51,8 +57,9 @@ export default {
     return {
       SPECIALISED_SECTION_CONTAINER_CLASSES: SPECIALISED_SECTION_CONTAINER_CLASSES,
       SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES.AUTO,
-      LAYER_SECTIONS_TYPES,
+      COMPONENT_PREVIEW_MARKER,
       ALIGNED_SECTION_TYPES,
+      LAYER_SECTIONS_TYPES,
     };
   },
   components: {

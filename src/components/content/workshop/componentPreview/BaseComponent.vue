@@ -4,7 +4,7 @@
       v-if="isSubcomponentDisplayed(component.componentPreviewStructure.baseSubcomponentProperties)"
       :id="subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId"
       class="parent-component"
-      :class="[ SUBCOMPONENT_CURSOR_AUTO_CLASS,
+      :class="[ COMPONENT_PREVIEW_MARKER, SUBCOMPONENT_CURSOR_AUTO_CLASS,
         ...((component.componentPreviewStructure.baseSubcomponentProperties.customFeatures && component.componentPreviewStructure.baseSubcomponentProperties.customFeatures.jsClasses) || []),
         (isImportedComponent ? 'imported-component' : STATIC_POSITION_CLASS) ]"
       @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId].subcomponentMouseEnter()"
@@ -50,6 +50,7 @@ import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOve
 import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../consts/subcomponentCursorClasses.enum';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
+import { COMPONENT_PREVIEW_MARKER } from '../../../../consts/elementClassMarkers';
 import { SubcomponentProperties } from '../../../../interfaces/workshopComponent';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 import SubcomponentDisplayUtils from './utils/subcomponentDisplayUtils';
@@ -59,6 +60,7 @@ interface Consts {
   SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES;
   OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
   STATIC_POSITION_CLASS: string;
+  COMPONENT_PREVIEW_MARKER: string;
   BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES;
   CSS_PSEUDO_CLASSES: typeof CSS_PSEUDO_CLASSES;
   isSubcomponentDisplayed: (nestedSubcomponent: SubcomponentProperties) => boolean;
@@ -71,6 +73,7 @@ export default {
       OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT,
       STATIC_POSITION_CLASS: STATIC_POSITION_CLASS,
       BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES.BASE,
+      COMPONENT_PREVIEW_MARKER,
       CSS_PSEUDO_CLASSES,
       isSubcomponentDisplayed: SubcomponentDisplayUtils.isSubcomponentDisplayed,
     };

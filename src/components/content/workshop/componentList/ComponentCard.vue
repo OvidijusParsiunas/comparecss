@@ -4,15 +4,16 @@
       @mousedown="selectComponentCard(thisComponent)">
       <div class="card-body" :class="COMPONENT_CARD_MARKER">
         <input v-if="isInputElementDisplayed" ref="componentCardClassNameEditorInput" class="card-title component-card-title"
+          :class="COMPONENT_CARD_MARKER"
           v-model="className"
           :placeholder="thisComponent.className"
           @input="classNameInputEvent"
           >
         <h5 v-else class="card-title component-card-title" :class="COMPONENT_CARD_MARKER">{{thisComponent.className}}</h5>
-        <div v-if="!isImportComponentModeActive">
-          <a ref="componentCardClassNameEditorButton" class="btn btn-success" @mousedown="preventBubbling" @mouseup="editClassName">Edit</a>
-          <a class="btn btn-warning" @mousedown="preventBubbling" @mouseup="copyComponentCard">Copy</a>
-          <a class="btn btn-danger component-card-remove" data-toggle="modal" :data-target="removeComponentModalId" @mousedown="preventBubbling" @mouseup="removeComponentCard">Remove</a>
+        <div v-if="!isImportComponentModeActive" :class="COMPONENT_CARD_MARKER">
+          <a ref="componentCardClassNameEditorButton" class="btn btn-success" :class="COMPONENT_CARD_MARKER" @mousedown="preventBubbling" @mouseup="editClassName">Edit</a>
+          <a class="btn btn-warning" :class="COMPONENT_CARD_MARKER" @mousedown="preventBubbling" @mouseup="copyComponentCard">Copy</a>
+          <a class="btn btn-danger component-card-remove" :class="COMPONENT_CARD_MARKER" data-toggle="modal" :data-target="removeComponentModalId" @mousedown="preventBubbling" @mouseup="removeComponentCard">Remove</a>
         </div>
         <div v-else>
           <a class="btn btn-success" :class="CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER">

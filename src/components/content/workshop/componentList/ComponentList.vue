@@ -1,9 +1,10 @@
 <template>
-  <div id="component-cards">
-    <div id="component-cards-container">
+  <div id="component-cards" :class="COMPONENT_LIST_ITEM_MARKER">
+    <div id="component-cards-container" :class="COMPONENT_LIST_ITEM_MARKER">
       <transition-group :name="listAnimationName">
         <component-card v-for="component in components" :key="component"
           class="transition-item"
+          :class="COMPONENT_LIST_ITEM_MARKER"
           :thisComponent="component"
           :allComponents="components"
           :currentlySelectedComponent="currentlySelectedComponent"
@@ -16,10 +17,11 @@
           @prepare-remove-component-modal="prepareRemoveComponentModal"/>
         <div v-if="!isImportComponentModeActive"
           class="transition-item component-card component-body-container add-card"
+          :class="COMPONENT_LIST_ITEM_MARKER"
           data-toggle="modal" :data-target="`#${NEW_COMPONENT_MODAL_ID}`"
           @click="prepareNewComponentModal">
-          <div class="card-body add-card-body">
-            <div class="add-card-text">
+          <div class="card-body add-card-body" :class="COMPONENT_LIST_ITEM_MARKER">
+            <div class="add-card-text" :class="COMPONENT_LIST_ITEM_MARKER">
               Add +
             </div>
           </div>
@@ -31,12 +33,14 @@
 
 <script lang="ts">
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
+import { COMPONENT_LIST_ITEM_MARKER } from '../../../../consts/elementClassMarkers';
 import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { NEW_COMPONENT_MODAL_ID } from '../../../../consts/elementIds';
 import componentCard from './ComponentCard.vue';
 
 interface Consts {
   NEW_COMPONENT_MODAL_ID: string;
+  COMPONENT_LIST_ITEM_MARKER: string;
 }
 
 interface Data {
@@ -47,6 +51,7 @@ export default {
   setup(): Consts {
     return {
       NEW_COMPONENT_MODAL_ID,
+      COMPONENT_LIST_ITEM_MARKER,
     }
   },
   data: (): Data => ({
