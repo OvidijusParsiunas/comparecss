@@ -4,10 +4,11 @@
       <div v-if="!isFullPreviewModeActive" class="btn-group option-component-button">
         <button v-if="isSubcomponentSelectModeButtonDisplayed"
           id="component-select-button" type="button" class="btn option-action-button" :class="[SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
-          @click="initiateSubcomponentSelectMode">
+          @click="buttonClickMiddleware(initiateSubcomponentSelectMode.bind(this, $event.currentTarget))">
           <i class="fa fa-mouse-pointer" :class="[SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"></i>
         </button>
-        <dropdown class="button-group-secondary-predominant-component"
+        <dropdown ref="subcomponentDropdown"
+          class="button-group-secondary-predominant-component"
           :uniqueIdentifier="SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
           :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
           :objectContainingActiveOption="component"
@@ -17,6 +18,7 @@
           :isButtonGroup="true"
           :isNested="true"
           :customEventHandlers="useSubcomponentDropdownEventHandlers"
+          @click.capture="dropdownClickMiddleware($event, $refs.subcomponentDropdown)"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
           @mouse-click-new-option="newSubcomponentNameClicked($event)"
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
@@ -25,7 +27,7 @@
         <button v-if="!isFullPreviewModeActive" ref="expandedModalPreviewModeToggle"
           type="button" class="btn btn-group-option option-action-button button-group-first-predominant-component expanded-modal-preview-mode-button"
           :class="[EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
-          @keydown.enter.prevent="$event.preventDefault()" @click="toggleModalExpandMode">
+          @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleModalExpandMode)">
           <font-awesome-icon v-if="isExpandedModalPreviewModeActive"
             :style="{ color: FONT_AWESOME_COLORS.DEFAULT, ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
             class="modal-button-icon expand-icon" icon="compress"/>
@@ -36,7 +38,7 @@
         <button
           type="button" class="btn btn-group-option option-action-button expanded-modal-preview-mode-button"
           :class="OPTION_MENU_BUTTON_MARKER"
-          @keydown.enter.prevent="$event.preventDefault()" @click="toggleFullPreviewMode">
+          @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleFullPreviewMode)">
           <font-awesome-icon v-if="isFullPreviewModeActive"
             :style="{ ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
             class="modal-button-icon full-preview-icon" icon="stop"/>
@@ -53,7 +55,7 @@
           <button ref="importComponentToggle"
             v-if="component.subcomponents[component.activeSubcomponentName].importedComponent && component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus"
             type="button" class="btn-group-option option-action-button" :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, OPTION_MENU_BUTTON_MARKER]"
-            @keydown.enter.prevent="$event.preventDefault()" @click="toggleSubcomponentImport">
+            @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleSubcomponentImport)">
               <font-awesome-icon
                 :style="{ color: isImportComponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT }"
                 class="import-icon" icon="long-arrow-alt-down"/>
@@ -61,7 +63,7 @@
           <button v-if="isInSyncButtonDisplayed()"
             type="button" class="btn-group-option option-action-button button-group-secondary-predominant-component"
             :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, OPTION_MENU_BUTTON_MARKER]"
-            @keydown.enter.prevent="$event.preventDefault()" @click="toggleImportedComponentInSync()">
+            @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleImportedComponentInSync)">
               <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
           </button>
           <button v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus"
@@ -70,7 +72,9 @@
               {'transition-item': isSubcomponentButtonsTransitionAllowed}, OPTION_MENU_BUTTON_MARKER]"
             @mouseenter="subcomponentMouseEnterHandler"
             @mouseleave="subcomponentMouseLeaveHandler"
-            @keydown.enter.prevent="$event.preventDefault()" @click="toggleSubcomponent(component.subcomponents[component.activeSubcomponentName])">
+            @keydown.enter.prevent="$event.preventDefault()"
+            @click="buttonClickMiddleware(toggleSubcomponent.bind(this, component.subcomponents[component.activeSubcomponentName]), 
+              component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed && !getIsDoNotShowModalAgainState())">
           </button>
         </transition-group>
       </div>
@@ -85,12 +89,14 @@
             && (!component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus
               || component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed)"
           :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}" > 
-          <dropdown class="option-component-button"
+          <dropdown ref="cssPseudoClassDropdown"
+            class="option-component-button"
             :uniqueIdentifier="CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
             :dropdownOptions="componentTypeToOptions[component.type][component.subcomponents[component.activeSubcomponentName].subcomponentType]"
             :objectContainingActiveOption="component.subcomponents[component.activeSubcomponentName]"
             :activeOptionPropertyKeyName="'activeCssPseudoClass'"
             :fontAwesomeIcon="'angle-down'"
+            @click.capture="dropdownClickMiddleware($event, $refs.cssPseudoClassDropdown)"
             @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
             @mouse-click-new-option="newCssPseudoClassClicked($event)"/>
           <div v-for="option in componentTypeToOptions[component.type][component.subcomponents[component.activeSubcomponentName].subcomponentType]
@@ -104,7 +110,7 @@
                 option.type === activeOption.type ? 'option-select-button-active' : '',
                 option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive ? 'option-select-button-default-disabled' : 'option-select-button-default-enabled',
                 OPTION_MENU_BUTTON_MARKER]"
-                @click="selectOption(option, true)">
+                @click="buttonClickMiddleware(selectOption.bind(this, option, true))">
                 {{option.buttonName}}
             </button>
           </div>
@@ -113,7 +119,7 @@
           class="toolbar-position-toggle-container" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
           <button
             type="button" class="btn toolbar-position-toggle"
-            @click="toolbarPositionToggleMouseClick(this)"
+            @click="buttonClickMiddleware(toolbarPositionToggleMouseClick.bind(this))"
             @mouseenter="toolbarPositionToggleMouseEnter($event)"
             @mouseleave="toolbarPositionToggleMouseLeave($event)">
             <i :class="['fa', 'fa-sort']"></i>
@@ -126,6 +132,7 @@
 
 <script lang="ts">
 import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER } from '../../../../../consts/elementClassMarkers';
+import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../componentPreview/utils/expandedModalPreviewMode/consts/sharedConsts';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ComponentTypeToOptions, componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
@@ -155,7 +162,7 @@ import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
 import BrowserType from '../../../../../services/workshop/browserType';
 import { Option } from '../../../../../interfaces/componentOptions';
-import { Ref } from 'node_modules/vue/dist/vue';
+import { ComponentOptions, Ref } from 'node_modules/vue/dist/vue';
 import dropdown from './dropdown/Dropdown.vue';
 
 interface Consts {
@@ -228,12 +235,27 @@ export default {
     this.reassignToolbarPositionToggleRef();
   },
   methods: {
-    initiateSubcomponentSelectMode(): void {
+    buttonClickMiddleware(callback: () => void, isModalToggled: boolean): void {
+      if (isModalToggled) {
+         callback();
+      } else {
+        this.executeCallbackAfterTimeout(callback);
+      }
+    },
+    dropdownClickMiddleware(event: MouseEvent, dropdownRef: ComponentOptions): void {
+      event.stopPropagation();
+      this.executeCallbackAfterTimeout(dropdownRef.openDropdown);
+    },
+    executeCallbackAfterTimeout(callback: () => void): void {
+      setTimeout(() => {
+        callback();
+      }, this.hasImportComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
+    },
+    initiateSubcomponentSelectMode(buttonElement: HTMLElement): void {
       if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) {
         subcomponentSelectModeState.setIsSubcomponentSelectModeActiveState(false);
         return;
       }
-      const buttonElement = event.currentTarget as HTMLElement;
       const subcomponentSelectModeCallbackFunction = SubcomponentSelectMode.initiate(buttonElement);
       const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.ESCAPE]);
       const subcomponentNameClickedFunc = this.newSubcomponentNameClicked;

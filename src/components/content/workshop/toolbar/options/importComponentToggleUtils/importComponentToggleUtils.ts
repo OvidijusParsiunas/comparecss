@@ -40,7 +40,9 @@ export default class ImportComponentToggleUtils {
     if (optionsComponent.activeOption.buttonName && subcomponents[activeSubcomponentName].subcomponentDisplayStatus.isDisplayed) {
       const defaultOption = optionsComponent.getDefaultOption();
       // timeout used for the inSync button animation to work
-      setTimeout(() => { optionsComponent.selectOption(defaultOption);})
+      setTimeout(() => {
+        optionsComponent.selectOption(defaultOption);
+      }, optionsComponent.hasImportComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     }
   }
 
@@ -61,13 +63,13 @@ export default class ImportComponentToggleUtils {
     delete subcomponents[activeSubcomponentName].importedComponent.lastSelectectedSubcomponentToImport;
   }
 
-  private static toggleOff(optionsComponent: ComponentOptions): WorkshopEventCallbackReturn {
+  private static toggleOff(optionsComponent: ComponentOptions, isOptionsButtonClicked: boolean): WorkshopEventCallbackReturn {
     optionsComponent.isImportComponentModeActive = !optionsComponent.isImportComponentModeActive;
-    ImportComponentToggleUtils.displayOptionSettings(optionsComponent);
+    if (!isOptionsButtonClicked) ImportComponentToggleUtils.displayOptionSettings(optionsComponent);
     if (optionsComponent.hasImportComponentModeClosedExpandedModal) {
       optionsComponent.toggleModalExpandMode();
-      optionsComponent.hasImportComponentModeClosedExpandedModal = false;
       setTimeout(() => {
+        optionsComponent.hasImportComponentModeClosedExpandedModal = false;
         optionsComponent.$emit('toggle-import-subcomponent-mode', [false] as ToggleImportComponentModeEvent);
       }, TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS);
     } else {
@@ -82,10 +84,12 @@ export default class ImportComponentToggleUtils {
     if (subcomponents[activeSubcomponentName].importedComponent.lastSelectectedSubcomponentToImport) {
       subcomponents[activeSubcomponentName].importedComponent.componentRef.componentStatus = subcomponents[activeSubcomponentName]
         .importedComponent.lastSelectectedSubcomponentToImport.componentStatus;
-      subcomponents[activeSubcomponentName].importedComponent.inSync = true;
-      subcomponents[activeSubcomponentName].subcomponentDisplayStatus.isDisplayed = true;
+      setTimeout(() => {
+        subcomponents[activeSubcomponentName].importedComponent.inSync = true;
+        subcomponents[activeSubcomponentName].subcomponentDisplayStatus.isDisplayed = true;
+      }, optionsComponent.hasImportComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     }
-    ImportComponentToggleUtils.toggleOff(optionsComponent);
+    ImportComponentToggleUtils.toggleOff(optionsComponent, false);
   }
 
   private static moveTempPropertiesToCustomProperties(activeComponentSubcomponents: Subcomponents, activeComponentSubcomponentName: string): void {
@@ -108,7 +112,7 @@ export default class ImportComponentToggleUtils {
     if (event instanceof KeyboardEvent) {
       if (event.key === DOM_EVENT_TRIGGER_KEYS.ESCAPE) {
         ImportComponentToggleUtils.resetImportedComponent(optionsComponent.component);
-        return ImportComponentToggleUtils.toggleOff(optionsComponent);
+        return ImportComponentToggleUtils.toggleOff(optionsComponent, false);
       } else if (event.key === DOM_EVENT_TRIGGER_KEYS.ENTER) {
         optionsComponent.temporarilyAllowOptionAnimations(ImportComponentToggleUtils.setImportedComponentProperties.bind(this, optionsComponent), true, true);
         return { shouldRepeat: false };
@@ -127,12 +131,14 @@ export default class ImportComponentToggleUtils {
     } 
     if (buttonElement.classList.contains(EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER)) {
       optionsComponent.hasImportComponentModeClosedExpandedModal = false;
-      return ImportComponentToggleUtils.toggleOff(optionsComponent);
+      return ImportComponentToggleUtils.toggleOff(optionsComponent, false);
     } 
-    if (buttonElement.classList.contains(OPTION_MENU_BUTTON_MARKER)
-      || buttonElement.classList.contains(optionsComponent.SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)
-      || buttonElement.classList.contains(optionsComponent.CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)) {
-        return ImportComponentToggleUtils.toggleOff(optionsComponent);
+    if (buttonElement.classList.contains(optionsComponent.SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)
+        || buttonElement.classList.contains(optionsComponent.CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)) {
+      return ImportComponentToggleUtils.toggleOff(optionsComponent, false);
+    }
+    if (buttonElement.classList.contains(OPTION_MENU_BUTTON_MARKER)) {
+      return ImportComponentToggleUtils.toggleOff(optionsComponent, true);
     }
     return { shouldRepeat: true };
   }

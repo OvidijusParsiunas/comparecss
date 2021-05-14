@@ -37,7 +37,7 @@ interface Props {
 
 interface Consts {
   CANCEL_ELEMENT_CLASS: string;
-  MODAL_DISPLAY_ANIMATION_INTERVAL_MILLISECONDS: number,
+  MODAL_DISPLAY_ANIMATION_INTERVAL_MILLISECONDS: number;
 }
 
 interface Data {
@@ -60,7 +60,7 @@ export default {
   }),
   methods: {
     prepare(successfulRemoveCallback: () => void): void {
-      const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
+      const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE]);
       const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.closeModalCallback };
       this.$emit('remove-modal-template-callback', workshopEventCallback);
       this.isClassNameTextHighlighted = false;
