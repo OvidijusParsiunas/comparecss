@@ -674,6 +674,7 @@ export default {
   }
   .option-action-button {
     border: 1px solid #aaaaaa !important;
+    outline: none;
   }
   .option-action-button:hover {
     background-color: #ebebeb !important;
