@@ -7,7 +7,7 @@
           @click="buttonClickMiddleware(initiateSubcomponentSelectMode.bind(this, $event.currentTarget))">
           <i class="fa fa-mouse-pointer" :class="[SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"></i>
         </button>
-        <dropdown ref="subcomponentDropdown"
+        <dropdown
           class="button-group-secondary-predominant-component"
           :uniqueIdentifier="SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
           :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
@@ -18,7 +18,7 @@
           :isButtonGroup="true"
           :isNested="true"
           :customEventHandlers="useSubcomponentDropdownEventHandlers"
-          @click.capture="dropdownClickMiddleware($event, $refs.subcomponentDropdown)"
+          :timeoutFunc="executeCallbackAfterTimeout"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
           @mouse-click-new-option="newSubcomponentNameClicked($event)"
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
@@ -55,7 +55,7 @@
           <button ref="importComponentToggle"
             v-if="component.subcomponents[component.activeSubcomponentName].importedComponent && component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus"
             type="button" class="btn-group-option option-action-button" :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, OPTION_MENU_BUTTON_MARKER]"
-            @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleSubcomponentImport)">
+            @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleSubcomponentImport, true)">
               <font-awesome-icon
                 :style="{ color: isImportComponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT }"
                 class="import-icon" icon="long-arrow-alt-down"/>
@@ -85,18 +85,18 @@
           class="option-action-button button-group-secondary-predominant-component" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
             <font-awesome-icon style="color: #54a9f100" class="sync-icon" icon="sync-alt"/>
         </button>
-        <div v-if="!isFullPreviewModeActive
+        <div v-if="true" v-show="!isFullPreviewModeActive
             && (!component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus
               || component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed)"
           :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}" > 
-          <dropdown ref="cssPseudoClassDropdown"
+          <dropdown
             class="option-component-button"
             :uniqueIdentifier="CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
             :dropdownOptions="componentTypeToOptions[component.type][component.subcomponents[component.activeSubcomponentName].subcomponentType]"
             :objectContainingActiveOption="component.subcomponents[component.activeSubcomponentName]"
             :activeOptionPropertyKeyName="'activeCssPseudoClass'"
             :fontAwesomeIcon="'angle-down'"
-            @click.capture="dropdownClickMiddleware($event, $refs.cssPseudoClassDropdown)"
+            :timeoutFunc="executeCallbackAfterTimeout"
             @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
             @mouse-click-new-option="newCssPseudoClassClicked($event)"/>
           <div v-for="option in componentTypeToOptions[component.type][component.subcomponents[component.activeSubcomponentName].subcomponentType]
@@ -109,8 +109,8 @@
               :class="[
                 option.type === activeOption.type ? 'option-select-button-active' : '',
                 option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive ? 'option-select-button-default-disabled' : 'option-select-button-default-enabled',
-                OPTION_MENU_BUTTON_MARKER]"
-                @click="buttonClickMiddleware(selectOption.bind(this, option, true))">
+                OPTION_MENU_SETTING_OPTION_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
+              @click="buttonClickMiddleware(selectOption.bind(this, option, true))">
                 {{option.buttonName}}
             </button>
           </div>
@@ -131,7 +131,7 @@
 </template>
 
 <script lang="ts">
-import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER } from '../../../../../consts/elementClassMarkers';
+import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_SETTING_OPTION_BUTTON_MARKER } from '../../../../../consts/elementClassMarkers';
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../componentPreview/utils/expandedModalPreviewMode/consts/sharedConsts';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
@@ -169,6 +169,7 @@ interface Consts {
   componentTypeToOptions: ComponentTypeToOptions;
   useSubcomponentDropdownEventHandlers: (objectContainingActiveOption: Ref<unknown>, activeOptionPropertyKeyName: Ref<string>, highlightSubcomponents: Ref<boolean>) => DropdownCompositionAPI;
   OPTION_MENU_BUTTON_MARKER: string;
+  OPTION_MENU_SETTING_OPTION_BUTTON_MARKER: string;
   FONT_AWESOME_COLORS: typeof FONT_AWESOME_COLORS;
   HIGHLIGHTED_OPTION_BUTTON_CLASS: string;
   BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES;
@@ -204,6 +205,7 @@ export default {
       ...removeSubcomponentModalState,
       FONT_AWESOME_COLORS,
       OPTION_MENU_BUTTON_MARKER,
+      OPTION_MENU_SETTING_OPTION_BUTTON_MARKER,
       BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES.BASE,
       SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
       EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER,
@@ -235,16 +237,12 @@ export default {
     this.reassignToolbarPositionToggleRef();
   },
   methods: {
-    buttonClickMiddleware(callback: () => void, isModalToggled: boolean): void {
-      if (isModalToggled) {
+    buttonClickMiddleware(callback: () => void, activateImmediately: boolean): void {
+      if (activateImmediately) {
          callback();
       } else {
         this.executeCallbackAfterTimeout(callback);
       }
-    },
-    dropdownClickMiddleware(event: MouseEvent, dropdownRef: ComponentOptions): void {
-      event.stopPropagation();
-      this.executeCallbackAfterTimeout(dropdownRef.openDropdown);
     },
     executeCallbackAfterTimeout(callback: () => void): void {
       setTimeout(() => {

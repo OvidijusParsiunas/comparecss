@@ -1,4 +1,4 @@
-import { CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER } from '../../../../../../consts/elementClassMarkers';
+import { CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER, OPTION_MENU_SETTING_OPTION_BUTTON_MARKER } from '../../../../../../consts/elementClassMarkers';
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../../componentPreview/utils/expandedModalPreviewMode/consts/sharedConsts';
 import { SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ToggleImportComponentModeEvent } from '../../../../../../interfaces/toggleImportComponentModeEvent';
@@ -84,6 +84,7 @@ export default class ImportComponentToggleUtils {
     if (subcomponents[activeSubcomponentName].importedComponent.lastSelectectedSubcomponentToImport) {
       subcomponents[activeSubcomponentName].importedComponent.componentRef.componentStatus = subcomponents[activeSubcomponentName]
         .importedComponent.lastSelectectedSubcomponentToImport.componentStatus;
+      // timeout used to not display the animation immediately if expanded modal mode has been temporarily closed
       setTimeout(() => {
         subcomponents[activeSubcomponentName].importedComponent.inSync = true;
         subcomponents[activeSubcomponentName].subcomponentDisplayStatus.isDisplayed = true;
@@ -132,13 +133,14 @@ export default class ImportComponentToggleUtils {
     if (buttonElement.classList.contains(EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER)) {
       optionsComponent.hasImportComponentModeClosedExpandedModal = false;
       return ImportComponentToggleUtils.toggleOff(optionsComponent, false);
-    } 
-    if (buttonElement.classList.contains(optionsComponent.SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)
+    }
+    if (buttonElement.classList.contains(OPTION_MENU_SETTING_OPTION_BUTTON_MARKER)) {
+      return ImportComponentToggleUtils.toggleOff(optionsComponent, true);
+    }
+    if (buttonElement.classList.contains(OPTION_MENU_BUTTON_MARKER)
+        || buttonElement.classList.contains(optionsComponent.SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)
         || buttonElement.classList.contains(optionsComponent.CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)) {
       return ImportComponentToggleUtils.toggleOff(optionsComponent, false);
-    }
-    if (buttonElement.classList.contains(OPTION_MENU_BUTTON_MARKER)) {
-      return ImportComponentToggleUtils.toggleOff(optionsComponent, true);
     }
     return { shouldRepeat: true };
   }
@@ -156,9 +158,9 @@ export default class ImportComponentToggleUtils {
     } else if (optionsComponent.hasImportComponentModeClosedExpandedModal) {
       setTimeout(() => {
         ImportComponentToggleUtils.toggleImportComponentModeOn(optionsComponent);
+        optionsComponent.hasImportComponentModeClosedExpandedModal = false;
       }, TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS);
       optionsComponent.toggleModalExpandMode();
-      optionsComponent.hasImportComponentModeClosedExpandedModal = false;
       return true;
     }
     return false;
@@ -166,12 +168,12 @@ export default class ImportComponentToggleUtils {
 
   public static toggleSubcomponentImport(optionsComponent: ComponentOptions): void {
     optionsComponent.isImportComponentModeActive = !optionsComponent.isImportComponentModeActive;
-    const hasBeenToggled = ImportComponentToggleUtils.toggleDuringExpandedModalMode(optionsComponent);
     if (optionsComponent.isImportComponentModeActive) {
       optionsComponent.hideSettings();
     } else {
       ImportComponentToggleUtils.displayOptionSettings(optionsComponent);
     }
+    const hasBeenToggled = ImportComponentToggleUtils.toggleDuringExpandedModalMode(optionsComponent);
     if (!hasBeenToggled) ImportComponentToggleUtils.toggleImportComponentModeOn(optionsComponent);
   }
 

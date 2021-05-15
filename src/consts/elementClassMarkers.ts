@@ -5,6 +5,7 @@ export const SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER = 'subcomponent-select-mode-
 export const EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER = 'expanded-modal-preview-mode-button-marker';
 export const RANGE_SETTING_MARKER = 'range-setting-marker';
 export const OPTION_MENU_BUTTON_MARKER = 'option-menu-button-marker';
+export const OPTION_MENU_SETTING_OPTION_BUTTON_MARKER = 'option-menu-setting-option-button-marker';
 export const CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER = 'confirm-subcomponent-to-import-marker';
 export const COMPONENT_PREVIEW_MARKER = 'component-preview-marker';
 export const COMPONENT_LIST_ITEM_MARKER = 'component-list-item-marker';

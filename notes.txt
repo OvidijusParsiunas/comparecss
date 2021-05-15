@@ -13,8 +13,10 @@ display second range value with 2 decimal points
 names for button and modal buttons
 when importing component and click full preview mode toggle
 when same button imported in two different subcomponents - their animations are the same
-the add subcomponent button should be darker
 when a subcomponent is removed and import preview clicked - should display a preview of the button
+highlight play
+change import component on card hover
+enter button click outline - import for starters
 
 close button may need to be a badge
 consider having a dropdown to choose which border side to edit

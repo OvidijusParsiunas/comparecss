@@ -1,7 +1,7 @@
 <template>
   <div v-if="isComponentDisplayed" class="dropdown">
     <button class="btn form-control dropdown-button option-action-button" :class="[uniqueIdentifier, { 'button-group-border': isButtonGroup }]" type="button"
-      @click="openDropdown"
+      @click="buttonClick"
       @mouseenter="mouseEnterButton"
       @mouseleave="mouseLeaveButton">
       <div class="dropdown-button-text" :class="uniqueIdentifier">
@@ -10,7 +10,7 @@
       <font-awesome-icon :style="{ color: DEFAULT_FONT_AWESOME_COLOR }" class="arrow-down-icon" :icon="fontAwesomeIcon"/>
     </button>
     <div class="auxiliary-padding dropdown-menu-options-marker" :class="uniqueIdentifier"
-      @click="openDropdown"
+      @click="buttonClick"
       @mouseenter="mouseEnterAuxiliaryPadding"
       @mouseleave="mouseLeaveAuxiliaryPadding">
     </div>
@@ -115,6 +115,13 @@ export default {
     this.toggleDropdownDisplay();
   },
   methods: {
+    buttonClick(): void {
+      if (this.timeoutFunc) { 
+        this.timeoutFunc(this.openDropdown.bind(this));
+      } else {
+        this.openDropdown();
+      }
+    },
     openDropdown(): void {
       if (this.enterButtonClicked || this.clickedButton) {
         this.enterButtonClicked = false;
@@ -367,7 +374,8 @@ export default {
     isNested: {
       type: Boolean,
       default: false,
-    }
+    },
+    timeoutFunc: Function,
   },
   watch: {
     objectContainingActiveOption(): void {
