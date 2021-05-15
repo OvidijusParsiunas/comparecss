@@ -1,4 +1,4 @@
-import { CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER, OPTION_MENU_SETTING_OPTION_BUTTON_MARKER } from '../../../../../../consts/elementClassMarkers';
+import { CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, FULL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER, OPTION_MENU_SETTING_OPTION_BUTTON_MARKER } from '../../../../../../consts/elementClassMarkers';
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../../componentPreview/utils/expandedModalPreviewMode/consts/sharedConsts';
 import { SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ToggleImportComponentModeEvent } from '../../../../../../interfaces/toggleImportComponentModeEvent';
@@ -35,14 +35,14 @@ export default class ImportComponentToggleUtils {
     if (callback) callback();
   }
 
-  private static displayOptionSettings(optionsComponent: ComponentOptions): void {
+  private static displayOptionSettings(optionsComponent: ComponentOptions, isWaitFadeAnimation?: boolean): void {
     const { subcomponents, activeSubcomponentName } = optionsComponent.component;
     if (optionsComponent.activeOption.buttonName && subcomponents[activeSubcomponentName].subcomponentDisplayStatus.isDisplayed) {
       const defaultOption = optionsComponent.getDefaultOption();
       // timeout used for the inSync button animation to work
       setTimeout(() => {
         optionsComponent.selectOption(defaultOption);
-      }, optionsComponent.hasImportComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
+      }, isWaitFadeAnimation || optionsComponent.hasImportComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     }
   }
 
@@ -63,11 +63,14 @@ export default class ImportComponentToggleUtils {
     delete subcomponents[activeSubcomponentName].importedComponent.lastSelectectedSubcomponentToImport;
   }
 
-  private static toggleOff(optionsComponent: ComponentOptions, isOptionsButtonClicked: boolean): WorkshopEventCallbackReturn {
+  private static toggleOff(optionsComponent: ComponentOptions, toggleOptionSettings: boolean): WorkshopEventCallbackReturn {
     optionsComponent.isImportComponentModeActive = !optionsComponent.isImportComponentModeActive;
-    if (!isOptionsButtonClicked) ImportComponentToggleUtils.displayOptionSettings(optionsComponent);
+    if (!toggleOptionSettings) ImportComponentToggleUtils.displayOptionSettings(optionsComponent);
     if (optionsComponent.hasImportComponentModeClosedExpandedModal) {
-      optionsComponent.toggleModalExpandMode();
+      // the following timeout is a fix for when the user clicks the full preview mode toggle as toolbar blinks before moving to the right
+      setTimeout(() => {
+        optionsComponent.toggleModalExpandMode();
+      });
       setTimeout(() => {
         optionsComponent.hasImportComponentModeClosedExpandedModal = false;
         optionsComponent.$emit('toggle-import-subcomponent-mode', [false] as ToggleImportComponentModeEvent);
@@ -132,9 +135,11 @@ export default class ImportComponentToggleUtils {
     } 
     if (buttonElement.classList.contains(EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER)) {
       optionsComponent.hasImportComponentModeClosedExpandedModal = false;
-      return ImportComponentToggleUtils.toggleOff(optionsComponent, false);
+      ImportComponentToggleUtils.displayOptionSettings(optionsComponent, true);
+      return ImportComponentToggleUtils.toggleOff(optionsComponent, true);
     }
-    if (buttonElement.classList.contains(OPTION_MENU_SETTING_OPTION_BUTTON_MARKER)) {
+    if (buttonElement.classList.contains(OPTION_MENU_SETTING_OPTION_BUTTON_MARKER)
+        || buttonElement.classList.contains(FULL_PREVIEW_MODE_BUTTON_MARKER)) {
       return ImportComponentToggleUtils.toggleOff(optionsComponent, true);
     }
     if (buttonElement.classList.contains(OPTION_MENU_BUTTON_MARKER)

@@ -37,7 +37,7 @@
         </button>
         <button
           type="button" class="btn btn-group-option option-action-button expanded-modal-preview-mode-button"
-          :class="OPTION_MENU_BUTTON_MARKER"
+          :class="[FULL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
           @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleFullPreviewMode)">
           <font-awesome-icon v-if="isFullPreviewModeActive"
             :style="{ ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
@@ -131,7 +131,6 @@
 </template>
 
 <script lang="ts">
-import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_SETTING_OPTION_BUTTON_MARKER } from '../../../../../consts/elementClassMarkers';
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../componentPreview/utils/expandedModalPreviewMode/consts/sharedConsts';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
@@ -162,13 +161,18 @@ import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
 import BrowserType from '../../../../../services/workshop/browserType';
 import { Option } from '../../../../../interfaces/componentOptions';
-import { ComponentOptions, Ref } from 'node_modules/vue/dist/vue';
+import { Ref } from 'node_modules/vue/dist/vue';
 import dropdown from './dropdown/Dropdown.vue';
+import {
+  SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER, FULL_PREVIEW_MODE_BUTTON_MARKER,
+  OPTION_MENU_SETTING_OPTION_BUTTON_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER,
+} from '../../../../../consts/elementClassMarkers';
 
 interface Consts {
   componentTypeToOptions: ComponentTypeToOptions;
   useSubcomponentDropdownEventHandlers: (objectContainingActiveOption: Ref<unknown>, activeOptionPropertyKeyName: Ref<string>, highlightSubcomponents: Ref<boolean>) => DropdownCompositionAPI;
   OPTION_MENU_BUTTON_MARKER: string;
+  FULL_PREVIEW_MODE_BUTTON_MARKER: string;
   OPTION_MENU_SETTING_OPTION_BUTTON_MARKER: string;
   FONT_AWESOME_COLORS: typeof FONT_AWESOME_COLORS;
   HIGHLIGHTED_OPTION_BUTTON_CLASS: string;
@@ -205,6 +209,7 @@ export default {
       ...removeSubcomponentModalState,
       FONT_AWESOME_COLORS,
       OPTION_MENU_BUTTON_MARKER,
+      FULL_PREVIEW_MODE_BUTTON_MARKER,
       OPTION_MENU_SETTING_OPTION_BUTTON_MARKER,
       BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES.BASE,
       SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
