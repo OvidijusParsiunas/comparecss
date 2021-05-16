@@ -147,6 +147,8 @@ export interface SubcomponentProperties {
   importedComponent?: ImportedComponent;
   // used to track the imported component's base inSync property
   baseSubcomponentRef?: SubcomponentProperties;
+  // this is used for imported subcomponents as overwriting customCss with mouseevents causes all the other in-sync references to be updated as well
+  tempCustomCssObjName?: string;
   parentLayer?: Layer;
   // appended at run-time
   tempCustomProperties?: TempCustomProperties;

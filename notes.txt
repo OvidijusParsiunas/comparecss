@@ -11,7 +11,6 @@ close button should probably be imported - but need to work through the logistic
 clicking enter/escape when using the overlay dropdown does not remove the overlay
 display second range value with 2 decimal points
 names for button and modal buttons
-when same button imported in two different subcomponents - their animations are the same
 when a subcomponent is removed and import preview clicked - should display a preview of the button
 highlight play
 change import component on card hover

@@ -3,7 +3,7 @@
     <div v-for="layer in layers" :key="layer" class="layer" :class="COMPONENT_PREVIEW_MARKER">
       <div v-if="isSubcomponentDisplayed(layer.subcomponentProperties)"
         :id="subcomponentAndOverlayElementIds[layer.name] && subcomponentAndOverlayElementIds[layer.name].subcomponentId"
-        :style="layer.subcomponentProperties.customCss[DEFAULT_CSS_PSEUDO_CLASS]"
+        :style="layer.subcomponentProperties[layer.subcomponentProperties.tempCustomCssObjName || 'customCss'][DEFAULT_CSS_PSEUDO_CLASS]"
         :class="COMPONENT_PREVIEW_MARKER"
         @mouseenter="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentMouseEnter()"
         @mouseleave="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentMouseLeave()"
