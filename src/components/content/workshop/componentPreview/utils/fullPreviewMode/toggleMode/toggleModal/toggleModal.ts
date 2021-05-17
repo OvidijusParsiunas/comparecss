@@ -13,9 +13,9 @@ import { SubcomponentProperties } from '../../../../../../../../interfaces/works
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
 import { CloseTriggers } from '../../../../../../../../interfaces/closeTriggers';
 import { fulPreviewModeState } from '../../fullPreviewModeState';
+import ImportComponedModeToggleOff from '../toggleOff';
 import GeneralUtils from '../generalUtils';
 import { ComponentOptions } from 'vue';
-import ToggleOff from '../toggleOff';
 
 export default class ToggleModal {
 
@@ -48,7 +48,7 @@ export default class ToggleModal {
       temporaryComponentElement: HTMLElement, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
       isExpandedModalPreviewModeActive: boolean, toggleFullPreviewModeOptionsCallback: () => void): void {
     GeneralUtils.createWorkshopEventCallback(componentPreviewComponent,
-      ToggleOff.toggleOffCallback.bind(this, componentPreviewComponent, componentPreviewElement, temporaryComponentElement,
+      ImportComponedModeToggleOff.toggleOffCallback.bind(this, componentPreviewComponent, componentPreviewElement, temporaryComponentElement,
         toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive,
         toggleFullPreviewModeOptionsCallback));
     ToggleModal.switchBetweenModalAndButton(componentPreviewComponent, true);

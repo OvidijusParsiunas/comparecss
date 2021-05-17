@@ -15,8 +15,10 @@
             :components="components"
             :currentlySelectedComponent="currentlySelectedComponent"
             :isImportComponentModeActive="isImportComponentModeActive"
+            :currentlyHoveredImportComponent="currentlyHoveredImportComponent"
             :currentlySelectedImportComponent="currentlySelectedImportComponent"
             @component-card-selected="selectComponentCard($event)"
+            @mouse-hover-component-card="hoverComponentCard($event)"
             @component-card-copied="copyComponentCard($event)"
             @component-card-removed="removeComponentCard($event)"
             @stop-editing-class-name-callback="addWorkshopEventCallback($event)"
@@ -111,6 +113,7 @@ import { modalLayerTopSpecificSettings } from './newComponent/types/modals/prope
 import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
 import { modalBaseSpecificSettings } from './newComponent/types/modals/properties/modalBaseSpecificSettings';
 import { modalTextSpecificSettings } from './newComponent/types/modals/properties/modalTextSpecificSettings'
+import { ImportedComponentGenerator } from './utils/importedComponentGenerator/importedComponentGenerator';
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
 import ComponentManipulationUtils from './utils/componentManipulationUtils/componentManipulationUtils';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
@@ -118,7 +121,6 @@ import { ToggleImportComponentModeEvent } from '../../../interfaces/toggleImport
 import { EntityDisplayStatusUtils } from './utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../consts/subcomponentOverlayClasses.enum';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
-import ImportedComponentProperties from './utils/importComponent/importedComponentProperties';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { inheritedAlertBaseCss } from './newComponent/types/alerts/properties/inheritedCss';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../consts/layerSections';
@@ -158,6 +160,7 @@ interface Data {
   components: WorkshopComponent[];
   tempComponents: WorkshopComponent[];
   currentlySelectedComponent: WorkshopComponent;
+  currentlyHoveredImportComponent: WorkshopComponent;
   currentlySelectedImportComponent: WorkshopComponent;
   componentPreviewAssistance: ComponentPreviewAssistance;
   workshopEventCallbacks: (() => boolean)[];
@@ -429,15 +432,15 @@ function createNewComponent(): WorkshopComponent {
   const importedButton1Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_1;
   const importedButton2Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_2;
   const subcomponents = { ...createSubcomponents(),
-    ...ImportedComponentProperties.createImportedComponents(closeButton, importedCloseButtonName, 1),
-    ...ImportedComponentProperties.createImportedComponents(defaultButton, importedButton1Name, 2),
-    ...ImportedComponentProperties.createImportedComponents(defaultButton, importedButton2Name, 3) };
+    ...ImportedComponentGenerator.createImportedComponents(closeButton, importedCloseButtonName, 1),
+    ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton1Name, 2),
+    ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton2Name, 3) };
   const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
     subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_3],
     subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_2],
-    ImportedComponentProperties.createImportedComponentStructure(subcomponents, importedCloseButtonName),
-    ImportedComponentProperties.createImportedComponentStructure(subcomponents, importedButton1Name),
-    ImportedComponentProperties.createImportedComponentStructure(subcomponents, importedButton2Name),
+    ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedCloseButtonName),
+    ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton1Name),
+    ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton2Name),
   );
   return {
     type: NEW_COMPONENT_TYPES.MODAL,
@@ -469,6 +472,7 @@ export default {
     ],
     tempComponents: [],
     currentlySelectedComponent: null,
+    currentlyHoveredImportComponent: null,
     currentlySelectedImportComponent: null,
     workshopEventCallbacks: [],
     isImportComponentModeActive: false,
@@ -486,6 +490,11 @@ export default {
     },
     selectComponentCard(selectComponentCard: WorkshopComponent): void {
       ComponentManipulationUtils.selectComponent(this, selectComponentCard);
+    },
+    // WORK1
+    hoverComponentCard(event: any): void {
+      const [hoveredComponent, isMouseEnter] = event;
+      ComponentManipulationUtils.hoverComponentCard(this, hoveredComponent, isMouseEnter);
     },
     copyComponentCard(selectComponentCard: WorkshopComponent): void {
       ComponentManipulationUtils.copyComponent(this, selectComponentCard);
@@ -535,6 +544,7 @@ export default {
       this.addWorkshopEventCallback(workshopEventCallback); 
       this.$refs.contents.toggleSubcomponentSelectMode(true);
     },
+    // WORK1
     toggleImportComponentMode(event: ToggleImportComponentModeEvent): void {
       const [isActive, workshopEventCallback] = event;
       if (isActive) {
@@ -547,6 +557,7 @@ export default {
         this.components = this.tempComponents;
         this.tempComponents = [];
         this.currentlySelectedImportComponent = null;
+        this.currentlyHoveredImportComponent = null;
       }
       this.isImportComponentModeActive = isActive;
     },

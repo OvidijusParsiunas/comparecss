@@ -1,7 +1,7 @@
 import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text } from '../../../../../../../interfaces/workshopComponent';
+import { ImportedComponentGenerator } from '../../../../utils/importedComponentGenerator/importedComponentGenerator';
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
-import ImportedComponentProperties from '../../../../utils/importComponent/importedComponentProperties';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
@@ -127,9 +127,9 @@ export const defaultAlert: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
     const importedCloseButtonName = CORE_SUBCOMPONENTS_NAMES.CLOSE;
     const subcomponents = { ...createSubcomponents(),
-      ...ImportedComponentProperties.createImportedComponents(closeButton, importedCloseButtonName, 1)};
+      ...ImportedComponentGenerator.createImportedComponents(closeButton, importedCloseButtonName, 1)};
     const subcomponentDropdownStructure = getAlertSubcomponentDropdownStructure(subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1],
-      ImportedComponentProperties.createImportedComponentStructure(subcomponents, importedCloseButtonName));
+      ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedCloseButtonName));
     return {
       type: NEW_COMPONENT_TYPES.ALERT,
       subcomponents,

@@ -143,8 +143,8 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToo
 import SubcomponentToggleOverlayUtils from './subcomponentToggleUtils/subcomponentToggleOverlayUtils';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
+import ImportComponentModeToggleUtils from './importComponent/modeUtils/importComponentModeToggle';
 import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFullPreviewModeEvent';
-import ImportComponentToggleUtils from './importComponentToggleUtils/importComponentToggleUtils';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
@@ -161,6 +161,7 @@ import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
 import BrowserType from '../../../../../services/workshop/browserType';
 import { Option } from '../../../../../interfaces/componentOptions';
+import { InSync } from './importComponent/inSync';
 import { Ref } from 'node_modules/vue/dist/vue';
 import dropdown from './dropdown/Dropdown.vue';
 import {
@@ -327,10 +328,10 @@ export default {
       });
     },
     toggleSubcomponentImport(): void {
-      ImportComponentToggleUtils.toggleSubcomponentImport(this);
+      ImportComponentModeToggleUtils.toggleSubcomponentImport(this);
     },
     toggleImportedComponentInSync(callback?: () => void): void {
-      this.temporarilyAllowOptionAnimations(ImportComponentToggleUtils.toggleSubcomponentInSync.bind(this, this.component, callback), true, true);
+      this.temporarilyAllowOptionAnimations(InSync.toggleSubcomponentInSync.bind(this, this.component, callback), true, true);
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {
       const { subcomponentDisplayStatus } = subcomponent;
@@ -448,7 +449,7 @@ export default {
     },
     isInSyncButtonDisplayed(): boolean {
       const activeSubcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
-      return ImportComponentToggleUtils.isInSyncButtonDisplayed(activeSubcomponent);
+      return InSync.isInSyncButtonDisplayed(activeSubcomponent);
     },
     reassignToolbarPositionToggleRef(): void {
       this.toolbarPositionToggleRef = this.$refs.toolbarPositionToggle;

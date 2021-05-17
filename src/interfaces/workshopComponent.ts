@@ -110,7 +110,7 @@ interface TempCustomProperties {
 export interface ImportedComponent {
   componentRef: WorkshopComponent;
   inSync: boolean;
-  lastSelectectedSubcomponentToImport?: WorkshopComponent;
+  lastSelectedComponentToImport?: WorkshopComponent;
 }
 
 export interface SubcomponentProperties {
@@ -150,8 +150,8 @@ export interface SubcomponentProperties {
   // this is used for imported subcomponents as overwriting customCss with mouseevents causes all the other in-sync references to be updated as well
   tempCustomCssObjName?: string;
   parentLayer?: Layer;
-  // appended at run-time
-  tempCustomProperties?: TempCustomProperties;
+  // temporarily holds the original customCss when a component card has been hovered/selected during component import mode 
+  tempOriginalCustomProperties?: TempCustomProperties;
 }
 
 export type Subcomponents = {

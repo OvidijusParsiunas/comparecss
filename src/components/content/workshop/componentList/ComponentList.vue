@@ -9,17 +9,19 @@
           :allComponents="components"
           :currentlySelectedComponent="currentlySelectedComponent"
           :isImportComponentModeActive="isImportComponentModeActive"
+          :currentlyHoveredImportComponent="currentlyHoveredImportComponent"
           :currentlySelectedImportComponent="currentlySelectedImportComponent"
-          @component-card-selected="componentCardSelected($event)"
-          @component-card-copied="componentCardCopied($event)"
-          @component-card-removed="componentCardRemoved($event)"
-          @stop-editing-class-name-callback="stopEditingClassName($event)"
-          @prepare-remove-component-modal="prepareRemoveComponentModal"/>
+          @component-card-selected="$emit('component-card-selected', $event)"
+          @mouse-hover-component-card="$emit('mouse-hover-component-card', $event)"
+          @component-card-copied="$emit('component-card-copied', $event)"
+          @component-card-removed="$emit('component-card-removed', $event)"
+          @stop-editing-class-name-callback="$emit('stop-editing-class-name-callback', $event)"
+          @prepare-remove-component-modal="$emit('prepare-remove-component-modal', $event)"/>
         <div v-if="!isImportComponentModeActive"
           class="transition-item component-card component-body-container add-card"
           :class="COMPONENT_LIST_ITEM_MARKER"
           data-toggle="modal" :data-target="`#${NEW_COMPONENT_MODAL_ID}`"
-          @click="prepareNewComponentModal">
+          @click="$emit('prepare-new-component-modal', $event)">
           <div class="card-body add-card-body" :class="COMPONENT_LIST_ITEM_MARKER">
             <div class="add-card-text" :class="COMPONENT_LIST_ITEM_MARKER">
               Add +
@@ -32,9 +34,7 @@
 </template>
 
 <script lang="ts">
-import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
 import { COMPONENT_LIST_ITEM_MARKER } from '../../../../consts/elementClassMarkers';
-import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { NEW_COMPONENT_MODAL_ID } from '../../../../consts/elementIds';
 import componentCard from './ComponentCard.vue';
 
@@ -57,32 +57,13 @@ export default {
   data: (): Data => ({
     listAnimationName: 'horizontal-transition',
   }),
-  methods: {
-    componentCardSelected(selectedComponentCard: WorkshopComponent): void {
-      this.$emit('component-card-selected', selectedComponentCard);
-    },
-    componentCardCopied(selectComponentCard: WorkshopComponent): void {
-      this.$emit('component-card-copied', selectComponentCard);
-    },
-    componentCardRemoved(componentCard: WorkshopComponent): void {
-      this.$emit('component-card-removed', componentCard);
-    },
-    stopEditingClassName(callback: WorkshopEventCallback): void {
-      this.$emit('stop-editing-class-name-callback', callback);
-    },
-    prepareNewComponentModal(): void {
-      this.$emit('prepare-new-component-modal');
-    },
-    prepareRemoveComponentModal(): void {
-      this.$emit('prepare-remove-component-modal');
-    }
-  },
   components: {
     componentCard,
   },
   props: {
     components: Array,
     currentlySelectedComponent: Object,
+    currentlyHoveredImportComponent: Object,
     currentlySelectedImportComponent: Object,
     isImportComponentModeActive: Boolean,
   },

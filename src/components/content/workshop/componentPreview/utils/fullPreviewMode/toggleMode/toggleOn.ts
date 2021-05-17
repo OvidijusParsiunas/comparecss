@@ -3,9 +3,9 @@ import { POINTER_EVENTS_NONE, SET_METHODS } from '../../expandedModalPreviewMode
 import ComponentPreviewUtils from '../../componentPreviewUtils';
 import { fulPreviewModeState } from '../fullPreviewModeState';
 import ToggleDisplays from './toggleModal/toggleModal';
+import ImportComponedModeToggleOff from './toggleOff';
 import GeneralUtils from './generalUtils';
 import { ComponentOptions } from 'vue';
-import ToggleOff from './toggleOff';
 
 export default class ToggleOn {
 
@@ -53,7 +53,7 @@ export default class ToggleOn {
     if (!isExpandedModalPreviewModeActive) {
       GeneralUtils.switchComponentsWithFadeOut(componentPreviewElement, temporaryComponentElement, prepareFullPreviewModeFunc);
       GeneralUtils.createWorkshopEventCallback(componentPreviewComponent,
-        ToggleOff.toggleOffCallback.bind(this, componentPreviewComponent, componentPreviewElement, temporaryComponentElement,
+        ImportComponedModeToggleOff.toggleOffCallback.bind(this, componentPreviewComponent, componentPreviewElement, temporaryComponentElement,
           toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback));
     } else {
       prepareFullPreviewModeFunc();

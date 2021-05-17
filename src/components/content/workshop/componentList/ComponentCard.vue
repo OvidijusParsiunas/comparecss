@@ -1,7 +1,9 @@
 <template>
   <div class="component-card" :class="COMPONENT_CARD_MARKER">
     <div class="component-body-container" :class="[highlightCard(), COMPONENT_CARD_MARKER]"
-      @mousedown="selectComponentCard(thisComponent)">
+      @mousedown="selectComponentCard"
+      @mouseenter="mouseHoverComponentCard(true)"
+      @mouseleave="mouseHoverComponentCard(false)">
       <div class="card-body" :class="COMPONENT_CARD_MARKER">
         <input v-if="isInputElementDisplayed" ref="componentCardClassNameEditorInput" class="card-title component-card-title"
           :class="COMPONENT_CARD_MARKER"
@@ -62,8 +64,12 @@ export default {
   }),
   methods: {
     highlightCard(): string {
-      if (this.currentlySelectedImportComponent && this.currentlySelectedImportComponent === this.thisComponent) {
-        return 'component-selected-to-import';
+      if (this.isImportComponentModeActive) {
+        if (this.currentlySelectedImportComponent === this.thisComponent) {
+          return 'component-selected-import-component-mode';
+        } else if (this.currentlyHoveredImportComponent === this.thisComponent) {
+          return 'component-hovered-import-component-mode';
+        }
       }
       if (this.thisComponent === this.currentlySelectedComponent) {
         return 'component-selected';
@@ -128,6 +134,9 @@ export default {
     selectComponentCard(): void {
       this.$emit('component-card-selected', this.thisComponent);
     },
+    mouseHoverComponentCard(isMouseEnter: boolean): void {
+      this.$emit('mouse-hover-component-card', [this.thisComponent, isMouseEnter]);
+    },
     preventBubbling(): void {
       if (this.getIsClassNameEditingInProgressState()) return;
       // remove/copy component without selecting its card
@@ -161,6 +170,7 @@ export default {
     thisComponent: Object,
     allComponents: Object,
     currentlySelectedComponent: Object,
+    currentlyHoveredImportComponent: Object,
     currentlySelectedImportComponent: Object,
     isImportComponentModeActive: Boolean,
   }
@@ -195,12 +205,18 @@ export default {
   .component-selected:hover {
     border-color: #72abf0 !important;
   }
-  .component-selected-to-import, .component-selected-to-import:hover {
+  .component-selected-import-component-mode, .component-selected-import-component-mode:hover {
     box-shadow: 0 0 1px rgb(194, 183, 87) !important;
     border-color: #fff6a3 !important;
     background-color: rgb(255, 255, 244) !important;
   }
-  .component-selected-to-import:hover {
+  /* WORK1 check */
+  .component-selected-import-component-mode:hover {
     border-color: #f0e872 !important;
   }
+  .component-hovered-import-component-mode:hover {
+    background-color: rgb(255, 255, 253) !important;
+    box-shadow: 0 0 1px rgb(212, 204, 124) !important;
+    border-color: #fff6a3 !important;
+  } 
 </style>

@@ -8,7 +8,7 @@ import { fulPreviewModeState } from '../fullPreviewModeState';
 import GeneralUtils from './generalUtils';
 import { ComponentOptions } from 'vue';
 
-export default class ToggleOff {
+export default class ImportComponedModeToggleOff {
 
   private static resetToolbarContainerPosition(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement): void {
     toolbarElement.classList.remove(TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS);
@@ -26,12 +26,12 @@ export default class ToggleOff {
       toggleFullPreviewModeOptionsCallback: () => void): void {
     if (!isExpandedModalPreviewModeActive) {
       GeneralUtils.switchComponentsWithFadeOut(componentPreviewElement,
-        temporaryComponentElement, ToggleOff.switchButtonToModal.bind(this, componentPreviewComponent));
+        temporaryComponentElement, ImportComponedModeToggleOff.switchButtonToModal.bind(this, componentPreviewComponent));
     } else {
-      ToggleOff.switchButtonToModal(componentPreviewComponent);
+      ImportComponedModeToggleOff.switchButtonToModal(componentPreviewComponent);
     }
     GeneralUtils.updateToolbarStyle(POINTER_EVENTS_NONE, toolbarContainerElement, toolbarElement,
-      isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback, ToggleOff.resetToolbarContainerPosition)
+      isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback, ImportComponedModeToggleOff.resetToolbarContainerPosition)
     fulPreviewModeState.setIsExpandedModalPreviewModeActivated(isExpandedModalPreviewModeActive);
   }
 
@@ -40,7 +40,7 @@ export default class ToggleOff {
       toggleFullPreviewModeOptionsCallback: () => void, event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
     const buttonElement = WorkshopEventCallbackUtils.getButtonElement(event.target as HTMLElement);
     if (buttonElement.classList.contains(COMPONENT_LIST_ITEM_MARKER) || buttonElement.classList.contains(COMPONENT_CARD_MARKER)) {
-      ToggleOff.start(componentPreviewComponent, componentPreviewElement, temporaryComponentElement,
+      ImportComponedModeToggleOff.start(componentPreviewComponent, componentPreviewElement, temporaryComponentElement,
         toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive,
         toggleFullPreviewModeOptionsCallback);
       return { shouldRepeat: false };

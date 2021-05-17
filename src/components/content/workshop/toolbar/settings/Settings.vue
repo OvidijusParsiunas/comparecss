@@ -165,7 +165,6 @@
 
 <script lang="ts">
 import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../../consts/unsetColotButtonDisplayed';
-import ImportComponentToggleUtils from '../options/importComponentToggleUtils/importComponentToggleUtils';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSettingsState';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
@@ -173,6 +172,7 @@ import { UseActionsDropdown } from '../../../../../interfaces/UseActionsDropdown
 import { RANGE_SETTING_MARKER } from '../../../../../consts/elementClassMarkers';
 import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
 import useActionsDropdown from './compositionAPI/useActionsDropdown';
+import { InSync } from '../options/importComponent/inSync';
 import dropdown from '../options/dropdown/Dropdown.vue';
 import ColorPickerUtils from './utils/colorPickerUtils';
 import SettingsUtils from './utils/settingsUtils';
@@ -328,7 +328,7 @@ export default {
       // this.$refs.selectSubcomponentOverlay2.style.display = 'block';
     },
     changeSetting(callback: () => void): void {
-      if (ImportComponentToggleUtils.isInSyncButtonDisplayed(this.subcomponentProperties)) {
+      if (InSync.isInSyncButtonDisplayed(this.subcomponentProperties)) {
         this.$emit('remove-insync-option-button', callback);
       } else {
         callback();
