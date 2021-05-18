@@ -20,8 +20,7 @@ export class ImportComponentModeCardEvents {
     if (currentlySelectedImportComponent) {
       ImportComponentModeTempPropertiesUtils.setActiveComponentToImportComponent(currentlySelectedImportComponent, currentlySelectedComponent);
     } else {
-      ImportComponentModeTempPropertiesUtils.resetComponent(currentlySelectedComponent);
+      ImportComponentModeTempPropertiesUtils.cleanComponent(currentlySelectedComponent, true);
     }
-    ImportComponentModeTempPropertiesUtils.removeTempCustomProperties(currentlySelectedComponent); 
   }
 }

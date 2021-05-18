@@ -18,7 +18,7 @@
             :currentlyHoveredImportComponent="currentlyHoveredImportComponent"
             :currentlySelectedImportComponent="currentlySelectedImportComponent"
             @component-card-selected="selectComponentCard($event)"
-            @mouse-hover-component-card="hoverComponentCard($event)"
+            @component-card-hovered="hoverComponentCard($event)"
             @component-card-copied="copyComponentCard($event)"
             @component-card-removed="removeComponentCard($event)"
             @stop-editing-class-name-callback="addWorkshopEventCallback($event)"
@@ -125,6 +125,7 @@ import { ComponentPreviewAssistance } from '../../../interfaces/componentPreview
 import { inheritedAlertBaseCss } from './newComponent/types/alerts/properties/inheritedCss';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../consts/layerSections';
 import { removeComponentModalState } from './componentList/state/removeComponentModalState';
+import { ComponentCardHoveredEvent } from '../../../interfaces/componentCardHoveredEvent';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../consts/coreSubcomponentNames.enum';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../consts/domEventTriggerKeys.enum';
@@ -491,9 +492,8 @@ export default {
     selectComponentCard(selectComponentCard: WorkshopComponent): void {
       ComponentManipulationUtils.selectComponent(this, selectComponentCard);
     },
-    // WORK1
-    hoverComponentCard(event: any): void {
-      const [hoveredComponent, isMouseEnter] = event;
+    hoverComponentCard(componentCardHoveredEvent: ComponentCardHoveredEvent): void {
+      const [hoveredComponent, isMouseEnter] = componentCardHoveredEvent;
       ComponentManipulationUtils.hoverComponentCard(this, hoveredComponent, isMouseEnter);
     },
     copyComponentCard(selectComponentCard: WorkshopComponent): void {

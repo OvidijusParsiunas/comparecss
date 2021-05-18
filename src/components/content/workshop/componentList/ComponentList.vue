@@ -12,7 +12,7 @@
           :currentlyHoveredImportComponent="currentlyHoveredImportComponent"
           :currentlySelectedImportComponent="currentlySelectedImportComponent"
           @component-card-selected="$emit('component-card-selected', $event)"
-          @mouse-hover-component-card="$emit('mouse-hover-component-card', $event)"
+          @component-card-hovered="$emit('component-card-hovered', $event)"
           @component-card-copied="$emit('component-card-copied', $event)"
           @component-card-removed="$emit('component-card-removed', $event)"
           @stop-editing-class-name-callback="$emit('stop-editing-class-name-callback', $event)"

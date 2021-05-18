@@ -1,5 +1,5 @@
+import { SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ImportedComponentGenerator } from '../../../../utils/importedComponentGenerator/importedComponentGenerator';
-import { Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 
 export class ImportComponentModeTempPropertiesUtils {
@@ -35,32 +35,20 @@ export class ImportComponentModeTempPropertiesUtils {
     });
   }
 
-  private static moveTempPropertiesToCustomProperties(activeComponentSubcomponents: Subcomponents, activeComponentSubcomponentName: string): void {
-    const activeSubcomponent = activeComponentSubcomponents[activeComponentSubcomponentName];
-    if (activeSubcomponent.tempOriginalCustomProperties) {
-      activeSubcomponent.customCss = activeSubcomponent.tempOriginalCustomProperties.customCss;
-      activeSubcomponent.customFeatures = activeSubcomponent.tempOriginalCustomProperties.customFeatures;
-      delete activeSubcomponent.tempOriginalCustomProperties;
-    }
+  private static resetOriginalCss(activeSubcomponent: SubcomponentProperties): void {
+    activeSubcomponent.customCss = activeSubcomponent.tempOriginalCustomProperties.customCss;
+    activeSubcomponent.customFeatures = activeSubcomponent.tempOriginalCustomProperties.customFeatures; 
   }
 
-  public static resetComponent(activeComponent: WorkshopComponent): void {
-    const activeComponentSubcomponentNames = activeComponent.subcomponents
-      [activeComponent.activeSubcomponentName].importedComponent.componentRef.subcomponentNames;
-    Object.keys(activeComponentSubcomponentNames).forEach((subcomponentName: string) => {
-      ImportComponentModeTempPropertiesUtils.moveTempPropertiesToCustomProperties(activeComponent.subcomponents, activeComponentSubcomponentNames[subcomponentName]);
-    });
-  }
-
-  public static removeTempCustomProperties(activeComponent: WorkshopComponent): void {
+  public static cleanComponent(activeComponent: WorkshopComponent, resetOriginalCss: boolean): void {
     const activeComponentSubcomponentNamesObj = activeComponent.subcomponents
       [activeComponent.activeSubcomponentName].importedComponent.componentRef.subcomponentNames;
     const activeComponentSubcomponentNamesArr = Object.keys(activeComponentSubcomponentNamesObj);
     for (let i = 0; i < activeComponentSubcomponentNamesArr.length; i += 1) {
-      // WORK1 - check if the traversal is needed
-      // if already removed through moveTempPropertiesToCustomProperties, do not traverse further
-      if (!activeComponent.subcomponents[activeComponentSubcomponentNamesObj[activeComponentSubcomponentNamesArr[i]]].tempOriginalCustomProperties) break;
-      delete activeComponent.subcomponents[activeComponentSubcomponentNamesObj[activeComponentSubcomponentNamesArr[i]]].tempOriginalCustomProperties;
+      const activeSubcomponent = activeComponent.subcomponents[activeComponentSubcomponentNamesObj[activeComponentSubcomponentNamesArr[i]]];
+      if (!activeSubcomponent.tempOriginalCustomProperties) break;
+      if (resetOriginalCss) { ImportComponentModeTempPropertiesUtils.resetOriginalCss(activeSubcomponent); }
+      delete activeSubcomponent.tempOriginalCustomProperties;
     }
   }
 

@@ -30,6 +30,7 @@
 <script lang="ts">
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
 import { CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER } from '../../../../consts/elementClassMarkers';
+import { ComponentCardHoveredEvent } from '../../../../interfaces/componentCardHoveredEvent'
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
 import { ClassNameEditState } from '../../../../interfaces/classNameEditState';
@@ -135,7 +136,7 @@ export default {
       this.$emit('component-card-selected', this.thisComponent);
     },
     mouseHoverComponentCard(isMouseEnter: boolean): void {
-      this.$emit('mouse-hover-component-card', [this.thisComponent, isMouseEnter]);
+      this.$emit('component-card-hovered', [this.thisComponent, isMouseEnter] as ComponentCardHoveredEvent);
     },
     preventBubbling(): void {
       if (this.getIsClassNameEditingInProgressState()) return;
@@ -205,14 +206,10 @@ export default {
   .component-selected:hover {
     border-color: #72abf0 !important;
   }
-  .component-selected-import-component-mode, .component-selected-import-component-mode:hover {
+  .component-selected-import-component-mode {
     box-shadow: 0 0 1px rgb(194, 183, 87) !important;
     border-color: #fff6a3 !important;
     background-color: rgb(255, 255, 244) !important;
-  }
-  /* WORK1 check */
-  .component-selected-import-component-mode:hover {
-    border-color: #f0e872 !important;
   }
   .component-hovered-import-component-mode:hover {
     background-color: rgb(255, 255, 253) !important;

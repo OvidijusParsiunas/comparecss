@@ -2,8 +2,8 @@ import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../../../compon
 import { ToggleImportComponentModeEvent } from '../../../../../../../interfaces/toggleImportComponentModeEvent';
 import { WorkshopEventCallbackReturn } from '../../../../../../../interfaces/workshopEventCallbackReturn';
 import { WorkshopEventCallbackUtils } from '../../workshopEventCallbackUtils/workshopEventCallbackUtils';
-import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../../consts/domEventTriggerKeys.enum';
 import { ImportComponentModeTempPropertiesUtils } from './importComponentModeTempPropertiesUtils';
+import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ComponentOptions } from 'vue';
 import {
@@ -24,14 +24,6 @@ export class ImportComponedModeToggleOff {
     }
   }
 
-  public static removeTemporaryProperties(optionsComponent: ComponentOptions): void {
-    const { optionsComponent: activeComponent, hasImportComponentModeClosedExpandedModal } = optionsComponent;
-    setTimeout(() => {
-      ImportComponentModeTempPropertiesUtils.removeTempCustomProperties(activeComponent);
-      ImportComponentModeTempPropertiesUtils.deleteLastSelectedSubcomponentToImport(activeComponent);
-    }, hasImportComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0)
-  }
-
   private static toggleOff(optionsComponent: ComponentOptions, toggleOptionSettings: boolean): WorkshopEventCallbackReturn {
     optionsComponent.isImportComponentModeActive = !optionsComponent.isImportComponentModeActive;
     if (!toggleOptionSettings) ImportComponedModeToggleOff.displayOptionSettings(optionsComponent);
@@ -47,7 +39,6 @@ export class ImportComponedModeToggleOff {
     } else {
       optionsComponent.$emit('toggle-import-subcomponent-mode', [false] as ToggleImportComponentModeEvent);
     }
-    ImportComponedModeToggleOff.removeTemporaryProperties(optionsComponent);
     return { shouldRepeat: false };
   }
 
@@ -62,13 +53,17 @@ export class ImportComponedModeToggleOff {
         subcomponents[activeSubcomponentName].subcomponentDisplayStatus.isDisplayed = true;
       }, optionsComponent.hasImportComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     }
+    ImportComponentModeTempPropertiesUtils.cleanComponent(optionsComponent.component, false);
+    ImportComponentModeTempPropertiesUtils.deleteLastSelectedSubcomponentToImport(optionsComponent.component);
     ImportComponedModeToggleOff.toggleOff(optionsComponent, false);
   }
 
   public static resetComponent(activeComponent: WorkshopComponent, isWaitFadeAnimation: boolean): void {
+    // timeout is used to not reset component imemdiately when the expanded modal mode has been closed by the import mode
     setTimeout(() => {
-      ImportComponentModeTempPropertiesUtils.resetComponent(activeComponent);
+      ImportComponentModeTempPropertiesUtils.cleanComponent(activeComponent, true);
     }, isWaitFadeAnimation ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
+    ImportComponentModeTempPropertiesUtils.deleteLastSelectedSubcomponentToImport(activeComponent);
   }
 
   public static toggleImportComponentModeOff(optionsComponent: ComponentOptions, event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
@@ -85,8 +80,6 @@ export class ImportComponedModeToggleOff {
     const buttonElement = WorkshopEventCallbackUtils.getButtonElement(event.target as HTMLElement);
     if (buttonElement === optionsComponent.$refs.importComponentToggle) {
       ImportComponedModeToggleOff.resetComponent(optionsComponent.component, optionsComponent.hasImportComponentModeClosedExpandedModal);
-      // WORK1 - can use this for all
-      ImportComponedModeToggleOff.removeTemporaryProperties(optionsComponent);
       return { shouldRepeat: false };
     }
     if (buttonElement.classList.contains(CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER)) {
