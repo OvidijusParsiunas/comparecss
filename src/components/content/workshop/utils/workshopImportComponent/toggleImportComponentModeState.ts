@@ -5,28 +5,28 @@ import { ComponentOptions } from 'vue';
 
 export class ToggleImportComponentModeState {
 
-  private static toggleOff(workshopComonent: ComponentOptions & { components: WorkshopComponent[] }): void {
-    workshopComonent.components = workshopComonent.tempComponents;
-    workshopComonent.tempComponents = [];
-    workshopComonent.currentlySelectedImportComponent = null;
-    workshopComonent.currentlyHoveredImportComponent = null;
+  private static toggleOff(workshopComponent: ComponentOptions & { components: WorkshopComponent[] }): void {
+    workshopComponent.components = workshopComponent.tempComponents;
+    workshopComponent.tempComponents = [];
+    workshopComponent.currentlySelectedImportComponent = null;
+    workshopComponent.currentlyHoveredImportComponent = null;
   }
 
-  private static toggleOn(workshopComonent: ComponentOptions & { components: WorkshopComponent[] }, workshopEventCallback: WorkshopEventCallback): void {
-    workshopComonent.tempComponents = workshopComonent.components;
-    const componentType = workshopComonent.currentlySelectedComponent.subcomponents[workshopComonent.currentlySelectedComponent.activeSubcomponentName]
+  private static toggleOn(workshopComponent: ComponentOptions & { components: WorkshopComponent[] }, workshopEventCallback: WorkshopEventCallback): void {
+    workshopComponent.tempComponents = workshopComponent.components;
+    const componentType = workshopComponent.currentlySelectedComponent.subcomponents[workshopComponent.currentlySelectedComponent.activeSubcomponentName]
       .importedComponent.componentRef.type;
-    (workshopComonent.components as WorkshopComponent[]) = workshopComonent.components.filter((component: WorkshopComponent) => component.type === componentType);
-    workshopComonent.addWorkshopEventCallback(workshopEventCallback);
+    (workshopComponent.components as WorkshopComponent[]) = workshopComponent.components.filter((component: WorkshopComponent) => component.type === componentType);
+    workshopComponent.addWorkshopEventCallback(workshopEventCallback);
   }
   
-  public static toggle(workshopComonent: ComponentOptions & { components: WorkshopComponent[] }, toggleImportComponentModeEvent: ToggleImportComponentModeEvent): void {
+  public static toggle(workshopComponent: ComponentOptions & { components: WorkshopComponent[] }, toggleImportComponentModeEvent: ToggleImportComponentModeEvent): void {
     const [isActive, workshopEventCallback] = toggleImportComponentModeEvent;
     if (isActive) {
-      ToggleImportComponentModeState.toggleOn(workshopComonent, workshopEventCallback);
+      ToggleImportComponentModeState.toggleOn(workshopComponent, workshopEventCallback);
     } else {
-      ToggleImportComponentModeState.toggleOff(workshopComonent);
+      ToggleImportComponentModeState.toggleOff(workshopComponent);
     }
-    workshopComonent.isImportComponentModeActive = isActive;
+    workshopComponent.isImportComponentModeActive = isActive;
   }
 }

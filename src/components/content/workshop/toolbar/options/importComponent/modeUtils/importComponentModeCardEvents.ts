@@ -11,6 +11,9 @@ export class ImportComponentModeCardEvents {
   }
 
   public static mouseEnter(workshopComponent: ComponentOptions, componentToBeImported: WorkshopComponent): void {
+    // the condition is a bug fix as when the import component mode is toggled on, during the component list animation the user can hover over a modal card
+    if (workshopComponent.currentlySelectedComponent.subcomponents[workshopComponent.currentlySelectedComponent.activeSubcomponentName]
+      .importedComponent.componentRef.type !== componentToBeImported.type) return;
     ImportComponentModeTempPropertiesUtils.setActiveComponentToImportComponent(componentToBeImported, workshopComponent.currentlySelectedComponent);
     workshopComponent.currentlyHoveredImportComponent = componentToBeImported;
   }

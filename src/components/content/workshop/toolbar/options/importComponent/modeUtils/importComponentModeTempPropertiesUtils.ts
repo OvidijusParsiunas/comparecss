@@ -28,7 +28,7 @@ export class ImportComponentModeTempPropertiesUtils {
 
   public static setActiveComponentToImportComponent(componentToBeImported: WorkshopComponent, activeComponent: WorkshopComponent): void {
     const componentToBeImportedComponentNames = componentToBeImported.subcomponentNames;
-    const activeComponentSubcomponentNames = activeComponent.subcomponents [activeComponent.activeSubcomponentName].importedComponent.componentRef.subcomponentNames;
+    const activeComponentSubcomponentNames = activeComponent.subcomponents[activeComponent.activeSubcomponentName].importedComponent.componentRef.subcomponentNames;
     Object.keys(activeComponentSubcomponentNames).forEach((subcomponentName: string) => {
       ImportComponentModeTempPropertiesUtils.copyTargetSubcomponent(componentToBeImported.subcomponents, componentToBeImportedComponentNames[subcomponentName],
         activeComponent.subcomponents, activeComponentSubcomponentNames[subcomponentName]);
