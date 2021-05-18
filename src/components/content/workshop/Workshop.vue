@@ -110,11 +110,12 @@ import getModalSubcomponentDropdownStructure from './newComponent/types/modals/p
 import { MODAL_ANIMATION_ENTRANCE_TYPES, MODAL_ANIMATION_EXIT_TYPES } from '../../../consts/modalAnimationTypes.enum';
 import SubcomponentToggleOverlayUtils from './toolbar/options/subcomponentToggleUtils/subcomponentToggleOverlayUtils';
 import { modalLayerTopSpecificSettings } from './newComponent/types/modals/properties/modalLayerTopSpecificSettings';
+import { ToggleImportComponentModeState } from './utils/workshopImportComponent/toggleImportComponentModeState';
 import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
 import { modalBaseSpecificSettings } from './newComponent/types/modals/properties/modalBaseSpecificSettings';
 import { modalTextSpecificSettings } from './newComponent/types/modals/properties/modalTextSpecificSettings'
-import { ImportedComponentGenerator } from './utils/importedComponentGenerator/importedComponentGenerator';
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
+import { ImportedComponentGenerator } from './utils/workshopImportComponent/importedComponentGenerator';
 import ComponentManipulationUtils from './utils/componentManipulationUtils/componentManipulationUtils';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { ToggleImportComponentModeEvent } from '../../../interfaces/toggleImportComponentModeEvent';
@@ -544,22 +545,8 @@ export default {
       this.addWorkshopEventCallback(workshopEventCallback); 
       this.$refs.contents.toggleSubcomponentSelectMode(true);
     },
-    // WORK1
     toggleImportComponentMode(event: ToggleImportComponentModeEvent): void {
-      const [isActive, workshopEventCallback] = event;
-      if (isActive) {
-        this.tempComponents = this.components;
-        const componentType = this.currentlySelectedComponent.subcomponents[this.currentlySelectedComponent.activeSubcomponentName]
-          .importedComponent.componentRef.type;
-        this.components = this.components.filter((component: WorkshopComponent) => component.type === componentType);
-        this.addWorkshopEventCallback(workshopEventCallback);
-      } else {
-        this.components = this.tempComponents;
-        this.tempComponents = [];
-        this.currentlySelectedImportComponent = null;
-        this.currentlyHoveredImportComponent = null;
-      }
-      this.isImportComponentModeActive = isActive;
+      ToggleImportComponentModeState.toggle(this, event);
     },
     isExpandedModalPreviewBackdropVisible(): boolean {
       return this.currentlySelectedComponent && this.currentlySelectedComponent.subcomponents[this.BASE_SUB_COMPONENT].customFeatures
