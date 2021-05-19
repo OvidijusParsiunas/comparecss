@@ -24,7 +24,7 @@ export default class SubcomponentToggleOverlayUtils {
   public static displaySubcomponentOverlay(component: WorkshopComponent): void {
     const { subcomponentDisplayStatus } = component.subcomponents[component.activeSubcomponentName];
     if (!subcomponentDisplayStatus.isDisplayed) {
-      subcomponentDisplayStatus.displayOverlayOnly = true;
+      subcomponentDisplayStatus.isDisplayedTemporarily = true;
       setTimeout(() => {
         SubcomponentToggleOverlayUtils.displaySubcomponentOverlayBySelectModeStatus(component.activeSubcomponentName, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
       });
@@ -35,14 +35,14 @@ export default class SubcomponentToggleOverlayUtils {
 
   public static hideSubcomponentOverlay(component: WorkshopComponent): void {
     const { subcomponentDisplayStatus } = component.subcomponents[component.activeSubcomponentName];
-    subcomponentDisplayStatus.displayOverlayOnly = false;
+    subcomponentDisplayStatus.isDisplayedTemporarily = false;
     SubcomponentToggleOverlayUtils.hideSubcomponentOverlayBySelectModeStatus(component.activeSubcomponentName,
       subcomponentDisplayStatus.isDisplayed ? SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE : SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
   }
 
   public static changeSubcomponentOverlayClass(subcomponentDisplayStatus: SubcomponentDisplayStatus, activeSubcomponentName: string, displayOverlayOnlyState: boolean,
       classToBeReplaced: SUBCOMPONENT_OVERLAY_CLASSES, newClass: SUBCOMPONENT_OVERLAY_CLASSES): void {
-    subcomponentDisplayStatus.displayOverlayOnly = displayOverlayOnlyState;
+    subcomponentDisplayStatus.isDisplayedTemporarily = displayOverlayOnlyState;
     const subcomponentOverlayElement = SubcomponentToggleOverlayUtils.getActiveSubcomponentOverlayElement(activeSubcomponentName);
     subcomponentOverlayElement.classList.replace(classToBeReplaced, newClass);
     setTimeout(() => { subcomponentOverlayElement.style.display = 'block'; });

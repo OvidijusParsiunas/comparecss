@@ -35,20 +35,23 @@ export class ImportComponentModeTempPropertiesUtils {
     });
   }
 
-  private static resetOriginalCss(activeSubcomponent: SubcomponentProperties): void {
-    activeSubcomponent.customCss = activeSubcomponent.tempOriginalCustomProperties.customCss;
-    activeSubcomponent.customFeatures = activeSubcomponent.tempOriginalCustomProperties.customFeatures; 
+  private static resetOriginalCss(subcomponentProperties: SubcomponentProperties): void {
+    subcomponentProperties.customCss = subcomponentProperties.tempOriginalCustomProperties.customCss;
+    subcomponentProperties.customFeatures = subcomponentProperties.tempOriginalCustomProperties.customFeatures; 
   }
 
-  public static cleanComponent(activeComponent: WorkshopComponent, resetOriginalCss: boolean): void {
+  public static cleanComponent(activeComponent: WorkshopComponent, resetOriginalProperties: boolean): void {
     const activeComponentSubcomponentNamesObj = activeComponent.subcomponents
       [activeComponent.activeSubcomponentName].importedComponent.componentRef.subcomponentNames;
     const activeComponentSubcomponentNamesArr = Object.keys(activeComponentSubcomponentNamesObj);
     for (let i = 0; i < activeComponentSubcomponentNamesArr.length; i += 1) {
       const activeSubcomponent = activeComponent.subcomponents[activeComponentSubcomponentNamesObj[activeComponentSubcomponentNamesArr[i]]];
       if (!activeSubcomponent.tempOriginalCustomProperties) break;
-      if (resetOriginalCss) { ImportComponentModeTempPropertiesUtils.resetOriginalCss(activeSubcomponent); }
+      if (resetOriginalProperties) { ImportComponentModeTempPropertiesUtils.resetOriginalCss(activeSubcomponent); }
       delete activeSubcomponent.tempOriginalCustomProperties;
+    }
+    if (resetOriginalProperties) {
+      ImportComponentModeTempPropertiesUtils.displayImportedComponentIfCurrentRemoved(activeComponent);
     }
   }
 
@@ -59,5 +62,19 @@ export class ImportComponentModeTempPropertiesUtils {
 
   public static deleteLastSelectedSubcomponentToImport(activeComponent: WorkshopComponent): void {
     delete activeComponent.subcomponents[activeComponent.activeSubcomponentName].importedComponent.lastSelectedComponentToImport;
+  }
+
+  public static displayImportedComponentIfCurrentRemoved(activeSubcomponent: WorkshopComponent): void {
+    const { subcomponentDisplayStatus } = activeSubcomponent.subcomponents[activeSubcomponent.activeSubcomponentName]
+      .importedComponent.componentRef.componentPreviewStructure.baseSubcomponentProperties;
+    if (!subcomponentDisplayStatus.isDisplayed) { subcomponentDisplayStatus.isDisplayedTemporarily = true; }
+  }
+
+  public static removeImportedComponentIfCurrentRemoved(activeSubcomponent: WorkshopComponent): void {
+    const { subcomponentDisplayStatus } = activeSubcomponent.subcomponents[activeSubcomponent.activeSubcomponentName]
+      .importedComponent.componentRef.componentPreviewStructure.baseSubcomponentProperties;
+    if (!subcomponentDisplayStatus.isDisplayed && subcomponentDisplayStatus.isDisplayedTemporarily) {
+      subcomponentDisplayStatus.isDisplayedTemporarily = false;
+    }
   }
 }

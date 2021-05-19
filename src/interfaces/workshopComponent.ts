@@ -31,11 +31,11 @@ export type CustomCss = {
   [key in CSS_PSEUDO_CLASSES]?: WorkshopComponentCss;
 }
 
-interface OverlayDisplayStatus {
-  displayOverlayOnly?: boolean;
+interface TemporaryDisplayStatus {
+  isDisplayedTemporarily?: boolean;
 }
 
-export type SubcomponentDisplayStatus = EntityDisplayStatus & OverlayDisplayStatus;
+export type SubcomponentDisplayStatus = EntityDisplayStatus & TemporaryDisplayStatus;
 
 export type SubcomponentSpecificSettings = {
   [key in WORKSHOP_TOOLBAR_OPTION_TYPES]?: {

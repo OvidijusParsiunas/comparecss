@@ -39,7 +39,7 @@
               nestedSubcomponent.subcomponentProperties[nestedSubcomponent.subcomponentProperties.tempCustomCssObjName || 'customCss'][CSS_PSEUDO_CLASSES.DEFAULT],
               nestedSubcomponent.subcomponentProperties[nestedSubcomponent.subcomponentProperties.tempCustomCssObjName || 'customCss'][nestedSubcomponent.subcomponentProperties.activeCssPseudoClass],
             ]"
-        >{{(!nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus || !nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus.displayOverlayOnly)
+        >{{(!nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus || !nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus.isDisplayedTemporarily)
             && (nestedSubcomponent.subcomponentProperties.customFeatures && nestedSubcomponent.subcomponentProperties.customFeatures.subcomponentText.text)
               ? nestedSubcomponent.subcomponentProperties.customFeatures.subcomponentText.text : '' }}
       </component>
