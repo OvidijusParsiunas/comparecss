@@ -7,8 +7,8 @@ import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../../consts/domEventTrig
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ComponentOptions } from 'vue';
 import {
-  OPTION_MENU_BUTTON_MARKER, OPTION_MENU_SETTING_OPTION_BUTTON_MARKER, FULL_PREVIEW_MODE_BUTTON_MARKER,
-  CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER,
+  OPTION_MENU_BUTTON_MARKER, OPTION_MENU_SETTING_OPTION_BUTTON_MARKER, COMPONENT_PREVIEW_MARKER, COMPONENT_CARD_MARKER,
+  CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, FULL_PREVIEW_MODE_BUTTON_MARKER,
 } from '../../../../../../../consts/elementClassMarkers';
 
 export class ImportComponedModeToggleOff {
@@ -66,7 +66,7 @@ export class ImportComponedModeToggleOff {
     ImportComponentModeTempPropertiesUtils.deleteLastSelectedSubcomponentToImport(activeComponent);
   }
 
-  public static toggleImportComponentModeOff(optionsComponent: ComponentOptions, event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
+  public static toggleImportComponentModeOff(workshopComponent: ComponentOptions, optionsComponent: ComponentOptions, event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
     if (event instanceof KeyboardEvent) {
       if (event.key === DOM_EVENT_TRIGGER_KEYS.ESCAPE) {
         ImportComponedModeToggleOff.resetComponent(optionsComponent.component, optionsComponent.hasImportComponentModeClosedExpandedModal);
@@ -77,31 +77,37 @@ export class ImportComponedModeToggleOff {
       }
       return { shouldRepeat: true };
     }
-    const buttonElement = WorkshopEventCallbackUtils.getButtonElement(event.target as HTMLElement);
-    if (buttonElement === optionsComponent.$refs.importComponentToggle) {
+    const targetElement = WorkshopEventCallbackUtils.getParentElementIfSvg(event.target as HTMLElement);
+    if (targetElement === optionsComponent.$refs.importComponentToggle) {
       ImportComponedModeToggleOff.resetComponent(optionsComponent.component, optionsComponent.hasImportComponentModeClosedExpandedModal);
       return { shouldRepeat: false };
     }
-    if (buttonElement.classList.contains(CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER)) {
+    if (targetElement.classList.contains(CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER)) {
       optionsComponent.temporarilyAllowOptionAnimations(ImportComponedModeToggleOff.setImportedComponentProperties.bind(this, optionsComponent), true, true);
       return { shouldRepeat: false };
     } 
-    if (buttonElement.classList.contains(EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER)) {
+    if (targetElement.classList.contains(EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER)) {
       optionsComponent.hasImportComponentModeClosedExpandedModal = false;
       ImportComponedModeToggleOff.resetComponent(optionsComponent.component, true);
       ImportComponedModeToggleOff.displayOptionSettings(optionsComponent, true);
       return ImportComponedModeToggleOff.toggleOff(optionsComponent, true);
     }
-    if (buttonElement.classList.contains(OPTION_MENU_SETTING_OPTION_BUTTON_MARKER)
-        || buttonElement.classList.contains(FULL_PREVIEW_MODE_BUTTON_MARKER)) {
+    if (targetElement.classList.contains(OPTION_MENU_SETTING_OPTION_BUTTON_MARKER)
+        || targetElement.classList.contains(FULL_PREVIEW_MODE_BUTTON_MARKER)) {
       ImportComponedModeToggleOff.resetComponent(optionsComponent.component, optionsComponent.hasImportComponentModeClosedExpandedModal);
       return ImportComponedModeToggleOff.toggleOff(optionsComponent, true);
     }
-    if (buttonElement.classList.contains(OPTION_MENU_BUTTON_MARKER)
-        || buttonElement.classList.contains(optionsComponent.SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)
-        || buttonElement.classList.contains(optionsComponent.CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)) {
+    if (targetElement.classList.contains(OPTION_MENU_BUTTON_MARKER)
+        || targetElement.classList.contains(optionsComponent.SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)
+        || targetElement.classList.contains(optionsComponent.CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)) {
       ImportComponedModeToggleOff.resetComponent(optionsComponent.component, optionsComponent.hasImportComponentModeClosedExpandedModal);
       return ImportComponedModeToggleOff.toggleOff(optionsComponent, false);
+    }
+    // if a component card has been selected and the user clicks on the background - reset
+    if (!targetElement.classList.contains(COMPONENT_CARD_MARKER) && !targetElement.classList.contains(COMPONENT_PREVIEW_MARKER)
+        && workshopComponent.currentlySelectedImportComponent) {
+      ImportComponentModeTempPropertiesUtils.cleanComponent(optionsComponent.component, true);
+      workshopComponent.currentlySelectedImportComponent = null;
     }
     return { shouldRepeat: true };
   }

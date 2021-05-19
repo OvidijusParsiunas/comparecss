@@ -38,7 +38,7 @@ export default class ImportComponedModeToggleOff {
   public static toggleOffCallback(componentPreviewComponent: ComponentOptions, componentPreviewElement: HTMLElement, temporaryComponentElement: HTMLElement,
       toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean,
       toggleFullPreviewModeOptionsCallback: () => void, event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
-    const buttonElement = WorkshopEventCallbackUtils.getButtonElement(event.target as HTMLElement);
+    const buttonElement = WorkshopEventCallbackUtils.getParentElementIfSvg(event.target as HTMLElement);
     if (buttonElement.classList.contains(COMPONENT_LIST_ITEM_MARKER) || buttonElement.classList.contains(COMPONENT_CARD_MARKER)) {
       ImportComponedModeToggleOff.start(componentPreviewComponent, componentPreviewElement, temporaryComponentElement,
         toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive,

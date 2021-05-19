@@ -82,7 +82,7 @@ export default class ToggleModal {
       }
       return { shouldRepeat: true };
     }
-    const buttonElement = WorkshopEventCallbackUtils.getButtonElement(event.target as HTMLElement);
+    const buttonElement = WorkshopEventCallbackUtils.getParentElementIfSvg(event.target as HTMLElement);
     // cannot use the JAVASCRIPT_CLASSES.CLOSE_MODAL on the backdrop because the user can't click on the actual backdrop element in the full preview
     // mode and the componentPreviewContainer element has classes that are being manually switched which get reset when class: is used
     if ((buttonElement.classList.contains(COMPONENT_PREVIEW_CLASSES.EXPANDED_MODAL_MODE_ACTIVE)

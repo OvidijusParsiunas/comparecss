@@ -17,7 +17,7 @@
           <a class="btn btn-warning" :class="COMPONENT_CARD_MARKER" @mousedown="preventBubbling" @mouseup="copyComponentCard">Copy</a>
           <a class="btn btn-danger component-card-remove" :class="COMPONENT_CARD_MARKER" data-toggle="modal" :data-target="removeComponentModalId" @mousedown="preventBubbling" @mouseup="removeComponentCard">Remove</a>
         </div>
-        <div v-else>
+        <div v-else :class="COMPONENT_CARD_MARKER">
           <a class="btn btn-success" :class="CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER">
             <font-awesome-icon class="import-icon" icon="check"/>
           </a>

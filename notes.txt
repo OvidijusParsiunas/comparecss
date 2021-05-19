@@ -15,7 +15,6 @@ when a subcomponent is removed and import preview clicked - should display a pre
 highlight play
 change import component on card hover
 the second button becomes blurry when the one beside it is clicked
-fix the issue of hovering over the component cards when the animation is in progress
 
 modals with gifs in them - https://icepanel.io/?human=architect
 close button may need to be a badge
