@@ -70,8 +70,8 @@
             type="button" class="btn-group-option option-action-button button-group-secondary-predominant-component" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
             :class="[component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add',
               {'transition-item': isSubcomponentButtonsTransitionAllowed}, TOGGLE_SUBCOMPONENT_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
-            @mouseenter="subcomponentMouseEnterHandler"
-            @mouseleave="subcomponentMouseLeaveHandler"
+            @mouseenter="mouseEnterSubcomponentToggle"
+            @mouseleave="mouseLeaveSubcomponentToggle"
             @keydown.enter.prevent="$event.preventDefault()"
             @click="buttonClickMiddleware(toggleSubcomponent.bind(this, component.subcomponents[component.activeSubcomponentName]), 
               component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed && !getIsDoNotShowModalAgainState())">
@@ -363,13 +363,13 @@ export default {
         SubcomponentToggleUtils.removeSubcomponent(this.component, this.hideSettings);
       }
     },
-    subcomponentMouseEnterHandler(): void {
+    mouseEnterSubcomponentToggle(): void {
       if (this.isRemovedComponentCurrentlySelectedForImport()) {
         ImportComponentModeTempPropertiesUtils.switchTempPropertiesWithTheLastSelectedSubcomponent(this.component);
       }
       SubcomponentToggleOverlayUtils.displaySubcomponentOverlay(this.component);
     },
-    subcomponentMouseLeaveHandler(): void {
+    mouseLeaveSubcomponentToggle(): void {
       if (this.currentRemoveSubcomponentModalTargetId === this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID) return;
       if (this.isRemovedComponentCurrentlySelectedForImport()) {
         // overlay is set to 'display: none' by default in the base component style="display: none"
