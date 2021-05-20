@@ -1,7 +1,6 @@
 import { expandedModalPreviewModeState } from '../../../componentPreview/utils/expandedModalPreviewMode/expandedModalPreviewModeState';
 import { UseToolbarPositionToggle } from '../../../../../../interfaces/useToolbarPositionToggle';
 import { TOOLBAR_POSITION_TOGGLE_HOVER_CLASS } from '../../../../../../consts/toolbarClasses';
-import { ComponentOptions } from 'vue';
 
 export default function useToolbarPositionToggle(): UseToolbarPositionToggle {
 
@@ -19,9 +18,9 @@ export default function useToolbarPositionToggle(): UseToolbarPositionToggle {
     }
   }
 
-  const toolbarPositionToggleMouseClick = (optionsComponent: ComponentOptions): void => {
+  const toolbarPositionToggleMouseClick = function() {
     if (!expandedModalPreviewModeState.getIsToolbarFadeAnimationInProgressState()) {
-      optionsComponent.$emit('toggle-toolbar-position');
+      this.$emit('toggle-toolbar-position');
     }
   }
   
