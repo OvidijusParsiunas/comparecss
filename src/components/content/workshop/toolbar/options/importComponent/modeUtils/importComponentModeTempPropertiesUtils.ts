@@ -51,7 +51,7 @@ export class ImportComponentModeTempPropertiesUtils {
       delete activeSubcomponent.tempOriginalCustomProperties;
     }
     if (resetOriginalProperties) {
-      ImportComponentModeTempPropertiesUtils.displayImportedComponentIfCurrentRemoved(activeComponent);
+      ImportComponentModeTempPropertiesUtils.removeImportedComponentIfCurrentRemoved(activeComponent);
     }
   }
 
@@ -75,6 +75,33 @@ export class ImportComponentModeTempPropertiesUtils {
       .importedComponent.componentRef.componentPreviewStructure.baseSubcomponentProperties;
     if (!subcomponentDisplayStatus.isDisplayed && subcomponentDisplayStatus.isDisplayedTemporarily) {
       subcomponentDisplayStatus.isDisplayedTemporarily = false;
+    }
+  }
+
+  public static switchTempPropertiesWithTheLastSelectedSubcomponent(activeComponent: WorkshopComponent): void {
+    const activeComponentSubcomponentNamesObj = activeComponent.subcomponents
+      [activeComponent.activeSubcomponentName].importedComponent.componentRef.subcomponentNames;
+    const activeComponentSubcomponentNamesArr = Object.keys(activeComponentSubcomponentNamesObj);
+    for (let i = 0; i < activeComponentSubcomponentNamesArr.length; i += 1) {
+      const activeSubcomponent = activeComponent.subcomponents[activeComponentSubcomponentNamesObj[activeComponentSubcomponentNamesArr[i]]];
+      if (!activeSubcomponent.tempOriginalCustomProperties) break;
+      const tempCustomCss = activeSubcomponent.customCss;
+      const tempCustomfeatures = activeSubcomponent.customFeatures;
+      activeSubcomponent.customCss = activeSubcomponent.tempOriginalCustomProperties.customCss;
+      activeSubcomponent.customFeatures = activeSubcomponent.tempOriginalCustomProperties.customFeatures;
+      activeSubcomponent.tempOriginalCustomProperties.customCss = tempCustomCss;
+      activeSubcomponent.tempOriginalCustomProperties.customFeatures = tempCustomfeatures;
+    }
+  }
+
+  public static removeTempProperties(activeComponent: WorkshopComponent): void {
+    const activeComponentSubcomponentNamesObj = activeComponent.subcomponents
+      [activeComponent.activeSubcomponentName].importedComponent.componentRef.subcomponentNames;
+    const activeComponentSubcomponentNamesArr = Object.keys(activeComponentSubcomponentNamesObj);
+    for (let i = 0; i < activeComponentSubcomponentNamesArr.length; i += 1) {
+      const activeSubcomponent = activeComponent.subcomponents[activeComponentSubcomponentNamesObj[activeComponentSubcomponentNamesArr[i]]];
+      if (!activeSubcomponent.tempOriginalCustomProperties) break;
+      delete activeSubcomponent.tempOriginalCustomProperties;
     }
   }
 }

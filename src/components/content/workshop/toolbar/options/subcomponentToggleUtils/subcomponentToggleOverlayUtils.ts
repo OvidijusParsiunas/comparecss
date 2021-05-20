@@ -44,7 +44,10 @@ export default class SubcomponentToggleOverlayUtils {
       classToBeReplaced: SUBCOMPONENT_OVERLAY_CLASSES, newClass: SUBCOMPONENT_OVERLAY_CLASSES): void {
     subcomponentDisplayStatus.isDisplayedTemporarily = displayOverlayOnlyState;
     const subcomponentOverlayElement = SubcomponentToggleOverlayUtils.getActiveSubcomponentOverlayElement(activeSubcomponentName);
-    subcomponentOverlayElement.classList.replace(classToBeReplaced, newClass);
-    setTimeout(() => { subcomponentOverlayElement.style.display = 'block'; });
+    // will return null when the import component mode is on and the user clicks the add button
+    if (subcomponentOverlayElement) {
+      subcomponentOverlayElement.classList.replace(classToBeReplaced, newClass);
+      setTimeout(() => { subcomponentOverlayElement.style.display = 'block'; });
+    }
   }
 }

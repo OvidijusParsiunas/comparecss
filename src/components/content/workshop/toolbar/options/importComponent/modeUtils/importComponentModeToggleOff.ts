@@ -8,7 +8,7 @@ import { WorkshopComponent } from '../../../../../../../interfaces/workshopCompo
 import { ComponentOptions } from 'vue';
 import {
   OPTION_MENU_BUTTON_MARKER, OPTION_MENU_SETTING_OPTION_BUTTON_MARKER, COMPONENT_PREVIEW_MARKER, COMPONENT_CARD_MARKER,
-  CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, FULL_PREVIEW_MODE_BUTTON_MARKER,
+  CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, FULL_PREVIEW_MODE_BUTTON_MARKER, TOGGLE_SUBCOMPONENT_BUTTON_MARKER,
 } from '../../../../../../../consts/elementClassMarkers';
 
 export class ImportComponedModeToggleOff {
@@ -96,6 +96,14 @@ export class ImportComponedModeToggleOff {
         || targetElement.classList.contains(FULL_PREVIEW_MODE_BUTTON_MARKER)) {
       ImportComponedModeToggleOff.resetComponent(optionsComponent.component, optionsComponent.hasImportComponentModeClosedExpandedModal);
       return ImportComponedModeToggleOff.toggleOff(optionsComponent, true);
+    }
+    if (targetElement.classList.contains(TOGGLE_SUBCOMPONENT_BUTTON_MARKER)) {
+      const { subcomponents, activeSubcomponentName } = optionsComponent.component;
+      if (workshopComponent.currentlySelectedImportComponent && subcomponents[activeSubcomponentName].subcomponentDisplayStatus.isDisplayedTemporarily) {
+        ImportComponentModeTempPropertiesUtils.removeTempProperties(optionsComponent.component);
+      }
+      ImportComponedModeToggleOff.resetComponent(optionsComponent.component, optionsComponent.hasImportComponentModeClosedExpandedModal);
+      return ImportComponedModeToggleOff.toggleOff(optionsComponent, false);
     }
     if (targetElement.classList.contains(OPTION_MENU_BUTTON_MARKER)
         || targetElement.classList.contains(optionsComponent.SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)
