@@ -1,5 +1,5 @@
 <template>
-  <div class="layer-sections-container" :class="COMPONENT_PREVIEW_MARKER">
+  <div class="layer-sections-container" :class="[...classes, COMPONENT_PREVIEW_MARKER]">
     <!-- center -->
     <layer-section v-if="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS] && sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.CENTER]"
       class="center-section"
@@ -8,7 +8,7 @@
       :nestedSubcomponents="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.CENTER]"
       :mouseEvents="mouseEvents"
       :specialisedSectionContainerClass="SPECIALISED_SECTION_CONTAINER_CLASSES.CENTER_SECTION"/>
-    <div class="default-sections-container" :class="[SUBCOMPONENT_CURSOR_AUTO_CLASS, COMPONENT_PREVIEW_MARKER]">
+    <div class="default-sections-container" :class="[...classes, COMPONENT_PREVIEW_MARKER]">
       <!-- left -->
       <layer-section v-if="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS] && sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.LEFT]"
         style="order: 0"
@@ -69,6 +69,7 @@ export default {
     subcomponentAndOverlayElementIds: Object,
     sections: Object,
     mouseEvents: Object,
+    classes: Array,
   },
 }
 </script>

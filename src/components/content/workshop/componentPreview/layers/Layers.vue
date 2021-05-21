@@ -13,6 +13,7 @@
           <layer-sections
             v-if="layer.sections"
             :class="COMPONENT_PREVIEW_MARKER"
+            :classes="classes"
             :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
             :sections="layer.sections"
             :mouseEvents="mouseEvents"/>
@@ -56,6 +57,7 @@ export default {
     subcomponentAndOverlayElementIds: Object,
     mouseEvents: Object,
     layers: Object,
+    classes: Array,
   }
 }
 </script>

@@ -25,6 +25,7 @@
             component.componentPreviewStructure.baseSubcomponentProperties[component.componentPreviewStructure.baseSubcomponentProperties.tempCustomCssObjName || 'customCss'][component.componentPreviewStructure.baseSubcomponentProperties.activeCssPseudoClass],
           ]">
           <layers
+            :classes="[...((component.componentPreviewStructure.baseSubcomponentProperties.customFeatures && component.componentPreviewStructure.baseSubcomponentProperties.customFeatures.jsClasses) || [])]"
             :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
             :mouseEvents="mouseEvents"
             :layers="component.componentPreviewStructure.layers"
