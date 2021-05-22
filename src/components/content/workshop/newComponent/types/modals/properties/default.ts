@@ -132,7 +132,6 @@ function createDefaultLayer1Css(): CustomCss {
       borderBottomColor: '#e9ecef',
       backgroundColor: 'inherit',
       boxShadow: 'unset',
-      zIndex: 1,
     },
   };
 }

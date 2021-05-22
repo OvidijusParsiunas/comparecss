@@ -12,7 +12,6 @@ clicking enter/escape when using the overlay dropdown does not remove the overla
 display second range value with 2 decimal points
 names for button and modal buttons
 highlight play
-the second button becomes blurry when the one beside it is clicked
 
 modals with gifs in them - https://icepanel.io/?human=architect
 close button may need to be a badge

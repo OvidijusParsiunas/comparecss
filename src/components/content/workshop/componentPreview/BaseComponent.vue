@@ -3,7 +3,6 @@
     <div ref="componentPreview"
       v-if="isSubcomponentDisplayed(component.componentPreviewStructure.baseSubcomponentProperties)"
       :id="subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId"
-      class="parent-component"
       :class="[ COMPONENT_PREVIEW_MARKER, SUBCOMPONENT_CURSOR_AUTO_CLASS,
         ...((component.componentPreviewStructure.baseSubcomponentProperties.customFeatures && component.componentPreviewStructure.baseSubcomponentProperties.customFeatures.jsClasses) || []),
         (isImportedComponent ? 'imported-component' : STATIC_POSITION_CLASS) ]"
@@ -95,9 +94,6 @@ export default {
   .imported-component {
     position: relative;
     transform: translateY(-50%);
-  }
-  .parent-component {
-    overflow: hidden;
   }
 </style>
 <style lang="css">

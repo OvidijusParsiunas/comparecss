@@ -29,7 +29,7 @@
             <div id="margin-assistance-left" v-if="componentPreviewAssistance.margin" class="margin-marker grid-item-position"></div>
           </transition>
         </div>
-        <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="grid-item grid-item-position">
+        <div :style="componentPreviewAssistance.margin ? { 'background-color': '#f9f9f9' } : { 'background-color': '' }" class="component-container grid-item grid-item-position">
           <!-- parent component -->
           <base-component ref="baseComponent"
             class="grid-item-position"
@@ -322,5 +322,8 @@ export default {
     left: 0px !important;
     bottom: 0px !important;
     right: 0px !important;
+  }
+  .component-container {
+    overflow: hidden;
   }
 </style>
