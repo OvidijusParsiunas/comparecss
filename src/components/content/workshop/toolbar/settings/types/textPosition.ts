@@ -22,7 +22,7 @@ export default {
         name: 'Align',
         options: { [ALIGNED_SECTION_TYPES.LEFT]: null, [ALIGNED_SECTION_TYPES.CENTER]: null, [ALIGNED_SECTION_TYPES.RIGHT]: null },
         activeOptionPropertyKeyName: 'section',
-        customFeatureObjectKeys: ['alignedLayerSection', 'section'],
+        customFeatureObjectKeys: ['customFeatures', 'alignedLayerSection', 'section'],
         ...SubcomponentAlignment.generateMouseEventCallbacks(),
       },
     },

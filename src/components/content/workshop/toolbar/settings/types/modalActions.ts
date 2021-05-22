@@ -7,7 +7,7 @@ export default {
       type: SETTINGS_TYPES.CHECKBOX,
       spec: {
         name: 'Close on Enter',
-        customFeatureObjectKeys: ['backdrop', 'closeTriggers', 'enter'],
+        customFeatureObjectKeys: ['customFeatures', 'backdrop', 'closeTriggers', 'enter'],
         default: false,
       },
     },
@@ -15,7 +15,7 @@ export default {
       type: SETTINGS_TYPES.CHECKBOX,
       spec: {
         name: 'Close on Escape',
-        customFeatureObjectKeys: ['backdrop', 'closeTriggers', 'escape'],
+        customFeatureObjectKeys: ['customFeatures', 'backdrop', 'closeTriggers', 'escape'],
         default: false,
       },
     },
@@ -23,7 +23,7 @@ export default {
       type: SETTINGS_TYPES.CHECKBOX,
       spec: {
         name: 'Close on Backdrop click',
-        customFeatureObjectKeys: ['backdrop', 'closeTriggers', 'backdrop'],
+        customFeatureObjectKeys: ['customFeatures', 'backdrop', 'closeTriggers', 'backdrop'],
         default: false,
       },
     }

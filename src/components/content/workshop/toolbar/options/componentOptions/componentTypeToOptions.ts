@@ -2,6 +2,7 @@ import { SubcomponentCssPseudoClasses } from '../../../../../../interfaces/subco
 import { NEW_COMPONENT_TYPES } from '../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { SubcomponentOptions } from '../../../../../../interfaces/componentOptions';
+import { closeButtonTextOptions } from './button/closeText';
 import { nestedButtonOptions } from './button/nestedBase';
 import { layerBottomOptions } from './layer/layerBottom';
 import { layerMiddleOptions } from './layer/layerMiddle';
@@ -29,7 +30,7 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
     [SUBCOMPONENT_TYPES.BASE]: alertBaseOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.TEXT]: textOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.BUTTON]: nestedButtonOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
-    [SUBCOMPONENT_TYPES.BUTTON_TEXT]: buttonTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+    [SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT]: closeButtonTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
   },
   [NEW_COMPONENT_TYPES.MODAL]: {
     [SUBCOMPONENT_TYPES.BASE]: modalBaseOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
@@ -39,5 +40,6 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
     [SUBCOMPONENT_TYPES.LAYER_3]: layerBottomOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.BUTTON]: nestedButtonOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.BUTTON_TEXT]: buttonTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+    [SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT]: closeButtonTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
   },
 };

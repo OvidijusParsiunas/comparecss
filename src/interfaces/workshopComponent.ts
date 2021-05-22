@@ -99,6 +99,9 @@ export interface CustomFeatures {
   jsClasses?: ComponentJavascriptClasses;
   autoWidth?: AutoWidth;
   alignedLayerSection?: AlignedLayerSection;
+}
+
+export interface CustomStaticFeatures {
   subcomponentText?: Text;
 }
 
@@ -143,6 +146,8 @@ export interface SubcomponentProperties {
   subcomponentSpecificSettings?: SubcomponentSpecificSettings;
   customFeatures?: CustomFeatures;
   defaultCustomFeatures?: CustomFeatures;
+  customStaticFeatures?: CustomStaticFeatures; 
+  defaultCustomStaticFeatures?: CustomStaticFeatures;
   layerSectionsType?: LAYER_SECTIONS_TYPES;
   importedComponent?: ImportedComponent;
   // used to track the imported component's base inSync property

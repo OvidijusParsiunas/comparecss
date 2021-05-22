@@ -1,4 +1,4 @@
-import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text } from '../../../../../../../interfaces/workshopComponent';
+import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text, CustomStaticFeatures } from '../../../../../../../interfaces/workshopComponent';
 import { ImportedComponentGenerator } from '../../../../utils/workshopImportComponent/importedComponentGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
@@ -97,15 +97,20 @@ function createDefaultButtonBaseCustomFeatures(): CustomFeatures {
   }
 }
 
+function createDefaultTextCustomFeatures(): CustomFeatures {
+  return {
+    autoWidth: createAutoWidth(),
+    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
+  }
+}
+
 function createText(text: string): Text {
   return { text };
 }
 
-function createDefaultTextCustomFeatures(subcomponentText?: string): CustomFeatures {
+function createDefaultTextCustomStaticFeatures(subcomponentText?: string): CustomStaticFeatures {
   return {
     subcomponentText: createText(subcomponentText || 'button'),
-    autoWidth: createAutoWidth(),
-    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
   }
 }
 
@@ -138,8 +143,10 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames, subcomp
       defaultCss: createTextCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      customFeatures: createDefaultTextCustomFeatures(subcomponentText),
-      defaultCustomFeatures: createDefaultTextCustomFeatures(subcomponentText),
+      customFeatures: createDefaultTextCustomFeatures(),
+      defaultCustomFeatures: createDefaultTextCustomFeatures(),
+      customStaticFeatures: createDefaultTextCustomStaticFeatures(subcomponentText),
+      defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(subcomponentText),
     },
   }
 }

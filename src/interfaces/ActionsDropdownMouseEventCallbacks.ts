@@ -9,7 +9,7 @@ export interface ActionsDropdownMouseEventCallbackEvent {
   isCustomFeatureResetTriggered?: boolean;
 }
 
-export type ActionsDropdownMouseEventCallback = (event: ActionsDropdownMouseEventCallbackEvent) => void;
+type ActionsDropdownMouseEventCallback = (event: ActionsDropdownMouseEventCallbackEvent) => void;
 
 export interface ActionsDropdownMouseEventCallbacks {
   mouseEnterButtonCallback?: ActionsDropdownMouseEventCallback;

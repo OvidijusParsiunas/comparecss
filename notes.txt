@@ -9,9 +9,10 @@ potentially add x button to border coloring
 close button should probably be imported - but need to work through the logistics of inherited css for it
 clicking enter/escape when using the overlay dropdown does not remove the overlay
 display second range value with 2 decimal points
-names for button and modal buttons
 highlight play
 layer text height
+button does not need positional align
+overflow
 
 modals with gifs in them - https://icepanel.io/?human=architect
 close button may need to be a badge

@@ -7,7 +7,7 @@ export default class GeneralUtils {
     const { customFeatureObjectKeys, cssProperty } = settingSpec;
     const { customCss, activeCssPseudoClass } = subcomponentProperties;
     return customFeatureObjectKeys
-      ? SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures)
+      ? SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]])
       : customCss[activeCssPseudoClass][cssProperty];
   }
 }

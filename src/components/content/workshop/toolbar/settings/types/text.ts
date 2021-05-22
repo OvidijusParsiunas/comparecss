@@ -7,7 +7,7 @@ export default {
       type: SETTINGS_TYPES.INPUT,
       spec: {
         name: 'Font',
-        customFeatureObjectKeys: ['subcomponentText', 'text'],
+        customFeatureObjectKeys: ['customStaticFeatures', 'subcomponentText', 'text'],
         default: 'text',
       },
     },

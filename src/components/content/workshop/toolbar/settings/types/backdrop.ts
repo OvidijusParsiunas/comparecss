@@ -15,7 +15,7 @@ const backdropAnimationDurationSpec = {
   default: 0,
   scale: [0, 40],
   smoothingDivisible: 20,
-  customFeatureObjectKeys: ['backdrop', 'entranceAnimationDuration', 'currentValue'],
+  customFeatureObjectKeys: ['customFeatures', 'backdrop', 'entranceAnimationDuration', 'currentValue'],
   lastSelectedValueObjectKeys: ['backdrop', 'entranceAnimationDuration', 'lastSelectedValue'],
   isAutoObjectKeys: ['backdrop', 'entranceAnimationDuration', 'isAuto'],
   postfix: 's',
@@ -34,12 +34,12 @@ export default {
         name: 'Color',
         default: '#000000',
         alphaValueCustomFeatureObjectKeys: ['backdrop', 'alpha'],
-        customFeatureObjectKeys: ['backdrop', 'color'],
+        customFeatureObjectKeys: ['customFeatures', 'backdrop', 'color'],
         unsetColorButtonAvailable: true,
       },
       removeColorTriggers: [
         {
-          customFeatureObjectKeys: ['backdrop', 'alpha'],
+          customFeatureObjectKeys: ['customFeatures', 'backdrop', 'alpha'],
           defaultValue: '0',
         },
       ]
@@ -53,12 +53,12 @@ export default {
         scale: [0, 100],
         smoothingDivisible: 100,
         colorValueCustomFeatureObjectKeys: ['backdrop', 'color'],
-        customFeatureObjectKeys: ['backdrop', 'alpha'],
+        customFeatureObjectKeys: ['customFeatures', 'backdrop', 'alpha'],
         postfix: '',
       },
       triggers: [
         {
-          customFeatureObjectKeys: ['backdrop', 'color'],
+          customFeatureObjectKeys: ['customFeatures', 'backdrop', 'color'],
           defaultValue: '#00000000',
           conditions: new Set(['unset']),
         },
@@ -69,7 +69,7 @@ export default {
       spec: backdropAnimationDurationSpec,
       triggers: [
         {
-          customFeatureObjectKeys: ['backdrop', 'entranceAnimationDuration', 'isAuto'],
+          customFeatureObjectKeys: ['customFeatures', 'backdrop', 'entranceAnimationDuration', 'isAuto'],
           defaultValue: false,
           conditions: new Set([true]),
         },
@@ -79,7 +79,7 @@ export default {
       type: SETTINGS_TYPES.CHECKBOX,
       spec: {
         name: 'Auto',
-        customFeatureObjectKeys: ['backdrop', 'entranceAnimationDuration', 'isAuto'],
+        customFeatureObjectKeys: ['customFeatures', 'backdrop', 'entranceAnimationDuration', 'isAuto'],
         default: false,
       },
       triggers: {

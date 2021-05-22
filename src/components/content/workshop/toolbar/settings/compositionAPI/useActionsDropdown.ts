@@ -15,7 +15,7 @@ export default function useActionsDropdown(): UseActionsDropdown {
   const getObjectContainingActiveOption = (settingSpec: any, subcomponentProperties: SubcomponentProperties): unknown => {
     const { customFeatureObjectKeys, cssProperty } = settingSpec;
     if (customFeatureObjectKeys) {
-      return CustomFeaturesUtils.getObjectContainingActiveOption(subcomponentProperties.customFeatures, customFeatureObjectKeys);
+      return CustomFeaturesUtils.getObjectContainingActiveOption(subcomponentProperties, customFeatureObjectKeys);
     }
     return ActionsDropdownUtils.getObjectContainingActiveOption(subcomponentProperties, cssProperty);
   }
@@ -74,11 +74,10 @@ export default function useActionsDropdown(): UseActionsDropdown {
   const mouseClickActionsDropdownNewOption = (triggeredOptionName: string, settingSpec: any,
       subcomponentProperties: SubcomponentProperties, activeOptionsObject: any): void => {
     if (expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState()) return;
-    const { customFeatures } = subcomponentProperties;
     const { customFeatureObjectKeys, cssProperty } = settingSpec;
     if (cssProperty) ActionsDropdownUtils.mouseClickActionsDropdownNewOption(temporaryDropdownValue, triggeredOptionName,
       subcomponentProperties, settingSpec, activeOptionsObject);
-    if (customFeatureObjectKeys) SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, customFeatures, triggeredOptionName);
+    if (customFeatureObjectKeys) SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties, triggeredOptionName);
   }
   
   return {

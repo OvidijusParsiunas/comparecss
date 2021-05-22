@@ -5,7 +5,7 @@ import { SubcomponentOptions } from '../../../../../../../interfaces/componentOp
 
 type TextWithNoBackgroundOptions = CSS_PSEUDO_CLASSES.DEFAULT;
 
-export const buttonTextOptions: SubcomponentOptions<TextWithNoBackgroundOptions> = {
+export const closeButtonTextOptions: SubcomponentOptions<TextWithNoBackgroundOptions> = {
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.TEXT_FONT,
@@ -22,10 +22,6 @@ export const buttonTextOptions: SubcomponentOptions<TextWithNoBackgroundOptions>
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_POSITION_NO_ALIGN,
-    },
-    {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.TEXT,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT,
     },
   ],
 };

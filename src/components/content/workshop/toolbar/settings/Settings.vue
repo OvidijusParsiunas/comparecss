@@ -94,7 +94,7 @@
                     class="form-control"
                     :ref="`elementReference${settingIndex}`"
                     v-bind:value="inputsValues[setting.spec.name] || setting.spec.default"
-                    @input="changeSetting(inputEventForInput.bind(this, $event, setting.spec.customFeatureObjectKeys))"
+                    @input="changeSetting(inputEventForInput.bind(this, $event, setting.spec.customFeatureObjectKeys), setting.spec.customFeatureObjectKeys[0])"
                     @keyup.enter="blurInputDropdown(`elementReference${settingIndex}`)">
                 </div>
               </div>
@@ -226,7 +226,8 @@ export default {
             } else if (setting.type === SETTINGS_TYPES.COLOR_PICKER) {
               ColorPickerUtils.updateSettings(setting.spec, this.subcomponentProperties);
             } else if (setting.type === SETTINGS_TYPES.INPUT) {
-              this.inputsValues[setting.spec.name] = SharedUtils.getCustomFeatureValue(setting.spec.customFeatureObjectKeys, this.subcomponentProperties.customFeatures);
+              const keys = setting.spec.customFeatureObjectKeys;
+              this.inputsValues[setting.spec.name] = SharedUtils.getCustomFeatureValue(keys, this.subcomponentProperties[keys[0]]);
             } else if (setting.type === SETTINGS_TYPES.INPUT_DROPDOWN) {
               const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClass, setting.spec.cssProperty);
               if (cssPropertyValue) { this.inputDropdownsValues[setting.spec.cssProperty] = cssPropertyValue; }
@@ -259,13 +260,13 @@ export default {
     updateRange(event: MouseEvent, setting: any): void {
       RangeUtils.updateProperties(event, setting, this.settings, this.subcomponentProperties, this.actionsDropdownsObjects,
         this.refreshSettings.bind(this));
-      if (setting.spec.customFeatureObjectKeys) this.customFeatureRangeValue = SharedUtils.getCustomFeatureValue(
-        setting.spec.customFeatureObjectKeys, this.subcomponentProperties.customFeatures);
+      const keys = setting.spec.customFeatureObjectKeys;
+      if (keys) this.customFeatureRangeValue = SharedUtils.getCustomFeatureValue(keys, this.subcomponentProperties[keys[0]]);
     },
     rangeMouseDown(event: KeyboardEvent, settingSpec: any): void {
-      if (settingSpec.customFeatureObjectKeys) { 
-        this.customFeatureRangeValue = SharedUtils.getCustomFeatureValue(settingSpec.customFeatureObjectKeys,
-          this.subcomponentProperties.customFeatures);
+      const keys = settingSpec.customFeatureObjectKeys;
+      if (keys) { 
+        this.customFeatureRangeValue = SharedUtils.getCustomFeatureValue(keys, this.subcomponentProperties[keys[0]]);
       } else {
         SharedUtils.addDefaultValueIfCssModeMissing(settingSpec.cssProperty, this.subcomponentProperties);
       }
@@ -300,7 +301,7 @@ export default {
       this.subcomponentProperties.customCss[this.subcomponentProperties.activeCssPseudoClass][cssProperty] = (event.target as HTMLInputElement).value;
     },
     inputEventForInput(event: KeyboardEvent, customFeatureObjectKeys: string[]): void {
-      SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, this.subcomponentProperties.customFeatures, (event.target as HTMLInputElement).value);
+      SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, this.subcomponentProperties, (event.target as HTMLInputElement).value);
     },
     blurInputDropdown(referenceId: string): void {
       this.$refs[referenceId].blur();
@@ -327,8 +328,8 @@ export default {
     toggleSubcomponentSelectMode(): void {
       // this.$refs.selectSubcomponentOverlay2.style.display = 'block';
     },
-    changeSetting(callback: () => void): void {
-      if (InSync.isInSyncButtonDisplayed(this.subcomponentProperties)) {
+    changeSetting(callback: () => void, firstCustomFeatureObjectKey?: string): void {
+      if (InSync.isInSyncButtonDisplayed(this.subcomponentProperties) && firstCustomFeatureObjectKey !== 'customStaticFeatures') {
         this.$emit('remove-insync-option-button', callback);
       } else {
         callback();

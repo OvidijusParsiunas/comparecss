@@ -1,4 +1,4 @@
-import { CustomCss, CustomFeatures, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import GeneralUtils from '../../../../../../services/workshop/exportFiles/contentBuilders/css/generalUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 
@@ -25,31 +25,37 @@ export default class SharedUtils {
     }
   }
 
-  public static getCustomFeatureValue(customFeatureObjectKeys: string[], customFeatures: CustomFeatures): unknown {
-    if (customFeatureObjectKeys.length === 0) {
-      return customFeatures;
+  private static traverseCustomFeatureValueObject(customFeatureObjectKeys: string[], customFeatures: CustomFeatures|CustomStaticFeatures,
+      newValue?: unknown): unknown {
+    if (newValue !== undefined) {
+      if (customFeatureObjectKeys.length === 1) {
+        return customFeatures[customFeatureObjectKeys[0]] = newValue;
+      }
+    } else {
+      if (customFeatureObjectKeys.length === 0) {
+        return customFeatures;
+      }
     }
     const innerCustomFeaturesObject = customFeatures[customFeatureObjectKeys[0]];
     const newCustomFeatureObjectKeysArray = customFeatureObjectKeys.slice(1, customFeatureObjectKeys.length);
-    return SharedUtils.getCustomFeatureValue(newCustomFeatureObjectKeysArray, innerCustomFeaturesObject);
+    return SharedUtils.traverseCustomFeatureValueObject(newCustomFeatureObjectKeysArray, innerCustomFeaturesObject, newValue);
   }
 
-  public static setCustomFeatureValue(customFeatureObjectKeys: string[], customFeatures: CustomFeatures, newValue: unknown): void {
-    if (customFeatureObjectKeys.length === 1) {
-      customFeatures[customFeatureObjectKeys[0]] = newValue;
-    } else {
-      const innerCustomFeaturesObject = customFeatures[customFeatureObjectKeys[0]];
-      const newCustomFeatureObjectKeysArray = customFeatureObjectKeys.slice(1, customFeatureObjectKeys.length);
-      SharedUtils.setCustomFeatureValue(newCustomFeatureObjectKeysArray, innerCustomFeaturesObject, newValue);
-    }
+  public static getCustomFeatureValue(customFeatureObjectKeys: string[], customFeatures: CustomFeatures|CustomStaticFeatures): unknown {
+    return SharedUtils.traverseCustomFeatureValueObject(customFeatureObjectKeys.slice(1, customFeatureObjectKeys.length), customFeatures);
   }
 
-  public static setCustomFeatureSetting(trigger: any, customFeatures: CustomFeatures, allSettings: any): void {
+  public static setCustomFeatureValue(customFeatureObjectKeys: string[], subcomponentProperties: SubcomponentProperties, newValue: unknown): void {
+    const keys = customFeatureObjectKeys;
+    SharedUtils.traverseCustomFeatureValueObject(keys.slice(1, keys.length), subcomponentProperties[keys[0]], newValue);
+  }
+
+  public static setCustomFeatureSetting(trigger: any, subcomponentProperties: SubcomponentProperties, allSettings: any): void {
     const { customFeatureObjectKeys, defaultValue } = trigger;
     for (let i = 0; i < allSettings.options.length; i += 1) {
       if (GeneralUtils.areArraysEqual(allSettings.options[i].spec.customFeatureObjectKeys, customFeatureObjectKeys)) {
         allSettings.options[i].spec.default = defaultValue;
-        SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, customFeatures, defaultValue);
+        SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties, defaultValue);
         return;
       }
     }

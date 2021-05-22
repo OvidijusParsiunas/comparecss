@@ -1,4 +1,4 @@
-import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text } from '../../../../../../../interfaces/workshopComponent';
+import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text, CustomStaticFeatures } from '../../../../../../../interfaces/workshopComponent';
 import { ImportedComponentGenerator } from '../../../../utils/workshopImportComponent/importedComponentGenerator';
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
@@ -72,10 +72,6 @@ function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayer
   return { section };
 }
 
-function createText(text: string): Text {
-  return { text };
-}
-
 function createAutoWidth(): AutoWidth {
   return {
     auto: true,
@@ -84,10 +80,19 @@ function createAutoWidth(): AutoWidth {
 
 function createDefaultTextCustomFeatures(): CustomFeatures {
   return {
-    subcomponentText: createText('button'),
     autoWidth: createAutoWidth(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
   };
+}
+
+function createText(text: string): Text {
+  return { text };
+}
+
+function createDefaultTextCustomStaticFeatures(): CustomStaticFeatures {
+  return {
+    subcomponentText: createText('button'),
+  }
 }
 
 function createSubcomponents(): Subcomponents {
@@ -110,7 +115,7 @@ function createSubcomponents(): Subcomponents {
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_1]: {
-      subcomponentType: SUBCOMPONENT_TYPES.TEXT,
+      subcomponentType: SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT,
       componentTag: 'div',
       customCss: createTextCss(),
       defaultCss: createTextCss(),
@@ -119,6 +124,8 @@ function createSubcomponents(): Subcomponents {
       subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
       customFeatures: createDefaultTextCustomFeatures(),
       defaultCustomFeatures: createDefaultTextCustomFeatures(),
+      customStaticFeatures: createDefaultTextCustomStaticFeatures(),
+      defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(),
     },
   }
 }

@@ -1,5 +1,5 @@
-import { CustomFeatures, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
+import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import { SettingPaths } from '../../../../../../interfaces/settingPaths';
 import { optionToSettings } from '../types/optionToSettings';
 import { FindSettings } from '../types/utils/findSetting';
@@ -13,7 +13,7 @@ export default class RangeUtils {
   public static saveLastSelectedValue(event: MouseEvent, settingSpec: any, subcomponentProperties: SubcomponentProperties): void {
     const rangeValue = (event.target as HTMLInputElement).value;
     if (settingSpec.lastSelectedValueObjectKeys) {
-      RangeUtils.updateCustomFeature(rangeValue, settingSpec, subcomponentProperties.customFeatures, settingSpec.lastSelectedValueObjectKeys);
+      RangeUtils.updateCustomFeature(rangeValue, settingSpec, subcomponentProperties, settingSpec.lastSelectedValueObjectKeys);
     }
   }
 
@@ -27,12 +27,12 @@ export default class RangeUtils {
     }
   }
 
-  private static activateTriggersForCustomSubcomponentProperties(trigger: any, customFeatures: CustomFeatures,
+  private static activateTriggersForCustomSubcomponentProperties(trigger: any, subcomponentProperties: SubcomponentProperties,
       allSettings: any): void {
     const { conditions, customFeatureObjectKeys } = trigger;
-    const customFeatureValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, customFeatures);
+    const customFeatureValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]);
     if (!conditions.has(customFeatureValue)) return;
-    SharedUtils.setCustomFeatureSetting(trigger, customFeatures, allSettings);
+    SharedUtils.setCustomFeatureSetting(trigger, subcomponentProperties, allSettings);
   }
 
   private static parseString(value: string, smoothingDivisible: number): number {
@@ -41,13 +41,14 @@ export default class RangeUtils {
 
   public static getCustomFeatureRangeNumberValue(spec: any, subcomponentProperties: SubcomponentProperties): number {
     const { customFeatureObjectKeys, smoothingDivisible } = spec;
-    const customFeatureValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures);
+    const customFeatureValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]);
     return RangeUtils.parseString(customFeatureValue as string, smoothingDivisible);
   }
 
   private static attemptToResetLastSelectedValue(totalAggregateAndCurrentSettingRangeValue: number, targetSettingRangeValue: number,
       targetSettingSpec: any, subcomponentProperties: SubcomponentProperties, refreshSettingsCallback?: () => void): void {
-    const customFeatureValue = SharedUtils.getCustomFeatureValue(targetSettingSpec.lastSelectedValueObjectKeys, subcomponentProperties.customFeatures);
+    const keys = targetSettingSpec.lastSelectedValueObjectKeys;
+    const customFeatureValue = SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys[0]]);
     const lastSelectedValue = RangeUtils.parseString(customFeatureValue as string, targetSettingSpec.smoothingDivisible);
     // Remember that this gets called when the totalAggregateAndCurrentSettingRangeValue is higher than the targetSettingRangeValue
     if (targetSettingRangeValue < lastSelectedValue) {
@@ -55,7 +56,7 @@ export default class RangeUtils {
       // an issue where upon selecting a high range value in the current setting (e.g. entrance delay duration),
       // the totalAggregateAndCurrentSettingRangeValue would be higher than lastSelectedValue
       const minRangeValue = Math.min(totalAggregateAndCurrentSettingRangeValue, lastSelectedValue);
-      RangeUtils.updateCustomFeature(minRangeValue.toString(), targetSettingSpec, subcomponentProperties.customFeatures);
+      RangeUtils.updateCustomFeature(minRangeValue.toString(), targetSettingSpec, subcomponentProperties);
       if (refreshSettingsCallback) refreshSettingsCallback();
     }
   }
@@ -64,11 +65,12 @@ export default class RangeUtils {
       subcomponentProperties: SubcomponentProperties, refreshSettingsCallback?: () => void): void {
     const targetSettingRangeValue = RangeUtils.getCustomFeatureRangeNumberValue(targetSettingSpec, subcomponentProperties);
     if (totalAggregateAndCurrentSettingRangeValue < targetSettingRangeValue) {
-      RangeUtils.updateCustomFeature(totalAggregateAndCurrentSettingRangeValue.toString(), targetSettingSpec, subcomponentProperties.customFeatures);
+      RangeUtils.updateCustomFeature(totalAggregateAndCurrentSettingRangeValue.toString(), targetSettingSpec, subcomponentProperties);
     } else if (targetSettingSpec.isAutoObjectKeys) {
-      const isAuto = SharedUtils.getCustomFeatureValue(targetSettingSpec.isAutoObjectKeys, subcomponentProperties.customFeatures);
+      const keys = targetSettingSpec.isAutoObjectKeys;
+      const isAuto = SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys[0]]);
       if (isAuto) {
-        RangeUtils.updateCustomFeature(totalAggregateAndCurrentSettingRangeValue.toString(), targetSettingSpec, subcomponentProperties.customFeatures);
+        RangeUtils.updateCustomFeature(totalAggregateAndCurrentSettingRangeValue.toString(), targetSettingSpec, subcomponentProperties);
         if (refreshSettingsCallback) refreshSettingsCallback();
       } else {
         RangeUtils.attemptToResetLastSelectedValue(totalAggregateAndCurrentSettingRangeValue, targetSettingRangeValue,
@@ -121,7 +123,7 @@ export default class RangeUtils {
     const { triggers, spec } = updatedSetting;
     (triggers || []).forEach((trigger) => {
       if (trigger.customFeatureObjectKeys) {
-        RangeUtils.activateTriggersForCustomSubcomponentProperties(trigger, subcomponentProperties.customFeatures, allSettings);
+        RangeUtils.activateTriggersForCustomSubcomponentProperties(trigger, subcomponentProperties, allSettings);
       } else if (trigger.setting) {
         const { setting, updateUsingScaleMax, aggregateSettingSpecs } = trigger;
         const [targetSettingSpecs] = RangeUtils.getAggregatedSettingSpecs(setting);
@@ -139,19 +141,20 @@ export default class RangeUtils {
     customCss[activeCssPseudoClass][cssProperty] = `${Math.floor(rangeValue as unknown as number / smoothingDivisible)}${postfix}`;
   }
 
-  private static updateColorValueInCustomFeatureProperties(rangeValue: string, spec: any, customFeatures: CustomFeatures): void {
-    const colorValue = SharedUtils.getCustomFeatureValue(spec.colorValueCustomFeatureObjectKeys, customFeatures) as string;
+  private static updateColorValueInCustomFeatureProperties(rangeValue: string, spec: any, subcomponentProperties: SubcomponentProperties): void {
+    const keys = spec.colorValueCustomFeatureObjectKeys;
+    const colorValue = SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys[0]]) as string;
     const alphaHexStringValue = SharedUtils.convertAlphaDecimalToHexString(rangeValue as unknown as number / spec.smoothingDivisible);
     const newColorvalue = `${colorValue.substring(0, colorValue.length - alphaHexStringValue.length)}${alphaHexStringValue}`;
-    SharedUtils.setCustomFeatureValue(spec.colorValueCustomFeatureObjectKeys, customFeatures, newColorvalue);
+    SharedUtils.setCustomFeatureValue(keys, subcomponentProperties, newColorvalue);
   }
 
-  private static updateCustomFeature(rangeValue: string, spec: any, customFeatures: CustomFeatures, lastSelectedValueObjectKeys?: string[]): void {
+  private static updateCustomFeature(rangeValue: string, spec: any, subcomponentProperties: SubcomponentProperties, lastSelectedValueObjectKeys?: string[]): void {
     const { smoothingDivisible, postfix, customFeatureObjectKeys } = spec;
     const newRangeValue = `${rangeValue as unknown as number / smoothingDivisible}${postfix}`;
-    SharedUtils.setCustomFeatureValue(lastSelectedValueObjectKeys || customFeatureObjectKeys, customFeatures, newRangeValue);
+    SharedUtils.setCustomFeatureValue(lastSelectedValueObjectKeys || customFeatureObjectKeys, subcomponentProperties, newRangeValue);
     if (spec.colorValueCustomFeatureObjectKeys) {
-      RangeUtils.updateColorValueInCustomFeatureProperties(rangeValue, spec, customFeatures);
+      RangeUtils.updateColorValueInCustomFeatureProperties(rangeValue, spec, subcomponentProperties);
     }
   }
 
@@ -163,7 +166,7 @@ export default class RangeUtils {
     if (spec.partialCss != undefined) {
       if (spec.cssProperty === 'boxShadow') BoxShadowUtils.updateBoxShadowRangeValue(rangeValue, spec, subcomponentProperties);
     } else if (spec.customFeatureObjectKeys) {
-      RangeUtils.updateCustomFeature(rangeValue, spec, subcomponentProperties.customFeatures);
+      RangeUtils.updateCustomFeature(rangeValue, spec, subcomponentProperties);
     } else {
       RangeUtils.updateCustomCss(rangeValue, spec, subcomponentProperties);
     }

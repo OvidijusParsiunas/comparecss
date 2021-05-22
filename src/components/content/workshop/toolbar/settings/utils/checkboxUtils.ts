@@ -12,8 +12,9 @@ export default class CheckboxUtils {
 
   private static updateCustomFeatureViaTrigger(trigger: any, subcomponentProperties: SubcomponentProperties): void {
     if (trigger.updateUsingValueFromAnotherObjectKeys) {
-      const valueFromAnotherObject = SharedUtils.getCustomFeatureValue(trigger.updateUsingValueFromAnotherObjectKeys, subcomponentProperties.customFeatures);
-      SharedUtils.setCustomFeatureValue(trigger.customFeatureObjectKeys, subcomponentProperties.customFeatures, valueFromAnotherObject);
+      const keys = trigger.updateUsingValueFromAnotherObjectKeys;
+      const valueFromAnotherObject = SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys]);
+      SharedUtils.setCustomFeatureValue(trigger.customFeatureObjectKeys, subcomponentProperties, valueFromAnotherObject);
     }
   }
 
@@ -42,8 +43,9 @@ export default class CheckboxUtils {
     });
   }
 
-  private static setSetObject(newCheckboxValue: boolean, valueInSetObject: any, customFeatureObjectKeys: string[], subcomponentProperties: SubcomponentProperties): void {
-    const property = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures) as Set<undefined>;
+  private static setSetObject(newCheckboxValue: boolean, valueInSetObject: any, customFeatureObjectKeys: string[],
+      subcomponentProperties: SubcomponentProperties): void {
+    const property = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]) as Set<undefined>;
     if (newCheckboxValue) {
       property.add(valueInSetObject);
     } else {
@@ -56,7 +58,7 @@ export default class CheckboxUtils {
     if (valueInSetObject) {
       CheckboxUtils.setSetObject(newCheckboxValue, valueInSetObject, customFeatureObjectKeys, subcomponentProperties);
     } else {
-      SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures, newCheckboxValue);
+      SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties, newCheckboxValue);
     }
   }
 
@@ -74,19 +76,20 @@ export default class CheckboxUtils {
     if (cssPropertyValue) { settingToBeUpdatedSpec.default = (cssPropertyValue === settingToBeUpdatedSpec.conditionalStyle.truthy); }
   }
 
-  private static updateCustomFeatureSetting(settingToBeUpdatedSpec: any, customFeatures: CustomFeatures): void {
+  private static updateCustomFeatureSetting(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
+    const keys = settingToBeUpdatedSpec.customFeatureObjectKeys
     if (settingToBeUpdatedSpec.valueInSetObject) {
       settingToBeUpdatedSpec.default = (
-        SharedUtils.getCustomFeatureValue(settingToBeUpdatedSpec.customFeatureObjectKeys, customFeatures) as Set<undefined>
+        SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys[0]]) as Set<undefined>
       ).has(settingToBeUpdatedSpec.valueInSetObject);
     } else {
-      settingToBeUpdatedSpec.default = SharedUtils.getCustomFeatureValue(settingToBeUpdatedSpec.customFeatureObjectKeys, customFeatures);
+      settingToBeUpdatedSpec.default = SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys[0]]);
     }
   }
 
   public static updateSettings(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
     if (settingToBeUpdatedSpec.customFeatureObjectKeys) {
-      CheckboxUtils.updateCustomFeatureSetting(settingToBeUpdatedSpec, subcomponentProperties.customFeatures);
+      CheckboxUtils.updateCustomFeatureSetting(settingToBeUpdatedSpec, subcomponentProperties);
     } else {
       CheckboxUtils.updateCustomCssSetting(settingToBeUpdatedSpec, subcomponentProperties);
     }

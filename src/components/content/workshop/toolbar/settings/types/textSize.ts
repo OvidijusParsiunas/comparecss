@@ -15,7 +15,7 @@ export default {
       },
       triggers: [
         {
-          customFeatureObjectKeys: ['autoWidth', 'auto'],
+          customFeatureObjectKeys: ['customFeatures', 'autoWidth', 'auto'],
           defaultValue: false,
           conditions: new Set([true]),
         },
@@ -25,7 +25,7 @@ export default {
       type: SETTINGS_TYPES.CHECKBOX,
       spec: {
         name: 'Auto',
-        customFeatureObjectKeys: ['autoWidth', 'auto'],
+        customFeatureObjectKeys: ['customFeatures', 'autoWidth', 'auto'],
         default: true,
       },
       triggers: {

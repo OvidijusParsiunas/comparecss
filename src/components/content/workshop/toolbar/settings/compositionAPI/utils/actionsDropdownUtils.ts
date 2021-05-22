@@ -61,7 +61,7 @@ export default class ActionsDropdownUtils {
       subcomponentProperties: SubcomponentProperties, settingSpec: any, settingsComponent: ComponentOptions): void {
     const { customFeatureObjectKeys, mouseEnterOptionCallback } = settingSpec;
     if (temporaryDropdownValue.value === ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED) {
-      temporaryDropdownValue.value = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures) as string;
+      temporaryDropdownValue.value = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]) as string;
     }
     if (mouseEnterOptionCallback) mouseEnterOptionCallback({subcomponentProperties, settingsComponent,
       previousOptionName: temporaryDropdownValue.value, triggeredOptionName});
@@ -72,7 +72,7 @@ export default class ActionsDropdownUtils {
       subcomponentProperties: SubcomponentProperties, settingSpec: any, settingsComponent: ComponentOptions): void {
     if (temporaryDropdownValue.value !== ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED) {
       const { customFeatureObjectKeys, mouseLeaveDropdownCallback } = settingSpec;
-      const defaultValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures) as string;
+      const defaultValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]) as string;
       if (mouseLeaveDropdownCallback) mouseLeaveDropdownCallback({subcomponentProperties, settingsComponent,
         previousOptionName: temporaryDropdownValue.value, triggeredOptionName: defaultValue});
     }

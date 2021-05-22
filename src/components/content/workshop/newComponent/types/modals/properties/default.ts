@@ -18,8 +18,8 @@ import { closeButton } from '../../buttons/properties/closeButton';
 import { defaultButton } from '../../buttons/properties/default';
 import { inheritedAlertBaseCss } from './inheritedCss';
 import {
-  CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, ComponentCenteringInParent,
-  AutoWidth, BackdropProperties, ModalAnimations,  AlignedLayerSection, Text,
+  CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, AlignedLayerSection, ModalAnimations,
+  AutoWidth, BackdropProperties, ComponentCenteringInParent, Text, CustomStaticFeatures,
 } from '../../../../../../../interfaces/workshopComponent';
 
 function createDefaultModalAnimationsProperties(): ModalAnimations {
@@ -48,8 +48,8 @@ function createDefaultBackdropProperties(): BackdropProperties {
     color: '#6d6d6dcc',
     alpha: 0.8,
     entranceAnimationDuration: {
-      currentValue: '1.2s',
-      lastSelectedValue: '1.2s',
+      currentValue: '0.45s',
+      lastSelectedValue: '0.45s',
       isAuto: true,
     },
     opacity: 0,
@@ -74,10 +74,6 @@ function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayer
   return { section };
 }
 
-function createText(text: string): Text {
-  return { text };
-}
-
 function createAutoWidth(): AutoWidth {
   return {
     auto: true,
@@ -86,18 +82,32 @@ function createAutoWidth(): AutoWidth {
 
 function createDefaultText1CustomFeatures(): CustomFeatures {
   return {
-    subcomponentText: createText('Modal title'),
     autoWidth: createAutoWidth(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
   };
 }
 
+function createText(text: string): Text {
+  return { text };
+}
+
+function createDefaultText1CustomStaticFeatures(): CustomStaticFeatures {
+  return {
+    subcomponentText: createText('Modal title'),
+  }
+}
+
 function createDefaultText2CustomFeatures(): CustomFeatures {
   return {
-    subcomponentText: createText('Modal body text'),
     autoWidth: createAutoWidth(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
   };
+}
+
+function createDefaultText2CustomStaticFeatures(): CustomStaticFeatures {
+  return {
+    subcomponentText: createText('Modal body text'),
+  }
 }
 
 function createDefaultBaseCss(): CustomCss {
@@ -188,7 +198,7 @@ function createDefaultText1Css(): CustomCss {
       marginLeft: '0px',
       marginRight: '0px',
     },
-  }
+  };
 }
 
 function createDefaultText2Css(): CustomCss {
@@ -265,6 +275,8 @@ function createSubcomponents(): Subcomponents {
       subcomponentSpecificSettings: modalTextSpecificSettings,
       customFeatures: createDefaultText1CustomFeatures(),
       defaultCustomFeatures: createDefaultText1CustomFeatures(),
+      customStaticFeatures: createDefaultText1CustomStaticFeatures(),
+      defaultCustomStaticFeatures: createDefaultText1CustomStaticFeatures(),
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_2]: {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
@@ -277,6 +289,8 @@ function createSubcomponents(): Subcomponents {
       subcomponentSpecificSettings: modalTextSpecificSettings,
       customFeatures: createDefaultText2CustomFeatures(),
       defaultCustomFeatures: createDefaultText2CustomFeatures(),
+      customStaticFeatures: createDefaultText2CustomStaticFeatures(),
+      defaultCustomStaticFeatures: createDefaultText2CustomStaticFeatures(),
     },
   };
 }
@@ -288,8 +302,8 @@ export const defaultModal: ComponentGenerator = {
     const importedButton2Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_2;
     const subcomponents = { ...createSubcomponents(),
       ...ImportedComponentGenerator.createImportedComponents(closeButton, importedCloseButtonName, 1),
-      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton1Name, 2),
-      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton2Name, 3) };
+      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton1Name, 2, 'Submit'),
+      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton2Name, 3, 'Cancel') };
     const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
       subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_3],
       subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_2],

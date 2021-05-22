@@ -144,7 +144,7 @@ import newComponentModal from './newComponent/NewComponentModal.vue';
 import componentList from './componentList/ComponentList.vue';
 import toolbar from './toolbar/Toolbar.vue';
 import {
-  CustomCss, ModalAnimations, ComponentCenteringInParent, CustomFeatures, Text,
+  CustomCss, ModalAnimations, ComponentCenteringInParent, CustomFeatures, Text, CustomStaticFeatures,
   AutoWidth, BackdropProperties,  AlignedLayerSection, WorkshopComponent, Subcomponents,
 } from '../../../interfaces/workshopComponent';
 
@@ -221,10 +221,6 @@ function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayer
   return { section };
 }
 
-function createText(text: string): Text {
-  return { text };
-}
-
 function createAutoWidth(): AutoWidth {
   return {
     auto: true,
@@ -233,18 +229,32 @@ function createAutoWidth(): AutoWidth {
 
 function createDefaultText1CustomFeatures(): CustomFeatures {
   return {
-    subcomponentText: createText('Modal title'),
     autoWidth: createAutoWidth(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
   };
 }
 
+function createText(text: string): Text {
+  return { text };
+}
+
+function createDefaultText1CustomStaticFeatures(): CustomStaticFeatures {
+  return {
+    subcomponentText: createText('Modal title'),
+  }
+}
+
 function createDefaultText2CustomFeatures(): CustomFeatures {
   return {
-    subcomponentText: createText('Modal body text'),
     autoWidth: createAutoWidth(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
   };
+}
+
+function createDefaultText2CustomStaticFeatures(): CustomStaticFeatures {
+  return {
+    subcomponentText: createText('Modal body text'),
+  }
 }
 
 function createDefaultBaseCss(): CustomCss {
@@ -412,6 +422,8 @@ function createSubcomponents(): Subcomponents {
       subcomponentSpecificSettings: modalTextSpecificSettings,
       customFeatures: createDefaultText1CustomFeatures(),
       defaultCustomFeatures: createDefaultText1CustomFeatures(),
+      customStaticFeatures: createDefaultText1CustomStaticFeatures(),
+      defaultCustomStaticFeatures: createDefaultText1CustomStaticFeatures(),
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_2]: {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
@@ -424,6 +436,8 @@ function createSubcomponents(): Subcomponents {
       subcomponentSpecificSettings: modalTextSpecificSettings,
       customFeatures: createDefaultText2CustomFeatures(),
       defaultCustomFeatures: createDefaultText2CustomFeatures(),
+      customStaticFeatures: createDefaultText2CustomStaticFeatures(),
+      defaultCustomStaticFeatures: createDefaultText2CustomStaticFeatures(),
     },
   };
 }

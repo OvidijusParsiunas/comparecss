@@ -1,4 +1,4 @@
-import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text } from '../../../../../../../interfaces/workshopComponent';
+import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text, CustomStaticFeatures } from '../../../../../../../interfaces/workshopComponent';
 import { ImportedComponentGenerator } from '../../../../utils/workshopImportComponent/importedComponentGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
@@ -88,16 +88,20 @@ function createDefaultButtonBaseCustomFeatures(): CustomFeatures {
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
   }
 }
+function createDefaultTextCustomFeatures(): CustomFeatures {
+  return {
+    autoWidth: createAutoWidth(),
+    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
+  }
+}
 
 function createText(text: string): Text {
   return { text };
 }
 
-function createDefaultTextCustomFeatures(): CustomFeatures {
+function createDefaultTextCustomStaticFeatures(): CustomStaticFeatures {
   return {
     subcomponentText: createText(CLOSE_BUTTON_X_TEXT),
-    autoWidth: createAutoWidth(),
-    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
   }
 }
 
@@ -124,7 +128,7 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [subcomponentNames.text]: {
-      subcomponentType: SUBCOMPONENT_TYPES.BUTTON_TEXT,
+      subcomponentType: SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT,
       componentTag: 'div',
       customCss: createTextCss(),
       defaultCss: createTextCss(),
@@ -133,6 +137,8 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
       inheritedCss: inheritedCloseTextCss,
       customFeatures: createDefaultTextCustomFeatures(),
       defaultCustomFeatures: createDefaultTextCustomFeatures(),
+      customStaticFeatures: createDefaultTextCustomStaticFeatures(),
+      defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(),
     },
   }
 }

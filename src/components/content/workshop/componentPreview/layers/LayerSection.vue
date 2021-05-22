@@ -40,8 +40,8 @@
               nestedSubcomponent.subcomponentProperties[nestedSubcomponent.subcomponentProperties.tempCustomCssObjName || 'customCss'][nestedSubcomponent.subcomponentProperties.activeCssPseudoClass],
             ]"
         >{{(!nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus || !nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus.isDisplayedTemporarily)
-            && (nestedSubcomponent.subcomponentProperties.customFeatures && nestedSubcomponent.subcomponentProperties.customFeatures.subcomponentText.text)
-              ? nestedSubcomponent.subcomponentProperties.customFeatures.subcomponentText.text : '' }}
+            && (nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text)
+              ? nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text : '' }}
       </component>
       <component v-if="!nestedSubcomponent.subcomponentProperties.importedComponent"
         :is="nestedSubcomponent.subcomponentProperties.componentTag"
@@ -51,11 +51,11 @@
           {display: 'none'}, {color: '#ff000000'}]"
         class="subcomponent-element"
         :class="[OVERLAY_DEFAULT_CLASS,
-          (nestedSubcomponent.subcomponentProperties.customFeatures && nestedSubcomponent.subcomponentProperties.customFeatures.subcomponentText.text) === CLOSE_BUTTON_X_TEXT
+          (nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text) === CLOSE_BUTTON_X_TEXT
             ? 'close-button-text-overlay-height' : '']">
           {{isSubcomponentDisplayed(nestedSubcomponent.subcomponentProperties)
-            && nestedSubcomponent.subcomponentProperties.customFeatures && nestedSubcomponent.subcomponentProperties.customFeatures.subcomponentText.text
-              ? nestedSubcomponent.subcomponentProperties.customFeatures.subcomponentText.text : ''}}
+            && nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text
+              ? nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text : ''}}
       </component>
     </div>
   </div>

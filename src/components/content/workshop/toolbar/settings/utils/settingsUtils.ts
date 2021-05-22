@@ -68,12 +68,13 @@ export default class SettingsUtils {
 
   private static resetCustomFeatures(option: any, subcomponentProperties: SubcomponentProperties): void {
     const { spec: { valueInSetObject, customFeatureObjectKeys, mouseClickOptionCallback } } = option;
-    const defaultValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.defaultCustomFeatures);
-    const currentValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures);
+    const defaultKey = customFeatureObjectKeys[0] === 'customFeatures' ? 'defaultCustomFeatures' : 'defaultCustomStaticFeatures';
+    const defaultValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[defaultKey]);
+    const currentValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]);
     if (valueInSetObject) {
       SettingsUtils.resetSetObject(currentValue as Set<undefined>, defaultValue as Set<undefined>);
     } else {
-      SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties.customFeatures, defaultValue);
+      SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties, defaultValue);
       SettingsUtils.updateSetting(option, subcomponentProperties);
       // only used for actions dropdown
       if (mouseClickOptionCallback) { mouseClickOptionCallback({subcomponentProperties,
