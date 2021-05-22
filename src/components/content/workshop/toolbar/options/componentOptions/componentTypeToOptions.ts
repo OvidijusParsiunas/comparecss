@@ -1,4 +1,4 @@
-import { SubcomponentCssPseudoClasses } from '../../../../../../interfaces/SubcomponentCssPseudoClasses';
+import { SubcomponentCssPseudoClasses } from '../../../../../../interfaces/subcomponentCssPseudoClasses';
 import { NEW_COMPONENT_TYPES } from '../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { SubcomponentOptions } from '../../../../../../interfaces/componentOptions';

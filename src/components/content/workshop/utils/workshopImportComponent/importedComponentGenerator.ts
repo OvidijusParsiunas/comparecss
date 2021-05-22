@@ -32,8 +32,9 @@ export class ImportedComponentGenerator {
       [importedComponentName][ENTITY_DISPLAY_STATUS_REF] = baseSubcomponent.subcomponentDisplayStatus;
   }
 
-  public static createImportedComponents(componentGenerator: ComponentGenerator, importedComponentName: string, importedComponentId: number): Subcomponents {
-    const importedComponentRef = componentGenerator.createNewComponent(importedComponentName, importedComponentId);
+  public static createImportedComponents(componentGenerator: ComponentGenerator, importedComponentName: string, importedComponentId: number,
+      subcomponentText?: string): Subcomponents {
+    const importedComponentRef = componentGenerator.createNewComponent(importedComponentName, importedComponentId, subcomponentText);
     ImportedComponentGenerator.applyTopProperty(importedComponentRef, importedComponentName);
     ImportedComponentGenerator.applyOptionalSubcomponentProperty(importedComponentRef, importedComponentName);
     // referencing the whole component within it's own subcomponent may not be efficient

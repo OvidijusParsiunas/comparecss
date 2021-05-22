@@ -434,8 +434,8 @@ function createNewComponent(): WorkshopComponent {
   const importedButton2Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_2;
   const subcomponents = { ...createSubcomponents(),
     ...ImportedComponentGenerator.createImportedComponents(closeButton, importedCloseButtonName, 1),
-    ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton1Name, 2),
-    ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton2Name, 3) };
+    ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton1Name, 2, 'Submit'),
+    ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton2Name, 3, 'Cancel') };
   const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
     subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_3],
     subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_2],

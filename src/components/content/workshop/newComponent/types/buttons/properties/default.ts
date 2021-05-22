@@ -101,15 +101,15 @@ function createText(text: string): Text {
   return { text };
 }
 
-function createDefaultTextCustomFeatures(): CustomFeatures {
+function createDefaultTextCustomFeatures(subcomponentText?: string): CustomFeatures {
   return {
-    subcomponentText: createText('button'),
+    subcomponentText: createText(subcomponentText || 'button'),
     autoWidth: createAutoWidth(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
   }
 }
 
-function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcomponents {
+function createSubcomponents(subcomponentNames: CustomSubcomponentNames, subcomponentText?: string): Subcomponents {
   return {
     [subcomponentNames.base]: {
       subcomponentType: SUBCOMPONENT_TYPES.BUTTON,
@@ -138,18 +138,18 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
       defaultCss: createTextCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      customFeatures: createDefaultTextCustomFeatures(),
-      defaultCustomFeatures: createDefaultTextCustomFeatures(),
+      customFeatures: createDefaultTextCustomFeatures(subcomponentText),
+      defaultCustomFeatures: createDefaultTextCustomFeatures(subcomponentText),
     },
   }
 }
 
 export const defaultButton: ComponentGenerator = {
-  createNewComponent(importedComponentBaseName: string, importedComponentId: number): WorkshopComponent {
+  createNewComponent(importedComponentBaseName: string, importedComponentId: number, subcomponentText?: string): WorkshopComponent {
     const subcomponentNames = importedComponentBaseName
       ? ImportedComponentGenerator.generateImportedComponentNames(importedComponentBaseName, importedComponentId)
       : defaultSubcomponentNames;
-    const subcomponents = createSubcomponents(subcomponentNames);
+    const subcomponents = createSubcomponents(subcomponentNames, subcomponentText);
     ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(subcomponents, subcomponentNames);
     ReferenceSharingUtils.appendBaseSubcomponentRefToAllChildSubcomponents(subcomponents, subcomponentNames);
     const subcomponentDropdownStructure = getButtonSubcomponentDropdownStructure(subcomponentNames);

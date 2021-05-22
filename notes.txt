@@ -4,7 +4,6 @@ javascript to close the alert message
 test in slower pc if the child dropdowns displays options correctly - chrome/firefox
 the x button should close the modal
 maybe clicking outside of the modal should close it too
-esc button
 enter - submit/cancel - potential - call the option 'actions'
 potentially add x button to border coloring
 close button should probably be imported - but need to work through the logistics of inherited css for it
@@ -12,6 +11,7 @@ clicking enter/escape when using the overlay dropdown does not remove the overla
 display second range value with 2 decimal points
 names for button and modal buttons
 highlight play
+layer text height
 
 modals with gifs in them - https://icepanel.io/?human=architect
 close button may need to be a badge
