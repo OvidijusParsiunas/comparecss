@@ -1,5 +1,6 @@
 import { SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS } from '../../../../../../consts/subcomponentSelectModeDisabledElementClass';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../../consts/subcomponentOverlayClasses.enum';
+import { SubcomponentTextUtils } from './utils/subcomponentTextUtils';
 
 export class SubcomponentSelectModeSubOverlay {
 
@@ -17,8 +18,9 @@ export class SubcomponentSelectModeSubOverlay {
       const subOverlay = Array.from(overlay.childNodes)
         .find((overlayChild: HTMLElement) => {
           return overlayChild instanceof HTMLElement && overlayChild.classList.contains(SUBCOMPONENT_OVERLAY_CLASSES.SUB)}) as HTMLElement;
-      subOverlay.style.width = `${overlay.clientWidth}px`
-      subOverlay.style.height = `${overlay.clientHeight}px`
+      subOverlay.style.width = `${overlay.clientWidth}px`;
+      const shorthandTextFont = `${overlay.style.fontWeight} ${overlay.style.fontSize} ${overlay.style.fontFamily}`;
+      subOverlay.style.height = SubcomponentTextUtils.calculateTextHeightPx(overlay.innerText, shorthandTextFont);
     });
   }
 

@@ -32,8 +32,8 @@ export default function useSubcomponentPreviewSelectModeEventHandlers(): UseSubc
   }
 
   const subcomponentMouseEnter = (): void => {
-    const targetElement = event.target as HTMLElement;
     hideLastHighlightedOverlayElement();
+    const targetElement = event.target as HTMLElement;
     if (targetElement.classList.contains(SUBCOMPONENT_OVERLAY_CLASSES.SUB)) {
       highlightSubOverlayParent(targetElement);
     } else {
