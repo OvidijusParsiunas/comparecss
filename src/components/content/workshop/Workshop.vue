@@ -119,12 +119,12 @@ import { ImportedComponentGenerator } from './utils/workshopImportComponent/impo
 import ComponentManipulationUtils from './utils/componentManipulationUtils/componentManipulationUtils';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { ToggleImportComponentModeEvent } from '../../../interfaces/toggleImportComponentModeEvent';
+import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../consts/layerSections.enum';
 import { EntityDisplayStatusUtils } from './utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../consts/subcomponentOverlayClasses.enum';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { inheritedAlertBaseCss } from './newComponent/types/alerts/properties/inheritedCss';
-import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../consts/layerSections';
 import { removeComponentModalState } from './componentList/state/removeComponentModalState';
 import { ComponentCardHoveredEvent } from '../../../interfaces/componentCardHoveredEvent';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../consts/coreSubcomponentNames.enum';

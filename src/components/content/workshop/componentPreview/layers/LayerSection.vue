@@ -21,7 +21,9 @@
         aria-hidden="true"
         :id="subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId"
         class="subcomponent-element"
-        :class="[COMPONENT_PREVIEW_MARKER, ...((nestedSubcomponent.subcomponentProperties.customFeatures && nestedSubcomponent.subcomponentProperties.customFeatures.jsClasses) || []) ]"
+        :class="[COMPONENT_PREVIEW_MARKER, ...((nestedSubcomponent.subcomponentProperties.customFeatures && nestedSubcomponent.subcomponentProperties.customFeatures.jsClasses) || []),
+         (nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text) === CLOSE_BUTTON_X_TEXT
+            ? SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS : '']"
         @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseEnter()"
         @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseLeave()"
         @mousedown="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseDown()"
@@ -50,18 +52,27 @@
           nestedSubcomponent.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
           {display: 'none'}, {color: '#ff000000'}]"
         class="subcomponent-element"
-        :class="[OVERLAY_DEFAULT_CLASS,
-          (nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text) === CLOSE_BUTTON_X_TEXT
-            ? 'close-button-text-overlay-height' : '']">
+        :class="nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text === CLOSE_BUTTON_X_TEXT
+            ? ['close-button-text-overlay-height', SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.SUB_CONTAINER] : [...OVERLAY_DEFAULT_CLASSES]">
           {{isSubcomponentDisplayed(nestedSubcomponent.subcomponentProperties)
             && nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text
               ? nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text : ''}}
+          <!-- subOverlays are used for only displaying the container/actual overlay only when the mouse has reached it's actual content as in some cases (close button text) mouse
+              enter event can be fired before the mouse actually reaches the actual div -->
+          <div v-if="nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text === CLOSE_BUTTON_X_TEXT"
+            :class="SUBCOMPONENT_OVERLAY_CLASSES.SUB"
+            :style="[nestedSubcomponent.subcomponentProperties[nestedSubcomponent.subcomponentProperties.tempCustomCssObjName || 'customCss'][CSS_PSEUDO_CLASSES.DEFAULT], { top: ''}]"
+            @mouseEnter="useSubcomponentPreviewSelectModeEventHandlers.subcomponentMouseEnter"
+            @mouseLeave="useSubcomponentPreviewSelectModeEventHandlers.subcomponentMouseLeave"></div>
       </component>
     </div>
   </div>
 </template>
                     
 <script lang="ts">
+import { SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS } from '../../../../../consts/subcomponentSelectModeDisabledElementClass';
+import useSubcomponentPreviewSelectModeEventHandlers from '../compositionAPI/useSubcomponentPreviewSelectModeEventHandlers';
+import { UseSubcomponentPreviewEventHandlers } from '../../../../../interfaces/useSubcomponentPreviewEventHandlers';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
@@ -71,23 +82,29 @@ import { CLOSE_BUTTON_X_TEXT } from '../../../../../consts/closeButtonXText';
 import SubcomponentDisplayUtils from '../utils/subcomponentDisplayUtils';
 
 interface Consts {
-  OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
+  SUBCOMPONENT_OVERLAY_CLASSES: typeof SUBCOMPONENT_OVERLAY_CLASSES;
+  OVERLAY_DEFAULT_CLASSES: SUBCOMPONENT_OVERLAY_CLASSES[];
   CORE_SUBCOMPONENTS_NAMES: typeof CORE_SUBCOMPONENTS_NAMES;
+  SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS: string;
   COMPONENT_PREVIEW_MARKER: string;
   CLOSE_BUTTON_X_TEXT: string;
   CSS_PSEUDO_CLASSES: typeof CSS_PSEUDO_CLASSES;
   isSubcomponentDisplayed: (nestedSubcomponent: SubcomponentProperties) => boolean;
+  useSubcomponentPreviewSelectModeEventHandlers: UseSubcomponentPreviewEventHandlers;
 }
 
 export default {
   setup(): Consts {
     return {
-      OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT,
+      SUBCOMPONENT_OVERLAY_CLASSES,
+      OVERLAY_DEFAULT_CLASSES: [SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT],
+      SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS,
       CORE_SUBCOMPONENTS_NAMES,
       COMPONENT_PREVIEW_MARKER,
       CLOSE_BUTTON_X_TEXT,
       CSS_PSEUDO_CLASSES,
       isSubcomponentDisplayed: SubcomponentDisplayUtils.isSubcomponentDisplayed,
+      useSubcomponentPreviewSelectModeEventHandlers: useSubcomponentPreviewSelectModeEventHandlers(),
     };
   },
   props: {

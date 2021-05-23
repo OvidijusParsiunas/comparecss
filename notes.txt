@@ -14,6 +14,9 @@ layer text height
 button does not need positional align
 overflow
 
+try with button tags
+check to see if text can be placed into another div
+
 modals with gifs in them - https://icepanel.io/?human=architect
 close button may need to be a badge
 consider having a dropdown to choose which border side to edit

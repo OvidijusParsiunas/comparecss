@@ -39,8 +39,8 @@
                     
 <script lang="ts">
 import { SPECIALISED_SECTION_CONTAINER_CLASSES } from '../../../../../consts/specialisedSectionContainerClasses.enum';
+import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../consts/layerSections.enum';
 import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../../consts/subcomponentCursorClasses.enum';
-import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../consts/layerSections';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
 import layerSection from './LayerSection.vue';
 

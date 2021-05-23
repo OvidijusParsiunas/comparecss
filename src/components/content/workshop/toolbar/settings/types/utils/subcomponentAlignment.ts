@@ -1,7 +1,7 @@
 import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallbacks } from '../../../../../../../interfaces/actionsDropdownMouseEventCallbacks';
 
 export default class SubcomponentAlignment {
-  
+
   private static moveSubcomponentToTargetSection(event: ActionsDropdownMouseEventCallbackEvent): void {
     const { previousOptionName, triggeredOptionName, subcomponentProperties } = event;
     let nestedSubcomponentIndex = 0;
@@ -15,7 +15,7 @@ export default class SubcomponentAlignment {
     }
     previousSectionArray.splice(nestedSubcomponentIndex, 1);
   }
-  
+
   public static generateMouseEventCallbacks(): ActionsDropdownMouseEventCallbacks {
     return {
       mouseClickOptionCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {

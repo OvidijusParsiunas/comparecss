@@ -38,7 +38,7 @@
         component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
         isImportedComponent ? {} : { height: '100% !important' }]"
       :class="[
-        OVERLAY_DEFAULT_CLASS,
+        ...OVERLAY_DEFAULT_CLASSES,
         isImportedComponent ? 'imported-component' : STATIC_POSITION_CLASS,
         isImportedComponent ? '' : 'subcomponent-overlay-with-no-border-property-but-with-height']">
     </div>
@@ -58,7 +58,7 @@ import layers from './layers/Layers.vue';
 
 interface Consts {
   SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES;
-  OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
+  OVERLAY_DEFAULT_CLASSES: SUBCOMPONENT_OVERLAY_CLASSES[];
   STATIC_POSITION_CLASS: string;
   COMPONENT_PREVIEW_MARKER: string;
   BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES;
@@ -70,7 +70,7 @@ export default {
   setup(): Consts {
     return {
       SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES.AUTO,
-      OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT,
+      OVERLAY_DEFAULT_CLASSES: [SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT],
       STATIC_POSITION_CLASS: STATIC_POSITION_CLASS,
       BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES.BASE,
       COMPONENT_PREVIEW_MARKER,
@@ -97,16 +97,18 @@ export default {
   }
 </style>
 <style lang="css">
-  .subcomponent-overlay-default {
-    background-color: rgb(64 197 255 / 43%) !important;
+  .subcomponent-overlay {
     /* the following color is partially transparent and uses the background color to set its own color */
     border-color: rgb(64 197 255 / 0%) !important;
     box-shadow: unset !important;
     position: absolute !important;
     top: 0px;
     width: 100%;
-    pointer-events: none;
     z-index: 1;
+  }
+  .subcomponent-overlay-default {
+    background-color: rgb(64 197 255 / 43%) !important;
+    pointer-events: none;
   }
   .subcomponent-overlay-remove {
     background-color: rgb(255 29 29 / 43%) !important;
@@ -119,6 +121,10 @@ export default {
     border-top-width: 0px !important;
     border-bottom-width: 0px !important;
     height: 100%;
+  }
+  .sub-overlay {
+    position: absolute;
+    top: 0px;
   }
   .subcomponent-cursor-auto {
     cursor: auto;

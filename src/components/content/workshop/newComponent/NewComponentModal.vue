@@ -71,8 +71,8 @@ interface Data {
 interface Consts {
   MODAL_FADE_MILLISECONDS: number;
   CLASS_NAME_PREFIX: string;
-  NEW_COMPONENT_TYPES;
-  NEW_COMPONENT_MODAL_ID;
+  NEW_COMPONENT_TYPES: typeof NEW_COMPONENT_TYPES;
+  NEW_COMPONENT_MODAL_ID: string;
 }
 
 export default {

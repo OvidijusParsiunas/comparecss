@@ -1,5 +1,7 @@
 import { expandedModalPreviewModeState } from '../../../../componentPreview/utils/expandedModalPreviewMode/expandedModalPreviewModeState';
 import { subcomponentAndOverlayElementIdsState } from '../../subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
+import { SUBCOMPONENT_OVERLAY_BACKGROUND_COLOR } from '../../../../../../../consts/subcomponentOverlayBackgroundColor';
+import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../../../consts/subcomponentOverlayClasses.enum';
 import { DropdownCompositionAPI } from '../../../../../../../interfaces/dropdownCompositionAPI';
 import { Ref } from 'vue';
 
@@ -10,7 +12,10 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
     if (!highlightSubcomponents.value) return;
     const subcomponentOverlayElementId = subcomponentAndOverlayElementIdsState.getOverlayIdViaSubcomponentType(subcomponentName);
     const subcomponentOverlayElement = document.getElementById(subcomponentOverlayElementId);
-    if (subcomponentOverlayElement) { 
+    if (subcomponentOverlayElement) {
+      if (subcomponentOverlayElement.classList.contains(SUBCOMPONENT_OVERLAY_CLASSES.SUB_CONTAINER)) {
+        subcomponentOverlayElement.style.backgroundColor = SUBCOMPONENT_OVERLAY_BACKGROUND_COLOR;
+      }
       subcomponentOverlayElement.style.display = displayValue;
     }
   }

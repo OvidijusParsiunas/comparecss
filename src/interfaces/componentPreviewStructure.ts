@@ -1,4 +1,4 @@
-import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections';
+import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { SubcomponentProperties } from './workshopComponent';
 

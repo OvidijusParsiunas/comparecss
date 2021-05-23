@@ -1,4 +1,4 @@
-import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections';
+import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import SubcomponentAlignment from './utils/subcomponentAlignment';
 

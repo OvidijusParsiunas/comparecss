@@ -1,6 +1,6 @@
 import { MODAL_ANIMATION_ENTRANCE_TYPES, MODAL_ANIMATION_EXIT_TYPES } from '../consts/modalAnimationTypes.enum';
+import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../consts/workshopToolbarOptionTypes.enum';
-import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
@@ -146,6 +146,7 @@ export interface SubcomponentProperties {
   subcomponentSpecificSettings?: SubcomponentSpecificSettings;
   customFeatures?: CustomFeatures;
   defaultCustomFeatures?: CustomFeatures;
+  // features that would not be overwritten by imported subcomponent features
   customStaticFeatures?: CustomStaticFeatures; 
   defaultCustomStaticFeatures?: CustomStaticFeatures;
   layerSectionsType?: LAYER_SECTIONS_TYPES;

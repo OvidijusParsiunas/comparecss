@@ -68,6 +68,7 @@
 <script lang="ts">
 import { modalAnimationTypeToFunctionality } from './utils/expandedModalPreviewMode/animationInitializers/modalAnimationTypeToFunctionality';
 import { subcomponentAndOverlayElementIdsState } from '../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
+import { SubcomponentSelectModeSubOverlay } from '../toolbar/options/subcomponentSelectMode/subcomponentSelectModeSubOverlay';
 import ExpandedModalPreviewModeToggleEntranceAnimation from './utils/expandedModalPreviewMode/modeToggleAnimations/entrance';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import ExpandedModalPreviewModeToggleExitAnimation from './utils/expandedModalPreviewMode/modeToggleAnimations/exit';
@@ -145,8 +146,10 @@ export default {
         ComponentPreviewUtils.setAllSubcomponentsCursorsToPointer();
         this.mouseEvents = ComponentPreviewUtils.generateSubcomponentSelectModeMouseEvents(this.subcomponentAndOverlayElementIds);
         this.changeMouseEventsToDefaultOnComponentPreviewMouseEnter = false;
+        SubcomponentSelectModeSubOverlay.displaySubOverlays();    
       } else {
         ComponentPreviewUtils.unsetAllSubcomponentsCursorsFromPointer();
+        SubcomponentSelectModeSubOverlay.toggleDisabledSubcomponentPointerEvents('');
         if ((event.target as HTMLElement).classList.contains(CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS)) {
           // bug fix - when in select subcomponent mode and click on the subcomponent dropdown button, the overlay disappears
           // this is caused by mouseEvents object being reasigned, which in turn causes the component markup to re-render

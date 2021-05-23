@@ -1,6 +1,6 @@
 import { AlignedSections, ComponentPreviewStructure, Layer, NestedSubcomponent } from '../../../../../interfaces/componentPreviewStructure';
+import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../consts/layerSections.enum';
 import { SubcomponentProperties, Subcomponents } from '../../../../../interfaces/workshopComponent';
-import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../consts/layerSections';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomponentNames';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';

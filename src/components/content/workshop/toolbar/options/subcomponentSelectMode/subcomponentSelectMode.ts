@@ -1,3 +1,4 @@
+import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../../consts/subcomponentOverlayClasses.enum';
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
 import { SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER } from '../../../../../../consts/elementClassMarkers';
 import { subcomponentAndOverlayElementIdsState } from './subcomponentAndOverlayElementIdsState';
@@ -16,8 +17,10 @@ export default class SubcomponentSelectMode {
       componentPreviewTriggerCallback: (param1: boolean) => void): WorkshopEventCallbackReturn {
     const lastHighlightedOverlayElement = subcomponentSelectModeState.getLastHighlightedOverlayElementState();
     if (lastHighlightedOverlayElement) {
-      lastHighlightedOverlayElement.style.display = 'none';
-      const subcomponentName = subcomponentAndOverlayElementIdsState.getSubcomponentNameViaOverlayId(lastHighlightedOverlayElement.id);
+      const overlayElement = lastHighlightedOverlayElement.classList.contains(SUBCOMPONENT_OVERLAY_CLASSES.SUB)
+        ? lastHighlightedOverlayElement.parentElement : lastHighlightedOverlayElement;
+      overlayElement.style.display = 'none';
+      const subcomponentName = subcomponentAndOverlayElementIdsState.getSubcomponentNameViaOverlayId(overlayElement.id);
       optionsSubcomponentNameClickedFunc(subcomponentName);
     }
     buttonElement.style.color = FONT_AWESOME_COLORS.DEFAULT;

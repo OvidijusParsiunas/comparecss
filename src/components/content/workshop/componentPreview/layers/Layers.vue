@@ -21,7 +21,7 @@
       <div v-if="isSubcomponentDisplayed(layer.subcomponentProperties)"
         :id="subcomponentAndOverlayElementIds[layer.name] && subcomponentAndOverlayElementIds[layer.name].overlayId"
         style="display: none" :style="layer.subcomponentProperties.customCss[DEFAULT_CSS_PSEUDO_CLASS]"
-        :class="OVERLAY_DEFAULT_CLASS"></div>
+        :class="[...OVERLAY_DEFAULT_CLASSES]"></div>
     </div>
   </div>
 </template>
@@ -36,7 +36,7 @@ import layerSections from './LayerSections.vue';
 
 interface Consts {
   COMPONENT_PREVIEW_MARKER: string;
-  OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES;
+  OVERLAY_DEFAULT_CLASSES: SUBCOMPONENT_OVERLAY_CLASSES[];
   DEFAULT_CSS_PSEUDO_CLASS: CSS_PSEUDO_CLASSES;
   isSubcomponentDisplayed: (nestedSubcomponent: SubcomponentProperties) => boolean;
 }
@@ -45,7 +45,7 @@ export default {
   setup(): Consts {
     return {
       COMPONENT_PREVIEW_MARKER,
-      OVERLAY_DEFAULT_CLASS: SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT,
+      OVERLAY_DEFAULT_CLASSES: [SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT],
       DEFAULT_CSS_PSEUDO_CLASS: CSS_PSEUDO_CLASSES.DEFAULT,
       isSubcomponentDisplayed: SubcomponentDisplayUtils.isSubcomponentDisplayed,
     };
