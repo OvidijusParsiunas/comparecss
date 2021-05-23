@@ -10,7 +10,7 @@
         ...(nestedSubcomponent.subcomponentProperties.customFeatures
           && nestedSubcomponent.subcomponentProperties.customFeatures.jsClasses || [])]">
       <base-component v-if="nestedSubcomponent.subcomponentProperties.importedComponent"
-        class="component-container imported-component-container"
+        class="imported-component-container"
         :class="COMPONENT_PREVIEW_MARKER"
         :component="nestedSubcomponent.subcomponentProperties.importedComponent.componentRef"
         :mouseEvents="mouseEvents"

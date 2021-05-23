@@ -11,7 +11,6 @@ clicking enter/escape when using the overlay dropdown does not remove the overla
 display second range value with 2 decimal points
 highlight play
 layer text height
-button does not need positional align
 overflow
 
 try with button tags
