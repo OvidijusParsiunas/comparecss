@@ -16,8 +16,8 @@ const backdropAnimationDurationSpec = {
   scale: [0, 40],
   smoothingDivisible: 20,
   customFeatureObjectKeys: ['customFeatures', 'backdrop', 'entranceAnimationDuration', 'currentValue'],
-  lastSelectedValueObjectKeys: ['backdrop', 'entranceAnimationDuration', 'lastSelectedValue'],
-  isAutoObjectKeys: ['backdrop', 'entranceAnimationDuration', 'isAuto'],
+  lastSelectedValueObjectKeys: ['customFeatures', 'backdrop', 'entranceAnimationDuration', 'lastSelectedValue'],
+  isAutoObjectKeys: ['customFeatures', 'backdrop', 'entranceAnimationDuration', 'isAuto'],
   postfix: 's',
   updateSettingSpecViaOtherSettings: {
     aggregatedSettingPaths: getAggregatedSettingsPaths(),
@@ -33,7 +33,7 @@ export default {
       spec: {
         name: 'Color',
         default: '#000000',
-        alphaValueCustomFeatureObjectKeys: ['backdrop', 'alpha'],
+        alphaValueCustomFeatureObjectKeys: ['customFeatures', 'backdrop', 'alpha'],
         customFeatureObjectKeys: ['customFeatures', 'backdrop', 'color'],
         unsetColorButtonAvailable: true,
       },
@@ -52,7 +52,7 @@ export default {
         default: 0,
         scale: [0, 100],
         smoothingDivisible: 100,
-        colorValueCustomFeatureObjectKeys: ['backdrop', 'color'],
+        colorValueCustomFeatureObjectKeys: ['customFeatures', 'backdrop', 'color'],
         customFeatureObjectKeys: ['customFeatures', 'backdrop', 'alpha'],
         postfix: '',
       },

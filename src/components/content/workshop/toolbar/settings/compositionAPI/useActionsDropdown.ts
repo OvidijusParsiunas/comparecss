@@ -15,7 +15,7 @@ export default function useActionsDropdown(): UseActionsDropdown {
   const getObjectContainingActiveOption = (settingSpec: any, subcomponentProperties: SubcomponentProperties): unknown => {
     const { customFeatureObjectKeys, cssProperty } = settingSpec;
     if (customFeatureObjectKeys) {
-      return CustomFeaturesUtils.getObjectContainingActiveOption(subcomponentProperties, customFeatureObjectKeys);
+      return CustomFeaturesUtils.getObjectContainingActiveOption(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]);
     }
     return ActionsDropdownUtils.getObjectContainingActiveOption(subcomponentProperties, cssProperty);
   }

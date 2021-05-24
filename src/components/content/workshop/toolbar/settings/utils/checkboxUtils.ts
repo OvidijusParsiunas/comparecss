@@ -13,7 +13,7 @@ export default class CheckboxUtils {
   private static updateCustomFeatureViaTrigger(trigger: any, subcomponentProperties: SubcomponentProperties): void {
     if (trigger.updateUsingValueFromAnotherObjectKeys) {
       const keys = trigger.updateUsingValueFromAnotherObjectKeys;
-      const valueFromAnotherObject = SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys]);
+      const valueFromAnotherObject = SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys[0]]);
       SharedUtils.setCustomFeatureValue(trigger.customFeatureObjectKeys, subcomponentProperties, valueFromAnotherObject);
     }
   }

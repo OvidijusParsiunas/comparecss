@@ -1,10 +1,10 @@
 import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
-import { SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
+import { CustomFeatures } from '../../../../../../../interfaces/workshopComponent';
 
 export default class CustomFeaturesUtils {
 
-  public static getObjectContainingActiveOption(subcomponentProperties: SubcomponentProperties, customFeatureObjectKeys: string[]): WorkshopComponentCss {
-    return (customFeatureObjectKeys[2] && subcomponentProperties[customFeatureObjectKeys[0]][customFeatureObjectKeys[1]])
-      || (customFeatureObjectKeys[1] && subcomponentProperties[customFeatureObjectKeys[0]]);
+  public static getObjectContainingActiveOption(customFeatureObjectKeys: string[], customFeatures: CustomFeatures): WorkshopComponentCss {
+    return (customFeatureObjectKeys[3] && customFeatures[customFeatureObjectKeys[1]][customFeatureObjectKeys[2]])
+      || (customFeatureObjectKeys[2] && customFeatures[customFeatureObjectKeys[1]]);
   }
 }

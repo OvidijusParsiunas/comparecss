@@ -232,8 +232,8 @@ export default {
               const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClass, setting.spec.cssProperty);
               if (cssPropertyValue) { this.inputDropdownsValues[setting.spec.cssProperty] = cssPropertyValue; }
             } else if (setting.type === SETTINGS_TYPES.ACTIONS_DROPDOWN) {
-              const cssPropertyValue = this.getObjectContainingActiveOption(setting.spec, this.subcomponentProperties);
-              if (cssPropertyValue) { this.actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.name] = cssPropertyValue; }
+              const objectContainingActiveOption = this.getObjectContainingActiveOption(setting.spec, this.subcomponentProperties);
+              if (objectContainingActiveOption) { this.actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.name] = objectContainingActiveOption; }
             } else if (setting.type === SETTINGS_TYPES.CHECKBOX) {
               CheckboxUtils.updateSettings(setting.spec, this.subcomponentProperties);
             }
