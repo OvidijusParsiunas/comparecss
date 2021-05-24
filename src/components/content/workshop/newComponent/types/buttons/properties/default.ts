@@ -128,6 +128,7 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames, subcomp
       subcomponentSpecificSettings: buttonSpecificSettings,
       customFeatures: createDefaultButtonBaseCustomFeatures(),
       defaultCustomFeatures: createDefaultButtonBaseCustomFeatures(),
+      triggerableSubcomponentName: subcomponentNames.text,
     },
     [subcomponentNames.layer]: {
       customCss: createLayerCss(),

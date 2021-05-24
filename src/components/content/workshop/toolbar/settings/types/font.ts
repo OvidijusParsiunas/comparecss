@@ -24,15 +24,6 @@ export default {
       },
     },
     {
-      type: SETTINGS_TYPES.COLOR_PICKER,
-      spec: {
-        name: 'Color',
-        default: '#000000',
-        cssProperty: 'color',
-        unsetColorButtonAvailable: true,
-      },
-    },
-    {
       type: SETTINGS_TYPES.INPUT_DROPDOWN,
       spec: {
         name: 'Font',

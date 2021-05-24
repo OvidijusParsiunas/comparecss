@@ -17,6 +17,7 @@ import nestedSubcomponentPosition from './nestedSubcomponentPosition';
 import nestedSubcomponentMargin from './nestedSubcomponentMargin';
 import backdrop from './backdrop';
 import textSize from './textSize';
+import textColor from './textColor';
 import textPosition from './textPosition';
 import textPositionNoAlign from './textPositionNoAlign';
 import text from './text';
@@ -42,6 +43,7 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN]: margin,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT]: text,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_FONT]: font,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_COLOR]: textColor,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND]: background,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_POSITION]: modalPosition,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_POSITION]: textPosition,

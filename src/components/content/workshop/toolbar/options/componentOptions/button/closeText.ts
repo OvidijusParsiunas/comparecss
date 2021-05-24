@@ -3,7 +3,7 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/works
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
 
-type TextWithNoBackgroundOptions = CSS_PSEUDO_CLASSES.DEFAULT;
+type TextWithNoBackgroundOptions = CSS_PSEUDO_CLASSES.DEFAULT | CSS_PSEUDO_CLASSES.HOVER | CSS_PSEUDO_CLASSES.CLICK;
 
 export const closeButtonTextOptions: SubcomponentOptions<TextWithNoBackgroundOptions> = {
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
@@ -12,12 +12,28 @@ export const closeButtonTextOptions: SubcomponentOptions<TextWithNoBackgroundOpt
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_FONT,
     },
     {
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.COLOR,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_COLOR,
+    },
+    {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.PADDING,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_POSITION_NO_ALIGN,
+    },
+  ],
+  [CSS_PSEUDO_CLASSES.HOVER]: [
+    {
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.COLOR,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_COLOR,
+    },
+  ],
+  [CSS_PSEUDO_CLASSES.CLICK]: [
+    {
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.COLOR,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_COLOR,
     },
   ],
 };
