@@ -10,9 +10,9 @@ close button should probably be imported - but need to work through the logistic
 clicking enter/escape when using the overlay dropdown does not remove the overlay
 display second range value with 2 decimal points
 highlight play
-layer text height
-overflow
+text color on hover and click
 
+overflow
 try with button tags
 check to see if text can be placed into another div
 

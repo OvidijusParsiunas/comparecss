@@ -79,8 +79,9 @@ export interface ModalAnimations {
   },
 }
 
-export interface AutoWidth {
-  auto: boolean;
+export interface AutoSize {
+  width?: boolean;
+  height?: boolean;
 }
 
 export interface Text {
@@ -97,7 +98,7 @@ export interface CustomFeatures {
   componentCenteringInParent?: ComponentCenteringInParent;
   modalAnimations?: ModalAnimations;
   jsClasses?: ComponentJavascriptClasses;
-  autoWidth?: AutoWidth;
+  autoSize?: AutoSize;
   alignedLayerSection?: AlignedLayerSection;
 }
 

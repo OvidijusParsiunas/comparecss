@@ -138,6 +138,7 @@ import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
 import { SUBCOMPONENT_TYPES } from '../../../consts/subcomponentTypes.enum';
 import PreviewStructure from './utils/componentGenerator/previewStructure'
 import { RemovalModalState } from '../../../interfaces/removalModalState';
+import { inheritedTextCss } from './newComponent/types/text/inheritedCss'
 import componentContents from './componentPreview/ComponentPreview.vue';
 import removalModalTemplate from './templates/RemovalModalTemplate.vue';
 import newComponentModal from './newComponent/NewComponentModal.vue';
@@ -145,7 +146,7 @@ import componentList from './componentList/ComponentList.vue';
 import toolbar from './toolbar/Toolbar.vue';
 import {
   CustomCss, ModalAnimations, ComponentCenteringInParent, CustomFeatures, Text, CustomStaticFeatures,
-  AutoWidth, BackdropProperties,  AlignedLayerSection, WorkshopComponent, Subcomponents,
+  AutoSize, BackdropProperties,  AlignedLayerSection, WorkshopComponent, Subcomponents,
 } from '../../../interfaces/workshopComponent';
 
 interface Consts {
@@ -221,15 +222,16 @@ function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayer
   return { section };
 }
 
-function createAutoWidth(): AutoWidth {
+function createAutoSize(): AutoSize {
   return {
-    auto: true,
+    width: true,
+    height: true,
   };
 }
 
 function createDefaultText1CustomFeatures(): CustomFeatures {
   return {
-    autoWidth: createAutoWidth(),
+    autoSize: createAutoSize(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
   };
 }
@@ -246,7 +248,7 @@ function createDefaultText1CustomStaticFeatures(): CustomStaticFeatures {
 
 function createDefaultText2CustomFeatures(): CustomFeatures {
   return {
-    autoWidth: createAutoWidth(),
+    autoSize: createAutoSize(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
   };
 }
@@ -344,6 +346,7 @@ function createDefaultText1Css(): CustomCss {
       paddingRight: '0px',
       marginLeft: '0px',
       marginRight: '0px',
+      height: '',
     },
   };
 }
@@ -365,6 +368,7 @@ function createDefaultText2Css(): CustomCss {
       paddingRight: '0px',
       marginLeft: '0px',
       marginRight: '0px',
+      height: '',
     },
   };
 }
@@ -418,6 +422,7 @@ function createSubcomponents(): Subcomponents {
       defaultCss: createDefaultText1Css(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      inheritedCss: inheritedTextCss,
       subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
       subcomponentSpecificSettings: modalTextSpecificSettings,
       customFeatures: createDefaultText1CustomFeatures(),
@@ -430,6 +435,7 @@ function createSubcomponents(): Subcomponents {
       componentTag: 'div',
       customCss: createDefaultText2Css(),
       defaultCss: createDefaultText2Css(),
+      inheritedCss: inheritedTextCss,
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),

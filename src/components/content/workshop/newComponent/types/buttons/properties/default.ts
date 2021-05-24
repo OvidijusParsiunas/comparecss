@@ -1,4 +1,4 @@
-import { AlignedLayerSection, AutoWidth, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text, CustomStaticFeatures } from '../../../../../../../interfaces/workshopComponent';
+import { AlignedLayerSection, AutoSize, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text, CustomStaticFeatures } from '../../../../../../../interfaces/workshopComponent';
 import { ImportedComponentGenerator } from '../../../../utils/workshopImportComponent/importedComponentGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
@@ -81,9 +81,9 @@ function createTextCss(): CustomCss {
   }
 }
 
-function createAutoWidth(): AutoWidth {
+function createAutoSize(): AutoSize {
   return {
-    auto: true,
+    width: true,
   };
 }
 
@@ -99,7 +99,7 @@ function createDefaultButtonBaseCustomFeatures(): CustomFeatures {
 
 function createDefaultTextCustomFeatures(): CustomFeatures {
   return {
-    autoWidth: createAutoWidth(),
+    autoSize: createAutoSize(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
   }
 }

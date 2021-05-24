@@ -45,4 +45,5 @@ export interface WorkshopComponentCss {
   pointerEvents?: string;
   userSelect?: string;
   zIndex?: number;
+  wordBreak?: string;
 }

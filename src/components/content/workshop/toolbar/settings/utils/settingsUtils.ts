@@ -34,7 +34,7 @@ export default class SettingsUtils {
   private static resetCustomCss(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
     const { defaultCss, activeCssPseudoClass } = subcomponentProperties;
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT) {
-      if (defaultCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty]) {
+      if (defaultCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty] !== undefined) {
         const cssValue = defaultCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty];
         SettingsUtils.setCssProperty(subcomponentProperties, cssProperty, cssValue);
       }
