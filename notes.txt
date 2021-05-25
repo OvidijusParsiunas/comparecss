@@ -7,7 +7,6 @@ maybe clicking outside of the modal should close it too
 enter - submit/cancel - potential - call the option 'actions'
 potentially add x button to border coloring
 close button should probably be imported - but need to work through the logistics of inherited css for it
-clicking enter/escape when using the overlay dropdown does not remove the overlay
 display second range value with 2 decimal points
 highlight play
 

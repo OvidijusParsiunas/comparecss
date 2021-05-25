@@ -129,8 +129,8 @@ export default {
         return;
       }
       this.displayHighlightedOptionAndParentMenus();
-      const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
-      const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.hideDropdownMenu};
+      const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE]);
+      const workshopEventCallback: WorkshopEventCallback = {keyTriggers, func: this.hideDropdownMenu};
       this.$emit('hide-dropdown-menu-callback', workshopEventCallback);
       this.areMenusDisplayed = true;
     },
@@ -314,8 +314,12 @@ export default {
       if (isDropdownButtonClicked && !closedViaKey) {
         this.clickedButton = true;
       }
-      if (!isDropdownButtonClicked && this.hideDropdownMenuEventHandler && this.lastHoveredOptionElement) {
-        this.hideDropdownMenuEventHandler(this.lastHoveredOptionElement);
+      if ((!isDropdownButtonClicked || closedViaKey) && this.lastHoveredOptionElement) {
+        if (this.hideDropdownMenuEventHandler) {
+          this.hideDropdownMenuEventHandler(this.lastHoveredOptionElement);
+        } else {
+          this.$emit('hide-dropdown-menu');
+        }
       }
       this.dropdowns = [];
       this.areMenusDisplayed = false;
@@ -356,6 +360,8 @@ export default {
   components: {
     dropdownMenu,
   },
+  // THIS COMPONENT OFFERS A TWO-WAY API, MOUSE EVENTS CAN BE EITHER PASSED IN
+  // OR LISTENED TO VIA EVENT EMITTERS
   props: {
     dropdownOptions: Object,
     objectContainingActiveOption: Object,
