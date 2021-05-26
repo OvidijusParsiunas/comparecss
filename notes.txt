@@ -1,14 +1,9 @@
 Modal:
-Have a default button, then when it is clicked, have the modal
 javascript to close the alert message
 test in slower pc if the child dropdowns displays options correctly - chrome/firefox
-the x button should close the modal
-maybe clicking outside of the modal should close it too
-enter - submit/cancel - potential - call the option 'actions'
 potentially add x button to border coloring
 close button should probably be imported - but need to work through the logistics of inherited css for it
 display second range value with 2 decimal points
-highlight play
 
 overflow
 try with button tags

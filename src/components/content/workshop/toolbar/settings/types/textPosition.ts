@@ -16,7 +16,7 @@ export default {
         postfix: '%',
       },
     },
-    { 
+    {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Align',

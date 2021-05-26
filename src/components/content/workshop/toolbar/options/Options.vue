@@ -104,6 +104,7 @@
               @mouseenter="mouseHoverOption(option, true)" @mouseleave="mouseHoverOption(option, false)">
             <button
               type="button"
+              v-if="isOptionDisplayed(option)"
               :disabled="option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive"
               class="btn btn-outline-secondary option-component-button-child option-select-button-default"
               :class="[
@@ -277,6 +278,16 @@ export default {
           this.$refs.expandedModalPreviewModeToggle.classList.replace(this.HIGHLIGHTED_OPTION_BUTTON_CLASS, 'option-action-button'); 
         }
       }
+    },
+    isOptionDisplayed(option: Option): boolean {
+      if (option.displayIfSubcomponentDisplayed) {
+        const subcomponentName = Object.keys(this.component.subcomponents).find((subcomponentName: string) => subcomponentName === option.displayIfSubcomponentDisplayed);
+        if (subcomponentName) {
+          const subcomponentProperties: SubcomponentProperties = this.component.subcomponents[subcomponentName];
+          return subcomponentProperties.subcomponentDisplayStatus.isDisplayed;
+        }
+      }
+      return true;
     },
     selectOption(option: Option, isManualSelect: boolean): void {
       if (isManualSelect && this.activeOption.buttonName === option.buttonName && this.activeOption.type === option.type) {

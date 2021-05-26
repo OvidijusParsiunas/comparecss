@@ -32,7 +32,7 @@ export const buttonBaseOptions: SubcomponentOptions<ButtonOptionsModes> = {
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
     },
     {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BUTTON_ANIMATIONS,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ANIMATIONS,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS,
     },
   ],

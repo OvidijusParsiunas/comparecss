@@ -115,7 +115,7 @@ function createSubcomponents(): Subcomponents {
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_1]: {
-      subcomponentType: SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT,
+      subcomponentType: SUBCOMPONENT_TYPES.TEXT,
       componentTag: 'div',
       customCss: createTextCss(),
       defaultCss: createTextCss(),

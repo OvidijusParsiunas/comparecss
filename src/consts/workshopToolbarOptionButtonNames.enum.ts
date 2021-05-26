@@ -10,7 +10,6 @@ export enum WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES {
   BACKGROUND = 'Background',
   POSITION = 'Position',
   BACKDROP = 'Backdrop',
-  BUTTON_ANIMATIONS = 'Animations',
-  MODAL_ANIMATIONS = 'Animations',
-  MODAL_ACTIONS = 'Actions',
+  ANIMATIONS = 'Animations',
+  ACTIONS = 'Actions',
 }

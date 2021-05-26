@@ -1,4 +1,4 @@
-import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../..//consts/workshopToolbarOptionButtonNames.enum';
+import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../../consts/workshopToolbarOptionButtonNames.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
@@ -34,12 +34,12 @@ export const modalBaseOptions: SubcomponentOptions<ModalBaseOptionsModes> = {
       enabledOnExpandedModalPreviewMode: true,
     },
     {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MODAL_ANIMATIONS,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ANIMATIONS,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ANIMATIONS,
       enabledOnExpandedModalPreviewMode: true,
     },
     {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MODAL_ACTIONS,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ACTIONS,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ACTIONS,
       enabledOnExpandedModalPreviewMode: true,
     },
