@@ -188,11 +188,11 @@ export default {
       if (isEntranceAnimation) {
         PreviewEntranceAnimation.start(
           modalAnimationTypeToFunctionality[animationType] as ModalEntranceAnimation,
-          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.modalAnimations.entrance.duration, this.$refs.baseComponent.$refs.componentPreview);
+          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.animations.entrance.duration, this.$refs.baseComponent.$refs.componentPreview);
       } else {
         PreviewExitAnimation.start(
           modalAnimationTypeToFunctionality[animationType] as ModalExitAnimation,
-          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.modalAnimations.exit.duration, this.$refs.baseComponent.$refs.componentPreview);
+          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.animations.exit.duration, this.$refs.baseComponent.$refs.componentPreview);
       }
     },
     stopAnimationPreview(): void {

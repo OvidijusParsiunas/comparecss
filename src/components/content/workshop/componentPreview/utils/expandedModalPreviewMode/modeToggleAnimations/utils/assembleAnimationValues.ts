@@ -12,9 +12,9 @@ export class AssembleAnimationValues {
 
   public static assembleEntranceAnimationValues(componentPreviewComponent: ComponentOptions): AssembledModalEntranceAnimationValues {
     return {
-      modalEntranceAnimation: modalAnimationTypeToFunctionality[componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.modalAnimations.entrance.type],
-      animationDuration: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.modalAnimations.entrance.duration,
-      animationDelay: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.modalAnimations.entrance.delay,
+      modalEntranceAnimation: modalAnimationTypeToFunctionality[componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.entrance.type],
+      animationDuration: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.entrance.duration,
+      animationDelay: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.entrance.delay,
       backdropProperties: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.backdrop,
       modalElement: componentPreviewComponent.$refs.baseComponent.$refs.componentPreview,
       modalOverlayElement: componentPreviewComponent.$refs.baseComponent.$refs.componentPreviewOverlay,
@@ -24,8 +24,8 @@ export class AssembleAnimationValues {
 
   public static assembleExitAnimationValues(componentPreviewComponent: ComponentOptions, exitAnimationCallback: () => void): AssembledModalExitAnimationValues {
     return {
-      modalExitAnimation: modalAnimationTypeToFunctionality[componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.modalAnimations.exit.type],
-      animationDuration: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.modalAnimations.exit.duration,
+      modalExitAnimation: modalAnimationTypeToFunctionality[componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.exit.type],
+      animationDuration: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.exit.duration,
       setOptionToDefaultCallback: exitAnimationCallback,
       componentPreviewContainerElement: componentPreviewComponent.$refs.componentPreviewContainer,
       backdropProperties: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.backdrop,

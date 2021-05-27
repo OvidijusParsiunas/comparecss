@@ -34,12 +34,12 @@ export const alertBaseOptions: SubcomponentOptions<AlertBaseOptionsModes> = {
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ANIMATIONS,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ANIMATIONS,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.ALERT_ANIMATIONS,
       displayIfSubcomponentDisplayed: CORE_SUBCOMPONENTS_NAMES.CLOSE,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ACTIONS,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ACTIONS,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.ALERT_ACTIONS,
       displayIfSubcomponentDisplayed: CORE_SUBCOMPONENTS_NAMES.CLOSE,
     },
   ],

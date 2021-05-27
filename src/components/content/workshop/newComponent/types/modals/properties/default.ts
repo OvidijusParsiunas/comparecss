@@ -1,4 +1,4 @@
-import { MODAL_ANIMATION_ENTRANCE_TYPES, MODAL_ANIMATION_EXIT_TYPES } from '../../../../../../../consts/modalAnimationTypes.enum';
+import { MODAL_ANIMATION_ENTRANCE_TYPES, MODAL_ANIMATION_EXIT_TYPES } from '../../../../../../../consts/animationTypes.enum';
 import { ImportedComponentGenerator } from '../../../../utils/workshopImportComponent/importedComponentGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
@@ -11,6 +11,7 @@ import { modalLayerBottomSpecificSettings } from './modalLayerBottomSpecificSett
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getModalSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { modalLayerTopSpecificSettings } from './modalLayerTopSpecificSettings';
+import { CloseTriggers } from '../../../../../../../interfaces/closeTriggers';
 import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';
 import { modalTextSpecificSettings } from './modalTextSpecificSettings';
 import { modalBaseSpecificSettings } from './modalBaseSpecificSettings';
@@ -19,23 +20,9 @@ import { defaultButton } from '../../buttons/properties/default';
 import { inheritedTextCss } from '../../text/inheritedCss';
 import { inheritedAlertBaseCss } from './inheritedCss';
 import {
-  CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, AlignedLayerSection, ModalAnimations,
+  CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, AlignedLayerSection, Animations,
   AutoSize, BackdropProperties, ComponentCenteringInParent, Text, CustomStaticFeatures,
 } from '../../../../../../../interfaces/workshopComponent';
-
-function createDefaultModalAnimationsProperties(): ModalAnimations {
-  return {
-    entrance: {
-      type: MODAL_ANIMATION_ENTRANCE_TYPES.FADE_IN,
-      duration: '0.3s',
-      delay: '0.15s',
-    },
-    exit: {
-      type: MODAL_ANIMATION_EXIT_TYPES.FADE_OUT,
-      duration: '0.25s',
-    },
-  };
-}
 
 function createDefaultComponentCenteringInParent(): ComponentCenteringInParent {
   return {
@@ -55,19 +42,37 @@ function createDefaultBackdropProperties(): BackdropProperties {
     },
     opacity: 0,
     visible: false,
-    closeTriggers: {
-      enter: false,
-      escape: false,
-      backdrop: false,
+  };
+}
+
+function createDefaultModalAnimationsProperties(): Animations {
+  return {
+    entrance: {
+      type: MODAL_ANIMATION_ENTRANCE_TYPES.FADE_IN,
+      duration: '0.3s',
+      delay: '0.15s',
     },
+    exit: {
+      type: MODAL_ANIMATION_EXIT_TYPES.FADE_OUT,
+      duration: '0.25s',
+    },
+  };
+}
+
+function createDefaultComponentCloseTriggerProperties(): CloseTriggers {
+  return {
+    enter: false,
+    escape: false,
+    backdrop: false,
   };
 }
 
 function createDefaultBaseCustomFeatures(): CustomFeatures {
   return {
     componentCenteringInParent: createDefaultComponentCenteringInParent(),
-    modalAnimations: createDefaultModalAnimationsProperties(),
     backdrop: createDefaultBackdropProperties(),
+    animations: createDefaultModalAnimationsProperties(),
+    closeTriggers: createDefaultComponentCloseTriggerProperties(),
   };
 }
 

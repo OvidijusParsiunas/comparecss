@@ -107,9 +107,9 @@
 import { modalLayerBottomSpecificSettings } from './newComponent/types/modals/properties/modalLayerBottomSpecificSettings';
 import { removeSubcomponentModalState } from './toolbar/options/removeSubcomponentModalState/removeSubcomponentModalState';
 import getModalSubcomponentDropdownStructure from './newComponent/types/modals/properties/subcomponentDropdownStructure'
-import { MODAL_ANIMATION_ENTRANCE_TYPES, MODAL_ANIMATION_EXIT_TYPES } from '../../../consts/modalAnimationTypes.enum';
 import SubcomponentToggleOverlayUtils from './toolbar/options/subcomponentToggleUtils/subcomponentToggleOverlayUtils';
 import { modalLayerTopSpecificSettings } from './newComponent/types/modals/properties/modalLayerTopSpecificSettings';
+import { MODAL_ANIMATION_ENTRANCE_TYPES, MODAL_ANIMATION_EXIT_TYPES } from '../../../consts/animationTypes.enum';
 import { ToggleImportComponentModeState } from './utils/workshopImportComponent/toggleImportComponentModeState';
 import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
 import { modalBaseSpecificSettings } from './newComponent/types/modals/properties/modalBaseSpecificSettings';
@@ -145,9 +145,10 @@ import newComponentModal from './newComponent/NewComponentModal.vue';
 import componentList from './componentList/ComponentList.vue';
 import toolbar from './toolbar/Toolbar.vue';
 import {
-  CustomCss, ModalAnimations, ComponentCenteringInParent, CustomFeatures, Text, CustomStaticFeatures,
+  CustomCss, Animations, ComponentCenteringInParent, CustomFeatures, Text, CustomStaticFeatures,
   AutoSize, BackdropProperties,  AlignedLayerSection, WorkshopComponent, Subcomponents,
 } from '../../../interfaces/workshopComponent';
+import { CloseTriggers } from '@/interfaces/closeTriggers';
 
 interface Consts {
   preloadedIconsElementId: string;
@@ -170,20 +171,6 @@ interface Data {
   isImportComponentModeActive: boolean;
 }
 
-function createDefaultModalAnimationsProperties(): ModalAnimations {
-  return {
-    entrance: {
-      type: MODAL_ANIMATION_ENTRANCE_TYPES.FADE_IN,
-      duration: '0.3s',
-      delay: '0.15s',
-    },
-    exit: {
-      type: MODAL_ANIMATION_EXIT_TYPES.FADE_OUT,
-      duration: '0.25s',
-    },
-  };
-}
-
 function createDefaultComponentCenteringInParent(): ComponentCenteringInParent {
   return {
     vertical: true,
@@ -202,19 +189,37 @@ function createDefaultBackdropProperties(): BackdropProperties {
     },
     opacity: 0,
     visible: false,
-    closeTriggers: {
-      enter: false,
-      escape: false,
-      backdrop: false,
+  };
+}
+
+function createDefaultModalAnimationsProperties(): Animations {
+  return {
+    entrance: {
+      type: MODAL_ANIMATION_ENTRANCE_TYPES.FADE_IN,
+      duration: '0.3s',
+      delay: '0.15s',
     },
+    exit: {
+      type: MODAL_ANIMATION_EXIT_TYPES.FADE_OUT,
+      duration: '0.25s',
+    },
+  };
+}
+
+function createDefaultComponentCloseTriggerProperties(): CloseTriggers {
+  return {
+    enter: false,
+    escape: false,
+    backdrop: false,
   };
 }
 
 function createDefaultBaseCustomFeatures(): CustomFeatures {
   return {
     componentCenteringInParent: createDefaultComponentCenteringInParent(),
-    modalAnimations: createDefaultModalAnimationsProperties(),
     backdrop: createDefaultBackdropProperties(),
+    animations: createDefaultModalAnimationsProperties(),
+    closeTriggers: createDefaultComponentCloseTriggerProperties(),
   };
 }
 

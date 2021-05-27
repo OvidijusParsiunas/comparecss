@@ -1,18 +1,44 @@
-import { AlignedLayerSection, AutoSize, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text, CustomStaticFeatures } from '../../../../../../../interfaces/workshopComponent';
+import { AlignedLayerSection, AutoSize, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text, CustomStaticFeatures, Animations } from '../../../../../../../interfaces/workshopComponent';
 import { ImportedComponentGenerator } from '../../../../utils/workshopImportComponent/importedComponentGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
+import { ALERT_ANIMATION_EXIT_TYPES } from '../../../../../../../consts/animationTypes.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getAlertSubcomponentDropdownStructure from './subcomponentDropdownStructure';
+import { CloseTriggers } from '../../../../../../../interfaces/closeTriggers';
 import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';
 import { alertBaseSpecificSettings } from './alertBaseSpecificSettings';
 import { closeButton } from '../../buttons/properties/closeButton';
 import { inheritedAlertBaseCss } from './inheritedCss';
+
+function createDefaultAlertAnimationsProperties(): Animations {
+  return {
+    exit: {
+      type: ALERT_ANIMATION_EXIT_TYPES.FADE_OUT,
+      duration: '0.25s',
+    },
+  };
+}
+
+function createDefaultComponentCloseTriggerProperties(): CloseTriggers {
+  return {
+    enter: false,
+    escape: false,
+    backdrop: false,
+  };
+}
+
+function createDefaultBaseCustomFeatures(): CustomFeatures {
+  return {
+    animations: createDefaultAlertAnimationsProperties(),
+    closeTriggers: createDefaultComponentCloseTriggerProperties(),
+  };
+}
 
 // all default css needs to be filled in as to be able to 'reset' correctly
 function createDefaultBaseCss(): CustomCss {
@@ -106,6 +132,8 @@ function createSubcomponents(): Subcomponents {
       inheritedCss: inheritedAlertBaseCss,
       childCss: inheritedAlertBaseChildCss,
       subcomponentSpecificSettings: alertBaseSpecificSettings,
+      customFeatures: createDefaultBaseCustomFeatures(),
+      defaultCustomFeatures: createDefaultBaseCustomFeatures(),
     },
     [CORE_SUBCOMPONENTS_NAMES.LAYER_1]: {
       customCss: createDefaultLayerCss(),

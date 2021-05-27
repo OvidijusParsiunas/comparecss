@@ -1,4 +1,4 @@
-import { MODAL_ANIMATION_ENTRANCE_TYPES, MODAL_ANIMATION_EXIT_TYPES } from '../consts/modalAnimationTypes.enum';
+import { ALERT_ANIMATION_EXIT_TYPES, MODAL_ANIMATION_ENTRANCE_TYPES, MODAL_ANIMATION_EXIT_TYPES } from '../consts/animationTypes.enum';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../consts/workshopToolbarOptionTypes.enum';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
@@ -59,7 +59,6 @@ export interface BackdropProperties {
   exitAnimationDuration?: string;
   opacity: number;
   visible: boolean;
-  closeTriggers: CloseTriggers;
 }
 
 export interface ComponentCenteringInParent {
@@ -67,14 +66,14 @@ export interface ComponentCenteringInParent {
   horizontal: boolean;
 }
 
-export interface ModalAnimations {
-  entrance: {
+export interface Animations {
+  entrance?: {
     type: MODAL_ANIMATION_ENTRANCE_TYPES;
     duration: string;
     delay: string;
   },
   exit: {
-    type: MODAL_ANIMATION_EXIT_TYPES;
+    type: MODAL_ANIMATION_EXIT_TYPES | ALERT_ANIMATION_EXIT_TYPES;
     duration: string;
   },
 }
@@ -96,7 +95,8 @@ export interface CustomFeatures {
   backdrop?: BackdropProperties;
   // currently used to position modal either in the center of the screen or the top
   componentCenteringInParent?: ComponentCenteringInParent;
-  modalAnimations?: ModalAnimations;
+  animations?: Animations;
+  closeTriggers?: CloseTriggers;
   jsClasses?: ComponentJavascriptClasses;
   autoSize?: AutoSize;
   alignedLayerSection?: AlignedLayerSection;
