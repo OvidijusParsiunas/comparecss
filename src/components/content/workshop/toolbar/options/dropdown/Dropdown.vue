@@ -112,7 +112,7 @@ export default {
   },
   mounted(): void {
     if (!this.areDropdownOptionsProcessed) this.processDropdownOptions();
-    this.toggleDropdownDisplay();
+    this.isDropdownDisplayed();
   },
   methods: {
     buttonClick(): void {
@@ -348,11 +348,11 @@ export default {
       });
       this.processedOptions = resultObject;
     },
-    toggleDropdownDisplay(): void {
+    isDropdownDisplayed(): void {
       if (this.isNested) {
         this.isComponentDisplayed = !!this.dropdownOptions;
       } else {
-        this.isComponentDisplayed = Object.keys(this.dropdownOptions).length > 1;
+        this.isComponentDisplayed = Object.keys(this.dropdownOptions).length > 0;
       }
       this.$emit('is-component-displayed', this.isComponentDisplayed);
     }
@@ -388,7 +388,7 @@ export default {
       this.processDropdownOptions();
     },
     dropdownOptions(): void {
-      this.toggleDropdownDisplay();
+      this.isDropdownDisplayed();
     }
   }
 };

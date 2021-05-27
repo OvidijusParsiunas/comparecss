@@ -1,6 +1,6 @@
 import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallbacks } from '../../../../../../interfaces/actionsDropdownsMouseEventCallbacks';
 import { PlayModalAnimationPreviewEvent } from '../../../../../../interfaces/playModalAnimationPreviewEvent';
-import { MODAL_ANIMATION_EXIT_TYPES } from '../../../../../../consts/animationTypes.enum';
+import { ALERT_ANIMATION_EXIT_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 
 function generateMouseEventCallbacks(isEntranceAnimation: boolean): ActionsDropdownMouseEventCallbacks {
@@ -30,8 +30,8 @@ export default {
     {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
-        name: 'Exit',
-        options: { [MODAL_ANIMATION_EXIT_TYPES.FADE_OUT]: null, [MODAL_ANIMATION_EXIT_TYPES.SLIDE_OUT]: null },
+        name: 'Close',
+        options: { [ALERT_ANIMATION_EXIT_TYPES.FADE_OUT]: null },
         activeOptionPropertyKeyName: 'type',
         customFeatureObjectKeys: ['customFeatures', 'animations', 'exit', 'type'],
         ...generateMouseEventCallbacks(false),
