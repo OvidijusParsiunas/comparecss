@@ -10,7 +10,6 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentType
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getAlertSubcomponentDropdownStructure from './subcomponentDropdownStructure';
-import { CloseTriggers } from '../../../../../../../interfaces/closeTriggers';
 import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';
 import { alertBaseSpecificSettings } from './alertBaseSpecificSettings';
 import { closeButton } from '../../buttons/properties/closeButton';
@@ -25,18 +24,9 @@ function createDefaultAlertAnimationsProperties(): Animations {
   };
 }
 
-function createDefaultComponentCloseTriggerProperties(): CloseTriggers {
-  return {
-    enter: false,
-    escape: false,
-    backdrop: false,
-  };
-}
-
 function createDefaultBaseCustomFeatures(): CustomFeatures {
   return {
     animations: createDefaultAlertAnimationsProperties(),
-    closeTriggers: createDefaultComponentCloseTriggerProperties(),
   };
 }
 

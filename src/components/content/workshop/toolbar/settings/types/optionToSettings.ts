@@ -25,7 +25,6 @@ import buttonAnimations from './buttonAnimations';
 import modalAnimations from './modalAnimations';
 import modalActions from './modalActions';
 import alertAnimations from './alertAnimations';
-import alertActions from './alertActions';
 
 type OptionToSettings = {
   [key in WORKSHOP_TOOLBAR_OPTION_TYPES]?: any;
@@ -57,6 +56,5 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS]: buttonAnimations,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.ALERT_ANIMATIONS]: alertAnimations,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ANIMATIONS]: modalAnimations,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.ALERT_ACTIONS]: alertActions,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ACTIONS]: modalActions,
 };
