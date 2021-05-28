@@ -30,7 +30,7 @@ export default {
     {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
-        name: 'Close',
+        name: 'Dismiss',
         options: { [ALERT_ANIMATION_EXIT_TYPES.FADE_OUT]: null },
         activeOptionPropertyKeyName: 'type',
         customFeatureObjectKeys: ['customFeatures', 'animations', 'exit', 'type'],

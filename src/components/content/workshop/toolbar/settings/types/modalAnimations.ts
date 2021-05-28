@@ -67,7 +67,7 @@ export default {
     {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
-        name: 'Close',
+        name: 'Exit',
         options: { [MODAL_ANIMATION_EXIT_TYPES.FADE_OUT]: null, [MODAL_ANIMATION_EXIT_TYPES.SLIDE_OUT]: null },
         activeOptionPropertyKeyName: 'type',
         customFeatureObjectKeys: ['customFeatures', 'animations', 'exit', 'type'],
