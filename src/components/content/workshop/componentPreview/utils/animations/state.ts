@@ -13,7 +13,6 @@ let pendingToolbarEntranceFadeInAnimationState = null;
 let pendingToolbarEntranceAnimationUnsetState = null;
 
 let animationDelayState = null;
-let pendingAnimationStartState = null;
 let pendingAnimationEndState = null;
 let pendingAnimationPreviewUnsetState = null;
 
@@ -92,10 +91,6 @@ function setIsWaitingAnimationDelayState(state: boolean): void {
   isWaitingAnimationDelayState = state;
 }
 
-function setPendingAnimationStartState(state: number): void {
-  pendingAnimationStartState = state;
-}
-
 function setPendingAnimationEndState(state: number): void {
   pendingAnimationEndState = state;
 }
@@ -105,7 +100,6 @@ function setPendingAnimationPreviewUnsetState(state: number): void {
 }
 
 function cancelPendingAnimationFunctionality(): void {
-  clearTimeout(pendingAnimationStartState);
   clearTimeout(pendingAnimationEndState);
   clearTimeout(pendingAnimationPreviewUnsetState);
   clearTimeout(animationDelayState);
@@ -130,7 +124,6 @@ export const animationState = {
   setAnimationDelayState,
   getIsWaitingAnimationDelayState,
   setIsWaitingAnimationDelayState,
-  setPendingAnimationStartState,
   setPendingAnimationEndState,
   setPendingAnimationPreviewUnsetState,
   cancelPendingAnimationFunctionality,
