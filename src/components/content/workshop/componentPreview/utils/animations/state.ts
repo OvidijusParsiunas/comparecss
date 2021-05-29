@@ -7,15 +7,15 @@ let isToolbarFadeAnimationInProgress = false;
 let isAnimationPreviewInProgressState = false;
 let isWaitingAnimationDelayState = false;
 let expandedModalModeToolbarContainerPositionState = EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.DEFAULT;
-let currentExitAnimationModalDefaultPropertiesState = {};
+let currentExitAnimationDefaultPropertiesState = {};
 
 let pendingToolbarEntranceFadeInAnimationState = null;
 let pendingToolbarEntranceAnimationUnsetState = null;
 
-let modalAnimationDelayState = null;
-let pendingModalAnimationStartState = null;
-let pendingModalAnimationEndState = null;
-let pendingModalAnimationPreviewUnsetState = null;
+let animationDelayState = null;
+let pendingAnimationStartState = null;
+let pendingAnimationEndState = null;
+let pendingAnimationPreviewUnsetState = null;
 
 function markBeginningTimeOfAnimationState(): void {
   beginningTimeOfAnimationState = performance.now();
@@ -58,11 +58,11 @@ function setExpandedModalModeToolbarContainerPositionState(state: EXPANDED_MODAL
 }
 
 function setIsPreviewAnimationInProgressState(): ElementStyleProperties {
-  return currentExitAnimationModalDefaultPropertiesState;
+  return currentExitAnimationDefaultPropertiesState;
 }
 
-function setCurrentExitAnimationModalDefaultPropertiesState(state: ElementStyleProperties): void {
-  currentExitAnimationModalDefaultPropertiesState = state;
+function setCurrentExitAnimationDefaultPropertiesState(state: ElementStyleProperties): void {
+  currentExitAnimationDefaultPropertiesState = state;
 }
 
 function setPendingToolbarEntranceFadeInAnimationState(state: number): void {
@@ -79,8 +79,8 @@ function cancelPendingToolbarAnimationFunctionality(): void {
   clearTimeout(pendingToolbarEntranceAnimationUnsetState);
 }
 
-function setModalAnimationDelayState(state: number): void {
-  modalAnimationDelayState = state;
+function setAnimationDelayState(state: number): void {
+  animationDelayState = state;
   setIsWaitingAnimationDelayState(true);
 }
 
@@ -92,26 +92,26 @@ function setIsWaitingAnimationDelayState(state: boolean): void {
   isWaitingAnimationDelayState = state;
 }
 
-function setPendingModalAnimationStartState(state: number): void {
-  pendingModalAnimationStartState = state;
+function setPendingAnimationStartState(state: number): void {
+  pendingAnimationStartState = state;
 }
 
-function setPendingModalAnimationEndState(state: number): void {
-  pendingModalAnimationEndState = state;
+function setPendingAnimationEndState(state: number): void {
+  pendingAnimationEndState = state;
 }
 
-function setPendingModalAnimationPreviewUnsetState(state: number): void {
-  pendingModalAnimationPreviewUnsetState = state;
+function setPendingAnimationPreviewUnsetState(state: number): void {
+  pendingAnimationPreviewUnsetState = state;
 }
 
-function cancelPendingModalAnimationFunctionality(): void {
-  clearTimeout(pendingModalAnimationStartState);
-  clearTimeout(pendingModalAnimationEndState);
-  clearTimeout(pendingModalAnimationPreviewUnsetState);
-  clearTimeout(modalAnimationDelayState);
+function cancelPendingAnimationFunctionality(): void {
+  clearTimeout(pendingAnimationStartState);
+  clearTimeout(pendingAnimationEndState);
+  clearTimeout(pendingAnimationPreviewUnsetState);
+  clearTimeout(animationDelayState);
 }
 
-export const expandedModalPreviewModeState = {
+export const animationState = {
   markBeginningTimeOfAnimationState,
   getElapsedAnimationTime,
   getIsModeToggleAnimationInProgressState,
@@ -123,15 +123,15 @@ export const expandedModalPreviewModeState = {
   getExpandedModalModeToolbarContainerPositionState,
   setExpandedModalModeToolbarContainerPositionState,
   setIsPreviewAnimationInProgressState,
-  setCurrentExitAnimationModalDefaultPropertiesState,
+  setCurrentExitAnimationDefaultPropertiesState,
   setPendingToolbarEntranceFadeInAnimationState,
   setPendingToolbarEntranceAnimationUnsetState,
   cancelPendingToolbarAnimationFunctionality,
-  setModalAnimationDelayState,
+  setAnimationDelayState,
   getIsWaitingAnimationDelayState,
   setIsWaitingAnimationDelayState,
-  setPendingModalAnimationStartState,
-  setPendingModalAnimationEndState,
-  setPendingModalAnimationPreviewUnsetState,
-  cancelPendingModalAnimationFunctionality,
+  setPendingAnimationStartState,
+  setPendingAnimationEndState,
+  setPendingAnimationPreviewUnsetState,
+  cancelPendingAnimationFunctionality,
 }

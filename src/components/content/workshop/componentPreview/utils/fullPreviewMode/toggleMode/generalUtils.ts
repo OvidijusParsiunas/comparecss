@@ -1,12 +1,12 @@
 import { WorkshopEventCallbackReturn } from '../../../../../../../interfaces/workshopEventCallbackReturn';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../../../interfaces/workshopEventCallback';
-import ExpandedModalModeGeneralUtils from '../../expandedModalPreviewMode/utils/generalUtils';
+import ExpandedModalModeGeneralUtils from '../../animations/utils/generalUtils';
 import { ComponentOptions } from 'vue';
 import {
   MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, OPACITY_VISIBLE, OPACITY_INVISIBLE, ELEMENT_CSS_CHANGE_MILLISECONDS, 
   MODE_TOGGLE_FADE_ANIMATION_DURATION_MILLISECONDS, POINTER_EVENTS_NONE, POINTER_EVENTS_REMOVE,
-} from '../../expandedModalPreviewMode/consts/sharedConsts';
+} from '../../animations/consts/sharedConsts';
 
 export default class GeneralUtils {
 

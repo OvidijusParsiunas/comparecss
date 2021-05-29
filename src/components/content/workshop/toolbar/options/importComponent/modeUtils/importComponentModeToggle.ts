@@ -1,4 +1,4 @@
-import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../../../componentPreview/utils/expandedModalPreviewMode/consts/sharedConsts';
+import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../../../componentPreview/utils/animations/consts/sharedConsts';
 import { ImportComponedModeToggleOff } from './importComponentModeToggleOff';
 import { ComponentOptions } from 'vue';
 

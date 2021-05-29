@@ -1,5 +1,5 @@
 import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES, TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS } from '../../../../../../../consts/toolbarClasses';
-import { POINTER_EVENTS_NONE, SET_METHODS } from '../../expandedModalPreviewMode/consts/sharedConsts';
+import { POINTER_EVENTS_NONE, SET_METHODS } from '../../animations/consts/sharedConsts';
 import ComponentPreviewUtils from '../../componentPreviewUtils';
 import { fulPreviewModeState } from '../fullPreviewModeState';
 import ToggleDisplays from './toggleModal/toggleModal';

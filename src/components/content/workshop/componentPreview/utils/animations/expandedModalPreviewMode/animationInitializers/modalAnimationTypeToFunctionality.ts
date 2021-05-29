@@ -1,12 +1,12 @@
-import { MODAL_ANIMATION_ENTRANCE_TYPES, MODAL_ANIMATION_EXIT_TYPES } from '../../../../../../../consts/animationTypes.enum';
-import { ModalEntranceAnimation, ModalExitAnimation } from '../../../../../../../interfaces/modalAnimations';
+import { MODAL_ANIMATION_ENTRANCE_TYPES, MODAL_ANIMATION_EXIT_TYPES } from '../../../../../../../../consts/animationTypes.enum';
+import { EntranceAnimation, ExitAnimation } from '../../../../../../../../interfaces/animations';
 import SlideAnimations from './slideAnimations';
 import FadeAnimations from './fadeAnimations';
 
 type ModalAnimationEntranceTypesToSettings = {
-  [key in MODAL_ANIMATION_ENTRANCE_TYPES]: ModalEntranceAnimation;
+  [key in MODAL_ANIMATION_ENTRANCE_TYPES]: EntranceAnimation;
 } & {
-  [key in MODAL_ANIMATION_EXIT_TYPES]: ModalExitAnimation;
+  [key in MODAL_ANIMATION_EXIT_TYPES]: ExitAnimation;
 }
 
 export const modalAnimationTypeToFunctionality: ModalAnimationEntranceTypesToSettings = {

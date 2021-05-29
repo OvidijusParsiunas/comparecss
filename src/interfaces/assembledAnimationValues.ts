@@ -1,8 +1,8 @@
-import { ModalEntranceAnimation, ModalExitAnimation } from './modalAnimations';
+import { EntranceAnimation, ExitAnimation } from './animations';
 import { BackdropProperties } from './workshopComponent';
 
 export interface AssembledModalEntranceAnimationValues {
-  modalEntranceAnimation: ModalEntranceAnimation;
+  modalEntranceAnimation: EntranceAnimation;
   animationDuration: string;
   animationDelay: string;
   backdropProperties: BackdropProperties;
@@ -12,7 +12,7 @@ export interface AssembledModalEntranceAnimationValues {
 }
 
 export interface AssembledModalExitAnimationValues {
-  modalExitAnimation: ModalExitAnimation;
+  modalExitAnimation: ExitAnimation;
   animationDuration: string;
   setOptionToDefaultCallback: () => void;
   componentPreviewContainerElement: HTMLElement;

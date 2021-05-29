@@ -1,7 +1,7 @@
-import { ExitAnimationCallback } from '../../../../../../../interfaces/modalAnimations';
-import { BackdropProperties } from '../../../../../../../interfaces/workshopComponent';
-import { expandedModalPreviewModeState } from '../expandedModalPreviewModeState';
-import AnimationUtils from '../utils/animationUtils';
+import { BackdropProperties } from '../../../../../../../../interfaces/workshopComponent';
+import { ExitAnimationCallback } from '../../../../../../../../interfaces/animations';
+import AnimationUtils from '../../utils/animationUtils';
+import { animationState } from '../../state';
 
 export default class SlideAnimations {
 
@@ -10,7 +10,7 @@ export default class SlideAnimations {
   private static prepareEntranceAnimation(modalElement: HTMLElement): string {
     const currentTopStyleValue = modalElement.style.top || '0px';
     const currentTopStyleValueNumber = Number.parseInt(currentTopStyleValue);
-    expandedModalPreviewModeState.setCurrentExitAnimationModalDefaultPropertiesState({top: currentTopStyleValue});
+    animationState.setCurrentExitAnimationDefaultPropertiesState({top: currentTopStyleValue});
     modalElement.style.top = `${currentTopStyleValueNumber - SlideAnimations.SLIDE_DISTANCE_NUMBER}px`;
     return currentTopStyleValue;
   }
@@ -25,7 +25,7 @@ export default class SlideAnimations {
 
   private static prepareExitAnimation(modalElement: HTMLElement): number {
     const currentTopStyleValue = modalElement.style.top || '0px';
-    expandedModalPreviewModeState.setCurrentExitAnimationModalDefaultPropertiesState({top: currentTopStyleValue});
+    animationState.setCurrentExitAnimationDefaultPropertiesState({top: currentTopStyleValue});
     return Number.parseInt(currentTopStyleValue);
   }
 

@@ -2,10 +2,10 @@ import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_
 import { subcomponentAndOverlayElementIdsState } from '../../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import { subcomponentSelectModeState } from '../../toolbar/options/subcomponentSelectMode/subcomponentSelectModeState';
 import { UseSubcomponentPreviewEventHandlers } from '../../../../../interfaces/useSubcomponentPreviewEventHandlers';
-import { expandedModalPreviewModeState } from '../utils/expandedModalPreviewMode/expandedModalPreviewModeState';
 import { CustomCss, SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
+import { animationState } from '../utils/animations/state';
 
 export default function useSubcomponentPreviewEventHandlers(subcomponentProperties: SubcomponentProperties,
     clickCallback: () => void): UseSubcomponentPreviewEventHandlers {
@@ -32,7 +32,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   }
 
   // the following condition is used to prevent the modal animation from stopping when the user moves their mouse and triggers the modal's base mouse events
-  // (expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState() && subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE)) return;
+  // (animationState.getIsModeToggleAnimationInProgressState() && subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE)) return;
 
   // the following condition is used to identify subcomponents that have been imported in order not to directly overwrite the default properties of the component
   // that is in sync, because if the user imports the same component into two different subcomponents their css will be immediately shared
@@ -40,7 +40,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
 
   const subcomponentMouseEnter = (): void => {
     if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()
-      || (expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState() && subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE)) return;
+      || (animationState.getIsModeToggleAnimationInProgressState() && subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE)) return;
     const { customCss, subcomponentPreviewTransition, activeCssPseudoClass, triggerableSubcomponentName } = subcomponentProperties;
     if (triggerableSubcomponentName) triggerAnotherSubcomponentMouseEvent(triggerableSubcomponentName, event.type);
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT) {
@@ -60,7 +60,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   
   const subcomponentMouseLeave = (): void => {
     if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()
-      || (expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState() && subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE)) return;
+      || (animationState.getIsModeToggleAnimationInProgressState() && subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE)) return;
     const { customCss, activeCssPseudoClass, triggerableSubcomponentName } = subcomponentProperties;
     if (triggerableSubcomponentName) triggerAnotherSubcomponentMouseEvent(triggerableSubcomponentName, event.type);
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT && overwrittenDefaultPropertiesByHover.hasBeenSet) {
@@ -76,7 +76,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   
   const subcomponentMouseDown = (): void => {
     if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()
-      || (expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState() && subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE)) return;
+      || (animationState.getIsModeToggleAnimationInProgressState() && subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE)) return;
     const { customCss, subcomponentPreviewTransition, activeCssPseudoClass, triggerableSubcomponentName } = subcomponentProperties;
     if (triggerableSubcomponentName) triggerAnotherSubcomponentMouseEvent(triggerableSubcomponentName, event.type);
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT) {
@@ -95,7 +95,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
 
   const subcomponentMouseUp = (): void => {
     if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()
-      || (expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState() && subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE)) return;
+      || (animationState.getIsModeToggleAnimationInProgressState() && subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE)) return;
     const { customCss, activeCssPseudoClass, triggerableSubcomponentName } = subcomponentProperties;
     if (triggerableSubcomponentName) triggerAnotherSubcomponentMouseEvent(triggerableSubcomponentName, event.type);
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT && overwrittenDefaultPropertiesByClick.hasBeenSet) {

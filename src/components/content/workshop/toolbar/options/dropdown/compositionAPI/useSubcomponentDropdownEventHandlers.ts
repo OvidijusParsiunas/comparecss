@@ -1,9 +1,9 @@
-import { expandedModalPreviewModeState } from '../../../../componentPreview/utils/expandedModalPreviewMode/expandedModalPreviewModeState';
 import { subcomponentAndOverlayElementIdsState } from '../../subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import { SUBCOMPONENT_OVERLAY_BACKGROUND_COLOR } from '../../../../../../../consts/subcomponentOverlayBackgroundColor';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../../../consts/subcomponentOverlayClasses.enum';
 import { subcomponentSelectModeState } from '../../subcomponentSelectMode/subcomponentSelectModeState';
 import { DropdownCompositionAPI } from '../../../../../../../interfaces/dropdownCompositionAPI';
+import { animationState } from '../../../../componentPreview/utils/animations/state';
 import { Ref } from 'vue';
 
 export default function useSubcomponentDropdownEventHandlers(objectContainingActiveOption: Ref<unknown>,
@@ -36,7 +36,7 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
   }
 
   const mouseEnterButtonEventHandler = (): void => {
-    if (!expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState()) {
+    if (!animationState.getIsModeToggleAnimationInProgressState()) {
       toggleSubcomponentOverlayDisplay(objectContainingActiveOption.value[activeOptionPropertyKeyName.value], 'block'); 
     }
   }

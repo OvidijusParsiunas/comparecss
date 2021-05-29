@@ -1,18 +1,18 @@
 import { WorkshopEventCallbackUtils } from '../../../../../toolbar/options/workshopEventCallbackUtils/workshopEventCallbackUtils';
-import { ELEMENT_CSS_CHANGE_MILLISECONDS, SET_METHODS } from '../../../expandedModalPreviewMode/consts/sharedConsts';
-import { expandedModalPreviewModeState } from '../../../expandedModalPreviewMode/expandedModalPreviewModeState';
+import ModeToggleEntranceAnimation from '../../../animations/expandedModalPreviewMode/toggleAnimations/entrance';
 import { TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS } from '../../../../../../../../consts/toolbarClasses';
 import { WorkshopEventCallbackReturn } from '../../../../../../../../interfaces/workshopEventCallbackReturn';
-import ModeToggleEntranceAnimation from '../../../expandedModalPreviewMode/modeToggleAnimations/entrance';
+import ModeToggleExitAnimation from '../../../animations/expandedModalPreviewMode/toggleAnimations/exit';
+import { ELEMENT_CSS_CHANGE_MILLISECONDS, SET_METHODS } from '../../../animations/consts/sharedConsts';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../../consts/coreSubcomponentNames.enum';
 import { COMPONENT_PREVIEW_CLASSES } from '../../../../../../../../consts/componentPreviewClasses';
-import ModeToggleExitAnimation from '../../../expandedModalPreviewMode/modeToggleAnimations/exit';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../../../consts/domEventTriggerKeys.enum';
 import { OPTION_MENU_BUTTON_MARKER } from '../../../../../../../../consts/elementClassMarkers';
 import { SubcomponentProperties } from '../../../../../../../../interfaces/workshopComponent';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
 import { CloseTriggers } from '../../../../../../../../interfaces/closeTriggers';
 import { fulPreviewModeState } from '../../fullPreviewModeState';
+import { animationState } from '../../../animations/state';
 import ImportComponedModeToggleOff from '../toggleOff';
 import GeneralUtils from '../generalUtils';
 import { ComponentOptions } from 'vue';
@@ -86,7 +86,7 @@ export default class ToggleModal {
     // cannot use the JAVASCRIPT_CLASSES.CLOSE_MODAL on the backdrop because the user can't click on the actual backdrop element in the full preview
     // mode and the componentPreviewContainer element has classes that are being manually switched which get reset when class: is used
     if ((buttonElement.classList.contains(COMPONENT_PREVIEW_CLASSES.EXPANDED_MODAL_MODE_ACTIVE)
-          && !expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState() && closeTriggers.backdrop)
+          && !animationState.getIsModeToggleAnimationInProgressState() && closeTriggers.backdrop)
         || (buttonElement.classList.contains(JAVASCRIPT_CLASSES.CLOSE_MODAL))) {
       return ToggleModal.closeModal(componentPreviewComponent, componentPreviewElement, temporaryComponentElement,
         toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback);
@@ -101,7 +101,7 @@ export default class ToggleModal {
   public static displayModal(componentPreviewComponent: ComponentOptions, componentPreviewElement: HTMLElement,
       temporaryComponentElement: HTMLElement, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
       isExpandedModalPreviewModeActive: boolean, toggleFullPreviewModeOptionsCallback: () => void): void {
-    // cannot use expandedModalPreviewModeState.getIsModeToggleAnimationInProgressState() because it has a timeout
+    // cannot use animationState.getIsModeToggleAnimationInProgressState() because it has a timeout
     if (!fulPreviewModeState.getIsAnimationInProgress()) {
       ToggleModal.changeCloseButtonsJsClasses(componentPreviewComponent, SET_METHODS.ADD);
       // the following line is a bug fix for the mouse leave and mouse up events not being triggered for when the button is switched

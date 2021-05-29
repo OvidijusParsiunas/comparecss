@@ -1,4 +1,4 @@
-import { AssembledModalEntranceAnimationValues, AssembledModalExitAnimationValues } from '../../../../../../../../interfaces/assembledAnimationValues';
+import { AssembledModalEntranceAnimationValues, AssembledModalExitAnimationValues } from '../../../../../../../../../interfaces/assembledAnimationValues';
 import { modalAnimationTypeToFunctionality } from '../../animationInitializers/modalAnimationTypeToFunctionality';
 import { ComponentOptions } from 'vue';
 

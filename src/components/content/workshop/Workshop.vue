@@ -45,8 +45,8 @@
               @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
               @toggle-expanded-modal-preview-mode="$refs.contents.toggleExpandModalPreviewMode($event)"
               @toggle-full-preview-mode="$refs.contents.toggleFullPreviewMode($event)"
-              @play-modal-animation-preview="$refs.contents.playModalAnimationPreview($event)"
-              @stop-modal-animation-preview="$refs.contents.stopAnimationPreview()"
+              @play-animation-preview="$refs.contents.playAnimationPreview($event)"
+              @stop-animation-preview="$refs.contents.stopAnimationPreview()"
               @toggle-import-subcomponent-mode="toggleImportComponentMode($event)"/>
             <component-contents ref="contents"
               :component="currentlySelectedComponent"

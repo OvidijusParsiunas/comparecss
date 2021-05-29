@@ -1,10 +1,10 @@
 import { COMPONENT_CARD_MARKER, COMPONENT_LIST_ITEM_MARKER, COMPONENT_PREVIEW_MARKER, OPTION_MENU_BUTTON_MARKER } from '../../../../../../../consts/elementClassMarkers';
 import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES, TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS } from '../../../../../../../consts/toolbarClasses';
 import { WorkshopEventCallbackUtils } from '../../../../toolbar/options/workshopEventCallbackUtils/workshopEventCallbackUtils';
-import { expandedModalPreviewModeState } from '../../expandedModalPreviewMode/expandedModalPreviewModeState';
 import { WorkshopEventCallbackReturn } from '../../../../../../../interfaces/workshopEventCallbackReturn';
-import { POINTER_EVENTS_NONE } from '../../expandedModalPreviewMode/consts/sharedConsts';
+import { POINTER_EVENTS_NONE } from '../../animations/consts/sharedConsts';
 import { fulPreviewModeState } from '../fullPreviewModeState';
+import { animationState } from '../../animations/state';
 import GeneralUtils from './generalUtils';
 import { ComponentOptions } from 'vue';
 
@@ -12,7 +12,7 @@ export default class ImportComponedModeToggleOff {
 
   private static resetToolbarContainerPosition(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement): void {
     toolbarElement.classList.remove(TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS);
-    if (expandedModalPreviewModeState.getExpandedModalModeToolbarContainerPositionState() === EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM) {
+    if (animationState.getExpandedModalModeToolbarContainerPositionState() === EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM) {
       toolbarContainerElement.classList.add(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM);
     }
   }

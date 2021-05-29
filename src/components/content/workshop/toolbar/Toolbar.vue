@@ -17,15 +17,15 @@
       <settings v-if="isSettingsDisplayed" ref="settings"
         :subcomponentProperties="component.subcomponents[component.activeSubcomponentName]"
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-        @play-modal-animation-preview="$emit('play-modal-animation-preview', $event)"
-        @stop-modal-animation-preview="$emit('stop-modal-animation-preview')"
+        @play-animation-preview="$emit('play-animation-preview', $event)"
+        @stop-animation-preview="$emit('stop-animation-preview')"
         @remove-insync-option-button="$refs.options.toggleImportedComponentInSync($event)"/>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import ToolbarToggles from '../componentPreview/utils/expandedModalPreviewMode/modeToggleAnimations/toolbarToggles';
+import ToolbarToggles from '../componentPreview/utils/animations/expandedModalPreviewMode/toggleAnimations/toolbarToggles';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../consts/workshopToolbarOptionTypes.enum';

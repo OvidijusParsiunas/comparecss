@@ -15,7 +15,7 @@ export const TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS = 150;
 export const TOOLBAR_FADE_ANIMATION_DURATION_SECONDS = `${TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS / 1000}s`;
 export enum CLASSLIST_METHODS { ADD = 'add', REMOVE = 'remove' }
 export enum SET_METHODS { ADD = 'add', REMOVE = 'delete' }
-export const INITIAL_EXPANDED_MODAL_ANIMATION_PROPERTIES: TransitionProperties = {
+export const INITIAL_ANIMATION_PROPERTIES: TransitionProperties = {
   transitionProperty: OPACITY_PROPERTY,
   transitionTimingFunction: LINEAR_SPEED_TRANSITION,
 };

@@ -66,28 +66,28 @@
 </template>
 
 <script lang="ts">
-import { modalAnimationTypeToFunctionality } from './utils/expandedModalPreviewMode/animationInitializers/modalAnimationTypeToFunctionality';
+import { modalAnimationTypeToFunctionality } from './utils/animations/expandedModalPreviewMode/animationInitializers/modalAnimationTypeToFunctionality';
 import { subcomponentAndOverlayElementIdsState } from '../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
+import ExpandedModalPreviewModeToggleEntranceAnimation from './utils/animations/expandedModalPreviewMode/toggleAnimations/entrance';
 import { SubcomponentSelectModeSubOverlay } from '../toolbar/options/subcomponentSelectMode/subcomponentSelectModeSubOverlay';
-import ExpandedModalPreviewModeToggleEntranceAnimation from './utils/expandedModalPreviewMode/modeToggleAnimations/entrance';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
-import ExpandedModalPreviewModeToggleExitAnimation from './utils/expandedModalPreviewMode/modeToggleAnimations/exit';
+import ExpandedModalPreviewModeToggleExitAnimation from './utils/animations/expandedModalPreviewMode/toggleAnimations/exit';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
-import { PlayModalAnimationPreviewEvent } from '../../../../interfaces/playModalAnimationPreviewEvent';
-import { ModalEntranceAnimation, ModalExitAnimation } from '../../../../interfaces/modalAnimations';
-import PreviewEntranceAnimation from './utils/expandedModalPreviewMode/previewAnimations/entrance';
 import { ToggleFullPreviewModeEvent } from '../../../../interfaces/toggleFullPreviewModeEvent';
-import PreviewExitAnimation from './utils/expandedModalPreviewMode/previewAnimations/exit';
+import { PlayAnimationPreviewEvent } from '../../../../interfaces/playAnimationPreviewEvent';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
+import PreviewEntranceAnimation from './utils/animations/previewAnimations/entrance';
+import { EntranceAnimation, ExitAnimation } from '../../../../interfaces/animations';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import { componentTypeToStyles } from '../newComponent/types/componentTypeToStyles';
-import AnimationUtils from './utils/expandedModalPreviewMode/utils/animationUtils';
 import { NEW_COMPONENT_STYLES } from '../../../../consts/newComponentStyles.enum';
 import ToggleFullPreviewMode from './utils/fullPreviewMode/toggleFullPreviewMode';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { TemporaryComponent } from '../../../../interfaces/temporaryComponent';
+import PreviewExitAnimation from './utils/animations/previewAnimations/exit';
+import AnimationUtils from './utils/animations/utils/animationUtils';
 import ComponentPreviewUtils from './utils/componentPreviewUtils';
 
 interface Consts {
@@ -183,20 +183,20 @@ export default {
           toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback);
       }
     },
-    playModalAnimationPreview(playModalAnimationPreviewEvent: PlayModalAnimationPreviewEvent): void {
-      const [animationType, isEntranceAnimation] = playModalAnimationPreviewEvent;
+    playAnimationPreview(playAnimationPreviewEvent: PlayAnimationPreviewEvent): void {
+      const [animationType, isEntranceAnimation] = playAnimationPreviewEvent;
       if (isEntranceAnimation) {
         PreviewEntranceAnimation.start(
-          modalAnimationTypeToFunctionality[animationType] as ModalEntranceAnimation,
+          modalAnimationTypeToFunctionality[animationType] as EntranceAnimation,
           this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.animations.entrance.duration, this.$refs.baseComponent.$refs.componentPreview);
       } else {
         PreviewExitAnimation.start(
-          modalAnimationTypeToFunctionality[animationType] as ModalExitAnimation,
+          modalAnimationTypeToFunctionality[animationType] as ExitAnimation,
           this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.animations.exit.duration, this.$refs.baseComponent.$refs.componentPreview);
       }
     },
     stopAnimationPreview(): void {
-      AnimationUtils.cancelModalAnimationPreview(this.$refs.baseComponent.$refs.componentPreview);
+      AnimationUtils.cancelAnimationPreview(this.$refs.baseComponent.$refs.componentPreview);
     }
   },
   props: {
