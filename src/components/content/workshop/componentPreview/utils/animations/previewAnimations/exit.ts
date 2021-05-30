@@ -16,6 +16,6 @@ export default class PreviewExitAnimation {
   public static start(exitAnimation: ExitAnimation, animationDuration: string, componentElement: HTMLElement): void {
     AnimationUtils.cancelAnimationPreview(componentElement);
     animationState.setIsAnimationPreviewInProgressState(true);
-    window.setTimeout(exitAnimation.bind(this, animationDuration, componentElement, PreviewExitAnimation.exitAnimationPreviewCallback));
+    setTimeout(exitAnimation.bind(this, animationDuration, componentElement, PreviewExitAnimation.exitAnimationPreviewCallback));
   }
 }

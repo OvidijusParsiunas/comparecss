@@ -13,8 +13,8 @@ import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptCla
 import { CloseTriggers } from '../../../../../../../../interfaces/closeTriggers';
 import { fulPreviewModeState } from '../../fullPreviewModeState';
 import { animationState } from '../../../animations/state';
-import ImportComponedModeToggleOff from '../toggleOff';
 import GeneralUtils from '../generalUtils';
+import ModalToggleOff from './toggleOff';
 import { ComponentOptions } from 'vue';
 
 export default class ToggleModal {
@@ -23,12 +23,10 @@ export default class ToggleModal {
   private static readonly TRIGGER_BUTTON_MOUSE_EVENTS_TOP_CSS_PROPERTY = '100px';
   private static readonly MODAL_BUTTON_NAMES = [CORE_SUBCOMPONENTS_NAMES.BUTTON_1, CORE_SUBCOMPONENTS_NAMES.BUTTON_2, CORE_SUBCOMPONENTS_NAMES.CLOSE];
 
-  // the reason why the class is applied to all of the buttons is because we cannot apply it to the backdrop, hence all of the logic for
-  // determining whether the modal should be closed on mouse/key click is in the closeModalCallback method
   public static changeCloseButtonsJsClasses(componentPreviewComponent: ComponentOptions, methodName: SET_METHODS): void {
     ToggleModal.MODAL_BUTTON_NAMES.forEach((buttonName) => {
       const buttonSubcomponentProperties: SubcomponentProperties = componentPreviewComponent.component.subcomponents[buttonName];
-      buttonSubcomponentProperties.customFeatures.jsClasses[methodName](JAVASCRIPT_CLASSES.CLOSE_MODAL);
+      buttonSubcomponentProperties.customFeatures.jsClasses[methodName](JAVASCRIPT_CLASSES.CLOSE_COMPONENT);
     });
   }
 
@@ -48,9 +46,8 @@ export default class ToggleModal {
       temporaryComponentElement: HTMLElement, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
       isExpandedModalPreviewModeActive: boolean, toggleFullPreviewModeOptionsCallback: () => void): void {
     GeneralUtils.createWorkshopEventCallback(componentPreviewComponent,
-      ImportComponedModeToggleOff.toggleOffCallback.bind(this, componentPreviewComponent, componentPreviewElement, temporaryComponentElement,
-        toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive,
-        toggleFullPreviewModeOptionsCallback));
+      ModalToggleOff.toggleOffCallback.bind(this, componentPreviewComponent, toolbarContainerElement, toolbarElement,
+        isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback, componentPreviewElement, temporaryComponentElement));
     ToggleModal.switchBetweenModalAndButton(componentPreviewComponent, true);
   }
 
@@ -83,11 +80,11 @@ export default class ToggleModal {
       return { shouldRepeat: true };
     }
     const buttonElement = WorkshopEventCallbackUtils.getParentElementIfSvg(event.target as HTMLElement);
-    // cannot use the JAVASCRIPT_CLASSES.CLOSE_MODAL on the backdrop because the user can't click on the actual backdrop element in the full preview
+    // cannot use the JAVASCRIPT_CLASSES.CLOSE_COMPONENT on the backdrop because the user can't click on the actual backdrop element in the full preview
     // mode and the componentPreviewContainer element has classes that are being manually switched which get reset when class: is used
     if ((buttonElement.classList.contains(COMPONENT_PREVIEW_CLASSES.EXPANDED_MODAL_MODE_ACTIVE)
           && !animationState.getIsModeToggleAnimationInProgressState() && closeTriggers.backdrop)
-        || (buttonElement.classList.contains(JAVASCRIPT_CLASSES.CLOSE_MODAL))) {
+        || (buttonElement.classList.contains(JAVASCRIPT_CLASSES.CLOSE_COMPONENT))) {
       return ToggleModal.closeModal(componentPreviewComponent, componentPreviewElement, temporaryComponentElement,
         toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback);
     }

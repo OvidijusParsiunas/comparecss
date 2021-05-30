@@ -176,11 +176,11 @@ export default {
       const [isToggledOn, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback,
         toolbarContainerElement, toolbarElement] = event;
       if (isToggledOn) {
-        ToggleFullPreviewMode.toggleOn(this, this.$refs.baseComponent.$refs.componentPreview, this.$refs.temporaryComponent,
-          toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback);
+        ToggleFullPreviewMode.toggleOn(this, this.$refs.baseComponent.$refs.componentPreview, toolbarContainerElement, toolbarElement,
+          isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback, this.$refs.temporaryComponent);
       } else {
-        ToggleFullPreviewMode.toggleOff(this, this.$refs.baseComponent.$refs.componentPreview, this.$refs.temporaryComponent,
-          toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback);
+        ToggleFullPreviewMode.toggleOff(this, toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive,
+          toggleFullPreviewModeOptionsCallback, this.$refs.baseComponent.$refs.componentPreview, this.$refs.temporaryComponent);
       }
     },
     playAnimationPreview(playAnimationPreviewEvent: PlayAnimationPreviewEvent): void {

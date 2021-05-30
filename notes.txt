@@ -5,6 +5,8 @@ potentially add x button to border coloring
 close button should probably be imported - but need to work through the logistics of inherited css for it
 display second range value with 2 decimal points
 weird animation problem when a subcomponet added
+should not be able to move components when in full preview mode
+cancel
 
 overflow
 try with button tags

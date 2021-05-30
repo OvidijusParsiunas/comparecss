@@ -23,8 +23,8 @@
           @mouse-click-new-option="newSubcomponentNameClicked($event)"
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       </div>
-      <div v-if="component.type === MODAL_COMPONENT_TYPE || isFullPreviewModeActive" class="btn-group option-component-button">
-        <button v-if="!isFullPreviewModeActive" ref="expandedModalPreviewModeToggle"
+      <div v-if="component.type === NEW_COMPONENT_TYPES.MODAL || component.type === NEW_COMPONENT_TYPES.ALERT" class="btn-group option-component-button">
+        <button v-if="!isFullPreviewModeActive && component.type === NEW_COMPONENT_TYPES.MODAL" ref="expandedModalPreviewModeToggle"
           type="button" class="btn btn-group-option option-action-button button-group-first-predominant-component expanded-modal-preview-mode-button"
           :class="[EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
           @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleModalExpandMode)">
@@ -35,7 +35,7 @@
             :style="{ color: FONT_AWESOME_COLORS.DEFAULT, ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
             class="modal-button-icon expand-icon" icon="expand"/>
         </button>
-        <button
+        <button v-if="isFullPreviewModeButtonDisplayed()"
           type="button" class="btn btn-group-option option-action-button expanded-modal-preview-mode-button"
           :class="[FULL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
           @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleFullPreviewMode)">
@@ -104,7 +104,7 @@
               @mouseenter="mouseHoverOption(option, true)" @mouseleave="mouseHoverOption(option, false)">
             <button
               type="button"
-              v-if="isOptionDisplayed(option)"
+              v-if="displayIfSubcomponentDisplayed(option.displayIfSubcomponentDisplayed)"
               :disabled="option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive"
               class="btn btn-outline-secondary option-component-button-child option-select-button-default"
               :class="[
@@ -183,7 +183,7 @@ interface Consts {
   BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES;
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER: string;
   EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER: string;
-  MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES;
+  NEW_COMPONENT_TYPES: typeof NEW_COMPONENT_TYPES;
   BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS: number;
   REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: string;
   BROWSER_SPECIFIC_MODAL_BUTTON_STYLE: WorkshopComponentCss;
@@ -212,6 +212,7 @@ export default {
       useSubcomponentDropdownEventHandlers,
       ...removeSubcomponentModalState,
       FONT_AWESOME_COLORS,
+      NEW_COMPONENT_TYPES,
       OPTION_MENU_BUTTON_MARKER,
       FULL_PREVIEW_MODE_BUTTON_MARKER,
       TOGGLE_SUBCOMPONENT_BUTTON_MARKER,
@@ -219,7 +220,6 @@ export default {
       BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES.BASE,
       SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
       EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER,
-      MODAL_COMPONENT_TYPE: NEW_COMPONENT_TYPES.MODAL,
       BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS: 500,
       REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: `#${REMOVE_SUBCOMPONENT_MODAL_ID}`,
       BROWSER_SPECIFIC_MODAL_BUTTON_STYLE: { paddingTop: BrowserType.isFirefox() ? '1px' : '' },
@@ -279,11 +279,10 @@ export default {
         }
       }
     },
-    isOptionDisplayed(option: Option): boolean {
-      if (option.displayIfSubcomponentDisplayed) {
-        const subcomponentName = Object.keys(this.component.subcomponents).find((subcomponentName: string) => subcomponentName === option.displayIfSubcomponentDisplayed);
-        if (subcomponentName) {
-          const subcomponentProperties: SubcomponentProperties = this.component.subcomponents[subcomponentName];
+    displayIfSubcomponentDisplayed(subcomponentName: CORE_SUBCOMPONENTS_NAMES): boolean {
+      if (subcomponentName) {
+        const subcomponentProperties: SubcomponentProperties = this.component.subcomponents[subcomponentName];
+        if (subcomponentProperties) {
           return subcomponentProperties.subcomponentDisplayStatus.isDisplayed;
         }
       }
@@ -414,7 +413,7 @@ export default {
       } else {
         if (this.activeOption.buttonName &&
           (!this.component.subcomponents[this.component.activeSubcomponentName].subcomponentDisplayStatus
-          || this.component.subcomponents[this.component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed)) {
+            || this.component.subcomponents[this.component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed)) {
             this.selectDefaultOption();
         }
         setTimeout(() => {
@@ -468,6 +467,10 @@ export default {
       setTimeout(() => {
         this.optionAnimationsInProgress = false;
       }, this.BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS);
+    },
+    isFullPreviewModeButtonDisplayed(): boolean {
+      return this.component.type === NEW_COMPONENT_TYPES.MODAL
+       || (this.component.type === NEW_COMPONENT_TYPES.ALERT && this.displayIfSubcomponentDisplayed(CORE_SUBCOMPONENTS_NAMES.CLOSE));
     },
     isInSyncButtonDisplayed(): boolean {
       const activeSubcomponent = this.component.subcomponents[this.component.activeSubcomponentName];

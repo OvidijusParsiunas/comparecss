@@ -1,11 +1,11 @@
-import { COMPONENT_CARD_MARKER, COMPONENT_LIST_ITEM_MARKER, COMPONENT_PREVIEW_MARKER, OPTION_MENU_BUTTON_MARKER } from '../../../../../../../consts/elementClassMarkers';
-import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES, TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS } from '../../../../../../../consts/toolbarClasses';
-import { WorkshopEventCallbackUtils } from '../../../../toolbar/options/workshopEventCallbackUtils/workshopEventCallbackUtils';
-import { WorkshopEventCallbackReturn } from '../../../../../../../interfaces/workshopEventCallbackReturn';
-import { POINTER_EVENTS_NONE } from '../../animations/consts/sharedConsts';
-import { fulPreviewModeState } from '../fullPreviewModeState';
-import { animationState } from '../../animations/state';
-import GeneralUtils from './generalUtils';
+import { COMPONENT_CARD_MARKER, COMPONENT_LIST_ITEM_MARKER, COMPONENT_PREVIEW_MARKER, OPTION_MENU_BUTTON_MARKER } from '../../../../../../../../consts/elementClassMarkers';
+import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES, TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS } from '../../../../../../../../consts/toolbarClasses';
+import { WorkshopEventCallbackUtils } from '../../../../../toolbar/options/workshopEventCallbackUtils/workshopEventCallbackUtils';
+import { WorkshopEventCallbackReturn } from '../../../../../../../../interfaces/workshopEventCallbackReturn';
+import { POINTER_EVENTS_NONE } from '../../../animations/consts/sharedConsts';
+import { fulPreviewModeState } from '../../fullPreviewModeState';
+import { animationState } from '../../../animations/state';
+import GeneralUtils from '../generalUtils';
 import { ComponentOptions } from 'vue';
 
 export default class ImportComponedModeToggleOff {
@@ -21,9 +21,9 @@ export default class ImportComponedModeToggleOff {
     componentPreviewComponent.isFullPreviewModeOn = false;
   }
 
-  public static start(componentPreviewComponent: ComponentOptions, componentPreviewElement: HTMLElement, temporaryComponentElement: HTMLElement,
-      toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean,
-      toggleFullPreviewModeOptionsCallback: () => void): void {
+  public static start(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
+      isExpandedModalPreviewModeActive: boolean, toggleFullPreviewModeOptionsCallback: () => void, componentPreviewElement: HTMLElement,
+      temporaryComponentElement: HTMLElement): void {
     if (!isExpandedModalPreviewModeActive) {
       GeneralUtils.switchComponentsWithFadeOut(componentPreviewElement,
         temporaryComponentElement, ImportComponedModeToggleOff.switchButtonToModal.bind(this, componentPreviewComponent));
@@ -35,14 +35,13 @@ export default class ImportComponedModeToggleOff {
     fulPreviewModeState.setIsExpandedModalPreviewModeActivated(isExpandedModalPreviewModeActive);
   }
 
-  public static toggleOffCallback(componentPreviewComponent: ComponentOptions, componentPreviewElement: HTMLElement, temporaryComponentElement: HTMLElement,
-      toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean,
-      toggleFullPreviewModeOptionsCallback: () => void, event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
+  public static toggleOffCallback(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
+      isExpandedModalPreviewModeActive: boolean, toggleFullPreviewModeOptionsCallback: () => void, componentPreviewElement: HTMLElement,
+      temporaryComponentElement: HTMLElement, event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
     const buttonElement = WorkshopEventCallbackUtils.getParentElementIfSvg(event.target as HTMLElement);
     if (buttonElement.classList.contains(COMPONENT_LIST_ITEM_MARKER) || buttonElement.classList.contains(COMPONENT_CARD_MARKER)) {
-      ImportComponedModeToggleOff.start(componentPreviewComponent, componentPreviewElement, temporaryComponentElement,
-        toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive,
-        toggleFullPreviewModeOptionsCallback);
+      ImportComponedModeToggleOff.start(componentPreviewComponent, toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive,
+        toggleFullPreviewModeOptionsCallback, componentPreviewElement, temporaryComponentElement);
       return { shouldRepeat: false };
     }
     if (buttonElement.classList.contains(COMPONENT_PREVIEW_MARKER) || buttonElement.classList.contains(OPTION_MENU_BUTTON_MARKER)) {

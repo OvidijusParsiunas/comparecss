@@ -1,10 +1,10 @@
-import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES, TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS } from '../../../../../../../consts/toolbarClasses';
-import { POINTER_EVENTS_NONE, SET_METHODS } from '../../animations/consts/sharedConsts';
-import ComponentPreviewUtils from '../../componentPreviewUtils';
-import { fulPreviewModeState } from '../fullPreviewModeState';
-import ToggleDisplays from './toggleModal/toggleModal';
+import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES, TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS } from '../../../../../../../../consts/toolbarClasses';
+import { POINTER_EVENTS_NONE, SET_METHODS } from '../../../animations/consts/sharedConsts';
+import ComponentPreviewUtils from '../../../componentPreviewUtils';
+import { fulPreviewModeState } from '../../fullPreviewModeState';
 import ImportComponedModeToggleOff from './toggleOff';
-import GeneralUtils from './generalUtils';
+import ToggleDisplays from './toggleModal';
+import GeneralUtils from '../generalUtils';
 import { ComponentOptions } from 'vue';
 
 export default class ToggleOn {
@@ -44,9 +44,9 @@ export default class ToggleOn {
     }
   }
 
-  public static start(componentPreviewComponent: ComponentOptions, componentPreviewElement: HTMLElement, temporaryComponentElement: HTMLElement,
+  public static start(componentPreviewComponent: ComponentOptions, componentPreviewElement: HTMLElement,
       toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean,
-      toggleFullPreviewModeOptionsCallback: () => void): void {
+      toggleFullPreviewModeOptionsCallback: () => void, temporaryComponentElement: HTMLElement): void {
     ToggleOn.setup(componentPreviewComponent, componentPreviewElement, temporaryComponentElement, toolbarContainerElement,
       toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback);
     const prepareFullPreviewModeFunc = ToggleOn.prepareFullPreviewMode.bind(this, componentPreviewComponent, isExpandedModalPreviewModeActive)

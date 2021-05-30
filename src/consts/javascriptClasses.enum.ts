@@ -1,4 +1,4 @@
 export enum JAVASCRIPT_CLASSES {
   RIPPLES = 'csssymphony-ripples',
-  CLOSE_MODAL = 'csssymphony-close-modal',
+  CLOSE_COMPONENT = 'csssymphony-close-component',
 }
