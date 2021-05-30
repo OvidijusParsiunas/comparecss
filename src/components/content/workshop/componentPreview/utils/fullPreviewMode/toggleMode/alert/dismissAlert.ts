@@ -27,12 +27,13 @@ export default class DismissAlert {
 
   private static removeComponent(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement): void {
     componentElement.style.display = 'none';
-    setTimeout(() => {
+    const pendingAnimationPreviewUnset = window.setTimeout(() => {
       AnimationUtils.cancelAnimationPreview(componentElement);
       componentElement.style.display = 'block';
       FullPreviewModeUtils.createWorkshopEventCallback(componentPreviewComponent,
       DismissAlert.closeAlertCallback.bind(this, componentPreviewComponent, componentElement));
     }, DismissAlert.RESET_AFTER_EXIT_ANIMATION_TIMEOUT_MILLISECONDS);
+    animationState.setPendingAnimationPreviewUnsetState(pendingAnimationPreviewUnset);
   }
 
   private static closeAlert(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement): WorkshopEventCallbackReturn {

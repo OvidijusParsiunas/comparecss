@@ -133,6 +133,7 @@
                   :objectContainingActiveOption="setting.spec.tempCustomCssObject || actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.name] || {}"
                   :activeOptionPropertyKeyName="setting.spec.cssProperty || setting.spec.activeOptionPropertyKeyName"
                   :fontAwesomeIcon="'caret-down'"
+                  :minOptionsToDisplayDropdown="0"
                   @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
                   @mouse-enter-button="mouseEnterActionsDropdownButton(this, setting.spec, subcomponentProperties)"
                   @mouse-leave-button="mouseLeaveActionsDropdownButton(this, setting.spec, subcomponentProperties)"

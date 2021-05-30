@@ -17,6 +17,7 @@ export default class AnimationUtils {
       animationState.cancelPendingAnimationFunctionality();
       animationState.setIsAnimationPreviewInProgressState(false);
       componentElement.style.opacity = OPACITY_VISIBLE;
+      componentElement.style.display = 'block';
     }
   }
 

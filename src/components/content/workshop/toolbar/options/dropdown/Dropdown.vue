@@ -61,6 +61,7 @@ interface Props {
   uniqueIdentifier: string;
   highlightSubcomponents: boolean;
   fontAwesomeIcon: string;
+  minOptionsToDisplayDropdown: number;
   activeOptionPropertyKeyName: string;
   objectContainingActiveOption: unknown;
   dropdownOptions: NestedDropdownStructure;
@@ -352,7 +353,7 @@ export default {
       if (this.isNested) {
         this.isComponentDisplayed = !!this.dropdownOptions;
       } else {
-        this.isComponentDisplayed = Object.keys(this.dropdownOptions).length > 0;
+        this.isComponentDisplayed = Object.keys(this.dropdownOptions).length > this.minOptionsToDisplayDropdown;
       }
       this.$emit('is-component-displayed', this.isComponentDisplayed);
     }
@@ -382,6 +383,10 @@ export default {
       default: false,
     },
     timeoutFunc: Function,
+    minOptionsToDisplayDropdown: {
+      type: Number,
+      default: 1,
+    },
   },
   watch: {
     objectContainingActiveOption(): void {

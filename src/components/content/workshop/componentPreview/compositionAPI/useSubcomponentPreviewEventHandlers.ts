@@ -31,16 +31,19 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     element.dispatchEvent(new MouseEvent(mouseEventType));
   }
 
-  // the following condition is used to prevent the modal animation from stopping when the user moves their mouse and triggers the modal's base mouse events
-  // (animationState.getIsModeToggleAnimationInProgressState() && subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE)) return;
+  // the following is used to prevent the modal animation from stopping when the user moves their mouse and triggers the modal's base mouse events
+  function shoudPreventMouseEvent(): boolean {
+    return subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()
+      || (subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE
+          && (animationState.getIsModeToggleAnimationInProgressState() || animationState.getIsAnimationPreviewInProgressState()))
+  }
 
   // the following condition is used to identify subcomponents that have been imported in order not to directly overwrite the default properties of the component
   // that is in sync, because if the user imports the same component into two different subcomponents their css will be immediately shared
   // subcomponentProperties.baseSubcomponentRef || subcomponentProperties.importedComponent
 
   const subcomponentMouseEnter = (): void => {
-    if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()
-      || (animationState.getIsModeToggleAnimationInProgressState() && subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE)) return;
+    if (shoudPreventMouseEvent()) return;
     const { customCss, subcomponentPreviewTransition, activeCssPseudoClass, triggerableSubcomponentName } = subcomponentProperties;
     if (triggerableSubcomponentName) triggerAnotherSubcomponentMouseEvent(triggerableSubcomponentName, event.type);
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT) {
@@ -59,8 +62,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   }
   
   const subcomponentMouseLeave = (): void => {
-    if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()
-      || (animationState.getIsModeToggleAnimationInProgressState() && subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE)) return;
+    if (shoudPreventMouseEvent()) return;
     const { customCss, activeCssPseudoClass, triggerableSubcomponentName } = subcomponentProperties;
     if (triggerableSubcomponentName) triggerAnotherSubcomponentMouseEvent(triggerableSubcomponentName, event.type);
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT && overwrittenDefaultPropertiesByHover.hasBeenSet) {
@@ -75,8 +77,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   }
   
   const subcomponentMouseDown = (): void => {
-    if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()
-      || (animationState.getIsModeToggleAnimationInProgressState() && subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE)) return;
+    if (shoudPreventMouseEvent()) return;
     const { customCss, subcomponentPreviewTransition, activeCssPseudoClass, triggerableSubcomponentName } = subcomponentProperties;
     if (triggerableSubcomponentName) triggerAnotherSubcomponentMouseEvent(triggerableSubcomponentName, event.type);
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT) {
@@ -94,8 +95,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   }
 
   const subcomponentMouseUp = (): void => {
-    if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()
-      || (animationState.getIsModeToggleAnimationInProgressState() && subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE)) return;
+    if (shoudPreventMouseEvent()) return;
     const { customCss, activeCssPseudoClass, triggerableSubcomponentName } = subcomponentProperties;
     if (triggerableSubcomponentName) triggerAnotherSubcomponentMouseEvent(triggerableSubcomponentName, event.type);
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT && overwrittenDefaultPropertiesByClick.hasBeenSet) {
