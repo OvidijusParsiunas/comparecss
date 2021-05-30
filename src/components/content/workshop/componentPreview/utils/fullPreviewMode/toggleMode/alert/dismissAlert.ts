@@ -1,4 +1,4 @@
-import { modalAnimationTypeToFunctionality } from '../../../animations/expandedModalPreviewMode/animationInitializers/modalAnimationTypeToFunctionality';
+import { animationTypeToFunctionality } from '../../../animations/animationToFunctionality';
 import { WorkshopEventCallbackUtils } from '../../../../../toolbar/options/workshopEventCallbackUtils/workshopEventCallbackUtils';
 import { WorkshopEventCallbackReturn } from '../../../../../../../../interfaces/workshopEventCallbackReturn';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../../consts/coreSubcomponentNames.enum';
@@ -36,7 +36,7 @@ export default class DismissAlert {
   }
 
   private static closeAlert(componentPreviewComponent: ComponentOptions, componentPreviewElement: HTMLElement): WorkshopEventCallbackReturn {
-    const closeAnimation = modalAnimationTypeToFunctionality
+    const closeAnimation = animationTypeToFunctionality
       [componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.exit.type] as ExitAnimation;
     const animationDuration = componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.exit.duration;
     animationState.setIsAnimationPreviewInProgressState(true);

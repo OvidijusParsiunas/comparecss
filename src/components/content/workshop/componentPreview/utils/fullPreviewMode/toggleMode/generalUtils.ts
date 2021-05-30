@@ -2,13 +2,33 @@ import { WorkshopEventCallbackReturn } from '../../../../../../../interfaces/wor
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../../../interfaces/workshopEventCallback';
 import ExpandedModalModeGeneralUtils from '../../animations/utils/generalUtils';
+import { animationState } from '../../animations/state';
 import { ComponentOptions } from 'vue';
 import {
   MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, OPACITY_VISIBLE, OPACITY_INVISIBLE, ELEMENT_CSS_CHANGE_MILLISECONDS, 
   MODE_TOGGLE_FADE_ANIMATION_DURATION_MILLISECONDS, POINTER_EVENTS_NONE, POINTER_EVENTS_REMOVE,
 } from '../../animations/consts/sharedConsts';
+import {
+  EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES, TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS,
+ } from '../../../../../../../consts/toolbarClasses';
 
 export default class GeneralUtils {
+
+  public static setToolbarContainerPositionToDefault(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean): void {
+    if (isExpandedModalPreviewModeActive) {
+      toolbarElement.classList.add(TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS);
+    } else {
+      toolbarElement.classList.remove(TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS);
+    }
+    toolbarContainerElement.classList.remove(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM);
+  }
+
+  public static resetToolbarContainerPosition(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement): void {
+    toolbarElement.classList.remove(TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS);
+    if (animationState.getExpandedModalModeToolbarContainerPositionState() === EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM) {
+      toolbarContainerElement.classList.add(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM);
+    }
+  }
 
   private static startToolbarAnimationWithFadeOut(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean,
       toggleFullPreviewModeOptionsCallback: () => void, toolbarPositionCallback: (toolbarContainerElement: HTMLElement,

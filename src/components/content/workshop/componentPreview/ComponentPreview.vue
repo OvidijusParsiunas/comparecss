@@ -66,7 +66,7 @@
 </template>
 
 <script lang="ts">
-import { modalAnimationTypeToFunctionality } from './utils/animations/expandedModalPreviewMode/animationInitializers/modalAnimationTypeToFunctionality';
+import { animationTypeToFunctionality } from './utils/animations/animationToFunctionality';
 import { subcomponentAndOverlayElementIdsState } from '../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import ExpandedModalPreviewModeToggleEntranceAnimation from './utils/animations/expandedModalPreviewMode/toggleAnimations/entrance';
 import { SubcomponentSelectModeSubOverlay } from '../toolbar/options/subcomponentSelectMode/subcomponentSelectModeSubOverlay';
@@ -187,11 +187,11 @@ export default {
       const [animationType, isEntranceAnimation] = playAnimationPreviewEvent;
       if (isEntranceAnimation) {
         PreviewEntranceAnimation.start(
-          modalAnimationTypeToFunctionality[animationType] as EntranceAnimation,
+          animationTypeToFunctionality[animationType] as EntranceAnimation,
           this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.animations.entrance.duration, this.$refs.baseComponent.$refs.componentPreview);
       } else {
         PreviewExitAnimation.start(
-          modalAnimationTypeToFunctionality[animationType] as ExitAnimation,
+          animationTypeToFunctionality[animationType] as ExitAnimation,
           this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.animations.exit.duration, this.$refs.baseComponent.$refs.componentPreview);
       }
     },

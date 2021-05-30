@@ -1,4 +1,3 @@
-import { EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES, TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS } from '../../../../../../../../consts/toolbarClasses';
 import { POINTER_EVENTS_NONE, SET_METHODS } from '../../../animations/consts/sharedConsts';
 import ComponentPreviewUtils from '../../../componentPreviewUtils';
 import { fulPreviewModeState } from '../../fullPreviewModeState';
@@ -8,15 +7,6 @@ import GeneralUtils from '../generalUtils';
 import { ComponentOptions } from 'vue';
 
 export default class ToggleOn {
-
-  private static setToolbarContainerPositionToDefault(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean): void {
-    if (isExpandedModalPreviewModeActive) {
-      toolbarElement.classList.add(TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS);
-    } else {
-      toolbarElement.classList.remove(TOOLBAR_ELEMENT_ACTIVE_FULL_PREVIEW_MODE_CLASS);
-    }
-    toolbarContainerElement.classList.remove(EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.BOTTOM);
-  }
 
   private static prepareFullPreviewMode(componentPreviewComponent: ComponentOptions, isExpandedModalPreviewModeActive: boolean): void {
     componentPreviewComponent.temporaryComponent.displayed = !isExpandedModalPreviewModeActive;
@@ -63,7 +53,7 @@ export default class ToggleOn {
           toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback));
     }
     GeneralUtils.updateToolbarStyle(POINTER_EVENTS_NONE, toolbarContainerElement, toolbarElement,
-      isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback, ToggleOn.setToolbarContainerPositionToDefault)
+      isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback, GeneralUtils.setToolbarContainerPositionToDefault)
     fulPreviewModeState.setIsExpandedModalPreviewModeActivated(isExpandedModalPreviewModeActive);
   }
 }

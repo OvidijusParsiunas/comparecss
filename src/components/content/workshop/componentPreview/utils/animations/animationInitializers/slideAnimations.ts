@@ -1,7 +1,7 @@
-import { BackdropProperties } from '../../../../../../../../interfaces/workshopComponent';
-import { ExitAnimationCallback } from '../../../../../../../../interfaces/animations';
-import AnimationUtils from '../../utils/animationUtils';
-import { animationState } from '../../state';
+import { BackdropProperties } from '../../../../../../../interfaces/workshopComponent';
+import { ExitAnimationCallback } from '../../../../../../../interfaces/animations';
+import AnimationUtils from '../utils/animationUtils';
+import { animationState } from '../state';
 
 export default class SlideAnimations {
 

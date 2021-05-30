@@ -1,6 +1,6 @@
-import { BackdropProperties } from '../../../../../../../../interfaces/workshopComponent';
-import { ExitAnimationCallback } from '../../../../../../../../interfaces/animations';
-import AnimationUtils from '../../utils/animationUtils';
+import { BackdropProperties } from '../../../../../../../interfaces/workshopComponent';
+import { ExitAnimationCallback } from '../../../../../../../interfaces/animations';
+import AnimationUtils from '../utils/animationUtils';
 
 export default class FadeAnimations {
 
