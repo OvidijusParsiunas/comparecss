@@ -35,21 +35,21 @@ export default class DismissAlert {
     }, DismissAlert.RESET_AFTER_EXIT_ANIMATION_TIMEOUT_MILLISECONDS);
   }
 
-  private static closeAlert(componentPreviewComponent: ComponentOptions, componentPreviewElement: HTMLElement): WorkshopEventCallbackReturn {
+  private static closeAlert(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement): WorkshopEventCallbackReturn {
     const closeAnimation = animationTypeToFunctionality
       [componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.exit.type] as ExitAnimation;
     const animationDuration = componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.exit.duration;
     animationState.setIsAnimationPreviewInProgressState(true);
-    setTimeout(closeAnimation.bind(this, animationDuration, componentPreviewElement, DismissAlert.removeComponent.bind(DismissAlert, componentPreviewComponent)));
+    setTimeout(closeAnimation.bind(this, animationDuration, componentElement, DismissAlert.removeComponent.bind(DismissAlert, componentPreviewComponent)));
     return { shouldRepeat: false };
   }
 
-  public static closeAlertCallback(componentPreviewComponent: ComponentOptions, componentPreviewElement: HTMLElement,
+  public static closeAlertCallback(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement,
       event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
     fulPreviewModeState.setIsAnimationInProgress(false);
     const buttonElement = WorkshopEventCallbackUtils.getParentElementIfSvg(event.target as HTMLElement);
     if ((buttonElement.classList.contains(JAVASCRIPT_CLASSES.CLOSE_COMPONENT))) {
-      return DismissAlert.closeAlert(componentPreviewComponent, componentPreviewElement);
+      return DismissAlert.closeAlert(componentPreviewComponent, componentElement);
     }
     if (buttonElement.classList.contains(OPTION_MENU_BUTTON_MARKER)) {
       DismissAlert.changeCloseButtonsJsClasses(componentPreviewComponent, SET_METHODS.REMOVE);

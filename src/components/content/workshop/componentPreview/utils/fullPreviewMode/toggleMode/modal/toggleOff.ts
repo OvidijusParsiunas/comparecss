@@ -13,10 +13,10 @@ export default class ImportComponedModeToggleOff {
   }
 
   public static start(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
-      isExpandedModalPreviewModeActive: boolean, toggleFullPreviewModeOptionsCallback: () => void, componentPreviewElement: HTMLElement,
+      isExpandedModalPreviewModeActive: boolean, toggleFullPreviewModeOptionsCallback: () => void, componentElement: HTMLElement,
       temporaryComponentElement: HTMLElement): void {
     if (!isExpandedModalPreviewModeActive) {
-      GeneralUtils.switchComponentsWithFadeOut(componentPreviewElement,
+      GeneralUtils.switchComponentsWithFadeOut(componentElement,
         temporaryComponentElement, ImportComponedModeToggleOff.switchButtonToModal.bind(this, componentPreviewComponent));
     } else {
       ImportComponedModeToggleOff.switchButtonToModal(componentPreviewComponent);
@@ -27,12 +27,12 @@ export default class ImportComponedModeToggleOff {
   }
 
   public static toggleOffCallback(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
-      isExpandedModalPreviewModeActive: boolean, toggleFullPreviewModeOptionsCallback: () => void, componentPreviewElement: HTMLElement,
+      isExpandedModalPreviewModeActive: boolean, toggleFullPreviewModeOptionsCallback: () => void, componentElement: HTMLElement,
       temporaryComponentElement: HTMLElement, event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
     const buttonElement = WorkshopEventCallbackUtils.getParentElementIfSvg(event.target as HTMLElement);
     if (buttonElement.classList.contains(COMPONENT_LIST_ITEM_MARKER) || buttonElement.classList.contains(COMPONENT_CARD_MARKER)) {
       ImportComponedModeToggleOff.start(componentPreviewComponent, toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive,
-        toggleFullPreviewModeOptionsCallback, componentPreviewElement, temporaryComponentElement);
+        toggleFullPreviewModeOptionsCallback, componentElement, temporaryComponentElement);
       return { shouldRepeat: false };
     }
     if (buttonElement.classList.contains(COMPONENT_PREVIEW_MARKER) || buttonElement.classList.contains(OPTION_MENU_BUTTON_MARKER)) {

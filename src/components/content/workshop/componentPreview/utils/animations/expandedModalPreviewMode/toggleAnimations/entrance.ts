@@ -2,7 +2,7 @@ import { COMPONENT_PREVIEW_CLASSES } from '../../../../../../../../consts/compon
 import { BackdropProperties } from '../../../../../../../../interfaces/workshopComponent';
 import { fulPreviewModeState } from '../../../fullPreviewMode/fullPreviewModeState';
 import { EntranceAnimation } from '../../../../../../../../interfaces/animations';
-import { AssembleAnimationValues } from './utils/assembleAnimationValues';
+import { AssembleAnimationValues } from '../utils/assembleAnimationValues';
 import GeneralUtils from '../../utils/generalUtils';
 import { animationState } from '../../state';
 import { ComponentOptions } from 'vue';
@@ -68,7 +68,7 @@ export default class ModeToggleEntranceAnimation {
     if (toolbarPositionToggleElement) toolbarPositionToggleElement.style.display = 'block';
   }
 
-  public static startToolbarAnimation(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
+  private static startToolbarAnimation(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
       toolbarPositionToggleElement: HTMLElement, animationDelay: string): void {
     ModeToggleEntranceAnimation.prepareToolbarAnimation(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
     const [toolbarAnimationDurationSeconds, toolbarAnimationDurationMilliseconds] = ModeToggleEntranceAnimation
@@ -94,29 +94,29 @@ export default class ModeToggleEntranceAnimation {
     }, ModeToggleEntranceAnimation.TIME_FOR_BACKDROP_TO_BE_RENDERED_MILLISECONDS);
   }
 
-  private static setComponentPreviewContainerToModalView(componentPreviewContainerElement: HTMLElement): void {
-    componentPreviewContainerElement.classList.replace(COMPONENT_PREVIEW_CLASSES.DEFAULT, COMPONENT_PREVIEW_CLASSES.EXPANDED_MODAL_MODE_ACTIVE);
+  private static setComponentPreviewContainerToModalView(modalContainerElement: HTMLElement): void {
+    modalContainerElement.classList.replace(COMPONENT_PREVIEW_CLASSES.DEFAULT, COMPONENT_PREVIEW_CLASSES.EXPANDED_MODAL_MODE_ACTIVE);
     setTimeout(() => {
-      componentPreviewContainerElement.style.opacity = OPACITY_VISIBLE;
+      modalContainerElement.style.opacity = OPACITY_VISIBLE;
     }, ModeToggleEntranceAnimation.TIME_FOR_BACKDROP_TO_BE_RENDERED_MILLISECONDS);
   }
 
-  public static startModalAndBackdropAnimation(componentPreviewContainerElement: HTMLElement, modalElement: HTMLElement,
+  private static startModalAndBackdropAnimation(modalContainerElement: HTMLElement, modalElement: HTMLElement,
       modalOverlayElement: HTMLElement, backdropProperties: BackdropProperties, modalEntranceAnimation: EntranceAnimation,
       animationDuration: string, animationDelay?: string): void {
     GeneralUtils.toggleModalStaticPosition(modalElement, modalOverlayElement, CLASSLIST_METHODS.REMOVE);
-    ModeToggleEntranceAnimation.setComponentPreviewContainerToModalView(componentPreviewContainerElement);
+    ModeToggleEntranceAnimation.setComponentPreviewContainerToModalView(modalContainerElement);
     ModeToggleEntranceAnimation.displayBackdrop(backdropProperties);
     setTimeout(() => { modalEntranceAnimation(animationDuration, modalElement, GeneralUtils.unsetAnimationProperties,
-      componentPreviewContainerElement, animationDelay); });
+      modalContainerElement, animationDelay); });
   }
 
-  private static startModalAndToolbarAnimationWithFadeOut(componentPreviewContainerElement: HTMLElement, modalElement: HTMLElement,
+  private static startModalAndToolbarAnimationWithFadeOut(modalContainerElement: HTMLElement, modalElement: HTMLElement,
       modalOverlayElement: HTMLElement, backdropProperties: BackdropProperties, modalEntranceAnimation: EntranceAnimation,
       animationDuration: string, animationDelay?: string): void {
     GeneralUtils.opacityFadeAnimation(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, modalElement);
     window.setTimeout(() => {
-      ModeToggleEntranceAnimation.startModalAndBackdropAnimation(componentPreviewContainerElement, modalElement, modalOverlayElement,
+      ModeToggleEntranceAnimation.startModalAndBackdropAnimation(modalContainerElement, modalElement, modalOverlayElement,
         backdropProperties, modalEntranceAnimation, animationDuration, animationDelay);
     }, MODE_TOGGLE_FADE_ANIMATION_DURATION_MILLISECONDS);
   }
@@ -124,16 +124,16 @@ export default class ModeToggleEntranceAnimation {
   public static start(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
       toolbarPositionToggleElement?: HTMLElement): void {
     const { modalEntranceAnimation, animationDuration, animationDelay, backdropProperties, modalElement, modalOverlayElement,
-      componentPreviewContainerElement } = AssembleAnimationValues.assembleEntranceAnimationValues(componentPreviewComponent);
+      modalContainerElement } = AssembleAnimationValues.assembleEntranceAnimationValues(componentPreviewComponent);
     if (animationState.getIsModeToggleAnimationInProgressState()) {
       GeneralUtils.startModalAndToolbarAnimationWithFadeOut(modalElement);
       const newAnimationDuration = GeneralUtils.getNewAnimationDuration();
-      ModeToggleEntranceAnimation.startModalAndBackdropAnimation(componentPreviewContainerElement, modalElement, modalOverlayElement,
+      ModeToggleEntranceAnimation.startModalAndBackdropAnimation(modalContainerElement, modalElement, modalOverlayElement,
         backdropProperties, modalEntranceAnimation, newAnimationDuration);
       ModeToggleEntranceAnimation.startToolbarAnimation(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, animationDelay);
     } else {
       GeneralUtils.setToolbarContainerPointerEvents(toolbarContainerElement, POINTER_EVENTS_NONE);
-      ModeToggleEntranceAnimation.startModalAndToolbarAnimationWithFadeOut(componentPreviewContainerElement, modalElement, modalOverlayElement,
+      ModeToggleEntranceAnimation.startModalAndToolbarAnimationWithFadeOut(modalContainerElement, modalElement, modalOverlayElement,
         backdropProperties, modalEntranceAnimation, animationDuration, animationDelay);
       ModeToggleEntranceAnimation.startToolbarAnimationWithFadeOut(toolbarContainerElement, toolbarElement,
         toolbarPositionToggleElement, animationDelay);

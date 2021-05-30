@@ -1,5 +1,5 @@
-import { AssembledModalEntranceAnimationValues, AssembledModalExitAnimationValues } from '../../../../../../../../../interfaces/assembledAnimationValues';
-import { animationTypeToFunctionality } from '../../../animationToFunctionality';
+import { AssembledModalEntranceAnimationValues, AssembledModalExitAnimationValues } from '../../../../../../../../interfaces/assembledAnimationValues';
+import { animationTypeToFunctionality } from '../../animationToFunctionality';
 import { ComponentOptions } from 'vue';
 
 // the reason why we are passing in the full component preview component state in (instead of passing what is needed), is because there was
@@ -18,7 +18,7 @@ export class AssembleAnimationValues {
       backdropProperties: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.backdrop,
       modalElement: componentPreviewComponent.$refs.baseComponent.$refs.componentPreview,
       modalOverlayElement: componentPreviewComponent.$refs.baseComponent.$refs.componentPreviewOverlay,
-      componentPreviewContainerElement: componentPreviewComponent.$refs.componentPreviewContainer,
+      modalContainerElement: componentPreviewComponent.$refs.componentPreviewContainer,
     };
   }
 
@@ -27,7 +27,7 @@ export class AssembleAnimationValues {
       modalExitAnimation: animationTypeToFunctionality[componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.exit.type],
       animationDuration: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.exit.duration,
       setOptionToDefaultCallback: exitAnimationCallback,
-      componentPreviewContainerElement: componentPreviewComponent.$refs.componentPreviewContainer,
+      modalContainerElement: componentPreviewComponent.$refs.componentPreviewContainer,
       backdropProperties: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.backdrop,
       modalElement: componentPreviewComponent.$refs.baseComponent.$refs.componentPreview,
       modalOverlayElement: componentPreviewComponent.$refs.baseComponent.$refs.componentPreviewOverlay,

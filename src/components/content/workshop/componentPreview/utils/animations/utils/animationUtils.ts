@@ -44,15 +44,15 @@ export default class AnimationUtils {
     AnimationUtils.setAnimationProperties(componentElement, OPACITY_VISIBLE,
       ALL_PROPERTIES, animationDuration, LINEAR_SPEED_TRANSITION, componentElementProperties);
     animationState.markBeginningTimeOfAnimationState();
-    const pendingModalAnimationEnd = window.setTimeout(() => {
+    const pendingAnimationEnd = window.setTimeout(() => {
       AnimationUtils.finishEntranceAnimation(componentElement, unsetAnimationPropertiesCallback);
     }, GeneralUtils.secondsStringToMillisecondsNumber(animationDuration));
-    animationState.setPendingAnimationEndState(pendingModalAnimationEnd);
+    animationState.setPendingAnimationEndState(pendingAnimationEnd);
   }
 
-  private static calculateAnimationDelay(componentPreviewContainerElement: HTMLElement, animationDelay?: string): number {
-    // if the componentPreviewContainerElement is present - we can assume that this is an expand mode toggle animation
-    if (componentPreviewContainerElement) {
+  private static calculateAnimationDelay(componentContainerElement: HTMLElement, animationDelay?: string): number {
+    // if componentContainerElement is present - we can assume that this is an expand modal mode toggle animation
+    if (componentContainerElement) {
       if (animationDelay) {
         return GeneralUtils.secondsStringToMillisecondsNumber(animationDelay);
       }
@@ -61,14 +61,14 @@ export default class AnimationUtils {
     return AnimationUtils.ENTRANCE_ANIMATION_PREVIEW_DELAY_MILLISECONDS;
   }
 
-  public static startModalEntranceAnimation(animationDuration: string, componentElement: HTMLElement, 
-      unsetAnimationPropertiesCallback: (...params: HTMLElement[]) => void, componentPreviewContainerElement?: HTMLElement,
+  public static startEntranceAnimation(animationDuration: string, componentElement: HTMLElement, 
+      unsetAnimationPropertiesCallback: (...params: HTMLElement[]) => void, componentContainerElement?: HTMLElement,
       animationDelay?: string, componentElementProperties?: ElementStyleProperties): void {
-    const modalAnimationDelay = window.setTimeout(() => { 
+    const componentAnimationDelay = window.setTimeout(() => { 
       AnimationUtils.startEntranceAnimationAfterDelay(
         animationDuration, componentElement, unsetAnimationPropertiesCallback, componentElementProperties); 
-    }, AnimationUtils.calculateAnimationDelay(componentPreviewContainerElement, animationDelay));
-    animationState.setAnimationDelayState(modalAnimationDelay);
+    }, AnimationUtils.calculateAnimationDelay(componentContainerElement, animationDelay));
+    animationState.setAnimationDelayState(componentAnimationDelay);
   }
 
   private static startBackdropHideAnimation(backdropProperties: BackdropProperties, animationDuration: string): void {
@@ -78,11 +78,11 @@ export default class AnimationUtils {
     }
   }
   
-  private static finishModalExitAnimation(componentElement: HTMLElement, exitAnimationCallback: ExitAnimationCallback,
-      componentPreviewContainerElement: HTMLElement, backdropProperties: BackdropProperties, toolbarElement: HTMLElement,
-      innerToolbarElement: HTMLElement, modalOverlayElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
-    exitAnimationCallback(componentElement, componentPreviewContainerElement, backdropProperties, toolbarElement,
-      innerToolbarElement, modalOverlayElement, toolbarPositionToggleElement);
+  private static finishExitAnimation(componentElement: HTMLElement, exitAnimationCallback: ExitAnimationCallback,
+      componentContainerElement: HTMLElement, backdropProperties?: BackdropProperties, toolbarElement?: HTMLElement,
+      innerToolbarElement?: HTMLElement, componentOverlayElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
+    exitAnimationCallback(componentElement, componentContainerElement, backdropProperties, toolbarElement,
+      innerToolbarElement, componentOverlayElement, toolbarPositionToggleElement);
   }
 
   private static calculateAnimationDurationMilliseconds(wasPreviousAnimationInterrupted: boolean, animationDuration: string): number {
@@ -92,18 +92,18 @@ export default class AnimationUtils {
       : animationDurationMilliseconds;
   }
 
-  public static startModalAndBackdropExitAnimation(animationDuration: string, componentElement: HTMLElement,
-      exitAnimationCallback: ExitAnimationCallback, componentPreviewContainerElement: HTMLElement, backdropProperties: BackdropProperties,
-      toolbarElement: HTMLElement, innerToolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement, modalOverlayElement?: HTMLElement,
+  public static startExitAnimation(animationDuration: string, componentElement: HTMLElement, exitAnimationCallback: ExitAnimationCallback,
+      componentContainerElement: HTMLElement, backdropProperties?: BackdropProperties, toolbarElement?: HTMLElement,
+      innerToolbarElement?: HTMLElement, toolbarPositionToggleElement?: HTMLElement, componentOverlayElement?: HTMLElement,
       wasPreviousAnimationInterrupted?: boolean, componentElementProperties?: ElementStyleProperties): void {
-    AnimationUtils.startBackdropHideAnimation(backdropProperties, animationDuration);
+    if (backdropProperties) AnimationUtils.startBackdropHideAnimation(backdropProperties, animationDuration);
     AnimationUtils.setAnimationProperties(componentElement, OPACITY_INVISIBLE, ALL_PROPERTIES, animationDuration,
       LINEAR_SPEED_TRANSITION, componentElementProperties);
     animationState.markBeginningTimeOfAnimationState();
-    const pendingModalAnimationEnd = window.setTimeout(() => {
-      AnimationUtils.finishModalExitAnimation(componentElement, exitAnimationCallback, componentPreviewContainerElement, backdropProperties, toolbarElement,
-        innerToolbarElement, modalOverlayElement, toolbarPositionToggleElement);
+    const pendingAnimationEnd = window.setTimeout(() => {
+      AnimationUtils.finishExitAnimation(componentElement, exitAnimationCallback, componentContainerElement, backdropProperties, toolbarElement,
+        innerToolbarElement, componentOverlayElement, toolbarPositionToggleElement);
     }, AnimationUtils.calculateAnimationDurationMilliseconds(wasPreviousAnimationInterrupted, animationDuration));
-    animationState.setPendingAnimationEndState(pendingModalAnimationEnd);
+    animationState.setPendingAnimationEndState(pendingAnimationEnd);
   }
 }

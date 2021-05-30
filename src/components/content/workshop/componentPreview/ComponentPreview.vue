@@ -66,7 +66,6 @@
 </template>
 
 <script lang="ts">
-import { animationTypeToFunctionality } from './utils/animations/animationToFunctionality';
 import { subcomponentAndOverlayElementIdsState } from '../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import ExpandedModalPreviewModeToggleEntranceAnimation from './utils/animations/expandedModalPreviewMode/toggleAnimations/entrance';
 import { SubcomponentSelectModeSubOverlay } from '../toolbar/options/subcomponentSelectMode/subcomponentSelectModeSubOverlay';
@@ -77,6 +76,7 @@ import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomp
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
 import { ToggleFullPreviewModeEvent } from '../../../../interfaces/toggleFullPreviewModeEvent';
 import { PlayAnimationPreviewEvent } from '../../../../interfaces/playAnimationPreviewEvent';
+import { animationTypeToFunctionality } from './utils/animations/animationToFunctionality';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
 import PreviewEntranceAnimation from './utils/animations/previewAnimations/entrance';
 import { EntranceAnimation, ExitAnimation } from '../../../../interfaces/animations';

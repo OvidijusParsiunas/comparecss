@@ -8,15 +8,15 @@ export interface AssembledModalEntranceAnimationValues {
   backdropProperties: BackdropProperties;
   modalElement: HTMLElement;
   modalOverlayElement: HTMLElement;
-  componentPreviewContainerElement: HTMLElement;
+  modalContainerElement: HTMLElement;
 }
 
 export interface AssembledModalExitAnimationValues {
   modalExitAnimation: ExitAnimation;
   animationDuration: string;
   setOptionToDefaultCallback: () => void;
-  componentPreviewContainerElement: HTMLElement;
+  modalContainerElement: HTMLElement;
   backdropProperties: BackdropProperties;
   modalElement: HTMLElement;
-  modalOverlayElement: HTMLElement
+  modalOverlayElement: HTMLElement;
 }
