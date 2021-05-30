@@ -1,5 +1,5 @@
 import { BackdropProperties } from '../../../../../../../../interfaces/workshopComponent';
-import { ExitAnimationCallback } from '../../../../../../../../interfaces/animations';
+import { CloseAnimationCallback } from '../../../../../../../../interfaces/animations';
 import AnimationUtils from '../animationUtils';
 import { animationState } from '../../state';
 
@@ -7,35 +7,35 @@ export default class SlideAnimations {
 
   private static readonly SLIDE_DISTANCE_NUMBER = 40;
 
-  private static prepareEntranceAnimation(componentElement: HTMLElement): string {
+  private static prepareOpenAnimation(componentElement: HTMLElement): string {
     const currentTopStyleValue = componentElement.style.top || '0px';
     const currentTopStyleValueNumber = Number.parseInt(currentTopStyleValue);
-    animationState.setCurrentExitAnimationDefaultPropertiesState({top: currentTopStyleValue});
+    animationState.setCurrentCloseAnimationDefaultPropertiesState({top: currentTopStyleValue});
     componentElement.style.top = `${currentTopStyleValueNumber - SlideAnimations.SLIDE_DISTANCE_NUMBER}px`;
     return currentTopStyleValue;
   }
 
-  public static startEntranceAnimation(animationDuration: string, componentElement: HTMLElement,
+  public static startOpenAnimation(animationDuration: string, componentElement: HTMLElement,
       unsetAnimationPropertiesCallback: (...params: HTMLElement[]) => void, componentContainerElement?: HTMLElement, animationDelay?: string): void {
-    const currentTopValue = SlideAnimations.prepareEntranceAnimation(componentElement);
+    const currentTopValue = SlideAnimations.prepareOpenAnimation(componentElement);
     const componentElementProperties = { top: currentTopValue };
-    AnimationUtils.startEntranceAnimation(
+    AnimationUtils.startOpenAnimation(
       animationDuration, componentElement, unsetAnimationPropertiesCallback, componentContainerElement, animationDelay, componentElementProperties);
   }
 
-  private static prepareExitAnimation(componentElement: HTMLElement): number {
+  private static prepareCloseAnimation(componentElement: HTMLElement): number {
     const currentTopStyleValue = componentElement.style.top || '0px';
-    animationState.setCurrentExitAnimationDefaultPropertiesState({top: currentTopStyleValue});
+    animationState.setCurrentCloseAnimationDefaultPropertiesState({top: currentTopStyleValue});
     return Number.parseInt(currentTopStyleValue);
   }
 
-  public static startExitAnimation(animationDuration: string, componentElement: HTMLElement, exitAnimationCallback: ExitAnimationCallback,
+  public static startCloseAnimation(animationDuration: string, componentElement: HTMLElement, closeAnimationCallback: CloseAnimationCallback,
       componentContainerElement: HTMLElement, backdropProperties: BackdropProperties, toolbarElement: HTMLElement,
       innerToolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement, componentOverlayElement: HTMLElement,
       wasPreviousAnimationInterrupted?: boolean): void {
-    const currentTopStyleValueNumber = SlideAnimations.prepareExitAnimation(componentElement);
+    const currentTopStyleValueNumber = SlideAnimations.prepareCloseAnimation(componentElement);
     const componentElementProperties = { top: `${currentTopStyleValueNumber - SlideAnimations.SLIDE_DISTANCE_NUMBER}px` };
-    AnimationUtils.startExitAnimation(animationDuration, componentElement, exitAnimationCallback, componentContainerElement,
+    AnimationUtils.startCloseAnimation(animationDuration, componentElement, closeAnimationCallback, componentContainerElement,
       backdropProperties, toolbarElement, innerToolbarElement, toolbarPositionToggleElement, componentOverlayElement,
       wasPreviousAnimationInterrupted, componentElementProperties);
   }

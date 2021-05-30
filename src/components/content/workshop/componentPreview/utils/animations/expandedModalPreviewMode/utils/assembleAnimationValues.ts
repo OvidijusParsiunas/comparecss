@@ -1,4 +1,4 @@
-import { AssembledModalEntranceAnimationValues, AssembledModalExitAnimationValues } from '../../../../../../../../interfaces/assembledAnimationValues';
+import { AssembledModalOpenAnimationValues, AssembledModalCloseAnimationValues } from '../../../../../../../../interfaces/assembledAnimationValues';
 import { animationTypeToFunctionality } from '../../animationToFunctionality';
 import { ComponentOptions } from 'vue';
 
@@ -10,11 +10,11 @@ import { ComponentOptions } from 'vue';
 // the animation method itself and allows the developer to easily understand what callbacks are being used within the codebase.
 export class AssembleAnimationValues {
 
-  public static assembleEntranceAnimationValues(componentPreviewComponent: ComponentOptions): AssembledModalEntranceAnimationValues {
+  public static assembleOpenAnimationValues(componentPreviewComponent: ComponentOptions): AssembledModalOpenAnimationValues {
     return {
-      modalEntranceAnimation: animationTypeToFunctionality[componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.entrance.type],
-      animationDuration: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.entrance.duration,
-      animationDelay: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.entrance.delay,
+      modalOpenAnimation: animationTypeToFunctionality[componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.open.type],
+      animationDuration: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.open.duration,
+      animationDelay: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.open.delay,
       backdropProperties: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.backdrop,
       modalElement: componentPreviewComponent.$refs.baseComponent.$refs.componentPreview,
       modalOverlayElement: componentPreviewComponent.$refs.baseComponent.$refs.componentPreviewOverlay,
@@ -22,11 +22,11 @@ export class AssembleAnimationValues {
     };
   }
 
-  public static assembleExitAnimationValues(componentPreviewComponent: ComponentOptions, exitAnimationCallback: () => void): AssembledModalExitAnimationValues {
+  public static assembleClosetAnimationValues(componentPreviewComponent: ComponentOptions, closeAnimationCallback: () => void): AssembledModalCloseAnimationValues {
     return {
-      modalExitAnimation: animationTypeToFunctionality[componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.exit.type],
-      animationDuration: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.exit.duration,
-      setOptionToDefaultCallback: exitAnimationCallback,
+      modalCloseAnimation: animationTypeToFunctionality[componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.close.type],
+      animationDuration: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.close.duration,
+      setOptionToDefaultCallback: closeAnimationCallback,
       modalContainerElement: componentPreviewComponent.$refs.componentPreviewContainer,
       backdropProperties: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.backdrop,
       modalElement: componentPreviewComponent.$refs.baseComponent.$refs.componentPreview,

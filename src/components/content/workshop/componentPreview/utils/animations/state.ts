@@ -7,10 +7,10 @@ let isToolbarFadeAnimationInProgress = false;
 let isAnimationPreviewInProgressState = false;
 let isWaitingAnimationDelayState = false;
 let expandedModalModeToolbarContainerPositionState = EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.DEFAULT;
-let currentExitAnimationDefaultPropertiesState = {};
+let currentCloseAnimationDefaultPropertiesState = {};
 
-let pendingToolbarEntranceFadeInAnimationState = null;
-let pendingToolbarEntranceAnimationUnsetState = null;
+let pendingToolbarOpenFadeInAnimationState = null;
+let pendingToolbarOpenAnimationUnsetState = null;
 
 let animationDelayState = null;
 let pendingAnimationEndState = null;
@@ -57,25 +57,25 @@ function setExpandedModalModeToolbarContainerPositionState(state: EXPANDED_MODAL
 }
 
 function setIsPreviewAnimationInProgressState(): ElementStyleProperties {
-  return currentExitAnimationDefaultPropertiesState;
+  return currentCloseAnimationDefaultPropertiesState;
 }
 
-function setCurrentExitAnimationDefaultPropertiesState(state: ElementStyleProperties): void {
-  currentExitAnimationDefaultPropertiesState = state;
+function setCurrentCloseAnimationDefaultPropertiesState(state: ElementStyleProperties): void {
+  currentCloseAnimationDefaultPropertiesState = state;
 }
 
-function setPendingToolbarEntranceFadeInAnimationState(state: number): void {
-  pendingToolbarEntranceFadeInAnimationState = state;
+function setPendingToolbarOpenFadeInAnimationState(state: number): void {
+  pendingToolbarOpenFadeInAnimationState = state;
 }
 
-function setPendingToolbarEntranceAnimationUnsetState(state: number): void {
-  pendingToolbarEntranceAnimationUnsetState = state;
+function setPendingToolbarOpenAnimationUnsetState(state: number): void {
+  pendingToolbarOpenAnimationUnsetState = state;
   setIsToolbarFadeAnimationInProgressState(true);
 }
 
 function cancelPendingToolbarAnimationFunctionality(): void {
-  clearTimeout(pendingToolbarEntranceFadeInAnimationState);
-  clearTimeout(pendingToolbarEntranceAnimationUnsetState);
+  clearTimeout(pendingToolbarOpenFadeInAnimationState);
+  clearTimeout(pendingToolbarOpenAnimationUnsetState);
 }
 
 function setAnimationDelayState(state: number): void {
@@ -117,9 +117,9 @@ export const animationState = {
   getExpandedModalModeToolbarContainerPositionState,
   setExpandedModalModeToolbarContainerPositionState,
   setIsPreviewAnimationInProgressState,
-  setCurrentExitAnimationDefaultPropertiesState,
-  setPendingToolbarEntranceFadeInAnimationState,
-  setPendingToolbarEntranceAnimationUnsetState,
+  setCurrentCloseAnimationDefaultPropertiesState,
+  setPendingToolbarOpenFadeInAnimationState,
+  setPendingToolbarOpenAnimationUnsetState,
   cancelPendingToolbarAnimationFunctionality,
   setAnimationDelayState,
   getIsWaitingAnimationDelayState,

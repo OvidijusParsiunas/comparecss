@@ -67,10 +67,10 @@
 
 <script lang="ts">
 import { subcomponentAndOverlayElementIdsState } from '../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
-import ExpandedModalPreviewModeToggleEntranceAnimation from './utils/animations/expandedModalPreviewMode/toggleAnimations/entrance';
 import { SubcomponentSelectModeSubOverlay } from '../toolbar/options/subcomponentSelectMode/subcomponentSelectModeSubOverlay';
+import ExpandedModalPreviewModeToggleCloseAnimation from './utils/animations/expandedModalPreviewMode/toggleAnimations/close';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
-import ExpandedModalPreviewModeToggleExitAnimation from './utils/animations/expandedModalPreviewMode/toggleAnimations/exit';
+import ExpandedModalPreviewModeToggleOpenAnimation from './utils/animations/expandedModalPreviewMode/toggleAnimations/open';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
@@ -78,15 +78,15 @@ import { ToggleFullPreviewModeEvent } from '../../../../interfaces/toggleFullPre
 import { PlayAnimationPreviewEvent } from '../../../../interfaces/playAnimationPreviewEvent';
 import { animationTypeToFunctionality } from './utils/animations/animationToFunctionality';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
-import PreviewEntranceAnimation from './utils/animations/previewAnimations/entrance';
-import { EntranceAnimation, ExitAnimation } from '../../../../interfaces/animations';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import { componentTypeToStyles } from '../newComponent/types/componentTypeToStyles';
 import { NEW_COMPONENT_STYLES } from '../../../../consts/newComponentStyles.enum';
 import ToggleFullPreviewMode from './utils/fullPreviewMode/toggleFullPreviewMode';
+import { OpenAnimation, CloseAnimation } from '../../../../interfaces/animations';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { TemporaryComponent } from '../../../../interfaces/temporaryComponent';
-import PreviewExitAnimation from './utils/animations/previewAnimations/exit';
+import PreviewCloseAnimation from './utils/animations/previewAnimations/close';
+import PreviewOpenAnimation from './utils/animations/previewAnimations/open';
 import AnimationUtils from './utils/animations/utils/animationUtils';
 import ComponentPreviewUtils from './utils/componentPreviewUtils';
 
@@ -166,9 +166,9 @@ export default {
       if (isToggledExpandedModalPreviewModeToActive) {
         // strategies
         // https://tympanus.net/codrops/2013/06/25/nifty-modal-window-effects/
-        ExpandedModalPreviewModeToggleEntranceAnimation.start(this, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
+        ExpandedModalPreviewModeToggleOpenAnimation.start(this, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
       } else {
-        ExpandedModalPreviewModeToggleExitAnimation.start(this, setOptionToDefaultCallback, toolbarContainerElement, toolbarElement,
+        ExpandedModalPreviewModeToggleCloseAnimation.start(this, setOptionToDefaultCallback, toolbarContainerElement, toolbarElement,
           toolbarPositionToggleElement);
       }
     },
@@ -184,15 +184,15 @@ export default {
       }
     },
     playAnimationPreview(playAnimationPreviewEvent: PlayAnimationPreviewEvent): void {
-      const [animationType, isEntranceAnimation] = playAnimationPreviewEvent;
-      if (isEntranceAnimation) {
-        PreviewEntranceAnimation.start(
-          animationTypeToFunctionality[animationType] as EntranceAnimation,
-          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.animations.entrance.duration, this.$refs.baseComponent.$refs.componentPreview);
+      const [animationType, isOpenAnimation] = playAnimationPreviewEvent;
+      if (isOpenAnimation) {
+        PreviewOpenAnimation.start(
+          animationTypeToFunctionality[animationType] as OpenAnimation,
+          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.animations.open.duration, this.$refs.baseComponent.$refs.componentPreview);
       } else {
-        PreviewExitAnimation.start(
-          animationTypeToFunctionality[animationType] as ExitAnimation,
-          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.animations.exit.duration, this.$refs.baseComponent.$refs.componentPreview);
+        PreviewCloseAnimation.start(
+          animationTypeToFunctionality[animationType] as CloseAnimation,
+          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.animations.close.duration, this.$refs.baseComponent.$refs.componentPreview);
       }
     },
     stopAnimationPreview(): void {

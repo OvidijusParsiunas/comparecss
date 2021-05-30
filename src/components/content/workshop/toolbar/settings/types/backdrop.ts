@@ -15,9 +15,9 @@ const backdropAnimationDurationSpec = {
   default: 0,
   scale: [0, 40],
   smoothingDivisible: 20,
-  customFeatureObjectKeys: ['customFeatures', 'backdrop', 'entranceAnimationDuration', 'currentValue'],
-  lastSelectedValueObjectKeys: ['customFeatures', 'backdrop', 'entranceAnimationDuration', 'lastSelectedValue'],
-  isAutoObjectKeys: ['customFeatures', 'backdrop', 'entranceAnimationDuration', 'isAuto'],
+  customFeatureObjectKeys: ['customFeatures', 'backdrop', 'openAnimationDuration', 'currentValue'],
+  lastSelectedValueObjectKeys: ['customFeatures', 'backdrop', 'openAnimationDuration', 'lastSelectedValue'],
+  isAutoObjectKeys: ['customFeatures', 'backdrop', 'openAnimationDuration', 'isAuto'],
   postfix: 's',
   updateSettingSpecViaOtherSettings: {
     aggregatedSettingPaths: getAggregatedSettingsPaths(),
@@ -69,7 +69,7 @@ export default {
       spec: backdropAnimationDurationSpec,
       triggers: [
         {
-          customFeatureObjectKeys: ['customFeatures', 'backdrop', 'entranceAnimationDuration', 'isAuto'],
+          customFeatureObjectKeys: ['customFeatures', 'backdrop', 'openAnimationDuration', 'isAuto'],
           defaultValue: false,
           conditions: new Set([true]),
         },
@@ -79,7 +79,7 @@ export default {
       type: SETTINGS_TYPES.CHECKBOX,
       spec: {
         name: 'Auto',
-        customFeatureObjectKeys: ['customFeatures', 'backdrop', 'entranceAnimationDuration', 'isAuto'],
+        customFeatureObjectKeys: ['customFeatures', 'backdrop', 'openAnimationDuration', 'isAuto'],
         default: false,
       },
       triggers: {

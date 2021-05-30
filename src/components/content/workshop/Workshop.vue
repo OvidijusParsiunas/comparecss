@@ -4,8 +4,8 @@
       ref="modalBackdrop" id="modal-backdrop"
       :style="{
         backgroundColor: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.color,
-        transitionDuration: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.exitAnimationDuration
-          || currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.entranceAnimationDuration.currentValue,
+        transitionDuration: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.closeAnimationDuration
+          || currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.openAnimationDuration.currentValue,
         opacity: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.opacity}">
     </div>
     <div style="height: 100vh" class="bootstrap">
@@ -109,9 +109,9 @@ import { removeSubcomponentModalState } from './toolbar/options/removeSubcompone
 import getModalSubcomponentDropdownStructure from './newComponent/types/modals/properties/subcomponentDropdownStructure'
 import SubcomponentToggleOverlayUtils from './toolbar/options/subcomponentToggleUtils/subcomponentToggleOverlayUtils';
 import { modalLayerTopSpecificSettings } from './newComponent/types/modals/properties/modalLayerTopSpecificSettings';
-import { MODAL_ANIMATION_ENTRANCE_TYPES, MODAL_ANIMATION_EXIT_TYPES } from '../../../consts/animationTypes.enum';
 import { ToggleImportComponentModeState } from './utils/workshopImportComponent/toggleImportComponentModeState';
 import { inheritedAlertBaseChildCss } from './newComponent/types/alerts/properties/inheritedAlertBaseChildCss';
+import { MODAL_ANIMATION_OPEN_TYPES, MODAL_ANIMATION_CLOSE_TYPES } from '../../../consts/animationTypes.enum';
 import { modalBaseSpecificSettings } from './newComponent/types/modals/properties/modalBaseSpecificSettings';
 import { modalTextSpecificSettings } from './newComponent/types/modals/properties/modalTextSpecificSettings'
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
@@ -182,7 +182,7 @@ function createDefaultBackdropProperties(): BackdropProperties {
   return {
     color: '#6d6d6dcc',
     alpha: 0.8,
-    entranceAnimationDuration: {
+    openAnimationDuration: {
       currentValue: '0.45s',
       lastSelectedValue: '0.45s',
       isAuto: true,
@@ -194,13 +194,13 @@ function createDefaultBackdropProperties(): BackdropProperties {
 
 function createDefaultModalAnimationsProperties(): Animations {
   return {
-    entrance: {
-      type: MODAL_ANIMATION_ENTRANCE_TYPES.FADE_IN,
+    open: {
+      type: MODAL_ANIMATION_OPEN_TYPES.FADE_IN,
       duration: '0.3s',
       delay: '0.15s',
     },
-    exit: {
-      type: MODAL_ANIMATION_EXIT_TYPES.FADE_OUT,
+    close: {
+      type: MODAL_ANIMATION_CLOSE_TYPES.FADE_OUT,
       duration: '0.25s',
     },
   };

@@ -1,4 +1,4 @@
-import { ALERT_ANIMATION_EXIT_TYPES, MODAL_ANIMATION_ENTRANCE_TYPES, MODAL_ANIMATION_EXIT_TYPES } from '../consts/animationTypes.enum';
+import { ALERT_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES, MODAL_ANIMATION_CLOSE_TYPES } from '../consts/animationTypes.enum';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../consts/workshopToolbarOptionTypes.enum';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
@@ -48,15 +48,15 @@ export type SubcomponentSpecificSettings = {
 export interface PreventPermanentEditByOtherSettings {
   currentValue: string;
   lastSelectedValue: string;
-  // the value is automatically set to the total of modal entrance duration and delay
+  // the value is automatically set to the total of modal open duration and delay
   isAuto: boolean;
 }
 
 export interface BackdropProperties {
   color: string;
   alpha: number;
-  entranceAnimationDuration: PreventPermanentEditByOtherSettings;
-  exitAnimationDuration?: string;
+  openAnimationDuration: PreventPermanentEditByOtherSettings;
+  closeAnimationDuration?: string;
   opacity: number;
   visible: boolean;
 }
@@ -67,13 +67,13 @@ export interface ComponentCenteringInParent {
 }
 
 export interface Animations {
-  entrance?: {
-    type: MODAL_ANIMATION_ENTRANCE_TYPES;
+  open?: {
+    type: MODAL_ANIMATION_OPEN_TYPES;
     duration: string;
     delay: string;
   },
-  exit: {
-    type: MODAL_ANIMATION_EXIT_TYPES | ALERT_ANIMATION_EXIT_TYPES;
+  close: {
+    type: MODAL_ANIMATION_CLOSE_TYPES | ALERT_ANIMATION_CLOSE_TYPES;
     duration: string;
   },
 }

@@ -1,6 +1,6 @@
 import { COMPONENT_PREVIEW_CLASSES } from '../../../../../../../../consts/componentPreviewClasses';
 import { BackdropProperties } from '../../../../../../../../interfaces/workshopComponent';
-import { ExitAnimationCallback } from '../../../../../../../../interfaces/animations';
+import { CloseAnimationCallback } from '../../../../../../../../interfaces/animations';
 import { AssembleAnimationValues } from '../utils/assembleAnimationValues';
 import GeneralUtils from '../../utils/generalUtils';
 import { animationState } from '../../state';
@@ -15,7 +15,7 @@ import {
   TOOLBAR_ELEMENT_ACTIVE_EXPANDED_MODAL_MODE_CLASS,
 } from '../../../../../../../../consts/toolbarClasses';
 
-export default class ModeToggleExitAnimation {
+export default class ModeToggleCloseAnimation {
 
   private static readonly TOOLBAR_FADE_DURATION_ON_DELAY_CANCEL_SECONDS = '0.6s';
 
@@ -36,7 +36,7 @@ export default class ModeToggleExitAnimation {
   
   private static hideBackdrop(backdropProperties: BackdropProperties): void {
     backdropProperties.visible = false;
-    delete backdropProperties.exitAnimationDuration;
+    delete backdropProperties.closeAnimationDuration;
   }
 
   private static setComponentPreviewContainerToDefault(modalContainerElement: HTMLElement): void {
@@ -45,44 +45,44 @@ export default class ModeToggleExitAnimation {
 
   private static modalAndBackdropFadeInAnimation(modalContainerElement: HTMLElement, backdropProperties: BackdropProperties,
       modalElement: HTMLElement): void {
-    ModeToggleExitAnimation.setComponentPreviewContainerToDefault(modalContainerElement);
-    ModeToggleExitAnimation.hideBackdrop(backdropProperties);
+    ModeToggleCloseAnimation.setComponentPreviewContainerToDefault(modalContainerElement);
+    ModeToggleCloseAnimation.hideBackdrop(backdropProperties);
     GeneralUtils.opacityFadeAnimation(OPACITY_VISIBLE, MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, modalElement);
   }
 
-  public static exitAnimationCallback(setOptionToDefaultCallback: () => void, modalElement: HTMLElement, modalContainerElement: HTMLElement,
+  public static closeAnimationCallback(setOptionToDefaultCallback: () => void, modalElement: HTMLElement, modalContainerElement: HTMLElement,
       backdropProperties: BackdropProperties, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
       modalOverlayElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
     GeneralUtils.toggleModalStaticPosition(modalElement, modalOverlayElement, CLASSLIST_METHODS.ADD);
     setOptionToDefaultCallback();
-    const exitAnimationModalDefaultProperties = animationState.setIsPreviewAnimationInProgressState();
-    GeneralUtils.setComponentElementProperties(modalElement, exitAnimationModalDefaultProperties);
-    ModeToggleExitAnimation.modalAndBackdropFadeInAnimation(modalContainerElement, backdropProperties, modalElement);
-    ModeToggleExitAnimation.toolbarFadeInAnimation(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
+    const closeAnimationModalDefaultProperties = animationState.setIsPreviewAnimationInProgressState();
+    GeneralUtils.setComponentElementProperties(modalElement, closeAnimationModalDefaultProperties);
+    ModeToggleCloseAnimation.modalAndBackdropFadeInAnimation(modalContainerElement, backdropProperties, modalElement);
+    ModeToggleCloseAnimation.toolbarFadeInAnimation(toolbarContainerElement, toolbarElement, toolbarPositionToggleElement);
   }
 
-  private static cancelEntranceAnimationFunctionality(modalElement: HTMLElement): string {
+  private static cancelOpenAnimationFunctionality(modalElement: HTMLElement): string {
     GeneralUtils.startModalAndToolbarAnimationWithFadeOut(modalElement);
     if (animationState.getIsWaitingAnimationDelayState()) {
       animationState.setIsWaitingAnimationDelayState(false);
-      return ModeToggleExitAnimation.TOOLBAR_FADE_DURATION_ON_DELAY_CANCEL_SECONDS;
+      return ModeToggleCloseAnimation.TOOLBAR_FADE_DURATION_ON_DELAY_CANCEL_SECONDS;
     } else {
       return GeneralUtils.getNewAnimationDuration();
     }
   }
 
   // UX - EXPANDED MODAL TOGGLE ANIMATION
-  // public static start(modalExitAnimation: ExitAnimation, animationDuration: string, setOptionToDefaultCallback: () => void,
+  // public static start(modalCloseAnimation: CloseAnimation, animationDuration: string, setOptionToDefaultCallback: () => void,
   //     modalContainerElement: HTMLElement, backdropProperties: BackdropProperties, modalElement: HTMLElement, modalOverlayElement: HTMLElement,
   //     toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
   //   let wasPreviousAnimationInterrupted = false;
   //   if (animationState.getIsModeToggleAnimationInProgressState()) {
-  //     const cancelResult = ModeToggleExitAnimation.cancelEntranceAnimationFunctionality(modalElement);
+  //     const cancelResult = ModeToggleCloseAnimation.cancelOpenAnimationFunctionality(modalElement);
   //     if (cancelResult) { animationDuration = cancelResult; }
   //     wasPreviousAnimationInterrupted = true;
   //   }
   //   GeneralUtils.opacityFadeAnimation(OPACITY_INVISIBLE, animationDuration, toolbarContainerElement);
-  //   modalExitAnimation(animationDuration, modalElement, ModeToggleExitAnimation.exitAnimationCallback.bind(this, setOptionToDefaultCallback) as ExitAnimationCallback,
+  //   modalCloseAnimation(animationDuration, modalElement, ModeToggleCloseAnimation.closeAnimationCallback.bind(this, setOptionToDefaultCallback) as CloseAnimationCallback,
   //     modalContainerElement, backdropProperties, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement, modalOverlayElement, wasPreviousAnimationInterrupted);
   //   animationState.setIsModeToggleAnimationInProgressState(true);
   // }
@@ -96,19 +96,19 @@ export default class ModeToggleExitAnimation {
     }, GeneralUtils.secondsStringToMillisecondsNumber(TOOLBAR_FADE_ANIMATION_DURATION_SECONDS));
   }
 
-  public static start(componentPreviewComponent: ComponentOptions, exitAnimationCallback: () => void,
+  public static start(componentPreviewComponent: ComponentOptions, closeAnimationCallback: () => void,
       toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, toolbarPositionToggleElement?: HTMLElement): void {
     let wasPreviousAnimationInterrupted = false;
     let reducedAnimationDuration: string;
-    const { modalExitAnimation, animationDuration, setOptionToDefaultCallback, modalContainerElement, backdropProperties,
-      modalElement, modalOverlayElement } = AssembleAnimationValues.assembleExitAnimationValues(componentPreviewComponent, exitAnimationCallback);
+    const { modalCloseAnimation, animationDuration, setOptionToDefaultCallback, modalContainerElement, backdropProperties,
+      modalElement, modalOverlayElement } = AssembleAnimationValues.assembleClosetAnimationValues(componentPreviewComponent, closeAnimationCallback);
     if (animationState.getIsModeToggleAnimationInProgressState()) {
-      reducedAnimationDuration = ModeToggleExitAnimation.cancelEntranceAnimationFunctionality(modalElement);
+      reducedAnimationDuration = ModeToggleCloseAnimation.cancelOpenAnimationFunctionality(modalElement);
       wasPreviousAnimationInterrupted = true;
     }
-    ModeToggleExitAnimation.toolbarFadeOutAnimation(toolbarContainerElement);
-    modalExitAnimation(reducedAnimationDuration || animationDuration, modalElement,
-      ModeToggleExitAnimation.exitAnimationCallback.bind(this, setOptionToDefaultCallback) as ExitAnimationCallback,
+    ModeToggleCloseAnimation.toolbarFadeOutAnimation(toolbarContainerElement);
+    modalCloseAnimation(reducedAnimationDuration || animationDuration, modalElement,
+      ModeToggleCloseAnimation.closeAnimationCallback.bind(this, setOptionToDefaultCallback) as CloseAnimationCallback,
       modalContainerElement, backdropProperties, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement,
       modalOverlayElement, wasPreviousAnimationInterrupted);
     animationState.setIsModeToggleAnimationInProgressState(true);

@@ -1,15 +1,15 @@
-import { EntranceAnimation } from '../../../../../../../interfaces/animations';
+import { OpenAnimation } from '../../../../../../../interfaces/animations';
 import { OPACITY_INVISIBLE } from '../consts/sharedConsts';
 import AnimationUtils from '../utils/animationUtils';
 import GeneralUtils from '../utils/generalUtils';
 import { animationState } from '../state';
 
-export default class PreviewEntranceAnimation {
+export default class PreviewOpenAnimation {
 
-  public static start(entranceAnimation: EntranceAnimation, animationDuration: string, componentElement: HTMLElement): void {
+  public static start(openAnimation: OpenAnimation, animationDuration: string, componentElement: HTMLElement): void {
     AnimationUtils.cancelAnimationPreview(componentElement);
     componentElement.style.opacity = OPACITY_INVISIBLE;
     animationState.setIsAnimationPreviewInProgressState(true);
-    entranceAnimation(animationDuration, componentElement, GeneralUtils.unsetAnimationProperties);
+    openAnimation(animationDuration, componentElement, GeneralUtils.unsetAnimationProperties);
   }
 }

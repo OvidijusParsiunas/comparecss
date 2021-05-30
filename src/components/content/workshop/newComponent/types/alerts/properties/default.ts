@@ -3,7 +3,7 @@ import { ImportedComponentGenerator } from '../../../../utils/workshopImportComp
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
-import { ALERT_ANIMATION_EXIT_TYPES } from '../../../../../../../consts/animationTypes.enum';
+import { ALERT_ANIMATION_CLOSE_TYPES } from '../../../../../../../consts/animationTypes.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -17,8 +17,8 @@ import { inheritedAlertBaseCss } from './inheritedCss';
 
 function createDefaultAlertAnimationsProperties(): Animations {
   return {
-    exit: {
-      type: ALERT_ANIMATION_EXIT_TYPES.FADE_OUT,
+    close: {
+      type: ALERT_ANIMATION_CLOSE_TYPES.FADE_OUT,
       duration: '0.25s',
     },
   };

@@ -5,7 +5,7 @@ import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../../consts/coreSub
 import { OPTION_MENU_BUTTON_MARKER } from '../../../../../../../../consts/elementClassMarkers';
 import { SubcomponentProperties } from '../../../../../../../../interfaces/workshopComponent';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
-import { ExitAnimation } from '../../../../../../../../interfaces/animations';
+import { CloseAnimation } from '../../../../../../../../interfaces/animations';
 import AnimationUtils from '../../../animations/utils/animationUtils';
 import { SET_METHODS } from '../../../animations/consts/sharedConsts';
 import { fulPreviewModeState } from '../../fullPreviewModeState';
@@ -15,7 +15,7 @@ import { ComponentOptions } from 'vue';
 
 export default class DismissAlert {
 
-  private static readonly RESET_AFTER_EXIT_ANIMATION_TIMEOUT_MILLISECONDS = 1000;
+  private static readonly RESET_AFTER_CLOSE_ANIMATION_TIMEOUT_MILLISECONDS = 1000;
   private static readonly ALERT_BUTTON_NAMES = [CORE_SUBCOMPONENTS_NAMES.CLOSE];
 
   public static changeCloseButtonsJsClasses(componentPreviewComponent: ComponentOptions, methodName: SET_METHODS): void {
@@ -32,14 +32,14 @@ export default class DismissAlert {
       componentElement.style.display = 'block';
       FullPreviewModeUtils.createWorkshopEventCallback(componentPreviewComponent,
       DismissAlert.closeAlertCallback.bind(this, componentPreviewComponent, componentElement));
-    }, DismissAlert.RESET_AFTER_EXIT_ANIMATION_TIMEOUT_MILLISECONDS);
+    }, DismissAlert.RESET_AFTER_CLOSE_ANIMATION_TIMEOUT_MILLISECONDS);
     animationState.setPendingAnimationPreviewUnsetState(pendingAnimationPreviewUnset);
   }
 
   private static closeAlert(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement): WorkshopEventCallbackReturn {
     const closeAnimation = animationTypeToFunctionality
-      [componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.exit.type] as ExitAnimation;
-    const animationDuration = componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.exit.duration;
+      [componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.close.type] as CloseAnimation;
+    const animationDuration = componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.close.duration;
     animationState.setIsAnimationPreviewInProgressState(true);
     setTimeout(closeAnimation.bind(this, animationDuration, componentElement, DismissAlert.removeComponent.bind(DismissAlert, componentPreviewComponent)));
     return { shouldRepeat: false };

@@ -1,18 +1,18 @@
 import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallbacks } from '../../../../../../interfaces/actionsDropdownsMouseEventCallbacks';
 import { PlayAnimationPreviewEvent } from '../../../../../../interfaces/playAnimationPreviewEvent';
-import { ALERT_ANIMATION_EXIT_TYPES } from '../../../../../../consts/animationTypes.enum';
+import { ALERT_ANIMATION_CLOSE_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 
-function generateMouseEventCallbacks(isEntranceAnimation: boolean): ActionsDropdownMouseEventCallbacks {
+function generateMouseEventCallbacks(isOpenAnimation: boolean): ActionsDropdownMouseEventCallbacks {
   return {
     mouseEnterButtonCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
-      event.settingsComponent.$emit('play-animation-preview', [event.triggeredOptionName, isEntranceAnimation] as PlayAnimationPreviewEvent);
+      event.settingsComponent.$emit('play-animation-preview', [event.triggeredOptionName, isOpenAnimation] as PlayAnimationPreviewEvent);
     },
     mouseLeaveButtonCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
       event.settingsComponent.$emit('stop-animation-preview');
     },
     mouseEnterOptionCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
-      event.settingsComponent.$emit('play-animation-preview', [event.triggeredOptionName, isEntranceAnimation] as PlayAnimationPreviewEvent);
+      event.settingsComponent.$emit('play-animation-preview', [event.triggeredOptionName, isOpenAnimation] as PlayAnimationPreviewEvent);
     },
     mouseLeaveDropdownCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
       event.settingsComponent.$emit('stop-animation-preview');
@@ -31,9 +31,9 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Dismiss',
-        options: { [ALERT_ANIMATION_EXIT_TYPES.FADE_OUT]: null },
+        options: { [ALERT_ANIMATION_CLOSE_TYPES.FADE_OUT]: null },
         activeOptionPropertyKeyName: 'type',
-        customFeatureObjectKeys: ['customFeatures', 'animations', 'exit', 'type'],
+        customFeatureObjectKeys: ['customFeatures', 'animations', 'close', 'type'],
         ...generateMouseEventCallbacks(false),
       },
     },
@@ -44,7 +44,7 @@ export default {
         default: 0,
         scale: [0, 40],
         smoothingDivisible: 20,
-        customFeatureObjectKeys: ['customFeatures', 'animations', 'exit', 'duration'],
+        customFeatureObjectKeys: ['customFeatures', 'animations', 'close', 'duration'],
         postfix: 's',
       },
     },

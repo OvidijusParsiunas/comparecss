@@ -1,4 +1,4 @@
-import { MODAL_ANIMATION_ENTRANCE_TYPES, MODAL_ANIMATION_EXIT_TYPES } from '../../../../../../../consts/animationTypes.enum';
+import { MODAL_ANIMATION_OPEN_TYPES, MODAL_ANIMATION_CLOSE_TYPES } from '../../../../../../../consts/animationTypes.enum';
 import { ImportedComponentGenerator } from '../../../../utils/workshopImportComponent/importedComponentGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
@@ -35,7 +35,7 @@ function createDefaultBackdropProperties(): BackdropProperties {
   return {
     color: '#6d6d6dcc',
     alpha: 0.8,
-    entranceAnimationDuration: {
+    openAnimationDuration: {
       currentValue: '0.45s',
       lastSelectedValue: '0.45s',
       isAuto: true,
@@ -47,13 +47,13 @@ function createDefaultBackdropProperties(): BackdropProperties {
 
 function createDefaultModalAnimationsProperties(): Animations {
   return {
-    entrance: {
-      type: MODAL_ANIMATION_ENTRANCE_TYPES.FADE_IN,
+    open: {
+      type: MODAL_ANIMATION_OPEN_TYPES.FADE_IN,
       duration: '0.3s',
       delay: '0.15s',
     },
-    exit: {
-      type: MODAL_ANIMATION_EXIT_TYPES.FADE_OUT,
+    close: {
+      type: MODAL_ANIMATION_CLOSE_TYPES.FADE_OUT,
       duration: '0.25s',
     },
   };
