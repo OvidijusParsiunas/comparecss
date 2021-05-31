@@ -6,23 +6,23 @@ import { fulPreviewModeState } from '../../fullPreviewModeState';
 import GeneralUtils from '../generalUtils';
 import { ComponentOptions } from 'vue';
 
-export default class ImportComponedModeToggleOff {
+export default class ToggleOff {
 
   private static switchButtonToModal(componentPreviewComponent: ComponentOptions): void {
+    componentPreviewComponent.temporaryComponent.displayed = false;
     componentPreviewComponent.isFullPreviewModeOn = false;
   }
 
-  public static start(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
-      isExpandedModalPreviewModeActive: boolean, toggleFullPreviewModeOptionsCallback: () => void, componentElement: HTMLElement,
-      temporaryComponentElement: HTMLElement): void {
+  public static start(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement, toggleFullPreviewModeOptionsCallback: () => void, 
+      toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean, componentElement: HTMLElement, temporaryComponentElement: HTMLElement): void {
     if (!isExpandedModalPreviewModeActive) {
       GeneralUtils.switchComponentsWithFadeOut(componentElement,
-        temporaryComponentElement, ImportComponedModeToggleOff.switchButtonToModal.bind(this, componentPreviewComponent));
+        temporaryComponentElement, ToggleOff.switchButtonToModal.bind(this, componentPreviewComponent));
     } else {
-      ImportComponedModeToggleOff.switchButtonToModal(componentPreviewComponent);
+      ToggleOff.switchButtonToModal(componentPreviewComponent);
     }
-    GeneralUtils.updateToolbarStyle(POINTER_EVENTS_NONE, toolbarContainerElement, toolbarElement,
-      isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback, GeneralUtils.resetToolbarContainerPosition)
+    GeneralUtils.updateToolbarStyle(POINTER_EVENTS_NONE, toolbarContainerElement, toggleFullPreviewModeOptionsCallback, toolbarElement,
+      isExpandedModalPreviewModeActive, GeneralUtils.resetToolbarContainerPosition);
     fulPreviewModeState.setIsExpandedModalPreviewModeActivated(isExpandedModalPreviewModeActive);
   }
 
@@ -31,8 +31,8 @@ export default class ImportComponedModeToggleOff {
       temporaryComponentElement: HTMLElement, event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
     const buttonElement = WorkshopEventCallbackUtils.getParentElementIfSvg(event.target as HTMLElement);
     if (buttonElement.classList.contains(COMPONENT_LIST_ITEM_MARKER) || buttonElement.classList.contains(COMPONENT_CARD_MARKER)) {
-      ImportComponedModeToggleOff.start(componentPreviewComponent, toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive,
-        toggleFullPreviewModeOptionsCallback, componentElement, temporaryComponentElement);
+      ToggleOff.start(componentPreviewComponent, toolbarContainerElement, toggleFullPreviewModeOptionsCallback, toolbarElement,
+        isExpandedModalPreviewModeActive, componentElement, temporaryComponentElement);
       return { shouldRepeat: false };
     }
     if (buttonElement.classList.contains(COMPONENT_PREVIEW_MARKER) || buttonElement.classList.contains(OPTION_MENU_BUTTON_MARKER)) {

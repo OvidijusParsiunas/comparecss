@@ -6,6 +6,7 @@ let isModeToggleAnimationInProgressState = false;
 let isToolbarFadeAnimationInProgress = false;
 let isAnimationPreviewInProgressState = false;
 let isWaitingAnimationDelayState = false;
+let isModalCloseEventPreventedState = false;
 let expandedModalModeToolbarContainerPositionState = EXPANDED_MODAL_TOOLBAR_CONTAINER_POSITION_CLASSES.DEFAULT;
 let currentCloseAnimationDefaultPropertiesState = {};
 
@@ -91,6 +92,14 @@ function setIsWaitingAnimationDelayState(state: boolean): void {
   isWaitingAnimationDelayState = state;
 }
 
+function getIsModalCloseEventPreventedState(): boolean {
+  return isModalCloseEventPreventedState;
+}
+
+function setIsModalCloseEventPreventedState(state: boolean): void {
+  isModalCloseEventPreventedState = state 
+}
+
 function setPendingAnimationEndState(state: number): void {
   pendingAnimationEndState = state;
 }
@@ -124,6 +133,8 @@ export const animationState = {
   setAnimationDelayState,
   getIsWaitingAnimationDelayState,
   setIsWaitingAnimationDelayState,
+  getIsModalCloseEventPreventedState,
+  setIsModalCloseEventPreventedState,
   setPendingAnimationEndState,
   setPendingAnimationPreviewUnsetState,
   cancelPendingAnimationFunctionality,

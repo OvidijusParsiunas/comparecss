@@ -1,9 +1,9 @@
 import { POINTER_EVENTS_NONE, SET_METHODS } from '../../../animations/consts/sharedConsts';
 import ComponentPreviewUtils from '../../../componentPreviewUtils';
 import { fulPreviewModeState } from '../../fullPreviewModeState';
-import ImportComponedModeToggleOff from './toggleOff';
 import ToggleDisplays from './toggleModal';
 import GeneralUtils from '../generalUtils';
+import ModalToggleOff from './toggleOff';
 import { ComponentOptions } from 'vue';
 
 export default class ToggleOn {
@@ -35,16 +35,16 @@ export default class ToggleOn {
   }
 
   public static start(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement,
-      toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean,
-      toggleFullPreviewModeOptionsCallback: () => void, temporaryComponentElement: HTMLElement): void {
+      toolbarContainerElement: HTMLElement, toggleFullPreviewModeOptionsCallback: () => void, toolbarElement: HTMLElement,
+      isExpandedModalPreviewModeActive: boolean, temporaryComponentElement: HTMLElement): void {
     ToggleOn.setup(componentPreviewComponent, componentElement, temporaryComponentElement, toolbarContainerElement,
       toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback);
-    const prepareFullPreviewModeFunc = ToggleOn.prepareFullPreviewMode.bind(this, componentPreviewComponent, isExpandedModalPreviewModeActive)
+    const prepareFullPreviewModeFunc = ToggleOn.prepareFullPreviewMode.bind(this, componentPreviewComponent, isExpandedModalPreviewModeActive);
     if (!isExpandedModalPreviewModeActive) {
       GeneralUtils.switchComponentsWithFadeOut(componentElement, temporaryComponentElement, prepareFullPreviewModeFunc);
       GeneralUtils.createWorkshopEventCallback(componentPreviewComponent,
-        ImportComponedModeToggleOff.toggleOffCallback.bind(this, componentPreviewComponent, componentElement, temporaryComponentElement,
-          toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback));
+        ModalToggleOff.toggleOffCallback.bind(this, componentPreviewComponent, toolbarContainerElement, toolbarElement,
+          isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback, componentElement, temporaryComponentElement));
     } else {
       prepareFullPreviewModeFunc();
       ToggleDisplays.changeCloseButtonsJsClasses(componentPreviewComponent, SET_METHODS.ADD);
@@ -52,8 +52,8 @@ export default class ToggleOn {
         ToggleDisplays.closeModalCallback.bind(this, componentPreviewComponent, componentElement, temporaryComponentElement,
           toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback));
     }
-    GeneralUtils.updateToolbarStyle(POINTER_EVENTS_NONE, toolbarContainerElement, toolbarElement,
-      isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback, GeneralUtils.setToolbarContainerPositionToDefault)
+    GeneralUtils.updateToolbarStyle(POINTER_EVENTS_NONE, toolbarContainerElement, toggleFullPreviewModeOptionsCallback,
+      toolbarElement, isExpandedModalPreviewModeActive, GeneralUtils.setToolbarContainerPositionToDefault);
     fulPreviewModeState.setIsExpandedModalPreviewModeActivated(isExpandedModalPreviewModeActive);
   }
 }

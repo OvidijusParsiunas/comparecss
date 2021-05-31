@@ -1,6 +1,7 @@
 import { COMPONENT_PREVIEW_CLASSES } from '../../../../../../../../consts/componentPreviewClasses';
 import { BackdropProperties } from '../../../../../../../../interfaces/workshopComponent';
 import { CloseAnimationCallback } from '../../../../../../../../interfaces/animations';
+import FullPreviewModeUtils from '../../../fullPreviewMode/toggleMode/generalUtils';
 import { AssembleAnimationValues } from '../utils/assembleAnimationValues';
 import GeneralUtils from '../../utils/generalUtils';
 import { animationState } from '../../state';
@@ -50,9 +51,10 @@ export default class ModeToggleCloseAnimation {
     GeneralUtils.opacityFadeAnimation(OPACITY_VISIBLE, MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, modalElement);
   }
 
-  public static closeAnimationCallback(setOptionToDefaultCallback: () => void, modalElement: HTMLElement, modalContainerElement: HTMLElement,
-      backdropProperties: BackdropProperties, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
+  public static closeAnimationCallback(setOptionToDefaultCallback: () => void, isFullPreviewModeOn: boolean, modalElement: HTMLElement,
+      modalContainerElement: HTMLElement, backdropProperties: BackdropProperties, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
       modalOverlayElement: HTMLElement, toolbarPositionToggleElement: HTMLElement): void {
+    if (isFullPreviewModeOn) FullPreviewModeUtils.setToolbarContainerPositionToDefault(toolbarContainerElement, toolbarElement, false);
     GeneralUtils.toggleModalStaticPosition(modalElement, modalOverlayElement, CLASSLIST_METHODS.ADD);
     setOptionToDefaultCallback();
     const closeAnimationModalDefaultProperties = animationState.setIsPreviewAnimationInProgressState();
@@ -108,7 +110,8 @@ export default class ModeToggleCloseAnimation {
     }
     ModeToggleCloseAnimation.toolbarFadeOutAnimation(toolbarContainerElement);
     modalCloseAnimation(reducedAnimationDuration || animationDuration, modalElement,
-      ModeToggleCloseAnimation.closeAnimationCallback.bind(this, setOptionToDefaultCallback) as CloseAnimationCallback,
+      ModeToggleCloseAnimation.closeAnimationCallback.bind(
+        this, setOptionToDefaultCallback, componentPreviewComponent.isFullPreviewModeOn) as CloseAnimationCallback,
       modalContainerElement, backdropProperties, toolbarContainerElement, toolbarElement, toolbarPositionToggleElement,
       modalOverlayElement, wasPreviousAnimationInterrupted);
     animationState.setIsModeToggleAnimationInProgressState(true);

@@ -14,15 +14,15 @@ export default class ToggleFullPreviewMode {
       toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean,
       toggleFullPreviewModeOptionsCallback: () => void, temporaryComponentElement: HTMLElement): void {
     const toggleClass = ToggleFullPreviewMode.TOGGLE_ON_CLASSES[componentPreviewComponent.component.type];
-    toggleClass.start(componentPreviewComponent, componentElement, toolbarContainerElement, toolbarElement,
-      isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback, temporaryComponentElement);
+    toggleClass.start(componentPreviewComponent, componentElement, toolbarContainerElement, toggleFullPreviewModeOptionsCallback,
+      toolbarElement, isExpandedModalPreviewModeActive, temporaryComponentElement);
   }
 
-  public static toggleOff(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
-      isExpandedModalPreviewModeActive: boolean, toggleFullPreviewModeOptionsCallback: () => void, componentElement: HTMLElement,
-      temporaryComponentElement: HTMLElement): void {
+  public static toggleOff(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement,
+      toggleFullPreviewModeOptionsCallback: () => void, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean,
+      componentElement: HTMLElement, temporaryComponentElement: HTMLElement): void {
     const toggleClass = ToggleFullPreviewMode.TOGGLE_OFF_CLASSES[componentPreviewComponent.component.type];
-    toggleClass.start(componentPreviewComponent, toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive,
-      toggleFullPreviewModeOptionsCallback, componentElement, temporaryComponentElement);
+    toggleClass.start(componentPreviewComponent, toolbarContainerElement, toggleFullPreviewModeOptionsCallback,
+      toolbarElement, isExpandedModalPreviewModeActive, componentElement, temporaryComponentElement);
   }
 }

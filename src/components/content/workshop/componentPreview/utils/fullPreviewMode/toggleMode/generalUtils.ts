@@ -31,11 +31,11 @@ export default class GeneralUtils {
   }
 
   private static startToolbarAnimationWithFadeOut(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean,
-      toggleFullPreviewModeOptionsCallback: () => void, toolbarPositionCallback: (toolbarContainerElement: HTMLElement,
-      toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean) => void): void {
+      toggleFullPreviewModeOptionsCallback: () => void, toolbarPositionCallback?: (toolbarContainerElement: HTMLElement,
+        toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean) => void): void {
     ExpandedModalModeGeneralUtils.opacityFadeAnimation(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, toolbarContainerElement);
     window.setTimeout(() => {
-      toolbarPositionCallback(toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive);
+      if (toolbarPositionCallback) toolbarPositionCallback(toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive);
       toggleFullPreviewModeOptionsCallback();
       ExpandedModalModeGeneralUtils.setToolbarContainerPointerEvents(toolbarContainerElement, POINTER_EVENTS_REMOVE);
       setTimeout(() => {
@@ -58,9 +58,9 @@ export default class GeneralUtils {
   }
 
   public static updateToolbarStyle(pointerEvents: typeof POINTER_EVENTS_NONE | typeof POINTER_EVENTS_REMOVE,
-      toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean,
-      toggleFullPreviewModeOptionsCallback: () => void, updateToolbarClassesCallback: (toolbarContainerElement: HTMLElement,
-      toolbarElement: HTMLElement, isExpandedModalPreviewModeActive?: boolean) => void): void {
+      toolbarContainerElement: HTMLElement, toggleFullPreviewModeOptionsCallback: () => void, toolbarElement?: HTMLElement,
+      isExpandedModalPreviewModeActive?: boolean, updateToolbarClassesCallback?: (toolbarContainerElement: HTMLElement,
+        toolbarElement: HTMLElement, isExpandedModalPreviewModeActive?: boolean) => void): void {
     ExpandedModalModeGeneralUtils.setToolbarContainerPointerEvents(toolbarContainerElement, pointerEvents);
     GeneralUtils.startToolbarAnimationWithFadeOut(toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive,
       toggleFullPreviewModeOptionsCallback, updateToolbarClassesCallback);

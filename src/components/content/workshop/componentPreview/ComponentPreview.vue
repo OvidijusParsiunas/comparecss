@@ -179,8 +179,8 @@ export default {
         ToggleFullPreviewMode.toggleOn(this, this.$refs.baseComponent.$refs.componentPreview, toolbarContainerElement, toolbarElement,
           isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback, this.$refs.temporaryComponent);
       } else {
-        ToggleFullPreviewMode.toggleOff(this, toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive,
-          toggleFullPreviewModeOptionsCallback, this.$refs.baseComponent.$refs.componentPreview, this.$refs.temporaryComponent);
+        ToggleFullPreviewMode.toggleOff(this, toolbarContainerElement, toggleFullPreviewModeOptionsCallback, toolbarElement,
+          isExpandedModalPreviewModeActive, this.$refs.baseComponent.$refs.componentPreview, this.$refs.temporaryComponent);
       }
     },
     playAnimationPreview(playAnimationPreviewEvent: PlayAnimationPreviewEvent): void {

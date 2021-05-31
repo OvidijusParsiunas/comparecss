@@ -1,6 +1,7 @@
 import { COMPONENT_PREVIEW_CLASSES } from '../../../../../../../../consts/componentPreviewClasses';
 import { BackdropProperties } from '../../../../../../../../interfaces/workshopComponent';
 import { fulPreviewModeState } from '../../../fullPreviewMode/fullPreviewModeState';
+import FullPreviewModeUtils from '../../../fullPreviewMode/toggleMode/generalUtils';
 import { OpenAnimation } from '../../../../../../../../interfaces/animations';
 import { AssembleAnimationValues } from '../utils/assembleAnimationValues';
 import GeneralUtils from '../../utils/generalUtils';
@@ -19,6 +20,7 @@ import {
 export default class ModeToggleOpenAnimation {
 
   private static TIME_FOR_BACKDROP_TO_BE_RENDERED_MILLISECONDS = 10;
+  private static INTERIM_FOR_MODAL_CLOSE_EVENT_PREVENTION_MILLISECONDS = 200;
 
   // UX - EXPANDED MODAL TOGGLE ANIMATION
   // private static toolbarFadeInAnimation(toolbarContainerElement: HTMLElement, animationDuration: string): void {
@@ -111,11 +113,21 @@ export default class ModeToggleOpenAnimation {
       modalContainerElement, animationDelay); });
   }
 
+  private static updateStateAndToolbarElement(toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement): void {
+    FullPreviewModeUtils.setToolbarContainerPositionToDefault(toolbarContainerElement, toolbarElement, true);
+    // this is used to prevent the user from accidentally double clicking temp button and quickly closing the modal 
+    animationState.setIsModalCloseEventPreventedState(true);
+    setTimeout(animationState.setIsModalCloseEventPreventedState.bind(this, false),
+      ModeToggleOpenAnimation.INTERIM_FOR_MODAL_CLOSE_EVENT_PREVENTION_MILLISECONDS);
+  }
+
   private static startModalAndToolbarAnimationWithFadeOut(modalContainerElement: HTMLElement, modalElement: HTMLElement,
-      modalOverlayElement: HTMLElement, backdropProperties: BackdropProperties, modalOpenAnimation: OpenAnimation,
-      animationDuration: string, animationDelay?: string): void {
+      modalOverlayElement: HTMLElement, backdropProperties: BackdropProperties, toolbarContainerElement: HTMLElement,
+      toolbarElement: HTMLElement, isFullPreviewModeOn: boolean, modalOpenAnimation: OpenAnimation, animationDuration: string,
+      animationDelay?: string): void {
     GeneralUtils.opacityFadeAnimation(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, modalElement);
     window.setTimeout(() => {
+      if (isFullPreviewModeOn) ModeToggleOpenAnimation.updateStateAndToolbarElement(toolbarContainerElement, toolbarElement);
       ModeToggleOpenAnimation.startModalAndBackdropAnimation(modalContainerElement, modalElement, modalOverlayElement,
         backdropProperties, modalOpenAnimation, animationDuration, animationDelay);
     }, MODE_TOGGLE_FADE_ANIMATION_DURATION_MILLISECONDS);
@@ -134,7 +146,8 @@ export default class ModeToggleOpenAnimation {
     } else {
       GeneralUtils.setToolbarContainerPointerEvents(toolbarContainerElement, POINTER_EVENTS_NONE);
       ModeToggleOpenAnimation.startModalAndToolbarAnimationWithFadeOut(modalContainerElement, modalElement, modalOverlayElement,
-        backdropProperties, modalOpenAnimation, animationDuration, animationDelay);
+        backdropProperties, toolbarContainerElement, toolbarElement, componentPreviewComponent.isFullPreviewModeOn, modalOpenAnimation,
+        animationDuration, animationDelay);
       ModeToggleOpenAnimation.startToolbarAnimationWithFadeOut(toolbarContainerElement, toolbarElement,
         toolbarPositionToggleElement, animationDelay);
     }
