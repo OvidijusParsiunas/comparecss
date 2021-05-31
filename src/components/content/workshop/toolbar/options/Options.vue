@@ -99,8 +99,7 @@
             :timeoutFunc="executeCallbackAfterTimeout"
             @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
             @mouse-click-new-option="newCssPseudoClassClicked($event)"/>
-          <div v-for="option in componentTypeToOptions[component.type][component.subcomponents[component.activeSubcomponentName].subcomponentType]
-              [component.subcomponents[component.activeSubcomponentName].activeCssPseudoClass]" :key="option" class="option-component-button-container"
+          <div v-for="option in getOptionsForActiveCssPseudoClass()" :key="option" class="option-component-button-container"
               @mouseenter="mouseHoverOption(option, true)" @mouseleave="mouseHoverOption(option, false)">
             <button
               type="button"
@@ -269,6 +268,13 @@ export default {
       const subcomponentNameClickedFunc = this.newSubcomponentNameClicked;
       this.$emit('toggle-subcomponent-select-mode',
         [subcomponentSelectModeCallbackFunction, keyTriggers, buttonElement, subcomponentNameClickedFunc] as ToggleSubcomponentSelectModeEvent);
+    },
+    getOptionsForActiveCssPseudoClass(): Option[] {
+      const subcomponentProperties: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
+      if (subcomponentProperties.subcomponentDisplayStatus && !subcomponentProperties.subcomponentDisplayStatus.isDisplayed) {
+        return [];
+      }
+      return componentTypeToOptions[this.component.type][subcomponentProperties.subcomponentType][subcomponentProperties.activeCssPseudoClass]
     },
     mouseHoverOption(option: Option, isEntering: boolean): void {
       if (!this.isExpandedModalPreviewModeActive && option.enabledOnExpandedModalPreviewMode) {
