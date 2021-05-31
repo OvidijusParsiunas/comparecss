@@ -4,7 +4,6 @@ test in slower pc if the child dropdowns displays options correctly - chrome/fir
 potentially add x button to border coloring
 close button should probably be imported - but need to work through the logistics of inherited css for it
 display second range value with 2 decimal points
-alert text is optional and has hover effects
 
 somehow try to indicate that actions are activated by using the play button
 overflow
