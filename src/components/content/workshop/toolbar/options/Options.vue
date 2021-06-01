@@ -35,7 +35,7 @@
             :style="{ color: FONT_AWESOME_COLORS.DEFAULT, ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
             class="modal-button-icon expand-icon" icon="expand"/>
         </button>
-        <button v-if="isFullPreviewModeButtonDisplayed()"
+        <button v-if="isFullPreviewModeButtonDisplayed()" ref="fullPreviewModeToggle"
           type="button" class="btn btn-group-option option-action-button expanded-modal-preview-mode-button"
           :class="[FULL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
           @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleFullPreviewMode)">
@@ -282,6 +282,12 @@ export default {
           this.$refs.expandedModalPreviewModeToggle.classList.replace('option-action-button', this.HIGHLIGHTED_OPTION_BUTTON_CLASS); 
         } else {
           this.$refs.expandedModalPreviewModeToggle.classList.replace(this.HIGHLIGHTED_OPTION_BUTTON_CLASS, 'option-action-button'); 
+        }
+      } else if (option.buttonName === 'Actions') {
+        if (isEntering) {
+          this.$refs.fullPreviewModeToggle.classList.replace('option-action-button', this.HIGHLIGHTED_OPTION_BUTTON_CLASS); 
+        } else {
+          this.$refs.fullPreviewModeToggle.classList.replace(this.HIGHLIGHTED_OPTION_BUTTON_CLASS, 'option-action-button'); 
         }
       }
     },

@@ -1,5 +1,4 @@
 Modal:
-javascript to close the alert message
 test in slower pc if the child dropdowns displays options correctly - chrome/firefox
 potentially add x button to border coloring
 close button should probably be imported - but need to work through the logistics of inherited css for it
