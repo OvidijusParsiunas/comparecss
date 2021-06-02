@@ -8,7 +8,7 @@
           <i class="fa fa-mouse-pointer" :class="[SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"></i>
         </button>
         <dropdown
-          class="button-group-secondary-predominant-component"
+          class="button-group-secondary-component"
           :uniqueIdentifier="SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
           :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
           :objectContainingActiveOption="component"
@@ -26,7 +26,7 @@
       <div v-if="component.type === NEW_COMPONENT_TYPES.MODAL || component.type === NEW_COMPONENT_TYPES.ALERT" class="btn-group option-component-button">
         <button v-if="!isFullPreviewModeActive && component.type === NEW_COMPONENT_TYPES.MODAL" ref="expandedModalPreviewModeToggle"
           type="button" class="btn btn-group-option option-action-button expanded-modal-preview-mode-button"
-          :class="[BUTTON_GROUP_PRIMARY_PREDOMINANT_BUTTON_CLASS, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
+          :class="[BUTTON_GROUP_PRIMARY_COMPONENT_CLASS, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
           @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleModalExpandMode)">
           <font-awesome-icon v-if="isExpandedModalPreviewModeActive"
             :style="{ color: FONT_AWESOME_COLORS.DEFAULT, ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
@@ -61,13 +61,13 @@
                 class="import-icon" icon="long-arrow-alt-down"/>
           </button>
           <button v-if="isInSyncButtonDisplayed()"
-            type="button" class="btn-group-option option-action-button button-group-secondary-predominant-component"
+            type="button" class="btn-group-option option-action-button button-group-secondary-component"
             :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, OPTION_MENU_BUTTON_MARKER]"
             @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleImportedComponentInSync)">
               <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
           </button>
           <button v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus"
-            type="button" class="btn-group-option option-action-button button-group-secondary-predominant-component" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
+            type="button" class="btn-group-option option-action-button button-group-secondary-component" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
             :class="[component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add',
               {'transition-item': isSubcomponentButtonsTransitionAllowed}, TOGGLE_SUBCOMPONENT_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
             @mouseenter="mouseEnterSubcomponentToggle"
@@ -82,7 +82,7 @@
         <button v-if="!isFullPreviewModeActive && isInSyncButtonDisplayed()"
           id="sync-transition-animation-padding"
           :style="{marginLeft: component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef ? '-23px' : '-29px'}"
-          class="option-action-button button-group-secondary-predominant-component" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
+          class="option-action-button button-group-secondary-component" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
             <font-awesome-icon style="color: #54a9f100" class="sync-icon" icon="sync-alt"/>
         </button>
         <div v-if="true" v-show="!isFullPreviewModeActive
@@ -185,7 +185,7 @@ interface Consts {
   NEW_COMPONENT_TYPES: typeof NEW_COMPONENT_TYPES;
   BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS: number;
   REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: string;
-  BUTTON_GROUP_PRIMARY_PREDOMINANT_BUTTON_CLASS: string;
+  BUTTON_GROUP_PRIMARY_COMPONENT_CLASS: string;
   BROWSER_SPECIFIC_MODAL_BUTTON_STYLE: WorkshopComponentCss;
   SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
   CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
@@ -222,7 +222,7 @@ export default {
       EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER,
       BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS: 500,
       REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: `#${REMOVE_SUBCOMPONENT_MODAL_ID}`,
-      BUTTON_GROUP_PRIMARY_PREDOMINANT_BUTTON_CLASS: 'button-group-primary-predominant-component',
+      BUTTON_GROUP_PRIMARY_COMPONENT_CLASS: 'button-group-primary-component',
       BROWSER_SPECIFIC_MODAL_BUTTON_STYLE: { paddingTop: BrowserType.isFirefox() ? '1px' : '' },
       SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS,
       CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.CSS_PSEUDO_CLASSES,
@@ -283,10 +283,10 @@ export default {
         this.changeElementHighlight(this.$refs.expandedModalPreviewModeToggle, isEntering);
       } else if (option.buttonName === 'Actions') {
         if (isEntering) {
-          this.$refs.fullPreviewModeToggle.classList.add(this.BUTTON_GROUP_PRIMARY_PREDOMINANT_BUTTON_CLASS);
+          this.$refs.fullPreviewModeToggle.classList.add(this.BUTTON_GROUP_PRIMARY_COMPONENT_CLASS);
         } else {
           setTimeout(() => {
-            this.$refs.fullPreviewModeToggle.classList.remove(this.BUTTON_GROUP_PRIMARY_PREDOMINANT_BUTTON_CLASS);
+            this.$refs.fullPreviewModeToggle.classList.remove(this.BUTTON_GROUP_PRIMARY_COMPONENT_CLASS);
           }, 50); // the z-index appears to disappear too quickly
         }
         this.changeElementHighlight(this.$refs.fullPreviewModeToggle, isEntering);
@@ -713,12 +713,12 @@ export default {
 </style>
 
 <style lang="css">
-  .button-group-primary-predominant-component {
+  .button-group-primary-component {
     left: 0px;
     z-index: 2 !important;
     background-color: white !important;
   }
-  .button-group-secondary-predominant-component {
+  .button-group-secondary-component {
     left: -1px;
     z-index: 1;
     background-color: white !important;
