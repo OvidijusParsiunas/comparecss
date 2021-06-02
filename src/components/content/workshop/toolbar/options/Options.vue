@@ -25,8 +25,8 @@
       </div>
       <div v-if="component.type === NEW_COMPONENT_TYPES.MODAL || component.type === NEW_COMPONENT_TYPES.ALERT" class="btn-group option-component-button">
         <button v-if="!isFullPreviewModeActive && component.type === NEW_COMPONENT_TYPES.MODAL" ref="expandedModalPreviewModeToggle"
-          type="button" class="btn btn-group-option option-action-button button-group-first-predominant-component expanded-modal-preview-mode-button"
-          :class="[EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
+          type="button" class="btn btn-group-option option-action-button expanded-modal-preview-mode-button"
+          :class="[BUTTON_GROUP_PRIMARY_PREDOMINANT_BUTTON_CLASS, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
           @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleModalExpandMode)">
           <font-awesome-icon v-if="isExpandedModalPreviewModeActive"
             :style="{ color: FONT_AWESOME_COLORS.DEFAULT, ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
@@ -185,6 +185,7 @@ interface Consts {
   NEW_COMPONENT_TYPES: typeof NEW_COMPONENT_TYPES;
   BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS: number;
   REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: string;
+  BUTTON_GROUP_PRIMARY_PREDOMINANT_BUTTON_CLASS: string;
   BROWSER_SPECIFIC_MODAL_BUTTON_STYLE: WorkshopComponentCss;
   SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
   CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
@@ -221,6 +222,7 @@ export default {
       EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER,
       BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS: 500,
       REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: `#${REMOVE_SUBCOMPONENT_MODAL_ID}`,
+      BUTTON_GROUP_PRIMARY_PREDOMINANT_BUTTON_CLASS: 'button-group-primary-predominant-component',
       BROWSER_SPECIFIC_MODAL_BUTTON_STYLE: { paddingTop: BrowserType.isFirefox() ? '1px' : '' },
       SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS,
       CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.CSS_PSEUDO_CLASSES,
@@ -278,17 +280,23 @@ export default {
     },
     mouseHoverOption(option: Option, isEntering: boolean): void {
       if (!this.isExpandedModalPreviewModeActive && option.enabledOnExpandedModalPreviewMode) {
-        if (isEntering) {
-          this.$refs.expandedModalPreviewModeToggle.classList.replace('option-action-button', this.HIGHLIGHTED_OPTION_BUTTON_CLASS); 
-        } else {
-          this.$refs.expandedModalPreviewModeToggle.classList.replace(this.HIGHLIGHTED_OPTION_BUTTON_CLASS, 'option-action-button'); 
-        }
+        this.changeElementHighlight(this.$refs.expandedModalPreviewModeToggle, isEntering);
       } else if (option.buttonName === 'Actions') {
         if (isEntering) {
-          this.$refs.fullPreviewModeToggle.classList.replace('option-action-button', this.HIGHLIGHTED_OPTION_BUTTON_CLASS); 
+          this.$refs.fullPreviewModeToggle.classList.add(this.BUTTON_GROUP_PRIMARY_PREDOMINANT_BUTTON_CLASS);
         } else {
-          this.$refs.fullPreviewModeToggle.classList.replace(this.HIGHLIGHTED_OPTION_BUTTON_CLASS, 'option-action-button'); 
+          setTimeout(() => {
+            this.$refs.fullPreviewModeToggle.classList.remove(this.BUTTON_GROUP_PRIMARY_PREDOMINANT_BUTTON_CLASS);
+          }, 50); // the z-index appears to disappear too quickly
         }
+        this.changeElementHighlight(this.$refs.fullPreviewModeToggle, isEntering);
+      }
+    },
+    changeElementHighlight(element: HTMLElement, isEntering: boolean): void {
+      if (isEntering) {
+        element.classList.replace('option-action-button', this.HIGHLIGHTED_OPTION_BUTTON_CLASS);
+      } else {
+        element.classList.replace(this.HIGHLIGHTED_OPTION_BUTTON_CLASS, 'option-action-button'); 
       }
     },
     displayIfSubcomponentDisplayed(subcomponentName: CORE_SUBCOMPONENTS_NAMES): boolean {
@@ -705,7 +713,7 @@ export default {
 </style>
 
 <style lang="css">
-  .button-group-first-predominant-component {
+  .button-group-primary-predominant-component {
     left: 0px;
     z-index: 2 !important;
     background-color: white !important;
