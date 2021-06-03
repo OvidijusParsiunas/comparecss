@@ -2,22 +2,22 @@ import { AlignedLayerSection, AutoSize, CustomCss, CustomFeatures, Subcomponents
 import { ImportedComponentGenerator } from '../../../../utils/workshopImportComponent/importedComponentGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
-import { ALERT_ANIMATION_CLOSE_TYPES } from '../../../../../../../consts/animationTypes.enum';
+import { GENERAL_ANIMATION_CLOSE_TYPES } from '../../../../../../../consts/animationTypes.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
+import { inheritedLayerBaseChildCss } from '../../shared/layer/inheritedBaseChildCss';
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getAlertSubcomponentDropdownStructure from './subcomponentDropdownStructure';
-import { inheritedAlertBaseChildCss } from './inheritedAlertBaseChildCss';
+import { inheritedLayerBaseCss } from '../../shared/layer/inheritedCss';
 import { alertBaseSpecificSettings } from './alertBaseSpecificSettings';
 import { closeButton } from '../../buttons/properties/closeButton';
-import { inheritedAlertBaseCss } from './inheritedCss';
 
 function createDefaultAlertAnimationsProperties(): Animations {
   return {
     close: {
-      type: ALERT_ANIMATION_CLOSE_TYPES.FADE_OUT,
+      type: GENERAL_ANIMATION_CLOSE_TYPES.FADE_OUT,
       duration: '0.25s',
     },
   };
@@ -118,8 +118,8 @@ function createSubcomponents(): Subcomponents {
       defaultCss: createDefaultBaseCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      inheritedCss: inheritedAlertBaseCss,
-      childCss: inheritedAlertBaseChildCss,
+      inheritedCss: inheritedLayerBaseCss,
+      childCss: inheritedLayerBaseChildCss,
       subcomponentSpecificSettings: alertBaseSpecificSettings,
       customFeatures: createDefaultBaseCustomFeatures(),
       defaultCustomFeatures: createDefaultBaseCustomFeatures(),

@@ -13,13 +13,13 @@ import { animationState } from '../../../animations/state';
 import { ComponentOptions } from 'vue';
 import ToggleOff from './toggleOff';
 
-export default class DismissAlert {
+export default class Dismiss {
 
   private static readonly RESET_AFTER_CLOSE_ANIMATION_TIMEOUT_MILLISECONDS = 1000;
   private static readonly ALERT_BUTTON_NAMES = [CORE_SUBCOMPONENTS_NAMES.CLOSE];
 
   public static changeCloseButtonsJsClasses(componentPreviewComponent: ComponentOptions, methodName: SET_METHODS): void {
-    DismissAlert.ALERT_BUTTON_NAMES.forEach((buttonName) => {
+    Dismiss.ALERT_BUTTON_NAMES.forEach((buttonName) => {
       const buttonSubcomponentProperties: SubcomponentProperties = componentPreviewComponent.component.subcomponents[buttonName];
       buttonSubcomponentProperties.customFeatures.jsClasses[methodName](JAVASCRIPT_CLASSES.CLOSE_COMPONENT);
     });
@@ -30,7 +30,7 @@ export default class DismissAlert {
     const pendingAnimationPreviewUnset = window.setTimeout(() => {
       AnimationUtils.cancelAnimationPreview(componentElement);
       componentElement.style.display = 'block';
-    }, DismissAlert.RESET_AFTER_CLOSE_ANIMATION_TIMEOUT_MILLISECONDS);
+    }, Dismiss.RESET_AFTER_CLOSE_ANIMATION_TIMEOUT_MILLISECONDS);
     animationState.setPendingAnimationPreviewUnsetState(pendingAnimationPreviewUnset);
   }
 
@@ -40,7 +40,7 @@ export default class DismissAlert {
     const animationDuration = componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.close.duration;
     animationState.setIsAnimationPreviewInProgressState(true);
     setTimeout(closeAnimation.bind(this, animationDuration, componentElement,
-      DismissAlert.removeComponent.bind(DismissAlert, componentElement)));
+      Dismiss.removeComponent.bind(Dismiss, componentElement)));
     return { shouldRepeat: false };
   }
 
@@ -50,11 +50,11 @@ export default class DismissAlert {
     fulPreviewModeState.setIsAnimationInProgress(false);
     const buttonElement = WorkshopEventCallbackUtils.getParentElementIfSvg(event.target as HTMLElement);
     if ((buttonElement.classList.contains(JAVASCRIPT_CLASSES.CLOSE_COMPONENT))) {
-      DismissAlert.closeAlert(componentPreviewComponent, componentElement);
+      Dismiss.closeAlert(componentPreviewComponent, componentElement);
       return { shouldRepeat: true };
     }
     if (buttonElement.classList.contains(OPTION_MENU_BUTTON_MARKER)) {
-      DismissAlert.changeCloseButtonsJsClasses(componentPreviewComponent, SET_METHODS.REMOVE);
+      Dismiss.changeCloseButtonsJsClasses(componentPreviewComponent, SET_METHODS.REMOVE);
       return { shouldRepeat: false };
     }
     if (buttonElement.classList.contains(COMPONENT_LIST_ITEM_MARKER) || buttonElement.classList.contains(COMPONENT_CARD_MARKER)) {

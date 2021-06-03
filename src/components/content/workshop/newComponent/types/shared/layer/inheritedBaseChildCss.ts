@@ -1,6 +1,6 @@
 import { ChildCss } from "../../../../../../../interfaces/workshopComponent";
 
-export const inheritedAlertBaseChildCss: ChildCss[] = [
+export const inheritedLayerBaseChildCss: ChildCss[] = [
   {
     elementTag: 'div',
     childNumber: 1,

@@ -1,6 +1,6 @@
 import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallbacks } from '../../../../../../interfaces/actionsDropdownsMouseEventCallbacks';
 import { PlayAnimationPreviewEvent } from '../../../../../../interfaces/playAnimationPreviewEvent';
-import { ALERT_ANIMATION_CLOSE_TYPES } from '../../../../../../consts/animationTypes.enum';
+import { GENERAL_ANIMATION_CLOSE_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 
 function generateMouseEventCallbacks(isOpenAnimation: boolean): ActionsDropdownMouseEventCallbacks {
@@ -31,7 +31,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Dismiss',
-        options: { [ALERT_ANIMATION_CLOSE_TYPES.FADE_OUT]: null },
+        options: { [GENERAL_ANIMATION_CLOSE_TYPES.FADE_OUT]: null },
         activeOptionPropertyKeyName: 'type',
         customFeatureObjectKeys: ['customFeatures', 'animations', 'close', 'type'],
         ...generateMouseEventCallbacks(false),

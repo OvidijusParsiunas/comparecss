@@ -11,6 +11,7 @@ import { buttonTextOptions } from './button/text';
 import { buttonBaseOptions } from './button/base';
 import { alertBaseOptions } from './alert/base';
 import { modalBaseOptions } from './modal/base';
+import { cardBaseOptions } from './card/base';
 import { textOptions } from './text/text';
 
 type SubcomponentTypeToOptions = {
@@ -34,6 +35,16 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
   },
   [NEW_COMPONENT_TYPES.MODAL]: {
     [SUBCOMPONENT_TYPES.BASE]: modalBaseOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+    [SUBCOMPONENT_TYPES.TEXT]: textOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+    [SUBCOMPONENT_TYPES.LAYER_1]: layerTopOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+    [SUBCOMPONENT_TYPES.LAYER_2]: layerMiddleOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+    [SUBCOMPONENT_TYPES.LAYER_3]: layerBottomOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+    [SUBCOMPONENT_TYPES.BUTTON]: nestedButtonOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+    [SUBCOMPONENT_TYPES.BUTTON_TEXT]: buttonTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+    [SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT]: closeButtonTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+  },
+  [NEW_COMPONENT_TYPES.CARD]: {
+    [SUBCOMPONENT_TYPES.BASE]: cardBaseOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.TEXT]: textOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.LAYER_1]: layerTopOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.LAYER_2]: layerMiddleOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,

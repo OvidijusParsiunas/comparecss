@@ -23,7 +23,8 @@
           @mouse-click-new-option="newSubcomponentNameClicked($event)"
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       </div>
-      <div v-if="component.type === NEW_COMPONENT_TYPES.MODAL || component.type === NEW_COMPONENT_TYPES.ALERT" class="btn-group option-component-button">
+      <div v-if="component.type === NEW_COMPONENT_TYPES.MODAL || component.type === NEW_COMPONENT_TYPES.ALERT || component.type === NEW_COMPONENT_TYPES.CARD"
+        class="btn-group option-component-button">
         <button v-if="!isFullPreviewModeActive && component.type === NEW_COMPONENT_TYPES.MODAL" ref="expandedModalPreviewModeToggle"
           type="button" class="btn btn-group-option option-action-button expanded-modal-preview-mode-button"
           :class="[BUTTON_GROUP_PRIMARY_COMPONENT_CLASS, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
@@ -490,7 +491,8 @@ export default {
     },
     isFullPreviewModeButtonDisplayed(): boolean {
       return this.component.type === NEW_COMPONENT_TYPES.MODAL
-       || (this.component.type === NEW_COMPONENT_TYPES.ALERT && this.displayIfSubcomponentDisplayed(CORE_SUBCOMPONENTS_NAMES.CLOSE));
+        || (this.displayIfSubcomponentDisplayed(CORE_SUBCOMPONENTS_NAMES.CLOSE)
+          && (this.component.type === NEW_COMPONENT_TYPES.ALERT || this.component.type === NEW_COMPONENT_TYPES.CARD));
     },
     isInSyncButtonDisplayed(): boolean {
       const activeSubcomponent = this.component.subcomponents[this.component.activeSubcomponentName];

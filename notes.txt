@@ -1,23 +1,17 @@
-Modal:
-test in slower pc if the child dropdowns displays options correctly - chrome/firefox
-potentially add x button to border coloring
-close button should probably be imported - but need to work through the logistics of inherited css for it
-display second range value with 2 decimal points
-
-somehow try to indicate that actions are activated by using the play button
 overflow
 try with button tags
 check to see if text can be placed into another div
 
-modals with gifs in them - https://icepanel.io/?human=architect
+potentially add x button to border coloring
+close button should probably be imported - but need to work through the logistics of inherited css for it
+display second range value with 2 decimal points
 close button may need to be a badge
+modals with gifs in them - https://icepanel.io/?human=architect
 consider having a dropdown to choose which border side to edit
 have a builder for contents within the settings
 maybe each equal section should be selectable
 consider making alert and button into a separately generated compontes in component preview as their contents shake when size is changed in firefox
 when changing the range and clicking the right mouse button causes the popover to disappear
-potentially have animation for when optional subcomponent options buttons appear and are hidden
-the alert button ripple does not seem to work properly when there are many components
 importing existing subcomponent will also need to offer an option from the app defaults
 
 UX:
@@ -31,12 +25,8 @@ UX:
   check if position option in the modal is ok to use
 
 update the range using the scroll wheel
-need a color for when settings are partially-disabled (the user can change them which will turn them to the original color) - this is more-so for cases where the modal is
-  set to be centered and the top range is not used and vice versa, also would provide use for disabling modal animations etc as no good way to disable that at the moment
-  this would also be useful for just partially disabling backdrop opacity when the color is romoved instead of setting it to 0
 ability to group the components
 option to see what the actual css looks like and to edit it
-consider placing javascript unique to the css classes it was used on
 sometimes setting to auto option like the margin does not set desired results, potentially remove it - or set beginner components (in modal) to have no margin as auto
 decide where the display code and download buttons should go
 

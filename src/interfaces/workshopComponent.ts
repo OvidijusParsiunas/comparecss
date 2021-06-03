@@ -1,4 +1,4 @@
-import { ALERT_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES, MODAL_ANIMATION_CLOSE_TYPES } from '../consts/animationTypes.enum';
+import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES, MODAL_ANIMATION_CLOSE_TYPES } from '../consts/animationTypes.enum';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../consts/workshopToolbarOptionTypes.enum';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
@@ -73,7 +73,7 @@ export interface Animations {
     delay: string;
   },
   close: {
-    type: MODAL_ANIMATION_CLOSE_TYPES | ALERT_ANIMATION_CLOSE_TYPES;
+    type: MODAL_ANIMATION_CLOSE_TYPES | GENERAL_ANIMATION_CLOSE_TYPES;
     duration: string;
   },
 }
@@ -134,7 +134,7 @@ export interface SubcomponentProperties {
   // this css is used for nested classes or element tags e.g. .my-component div {
   // the code to export this has been removed on the 19th of Dec 2020 - commit id: f6391eb61305106001709130ce4f45877226069b, remove if all component types added and this is not needed
   descendantCss?: DescendantCss;
-  // this css is used for particular nested children (.default-class-name > div:nth-child(2))
+  // this css is used during export for elements that have nested children (.default-class-name > div:nth-child(2))
   childCss?: ChildCss[];
   activeCssPseudoClass: CSS_PSEUDO_CLASSES;
   // the motivator for this is the fact that the first subcomponent css pseudo class should not be assumed to be the default one

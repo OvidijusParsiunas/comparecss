@@ -8,6 +8,6 @@ export enum MODAL_ANIMATION_CLOSE_TYPES {
   SLIDE_OUT = 'Slide out',
 }
 
-export enum ALERT_ANIMATION_CLOSE_TYPES {
+export enum GENERAL_ANIMATION_CLOSE_TYPES {
   FADE_OUT = 'Fade out',
 }

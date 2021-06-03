@@ -1,78 +1,40 @@
-import { MODAL_ANIMATION_OPEN_TYPES, MODAL_ANIMATION_CLOSE_TYPES } from '../../../../../../../consts/animationTypes.enum';
 import { ImportedComponentGenerator } from '../../../../utils/workshopImportComponent/importedComponentGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
+import { GENERAL_ANIMATION_CLOSE_TYPES } from '../../../../../../../consts/animationTypes.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { modalLayerBottomSpecificSettings } from './modalLayerBottomSpecificSettings';
 import { inheritedLayerBaseChildCss } from '../../shared/layer/inheritedBaseChildCss';
+import { modalLayerBottomSpecificSettings } from './modalLayerBottomSpecificSettings';
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getModalSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { modalLayerTopSpecificSettings } from './modalLayerTopSpecificSettings';
-import { CloseTriggers } from '../../../../../../../interfaces/closeTriggers';
-import { inheritedLayerBaseCss } from '../../shared/layer/inheritedCss';
 import { modalTextSpecificSettings } from './modalTextSpecificSettings';
 import { modalBaseSpecificSettings } from './modalBaseSpecificSettings';
+import { inheritedLayerBaseCss } from '../../shared/layer/inheritedCss';
 import { closeButton } from '../../buttons/properties/closeButton';
 import { inheritedTextCss } from '../../shared/text/inheritedCss';
 import { defaultButton } from '../../buttons/properties/default';
 import {
-  CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, AlignedLayerSection, Animations,
-  AutoSize, BackdropProperties, ComponentCenteringInParent, Text, CustomStaticFeatures,
+  CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Animations,
+  AlignedLayerSection, AutoSize, Text, CustomStaticFeatures,
 } from '../../../../../../../interfaces/workshopComponent';
 
-function createDefaultComponentCenteringInParent(): ComponentCenteringInParent {
+function createDefaultAlertAnimationsProperties(): Animations {
   return {
-    vertical: true,
-    horizontal: true,
-  };
-}
-
-function createDefaultBackdropProperties(): BackdropProperties {
-  return {
-    color: '#6d6d6dcc',
-    alpha: 0.8,
-    openAnimationDuration: {
-      currentValue: '0.45s',
-      lastSelectedValue: '0.45s',
-      isAuto: true,
-    },
-    opacity: 0,
-    visible: false,
-  };
-}
-
-function createDefaultModalAnimationsProperties(): Animations {
-  return {
-    open: {
-      type: MODAL_ANIMATION_OPEN_TYPES.FADE_IN,
-      duration: '0.3s',
-      delay: '0.15s',
-    },
     close: {
-      type: MODAL_ANIMATION_CLOSE_TYPES.FADE_OUT,
+      type: GENERAL_ANIMATION_CLOSE_TYPES.FADE_OUT,
       duration: '0.25s',
     },
   };
 }
 
-function createDefaultComponentCloseTriggerProperties(): CloseTriggers {
-  return {
-    enter: false,
-    escape: false,
-    backdrop: false,
-  };
-}
-
 function createDefaultBaseCustomFeatures(): CustomFeatures {
   return {
-    componentCenteringInParent: createDefaultComponentCenteringInParent(),
-    backdrop: createDefaultBackdropProperties(),
-    animations: createDefaultModalAnimationsProperties(),
-    closeTriggers: createDefaultComponentCloseTriggerProperties(),
+    animations: createDefaultAlertAnimationsProperties(),
   };
 }
 
@@ -306,7 +268,7 @@ function createSubcomponents(): Subcomponents {
   };
 }
 
-export const defaultModal: ComponentGenerator = {
+export const defaultCard: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
     const importedCloseButtonName = CORE_SUBCOMPONENTS_NAMES.CLOSE;
     const importedButton1Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_1;
@@ -323,7 +285,7 @@ export const defaultModal: ComponentGenerator = {
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton2Name),
     );
     return {
-      type: NEW_COMPONENT_TYPES.MODAL,
+      type: NEW_COMPONENT_TYPES.CARD,
       subcomponents,
       activeSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,
       defaultSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,
