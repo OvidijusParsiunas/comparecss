@@ -5,4 +5,5 @@ export enum SETTINGS_TYPES {
   COLOR_PICKER,
   CHECKBOX,
   RANGE,
+  UPLOAD_FILE,
 }

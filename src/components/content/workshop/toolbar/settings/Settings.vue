@@ -150,6 +150,11 @@
                 </div>
                 <input type="checkbox" v-model="setting.spec.default" @click="changeSetting(checkboxMouseClick.bind(this, setting.spec.default, setting.spec, setting.triggers))">
               </div>
+              
+              <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.UPLOAD_FILE">
+                <input ref="uploadImage" type='file' @change="uploadImage($event)" accept="image/*" hidden/>
+                <button @click="triggerImageUpload(event)">click this</button>
+              </div>
             </div>
             
           </div>
@@ -321,6 +326,29 @@ export default {
     checkboxMouseClick(currentCheckboxValue: boolean, spec: any, triggers: any): void {
       CheckboxUtils.updateProperties(currentCheckboxValue, spec, triggers, this.subcomponentProperties, this.settings);
       this.refreshSettings();
+    },
+    triggerImageUpload(): void {
+      this.$refs.uploadImage.click();
+    },
+    isFormatValid(file): void {
+      return file.type.includes('image/');
+    },
+    uploadImage(event: any): void {
+      const image = event.target.files[0];
+      if (this.isFormatValid(image)) {
+        const reader = new FileReader();
+        reader.onload = this.singleFileLoad.bind(this, image);
+        reader.readAsDataURL(image);
+      }
+    },
+    singleFileLoad(imageMetaData, e): void {
+      const image = new Image();
+      image.src = e.target.result;
+      image.onload = this.imageLoad;
+      console.log(image);
+    },
+    imageLoad(): void {
+      console.log('called');
     },
     resetSubcomponentProperties(options: any): void {
       SettingsUtils.resetSubcomponentProperties(options, this.subcomponentProperties);

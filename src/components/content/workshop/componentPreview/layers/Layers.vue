@@ -3,7 +3,8 @@
     <div v-for="layer in layers" :key="layer" class="layer" :class="COMPONENT_PREVIEW_MARKER">
       <div v-if="isSubcomponentDisplayed(layer.subcomponentProperties)"
         :id="subcomponentAndOverlayElementIds[layer.name] && subcomponentAndOverlayElementIds[layer.name].subcomponentId"
-        :style="layer.subcomponentProperties[layer.subcomponentProperties.tempCustomCssObjName || 'customCss'][DEFAULT_CSS_PSEUDO_CLASS]"
+        :style="[layer.subcomponentProperties[layer.subcomponentProperties.tempCustomCssObjName || 'customCss'][DEFAULT_CSS_PSEUDO_CLASS],
+          { backgroundImage: layer.subcomponentProperties.customFeatures && layer.subcomponentProperties.customFeatures.image ? 'url(' + URL + ')' : '' }]"
         :class="COMPONENT_PREVIEW_MARKER"
         @mouseenter="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentMouseEnter()"
         @mouseleave="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentMouseLeave()"
@@ -38,15 +39,17 @@ interface Consts {
   COMPONENT_PREVIEW_MARKER: string;
   OVERLAY_DEFAULT_CLASSES: SUBCOMPONENT_OVERLAY_CLASSES[];
   DEFAULT_CSS_PSEUDO_CLASS: CSS_PSEUDO_CLASSES;
+  URL: string;
   isSubcomponentDisplayed: (nestedSubcomponent: SubcomponentProperties) => boolean;
 }
 
 export default {
   setup(): Consts {
     return {
-      COMPONENT_PREVIEW_MARKER,
+      COMPONENT_PREVIEW_MARKER, 
       OVERLAY_DEFAULT_CLASSES: [SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT],
       DEFAULT_CSS_PSEUDO_CLASS: CSS_PSEUDO_CLASSES.DEFAULT,
+      URL: require('@/assets/images/road.webp'),
       isSubcomponentDisplayed: SubcomponentDisplayUtils.isSubcomponentDisplayed,
     };
   },

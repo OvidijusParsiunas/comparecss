@@ -38,6 +38,12 @@ function createDefaultBaseCustomFeatures(): CustomFeatures {
   };
 }
 
+function createDefaultLayer1CustomFeatures(): CustomFeatures {
+  return {
+    image: true,
+  };
+}
+
 function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayerSection {
   return { section };
 }
@@ -214,6 +220,8 @@ function createSubcomponents(): Subcomponents {
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       subcomponentSpecificSettings: modalLayerTopSpecificSettings,
+      customFeatures: createDefaultLayer1CustomFeatures(),
+      defaultCustomFeatures: createDefaultLayer1CustomFeatures(),
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [CORE_SUBCOMPONENTS_NAMES.LAYER_2]: {
