@@ -13,6 +13,7 @@ export interface WorkshopComponentCss {
   transition?: string; // this is mostly used to mark a transition style that will be removed when exporting css files
   boxShadow?: string; // should not start with '0px 0px 0px 0px'
   backgroundColor?: string;
+  backgroundSize?: string;
   width?: string;
   height?: string;
   fontFamily?: string;

@@ -20,7 +20,7 @@ import { inheritedTextCss } from '../../shared/text/inheritedCss';
 import { defaultButton } from '../../buttons/properties/default';
 import {
   CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Animations,
-  AlignedLayerSection, AutoSize, Text, CustomStaticFeatures,
+  AlignedLayerSection, AutoSize, Text, CustomStaticFeatures, Image,
 } from '../../../../../../../interfaces/workshopComponent';
 
 function createDefaultAlertAnimationsProperties(): Animations {
@@ -38,9 +38,16 @@ function createDefaultBaseCustomFeatures(): CustomFeatures {
   };
 }
 
-function createDefaultLayer1CustomFeatures(): CustomFeatures {
+function createImage(): Image {
   return {
-    image: true,
+    data: null,
+    size: true,
+  }
+}
+
+function createDefaultLayer1CustomStaticFeatures(): CustomStaticFeatures {
+  return {
+    image: createImage(),
   };
 }
 
@@ -117,6 +124,7 @@ function createDefaultLayer1Css(): CustomCss {
       borderBottomColor: '#e9ecef',
       backgroundColor: 'inherit',
       boxShadow: 'unset',
+      backgroundSize: '100% 100%',
     },
   };
 }
@@ -220,8 +228,8 @@ function createSubcomponents(): Subcomponents {
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       subcomponentSpecificSettings: modalLayerTopSpecificSettings,
-      customFeatures: createDefaultLayer1CustomFeatures(),
-      defaultCustomFeatures: createDefaultLayer1CustomFeatures(),
+      customStaticFeatures: createDefaultLayer1CustomStaticFeatures(),
+      defaultCustomStaticFeatures: createDefaultLayer1CustomStaticFeatures(),
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
     [CORE_SUBCOMPONENTS_NAMES.LAYER_2]: {

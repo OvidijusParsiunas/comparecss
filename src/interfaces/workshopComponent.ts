@@ -100,11 +100,16 @@ export interface CustomFeatures {
   jsClasses?: ComponentJavascriptClasses;
   autoSize?: AutoSize;
   alignedLayerSection?: AlignedLayerSection;
-  image?: boolean;
+}
+
+export interface Image {
+  data: string;
+  size: boolean;
 }
 
 export interface CustomStaticFeatures {
   subcomponentText?: Text;
+  image?: Image;
 }
 
 interface TempCustomProperties {

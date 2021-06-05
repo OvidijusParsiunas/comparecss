@@ -152,7 +152,7 @@
               </div>
               
               <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.UPLOAD_FILE">
-                <input ref="uploadImage" type='file' @change="uploadImage($event)" accept="image/*" hidden/>
+                <input ref="uploadImage" type='file' @change="uploadImage($event, setting.spec)" accept="image/*" hidden/>
                 <button @click="triggerImageUpload(event)">click this</button>
               </div>
             </div>
@@ -333,19 +333,19 @@ export default {
     isFormatValid(file): void {
       return file.type.includes('image/');
     },
-    uploadImage(event: any): void {
+    uploadImage(event: any, spec: any): void {
       const image = event.target.files[0];
       if (this.isFormatValid(image)) {
         const reader = new FileReader();
-        reader.onload = this.singleFileLoad.bind(this, image);
+        reader.onload = this.singleFileLoad.bind(this, image, spec);
         reader.readAsDataURL(image);
       }
     },
-    singleFileLoad(imageMetaData, e): void {
+    singleFileLoad(imageMetaData, spec, e): void {
       const image = new Image();
       image.src = e.target.result;
       image.onload = this.imageLoad;
-      console.log(image);
+      SharedUtils.setCustomFeatureValue(spec.customFeatureObjectKeys, this.subcomponentProperties, e.target.result);
     },
     imageLoad(): void {
       console.log('called');
