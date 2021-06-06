@@ -14,7 +14,7 @@ export default {
     {
       type: SETTINGS_TYPES.CHECKBOX,
       spec: {
-        name: 'Fit',
+        name: 'Fit to scale',
         customFeatureObjectKeys: ['customStaticFeatures', 'image', 'size'],
         default: false,
       },

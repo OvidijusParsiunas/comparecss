@@ -28,8 +28,8 @@ export const layerTopOptions: SubcomponentOptions<LayerOptionsModes> = {
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING,
     },
     {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.IMAGES,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGES,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.IMAGE,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE,
     },
   ],
 };
