@@ -1,6 +1,6 @@
 <template>
   <div v-if="isComponentDisplayed" class="dropdown">
-    <button class="btn form-control dropdown-button option-action-button" :class="[uniqueIdentifier, { 'button-group-border': isButtonGroup }]" type="button"
+    <button class="btn form-control dropdown-button" :class="[uniqueIdentifier, { 'button-group-border': isButtonGroup }, TOOLBAR_GENERAL_BUTTON_CLASS]" type="button"
       @click="buttonClick"
       @mouseenter="mouseEnterButton"
       @mouseleave="mouseLeaveButton">
@@ -37,6 +37,7 @@ import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDrop
 import { DropdownCompositionAPI } from '../../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
+import { TOOLBAR_GENERAL_BUTTON_CLASS } from '../../../../../../consts/toolbarClasses';
 import { FONT_AWESOME_COLORS } from '../../../../../../consts/fontAwesomeColors.enum';
 import BrowserType from '../../../../../../services/workshop/browserType';
 import dropdownMenu from './DropdownMenu.vue';
@@ -51,8 +52,9 @@ interface Data {
   clickedButton: boolean;
   dropdownDisplayDelayMilliseconds: number;
   areDropdownOptionsProcessed: boolean;
+  TOOLBAR_GENERAL_BUTTON_CLASS: string;
   processedOptions: NestedDropdownStructure[];
-  DEFAULT_FONT_AWESOME_COLOR: FONT_AWESOME_COLORS,
+  DEFAULT_FONT_AWESOME_COLOR: FONT_AWESOME_COLORS;
 }
 
 interface Props {
@@ -83,6 +85,7 @@ export default {
     areMenusDisplayed: false,
     enterButtonClicked: false,
     isComponentDisplayed: true,
+    TOOLBAR_GENERAL_BUTTON_CLASS,
     lastHoveredOptionElement: null,
     areDropdownOptionsProcessed: false,
     DEFAULT_FONT_AWESOME_COLOR: FONT_AWESOME_COLORS.DEFAULT,

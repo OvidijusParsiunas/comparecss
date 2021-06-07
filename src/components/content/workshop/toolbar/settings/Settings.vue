@@ -111,7 +111,9 @@
                     @input="changeSetting(inputEventForDropdownInput.bind(this, $event, setting.spec.cssProperty))"
                     @keyup.enter="blurInputDropdown(`elementReference${settingIndex}`)">
                   <div class="input-group-append">
-                    <button class="btn btn-outline-secondary dropdown-toggle" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" @click="openDropdown(setting.spec.cssProperty)"></button>
+                    <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
+                      class="btn dropdown-toggle" :class="TOOLBAR_GENERAL_BUTTON_CLASS"
+                      @click="openDropdown(setting.spec.cssProperty)"></button>
                     <div class="dropdown-menu" @mouseleave="inputDropdownOptionMouseLeave(setting.spec.cssProperty)">
                       <a class="dropdown-item" v-for="(option) in setting.spec.options" :key="option"
                         @mouseover="inputDropdownOptionMouseOver(option, setting.spec.cssProperty)"
@@ -153,8 +155,19 @@
               
               <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.UPLOAD_FILE">
                 <input ref="uploadImage" type='file' @change="uploadImage($event, setting.spec)" accept="image/*" hidden/>
-                <button @click="triggerImageUpload(event)">click this</button>
+                <button
+                  class="btn btn-group-option"
+                  :class="TOOLBAR_GENERAL_BUTTON_CLASS"
+                  @click="triggerImageUpload(event)">
+                    <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.DEFAULT }" class="sync-icon" icon="upload"/>
+                    Upload
+                </button>
                 <div>{{imageNames[setting.spec.name]}}</div>
+                <button class="unset-color-button" id="dropdownMenuButton"
+                  v-if="imageNames[setting.spec.name]"
+                  @click="changeSetting(removeImage.bind(this, setting.spec))">
+                  &times;
+                </button>
               </div>
             </div>
             
@@ -176,6 +189,8 @@ import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSettingsState';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
+import { TOOLBAR_GENERAL_BUTTON_CLASS } from '../../../../../consts/toolbarClasses';
+import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
 import { UseActionsDropdown } from '../../../../../interfaces/UseActionsDropdown';
 import { RANGE_SETTING_MARKER } from '../../../../../consts/elementClassMarkers';
 import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
@@ -190,11 +205,13 @@ import ImageUtils from './utils/imageUtils';
 import RangeUtils from './utils/rangeUtils';
 
 interface Consts {
-  SETTINGS_TYPES;
   RANGE_SETTING_MARKER: string;
-  CSS_PSEUDO_CLASSES;
-  UNSET_COLOR_BUTTON_DISPLAYED_STATE;
-  UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX;
+  TOOLBAR_GENERAL_BUTTON_CLASS: string;
+  SETTINGS_TYPES: typeof SETTINGS_TYPES;
+  CSS_PSEUDO_CLASSES: typeof CSS_PSEUDO_CLASSES;
+  FONT_AWESOME_COLORS: typeof FONT_AWESOME_COLORS;
+  UNSET_COLOR_BUTTON_DISPLAYED_STATE: typeof UNSET_COLOR_BUTTON_DISPLAYED_STATE;
+  UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX: string;
   ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX: string;
   UNSET_CUSTOM_FEATURE_COLOR_VALUE: string;
   INHERIT_CUSTOM_FEATURE_COLOR_VALUE: string;
@@ -218,6 +235,8 @@ export default {
       SETTINGS_TYPES,
       RANGE_SETTING_MARKER,
       CSS_PSEUDO_CLASSES,
+      FONT_AWESOME_COLORS,
+      TOOLBAR_GENERAL_BUTTON_CLASS,
       UNSET_COLOR_BUTTON_DISPLAYED_STATE,
       UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX,
       ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX: 'actionsDropdown-',
@@ -340,6 +359,9 @@ export default {
     uploadImage(event: any, spec: any): void {
       ImageUtils.uploadImage(this, event, spec);
     },
+    removeImage(spec: any): void {
+      ImageUtils.removeImage(this, spec);
+    },
     resetSubcomponentProperties(options: any): void {
       SettingsUtils.resetSubcomponentProperties(options, this.subcomponentProperties);
       this.refreshSettings();
@@ -390,15 +412,6 @@ export default {
     -webkit-transition: opacity 0.25s linear;
     -moz-transition: opacity 0.25s linear;
     -o-transition: opacity 0.25s linear;
-  }
-  .btn-outline-secondary:hover {
-    background-color: #d6d6d6 !important;
-    color: black !important;
-  }
-  .edit-component-button {
-    margin-right: 8px;
-    border-color: #9d9d9d !important;
-    background-color: white !important;
   }
   .dropdown-toggle::after {
     vertical-align: 0.15em !important;

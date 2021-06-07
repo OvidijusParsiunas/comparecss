@@ -56,7 +56,7 @@
               <div style="position: relative">
                 <div>
                   <!-- <div style="text-align: center; margin-bottom: 5px">Size: 0kb</div> -->
-                  <button type="button" class="btn btn-outline-secondary edit-component-button" @click="exportFiles">&lt;&gt;</button>
+                  <button type="button" class="btn edit-component-button" @click="exportFiles">&lt;&gt;</button>
                   <button type="button" class="btn btn-success" @click="exportFiles">&darr;</button>
                 </div>
               </div>
@@ -260,10 +260,6 @@ export default {
 </script>
 
 <style lang="css" scoped>
-  .btn-outline-secondary:hover {
-    background-color: #d6d6d6 !important;
-    color: black !important;
-  }
   .edit-component-button {
     margin-right: 8px;
     border-color: #9d9d9d !important;

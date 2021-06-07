@@ -1,14 +1,15 @@
 <template>
   <div class="options-container" :class="{'options-container-full-preview-mode': isFullPreviewModeActive}">
     <div class="options-container-inner">
-      <div v-if="!isFullPreviewModeActive" class="btn-group option-component-button">
+      <div v-if="!isFullPreviewModeActive" class="btn-group option-component-button-container">
         <button v-if="isSubcomponentSelectModeButtonDisplayed"
-          id="component-select-button" type="button" class="btn option-action-button" :class="[SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
+          id="component-select-button" type="button" class="btn"
+          :class="[TOOLBAR_GENERAL_BUTTON_CLASS, SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
           @click="buttonClickMiddleware(initiateSubcomponentSelectMode.bind(this, $event.currentTarget))">
-          <i class="fa fa-mouse-pointer" :class="[SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"></i>
+            <i class="fa fa-mouse-pointer" :class="[SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"></i>
         </button>
         <dropdown
-          class="button-group-secondary-component"
+          :class="TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS"
           :uniqueIdentifier="SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
           :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
           :objectContainingActiveOption="component"
@@ -24,10 +25,10 @@
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       </div>
       <div v-if="component.type === NEW_COMPONENT_TYPES.MODAL || component.type === NEW_COMPONENT_TYPES.ALERT || component.type === NEW_COMPONENT_TYPES.CARD"
-        class="btn-group option-component-button">
+        class="btn-group option-component-button-container">
         <button v-if="!isFullPreviewModeActive && component.type === NEW_COMPONENT_TYPES.MODAL" ref="expandedModalPreviewModeToggle"
-          type="button" class="btn btn-group-option option-action-button expanded-modal-preview-mode-button"
-          :class="[BUTTON_GROUP_PRIMARY_COMPONENT_CLASS, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
+          type="button" class="btn btn-group-option expanded-modal-preview-mode-button"
+          :class="[TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS, TOOLBAR_GENERAL_BUTTON_CLASS, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
           @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleModalExpandMode)">
           <font-awesome-icon v-if="isExpandedModalPreviewModeActive"
             :style="{ color: FONT_AWESOME_COLORS.DEFAULT, ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
@@ -37,8 +38,8 @@
             class="modal-button-icon expand-icon" icon="expand"/>
         </button>
         <button v-if="isFullPreviewModeButtonDisplayed()" ref="fullPreviewModeToggle"
-          type="button" class="btn btn-group-option option-action-button expanded-modal-preview-mode-button"
-          :class="[FULL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
+          type="button" class="btn btn-group-option expanded-modal-preview-mode-button"
+          :class="[TOOLBAR_GENERAL_BUTTON_CLASS, FULL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
           @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleFullPreviewMode)">
           <font-awesome-icon v-if="isFullPreviewModeActive"
             :style="{ ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
@@ -48,29 +49,30 @@
             class="modal-button-icon full-preview-icon" icon="play"/>
         </button>
       </div>
-      <div class="btn-group option-component-button"
+      <div
         :style="{marginRight: component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef ? '0px' : '8px'}"
+        class="btn-group option-component-button-container"
         v-if="!isFullPreviewModeActive && 
           (component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus || component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef)">
         <transition-group name="horizontal-transition">
           <button ref="importComponentToggle"
             v-if="component.subcomponents[component.activeSubcomponentName].importedComponent && component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus"
-            type="button" class="btn-group-option option-action-button" :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, OPTION_MENU_BUTTON_MARKER]"
+            type="button" class="btn-group-option" :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, OPTION_MENU_BUTTON_MARKER]"
             @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleSubcomponentImport, true)">
               <font-awesome-icon
                 :style="{ color: isImportComponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT }"
                 class="import-icon" icon="long-arrow-alt-down"/>
           </button>
           <button v-if="isInSyncButtonDisplayed()"
-            type="button" class="btn-group-option option-action-button button-group-secondary-component"
-            :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, OPTION_MENU_BUTTON_MARKER]"
+            type="button" class="btn-group-option"
+            :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS, OPTION_MENU_BUTTON_MARKER]"
             @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleImportedComponentInSync)">
               <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
           </button>
           <button v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus"
-            type="button" class="btn-group-option option-action-button button-group-secondary-component" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
+            type="button" class="btn-group-option" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
             :class="[component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add',
-              {'transition-item': isSubcomponentButtonsTransitionAllowed}, TOGGLE_SUBCOMPONENT_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
+              {'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS, TOGGLE_SUBCOMPONENT_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
             @mouseenter="mouseEnterSubcomponentToggle"
             @mouseleave="mouseLeaveSubcomponentToggle"
             @keydown.enter.prevent="$event.preventDefault()"
@@ -83,7 +85,7 @@
         <button v-if="!isFullPreviewModeActive && isInSyncButtonDisplayed()"
           id="sync-transition-animation-padding"
           :style="{marginLeft: component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef ? '-23px' : '-29px'}"
-          class="option-action-button button-group-secondary-component" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
+          :class="[{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS]">
             <font-awesome-icon style="color: #54a9f100" class="sync-icon" icon="sync-alt"/>
         </button>
         <div v-if="true" v-show="!isFullPreviewModeActive
@@ -91,7 +93,7 @@
               || component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed)"
           :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}" > 
           <dropdown
-            class="option-component-button"
+            class="option-component-button-container"
             :uniqueIdentifier="CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
             :dropdownOptions="componentTypeToOptions[component.type][component.subcomponents[component.activeSubcomponentName].subcomponentType]"
             :objectContainingActiveOption="component.subcomponents[component.activeSubcomponentName]"
@@ -106,11 +108,11 @@
               type="button"
               v-if="displayIfSubcomponentDisplayed(option.displayIfSubcomponentDisplayed)"
               :disabled="option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive"
-              class="btn btn-outline-secondary option-component-button-child option-select-button-default"
+              class="btn option-select-button-default"
               :class="[
                 option.type === activeOption.type ? 'option-select-button-active' : '',
                 option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive ? 'option-select-button-default-disabled' : 'option-select-button-default-enabled',
-                OPTION_MENU_SETTING_OPTION_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
+                TOOLBAR_GENERAL_BUTTON_CLASS, OPTION_MENU_SETTING_OPTION_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
               @click="buttonClickMiddleware(selectOption.bind(this, option, true))">
                 {{option.buttonName}}
             </button>
@@ -132,6 +134,7 @@
 </template>
 
 <script lang="ts">
+import { TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS } from '../../../../../consts/toolbarClasses';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import { ImportComponentModeTempPropertiesUtils } from './importComponent/modeUtils/importComponentModeTempPropertiesUtils';
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../componentPreview/utils/animations/consts/sharedConsts';
@@ -175,12 +178,14 @@ interface Consts {
   componentTypeToOptions: ComponentTypeToOptions;
   useSubcomponentDropdownEventHandlers: (objectContainingActiveOption: Ref<unknown>, activeOptionPropertyKeyName: Ref<string>, highlightSubcomponents: Ref<boolean>) => DropdownCompositionAPI;
   OPTION_MENU_BUTTON_MARKER: string;
+  TOOLBAR_GENERAL_BUTTON_CLASS: string;
   FULL_PREVIEW_MODE_BUTTON_MARKER: string;
   TOGGLE_SUBCOMPONENT_BUTTON_MARKER: string;
   OPTION_MENU_SETTING_OPTION_BUTTON_MARKER: string;
   FONT_AWESOME_COLORS: typeof FONT_AWESOME_COLORS;
   HIGHLIGHTED_OPTION_BUTTON_CLASS: string;
-  BUTTON_GROUP_PRIMARY_COMPONENT_CLASS: string;
+  TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS: string;
+  TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS: string;
   BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES;
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER: string;
   EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER: string;
@@ -215,6 +220,7 @@ export default {
       FONT_AWESOME_COLORS,
       NEW_COMPONENT_TYPES,
       OPTION_MENU_BUTTON_MARKER,
+      TOOLBAR_GENERAL_BUTTON_CLASS,
       FULL_PREVIEW_MODE_BUTTON_MARKER,
       TOGGLE_SUBCOMPONENT_BUTTON_MARKER,
       OPTION_MENU_SETTING_OPTION_BUTTON_MARKER,
@@ -222,7 +228,8 @@ export default {
       SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
       EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER,
       BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS: 500,
-      BUTTON_GROUP_PRIMARY_COMPONENT_CLASS: 'button-group-primary-component',
+      TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS,
+      TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS,
       REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: `#${REMOVE_SUBCOMPONENT_MODAL_ID}`,
       BROWSER_SPECIFIC_MODAL_BUTTON_STYLE: { paddingTop: BrowserType.isFirefox() ? '1px' : '' },
       SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS,
@@ -284,10 +291,10 @@ export default {
         this.changeElementHighlight(this.$refs.expandedModalPreviewModeToggle, isEntering);
       } else if (option.buttonName === 'Actions') {
         if (isEntering) {
-          this.$refs.fullPreviewModeToggle.classList.add(this.BUTTON_GROUP_PRIMARY_COMPONENT_CLASS);
+          this.$refs.fullPreviewModeToggle.classList.add(this.TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS);
         } else {
           setTimeout(() => {
-            this.$refs.fullPreviewModeToggle.classList.remove(this.BUTTON_GROUP_PRIMARY_COMPONENT_CLASS);
+            this.$refs.fullPreviewModeToggle.classList.remove(this.TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS);
           }, 50); // the z-index appears to disappear too quickly
         }
         this.changeElementHighlight(this.$refs.fullPreviewModeToggle, isEntering);
@@ -295,9 +302,9 @@ export default {
     },
     changeElementHighlight(element: HTMLElement, isEntering: boolean): void {
       if (isEntering) {
-        element.classList.replace('option-action-button', this.HIGHLIGHTED_OPTION_BUTTON_CLASS);
+        element.classList.replace(this.TOOLBAR_GENERAL_BUTTON_CLASS, this.HIGHLIGHTED_OPTION_BUTTON_CLASS);
       } else {
-        element.classList.replace(this.HIGHLIGHTED_OPTION_BUTTON_CLASS, 'option-action-button'); 
+        element.classList.replace(this.HIGHLIGHTED_OPTION_BUTTON_CLASS, this.TOOLBAR_GENERAL_BUTTON_CLASS); 
       }
     },
     displayIfSubcomponentDisplayed(subcomponentName: CORE_SUBCOMPONENTS_NAMES): boolean {
@@ -548,16 +555,6 @@ export default {
     float: left;
     margin-right: 8px;
   }
-  .option-component-button-child {
-    border-color: #9d9d9d !important;
-    background-color: white !important;
-  }
-  .option-component-button {
-    float: left;
-    margin-right: 8px;
-    border-color: #9d9d9d !important;
-    background-color: white !important;
-  }
   .expanded-modal-preview-mode-button {
     font: normal normal normal 14px/1 FontAwesome !important;
     width: 39.5px;
@@ -571,41 +568,6 @@ export default {
   .full-preview-icon {
     width: 10px;
     color: rgb(92 93 92);
-  }
-  .bootstrap .btn-group > .btn-group-option:not(:last-child):not(.dropdown-toggle) {
-    border-top-right-radius: 0;
-    border-bottom-right-radius: 0;
-  }
-  .bootstrap .btn-group > .btn-group-option:not(:first-child) {
-    border-top-left-radius: 0;
-    border-bottom-left-radius: 0;
-  }
-  .bootstrap .btn-group > .btn-group-option:not(:first-child) {
-    margin-left: -1px;
-  }
-  .bootstrap .btn-group-option:not(:disabled):not(.disabled) {
-    cursor: pointer;
-  }
-  .bootstrap .btn-group > .btn-group-option {
-    position: relative;
-    flex: 1 1 auto;
-  }
-  .bootstrap .btn-group-option {
-    display: inline-block;
-    font-weight: 400;
-    color: #212529;
-    text-align: center;
-    vertical-align: middle;
-    user-select: none;
-    padding: 0.375rem 0.75rem;
-    font-size: 1rem;
-    line-height: 1.5;
-    border-radius: 0.25rem;
-    border-top-left-radius: 0.25rem;
-    border-top-right-radius: 0.25rem;
-    border-bottom-right-radius: 0.25rem;
-    border-bottom-left-radius: 0.25rem;
-    background-color: transparent;
   }
   .transition-item {
     transition: all 0.5s ease;
@@ -711,28 +673,5 @@ export default {
     transition-duration: 0s !important;
     background-color: rgb(255, 255, 220) !important;
     border-color: rgb(235, 199, 0) !important;
-  }
-</style>
-
-<style lang="css">
-  .button-group-primary-component {
-    left: 0px;
-    z-index: 2 !important;
-    background-color: white !important;
-  }
-  .button-group-secondary-component {
-    left: -1px;
-    z-index: 1;
-    background-color: white !important;
-  }
-  .option-action-button {
-    border: 1px solid #aaaaaa !important;
-    outline: none;
-  }
-  .option-action-button:hover {
-    background-color: #ebebeb !important;
-  }
-  .option-action-button:active {
-    background-color: #e4e4e4 !important;
   }
 </style>

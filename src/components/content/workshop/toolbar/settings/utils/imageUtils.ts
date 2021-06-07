@@ -15,19 +15,6 @@ interface FileReaderEvent extends Event {
 
 export default class ImageUtils {
 
-  private static isFormatValid(file: File): boolean {
-    return file.type.includes('image/');
-  }
-  
-  public static uploadImage(settingsComponent: ComponentOptions, event: HTMLInputEvent, spec: any): void {
-    const file = event.target.files[0];
-    if (ImageUtils.isFormatValid(file)) {
-      const reader = new FileReader();
-      reader.onload = ImageUtils.fileLoaded.bind(settingsComponent, file, spec);
-      reader.readAsDataURL(file);
-    }
-  }
-
   private static fileLoaded(file: File, spec: any, event: FileReaderEvent): void {
     const settingsComponent = this as any;
     const result = event.target.result;
@@ -36,5 +23,18 @@ export default class ImageUtils {
     SharedUtils.setCustomFeatureValue(spec.customFeatureObjectKeys, settingsComponent.subcomponentProperties, result);
     SharedUtils.setCustomFeatureValue(spec.auxiliaryCustomFeatureObjectKeys, settingsComponent.subcomponentProperties, file.name);
     settingsComponent.imageNames[spec.name] = file.name;
+  }
+
+  public static uploadImage(settingsComponent: ComponentOptions, event: HTMLInputEvent, spec: any): void {
+    const file = event.target.files[0];
+    const reader = new FileReader();
+    reader.onload = ImageUtils.fileLoaded.bind(settingsComponent, file, spec);
+    reader.readAsDataURL(file);
+  }
+
+  public static removeImage(settingsComponent: ComponentOptions, spec: any): void {
+    SharedUtils.setCustomFeatureValue(spec.customFeatureObjectKeys, settingsComponent.subcomponentProperties, null);
+    SharedUtils.setCustomFeatureValue(spec.auxiliaryCustomFeatureObjectKeys, settingsComponent.subcomponentProperties, null);
+    delete settingsComponent.imageNames[spec.name];
   }
 }

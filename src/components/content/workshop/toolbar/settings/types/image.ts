@@ -18,6 +18,8 @@ export default {
         name: 'Fit to scale',
         customFeatureObjectKeys: ['customStaticFeatures', 'image', 'size'],
         default: false,
+        resetCustomCss: 'backgroundSize', // reset the css that was changed, other settings that are checkboxes
+        // and update custom css use other settings to do the reset for them
       },
       triggers: {
         true: [
