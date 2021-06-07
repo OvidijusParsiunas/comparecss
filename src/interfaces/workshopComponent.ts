@@ -103,6 +103,7 @@ export interface CustomFeatures {
 }
 
 export interface Image {
+  name: string;
   data: string;
   size: boolean;
 }

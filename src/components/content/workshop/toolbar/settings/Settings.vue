@@ -154,6 +154,7 @@
               <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.UPLOAD_FILE">
                 <input ref="uploadImage" type='file' @change="uploadImage($event, setting.spec)" accept="image/*" hidden/>
                 <button @click="triggerImageUpload(event)">click this</button>
+                <div>{{imageNames[setting.spec.name]}}</div>
               </div>
             </div>
             
@@ -185,6 +186,7 @@ import ColorPickerUtils from './utils/colorPickerUtils';
 import SettingsUtils from './utils/settingsUtils';
 import CheckboxUtils from './utils/checkboxUtils';
 import SharedUtils from './utils/sharedUtils';
+import ImageUtils from './utils/imageUtils';
 import RangeUtils from './utils/rangeUtils';
 
 interface Consts {
@@ -201,6 +203,7 @@ interface Consts {
 
 interface Data {
   settings: any;
+  imageNames: unknown;
   inputsValues: unknown;
   inputDropdownsValues: unknown;
   actionsDropdownsObjects: unknown;
@@ -243,6 +246,9 @@ export default {
               if (objectContainingActiveOption) { this.actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.name] = objectContainingActiveOption; }
             } else if (setting.type === SETTINGS_TYPES.CHECKBOX) {
               CheckboxUtils.updateSettings(setting.spec, this.subcomponentProperties);
+            } else if (setting.type === SETTINGS_TYPES.UPLOAD_FILE) {
+              const keys = setting.spec.auxiliaryCustomFeatureObjectKeys;
+              this.imageNames[setting.spec.name] = SharedUtils.getCustomFeatureValue(keys, this.subcomponentProperties[keys[0]]);
             }
           });
           // this is a bug fix where the range would not re-render even though setting.spec.default was updated correctly
@@ -256,6 +262,7 @@ export default {
     };
   },
   data: (): Data => ({
+    imageNames: {},
     inputsValues: {},
     inputDropdownsValues: {},
     actionsDropdownsObjects: {},
@@ -330,25 +337,8 @@ export default {
     triggerImageUpload(): void {
       this.$refs.uploadImage.click();
     },
-    isFormatValid(file): void {
-      return file.type.includes('image/');
-    },
     uploadImage(event: any, spec: any): void {
-      const image = event.target.files[0];
-      if (this.isFormatValid(image)) {
-        const reader = new FileReader();
-        reader.onload = this.singleFileLoad.bind(this, image, spec);
-        reader.readAsDataURL(image);
-      }
-    },
-    singleFileLoad(imageMetaData, spec, e): void {
-      const image = new Image();
-      image.src = e.target.result;
-      image.onload = this.imageLoad;
-      SharedUtils.setCustomFeatureValue(spec.customFeatureObjectKeys, this.subcomponentProperties, e.target.result);
-    },
-    imageLoad(): void {
-      console.log('called');
+      ImageUtils.uploadImage(this, event, spec);
     },
     resetSubcomponentProperties(options: any): void {
       SettingsUtils.resetSubcomponentProperties(options, this.subcomponentProperties);

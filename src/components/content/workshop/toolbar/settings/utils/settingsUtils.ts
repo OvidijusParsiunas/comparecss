@@ -48,6 +48,12 @@ export default class SettingsUtils {
     defaultValue.forEach((value) => currentValue.add(value));
   }
 
+  private static resetAuxiliaryCustomFeature(auxiliaryCustomFeatureObjectKeys: string[], subcomponentProperties: SubcomponentProperties,
+      defaultKey: 'defaultCustomFeatures'|'defaultCustomStaticFeatures'): void {
+    const defaultValue = SharedUtils.getCustomFeatureValue(auxiliaryCustomFeatureObjectKeys, subcomponentProperties[defaultKey]);
+    SharedUtils.setCustomFeatureValue(auxiliaryCustomFeatureObjectKeys, subcomponentProperties, defaultValue);
+  }
+
   private static updateSetting(option: any, subcomponentProperties: SubcomponentProperties): void {
     // only being used to update range values - hence functionality is currently there
     const { triggers, spec } = option;
@@ -67,7 +73,7 @@ export default class SettingsUtils {
   }
 
   private static resetCustomFeatures(option: any, subcomponentProperties: SubcomponentProperties): void {
-    const { spec: { valueInSetObject, customFeatureObjectKeys, mouseClickOptionCallback } } = option;
+    const { spec: { valueInSetObject, customFeatureObjectKeys, mouseClickOptionCallback, auxiliaryCustomFeatureObjectKeys } } = option;
     const defaultKey = customFeatureObjectKeys[0] === 'customFeatures' ? 'defaultCustomFeatures' : 'defaultCustomStaticFeatures';
     const defaultValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[defaultKey]);
     const currentValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]);
@@ -79,6 +85,9 @@ export default class SettingsUtils {
       // only used for actions dropdown
       if (mouseClickOptionCallback) { mouseClickOptionCallback({subcomponentProperties,
         previousOptionName: currentValue as string, triggeredOptionName: defaultValue as string, isCustomFeatureResetTriggered: true }); }
+    }
+    if (auxiliaryCustomFeatureObjectKeys) {
+      SettingsUtils.resetAuxiliaryCustomFeature(auxiliaryCustomFeatureObjectKeys, subcomponentProperties, defaultKey);
     }
   }
 

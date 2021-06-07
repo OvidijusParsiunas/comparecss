@@ -40,6 +40,7 @@ function createDefaultBaseCustomFeatures(): CustomFeatures {
 
 function createImage(): Image {
   return {
+    name: null,
     data: null,
     size: true,
   }

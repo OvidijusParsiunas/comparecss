@@ -8,6 +8,7 @@ export default {
       spec: {
         name: 'Background Image',
         customFeatureObjectKeys: ['customStaticFeatures', 'image', 'data'],
+        auxiliaryCustomFeatureObjectKeys: ['customStaticFeatures', 'image', 'name'],
         default: 'text',
       },
     },
