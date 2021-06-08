@@ -8,6 +8,10 @@ type AvatarOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT;
 export const avatarOptions: SubcomponentOptions<AvatarOptionsModes> = {
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
     {
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.IMAGE,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE,
+    },
+    {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER,
     },
@@ -34,10 +38,6 @@ export const avatarOptions: SubcomponentOptions<AvatarOptionsModes> = {
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_POSITION,
-    },
-    {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.IMAGE,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE,
     },
   ],
 };

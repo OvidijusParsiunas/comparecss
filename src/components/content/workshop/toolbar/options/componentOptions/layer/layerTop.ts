@@ -27,9 +27,5 @@ export const layerTopOptions: SubcomponentOptions<LayerOptionsModes> = {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.PADDING,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING,
     },
-    {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.IMAGE,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE_SCALE,
-    },
   ],
 };

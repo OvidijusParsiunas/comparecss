@@ -2,6 +2,7 @@ import { SubcomponentCssPseudoClasses } from '../../../../../../interfaces/subco
 import { NEW_COMPONENT_TYPES } from '../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { SubcomponentOptions } from '../../../../../../interfaces/componentOptions';
+import { imageLayerTopOptions } from './layer/imageLayerTop';
 import { closeButtonTextOptions } from './button/closeText';
 import { nestedButtonOptions } from './button/nestedBase';
 import { layerBottomOptions } from './layer/layerBottom';
@@ -47,7 +48,7 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
   [NEW_COMPONENT_TYPES.CARD]: {
     [SUBCOMPONENT_TYPES.BASE]: cardBaseOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.TEXT]: textOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
-    [SUBCOMPONENT_TYPES.LAYER_1]: layerTopOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+    [SUBCOMPONENT_TYPES.LAYER_1]: imageLayerTopOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.LAYER_2]: layerMiddleOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.LAYER_3]: layerBottomOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.BUTTON]: nestedButtonOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,

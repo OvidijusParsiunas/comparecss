@@ -18,6 +18,7 @@ import { inheritedLayerBaseCss } from '../../shared/layer/inheritedCss';
 import { closeButton } from '../../buttons/properties/closeButton';
 import { inheritedTextCss } from '../../shared/text/inheritedCss';
 import { defaultButton } from '../../buttons/properties/default';
+import { defaultImage } from '../../shared/images/default';
 import {
   CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Animations,
   AlignedLayerSection, AutoSize, Text, CustomStaticFeatures, Image,
@@ -38,7 +39,7 @@ function createDefaultBaseCustomFeatures(): CustomFeatures {
   };
 }
 
-function createImage(): Image {
+function createLayer1Image(): Image {
   return {
     name: null,
     data: null,
@@ -48,7 +49,7 @@ function createImage(): Image {
 
 function createDefaultLayer1CustomStaticFeatures(): CustomStaticFeatures {
   return {
-    image: createImage(),
+    image: createLayer1Image(),
   };
 }
 
@@ -99,9 +100,17 @@ function createDefaultAvatarCustomFeatures(): CustomFeatures {
   };
 }
 
+function createAvatarImage(): Image {
+  return {
+    name: 'default',
+    data: defaultImage,
+    size: true,
+  }
+}
+
 function createDefaultAvatarCustomStaticFeatures(): CustomStaticFeatures {
   return {
-    image: createImage(),
+    image: createAvatarImage(),
   }
 }
 
