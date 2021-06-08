@@ -2,6 +2,7 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../consts/workshop
 import border from './border';
 import borderBottom from './borderBottom';
 import borderTop from './borderTop';
+import circleBorder from './circleBorder';
 import color from './color';
 import shadow from './shadow';
 import shadowVertical from './shadowVertical';
@@ -36,6 +37,7 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER]: border,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER_BOTTOM]: borderBottom,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER_TOP]: borderTop,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.CIRCLE_BORDER]: circleBorder,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.COLOR]: color,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW]: shadow,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW_VERTICAL]: shadowVertical,

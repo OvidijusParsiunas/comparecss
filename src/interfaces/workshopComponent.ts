@@ -100,6 +100,7 @@ export interface CustomFeatures {
   jsClasses?: ComponentJavascriptClasses;
   autoSize?: AutoSize;
   alignedLayerSection?: AlignedLayerSection;
+  circleBorder?: boolean;
 }
 
 export interface Image {

@@ -13,7 +13,7 @@ export const avatarOptions: SubcomponentOptions<AvatarOptionsModes> = {
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.CIRCLE_BORDER,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.COLOR,

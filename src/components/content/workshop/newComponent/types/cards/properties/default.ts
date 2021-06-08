@@ -96,6 +96,7 @@ function createDefaultText2CustomStaticFeatures(): CustomStaticFeatures {
 
 function createDefaultAvatarCustomFeatures(): CustomFeatures {
   return {
+    circleBorder: false,
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
   };
 }

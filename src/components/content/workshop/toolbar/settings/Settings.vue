@@ -15,6 +15,9 @@
                     <div v-if="setting.spec.customFeatureObjectKeys">
                       {{customFeatureRangeValue}}
                     </div>
+                    <div v-else-if="setting.spec.greatestControlledNumber !== undefined && setting.spec.default / setting.spec.smoothingDivisible > setting.spec.greatestControlledNumber">
+                      {{setting.spec.greatestControlledNumber + setting.spec.postfix}}
+                    </div>
                     <!-- the boxShadow range properties are set to 'unset' when all are 0px (for firefox) -->
                     <div v-else-if="subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass]
                       && subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass][setting.spec.cssProperty]
