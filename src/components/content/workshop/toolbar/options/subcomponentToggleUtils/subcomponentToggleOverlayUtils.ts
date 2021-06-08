@@ -5,7 +5,7 @@ import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../../consts/subcompon
 export default class SubcomponentToggleOverlayUtils {
 
   private static getActiveSubcomponentOverlayElement(activeSubcomponentName: string): HTMLElement {
-    const subcomponentOverlayElementId = subcomponentAndOverlayElementIdsState.getOverlayIdViaSubcomponentType(activeSubcomponentName);
+    const subcomponentOverlayElementId = subcomponentAndOverlayElementIdsState.getOverlayIdViaSubcomponentName(activeSubcomponentName);
     return document.getElementById(subcomponentOverlayElementId);
   }
 

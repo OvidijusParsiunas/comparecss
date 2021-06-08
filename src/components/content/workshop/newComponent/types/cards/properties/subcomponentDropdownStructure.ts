@@ -4,14 +4,15 @@ import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcom
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
 
-export default function getModalSubcomponentDropdownStructure(
-    layer2Subcomponent: SubcomponentProperties, layer3Subcomponent: SubcomponentProperties, textSubcomponent1: SubcomponentProperties,
-    textSubcomponent2: SubcomponentProperties, importedCloseButtonStructure: ImportedComponentStructure,
+export default function getCardSubcomponentDropdownStructure(
+    avatarSubcomponent: SubcomponentProperties, layer2Subcomponent: SubcomponentProperties, layer3Subcomponent: SubcomponentProperties,
+    textSubcomponent1: SubcomponentProperties, textSubcomponent2: SubcomponentProperties, importedCloseButtonStructure: ImportedComponentStructure,
     importedButtonStructure1: ImportedComponentStructure, importedButtonStructure2: ImportedComponentStructure): NestedDropdownStructure {
   return {
     [CORE_SUBCOMPONENTS_NAMES.BASE]: {
       [CORE_SUBCOMPONENTS_NAMES.LAYER_1]: {
         [CORE_SUBCOMPONENTS_NAMES.TEXT_1]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject(textSubcomponent1.subcomponentDisplayStatus),
+        [CORE_SUBCOMPONENTS_NAMES.AVATAR]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject(avatarSubcomponent.subcomponentDisplayStatus),
         [importedCloseButtonStructure.baseName]: { ...importedCloseButtonStructure.component[importedCloseButtonStructure.baseName] },
       },
       [CORE_SUBCOMPONENTS_NAMES.LAYER_2]: {

@@ -11,7 +11,7 @@ function getSubcomponentIdViaSubcomponentName(subcomponentName: string): string 
   return subcomponentAndOverlayElementIdsObject[subcomponentName].subcomponentId;
 }
 
-function getOverlayIdViaSubcomponentType(subcomponentName: string): string {
+function getOverlayIdViaSubcomponentName(subcomponentName: string): string {
   return subcomponentAndOverlayElementIdsObject[subcomponentName] && subcomponentAndOverlayElementIdsObject[subcomponentName].overlayId;
 }
 
@@ -34,6 +34,6 @@ export const subcomponentAndOverlayElementIdsState = {
   setSubcomponentAndOverlayElementIdsState,
   getSubcomponentIdViaSubcomponentName,
   getSubcomponentNameViaOverlayId,
-  getOverlayIdViaSubcomponentType,
+  getOverlayIdViaSubcomponentName,
   getOverlayIdViaSubcomponentId,
 }

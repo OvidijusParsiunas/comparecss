@@ -3,13 +3,13 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/works
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
 
-type LayerOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT;
+type AvatarOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT;
 
-export const layerTopOptions: SubcomponentOptions<LayerOptionsModes> = {
+export const avatarOptions: SubcomponentOptions<AvatarOptionsModes> = {
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER_BOTTOM,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.COLOR,
@@ -17,19 +17,27 @@ export const layerTopOptions: SubcomponentOptions<LayerOptionsModes> = {
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SHADOW,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW_VERTICAL,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SIZE,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_HEIGHT,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.PADDING,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING,
     },
     {
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
+    },
+    {
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_POSITION,
+    },
+    {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.IMAGE,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE_SCALE,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE,
     },
   ],
 };

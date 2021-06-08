@@ -8,4 +8,5 @@ export enum CORE_SUBCOMPONENTS_NAMES {
   BUTTON_2 = 'Button 2',
   TEXT_1 = 'Text',
   TEXT_2 = 'Text ',
+  AVATAR = 'Avatar',
 }

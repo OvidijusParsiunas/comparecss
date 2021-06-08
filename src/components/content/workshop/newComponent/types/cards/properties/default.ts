@@ -10,7 +10,7 @@ import { ComponentGenerator } from '../../../../../../../interfaces/componentGen
 import { inheritedLayerBaseChildCss } from '../../shared/layer/inheritedBaseChildCss';
 import { modalLayerBottomSpecificSettings } from './modalLayerBottomSpecificSettings';
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
-import getModalSubcomponentDropdownStructure from './subcomponentDropdownStructure';
+import getCardSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { modalLayerTopSpecificSettings } from './modalLayerTopSpecificSettings';
 import { modalTextSpecificSettings } from './modalTextSpecificSettings';
 import { modalBaseSpecificSettings } from './modalBaseSpecificSettings';
@@ -90,6 +90,18 @@ function createDefaultText2CustomFeatures(): CustomFeatures {
 function createDefaultText2CustomStaticFeatures(): CustomStaticFeatures {
   return {
     subcomponentText: createText('Modal body text'),
+  }
+}
+
+function createDefaultAvatarCustomFeatures(): CustomFeatures {
+  return {
+    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
+  };
+}
+
+function createDefaultAvatarCustomStaticFeatures(): CustomStaticFeatures {
+  return {
+    image: createImage(),
   }
 }
 
@@ -208,6 +220,35 @@ function createDefaultText2Css(): CustomCss {
   };
 }
 
+function createDefaultAvatarCss(): CustomCss {
+  return {
+    [CSS_PSEUDO_CLASSES.DEFAULT]: {
+      borderRadius: '0px',
+      borderWidth: '0px',
+      borderColor: '#1779ba',
+      borderStyle: 'solid',
+      boxShadow: 'unset',
+      outline: 'none',
+      paddingTop: '0px',
+      paddingBottom: '0px',
+      paddingLeft: '12px',
+      paddingRight: '12px',
+      marginLeft: '0px',
+      marginTop: '0px',
+      marginRight: '0px',
+      marginBottom: '0px',
+      width: '40px',
+      height: '38px',
+      boxSizing: 'content-box',
+      color: '#ffffff',
+      fontSize: '14px',
+      transition: 'unset',
+      top: '50%',
+      backgroundSize: '100% 100%',
+    },
+  };
+}
+
 function createSubcomponents(): Subcomponents {
   return {
     [CORE_SUBCOMPONENTS_NAMES.BASE]: {
@@ -282,6 +323,19 @@ function createSubcomponents(): Subcomponents {
       customStaticFeatures: createDefaultText2CustomStaticFeatures(),
       defaultCustomStaticFeatures: createDefaultText2CustomStaticFeatures(),
     },
+    [CORE_SUBCOMPONENTS_NAMES.AVATAR]: {
+      subcomponentType: SUBCOMPONENT_TYPES.AVATAR,
+      componentTag: 'div',
+      customCss: createDefaultAvatarCss(),
+      defaultCss: createDefaultAvatarCss(),
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
+      customFeatures: createDefaultAvatarCustomFeatures(),
+      defaultCustomFeatures: createDefaultAvatarCustomFeatures(),
+      customStaticFeatures: createDefaultAvatarCustomStaticFeatures(),
+      defaultCustomStaticFeatures: createDefaultAvatarCustomStaticFeatures(),
+    },
   };
 }
 
@@ -294,7 +348,7 @@ export const defaultCard: ComponentGenerator = {
       ...ImportedComponentGenerator.createImportedComponents(closeButton, importedCloseButtonName, 1),
       ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton1Name, 2, 'Submit'),
       ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton2Name, 3, 'Cancel') };
-    const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
+    const subcomponentDropdownStructure = getCardSubcomponentDropdownStructure(subcomponents[CORE_SUBCOMPONENTS_NAMES.AVATAR],
       subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_3],
       subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_2],
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedCloseButtonName),

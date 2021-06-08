@@ -22,14 +22,15 @@
         :id="subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId"
         class="subcomponent-element"
         :class="[COMPONENT_PREVIEW_MARKER, ...((nestedSubcomponent.subcomponentProperties.customFeatures && nestedSubcomponent.subcomponentProperties.customFeatures.jsClasses) || []),
-         (nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text) === CLOSE_BUTTON_X_TEXT
+         (nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText
+         && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text) === CLOSE_BUTTON_X_TEXT
             ? SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS : '']"
         @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseEnter()"
         @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseLeave()"
         @mousedown="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseDown()"
         @mouseup="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseUp()"
         @click="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentClick()"
-        :style="nestedSubcomponent.subcomponentProperties.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK
+        :style="[nestedSubcomponent.subcomponentProperties.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK
           ? [
               [ nestedSubcomponent.subcomponentProperties.inheritedCss || '' ],
               nestedSubcomponent.subcomponentProperties[nestedSubcomponent.subcomponentProperties.tempCustomCssObjName || 'customCss'][CSS_PSEUDO_CLASSES.DEFAULT],
@@ -40,10 +41,11 @@
               [ nestedSubcomponent.subcomponentProperties.inheritedCss || '' ],
               nestedSubcomponent.subcomponentProperties[nestedSubcomponent.subcomponentProperties.tempCustomCssObjName || 'customCss'][CSS_PSEUDO_CLASSES.DEFAULT],
               nestedSubcomponent.subcomponentProperties[nestedSubcomponent.subcomponentProperties.tempCustomCssObjName || 'customCss'][nestedSubcomponent.subcomponentProperties.activeCssPseudoClass],
-            ]"
+            ], { backgroundImage: nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.image
+              && nestedSubcomponent.subcomponentProperties.customStaticFeatures.image.data ? 'url(' + nestedSubcomponent.subcomponentProperties.customStaticFeatures.image.data + ')' : ''}]"
         >{{(!nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus || !nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus.isDisplayedTemporarily)
-            && (nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text)
-              ? nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text : '' }}
+            && (nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText
+            && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text) ? nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text : '' }}
       </component>
       <component v-if="!nestedSubcomponent.subcomponentProperties.importedComponent"
         :is="nestedSubcomponent.subcomponentProperties.componentTag"
@@ -52,14 +54,16 @@
           nestedSubcomponent.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
           {display: 'none'}, {color: '#ff000000'}]"
         class="subcomponent-element"
-        :class="nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text === CLOSE_BUTTON_X_TEXT
+        :class="nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText
+              && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text === CLOSE_BUTTON_X_TEXT
             ? ['close-button-text-overlay-height', SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.SUB_CONTAINER] : [...OVERLAY_DEFAULT_CLASSES]">
           {{isSubcomponentDisplayed(nestedSubcomponent.subcomponentProperties)
-            && nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text
-              ? nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text : ''}}
+            && nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText
+            && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text ? nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text : ''}}
           <!-- subOverlays are used for only displaying the container/actual overlay only when the mouse has reached it's actual content as in some cases (close button text) mouse
               enter event can be fired before the mouse actually reaches the actual div -->
-          <div v-if="nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text === CLOSE_BUTTON_X_TEXT"
+          <div v-if="nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText
+            && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text === CLOSE_BUTTON_X_TEXT"
             :class="SUBCOMPONENT_OVERLAY_CLASSES.SUB"
             :style="[nestedSubcomponent.subcomponentProperties[nestedSubcomponent.subcomponentProperties.tempCustomCssObjName || 'customCss'][CSS_PSEUDO_CLASSES.DEFAULT], { top: ''}]"
             @mouseEnter="useSubcomponentPreviewSelectModeEventHandlers.subcomponentMouseEnter"

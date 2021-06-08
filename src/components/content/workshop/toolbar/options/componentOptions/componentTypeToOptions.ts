@@ -12,6 +12,7 @@ import { buttonBaseOptions } from './button/base';
 import { alertBaseOptions } from './alert/base';
 import { modalBaseOptions } from './modal/base';
 import { cardBaseOptions } from './card/base';
+import { avatarOptions } from './card/avatar';
 import { textOptions } from './text/text';
 
 type SubcomponentTypeToOptions = {
@@ -52,5 +53,6 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
     [SUBCOMPONENT_TYPES.BUTTON]: nestedButtonOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.BUTTON_TEXT]: buttonTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT]: closeButtonTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+    [SUBCOMPONENT_TYPES.AVATAR]: avatarOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
   },
 };
