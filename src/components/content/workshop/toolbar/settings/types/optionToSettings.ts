@@ -12,6 +12,7 @@ import sizeHeight from './sizeHeight';
 import padding from './padding';
 import margin from './margin';
 import font from './font';
+import fullPosition from './fullPosition';
 import background from './background';
 import modalPosition from './modalPosition';
 import nestedSubcomponentPosition from './nestedSubcomponentPosition';
@@ -19,8 +20,7 @@ import nestedSubcomponentMargin from './nestedSubcomponentMargin';
 import backdrop from './backdrop';
 import textSize from './textSize';
 import textColor from './textColor';
-import textPosition from './textPosition';
-import textPositionNoAlign from './textPositionNoAlign';
+import nestedSubcomponentPositionNoAlign from './nestedSubcomponentPositionNoAlign';
 import text from './text';
 import buttonAnimations from './buttonAnimations';
 import modalAnimations from './modalAnimations';
@@ -51,8 +51,8 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_COLOR]: textColor,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND]: background,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_POSITION]: modalPosition,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_POSITION]: textPosition,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_POSITION_NO_ALIGN]: textPositionNoAlign,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.FULL_POSITION]: fullPosition,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_POSITION_NO_ALIGN]: nestedSubcomponentPositionNoAlign,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_SIZE]: textSize,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_POSITION]: nestedSubcomponentPosition,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_MARGIN]: nestedSubcomponentMargin,

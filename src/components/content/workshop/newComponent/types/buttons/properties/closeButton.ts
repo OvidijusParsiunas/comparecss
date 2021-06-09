@@ -39,6 +39,7 @@ function createDefaultBaseCss(): CustomCss {
       paddingBottom: '0px',
       marginRight: '5px',
       transition: 'unset',
+      left: '0px',
     }
   }
 }
@@ -108,7 +109,7 @@ function createDefaultTextCustomStaticFeatures(): CustomStaticFeatures {
 function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcomponents {
   return {
     [subcomponentNames.base]: {
-      subcomponentType: SUBCOMPONENT_TYPES.BUTTON,
+      subcomponentType: SUBCOMPONENT_TYPES.CLOSE_BUTTON,
       customCss: createDefaultBaseCss(),
       defaultCss: createDefaultBaseCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,

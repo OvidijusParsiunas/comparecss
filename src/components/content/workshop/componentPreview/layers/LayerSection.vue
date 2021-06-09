@@ -150,6 +150,7 @@ export default {
     height: 100%;
     display: flex;
     place-items: baseline;
+    position: relative;
   }
   .subcomponent-element {
     position: relative;

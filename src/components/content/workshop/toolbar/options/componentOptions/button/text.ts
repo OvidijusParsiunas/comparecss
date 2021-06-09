@@ -25,7 +25,7 @@ export const buttonTextOptions: SubcomponentOptions<TextWithNoBackgroundOptions>
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_POSITION_NO_ALIGN,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_POSITION_NO_ALIGN,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.TEXT,

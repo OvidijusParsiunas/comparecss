@@ -17,6 +17,17 @@ export default {
       },
     },
     {
+      type: SETTINGS_TYPES.RANGE,
+      spec: {
+        name: 'Horizontal-Offset',
+        default: 50,
+        scale: [-100, 100],
+        smoothingDivisible: 1,
+        cssProperty: 'left',
+        postfix: 'px',
+      },
+    },
+    { 
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Align',

@@ -4,7 +4,8 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.e
 import { SubcomponentOptions } from '../../../../../../interfaces/componentOptions';
 import { imageLayerTopOptions } from './layer/imageLayerTop';
 import { closeButtonTextOptions } from './button/closeText';
-import { nestedButtonOptions } from './button/nestedBase';
+import { nestedButtonOptions } from './button/nestedButton';
+import { closeButtonOptions } from './button/closeButton';
 import { layerBottomOptions } from './layer/layerBottom';
 import { layerMiddleOptions } from './layer/layerMiddle';
 import { layerTopOptions } from './layer/layerTop';
@@ -32,7 +33,7 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
   [NEW_COMPONENT_TYPES.ALERT]: {
     [SUBCOMPONENT_TYPES.BASE]: alertBaseOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.TEXT]: textOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
-    [SUBCOMPONENT_TYPES.BUTTON]: nestedButtonOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+    [SUBCOMPONENT_TYPES.CLOSE_BUTTON]: closeButtonOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT]: closeButtonTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
   },
   [NEW_COMPONENT_TYPES.MODAL]: {
@@ -43,6 +44,7 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
     [SUBCOMPONENT_TYPES.LAYER_3]: layerBottomOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.BUTTON]: nestedButtonOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.BUTTON_TEXT]: buttonTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+    [SUBCOMPONENT_TYPES.CLOSE_BUTTON]: closeButtonOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT]: closeButtonTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
   },
   [NEW_COMPONENT_TYPES.CARD]: {
@@ -53,6 +55,7 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
     [SUBCOMPONENT_TYPES.LAYER_3]: layerBottomOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.BUTTON]: nestedButtonOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.BUTTON_TEXT]: buttonTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+    [SUBCOMPONENT_TYPES.CLOSE_BUTTON]: closeButtonOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT]: closeButtonTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.AVATAR]: avatarOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
   },

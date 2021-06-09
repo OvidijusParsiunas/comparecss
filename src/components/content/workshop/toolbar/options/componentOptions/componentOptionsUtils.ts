@@ -1,3 +1,4 @@
+import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../consts/workshopToolbarOptionButtonNames.enum';
 import { Option } from '../../../../../../interfaces/componentOptions';
 
 export class ComponentOptionsUtils {
@@ -15,5 +16,9 @@ export class ComponentOptionsUtils {
     });
     resultOptions = [...resultOptions, ...newOptions];
     return resultOptions;
+  }
+
+  public static removeOptions(options: Option[], ...optionButtonNames: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES[]): Option[] {
+    return options.filter((option) => !optionButtonNames.includes(option.buttonName));
   }
 }
