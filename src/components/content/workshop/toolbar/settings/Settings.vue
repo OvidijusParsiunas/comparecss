@@ -311,8 +311,8 @@ export default {
         if (popoverElement.style) { popoverElement.style.opacity = '1'; }
       });
     },
-    rangeMouseUp(event: MouseEvent, setting: any): void {
-      RangeUtils.saveLastSelectedValue(event, setting, this.subcomponentProperties);
+    rangeMouseUp(event: MouseEvent, settingSpec: any): void {
+      RangeUtils.saveLastSelectedValue(event, settingSpec, this.subcomponentProperties);
       ((event.target as HTMLInputElement).parentElement.childNodes[0] as HTMLElement).style.opacity = '0';
     },
     preventRightClickEvent(event: KeyboardEvent): void {

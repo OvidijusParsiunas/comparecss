@@ -1,6 +1,14 @@
+import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../consts/coreSubcomponentNames.enum';
+import { LAYER_SECTION_DIVISOR } from '../../../../../../consts/layerSectionDivisor';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import SubcomponentAlignment from './utils/subcomponentAlignment';
+
+function getAggregatedPropertiesDetails(): any {
+  return [
+    {subcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE, cssProperty: 'width'},
+  ];
+}
 
 // create an optional interface
 export default {
@@ -20,11 +28,16 @@ export default {
       type: SETTINGS_TYPES.RANGE,
       spec: {
         name: 'Horizontal-Offset',
-        default: 50,
+        default: 0,
         scale: [-100, 100],
         smoothingDivisible: 1,
         cssProperty: 'left',
         postfix: 'px',
+        updateSettingSpecViaOtherCssProperties: {
+          aggregatedProperties: getAggregatedPropertiesDetails(),
+          isScaleNegativeToPositive: true,
+          divisor: LAYER_SECTION_DIVISOR,
+        },
       },
     },
     { 

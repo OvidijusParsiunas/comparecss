@@ -1,5 +1,6 @@
+import { subcomponentAndOverlayElementIdsState } from '../../options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
+import { SubcomponentProperties, DetailsToUpdateOtherCssProperties } from '../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
-import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import { SettingPaths } from '../../../../../../interfaces/settingPaths';
 import { optionToSettings } from '../types/optionToSettings';
 import { FindSettings } from '../types/utils/findSetting';
@@ -135,10 +136,29 @@ export default class RangeUtils {
     });
   }
 
+  // WORK1: lift out!
+  private static updateCssProperty(realRangeValue: number, otherCssProperties: DetailsToUpdateOtherCssProperties) {
+    const { divisor = 1, cssProperty, customCss, isScaleNegativeToPositive } = otherCssProperties;
+    const currentSubcomponentLeft = Number.parseFloat(customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty] as string);
+    if (realRangeValue / divisor < Math.abs(currentSubcomponentLeft)) {
+      const newRangeValue = Math.floor(realRangeValue / divisor);
+      (customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty] as string) = `${
+        isScaleNegativeToPositive && currentSubcomponentLeft < 0 ? -newRangeValue : newRangeValue}px`;
+    }
+  }
+
+  private static updateOtherCssProperties(detailsToUpdateOtherCssProperties: DetailsToUpdateOtherCssProperties[], realRangeValue: number): void {
+    detailsToUpdateOtherCssProperties.forEach((otherCssProperties) => {
+      RangeUtils.updateCssProperty(realRangeValue, otherCssProperties);
+    })
+  }
+
   private static updateCustomCss(rangeValue: string, spec: any, subcomponentProperties: SubcomponentProperties): void {
-    const { cssProperty, smoothingDivisible, postfix } = spec;
+    const { cssProperty, smoothingDivisible, postfix, detailsToUpdateOtherCssProperties } = spec;
     const { customCss, activeCssPseudoClass } = subcomponentProperties;
-    customCss[activeCssPseudoClass][cssProperty] = `${Math.floor(rangeValue as unknown as number / smoothingDivisible)}${postfix}`;
+    const realRangeValue = Math.floor(rangeValue as unknown as number / smoothingDivisible);
+    customCss[activeCssPseudoClass][cssProperty] = `${realRangeValue}${postfix}`;
+    if (detailsToUpdateOtherCssProperties) RangeUtils.updateOtherCssProperties(detailsToUpdateOtherCssProperties, realRangeValue);
   }
 
   private static updateColorValueInCustomFeatureProperties(rangeValue: string, spec: any, subcomponentProperties: SubcomponentProperties): void {
@@ -163,7 +183,7 @@ export default class RangeUtils {
     const { spec } = updatedSetting;
     const rangeValue = (event.target as HTMLInputElement).value;
     RangeUtils.activateTriggers(rangeValue, updatedSetting, subcomponentProperties, allSettings, actionsDropdownsObjects, refreshSettingsCallback);
-    if (spec.partialCss != undefined) {
+    if (spec.partialCss !== undefined) {
       if (spec.cssProperty === 'boxShadow') BoxShadowUtils.updateBoxShadowRangeValue(rangeValue, spec, subcomponentProperties);
     } else if (spec.customFeatureObjectKeys) {
       RangeUtils.updateCustomFeature(rangeValue, spec, subcomponentProperties);
@@ -194,7 +214,29 @@ export default class RangeUtils {
     const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClass, settingToBeUpdated.spec.cssProperty);
     if (cssPropertyValue !== undefined) {
       const hasBoxShadowBeenSet = settingToBeUpdated.spec.cssProperty === 'boxShadow' && BoxShadowUtils.setBoxShadowSettingsRangeValue(cssPropertyValue, settingToBeUpdated.spec);
-      if (!hasBoxShadowBeenSet) { RangeUtils.updateCustomCssSetting(settingToBeUpdated, cssPropertyValue); }
+      if (!hasBoxShadowBeenSet) {
+        // WORK1: lift out!
+        RangeUtils.updateCustomCssSetting(settingToBeUpdated, cssPropertyValue);
+        if (settingToBeUpdated.spec.updateSettingSpecViaOtherCssProperties) {
+          const { aggregatedProperties, isScaleNegativeToPositive, divisor } = settingToBeUpdated.spec.updateSettingSpecViaOtherCssProperties;
+          let totalAggregatedValue = 0;
+          for (let i = 0; i < aggregatedProperties.length; i += 1) {
+            const { subcomponentName, cssProperty } = aggregatedProperties[i];
+            const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(subcomponentName);
+            const element = document.getElementById(subcomponentId);
+            totalAggregatedValue += Number.parseFloat(element.style[cssProperty]);
+          }
+          if (divisor) {
+            totalAggregatedValue = totalAggregatedValue / divisor;
+          }
+          const currentValue = Number.parseFloat(subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT][settingToBeUpdated.spec.cssProperty]);
+          if (Math.abs(currentValue) <= totalAggregatedValue) {
+            settingToBeUpdated.spec.scale[1] = totalAggregatedValue;
+            settingToBeUpdated.spec.scale[0] = isScaleNegativeToPositive ? -totalAggregatedValue : 0;
+          }
+        }
+        // remember the last selected value for this css
+      }
     } else if (settingToBeUpdated.spec.customFeatureObjectKeys) {
       settingToBeUpdated.spec.default = RangeUtils.getCustomFeatureRangeNumberValue(settingToBeUpdated.spec, subcomponentProperties);
       if (settingToBeUpdated.spec.updateSettingSpecViaOtherSettings) {

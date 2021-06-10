@@ -35,12 +35,20 @@ interface TemporaryDisplayStatus {
   isDisplayedTemporarily?: boolean;
 }
 
+export interface DetailsToUpdateOtherCssProperties {
+  cssProperty: keyof WorkshopComponentCss;
+  customCss: CustomCss;
+  isScaleNegativeToPositive: boolean;
+  divisor?: number;
+}
+
 export type SubcomponentDisplayStatus = EntityDisplayStatus & TemporaryDisplayStatus;
 
 export type SubcomponentSpecificSettings = {
   [key in WORKSHOP_TOOLBAR_OPTION_TYPES]?: {
     [cssPropertyName: string]: {
       scale?: [number, number];
+      detailsToUpdateOtherCssProperties?: DetailsToUpdateOtherCssProperties[];
     }
   };
 }

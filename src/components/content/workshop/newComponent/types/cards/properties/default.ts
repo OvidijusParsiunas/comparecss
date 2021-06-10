@@ -12,8 +12,8 @@ import { modalLayerBottomSpecificSettings } from './modalLayerBottomSpecificSett
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getCardSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { modalLayerTopSpecificSettings } from './modalLayerTopSpecificSettings';
+import { getCardBaseSpecificSettings } from './cardBaseSpecificSettings';
 import { modalTextSpecificSettings } from './modalTextSpecificSettings';
-import { modalBaseSpecificSettings } from './modalBaseSpecificSettings';
 import { inheritedLayerBaseCss } from '../../shared/layer/inheritedCss';
 import { closeButton } from '../../buttons/properties/closeButton';
 import { inheritedTextCss } from '../../shared/text/inheritedCss';
@@ -269,7 +269,6 @@ function createSubcomponents(): Subcomponents {
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       inheritedCss: inheritedLayerBaseCss,
       childCss: inheritedLayerBaseChildCss,
-      subcomponentSpecificSettings: modalBaseSpecificSettings,
       customFeatures: createDefaultBaseCustomFeatures(),
       defaultCustomFeatures: createDefaultBaseCustomFeatures(),
     },
@@ -365,6 +364,7 @@ export const defaultCard: ComponentGenerator = {
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton1Name),
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton2Name),
     );
+    subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE].subcomponentSpecificSettings = getCardBaseSpecificSettings(subcomponents[importedCloseButtonName].customCss);
     return {
       type: NEW_COMPONENT_TYPES.CARD,
       subcomponents,
