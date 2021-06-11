@@ -4,6 +4,7 @@ import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../.
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -84,16 +85,22 @@ function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayer
   return { section };
 }
 
+function createButtonBaseLastSelectedCssValues(): WorkshopComponentCss {
+  return { left: '0px' };
+}
+
 function createDefaultButtonBaseCustomFeatures(): CustomFeatures {
   return {
+    lastSelectedCssValues: createButtonBaseLastSelectedCssValues(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
-  }
+  };
 }
+
 function createDefaultTextCustomFeatures(): CustomFeatures {
   return {
     autoSize: createAutoSize(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
-  }
+  };
 }
 
 function createText(text: string): Text {
@@ -103,7 +110,7 @@ function createText(text: string): Text {
 function createDefaultTextCustomStaticFeatures(): CustomStaticFeatures {
   return {
     subcomponentText: createText(CLOSE_BUTTON_X_TEXT),
-  }
+  };
 }
 
 function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcomponents {
@@ -141,7 +148,7 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
       customStaticFeatures: createDefaultTextCustomStaticFeatures(),
       defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(),
     },
-  }
+  };
 }
 
 export const closeButton: ComponentGenerator = {

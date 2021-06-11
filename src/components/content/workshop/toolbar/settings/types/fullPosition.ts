@@ -4,6 +4,7 @@ import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.en
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import SubcomponentAlignment from './utils/subcomponentAlignment';
 
+// WORK 1: type for css settings
 function getAggregatedPropertiesDetails(): any {
   return [
     {subcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE, cssProperty: 'width'},
@@ -33,6 +34,7 @@ export default {
         smoothingDivisible: 1,
         cssProperty: 'left',
         postfix: 'px',
+        lastSelectedValueObjectKeys: ['customFeatures', 'lastSelectedCssValues', 'left'],
         updateSettingSpecViaOtherCssProperties: {
           aggregatedProperties: getAggregatedPropertiesDetails(),
           isScaleNegativeToPositive: true,

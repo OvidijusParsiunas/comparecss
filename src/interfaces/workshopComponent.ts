@@ -38,6 +38,7 @@ interface TemporaryDisplayStatus {
 export interface DetailsToUpdateOtherCssProperties {
   cssProperty: keyof WorkshopComponentCss;
   customCss: CustomCss;
+  customFeatures: CustomFeatures;
   isScaleNegativeToPositive: boolean;
   divisor?: number;
 }
@@ -109,6 +110,7 @@ export interface CustomFeatures {
   autoSize?: AutoSize;
   alignedLayerSection?: AlignedLayerSection;
   circleBorder?: boolean;
+  lastSelectedCssValues?: WorkshopComponentCss;
 }
 
 export interface Image {

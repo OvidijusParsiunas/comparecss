@@ -364,7 +364,7 @@ export const defaultCard: ComponentGenerator = {
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton1Name),
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton2Name),
     );
-    subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE].subcomponentSpecificSettings = getCardBaseSpecificSettings(subcomponents[importedCloseButtonName].customCss);
+    subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE].subcomponentSpecificSettings = getCardBaseSpecificSettings(subcomponents[importedCloseButtonName]);
     return {
       type: NEW_COMPONENT_TYPES.CARD,
       subcomponents,

@@ -129,7 +129,7 @@ export default class RangeUtils {
         const { setting, updateUsingScaleMax, aggregateSettingSpecs } = trigger;
         const [targetSettingSpecs] = RangeUtils.getAggregatedSettingSpecs(setting);
         RangeUtils.updateSetting(rangeValue, aggregateSettingSpecs, targetSettingSpecs, updateUsingScaleMax,
-            spec.smoothingDivisible, subcomponentProperties, refreshSettingsCallback);
+          spec.smoothingDivisible, subcomponentProperties, refreshSettingsCallback);
       } else {
         RangeUtils.activeTriggersForCustomCss(trigger, subcomponentProperties, actionsDropdownsObjects);
       }
@@ -138,12 +138,22 @@ export default class RangeUtils {
 
   // WORK1: lift out!
   private static updateCssProperty(realRangeValue: number, otherCssProperties: DetailsToUpdateOtherCssProperties) {
-    const { divisor = 1, cssProperty, customCss, isScaleNegativeToPositive } = otherCssProperties;
+    const { divisor = 1, cssProperty, customCss, customFeatures, isScaleNegativeToPositive } = otherCssProperties;
     const currentSubcomponentLeft = Number.parseFloat(customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty] as string);
-    if (realRangeValue / divisor < Math.abs(currentSubcomponentLeft)) {
-      const newRangeValue = Math.floor(realRangeValue / divisor);
+    const dividedRangeValue = realRangeValue /divisor;
+    if (dividedRangeValue < Math.abs(currentSubcomponentLeft)) {
+      const newRangeValue = Math.floor(dividedRangeValue);
       (customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty] as string) = `${
         isScaleNegativeToPositive && currentSubcomponentLeft < 0 ? -newRangeValue : newRangeValue}px`;
+    } else {
+      const keys = ['customFeatures', 'lastSelectedCssValues', cssProperty];
+      const customFeatureValue = SharedUtils.getCustomFeatureValue(keys, customFeatures);
+      const lastSelectedValue = RangeUtils.parseString(customFeatureValue as string, 1);
+      if (dividedRangeValue <= Math.abs(lastSelectedValue)) {
+        const newRangeValue = Math.floor(dividedRangeValue);
+        (customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty] as string) = `${
+          isScaleNegativeToPositive && currentSubcomponentLeft < 0 ? -newRangeValue : newRangeValue}px`;
+      }
     }
   }
 
