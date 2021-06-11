@@ -4,6 +4,7 @@ import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { GENERAL_ANIMATION_CLOSE_TYPES } from '../../../../../../../consts/animationTypes.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -94,9 +95,14 @@ function createDefaultText2CustomStaticFeatures(): CustomStaticFeatures {
   }
 }
 
+function createButtonBaseLastSelectedCssValues(): WorkshopComponentCss {
+  return { left: '0px' };
+}
+
 function createDefaultAvatarCustomFeatures(): CustomFeatures {
   return {
     circleBorder: false,
+    lastSelectedCssValues: createButtonBaseLastSelectedCssValues(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
   };
 }
@@ -254,6 +260,7 @@ function createDefaultAvatarCss(): CustomCss {
       fontSize: '14px',
       transition: 'unset',
       top: '50%',
+      left: '0px',
       backgroundSize: '100% 100%',
     },
   };
@@ -364,7 +371,8 @@ export const defaultCard: ComponentGenerator = {
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton1Name),
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton2Name),
     );
-    subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE].subcomponentSpecificSettings = getCardBaseSpecificSettings(subcomponents[importedCloseButtonName]);
+    subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE].subcomponentSpecificSettings = getCardBaseSpecificSettings(
+      subcomponents[importedCloseButtonName], subcomponents[CORE_SUBCOMPONENTS_NAMES.AVATAR]);
     return {
       type: NEW_COMPONENT_TYPES.CARD,
       subcomponents,

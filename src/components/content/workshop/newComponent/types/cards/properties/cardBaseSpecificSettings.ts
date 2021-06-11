@@ -3,7 +3,7 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/works
 import { modalBaseSpecificSettings } from '../../modals/properties/modalBaseSpecificSettings';
 import { LAYER_SECTION_DIVISOR } from '../../../../../../../consts/layerSectionDivisor';
 
-function getLayerSectionSubcomponentPosition({ customCss, customFeatures }: SubcomponentProperties): DetailsToUpdateOtherCssProperties {
+function getLeftPositionProperties({ customCss, customFeatures }: SubcomponentProperties): DetailsToUpdateOtherCssProperties {
   return {
     cssProperty: 'left',
     customCss,
@@ -13,11 +13,18 @@ function getLayerSectionSubcomponentPosition({ customCss, customFeatures }: Subc
   }
 }
 
-export function getCardBaseSpecificSettings(subcomponentProperties: SubcomponentProperties): SubcomponentSpecificSettings {
+export function getCardBaseSpecificSettings(closeButtonSubcomponentProperties: SubcomponentProperties,
+    avatarSubcomponentProperties: SubcomponentProperties): SubcomponentSpecificSettings {
   return {
     ...modalBaseSpecificSettings,
     [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH]: {
-      'width': { scale: [170, 700], detailsToUpdateOtherCssProperties: [getLayerSectionSubcomponentPosition(subcomponentProperties)] },
+      'width': {
+        scale: [170, 700],
+        detailsToUpdateOtherCssProperties: [
+          getLeftPositionProperties(closeButtonSubcomponentProperties),
+          getLeftPositionProperties(avatarSubcomponentProperties),
+        ],
+      },
     },
   }
 }

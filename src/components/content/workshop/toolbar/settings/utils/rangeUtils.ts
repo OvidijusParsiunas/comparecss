@@ -140,17 +140,19 @@ export default class RangeUtils {
   private static updateCssProperty(realRangeValue: number, otherCssProperties: DetailsToUpdateOtherCssProperties) {
     const { divisor = 1, cssProperty, customCss, customFeatures, isScaleNegativeToPositive } = otherCssProperties;
     const currentSubcomponentLeft = Number.parseFloat(customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty] as string);
-    const dividedRangeValue = realRangeValue /divisor;
+    const dividedRangeValue = realRangeValue / divisor;
     if (dividedRangeValue < Math.abs(currentSubcomponentLeft)) {
-      const newRangeValue = Math.floor(dividedRangeValue);
+      const newRangeValue = Math.round(dividedRangeValue);
       (customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty] as string) = `${
         isScaleNegativeToPositive && currentSubcomponentLeft < 0 ? -newRangeValue : newRangeValue}px`;
+        console.log('updating to');
+        console.log(customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty]);
     } else {
       const keys = ['customFeatures', 'lastSelectedCssValues', cssProperty];
       const customFeatureValue = SharedUtils.getCustomFeatureValue(keys, customFeatures);
       const lastSelectedValue = RangeUtils.parseString(customFeatureValue as string, 1);
       if (dividedRangeValue <= Math.abs(lastSelectedValue)) {
-        const newRangeValue = Math.floor(dividedRangeValue);
+        const newRangeValue = Math.round(dividedRangeValue);
         (customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty] as string) = `${
           isScaleNegativeToPositive && currentSubcomponentLeft < 0 ? -newRangeValue : newRangeValue}px`;
       }
@@ -166,7 +168,7 @@ export default class RangeUtils {
   private static updateCustomCss(rangeValue: string, spec: any, subcomponentProperties: SubcomponentProperties): void {
     const { cssProperty, smoothingDivisible, postfix, detailsToUpdateOtherCssProperties } = spec;
     const { customCss, activeCssPseudoClass } = subcomponentProperties;
-    const realRangeValue = Math.floor(rangeValue as unknown as number / smoothingDivisible);
+    const realRangeValue = Math.round(rangeValue as unknown as number / smoothingDivisible);
     customCss[activeCssPseudoClass][cssProperty] = `${realRangeValue}${postfix}`;
     if (detailsToUpdateOtherCssProperties) RangeUtils.updateOtherCssProperties(detailsToUpdateOtherCssProperties, realRangeValue);
   }
@@ -239,13 +241,17 @@ export default class RangeUtils {
           if (divisor) {
             totalAggregatedValue = totalAggregatedValue / divisor;
           }
+          settingToBeUpdated.spec.scale[1] = totalAggregatedValue;
+          settingToBeUpdated.spec.scale[0] = isScaleNegativeToPositive ? -totalAggregatedValue : 0;
           const currentValue = Number.parseFloat(subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT][settingToBeUpdated.spec.cssProperty]);
-          if (Math.abs(currentValue) <= totalAggregatedValue) {
-            settingToBeUpdated.spec.scale[1] = totalAggregatedValue;
-            settingToBeUpdated.spec.scale[0] = isScaleNegativeToPositive ? -totalAggregatedValue : 0;
+          // when resetting need to make sure that not resetting to an out of bounds value
+          if (Math.abs(currentValue) > totalAggregatedValue) {
+            RangeUtils.updateCustomCss(totalAggregatedValue.toString(), settingToBeUpdated.spec, subcomponentProperties);
           }
         }
-        // remember the last selected value for this css
+        // when resetting the base subcomponent
+        if (settingToBeUpdated.spec.detailsToUpdateOtherCssProperties) RangeUtils.updateOtherCssProperties(
+          settingToBeUpdated.spec.detailsToUpdateOtherCssProperties, Number.parseFloat(cssPropertyValue));
       }
     } else if (settingToBeUpdated.spec.customFeatureObjectKeys) {
       settingToBeUpdated.spec.default = RangeUtils.getCustomFeatureRangeNumberValue(settingToBeUpdated.spec, subcomponentProperties);
