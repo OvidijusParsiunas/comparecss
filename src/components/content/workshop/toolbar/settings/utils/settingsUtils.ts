@@ -1,7 +1,8 @@
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
+import { UpdateOtherRangesUtils } from './rangeUtils/updateOtherRangesUtils';
+import { SharedRangeUtils } from './rangeUtils/sharedRangeUtils';
 import SharedUtils from './sharedUtils';
-import RangeUtils from './rangeUtils';
 
 export default class SettingsUtils {
 
@@ -54,8 +55,8 @@ export default class SettingsUtils {
     SharedUtils.setCustomFeatureValue(auxiliaryCustomFeatureObjectKeys, subcomponentProperties, defaultValue);
   }
 
-  private static updateSetting(option: any, subcomponentProperties: SubcomponentProperties): void {
-    // only being used to update range values - hence functionality is currently there
+  // currently only being used to reset other settings and their custom features
+  private static activateTriggers(option: any, subcomponentProperties: SubcomponentProperties): void {
     const { triggers, spec } = option;
     if (!Array.isArray(triggers)) return;
     (triggers || []).forEach((trigger) => {
@@ -63,11 +64,8 @@ export default class SettingsUtils {
         // when resetting back to not auto, the lastSelectedValue is going to be reset to whatever it was set to originally
         // instead of the max value of the scale. If this is confusing users - will need to activate settings triggers
         // that have customFeatureObjectKeys within them. 
-        const rangeValue = RangeUtils.getCustomFeatureRangeNumberValue(spec, subcomponentProperties);
-        const { setting, updateUsingScaleMax, aggregateSettingSpecs } = trigger;
-        const [targetSettingSpecs] = RangeUtils.getAggregatedSettingSpecs(setting);
-        RangeUtils.updateSetting(rangeValue.toString(), aggregateSettingSpecs, targetSettingSpecs, updateUsingScaleMax,
-          spec.smoothingDivisible, subcomponentProperties);
+        const rangeValue = SharedRangeUtils.getCustomFeatureRangeNumberValue(spec, subcomponentProperties);
+        UpdateOtherRangesUtils.updateOtherSettingAndCustomFeature(trigger, spec, rangeValue.toString(), subcomponentProperties);
       }
     });
   }
@@ -81,7 +79,7 @@ export default class SettingsUtils {
       SettingsUtils.resetSetObject(currentValue as Set<undefined>, defaultValue as Set<undefined>);
     } else {
       SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties, defaultValue);
-      SettingsUtils.updateSetting(option, subcomponentProperties);
+      SettingsUtils.activateTriggers(option, subcomponentProperties);
       // only used for actions dropdown
       if (mouseClickOptionCallback) { mouseClickOptionCallback({subcomponentProperties,
         previousOptionName: currentValue as string, triggeredOptionName: defaultValue as string, isCustomFeatureResetTriggered: true }); }

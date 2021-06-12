@@ -7,7 +7,7 @@ interface OverwrittenSettingDefaultValues {
   originalValues: {
     name: string;
     value: number[];
-  }
+  },
 }
 
 export default class SubcomponentSpecificSettingsState {
@@ -19,6 +19,7 @@ export default class SubcomponentSpecificSettingsState {
     // the same setting property which is not specific to a subcomponent. The result setting property should be the default value defined within the specs.
     this.overwrittenSettingsDefaultValues.forEach((overwrittenSettingDefaultValues: OverwrittenSettingDefaultValues) => {
       overwrittenSettingDefaultValues.spec[overwrittenSettingDefaultValues.originalValues.name] = overwrittenSettingDefaultValues.originalValues.value;
+      if (overwrittenSettingDefaultValues.spec.detailsToUpdateOtherCssProperties) delete overwrittenSettingDefaultValues.spec.detailsToUpdateOtherCssProperties;
     });
     this.overwrittenSettingsDefaultValues = [];
   }
@@ -31,10 +32,9 @@ export default class SubcomponentSpecificSettingsState {
           ? SubcomponentSpecificSettingsUtils.generatePartialCssPropertyName(setting.spec.cssProperty, setting.spec.partialCss.position) : setting.spec.cssProperty;
         if (subcomponentSpecificSettings[optionType][cssPropertyName]) {
           const { scale, detailsToUpdateOtherCssProperties } = subcomponentSpecificSettings[optionType][cssPropertyName];
-          const overwrittenSettingDefaultValues: OverwrittenSettingDefaultValues = { spec: setting.spec, originalValues: { name: 'scale', value: setting.spec.scale }};
+          const overwrittenSettingDefaultValues: OverwrittenSettingDefaultValues = { spec: setting.spec, originalValues: { name: 'scale', value: setting.spec.scale }};        
           this.overwrittenSettingsDefaultValues.push(overwrittenSettingDefaultValues);
           setting.spec.scale = scale;
-          // WORK1: do not forget to reset this
           if (detailsToUpdateOtherCssProperties) setting.spec.detailsToUpdateOtherCssProperties = detailsToUpdateOtherCssProperties;
         }
       });

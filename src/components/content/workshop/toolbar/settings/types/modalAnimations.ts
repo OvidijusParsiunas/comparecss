@@ -81,7 +81,6 @@ export default {
         {
           setting: getSettingPath(),
           aggregateSettingSpecs: [openAnimationDelaySpec],
-          updateUsingScaleMax: true,
         },
       ]
     },
@@ -103,7 +102,6 @@ export default {
         {
           setting: getSettingPath(),
           aggregateSettingSpecs: [openAnimationDurationSpec],
-          updateUsingScaleMax: true,
         },
       ]
     },

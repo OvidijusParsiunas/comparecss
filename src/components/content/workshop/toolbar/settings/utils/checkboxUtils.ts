@@ -1,14 +1,8 @@
-import { CustomFeatures, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
+import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
+import { UpdateOtherRangesUtils } from './rangeUtils/updateOtherRangesUtils';
 import SharedUtils from './sharedUtils';
-import RangeUtils from './rangeUtils';
 
 export default class CheckboxUtils {
-
-  private static updateSetting(settingSpec: any, subcomponentProperties: SubcomponentProperties): void {
-    if (settingSpec.updateSettingSpecViaOtherSettings) {
-      RangeUtils.updateSettingSpec(settingSpec.updateSettingSpecViaOtherSettings, settingSpec, subcomponentProperties);
-    }
-  }
 
   private static updateCustomFeatureViaTrigger(trigger: any, subcomponentProperties: SubcomponentProperties): void {
     if (trigger.updateUsingValueFromAnotherObjectKeys) {
@@ -37,8 +31,8 @@ export default class CheckboxUtils {
         CheckboxUtils.updateCssProperty(trigger, subcomponentProperties, thisSettingSpec, allSettings);
       } else if (trigger.customFeatureObjectKeys) {
         CheckboxUtils.updateCustomFeatureViaTrigger(trigger, subcomponentProperties)
-      } else if (trigger.updateSettingSpec) {
-        CheckboxUtils.updateSetting(trigger.updateSettingSpec, subcomponentProperties);
+      } else if (trigger.updateSettingSpec && trigger.updateSettingSpec.updateSettingSpecViaOtherSettings) {
+        UpdateOtherRangesUtils.updateCurrentSettingAndCustomFeature(trigger.updateSettingSpec, subcomponentProperties);
       }
     });
   }

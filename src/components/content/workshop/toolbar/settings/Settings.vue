@@ -201,11 +201,11 @@ import useActionsDropdown from './compositionAPI/useActionsDropdown';
 import { InSync } from '../options/importComponent/inSync';
 import dropdown from '../options/dropdown/Dropdown.vue';
 import ColorPickerUtils from './utils/colorPickerUtils';
+import RangeUtils from './utils/rangeUtils/rangeUtils';
 import SettingsUtils from './utils/settingsUtils';
 import CheckboxUtils from './utils/checkboxUtils';
 import SharedUtils from './utils/sharedUtils';
 import ImageUtils from './utils/imageUtils';
-import RangeUtils from './utils/rangeUtils';
 
 interface Consts {
   RANGE_SETTING_MARKER: string;

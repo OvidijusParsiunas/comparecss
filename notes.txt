@@ -2,6 +2,7 @@ overflow
 try with button tags
 check to see if text can be placed into another div
 
+when hovering the insync button - the popover should say what component/subcomponent is it in-sync to
 potentially add x button to border coloring
 close button should probably be imported - but need to work through the logistics of inherited css for it
 display second range value with 2 decimal points

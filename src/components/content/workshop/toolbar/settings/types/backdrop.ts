@@ -21,7 +21,6 @@ const backdropAnimationDurationSpec = {
   postfix: 's',
   updateSettingSpecViaOtherSettings: {
     aggregatedSettingPaths: getAggregatedSettingsPaths(),
-    updateUsingScaleMax: true,
   },
 };
 
