@@ -55,19 +55,36 @@ export default class SettingsUtils {
     SharedUtils.setCustomFeatureValue(auxiliaryCustomFeatureObjectKeys, subcomponentProperties, defaultValue);
   }
 
-  // currently only being used to reset other settings and their custom features
-  private static activateTriggers(option: any, subcomponentProperties: SubcomponentProperties): void {
-    const { triggers, spec } = option;
-    if (!Array.isArray(triggers)) return;
+  private static updateOtherSettingViaTrigger(triggers: any, spec: any, subcomponentProperties: SubcomponentProperties): void {
     (triggers || []).forEach((trigger) => {
       if (trigger.setting) {
         // when resetting back to not auto, the lastSelectedValue is going to be reset to whatever it was set to originally
         // instead of the max value of the scale. If this is confusing users - will need to activate settings triggers
-        // that have customFeatureObjectKeys within them. 
+        // that have customFeatureObjectKeys within them.
         const rangeValue = SharedRangeUtils.getCustomFeatureRangeNumberValue(spec, subcomponentProperties);
         UpdateOtherRangesUtils.updateOtherSettingAndCustomFeature(trigger, spec, rangeValue.toString(), subcomponentProperties);
       }
     });
+  }
+
+  // Reason for using the method below:
+  // when the animation duration custom feature is reset to default (setCustomFeatureValue) - it triggers change detection and the range is
+  // updated on the screen accordingly, however when the updateSettings is run in RangeUtils (during refreshSettings) to update the value,
+  // that update does not cause change detection to trigger again and the actual new value is visibile only after moving to a different
+  // option and back. Hence for the resets that have their custom feature value controlled by another setting, this need to run first
+  private static updateCurrentSettingViaTrigger(triggers: any, subcomponentProperties: SubcomponentProperties): void {
+    (triggers.true || []).forEach((trigger) => {
+      if (trigger.updateSettingSpec) {
+        UpdateOtherRangesUtils.updateCurrentSettingAndCustomFeature(trigger.updateSettingSpec, subcomponentProperties);
+      }
+    });
+  }
+
+  // currently only being used to reset other settings and their custom features
+  private static activateTriggers(option: any, subcomponentProperties: SubcomponentProperties): void {
+    const { triggers, spec } = option;
+    if (triggers && triggers.true) SettingsUtils.updateCurrentSettingViaTrigger(triggers, subcomponentProperties);
+    if (Array.isArray(triggers)) SettingsUtils.updateOtherSettingViaTrigger(triggers, spec, subcomponentProperties);
   }
 
   private static resetCustomFeatures(option: any, subcomponentProperties: SubcomponentProperties): void {

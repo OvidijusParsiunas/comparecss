@@ -7,8 +7,7 @@ import { FindSettings } from '../../types/utils/findSetting';
 import { SharedRangeUtils } from './sharedRangeUtils';
 import SharedUtils from '../sharedUtils';
 
-// WORK1 - refresh backdrop animation duration does not seem to refresh the scale
-// Functionality here is currently being used to reset Range values, but can be reutilized for resetting other settings and their properties
+// Functionality here is currently being used for Range values, but it can be reutilized for other settings and their properties
 export class UpdateOtherRangesUtils {
 
   private static setCssPropertyValue(postDivisionRangeValue: number, customCss: CustomCss, cssProperty: string, isScaleNegativeToPositive: boolean,
@@ -149,7 +148,8 @@ export class UpdateOtherRangesUtils {
   public static updateCurrentSettingAndCustomFeature(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
     const { updateSettingSpecViaOtherSettings, smoothingDivisible } = settingToBeUpdatedSpec;
     const aggregateSettingSpecs = UpdateOtherRangesUtils.getAggregatedSettingSpecs(updateSettingSpecViaOtherSettings.aggregatedSettingPaths);
-    UpdateOtherRangesUtils.updateSettingAndCustomFeature('0', aggregateSettingSpecs, settingToBeUpdatedSpec, smoothingDivisible, subcomponentProperties);
+    UpdateOtherRangesUtils.updateSettingAndCustomFeature('0', aggregateSettingSpecs, settingToBeUpdatedSpec, smoothingDivisible,
+      subcomponentProperties);
   }
 
   public static updateOtherSettingAndCustomFeature(trigger: any, spec: any, rangeValue: string, subcomponentProperties: SubcomponentProperties,
