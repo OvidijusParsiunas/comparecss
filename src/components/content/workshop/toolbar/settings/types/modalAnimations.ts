@@ -79,7 +79,7 @@ export default {
       spec: openAnimationDurationSpec,
       triggers: [
         {
-          setting: getSettingPath(),
+          otherOptionSettingPath: getSettingPath(),
           aggregateSettingSpecs: [openAnimationDelaySpec],
         },
       ]
@@ -100,7 +100,7 @@ export default {
       spec: openAnimationDelaySpec,
       triggers: [
         {
-          setting: getSettingPath(),
+          otherOptionSettingPath: getSettingPath(),
           aggregateSettingSpecs: [openAnimationDurationSpec],
         },
       ]

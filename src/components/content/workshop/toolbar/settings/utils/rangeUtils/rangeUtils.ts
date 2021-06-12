@@ -53,8 +53,8 @@ export default class RangeUtils {
     (triggers || []).forEach((trigger) => {
       if (trigger.customFeatureObjectKeys) {
         RangeUtils.activateTriggersForCustomSubcomponentProperties(trigger, subcomponentProperties, allSettings);
-      } else if (trigger.setting) {
-        UpdateOtherRangesUtils.updateOtherSettingAndCustomFeature(trigger, spec, rangeValue, subcomponentProperties, refreshSettingsCallback);
+      } else if (trigger.otherOptionSettingPath) {
+        UpdateOtherRangesUtils.updateOtherOptionSettingAndCustomFeature(trigger, spec, rangeValue, subcomponentProperties, refreshSettingsCallback);
       } else {
         RangeUtils.activeTriggersForCustomCss(trigger, subcomponentProperties, actionsDropdownsObjects);
       }
@@ -95,7 +95,7 @@ export default class RangeUtils {
       if (!hasBoxShadowBeenSet) {
         RangeUtils.updateCustomCssSetting(settingToBeUpdated, cssPropertyValue);
         // update setting and adjust css to boundaries if resetting
-        if (settingToBeUpdated.spec.updateSettingSpecViaOtherCssProperties) UpdateOtherRangesUtils.updateCurrentSettingAndCssProperties(
+        if (settingToBeUpdated.spec.updateSettingSpecViaOtherCssProperties) UpdateOtherRangesUtils.updateOtherOptionSettingAndCssProperties(
           settingToBeUpdated.spec, subcomponentProperties);
         // when resetting subcomponent, update other subcomponent css that depend on it
         if (settingToBeUpdated.spec.detailsToUpdateOtherCssProperties) UpdateOtherRangesUtils.updateOtherCustomCss(
@@ -104,7 +104,7 @@ export default class RangeUtils {
     } else if (settingToBeUpdated.spec.customFeatureObjectKeys) {
       settingToBeUpdated.spec.default = SharedRangeUtils.getCustomFeatureRangeNumberValue(settingToBeUpdated.spec, subcomponentProperties);
       if (settingToBeUpdated.spec.updateSettingSpecViaOtherSettings) {
-        UpdateOtherRangesUtils.updateCurrentSettingAndCustomFeature(settingToBeUpdated.spec, subcomponentProperties);
+        UpdateOtherRangesUtils.updateCurrentOptionSettingAndCustomFeature(settingToBeUpdated.spec, subcomponentProperties);
       }
     } else {
       settingToBeUpdated.spec.default = RangeUtils.DEFAULT_RANGE_VALUE;

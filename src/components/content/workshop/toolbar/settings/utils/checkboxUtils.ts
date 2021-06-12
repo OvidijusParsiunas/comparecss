@@ -31,8 +31,8 @@ export default class CheckboxUtils {
         CheckboxUtils.updateCssProperty(trigger, subcomponentProperties, thisSettingSpec, allSettings);
       } else if (trigger.customFeatureObjectKeys) {
         CheckboxUtils.updateCustomFeatureViaTrigger(trigger, subcomponentProperties)
-      } else if (trigger.updateSettingSpec && trigger.updateSettingSpec.updateSettingSpecViaOtherSettings) {
-        UpdateOtherRangesUtils.updateCurrentSettingAndCustomFeature(trigger.updateSettingSpec, subcomponentProperties);
+      } else if (trigger.currentOptionSettingSpec && trigger.currentOptionSettingSpec.updateSettingSpecViaOtherSettings) {
+        UpdateOtherRangesUtils.updateCurrentOptionSettingAndCustomFeature(trigger.currentOptionSettingSpec, subcomponentProperties);
       }
     });
   }

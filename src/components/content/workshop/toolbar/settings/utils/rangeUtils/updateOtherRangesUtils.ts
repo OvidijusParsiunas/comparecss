@@ -62,7 +62,7 @@ export class UpdateOtherRangesUtils {
     return totalAggregatedValue;
   }
 
-  public static updateCurrentSettingAndCssProperties(settingSpec: any, subcomponentProperties: SubcomponentProperties): void {
+  public static updateOtherOptionSettingAndCssProperties(settingSpec: any, subcomponentProperties: SubcomponentProperties): void {
     const scaleBoundaryValue = UpdateOtherRangesUtils.updateCurrentSetting(settingSpec);
     const currentValue = Number.parseFloat(subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT][settingSpec.cssProperty]);
     // if the current value is greater than scaleBoundaryValue, reduce its size to within the bounds
@@ -145,18 +145,18 @@ export class UpdateOtherRangesUtils {
       subcomponentProperties, refreshSettingsCallback);
   }
 
-  public static updateCurrentSettingAndCustomFeature(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
+  public static updateCurrentOptionSettingAndCustomFeature(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
     const { updateSettingSpecViaOtherSettings, smoothingDivisible } = settingToBeUpdatedSpec;
     const aggregateSettingSpecs = UpdateOtherRangesUtils.getAggregatedSettingSpecs(updateSettingSpecViaOtherSettings.aggregatedSettingPaths);
     UpdateOtherRangesUtils.updateSettingAndCustomFeature('0', aggregateSettingSpecs, settingToBeUpdatedSpec, smoothingDivisible,
       subcomponentProperties);
   }
 
-  public static updateOtherSettingAndCustomFeature(trigger: any, spec: any, rangeValue: string, subcomponentProperties: SubcomponentProperties,
+  public static updateOtherOptionSettingAndCustomFeature(trigger: any, spec: any, rangeValue: string, subcomponentProperties: SubcomponentProperties,
       refreshSettingsCallback?: () => void): void {
-    const { setting, aggregateSettingSpecs } = trigger;
-    const [targetSettingSpecs] = UpdateOtherRangesUtils.getAggregatedSettingSpecs(setting);
-    UpdateOtherRangesUtils.updateSettingAndCustomFeature(rangeValue, aggregateSettingSpecs, targetSettingSpecs, spec.smoothingDivisible,
+    const { otherOptionSettingPath, aggregateSettingSpecs } = trigger;
+    const [otherOptionSettingSpecs] = UpdateOtherRangesUtils.getAggregatedSettingSpecs(otherOptionSettingPath);
+    UpdateOtherRangesUtils.updateSettingAndCustomFeature(rangeValue, aggregateSettingSpecs, otherOptionSettingSpecs, spec.smoothingDivisible,
       subcomponentProperties, refreshSettingsCallback);
   }
 }

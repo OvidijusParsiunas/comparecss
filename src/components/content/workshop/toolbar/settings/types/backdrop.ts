@@ -84,7 +84,7 @@ export default {
       triggers: {
         true: [
           {
-            updateSettingSpec: backdropAnimationDurationSpec,
+            currentOptionSettingSpec: backdropAnimationDurationSpec,
           }
         ],
         false: [
