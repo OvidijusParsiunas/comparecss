@@ -1,11 +1,11 @@
+import { SubcomponentCssPropertyDetails } from '../../../../../../interfaces/subcomponentCssPropertyDetails';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../consts/coreSubcomponentNames.enum';
 import { LAYER_SECTION_DIVISOR } from '../../../../../../consts/layerSectionDivisor';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import SubcomponentAlignment from './utils/subcomponentAlignment';
 
-// WORK 1: type for css settings
-function getAggregatedPropertiesDetails(): any {
+function getOtherSubcomponentCssPropertyDetails(): SubcomponentCssPropertyDetails {
   return [
     {subcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE, cssProperty: 'width'},
   ];
@@ -36,7 +36,7 @@ export default {
         postfix: 'px',
         lastSelectedValueObjectKeys: ['customFeatures', 'lastSelectedCssValues', 'left'],
         updateSettingSpecViaOtherCssProperties: {
-          aggregatedProperties: getAggregatedPropertiesDetails(),
+          aggregatedCssProperties: getOtherSubcomponentCssPropertyDetails(),
           isScaleNegativeToPositive: true,
           divisor: LAYER_SECTION_DIVISOR,
         },

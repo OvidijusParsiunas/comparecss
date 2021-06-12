@@ -43,10 +43,10 @@ export class UpdateOtherRangesUtils {
     });
   }
 
-  private static getAggregatedPropertiesTotalValue(aggregatedProperties: any, divisor: number): number {
+  private static getAggregatedCssPropertiesTotalValue(aggregatedCssProperties: any, divisor: number): number {
     let totalAggregatedValue = 0;
-    for (let i = 0; i < aggregatedProperties.length; i += 1) {
-      const { subcomponentName, cssProperty } = aggregatedProperties[i];
+    for (let i = 0; i < aggregatedCssProperties.length; i += 1) {
+      const { subcomponentName, cssProperty } = aggregatedCssProperties[i];
       const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(subcomponentName);
       const element = document.getElementById(subcomponentId);
       totalAggregatedValue += Number.parseFloat(element.style[cssProperty]);
@@ -55,8 +55,8 @@ export class UpdateOtherRangesUtils {
   }
 
   private static updateCurrentSetting(settingSpec: any): number {
-    const { aggregatedProperties, isScaleNegativeToPositive, divisor = 1 } = settingSpec.updateSettingSpecViaOtherCssProperties;
-    const totalAggregatedValue = UpdateOtherRangesUtils.getAggregatedPropertiesTotalValue(aggregatedProperties, divisor);
+    const { aggregatedCssProperties, isScaleNegativeToPositive, divisor = 1 } = settingSpec.updateSettingSpecViaOtherCssProperties;
+    const totalAggregatedValue = UpdateOtherRangesUtils.getAggregatedCssPropertiesTotalValue(aggregatedCssProperties, divisor);
     settingSpec.scale[1] = totalAggregatedValue;
     settingSpec.scale[0] = isScaleNegativeToPositive ? -totalAggregatedValue : 0;
     return totalAggregatedValue;
