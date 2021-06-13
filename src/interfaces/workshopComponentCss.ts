@@ -8,6 +8,7 @@ export interface WorkshopComponentCss {
   borderTopWidth?: string;
   borderTopStyle?: string;
   borderTopColor?: string;
+  borderLeftWidth?: string;
   borderRightWidth?: string;
   borderRadius?: string;
   transition?: string; // this is mostly used to mark a transition style that will be removed when exporting css files

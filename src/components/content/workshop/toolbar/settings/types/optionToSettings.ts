@@ -18,10 +18,11 @@ import modalPosition from './modalPosition';
 import nestedSubcomponentPosition from './nestedSubcomponentPosition';
 import nestedSubcomponentMargin from './nestedSubcomponentMargin';
 import backdrop from './backdrop';
+import text from './text';
+import textBorder from './textBorder';
 import textSize from './textSize';
 import textColor from './textColor';
 import nestedSubcomponentPositionNoAlign from './nestedSubcomponentPositionNoAlign';
-import text from './text';
 import buttonAnimations from './buttonAnimations';
 import modalAnimations from './modalAnimations';
 import modalActions from './modalActions';
@@ -47,6 +48,7 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING]: padding,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN]: margin,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT]: text,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_BORDER]: textBorder,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_FONT]: font,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_COLOR]: textColor,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND]: background,

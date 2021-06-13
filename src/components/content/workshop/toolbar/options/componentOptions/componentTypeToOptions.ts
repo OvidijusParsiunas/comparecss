@@ -8,6 +8,7 @@ import { nestedButtonOptions } from './button/nestedButton';
 import { closeButtonOptions } from './button/closeButton';
 import { layerBottomOptions } from './layer/layerBottom';
 import { layerMiddleOptions } from './layer/layerMiddle';
+import { sectionTextOptions } from './text/sectionText';
 import { layerTopOptions } from './layer/layerTop';
 import { buttonTextOptions } from './button/text';
 import { buttonBaseOptions } from './button/base';
@@ -50,6 +51,7 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
   [NEW_COMPONENT_TYPES.CARD]: {
     [SUBCOMPONENT_TYPES.BASE]: cardBaseOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.TEXT]: textOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+    [SUBCOMPONENT_TYPES.SECTION_TEXT]: sectionTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.LAYER_1]: imageLayerTopOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.LAYER_2]: layerMiddleOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.LAYER_3]: layerBottomOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,

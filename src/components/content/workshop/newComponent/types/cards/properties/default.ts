@@ -246,6 +246,11 @@ function createDefaultTextCss(): CustomCss {
       marginLeft: '0px',
       marginRight: '0px',
       height: '',
+      borderWidth: '0',
+      borderColor: '#1779ba',
+      borderStyle: 'solid',
+      borderRightWidth: '0px',
+      borderLeftWidth: '0px',
     },
   };
 }
@@ -349,7 +354,7 @@ function createSubcomponents(): Subcomponents {
       defaultCustomStaticFeatures: createDefaultNoSiblingTextCustomStaticFeatures(),
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_1_LAYER_2]: {
-      subcomponentType: SUBCOMPONENT_TYPES.TEXT,
+      subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
       componentTag: 'div',
       customCss: createDefaultTextCss(),
       defaultCss: createDefaultTextCss(),
@@ -364,7 +369,7 @@ function createSubcomponents(): Subcomponents {
       defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(),
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_2_LAYER_2]: {
-      subcomponentType: SUBCOMPONENT_TYPES.TEXT,
+      subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
       componentTag: 'div',
       customCss: createDefaultTextCss(),
       defaultCss: createDefaultTextCss(),
@@ -379,7 +384,7 @@ function createSubcomponents(): Subcomponents {
       defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(),
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_3_LAYER_2]: {
-      subcomponentType: SUBCOMPONENT_TYPES.TEXT,
+      subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
       componentTag: 'div',
       customCss: createDefaultTextCss(),
       defaultCss: createDefaultTextCss(),
@@ -394,7 +399,7 @@ function createSubcomponents(): Subcomponents {
       defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(),
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_1_LAYER_3]: {
-      subcomponentType: SUBCOMPONENT_TYPES.TEXT,
+      subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
       componentTag: 'div',
       customCss: createDefaultTextCss(),
       defaultCss: createDefaultTextCss(),
@@ -409,7 +414,7 @@ function createSubcomponents(): Subcomponents {
       defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(),
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_2_LAYER_3]: {
-      subcomponentType: SUBCOMPONENT_TYPES.TEXT,
+      subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
       componentTag: 'div',
       customCss: createDefaultTextCss(),
       defaultCss: createDefaultTextCss(),
@@ -424,7 +429,7 @@ function createSubcomponents(): Subcomponents {
       defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(),
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_3_LAYER_3]: {
-      subcomponentType: SUBCOMPONENT_TYPES.TEXT,
+      subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
       componentTag: 'div',
       customCss: createDefaultTextCss(),
       defaultCss: createDefaultTextCss(),
@@ -439,7 +444,7 @@ function createSubcomponents(): Subcomponents {
       defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(),
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_1_LAYER_4]: {
-      subcomponentType: SUBCOMPONENT_TYPES.TEXT,
+      subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
       componentTag: 'div',
       customCss: createDefaultTextCss(),
       defaultCss: createDefaultTextCss(),
@@ -454,7 +459,7 @@ function createSubcomponents(): Subcomponents {
       defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(),
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_2_LAYER_4]: {
-      subcomponentType: SUBCOMPONENT_TYPES.TEXT,
+      subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
       componentTag: 'div',
       customCss: createDefaultTextCss(),
       defaultCss: createDefaultTextCss(),
@@ -469,7 +474,7 @@ function createSubcomponents(): Subcomponents {
       defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(),
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_3_LAYER_4]: {
-      subcomponentType: SUBCOMPONENT_TYPES.TEXT,
+      subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
       componentTag: 'div',
       customCss: createDefaultTextCss(),
       defaultCss: createDefaultTextCss(),
