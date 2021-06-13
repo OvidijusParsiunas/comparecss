@@ -1,11 +1,12 @@
 import { CUSTOM_SUBCOMPONENT_NAMES_PREFIXES } from '../../../../../consts/customSubcomponentNamesPrefixes.enum';
+import { EntityDisplayStatus, ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/entityDisplayStatus';
 import { ImportedComponentStructure } from '../../../../../interfaces/importedComponentStructure';
 import { Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomponentNames';
 import { EntityDisplayStatusUtils } from '../entityDisplayStatus/entityDisplayStatusUtils';
-import { ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/entityDisplayStatus';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../interfaces/componentGenerator';
+import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
 
 export class ImportedComponentGenerator {
 
@@ -43,7 +44,13 @@ export class ImportedComponentGenerator {
     return importedComponentRef.subcomponents;
   }
 
-  public static createImportedComponentStructure(subcomponents: Subcomponents, baseName: string): ImportedComponentStructure {
+  public static createImportedComponentStructure(subcomponents: Subcomponents, baseName: string, alignment?: ALIGNED_SECTION_TYPES,
+      isComponentDisplayed = true): ImportedComponentStructure {
+    (subcomponents[baseName].importedComponent.componentRef.componentPreviewStructure.subcomponentDropdownStructure[baseName]
+      .optionalSubcomponentRef as EntityDisplayStatus).isDisplayed = isComponentDisplayed;
+    if (alignment) {
+      subcomponents[baseName].importedComponent.componentRef.subcomponents[baseName].customFeatures.alignedLayerSection.section = alignment;
+    }
     return {
       baseName,
       component: subcomponents[baseName].importedComponent.componentRef.componentPreviewStructure.subcomponentDropdownStructure,

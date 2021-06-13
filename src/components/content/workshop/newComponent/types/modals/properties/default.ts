@@ -273,7 +273,7 @@ function createSubcomponents(): Subcomponents {
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
       subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
     },
-    [CORE_SUBCOMPONENTS_NAMES.TEXT_1]: {
+    [CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_1]: {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
       componentTag: 'div',
       customCss: createDefaultText1Css(),
@@ -288,7 +288,7 @@ function createSubcomponents(): Subcomponents {
       customStaticFeatures: createDefaultText1CustomStaticFeatures(),
       defaultCustomStaticFeatures: createDefaultText1CustomStaticFeatures(),
     },
-    [CORE_SUBCOMPONENTS_NAMES.TEXT_2]: {
+    [CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_2]: {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
       componentTag: 'div',
       customCss: createDefaultText2Css(),
@@ -309,15 +309,15 @@ function createSubcomponents(): Subcomponents {
 export const defaultModal: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
     const importedCloseButtonName = CORE_SUBCOMPONENTS_NAMES.CLOSE;
-    const importedButton1Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_1;
-    const importedButton2Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_2;
+    const importedButton1Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_1_LAYER_3;
+    const importedButton2Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_2_LAYER_3;
     const subcomponents = { ...createSubcomponents(),
       ...ImportedComponentGenerator.createImportedComponents(closeButton, importedCloseButtonName, 1),
       ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton1Name, 2, 'Submit'),
       ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton2Name, 3, 'Cancel') };
     const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
       subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_3],
-      subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_2],
+      subcomponents[CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_1], subcomponents[CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_2],
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedCloseButtonName),
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton1Name),
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton2Name),

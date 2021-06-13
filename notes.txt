@@ -1,3 +1,10 @@
+there is animation for onhover - but not for mouse leave (button)
+no need for sections at the moment and can have text instead
+border for text inside card
+
+instead of having a dropdown for active and removed subcomponents we can have a + for adding subcomponents to it - base -> layer -> button/text
+ability to copy subcomponent instead of importing text/button
+
 overflow
 try with button tags
 check to see if text can be placed into another div

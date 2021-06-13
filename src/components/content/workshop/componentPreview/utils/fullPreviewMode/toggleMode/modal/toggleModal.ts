@@ -20,7 +20,8 @@ export default class ToggleModal {
 
   private static readonly TRIGGER_BUTTON_MOUSE_EVENTS_DISPLAY_CSS_PROPERTY = 'none';
   private static readonly TRIGGER_BUTTON_MOUSE_EVENTS_TOP_CSS_PROPERTY = '100px';
-  private static readonly MODAL_BUTTON_NAMES = [CORE_SUBCOMPONENTS_NAMES.BUTTON_1, CORE_SUBCOMPONENTS_NAMES.BUTTON_2, CORE_SUBCOMPONENTS_NAMES.CLOSE];
+  private static readonly MODAL_BUTTON_NAMES = [CORE_SUBCOMPONENTS_NAMES.BUTTON_1_LAYER_3,
+    CORE_SUBCOMPONENTS_NAMES.BUTTON_2_LAYER_3, CORE_SUBCOMPONENTS_NAMES.CLOSE];
 
   public static changeCloseButtonsJsClasses(componentPreviewComponent: ComponentOptions, methodName: SET_METHODS): void {
     ToggleModal.MODAL_BUTTON_NAMES.forEach((buttonName) => {
