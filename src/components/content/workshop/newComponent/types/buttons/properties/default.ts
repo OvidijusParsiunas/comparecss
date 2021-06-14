@@ -153,9 +153,9 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames, subcomp
 }
 
 export const defaultButton: ComponentGenerator = {
-  createNewComponent(importedComponentBaseName: string, importedComponentId: number, subcomponentText?: string): WorkshopComponent {
+  createNewComponent(importedComponentBaseName: string, subcomponentText?: string): WorkshopComponent {
     const subcomponentNames = importedComponentBaseName
-      ? ImportedComponentGenerator.generateImportedComponentNames(importedComponentBaseName, importedComponentId)
+      ? ImportedComponentGenerator.generateImportedComponentNames(importedComponentBaseName)
       : defaultSubcomponentNames;
     const subcomponents = createSubcomponents(subcomponentNames, subcomponentText);
     ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(subcomponents, subcomponentNames);

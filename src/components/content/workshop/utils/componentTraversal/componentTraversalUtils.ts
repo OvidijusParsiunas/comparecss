@@ -6,7 +6,7 @@ type TraverseSubcomponentsUsingDropdownStructureCallback = (activeSubcomponentNa
 
 export default class ComponentTraversalUtils {
 
-  public static traverseSubcomponentsUsingDropdownStructure(subcomponentDropdownStructure: NestedDropdownStructure, currentComponent: WorkshopComponent,
+  private static traverseSubcomponentsUsingDropdownStructure(subcomponentDropdownStructure: NestedDropdownStructure, currentComponent: WorkshopComponent,
       callback: TraverseSubcomponentsUsingDropdownStructureCallback): void {
     const subcomponentDropdownStructureKeys = Object.keys(subcomponentDropdownStructure);
     for (let i = 0; i < subcomponentDropdownStructureKeys.length; i += 1) {
@@ -20,7 +20,7 @@ export default class ComponentTraversalUtils {
     }
   }
 
-  public static traverseSubcomponentsUsingDropdownStructureStaringWithParticularChild(activeSubcomponentName: string,
+  public static traverseSubcomponentsUsingDropdownStructureStartingWithParticularChild(activeSubcomponentName: string,
       subcomponentDropdownStructure: NestedDropdownStructure, currentComponent: WorkshopComponent,
       callback: TraverseSubcomponentsUsingDropdownStructureCallback): void {
     const subcomponentDropdownStructureKeys = Object.keys(subcomponentDropdownStructure);
@@ -31,7 +31,7 @@ export default class ComponentTraversalUtils {
           currentComponent, callback);
         break;
       } else if (Object.keys(subcomponentDropdownStructure[subcomponentName]).length > 0) {
-        ComponentTraversalUtils.traverseSubcomponentsUsingDropdownStructureStaringWithParticularChild(activeSubcomponentName,
+        ComponentTraversalUtils.traverseSubcomponentsUsingDropdownStructureStartingWithParticularChild(activeSubcomponentName,
           subcomponentDropdownStructure[subcomponentName] as NestedDropdownStructure, currentComponent, callback);
       }
     }

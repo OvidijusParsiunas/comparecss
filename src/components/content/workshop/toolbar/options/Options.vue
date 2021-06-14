@@ -81,6 +81,12 @@
           </button>
         </transition-group>
       </div>
+      <button
+        type="button"
+        class="btn"
+        :class="['subcomponent-display-toggle-add', TOOLBAR_GENERAL_BUTTON_CLASS, OPTION_MENU_BUTTON_MARKER]"
+        @click="buttonClickMiddleware(addSubcomponent, true)">
+      </button>
       <transition-group :name="isDropdownAndOptionButtonsTransitionAllowed || isExpandedModalPreviewModeActive ? 'horizontal-transition' : ''">
         <button v-if="!isFullPreviewModeActive && isInSyncButtonDisplayed()"
           id="sync-transition-animation-padding"
@@ -392,6 +398,10 @@ export default {
         SubcomponentToggleOverlayUtils.changeSubcomponentOverlayClass(subcomponentDisplayStatus, this.component.activeSubcomponentName, true,
           SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
       }
+    },
+    // WORK1
+    addSubcomponent(): void {
+      this.$emit('add-subcomponent');
     },
     removeSubcomponent(): void {
       if (this.component.subcomponents[this.component.activeSubcomponentName].importedComponent

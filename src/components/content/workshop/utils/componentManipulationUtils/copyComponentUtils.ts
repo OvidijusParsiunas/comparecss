@@ -1,12 +1,14 @@
 import { ImportedComponent, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
+import { ImportedComponentGenerator } from '../workshopImportComponent/importedComponentGenerator';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { componentTypeToStyles } from '../../newComponent/types/componentTypeToStyles';
 import { NEW_COMPONENT_STYLES } from '../../../../../consts/newComponentStyles.enum';
-import ComponentTraversalUtils from '../componentTraversal/componentTraversalUtils';
+import { defaultButton } from '../../newComponent/types/buttons/properties/default';
 import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
 import ProcessClassName from '../componentGenerator/processClassName';
+import PreviewStructure from '../componentGenerator/previewStructure';
 import { ComponentOptions } from 'vue';
 
 export default class ComponentComponentUtils {
@@ -40,37 +42,38 @@ export default class ComponentComponentUtils {
     ComponentComponentUtils.copyDisplayStatus(newSubcomponent, subcomponentBeingCopied);
   }
 
-  private static copyImportedComponent(importedComponent: ImportedComponent, newComponent: WorkshopComponent,
-      componentBeingCopied: WorkshopComponent): void {
-    const { subcomponentNames, referenceSharingExecutables } = importedComponent.componentRef;
-    Object.keys(subcomponentNames).forEach((subcomponentName: string) => {
-      const newSubcomponent = newComponent.subcomponents[subcomponentNames[subcomponentName]];
-      const subcomponentBeingCopied = componentBeingCopied.subcomponents[subcomponentNames[subcomponentName]];
-      if (importedComponent.inSync) {
-        ComponentComponentUtils.copyInSyncSubcomponent(importedComponent, newSubcomponent, subcomponentBeingCopied);
-      } else {
-        ComponentComponentUtils.copySubcomponentProperties(newSubcomponent, subcomponentBeingCopied);
+  // WORK1: refactoring
+  // WORK1: remove new component subcomponents that are not in the component being copied
+  private static copySubcomponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
+    const importedComponentRefs = [];
+    Object.keys(componentBeingCopied.subcomponents).forEach((subcomponentName) => {
+      if (!newComponent.subcomponents[subcomponentName]) {
+        newComponent.subcomponents = {
+          ...newComponent.subcomponents, ...ImportedComponentGenerator.createImportedComponents(defaultButton, subcomponentName) };
       }
+      if (componentBeingCopied.subcomponents[subcomponentName].importedComponent) {
+        importedComponentRefs.push(componentBeingCopied.subcomponents[subcomponentName].importedComponent.componentRef);
+        if (componentBeingCopied.subcomponents[subcomponentName].importedComponent.inSync) {
+          ComponentComponentUtils.copyInSyncSubcomponent(componentBeingCopied.subcomponents[subcomponentName].importedComponent, 
+            newComponent.subcomponents[subcomponentName], componentBeingCopied.subcomponents[subcomponentName]);
+          return;
+        }
+      }
+      ComponentComponentUtils.copySubcomponentProperties(newComponent.subcomponents[subcomponentName],
+        componentBeingCopied.subcomponents[subcomponentName]);
     });
-    referenceSharingExecutables.forEach((executable: (subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames) => void) => {
-      executable(newComponent.subcomponents, subcomponentNames);
+    importedComponentRefs.forEach((importedComponentRef) => {
+      const { subcomponentNames, referenceSharingExecutables } = importedComponentRef;
+      referenceSharingExecutables.forEach((executable: (subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames) => void) => {
+        executable(newComponent.subcomponents, subcomponentNames);
+      });
     });
   }
 
-  private static copySubcomponent(componentBeingCopied: WorkshopComponent, activeSubcomponentName: string, newComponent: WorkshopComponent): void {
-    const newSubcomponent = newComponent.subcomponents[activeSubcomponentName];
-    const subcomponentBeingCompied = componentBeingCopied.subcomponents[activeSubcomponentName];
-    if (newSubcomponent.importedComponent) {
-      ComponentComponentUtils.copyImportedComponent(subcomponentBeingCompied.importedComponent, newComponent, componentBeingCopied);
-    } else {
-      ComponentComponentUtils.copySubcomponentProperties(newSubcomponent, subcomponentBeingCompied);
-    }
-  }
-  
   private static copyComponentProperties(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
-    const copySubcomponentCallback = ComponentComponentUtils.copySubcomponent.bind(this, componentBeingCopied);
-    ComponentTraversalUtils.traverseSubcomponentsUsingDropdownStructure(newComponent.componentPreviewStructure.subcomponentDropdownStructure,
-      newComponent, copySubcomponentCallback);
+    ComponentComponentUtils.copySubcomponents(newComponent, componentBeingCopied);
+    newComponent.componentPreviewStructure = PreviewStructure.createComponentPreviewStructure(
+      componentBeingCopied.componentPreviewStructure.subcomponentDropdownStructure, newComponent.subcomponents);
   }
 
   public static copyComponent(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {

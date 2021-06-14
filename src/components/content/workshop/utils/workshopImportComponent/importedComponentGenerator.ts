@@ -6,14 +6,15 @@ import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomp
 import { EntityDisplayStatusUtils } from '../entityDisplayStatus/entityDisplayStatusUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../interfaces/componentGenerator';
+import { importedComponentUniqueIdState } from './importedComponentUniqueIdState';
 import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
 
 export class ImportedComponentGenerator {
 
   public static readonly DEFAULT_TOP_PROPERTY = '50%';
 
-  public static generateImportedComponentNames(importedComponentBaseName: string, importedComponentId: number): CustomSubcomponentNames {
-    const spaces = new Array(importedComponentId).join(' ');
+  public static generateImportedComponentNames(importedComponentBaseName: string): CustomSubcomponentNames {
+    const spaces = new Array(importedComponentUniqueIdState.getUniqueId()).join(' ');
     return { base: importedComponentBaseName, layer: `${CUSTOM_SUBCOMPONENT_NAMES_PREFIXES.LAYER}${spaces}`, text: `${CUSTOM_SUBCOMPONENT_NAMES_PREFIXES.TEXT}${spaces}`};
   }
 
@@ -33,9 +34,8 @@ export class ImportedComponentGenerator {
       [importedComponentName][ENTITY_DISPLAY_STATUS_REF] = baseSubcomponent.subcomponentDisplayStatus;
   }
 
-  public static createImportedComponents(componentGenerator: ComponentGenerator, importedComponentName: string, importedComponentId: number,
-      subcomponentText?: string): Subcomponents {
-    const importedComponentRef = componentGenerator.createNewComponent(importedComponentName, importedComponentId, subcomponentText);
+  public static createImportedComponents(componentGenerator: ComponentGenerator, importedComponentName: string, subcomponentText?: string): Subcomponents {
+    const importedComponentRef = componentGenerator.createNewComponent(importedComponentName, subcomponentText);
     ImportedComponentGenerator.applyTopProperty(importedComponentRef, importedComponentName);
     ImportedComponentGenerator.applyOptionalSubcomponentProperty(importedComponentRef, importedComponentName);
     // referencing the whole component within it's own subcomponent may not be efficient

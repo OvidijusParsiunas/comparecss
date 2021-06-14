@@ -1,3 +1,4 @@
+import { importedComponentUniqueIdState } from './../../../../../../../components/content/workshop/utils/workshopImportComponent/importedComponentUniqueIdState';
 import { ImportedComponentGenerator } from '../../../../utils/workshopImportComponent/importedComponentGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
@@ -506,6 +507,7 @@ function createSubcomponents(): Subcomponents {
 
 export const defaultCard: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
+    importedComponentUniqueIdState.resetUniqueId();
     const importedCloseButtonName = CORE_SUBCOMPONENTS_NAMES.CLOSE;
     const importedButtonLayer1Name = CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_BUTTON;
     const importedButton1Layer2Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_1_LAYER_2;
@@ -518,17 +520,17 @@ export const defaultCard: ComponentGenerator = {
     const importedButton2Layer4Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_2_LAYER_4;
     const importedButton3Layer4Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_3_LAYER_4;
     const subcomponents = { ...createSubcomponents(),
-      ...ImportedComponentGenerator.createImportedComponents(closeButton, importedCloseButtonName, 1),
-      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButtonLayer1Name, 2),
-      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton1Layer2Name, 3),
-      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton2Layer2Name, 4),
-      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton3Layer2Name, 5),
-      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton1Layer3Name, 6),
-      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton2Layer3Name, 7),
-      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton3Layer3Name, 8),
-      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton1Layer4Name, 9),
-      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton2Layer4Name, 10),
-      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton3Layer4Name, 11),
+      ...ImportedComponentGenerator.createImportedComponents(closeButton, importedCloseButtonName),
+      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButtonLayer1Name),
+      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton1Layer2Name),
+      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton2Layer2Name),
+      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton3Layer2Name),
+      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton1Layer3Name),
+      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton2Layer3Name),
+      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton3Layer3Name),
+      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton1Layer4Name),
+      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton2Layer4Name),
+      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton3Layer4Name),
     };
     const subcomponentDropdownStructure = getCardSubcomponentDropdownStructure(subcomponents[CORE_SUBCOMPONENTS_NAMES.AVATAR],
       subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_3],

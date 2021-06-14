@@ -10,9 +10,9 @@ export default class ReferenceSharingUtils {
 
   public static appendJsClassesRefToAllSubcomponents(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void { 
     const subcomponentNameKeys = Object.keys(subcomponentNames);
-    const initialSubcomponentName = subcomponents[subcomponentNames[subcomponentNameKeys[0]]];
-    const jsClasses = initialSubcomponentName.customFeatures && initialSubcomponentName.customFeatures.jsClasses
-      ? initialSubcomponentName.customFeatures.jsClasses : ReferenceSharingUtils.createDefaultButtonJsClasses();
+    const subcomponentProperties = subcomponents[subcomponentNames[subcomponentNameKeys[0]]];
+    const jsClasses = subcomponentProperties.customFeatures && subcomponentProperties.customFeatures.jsClasses
+      ? subcomponentProperties.customFeatures.jsClasses : ReferenceSharingUtils.createDefaultButtonJsClasses();
     subcomponentNameKeys.forEach((subcomponentName) => {
       if (!subcomponents[subcomponentNames[subcomponentName]].customFeatures) {
         subcomponents[subcomponentNames[subcomponentName]].customFeatures = {};

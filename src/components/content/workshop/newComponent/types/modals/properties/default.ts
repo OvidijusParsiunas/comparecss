@@ -1,3 +1,4 @@
+import { importedComponentUniqueIdState } from '../../../../../../../components/content/workshop/utils/workshopImportComponent/importedComponentUniqueIdState';
 import { MODAL_ANIMATION_OPEN_TYPES, MODAL_ANIMATION_CLOSE_TYPES } from '../../../../../../../consts/animationTypes.enum';
 import { ImportedComponentGenerator } from '../../../../utils/workshopImportComponent/importedComponentGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
@@ -308,13 +309,14 @@ function createSubcomponents(): Subcomponents {
 
 export const defaultModal: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
+    importedComponentUniqueIdState.resetUniqueId();
     const importedCloseButtonName = CORE_SUBCOMPONENTS_NAMES.CLOSE;
     const importedButton1Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_1_LAYER_3;
     const importedButton2Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_2_LAYER_3;
     const subcomponents = { ...createSubcomponents(),
-      ...ImportedComponentGenerator.createImportedComponents(closeButton, importedCloseButtonName, 1),
-      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton1Name, 2, 'Submit'),
-      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton2Name, 3, 'Cancel') };
+      ...ImportedComponentGenerator.createImportedComponents(closeButton, importedCloseButtonName),
+      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton1Name, 'Submit'),
+      ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton2Name, 'Cancel') };
     const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
       subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_3],
       subcomponents[CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_1], subcomponents[CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_2],

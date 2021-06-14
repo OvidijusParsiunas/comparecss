@@ -39,7 +39,7 @@ export default class SubcomponentToggleUtils {
     const activeSubcomponent = component.subcomponents[component.activeSubcomponentName];
     if (activeSubcomponent.layerSectionsType) {
       const resetSubcomponentCallback = SubcomponentToggleUtils.resetSubcomponent;
-      ComponentTraversalUtils.traverseSubcomponentsUsingDropdownStructureStaringWithParticularChild(component.activeSubcomponentName,
+      ComponentTraversalUtils.traverseSubcomponentsUsingDropdownStructureStartingWithParticularChild(component.activeSubcomponentName,
         component.componentPreviewStructure.subcomponentDropdownStructure, component, resetSubcomponentCallback);
     }
     SubcomponentToggleUtils.resetSubcomponent(component.activeSubcomponentName, component);

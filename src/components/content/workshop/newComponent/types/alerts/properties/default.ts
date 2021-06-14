@@ -1,4 +1,4 @@
-import { AlignedLayerSection, AutoSize, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text, CustomStaticFeatures, Animations } from '../../../../../../../interfaces/workshopComponent';
+import { importedComponentUniqueIdState } from '../../../../../../../components/content/workshop/utils/workshopImportComponent/importedComponentUniqueIdState';
 import { ImportedComponentGenerator } from '../../../../utils/workshopImportComponent/importedComponentGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
@@ -13,6 +13,10 @@ import getAlertSubcomponentDropdownStructure from './subcomponentDropdownStructu
 import { inheritedLayerBaseCss } from '../../shared/layer/inheritedCss';
 import { alertBaseSpecificSettings } from './alertBaseSpecificSettings';
 import { closeButton } from '../../buttons/properties/closeButton';
+import {
+  AlignedLayerSection, AutoSize, CustomCss, CustomFeatures, Animations,
+  WorkshopComponent, Text, CustomStaticFeatures, Subcomponents,
+} from '../../../../../../../interfaces/workshopComponent';
 
 function createDefaultAlertAnimationsProperties(): Animations {
   return {
@@ -148,9 +152,10 @@ function createSubcomponents(): Subcomponents {
 
 export const defaultAlert: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
+    importedComponentUniqueIdState.resetUniqueId();
     const importedCloseButtonName = CORE_SUBCOMPONENTS_NAMES.CLOSE;
     const subcomponents = { ...createSubcomponents(),
-      ...ImportedComponentGenerator.createImportedComponents(closeButton, importedCloseButtonName, 1)};
+      ...ImportedComponentGenerator.createImportedComponents(closeButton, importedCloseButtonName)};
     const subcomponentDropdownStructure = getAlertSubcomponentDropdownStructure(subcomponents[CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_1],
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedCloseButtonName));
     return {

@@ -6,6 +6,8 @@ export enum CORE_SUBCOMPONENTS_NAMES {
   LAYER_3 = 'Layer 3',
   LAYER_4 = 'Layer 4',
   NO_SIBLING_BUTTON = 'Button',
+  // WORK1
+  DYNAMICALLY_GENERATED_BUTTON = 'Dynamic button',
   BUTTON_1_LAYER_2 = 'Button 1',
   BUTTON_2_LAYER_2 = 'Button 2',
   BUTTON_3_LAYER_2 = 'Button 3',

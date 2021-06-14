@@ -47,7 +47,8 @@
               @toggle-full-preview-mode="$refs.contents.toggleFullPreviewMode($event)"
               @play-animation-preview="$refs.contents.playAnimationPreview($event)"
               @stop-animation-preview="$refs.contents.stopAnimationPreview()"
-              @toggle-import-subcomponent-mode="toggleImportComponentMode($event)"/>
+              @toggle-import-subcomponent-mode="toggleImportComponentMode($event)"
+              @add-subcomponent="addSubcomponent"/>
             <component-contents ref="contents"
               :component="currentlySelectedComponent"
               :componentPreviewAssistance="componentPreviewAssistance"
@@ -108,9 +109,11 @@ import { removeSubcomponentModalState } from './toolbar/options/removeSubcompone
 import SubcomponentToggleOverlayUtils from './toolbar/options/subcomponentToggleUtils/subcomponentToggleOverlayUtils';
 import { ToggleImportComponentModeState } from './utils/workshopImportComponent/toggleImportComponentModeState';
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
+import { ImportedComponentGenerator } from './utils/workshopImportComponent/importedComponentGenerator';
 import ComponentManipulationUtils from './utils/componentManipulationUtils/componentManipulationUtils';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { ToggleImportComponentModeEvent } from '../../../interfaces/toggleImportComponentModeEvent';
+import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../consts/layerSections.enum';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../consts/subcomponentOverlayClasses.enum';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
@@ -119,6 +122,7 @@ import { ComponentCardHoveredEvent } from '../../../interfaces/componentCardHove
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../consts/coreSubcomponentNames.enum';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../consts/domEventTriggerKeys.enum';
+import { defaultButton } from './newComponent/types/buttons/properties/default';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
 import { defaultCard } from './newComponent/types/cards/properties/default';
 import { RemovalModalState } from '../../../interfaces/removalModalState';
@@ -200,6 +204,24 @@ export default {
     },
     exportFiles(): void {
       exportFiles.export(this.components);
+    },
+    // WORK1 - refactor
+    addSubcomponent(): void {
+      const newSub = ImportedComponentGenerator.createImportedComponents(defaultButton, CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_BUTTON);
+      this.currentlySelectedComponent.subcomponents = {
+        ...this.currentlySelectedComponent.subcomponents,
+        ...newSub,
+      };
+      this.currentlySelectedComponent.componentPreviewStructure.layers[2].sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.LEFT].push(
+        { name: CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_BUTTON, subcomponentProperties: newSub[CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_BUTTON] },
+      );
+      const importedComponentStructure = ImportedComponentGenerator.createImportedComponentStructure(
+        this.currentlySelectedComponent.subcomponents, CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_BUTTON, ALIGNED_SECTION_TYPES.RIGHT);
+      this.currentlySelectedComponent.componentPreviewStructure.subcomponentDropdownStructure[CORE_SUBCOMPONENTS_NAMES.BASE][CORE_SUBCOMPONENTS_NAMES.LAYER_3] = {
+        [CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_BUTTON]: { ...importedComponentStructure.component[importedComponentStructure.baseName]},
+        ...this.currentlySelectedComponent.componentPreviewStructure.subcomponentDropdownStructure[CORE_SUBCOMPONENTS_NAMES.BASE][CORE_SUBCOMPONENTS_NAMES.LAYER_3],
+      }
+      this.$refs.contents.refreshComponent();
     },
     triggerWorkshopEventCallbacks(): void {
       if (this.workshopEventCallbacks.length > 0) {

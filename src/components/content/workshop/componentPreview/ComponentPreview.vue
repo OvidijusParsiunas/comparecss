@@ -197,6 +197,12 @@ export default {
     },
     stopAnimationPreview(): void {
       AnimationUtils.cancelAnimationPreview(this.$refs.baseComponent.$refs.componentPreview);
+    },
+    refreshComponent(): void {
+      const subcomponentAndOverlayElementIds = ComponentPreviewUtils.generateSubcomponentAndOverlayIds(this.component);
+      this.subcomponentAndOverlayElementIds = subcomponentAndOverlayElementIds;
+      subcomponentAndOverlayElementIdsState.setSubcomponentAndOverlayElementIdsState(subcomponentAndOverlayElementIds);
+      this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(subcomponentAndOverlayElementIds, this.component.subcomponents);
     }
   },
   props: {
@@ -206,10 +212,7 @@ export default {
   watch: {
     component(): void {
       if (!this.component) return;
-      const subcomponentAndOverlayElementIds = ComponentPreviewUtils.generateSubcomponentAndOverlayIds(this.component);
-      this.subcomponentAndOverlayElementIds = subcomponentAndOverlayElementIds;
-      subcomponentAndOverlayElementIdsState.setSubcomponentAndOverlayElementIdsState(subcomponentAndOverlayElementIds);
-      this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(subcomponentAndOverlayElementIds, this.component.subcomponents);
+      this.refreshComponent();
     }
   }
 };

@@ -1,8 +1,8 @@
 there is animation for onhover - but not for mouse leave (button)
-no need for sections at the moment and can have text instead
-
 instead of having a dropdown for active and removed subcomponents we can have a + for adding subcomponents to it - base -> layer -> button/text
 ability to copy subcomponent instead of importing text/button
+text needs to have color
+bug where upon removing the component that was imported by other components and attempting to edit the component in the other components still changes the reference for all of them
 
 overflow
 try with button tags
