@@ -1,10 +1,11 @@
 import { ImportComponentModeCardEvents } from '../../toolbar/options/importComponent/modeUtils/importComponentModeCardEvents';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import ComponentJs from '../../../../../services/workshop/componentJs';
+import { AddSubcomponentUtils } from './addSubcomponent';
 import CopyComponentUtils from './copyComponentUtils';
 import { ComponentOptions } from 'vue';
 
-export default class ComponentManipulationUtils {
+export class ComponentManipulation {
 
   private static resetComponentModes(previousComponent: WorkshopComponent): void {
     if (!previousComponent) return;
@@ -16,7 +17,7 @@ export default class ComponentManipulationUtils {
   }
 
   private static switchActiveComponent(workshopComponent: ComponentOptions, newComponent: WorkshopComponent): void {
-    ComponentManipulationUtils.resetComponentModes(workshopComponent.currentlySelectedComponent);
+    ComponentManipulation.resetComponentModes(workshopComponent.currentlySelectedComponent);
     if (workshopComponent.currentlySelectedComponent && workshopComponent.currentlySelectedComponent.type !== newComponent.type) {
       ComponentJs.manipulateJS(workshopComponent.currentlySelectedComponent.type, 'revokeJS');
     }
@@ -27,19 +28,24 @@ export default class ComponentManipulationUtils {
 
   public static addNewComponent(workshopComponent: ComponentOptions, newComponent: WorkshopComponent): void {
     (workshopComponent.components as undefined as WorkshopComponent[]).push(newComponent);
-    ComponentManipulationUtils.switchActiveComponent(workshopComponent, newComponent);
+    ComponentManipulation.switchActiveComponent(workshopComponent, newComponent);
+  }
+
+  public static addNewSubcomponent(workshopComponent: ComponentOptions): void {
+    AddSubcomponentUtils.addSubcomponent(workshopComponent.currentlySelectedComponent);
+    workshopComponent.$refs.contents.refreshComponent();
   }
 
   public static copyComponent(workshopComponent: ComponentOptions, selectComponentCard: WorkshopComponent): void {
     const newComponent = CopyComponentUtils.copyComponent(workshopComponent, selectComponentCard);
-    ComponentManipulationUtils.addNewComponent(workshopComponent, newComponent);
+    ComponentManipulation.addNewComponent(workshopComponent, newComponent);
   }
 
   public static selectComponent(workshopComponent: ComponentOptions, selectedComponent: WorkshopComponent): void {
     if (workshopComponent.isImportComponentModeActive) {
       ImportComponentModeCardEvents.mouseClick(workshopComponent, selectedComponent);
     } else if (workshopComponent.currentlySelectedComponent !== selectedComponent) {
-      ComponentManipulationUtils.switchActiveComponent(workshopComponent, selectedComponent);
+      ComponentManipulation.switchActiveComponent(workshopComponent, selectedComponent);
     }
   }
 
@@ -56,7 +62,7 @@ export default class ComponentManipulationUtils {
   private static selectNextComponentAfterRemoving(workshopComponent: ComponentOptions, removedComponentIndex: number): void {
     const components = (workshopComponent.components as undefined as WorkshopComponent[]);
     const nextComponentIndex = removedComponentIndex === components.length ? removedComponentIndex - 1 : removedComponentIndex;
-    ComponentManipulationUtils.switchActiveComponent(workshopComponent, components[nextComponentIndex]);
+    ComponentManipulation.switchActiveComponent(workshopComponent, components[nextComponentIndex]);
   }
 
   private static removeComponentCallback(workshopComponent: ComponentOptions, componentToBeRemovedWithoutSelecting: WorkshopComponent): number {
@@ -83,11 +89,11 @@ export default class ComponentManipulationUtils {
     // only switch after using the removal modal (componentToBeRemovedWithoutSelecting is undefined)
     // or not using the modal but directly removing the component that is currently selected
     if (!componentToBeRemovedWithoutSelecting || componentToBeRemovedWithoutSelecting === workshopComponent.currentlySelectedComponent) {
-      const componentToBeRemovedIndex = ComponentManipulationUtils.removeComponentCallback(workshopComponent, componentToBeRemovedWithoutSelecting);
-      if (componentToBeRemovedIndex > -1) ComponentManipulationUtils.selectNextComponentAfterRemoving(workshopComponent, componentToBeRemovedIndex);
+      const componentToBeRemovedIndex = ComponentManipulation.removeComponentCallback(workshopComponent, componentToBeRemovedWithoutSelecting);
+      if (componentToBeRemovedIndex > -1) ComponentManipulation.selectNextComponentAfterRemoving(workshopComponent, componentToBeRemovedIndex);
     } else {
       workshopComponent.$refs.toolbar.$refs.options.temporarilyAllowOptionAnimations(
-      ComponentManipulationUtils.removeComponentCallback.bind(this, workshopComponent, componentToBeRemovedWithoutSelecting), true, true);
+      ComponentManipulation.removeComponentCallback.bind(this, workshopComponent, componentToBeRemovedWithoutSelecting), true, true);
     }
   }
 }

@@ -8,7 +8,7 @@ function resetUniqueId(): void {
   id = 0;
 }
 
-export const importedComponentUniqueIdState = {
+export const uniqueSubcomponentIdState = {
   getUniqueId,
   resetUniqueId,
 }

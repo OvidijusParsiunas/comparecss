@@ -1,12 +1,12 @@
-import { CUSTOM_SUBCOMPONENT_NAMES_PREFIXES } from '../../../../../consts/customSubcomponentNamesPrefixes.enum';
 import { EntityDisplayStatus, ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/entityDisplayStatus';
+import { UniqueSubcomponentNameGenerator } from '../componentGenerator/uniqueSubcomponentNameGenerator';
 import { ImportedComponentStructure } from '../../../../../interfaces/importedComponentStructure';
 import { Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomponentNames';
+import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { EntityDisplayStatusUtils } from '../entityDisplayStatus/entityDisplayStatusUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../interfaces/componentGenerator';
-import { importedComponentUniqueIdState } from './importedComponentUniqueIdState';
 import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
 
 export class ImportedComponentGenerator {
@@ -14,8 +14,9 @@ export class ImportedComponentGenerator {
   public static readonly DEFAULT_TOP_PROPERTY = '50%';
 
   public static generateImportedComponentNames(importedComponentBaseName: string): CustomSubcomponentNames {
-    const spaces = new Array(importedComponentUniqueIdState.getUniqueId()).join(' ');
-    return { base: importedComponentBaseName, layer: `${CUSTOM_SUBCOMPONENT_NAMES_PREFIXES.LAYER}${spaces}`, text: `${CUSTOM_SUBCOMPONENT_NAMES_PREFIXES.TEXT}${spaces}`};
+    const layerName = UniqueSubcomponentNameGenerator.generate(CORE_SUBCOMPONENTS_NAMES.LAYER);
+    const textName = UniqueSubcomponentNameGenerator.generate(CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_1);
+    return { base: importedComponentBaseName, layer: layerName, text: textName };
   }
 
   private static applyTopProperty(importedComponentRef: WorkshopComponent, importedComponentName: string): void {

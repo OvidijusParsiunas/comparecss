@@ -1,7 +1,7 @@
-import { importedComponentUniqueIdState } from '../../../../../../../components/content/workshop/utils/workshopImportComponent/importedComponentUniqueIdState';
 import { MODAL_ANIMATION_OPEN_TYPES, MODAL_ANIMATION_CLOSE_TYPES } from '../../../../../../../consts/animationTypes.enum';
-import { ImportedComponentGenerator } from '../../../../utils/workshopImportComponent/importedComponentGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
+import { ImportedComponentGenerator } from '../../../../utils/importComponent/importedComponentGenerator';
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -309,7 +309,7 @@ function createSubcomponents(): Subcomponents {
 
 export const defaultModal: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
-    importedComponentUniqueIdState.resetUniqueId();
+    uniqueSubcomponentIdState.resetUniqueId();
     const importedCloseButtonName = CORE_SUBCOMPONENTS_NAMES.CLOSE;
     const importedButton1Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_1_LAYER_3;
     const importedButton2Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_2_LAYER_3;

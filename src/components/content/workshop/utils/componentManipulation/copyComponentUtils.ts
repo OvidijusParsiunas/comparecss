@@ -1,5 +1,5 @@
 import { ImportedComponent, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
-import { ImportedComponentGenerator } from '../workshopImportComponent/importedComponentGenerator';
+import { ImportedComponentGenerator } from '../importComponent/importedComponentGenerator';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
@@ -43,14 +43,36 @@ export default class ComponentComponentUtils {
   }
 
   // WORK1: refactoring
-  // WORK1: remove new component subcomponents that are not in the component being copied
   private static copySubcomponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
     const importedComponentRefs = [];
+    // WORK1: remove new component subcomponents that are not in the component being copied
+    // currently can add an imported component but need to be able to add a native component
+    // newComponent.subcomponents = {};
+    // uniqueSubcomponentIdState.resetUniqueId();
     Object.keys(componentBeingCopied.subcomponents).forEach((subcomponentName) => {
-      if (!newComponent.subcomponents[subcomponentName]) {
+      // if subcomponent is part of an imported component, do not proceed as a new one will be created
+      // PART3:
+      // if (componentBeingCopied.subcomponents[subcomponentName].baseSubcomponentRef
+      //   && componentBeingCopied.subcomponents[subcomponentName].baseSubcomponentRef.importedComponent) {
+      //     return;
+      //   };
+      // still requires the first detected subcomponent to be the base, otherwise it will overwrite the smaller ones
+      // PART1:
+      // current strategy is to be able to repopulate subcomponents from scratch
+      // PART2:
+      // make sure the ids are the same (pass the subcomponentNames directly)
+      // PART 5: change this if statement to
+      /// if (componentBeingCopied.subcomponents[subcomponentName].importedComponent)
+      if (!newComponent.subcomponents[subcomponentName] && !componentBeingCopied.subcomponents[subcomponentName].baseSubcomponentRef) {
+        const importedComponent = ImportedComponentGenerator.createImportedComponents(defaultButton, subcomponentName);
         newComponent.subcomponents = {
-          ...newComponent.subcomponents, ...ImportedComponentGenerator.createImportedComponents(defaultButton, subcomponentName) };
+          ...newComponent.subcomponents, ...importedComponent };
+        // PART4:
+        // copySubcomponentProperties
+        // or inSyncSubcomponent
       }
+      // PART6:
+      // else proceed to create a default subcomponent
       if (componentBeingCopied.subcomponents[subcomponentName].importedComponent) {
         importedComponentRefs.push(componentBeingCopied.subcomponents[subcomponentName].importedComponent.componentRef);
         if (componentBeingCopied.subcomponents[subcomponentName].importedComponent.inSync) {

@@ -1,6 +1,6 @@
-import { importedComponentUniqueIdState } from './../../../../../../../components/content/workshop/utils/workshopImportComponent/importedComponentUniqueIdState';
-import { ImportedComponentGenerator } from '../../../../utils/workshopImportComponent/importedComponentGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
+import { ImportedComponentGenerator } from '../../../../utils/importComponent/importedComponentGenerator';
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { GENERAL_ANIMATION_CLOSE_TYPES } from '../../../../../../../consts/animationTypes.enum';
@@ -22,8 +22,8 @@ import { inheritedTextCss } from '../../shared/text/inheritedCss';
 import { defaultButton } from '../../buttons/properties/default';
 import { defaultImage } from '../../shared/images/default';
 import {
+  AlignedLayerSection, AutoSize, Text, CustomStaticFeatures, Image, SubcomponentProperties,
   CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Animations,
-  AlignedLayerSection, AutoSize, Text, CustomStaticFeatures, Image,
 } from '../../../../../../../interfaces/workshopComponent';
 
 function createDefaultAlertAnimationsProperties(): Animations {
@@ -507,7 +507,7 @@ function createSubcomponents(): Subcomponents {
 
 export const defaultCard: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
-    importedComponentUniqueIdState.resetUniqueId();
+    uniqueSubcomponentIdState.resetUniqueId();
     const importedCloseButtonName = CORE_SUBCOMPONENTS_NAMES.CLOSE;
     const importedButtonLayer1Name = CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_BUTTON;
     const importedButton1Layer2Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_1_LAYER_2;
@@ -564,4 +564,22 @@ export const defaultCard: ComponentGenerator = {
       componentStatus: { isRemoved: false },
     };
   },
+  createNewSubcomponent(): SubcomponentProperties {
+    // WORK1: return based on type
+    return {
+      subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
+      componentTag: 'div',
+      customCss: createDefaultTextCss(),
+      defaultCss: createDefaultTextCss(),
+      inheritedCss: inheritedTextCss,
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
+      subcomponentSpecificSettings: modalTextSpecificSettings,
+      customFeatures: createDefaultText3CustomFeatures(),
+      defaultCustomFeatures: createDefaultText3CustomFeatures(),
+      customStaticFeatures: createDefaultTextCustomStaticFeatures(),
+      defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(),
+    }
+  }
 }

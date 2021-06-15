@@ -1,6 +1,6 @@
 import { AlignedLayerSection, AutoSize, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text, CustomStaticFeatures } from '../../../../../../../interfaces/workshopComponent';
-import { ImportedComponentGenerator } from '../../../../utils/workshopImportComponent/importedComponentGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { ImportedComponentGenerator } from '../../../../utils/importComponent/importedComponentGenerator';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';

@@ -3,6 +3,8 @@ instead of having a dropdown for active and removed subcomponents we can have a 
 ability to copy subcomponent instead of importing text/button
 text needs to have color
 bug where upon removing the component that was imported by other components and attempting to edit the component in the other components still changes the reference for all of them
+position - move subcomponent over another, left or right
+maybe should allow import a new button alltogether instead of creating a new button and then changing its style
 
 overflow
 try with button tags

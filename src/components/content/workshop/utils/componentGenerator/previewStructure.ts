@@ -65,7 +65,7 @@ export default class PreviewStructure {
       layerSubcomponentsStructure: NestedDropdownStructure, allSubcomponents: Subcomponents): Layer {
     const layer = PreviewStructure.createEmptyLayer(layerName, layerSubcomponent);
     if (layerSubcomponent.layerSectionsType === LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS) {
-      PreviewStructure.populateAlignedSections(layer, layerSubcomponent, layerSubcomponentsStructure, allSubcomponents)
+      PreviewStructure.populateAlignedSections(layer, layerSubcomponent, layerSubcomponentsStructure, allSubcomponents);
     } else if (layerSubcomponent.layerSectionsType === LAYER_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS) {
       PreviewStructure.populateEqualSplitSections(layer, layerSubcomponent, layerSubcomponentsStructure, allSubcomponents);
     }

@@ -1,6 +1,6 @@
-import { importedComponentUniqueIdState } from '../../../../../../../components/content/workshop/utils/workshopImportComponent/importedComponentUniqueIdState';
-import { ImportedComponentGenerator } from '../../../../utils/workshopImportComponent/importedComponentGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
+import { ImportedComponentGenerator } from '../../../../utils/importComponent/importedComponentGenerator';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { GENERAL_ANIMATION_CLOSE_TYPES } from '../../../../../../../consts/animationTypes.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -152,7 +152,7 @@ function createSubcomponents(): Subcomponents {
 
 export const defaultAlert: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
-    importedComponentUniqueIdState.resetUniqueId();
+    uniqueSubcomponentIdState.resetUniqueId();
     const importedCloseButtonName = CORE_SUBCOMPONENTS_NAMES.CLOSE;
     const subcomponents = { ...createSubcomponents(),
       ...ImportedComponentGenerator.createImportedComponents(closeButton, importedCloseButtonName)};
