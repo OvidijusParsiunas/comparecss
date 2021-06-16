@@ -136,7 +136,7 @@ export interface ImportedComponent {
 }
 
 export interface SubcomponentProperties {
-  // used for defining options
+  // used for defining options and adding new subcomponents to a layer
   subcomponentType?: SUBCOMPONENT_TYPES;
   // may not be required if always div
   componentTag?: string;

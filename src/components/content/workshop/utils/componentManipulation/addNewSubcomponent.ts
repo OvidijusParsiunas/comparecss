@@ -58,25 +58,35 @@ export class AddSubcomponentUtils {
     const newSubcomponentId = UniqueSubcomponentNameGenerator.generate(CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_TEXT);
     return { id: newSubcomponentId, subcomponentProperties: defaultCard.createNewSubcomponent() };
   }
-  
-  public static addSubcomponent(currentlySelectedComponent: WorkshopComponent): void {
-    // const newSub = ImportedComponentGenerator.createImportedComponents(defaultButton, CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_BUTTON);
+
+  private static addImportedSubcomponent(currentlySelectedComponent: WorkshopComponent): void {
+    // create new
+    // const subcomponents = ImportedComponentGenerator.createImportedComponents(defaultButton, CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_BUTTON);
+    // // add new
     // currentlySelectedComponent.subcomponents = {
     //   ...currentlySelectedComponent.subcomponents,
-    //   ...newSub,
-    // };
+    //   ...subcomponents,
+    // };  
+    // // update
     // currentlySelectedComponent.componentPreviewStructure.layers[2].sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.RIGHT].push(
-    //   { name: CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_BUTTON, subcomponentProperties: newSub[CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_BUTTON] },
+    //   { name: CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_BUTTON, subcomponentProperties: subcomponents[CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_BUTTON] },
     // );
     // const importedComponentStructure = ImportedComponentGenerator.createImportedComponentStructure(
     //   currentlySelectedComponent.subcomponents, CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_BUTTON, ALIGNED_SECTION_TYPES.RIGHT);
-    // newSub[CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_BUTTON].parentLayer = currentlySelectedComponent.componentPreviewStructure.layers[2];
+    //   subcomponents[CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_BUTTON].parentLayer = currentlySelectedComponent.componentPreviewStructure.layers[2];
     // currentlySelectedComponent.componentPreviewStructure.subcomponentDropdownStructure[CORE_SUBCOMPONENTS_NAMES.BASE][CORE_SUBCOMPONENTS_NAMES.LAYER_3] = {
     //   [CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_BUTTON]: { ...importedComponentStructure.component[importedComponentStructure.baseName]},
     //   ...currentlySelectedComponent.componentPreviewStructure.subcomponentDropdownStructure[CORE_SUBCOMPONENTS_NAMES.BASE][CORE_SUBCOMPONENTS_NAMES.LAYER_3],
     // }
-    const newSubcomponent = AddSubcomponentUtils.createNewSubcomponent();
-    AddSubcomponentUtils.addNewSubcomponentToSubcomponents(currentlySelectedComponent, newSubcomponent);
-    AddSubcomponentUtils.addNewSubcomponentToComponentPreview(currentlySelectedComponent, newSubcomponent);
+  }
+  
+  public static addSubcomponent(currentlySelectedComponent: WorkshopComponent, subcomponentType = 'importedButton'): void {
+    if (subcomponentType === 'importedButton') {
+      AddSubcomponentUtils.addImportedSubcomponent(currentlySelectedComponent);
+    } else {
+      const newSubcomponent = AddSubcomponentUtils.createNewSubcomponent();
+      AddSubcomponentUtils.addNewSubcomponentToSubcomponents(currentlySelectedComponent, newSubcomponent);
+      AddSubcomponentUtils.addNewSubcomponentToComponentPreview(currentlySelectedComponent, newSubcomponent); 
+    }
   }
 }

@@ -1,7 +1,7 @@
 import { ImportComponentModeCardEvents } from '../../toolbar/options/importComponent/modeUtils/importComponentModeCardEvents';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import ComponentJs from '../../../../../services/workshop/componentJs';
-import { AddSubcomponentUtils } from './addSubcomponent';
+import { AddSubcomponentUtils } from './addNewSubcomponent';
 import CopyComponentUtils from './copyComponentUtils';
 import { ComponentOptions } from 'vue';
 

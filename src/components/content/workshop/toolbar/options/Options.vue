@@ -85,7 +85,7 @@
         type="button"
         class="btn"
         :class="['subcomponent-display-toggle-add', TOOLBAR_GENERAL_BUTTON_CLASS, OPTION_MENU_BUTTON_MARKER]"
-        @click="buttonClickMiddleware(addSubcomponent, true)">
+        @click="buttonClickMiddleware(addNewSubcomponent, true)">
       </button>
       <transition-group :name="isDropdownAndOptionButtonsTransitionAllowed || isExpandedModalPreviewModeActive ? 'horizontal-transition' : ''">
         <button v-if="!isFullPreviewModeActive && isInSyncButtonDisplayed()"
@@ -399,9 +399,8 @@ export default {
           SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
       }
     },
-    // WORK1
-    addSubcomponent(): void {
-      this.$emit('add-subcomponent');
+    addNewSubcomponent(): void {
+      this.$emit('add-new-subcomponent');
     },
     removeSubcomponent(): void {
       if (this.component.subcomponents[this.component.activeSubcomponentName].importedComponent

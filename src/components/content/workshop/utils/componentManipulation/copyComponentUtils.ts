@@ -1,7 +1,7 @@
 import { ImportedComponent, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
-import { ImportedComponentGenerator } from '../importComponent/importedComponentGenerator';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomponentNames';
+import { ImportedComponentGenerator } from '../importComponent/importedComponentGenerator';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { componentTypeToStyles } from '../../newComponent/types/componentTypeToStyles';
 import { NEW_COMPONENT_STYLES } from '../../../../../consts/newComponentStyles.enum';
