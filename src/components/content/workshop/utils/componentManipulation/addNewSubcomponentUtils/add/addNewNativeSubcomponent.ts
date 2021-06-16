@@ -6,7 +6,7 @@ import { WorkshopComponent } from '../../../../../../../interfaces/workshopCompo
 import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { AddNewSubcomponentShared } from './addNewSubcomponentShared';
 
-export class AddNewSubcomponent extends AddNewSubcomponentShared {
+export class AddNewNativeSubcomponent extends AddNewSubcomponentShared {
 
   private static updateComponentPreviewStructure(currentlySelectedComponent: WorkshopComponent, newSubcomponentProperties: NewSubcomponentProperties,
       currentLayer: Layer): void {
@@ -19,16 +19,16 @@ export class AddNewSubcomponent extends AddNewSubcomponentShared {
   private static addNewSubcomponentToComponentPreview(currentlySelectedComponent: WorkshopComponent, newSubcomponentProperties: NewSubcomponentProperties): void {
     // WORK1: remove this if statement
     if (currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].layerSectionsType) {
-      const currentLayer = AddNewSubcomponent.findCurrentLayer(currentlySelectedComponent);
-      AddNewSubcomponent.updateNewSubcomponentParentLayer(newSubcomponentProperties, currentLayer);
-      AddNewSubcomponent.addNewSubcomponentToCurrentLayer(currentLayer, newSubcomponentProperties);
-      AddNewSubcomponent.updateComponentPreviewStructure(currentlySelectedComponent, newSubcomponentProperties, currentLayer);
+      const currentLayer = AddNewNativeSubcomponent.findCurrentLayer(currentlySelectedComponent);
+      AddNewNativeSubcomponent.updateNewSubcomponentParentLayer(newSubcomponentProperties, currentLayer);
+      AddNewNativeSubcomponent.addNewSubcomponentToCurrentLayer(currentLayer, newSubcomponentProperties);
+      AddNewNativeSubcomponent.updateComponentPreviewStructure(currentlySelectedComponent, newSubcomponentProperties, currentLayer);
     }
   }
   
   public static add(currentlySelectedComponent: WorkshopComponent): void {
-    const newSubcomponent = AddNewSubcomponent.createNewSubcomponent(CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_TEXT, SUBCOMPONENT_TYPES.SECTION_TEXT);
-    AddNewSubcomponent.addNewSubcomponentToExistingSubcomponents(currentlySelectedComponent, newSubcomponent);
-    AddNewSubcomponent.addNewSubcomponentToComponentPreview(currentlySelectedComponent, newSubcomponent); 
+    const newSubcomponent = AddNewNativeSubcomponent.createNewSubcomponent(CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_TEXT, SUBCOMPONENT_TYPES.SECTION_TEXT);
+    AddNewNativeSubcomponent.addNewSubcomponentToExistingSubcomponents(currentlySelectedComponent, newSubcomponent);
+    AddNewNativeSubcomponent.addNewSubcomponentToComponentPreview(currentlySelectedComponent, newSubcomponent); 
   }
 }
