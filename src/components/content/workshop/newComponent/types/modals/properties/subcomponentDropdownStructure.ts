@@ -11,11 +11,11 @@ export default function getModalSubcomponentDropdownStructure(
   return {
     [CORE_SUBCOMPONENTS_NAMES.BASE]: {
       [CORE_SUBCOMPONENTS_NAMES.LAYER_1]: {
-        [CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_1]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject(textSubcomponent1.subcomponentDisplayStatus),
+        [CORE_SUBCOMPONENTS_NAMES.TEXT]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject(textSubcomponent1.subcomponentDisplayStatus),
         [importedCloseButtonStructure.baseName]: { ...importedCloseButtonStructure.component[importedCloseButtonStructure.baseName] },
       },
       [CORE_SUBCOMPONENTS_NAMES.LAYER_2]: {
-        [CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_2]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject(textSubcomponent2.subcomponentDisplayStatus),
+        [CORE_SUBCOMPONENTS_NAMES.TEXT_2]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject(textSubcomponent2.subcomponentDisplayStatus),
         ...EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject(layer2Subcomponent.subcomponentDisplayStatus),
       },
       [CORE_SUBCOMPONENTS_NAMES.LAYER_3]: {

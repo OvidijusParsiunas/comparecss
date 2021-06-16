@@ -8,7 +8,7 @@ export default function getAlertSubcomponentDropdownStructure(textSubcomponent: 
     importedCloseButtonStructure: ImportedComponentStructure): NestedDropdownStructure {
   return {
     [CORE_SUBCOMPONENTS_NAMES.BASE]: {
-      [CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_1]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject(textSubcomponent.subcomponentDisplayStatus),
+      [CORE_SUBCOMPONENTS_NAMES.TEXT]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject(textSubcomponent.subcomponentDisplayStatus),
       [importedCloseButtonStructure.baseName]: { ...importedCloseButtonStructure.component[importedCloseButtonStructure.baseName] },
     },
   };

@@ -14,7 +14,7 @@ import ReferenceSharingUtils from './referenceSharingUtils';
 import { inheritedButtonCss } from './inheritedCss';
 
 const defaultSubcomponentNames: CustomSubcomponentNames = {
-  base: CORE_SUBCOMPONENTS_NAMES.BASE, layer: CORE_SUBCOMPONENTS_NAMES.LAYER_1, text: CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_1,
+  base: CORE_SUBCOMPONENTS_NAMES.BASE, layer: CORE_SUBCOMPONENTS_NAMES.LAYER_1, text: CORE_SUBCOMPONENTS_NAMES.TEXT,
 };
 
 function createDefaultBaseCss(): CustomCss {

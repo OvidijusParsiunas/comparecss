@@ -135,7 +135,7 @@ function createSubcomponents(): Subcomponents {
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
-    [CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_1]: {
+    [CORE_SUBCOMPONENTS_NAMES.TEXT]: {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
       componentTag: 'div',
       customCss: createTextCss(),
@@ -156,7 +156,7 @@ export const defaultAlert: ComponentGenerator = {
     const importedCloseButtonName = CORE_SUBCOMPONENTS_NAMES.CLOSE;
     const subcomponents = { ...createSubcomponents(),
       ...ImportedComponentGenerator.createImportedComponents(closeButton, importedCloseButtonName)};
-    const subcomponentDropdownStructure = getAlertSubcomponentDropdownStructure(subcomponents[CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_1],
+    const subcomponentDropdownStructure = getAlertSubcomponentDropdownStructure(subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT],
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedCloseButtonName));
     return {
       type: NEW_COMPONENT_TYPES.ALERT,

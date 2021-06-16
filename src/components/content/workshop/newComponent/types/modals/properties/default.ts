@@ -274,7 +274,7 @@ function createSubcomponents(): Subcomponents {
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
       subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
     },
-    [CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_1]: {
+    [CORE_SUBCOMPONENTS_NAMES.TEXT]: {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
       componentTag: 'div',
       customCss: createDefaultText1Css(),
@@ -289,7 +289,7 @@ function createSubcomponents(): Subcomponents {
       customStaticFeatures: createDefaultText1CustomStaticFeatures(),
       defaultCustomStaticFeatures: createDefaultText1CustomStaticFeatures(),
     },
-    [CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_2]: {
+    [CORE_SUBCOMPONENTS_NAMES.TEXT_2]: {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
       componentTag: 'div',
       customCss: createDefaultText2Css(),
@@ -319,7 +319,7 @@ export const defaultModal: ComponentGenerator = {
       ...ImportedComponentGenerator.createImportedComponents(defaultButton, importedButton2Name, 'Cancel') };
     const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
       subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_3],
-      subcomponents[CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_1], subcomponents[CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_2],
+      subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_2],
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedCloseButtonName),
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton1Name),
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton2Name),

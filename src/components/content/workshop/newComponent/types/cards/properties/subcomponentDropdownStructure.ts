@@ -19,7 +19,7 @@ export default function getCardSubcomponentDropdownStructure(
     [CORE_SUBCOMPONENTS_NAMES.BASE]: {
       [CORE_SUBCOMPONENTS_NAMES.LAYER_1]: {
         [CORE_SUBCOMPONENTS_NAMES.AVATAR]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject(avatarSubcomponent.subcomponentDisplayStatus),
-        [CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_1]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject(noSiblingTextSubcomponent.subcomponentDisplayStatus),
+        [CORE_SUBCOMPONENTS_NAMES.TEXT]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject(noSiblingTextSubcomponent.subcomponentDisplayStatus),
         [importedCloseButtonStructure.baseName]: { ...importedCloseButtonStructure.component[importedCloseButtonStructure.baseName] },
         [importedButtonLayer1Structure.baseName]: { ...importedButtonLayer1Structure.component[importedButtonLayer1Structure.baseName] },
       },

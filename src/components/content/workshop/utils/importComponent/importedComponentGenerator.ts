@@ -15,7 +15,7 @@ export class ImportedComponentGenerator {
 
   public static generateImportedComponentNames(importedComponentBaseName: string): CustomSubcomponentNames {
     const layerName = UniqueSubcomponentNameGenerator.generate(CORE_SUBCOMPONENTS_NAMES.LAYER);
-    const textName = UniqueSubcomponentNameGenerator.generate(CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_1);
+    const textName = UniqueSubcomponentNameGenerator.generate(CORE_SUBCOMPONENTS_NAMES.TEXT);
     return { base: importedComponentBaseName, layer: layerName, text: textName };
   }
 

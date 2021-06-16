@@ -339,7 +339,7 @@ function createSubcomponents(): Subcomponents {
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
       subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(false),
     },
-    [CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_1]: {
+    [CORE_SUBCOMPONENTS_NAMES.TEXT]: {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
       componentTag: 'div',
       customCss: createDefaultNoSiblingTextCss(),
@@ -534,7 +534,7 @@ export const defaultCard: ComponentGenerator = {
     };
     const subcomponentDropdownStructure = getCardSubcomponentDropdownStructure(subcomponents[CORE_SUBCOMPONENTS_NAMES.AVATAR],
       subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_3],
-      subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_4], subcomponents[CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_TEXT_1],
+      subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_4], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT],
       subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1_LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_2_LAYER_2],
       subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_3_LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1_LAYER_3],
       subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_2_LAYER_3], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_3_LAYER_3],
