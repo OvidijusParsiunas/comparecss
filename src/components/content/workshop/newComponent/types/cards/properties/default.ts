@@ -505,6 +505,41 @@ function createSubcomponents(): Subcomponents {
   };
 }
 
+// WORK1: allow this to be reusable for all componennts
+const createNewSubcomponent = (subcomponentType: SUBCOMPONENT_TYPES): SubcomponentProperties => {
+  switch (subcomponentType) {
+    case (SUBCOMPONENT_TYPES.SECTION_TEXT):
+      return {
+        subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
+        componentTag: 'div',
+        customCss: createDefaultTextCss(),
+        defaultCss: createDefaultTextCss(),
+        inheritedCss: inheritedTextCss,
+        activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+        defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+        subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
+        subcomponentSpecificSettings: modalTextSpecificSettings,
+        customFeatures: createDefaultText3CustomFeatures(),
+        defaultCustomFeatures: createDefaultText3CustomFeatures(),
+        customStaticFeatures: createDefaultTextCustomStaticFeatures(),
+        defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(),
+      }
+    case (SUBCOMPONENT_TYPES.LAYER_3):
+      return {
+        subcomponentType: SUBCOMPONENT_TYPES.LAYER_3,
+        customCss: createDefaultBottomLayerCss(),
+        defaultCss: createDefaultBottomLayerCss(),
+        activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+        defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+        subcomponentSpecificSettings: modalLayerBottomSpecificSettings,
+        layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
+        subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
+      }
+    default:
+      return undefined;
+  }
+}
+
 export const defaultCard: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
     uniqueSubcomponentIdState.resetUniqueId();
@@ -564,22 +599,5 @@ export const defaultCard: ComponentGenerator = {
       componentStatus: { isRemoved: false },
     };
   },
-  createNewSubcomponent(): SubcomponentProperties {
-    // WORK1: return based on type
-    return {
-      subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
-      componentTag: 'div',
-      customCss: createDefaultTextCss(),
-      defaultCss: createDefaultTextCss(),
-      inheritedCss: inheritedTextCss,
-      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
-      subcomponentSpecificSettings: modalTextSpecificSettings,
-      customFeatures: createDefaultText3CustomFeatures(),
-      defaultCustomFeatures: createDefaultText3CustomFeatures(),
-      customStaticFeatures: createDefaultTextCustomStaticFeatures(),
-      defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(),
-    }
-  }
+  createNewSubcomponent: createNewSubcomponent,
 }

@@ -8,6 +8,10 @@ import { ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/entityDispl
 
 export default class PreviewStructure {
 
+  private static createNestedSubcomponent(name: string, subcomponentProperties: SubcomponentProperties): NestedSubcomponent {
+    return { name, subcomponentProperties };
+  }
+
   private static addSubcomponentToEqualSplitSection(layer: Layer, layerSubcomponent: SubcomponentProperties,
       subcomponentName: string, allSubcomponents: Subcomponents): void {
     (layer.sections[layerSubcomponent.layerSectionsType] as NestedSubcomponent[]).push(
@@ -16,21 +20,25 @@ export default class PreviewStructure {
 
   private static populateEqualSplitSections(layer: Layer, layerSubcomponent: SubcomponentProperties,
       layerSubcomponentsStructure: NestedDropdownStructure, allSubcomponents: Subcomponents): void {
-    layer.sections[LAYER_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS] = [];
     Object.keys(layerSubcomponentsStructure).forEach((subcomponentName: string) => {
       PreviewStructure.addSubcomponentToEqualSplitSection(layer, layerSubcomponent, subcomponentName, allSubcomponents);
       allSubcomponents[subcomponentName].parentLayer = layer;
     });
   }
 
-  private static createNestedSubcomponent(name: string, subcomponentProperties: SubcomponentProperties): NestedSubcomponent {
-    return { name, subcomponentProperties };
-  }
-
   private static addSubcomponentToAlignedSection(layer: Layer, layerSubcomponent: SubcomponentProperties,
       subcomponentName: string, allSubcomponents: Subcomponents): void {
     layer.sections[layerSubcomponent.layerSectionsType][allSubcomponents[subcomponentName].customFeatures.alignedLayerSection.section].push(
         PreviewStructure.createNestedSubcomponent(subcomponentName, allSubcomponents[subcomponentName]));
+  }
+
+  private static populateAlignedSections(layer: Layer, layerSubcomponent: SubcomponentProperties,
+      layerSubcomponentsStructure: NestedDropdownStructure, allSubcomponents: Subcomponents): void {
+    Object.keys(layerSubcomponentsStructure).forEach((subcomponentName: string) => {
+      if (subcomponentName === ENTITY_DISPLAY_STATUS_REF) return;
+      PreviewStructure.addSubcomponentToAlignedSection(layer, layerSubcomponent, subcomponentName, allSubcomponents);
+      allSubcomponents[subcomponentName].parentLayer = layer;
+    });
   }
 
   private static createEmptyAlignedSections(): AlignedSections {
@@ -41,22 +49,14 @@ export default class PreviewStructure {
     }
   }
 
-  private static populateAlignedSections(layer: Layer, layerSubcomponent: SubcomponentProperties,
-      layerSubcomponentsStructure: NestedDropdownStructure, allSubcomponents: Subcomponents): void {
-    layer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS] = PreviewStructure.createEmptyAlignedSections();
-    Object.keys(layerSubcomponentsStructure).forEach((subcomponentName: string) => {
-      if (subcomponentName === ENTITY_DISPLAY_STATUS_REF) return;
-      PreviewStructure.addSubcomponentToAlignedSection(layer, layerSubcomponent, subcomponentName, allSubcomponents);
-      allSubcomponents[subcomponentName].parentLayer = layer;
-    });
-  }
-  
-  private static createEmptyLayer(layerName: string, layerSubcomponent: SubcomponentProperties): Layer {
+  public static createEmptyLayer(layerName: string, layerSubcomponent: SubcomponentProperties): Layer {
+    const layerSections = layerSubcomponent.layerSectionsType === LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS
+      ? PreviewStructure.createEmptyAlignedSections() : [];
     return {
       name: layerName,
       subcomponentProperties: layerSubcomponent,
       sections: {
-        [layerSubcomponent.layerSectionsType]: {},
+        [layerSubcomponent.layerSectionsType]: layerSections,
       }
     };
   }
