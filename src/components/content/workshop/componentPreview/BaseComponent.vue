@@ -24,6 +24,8 @@
             component.componentPreviewStructure.baseSubcomponentProperties[component.componentPreviewStructure.baseSubcomponentProperties.tempCustomCssObjName || 'customCss'][CSS_PSEUDO_CLASSES.DEFAULT],
             component.componentPreviewStructure.baseSubcomponentProperties[component.componentPreviewStructure.baseSubcomponentProperties.tempCustomCssObjName || 'customCss'][component.componentPreviewStructure.baseSubcomponentProperties.activeCssPseudoClass],
           ]">
+          {{(component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures && component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.subcomponentText
+            && component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.subcomponentText.text) ? component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.subcomponentText.text : '' }}
           <layers
             :classes="[...((component.componentPreviewStructure.baseSubcomponentProperties.customFeatures && component.componentPreviewStructure.baseSubcomponentProperties.customFeatures.jsClasses) || [])]"
             :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
@@ -37,11 +39,13 @@
       style="display: none"
       :style="[
         component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
-        isImportedComponent ? {} : { height: '100% !important' }]"
+        {color: '#ff000000'}, isImportedComponent ? {} : { height: '100% !important' }]"
       :class="[
         ...OVERLAY_DEFAULT_CLASSES,
         isImportedComponent ? 'imported-component' : STATIC_POSITION_CLASS,
         isImportedComponent ? '' : 'subcomponent-overlay-with-no-border-property-but-with-height']">
+        {{(component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures && component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.subcomponentText
+            && component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.subcomponentText.text) ? component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.subcomponentText.text : '' }}
     </div>
   </div>    
 </template>
@@ -64,7 +68,7 @@ interface Consts {
   COMPONENT_PREVIEW_MARKER: string;
   BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES;
   CSS_PSEUDO_CLASSES: typeof CSS_PSEUDO_CLASSES;
-  isSubcomponentDisplayed: (nestedSubcomponent: SubcomponentProperties) => boolean;
+  isSubcomponentDisplayed: (component: SubcomponentProperties) => boolean;
 }
 
 export default {

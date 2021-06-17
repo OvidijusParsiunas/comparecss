@@ -73,7 +73,7 @@ export default class PreviewStructure {
   }
   
   private static createLayers(subcomponentBase: NestedDropdownStructure, subcomponents: Subcomponents, subcomponentNames?: CustomSubcomponentNames): Layer[] {
-    // if subcomponentDropdownStructure contains layers
+    if (!subcomponents[Object.keys(subcomponentBase)[0]]) return [];
     if (subcomponents[Object.keys(subcomponentBase)[0]].layerSectionsType) {
       return Object.keys(subcomponentBase).map((subcomponentName: string) =>
         PreviewStructure.createLayer(subcomponentName, subcomponents[subcomponentName],

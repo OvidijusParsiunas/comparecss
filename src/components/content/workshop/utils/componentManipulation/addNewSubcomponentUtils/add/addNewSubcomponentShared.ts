@@ -9,6 +9,14 @@ import { Layer } from '../../../../../../../interfaces/componentPreviewStructure
 
 export class AddNewSubcomponentShared {
 
+  protected static readonly subcomponentTypeToName: { [key in SUBCOMPONENT_TYPES]?: CORE_SUBCOMPONENTS_NAMES } = {
+    [SUBCOMPONENT_TYPES.LAYER_3]: CORE_SUBCOMPONENTS_NAMES.LAYER,
+    [SUBCOMPONENT_TYPES.CLOSE_BUTTON]: CORE_SUBCOMPONENTS_NAMES.CLOSE,
+    [SUBCOMPONENT_TYPES.BUTTON]: CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_BUTTON,
+    [SUBCOMPONENT_TYPES.SECTION_TEXT]: CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_TEXT,
+    [SUBCOMPONENT_TYPES.TEXT]: CORE_SUBCOMPONENTS_NAMES.TEXT,
+  }
+
   protected static addNewSubcomponentToCurrentLayer(currentLayer: Layer, newSubcomponentProperties: NewSubcomponentProperties): void {
     currentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.LEFT].push(newSubcomponentProperties);
   }
@@ -38,7 +46,8 @@ export class AddNewSubcomponentShared {
     };
   }
 
-  protected static createNewSubcomponent(subcomponentNamePrefix: CORE_SUBCOMPONENTS_NAMES, subcomponentType: SUBCOMPONENT_TYPES): NewSubcomponentProperties {
+  protected static createNewSubcomponent(subcomponentType: SUBCOMPONENT_TYPES): NewSubcomponentProperties {
+    const subcomponentNamePrefix = AddNewSubcomponentShared.subcomponentTypeToName[subcomponentType];
     const newSubcomponentName = UniqueSubcomponentNameGenerator.generate(subcomponentNamePrefix);
     return { name: newSubcomponentName, subcomponentProperties: defaultCard.createNewSubcomponent(subcomponentType), };
   }

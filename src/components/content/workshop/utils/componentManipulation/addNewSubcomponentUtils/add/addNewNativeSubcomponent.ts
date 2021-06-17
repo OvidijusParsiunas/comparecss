@@ -26,8 +26,8 @@ export class AddNewNativeSubcomponent extends AddNewSubcomponentShared {
     }
   }
   
-  public static add(currentlySelectedComponent: WorkshopComponent): void {
-    const newSubcomponent = AddNewNativeSubcomponent.createNewSubcomponent(CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_TEXT, SUBCOMPONENT_TYPES.SECTION_TEXT);
+  public static add(currentlySelectedComponent: WorkshopComponent, subcomponentType: SUBCOMPONENT_TYPES): void {
+    const newSubcomponent = AddNewNativeSubcomponent.createNewSubcomponent(subcomponentType);
     AddNewNativeSubcomponent.addNewSubcomponentToExistingSubcomponents(currentlySelectedComponent, newSubcomponent);
     AddNewNativeSubcomponent.addNewSubcomponentToComponentPreview(currentlySelectedComponent, newSubcomponent); 
   }

@@ -28,8 +28,9 @@ export class AddNewLayerSubcomponent extends AddNewSubcomponentShared {
     AddNewLayerSubcomponent.updateComponentPreviewStructure(currentlySelectedComponent, newSubcomponentProperties);
   }
 
-  public static add(currentlySelectedComponent: WorkshopComponent): void {
-    const newLayerSubcomponent = AddNewLayerSubcomponent.createNewSubcomponent(CORE_SUBCOMPONENTS_NAMES.LAYER, SUBCOMPONENT_TYPES.LAYER_3);
+  public static add(currentlySelectedComponent: WorkshopComponent, subcomponentType: SUBCOMPONENT_TYPES): void {
+    // WORK1: should layer3 be changed to something else or would the options adjust depending on layer depth
+    const newLayerSubcomponent = AddNewLayerSubcomponent.createNewSubcomponent(subcomponentType);
     AddNewLayerSubcomponent.addNewSubcomponentToExistingSubcomponents(currentlySelectedComponent, newLayerSubcomponent);
     AddNewLayerSubcomponent.addNewSubcomponentToComponentPreview(currentlySelectedComponent, newLayerSubcomponent); 
   }

@@ -2,13 +2,23 @@ import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uni
 import { NewImportedComponentProperties } from '../../../../../../../interfaces/addNewSubcomponent';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { ImportedComponentGenerator } from '../../../importComponent/importedComponentGenerator';
+import { closeButton } from '../../../../newComponent/types/buttons/properties/closeButton';
 import { defaultButton } from '../../../../newComponent/types/buttons/properties/default';
+import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
+import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { defaultText } from '../../../../newComponent/types/text/properties/default';
 import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { AddNewSubcomponentShared } from './addNewSubcomponentShared';
 
 export class AddNewImportedComponent extends AddNewSubcomponentShared {
+
+  private static readonly componentTypeToGenerator: { [key in SUBCOMPONENT_TYPES]?: ComponentGenerator } = {
+    [SUBCOMPONENT_TYPES.TEXT]: defaultText,
+    [SUBCOMPONENT_TYPES.BUTTON]: defaultButton,
+    [SUBCOMPONENT_TYPES.CLOSE_BUTTON]: closeButton,
+  }
 
   private static updateComponentPreviewStructure(currentlySelectedComponent: WorkshopComponent, importedComponent: NewImportedComponentProperties,
       currentLayer: Layer): void {
@@ -32,16 +42,16 @@ export class AddNewImportedComponent extends AddNewSubcomponentShared {
     }
   }
 
-  private static createNewImportedComponent(): NewImportedComponentProperties {
-    const newSubcomponentName = UniqueSubcomponentNameGenerator.generate(CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_BUTTON);
-    return {
-      baseName: newSubcomponentName,
-      subcomponents: ImportedComponentGenerator.createImportedComponents(defaultButton, newSubcomponentName),
-    }
+  private static createNewImportedComponent(parentSubcomponentType: SUBCOMPONENT_TYPES): NewImportedComponentProperties {
+    const baseName = UniqueSubcomponentNameGenerator.generate(
+      AddNewSubcomponentShared.subcomponentTypeToName[parentSubcomponentType]);
+    const subcomponents = ImportedComponentGenerator.createImportedComponents(
+      AddNewImportedComponent.componentTypeToGenerator[parentSubcomponentType], baseName);
+    return { baseName, subcomponents }
   }
 
-  public static add(currentlySelectedComponent: WorkshopComponent): void {
-    const importedComponent = AddNewImportedComponent.createNewImportedComponent();
+  public static add(currentlySelectedComponent: WorkshopComponent, parentSubcomponentType: SUBCOMPONENT_TYPES): void {
+    const importedComponent = AddNewImportedComponent.createNewImportedComponent(parentSubcomponentType);
     AddNewImportedComponent.addNewSubcomponentsToExistingSubcomponents(currentlySelectedComponent, importedComponent.subcomponents);
     AddNewImportedComponent.addNewSubcomponentsToComponentPreview(currentlySelectedComponent, importedComponent); 
   }

@@ -7,13 +7,12 @@ import { AddNewLayerSubcomponent } from './add/addNewLayerSubcomponent';
 export class AddNewSubcomponentUtils {
   
   public static addSubcomponent(currentlySelectedComponent: WorkshopComponent, subcomponentType = 'importedButton'): void {
-    // WORK1: use the subcomponentType that will be passed in as arg
     if (currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].subcomponentType === SUBCOMPONENT_TYPES.BASE) {
-      AddNewLayerSubcomponent.add(currentlySelectedComponent);
+      AddNewLayerSubcomponent.add(currentlySelectedComponent, SUBCOMPONENT_TYPES.LAYER_3);
     } else if (subcomponentType === 'importedButton') {
-      AddNewImportedComponent.add(currentlySelectedComponent);
+      AddNewImportedComponent.add(currentlySelectedComponent, SUBCOMPONENT_TYPES.TEXT);
     } else {
-      AddNewNativeSubcomponent.add(currentlySelectedComponent);
+      AddNewNativeSubcomponent.add(currentlySelectedComponent, SUBCOMPONENT_TYPES.SECTION_TEXT);
     }
   }
 }
