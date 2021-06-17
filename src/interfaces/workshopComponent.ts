@@ -139,8 +139,6 @@ export interface ImportedComponent {
 export interface SubcomponentProperties {
   // used for defining options and adding new subcomponents to a layer
   subcomponentType?: SUBCOMPONENT_TYPES;
-  // may not be required if always div
-  componentTag?: string;
   customCss: CustomCss;
   defaultCss: CustomCss;
   // this css is used in instances where partialCss has been overwrittern by a single value, but a fraction of it

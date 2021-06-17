@@ -16,8 +16,7 @@
         :mouseEvents="mouseEvents"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
         :isImportedComponent="true"/>
-      <component v-else-if="isSubcomponentDisplayed(nestedSubcomponent.subcomponentProperties)"
-        :is="nestedSubcomponent.subcomponentProperties.componentTag"
+      <div v-else-if="isSubcomponentDisplayed(nestedSubcomponent.subcomponentProperties)"
         aria-hidden="true"
         :id="subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId"
         class="subcomponent-element"
@@ -46,9 +45,8 @@
         >{{(!nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus || !nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus.isDisplayedTemporarily)
             && (nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText
             && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text) ? nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text : '' }}
-      </component>
-      <component v-if="!nestedSubcomponent.subcomponentProperties.importedComponent"
-        :is="nestedSubcomponent.subcomponentProperties.componentTag"
+      </div>
+      <div v-if="!nestedSubcomponent.subcomponentProperties.importedComponent"
         :id="subcomponentAndOverlayElementIds[nestedSubcomponent.name].overlayId"
         :style="[
           nestedSubcomponent.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
@@ -68,7 +66,7 @@
             :style="[nestedSubcomponent.subcomponentProperties[nestedSubcomponent.subcomponentProperties.tempCustomCssObjName || 'customCss'][CSS_PSEUDO_CLASSES.DEFAULT], { top: ''}]"
             @mouseEnter="useSubcomponentPreviewSelectModeEventHandlers.subcomponentMouseEnter"
             @mouseLeave="useSubcomponentPreviewSelectModeEventHandlers.subcomponentMouseLeave"></div>
-      </component>
+      </div>
     </div>
   </div>
 </template>

@@ -276,7 +276,6 @@ function createSubcomponents(): Subcomponents {
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT]: {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
-      componentTag: 'div',
       customCss: createDefaultText1Css(),
       defaultCss: createDefaultText1Css(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
@@ -291,7 +290,6 @@ function createSubcomponents(): Subcomponents {
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_2]: {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
-      componentTag: 'div',
       customCss: createDefaultText2Css(),
       defaultCss: createDefaultText2Css(),
       inheritedCss: inheritedTextCss,

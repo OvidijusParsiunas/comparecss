@@ -341,7 +341,6 @@ function createSubcomponents(): Subcomponents {
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT]: {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
-      componentTag: 'div',
       customCss: createDefaultNoSiblingTextCss(),
       defaultCss: createDefaultNoSiblingTextCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
@@ -356,7 +355,6 @@ function createSubcomponents(): Subcomponents {
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_1_LAYER_2]: {
       subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
-      componentTag: 'div',
       customCss: createDefaultTextCss(),
       defaultCss: createDefaultTextCss(),
       inheritedCss: inheritedTextCss,
@@ -371,7 +369,6 @@ function createSubcomponents(): Subcomponents {
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_2_LAYER_2]: {
       subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
-      componentTag: 'div',
       customCss: createDefaultTextCss(),
       defaultCss: createDefaultTextCss(),
       inheritedCss: inheritedTextCss,
@@ -386,7 +383,6 @@ function createSubcomponents(): Subcomponents {
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_3_LAYER_2]: {
       subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
-      componentTag: 'div',
       customCss: createDefaultTextCss(),
       defaultCss: createDefaultTextCss(),
       inheritedCss: inheritedTextCss,
@@ -401,7 +397,6 @@ function createSubcomponents(): Subcomponents {
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_1_LAYER_3]: {
       subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
-      componentTag: 'div',
       customCss: createDefaultTextCss(),
       defaultCss: createDefaultTextCss(),
       inheritedCss: inheritedTextCss,
@@ -416,7 +411,6 @@ function createSubcomponents(): Subcomponents {
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_2_LAYER_3]: {
       subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
-      componentTag: 'div',
       customCss: createDefaultTextCss(),
       defaultCss: createDefaultTextCss(),
       inheritedCss: inheritedTextCss,
@@ -431,7 +425,6 @@ function createSubcomponents(): Subcomponents {
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_3_LAYER_3]: {
       subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
-      componentTag: 'div',
       customCss: createDefaultTextCss(),
       defaultCss: createDefaultTextCss(),
       inheritedCss: inheritedTextCss,
@@ -446,7 +439,6 @@ function createSubcomponents(): Subcomponents {
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_1_LAYER_4]: {
       subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
-      componentTag: 'div',
       customCss: createDefaultTextCss(),
       defaultCss: createDefaultTextCss(),
       inheritedCss: inheritedTextCss,
@@ -461,7 +453,6 @@ function createSubcomponents(): Subcomponents {
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_2_LAYER_4]: {
       subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
-      componentTag: 'div',
       customCss: createDefaultTextCss(),
       defaultCss: createDefaultTextCss(),
       inheritedCss: inheritedTextCss,
@@ -476,7 +467,6 @@ function createSubcomponents(): Subcomponents {
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT_3_LAYER_4]: {
       subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
-      componentTag: 'div',
       customCss: createDefaultTextCss(),
       defaultCss: createDefaultTextCss(),
       inheritedCss: inheritedTextCss,
@@ -491,7 +481,6 @@ function createSubcomponents(): Subcomponents {
     },
     [CORE_SUBCOMPONENTS_NAMES.AVATAR]: {
       subcomponentType: SUBCOMPONENT_TYPES.AVATAR,
-      componentTag: 'div',
       customCss: createDefaultAvatarCss(),
       defaultCss: createDefaultAvatarCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
@@ -511,7 +500,6 @@ const createNewSubcomponent = (subcomponentType: SUBCOMPONENT_TYPES): Subcompone
     case (SUBCOMPONENT_TYPES.SECTION_TEXT):
       return {
         subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
-        componentTag: 'div',
         customCss: createDefaultTextCss(),
         defaultCss: createDefaultTextCss(),
         inheritedCss: inheritedTextCss,

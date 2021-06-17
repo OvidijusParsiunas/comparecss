@@ -78,8 +78,6 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
   return {
     [subcomponentNames.base]: {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
-      // WORK1: remove this
-      componentTag: 'div',
       customCss: createTextCss(),
       defaultCss: createTextCss(),
       inheritedCss: inheritedTextCss,

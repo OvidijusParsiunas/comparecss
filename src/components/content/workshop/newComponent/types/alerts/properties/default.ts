@@ -137,7 +137,6 @@ function createSubcomponents(): Subcomponents {
     },
     [CORE_SUBCOMPONENTS_NAMES.TEXT]: {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
-      componentTag: 'div',
       customCss: createTextCss(),
       defaultCss: createTextCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,

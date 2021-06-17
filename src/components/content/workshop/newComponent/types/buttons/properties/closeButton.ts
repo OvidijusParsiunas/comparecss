@@ -137,7 +137,6 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
     },
     [subcomponentNames.text]: {
       subcomponentType: SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT,
-      componentTag: 'div',
       customCss: createTextCss(),
       defaultCss: createTextCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
