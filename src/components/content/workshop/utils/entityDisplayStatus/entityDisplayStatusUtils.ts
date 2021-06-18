@@ -3,8 +3,8 @@ import { SubcomponentDisplayStatus } from '../../../../../interfaces/workshopCom
 
 export class EntityDisplayStatusUtils {
 
-  public static createDefaultEntityDisplayStatus(isDisplayed = true): EntityDisplayStatus {
-    return { isDisplayed };
+  public static createDefaultEntityDisplayStatus(): EntityDisplayStatus {
+    return { isDisplayed: true };
   }
   
   public static createEntityDisplayStatusReferenceObject(subcomponentDisplayStatus?: SubcomponentDisplayStatus): EntityDisplayStatusRef {

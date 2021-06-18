@@ -64,9 +64,9 @@ export default class ComponentComponentUtils {
       // PART 5: change this if statement to
       /// if (componentBeingCopied.subcomponents[subcomponentName].importedComponent)
       if (!newComponent.subcomponents[subcomponentName] && !componentBeingCopied.subcomponents[subcomponentName].baseSubcomponentRef) {
-        const importedComponent = ImportedComponentGenerator.createImportedComponents(defaultButton, subcomponentName);
+        const importedComponentSubcomponents = ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, subcomponentName);
         newComponent.subcomponents = {
-          ...newComponent.subcomponents, ...importedComponent };
+          ...newComponent.subcomponents, ...importedComponentSubcomponents };
         // PART4:
         // copySubcomponentProperties
         // or inSyncSubcomponent

@@ -151,6 +151,81 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames, subcomp
   }
 }
 
+function createSubcomponents2(subcomponentproperties: any): Subcomponents {
+  return {
+    [subcomponentproperties.base.name]: {
+      subcomponentType: SUBCOMPONENT_TYPES.BUTTON,
+      customCss: subcomponentproperties.base.customCss || createDefaultBaseCss(),
+      defaultCss: subcomponentproperties.base.customCss || createDefaultBaseCss(),
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      subcomponentPreviewTransition: 'all 0.25s ease-out',
+      tempCustomCss: new Set(['transition']),
+      inheritedCss: inheritedButtonCss,
+      subcomponentSpecificSettings: buttonSpecificSettings,
+      customFeatures: subcomponentproperties.base.customFeatures || createDefaultButtonBaseCustomFeatures(),
+      defaultCustomFeatures: subcomponentproperties.base.customFeatures || createDefaultButtonBaseCustomFeatures(),
+      triggerableSubcomponentName: subcomponentproperties.text.name,
+    },
+    [subcomponentproperties.layer.name]: {
+      customCss: subcomponentproperties.layer.customCss || createLayerCss(),
+      defaultCss: subcomponentproperties.layer.customCss || createLayerCss(),
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
+    },
+    [subcomponentproperties.text.name]: {
+      subcomponentType: SUBCOMPONENT_TYPES.BUTTON_TEXT,
+      customCss: subcomponentproperties.text.customCss || createTextCss(),
+      defaultCss: subcomponentproperties.text.customCss || createTextCss(),
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      customFeatures: subcomponentproperties.text.customFeatures || createDefaultTextCustomFeatures(),
+      defaultCustomFeatures: subcomponentproperties.text.customFeatures || createDefaultTextCustomFeatures(),
+      customStaticFeatures: subcomponentproperties.text.customStaticFeatures || createDefaultTextCustomStaticFeatures(),
+      defaultCustomStaticFeatures: subcomponentproperties.text.customStaticFeatures || createDefaultTextCustomStaticFeatures(),
+    },
+  }
+}
+
+// the complecity is within the setup itself
+function createSubcomponents3(subcomponentNames: CustomSubcomponentNames, overwrittenProperties: any): Subcomponents {
+  return {
+    [subcomponentNames.base]: {
+      subcomponentType: SUBCOMPONENT_TYPES.BUTTON,
+      customCss: overwrittenProperties[subcomponentNames.base].customCss || createDefaultBaseCss(),
+      defaultCss: overwrittenProperties[subcomponentNames.base].customCss || createDefaultBaseCss(),
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      subcomponentPreviewTransition: 'all 0.25s ease-out',
+      tempCustomCss: new Set(['transition']),
+      inheritedCss: inheritedButtonCss,
+      subcomponentSpecificSettings: buttonSpecificSettings,
+      customFeatures: createDefaultButtonBaseCustomFeatures(),
+      defaultCustomFeatures: createDefaultButtonBaseCustomFeatures(),
+      triggerableSubcomponentName: subcomponentNames.text,
+    },
+    [subcomponentNames.layer]: {
+      customCss: createLayerCss(),
+      defaultCss: createLayerCss(),
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
+    },
+    [subcomponentNames.text]: {
+      subcomponentType: SUBCOMPONENT_TYPES.BUTTON_TEXT,
+      customCss: createTextCss(),
+      defaultCss: createTextCss(),
+      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+      customFeatures: createDefaultTextCustomFeatures(),
+      defaultCustomFeatures: createDefaultTextCustomFeatures(),
+      customStaticFeatures: createDefaultTextCustomStaticFeatures(),
+      defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(),
+    },
+  }
+}
+
 export const defaultButton: ComponentGenerator = {
   createNewComponent(importedComponentBaseName: string, subcomponentText?: string): WorkshopComponent {
     const subcomponentNames = importedComponentBaseName

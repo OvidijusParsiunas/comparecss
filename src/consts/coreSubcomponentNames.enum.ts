@@ -16,9 +16,6 @@ export enum CORE_SUBCOMPONENTS_NAMES {
   BUTTON_1_LAYER_3 = 'Button 1 ',
   BUTTON_2_LAYER_3 = 'Button 2 ',
   BUTTON_3_LAYER_3 = 'Button 3 ',
-  BUTTON_1_LAYER_4 = 'Button 1  ',
-  BUTTON_2_LAYER_4 = 'Button 2  ',
-  BUTTON_3_LAYER_4 = 'Button 3  ',
   TEXT = 'Text',
   TEXT_2 = 'Text ',
   TEXT_1_LAYER_2 = 'Text 1',
@@ -27,8 +24,5 @@ export enum CORE_SUBCOMPONENTS_NAMES {
   TEXT_1_LAYER_3 = 'Text 1 ',
   TEXT_2_LAYER_3 = 'Text 2 ',
   TEXT_3_LAYER_3 = 'Text 3 ',
-  TEXT_1_LAYER_4 = 'Text 1  ',
-  TEXT_2_LAYER_4 = 'Text 2  ',
-  TEXT_3_LAYER_4 = 'Text 3  ',
   AVATAR = 'Avatar',
 }

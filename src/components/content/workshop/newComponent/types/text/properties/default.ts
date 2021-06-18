@@ -60,7 +60,7 @@ function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayer
 function createDefaultTextCustomFeatures(): CustomFeatures {
   return {
     autoSize: createAutoSize(),
-    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
+    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
   };
 }
 

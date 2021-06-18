@@ -6,7 +6,6 @@ import { closeButton } from '../../../../newComponent/types/buttons/properties/c
 import { defaultButton } from '../../../../newComponent/types/buttons/properties/default';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { defaultText } from '../../../../newComponent/types/text/properties/default';
 import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
@@ -23,7 +22,7 @@ export class AddNewImportedComponent extends AddNewSubcomponentShared {
   private static updateComponentPreviewStructure(currentlySelectedComponent: WorkshopComponent, importedComponent: NewImportedComponentProperties,
       currentLayer: Layer): void {
     const importedComponentStructure = ImportedComponentGenerator.createImportedComponentStructure(
-      currentlySelectedComponent.subcomponents, importedComponent.baseName, ALIGNED_SECTION_TYPES.RIGHT);
+      currentlySelectedComponent.subcomponents, importedComponent.baseName);
     currentlySelectedComponent.componentPreviewStructure.subcomponentDropdownStructure[CORE_SUBCOMPONENTS_NAMES.BASE][currentLayer.name] = {
       [importedComponent.baseName]: { ...importedComponentStructure.component[importedComponentStructure.baseName]},
       ...currentlySelectedComponent.componentPreviewStructure.subcomponentDropdownStructure[CORE_SUBCOMPONENTS_NAMES.BASE][currentLayer.name],
@@ -45,7 +44,7 @@ export class AddNewImportedComponent extends AddNewSubcomponentShared {
   private static createNewImportedComponent(parentSubcomponentType: SUBCOMPONENT_TYPES): NewImportedComponentProperties {
     const baseName = UniqueSubcomponentNameGenerator.generate(
       AddNewSubcomponentShared.subcomponentTypeToName[parentSubcomponentType]);
-    const subcomponents = ImportedComponentGenerator.createImportedComponents(
+    const subcomponents = ImportedComponentGenerator.createImportedComponentSubcomponents(
       AddNewImportedComponent.componentTypeToGenerator[parentSubcomponentType], baseName);
     return { baseName, subcomponents }
   }

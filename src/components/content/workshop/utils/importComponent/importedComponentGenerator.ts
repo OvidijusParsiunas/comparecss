@@ -7,7 +7,6 @@ import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponent
 import { EntityDisplayStatusUtils } from '../entityDisplayStatus/entityDisplayStatusUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../interfaces/componentGenerator';
-import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
 
 export class ImportedComponentGenerator {
 
@@ -35,7 +34,7 @@ export class ImportedComponentGenerator {
       [importedComponentName][ENTITY_DISPLAY_STATUS_REF] = baseSubcomponent.subcomponentDisplayStatus;
   }
 
-  public static createImportedComponents(componentGenerator: ComponentGenerator, importedComponentName: string, subcomponentText?: string): Subcomponents {
+  public static createImportedComponentSubcomponents(componentGenerator: ComponentGenerator, importedComponentName: string, subcomponentText?: string): Subcomponents {
     const importedComponentRef = componentGenerator.createNewComponent(importedComponentName, subcomponentText);
     ImportedComponentGenerator.applyTopProperty(importedComponentRef, importedComponentName);
     ImportedComponentGenerator.applyOptionalSubcomponentProperty(importedComponentRef, importedComponentName);
@@ -45,13 +44,9 @@ export class ImportedComponentGenerator {
     return importedComponentRef.subcomponents;
   }
 
-  public static createImportedComponentStructure(subcomponents: Subcomponents, baseName: string, alignment?: ALIGNED_SECTION_TYPES,
-      isComponentDisplayed = true): ImportedComponentStructure {
+  public static createImportedComponentStructure(subcomponents: Subcomponents, baseName: string): ImportedComponentStructure {
     (subcomponents[baseName].importedComponent.componentRef.componentPreviewStructure.subcomponentDropdownStructure[baseName]
-      .optionalSubcomponentRef as EntityDisplayStatus).isDisplayed = isComponentDisplayed;
-    if (alignment) {
-      subcomponents[baseName].importedComponent.componentRef.subcomponents[baseName].customFeatures.alignedLayerSection.section = alignment;
-    }
+      .optionalSubcomponentRef as EntityDisplayStatus).isDisplayed = true;
     return {
       baseName,
       component: subcomponents[baseName].importedComponent.componentRef.componentPreviewStructure.subcomponentDropdownStructure,

@@ -154,7 +154,7 @@ export const defaultAlert: ComponentGenerator = {
     uniqueSubcomponentIdState.resetUniqueId();
     const importedCloseButtonName = CORE_SUBCOMPONENTS_NAMES.CLOSE;
     const subcomponents = { ...createSubcomponents(),
-      ...ImportedComponentGenerator.createImportedComponents(closeButton, importedCloseButtonName)};
+      ...ImportedComponentGenerator.createImportedComponentSubcomponents(closeButton, importedCloseButtonName)};
     const subcomponentDropdownStructure = getAlertSubcomponentDropdownStructure(subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT],
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedCloseButtonName));
     return {
