@@ -1,4 +1,4 @@
-import { componentTypeToGenerators } from '../../../../newComponent/types/componentTypeToGenerators';
+import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { EntityDisplayStatusUtils } from '../../../entityDisplayStatus/entityDisplayStatusUtils';
 import { NewSubcomponentProperties } from '../../../../../../../interfaces/addNewSubcomponent';
@@ -30,7 +30,7 @@ export class AddNewLayerSubcomponent extends AddNewSubcomponentShared {
   }
 
   public static add(currentlySelectedComponent: WorkshopComponent, subcomponentType: SUBCOMPONENT_TYPES): void {
-    const componentGenerator = componentTypeToGenerators[currentlySelectedComponent.type][currentlySelectedComponent.style];
+    const componentGenerator = componentTypeToStyleGenerators[currentlySelectedComponent.type][currentlySelectedComponent.style];
     // WORK1: should layer3 be changed to something else or would the options adjust depending on layer depth
     const newLayerSubcomponent = AddNewLayerSubcomponent.createNewSubcomponent(componentGenerator, subcomponentType);
     AddNewLayerSubcomponent.addNewSubcomponentToExistingSubcomponents(currentlySelectedComponent, newLayerSubcomponent);

@@ -5,12 +5,11 @@ import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedD
 import { SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
 
 export default function getCardSubcomponentDropdownStructure(
-    avatarSubcomponent: SubcomponentProperties, layer2Subcomponent: SubcomponentProperties, layer3Subcomponent: SubcomponentProperties,
+    layer2Subcomponent: SubcomponentProperties, layer3Subcomponent: SubcomponentProperties,
     importedCloseButtonStructure: ImportedComponentStructure): NestedDropdownStructure {
   return {
     [CORE_SUBCOMPONENTS_NAMES.BASE]: {
       [CORE_SUBCOMPONENTS_NAMES.LAYER_1]: {
-        [CORE_SUBCOMPONENTS_NAMES.AVATAR]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject(avatarSubcomponent.subcomponentDisplayStatus),
         [importedCloseButtonStructure.baseName]: { ...importedCloseButtonStructure.component[importedCloseButtonStructure.baseName] },
       },
       [CORE_SUBCOMPONENTS_NAMES.LAYER_2]: {

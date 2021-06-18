@@ -29,7 +29,7 @@
         @mousedown="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseDown()"
         @mouseup="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentMouseUp()"
         @click="mouseEvents[subcomponentAndOverlayElementIds[nestedSubcomponent.name].subcomponentId].subcomponentClick()"
-        :style="[nestedSubcomponent.subcomponentProperties.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK
+        :style="nestedSubcomponent.subcomponentProperties.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK
           ? [
               [ nestedSubcomponent.subcomponentProperties.inheritedCss || '' ],
               nestedSubcomponent.subcomponentProperties[nestedSubcomponent.subcomponentProperties.tempCustomCssObjName || 'customCss'][CSS_PSEUDO_CLASSES.DEFAULT],
@@ -40,8 +40,7 @@
               [ nestedSubcomponent.subcomponentProperties.inheritedCss || '' ],
               nestedSubcomponent.subcomponentProperties[nestedSubcomponent.subcomponentProperties.tempCustomCssObjName || 'customCss'][CSS_PSEUDO_CLASSES.DEFAULT],
               nestedSubcomponent.subcomponentProperties[nestedSubcomponent.subcomponentProperties.tempCustomCssObjName || 'customCss'][nestedSubcomponent.subcomponentProperties.activeCssPseudoClass],
-            ], { backgroundImage: nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.image
-              && nestedSubcomponent.subcomponentProperties.customStaticFeatures.image.data ? 'url(' + nestedSubcomponent.subcomponentProperties.customStaticFeatures.image.data + ')' : ''}]"
+            ]"
         >{{(!nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus || !nestedSubcomponent.subcomponentProperties.subcomponentDisplayStatus.isDisplayedTemporarily)
             && (nestedSubcomponent.subcomponentProperties.customStaticFeatures && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText
             && nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text) ? nestedSubcomponent.subcomponentProperties.customStaticFeatures.subcomponentText.text : '' }}

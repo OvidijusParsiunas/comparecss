@@ -15,17 +15,16 @@ export class AddNewSubcomponentShared {
     [SUBCOMPONENT_TYPES.BUTTON]: CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_BUTTON,
     [SUBCOMPONENT_TYPES.SECTION_TEXT]: CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_TEXT,
     [SUBCOMPONENT_TYPES.TEXT]: CORE_SUBCOMPONENTS_NAMES.TEXT,
+    [SUBCOMPONENT_TYPES.AVATAR]: CORE_SUBCOMPONENTS_NAMES.AVATAR,
   }
 
   protected static addNewSubcomponentToCurrentLayer(currentLayer: Layer, newSubcomponentProperties: NewSubcomponentProperties): void {
-    const alignment = newSubcomponentProperties.subcomponentProperties.customFeatures
-      && newSubcomponentProperties.subcomponentProperties.customFeatures.alignedLayerSection
-      && newSubcomponentProperties.subcomponentProperties.customFeatures.alignedLayerSection.section;
+    const alignment = newSubcomponentProperties.subcomponentProperties?.customFeatures?.alignedLayerSection?.section;
     currentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][alignment || ALIGNED_SECTION_TYPES.LEFT].push(newSubcomponentProperties);
   }
 
   protected static updateNewSubcomponentParentLayer(newSubcomponentProperties: NewSubcomponentProperties, currentLayer: Layer): void {
-    newSubcomponentProperties.subcomponentProperties.parentLayer = currentLayer;
+  newSubcomponentProperties.subcomponentProperties.parentLayer = currentLayer;
   }
 
   protected static findCurrentLayer(currentlySelectedComponent: WorkshopComponent, layerName?: CORE_SUBCOMPONENTS_NAMES): Layer {

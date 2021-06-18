@@ -4,4 +4,5 @@ export enum NEW_COMPONENT_TYPES {
   MODAL = 'Modal',
   CARD = 'Card',
   TEXT = 'Text',
+  AVATAR = 'Avatar',
 }

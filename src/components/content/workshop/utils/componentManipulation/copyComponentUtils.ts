@@ -1,5 +1,5 @@
 import { ImportedComponent, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
-import { componentTypeToGenerators } from '../../newComponent/types/componentTypeToGenerators';
+import { componentTypeToStyleGenerators } from '../../newComponent/types/componentTypeToStyleGenerators';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomponentNames';
 import { ImportedComponentGenerator } from '../importComponent/importedComponentGenerator';
@@ -99,7 +99,7 @@ export default class ComponentComponentUtils {
   }
 
   public static copyComponent(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {
-    const newComponent = componentTypeToGenerators[componentBeingCopied.type][NEW_COMPONENT_STYLES.DEFAULT].createNewComponent();
+    const newComponent = componentTypeToStyleGenerators[componentBeingCopied.type][NEW_COMPONENT_STYLES.DEFAULT].createNewComponent();
     ComponentComponentUtils.copyComponentProperties(newComponent, componentBeingCopied);
     newComponent.activeSubcomponentName = CORE_SUBCOMPONENTS_NAMES.BASE;
     newComponent.subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE].activeCssPseudoClass = CSS_PSEUDO_CLASSES.DEFAULT;

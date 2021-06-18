@@ -12,7 +12,7 @@
       @mousedown="mouseEvents[subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId].subcomponentMouseDown()"
       @mouseup="mouseEvents[subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId].subcomponentMouseUp()"
       @click="mouseEvents[subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId].subcomponentClick()"
-      :style="component.componentPreviewStructure.baseSubcomponentProperties.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK
+      :style="[component.componentPreviewStructure.baseSubcomponentProperties.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK
         ? [
             [ component.componentPreviewStructure.baseSubcomponentProperties.inheritedCss || '' ],
             component.componentPreviewStructure.baseSubcomponentProperties[component.componentPreviewStructure.baseSubcomponentProperties.tempCustomCssObjName || 'customCss'][CSS_PSEUDO_CLASSES.DEFAULT],
@@ -23,7 +23,8 @@
             [ component.componentPreviewStructure.baseSubcomponentProperties.inheritedCss || '' ],
             component.componentPreviewStructure.baseSubcomponentProperties[component.componentPreviewStructure.baseSubcomponentProperties.tempCustomCssObjName || 'customCss'][CSS_PSEUDO_CLASSES.DEFAULT],
             component.componentPreviewStructure.baseSubcomponentProperties[component.componentPreviewStructure.baseSubcomponentProperties.tempCustomCssObjName || 'customCss'][component.componentPreviewStructure.baseSubcomponentProperties.activeCssPseudoClass],
-          ]">
+          ], { backgroundImage: component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures && component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.image
+              && component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.image.data ? 'url(' + component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.image.data + ')' : ''}]">
           {{(component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures && component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.subcomponentText
             && component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.subcomponentText.text) ? component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.subcomponentText.text : '' }}
           <layers

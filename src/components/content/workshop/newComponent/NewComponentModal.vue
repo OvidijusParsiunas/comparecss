@@ -51,12 +51,12 @@
 
 <script lang="ts">
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
+import { componentTypeToStyleGenerators } from './types/componentTypeToStyleGenerators';
 import newComponentModalService from '../../../../services/workshop/newComponentModal';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
 import { NEW_COMPONENT_STYLES } from '../../../../consts/newComponentStyles.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
-import { componentTypeToGenerators } from './types/componentTypeToGenerators';
 import ProcessClassName from '../utils/componentGenerator/processClassName';
 import { NEW_COMPONENT_MODAL_ID } from '../../../../consts/elementIds';
 
@@ -157,7 +157,7 @@ export default {
       this.currentlySelectedComponentType = componentType;
     },
     addNewComponent(): void {
-      const newComponent = componentTypeToGenerators[this.currentlySelectedComponentType][NEW_COMPONENT_STYLES.DEFAULT].createNewComponent();
+      const newComponent = componentTypeToStyleGenerators[this.currentlySelectedComponentType][NEW_COMPONENT_STYLES.DEFAULT].createNewComponent();
       newComponent.className = this.className;
       this.$emit('add-new-component', newComponent);
       // updates modal only after it has closed

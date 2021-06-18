@@ -7,7 +7,6 @@ import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcom
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { GENERAL_ANIMATION_CLOSE_TYPES } from '../../../../../../../consts/animationTypes.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
 import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -22,7 +21,6 @@ import { modalTextSpecificSettings } from './modalTextSpecificSettings';
 import { inheritedLayerBaseCss } from '../../shared/layer/inheritedCss';
 import { closeButton } from '../../buttons/properties/closeButton';
 import { inheritedTextCss } from '../../shared/text/inheritedCss';
-import { defaultImage } from '../../shared/images/default';
 import {
   AlignedLayerSection, AutoSize, Text, CustomStaticFeatures, Image, SubcomponentProperties,
   CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Animations,
@@ -82,32 +80,6 @@ function createDefaultTextCustomFeatures(): CustomFeatures {
 function createDefaultTextCustomStaticFeatures(text?: string): CustomStaticFeatures {
   return {
     subcomponentText: createText(text || 'text'),
-  }
-}
-
-function createButtonBaseLastSelectedCssValues(): WorkshopComponentCss {
-  return { left: '0px' };
-}
-
-function createDefaultAvatarCustomFeatures(): CustomFeatures {
-  return {
-    circleBorder: false,
-    lastSelectedCssValues: createButtonBaseLastSelectedCssValues(),
-    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
-  };
-}
-
-function createAvatarImage(): Image {
-  return {
-    name: 'default',
-    data: defaultImage,
-    size: true,
-  }
-}
-
-function createDefaultAvatarCustomStaticFeatures(): CustomStaticFeatures {
-  return {
-    image: createAvatarImage(),
   }
 }
 
@@ -182,36 +154,6 @@ function createDefaultBottomLayerCss(): CustomCss {
   };
 }
 
-function createDefaultAvatarCss(): CustomCss {
-  return {
-    [CSS_PSEUDO_CLASSES.DEFAULT]: {
-      borderRadius: '0px',
-      borderWidth: '0px',
-      borderColor: '#1779ba',
-      borderStyle: 'solid',
-      boxShadow: 'unset',
-      outline: 'none',
-      paddingTop: '0px',
-      paddingBottom: '0px',
-      paddingLeft: '12px',
-      paddingRight: '12px',
-      marginLeft: '0px',
-      marginTop: '0px',
-      marginRight: '0px',
-      marginBottom: '0px',
-      width: '40px',
-      height: '38px',
-      boxSizing: 'content-box',
-      color: '#ffffff',
-      fontSize: '14px',
-      transition: 'unset',
-      top: '50%',
-      left: '0px',
-      backgroundSize: '100% 100%',
-    },
-  };
-}
-
 function createSubcomponents(): Subcomponents {
   return {
     [CORE_SUBCOMPONENTS_NAMES.BASE]: {
@@ -254,18 +196,6 @@ function createSubcomponents(): Subcomponents {
       subcomponentSpecificSettings: modalLayerBottomSpecificSettings,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
       subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
-    },
-    [CORE_SUBCOMPONENTS_NAMES.AVATAR]: {
-      subcomponentType: SUBCOMPONENT_TYPES.AVATAR,
-      customCss: createDefaultAvatarCss(),
-      defaultCss: createDefaultAvatarCss(),
-      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
-      customFeatures: createDefaultAvatarCustomFeatures(),
-      defaultCustomFeatures: createDefaultAvatarCustomFeatures(),
-      customStaticFeatures: createDefaultAvatarCustomStaticFeatures(),
-      defaultCustomStaticFeatures: createDefaultAvatarCustomStaticFeatures(),
     },
   };
 }
@@ -388,12 +318,10 @@ export const defaultCard: ComponentGenerator = {
     const subcomponents = { ...createSubcomponents(),
       ...ImportedComponentGenerator.createImportedComponentSubcomponents(closeButton, importedCloseButtonName),
     };
-    const subcomponentDropdownStructure = getCardSubcomponentDropdownStructure(subcomponents[CORE_SUBCOMPONENTS_NAMES.AVATAR],
+    const subcomponentDropdownStructure = getCardSubcomponentDropdownStructure(
       subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_3],
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedCloseButtonName),
     );
-    subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE].subcomponentSpecificSettings = getCardBaseSpecificSettings(
-      subcomponents[importedCloseButtonName], subcomponents[CORE_SUBCOMPONENTS_NAMES.AVATAR]);
     const defaultCardComponent = {
       type: NEW_COMPONENT_TYPES.CARD,
       style: NEW_COMPONENT_STYLES.DEFAULT,
@@ -408,6 +336,9 @@ export const defaultCard: ComponentGenerator = {
     AddNewImportedComponent.add(defaultCardComponent, SUBCOMPONENT_TYPES.TEXT, CORE_SUBCOMPONENTS_NAMES.LAYER_2, overwriteImportedDescriptionProperties);
     AddNewImportedComponent.add(defaultCardComponent, SUBCOMPONENT_TYPES.BUTTON, CORE_SUBCOMPONENTS_NAMES.LAYER_3, overwriteImportedSubmitButtonProperties);
     AddNewImportedComponent.add(defaultCardComponent, SUBCOMPONENT_TYPES.BUTTON, CORE_SUBCOMPONENTS_NAMES.LAYER_3, overwriteImportedCancelButtonProperties);
+    const avatarComponent = AddNewImportedComponent.add(defaultCardComponent, SUBCOMPONENT_TYPES.AVATAR, CORE_SUBCOMPONENTS_NAMES.LAYER_1);
+    subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE].subcomponentSpecificSettings = getCardBaseSpecificSettings(
+      subcomponents[importedCloseButtonName], avatarComponent.subcomponents[avatarComponent.baseName]);
     return defaultCardComponent;
   },
   createNewSubcomponent: createNewSubcomponent,

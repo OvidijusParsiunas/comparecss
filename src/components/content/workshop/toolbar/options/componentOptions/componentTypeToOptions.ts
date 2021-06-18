@@ -31,10 +31,6 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
     [SUBCOMPONENT_TYPES.BUTTON]: buttonBaseOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.BUTTON_TEXT]: buttonTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
   },
-  [NEW_COMPONENT_TYPES.TEXT]: {
-    // WORK1: make sure that the options used are correct
-    [SUBCOMPONENT_TYPES.TEXT]: buttonTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
-  },
   [NEW_COMPONENT_TYPES.ALERT]: {
     [SUBCOMPONENT_TYPES.BASE]: alertBaseOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.TEXT]: textOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
@@ -64,5 +60,11 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
     [SUBCOMPONENT_TYPES.CLOSE_BUTTON]: closeButtonOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT]: closeButtonTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.AVATAR]: avatarOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+  },
+  [NEW_COMPONENT_TYPES.TEXT]: {
+    [SUBCOMPONENT_TYPES.TEXT]: textOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+  },
+  [NEW_COMPONENT_TYPES.AVATAR]: {
+    [SUBCOMPONENT_TYPES.TEXT]: avatarOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
   },
 };

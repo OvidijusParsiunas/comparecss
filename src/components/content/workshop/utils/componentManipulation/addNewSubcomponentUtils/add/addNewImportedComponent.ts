@@ -10,6 +10,7 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentType
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { defaultText } from '../../../../newComponent/types/text/properties/default';
 import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
+import { avatar } from '../../../../newComponent/types/avatar/properties/avatar';
 import { AddNewSubcomponentShared } from './addNewSubcomponentShared';
 
 type OverwritePropertiesFunc = (subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames) => void
@@ -17,6 +18,7 @@ type OverwritePropertiesFunc = (subcomponents: Subcomponents, subcomponentNames:
 export class AddNewImportedComponent extends AddNewSubcomponentShared {
 
   private static readonly componentTypeToGenerator: { [key in SUBCOMPONENT_TYPES]?: ComponentGenerator } = {
+    [SUBCOMPONENT_TYPES.AVATAR]: avatar,
     [SUBCOMPONENT_TYPES.TEXT]: defaultText,
     [SUBCOMPONENT_TYPES.BUTTON]: defaultButton,
     [SUBCOMPONENT_TYPES.CLOSE_BUTTON]: closeButton,
@@ -54,9 +56,10 @@ export class AddNewImportedComponent extends AddNewSubcomponentShared {
 
   // WORK1: currently adding default styles but may need to add a non default style in the future
   public static add(currentlySelectedComponent: WorkshopComponent, parentSubcomponentType: SUBCOMPONENT_TYPES, layerName?: CORE_SUBCOMPONENTS_NAMES,
-      OverwritePropertiesFunc?: OverwritePropertiesFunc): void {
+      OverwritePropertiesFunc?: OverwritePropertiesFunc): NewImportedComponentProperties {
     const importedComponent = AddNewImportedComponent.createNewImportedComponent(parentSubcomponentType, OverwritePropertiesFunc);
     AddNewImportedComponent.addNewSubcomponentsToExistingSubcomponents(currentlySelectedComponent, importedComponent.subcomponents);
     AddNewImportedComponent.addNewSubcomponentsToComponentPreview(currentlySelectedComponent, importedComponent, layerName);
+    return importedComponent;
   }
 }
