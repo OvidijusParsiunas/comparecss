@@ -2,6 +2,7 @@ import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uni
 import { Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { NewImportedComponentProperties } from '../../../../../../../interfaces/addNewSubcomponent';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
+import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { ImportedComponentGenerator } from '../../../importComponent/importedComponentGenerator';
 import { closeButton } from '../../../../newComponent/types/buttons/properties/closeButton';
 import { defaultButton } from '../../../../newComponent/types/buttons/properties/default';
@@ -11,7 +12,7 @@ import { defaultText } from '../../../../newComponent/types/text/properties/defa
 import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { AddNewSubcomponentShared } from './addNewSubcomponentShared';
 
-type OverwritePropertiesFunc = (subcomponents: Subcomponents, baseName: string) => void
+type OverwritePropertiesFunc = (subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames) => void
 
 export class AddNewImportedComponent extends AddNewSubcomponentShared {
 
@@ -46,7 +47,8 @@ export class AddNewImportedComponent extends AddNewSubcomponentShared {
       AddNewImportedComponent.subcomponentTypeToName[parentSubcomponentType]);
     const subcomponents = ImportedComponentGenerator.createImportedComponentSubcomponents(
       AddNewImportedComponent.componentTypeToGenerator[parentSubcomponentType], baseName);
-    if (OverwritePropertiesFunc) OverwritePropertiesFunc(subcomponents, baseName);
+    const { subcomponentNames } = subcomponents[baseName].importedComponent.componentRef;
+    if (OverwritePropertiesFunc) OverwritePropertiesFunc(subcomponents, subcomponentNames);
     return { baseName, subcomponents }
   }
 

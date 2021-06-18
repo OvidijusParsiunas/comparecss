@@ -4,6 +4,7 @@ import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/
 import { ImportedComponentGenerator } from '../../../../utils/importComponent/importedComponentGenerator';
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
+import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { GENERAL_ANIMATION_CLOSE_TYPES } from '../../../../../../../consts/animationTypes.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
@@ -21,7 +22,6 @@ import { modalTextSpecificSettings } from './modalTextSpecificSettings';
 import { inheritedLayerBaseCss } from '../../shared/layer/inheritedCss';
 import { closeButton } from '../../buttons/properties/closeButton';
 import { inheritedTextCss } from '../../shared/text/inheritedCss';
-import { defaultButton } from '../../buttons/properties/default';
 import { defaultImage } from '../../shared/images/default';
 import {
   AlignedLayerSection, AutoSize, Text, CustomStaticFeatures, Image, SubcomponentProperties,
@@ -68,47 +68,20 @@ function createAutoSize(): AutoSize {
   };
 }
 
-function createDefaultNoSiblingTextCustomFeatures(): CustomFeatures {
-  return {
-    autoSize: createAutoSize(),
-    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
-  };
-}
-
 function createText(text: string): Text {
   return { text };
 }
 
-function createDefaultNoSiblingTextCustomStaticFeatures(): CustomStaticFeatures {
-  return {
-    subcomponentText: createText('Modal title'),
-  }
-}
-
-function createDefaultText1CustomFeatures(): CustomFeatures {
+function createDefaultTextCustomFeatures(): CustomFeatures {
   return {
     autoSize: createAutoSize(),
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
   };
 }
 
-function createDefaultText2CustomFeatures(): CustomFeatures {
+function createDefaultTextCustomStaticFeatures(text?: string): CustomStaticFeatures {
   return {
-    autoSize: createAutoSize(),
-    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
-  };
-}
-
-function createDefaultText3CustomFeatures(): CustomFeatures {
-  return {
-    autoSize: createAutoSize(),
-    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
-  };
-}
-
-function createDefaultTextCustomStaticFeatures(): CustomStaticFeatures {
-  return {
-    subcomponentText: createText('text'),
+    subcomponentText: createText(text || 'text'),
   }
 }
 
@@ -209,55 +182,6 @@ function createDefaultBottomLayerCss(): CustomCss {
   };
 }
 
-function createDefaultNoSiblingTextCss(): CustomCss {
-  return {
-    [CSS_PSEUDO_CLASSES.DEFAULT]: {
-      top: '50%',
-      width: 'max-content',
-      fontWeight: '500',
-      fontSize: '20px',
-      fontFamily: '"Poppins", sans-serif',
-      color: '#004085',
-      textAlign: 'left',
-      backgroundColor: 'inherit',
-      paddingTop: '0px',
-      paddingBottom: '0px',
-      paddingLeft: '0px',
-      paddingRight: '0px',
-      marginLeft: '0px',
-      marginRight: '0px',
-      height: '',
-    },
-  };
-}
-
-function createDefaultTextCss(): CustomCss {
-  return {
-    [CSS_PSEUDO_CLASSES.DEFAULT]: {
-      top: '50%',
-      width: 'max-content',
-      fontWeight: '400',
-      fontFamily: '"Poppins", sans-serif',
-      fontSize: '16px',
-      color: '#004085',
-      textAlign: 'left',
-      backgroundColor: 'inherit',
-      paddingTop: '0px',
-      paddingBottom: '0px',
-      paddingLeft: '0px',
-      paddingRight: '0px',
-      marginLeft: '0px',
-      marginRight: '0px',
-      height: '',
-      borderWidth: '0',
-      borderColor: '#1779ba',
-      borderStyle: 'solid',
-      borderRightWidth: '0px',
-      borderLeftWidth: '0px',
-    },
-  };
-}
-
 function createDefaultAvatarCss(): CustomCss {
   return {
     [CSS_PSEUDO_CLASSES.DEFAULT]: {
@@ -331,20 +255,6 @@ function createSubcomponents(): Subcomponents {
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
       subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
     },
-    [CORE_SUBCOMPONENTS_NAMES.TEXT_1_LAYER_2]: {
-      subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
-      customCss: createDefaultTextCss(),
-      defaultCss: createDefaultTextCss(),
-      inheritedCss: inheritedTextCss,
-      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
-      subcomponentSpecificSettings: modalTextSpecificSettings,
-      customFeatures: createDefaultText1CustomFeatures(),
-      defaultCustomFeatures: createDefaultText1CustomFeatures(),
-      customStaticFeatures: createDefaultTextCustomStaticFeatures(),
-      defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(),
-    },
     [CORE_SUBCOMPONENTS_NAMES.AVATAR]: {
       subcomponentType: SUBCOMPONENT_TYPES.AVATAR,
       customCss: createDefaultAvatarCss(),
@@ -360,41 +270,7 @@ function createSubcomponents(): Subcomponents {
   };
 }
 
-// WORK1: allow this to be reusable for all componennts
-const createNewSubcomponent = (subcomponentType: SUBCOMPONENT_TYPES): SubcomponentProperties => {
-  switch (subcomponentType) {
-    case (SUBCOMPONENT_TYPES.SECTION_TEXT):
-      return {
-        subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
-        customCss: createDefaultTextCss(),
-        defaultCss: createDefaultTextCss(),
-        inheritedCss: inheritedTextCss,
-        activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-        defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-        subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
-        subcomponentSpecificSettings: modalTextSpecificSettings,
-        customFeatures: createDefaultText3CustomFeatures(),
-        defaultCustomFeatures: createDefaultText3CustomFeatures(),
-        customStaticFeatures: createDefaultTextCustomStaticFeatures(),
-        defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(),
-      }
-    case (SUBCOMPONENT_TYPES.LAYER_3):
-      return {
-        subcomponentType: SUBCOMPONENT_TYPES.LAYER_3,
-        customCss: createDefaultBottomLayerCss(),
-        defaultCss: createDefaultBottomLayerCss(),
-        activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-        defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-        subcomponentSpecificSettings: modalLayerBottomSpecificSettings,
-        layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
-        subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
-      }
-    default:
-      return undefined;
-  }
-}
-
-function createDefaultText1Css(): CustomCss {
+function createDefaultModalTitleCss(): CustomCss {
   return {
     [CSS_PSEUDO_CLASSES.DEFAULT]: {
       top: '50%',
@@ -416,52 +292,122 @@ function createDefaultText1Css(): CustomCss {
   };
 }
 
-function createDefaultText1CustomStaticFeatures(): CustomStaticFeatures {
-  return {
-    subcomponentText: createText('Modal title'),
-  }
+function overwriteImportedTitleProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
+  subcomponents[subcomponentNames.base].customCss = createDefaultModalTitleCss();
+  subcomponents[subcomponentNames.base].defaultCss = createDefaultModalTitleCss();
+  subcomponents[subcomponentNames.base].customFeatures = createDefaultTextCustomFeatures();
+  subcomponents[subcomponentNames.base].defaultCustomFeatures = createDefaultTextCustomFeatures();
+  subcomponents[subcomponentNames.base].customStaticFeatures = createDefaultTextCustomStaticFeatures('Modal title');
+  subcomponents[subcomponentNames.base].defaultCustomStaticFeatures = createDefaultTextCustomStaticFeatures('Modal title');
 }
 
-function overwriteImportedText1Properties(subcomponents: Subcomponents, baseName: string): void {
-  subcomponents[baseName].customCss = createDefaultText1Css();
-  subcomponents[baseName].defaultCss = createDefaultText1Css();
-  subcomponents[baseName].customFeatures = createDefaultText1CustomFeatures();
-  subcomponents[baseName].defaultCustomFeatures = createDefaultText1CustomFeatures();
-  subcomponents[baseName].customStaticFeatures = createDefaultText1CustomStaticFeatures();
-  subcomponents[baseName].defaultCustomStaticFeatures = createDefaultText1CustomStaticFeatures();
+function overwriteImportedDescriptionProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
+  subcomponents[subcomponentNames.base].customStaticFeatures = createDefaultTextCustomStaticFeatures('Description');
+  subcomponents[subcomponentNames.base].defaultCustomStaticFeatures = createDefaultTextCustomStaticFeatures('Description');
+}
+
+function overwriteImportedSubmitButtonProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
+  subcomponents[subcomponentNames.base].customFeatures.alignedLayerSection = createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+  subcomponents[subcomponentNames.base].defaultCustomFeatures.alignedLayerSection = createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+  subcomponents[subcomponentNames.text].customStaticFeatures = createDefaultTextCustomStaticFeatures('Submit');
+  subcomponents[subcomponentNames.text].customStaticFeatures = createDefaultTextCustomStaticFeatures('Submit');
+}
+
+function overwriteImportedCancelButtonProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
+  subcomponents[subcomponentNames.base].customFeatures.alignedLayerSection = createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+  subcomponents[subcomponentNames.base].defaultCustomFeatures.alignedLayerSection = createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+  subcomponents[subcomponentNames.text].customStaticFeatures = createDefaultTextCustomStaticFeatures('Cancel');
+  subcomponents[subcomponentNames.text].customStaticFeatures = createDefaultTextCustomStaticFeatures('Cancel');
+}
+
+function createDefaultTextCss(): CustomCss {
+  return {
+    [CSS_PSEUDO_CLASSES.DEFAULT]: {
+      top: '50%',
+      width: 'max-content',
+      fontWeight: '400',
+      fontFamily: '"Poppins", sans-serif',
+      fontSize: '16px',
+      color: '#004085',
+      textAlign: 'left',
+      backgroundColor: 'inherit',
+      paddingTop: '0px',
+      paddingBottom: '0px',
+      paddingLeft: '0px',
+      paddingRight: '0px',
+      marginLeft: '0px',
+      marginRight: '0px',
+      height: '',
+      borderWidth: '0',
+      borderColor: '#1779ba',
+      borderStyle: 'solid',
+      borderRightWidth: '0px',
+      borderLeftWidth: '0px',
+    },
+  };
+}
+
+// WORK1: allow this to be reusable for all componennts
+const createNewSubcomponent = (subcomponentType: SUBCOMPONENT_TYPES): SubcomponentProperties => {
+  switch (subcomponentType) {
+    case (SUBCOMPONENT_TYPES.SECTION_TEXT):
+      return {
+        subcomponentType: SUBCOMPONENT_TYPES.SECTION_TEXT,
+        customCss: createDefaultTextCss(),
+        defaultCss: createDefaultTextCss(),
+        inheritedCss: inheritedTextCss,
+        activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+        defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+        subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
+        subcomponentSpecificSettings: modalTextSpecificSettings,
+        customFeatures: createDefaultTextCustomFeatures(),
+        defaultCustomFeatures: createDefaultTextCustomFeatures(),
+        customStaticFeatures: createDefaultTextCustomStaticFeatures(),
+        defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(),
+      }
+    case (SUBCOMPONENT_TYPES.LAYER_3):
+      return {
+        subcomponentType: SUBCOMPONENT_TYPES.LAYER_3,
+        customCss: createDefaultBottomLayerCss(),
+        defaultCss: createDefaultBottomLayerCss(),
+        activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+        defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+        subcomponentSpecificSettings: modalLayerBottomSpecificSettings,
+        layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
+        subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
+      }
+    default:
+      return undefined;
+  }
 }
 
 export const defaultCard: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
     uniqueSubcomponentIdState.resetUniqueId();
     const importedCloseButtonName = CORE_SUBCOMPONENTS_NAMES.CLOSE;
-    const importedButton1Layer3Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_1_LAYER_3;
-    const importedButton2Layer3Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_2_LAYER_3;
     const subcomponents = { ...createSubcomponents(),
       ...ImportedComponentGenerator.createImportedComponentSubcomponents(closeButton, importedCloseButtonName),
-      ...ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, importedButton1Layer3Name),
-      ...ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, importedButton2Layer3Name),
     };
     const subcomponentDropdownStructure = getCardSubcomponentDropdownStructure(subcomponents[CORE_SUBCOMPONENTS_NAMES.AVATAR],
       subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_3],
-      subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1_LAYER_2],
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedCloseButtonName),
-      ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton1Layer3Name),
-      ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton2Layer3Name),
     );
     subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE].subcomponentSpecificSettings = getCardBaseSpecificSettings(
       subcomponents[importedCloseButtonName], subcomponents[CORE_SUBCOMPONENTS_NAMES.AVATAR]);
     const defaultCardComponent = {
       type: NEW_COMPONENT_TYPES.CARD,
+      style: NEW_COMPONENT_STYLES.DEFAULT,
       subcomponents,
       activeSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,
       defaultSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,
       componentPreviewStructure: PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents),
       className: 'default-class-name',
       componentStatus: { isRemoved: false },
-      style: NEW_COMPONENT_STYLES.DEFAULT,
     };
-    AddNewImportedComponent.add(defaultCardComponent, SUBCOMPONENT_TYPES.TEXT, CORE_SUBCOMPONENTS_NAMES.LAYER_1, overwriteImportedText1Properties);
+    AddNewImportedComponent.add(defaultCardComponent, SUBCOMPONENT_TYPES.TEXT, CORE_SUBCOMPONENTS_NAMES.LAYER_1, overwriteImportedTitleProperties);
+    AddNewImportedComponent.add(defaultCardComponent, SUBCOMPONENT_TYPES.TEXT, CORE_SUBCOMPONENTS_NAMES.LAYER_2, overwriteImportedDescriptionProperties);
+    AddNewImportedComponent.add(defaultCardComponent, SUBCOMPONENT_TYPES.BUTTON, CORE_SUBCOMPONENTS_NAMES.LAYER_3, overwriteImportedSubmitButtonProperties);
+    AddNewImportedComponent.add(defaultCardComponent, SUBCOMPONENT_TYPES.BUTTON, CORE_SUBCOMPONENTS_NAMES.LAYER_3, overwriteImportedCancelButtonProperties);
     return defaultCardComponent;
   },
   createNewSubcomponent: createNewSubcomponent,

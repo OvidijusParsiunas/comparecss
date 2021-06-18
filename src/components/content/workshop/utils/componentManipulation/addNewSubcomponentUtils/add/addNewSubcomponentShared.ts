@@ -18,7 +18,10 @@ export class AddNewSubcomponentShared {
   }
 
   protected static addNewSubcomponentToCurrentLayer(currentLayer: Layer, newSubcomponentProperties: NewSubcomponentProperties): void {
-    currentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.LEFT].push(newSubcomponentProperties);
+    const alignment = newSubcomponentProperties.subcomponentProperties.customFeatures
+      && newSubcomponentProperties.subcomponentProperties.customFeatures.alignedLayerSection
+      && newSubcomponentProperties.subcomponentProperties.customFeatures.alignedLayerSection.section;
+    currentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][alignment || ALIGNED_SECTION_TYPES.LEFT].push(newSubcomponentProperties);
   }
 
   protected static updateNewSubcomponentParentLayer(newSubcomponentProperties: NewSubcomponentProperties, currentLayer: Layer): void {
@@ -52,6 +55,6 @@ export class AddNewSubcomponentShared {
   protected static createNewSubcomponent(componentGenerator: ComponentGenerator, subcomponentType: SUBCOMPONENT_TYPES): NewSubcomponentProperties {
     const subcomponentNamePrefix = AddNewSubcomponentShared.subcomponentTypeToName[subcomponentType];
     const newSubcomponentName = UniqueSubcomponentNameGenerator.generate(subcomponentNamePrefix);
-    return { name: newSubcomponentName, subcomponentProperties: componentGenerator.createNewSubcomponent(subcomponentType), };
+    return { name: newSubcomponentName, subcomponentProperties: componentGenerator.createNewSubcomponent(subcomponentType) };
   }
 }

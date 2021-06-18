@@ -34,7 +34,8 @@ export class ImportedComponentGenerator {
       [importedComponentName][ENTITY_DISPLAY_STATUS_REF] = baseSubcomponent.subcomponentDisplayStatus;
   }
 
-  public static createImportedComponentSubcomponents(componentGenerator: ComponentGenerator, importedComponentName: string, subcomponentText?: string): Subcomponents {
+  public static createImportedComponentSubcomponents(componentGenerator: ComponentGenerator, importedComponentName: string,
+      subcomponentText?: string): Subcomponents {
     const importedComponentRef = componentGenerator.createNewComponent(importedComponentName, subcomponentText);
     ImportedComponentGenerator.applyTopProperty(importedComponentRef, importedComponentName);
     ImportedComponentGenerator.applyOptionalSubcomponentProperty(importedComponentRef, importedComponentName);
