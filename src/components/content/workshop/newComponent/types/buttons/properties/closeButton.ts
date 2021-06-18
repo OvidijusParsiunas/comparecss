@@ -5,6 +5,7 @@ import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcom
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
+import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -160,6 +161,7 @@ export const closeButton: ComponentGenerator = {
     const subcomponentDropdownStructure = getButtonSubcomponentDropdownStructure(subcomponentNames);
     return {
       type: NEW_COMPONENT_TYPES.BUTTON,
+      style: NEW_COMPONENT_STYLES.DEFAULT,
       subcomponents,
       activeSubcomponentName: subcomponentNames.base,
       defaultSubcomponentName: subcomponentNames.base,

@@ -76,10 +76,10 @@ import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomp
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
 import { ToggleFullPreviewModeEvent } from '../../../../interfaces/toggleFullPreviewModeEvent';
 import { PlayAnimationPreviewEvent } from '../../../../interfaces/playAnimationPreviewEvent';
+import { componentTypeToGenerators } from '../newComponent/types/componentTypeToGenerators';
 import { animationTypeToFunctionality } from './utils/animations/animationToFunctionality';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
-import { componentTypeToStyles } from '../newComponent/types/componentTypeToStyles';
 import { NEW_COMPONENT_STYLES } from '../../../../consts/newComponentStyles.enum';
 import ToggleFullPreviewMode from './utils/fullPreviewMode/toggleFullPreviewMode';
 import { OpenAnimation, CloseAnimation } from '../../../../interfaces/animations';
@@ -119,7 +119,7 @@ export default {
       displayed: false,
       mouseEvents: null,
       subcomponentAndOverlayElementIds: null,
-      component: componentTypeToStyles[NEW_COMPONENT_TYPES.BUTTON][NEW_COMPONENT_STYLES.DEFAULT].createNewComponent(),
+      component: componentTypeToGenerators[NEW_COMPONENT_TYPES.BUTTON][NEW_COMPONENT_STYLES.DEFAULT].createNewComponent(),
     },
   }),
   methods: {

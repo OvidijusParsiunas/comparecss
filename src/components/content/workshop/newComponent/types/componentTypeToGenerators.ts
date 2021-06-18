@@ -6,11 +6,11 @@ import { modalStyleToGenerator } from './modals/modalStyleToGenerator';
 import { cardStyleToGenerator } from './cards/cardStyleToGenerator';
 import { textStyleToGenerator } from './text/textStyleToGenerator';
 
-type ComponentTypeToStyles = {
+type ComponentTypeToGenerators = {
   [key in NEW_COMPONENT_TYPES]: ComponentStyleToGenerator;
 }
 
-export const componentTypeToStyles: ComponentTypeToStyles = {
+export const componentTypeToGenerators: ComponentTypeToGenerators = {
   [NEW_COMPONENT_TYPES.BUTTON]: buttonStyleToGenerator,
   [NEW_COMPONENT_TYPES.ALERT]: alertStyleToGenerator,
   [NEW_COMPONENT_TYPES.MODAL]: modalStyleToGenerator,

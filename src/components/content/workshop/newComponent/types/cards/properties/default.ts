@@ -1,3 +1,4 @@
+import { AddNewImportedComponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewImportedComponent';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { ImportedComponentGenerator } from '../../../../utils/importComponent/importedComponentGenerator';
@@ -6,6 +7,7 @@ import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcom
 import { GENERAL_ANIMATION_CLOSE_TYPES } from '../../../../../../../consts/animationTypes.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
+import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -20,7 +22,6 @@ import { inheritedLayerBaseCss } from '../../shared/layer/inheritedCss';
 import { closeButton } from '../../buttons/properties/closeButton';
 import { inheritedTextCss } from '../../shared/text/inheritedCss';
 import { defaultButton } from '../../buttons/properties/default';
-import { defaultText } from '../../text/properties/default';
 import { defaultImage } from '../../shared/images/default';
 import {
   AlignedLayerSection, AutoSize, Text, CustomStaticFeatures, Image, SubcomponentProperties,
@@ -393,45 +394,64 @@ const createNewSubcomponent = (subcomponentType: SUBCOMPONENT_TYPES): Subcompone
   }
 }
 
+function createDefaultText1Css(): CustomCss {
+  return {
+    [CSS_PSEUDO_CLASSES.DEFAULT]: {
+      top: '50%',
+      width: 'max-content',
+      fontWeight: '500',
+      fontSize: '20px',
+      fontFamily: '"Poppins", sans-serif',
+      color: '#004085',
+      textAlign: 'left',
+      backgroundColor: 'inherit',
+      paddingTop: '0px',
+      paddingBottom: '0px',
+      paddingLeft: '0px',
+      paddingRight: '0px',
+      marginLeft: '0px',
+      marginRight: '0px',
+      height: '',
+    },
+  };
+}
+
+function createDefaultText1CustomStaticFeatures(): CustomStaticFeatures {
+  return {
+    subcomponentText: createText('Modal title'),
+  }
+}
+
+function overwriteImportedText1Properties(subcomponents: Subcomponents, baseName: string): void {
+  subcomponents[baseName].customCss = createDefaultText1Css();
+  subcomponents[baseName].defaultCss = createDefaultText1Css();
+  subcomponents[baseName].customFeatures = createDefaultText1CustomFeatures();
+  subcomponents[baseName].defaultCustomFeatures = createDefaultText1CustomFeatures();
+  subcomponents[baseName].customStaticFeatures = createDefaultText1CustomStaticFeatures();
+  subcomponents[baseName].defaultCustomStaticFeatures = createDefaultText1CustomStaticFeatures();
+}
+
 export const defaultCard: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
     uniqueSubcomponentIdState.resetUniqueId();
     const importedCloseButtonName = CORE_SUBCOMPONENTS_NAMES.CLOSE;
-    const importedButtonLayer1Name = CORE_SUBCOMPONENTS_NAMES.NO_SIBLING_BUTTON;
-    const importedButton1Layer2Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_1_LAYER_2;
-    const importedButton2Layer2Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_2_LAYER_2;
-    const importedButton3Layer2Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_3_LAYER_2;
     const importedButton1Layer3Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_1_LAYER_3;
     const importedButton2Layer3Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_2_LAYER_3;
-    const importedButton3Layer3Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_3_LAYER_3;
-    const importedTextName = CORE_SUBCOMPONENTS_NAMES.TEXT;
     const subcomponents = { ...createSubcomponents(),
       ...ImportedComponentGenerator.createImportedComponentSubcomponents(closeButton, importedCloseButtonName),
-      ...ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, importedButtonLayer1Name),
-      ...ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, importedButton1Layer2Name),
-      ...ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, importedButton2Layer2Name),
-      ...ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, importedButton3Layer2Name),
       ...ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, importedButton1Layer3Name),
       ...ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, importedButton2Layer3Name),
-      ...ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, importedButton3Layer3Name),
-      ...ImportedComponentGenerator.createImportedComponentSubcomponents(defaultText, importedTextName)
     };
     const subcomponentDropdownStructure = getCardSubcomponentDropdownStructure(subcomponents[CORE_SUBCOMPONENTS_NAMES.AVATAR],
       subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_3],
       subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_1_LAYER_2],
-      ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedTextName),
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedCloseButtonName),
-      ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButtonLayer1Name),
-      ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton1Layer2Name),
-      ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton2Layer2Name),
-      ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton3Layer2Name),
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton1Layer3Name),
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton2Layer3Name),
-      ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton3Layer3Name),
     );
     subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE].subcomponentSpecificSettings = getCardBaseSpecificSettings(
       subcomponents[importedCloseButtonName], subcomponents[CORE_SUBCOMPONENTS_NAMES.AVATAR]);
-    return {
+    const defaultCardComponent = {
       type: NEW_COMPONENT_TYPES.CARD,
       subcomponents,
       activeSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,
@@ -439,7 +459,10 @@ export const defaultCard: ComponentGenerator = {
       componentPreviewStructure: PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents),
       className: 'default-class-name',
       componentStatus: { isRemoved: false },
+      style: NEW_COMPONENT_STYLES.DEFAULT,
     };
+    AddNewImportedComponent.add(defaultCardComponent, SUBCOMPONENT_TYPES.TEXT, CORE_SUBCOMPONENTS_NAMES.LAYER_1, overwriteImportedText1Properties);
+    return defaultCardComponent;
   },
   createNewSubcomponent: createNewSubcomponent,
 }

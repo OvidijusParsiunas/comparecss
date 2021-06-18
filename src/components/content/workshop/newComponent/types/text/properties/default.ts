@@ -4,6 +4,7 @@ import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcom
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { modalTextSpecificSettings } from '../../modals/properties/modalTextSpecificSettings';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -101,6 +102,7 @@ export const defaultText: ComponentGenerator = {
     const subcomponentDropdownStructure = getTextSubcomponentDropdownStructure(subcomponentNames);
     return {
       type: NEW_COMPONENT_TYPES.TEXT,
+      style: NEW_COMPONENT_STYLES.DEFAULT,
       subcomponents,
       activeSubcomponentName: subcomponentNames.base,
       defaultSubcomponentName: subcomponentNames.base,

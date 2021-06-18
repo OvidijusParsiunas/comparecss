@@ -5,6 +5,7 @@ import { ImportedComponentGenerator } from '../../../../utils/importComponent/im
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -324,6 +325,7 @@ export const defaultModal: ComponentGenerator = {
     );
     return {
       type: NEW_COMPONENT_TYPES.MODAL,
+      style: NEW_COMPONENT_STYLES.DEFAULT,
       subcomponents,
       activeSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,
       defaultSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,

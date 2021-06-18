@@ -4,7 +4,7 @@ import { Subcomponents, WorkshopComponent } from '../../../../../../../interface
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { NewSubcomponentProperties } from '../../../../../../../interfaces/addNewSubcomponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
-import { defaultCard } from '../../../../newComponent/types/cards/properties/default';
+import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 
 export class AddNewSubcomponentShared {
@@ -25,9 +25,12 @@ export class AddNewSubcomponentShared {
     newSubcomponentProperties.subcomponentProperties.parentLayer = currentLayer;
   }
 
-  protected static findCurrentLayer(currentlySelectedComponent: WorkshopComponent): Layer {
-    const currentLayer = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName];
+  protected static findCurrentLayer(currentlySelectedComponent: WorkshopComponent, layerName?: CORE_SUBCOMPONENTS_NAMES): Layer {
     const { layers } = currentlySelectedComponent.componentPreviewStructure;
+    if (layerName) {
+      return layers.find((layer) => layer.name === layerName);
+    }
+    const currentLayer = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName];
     return layers.find((layer) => layer.subcomponentProperties === currentLayer);
   }
 
@@ -35,7 +38,7 @@ export class AddNewSubcomponentShared {
     currentlySelectedComponent.subcomponents = {
       ...currentlySelectedComponent.subcomponents,
       ...newSubcomponents,
-    };  
+    };
   }
 
   protected static addNewSubcomponentToExistingSubcomponents(currentlySelectedComponent: WorkshopComponent, newSubcomponentProperties: NewSubcomponentProperties): void {
@@ -46,9 +49,9 @@ export class AddNewSubcomponentShared {
     };
   }
 
-  protected static createNewSubcomponent(subcomponentType: SUBCOMPONENT_TYPES): NewSubcomponentProperties {
+  protected static createNewSubcomponent(componentGenerator: ComponentGenerator, subcomponentType: SUBCOMPONENT_TYPES): NewSubcomponentProperties {
     const subcomponentNamePrefix = AddNewSubcomponentShared.subcomponentTypeToName[subcomponentType];
     const newSubcomponentName = UniqueSubcomponentNameGenerator.generate(subcomponentNamePrefix);
-    return { name: newSubcomponentName, subcomponentProperties: defaultCard.createNewSubcomponent(subcomponentType), };
+    return { name: newSubcomponentName, subcomponentProperties: componentGenerator.createNewSubcomponent(subcomponentType), };
   }
 }

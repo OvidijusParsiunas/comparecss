@@ -1,3 +1,4 @@
+import { componentTypeToGenerators } from '../../../../newComponent/types/componentTypeToGenerators';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { EntityDisplayStatusUtils } from '../../../entityDisplayStatus/entityDisplayStatusUtils';
 import { NewSubcomponentProperties } from '../../../../../../../interfaces/addNewSubcomponent';
@@ -17,17 +18,15 @@ export class AddNewNativeSubcomponent extends AddNewSubcomponentShared {
   }
 
   private static addNewSubcomponentToComponentPreview(currentlySelectedComponent: WorkshopComponent, newSubcomponentProperties: NewSubcomponentProperties): void {
-    // WORK1: remove this if statement
-    if (currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].layerSectionsType) {
-      const currentLayer = AddNewNativeSubcomponent.findCurrentLayer(currentlySelectedComponent);
-      AddNewNativeSubcomponent.updateNewSubcomponentParentLayer(newSubcomponentProperties, currentLayer);
-      AddNewNativeSubcomponent.addNewSubcomponentToCurrentLayer(currentLayer, newSubcomponentProperties);
-      AddNewNativeSubcomponent.updateComponentPreviewStructure(currentlySelectedComponent, newSubcomponentProperties, currentLayer);
-    }
+    const currentLayer = AddNewNativeSubcomponent.findCurrentLayer(currentlySelectedComponent);
+    AddNewNativeSubcomponent.updateNewSubcomponentParentLayer(newSubcomponentProperties, currentLayer);
+    AddNewNativeSubcomponent.addNewSubcomponentToCurrentLayer(currentLayer, newSubcomponentProperties);
+    AddNewNativeSubcomponent.updateComponentPreviewStructure(currentlySelectedComponent, newSubcomponentProperties, currentLayer);
   }
   
   public static add(currentlySelectedComponent: WorkshopComponent, subcomponentType: SUBCOMPONENT_TYPES): void {
-    const newSubcomponent = AddNewNativeSubcomponent.createNewSubcomponent(subcomponentType);
+    const componentGenerator = componentTypeToGenerators[currentlySelectedComponent.type][currentlySelectedComponent.style];
+    const newSubcomponent = AddNewNativeSubcomponent.createNewSubcomponent(componentGenerator, subcomponentType);
     AddNewNativeSubcomponent.addNewSubcomponentToExistingSubcomponents(currentlySelectedComponent, newSubcomponent);
     AddNewNativeSubcomponent.addNewSubcomponentToComponentPreview(currentlySelectedComponent, newSubcomponent); 
   }

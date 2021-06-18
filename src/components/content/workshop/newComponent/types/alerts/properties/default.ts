@@ -4,6 +4,7 @@ import { ImportedComponentGenerator } from '../../../../utils/importComponent/im
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { GENERAL_ANIMATION_CLOSE_TYPES } from '../../../../../../../consts/animationTypes.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -159,6 +160,7 @@ export const defaultAlert: ComponentGenerator = {
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedCloseButtonName));
     return {
       type: NEW_COMPONENT_TYPES.ALERT,
+      style: NEW_COMPONENT_STYLES.DEFAULT,
       subcomponents,
       activeSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,
       defaultSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,
