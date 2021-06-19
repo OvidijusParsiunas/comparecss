@@ -1,6 +1,6 @@
-import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
+import { NewImportedComponentProperties, NewSubcomponentProperties } from '../../../../../../../interfaces/addNewSubcomponent';
+import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { NewImportedComponentProperties } from '../../../../../../../interfaces/addNewSubcomponent';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { ImportedComponentGenerator } from '../../../importComponent/importedComponentGenerator';
@@ -34,6 +34,24 @@ export class AddNewImportedComponent extends AddNewSubcomponentShared {
     }
   }
 
+  private static addNewSubcomponentToCurrentLayer(currentLayer: Layer, newSubcomponentProperties: NewSubcomponentProperties): void {
+    const alignment = newSubcomponentProperties.subcomponentProperties?.customFeatures?.alignedLayerSection?.section;
+    currentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][alignment || ALIGNED_SECTION_TYPES.LEFT].push(newSubcomponentProperties);
+  }
+
+  private static updateNewSubcomponentParentLayer(newSubcomponentProperties: NewSubcomponentProperties, currentLayer: Layer): void {
+    newSubcomponentProperties.subcomponentProperties.parentLayer = currentLayer;
+  }
+
+  private static findCurrentLayer(currentlySelectedComponent: WorkshopComponent, layerName?: CORE_SUBCOMPONENTS_NAMES | string): Layer {
+    const { layers } = currentlySelectedComponent.componentPreviewStructure;
+    if (layerName) {
+      return layers.find((layer) => layer.name === layerName);
+    }
+    const currentLayer = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName];
+    return layers.find((layer) => layer.subcomponentProperties === currentLayer);
+  }
+
   private static addNewSubcomponentsToComponentPreview(currentlySelectedComponent: WorkshopComponent, importedComponent: NewImportedComponentProperties,
       layerName?: CORE_SUBCOMPONENTS_NAMES | string): void {
     const currentLayer = AddNewImportedComponent.findCurrentLayer(currentlySelectedComponent, layerName);
@@ -44,20 +62,11 @@ export class AddNewImportedComponent extends AddNewSubcomponentShared {
     AddNewImportedComponent.updateComponentPreviewStructure(currentlySelectedComponent, importedComponent, currentLayer);
   }
 
-  private static createNewImportedComponent(parentSubcomponentType: SUBCOMPONENT_TYPES, OverwritePropertiesFunc?: OverwritePropertiesFunc): NewImportedComponentProperties {
-    const baseName = UniqueSubcomponentNameGenerator.generate(
-      AddNewImportedComponent.subcomponentTypeToName[parentSubcomponentType]);
-    const subcomponents = ImportedComponentGenerator.createImportedComponentSubcomponents(
-      AddNewImportedComponent.componentTypeToGenerator[parentSubcomponentType], baseName);
-    const { subcomponentNames } = subcomponents[baseName].importedComponent.componentRef;
-    if (OverwritePropertiesFunc) OverwritePropertiesFunc(subcomponents, subcomponentNames);
-    return { baseName, subcomponents }
-  }
-
   // WORK1: currently adding default styles but may need to add a non default style in the future
   public static add(currentlySelectedComponent: WorkshopComponent, parentSubcomponentType: SUBCOMPONENT_TYPES,
-      layerName?: CORE_SUBCOMPONENTS_NAMES | string, OverwritePropertiesFunc?: OverwritePropertiesFunc): NewImportedComponentProperties {
-    const importedComponent = AddNewImportedComponent.createNewImportedComponent(parentSubcomponentType, OverwritePropertiesFunc);
+      layerName?: CORE_SUBCOMPONENTS_NAMES | string, overwritePropertiesFunc?: OverwritePropertiesFunc): NewImportedComponentProperties {
+    const importedComponent = AddNewImportedComponent.createNewImportedComponent(parentSubcomponentType,
+      AddNewImportedComponent.componentTypeToGenerator[parentSubcomponentType], overwritePropertiesFunc);
     AddNewImportedComponent.addNewSubcomponentsToExistingSubcomponents(currentlySelectedComponent, importedComponent.subcomponents);
     AddNewImportedComponent.addNewSubcomponentsToComponentPreview(currentlySelectedComponent, importedComponent, layerName);
     return importedComponent;

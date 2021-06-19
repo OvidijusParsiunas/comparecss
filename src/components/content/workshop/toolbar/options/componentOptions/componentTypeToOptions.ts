@@ -53,7 +53,7 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
     [SUBCOMPONENT_TYPES.TEXT]: textOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.SECTION_TEXT]: sectionTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     // WORK1: refactor this to know when to apply layer top/middle/bottom
-    [SUBCOMPONENT_TYPES.LAYER]: layerBottomOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+    [SUBCOMPONENT_TYPES.LAYER]: layerMiddleOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.LAYER_1]: imageLayerTopOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.LAYER_2]: layerMiddleOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.LAYER_3]: layerBottomOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,

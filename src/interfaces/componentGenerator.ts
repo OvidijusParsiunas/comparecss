@@ -1,7 +1,5 @@
-import { SubcomponentProperties, WorkshopComponent } from './workshopComponent';
-import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
+import { WorkshopComponent } from './workshopComponent';
 
 export interface ComponentGenerator {
   createNewComponent: (baseName?: string, subcomponentText?: string) => WorkshopComponent;
-  createNewSubcomponent?: (subcomponentType: SUBCOMPONENT_TYPES) => SubcomponentProperties;
 }

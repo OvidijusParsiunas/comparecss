@@ -1,6 +1,5 @@
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { AddNewNativeSubcomponent } from './add/addNewNativeSubcomponent';
 import { AddNewImportedComponent } from './add/addNewImportedComponent';
 import { AddNewLayerSubcomponent } from './add/addNewLayerSubcomponent';
 
@@ -11,8 +10,6 @@ export class AddNewSubcomponentUtils {
       AddNewLayerSubcomponent.add(currentlySelectedComponent);
     } else if (subcomponentType === 'importedButton') {
       AddNewImportedComponent.add(currentlySelectedComponent, SUBCOMPONENT_TYPES.TEXT);
-    } else {
-      AddNewNativeSubcomponent.add(currentlySelectedComponent, SUBCOMPONENT_TYPES.SECTION_TEXT);
     }
   }
 }
