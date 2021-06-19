@@ -10,7 +10,7 @@ import { Layer } from '../../../../../../../interfaces/componentPreviewStructure
 export class AddNewSubcomponentShared {
 
   protected static readonly subcomponentTypeToName: { [key in SUBCOMPONENT_TYPES]?: CORE_SUBCOMPONENTS_NAMES } = {
-    [SUBCOMPONENT_TYPES.LAYER_3]: CORE_SUBCOMPONENTS_NAMES.LAYER,
+    [SUBCOMPONENT_TYPES.LAYER]: CORE_SUBCOMPONENTS_NAMES.LAYER,
     [SUBCOMPONENT_TYPES.CLOSE_BUTTON]: CORE_SUBCOMPONENTS_NAMES.CLOSE,
     [SUBCOMPONENT_TYPES.BUTTON]: CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_BUTTON,
     [SUBCOMPONENT_TYPES.SECTION_TEXT]: CORE_SUBCOMPONENTS_NAMES.DYNAMICALLY_GENERATED_TEXT,
@@ -27,7 +27,7 @@ export class AddNewSubcomponentShared {
   newSubcomponentProperties.subcomponentProperties.parentLayer = currentLayer;
   }
 
-  protected static findCurrentLayer(currentlySelectedComponent: WorkshopComponent, layerName?: CORE_SUBCOMPONENTS_NAMES): Layer {
+  protected static findCurrentLayer(currentlySelectedComponent: WorkshopComponent, layerName?: CORE_SUBCOMPONENTS_NAMES | string): Layer {
     const { layers } = currentlySelectedComponent.componentPreviewStructure;
     if (layerName) {
       return layers.find((layer) => layer.name === layerName);

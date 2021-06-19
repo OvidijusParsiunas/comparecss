@@ -5,4 +5,5 @@ export enum NEW_COMPONENT_TYPES {
   CARD = 'Card',
   TEXT = 'Text',
   AVATAR = 'Avatar',
+  LAYER = 'Layer',
 }

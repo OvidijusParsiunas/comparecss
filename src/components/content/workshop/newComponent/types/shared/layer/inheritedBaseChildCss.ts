@@ -1,4 +1,4 @@
-import { ChildCss } from "../../../../../../../interfaces/workshopComponent";
+import { ChildCss } from '../../../../../../../interfaces/workshopComponent';
 
 export const inheritedLayerBaseChildCss: ChildCss[] = [
   {

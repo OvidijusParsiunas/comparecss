@@ -1,4 +1,5 @@
 import { AddNewImportedComponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewImportedComponent';
+import { AddNewLayerSubcomponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewLayerSubcomponent';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { ImportedComponentGenerator } from '../../../../utils/importComponent/importedComponentGenerator';
@@ -178,25 +179,6 @@ function createSubcomponents(): Subcomponents {
       defaultCustomStaticFeatures: createDefaultLayer1CustomStaticFeatures(),
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     },
-    [CORE_SUBCOMPONENTS_NAMES.LAYER_2]: {
-      subcomponentType: SUBCOMPONENT_TYPES.LAYER_2,
-      customCss: createDefaultLayer2Css(),
-      defaultCss: createDefaultLayer2Css(),
-      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
-      subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
-    },
-    [CORE_SUBCOMPONENTS_NAMES.LAYER_3]: {
-      subcomponentType: SUBCOMPONENT_TYPES.LAYER_3,
-      customCss: createDefaultBottomLayerCss(),
-      defaultCss: createDefaultBottomLayerCss(),
-      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      subcomponentSpecificSettings: modalLayerBottomSpecificSettings,
-      layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
-      subcomponentDisplayStatus: EntityDisplayStatusUtils.createDefaultEntityDisplayStatus(),
-    },
   };
 }
 
@@ -314,14 +296,8 @@ const createNewSubcomponent = (subcomponentType: SUBCOMPONENT_TYPES): Subcompone
 export const defaultCard: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
     uniqueSubcomponentIdState.resetUniqueId();
-    const importedCloseButtonName = CORE_SUBCOMPONENTS_NAMES.CLOSE;
-    const subcomponents = { ...createSubcomponents(),
-      ...ImportedComponentGenerator.createImportedComponentSubcomponents(closeButton, importedCloseButtonName),
-    };
-    const subcomponentDropdownStructure = getCardSubcomponentDropdownStructure(
-      subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_3],
-      ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedCloseButtonName),
-    );
+    const subcomponents = createSubcomponents();
+    const subcomponentDropdownStructure = getCardSubcomponentDropdownStructure();
     const defaultCardComponent = {
       type: NEW_COMPONENT_TYPES.CARD,
       style: NEW_COMPONENT_STYLES.DEFAULT,
@@ -332,13 +308,17 @@ export const defaultCard: ComponentGenerator = {
       className: 'default-class-name',
       componentStatus: { isRemoved: false },
     };
+    // should probably be just an imported component
+    const layer2Component = AddNewLayerSubcomponent.add(defaultCardComponent);
+    const layer3Component = AddNewLayerSubcomponent.add(defaultCardComponent);
     AddNewImportedComponent.add(defaultCardComponent, SUBCOMPONENT_TYPES.TEXT, CORE_SUBCOMPONENTS_NAMES.LAYER_1, overwriteImportedTitleProperties);
-    AddNewImportedComponent.add(defaultCardComponent, SUBCOMPONENT_TYPES.TEXT, CORE_SUBCOMPONENTS_NAMES.LAYER_2, overwriteImportedDescriptionProperties);
-    AddNewImportedComponent.add(defaultCardComponent, SUBCOMPONENT_TYPES.BUTTON, CORE_SUBCOMPONENTS_NAMES.LAYER_3, overwriteImportedSubmitButtonProperties);
-    AddNewImportedComponent.add(defaultCardComponent, SUBCOMPONENT_TYPES.BUTTON, CORE_SUBCOMPONENTS_NAMES.LAYER_3, overwriteImportedCancelButtonProperties);
+    AddNewImportedComponent.add(defaultCardComponent, SUBCOMPONENT_TYPES.TEXT, layer2Component.baseName, overwriteImportedDescriptionProperties);
+    AddNewImportedComponent.add(defaultCardComponent, SUBCOMPONENT_TYPES.BUTTON, layer3Component.baseName, overwriteImportedSubmitButtonProperties);
+    AddNewImportedComponent.add(defaultCardComponent, SUBCOMPONENT_TYPES.BUTTON, layer3Component.baseName, overwriteImportedCancelButtonProperties);
+    const closeButtonComponent = AddNewImportedComponent.add(defaultCardComponent, SUBCOMPONENT_TYPES.CLOSE_BUTTON, CORE_SUBCOMPONENTS_NAMES.LAYER_1);
     const avatarComponent = AddNewImportedComponent.add(defaultCardComponent, SUBCOMPONENT_TYPES.AVATAR, CORE_SUBCOMPONENTS_NAMES.LAYER_1);
     subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE].subcomponentSpecificSettings = getCardBaseSpecificSettings(
-      subcomponents[importedCloseButtonName], avatarComponent.subcomponents[avatarComponent.baseName]);
+      closeButtonComponent.subcomponents[closeButtonComponent.baseName], avatarComponent.subcomponents[avatarComponent.baseName]);
     return defaultCardComponent;
   },
   createNewSubcomponent: createNewSubcomponent,

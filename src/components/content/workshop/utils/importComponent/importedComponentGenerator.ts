@@ -37,6 +37,7 @@ export class ImportedComponentGenerator {
   public static createImportedComponentSubcomponents(componentGenerator: ComponentGenerator, importedComponentName: string,
       subcomponentText?: string): Subcomponents {
     const importedComponentRef = componentGenerator.createNewComponent(importedComponentName, subcomponentText);
+    // WORK1: the following are not necessary for layer
     ImportedComponentGenerator.applyTopProperty(importedComponentRef, importedComponentName);
     ImportedComponentGenerator.applyOptionalSubcomponentProperty(importedComponentRef, importedComponentName);
     // referencing the whole component within it's own subcomponent may not be efficient

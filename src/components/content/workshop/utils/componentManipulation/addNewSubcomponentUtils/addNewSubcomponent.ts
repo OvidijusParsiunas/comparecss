@@ -8,7 +8,7 @@ export class AddNewSubcomponentUtils {
   
   public static addSubcomponent(currentlySelectedComponent: WorkshopComponent, subcomponentType = 'importedButton'): void {
     if (currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].subcomponentType === SUBCOMPONENT_TYPES.BASE) {
-      AddNewLayerSubcomponent.add(currentlySelectedComponent, SUBCOMPONENT_TYPES.LAYER_3);
+      AddNewLayerSubcomponent.add(currentlySelectedComponent);
     } else if (subcomponentType === 'importedButton') {
       AddNewImportedComponent.add(currentlySelectedComponent, SUBCOMPONENT_TYPES.TEXT);
     } else {

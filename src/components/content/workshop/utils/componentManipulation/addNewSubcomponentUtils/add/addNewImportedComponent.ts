@@ -35,7 +35,7 @@ export class AddNewImportedComponent extends AddNewSubcomponentShared {
   }
 
   private static addNewSubcomponentsToComponentPreview(currentlySelectedComponent: WorkshopComponent, importedComponent: NewImportedComponentProperties,
-      layerName?: CORE_SUBCOMPONENTS_NAMES): void {
+      layerName?: CORE_SUBCOMPONENTS_NAMES | string): void {
     const currentLayer = AddNewImportedComponent.findCurrentLayer(currentlySelectedComponent, layerName);
     const baseSubcomponentProperties = {
       name: importedComponent.baseName, subcomponentProperties: importedComponent.subcomponents[importedComponent.baseName]};
@@ -55,8 +55,8 @@ export class AddNewImportedComponent extends AddNewSubcomponentShared {
   }
 
   // WORK1: currently adding default styles but may need to add a non default style in the future
-  public static add(currentlySelectedComponent: WorkshopComponent, parentSubcomponentType: SUBCOMPONENT_TYPES, layerName?: CORE_SUBCOMPONENTS_NAMES,
-      OverwritePropertiesFunc?: OverwritePropertiesFunc): NewImportedComponentProperties {
+  public static add(currentlySelectedComponent: WorkshopComponent, parentSubcomponentType: SUBCOMPONENT_TYPES,
+      layerName?: CORE_SUBCOMPONENTS_NAMES | string, OverwritePropertiesFunc?: OverwritePropertiesFunc): NewImportedComponentProperties {
     const importedComponent = AddNewImportedComponent.createNewImportedComponent(parentSubcomponentType, OverwritePropertiesFunc);
     AddNewImportedComponent.addNewSubcomponentsToExistingSubcomponents(currentlySelectedComponent, importedComponent.subcomponents);
     AddNewImportedComponent.addNewSubcomponentsToComponentPreview(currentlySelectedComponent, importedComponent, layerName);

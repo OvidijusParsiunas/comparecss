@@ -23,7 +23,7 @@ type SubcomponentTypeToOptions = {
 }
 
 export type ComponentTypeToOptions = {
-  [key in NEW_COMPONENT_TYPES]: SubcomponentTypeToOptions;
+  [key in NEW_COMPONENT_TYPES]?: SubcomponentTypeToOptions;
 }
 
 export const componentTypeToOptions: ComponentTypeToOptions = {
@@ -52,6 +52,8 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
     [SUBCOMPONENT_TYPES.BASE]: cardBaseOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.TEXT]: textOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.SECTION_TEXT]: sectionTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
+    // WORK1: refactor this to know when to apply layer top/middle/bottom
+    [SUBCOMPONENT_TYPES.LAYER]: layerBottomOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.LAYER_1]: imageLayerTopOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.LAYER_2]: layerMiddleOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.LAYER_3]: layerBottomOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
@@ -60,11 +62,5 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
     [SUBCOMPONENT_TYPES.CLOSE_BUTTON]: closeButtonOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT]: closeButtonTextOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
     [SUBCOMPONENT_TYPES.AVATAR]: avatarOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
-  },
-  [NEW_COMPONENT_TYPES.TEXT]: {
-    [SUBCOMPONENT_TYPES.TEXT]: textOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
-  },
-  [NEW_COMPONENT_TYPES.AVATAR]: {
-    [SUBCOMPONENT_TYPES.TEXT]: avatarOptions as SubcomponentOptions<keyof SubcomponentCssPseudoClasses>,
   },
 };

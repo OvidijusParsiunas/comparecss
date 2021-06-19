@@ -1,20 +1,28 @@
-import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
+import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
+import { NewImportedComponentProperties } from '../../../../../../../interfaces/addNewSubcomponent';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { EntityDisplayStatusUtils } from '../../../entityDisplayStatus/entityDisplayStatusUtils';
-import { NewSubcomponentProperties } from '../../../../../../../interfaces/addNewSubcomponent';
+import { ImportedComponentGenerator } from '../../../importComponent/importedComponentGenerator';
+import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
-import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
+import { layer } from '../../../../newComponent/types/layers/properties/layer';
 import PreviewStructure from '../../../componentGenerator/previewStructure';
 import { AddNewSubcomponentShared } from './addNewSubcomponentShared';
 
 export class AddNewLayerSubcomponent extends AddNewSubcomponentShared {
 
-  private static updateComponentPreviewStructure(currentlySelectedComponent: WorkshopComponent, newSubcomponentProperties: NewSubcomponentProperties): void {
+  private static readonly componentTypeToGenerator: { [key in SUBCOMPONENT_TYPES]?: ComponentGenerator } = {
+    [SUBCOMPONENT_TYPES.LAYER]: layer,
+  }
+
+  private static updateComponentPreviewStructure(currentlySelectedComponent: WorkshopComponent, newSubcomponentProperties: NewImportedComponentProperties,
+      layerBaseSubcomponent: SubcomponentProperties): void {
     currentlySelectedComponent.componentPreviewStructure.subcomponentDropdownStructure[CORE_SUBCOMPONENTS_NAMES.BASE] = {
       ...currentlySelectedComponent.componentPreviewStructure.subcomponentDropdownStructure[CORE_SUBCOMPONENTS_NAMES.BASE],
-      [newSubcomponentProperties.name]: { 
-        ...EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject(newSubcomponentProperties.subcomponentProperties.subcomponentDisplayStatus),
+      [newSubcomponentProperties.baseName]: { 
+        ...EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject(layerBaseSubcomponent.subcomponentDisplayStatus),
       },
     }
   }
@@ -23,17 +31,26 @@ export class AddNewLayerSubcomponent extends AddNewSubcomponentShared {
     currentlySelectedComponent.componentPreviewStructure.layers.push(layer);
   }
 
-  private static addNewSubcomponentToComponentPreview(currentlySelectedComponent: WorkshopComponent, newSubcomponentProperties: NewSubcomponentProperties): void {
-    const layer: Layer = PreviewStructure.createEmptyLayer(newSubcomponentProperties.name, newSubcomponentProperties.subcomponentProperties);
-    AddNewLayerSubcomponent.addNewSubcomponentToBase(currentlySelectedComponent, layer);
-    AddNewLayerSubcomponent.updateComponentPreviewStructure(currentlySelectedComponent, newSubcomponentProperties);
+  private static createNewImportedComponent(parentSubcomponentType: SUBCOMPONENT_TYPES): NewImportedComponentProperties {
+    const baseName = UniqueSubcomponentNameGenerator.generate(
+      AddNewSubcomponentShared.subcomponentTypeToName[parentSubcomponentType]);
+    const subcomponents = ImportedComponentGenerator.createImportedComponentSubcomponents(
+      AddNewLayerSubcomponent.componentTypeToGenerator[parentSubcomponentType], baseName);
+    return { baseName, subcomponents }
   }
 
-  public static add(currentlySelectedComponent: WorkshopComponent, subcomponentType: SUBCOMPONENT_TYPES): void {
-    const componentGenerator = componentTypeToStyleGenerators[currentlySelectedComponent.type][currentlySelectedComponent.style];
+  private static addNewSubcomponentToComponentPreview(currentlySelectedComponent: WorkshopComponent, newSubcomponentProperties: NewImportedComponentProperties): void {
+    const layerSubcomponent = newSubcomponentProperties.subcomponents[newSubcomponentProperties.baseName];
+    const layer: Layer = PreviewStructure.createEmptyLayer(newSubcomponentProperties.baseName, layerSubcomponent);
+    AddNewLayerSubcomponent.addNewSubcomponentToBase(currentlySelectedComponent, layer);
+    AddNewLayerSubcomponent.updateComponentPreviewStructure(currentlySelectedComponent, newSubcomponentProperties, layerSubcomponent);
+  }
+
+  public static add(currentlySelectedComponent: WorkshopComponent): NewImportedComponentProperties {
     // WORK1: should layer3 be changed to something else or would the options adjust depending on layer depth
-    const newLayerSubcomponent = AddNewLayerSubcomponent.createNewSubcomponent(componentGenerator, subcomponentType);
-    AddNewLayerSubcomponent.addNewSubcomponentToExistingSubcomponents(currentlySelectedComponent, newLayerSubcomponent);
-    AddNewLayerSubcomponent.addNewSubcomponentToComponentPreview(currentlySelectedComponent, newLayerSubcomponent); 
+    const newLayerSubcomponent = AddNewLayerSubcomponent.createNewImportedComponent(SUBCOMPONENT_TYPES.LAYER);
+    AddNewSubcomponentShared.addNewSubcomponentsToExistingSubcomponents(currentlySelectedComponent, newLayerSubcomponent.subcomponents);
+    AddNewLayerSubcomponent.addNewSubcomponentToComponentPreview(currentlySelectedComponent, newLayerSubcomponent);
+    return newLayerSubcomponent;
   }
 }
