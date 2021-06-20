@@ -1,5 +1,4 @@
 import { AlignedLayerSection, AutoSize, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text, CustomStaticFeatures } from '../../../../../../../interfaces/workshopComponent';
-import { ImportedComponentGenerator } from '../../../../utils/importComponent/importedComponentGenerator';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { modalTextSpecificSettings } from '../../modals/properties/modalTextSpecificSettings';
@@ -95,9 +94,7 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
 
 export const defaultText: ComponentGenerator = {
   createNewComponent(importedComponentBaseName: string): WorkshopComponent {
-    const subcomponentNames = importedComponentBaseName
-      ? ImportedComponentGenerator.generateImportedComponentNames(importedComponentBaseName)
-      : defaultSubcomponentNames;
+    const subcomponentNames = importedComponentBaseName ? { base: importedComponentBaseName } : defaultSubcomponentNames;
     const subcomponents = createSubcomponents(subcomponentNames);
     const subcomponentDropdownStructure = getTextSubcomponentDropdownStructure(subcomponentNames);
     return {

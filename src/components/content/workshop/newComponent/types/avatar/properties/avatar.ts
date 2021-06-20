@@ -1,5 +1,4 @@
 import { AlignedLayerSection, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Image, CustomStaticFeatures } from '../../../../../../../interfaces/workshopComponent';
-import { ImportedComponentGenerator } from '../../../../utils/importComponent/importedComponentGenerator';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -96,9 +95,7 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
 
 export const avatar: ComponentGenerator = {
   createNewComponent(importedComponentBaseName: string): WorkshopComponent {
-    const subcomponentNames = importedComponentBaseName
-      ? ImportedComponentGenerator.generateImportedComponentNames(importedComponentBaseName)
-      : defaultSubcomponentNames;
+    const subcomponentNames = importedComponentBaseName ? { base: importedComponentBaseName } : defaultSubcomponentNames;
     const subcomponents = createSubcomponents(subcomponentNames);
     const subcomponentDropdownStructure = getAvatarSubcomponentDropdownStructure(subcomponentNames);
     return {

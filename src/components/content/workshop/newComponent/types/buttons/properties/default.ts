@@ -154,6 +154,9 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames, subcomp
 
 export const defaultButton: ComponentGenerator = {
   createNewComponent(importedComponentBaseName: string, subcomponentText?: string): WorkshopComponent {
+    // WORK1: ImportedComponentGenerator.generateImportedComponentNames will no longer be required if each subcomponent is going to be
+    // added individually
+    // should not generate new unique names if not imported (to reduce the number of unique ids being generated)
     const subcomponentNames = importedComponentBaseName
       ? ImportedComponentGenerator.generateImportedComponentNames(importedComponentBaseName)
       : defaultSubcomponentNames;

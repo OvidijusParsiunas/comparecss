@@ -1,7 +1,6 @@
 import { CustomCss, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { modalLayerBottomSpecificSettings } from '../../modals/properties/modalLayerBottomSpecificSettings';
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
-import { ImportedComponentGenerator } from '../../../../utils/importComponent/importedComponentGenerator';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -54,9 +53,7 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
 
 export const layer: ComponentGenerator = {
   createNewComponent(importedComponentBaseName: string): WorkshopComponent {
-    const subcomponentNames = importedComponentBaseName
-      ? ImportedComponentGenerator.generateImportedComponentNames(importedComponentBaseName)
-      : defaultSubcomponentNames;
+    const subcomponentNames = importedComponentBaseName ? { base: importedComponentBaseName } : defaultSubcomponentNames;
     const subcomponents = createSubcomponents(subcomponentNames);
     const subcomponentDropdownStructure = getLayerSubcomponentDropdownStructure(subcomponentNames);
     return {

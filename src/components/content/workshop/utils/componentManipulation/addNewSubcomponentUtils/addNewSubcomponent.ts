@@ -11,8 +11,8 @@ export class AddNewSubcomponentUtils {
     if (currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].subcomponentType === SUBCOMPONENT_TYPES.BASE) {
       AddNewLayerSubcomponent.add(currentlySelectedComponent);
     } else if (subcomponentType === 'importedButton') {
-      AddNewImportedComponent.add(currentlySelectedComponent, NEW_COMPONENT_TYPES.TEXT, currentlySelectedComponent.activeSubcomponentName,
-        NEW_COMPONENT_STYLES.BUTTON_CLOSE);
+      AddNewImportedComponent.add(currentlySelectedComponent, NEW_COMPONENT_TYPES.TEXT, NEW_COMPONENT_STYLES.DEFAULT,
+        currentlySelectedComponent.activeSubcomponentName);
     }
   }
 }
