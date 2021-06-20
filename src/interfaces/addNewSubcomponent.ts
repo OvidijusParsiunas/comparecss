@@ -1,11 +1,9 @@
-import { SubcomponentProperties, Subcomponents } from './workshopComponent';
+import { CustomSubcomponentNames } from './customSubcomponentNames';
+import { Subcomponents } from './workshopComponent';
 
-export type NewSubcomponentProperties = {
-  name: string;
-  subcomponentProperties: SubcomponentProperties;
-}
+export type OverwritePropertiesFunc = (subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames) => void;
 
-export type NewImportedComponentProperties = {
+export type NewComponentProperties = {
   baseName: string;
   subcomponents: Subcomponents;
 }

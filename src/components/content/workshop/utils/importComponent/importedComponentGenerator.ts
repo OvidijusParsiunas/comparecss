@@ -6,6 +6,7 @@ import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomp
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { EntityDisplayStatusUtils } from '../entityDisplayStatus/entityDisplayStatusUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
+import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum';
 import { ComponentGenerator } from '../../../../../interfaces/componentGenerator';
 
 export class ImportedComponentGenerator {
@@ -37,8 +38,11 @@ export class ImportedComponentGenerator {
   public static createImportedComponentSubcomponents(componentGenerator: ComponentGenerator, importedComponentName: string,
       subcomponentText?: string): Subcomponents {
     const importedComponentRef = componentGenerator.createNewComponent(importedComponentName, subcomponentText);
-    // WORK1: the following are not necessary for layer
-    ImportedComponentGenerator.applyTopProperty(importedComponentRef, importedComponentName);
+    // WORK1: if copy is using addNewImportedComponent instead - the following code should be just taken out to that class and this if
+    // statement should then be removed
+    if (importedComponentRef.type !== NEW_COMPONENT_TYPES.LAYER) {
+      ImportedComponentGenerator.applyTopProperty(importedComponentRef, importedComponentName);
+    }
     ImportedComponentGenerator.applyOptionalSubcomponentProperty(importedComponentRef, importedComponentName);
     // referencing the whole component within it's own subcomponent may not be efficient
     // alternative would be to have a placeholder subcomponent to reference it

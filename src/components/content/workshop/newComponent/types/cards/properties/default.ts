@@ -15,8 +15,8 @@ import PreviewStructure from '../../../../utils/componentGenerator/previewStruct
 import { getCardBaseSpecificSettings } from './cardBaseSpecificSettings';
 import { inheritedLayerBaseCss } from '../../shared/layer/inheritedCss';
 import {
-  CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Animations,
-  AlignedLayerSection, AutoSize, Text, CustomStaticFeatures, Image,
+  CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, SubcomponentProperties,
+  AlignedLayerSection, AutoSize, Text, CustomStaticFeatures, Image, Animations,
 } from '../../../../../../../interfaces/workshopComponent';
 
 function createDefaultAlertAnimationsProperties(): Animations {
@@ -113,19 +113,17 @@ function createDefaultTopLayerCss(): CustomCss {
   };
 }
 
-function createSubcomponents(): Subcomponents {
+function createBaseSubcomponent(): SubcomponentProperties {
   return {
-    [CORE_SUBCOMPONENTS_NAMES.BASE]: {
-      subcomponentType: SUBCOMPONENT_TYPES.BASE,
-      customCss: createDefaultBaseCss(),
-      defaultCss: createDefaultBaseCss(),
-      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      inheritedCss: inheritedLayerBaseCss,
-      childCss: inheritedLayerBaseChildCss,
-      customFeatures: createDefaultBaseCustomFeatures(),
-      defaultCustomFeatures: createDefaultBaseCustomFeatures(),
-    },
+    subcomponentType: SUBCOMPONENT_TYPES.BASE,
+    customCss: createDefaultBaseCss(),
+    defaultCss: createDefaultBaseCss(),
+    activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+    defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+    inheritedCss: inheritedLayerBaseCss,
+    childCss: inheritedLayerBaseChildCss,
+    customFeatures: createDefaultBaseCustomFeatures(),
+    defaultCustomFeatures: createDefaultBaseCustomFeatures(),
   };
 }
 
@@ -189,7 +187,7 @@ function overwriteImportedCancelButtonProperties(subcomponents: Subcomponents, s
 export const defaultCard: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
     uniqueSubcomponentIdState.resetUniqueId();
-    const subcomponents = createSubcomponents();
+    const subcomponents = { [CORE_SUBCOMPONENTS_NAMES.BASE]: createBaseSubcomponent()};
     const defaultCardComponent = {
       type: NEW_COMPONENT_TYPES.CARD,
       style: NEW_COMPONENT_STYLES.DEFAULT,

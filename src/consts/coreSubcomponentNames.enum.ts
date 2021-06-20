@@ -5,14 +5,12 @@ export enum CORE_SUBCOMPONENTS_NAMES {
   LAYER_1 = 'Layer 1',
   LAYER_2 = 'Layer 2',
   LAYER_3 = 'Layer 3',
-  NO_SIBLING_BUTTON = 'Button',
   // WORK1
-  DYNAMICALLY_GENERATED_BUTTON = 'Dynamic button',
+  BUTTON = 'Button',
   DYNAMICALLY_GENERATED_TEXT = 'Dynamic text',
   BUTTON_1_LAYER_3 = 'Button 1 ',
   BUTTON_2_LAYER_3 = 'Button 2 ',
   TEXT = 'Text',
   TEXT_2 = 'Text ',
-  TEXT_1_LAYER_2 = 'Text 1',
   AVATAR = 'Avatar',
 }
