@@ -20,7 +20,6 @@ export class AddNewImportedComponent {
     [NEW_COMPONENT_TYPES.AVATAR]: CORE_SUBCOMPONENTS_NAMES.AVATAR,
   }
 
-  // WORK1: The dropdown structure names should be adjusted every time to reflect better in the actual dropdown options
   private static updateComponentPreviewStructure(currentlySelectedComponent: WorkshopComponent, importedComponent: NewComponentProperties,
       currentLayer: Layer): void {
     const importedComponentStructure = ImportedComponentGenerator.createImportedComponentStructure(

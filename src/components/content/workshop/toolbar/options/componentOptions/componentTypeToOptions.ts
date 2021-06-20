@@ -6,15 +6,12 @@ import { nestedButtonOptions } from './button/nestedButton';
 import { closeButtonOptions } from './button/closeButton';
 import { layerBottomOptions } from './layer/layerBottom';
 import { layerMiddleOptions } from './layer/layerMiddle';
-import { sectionTextOptions } from './text/sectionText';
-import { LayerOptions } from './layer/layerOptions';
+import { getCardOptions } from './card/cardOptions';
 import { layerTopOptions } from './layer/layerTop';
-import { buttonTextOptions } from './button/text';
 import { buttonBaseOptions } from './button/base';
+import { buttonTextOptions } from './button/text';
 import { alertBaseOptions } from './alert/base';
 import { modalBaseOptions } from './modal/base';
-import { cardBaseOptions } from './card/base';
-import { avatarOptions } from './card/avatar';
 import { textOptions } from './text/text';
 
 type SubcomponentTypeToOptions = {
@@ -23,10 +20,6 @@ type SubcomponentTypeToOptions = {
 
 export type ComponentTypeToOptions = {
   [key in NEW_COMPONENT_TYPES]?: SubcomponentTypeToOptions;
-}
-
-function getStaticOptions(options: Options): Options {
-  return options;
 }
 
 // WORK1: change type
@@ -52,15 +45,5 @@ export const componentTypeToOptions: any = {
     [SUBCOMPONENT_TYPES.CLOSE_BUTTON]: closeButtonOptions as Options,
     [SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT]: closeButtonTextOptions as Options,
   },
-  [NEW_COMPONENT_TYPES.CARD]: {
-    [SUBCOMPONENT_TYPES.BASE]: getStaticOptions.bind(this, cardBaseOptions),
-    [SUBCOMPONENT_TYPES.TEXT]: getStaticOptions.bind(this, textOptions),
-    [SUBCOMPONENT_TYPES.SECTION_TEXT]: getStaticOptions.bind(this, sectionTextOptions),
-    [SUBCOMPONENT_TYPES.LAYER]: LayerOptions.getOptions,
-    [SUBCOMPONENT_TYPES.BUTTON]: getStaticOptions.bind(this, nestedButtonOptions),
-    [SUBCOMPONENT_TYPES.BUTTON_TEXT]: getStaticOptions.bind(this, buttonTextOptions),
-    [SUBCOMPONENT_TYPES.CLOSE_BUTTON]: getStaticOptions.bind(this, closeButtonOptions),
-    [SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT]: getStaticOptions.bind(this, closeButtonTextOptions),
-    [SUBCOMPONENT_TYPES.AVATAR]: getStaticOptions.bind(this, avatarOptions),
-  },
+  [NEW_COMPONENT_TYPES.CARD]: getCardOptions,
 };
