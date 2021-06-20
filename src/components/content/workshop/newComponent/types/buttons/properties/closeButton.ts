@@ -161,7 +161,7 @@ export const closeButton: ComponentGenerator = {
     const subcomponentDropdownStructure = getButtonSubcomponentDropdownStructure(subcomponentNames);
     return {
       type: NEW_COMPONENT_TYPES.BUTTON,
-      style: NEW_COMPONENT_STYLES.DEFAULT,
+      style: NEW_COMPONENT_STYLES.BUTTON_CLOSE,
       subcomponents,
       activeSubcomponentName: subcomponentNames.base,
       defaultSubcomponentName: subcomponentNames.base,

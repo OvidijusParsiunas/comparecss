@@ -2,7 +2,7 @@ import { NewComponentProperties, OverwritePropertiesFunc } from '../../../../../
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { EntityDisplayStatusUtils } from '../../../entityDisplayStatus/entityDisplayStatusUtils';
-import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
+import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { layer } from '../../../../newComponent/types/layers/properties/layer';
 import PreviewStructure from '../../../componentGenerator/previewStructure';
@@ -32,7 +32,7 @@ export class AddNewLayerSubcomponent extends AddNewSubcomponentShared {
   }
 
   public static add(currentlySelectedComponent: WorkshopComponent, overwritePropertiesFunc?: OverwritePropertiesFunc): NewComponentProperties {
-    const newLayerSubcomponent = AddNewLayerSubcomponent.createNewImportedComponent(SUBCOMPONENT_TYPES.LAYER, layer, overwritePropertiesFunc);
+    const newLayerSubcomponent = AddNewLayerSubcomponent.createNewImportedComponent(NEW_COMPONENT_TYPES.LAYER, layer, overwritePropertiesFunc);
     AddNewSubcomponentShared.addNewSubcomponentsToExistingSubcomponents(currentlySelectedComponent, newLayerSubcomponent.subcomponents);
     AddNewLayerSubcomponent.addNewSubcomponentToComponentPreview(currentlySelectedComponent, newLayerSubcomponent);
     return newLayerSubcomponent;
