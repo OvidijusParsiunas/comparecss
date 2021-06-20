@@ -117,7 +117,7 @@ function createDefaultTextCustomStaticFeatures(): CustomStaticFeatures {
 function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcomponents {
   return {
     [subcomponentNames.base]: {
-      subcomponentType: SUBCOMPONENT_TYPES.CLOSE_BUTTON,
+      subcomponentType: SUBCOMPONENT_TYPES.BUTTON,
       customCss: createDefaultBaseCss(),
       defaultCss: createDefaultBaseCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,

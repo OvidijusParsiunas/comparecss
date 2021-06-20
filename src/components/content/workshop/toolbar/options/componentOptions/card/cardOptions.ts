@@ -2,29 +2,33 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentType
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { Options } from '../../../../../../../interfaces/options';
 import { closeButtonTextOptions } from '../button/closeText';
-import { nestedButtonOptions } from '../button/nestedButton';
-import { closeButtonOptions } from '../button/closeButton';
 import { sectionTextOptions } from '../text/sectionText';
+import { ButtonOptions } from '../button/buttonOptions';
 import { LayerOptions } from '../layer/layerOptions';
 import { buttonTextOptions } from '../button/text';
 import { textOptions } from '../text/text';
 import { avatarOptions } from './avatar';
 import { cardBaseOptions } from './base';
 
-const staticCardOptions = {
+type SubcomponentTypeToOptions = {
+  [key in SUBCOMPONENT_TYPES]?: Options;
+}
+
+const staticCardOptions: SubcomponentTypeToOptions = {
   [SUBCOMPONENT_TYPES.BASE]: cardBaseOptions as Options,
   [SUBCOMPONENT_TYPES.TEXT]: textOptions as Options,
   [SUBCOMPONENT_TYPES.SECTION_TEXT]: sectionTextOptions as Options,
-  [SUBCOMPONENT_TYPES.BUTTON]: nestedButtonOptions,
-  [SUBCOMPONENT_TYPES.BUTTON_TEXT]: buttonTextOptions,
-  [SUBCOMPONENT_TYPES.CLOSE_BUTTON]: closeButtonOptions,
-  [SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT]: closeButtonTextOptions,
-  [SUBCOMPONENT_TYPES.AVATAR]: avatarOptions,
+  [SUBCOMPONENT_TYPES.BUTTON_TEXT]: buttonTextOptions as Options,
+  [SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT]: closeButtonTextOptions as Options,
+  [SUBCOMPONENT_TYPES.AVATAR]: avatarOptions as Options,
 }
 
-export function getCardOptions(component: WorkshopComponent, subcomponentName: SUBCOMPONENT_TYPES): Options {
-  if (subcomponentName === SUBCOMPONENT_TYPES.LAYER) {
+export function getCardOptions(component: WorkshopComponent, subcomponentType: SUBCOMPONENT_TYPES): Options {
+  if (subcomponentType === SUBCOMPONENT_TYPES.LAYER) {
     return LayerOptions.getOptions(component);
   }
-  return staticCardOptions[subcomponentName];
+  if (subcomponentType === SUBCOMPONENT_TYPES.BUTTON) {
+    return ButtonOptions.getOptions(component);
+  }
+  return staticCardOptions[subcomponentType];
 }
