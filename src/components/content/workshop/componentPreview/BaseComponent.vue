@@ -4,7 +4,7 @@
       v-if="isSubcomponentDisplayed(component.componentPreviewStructure.baseSubcomponentProperties)"
       :id="subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId"
       class="parent-component"
-      :class="[ COMPONENT_PREVIEW_MARKER, SUBCOMPONENT_CURSOR_AUTO_CLASS,
+      :class="[ COMPONENT_PREVIEW_MARKER,
         ...((component.componentPreviewStructure.baseSubcomponentProperties.customFeatures && component.componentPreviewStructure.baseSubcomponentProperties.customFeatures.jsClasses) || []),
         (isImportedComponent ? 'imported-component' : STATIC_POSITION_CLASS) ]"
       @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId].subcomponentMouseEnter()"

@@ -199,9 +199,9 @@ export const defaultCard: ComponentGenerator = {
       className: 'default-class-name',
       componentStatus: { isRemoved: false },
     };
-    const layer1Component = AddNewLayerSubcomponent.add(defaultCardComponent, overwriteImportedTopLayerProperties);
-    const layer2Component = AddNewLayerSubcomponent.add(defaultCardComponent);
-    const layer3Component = AddNewLayerSubcomponent.add(defaultCardComponent);
+    const layer1Component = AddNewLayerSubcomponent.add(defaultCardComponent, NEW_COMPONENT_STYLES.DEFAULT, true, overwriteImportedTopLayerProperties);
+    const layer2Component = AddNewLayerSubcomponent.add(defaultCardComponent, NEW_COMPONENT_STYLES.DEFAULT, true);
+    const layer3Component = AddNewLayerSubcomponent.add(defaultCardComponent, NEW_COMPONENT_STYLES.DEFAULT, true);
     AddNewImportedComponent.add(defaultCardComponent, NEW_COMPONENT_TYPES.TEXT, NEW_COMPONENT_STYLES.DEFAULT,
       layer1Component.baseName, overwriteImportedTitleProperties);
     AddNewImportedComponent.add(defaultCardComponent, NEW_COMPONENT_TYPES.TEXT, NEW_COMPONENT_STYLES.DEFAULT,

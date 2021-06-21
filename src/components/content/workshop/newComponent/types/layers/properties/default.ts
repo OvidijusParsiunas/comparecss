@@ -11,7 +11,6 @@ import { ComponentGenerator } from '../../../../../../../interfaces/componentGen
 import { LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getLayerSubcomponentDropdownStructure from './subcomponentDropdownStructure';
-import ReferenceSharingUtils from '../../buttons/properties/referenceSharingUtils';
 
 const defaultSubcomponentNames: CustomSubcomponentNames = {
   base: CORE_SUBCOMPONENTS_NAMES.LAYER,
@@ -51,7 +50,7 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
   };
 }
 
-export const layer: ComponentGenerator = {
+export const defaultLayer: ComponentGenerator = {
   createNewComponent(importedComponentBaseName: string): WorkshopComponent {
     const subcomponentNames = importedComponentBaseName ? { base: importedComponentBaseName } : defaultSubcomponentNames;
     const subcomponents = createSubcomponents(subcomponentNames);
@@ -66,7 +65,6 @@ export const layer: ComponentGenerator = {
       className: 'default-class-name',
       subcomponentNames,
       componentStatus: { isRemoved: false },
-      referenceSharingExecutables: [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents],
     };
   },
 };

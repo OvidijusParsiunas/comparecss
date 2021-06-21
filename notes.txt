@@ -7,6 +7,8 @@ position - move subcomponent over another, left or right
 maybe should allow import a new button alltogether instead of creating a new button and then changing its style
 after adding a new subcomponent, open its options
 rename imported component to nested component
+hovering the x button from the horizontal side does not trigger thre x button
+when hovering over the close button - the x text appears to not have a transition animation
 
 overflow
 try with button tags

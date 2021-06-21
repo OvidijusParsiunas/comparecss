@@ -47,7 +47,7 @@ export default class ComponentComponentUtils {
     const importedComponentRefs = [];
     // WORK1: remove new component subcomponents that are not in the component being copied
     // currently can add an imported component but need to be able to add a native component
-    // newComponent.subcomponents = {};
+  // newComponent.subcomponents = {};
     // uniqueSubcomponentIdState.resetUniqueId();
     Object.keys(componentBeingCopied.subcomponents).forEach((subcomponentName) => {
       // if subcomponent is part of an imported component, do not proceed as a new one will be created
@@ -64,7 +64,9 @@ export default class ComponentComponentUtils {
       // PART 5: change this if statement to
       /// if (componentBeingCopied.subcomponents[subcomponentName].importedComponent)
       if (!newComponent.subcomponents[subcomponentName] && !componentBeingCopied.subcomponents[subcomponentName].baseSubcomponentRef) {
+        // 11111 recreate all subcomponents except base
         const importedComponentSubcomponents = ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, subcomponentName);
+        // 11111 adding all the subcomponents
         newComponent.subcomponents = {
           ...newComponent.subcomponents, ...importedComponentSubcomponents };
         // PART4:
@@ -73,6 +75,7 @@ export default class ComponentComponentUtils {
       }
       // PART6:
       // else proceed to create a default subcomponent
+      // 1111111 importing in-sync componnets - check
       if (componentBeingCopied.subcomponents[subcomponentName].importedComponent) {
         importedComponentRefs.push(componentBeingCopied.subcomponents[subcomponentName].importedComponent.componentRef);
         if (componentBeingCopied.subcomponents[subcomponentName].importedComponent.inSync) {
@@ -86,7 +89,7 @@ export default class ComponentComponentUtils {
     });
     importedComponentRefs.forEach((importedComponentRef) => {
       const { subcomponentNames, referenceSharingExecutables } = importedComponentRef;
-      referenceSharingExecutables.forEach((executable: (subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames) => void) => {
+      (referenceSharingExecutables || []).forEach((executable: (subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames) => void) => {
         executable(newComponent.subcomponents, subcomponentNames);
       });
     });

@@ -9,7 +9,6 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentType
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
-import ReferenceSharingUtils from '../../buttons/properties/referenceSharingUtils';
 import getTextSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { inheritedTextCss } from '../../shared/text/inheritedCss';
 
@@ -107,7 +106,6 @@ export const defaultText: ComponentGenerator = {
       className: 'default-class-name',
       subcomponentNames,
       componentStatus: { isRemoved: false },
-      referenceSharingExecutables: [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents],
     };
   },
 };

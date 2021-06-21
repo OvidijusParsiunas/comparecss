@@ -14,6 +14,7 @@ type SubcomponentTypeToOptions = {
   [key in SUBCOMPONENT_TYPES]?: Options;
 }
 
+// WORK1: text - will be done when all imported components have their text imported with specific styles
 const staticCardOptions: SubcomponentTypeToOptions = {
   [SUBCOMPONENT_TYPES.BASE]: cardBaseOptions as Options,
   [SUBCOMPONENT_TYPES.TEXT]: textOptions as Options,

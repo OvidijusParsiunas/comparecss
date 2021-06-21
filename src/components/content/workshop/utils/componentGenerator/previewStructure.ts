@@ -72,17 +72,17 @@ export default class PreviewStructure {
     return layer;
   }
   
-  private static createLayers(subcomponentBase: NestedDropdownStructure, subcomponents: Subcomponents, subcomponentNames?: CustomSubcomponentNames): Layer[] {
-    if (!subcomponents[Object.keys(subcomponentBase)[0]]) return [];
-    if (subcomponents[Object.keys(subcomponentBase)[0]].layerSectionsType) {
-      return Object.keys(subcomponentBase).map((subcomponentName: string) =>
+  private static createLayers(dropdownStructure: NestedDropdownStructure, subcomponents: Subcomponents, subcomponentNames?: CustomSubcomponentNames): Layer[] {
+    if (!subcomponents[Object.keys(dropdownStructure)[0]]) return [];
+    if (subcomponents[Object.keys(dropdownStructure)[0]].layerSectionsType) {
+      return Object.keys(dropdownStructure).map((subcomponentName: string) =>
         PreviewStructure.createLayer(subcomponentName, subcomponents[subcomponentName],
-          subcomponentBase[subcomponentName] as NestedDropdownStructure, subcomponents)
+          dropdownStructure[subcomponentName] as NestedDropdownStructure, subcomponents)
       );
     }
     const layerName = subcomponentNames ? subcomponentNames.layer : CORE_SUBCOMPONENTS_NAMES.LAYER_1;
     return [PreviewStructure.createLayer(layerName, subcomponents[layerName],
-      subcomponentBase as NestedDropdownStructure, subcomponents)];
+      dropdownStructure as NestedDropdownStructure, subcomponents)];
   }
 
   public static createComponentPreviewStructure(subcomponentDropdownStructure: NestedDropdownStructure,

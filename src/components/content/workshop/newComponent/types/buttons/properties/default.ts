@@ -1,6 +1,7 @@
-import { AlignedLayerSection, AutoSize, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text, CustomStaticFeatures } from '../../../../../../../interfaces/workshopComponent';
-import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
-import { ImportedComponentGenerator } from '../../../../utils/importComponent/importedComponentGenerator';
+import { AlignedLayerSection, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { AddNewImportedComponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewImportedComponent';
+import { AddNewLayerSubcomponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewLayerSubcomponent';
+import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -8,8 +9,8 @@ import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentSt
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
+import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
-import getButtonSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { buttonSpecificSettings } from './buttonSpecificSettings';
 import ReferenceSharingUtils from './referenceSharingUtils';
 import { inheritedButtonCss } from './inheritedCss';
@@ -53,41 +54,6 @@ function createDefaultBaseCss(): CustomCss {
   }
 }
 
-function createLayerCss(): CustomCss {
-  return {
-    [CSS_PSEUDO_CLASSES.DEFAULT]: {
-      height: '100%',
-    },
-  }
-}
-
-function createTextCss(): CustomCss {
-  return {
-    [CSS_PSEUDO_CLASSES.DEFAULT]: {
-      top: '50%',
-      width: 'max-content',
-      userSelect: 'none',
-      overflow: 'unset',
-      fontSize: '14px',
-      fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
-      backgroundColor: 'inherit',
-      fontWeight: '400',
-      paddingTop: '0px',
-      paddingBottom: '0px',
-      paddingLeft: '0px',
-      paddingRight: '0px',
-      marginLeft: '0px',
-      marginRight: '0px',
-    },
-  }
-}
-
-function createAutoSize(): AutoSize {
-  return {
-    width: true,
-  };
-}
-
 function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayerSection {
   return { section };
 }
@@ -95,23 +61,6 @@ function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayer
 function createDefaultButtonBaseCustomFeatures(): CustomFeatures {
   return {
     alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
-  }
-}
-
-function createDefaultTextCustomFeatures(): CustomFeatures {
-  return {
-    autoSize: createAutoSize(),
-    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
-  }
-}
-
-function createText(text: string): Text {
-  return { text };
-}
-
-function createDefaultTextCustomStaticFeatures(subcomponentText?: string): CustomStaticFeatures {
-  return {
-    subcomponentText: createText(subcomponentText || 'button'),
   }
 }
 
@@ -131,40 +80,19 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames, subcomp
       defaultCustomFeatures: createDefaultButtonBaseCustomFeatures(),
       triggerableSubcomponentName: subcomponentNames.text,
     },
-    [subcomponentNames.layer]: {
-      customCss: createLayerCss(),
-      defaultCss: createLayerCss(),
-      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
-    },
-    [subcomponentNames.text]: {
-      subcomponentType: SUBCOMPONENT_TYPES.BUTTON_TEXT,
-      customCss: createTextCss(),
-      defaultCss: createTextCss(),
-      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      customFeatures: createDefaultTextCustomFeatures(),
-      defaultCustomFeatures: createDefaultTextCustomFeatures(),
-      customStaticFeatures: createDefaultTextCustomStaticFeatures(subcomponentText),
-      defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(subcomponentText),
-    },
   }
 }
 
 export const defaultButton: ComponentGenerator = {
+  // WORK1: check if subcomponentText needed
   createNewComponent(importedComponentBaseName: string, subcomponentText?: string): WorkshopComponent {
     // WORK1: ImportedComponentGenerator.generateImportedComponentNames will no longer be required if each subcomponent is going to be
     // added individually
     // should not generate new unique names if not imported (to reduce the number of unique ids being generated)
-    const subcomponentNames = importedComponentBaseName
-      ? ImportedComponentGenerator.generateImportedComponentNames(importedComponentBaseName)
-      : defaultSubcomponentNames;
+    const subcomponentNames = importedComponentBaseName ? { base: importedComponentBaseName } : defaultSubcomponentNames;
     const subcomponents = createSubcomponents(subcomponentNames, subcomponentText);
-    ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(subcomponents, subcomponentNames);
-    ReferenceSharingUtils.appendBaseSubcomponentRefToAllChildSubcomponents(subcomponents, subcomponentNames);
-    const subcomponentDropdownStructure = getButtonSubcomponentDropdownStructure(subcomponentNames);
-    return {
+    const subcomponentDropdownStructure = { [subcomponentNames.base]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject() };
+    const defaultButtonComponent: WorkshopComponent = {
       type: NEW_COMPONENT_TYPES.BUTTON,
       style: NEW_COMPONENT_STYLES.DEFAULT,
       subcomponents,
@@ -176,5 +104,14 @@ export const defaultButton: ComponentGenerator = {
       componentStatus: { isRemoved: false },
       referenceSharingExecutables: [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents],
     };
+    const layerSubcomponent = AddNewLayerSubcomponent.add(defaultButtonComponent, NEW_COMPONENT_STYLES.BUTTON_LAYER, false);
+    const textSubcomponent = AddNewImportedComponent.add(defaultButtonComponent, NEW_COMPONENT_TYPES.TEXT, NEW_COMPONENT_STYLES.TEXT_BUTTON,
+      layerSubcomponent.baseName);
+    subcomponentNames.layer = layerSubcomponent.baseName;
+    subcomponentNames.text = textSubcomponent.baseName;
+    defaultButtonComponent.subcomponentNames = subcomponentNames;
+    ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(defaultButtonComponent.subcomponents, subcomponentNames);
+    ReferenceSharingUtils.appendBaseSubcomponentRefToAllChildSubcomponents(defaultButtonComponent.subcomponents, subcomponentNames);
+    return defaultButtonComponent;
   },
 };
