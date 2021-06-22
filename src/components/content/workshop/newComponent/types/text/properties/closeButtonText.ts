@@ -7,8 +7,10 @@ import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTyp
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { inheritedCloseTextCss } from '../../buttons/properties/inheritedCloseTextCss';
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getTextSubcomponentDropdownStructure from './subcomponentDropdownStructure';
+import { CLOSE_BUTTON_X_TEXT } from '../../../../../../../consts/closeButtonXText';
 
 const defaultSubcomponentNames: CustomSubcomponentNames = {
   base: CORE_SUBCOMPONENTS_NAMES.TEXT,
@@ -19,13 +21,14 @@ function createDefaultTextCss(): CustomCss {
     [CSS_PSEUDO_CLASSES.DEFAULT]: {
       top: '50%',
       width: 'max-content',
+      color: '#ff0000',
       userSelect: 'none',
       overflow: 'unset',
-      fontSize: '14px',
-      fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
+      fontSize: '18px',
+      fontFamily: '"Poppins", sans-serif',
       backgroundColor: 'inherit',
-      fontWeight: '400',
-      paddingTop: '0px',
+      fontWeight: '300',
+      paddingTop: '1px',
       paddingBottom: '0px',
       paddingLeft: '0px',
       paddingRight: '0px',
@@ -61,7 +64,7 @@ function createText(text: string): Text {
 
 function createDefaultTextCustomStaticFeatures(): CustomStaticFeatures {
   return {
-    subcomponentText: createText('Text'),
+    subcomponentText: createText(CLOSE_BUTTON_X_TEXT),
   };
 }
 
@@ -71,6 +74,7 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
       customCss: createDefaultTextCss(),
       defaultCss: createDefaultTextCss(),
+      inheritedCss: inheritedCloseTextCss,
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       customFeatures: createDefaultTextCustomFeatures(),
@@ -81,14 +85,14 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
   };
 }
 
-export const buttonText: ComponentGenerator = {
+export const closeButtonText: ComponentGenerator = {
   createNewComponent(importedComponentBaseName: string): WorkshopComponent {
     const subcomponentNames = importedComponentBaseName ? { base: importedComponentBaseName } : defaultSubcomponentNames;
     const subcomponents = createSubcomponents(subcomponentNames);
     const subcomponentDropdownStructure = getTextSubcomponentDropdownStructure(subcomponentNames);
     return {
       type: NEW_COMPONENT_TYPES.TEXT,
-      style: NEW_COMPONENT_STYLES.TEXT_BUTTON,
+      style: NEW_COMPONENT_STYLES.CLOSE_BUTTON_TEXT,
       subcomponents,
       activeSubcomponentName: subcomponentNames.base,
       defaultSubcomponentName: subcomponentNames.base,

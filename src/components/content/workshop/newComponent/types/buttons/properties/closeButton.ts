@@ -1,6 +1,7 @@
-import { AlignedLayerSection, AutoSize, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text, CustomStaticFeatures } from '../../../../../../../interfaces/workshopComponent';
-import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
-import { ImportedComponentGenerator } from '../../../../utils/importComponent/importedComponentGenerator';
+import { AlignedLayerSection, CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { AddNewImportedComponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewImportedComponent';
+import { AddNewLayerSubcomponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewLayerSubcomponent';
+import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -9,17 +10,11 @@ import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentSt
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
+import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
-import getButtonSubcomponentDropdownStructure from './subcomponentDropdownStructure';
-import { CLOSE_BUTTON_X_TEXT } from '../../../../../../../consts/closeButtonXText';
 import { buttonSpecificSettings } from './buttonSpecificSettings';
-import { inheritedCloseTextCss } from './inheritedCloseTextCss';
 import ReferenceSharingUtils from './referenceSharingUtils';
 import { inheritedButtonCss } from './inheritedCss';
-
-const defaultSubcomponentNames: CustomSubcomponentNames = {
-  base: CORE_SUBCOMPONENTS_NAMES.BASE, layer: CORE_SUBCOMPONENTS_NAMES.LAYER_1, text: CORE_SUBCOMPONENTS_NAMES.TEXT,
-};
 
 function createDefaultBaseCss(): CustomCss {
   return {
@@ -46,42 +41,6 @@ function createDefaultBaseCss(): CustomCss {
   }
 }
 
-function createLayerCss(): CustomCss {
-  return {
-    [CSS_PSEUDO_CLASSES.DEFAULT]: {
-      height: '100%',
-    },
-  }
-}
-
-function createTextCss(): CustomCss {
-  return {
-    [CSS_PSEUDO_CLASSES.DEFAULT]: {
-      top: '50%',
-      width: 'max-content',
-      color: '#ff0000',
-      userSelect: 'none',
-      overflow: 'unset',
-      fontSize: '18px',
-      fontFamily: '"Poppins", sans-serif',
-      backgroundColor: 'inherit',
-      fontWeight: '300',
-      paddingTop: '1px',
-      paddingBottom: '0px',
-      paddingLeft: '0px',
-      paddingRight: '0px',
-      marginLeft: '0px',
-      marginRight: '0px',
-    },
-  }
-}
-
-function createAutoSize(): AutoSize {
-  return {
-    width: true,
-  };
-}
-
 function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayerSection {
   return { section };
 }
@@ -97,79 +56,62 @@ function createDefaultButtonBaseCustomFeatures(): CustomFeatures {
   };
 }
 
-function createDefaultTextCustomFeatures(): CustomFeatures {
+function createBaseSubcomponent(): SubcomponentProperties {
   return {
-    autoSize: createAutoSize(),
-    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
+    subcomponentType: SUBCOMPONENT_TYPES.BUTTON,
+    customCss: createDefaultBaseCss(),
+    defaultCss: createDefaultBaseCss(),
+    activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+    defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+    subcomponentPreviewTransition: 'all 0.25s ease-out',
+    tempCustomCss: new Set(['transition']),
+    inheritedCss: inheritedButtonCss,
+    subcomponentSpecificSettings: buttonSpecificSettings,
+    customFeatures: createDefaultButtonBaseCustomFeatures(),
+    defaultCustomFeatures: createDefaultButtonBaseCustomFeatures(),
   };
 }
 
-function createText(text: string): Text {
-  return { text };
-}
-
-function createDefaultTextCustomStaticFeatures(): CustomStaticFeatures {
+function createButtonBaseSubcomponent(importedComponentBaseName: string ): WorkshopComponent {
+  const subcomponentNames: CustomSubcomponentNames = { base: importedComponentBaseName || CORE_SUBCOMPONENTS_NAMES.BASE };
+  const subcomponents = {[subcomponentNames.base]: createBaseSubcomponent()};
+  const subcomponentDropdownStructure = { [subcomponentNames.base]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject() };
+  const componentPreviewStructure = PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents, subcomponentNames);
   return {
-    subcomponentText: createText(CLOSE_BUTTON_X_TEXT),
+    type: NEW_COMPONENT_TYPES.BUTTON,
+    style: NEW_COMPONENT_STYLES.BUTTON_CLOSE,
+    subcomponents,
+    activeSubcomponentName: subcomponentNames.base,
+    defaultSubcomponentName: subcomponentNames.base,
+    componentPreviewStructure,
+    className: 'default-class-name',
+    subcomponentNames,
+    componentStatus: { isRemoved: false },
+    referenceSharingExecutables: [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents],
   };
 }
 
-function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcomponents {
-  return {
-    [subcomponentNames.base]: {
-      subcomponentType: SUBCOMPONENT_TYPES.BUTTON,
-      customCss: createDefaultBaseCss(),
-      defaultCss: createDefaultBaseCss(),
-      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      subcomponentPreviewTransition: 'all 0.25s ease-out',
-      tempCustomCss: new Set(['transition']),
-      inheritedCss: inheritedButtonCss,
-      subcomponentSpecificSettings: buttonSpecificSettings,
-      customFeatures: createDefaultButtonBaseCustomFeatures(),
-      defaultCustomFeatures: createDefaultButtonBaseCustomFeatures(),
-    },
-    [subcomponentNames.layer]: {
-      customCss: createLayerCss(),
-      defaultCss: createLayerCss(),
-      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
-    },
-    [subcomponentNames.text]: {
-      subcomponentType: SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT,
-      customCss: createTextCss(),
-      defaultCss: createTextCss(),
-      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      inheritedCss: inheritedCloseTextCss,
-      customFeatures: createDefaultTextCustomFeatures(),
-      defaultCustomFeatures: createDefaultTextCustomFeatures(),
-      customStaticFeatures: createDefaultTextCustomStaticFeatures(),
-      defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(),
-    },
-  };
+function addComponentsToBase(buttonComponent: WorkshopComponent): void {
+  const layerSubcomponent = AddNewLayerSubcomponent.add(buttonComponent, NEW_COMPONENT_STYLES.BUTTON_LAYER, false);
+  const textSubcomponent = AddNewImportedComponent.add(buttonComponent, NEW_COMPONENT_TYPES.TEXT, NEW_COMPONENT_STYLES.CLOSE_BUTTON_TEXT,
+    layerSubcomponent.baseName);
+  const { subcomponentNames } = buttonComponent;
+  buttonComponent.subcomponents[subcomponentNames.base].triggerableSubcomponentName = textSubcomponent.baseName;
+  subcomponentNames.layer = layerSubcomponent.baseName;
+  subcomponentNames.text = textSubcomponent.baseName;
+}
+
+function addReferences(buttonComponent: WorkshopComponent): void {
+  const { subcomponentNames } = buttonComponent;
+  ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(buttonComponent.subcomponents, subcomponentNames);
+  ReferenceSharingUtils.appendBaseSubcomponentRefToAllChildSubcomponents(buttonComponent.subcomponents, subcomponentNames);
 }
 
 export const closeButton: ComponentGenerator = {
   createNewComponent(importedComponentBaseName: string): WorkshopComponent {
-    const subcomponentNames = importedComponentBaseName
-      ? ImportedComponentGenerator.generateImportedComponentNames(importedComponentBaseName)
-      : defaultSubcomponentNames;
-    const subcomponents = createSubcomponents(subcomponentNames);
-    ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(subcomponents, subcomponentNames);
-    const subcomponentDropdownStructure = getButtonSubcomponentDropdownStructure(subcomponentNames);
-    return {
-      type: NEW_COMPONENT_TYPES.BUTTON,
-      style: NEW_COMPONENT_STYLES.BUTTON_CLOSE,
-      subcomponents,
-      activeSubcomponentName: subcomponentNames.base,
-      defaultSubcomponentName: subcomponentNames.base,
-      componentPreviewStructure: PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents, subcomponentNames),
-      className: 'default-class-name',
-      subcomponentNames,
-      componentStatus: { isRemoved: false },
-      referenceSharingExecutables: [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents],
-    };
+    const buttonComponent: WorkshopComponent = createButtonBaseSubcomponent(importedComponentBaseName);
+    addComponentsToBase(buttonComponent);
+    addReferences(buttonComponent);
+    return buttonComponent;
   },
 };

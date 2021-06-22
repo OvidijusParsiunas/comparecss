@@ -20,13 +20,15 @@ export class CardOptions {
     [SUBCOMPONENT_TYPES.BASE]: cardBaseOptions as Options,
     // WORK1: check if this is needed
     [SUBCOMPONENT_TYPES.SECTION_TEXT]: sectionTextOptions as Options,
-    [SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT]: closeButtonTextOptions as Options,
     [SUBCOMPONENT_TYPES.AVATAR]: avatarOptions as Options,
   };
 
   private static getTextOptions(component: WorkshopComponent): Options {
-    if (component.subcomponents[component.activeSubcomponentName].importedComponent.componentRef.style === NEW_COMPONENT_STYLES.TEXT_BUTTON) {
+    const subcomponentStyle = component.subcomponents[component.activeSubcomponentName].importedComponent.componentRef.style;
+    if (subcomponentStyle === NEW_COMPONENT_STYLES.TEXT_BUTTON) {
       return buttonTextOptions as Options;
+    } else if (subcomponentStyle === NEW_COMPONENT_STYLES.CLOSE_BUTTON_TEXT) {
+      return closeButtonTextOptions as Options;
     }
     return textOptions as Options;
   }
