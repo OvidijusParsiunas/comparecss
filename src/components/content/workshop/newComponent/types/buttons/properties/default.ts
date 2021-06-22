@@ -1,4 +1,4 @@
-import { AlignedLayerSection, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { AlignedLayerSection, CustomCss, CustomFeatures, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddNewImportedComponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewImportedComponent';
 import { AddNewLayerSubcomponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewLayerSubcomponent';
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
@@ -14,10 +14,6 @@ import PreviewStructure from '../../../../utils/componentGenerator/previewStruct
 import { buttonSpecificSettings } from './buttonSpecificSettings';
 import ReferenceSharingUtils from './referenceSharingUtils';
 import { inheritedButtonCss } from './inheritedCss';
-
-const defaultSubcomponentNames: CustomSubcomponentNames = {
-  base: CORE_SUBCOMPONENTS_NAMES.BASE, layer: CORE_SUBCOMPONENTS_NAMES.LAYER_1, text: CORE_SUBCOMPONENTS_NAMES.TEXT,
-};
 
 function createDefaultBaseCss(): CustomCss {
   return {
@@ -64,54 +60,68 @@ function createDefaultButtonBaseCustomFeatures(): CustomFeatures {
   }
 }
 
-function createSubcomponents(subcomponentNames: CustomSubcomponentNames, subcomponentText?: string): Subcomponents {
+function createBaseSubcomponent(): SubcomponentProperties {
   return {
-    [subcomponentNames.base]: {
-      subcomponentType: SUBCOMPONENT_TYPES.BUTTON,
-      customCss: createDefaultBaseCss(),
-      defaultCss: createDefaultBaseCss(),
-      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      subcomponentPreviewTransition: 'all 0.25s ease-out',
-      tempCustomCss: new Set(['transition']),
-      inheritedCss: inheritedButtonCss,
-      subcomponentSpecificSettings: buttonSpecificSettings,
-      customFeatures: createDefaultButtonBaseCustomFeatures(),
-      defaultCustomFeatures: createDefaultButtonBaseCustomFeatures(),
-      triggerableSubcomponentName: subcomponentNames.text,
-    },
+    subcomponentType: SUBCOMPONENT_TYPES.BUTTON,
+    customCss: createDefaultBaseCss(),
+    defaultCss: createDefaultBaseCss(),
+    activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+    defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
+    subcomponentPreviewTransition: 'all 0.25s ease-out',
+    tempCustomCss: new Set(['transition']),
+    inheritedCss: inheritedButtonCss,
+    subcomponentSpecificSettings: buttonSpecificSettings,
+    customFeatures: createDefaultButtonBaseCustomFeatures(),
+    defaultCustomFeatures: createDefaultButtonBaseCustomFeatures(),
   }
 }
 
+function createButtonBaseSubcomponent(importedComponentBaseName: string ): WorkshopComponent {
+  const subcomponentNames: CustomSubcomponentNames = { base: importedComponentBaseName || CORE_SUBCOMPONENTS_NAMES.BASE };
+  const subcomponents = {[subcomponentNames.base]: createBaseSubcomponent()};
+  const subcomponentDropdownStructure = { [subcomponentNames.base]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject() };
+  const componentPreviewStructure = PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents, subcomponentNames);
+  return {
+    type: NEW_COMPONENT_TYPES.BUTTON,
+    style: NEW_COMPONENT_STYLES.DEFAULT,
+    subcomponents,
+    activeSubcomponentName: subcomponentNames.base,
+    defaultSubcomponentName: subcomponentNames.base,
+    componentPreviewStructure,
+    className: 'default-class-name',
+    subcomponentNames,
+    componentStatus: { isRemoved: false },
+    referenceSharingExecutables: [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents],
+  };
+}
+
+function overwriteButtonTextProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
+  subcomponents[subcomponentNames.base].customStaticFeatures.subcomponentText.text = 'Button';
+  subcomponents[subcomponentNames.base].customStaticFeatures.subcomponentText.text = 'Button';
+}
+
+function addComponentsToBase(buttonComponent: WorkshopComponent): void {
+  const layerSubcomponent = AddNewLayerSubcomponent.add(buttonComponent, NEW_COMPONENT_STYLES.BUTTON_LAYER, false);
+  const textSubcomponent = AddNewImportedComponent.add(buttonComponent, NEW_COMPONENT_TYPES.TEXT, NEW_COMPONENT_STYLES.TEXT_BUTTON,
+    layerSubcomponent.baseName, overwriteButtonTextProperties);
+  const { subcomponentNames } = buttonComponent;
+  buttonComponent.subcomponents[subcomponentNames.base].triggerableSubcomponentName = textSubcomponent.baseName;
+  subcomponentNames.layer = layerSubcomponent.baseName;
+  subcomponentNames.text = textSubcomponent.baseName;
+}
+
+function addReferences(buttonComponent: WorkshopComponent): void {
+  const { subcomponentNames } = buttonComponent;
+  ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(buttonComponent.subcomponents, subcomponentNames);
+  ReferenceSharingUtils.appendBaseSubcomponentRefToAllChildSubcomponents(buttonComponent.subcomponents, subcomponentNames);
+}
+
 export const defaultButton: ComponentGenerator = {
-  // WORK1: check if subcomponentText needed
-  createNewComponent(importedComponentBaseName: string, subcomponentText?: string): WorkshopComponent {
-    // WORK1: ImportedComponentGenerator.generateImportedComponentNames will no longer be required if each subcomponent is going to be
-    // added individually
-    // should not generate new unique names if not imported (to reduce the number of unique ids being generated)
-    const subcomponentNames = importedComponentBaseName ? { base: importedComponentBaseName } : defaultSubcomponentNames;
-    const subcomponents = createSubcomponents(subcomponentNames, subcomponentText);
-    const subcomponentDropdownStructure = { [subcomponentNames.base]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject() };
-    const defaultButtonComponent: WorkshopComponent = {
-      type: NEW_COMPONENT_TYPES.BUTTON,
-      style: NEW_COMPONENT_STYLES.DEFAULT,
-      subcomponents,
-      activeSubcomponentName: subcomponentNames.base,
-      defaultSubcomponentName: subcomponentNames.base,
-      componentPreviewStructure: PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents, subcomponentNames),
-      className: 'default-class-name',
-      subcomponentNames,
-      componentStatus: { isRemoved: false },
-      referenceSharingExecutables: [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents],
-    };
-    const layerSubcomponent = AddNewLayerSubcomponent.add(defaultButtonComponent, NEW_COMPONENT_STYLES.BUTTON_LAYER, false);
-    const textSubcomponent = AddNewImportedComponent.add(defaultButtonComponent, NEW_COMPONENT_TYPES.TEXT, NEW_COMPONENT_STYLES.TEXT_BUTTON,
-      layerSubcomponent.baseName);
-    subcomponentNames.layer = layerSubcomponent.baseName;
-    subcomponentNames.text = textSubcomponent.baseName;
-    defaultButtonComponent.subcomponentNames = subcomponentNames;
-    ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(defaultButtonComponent.subcomponents, subcomponentNames);
-    ReferenceSharingUtils.appendBaseSubcomponentRefToAllChildSubcomponents(defaultButtonComponent.subcomponents, subcomponentNames);
-    return defaultButtonComponent;
+  // WORK1: on hover button change color text option - and fix mouse leave bug
+  createNewComponent(importedComponentBaseName: string): WorkshopComponent {
+    const buttonComponent: WorkshopComponent = createButtonBaseSubcomponent(importedComponentBaseName);
+    addComponentsToBase(buttonComponent);
+    addReferences(buttonComponent);
+    return buttonComponent;
   },
 };

@@ -35,9 +35,8 @@ export class ImportedComponentGenerator {
       [importedComponentName][ENTITY_DISPLAY_STATUS_REF] = baseSubcomponent.subcomponentDisplayStatus;
   }
 
-  public static createImportedComponentSubcomponents(componentGenerator: ComponentGenerator, importedComponentName: string,
-      subcomponentText?: string): Subcomponents {
-    const importedComponentRef = componentGenerator.createNewComponent(importedComponentName, subcomponentText);
+  public static createImportedComponentSubcomponents(componentGenerator: ComponentGenerator, importedComponentName: string): Subcomponents {
+    const importedComponentRef = componentGenerator.createNewComponent(importedComponentName);
     // WORK1: if copy is using addNewImportedComponent instead - the following code should be just taken out to that class and this if
     // statement should then be removed
     if (importedComponentRef.type !== NEW_COMPONENT_TYPES.LAYER) {

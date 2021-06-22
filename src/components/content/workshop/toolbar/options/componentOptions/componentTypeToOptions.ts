@@ -3,11 +3,11 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.e
 import { Options } from '../../../../../../interfaces/options';
 import { closeButtonTextOptions } from './button/closeText';
 import { nestedButtonOptions } from './button/nestedButton';
+import { getButtonOptions } from './button/buttonOptions';
 import { layerBottomOptions } from './layer/layerBottom';
 import { layerMiddleOptions } from './layer/layerMiddle';
 import { getCardOptions } from './card/cardOptions';
 import { layerTopOptions } from './layer/layerTop';
-import { buttonBaseOptions } from './button/base';
 import { buttonTextOptions } from './button/text';
 import { alertBaseOptions } from './alert/base';
 import { modalBaseOptions } from './modal/base';
@@ -23,10 +23,7 @@ export type ComponentTypeToOptions = {
 
 // WORK1: change type
 export const componentTypeToOptions: any = {
-  [NEW_COMPONENT_TYPES.BUTTON]: {
-    [SUBCOMPONENT_TYPES.BUTTON]: buttonBaseOptions as Options,
-    [SUBCOMPONENT_TYPES.BUTTON_TEXT]: buttonTextOptions as Options,
-  },
+  [NEW_COMPONENT_TYPES.BUTTON]: getButtonOptions,
   [NEW_COMPONENT_TYPES.ALERT]: {
     [SUBCOMPONENT_TYPES.BASE]: alertBaseOptions as Options,
     [SUBCOMPONENT_TYPES.TEXT]: textOptions as Options,

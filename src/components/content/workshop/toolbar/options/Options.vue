@@ -101,7 +101,7 @@
           <dropdown
             class="option-component-button-container"
             :uniqueIdentifier="CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
-            :dropdownOptions="componentTypeToOptions[component.type](component, component.subcomponents[component.activeSubcomponentName].subcomponentType)"
+            :dropdownOptions="componentTypeToOptions[component.type](component.subcomponents[component.activeSubcomponentName].subcomponentType, component)"
             :objectContainingActiveOption="component.subcomponents[component.activeSubcomponentName]"
             :activeOptionPropertyKeyName="'activeCssPseudoClass'"
             :fontAwesomeIcon="'angle-down'"
@@ -290,7 +290,7 @@ export default {
       if (subcomponentProperties.subcomponentDisplayStatus && !subcomponentProperties.subcomponentDisplayStatus.isDisplayed) {
         return [];
       }
-      return componentTypeToOptions[this.component.type](this.component, subcomponentProperties.subcomponentType)
+      return componentTypeToOptions[this.component.type](subcomponentProperties.subcomponentType, this.component)
         [subcomponentProperties.activeCssPseudoClass];
     },
     mouseHoverOption(option: Option, isEntering: boolean): void {
@@ -472,7 +472,7 @@ export default {
     getActiveOptions(): Option[] {
       const { subcomponents, activeSubcomponentName, type } = this.component;
       const { subcomponentType, activeCssPseudoClass } = subcomponents[activeSubcomponentName];
-      return componentTypeToOptions[type](this.component, subcomponentType)[activeCssPseudoClass];
+      return componentTypeToOptions[type](subcomponentType, this.component)[activeCssPseudoClass];
     },
     hideSettings(): void {
       this.$emit('hide-settings');

@@ -1,15 +1,14 @@
-import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
-import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { SubcomponentTypeToOptions } from '../../../../../../../interfaces/subcomponentTypeToOptions';
+import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { Options } from '../../../../../../../interfaces/options';
-import { nestedButtonOptions } from './nestedButton';
-import { closeButtonOptions } from './closeButton';
+import { buttonTextOptions } from './text';
+import { buttonBaseOptions } from './base';
 
-export class ButtonOptions {
+const staticButtonOptions: SubcomponentTypeToOptions = {
+  [SUBCOMPONENT_TYPES.BUTTON]: buttonBaseOptions as Options,
+  [SUBCOMPONENT_TYPES.TEXT]: buttonTextOptions as Options,
+}
 
-  public static getOptions(component: WorkshopComponent): Options {
-    if (component.subcomponents[component.activeSubcomponentName].importedComponent.componentRef.style === NEW_COMPONENT_STYLES.BUTTON_CLOSE) {
-      return closeButtonOptions;
-    }
-    return nestedButtonOptions;
-  }
+export function getButtonOptions(subcomponentType: SUBCOMPONENT_TYPES): Options {
+  return staticButtonOptions[subcomponentType];
 }

@@ -314,8 +314,11 @@ export const defaultModal: ComponentGenerator = {
     const importedButton2Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_2_LAYER_3;
     const subcomponents = { ...createSubcomponents(),
       ...ImportedComponentGenerator.createImportedComponentSubcomponents(closeButton, importedCloseButtonName),
-      ...ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, importedButton1Name, 'Submit'),
-      ...ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, importedButton2Name, 'Cancel') };
+      // WORK1: refactor
+      // ...ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, importedButton1Name, 'Submit'),
+      // ...ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, importedButton2Name, 'Cancel')
+      ...ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, importedButton1Name),
+      ...ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, importedButton2Name) };
     const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
       subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_3],
       subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_2],
