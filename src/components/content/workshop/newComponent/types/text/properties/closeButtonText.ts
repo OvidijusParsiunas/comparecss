@@ -12,10 +12,6 @@ import PreviewStructure from '../../../../utils/componentGenerator/previewStruct
 import getTextSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../../../../consts/closeButtonXText';
 
-const defaultSubcomponentNames: CustomSubcomponentNames = {
-  base: CORE_SUBCOMPONENTS_NAMES.TEXT,
-};
-
 function createDefaultTextCss(): CustomCss {
   return {
     [CSS_PSEUDO_CLASSES.DEFAULT]: {
@@ -85,9 +81,10 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
   };
 }
 
+// WORK1: use builder
 export const closeButtonText: ComponentGenerator = {
   createNewComponent(importedComponentBaseName: string): WorkshopComponent {
-    const subcomponentNames = importedComponentBaseName ? { base: importedComponentBaseName } : defaultSubcomponentNames;
+    const subcomponentNames = { base: importedComponentBaseName || CORE_SUBCOMPONENTS_NAMES.TEXT };
     const subcomponents = createSubcomponents(subcomponentNames);
     const subcomponentDropdownStructure = getTextSubcomponentDropdownStructure(subcomponentNames);
     return {

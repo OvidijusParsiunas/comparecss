@@ -10,10 +10,6 @@ import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getTextSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 
-const defaultSubcomponentNames: CustomSubcomponentNames = {
-  base: CORE_SUBCOMPONENTS_NAMES.TEXT,
-};
-
 function createDefaultTextCss(): CustomCss {
   return {
     [CSS_PSEUDO_CLASSES.DEFAULT]: {
@@ -83,7 +79,7 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
 
 export const buttonText: ComponentGenerator = {
   createNewComponent(importedComponentBaseName: string): WorkshopComponent {
-    const subcomponentNames = importedComponentBaseName ? { base: importedComponentBaseName } : defaultSubcomponentNames;
+    const subcomponentNames = { base: importedComponentBaseName || CORE_SUBCOMPONENTS_NAMES.TEXT };
     const subcomponents = createSubcomponents(subcomponentNames);
     const subcomponentDropdownStructure = getTextSubcomponentDropdownStructure(subcomponentNames);
     return {

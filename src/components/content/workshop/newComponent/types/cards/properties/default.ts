@@ -196,13 +196,13 @@ function addComponentsToBase(cardComponent: WorkshopComponent): void {
   const layer2Component = AddNewLayerSubcomponent.add(cardComponent, NEW_COMPONENT_STYLES.DEFAULT, true);
   const layer3Component = AddNewLayerSubcomponent.add(cardComponent, NEW_COMPONENT_STYLES.DEFAULT, true);
   AddNewImportedComponent.add(cardComponent, NEW_COMPONENT_TYPES.TEXT, NEW_COMPONENT_STYLES.DEFAULT,
-    layer1Component.baseName, overwriteImportedTitleProperties);
+    layer1Component.baseName, [overwriteImportedTitleProperties]);
   AddNewImportedComponent.add(cardComponent, NEW_COMPONENT_TYPES.TEXT, NEW_COMPONENT_STYLES.DEFAULT,
-    layer2Component.baseName, overwriteImportedDescriptionProperties);
+    layer2Component.baseName, [overwriteImportedDescriptionProperties]);
   AddNewImportedComponent.add(cardComponent, NEW_COMPONENT_TYPES.BUTTON, NEW_COMPONENT_STYLES.DEFAULT,
-    layer3Component.baseName, overwriteImportedSubmitButtonProperties);
+    layer3Component.baseName, [overwriteImportedSubmitButtonProperties]);
   AddNewImportedComponent.add(cardComponent, NEW_COMPONENT_TYPES.BUTTON, NEW_COMPONENT_STYLES.DEFAULT,
-    layer3Component.baseName, overwriteImportedCancelButtonProperties);
+    layer3Component.baseName, [overwriteImportedCancelButtonProperties]);
   const closeButtonComponent = AddNewImportedComponent.add(cardComponent, NEW_COMPONENT_TYPES.BUTTON,
     NEW_COMPONENT_STYLES.BUTTON_CLOSE, layer1Component.baseName);
   const avatarComponent = AddNewImportedComponent.add(cardComponent, NEW_COMPONENT_TYPES.AVATAR, NEW_COMPONENT_STYLES.DEFAULT,

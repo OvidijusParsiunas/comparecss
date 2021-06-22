@@ -81,17 +81,19 @@ export class AddNewImportedComponent {
 
   // WORK 1 - change names
   private static createNewImportedComponent(componentType: NEW_COMPONENT_TYPES, componentGenerator: ComponentGenerator,
-      overwritePropertiesFunc?: OverwritePropertiesFunc): NewComponentProperties {
+      overwritePropertiesFunc?: OverwritePropertiesFunc[]): NewComponentProperties {
     const baseName = UniqueSubcomponentNameGenerator.generate(AddNewImportedComponent.componentTypeToName[componentType]);
     const subcomponents = ImportedComponentGenerator.createImportedComponentSubcomponents(componentGenerator, baseName);
     const { subcomponentNames } = subcomponents[baseName].importedComponent.componentRef;
-    if (overwritePropertiesFunc) overwritePropertiesFunc(subcomponents, subcomponentNames);
+    (overwritePropertiesFunc || []).forEach((overwritePropertiesFunc) => {
+      overwritePropertiesFunc(subcomponents, subcomponentNames);
+    });
     return { baseName, subcomponents };
   }
 
   public static add(parentComponent: WorkshopComponent, componentType: NEW_COMPONENT_TYPES,
       componentStyle: NEW_COMPONENT_STYLES, layerName: CORE_SUBCOMPONENTS_NAMES | string,
-      overwritePropertiesFunc?: OverwritePropertiesFunc): NewComponentProperties {
+      overwritePropertiesFunc?: OverwritePropertiesFunc[]): NewComponentProperties {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
     const importedComponent = AddNewImportedComponent.createNewImportedComponent(componentType, componentGenerator, overwritePropertiesFunc);
     JsUtils.addObjects(parentComponent, 'subcomponents', importedComponent.subcomponents);

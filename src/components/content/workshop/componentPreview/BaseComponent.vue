@@ -46,6 +46,7 @@
         component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures && component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.subcomponentText
               && component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.subcomponentText.text === CLOSE_BUTTON_X_TEXT
             ? ['close-button-text-overlay-height', SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.SUB_CONTAINER] : [...OVERLAY_DEFAULT_CLASSES]]">
+        <!-- WORK1: do the following after updating all packages -->
         <!-- WORK1: take all of this code out into a separate component, use method's optional chaining here -->
         {{(component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures
           && component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.subcomponentText
