@@ -1,13 +1,9 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
-import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
-import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
-import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import { inheritedTextCss } from '../../shared/text/inheritedCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
@@ -71,24 +67,7 @@ export class TextBuilder extends ComponentBuilder {
     };
   }
 
-  private static createButtonBaseSubcomponent(componentStyle: NewComponentStyleProperties): WorkshopComponent {
-    const subcomponentNames: CustomSubcomponentNames = { base: componentStyle.baseName || CORE_SUBCOMPONENTS_NAMES.BASE };
-    const subcomponents = {[subcomponentNames.base]: TextBuilder.createBaseSubcomponent(componentStyle)};
-    const componentPreviewStructure = PreviewStructure.createEmptyComponentPreviewStructure(subcomponents, subcomponentNames.base);
-    return {
-      type: NEW_COMPONENT_TYPES.TEXT,
-      style: componentStyle.baseStyle || NEW_COMPONENT_STYLES.DEFAULT,
-      subcomponents,
-      activeSubcomponentName: subcomponentNames.base,
-      defaultSubcomponentName: subcomponentNames.base,
-      componentPreviewStructure,
-      className: 'default-class-name',
-      subcomponentNames,
-      componentStatus: { isRemoved: false },
-    };
-  }
-
   public static create(componentStyle: NewComponentStyleProperties): WorkshopComponent {
-    return TextBuilder.createButtonBaseSubcomponent(componentStyle);
+    return ComponentBuilder.createBaseComponent(componentStyle, NEW_COMPONENT_TYPES.TEXT, TextBuilder.createBaseSubcomponent);
   }
 }

@@ -2,14 +2,12 @@ import { CustomCss, CustomFeatures, SubcomponentProperties, Subcomponents, Works
 import { AddNewImportedComponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewImportedComponent';
 import { AddNewLayerSubcomponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewLayerSubcomponent';
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
-import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
-import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import { buttonSpecificSettings } from './buttonSpecificSettings';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import ReferenceSharingUtils from './referenceSharingUtils';
@@ -59,11 +57,11 @@ export class ButtonBuilder extends ComponentBuilder {
     };
   }
   
-  private static createBaseSubcomponent(customCssFunc: () => CustomCss): SubcomponentProperties {
+  private static createBaseSubcomponent(componentStyle: NewComponentStyleProperties): SubcomponentProperties {
     return {
       subcomponentType: SUBCOMPONENT_TYPES.BUTTON,
-      customCss: (customCssFunc && customCssFunc()) || ButtonBuilder.createDefaultBaseCss(),
-      defaultCss: (customCssFunc && customCssFunc()) || ButtonBuilder.createDefaultBaseCss(),
+      customCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || ButtonBuilder.createDefaultBaseCss(),
+      defaultCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || ButtonBuilder.createDefaultBaseCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
@@ -72,24 +70,6 @@ export class ButtonBuilder extends ComponentBuilder {
       subcomponentSpecificSettings: buttonSpecificSettings,
       customFeatures: ButtonBuilder.createDefaultButtonBaseCustomFeatures(),
       defaultCustomFeatures: ButtonBuilder.createDefaultButtonBaseCustomFeatures(),
-    };
-  }
-  
-  private static createButtonBaseSubcomponent(componentStyle: NewComponentStyleProperties): WorkshopComponent {
-    const subcomponentNames: CustomSubcomponentNames = { base: componentStyle.baseName || CORE_SUBCOMPONENTS_NAMES.BASE };
-    const subcomponents = {[subcomponentNames.base]: ButtonBuilder.createBaseSubcomponent(componentStyle.baseCustomCssFunc)};
-    const componentPreviewStructure = PreviewStructure.createEmptyComponentPreviewStructure(subcomponents, subcomponentNames.base);
-    return {
-      type: NEW_COMPONENT_TYPES.BUTTON,
-      style: componentStyle.baseStyle || NEW_COMPONENT_STYLES.DEFAULT,
-      subcomponents,
-      activeSubcomponentName: subcomponentNames.base,
-      defaultSubcomponentName: subcomponentNames.base,
-      componentPreviewStructure,
-      className: 'default-class-name',
-      subcomponentNames,
-      componentStatus: { isRemoved: false },
-      referenceSharingExecutables: [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents],
     };
   }
   
@@ -117,7 +97,8 @@ export class ButtonBuilder extends ComponentBuilder {
   }
 
   public static create(componentStyle: NewComponentStyleProperties): WorkshopComponent {
-    const buttonComponent: WorkshopComponent = ButtonBuilder.createButtonBaseSubcomponent(componentStyle);
+    const buttonComponent: WorkshopComponent = ComponentBuilder.createBaseComponent(componentStyle, NEW_COMPONENT_TYPES.BUTTON,
+      ButtonBuilder.createBaseSubcomponent);
     ButtonBuilder.addComponentsToBase(buttonComponent, componentStyle);
     ButtonBuilder.addReferences(buttonComponent);
     return buttonComponent;
