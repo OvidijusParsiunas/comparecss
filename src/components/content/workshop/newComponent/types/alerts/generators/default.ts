@@ -13,7 +13,7 @@ import PreviewStructure from '../../../../utils/componentGenerator/previewStruct
 import getAlertSubcomponentDropdownStructure from './subcomponentDropdownStructure';
 import { inheritedLayerBaseCss } from '../../shared/layer/inheritedCss';
 import { alertBaseSpecificSettings } from './alertBaseSpecificSettings';
-import { closeButton } from '../../buttons/properties/closeButton';
+import { closeButton } from '../../buttons/generators/closeButton';
 import {
   AlignedLayerSection, AutoSize, CustomCss, CustomFeatures, Animations,
   WorkshopComponent, Text, CustomStaticFeatures, Subcomponents,

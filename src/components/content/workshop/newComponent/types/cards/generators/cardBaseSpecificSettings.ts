@@ -1,6 +1,6 @@
 import { DetailsToUpdateOtherCssProperties, SubcomponentProperties, SubcomponentSpecificSettings } from '../../../../../../../interfaces/workshopComponent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
-import { modalBaseSpecificSettings } from '../../modals/properties/modalBaseSpecificSettings';
+import { modalBaseSpecificSettings } from '../../modals/generators/modalBaseSpecificSettings';
 import { LAYER_SECTION_DIVISOR } from '../../../../../../../consts/layerSectionDivisor';
 
 function getLeftPositionProperties({ customCss, customFeatures }: SubcomponentProperties): DetailsToUpdateOtherCssProperties {

@@ -1,5 +1,5 @@
 import { CustomCss, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { modalLayerBottomSpecificSettings } from '../../modals/properties/modalLayerBottomSpecificSettings';
+import { modalLayerBottomSpecificSettings } from '../../modals/generators/modalLayerBottomSpecificSettings';
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';

@@ -3,7 +3,7 @@ import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/wo
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { inheritedCloseTextCss } from '../../buttons/properties/inheritedCloseTextCss';
+import { inheritedCloseTextCss } from '../../buttons/generators/inheritedCloseTextCss';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { TextBuilder } from './textBuilder';
 

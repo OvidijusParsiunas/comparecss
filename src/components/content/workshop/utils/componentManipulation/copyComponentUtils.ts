@@ -5,7 +5,7 @@ import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomp
 import { ImportedComponentGenerator } from '../importComponent/importedComponentGenerator';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { NEW_COMPONENT_STYLES } from '../../../../../consts/newComponentStyles.enum';
-import { defaultButton } from '../../newComponent/types/buttons/properties/default';
+import { defaultButton } from '../../newComponent/types/buttons/generators/default';
 import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
 import ProcessClassName from '../componentGenerator/processClassName';
 import PreviewStructure from '../componentGenerator/previewStructure';

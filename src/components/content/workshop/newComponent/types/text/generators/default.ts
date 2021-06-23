@@ -1,4 +1,4 @@
-import { modalTextSpecificSettings } from '../../modals/properties/modalTextSpecificSettings';
+import { modalTextSpecificSettings } from '../../modals/generators/modalTextSpecificSettings';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { TextBuilder } from './textBuilder';

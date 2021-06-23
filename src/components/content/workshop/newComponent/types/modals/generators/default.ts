@@ -18,9 +18,9 @@ import { CloseTriggers } from '../../../../../../../interfaces/closeTriggers';
 import { inheritedLayerBaseCss } from '../../shared/layer/inheritedCss';
 import { modalTextSpecificSettings } from './modalTextSpecificSettings';
 import { modalBaseSpecificSettings } from './modalBaseSpecificSettings';
-import { closeButton } from '../../buttons/properties/closeButton';
+import { closeButton } from '../../buttons/generators/closeButton';
 import { inheritedTextCss } from '../../shared/text/inheritedCss';
-import { defaultButton } from '../../buttons/properties/default';
+import { defaultButton } from '../../buttons/generators/default';
 import {
   CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, AlignedLayerSection, Animations,
   AutoSize, BackdropProperties, ComponentCenteringInParent, Text, CustomStaticFeatures,

@@ -1,7 +1,7 @@
 import { ComponentStyleToGenerator } from '../../../../../../interfaces/componentStyleToGenerator'
 import { NEW_COMPONENT_STYLES } from '../../../../../../consts/newComponentStyles.enum'
-import { buttonLayer } from './properties/buttonLayer';
-import { defaultLayer } from './properties/default';
+import { buttonLayer } from './generators/buttonLayer';
+import { defaultLayer } from './generators/default';
 
 export const layerStyleToGenerator: ComponentStyleToGenerator = {
   [NEW_COMPONENT_STYLES.DEFAULT]: defaultLayer,

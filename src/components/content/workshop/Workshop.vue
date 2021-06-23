@@ -121,7 +121,7 @@ import { CORE_SUBCOMPONENTS_NAMES } from '../../../consts/coreSubcomponentNames.
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../consts/domEventTriggerKeys.enum';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
-import { defaultCard } from './newComponent/types/cards/properties/default';
+import { defaultCard } from './newComponent/types/cards/generators/default';
 import { RemovalModalState } from '../../../interfaces/removalModalState';
 import { WorkshopComponent } from '../../../interfaces/workshopComponent';
 import componentContents from './componentPreview/ComponentPreview.vue';
