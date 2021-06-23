@@ -218,8 +218,7 @@ function createCardBaseSubcomponent(): WorkshopComponent {
     subcomponents,
     activeSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,
     defaultSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,
-    // WORK1: this should no longer be creating a component preview structure, but an empty object
-    componentPreviewStructure: PreviewStructure.createComponentPreviewStructure({[CORE_SUBCOMPONENTS_NAMES.BASE]: {}}, subcomponents),
+    componentPreviewStructure: PreviewStructure.createEmptyComponentPreviewStructure(subcomponents, CORE_SUBCOMPONENTS_NAMES.BASE),
     className: 'default-class-name',
     componentStatus: { isRemoved: false },
   };

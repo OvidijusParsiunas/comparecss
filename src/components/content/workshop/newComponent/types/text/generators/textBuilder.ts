@@ -1,5 +1,4 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
@@ -75,8 +74,7 @@ export class TextBuilder extends ComponentBuilder {
   private static createButtonBaseSubcomponent(componentStyle: NewComponentStyleProperties): WorkshopComponent {
     const subcomponentNames: CustomSubcomponentNames = { base: componentStyle.baseName || CORE_SUBCOMPONENTS_NAMES.BASE };
     const subcomponents = {[subcomponentNames.base]: TextBuilder.createBaseSubcomponent(componentStyle)};
-    const subcomponentDropdownStructure = { [subcomponentNames.base]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject() };
-    const componentPreviewStructure = PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents, subcomponentNames);
+    const componentPreviewStructure = PreviewStructure.createEmptyComponentPreviewStructure(subcomponents, subcomponentNames.base);
     return {
       type: NEW_COMPONENT_TYPES.TEXT,
       style: componentStyle.baseStyle || NEW_COMPONENT_STYLES.DEFAULT,

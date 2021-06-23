@@ -4,6 +4,7 @@ import { SubcomponentProperties, Subcomponents } from '../../../../../interfaces
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomponentNames';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
+import { EntityDisplayStatusUtils } from '../entityDisplayStatus/entityDisplayStatusUtils';
 import { ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/entityDisplayStatus';
 
 export default class PreviewStructure {
@@ -96,5 +97,15 @@ export default class PreviewStructure {
       layers,
       subcomponentDropdownStructure,
     };
+  }
+
+  public static createEmptyComponentPreviewStructure(subcomponents: Subcomponents, baseSubcomponentName: string): ComponentPreviewStructure {
+    const subcomponentDropdownStructure = { [baseSubcomponentName]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject() };
+    return {
+      baseSubcomponentProperties: subcomponents[baseSubcomponentName],
+      layeringType: 'vertical',
+      layers: [],
+      subcomponentDropdownStructure,
+    }
   }
 }

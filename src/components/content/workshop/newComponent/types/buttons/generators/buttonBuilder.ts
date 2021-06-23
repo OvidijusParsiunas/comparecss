@@ -1,7 +1,6 @@
 import { CustomCss, CustomFeatures, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddNewImportedComponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewImportedComponent';
 import { AddNewLayerSubcomponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewLayerSubcomponent';
-import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
@@ -79,8 +78,7 @@ export class ButtonBuilder extends ComponentBuilder {
   private static createButtonBaseSubcomponent(componentStyle: NewComponentStyleProperties): WorkshopComponent {
     const subcomponentNames: CustomSubcomponentNames = { base: componentStyle.baseName || CORE_SUBCOMPONENTS_NAMES.BASE };
     const subcomponents = {[subcomponentNames.base]: ButtonBuilder.createBaseSubcomponent(componentStyle.baseCustomCssFunc)};
-    const subcomponentDropdownStructure = { [subcomponentNames.base]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject() };
-    const componentPreviewStructure = PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents, subcomponentNames);
+    const componentPreviewStructure = PreviewStructure.createEmptyComponentPreviewStructure(subcomponents, subcomponentNames.base);
     return {
       type: NEW_COMPONENT_TYPES.BUTTON,
       style: componentStyle.baseStyle || NEW_COMPONENT_STYLES.DEFAULT,
