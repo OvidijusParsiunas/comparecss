@@ -1,16 +1,11 @@
-import { AlignedLayerSection, AutoSize, CustomCss, CustomFeatures, Subcomponents, WorkshopComponent, Text, CustomStaticFeatures } from '../../../../../../../interfaces/workshopComponent';
-import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
-import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
+import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
+import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
-import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
-import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { inheritedCloseTextCss } from '../../buttons/properties/inheritedCloseTextCss';
-import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
-import getTextSubcomponentDropdownStructure from './subcomponentDropdownStructure';
-import { CLOSE_BUTTON_X_TEXT } from '../../../../../../../consts/closeButtonXText';
+import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { TextBuilder } from './textBuilder';
 
 function createDefaultTextCss(): CustomCss {
   return {
@@ -37,66 +32,17 @@ function createDefaultTextCss(): CustomCss {
   }
 }
 
-function createAutoSize(): AutoSize {
-  return {
-    width: true,
-  };
+function overwriteAlignment(textComponent: WorkshopComponent): void {
+  textComponent.subcomponents[textComponent.subcomponentNames.base].customFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
+  textComponent.subcomponents[textComponent.subcomponentNames.base].defaultCustomFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
 }
 
-function createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayerSection {
-  return { section };
-}
-
-function createDefaultTextCustomFeatures(): CustomFeatures {
-  return {
-    autoSize: createAutoSize(),
-    alignedLayerSection: createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
-  };
-}
-
-function createText(text: string): Text {
-  return { text };
-}
-
-function createDefaultTextCustomStaticFeatures(): CustomStaticFeatures {
-  return {
-    subcomponentText: createText(CLOSE_BUTTON_X_TEXT),
-  };
-}
-
-function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcomponents {
-  return {
-    [subcomponentNames.base]: {
-      subcomponentType: SUBCOMPONENT_TYPES.TEXT,
-      customCss: createDefaultTextCss(),
-      defaultCss: createDefaultTextCss(),
-      inheritedCss: inheritedCloseTextCss,
-      activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      customFeatures: createDefaultTextCustomFeatures(),
-      defaultCustomFeatures: createDefaultTextCustomFeatures(),
-      customStaticFeatures: createDefaultTextCustomStaticFeatures(),
-      defaultCustomStaticFeatures: createDefaultTextCustomStaticFeatures(),
-    },
-  };
-}
-
-// WORK1: use builder
 export const closeButtonText: ComponentGenerator = {
   createNewComponent(importedComponentBaseName: string): WorkshopComponent {
-    const subcomponentNames = { base: importedComponentBaseName || CORE_SUBCOMPONENTS_NAMES.TEXT };
-    const subcomponents = createSubcomponents(subcomponentNames);
-    const subcomponentDropdownStructure = getTextSubcomponentDropdownStructure(subcomponentNames);
-    return {
-      type: NEW_COMPONENT_TYPES.TEXT,
-      style: NEW_COMPONENT_STYLES.CLOSE_BUTTON_TEXT,
-      subcomponents,
-      activeSubcomponentName: subcomponentNames.base,
-      defaultSubcomponentName: subcomponentNames.base,
-      componentPreviewStructure: PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents, subcomponentNames),
-      className: 'default-class-name',
-      subcomponentNames,
-      componentStatus: { isRemoved: false },
-    };
+    const componentStyle: NewComponentStyleProperties = { baseName: importedComponentBaseName,
+      baseStyle: NEW_COMPONENT_STYLES.CLOSE_BUTTON_TEXT, baseCustomCssFunc: createDefaultTextCss, baseInheritedCss: inheritedCloseTextCss };
+    const closeButtonTextComponent =  TextBuilder.create(componentStyle);
+    overwriteAlignment(closeButtonTextComponent);
+    return closeButtonTextComponent;
   },
 };

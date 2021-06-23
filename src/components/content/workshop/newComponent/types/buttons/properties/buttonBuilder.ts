@@ -1,4 +1,4 @@
-import { AlignedLayerSection, CustomCss, CustomFeatures, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddNewImportedComponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewImportedComponent';
 import { AddNewLayerSubcomponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewLayerSubcomponent';
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
@@ -6,18 +6,17 @@ import { NewComponentStyleProperties } from '../../../../../../../consts/newComp
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
 import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
 import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import { buttonSpecificSettings } from './buttonSpecificSettings';
+import { ComponentBuilder } from '../../shared/componentBuilder';
 import ReferenceSharingUtils from './referenceSharingUtils';
 import { inheritedButtonCss } from './inheritedCss';
 
-// WORK1 extend ComponentBuilder in the future
-export class ButtonBuilder {
+export class ButtonBuilder extends ComponentBuilder {
 
   private static createDefaultBaseCss(): CustomCss {
     return {
@@ -54,26 +53,18 @@ export class ButtonBuilder {
     }
   }
   
-  private static createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayerSection {
-    return { section };
-  }
-  
-  private static createButtonBaseLastSelectedCssValues(): WorkshopComponentCss {
-    return { left: '0px' };
-  }
-  
   private static createDefaultButtonBaseCustomFeatures(): CustomFeatures {
     return {
-      lastSelectedCssValues: ButtonBuilder.createButtonBaseLastSelectedCssValues(),
-      alignedLayerSection: ButtonBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
+      lastSelectedCssValues: ComponentBuilder.createButtonBaseLastSelectedCssValues(),
+      alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
     };
   }
   
-  private static createBaseSubcomponent(customCss: CustomCss): SubcomponentProperties {
+  private static createBaseSubcomponent(customCssFunc: () => CustomCss): SubcomponentProperties {
     return {
       subcomponentType: SUBCOMPONENT_TYPES.BUTTON,
-      customCss: customCss || ButtonBuilder.createDefaultBaseCss(),
-      defaultCss: customCss || ButtonBuilder.createDefaultBaseCss(),
+      customCss: (customCssFunc && customCssFunc()) || ButtonBuilder.createDefaultBaseCss(),
+      defaultCss: (customCssFunc && customCssFunc()) || ButtonBuilder.createDefaultBaseCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       subcomponentPreviewTransition: 'all 0.25s ease-out',
@@ -87,7 +78,7 @@ export class ButtonBuilder {
   
   private static createButtonBaseSubcomponent(componentStyle: NewComponentStyleProperties): WorkshopComponent {
     const subcomponentNames: CustomSubcomponentNames = { base: componentStyle.baseName || CORE_SUBCOMPONENTS_NAMES.BASE };
-    const subcomponents = {[subcomponentNames.base]: ButtonBuilder.createBaseSubcomponent(componentStyle.baseCustomCss)};
+    const subcomponents = {[subcomponentNames.base]: ButtonBuilder.createBaseSubcomponent(componentStyle.baseCustomCssFunc)};
     const subcomponentDropdownStructure = { [subcomponentNames.base]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject() };
     const componentPreviewStructure = PreviewStructure.createComponentPreviewStructure(subcomponentDropdownStructure, subcomponents, subcomponentNames);
     return {
