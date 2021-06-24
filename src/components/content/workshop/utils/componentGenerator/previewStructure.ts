@@ -99,8 +99,10 @@ export default class PreviewStructure {
     };
   }
 
-  public static createEmptyComponentPreviewStructure(subcomponents: Subcomponents, baseSubcomponentName: string): ComponentPreviewStructure {
-    const subcomponentDropdownStructure = { [baseSubcomponentName]: EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject() };
+  public static createEmptyComponentPreviewStructure(subcomponents: Subcomponents, baseSubcomponentName: string,
+      isBaseOptional = true): ComponentPreviewStructure {
+    const subcomponentDropdownStructure = { [baseSubcomponentName]:
+      isBaseOptional ? EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject() : {} };
     return {
       baseSubcomponentProperties: subcomponents[baseSubcomponentName],
       layeringType: 'vertical',

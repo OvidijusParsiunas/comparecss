@@ -218,7 +218,7 @@ function createCardBaseSubcomponent(): WorkshopComponent {
     subcomponents,
     activeSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,
     defaultSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,
-    componentPreviewStructure: PreviewStructure.createEmptyComponentPreviewStructure(subcomponents, CORE_SUBCOMPONENTS_NAMES.BASE),
+    componentPreviewStructure: PreviewStructure.createEmptyComponentPreviewStructure(subcomponents, CORE_SUBCOMPONENTS_NAMES.BASE, false),
     className: 'default-class-name',
     componentStatus: { isRemoved: false },
   };
