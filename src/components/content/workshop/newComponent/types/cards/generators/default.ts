@@ -1,9 +1,9 @@
 import { AddNewImportedComponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewImportedComponent';
 import { AddNewLayerSubcomponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewLayerSubcomponent';
+import { DEFAULT_STYLE, BUTTON_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
-import { DEFAULT_STYLE, BUTTON_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { GENERAL_ANIMATION_CLOSE_TYPES } from '../../../../../../../consts/animationTypes.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { NewComponentProperties } from '../../../../../../../interfaces/addNewSubcomponent';
@@ -94,26 +94,6 @@ function createDefaultBaseCss(): CustomCss {
   };
 }
 
-function createDefaultTopLayerCss(): CustomCss {
-  return {
-    [CSS_PSEUDO_CLASSES.DEFAULT]: {
-      position: 'relative',
-      height: '50px',
-      textAlign: 'left',
-      paddingLeft: '20px',
-      paddingTop: '0px',
-      paddingRight: '0px',
-      paddingBottom: '0px',
-      borderBottomWidth: '1px',
-      borderBottomStyle: 'solid',
-      borderBottomColor: '#e9ecef',
-      backgroundColor: 'inherit',
-      boxShadow: 'unset',
-      backgroundSize: '100% 100%',
-    },
-  };
-}
-
 function createBaseSubcomponent(): SubcomponentProperties {
   return {
     subcomponentType: SUBCOMPONENT_TYPES.BASE,
@@ -151,8 +131,6 @@ function createDefaultModalTitleCss(): CustomCss {
 }
 
 function overwriteImportedTopLayerProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
-  subcomponents[subcomponentNames.base].customCss = createDefaultTopLayerCss();
-  subcomponents[subcomponentNames.base].defaultCss = createDefaultTopLayerCss();
   subcomponents[subcomponentNames.base].customStaticFeatures = createDefaultTopLayerCustomStaticFeatures();
   subcomponents[subcomponentNames.base].defaultCustomStaticFeatures = createDefaultTopLayerCustomStaticFeatures();
 }
@@ -193,8 +171,8 @@ function addSubcomponentSpecificSettings(baseSubcomponent: SubcomponentPropertie
 
 function addComponentsToBase(cardComponent: WorkshopComponent): void {
   const layer1Component = AddNewLayerSubcomponent.add(cardComponent, DEFAULT_STYLE.DEFAULT, true, overwriteImportedTopLayerProperties);
-  const layer2Component = AddNewLayerSubcomponent.add(cardComponent, DEFAULT_STYLE.DEFAULT, true);
-  const layer3Component = AddNewLayerSubcomponent.add(cardComponent, DEFAULT_STYLE.DEFAULT, true);
+  const layer2Component = AddNewLayerSubcomponent.add(cardComponent, LAYER_STYLES.CARD, true);
+  const layer3Component = AddNewLayerSubcomponent.add(cardComponent, LAYER_STYLES.CARD, true);
   AddNewImportedComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLE.DEFAULT,
     layer1Component.baseName, [overwriteImportedTitleProperties]);
   AddNewImportedComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLE.DEFAULT,

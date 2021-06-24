@@ -9,7 +9,7 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 export class LayerBuilder extends ComponentBuilder {
 
-  private static createDefaultBottomLayerCss(): CustomCss {
+  private static createDefaultBaseCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
         position: 'relative',
@@ -19,9 +19,6 @@ export class LayerBuilder extends ComponentBuilder {
         paddingTop: '0px',
         paddingRight: '0px',
         paddingBottom: '0px',
-        borderBottomWidth: '1px',
-        borderBottomStyle: 'solid',
-        borderBottomColor: '#e9ecef',
         backgroundColor: 'inherit',
         boxShadow: 'unset',
         backgroundSize: '100% 100%',
@@ -32,8 +29,8 @@ export class LayerBuilder extends ComponentBuilder {
   private static createBaseSubcomponent(componentStyle: NewComponentStyleProperties): SubcomponentProperties {
     return {
       subcomponentType: SUBCOMPONENT_TYPES.LAYER,
-      customCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || LayerBuilder.createDefaultBottomLayerCss(),
-      defaultCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || LayerBuilder.createDefaultBottomLayerCss(),
+      customCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || LayerBuilder.createDefaultBaseCss(),
+      defaultCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || LayerBuilder.createDefaultBaseCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,

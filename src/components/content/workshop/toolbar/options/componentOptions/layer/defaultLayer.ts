@@ -9,7 +9,7 @@ export const defaultLayerOptions: SubcomponentOptions<LayerOptionsModes> = {
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER_BOTTOM,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.COLOR,

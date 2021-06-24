@@ -2,8 +2,10 @@ import { ComponentStyleToGenerator } from '../../../../../../interfaces/componen
 import { DEFAULT_STYLE, LAYER_STYLES } from '../../../../../../consts/componentStyles.enum'
 import { buttonLayer } from './generators/buttonLayer';
 import { defaultLayer } from './generators/default';
+import { cardLayer } from './generators/cardLayer';
 
 export const layerStyleToGenerator: ComponentStyleToGenerator = {
   [DEFAULT_STYLE.DEFAULT]: defaultLayer,
   [LAYER_STYLES.BUTTON]: buttonLayer,
+  [LAYER_STYLES.CARD]: cardLayer,
 };

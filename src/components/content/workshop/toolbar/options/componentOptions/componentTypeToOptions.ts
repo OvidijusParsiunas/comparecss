@@ -4,8 +4,8 @@ import { Options } from '../../../../../../interfaces/options';
 import { closeButtonTextOptions } from './button/closeText';
 import { nestedButtonOptions } from './button/nestedButton';
 import { defaultLayerOptions } from './layer/defaultLayer';
-import { layerBottomOptions } from './layer/layerBottom';
 import { ButtonOptions } from './button/buttonOptions';
+import { cardLayerOptions } from './layer/cardLayer';
 import { buttonTextOptions } from './button/text';
 import { CardOptions } from './card/cardOptions';
 import { alertBaseOptions } from './alert/base';
@@ -34,7 +34,7 @@ export const componentTypeToOptions: any = {
     [SUBCOMPONENT_TYPES.TEXT]: textOptions as Options,
     [SUBCOMPONENT_TYPES.LAYER_1]: defaultLayerOptions as Options,
     [SUBCOMPONENT_TYPES.LAYER_2]: defaultLayerOptions as Options,
-    [SUBCOMPONENT_TYPES.LAYER_3]: layerBottomOptions as Options,
+    [SUBCOMPONENT_TYPES.LAYER_3]: cardLayerOptions as Options,
     [SUBCOMPONENT_TYPES.BUTTON]: nestedButtonOptions as Options,
     [SUBCOMPONENT_TYPES.BUTTON_TEXT]: buttonTextOptions as Options,
     // [SUBCOMPONENT_TYPES.CLOSE_BUTTON]: closeButtonOptions as Options,

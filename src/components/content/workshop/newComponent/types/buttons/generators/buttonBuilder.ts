@@ -49,14 +49,14 @@ export class ButtonBuilder extends ComponentBuilder {
       },
     }
   }
-  
+
   private static createDefaultButtonBaseCustomFeatures(): CustomFeatures {
     return {
       lastSelectedCssValues: ComponentBuilder.createButtonBaseLastSelectedCssValues(),
       alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
     };
   }
-  
+
   private static createBaseSubcomponent(componentStyle: NewComponentStyleProperties): SubcomponentProperties {
     return {
       subcomponentType: SUBCOMPONENT_TYPES.BUTTON,
@@ -72,7 +72,7 @@ export class ButtonBuilder extends ComponentBuilder {
       defaultCustomFeatures: ButtonBuilder.createDefaultButtonBaseCustomFeatures(),
     };
   }
-  
+
   private static overwriteButtonTextProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
     subcomponents[subcomponentNames.base].customStaticFeatures.subcomponentText.text = 'Button';
     subcomponents[subcomponentNames.base].customStaticFeatures.subcomponentText.text = 'Button';
@@ -89,7 +89,7 @@ export class ButtonBuilder extends ComponentBuilder {
     subcomponentNames.layer = layerSubcomponent.baseName;
     subcomponentNames.text = textSubcomponent.baseName;
   }
-  
+
   private static addReferences(buttonComponent: WorkshopComponent): void {
     const { subcomponentNames } = buttonComponent;
     ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(buttonComponent.subcomponents, subcomponentNames);

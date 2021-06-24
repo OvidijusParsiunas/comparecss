@@ -2,22 +2,20 @@ import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../../const
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
+import { ComponentOptionsUtils } from '../componentOptionsUtils';
+import { defaultLayerOptions } from './defaultLayer';
 
 type LayerOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT;
 
-export const layerBottomOptions: SubcomponentOptions<LayerOptionsModes> = {
+const cardLayerSpecificOptions = [
+  {
+    buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
+    type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER_TOP,
+  },
+];
+
+export const cardLayerOptions: SubcomponentOptions<LayerOptionsModes> = {
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
-    {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.COLOR,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.COLOR,
-    },
-    {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SIZE,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_HEIGHT,
-    },
-    {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.PADDING,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING,
-    },
+    ...ComponentOptionsUtils.overwriteOptions(defaultLayerOptions[CSS_PSEUDO_CLASSES.DEFAULT], cardLayerSpecificOptions),
   ],
 };

@@ -5,11 +5,10 @@ import { WorkshopComponent } from '../../../../../../../interfaces/workshopCompo
 import { Options } from '../../../../../../../interfaces/options';
 import { closeButtonTextOptions } from '../button/closeText';
 import { nestedButtonOptions } from '../button/nestedButton';
-import { defaultLayerOptions } from '../layer/defaultLayer';
 import { closeButtonOptions } from '../button/closeButton';
-import { layerBottomOptions } from '../layer/layerBottom';
 import { sectionTextOptions } from '../text/sectionText';
 import { imageLayerOptions } from '../layer/imageLayer';
+import { cardLayerOptions } from '../layer/cardLayer';
 import { buttonTextOptions } from '../button/text';
 import { textOptions } from '../text/text';
 import { avatarOptions } from './avatar';
@@ -42,14 +41,12 @@ export class CardOptions {
   }
 
   private static getLayerOptions(component: WorkshopComponent): Options {
-    const { layers } = component.componentPreviewStructure;
-    const currentLayerIndex = layers.findIndex((layer) => layer.name === component.activeSubcomponentName);
+    const currentLayerIndex = component.componentPreviewStructure.layers
+      .findIndex((layer) => layer.name === component.activeSubcomponentName);
     if (currentLayerIndex === 0) {
       return imageLayerOptions as Options;
-    } else if (currentLayerIndex === layers.length - 1) {
-      return layerBottomOptions as Options;
     }
-    return defaultLayerOptions as Options;
+    return cardLayerOptions as Options;
   }
 
   public static getCardOptions(subcomponentType: SUBCOMPONENT_TYPES, component: WorkshopComponent): Options {

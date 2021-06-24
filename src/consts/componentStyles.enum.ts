@@ -11,6 +11,7 @@ export enum TEXT_STYLES {
 
 export enum LAYER_STYLES {
   BUTTON = 'Button layer',
+  CARD = 'Card layer'
 }
 
 export enum BUTTON_STYLES {
