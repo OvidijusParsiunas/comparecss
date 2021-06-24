@@ -6,6 +6,7 @@ import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../../consts/subcomponentC
 import { Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
 import { ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/entityDisplayStatus';
+import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
 
 interface Index {
   number: number;
@@ -83,7 +84,7 @@ export default class ComponentPreviewUtils {
   }
 
   public static setAllSubcomponentsCursorsToPointer(): void {
-    ComponentPreviewUtils.addNewClassToSubcomponentsWithExistingClass(SUBCOMPONENT_CURSOR_CLASSES.AUTO, SUBCOMPONENT_CURSOR_CLASSES.SELECT_MODE);
+    ComponentPreviewUtils.addNewClassToSubcomponentsWithExistingClass(COMPONENT_PREVIEW_MARKER, SUBCOMPONENT_CURSOR_CLASSES.SELECT_MODE);
   }
 
   public static unsetAllSubcomponentsCursorsFromPointer(): void {

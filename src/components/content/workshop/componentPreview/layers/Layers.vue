@@ -23,7 +23,8 @@
       </div>
       <div v-if="isSubcomponentDisplayed(layer.subcomponentProperties)"
         :id="subcomponentAndOverlayElementIds[layer.name] && subcomponentAndOverlayElementIds[layer.name].overlayId"
-        style="display: none" :style="layer.subcomponentProperties.customCss[DEFAULT_CSS_PSEUDO_CLASS]"
+        style="display: none"
+        :style="[layer.subcomponentProperties.customCss[DEFAULT_CSS_PSEUDO_CLASS], { zIndex: layers.length - index + 1 }]"
         :class="[...OVERLAY_DEFAULT_CLASSES]"></div>
     </div>
   </div>

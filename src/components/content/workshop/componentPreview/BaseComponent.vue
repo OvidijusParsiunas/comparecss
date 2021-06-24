@@ -70,7 +70,6 @@
 import useSubcomponentPreviewSelectModeEventHandlers from './compositionAPI/useSubcomponentPreviewSelectModeEventHandlers';
 import { UseSubcomponentPreviewEventHandlers } from '../../../../interfaces/useSubcomponentPreviewEventHandlers';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
-import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../consts/subcomponentCursorClasses.enum';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../consts/elementClassMarkers';
@@ -82,7 +81,6 @@ import layers from './layers/Layers.vue';
 
 interface Consts {
   SUBCOMPONENT_OVERLAY_CLASSES: typeof SUBCOMPONENT_OVERLAY_CLASSES;
-  SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES;
   OVERLAY_DEFAULT_CLASSES: SUBCOMPONENT_OVERLAY_CLASSES[];
   STATIC_POSITION_CLASS: string;
   COMPONENT_PREVIEW_MARKER: string;
@@ -97,7 +95,6 @@ export default {
   setup(): Consts {
     return {
       SUBCOMPONENT_OVERLAY_CLASSES,
-      SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES.AUTO,
       OVERLAY_DEFAULT_CLASSES: [SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT],
       STATIC_POSITION_CLASS: STATIC_POSITION_CLASS,
       BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES.BASE,

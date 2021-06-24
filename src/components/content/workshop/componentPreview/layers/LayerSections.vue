@@ -40,13 +40,11 @@
 <script lang="ts">
 import { SPECIALISED_SECTION_CONTAINER_CLASSES } from '../../../../../consts/specialisedSectionContainerClasses.enum';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../consts/layerSections.enum';
-import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../../consts/subcomponentCursorClasses.enum';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
 import layerSection from './LayerSection.vue';
 
 interface Consts {
   SPECIALISED_SECTION_CONTAINER_CLASSES: typeof SPECIALISED_SECTION_CONTAINER_CLASSES;
-  SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES;
   COMPONENT_PREVIEW_MARKER: string;
   ALIGNED_SECTION_TYPES: typeof ALIGNED_SECTION_TYPES;
   LAYER_SECTIONS_TYPES: typeof LAYER_SECTIONS_TYPES;
@@ -56,7 +54,6 @@ export default {
   setup(): Consts {
     return {
       SPECIALISED_SECTION_CONTAINER_CLASSES: SPECIALISED_SECTION_CONTAINER_CLASSES,
-      SUBCOMPONENT_CURSOR_AUTO_CLASS: SUBCOMPONENT_CURSOR_CLASSES.AUTO,
       COMPONENT_PREVIEW_MARKER,
       ALIGNED_SECTION_TYPES,
       LAYER_SECTIONS_TYPES,
