@@ -23,7 +23,7 @@
                 <div class="form-group">
                   <label style="margin-bottom: 1px; margin-top: 5px">Component type:</label>
                   <select class="custom-select" size="5">
-                    <option v-for="newComponentType in NEW_COMPONENT_TYPES" :key="newComponentType"
+                    <option v-for="newComponentType in COMPONENT_TYPES" :key="newComponentType"
                       @mouseenter="setComponentPreviewImage(newComponentType)"
                       @click="selectComponentType(newComponentType)">
                       {{newComponentType}}
@@ -55,9 +55,9 @@ import { componentTypeToStyleGenerators } from './types/componentTypeToStyleGene
 import newComponentModalService from '../../../../services/workshop/newComponentModal';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
-import { NEW_COMPONENT_STYLES } from '../../../../consts/newComponentStyles.enum';
-import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import ProcessClassName from '../utils/componentGenerator/processClassName';
+import { COMPONENT_TYPES } from '../../../../consts/componentTypes.enum';
+import { DEFAULT_STYLE } from '../../../../consts/componentStyles.enum';
 import { NEW_COMPONENT_MODAL_ID } from '../../../../consts/elementIds';
 
 interface Data {
@@ -65,13 +65,13 @@ interface Data {
   classNameIndex: number;
   className: string;
   classNamePlaceholder: string;
-  currentlySelectedComponentType: NEW_COMPONENT_TYPES;
+  currentlySelectedComponentType: COMPONENT_TYPES;
 }
 
 interface Consts {
   MODAL_FADE_MILLISECONDS: number;
   CLASS_NAME_PREFIX: string;
-  NEW_COMPONENT_TYPES: typeof NEW_COMPONENT_TYPES;
+  COMPONENT_TYPES: typeof COMPONENT_TYPES;
   NEW_COMPONENT_MODAL_ID: string;
 }
 
@@ -80,7 +80,7 @@ export default {
     return {
       MODAL_FADE_MILLISECONDS: 500,
       CLASS_NAME_PREFIX: 'component-',
-      NEW_COMPONENT_TYPES,
+      COMPONENT_TYPES,
       NEW_COMPONENT_MODAL_ID,
     };
   },
@@ -94,7 +94,7 @@ export default {
   created(): void {
     if (!this.className) { this.className = this.createClassName(this.classNameIndex); }
     if (!this.classNamePlaceholder) { this.classNamePlaceholder = this.createClassName(this.classNameIndex); }
-    if (!this.currentlySelectedComponentType) { this.currentlySelectedComponentType = Object.values(this.NEW_COMPONENT_TYPES)[0]; }
+    if (!this.currentlySelectedComponentType) { this.currentlySelectedComponentType = Object.values(this.COMPONENT_TYPES)[0]; }
   },
   methods: {
     prepare(): void {
@@ -153,11 +153,11 @@ export default {
       // prevents the following: when text is highlighted, user clicks on a component type option then clicks on input again - causing the highlight to flicker
       if (window.getSelection) window.getSelection().removeAllRanges();
     },
-    selectComponentType(componentType: NEW_COMPONENT_TYPES): void {
+    selectComponentType(componentType: COMPONENT_TYPES): void {
       this.currentlySelectedComponentType = componentType;
     },
     addNewComponent(): void {
-      const newComponent = componentTypeToStyleGenerators[this.currentlySelectedComponentType][NEW_COMPONENT_STYLES.DEFAULT].createNewComponent();
+      const newComponent = componentTypeToStyleGenerators[this.currentlySelectedComponentType][DEFAULT_STYLE.DEFAULT].createNewComponent();
       newComponent.className = this.className;
       this.$emit('add-new-component', newComponent);
       // updates modal only after it has closed

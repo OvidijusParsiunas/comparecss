@@ -1,7 +1,7 @@
 import { ComponentStyleToGenerator } from '../../../../../../interfaces/componentStyleToGenerator'
-import { NEW_COMPONENT_STYLES } from '../../../../../../consts/newComponentStyles.enum'
+import { DEFAULT_STYLE } from '../../../../../../consts/componentStyles.enum'
 import { defaultCard } from './generators/default';  
 
 export const cardStyleToGenerator: ComponentStyleToGenerator = {
-  [NEW_COMPONENT_STYLES.DEFAULT]: defaultCard,
+  [DEFAULT_STYLE.DEFAULT]: defaultCard,
 };

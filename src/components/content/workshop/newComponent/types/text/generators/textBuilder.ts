@@ -1,9 +1,9 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { inheritedTextCss } from '../../shared/text/inheritedCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
@@ -68,6 +68,6 @@ export class TextBuilder extends ComponentBuilder {
   }
 
   public static create(componentStyle: NewComponentStyleProperties): WorkshopComponent {
-    return ComponentBuilder.createBaseComponent(componentStyle, NEW_COMPONENT_TYPES.TEXT, TextBuilder.createBaseSubcomponent);
+    return ComponentBuilder.createBaseComponent(componentStyle, COMPONENT_TYPES.TEXT, TextBuilder.createBaseSubcomponent);
   }
 }

@@ -1,11 +1,11 @@
 import { ComponentStyleToGenerator } from '../../../../../../interfaces/componentStyleToGenerator'
-import { NEW_COMPONENT_STYLES } from '../../../../../../consts/newComponentStyles.enum'
+import { DEFAULT_STYLE, TEXT_STYLES } from '../../../../../../consts/componentStyles.enum'
 import { closeButtonText } from './generators/closeButtonText';
 import { buttonText } from './generators/buttonText';
 import { defaultText } from './generators/default';
 
 export const textStyleToGenerator: ComponentStyleToGenerator = {
-  [NEW_COMPONENT_STYLES.DEFAULT]: defaultText,
-  [NEW_COMPONENT_STYLES.TEXT_BUTTON]: buttonText,
-  [NEW_COMPONENT_STYLES.CLOSE_BUTTON_TEXT]: closeButtonText,
+  [DEFAULT_STYLE.DEFAULT]: defaultText,
+  [TEXT_STYLES.BUTTON]: buttonText,
+  [TEXT_STYLES.CLOSE_BUTTON]: closeButtonText,
 };

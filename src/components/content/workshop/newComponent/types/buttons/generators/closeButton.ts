@@ -1,8 +1,8 @@
 import { CustomCss, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
+import { BUTTON_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../../../../consts/closeButtonXText';
 import { ButtonBuilder } from './buttonBuilder';
@@ -39,8 +39,8 @@ function overwriteButtonTextProperties(subcomponents: Subcomponents, subcomponen
 
 export const closeButton: ComponentGenerator = {
   createNewComponent(importedComponentBaseName: string): WorkshopComponent {
-    const componentStyle: NewComponentStyleProperties = { baseName: importedComponentBaseName, baseStyle: NEW_COMPONENT_STYLES.BUTTON_CLOSE,
-      baseCustomCssFunc: createDefaultBaseCss, textStyle: NEW_COMPONENT_STYLES.CLOSE_BUTTON_TEXT, overwriteButtonTextProperties };
+    const componentStyle: NewComponentStyleProperties = { baseName: importedComponentBaseName, baseStyle: BUTTON_STYLES.CLOSE,
+      baseCustomCssFunc: createDefaultBaseCss, textStyle: TEXT_STYLES.CLOSE_BUTTON, overwriteButtonTextProperties };
     return ButtonBuilder.create(componentStyle);
   },
 };

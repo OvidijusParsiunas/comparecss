@@ -4,10 +4,10 @@ import { AddNewLayerSubcomponent } from '../../../../utils/componentManipulation
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
-import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
+import { LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { buttonSpecificSettings } from './buttonSpecificSettings';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import ReferenceSharingUtils from './referenceSharingUtils';
@@ -79,11 +79,11 @@ export class ButtonBuilder extends ComponentBuilder {
   }
 
   private static addComponentsToBase(buttonComponent: WorkshopComponent, componentStyle: NewComponentStyleProperties): void {
-    const layerSubcomponent = AddNewLayerSubcomponent.add(buttonComponent, NEW_COMPONENT_STYLES.BUTTON_LAYER, false);
+    const layerSubcomponent = AddNewLayerSubcomponent.add(buttonComponent, LAYER_STYLES.BUTTON, false);
     const textOverwriteFuncs = [ButtonBuilder.overwriteButtonTextProperties];
     if (componentStyle.overwriteButtonTextProperties) { textOverwriteFuncs.push(componentStyle.overwriteButtonTextProperties); }
-    const textSubcomponent = AddNewImportedComponent.add(buttonComponent, NEW_COMPONENT_TYPES.TEXT,
-      componentStyle.textStyle || NEW_COMPONENT_STYLES.TEXT_BUTTON, layerSubcomponent.baseName, textOverwriteFuncs);
+    const textSubcomponent = AddNewImportedComponent.add(buttonComponent, COMPONENT_TYPES.TEXT,
+      componentStyle.textStyle || TEXT_STYLES.BUTTON, layerSubcomponent.baseName, textOverwriteFuncs);
     const { subcomponentNames } = buttonComponent;
     buttonComponent.subcomponents[subcomponentNames.base].triggerableSubcomponentName = textSubcomponent.baseName;
     subcomponentNames.layer = layerSubcomponent.baseName;
@@ -97,7 +97,7 @@ export class ButtonBuilder extends ComponentBuilder {
   }
 
   public static create(componentStyle: NewComponentStyleProperties): WorkshopComponent {
-    const buttonComponent: WorkshopComponent = ComponentBuilder.createBaseComponent(componentStyle, NEW_COMPONENT_TYPES.BUTTON,
+    const buttonComponent: WorkshopComponent = ComponentBuilder.createBaseComponent(componentStyle, COMPONENT_TYPES.BUTTON,
       ButtonBuilder.createBaseSubcomponent);
     ButtonBuilder.addComponentsToBase(buttonComponent, componentStyle);
     ButtonBuilder.addReferences(buttonComponent);

@@ -5,9 +5,9 @@ import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uni
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { EntityDisplayStatusUtils } from '../../../entityDisplayStatus/entityDisplayStatusUtils';
 import { ImportedComponentGenerator } from '../../../importComponent/importedComponentGenerator';
-import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
-import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
+import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
+import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import PreviewStructure from '../../../componentGenerator/previewStructure';
 import { JsUtils } from '../../../../../../../services/jsUtils/jsUtils';
@@ -46,9 +46,9 @@ export class AddNewLayerSubcomponent {
     return { baseName, subcomponents };
   }
 
-  public static add(parentComponent: WorkshopComponent, componentStyle: NEW_COMPONENT_STYLES, isEditable: boolean,
+  public static add(parentComponent: WorkshopComponent, componentStyle: COMPONENT_STYLES, isEditable: boolean,
       overwritePropertiesFunc?: OverwritePropertiesFunc): NewComponentProperties {
-    const componentGenerator = componentTypeToStyleGenerators[NEW_COMPONENT_TYPES.LAYER][componentStyle];
+    const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
     const newLayerSubcomponent = AddNewLayerSubcomponent.createNewImportedComponent(parentComponent, componentGenerator,
       overwritePropertiesFunc);
     JsUtils.addObjects(parentComponent, 'subcomponents', newLayerSubcomponent.subcomponents);

@@ -80,13 +80,13 @@ import { PlayAnimationPreviewEvent } from '../../../../interfaces/playAnimationP
 import { animationTypeToFunctionality } from './utils/animations/animationToFunctionality';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
-import { NEW_COMPONENT_STYLES } from '../../../../consts/newComponentStyles.enum';
 import ToggleFullPreviewMode from './utils/fullPreviewMode/toggleFullPreviewMode';
 import { OpenAnimation, CloseAnimation } from '../../../../interfaces/animations';
-import { NEW_COMPONENT_TYPES } from '../../../../consts/newComponentTypes.enum';
 import { TemporaryComponent } from '../../../../interfaces/temporaryComponent';
 import PreviewCloseAnimation from './utils/animations/previewAnimations/close';
 import PreviewOpenAnimation from './utils/animations/previewAnimations/open';
+import { COMPONENT_TYPES } from '../../../../consts/componentTypes.enum';
+import { DEFAULT_STYLE } from '../../../../consts/componentStyles.enum';
 import AnimationUtils from './utils/animations/utils/animationUtils';
 import ComponentPreviewUtils from './utils/componentPreviewUtils';
 
@@ -119,7 +119,7 @@ export default {
       displayed: false,
       mouseEvents: null,
       subcomponentAndOverlayElementIds: null,
-      component: componentTypeToStyleGenerators[NEW_COMPONENT_TYPES.BUTTON][NEW_COMPONENT_STYLES.DEFAULT].createNewComponent(),
+      component: componentTypeToStyleGenerators[COMPONENT_TYPES.BUTTON][DEFAULT_STYLE.DEFAULT].createNewComponent(),
     },
   }),
   methods: {

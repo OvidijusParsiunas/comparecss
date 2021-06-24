@@ -1,9 +1,9 @@
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { TextBuilder } from './textBuilder';
 
 function createDefaultTextCss(): CustomCss {
@@ -37,7 +37,7 @@ function overwriteAlignment(textComponent: WorkshopComponent): void {
 
 export const buttonText: ComponentGenerator = {
   createNewComponent(importedComponentBaseName: string): WorkshopComponent {
-    const componentStyle: NewComponentStyleProperties = { baseName: importedComponentBaseName, baseStyle: NEW_COMPONENT_STYLES.TEXT_BUTTON,
+    const componentStyle: NewComponentStyleProperties = { baseName: importedComponentBaseName, baseStyle: TEXT_STYLES.BUTTON,
       baseCustomCssFunc: createDefaultTextCss };
     const buttonTextComponent =  TextBuilder.create(componentStyle);
     overwriteAlignment(buttonTextComponent);

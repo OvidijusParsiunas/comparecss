@@ -4,9 +4,9 @@ import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponent
 import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomponentNames';
 import { ImportedComponentGenerator } from '../importComponent/importedComponentGenerator';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
-import { NEW_COMPONENT_STYLES } from '../../../../../consts/newComponentStyles.enum';
 import { defaultButton } from '../../newComponent/types/buttons/generators/default';
 import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
+import { DEFAULT_STYLE } from '../../../../../consts/componentStyles.enum';
 import ProcessClassName from '../componentGenerator/processClassName';
 import PreviewStructure from '../componentGenerator/previewStructure';
 import { ComponentOptions } from 'vue';
@@ -102,7 +102,7 @@ export default class ComponentComponentUtils {
   }
 
   public static copyComponent(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {
-    const newComponent = componentTypeToStyleGenerators[componentBeingCopied.type][NEW_COMPONENT_STYLES.DEFAULT].createNewComponent();
+    const newComponent = componentTypeToStyleGenerators[componentBeingCopied.type][DEFAULT_STYLE.DEFAULT].createNewComponent();
     ComponentComponentUtils.copyComponentProperties(newComponent, componentBeingCopied);
     newComponent.activeSubcomponentName = CORE_SUBCOMPONENTS_NAMES.BASE;
     newComponent.subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE].activeCssPseudoClass = CSS_PSEUDO_CLASSES.DEFAULT;

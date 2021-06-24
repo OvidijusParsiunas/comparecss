@@ -6,8 +6,8 @@ import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomp
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { EntityDisplayStatusUtils } from '../entityDisplayStatus/entityDisplayStatusUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
-import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum';
 import { ComponentGenerator } from '../../../../../interfaces/componentGenerator';
+import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 
 export class ImportedComponentGenerator {
 
@@ -39,7 +39,7 @@ export class ImportedComponentGenerator {
     const importedComponentRef = componentGenerator.createNewComponent(importedComponentName);
     // WORK1: if copy is using addNewImportedComponent instead - the following code should be just taken out to that class and this if
     // statement should then be removed
-    if (importedComponentRef.type !== NEW_COMPONENT_TYPES.LAYER) {
+    if (importedComponentRef.type !== COMPONENT_TYPES.LAYER) {
       ImportedComponentGenerator.applyTopProperty(importedComponentRef, importedComponentName);
     }
     ImportedComponentGenerator.applyOptionalSubcomponentProperty(importedComponentRef, importedComponentName);

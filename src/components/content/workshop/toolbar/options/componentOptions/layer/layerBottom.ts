@@ -8,16 +8,8 @@ type LayerOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT;
 export const layerBottomOptions: SubcomponentOptions<LayerOptionsModes> = {
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
     {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER_TOP,
-    },
-    {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.COLOR,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.COLOR,
-    },
-    {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SHADOW,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW_VERTICAL,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SIZE,

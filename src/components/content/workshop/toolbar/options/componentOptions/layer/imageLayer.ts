@@ -2,20 +2,20 @@ import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../../const
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
-import { layerTopOptions } from './layerTop';
+import { defaultLayerOptions } from './defaultLayer';
 
 type LayerOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT;
 
-const imageLayerTopSpecificOptions = [
+const imageLayerSpecificOptions = [
   {
     buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.IMAGE,
     type: WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE_SCALE,
   },
 ]
 
-export const imageLayerTopOptions: SubcomponentOptions<LayerOptionsModes> = {
+export const imageLayerOptions: SubcomponentOptions<LayerOptionsModes> = {
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
-    ...imageLayerTopSpecificOptions,
-    ...layerTopOptions[CSS_PSEUDO_CLASSES.DEFAULT],
+    ...imageLayerSpecificOptions,
+    ...defaultLayerOptions[CSS_PSEUDO_CLASSES.DEFAULT],
   ],
 };

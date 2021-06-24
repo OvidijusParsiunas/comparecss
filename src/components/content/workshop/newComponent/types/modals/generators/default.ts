@@ -5,14 +5,14 @@ import { ImportedComponentGenerator } from '../../../../utils/importComponent/im
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
-import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { modalLayerBottomSpecificSettings } from './modalLayerBottomSpecificSettings';
 import { inheritedLayerBaseChildCss } from '../../shared/layer/inheritedBaseChildCss';
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getModalSubcomponentDropdownStructure from './subcomponentDropdownStructure';
+import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
+import { DEFAULT_STYLE } from '../../../../../../../consts/componentStyles.enum';
 import { modalLayerTopSpecificSettings } from './modalLayerTopSpecificSettings';
 import { CloseTriggers } from '../../../../../../../interfaces/closeTriggers';
 import { inheritedLayerBaseCss } from '../../shared/layer/inheritedCss';
@@ -327,8 +327,8 @@ export const defaultModal: ComponentGenerator = {
       ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton2Name),
     );
     return {
-      type: NEW_COMPONENT_TYPES.MODAL,
-      style: NEW_COMPONENT_STYLES.DEFAULT,
+      type: COMPONENT_TYPES.MODAL,
+      style: DEFAULT_STYLE.DEFAULT,
       subcomponents,
       activeSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,
       defaultSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,

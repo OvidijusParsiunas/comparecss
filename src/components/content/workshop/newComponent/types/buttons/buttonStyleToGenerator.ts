@@ -1,9 +1,9 @@
 import { ComponentStyleToGenerator } from '../../../../../../interfaces/componentStyleToGenerator'
-import { NEW_COMPONENT_STYLES } from '../../../../../../consts/newComponentStyles.enum'
+import { BUTTON_STYLES, DEFAULT_STYLE } from '../../../../../../consts/componentStyles.enum'
 import { closeButton } from './generators/closeButton';
 import { defaultButton } from './generators/default';  
 
 export const buttonStyleToGenerator: ComponentStyleToGenerator = {
-  [NEW_COMPONENT_STYLES.DEFAULT]: defaultButton,
-  [NEW_COMPONENT_STYLES.BUTTON_CLOSE]: closeButton,
+  [DEFAULT_STYLE.DEFAULT]: defaultButton,
+  [BUTTON_STYLES.CLOSE]: closeButton,
 };

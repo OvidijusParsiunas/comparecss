@@ -1,8 +1,8 @@
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
+import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { LayerBuilder } from './layerBuilder';
 
 function createDefaultBaseCss(): CustomCss {
@@ -16,7 +16,7 @@ function createDefaultBaseCss(): CustomCss {
 export const buttonLayer: ComponentGenerator = {
   createNewComponent(importedComponentBaseName: string): WorkshopComponent {
     const componentStyle: NewComponentStyleProperties = { baseName: importedComponentBaseName,
-      baseStyle: NEW_COMPONENT_STYLES.BUTTON_LAYER, baseCustomCssFunc: createDefaultBaseCss, };
+      baseStyle: LAYER_STYLES.BUTTON, baseCustomCssFunc: createDefaultBaseCss, };
     return LayerBuilder.create(componentStyle);
   },
 };

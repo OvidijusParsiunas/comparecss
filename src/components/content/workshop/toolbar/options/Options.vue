@@ -24,9 +24,9 @@
           @mouse-click-new-option="newSubcomponentNameClicked($event)"
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       </div>
-      <div v-if="component.type === NEW_COMPONENT_TYPES.MODAL || component.type === NEW_COMPONENT_TYPES.ALERT || component.type === NEW_COMPONENT_TYPES.CARD"
+      <div v-if="component.type === COMPONENT_TYPES.MODAL || component.type === COMPONENT_TYPES.ALERT || component.type === COMPONENT_TYPES.CARD"
         class="btn-group option-component-button-container">
-        <button v-if="!isFullPreviewModeActive && component.type === NEW_COMPONENT_TYPES.MODAL" ref="expandedModalPreviewModeToggle"
+        <button v-if="!isFullPreviewModeActive && component.type === COMPONENT_TYPES.MODAL" ref="expandedModalPreviewModeToggle"
           type="button" class="btn btn-group-option expanded-modal-preview-mode-button"
           :class="[TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS, TOOLBAR_GENERAL_BUTTON_CLASS, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
           @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleModalExpandMode)">
@@ -165,11 +165,11 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectMode';
-import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum';
 import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
 import useToolbarPositionToggle from './compositionApi/useToolbarPositionToggle';
 import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
+import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import BrowserType from '../../../../../services/workshop/browserType';
 import { Option } from '../../../../../interfaces/componentOptions';
 import { InSync } from './importComponent/inSync';
@@ -195,7 +195,7 @@ interface Consts {
   BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES;
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER: string;
   EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER: string;
-  NEW_COMPONENT_TYPES: typeof NEW_COMPONENT_TYPES;
+  COMPONENT_TYPES: typeof COMPONENT_TYPES;
   BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS: number;
   REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: string;
   BROWSER_SPECIFIC_MODAL_BUTTON_STYLE: WorkshopComponentCss;
@@ -224,7 +224,7 @@ export default {
       useSubcomponentDropdownEventHandlers,
       ...removeSubcomponentModalState,
       FONT_AWESOME_COLORS,
-      NEW_COMPONENT_TYPES,
+      COMPONENT_TYPES,
       OPTION_MENU_BUTTON_MARKER,
       TOOLBAR_GENERAL_BUTTON_CLASS,
       FULL_PREVIEW_MODE_BUTTON_MARKER,
@@ -507,9 +507,9 @@ export default {
       }, this.BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS);
     },
     isFullPreviewModeButtonDisplayed(): boolean {
-      return this.component.type === NEW_COMPONENT_TYPES.MODAL
+      return this.component.type === COMPONENT_TYPES.MODAL
         || (this.displayIfSubcomponentDisplayed(CORE_SUBCOMPONENTS_NAMES.CLOSE)
-          && (this.component.type === NEW_COMPONENT_TYPES.ALERT || this.component.type === NEW_COMPONENT_TYPES.CARD));
+          && (this.component.type === COMPONENT_TYPES.ALERT || this.component.type === COMPONENT_TYPES.CARD));
     },
     isInSyncButtonDisplayed(): boolean {
       const activeSubcomponent = this.component.subcomponents[this.component.activeSubcomponentName];

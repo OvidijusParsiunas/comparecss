@@ -1,7 +1,7 @@
 import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { CustomCssWithInheritedCss, SharedInheritedCss } from '../../../../../interfaces/cssBuilder';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
-import { NEW_COMPONENT_TYPES } from '../../../../../consts/newComponentTypes.enum';
+import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import GeneralUtils from './generalUtils';
 
 export default class SharedCssUtils {
@@ -9,7 +9,7 @@ export default class SharedCssUtils {
   private static purgeUniqueSubcomponents = (subcomponent: unknown): void => { Object.keys(subcomponent).map((key) => { if (subcomponent[key] < 2) delete subcomponent[key] })};
 
   // this is required as components can share subcomponent types: e.g. BASE
-  public static generateComponentToSubcomponentId = (componentType: NEW_COMPONENT_TYPES, subcomponentType: string): string => componentType + subcomponentType;
+  public static generateComponentToSubcomponentId = (componentType: COMPONENT_TYPES, subcomponentType: string): string => componentType + subcomponentType;
 
   public static identifyRepeatedSubcomponents(components: WorkshopComponent[]): unknown {
     const repeatedSubcomponents = {};

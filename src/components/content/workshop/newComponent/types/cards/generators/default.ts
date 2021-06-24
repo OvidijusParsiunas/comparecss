@@ -3,16 +3,16 @@ import { AddNewLayerSubcomponent } from '../../../../utils/componentManipulation
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
+import { DEFAULT_STYLE, BUTTON_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { GENERAL_ANIMATION_CLOSE_TYPES } from '../../../../../../../consts/animationTypes.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { NewComponentProperties } from '../../../../../../../interfaces/addNewSubcomponent';
-import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
-import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { inheritedLayerBaseChildCss } from '../../shared/layer/inheritedBaseChildCss';
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
+import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { getCardBaseSpecificSettings } from './cardBaseSpecificSettings';
 import { inheritedLayerBaseCss } from '../../shared/layer/inheritedCss';
 import {
@@ -192,20 +192,20 @@ function addSubcomponentSpecificSettings(baseSubcomponent: SubcomponentPropertie
 }
 
 function addComponentsToBase(cardComponent: WorkshopComponent): void {
-  const layer1Component = AddNewLayerSubcomponent.add(cardComponent, NEW_COMPONENT_STYLES.DEFAULT, true, overwriteImportedTopLayerProperties);
-  const layer2Component = AddNewLayerSubcomponent.add(cardComponent, NEW_COMPONENT_STYLES.DEFAULT, true);
-  const layer3Component = AddNewLayerSubcomponent.add(cardComponent, NEW_COMPONENT_STYLES.DEFAULT, true);
-  AddNewImportedComponent.add(cardComponent, NEW_COMPONENT_TYPES.TEXT, NEW_COMPONENT_STYLES.DEFAULT,
+  const layer1Component = AddNewLayerSubcomponent.add(cardComponent, DEFAULT_STYLE.DEFAULT, true, overwriteImportedTopLayerProperties);
+  const layer2Component = AddNewLayerSubcomponent.add(cardComponent, DEFAULT_STYLE.DEFAULT, true);
+  const layer3Component = AddNewLayerSubcomponent.add(cardComponent, DEFAULT_STYLE.DEFAULT, true);
+  AddNewImportedComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLE.DEFAULT,
     layer1Component.baseName, [overwriteImportedTitleProperties]);
-  AddNewImportedComponent.add(cardComponent, NEW_COMPONENT_TYPES.TEXT, NEW_COMPONENT_STYLES.DEFAULT,
+  AddNewImportedComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLE.DEFAULT,
     layer2Component.baseName, [overwriteImportedDescriptionProperties]);
-  AddNewImportedComponent.add(cardComponent, NEW_COMPONENT_TYPES.BUTTON, NEW_COMPONENT_STYLES.DEFAULT,
+  AddNewImportedComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLE.DEFAULT,
     layer3Component.baseName, [overwriteImportedSubmitButtonProperties]);
-  AddNewImportedComponent.add(cardComponent, NEW_COMPONENT_TYPES.BUTTON, NEW_COMPONENT_STYLES.DEFAULT,
+  AddNewImportedComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLE.DEFAULT,
     layer3Component.baseName, [overwriteImportedCancelButtonProperties]);
-  const closeButtonComponent = AddNewImportedComponent.add(cardComponent, NEW_COMPONENT_TYPES.BUTTON,
-    NEW_COMPONENT_STYLES.BUTTON_CLOSE, layer1Component.baseName);
-  const avatarComponent = AddNewImportedComponent.add(cardComponent, NEW_COMPONENT_TYPES.AVATAR, NEW_COMPONENT_STYLES.DEFAULT,
+  const closeButtonComponent = AddNewImportedComponent.add(cardComponent, COMPONENT_TYPES.BUTTON,
+    BUTTON_STYLES.CLOSE, layer1Component.baseName);
+  const avatarComponent = AddNewImportedComponent.add(cardComponent, COMPONENT_TYPES.AVATAR, DEFAULT_STYLE.DEFAULT,
     layer1Component.baseName);
   addSubcomponentSpecificSettings(cardComponent.subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE], closeButtonComponent, avatarComponent);
 }
@@ -213,8 +213,8 @@ function addComponentsToBase(cardComponent: WorkshopComponent): void {
 function createCardBaseSubcomponent(): WorkshopComponent {
   const subcomponents = {[CORE_SUBCOMPONENTS_NAMES.BASE]: createBaseSubcomponent()};
   return {
-    type: NEW_COMPONENT_TYPES.CARD,
-    style: NEW_COMPONENT_STYLES.DEFAULT,
+    type: COMPONENT_TYPES.CARD,
+    style: DEFAULT_STYLE.DEFAULT,
     subcomponents,
     activeSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,
     defaultSubcomponentName: CORE_SUBCOMPONENTS_NAMES.BASE,

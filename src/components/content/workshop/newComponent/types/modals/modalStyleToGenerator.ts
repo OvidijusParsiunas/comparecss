@@ -1,7 +1,7 @@
 import { ComponentStyleToGenerator } from '../../../../../../interfaces/componentStyleToGenerator'
-import { NEW_COMPONENT_STYLES } from '../../../../../../consts/newComponentStyles.enum'
+import { DEFAULT_STYLE } from '../../../../../../consts/componentStyles.enum'
 import { defaultModal } from './generators/default';  
 
 export const modalStyleToGenerator: ComponentStyleToGenerator = {
-  [NEW_COMPONENT_STYLES.DEFAULT]: defaultModal,
+  [DEFAULT_STYLE.DEFAULT]: defaultModal,
 };

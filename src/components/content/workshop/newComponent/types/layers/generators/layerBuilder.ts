@@ -2,9 +2,9 @@ import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../.
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
 export class LayerBuilder extends ComponentBuilder {
@@ -42,6 +42,6 @@ export class LayerBuilder extends ComponentBuilder {
   }
 
   public static create(componentStyle: NewComponentStyleProperties): WorkshopComponent {
-    return ComponentBuilder.createBaseComponent(componentStyle, NEW_COMPONENT_TYPES.LAYER, LayerBuilder.createBaseSubcomponent);
+    return ComponentBuilder.createBaseComponent(componentStyle, COMPONENT_TYPES.LAYER, LayerBuilder.createBaseSubcomponent);
   }
 }

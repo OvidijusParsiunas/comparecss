@@ -3,13 +3,13 @@ import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcom
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
-import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
-import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import PreviewStructure from '../../../../utils/componentGenerator/previewStructure';
 import getAvatarSubcomponentDropdownStructure from './subcomponentDropdownStructure';
+import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
+import { DEFAULT_STYLE } from '../../../../../../../consts/componentStyles.enum';
 import { defaultImage } from '../../shared/images/default';
 
 const defaultSubcomponentNames: CustomSubcomponentNames = {
@@ -98,8 +98,8 @@ export const avatar: ComponentGenerator = {
     const subcomponents = createSubcomponents(subcomponentNames);
     const subcomponentDropdownStructure = getAvatarSubcomponentDropdownStructure(subcomponentNames);
     return {
-      type: NEW_COMPONENT_TYPES.AVATAR,
-      style: NEW_COMPONENT_STYLES.DEFAULT,
+      type: COMPONENT_TYPES.AVATAR,
+      style: DEFAULT_STYLE.DEFAULT,
       subcomponents,
       activeSubcomponentName: subcomponentNames.base,
       defaultSubcomponentName: subcomponentNames.base,

@@ -1,12 +1,11 @@
-import { NEW_COMPONENT_TYPES } from '../../../../../../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
+import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 import { Options } from '../../../../../../interfaces/options';
 import { closeButtonTextOptions } from './button/closeText';
 import { nestedButtonOptions } from './button/nestedButton';
+import { defaultLayerOptions } from './layer/defaultLayer';
 import { layerBottomOptions } from './layer/layerBottom';
-import { layerMiddleOptions } from './layer/layerMiddle';
 import { ButtonOptions } from './button/buttonOptions';
-import { layerTopOptions } from './layer/layerTop';
 import { buttonTextOptions } from './button/text';
 import { CardOptions } from './card/cardOptions';
 import { alertBaseOptions } from './alert/base';
@@ -18,28 +17,28 @@ type SubcomponentTypeToOptions = {
 }
 
 export type ComponentTypeToOptions = {
-  [key in NEW_COMPONENT_TYPES]?: SubcomponentTypeToOptions;
+  [key in COMPONENT_TYPES]?: SubcomponentTypeToOptions;
 }
 
 // WORK1: change type
 export const componentTypeToOptions: any = {
-  [NEW_COMPONENT_TYPES.BUTTON]: ButtonOptions.getButtonOptions,
-  [NEW_COMPONENT_TYPES.ALERT]: {
+  [COMPONENT_TYPES.BUTTON]: ButtonOptions.getButtonOptions,
+  [COMPONENT_TYPES.ALERT]: {
     [SUBCOMPONENT_TYPES.BASE]: alertBaseOptions as Options,
     [SUBCOMPONENT_TYPES.TEXT]: textOptions as Options,
     // [SUBCOMPONENT_TYPES.CLOSE_BUTTON]: closeButtonOptions as Options,
     [SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT]: closeButtonTextOptions as Options,
   },
-  [NEW_COMPONENT_TYPES.MODAL]: {
+  [COMPONENT_TYPES.MODAL]: {
     [SUBCOMPONENT_TYPES.BASE]: modalBaseOptions as Options,
     [SUBCOMPONENT_TYPES.TEXT]: textOptions as Options,
-    [SUBCOMPONENT_TYPES.LAYER_1]: layerTopOptions as Options,
-    [SUBCOMPONENT_TYPES.LAYER_2]: layerMiddleOptions as Options,
+    [SUBCOMPONENT_TYPES.LAYER_1]: defaultLayerOptions as Options,
+    [SUBCOMPONENT_TYPES.LAYER_2]: defaultLayerOptions as Options,
     [SUBCOMPONENT_TYPES.LAYER_3]: layerBottomOptions as Options,
     [SUBCOMPONENT_TYPES.BUTTON]: nestedButtonOptions as Options,
     [SUBCOMPONENT_TYPES.BUTTON_TEXT]: buttonTextOptions as Options,
     // [SUBCOMPONENT_TYPES.CLOSE_BUTTON]: closeButtonOptions as Options,
     [SUBCOMPONENT_TYPES.CLOSE_BUTTON_TEXT]: closeButtonTextOptions as Options,
   },
-  [NEW_COMPONENT_TYPES.CARD]: CardOptions.getCardOptions,
+  [COMPONENT_TYPES.CARD]: CardOptions.getCardOptions,
 };

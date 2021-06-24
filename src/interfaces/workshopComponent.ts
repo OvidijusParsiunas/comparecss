@@ -5,10 +5,10 @@ import { CORE_SUBCOMPONENTS_NAMES } from '../consts/coreSubcomponentNames.enum';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
-import { NEW_COMPONENT_STYLES } from '../consts/newComponentStyles.enum';
-import { NEW_COMPONENT_TYPES } from '../consts/newComponentTypes.enum';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
 import { CustomSubcomponentNames } from './customSubcomponentNames';
+import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
+import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { EntityDisplayStatus } from './entityDisplayStatus';
 import { TempCustomCss } from './tempCustomCss';
@@ -187,8 +187,8 @@ export type Subcomponents = {
 }
 
 export interface WorkshopComponent {
-  type: NEW_COMPONENT_TYPES;
-  style: NEW_COMPONENT_STYLES;
+  type: COMPONENT_TYPES;
+  style: COMPONENT_STYLES;
   subcomponents: Subcomponents;
   activeSubcomponentName: string;
   // the motivator for this is the fact that the first subcomponent should not be assumed to be the default one

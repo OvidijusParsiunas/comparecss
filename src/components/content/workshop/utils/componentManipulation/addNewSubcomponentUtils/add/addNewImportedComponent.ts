@@ -7,9 +7,9 @@ import { Layer, NestedSubcomponent } from '../../../../../../../interfaces/compo
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { ImportedComponentGenerator } from '../../../importComponent/importedComponentGenerator';
-import { NEW_COMPONENT_STYLES } from '../../../../../../../consts/newComponentStyles.enum';
-import { NEW_COMPONENT_TYPES } from '../../../../../../../consts/newComponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
+import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
+import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { JsUtils } from '../../../../../../../services/jsUtils/jsUtils';
 
 interface SubcomponentData {
@@ -22,11 +22,11 @@ interface SubcomponentData {
 
 export class AddNewImportedComponent {
 
-  private static readonly componentTypeToName: { [key in NEW_COMPONENT_TYPES]?: CORE_SUBCOMPONENTS_NAMES } = {
-    [NEW_COMPONENT_TYPES.LAYER]: CORE_SUBCOMPONENTS_NAMES.LAYER,
-    [NEW_COMPONENT_TYPES.BUTTON]: CORE_SUBCOMPONENTS_NAMES.BUTTON,
-    [NEW_COMPONENT_TYPES.TEXT]: CORE_SUBCOMPONENTS_NAMES.TEXT,
-    [NEW_COMPONENT_TYPES.AVATAR]: CORE_SUBCOMPONENTS_NAMES.AVATAR,
+  private static readonly componentTypeToName: { [key in COMPONENT_TYPES]?: CORE_SUBCOMPONENTS_NAMES } = {
+    [COMPONENT_TYPES.LAYER]: CORE_SUBCOMPONENTS_NAMES.LAYER,
+    [COMPONENT_TYPES.BUTTON]: CORE_SUBCOMPONENTS_NAMES.BUTTON,
+    [COMPONENT_TYPES.TEXT]: CORE_SUBCOMPONENTS_NAMES.TEXT,
+    [COMPONENT_TYPES.AVATAR]: CORE_SUBCOMPONENTS_NAMES.AVATAR,
   }
 
   private static updateComponentPreviewStructure(parentComponent: WorkshopComponent, importedComponent: NewComponentProperties,
@@ -80,7 +80,7 @@ export class AddNewImportedComponent {
   }
 
   // WORK 1 - change names
-  private static createNewImportedComponent(componentType: NEW_COMPONENT_TYPES, componentGenerator: ComponentGenerator,
+  private static createNewImportedComponent(componentType: COMPONENT_TYPES, componentGenerator: ComponentGenerator,
       overwritePropertiesFunc?: OverwritePropertiesFunc[]): NewComponentProperties {
     const baseName = UniqueSubcomponentNameGenerator.generate(AddNewImportedComponent.componentTypeToName[componentType]);
     const subcomponents = ImportedComponentGenerator.createImportedComponentSubcomponents(componentGenerator, baseName);
@@ -91,8 +91,8 @@ export class AddNewImportedComponent {
     return { baseName, subcomponents };
   }
 
-  public static add(parentComponent: WorkshopComponent, componentType: NEW_COMPONENT_TYPES,
-      componentStyle: NEW_COMPONENT_STYLES, layerName: CORE_SUBCOMPONENTS_NAMES | string,
+  public static add(parentComponent: WorkshopComponent, componentType: COMPONENT_TYPES,
+      componentStyle: COMPONENT_STYLES, layerName: CORE_SUBCOMPONENTS_NAMES | string,
       overwritePropertiesFunc?: OverwritePropertiesFunc[]): NewComponentProperties {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
     const importedComponent = AddNewImportedComponent.createNewImportedComponent(componentType, componentGenerator, overwritePropertiesFunc);
