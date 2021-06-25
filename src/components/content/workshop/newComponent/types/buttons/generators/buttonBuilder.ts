@@ -94,6 +94,7 @@ export class ButtonBuilder extends ComponentBuilder {
     const { subcomponentNames } = buttonComponent;
     ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(buttonComponent.subcomponents, subcomponentNames);
     ReferenceSharingUtils.appendBaseSubcomponentRefToAllChildSubcomponents(buttonComponent.subcomponents, subcomponentNames);
+    buttonComponent.referenceSharingExecutables = [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents];
   }
 
   public static create(componentStyle: NewComponentStyleProperties): WorkshopComponent {

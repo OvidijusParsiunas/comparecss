@@ -171,7 +171,7 @@ export interface SubcomponentProperties {
   defaultCustomStaticFeatures?: CustomStaticFeatures;
   layerSectionsType?: LAYER_SECTIONS_TYPES;
   importedComponent?: ImportedComponent;
-  // used to track the imported component's base inSync property
+  // used to track the imported component's base inSync property and also used to identify whether the subcomponent is not the base subcomponent
   baseSubcomponentRef?: SubcomponentProperties;
   // this is used for imported subcomponents as overwriting customCss with mouseevents causes all the other in-sync references to be updated as well
   tempCustomCssObjName?: string;

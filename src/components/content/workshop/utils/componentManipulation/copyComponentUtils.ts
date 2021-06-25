@@ -1,14 +1,11 @@
 import { ImportedComponent, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { componentTypeToStyleGenerators } from '../../newComponent/types/componentTypeToStyleGenerators';
-import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
+import { AddNewImportedComponent } from './addNewSubcomponentUtils/add/addNewImportedComponent';
+import { AddNewLayerSubcomponent } from './addNewSubcomponentUtils/add/addNewLayerSubcomponent';
 import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomponentNames';
-import { ImportedComponentGenerator } from '../importComponent/importedComponentGenerator';
-import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
-import { defaultButton } from '../../newComponent/types/buttons/generators/default';
 import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
-import { DEFAULT_STYLE } from '../../../../../consts/componentStyles.enum';
+import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import ProcessClassName from '../componentGenerator/processClassName';
-import PreviewStructure from '../componentGenerator/previewStructure';
 import { ComponentOptions } from 'vue';
 
 export default class ComponentComponentUtils {
@@ -45,47 +42,45 @@ export default class ComponentComponentUtils {
   // WORK1: refactoring
   private static copySubcomponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
     const importedComponentRefs = [];
-    // WORK1: remove new component subcomponents that are not in the component being copied
-    // currently can add an imported component but need to be able to add a native component
-  // newComponent.subcomponents = {};
     // uniqueSubcomponentIdState.resetUniqueId();
     Object.keys(componentBeingCopied.subcomponents).forEach((subcomponentName) => {
-      // if subcomponent is part of an imported component, do not proceed as a new one will be created
-      // PART3:
-      // if (componentBeingCopied.subcomponents[subcomponentName].baseSubcomponentRef
-      //   && componentBeingCopied.subcomponents[subcomponentName].baseSubcomponentRef.importedComponent) {
-      //     return;
-      //   };
-      // still requires the first detected subcomponent to be the base, otherwise it will overwrite the smaller ones
-      // PART1:
-      // current strategy is to be able to repopulate subcomponents from scratch
-      // PART2:
-      // make sure the ids are the same (pass the subcomponentNames directly)
-      // PART 5: change this if statement to
-      /// if (componentBeingCopied.subcomponents[subcomponentName].importedComponent)
-      if (!newComponent.subcomponents[subcomponentName] && !componentBeingCopied.subcomponents[subcomponentName].baseSubcomponentRef) {
-        // 11111 recreate all subcomponents except base
-        const importedComponentSubcomponents = ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, subcomponentName);
-        // 11111 adding all the subcomponents
-        newComponent.subcomponents = {
-          ...newComponent.subcomponents, ...importedComponentSubcomponents };
-        // PART4:
-        // copySubcomponentProperties
-        // or inSyncSubcomponent
-      }
-      // PART6:
-      // else proceed to create a default subcomponent
-      // 1111111 importing in-sync componnets - check
-      if (componentBeingCopied.subcomponents[subcomponentName].importedComponent) {
-        importedComponentRefs.push(componentBeingCopied.subcomponents[subcomponentName].importedComponent.componentRef);
-        if (componentBeingCopied.subcomponents[subcomponentName].importedComponent.inSync) {
-          ComponentComponentUtils.copyInSyncSubcomponent(componentBeingCopied.subcomponents[subcomponentName].importedComponent, 
-            newComponent.subcomponents[subcomponentName], componentBeingCopied.subcomponents[subcomponentName]);
-          return;
+      let newComponentName;
+      if (!newComponent.subcomponents[subcomponentName]) {
+        // if base component
+        if (!componentBeingCopied.subcomponents[subcomponentName].baseSubcomponentRef) {
+          const { type, style } = componentBeingCopied.subcomponents[subcomponentName].importedComponent.componentRef;
+          if (type === COMPONENT_TYPES.LAYER) {
+            const layerComponent = AddNewLayerSubcomponent.add(newComponent, style, true);
+            newComponentName = layerComponent.baseName;
+            ComponentComponentUtils.copySubcomponentProperties(layerComponent.subcomponents[layerComponent.baseName],
+              componentBeingCopied.subcomponents[subcomponentName]);
+          } else {
+            const layer = newComponent.componentPreviewStructure.layers[componentBeingCopied.componentPreviewStructure.layers.indexOf(componentBeingCopied.subcomponents[subcomponentName].parentLayer)];
+            const importedComponent = AddNewImportedComponent.add(newComponent, type, style,
+              layer.name);
+            newComponentName = importedComponent.baseName;
+            const newSubcomponentNames = Object.keys(importedComponent.subcomponents);
+            const copiedSubcomponentNames = Object.keys(componentBeingCopied.subcomponents[subcomponentName].importedComponent.componentRef.subcomponents);
+            for (let i = 0; i < newSubcomponentNames.length; i += 1) {
+              ComponentComponentUtils.copySubcomponentProperties(importedComponent.subcomponents[newSubcomponentNames[i]],
+                componentBeingCopied.subcomponents[subcomponentName].importedComponent.componentRef.subcomponents[copiedSubcomponentNames[i]]);
+            }
+          }
         }
+        // everything that is imported but not base is dealth with earlier
+        return;
       }
-      ComponentComponentUtils.copySubcomponentProperties(newComponent.subcomponents[subcomponentName],
+      ComponentComponentUtils.copySubcomponentProperties(newComponent.subcomponents[newComponentName || subcomponentName],
         componentBeingCopied.subcomponents[subcomponentName]);
+        // 1111111 importing in-sync componnets - check
+      if (componentBeingCopied.subcomponents[subcomponentName]) {
+        importedComponentRefs.push(newComponent);
+        // if (componentBeingCopied.subcomponents[subcomponentName].importedComponent.inSync) {
+        //   ComponentComponentUtils.copyInSyncSubcomponent(componentBeingCopied.subcomponents[subcomponentName].importedComponent, 
+        //     newComponent.subcomponents[subcomponentName], componentBeingCopied.subcomponents[subcomponentName]);
+        //   return;
+        // }
+      }
     });
     importedComponentRefs.forEach((importedComponentRef) => {
       const { subcomponentNames, referenceSharingExecutables } = importedComponentRef;
@@ -95,17 +90,9 @@ export default class ComponentComponentUtils {
     });
   }
 
-  private static copyComponentProperties(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
-    ComponentComponentUtils.copySubcomponents(newComponent, componentBeingCopied);
-    newComponent.componentPreviewStructure = PreviewStructure.createComponentPreviewStructure(
-      componentBeingCopied.componentPreviewStructure.subcomponentDropdownStructure, newComponent.subcomponents);
-  }
-
   public static copyComponent(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {
-    const newComponent = componentTypeToStyleGenerators[componentBeingCopied.type][DEFAULT_STYLE.DEFAULT].createNewComponent();
-    ComponentComponentUtils.copyComponentProperties(newComponent, componentBeingCopied);
-    newComponent.activeSubcomponentName = CORE_SUBCOMPONENTS_NAMES.BASE;
-    newComponent.subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE].activeCssPseudoClass = CSS_PSEUDO_CLASSES.DEFAULT;
+    const newComponent = componentTypeToStyleGenerators[componentBeingCopied.type][componentBeingCopied.style].createNewComponent();
+    ComponentComponentUtils.copySubcomponents(newComponent, componentBeingCopied);
     newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className,
       (optionsComponent.components as undefined as WorkshopComponent[]), '-copy');
     return newComponent;
