@@ -3,6 +3,7 @@ import { componentTypeToStyleGenerators } from '../../newComponent/types/compone
 import { AddNewImportedComponent } from './addNewSubcomponentUtils/add/addNewImportedComponent';
 import { AddNewLayerSubcomponent } from './addNewSubcomponentUtils/add/addNewLayerSubcomponent';
 import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomponentNames';
+import { uniqueSubcomponentIdState } from '../componentGenerator/uniqueSubcomponentIdState';
 import JSONManipulation from '../../../../../services/workshop/jsonManipulation';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import ProcessClassName from '../componentGenerator/processClassName';
@@ -41,8 +42,9 @@ export default class ComponentComponentUtils {
 
   // WORK1: refactoring
   private static copySubcomponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
+    // when imported component deleted, all other ones take control of its css
+    // ripple animation does not carry on
     const importedComponentRefs = [];
-    // uniqueSubcomponentIdState.resetUniqueId();
     Object.keys(componentBeingCopied.subcomponents).forEach((subcomponentName) => {
       let newComponentName;
       if (!newComponent.subcomponents[subcomponentName]) {
@@ -61,25 +63,33 @@ export default class ComponentComponentUtils {
             newComponentName = importedComponent.baseName;
             const newSubcomponentNames = Object.keys(importedComponent.subcomponents);
             const copiedSubcomponentNames = Object.keys(componentBeingCopied.subcomponents[subcomponentName].importedComponent.componentRef.subcomponents);
+            importedComponentRefs.push(importedComponent.subcomponents[importedComponent.baseName]);
             for (let i = 0; i < newSubcomponentNames.length; i += 1) {
-              ComponentComponentUtils.copySubcomponentProperties(importedComponent.subcomponents[newSubcomponentNames[i]],
-                componentBeingCopied.subcomponents[subcomponentName].importedComponent.componentRef.subcomponents[copiedSubcomponentNames[i]]);
+              const subcomponentBeingCopied = componentBeingCopied.subcomponents[subcomponentName].importedComponent.componentRef.subcomponents[copiedSubcomponentNames[i]];
+              if (!subcomponentBeingCopied.baseSubcomponentRef && subcomponentBeingCopied.importedComponent?.inSync) {
+                ComponentComponentUtils.copyInSyncSubcomponent(componentBeingCopied.subcomponents[subcomponentName].importedComponent, 
+                  importedComponent.subcomponents[newSubcomponentNames[i]],
+                  componentBeingCopied.subcomponents[subcomponentName].importedComponent.componentRef.subcomponents[copiedSubcomponentNames[i]]);
+              } else {
+                ComponentComponentUtils.copySubcomponentProperties(importedComponent.subcomponents[newSubcomponentNames[i]],
+                  componentBeingCopied.subcomponents[subcomponentName].importedComponent.componentRef.subcomponents[copiedSubcomponentNames[i]]); 
+              }
             }
           }
         }
         // everything that is imported but not base is dealth with earlier
         return;
       }
-      ComponentComponentUtils.copySubcomponentProperties(newComponent.subcomponents[newComponentName || subcomponentName],
-        componentBeingCopied.subcomponents[subcomponentName]);
-        // 1111111 importing in-sync componnets - check
-      if (componentBeingCopied.subcomponents[subcomponentName]) {
-        importedComponentRefs.push(newComponent);
-        // if (componentBeingCopied.subcomponents[subcomponentName].importedComponent.inSync) {
-        //   ComponentComponentUtils.copyInSyncSubcomponent(componentBeingCopied.subcomponents[subcomponentName].importedComponent, 
-        //     newComponent.subcomponents[subcomponentName], componentBeingCopied.subcomponents[subcomponentName]);
-        //   return;
-        // }
+      // 1111111 importing in-sync componnets - check
+      if (componentBeingCopied.subcomponents[subcomponentName].importedComponent?.inSync) {
+        ComponentComponentUtils.copyInSyncSubcomponent(componentBeingCopied.subcomponents[subcomponentName].importedComponent, 
+          newComponent.subcomponents[subcomponentName], componentBeingCopied.subcomponents[subcomponentName]);
+      } else {
+        ComponentComponentUtils.copySubcomponentProperties(newComponent.subcomponents[newComponentName || subcomponentName],
+          componentBeingCopied.subcomponents[subcomponentName]);
+      }
+      if (!newComponent.subcomponents[subcomponentName].baseSubcomponentRef) {
+        importedComponentRefs.push(newComponent.subcomponents[subcomponentName].importedComponent?.componentRef || newComponent);
       }
     });
     importedComponentRefs.forEach((importedComponentRef) => {
@@ -91,6 +101,8 @@ export default class ComponentComponentUtils {
   }
 
   public static copyComponent(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {
+    // not refreshed for buttons
+    uniqueSubcomponentIdState.resetUniqueId();
     const newComponent = componentTypeToStyleGenerators[componentBeingCopied.type][componentBeingCopied.style].createNewComponent();
     ComponentComponentUtils.copySubcomponents(newComponent, componentBeingCopied);
     newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className,
