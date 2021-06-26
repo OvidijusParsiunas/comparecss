@@ -1,0 +1,63 @@
+import { componentTypeToStyleGenerators } from '../../../newComponent/types/componentTypeToStyleGenerators';
+import { Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { CustomSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
+import { uniqueSubcomponentIdState } from '../../componentGenerator/uniqueSubcomponentIdState';
+import { CopyExistingSubcomponent } from './copyComponent/copyExistingSubcomponent';
+import { CopyNewSubcomponent } from './copyComponent/copyNewSubcomponent';
+import ProcessClassName from '../../componentGenerator/processClassName';
+import { ComponentOptions } from 'vue';
+
+export default class CopyComponent {
+
+  private static executeReferenceSharingExecutables(baseComponentRefs: WorkshopComponent[], newComponent: WorkshopComponent): void {
+    baseComponentRefs.forEach((importedComponentRef) => {
+      const { subcomponentNames, referenceSharingExecutables } = importedComponentRef;
+      (referenceSharingExecutables || []).forEach((executable: (subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames) => void) => {
+        executable(newComponent.subcomponents, subcomponentNames);
+      });
+    });
+  }
+
+  private static addBaseComponentRef(baseComponentRefs: WorkshopComponent[], newComponent: WorkshopComponent,
+      subcomponentName: string): void {
+    // either the imported component base or the component itself
+    baseComponentRefs.push(newComponent.subcomponents[subcomponentName].importedComponent?.componentRef || newComponent);
+  }
+
+  private static copySubcomponent(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent,
+      subcomponentName: string, baseComponentRefs: WorkshopComponent[]): void {
+    if (!newComponent.subcomponents[subcomponentName]) {
+      // if base component
+      if (!componentBeingCopied.subcomponents[subcomponentName].baseSubcomponentRef) {
+        CopyNewSubcomponent.copy(newComponent, componentBeingCopied, subcomponentName, baseComponentRefs);
+      }
+      // subcomponents that are not base are not copied because their new versions are recreated from bases
+      return;
+    }
+    CopyExistingSubcomponent.copy(newComponent.subcomponents[subcomponentName], componentBeingCopied.subcomponents[subcomponentName]);
+    if (!newComponent.subcomponents[subcomponentName].baseSubcomponentRef) {
+      CopyComponent.addBaseComponentRef(baseComponentRefs, componentBeingCopied, subcomponentName);
+    }
+  }
+
+  // WORK1: refactoring
+  // when less subcomponents
+  private static copySubcomponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
+    // when imported component deleted, all other ones take control of its css
+    const baseComponentRefs: WorkshopComponent[] = [];
+    Object.keys(componentBeingCopied.subcomponents).forEach((subcomponentName) => {
+      CopyComponent.copySubcomponent(newComponent, componentBeingCopied, subcomponentName, baseComponentRefs);
+    });
+    CopyComponent.executeReferenceSharingExecutables(baseComponentRefs, newComponent);
+  }
+
+  public static copyComponent(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {
+    // used here as button builders do not inherently reset the unique id
+    uniqueSubcomponentIdState.resetUniqueId();
+    const newComponent = componentTypeToStyleGenerators[componentBeingCopied.type][componentBeingCopied.style].createNewComponent();
+    CopyComponent.copySubcomponents(newComponent, componentBeingCopied);
+    newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className,
+      (optionsComponent.components as undefined as WorkshopComponent[]), '-copy');
+    return newComponent;
+  }
+}

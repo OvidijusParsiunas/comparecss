@@ -1,8 +1,8 @@
 import { ImportComponentModeCardEvents } from '../../toolbar/options/importComponent/modeUtils/importComponentModeCardEvents';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
-import { AddNewSubcomponentUtils } from './addNewSubcomponentUtils/addNewSubcomponent';
+import { AddNewSubcomponent } from './addNewSubcomponentUtils/addNewSubcomponent';
 import ComponentJs from '../../../../../services/workshop/componentJs';
-import CopyComponentUtils from './copyComponentUtils';
+import CopyComponent from './copyComponentUtils/copyComponent';
 import { ComponentOptions } from 'vue';
 
 export class ComponentManipulation {
@@ -32,12 +32,12 @@ export class ComponentManipulation {
   }
 
   public static addNewSubcomponent(workshopComponent: ComponentOptions): void {
-    AddNewSubcomponentUtils.addSubcomponent(workshopComponent.currentlySelectedComponent);
+    AddNewSubcomponent.addSubcomponent(workshopComponent.currentlySelectedComponent);
     workshopComponent.$refs.contents.refreshComponent();
   }
 
   public static copyComponent(workshopComponent: ComponentOptions, selectComponentCard: WorkshopComponent): void {
-    const newComponent = CopyComponentUtils.copyComponent(workshopComponent, selectComponentCard);
+    const newComponent = CopyComponent.copyComponent(workshopComponent, selectComponentCard);
     ComponentManipulation.addNewComponent(workshopComponent, newComponent);
   }
 

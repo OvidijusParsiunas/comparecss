@@ -5,7 +5,7 @@ import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 import { AddNewImportedComponent } from './add/addNewImportedComponent';
 import { AddNewLayerSubcomponent } from './add/addNewLayerSubcomponent';
 
-export class AddNewSubcomponentUtils {
+export class AddNewSubcomponent {
   
   public static addSubcomponent(currentlySelectedComponent: WorkshopComponent, subcomponentType = 'importedButton'): void {
     if (currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].subcomponentType === SUBCOMPONENT_TYPES.BASE) {

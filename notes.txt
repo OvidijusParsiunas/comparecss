@@ -8,6 +8,7 @@ maybe should allow import a new button alltogether instead of creating a new but
 after adding a new subcomponent, open its options
 rename imported component to nested component
 clicking close button sets the background to default
+zoom in image when hovered on 
 
 overflow
 try with button tags
