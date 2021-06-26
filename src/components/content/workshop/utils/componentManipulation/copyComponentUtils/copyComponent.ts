@@ -41,7 +41,6 @@ export default class CopyComponent {
   }
 
   // WORK1: refactoring
-  // when less subcomponents
   private static copySubcomponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
     // when imported component deleted, all other ones take control of its css
     const baseComponentRefs: WorkshopComponent[] = [];
@@ -51,10 +50,19 @@ export default class CopyComponent {
     CopyComponent.executeReferenceSharingExecutables(baseComponentRefs, newComponent);
   }
 
+  private static removeUnusedSubcomponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
+    Object.keys(newComponent.subcomponents).forEach((subcomponentName) => {
+      if (!componentBeingCopied.subcomponents[subcomponentName]) {
+        delete newComponent.subcomponents[subcomponentName];
+      }
+    });
+  }
+
   public static copyComponent(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {
     // used here as button builders do not inherently reset the unique id
     uniqueSubcomponentIdState.resetUniqueId();
     const newComponent = componentTypeToStyleGenerators[componentBeingCopied.type][componentBeingCopied.style].createNewComponent();
+    CopyComponent.removeUnusedSubcomponents(newComponent, componentBeingCopied);
     CopyComponent.copySubcomponents(newComponent, componentBeingCopied);
     newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className,
       (optionsComponent.components as undefined as WorkshopComponent[]), '-copy');
