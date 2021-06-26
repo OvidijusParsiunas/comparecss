@@ -43,27 +43,23 @@ export default class ComponentComponentUtils {
   // WORK1: refactoring
   private static copySubcomponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
     // when imported component deleted, all other ones take control of its css
-    // ripple animation does not carry on
     const importedComponentRefs = [];
     Object.keys(componentBeingCopied.subcomponents).forEach((subcomponentName) => {
-      let newComponentName;
       if (!newComponent.subcomponents[subcomponentName]) {
         // if base component
         if (!componentBeingCopied.subcomponents[subcomponentName].baseSubcomponentRef) {
           const { type, style } = componentBeingCopied.subcomponents[subcomponentName].importedComponent.componentRef;
           if (type === COMPONENT_TYPES.LAYER) {
             const layerComponent = AddNewLayerSubcomponent.add(newComponent, style, true);
-            newComponentName = layerComponent.baseName;
             ComponentComponentUtils.copySubcomponentProperties(layerComponent.subcomponents[layerComponent.baseName],
               componentBeingCopied.subcomponents[subcomponentName]);
           } else {
             const layer = newComponent.componentPreviewStructure.layers[componentBeingCopied.componentPreviewStructure.layers.indexOf(componentBeingCopied.subcomponents[subcomponentName].parentLayer)];
             const importedComponent = AddNewImportedComponent.add(newComponent, type, style,
               layer.name);
-            newComponentName = importedComponent.baseName;
             const newSubcomponentNames = Object.keys(importedComponent.subcomponents);
             const copiedSubcomponentNames = Object.keys(componentBeingCopied.subcomponents[subcomponentName].importedComponent.componentRef.subcomponents);
-            importedComponentRefs.push(importedComponent.subcomponents[importedComponent.baseName]);
+            importedComponentRefs.push(importedComponent.subcomponents[importedComponent.baseName].importedComponent.componentRef);
             for (let i = 0; i < newSubcomponentNames.length; i += 1) {
               const subcomponentBeingCopied = componentBeingCopied.subcomponents[subcomponentName].importedComponent.componentRef.subcomponents[copiedSubcomponentNames[i]];
               if (!subcomponentBeingCopied.baseSubcomponentRef && subcomponentBeingCopied.importedComponent?.inSync) {
@@ -77,7 +73,7 @@ export default class ComponentComponentUtils {
             }
           }
         }
-        // everything that is imported but not base is dealth with earlier
+        // everything that is imported but not base is dealt with earlier
         return;
       }
       // 1111111 importing in-sync componnets - check
@@ -85,7 +81,7 @@ export default class ComponentComponentUtils {
         ComponentComponentUtils.copyInSyncSubcomponent(componentBeingCopied.subcomponents[subcomponentName].importedComponent, 
           newComponent.subcomponents[subcomponentName], componentBeingCopied.subcomponents[subcomponentName]);
       } else {
-        ComponentComponentUtils.copySubcomponentProperties(newComponent.subcomponents[newComponentName || subcomponentName],
+        ComponentComponentUtils.copySubcomponentProperties(newComponent.subcomponents[subcomponentName],
           componentBeingCopied.subcomponents[subcomponentName]);
       }
       if (!newComponent.subcomponents[subcomponentName].baseSubcomponentRef) {
