@@ -40,9 +40,7 @@ export default class CopyComponent {
     }
   }
 
-  // WORK1: refactoring
   private static copySubcomponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
-    // when imported component deleted, all other ones take control of its css
     const baseComponentRefs: WorkshopComponent[] = [];
     Object.keys(componentBeingCopied.subcomponents).forEach((subcomponentName) => {
       CopyComponent.copySubcomponent(newComponent, componentBeingCopied, subcomponentName, baseComponentRefs);

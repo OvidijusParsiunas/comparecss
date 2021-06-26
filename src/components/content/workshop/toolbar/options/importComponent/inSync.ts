@@ -27,6 +27,13 @@ export class InSync {
     if (callback) callback();
   }
 
+  public static updateIfSubcomponentNotInSync(activeComponent: WorkshopComponent, activeSubcomponent: SubcomponentProperties): void {
+    const activeBaseSubcomponent = activeSubcomponent.baseSubcomponentRef?.importedComponent || activeSubcomponent.importedComponent;
+    if (activeBaseSubcomponent?.inSync && activeBaseSubcomponent.componentRef.componentStatus.isRemoved) {
+      InSync.toggleSubcomponentInSync(activeComponent);
+    }
+  }
+
   public static isInSyncButtonDisplayed(activeSubcomponent: SubcomponentProperties): boolean {
     return (activeSubcomponent.importedComponent && !activeSubcomponent.importedComponent.componentRef.componentStatus.isRemoved
             && activeSubcomponent.importedComponent.inSync) 

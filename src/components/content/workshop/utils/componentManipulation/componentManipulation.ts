@@ -74,6 +74,7 @@ export class ComponentManipulation {
     const components = (workshopComponent.components as undefined as WorkshopComponent[]);
     const componentToBeRemovedIndex = components.findIndex(componentMatch);
     components.splice(componentToBeRemovedIndex, 1);
+    // used to allow components that have imported this to remove insync properties
     componentToBeRemoved.componentStatus.isRemoved = true;
     if (components.length === 0) {
       workshopComponent.$refs.toolbar.saveLastActiveOptionPriorToAllComponentsDeletion();
@@ -93,7 +94,7 @@ export class ComponentManipulation {
       if (componentToBeRemovedIndex > -1) ComponentManipulation.selectNextComponentAfterRemoving(workshopComponent, componentToBeRemovedIndex);
     } else {
       workshopComponent.$refs.toolbar.$refs.options.temporarilyAllowOptionAnimations(
-      ComponentManipulation.removeComponentCallback.bind(this, workshopComponent, componentToBeRemovedWithoutSelecting), true, true);
+        ComponentManipulation.removeComponentCallback.bind(this, workshopComponent, componentToBeRemovedWithoutSelecting), true, true);
     }
   }
 }

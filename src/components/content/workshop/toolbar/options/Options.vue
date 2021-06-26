@@ -513,6 +513,7 @@ export default {
     },
     isInSyncButtonDisplayed(): boolean {
       const activeSubcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
+      InSync.updateIfSubcomponentNotInSync(this.component, activeSubcomponent);
       return InSync.isInSyncButtonDisplayed(activeSubcomponent);
     },
     isRemovedComponentCurrentlySelectedForImport(): void {
