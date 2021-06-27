@@ -86,7 +86,8 @@ export class AddNewGenericComponent {
     const baseName = UniqueSubcomponentNameGenerator.generate(AddNewGenericComponent.componentTypeToName[componentType]);
     const subcomponents = NestedComponentGenerator.createNestedComponentSubcomponents(componentGenerator, baseName);
     const { subcomponentNames } = subcomponents[baseName].nestedComponent.ref;
-    (overwritePropertiesFunc || []).forEach((overwritePropertiesFunc) => {
+    const funcArray = overwritePropertiesFunc.filter((func) => typeof func === 'function');
+    funcArray.forEach((overwritePropertiesFunc) => {
       overwritePropertiesFunc(subcomponents, subcomponentNames);
     });
     return { baseName, subcomponents };

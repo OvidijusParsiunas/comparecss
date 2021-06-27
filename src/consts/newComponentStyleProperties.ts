@@ -8,6 +8,10 @@ export interface NewComponentStyleProperties {
   baseStyle?: COMPONENT_STYLES;
   baseCustomCssFunc?: () => CustomCss;
   baseInheritedCss?: WorkshopComponentCss;
-  textStyle?: COMPONENT_STYLES;
-  overwriteButtonTextProperties?: OverwritePropertiesFunc;
+  overwriteLayersProperties?: {
+    layer?: OverwritePropertiesFunc,
+    text?: OverwritePropertiesFunc[],
+    button?: OverwritePropertiesFunc[],
+    avatar?: OverwritePropertiesFunc,
+  }[];
 }

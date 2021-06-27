@@ -41,7 +41,7 @@ export class TextBuilder extends ComponentBuilder {
 
   private static createDefaultTextCustomFeatures(): CustomFeatures {
     return {
-      autoSize: ComponentBuilder.createAutoSize(),
+      autoSize: ComponentBuilder.createAutoSize(true, false),
       alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
     };
   }

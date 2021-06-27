@@ -52,7 +52,7 @@ export class ButtonBuilder extends ComponentBuilder {
 
   private static createDefaultButtonBaseCustomFeatures(): CustomFeatures {
     return {
-      lastSelectedCssValues: ComponentBuilder.createButtonBaseLastSelectedCssValues(),
+      lastSelectedCssValues: ComponentBuilder.createLastSelectedCssLeftValue(),
       alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
     };
   }
@@ -80,10 +80,8 @@ export class ButtonBuilder extends ComponentBuilder {
 
   private static addComponentsToBase(buttonComponent: WorkshopComponent, componentStyle: NewComponentStyleProperties): void {
     const layerSubcomponent = AddNewLayerSubcomponent.add(buttonComponent, LAYER_STYLES.BUTTON, false);
-    const textOverwriteFuncs = [ButtonBuilder.overwriteButtonTextProperties];
-    if (componentStyle.overwriteButtonTextProperties) { textOverwriteFuncs.push(componentStyle.overwriteButtonTextProperties); }
-    const textSubcomponent = AddNewGenericComponent.add(buttonComponent, COMPONENT_TYPES.TEXT,
-      componentStyle.textStyle || TEXT_STYLES.BUTTON, layerSubcomponent.baseName, textOverwriteFuncs);
+    const textSubcomponent = AddNewGenericComponent.add(buttonComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
+      layerSubcomponent.baseName, [ButtonBuilder.overwriteButtonTextProperties, componentStyle.overwriteLayersProperties?.[0]?.text?.[0]]);
     const { subcomponentNames } = buttonComponent;
     buttonComponent.subcomponents[subcomponentNames.base].triggerableSubcomponentName = textSubcomponent.baseName;
     subcomponentNames.layer = layerSubcomponent.baseName;
