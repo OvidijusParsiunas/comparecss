@@ -20,7 +20,7 @@ interface SubcomponentData {
   isParentLayerInSubcomponentsDropdown: boolean;
 }
 
-export class AddNewImportedComponent {
+export class AddNewGenericComponent {
 
   private static readonly componentTypeToName: { [key in COMPONENT_TYPES]?: CORE_SUBCOMPONENTS_NAMES } = {
     [COMPONENT_TYPES.LAYER]: CORE_SUBCOMPONENTS_NAMES.LAYER,
@@ -29,12 +29,13 @@ export class AddNewImportedComponent {
     [COMPONENT_TYPES.AVATAR]: CORE_SUBCOMPONENTS_NAMES.AVATAR,
   }
 
-  private static updateComponentPreviewStructure(parentComponent: WorkshopComponent, importedComponent: NewComponentProperties,
+  private static updateComponentPreviewStructure(parentComponent: WorkshopComponent, nestedComponent: NewComponentProperties,
       parentSubcomponentObject: NestedDropdownStructure, subcomponentName: string): void {
+    // WORK1: the ImportedComponentStructure is no longer required and createImportedComponentStructure should just create a new nestedDropdownStructure
     const importedComponentStructure = ImportedComponentGenerator.createImportedComponentStructure(
-        parentComponent.subcomponents, importedComponent.baseName);
+        parentComponent.subcomponents, nestedComponent.baseName);
     const newNestedDropdownStructure = {
-      [importedComponent.baseName]: { ...importedComponentStructure.component[importedComponentStructure.baseName] }};
+      [nestedComponent.baseName]: { ...importedComponentStructure.component[importedComponentStructure.baseName] }};
     JsUtils.addObjects(parentSubcomponentObject, subcomponentName, newNestedDropdownStructure, false);
   }
 
@@ -43,10 +44,10 @@ export class AddNewImportedComponent {
   }
 
   private static addNewSubcomponentToparentLayer(parentLayer: Layer, baseSubcomponentProperties: SubcomponentProperties,
-      importedComponent: NewComponentProperties): void {
+      nestedComponent: NewComponentProperties): void {
     const alignment = baseSubcomponentProperties?.customFeatures?.alignedLayerSection?.section;
     const nestedSubcomponentProperties: NestedSubcomponent = {
-      name: importedComponent.baseName, subcomponentProperties: baseSubcomponentProperties};
+      name: nestedComponent.baseName, subcomponentProperties: baseSubcomponentProperties};
     parentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][alignment || ALIGNED_SECTION_TYPES.LEFT].push(nestedSubcomponentProperties);
   }
 
@@ -54,27 +55,27 @@ export class AddNewImportedComponent {
     return parentComponent.componentPreviewStructure.layers.find((layer) => layer.name === layerName);
   }
 
-  private static assembleSubcomponentData(parentComponent: WorkshopComponent, importedComponent: NewComponentProperties,
+  private static assembleSubcomponentData(parentComponent: WorkshopComponent, nestedComponent: NewComponentProperties,
       layerName: CORE_SUBCOMPONENTS_NAMES | string): SubcomponentData {
-    const parentLayer = AddNewImportedComponent.findparentLayer(parentComponent, layerName);
-    const baseSubcomponentProperties = importedComponent.subcomponents[importedComponent.baseName];
+    const parentLayer = AddNewGenericComponent.findparentLayer(parentComponent, layerName);
+    const baseSubcomponentProperties = nestedComponent.subcomponents[nestedComponent.baseName];
     const { subcomponentDropdownStructure } = parentComponent.componentPreviewStructure;
     const parentComponentBaseName = Object.keys(subcomponentDropdownStructure)[0];
     const isParentLayerInSubcomponentsDropdown = !!subcomponentDropdownStructure[parentComponentBaseName][parentLayer.name];
     return { parentLayer, baseSubcomponentProperties, subcomponentDropdownStructure, parentComponentBaseName, isParentLayerInSubcomponentsDropdown };
   }
 
-  private static addNewSubcomponentsToComponentPreview(parentComponent: WorkshopComponent, importedComponent: NewComponentProperties,
+  private static addNewSubcomponentsToComponentPreview(parentComponent: WorkshopComponent, nestedComponent: NewComponentProperties,
       layerName: CORE_SUBCOMPONENTS_NAMES | string): void {
     const { parentLayer, baseSubcomponentProperties, subcomponentDropdownStructure, parentComponentBaseName,
-      isParentLayerInSubcomponentsDropdown } = AddNewImportedComponent.assembleSubcomponentData(parentComponent, importedComponent, layerName);
-    AddNewImportedComponent.addNewSubcomponentToparentLayer(parentLayer, baseSubcomponentProperties, importedComponent);
+      isParentLayerInSubcomponentsDropdown } = AddNewGenericComponent.assembleSubcomponentData(parentComponent, nestedComponent, layerName);
+    AddNewGenericComponent.addNewSubcomponentToparentLayer(parentLayer, baseSubcomponentProperties, nestedComponent);
     if (isParentLayerInSubcomponentsDropdown) {
-      AddNewImportedComponent.updateNewSubcomponentParentLayer(baseSubcomponentProperties, parentLayer);
-      AddNewImportedComponent.updateComponentPreviewStructure(parentComponent, importedComponent,
+      AddNewGenericComponent.updateNewSubcomponentParentLayer(baseSubcomponentProperties, parentLayer);
+      AddNewGenericComponent.updateComponentPreviewStructure(parentComponent, nestedComponent,
         subcomponentDropdownStructure[parentComponentBaseName] as NestedDropdownStructure, parentLayer.name);
     } else {
-      AddNewImportedComponent.updateComponentPreviewStructure(parentComponent, importedComponent,
+      AddNewGenericComponent.updateComponentPreviewStructure(parentComponent, nestedComponent,
         subcomponentDropdownStructure, parentComponentBaseName);
     }
   }
@@ -82,9 +83,9 @@ export class AddNewImportedComponent {
   // WORK 1 - change names
   private static createNewImportedComponent(componentType: COMPONENT_TYPES, componentGenerator: ComponentGenerator,
       overwritePropertiesFunc?: OverwritePropertiesFunc[]): NewComponentProperties {
-    const baseName = UniqueSubcomponentNameGenerator.generate(AddNewImportedComponent.componentTypeToName[componentType]);
+    const baseName = UniqueSubcomponentNameGenerator.generate(AddNewGenericComponent.componentTypeToName[componentType]);
     const subcomponents = ImportedComponentGenerator.createImportedComponentSubcomponents(componentGenerator, baseName);
-    const { subcomponentNames } = subcomponents[baseName].importedComponent.componentRef;
+    const { subcomponentNames } = subcomponents[baseName].nestedComponent.ref;
     (overwritePropertiesFunc || []).forEach((overwritePropertiesFunc) => {
       overwritePropertiesFunc(subcomponents, subcomponentNames);
     });
@@ -95,9 +96,9 @@ export class AddNewImportedComponent {
       componentStyle: COMPONENT_STYLES, layerName: CORE_SUBCOMPONENTS_NAMES | string,
       overwritePropertiesFunc?: OverwritePropertiesFunc[]): NewComponentProperties {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
-    const importedComponent = AddNewImportedComponent.createNewImportedComponent(componentType, componentGenerator, overwritePropertiesFunc);
-    JsUtils.addObjects(parentComponent, 'subcomponents', importedComponent.subcomponents);
-    AddNewImportedComponent.addNewSubcomponentsToComponentPreview(parentComponent, importedComponent, layerName);
-    return importedComponent;
+    const nestedComponent = AddNewGenericComponent.createNewImportedComponent(componentType, componentGenerator, overwritePropertiesFunc);
+    JsUtils.addObjects(parentComponent, 'subcomponents', nestedComponent.subcomponents);
+    AddNewGenericComponent.addNewSubcomponentsToComponentPreview(parentComponent, nestedComponent, layerName);
+    return nestedComponent;
   }
 }

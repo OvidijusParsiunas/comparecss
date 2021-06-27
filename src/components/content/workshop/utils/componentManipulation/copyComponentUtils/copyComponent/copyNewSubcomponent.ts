@@ -1,6 +1,6 @@
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { AddNewImportedComponent } from '../../addNewSubcomponentUtils/add/addNewImportedComponent';
 import { AddNewLayerSubcomponent } from '../../addNewSubcomponentUtils/add/addNewLayerSubcomponent';
+import { AddNewGenericComponent } from '../../addNewSubcomponentUtils/add/addNewGenericComponent';
 import { NewComponentProperties } from '../../../../../../../interfaces/addNewSubcomponent';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -10,20 +10,20 @@ import { CopyComponentShared } from './copyComponentShared';
 export class CopyNewSubcomponent extends CopyComponentShared {
   
   private static copyExistingSubcomponentProperties(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
-    if (!subcomponentBeingCopied.baseSubcomponentRef && subcomponentBeingCopied.importedComponent?.inSync) {
-      CopyComponentShared.copyInSyncSubcomponent(subcomponentBeingCopied.importedComponent, newSubcomponent, subcomponentBeingCopied);
+    if (!subcomponentBeingCopied.baseSubcomponentRef && subcomponentBeingCopied.nestedComponent?.inSync) {
+      CopyComponentShared.copyInSyncSubcomponent(subcomponentBeingCopied.nestedComponent, newSubcomponent, subcomponentBeingCopied);
     } else {
       CopyComponentShared.copySubcomponentProperties(newSubcomponent, subcomponentBeingCopied); 
     }
   }
 
   private static copyExistingSubcomponentsProperties(subcomponentBeingCopied: SubcomponentProperties, newImportedComponent: NewComponentProperties): void {
-    const { importedComponent: copiedImportedComponent } = subcomponentBeingCopied;
+    const { nestedComponent: copiedImportedComponent } = subcomponentBeingCopied;
     const newSubcomponentNames = Object.keys(newImportedComponent.subcomponents);
-    const copiedSubcomponentNames = Object.keys(copiedImportedComponent.componentRef.subcomponents);
+    const copiedSubcomponentNames = Object.keys(copiedImportedComponent.ref.subcomponents);
     for (let i = 0; i < newSubcomponentNames.length; i += 1) {
       const newSubcomponent = newImportedComponent.subcomponents[newSubcomponentNames[i]];
-      const subcomponentBeingCopied = copiedImportedComponent.componentRef.subcomponents[copiedSubcomponentNames[i]];
+      const subcomponentBeingCopied = copiedImportedComponent.ref.subcomponents[copiedSubcomponentNames[i]];
       CopyNewSubcomponent.copyExistingSubcomponentProperties(newSubcomponent, subcomponentBeingCopied)
     }
   }
@@ -37,10 +37,10 @@ export class CopyNewSubcomponent extends CopyComponentShared {
 
   private static createNewAndCopyExistingComponentProperties(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent,
       subcomponentName: string, baseComponentRefs: WorkshopComponent[]): void {
-    const { importedComponent: { componentRef: { type, style } }, parentLayer } = componentBeingCopied.subcomponents[subcomponentName];
+    const { nestedComponent: { ref: { type, style } }, parentLayer } = componentBeingCopied.subcomponents[subcomponentName];
     const newImportedComponentParentLayer = CopyNewSubcomponent.getNewImportedComponentParentLayer(newComponent, componentBeingCopied, parentLayer);
-    const newImportedComponent = AddNewImportedComponent.add(newComponent, type, style, newImportedComponentParentLayer.name);
-    baseComponentRefs.push(newImportedComponent.subcomponents[newImportedComponent.baseName].importedComponent.componentRef);
+    const newImportedComponent = AddNewGenericComponent.add(newComponent, type, style, newImportedComponentParentLayer.name);
+    baseComponentRefs.push(newImportedComponent.subcomponents[newImportedComponent.baseName].nestedComponent.ref);
     CopyNewSubcomponent.copyExistingSubcomponentsProperties(componentBeingCopied.subcomponents[subcomponentName], newImportedComponent);
   }
 
@@ -53,7 +53,7 @@ export class CopyNewSubcomponent extends CopyComponentShared {
 
   public static copy(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent,
       subcomponentName: string, baseComponentRefs: WorkshopComponent[]): void {
-    const { type, style } = componentBeingCopied.subcomponents[subcomponentName].importedComponent.componentRef;
+    const { type, style } = componentBeingCopied.subcomponents[subcomponentName].nestedComponent.ref;
     if (type === COMPONENT_TYPES.LAYER) {
       CopyNewSubcomponent.createNewAndCopyExistingLayerProperties(newComponent, componentBeingCopied, subcomponentName, style);
     } else {

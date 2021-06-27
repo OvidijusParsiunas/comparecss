@@ -21,7 +21,7 @@ export default class CopyComponent {
   private static addBaseComponentRef(baseComponentRefs: WorkshopComponent[], newComponent: WorkshopComponent,
       subcomponentName: string): void {
     // either the imported component base or the component itself
-    baseComponentRefs.push(newComponent.subcomponents[subcomponentName].importedComponent?.componentRef || newComponent);
+    baseComponentRefs.push(newComponent.subcomponents[subcomponentName].nestedComponent?.ref || newComponent);
   }
 
   private static copySubcomponent(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent,

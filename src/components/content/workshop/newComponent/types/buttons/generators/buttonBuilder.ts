@@ -1,6 +1,6 @@
 import { CustomCss, CustomFeatures, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { AddNewImportedComponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewImportedComponent';
 import { AddNewLayerSubcomponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewLayerSubcomponent';
+import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewGenericComponent';
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -82,7 +82,7 @@ export class ButtonBuilder extends ComponentBuilder {
     const layerSubcomponent = AddNewLayerSubcomponent.add(buttonComponent, LAYER_STYLES.BUTTON, false);
     const textOverwriteFuncs = [ButtonBuilder.overwriteButtonTextProperties];
     if (componentStyle.overwriteButtonTextProperties) { textOverwriteFuncs.push(componentStyle.overwriteButtonTextProperties); }
-    const textSubcomponent = AddNewImportedComponent.add(buttonComponent, COMPONENT_TYPES.TEXT,
+    const textSubcomponent = AddNewGenericComponent.add(buttonComponent, COMPONENT_TYPES.TEXT,
       componentStyle.textStyle || TEXT_STYLES.BUTTON, layerSubcomponent.baseName, textOverwriteFuncs);
     const { subcomponentNames } = buttonComponent;
     buttonComponent.subcomponents[subcomponentNames.base].triggerableSubcomponentName = textSubcomponent.baseName;

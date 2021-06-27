@@ -2,8 +2,8 @@ import { DEFAULT_STYLE, LAYER_STYLES } from '../../../../../../consts/componentS
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
-import { AddNewImportedComponent } from './add/addNewImportedComponent';
 import { AddNewLayerSubcomponent } from './add/addNewLayerSubcomponent';
+import { AddNewGenericComponent } from './add/addNewGenericComponent';
 
 export class AddNewSubcomponent {
   
@@ -11,7 +11,7 @@ export class AddNewSubcomponent {
     if (currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].subcomponentType === SUBCOMPONENT_TYPES.BASE) {
       AddNewLayerSubcomponent.add(currentlySelectedComponent, LAYER_STYLES.CARD, true);
     } else if (subcomponentType === 'importedButton') {
-      AddNewImportedComponent.add(currentlySelectedComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLE.DEFAULT,
+      AddNewGenericComponent.add(currentlySelectedComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLE.DEFAULT,
         currentlySelectedComponent.activeSubcomponentName);
     }
   }

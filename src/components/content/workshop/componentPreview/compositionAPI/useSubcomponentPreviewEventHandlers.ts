@@ -40,7 +40,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
 
   // the following condition is used to identify subcomponents that have been imported in order not to directly overwrite the default properties of the component
   // that is in sync, because if the user imports the same component into two different subcomponents their css will be immediately shared
-  // subcomponentProperties.baseSubcomponentRef || subcomponentProperties.importedComponent
+  // subcomponentProperties.baseSubcomponentRef || subcomponentProperties.nestedComponent
 
   const subcomponentMouseEnter = (): void => {
     if (shoudPreventMouseEvent()) return;
@@ -52,7 +52,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
       overwrittenDefaultPropertiesByHover = { hasBeenSet: true, css: { ...customCss[CSS_PSEUDO_CLASSES.DEFAULT], transition } };
       const newDefaultProperties = {
         ...customCss[CSS_PSEUDO_CLASSES.DEFAULT], ...customCss[CSS_PSEUDO_CLASSES.HOVER], transition, ...isUnsetButtonDisplayedForColorInputs };
-      if (subcomponentProperties.baseSubcomponentRef || subcomponentProperties.importedComponent) {
+      if (subcomponentProperties.baseSubcomponentRef || subcomponentProperties.nestedComponent) {
         subcomponentProperties[TEMP_IMPORTED_CUSTOM_CSS_OBJ_NAME] = { [CSS_PSEUDO_CLASSES.DEFAULT]: newDefaultProperties };
         subcomponentProperties.tempCustomCssObjName = TEMP_IMPORTED_CUSTOM_CSS_OBJ_NAME;
       } else {
@@ -66,7 +66,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     const { customCss, activeCssPseudoClass, triggerableSubcomponentName } = subcomponentProperties;
     if (triggerableSubcomponentName) triggerAnotherSubcomponentMouseEvent(triggerableSubcomponentName, event.type);
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT && overwrittenDefaultPropertiesByHover.hasBeenSet) {
-      if (subcomponentProperties.baseSubcomponentRef || subcomponentProperties.importedComponent) {
+      if (subcomponentProperties.baseSubcomponentRef || subcomponentProperties.nestedComponent) {
         delete subcomponentProperties.tempCustomCssObjName;
       } else {
         customCss[CSS_PSEUDO_CLASSES.DEFAULT] = { ...overwrittenDefaultPropertiesByHover.css };
@@ -84,7 +84,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
       const transition = subcomponentPreviewTransition || 'unset';
       const newDefaultProperties = {
         ...customCss[CSS_PSEUDO_CLASSES.DEFAULT], ...customCss[CSS_PSEUDO_CLASSES.CLICK], transition, ...isUnsetButtonDisplayedForColorInputs };
-      if (subcomponentProperties.baseSubcomponentRef || subcomponentProperties.importedComponent) {
+      if (subcomponentProperties.baseSubcomponentRef || subcomponentProperties.nestedComponent) {
         overwrittenDefaultPropertiesByClick = { hasBeenSet: true, css: { ...subcomponentProperties[TEMP_IMPORTED_CUSTOM_CSS_OBJ_NAME][CSS_PSEUDO_CLASSES.DEFAULT], transition } };
         subcomponentProperties[TEMP_IMPORTED_CUSTOM_CSS_OBJ_NAME][CSS_PSEUDO_CLASSES.DEFAULT] = newDefaultProperties;
       } else {
@@ -99,7 +99,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     const { customCss, activeCssPseudoClass, triggerableSubcomponentName } = subcomponentProperties;
     if (triggerableSubcomponentName) triggerAnotherSubcomponentMouseEvent(triggerableSubcomponentName, event.type);
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT && overwrittenDefaultPropertiesByClick.hasBeenSet) {
-      if (subcomponentProperties.baseSubcomponentRef || subcomponentProperties.importedComponent) {
+      if (subcomponentProperties.baseSubcomponentRef || subcomponentProperties.nestedComponent) {
         subcomponentProperties[TEMP_IMPORTED_CUSTOM_CSS_OBJ_NAME][CSS_PSEUDO_CLASSES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };
       } else {
         customCss[CSS_PSEUDO_CLASSES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };

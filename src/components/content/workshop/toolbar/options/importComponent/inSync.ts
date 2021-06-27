@@ -1,15 +1,15 @@
-import { SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { NestedComponent, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { CustomSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
 import JSONManipulation from '../../../../../../services/workshop/jsonManipulation';
 
 export class InSync {
   
   private static dereferenceImportedComponentCustomProperties(activeComponent: WorkshopComponent, importedComponentBase: SubcomponentProperties): void {
-    const { subcomponentNames, referenceSharingExecutables } = importedComponentBase.importedComponent.componentRef;
+    const { subcomponentNames, referenceSharingExecutables } = importedComponentBase.nestedComponent.ref;
     Object.keys(subcomponentNames).forEach((subcomponentName: string) => {
-      const importedComponent = activeComponent.subcomponents[subcomponentNames[subcomponentName]];
-      importedComponent.customCss = JSONManipulation.deepCopy(importedComponent.customCss);
-      importedComponent.customFeatures = JSONManipulation.deepCopy(importedComponent.customFeatures);
+      const nestedComponent = activeComponent.subcomponents[subcomponentNames[subcomponentName]];
+      nestedComponent.customCss = JSONManipulation.deepCopy(nestedComponent.customCss);
+      nestedComponent.customFeatures = JSONManipulation.deepCopy(nestedComponent.customFeatures);
     });
     referenceSharingExecutables.forEach((executable: (param1: Subcomponents, param2: CustomSubcomponentNames) => void) => {
       executable(activeComponent.subcomponents, subcomponentNames);
@@ -20,25 +20,26 @@ export class InSync {
     const activeSubcomponent = activeComponent.subcomponents[activeComponent.activeSubcomponentName];
     // use base subcomponent reference if the activeComponent is a child of base or activeSubcomponent if it is the base
     const importedComponentBase = activeSubcomponent.baseSubcomponentRef || activeSubcomponent;
-    if (importedComponentBase.importedComponent.inSync) {
+    if (importedComponentBase.nestedComponent.inSync) {
       InSync.dereferenceImportedComponentCustomProperties(activeComponent, importedComponentBase);
     }
-    importedComponentBase.importedComponent.inSync = !importedComponentBase.importedComponent.inSync;
+    importedComponentBase.nestedComponent.inSync = !importedComponentBase.nestedComponent.inSync;
     if (callback) callback();
   }
 
+  private static getBaseSubcomponent(activeSubcomponent: SubcomponentProperties): NestedComponent {
+    return activeSubcomponent.baseSubcomponentRef?.nestedComponent || activeSubcomponent.nestedComponent;
+  }
+
   public static updateIfSubcomponentNotInSync(activeComponent: WorkshopComponent, activeSubcomponent: SubcomponentProperties): void {
-    const activeBaseSubcomponent = activeSubcomponent.baseSubcomponentRef?.importedComponent || activeSubcomponent.importedComponent;
-    if (activeBaseSubcomponent?.inSync && activeBaseSubcomponent.componentRef.componentStatus.isRemoved) {
+    const activeBaseSubcomponent = InSync.getBaseSubcomponent(activeSubcomponent);
+    if (activeBaseSubcomponent?.inSync && activeBaseSubcomponent.ref.componentStatus.isRemoved) {
       InSync.toggleSubcomponentInSync(activeComponent);
     }
   }
 
   public static isInSyncButtonDisplayed(activeSubcomponent: SubcomponentProperties): boolean {
-    return (activeSubcomponent.importedComponent && !activeSubcomponent.importedComponent.componentRef.componentStatus.isRemoved
-            && activeSubcomponent.importedComponent.inSync) 
-        || (activeSubcomponent.baseSubcomponentRef && activeSubcomponent.baseSubcomponentRef.importedComponent
-            && !activeSubcomponent.baseSubcomponentRef.importedComponent.componentRef.componentStatus.isRemoved
-            && activeSubcomponent.baseSubcomponentRef.importedComponent.inSync);
+    const activeBaseSubcomponent = InSync.getBaseSubcomponent(activeSubcomponent);
+    return activeBaseSubcomponent?.inSync && !activeBaseSubcomponent.ref.componentStatus.isRemoved;
   }
 }

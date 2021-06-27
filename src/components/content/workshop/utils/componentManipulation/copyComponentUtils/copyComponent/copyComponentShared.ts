@@ -1,4 +1,4 @@
-import { ImportedComponent, SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
+import { NestedComponent, SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
 import JSONManipulation from '../../../../../../../services/workshop/jsonManipulation';
 
 export class CopyComponentShared {
@@ -9,11 +9,11 @@ export class CopyComponentShared {
     }
   }
 
-  protected static copyInSyncSubcomponent(importedComponent: ImportedComponent, newSubcomponent: SubcomponentProperties,
+  protected static copyInSyncSubcomponent(nestedComponent: NestedComponent, newSubcomponent: SubcomponentProperties,
       subcomponentBeingCopied: SubcomponentProperties): void {
-    if (newSubcomponent.importedComponent) {
-      newSubcomponent.importedComponent.inSync = true;
-      newSubcomponent.importedComponent.componentRef.componentStatus = importedComponent.componentRef.componentStatus;
+    if (newSubcomponent.nestedComponent) {
+      newSubcomponent.nestedComponent.inSync = true;
+      newSubcomponent.nestedComponent.ref.componentStatus = nestedComponent.ref.componentStatus;
     }
     newSubcomponent.customCss = subcomponentBeingCopied.customCss;
     newSubcomponent.customFeatures = subcomponentBeingCopied.customFeatures;

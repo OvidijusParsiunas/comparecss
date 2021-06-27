@@ -13,7 +13,7 @@ export default class ComponentTraversalUtils {
       const subcomponentName = subcomponentDropdownStructureKeys[i];
       if (subcomponentName === ENTITY_DISPLAY_STATUS_REF) return;
       callback(subcomponentName, currentComponent);
-      if (Object.keys(subcomponentDropdownStructure[subcomponentName]).length && !currentComponent.subcomponents[subcomponentName].importedComponent) {
+      if (Object.keys(subcomponentDropdownStructure[subcomponentName]).length && !currentComponent.subcomponents[subcomponentName].nestedComponent) {
         ComponentTraversalUtils.traverseSubcomponentsUsingDropdownStructure(subcomponentDropdownStructure[subcomponentName] as NestedDropdownStructure,
           currentComponent, callback);
       }

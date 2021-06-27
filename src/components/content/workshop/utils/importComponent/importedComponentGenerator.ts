@@ -1,9 +1,6 @@
 import { EntityDisplayStatus, ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/entityDisplayStatus';
-import { UniqueSubcomponentNameGenerator } from '../componentGenerator/uniqueSubcomponentNameGenerator';
 import { ImportedComponentStructure } from '../../../../../interfaces/importedComponentStructure';
 import { Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
-import { CustomSubcomponentNames } from '../../../../../interfaces/customSubcomponentNames';
-import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
 import { EntityDisplayStatusUtils } from '../entityDisplayStatus/entityDisplayStatusUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../interfaces/componentGenerator';
@@ -12,12 +9,6 @@ import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 export class ImportedComponentGenerator {
 
   public static readonly DEFAULT_TOP_PROPERTY = '50%';
-
-  public static generateImportedComponentNames(importedComponentBaseName: string): CustomSubcomponentNames {
-    const layerName = UniqueSubcomponentNameGenerator.generate(CORE_SUBCOMPONENTS_NAMES.LAYER);
-    const textName = UniqueSubcomponentNameGenerator.generate(CORE_SUBCOMPONENTS_NAMES.TEXT);
-    return { base: importedComponentBaseName, layer: layerName, text: textName };
-  }
 
   private static applyTopProperty(importedComponentRef: WorkshopComponent, importedComponentName: string): void {
     const customCssProperties = importedComponentRef.subcomponents[importedComponentName].customCss[CSS_PSEUDO_CLASSES.DEFAULT];
@@ -35,26 +26,29 @@ export class ImportedComponentGenerator {
       [importedComponentName][ENTITY_DISPLAY_STATUS_REF] = baseSubcomponent.subcomponentDisplayStatus;
   }
 
+  // WORK1: take to inherited css
+  // change the nestedComponent naming convention
   public static createImportedComponentSubcomponents(componentGenerator: ComponentGenerator, importedComponentName: string): Subcomponents {
     const importedComponentRef = componentGenerator.createNewComponent(importedComponentName);
-    // WORK1: if copy is using addNewImportedComponent instead - the following code should be just taken out to that class and this if
-    // statement should then be removed
     if (importedComponentRef.type !== COMPONENT_TYPES.LAYER) {
+      // should only be used by add new imported component
       ImportedComponentGenerator.applyTopProperty(importedComponentRef, importedComponentName);
     }
+    // probably not needed anymore
     ImportedComponentGenerator.applyOptionalSubcomponentProperty(importedComponentRef, importedComponentName);
     // referencing the whole component within it's own subcomponent may not be efficient
     // alternative would be to have a placeholder subcomponent to reference it
-    importedComponentRef.subcomponents[importedComponentName].importedComponent = { componentRef: importedComponentRef, inSync: false };
+    importedComponentRef.subcomponents[importedComponentName].nestedComponent = { ref: importedComponentRef, inSync: false };
     return importedComponentRef.subcomponents;
   }
 
+  // WORK1: Remove this
   public static createImportedComponentStructure(subcomponents: Subcomponents, baseName: string): ImportedComponentStructure {
-    (subcomponents[baseName].importedComponent.componentRef.componentPreviewStructure.subcomponentDropdownStructure[baseName]
+    (subcomponents[baseName].nestedComponent.ref.componentPreviewStructure.subcomponentDropdownStructure[baseName]
       .optionalSubcomponentRef as EntityDisplayStatus).isDisplayed = true;
     return {
       baseName,
-      component: subcomponents[baseName].importedComponent.componentRef.componentPreviewStructure.subcomponentDropdownStructure,
+      component: subcomponents[baseName].nestedComponent.ref.componentPreviewStructure.subcomponentDropdownStructure,
     };
   }
 }

@@ -44,9 +44,9 @@ export class ImportComponedModeToggleOff {
 
   private static setImportedComponentProperties(optionsComponent: ComponentOptions): void {
     const { subcomponents, activeSubcomponentName } = optionsComponent.component;
-    if (subcomponents[activeSubcomponentName].importedComponent.lastSelectedComponentToImport) {
-      subcomponents[activeSubcomponentName].importedComponent.componentRef.componentStatus = subcomponents[activeSubcomponentName]
-        .importedComponent.lastSelectedComponentToImport.componentStatus;
+    if (subcomponents[activeSubcomponentName].nestedComponent.lastSelectedComponentToImport) {
+      subcomponents[activeSubcomponentName].nestedComponent.ref.componentStatus = subcomponents[activeSubcomponentName]
+        .nestedComponent.lastSelectedComponentToImport.componentStatus;
       // timeout used to not display the animation immediately if expanded modal mode has been temporarily closed
       setTimeout(() => {
         const wasRemoved = !subcomponents[activeSubcomponentName].subcomponentDisplayStatus.isDisplayed;
@@ -55,7 +55,7 @@ export class ImportComponedModeToggleOff {
         // timeout used to make sure that when a subcomponent was removed - the options buttons are displayed before the sync animation starts as they will
         // come from top left side of the screen
         setTimeout(() => {
-          subcomponents[activeSubcomponentName].importedComponent.inSync = true;
+          subcomponents[activeSubcomponentName].nestedComponent.inSync = true;
         });
       }, optionsComponent.hasImportComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     }

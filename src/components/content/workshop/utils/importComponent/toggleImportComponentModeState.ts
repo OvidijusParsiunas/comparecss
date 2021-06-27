@@ -23,7 +23,7 @@ export class ToggleImportComponentModeState {
   private static toggleOn(workshopComponent: ComponentOptions & { components: WorkshopComponent[] }, optionsComponent: ComponentOptions): void {
     workshopComponent.tempComponents = workshopComponent.components;
     const componentType = workshopComponent.currentlySelectedComponent.subcomponents[workshopComponent.currentlySelectedComponent.activeSubcomponentName]
-      .importedComponent.componentRef.type;
+      .nestedComponent.ref.type;
     (workshopComponent.components as WorkshopComponent[]) = workshopComponent.components.filter((component: WorkshopComponent) => component.type === componentType);
     ToggleImportComponentModeState.toggleImportComponentMode(workshopComponent, optionsComponent);
   }

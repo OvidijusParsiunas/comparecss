@@ -1,5 +1,5 @@
-import { AddNewImportedComponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewImportedComponent';
 import { AddNewLayerSubcomponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewLayerSubcomponent';
+import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewGenericComponent';
 import { DEFAULT_STYLE, BUTTON_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
@@ -173,17 +173,17 @@ function addComponentsToBase(cardComponent: WorkshopComponent): void {
   const layer1Component = AddNewLayerSubcomponent.add(cardComponent, DEFAULT_STYLE.DEFAULT, true, overwriteImportedTopLayerProperties);
   const layer2Component = AddNewLayerSubcomponent.add(cardComponent, LAYER_STYLES.CARD, true);
   const layer3Component = AddNewLayerSubcomponent.add(cardComponent, LAYER_STYLES.CARD, true);
-  AddNewImportedComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLE.DEFAULT,
+  AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLE.DEFAULT,
     layer1Component.baseName, [overwriteImportedTitleProperties]);
-  AddNewImportedComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLE.DEFAULT,
+  AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLE.DEFAULT,
     layer2Component.baseName, [overwriteImportedDescriptionProperties]);
-  AddNewImportedComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLE.DEFAULT,
+  AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLE.DEFAULT,
     layer3Component.baseName, [overwriteImportedSubmitButtonProperties]);
-  AddNewImportedComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLE.DEFAULT,
+  AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLE.DEFAULT,
     layer3Component.baseName, [overwriteImportedCancelButtonProperties]);
-  const closeButtonComponent = AddNewImportedComponent.add(cardComponent, COMPONENT_TYPES.BUTTON,
+  const closeButtonComponent = AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON,
     BUTTON_STYLES.CLOSE, layer1Component.baseName);
-  const avatarComponent = AddNewImportedComponent.add(cardComponent, COMPONENT_TYPES.AVATAR, DEFAULT_STYLE.DEFAULT,
+  const avatarComponent = AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.AVATAR, DEFAULT_STYLE.DEFAULT,
     layer1Component.baseName);
   addSubcomponentSpecificSettings(cardComponent.subcomponents[CORE_SUBCOMPONENTS_NAMES.BASE], closeButtonComponent, avatarComponent);
 }

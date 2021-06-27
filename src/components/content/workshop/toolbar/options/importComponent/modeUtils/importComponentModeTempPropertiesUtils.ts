@@ -28,7 +28,7 @@ export class ImportComponentModeTempPropertiesUtils {
 
   public static setActiveComponentToImportComponent(componentToBeImported: WorkshopComponent, activeComponent: WorkshopComponent): void {
     const componentToBeImportedComponentNames = componentToBeImported.subcomponentNames;
-    const activeComponentSubcomponentNames = activeComponent.subcomponents[activeComponent.activeSubcomponentName].importedComponent.componentRef.subcomponentNames;
+    const activeComponentSubcomponentNames = activeComponent.subcomponents[activeComponent.activeSubcomponentName].nestedComponent.ref.subcomponentNames;
     Object.keys(activeComponentSubcomponentNames).forEach((subcomponentName: string) => {
       ImportComponentModeTempPropertiesUtils.copyTargetSubcomponent(componentToBeImported.subcomponents, componentToBeImportedComponentNames[subcomponentName],
         activeComponent.subcomponents, activeComponentSubcomponentNames[subcomponentName]);
@@ -42,7 +42,7 @@ export class ImportComponentModeTempPropertiesUtils {
 
   public static cleanComponent(activeComponent: WorkshopComponent, resetOriginalProperties: boolean): void {
     const activeComponentSubcomponentNamesObj = activeComponent.subcomponents
-      [activeComponent.activeSubcomponentName].importedComponent.componentRef.subcomponentNames;
+      [activeComponent.activeSubcomponentName].nestedComponent.ref.subcomponentNames;
     const activeComponentSubcomponentNamesArr = Object.keys(activeComponentSubcomponentNamesObj);
     for (let i = 0; i < activeComponentSubcomponentNamesArr.length; i += 1) {
       const activeSubcomponent = activeComponent.subcomponents[activeComponentSubcomponentNamesObj[activeComponentSubcomponentNamesArr[i]]];
@@ -57,22 +57,22 @@ export class ImportComponentModeTempPropertiesUtils {
 
   public static setLastSelectectedSubcomponentToImport(componentToBeImported: WorkshopComponent, activeComponent: WorkshopComponent): void {
     activeComponent.subcomponents
-      [activeComponent.activeSubcomponentName].importedComponent.lastSelectedComponentToImport = componentToBeImported;
+      [activeComponent.activeSubcomponentName].nestedComponent.lastSelectedComponentToImport = componentToBeImported;
   }
 
   public static deleteLastSelectedSubcomponentToImport(activeComponent: WorkshopComponent): void {
-    delete activeComponent.subcomponents[activeComponent.activeSubcomponentName].importedComponent.lastSelectedComponentToImport;
+    delete activeComponent.subcomponents[activeComponent.activeSubcomponentName].nestedComponent.lastSelectedComponentToImport;
   }
 
   public static displayImportedComponentIfCurrentRemoved(activeSubcomponent: WorkshopComponent): void {
     const { subcomponentDisplayStatus } = activeSubcomponent.subcomponents[activeSubcomponent.activeSubcomponentName]
-      .importedComponent.componentRef.componentPreviewStructure.baseSubcomponentProperties;
+      .nestedComponent.ref.componentPreviewStructure.baseSubcomponentProperties;
     if (!subcomponentDisplayStatus.isDisplayed) { subcomponentDisplayStatus.isDisplayedTemporarily = true; }
   }
 
   public static removeImportedComponentIfCurrentRemoved(activeSubcomponent: WorkshopComponent): void {
     const { subcomponentDisplayStatus } = activeSubcomponent.subcomponents[activeSubcomponent.activeSubcomponentName]
-      .importedComponent.componentRef.componentPreviewStructure.baseSubcomponentProperties;
+      .nestedComponent.ref.componentPreviewStructure.baseSubcomponentProperties;
     if (!subcomponentDisplayStatus.isDisplayed && subcomponentDisplayStatus.isDisplayedTemporarily) {
       subcomponentDisplayStatus.isDisplayedTemporarily = false;
     }
@@ -80,7 +80,7 @@ export class ImportComponentModeTempPropertiesUtils {
 
   public static switchTempPropertiesWithTheLastSelectedSubcomponent(activeComponent: WorkshopComponent): void {
     const activeComponentSubcomponentNamesObj = activeComponent.subcomponents
-      [activeComponent.activeSubcomponentName].importedComponent.componentRef.subcomponentNames;
+      [activeComponent.activeSubcomponentName].nestedComponent.ref.subcomponentNames;
     const activeComponentSubcomponentNamesArr = Object.keys(activeComponentSubcomponentNamesObj);
     for (let i = 0; i < activeComponentSubcomponentNamesArr.length; i += 1) {
       const activeSubcomponent = activeComponent.subcomponents[activeComponentSubcomponentNamesObj[activeComponentSubcomponentNamesArr[i]]];
@@ -96,7 +96,7 @@ export class ImportComponentModeTempPropertiesUtils {
 
   public static removeTempProperties(activeComponent: WorkshopComponent): void {
     const activeComponentSubcomponentNamesObj = activeComponent.subcomponents
-      [activeComponent.activeSubcomponentName].importedComponent.componentRef.subcomponentNames;
+      [activeComponent.activeSubcomponentName].nestedComponent.ref.subcomponentNames;
     const activeComponentSubcomponentNamesArr = Object.keys(activeComponentSubcomponentNamesObj);
     for (let i = 0; i < activeComponentSubcomponentNamesArr.length; i += 1) {
       const activeSubcomponent = activeComponent.subcomponents[activeComponentSubcomponentNamesObj[activeComponentSubcomponentNamesArr[i]]];

@@ -24,7 +24,7 @@ export class CardOptions {
   };
 
   private static getTextOptions(component: WorkshopComponent): Options {
-    const subcomponentStyle = component.subcomponents[component.activeSubcomponentName].importedComponent.componentRef.style;
+    const subcomponentStyle = component.subcomponents[component.activeSubcomponentName].nestedComponent.ref.style;
     if (subcomponentStyle === TEXT_STYLES.BUTTON) {
       return buttonTextOptions as Options;
     } else if (subcomponentStyle === TEXT_STYLES.CLOSE_BUTTON) {
@@ -34,7 +34,7 @@ export class CardOptions {
   }
 
   private static getButtonOptions(component: WorkshopComponent): Options {
-    if (component.subcomponents[component.activeSubcomponentName].importedComponent.componentRef.style === BUTTON_STYLES.CLOSE) {
+    if (component.subcomponents[component.activeSubcomponentName].nestedComponent.ref.style === BUTTON_STYLES.CLOSE) {
       return closeButtonOptions;
     }
     return nestedButtonOptions;

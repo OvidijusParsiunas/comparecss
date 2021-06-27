@@ -56,7 +56,7 @@
           (component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus || component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef)">
         <transition-group name="horizontal-transition">
           <button ref="importComponentToggle"
-            v-if="component.subcomponents[component.activeSubcomponentName].importedComponent && component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus"
+            v-if="component.subcomponents[component.activeSubcomponentName].nestedComponent && component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus"
             type="button" class="btn-group-option" :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, OPTION_MENU_BUTTON_MARKER]"
             @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleSubcomponentImport, true)">
               <font-awesome-icon
@@ -404,8 +404,8 @@ export default {
       this.$emit('add-new-subcomponent');
     },
     removeSubcomponent(): void {
-      if (this.component.subcomponents[this.component.activeSubcomponentName].importedComponent
-          && this.component.subcomponents[this.component.activeSubcomponentName].importedComponent.inSync) {
+      if (this.component.subcomponents[this.component.activeSubcomponentName].nestedComponent
+          && this.component.subcomponents[this.component.activeSubcomponentName].nestedComponent.inSync) {
         this.temporarilyAllowOptionAnimations(SubcomponentToggleUtils.removeSubcomponent.bind(this, this.component, this.hideSettings), true, false);
       } else {
         SubcomponentToggleUtils.removeSubcomponent(this.component, this.hideSettings);
@@ -517,9 +517,9 @@ export default {
       return InSync.isInSyncButtonDisplayed(activeSubcomponent);
     },
     isRemovedComponentCurrentlySelectedForImport(): void {
-      const { subcomponentDisplayStatus, importedComponent } = this.component.subcomponents[this.component.activeSubcomponentName];
+      const { subcomponentDisplayStatus, nestedComponent } = this.component.subcomponents[this.component.activeSubcomponentName];
       return this.isImportComponentModeActive && !subcomponentDisplayStatus.isDisplayed
-        && importedComponent.componentRef.componentPreviewStructure.baseSubcomponentProperties.tempOriginalCustomProperties;
+        && nestedComponent.ref.componentPreviewStructure.baseSubcomponentProperties.tempOriginalCustomProperties;
     },
     reassignToolbarPositionToggleRef(): void {
       this.toolbarPositionToggleRef = this.$refs.toolbarPositionToggle;

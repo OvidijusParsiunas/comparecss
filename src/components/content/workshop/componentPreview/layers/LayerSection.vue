@@ -9,12 +9,12 @@
       :class="[COMPONENT_PREVIEW_MARKER, specialisedSectionContainerClass,
         ...(nestedSubcomponent.subcomponentProperties.customFeatures
           && nestedSubcomponent.subcomponentProperties.customFeatures.jsClasses || [])]">
-      <base-component v-if="nestedSubcomponent.subcomponentProperties.importedComponent"
+      <base-component v-if="nestedSubcomponent.subcomponentProperties.nestedComponent"
         class="imported-component-container"
         :class="[COMPONENT_PREVIEW_MARKER,
           ...(nestedSubcomponent.subcomponentProperties.customFeatures
           && nestedSubcomponent.subcomponentProperties.customFeatures.jsClasses || [])]"
-        :component="nestedSubcomponent.subcomponentProperties.importedComponent.componentRef"
+        :component="nestedSubcomponent.subcomponentProperties.nestedComponent.ref"
         :mouseEvents="mouseEvents"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
         :isImportedComponent="true"/>

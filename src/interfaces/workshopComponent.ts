@@ -131,8 +131,8 @@ interface TempCustomProperties {
   customFeatures?: CustomFeatures;
 }
 
-export interface ImportedComponent {
-  componentRef: WorkshopComponent;
+export interface NestedComponent {
+  ref: WorkshopComponent;
   inSync: boolean;
   lastSelectedComponentToImport?: WorkshopComponent;
 }
@@ -166,14 +166,19 @@ export interface SubcomponentProperties {
   subcomponentSpecificSettings?: SubcomponentSpecificSettings;
   customFeatures?: CustomFeatures;
   defaultCustomFeatures?: CustomFeatures;
-  // features that would not be overwritten by imported subcomponent features
+  // features that would not be overwritten by imported nested component's subcomponents
   customStaticFeatures?: CustomStaticFeatures; 
   defaultCustomStaticFeatures?: CustomStaticFeatures;
   layerSectionsType?: LAYER_SECTIONS_TYPES;
-  importedComponent?: ImportedComponent;
-  // used to track the imported component's base inSync property and also used to identify whether the subcomponent is not the base subcomponent
+  // it is important to understand that the subcomponents of a nested component are in the very parent component's subcomponents,
+  // however they all still keep a reference of their own parent components
+  // nestedComponent is only appended to their bases (the nested ones access this via baseSubcomponentRef)
+  // full structure explained at the bottom of the file titled: 'Reference for component structure'
+  nestedComponent?: NestedComponent;
+  // baseSubcomponentRef is only appended to the nested subcomponents, not the base subcomponents
+  // used to track the nested component's inSync property and also used to identify whether the subcomponent is nested (not the base subcomponent)
   baseSubcomponentRef?: SubcomponentProperties;
-  // this is used for imported subcomponents as overwriting customCss with mouseevents causes all the other in-sync references to be updated as well
+  // this is used for imported nested subcomponents as overwriting customCss with mouseevents causes all the other in-sync references to be updated as well
   tempCustomCssObjName?: string;
   parentLayer?: Layer;
   // temporarily holds the original customCss when a component card has been hovered/selected during component import mode 
@@ -196,10 +201,31 @@ export interface WorkshopComponent {
   componentPreviewStructure: ComponentPreviewStructure;
   // class name for the component
   className: string;
-  // used for imported components
+  // used for nested components
   subcomponentNames?: CustomSubcomponentNames;
-  // used to update imported subcomponent when it is in sync
+  // gives an in sync nested component to identify if the copied component has not been deleted
   componentStatus: { isRemoved: boolean };
   // used to reassign references when the subcomponents have been deep copied
   referenceSharingExecutables?: ((...any: any) => void)[];
 }
+
+// Reference for component structure:
+// Overall:
+//   component -> subcomponents (parent base subcomponent + nested subcomponents)
+// Nested subcomponents (all except the very base of the parent component) have a reference to their own components:
+// Base subcomponents access it via the following properties:
+//   nestedComponent -> ref
+// Nested subcomponent access it via the following properties:
+//   baseSubcomponentRef -> nestedComponent -> ref
+// a complete diagram may look like this:
+// component -> subcomponents
+//              |          |
+//      nested base sub  nested sub
+//              |          |
+//      nestedComponent  baseSubcomponentRef
+//              |          |
+//             ref       nestedComponent
+//              |          |
+//           component   component
+// (xForAllSubcomponents except for the very base subcomponent of parent)
+// Hence a nested button component which has its own base, layer and text subcomponents - all reference the same button component
