@@ -7,10 +7,10 @@ import { AddNewGenericComponent } from './add/addNewGenericComponent';
 
 export class AddNewSubcomponent {
   
-  public static addSubcomponent(currentlySelectedComponent: WorkshopComponent, subcomponentType = 'importedButton'): void {
+  public static addSubcomponent(currentlySelectedComponent: WorkshopComponent, subcomponentType = 'nestedButton'): void {
     if (currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].subcomponentType === SUBCOMPONENT_TYPES.BASE) {
       AddNewLayerSubcomponent.add(currentlySelectedComponent, LAYER_STYLES.CARD, true);
-    } else if (subcomponentType === 'importedButton') {
+    } else if (subcomponentType === 'nestedButton') {
       AddNewGenericComponent.add(currentlySelectedComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLE.DEFAULT,
         currentlySelectedComponent.activeSubcomponentName);
     }

@@ -36,8 +36,8 @@ function overwriteAlignment(textComponent: WorkshopComponent): void {
 }
 
 export const buttonText: ComponentGenerator = {
-  createNewComponent(importedComponentBaseName: string): WorkshopComponent {
-    const componentStyle: NewComponentStyleProperties = { baseName: importedComponentBaseName, baseStyle: TEXT_STYLES.BUTTON,
+  createNewComponent(baseName?: string): WorkshopComponent {
+    const componentStyle: NewComponentStyleProperties = { baseName, baseStyle: TEXT_STYLES.BUTTON,
       baseCustomCssFunc: createDefaultTextCss };
     const buttonTextComponent =  TextBuilder.create(componentStyle);
     overwriteAlignment(buttonTextComponent);

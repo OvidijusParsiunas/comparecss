@@ -92,9 +92,10 @@ function createSubcomponents(subcomponentNames: CustomSubcomponentNames): Subcom
   };
 }
 
+// WORK1: refactor
 export const avatar: ComponentGenerator = {
-  createNewComponent(importedComponentBaseName: string): WorkshopComponent {
-    const subcomponentNames = importedComponentBaseName ? { base: importedComponentBaseName } : defaultSubcomponentNames;
+  createNewComponent(baseName: string): WorkshopComponent {
+    const subcomponentNames = baseName ? { base: baseName } : defaultSubcomponentNames;
     const subcomponents = createSubcomponents(subcomponentNames);
     const subcomponentDropdownStructure = getAvatarSubcomponentDropdownStructure(subcomponentNames);
     return {

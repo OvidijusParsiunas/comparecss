@@ -1,7 +1,7 @@
 import { MODAL_ANIMATION_OPEN_TYPES, MODAL_ANIMATION_CLOSE_TYPES } from '../../../../../../../consts/animationTypes.enum';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
-import { ImportedComponentGenerator } from '../../../../utils/importComponent/importedComponentGenerator';
+import { NestedComponentGenerator } from '../../../../utils/importComponent/nestedComponentGenerator';
 import { EntityDisplayStatusUtils } from '../../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -309,22 +309,22 @@ function createSubcomponents(): Subcomponents {
 export const defaultModal: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
     uniqueSubcomponentIdState.resetUniqueId();
-    const importedCloseButtonName = CORE_SUBCOMPONENTS_NAMES.CLOSE;
-    const importedButton1Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_1_LAYER_3;
-    const importedButton2Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_2_LAYER_3;
+    const nestedCloseButtonName = CORE_SUBCOMPONENTS_NAMES.CLOSE;
+    const nestedButton1Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_1_LAYER_3;
+    const nestedButton2Name = CORE_SUBCOMPONENTS_NAMES.BUTTON_2_LAYER_3;
     const subcomponents = { ...createSubcomponents(),
-      ...ImportedComponentGenerator.createImportedComponentSubcomponents(closeButton, importedCloseButtonName),
+      ...NestedComponentGenerator.createNestedComponentSubcomponents(closeButton, nestedCloseButtonName),
       // WORK1: refactor
-      // ...ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, importedButton1Name, 'Submit'),
-      // ...ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, importedButton2Name, 'Cancel')
-      ...ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, importedButton1Name),
-      ...ImportedComponentGenerator.createImportedComponentSubcomponents(defaultButton, importedButton2Name) };
+      // ...NestedComponentGenerator.createNestedComponentSubcomponents(defaultButton, nestedButton1Name, 'Submit'),
+      // ...NestedComponentGenerator.createNestedComponentSubcomponents(defaultButton, nestedButton2Name, 'Cancel')
+      ...NestedComponentGenerator.createNestedComponentSubcomponents(defaultButton, nestedButton1Name),
+      ...NestedComponentGenerator.createNestedComponentSubcomponents(defaultButton, nestedButton2Name) };
     const subcomponentDropdownStructure = getModalSubcomponentDropdownStructure(
       subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_2], subcomponents[CORE_SUBCOMPONENTS_NAMES.LAYER_3],
       subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT], subcomponents[CORE_SUBCOMPONENTS_NAMES.TEXT_2],
-      ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedCloseButtonName),
-      ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton1Name),
-      ImportedComponentGenerator.createImportedComponentStructure(subcomponents, importedButton2Name),
+      NestedComponentGenerator.createNestedComponentStructure(subcomponents, nestedCloseButtonName),
+      NestedComponentGenerator.createNestedComponentStructure(subcomponents, nestedButton1Name),
+      NestedComponentGenerator.createNestedComponentStructure(subcomponents, nestedButton2Name),
     );
     return {
       type: COMPONENT_TYPES.MODAL,

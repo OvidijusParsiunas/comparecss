@@ -4,8 +4,8 @@ import JSONManipulation from '../../../../../../services/workshop/jsonManipulati
 
 export class InSync {
   
-  private static dereferenceImportedComponentCustomProperties(activeComponent: WorkshopComponent, importedComponentBase: SubcomponentProperties): void {
-    const { subcomponentNames, referenceSharingExecutables } = importedComponentBase.nestedComponent.ref;
+  private static dereferenceImportedComponentCustomProperties(activeComponent: WorkshopComponent, baseSubcomponent: SubcomponentProperties): void {
+    const { subcomponentNames, referenceSharingExecutables } = baseSubcomponent.nestedComponent.ref;
     Object.keys(subcomponentNames).forEach((subcomponentName: string) => {
       const nestedComponent = activeComponent.subcomponents[subcomponentNames[subcomponentName]];
       nestedComponent.customCss = JSONManipulation.deepCopy(nestedComponent.customCss);
@@ -18,12 +18,11 @@ export class InSync {
 
   public static toggleSubcomponentInSync(activeComponent: WorkshopComponent, callback?: () => void): void {
     const activeSubcomponent = activeComponent.subcomponents[activeComponent.activeSubcomponentName];
-    // use base subcomponent reference if the activeComponent is a child of base or activeSubcomponent if it is the base
-    const importedComponentBase = activeSubcomponent.baseSubcomponentRef || activeSubcomponent;
-    if (importedComponentBase.nestedComponent.inSync) {
-      InSync.dereferenceImportedComponentCustomProperties(activeComponent, importedComponentBase);
+    const baseSubcomponent = activeSubcomponent.baseSubcomponentRef || activeSubcomponent;
+    if (baseSubcomponent.nestedComponent.inSync) {
+      InSync.dereferenceImportedComponentCustomProperties(activeComponent, baseSubcomponent);
     }
-    importedComponentBase.nestedComponent.inSync = !importedComponentBase.nestedComponent.inSync;
+    baseSubcomponent.nestedComponent.inSync = !baseSubcomponent.nestedComponent.inSync;
     if (callback) callback();
   }
 

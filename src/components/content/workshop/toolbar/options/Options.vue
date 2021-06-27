@@ -66,7 +66,7 @@
           <button v-if="isInSyncButtonDisplayed()"
             type="button" class="btn-group-option"
             :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS, OPTION_MENU_BUTTON_MARKER]"
-            @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleImportedComponentInSync)">
+            @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleInSync)">
               <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
           </button>
           <button v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus"
@@ -378,7 +378,7 @@ export default {
     toggleSubcomponentImport(): void {
       ImportComponentModeToggleUtils.toggleSubcomponentImport(this);
     },
-    toggleImportedComponentInSync(callback?: () => void): void {
+    toggleInSync(callback?: () => void): void {
       this.temporarilyAllowOptionAnimations(InSync.toggleSubcomponentInSync.bind(this, this.component, callback), true, true);
     },
     toggleSubcomponent(subcomponent: SubcomponentProperties): void {

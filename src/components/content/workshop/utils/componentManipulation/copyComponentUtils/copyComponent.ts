@@ -10,8 +10,8 @@ import { ComponentOptions } from 'vue';
 export default class CopyComponent {
 
   private static executeReferenceSharingExecutables(baseComponentRefs: WorkshopComponent[], newComponent: WorkshopComponent): void {
-    baseComponentRefs.forEach((importedComponentRef) => {
-      const { subcomponentNames, referenceSharingExecutables } = importedComponentRef;
+    baseComponentRefs.forEach((nestedComponentRef) => {
+      const { subcomponentNames, referenceSharingExecutables } = nestedComponentRef;
       (referenceSharingExecutables || []).forEach((executable: (subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames) => void) => {
         executable(newComponent.subcomponents, subcomponentNames);
       });
@@ -20,7 +20,7 @@ export default class CopyComponent {
 
   private static addBaseComponentRef(baseComponentRefs: WorkshopComponent[], newComponent: WorkshopComponent,
       subcomponentName: string): void {
-    // either the imported component base or the component itself
+    // add the component reference if the component has been nested or if it has not
     baseComponentRefs.push(newComponent.subcomponents[subcomponentName].nestedComponent?.ref || newComponent);
   }
 

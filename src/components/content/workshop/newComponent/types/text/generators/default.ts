@@ -8,8 +8,8 @@ function addSubcomponentSpecificSettings(textComponent: WorkshopComponent): void
 }
 
 export const defaultText: ComponentGenerator = {
-  createNewComponent(importedComponentBaseName: string): WorkshopComponent {
-    const textComponent = TextBuilder.create({ baseName: importedComponentBaseName });
+  createNewComponent(baseName?: string): WorkshopComponent {
+    const textComponent = TextBuilder.create({ baseName });
     addSubcomponentSpecificSettings(textComponent);
     return textComponent;
   },

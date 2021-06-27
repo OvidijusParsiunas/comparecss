@@ -14,8 +14,8 @@ function createDefaultBaseCss(): CustomCss {
 }
 
 export const buttonLayer: ComponentGenerator = {
-  createNewComponent(importedComponentBaseName: string): WorkshopComponent {
-    const componentStyle: NewComponentStyleProperties = { baseName: importedComponentBaseName,
+  createNewComponent(baseName?: string): WorkshopComponent {
+    const componentStyle: NewComponentStyleProperties = { baseName,
       baseStyle: LAYER_STYLES.BUTTON, baseCustomCssFunc: createDefaultBaseCss, };
     return LayerBuilder.create(componentStyle);
   },

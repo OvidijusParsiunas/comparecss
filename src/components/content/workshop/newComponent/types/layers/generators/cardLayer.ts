@@ -31,8 +31,8 @@ function overwriteSubcomponentSpecificSettings(textComponent: WorkshopComponent)
 }
 
 export const cardLayer: ComponentGenerator = {
-  createNewComponent(importedComponentBaseName: string): WorkshopComponent {
-    const newSubcomponentStyle: NewComponentStyleProperties = { baseName: importedComponentBaseName,
+  createNewComponent(baseName?: string): WorkshopComponent {
+    const newSubcomponentStyle: NewComponentStyleProperties = { baseName,
       baseStyle: LAYER_STYLES.CARD, baseCustomCssFunc: createDefaultLayerCss };
     const layerComponent = LayerBuilder.create(newSubcomponentStyle);
     overwriteSubcomponentSpecificSettings(layerComponent);

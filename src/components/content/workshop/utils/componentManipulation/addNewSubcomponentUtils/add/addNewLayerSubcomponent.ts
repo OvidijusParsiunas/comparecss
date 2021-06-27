@@ -4,7 +4,7 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { EntityDisplayStatusUtils } from '../../../entityDisplayStatus/entityDisplayStatusUtils';
-import { ImportedComponentGenerator } from '../../../importComponent/importedComponentGenerator';
+import { NestedComponentGenerator } from '../../../importComponent/nestedComponentGenerator';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -37,10 +37,10 @@ export class AddNewLayerSubcomponent {
     }
   }
 
-  protected static createNewImportedComponent(parentComponent: WorkshopComponent, componentGenerator: ComponentGenerator,
+  protected static createNewNestedComponent(parentComponent: WorkshopComponent, componentGenerator: ComponentGenerator,
       overwritePropertiesFunc?: OverwritePropertiesFunc): NewComponentProperties {
     const baseName = `${UniqueSubcomponentNameGenerator.generate(CORE_SUBCOMPONENTS_NAMES.LAYER)} ${parentComponent.componentPreviewStructure.layers.length + 1}`;
-    const subcomponents = ImportedComponentGenerator.createImportedComponentSubcomponents(componentGenerator, baseName);
+    const subcomponents = NestedComponentGenerator.createNestedComponentSubcomponents(componentGenerator, baseName);
     const { subcomponentNames } = subcomponents[baseName].nestedComponent.ref;
     if (overwritePropertiesFunc) overwritePropertiesFunc(subcomponents, subcomponentNames);
     return { baseName, subcomponents };
@@ -49,7 +49,7 @@ export class AddNewLayerSubcomponent {
   public static add(parentComponent: WorkshopComponent, componentStyle: COMPONENT_STYLES, isEditable: boolean,
       overwritePropertiesFunc?: OverwritePropertiesFunc): NewComponentProperties {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
-    const newLayerSubcomponent = AddNewLayerSubcomponent.createNewImportedComponent(parentComponent, componentGenerator,
+    const newLayerSubcomponent = AddNewLayerSubcomponent.createNewNestedComponent(parentComponent, componentGenerator,
       overwritePropertiesFunc);
     JsUtils.addObjects(parentComponent, 'subcomponents', newLayerSubcomponent.subcomponents);
     AddNewLayerSubcomponent.addNewSubcomponentToComponentPreview(parentComponent, newLayerSubcomponent, isEditable);

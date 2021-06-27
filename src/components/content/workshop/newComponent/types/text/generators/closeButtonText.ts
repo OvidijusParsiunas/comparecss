@@ -38,8 +38,8 @@ function overwriteAlignment(textComponent: WorkshopComponent): void {
 }
 
 export const closeButtonText: ComponentGenerator = {
-  createNewComponent(importedComponentBaseName: string): WorkshopComponent {
-    const componentStyle: NewComponentStyleProperties = { baseName: importedComponentBaseName,
+  createNewComponent(baseName?: string): WorkshopComponent {
+    const componentStyle: NewComponentStyleProperties = { baseName,
       baseStyle: TEXT_STYLES.CLOSE_BUTTON, baseCustomCssFunc: createDefaultTextCss, baseInheritedCss: inheritedCloseTextCss };
     const closeButtonTextComponent =  TextBuilder.create(componentStyle);
     overwriteAlignment(closeButtonTextComponent);

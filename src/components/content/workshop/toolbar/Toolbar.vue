@@ -20,7 +20,7 @@
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
         @play-animation-preview="$emit('play-animation-preview', $event)"
         @stop-animation-preview="$emit('stop-animation-preview')"
-        @remove-insync-option-button="$refs.options.toggleImportedComponentInSync($event)"/>
+        @remove-insync-option-button="$refs.options.toggleInSync($event)"/>
     </div>
   </div>
 </template>

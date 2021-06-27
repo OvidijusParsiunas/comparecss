@@ -130,12 +130,12 @@ function createDefaultModalTitleCss(): CustomCss {
   };
 }
 
-function overwriteImportedTopLayerProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
+function overwriteTopLayerProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
   subcomponents[subcomponentNames.base].customStaticFeatures = createDefaultTopLayerCustomStaticFeatures();
   subcomponents[subcomponentNames.base].defaultCustomStaticFeatures = createDefaultTopLayerCustomStaticFeatures();
 }
 
-function overwriteImportedTitleProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
+function overwriteTitleProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
   subcomponents[subcomponentNames.base].customCss = createDefaultModalTitleCss();
   subcomponents[subcomponentNames.base].defaultCss = createDefaultModalTitleCss();
   subcomponents[subcomponentNames.base].customFeatures = createDefaultTextCustomFeatures();
@@ -144,19 +144,19 @@ function overwriteImportedTitleProperties(subcomponents: Subcomponents, subcompo
   subcomponents[subcomponentNames.base].defaultCustomStaticFeatures = createDefaultTextCustomStaticFeatures('Modal title');
 }
 
-function overwriteImportedDescriptionProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
+function overwriteDescriptionProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
   subcomponents[subcomponentNames.base].customStaticFeatures = createDefaultTextCustomStaticFeatures('Description');
   subcomponents[subcomponentNames.base].defaultCustomStaticFeatures = createDefaultTextCustomStaticFeatures('Description');
 }
 
-function overwriteImportedSubmitButtonProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
+function overwriteSubmitButtonProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
   subcomponents[subcomponentNames.base].customFeatures.alignedLayerSection = createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
   subcomponents[subcomponentNames.base].defaultCustomFeatures.alignedLayerSection = createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
   subcomponents[subcomponentNames.text].customStaticFeatures = createDefaultTextCustomStaticFeatures('Submit');
   subcomponents[subcomponentNames.text].customStaticFeatures = createDefaultTextCustomStaticFeatures('Submit');
 }
 
-function overwriteImportedCancelButtonProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
+function overwriteCancelButtonProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
   subcomponents[subcomponentNames.base].customFeatures.alignedLayerSection = createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
   subcomponents[subcomponentNames.base].defaultCustomFeatures.alignedLayerSection = createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
   subcomponents[subcomponentNames.text].customStaticFeatures = createDefaultTextCustomStaticFeatures('Cancel');
@@ -170,17 +170,17 @@ function addSubcomponentSpecificSettings(baseSubcomponent: SubcomponentPropertie
 }
 
 function addComponentsToBase(cardComponent: WorkshopComponent): void {
-  const layer1Component = AddNewLayerSubcomponent.add(cardComponent, DEFAULT_STYLE.DEFAULT, true, overwriteImportedTopLayerProperties);
+  const layer1Component = AddNewLayerSubcomponent.add(cardComponent, DEFAULT_STYLE.DEFAULT, true, overwriteTopLayerProperties);
   const layer2Component = AddNewLayerSubcomponent.add(cardComponent, LAYER_STYLES.CARD, true);
   const layer3Component = AddNewLayerSubcomponent.add(cardComponent, LAYER_STYLES.CARD, true);
   AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLE.DEFAULT,
-    layer1Component.baseName, [overwriteImportedTitleProperties]);
+    layer1Component.baseName, [overwriteTitleProperties]);
   AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLE.DEFAULT,
-    layer2Component.baseName, [overwriteImportedDescriptionProperties]);
+    layer2Component.baseName, [overwriteDescriptionProperties]);
   AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLE.DEFAULT,
-    layer3Component.baseName, [overwriteImportedSubmitButtonProperties]);
+    layer3Component.baseName, [overwriteSubmitButtonProperties]);
   AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLE.DEFAULT,
-    layer3Component.baseName, [overwriteImportedCancelButtonProperties]);
+    layer3Component.baseName, [overwriteCancelButtonProperties]);
   const closeButtonComponent = AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON,
     BUTTON_STYLES.CLOSE, layer1Component.baseName);
   const avatarComponent = AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.AVATAR, DEFAULT_STYLE.DEFAULT,

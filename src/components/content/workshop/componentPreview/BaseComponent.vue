@@ -6,7 +6,7 @@
       class="parent-component"
       :class="[ COMPONENT_PREVIEW_MARKER,
         ...((component.componentPreviewStructure.baseSubcomponentProperties.customFeatures && component.componentPreviewStructure.baseSubcomponentProperties.customFeatures.jsClasses) || []),
-        (isImportedComponent ? 'imported-component' : STATIC_POSITION_CLASS) ]"
+        (isNestedComponent ? 'nested-component' : STATIC_POSITION_CLASS) ]"
       @mouseenter="mouseEvents[subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId].subcomponentMouseEnter()"
       @mouseleave="mouseEvents[subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId].subcomponentMouseLeave()"
       @mousedown="mouseEvents[subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId].subcomponentMouseDown()"
@@ -40,9 +40,9 @@
       style="display: none"
       :style="[
         component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
-        {color: '#ff000000'}, isImportedComponent ? {} : { height: '100% !important' }]"
+        {color: '#ff000000'}, isNestedComponent ? {} : { height: '100% !important' }]"
       :class="[
-        isImportedComponent ? 'imported-component' : [STATIC_POSITION_CLASS, 'subcomponent-overlay-with-no-border-property-but-with-height'],
+        isNestedComponent ? 'nested-component' : [STATIC_POSITION_CLASS, 'subcomponent-overlay-with-no-border-property-but-with-height'],
         component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures && component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.subcomponentText
               && component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.subcomponentText.text === CLOSE_BUTTON_X_TEXT
             ? ['close-button-text-overlay-height', SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.SUB_CONTAINER] : [...OVERLAY_DEFAULT_CLASSES]]">
@@ -111,7 +111,7 @@ export default {
   props: {
     component: Object,
     mouseEvents: Object,
-    isImportedComponent: Boolean,
+    isNestedComponent: Boolean,
     subcomponentAndOverlayElementIds: Object,
   },
 };
@@ -121,7 +121,7 @@ export default {
   .parent-component {
     overflow: hidden;
   }
-  .imported-component {
+  .nested-component {
     position: relative;
     transform: translateY(-50%);
   }

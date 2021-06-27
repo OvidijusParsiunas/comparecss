@@ -6,7 +6,6 @@ bug where upon removing the component that was imported by other components and 
 position - move subcomponent over another, left or right
 maybe should allow import a new button alltogether instead of creating a new button and then changing its style
 after adding a new subcomponent, open its options
-rename imported component to nested component
 clicking close button sets the background to default
 zoom in image when hovered on 
 

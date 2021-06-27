@@ -10,7 +10,7 @@ import { animationState } from '../utils/animations/state';
 export default function useSubcomponentPreviewEventHandlers(subcomponentProperties: SubcomponentProperties,
     clickCallback: () => void): UseSubcomponentPreviewEventHandlers {
 
-  const TEMP_IMPORTED_CUSTOM_CSS_OBJ_NAME = 'tempImportedCustomCss';
+  const TEMP_NESTED_CUSTOM_CSS_OBJ_NAME = 'tempNestedCustomCss';
   let overwrittenDefaultPropertiesByHover = { hasBeenSet: false, css: {} };
   let overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
   let isUnsetButtonDisplayedForColorInputs = {};
@@ -38,7 +38,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
           && (animationState.getIsModeToggleAnimationInProgressState() || animationState.getIsAnimationPreviewInProgressState()))
   }
 
-  // the following condition is used to identify subcomponents that have been imported in order not to directly overwrite the default properties of the component
+  // the following condition is used to identify subcomponents that are nested in order to not directly overwrite the default properties of the component
   // that is in sync, because if the user imports the same component into two different subcomponents their css will be immediately shared
   // subcomponentProperties.baseSubcomponentRef || subcomponentProperties.nestedComponent
 
@@ -53,8 +53,8 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
       const newDefaultProperties = {
         ...customCss[CSS_PSEUDO_CLASSES.DEFAULT], ...customCss[CSS_PSEUDO_CLASSES.HOVER], transition, ...isUnsetButtonDisplayedForColorInputs };
       if (subcomponentProperties.baseSubcomponentRef || subcomponentProperties.nestedComponent) {
-        subcomponentProperties[TEMP_IMPORTED_CUSTOM_CSS_OBJ_NAME] = { [CSS_PSEUDO_CLASSES.DEFAULT]: newDefaultProperties };
-        subcomponentProperties.tempCustomCssObjName = TEMP_IMPORTED_CUSTOM_CSS_OBJ_NAME;
+        subcomponentProperties[TEMP_NESTED_CUSTOM_CSS_OBJ_NAME] = { [CSS_PSEUDO_CLASSES.DEFAULT]: newDefaultProperties };
+        subcomponentProperties.tempCustomCssObjName = TEMP_NESTED_CUSTOM_CSS_OBJ_NAME;
       } else {
         customCss[CSS_PSEUDO_CLASSES.DEFAULT] = newDefaultProperties;
       }
@@ -85,8 +85,8 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
       const newDefaultProperties = {
         ...customCss[CSS_PSEUDO_CLASSES.DEFAULT], ...customCss[CSS_PSEUDO_CLASSES.CLICK], transition, ...isUnsetButtonDisplayedForColorInputs };
       if (subcomponentProperties.baseSubcomponentRef || subcomponentProperties.nestedComponent) {
-        overwrittenDefaultPropertiesByClick = { hasBeenSet: true, css: { ...subcomponentProperties[TEMP_IMPORTED_CUSTOM_CSS_OBJ_NAME][CSS_PSEUDO_CLASSES.DEFAULT], transition } };
-        subcomponentProperties[TEMP_IMPORTED_CUSTOM_CSS_OBJ_NAME][CSS_PSEUDO_CLASSES.DEFAULT] = newDefaultProperties;
+        overwrittenDefaultPropertiesByClick = { hasBeenSet: true, css: { ...subcomponentProperties[TEMP_NESTED_CUSTOM_CSS_OBJ_NAME][CSS_PSEUDO_CLASSES.DEFAULT], transition } };
+        subcomponentProperties[TEMP_NESTED_CUSTOM_CSS_OBJ_NAME][CSS_PSEUDO_CLASSES.DEFAULT] = newDefaultProperties;
       } else {
         overwrittenDefaultPropertiesByClick = { hasBeenSet: true, css: { ...customCss[CSS_PSEUDO_CLASSES.DEFAULT], transition } };
         customCss[CSS_PSEUDO_CLASSES.DEFAULT] = newDefaultProperties;
@@ -100,7 +100,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     if (triggerableSubcomponentName) triggerAnotherSubcomponentMouseEvent(triggerableSubcomponentName, event.type);
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT && overwrittenDefaultPropertiesByClick.hasBeenSet) {
       if (subcomponentProperties.baseSubcomponentRef || subcomponentProperties.nestedComponent) {
-        subcomponentProperties[TEMP_IMPORTED_CUSTOM_CSS_OBJ_NAME][CSS_PSEUDO_CLASSES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };
+        subcomponentProperties[TEMP_NESTED_CUSTOM_CSS_OBJ_NAME][CSS_PSEUDO_CLASSES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };
       } else {
         customCss[CSS_PSEUDO_CLASSES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };
       }

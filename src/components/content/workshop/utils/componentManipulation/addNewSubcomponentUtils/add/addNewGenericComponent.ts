@@ -6,7 +6,7 @@ import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../.
 import { Layer, NestedSubcomponent } from '../../../../../../../interfaces/componentPreviewStructure';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
-import { ImportedComponentGenerator } from '../../../importComponent/importedComponentGenerator';
+import { NestedComponentGenerator } from '../../../importComponent/nestedComponentGenerator';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -31,11 +31,11 @@ export class AddNewGenericComponent {
 
   private static updateComponentPreviewStructure(parentComponent: WorkshopComponent, nestedComponent: NewComponentProperties,
       parentSubcomponentObject: NestedDropdownStructure, subcomponentName: string): void {
-    // WORK1: the ImportedComponentStructure is no longer required and createImportedComponentStructure should just create a new nestedDropdownStructure
-    const importedComponentStructure = ImportedComponentGenerator.createImportedComponentStructure(
+    // WORK1: the NestedComponentStructure is no longer required and createNestedComponentStructure should just create a new nestedDropdownStructure
+    const nestedComponentStructure = NestedComponentGenerator.createNestedComponentStructure(
         parentComponent.subcomponents, nestedComponent.baseName);
     const newNestedDropdownStructure = {
-      [nestedComponent.baseName]: { ...importedComponentStructure.component[importedComponentStructure.baseName] }};
+      [nestedComponent.baseName]: { ...nestedComponentStructure.component[nestedComponentStructure.baseName] }};
     JsUtils.addObjects(parentSubcomponentObject, subcomponentName, newNestedDropdownStructure, false);
   }
 
@@ -81,10 +81,10 @@ export class AddNewGenericComponent {
   }
 
   // WORK 1 - change names
-  private static createNewImportedComponent(componentType: COMPONENT_TYPES, componentGenerator: ComponentGenerator,
+  private static createNewNestedComponent(componentType: COMPONENT_TYPES, componentGenerator: ComponentGenerator,
       overwritePropertiesFunc?: OverwritePropertiesFunc[]): NewComponentProperties {
     const baseName = UniqueSubcomponentNameGenerator.generate(AddNewGenericComponent.componentTypeToName[componentType]);
-    const subcomponents = ImportedComponentGenerator.createImportedComponentSubcomponents(componentGenerator, baseName);
+    const subcomponents = NestedComponentGenerator.createNestedComponentSubcomponents(componentGenerator, baseName);
     const { subcomponentNames } = subcomponents[baseName].nestedComponent.ref;
     (overwritePropertiesFunc || []).forEach((overwritePropertiesFunc) => {
       overwritePropertiesFunc(subcomponents, subcomponentNames);
@@ -96,7 +96,7 @@ export class AddNewGenericComponent {
       componentStyle: COMPONENT_STYLES, layerName: CORE_SUBCOMPONENTS_NAMES | string,
       overwritePropertiesFunc?: OverwritePropertiesFunc[]): NewComponentProperties {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
-    const nestedComponent = AddNewGenericComponent.createNewImportedComponent(componentType, componentGenerator, overwritePropertiesFunc);
+    const nestedComponent = AddNewGenericComponent.createNewNestedComponent(componentType, componentGenerator, overwritePropertiesFunc);
     JsUtils.addObjects(parentComponent, 'subcomponents', nestedComponent.subcomponents);
     AddNewGenericComponent.addNewSubcomponentsToComponentPreview(parentComponent, nestedComponent, layerName);
     return nestedComponent;

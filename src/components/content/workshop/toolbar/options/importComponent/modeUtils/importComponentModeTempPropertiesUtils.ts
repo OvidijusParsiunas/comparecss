@@ -1,5 +1,5 @@
 import { SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { ImportedComponentGenerator } from '../../../../utils/importComponent/importedComponentGenerator';
+import { NestedComponentGenerator } from '../../../../utils/importComponent/nestedComponentGenerator';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 
 export class ImportComponentModeTempPropertiesUtils {
@@ -22,7 +22,7 @@ export class ImportComponentModeTempPropertiesUtils {
     activeSubcomponent.customCss = subcomponentToBeImportedCustomCss;
     activeSubcomponent.customFeatures = subcomponentsToBeImported[subcomponentToBeImportedName].customFeatures;
     if (!subcomponentToBeImportedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top) {
-      subcomponentToBeImportedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top = ImportedComponentGenerator.DEFAULT_TOP_PROPERTY;
+      subcomponentToBeImportedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top = NestedComponentGenerator.DEFAULT_TOP_PROPERTY;
     }
   }
 

@@ -10,7 +10,7 @@ export default class SubcomponentToggleUtils {
     activeSubcomponent.customFeatures = JSONManipulation.deepCopy(activeSubcomponent.defaultCustomFeatures);
   }
 
-  private static resetImportedComponent(nestedComponent: NestedComponent, activeComponent: WorkshopComponent): void {
+  private static resetNestedComponent(nestedComponent: NestedComponent, activeComponent: WorkshopComponent): void {
     const { subcomponentNames, referenceSharingExecutables } = nestedComponent.ref;
     Object.keys(subcomponentNames).forEach((subcomponentName: string) => {
       const nestedComponent = activeComponent.subcomponents[subcomponentNames[subcomponentName]];
@@ -29,12 +29,13 @@ export default class SubcomponentToggleUtils {
   private static resetSubcomponent(activeSubcomponentName: string, activeComponent: WorkshopComponent): void {
     const activeSubcomponent = activeComponent.subcomponents[activeSubcomponentName];
     if (activeSubcomponent.nestedComponent) {
-      SubcomponentToggleUtils.resetImportedComponent(activeSubcomponent.nestedComponent, activeComponent);
+      SubcomponentToggleUtils.resetNestedComponent(activeSubcomponent.nestedComponent, activeComponent);
     } else {
       SubcomponentToggleUtils.resetSubcomponentProperties(activeSubcomponent);
     }
   }
 
+  // WORK1: will need some refactoring
   public static removeSubcomponent(component: WorkshopComponent, hideSettingsCallback: () => void): void {
     const activeSubcomponent = component.subcomponents[component.activeSubcomponentName];
     if (activeSubcomponent.layerSectionsType) {

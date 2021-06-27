@@ -1,6 +1,7 @@
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 
-export interface ImportedComponentStructure {
+// WORK1: remove
+export interface NestedComponentStructure {
   baseName: string;
   component: NestedDropdownStructure;
 }

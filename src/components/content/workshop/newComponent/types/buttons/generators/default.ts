@@ -4,7 +4,7 @@ import { ButtonBuilder } from './buttonBuilder';
 
 export const defaultButton: ComponentGenerator = {
   // WORK1: on hover button change color text option - and fix mouse leave bug
-  createNewComponent(importedComponentBaseName: string): WorkshopComponent {
-    return ButtonBuilder.create({ baseName: importedComponentBaseName });
+  createNewComponent(baseName?: string): WorkshopComponent {
+    return ButtonBuilder.create({ baseName });
   },
 };

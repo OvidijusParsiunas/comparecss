@@ -10,14 +10,14 @@
         ...(nestedSubcomponent.subcomponentProperties.customFeatures
           && nestedSubcomponent.subcomponentProperties.customFeatures.jsClasses || [])]">
       <base-component v-if="nestedSubcomponent.subcomponentProperties.nestedComponent"
-        class="imported-component-container"
+        class="nested-component-container"
         :class="[COMPONENT_PREVIEW_MARKER,
           ...(nestedSubcomponent.subcomponentProperties.customFeatures
           && nestedSubcomponent.subcomponentProperties.customFeatures.jsClasses || [])]"
         :component="nestedSubcomponent.subcomponentProperties.nestedComponent.ref"
         :mouseEvents="mouseEvents"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-        :isImportedComponent="true"/>
+        :isNestedComponent="true"/>
     </div>
   </div>
 </template>
@@ -60,7 +60,7 @@ export default {
     place-items: baseline;
     position: relative;
   }
-  .imported-component-container {
+  .nested-component-container {
     height: 100%;
   }
 </style>

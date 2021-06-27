@@ -3,7 +3,7 @@ import { WorkshopComponent } from '../../../../../../../interfaces/workshopCompo
 import { LayerBuilder } from './layerBuilder';
 
 export const defaultLayer: ComponentGenerator = {
-  createNewComponent(importedComponentBaseName: string): WorkshopComponent {
-    return LayerBuilder.create({ baseName: importedComponentBaseName });
+  createNewComponent(baseName?: string): WorkshopComponent {
+    return LayerBuilder.create({ baseName });
   },
 };
