@@ -7,6 +7,16 @@ function setSubcomponentAndOverlayElementIdsState(state: SubcomponentAndOverlayE
   return subcomponentAndOverlayElementIdsObject = state;
 }
 
+function getLastSubcomponentIdNumber(): number {
+  const keys = Object.keys(subcomponentAndOverlayElementIdsObject);
+  const lastSubcomponentAndOverlayElement = subcomponentAndOverlayElementIdsObject[keys[keys.length - 1]].subcomponentId;
+  return Number.parseInt(lastSubcomponentAndOverlayElement.split('-').pop());
+}
+
+function addSubcomponentAndOverlayElementIdsState(state: SubcomponentAndOverlayElementIds): void {
+  Object.assign(subcomponentAndOverlayElementIdsObject, state);
+}
+
 function getSubcomponentIdViaSubcomponentName(subcomponentName: string): string {
   return subcomponentAndOverlayElementIdsObject[subcomponentName].subcomponentId;
 }
@@ -32,8 +42,10 @@ function getOverlayIdViaSubcomponentId(subcomponentId: string): string {
 
 export const subcomponentAndOverlayElementIdsState = {
   setSubcomponentAndOverlayElementIdsState,
+  addSubcomponentAndOverlayElementIdsState,
   getSubcomponentIdViaSubcomponentName,
   getSubcomponentNameViaOverlayId,
   getOverlayIdViaSubcomponentName,
   getOverlayIdViaSubcomponentId,
+  getLastSubcomponentIdNumber,
 }

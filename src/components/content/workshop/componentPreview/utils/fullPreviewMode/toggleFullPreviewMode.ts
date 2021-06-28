@@ -1,16 +1,16 @@
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
-import SharedToggleOff from './toggleMode/shared/toggleOff';
+import GenericToggleOff from './toggleMode/generic/toggleOff';
+import GenericToggleOn from './toggleMode/generic/toggleOn';
 import ModalToggleOff from './toggleMode/modal/toggleOff';
-import SharedToggleOn from './toggleMode/shared/toggleOn';
 import ModalToggleOn from './toggleMode/modal/toggleOn';
 import { ComponentOptions } from 'vue';
 
 export default class ToggleFullPreviewMode {
 
   private static TOGGLE_ON_CLASSES = {
-    [COMPONENT_TYPES.ALERT]: SharedToggleOn, [COMPONENT_TYPES.CARD]: SharedToggleOn, [COMPONENT_TYPES.MODAL]: ModalToggleOn };
+    [COMPONENT_TYPES.ALERT]: GenericToggleOn, [COMPONENT_TYPES.CARD]: GenericToggleOn, [COMPONENT_TYPES.MODAL]: ModalToggleOn };
   private static TOGGLE_OFF_CLASSES = {
-    [COMPONENT_TYPES.ALERT]: SharedToggleOff, [COMPONENT_TYPES.CARD]: SharedToggleOff, [COMPONENT_TYPES.MODAL]: ModalToggleOff };
+    [COMPONENT_TYPES.ALERT]: GenericToggleOff, [COMPONENT_TYPES.CARD]: GenericToggleOff, [COMPONENT_TYPES.MODAL]: ModalToggleOff };
 
   public static toggleOn(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement,
       toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean,

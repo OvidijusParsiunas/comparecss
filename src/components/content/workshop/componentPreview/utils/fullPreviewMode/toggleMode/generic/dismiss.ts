@@ -16,14 +16,12 @@ import ToggleOff from './toggleOff';
 export default class Dismiss {
 
   private static readonly RESET_AFTER_CLOSE_ANIMATION_TIMEOUT_MILLISECONDS = 1000;
-  // WORK1: does this need to be bigger
-  private static readonly CLOSE_BUTTON_NAMES = [TEXT_STYLES.CLOSE_BUTTON];
 
   public static changeCloseButtonsJsClasses(componentPreviewComponent: ComponentOptions, methodName: SET_METHODS): void {
     const { subcomponents } = componentPreviewComponent.component;
     const subcomponentNames = Object.keys(subcomponents);
     for (let i = 0; i < subcomponentNames.length; i += 1) {
-      if (subcomponents[subcomponentNames[i]].style === Dismiss.CLOSE_BUTTON_NAMES[0]) {
+      if (subcomponents[subcomponentNames[i]].style === TEXT_STYLES.CLOSE_BUTTON) {
         const buttonSubcomponentProperties: SubcomponentProperties = subcomponents[subcomponentNames[i]];
         buttonSubcomponentProperties.customFeatures.jsClasses[methodName](JAVASCRIPT_CLASSES.CLOSE_COMPONENT);
         break;
@@ -40,7 +38,7 @@ export default class Dismiss {
     animationState.setPendingAnimationPreviewUnsetState(pendingAnimationPreviewUnset);
   }
 
-  private static closeAlert(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement): WorkshopEventCallbackReturn {
+  private static close(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement): WorkshopEventCallbackReturn {
     const closeAnimation = animationTypeToFunctionality
       [componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.close.type] as CloseAnimation;
     const animationDuration = componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.close.duration;
@@ -50,13 +48,13 @@ export default class Dismiss {
     return { shouldRepeat: false };
   }
 
-  public static closeAlertCallback(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement,
+  public static closeCallback(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement,
       toolbarContainerElement: HTMLElement, toggleFullPreviewModeOptionsCallback: () => void,
       event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
     fulPreviewModeState.setIsAnimationInProgress(false);
     const buttonElement = WorkshopEventCallbackUtils.getParentElementIfSvg(event.target as HTMLElement);
     if ((buttonElement.classList.contains(JAVASCRIPT_CLASSES.CLOSE_COMPONENT))) {
-      Dismiss.closeAlert(componentPreviewComponent, componentElement);
+      Dismiss.close(componentPreviewComponent, componentElement);
       return { shouldRepeat: true };
     }
     if (buttonElement.classList.contains(OPTION_MENU_BUTTON_MARKER)) {

@@ -1,3 +1,4 @@
+import { subcomponentAndOverlayElementIdsState } from '../../../../../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import { POINTER_EVENTS_NONE, SET_METHODS } from '../../../animations/consts/sharedConsts';
 import ComponentPreviewUtils from '../../../componentPreviewUtils';
 import { fulPreviewModeState } from '../../fullPreviewModeState';
@@ -13,15 +14,22 @@ export default class ToggleOn {
     componentPreviewComponent.isFullPreviewModeOn = true;
   }
 
+  // this gets called everytime we open up a new component
+  // generates new temporary button element ids and events depending on the latest subomponentAndOverlayIds number
+  // no need to worry about adding new subcomponents when a component has not been switched as they will use
+  // the subomponentAndOverlayIds number after that one
   private static createButtonForFullPreviewMode(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement,
       temporaryComponentElement: HTMLElement, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
       isExpandedModalPreviewModeActive: boolean, toggleFullPreviewModeOptionsCallback: () => void): void {
-    const subcomponentAndOverlayElementIds = ComponentPreviewUtils.generateSubcomponentAndOverlayIds(componentPreviewComponent.temporaryComponent.component);
+    const lastSubcomponentIdNumber = subcomponentAndOverlayElementIdsState.getLastSubcomponentIdNumber();
+    const subcomponentAndOverlayElementIds = ComponentPreviewUtils.generateSubcomponentAndOverlayIds(componentPreviewComponent.temporaryComponent.component,
+      lastSubcomponentIdNumber);
     const mouseEvents = ComponentPreviewUtils.generateMouseEvents(subcomponentAndOverlayElementIds,
       componentPreviewComponent.temporaryComponent.component.subcomponents,
       ToggleDisplays.displayModal.bind(this, componentPreviewComponent, componentElement, temporaryComponentElement,
         toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback));
     componentPreviewComponent.temporaryComponent.subcomponentAndOverlayElementIds = subcomponentAndOverlayElementIds;
+    subcomponentAndOverlayElementIdsState.addSubcomponentAndOverlayElementIdsState(subcomponentAndOverlayElementIds);
     componentPreviewComponent.temporaryComponent.mouseEvents = mouseEvents;
   }
 

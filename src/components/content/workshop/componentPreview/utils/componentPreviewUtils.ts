@@ -43,10 +43,10 @@ export default class ComponentPreviewUtils {
     });
   }
 
-  public static generateSubcomponentAndOverlayIds(component: WorkshopComponent): SubcomponentAndOverlayElementIds {
+  public static generateSubcomponentAndOverlayIds(component: WorkshopComponent, initialNumber = 0): SubcomponentAndOverlayElementIds {
     const subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds = {};
     if (component.componentPreviewStructure.subcomponentDropdownStructure) {
-      const index = { number: 0 };
+      const index = { number: initialNumber };
       ComponentPreviewUtils.addIdsViaTraversalOfNestedDropdownStructure(component.componentPreviewStructure.subcomponentDropdownStructure,
         index, subcomponentAndOverlayElementIdsObject);
     } else {

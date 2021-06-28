@@ -98,7 +98,7 @@ export default {
   },
   methods: {
     prepare(): void {
-      const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
+      const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE]);
       const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.keyEventHandler };
       this.$emit('new-component-modal-callback', workshopEventCallback);
       this.isClassNameTextHighlighted = false;

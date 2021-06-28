@@ -10,7 +10,7 @@ export default class ToggleOn {
     componentPreviewComponent.isFullPreviewModeOn = true;
     Dismiss.changeCloseButtonsJsClasses(componentPreviewComponent, SET_METHODS.ADD);
     GeneralUtils.createWorkshopEventCallback(componentPreviewComponent,
-      Dismiss.closeAlertCallback.bind(this, componentPreviewComponent, componentElement, toolbarContainerElement,
+      Dismiss.closeCallback.bind(this, componentPreviewComponent, componentElement, toolbarContainerElement,
         toggleFullPreviewModeOptionsCallback));
     GeneralUtils.updateToolbarStyle(POINTER_EVENTS_NONE, toolbarContainerElement, toggleFullPreviewModeOptionsCallback);
   }

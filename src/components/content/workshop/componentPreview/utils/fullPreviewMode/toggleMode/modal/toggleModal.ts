@@ -9,6 +9,7 @@ import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../../../consts/domEventT
 import { OPTION_MENU_BUTTON_MARKER } from '../../../../../../../../consts/elementClassMarkers';
 import { SubcomponentProperties } from '../../../../../../../../interfaces/workshopComponent';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
+import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
 import { CloseTriggers } from '../../../../../../../../interfaces/closeTriggers';
 import { fulPreviewModeState } from '../../fullPreviewModeState';
 import { animationState } from '../../../animations/state';
@@ -20,14 +21,16 @@ export default class ToggleModal {
 
   private static readonly TRIGGER_BUTTON_MOUSE_EVENTS_DISPLAY_CSS_PROPERTY = 'none';
   private static readonly TRIGGER_BUTTON_MOUSE_EVENTS_TOP_CSS_PROPERTY = '100px';
-  private static readonly MODAL_BUTTON_NAMES = [CORE_SUBCOMPONENTS_NAMES.BUTTON_1_LAYER_3,
-    CORE_SUBCOMPONENTS_NAMES.BUTTON_2_LAYER_3, CORE_SUBCOMPONENTS_NAMES.CLOSE];
 
   public static changeCloseButtonsJsClasses(componentPreviewComponent: ComponentOptions, methodName: SET_METHODS): void {
-    ToggleModal.MODAL_BUTTON_NAMES.forEach((buttonName) => {
-      const buttonSubcomponentProperties: SubcomponentProperties = componentPreviewComponent.component.subcomponents[buttonName];
-      buttonSubcomponentProperties.customFeatures.jsClasses[methodName](JAVASCRIPT_CLASSES.CLOSE_COMPONENT);
-    });
+    const { subcomponents } = componentPreviewComponent.component;
+    const subcomponentNames = Object.keys(subcomponents);
+    for (let i = 0; i < subcomponentNames.length; i += 1) {
+      if (subcomponents[subcomponentNames[i]].subcomponentType === SUBCOMPONENT_TYPES.BUTTON) {
+        const buttonSubcomponentProperties: SubcomponentProperties = subcomponents[subcomponentNames[i]];
+        buttonSubcomponentProperties.customFeatures.jsClasses[methodName](JAVASCRIPT_CLASSES.CLOSE_COMPONENT);
+      }
+    }
   }
 
   // cannot use a class because it is overwritten by the componentPreview component dom changes
