@@ -142,7 +142,7 @@ export interface SubcomponentProperties {
   subcomponentType?: SUBCOMPONENT_TYPES;
   customCss: CustomCss;
   defaultCss: CustomCss;
-  // this css is used in instances where partialCss has been overwrittern by a single value, but a fraction of it
+  // this css is used in instances where partialCss has been overwritten by a single value, but a fraction of it
   // must be retained for use by settings - boxShadow (to note, this is mostly used by the app in runtime)
   auxiliaryPartialCss?: CustomCss;
   // this is used to signify css that gets used within the app only and gets removed when exporting - should only be used on subcomponents that will have transition effects
@@ -178,8 +178,8 @@ export interface SubcomponentProperties {
   // baseSubcomponentRef is only appended to the nested subcomponents, not the base subcomponents
   // used to track the nested component's inSync property and also used to identify whether the subcomponent is nested (not the base subcomponent)
   baseSubcomponentRef?: SubcomponentProperties;
-  // this is used for imported nested subcomponents as overwriting customCss with mouseevents causes all the other in-sync references to be updated as well
-  tempCustomCssObjName?: string;
+  // this is used for overwriting css properties on mouse actions as adding css directly to customCss causes in-sync components to be edited all at once
+  overwrittenCustomCssObjName?: string;
   parentLayer?: Layer;
   // temporarily holds the original customCss when a component card has been hovered/selected during component import mode 
   tempOriginalCustomProperties?: TempCustomProperties;

@@ -2,14 +2,14 @@ import { NewComponentProperties, OverwritePropertiesFunc } from '../../../../../
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
+import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { AlignedSections, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { EntityDisplayStatusUtils } from '../../../entityDisplayStatus/entityDisplayStatusUtils';
 import { NestedComponentGenerator } from '../../../importComponent/nestedComponentGenerator';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
-import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
-import PreviewStructure from '../../../componentGenerator/previewStructure';
 import { JsUtils } from '../../../../../../../services/jsUtils/jsUtils';
 
 export class AddNewLayerSubcomponent {
@@ -27,10 +27,30 @@ export class AddNewLayerSubcomponent {
     parentComponent.componentPreviewStructure.layers.push(layer);
   }
 
+  private static createEmptyAlignedSections(): AlignedSections {
+    return {
+      [ALIGNED_SECTION_TYPES.LEFT]: [],
+      [ALIGNED_SECTION_TYPES.CENTER]: [],
+      [ALIGNED_SECTION_TYPES.RIGHT]: [],
+    }
+  }
+
+  private static createEmptyLayer(layerName: string, layerSubcomponent: SubcomponentProperties): Layer {
+    const layerSections = layerSubcomponent.layerSectionsType === LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS
+      ? AddNewLayerSubcomponent.createEmptyAlignedSections() : [];
+    return {
+      name: layerName,
+      subcomponentProperties: layerSubcomponent,
+      sections: {
+        [layerSubcomponent.layerSectionsType]: layerSections,
+      }
+    };
+  }
+
   private static addNewSubcomponentToComponentPreview(parentComponent: WorkshopComponent, newSubcomponentProperties: NewComponentProperties,
       isEditable: boolean): void {
     const layerSubcomponent = newSubcomponentProperties.subcomponents[newSubcomponentProperties.baseName];
-    const layer: Layer = PreviewStructure.createEmptyLayer(newSubcomponentProperties.baseName, layerSubcomponent);
+    const layer: Layer = AddNewLayerSubcomponent.createEmptyLayer(newSubcomponentProperties.baseName, layerSubcomponent);
     AddNewLayerSubcomponent.addNewSubcomponentToBase(parentComponent, layer);
     if (isEditable) {
       AddNewLayerSubcomponent.updateComponentPreviewStructure(parentComponent, newSubcomponentProperties, layerSubcomponent);

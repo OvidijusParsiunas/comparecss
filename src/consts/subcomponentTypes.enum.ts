@@ -1,9 +1,6 @@
 export enum SUBCOMPONENT_TYPES {
   BASE,
   LAYER,
-  LAYER_1,
-  LAYER_2,
-  LAYER_3,
   BUTTON,
   TEXT,
   SECTION_TEXT,

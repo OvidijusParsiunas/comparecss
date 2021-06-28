@@ -2,9 +2,9 @@ import { componentTypeToStyleGenerators } from '../../../newComponent/types/comp
 import { Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { CustomSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
 import { uniqueSubcomponentIdState } from '../../componentGenerator/uniqueSubcomponentIdState';
-import { CopyExistingSubcomponent } from './copyComponent/copyExistingSubcomponent';
-import { CopyNewSubcomponent } from './copyComponent/copyNewSubcomponent';
+import { CopyExistingSubcomponent } from './copy/copyExistingSubcomponent';
 import ProcessClassName from '../../componentGenerator/processClassName';
+import { CopyNewSubcomponent } from './copy/copyNewSubcomponent';
 import { ComponentOptions } from 'vue';
 
 export default class CopyComponent {
