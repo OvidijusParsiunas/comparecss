@@ -14,7 +14,7 @@ export default class ToggleOn {
     componentPreviewComponent.isFullPreviewModeOn = true;
   }
 
-  // this gets called everytime we open up a new component
+  // this gets called everytime we open up a new component and open up the display preview mode (currently modal)
   // generates new temporary button element ids and events depending on the latest subomponentAndOverlayIds number
   // no need to worry about adding new subcomponents when a component has not been switched as they will use
   // the subomponentAndOverlayIds number after that one

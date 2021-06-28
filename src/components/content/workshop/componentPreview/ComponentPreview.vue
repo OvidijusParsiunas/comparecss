@@ -198,7 +198,14 @@ export default {
     stopAnimationPreview(): void {
       AnimationUtils.cancelAnimationPreview(this.$refs.baseComponent.$refs.componentPreview);
     },
+    refreshTemporaryComponentPropertiesBeforeUse(): void {
+      if (this.component.subcomponents[this.component.subcomponentNames.base]?.customFeatures?.closeTriggers && !this.temporaryComponent.displayed) {
+        this.temporaryComponent.subcomponentAndOverlayElementIds = null;
+        this.temporaryComponent.mouseEvents = null;
+      }
+    },
     refreshComponent(): void {
+      this.refreshTemporaryComponentPropertiesBeforeUse();
       const subcomponentAndOverlayElementIds = ComponentPreviewUtils.generateSubcomponentAndOverlayIds(this.component);
       this.subcomponentAndOverlayElementIds = subcomponentAndOverlayElementIds;
       subcomponentAndOverlayElementIdsState.setSubcomponentAndOverlayElementIdsState(subcomponentAndOverlayElementIds);
