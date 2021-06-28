@@ -80,8 +80,9 @@ export class ButtonBuilder extends ComponentBuilder {
 
   private static addComponentsToBase(buttonComponent: WorkshopComponent, componentStyle: NewComponentStyleProperties): void {
     const layerSubcomponent = AddNewLayerSubcomponent.add(buttonComponent, LAYER_STYLES.BUTTON, false);
-    const textSubcomponent = AddNewGenericComponent.add(buttonComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
-      layerSubcomponent.baseName, [ButtonBuilder.overwriteButtonTextProperties, componentStyle.overwriteLayersProperties?.[0]?.text?.[0]]);
+    const textSubcomponent = AddNewGenericComponent.add(buttonComponent, COMPONENT_TYPES.TEXT,
+      componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.style || TEXT_STYLES.BUTTON,
+      layerSubcomponent.baseName, [ButtonBuilder.overwriteButtonTextProperties, componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.func]);
     const { subcomponentNames } = buttonComponent;
     buttonComponent.subcomponents[subcomponentNames.base].triggerableSubcomponentName = textSubcomponent.baseName;
     subcomponentNames.layer = layerSubcomponent.baseName;
@@ -96,8 +97,8 @@ export class ButtonBuilder extends ComponentBuilder {
   }
 
   public static create(componentStyle: NewComponentStyleProperties): WorkshopComponent {
-    const buttonComponent: WorkshopComponent = ComponentBuilder.createBaseComponent(componentStyle, COMPONENT_TYPES.BUTTON,
-      ButtonBuilder.createBaseSubcomponent);
+    componentStyle.componentType = COMPONENT_TYPES.BUTTON;
+    const buttonComponent: WorkshopComponent = ComponentBuilder.createBaseComponent(componentStyle, ButtonBuilder.createBaseSubcomponent);
     ButtonBuilder.addComponentsToBase(buttonComponent, componentStyle);
     ButtonBuilder.addReferences(buttonComponent);
     return buttonComponent;

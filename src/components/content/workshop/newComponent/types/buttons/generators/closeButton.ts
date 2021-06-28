@@ -44,7 +44,7 @@ function overwriteButtonTextProperties(subcomponents: Subcomponents, subcomponen
 export const closeButton: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const componentStyle: NewComponentStyleProperties = { baseName, baseStyle: BUTTON_STYLES.CLOSE,
-      baseCustomCssFunc: createDefaultBaseCss, overwriteLayersProperties: [{ text: [overwriteButtonTextProperties]}] };
+      baseCustomCssFunc: createDefaultBaseCss, overwriteLayersProperties: [{ text: [{style: TEXT_STYLES.CLOSE_BUTTON, func: overwriteButtonTextProperties}]}] };
     const buttonComponent = ButtonBuilder.create(componentStyle);
     overwriteButtonTextStyle(buttonComponent);
     return buttonComponent;

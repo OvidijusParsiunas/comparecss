@@ -1,10 +1,10 @@
 import { COMPONENT_CARD_MARKER, COMPONENT_LIST_ITEM_MARKER, OPTION_MENU_BUTTON_MARKER } from '../../../../../../../../consts/elementClassMarkers';
 import { WorkshopEventCallbackUtils } from '../../../../../toolbar/options/workshopEventCallbackUtils/workshopEventCallbackUtils';
 import { WorkshopEventCallbackReturn } from '../../../../../../../../interfaces/workshopEventCallbackReturn';
-import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../../consts/coreSubcomponentNames.enum';
 import { SubcomponentProperties } from '../../../../../../../../interfaces/workshopComponent';
 import { animationTypeToFunctionality } from '../../../animations/animationToFunctionality';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
+import { TEXT_STYLES } from '../../../../../../../../consts/componentStyles.enum';
 import { CloseAnimation } from '../../../../../../../../interfaces/animations';
 import AnimationUtils from '../../../animations/utils/animationUtils';
 import { SET_METHODS } from '../../../animations/consts/sharedConsts';
@@ -16,13 +16,19 @@ import ToggleOff from './toggleOff';
 export default class Dismiss {
 
   private static readonly RESET_AFTER_CLOSE_ANIMATION_TIMEOUT_MILLISECONDS = 1000;
-  private static readonly ALERT_BUTTON_NAMES = [CORE_SUBCOMPONENTS_NAMES.CLOSE];
+  // WORK1: does this need to be bigger
+  private static readonly CLOSE_BUTTON_NAMES = [TEXT_STYLES.CLOSE_BUTTON];
 
   public static changeCloseButtonsJsClasses(componentPreviewComponent: ComponentOptions, methodName: SET_METHODS): void {
-    Dismiss.ALERT_BUTTON_NAMES.forEach((buttonName) => {
-      const buttonSubcomponentProperties: SubcomponentProperties = componentPreviewComponent.component.subcomponents[buttonName];
-      buttonSubcomponentProperties.customFeatures.jsClasses[methodName](JAVASCRIPT_CLASSES.CLOSE_COMPONENT);
-    });
+    const { subcomponents } = componentPreviewComponent.component;
+    const subcomponentNames = Object.keys(subcomponents);
+    for (let i = 0; i < subcomponentNames.length; i += 1) {
+      if (subcomponents[subcomponentNames[i]].style === Dismiss.CLOSE_BUTTON_NAMES[0]) {
+        const buttonSubcomponentProperties: SubcomponentProperties = subcomponents[subcomponentNames[i]];
+        buttonSubcomponentProperties.customFeatures.jsClasses[methodName](JAVASCRIPT_CLASSES.CLOSE_COMPONENT);
+        break;
+      }
+    }
   }
 
   private static removeComponent(componentElement: HTMLElement): void {

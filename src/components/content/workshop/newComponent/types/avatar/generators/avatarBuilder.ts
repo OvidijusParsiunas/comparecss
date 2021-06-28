@@ -66,7 +66,8 @@ export class AvatarBuilder extends ComponentBuilder {
     };
   }
 
-  public static create(componentStyle: NewComponentStyleProperties): WorkshopComponent {
-    return ComponentBuilder.createBaseComponent(componentStyle, COMPONENT_TYPES.AVATAR, AvatarBuilder.createBaseSubcomponent);
+  public static create(componentStyle: NewComponentStyleProperties = {}): WorkshopComponent {
+    componentStyle.componentType = COMPONENT_TYPES.AVATAR;
+    return ComponentBuilder.createBaseComponent(componentStyle, AvatarBuilder.createBaseSubcomponent);
   }
 }

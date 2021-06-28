@@ -1,5 +1,6 @@
 export enum CORE_SUBCOMPONENTS_NAMES {
   BASE = 'Base',
+  // WORK1: remove this
   CLOSE = 'Close',
   LAYER = 'Layer',
   LAYER_1 = 'Layer 1',

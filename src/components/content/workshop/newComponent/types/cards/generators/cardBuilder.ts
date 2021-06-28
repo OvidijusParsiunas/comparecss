@@ -104,9 +104,9 @@ export class CardBuilder extends ComponentBuilder {
     const layer2Component = AddNewLayerSubcomponent.add(cardComponent, LAYER_STYLES.CARD, true);
     const layer3Component = AddNewLayerSubcomponent.add(cardComponent, LAYER_STYLES.CARD, true);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLE.DEFAULT,
-      layer1Component.baseName, [(componentStyle.overwriteLayersProperties?.[0]?.text?.[0]) || CardBuilder.overwriteTitleProperties]);
+      layer1Component.baseName, [(componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.func) || CardBuilder.overwriteTitleProperties]);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLE.DEFAULT,
-      layer2Component.baseName, [(componentStyle.overwriteLayersProperties?.[1]?.text?.[0]) || CardBuilder.overwriteDescriptionProperties]);
+      layer2Component.baseName, [(componentStyle.overwriteLayersProperties?.[1]?.text?.[0]?.func) || CardBuilder.overwriteDescriptionProperties]);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLE.DEFAULT,
       layer3Component.baseName, [(componentStyle.overwriteLayersProperties?.[2]?.button?.[0]) || CardBuilder.overwriteSubmitButtonProperties]);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLE.DEFAULT,
@@ -157,7 +157,8 @@ export class CardBuilder extends ComponentBuilder {
 
   public static create(componentStyle: NewComponentStyleProperties = {}): WorkshopComponent {
     uniqueSubcomponentIdState.resetUniqueId();
-    const cardComponent = ComponentBuilder.createBaseComponent(componentStyle, COMPONENT_TYPES.CARD, CardBuilder.createBaseSubcomponent, false);
+    if (componentStyle.componentType === undefined) componentStyle.componentType = COMPONENT_TYPES.CARD;
+    const cardComponent = ComponentBuilder.createBaseComponent(componentStyle, CardBuilder.createBaseSubcomponent, false);
     CardBuilder.addComponentsToBase(cardComponent, componentStyle);
     return cardComponent;
   }

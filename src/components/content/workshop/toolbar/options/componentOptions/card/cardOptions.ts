@@ -23,7 +23,7 @@ export class CardOptions {
     [SUBCOMPONENT_TYPES.AVATAR]: avatarOptions as Options,
   };
 
-  private static getTextOptions(component: WorkshopComponent): Options {
+  protected static getTextOptions(component: WorkshopComponent): Options {
     const subcomponentStyle = component.subcomponents[component.activeSubcomponentName].nestedComponent.ref.style;
     if (subcomponentStyle === TEXT_STYLES.BUTTON) {
       return buttonTextOptions as Options;
@@ -33,14 +33,14 @@ export class CardOptions {
     return textOptions as Options;
   }
 
-  private static getButtonOptions(component: WorkshopComponent): Options {
+  protected static getButtonOptions(component: WorkshopComponent): Options {
     if (component.subcomponents[component.activeSubcomponentName].nestedComponent.ref.style === BUTTON_STYLES.CLOSE) {
       return closeButtonOptions;
     }
     return nestedButtonOptions;
   }
 
-  private static getLayerOptions(component: WorkshopComponent): Options {
+  protected static getLayerOptions(component: WorkshopComponent): Options {
     const currentLayerIndex = component.componentPreviewStructure.layers
       .findIndex((layer) => layer.name === component.activeSubcomponentName);
     if (currentLayerIndex === 0) {

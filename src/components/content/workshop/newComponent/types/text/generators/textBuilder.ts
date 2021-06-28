@@ -67,7 +67,8 @@ export class TextBuilder extends ComponentBuilder {
     };
   }
 
-  public static create(componentStyle: NewComponentStyleProperties): WorkshopComponent {
-    return ComponentBuilder.createBaseComponent(componentStyle, COMPONENT_TYPES.TEXT, TextBuilder.createBaseSubcomponent);
+  public static create(componentStyle: NewComponentStyleProperties = {}): WorkshopComponent {
+    componentStyle.componentType = COMPONENT_TYPES.TEXT;
+    return ComponentBuilder.createBaseComponent(componentStyle, TextBuilder.createBaseSubcomponent);
   }
 }

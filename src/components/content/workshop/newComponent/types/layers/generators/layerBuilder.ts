@@ -38,7 +38,8 @@ export class LayerBuilder extends ComponentBuilder {
     };
   }
 
-  public static create(componentStyle: NewComponentStyleProperties): WorkshopComponent {
-    return ComponentBuilder.createBaseComponent(componentStyle, COMPONENT_TYPES.LAYER, LayerBuilder.createBaseSubcomponent);
+  public static create(componentStyle: NewComponentStyleProperties = {}): WorkshopComponent {
+    componentStyle.componentType = COMPONENT_TYPES.LAYER;
+    return ComponentBuilder.createBaseComponent(componentStyle, LayerBuilder.createBaseSubcomponent);
   }
 }
