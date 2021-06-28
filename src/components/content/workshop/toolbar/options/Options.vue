@@ -112,7 +112,6 @@
               @mouseenter="mouseHoverOption(option, true)" @mouseleave="mouseHoverOption(option, false)">
             <button
               type="button"
-              v-if="displayIfSubcomponentDisplayed(option.displayIfSubcomponentDisplayed)"
               :disabled="option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive"
               class="btn option-select-button-default"
               :class="[
@@ -179,6 +178,7 @@ import {
   OPTION_MENU_SETTING_OPTION_BUTTON_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, TOGGLE_SUBCOMPONENT_BUTTON_MARKER,
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER, FULL_PREVIEW_MODE_BUTTON_MARKER,
 } from '../../../../../consts/elementClassMarkers';
+import { BUTTON_STYLES, COMPONENT_STYLES } from '@/consts/componentStyles.enum';
 
 interface Consts {
   componentTypeToOptions: ComponentTypeToOptions;
@@ -313,15 +313,6 @@ export default {
       } else {
         element.classList.replace(this.HIGHLIGHTED_OPTION_BUTTON_CLASS, this.TOOLBAR_GENERAL_BUTTON_CLASS); 
       }
-    },
-    displayIfSubcomponentDisplayed(subcomponentName: CORE_SUBCOMPONENTS_NAMES): boolean {
-      if (subcomponentName) {
-        const subcomponentProperties: SubcomponentProperties = this.component.subcomponents[subcomponentName];
-        if (subcomponentProperties) {
-          return subcomponentProperties.subcomponentDisplayStatus.isDisplayed;
-        }
-      }
-      return true;
     },
     selectOption(option: Option, isManualSelect: boolean): void {
       if (isManualSelect && this.activeOption.buttonName === option.buttonName && this.activeOption.type === option.type) {
@@ -506,9 +497,14 @@ export default {
         this.optionAnimationsInProgress = false;
       }, this.BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS);
     },
+    isSubcomponentPresent(subcomponentStyle: COMPONENT_STYLES): boolean {
+      return !!Object.keys(this.component.subcomponents).find((subcomponentName) => {
+        return this.component.subcomponents[subcomponentName].nestedComponent?.ref.style === subcomponentStyle;
+      });
+    },
     isFullPreviewModeButtonDisplayed(): boolean {
       return this.component.type === COMPONENT_TYPES.MODAL
-        || (this.displayIfSubcomponentDisplayed(CORE_SUBCOMPONENTS_NAMES.CLOSE)
+        || (this.isSubcomponentPresent(BUTTON_STYLES.CLOSE)
           && (this.component.type === COMPONENT_TYPES.ALERT || this.component.type === COMPONENT_TYPES.CARD));
     },
     isInSyncButtonDisplayed(): boolean {

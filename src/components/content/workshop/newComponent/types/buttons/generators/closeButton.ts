@@ -32,10 +32,6 @@ function createDefaultBaseCss(): CustomCss {
   }
 }
 
-function overwriteButtonTextStyle(buttonComponent: WorkshopComponent): void {
-  buttonComponent.subcomponents[buttonComponent.subcomponentNames.text].style = TEXT_STYLES.CLOSE_BUTTON;
-}
-
 function overwriteButtonTextProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
   subcomponents[subcomponentNames.base].customStaticFeatures.subcomponentText.text = CLOSE_BUTTON_X_TEXT;
   subcomponents[subcomponentNames.base].customStaticFeatures.subcomponentText.text = CLOSE_BUTTON_X_TEXT;
@@ -45,8 +41,6 @@ export const closeButton: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const componentStyle: NewComponentStyleProperties = { baseName, baseStyle: BUTTON_STYLES.CLOSE,
       baseCustomCssFunc: createDefaultBaseCss, overwriteLayersProperties: [{ text: [{style: TEXT_STYLES.CLOSE_BUTTON, func: overwriteButtonTextProperties}]}] };
-    const buttonComponent = ButtonBuilder.create(componentStyle);
-    overwriteButtonTextStyle(buttonComponent);
-    return buttonComponent;
+    return ButtonBuilder.create(componentStyle);
   },
 };

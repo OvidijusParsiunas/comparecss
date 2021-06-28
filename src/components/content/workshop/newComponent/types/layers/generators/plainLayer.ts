@@ -13,10 +13,10 @@ function createDefaultBaseCss(): CustomCss {
   }
 }
 
-export const buttonLayer: ComponentGenerator = {
+export const plainLayer: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const componentStyle: NewComponentStyleProperties = { baseName,
-      baseStyle: LAYER_STYLES.BUTTON, baseCustomCssFunc: createDefaultBaseCss, };
+      baseStyle: LAYER_STYLES.PLAIN, baseCustomCssFunc: createDefaultBaseCss, };
     return LayerBuilder.create(componentStyle);
   },
 };

@@ -1,6 +1,5 @@
 import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../../consts/workshopToolbarOptionButtonNames.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
-import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
 
@@ -35,7 +34,6 @@ export const alertBaseOptions: SubcomponentOptions<AlertBaseOptionsModes> = {
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ANIMATIONS,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.ALERT_ANIMATIONS,
-      displayIfSubcomponentDisplayed: CORE_SUBCOMPONENTS_NAMES.CLOSE,
     },
   ],
 };

@@ -79,7 +79,7 @@ export class ButtonBuilder extends ComponentBuilder {
   }
 
   private static addComponentsToBase(buttonComponent: WorkshopComponent, componentStyle: NewComponentStyleProperties): void {
-    const layerSubcomponent = AddNewLayerSubcomponent.add(buttonComponent, LAYER_STYLES.BUTTON, false);
+    const layerSubcomponent = AddNewLayerSubcomponent.add(buttonComponent, LAYER_STYLES.PLAIN, false);
     const textSubcomponent = AddNewGenericComponent.add(buttonComponent, COMPONENT_TYPES.TEXT,
       componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.style || TEXT_STYLES.BUTTON,
       layerSubcomponent.baseName, [ButtonBuilder.overwriteButtonTextProperties, componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.func]);
