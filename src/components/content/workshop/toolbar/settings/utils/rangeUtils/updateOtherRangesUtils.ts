@@ -4,11 +4,11 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssC
 import { SettingPaths } from '../../../../../../../interfaces/settingPaths';
 import { optionToSettings } from '../../types/optionToSettings';
 import { FindSettings } from '../../types/utils/findSetting';
-import { SharedRangeUtils } from './sharedRangeUtils';
+import { UpdateRange } from './updateRange';
 import SharedUtils from '../sharedUtils';
 
 // Functionality here is currently being used for Range values, but it can be reutilized for other settings and their properties
-export class UpdateOtherRangesUtils {
+export class UpdateOtherRangesUtils extends UpdateRange {
 
   private static setCssPropertyValue(postDivisionRangeValue: number, customCss: CustomCss, cssProperty: string, isScaleNegativeToPositive: boolean,
       currentCssPropertyValue: number): void {
@@ -28,7 +28,7 @@ export class UpdateOtherRangesUtils {
     } else {
       const keys = ['customFeatures', 'lastSelectedCssValues', cssProperty];
       const customFeatureValue = SharedUtils.getCustomFeatureValue(keys, customFeatures);
-      const lastSelectedValue = SharedRangeUtils.parseString(customFeatureValue as string, 1);
+      const lastSelectedValue = UpdateRange.parseString(customFeatureValue as string, 1);
       // increase
       if (postDivisionRangeValue <= Math.abs(lastSelectedValue)) {
         UpdateOtherRangesUtils.setCssPropertyValue(postDivisionRangeValue, customCss, cssProperty, isScaleNegativeToPositive,
@@ -67,7 +67,7 @@ export class UpdateOtherRangesUtils {
     const currentValue = Number.parseFloat(subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT][settingSpec.cssProperty]);
     // if the current value is greater than scaleBoundaryValue, reduce its size to within the bounds
     if (Math.abs(currentValue) > scaleBoundaryValue) {
-      const realRangeValue = SharedRangeUtils.updateCustomCss(scaleBoundaryValue.toString(), settingSpec, subcomponentProperties);
+      const realRangeValue = UpdateRange.updateCustomCss(scaleBoundaryValue.toString(), settingSpec, subcomponentProperties);
       if (settingSpec.detailsToUpdateOtherCssProperties) UpdateOtherRangesUtils.updateOtherCustomCss(
         settingSpec.detailsToUpdateOtherCssProperties, realRangeValue);
     }
@@ -77,28 +77,28 @@ export class UpdateOtherRangesUtils {
       targetSettingSpec: any, subcomponentProperties: SubcomponentProperties, refreshSettingsCallback?: () => void): void {
     const keys = targetSettingSpec.lastSelectedValueObjectKeys;
     const customFeatureValue = SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys[0]]);
-    const lastSelectedValue = SharedRangeUtils.parseString(customFeatureValue as string, targetSettingSpec.smoothingDivisible);
+    const lastSelectedValue = UpdateRange.parseString(customFeatureValue as string, targetSettingSpec.smoothingDivisible);
     // Remember that this gets called when the scaleBoundaryValue is higher than the targetSettingRangeValue
     if (targetSettingRangeValue < lastSelectedValue) {
       // instead of using scaleBoundaryValue as the new value, the following line is used to prevent an issue where upon
       // selecting a high range value in the current setting (e.g. entrance delay duration), the scaleBoundaryValue would
       // be higher than lastSelectedValue
       const minRangeValue = Math.min(scaleBoundaryValue, lastSelectedValue);
-      SharedRangeUtils.updateRangeCustomFeature(minRangeValue.toString(), targetSettingSpec, subcomponentProperties);
+      UpdateRange.updateRangeCustomFeature(minRangeValue.toString(), targetSettingSpec, subcomponentProperties);
       if (refreshSettingsCallback) refreshSettingsCallback();
     }
   }
 
   private static updateCustomFeatureValue(scaleBoundaryValue: number, targetSettingSpec: any,
       subcomponentProperties: SubcomponentProperties, refreshSettingsCallback?: () => void): void {
-    const targetSettingRangeValue = SharedRangeUtils.getCustomFeatureRangeNumberValue(targetSettingSpec, subcomponentProperties);
+    const targetSettingRangeValue = UpdateRange.getCustomFeatureRangeNumberValue(targetSettingSpec, subcomponentProperties);
     if (scaleBoundaryValue < targetSettingRangeValue) {
-      SharedRangeUtils.updateRangeCustomFeature(scaleBoundaryValue.toString(), targetSettingSpec, subcomponentProperties);
+      UpdateRange.updateRangeCustomFeature(scaleBoundaryValue.toString(), targetSettingSpec, subcomponentProperties);
     } else if (targetSettingSpec.isAutoObjectKeys) {
       const keys = targetSettingSpec.isAutoObjectKeys;
       const isAuto = SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys[0]]);
       if (isAuto) {
-        SharedRangeUtils.updateRangeCustomFeature(scaleBoundaryValue.toString(), targetSettingSpec, subcomponentProperties);
+        UpdateRange.updateRangeCustomFeature(scaleBoundaryValue.toString(), targetSettingSpec, subcomponentProperties);
         if (refreshSettingsCallback) refreshSettingsCallback();
       } else {
         UpdateOtherRangesUtils.resetLastSelectedCustomFeatureValue(scaleBoundaryValue, targetSettingRangeValue,
@@ -116,7 +116,7 @@ export class UpdateOtherRangesUtils {
       subcomponentProperties: SubcomponentProperties): number {
     let total = 0;
     for (let i = 0; i < aggregateSettingSpecs.length; i += 1) {
-      const rangeValue = SharedRangeUtils.getCustomFeatureRangeNumberValue(aggregateSettingSpecs[i], subcomponentProperties);
+      const rangeValue = UpdateRange.getCustomFeatureRangeNumberValue(aggregateSettingSpecs[i], subcomponentProperties);
       total += UpdateOtherRangesUtils.convertRangeValueNumberViaTargetSmoothingDivisible(
         rangeValue, aggregateSettingSpecs[i].smoothingDivisible, targetSettingSmoothingDivisible);
     }

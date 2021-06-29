@@ -4,18 +4,18 @@ import { SettingPaths } from '../../../../../../../interfaces/settingPaths';
 import { UpdateOtherRangesUtils } from './updateOtherRangesUtils';
 import { optionToSettings } from '../../types/optionToSettings';
 import { FindSettings } from '../../types/utils/findSetting';
-import { SharedRangeUtils } from './sharedRangeUtils';
 import BoxShadowUtils from '../boxShadowUtils';
+import { UpdateRange } from './updateRange';
 import SharedUtils from '../sharedUtils';
 
-export default class RangeUtils {
+export default class RangeUtils extends UpdateRange {
 
   private static readonly DEFAULT_RANGE_VALUE = 0;
 
   public static saveLastSelectedValue(event: MouseEvent, settingSpec: any, subcomponentProperties: SubcomponentProperties): void {
     const rangeValue = (event.target as HTMLInputElement).value;
     if (settingSpec.lastSelectedValueObjectKeys) {
-      SharedRangeUtils.updateRangeCustomFeature(rangeValue, settingSpec, subcomponentProperties, settingSpec.lastSelectedValueObjectKeys);
+      UpdateRange.updateRangeCustomFeature(rangeValue, settingSpec, subcomponentProperties, settingSpec.lastSelectedValueObjectKeys);
     }
   }
 
@@ -69,9 +69,9 @@ export default class RangeUtils {
     if (spec.partialCss !== undefined) {
       if (spec.cssProperty === 'boxShadow') BoxShadowUtils.updateBoxShadowRangeValue(rangeValue, spec, subcomponentProperties);
     } else if (spec.customFeatureObjectKeys) {
-      SharedRangeUtils.updateRangeCustomFeature(rangeValue, spec, subcomponentProperties);
+      UpdateRange.updateRangeCustomFeature(rangeValue, spec, subcomponentProperties);
     } else {
-      const realRangeValue = SharedRangeUtils.updateCustomCss(rangeValue, spec, subcomponentProperties);
+      const realRangeValue = UpdateRange.updateCustomCss(rangeValue, spec, subcomponentProperties);
       if (spec.detailsToUpdateOtherCssProperties) UpdateOtherRangesUtils.updateOtherCustomCss(spec.detailsToUpdateOtherCssProperties, realRangeValue);
     }
   }
@@ -79,10 +79,10 @@ export default class RangeUtils {
   private static updateCustomCssSetting(settingToBeUpdated: any, cssPropertyValue: string): void {
     const singlePropertyValue = settingToBeUpdated.spec.partialCss
       ? cssPropertyValue.split(' ')[settingToBeUpdated.spec.partialCss.position] : cssPropertyValue;
-    const newRangeValue = SharedRangeUtils.parseString(singlePropertyValue, settingToBeUpdated.spec.smoothingDivisible);
+    const newRangeValue = UpdateRange.parseString(singlePropertyValue, settingToBeUpdated.spec.smoothingDivisible);
     if (Number.isNaN(newRangeValue)) { settingToBeUpdated.spec.default = RangeUtils.DEFAULT_RANGE_VALUE; }
     else if (Math.abs(Number.parseFloat(settingToBeUpdated.spec.default) - newRangeValue) >= settingToBeUpdated.spec.smoothingDivisible) {
-      settingToBeUpdated.spec.default = SharedRangeUtils.parseString(singlePropertyValue, settingToBeUpdated.spec.smoothingDivisible); 
+      settingToBeUpdated.spec.default = UpdateRange.parseString(singlePropertyValue, settingToBeUpdated.spec.smoothingDivisible); 
     }
   }
 
@@ -102,7 +102,7 @@ export default class RangeUtils {
           settingToBeUpdated.spec.detailsToUpdateOtherCssProperties, Number.parseFloat(cssPropertyValue));
       }
     } else if (settingToBeUpdated.spec.customFeatureObjectKeys) {
-      settingToBeUpdated.spec.default = SharedRangeUtils.getCustomFeatureRangeNumberValue(settingToBeUpdated.spec, subcomponentProperties);
+      settingToBeUpdated.spec.default = UpdateRange.getCustomFeatureRangeNumberValue(settingToBeUpdated.spec, subcomponentProperties);
       if (settingToBeUpdated.spec.updateSettingSpecViaOtherSettings) {
         UpdateOtherRangesUtils.updateCurrentOptionSettingAndCustomFeature(settingToBeUpdated.spec, subcomponentProperties);
       }

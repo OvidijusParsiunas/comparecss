@@ -1,7 +1,7 @@
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import { UpdateOtherRangesUtils } from './rangeUtils/updateOtherRangesUtils';
-import { SharedRangeUtils } from './rangeUtils/sharedRangeUtils';
+import { UpdateRange } from './rangeUtils/updateRange';
 import SharedUtils from './sharedUtils';
 
 export default class SettingsUtils {
@@ -61,7 +61,7 @@ export default class SettingsUtils {
         // when resetting back to not auto, the lastSelectedValue is going to be reset to whatever it was set to originally
         // instead of the max value of the scale. If this is confusing users - will need to activate settings triggers
         // that have customFeatureObjectKeys within them.
-        const rangeValue = SharedRangeUtils.getCustomFeatureRangeNumberValue(spec, subcomponentProperties);
+        const rangeValue = UpdateRange.getCustomFeatureRangeNumberValue(spec, subcomponentProperties);
         UpdateOtherRangesUtils.updateOtherOptionSettingAndCustomFeature(trigger, spec, rangeValue.toString(), subcomponentProperties);
       }
     });
