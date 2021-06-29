@@ -12,12 +12,7 @@
       @mousedown="mouseEvents[subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId].subcomponentMouseDown()"
       @mouseup="mouseEvents[subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId].subcomponentMouseUp()"
       @click="mouseEvents[subcomponentAndOverlayElementIds[(component.subcomponentNames && component.subcomponentNames.base) || BASE_SUB_COMPONENT].subcomponentId].subcomponentClick()"
-      :style="[
-            component.componentPreviewStructure.baseSubcomponentProperties.inheritedCss || '',
-            component.componentPreviewStructure.baseSubcomponentProperties[component.componentPreviewStructure.baseSubcomponentProperties.overwrittenCustomCssObjName || 'customCss'][CSS_PSEUDO_CLASSES.DEFAULT],
-            component.componentPreviewStructure.baseSubcomponentProperties[component.componentPreviewStructure.baseSubcomponentProperties.overwrittenCustomCssObjName || 'customCss'][component.componentPreviewStructure.baseSubcomponentProperties.activeCssPseudoClass],
-            { backgroundImage: component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures && component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.image
-              && component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.image.data ? 'url(' + component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.image.data + ')' : ''}]">
+      :style="getStyleProperties()">
           {{(component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures && component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.subcomponentText
             && component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.subcomponentText.text) ? component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.subcomponentText.text : '' }}
           <layers
@@ -51,8 +46,7 @@
             && component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.subcomponentText
             && component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.subcomponentText.text === CLOSE_BUTTON_X_TEXT"
             :class="SUBCOMPONENT_OVERLAY_CLASSES.SUB"
-            :style="[component.componentPreviewStructure.baseSubcomponentProperties[
-              component.componentPreviewStructure.baseSubcomponentProperties.overwrittenCustomCssObjName || 'customCss'][CSS_PSEUDO_CLASSES.DEFAULT], { top: ''}]"
+            :style="getXButtonOverlayStyleProperties()"
             @mouseEnter="useSubcomponentPreviewSelectModeEventHandlers.subcomponentMouseEnter"
             @mouseLeave="useSubcomponentPreviewSelectModeEventHandlers.subcomponentMouseLeave"></div>
     </div>
@@ -60,16 +54,17 @@
 </template>
 
 <script lang="ts">
+import { SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS } from '../../../../consts/subcomponentSelectModeDisabledElementClass';
 import useSubcomponentPreviewSelectModeEventHandlers from './compositionAPI/useSubcomponentPreviewSelectModeEventHandlers';
 import { UseSubcomponentPreviewEventHandlers } from '../../../../interfaces/useSubcomponentPreviewEventHandlers';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
+import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../consts/elementClassMarkers';
 import { SubcomponentProperties } from '../../../../interfaces/workshopComponent';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../consts/closeButtonXText';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
-import { SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS } from '../../../../consts/subcomponentSelectModeDisabledElementClass';
 import SubcomponentDisplayUtils from './utils/subcomponentDisplayUtils';
 import layers from './layers/Layers.vue';
 
@@ -105,6 +100,22 @@ export default {
     getSubcomponentMouseEventsDisabledClassForXButtonText(): string {
       return this.component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures?.subcomponentText?.text === CLOSE_BUTTON_X_TEXT
         ? SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS : ''
+    },
+    getStyleProperties(): WorkshopComponentCss[] {
+      const { baseSubcomponentProperties: {
+        overwrittenCustomCssObj, customCss, inheritedCss, activeCssPseudoClass, customStaticFeatures} } = this.component.componentPreviewStructure;
+      const customCssObj = overwrittenCustomCssObj || customCss;
+      return [
+        inheritedCss || '',
+        customCssObj[CSS_PSEUDO_CLASSES.DEFAULT],
+        customCssObj[activeCssPseudoClass],
+        { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : ''}
+      ];
+    },
+    getXButtonOverlayStyleProperties(): WorkshopComponentCss[] {
+      const { baseSubcomponentProperties: { overwrittenCustomCssObj, customCss } } = this.component.componentPreviewStructure;
+      const customCssObj = overwrittenCustomCssObj || customCss;
+      return [customCssObj[CSS_PSEUDO_CLASSES.DEFAULT], { top: ''}];
     },
   },
   components: {

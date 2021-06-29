@@ -10,7 +10,6 @@ import { animationState } from '../utils/animations/state';
 export default function useSubcomponentPreviewEventHandlers(subcomponentProperties: SubcomponentProperties,
     clickCallback: () => void): UseSubcomponentPreviewEventHandlers {
 
-  const OVERWRITTEN_CUSTOM_CSS_OBJ_NAME = 'tempOverwrittenCustomCss';
   let overwrittenDefaultPropertiesByHover = { hasBeenSet: false, css: {} };
   let overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
   let isUnsetButtonDisplayedForColorInputs = {};
@@ -42,8 +41,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     overwrittenDefaultPropertiesByHover = { hasBeenSet: true, css: { ...customCss[CSS_PSEUDO_CLASSES.DEFAULT], transition } };
     const newDefaultProperties = {
       ...customCss[CSS_PSEUDO_CLASSES.DEFAULT], ...customCss[CSS_PSEUDO_CLASSES.HOVER], transition, ...isUnsetButtonDisplayedForColorInputs };
-    subcomponentProperties[OVERWRITTEN_CUSTOM_CSS_OBJ_NAME] = { [CSS_PSEUDO_CLASSES.DEFAULT]: newDefaultProperties };
-    subcomponentProperties.overwrittenCustomCssObjName = OVERWRITTEN_CUSTOM_CSS_OBJ_NAME;
+    subcomponentProperties.overwrittenCustomCssObj = { [CSS_PSEUDO_CLASSES.DEFAULT]: newDefaultProperties };
   }
 
   // adding properties via OVERWRITTEN_CUSTOM_CSS_OBJ_NAME instead of customCss because if couple components are in-sync they will edit each other
@@ -63,7 +61,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     const { activeCssPseudoClass, triggerableSubcomponentName } = subcomponentProperties;
     if (triggerableSubcomponentName) triggerAnotherSubcomponentMouseEvent(triggerableSubcomponentName, event.type);
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT && overwrittenDefaultPropertiesByHover.hasBeenSet) {
-      delete subcomponentProperties.overwrittenCustomCssObjName;
+      delete subcomponentProperties.overwrittenCustomCssObj;
       overwrittenDefaultPropertiesByHover = { hasBeenSet: false, css: {} };
     }
     isUnsetButtonDisplayedForColorInputs = {};
@@ -78,11 +76,11 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
       const newDefaultProperties = {
         ...customCss[CSS_PSEUDO_CLASSES.DEFAULT], ...customCss[CSS_PSEUDO_CLASSES.CLICK], transition, ...isUnsetButtonDisplayedForColorInputs };
       // this is a bug fix for when the user clicks a button without entering it (after subcomponent select mode)
-      if (!subcomponentProperties.overwrittenCustomCssObjName) {
+      if (!subcomponentProperties.overwrittenCustomCssObj) {
         setMouseEnterProperties(customCss, transition);
       }
-      overwrittenDefaultPropertiesByClick = { hasBeenSet: true, css: { ...subcomponentProperties[OVERWRITTEN_CUSTOM_CSS_OBJ_NAME][CSS_PSEUDO_CLASSES.DEFAULT], transition } };
-      subcomponentProperties[OVERWRITTEN_CUSTOM_CSS_OBJ_NAME][CSS_PSEUDO_CLASSES.DEFAULT] = { ...newDefaultProperties };
+      overwrittenDefaultPropertiesByClick = { hasBeenSet: true, css: { ...subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT], transition } };
+      subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] = { ...newDefaultProperties };
     }
   }
 
@@ -91,7 +89,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     const { activeCssPseudoClass, triggerableSubcomponentName } = subcomponentProperties;
     if (triggerableSubcomponentName) triggerAnotherSubcomponentMouseEvent(triggerableSubcomponentName, event.type);
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT && overwrittenDefaultPropertiesByClick.hasBeenSet) {
-      subcomponentProperties[OVERWRITTEN_CUSTOM_CSS_OBJ_NAME][CSS_PSEUDO_CLASSES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };
+      subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };
       overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} }; 
     }
   }

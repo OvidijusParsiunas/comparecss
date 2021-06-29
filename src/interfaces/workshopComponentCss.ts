@@ -48,4 +48,5 @@ export interface WorkshopComponentCss {
   userSelect?: string;
   zIndex?: number;
   wordBreak?: string;
+  backgroundImage?: string;
 }

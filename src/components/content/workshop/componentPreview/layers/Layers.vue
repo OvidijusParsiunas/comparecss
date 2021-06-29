@@ -3,10 +3,7 @@
     <div v-for="(layer, index) in layers" :key="layer" class="layer" :class="COMPONENT_PREVIEW_MARKER">
       <div v-if="isSubcomponentDisplayed(layer.subcomponentProperties)"
         :id="subcomponentAndOverlayElementIds[layer.name] && subcomponentAndOverlayElementIds[layer.name].subcomponentId"
-        :style="[layer.subcomponentProperties[layer.subcomponentProperties.overwrittenCustomCssObjName || 'customCss'][DEFAULT_CSS_PSEUDO_CLASS],
-          { backgroundImage: layer.subcomponentProperties.customStaticFeatures && layer.subcomponentProperties.customStaticFeatures.image
-            && layer.subcomponentProperties.customStaticFeatures.image.data ? 'url(' + layer.subcomponentProperties.customStaticFeatures.image.data + ')' : ''},
-          { zIndex: layers.length - index }]"
+        :style="getStyleProperties(layers, layer, index)"
         :class="COMPONENT_PREVIEW_MARKER"
         @mouseenter="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentMouseEnter()"
         @mouseleave="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentMouseLeave()"
@@ -33,8 +30,10 @@
 <script lang="ts">
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
+import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
+import { Layer } from '../../../../../interfaces/componentPreviewStructure';
 import SubcomponentDisplayUtils from '../utils/subcomponentDisplayUtils';
 import layerSections from './LayerSections.vue';
 
@@ -55,6 +54,17 @@ export default {
       URL: require('@/assets/images/road.webp'),
       isSubcomponentDisplayed: SubcomponentDisplayUtils.isSubcomponentDisplayed,
     };
+  },
+  methods: {
+    getStyleProperties(layers: Layer[], layer: Layer, index: number): WorkshopComponentCss[] {
+      const { subcomponentProperties: { overwrittenCustomCssObj, customCss, customStaticFeatures } } = layer;
+      const customCssObj = overwrittenCustomCssObj || customCss;
+      return [
+        customCssObj[CSS_PSEUDO_CLASSES.DEFAULT],
+        { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : ''},
+        { zIndex: layers.length - index }
+      ]
+    },
   },
   components: {
     layerSections,

@@ -179,7 +179,7 @@ export interface SubcomponentProperties {
   // used to track the nested component's inSync property and also used to identify whether the subcomponent is nested (not the base subcomponent)
   baseSubcomponentRef?: SubcomponentProperties;
   // this is used for overwriting css properties on mouse actions as adding css directly to customCss causes in-sync components to be edited all at once
-  overwrittenCustomCssObjName?: string;
+  overwrittenCustomCssObj?: CustomCss;
   parentLayer?: Layer;
   // temporarily holds the original customCss when a component card has been hovered/selected during component import mode 
   tempOriginalCustomProperties?: TempCustomProperties;
