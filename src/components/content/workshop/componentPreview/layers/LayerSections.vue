@@ -1,29 +1,29 @@
 <template>
   <div class="layer-sections-container" :class="[...classes, COMPONENT_PREVIEW_MARKER]">
     <!-- center -->
-    <layer-section v-if="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS] && sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.CENTER]"
+    <layer-section v-if="getAlignedSection([ALIGNED_SECTION_TYPES.CENTER])"
       class="center-section"
       :class="COMPONENT_PREVIEW_MARKER"
       :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-      :nestedSubcomponents="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.CENTER]"
+      :nestedSubcomponents="getAlignedSection([ALIGNED_SECTION_TYPES.CENTER])"
       :mouseEvents="mouseEvents"
       :specialisedSectionContainerClass="SPECIALISED_SECTION_CONTAINER_CLASSES.CENTER_SECTION"/>
     <div class="default-sections-container" :class="[...classes, COMPONENT_PREVIEW_MARKER]">
       <!-- left -->
-      <layer-section v-if="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS] && sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.LEFT]"
+      <layer-section v-if="getAlignedSection([ALIGNED_SECTION_TYPES.LEFT])"
         style="order: 0"
         class="default-section"
         :class="COMPONENT_PREVIEW_MARKER"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-        :nestedSubcomponents="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.LEFT]"
+        :nestedSubcomponents="getAlignedSection([ALIGNED_SECTION_TYPES.LEFT])"
         :mouseEvents="mouseEvents"/>
       <!-- right -->
-      <layer-section v-if="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS] && sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.RIGHT]"
+      <layer-section v-if="getAlignedSection([ALIGNED_SECTION_TYPES.RIGHT])"
         style="order: 1"
         class="default-section right-section"
         :class="COMPONENT_PREVIEW_MARKER"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-        :nestedSubcomponents="sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][ALIGNED_SECTION_TYPES.RIGHT]"
+        :nestedSubcomponents="getAlignedSection([ALIGNED_SECTION_TYPES.RIGHT])"
         :mouseEvents="mouseEvents"/>
       <!-- equal split sections -->
       <layer-section v-if="sections[LAYER_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS]"
@@ -58,6 +58,11 @@ export default {
       ALIGNED_SECTION_TYPES,
       LAYER_SECTIONS_TYPES,
     };
+  },
+  methods: {
+    getAlignedSection(alignedSectionType: ALIGNED_SECTION_TYPES): ALIGNED_SECTION_TYPES {
+      return this.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS]?.[alignedSectionType];
+    }
   },
   components: {
     layerSection,

@@ -2,14 +2,14 @@
   <div class="layers" :class="COMPONENT_PREVIEW_MARKER">
     <div v-for="(layer, index) in layers" :key="layer" class="layer" :class="COMPONENT_PREVIEW_MARKER">
       <div v-if="isSubcomponentDisplayed(layer.subcomponentProperties)"
-        :id="subcomponentAndOverlayElementIds[layer.name] && subcomponentAndOverlayElementIds[layer.name].subcomponentId"
+        :id="getLayerId(layer.name, 'subcomponentId')"
         :style="getStyleProperties(layers, layer, index)"
         :class="COMPONENT_PREVIEW_MARKER"
-        @mouseenter="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentMouseEnter()"
-        @mouseleave="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentMouseLeave()"
-        @mousedown="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentMouseDown()"
-        @mouseup="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentMouseUp()"
-        @click="subcomponentAndOverlayElementIds[layer.name] && mouseEvents[subcomponentAndOverlayElementIds[layer.name].subcomponentId].subcomponentClick()">
+        @mouseenter="activateMouseEvent(layer.name, 'subcomponentMouseEnter')"
+        @mouseleave="activateMouseEvent(layer.name, 'subcomponentMouseLeave')"
+        @mousedown="activateMouseEvent(layer.name, 'subcomponentMouseDown')"
+        @mouseup="activateMouseEvent(layer.name, 'subcomponentMouseUp')"
+        @click="activateMouseEvent(layer.name, 'subcomponentClick')">
           <layer-sections
             v-if="layer.sections"
             :class="COMPONENT_PREVIEW_MARKER"
@@ -19,7 +19,7 @@
             :mouseEvents="mouseEvents"/>
       </div>
       <div v-if="isSubcomponentDisplayed(layer.subcomponentProperties)"
-        :id="subcomponentAndOverlayElementIds[layer.name] && subcomponentAndOverlayElementIds[layer.name].overlayId"
+        :id="getLayerId(layer.name, 'overlayId')"
         style="display: none"
         :style="[layer.subcomponentProperties.customCss[DEFAULT_CSS_PSEUDO_CLASS], { zIndex: layers.length - index + 1 }]"
         :class="[...OVERLAY_DEFAULT_CLASSES]"></div>
@@ -28,6 +28,8 @@
 </template>
                     
 <script lang="ts">
+import { UseSubcomponentPreviewEventHandlers } from '../../../../../interfaces/useSubcomponentPreviewEventHandlers';
+import { SubcomponentAndOverlayElementIds } from '../../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
@@ -64,6 +66,13 @@ export default {
         { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : ''},
         { zIndex: layers.length - index }
       ]
+    },
+    getLayerId(layerName: string, idType: keyof SubcomponentAndOverlayElementIds[string]): string {
+      return this.subcomponentAndOverlayElementIds[layerName]?.[idType];
+    },
+    activateMouseEvent(layerName: string, subcomponentMouseEvent: keyof UseSubcomponentPreviewEventHandlers): void {
+      const layerId = this.getLayerId(layerName, 'subcomponentId');
+      return layerId && this.mouseEvents[layerId][subcomponentMouseEvent]()
     },
   },
   components: {
