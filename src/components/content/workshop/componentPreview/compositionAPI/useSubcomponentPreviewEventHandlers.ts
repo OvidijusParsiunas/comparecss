@@ -88,7 +88,8 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     if (shoudPreventMouseEvent()) return;
     const { activeCssPseudoClass, triggerableSubcomponentName } = subcomponentProperties;
     if (triggerableSubcomponentName) triggerAnotherSubcomponentMouseEvent(triggerableSubcomponentName, event.type);
-    if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT && overwrittenDefaultPropertiesByClick.hasBeenSet) {
+    if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT && overwrittenDefaultPropertiesByClick.hasBeenSet
+        && subcomponentProperties.overwrittenCustomCssObj) {
       subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };
       overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} }; 
     }

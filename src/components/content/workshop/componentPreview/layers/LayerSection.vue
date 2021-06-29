@@ -6,14 +6,10 @@
     <div v-for="(nestedSubcomponent, index) in nestedSubcomponents" :key="nestedSubcomponent"
       :style="{order: `${index}`}"
       class="subcomponent-element-container"
-      :class="[COMPONENT_PREVIEW_MARKER, specialisedSectionContainerClass,
-        ...(nestedSubcomponent.subcomponentProperties.customFeatures
-          && nestedSubcomponent.subcomponentProperties.customFeatures.jsClasses || [])]">
+      :class="[COMPONENT_PREVIEW_MARKER, specialisedSectionContainerClass, ...getNestedSubcomponentJs(nestedSubcomponent)]">
       <base-component v-if="nestedSubcomponent.subcomponentProperties.nestedComponent"
         class="nested-component-container"
-        :class="[COMPONENT_PREVIEW_MARKER,
-          ...(nestedSubcomponent.subcomponentProperties.customFeatures
-          && nestedSubcomponent.subcomponentProperties.customFeatures.jsClasses || [])]"
+        :class="[COMPONENT_PREVIEW_MARKER, ...getNestedComponentContainerJsClasses(nestedSubcomponent)]"
         :component="nestedSubcomponent.subcomponentProperties.nestedComponent.ref"
         :mouseEvents="mouseEvents"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
@@ -23,7 +19,10 @@
 </template>
                     
 <script lang="ts">
+import { ComponentJavascriptClasses } from '../../../../../interfaces/componentJavascriptClasses';
+import { NestedSubcomponent } from '../../../../../interfaces/componentPreviewStructure';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
+import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 
 interface Consts {
   COMPONENT_PREVIEW_MARKER: string;
@@ -34,6 +33,15 @@ export default {
     return {
       COMPONENT_PREVIEW_MARKER,
     };
+  },
+  methods: {
+    getNestedComponentContainerJsClasses(nestedSubcomponent: NestedSubcomponent): ComponentJavascriptClasses | undefined[] {
+      if (nestedSubcomponent.subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BUTTON) return [];
+      return this.getNestedSubcomponentJs(nestedSubcomponent);
+    },
+    getNestedSubcomponentJs(nestedSubcomponent: NestedSubcomponent): ComponentJavascriptClasses | undefined[] {
+      return nestedSubcomponent.subcomponentProperties.customFeatures?.jsClasses || [];
+    }
   },
   props: {
     subcomponentAndOverlayElementIds: Object,
