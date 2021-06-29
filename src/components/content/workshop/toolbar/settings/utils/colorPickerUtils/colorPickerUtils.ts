@@ -1,6 +1,6 @@
-import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
-import BoxShadowUtils from './boxShadowUtils';
-import SharedUtils from './sharedUtils';
+import { SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
+import BoxShadowUtils from '../boxShadowUtils';
+import SharedUtils from '../sharedUtils';
 
 export default class ColorPickerUtils {
 

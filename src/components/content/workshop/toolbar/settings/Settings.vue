@@ -19,16 +19,12 @@
                       {{setting.spec.greatestControlledNumber + setting.spec.postfix}}
                     </div>
                     <!-- the boxShadow range properties are set to 'unset' when all are 0px (for firefox) -->
-                    <div v-else-if="subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass]
-                      && subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass][setting.spec.cssProperty]
-                      && subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass][setting.spec.cssProperty] !== 'unset'">
+                    <div v-else-if="isCssPropertyNotEquals(setting, 'unset')">
                       {{setting.spec.partialCss !== undefined && subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass][setting.spec.cssProperty]
                         ? subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass][setting.spec.cssProperty].split(' ')[setting.spec.partialCss.position]
                         : subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass][setting.spec.cssProperty]}}
                     </div>
-                    <div v-else-if="subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass]
-                      && subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass][setting.spec.cssProperty]
-                      && subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass][setting.spec.cssProperty] === 'unset'">
+                    <div v-else-if="isCssPropertyEquals(setting, 'unset')">
                       0px
                     </div>
                     <div v-else>
@@ -63,26 +59,7 @@
                   @input="changeSetting(colorChanged.bind(this, $event, setting))"
                   v-model="setting.spec.default"/>
                 <button class="unset-color-button" id="dropdownMenuButton"
-                  v-if="setting.spec.unsetColorButtonAvailable && 
-                    ((subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass]
-                      && subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass][setting.spec.cssProperty]
-                      && ((!subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX]
-                            && subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass][setting.spec.cssProperty] !== INHERIT_CUSTOM_FEATURE_COLOR_VALUE)
-                          || 
-                          (subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX]
-                            && subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass][setting.spec.cssProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX] === UNSET_COLOR_BUTTON_DISPLAYED_STATE.DISPLAY)))
-                    || ((subcomponentProperties.activeCssPseudoClass === CSS_PSEUDO_CLASSES.HOVER
-                        && ((subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER] && subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER][setting.spec.cssProperty] && subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER][setting.spec.cssProperty] !== 'inherit')
-                          || ((!subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER] || !subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER][setting.spec.cssProperty])
-                            && subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT][setting.spec.cssProperty] !== INHERIT_CUSTOM_FEATURE_COLOR_VALUE))
-                        )
-                        || (subcomponentProperties.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK
-                          && ((subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK] && subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK][setting.spec.cssProperty] && subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK][setting.spec.cssProperty] !== 'inherit')
-                            || ((!subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK] || !subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK][setting.spec.cssProperty])
-                                  && (((!subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER] || !subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER][setting.spec.cssProperty]) && subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT][setting.spec.cssProperty] !== 'inherit')
-                                      || (subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER] && subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER][setting.spec.cssProperty] && subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER][setting.spec.cssProperty] !== 'inherit')))))
-                       )
-                    || (setting.spec.customFeatureObjectKeys && (setting.spec.default !== UNSET_CUSTOM_FEATURE_COLOR_VALUE)))"
+                  v-if="isUnsetColorButtonDisplayed(setting)"
                   @click="changeSetting(removeColor.bind(this, setting.spec, setting.removeColorTriggers))">
                   &times;
                 </button>
@@ -196,11 +173,12 @@ import { TOOLBAR_GENERAL_BUTTON_CLASS } from '../../../../../consts/toolbarClass
 import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
 import { UseActionsDropdown } from '../../../../../interfaces/UseActionsDropdown';
 import { RANGE_SETTING_MARKER } from '../../../../../consts/elementClassMarkers';
+import { UnsetColorButton } from './utils/colorPickerUtils/unsetColorButton';
 import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
+import ColorPickerUtils from './utils/colorPickerUtils/colorPickerUtils';
 import useActionsDropdown from './compositionAPI/useActionsDropdown';
 import { InSync } from '../options/importComponent/inSync';
 import dropdown from '../options/dropdown/Dropdown.vue';
-import ColorPickerUtils from './utils/colorPickerUtils';
 import RangeUtils from './utils/rangeUtils/rangeUtils';
 import SettingsUtils from './utils/settingsUtils';
 import CheckboxUtils from './utils/checkboxUtils';
@@ -293,6 +271,20 @@ export default {
     settingsVisible: true,
   }),
   methods: {
+    getCurrentCssProperty(setting: any): boolean {
+      return this.subcomponentProperties.customCss[this.subcomponentProperties.activeCssPseudoClass]?.[setting.spec.cssProperty];
+    },
+    isCssPropertyEquals(setting: any, propertyValue: string): boolean {
+      const cssProperty = this.getCurrentCssProperty(setting);
+      return cssProperty && cssProperty === propertyValue;
+    },
+    isCssPropertyNotEquals(setting: any, propertyValue: string): boolean {
+      const cssProperty = this.getCurrentCssProperty(setting);
+      return cssProperty && cssProperty !== propertyValue;
+    },
+    isUnsetColorButtonDisplayed(setting: any): boolean {
+      return UnsetColorButton.isUnsetColorButtonDisplayed(setting.spec, this.subcomponentProperties);
+    },
     updateRange(event: MouseEvent, setting: any): void {
       RangeUtils.updateProperties(event, setting, this.settings, this.subcomponentProperties, this.actionsDropdownsObjects,
         this.refreshSettings.bind(this));
