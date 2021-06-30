@@ -1,6 +1,7 @@
 import { COMPONENT_CARD_MARKER, COMPONENT_LIST_ITEM_MARKER, OPTION_MENU_BUTTON_MARKER } from '../../../../../../../../consts/elementClassMarkers';
 import { WorkshopEventCallbackUtils } from '../../../../../toolbar/options/workshopEventCallbackUtils/workshopEventCallbackUtils';
 import { WorkshopEventCallbackReturn } from '../../../../../../../../interfaces/workshopEventCallbackReturn';
+import { PARENT_SUBCOMPONENT_NAME } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { SubcomponentProperties } from '../../../../../../../../interfaces/workshopComponent';
 import { animationTypeToFunctionality } from '../../../animations/animationToFunctionality';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
@@ -39,8 +40,7 @@ export default class Dismiss {
   }
 
   private static close(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement): WorkshopEventCallbackReturn {
-    const { subcomponents, coreSubcomponentNames } = componentPreviewComponent.component;
-    const { type, duration } = subcomponents[coreSubcomponentNames.base].customFeatures.animations.close;
+    const { type, duration } = componentPreviewComponent.component[PARENT_SUBCOMPONENT_NAME.BASE].customFeatures.animations.close;
     const closeAnimation = animationTypeToFunctionality[type] as CloseAnimation;
     const animationDuration = duration;
     animationState.setIsAnimationPreviewInProgressState(true);

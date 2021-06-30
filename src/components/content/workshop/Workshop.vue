@@ -128,6 +128,7 @@ import removalModalTemplate from './templates/RemovalModalTemplate.vue';
 import newComponentModal from './newComponent/NewComponentModal.vue';
 import componentList from './componentList/ComponentList.vue';
 import toolbar from './toolbar/Toolbar.vue';
+import { PARENT_SUBCOMPONENT_NAME } from '@/consts/baseSubcomponentNames.enum';
 
 interface Consts {
   preloadedIconsElementId: string;
@@ -247,7 +248,7 @@ export default {
     isExpandedModalPreviewBackdropVisible(): boolean {
       const { subcomponents } = this.currentlySelectedComponent || {};
       if (subcomponents) {
-        return subcomponents[subcomponents[this.currentlySelectedComponent.coreSubcomponentNames.base]]?.customFeatures?.backdrop?.visible
+        return subcomponents[PARENT_SUBCOMPONENT_NAME.BASE].customFeatures?.backdrop?.visible;
       }
       return false;
     }

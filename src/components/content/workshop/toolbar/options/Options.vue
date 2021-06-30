@@ -157,6 +157,7 @@ import ImportComponentModeToggleUtils from './importComponent/modeUtils/importCo
 import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFullPreviewModeEvent';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../consts/componentStyles.enum';
+import { PARENT_SUBCOMPONENT_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
 import SubcomponentToggleUtils from './subcomponentToggleUtils/subcomponentToggleUtils';
@@ -469,7 +470,7 @@ export default {
     resetComponentPreviewMarginAssistance(): void {
       this.$nextTick(() => {
         this.componentPreviewAssistance.margin = this.activeOption.type === WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN
-          && this.component.activeSubcomponentName === this.component.coreSubcomponentNames.base
+          && this.component.activeSubcomponentName === PARENT_SUBCOMPONENT_NAME.BASE
           && this.isSettingsDisplayed
           && !this.isExpandedModalPreviewModeActive;
       });
