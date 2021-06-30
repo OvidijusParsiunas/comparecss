@@ -1,18 +1,18 @@
-import { NestedComponent, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { CoreSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
+import { NestedComponent, SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { ReferenceSharingExecutable } from '../../../../../../interfaces/referenceSharingExecutable';
 import JSONManipulation from '../../../../../../services/workshop/jsonManipulation';
 
 export class InSync {
   
   private static dereferenceImportedComponentCustomProperties(activeComponent: WorkshopComponent, baseSubcomponent: SubcomponentProperties): void {
-    const { subcomponentNames, referenceSharingExecutables } = baseSubcomponent.nestedComponent.ref;
-    Object.keys(subcomponentNames).forEach((subcomponentName: string) => {
-      const nestedComponent = activeComponent.subcomponents[subcomponentNames[subcomponentName]];
+    const { subcomponents, referenceSharingExecutables, coreSubcomponentNames } = baseSubcomponent.nestedComponent.ref;
+    Object.keys(subcomponents).forEach((subcomponentName: string) => {
+      const nestedComponent = activeComponent.subcomponents[subcomponentName];
       nestedComponent.customCss = JSONManipulation.deepCopy(nestedComponent.customCss);
       nestedComponent.customFeatures = JSONManipulation.deepCopy(nestedComponent.customFeatures);
     });
-    referenceSharingExecutables.forEach((executable: (param1: Subcomponents, param2: CoreSubcomponentNames) => void) => {
-      executable(activeComponent.subcomponents, subcomponentNames);
+    referenceSharingExecutables.forEach((executable: ReferenceSharingExecutable) => {
+      executable(activeComponent.subcomponents, coreSubcomponentNames);
     });
   }
 

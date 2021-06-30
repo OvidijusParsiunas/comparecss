@@ -3,8 +3,8 @@ import { componentTypeToStyleGenerators } from '../../../../newComponent/types/c
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { NESTED_SUBCOMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { Layer, NestedSubcomponent } from '../../../../../../../interfaces/componentPreviewStructure';
-import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { NestedComponentGenerator } from '../../../importComponent/nestedComponentGenerator';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -22,11 +22,11 @@ interface SubcomponentData {
 
 export class AddNewGenericComponent {
 
-  private static readonly componentTypeToName: { [key in COMPONENT_TYPES]?: CORE_SUBCOMPONENTS_NAMES } = {
-    [COMPONENT_TYPES.LAYER]: CORE_SUBCOMPONENTS_NAMES.LAYER,
-    [COMPONENT_TYPES.BUTTON]: CORE_SUBCOMPONENTS_NAMES.BUTTON,
-    [COMPONENT_TYPES.TEXT]: CORE_SUBCOMPONENTS_NAMES.TEXT,
-    [COMPONENT_TYPES.AVATAR]: CORE_SUBCOMPONENTS_NAMES.AVATAR,
+  private static readonly componentTypeToName: { [key in COMPONENT_TYPES]?: NESTED_SUBCOMPONENTS_BASE_NAMES } = {
+    [COMPONENT_TYPES.LAYER]: NESTED_SUBCOMPONENTS_BASE_NAMES.LAYER,
+    [COMPONENT_TYPES.BUTTON]: NESTED_SUBCOMPONENTS_BASE_NAMES.BUTTON,
+    [COMPONENT_TYPES.TEXT]: NESTED_SUBCOMPONENTS_BASE_NAMES.TEXT,
+    [COMPONENT_TYPES.AVATAR]: NESTED_SUBCOMPONENTS_BASE_NAMES.AVATAR,
   }
 
   private static updateComponentPreviewStructure(parentComponent: WorkshopComponent, nestedComponent: NewComponentProperties,
@@ -51,12 +51,12 @@ export class AddNewGenericComponent {
     parentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][alignment || ALIGNED_SECTION_TYPES.LEFT].push(nestedSubcomponentProperties);
   }
 
-  private static findparentLayer(parentComponent: WorkshopComponent, layerName: CORE_SUBCOMPONENTS_NAMES | string): Layer {
+  private static findparentLayer(parentComponent: WorkshopComponent, layerName: string): Layer {
     return parentComponent.componentPreviewStructure.layers.find((layer) => layer.name === layerName);
   }
 
   private static assembleSubcomponentData(parentComponent: WorkshopComponent, nestedComponent: NewComponentProperties,
-      layerName: CORE_SUBCOMPONENTS_NAMES | string): SubcomponentData {
+      layerName: string): SubcomponentData {
     const parentLayer = AddNewGenericComponent.findparentLayer(parentComponent, layerName);
     const baseSubcomponentProperties = nestedComponent.subcomponents[nestedComponent.baseName];
     const { subcomponentDropdownStructure } = parentComponent.componentPreviewStructure;
@@ -66,7 +66,7 @@ export class AddNewGenericComponent {
   }
 
   private static addNewSubcomponentsToComponentPreview(parentComponent: WorkshopComponent, nestedComponent: NewComponentProperties,
-      layerName: CORE_SUBCOMPONENTS_NAMES | string): void {
+      layerName: string): void {
     const { parentLayer, baseSubcomponentProperties, subcomponentDropdownStructure, parentComponentBaseName,
       isParentLayerInSubcomponentsDropdown } = AddNewGenericComponent.assembleSubcomponentData(parentComponent, nestedComponent, layerName);
     AddNewGenericComponent.addNewSubcomponentToparentLayer(parentLayer, baseSubcomponentProperties, nestedComponent);
@@ -93,8 +93,7 @@ export class AddNewGenericComponent {
     return { baseName, subcomponents };
   }
 
-  public static add(parentComponent: WorkshopComponent, componentType: COMPONENT_TYPES,
-      componentStyle: COMPONENT_STYLES, layerName: CORE_SUBCOMPONENTS_NAMES | string,
+  public static add(parentComponent: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, layerName: string,
       overwritePropertiesFunc?: OverwritePropertiesFunc[]): NewComponentProperties {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
     const nestedComponent = AddNewGenericComponent.createNewNestedComponent(componentType, componentGenerator, overwritePropertiesFunc);

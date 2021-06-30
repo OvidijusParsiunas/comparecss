@@ -1,6 +1,6 @@
-import { NestedComponent, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { NestedComponent, SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { ReferenceSharingExecutable } from '../../../../../../interfaces/referenceSharingExecutable';
 import ComponentTraversalUtils from '../../../utils/componentTraversal/componentTraversalUtils';
-import { CoreSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
 import JSONManipulation from '../../../../../../services/workshop/jsonManipulation';
 
 export default class SubcomponentToggleUtils {
@@ -16,7 +16,7 @@ export default class SubcomponentToggleUtils {
       const nestedComponent = activeComponent.subcomponents[coreSubcomponentNames[subcomponentName]];
       SubcomponentToggleUtils.resetSubcomponentProperties(nestedComponent);
     });
-    referenceSharingExecutables.forEach((executable: (param1: Subcomponents, param2: CoreSubcomponentNames) => void) => {
+    referenceSharingExecutables.forEach((executable: ReferenceSharingExecutable) => {
       executable(activeComponent.subcomponents, coreSubcomponentNames);
     });
     // the timeout is used to allow the options buttons to disappear before inSync button removal animation begins

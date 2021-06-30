@@ -1,10 +1,10 @@
+import { NESTED_SUBCOMPONENTS_BASE_NAMES, PARENT_SUBCOMPONENT_NAME } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { NewComponentProperties, OverwritePropertiesFunc } from '../../../../../../../interfaces/addNewSubcomponent';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { AlignedSections, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
-import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
 import { EntityDisplayStatusUtils } from '../../../entityDisplayStatus/entityDisplayStatusUtils';
 import { NestedComponentGenerator } from '../../../importComponent/nestedComponentGenerator';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -20,7 +20,7 @@ export class AddNewLayerSubcomponent {
       ...EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject(layerBaseSubcomponent.subcomponentDisplayStatus),
     }};
     const parentSubcomponentObject = parentComponent.componentPreviewStructure.subcomponentDropdownStructure;
-    JsUtils.addObjects(parentSubcomponentObject, CORE_SUBCOMPONENTS_NAMES.BASE, newNestedDropdownStructure);
+    JsUtils.addObjects(parentSubcomponentObject, PARENT_SUBCOMPONENT_NAME.BASE, newNestedDropdownStructure);
   }
 
   private static addNewSubcomponentToBase(parentComponent: WorkshopComponent, layer: Layer): void {
@@ -59,7 +59,7 @@ export class AddNewLayerSubcomponent {
 
   protected static createNewNestedComponent(parentComponent: WorkshopComponent, componentGenerator: ComponentGenerator,
       overwritePropertiesFunc?: OverwritePropertiesFunc): NewComponentProperties {
-    const baseName = `${UniqueSubcomponentNameGenerator.generate(CORE_SUBCOMPONENTS_NAMES.LAYER)} ${parentComponent.componentPreviewStructure.layers.length + 1}`;
+    const baseName = `${UniqueSubcomponentNameGenerator.generate(NESTED_SUBCOMPONENTS_BASE_NAMES.LAYER)} ${parentComponent.componentPreviewStructure.layers.length + 1}`;
     const subcomponents = NestedComponentGenerator.createNestedComponentSubcomponents(componentGenerator, baseName);
     const { coreSubcomponentNames } = subcomponents[baseName].nestedComponent.ref;
     if (overwritePropertiesFunc) overwritePropertiesFunc(subcomponents, coreSubcomponentNames);

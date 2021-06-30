@@ -1,10 +1,11 @@
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES, MODAL_ANIMATION_CLOSE_TYPES } from '../consts/animationTypes.enum';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../consts/workshopToolbarOptionTypes.enum';
-import { CORE_SUBCOMPONENTS_NAMES } from '../consts/coreSubcomponentNames.enum';
+import { BASE_SUBCOMPONENT_NAMES } from '../consts/baseSubcomponentNames.enum';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
+import { ReferenceSharingExecutable } from './referenceSharingExecutable';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
 import { CoreSubcomponentNames } from './customSubcomponentNames';
@@ -188,7 +189,7 @@ export interface SubcomponentProperties {
 }
 
 export type Subcomponents = {
-  [key in CORE_SUBCOMPONENTS_NAMES]?: SubcomponentProperties;
+  [key in BASE_SUBCOMPONENT_NAMES]?: SubcomponentProperties;
 }
 
 export interface WorkshopComponent {
@@ -206,7 +207,7 @@ export interface WorkshopComponent {
   // gives an in sync nested component to identify if the copied component has not been deleted
   componentStatus: { isRemoved: boolean };
   // used to reassign references when the subcomponents have been deep copied
-  referenceSharingExecutables?: ((...any: any) => void)[];
+  referenceSharingExecutables?: ReferenceSharingExecutable[];
 }
 
 // Reference for component structure:

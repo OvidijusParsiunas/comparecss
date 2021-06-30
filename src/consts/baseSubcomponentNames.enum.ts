@@ -1,0 +1,12 @@
+export type BASE_SUBCOMPONENT_NAMES = PARENT_SUBCOMPONENT_NAME | NESTED_SUBCOMPONENTS_BASE_NAMES;
+
+export enum PARENT_SUBCOMPONENT_NAME {
+  BASE = 'Base'
+}
+
+export enum NESTED_SUBCOMPONENTS_BASE_NAMES {
+  LAYER = 'Layer',
+  BUTTON = 'Button',
+  TEXT = 'Text',
+  AVATAR = 'Avatar',
+}

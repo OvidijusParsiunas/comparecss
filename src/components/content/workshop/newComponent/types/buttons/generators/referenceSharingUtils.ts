@@ -9,17 +9,16 @@ export default class ReferenceSharingUtils {
   }
 
   public static appendJsClassesRefToAllSubcomponents(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void { 
-    const subcomponentNameKeys = Object.keys(coreSubcomponentNames);
-    const subcomponentProperties = subcomponents[coreSubcomponentNames[subcomponentNameKeys[0]]];
-    const jsClasses = subcomponentProperties.customFeatures && subcomponentProperties.customFeatures.jsClasses
-      ? subcomponentProperties.customFeatures.jsClasses : ReferenceSharingUtils.createDefaultButtonJsClasses();
-    subcomponentNameKeys.forEach((subcomponentName) => {
-      if (!subcomponents[coreSubcomponentNames[subcomponentName]].customFeatures) {
-        subcomponents[coreSubcomponentNames[subcomponentName]].customFeatures = {};
-        subcomponents[coreSubcomponentNames[subcomponentName]].defaultCustomFeatures = {};
+    const baseSubcomponent = subcomponents[coreSubcomponentNames.base];
+    const jsClasses = baseSubcomponent.customFeatures && baseSubcomponent.customFeatures.jsClasses
+      ? baseSubcomponent.customFeatures.jsClasses : ReferenceSharingUtils.createDefaultButtonJsClasses();
+    Object.keys(subcomponents).forEach((subcomponentName) => {
+      if (!subcomponents[subcomponentName].customFeatures) {
+        subcomponents[subcomponentName].customFeatures = {};
+        subcomponents[subcomponentName].defaultCustomFeatures = {};
       }
-      subcomponents[coreSubcomponentNames[subcomponentName]].customFeatures.jsClasses = jsClasses;
-      subcomponents[coreSubcomponentNames[subcomponentName]].defaultCustomFeatures.jsClasses = new Set(jsClasses);
+      subcomponents[subcomponentName].customFeatures.jsClasses = jsClasses;
+      subcomponents[subcomponentName].defaultCustomFeatures.jsClasses = new Set(jsClasses);
     });
   }
 
