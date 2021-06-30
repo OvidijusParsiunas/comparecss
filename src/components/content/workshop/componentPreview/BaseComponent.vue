@@ -45,7 +45,6 @@ import useSubcomponentPreviewSelectModeEventHandlers from './compositionAPI/useS
 import { UseSubcomponentPreviewEventHandlers } from '../../../../interfaces/useSubcomponentPreviewEventHandlers';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
-import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../consts/elementClassMarkers';
@@ -59,7 +58,6 @@ interface Consts {
   SUBCOMPONENT_OVERLAY_CLASSES: typeof SUBCOMPONENT_OVERLAY_CLASSES;
   STATIC_POSITION_CLASS: string;
   COMPONENT_PREVIEW_MARKER: string;
-  BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES;
   CSS_PSEUDO_CLASSES: typeof CSS_PSEUDO_CLASSES;
   isSubcomponentDisplayed: (component: SubcomponentProperties) => boolean;
   useSubcomponentPreviewSelectModeEventHandlers: UseSubcomponentPreviewEventHandlers;
@@ -70,7 +68,6 @@ export default {
     return {
       SUBCOMPONENT_OVERLAY_CLASSES,
       STATIC_POSITION_CLASS: STATIC_POSITION_CLASS,
-      BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES.BASE,
       COMPONENT_PREVIEW_MARKER,
       CSS_PSEUDO_CLASSES,
       isSubcomponentDisplayed: SubcomponentDisplayUtils.isSubcomponentDisplayed,
@@ -90,7 +87,7 @@ export default {
       ];
     },
     getBaseId(idType: keyof SubcomponentAndOverlayElementIds[string]): string {
-      return this.subcomponentAndOverlayElementIds[(this.component.subcomponentNames && this.component.subcomponentNames.base) || this.BASE_SUB_COMPONENT][idType];
+      return this.subcomponentAndOverlayElementIds[this.component.subcomponentNames.base][idType];
     },
     activateSubcomponentMouseEvent(subcomponentMouseEvent: keyof UseSubcomponentPreviewEventHandlers): void {
       this.mouseEvents[this.getBaseId('subcomponentId')][subcomponentMouseEvent]()

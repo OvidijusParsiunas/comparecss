@@ -39,9 +39,10 @@ export default class Dismiss {
   }
 
   private static close(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement): WorkshopEventCallbackReturn {
-    const closeAnimation = animationTypeToFunctionality
-      [componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.close.type] as CloseAnimation;
-    const animationDuration = componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.close.duration;
+    const { subcomponents, subcomponentNames } = componentPreviewComponent.component;
+    const { type, duration } = subcomponents[subcomponentNames.base].customFeatures.animations.close;
+    const closeAnimation = animationTypeToFunctionality[type] as CloseAnimation;
+    const animationDuration = duration;
     animationState.setIsAnimationPreviewInProgressState(true);
     setTimeout(closeAnimation.bind(this, animationDuration, componentElement,
       Dismiss.removeComponent.bind(Dismiss, componentElement)));

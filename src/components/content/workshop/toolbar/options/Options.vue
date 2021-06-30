@@ -156,7 +156,7 @@ import { subcomponentSelectModeState } from './subcomponentSelectMode/subcompone
 import ImportComponentModeToggleUtils from './importComponent/modeUtils/importComponentModeToggle';
 import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFullPreviewModeEvent';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
-import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../consts/coreSubcomponentNames.enum';
+import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../consts/componentStyles.enum';
 import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
 import SubcomponentToggleUtils from './subcomponentToggleUtils/subcomponentToggleUtils';
@@ -178,7 +178,6 @@ import {
   OPTION_MENU_SETTING_OPTION_BUTTON_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, TOGGLE_SUBCOMPONENT_BUTTON_MARKER,
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER, FULL_PREVIEW_MODE_BUTTON_MARKER,
 } from '../../../../../consts/elementClassMarkers';
-import { BUTTON_STYLES, COMPONENT_STYLES } from '@/consts/componentStyles.enum';
 
 interface Consts {
   componentTypeToOptions: ComponentTypeToOptions;
@@ -192,7 +191,6 @@ interface Consts {
   HIGHLIGHTED_OPTION_BUTTON_CLASS: string;
   TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS: string;
   TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS: string;
-  BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES;
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER: string;
   EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER: string;
   COMPONENT_TYPES: typeof COMPONENT_TYPES;
@@ -230,7 +228,6 @@ export default {
       FULL_PREVIEW_MODE_BUTTON_MARKER,
       TOGGLE_SUBCOMPONENT_BUTTON_MARKER,
       OPTION_MENU_SETTING_OPTION_BUTTON_MARKER,
-      BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES.BASE,
       SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
       EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER,
       BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS: 500,
@@ -472,7 +469,7 @@ export default {
     resetComponentPreviewMarginAssistance(): void {
       this.$nextTick(() => {
         this.componentPreviewAssistance.margin = this.activeOption.type === WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN
-          && this.component.activeSubcomponentName === this.BASE_SUB_COMPONENT
+          && this.component.activeSubcomponentName === this.component.subcomponentNames.base
           && this.isSettingsDisplayed
           && !this.isExpandedModalPreviewModeActive;
       });

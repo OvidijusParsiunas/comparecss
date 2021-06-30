@@ -9,6 +9,7 @@ after adding a new subcomponent, open its options
 clicking close button sets the background to default
 zoom in image when hovered on 
 when hover mode is on, click events should still render the css properties accordingly
+card margin
 
 overflow
 try with button tags

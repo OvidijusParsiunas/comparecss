@@ -3,10 +3,10 @@
     <div v-if="isExpandedModalPreviewBackdropVisible()"
       ref="modalBackdrop" id="modal-backdrop"
       :style="{
-        backgroundColor: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.color,
-        transitionDuration: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.closeAnimationDuration
-          || currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.openAnimationDuration.currentValue,
-        opacity: currentlySelectedComponent.subcomponents[BASE_SUB_COMPONENT].customFeatures.backdrop.opacity}">
+        backgroundColor: currentlySelectedComponent.subcomponents[currentlySelectedComponent.subcomponentNames.base].customFeatures.backdrop.color,
+        transitionDuration: currentlySelectedComponent.subcomponents[currentlySelectedComponent.subcomponentNames.base].customFeatures.backdrop.closeAnimationDuration
+          || currentlySelectedComponent.subcomponents[currentlySelectedComponent.subcomponentNames.base].customFeatures.backdrop.openAnimationDuration.currentValue,
+        opacity: currentlySelectedComponent.subcomponents[currentlySelectedComponent.subcomponentNames.base].customFeatures.backdrop.opacity}">
     </div>
     <div style="height: 100vh" class="bootstrap">
       <div style="height: 100%; margin-left: 0px; margin-right: 0px; display: flex">
@@ -117,7 +117,6 @@ import { ComponentManipulation } from './utils/componentManipulation/componentMa
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { removeComponentModalState } from './componentList/state/removeComponentModalState';
 import { ComponentCardHoveredEvent } from '../../../interfaces/componentCardHoveredEvent';
-import { CORE_SUBCOMPONENTS_NAMES } from '../../../consts/coreSubcomponentNames.enum';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../consts/domEventTriggerKeys.enum';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
@@ -136,7 +135,6 @@ interface Consts {
   removeSubcomponentModalState: RemovalModalState;
   REMOVE_COMPONENT_MODAL_ID: string;
   REMOVE_SUBCOMPONENT_MODAL_ID: string;
-  BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES;
 }
 
 interface Data {
@@ -159,7 +157,6 @@ export default {
       removeSubcomponentModalState,
       REMOVE_COMPONENT_MODAL_ID,
       REMOVE_SUBCOMPONENT_MODAL_ID,
-      BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES.BASE,
      };
   },
   data: (): Data => ({
@@ -248,9 +245,11 @@ export default {
       ToggleImportComponentModeState.toggle(this, event);
     },
     isExpandedModalPreviewBackdropVisible(): boolean {
-      return this.currentlySelectedComponent && this.currentlySelectedComponent.subcomponents[this.BASE_SUB_COMPONENT].customFeatures
-        && this.currentlySelectedComponent.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.backdrop
-        && this.currentlySelectedComponent.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.backdrop.visible
+      const { subcomponents } = this.currentlySelectedComponent || {};
+      if (subcomponents) {
+        return subcomponents[subcomponents[this.currentlySelectedComponent.subcomponentNames.base]]?.customFeatures?.backdrop?.visible
+      }
+      return false;
     }
   },
   components: {

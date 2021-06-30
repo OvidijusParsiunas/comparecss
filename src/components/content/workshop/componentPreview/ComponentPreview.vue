@@ -4,17 +4,7 @@
     @mouseenter="componentPreviewMouseEnter()"
     @mouseleave="componentPreviewMouseLeave()">
     <div class="component-preview-contents"
-      :class="[
-        (component.subcomponents[BASE_SUB_COMPONENT].customFeatures
-          && component.subcomponents[BASE_SUB_COMPONENT].customFeatures.componentCenteringInParent
-          && ((component.subcomponents[BASE_SUB_COMPONENT].customFeatures.componentCenteringInParent.vertical
-              && !component.subcomponents[BASE_SUB_COMPONENT].customFeatures.componentCenteringInParent.horizontal
-                ? 'component-preview-centered-vertically' : false)
-              || (component.subcomponents[BASE_SUB_COMPONENT].customFeatures.componentCenteringInParent.horizontal 
-                && !component.subcomponents[BASE_SUB_COMPONENT].customFeatures.componentCenteringInParent.vertical
-                ? 'component-preview-centered-horizontally': false)
-        ))
-        || 'component-preview-centered']"> 
+      :class="getComponentPreviewContentsDynamicClass()"> 
       <div class="grid-container">
         <div class="grid-item grid-item-position"></div>
         <div class="grid-item grid-item-position">
@@ -78,7 +68,6 @@ import { componentTypeToStyleGenerators } from '../newComponent/types/componentT
 import { ToggleFullPreviewModeEvent } from '../../../../interfaces/toggleFullPreviewModeEvent';
 import { PlayAnimationPreviewEvent } from '../../../../interfaces/playAnimationPreviewEvent';
 import { animationTypeToFunctionality } from './utils/animations/animationToFunctionality';
-import { CORE_SUBCOMPONENTS_NAMES } from '../../../../consts/coreSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import ToggleFullPreviewMode from './utils/fullPreviewMode/toggleFullPreviewMode';
 import { OpenAnimation, CloseAnimation } from '../../../../interfaces/animations';
@@ -90,10 +79,6 @@ import { DEFAULT_STYLE } from '../../../../consts/componentStyles.enum';
 import AnimationUtils from './utils/animations/utils/animationUtils';
 import ComponentPreviewUtils from './utils/componentPreviewUtils';
 
-interface Consts {
-  BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES;
-}
-
 interface Data {
   subcomponentAndOverlayElementIds: SubcomponentAndOverlayElementIds;
   mouseEvents: SubcomponentPreviewMouseEvents;
@@ -103,11 +88,6 @@ interface Data {
 }
 
 export default {
-  setup(): Consts {
-    return {
-      BASE_SUB_COMPONENT: CORE_SUBCOMPONENTS_NAMES.BASE,
-    };
-  },
   data: (): Data => ({
     subcomponentAndOverlayElementIds: null,
     mouseEvents: {},
@@ -123,6 +103,14 @@ export default {
     },
   }),
   methods: {
+    getComponentPreviewContentsDynamicClass(): string {
+      const { componentCenteringInParent } = this.component.subcomponents[this.component.subcomponentNames.base].customFeatures || {};
+      if (componentCenteringInParent) {
+        if (componentCenteringInParent.vertical && !componentCenteringInParent.horizontal) return 'component-preview-centered-vertically';
+        if (componentCenteringInParent.horizontal && !componentCenteringInParent.vertical) return 'component-preview-centered-horizontally';
+      }
+      return 'component-preview-centered';
+    },
     componentPreviewMouseLeave(): void {
       Object.keys(this.component.subcomponents).forEach((key) => {
         const subcomponent = this.component.subcomponents[key];
@@ -188,11 +176,11 @@ export default {
       if (isOpenAnimation) {
         PreviewOpenAnimation.start(
           animationTypeToFunctionality[animationType] as OpenAnimation,
-          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.animations.open.duration, this.$refs.baseComponent.$refs.componentPreview);
+          this.component.subcomponents[this.component.subcomponentNames.base].customFeatures.animations.open.duration, this.$refs.baseComponent.$refs.componentPreview);
       } else {
         PreviewCloseAnimation.start(
           animationTypeToFunctionality[animationType] as CloseAnimation,
-          this.component.subcomponents[this.BASE_SUB_COMPONENT].customFeatures.animations.close.duration, this.$refs.baseComponent.$refs.componentPreview);
+          this.component.subcomponents[this.component.subcomponentNames.base].customFeatures.animations.close.duration, this.$refs.baseComponent.$refs.componentPreview);
       }
     },
     stopAnimationPreview(): void {

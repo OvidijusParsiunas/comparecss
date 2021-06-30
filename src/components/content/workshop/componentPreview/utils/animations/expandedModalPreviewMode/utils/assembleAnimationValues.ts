@@ -11,11 +11,13 @@ import { ComponentOptions } from 'vue';
 export class AssembleAnimationValues {
 
   public static assembleOpenAnimationValues(componentPreviewComponent: ComponentOptions): AssembledModalOpenAnimationValues {
+    const { subcomponents, subcomponentNames } = componentPreviewComponent.component;
+    const { customFeatures } = subcomponents[subcomponentNames.base];
     return {
-      modalOpenAnimation: animationTypeToFunctionality[componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.open.type],
-      animationDuration: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.open.duration,
-      animationDelay: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.open.delay,
-      backdropProperties: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.backdrop,
+      modalOpenAnimation: animationTypeToFunctionality[customFeatures.animations.open.type],
+      animationDuration: customFeatures.animations.open.duration,
+      animationDelay: customFeatures.animations.open.delay,
+      backdropProperties: customFeatures.backdrop,
       modalElement: componentPreviewComponent.$refs.baseComponent.$refs.componentPreview,
       modalOverlayElement: componentPreviewComponent.$refs.baseComponent.$refs.componentPreviewOverlay,
       modalContainerElement: componentPreviewComponent.$refs.componentPreviewContainer,
@@ -23,12 +25,14 @@ export class AssembleAnimationValues {
   }
 
   public static assembleClosetAnimationValues(componentPreviewComponent: ComponentOptions, closeAnimationCallback: () => void): AssembledModalCloseAnimationValues {
+    const { subcomponents, subcomponentNames } = componentPreviewComponent.component;
+    const { customFeatures } = subcomponents[subcomponentNames.base];
     return {
-      modalCloseAnimation: animationTypeToFunctionality[componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.close.type],
-      animationDuration: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.animations.close.duration,
+      modalCloseAnimation: animationTypeToFunctionality[customFeatures.animations.close.type],
+      animationDuration: customFeatures.animations.close.duration,
       setOptionToDefaultCallback: closeAnimationCallback,
       modalContainerElement: componentPreviewComponent.$refs.componentPreviewContainer,
-      backdropProperties: componentPreviewComponent.component.subcomponents[componentPreviewComponent.BASE_SUB_COMPONENT].customFeatures.backdrop,
+      backdropProperties: customFeatures.backdrop,
       modalElement: componentPreviewComponent.$refs.baseComponent.$refs.componentPreview,
       modalOverlayElement: componentPreviewComponent.$refs.baseComponent.$refs.componentPreviewOverlay,
     };

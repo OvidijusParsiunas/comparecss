@@ -165,10 +165,8 @@
 </template>
 
 <script lang="ts">
-import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../../consts/unsetColotButtonDisplayed';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSettingsState';
-import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { TOOLBAR_GENERAL_BUTTON_CLASS } from '../../../../../consts/toolbarClasses';
 import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
 import { UseActionsDropdown } from '../../../../../interfaces/UseActionsDropdown';
@@ -189,13 +187,8 @@ interface Consts {
   RANGE_SETTING_MARKER: string;
   TOOLBAR_GENERAL_BUTTON_CLASS: string;
   SETTINGS_TYPES: typeof SETTINGS_TYPES;
-  CSS_PSEUDO_CLASSES: typeof CSS_PSEUDO_CLASSES;
   FONT_AWESOME_COLORS: typeof FONT_AWESOME_COLORS;
-  UNSET_COLOR_BUTTON_DISPLAYED_STATE: typeof UNSET_COLOR_BUTTON_DISPLAYED_STATE;
-  UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX: string;
   ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX: string;
-  UNSET_CUSTOM_FEATURE_COLOR_VALUE: string;
-  INHERIT_CUSTOM_FEATURE_COLOR_VALUE: string;
   refreshSettings: (param1?: any, param2?: WORKSHOP_TOOLBAR_OPTION_TYPES) => void;
 }
 
@@ -215,14 +208,9 @@ export default {
     return {
       SETTINGS_TYPES,
       RANGE_SETTING_MARKER,
-      CSS_PSEUDO_CLASSES,
       FONT_AWESOME_COLORS,
       TOOLBAR_GENERAL_BUTTON_CLASS,
-      UNSET_COLOR_BUTTON_DISPLAYED_STATE,
-      UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX,
       ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX: 'actionsDropdown-',
-      UNSET_CUSTOM_FEATURE_COLOR_VALUE: ColorPickerUtils.UNSET_CUSTOM_FEATURE_COLOR_VALUE,
-      INHERIT_CUSTOM_FEATURE_COLOR_VALUE: ColorPickerUtils.INHERIT_CUSTOM_FEATURE_COLOR_VALUE,
       refreshSettings(newSettings?: any, optionType?: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
         if (newSettings) this.settings = newSettings;
         if (optionType) SubcomponentSpecificSettingsState.setSubcomponentSpecificSettings(optionType,
