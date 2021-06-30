@@ -5,7 +5,7 @@ import { BUTTON_STYLES, DEFAULT_STYLE, LAYER_STYLES } from '../../../../../../..
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../../consts/coreSubcomponentNames.enum';
-import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
+import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { NewComponentProperties } from '../../../../../../../interfaces/addNewSubcomponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -65,37 +65,37 @@ export class CardBuilder extends ComponentBuilder {
     }
   }
 
-  private static overwriteTopLayerProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
-    subcomponents[subcomponentNames.base].customStaticFeatures = CardBuilder.createDefaultTopLayerCustomStaticFeatures();
-    subcomponents[subcomponentNames.base].defaultCustomStaticFeatures = CardBuilder.createDefaultTopLayerCustomStaticFeatures();
+  private static overwriteTopLayerProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
+    subcomponents[coreSubcomponentNames.base].customStaticFeatures = CardBuilder.createDefaultTopLayerCustomStaticFeatures();
+    subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures = CardBuilder.createDefaultTopLayerCustomStaticFeatures();
   }
   
-  private static overwriteTitleProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
-    subcomponents[subcomponentNames.base].customCss = CardBuilder.createDefaultModalTitleCss();
-    subcomponents[subcomponentNames.base].defaultCss = CardBuilder.createDefaultModalTitleCss();
-    subcomponents[subcomponentNames.base].customFeatures = CardBuilder.createDefaultTextCustomFeatures();
-    subcomponents[subcomponentNames.base].defaultCustomFeatures = CardBuilder.createDefaultTextCustomFeatures();
-    subcomponents[subcomponentNames.base].customStaticFeatures = CardBuilder.createDefaultTextCustomStaticFeatures('Modal title');
-    subcomponents[subcomponentNames.base].defaultCustomStaticFeatures = CardBuilder.createDefaultTextCustomStaticFeatures('Modal title');
+  private static overwriteTitleProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
+    subcomponents[coreSubcomponentNames.base].customCss = CardBuilder.createDefaultModalTitleCss();
+    subcomponents[coreSubcomponentNames.base].defaultCss = CardBuilder.createDefaultModalTitleCss();
+    subcomponents[coreSubcomponentNames.base].customFeatures = CardBuilder.createDefaultTextCustomFeatures();
+    subcomponents[coreSubcomponentNames.base].defaultCustomFeatures = CardBuilder.createDefaultTextCustomFeatures();
+    subcomponents[coreSubcomponentNames.base].customStaticFeatures = CardBuilder.createDefaultTextCustomStaticFeatures('Modal title');
+    subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures = CardBuilder.createDefaultTextCustomStaticFeatures('Modal title');
   }
   
-  private static overwriteDescriptionProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
-    subcomponents[subcomponentNames.base].customStaticFeatures = CardBuilder.createDefaultTextCustomStaticFeatures('Description');
-    subcomponents[subcomponentNames.base].defaultCustomStaticFeatures = CardBuilder.createDefaultTextCustomStaticFeatures('Description');
+  private static overwriteDescriptionProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
+    subcomponents[coreSubcomponentNames.base].customStaticFeatures = CardBuilder.createDefaultTextCustomStaticFeatures('Description');
+    subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures = CardBuilder.createDefaultTextCustomStaticFeatures('Description');
   }
   
-  private static overwriteSubmitButtonProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
-    subcomponents[subcomponentNames.base].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    subcomponents[subcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    subcomponents[subcomponentNames.text].customStaticFeatures = CardBuilder.createDefaultTextCustomStaticFeatures('Submit');
-    subcomponents[subcomponentNames.text].customStaticFeatures = CardBuilder.createDefaultTextCustomStaticFeatures('Submit');
+  private static overwriteSubmitButtonProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
+    subcomponents[coreSubcomponentNames.base].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    subcomponents[coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    subcomponents[coreSubcomponentNames.text].customStaticFeatures = CardBuilder.createDefaultTextCustomStaticFeatures('Submit');
+    subcomponents[coreSubcomponentNames.text].defaultCustomStaticFeatures = CardBuilder.createDefaultTextCustomStaticFeatures('Submit');
   }
   
-  private static overwriteCancelButtonProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
-    subcomponents[subcomponentNames.base].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    subcomponents[subcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    subcomponents[subcomponentNames.text].customStaticFeatures = CardBuilder.createDefaultTextCustomStaticFeatures('Cancel');
-    subcomponents[subcomponentNames.text].customStaticFeatures = CardBuilder.createDefaultTextCustomStaticFeatures('Cancel');
+  private static overwriteCancelButtonProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
+    subcomponents[coreSubcomponentNames.base].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    subcomponents[coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    subcomponents[coreSubcomponentNames.text].customStaticFeatures = CardBuilder.createDefaultTextCustomStaticFeatures('Cancel');
+    subcomponents[coreSubcomponentNames.text].defaultCustomStaticFeatures = CardBuilder.createDefaultTextCustomStaticFeatures('Cancel');
   }
 
   private static addComponentsToBase(cardComponent: WorkshopComponent, componentStyle: NewComponentStyleProperties): void {

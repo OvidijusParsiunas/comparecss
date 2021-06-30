@@ -31,8 +31,8 @@ function createDefaultTextCss(): CustomCss {
 }
 
 function overwriteAlignment(textComponent: WorkshopComponent): void {
-  textComponent.subcomponents[textComponent.subcomponentNames.base].customFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
-  textComponent.subcomponents[textComponent.subcomponentNames.base].defaultCustomFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
+  textComponent.subcomponents[textComponent.coreSubcomponentNames.base].customFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
+  textComponent.subcomponents[textComponent.coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
 }
 
 export const buttonText: ComponentGenerator = {

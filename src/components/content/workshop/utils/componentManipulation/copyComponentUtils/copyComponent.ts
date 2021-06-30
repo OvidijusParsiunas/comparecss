@@ -1,7 +1,7 @@
 import { componentTypeToStyleGenerators } from '../../../newComponent/types/componentTypeToStyleGenerators';
 import { Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { CustomSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
 import { uniqueSubcomponentIdState } from '../../componentGenerator/uniqueSubcomponentIdState';
+import { CoreSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
 import { CopyExistingSubcomponent } from './copy/copyExistingSubcomponent';
 import ProcessClassName from '../../componentGenerator/processClassName';
 import { CopyNewSubcomponent } from './copy/copyNewSubcomponent';
@@ -11,9 +11,9 @@ export default class CopyComponent {
 
   private static executeReferenceSharingExecutables(baseComponentRefs: WorkshopComponent[], newComponent: WorkshopComponent): void {
     baseComponentRefs.forEach((nestedComponentRef) => {
-      const { subcomponentNames, referenceSharingExecutables } = nestedComponentRef;
-      (referenceSharingExecutables || []).forEach((executable: (subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames) => void) => {
-        executable(newComponent.subcomponents, subcomponentNames);
+      const { coreSubcomponentNames, referenceSharingExecutables } = nestedComponentRef;
+      (referenceSharingExecutables || []).forEach((executable: (subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames) => void) => {
+        executable(newComponent.subcomponents, coreSubcomponentNames);
       });
     });
   }

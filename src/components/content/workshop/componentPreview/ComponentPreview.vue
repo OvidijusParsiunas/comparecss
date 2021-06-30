@@ -104,7 +104,7 @@ export default {
   }),
   methods: {
     getComponentPreviewContentsDynamicClass(): string {
-      const { componentCenteringInParent } = this.component.subcomponents[this.component.subcomponentNames.base].customFeatures || {};
+      const { componentCenteringInParent } = this.component.subcomponents[this.component.coreSubcomponentNames.base].customFeatures || {};
       if (componentCenteringInParent) {
         if (componentCenteringInParent.vertical && !componentCenteringInParent.horizontal) return 'component-preview-centered-vertically';
         if (componentCenteringInParent.horizontal && !componentCenteringInParent.vertical) return 'component-preview-centered-horizontally';
@@ -176,18 +176,18 @@ export default {
       if (isOpenAnimation) {
         PreviewOpenAnimation.start(
           animationTypeToFunctionality[animationType] as OpenAnimation,
-          this.component.subcomponents[this.component.subcomponentNames.base].customFeatures.animations.open.duration, this.$refs.baseComponent.$refs.componentPreview);
+          this.component.subcomponents[this.component.coreSubcomponentNames.base].customFeatures.animations.open.duration, this.$refs.baseComponent.$refs.componentPreview);
       } else {
         PreviewCloseAnimation.start(
           animationTypeToFunctionality[animationType] as CloseAnimation,
-          this.component.subcomponents[this.component.subcomponentNames.base].customFeatures.animations.close.duration, this.$refs.baseComponent.$refs.componentPreview);
+          this.component.subcomponents[this.component.coreSubcomponentNames.base].customFeatures.animations.close.duration, this.$refs.baseComponent.$refs.componentPreview);
       }
     },
     stopAnimationPreview(): void {
       AnimationUtils.cancelAnimationPreview(this.$refs.baseComponent.$refs.componentPreview);
     },
     refreshTemporaryComponentPropertiesBeforeUse(): void {
-      if (this.component.subcomponents[this.component.subcomponentNames.base]?.customFeatures?.closeTriggers && !this.temporaryComponent.displayed) {
+      if (this.component.subcomponents[this.component.coreSubcomponentNames.base]?.customFeatures?.closeTriggers && !this.temporaryComponent.displayed) {
         this.temporaryComponent.subcomponentAndOverlayElementIds = null;
         this.temporaryComponent.mouseEvents = null;
       }

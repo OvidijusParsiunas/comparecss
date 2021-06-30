@@ -6,8 +6,8 @@ import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
-import { CustomSubcomponentNames } from './customSubcomponentNames';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
+import { CoreSubcomponentNames } from './customSubcomponentNames';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { EntityDisplayStatus } from './entityDisplayStatus';
@@ -201,8 +201,8 @@ export interface WorkshopComponent {
   componentPreviewStructure: ComponentPreviewStructure;
   // class name for the component
   className: string;
-  // used for nested components
-  subcomponentNames?: CustomSubcomponentNames;
+  // used for referencing core subcomponent names like component base and text
+  coreSubcomponentNames?: CoreSubcomponentNames;
   // gives an in sync nested component to identify if the copied component has not been deleted
   componentStatus: { isRemoved: boolean };
   // used to reassign references when the subcomponents have been deep copied

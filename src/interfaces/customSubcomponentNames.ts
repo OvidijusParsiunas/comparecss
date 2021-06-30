@@ -1,5 +1,4 @@
-export interface CustomSubcomponentNames {
+export interface CoreSubcomponentNames {
   base?: string;
-  layer?: string;
   text?: string;
 }

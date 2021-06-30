@@ -3,8 +3,8 @@ import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../..
 import { EntityDisplayStatusUtils } from '../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { NewComponentStyleProperties } from '../../../../../../consts/newComponentStyleProperties';
 import { ComponentPreviewStructure } from '../../../../../../interfaces/componentPreviewStructure';
-import { CustomSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
 import { CORE_SUBCOMPONENTS_NAMES } from '../../../../../../consts/coreSubcomponentNames.enum';
+import { CoreSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { DEFAULT_STYLE } from '../../../../../../consts/componentStyles.enum';
@@ -101,18 +101,18 @@ export class ComponentBuilder {
 
   public static createBaseComponent(componentStyle: NewComponentStyleProperties,
       createBaseSubcomponent: (componentStyle: NewComponentStyleProperties) => SubcomponentProperties, isBaseOptional = true): WorkshopComponent {
-    const subcomponentNames: CustomSubcomponentNames = { base: componentStyle.baseName || CORE_SUBCOMPONENTS_NAMES.BASE };
-    const subcomponents = {[subcomponentNames.base]: createBaseSubcomponent(componentStyle)};
-    const componentPreviewStructure = ComponentBuilder.createEmptyComponentPreviewStructure(subcomponents, subcomponentNames.base, isBaseOptional);
+    const coreSubcomponentNames: CoreSubcomponentNames = { base: componentStyle.baseName || CORE_SUBCOMPONENTS_NAMES.BASE };
+    const subcomponents = {[coreSubcomponentNames.base]: createBaseSubcomponent(componentStyle)};
+    const componentPreviewStructure = ComponentBuilder.createEmptyComponentPreviewStructure(subcomponents, coreSubcomponentNames.base, isBaseOptional);
     return {
       type: componentStyle.componentType,
       style: componentStyle.baseStyle || DEFAULT_STYLE.DEFAULT,
       subcomponents,
-      activeSubcomponentName: subcomponentNames.base,
-      defaultSubcomponentName: subcomponentNames.base,
+      activeSubcomponentName: coreSubcomponentNames.base,
+      defaultSubcomponentName: coreSubcomponentNames.base,
       componentPreviewStructure,
       className: 'default-class-name',
-      subcomponentNames,
+      coreSubcomponentNames,
       componentStatus: { isRemoved: false },
     };
   }

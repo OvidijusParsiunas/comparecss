@@ -3,10 +3,10 @@
     <div v-if="isExpandedModalPreviewBackdropVisible()"
       ref="modalBackdrop" id="modal-backdrop"
       :style="{
-        backgroundColor: currentlySelectedComponent.subcomponents[currentlySelectedComponent.subcomponentNames.base].customFeatures.backdrop.color,
-        transitionDuration: currentlySelectedComponent.subcomponents[currentlySelectedComponent.subcomponentNames.base].customFeatures.backdrop.closeAnimationDuration
-          || currentlySelectedComponent.subcomponents[currentlySelectedComponent.subcomponentNames.base].customFeatures.backdrop.openAnimationDuration.currentValue,
-        opacity: currentlySelectedComponent.subcomponents[currentlySelectedComponent.subcomponentNames.base].customFeatures.backdrop.opacity}">
+        backgroundColor: currentlySelectedComponent.subcomponents[currentlySelectedComponent.coreSubcomponentNames.base].customFeatures.backdrop.color,
+        transitionDuration: currentlySelectedComponent.subcomponents[currentlySelectedComponent.coreSubcomponentNames.base].customFeatures.backdrop.closeAnimationDuration
+          || currentlySelectedComponent.subcomponents[currentlySelectedComponent.coreSubcomponentNames.base].customFeatures.backdrop.openAnimationDuration.currentValue,
+        opacity: currentlySelectedComponent.subcomponents[currentlySelectedComponent.coreSubcomponentNames.base].customFeatures.backdrop.opacity}">
     </div>
     <div style="height: 100vh" class="bootstrap">
       <div style="height: 100%; margin-left: 0px; margin-right: 0px; display: flex">
@@ -247,7 +247,7 @@ export default {
     isExpandedModalPreviewBackdropVisible(): boolean {
       const { subcomponents } = this.currentlySelectedComponent || {};
       if (subcomponents) {
-        return subcomponents[subcomponents[this.currentlySelectedComponent.subcomponentNames.base]]?.customFeatures?.backdrop?.visible
+        return subcomponents[subcomponents[this.currentlySelectedComponent.coreSubcomponentNames.base]]?.customFeatures?.backdrop?.visible
       }
       return false;
     }

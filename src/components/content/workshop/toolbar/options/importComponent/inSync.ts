@@ -1,5 +1,5 @@
 import { NestedComponent, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { CustomSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
+import { CoreSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
 import JSONManipulation from '../../../../../../services/workshop/jsonManipulation';
 
 export class InSync {
@@ -11,7 +11,7 @@ export class InSync {
       nestedComponent.customCss = JSONManipulation.deepCopy(nestedComponent.customCss);
       nestedComponent.customFeatures = JSONManipulation.deepCopy(nestedComponent.customFeatures);
     });
-    referenceSharingExecutables.forEach((executable: (param1: Subcomponents, param2: CustomSubcomponentNames) => void) => {
+    referenceSharingExecutables.forEach((executable: (param1: Subcomponents, param2: CoreSubcomponentNames) => void) => {
       executable(activeComponent.subcomponents, subcomponentNames);
     });
   }

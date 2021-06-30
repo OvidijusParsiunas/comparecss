@@ -17,8 +17,8 @@ export class ModalBuilder extends ComponentBuilder {
   }
 
   private static overwriteBaseSubcomponentCustomFeatures(cardComponent: WorkshopComponent): void {
-    cardComponent.subcomponents[cardComponent.subcomponentNames.base].customFeatures = ModalBuilder.createDefaultBaseCustomFeatures();
-    cardComponent.subcomponents[cardComponent.subcomponentNames.base].defaultCustomFeatures = ModalBuilder.createDefaultBaseCustomFeatures();
+    cardComponent.subcomponents[cardComponent.coreSubcomponentNames.base].customFeatures = ModalBuilder.createDefaultBaseCustomFeatures();
+    cardComponent.subcomponents[cardComponent.coreSubcomponentNames.base].defaultCustomFeatures = ModalBuilder.createDefaultBaseCustomFeatures();
   }
 
   public static create(componentStyle: NewComponentStyleProperties = {}): WorkshopComponent {

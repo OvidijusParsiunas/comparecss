@@ -4,7 +4,7 @@ import { WorkshopComponent } from '../../../../../../../interfaces/workshopCompo
 import { TextBuilder } from './textBuilder';
 
 function addSubcomponentSpecificSettings(textComponent: WorkshopComponent): void {
-  textComponent.subcomponents[textComponent.subcomponentNames.base].subcomponentSpecificSettings = modalTextSpecificSettings;
+  textComponent.subcomponents[textComponent.coreSubcomponentNames.base].subcomponentSpecificSettings = modalTextSpecificSettings;
 }
 
 export const defaultText: ComponentGenerator = {

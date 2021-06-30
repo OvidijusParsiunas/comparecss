@@ -1,6 +1,6 @@
 import { CustomCss, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
-import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
+import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { BUTTON_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -32,9 +32,9 @@ function createDefaultBaseCss(): CustomCss {
   }
 }
 
-function overwriteButtonTextProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
-  subcomponents[subcomponentNames.base].customStaticFeatures.subcomponentText.text = CLOSE_BUTTON_X_TEXT;
-  subcomponents[subcomponentNames.base].customStaticFeatures.subcomponentText.text = CLOSE_BUTTON_X_TEXT;
+function overwriteButtonTextProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
+  subcomponents[coreSubcomponentNames.base].customStaticFeatures.subcomponentText.text = CLOSE_BUTTON_X_TEXT;
+  subcomponents[coreSubcomponentNames.base].customStaticFeatures.subcomponentText.text = CLOSE_BUTTON_X_TEXT;
 }
 
 export const closeButton: ComponentGenerator = {

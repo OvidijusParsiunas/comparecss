@@ -61,8 +61,8 @@ export class AddNewLayerSubcomponent {
       overwritePropertiesFunc?: OverwritePropertiesFunc): NewComponentProperties {
     const baseName = `${UniqueSubcomponentNameGenerator.generate(CORE_SUBCOMPONENTS_NAMES.LAYER)} ${parentComponent.componentPreviewStructure.layers.length + 1}`;
     const subcomponents = NestedComponentGenerator.createNestedComponentSubcomponents(componentGenerator, baseName);
-    const { subcomponentNames } = subcomponents[baseName].nestedComponent.ref;
-    if (overwritePropertiesFunc) overwritePropertiesFunc(subcomponents, subcomponentNames);
+    const { coreSubcomponentNames } = subcomponents[baseName].nestedComponent.ref;
+    if (overwritePropertiesFunc) overwritePropertiesFunc(subcomponents, coreSubcomponentNames);
     return { baseName, subcomponents };
   }
 

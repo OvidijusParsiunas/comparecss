@@ -27,7 +27,7 @@ function createDefaultLayerCss(): CustomCss {
 }
 
 function overwriteSubcomponentSpecificSettings(textComponent: WorkshopComponent): void {
-  textComponent.subcomponents[textComponent.subcomponentNames.base].subcomponentSpecificSettings = cardLayerSpecificSettings;
+  textComponent.subcomponents[textComponent.coreSubcomponentNames.base].subcomponentSpecificSettings = cardLayerSpecificSettings;
 }
 
 export const cardLayer: ComponentGenerator = {

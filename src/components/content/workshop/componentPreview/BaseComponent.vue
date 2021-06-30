@@ -87,7 +87,7 @@ export default {
       ];
     },
     getBaseId(idType: keyof SubcomponentAndOverlayElementIds[string]): string {
-      return this.subcomponentAndOverlayElementIds[this.component.subcomponentNames.base][idType];
+      return this.subcomponentAndOverlayElementIds[this.component.coreSubcomponentNames.base][idType];
     },
     activateSubcomponentMouseEvent(subcomponentMouseEvent: keyof UseSubcomponentPreviewEventHandlers): void {
       this.mouseEvents[this.getBaseId('subcomponentId')][subcomponentMouseEvent]()

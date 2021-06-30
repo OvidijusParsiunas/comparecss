@@ -11,8 +11,8 @@ import { ComponentOptions } from 'vue';
 export class AssembleAnimationValues {
 
   public static assembleOpenAnimationValues(componentPreviewComponent: ComponentOptions): AssembledModalOpenAnimationValues {
-    const { subcomponents, subcomponentNames } = componentPreviewComponent.component;
-    const { customFeatures } = subcomponents[subcomponentNames.base];
+    const { subcomponents, coreSubcomponentNames } = componentPreviewComponent.component;
+    const { customFeatures } = subcomponents[coreSubcomponentNames.base];
     return {
       modalOpenAnimation: animationTypeToFunctionality[customFeatures.animations.open.type],
       animationDuration: customFeatures.animations.open.duration,
@@ -25,8 +25,8 @@ export class AssembleAnimationValues {
   }
 
   public static assembleClosetAnimationValues(componentPreviewComponent: ComponentOptions, closeAnimationCallback: () => void): AssembledModalCloseAnimationValues {
-    const { subcomponents, subcomponentNames } = componentPreviewComponent.component;
-    const { customFeatures } = subcomponents[subcomponentNames.base];
+    const { subcomponents, coreSubcomponentNames } = componentPreviewComponent.component;
+    const { customFeatures } = subcomponents[coreSubcomponentNames.base];
     return {
       modalCloseAnimation: animationTypeToFunctionality[customFeatures.animations.close.type],
       animationDuration: customFeatures.animations.close.duration,

@@ -2,7 +2,7 @@ import { CustomCss, CustomFeatures, SubcomponentProperties, Subcomponents, Works
 import { AddNewLayerSubcomponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewLayerSubcomponent';
 import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewGenericComponent';
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
-import { CustomSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
+import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -73,9 +73,9 @@ export class ButtonBuilder extends ComponentBuilder {
     };
   }
 
-  private static overwriteButtonTextProperties(subcomponents: Subcomponents, subcomponentNames: CustomSubcomponentNames): void {
-    subcomponents[subcomponentNames.base].customStaticFeatures.subcomponentText.text = 'Button';
-    subcomponents[subcomponentNames.base].customStaticFeatures.subcomponentText.text = 'Button';
+  private static overwriteButtonTextProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
+    subcomponents[coreSubcomponentNames.base].customStaticFeatures.subcomponentText.text = 'Button';
+    subcomponents[coreSubcomponentNames.base].customStaticFeatures.subcomponentText.text = 'Button';
   }
 
   private static addComponentsToBase(buttonComponent: WorkshopComponent, componentStyle: NewComponentStyleProperties): void {
@@ -83,16 +83,15 @@ export class ButtonBuilder extends ComponentBuilder {
     const textSubcomponent = AddNewGenericComponent.add(buttonComponent, COMPONENT_TYPES.TEXT,
       componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.style || TEXT_STYLES.BUTTON,
       layerSubcomponent.baseName, [ButtonBuilder.overwriteButtonTextProperties, componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.func]);
-    const { subcomponentNames } = buttonComponent;
-    buttonComponent.subcomponents[subcomponentNames.base].triggerableSubcomponentName = textSubcomponent.baseName;
-    subcomponentNames.layer = layerSubcomponent.baseName;
-    subcomponentNames.text = textSubcomponent.baseName;
+    const { coreSubcomponentNames } = buttonComponent;
+    buttonComponent.subcomponents[coreSubcomponentNames.base].triggerableSubcomponentName = textSubcomponent.baseName;
+    coreSubcomponentNames.text = textSubcomponent.baseName;
   }
 
   private static addReferences(buttonComponent: WorkshopComponent): void {
-    const { subcomponentNames } = buttonComponent;
-    ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(buttonComponent.subcomponents, subcomponentNames);
-    ReferenceSharingUtils.appendBaseSubcomponentRefToAllChildSubcomponents(buttonComponent.subcomponents, subcomponentNames);
+    const { coreSubcomponentNames } = buttonComponent;
+    ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(buttonComponent.subcomponents, coreSubcomponentNames);
+    ReferenceSharingUtils.appendBaseSubcomponentRefToAllChildSubcomponents(buttonComponent.subcomponents, coreSubcomponentNames);
     buttonComponent.referenceSharingExecutables = [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents];
   }
 

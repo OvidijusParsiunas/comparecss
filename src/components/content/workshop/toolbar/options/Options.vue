@@ -469,7 +469,7 @@ export default {
     resetComponentPreviewMarginAssistance(): void {
       this.$nextTick(() => {
         this.componentPreviewAssistance.margin = this.activeOption.type === WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN
-          && this.component.activeSubcomponentName === this.component.subcomponentNames.base
+          && this.component.activeSubcomponentName === this.component.coreSubcomponentNames.base
           && this.isSettingsDisplayed
           && !this.isExpandedModalPreviewModeActive;
       });
