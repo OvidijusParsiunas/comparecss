@@ -42,6 +42,7 @@ export default class ToggleOn {
     }
   }
 
+  // WORK2: test this
   public static start(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement,
       toolbarContainerElement: HTMLElement, toggleFullPreviewModeOptionsCallback: () => void, toolbarElement: HTMLElement,
       isExpandedModalPreviewModeActive: boolean, temporaryComponentElement: HTMLElement): void {
@@ -49,7 +50,7 @@ export default class ToggleOn {
       toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback);
     const prepareFullPreviewModeFunc = ToggleOn.prepareFullPreviewMode.bind(this, componentPreviewComponent, isExpandedModalPreviewModeActive);
     if (!isExpandedModalPreviewModeActive) {
-      GeneralUtils.switchComponentsWithFadeOut(componentElement, temporaryComponentElement, prepareFullPreviewModeFunc);
+      GeneralUtils.switchComponentsWithFadeOut(componentElement, prepareFullPreviewModeFunc, temporaryComponentElement);
       GeneralUtils.createWorkshopEventCallback(componentPreviewComponent,
         ModalToggleOff.toggleOffCallback.bind(this, componentPreviewComponent, toolbarContainerElement, toolbarElement,
           isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback, componentElement, temporaryComponentElement));

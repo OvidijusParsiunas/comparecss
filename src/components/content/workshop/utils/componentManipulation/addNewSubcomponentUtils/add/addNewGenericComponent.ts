@@ -1,6 +1,6 @@
+import { SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { NewComponentProperties, OverwritePropertiesFunc } from '../../../../../../../interfaces/addNewSubcomponent';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
-import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { NESTED_SUBCOMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
@@ -51,13 +51,13 @@ export class AddNewGenericComponent {
     parentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][alignment || ALIGNED_SECTION_TYPES.LEFT].push(nestedSubcomponentProperties);
   }
 
-  private static findparentLayer(parentComponent: WorkshopComponent, layerName: string): Layer {
+  private static findParentLayer(parentComponent: WorkshopComponent, layerName: string): Layer {
     return parentComponent.componentPreviewStructure.layers.find((layer) => layer.name === layerName);
   }
 
   private static assembleSubcomponentData(parentComponent: WorkshopComponent, nestedComponent: NewComponentProperties,
       layerName: string): SubcomponentData {
-    const parentLayer = AddNewGenericComponent.findparentLayer(parentComponent, layerName);
+    const parentLayer = AddNewGenericComponent.findParentLayer(parentComponent, layerName);
     const baseSubcomponentProperties = nestedComponent.subcomponents[nestedComponent.baseName];
     const { subcomponentDropdownStructure } = parentComponent.componentPreviewStructure;
     const parentComponentBaseName = Object.keys(subcomponentDropdownStructure)[0];
@@ -80,16 +80,23 @@ export class AddNewGenericComponent {
     }
   }
 
-  // WORK 1 - change names
-  private static createNewNestedComponent(componentType: COMPONENT_TYPES, componentGenerator: ComponentGenerator,
-      overwritePropertiesFunc?: OverwritePropertiesFunc[]): NewComponentProperties {
-    const baseName = UniqueSubcomponentNameGenerator.generate(AddNewGenericComponent.componentTypeToName[componentType]);
-    const subcomponents = NestedComponentGenerator.createNestedComponentSubcomponents(componentGenerator, baseName);
+  private static executeOverwritePropertiesFuncs(overwritePropertiesFunc: OverwritePropertiesFunc[], subcomponents: Subcomponents,
+      baseName: string): void {
     const { coreSubcomponentNames } = subcomponents[baseName].nestedComponent.ref;
     const funcArray = overwritePropertiesFunc.filter((func) => typeof func === 'function');
     funcArray.forEach((overwritePropertiesFunc) => {
       overwritePropertiesFunc(subcomponents, coreSubcomponentNames);
     });
+  }
+
+  // WORK 1 - change names
+  private static createNewNestedComponent(componentType: COMPONENT_TYPES, componentGenerator: ComponentGenerator,
+      overwritePropertiesFunc?: OverwritePropertiesFunc[]): NewComponentProperties {
+    const baseName = UniqueSubcomponentNameGenerator.generate(AddNewGenericComponent.componentTypeToName[componentType]);
+    const subcomponents = NestedComponentGenerator.createNestedComponentSubcomponents(componentGenerator, baseName);
+    if (overwritePropertiesFunc) {
+      AddNewGenericComponent.executeOverwritePropertiesFuncs(overwritePropertiesFunc, subcomponents, baseName);
+    }
     return { baseName, subcomponents };
   }
 

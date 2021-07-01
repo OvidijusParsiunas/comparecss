@@ -393,8 +393,7 @@ export default {
       this.$emit('add-new-subcomponent');
     },
     removeSubcomponent(): void {
-      if (this.component.subcomponents[this.component.activeSubcomponentName].nestedComponent
-          && this.component.subcomponents[this.component.activeSubcomponentName].nestedComponent.inSync) {
+      if (this.component.subcomponents[this.component.activeSubcomponentName].nestedComponent?.inSync) {
         this.temporarilyAllowOptionAnimations(SubcomponentToggleUtils.removeSubcomponent.bind(this, this.component, this.hideSettings), true, false);
       } else {
         SubcomponentToggleUtils.removeSubcomponent(this.component, this.hideSettings);

@@ -17,7 +17,7 @@ export default class ToggleOff {
       toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean, componentElement: HTMLElement, temporaryComponentElement: HTMLElement): void {
     if (!isExpandedModalPreviewModeActive) {
       GeneralUtils.switchComponentsWithFadeOut(componentElement,
-        temporaryComponentElement, ToggleOff.switchButtonToModal.bind(this, componentPreviewComponent));
+        ToggleOff.switchButtonToModal.bind(this, componentPreviewComponent), temporaryComponentElement);
     } else {
       ToggleOff.switchButtonToModal(componentPreviewComponent);
     }

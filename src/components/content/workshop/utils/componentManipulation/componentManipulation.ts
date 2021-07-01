@@ -31,6 +31,7 @@ export class ComponentManipulation {
     ComponentManipulation.switchActiveComponent(workshopComponent, newComponent);
   }
 
+  // WORK1: refactor workshop component naming conventions and selectComponentCard
   public static addNewSubcomponent(workshopComponent: ComponentOptions): void {
     AddNewSubcomponent.addSubcomponent(workshopComponent.currentlySelectedComponent);
     workshopComponent.$refs.contents.refreshComponent();
@@ -42,6 +43,11 @@ export class ComponentManipulation {
   }
 
   public static selectComponent(workshopComponent: ComponentOptions, selectedComponent: WorkshopComponent): void {
+    if (workshopComponent.componentSelectedBeforeFadeAnimation) {
+      selectedComponent = workshopComponent.componentSelectedBeforeFadeAnimation;
+      workshopComponent.componentSelectedBeforeFadeAnimation = null;
+    }
+    if (!selectedComponent) return;
     if (workshopComponent.isImportComponentModeActive) {
       ImportComponentModeCardEvents.mouseClick(workshopComponent, selectedComponent);
     } else if (workshopComponent.currentlySelectedComponent !== selectedComponent) {

@@ -21,6 +21,7 @@ export default class GeneralUtils {
   public static opacityFadeAnimation(opacity: string, animationDuration: string, ...elements: HTMLElement[]): void {
     const { transitionProperty, transitionTimingFunction } = INITIAL_ANIMATION_PROPERTIES;
     elements.forEach((element) => {
+      if (!element) return;
       element.style.transitionDuration = animationDuration;
       element.style.transitionProperty = transitionProperty;
       element.style.transitionTimingFunction = transitionTimingFunction;

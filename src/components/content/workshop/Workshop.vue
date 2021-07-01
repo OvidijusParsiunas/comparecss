@@ -13,7 +13,7 @@
         <div style="width: 30%; position: relative">
           <component-list ref="componentList"
             :components="components"
-            :currentlySelectedComponent="currentlySelectedComponent"
+            :currentlySelectedComponent="componentSelectedBeforeFadeAnimation || currentlySelectedComponent"
             :isImportComponentModeActive="isImportComponentModeActive"
             :currentlyHoveredImportComponent="currentlyHoveredImportComponent"
             :currentlySelectedImportComponent="currentlySelectedImportComponent"
@@ -44,7 +44,7 @@
               @prepare-remove-subcomponent-modal="$refs.removeSubcomponentModal.prepare($event)"
               @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
               @toggle-expanded-modal-preview-mode="$refs.contents.toggleExpandModalPreviewMode($event)"
-              @toggle-full-preview-mode="$refs.contents.toggleFullPreviewMode($event)"
+              @toggle-full-preview-mode="$refs.contents.toggleFullPreviewMode($event, fadeComponentOnFullPreviewModeToggleOffCallback)"
               @play-animation-preview="$refs.contents.playAnimationPreview($event)"
               @stop-animation-preview="$refs.contents.stopAnimationPreview()"
               @toggle-import-subcomponent-mode="toggleImportComponentMode($event)"
@@ -110,6 +110,7 @@ import SubcomponentToggleOverlayUtils from './toolbar/options/subcomponentToggle
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { ToggleImportComponentModeState } from './utils/importComponent/toggleImportComponentModeState';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
+import { SwitchComponentsWithFadeOutCallback } from '../../../interfaces/toggleFullPreviewModeEvent';
 import { ToggleImportComponentModeEvent } from '../../../interfaces/toggleImportComponentModeEvent';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../consts/subcomponentOverlayClasses.enum';
 import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
@@ -117,6 +118,7 @@ import { ComponentManipulation } from './utils/componentManipulation/componentMa
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { removeComponentModalState } from './componentList/state/removeComponentModalState';
 import { ComponentCardHoveredEvent } from '../../../interfaces/componentCardHoveredEvent';
+import { PARENT_SUBCOMPONENT_NAME } from '../../../consts/baseSubcomponentNames.enum';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../consts/domEventTriggerKeys.enum';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
@@ -128,7 +130,6 @@ import removalModalTemplate from './templates/RemovalModalTemplate.vue';
 import newComponentModal from './newComponent/NewComponentModal.vue';
 import componentList from './componentList/ComponentList.vue';
 import toolbar from './toolbar/Toolbar.vue';
-import { PARENT_SUBCOMPONENT_NAME } from '@/consts/baseSubcomponentNames.enum';
 
 interface Consts {
   preloadedIconsElementId: string;
@@ -138,6 +139,7 @@ interface Consts {
   REMOVE_SUBCOMPONENT_MODAL_ID: string;
 }
 
+// WORK1: consider placing components into state so Workshop reference would not need to be passed to utils
 interface Data {
   isIconsPreloaded: boolean;
   components: WorkshopComponent[];
@@ -148,6 +150,7 @@ interface Data {
   componentPreviewAssistance: ComponentPreviewAssistance;
   workshopEventCallbacks: (() => boolean)[];
   isImportComponentModeActive: boolean;
+  componentSelectedBeforeFadeAnimation: WorkshopComponent;
 }
 
 export default {
@@ -158,7 +161,7 @@ export default {
       removeSubcomponentModalState,
       REMOVE_COMPONENT_MODAL_ID,
       REMOVE_SUBCOMPONENT_MODAL_ID,
-     };
+    };
   },
   data: (): Data => ({
     isIconsPreloaded: false,
@@ -170,6 +173,7 @@ export default {
     currentlySelectedComponent: null,
     currentlyHoveredImportComponent: null,
     currentlySelectedImportComponent: null,
+    componentSelectedBeforeFadeAnimation: null,
     workshopEventCallbacks: [],
     isImportComponentModeActive: false,
   }),
@@ -184,15 +188,20 @@ export default {
     addNewComponent(newComponent: WorkshopComponent): void {
       ComponentManipulation.addNewComponent(this, newComponent);
     },
-    selectComponentCard(selectComponentCard: WorkshopComponent): void {
-      ComponentManipulation.selectComponent(this, selectComponentCard);
+    // WORK2: rename this method to new component selected
+    selectComponentCard(selectedComponent: WorkshopComponent): void {
+      if (this.$refs.contents.isFullPreviewModeOn) {
+        this.componentSelectedBeforeFadeAnimation = selectedComponent;
+        return;
+      }
+      ComponentManipulation.selectComponent(this, selectedComponent);
     },
     hoverComponentCard(componentCardHoveredEvent: ComponentCardHoveredEvent): void {
       const [hoveredComponent, isMouseEnter] = componentCardHoveredEvent;
       ComponentManipulation.hoverComponentCard(this, hoveredComponent, isMouseEnter);
     },
-    copyComponentCard(selectComponentCard: WorkshopComponent): void {
-      ComponentManipulation.copyComponent(this, selectComponentCard);
+    copyComponentCard(selectedComponent: WorkshopComponent): void {
+      ComponentManipulation.copyComponent(this, selectedComponent);
     },
     removeComponentCard(componentToBeRemovedWithoutSelecting: WorkshopComponent): void {
       ComponentManipulation.removeComponent(this, componentToBeRemovedWithoutSelecting);
@@ -203,13 +212,25 @@ export default {
     addNewSubcomponent(): void {
       ComponentManipulation.addNewSubcomponent(this);
     },
+    fadeComponentOnFullPreviewModeToggleOffCallback(switchComponentsWithFadeOutCallback: SwitchComponentsWithFadeOutCallback,
+        componentPreviewHTMLElement: HTMLElement): void {
+      if (this.componentSelectedBeforeFadeAnimation === this.currentlySelectedComponent) {
+        this.componentSelectedBeforeFadeAnimation = null;
+        return;
+      }
+      switchComponentsWithFadeOutCallback(componentPreviewHTMLElement, ComponentManipulation.selectComponent.bind(this, this));
+    },
+    // WORK2: extract
     triggerWorkshopEventCallbacks(): void {
       if (this.workshopEventCallbacks.length > 0) {
         const remainingCallbacks = [];
+        const eventKey = event instanceof KeyboardEvent ? event.key : event.type;
+        if (eventKey === DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN) {
+          this.lastMouseDownTarget = event.target;
+        }
         this.workshopEventCallbacks.forEach((callback: WorkshopEventCallback) => {
-          const eventKey = event instanceof KeyboardEvent ? event.key : event.type;
           if (callback.keyTriggers.has(eventKey as DOM_EVENT_TRIGGER_KEYS)) {
-            const callbackCompleted: WorkshopEventCallbackReturn = callback.func(event);
+            const callbackCompleted: WorkshopEventCallbackReturn = callback.func(event, { lastMouseDownTarget: this.lastMouseDownTarget });
             if (callbackCompleted.shouldRepeat) remainingCallbacks.push(callback);
             if (callbackCompleted.newCallback) remainingCallbacks.push(callbackCompleted.newCallback);
           } else {

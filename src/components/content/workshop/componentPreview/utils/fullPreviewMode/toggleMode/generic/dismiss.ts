@@ -1,7 +1,9 @@
 import { COMPONENT_CARD_MARKER, COMPONENT_LIST_ITEM_MARKER, OPTION_MENU_BUTTON_MARKER } from '../../../../../../../../consts/elementClassMarkers';
 import { WorkshopEventCallbackUtils } from '../../../../../toolbar/options/workshopEventCallbackUtils/workshopEventCallbackUtils';
+import { ToggleFullPreviewModeOffCallbacks } from '../../../../../../../../interfaces/toggleFullPreviewModeEvent';
 import { WorkshopEventCallbackReturn } from '../../../../../../../../interfaces/workshopEventCallbackReturn';
 import { PARENT_SUBCOMPONENT_NAME } from '../../../../../../../../consts/baseSubcomponentNames.enum';
+import { OtherWorkshopEventDetails } from '../../../../../../../../interfaces/workshopEventCallback';
 import { SubcomponentProperties } from '../../../../../../../../interfaces/workshopComponent';
 import { animationTypeToFunctionality } from '../../../animations/animationToFunctionality';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
@@ -11,6 +13,7 @@ import AnimationUtils from '../../../animations/utils/animationUtils';
 import { SET_METHODS } from '../../../animations/consts/sharedConsts';
 import { fulPreviewModeState } from '../../fullPreviewModeState';
 import { animationState } from '../../../animations/state';
+import GeneralUtils from '../generalUtils';
 import { ComponentOptions } from 'vue';
 import ToggleOff from './toggleOff';
 
@@ -49,11 +52,13 @@ export default class Dismiss {
     return { shouldRepeat: false };
   }
 
+  // WORK2: param refactoring
   public static closeCallback(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement,
-      toolbarContainerElement: HTMLElement, toggleFullPreviewModeOptionsCallback: () => void,
-      event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
+      toolbarContainerElement: HTMLElement, toggleFullPreviewModeOffCallbacks: ToggleFullPreviewModeOffCallbacks,
+      event: Event | KeyboardEvent, otherWorkshopEventDetails: OtherWorkshopEventDetails): WorkshopEventCallbackReturn {
     fulPreviewModeState.setIsAnimationInProgress(false);
-    const buttonElement = WorkshopEventCallbackUtils.getParentElementIfSvg(event.target as HTMLElement);
+    const buttonElement = WorkshopEventCallbackUtils.getParentElementIfSvg(
+      otherWorkshopEventDetails.lastMouseDownTarget || event.target as HTMLElement);
     if ((buttonElement.classList.contains(JAVASCRIPT_CLASSES.CLOSE_COMPONENT))) {
       Dismiss.close(componentPreviewComponent, componentElement);
       return { shouldRepeat: true };
@@ -63,7 +68,10 @@ export default class Dismiss {
       return { shouldRepeat: false };
     }
     if (buttonElement.classList.contains(COMPONENT_LIST_ITEM_MARKER) || buttonElement.classList.contains(COMPONENT_CARD_MARKER)) {
-      ToggleOff.start(componentPreviewComponent, toolbarContainerElement, toggleFullPreviewModeOptionsCallback);
+      // WORK2: fuse into 1 method
+      ToggleOff.start(componentPreviewComponent, toolbarContainerElement, toggleFullPreviewModeOffCallbacks.toggleFullPreviewModeOptionsCallback);
+      toggleFullPreviewModeOffCallbacks.toggleFullPreviewModeOffWorkshopCallback(GeneralUtils.switchComponentsWithFadeOut,
+        componentPreviewComponent.$refs.baseComponent.$refs.componentPreview);
       return { shouldRepeat: false };
     }
     return { shouldRepeat: true };

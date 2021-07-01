@@ -57,6 +57,7 @@
 
 <script lang="ts">
 import { subcomponentAndOverlayElementIdsState } from '../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
+import { ToggleFullPreviewModeEvent, ToggleFullPreviewModeOffCallbacks } from '../../../../interfaces/toggleFullPreviewModeEvent';
 import { SubcomponentSelectModeSubOverlay } from '../toolbar/options/subcomponentSelectMode/subcomponentSelectModeSubOverlay';
 import ExpandedModalPreviewModeToggleCloseAnimation from './utils/animations/expandedModalPreviewMode/toggleAnimations/close';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
@@ -65,7 +66,6 @@ import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/togg
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
 import { componentTypeToStyleGenerators } from '../newComponent/types/componentTypeToStyleGenerators';
-import { ToggleFullPreviewModeEvent } from '../../../../interfaces/toggleFullPreviewModeEvent';
 import { PlayAnimationPreviewEvent } from '../../../../interfaces/playAnimationPreviewEvent';
 import { animationTypeToFunctionality } from './utils/animations/animationToFunctionality';
 import { PARENT_SUBCOMPONENT_NAME } from '../../../../consts/baseSubcomponentNames.enum';
@@ -161,12 +161,13 @@ export default {
           toolbarPositionToggleElement);
       }
     },
-    toggleFullPreviewMode(event: ToggleFullPreviewModeEvent): void {
+    toggleFullPreviewMode(event: ToggleFullPreviewModeEvent, toggleFullPreviewModeOffWorkshopCallback: () => void): void {
       const [isToggledOn, isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback,
         toolbarContainerElement, toolbarElement] = event;
       if (isToggledOn) {
+        const toggleFullPreviewModeOffCallbacks: ToggleFullPreviewModeOffCallbacks = { toggleFullPreviewModeOptionsCallback, toggleFullPreviewModeOffWorkshopCallback };
         ToggleFullPreviewMode.toggleOn(this, this.$refs.baseComponent.$refs.componentPreview, toolbarContainerElement, toolbarElement,
-          isExpandedModalPreviewModeActive, toggleFullPreviewModeOptionsCallback, this.$refs.temporaryComponent);
+          isExpandedModalPreviewModeActive, this.$refs.temporaryComponent, toggleFullPreviewModeOffCallbacks);
       } else {
         ToggleFullPreviewMode.toggleOff(this, toolbarContainerElement, toggleFullPreviewModeOptionsCallback, toolbarElement,
           isExpandedModalPreviewModeActive, this.$refs.baseComponent.$refs.componentPreview, this.$refs.temporaryComponent);

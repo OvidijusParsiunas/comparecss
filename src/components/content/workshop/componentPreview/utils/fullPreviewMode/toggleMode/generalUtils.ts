@@ -44,15 +44,14 @@ export default class GeneralUtils {
     }, MODE_TOGGLE_FADE_ANIMATION_DURATION_MILLISECONDS);
   }
 
-  public static switchComponentsWithFadeOut(modalElement: HTMLElement, temporaryComponentElement: HTMLElement,
-      switchComponentCallback: () => void): void {
-    ExpandedModalModeGeneralUtils.opacityFadeAnimation(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, modalElement);
-    ExpandedModalModeGeneralUtils.opacityFadeAnimation(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, temporaryComponentElement);
+  public static switchComponentsWithFadeOut(componentElement: HTMLElement, fadeOutCallback: () => void, temporaryComponentElement?: HTMLElement): void {
+    ExpandedModalModeGeneralUtils.opacityFadeAnimation(OPACITY_INVISIBLE, MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS,
+      componentElement, temporaryComponentElement);
     window.setTimeout(() => {
-      switchComponentCallback();
+      fadeOutCallback();
       setTimeout(() => {
-        ExpandedModalModeGeneralUtils.opacityFadeAnimation(OPACITY_VISIBLE, MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, modalElement);
-        ExpandedModalModeGeneralUtils.opacityFadeAnimation(OPACITY_VISIBLE, MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS, temporaryComponentElement);
+        ExpandedModalModeGeneralUtils.opacityFadeAnimation(OPACITY_VISIBLE, MODE_TOGGLE_FADE_ANIMATION_DURATION_SECONDS,
+          componentElement, temporaryComponentElement);
       }, ELEMENT_CSS_CHANGE_MILLISECONDS);
     }, MODE_TOGGLE_FADE_ANIMATION_DURATION_MILLISECONDS);
   }
