@@ -68,7 +68,6 @@ export default class Dismiss {
       return { shouldRepeat: false };
     }
     if (buttonElement.classList.contains(COMPONENT_LIST_ITEM_MARKER) || buttonElement.classList.contains(COMPONENT_CARD_MARKER)) {
-      // WORK2: fuse into 1 method
       ToggleOff.start(componentPreviewComponent, toolbarContainerElement, toggleFullPreviewModeOffCallbacks.toggleFullPreviewModeOptionsCallback);
       toggleFullPreviewModeOffCallbacks.toggleFullPreviewModeOffWorkshopCallback(GeneralUtils.switchComponentsWithFadeOut,
         componentPreviewComponent.$refs.baseComponent.$refs.componentPreview);

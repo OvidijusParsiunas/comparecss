@@ -44,7 +44,7 @@
               @prepare-remove-subcomponent-modal="$refs.removeSubcomponentModal.prepare($event)"
               @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
               @toggle-expanded-modal-preview-mode="$refs.contents.toggleExpandModalPreviewMode($event)"
-              @toggle-full-preview-mode="$refs.contents.toggleFullPreviewMode($event, fadeComponentOnFullPreviewModeToggleOffCallback)"
+              @toggle-full-preview-mode="$refs.contents.toggleFullPreviewMode($event, toggleFullPreviewModeOffCallback)"
               @play-animation-preview="$refs.contents.playAnimationPreview($event)"
               @stop-animation-preview="$refs.contents.stopAnimationPreview()"
               @toggle-import-subcomponent-mode="toggleImportComponentMode($event)"
@@ -212,12 +212,15 @@ export default {
     addNewSubcomponent(): void {
       ComponentManipulation.addNewSubcomponent(this);
     },
-    fadeComponentOnFullPreviewModeToggleOffCallback(switchComponentsWithFadeOutCallback: SwitchComponentsWithFadeOutCallback,
-        componentPreviewHTMLElement: HTMLElement): void {
+    toggleFullPreviewModeOffCallback(switchComponentsWithFadeOutCallback: SwitchComponentsWithFadeOutCallback,
+        componentPreviewHTMLElement?: HTMLElement): void {
       if (this.componentSelectedBeforeFadeAnimation === this.currentlySelectedComponent) {
         this.componentSelectedBeforeFadeAnimation = null;
         return;
       }
+      // when a different component card has been selected during temporary button view (modal), this call selects the new
+      // subcomponent after the fadeout timer, but does not fade out the actual component preview element itself as 
+      // componentPreviewHTMLElement is undefined and the fading for it is done in modal/ToggleOff.start
       switchComponentsWithFadeOutCallback(componentPreviewHTMLElement, ComponentManipulation.selectComponent.bind(this, this));
     },
     // WORK2: extract

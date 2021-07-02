@@ -4,7 +4,7 @@ export type SwitchComponentsWithFadeOutCallback = (componentElement: HTMLElement
 
 type ToggleFullPreviewModeOffWorkshopComponentCallback = (
   switchComponentsWithFadeOut: SwitchComponentsWithFadeOutCallback,
-  componentPreviewHTMLElement: HTMLElement,
+  componentPreviewHTMLElement?: HTMLElement,
 ) => void;
 
 export interface ToggleFullPreviewModeOffCallbacks {

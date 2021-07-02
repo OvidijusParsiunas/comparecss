@@ -1,5 +1,6 @@
 import { COMPONENT_CARD_MARKER, COMPONENT_LIST_ITEM_MARKER, COMPONENT_PREVIEW_MARKER, OPTION_MENU_BUTTON_MARKER } from '../../../../../../../../consts/elementClassMarkers';
 import { WorkshopEventCallbackUtils } from '../../../../../toolbar/options/workshopEventCallbackUtils/workshopEventCallbackUtils';
+import { ToggleFullPreviewModeOffCallbacks } from '../../../../../../../../interfaces/toggleFullPreviewModeEvent';
 import { WorkshopEventCallbackReturn } from '../../../../../../../../interfaces/workshopEventCallbackReturn';
 import { POINTER_EVENTS_NONE } from '../../../animations/consts/sharedConsts';
 import { fulPreviewModeState } from '../../fullPreviewModeState';
@@ -14,10 +15,9 @@ export default class ToggleOff {
   }
 
   public static start(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement, toggleFullPreviewModeOptionsCallback: () => void, 
-      toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean, componentElement: HTMLElement, temporaryComponentElement: HTMLElement): void {
+      toolbarElement: HTMLElement, isExpandedModalPreviewModeActive: boolean, temporaryComponentElement: HTMLElement): void {
     if (!isExpandedModalPreviewModeActive) {
-      GeneralUtils.switchComponentsWithFadeOut(componentElement,
-        ToggleOff.switchButtonToModal.bind(this, componentPreviewComponent), temporaryComponentElement);
+      GeneralUtils.switchComponentsWithFadeOut(temporaryComponentElement, ToggleOff.switchButtonToModal.bind(this, componentPreviewComponent));
     } else {
       ToggleOff.switchButtonToModal(componentPreviewComponent);
     }
@@ -27,12 +27,13 @@ export default class ToggleOff {
   }
 
   public static toggleOffCallback(componentPreviewComponent: ComponentOptions, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
-      isExpandedModalPreviewModeActive: boolean, toggleFullPreviewModeOptionsCallback: () => void, componentElement: HTMLElement,
+      isExpandedModalPreviewModeActive: boolean, toggleFullPreviewModeOffCallbacks: ToggleFullPreviewModeOffCallbacks, componentElement: HTMLElement,
       temporaryComponentElement: HTMLElement, event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
     const buttonElement = WorkshopEventCallbackUtils.getParentElementIfSvg(event.target as HTMLElement);
     if (buttonElement.classList.contains(COMPONENT_LIST_ITEM_MARKER) || buttonElement.classList.contains(COMPONENT_CARD_MARKER)) {
-      ToggleOff.start(componentPreviewComponent, toolbarContainerElement, toggleFullPreviewModeOptionsCallback, toolbarElement,
-        isExpandedModalPreviewModeActive, componentElement, temporaryComponentElement);
+      ToggleOff.start(componentPreviewComponent, toolbarContainerElement, toggleFullPreviewModeOffCallbacks.toggleFullPreviewModeOptionsCallback,
+        toolbarElement, isExpandedModalPreviewModeActive, temporaryComponentElement);
+      toggleFullPreviewModeOffCallbacks.toggleFullPreviewModeOffWorkshopCallback(GeneralUtils.switchComponentsWithFadeOut);
       return { shouldRepeat: false };
     }
     if (buttonElement.classList.contains(COMPONENT_PREVIEW_MARKER) || buttonElement.classList.contains(OPTION_MENU_BUTTON_MARKER)) {

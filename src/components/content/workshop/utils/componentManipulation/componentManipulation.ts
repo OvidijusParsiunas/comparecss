@@ -42,7 +42,7 @@ export class ComponentManipulation {
     ComponentManipulation.addNewComponent(workshopComponent, newComponent);
   }
 
-  public static selectComponent(workshopComponent: ComponentOptions, selectedComponent: WorkshopComponent): void {
+  public static selectComponent(workshopComponent: ComponentOptions, selectedComponent?: WorkshopComponent): void {
     if (workshopComponent.componentSelectedBeforeFadeAnimation) {
       selectedComponent = workshopComponent.componentSelectedBeforeFadeAnimation;
       workshopComponent.componentSelectedBeforeFadeAnimation = null;
