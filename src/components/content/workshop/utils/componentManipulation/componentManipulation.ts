@@ -1,7 +1,7 @@
 import { ImportComponentModeCardEvents } from '../../toolbar/options/importComponent/modeUtils/importComponentModeCardEvents';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { AddNewNestedComponent } from './addNewNestedComponent/addNewNestedComponent';
-import ComponentTraversalUtils from '../componentTraversal/componentTraversalUtils';
+import { RemoveSubcomponent } from './removeSubcomponent/removeSubcomponent';
 import ComponentJs from '../../../../../services/workshop/componentJs';
 import CopyComponent from './copyComponentUtils/copyComponent';
 import { ComponentOptions } from 'vue';
@@ -37,39 +37,8 @@ export class ComponentManipulation {
     workshopComponent.$refs.contents.refreshComponent();
   }
 
-  // WORK2: refactor
-  private static deleteSubcomponents(subcomponentName: string, currentComponent: WorkshopComponent): boolean {
-    const activeSubcomponent = currentComponent.subcomponents[subcomponentName];
-      Object.keys(activeSubcomponent?.nestedComponent.ref.subcomponents|| {}).forEach((keyName) => {
-        delete currentComponent.subcomponents[keyName];
-      });
-    return true;
-  }
-
-  private static removeSubcomponentFromDropdown(subcomponentName: string, currentComponent: WorkshopComponent, subcomponentNameStack: string[],
-      structure: any): boolean {
-    if (currentComponent.activeSubcomponentName === subcomponentName) {
-      const selectNewSubcomponentCallback = this as any;
-      selectNewSubcomponentCallback(subcomponentNameStack[subcomponentNameStack.length - 2]);
-      const activeSubcomponent = currentComponent.subcomponents[subcomponentName];
-      Object.keys(activeSubcomponent.nestedComponent.ref.subcomponents).forEach((keyName) => {
-        delete currentComponent.subcomponents[keyName];
-      });
-      ComponentTraversalUtils.traverseSubcomponentsUsingDropdownStructure(
-        structure[subcomponentName], currentComponent,
-          ComponentManipulation.deleteSubcomponents);
-      delete structure[subcomponentName];
-      return false;
-    }
-    return true;
-  }
-
   public static removeSubcomponent(component: WorkshopComponent, selectNewSubcomponentCallback: () => void): void {
-    const activeSubcomponent = component.subcomponents[component.activeSubcomponentName];
-    ComponentTraversalUtils.traverseSubcomponentsUsingDropdownStructure(
-      component.componentPreviewStructure.subcomponentDropdownStructure, component,
-        ComponentManipulation.removeSubcomponentFromDropdown.bind(selectNewSubcomponentCallback));
-    activeSubcomponent.subcomponentDisplayStatus.isDisplayed = false;
+    RemoveSubcomponent.remove(component, selectNewSubcomponentCallback);
   }
 
   public static copyComponent(workshopComponent: ComponentOptions, setActiveComponent: WorkshopComponent): void {
