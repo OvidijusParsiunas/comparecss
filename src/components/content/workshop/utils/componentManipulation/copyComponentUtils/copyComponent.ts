@@ -2,6 +2,7 @@ import { componentTypeToStyleGenerators } from '../../../newComponent/types/comp
 import { Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { uniqueSubcomponentIdState } from '../../componentGenerator/uniqueSubcomponentIdState';
 import { CoreSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
+import { RemoveSubcomponent } from '../removeSubcomponent/removeSubcomponent';
 import { CopyExistingSubcomponent } from './copy/copyExistingSubcomponent';
 import ProcessClassName from '../../componentGenerator/processClassName';
 import { CopyNewSubcomponent } from './copy/copyNewSubcomponent';
@@ -51,7 +52,7 @@ export default class CopyComponent {
   private static removeUnusedSubcomponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
     Object.keys(newComponent.subcomponents).forEach((subcomponentName) => {
       if (!componentBeingCopied.subcomponents[subcomponentName]) {
-        delete newComponent.subcomponents[subcomponentName];
+        RemoveSubcomponent.remove(newComponent, subcomponentName);
       }
     });
   }

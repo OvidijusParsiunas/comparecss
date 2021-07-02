@@ -23,7 +23,7 @@ interface SubcomponentData {
 
 export class AddNewGenericComponent extends AddNewNestedComponentShared {
 
-  // base name is also used in the dropdown
+  // base name is used in the dropdown
   private static readonly componentTypeToBaseName: { [key in COMPONENT_TYPES]?: NESTED_SUBCOMPONENTS_BASE_NAMES } = {
     [COMPONENT_TYPES.LAYER]: NESTED_SUBCOMPONENTS_BASE_NAMES.LAYER,
     [COMPONENT_TYPES.BUTTON]: NESTED_SUBCOMPONENTS_BASE_NAMES.BUTTON,

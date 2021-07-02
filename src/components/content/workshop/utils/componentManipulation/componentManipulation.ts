@@ -38,7 +38,7 @@ export class ComponentManipulation {
   }
 
   public static removeSubcomponent(component: WorkshopComponent, selectNewSubcomponentCallback: () => void): void {
-    RemoveSubcomponent.remove(component, selectNewSubcomponentCallback);
+    RemoveSubcomponent.remove(component, component.activeSubcomponentName, selectNewSubcomponentCallback);
   }
 
   public static copyComponent(workshopComponent: ComponentOptions, setActiveComponent: WorkshopComponent): void {
@@ -78,7 +78,6 @@ export class ComponentManipulation {
     const components = (workshopComponent.components as undefined as WorkshopComponent[]);
     const componentToBeRemovedIndex = components.findIndex(componentMatch);
     components.splice(componentToBeRemovedIndex, 1);
-    // WORK1: will need to remove the actual subcomponent
     // used to allow components that have imported this to remove insync properties
     componentToBeRemoved.componentStatus.isRemoved = true;
     if (components.length === 0) {
