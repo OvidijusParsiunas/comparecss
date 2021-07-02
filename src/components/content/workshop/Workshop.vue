@@ -201,9 +201,9 @@ export default {
       const [hoveredComponent, isMouseEnter] = componentCardHoveredEvent;
       if (this.isImportComponentModeActive) {
         if (isMouseEnter) {
-          ImportComponentModeCardEvents.mouseEnter(this.workshopComponent, hoveredComponent);
+          ImportComponentModeCardEvents.mouseEnter(this, hoveredComponent);
         } else {
-          ImportComponentModeCardEvents.mouseLeave(this.workshopComponent);
+          ImportComponentModeCardEvents.mouseLeave(this);
         }
       }
     },

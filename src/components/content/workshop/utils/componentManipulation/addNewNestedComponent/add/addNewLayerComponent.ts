@@ -14,10 +14,9 @@ import { JsUtils } from '../../../../../../../services/jsUtils/jsUtils';
 
 export class AddNewLayerComponent extends AddNewNestedComponentShared {
 
-  private static updateComponentPreviewStructure(parentComponent: WorkshopComponent, newSubcomponentProperties: NewComponentProperties,
-      layerBaseSubcomponent: SubcomponentProperties): void {
+  private static updateComponentPreviewStructure(parentComponent: WorkshopComponent, newSubcomponentProperties: NewComponentProperties): void {
     const newNestedDropdownStructure = { [newSubcomponentProperties.baseName]: { 
-      ...EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject(layerBaseSubcomponent.subcomponentDisplayStatus),
+      ...EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject(),
     }};
     const parentSubcomponentObject = parentComponent.componentPreviewStructure.subcomponentDropdownStructure;
     JsUtils.addObjects(parentSubcomponentObject, PARENT_SUBCOMPONENT_NAME.BASE, newNestedDropdownStructure);
@@ -53,7 +52,7 @@ export class AddNewLayerComponent extends AddNewNestedComponentShared {
     const layer: Layer = AddNewLayerComponent.createEmptyLayer(newSubcomponentProperties.baseName, layerSubcomponent);
     AddNewLayerComponent.addNewSubcomponentToBase(parentComponent, layer);
     if (isEditable) {
-      AddNewLayerComponent.updateComponentPreviewStructure(parentComponent, newSubcomponentProperties, layerSubcomponent);
+      AddNewLayerComponent.updateComponentPreviewStructure(parentComponent, newSubcomponentProperties);
     }
   }
 
