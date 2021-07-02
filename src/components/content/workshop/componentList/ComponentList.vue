@@ -11,10 +11,10 @@
           :isImportComponentModeActive="isImportComponentModeActive"
           :currentlyHoveredImportComponent="currentlyHoveredImportComponent"
           :currentlySelectedImportComponent="currentlySelectedImportComponent"
-          @component-card-selected="$emit('component-card-selected', $event)"
+          @set-active-component="$emit('set-active-component', $event)"
           @component-card-hovered="$emit('component-card-hovered', $event)"
-          @component-card-copied="$emit('component-card-copied', $event)"
-          @component-card-removed="$emit('component-card-removed', $event)"
+          @copy-component="$emit('copy-component', $event)"
+          @remove-component="$emit('remove-component', $event)"
           @stop-editing-class-name-callback="$emit('stop-editing-class-name-callback', $event)"
           @prepare-remove-component-modal="$emit('prepare-remove-component-modal', $event)"/>
         <div v-if="!isImportComponentModeActive"

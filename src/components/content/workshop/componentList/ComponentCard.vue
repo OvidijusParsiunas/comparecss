@@ -1,7 +1,7 @@
 <template>
   <div class="component-card" :class="COMPONENT_CARD_MARKER">
     <div class="component-body-container" :class="[highlightCard(), COMPONENT_CARD_MARKER]"
-      @mousedown="selectComponentCard"
+      @mousedown="setActiveComponent"
       @mouseenter="mouseHoverComponentCard(true)"
       @mouseleave="mouseHoverComponentCard(false)">
       <div class="card-body" :class="COMPONENT_CARD_MARKER">
@@ -14,8 +14,8 @@
         <h5 v-else class="card-title component-card-title" :class="COMPONENT_CARD_MARKER">{{thisComponent.className}}</h5>
         <div v-if="!isImportComponentModeActive" :class="COMPONENT_CARD_MARKER">
           <a ref="componentCardClassNameEditorButton" class="btn btn-success" :class="COMPONENT_CARD_MARKER" @mousedown="preventBubbling" @mouseup="editClassName">Edit</a>
-          <a class="btn btn-warning" :class="COMPONENT_CARD_MARKER" @mousedown="preventBubbling" @mouseup="copyComponentCard">Copy</a>
-          <a class="btn btn-danger component-card-remove" :class="COMPONENT_CARD_MARKER" data-toggle="modal" :data-target="removeComponentModalId" @mousedown="preventBubbling" @mouseup="removeComponentCard">Remove</a>
+          <a class="btn btn-warning" :class="COMPONENT_CARD_MARKER" @mousedown="preventBubbling" @mouseup="copyComponent">Copy</a>
+          <a class="btn btn-danger component-card-remove" :class="COMPONENT_CARD_MARKER" data-toggle="modal" :data-target="removeComponentModalId" @mousedown="preventBubbling" @mouseup="removeComponent">Remove</a>
         </div>
         <div v-else :class="COMPONENT_CARD_MARKER">
           <a class="btn btn-success" :class="CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER">
@@ -78,7 +78,7 @@ export default {
       return '';
     },
     editClassName(): void {
-      this.selectComponentCard();
+      this.setActiveComponent();
       if (this.editorButtonClickedOnStopEditing) {
         this.editorButtonClickedOnStopEditing = false;
         return;
@@ -132,8 +132,8 @@ export default {
       }
       return { shouldRepeat: false};
     },
-    selectComponentCard(): void {
-      this.$emit('component-card-selected', this.thisComponent);
+    setActiveComponent(): void {
+      this.$emit('set-active-component', this.thisComponent);
     },
     mouseHoverComponentCard(isMouseEnter: boolean): void {
       this.$emit('component-card-hovered', [this.thisComponent, isMouseEnter] as ComponentCardHoveredEvent);
@@ -143,17 +143,17 @@ export default {
       // remove/copy component without selecting its card
       event.stopPropagation();
     },
-    copyComponentCard(): void {
-      this.$emit('component-card-copied', this.thisComponent);
+    copyComponent(): void {
+      this.$emit('copy-component', this.thisComponent);
     },
-    removeComponentCard(): void {
+    removeComponent(): void {
       if (!this.getIsDoNotShowModalAgainState()){
-        this.selectComponentCard();
+        this.setActiveComponent();
         this.removeComponentModalId = `#${REMOVE_COMPONENT_MODAL_ID}`;
         this.$emit('prepare-remove-component-modal');
         setTimeout(() => { this.removeComponentModalId = ''; });
       } else {
-        this.$emit('component-card-removed', this.thisComponent);
+        this.$emit('remove-component', this.thisComponent);
       }
     },
     classNameInputEvent(): void {

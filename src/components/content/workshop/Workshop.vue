@@ -17,10 +17,10 @@
             :isImportComponentModeActive="isImportComponentModeActive"
             :currentlyHoveredImportComponent="currentlyHoveredImportComponent"
             :currentlySelectedImportComponent="currentlySelectedImportComponent"
-            @component-card-selected="selectComponentCard($event)"
-            @component-card-hovered="hoverComponentCard($event)"
-            @component-card-copied="copyComponentCard($event)"
-            @component-card-removed="removeComponentCard($event)"
+            @set-active-component="setActiveComponent($event)"
+            @copy-component="copyComponent($event)"
+            @remove-component="removeComponent($event)"
+            @component-card-hovered="componentCardHovered($event)"
             @stop-editing-class-name-callback="addWorkshopEventCallback($event)"
             @prepare-new-component-modal="$refs.newComponentModal.prepare()"
             @prepare-remove-component-modal="$refs.removeComponentModal.prepare()"/>
@@ -82,7 +82,7 @@
         ref="removeComponentModal"
         :modalId="REMOVE_COMPONENT_MODAL_ID"
         :removalModalState="removeComponentModalState"
-        @remove-event="removeComponentCard"
+        @remove-event="removeComponent"
         @remove-modal-template-callback="addWorkshopEventCallback($event)">
         Are you sure you want to remove this component?
       </removal-modal-template>
@@ -105,22 +105,22 @@
 </template>
 
 <script lang="ts">
+import SubcomponentOverlayToggleUtils from './toolbar/options/subcomponentOverlayToggleUtils/subcomponentOverlayToggleUtils';
 import { removeSubcomponentModalState } from './toolbar/options/removeSubcomponentModalState/removeSubcomponentModalState';
-import SubcomponentToggleOverlayUtils from './toolbar/options/subcomponentToggleUtils/subcomponentToggleOverlayUtils';
+import { ImportComponentModeCardEvents } from './toolbar/options/importComponent/modeUtils/importComponentModeCardEvents';
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { ToggleImportComponentModeState } from './utils/importComponent/toggleImportComponentModeState';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { SwitchComponentsWithFadeOutCallback } from '../../../interfaces/toggleFullPreviewModeEvent';
 import { ToggleImportComponentModeEvent } from '../../../interfaces/toggleImportComponentModeEvent';
+import useWorkshopEventCallbacks from './utils/workshopEventCallbacks/useWorkshopEventCallbacks';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../consts/subcomponentOverlayClasses.enum';
-import { WorkshopEventCallbackReturn } from '../../../interfaces/workshopEventCallbackReturn';
 import { ComponentManipulation } from './utils/componentManipulation/componentManipulation';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { removeComponentModalState } from './componentList/state/removeComponentModalState';
 import { ComponentCardHoveredEvent } from '../../../interfaces/componentCardHoveredEvent';
 import { PARENT_SUBCOMPONENT_NAME } from '../../../consts/baseSubcomponentNames.enum';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
-import { DOM_EVENT_TRIGGER_KEYS } from '../../../consts/domEventTriggerKeys.enum';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
 import { defaultCard } from './newComponent/types/cards/generators/default';
 import { RemovalModalState } from '../../../interfaces/removalModalState';
@@ -139,7 +139,6 @@ interface Consts {
   REMOVE_SUBCOMPONENT_MODAL_ID: string;
 }
 
-// WORK1: consider placing components into state so Workshop reference would not need to be passed to utils
 interface Data {
   isIconsPreloaded: boolean;
   components: WorkshopComponent[];
@@ -161,6 +160,7 @@ export default {
       removeSubcomponentModalState,
       REMOVE_COMPONENT_MODAL_ID,
       REMOVE_SUBCOMPONENT_MODAL_ID,
+      ...useWorkshopEventCallbacks(),
     };
   },
   data: (): Data => ({
@@ -188,23 +188,24 @@ export default {
     addNewComponent(newComponent: WorkshopComponent): void {
       ComponentManipulation.addNewComponent(this, newComponent);
     },
-    // WORK2: rename this method to new component selected
-    selectComponentCard(selectedComponent: WorkshopComponent): void {
-      if (this.$refs.contents.isFullPreviewModeOn) {
-        this.componentSelectedBeforeFadeAnimation = selectedComponent;
-        return;
-      }
-      ComponentManipulation.selectComponent(this, selectedComponent);
+    setActiveComponent(component: WorkshopComponent): void {
+      ComponentManipulation.setActiveComponent(this, component);
     },
-    hoverComponentCard(componentCardHoveredEvent: ComponentCardHoveredEvent): void {
-      const [hoveredComponent, isMouseEnter] = componentCardHoveredEvent;
-      ComponentManipulation.hoverComponentCard(this, hoveredComponent, isMouseEnter);
+    copyComponent(component: WorkshopComponent): void {
+      ComponentManipulation.copyComponent(this, component);
     },
-    copyComponentCard(selectedComponent: WorkshopComponent): void {
-      ComponentManipulation.copyComponent(this, selectedComponent);
-    },
-    removeComponentCard(componentToBeRemovedWithoutSelecting: WorkshopComponent): void {
+    removeComponent(componentToBeRemovedWithoutSelecting: WorkshopComponent): void {
       ComponentManipulation.removeComponent(this, componentToBeRemovedWithoutSelecting);
+    },
+    componentCardHovered(componentCardHoveredEvent: ComponentCardHoveredEvent): void {
+      const [hoveredComponent, isMouseEnter] = componentCardHoveredEvent;
+      if (this.isImportComponentModeActive) {
+        if (isMouseEnter) {
+          ImportComponentModeCardEvents.mouseEnter(this.workshopComponent, hoveredComponent);
+        } else {
+          ImportComponentModeCardEvents.mouseLeave(this.workshopComponent);
+        }
+      }
     },
     exportFiles(): void {
       exportFiles.export(this.components);
@@ -221,33 +222,10 @@ export default {
       // when a different component card has been selected during temporary button view (modal), this call selects the new
       // subcomponent after the fadeout timer, but does not fade out the actual component preview element itself as 
       // componentPreviewHTMLElement is undefined and the fading for it is done in modal/ToggleOff.start
-      switchComponentsWithFadeOutCallback(componentPreviewHTMLElement, ComponentManipulation.selectComponent.bind(this, this));
-    },
-    // WORK2: extract
-    triggerWorkshopEventCallbacks(): void {
-      if (this.workshopEventCallbacks.length > 0) {
-        const remainingCallbacks = [];
-        const eventKey = event instanceof KeyboardEvent ? event.key : event.type;
-        if (eventKey === DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN) {
-          this.lastMouseDownTarget = event.target;
-        }
-        this.workshopEventCallbacks.forEach((callback: WorkshopEventCallback) => {
-          if (callback.keyTriggers.has(eventKey as DOM_EVENT_TRIGGER_KEYS)) {
-            const callbackCompleted: WorkshopEventCallbackReturn = callback.func(event, { lastMouseDownTarget: this.lastMouseDownTarget });
-            if (callbackCompleted.shouldRepeat) remainingCallbacks.push(callback);
-            if (callbackCompleted.newCallback) remainingCallbacks.push(callbackCompleted.newCallback);
-          } else {
-            remainingCallbacks.push(callback);
-          }
-        });
-        this.workshopEventCallbacks = remainingCallbacks;
-      }
-    },
-    addWorkshopEventCallback(callback: WorkshopEventCallback): void {
-      this.workshopEventCallbacks.push(callback);
+      switchComponentsWithFadeOutCallback(componentPreviewHTMLElement, ComponentManipulation.setActiveComponent.bind(this, this));
     },
     cancelSubcomponentRemovalEventHandler(): void {
-      SubcomponentToggleOverlayUtils.hideSubcomponentOverlayBySelectModeStatus(this.currentlySelectedComponent.activeSubcomponentName,
+      SubcomponentOverlayToggleUtils.hideSubcomponentOverlayBySelectModeStatus(this.currentlySelectedComponent.activeSubcomponentName,
         SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
     },
     preloadIcons(): void {

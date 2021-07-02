@@ -1,6 +1,6 @@
 import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
 
-export const inheritedLayerBaseCss: WorkshopComponentCss = {
+export const inheritedCardBaseCss: WorkshopComponentCss = {
   position: 'relative',
   overflow: 'hidden',
 };

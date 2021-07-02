@@ -2,20 +2,27 @@ import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdow
 import { ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/entityDisplayStatus';
 import { WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 
-type TraverseSubcomponentsUsingDropdownStructureCallback = (activeSubcomponentName: string, activeComponent: WorkshopComponent) => void;
+// WORK2: refactor
+type TraverseSubcomponentsUsingDropdownStructureCallback = (
+  activeSubcomponentName: string, activeComponent: WorkshopComponent, subcomponentNameStack: string[], structure: any) => boolean;
 
 export default class ComponentTraversalUtils {
 
-  private static traverseSubcomponentsUsingDropdownStructure(subcomponentDropdownStructure: NestedDropdownStructure, currentComponent: WorkshopComponent,
-      callback: TraverseSubcomponentsUsingDropdownStructureCallback): void {
+  public static traverseSubcomponentsUsingDropdownStructure(subcomponentDropdownStructure: NestedDropdownStructure, currentComponent: WorkshopComponent,
+      callback: TraverseSubcomponentsUsingDropdownStructureCallback, subcomponentNameStack?: string[]): void {
+    if (!subcomponentNameStack) subcomponentNameStack = [];
     const subcomponentDropdownStructureKeys = Object.keys(subcomponentDropdownStructure);
     for (let i = 0; i < subcomponentDropdownStructureKeys.length; i += 1) {
       const subcomponentName = subcomponentDropdownStructureKeys[i];
-      if (subcomponentName === ENTITY_DISPLAY_STATUS_REF) return;
-      callback(subcomponentName, currentComponent);
-      if (Object.keys(subcomponentDropdownStructure[subcomponentName]).length && !currentComponent.subcomponents[subcomponentName].nestedComponent) {
+      if (subcomponentName === ENTITY_DISPLAY_STATUS_REF) {
+        subcomponentNameStack.splice(subcomponentNameStack.length - 1, 1);
+        return;
+      }
+      subcomponentNameStack.push(subcomponentName);
+      if (!callback(subcomponentName, currentComponent, subcomponentNameStack, subcomponentDropdownStructure)) return;
+      if (Object.keys(subcomponentDropdownStructure[subcomponentName]).length > 0) {
         ComponentTraversalUtils.traverseSubcomponentsUsingDropdownStructure(subcomponentDropdownStructure[subcomponentName] as NestedDropdownStructure,
-          currentComponent, callback);
+          currentComponent, callback, subcomponentNameStack);
       }
     }
   }

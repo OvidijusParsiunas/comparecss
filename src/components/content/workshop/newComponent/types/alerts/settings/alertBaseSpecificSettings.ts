@@ -9,4 +9,4 @@ export const alertBaseSpecificSettings: SubcomponentSpecificSettings = {
     'width': { scale: [100, 700] },
     'height': { scale: [30, 200] },
   },
-}
+};

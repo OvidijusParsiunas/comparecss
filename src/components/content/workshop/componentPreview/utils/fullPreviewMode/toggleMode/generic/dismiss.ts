@@ -2,8 +2,8 @@ import { COMPONENT_CARD_MARKER, COMPONENT_LIST_ITEM_MARKER, OPTION_MENU_BUTTON_M
 import { WorkshopEventCallbackUtils } from '../../../../../toolbar/options/workshopEventCallbackUtils/workshopEventCallbackUtils';
 import { ToggleFullPreviewModeOffCallbacks } from '../../../../../../../../interfaces/toggleFullPreviewModeEvent';
 import { WorkshopEventCallbackReturn } from '../../../../../../../../interfaces/workshopEventCallbackReturn';
+import { OtherWorkshopEventCallbackDetails } from '../../../../../../../../interfaces/workshopEventCallback';
 import { PARENT_SUBCOMPONENT_NAME } from '../../../../../../../../consts/baseSubcomponentNames.enum';
-import { OtherWorkshopEventDetails } from '../../../../../../../../interfaces/workshopEventCallback';
 import { SubcomponentProperties } from '../../../../../../../../interfaces/workshopComponent';
 import { animationTypeToFunctionality } from '../../../animations/animationToFunctionality';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
@@ -52,13 +52,12 @@ export default class Dismiss {
     return { shouldRepeat: false };
   }
 
-  // WORK2: param refactoring
   public static closeCallback(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement,
       toolbarContainerElement: HTMLElement, toggleFullPreviewModeOffCallbacks: ToggleFullPreviewModeOffCallbacks,
-      event: Event | KeyboardEvent, otherWorkshopEventDetails: OtherWorkshopEventDetails): WorkshopEventCallbackReturn {
+      event: Event | KeyboardEvent, otherWorkshopEventCallbackDetails: OtherWorkshopEventCallbackDetails): WorkshopEventCallbackReturn {
     fulPreviewModeState.setIsAnimationInProgress(false);
     const buttonElement = WorkshopEventCallbackUtils.getParentElementIfSvg(
-      otherWorkshopEventDetails.lastMouseDownTarget || event.target as HTMLElement);
+      otherWorkshopEventCallbackDetails.lastMouseDownTarget || event.target as HTMLElement);
     if ((buttonElement.classList.contains(JAVASCRIPT_CLASSES.CLOSE_COMPONENT))) {
       Dismiss.close(componentPreviewComponent, componentElement);
       return { shouldRepeat: true };

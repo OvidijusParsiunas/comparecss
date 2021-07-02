@@ -1,6 +1,6 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { AddNewLayerSubcomponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewLayerSubcomponent';
-import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewGenericComponent';
+import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewGenericComponent';
+import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
 import { BUTTON_STYLES, DEFAULT_STYLE, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
@@ -10,10 +10,10 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssC
 import { NewComponentProperties } from '../../../../../../../interfaces/addNewSubcomponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
-import { inheritedLayerBaseChildCss } from '../../shared/layer/inheritedBaseChildCss';
+import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
+import { getCardBaseSpecificSettings } from '../settings/cardBaseSpecificSettings';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
-import { getCardBaseSpecificSettings } from './cardBaseSpecificSettings';
-import { inheritedLayerBaseCss } from '../../shared/layer/inheritedCss';
+import { inheritedCardBaseCss } from '../inheritedCss/inheritedCardCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
 export class CardBuilder extends ComponentBuilder {
@@ -37,7 +37,7 @@ export class CardBuilder extends ComponentBuilder {
     };
   }
 
-  private static createDefaultModalTitleCss(): CustomCss {
+  private static createDefaultTitleCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
         top: '50%',
@@ -71,12 +71,12 @@ export class CardBuilder extends ComponentBuilder {
   }
   
   private static overwriteTitleProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
-    subcomponents[coreSubcomponentNames.base].customCss = CardBuilder.createDefaultModalTitleCss();
-    subcomponents[coreSubcomponentNames.base].defaultCss = CardBuilder.createDefaultModalTitleCss();
+    subcomponents[coreSubcomponentNames.base].customCss = CardBuilder.createDefaultTitleCss();
+    subcomponents[coreSubcomponentNames.base].defaultCss = CardBuilder.createDefaultTitleCss();
     subcomponents[coreSubcomponentNames.base].customFeatures = CardBuilder.createDefaultTextCustomFeatures();
     subcomponents[coreSubcomponentNames.base].defaultCustomFeatures = CardBuilder.createDefaultTextCustomFeatures();
-    subcomponents[coreSubcomponentNames.base].customStaticFeatures = CardBuilder.createDefaultTextCustomStaticFeatures('Modal title');
-    subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures = CardBuilder.createDefaultTextCustomStaticFeatures('Modal title');
+    subcomponents[coreSubcomponentNames.base].customStaticFeatures = CardBuilder.createDefaultTextCustomStaticFeatures('Card title');
+    subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures = CardBuilder.createDefaultTextCustomStaticFeatures('Card title');
   }
   
   private static overwriteDescriptionProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
@@ -99,10 +99,10 @@ export class CardBuilder extends ComponentBuilder {
   }
 
   private static addComponentsToBase(cardComponent: WorkshopComponent, componentStyle: NewComponentStyleProperties): void {
-    const layer1Component = AddNewLayerSubcomponent.add(cardComponent, DEFAULT_STYLE.DEFAULT, true,
+    const layer1Component = AddNewLayerComponent.add(cardComponent, DEFAULT_STYLE.DEFAULT, true,
       (componentStyle.overwriteLayersProperties?.[0]?.layer) || CardBuilder.overwriteTopLayerProperties);
-    const layer2Component = AddNewLayerSubcomponent.add(cardComponent, LAYER_STYLES.CARD, true);
-    const layer3Component = AddNewLayerSubcomponent.add(cardComponent, LAYER_STYLES.CARD, true);
+    const layer2Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
+    const layer3Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLE.DEFAULT,
       layer1Component.baseName, [(componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.func) || CardBuilder.overwriteTitleProperties]);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLE.DEFAULT,
@@ -148,8 +148,8 @@ export class CardBuilder extends ComponentBuilder {
       defaultCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || CardBuilder.createDefaultCardCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      inheritedCss: inheritedLayerBaseCss,
-      childCss: inheritedLayerBaseChildCss,
+      inheritedCss: inheritedCardBaseCss,
+      childCss: inheritedBaseChildCss,
       customFeatures: CardBuilder.createDefaultCustomFeatures(),
       defaultCustomFeatures: CardBuilder.createDefaultCustomFeatures(),
     };

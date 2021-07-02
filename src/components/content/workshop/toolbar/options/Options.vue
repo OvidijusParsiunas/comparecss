@@ -21,7 +21,7 @@
           :customEventHandlers="useSubcomponentDropdownEventHandlers"
           :timeoutFunc="executeCallbackAfterTimeout"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-          @mouse-click-new-option="newSubcomponentNameClicked($event)"
+          @mouse-click-new-option="selectNewSubcomponent($event)"
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       </div>
       <div v-if="component.type === COMPONENT_TYPES.MODAL || component.type === COMPONENT_TYPES.ALERT || component.type === COMPONENT_TYPES.CARD"
@@ -107,7 +107,7 @@
             :fontAwesomeIcon="'angle-down'"
             :timeoutFunc="executeCallbackAfterTimeout"
             @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-            @mouse-click-new-option="newCssPseudoClassClicked($event)"/>
+            @mouse-click-new-option="selectNewCssPseudoClass($event)"/>
           <div v-for="option in getOptionsForActiveCssPseudoClass()" :key="option" class="option-component-button-container"
               @mouseenter="mouseHoverOption(option, true)" @mouseleave="mouseHoverOption(option, false)">
             <button
@@ -147,20 +147,20 @@ import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/t
 import { ComponentTypeToOptions, componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
+import SubcomponentOverlayToggleUtils from './subcomponentOverlayToggleUtils/subcomponentOverlayToggleUtils';
 import { removeSubcomponentModalState } from './removeSubcomponentModalState/removeSubcomponentModalState';
 import { fulPreviewModeState } from '../../componentPreview/utils/fullPreviewMode/fullPreviewModeState';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
-import SubcomponentToggleOverlayUtils from './subcomponentToggleUtils/subcomponentToggleOverlayUtils';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
 import ImportComponentModeToggleUtils from './importComponent/modeUtils/importComponentModeToggle';
 import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFullPreviewModeEvent';
+import { ComponentManipulation } from '../../utils/componentManipulation/componentManipulation';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../consts/componentStyles.enum';
 import { PARENT_SUBCOMPONENT_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
-import SubcomponentToggleUtils from './subcomponentToggleUtils/subcomponentToggleUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
@@ -279,7 +279,7 @@ export default {
       }
       const subcomponentSelectModeCallbackFunction = SubcomponentSelectMode.initiate(buttonElement);
       const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.ESCAPE]);
-      const subcomponentNameClickedFunc = this.newSubcomponentNameClicked;
+      const subcomponentNameClickedFunc = this.selectNewSubcomponent;
       this.$emit('toggle-subcomponent-select-mode',
         [subcomponentSelectModeCallbackFunction, keyTriggers, buttonElement, subcomponentNameClickedFunc] as ToggleSubcomponentSelectModeEvent);
     },
@@ -328,11 +328,11 @@ export default {
     getActiveOption(): Option {
       return this.activeOption;
     },
-    newSubcomponentNameClicked(newSubComponent: string): void {
+    selectNewSubcomponent(subcomponentName: string): void {
       // reset css state of the previous subcomponent to the first one
       const oldActiveSubcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
       oldActiveSubcomponent.activeCssPseudoClass = oldActiveSubcomponent.defaultCssPseudoClass;
-      this.component.activeSubcomponentName = newSubComponent;
+      this.component.activeSubcomponentName = subcomponentName;
       if (this.component.subcomponents[this.component.activeSubcomponentName].subcomponentDisplayStatus
           && !this.component.subcomponents[this.component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed) {
         this.hideSettings();
@@ -340,7 +340,7 @@ export default {
       }
       this.setNewOptionOnNewDropdownOptionSelect();
     },
-    newCssPseudoClassClicked(newCssPseudoClass: CSS_PSEUDO_CLASSES): void {
+    selectNewCssPseudoClass(newCssPseudoClass: CSS_PSEUDO_CLASSES): void {
       this.component.subcomponents[this.component.activeSubcomponentName].activeCssPseudoClass = newCssPseudoClass;
       this.setNewOptionOnNewDropdownOptionSelect();
     },
@@ -377,7 +377,7 @@ export default {
         if (this.activeOption.buttonName) {
           this.selectDefaultOption();
         }
-        SubcomponentToggleOverlayUtils.changeSubcomponentOverlayClass(subcomponentDisplayStatus, this.component.activeSubcomponentName, false,
+        SubcomponentOverlayToggleUtils.changeSubcomponentOverlayClass(subcomponentDisplayStatus, this.component.activeSubcomponentName, false,
           SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
       } else if (!this.getIsDoNotShowModalAgainState()) {
         this.currentRemoveSubcomponentModalTargetId = this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID;
@@ -385,7 +385,7 @@ export default {
         this.$emit('prepare-remove-subcomponent-modal', this.removeSubcomponent);
       } else {
         this.removeSubcomponent();
-        SubcomponentToggleOverlayUtils.changeSubcomponentOverlayClass(subcomponentDisplayStatus, this.component.activeSubcomponentName, true,
+        SubcomponentOverlayToggleUtils.changeSubcomponentOverlayClass(subcomponentDisplayStatus, this.component.activeSubcomponentName, true,
           SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
       }
     },
@@ -394,16 +394,16 @@ export default {
     },
     removeSubcomponent(): void {
       if (this.component.subcomponents[this.component.activeSubcomponentName].nestedComponent?.inSync) {
-        this.temporarilyAllowOptionAnimations(SubcomponentToggleUtils.removeSubcomponent.bind(this, this.component, this.hideSettings), true, false);
+        this.temporarilyAllowOptionAnimations(ComponentManipulation.removeSubcomponent.bind(this, this.component, this.selectNewSubcomponent), true, false);
       } else {
-        SubcomponentToggleUtils.removeSubcomponent(this.component, this.hideSettings);
+        ComponentManipulation.removeSubcomponent(this.component, this.selectNewSubcomponent);
       }
     },
     mouseEnterSubcomponentToggle(): void {
       if (this.isRemovedComponentCurrentlySelectedForImport()) {
         ImportComponentModeTempPropertiesUtils.switchTempPropertiesWithTheLastSelectedSubcomponent(this.component);
       }
-      SubcomponentToggleOverlayUtils.displaySubcomponentOverlay(this.component);
+      SubcomponentOverlayToggleUtils.displaySubcomponentOverlay(this.component);
     },
     mouseLeaveSubcomponentToggle(): void {
       if (this.currentRemoveSubcomponentModalTargetId === this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID) return;
@@ -411,7 +411,7 @@ export default {
         // overlay is set to 'display: none' by default in the base component style="display: none"
         ImportComponentModeTempPropertiesUtils.switchTempPropertiesWithTheLastSelectedSubcomponent(this.component);
       } else {
-        SubcomponentToggleOverlayUtils.hideSubcomponentOverlay(this.component);
+        SubcomponentOverlayToggleUtils.hideSubcomponentOverlay(this.component);
       }
     },
     toggleSubcomponentSelectModeButtonDisplay(isDropdownDisplayed: boolean): void {

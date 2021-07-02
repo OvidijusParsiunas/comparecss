@@ -1,6 +1,6 @@
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { AddNewLayerSubcomponent } from '../../addNewSubcomponentUtils/add/addNewLayerSubcomponent';
-import { AddNewGenericComponent } from '../../addNewSubcomponentUtils/add/addNewGenericComponent';
+import { AddNewGenericComponent } from '../../addNewNestedComponent/add/addNewGenericComponent';
+import { AddNewLayerComponent } from '../../addNewNestedComponent/add/addNewLayerComponent';
 import { NewComponentProperties } from '../../../../../../../interfaces/addNewSubcomponent';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -46,7 +46,7 @@ export class CopyNewSubcomponent extends CopyComponentShared {
 
   private static createNewAndCopyExistingLayerProperties(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent,
       subcomponentName: string, newComponentStyle: COMPONENT_STYLES): void {
-    const layerComponent = AddNewLayerSubcomponent.add(newComponent, newComponentStyle, true);
+    const layerComponent = AddNewLayerComponent.add(newComponent, newComponentStyle, true);
     CopyComponentShared.copySubcomponentProperties(layerComponent.subcomponents[layerComponent.baseName],
       componentBeingCopied.subcomponents[subcomponentName]);
   }

@@ -1,6 +1,6 @@
 import { CustomCss, CustomFeatures, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { AddNewLayerSubcomponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewLayerSubcomponent';
-import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewGenericComponent';
+import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewGenericComponent';
+import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
 import { BUTTON_STYLES, DEFAULT_STYLE, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
@@ -8,10 +8,10 @@ import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSub
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
-import { inheritedLayerBaseChildCss } from '../../shared/layer/inheritedBaseChildCss';
+import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
-import { inheritedLayerBaseCss } from '../../shared/layer/inheritedCss';
-import { alertBaseSpecificSettings } from './alertBaseSpecificSettings';
+import { alertBaseSpecificSettings } from '../settings/alertBaseSpecificSettings';
+import { inheritedCardBaseCss } from '../../cards/inheritedCss/inheritedCardCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
 export class AlertBuilder extends ComponentBuilder {
@@ -22,7 +22,7 @@ export class AlertBuilder extends ComponentBuilder {
   }
 
   private static addComponentsToBase(alertComponent: WorkshopComponent, componentStyle: NewComponentStyleProperties): void {
-    const layer1Component = AddNewLayerSubcomponent.add(alertComponent, LAYER_STYLES.PLAIN, false);
+    const layer1Component = AddNewLayerComponent.add(alertComponent, LAYER_STYLES.PLAIN, false);
     AddNewGenericComponent.add(alertComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLE.DEFAULT,
       layer1Component.baseName, [(componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.func) || AlertBuilder.overwriteTextProperties]);
     AddNewGenericComponent.add(alertComponent, COMPONENT_TYPES.BUTTON,
@@ -66,8 +66,8 @@ export class AlertBuilder extends ComponentBuilder {
       defaultCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || AlertBuilder.createDefaultCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      inheritedCss: inheritedLayerBaseCss,
-      childCss: inheritedLayerBaseChildCss,
+      inheritedCss: inheritedCardBaseCss,
+      childCss: inheritedBaseChildCss,
       subcomponentSpecificSettings: alertBaseSpecificSettings,
       customFeatures: AlertBuilder.createDefaultCustomFeatures(),
       defaultCustomFeatures: AlertBuilder.createDefaultCustomFeatures(),

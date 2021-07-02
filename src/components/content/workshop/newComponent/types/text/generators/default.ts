@@ -1,10 +1,10 @@
-import { modalTextSpecificSettings } from '../../modals/generators/modalTextSpecificSettings';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { textSpecificSettings } from '../settings/textSpecificSettings';
 import { TextBuilder } from './textBuilder';
 
 function addSubcomponentSpecificSettings(textComponent: WorkshopComponent): void {
-  textComponent.subcomponents[textComponent.coreSubcomponentNames.base].subcomponentSpecificSettings = modalTextSpecificSettings;
+  textComponent.subcomponents[textComponent.coreSubcomponentNames.base].subcomponentSpecificSettings = textSpecificSettings;
 }
 
 export const defaultText: ComponentGenerator = {

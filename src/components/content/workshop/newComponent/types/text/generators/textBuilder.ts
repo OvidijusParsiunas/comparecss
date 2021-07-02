@@ -4,7 +4,7 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssC
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
-import { inheritedTextCss } from '../../shared/text/inheritedCss';
+import { inheritedTextCss } from '../inheritedCss/inheritedTextCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
 export class TextBuilder extends ComponentBuilder {

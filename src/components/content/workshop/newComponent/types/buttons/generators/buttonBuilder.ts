@@ -1,6 +1,6 @@
 import { CustomCss, CustomFeatures, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { AddNewLayerSubcomponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewLayerSubcomponent';
-import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewSubcomponentUtils/add/addNewGenericComponent';
+import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewGenericComponent';
+import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -8,10 +8,10 @@ import { LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/component
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
-import { buttonSpecificSettings } from './buttonSpecificSettings';
+import { buttonSpecificSettings } from '../settings/buttonSpecificSettings';
+import ReferenceSharingUtils from '../utils/referenceSharingUtils';
+import { inheritedButtonCss } from '../inheritedCss/inheritedCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
-import ReferenceSharingUtils from './referenceSharingUtils';
-import { inheritedButtonCss } from './inheritedCss';
 
 export class ButtonBuilder extends ComponentBuilder {
 
@@ -79,7 +79,7 @@ export class ButtonBuilder extends ComponentBuilder {
   }
 
   private static addComponentsToBase(buttonComponent: WorkshopComponent, componentStyle: NewComponentStyleProperties): void {
-    const layerSubcomponent = AddNewLayerSubcomponent.add(buttonComponent, LAYER_STYLES.PLAIN, false);
+    const layerSubcomponent = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.PLAIN, false);
     const textSubcomponent = AddNewGenericComponent.add(buttonComponent, COMPONENT_TYPES.TEXT,
       componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.style || TEXT_STYLES.BUTTON,
       layerSubcomponent.baseName, [ButtonBuilder.overwriteButtonTextProperties, componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.func]);

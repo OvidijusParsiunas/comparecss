@@ -1,6 +1,7 @@
 import { ImportComponentModeCardEvents } from '../../toolbar/options/importComponent/modeUtils/importComponentModeCardEvents';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
-import { AddNewSubcomponent } from './addNewSubcomponentUtils/addNewSubcomponent';
+import { AddNewNestedComponent } from './addNewNestedComponent/addNewNestedComponent';
+import ComponentTraversalUtils from '../componentTraversal/componentTraversalUtils';
 import ComponentJs from '../../../../../services/workshop/componentJs';
 import CopyComponent from './copyComponentUtils/copyComponent';
 import { ComponentOptions } from 'vue';
@@ -16,52 +17,80 @@ export class ComponentManipulation {
     });
   }
 
-  private static switchActiveComponent(workshopComponent: ComponentOptions, newComponent: WorkshopComponent): void {
+  private static switchActiveComponent(workshopComponent: ComponentOptions, component: WorkshopComponent): void {
     ComponentManipulation.resetComponentModes(workshopComponent.currentlySelectedComponent);
-    if (workshopComponent.currentlySelectedComponent && workshopComponent.currentlySelectedComponent.type !== newComponent.type) {
+    if (workshopComponent.currentlySelectedComponent && workshopComponent.currentlySelectedComponent.type !== component.type) {
       ComponentJs.manipulateJS(workshopComponent.currentlySelectedComponent.type, 'revokeJS');
     }
-    workshopComponent.currentlySelectedComponent = newComponent;
+    workshopComponent.currentlySelectedComponent = component;
     ComponentJs.manipulateJS(workshopComponent.currentlySelectedComponent.type, 'executeJS');
     workshopComponent.$refs.toolbar.updateToolbarForNewComponent();
   }
 
-  public static addNewComponent(workshopComponent: ComponentOptions, newComponent: WorkshopComponent): void {
-    (workshopComponent.components as undefined as WorkshopComponent[]).push(newComponent);
-    ComponentManipulation.switchActiveComponent(workshopComponent, newComponent);
+  public static addNewComponent(workshopComponent: ComponentOptions, component: WorkshopComponent): void {
+    (workshopComponent.components as undefined as WorkshopComponent[]).push(component);
+    ComponentManipulation.switchActiveComponent(workshopComponent, component);
   }
 
-  // WORK1: refactor workshop component naming conventions and selectComponentCard
   public static addNewSubcomponent(workshopComponent: ComponentOptions): void {
-    AddNewSubcomponent.addSubcomponent(workshopComponent.currentlySelectedComponent);
+    AddNewNestedComponent.add(workshopComponent.currentlySelectedComponent);
     workshopComponent.$refs.contents.refreshComponent();
   }
 
-  public static copyComponent(workshopComponent: ComponentOptions, selectComponentCard: WorkshopComponent): void {
-    const newComponent = CopyComponent.copyComponent(workshopComponent, selectComponentCard);
+  // WORK2: refactor
+  private static deleteSubcomponents(subcomponentName: string, currentComponent: WorkshopComponent): boolean {
+    const activeSubcomponent = currentComponent.subcomponents[subcomponentName];
+      Object.keys(activeSubcomponent?.nestedComponent.ref.subcomponents|| {}).forEach((keyName) => {
+        delete currentComponent.subcomponents[keyName];
+      });
+    return true;
+  }
+
+  private static removeSubcomponentFromDropdown(subcomponentName: string, currentComponent: WorkshopComponent, subcomponentNameStack: string[],
+      structure: any): boolean {
+    if (currentComponent.activeSubcomponentName === subcomponentName) {
+      const selectNewSubcomponentCallback = this as any;
+      selectNewSubcomponentCallback(subcomponentNameStack[subcomponentNameStack.length - 2]);
+      const activeSubcomponent = currentComponent.subcomponents[subcomponentName];
+      Object.keys(activeSubcomponent.nestedComponent.ref.subcomponents).forEach((keyName) => {
+        delete currentComponent.subcomponents[keyName];
+      });
+      ComponentTraversalUtils.traverseSubcomponentsUsingDropdownStructure(
+        structure[subcomponentName], currentComponent,
+          ComponentManipulation.deleteSubcomponents);
+      delete structure[subcomponentName];
+      return false;
+    }
+    return true;
+  }
+
+  public static removeSubcomponent(component: WorkshopComponent, selectNewSubcomponentCallback: () => void): void {
+    const activeSubcomponent = component.subcomponents[component.activeSubcomponentName];
+    ComponentTraversalUtils.traverseSubcomponentsUsingDropdownStructure(
+      component.componentPreviewStructure.subcomponentDropdownStructure, component,
+        ComponentManipulation.removeSubcomponentFromDropdown.bind(selectNewSubcomponentCallback));
+    activeSubcomponent.subcomponentDisplayStatus.isDisplayed = false;
+  }
+
+  public static copyComponent(workshopComponent: ComponentOptions, setActiveComponent: WorkshopComponent): void {
+    const newComponent = CopyComponent.copyComponent(workshopComponent, setActiveComponent);
     ComponentManipulation.addNewComponent(workshopComponent, newComponent);
   }
 
-  public static selectComponent(workshopComponent: ComponentOptions, selectedComponent?: WorkshopComponent): void {
+  public static setActiveComponent(workshopComponent: ComponentOptions, component?: WorkshopComponent): void {
+    if (workshopComponent.$refs.contents.isFullPreviewModeOn) {
+      workshopComponent.componentSelectedBeforeFadeAnimation = component;
+      return;
+    }
     if (workshopComponent.componentSelectedBeforeFadeAnimation) {
-      selectedComponent = workshopComponent.componentSelectedBeforeFadeAnimation;
+      component = workshopComponent.componentSelectedBeforeFadeAnimation;
       workshopComponent.componentSelectedBeforeFadeAnimation = null;
     }
-    if (!selectedComponent) return;
+    if (!component) return;
     if (workshopComponent.isImportComponentModeActive) {
-      ImportComponentModeCardEvents.mouseClick(workshopComponent, selectedComponent);
-    } else if (workshopComponent.currentlySelectedComponent !== selectedComponent) {
-      ComponentManipulation.switchActiveComponent(workshopComponent, selectedComponent);
-    }
-  }
-
-  public static hoverComponentCard(workshopComponent: ComponentOptions, selectedComponent: WorkshopComponent, isMouseEnter: boolean): void {
-    if (workshopComponent.isImportComponentModeActive) {
-      if (isMouseEnter) {
-        ImportComponentModeCardEvents.mouseEnter(workshopComponent, selectedComponent);
-      } else {
-        ImportComponentModeCardEvents.mouseLeave(workshopComponent);
-      }
+      ImportComponentModeCardEvents.mouseClick(workshopComponent, component);
+    } else if (workshopComponent.currentlySelectedComponent !== component) {
+      ComponentManipulation.switchActiveComponent(workshopComponent, component);
     }
   }
 

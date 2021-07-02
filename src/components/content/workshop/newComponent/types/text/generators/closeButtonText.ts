@@ -2,9 +2,9 @@ import { NewComponentStyleProperties } from '../../../../../../../consts/newComp
 import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { inheritedCloseTextCss } from '../../buttons/generators/inheritedCloseTextCss';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
+import { inheritedCloseTextCss } from '../inheritedCss/inheritedCloseTextCss';
 import { TextBuilder } from './textBuilder';
 
 function createDefaultTextCss(): CustomCss {
