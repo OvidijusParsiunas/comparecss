@@ -203,6 +203,7 @@ export interface WorkshopComponent {
   // class name for the component
   className: string;
   // used for referencing core subcomponent names like component base and text
+  // also used to reference components that should share base jsclasses refs
   coreSubcomponentNames?: CoreSubcomponentNames;
   // gives an in sync nested component to identify if the copied component has not been deleted
   componentStatus: { isRemoved: boolean };
