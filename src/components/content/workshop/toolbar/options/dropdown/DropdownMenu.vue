@@ -17,7 +17,7 @@
 </template>
 
 <script lang="ts">
-import { EntityDisplayStatus, EntityDisplayStatusRef, ENTITY_DISPLAY_STATUS_REF } from '../../../../../../interfaces/entityDisplayStatus';
+import { DropdownOptionDisplayStatus, DropdownOptionDisplayStatusRef, DROPDOWN_OPTION_DISPLAY_STATUS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { OptionMouseEnter, OptionMouseLeave } from '../../../../../../interfaces/dropdownMenuMouseEvents'
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
@@ -27,31 +27,31 @@ import BrowserType from '../../../../../../services/workshop/browserType';
 
 interface Consts {
   DROPDOWN_OPTION_MARKER: string;
-  ENTITY_DISPLAY_STATUS_REF: string;
+  DROPDOWN_OPTION_DISPLAY_STATUS_REF: string;
   BROWSER_SPECIFIC_DROPDOWN_MENU_STYLE: WorkshopComponentCss;
   PASSIVE_FONT_AWESOME_COLOR: FONT_AWESOME_COLORS,
   getOptionDisplay: (optionName: string) => string;
-  getDefaultTextColor: (innerDropdownOptions: NestedDropdownStructure | EntityDisplayStatusRef) => string;
-  isArrowDisplayed: (innerDropdownOptions: NestedDropdownStructure | EntityDisplayStatusRef) => boolean;
+  getDefaultTextColor: (innerDropdownOptions: NestedDropdownStructure | DropdownOptionDisplayStatusRef) => string;
+  isArrowDisplayed: (innerDropdownOptions: NestedDropdownStructure | DropdownOptionDisplayStatusRef) => boolean;
 }
 
 export default {
   setup(): Consts {
     return {
       DROPDOWN_OPTION_MARKER,
-      ENTITY_DISPLAY_STATUS_REF,
+      DROPDOWN_OPTION_DISPLAY_STATUS_REF,
       BROWSER_SPECIFIC_DROPDOWN_MENU_STYLE: { paddingBottom: BrowserType.isFirefox() ? '1px !important' : '2px !important' },
       PASSIVE_FONT_AWESOME_COLOR: FONT_AWESOME_COLORS.PASSIVE,
       getOptionDisplay(optionName: string): string {
-        return optionName === ENTITY_DISPLAY_STATUS_REF ? 'none !important' : '';
+        return optionName === DROPDOWN_OPTION_DISPLAY_STATUS_REF ? 'none !important' : '';
       },
-      getDefaultTextColor(innerDropdownOptions: NestedDropdownStructure | EntityDisplayStatusRef): string {
-        return !innerDropdownOptions[ENTITY_DISPLAY_STATUS_REF] || (innerDropdownOptions[ENTITY_DISPLAY_STATUS_REF] as EntityDisplayStatus).isDisplayed
+      getDefaultTextColor(innerDropdownOptions: NestedDropdownStructure | DropdownOptionDisplayStatusRef): string {
+        return !innerDropdownOptions[DROPDOWN_OPTION_DISPLAY_STATUS_REF] || (innerDropdownOptions[DROPDOWN_OPTION_DISPLAY_STATUS_REF] as DropdownOptionDisplayStatus).isEnabled
           ? 'black' : 'grey';
       },
-      isArrowDisplayed(innerDropdownOptions: NestedDropdownStructure | EntityDisplayStatusRef): boolean {
-        return !innerDropdownOptions[ENTITY_DISPLAY_STATUS_REF]
-          || ((innerDropdownOptions[ENTITY_DISPLAY_STATUS_REF] as EntityDisplayStatus).isDisplayed && Object.keys(innerDropdownOptions).length > 1);
+      isArrowDisplayed(innerDropdownOptions: NestedDropdownStructure | DropdownOptionDisplayStatusRef): boolean {
+        return !innerDropdownOptions[DROPDOWN_OPTION_DISPLAY_STATUS_REF]
+          || ((innerDropdownOptions[DROPDOWN_OPTION_DISPLAY_STATUS_REF] as DropdownOptionDisplayStatus).isEnabled && Object.keys(innerDropdownOptions).length > 1);
       },
     };
   },

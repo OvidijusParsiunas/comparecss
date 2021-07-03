@@ -1,5 +1,5 @@
-import { EntityDisplayStatusRef } from './entityDisplayStatus';
+import { DropdownOptionDisplayStatusRef } from './dropdownOptionDisplayStatus';
 
 export type NestedDropdownStructure = {
-  [key in string]: NestedDropdownStructure | EntityDisplayStatusRef;
+  [key in string]: NestedDropdownStructure | DropdownOptionDisplayStatusRef;
 }

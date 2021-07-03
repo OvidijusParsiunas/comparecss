@@ -1,6 +1,6 @@
 import { AlignedLayerSection, AutoSize, SubcomponentProperties, Image, Text, WorkshopComponent, Animations, ComponentCenteringInParent, BackdropProperties, Subcomponents } from '../../../../../../interfaces/workshopComponent';
+import { DropdownOptionsDisplayStatusUtils } from '../../../utils/dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../../../../../../consts/animationTypes.enum';
-import { EntityDisplayStatusUtils } from '../../../utils/entityDisplayStatus/entityDisplayStatusUtils';
 import { NewComponentStyleProperties } from '../../../../../../consts/newComponentStyleProperties';
 import { ComponentPreviewStructure } from '../../../../../../interfaces/componentPreviewStructure';
 import { PARENT_SUBCOMPONENT_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
@@ -90,7 +90,7 @@ export class ComponentBuilder {
   private static createEmptyComponentPreviewStructure(subcomponents: Subcomponents, baseSubcomponentName: string,
       isBaseOptional = true): ComponentPreviewStructure {
     const subcomponentDropdownStructure = { [baseSubcomponentName]:
-      isBaseOptional ? EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject() : {} };
+      isBaseOptional ? DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject() : {} };
     return {
       baseSubcomponentProperties: subcomponents[baseSubcomponentName],
       layeringType: 'vertical',

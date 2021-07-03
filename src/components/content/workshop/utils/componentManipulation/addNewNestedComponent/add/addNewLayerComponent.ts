@@ -1,11 +1,11 @@
 import { NESTED_SUBCOMPONENTS_BASE_NAMES, PARENT_SUBCOMPONENT_NAME } from '../../../../../../../consts/baseSubcomponentNames.enum';
+import { DropdownOptionsDisplayStatusUtils } from '../../../dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
 import { NewComponentProperties, OverwritePropertiesFunc } from '../../../../../../../interfaces/addNewSubcomponent';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { AlignedSections, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
-import { EntityDisplayStatusUtils } from '../../../entityDisplayStatus/entityDisplayStatusUtils';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -14,12 +14,12 @@ import { JsUtils } from '../../../../../../../services/jsUtils/jsUtils';
 
 export class AddNewLayerComponent extends AddNewNestedComponentShared {
 
-  private static updateComponentPreviewStructure(parentComponent: WorkshopComponent, newSubcomponentProperties: NewComponentProperties): void {
-    const newNestedDropdownStructure = { [newSubcomponentProperties.baseName]: { 
-      ...EntityDisplayStatusUtils.createEntityDisplayStatusReferenceObject(),
+  private static updateComponentDropdownStructure(parentComponent: WorkshopComponent, newSubcomponentProperties: NewComponentProperties): void {
+    const newComponentDropdownStructure = { [newSubcomponentProperties.baseName]: { 
+      ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(),
     }};
-    const parentSubcomponentObject = parentComponent.componentPreviewStructure.subcomponentDropdownStructure;
-    JsUtils.addObjects(parentSubcomponentObject, PARENT_SUBCOMPONENT_NAME.BASE, newNestedDropdownStructure);
+    const parentComponentDropdownStructure = parentComponent.componentPreviewStructure.subcomponentDropdownStructure;
+    JsUtils.addObjects(parentComponentDropdownStructure, PARENT_SUBCOMPONENT_NAME.BASE, newComponentDropdownStructure);
   }
 
   private static addNewSubcomponentToBase(parentComponent: WorkshopComponent, layer: Layer): void {
@@ -52,7 +52,7 @@ export class AddNewLayerComponent extends AddNewNestedComponentShared {
     const layer: Layer = AddNewLayerComponent.createEmptyLayer(newSubcomponentProperties.baseName, layerSubcomponent);
     AddNewLayerComponent.addNewSubcomponentToBase(parentComponent, layer);
     if (isEditable) {
-      AddNewLayerComponent.updateComponentPreviewStructure(parentComponent, newSubcomponentProperties);
+      AddNewLayerComponent.updateComponentDropdownStructure(parentComponent, newSubcomponentProperties);
     }
   }
 

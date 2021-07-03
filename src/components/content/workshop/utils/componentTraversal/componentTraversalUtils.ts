@@ -1,6 +1,6 @@
 import { AlignedSections, ComponentPreviewStructure, Layer, NestedSubcomponent } from '../../../../../interfaces/componentPreviewStructure';
+import { DROPDOWN_OPTION_DISPLAY_STATUS_REF } from '../../../../../interfaces/dropdownOptionDisplayStatus';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
-import { ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/entityDisplayStatus';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
 
@@ -19,7 +19,7 @@ export default class ComponentTraversalUtils {
 
   private static inspectSubcomponent(subcomponentDropdownStructure: NestedDropdownStructure, 
       callback: TraverseComponentCallback, subcomponentNameStack: string[], subcomponentName: string): boolean {
-    if (subcomponentName === ENTITY_DISPLAY_STATUS_REF) {
+    if (subcomponentName === DROPDOWN_OPTION_DISPLAY_STATUS_REF) {
       subcomponentNameStack.splice(subcomponentNameStack.length - 1, 1);
       return false;
     }

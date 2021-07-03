@@ -1,11 +1,11 @@
 import useSubcomponentPreviewSelectModeEventHandlers from '../compositionAPI/useSubcomponentPreviewSelectModeEventHandlers';
 import { SubcomponentAndOverlayElementIds } from '../../../../../interfaces/subcomponentAndOverlayElementIds';
+import { DROPDOWN_OPTION_DISPLAY_STATUS_REF } from '../../../../../interfaces/dropdownOptionDisplayStatus';
 import { SubcomponentPreviewMouseEvents } from '../../../../../interfaces/subcomponentPreviewMouseEvents';
 import useSubcomponentPreviewEventHandlers from '../compositionAPI/useSubcomponentPreviewEventHandlers';
 import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../../consts/subcomponentCursorClasses.enum';
 import { Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
-import { ENTITY_DISPLAY_STATUS_REF } from '../../../../../interfaces/entityDisplayStatus';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
 
 interface Index {
@@ -30,13 +30,13 @@ export default class ComponentPreviewUtils {
   private static addIdsViaTraversalOfNestedDropdownStructure(subcomponentDropdownStructure: NestedDropdownStructure, index: Index,
       subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds): void {
     Object.keys(subcomponentDropdownStructure).forEach((subcomponentName: string) => {
-      if (subcomponentName === ENTITY_DISPLAY_STATUS_REF) return;
+      if (subcomponentName === DROPDOWN_OPTION_DISPLAY_STATUS_REF) return;
       subcomponentAndOverlayElementIdsObject[subcomponentName] = {
         subcomponentId: `${ComponentPreviewUtils.SUBCOMPONENT_ID_PREFIX}${index.number}`,
         overlayId: `${ComponentPreviewUtils.OVERLAY_ID_PREFIX}${index.number}`,
       };
       index.number += 1;
-      if (Object.keys(subcomponentDropdownStructure[subcomponentName]).length > 1 || !subcomponentDropdownStructure[subcomponentName][ENTITY_DISPLAY_STATUS_REF]) {
+      if (Object.keys(subcomponentDropdownStructure[subcomponentName]).length > 1 || !subcomponentDropdownStructure[subcomponentName][DROPDOWN_OPTION_DISPLAY_STATUS_REF]) {
         ComponentPreviewUtils.addIdsViaTraversalOfNestedDropdownStructure(subcomponentDropdownStructure[subcomponentName] as NestedDropdownStructure,
           index, subcomponentAndOverlayElementIdsObject);
       }
