@@ -52,11 +52,10 @@
       <div
         :style="{marginRight: component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef ? '0px' : '8px'}"
         class="btn-group option-component-button-container"
-        v-if="!isFullPreviewModeActive && 
-          (component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus || component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef)">
+        v-if="!isFullPreviewModeActive">
         <transition-group name="horizontal-transition">
           <button ref="importComponentToggle"
-            v-if="component.subcomponents[component.activeSubcomponentName].nestedComponent && component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus"
+            v-if="component.subcomponents[component.activeSubcomponentName].nestedComponent"
             type="button" class="btn-group-option" :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, OPTION_MENU_BUTTON_MARKER]"
             @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleSubcomponentImport, true)">
               <font-awesome-icon
@@ -69,15 +68,14 @@
             @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleInSync)">
               <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
           </button>
-          <button v-if="component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus"
+          <button v-if="true"
             type="button" class="btn-group-option" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
-            :class="[component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed ? 'subcomponent-display-toggle-remove' : 'subcomponent-display-toggle-add',
+            :class="['subcomponent-display-toggle-remove',
               {'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS, TOGGLE_SUBCOMPONENT_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
             @mouseenter="mouseEnterSubcomponentToggle"
             @mouseleave="mouseLeaveSubcomponentToggle"
             @keydown.enter.prevent="$event.preventDefault()"
-            @click="buttonClickMiddleware(toggleSubcomponent.bind(this, component.subcomponents[component.activeSubcomponentName]), 
-              component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed && !getIsDoNotShowModalAgainState())">
+            @click="buttonClickMiddleware(toggleSubcomponent, !getIsDoNotShowModalAgainState())">
           </button>
         </transition-group>
       </div>
@@ -94,9 +92,7 @@
           :class="[{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS]">
             <font-awesome-icon style="color: #54a9f100" class="sync-icon" icon="sync-alt"/>
         </button>
-        <div v-if="true" v-show="!isFullPreviewModeActive
-            && (!component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus
-              || component.subcomponents[component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed)"
+        <div v-if="true" v-show="!isFullPreviewModeActive"
           :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}" > 
           <dropdown
             class="option-component-button-container"
@@ -141,7 +137,6 @@
 <script lang="ts">
 import { TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS } from '../../../../../consts/toolbarClasses';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
-import { ImportComponentModeTempPropertiesUtils } from './importComponent/modeUtils/importComponentModeTempPropertiesUtils';
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../componentPreview/utils/animations/consts/sharedConsts';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ComponentTypeToOptions, componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
@@ -151,7 +146,6 @@ import SubcomponentOverlayToggleUtils from './subcomponentOverlayToggleUtils/sub
 import { removeSubcomponentModalState } from './removeSubcomponentModalState/removeSubcomponentModalState';
 import { fulPreviewModeState } from '../../componentPreview/utils/fullPreviewMode/fullPreviewModeState';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
-import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
 import ImportComponentModeToggleUtils from './importComponent/modeUtils/importComponentModeToggle';
 import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFullPreviewModeEvent';
@@ -285,9 +279,6 @@ export default {
     },
     getOptionsForActiveCssPseudoClass(): Option[] {
       const subcomponentProperties: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
-      if (subcomponentProperties.subcomponentDisplayStatus && !subcomponentProperties.subcomponentDisplayStatus.isDisplayed) {
-        return [];
-      }
       return componentTypeToOptions[this.component.type](subcomponentProperties.subcomponentType, this.component)
         [subcomponentProperties.activeCssPseudoClass];
     },
@@ -333,11 +324,6 @@ export default {
       const oldActiveSubcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
       oldActiveSubcomponent.activeCssPseudoClass = oldActiveSubcomponent.defaultCssPseudoClass;
       this.component.activeSubcomponentName = subcomponentName;
-      if (this.component.subcomponents[this.component.activeSubcomponentName].subcomponentDisplayStatus
-          && !this.component.subcomponents[this.component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed) {
-        this.hideSettings();
-        return;
-      }
       this.setNewOptionOnNewDropdownOptionSelect();
     },
     selectNewCssPseudoClass(newCssPseudoClass: CSS_PSEUDO_CLASSES): void {
@@ -370,23 +356,13 @@ export default {
     toggleInSync(callback?: () => void): void {
       this.temporarilyAllowOptionAnimations(InSync.toggleSubcomponentInSync.bind(this, this.component, callback), true, true);
     },
-    toggleSubcomponent(subcomponent: SubcomponentProperties): void {
-      const { subcomponentDisplayStatus } = subcomponent;
-      if (!subcomponentDisplayStatus.isDisplayed) {
-        subcomponentDisplayStatus.isDisplayed = true;
-        if (this.activeOption.buttonName) {
-          this.selectDefaultOption();
-        }
-        SubcomponentOverlayToggleUtils.changeSubcomponentOverlayClass(subcomponentDisplayStatus, this.component.activeSubcomponentName, false,
-          SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
-      } else if (!this.getIsDoNotShowModalAgainState()) {
+    toggleSubcomponent(): void {
+      if (!this.getIsDoNotShowModalAgainState()) {
         this.currentRemoveSubcomponentModalTargetId = this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID;
         setTimeout(() => { this.currentRemoveSubcomponentModalTargetId = ''; });
         this.$emit('prepare-remove-subcomponent-modal', this.removeSubcomponent);
       } else {
         this.removeSubcomponent();
-        SubcomponentOverlayToggleUtils.changeSubcomponentOverlayClass(subcomponentDisplayStatus, this.component.activeSubcomponentName, true,
-          SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
       }
     },
     addNewSubcomponent(): void {
@@ -399,20 +375,21 @@ export default {
         ComponentManipulation.removeSubcomponent(this.component, this.selectNewSubcomponent);
       }
     },
+    // WORK2: not sure if those if statements are required
     mouseEnterSubcomponentToggle(): void {
-      if (this.isRemovedComponentCurrentlySelectedForImport()) {
-        ImportComponentModeTempPropertiesUtils.switchTempPropertiesWithTheLastSelectedSubcomponent(this.component);
-      }
+      // if (this.isRemovedComponentCurrentlySelectedForImport()) {
+      //   ImportComponentModeTempPropertiesUtils.switchTempPropertiesWithTheLastSelectedSubcomponent(this.component);
+      // }
       SubcomponentOverlayToggleUtils.displaySubcomponentOverlay(this.component);
     },
     mouseLeaveSubcomponentToggle(): void {
       if (this.currentRemoveSubcomponentModalTargetId === this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID) return;
-      if (this.isRemovedComponentCurrentlySelectedForImport()) {
-        // overlay is set to 'display: none' by default in the base component style="display: none"
-        ImportComponentModeTempPropertiesUtils.switchTempPropertiesWithTheLastSelectedSubcomponent(this.component);
-      } else {
+      // if (this.isRemovedComponentCurrentlySelectedForImport()) {
+      //   // overlay is set to 'display: none' by default in the base component style="display: none"
+      //   ImportComponentModeTempPropertiesUtils.switchTempPropertiesWithTheLastSelectedSubcomponent(this.component);
+      // } else {
         SubcomponentOverlayToggleUtils.hideSubcomponentOverlay(this.component);
-      }
+      // }
     },
     toggleSubcomponentSelectModeButtonDisplay(isDropdownDisplayed: boolean): void {
       this.isSubcomponentSelectModeButtonDisplayed = isDropdownDisplayed;
@@ -437,9 +414,7 @@ export default {
       if (this.isFullPreviewModeActive) {
         this.hideSettings();
       } else {
-        if (this.activeOption.buttonName &&
-          (!this.component.subcomponents[this.component.activeSubcomponentName].subcomponentDisplayStatus
-            || this.component.subcomponents[this.component.activeSubcomponentName].subcomponentDisplayStatus.isDisplayed)) {
+        if (this.activeOption.buttonName) {
             this.selectDefaultOption();
         }
         setTimeout(() => {
@@ -510,8 +485,8 @@ export default {
       return InSync.isInSyncButtonDisplayed(activeSubcomponent);
     },
     isRemovedComponentCurrentlySelectedForImport(): void {
-      const { subcomponentDisplayStatus, nestedComponent } = this.component.subcomponents[this.component.activeSubcomponentName];
-      return this.isImportComponentModeActive && !subcomponentDisplayStatus.isDisplayed
+      const { nestedComponent } = this.component.subcomponents[this.component.activeSubcomponentName];
+      return this.isImportComponentModeActive
         && nestedComponent.ref.componentPreviewStructure.baseSubcomponentProperties.tempOriginalCustomProperties;
     },
     reassignToolbarPositionToggleRef(): void {

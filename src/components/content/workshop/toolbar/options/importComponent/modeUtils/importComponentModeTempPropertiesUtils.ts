@@ -50,9 +50,6 @@ export class ImportComponentModeTempPropertiesUtils {
       if (resetOriginalProperties) { ImportComponentModeTempPropertiesUtils.resetOriginalCss(activeSubcomponent); }
       delete activeSubcomponent.tempOriginalCustomProperties;
     }
-    if (resetOriginalProperties) {
-      ImportComponentModeTempPropertiesUtils.removeImportedComponentIfCurrentRemoved(activeComponent);
-    }
   }
 
   public static setLastSelectectedSubcomponentToImport(componentToBeImported: WorkshopComponent, activeComponent: WorkshopComponent): void {
@@ -62,20 +59,6 @@ export class ImportComponentModeTempPropertiesUtils {
 
   public static deleteLastSelectedSubcomponentToImport(activeComponent: WorkshopComponent): void {
     delete activeComponent.subcomponents[activeComponent.activeSubcomponentName].nestedComponent.lastSelectedComponentToImport;
-  }
-
-  public static displayImportedComponentIfCurrentRemoved(activeSubcomponent: WorkshopComponent): void {
-    const { subcomponentDisplayStatus } = activeSubcomponent.subcomponents[activeSubcomponent.activeSubcomponentName]
-      .nestedComponent.ref.componentPreviewStructure.baseSubcomponentProperties;
-    if (!subcomponentDisplayStatus.isDisplayed) { subcomponentDisplayStatus.isDisplayedTemporarily = true; }
-  }
-
-  public static removeImportedComponentIfCurrentRemoved(activeSubcomponent: WorkshopComponent): void {
-    const { subcomponentDisplayStatus } = activeSubcomponent.subcomponents[activeSubcomponent.activeSubcomponentName]
-      .nestedComponent.ref.componentPreviewStructure.baseSubcomponentProperties;
-    if (!subcomponentDisplayStatus.isDisplayed && subcomponentDisplayStatus.isDisplayedTemporarily) {
-      subcomponentDisplayStatus.isDisplayedTemporarily = false;
-    }
   }
 
   public static switchTempPropertiesWithTheLastSelectedSubcomponent(activeComponent: WorkshopComponent): void {

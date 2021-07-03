@@ -1,5 +1,5 @@
-import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { CustomCssWithInheritedCss, SharedInheritedCss } from '../../../../../interfaces/cssBuilder';
+import { CustomCss, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import GeneralUtils from './generalUtils';
@@ -16,8 +16,6 @@ export default class SharedCssUtils {
     components.forEach((component) => {
       const { subcomponents, type } = component;
       Object.keys(subcomponents).forEach((subcomponentNames: string) => {
-        const subcomponent: SubcomponentProperties = subcomponents[subcomponentNames];
-        if (subcomponent.subcomponentDisplayStatus && !subcomponent.subcomponentDisplayStatus.isDisplayed) return;
         const componentToSubcomponentId = this.generateComponentToSubcomponentId(type, subcomponentNames);
         repeatedSubcomponents[componentToSubcomponentId] = repeatedSubcomponents[componentToSubcomponentId] ? repeatedSubcomponents[componentToSubcomponentId] + 1 : 1;
       });

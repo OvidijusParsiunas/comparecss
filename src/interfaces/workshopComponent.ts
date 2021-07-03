@@ -11,7 +11,6 @@ import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
 import { CoreSubcomponentNames } from './customSubcomponentNames';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
-import { EntityDisplayStatus } from './entityDisplayStatus';
 import { TempCustomCss } from './tempCustomCss';
 import { CloseTriggers } from './closeTriggers';
 
@@ -34,10 +33,6 @@ export type CustomCss = {
   [key in CSS_PSEUDO_CLASSES]?: WorkshopComponentCss;
 }
 
-interface TemporaryDisplayStatus {
-  isDisplayedTemporarily?: boolean;
-}
-
 export interface DetailsToUpdateOtherCssProperties {
   cssProperty: keyof WorkshopComponentCss;
   customCss: CustomCss;
@@ -45,8 +40,6 @@ export interface DetailsToUpdateOtherCssProperties {
   isScaleNegativeToPositive: boolean;
   divisor?: number;
 }
-
-export type SubcomponentDisplayStatus = EntityDisplayStatus & TemporaryDisplayStatus;
 
 export type SubcomponentSpecificSettings = {
   [key in WORKSHOP_TOOLBAR_OPTION_TYPES]?: {
@@ -161,8 +154,6 @@ export interface SubcomponentProperties {
   // this is used to add an animation effect when hovering or clicking a subcomponent to display their new custom css
   // it is currently not being used during css export and instead added explicitly using inherited css files
   subcomponentPreviewTransition?: string;
-  // WORK1: will probably not be required anymore
-  subcomponentDisplayStatus?: EntityDisplayStatus & SubcomponentDisplayStatus;
   // the reason why custom css is attached here is to not have to keep multiple unique settings for each and every subcomponent in memory all at once
   subcomponentSpecificSettings?: SubcomponentSpecificSettings;
   customFeatures?: CustomFeatures;

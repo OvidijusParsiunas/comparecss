@@ -1,8 +1,7 @@
 <template>
   <div class="layers" :class="COMPONENT_PREVIEW_MARKER">
     <div v-for="(layer, index) in layers" :key="layer" class="layer" :class="COMPONENT_PREVIEW_MARKER">
-      <div v-if="isSubcomponentDisplayed(layer.subcomponentProperties)"
-        :id="getLayerId(layer.name, 'subcomponentId')"
+      <div :id="getLayerId(layer.name, 'subcomponentId')"
         :style="getStyleProperties(layers, layer, index)"
         :class="COMPONENT_PREVIEW_MARKER"
         @mouseenter="activateMouseEvent(layer.name, 'subcomponentMouseEnter')"
@@ -18,8 +17,7 @@
             :sections="layer.sections"
             :mouseEvents="mouseEvents"/>
       </div>
-      <div v-if="isSubcomponentDisplayed(layer.subcomponentProperties)"
-        :id="getLayerId(layer.name, 'overlayId')"
+      <div :id="getLayerId(layer.name, 'overlayId')"
         style="display: none"
         :style="[layer.subcomponentProperties.customCss[DEFAULT_CSS_PSEUDO_CLASS], { zIndex: layers.length - index + 1 }]"
         :class="[...OVERLAY_DEFAULT_CLASSES]"></div>
@@ -34,9 +32,7 @@ import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponent
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
-import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { Layer } from '../../../../../interfaces/componentPreviewStructure';
-import SubcomponentDisplayUtils from '../utils/subcomponentDisplayUtils';
 import layerSections from './LayerSections.vue';
 
 interface Consts {
@@ -44,7 +40,6 @@ interface Consts {
   OVERLAY_DEFAULT_CLASSES: SUBCOMPONENT_OVERLAY_CLASSES[];
   DEFAULT_CSS_PSEUDO_CLASS: CSS_PSEUDO_CLASSES;
   URL: string;
-  isSubcomponentDisplayed: (nestedSubcomponent: SubcomponentProperties) => boolean;
 }
 
 export default {
@@ -54,7 +49,6 @@ export default {
       OVERLAY_DEFAULT_CLASSES: [SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT],
       DEFAULT_CSS_PSEUDO_CLASS: CSS_PSEUDO_CLASSES.DEFAULT,
       URL: require('@/assets/images/road.webp'),
-      isSubcomponentDisplayed: SubcomponentDisplayUtils.isSubcomponentDisplayed,
     };
   },
   methods: {

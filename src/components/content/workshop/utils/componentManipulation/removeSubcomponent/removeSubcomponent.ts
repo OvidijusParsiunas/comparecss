@@ -1,17 +1,30 @@
 import ComponentTraversalUtils, { ComponentTraversalState } from '../../componentTraversal/componentTraversalUtils';
+import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
-import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 
 type SelectNewSubcomponentCallback = (parentSubcomponentName: string) => void;
-interface RemoveNestedComponentIfFoundObj {
+interface SubcomponentValues {
   selectNewSubcomponentCallback: SelectNewSubcomponentCallback;
   subcomponentName: string;
+  parentComponent: WorkshopComponent;
+  subcomponentProperties: SubcomponentProperties;
 }
 
 export class RemoveSubcomponent {
 
-  private static removeSubcomponents(componentTraversalState: ComponentTraversalState): void {
-    const { subcomponentName, parentComponent } = componentTraversalState;
+  private static removeNestedComponentInPreviewStructureIfFound(componentTraversalState: ComponentTraversalState): boolean {
+    const { subcomponentProperties, layers, alignedNestedComponents, index } = componentTraversalState;
+    const { subcomponentProperties: targetSubcomponentProperties } = this as any;
+    if (targetSubcomponentProperties === subcomponentProperties) {
+      if (layers) layers.splice(index, 1);
+      if (alignedNestedComponents) alignedNestedComponents.splice(index, 1);
+      return true;
+    }
+    return false;
+  }
+
+  private static removeSubcomponents(componentTraversalState: ComponentTraversalState, parentComponent: WorkshopComponent): void {
+    const { subcomponentName } = componentTraversalState;
     const activeSubcomponent = parentComponent.subcomponents[subcomponentName];
     Object.keys(activeSubcomponent?.nestedComponent?.ref.subcomponents|| {}).forEach((keyName) => {
       delete parentComponent.subcomponents[keyName];
@@ -19,46 +32,47 @@ export class RemoveSubcomponent {
   }
 
   private static removeNestedComponentNestedComponents(componentTraversalState: ComponentTraversalState): boolean {
-    RemoveSubcomponent.removeSubcomponents(componentTraversalState);
+    const { parentComponent } = this as any;
+    RemoveSubcomponent.removeSubcomponents(componentTraversalState, parentComponent);
     return true;
   }
 
-  private static updateOptions(componentTraversalState: ComponentTraversalState,
-      selectNewSubcomponentCallback?: SelectNewSubcomponentCallback): void {
-    const { subcomponentName, parentComponent, subcomponentNameStack } = componentTraversalState;
+  private static updateOptions(subcomponentNameStack: string[], selectNewSubcomponentCallback?: SelectNewSubcomponentCallback): void {
     if (selectNewSubcomponentCallback) selectNewSubcomponentCallback(subcomponentNameStack[subcomponentNameStack.length - 2]);
-    parentComponent.subcomponents[subcomponentName].subcomponentDisplayStatus.isDisplayed = false;
   }
 
-  private static removeNestedComponent(componentTraversalState: ComponentTraversalState,
-      selectNewSubcomponentCallback?: SelectNewSubcomponentCallback): void {
-    const { subcomponentName, subcomponentDropdownStructure, parentComponent } = componentTraversalState;
-    RemoveSubcomponent.updateOptions(componentTraversalState, selectNewSubcomponentCallback);
-    RemoveSubcomponent.removeSubcomponents(componentTraversalState);
+  private static removeNestedComponent(componentTraversalState: ComponentTraversalState, subcomponentValues: SubcomponentValues): void {
+    const { subcomponentName, subcomponentDropdownStructure, subcomponentNameStack } = componentTraversalState;
+    RemoveSubcomponent.updateOptions(subcomponentNameStack, subcomponentValues.selectNewSubcomponentCallback);
+    RemoveSubcomponent.removeSubcomponents(componentTraversalState, subcomponentValues.parentComponent);
     ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
       subcomponentDropdownStructure[subcomponentName] as NestedDropdownStructure,
-      parentComponent, RemoveSubcomponent.removeNestedComponentNestedComponents);
+      RemoveSubcomponent.removeNestedComponentNestedComponents.bind(subcomponentValues));
     delete subcomponentDropdownStructure[subcomponentName];
   }
 
-  private static removeNestedComponentIfFound(componentTraversalState: ComponentTraversalState): boolean {
+  private static removeNestedComponentUsingDropdownStructureIfFound(componentTraversalState: ComponentTraversalState): boolean {
     const { subcomponentName } = componentTraversalState;
-    const { subcomponentName: targetSubcomponentName, selectNewSubcomponentCallback } = this as any;
-    if (targetSubcomponentName === subcomponentName) {
-      RemoveSubcomponent.removeNestedComponent(componentTraversalState, selectNewSubcomponentCallback);
-      return false;
+    const subcomponentValues: SubcomponentValues = this as any;
+    if (subcomponentValues.subcomponentName === subcomponentName) {
+      RemoveSubcomponent.removeNestedComponent(componentTraversalState, subcomponentValues);
+      return true;
     }
-    return true;
+    return false;
   }
   
-  public static remove(component: WorkshopComponent, subcomponentName: string,
-      selectNewSubcomponentCallback?: SelectNewSubcomponentCallback): void {
-    const removeNestedComponentIfFoundObj: RemoveNestedComponentIfFoundObj = {
+  public static remove(component: WorkshopComponent, subcomponentName: string, selectNewSubcomponentCallback?: SelectNewSubcomponentCallback): void {
+    const subcomponentValues: SubcomponentValues = {
       subcomponentName,
       selectNewSubcomponentCallback,
+      parentComponent: component,
+      subcomponentProperties: component.subcomponents[subcomponentName],
     };
     ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
-      component.componentPreviewStructure.subcomponentDropdownStructure, component,
-      RemoveSubcomponent.removeNestedComponentIfFound.bind(removeNestedComponentIfFoundObj));
+      component.componentPreviewStructure.subcomponentDropdownStructure,
+      RemoveSubcomponent.removeNestedComponentUsingDropdownStructureIfFound.bind(subcomponentValues));
+    ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
+      component.componentPreviewStructure,
+      RemoveSubcomponent.removeNestedComponentInPreviewStructureIfFound.bind(subcomponentValues));
   }
 }

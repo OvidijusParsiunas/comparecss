@@ -1,7 +1,6 @@
 <template>
   <div>
     <div ref="componentPreview"
-      v-if="isSubcomponentDisplayed(component.componentPreviewStructure.baseSubcomponentProperties)"
       :id="getBaseId('subcomponentId')"
       :style="getStyleProperties()"
       class="parent-component"
@@ -21,7 +20,6 @@
         />
     </div>
     <div ref="componentPreviewOverlay"
-      v-if="isSubcomponentDisplayed(component.componentPreviewStructure.baseSubcomponentProperties)"
       :id="getBaseId('overlayId')"
       style="display: none"
       :style="[component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
@@ -48,10 +46,8 @@ import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOve
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../consts/elementClassMarkers';
-import { SubcomponentProperties } from '../../../../interfaces/workshopComponent';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../consts/closeButtonXText';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
-import SubcomponentDisplayUtils from './utils/subcomponentDisplayUtils';
 import layers from './layers/Layers.vue';
 
 interface Consts {
@@ -59,7 +55,6 @@ interface Consts {
   STATIC_POSITION_CLASS: string;
   COMPONENT_PREVIEW_MARKER: string;
   CSS_PSEUDO_CLASSES: typeof CSS_PSEUDO_CLASSES;
-  isSubcomponentDisplayed: (component: SubcomponentProperties) => boolean;
   useSubcomponentPreviewSelectModeEventHandlers: UseSubcomponentPreviewEventHandlers;
 }
 
@@ -70,7 +65,6 @@ export default {
       STATIC_POSITION_CLASS: STATIC_POSITION_CLASS,
       COMPONENT_PREVIEW_MARKER,
       CSS_PSEUDO_CLASSES,
-      isSubcomponentDisplayed: SubcomponentDisplayUtils.isSubcomponentDisplayed,
       useSubcomponentPreviewSelectModeEventHandlers: useSubcomponentPreviewSelectModeEventHandlers(),
     };
   },

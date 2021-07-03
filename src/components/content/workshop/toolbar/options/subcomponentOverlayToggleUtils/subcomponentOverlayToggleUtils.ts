@@ -1,6 +1,6 @@
 import { subcomponentAndOverlayElementIdsState } from '../subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
-import { SubcomponentDisplayStatus, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../../consts/subcomponentOverlayClasses.enum';
+import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 
 export default class SubcomponentOverlayToggleUtils {
 
@@ -21,33 +21,38 @@ export default class SubcomponentOverlayToggleUtils {
     setTimeout(() => { subcomponentOverlayElement.style.display = 'none' });
   }
 
+  // WORK1: change logic to preview a new subcomponent
   public static displaySubcomponentOverlay(component: WorkshopComponent): void {
-    const { subcomponentDisplayStatus } = component.subcomponents[component.activeSubcomponentName];
-    if (!subcomponentDisplayStatus.isDisplayed) {
-      subcomponentDisplayStatus.isDisplayedTemporarily = true;
-      setTimeout(() => {
-        SubcomponentOverlayToggleUtils.displaySubcomponentOverlayBySelectModeStatus(component.activeSubcomponentName, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
-      });
-    } else {
+    // const { subcomponentDisplayStatus } = component.subcomponents[component.activeSubcomponentName];
+    // if (!subcomponentDisplayStatus.isDisplayed) {
+    //   subcomponentDisplayStatus.isDisplayedTemporarily = true;
+    //   setTimeout(() => {
+    //     SubcomponentOverlayToggleUtils.displaySubcomponentOverlayBySelectModeStatus(component.activeSubcomponentName, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
+    //   });
+    // } else {
       SubcomponentOverlayToggleUtils.displaySubcomponentOverlayBySelectModeStatus(component.activeSubcomponentName, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
-    }
+    // }
   }
 
   public static hideSubcomponentOverlay(component: WorkshopComponent): void {
-    const { subcomponentDisplayStatus } = component.subcomponents[component.activeSubcomponentName];
-    subcomponentDisplayStatus.isDisplayedTemporarily = false;
-    SubcomponentOverlayToggleUtils.hideSubcomponentOverlayBySelectModeStatus(component.activeSubcomponentName,
-      subcomponentDisplayStatus.isDisplayed ? SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE : SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
+    SubcomponentOverlayToggleUtils.hideSubcomponentOverlayBySelectModeStatus(component.activeSubcomponentName, SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
   }
 
-  public static changeSubcomponentOverlayClass(subcomponentDisplayStatus: SubcomponentDisplayStatus, activeSubcomponentName: string, displayOverlayOnlyState: boolean,
-      classToBeReplaced: SUBCOMPONENT_OVERLAY_CLASSES, newClass: SUBCOMPONENT_OVERLAY_CLASSES): void {
-    subcomponentDisplayStatus.isDisplayedTemporarily = displayOverlayOnlyState;
-    const subcomponentOverlayElement = SubcomponentOverlayToggleUtils.getActiveSubcomponentOverlayElement(activeSubcomponentName);
-    // will return null when the import component mode is on and the user clicks the add button
-    if (subcomponentOverlayElement) {
-      subcomponentOverlayElement.classList.replace(classToBeReplaced, newClass);
-      setTimeout(() => { subcomponentOverlayElement.style.display = 'block'; });
-    }
-  }
+  // public static hideSubcomponentOverlay(component: WorkshopComponent): void {
+  //   const { subcomponentDisplayStatus } = component.subcomponents[component.activeSubcomponentName];
+  //   subcomponentDisplayStatus.isDisplayedTemporarily = false;
+  //   SubcomponentOverlayToggleUtils.hideSubcomponentOverlayBySelectModeStatus(component.activeSubcomponentName,
+  //     subcomponentDisplayStatus.isDisplayed ? SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE : SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
+  // }
+
+  // public static changeSubcomponentOverlayClass(subcomponentDisplayStatus: SubcomponentDisplayStatus, activeSubcomponentName: string, displayOverlayOnlyState: boolean,
+  //     classToBeReplaced: SUBCOMPONENT_OVERLAY_CLASSES, newClass: SUBCOMPONENT_OVERLAY_CLASSES): void {
+  //   subcomponentDisplayStatus.isDisplayedTemporarily = displayOverlayOnlyState;
+  //   const subcomponentOverlayElement = SubcomponentOverlayToggleUtils.getActiveSubcomponentOverlayElement(activeSubcomponentName);
+  //   // will return null when the import component mode is on and the user clicks the add button
+  //   if (subcomponentOverlayElement) {
+  //     subcomponentOverlayElement.classList.replace(classToBeReplaced, newClass);
+  //     setTimeout(() => { subcomponentOverlayElement.style.display = 'block'; });
+  //   }
+  // }
 }

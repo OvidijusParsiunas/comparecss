@@ -24,7 +24,7 @@ export class CopyNewSubcomponent extends CopyComponentShared {
     for (let i = 0; i < newSubcomponentNames.length; i += 1) {
       const newSubcomponent = newNestedComponent.subcomponents[newSubcomponentNames[i]];
       const subcomponentBeingCopied = copiedNestedComponent.ref.subcomponents[copiedSubcomponentNames[i]];
-      CopyNewSubcomponent.copyExistingSubcomponentProperties(newSubcomponent, subcomponentBeingCopied)
+      CopyNewSubcomponent.copyExistingSubcomponentProperties(newSubcomponent, subcomponentBeingCopied);
     }
   }
 

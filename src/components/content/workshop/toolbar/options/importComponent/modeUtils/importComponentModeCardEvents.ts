@@ -15,7 +15,6 @@ export class ImportComponentModeCardEvents {
     if (workshopComponent.currentlySelectedComponent.subcomponents[workshopComponent.currentlySelectedComponent.activeSubcomponentName]
       .nestedComponent.ref.type !== componentToBeImported.type) return;
     ImportComponentModeTempPropertiesUtils.setActiveComponentToImportComponent(componentToBeImported, workshopComponent.currentlySelectedComponent);
-    ImportComponentModeTempPropertiesUtils.displayImportedComponentIfCurrentRemoved(workshopComponent.currentlySelectedComponent);
     workshopComponent.currentlyHoveredImportComponent = componentToBeImported;
   }
   
@@ -25,7 +24,6 @@ export class ImportComponentModeCardEvents {
       ImportComponentModeTempPropertiesUtils.setActiveComponentToImportComponent(currentlySelectedImportComponent, currentlySelectedComponent);
     } else {
       ImportComponentModeTempPropertiesUtils.cleanComponent(currentlySelectedComponent, true);
-      ImportComponentModeTempPropertiesUtils.removeImportedComponentIfCurrentRemoved(workshopComponent.currentlySelectedComponent);
     }
   }
 }

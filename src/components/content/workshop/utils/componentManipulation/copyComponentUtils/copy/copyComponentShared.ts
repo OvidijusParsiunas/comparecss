@@ -3,12 +3,6 @@ import JSONManipulation from '../../../../../../../services/workshop/jsonManipul
 
 export class CopyComponentShared {
 
-  protected static copyDisplayStatus(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
-    if (newSubcomponent.subcomponentDisplayStatus) {
-      newSubcomponent.subcomponentDisplayStatus.isDisplayed = subcomponentBeingCopied.subcomponentDisplayStatus.isDisplayed;
-    }
-  }
-
   protected static copyInSyncSubcomponent(nestedComponent: NestedComponent, newSubcomponent: SubcomponentProperties,
       subcomponentBeingCopied: SubcomponentProperties): void {
     if (newSubcomponent.nestedComponent) {
@@ -19,7 +13,6 @@ export class CopyComponentShared {
     newSubcomponent.customFeatures = subcomponentBeingCopied.customFeatures;
     newSubcomponent.defaultCss = JSONManipulation.deepCopy(subcomponentBeingCopied.defaultCss);
     newSubcomponent.defaultCustomFeatures = JSONManipulation.deepCopy(subcomponentBeingCopied.defaultCustomFeatures);
-    CopyComponentShared.copyDisplayStatus(newSubcomponent, subcomponentBeingCopied);
   }
 
   protected static copySubcomponentProperties(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
@@ -29,6 +22,5 @@ export class CopyComponentShared {
     newSubcomponent.defaultCss = JSONManipulation.deepCopy(subcomponentBeingCopied.customCss);
     newSubcomponent.defaultCustomFeatures = JSONManipulation.deepCopy(subcomponentBeingCopied.customFeatures);
     newSubcomponent.defaultCustomStaticFeatures = JSONManipulation.deepCopy(subcomponentBeingCopied.customStaticFeatures);
-    CopyComponentShared.copyDisplayStatus(newSubcomponent, subcomponentBeingCopied);
   }
 }
