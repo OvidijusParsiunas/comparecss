@@ -365,9 +365,6 @@ export default {
         this.removeSubcomponent();
       }
     },
-    addNewSubcomponent(): void {
-      this.$emit('add-new-subcomponent');
-    },
     removeSubcomponent(): void {
       if (this.component.subcomponents[this.component.activeSubcomponentName].nestedComponent?.inSync) {
         this.temporarilyAllowOptionAnimations(ComponentManipulation.removeSubcomponent.bind(this, this.component, this.selectNewSubcomponent), true, false);
@@ -375,21 +372,15 @@ export default {
         ComponentManipulation.removeSubcomponent(this.component, this.selectNewSubcomponent);
       }
     },
-    // WORK2: not sure if those if statements are required
+    addNewSubcomponent(): void {
+      this.$emit('add-new-subcomponent');
+    },
     mouseEnterSubcomponentToggle(): void {
-      // if (this.isRemovedComponentCurrentlySelectedForImport()) {
-      //   ImportComponentModeTempPropertiesUtils.switchTempPropertiesWithTheLastSelectedSubcomponent(this.component);
-      // }
       SubcomponentOverlayToggleUtils.displaySubcomponentOverlay(this.component);
     },
     mouseLeaveSubcomponentToggle(): void {
       if (this.currentRemoveSubcomponentModalTargetId === this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID) return;
-      // if (this.isRemovedComponentCurrentlySelectedForImport()) {
-      //   // overlay is set to 'display: none' by default in the base component style="display: none"
-      //   ImportComponentModeTempPropertiesUtils.switchTempPropertiesWithTheLastSelectedSubcomponent(this.component);
-      // } else {
         SubcomponentOverlayToggleUtils.hideSubcomponentOverlay(this.component);
-      // }
     },
     toggleSubcomponentSelectModeButtonDisplay(isDropdownDisplayed: boolean): void {
       this.isSubcomponentSelectModeButtonDisplayed = isDropdownDisplayed;

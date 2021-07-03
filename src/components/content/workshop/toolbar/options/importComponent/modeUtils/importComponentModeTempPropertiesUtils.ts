@@ -60,31 +60,4 @@ export class ImportComponentModeTempPropertiesUtils {
   public static deleteLastSelectedSubcomponentToImport(activeComponent: WorkshopComponent): void {
     delete activeComponent.subcomponents[activeComponent.activeSubcomponentName].nestedComponent.lastSelectedComponentToImport;
   }
-
-  public static switchTempPropertiesWithTheLastSelectedSubcomponent(activeComponent: WorkshopComponent): void {
-    const activeComponentSubcomponentNamesObj = activeComponent.subcomponents
-      [activeComponent.activeSubcomponentName].nestedComponent.ref.coreSubcomponentNames;
-    const activeComponentSubcomponentNamesArr = Object.keys(activeComponentSubcomponentNamesObj);
-    for (let i = 0; i < activeComponentSubcomponentNamesArr.length; i += 1) {
-      const activeSubcomponent = activeComponent.subcomponents[activeComponentSubcomponentNamesObj[activeComponentSubcomponentNamesArr[i]]];
-      if (!activeSubcomponent.tempOriginalCustomProperties) break;
-      const tempCustomCss = activeSubcomponent.customCss;
-      const tempCustomfeatures = activeSubcomponent.customFeatures;
-      activeSubcomponent.customCss = activeSubcomponent.tempOriginalCustomProperties.customCss;
-      activeSubcomponent.customFeatures = activeSubcomponent.tempOriginalCustomProperties.customFeatures;
-      activeSubcomponent.tempOriginalCustomProperties.customCss = tempCustomCss;
-      activeSubcomponent.tempOriginalCustomProperties.customFeatures = tempCustomfeatures;
-    }
-  }
-
-  public static removeTempProperties(activeComponent: WorkshopComponent): void {
-    const activeComponentSubcomponentNamesObj = activeComponent.subcomponents
-      [activeComponent.activeSubcomponentName].nestedComponent.ref.coreSubcomponentNames;
-    const activeComponentSubcomponentNamesArr = Object.keys(activeComponentSubcomponentNamesObj);
-    for (let i = 0; i < activeComponentSubcomponentNamesArr.length; i += 1) {
-      const activeSubcomponent = activeComponent.subcomponents[activeComponentSubcomponentNamesObj[activeComponentSubcomponentNamesArr[i]]];
-      if (!activeSubcomponent.tempOriginalCustomProperties) break;
-      delete activeSubcomponent.tempOriginalCustomProperties;
-    }
-  }
 }

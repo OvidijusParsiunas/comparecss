@@ -48,12 +48,7 @@ export class ImportComponedModeToggleOff {
         .nestedComponent.lastSelectedComponentToImport.componentStatus;
       // timeout used to not display the animation immediately if expanded modal mode has been temporarily closed
       setTimeout(() => {
-        // timeout used to make sure that when a subcomponent was removed - the options buttons are displayed before the sync animation starts as they will
-        // come from top left side of the screen
-        // WORK2: make sure this is needed
-        setTimeout(() => {
           subcomponents[activeSubcomponentName].nestedComponent.inSync = true;
-        });
       }, optionsComponent.hasImportComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     }
     ImportComponentModeTempPropertiesUtils.cleanComponent(optionsComponent.component, false);
@@ -101,9 +96,6 @@ export class ImportComponedModeToggleOff {
       return ImportComponedModeToggleOff.toggleOff(optionsComponent, true);
     }
     if (targetElement.classList.contains(TOGGLE_SUBCOMPONENT_BUTTON_MARKER)) {
-      if (workshopComponent.currentlySelectedImportComponent) {
-        ImportComponentModeTempPropertiesUtils.removeTempProperties(optionsComponent.component);
-      }
       ImportComponedModeToggleOff.resetComponent(optionsComponent.component, optionsComponent.hasImportComponentModeClosedExpandedModal);
       return ImportComponedModeToggleOff.toggleOff(optionsComponent, false);
     }
