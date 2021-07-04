@@ -6,7 +6,6 @@ import { Options } from '../../../../../../../interfaces/options';
 import { closeButtonTextOptions } from '../button/closeText';
 import { nestedButtonOptions } from '../button/nestedButton';
 import { closeButtonOptions } from '../button/closeButton';
-import { sectionTextOptions } from '../text/sectionText';
 import { imageLayerOptions } from '../layer/imageLayer';
 import { cardLayerOptions } from '../layer/cardLayer';
 import { buttonTextOptions } from '../button/text';
@@ -18,8 +17,6 @@ export class CardOptions {
 
   private static readonly STATIC_CARD_OPTIONS: SubcomponentTypeToOptions = {
     [SUBCOMPONENT_TYPES.BASE]: cardBaseOptions as Options,
-    // WORK1: check if this is needed
-    [SUBCOMPONENT_TYPES.SECTION_TEXT]: sectionTextOptions as Options,
     [SUBCOMPONENT_TYPES.AVATAR]: avatarOptions as Options,
   };
 
