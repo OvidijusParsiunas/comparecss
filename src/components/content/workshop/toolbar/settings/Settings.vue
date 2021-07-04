@@ -327,7 +327,6 @@ export default {
     },
     colorInputClick(cssProperty: string): void {
       SharedUtils.addDefaultValueIfCssModeMissing(cssProperty, this.subcomponentProperties);
-      this.subcomponentProperties.customCss[this.subcomponentProperties.activeCssPseudoClass].transition = 'unset';
     },
     removeColor(spec: any, removeColorTriggers: any): void {
       ColorPickerUtils.removeColor(spec, removeColorTriggers, this.subcomponentProperties, this.settings);

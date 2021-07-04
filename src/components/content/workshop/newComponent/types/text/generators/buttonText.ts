@@ -16,6 +16,7 @@ function createDefaultTextCss(): CustomCss {
       fontSize: '14px',
       fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
       backgroundColor: 'inherit',
+      color: '#ffffff',
       fontWeight: '400',
       paddingTop: '0px',
       paddingBottom: '0px',
@@ -35,8 +36,10 @@ function overwriteAlignment(textComponent: WorkshopComponent): void {
   textComponent.subcomponents[textComponent.coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
 }
 
-function setIsTriggeredByAnotherSubcomponent(textComponent: WorkshopComponent): void {
+function overwriteSubcomponentProperties(textComponent: WorkshopComponent): void {
   textComponent.subcomponents[textComponent.coreSubcomponentNames.base].isTriggeredByAnotherSubcomponent = true;
+  textComponent.subcomponents[textComponent.coreSubcomponentNames.base].mouseEventTransitionDuration = '0.25s';
+  textComponent.subcomponents[textComponent.coreSubcomponentNames.base].tempCustomCss = new Set(['transition']);
 }
 
 export const buttonText: ComponentGenerator = {
@@ -45,7 +48,7 @@ export const buttonText: ComponentGenerator = {
       baseCustomCssFunc: createDefaultTextCss };
     const buttonTextComponent =  TextBuilder.create(componentStyle);
     overwriteAlignment(buttonTextComponent);
-    setIsTriggeredByAnotherSubcomponent(buttonTextComponent);
+    overwriteSubcomponentProperties(buttonTextComponent);
     return buttonTextComponent;
   },
 };

@@ -64,7 +64,7 @@ export class ButtonBuilder extends ComponentBuilder {
       defaultCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || ButtonBuilder.createDefaultBaseCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      subcomponentPreviewTransition: 'all 0.25s ease-out',
+      mouseEventTransitionDuration: '0.25s',
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedButtonCss,
       subcomponentSpecificSettings: buttonSpecificSettings,

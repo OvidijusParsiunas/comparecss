@@ -1,4 +1,3 @@
-there is animation for onhover - but not for mouse leave (button)
 instead of having a dropdown for active and removed subcomponents we can have a + for adding subcomponents to it - base -> layer -> button/text
 ability to copy subcomponent instead of importing text/button
 text needs to have color
@@ -10,6 +9,7 @@ zoom in image when hovered on
 when hover mode is on, click events should still render the css properties accordingly
 card margin
 think about computed property solution
+when going onto hover of butto text color, there is an x even though there is no colour
 
 overflow
 try with button tags

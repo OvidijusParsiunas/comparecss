@@ -10,7 +10,6 @@ import { animationState } from '../utils/animations/state';
 export default function useSubcomponentPreviewEventHandlers(subcomponentProperties: SubcomponentProperties,
     clickCallback: () => void): UseSubcomponentPreviewEventHandlers {
 
-  let overwrittenDefaultPropertiesByHover = { hasBeenSet: false, css: {} };
   let overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
   let isUnsetButtonDisplayedForColorInputs = {};
 
@@ -37,56 +36,71 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
           && (animationState.getIsModeToggleAnimationInProgressState() || animationState.getIsAnimationPreviewInProgressState()))
   }
 
-  function setMouseEnterProperties(customCss: CustomCss, transition: string): void {
-    overwrittenDefaultPropertiesByHover = { hasBeenSet: true, css: { ...customCss[CSS_PSEUDO_CLASSES.DEFAULT], transition } };
+  function unsetTransitionProperty(customCss: CustomCss, mouseEventTransitionDuration: string): void {
+    setTimeout(() => {
+      customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition = 'unset';
+    }, Number.parseFloat(mouseEventTransitionDuration) * 1000);
+  }
+
+  function buildTransitionCssProperty(mouseEventTransitionDuration: string): string {
+    return `all ${mouseEventTransitionDuration} ease-out`;
+  }
+
+  function setTransitionCssProperty(customCss: CustomCss, mouseEventTransitionDuration: string): void {
+    const transition = mouseEventTransitionDuration ? buildTransitionCssProperty(mouseEventTransitionDuration) : 'unset';
+    customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition = transition;
+  }
+
+  function setCustomCss(customCss: CustomCss, activeCssPseudoClass: CSS_PSEUDO_CLASSES): void {
     const newDefaultProperties = {
-      ...customCss[CSS_PSEUDO_CLASSES.DEFAULT], ...customCss[CSS_PSEUDO_CLASSES.HOVER], transition, ...isUnsetButtonDisplayedForColorInputs };
+      ...customCss[CSS_PSEUDO_CLASSES.DEFAULT], ...customCss[activeCssPseudoClass], ...isUnsetButtonDisplayedForColorInputs };
     subcomponentProperties.overwrittenCustomCssObj = { [CSS_PSEUDO_CLASSES.DEFAULT]: newDefaultProperties };
   }
 
-  // adding properties via OVERWRITTEN_CUSTOM_CSS_OBJ_NAME instead of customCss because if couple components are in-sync they will edit each other
+  function setMouseEnterProperties(customCss: CustomCss, mouseEventTransitionDuration: string): void {
+    setTransitionCssProperty(customCss, mouseEventTransitionDuration);
+    setCustomCss(customCss, CSS_PSEUDO_CLASSES.HOVER);
+  }
+
   const subcomponentMouseEnter = (): void => {
     if (shoudPreventMouseEvent()) return;
-    const { customCss, subcomponentPreviewTransition, activeCssPseudoClass,
+    const { customCss, mouseEventTransitionDuration, activeCssPseudoClass,
       nameOfAnotherSubcomponetToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
     // even.isTrusted means that the event was triggered by user's mouse instead of dispatch
     if (isTriggeredByAnotherSubcomponent && event.isTrusted) return;
     if (nameOfAnotherSubcomponetToTrigger) triggerAnotherSubcomponentMouseEvent(nameOfAnotherSubcomponetToTrigger, event.type);
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT) {
       setDefaultUnsetButtonStatesForColorInputs(customCss);
-      const transition = subcomponentPreviewTransition || 'unset';
-      setMouseEnterProperties(customCss, transition);
+      setMouseEnterProperties(customCss, mouseEventTransitionDuration);
     }
   }
-  
+
   const subcomponentMouseLeave = (): void => {
     if (shoudPreventMouseEvent()) return;
-    const { activeCssPseudoClass, nameOfAnotherSubcomponetToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
+    const { activeCssPseudoClass, customCss, mouseEventTransitionDuration,
+      nameOfAnotherSubcomponetToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
     if (isTriggeredByAnotherSubcomponent && event.isTrusted) return;
     if (nameOfAnotherSubcomponetToTrigger) triggerAnotherSubcomponentMouseEvent(nameOfAnotherSubcomponetToTrigger, event.type);
-    if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT && overwrittenDefaultPropertiesByHover.hasBeenSet) {
+    if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT && subcomponentProperties.overwrittenCustomCssObj) {
       delete subcomponentProperties.overwrittenCustomCssObj;
-      overwrittenDefaultPropertiesByHover = { hasBeenSet: false, css: {} };
     }
     isUnsetButtonDisplayedForColorInputs = {};
+    if (mouseEventTransitionDuration) unsetTransitionProperty(customCss, mouseEventTransitionDuration); 
   }
-  
+
   const subcomponentMouseDown = (): void => {
     if (shoudPreventMouseEvent()) return;
-    const { customCss, subcomponentPreviewTransition, activeCssPseudoClass,
+    const { customCss, mouseEventTransitionDuration, activeCssPseudoClass,
         nameOfAnotherSubcomponetToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
     if (isTriggeredByAnotherSubcomponent && event.isTrusted) return;
     if (nameOfAnotherSubcomponetToTrigger) triggerAnotherSubcomponentMouseEvent(nameOfAnotherSubcomponetToTrigger, event.type);
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT) {
-      const transition = subcomponentPreviewTransition || 'unset';
-      const newDefaultProperties = {
-        ...customCss[CSS_PSEUDO_CLASSES.DEFAULT], ...customCss[CSS_PSEUDO_CLASSES.CLICK], transition, ...isUnsetButtonDisplayedForColorInputs };
       // this is a bug fix for when the user clicks a button without entering it (after subcomponent select mode)
       if (!subcomponentProperties.overwrittenCustomCssObj) {
-        setMouseEnterProperties(customCss, transition);
+        setMouseEnterProperties(customCss, mouseEventTransitionDuration);
       }
-      overwrittenDefaultPropertiesByClick = { hasBeenSet: true, css: { ...subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT], transition } };
-      subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] = { ...newDefaultProperties };
+      overwrittenDefaultPropertiesByClick = { hasBeenSet: true, css: { ...subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] } };
+      setCustomCss(customCss, CSS_PSEUDO_CLASSES.CLICK);
     }
   }
 
