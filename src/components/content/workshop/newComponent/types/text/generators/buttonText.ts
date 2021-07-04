@@ -35,12 +35,17 @@ function overwriteAlignment(textComponent: WorkshopComponent): void {
   textComponent.subcomponents[textComponent.coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
 }
 
+function setIsTriggeredByAnotherSubcomponent(textComponent: WorkshopComponent): void {
+  textComponent.subcomponents[textComponent.coreSubcomponentNames.base].isTriggeredByAnotherSubcomponent = true;
+}
+
 export const buttonText: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const componentStyle: NewComponentStyleProperties = { baseName, baseStyle: TEXT_STYLES.BUTTON,
       baseCustomCssFunc: createDefaultTextCss };
     const buttonTextComponent =  TextBuilder.create(componentStyle);
     overwriteAlignment(buttonTextComponent);
+    setIsTriggeredByAnotherSubcomponent(buttonTextComponent);
     return buttonTextComponent;
   },
 };

@@ -176,7 +176,8 @@ export interface SubcomponentProperties {
   // temporarily holds the original customCss when a component card has been hovered/selected during component import mode 
   tempOriginalCustomProperties?: TempCustomProperties;
   // when a subcomponent's mouse event is triggered, trigger another subcomponent's mouse events
-  triggerableSubcomponentName?: string;
+  nameOfAnotherSubcomponetToTrigger?: string;
+  isTriggeredByAnotherSubcomponent?: boolean;
 }
 
 export type Subcomponents = {

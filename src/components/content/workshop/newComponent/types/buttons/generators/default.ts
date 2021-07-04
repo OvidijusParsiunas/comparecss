@@ -3,7 +3,6 @@ import { WorkshopComponent } from '../../../../../../../interfaces/workshopCompo
 import { ButtonBuilder } from './buttonBuilder';
 
 export const defaultButton: ComponentGenerator = {
-  // WORK1: on hover button change color text option - and fix mouse leave bug
   createNewComponent(baseName?: string): WorkshopComponent {
     return ButtonBuilder.create({ baseName });
   },

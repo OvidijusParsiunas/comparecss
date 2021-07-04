@@ -84,7 +84,7 @@ export class ButtonBuilder extends ComponentBuilder {
       componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.style || TEXT_STYLES.BUTTON,
       layerSubcomponent.baseName, [ButtonBuilder.overwriteButtonTextProperties, componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.func]);
     const { coreSubcomponentNames } = buttonComponent;
-    buttonComponent.subcomponents[coreSubcomponentNames.base].triggerableSubcomponentName = textSubcomponent.baseName;
+    buttonComponent.subcomponents[coreSubcomponentNames.base].nameOfAnotherSubcomponetToTrigger = textSubcomponent.baseName;
     coreSubcomponentNames.text = textSubcomponent.baseName;
   }
 
