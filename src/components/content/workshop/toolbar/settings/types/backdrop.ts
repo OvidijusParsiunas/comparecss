@@ -1,4 +1,5 @@
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../consts/workshopToolbarOptionTypes.enum';
+import { CSS_PROPERTY_VALUES } from '../../../../../../consts/cssPropertyValues.enum';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { SettingPaths } from '../../../../../../interfaces/settingPaths';
 
@@ -59,7 +60,7 @@ export default {
         {
           customFeatureObjectKeys: ['customFeatures', 'backdrop', 'color'],
           defaultValue: '#00000000',
-          conditions: new Set(['unset']),
+          conditions: new Set([CSS_PROPERTY_VALUES.UNSET]),
         },
       ]
     },

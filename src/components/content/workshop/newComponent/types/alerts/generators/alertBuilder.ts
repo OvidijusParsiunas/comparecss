@@ -6,6 +6,7 @@ import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
@@ -40,9 +41,9 @@ export class AlertBuilder extends ComponentBuilder {
         borderRadius: '4px',
         width: '400px',
         height: '50px',
-        boxSizing: 'unset',
+        boxSizing: CSS_PROPERTY_VALUES.UNSET,
         fontSize: '16px',
-        boxShadow: 'unset',
+        boxShadow: CSS_PROPERTY_VALUES.UNSET,
         paddingLeft: '20px',
         paddingRight: '20px',
         paddingTop: '0px',

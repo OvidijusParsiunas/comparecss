@@ -4,6 +4,7 @@ import { subcomponentSelectModeState } from '../../toolbar/options/subcomponentS
 import { UseSubcomponentPreviewEventHandlers } from '../../../../../interfaces/useSubcomponentPreviewEventHandlers';
 import { CustomCss, SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
+import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { animationState } from '../utils/animations/state';
 
@@ -15,9 +16,9 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
 
   function setDefaultUnsetButtonStatesForColorInputs(customCss: CustomCss): void {
     Object.keys(customCss[CSS_PSEUDO_CLASSES.DEFAULT]).forEach((key) => {
-      if (customCss[CSS_PSEUDO_CLASSES.DEFAULT][key] === 'inherit'
+      if (customCss[CSS_PSEUDO_CLASSES.DEFAULT][key] === CSS_PROPERTY_VALUES.INHERIT
           || (typeof customCss[CSS_PSEUDO_CLASSES.DEFAULT][key] === 'string' && customCss[CSS_PSEUDO_CLASSES.DEFAULT][key].charAt(0) === '#')) {
-        isUnsetButtonDisplayedForColorInputs[key + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX] = customCss[CSS_PSEUDO_CLASSES.DEFAULT][key] === 'inherit'
+        isUnsetButtonDisplayedForColorInputs[key + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX] = customCss[CSS_PSEUDO_CLASSES.DEFAULT][key] === CSS_PROPERTY_VALUES.INHERIT
           ? UNSET_COLOR_BUTTON_DISPLAYED_STATE.DO_NOT_DISPLAY : UNSET_COLOR_BUTTON_DISPLAYED_STATE.DISPLAY;
       }
     });
@@ -38,7 +39,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
 
   function unsetTransitionProperty(customCss: CustomCss, mouseEventTransitionDuration: string): void {
     setTimeout(() => {
-      customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition = 'unset';
+      customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition = CSS_PROPERTY_VALUES.UNSET;
     }, Number.parseFloat(mouseEventTransitionDuration) * 1000);
   }
 
@@ -47,7 +48,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   }
 
   function setTransitionCssProperty(customCss: CustomCss, mouseEventTransitionDuration: string): void {
-    const transition = mouseEventTransitionDuration ? buildTransitionCssProperty(mouseEventTransitionDuration) : 'unset';
+    const transition = mouseEventTransitionDuration ? buildTransitionCssProperty(mouseEventTransitionDuration) : CSS_PROPERTY_VALUES.UNSET;
     customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition = transition;
   }
 

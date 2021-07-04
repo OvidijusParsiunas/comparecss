@@ -19,12 +19,12 @@
                       {{setting.spec.greatestControlledNumber + setting.spec.postfix}}
                     </div>
                     <!-- the boxShadow range properties are set to 'unset' when all are 0px (for firefox) -->
-                    <div v-else-if="isCssPropertyNotEquals(setting, 'unset')">
+                    <div v-else-if="isCssPropertyNotEquals(setting, UNSET)">
                       {{setting.spec.partialCss !== undefined && subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass][setting.spec.cssProperty]
                         ? subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass][setting.spec.cssProperty].split(' ')[setting.spec.partialCss.position]
                         : subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass][setting.spec.cssProperty]}}
                     </div>
-                    <div v-else-if="isCssPropertyEquals(setting, 'unset')">
+                    <div v-else-if="isCssPropertyEquals(setting, UNSET)">
                       0px
                     </div>
                     <div v-else>
@@ -169,11 +169,12 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToo
 import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSettingsState';
 import { TOOLBAR_GENERAL_BUTTON_CLASS } from '../../../../../consts/toolbarClasses';
 import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
+import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 import { UseActionsDropdown } from '../../../../../interfaces/UseActionsDropdown';
 import { RANGE_SETTING_MARKER } from '../../../../../consts/elementClassMarkers';
 import { UnsetColorButton } from './utils/colorPickerUtils/unsetColorButton';
+import { ColorPickerUtils } from './utils/colorPickerUtils/colorPickerUtils';
 import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
-import ColorPickerUtils from './utils/colorPickerUtils/colorPickerUtils';
 import useActionsDropdown from './compositionAPI/useActionsDropdown';
 import { InSync } from '../options/importComponent/inSync';
 import dropdown from '../options/dropdown/Dropdown.vue';
@@ -185,6 +186,7 @@ import ImageUtils from './utils/imageUtils';
 
 interface Consts {
   RANGE_SETTING_MARKER: string;
+  UNSET: CSS_PROPERTY_VALUES.UNSET;
   TOOLBAR_GENERAL_BUTTON_CLASS: string;
   SETTINGS_TYPES: typeof SETTINGS_TYPES;
   FONT_AWESOME_COLORS: typeof FONT_AWESOME_COLORS;
@@ -210,6 +212,7 @@ export default {
       RANGE_SETTING_MARKER,
       FONT_AWESOME_COLORS,
       TOOLBAR_GENERAL_BUTTON_CLASS,
+      UNSET: CSS_PROPERTY_VALUES.UNSET,
       ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX: 'actionsDropdown-',
       refreshSettings(newSettings?: any, optionType?: WORKSHOP_TOOLBAR_OPTION_TYPES): void {
         if (newSettings) this.settings = newSettings;

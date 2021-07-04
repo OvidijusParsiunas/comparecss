@@ -1,5 +1,6 @@
 import { CustomCss, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
+import { CSS_PROPERTY_VALUES } from '../../../../../../consts/cssPropertyValues.enum';
 import SharedUtils from './sharedUtils';
 
 // the use of the auxiliary functionality and unset properties is mostly due to the fact that in firefox
@@ -7,7 +8,7 @@ import SharedUtils from './sharedUtils';
 export default class BoxShadowUtils {
 
   private static readonly DEFAULT_BOX_SHADOW_PIXEL_VALUES = '0px 0px 0px 0px';
-  private static readonly DEFAULT_BOX_SHADOW_UNSET_VALUE = 'unset';
+  private static readonly DEFAULT_BOX_SHADOW_UNSET_VALUE = CSS_PROPERTY_VALUES.UNSET;
   private static readonly DEFAULT_BOX_SHADOW_COLOR_VALUE = '#000000';
   private static readonly DEFAULT_BOX_SHADOW_SETTINGS_RANGE_VALUE = '0';
   

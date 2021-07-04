@@ -1,6 +1,7 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -15,7 +16,7 @@ export class AvatarBuilder extends ComponentBuilder {
         borderWidth: '0px',
         borderColor: '#1779ba',
         borderStyle: 'solid',
-        boxShadow: 'unset',
+        boxShadow: CSS_PROPERTY_VALUES.UNSET,
         outline: 'none',
         paddingTop: '0px',
         paddingBottom: '0px',
@@ -30,7 +31,7 @@ export class AvatarBuilder extends ComponentBuilder {
         boxSizing: 'content-box',
         color: '#ffffff',
         fontSize: '14px',
-        transition: 'unset',
+        transition: CSS_PROPERTY_VALUES.UNSET,
         top: '50%',
         left: '0px',
         backgroundSize: '100% 100%',

@@ -4,7 +4,6 @@ export const OPACITY_INVISIBLE = '0';
 export const OPACITY_VISIBLE = '1';
 export const ALL_PROPERTIES = 'all';
 export const OPACITY_PROPERTY = 'opacity';
-export const UNSET = 'unset';
 export const POINTER_EVENTS_NONE = 'none';
 export const POINTER_EVENTS_REMOVE = '';
 export const LINEAR_SPEED_TRANSITION = 'linear';

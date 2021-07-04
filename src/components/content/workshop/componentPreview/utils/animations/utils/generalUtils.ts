@@ -1,5 +1,6 @@
-import { POINTER_EVENTS_NONE, POINTER_EVENTS_REMOVE, CLASSLIST_METHODS, INITIAL_ANIMATION_PROPERTIES, UNSET } from '../consts/sharedConsts';
+import { POINTER_EVENTS_NONE, POINTER_EVENTS_REMOVE, CLASSLIST_METHODS, INITIAL_ANIMATION_PROPERTIES } from '../consts/sharedConsts';
 import { ElementStyleProperties } from '../../../../../../../interfaces/elementStyleProperties';
+import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { STATIC_POSITION_CLASS } from '../../../../../../../consts/sharedClasses';
 import { animationState } from '../state';
 
@@ -12,9 +13,9 @@ export default class GeneralUtils {
   public static unsetAnimationProperties(...elements: HTMLElement[]): void {
     elements.forEach((element) => {
       if (!element) return;
-      element.style.transitionDuration = UNSET;
-      element.style.transitionProperty = UNSET;
-      element.style.transitionTimingFunction = UNSET;
+      element.style.transitionDuration = CSS_PROPERTY_VALUES.UNSET;
+      element.style.transitionProperty = CSS_PROPERTY_VALUES.UNSET;
+      element.style.transitionTimingFunction = CSS_PROPERTY_VALUES.UNSET;
     });
   }
 

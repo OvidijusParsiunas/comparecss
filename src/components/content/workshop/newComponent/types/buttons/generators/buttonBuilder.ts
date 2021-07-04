@@ -5,6 +5,7 @@ import { NewComponentStyleProperties } from '../../../../../../../consts/newComp
 import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
+import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -23,7 +24,7 @@ export class ButtonBuilder extends ComponentBuilder {
         borderColor: '#1779ba',
         backgroundColor: '#1779ba',
         borderStyle: 'solid',
-        boxShadow: 'unset',
+        boxShadow: CSS_PROPERTY_VALUES.UNSET,
         outline: 'none',
         paddingTop: '0px',
         paddingBottom: '0px',
@@ -39,7 +40,7 @@ export class ButtonBuilder extends ComponentBuilder {
         color: '#ffffff',
         fontSize: '14px',
         fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
-        transition: 'unset',
+        transition: CSS_PROPERTY_VALUES.UNSET,
       },
       [CSS_PSEUDO_CLASSES.HOVER]: {
         backgroundColor: '#ff0000',

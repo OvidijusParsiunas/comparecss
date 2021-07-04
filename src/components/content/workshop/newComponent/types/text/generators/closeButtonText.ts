@@ -1,6 +1,7 @@
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -14,10 +15,10 @@ function createDefaultTextCss(): CustomCss {
       width: 'max-content',
       color: '#ff0000',
       userSelect: 'none',
-      overflow: 'unset',
+      overflow: CSS_PROPERTY_VALUES.UNSET,
       fontSize: '18px',
       fontFamily: '"Poppins", sans-serif',
-      backgroundColor: 'inherit',
+      backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
       fontWeight: '300',
       paddingTop: '1px',
       paddingBottom: '0px',
@@ -25,7 +26,7 @@ function createDefaultTextCss(): CustomCss {
       paddingRight: '0px',
       marginLeft: '0px',
       marginRight: '0px',
-      transition: 'unset',
+      transition: CSS_PROPERTY_VALUES.UNSET,
       outline: 'none',
       left: '0px',
     },

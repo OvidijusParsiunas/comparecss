@@ -9,7 +9,7 @@ zoom in image when hovered on
 when hover mode is on, click events should still render the css properties accordingly
 card margin
 think about computed property solution
-when going onto hover of butto text color, there is an x even though there is no colour
+button transition animation should be optional
 
 overflow
 try with button tags

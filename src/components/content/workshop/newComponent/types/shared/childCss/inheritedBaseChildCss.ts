@@ -1,3 +1,4 @@
+import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { ChildCss } from '../../../../../../../interfaces/workshopComponent';
 
 export const inheritedBaseChildCss: ChildCss[] = [
@@ -8,7 +9,7 @@ export const inheritedBaseChildCss: ChildCss[] = [
       position: 'absolute',
       top: '50%',
       transform: 'translateY(-50%)',
-      width: 'inherit',
+      width: CSS_PROPERTY_VALUES.INHERIT,
     },
   },
 ];

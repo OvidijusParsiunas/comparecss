@@ -8,6 +8,7 @@ import { PARENT_SUBCOMPONENT_NAME } from '../../../../../../../consts/baseSubcom
 import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { NewComponentProperties } from '../../../../../../../interfaces/addNewSubcomponent';
+import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
@@ -47,7 +48,7 @@ export class CardBuilder extends ComponentBuilder {
         fontFamily: '"Poppins", sans-serif',
         color: '#004085',
         textAlign: 'left',
-        backgroundColor: 'inherit',
+        backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
         paddingTop: '0px',
         paddingBottom: '0px',
         paddingLeft: '0px',
@@ -128,8 +129,8 @@ export class CardBuilder extends ComponentBuilder {
         borderStyle: 'solid',
         borderRadius: '4px',
         width: '450px',
-        boxSizing: 'unset',
-        boxShadow: 'unset',
+        boxSizing: CSS_PROPERTY_VALUES.UNSET,
+        boxShadow: CSS_PROPERTY_VALUES.UNSET,
         top: '0px',
       },
     }

@@ -1,5 +1,6 @@
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
+import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 import { CustomCss } from '../../../../../interfaces/workshopComponent';
 
 interface BorderPropertiesStatus {
@@ -151,7 +152,7 @@ export default class CssCleaner {
       case 'paddingLeft':
         return true;
       case 'boxShadow':
-        if (propertyValue.startsWith('0px 0px 0px 0px') || propertyValue === 'unset') {
+        if (propertyValue.startsWith('0px 0px 0px 0px') || propertyValue === CSS_PROPERTY_VALUES.UNSET) {
           return false;
         }
         return true;
@@ -172,7 +173,7 @@ export default class CssCleaner {
         }
         return true;
       default:
-        if (propertyValue === '0px' || propertyValue === 'unset' || propertyValue === '0%') {
+        if (propertyValue === '0px' || propertyValue === CSS_PROPERTY_VALUES.UNSET || propertyValue === '0%') {
           return false;
         }
         return true;

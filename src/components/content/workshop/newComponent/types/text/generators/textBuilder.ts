@@ -1,6 +1,7 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -19,7 +20,7 @@ export class TextBuilder extends ComponentBuilder {
         fontSize: '16px',
         color: '#004085',
         textAlign: 'left',
-        backgroundColor: 'inherit',
+        backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
         paddingTop: '0px',
         paddingBottom: '0px',
         paddingLeft: '0px',
@@ -32,7 +33,7 @@ export class TextBuilder extends ComponentBuilder {
         borderStyle: 'solid',
         borderRightWidth: '0px',
         borderLeftWidth: '0px',
-        transition: 'unset',
+        transition: CSS_PROPERTY_VALUES.UNSET,
         outline: 'none',
         left: '0px',
       },

@@ -1,6 +1,7 @@
 import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -18,8 +19,8 @@ export class LayerBuilder extends ComponentBuilder {
         paddingTop: '0px',
         paddingRight: '0px',
         paddingBottom: '0px',
-        backgroundColor: 'inherit',
-        boxShadow: 'unset',
+        backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
+        boxShadow: CSS_PROPERTY_VALUES.UNSET,
         backgroundSize: '100% 100%',
       },
     };

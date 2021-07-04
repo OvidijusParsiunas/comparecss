@@ -3,6 +3,7 @@ import { NewComponentStyleProperties } from '../../../../../../../consts/newComp
 import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { BUTTON_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../../../../consts/closeButtonXText';
 import { ButtonBuilder } from './buttonBuilder';
@@ -14,19 +15,19 @@ function createDefaultBaseCss(): CustomCss {
       width: '17px',
       borderRadius: '15px',
       cursor: 'pointer',
-      boxSizing: 'unset',
-      boxShadow: 'unset',
+      boxSizing: CSS_PROPERTY_VALUES.UNSET,
+      boxShadow: CSS_PROPERTY_VALUES.UNSET,
       borderWidth: '0px',
       borderStyle: 'solid',
       borderColor: '#000000',
-      backgroundColor: 'inherit',
+      backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
       outline: 'none',
       paddingTop: '0px',
       paddingLeft: '0px',
       paddingRight: '0px',
       paddingBottom: '0px',
       marginRight: '5px',
-      transition: 'unset',
+      transition: CSS_PROPERTY_VALUES.UNSET,
       left: '0px',
     }
   }

@@ -1,6 +1,7 @@
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { cardLayerSpecificSettings } from './cardLayerSpecificSettings';
@@ -19,8 +20,8 @@ function createDefaultLayerCss(): CustomCss {
       borderTopWidth: '1px',
       borderTopStyle: 'solid',
       borderTopColor: '#e9ecef',
-      backgroundColor: 'inherit',
-      boxShadow: 'unset',
+      backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
+      boxShadow: CSS_PROPERTY_VALUES.UNSET,
       backgroundSize: '100% 100%',
     },
   }

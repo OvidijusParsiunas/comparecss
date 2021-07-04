@@ -72,6 +72,7 @@ import { PARENT_SUBCOMPONENT_NAME } from '../../../../consts/baseSubcomponentNam
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import ToggleFullPreviewMode from './utils/fullPreviewMode/toggleFullPreviewMode';
 import { OpenAnimation, CloseAnimation } from '../../../../interfaces/animations';
+import { CSS_PROPERTY_VALUES } from '../../../../consts/cssPropertyValues.enum';
 import { TemporaryComponent } from '../../../../interfaces/temporaryComponent';
 import PreviewCloseAnimation from './utils/animations/previewAnimations/close';
 import PreviewOpenAnimation from './utils/animations/previewAnimations/open';
@@ -116,7 +117,7 @@ export default {
       Object.keys(this.component.subcomponents).forEach((key) => {
         const subcomponent = this.component.subcomponents[key];
         if (subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition) {
-          subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition = 'unset';
+          subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition = CSS_PROPERTY_VALUES.UNSET;
         }
       });
     },
