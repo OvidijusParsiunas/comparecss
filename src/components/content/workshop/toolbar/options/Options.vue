@@ -367,13 +367,16 @@ export default {
     },
     removeSubcomponent(): void {
       if (this.component.subcomponents[this.component.activeSubcomponentName].nestedComponent?.inSync) {
-        this.temporarilyAllowOptionAnimations(ComponentManipulation.removeSubcomponent.bind(this, this.component, this.selectNewSubcomponent), true, false);
+        this.temporarilyAllowOptionAnimations(this.emitRemoveSubcomponentEvent, true, false);
       } else {
-        ComponentManipulation.removeSubcomponent(this.component, this.selectNewSubcomponent);
+        this.emitRemoveSubcomponentEvent();
       }
     },
+    emitRemoveSubcomponentEvent(): void {
+      this.$emit('remove-subcomponent', this.selectNewSubcomponent);
+    },
     addNewSubcomponent(): void {
-      this.$emit('add-new-subcomponent');
+      this.$emit('add-subcomponent');
     },
     mouseEnterSubcomponentToggle(): void {
       SubcomponentOverlayToggleUtils.displaySubcomponentOverlay(this.component);

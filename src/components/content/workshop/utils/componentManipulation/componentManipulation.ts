@@ -37,8 +37,10 @@ export class ComponentManipulation {
     workshopComponent.$refs.contents.refreshComponent();
   }
 
-  public static removeSubcomponent(component: WorkshopComponent, selectNewSubcomponentCallback: () => void): void {
-    RemoveSubcomponent.remove(component, component.activeSubcomponentName, selectNewSubcomponentCallback);
+  public static removeSubcomponent(workshopComponent: ComponentOptions, selectNewSubcomponentCallback: () => void): void {
+    const { currentlySelectedComponent } = workshopComponent;
+    RemoveSubcomponent.remove(currentlySelectedComponent, currentlySelectedComponent.activeSubcomponentName, selectNewSubcomponentCallback);
+    workshopComponent.$refs.contents.refreshComponent();
   }
 
   public static copyComponent(workshopComponent: ComponentOptions, setActiveComponent: WorkshopComponent): void {

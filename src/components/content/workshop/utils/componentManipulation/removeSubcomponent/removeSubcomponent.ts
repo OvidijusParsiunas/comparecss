@@ -1,6 +1,7 @@
 import ComponentTraversalUtils, { ComponentTraversalState } from '../../componentTraversal/componentTraversalUtils';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
+import { ChangeSubcomponentNames } from '../changeSubcomponentNames/changeSubcomponentNames';
 
 type SelectNewSubcomponentCallback = (parentSubcomponentName: string) => void;
 interface SubcomponentValues {
@@ -68,11 +69,15 @@ export class RemoveSubcomponent {
       parentComponent: component,
       subcomponentProperties: component.subcomponents[subcomponentName],
     };
+    const { coreSubcomponentNames: { base }, componentPreviewStructure: { subcomponentDropdownStructure } } = component;
+    const layerComponentsNames: string[] = Object.keys(subcomponentDropdownStructure[base]);
+    const removedSubcomponentIndex = layerComponentsNames.indexOf(subcomponentName);
     ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
       component.componentPreviewStructure.subcomponentDropdownStructure,
       RemoveSubcomponent.removeNestedComponentUsingDropdownStructureIfFound.bind(subcomponentValues));
     ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
       component.componentPreviewStructure,
       RemoveSubcomponent.removeNestedComponentInPreviewStructureIfFound.bind(subcomponentValues));
+    ChangeSubcomponentNames.changeLayerSubcomponentBaseNames(component, removedSubcomponentIndex);
   }
 }

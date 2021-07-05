@@ -48,7 +48,8 @@
               @play-animation-preview="$refs.contents.playAnimationPreview($event)"
               @stop-animation-preview="$refs.contents.stopAnimationPreview()"
               @toggle-import-subcomponent-mode="toggleImportComponentMode($event)"
-              @add-new-subcomponent="addNewSubcomponent"/>
+              @add-subcomponent="addNewSubcomponent"
+              @remove-subcomponent="removeSubcomponent($event)"/>
             <component-contents ref="contents"
               :component="currentlySelectedComponent"
               :componentPreviewAssistance="componentPreviewAssistance"
@@ -212,6 +213,9 @@ export default {
     },
     addNewSubcomponent(): void {
       ComponentManipulation.addNewSubcomponent(this);
+    },
+    removeSubcomponent(selectNewSubcomponentCallback: () => void): void {
+      ComponentManipulation.removeSubcomponent(this, selectNewSubcomponentCallback);
     },
     toggleFullPreviewModeOffCallback(switchComponentsWithFadeOutCallback: SwitchComponentsWithFadeOutCallback,
         componentPreviewHTMLElement?: HTMLElement): void {

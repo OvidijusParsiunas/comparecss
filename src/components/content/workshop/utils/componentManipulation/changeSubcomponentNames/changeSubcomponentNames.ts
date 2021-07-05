@@ -21,37 +21,40 @@ export class ChangeSubcomponentNames {
     parentLayerComponent.defaultSubcomponentName = newSubcomponentName;
     parentLayerComponent.coreSubcomponentNames.base = newSubcomponentName;
     // double check if this is needed
-    parentLayerComponent.componentPreviewStructure.subcomponentDropdownStructure[newSubcomponentName] = parentLayerComponent.componentPreviewStructure.subcomponentDropdownStructure[currentSubcomponentName];
+    parentLayerComponent.componentPreviewStructure.subcomponentDropdownStructure[newSubcomponentName] = parentLayerComponent
+      .componentPreviewStructure.subcomponentDropdownStructure[currentSubcomponentName];
     parentLayerComponent.subcomponents[newSubcomponentName] = parentComponent.subcomponents[currentSubcomponentName];
     delete parentComponent.subcomponents[currentSubcomponentName];
     delete parentLayerComponent.subcomponents[currentSubcomponentName];
   }
 
   private static addLayerWithNewName(layersDropdownStructure: NestedDropdownStructure, layerSubcomponentsNames: string[], index: number,
-      parentComponent: WorkshopComponent, parentComponentDropdownStructure: NestedDropdownStructure, oldSubcomponentNames: string[]): void {
-    const { base } = parentComponent.coreSubcomponentNames;
+      parentComponent: WorkshopComponent, oldSubcomponentNames: string[]): void {
+    const {
+      coreSubcomponentNames: { base: baseName },
+      componentPreviewStructure: { subcomponentDropdownStructure: componentDropdownStructure, layers } } = parentComponent;
     const layerSubcomponentName = layerSubcomponentsNames[index];
     if (layerSubcomponentName !== DROPDOWN_OPTION_DISPLAY_STATUS_REF) {
       const newSubcomponentName = ChangeSubcomponentNames.replaceSubstringAtIndex(layerSubcomponentName, layerSubcomponentName.length - 1, index + 1);
       if (newSubcomponentName !== layerSubcomponentName) {
-        parentComponentDropdownStructure[base][newSubcomponentName] = layersDropdownStructure[layerSubcomponentName];
+        componentDropdownStructure[baseName][newSubcomponentName] = layersDropdownStructure[layerSubcomponentName];
         ChangeSubcomponentNames.changeOldSubcomponentBaseNames(parentComponent, layerSubcomponentName, newSubcomponentName);
-        parentComponent.componentPreviewStructure.layers[index].name = newSubcomponentName;
+        layers[index].name = newSubcomponentName;
         oldSubcomponentNames.push(layerSubcomponentName);
       }
     }
   }
 
   public static changeLayerSubcomponentBaseNames(parentComponent: WorkshopComponent, newComponentIndex: number): void {
-    const { coreSubcomponentNames: { base }, componentPreviewStructure: { subcomponentDropdownStructure, layers } } = parentComponent;
+    const { coreSubcomponentNames: { base }, componentPreviewStructure: { subcomponentDropdownStructure } } = parentComponent;
     const layersDropdownStructure = subcomponentDropdownStructure[base] as NestedDropdownStructure;
     const layerSubcomponentsNames = Object.keys(layersDropdownStructure);
     if (layerSubcomponentsNames.length === 1) return;
     const oldSubcomponentNames: string[] = [];
     for (let i = newComponentIndex; i < layerSubcomponentsNames.length; i += 1) {
       ChangeSubcomponentNames.addLayerWithNewName(layersDropdownStructure, layerSubcomponentsNames, i,
-        parentComponent, subcomponentDropdownStructure, oldSubcomponentNames)
+        parentComponent, oldSubcomponentNames)
     }
-    ChangeSubcomponentNames.removeOldSubcomponentNames(layerSubcomponentsNames, layersDropdownStructure);
+    ChangeSubcomponentNames.removeOldSubcomponentNames(oldSubcomponentNames, layersDropdownStructure);
   }
 }
