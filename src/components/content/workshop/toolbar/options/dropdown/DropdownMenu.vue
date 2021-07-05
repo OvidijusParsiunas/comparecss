@@ -35,6 +35,10 @@ interface Consts {
   isArrowDisplayed: (innerDropdownOptions: NestedDropdownStructure | DropdownOptionDisplayStatusRef) => boolean;
 }
 
+interface Data {
+  isFirstOptionNotDisplayed: boolean;
+}
+
 export default {
   setup(): Consts {
     return {
@@ -55,8 +59,16 @@ export default {
       },
     };
   },
+  data: (): Data => ({
+    isFirstOptionNotDisplayed: false,
+  }),
+  mounted(): void {
+    const optionNames = Object.keys(this.dropdownOptions);
+    this.isFirstOptionNotDisplayed = optionNames[0] === DROPDOWN_OPTION_DISPLAY_STATUS_REF;
+  },
   methods: {
     mouseEnter(innerDropdownOptions: NestedDropdownStructure, optionIndex: number): void {
+      if (this.isFirstOptionNotDisplayed) optionIndex -= 1;
       this.$emit('mouse-enter-option', [innerDropdownOptions, this.nestedDropdownIndex, optionIndex] as OptionMouseEnter);
     },
     mouseLeave(): void {

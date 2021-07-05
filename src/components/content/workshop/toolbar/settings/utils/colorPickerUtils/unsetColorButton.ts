@@ -32,8 +32,6 @@ export class UnsetColorButton {
     if (subcomponentProperties.activeCssPseudoClass === CSS_PSEUDO_CLASSES.HOVER) {
       const workshopComponentCssHover: WorkshopComponentCss = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER];
       const workshopComponentDefault: WorkshopComponentCss = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
-      console.log(UnsetColorButton.isCssPropertyNotAvailable(settingProperty, workshopComponentCssHover))
-      console.log(workshopComponentDefault[settingProperty] !== CSS_PROPERTY_VALUES.INHERIT)
       return UnsetColorButton.isExistingCssPropertyNotInherited(settingProperty, workshopComponentCssHover)
         || (UnsetColorButton.isCssPropertyNotAvailable(settingProperty, workshopComponentCssHover)
           && workshopComponentDefault[settingProperty] !== CSS_PROPERTY_VALUES.INHERIT);

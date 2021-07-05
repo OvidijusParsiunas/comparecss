@@ -7,6 +7,7 @@ import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../.
 import { NESTED_SUBCOMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { Layer, NestedSubcomponent } from '../../../../../../../interfaces/componentPreviewStructure';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
+import { ChangeSubcomponentNames } from '../../changeSubcomponentNames/changeSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -40,7 +41,7 @@ export class AddNewGenericComponent extends AddNewNestedComponentShared {
     (nestedComponentBaseDropdownStructure[DROPDOWN_OPTION_DISPLAY_STATUS_REF] as DropdownOptionDisplayStatus).isEnabled = true;
     const newComponentDropdownStructure = {
       [baseName]: { ...nestedComponentBaseDropdownStructure }};
-    JsUtils.addObjects(subcomponentDropdownStructure, baseSubcomponentName, newComponentDropdownStructure, false);
+    JsUtils.addObjects(subcomponentDropdownStructure, baseSubcomponentName, newComponentDropdownStructure, true);
   }
 
   private static updateNewSubcomponentParentLayer(baseSubcomponentProperties: SubcomponentProperties, parentLayer: Layer): void {
@@ -81,6 +82,11 @@ export class AddNewGenericComponent extends AddNewNestedComponentShared {
     } else {
       AddNewGenericComponent.updateComponentDropdownStructure(nestedComponent, subcomponentDropdownStructure, parentComponentBaseName);
     }
+    // WORK2: refactor
+    const nestedComponents = subcomponentDropdownStructure[parentComponentBaseName][parentLayer.name];
+    if (!nestedComponents) return;
+    const subcomponentNames = Object.keys(nestedComponents);
+    ChangeSubcomponentNames.changeGenericSubcomponentBaseNames(parentComponent, nestedComponents, subcomponentNames.length - 1);
   }
 
   private static executeOverwritePropertiesFuncs(overwritePropertiesFunc: OverwritePropertiesFunc[], subcomponents: Subcomponents,

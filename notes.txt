@@ -10,6 +10,7 @@ when hover mode is on, click events should still render the css properties accor
 card margin
 think about computed property solution
 button transition animation should be optional
+something doesn't scale well when viewing an option on a long length dropdown (20)
 
 overflow
 try with button tags
