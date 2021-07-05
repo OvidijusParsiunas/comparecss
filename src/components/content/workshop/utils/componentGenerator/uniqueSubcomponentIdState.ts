@@ -1,11 +1,12 @@
-let id = 0;
+const defaultId = 2;
+let id = defaultId;
 
 function getUniqueId(): number {
   return id += 1;
 }
 
 function resetUniqueId(): void {
-  id = 0;
+  id = defaultId;
 }
 
 export const uniqueSubcomponentIdState = {

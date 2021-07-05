@@ -1,4 +1,4 @@
-import { OverwritePropertiesFunc } from '../interfaces/addNewSubcomponent';
+import { OverwritePropertiesFunc } from '../interfaces/overwriteSubcomponentPropertiesFunc';
 import { WorkshopComponentCss } from '../interfaces/workshopComponentCss';
 import { CustomCss } from '../interfaces/workshopComponent';
 import { COMPONENT_STYLES } from './componentStyles.enum';

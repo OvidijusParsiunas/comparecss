@@ -83,10 +83,10 @@ export class ButtonBuilder extends ComponentBuilder {
     const layerSubcomponent = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.PLAIN, false);
     const textSubcomponent = AddNewGenericComponent.add(buttonComponent, COMPONENT_TYPES.TEXT,
       componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.style || TEXT_STYLES.BUTTON,
-      layerSubcomponent.baseName, [ButtonBuilder.overwriteButtonTextProperties, componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.func]);
+      layerSubcomponent.coreSubcomponentNames.base, [ButtonBuilder.overwriteButtonTextProperties, componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.func]);
     const { coreSubcomponentNames } = buttonComponent;
-    buttonComponent.subcomponents[coreSubcomponentNames.base].nameOfAnotherSubcomponetToTrigger = textSubcomponent.baseName;
-    coreSubcomponentNames.text = textSubcomponent.baseName;
+    buttonComponent.componentPreviewStructure.baseSubcomponentProperties.nameOfAnotherSubcomponetToTrigger = textSubcomponent.coreSubcomponentNames.base;
+    coreSubcomponentNames.text = textSubcomponent.coreSubcomponentNames.base;
   }
 
   private static addReferences(buttonComponent: WorkshopComponent): void {

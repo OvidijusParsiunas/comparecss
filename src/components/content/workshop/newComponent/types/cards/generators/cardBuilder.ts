@@ -7,7 +7,6 @@ import { NewComponentStyleProperties } from '../../../../../../../consts/newComp
 import { PARENT_SUBCOMPONENT_NAME } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { NewComponentProperties } from '../../../../../../../interfaces/addNewSubcomponent';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
@@ -19,10 +18,10 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 export class CardBuilder extends ComponentBuilder {
 
-  private static addSubcomponentSpecificSettings(baseSubcomponent: SubcomponentProperties, closeComponent: NewComponentProperties,
-      avatarComponent: NewComponentProperties): void {
+  private static addSubcomponentSpecificSettings(baseSubcomponent: SubcomponentProperties, closeComponent: WorkshopComponent,
+      avatarComponent: WorkshopComponent): void {
     baseSubcomponent.subcomponentSpecificSettings = getCardBaseSpecificSettings(
-      closeComponent.subcomponents[closeComponent.baseName], avatarComponent.subcomponents[avatarComponent.baseName]);
+      closeComponent.componentPreviewStructure.baseSubcomponentProperties, avatarComponent.componentPreviewStructure.baseSubcomponentProperties);
   }
   
   private static createDefaultTopLayerCustomStaticFeatures(): CustomStaticFeatures {
@@ -105,17 +104,17 @@ export class CardBuilder extends ComponentBuilder {
     const layer2Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
     const layer3Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLE.DEFAULT,
-      layer1Component.baseName, [(componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.func) || CardBuilder.overwriteTitleProperties]);
+      layer1Component.coreSubcomponentNames.base, [(componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.func) || CardBuilder.overwriteTitleProperties]);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLE.DEFAULT,
-      layer2Component.baseName, [(componentStyle.overwriteLayersProperties?.[1]?.text?.[0]?.func) || CardBuilder.overwriteDescriptionProperties]);
+      layer2Component.coreSubcomponentNames.base, [(componentStyle.overwriteLayersProperties?.[1]?.text?.[0]?.func) || CardBuilder.overwriteDescriptionProperties]);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLE.DEFAULT,
-      layer3Component.baseName, [(componentStyle.overwriteLayersProperties?.[2]?.button?.[0]) || CardBuilder.overwriteSubmitButtonProperties]);
+      layer3Component.coreSubcomponentNames.base, [(componentStyle.overwriteLayersProperties?.[2]?.button?.[0]) || CardBuilder.overwriteSubmitButtonProperties]);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLE.DEFAULT,
-      layer3Component.baseName, [(componentStyle.overwriteLayersProperties?.[2]?.button?.[1]) || CardBuilder.overwriteCancelButtonProperties]);
+      layer3Component.coreSubcomponentNames.base, [(componentStyle.overwriteLayersProperties?.[2]?.button?.[1]) || CardBuilder.overwriteCancelButtonProperties]);
     const closeButtonComponent = AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON,
-      BUTTON_STYLES.CLOSE, layer1Component.baseName, [(componentStyle.overwriteLayersProperties?.[0]?.button?.[0])]);
+      BUTTON_STYLES.CLOSE, layer1Component.coreSubcomponentNames.base, [(componentStyle.overwriteLayersProperties?.[0]?.button?.[0])]);
     const avatarComponent = AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.AVATAR, DEFAULT_STYLE.DEFAULT,
-      layer1Component.baseName, [(componentStyle.overwriteLayersProperties?.[0]?.avatar)]);
+      layer1Component.coreSubcomponentNames.base, [(componentStyle.overwriteLayersProperties?.[0]?.avatar)]);
     CardBuilder.addSubcomponentSpecificSettings(cardComponent.subcomponents[PARENT_SUBCOMPONENT_NAME.BASE], closeButtonComponent, avatarComponent);
   }
 

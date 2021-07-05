@@ -18,7 +18,7 @@ function addSubcomponentAndOverlayElementIdsState(state: SubcomponentAndOverlayE
 }
 
 function getSubcomponentIdViaSubcomponentName(subcomponentName: string): string {
-  return subcomponentAndOverlayElementIdsObject[subcomponentName].subcomponentId;
+  return subcomponentAndOverlayElementIdsObject[subcomponentName]?.subcomponentId;
 }
 
 function getOverlayIdViaSubcomponentName(subcomponentName: string): string {

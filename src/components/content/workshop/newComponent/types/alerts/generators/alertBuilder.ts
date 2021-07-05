@@ -24,10 +24,11 @@ export class AlertBuilder extends ComponentBuilder {
 
   private static addComponentsToBase(alertComponent: WorkshopComponent, componentStyle: NewComponentStyleProperties): void {
     const layer1Component = AddNewLayerComponent.add(alertComponent, LAYER_STYLES.PLAIN, false);
+    const layet1ComponentBaseName = layer1Component.coreSubcomponentNames.base;
     AddNewGenericComponent.add(alertComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLE.DEFAULT,
-      layer1Component.baseName, [(componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.func) || AlertBuilder.overwriteTextProperties]);
+      layet1ComponentBaseName, [(componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.func) || AlertBuilder.overwriteTextProperties]);
     AddNewGenericComponent.add(alertComponent, COMPONENT_TYPES.BUTTON,
-      BUTTON_STYLES.CLOSE, layer1Component.baseName, [(componentStyle.overwriteLayersProperties?.[0]?.button?.[0])]);
+      BUTTON_STYLES.CLOSE, layet1ComponentBaseName, [(componentStyle.overwriteLayersProperties?.[0]?.button?.[0])]);
   }
 
   private static createDefaultCss(): CustomCss {
