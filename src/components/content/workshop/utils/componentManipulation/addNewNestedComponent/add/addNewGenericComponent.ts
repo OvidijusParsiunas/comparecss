@@ -85,8 +85,7 @@ export class AddNewGenericComponent extends AddNewNestedComponentShared {
     // WORK2: refactor
     const nestedComponents = subcomponentDropdownStructure[parentComponentBaseName][parentLayer.name];
     if (!nestedComponents) return;
-    const subcomponentNames = Object.keys(nestedComponents);
-    ChangeSubcomponentNames.changeGenericSubcomponentBaseNames(parentComponent, nestedComponents, subcomponentNames.length - 1);
+    ChangeSubcomponentNames.changeGenericSubcomponentBaseNames(parentComponent, nestedComponents);
   }
 
   private static executeOverwritePropertiesFuncs(overwritePropertiesFunc: OverwritePropertiesFunc[], subcomponents: Subcomponents,
