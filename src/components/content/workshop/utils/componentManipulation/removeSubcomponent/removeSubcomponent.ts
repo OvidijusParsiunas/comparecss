@@ -78,6 +78,6 @@ export class RemoveSubcomponent {
     ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
       component.componentPreviewStructure,
       RemoveSubcomponent.removeNestedComponentInPreviewStructureIfFound.bind(subcomponentValues));
-    ChangeSubcomponentNames.changeLayerSubcomponentBaseNames(component, removedSubcomponentIndex);
+    ChangeSubcomponentNames.changeLayerSubcomponentBaseNames(component, removedSubcomponentIndex + 1);
   }
 }

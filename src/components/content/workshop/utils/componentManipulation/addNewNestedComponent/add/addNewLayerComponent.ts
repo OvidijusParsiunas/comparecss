@@ -76,7 +76,7 @@ export class AddNewLayerComponent extends AddNewNestedComponentShared {
     const { coreSubcomponentNames: { base }, componentPreviewStructure: { subcomponentDropdownStructure } } = parentComponent;
     const layerComponents = subcomponentDropdownStructure[base];
     const layerComponentsNames = Object.keys(layerComponents);
-    const newIndex = layerComponentsNames.length - 1 === 1 ? layerComponentsNames.length - 2 : layerComponentsNames.length - 1;
+    const newIndex = layerComponentsNames.length - 1 === 1 ? layerComponentsNames.length - 1 : layerComponentsNames.length;
     ChangeSubcomponentNames.changeLayerSubcomponentBaseNames(parentComponent, newIndex);
     return newLayerComponent;
   }
