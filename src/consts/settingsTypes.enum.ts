@@ -6,4 +6,5 @@ export enum SETTINGS_TYPES {
   CHECKBOX,
   RANGE,
   UPLOAD_FILE,
+  BUTTONS,
 }

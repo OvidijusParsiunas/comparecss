@@ -149,8 +149,21 @@
                   &times;
                 </button>
               </div>
+
+              <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.BUTTONS">
+                <div style="text-align: left">
+                  {{setting.spec.name}}
+                </div>
+                <div class="btn-group option-component-button-container">
+                  <button v-for="(option, name) in setting.spec.options" :key="option"
+                    class="btn btn-group-option" :class="TOOLBAR_GENERAL_BUTTON_CLASS"
+                    @click="activateButton(setting.spec.optionAction, name)">
+                    {{name}}
+                  </button>
+                </div>
+                <!-- <input type="checkbox" v-model="setting.spec.default" @click="changeSetting(checkboxMouseClick.bind(this, setting.spec.default, setting.spec, setting.triggers))"> -->
+              </div>
             </div>
-            
           </div>
           <button class="reset-button" @click="changeSetting(resetSubcomponentProperties.bind(this, settings.options))">
             &#8634;
@@ -262,6 +275,9 @@ export default {
     settingsVisible: true,
   }),
   methods: {
+    activateButton(optionAction: any, actionName: string): void {
+      optionAction(actionName, this.component, this.subcomponentProperties);
+    },
     getCurrentCssProperty(setting: any): boolean {
       return this.subcomponentProperties.customCss[this.subcomponentProperties.activeCssPseudoClass]?.[setting.spec.cssProperty];
     },
@@ -364,6 +380,7 @@ export default {
     },
   },
   props: {
+    component: Object,
     subcomponentProperties: Object,
   },
   components: {

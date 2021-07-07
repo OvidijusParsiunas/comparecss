@@ -17,6 +17,7 @@
         @add-subcomponent="$emit('add-subcomponent')"
         @remove-subcomponent="$emit('remove-subcomponent', $event)"/>
       <settings v-if="isSettingsDisplayed" ref="settings"
+        :component="component"
         :subcomponentProperties="component.subcomponents[component.activeSubcomponentName]"
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
         @play-animation-preview="$emit('play-animation-preview', $event)"

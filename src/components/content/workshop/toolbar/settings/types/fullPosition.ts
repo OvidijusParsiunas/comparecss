@@ -4,11 +4,17 @@ import { LAYER_SECTION_DIVISOR } from '../../../../../../consts/layerSectionDivi
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import SubcomponentAlignment from './utils/subcomponentAlignment';
+import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 
 function getOtherSubcomponentCssPropertyDetails(): SubcomponentCssPropertyDetails {
   return [
     {subcomponentName: PARENT_SUBCOMPONENT_NAME.BASE, cssProperty: 'width'},
   ];
+}
+
+function moveSubcomponent(optionName: string, subcomponentProperties: SubcomponentProperties): void {
+  console.log(optionName);
+  console.log(subcomponentProperties.nestedComponent.ref.componentPreviewStructure.layers);
 }
 
 // create an optional interface
@@ -50,6 +56,14 @@ export default {
         activeOptionPropertyKeyName: 'section',
         customFeatureObjectKeys: ['customFeatures', 'alignedLayerSection', 'section'],
         ...SubcomponentAlignment.generateMouseEventCallbacks(),
+      },
+    },
+    { 
+      type: SETTINGS_TYPES.BUTTONS,
+      spec: {
+        name: 'Order',
+        options: { ['Left']: null, ['Right']: null },
+        optionAction: moveSubcomponent,
       },
     },
   ]
