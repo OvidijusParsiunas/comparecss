@@ -4,10 +4,10 @@ import { componentTypeToStyleGenerators } from '../../../../newComponent/types/c
 import { OverwritePropertiesFunc } from '../../../../../../../interfaces/overwriteSubcomponentPropertiesFunc';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { UpdateGenericComponentNames } from '../../updateNestedComponentNames/updateGenericComponentNames';
 import { NESTED_SUBCOMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { Layer, NestedSubcomponent } from '../../../../../../../interfaces/componentPreviewStructure';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
-import { ChangeSubcomponentNames } from '../../changeSubcomponentNames/changeSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -85,7 +85,7 @@ export class AddNewGenericComponent extends AddNewNestedComponentShared {
     // WORK2: refactor
     const nestedComponents = subcomponentDropdownStructure[parentComponentBaseName][parentLayer.name];
     if (!nestedComponents) return;
-    ChangeSubcomponentNames.changeGenericSubcomponentBaseNames(parentComponent, nestedComponents);
+    UpdateGenericComponentNames.update(parentComponent, nestedComponents);
   }
 
   private static executeOverwritePropertiesFuncs(overwritePropertiesFunc: OverwritePropertiesFunc[], subcomponents: Subcomponents,

@@ -3,7 +3,7 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../interf
 import { AddNewNestedComponent } from './addNewNestedComponent/addNewNestedComponent';
 import { RemoveSubcomponent } from './removeSubcomponent/removeSubcomponent';
 import ComponentJs from '../../../../../services/workshop/componentJs';
-import CopyComponent from './copyComponentUtils/copyComponent';
+import CopyComponent from './copyComponent/copyComponent';
 import { ComponentOptions } from 'vue';
 
 export class ComponentManipulation {

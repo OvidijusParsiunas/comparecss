@@ -5,8 +5,8 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { OverwritePropertiesFunc } from '../../../../../../../interfaces/overwriteSubcomponentPropertiesFunc';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { UpdateLayerComponentNames } from '../../updateNestedComponentNames/updateLayerComponentNames';
 import { AlignedSections, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
-import { ChangeSubcomponentNames } from '../../changeSubcomponentNames/changeSubcomponentNames';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -77,7 +77,7 @@ export class AddNewLayerComponent extends AddNewNestedComponentShared {
     const layerComponents = subcomponentDropdownStructure[base];
     const layerComponentsNames = Object.keys(layerComponents);
     const newIndex = layerComponentsNames.length - 1 === 1 ? layerComponentsNames.length - 1 : layerComponentsNames.length;
-    ChangeSubcomponentNames.changeLayerSubcomponentBaseNames(parentComponent, newIndex);
+    UpdateLayerComponentNames.update(parentComponent, newIndex);
     return newLayerComponent;
   }
 }

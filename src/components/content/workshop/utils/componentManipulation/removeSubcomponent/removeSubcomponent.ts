@@ -1,7 +1,8 @@
 import ComponentTraversalUtils, { ComponentTraversalState } from '../../componentTraversal/componentTraversalUtils';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { UpdateGenericComponentNames } from '../updateNestedComponentNames/updateGenericComponentNames';
+import { UpdateLayerComponentNames } from '../updateNestedComponentNames/updateLayerComponentNames';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
-import { ChangeSubcomponentNames } from '../changeSubcomponentNames/changeSubcomponentNames';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 
 type SelectNewSubcomponentCallback = (parentSubcomponentName: string) => void;
@@ -18,9 +19,9 @@ export class RemoveSubcomponent {
       removedSubcomponentDropdownIndex: number): void {
     const { parentComponent, subcomponentProperties: { subcomponentType } } = subcomponentValues;
     if (subcomponentType !== SUBCOMPONENT_TYPES.LAYER) {
-      ChangeSubcomponentNames.changeGenericSubcomponentBaseNames(parentComponent, subcomponentDropdownStructure);
+      UpdateGenericComponentNames.update(parentComponent, subcomponentDropdownStructure);
     } else {
-      ChangeSubcomponentNames.changeLayerSubcomponentBaseNames(parentComponent, removedSubcomponentDropdownIndex + 1);
+      UpdateLayerComponentNames.update(parentComponent, removedSubcomponentDropdownIndex + 1);
     }
   }
 
