@@ -1,7 +1,6 @@
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES, MODAL_ANIMATION_CLOSE_TYPES } from '../consts/animationTypes.enum';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../consts/workshopToolbarOptionTypes.enum';
-import { BASE_SUBCOMPONENT_NAMES } from '../consts/baseSubcomponentNames.enum';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
@@ -181,11 +180,12 @@ export interface SubcomponentProperties {
 }
 
 export type Subcomponents = {
-  [key in BASE_SUBCOMPONENT_NAMES]?: SubcomponentProperties;
+  [subcomponentName:string]: SubcomponentProperties;
 }
 
 export interface WorkshopComponent {
   type: COMPONENT_TYPES;
+  // WORK2: not needed
   style: COMPONENT_STYLES;
   subcomponents: Subcomponents;
   activeSubcomponentName: string;

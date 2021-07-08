@@ -57,7 +57,7 @@ import { DOM_EVENT_TRIGGER_KEYS } from '../../../../consts/domEventTriggerKeys.e
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
 import ProcessClassName from '../utils/componentGenerator/processClassName';
 import { COMPONENT_TYPES } from '../../../../consts/componentTypes.enum';
-import { DEFAULT_STYLE } from '../../../../consts/componentStyles.enum';
+import { DEFAULT_STYLES } from '../../../../consts/componentStyles.enum';
 import { NEW_COMPONENT_MODAL_ID } from '../../../../consts/elementIds';
 
 interface Data {
@@ -157,7 +157,7 @@ export default {
       this.currentlySelectedComponentType = componentType;
     },
     addNewComponent(): void {
-      const newComponent = componentTypeToStyleGenerators[this.currentlySelectedComponentType][DEFAULT_STYLE.DEFAULT].createNewComponent();
+      const newComponent = componentTypeToStyleGenerators[this.currentlySelectedComponentType][DEFAULT_STYLES.DEFAULT].createNewComponent();
       newComponent.className = this.className;
       this.$emit('add-new-component', newComponent);
       // updates modal only after it has closed

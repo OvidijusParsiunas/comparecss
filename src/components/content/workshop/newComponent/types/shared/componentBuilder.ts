@@ -7,7 +7,7 @@ import { PARENT_SUBCOMPONENT_NAME } from '../../../../../../consts/baseSubcompon
 import { CoreSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
-import { DEFAULT_STYLE } from '../../../../../../consts/componentStyles.enum';
+import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
 import { CloseTriggers } from '../../../../../../interfaces/closeTriggers';
 import { defaultImage } from './images/default';
 
@@ -106,7 +106,7 @@ export class ComponentBuilder {
     const componentPreviewStructure = ComponentBuilder.createEmptyComponentPreviewStructure(subcomponents, coreSubcomponentNames.base, isBaseOptional);
     return {
       type: componentStyle.componentType,
-      style: componentStyle.baseStyle || DEFAULT_STYLE.DEFAULT,
+      style: componentStyle.baseStyle || DEFAULT_STYLES.DEFAULT,
       subcomponents,
       activeSubcomponentName: coreSubcomponentNames.base,
       defaultSubcomponentName: coreSubcomponentNames.base,

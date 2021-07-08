@@ -5,7 +5,6 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { OverwritePropertiesFunc } from '../../../../../../../interfaces/overwriteSubcomponentPropertiesFunc';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
-import { UpdateLayerComponentNames } from '../../updateNestedComponentNames/updateLayerComponentNames';
 import { AlignedSections, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -72,12 +71,6 @@ export class AddNewLayerComponent extends AddNewNestedComponentShared {
     const newLayerComponent = AddNewLayerComponent.createNewComponent(componentGenerator, overwritePropertiesFunc);
     JsUtils.addObjects(parentComponent, 'subcomponents', newLayerComponent.subcomponents);
     AddNewLayerComponent.addNewComponentToComponentPreview(parentComponent, newLayerComponent, isEditable);
-    // WORK2: check if this is needed
-    const { coreSubcomponentNames: { base }, componentPreviewStructure: { subcomponentDropdownStructure } } = parentComponent;
-    const layerComponents = subcomponentDropdownStructure[base];
-    const layerComponentsNames = Object.keys(layerComponents);
-    const newIndex = layerComponentsNames.length - 1 === 1 ? layerComponentsNames.length - 1 : layerComponentsNames.length;
-    UpdateLayerComponentNames.update(parentComponent, newIndex);
     return newLayerComponent;
   }
 }

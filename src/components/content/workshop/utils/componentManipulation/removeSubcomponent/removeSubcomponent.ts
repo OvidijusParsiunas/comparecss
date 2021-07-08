@@ -3,6 +3,7 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../int
 import { UpdateGenericComponentNames } from '../updateNestedComponentNames/updateGenericComponentNames';
 import { UpdateLayerComponentNames } from '../updateNestedComponentNames/updateLayerComponentNames';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
+import { AlignedSections } from '../../../../../../interfaces/componentPreviewStructure';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 
 type SelectNewSubcomponentCallback = (parentSubcomponentName: string) => void;
@@ -11,29 +12,30 @@ interface SubcomponentValues {
   subcomponentName: string;
   parentComponent: WorkshopComponent;
   subcomponentProperties: SubcomponentProperties;
+  parentLayerAlignedSections?: AlignedSections;
 }
 
 export class RemoveSubcomponent {
 
   private static updateSubcomponentNames(subcomponentValues: SubcomponentValues, subcomponentDropdownStructure: NestedDropdownStructure,
-      removedSubcomponentDropdownIndex: number): void {
+      removedSubcomponentDropdownIndex: number, alignedSections: AlignedSections): void {
     const { parentComponent, subcomponentProperties: { subcomponentType } } = subcomponentValues;
     if (subcomponentType !== SUBCOMPONENT_TYPES.LAYER) {
-      UpdateGenericComponentNames.update(parentComponent, subcomponentDropdownStructure);
+      UpdateGenericComponentNames.update(parentComponent, subcomponentDropdownStructure, alignedSections);
     } else {
       UpdateLayerComponentNames.update(parentComponent, removedSubcomponentDropdownIndex + 1);
     }
   }
 
-  private static removeNestedComponentInPreviewStructureIfFound(componentTraversalState: ComponentTraversalState): boolean {
+  private static removeNestedComponentInPreviewStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
     const { subcomponentProperties, layers, alignedNestedComponents, index } = componentTraversalState;
     const { subcomponentProperties: targetSubcomponentProperties } = this as any;
     if (targetSubcomponentProperties === subcomponentProperties) {
       if (layers) layers.splice(index, 1);
       if (alignedNestedComponents) alignedNestedComponents.splice(index, 1);
-      return true;
+      return componentTraversalState;
     }
-    return false;
+    return null;
   }
 
   private static removeSubcomponents(componentTraversalState: ComponentTraversalState, parentComponent: WorkshopComponent): void {
@@ -44,10 +46,10 @@ export class RemoveSubcomponent {
     });
   }
 
-  private static removeNestedComponentNestedComponents(componentTraversalState: ComponentTraversalState): boolean {
+  private static removeNestedComponentNestedComponents(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
     const { parentComponent } = this as any;
     RemoveSubcomponent.removeSubcomponents(componentTraversalState, parentComponent);
-    return true;
+    return componentTraversalState;
   }
 
   private static updateOptions(subcomponentNameStack: string[], selectNewSubcomponentCallback?: SelectNewSubcomponentCallback): void {
@@ -64,16 +66,17 @@ export class RemoveSubcomponent {
     delete subcomponentDropdownStructure[subcomponentName];
   }
 
-  private static removeNestedComponentUsingDropdownStructureIfFound(componentTraversalState: ComponentTraversalState): boolean {
+  private static removeNestedComponentUsingDropdownStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
     const { subcomponentName, subcomponentDropdownStructure } = componentTraversalState;
     const subcomponentValues: SubcomponentValues = this as any;
     if (subcomponentValues.subcomponentName === subcomponentName) {
       const removedSubcomponentDropdownIndex = Object.keys(subcomponentDropdownStructure).indexOf(subcomponentName);
       RemoveSubcomponent.removeNestedComponent(componentTraversalState, subcomponentValues);
-      RemoveSubcomponent.updateSubcomponentNames(subcomponentValues, subcomponentDropdownStructure, removedSubcomponentDropdownIndex);
-      return true;
+      RemoveSubcomponent.updateSubcomponentNames(subcomponentValues, subcomponentDropdownStructure, removedSubcomponentDropdownIndex,
+        subcomponentValues.parentLayerAlignedSections);
+      return componentTraversalState;
     }
-    return false;
+    return null;
   }
   
   public static remove(component: WorkshopComponent, subcomponentName: string, selectNewSubcomponentCallback?: SelectNewSubcomponentCallback): void {
@@ -83,9 +86,10 @@ export class RemoveSubcomponent {
       parentComponent: component,
       subcomponentProperties: component.subcomponents[subcomponentName],
     };
-    ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
+    const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
       component.componentPreviewStructure,
       RemoveSubcomponent.removeNestedComponentInPreviewStructureIfFound.bind(subcomponentValues));
+    if (traversalResult) subcomponentValues.parentLayerAlignedSections = traversalResult.alignedSections;
     ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
       component.componentPreviewStructure.subcomponentDropdownStructure,
       RemoveSubcomponent.removeNestedComponentUsingDropdownStructureIfFound.bind(subcomponentValues));

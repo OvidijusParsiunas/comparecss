@@ -77,7 +77,7 @@ import { TemporaryComponent } from '../../../../interfaces/temporaryComponent';
 import PreviewCloseAnimation from './utils/animations/previewAnimations/close';
 import PreviewOpenAnimation from './utils/animations/previewAnimations/open';
 import { COMPONENT_TYPES } from '../../../../consts/componentTypes.enum';
-import { DEFAULT_STYLE } from '../../../../consts/componentStyles.enum';
+import { DEFAULT_STYLES } from '../../../../consts/componentStyles.enum';
 import AnimationUtils from './utils/animations/utils/animationUtils';
 import ComponentPreviewUtils from './utils/componentPreviewUtils';
 
@@ -101,7 +101,7 @@ export default {
       displayed: false,
       mouseEvents: null,
       subcomponentAndOverlayElementIds: null,
-      component: componentTypeToStyleGenerators[COMPONENT_TYPES.BUTTON][DEFAULT_STYLE.DEFAULT].createNewComponent(),
+      component: componentTypeToStyleGenerators[COMPONENT_TYPES.BUTTON][DEFAULT_STYLES.DEFAULT].createNewComponent(),
     },
   }),
   methods: {

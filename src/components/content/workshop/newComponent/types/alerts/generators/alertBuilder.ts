@@ -1,7 +1,7 @@
 import { CustomCss, CustomFeatures, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewGenericComponent';
 import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
-import { BUTTON_STYLES, DEFAULT_STYLE, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
+import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
@@ -25,7 +25,7 @@ export class AlertBuilder extends ComponentBuilder {
   private static addComponentsToBase(alertComponent: WorkshopComponent, componentStyle: NewComponentStyleProperties): void {
     const layer1Component = AddNewLayerComponent.add(alertComponent, LAYER_STYLES.PLAIN, false);
     const layet1ComponentBaseName = layer1Component.coreSubcomponentNames.base;
-    AddNewGenericComponent.add(alertComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLE.DEFAULT,
+    AddNewGenericComponent.add(alertComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layet1ComponentBaseName, [(componentStyle.overwriteLayersProperties?.[0]?.text?.[0]?.func) || AlertBuilder.overwriteTextProperties]);
     AddNewGenericComponent.add(alertComponent, COMPONENT_TYPES.BUTTON,
       BUTTON_STYLES.CLOSE, layet1ComponentBaseName, [(componentStyle.overwriteLayersProperties?.[0]?.button?.[0])]);

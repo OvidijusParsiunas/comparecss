@@ -2,7 +2,7 @@ import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../..
 import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CustomFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
-import { CardBuilder } from '../../cards/generators/cardBuilder';
+import { cardBase } from '../../cards/generators/cardBaseBuilder';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
 export class ModalBuilder extends ComponentBuilder {
@@ -21,9 +21,11 @@ export class ModalBuilder extends ComponentBuilder {
     cardComponent.subcomponents[cardComponent.coreSubcomponentNames.base].defaultCustomFeatures = ModalBuilder.createDefaultBaseCustomFeatures();
   }
 
+  // WORK2
   public static create(componentStyle: NewComponentStyleProperties = {}): WorkshopComponent {
     componentStyle.componentType = COMPONENT_TYPES.MODAL;
-    const modalComponent = CardBuilder.create(componentStyle);
+    const modalComponent = cardBase.createNewComponent();
+    modalComponent.type = COMPONENT_TYPES.MODAL;
     ModalBuilder.overwriteBaseSubcomponentCustomFeatures(modalComponent);
     return modalComponent;
   }

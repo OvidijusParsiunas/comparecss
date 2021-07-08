@@ -56,7 +56,7 @@ export class AddNewGenericComponent extends AddNewNestedComponentShared {
     parentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][alignment || ALIGNED_SECTION_TYPES.LEFT].push(nestedSubcomponentProperties);
   }
 
-  private static findParentLayer(parentComponent: WorkshopComponent, layerName: string): Layer {
+  public static findParentLayer(parentComponent: WorkshopComponent, layerName: string): Layer {
     return parentComponent.componentPreviewStructure.layers.find((layer) => layer.name === layerName);
   }
 
@@ -83,9 +83,9 @@ export class AddNewGenericComponent extends AddNewNestedComponentShared {
       AddNewGenericComponent.updateComponentDropdownStructure(nestedComponent, subcomponentDropdownStructure, parentComponentBaseName);
     }
     // WORK2: refactor
-    const nestedComponents = subcomponentDropdownStructure[parentComponentBaseName][parentLayer.name];
-    if (!nestedComponents) return;
-    UpdateGenericComponentNames.update(parentComponent, nestedComponents);
+    // const nestedComponents = subcomponentDropdownStructure[parentComponentBaseName][parentLayer.name];
+    // if (!nestedComponents) return;
+    // UpdateGenericComponentNames.update(parentComponent, nestedComponents);
   }
 
   private static executeOverwritePropertiesFuncs(overwritePropertiesFunc: OverwritePropertiesFunc[], subcomponents: Subcomponents,

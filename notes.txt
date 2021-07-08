@@ -11,6 +11,7 @@ card margin
 think about computed property solution
 button transition animation should be optional
 something doesn't scale well when viewing an option on a long length dropdown (20)
+no layers makes the base dropdown look weird but should probably not allow less than 1 layer
 
 overflow
 try with button tags
