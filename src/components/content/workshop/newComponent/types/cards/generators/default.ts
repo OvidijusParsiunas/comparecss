@@ -110,11 +110,7 @@ class DefaultCardBuilder extends ComponentBuilder {
       layer3Component.coreSubcomponentNames.base, [DefaultCardBuilder.overwriteSubmitButtonProperties]);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
       layer3Component.coreSubcomponentNames.base, [DefaultCardBuilder.overwriteCancelButtonProperties]);
-    const { name, sections: { alignedSections }} = cardComponent.componentPreviewStructure.layers[2];
-    const { subcomponentDropdownStructure } = cardComponent.componentPreviewStructure;
-    const parentComponentBaseName = Object.keys(subcomponentDropdownStructure)[0];
-    const nestedComponents = subcomponentDropdownStructure[parentComponentBaseName][name];
-    UpdateGenericComponentNames.update(cardComponent, nestedComponents, alignedSections);
+    UpdateGenericComponentNames.updateViaLayerObject(cardComponent, cardComponent.componentPreviewStructure.layers[2]);
     const closeButtonComponent = AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON,
       BUTTON_STYLES.CLOSE, layer1Component.coreSubcomponentNames.base);
     const avatarComponent = AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.AVATAR, DEFAULT_STYLES.DEFAULT,

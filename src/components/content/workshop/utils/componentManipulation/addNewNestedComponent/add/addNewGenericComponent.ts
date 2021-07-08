@@ -4,9 +4,9 @@ import { componentTypeToStyleGenerators } from '../../../../newComponent/types/c
 import { OverwritePropertiesFunc } from '../../../../../../../interfaces/overwriteSubcomponentPropertiesFunc';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
-import { UpdateGenericComponentNames } from '../../updateNestedComponentNames/updateGenericComponentNames';
 import { NESTED_SUBCOMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { Layer, NestedSubcomponent } from '../../../../../../../interfaces/componentPreviewStructure';
+import { ComponentPreviewStructureSearchUtils } from '../utils/componentPreviewStractureSearchUtils';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -56,13 +56,9 @@ export class AddNewGenericComponent extends AddNewNestedComponentShared {
     parentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][alignment || ALIGNED_SECTION_TYPES.LEFT].push(nestedSubcomponentProperties);
   }
 
-  public static findParentLayer(parentComponent: WorkshopComponent, layerName: string): Layer {
-    return parentComponent.componentPreviewStructure.layers.find((layer) => layer.name === layerName);
-  }
-
   private static assembleSubcomponentData(parentComponent: WorkshopComponent, nestedComponent: WorkshopComponent,
       layerName: string): SubcomponentData {
-    const parentLayer = AddNewGenericComponent.findParentLayer(parentComponent, layerName);
+    const parentLayer = ComponentPreviewStructureSearchUtils.getLayerByName(parentComponent, layerName);
     const baseSubcomponentProperties = nestedComponent.componentPreviewStructure.baseSubcomponentProperties;
     const { subcomponentDropdownStructure } = parentComponent.componentPreviewStructure;
     const parentComponentBaseName = Object.keys(subcomponentDropdownStructure)[0];
@@ -82,10 +78,6 @@ export class AddNewGenericComponent extends AddNewNestedComponentShared {
     } else {
       AddNewGenericComponent.updateComponentDropdownStructure(nestedComponent, subcomponentDropdownStructure, parentComponentBaseName);
     }
-    // WORK2: refactor
-    // const nestedComponents = subcomponentDropdownStructure[parentComponentBaseName][parentLayer.name];
-    // if (!nestedComponents) return;
-    // UpdateGenericComponentNames.update(parentComponent, nestedComponents);
   }
 
   private static executeOverwritePropertiesFuncs(overwritePropertiesFunc: OverwritePropertiesFunc[], subcomponents: Subcomponents,

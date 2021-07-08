@@ -7,6 +7,7 @@ import { CoreSubcomponentNames } from '../../../../../../interfaces/customSubcom
 import { AddNewGenericComponent } from '../addNewNestedComponent/add/addNewGenericComponent';
 import { AddNewLayerComponent } from '../addNewNestedComponent/add/addNewLayerComponent';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
+import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
 import ProcessClassName from '../../componentGenerator/processClassName';
 import { CopySubcomponents } from './copySubcomponents';
 import { ComponentOptions } from 'vue';
@@ -22,26 +23,24 @@ export default class CopyComponent {
     });
   }
 
-  private static createPlaneComponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent, baseComponentRefs: WorkshopComponent[]): void {
-    CopySubcomponents.copyBaseSubcomponent(newComponent.subcomponents[newComponent.coreSubcomponentNames.base],
-      componentBeingCopied.subcomponents[componentBeingCopied.coreSubcomponentNames.base]);
+  private static copyAlignedSectionComponents(oldLayer: Layer, newLayer: Layer, newComponent: WorkshopComponent, baseComponentRefs: WorkshopComponent[]): void {
+    Object.keys(oldLayer.sections.alignedSections).forEach((section) => {
+      oldLayer.sections.alignedSections[section].forEach((subcomponent) => {
+        const { type, style} = subcomponent.subcomponentProperties.nestedComponent.ref as WorkshopComponent;
+        const layerName = newLayer.name;
+        const newNestedComponent = AddNewGenericComponent.add(newComponent, type, style, layerName);
+        baseComponentRefs.push(newNestedComponent);
+        CopySubcomponents.copyComponentSubcomponents(subcomponent.subcomponentProperties.nestedComponent.ref, newNestedComponent);
+      });
+    });
+  }
+
+  private static copyLayerComponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent, baseComponentRefs: WorkshopComponent[]): void {
     componentBeingCopied.componentPreviewStructure.layers.forEach((layer, index) => {
       const newLayerStyle = componentBeingCopied.subcomponents[layer.name].nestedComponent.ref.style;
       const newLayer = AddNewLayerComponent.add(newComponent, newLayerStyle, true);
-      Object.keys(layer.sections.alignedSections).forEach((section) => {
-        layer.sections.alignedSections[section].forEach((subcomponent) => {
-          const { type, style} = subcomponent.subcomponentProperties.nestedComponent.ref as WorkshopComponent;
-          let layerName = newComponent.componentPreviewStructure.layers[index].name;
-          const newNestedComponent = AddNewGenericComponent.add(newComponent, type, style, layerName);
-          baseComponentRefs.push(newNestedComponent);
-          CopySubcomponents.copyComponentSubcomponents(subcomponent.subcomponentProperties.nestedComponent.ref, newNestedComponent);
-        });
-      });
-      const { name, sections: { alignedSections }} = newComponent.componentPreviewStructure.layers[index];
-      const { subcomponentDropdownStructure } = newComponent.componentPreviewStructure;
-      const parentComponentBaseName = Object.keys(subcomponentDropdownStructure)[0];
-      const nestedComponents = subcomponentDropdownStructure[parentComponentBaseName][name];
-      UpdateGenericComponentNames.update(newComponent, nestedComponents, alignedSections);
+      CopyComponent.copyAlignedSectionComponents(layer, newComponent.componentPreviewStructure.layers[index], newComponent, baseComponentRefs);
+      UpdateGenericComponentNames.updateViaLayerObject(newComponent, newComponent.componentPreviewStructure.layers[index]);
       CopySubcomponents.copyComponentSubcomponents(layer.subcomponentProperties.nestedComponent.ref, newLayer);
     });
     UpdateLayerComponentNames.update(newComponent, 1);
@@ -49,7 +48,8 @@ export default class CopyComponent {
 
   private static copySubcomponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
     const baseComponentRefs: WorkshopComponent[] = [];
-    CopyComponent.createPlaneComponents(newComponent, componentBeingCopied, baseComponentRefs);
+    CopySubcomponents.copyBaseSubcomponent(newComponent, componentBeingCopied);
+    CopyComponent.copyLayerComponents(newComponent, componentBeingCopied, baseComponentRefs);
     CopyComponent.executeReferenceSharingExecutables(baseComponentRefs, newComponent);
   }
 

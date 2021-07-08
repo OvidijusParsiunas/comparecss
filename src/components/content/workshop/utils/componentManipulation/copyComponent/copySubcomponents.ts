@@ -42,11 +42,13 @@ export class CopySubcomponents {
     }
   }
 
-  public static copyBaseSubcomponent(newSubcomponent: SubcomponentProperties, copiedSubcomponent: SubcomponentProperties): void {
-    if (copiedSubcomponent.nestedComponent?.inSync) {
-      CopySubcomponents.copyInSyncSubcomponent(copiedSubcomponent.nestedComponent, newSubcomponent, copiedSubcomponent);
+  public static copyBaseSubcomponent(newComponent: WorkshopComponent, copiedComponent: WorkshopComponent): void {
+    const newBaseSubcomponent = newComponent.subcomponents[newComponent.coreSubcomponentNames.base];
+    const copiedBaseSubcomponent = copiedComponent.subcomponents[copiedComponent.coreSubcomponentNames.base]
+    if (copiedBaseSubcomponent.nestedComponent?.inSync) {
+      CopySubcomponents.copyInSyncSubcomponent(copiedBaseSubcomponent.nestedComponent, newBaseSubcomponent, copiedBaseSubcomponent);
     } else {
-      CopySubcomponents.copySubcomponentProperties(newSubcomponent, copiedSubcomponent);
+      CopySubcomponents.copySubcomponentProperties(newBaseSubcomponent, copiedBaseSubcomponent);
     }
   }
 }

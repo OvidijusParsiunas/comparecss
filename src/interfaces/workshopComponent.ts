@@ -180,7 +180,7 @@ export interface SubcomponentProperties {
 }
 
 export type Subcomponents = {
-  [subcomponentName:string]: SubcomponentProperties;
+  [subcomponentName: string]: SubcomponentProperties;
 }
 
 export interface WorkshopComponent {
