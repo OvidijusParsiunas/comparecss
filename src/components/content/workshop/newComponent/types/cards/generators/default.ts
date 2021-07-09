@@ -13,9 +13,9 @@ import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections
 import { getCardBaseSpecificSettings } from '../settings/cardBaseSpecificSettings';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
-import { cardBase } from './cardBaseBuilder';
+import { cardBase } from './base';
 
-class DefaultCardBuilder extends ComponentBuilder {
+class DefaultCard extends ComponentBuilder {
 
   private static addSubcomponentSpecificSettings(baseSubcomponent: SubcomponentProperties, closeComponent: WorkshopComponent,
       avatarComponent: WorkshopComponent): void {
@@ -65,64 +65,64 @@ class DefaultCardBuilder extends ComponentBuilder {
   }
 
   private static overwriteTopLayerProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
-    subcomponents[coreSubcomponentNames.base].customStaticFeatures = DefaultCardBuilder.createDefaultTopLayerCustomStaticFeatures();
-    subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures = DefaultCardBuilder.createDefaultTopLayerCustomStaticFeatures();
+    subcomponents[coreSubcomponentNames.base].customStaticFeatures = DefaultCard.createDefaultTopLayerCustomStaticFeatures();
+    subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures = DefaultCard.createDefaultTopLayerCustomStaticFeatures();
   }
 
   private static overwriteTitleProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
-    subcomponents[coreSubcomponentNames.base].customCss = DefaultCardBuilder.createDefaultTitleCss();
-    subcomponents[coreSubcomponentNames.base].defaultCss = DefaultCardBuilder.createDefaultTitleCss();
-    subcomponents[coreSubcomponentNames.base].customFeatures = DefaultCardBuilder.createDefaultTextCustomFeatures();
-    subcomponents[coreSubcomponentNames.base].defaultCustomFeatures = DefaultCardBuilder.createDefaultTextCustomFeatures();
-    subcomponents[coreSubcomponentNames.base].customStaticFeatures = DefaultCardBuilder.createDefaultTextCustomStaticFeatures('Card title');
-    subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures = DefaultCardBuilder.createDefaultTextCustomStaticFeatures('Card title');
+    subcomponents[coreSubcomponentNames.base].customCss = DefaultCard.createDefaultTitleCss();
+    subcomponents[coreSubcomponentNames.base].defaultCss = DefaultCard.createDefaultTitleCss();
+    subcomponents[coreSubcomponentNames.base].customFeatures = DefaultCard.createDefaultTextCustomFeatures();
+    subcomponents[coreSubcomponentNames.base].defaultCustomFeatures = DefaultCard.createDefaultTextCustomFeatures();
+    subcomponents[coreSubcomponentNames.base].customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Card title');
+    subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Card title');
   }
 
   private static overwriteDescriptionProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
-    subcomponents[coreSubcomponentNames.base].customStaticFeatures = DefaultCardBuilder.createDefaultTextCustomStaticFeatures('Description');
-    subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures = DefaultCardBuilder.createDefaultTextCustomStaticFeatures('Description');
+    subcomponents[coreSubcomponentNames.base].customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Description');
+    subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Description');
   }
 
   private static overwriteSubmitButtonProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
     subcomponents[coreSubcomponentNames.base].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
     subcomponents[coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    subcomponents[coreSubcomponentNames.text].customStaticFeatures = DefaultCardBuilder.createDefaultTextCustomStaticFeatures('Submit');
-    subcomponents[coreSubcomponentNames.text].defaultCustomStaticFeatures = DefaultCardBuilder.createDefaultTextCustomStaticFeatures('Submit');
+    subcomponents[coreSubcomponentNames.text].customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Submit');
+    subcomponents[coreSubcomponentNames.text].defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Submit');
   }
 
   private static overwriteCancelButtonProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
     subcomponents[coreSubcomponentNames.base].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
     subcomponents[coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    subcomponents[coreSubcomponentNames.text].customStaticFeatures = DefaultCardBuilder.createDefaultTextCustomStaticFeatures('Cancel');
-    subcomponents[coreSubcomponentNames.text].defaultCustomStaticFeatures = DefaultCardBuilder.createDefaultTextCustomStaticFeatures('Cancel');
+    subcomponents[coreSubcomponentNames.text].customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Cancel');
+    subcomponents[coreSubcomponentNames.text].defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Cancel');
   }
 
   public static addComponentsToBase(cardComponent: WorkshopComponent): void {
-    const layer1Component = AddNewLayerComponent.add(cardComponent, DEFAULT_STYLES.DEFAULT, true, DefaultCardBuilder.overwriteTopLayerProperties);
+    const layer1Component = AddNewLayerComponent.add(cardComponent, DEFAULT_STYLES.DEFAULT, true, DefaultCard.overwriteTopLayerProperties);
     const layer2Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
     const layer3Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
     UpdateLayerComponentNames.update(cardComponent, 1);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
-      layer1Component.coreSubcomponentNames.base, [DefaultCardBuilder.overwriteTitleProperties]);
+      layer1Component.coreSubcomponentNames.base, [DefaultCard.overwriteTitleProperties]);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
-      layer2Component.coreSubcomponentNames.base, [DefaultCardBuilder.overwriteDescriptionProperties]);
+      layer2Component.coreSubcomponentNames.base, [DefaultCard.overwriteDescriptionProperties]);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
-      layer3Component.coreSubcomponentNames.base, [DefaultCardBuilder.overwriteSubmitButtonProperties]);
+      layer3Component.coreSubcomponentNames.base, [DefaultCard.overwriteSubmitButtonProperties]);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
-      layer3Component.coreSubcomponentNames.base, [DefaultCardBuilder.overwriteCancelButtonProperties]);
+      layer3Component.coreSubcomponentNames.base, [DefaultCard.overwriteCancelButtonProperties]);
     UpdateGenericComponentNames.updateViaLayerObject(cardComponent, cardComponent.componentPreviewStructure.layers[2]);
     const closeButtonComponent = AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON,
       BUTTON_STYLES.CLOSE, layer1Component.coreSubcomponentNames.base);
     const avatarComponent = AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.AVATAR, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentNames.base);
-    DefaultCardBuilder.addSubcomponentSpecificSettings(cardComponent.subcomponents[PARENT_SUBCOMPONENT_NAME.BASE], closeButtonComponent, avatarComponent);
+    DefaultCard.addSubcomponentSpecificSettings(cardComponent.subcomponents[PARENT_SUBCOMPONENT_NAME.BASE], closeButtonComponent, avatarComponent);
   }
 }
 
 export const defaultCard: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
     const cardComponent = cardBase.createNewComponent();
-    DefaultCardBuilder.addComponentsToBase(cardComponent);
+    DefaultCard.addComponentsToBase(cardComponent);
     return cardComponent;
   },
 }

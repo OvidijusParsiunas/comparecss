@@ -13,7 +13,7 @@ import { defaultImage } from './images/default';
 
 export class ComponentBuilder {
 
-  protected static createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayerSection {
+  public static createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayerSection {
     return { section };
   }
 

@@ -1,6 +1,5 @@
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
-import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -10,7 +9,7 @@ import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum
 import { inheritedCardBaseCss } from '../inheritedCss/inheritedCardCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
-class CardBaseBuilder extends ComponentBuilder {
+class CardBase extends ComponentBuilder {
 
   private static createDefaultCardCss(): CustomCss {
     return {
@@ -26,7 +25,7 @@ class CardBaseBuilder extends ComponentBuilder {
         boxShadow: CSS_PROPERTY_VALUES.UNSET,
         top: '0px',
       },
-    }
+    };
   }
 
   private static createDefaultCustomFeatures(): CustomFeatures {
@@ -35,29 +34,29 @@ class CardBaseBuilder extends ComponentBuilder {
     };
   }
 
-  private static createBaseSubcomponent(componentStyle: NewComponentStyleProperties): SubcomponentProperties {
+  private static createBaseSubcomponent(): SubcomponentProperties {
     return {
       subcomponentType: SUBCOMPONENT_TYPES.BASE,
-      customCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || CardBaseBuilder.createDefaultCardCss(),
-      defaultCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || CardBaseBuilder.createDefaultCardCss(),
+      customCss: CardBase.createDefaultCardCss(),
+      defaultCss: CardBase.createDefaultCardCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       inheritedCss: inheritedCardBaseCss,
       childCss: inheritedBaseChildCss,
-      customFeatures: CardBaseBuilder.createDefaultCustomFeatures(),
-      defaultCustomFeatures: CardBaseBuilder.createDefaultCustomFeatures(),
+      customFeatures: CardBase.createDefaultCustomFeatures(),
+      defaultCustomFeatures: CardBase.createDefaultCustomFeatures(),
     };
   }
 
-  public static create(componentStyle: NewComponentStyleProperties = {}): WorkshopComponent {
+  public static create(): WorkshopComponent {
     uniqueSubcomponentIdState.resetUniqueId();
-    if (componentStyle.componentType === undefined) componentStyle.componentType = COMPONENT_TYPES.CARD;
-    return ComponentBuilder.createBaseComponent(componentStyle, CardBaseBuilder.createBaseSubcomponent, false);
+    return ComponentBuilder.createBaseComponent({ componentType: COMPONENT_TYPES.CARD }, CardBase.createBaseSubcomponent, false);
   }
 }
 
 export const cardBase: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
-    return CardBaseBuilder.create();
+    // WORK2
+    return CardBase.create();
   },
 }

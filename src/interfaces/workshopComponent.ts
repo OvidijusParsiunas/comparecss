@@ -185,7 +185,6 @@ export type Subcomponents = {
 
 export interface WorkshopComponent {
   type: COMPONENT_TYPES;
-  // WORK2: not needed
   style: COMPONENT_STYLES;
   subcomponents: Subcomponents;
   activeSubcomponentName: string;

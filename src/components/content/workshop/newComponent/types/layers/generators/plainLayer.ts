@@ -1,22 +1,32 @@
-import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
-import { LayerBuilder } from './layerBuilder';
+import { ComponentBuilder } from '../../shared/componentBuilder';
+import { layerBase } from './base';
 
-function createDefaultBaseCss(): CustomCss {
-  return {
-    [CSS_PSEUDO_CLASSES.DEFAULT]: {
-      height: '100%',
-    },
+class PlaneLayer extends ComponentBuilder {
+
+  private static createDefaultBaseCss(): CustomCss {
+    return {
+      [CSS_PSEUDO_CLASSES.DEFAULT]: {
+        height: '100%',
+      },
+    };
+  }
+
+  public static overwriteCustomCss(component: WorkshopComponent): void {
+    component.subcomponents[component.coreSubcomponentNames.base].customCss = PlaneLayer.createDefaultBaseCss();
+    component.subcomponents[component.coreSubcomponentNames.base].defaultCss = PlaneLayer.createDefaultBaseCss();
   }
 }
 
 export const plainLayer: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
-    const componentStyle: NewComponentStyleProperties = { baseName,
-      baseStyle: LAYER_STYLES.PLAIN, baseCustomCssFunc: createDefaultBaseCss, };
-    return LayerBuilder.create(componentStyle);
+    const layerComponent = layerBase.createNewComponent(baseName);
+    // WORK2
+    layerComponent.style = LAYER_STYLES.PLAIN;
+    PlaneLayer.overwriteCustomCss(layerComponent);
+    return layerComponent;
   },
 };

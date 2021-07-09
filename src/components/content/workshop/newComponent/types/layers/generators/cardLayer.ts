@@ -1,42 +1,54 @@
-import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { cardLayerSpecificSettings } from './cardLayerSpecificSettings';
-import { LayerBuilder } from './layerBuilder';
+import { ComponentBuilder } from '../../shared/componentBuilder';
+import { layerBase } from './base';
+import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 
-function createDefaultLayerCss(): CustomCss {
-  return {
-    [CSS_PSEUDO_CLASSES.DEFAULT]: {
-      position: 'relative',
-      height: '50px',
-      textAlign: 'left',
-      paddingLeft: '20px',
-      paddingTop: '0px',
-      paddingRight: '0px',
-      paddingBottom: '0px',
-      borderTopWidth: '1px',
-      borderTopStyle: 'solid',
-      borderTopColor: '#e9ecef',
-      backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
-      boxShadow: CSS_PROPERTY_VALUES.UNSET,
-      backgroundSize: '100% 100%',
-    },
+class CardLayer extends ComponentBuilder {
+
+  private static createDefaultLayerCss(): CustomCss {
+    return {
+      [CSS_PSEUDO_CLASSES.DEFAULT]: {
+        position: 'relative',
+        height: '50px',
+        textAlign: 'left',
+        paddingLeft: '20px',
+        paddingTop: '0px',
+        paddingRight: '0px',
+        paddingBottom: '0px',
+        borderTopWidth: '1px',
+        borderTopStyle: 'solid',
+        borderTopColor: '#e9ecef',
+        backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
+        boxShadow: CSS_PROPERTY_VALUES.UNSET,
+        backgroundSize: '100% 100%',
+      },
+    };
   }
-}
 
-function overwriteSubcomponentSpecificSettings(textComponent: WorkshopComponent): void {
-  textComponent.subcomponents[textComponent.coreSubcomponentNames.base].subcomponentSpecificSettings = cardLayerSpecificSettings;
+  private static overwriteCustomCss(component: WorkshopComponent): void {
+    component.subcomponents[component.coreSubcomponentNames.base].customCss = CardLayer.createDefaultLayerCss();
+    component.subcomponents[component.coreSubcomponentNames.base].defaultCss = CardLayer.createDefaultLayerCss();
+  }
+
+  private static overwriteSubcomponentSpecificSettings(component: WorkshopComponent): void {
+    component.subcomponents[component.coreSubcomponentNames.base].subcomponentSpecificSettings = cardLayerSpecificSettings;
+  }
+
+  public static overwrite(component: WorkshopComponent): void {
+    CardLayer.overwriteCustomCss(component);
+    CardLayer.overwriteSubcomponentSpecificSettings(component);
+  }
 }
 
 export const cardLayer: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
-    const newSubcomponentStyle: NewComponentStyleProperties = { baseName,
-      baseStyle: LAYER_STYLES.CARD, baseCustomCssFunc: createDefaultLayerCss };
-    const layerComponent = LayerBuilder.create(newSubcomponentStyle);
-    overwriteSubcomponentSpecificSettings(layerComponent);
+    const layerComponent = layerBase.createNewComponent(baseName);
+    layerComponent.style = LAYER_STYLES.CARD;
+    CardLayer.overwrite(layerComponent);
     return layerComponent;
   },
 };

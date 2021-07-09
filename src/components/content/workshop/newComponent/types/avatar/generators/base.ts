@@ -1,13 +1,13 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
+import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
-export class AvatarBuilder extends ComponentBuilder {
+class AvatarBase extends ComponentBuilder {
 
   private static createDefaultAvatarCss(): CustomCss {
     return {
@@ -53,22 +53,27 @@ export class AvatarBuilder extends ComponentBuilder {
     };
   }
 
-  private static createBaseSubcomponent(componentStyle: NewComponentStyleProperties): SubcomponentProperties {
+  private static createBaseSubcomponent(): SubcomponentProperties {
     return {
       subcomponentType: SUBCOMPONENT_TYPES.AVATAR,
-      customCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || AvatarBuilder.createDefaultAvatarCss(),
-      defaultCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || AvatarBuilder.createDefaultAvatarCss(),
+      customCss: AvatarBase.createDefaultAvatarCss(),
+      defaultCss: AvatarBase.createDefaultAvatarCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      customFeatures: AvatarBuilder.createDefaultCustomFeatures(),
-      defaultCustomFeatures: AvatarBuilder.createDefaultCustomFeatures(),
-      customStaticFeatures: AvatarBuilder.createDefaultCustomStaticFeatures(),
-      defaultCustomStaticFeatures: AvatarBuilder.createDefaultCustomStaticFeatures(),
+      customFeatures: AvatarBase.createDefaultCustomFeatures(),
+      defaultCustomFeatures: AvatarBase.createDefaultCustomFeatures(),
+      customStaticFeatures: AvatarBase.createDefaultCustomStaticFeatures(),
+      defaultCustomStaticFeatures: AvatarBase.createDefaultCustomStaticFeatures(),
     };
   }
 
-  public static create(componentStyle: NewComponentStyleProperties = {}): WorkshopComponent {
-    componentStyle.componentType = COMPONENT_TYPES.AVATAR;
-    return ComponentBuilder.createBaseComponent(componentStyle, AvatarBuilder.createBaseSubcomponent);
+  public static create(baseName?: string): WorkshopComponent {
+    return ComponentBuilder.createBaseComponent({ componentType: COMPONENT_TYPES.AVATAR, baseName }, AvatarBase.createBaseSubcomponent);
   }
+}
+
+export const avatarBase: ComponentGenerator = {
+  createNewComponent(baseName?: string): WorkshopComponent {
+    return AvatarBase.create(baseName);
+  },
 }

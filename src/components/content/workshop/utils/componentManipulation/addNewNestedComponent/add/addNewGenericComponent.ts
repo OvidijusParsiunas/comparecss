@@ -48,7 +48,7 @@ export class AddNewGenericComponent extends AddNewNestedComponentShared {
     baseSubcomponentProperties.parentLayer = parentLayer;
   }
 
-  private static addNewSubcomponentToparentLayer(parentLayer: Layer, baseSubcomponentProperties: SubcomponentProperties,
+  private static addNewSubcomponentToParentLayer(parentLayer: Layer, baseSubcomponentProperties: SubcomponentProperties,
       nestedComponent: WorkshopComponent): void {
     const alignment = baseSubcomponentProperties?.customFeatures?.alignedLayerSection?.section;
     const nestedSubcomponentProperties: NestedSubcomponent = {
@@ -70,7 +70,7 @@ export class AddNewGenericComponent extends AddNewNestedComponentShared {
       layerName: string): void {
     const { parentLayer, baseSubcomponentProperties, subcomponentDropdownStructure, parentComponentBaseName,
       isParentLayerInSubcomponentsDropdown } = AddNewGenericComponent.assembleSubcomponentData(parentComponent, nestedComponent, layerName);
-    AddNewGenericComponent.addNewSubcomponentToparentLayer(parentLayer, baseSubcomponentProperties, nestedComponent);
+    AddNewGenericComponent.addNewSubcomponentToParentLayer(parentLayer, baseSubcomponentProperties, nestedComponent);
     if (isParentLayerInSubcomponentsDropdown) {
       AddNewGenericComponent.updateNewSubcomponentParentLayer(baseSubcomponentProperties, parentLayer);
       AddNewGenericComponent.updateComponentDropdownStructure(nestedComponent,

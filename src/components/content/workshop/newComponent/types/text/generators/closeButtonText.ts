@@ -1,49 +1,66 @@
-import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
-import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { inheritedCloseTextCss } from '../inheritedCss/inheritedCloseTextCss';
-import { TextBuilder } from './textBuilder';
+import { textBase } from './base';
 
-function createDefaultTextCss(): CustomCss {
-  return {
-    [CSS_PSEUDO_CLASSES.DEFAULT]: {
-      top: '50%',
-      width: 'max-content',
-      color: '#ff0000',
-      userSelect: 'none',
-      overflow: CSS_PROPERTY_VALUES.UNSET,
-      fontSize: '18px',
-      fontFamily: '"Poppins", sans-serif',
-      backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
-      fontWeight: '300',
-      paddingTop: '1px',
-      paddingBottom: '0px',
-      paddingLeft: '0px',
-      paddingRight: '0px',
-      marginLeft: '0px',
-      marginRight: '0px',
-      transition: CSS_PROPERTY_VALUES.UNSET,
-      outline: 'none',
-      left: '0px',
-    },
+class CloseButtonText {
+
+  private static createDefaultTextCss(): CustomCss {
+    return {
+      [CSS_PSEUDO_CLASSES.DEFAULT]: {
+        top: '50%',
+        width: 'max-content',
+        color: '#ff0000',
+        userSelect: 'none',
+        overflow: CSS_PROPERTY_VALUES.UNSET,
+        fontSize: '18px',
+        fontFamily: '"Poppins", sans-serif',
+        backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
+        fontWeight: '300',
+        paddingTop: '1px',
+        paddingBottom: '0px',
+        paddingLeft: '0px',
+        paddingRight: '0px',
+        marginLeft: '0px',
+        marginRight: '0px',
+        transition: CSS_PROPERTY_VALUES.UNSET,
+        outline: 'none',
+        left: '0px',
+      },
+    }
   }
-}
+  
+  private static overwriteAlignment(subcomponent: SubcomponentProperties): void {
+    subcomponent.customFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
+    subcomponent.defaultCustomFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
+  }
 
-function overwriteAlignment(textComponent: WorkshopComponent): void {
-  textComponent.subcomponents[textComponent.coreSubcomponentNames.base].customFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
-  textComponent.subcomponents[textComponent.coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
+  private static overwriteCustomCss(subcomponent: SubcomponentProperties): void {
+    subcomponent.customCss = CloseButtonText.createDefaultTextCss();
+    subcomponent.defaultCss = CloseButtonText.createDefaultTextCss();
+  }
+
+  private static overwriteInheritedCss(subcomponent: SubcomponentProperties): void {
+    subcomponent.inheritedCss = inheritedCloseTextCss;
+  }
+
+  public static overwriteBase(closeButtonTextComponent: WorkshopComponent): void {
+    const baseSubcomponent = closeButtonTextComponent.subcomponents[closeButtonTextComponent.coreSubcomponentNames.base];
+    CloseButtonText.overwriteInheritedCss(baseSubcomponent);
+    CloseButtonText.overwriteCustomCss(baseSubcomponent);
+    CloseButtonText.overwriteAlignment(baseSubcomponent);
+  }
 }
 
 export const closeButtonText: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
-    const componentStyle: NewComponentStyleProperties = { baseName,
-      baseStyle: TEXT_STYLES.CLOSE_BUTTON, baseCustomCssFunc: createDefaultTextCss, baseInheritedCss: inheritedCloseTextCss };
-    const closeButtonTextComponent =  TextBuilder.create(componentStyle);
-    overwriteAlignment(closeButtonTextComponent);
+    const closeButtonTextComponent =  textBase.createNewComponent(baseName);
+    closeButtonTextComponent.style = TEXT_STYLES.CLOSE_BUTTON;
+    CloseButtonText.overwriteBase(closeButtonTextComponent)
     return closeButtonTextComponent;
   },
 };

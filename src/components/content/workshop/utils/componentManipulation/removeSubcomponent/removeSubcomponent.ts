@@ -29,7 +29,7 @@ export class RemoveSubcomponent {
 
   private static removeNestedComponentInPreviewStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
     const { subcomponentProperties, layers, alignedNestedComponents, index } = componentTraversalState;
-    const { subcomponentProperties: targetSubcomponentProperties } = this as any;
+    const { subcomponentProperties: targetSubcomponentProperties } = this as any as SubcomponentValues;
     if (targetSubcomponentProperties === subcomponentProperties) {
       if (layers) layers.splice(index, 1);
       if (alignedNestedComponents) alignedNestedComponents.splice(index, 1);
@@ -47,7 +47,7 @@ export class RemoveSubcomponent {
   }
 
   private static removeNestedComponentNestedComponents(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
-    const { parentComponent } = this as any;
+    const { parentComponent } = this as any as SubcomponentValues;
     RemoveSubcomponent.removeSubcomponents(componentTraversalState, parentComponent);
     return componentTraversalState;
   }
@@ -68,7 +68,7 @@ export class RemoveSubcomponent {
 
   private static removeNestedComponentUsingDropdownStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
     const { subcomponentName, subcomponentDropdownStructure } = componentTraversalState;
-    const subcomponentValues: SubcomponentValues = this as any;
+    const subcomponentValues = this as any as SubcomponentValues;
     if (subcomponentValues.subcomponentName === subcomponentName) {
       const removedSubcomponentDropdownIndex = Object.keys(subcomponentDropdownStructure).indexOf(subcomponentName);
       RemoveSubcomponent.removeNestedComponent(componentTraversalState, subcomponentValues);

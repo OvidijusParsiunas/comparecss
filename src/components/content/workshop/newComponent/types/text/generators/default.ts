@@ -1,7 +1,7 @@
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { textSpecificSettings } from '../settings/textSpecificSettings';
-import { TextBuilder } from './textBuilder';
+import { textBase } from './base';
 
 function addSubcomponentSpecificSettings(textComponent: WorkshopComponent): void {
   textComponent.subcomponents[textComponent.coreSubcomponentNames.base].subcomponentSpecificSettings = textSpecificSettings;
@@ -9,7 +9,7 @@ function addSubcomponentSpecificSettings(textComponent: WorkshopComponent): void
 
 export const defaultText: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
-    const textComponent = TextBuilder.create({ baseName });
+    const textComponent = textBase.createNewComponent(baseName);
     addSubcomponentSpecificSettings(textComponent);
     return textComponent;
   },

@@ -3,8 +3,10 @@ import { DEFAULT_STYLES, TEXT_STYLES } from '../../../../../../consts/componentS
 import { closeButtonText } from './generators/closeButtonText';
 import { buttonText } from './generators/buttonText';
 import { defaultText } from './generators/default';
+import { textBase } from './generators/base';
 
 export const textStyleToGenerator: ComponentStyleToGenerator = {
+  [DEFAULT_STYLES.BASE]: textBase,
   [DEFAULT_STYLES.DEFAULT]: defaultText,
   [TEXT_STYLES.BUTTON]: buttonText,
   [TEXT_STYLES.CLOSE_BUTTON]: closeButtonText,

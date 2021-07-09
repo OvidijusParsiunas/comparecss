@@ -3,11 +3,12 @@ import { NewComponentStyleProperties } from '../../../../../../../consts/newComp
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
+import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
-export class LayerBuilder extends ComponentBuilder {
+class LayerBase extends ComponentBuilder {
 
   private static createDefaultBaseCss(): CustomCss {
     return {
@@ -26,19 +27,21 @@ export class LayerBuilder extends ComponentBuilder {
     };
   }
 
-  private static createBaseSubcomponent(componentStyle: NewComponentStyleProperties): SubcomponentProperties {
+  public static createBaseSubcomponent(componentStyle: NewComponentStyleProperties): SubcomponentProperties {
     return {
       subcomponentType: SUBCOMPONENT_TYPES.LAYER,
-      customCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || LayerBuilder.createDefaultBaseCss(),
-      defaultCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || LayerBuilder.createDefaultBaseCss(),
+      customCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || LayerBase.createDefaultBaseCss(),
+      defaultCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || LayerBase.createDefaultBaseCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     };
   }
+}
 
-  public static create(componentStyle: NewComponentStyleProperties = {}): WorkshopComponent {
-    componentStyle.componentType = COMPONENT_TYPES.LAYER;
-    return ComponentBuilder.createBaseComponent(componentStyle, LayerBuilder.createBaseSubcomponent);
-  }
+export const layerBase: ComponentGenerator = {
+  createNewComponent(baseName?: string): WorkshopComponent {
+    return ComponentBuilder.createBaseComponent(
+      { componentType: COMPONENT_TYPES.LAYER, baseName }, LayerBase.createBaseSubcomponent);
+  },
 }

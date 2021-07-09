@@ -3,12 +3,13 @@ import { NewComponentStyleProperties } from '../../../../../../../consts/newComp
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
+import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { inheritedTextCss } from '../inheritedCss/inheritedTextCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
-export class TextBuilder extends ComponentBuilder {
+class TextBase extends ComponentBuilder {
 
   private static createTextCss(): CustomCss {
     return {
@@ -53,23 +54,25 @@ export class TextBuilder extends ComponentBuilder {
     };
   }
 
-  private static createBaseSubcomponent(componentStyle: NewComponentStyleProperties): SubcomponentProperties {
+  public static createBaseSubcomponent(componentStyle: NewComponentStyleProperties): SubcomponentProperties {
     return {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
-      customCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || TextBuilder.createTextCss(),
-      defaultCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || TextBuilder.createTextCss(),
+      customCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || TextBase.createTextCss(),
+      defaultCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || TextBase.createTextCss(),
       inheritedCss: componentStyle.baseInheritedCss || inheritedTextCss,
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      customFeatures: TextBuilder.createDefaultTextCustomFeatures(),
-      defaultCustomFeatures: TextBuilder.createDefaultTextCustomFeatures(),
-      customStaticFeatures: TextBuilder.createDefaultTextCustomStaticFeatures(),
-      defaultCustomStaticFeatures: TextBuilder.createDefaultTextCustomStaticFeatures(),
+      customFeatures: TextBase.createDefaultTextCustomFeatures(),
+      defaultCustomFeatures: TextBase.createDefaultTextCustomFeatures(),
+      customStaticFeatures: TextBase.createDefaultTextCustomStaticFeatures(),
+      defaultCustomStaticFeatures: TextBase.createDefaultTextCustomStaticFeatures(),
     };
   }
+}
 
-  public static create(componentStyle: NewComponentStyleProperties = {}): WorkshopComponent {
-    componentStyle.componentType = COMPONENT_TYPES.TEXT;
-    return ComponentBuilder.createBaseComponent(componentStyle, TextBuilder.createBaseSubcomponent);
-  }
+export const textBase: ComponentGenerator = {
+  createNewComponent(baseName?: string): WorkshopComponent {
+    return ComponentBuilder.createBaseComponent(
+      { componentType: COMPONENT_TYPES.TEXT, baseName }, TextBase.createBaseSubcomponent);
+  },
 }
