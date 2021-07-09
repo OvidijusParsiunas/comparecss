@@ -1,29 +1,12 @@
-import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewGenericComponent';
-import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
-import { Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
-import { LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
+import { AddComponentsToButtonBaseUtils } from '../utils/addComponentsToButtonBaseUtils';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
+import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import ReferenceSharingUtils from '../utils/referenceSharingUtils';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { buttonBase } from './base';
 
 export class DefaultButton extends ComponentBuilder {
-
-  private static overwriteButtonTextProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
-    subcomponents[coreSubcomponentNames.base].customStaticFeatures.subcomponentText.text = 'Button';
-    subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures.subcomponentText.text = 'Button';
-  }
-
-  public static addComponentsToBase(buttonComponent: WorkshopComponent): void {
-    const layerSubcomponent = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.PLAIN, false);
-    const textSubcomponent = AddNewGenericComponent.add(buttonComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
-      layerSubcomponent.coreSubcomponentNames.base, [DefaultButton.overwriteButtonTextProperties]);
-    const { coreSubcomponentNames } = buttonComponent;
-    buttonComponent.componentPreviewStructure.baseSubcomponentProperties.nameOfAnotherSubcomponetToTrigger = textSubcomponent.coreSubcomponentNames.base;
-    coreSubcomponentNames.text = textSubcomponent.coreSubcomponentNames.base;
-  }
 
   public static addReferences(buttonComponent: WorkshopComponent): void {
     const { coreSubcomponentNames } = buttonComponent;
@@ -36,7 +19,7 @@ export class DefaultButton extends ComponentBuilder {
 export const defaultButton: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const buttonComponent = buttonBase.createNewComponent(baseName);
-    DefaultButton.addComponentsToBase(buttonComponent);
+    AddComponentsToButtonBaseUtils.add(buttonComponent, TEXT_STYLES.BUTTON, 'Button');
     DefaultButton.addReferences(buttonComponent);
     return buttonComponent;
   },

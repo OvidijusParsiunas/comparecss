@@ -53,7 +53,7 @@ class AvatarBase extends ComponentBuilder {
     };
   }
 
-  private static createBaseSubcomponent(): SubcomponentProperties {
+  public static createBaseSubcomponent(): SubcomponentProperties {
     return {
       subcomponentType: SUBCOMPONENT_TYPES.AVATAR,
       customCss: AvatarBase.createDefaultAvatarCss(),
@@ -66,14 +66,10 @@ class AvatarBase extends ComponentBuilder {
       defaultCustomStaticFeatures: AvatarBase.createDefaultCustomStaticFeatures(),
     };
   }
-
-  public static create(baseName?: string): WorkshopComponent {
-    return ComponentBuilder.createBaseComponent({ componentType: COMPONENT_TYPES.AVATAR, baseName }, AvatarBase.createBaseSubcomponent);
-  }
 }
 
 export const avatarBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
-    return AvatarBase.create(baseName);
+    return ComponentBuilder.createBaseComponent({ componentType: COMPONENT_TYPES.AVATAR, baseName }, AvatarBase.createBaseSubcomponent);
   },
 }

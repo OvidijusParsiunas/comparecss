@@ -34,7 +34,7 @@ class CardBase extends ComponentBuilder {
     };
   }
 
-  private static createBaseSubcomponent(): SubcomponentProperties {
+  public static createBaseSubcomponent(): SubcomponentProperties {
     return {
       subcomponentType: SUBCOMPONENT_TYPES.BASE,
       customCss: CardBase.createDefaultCardCss(),
@@ -47,16 +47,11 @@ class CardBase extends ComponentBuilder {
       defaultCustomFeatures: CardBase.createDefaultCustomFeatures(),
     };
   }
-
-  public static create(): WorkshopComponent {
-    uniqueSubcomponentIdState.resetUniqueId();
-    return ComponentBuilder.createBaseComponent({ componentType: COMPONENT_TYPES.CARD }, CardBase.createBaseSubcomponent, false);
-  }
 }
 
 export const cardBase: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
-    // WORK2
-    return CardBase.create();
+    uniqueSubcomponentIdState.resetUniqueId();
+    return ComponentBuilder.createBaseComponent({ componentType: COMPONENT_TYPES.CARD }, CardBase.createBaseSubcomponent, false);
   },
 }

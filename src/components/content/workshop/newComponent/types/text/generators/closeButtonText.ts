@@ -9,6 +9,10 @@ import { textBase } from './base';
 
 class CloseButtonText {
 
+  public static setStyle(component: WorkshopComponent): void {
+    component.style = TEXT_STYLES.CLOSE_BUTTON;
+  }
+
   private static createDefaultTextCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
@@ -48,8 +52,8 @@ class CloseButtonText {
     subcomponent.inheritedCss = inheritedCloseTextCss;
   }
 
-  public static overwriteBase(closeButtonTextComponent: WorkshopComponent): void {
-    const baseSubcomponent = closeButtonTextComponent.subcomponents[closeButtonTextComponent.coreSubcomponentNames.base];
+  public static overwriteBase(component: WorkshopComponent): void {
+    const baseSubcomponent = component.subcomponents[component.coreSubcomponentNames.base];
     CloseButtonText.overwriteInheritedCss(baseSubcomponent);
     CloseButtonText.overwriteCustomCss(baseSubcomponent);
     CloseButtonText.overwriteAlignment(baseSubcomponent);
@@ -59,8 +63,8 @@ class CloseButtonText {
 export const closeButtonText: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const closeButtonTextComponent =  textBase.createNewComponent(baseName);
-    closeButtonTextComponent.style = TEXT_STYLES.CLOSE_BUTTON;
     CloseButtonText.overwriteBase(closeButtonTextComponent)
+    CloseButtonText.setStyle(closeButtonTextComponent)
     return closeButtonTextComponent;
   },
 };

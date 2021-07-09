@@ -1,18 +1,26 @@
-import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewGenericComponent';
-import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
-import { CustomCss, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
-import { LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
+import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { BUTTON_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
+import { AddComponentsToButtonBaseUtils } from '../utils/addComponentsToButtonBaseUtils';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../../../../consts/closeButtonXText';
-import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import ReferenceSharingUtils from '../utils/referenceSharingUtils';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { buttonBase } from './base';
 
 class CloseButton extends ComponentBuilder {
+
+  public static setStyle(component: WorkshopComponent): void {
+    component.style = BUTTON_STYLES.CLOSE;
+  }
+
+  public static addReferences(component: WorkshopComponent): void {
+    const { coreSubcomponentNames } = component;
+    ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(component.subcomponents, coreSubcomponentNames);
+    ReferenceSharingUtils.appendBaseSubcomponentRefToAllChildSubcomponents(component.subcomponents, coreSubcomponentNames);
+    component.referenceSharingExecutables = [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents];
+  }
 
   private static createDefaultBaseCss(): CustomCss {
     return {
@@ -43,35 +51,15 @@ class CloseButton extends ComponentBuilder {
     component.subcomponents[component.coreSubcomponentNames.base].customCss = CloseButton.createDefaultBaseCss();
     component.subcomponents[component.coreSubcomponentNames.base].defaultCss = CloseButton.createDefaultBaseCss();
   }
-
-  private static overwriteButtonTextProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
-    subcomponents[coreSubcomponentNames.base].customStaticFeatures.subcomponentText.text = CLOSE_BUTTON_X_TEXT;
-    subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures.subcomponentText.text = CLOSE_BUTTON_X_TEXT;
-  }
-
-  public static addComponentsToBase(buttonComponent: WorkshopComponent): void {
-    const layerSubcomponent = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.PLAIN, false);
-    const textSubcomponent = AddNewGenericComponent.add(buttonComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.CLOSE_BUTTON,
-      layerSubcomponent.coreSubcomponentNames.base, [CloseButton.overwriteButtonTextProperties]);
-    const { coreSubcomponentNames } = buttonComponent;
-    buttonComponent.componentPreviewStructure.baseSubcomponentProperties.nameOfAnotherSubcomponetToTrigger = textSubcomponent.coreSubcomponentNames.base;
-    coreSubcomponentNames.text = textSubcomponent.coreSubcomponentNames.base;
-  }
-
-  public static addReferences(buttonComponent: WorkshopComponent): void {
-    const { coreSubcomponentNames } = buttonComponent;
-    ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(buttonComponent.subcomponents, coreSubcomponentNames);
-    ReferenceSharingUtils.appendBaseSubcomponentRefToAllChildSubcomponents(buttonComponent.subcomponents, coreSubcomponentNames);
-    buttonComponent.referenceSharingExecutables = [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents];
-  }
 }
 
 export const closeButton: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const buttonComponent = buttonBase.createNewComponent(baseName);
     CloseButton.overwriteBaseCustomCss(buttonComponent);
-    CloseButton.addComponentsToBase(buttonComponent);
+    AddComponentsToButtonBaseUtils.add(buttonComponent, TEXT_STYLES.CLOSE_BUTTON, CLOSE_BUTTON_X_TEXT);
     CloseButton.addReferences(buttonComponent);
+    CloseButton.setStyle(buttonComponent);
     return buttonComponent;
   }
 };

@@ -2,12 +2,16 @@ import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/wo
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { cardLayerSpecificSettings } from './cardLayerSpecificSettings';
+import { cardLayerSpecificSettings } from '../settings/cardLayerSpecificSettings';
+import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { layerBase } from './base';
-import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 
 class CardLayer extends ComponentBuilder {
+
+  public static setStyle(component: WorkshopComponent): void {
+    component.style = LAYER_STYLES.CARD;
+  }
 
   private static createDefaultLayerCss(): CustomCss {
     return {
@@ -47,8 +51,8 @@ class CardLayer extends ComponentBuilder {
 export const cardLayer: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const layerComponent = layerBase.createNewComponent(baseName);
-    layerComponent.style = LAYER_STYLES.CARD;
     CardLayer.overwrite(layerComponent);
+    CardLayer.setStyle(layerComponent);
     return layerComponent;
   },
 };

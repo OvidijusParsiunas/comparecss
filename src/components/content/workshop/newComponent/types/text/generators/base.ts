@@ -1,5 +1,4 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -54,12 +53,12 @@ class TextBase extends ComponentBuilder {
     };
   }
 
-  public static createBaseSubcomponent(componentStyle: NewComponentStyleProperties): SubcomponentProperties {
+  public static createBaseSubcomponent(): SubcomponentProperties {
     return {
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,
-      customCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || TextBase.createTextCss(),
-      defaultCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || TextBase.createTextCss(),
-      inheritedCss: componentStyle.baseInheritedCss || inheritedTextCss,
+      customCss: TextBase.createTextCss(),
+      defaultCss: TextBase.createTextCss(),
+      inheritedCss: inheritedTextCss,
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       customFeatures: TextBase.createDefaultTextCustomFeatures(),

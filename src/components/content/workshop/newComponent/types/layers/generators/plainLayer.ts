@@ -7,6 +7,10 @@ import { layerBase } from './base';
 
 class PlaneLayer extends ComponentBuilder {
 
+  public static setStyle(component: WorkshopComponent): void {
+    component.style = LAYER_STYLES.PLAIN;
+  }
+
   private static createDefaultBaseCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
@@ -24,9 +28,8 @@ class PlaneLayer extends ComponentBuilder {
 export const plainLayer: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const layerComponent = layerBase.createNewComponent(baseName);
-    // WORK2
-    layerComponent.style = LAYER_STYLES.PLAIN;
     PlaneLayer.overwriteCustomCss(layerComponent);
+    PlaneLayer.setStyle(layerComponent);
     return layerComponent;
   },
 };

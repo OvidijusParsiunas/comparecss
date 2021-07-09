@@ -8,6 +8,10 @@ import { textBase } from './base';
 
 class ButtonText {
 
+  public static setStyle(component: WorkshopComponent): void {
+    component.style = TEXT_STYLES.BUTTON;
+  }
+
   private static createDefaultTextCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
@@ -55,8 +59,8 @@ class ButtonText {
     subcomponent.tempCustomCss = new Set(['transition']);
   }
 
-  public static overwriteBase(closeButtonTextComponent: WorkshopComponent): void {
-    const baseSubcomponent = closeButtonTextComponent.subcomponents[closeButtonTextComponent.coreSubcomponentNames.base];
+  public static overwriteBase(component: WorkshopComponent): void {
+    const baseSubcomponent = component.subcomponents[component.coreSubcomponentNames.base];
     ButtonText.overwriteCustomCss(baseSubcomponent);
     ButtonText.overwriteAlignment(baseSubcomponent);
     ButtonText.overwriteSubcomponentProperties(baseSubcomponent);
@@ -66,8 +70,8 @@ class ButtonText {
 export const buttonText: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const closeButtonTextComponent = textBase.createNewComponent(baseName);
-    closeButtonTextComponent.style = TEXT_STYLES.BUTTON;
     ButtonText.overwriteBase(closeButtonTextComponent);
+    ButtonText.setStyle(closeButtonTextComponent);
     return closeButtonTextComponent;
   },
 };

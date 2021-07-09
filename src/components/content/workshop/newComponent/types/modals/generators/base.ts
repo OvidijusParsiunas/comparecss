@@ -16,21 +16,17 @@ class ModalBase extends ComponentBuilder {
     };
   }
 
-  private static overwriteBaseCustomFeatures(cardComponent: WorkshopComponent): void {
+  public static overwriteBaseCustomFeatures(cardComponent: WorkshopComponent): void {
     cardComponent.subcomponents[cardComponent.coreSubcomponentNames.base].customFeatures = ModalBase.createDefaultBaseCustomFeatures();
     cardComponent.subcomponents[cardComponent.coreSubcomponentNames.base].defaultCustomFeatures = ModalBase.createDefaultBaseCustomFeatures();
-  }
-
-  public static create(): WorkshopComponent {
-    const modalComponent = cardBase.createNewComponent();
-    modalComponent.type = COMPONENT_TYPES.MODAL;
-    ModalBase.overwriteBaseCustomFeatures(modalComponent);
-    return modalComponent;
   }
 }
 
 export const modalBase: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
-    return ModalBase.create();
+    const modalComponent = cardBase.createNewComponent();
+    modalComponent.type = COMPONENT_TYPES.MODAL;
+    ModalBase.overwriteBaseCustomFeatures(modalComponent);
+    return modalComponent;
   },
 }

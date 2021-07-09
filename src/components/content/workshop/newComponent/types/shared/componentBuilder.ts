@@ -106,7 +106,7 @@ export class ComponentBuilder {
     const componentPreviewStructure = ComponentBuilder.createEmptyComponentPreviewStructure(subcomponents, coreSubcomponentNames.base, isBaseOptional);
     return {
       type: componentStyle.componentType,
-      style: componentStyle.baseStyle || DEFAULT_STYLES.DEFAULT,
+      style: DEFAULT_STYLES.DEFAULT,
       subcomponents,
       activeSubcomponentName: coreSubcomponentNames.base,
       defaultSubcomponentName: coreSubcomponentNames.base,
