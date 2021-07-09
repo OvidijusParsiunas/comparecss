@@ -1,5 +1,4 @@
 import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { NewComponentStyleProperties } from '../../../../../../../consts/newComponentStyleProperties';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -27,11 +26,11 @@ class LayerBase extends ComponentBuilder {
     };
   }
 
-  public static createBaseSubcomponent(componentStyle: NewComponentStyleProperties): SubcomponentProperties {
+  public static createBaseSubcomponent(): SubcomponentProperties {
     return {
       subcomponentType: SUBCOMPONENT_TYPES.LAYER,
-      customCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || LayerBase.createDefaultBaseCss(),
-      defaultCss: (componentStyle.baseCustomCssFunc && componentStyle.baseCustomCssFunc()) || LayerBase.createDefaultBaseCss(),
+      customCss: LayerBase.createDefaultBaseCss(),
+      defaultCss: LayerBase.createDefaultBaseCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
