@@ -2,7 +2,7 @@
   <div class="layers" :class="COMPONENT_PREVIEW_MARKER">
     <div v-for="(layer, index) in layers" :key="layer" class="layer" :class="COMPONENT_PREVIEW_MARKER">
       <div :id="getLayerId(layer.name, 'subcomponentId')"
-        :style="getStyleProperties(layers, layer, index)"
+        :style="getStyleProperties(layer)"
         :class="COMPONENT_PREVIEW_MARKER"
         @mouseenter="activateMouseEvent(layer.name, 'subcomponentMouseEnter')"
         @mouseleave="activateMouseEvent(layer.name, 'subcomponentMouseLeave')"
@@ -17,10 +17,17 @@
             :sections="layer.sections"
             :mouseEvents="mouseEvents"/>
       </div>
+      <!-- zIndex is used for the shadow and overlay to be placed above the next layer's border -->
+      <div :style="[{ zIndex: layers.length - index + 1}]"
+        class="layer-shadow-overlay-container"
+        :class="SUBCOMPONENT_OVERLAY_CLASSES.BASE">
+          <div :style="layer.subcomponentProperties.customCss[DEFAULT_CSS_PSEUDO_CLASS]"
+            class="layer-shadow-overlay"></div>
+      </div>
       <div :id="getLayerId(layer.name, 'overlayId')"
         style="display: none"
         :style="[layer.subcomponentProperties.customCss[DEFAULT_CSS_PSEUDO_CLASS], { zIndex: layers.length - index + 1 }]"
-        :class="[...OVERLAY_DEFAULT_CLASSES]"></div>
+        :class="[SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT]"></div>
     </div>
   </div>
 </template>
@@ -37,7 +44,7 @@ import layerSections from './LayerSections.vue';
 
 interface Consts {
   COMPONENT_PREVIEW_MARKER: string;
-  OVERLAY_DEFAULT_CLASSES: SUBCOMPONENT_OVERLAY_CLASSES[];
+  SUBCOMPONENT_OVERLAY_CLASSES: typeof SUBCOMPONENT_OVERLAY_CLASSES;
   DEFAULT_CSS_PSEUDO_CLASS: CSS_PSEUDO_CLASSES;
   URL: string;
 }
@@ -46,19 +53,19 @@ export default {
   setup(): Consts {
     return {
       COMPONENT_PREVIEW_MARKER, 
-      OVERLAY_DEFAULT_CLASSES: [SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT],
+      SUBCOMPONENT_OVERLAY_CLASSES,
       DEFAULT_CSS_PSEUDO_CLASS: CSS_PSEUDO_CLASSES.DEFAULT,
       URL: require('@/assets/images/road.webp'),
     };
   },
   methods: {
-    getStyleProperties(layers: Layer[], layer: Layer, index: number): WorkshopComponentCss[] {
+    getStyleProperties(layer: Layer): WorkshopComponentCss[] {
       const { subcomponentProperties: { overwrittenCustomCssObj, customCss, customStaticFeatures } } = layer;
       const customCssObj = overwrittenCustomCssObj || customCss;
       return [
         customCssObj[CSS_PSEUDO_CLASSES.DEFAULT],
         { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : ''},
-        { zIndex: layers.length - index }
+        { boxShadow: 'unset'},
       ]
     },
     getLayerId(layerName: string, idType: keyof SubcomponentAndOverlayElementIds[string]): string {
@@ -88,5 +95,16 @@ export default {
   .layer {
     position: relative;
     height: 100%;
+  }
+  .layer-shadow-overlay-container {
+    overflow: hidden;
+    height: 500px;
+    pointer-events: none;
+  }
+  .layer-shadow-overlay {
+    top: -1px;
+    left: -1px;
+    width: calc(100% + 1px);
+    background-color: unset !important;
   }
 </style>

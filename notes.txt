@@ -12,7 +12,6 @@ think about computed property solution
 button transition animation should be optional
 something doesn't scale well when viewing an option on a long length dropdown (20)
 no layers makes the base dropdown look weird but should probably not allow less than 1 layer
-layer shadows need to be fixed
 
 overflow
 try with button tags
@@ -55,6 +54,7 @@ button to switch between px, em (at the moment optimization is only configured f
 if button height exceeds certain threshold - only then should the 'Centered' setting be displayed in the 'Text' panel
 the options/available components/subcomponents could all be fetched via an endpoint to maintain site integrity
 
+interactice tool to demo css - like a runtime addon (like stackblitz)
 website builder
 the current infrastructure does not support layers within layers in the component preview and the subcomponent dropdown
 
