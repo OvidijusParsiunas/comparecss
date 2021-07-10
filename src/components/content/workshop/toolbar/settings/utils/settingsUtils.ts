@@ -87,8 +87,8 @@ export default class SettingsUtils {
     if (Array.isArray(triggers)) SettingsUtils.updateOtherOptionSettingViaTrigger(triggers, spec, subcomponentProperties);
   }
 
-  private static resetCustomFeatures(option: any, subcomponentProperties: SubcomponentProperties): void {
-    const { spec: { valueInSetObject, customFeatureObjectKeys, mouseClickOptionCallback, auxiliaryCustomFeatureObjectKeys, resetCustomCss } } = option;
+  private static resetCustomFeatures(option: any, subcomponentProperties: SubcomponentProperties, customFeatureObjectKeys: string[]): void {
+    const { spec: { valueInSetObject, mouseClickOptionCallback, auxiliaryCustomFeatureObjectKeys, resetCustomCss } } = option;
     const defaultKey = customFeatureObjectKeys[0] === 'customFeatures' ? 'defaultCustomFeatures' : 'defaultCustomStaticFeatures';
     const defaultValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[defaultKey]);
     const currentValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]);
@@ -109,12 +109,13 @@ export default class SettingsUtils {
 
   public static resetSubcomponentProperties(options: any, subcomponentProperties: SubcomponentProperties): void {
     options.forEach((option) => {
-      const { cssProperty, customFeatureObjectKeys } = option.spec;
+      const { cssProperty, customFeatureObjectKeys, lastSelectedValueObjectKeys } = option.spec;
       if (customFeatureObjectKeys) {
-        SettingsUtils.resetCustomFeatures(option, subcomponentProperties);
+        SettingsUtils.resetCustomFeatures(option, subcomponentProperties, customFeatureObjectKeys);
       } else {
         SettingsUtils.resetCustomCss(subcomponentProperties, cssProperty);
         SettingsUtils.removeAuxiliaryPartialCss(subcomponentProperties, cssProperty);
+        if (lastSelectedValueObjectKeys) SettingsUtils.resetCustomFeatures(option, subcomponentProperties, lastSelectedValueObjectKeys);
       }
     });
   }

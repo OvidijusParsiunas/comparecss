@@ -36,7 +36,7 @@ class AvatarBase extends ComponentBuilder {
         left: '0px',
         backgroundSize: '100% 100%',
       },
-    }
+    };
   }
 
   private static createDefaultCustomFeatures(): CustomFeatures {
