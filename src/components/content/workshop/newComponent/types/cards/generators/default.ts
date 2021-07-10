@@ -71,6 +71,8 @@ class DefaultCard extends ComponentBuilder {
   }
 
   private static overwriteDescriptionProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
+    subcomponents[coreSubcomponentNames.base].customFeatures = DefaultCard.createDefaultTextCustomFeatures();
+    subcomponents[coreSubcomponentNames.base].defaultCustomFeatures = DefaultCard.createDefaultTextCustomFeatures();
     subcomponents[coreSubcomponentNames.base].customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Description');
     subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Description');
   }
