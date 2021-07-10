@@ -86,10 +86,6 @@ export interface AlignedLayerSection {
   section: ALIGNED_SECTION_TYPES;
 }
 
-export interface CircleBorder {
-  isCircle: boolean;
-}
-
 // should not be primitives as these values are copied by key
 export interface CustomFeatures {
   backdrop?: BackdropProperties;
@@ -100,7 +96,7 @@ export interface CustomFeatures {
   jsClasses?: ComponentJavascriptClasses;
   autoSize?: AutoSize;
   alignedLayerSection?: AlignedLayerSection;
-  circleBorder?: CircleBorder;
+  circleBorder?: boolean;
   lastSelectedCssValues?: WorkshopComponentCss;
 }
 

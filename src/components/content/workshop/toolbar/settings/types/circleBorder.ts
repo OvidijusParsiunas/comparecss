@@ -16,7 +16,7 @@ export default {
       },
       triggers: [
         {
-          customFeatureObjectKeys: ['customFeatures', 'circleBorder', 'isCircle'],
+          customFeatureObjectKeys: ['customFeatures', 'circleBorder'],
           defaultValue: false,
           conditions: new Set([true]),
         },
@@ -26,7 +26,7 @@ export default {
       type: SETTINGS_TYPES.CHECKBOX,
       spec: {
         name: 'Circle',
-        customFeatureObjectKeys: ['customFeatures', 'circleBorder', 'isCircle'],
+        customFeatureObjectKeys: ['customFeatures', 'circleBorder'],
         default: true,
       },
       triggers: {

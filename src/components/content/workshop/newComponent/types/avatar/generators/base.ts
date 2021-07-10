@@ -1,4 +1,4 @@
-import { CircleBorder, CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -39,13 +39,9 @@ class AvatarBase extends ComponentBuilder {
     }
   }
 
-  private static createDefaultCircleBorderValue(): CircleBorder {
-    return { isCircle: false };
-  }
-
   private static createDefaultCustomFeatures(): CustomFeatures {
     return {
-      circleBorder: AvatarBase.createDefaultCircleBorderValue(),
+      circleBorder: false,
       lastSelectedCssValues: ComponentBuilder.createLastSelectedCssLeftValue(),
       alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
     };
