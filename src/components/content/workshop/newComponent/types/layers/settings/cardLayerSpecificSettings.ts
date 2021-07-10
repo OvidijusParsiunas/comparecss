@@ -1,6 +1,6 @@
 import SubcomponentSpecificSettingsUtils from '../../../../toolbar/settings/utils/subcomponentSpecificSettingsUtils';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
-import { SubcomponentSpecificSettings } from '../../../../../../../interfaces/workshopComponent';
+import { SubcomponentSpecificSettings } from '../../../../../../../interfaces/subcomponentSpecificSettings';
 
 const verticalBoxShadowPropertyName = 'boxShadow';
 const verticalBoxShadowPartialCssPosition = 1;

@@ -8,6 +8,7 @@ import { NESTED_SUBCOMPONENTS_BASE_NAMES } from '../../../../../../../consts/bas
 import { Layer, NestedSubcomponent } from '../../../../../../../interfaces/componentPreviewStructure';
 import { ComponentPreviewStructureSearchUtils } from '../utils/componentPreviewStractureSearchUtils';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
+import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -39,8 +40,7 @@ export class AddNewGenericComponent extends AddNewNestedComponentShared {
     const { coreSubcomponentNames: { base: baseName }, componentPreviewStructure } = nestedComponent;
     const nestedComponentBaseDropdownStructure = componentPreviewStructure.subcomponentDropdownStructure[baseName];
     (nestedComponentBaseDropdownStructure[DROPDOWN_OPTION_DISPLAY_STATUS_REF] as DropdownOptionDisplayStatus).isEnabled = true;
-    const newComponentDropdownStructure = {
-      [baseName]: { ...nestedComponentBaseDropdownStructure }};
+    const newComponentDropdownStructure = { [baseName]: { ...nestedComponentBaseDropdownStructure }};
     JsUtils.addObjects(subcomponentDropdownStructure, baseSubcomponentName, newComponentDropdownStructure, true);
   }
 
@@ -115,6 +115,7 @@ export class AddNewGenericComponent extends AddNewNestedComponentShared {
     const nestedComponent = AddNewGenericComponent.createNewComponent(componentType, componentGenerator, overwritePropertiesFunc);
     JsUtils.addObjects(parentComponent, 'subcomponents', nestedComponent.subcomponents);
     AddNewGenericComponent.addNewSubcomponentsToComponentPreview(parentComponent, nestedComponent, layerName);
+    InterconnectedSettings.update(true, parentComponent, nestedComponent.subcomponents[nestedComponent.coreSubcomponentNames.base]);
     return nestedComponent;
   }
 }

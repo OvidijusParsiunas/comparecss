@@ -3,6 +3,7 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../int
 import { UpdateGenericComponentNames } from '../updateNestedComponentNames/updateGenericComponentNames';
 import { UpdateLayerComponentNames } from '../updateNestedComponentNames/updateLayerComponentNames';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
+import { InterconnectedSettings } from '../../interconnectedSettings/interconnectedSettings';
 import { AlignedSections } from '../../../../../../interfaces/componentPreviewStructure';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 
@@ -29,10 +30,13 @@ export class RemoveSubcomponent {
 
   private static removeNestedComponentInPreviewStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
     const { subcomponentProperties, layers, alignedNestedComponents, index } = componentTraversalState;
-    const { subcomponentProperties: targetSubcomponentProperties } = this as any as SubcomponentValues;
+    const { subcomponentProperties: targetSubcomponentProperties, parentComponent } = this as any as SubcomponentValues;
     if (targetSubcomponentProperties === subcomponentProperties) {
       if (layers) layers.splice(index, 1);
-      if (alignedNestedComponents) alignedNestedComponents.splice(index, 1);
+      if (alignedNestedComponents) {
+        alignedNestedComponents.splice(index, 1);
+        InterconnectedSettings.update(false, parentComponent, subcomponentProperties);
+      }
       return componentTraversalState;
     }
     return null;

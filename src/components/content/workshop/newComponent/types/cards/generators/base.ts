@@ -6,6 +6,7 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentType
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
+import { CardBaseSpecificSettings } from '../settings/cardBaseSpecificSettings';
 import { inheritedCardBaseCss } from '../inheritedCss/inheritedCardCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
@@ -52,6 +53,9 @@ class CardBase extends ComponentBuilder {
 export const cardBase: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
     uniqueSubcomponentIdState.resetUniqueId();
-    return ComponentBuilder.createBaseComponent({ componentType: COMPONENT_TYPES.CARD }, CardBase.createBaseSubcomponent, false);
+    const cardBaseComponent = ComponentBuilder.createBaseComponent(
+      { componentType: COMPONENT_TYPES.CARD }, CardBase.createBaseSubcomponent, false);
+    CardBaseSpecificSettings.set(cardBaseComponent);
+    return cardBaseComponent;
   },
 }

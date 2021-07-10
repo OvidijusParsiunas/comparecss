@@ -72,7 +72,7 @@ export default class RangeUtils extends UpdateRange {
       UpdateRange.updateRangeCustomFeature(rangeValue, spec, subcomponentProperties);
     } else {
       const realRangeValue = UpdateRange.updateCustomCss(rangeValue, spec, subcomponentProperties);
-      if (spec.detailsToUpdateOtherCssProperties) UpdateOtherRangesUtils.updateOtherCustomCss(spec.detailsToUpdateOtherCssProperties, realRangeValue);
+      if (spec.updateOtherCssProperties) UpdateOtherRangesUtils.updateOtherCustomCss(spec.updateOtherCssProperties, realRangeValue);
     }
   }
 
@@ -97,9 +97,9 @@ export default class RangeUtils extends UpdateRange {
         // update setting and adjust css to boundaries if resetting
         if (settingToBeUpdated.spec.updateSettingSpecViaOtherCssProperties) UpdateOtherRangesUtils.updateOtherOptionSettingAndCssProperties(
           settingToBeUpdated.spec, subcomponentProperties);
-        // when resetting subcomponent, update other subcomponent css that depend on it
-        if (settingToBeUpdated.spec.detailsToUpdateOtherCssProperties) UpdateOtherRangesUtils.updateOtherCustomCss(
-          settingToBeUpdated.spec.detailsToUpdateOtherCssProperties, Number.parseFloat(cssPropertyValue));
+        // when resetting subcomponent, update other interconnected subcomponent css that depend on it
+        if (settingToBeUpdated.spec.updateOtherCssProperties) UpdateOtherRangesUtils.updateOtherCustomCss(
+          settingToBeUpdated.spec.updateOtherCssProperties, Number.parseFloat(cssPropertyValue));
       }
     } else if (settingToBeUpdated.spec.customFeatureObjectKeys) {
       settingToBeUpdated.spec.default = UpdateRange.getCustomFeatureRangeNumberValue(settingToBeUpdated.spec, subcomponentProperties);

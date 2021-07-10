@@ -12,7 +12,7 @@ export default {
         smoothingDivisible: 1,
         cssProperty: 'width',
         postfix: 'px',
-        detailsToUpdateOtherCssProperties: null,
+        updateOtherCssProperties: null,
       },
     },
     { 

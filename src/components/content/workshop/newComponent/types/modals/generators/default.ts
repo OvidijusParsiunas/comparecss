@@ -1,13 +1,11 @@
-import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, CustomStaticFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { UpdateGenericComponentNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateGenericComponentNames';
 import { UpdateLayerComponentNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateLayerComponentNames';
 import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewGenericComponent';
 import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
 import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
-import { PARENT_SUBCOMPONENT_NAME } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { getCardBaseSpecificSettings } from '../../cards/settings/cardBaseSpecificSettings';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
@@ -16,12 +14,6 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 import { modalBase } from './base';
 
 class DefaultModal extends ComponentBuilder {
-
-  private static addSubcomponentSpecificSettings(baseSubcomponent: SubcomponentProperties, closeComponent: WorkshopComponent,
-      avatarComponent: WorkshopComponent): void {
-    baseSubcomponent.subcomponentSpecificSettings = getCardBaseSpecificSettings(
-      closeComponent.componentPreviewStructure.baseSubcomponentProperties, avatarComponent.componentPreviewStructure.baseSubcomponentProperties);
-  }
 
   private static createDefaultTopLayerCustomStaticFeatures(): CustomStaticFeatures {
     return {
@@ -97,25 +89,24 @@ class DefaultModal extends ComponentBuilder {
     subcomponents[coreSubcomponentNames.text].defaultCustomStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Cancel');
   }
 
-  public static addComponentsToBase(cardComponent: WorkshopComponent): void {
-    const layer1Component = AddNewLayerComponent.add(cardComponent, DEFAULT_STYLES.DEFAULT, true, DefaultModal.overwriteTopLayerProperties);
-    const layer2Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
-    const layer3Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
-    UpdateLayerComponentNames.update(cardComponent, 1);
-    AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
+  public static addComponentsToBase(component: WorkshopComponent): void {
+    const layer1Component = AddNewLayerComponent.add(component, DEFAULT_STYLES.DEFAULT, true, DefaultModal.overwriteTopLayerProperties);
+    const layer2Component = AddNewLayerComponent.add(component, LAYER_STYLES.CARD, true);
+    const layer3Component = AddNewLayerComponent.add(component, LAYER_STYLES.CARD, true);
+    UpdateLayerComponentNames.update(component, 1);
+    AddNewGenericComponent.add(component, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentNames.base, [DefaultModal.overwriteTitleProperties]);
-    AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
+    AddNewGenericComponent.add(component, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layer2Component.coreSubcomponentNames.base, [DefaultModal.overwriteDescriptionProperties]);
-    AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
+    AddNewGenericComponent.add(component, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
       layer3Component.coreSubcomponentNames.base, [DefaultModal.overwriteSubmitButtonProperties]);
-    AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
+    AddNewGenericComponent.add(component, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
       layer3Component.coreSubcomponentNames.base, [DefaultModal.overwriteCancelButtonProperties]);
-    UpdateGenericComponentNames.updateViaLayerObject(cardComponent, cardComponent.componentPreviewStructure.layers[2]);
-    const closeButtonComponent = AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON,
+    UpdateGenericComponentNames.updateViaLayerObject(component, component.componentPreviewStructure.layers[2]);
+    AddNewGenericComponent.add(component, COMPONENT_TYPES.BUTTON,
       BUTTON_STYLES.CLOSE, layer1Component.coreSubcomponentNames.base);
-    const avatarComponent = AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.AVATAR, DEFAULT_STYLES.DEFAULT,
+    AddNewGenericComponent.add(component, COMPONENT_TYPES.AVATAR, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentNames.base);
-    DefaultModal.addSubcomponentSpecificSettings(cardComponent.subcomponents[PARENT_SUBCOMPONENT_NAME.BASE], closeButtonComponent, avatarComponent);
   }
 }
 

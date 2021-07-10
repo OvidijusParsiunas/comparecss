@@ -1,6 +1,6 @@
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES, MODAL_ANIMATION_CLOSE_TYPES } from '../consts/animationTypes.enum';
+import { InterconnectedSetting, SubcomponentSpecificSettings } from './subcomponentSpecificSettings';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
-import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../consts/workshopToolbarOptionTypes.enum';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
@@ -32,21 +32,12 @@ export type CustomCss = {
   [key in CSS_PSEUDO_CLASSES]?: WorkshopComponentCss;
 }
 
-export interface DetailsToUpdateOtherCssProperties {
+export interface UpdateOtherCssProperties {
   cssProperty: keyof WorkshopComponentCss;
   customCss: CustomCss;
   customFeatures: CustomFeatures;
   isScaleNegativeToPositive: boolean;
   divisor?: number;
-}
-
-export type SubcomponentSpecificSettings = {
-  [key in WORKSHOP_TOOLBAR_OPTION_TYPES]?: {
-    [cssPropertyName: string]: {
-      scale?: [number, number];
-      detailsToUpdateOtherCssProperties?: DetailsToUpdateOtherCssProperties[];
-    }
-  };
 }
 
 export interface PreventPermanentEditByOtherSettings {
@@ -75,11 +66,11 @@ export interface Animations {
     type: MODAL_ANIMATION_OPEN_TYPES;
     duration: string;
     delay: string;
-  },
+  };
   close: {
     type: MODAL_ANIMATION_CLOSE_TYPES | GENERAL_ANIMATION_CLOSE_TYPES;
     duration: string;
-  },
+  };
 }
 
 export interface AutoSize {
@@ -95,6 +86,11 @@ export interface AlignedLayerSection {
   section: ALIGNED_SECTION_TYPES;
 }
 
+export interface CircleBorder {
+  isCircle: boolean;
+}
+
+// should not be primitives as these values are copied by key
 export interface CustomFeatures {
   backdrop?: BackdropProperties;
   // currently used to position modal either in the center of the screen or the top
@@ -104,7 +100,7 @@ export interface CustomFeatures {
   jsClasses?: ComponentJavascriptClasses;
   autoSize?: AutoSize;
   alignedLayerSection?: AlignedLayerSection;
-  circleBorder?: boolean;
+  circleBorder?: CircleBorder;
   lastSelectedCssValues?: WorkshopComponentCss;
 }
 
@@ -200,6 +196,7 @@ export interface WorkshopComponent {
   componentStatus: { isRemoved: boolean };
   // used to reassign references when the subcomponents have been deep copied
   referenceSharingExecutables?: ReferenceSharingExecutable[];
+  interconnectedSettings?: InterconnectedSetting[];  
 }
 
 // Reference for component structure:

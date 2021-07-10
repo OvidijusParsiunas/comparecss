@@ -1,5 +1,5 @@
-import { CustomCss, DetailsToUpdateOtherCssProperties, SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
 import { subcomponentAndOverlayElementIdsState } from '../../../options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
+import { CustomCss, UpdateOtherCssProperties, SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SettingPaths } from '../../../../../../../interfaces/settingPaths';
 import { optionToSettings } from '../../types/optionToSettings';
@@ -13,11 +13,11 @@ export class UpdateOtherRangesUtils extends UpdateRange {
   private static setCssPropertyValue(postDivisionRangeValue: number, customCss: CustomCss, cssProperty: string, isScaleNegativeToPositive: boolean,
       currentCssPropertyValue: number): void {
     const newRangeValue = Math.round(postDivisionRangeValue);
-    (customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty] as string) = `${
+    customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty] = `${
       isScaleNegativeToPositive && currentCssPropertyValue < 0 ? -newRangeValue : newRangeValue}px`;
   }
 
-  private static updateOtherCustomCssProperty(rangeValue: number, otherCssProperties: DetailsToUpdateOtherCssProperties) {
+  private static updateOtherCustomCssProperty(rangeValue: number, otherCssProperties: UpdateOtherCssProperties) {
     const { divisor = 1, cssProperty, customCss, customFeatures, isScaleNegativeToPositive } = otherCssProperties;
     const currentCssPropertyValue = Number.parseFloat(customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty] as string);
     const postDivisionRangeValue = rangeValue / divisor;
@@ -37,8 +37,8 @@ export class UpdateOtherRangesUtils extends UpdateRange {
     }
   }
 
-  public static updateOtherCustomCss(detailsToUpdateOtherCssProperties: DetailsToUpdateOtherCssProperties[], rangeValue: number): void {
-    detailsToUpdateOtherCssProperties.forEach((otherCssProperties) => {
+  public static updateOtherCustomCss(updateOtherCssProperties: UpdateOtherCssProperties[], rangeValue: number): void {
+    updateOtherCssProperties.forEach((otherCssProperties) => {
       UpdateOtherRangesUtils.updateOtherCustomCssProperty(rangeValue, otherCssProperties);
     });
   }
@@ -68,8 +68,8 @@ export class UpdateOtherRangesUtils extends UpdateRange {
     // if the current value is greater than scaleBoundaryValue, reduce its size to within the bounds
     if (Math.abs(currentValue) > scaleBoundaryValue) {
       const realRangeValue = UpdateRange.updateCustomCss(scaleBoundaryValue.toString(), settingSpec, subcomponentProperties);
-      if (settingSpec.detailsToUpdateOtherCssProperties) UpdateOtherRangesUtils.updateOtherCustomCss(
-        settingSpec.detailsToUpdateOtherCssProperties, realRangeValue);
+      if (settingSpec.updateOtherCssProperties) UpdateOtherRangesUtils.updateOtherCustomCss(
+        settingSpec.updateOtherCssProperties, realRangeValue);
     }
   }
 

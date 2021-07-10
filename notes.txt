@@ -14,6 +14,7 @@ something doesn't scale well when viewing an option on a long length dropdown (2
 no layers makes the base dropdown look weird but should probably not allow less than 1 layer
 layer shadows need to be fixed
 (Description) text size should be auto
+updateOtherCustomCssProperty keeps getting called when using range and mouse up outside of it
 
 overflow
 try with button tags
