@@ -1,5 +1,6 @@
 import { AssembledModalOpenAnimationValues, AssembledModalCloseAnimationValues } from '../../../../../../../../interfaces/assembledAnimationValues';
 import { PARENT_SUBCOMPONENT_NAME } from '../../../../../../../../consts/baseSubcomponentNames.enum';
+import { SubcomponentProperties } from '../../../../../../../../interfaces/workshopComponent';
 import { animationTypeToFunctionality } from '../../animationToFunctionality';
 import { ComponentOptions } from 'vue';
 
@@ -12,11 +13,11 @@ import { ComponentOptions } from 'vue';
 export class AssembleAnimationValues {
 
   public static assembleOpenAnimationValues(componentPreviewComponent: ComponentOptions): AssembledModalOpenAnimationValues {
-    const { customFeatures } = componentPreviewComponent.component.subcomponents[PARENT_SUBCOMPONENT_NAME.BASE];
+    const { customFeatures } = componentPreviewComponent.component.subcomponents[PARENT_SUBCOMPONENT_NAME.BASE] as SubcomponentProperties;
     return {
-      modalOpenAnimation: animationTypeToFunctionality[customFeatures.animations.open.type],
-      animationDuration: customFeatures.animations.open.duration,
-      animationDelay: customFeatures.animations.open.delay,
+      modalOpenAnimation: animationTypeToFunctionality[customFeatures.animations.display.open.type],
+      animationDuration: customFeatures.animations.display.open.duration,
+      animationDelay: customFeatures.animations.display.open.delay,
       backdropProperties: customFeatures.backdrop,
       modalElement: componentPreviewComponent.$refs.baseComponent.$refs.componentPreview,
       modalOverlayElement: componentPreviewComponent.$refs.baseComponent.$refs.componentPreviewOverlay,
@@ -25,10 +26,10 @@ export class AssembleAnimationValues {
   }
 
   public static assembleClosetAnimationValues(componentPreviewComponent: ComponentOptions, closeAnimationCallback: () => void): AssembledModalCloseAnimationValues {
-    const { customFeatures } = componentPreviewComponent.component.subcomponents[PARENT_SUBCOMPONENT_NAME.BASE];
+    const { customFeatures } = componentPreviewComponent.component.subcomponents[PARENT_SUBCOMPONENT_NAME.BASE] as SubcomponentProperties;
     return {
-      modalCloseAnimation: animationTypeToFunctionality[customFeatures.animations.close.type],
-      animationDuration: customFeatures.animations.close.duration,
+      modalCloseAnimation: animationTypeToFunctionality[customFeatures.animations.display.close.type],
+      animationDuration: customFeatures.animations.display.close.duration,
       setOptionToDefaultCallback: closeAnimationCallback,
       modalContainerElement: componentPreviewComponent.$refs.componentPreviewContainer,
       backdropProperties: customFeatures.backdrop,

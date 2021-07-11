@@ -2,7 +2,7 @@ import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_
 import { subcomponentAndOverlayElementIdsState } from '../../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import { subcomponentSelectModeState } from '../../toolbar/options/subcomponentSelectMode/subcomponentSelectModeState';
 import { UseSubcomponentPreviewEventHandlers } from '../../../../../interfaces/useSubcomponentPreviewEventHandlers';
-import { CustomCss, SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
@@ -37,18 +37,20 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
           && (animationState.getIsModeToggleAnimationInProgressState() || animationState.getIsAnimationPreviewInProgressState()))
   }
 
-  function unsetTransitionProperty(customCss: CustomCss, mouseEventTransitionDuration: string): void {
+  function unsetTransitionProperty(customCss: CustomCss, customFeatures: CustomFeatures): void {
+    const transitionDuration = customFeatures?.animations?.stationary?.fade?.duration;
+    if (!transitionDuration) return;
     setTimeout(() => {
       customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition = CSS_PROPERTY_VALUES.UNSET;
-    }, Number.parseFloat(mouseEventTransitionDuration) * 1000);
+    }, Number.parseFloat(transitionDuration) * 1000);
   }
 
-  function buildTransitionCssProperty(mouseEventTransitionDuration: string): string {
-    return `all ${mouseEventTransitionDuration} ease-out`;
+  function buildTransitionCssProperty(customFeatures: string): string {
+    return `all ${customFeatures} ease-out`;
   }
 
-  function setTransitionCssProperty(customCss: CustomCss, mouseEventTransitionDuration: string): void {
-    const transition = mouseEventTransitionDuration ? buildTransitionCssProperty(mouseEventTransitionDuration) : CSS_PROPERTY_VALUES.UNSET;
+  function setTransitionCssProperty(customCss: CustomCss, transitionDuration: string): void {
+    const transition = transitionDuration ? buildTransitionCssProperty(transitionDuration) : CSS_PROPERTY_VALUES.UNSET;
     customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition = transition;
   }
 
@@ -58,27 +60,27 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     subcomponentProperties.overwrittenCustomCssObj = { [CSS_PSEUDO_CLASSES.DEFAULT]: newDefaultProperties };
   }
 
-  function setMouseEnterProperties(customCss: CustomCss, mouseEventTransitionDuration: string): void {
-    setTransitionCssProperty(customCss, mouseEventTransitionDuration);
+  function setMouseEnterProperties(customCss: CustomCss, customFeatures: CustomFeatures): void {
+    if (customFeatures?.animations?.stationary?.fade) setTransitionCssProperty(customCss, customFeatures.animations.stationary.fade.duration);
     setCustomCss(customCss, CSS_PSEUDO_CLASSES.HOVER);
   }
 
   const subcomponentMouseEnter = (): void => {
     if (shoudPreventMouseEvent()) return;
-    const { customCss, mouseEventTransitionDuration, activeCssPseudoClass,
+    const { customCss, customFeatures, activeCssPseudoClass,
       nameOfAnotherSubcomponetToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
     // even.isTrusted means that the event was triggered by user's mouse instead of dispatch
     if (isTriggeredByAnotherSubcomponent && event.isTrusted) return;
     if (nameOfAnotherSubcomponetToTrigger) triggerAnotherSubcomponentMouseEvent(nameOfAnotherSubcomponetToTrigger, event.type);
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT) {
       setDefaultUnsetButtonStatesForColorInputs(customCss);
-      setMouseEnterProperties(customCss, mouseEventTransitionDuration);
+      setMouseEnterProperties(customCss, customFeatures);
     }
   }
 
   const subcomponentMouseLeave = (): void => {
     if (shoudPreventMouseEvent()) return;
-    const { activeCssPseudoClass, customCss, mouseEventTransitionDuration,
+    const { activeCssPseudoClass, customCss, customFeatures,
       nameOfAnotherSubcomponetToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
     if (isTriggeredByAnotherSubcomponent && event.isTrusted) return;
     if (nameOfAnotherSubcomponetToTrigger) triggerAnotherSubcomponentMouseEvent(nameOfAnotherSubcomponetToTrigger, event.type);
@@ -86,19 +88,19 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
       delete subcomponentProperties.overwrittenCustomCssObj;
     }
     isUnsetButtonDisplayedForColorInputs = {};
-    if (mouseEventTransitionDuration) unsetTransitionProperty(customCss, mouseEventTransitionDuration); 
+    if (customFeatures) unsetTransitionProperty(customCss, customFeatures); 
   }
 
   const subcomponentMouseDown = (): void => {
     if (shoudPreventMouseEvent()) return;
-    const { customCss, mouseEventTransitionDuration, activeCssPseudoClass,
+    const { customCss, customFeatures, activeCssPseudoClass,
         nameOfAnotherSubcomponetToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
     if (isTriggeredByAnotherSubcomponent && event.isTrusted) return;
     if (nameOfAnotherSubcomponetToTrigger) triggerAnotherSubcomponentMouseEvent(nameOfAnotherSubcomponetToTrigger, event.type);
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT) {
       // this is a bug fix for when the user clicks a button without entering it (after subcomponent select mode)
       if (!subcomponentProperties.overwrittenCustomCssObj) {
-        setMouseEnterProperties(customCss, mouseEventTransitionDuration);
+        setMouseEnterProperties(customCss, customFeatures);
       }
       overwrittenDefaultPropertiesByClick = { hasBeenSet: true, css: { ...subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] } };
       setCustomCss(customCss, CSS_PSEUDO_CLASSES.CLICK);

@@ -28,13 +28,16 @@ export default class SubcomponentSpecificSettingsState {
       subcomponentSpecificSettings: SubcomponentSpecificSettings, settingsOptions: any): void {
     if (subcomponentSpecificSettings && subcomponentSpecificSettings[optionType]) {
       settingsOptions.forEach((setting) => {
+        // WORK2: this should be option name
         const cssPropertyName = setting.spec.partialCss
-          ? SubcomponentSpecificSettingsUtils.generatePartialCssPropertyName(setting.spec.cssProperty, setting.spec.partialCss.position) : setting.spec.cssProperty;
+          ? SubcomponentSpecificSettingsUtils.generatePartialCssPropertyName(setting.spec.cssProperty, setting.spec.partialCss.position) : (setting.spec.cssProperty || setting.spec.name);
         if (subcomponentSpecificSettings[optionType][cssPropertyName]) {
           const { scale, updateOtherCssProperties } = subcomponentSpecificSettings[optionType][cssPropertyName];
-          const overwrittenSettingDefaultValues: OverwrittenSettingDefaultValues = { spec: setting.spec, originalValues: { name: 'scale', value: setting.spec.scale }};        
-          this.overwrittenSettingsDefaultValues.push(overwrittenSettingDefaultValues);
-          setting.spec.scale = scale;
+          if (scale) {
+            const overwrittenSettingDefaultValues: OverwrittenSettingDefaultValues = { spec: setting.spec, originalValues: { name: 'scale', value: setting.spec.scale }};
+            this.overwrittenSettingsDefaultValues.push(overwrittenSettingDefaultValues);
+            setting.spec.scale = scale;
+          }
           if (updateOtherCssProperties) setting.spec.updateOtherCssProperties = updateOtherCssProperties;
         }
       });

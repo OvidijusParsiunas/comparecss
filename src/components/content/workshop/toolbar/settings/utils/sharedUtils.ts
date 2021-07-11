@@ -45,7 +45,8 @@ export default class SharedUtils {
     return SharedUtils.traverseCustomFeatureValueObject(customFeatureObjectKeys.slice(1, customFeatureObjectKeys.length), customFeatures);
   }
 
-  public static setCustomFeatureValue(customFeatureObjectKeys: string[], subcomponentProperties: SubcomponentProperties, newValue: unknown): void {
+  public static setCustomFeatureValue(customFeatureObjectKeys: string[], subcomponentProperties: SubcomponentProperties|CustomFeatures,
+      newValue: unknown): void {
     const keys = customFeatureObjectKeys;
     SharedUtils.traverseCustomFeatureValueObject(keys.slice(1, keys.length), subcomponentProperties[keys[0]], newValue);
   }

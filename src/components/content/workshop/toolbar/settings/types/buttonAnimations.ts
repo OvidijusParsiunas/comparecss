@@ -26,5 +26,18 @@ export default {
       //   }
       // },
     },
+    {
+      type: SETTINGS_TYPES.RANGE,
+      spec: {
+        name: 'Fade',
+        default: 0,
+        scale: [0, 12],
+        smoothingDivisible: 20,
+        customFeatureObjectKeys: ['customFeatures', 'animations', 'stationary', 'fade', 'duration'],
+        postfix: 's',
+        // WORK2: is this needed
+        updateOtherCssProperties: null,
+      },
+    },
   ]
 };

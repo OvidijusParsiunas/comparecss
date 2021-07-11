@@ -7,8 +7,8 @@ import { PARENT_SUBCOMPONENT_NAME } from '../../../../../../../../consts/baseSub
 import { SubcomponentProperties } from '../../../../../../../../interfaces/workshopComponent';
 import { animationTypeToFunctionality } from '../../../animations/animationToFunctionality';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
+import { Animations, CloseAnimation } from '../../../../../../../../interfaces/animations';
 import { TEXT_STYLES } from '../../../../../../../../consts/componentStyles.enum';
-import { CloseAnimation } from '../../../../../../../../interfaces/animations';
 import AnimationUtils from '../../../animations/utils/animationUtils';
 import { SET_METHODS } from '../../../animations/consts/sharedConsts';
 import { fulPreviewModeState } from '../../fullPreviewModeState';
@@ -43,7 +43,8 @@ export default class Dismiss {
   }
 
   private static close(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement): WorkshopEventCallbackReturn {
-    const { type, duration } = componentPreviewComponent.component[PARENT_SUBCOMPONENT_NAME.BASE].customFeatures.animations.close;
+    const { type, duration } = (componentPreviewComponent.component[PARENT_SUBCOMPONENT_NAME.BASE].customFeatures.animations as Animations)
+      .display.close;
     const closeAnimation = animationTypeToFunctionality[type] as CloseAnimation;
     const animationDuration = duration;
     animationState.setIsAnimationPreviewInProgressState(true);

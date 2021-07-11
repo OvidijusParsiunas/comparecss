@@ -76,6 +76,7 @@ import { CSS_PROPERTY_VALUES } from '../../../../consts/cssPropertyValues.enum';
 import { TemporaryComponent } from '../../../../interfaces/temporaryComponent';
 import PreviewCloseAnimation from './utils/animations/previewAnimations/close';
 import PreviewOpenAnimation from './utils/animations/previewAnimations/open';
+import { CustomFeatures } from '../../../../interfaces/workshopComponent';
 import { COMPONENT_TYPES } from '../../../../consts/componentTypes.enum';
 import { DEFAULT_STYLES } from '../../../../consts/componentStyles.enum';
 import AnimationUtils from './utils/animations/utils/animationUtils';
@@ -179,11 +180,13 @@ export default {
       if (isOpenAnimation) {
         PreviewOpenAnimation.start(
           animationTypeToFunctionality[animationType] as OpenAnimation,
-          this.component.subcomponents[PARENT_SUBCOMPONENT_NAME.BASE].customFeatures.animations.open.duration, this.$refs.baseComponent.$refs.componentPreview);
+          (this.component.subcomponents[PARENT_SUBCOMPONENT_NAME.BASE].customFeatures as CustomFeatures).animations.display.open.duration,
+          this.$refs.baseComponent.$refs.componentPreview);
       } else {
         PreviewCloseAnimation.start(
           animationTypeToFunctionality[animationType] as CloseAnimation,
-          this.component.subcomponents[PARENT_SUBCOMPONENT_NAME.BASE].customFeatures.animations.close.duration, this.$refs.baseComponent.$refs.componentPreview);
+          (this.component.subcomponents[PARENT_SUBCOMPONENT_NAME.BASE].customFeatures as CustomFeatures).animations.display.close.duration,
+          this.$refs.baseComponent.$refs.componentPreview);
       }
     },
     stopAnimationPreview(): void {

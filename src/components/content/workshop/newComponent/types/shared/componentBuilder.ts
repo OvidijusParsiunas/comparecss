@@ -1,4 +1,4 @@
-import { AlignedLayerSection, AutoSize, SubcomponentProperties, Image, Text, WorkshopComponent, Animations, ComponentCenteringInParent, BackdropProperties, Subcomponents } from '../../../../../../interfaces/workshopComponent';
+import { AlignedLayerSection, AutoSize, SubcomponentProperties, Image, Text, WorkshopComponent, ComponentCenteringInParent, BackdropProperties, Subcomponents } from '../../../../../../interfaces/workshopComponent';
 import { DropdownOptionsDisplayStatusUtils } from '../../../utils/dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { NewComponentStyleProperties } from '../../../../../../consts/newComponentStyleProperties';
@@ -9,6 +9,7 @@ import { WorkshopComponentCss } from '../../../../../../interfaces/workshopCompo
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
 import { CloseTriggers } from '../../../../../../interfaces/closeTriggers';
+import { Animations } from '../../../../../../interfaces/animations';
 import { defaultImage } from './images/default';
 
 export class ComponentBuilder {
@@ -40,16 +41,18 @@ export class ComponentBuilder {
     }
   }
 
-  protected static createDefaultAnimationsProperties(closeAnimationType = GENERAL_ANIMATION_CLOSE_TYPES.FADE_OUT,
+  protected static createDisplayAnimationsProperties(closeAnimationType = GENERAL_ANIMATION_CLOSE_TYPES.FADE_OUT,
       openAnimationType?: MODAL_ANIMATION_OPEN_TYPES.FADE_IN): Animations {
     const animations: Animations = {
-      close: {
-        type: closeAnimationType,
-        duration: '0.25s',
-      },
+      display: {
+        close: {
+          type: closeAnimationType,
+          duration: '0.25s',
+        },
+      }
     };
     if (openAnimationType) {
-      animations.open = {
+      animations.display.open = {
         type: openAnimationType,
         duration: '0.3s',
         delay: '0.15s',
@@ -58,14 +61,24 @@ export class ComponentBuilder {
     return animations;
   }
 
-  protected static createDefaultComponentCenteringInParent(): ComponentCenteringInParent {
+  protected static createStaticFadeAnimation(duration = '0.25s'): Animations {
+    return {
+      stationary: {
+        fade: {
+          duration,
+        }
+      }
+    };
+  }
+
+  protected static createComponentCenteringInParent(): ComponentCenteringInParent {
     return {
       vertical: true,
       horizontal: true,
     };
   }
   
-  protected static createDefaultBackdropProperties(): BackdropProperties {
+  protected static createBackdropProperties(): BackdropProperties {
     return {
       color: '#6d6d6dcc',
       alpha: 0.8,
@@ -79,7 +92,7 @@ export class ComponentBuilder {
     };
   }
   
-  protected static createDefaultComponentCloseTriggerProperties(): CloseTriggers {
+  protected static createComponentCloseTriggerProperties(): CloseTriggers {
     return {
       enter: false,
       escape: false,

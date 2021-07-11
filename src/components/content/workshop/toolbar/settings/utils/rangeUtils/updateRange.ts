@@ -32,9 +32,13 @@ export class UpdateRange {
     return realRangeValue;
   }
 
+  public static getCustomFeatureStringRangeValue(customFeatureObjectKeys: string[], subcomponentProperties: SubcomponentProperties): string {
+    return SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]) as string;
+  }
+
   public static getCustomFeatureRangeNumberValue(spec: any, subcomponentProperties: SubcomponentProperties): number {
     const { customFeatureObjectKeys, smoothingDivisible } = spec;
-    const customFeatureValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]);
+    const customFeatureValue = UpdateRange.getCustomFeatureStringRangeValue(customFeatureObjectKeys, subcomponentProperties);
     return UpdateRange.parseString(customFeatureValue as string, smoothingDivisible);
   }
 }

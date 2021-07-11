@@ -1,4 +1,3 @@
-import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES, MODAL_ANIMATION_CLOSE_TYPES } from '../consts/animationTypes.enum';
 import { InterconnectedSetting, SubcomponentSpecificSettings } from './subcomponentSpecificSettings';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
@@ -12,6 +11,7 @@ import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { TempCustomCss } from './tempCustomCss';
 import { CloseTriggers } from './closeTriggers';
+import { Animations } from './animations';
 
 export interface ChildCss {
   elementTag: string;
@@ -33,11 +33,13 @@ export type CustomCss = {
 }
 
 export interface UpdateOtherCssProperties {
-  cssProperty: keyof WorkshopComponentCss;
-  customCss: CustomCss;
-  customFeatures: CustomFeatures;
-  isScaleNegativeToPositive: boolean;
+  customCss?: CustomCss;
+  cssProperty?: keyof WorkshopComponentCss;
+  customFeatures?: CustomFeatures;
+  customFeatureKeys?: string[];
+  isScaleNegativeToPositive?: boolean;
   divisor?: number;
+  postfix?: string;
 }
 
 export interface PreventPermanentEditByOtherSettings {
@@ -59,18 +61,6 @@ export interface BackdropProperties {
 export interface ComponentCenteringInParent {
   vertical: boolean;
   horizontal: boolean;
-}
-
-export interface Animations {
-  open?: {
-    type: MODAL_ANIMATION_OPEN_TYPES;
-    duration: string;
-    delay: string;
-  };
-  close: {
-    type: MODAL_ANIMATION_CLOSE_TYPES | GENERAL_ANIMATION_CLOSE_TYPES;
-    duration: string;
-  };
 }
 
 export interface AutoSize {
@@ -130,7 +120,7 @@ export interface SubcomponentProperties {
   // this css is used in instances where partialCss has been overwritten by a single value, but a fraction of it
   // must be retained for use by settings - boxShadow (to note, this is mostly used by the app in runtime)
   auxiliaryPartialCss?: CustomCss;
-  // this is used to signify css that gets used within the app only and gets removed when exporting - should only be used on subcomponents that will have transition effects
+  // this is used to signify css that gets used within the app only and gets removed when exporting - (temporary or overwritten by custom features)
   tempCustomCss?: TempCustomCss;
   // this css is not configured by the user and comes along with the component
   inheritedCss?: WorkshopComponentCss;
@@ -142,9 +132,6 @@ export interface SubcomponentProperties {
   activeCssPseudoClass: CSS_PSEUDO_CLASSES;
   // the motivator for this is the fact that the first subcomponent css pseudo class should not be assumed to be the default one
   defaultCssPseudoClass: CSS_PSEUDO_CLASSES;
-  // this is used to add an animation effect when hovering or clicking a subcomponent to display their new custom css
-  // it is currently not being used during css export and instead added explicitly using inherited css files
-  mouseEventTransitionDuration?: string;
   // the reason why custom css is attached here is to not have to keep multiple unique settings for each and every subcomponent in memory all at once
   subcomponentSpecificSettings?: SubcomponentSpecificSettings;
   customFeatures?: CustomFeatures;

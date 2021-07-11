@@ -4,9 +4,10 @@ import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValu
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
+import { ComponentBuilder } from '../../shared/componentBuilder';
 import { textBase } from './base';
 
-class ButtonText {
+class ButtonText extends ComponentBuilder {
 
   public static setStyle(component: WorkshopComponent): void {
     component.style = TEXT_STYLES.BUTTON;
@@ -43,9 +44,11 @@ class ButtonText {
     }
   }
   
-  private static overwriteAlignment(subcomponent: SubcomponentProperties): void {
+  private static overwriteCustomFeatures(subcomponent: SubcomponentProperties): void {
     subcomponent.customFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
     subcomponent.defaultCustomFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
+    subcomponent.customFeatures.animations = ComponentBuilder.createStaticFadeAnimation();
+    subcomponent.defaultCustomFeatures.animations = ComponentBuilder.createStaticFadeAnimation();
   }
 
   private static overwriteCustomCss(subcomponent: SubcomponentProperties): void {
@@ -55,14 +58,13 @@ class ButtonText {
 
   private static overwriteSubcomponentProperties(subcomponent: SubcomponentProperties): void {
     subcomponent.isTriggeredByAnotherSubcomponent = true;
-    subcomponent.mouseEventTransitionDuration = '0.25s';
     subcomponent.tempCustomCss = new Set(['transition']);
   }
 
   public static overwriteBase(component: WorkshopComponent): void {
     const baseSubcomponent = component.subcomponents[component.coreSubcomponentNames.base];
     ButtonText.overwriteCustomCss(baseSubcomponent);
-    ButtonText.overwriteAlignment(baseSubcomponent);
+    ButtonText.overwriteCustomFeatures(baseSubcomponent);
     ButtonText.overwriteSubcomponentProperties(baseSubcomponent);
   }
 }

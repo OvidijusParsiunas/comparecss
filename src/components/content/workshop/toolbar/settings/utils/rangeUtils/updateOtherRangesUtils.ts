@@ -1,5 +1,5 @@
 import { subcomponentAndOverlayElementIdsState } from '../../../options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
-import { CustomCss, UpdateOtherCssProperties, SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, SubcomponentProperties, UpdateOtherCssProperties } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SettingPaths } from '../../../../../../../interfaces/settingPaths';
 import { optionToSettings } from '../../types/optionToSettings';
@@ -17,7 +17,13 @@ export class UpdateOtherRangesUtils extends UpdateRange {
       isScaleNegativeToPositive && currentCssPropertyValue < 0 ? -newRangeValue : newRangeValue}px`;
   }
 
-  private static updateOtherCustomCssProperty(rangeValue: number, otherCssProperties: UpdateOtherCssProperties) {
+  private static updateOtherCustomFeatureValue(rangeValue: number|string, otherCssProperties: UpdateOtherCssProperties): void {
+    const { customFeatures, customFeatureKeys, postfix } = otherCssProperties;
+    const resultRangeValue = typeof rangeValue === 'string' ? rangeValue : `${rangeValue.toString()}${postfix}`;
+    SharedUtils.setCustomFeatureValue(customFeatureKeys, customFeatures, resultRangeValue);
+  }
+
+  private static updateOtherCustomCssProperty(rangeValue: number, otherCssProperties: UpdateOtherCssProperties): void {
     const { divisor = 1, cssProperty, customCss, customFeatures, isScaleNegativeToPositive } = otherCssProperties;
     const currentCssPropertyValue = Number.parseFloat(customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty] as string);
     const postDivisionRangeValue = rangeValue / divisor;
@@ -37,9 +43,18 @@ export class UpdateOtherRangesUtils extends UpdateRange {
     }
   }
 
-  public static updateOtherCustomCss(updateOtherCssProperties: UpdateOtherCssProperties[], rangeValue: number): void {
+  private static updateOtherCustomProperty(rangeValue: number|string, otherCssProperties: UpdateOtherCssProperties) {
+    const { cssProperty, customFeatureKeys } = otherCssProperties;
+    if (cssProperty) {
+      UpdateOtherRangesUtils.updateOtherCustomCssProperty(rangeValue as number, otherCssProperties);
+    } else if (customFeatureKeys) {
+      UpdateOtherRangesUtils.updateOtherCustomFeatureValue(rangeValue, otherCssProperties);
+    }
+  }
+
+  public static updateOtherSubcomponentRanges(updateOtherCssProperties: UpdateOtherCssProperties[], rangeValue: number|string): void {
     updateOtherCssProperties.forEach((otherCssProperties) => {
-      UpdateOtherRangesUtils.updateOtherCustomCssProperty(rangeValue, otherCssProperties);
+      UpdateOtherRangesUtils.updateOtherCustomProperty(rangeValue, otherCssProperties);
     });
   }
 
@@ -68,7 +83,7 @@ export class UpdateOtherRangesUtils extends UpdateRange {
     // if the current value is greater than scaleBoundaryValue, reduce its size to within the bounds
     if (Math.abs(currentValue) > scaleBoundaryValue) {
       const realRangeValue = UpdateRange.updateCustomCss(scaleBoundaryValue.toString(), settingSpec, subcomponentProperties);
-      if (settingSpec.updateOtherCssProperties) UpdateOtherRangesUtils.updateOtherCustomCss(
+      if (settingSpec.updateOtherCssProperties) UpdateOtherRangesUtils.updateOtherSubcomponentRanges(
         settingSpec.updateOtherCssProperties, realRangeValue);
     }
   }

@@ -31,7 +31,7 @@ class CardBase extends ComponentBuilder {
 
   private static createDefaultCustomFeatures(): CustomFeatures {
     return {
-      animations: ComponentBuilder.createDefaultAnimationsProperties(),
+      animations: ComponentBuilder.createDisplayAnimationsProperties(),
     };
   }
 

@@ -9,10 +9,10 @@ class ModalBase extends ComponentBuilder {
 
   private static createDefaultBaseCustomFeatures(): CustomFeatures {
     return {
-      componentCenteringInParent: ComponentBuilder.createDefaultComponentCenteringInParent(),
-      backdrop: ComponentBuilder.createDefaultBackdropProperties(),
-      animations: ComponentBuilder.createDefaultAnimationsProperties(GENERAL_ANIMATION_CLOSE_TYPES.FADE_OUT, MODAL_ANIMATION_OPEN_TYPES.FADE_IN),
-      closeTriggers: ComponentBuilder.createDefaultComponentCloseTriggerProperties(),
+      componentCenteringInParent: ComponentBuilder.createComponentCenteringInParent(),
+      backdrop: ComponentBuilder.createBackdropProperties(),
+      animations: ComponentBuilder.createDisplayAnimationsProperties(GENERAL_ANIMATION_CLOSE_TYPES.FADE_OUT, MODAL_ANIMATION_OPEN_TYPES.FADE_IN),
+      closeTriggers: ComponentBuilder.createComponentCloseTriggerProperties(),
     };
   }
 

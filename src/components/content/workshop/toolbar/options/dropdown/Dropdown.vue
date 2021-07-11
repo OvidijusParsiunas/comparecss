@@ -230,6 +230,7 @@ export default {
     },
     displayChildDropdownMenu(parentOptionElement: HTMLElement, parentDropdownMenuIndex: number, parentDropdownOptionIndex: number,
         childDropdownOptions: NestedDropdownStructure | DropdownOptionDisplayStatusRef): void {
+      if (!parentOptionElement) return;
       if (!childDropdownOptions[DROPDOWN_OPTION_DISPLAY_STATUS_REF]
           || (Object.keys(childDropdownOptions).length > 1 && (childDropdownOptions[DROPDOWN_OPTION_DISPLAY_STATUS_REF] as DropdownOptionDisplayStatus).isEnabled)) {
         this.dropdowns.push(childDropdownOptions);

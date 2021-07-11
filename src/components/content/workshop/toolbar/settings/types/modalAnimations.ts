@@ -38,7 +38,7 @@ const openAnimationDurationSpec = {
   default: 0,
   scale: [0, 40],
   smoothingDivisible: 20,
-  customFeatureObjectKeys: ['customFeatures', 'animations', 'open', 'duration'],
+  customFeatureObjectKeys: ['customFeatures', 'animations', 'display', 'open', 'duration'],
   postfix: 's'
 };
 
@@ -47,7 +47,7 @@ const openAnimationDelaySpec = {
   default: 0,
   scale: [0, 40],
   smoothingDivisible: 20,
-  customFeatureObjectKeys: ['customFeatures', 'animations', 'open', 'delay'],
+  customFeatureObjectKeys: ['customFeatures', 'animations', 'display', 'open', 'delay'],
   postfix: 's',
 };
 
@@ -60,7 +60,7 @@ export default {
         name: 'Entrance',
         options: { [MODAL_ANIMATION_OPEN_TYPES.FADE_IN]: null, [MODAL_ANIMATION_OPEN_TYPES.SLIDE_IN]: null },
         activeOptionPropertyKeyName: 'type',
-        customFeatureObjectKeys: ['customFeatures', 'animations', 'open', 'type'],
+        customFeatureObjectKeys: ['customFeatures', 'animations', 'display', 'open', 'type'],
         ...generateMouseEventCallbacks(true),
       },
     },
@@ -70,7 +70,7 @@ export default {
         name: 'Exit',
         options: { [MODAL_ANIMATION_CLOSE_TYPES.FADE_OUT]: null, [MODAL_ANIMATION_CLOSE_TYPES.SLIDE_OUT]: null },
         activeOptionPropertyKeyName: 'type',
-        customFeatureObjectKeys: ['customFeatures', 'animations', 'close', 'type'],
+        customFeatureObjectKeys: ['customFeatures', 'animations', 'display', 'close', 'type'],
         ...generateMouseEventCallbacks(false),
       },
     },
@@ -91,7 +91,7 @@ export default {
         default: 0,
         scale: [0, 40],
         smoothingDivisible: 20,
-        customFeatureObjectKeys: ['customFeatures', 'animations', 'close', 'duration'],
+        customFeatureObjectKeys: ['customFeatures', 'animations', 'display', 'close', 'duration'],
         postfix: 's',
       },
     },

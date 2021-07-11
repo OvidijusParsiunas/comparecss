@@ -5,8 +5,8 @@ import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValu
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { ButtonBaseSpecificSettings } from '../settings/buttonBaseSpecificSettings';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
-import { buttonSpecificSettings } from '../settings/buttonSpecificSettings';
 import { inheritedButtonCss } from '../inheritedCss/inheritedCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
@@ -51,6 +51,7 @@ class ButtonBase extends ComponentBuilder {
     return {
       lastSelectedCssValues: ComponentBuilder.createLastSelectedCssLeftValue(),
       alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
+      animations: ComponentBuilder.createStaticFadeAnimation(),
     };
   }
 
@@ -61,10 +62,8 @@ class ButtonBase extends ComponentBuilder {
       defaultCss: ButtonBase.createDefaultBaseCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      mouseEventTransitionDuration: '0.25s',
       tempCustomCss: new Set(['transition']),
       inheritedCss: inheritedButtonCss,
-      subcomponentSpecificSettings: buttonSpecificSettings,
       customFeatures: ButtonBase.createDefaultButtonBaseCustomFeatures(),
       defaultCustomFeatures: ButtonBase.createDefaultButtonBaseCustomFeatures(),
     };
@@ -83,6 +82,7 @@ export const buttonBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const buttonBaseComponent = ComponentBuilder.createBaseComponent(
       { componentType: COMPONENT_TYPES.BUTTON, baseName }, ButtonBase.createBaseSubcomponent);
+    ButtonBaseSpecificSettings.set(buttonBaseComponent);
     ButtonBase.cleanBaseDropdownIfNotNested(buttonBaseComponent, baseName);
     return buttonBaseComponent;
   },
