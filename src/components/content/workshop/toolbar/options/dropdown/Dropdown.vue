@@ -271,6 +271,7 @@ export default {
       this.changeOptionArrowColor(this.lastHoveredOptionElement, '#6d6d6d');
     },
     setNewHighligtedOptionStyle(dropdowns: NestedDropdownStructure[], optionElementToBeHighlighted: HTMLElement, dropdownMenuIndex: number): void {
+      if (!optionElementToBeHighlighted) return;
       const highlightedElementBackgroundClass = dropdownMenuIndex !== undefined && dropdowns[dropdownMenuIndex]
         && this.isOptionInactive(dropdowns, optionElementToBeHighlighted, dropdownMenuIndex)
         ? CUSTOM_DROPDOWN_OPTION_CLASSES.INACTIVE : CUSTOM_DROPDOWN_OPTION_CLASSES.ACTIVE;

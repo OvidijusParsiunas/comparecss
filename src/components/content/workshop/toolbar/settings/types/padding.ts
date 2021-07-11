@@ -1,4 +1,5 @@
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
+import { SETTING_NAMES } from '../../../../../../consts/settingNames.enum';
 
 // create an optional interface
 export default {
@@ -6,7 +7,7 @@ export default {
     { 
       type: SETTINGS_TYPES.RANGE,
       spec: {
-        name: 'Left',
+        name: SETTING_NAMES.LEFT,
         default: 0,
         scale: [0, 250],
         smoothingDivisible: 1,

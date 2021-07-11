@@ -1,4 +1,5 @@
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
+import { SETTING_NAMES } from '../../../../../../consts/settingNames.enum';
 
 // create an optional interface
 export default {
@@ -6,7 +7,7 @@ export default {
     { 
       type: SETTINGS_TYPES.RANGE,
       spec: {
-        name: 'Y-Offset',
+        name: SETTING_NAMES.Y_OFFSET,
         default: 0,
         scale: [-50, 50],
         smoothingDivisible: 1,

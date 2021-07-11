@@ -2,6 +2,7 @@ import { UpdateOtherCssProperties, SubcomponentProperties, WorkshopComponent } f
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SubcomponentSpecificSettings } from '../../../../../../../interfaces/subcomponentSpecificSettings';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
+import { SETTING_NAMES } from '../../../../../../../consts/settingNames.enum';
 
 export class ButtonBaseSpecificSettings {
 
@@ -17,7 +18,8 @@ export class ButtonBaseSpecificSettings {
   private static setInterconnectedSettings(component: WorkshopComponent): void {
     const baseSubcomponent = component.subcomponents[component.coreSubcomponentNames.base];
     component.interconnectedSettings = [{
-      updateOtherCssProperties: baseSubcomponent.subcomponentSpecificSettings[WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS].Fade.updateOtherCssProperties,
+      updateOtherCssProperties: baseSubcomponent.subcomponentSpecificSettings[WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS]
+        [SETTING_NAMES.FADE].updateOtherCssProperties,
       dependantChildrenTypes: new Set([SUBCOMPONENT_TYPES.TEXT]),
       updateOtherCssPropertiesObjGenerator: ButtonBaseSpecificSettings.getLeftPositionProperties,
     }];
@@ -26,11 +28,11 @@ export class ButtonBaseSpecificSettings {
   private static getButtonBaseSpecificSettings(): SubcomponentSpecificSettings {
     return {
       [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE]: {
-        'width': { scale: [0, 250] },
-        'height': { scale: [0, 250] },
+        [SETTING_NAMES.WIDTH]: { scale: [0, 250] },
+        [SETTING_NAMES.HEIGHT]: { scale: [0, 250] },
       },
       [WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS]: {
-        'Fade': {
+        [SETTING_NAMES.FADE]: {
           updateOtherCssProperties: [],
         },
       },

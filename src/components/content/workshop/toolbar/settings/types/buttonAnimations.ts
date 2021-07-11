@@ -1,5 +1,6 @@
 import { JAVASCRIPT_CLASSES } from '../../../../../../consts/javascriptClasses.enum';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
+import { SETTING_NAMES } from '../../../../../../consts/settingNames.enum';
 
 // create an optional interface
 export default {
@@ -29,14 +30,12 @@ export default {
     {
       type: SETTINGS_TYPES.RANGE,
       spec: {
-        name: 'Fade',
+        name: SETTING_NAMES.FADE,
         default: 0,
         scale: [0, 12],
         smoothingDivisible: 20,
         customFeatureObjectKeys: ['customFeatures', 'animations', 'stationary', 'fade', 'duration'],
         postfix: 's',
-        // WORK2: is this needed
-        updateOtherCssProperties: null,
       },
     },
   ]
