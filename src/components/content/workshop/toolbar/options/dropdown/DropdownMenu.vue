@@ -1,8 +1,11 @@
 <template>
-  <div ref="dropdownMenu" class="dropdown-menu custom-dropdown-menu" :class="DROPDOWN_OPTION_MARKER" :style="BROWSER_SPECIFIC_DROPDOWN_MENU_STYLE">
+  <div ref="dropdownMenu" v-if="isMenuBeDisplayed(dropdownOptions)"
+    :style="BROWSER_SPECIFIC_DROPDOWN_MENU_STYLE"
+    class="dropdown-menu custom-dropdown-menu"
+    :class="DROPDOWN_OPTION_MARKER">
     <a v-for="(innerDropdownOptions, optionName, optionIndex) in dropdownOptions" :key="optionName"
       class="dropdown-item custom-dropdown-item"
-      :style="{ color: getDefaultTextColor(innerDropdownOptions), display: getOptionDisplay(optionName) }"
+      :style="{ color: getDefaultTextColor(innerDropdownOptions), display: getOptionDisplayValue(optionName) }"
       :class="DROPDOWN_OPTION_MARKER"
       @mouseenter="mouseEnter(innerDropdownOptions, optionIndex)"
       @mouseleave="mouseLeave">
@@ -30,9 +33,6 @@ interface Consts {
   DROPDOWN_OPTION_DISPLAY_STATUS_REF: string;
   BROWSER_SPECIFIC_DROPDOWN_MENU_STYLE: WorkshopComponentCss;
   PASSIVE_FONT_AWESOME_COLOR: FONT_AWESOME_COLORS,
-  getOptionDisplay: (optionName: string) => string;
-  getDefaultTextColor: (innerDropdownOptions: NestedDropdownStructure | DropdownOptionDisplayStatusRef) => string;
-  isArrowDisplayed: (innerDropdownOptions: NestedDropdownStructure | DropdownOptionDisplayStatusRef) => boolean;
 }
 
 interface Data {
@@ -46,17 +46,6 @@ export default {
       DROPDOWN_OPTION_DISPLAY_STATUS_REF,
       BROWSER_SPECIFIC_DROPDOWN_MENU_STYLE: { paddingBottom: BrowserType.isFirefox() ? '1px !important' : '2px !important' },
       PASSIVE_FONT_AWESOME_COLOR: FONT_AWESOME_COLORS.PASSIVE,
-      getOptionDisplay(optionName: string): string {
-        return optionName === DROPDOWN_OPTION_DISPLAY_STATUS_REF ? 'none !important' : '';
-      },
-      getDefaultTextColor(innerDropdownOptions: NestedDropdownStructure | DropdownOptionDisplayStatusRef): string {
-        return !innerDropdownOptions[DROPDOWN_OPTION_DISPLAY_STATUS_REF] || (innerDropdownOptions[DROPDOWN_OPTION_DISPLAY_STATUS_REF] as DropdownOptionDisplayStatus).isEnabled
-          ? 'black' : 'grey';
-      },
-      isArrowDisplayed(innerDropdownOptions: NestedDropdownStructure | DropdownOptionDisplayStatusRef): boolean {
-        return !innerDropdownOptions[DROPDOWN_OPTION_DISPLAY_STATUS_REF]
-          || ((innerDropdownOptions[DROPDOWN_OPTION_DISPLAY_STATUS_REF] as DropdownOptionDisplayStatus).isEnabled && Object.keys(innerDropdownOptions).length > 1);
-      },
     };
   },
   data: (): Data => ({
@@ -67,13 +56,30 @@ export default {
     this.isFirstOptionNotDisplayed = optionNames[0] === DROPDOWN_OPTION_DISPLAY_STATUS_REF;
   },
   methods: {
+    isMenuBeDisplayed(dropdownOptions: NestedDropdownStructure): boolean {
+      return Object.keys(dropdownOptions).length > 0;
+    },
+    getDefaultTextColor(innerDropdownOptions: NestedDropdownStructure | DropdownOptionDisplayStatusRef): string {
+      return !innerDropdownOptions[DROPDOWN_OPTION_DISPLAY_STATUS_REF] || (innerDropdownOptions[DROPDOWN_OPTION_DISPLAY_STATUS_REF] as DropdownOptionDisplayStatus).isEnabled
+        ? 'black' : 'grey';
+    },
+    getOptionDisplayValue(optionName: string): string {
+        return optionName === DROPDOWN_OPTION_DISPLAY_STATUS_REF ? 'none !important' : '';
+    },
     mouseEnter(innerDropdownOptions: NestedDropdownStructure, optionIndex: number): void {
       if (this.isFirstOptionNotDisplayed) optionIndex -= 1;
       this.$emit('mouse-enter-option', [innerDropdownOptions, this.nestedDropdownIndex, optionIndex] as OptionMouseEnter);
     },
     mouseLeave(): void {
       this.$emit('mouse-leave-option', event.target as OptionMouseLeave);
-    }
+    },
+    isArrowDisplayed(innerDropdownOptions: NestedDropdownStructure | DropdownOptionDisplayStatusRef): boolean {
+      if (innerDropdownOptions[DROPDOWN_OPTION_DISPLAY_STATUS_REF]) {
+        return (innerDropdownOptions[DROPDOWN_OPTION_DISPLAY_STATUS_REF] as DropdownOptionDisplayStatus).isEnabled
+          && Object.keys(innerDropdownOptions).length > 1;
+      }
+      return Object.keys(innerDropdownOptions).length > 0;
+    },
   },
   props: {
     dropdownOptions: Object,

@@ -11,7 +11,6 @@ card margin
 think about computed property solution
 button transition animation should be optional
 something doesn't scale well when viewing an option on a long length dropdown (20)
-no layers makes the base dropdown look weird but should probably not allow less than 1 layer
 
 overflow
 try with button tags
@@ -30,7 +29,6 @@ have a builder for contents within the settings
 maybe each equal section should be selectable
 consider making alert and button into a separately generated compontes in component preview as their contents shake when size is changed in firefox
 when changing the range and clicking the right mouse button causes the popover to disappear
-importing existing subcomponent will also need to offer an option from the app defaults
 
 UX:
   which expanded modal preview toggle button highlighted style is more preferable, the chromium or firefox one
@@ -42,6 +40,7 @@ UX:
   see if the subcomponent add and subcomponent remove hover and active css is ok
   check if position option in the modal is ok to use
 
+importing existing subcomponent will also need to offer an option from the app defaults
 update the range using the scroll wheel
 ability to group the components
 option to see what the actual css looks like and to edit it

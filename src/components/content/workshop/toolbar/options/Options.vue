@@ -149,7 +149,6 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToo
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
 import ImportComponentModeToggleUtils from './importComponent/modeUtils/importComponentModeToggle';
 import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFullPreviewModeEvent';
-import { ComponentManipulation } from '../../utils/componentManipulation/componentManipulation';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../consts/componentStyles.enum';
 import { PARENT_SUBCOMPONENT_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
