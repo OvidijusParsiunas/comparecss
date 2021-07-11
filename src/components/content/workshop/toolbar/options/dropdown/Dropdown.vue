@@ -240,7 +240,7 @@ export default {
         const topStyleValueParsed = Number.parseInt(topStyleValueRaw.substring(startOfLeftPropertyValueNumber, topStyleValueRaw.length)) || 0;
         const leftStyleValueParsed = Number.parseInt(leftStyleValueRaw) || 0;
         const currentDropdownMenuWidth = dropdownMenuElement.offsetWidth;
-        const optionHeight = parentOptionElement.offsetHeight;
+        const optionHeight = Number.parseFloat(window.getComputedStyle(parentOptionElement).height);
         setTimeout(() => {
           const newChildDropdownMenuElemIndex = parentDropdownMenuIndex + 2;
           // if the user moves the mouse into an option that has children and quickly moves it back to its parent dropdown, the new child dropdown that was triggered to display
