@@ -1,14 +1,14 @@
 import { COMPONENT_CARD_MARKER, COMPONENT_LIST_ITEM_MARKER, OPTION_MENU_BUTTON_MARKER } from '../../../../../../../../consts/elementClassMarkers';
 import { WorkshopEventCallbackUtils } from '../../../../../toolbar/options/workshopEventCallbackUtils/workshopEventCallbackUtils';
 import { ToggleFullPreviewModeOffCallbacks } from '../../../../../../../../interfaces/toggleFullPreviewModeEvent';
+import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { WorkshopEventCallbackReturn } from '../../../../../../../../interfaces/workshopEventCallbackReturn';
 import { OtherWorkshopEventCallbackDetails } from '../../../../../../../../interfaces/workshopEventCallback';
 import { PARENT_SUBCOMPONENT_NAME } from '../../../../../../../../consts/baseSubcomponentNames.enum';
-import { SubcomponentProperties } from '../../../../../../../../interfaces/workshopComponent';
 import { animationTypeToFunctionality } from '../../../animations/animationToFunctionality';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
-import { Animations, CloseAnimation } from '../../../../../../../../interfaces/animations';
-import { TEXT_STYLES } from '../../../../../../../../consts/componentStyles.enum';
+import { BUTTON_STYLES } from '../../../../../../../../consts/componentStyles.enum';
+import { CloseAnimation } from '../../../../../../../../interfaces/animations';
 import AnimationUtils from '../../../animations/utils/animationUtils';
 import { SET_METHODS } from '../../../animations/consts/sharedConsts';
 import { fulPreviewModeState } from '../../fullPreviewModeState';
@@ -22,10 +22,10 @@ export default class Dismiss {
   private static readonly RESET_AFTER_CLOSE_ANIMATION_TIMEOUT_MILLISECONDS = 1000;
 
   public static changeCloseButtonsJsClasses(componentPreviewComponent: ComponentOptions, methodName: SET_METHODS): void {
-    const { subcomponents } = componentPreviewComponent.component;
+    const { subcomponents } = componentPreviewComponent.component as WorkshopComponent;
     const subcomponentNames = Object.keys(subcomponents);
     for (let i = 0; i < subcomponentNames.length; i += 1) {
-      if (subcomponents[subcomponentNames[i]].style === TEXT_STYLES.CLOSE_BUTTON) {
+      if (subcomponents[subcomponentNames[i]].nestedComponent?.ref?.style === BUTTON_STYLES.CLOSE) {
         const buttonSubcomponentProperties: SubcomponentProperties = subcomponents[subcomponentNames[i]];
         buttonSubcomponentProperties.customFeatures.jsClasses[methodName](JAVASCRIPT_CLASSES.CLOSE_COMPONENT);
         break;
@@ -43,8 +43,8 @@ export default class Dismiss {
   }
 
   private static close(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement): WorkshopEventCallbackReturn {
-    const { type, duration } = (componentPreviewComponent.component[PARENT_SUBCOMPONENT_NAME.BASE].customFeatures.animations as Animations)
-      .display.close;
+    const { type, duration } = (componentPreviewComponent.component as WorkshopComponent).subcomponents[PARENT_SUBCOMPONENT_NAME.BASE]
+      .customFeatures.animations.display.close;
     const closeAnimation = animationTypeToFunctionality[type] as CloseAnimation;
     const animationDuration = duration;
     animationState.setIsAnimationPreviewInProgressState(true);
