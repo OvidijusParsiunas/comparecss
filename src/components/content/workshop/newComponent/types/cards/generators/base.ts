@@ -25,6 +25,10 @@ class CardBase extends ComponentBuilder {
         boxSizing: CSS_PROPERTY_VALUES.UNSET,
         boxShadow: CSS_PROPERTY_VALUES.UNSET,
         top: '0px',
+        marginLeft: '0px',
+        marginRight: '0px',
+        marginTop: '0px',
+        marginBottom: '0px',
       },
     };
   }

@@ -5,7 +5,6 @@ position - move subcomponent over another, left or right
 maybe should allow import a new button alltogether instead of creating a new button and then changing its style
 after adding a new subcomponent, open its options
 zoom in image when hovered on
-card margin
 think about computed property solution
 
 overflow
