@@ -8,6 +8,7 @@ import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../../consts/subcomponentC
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
+import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 
 interface Index {
   number: number;
@@ -99,11 +100,11 @@ export default class ComponentPreviewUtils {
   public static getInheritedCustomCssValue(cssPseudoClass: CSS_PSEUDO_CLASSES, customCss: CustomCss, cssProperty: string): string {
     switch (cssPseudoClass) {
       case (CSS_PSEUDO_CLASSES.CLICK):
-        if (customCss[CSS_PSEUDO_CLASSES.CLICK] && customCss[CSS_PSEUDO_CLASSES.CLICK][cssProperty] !== 'inherit') {
+        if (customCss[CSS_PSEUDO_CLASSES.CLICK] && customCss[CSS_PSEUDO_CLASSES.CLICK][cssProperty] !== CSS_PROPERTY_VALUES.INHERIT) {
           return customCss[CSS_PSEUDO_CLASSES.CLICK][cssProperty];
         }
       case (CSS_PSEUDO_CLASSES.HOVER):
-        if (customCss[CSS_PSEUDO_CLASSES.HOVER] && customCss[CSS_PSEUDO_CLASSES.HOVER][cssProperty] !== 'inherit') {
+        if (customCss[CSS_PSEUDO_CLASSES.HOVER] && customCss[CSS_PSEUDO_CLASSES.HOVER][cssProperty] !== CSS_PROPERTY_VALUES.INHERIT) {
           return customCss[CSS_PSEUDO_CLASSES.HOVER][cssProperty];
         }
       default:

@@ -70,24 +70,20 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
 
   const subcomponentMouseEnter = (): void => {
     if (shoudPreventMouseEvent()) return;
-    const { customCss, customFeatures, activeCssPseudoClass,
-      nameOfAnotherSubcomponetToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
-    // even.isTrusted means that the event was triggered by user's mouse instead of dispatch
+    const { customCss, customFeatures, nameOfAnotherSubcomponetToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
+    // even.isTrusted means that the event was triggered by a mouse instead of a dispatch
     if (isTriggeredByAnotherSubcomponent && event.isTrusted) return;
     if (nameOfAnotherSubcomponetToTrigger) triggerAnotherSubcomponentMouseEvent(nameOfAnotherSubcomponetToTrigger, event.type);
-    if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT) {
-      setDefaultUnsetButtonStatesForColorInputs(customCss);
-      setMouseEnterProperties(customCss, customFeatures);
-    }
+    setDefaultUnsetButtonStatesForColorInputs(customCss);
+    setMouseEnterProperties(customCss, customFeatures);
   }
 
   const subcomponentMouseLeave = (): void => {
     if (shoudPreventMouseEvent()) return;
-    const { activeCssPseudoClass, customCss, customFeatures,
-      nameOfAnotherSubcomponetToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
+    const { customCss, customFeatures, nameOfAnotherSubcomponetToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
     if (isTriggeredByAnotherSubcomponent && event.isTrusted) return;
     if (nameOfAnotherSubcomponetToTrigger) triggerAnotherSubcomponentMouseEvent(nameOfAnotherSubcomponetToTrigger, event.type);
-    if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT && subcomponentProperties.overwrittenCustomCssObj) {
+    if (subcomponentProperties.overwrittenCustomCssObj) {
       delete subcomponentProperties.overwrittenCustomCssObj;
     }
     isUnsetButtonDisplayedForColorInputs = {};
@@ -96,25 +92,22 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
 
   const subcomponentMouseDown = (): void => {
     if (shoudPreventMouseEvent()) return;
-    const { customCss, customFeatures, activeCssPseudoClass,
-        nameOfAnotherSubcomponetToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
+    const { customCss, customFeatures, nameOfAnotherSubcomponetToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
     if (isTriggeredByAnotherSubcomponent && event.isTrusted) return;
     if (nameOfAnotherSubcomponetToTrigger) triggerAnotherSubcomponentMouseEvent(nameOfAnotherSubcomponetToTrigger, event.type);
-    if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT) {
-      // this is a bug fix for when the user clicks a button without entering it (after subcomponent select mode)
-      if (!subcomponentProperties.overwrittenCustomCssObj) {
-        setMouseEnterProperties(customCss, customFeatures);
-      }
-      overwrittenDefaultPropertiesByClick = { hasBeenSet: true, css: { ...subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] } };
-      setCustomCss(customCss, CSS_PSEUDO_CLASSES.CLICK);
+    // this is a bug fix for when the user clicks a button without entering it (after subcomponent select mode)
+    if (!subcomponentProperties.overwrittenCustomCssObj) {
+      setMouseEnterProperties(customCss, customFeatures);
     }
+    overwrittenDefaultPropertiesByClick = { hasBeenSet: true, css: { ...subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] } };
+    setCustomCss(customCss, CSS_PSEUDO_CLASSES.CLICK);
   }
 
   const subcomponentMouseUp = (): void => {
     if (shoudPreventMouseEvent()) return;
-    const { activeCssPseudoClass, nameOfAnotherSubcomponetToTrigger } = subcomponentProperties;
+    const { nameOfAnotherSubcomponetToTrigger } = subcomponentProperties;
     if (nameOfAnotherSubcomponetToTrigger) triggerAnotherSubcomponentMouseEvent(nameOfAnotherSubcomponetToTrigger, event.type);
-    if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT && overwrittenDefaultPropertiesByClick.hasBeenSet
+    if (overwrittenDefaultPropertiesByClick.hasBeenSet
         && subcomponentProperties.overwrittenCustomCssObj) {
       subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };
       overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} }; 
