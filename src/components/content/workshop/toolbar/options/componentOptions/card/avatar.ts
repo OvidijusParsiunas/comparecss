@@ -16,10 +16,6 @@ export const avatarOptions: SubcomponentOptions<AvatarOptionsModes> = {
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.CIRCLE_BORDER,
     },
     {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.COLOR,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.COLOR,
-    },
-    {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SHADOW,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW,
     },

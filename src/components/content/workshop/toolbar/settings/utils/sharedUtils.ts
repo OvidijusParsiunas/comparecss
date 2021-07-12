@@ -3,22 +3,22 @@ import GeneralUtils from '../../../../../../services/workshop/exportFiles/conten
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 
 export default class SharedUtils {
-  
-  public static getActiveModeCssPropertyValue(css: CustomCss, activeMode: CSS_PSEUDO_CLASSES, cssProperty: string): string {
+
+  public static getActiveModeCssPropertyValue(customCss: CustomCss, activeMode: CSS_PSEUDO_CLASSES, cssProperty: string): string {
     // the following allows multiple cases to be checked in one execution
-    if (!css) return undefined;
+    if (!customCss) return undefined;
     switch (activeMode) {
       case (CSS_PSEUDO_CLASSES.CLICK):
-        if (css[CSS_PSEUDO_CLASSES.CLICK] && css[CSS_PSEUDO_CLASSES.CLICK].hasOwnProperty(cssProperty)) {
-          return css[CSS_PSEUDO_CLASSES.CLICK][cssProperty];
+        if (customCss[CSS_PSEUDO_CLASSES.CLICK] && customCss[CSS_PSEUDO_CLASSES.CLICK].hasOwnProperty(cssProperty)) {
+          return customCss[CSS_PSEUDO_CLASSES.CLICK][cssProperty];
         }
       case (CSS_PSEUDO_CLASSES.HOVER):
-        if (css[CSS_PSEUDO_CLASSES.HOVER] && css[CSS_PSEUDO_CLASSES.HOVER].hasOwnProperty(cssProperty)) {
-          return css[CSS_PSEUDO_CLASSES.HOVER][cssProperty];
+        if (customCss[CSS_PSEUDO_CLASSES.HOVER] && customCss[CSS_PSEUDO_CLASSES.HOVER].hasOwnProperty(cssProperty)) {
+          return customCss[CSS_PSEUDO_CLASSES.HOVER][cssProperty];
         }
       case (CSS_PSEUDO_CLASSES.DEFAULT):
-        if (css[CSS_PSEUDO_CLASSES.DEFAULT] && css[CSS_PSEUDO_CLASSES.DEFAULT].hasOwnProperty(cssProperty)) {
-          return css[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty];
+        if (customCss[CSS_PSEUDO_CLASSES.DEFAULT] && customCss[CSS_PSEUDO_CLASSES.DEFAULT].hasOwnProperty(cssProperty)) {
+          return customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty];
         }
       default:
         return undefined;

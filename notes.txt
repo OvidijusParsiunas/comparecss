@@ -4,13 +4,11 @@ text needs to have color
 position - move subcomponent over another, left or right
 maybe should allow import a new button alltogether instead of creating a new button and then changing its style
 after adding a new subcomponent, open its options
-clicking close button sets the background to default
 zoom in image when hovered on
 when hover mode is on, click events should still render the css properties accordingly
 card margin
 think about computed property solution
 card/alert close animations do not work
-when clicking button text that only has color on hover - it turns to white text
 
 overflow
 try with button tags

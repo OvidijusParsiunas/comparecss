@@ -48,6 +48,7 @@ import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCs
 import { COMPONENT_PREVIEW_MARKER } from '../../../../consts/elementClassMarkers';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../consts/closeButtonXText';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
+import ComponentPreviewUtils from './utils/componentPreviewUtils';
 import layers from './layers/Layers.vue';
 
 interface Consts {
@@ -77,7 +78,9 @@ export default {
         inheritedCss || '',
         customCssObj[CSS_PSEUDO_CLASSES.DEFAULT],
         customCssObj[activeCssPseudoClass],
-        { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : ''}
+        { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : ''},
+        { backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCssObj, 'backgroundColor') },
+        { color: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCssObj, 'color') },
       ];
     },
     getBaseId(idType: keyof SubcomponentAndOverlayElementIds[string]): string {

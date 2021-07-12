@@ -43,8 +43,8 @@ export class UnsetColorButton {
     const workshopComponentCss: WorkshopComponentCss = subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass];
     if (workshopComponentCss?.[settingProperty]) {
       const unsetColorButtonStatePropertyValue =  workshopComponentCss[settingProperty + UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX];
-      return (!unsetColorButtonStatePropertyValue && workshopComponentCss[settingProperty] !== CSS_PROPERTY_VALUES.INHERIT)
-        || (unsetColorButtonStatePropertyValue && unsetColorButtonStatePropertyValue === UNSET_COLOR_BUTTON_DISPLAYED_STATE.DISPLAY);
+      if (unsetColorButtonStatePropertyValue) return unsetColorButtonStatePropertyValue === UNSET_COLOR_BUTTON_DISPLAYED_STATE.DISPLAY;
+      return workshopComponentCss[settingProperty] !== CSS_PROPERTY_VALUES.INHERIT;
     }
     return false;
   }

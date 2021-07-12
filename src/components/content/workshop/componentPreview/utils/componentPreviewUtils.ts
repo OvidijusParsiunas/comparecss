@@ -2,10 +2,11 @@ import useSubcomponentPreviewSelectModeEventHandlers from '../compositionAPI/use
 import { SubcomponentAndOverlayElementIds } from '../../../../../interfaces/subcomponentAndOverlayElementIds';
 import { DROPDOWN_OPTION_DISPLAY_STATUS_REF } from '../../../../../interfaces/dropdownOptionDisplayStatus';
 import { SubcomponentPreviewMouseEvents } from '../../../../../interfaces/subcomponentPreviewMouseEvents';
+import { CustomCss, Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import useSubcomponentPreviewEventHandlers from '../compositionAPI/useSubcomponentPreviewEventHandlers';
 import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../../consts/subcomponentCursorClasses.enum';
-import { Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
+import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
 
 interface Index {
@@ -89,5 +90,24 @@ export default class ComponentPreviewUtils {
 
   public static unsetAllSubcomponentsCursorsFromPointer(): void {
     ComponentPreviewUtils.removeClassFromAllElements(SUBCOMPONENT_CURSOR_CLASSES.SELECT_MODE);
+  }
+
+  // inherit strategy:
+  // when inheriting during a click or hover class, attempt to get a valid value from a lower class
+  // when inheriting during a default class - return 'inherit' to make the element transparent
+  // currently utilised for background and text color properties only
+  public static getInheritedCustomCssValue(cssPseudoClass: CSS_PSEUDO_CLASSES, customCss: CustomCss, cssProperty: string): string {
+    switch (cssPseudoClass) {
+      case (CSS_PSEUDO_CLASSES.CLICK):
+        if (customCss[CSS_PSEUDO_CLASSES.CLICK] && customCss[CSS_PSEUDO_CLASSES.CLICK][cssProperty] !== 'inherit') {
+          return customCss[CSS_PSEUDO_CLASSES.CLICK][cssProperty];
+        }
+      case (CSS_PSEUDO_CLASSES.HOVER):
+        if (customCss[CSS_PSEUDO_CLASSES.HOVER] && customCss[CSS_PSEUDO_CLASSES.HOVER][cssProperty] !== 'inherit') {
+          return customCss[CSS_PSEUDO_CLASSES.HOVER][cssProperty];
+        }
+      default:
+        return customCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty];
+    }
   }
 }

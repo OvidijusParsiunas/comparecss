@@ -21,7 +21,6 @@ export class AddNewNestedComponent {
     UpdateLayerComponentNames.update(currentlySelectedComponent, startingLayerNumber);
   }
 
-  // WORK2: how to pass the component specific settings/configs
   public static add(currentlySelectedComponent: WorkshopComponent, subcomponentType = 'nestedButton'): void {
     if (currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].subcomponentType === SUBCOMPONENT_TYPES.BASE) {
       AddNewLayerComponent.add(currentlySelectedComponent, LAYER_STYLES.CARD, true);
