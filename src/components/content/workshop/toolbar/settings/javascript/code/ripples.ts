@@ -98,7 +98,7 @@ const downloadableCSS = `
 `;
 
 export const ripplesCode: JavascriptCode = {
-  executeJS: initializeScript,
+  initializeJS: initializeScript,
   revokeJS: removeScript,
   downloadables: {
     jsFileContent: downloadableJS,

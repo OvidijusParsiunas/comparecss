@@ -1,15 +1,15 @@
 import { DROPDOWN_OPTION_DISPLAY_STATUS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { UpdateNestedComponentNames } from './updateNestedComponentNamesShared';
 import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
+import { UpdateComponentNamesShared } from './updateComponentNamesShared';
 
-export class UpdateLayerComponentNames extends UpdateNestedComponentNames {
+export class UpdateLayerComponentNames extends UpdateComponentNamesShared {
 
   private static updateLayerName(parentComponent: WorkshopComponent, subcomponentDropdownStructure: NestedDropdownStructure, oldSubcomponentName: string,
       newSubcomponentName: string, layer: Layer, overwrittenDropdownNames: string[]): void {
     if (newSubcomponentName !== DROPDOWN_OPTION_DISPLAY_STATUS_REF) {
-      UpdateNestedComponentNames.updateName(parentComponent, subcomponentDropdownStructure, oldSubcomponentName, newSubcomponentName, overwrittenDropdownNames);
+      UpdateComponentNamesShared.updateName(parentComponent, subcomponentDropdownStructure, oldSubcomponentName, newSubcomponentName, overwrittenDropdownNames);
       layer.name = newSubcomponentName;
     }
   }
@@ -18,7 +18,7 @@ export class UpdateLayerComponentNames extends UpdateNestedComponentNames {
       layersDropdownStructure: NestedDropdownStructure, overwrittenDropdownNames: string[], layers: Layer[], startingLayerNumber: number): void {
     for (let i = startingLayerNumber; i <= layerSubcomponentsNames.length; i += 1) {
       const layerSubcomponentName = layerSubcomponentsNames[i - 1];
-      const newSubcomponentName = UpdateNestedComponentNames.getNewSubcomponentName(layerSubcomponentName, i);
+      const newSubcomponentName = UpdateComponentNamesShared.getNewSubcomponentName(layerSubcomponentName, i);
       UpdateLayerComponentNames.updateLayerName(parentComponent, layersDropdownStructure, layerSubcomponentName, newSubcomponentName,
         layers[i - 1], overwrittenDropdownNames);
     }
@@ -29,8 +29,8 @@ export class UpdateLayerComponentNames extends UpdateNestedComponentNames {
     const firstLayerNumber = Number.parseFloat(layerSubcomponentsNames[0].substring(layerSubcomponentsNames[0].length - 1));
     if (firstLayerNumber === 1 || firstLayerNumber === 2) {
       const oldSubcomponentName = layerSubcomponentsNames[0];
-      const newSubcomponentName = UpdateNestedComponentNames.replaceSubstringAtIndex(oldSubcomponentName, oldSubcomponentName.length - 1,
-        UpdateNestedComponentNames.SINGLE_SPACE_STRING);
+      const newSubcomponentName = UpdateComponentNamesShared.replaceSubstringAtIndex(oldSubcomponentName, oldSubcomponentName.length - 1,
+        UpdateComponentNamesShared.SINGLE_SPACE_STRING);
       UpdateLayerComponentNames.updateLayerName(parentComponent, layersDropdownStructure, oldSubcomponentName, newSubcomponentName,
         firstLayer, overwrittenDropdownNames);
     }
@@ -48,6 +48,6 @@ export class UpdateLayerComponentNames extends UpdateNestedComponentNames {
       UpdateLayerComponentNames.updateLayerNamesStartingFromNumber(parentComponent, layerSubcomponentsNames, layersDropdownStructure,
         overwrittenDropdownNames, layers, startingLayerNumber);
     }
-    UpdateNestedComponentNames.removeOverwrittenDropdownNames(overwrittenDropdownNames, layersDropdownStructure);
+    UpdateComponentNamesShared.removeOverwrittenDropdownNames(overwrittenDropdownNames, layersDropdownStructure);
   }
 }

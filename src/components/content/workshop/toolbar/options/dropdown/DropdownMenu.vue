@@ -26,7 +26,7 @@ import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDrop
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { FONT_AWESOME_COLORS } from '../../../../../../consts/fontAwesomeColors.enum';
 import { DROPDOWN_OPTION_MARKER } from '../../../../../../consts/elementClassMarkers';
-import BrowserType from '../../../../../../services/workshop/browserType';
+import BrowserType from '../../../utils/generic/browserType';
 
 interface Consts {
   DROPDOWN_OPTION_MARKER: string;

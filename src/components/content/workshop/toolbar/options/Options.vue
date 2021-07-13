@@ -163,8 +163,8 @@ import useToolbarPositionToggle from './compositionApi/useToolbarPositionToggle'
 import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
-import BrowserType from '../../../../../services/workshop/browserType';
 import { Option } from '../../../../../interfaces/componentOptions';
+import BrowserType from '../../utils/generic/browserType';
 import { InSync } from './importComponent/inSync';
 import { Ref } from 'node_modules/vue/dist/vue';
 import dropdown from './dropdown/Dropdown.vue';

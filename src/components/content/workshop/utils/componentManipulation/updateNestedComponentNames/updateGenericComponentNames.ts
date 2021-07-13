@@ -2,7 +2,7 @@ import { AlignedSections, Layer } from '../../../../../../interfaces/componentPr
 import { DROPDOWN_OPTION_DISPLAY_STATUS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { UpdateNestedComponentNames } from './updateNestedComponentNamesShared';
+import { UpdateComponentNamesShared } from './updateComponentNamesShared';
 
 interface SubcomponentNameToPrefix {
   [subcomponentName: string]: string;
@@ -16,7 +16,7 @@ interface SingleSubcomponentPrefixes {
   [subcomponentPrefix: string]: boolean;
 }
 
-export class UpdateGenericComponentNames extends UpdateNestedComponentNames {
+export class UpdateGenericComponentNames extends UpdateComponentNamesShared {
 
   private static updateNameInAlignedSections(alignedSections: AlignedSections, oldBaseSubcomponentName: string, newBaseSubcomponentName: string): void {
     const alignedSectionsKeys = Object.keys(alignedSections);
@@ -34,7 +34,7 @@ export class UpdateGenericComponentNames extends UpdateNestedComponentNames {
   private static getPostfix(subcomponentPrefixToTotal: SubcomponentPrefixToTotal, subcomponentNameToPrefix: SubcomponentNameToPrefix,
       singleSubcomponentPrefixes: SingleSubcomponentPrefixes, nestedSubcomponentName: string): string|number {
     if (singleSubcomponentPrefixes[subcomponentNameToPrefix[nestedSubcomponentName]]) {
-      return UpdateNestedComponentNames.SINGLE_SPACE_STRING;
+      return UpdateComponentNamesShared.SINGLE_SPACE_STRING;
     }
     return subcomponentPrefixToTotal[subcomponentNameToPrefix[nestedSubcomponentName]] += 1;
   }
@@ -47,9 +47,9 @@ export class UpdateGenericComponentNames extends UpdateNestedComponentNames {
       oldBaseSubcomponentName);
     // when moving from 9 to 10, 9 has a space after it which continuously causes result name to be shorter
     const newBaseSubcomponentName = oldBaseSubcomponentName.charAt(oldBaseSubcomponentName.length - 1) === postfix.toString()
-      ? oldBaseSubcomponentName : UpdateNestedComponentNames.getNewSubcomponentName(oldBaseSubcomponentName, postfix);
+      ? oldBaseSubcomponentName : UpdateComponentNamesShared.getNewSubcomponentName(oldBaseSubcomponentName, postfix);
     if (newBaseSubcomponentName !== oldBaseSubcomponentName) {
-      UpdateNestedComponentNames.updateName(parentComponent, parentLayerDropdown, oldBaseSubcomponentName, newBaseSubcomponentName, overwrittenDropdownNames);
+      UpdateComponentNamesShared.updateName(parentComponent, parentLayerDropdown, oldBaseSubcomponentName, newBaseSubcomponentName, overwrittenDropdownNames);
       UpdateGenericComponentNames.updateNameInAlignedSections(alignedSections, oldBaseSubcomponentName, newBaseSubcomponentName);
     }
   }
@@ -110,7 +110,7 @@ export class UpdateGenericComponentNames extends UpdateNestedComponentNames {
     UpdateGenericComponentNames.populateMaps(nestedSubcomponentsNames, subcomponentNameToPrefix, subcomponentPrefixToTotal, singleSubcomponentPrefixes);
     UpdateGenericComponentNames.updateAllComponentNames(parentComponent, nestedSubcomponentsNames, subcomponentNameToPrefix, subcomponentPrefixToTotal,
       singleSubcomponentPrefixes, parentLayerDropdown, overwrittenDropdownNames, alignedSections);
-    UpdateNestedComponentNames.removeOverwrittenDropdownNames(overwrittenDropdownNames, parentLayerDropdown);
+    UpdateComponentNamesShared.removeOverwrittenDropdownNames(overwrittenDropdownNames, parentLayerDropdown);
   }
 
   public static updateViaLayerObject(newComponent: WorkshopComponent, layer: Layer): void {

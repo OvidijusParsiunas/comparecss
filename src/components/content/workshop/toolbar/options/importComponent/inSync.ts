@@ -1,6 +1,6 @@
 import { NestedComponent, SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ReferenceSharingExecutable } from '../../../../../../interfaces/referenceSharingExecutable';
-import JSONManipulation from '../../../../../../services/workshop/jsonManipulation';
+import JSONUtils from '../../../utils/generic/jsonUtils';
 
 export class InSync {
   
@@ -8,8 +8,8 @@ export class InSync {
     const { subcomponents, referenceSharingExecutables, coreSubcomponentNames } = baseSubcomponent.nestedComponent.ref;
     Object.keys(subcomponents).forEach((subcomponentName: string) => {
       const nestedComponent = activeComponent.subcomponents[subcomponentName];
-      nestedComponent.customCss = JSONManipulation.deepCopy(nestedComponent.customCss);
-      nestedComponent.customFeatures = JSONManipulation.deepCopy(nestedComponent.customFeatures);
+      nestedComponent.customCss = JSONUtils.deepCopy(nestedComponent.customCss);
+      nestedComponent.customFeatures = JSONUtils.deepCopy(nestedComponent.customFeatures);
     });
     referenceSharingExecutables.forEach((executable: ReferenceSharingExecutable) => {
       executable(activeComponent.subcomponents, coreSubcomponentNames);

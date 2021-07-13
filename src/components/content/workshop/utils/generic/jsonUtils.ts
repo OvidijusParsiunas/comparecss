@@ -1,4 +1,4 @@
-export default class JSONManipulation {
+export default class JSONUtils {
 
   private static createNewObject(object: unknown): unknown {
     if (null == object || "object" != typeof object) {
@@ -29,7 +29,19 @@ export default class JSONManipulation {
     throw new Error("Unable to copy object! Its type isn't supported.");
   }
 
-  static deepCopy<T>(object: Exclude<T, string>): T  {
+  public static deepCopy<T>(object: Exclude<T, string>): T  {
     return this.createNewObject(object) as T;
+  }
+
+  public static getKeyByValue(object: unknown, value: unknown): string {
+    return Object.keys(object).find(key => object[key] === value);
+  }
+
+  public static addObjects<T>(object1Parent: T, object1Key: keyof T, object2: T[keyof T], toTheRight = true): void {
+    if (toTheRight) {
+      object1Parent[object1Key] = { ...object1Parent[object1Key], ...object2 };
+    } else {
+      object1Parent[object1Key] = { ...object2, ...object1Parent[object1Key] };
+    }
   }
 }

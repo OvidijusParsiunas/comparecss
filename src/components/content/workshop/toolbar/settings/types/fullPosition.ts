@@ -1,10 +1,10 @@
 import { SubcomponentCssPropertyDetails } from '../../../../../../interfaces/subcomponentCssPropertyDetails';
 import { PARENT_SUBCOMPONENT_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
+import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import { LAYER_SECTION_DIVISOR } from '../../../../../../consts/layerSectionDivisor';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import SubcomponentAlignment from './utils/subcomponentAlignment';
-import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 
 function getOtherSubcomponentCssPropertyDetails(): SubcomponentCssPropertyDetails {
   return [
@@ -31,6 +31,8 @@ export default {
         postfix: '%',
       },
     },
+    // WORK2
+    // this may not be required and it may just end up being replaced by margin - this file may not be needed
     {
       type: SETTINGS_TYPES.RANGE,
       spec: {

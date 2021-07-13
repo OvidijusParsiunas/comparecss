@@ -1,5 +1,5 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, NestedComponent, SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import JSONManipulation from '../../../../../../services/workshop/jsonManipulation';
+import JSONUtils from '../../generic/jsonUtils';
 
 type CopyableSubcomponentProperties = CustomCss|CustomFeatures|CustomStaticFeatures;
 
@@ -9,7 +9,7 @@ export class CopySubcomponents {
   // addUpdateOtherCssProperties method when creating/copying a subcomponent, hence they cannot be directly overwritten
   private static copyProperties(newCustomCss: CopyableSubcomponentProperties = {}, customCssBeingCopied: CopyableSubcomponentProperties = {}): void {
     Object.keys(newCustomCss).forEach((pseudoCssClass) => {
-      newCustomCss[pseudoCssClass] = JSONManipulation.deepCopy(customCssBeingCopied[pseudoCssClass]);
+      newCustomCss[pseudoCssClass] = JSONUtils.deepCopy(customCssBeingCopied[pseudoCssClass]);
     });
   }
 

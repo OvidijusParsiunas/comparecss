@@ -277,6 +277,8 @@ export default {
   methods: {
     activateButton(optionAction: any, actionName: string): void {
       optionAction(actionName, this.component, this.subcomponentProperties);
+      // WORK2
+      this.$emit('refresh');
     },
     getCurrentCssProperty(setting: any): boolean {
       return this.subcomponentProperties.customCss[this.subcomponentProperties.activeCssPseudoClass]?.[setting.spec.cssProperty];

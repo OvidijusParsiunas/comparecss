@@ -2,8 +2,8 @@ import { ImportComponentModeCardEvents } from '../../toolbar/options/importCompo
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { AddNewNestedComponent } from './addNewNestedComponent/addNewNestedComponent';
 import { RemoveSubcomponent } from './removeSubcomponent/removeSubcomponent';
-import ComponentJs from '../../../../../services/workshop/componentJs';
 import CopyComponent from './copyComponent/copyComponent';
+import ComponentJs from '../generic/componentJs';
 import { ComponentOptions } from 'vue';
 
 export class ComponentManipulation {
@@ -20,10 +20,10 @@ export class ComponentManipulation {
   private static switchActiveComponent(workshopComponent: ComponentOptions, component: WorkshopComponent): void {
     ComponentManipulation.resetComponentModes(workshopComponent.currentlySelectedComponent);
     if (workshopComponent.currentlySelectedComponent && workshopComponent.currentlySelectedComponent.type !== component.type) {
-      ComponentJs.manipulateJS(workshopComponent.currentlySelectedComponent.type, 'revokeJS');
+      ComponentJs.manipulateJSClasses(workshopComponent.currentlySelectedComponent.type, 'revokeJS');
     }
     workshopComponent.currentlySelectedComponent = component;
-    ComponentJs.manipulateJS(workshopComponent.currentlySelectedComponent.type, 'executeJS');
+    ComponentJs.manipulateJSClasses(workshopComponent.currentlySelectedComponent.type, 'initializeJS');
     workshopComponent.$refs.toolbar.updateToolbarForNewComponent();
   }
 
@@ -85,7 +85,7 @@ export class ComponentManipulation {
     if (components.length === 0) {
       workshopComponent.$refs.toolbar.saveLastActiveOptionPriorToAllComponentsDeletion();
       workshopComponent.componentPreviewAssistance.margin = false;
-      ComponentJs.manipulateJS(componentToBeRemoved.type, 'revokeJS');
+      ComponentJs.manipulateJSClasses(componentToBeRemoved.type, 'revokeJS');
       workshopComponent.currentlySelectedComponent = undefined;
       return -1;
     }

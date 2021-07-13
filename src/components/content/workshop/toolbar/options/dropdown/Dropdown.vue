@@ -39,7 +39,7 @@ import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTrigger
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
 import { TOOLBAR_GENERAL_BUTTON_CLASS } from '../../../../../../consts/toolbarClasses';
 import { FONT_AWESOME_COLORS } from '../../../../../../consts/fontAwesomeColors.enum';
-import BrowserType from '../../../../../../services/workshop/browserType';
+import BrowserType from '../../../utils/generic/browserType';
 import dropdownMenu from './DropdownMenu.vue';
 import { Ref, ref, watch } from 'vue';
 

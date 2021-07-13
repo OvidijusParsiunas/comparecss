@@ -22,7 +22,8 @@
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
         @play-animation-preview="$emit('play-animation-preview', $event)"
         @stop-animation-preview="$emit('stop-animation-preview')"
-        @remove-insync-option-button="$refs.options.toggleInSync($event)"/>
+        @remove-insync-option-button="$refs.options.toggleInSync($event)"
+        @refresh="$emit('refresh')"/>
     </div>
   </div>
 </template>

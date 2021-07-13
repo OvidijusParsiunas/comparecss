@@ -1,8 +1,8 @@
 export interface JavascriptCode {
-  executeJS: () => void;
-  revokeJS: () => void,
+  initializeJS: () => void;
+  revokeJS: () => void;
   downloadables: {
-    jsFileContent: string,
-    cssFileContent: string,
+    jsFileContent: string;
+    cssFileContent: string;
   }
 }

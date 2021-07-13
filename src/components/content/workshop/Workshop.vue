@@ -49,7 +49,8 @@
               @stop-animation-preview="$refs.contents.stopAnimationPreview()"
               @toggle-import-subcomponent-mode="toggleImportComponentMode($event)"
               @add-subcomponent="addNewSubcomponent"
-              @remove-subcomponent="removeSubcomponent($event)"/>
+              @remove-subcomponent="removeSubcomponent($event)"
+              @refresh="$refs.contents.refreshComponent()"/>
             <component-contents ref="contents"
               :component="currentlySelectedComponent"
               :componentPreviewAssistance="componentPreviewAssistance"
