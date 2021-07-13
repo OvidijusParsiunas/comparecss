@@ -100,7 +100,7 @@ export class MoveSubcomponent {
     return null;
   }
 
-  public static moveSubcomponent(direction: SUBCOMPONENT_MOVE_DIRECTIONS, parentComponent: WorkshopComponent): void {
+  public static move(direction: SUBCOMPONENT_MOVE_DIRECTIONS, parentComponent: WorkshopComponent): void {
     const subcomponentValues: SubcomponentValues = {
       subcomponentName: parentComponent.activeSubcomponentName,
       parentComponent,

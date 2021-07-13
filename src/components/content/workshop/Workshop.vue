@@ -50,7 +50,7 @@
               @toggle-import-subcomponent-mode="toggleImportComponentMode($event)"
               @add-subcomponent="addNewSubcomponent"
               @remove-subcomponent="removeSubcomponent($event)"
-              @refresh="$refs.contents.refreshComponent()"/>
+              @move-subcomponent="moveSubcomponent($event)"/>
             <component-contents ref="contents"
               :component="currentlySelectedComponent"
               :componentPreviewAssistance="componentPreviewAssistance"
@@ -122,6 +122,7 @@ import { ComponentPreviewAssistance } from '../../../interfaces/componentPreview
 import { removeComponentModalState } from './componentList/state/removeComponentModalState';
 import { ComponentCardHoveredEvent } from '../../../interfaces/componentCardHoveredEvent';
 import { PARENT_SUBCOMPONENT_NAME } from '../../../consts/baseSubcomponentNames.enum';
+import { MoveSubcomponentEvent } from '../../../interfaces/settingsComponentEvents';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
 import { defaultCard } from './newComponent/types/cards/generators/default';
@@ -217,6 +218,9 @@ export default {
     },
     removeSubcomponent(selectNewSubcomponentCallback: () => void): void {
       ComponentManipulation.removeSubcomponent(this, selectNewSubcomponentCallback);
+    },
+    moveSubcomponent(moveSubcomponentEvent: MoveSubcomponentEvent): void {
+      ComponentManipulation.moveSubcomponent(this, ...moveSubcomponentEvent);
     },
     toggleFullPreviewModeOffCallback(switchComponentsWithFadeOutCallback: SwitchComponentsWithFadeOutCallback,
         componentPreviewHTMLElement?: HTMLElement): void {

@@ -66,8 +66,8 @@ import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/togg
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
 import { componentTypeToStyleGenerators } from '../newComponent/types/componentTypeToStyleGenerators';
-import { PlayAnimationPreviewEvent } from '../../../../interfaces/playAnimationPreviewEvent';
 import { animationTypeToFunctionality } from './utils/animations/animationToFunctionality';
+import { PlayAnimationPreviewEvent } from '../../../../interfaces/settingsComponentEvents';
 import { PARENT_SUBCOMPONENT_NAME } from '../../../../consts/baseSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import ToggleFullPreviewMode from './utils/fullPreviewMode/toggleFullPreviewMode';

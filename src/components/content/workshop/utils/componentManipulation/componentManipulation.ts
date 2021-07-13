@@ -1,7 +1,9 @@
 import { ImportComponentModeCardEvents } from '../../toolbar/options/importComponent/modeUtils/importComponentModeCardEvents';
+import { SUBCOMPONENT_MOVE_DIRECTIONS } from '../../../../../interfaces/subcomponentMoveDirections.enum';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { AddNewNestedComponent } from './addNewNestedComponent/addNewNestedComponent';
 import { RemoveSubcomponent } from './removeSubcomponent/removeSubcomponent';
+import { MoveSubcomponent } from './moveSubcomponent/moveSubcomponent';
 import CopyComponent from './copyComponent/copyComponent';
 import ComponentJs from '../generic/componentJs';
 import { ComponentOptions } from 'vue';
@@ -40,6 +42,12 @@ export class ComponentManipulation {
   public static removeSubcomponent(workshopComponent: ComponentOptions, selectNewSubcomponentCallback: () => void): void {
     const { currentlySelectedComponent } = workshopComponent;
     RemoveSubcomponent.remove(currentlySelectedComponent, currentlySelectedComponent.activeSubcomponentName, selectNewSubcomponentCallback);
+    workshopComponent.$refs.contents.refreshComponent();
+  }
+
+  public static moveSubcomponent(workshopComponent: ComponentOptions, direction: SUBCOMPONENT_MOVE_DIRECTIONS,
+      parentComponent: WorkshopComponent): void {
+    MoveSubcomponent.move(direction, parentComponent);
     workshopComponent.$refs.contents.refreshComponent();
   }
 

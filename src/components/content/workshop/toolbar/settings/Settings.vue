@@ -179,6 +179,7 @@
 
 <script lang="ts">
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
+import { RemoveInSyncOptionButton } from '../../../../../interfaces/settingsComponentEvents';
 import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSettingsState';
 import { TOOLBAR_GENERAL_BUTTON_CLASS } from '../../../../../consts/toolbarClasses';
 import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
@@ -276,9 +277,7 @@ export default {
   }),
   methods: {
     activateButton(optionAction: any, actionName: string): void {
-      optionAction(actionName, this.component);
-      // WORK2
-      this.$emit('refresh');
+      optionAction(this, actionName, this.component);
     },
     getCurrentCssProperty(setting: any): boolean {
       return this.subcomponentProperties.customCss[this.subcomponentProperties.activeCssPseudoClass]?.[setting.spec.cssProperty];
@@ -375,7 +374,7 @@ export default {
     },
     changeSetting(callback: () => void, firstCustomFeatureObjectKey?: string): void {
       if (InSync.isInSyncButtonDisplayed(this.subcomponentProperties) && firstCustomFeatureObjectKey !== 'customStaticFeatures') {
-        this.$emit('remove-insync-option-button', callback);
+        this.$emit('remove-insync-option-button', callback as RemoveInSyncOptionButton);
       } else {
         callback();
       }

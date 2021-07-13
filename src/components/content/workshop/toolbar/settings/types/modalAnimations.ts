@@ -1,7 +1,7 @@
 import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallbacks } from '../../../../../../interfaces/actionsDropdownsMouseEventCallbacks';
 import { MODAL_ANIMATION_OPEN_TYPES, MODAL_ANIMATION_CLOSE_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../consts/workshopToolbarOptionTypes.enum';
-import { PlayAnimationPreviewEvent } from '../../../../../../interfaces/playAnimationPreviewEvent';
+import { PlayAnimationPreviewEvent } from '../../../../../../interfaces/settingsComponentEvents';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { SettingPaths } from '../../../../../../interfaces/settingPaths';
 

@@ -1,5 +1,5 @@
 import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallbacks } from '../../../../../../interfaces/actionsDropdownsMouseEventCallbacks';
-import { PlayAnimationPreviewEvent } from '../../../../../../interfaces/playAnimationPreviewEvent';
+import { PlayAnimationPreviewEvent } from '../../../../../../interfaces/settingsComponentEvents';
 import { GENERAL_ANIMATION_CLOSE_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 
