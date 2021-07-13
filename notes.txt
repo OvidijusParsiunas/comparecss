@@ -6,6 +6,7 @@ maybe should allow import a new button alltogether instead of creating a new but
 after adding a new subcomponent, open its options
 zoom in image when hovered on
 think about computed property solution
+when a layer has no image and the image option is clicked, a new error is thrown
 
 overflow
 try with button tags

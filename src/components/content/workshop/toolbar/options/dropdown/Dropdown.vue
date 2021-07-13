@@ -156,7 +156,7 @@ export default {
           }, i * this.dropdownDisplayDelayMilliseconds);
         }
         setTimeout(() => {
-          const optionElementToBeHighlighted = this.$refs.dropdownMenus.childNodes[dropdowns.length].childNodes[optionIndexes[optionIndexes.length - 1] + 1];
+          const optionElementToBeHighlighted = this.$refs.dropdownMenus.childNodes[dropdowns.length]?.childNodes[optionIndexes[optionIndexes.length - 1] + 1];
           this.highlightNewOption(optionElementToBeHighlighted, dropdowns.length - 1);
         }, (dropdowns.length - 1) * this.dropdownDisplayDelayMilliseconds);
       }
@@ -254,6 +254,7 @@ export default {
       }
     },
     highlightNewOption(optionElementToBeHighlighted: HTMLElement, dropdownMenuIndex: number): void {
+      if (!optionElementToBeHighlighted) return;
       if (this.lastHoveredOptionElement) { this.resetLastHighlightedOptionStyle(); }
       this.setNewHighligtedOptionStyle(this.dropdowns, optionElementToBeHighlighted, dropdownMenuIndex);
       this.lastHoveredOptionElement = optionElementToBeHighlighted;

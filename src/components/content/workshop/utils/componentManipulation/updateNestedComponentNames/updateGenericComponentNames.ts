@@ -39,9 +39,15 @@ export class UpdateGenericComponentNames extends UpdateComponentNamesShared {
     return subcomponentPrefixToTotal[subcomponentNameToPrefix[nestedSubcomponentName]] += 1;
   }
 
+  private static moveExistingDropdownOptionToTheBottom(parentLayerDropdown: NestedDropdownStructure, newBaseSubcomponentName: string): void {
+    const temp = parentLayerDropdown[newBaseSubcomponentName];
+    delete parentLayerDropdown[newBaseSubcomponentName];
+    parentLayerDropdown[newBaseSubcomponentName] = temp;
+  }
+
   private static updateBaseSubcomponentName(oldBaseSubcomponentName: string, parentComponent: WorkshopComponent, subcomponentNameToPrefix: SubcomponentNameToPrefix,
       subcomponentPrefixToTotal: SubcomponentPrefixToTotal, singleSubcomponentPrefixes: SingleSubcomponentPrefixes, parentLayerDropdown: NestedDropdownStructure,
-      overwrittenDropdownNames: string[], alignedSections: AlignedSections): void {
+      overwrittenDropdownNames: string[], alignedSections: AlignedSections, isOptionUpdated: boolean): boolean {
     if (oldBaseSubcomponentName === DROPDOWN_OPTION_DISPLAY_STATUS_REF) return;
     const postfix = UpdateGenericComponentNames.getPostfix(subcomponentPrefixToTotal, subcomponentNameToPrefix, singleSubcomponentPrefixes,
       oldBaseSubcomponentName);
@@ -51,16 +57,23 @@ export class UpdateGenericComponentNames extends UpdateComponentNamesShared {
     if (newBaseSubcomponentName !== oldBaseSubcomponentName) {
       UpdateComponentNamesShared.updateName(parentComponent, parentLayerDropdown, oldBaseSubcomponentName, newBaseSubcomponentName, overwrittenDropdownNames);
       UpdateGenericComponentNames.updateNameInAlignedSections(alignedSections, oldBaseSubcomponentName, newBaseSubcomponentName);
+      return true;
+    } else if (isOptionUpdated) {
+      // fix: when we have 2, 1, 3 - the updates above to 2 and 1 move those options to the bottom, however because 3 is the same it remains in the original position
+      // which after the augmentations is now at the top of the dropdown. The following moves it down.
+      UpdateGenericComponentNames.moveExistingDropdownOptionToTheBottom(parentLayerDropdown, newBaseSubcomponentName);
+      return true;
     }
   }
 
   private static updateAllComponentNames(parentComponent: WorkshopComponent, nestedSubcomponentsNames: string[], subcomponentNameToPrefix: SubcomponentNameToPrefix,
       subcomponentPrefixToTotal: SubcomponentPrefixToTotal, singleSubcomponentPrefixes: SingleSubcomponentPrefixes, parentLayerDropdown: NestedDropdownStructure,
       overwrittenDropdownNames: string[], alignedSections: AlignedSections): void {
+    let isOptionUpdated = false;
     for (let i = 0; i < nestedSubcomponentsNames.length; i += 1) {
       const oldBaseSubcomponentName = nestedSubcomponentsNames[i];
-      UpdateGenericComponentNames.updateBaseSubcomponentName(oldBaseSubcomponentName, parentComponent, subcomponentNameToPrefix,
-        subcomponentPrefixToTotal, singleSubcomponentPrefixes, parentLayerDropdown, overwrittenDropdownNames, alignedSections);
+      isOptionUpdated = UpdateGenericComponentNames.updateBaseSubcomponentName(oldBaseSubcomponentName, parentComponent, subcomponentNameToPrefix,
+        subcomponentPrefixToTotal, singleSubcomponentPrefixes, parentLayerDropdown, overwrittenDropdownNames, alignedSections, isOptionUpdated);
     }
   }
 

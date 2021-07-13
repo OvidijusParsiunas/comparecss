@@ -1,4 +1,5 @@
-import { MoveSubcomponent } from '../../../utils/componentManipulation/removeSubcomponent/moveSubcomponent';
+import { SUBCOMPONENT_MOVE_DIRECTIONS } from '../../../../../../interfaces/subcomponentMoveDirections.enum';
+import { MoveSubcomponent } from '../../../utils/componentManipulation/moveSubcomponent/moveSubcomponent';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import SubcomponentAlignment from './utils/subcomponentAlignment';
@@ -31,7 +32,7 @@ export default {
       type: SETTINGS_TYPES.BUTTONS,
       spec: {
         name: 'Order',
-        options: { ['Left']: null, ['Right']: null },
+        options: { [SUBCOMPONENT_MOVE_DIRECTIONS.LEFT]: null, [SUBCOMPONENT_MOVE_DIRECTIONS.RIGHT]: null },
         optionAction: MoveSubcomponent.moveSubcomponent,
       },
     },

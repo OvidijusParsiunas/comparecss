@@ -276,7 +276,7 @@ export default {
   }),
   methods: {
     activateButton(optionAction: any, actionName: string): void {
-      optionAction(actionName, this.component, this.subcomponentProperties);
+      optionAction(actionName, this.component);
       // WORK2
       this.$emit('refresh');
     },
