@@ -1,3 +1,3 @@
-export enum SUBCOMPONENT_MOVE_DIRECTIONS {
+export enum SUBCOMPONENT_ORDER_DIRECTIONS {
   LEFT = 'Left', RIGHT = 'Right', TOP = 'Top', BOTTOM = 'Bottom',
 }

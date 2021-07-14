@@ -69,12 +69,12 @@ export default class ActionsDropdownUtils {
   }
 
   public static mouseLeaveActionsDropdownOptionCustomFeature(temporaryDropdownValue: TemporaryDropdownValue,
-      subcomponentProperties: SubcomponentProperties, settingSpec: any, settingsComponent: ComponentOptions): void {
+      subcomponentProperties: SubcomponentProperties, settingSpec: any, settingsComponent: ComponentOptions, isDropdownHidden: boolean): void {
     if (temporaryDropdownValue.value !== ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED) {
       const { customFeatureObjectKeys, mouseLeaveDropdownCallback } = settingSpec;
       const defaultValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]) as string;
       if (mouseLeaveDropdownCallback) mouseLeaveDropdownCallback({subcomponentProperties, settingsComponent,
-        previousOptionName: temporaryDropdownValue.value, triggeredOptionName: defaultValue});
+        previousOptionName: temporaryDropdownValue.value, triggeredOptionName: defaultValue, isDropdownHidden});
     }
     temporaryDropdownValue.value = ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED;
   }

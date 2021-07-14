@@ -1,16 +1,16 @@
 import { DROPDOWN_OPTION_DISPLAY_STATUS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
+import { Layer, NestedSubcomponent } from '../../../../../../interfaces/componentPreviewStructure';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
 import { UpdateComponentNamesShared } from './updateComponentNamesShared';
 
 export class UpdateLayerComponentNames extends UpdateComponentNamesShared {
 
   private static updateLayerName(parentComponent: WorkshopComponent, subcomponentDropdownStructure: NestedDropdownStructure, oldSubcomponentName: string,
-      newSubcomponentName: string, layer: Layer, overwrittenDropdownNames: string[]): void {
+      newSubcomponentName: string, layer: NestedSubcomponent, overwrittenDropdownNames: string[]): void {
     if (newSubcomponentName !== DROPDOWN_OPTION_DISPLAY_STATUS_REF) {
-      UpdateComponentNamesShared.updateName(parentComponent, subcomponentDropdownStructure, oldSubcomponentName, newSubcomponentName, overwrittenDropdownNames);
-      layer.name = newSubcomponentName;
+      UpdateComponentNamesShared.updateName(parentComponent, subcomponentDropdownStructure, oldSubcomponentName, newSubcomponentName,
+        layer, overwrittenDropdownNames);
     }
   }
 

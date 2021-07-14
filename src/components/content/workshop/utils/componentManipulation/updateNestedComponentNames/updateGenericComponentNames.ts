@@ -1,4 +1,4 @@
-import { AlignedSections, Layer } from '../../../../../../interfaces/componentPreviewStructure';
+import { AlignedSections, Layer, NestedSubcomponent } from '../../../../../../interfaces/componentPreviewStructure';
 import { DROPDOWN_OPTION_DISPLAY_STATUS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
@@ -18,19 +18,6 @@ interface SingleSubcomponentPrefixes {
 
 export class UpdateGenericComponentNames extends UpdateComponentNamesShared {
 
-  private static updateNameInAlignedSections(alignedSections: AlignedSections, oldBaseSubcomponentName: string, newBaseSubcomponentName: string): void {
-    const alignedSectionsKeys = Object.keys(alignedSections);
-    for (let i = 0; i < alignedSectionsKeys.length; i += 1) {
-      const section = alignedSections[alignedSectionsKeys[i]];
-      for (let j = 0; j < section.length; j += 1) {
-        if (section[j].name === oldBaseSubcomponentName) {
-          section[j].name = newBaseSubcomponentName;
-          return;
-        }
-      }
-    }
-  }
-
   private static getPostfix(subcomponentPrefixToTotal: SubcomponentPrefixToTotal, subcomponentNameToPrefix: SubcomponentNameToPrefix,
       singleSubcomponentPrefixes: SingleSubcomponentPrefixes, nestedSubcomponentName: string): string|number {
     if (singleSubcomponentPrefixes[subcomponentNameToPrefix[nestedSubcomponentName]]) {
@@ -45,9 +32,10 @@ export class UpdateGenericComponentNames extends UpdateComponentNamesShared {
     parentLayerDropdown[newBaseSubcomponentName] = temp;
   }
 
-  private static updateBaseSubcomponentName(oldBaseSubcomponentName: string, parentComponent: WorkshopComponent, subcomponentNameToPrefix: SubcomponentNameToPrefix,
+  private static updateBaseSubcomponentName(parentComponent: WorkshopComponent, subcomponentNameToPrefix: SubcomponentNameToPrefix,
       subcomponentPrefixToTotal: SubcomponentPrefixToTotal, singleSubcomponentPrefixes: SingleSubcomponentPrefixes, parentLayerDropdown: NestedDropdownStructure,
-      overwrittenDropdownNames: string[], alignedSections: AlignedSections, isOptionUpdated: boolean): boolean {
+      overwrittenDropdownNames: string[], nestedSubcomponent: NestedSubcomponent, isOptionUpdated: boolean): boolean {
+    const oldBaseSubcomponentName = nestedSubcomponent.name;
     if (oldBaseSubcomponentName === DROPDOWN_OPTION_DISPLAY_STATUS_REF) return;
     const postfix = UpdateGenericComponentNames.getPostfix(subcomponentPrefixToTotal, subcomponentNameToPrefix, singleSubcomponentPrefixes,
       oldBaseSubcomponentName);
@@ -55,8 +43,8 @@ export class UpdateGenericComponentNames extends UpdateComponentNamesShared {
     const newBaseSubcomponentName = oldBaseSubcomponentName.charAt(oldBaseSubcomponentName.length - 1) === postfix.toString()
       ? oldBaseSubcomponentName : UpdateComponentNamesShared.getNewSubcomponentName(oldBaseSubcomponentName, postfix);
     if (newBaseSubcomponentName !== oldBaseSubcomponentName) {
-      UpdateComponentNamesShared.updateName(parentComponent, parentLayerDropdown, oldBaseSubcomponentName, newBaseSubcomponentName, overwrittenDropdownNames);
-      UpdateGenericComponentNames.updateNameInAlignedSections(alignedSections, oldBaseSubcomponentName, newBaseSubcomponentName);
+      UpdateComponentNamesShared.updateName(parentComponent, parentLayerDropdown, oldBaseSubcomponentName, newBaseSubcomponentName, nestedSubcomponent,
+        overwrittenDropdownNames);
       return true;
     } else if (isOptionUpdated) {
       // fix: when we have 2, 1, 3 - the updates above to 2 and 1 move those options to the bottom, however because 3 is the same it remains in the original position
@@ -69,11 +57,15 @@ export class UpdateGenericComponentNames extends UpdateComponentNamesShared {
   private static updateAllComponentNames(parentComponent: WorkshopComponent, nestedSubcomponentsNames: string[], subcomponentNameToPrefix: SubcomponentNameToPrefix,
       subcomponentPrefixToTotal: SubcomponentPrefixToTotal, singleSubcomponentPrefixes: SingleSubcomponentPrefixes, parentLayerDropdown: NestedDropdownStructure,
       overwrittenDropdownNames: string[], alignedSections: AlignedSections): void {
+    // strategy for updating dropdown correctly is to use nestedSubcomponentsNames
     let isOptionUpdated = false;
-    for (let i = 0; i < nestedSubcomponentsNames.length; i += 1) {
-      const oldBaseSubcomponentName = nestedSubcomponentsNames[i];
-      isOptionUpdated = UpdateGenericComponentNames.updateBaseSubcomponentName(oldBaseSubcomponentName, parentComponent, subcomponentNameToPrefix,
-        subcomponentPrefixToTotal, singleSubcomponentPrefixes, parentLayerDropdown, overwrittenDropdownNames, alignedSections, isOptionUpdated);
+    const alignedSectionsKeys = Object.keys(alignedSections);
+    for (let i = 0; i < alignedSectionsKeys.length; i += 1) {
+      const section = alignedSections[alignedSectionsKeys[i]];
+      for (let j = 0; j < section.length; j += 1) {
+        isOptionUpdated = UpdateGenericComponentNames.updateBaseSubcomponentName(parentComponent, subcomponentNameToPrefix,
+          subcomponentPrefixToTotal, singleSubcomponentPrefixes, parentLayerDropdown, overwrittenDropdownNames, section[j], isOptionUpdated);
+      }
     }
   }
 

@@ -194,6 +194,7 @@ export default {
       if (this.areMenusDisplayed) {
         this.removeChildDropdownMenus(0);
         const optionElementToBeHighlighted = this.$refs.dropdownMenus.childNodes[1].childNodes[1];
+        if (!optionElementToBeHighlighted) return;
         this.displayChildDropdownMenu(optionElementToBeHighlighted, 0, 0, this.processedOptions[Object.keys(this.processedOptions)[0]]);
         if (this.mouseEnterAuxiliaryPaddingEventHandler) { this.mouseEnterAuxiliaryPaddingEventHandler(optionElementToBeHighlighted); }
         this.highlightNewOption(optionElementToBeHighlighted, 0);
@@ -246,7 +247,7 @@ export default {
           const newChildDropdownMenuElemIndex = parentDropdownMenuIndex + 2;
           // if the user moves the mouse into an option that has children and quickly moves it back to its parent dropdown, the new child dropdown that was triggered to display
           // here no longer exists
-          if (!this.$refs.dropdownMenus.childNodes[newChildDropdownMenuElemIndex].style) return;
+          if (!this.$refs.dropdownMenus.childNodes[newChildDropdownMenuElemIndex]?.style) return;
           this.$refs.dropdownMenus.childNodes[newChildDropdownMenuElemIndex].style.top = `calc(100% + ${(parentDropdownOptionIndex * optionHeight) + topStyleValueParsed}px)`;
           this.$refs.dropdownMenus.childNodes[newChildDropdownMenuElemIndex].style.left = `${currentDropdownMenuWidth + leftStyleValueParsed}px`;
           this.$refs.dropdownMenus.childNodes[newChildDropdownMenuElemIndex].style.display = 'block';

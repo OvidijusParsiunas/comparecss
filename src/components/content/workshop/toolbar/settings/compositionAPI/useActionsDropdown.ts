@@ -53,12 +53,13 @@ export default function useActionsDropdown(): UseActionsDropdown {
       triggeredOptionName, subcomponentProperties, settingSpec, settingsComponent);
   }
   
-  const mouseLeaveActionsDropdown = (settingsComponent: ComponentOptions, settingSpec: any, subcomponentProperties: SubcomponentProperties): void => {
+  const mouseLeaveActionsDropdown = (settingsComponent: ComponentOptions, settingSpec: any, subcomponentProperties: SubcomponentProperties,
+      isDropdownHidden: boolean): void => {
     if (animationState.getIsModeToggleAnimationInProgressState()) return;
     const { cssProperty, customFeatureObjectKeys } = settingSpec;
     if (cssProperty) ActionsDropdownUtils.mouseLeaveActionsDropdownCustomCss(temporaryDropdownValue, subcomponentProperties, settingSpec);
     if (customFeatureObjectKeys) ActionsDropdownUtils.mouseLeaveActionsDropdownOptionCustomFeature(temporaryDropdownValue,
-      subcomponentProperties, settingSpec, settingsComponent);
+      subcomponentProperties, settingSpec, settingsComponent, isDropdownHidden);
   }
 
   const mouseClickActionsDropdownOption = (settingsComponent: ComponentOptions, mouseClickOptionEvent: any, setting: any,

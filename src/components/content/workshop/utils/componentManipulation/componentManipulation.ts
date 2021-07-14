@@ -1,9 +1,11 @@
 import { ImportComponentModeCardEvents } from '../../toolbar/options/importComponent/modeUtils/importComponentModeCardEvents';
-import { SUBCOMPONENT_MOVE_DIRECTIONS } from '../../../../../interfaces/subcomponentMoveDirections.enum';
+import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../interfaces/subcomponentOrderDirections.enum';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
+import { ChangeSubcomponentAlignment } from './moveSubcomponent/changeSubcomponentAlignment';
 import { AddNewNestedComponent } from './addNewNestedComponent/addNewNestedComponent';
+import { ChangeSubcomponentOrder } from './moveSubcomponent/changeSubcomponentOrder';
+import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
 import { RemoveSubcomponent } from './removeSubcomponent/removeSubcomponent';
-import { MoveSubcomponent } from './moveSubcomponent/moveSubcomponent';
 import CopyComponent from './copyComponent/copyComponent';
 import ComponentJs from '../generic/componentJs';
 import { ComponentOptions } from 'vue';
@@ -45,10 +47,18 @@ export class ComponentManipulation {
     workshopComponent.$refs.contents.refreshComponent();
   }
 
-  public static moveSubcomponent(workshopComponent: ComponentOptions, direction: SUBCOMPONENT_MOVE_DIRECTIONS,
+  public static changeSubcomponentOrder(workshopComponent: ComponentOptions, direction: SUBCOMPONENT_ORDER_DIRECTIONS,
       parentComponent: WorkshopComponent): void {
-    MoveSubcomponent.move(direction, parentComponent);
+    ChangeSubcomponentOrder.change(direction, parentComponent);
     workshopComponent.$refs.contents.refreshComponent();
+  }
+
+  public static changeSubcomponentAlignment(workshopComponent: ComponentOptions, previousAlignment: ALIGNED_SECTION_TYPES,
+      newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties, shouldNamesBeUpdated: boolean,
+      shouldSubcomponentBeRealigned: boolean): void {
+    ChangeSubcomponentAlignment.change(previousAlignment, newAlignment, subcomponentProperties, shouldNamesBeUpdated,
+      shouldSubcomponentBeRealigned, workshopComponent.currentlySelectedComponent);
+    if (shouldNamesBeUpdated) workshopComponent.$refs.contents.refreshComponent();
   }
 
   public static copyComponent(workshopComponent: ComponentOptions, setActiveComponent: WorkshopComponent): void {

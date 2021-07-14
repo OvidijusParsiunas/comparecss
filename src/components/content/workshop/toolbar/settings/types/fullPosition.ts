@@ -4,7 +4,6 @@ import { SubcomponentProperties } from '../../../../../../interfaces/workshopCom
 import { LAYER_SECTION_DIVISOR } from '../../../../../../consts/layerSectionDivisor';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
-import SubcomponentAlignment from './utils/subcomponentAlignment';
 
 function getOtherSubcomponentCssPropertyDetails(): SubcomponentCssPropertyDetails {
   return [
@@ -12,7 +11,7 @@ function getOtherSubcomponentCssPropertyDetails(): SubcomponentCssPropertyDetail
   ];
 }
 
-function moveSubcomponent(optionName: string, subcomponentProperties: SubcomponentProperties): void {
+function changeSubcomponentOrder(optionName: string, subcomponentProperties: SubcomponentProperties): void {
   console.log(optionName);
   console.log(subcomponentProperties.nestedComponent.ref.componentPreviewStructure.layers);
 }
@@ -57,7 +56,8 @@ export default {
         options: { [ALIGNED_SECTION_TYPES.LEFT]: null, [ALIGNED_SECTION_TYPES.CENTER]: null, [ALIGNED_SECTION_TYPES.RIGHT]: null },
         activeOptionPropertyKeyName: 'section',
         customFeatureObjectKeys: ['customFeatures', 'alignedLayerSection', 'section'],
-        ...SubcomponentAlignment.generateMouseEventCallbacks(),
+        // WORK2
+        // ...SubcomponentAlignment.generateMouseEventCallbacks(),
       },
     },
     { 
@@ -65,7 +65,7 @@ export default {
       spec: {
         name: 'Order',
         options: { ['Left']: null, ['Right']: null },
-        optionAction: moveSubcomponent,
+        optionAction: changeSubcomponentOrder,
       },
     },
   ]

@@ -120,10 +120,10 @@
                   @mouse-enter-button="mouseEnterActionsDropdownButton(this, setting.spec, subcomponentProperties)"
                   @mouse-leave-button="mouseLeaveActionsDropdownButton(this, setting.spec, subcomponentProperties)"
                   @mouse-enter-option="mouseEnterActionsDropdownOption(this, $event, setting.spec, subcomponentProperties)"
-                  @mouse-leave-dropdown="mouseLeaveActionsDropdown(this, setting.spec, subcomponentProperties)"
+                  @mouse-leave-dropdown="mouseLeaveActionsDropdown(this, setting.spec, subcomponentProperties, false)"
                   @mouse-click-option="changeSetting(mouseClickActionsDropdownOption.bind(this, this, $event, setting, settings, subcomponentProperties))"
                   @mouse-click-new-option="mouseClickActionsDropdownNewOption($event, setting.spec, subcomponentProperties, actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.activeOptionPropertyKeyName])"
-                  @hide-dropdown-menu="mouseLeaveActionsDropdown(this, setting.spec, subcomponentProperties)"/>
+                  @hide-dropdown-menu="mouseLeaveActionsDropdown(this, setting.spec, subcomponentProperties, true)"/>
               </div>
 
               <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.CHECKBOX">

@@ -3,11 +3,12 @@ import { SubcomponentProperties } from './workshopComponent';
 import { ComponentOptions } from 'vue';
 
 export interface ActionsDropdownMouseEventCallbackEvent {
-  subcomponentProperties: SubcomponentProperties;
-  triggeredOptionName: string;
+  subcomponentProperties?: SubcomponentProperties;
+  triggeredOptionName?: string;
   previousOptionName?: string;
   settingsComponent?: ComponentOptions;
   isCustomFeatureResetTriggered?: boolean;
+  isDropdownHidden?: boolean;
 }
 
 type ActionsDropdownMouseEventCallback = (event: ActionsDropdownMouseEventCallbackEvent) => void;

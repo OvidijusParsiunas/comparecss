@@ -1,4 +1,5 @@
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
+import { NestedSubcomponent } from '../../../../../../interfaces/componentPreviewStructure';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 
 export class UpdateComponentNamesShared {
@@ -37,7 +38,8 @@ export class UpdateComponentNamesShared {
     delete nestedComponent.componentPreviewStructure.subcomponentDropdownStructure[oldSubcomponentName];
   }
 
-  private static updateAllReferencesOfTheName(parentComponent: WorkshopComponent, oldSubcomponentName: string, newSubcomponentName: string): void {
+  private static updateAllReferencesOfTheName(parentComponent: WorkshopComponent, oldSubcomponentName: string, newSubcomponentName: string,
+      nestedSubcomponent: NestedSubcomponent): void {
     parentComponent.subcomponents[newSubcomponentName] = parentComponent.subcomponents[oldSubcomponentName];
     const nestedComponent: WorkshopComponent = parentComponent.subcomponents[oldSubcomponentName].nestedComponent.ref;
     nestedComponent.activeSubcomponentName = newSubcomponentName;
@@ -46,12 +48,13 @@ export class UpdateComponentNamesShared {
     nestedComponent.componentPreviewStructure.subcomponentDropdownStructure[newSubcomponentName] = nestedComponent
       .componentPreviewStructure.subcomponentDropdownStructure[oldSubcomponentName];
     nestedComponent.subcomponents[newSubcomponentName] = parentComponent.subcomponents[oldSubcomponentName];
+    nestedSubcomponent.name = newSubcomponentName;
   }
 
   protected static updateName(parentComponent: WorkshopComponent, subcomponentDropdownStructure: NestedDropdownStructure, oldSubcomponentName: string,
-      newSubcomponentName: string, oldSubcomponentNames: string[]): void {
+      newSubcomponentName: string, nestedSubcomponent: NestedSubcomponent, oldSubcomponentNames: string[]): void {
     subcomponentDropdownStructure[newSubcomponentName] = subcomponentDropdownStructure[oldSubcomponentName];
-    UpdateComponentNamesShared.updateAllReferencesOfTheName(parentComponent, oldSubcomponentName, newSubcomponentName);
+    UpdateComponentNamesShared.updateAllReferencesOfTheName(parentComponent, oldSubcomponentName, newSubcomponentName, nestedSubcomponent);
     UpdateComponentNamesShared.removeSubcomponentsFromParentComponents(parentComponent, oldSubcomponentName);
     oldSubcomponentNames.push(oldSubcomponentName);
   }
