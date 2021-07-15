@@ -54,11 +54,11 @@ export class ComponentManipulation {
   }
 
   public static changeSubcomponentAlignment(workshopComponent: ComponentOptions, previousAlignment: ALIGNED_SECTION_TYPES,
-      newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties, shouldNamesBeUpdated: boolean,
+      newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties, shouldSubcomponentNamesBeUpdated: boolean,
       shouldSubcomponentBeRealigned: boolean): void {
-    ChangeSubcomponentAlignment.change(previousAlignment, newAlignment, subcomponentProperties, shouldNamesBeUpdated,
+    ChangeSubcomponentAlignment.change(previousAlignment, newAlignment, subcomponentProperties, shouldSubcomponentNamesBeUpdated,
       shouldSubcomponentBeRealigned, workshopComponent.currentlySelectedComponent);
-    if (shouldNamesBeUpdated) workshopComponent.$refs.contents.refreshComponent();
+    if (shouldSubcomponentNamesBeUpdated) workshopComponent.$refs.contents.refreshComponent();
   }
 
   public static copyComponent(workshopComponent: ComponentOptions, setActiveComponent: WorkshopComponent): void {
