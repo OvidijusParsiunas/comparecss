@@ -16,9 +16,9 @@ interface SubcomponentValues {
   parentLayerAlignedSections?: AlignedSections;
 }
 
-export class ChangeSubcomponentOrder {
+type CompositeTraversalResult = ComponentTraversalState & { nestedComponentMovable: boolean } 
 
-  private static readonly OUT_OF_BOUNDS_INDEX = -1;
+export class ChangeSubcomponentOrder {
 
   private static updateSubcomponentNames(subcomponentValues: SubcomponentValues, subcomponentDropdownStructure: NestedDropdownStructure,
       removedSubcomponentDropdownIndex: number): void {
@@ -51,14 +51,12 @@ export class ChangeSubcomponentOrder {
 
   private static getRightMoveIndexes(initialDropdownOptionNames: string[], subcomponentName: string): number[] {
     const currentIndex = initialDropdownOptionNames.indexOf(subcomponentName);
-    if (currentIndex === initialDropdownOptionNames.length - 1) return [ChangeSubcomponentOrder.OUT_OF_BOUNDS_INDEX, ChangeSubcomponentOrder.OUT_OF_BOUNDS_INDEX];
     const targetIndex = currentIndex + 1;
     return [currentIndex, targetIndex];
   }
 
   private static getLeftMoveIndexes(initialDropdownOptionNames: string[], subcomponentName: string): number[] {
     const currentIndex = initialDropdownOptionNames.indexOf(subcomponentName) - 1;
-    if (currentIndex === 0) return [ChangeSubcomponentOrder.OUT_OF_BOUNDS_INDEX, ChangeSubcomponentOrder.OUT_OF_BOUNDS_INDEX];
     const targetIndex = currentIndex;
     return [currentIndex, targetIndex];
   }
@@ -76,7 +74,6 @@ export class ChangeSubcomponentOrder {
     if (subcomponentValues.subcomponentName === subcomponentName) {
       const initialDropdownOptionNames = Object.keys(subcomponentDropdownStructure);
       const [currentIndex, targetIndex] = ChangeSubcomponentOrder.getMoveIndexes(subcomponentValues.direction, initialDropdownOptionNames, subcomponentName);
-      if (currentIndex === ChangeSubcomponentOrder.OUT_OF_BOUNDS_INDEX) return componentTraversalState;
       ChangeSubcomponentOrder.moveObjectPropertyToEnd(subcomponentDropdownStructure, initialDropdownOptionNames[currentIndex]);
       ChangeSubcomponentOrder.moveObjectPropertiesAfterIndexToEnd(subcomponentDropdownStructure, currentIndex);
       ChangeSubcomponentOrder.updateSubcomponentNames(subcomponentValues, subcomponentDropdownStructure, currentIndex);
@@ -86,16 +83,18 @@ export class ChangeSubcomponentOrder {
     return null;
   }
 
-  private static moveNestedComponentInPreviewStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
+  private static moveNestedComponentInPreviewStructureIfFound(componentTraversalState: ComponentTraversalState): CompositeTraversalResult {
     const { subcomponentProperties, alignedNestedComponents, index } = componentTraversalState;
     const { subcomponentProperties: targetSubcomponentProperties, direction } = this as any as SubcomponentValues;
     if (targetSubcomponentProperties === subcomponentProperties) {
       if (direction === SUBCOMPONENT_ORDER_DIRECTIONS.RIGHT && index !== alignedNestedComponents.length - 1) {
         ArrayUtils.changeElementPosition(alignedNestedComponents, index, index + 1);
+        return { ...componentTraversalState, nestedComponentMovable: true };
       } else if (direction === SUBCOMPONENT_ORDER_DIRECTIONS.LEFT && index !== 0) {
         ArrayUtils.changeElementPosition(alignedNestedComponents, index, index - 1);
+        return { ...componentTraversalState, nestedComponentMovable: true };
       }
-      return componentTraversalState;
+      return { ...componentTraversalState, nestedComponentMovable: false };
     }
     return null;
   }
@@ -109,7 +108,8 @@ export class ChangeSubcomponentOrder {
     };
     const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
       parentComponent.componentPreviewStructure,
-      ChangeSubcomponentOrder.moveNestedComponentInPreviewStructureIfFound.bind(subcomponentValues));
+      ChangeSubcomponentOrder.moveNestedComponentInPreviewStructureIfFound.bind(subcomponentValues)) as CompositeTraversalResult;
+    if (!traversalResult.nestedComponentMovable) return;
     if (traversalResult) subcomponentValues.parentLayerAlignedSections = traversalResult.alignedSections;
     ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
       parentComponent.componentPreviewStructure.subcomponentDropdownStructure,

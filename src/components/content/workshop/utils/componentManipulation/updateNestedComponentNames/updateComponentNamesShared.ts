@@ -20,15 +20,16 @@ export class UpdateComponentNamesShared {
     return postfix !== UpdateComponentNamesShared.SINGLE_SPACE_STRING && typeof postfix === 'number';
   }
 
-  protected static getNewSubcomponentName(oldSubcomponentName: string, postfix: number|string): string {
+  protected static getNewSubcomponentName(oldSubcomponentName: string, newPostfix: number|string): string {
     let postfixLengthToReplace = 1;
-    if (UpdateComponentNamesShared.isValidNumber(postfix)) {
-      const currentPostfixLength = (postfix).toString().length;
-      const nextPostfixLength = (postfix + 1).toString().length;
+    if (UpdateComponentNamesShared.isValidNumber(newPostfix)) {
+      const oldPostfix = oldSubcomponentName.match(/\d+$/)?.[0] || 1;
+      const currentPostfixLength = oldPostfix.toString().length;
+      const nextPostfixLength = newPostfix.toString().length;
       // when removing number 9, need to make sure that the next 10 will get reduced to 9, hence more chars need to be removed
       postfixLengthToReplace = currentPostfixLength < nextPostfixLength ? nextPostfixLength : currentPostfixLength;
     }
-    return UpdateComponentNamesShared.replaceSubstringAtIndex(oldSubcomponentName, oldSubcomponentName.length - postfixLengthToReplace, postfix);
+    return UpdateComponentNamesShared.replaceSubstringAtIndex(oldSubcomponentName, oldSubcomponentName.length - postfixLengthToReplace, newPostfix);
   }
 
   private static removeSubcomponentsFromParentComponents(parentComponent: WorkshopComponent, oldSubcomponentName: string): void {

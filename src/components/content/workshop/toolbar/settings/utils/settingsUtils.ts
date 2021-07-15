@@ -94,12 +94,13 @@ export default class SettingsUtils {
     const currentValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]);
     if (valueInSetObject) {
       SettingsUtils.resetSetObject(currentValue as Set<undefined>, defaultValue as Set<undefined>);
-    } else {
+    } else if (mouseClickOptionCallback) {
+      // only used for actions dropdown
+      mouseClickOptionCallback({subcomponentProperties,
+        previousOptionName: currentValue as string, triggeredOptionName: defaultValue as string, isCustomFeatureResetTriggered: true }); }
+    else {
       SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties, defaultValue);
       SettingsUtils.activateTriggers(option, subcomponentProperties);
-      // only used for actions dropdown
-      if (mouseClickOptionCallback) { mouseClickOptionCallback({subcomponentProperties,
-        previousOptionName: currentValue as string, triggeredOptionName: defaultValue as string, isCustomFeatureResetTriggered: true }); }
     }
     if (auxiliaryCustomFeatureObjectKeys) {
       SettingsUtils.resetAuxiliaryCustomFeature(auxiliaryCustomFeatureObjectKeys, subcomponentProperties, defaultKey);

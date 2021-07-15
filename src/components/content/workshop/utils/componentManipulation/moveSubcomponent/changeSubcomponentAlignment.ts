@@ -63,11 +63,12 @@ export class ChangeSubcomponentAlignment {
   }
 
   public static change(previousAlignment: ALIGNED_SECTION_TYPES, newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties,
-      shouldSubcomponentNamesBeUpdated: boolean, shouldSubcomponentBeRealigned: boolean, parentComponent: WorkshopComponent): void {
-    if (shouldSubcomponentBeRealigned) {
+      shouldSubcomponentNamesBeUpdated: boolean, parentComponent: WorkshopComponent): void {
+    if (shouldSubcomponentNamesBeUpdated) {
+      ChangeSubcomponentAlignment.updateNames(newAlignment, subcomponentProperties, parentComponent);
+    } else {
       if (newAlignment !== previousAlignment) ChangeSubcomponentAlignment.setStateAndRemoveSubcomponent(previousAlignment, subcomponentProperties);
       ChangeSubcomponentAlignment.addSubcomponentToAlignment(previousAlignment, newAlignment, subcomponentProperties);
     }
-    if (shouldSubcomponentNamesBeUpdated) ChangeSubcomponentAlignment.updateNames(newAlignment, subcomponentProperties, parentComponent);
   }
 }

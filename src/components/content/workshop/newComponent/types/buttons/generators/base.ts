@@ -50,7 +50,7 @@ class ButtonBase extends ComponentBuilder {
   private static createDefaultButtonBaseCustomFeatures(): CustomFeatures {
     return {
       lastSelectedCssValues: ComponentBuilder.createLastSelectedCssLeftValue(),
-      alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
+      alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
       animations: ComponentBuilder.createStaticFadeAnimation(),
     };
   }

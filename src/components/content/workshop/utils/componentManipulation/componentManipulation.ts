@@ -54,10 +54,9 @@ export class ComponentManipulation {
   }
 
   public static changeSubcomponentAlignment(workshopComponent: ComponentOptions, previousAlignment: ALIGNED_SECTION_TYPES,
-      newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties, shouldSubcomponentNamesBeUpdated: boolean,
-      shouldSubcomponentBeRealigned: boolean): void {
+      newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties, shouldSubcomponentNamesBeUpdated: boolean): void {
     ChangeSubcomponentAlignment.change(previousAlignment, newAlignment, subcomponentProperties, shouldSubcomponentNamesBeUpdated,
-      shouldSubcomponentBeRealigned, workshopComponent.currentlySelectedComponent);
+      workshopComponent.currentlySelectedComponent);
     if (shouldSubcomponentNamesBeUpdated) workshopComponent.$refs.contents.refreshComponent();
   }
 
