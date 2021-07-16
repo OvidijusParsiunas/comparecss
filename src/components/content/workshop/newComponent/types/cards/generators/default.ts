@@ -53,7 +53,7 @@ class DefaultCard extends ComponentBuilder {
   private static createDefaultTextCustomStaticFeatures(text?: string): CustomStaticFeatures {
     return {
       subcomponentText: ComponentBuilder.createText(text || 'text'),
-    }
+    };
   }
 
   private static overwriteTopLayerProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {

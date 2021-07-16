@@ -38,7 +38,7 @@ export class UpdateGenericComponentNames extends UpdateComponentNamesShared {
     const oldBaseSubcomponentName = nestedSubcomponent.name;
     const newPostfix = UpdateGenericComponentNames.getNewPostfix(subcomponentPrefixToTotal, subcomponentNameToPrefix, singleSubcomponentPrefixes,
       oldBaseSubcomponentName);
-    const newBaseSubcomponentName = UpdateComponentNamesShared.getNewSubcomponentName(oldBaseSubcomponentName, newPostfix);
+    const newBaseSubcomponentName = UpdateComponentNamesShared.generateNewSubcomponentName(oldBaseSubcomponentName, newPostfix);
     if (newBaseSubcomponentName !== oldBaseSubcomponentName) {
       UpdateComponentNamesShared.updateName(parentComponent, parentLayerDropdown, oldBaseSubcomponentName, newBaseSubcomponentName, nestedSubcomponent,
         overwrittenDropdownNames);

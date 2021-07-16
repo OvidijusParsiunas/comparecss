@@ -20,7 +20,7 @@ export class UpdateComponentNamesShared {
     return postfix !== UpdateComponentNamesShared.SINGLE_SPACE_STRING && typeof postfix === 'number';
   }
 
-  protected static getNewSubcomponentName(oldSubcomponentName: string, newPostfix: number|string): string {
+  protected static generateNewSubcomponentName(oldSubcomponentName: string, newPostfix: number|string): string {
     let postfixLengthToReplace = 1;
     if (UpdateComponentNamesShared.isValidNumber(newPostfix)) {
       const oldPostfix = oldSubcomponentName.match(/\d+$/)?.[0] || 1;

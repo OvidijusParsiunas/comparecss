@@ -10,10 +10,14 @@ export class ChangeSubcomponentAlignment {
   private static updateNames(newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties, parentComponent: WorkshopComponent): void {
     const parentLayer = ComponentPreviewStructureSearchUtils.getLayerByName(parentComponent, subcomponentProperties.parentLayer.name);
     UpdateGenericComponentNames.updateViaLayerObject(parentComponent, parentLayer);
-    parentComponent.activeSubcomponentName = subcomponentProperties.parentLayer.sections.alignedSections[newAlignment][0].name;
+    // UX - check if need to set the subcomponent to the right of the alignment
+    // parentComponent.activeSubcomponentName = newAlignmentSubcomponents[newAlignmentSubcomponents.length - 1].name;
+    const newAlignmentSubcomponents = subcomponentProperties.parentLayer.sections.alignedSections[newAlignment];
+    parentComponent.activeSubcomponentName = newAlignmentSubcomponents[0].name;
   }
 
   private static addSubcomponentToNewAlignment(newAlignment: ALIGNED_SECTION_TYPES, alignedSections: AlignedSections): void {
+    // alignedSections[newAlignment].push(subcomponentAlignmentDropdownState.getNestedSubcomponent());
     alignedSections[newAlignment].unshift(subcomponentAlignmentDropdownState.getNestedSubcomponent());
   }
 

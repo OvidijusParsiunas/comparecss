@@ -18,7 +18,7 @@ export class UpdateLayerComponentNames extends UpdateComponentNamesShared {
       layersDropdownStructure: NestedDropdownStructure, overwrittenDropdownNames: string[], layers: Layer[], startingLayerNumber: number): void {
     for (let i = startingLayerNumber; i <= layerSubcomponentsNames.length; i += 1) {
       const layerSubcomponentName = layerSubcomponentsNames[i - 1];
-      const newSubcomponentName = UpdateComponentNamesShared.getNewSubcomponentName(layerSubcomponentName, i);
+      const newSubcomponentName = UpdateComponentNamesShared.generateNewSubcomponentName(layerSubcomponentName, i);
       UpdateLayerComponentNames.updateLayerName(parentComponent, layersDropdownStructure, layerSubcomponentName, newSubcomponentName,
         layers[i - 1], overwrittenDropdownNames);
     }

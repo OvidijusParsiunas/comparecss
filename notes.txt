@@ -27,6 +27,7 @@ consider making alert and button into a separately generated compontes in compon
 when changing the range and clicking the right mouse button causes the popover to disappear
 
 UX:
+  when moving subcomponent alignment, should the subcomponent be placed at the right or left of the alignment
   which expanded modal preview toggle button highlighted style is more preferable, the chromium or firefox one
   on using the select key for picking a subcomponent, check whether the mouse should always be a pointer, marked with UX - SUBCOMPONENT SELECT
   on expanded modal mode toggle open and close animations, does the toolbar needs to fade in and out with the same duration as modal, marked with UX - EXPANDED MODAL TOGGLE ANIMATION
