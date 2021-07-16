@@ -1,33 +1,34 @@
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../consts/workshopToolbarOptionTypes.enum';
-import border from './border';
-import borderBottom from './borderBottom';
-import borderTop from './borderTop';
-import circleBorder from './circleBorder';
-import color from './color';
-import shadow from './shadow';
-import shadowVertical from './shadowVertical';
-import size from './size';
-import sizeWidth from './sizeWidth';
-import sizeHeight from './sizeHeight';
-import padding from './padding';
-import margin from './margin';
-import font from './font';
-import fullPosition from './fullPosition';
-import background from './background';
-import modalPosition from './modalPosition';
+import nestedSubcomponentPositionNoAlign from './nestedSubcomponentPositionNoAlign';
 import nestedSubcomponentPosition from './nestedSubcomponentPosition';
 import nestedSubcomponentMargin from './nestedSubcomponentMargin';
-import backdrop from './backdrop';
-import text from './text';
-import textSize from './textSize';
-import textColor from './textColor';
-import nestedSubcomponentPositionNoAlign from './nestedSubcomponentPositionNoAlign';
 import buttonAnimations from './buttonAnimations';
 import modalAnimations from './modalAnimations';
-import modalActions from './modalActions';
 import alertAnimations from './alertAnimations';
-import image from './image';
+import shadowVertical from './shadowVertical';
+import modalPosition from './modalPosition';
+import layerPosition from './layerPosition';
+import borderBottom from './borderBottom';
+import circleBorder from './circleBorder';
+import fullPosition from './fullPosition';
+import modalActions from './modalActions';
+import sizeHeight from './sizeHeight';
+import background from './background';
 import imageScale from './imageScale';
+import borderTop from './borderTop';
+import sizeWidth from './sizeWidth';
+import textColor from './textColor';
+import backdrop from './backdrop';
+import textSize from './textSize';
+import padding from './padding';
+import border from './border';
+import shadow from './shadow';
+import margin from './margin';
+import color from './color';
+import image from './image';
+import size from './size';
+import font from './font';
+import text from './text';
 
 type OptionToSettings = {
   [key in WORKSHOP_TOOLBAR_OPTION_TYPES]?: any;
@@ -63,4 +64,5 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ACTIONS]: modalActions,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE]: image,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE_SCALE]: imageScale,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.LAYER_POSITION]: layerPosition,
 };

@@ -12,6 +12,7 @@ overflow
 try with button tags
 check to see if text can be placed into another div
 
+when switching subcomponent alignment, highlight the subcomponent so that it is clear where it is being moved
 an alternative to using spaces for ids would be to append id numbers at the start and cut them out from the dropdown option elements
 when a subcomponent is added or removed - should have an appropriate animation like stretch to make it more interactive
 when hovering the insync button - the popover should say what component/subcomponent is it in-sync to

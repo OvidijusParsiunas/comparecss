@@ -11,7 +11,7 @@ function changeSubcomponentOrder(settingsComponent: ComponentOptions, direction:
   settingsComponent.$emit('change-subcomponent-order', [direction, parentComponent] as ChangeSubcomponentOrderEvent);
 }
 
-function emitChangeSubcomponentAlignmentEvent(event: ActionsDropdownMouseEventCallbackEvent, shouldSubcomponentNamesBeUpdated?: boolean): void {
+function changeSubcomponentAlignment(event: ActionsDropdownMouseEventCallbackEvent, shouldSubcomponentNamesBeUpdated?: boolean): void {
   const { settingsComponent, previousOptionName, triggeredOptionName, subcomponentProperties, isCustomFeatureResetTriggered } = event;
   if (isCustomFeatureResetTriggered) return;
   settingsComponent.$emit('change-subcomponent-alignment',
@@ -20,14 +20,14 @@ function emitChangeSubcomponentAlignmentEvent(event: ActionsDropdownMouseEventCa
 
 function changeSubcomponentAlignmentOptionSelect(event: ActionsDropdownMouseEventCallbackEvent): void {
   const isOptionSelected = this as any as boolean;
-  emitChangeSubcomponentAlignmentEvent(event, isOptionSelected);
+  changeSubcomponentAlignment(event, isOptionSelected);
   if ((isOptionSelected || event.isDropdownHidden) && !event.isCustomFeatureResetTriggered) subcomponentAlignmentDropdownState.reset();
 }
 
 function generateMouseEventCallbacks(): ActionsDropdownMouseEventCallbacks {
   return {
     mouseClickOptionCallback: changeSubcomponentAlignmentOptionSelect.bind(true),
-    mouseEnterOptionCallback: emitChangeSubcomponentAlignmentEvent,
+    mouseEnterOptionCallback: changeSubcomponentAlignment,
     mouseLeaveDropdownCallback: changeSubcomponentAlignmentOptionSelect,
   };
 }

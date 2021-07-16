@@ -20,10 +20,14 @@ export class UpdateComponentNamesShared {
     return postfix !== UpdateComponentNamesShared.SINGLE_SPACE_STRING && typeof postfix === 'number';
   }
 
+  private static parsePostfix(subcomponentName: string): string {
+    return subcomponentName.match(/\d+$/)?.[0];
+  }
+
   protected static generateNewSubcomponentName(oldSubcomponentName: string, newPostfix: number|string): string {
     let postfixLengthToReplace = 1;
     if (UpdateComponentNamesShared.isValidNumber(newPostfix)) {
-      const oldPostfix = oldSubcomponentName.match(/\d+$/)?.[0] || 1;
+      const oldPostfix = UpdateComponentNamesShared.parsePostfix(oldSubcomponentName) || 1;
       const currentPostfixLength = oldPostfix.toString().length;
       const nextPostfixLength = newPostfix.toString().length;
       // when removing number 9, need to make sure that the next 10 will get reduced to 9, hence more chars need to be removed

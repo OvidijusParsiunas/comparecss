@@ -7,15 +7,23 @@ import { defaultLayerOptions } from './defaultLayer';
 
 type LayerOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT;
 
-const cardLayerSpecificOptions = [
+const cardLayerSpecificOptionsOverwrite = [
   {
     buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
     type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER_TOP,
   },
 ];
 
+const cardLayerSpecificOptionsStatic = [
+  {
+    buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
+    type: WORKSHOP_TOOLBAR_OPTION_TYPES.LAYER_POSITION,
+  },
+]
+
 export const cardLayerOptions: SubcomponentOptions<LayerOptionsModes> = {
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
-    ...ComponentOptionsUtils.overwriteOptions(defaultLayerOptions[CSS_PSEUDO_CLASSES.DEFAULT], cardLayerSpecificOptions),
+    ...ComponentOptionsUtils.overwriteOptions(defaultLayerOptions[CSS_PSEUDO_CLASSES.DEFAULT], cardLayerSpecificOptionsOverwrite),
+    ...cardLayerSpecificOptionsStatic,
   ],
 };
