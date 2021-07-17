@@ -109,6 +109,7 @@ class DefaultCard extends ComponentBuilder {
       layer1Component.coreSubcomponentNames.base);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.AVATAR, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentNames.base);
+    UpdateGenericComponentNames.updateViaLayerObject(cardComponent, cardComponent.componentPreviewStructure.layers[0]);
   }
 }
 
