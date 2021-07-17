@@ -109,7 +109,7 @@ export default {
     getXButtonOverlayStyleProperties(): WorkshopComponentCss[] {
       const { baseSubcomponentProperties: { overwrittenCustomCssObj, customCss } } = this.component.componentPreviewStructure;
       const customCssObj = overwrittenCustomCssObj || customCss;
-      return [customCssObj[CSS_PSEUDO_CLASSES.DEFAULT], { top: ''}];
+      return [customCssObj[CSS_PSEUDO_CLASSES.DEFAULT], { top: '', color: 'none', backgroundColor: 'none'}];
     },
   },
   components: {
