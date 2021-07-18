@@ -6,4 +6,5 @@ export interface DropdownOptionDisplayStatusRef {
 
 export interface DropdownOptionDisplayStatus {
   isEnabled: boolean;
+  hiddenText?: string;
 }

@@ -1,5 +1,5 @@
-import { NestedDropdownStructure } from './nestedDropdownStructure';
+import { DropdownOptionDisplayStatusRef } from './dropdownOptionDisplayStatus';
 
-export type OptionMouseEnter = [NestedDropdownStructure?, number?, number?];
+export type OptionMouseEnter = [DropdownOptionDisplayStatusRef?, number?, number?, string?];
 
 export type OptionMouseLeave = HTMLElement;

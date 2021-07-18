@@ -66,9 +66,10 @@ export default {
     getOptionDisplayValue(optionName: string): string {
         return optionName === DROPDOWN_OPTION_DISPLAY_STATUS_REF ? 'none !important' : '';
     },
-    mouseEnter(innerDropdownOptions: NestedDropdownStructure, optionIndex: number): void {
+    mouseEnter(innerDropdownOptions: DropdownOptionDisplayStatusRef, optionIndex: number): void {
       if (this.isFirstOptionNotDisplayed) optionIndex -= 1;
-      this.$emit('mouse-enter-option', [innerDropdownOptions, this.nestedDropdownIndex, optionIndex] as OptionMouseEnter);
+      const hiddenText = innerDropdownOptions[DROPDOWN_OPTION_DISPLAY_STATUS_REF]?.hiddenText;
+      this.$emit('mouse-enter-option', [innerDropdownOptions, this.nestedDropdownIndex, optionIndex, hiddenText] as OptionMouseEnter);
     },
     mouseLeave(): void {
       this.$emit('mouse-leave-option', event.target as OptionMouseLeave);

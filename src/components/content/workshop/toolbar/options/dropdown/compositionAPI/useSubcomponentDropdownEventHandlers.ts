@@ -33,10 +33,6 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
     }
   }
 
-  function getOptionNameFromElement(highlightedOptionElement: HTMLElement): string {
-    return (highlightedOptionElement.childNodes[0] as HTMLElement).innerHTML;
-  }
-
   const mouseEnterButtonEventHandler = (): void => {
     if (!animationState.getIsModeToggleAnimationInProgressState()) {
       toggleSubcomponentOverlayDisplay(objectContainingActiveOption.value[activeOptionPropertyKeyName.value], 'block'); 
@@ -47,24 +43,24 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
     toggleSubcomponentOverlayDisplay(objectContainingActiveOption.value[activeOptionPropertyKeyName.value], 'none');
   }
 
-  const mouseEnterOptionEventHandler = (optionElementToBeHighlighted: HTMLElement): void => {
-    toggleSubcomponentOverlayDisplay(getOptionNameFromElement(optionElementToBeHighlighted), 'block');
+  const mouseEnterOptionEventHandler = (highlightedOption: string): void => {
+    toggleSubcomponentOverlayDisplay(highlightedOption, 'block');
   }
 
-  const mouseLeaveOptionEventHandler = (optionElementToBeHighlighted: HTMLElement): void => {
-    toggleSubcomponentOverlayDisplay(getOptionNameFromElement(optionElementToBeHighlighted), 'none');
+  const mouseLeaveOptionEventHandler = (highlightedOption: string): void => {
+    toggleSubcomponentOverlayDisplay(highlightedOption, 'none');
   }
 
-  const hideDropdownMenuEventHandler = (optionElementToBeHighlighted: HTMLElement): void => {
-    toggleSubcomponentOverlayDisplay(getOptionNameFromElement(optionElementToBeHighlighted), 'none');
+  const hideDropdownMenuEventHandler = (highlightedOption: string): void => {
+    toggleSubcomponentOverlayDisplay(highlightedOption, 'none');
   }
 
-  const mouseEnterAuxiliaryPaddingEventHandler = (optionElementToBeHighlighted: HTMLElement): void => {
-    toggleSubcomponentOverlayDisplay(getOptionNameFromElement(optionElementToBeHighlighted), 'block');
+  const mouseEnterAuxiliaryPaddingEventHandler = (highlightedOption: string): void => {
+    toggleSubcomponentOverlayDisplay(highlightedOption, 'block');
   }
 
-  const mouseLeaveAuxiliaryPaddingEventHandler = (blurredOptionElement: HTMLElement): void => {
-    toggleSubcomponentOverlayDisplay(getOptionNameFromElement(blurredOptionElement), 'none');
+  const mouseLeaveAuxiliaryPaddingEventHandler = (highlightedOption: string): void => {
+    toggleSubcomponentOverlayDisplay(highlightedOption, 'none');
   }
 
   return {

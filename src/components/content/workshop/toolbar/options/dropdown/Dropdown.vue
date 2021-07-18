@@ -196,25 +196,35 @@ export default {
         const optionElementToBeHighlighted = this.$refs.dropdownMenus.childNodes[1].childNodes[1];
         if (!optionElementToBeHighlighted) return;
         this.displayChildDropdownMenu(optionElementToBeHighlighted, 0, 0, this.processedOptions[Object.keys(this.processedOptions)[0]]);
-        if (this.mouseEnterAuxiliaryPaddingEventHandler) { this.mouseEnterAuxiliaryPaddingEventHandler(optionElementToBeHighlighted); }
+        if (this.mouseEnterAuxiliaryPaddingEventHandler) {
+          const highlightedOption = this.extractHighlightedOptionText(optionElementToBeHighlighted);
+          this.mouseEnterAuxiliaryPaddingEventHandler(highlightedOption);
+          }
         this.highlightNewOption(optionElementToBeHighlighted, 0);
       }
     },
     mouseLeaveAuxiliaryPadding(): void {
       if (this.areMenusDisplayed) {
         const blurredOptionElement = this.$refs.dropdownMenus.childNodes[1].childNodes[1];
-        if (this.mouseLeaveAuxiliaryPaddingEventHandler) this.mouseLeaveAuxiliaryPaddingEventHandler(blurredOptionElement);
+        if (this.mouseLeaveAuxiliaryPaddingEventHandler) {
+          const highlightedOption = this.extractHighlightedOptionText(blurredOptionElement);
+          this.mouseLeaveAuxiliaryPaddingEventHandler(highlightedOption);
+        }
       }
     },
     mouseLeaveDropdown(): void {
       this.$emit('mouse-leave-dropdown');
     },
+    extractHighlightedOptionText(optionElement: HTMLElement): string {
+      return (optionElement.childNodes[0] as HTMLElement).innerHTML;
+    },
     mouseEnterOption(optionMouseEnterEvent: OptionMouseEnter): void {
-      const [dropdownOptions, dropdownMenuIndex, dropdownOptionIndex] = optionMouseEnterEvent;
+      const [dropdownOptions, dropdownMenuIndex, dropdownOptionIndex, hiddenText] = optionMouseEnterEvent;
       this.removeChildDropdownMenus(dropdownMenuIndex);
       this.displayChildDropdownMenu(event.target, dropdownMenuIndex, dropdownOptionIndex, dropdownOptions);
-      if (this.mouseEnterOptionEventHandler) { this.mouseEnterOptionEventHandler(event.target); }
-      this.$emit('mouse-enter-option', ((event.target as HTMLElement).childNodes[0] as HTMLElement).innerHTML);
+      const highlightedOption = this.extractHighlightedOptionText(event.target);
+      if (this.mouseEnterOptionEventHandler) { this.mouseEnterOptionEventHandler(hiddenText || highlightedOption); }
+      this.$emit('mouse-enter-option', highlightedOption);
       this.highlightNewOption(event.target, dropdownMenuIndex);
     },
     removeChildDropdownMenus(dropdownMenuIndex: number): void {
@@ -295,7 +305,10 @@ export default {
       return (highlightedOptionElement.childNodes[0] as HTMLElement).innerHTML;
     },
     mouseLeaveOption(blurredOptionElement: OptionMouseLeave): void {
-      if (this.mouseLeaveOptionEventHandler) this.mouseLeaveOptionEventHandler(blurredOptionElement);
+      if (this.mouseLeaveOptionEventHandler) {
+        const highlightedOption = this.extractHighlightedOptionText(blurredOptionElement);
+        this.mouseLeaveOptionEventHandler(highlightedOption);
+      }
     },
     hideDropdownMenu(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
       if (event.type === 'mousedown' && this.isIgnoreOnMouseDown((event.target as HTMLElement).classList)) {
@@ -324,7 +337,8 @@ export default {
       }
       if ((!isDropdownButtonClicked || closedViaKey) && this.lastHoveredOptionElement) {
         if (this.hideDropdownMenuEventHandler) {
-          this.hideDropdownMenuEventHandler(this.lastHoveredOptionElement);
+          const highlightedOption = this.extractHighlightedOptionText(this.lastHoveredOptionElement);
+          this.hideDropdownMenuEventHandler(highlightedOption);
         } else {
           this.$emit('hide-dropdown-menu');
         }

@@ -1,9 +1,9 @@
 export interface DropdownCompositionAPI {
   mouseEnterButtonEventHandler?: () => void;
   mouseLeaveButtonEventHandler?: () => void;
-  mouseEnterOptionEventHandler?: (optionElementToBeHighlighted: HTMLElement) => void;
-  mouseLeaveOptionEventHandler?: (optionElementToBeHighlighted: HTMLElement) => void;
-  hideDropdownMenuEventHandler?: (optionElementToBeHighlighted: HTMLElement) => void;
-  mouseEnterAuxiliaryPaddingEventHandler?: (optionElementToBeHighlighted: HTMLElement) => void;
-  mouseLeaveAuxiliaryPaddingEventHandler?: (optionElementToBeHighlighted: HTMLElement) => void;
+  mouseEnterOptionEventHandler?: (highlightedOption: string) => void;
+  mouseLeaveOptionEventHandler?: (highlightedOption: string) => void;
+  hideDropdownMenuEventHandler?: (highlightedOption: string) => void;
+  mouseEnterAuxiliaryPaddingEventHandler?: (highlightedOption: string) => void;
+  mouseLeaveAuxiliaryPaddingEventHandler?: (highlightedOption: string) => void;
 }
