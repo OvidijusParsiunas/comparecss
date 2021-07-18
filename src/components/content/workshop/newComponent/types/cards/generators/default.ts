@@ -95,7 +95,7 @@ class DefaultCard extends ComponentBuilder {
     const layer1Component = AddNewLayerComponent.add(cardComponent, DEFAULT_STYLES.DEFAULT, true, DefaultCard.overwriteTopLayerProperties);
     const layer2Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
     const layer3Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
-    UpdateLayerComponentNames.update(cardComponent, 1);
+    UpdateLayerComponentNames.update(cardComponent, 0);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentNames.base, [DefaultCard.overwriteTitleProperties]);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,

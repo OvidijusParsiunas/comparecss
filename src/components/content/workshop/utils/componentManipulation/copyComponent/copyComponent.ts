@@ -52,7 +52,7 @@ export default class CopyComponent {
       UpdateGenericComponentNames.updateViaLayerObject(newComponent, newComponent.componentPreviewStructure.layers[index]);
       CopySubcomponents.copyComponentSubcomponents(layer.subcomponentProperties.nestedComponent.ref, newLayer);
     });
-    UpdateLayerComponentNames.update(newComponent, 1);
+    UpdateLayerComponentNames.update(newComponent, 0);
   }
 
   private static copySubcomponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {

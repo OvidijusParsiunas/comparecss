@@ -6,6 +6,7 @@ import { AddNewNestedComponent } from './addNewNestedComponent/addNewNestedCompo
 import { ChangeSubcomponentOrder } from './moveSubcomponent/changeSubcomponentOrder';
 import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
 import { RemoveSubcomponent } from './removeSubcomponent/removeSubcomponent';
+import { ChangeLayerOrder } from './moveSubcomponent/changeLayerOrder';
 import CopyComponent from './copyComponent/copyComponent';
 import ComponentJs from '../generic/componentJs';
 import { ComponentOptions } from 'vue';
@@ -49,7 +50,9 @@ export class ComponentManipulation {
 
   public static changeSubcomponentOrder(workshopComponent: ComponentOptions, direction: SUBCOMPONENT_ORDER_DIRECTIONS,
       parentComponent: WorkshopComponent): void {
-    ChangeSubcomponentOrder.change(direction, parentComponent);
+    // WORK2: this will need to be moved out
+    if (direction === SUBCOMPONENT_ORDER_DIRECTIONS.LEFT || direction === SUBCOMPONENT_ORDER_DIRECTIONS.RIGHT) ChangeSubcomponentOrder.change(direction, parentComponent);
+    if (direction === SUBCOMPONENT_ORDER_DIRECTIONS.UP || direction === SUBCOMPONENT_ORDER_DIRECTIONS.DOWN) ChangeLayerOrder.change(direction, parentComponent);
     workshopComponent.$refs.contents.refreshComponent();
   }
 

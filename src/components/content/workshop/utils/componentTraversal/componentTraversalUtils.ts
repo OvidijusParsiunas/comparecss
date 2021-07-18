@@ -18,14 +18,14 @@ type TraverseComponentCallback = (componentTraversalState: ComponentTraversalSta
 
 export default class ComponentTraversalUtils {
 
-  private static inspectSubcomponent(subcomponentDropdownStructure: NestedDropdownStructure, 
+  private static inspectSubcomponent(subcomponentDropdownStructure: NestedDropdownStructure, index: number,
       callback: TraverseComponentCallback, subcomponentNameStack: string[], subcomponentName: string): ComponentTraversalState {
     if (subcomponentName === DROPDOWN_OPTION_DISPLAY_STATUS_REF) {
       subcomponentNameStack.splice(subcomponentNameStack.length - 1, 1);
       return null;
     }
     subcomponentNameStack.push(subcomponentName);
-    const callbackResult = callback({subcomponentName, subcomponentDropdownStructure, subcomponentNameStack});
+    const callbackResult = callback({subcomponentName, subcomponentDropdownStructure, subcomponentNameStack, index});
     if (callbackResult) return callbackResult;
     if (Object.keys(subcomponentDropdownStructure[subcomponentName]).length > 0) {
       const traversalResult = ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
@@ -41,8 +41,8 @@ export default class ComponentTraversalUtils {
     const subcomponentDropdownStructureKeys = Object.keys(subcomponentDropdownStructure);
     for (let i = 0; i < subcomponentDropdownStructureKeys.length; i += 1) {
       const subcomponentName = subcomponentDropdownStructureKeys[i];
-      const inspectionResult = ComponentTraversalUtils.inspectSubcomponent(subcomponentDropdownStructure,
-        callback, subcomponentNameStack, subcomponentName)
+      const inspectionResult = ComponentTraversalUtils.inspectSubcomponent(subcomponentDropdownStructure, i,
+        callback, subcomponentNameStack, subcomponentName);
       if (inspectionResult) return inspectionResult;
     }
     return null;

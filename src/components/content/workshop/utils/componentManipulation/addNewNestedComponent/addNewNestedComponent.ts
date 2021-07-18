@@ -17,8 +17,7 @@ export class AddNewNestedComponent {
 
   private static updateLayerComponentNames(currentlySelectedComponent: WorkshopComponent): void {
     const layerComponentsNames = Object.keys(ComponentPreviewStructureSearchUtils.getComponentLayers(currentlySelectedComponent));
-    const startingLayerNumber = layerComponentsNames.length === 2 ? 1 : layerComponentsNames.length;
-    UpdateLayerComponentNames.update(currentlySelectedComponent, startingLayerNumber);
+    UpdateLayerComponentNames.update(currentlySelectedComponent, layerComponentsNames.length - 1);
   }
 
   public static add(currentlySelectedComponent: WorkshopComponent, subcomponentType = 'nestedButton'): void {

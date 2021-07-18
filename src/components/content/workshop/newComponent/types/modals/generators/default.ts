@@ -93,7 +93,7 @@ class DefaultModal extends ComponentBuilder {
     const layer1Component = AddNewLayerComponent.add(component, DEFAULT_STYLES.DEFAULT, true, DefaultModal.overwriteTopLayerProperties);
     const layer2Component = AddNewLayerComponent.add(component, LAYER_STYLES.CARD, true);
     const layer3Component = AddNewLayerComponent.add(component, LAYER_STYLES.CARD, true);
-    UpdateLayerComponentNames.update(component, 1);
+    UpdateLayerComponentNames.update(component, 0);
     AddNewGenericComponent.add(component, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentNames.base, [DefaultModal.overwriteTitleProperties]);
     AddNewGenericComponent.add(component, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,

@@ -61,6 +61,6 @@ export class UpdateComponentNamesShared {
     subcomponentDropdownStructure[newSubcomponentName] = subcomponentDropdownStructure[oldSubcomponentName];
     UpdateComponentNamesShared.updateAllReferencesOfTheName(parentComponent, oldSubcomponentName, newSubcomponentName, nestedSubcomponent);
     UpdateComponentNamesShared.removeSubcomponentsFromParentComponents(parentComponent, oldSubcomponentName);
-    oldSubcomponentNames.push(oldSubcomponentName);
+    oldSubcomponentNames.push(oldSubcomponentName); 
   }
 }

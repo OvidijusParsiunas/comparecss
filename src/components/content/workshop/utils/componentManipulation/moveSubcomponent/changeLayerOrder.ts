@@ -2,25 +2,30 @@ import ComponentTraversalUtils, { ComponentTraversalState } from '../../componen
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../../interfaces/subcomponentOrderDirections.enum';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { UpdateGenericComponentNames } from '../updateNestedComponentNames/updateGenericComponentNames';
+import { UpdateLayerComponentNames } from '../updateNestedComponentNames/updateLayerComponentNames';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { AlignedSections } from '../../../../../../interfaces/componentPreviewStructure';
+import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { ArrayUtils } from '../../generic/arrayUtils';
+import { layer } from '@fortawesome/fontawesome-svg-core';
 
 interface SubcomponentValues {
   direction: SUBCOMPONENT_ORDER_DIRECTIONS;
   subcomponentName: string;
   parentComponent: WorkshopComponent;
   subcomponentProperties: SubcomponentProperties;
-  parentLayerAlignedSections?: AlignedSections;
+  // parentLayerAlignedSections?: AlignedSections;
 }
 
+// WORK2
 type CompositeTraversalResult = ComponentTraversalState & { nestedComponentMovable: boolean } 
 
-export class ChangeSubcomponentOrder {
+export class ChangeLayerOrder {
 
-  private static updateSubcomponentNames(subcomponentValues: SubcomponentValues, subcomponentDropdownStructure: NestedDropdownStructure): void {
-    const { parentComponent, parentLayerAlignedSections } = subcomponentValues;
-      UpdateGenericComponentNames.update(parentComponent, subcomponentDropdownStructure, parentLayerAlignedSections);
+  private static updateSubcomponentNames(subcomponentValues: SubcomponentValues, subcomponentDropdownStructure: NestedDropdownStructure,
+      removedSubcomponentDropdownIndex: number): void {
+    const { parentComponent } = subcomponentValues;
+    UpdateLayerComponentNames.update(parentComponent, removedSubcomponentDropdownIndex);
   }
 
   private static setNewActiveSubcomponentName(subcomponentValues: SubcomponentValues, subcomponentDropdownStructure: NestedDropdownStructure,
@@ -38,7 +43,7 @@ export class ChangeSubcomponentOrder {
   private static moveObjectPropertiesAfterIndexToEnd(subcomponentDropdownStructure: NestedDropdownStructure, currentIndex: number): void {
     const dropdownOptionNames = Object.keys(subcomponentDropdownStructure);
     for (let i = currentIndex + 1; i < dropdownOptionNames.length - 1; i += 1) {
-      ChangeSubcomponentOrder.moveObjectPropertyToEnd(subcomponentDropdownStructure, dropdownOptionNames[i]);
+      ChangeLayerOrder.moveObjectPropertyToEnd(subcomponentDropdownStructure, dropdownOptionNames[i]);
     }
   }
 
@@ -56,35 +61,36 @@ export class ChangeSubcomponentOrder {
 
   private static getMoveIndexes(direction: string, initialDropdownOptionNames: string[], subcomponentName: string): number[] {
     if (direction === SUBCOMPONENT_ORDER_DIRECTIONS.RIGHT) {
-      return ChangeSubcomponentOrder.getRightMoveIndexes(initialDropdownOptionNames, subcomponentName);
+      return ChangeLayerOrder.getRightMoveIndexes(initialDropdownOptionNames, subcomponentName);
     }
-    return ChangeSubcomponentOrder.getLeftMoveIndexes(initialDropdownOptionNames, subcomponentName);
+    return ChangeLayerOrder.getLeftMoveIndexes(initialDropdownOptionNames, subcomponentName);
   }
 
   private static moveNestedComponentInDropdownStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
-    const { subcomponentName, subcomponentDropdownStructure } = componentTraversalState;
+    const { subcomponentName, subcomponentDropdownStructure, index } = componentTraversalState;
     const subcomponentValues = this as any as SubcomponentValues;
     if (subcomponentValues.subcomponentName === subcomponentName) {
+      const moveIndex = subcomponentValues.direction === SUBCOMPONENT_ORDER_DIRECTIONS.UP ? index - 1: index;
       const initialDropdownOptionNames = Object.keys(subcomponentDropdownStructure);
-      const [currentIndex, targetIndex] = ChangeSubcomponentOrder.getMoveIndexes(subcomponentValues.direction, initialDropdownOptionNames, subcomponentName);
-      ChangeSubcomponentOrder.moveObjectPropertyToEnd(subcomponentDropdownStructure, initialDropdownOptionNames[currentIndex]);
-      ChangeSubcomponentOrder.moveObjectPropertiesAfterIndexToEnd(subcomponentDropdownStructure, currentIndex);
-      ChangeSubcomponentOrder.updateSubcomponentNames(subcomponentValues, subcomponentDropdownStructure);
-      ChangeSubcomponentOrder.setNewActiveSubcomponentName(subcomponentValues, subcomponentDropdownStructure, targetIndex);
+      ChangeLayerOrder.moveObjectPropertyToEnd(subcomponentDropdownStructure, initialDropdownOptionNames[moveIndex]);
+      ChangeLayerOrder.moveObjectPropertiesAfterIndexToEnd(subcomponentDropdownStructure, moveIndex);
+      ChangeLayerOrder.updateSubcomponentNames(subcomponentValues, subcomponentDropdownStructure, moveIndex);
+      const newIndex = subcomponentValues.direction === SUBCOMPONENT_ORDER_DIRECTIONS.UP ? index - 1 : index + 1;
+      subcomponentValues.parentComponent.activeSubcomponentName = subcomponentValues.parentComponent.componentPreviewStructure.layers[newIndex].name;
       return componentTraversalState;
     }
     return null;
   }
 
   private static moveNestedComponentInPreviewStructureIfFound(componentTraversalState: ComponentTraversalState): CompositeTraversalResult {
-    const { subcomponentProperties, alignedNestedComponents, index } = componentTraversalState;
+    const { subcomponentProperties, layers, index } = componentTraversalState;
     const { subcomponentProperties: targetSubcomponentProperties, direction } = this as any as SubcomponentValues;
     if (targetSubcomponentProperties === subcomponentProperties) {
-      if (direction === SUBCOMPONENT_ORDER_DIRECTIONS.RIGHT && index !== alignedNestedComponents.length - 1) {
-        ArrayUtils.changeElementPosition(alignedNestedComponents, index, index + 1);
+      if (direction === SUBCOMPONENT_ORDER_DIRECTIONS.UP && index !== 0) {
+        ArrayUtils.changeElementPosition(layers, index, index - 1);
         return { ...componentTraversalState, nestedComponentMovable: true };
-      } else if (direction === SUBCOMPONENT_ORDER_DIRECTIONS.LEFT && index !== 0) {
-        ArrayUtils.changeElementPosition(alignedNestedComponents, index, index - 1);
+      } else if (direction === SUBCOMPONENT_ORDER_DIRECTIONS.DOWN && index !== layers.length - 1) {
+        ArrayUtils.changeElementPosition(layers, index, index + 1);
         return { ...componentTraversalState, nestedComponentMovable: true };
       }
       return { ...componentTraversalState, nestedComponentMovable: false };
@@ -101,11 +107,10 @@ export class ChangeSubcomponentOrder {
     };
     const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
       parentComponent.componentPreviewStructure,
-      ChangeSubcomponentOrder.moveNestedComponentInPreviewStructureIfFound.bind(subcomponentValues)) as CompositeTraversalResult;
+      ChangeLayerOrder.moveNestedComponentInPreviewStructureIfFound.bind(subcomponentValues)) as CompositeTraversalResult;
     if (!traversalResult.nestedComponentMovable) return;
-    if (traversalResult) subcomponentValues.parentLayerAlignedSections = traversalResult.alignedSections;
     ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
       parentComponent.componentPreviewStructure.subcomponentDropdownStructure,
-      ChangeSubcomponentOrder.moveNestedComponentInDropdownStructureIfFound.bind(subcomponentValues));
+      ChangeLayerOrder.moveNestedComponentInDropdownStructureIfFound.bind(subcomponentValues));
   }
 }
