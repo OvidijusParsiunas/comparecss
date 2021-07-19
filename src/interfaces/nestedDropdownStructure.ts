@@ -1,5 +1,5 @@
-import { DropdownOptionDisplayStatusRef } from './dropdownOptionDisplayStatus';
+import { DropdownOptionAuxDetailsRef } from './dropdownOptionDisplayStatus';
 
 export type NestedDropdownStructure = {
-  [subcomponentName: string]: NestedDropdownStructure | DropdownOptionDisplayStatusRef;
+  [subcomponentName: string]: NestedDropdownStructure | DropdownOptionAuxDetailsRef;
 }

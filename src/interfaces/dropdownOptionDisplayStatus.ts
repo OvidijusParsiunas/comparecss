@@ -1,10 +1,10 @@
-export const DROPDOWN_OPTION_DISPLAY_STATUS_REF = 'dropdownOptionDisplayStatusReferenceObject';
+export const DROPDOWN_OPTION_AUX_DETAILS_REF = 'dropdownOptionAuxiliaryDetailsReferenceObject';
 
-export interface DropdownOptionDisplayStatusRef {
-  [DROPDOWN_OPTION_DISPLAY_STATUS_REF]: DropdownOptionDisplayStatus;
+export interface DropdownOptionAuxDetailsRef {
+  [DROPDOWN_OPTION_AUX_DETAILS_REF]: DropdownOptionAuxDetails;
 }
 
-export interface DropdownOptionDisplayStatus {
+export interface DropdownOptionAuxDetails {
   isEnabled: boolean;
-  hiddenText?: string;
+  actualObjectName?: string;
 }

@@ -22,9 +22,8 @@ export default class ToggleOn {
   private static createButtonForFullPreviewMode(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement,
       temporaryComponentElement: HTMLElement, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
       isExpandedModalPreviewModeActive: boolean, toggleFullPreviewModeOffCallbacks: ToggleFullPreviewModeOffCallbacks): void {
-    const lastSubcomponentIdNumber = subcomponentAndOverlayElementIdsState.getLastSubcomponentIdNumber();
-    const subcomponentAndOverlayElementIds = ComponentPreviewUtils.generateSubcomponentAndOverlayIds(componentPreviewComponent.temporaryComponent.component,
-      lastSubcomponentIdNumber);
+    const subcomponentAndOverlayElementIds = ComponentPreviewUtils.generateSubcomponentAndOverlayIds(
+      componentPreviewComponent.temporaryComponent.component);
     const mouseEvents = ComponentPreviewUtils.generateMouseEvents(subcomponentAndOverlayElementIds,
       componentPreviewComponent.temporaryComponent.component.subcomponents,
       ToggleDisplays.displayModal.bind(this, componentPreviewComponent, componentElement, temporaryComponentElement,

@@ -14,6 +14,7 @@
           :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
           :objectContainingActiveOption="component"
           :activeOptionPropertyKeyName="'activeSubcomponentName'"
+          :optionNameMap="component.componentPreviewStructure.subcomponentNameToDropdownOptionName"
           :fontAwesomeIcon="'angle-double-down'"
           :highlightSubcomponents="true"
           :isButtonGroup="true"

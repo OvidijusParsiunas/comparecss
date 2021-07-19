@@ -1,4 +1,4 @@
-import { DropdownOptionDisplayStatus, DROPDOWN_OPTION_DISPLAY_STATUS_REF } from '../../../../../../../interfaces/dropdownOptionDisplayStatus';
+import { DropdownOptionAuxDetails, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { OverwritePropertiesFunc } from '../../../../../../../interfaces/overwriteSubcomponentPropertiesFunc';
@@ -39,7 +39,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
       subcomponentDropdownStructure: NestedDropdownStructure, baseSubcomponentName: string): void {
     const { coreSubcomponentNames: { base: baseName }, componentPreviewStructure } = nestedComponent;
     const nestedComponentBaseDropdownStructure = componentPreviewStructure.subcomponentDropdownStructure[baseName];
-    (nestedComponentBaseDropdownStructure[DROPDOWN_OPTION_DISPLAY_STATUS_REF] as DropdownOptionDisplayStatus).isEnabled = true;
+    (nestedComponentBaseDropdownStructure[DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).isEnabled = true;
     const newComponentDropdownStructure = { [baseName]: { ...nestedComponentBaseDropdownStructure }};
     JSONUtils.addObjects(subcomponentDropdownStructure, baseSubcomponentName, newComponentDropdownStructure, true);
   }

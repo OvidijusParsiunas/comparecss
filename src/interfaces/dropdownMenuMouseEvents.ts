@@ -1,5 +1,5 @@
-import { DropdownOptionDisplayStatusRef } from './dropdownOptionDisplayStatus';
+import { DropdownOptionAuxDetailsRef } from './dropdownOptionDisplayStatus';
 
-export type OptionMouseEnter = [DropdownOptionDisplayStatusRef?, number?, number?, string?];
+export type OptionMouseEnter = [DropdownOptionAuxDetailsRef?, number?, number?, string?];
 
-export type OptionMouseLeave = HTMLElement;
+export type OptionMouseLeave = [HTMLElement, string?];

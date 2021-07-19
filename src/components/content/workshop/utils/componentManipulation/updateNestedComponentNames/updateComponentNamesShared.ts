@@ -1,5 +1,4 @@
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
-import { NestedSubcomponent } from '../../../../../../interfaces/componentPreviewStructure';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 
 export class UpdateComponentNamesShared {
@@ -36,31 +35,25 @@ export class UpdateComponentNamesShared {
     return UpdateComponentNamesShared.replaceSubstringAtIndex(oldSubcomponentName, oldSubcomponentName.length - postfixLengthToReplace, newPostfix);
   }
 
-  private static removeSubcomponentsFromParentComponents(parentComponent: WorkshopComponent, oldSubcomponentName: string): void {
+  private static removeSubcomponentsFromParentComponents(parentComponent: WorkshopComponent, oldSubcomponentName: string, oldDropdownName: string): void {
     const nestedComponent: WorkshopComponent = parentComponent.subcomponents[oldSubcomponentName].nestedComponent.ref;
-    delete parentComponent.subcomponents[oldSubcomponentName];
-    delete nestedComponent.subcomponents[oldSubcomponentName];
-    delete nestedComponent.componentPreviewStructure.subcomponentDropdownStructure[oldSubcomponentName];
+    delete nestedComponent.componentPreviewStructure.subcomponentDropdownStructure[oldDropdownName];
   }
 
-  private static updateAllReferencesOfTheName(parentComponent: WorkshopComponent, oldSubcomponentName: string, newSubcomponentName: string,
-      nestedSubcomponent: NestedSubcomponent): void {
-    parentComponent.subcomponents[newSubcomponentName] = parentComponent.subcomponents[oldSubcomponentName];
-    const nestedComponent: WorkshopComponent = parentComponent.subcomponents[oldSubcomponentName].nestedComponent.ref;
-    nestedComponent.activeSubcomponentName = newSubcomponentName;
-    nestedComponent.defaultSubcomponentName = newSubcomponentName;
-    nestedComponent.coreSubcomponentNames.base = newSubcomponentName;
-    nestedComponent.componentPreviewStructure.subcomponentDropdownStructure[newSubcomponentName] = nestedComponent
-      .componentPreviewStructure.subcomponentDropdownStructure[oldSubcomponentName];
-    nestedComponent.subcomponents[newSubcomponentName] = parentComponent.subcomponents[oldSubcomponentName];
-    nestedSubcomponent.name = newSubcomponentName;
+  protected static getDropdownName(subcomponentName: string): string {
+    const words = subcomponentName.trim().split(/\s+/);
+    if (words.length === 3) {
+      return (words[0] + ' ' + words[2]);
+    } else if (words.length === 2) {
+      return (words[0] + ' ' + words[1]);
+    }
+    return words[0];
   }
 
   protected static updateName(parentComponent: WorkshopComponent, subcomponentDropdownStructure: NestedDropdownStructure, oldSubcomponentName: string,
-      newSubcomponentName: string, nestedSubcomponent: NestedSubcomponent, oldSubcomponentNames: string[]): void {
-    subcomponentDropdownStructure[newSubcomponentName] = subcomponentDropdownStructure[oldSubcomponentName];
-    UpdateComponentNamesShared.updateAllReferencesOfTheName(parentComponent, oldSubcomponentName, newSubcomponentName, nestedSubcomponent);
-    UpdateComponentNamesShared.removeSubcomponentsFromParentComponents(parentComponent, oldSubcomponentName);
-    oldSubcomponentNames.push(oldSubcomponentName); 
+      overwrittenDropdownValues: string[], newDropdownName?: string, oldDropdownName?: string): void {
+    subcomponentDropdownStructure[newDropdownName] = subcomponentDropdownStructure[oldDropdownName];
+    UpdateComponentNamesShared.removeSubcomponentsFromParentComponents(parentComponent, oldSubcomponentName, oldDropdownName);
+    overwrittenDropdownValues.push(oldDropdownName); 
   }
 }

@@ -1,5 +1,5 @@
 import { AlignedSections, Layer, NestedSubcomponent } from '../../../../../../interfaces/componentPreviewStructure';
-import { DROPDOWN_OPTION_DISPLAY_STATUS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
+import { DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { UpdateComponentNamesShared } from './updateComponentNamesShared';
@@ -40,8 +40,7 @@ export class UpdateGenericComponentNames extends UpdateComponentNamesShared {
       oldBaseSubcomponentName);
     const newBaseSubcomponentName = UpdateComponentNamesShared.generateNewSubcomponentName(oldBaseSubcomponentName, newPostfix);
     if (newBaseSubcomponentName !== oldBaseSubcomponentName) {
-      UpdateComponentNamesShared.updateName(parentComponent, parentLayerDropdown, oldBaseSubcomponentName, newBaseSubcomponentName, nestedSubcomponent,
-        overwrittenDropdownNames);
+      UpdateComponentNamesShared.updateName(parentComponent, parentLayerDropdown, oldBaseSubcomponentName, overwrittenDropdownNames);
       return true;
     } else if (isOptionUpdated) {
       // fix: when we have 2, 1, 3 - the above updates 2 and 1, and moves the option names to the bottom, however because 3 is the same it remains in the original position
@@ -107,7 +106,7 @@ export class UpdateGenericComponentNames extends UpdateComponentNamesShared {
   }
 
   private static generateDropdownOptionNames(parentLayerDropdown: NestedDropdownStructure): string[] {
-    return Object.keys(parentLayerDropdown).filter((name) => name !== DROPDOWN_OPTION_DISPLAY_STATUS_REF);
+    return Object.keys(parentLayerDropdown).filter((name) => name !== DROPDOWN_OPTION_AUX_DETAILS_REF);
   }
 
   public static update(parentComponent: WorkshopComponent, parentLayerDropdown: NestedDropdownStructure, alignedSections?: AlignedSections): void {

@@ -1,17 +1,15 @@
-import { DROPDOWN_OPTION_DISPLAY_STATUS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
-import { Layer, NestedSubcomponent } from '../../../../../../interfaces/componentPreviewStructure';
+import { DropdownOptionAuxDetails, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { UpdateComponentNamesShared } from './updateComponentNamesShared';
 
 export class UpdateLayerComponentNames extends UpdateComponentNamesShared {
 
-  private static updateLayerName(parentComponent: WorkshopComponent, subcomponentDropdownStructure: NestedDropdownStructure, oldSubcomponentName: string,
-      newSubcomponentName: string, layer: NestedSubcomponent, overwrittenDropdownNames: string[]): void {
-    if (newSubcomponentName !== DROPDOWN_OPTION_DISPLAY_STATUS_REF) {
-      UpdateComponentNamesShared.updateName(parentComponent, subcomponentDropdownStructure, oldSubcomponentName, newSubcomponentName,
-        layer, overwrittenDropdownNames);
-    }
+  private static updateLayerName(parentComponent: WorkshopComponent, subcomponentDropdownStructure: NestedDropdownStructure, subcomponentName: string,
+      overwrittenDropdownNames: string[], newDropdownOptionName: string, oldDropdownOptionName: string): void {
+    subcomponentDropdownStructure[newDropdownOptionName] = subcomponentDropdownStructure[oldDropdownOptionName];
+    overwrittenDropdownNames.push(oldDropdownOptionName); 
+    parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[subcomponentName] = newDropdownOptionName;
   }
 
   private static moveExistingDropdownOptionToTheBottom(parentLayerDropdown: NestedDropdownStructure, newBaseSubcomponentName: string): void {
@@ -20,56 +18,67 @@ export class UpdateLayerComponentNames extends UpdateComponentNamesShared {
     parentLayerDropdown[newBaseSubcomponentName] = temp;
   }
 
-  // WORK2: alot of the logic is repeated
-  private static parsePostfix2(subcomponentName: string): string {
-    return subcomponentName.match(/\d+$/)?.[0];
+  private static generateDropdownOptionName(subcomponentName: string, newPostfix: number|string): string {
+    const words = subcomponentName.trim().split(/\s+/);
+    return words[0] + ' ' + newPostfix;
   }
 
-  // WORK 2 - may not be needed if we are changing how ids work, but if this is kept, make sure that it is correct
-  private static generateNewSubcomponentName2(oldSubcomponentName: string, newPostfix: number|string): string {
-    const oldPostfix = UpdateLayerComponentNames.parsePostfix2(oldSubcomponentName) || 1;
-    const postfixLengthToReplace = oldPostfix.toString().length;
-    return UpdateComponentNamesShared.replaceSubstringAtIndex(oldSubcomponentName, oldSubcomponentName.length - postfixLengthToReplace, newPostfix);
+  private static generateNames(layerSubcomponentsNames: string[], subcomponentIndex: number, parentComponent: WorkshopComponent,
+      generateDropdownOptionName: (subcomponetnName: string, index?: number) => string): {subcomponentName: string, oldDropdownName: string, newDropdownName: string } {
+    const subcomponentName = layerSubcomponentsNames[subcomponentIndex];
+    const oldDropdownName = parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[subcomponentName];
+    const newDropdownName = generateDropdownOptionName(subcomponentName, subcomponentIndex + 1);
+    return { subcomponentName, oldDropdownName, newDropdownName };
   }
 
   private static updateLayerNamesStartingFromNumber(parentComponent: WorkshopComponent, layerSubcomponentsNames: string[],
-      layersDropdownStructure: NestedDropdownStructure, overwrittenDropdownNames: string[], layers: Layer[], startingLayerNumber: number): void {
+      layersDropdownStructure: NestedDropdownStructure, startingLayerNumber: number): string[] {
+    const overwrittenDropdownNames = [];
+    const newDrodpownValues = [];
     for (let i = startingLayerNumber; i < layerSubcomponentsNames.length; i += 1) {
-      const oldSubcomponentName = layerSubcomponentsNames[i];
-      const newSubcomponentName = UpdateLayerComponentNames.generateNewSubcomponentName2(oldSubcomponentName, i + 1);
-      // WORK2 - for some reason when layer 10 is moved to top - layer 9 lose a space
-      if (oldSubcomponentName !== newSubcomponentName) {
-        UpdateLayerComponentNames.updateLayerName(parentComponent, layersDropdownStructure, oldSubcomponentName, newSubcomponentName,
-          layers[i], overwrittenDropdownNames);
-      } else {
-        UpdateLayerComponentNames.moveExistingDropdownOptionToTheBottom(layersDropdownStructure, newSubcomponentName);
+      const { subcomponentName, oldDropdownName, newDropdownName } = UpdateLayerComponentNames
+        .generateNames(layerSubcomponentsNames, i, parentComponent, UpdateLayerComponentNames.generateDropdownOptionName);
+      if (layersDropdownStructure[newDropdownName]) {
+        UpdateLayerComponentNames.moveExistingDropdownOptionToTheBottom(layersDropdownStructure, newDropdownName);
       }
+      // WORK2: the if statement is currently not required
+      if (subcomponentName !== newDropdownName) {
+        UpdateLayerComponentNames.updateLayerName(parentComponent, layersDropdownStructure, subcomponentName,
+          overwrittenDropdownNames, newDropdownName, oldDropdownName);
+      }
+      newDrodpownValues.push(newDropdownName);
     }
+    return overwrittenDropdownNames.filter(x => !newDrodpownValues.includes(x));
+  }
+
+  private static generateSingleDropdownOptionName(subcomponentName: string): string {
+    return subcomponentName.trim().split(/\s+/)[0];
   }
 
   private static updateFirstLayerName(parentComponent: WorkshopComponent, layerSubcomponentsNames: string[],
-      layersDropdownStructure: NestedDropdownStructure, overwrittenDropdownNames: string[], firstLayer: Layer): void {
-    const firstLayerNumber = Number.parseFloat(layerSubcomponentsNames[0].substring(layerSubcomponentsNames[0].length - 1));
-    if (firstLayerNumber === 1 || firstLayerNumber === 2) {
-      const oldSubcomponentName = layerSubcomponentsNames[0];
-      const newSubcomponentName = UpdateComponentNamesShared.replaceSubstringAtIndex(oldSubcomponentName, oldSubcomponentName.length - 1,
-        UpdateComponentNamesShared.SINGLE_SPACE_STRING);
-      UpdateLayerComponentNames.updateLayerName(parentComponent, layersDropdownStructure, oldSubcomponentName, newSubcomponentName,
-        firstLayer, overwrittenDropdownNames);
-    }
+      layersDropdownStructure: NestedDropdownStructure, overwrittenDropdownNames: string[]): void {
+    const { subcomponentName, oldDropdownName, newDropdownName } = UpdateLayerComponentNames
+      .generateNames(layerSubcomponentsNames, 0, parentComponent, UpdateLayerComponentNames.generateSingleDropdownOptionName);
+    UpdateLayerComponentNames.updateLayerName(parentComponent, layersDropdownStructure, subcomponentName,
+      overwrittenDropdownNames, newDropdownName, oldDropdownName);
+  }
+
+  private static getLayerSubcomponentNames(layersDropdownStructure: NestedDropdownStructure): string[] {
+    return Object.keys(layersDropdownStructure).map(
+      (optionName) => (layersDropdownStructure[optionName][DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).actualObjectName);
   }
 
   public static update(parentComponent: WorkshopComponent, startingLayerNumber: number): void {
-    const { coreSubcomponentNames: { base }, componentPreviewStructure: { subcomponentDropdownStructure, layers } } = parentComponent;
+    const { coreSubcomponentNames: { base }, componentPreviewStructure: { subcomponentDropdownStructure } } = parentComponent;
     const layersDropdownStructure = subcomponentDropdownStructure[base] as NestedDropdownStructure;
-    const layerSubcomponentsNames = Object.keys(layersDropdownStructure);
-    const overwrittenDropdownNames: string[] = [];
+    const layerSubcomponentsNames = UpdateLayerComponentNames.getLayerSubcomponentNames(layersDropdownStructure);
+    let overwrittenDropdownNames: string[] = [];
     if (layerSubcomponentsNames.length === 1) {
       UpdateLayerComponentNames.updateFirstLayerName(parentComponent, layerSubcomponentsNames, layersDropdownStructure,
-        overwrittenDropdownNames, layers[0]);
+        overwrittenDropdownNames);
     } else {
-      UpdateLayerComponentNames.updateLayerNamesStartingFromNumber(parentComponent, layerSubcomponentsNames, layersDropdownStructure,
-        overwrittenDropdownNames, layers, startingLayerNumber);
+      overwrittenDropdownNames = UpdateLayerComponentNames.updateLayerNamesStartingFromNumber(parentComponent, layerSubcomponentsNames,
+        layersDropdownStructure, startingLayerNumber);
     }
     UpdateComponentNamesShared.removeOverwrittenDropdownNames(overwrittenDropdownNames, layersDropdownStructure);
   }

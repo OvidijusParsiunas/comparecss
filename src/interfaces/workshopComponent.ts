@@ -179,7 +179,7 @@ export interface WorkshopComponent {
   componentStatus: { isRemoved: boolean };
   // used to reassign references when the subcomponents have been deep copied
   referenceSharingExecutables?: ReferenceSharingExecutable[];
-  interconnectedSettings?: InterconnectedSetting[];  
+  interconnectedSettings?: InterconnectedSetting[];
 }
 
 // Reference for component structure:

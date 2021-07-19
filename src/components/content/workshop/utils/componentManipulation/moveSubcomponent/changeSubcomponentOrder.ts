@@ -42,31 +42,31 @@ export class ChangeSubcomponentOrder {
     }
   }
 
-  private static getRightMoveIndexes(initialDropdownOptionNames: string[], subcomponentName: string): number[] {
-    const currentIndex = initialDropdownOptionNames.indexOf(subcomponentName);
+  private static getRightMoveIndexes(initialDropdownOptionNames: string[], dropdownOptionName: string): number[] {
+    const currentIndex = initialDropdownOptionNames.indexOf(dropdownOptionName);
     const targetIndex = currentIndex + 1;
     return [currentIndex, targetIndex];
   }
 
-  private static getLeftMoveIndexes(initialDropdownOptionNames: string[], subcomponentName: string): number[] {
-    const currentIndex = initialDropdownOptionNames.indexOf(subcomponentName) - 1;
+  private static getLeftMoveIndexes(initialDropdownOptionNames: string[], dropdownOptionName: string): number[] {
+    const currentIndex = initialDropdownOptionNames.indexOf(dropdownOptionName) - 1;
     const targetIndex = currentIndex;
     return [currentIndex, targetIndex];
   }
 
-  private static getMoveIndexes(direction: string, initialDropdownOptionNames: string[], subcomponentName: string): number[] {
+  private static getMoveIndexes(direction: string, initialDropdownOptionNames: string[], dropdownOptionName: string): number[] {
     if (direction === SUBCOMPONENT_ORDER_DIRECTIONS.RIGHT) {
-      return ChangeSubcomponentOrder.getRightMoveIndexes(initialDropdownOptionNames, subcomponentName);
+      return ChangeSubcomponentOrder.getRightMoveIndexes(initialDropdownOptionNames, dropdownOptionName);
     }
-    return ChangeSubcomponentOrder.getLeftMoveIndexes(initialDropdownOptionNames, subcomponentName);
+    return ChangeSubcomponentOrder.getLeftMoveIndexes(initialDropdownOptionNames, dropdownOptionName);
   }
 
   private static moveNestedComponentInDropdownStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
-    const { subcomponentName, subcomponentDropdownStructure } = componentTraversalState;
+    const { dropdownOptionName, subcomponentDropdownStructure } = componentTraversalState;
     const subcomponentValues = this as any as SubcomponentValues;
-    if (subcomponentValues.subcomponentName === subcomponentName) {
+    if (subcomponentValues.subcomponentName === dropdownOptionName) {
       const initialDropdownOptionNames = Object.keys(subcomponentDropdownStructure);
-      const [currentIndex, targetIndex] = ChangeSubcomponentOrder.getMoveIndexes(subcomponentValues.direction, initialDropdownOptionNames, subcomponentName);
+      const [currentIndex, targetIndex] = ChangeSubcomponentOrder.getMoveIndexes(subcomponentValues.direction, initialDropdownOptionNames, dropdownOptionName);
       ChangeSubcomponentOrder.moveObjectPropertyToEnd(subcomponentDropdownStructure, initialDropdownOptionNames[currentIndex]);
       ChangeSubcomponentOrder.moveObjectPropertiesAfterIndexToEnd(subcomponentDropdownStructure, currentIndex);
       ChangeSubcomponentOrder.updateSubcomponentNames(subcomponentValues, subcomponentDropdownStructure);

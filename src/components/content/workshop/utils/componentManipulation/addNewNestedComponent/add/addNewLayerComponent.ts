@@ -16,7 +16,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
 
   private static updateComponentDropdownStructure(parentComponent: WorkshopComponent, newComponentBaseName: string): void {
     const newComponentDropdownStructure = { [newComponentBaseName]: { 
-      ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(),
+      ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(newComponentBaseName),
     }};
     const parentComponentDropdownStructure = parentComponent.componentPreviewStructure.subcomponentDropdownStructure;
     JSONUtils.addObjects(parentComponentDropdownStructure, PARENT_SUBCOMPONENT_NAME.BASE, newComponentDropdownStructure);
@@ -57,7 +57,12 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     }
   }
 
-  protected static createNewComponent(componentGenerator: ComponentGenerator, overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
+  private static addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
+    const baseName = newComponent.coreSubcomponentNames.base;
+    parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[baseName] = baseName;
+  }
+
+  private static createNewComponent(componentGenerator: ComponentGenerator, overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
     const baseName = UniqueSubcomponentNameGenerator.generate(NESTED_SUBCOMPONENTS_BASE_NAMES.LAYER);
     const subcomponents = AddNewComponentShared.createNewComponentSubcomponents(componentGenerator, baseName);
     const { coreSubcomponentNames } = subcomponents[baseName].nestedComponent.ref;
@@ -71,6 +76,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     const newLayerComponent = AddNewLayerComponent.createNewComponent(componentGenerator, overwritePropertiesFunc);
     JSONUtils.addObjects(parentComponent, 'subcomponents', newLayerComponent.subcomponents);
     AddNewLayerComponent.addNewComponentToComponentPreview(parentComponent, newLayerComponent, isEditable);
+    AddNewLayerComponent.addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent, newLayerComponent);
     return newLayerComponent;
   }
 }

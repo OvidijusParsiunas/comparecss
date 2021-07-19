@@ -94,22 +94,22 @@ class DefaultCard extends ComponentBuilder {
   public static addComponentsToBase(cardComponent: WorkshopComponent): void {
     const layer1Component = AddNewLayerComponent.add(cardComponent, DEFAULT_STYLES.DEFAULT, true, DefaultCard.overwriteTopLayerProperties);
     const layer2Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
-    const layer3Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
+    // const layer3Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
     UpdateLayerComponentNames.update(cardComponent, 0);
-    AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
-      layer1Component.coreSubcomponentNames.base, [DefaultCard.overwriteTitleProperties]);
-    AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
-      layer2Component.coreSubcomponentNames.base, [DefaultCard.overwriteDescriptionProperties]);
-    AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
-      layer3Component.coreSubcomponentNames.base, [DefaultCard.overwriteSubmitButtonProperties]);
-    AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
-      layer3Component.coreSubcomponentNames.base, [DefaultCard.overwriteCancelButtonProperties]);
-    UpdateGenericComponentNames.updateViaLayerObject(cardComponent, cardComponent.componentPreviewStructure.layers[2]);
-    AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, BUTTON_STYLES.CLOSE,
-      layer1Component.coreSubcomponentNames.base);
-    AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.AVATAR, DEFAULT_STYLES.DEFAULT,
-      layer1Component.coreSubcomponentNames.base);
-    UpdateGenericComponentNames.updateViaLayerObject(cardComponent, cardComponent.componentPreviewStructure.layers[0]);
+    // AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
+    //   layer1Component.coreSubcomponentNames.base, [DefaultCard.overwriteTitleProperties]);
+    // AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
+    //   layer2Component.coreSubcomponentNames.base, [DefaultCard.overwriteDescriptionProperties]);
+    // AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
+    //   layer3Component.coreSubcomponentNames.base, [DefaultCard.overwriteSubmitButtonProperties]);
+    // AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
+    //   layer3Component.coreSubcomponentNames.base, [DefaultCard.overwriteCancelButtonProperties]);
+    // UpdateGenericComponentNames.updateViaLayerObject(cardComponent, cardComponent.componentPreviewStructure.layers[2]);
+    // AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, BUTTON_STYLES.CLOSE,
+    //   layer1Component.coreSubcomponentNames.base);
+    // AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.AVATAR, DEFAULT_STYLES.DEFAULT,
+    //   layer1Component.coreSubcomponentNames.base);
+    // UpdateGenericComponentNames.updateViaLayerObject(cardComponent, cardComponent.componentPreviewStructure.layers[0]);
   }
 }
 

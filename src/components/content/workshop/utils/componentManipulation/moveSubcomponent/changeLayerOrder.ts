@@ -67,9 +67,9 @@ export class ChangeLayerOrder {
   }
 
   private static moveNestedComponentInDropdownStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
-    const { subcomponentName, subcomponentDropdownStructure, index } = componentTraversalState;
+    const { dropdownOptionName, subcomponentDropdownStructure, index } = componentTraversalState;
     const subcomponentValues = this as any as SubcomponentValues;
-    if (subcomponentValues.subcomponentName === subcomponentName) {
+    if (subcomponentValues.subcomponentName === dropdownOptionName) {
       const moveIndex = subcomponentValues.direction === SUBCOMPONENT_ORDER_DIRECTIONS.UP ? index - 1: index;
       const initialDropdownOptionNames = Object.keys(subcomponentDropdownStructure);
       ChangeLayerOrder.moveObjectPropertyToEnd(subcomponentDropdownStructure, initialDropdownOptionNames[moveIndex]);

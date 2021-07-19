@@ -1,13 +1,13 @@
 import { AlignedSections, ComponentPreviewStructure, Layer, NestedSubcomponent } from '../../../../../interfaces/componentPreviewStructure';
-import { DROPDOWN_OPTION_DISPLAY_STATUS_REF } from '../../../../../interfaces/dropdownOptionDisplayStatus';
+import { DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../interfaces/dropdownOptionDisplayStatus';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
 
 export interface ComponentTraversalState {
-  subcomponentName?: string;
+  dropdownOptionName?: string;
+  dropdownOptionNamesStack?: string[];
   subcomponentDropdownStructure?: NestedDropdownStructure;
-  subcomponentNameStack?: string[];
   subcomponentProperties?: SubcomponentProperties;
   alignedNestedComponents?: NestedSubcomponent[];
   alignedSections?: AlignedSections;
@@ -19,30 +19,30 @@ type TraverseComponentCallback = (componentTraversalState: ComponentTraversalSta
 export default class ComponentTraversalUtils {
 
   private static inspectSubcomponent(subcomponentDropdownStructure: NestedDropdownStructure, index: number,
-      callback: TraverseComponentCallback, subcomponentNameStack: string[], subcomponentName: string): ComponentTraversalState {
-    if (subcomponentName === DROPDOWN_OPTION_DISPLAY_STATUS_REF) {
-      subcomponentNameStack.splice(subcomponentNameStack.length - 1, 1);
+      callback: TraverseComponentCallback, dropdownOptionNamesStack: string[], dropdownOptionName: string): ComponentTraversalState {
+    if (dropdownOptionName === DROPDOWN_OPTION_AUX_DETAILS_REF) {
+      dropdownOptionNamesStack.splice(dropdownOptionNamesStack.length - 1, 1);
       return null;
     }
-    subcomponentNameStack.push(subcomponentName);
-    const callbackResult = callback({subcomponentName, subcomponentDropdownStructure, subcomponentNameStack, index});
+    dropdownOptionNamesStack.push(dropdownOptionName);
+    const callbackResult = callback({dropdownOptionName, subcomponentDropdownStructure, dropdownOptionNamesStack, index});
     if (callbackResult) return callbackResult;
-    if (Object.keys(subcomponentDropdownStructure[subcomponentName]).length > 0) {
+    if (Object.keys(subcomponentDropdownStructure[dropdownOptionName]).length > 0) {
       const traversalResult = ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
-        subcomponentDropdownStructure[subcomponentName] as NestedDropdownStructure, callback, subcomponentNameStack);
+        subcomponentDropdownStructure[dropdownOptionName] as NestedDropdownStructure, callback, dropdownOptionNamesStack);
       if (traversalResult) return traversalResult;
     }
     return null;
   }
 
   public static traverseComponentUsingDropdownStructure(subcomponentDropdownStructure: NestedDropdownStructure,
-      callback: TraverseComponentCallback, subcomponentNameStack?: string[]): ComponentTraversalState {
-    if (!subcomponentNameStack) subcomponentNameStack = [];
+      callback: TraverseComponentCallback, dropdownOptionNamesStack?: string[]): ComponentTraversalState {
+    if (!dropdownOptionNamesStack) dropdownOptionNamesStack = [];
     const subcomponentDropdownStructureKeys = Object.keys(subcomponentDropdownStructure);
     for (let i = 0; i < subcomponentDropdownStructureKeys.length; i += 1) {
       const subcomponentName = subcomponentDropdownStructureKeys[i];
       const inspectionResult = ComponentTraversalUtils.inspectSubcomponent(subcomponentDropdownStructure, i,
-        callback, subcomponentNameStack, subcomponentName);
+        callback, dropdownOptionNamesStack, subcomponentName);
       if (inspectionResult) return inspectionResult;
     }
     return null;

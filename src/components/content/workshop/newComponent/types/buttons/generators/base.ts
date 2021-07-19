@@ -1,5 +1,5 @@
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { DROPDOWN_OPTION_DISPLAY_STATUS_REF } from '../../../../../../../interfaces/dropdownOptionDisplayStatus';
+import { DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -73,7 +73,7 @@ class ButtonBase extends ComponentBuilder {
     if (!baseName) {
       const { componentPreviewStructure, coreSubcomponentNames } = buttonComponent;
       const buttonBaseCustomponent = componentPreviewStructure.subcomponentDropdownStructure[coreSubcomponentNames.base];
-      delete buttonBaseCustomponent[DROPDOWN_OPTION_DISPLAY_STATUS_REF];
+      delete buttonBaseCustomponent[DROPDOWN_OPTION_AUX_DETAILS_REF];
     }
   }
 }

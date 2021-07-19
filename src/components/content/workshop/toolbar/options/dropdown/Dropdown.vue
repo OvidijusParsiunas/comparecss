@@ -5,7 +5,7 @@
       @mouseenter="mouseEnterButton"
       @mouseleave="mouseLeaveButton">
       <div class="dropdown-button-text" :class="uniqueIdentifier">
-        {{objectContainingActiveOption[activeOptionPropertyKeyName]}}
+        {{buttonText}}
       </div>
       <font-awesome-icon :style="{ color: DEFAULT_FONT_AWESOME_COLOR }" class="arrow-down-icon" :icon="fontAwesomeIcon"/>
     </button>
@@ -26,7 +26,7 @@
 </template>
 
 <script lang="ts">
-import { DropdownOptionDisplayStatus, DropdownOptionDisplayStatusRef, DROPDOWN_OPTION_DISPLAY_STATUS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
+import { DropdownOptionAuxDetails, DropdownOptionAuxDetailsRef, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { DropdownOptionsDisplayStatusUtils } from '../../../utils/dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
 import { COMPONENT_CARD_MARKER, DROPDOWN_OPTION_MARKER, RANGE_SETTING_MARKER } from '../../../../../../consts/elementClassMarkers';
 import { CUSTOM_DROPDOWN_OPTION_CLASSES } from '../../../../../../consts/customDropdownOptionClasses.enum';
@@ -45,6 +45,7 @@ import { Ref, ref, watch } from 'vue';
 
 interface Data {
   isComponentDisplayed: boolean;
+  lastHoveredOptionText: string;
   dropdowns: NestedDropdownStructure[];
   lastHoveredOptionElement: HTMLElement;
   enterButtonClicked: boolean;
@@ -85,6 +86,7 @@ export default {
     areMenusDisplayed: false,
     enterButtonClicked: false,
     isComponentDisplayed: true,
+    lastHoveredOptionText: null,
     TOOLBAR_GENERAL_BUTTON_CLASS,
     lastHoveredOptionElement: null,
     areDropdownOptionsProcessed: false,
@@ -114,11 +116,19 @@ export default {
       ...customEventHandlers,
     };
   },
+  computed: {
+    buttonText(): void {
+      return this.getOptionName(this.objectContainingActiveOption[this.activeOptionPropertyKeyName]);
+    }
+  },
   mounted(): void {
     if (!this.areDropdownOptionsProcessed) this.processDropdownOptions();
     this.isDropdownDisplayed();
   },
   methods: {
+    getOptionName(dropdownOptionName: string): void {
+      return this.optionNameMap ? this.optionNameMap[dropdownOptionName] : dropdownOptionName;
+    },
     buttonClick(): void {
       if (this.timeoutFunc) { 
         this.timeoutFunc(this.openDropdown.bind(this));
@@ -139,7 +149,10 @@ export default {
       this.areMenusDisplayed = true;
     },
     displayHighlightedOptionAndParentMenus(): void {
-      const results: SearchForOptionResult = this.searchForOpion(this.processedOptions, this.objectContainingActiveOption[this.activeOptionPropertyKeyName], 0);
+      const objectActiveOptionName = this.objectContainingActiveOption[this.activeOptionPropertyKeyName];
+      const dropdownOptionName = this.getOptionName(objectActiveOptionName);
+      const actualObjectName = dropdownOptionName !== objectActiveOptionName ? objectActiveOptionName : null;
+      const results: SearchForOptionResult = this.searchForOpion(this.processedOptions, dropdownOptionName, 0, actualObjectName);
       if (results) {
         const { dropdowns, optionIndexes } = results;
         for (let i = 0; i < dropdowns.length; i++) {
@@ -161,17 +174,22 @@ export default {
         }, (dropdowns.length - 1) * this.dropdownDisplayDelayMilliseconds);
       }
     },
-    searchForOpion(dropdownOptions: NestedDropdownStructure, subjectOptionName: string, dropdownOptionsIndex: number): SearchForOptionResult {
+    isOptionFound(dropdownOptionDisplayStatus: DropdownOptionAuxDetailsRef, actualObjectName: string): boolean {
+      let actualObjectNameMatch = true;
+      if (actualObjectName) actualObjectNameMatch = actualObjectName === dropdownOptionDisplayStatus?.[DROPDOWN_OPTION_AUX_DETAILS_REF].actualObjectName;
+      return dropdownOptionDisplayStatus !== undefined && actualObjectNameMatch;
+    },
+    searchForOpion(dropdownOptions: NestedDropdownStructure, dropdownOptionName: string, dropdownOptionsIndex: number, actualObjectName?: string): SearchForOptionResult {
       if (!dropdownOptions) return null;
-      if (dropdownOptions[subjectOptionName] !== undefined) {
-        return { dropdowns: [dropdownOptions], optionIndexes: [Object.keys(dropdownOptions).indexOf(subjectOptionName)] };
+      if (this.isOptionFound(dropdownOptions[dropdownOptionName], actualObjectName)) {
+        return { dropdowns: [dropdownOptions], optionIndexes: [Object.keys(dropdownOptions).indexOf(dropdownOptionName)] };
       } else {
         const optionNames = Object.keys(dropdownOptions);
         const childDropdownIndex = dropdownOptionsIndex + 1;
         for (let i = 0; i <= optionNames.length; i += 1) {
           const optionName = optionNames[i];
-          if (optionName !== subjectOptionName) {
-            const result: SearchForOptionResult = this.searchForOpion(dropdownOptions[optionName], subjectOptionName, childDropdownIndex);
+          if (optionName !== dropdownOptionName) {
+            const result: SearchForOptionResult = this.searchForOpion(dropdownOptions[optionName], dropdownOptionName, childDropdownIndex, actualObjectName);
             if (result) {
               result.dropdowns.unshift(dropdownOptions);
               result.optionIndexes.unshift(i);
@@ -197,8 +215,8 @@ export default {
         if (!optionElementToBeHighlighted) return;
         this.displayChildDropdownMenu(optionElementToBeHighlighted, 0, 0, this.processedOptions[Object.keys(this.processedOptions)[0]]);
         if (this.mouseEnterAuxiliaryPaddingEventHandler) {
-          const highlightedOption = this.extractHighlightedOptionText(optionElementToBeHighlighted);
-          this.mouseEnterAuxiliaryPaddingEventHandler(highlightedOption);
+          const optionNameToBehighlighted = this.getOptionName(this.extractHighlightedOptionText(optionElementToBeHighlighted));
+          this.mouseEnterAuxiliaryPaddingEventHandler(optionNameToBehighlighted);
           }
         this.highlightNewOption(optionElementToBeHighlighted, 0);
       }
@@ -207,8 +225,8 @@ export default {
       if (this.areMenusDisplayed) {
         const blurredOptionElement = this.$refs.dropdownMenus.childNodes[1].childNodes[1];
         if (this.mouseLeaveAuxiliaryPaddingEventHandler) {
-          const highlightedOption = this.extractHighlightedOptionText(blurredOptionElement);
-          this.mouseLeaveAuxiliaryPaddingEventHandler(highlightedOption);
+          const blurredOptionName = this.getOptionName(this.extractHighlightedOptionText(blurredOptionElement));
+          this.mouseLeaveAuxiliaryPaddingEventHandler(blurredOptionName);
         }
       }
     },
@@ -219,13 +237,14 @@ export default {
       return (optionElement.childNodes[0] as HTMLElement).innerHTML;
     },
     mouseEnterOption(optionMouseEnterEvent: OptionMouseEnter): void {
-      const [dropdownOptions, dropdownMenuIndex, dropdownOptionIndex, hiddenText] = optionMouseEnterEvent;
+      const [dropdownOptions, dropdownMenuIndex, dropdownOptionIndex, actualObjectName] = optionMouseEnterEvent;
       this.removeChildDropdownMenus(dropdownMenuIndex);
       this.displayChildDropdownMenu(event.target, dropdownMenuIndex, dropdownOptionIndex, dropdownOptions);
-      const highlightedOption = this.extractHighlightedOptionText(event.target);
-      if (this.mouseEnterOptionEventHandler) { this.mouseEnterOptionEventHandler(hiddenText || highlightedOption); }
+      const highlightedOption = actualObjectName || this.extractHighlightedOptionText(event.target);
+      if (this.mouseEnterOptionEventHandler) { this.mouseEnterOptionEventHandler(highlightedOption); }
       this.$emit('mouse-enter-option', highlightedOption);
       this.highlightNewOption(event.target, dropdownMenuIndex);
+      this.lastHoveredOptionText = highlightedOption;
     },
     removeChildDropdownMenus(dropdownMenuIndex: number): void {
       const removableDropdownMenusIndex = dropdownMenuIndex + 1;
@@ -240,10 +259,10 @@ export default {
       });
     },
     displayChildDropdownMenu(parentOptionElement: HTMLElement, parentDropdownMenuIndex: number, parentDropdownOptionIndex: number,
-        childDropdownOptions: NestedDropdownStructure | DropdownOptionDisplayStatusRef): void {
+        childDropdownOptions: NestedDropdownStructure | DropdownOptionAuxDetailsRef): void {
       if (!parentOptionElement) return;
-      if (!childDropdownOptions[DROPDOWN_OPTION_DISPLAY_STATUS_REF]
-          || (Object.keys(childDropdownOptions).length > 1 && (childDropdownOptions[DROPDOWN_OPTION_DISPLAY_STATUS_REF] as DropdownOptionDisplayStatus).isEnabled)) {
+      if (!childDropdownOptions[DROPDOWN_OPTION_AUX_DETAILS_REF]
+          || (Object.keys(childDropdownOptions).length > 1 && (childDropdownOptions[DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).isEnabled)) {
         this.dropdowns.push(childDropdownOptions);
         const startOfLeftPropertyValueNumber = 11;
         const dropdownMenuElement = parentOptionElement.parentNode as HTMLElement;
@@ -292,8 +311,8 @@ export default {
       this.changeOptionArrowColor(optionElementToBeHighlighted, 'white');
     },
     isOptionInactive(dropdowns: NestedDropdownStructure[], optionElement: HTMLElement, dropdownMenuIndex: number): boolean {
-      return dropdowns[dropdownMenuIndex][(optionElement.childNodes[0] as HTMLElement).innerHTML][DROPDOWN_OPTION_DISPLAY_STATUS_REF]
-        && !(dropdowns[dropdownMenuIndex][(optionElement.childNodes[0] as HTMLElement).innerHTML][DROPDOWN_OPTION_DISPLAY_STATUS_REF] as DropdownOptionDisplayStatus).isEnabled;
+      return dropdowns[dropdownMenuIndex][(optionElement.childNodes[0] as HTMLElement).innerHTML][DROPDOWN_OPTION_AUX_DETAILS_REF]
+        && !(dropdowns[dropdownMenuIndex][(optionElement.childNodes[0] as HTMLElement).innerHTML][DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).isEnabled;
     },
     changeOptionArrowColor(optionElement: Element, newColor: 'white'|'#6d6d6d'): void {
       const arrowElement = optionElement.childNodes[1];
@@ -304,10 +323,10 @@ export default {
     getOptionNameFromElement(highlightedOptionElement: HTMLElement): string {
       return (highlightedOptionElement.childNodes[0] as HTMLElement).innerHTML;
     },
-    mouseLeaveOption(blurredOptionElement: OptionMouseLeave): void {
+    mouseLeaveOption(optionMouseLeaveEvent: OptionMouseLeave): void {
       if (this.mouseLeaveOptionEventHandler) {
-        const highlightedOption = this.extractHighlightedOptionText(blurredOptionElement);
-        this.mouseLeaveOptionEventHandler(highlightedOption);
+        const [blurredOptionElement, actualObjectName] = optionMouseLeaveEvent;
+        this.mouseLeaveOptionEventHandler(actualObjectName || this.extractHighlightedOptionText(blurredOptionElement));
       }
     },
     hideDropdownMenu(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
@@ -322,23 +341,21 @@ export default {
         closedViaKey = true;
       }
       if ((event.target as HTMLElement).classList.contains(DROPDOWN_OPTION_MARKER) || this.enterButtonClicked) {
-        if (this.lastHoveredOptionElement) {
-          const optionName = this.lastHoveredOptionElement.childNodes[0].innerHTML;
+        if (this.lastHoveredOptionText) {
           const previousActiveOptionName = this.objectContainingActiveOption[this.activeOptionPropertyKeyName];
-          if (previousActiveOptionName !== optionName) {
-            this.$emit('mouse-click-new-option', optionName);
+          if (previousActiveOptionName !== this.lastHoveredOptionText) {
+            this.$emit('mouse-click-new-option', this.lastHoveredOptionText);
           }
-          this.$emit('mouse-click-option', [previousActiveOptionName, optionName] as DropdownMouseClickOptionEvent);
+          this.$emit('mouse-click-option', [previousActiveOptionName, this.lastHoveredOptionText] as DropdownMouseClickOptionEvent);
         }
       }
       const isDropdownButtonClicked = (event.target as HTMLElement).classList.contains(this.uniqueIdentifier);
       if (isDropdownButtonClicked && !closedViaKey) {
         this.clickedButton = true;
       }
-      if ((!isDropdownButtonClicked || closedViaKey) && this.lastHoveredOptionElement) {
+      if ((!isDropdownButtonClicked || closedViaKey) && this.lastHoveredOptionText) {
         if (this.hideDropdownMenuEventHandler) {
-          const highlightedOption = this.extractHighlightedOptionText(this.lastHoveredOptionElement);
-          this.hideDropdownMenuEventHandler(highlightedOption);
+          this.hideDropdownMenuEventHandler(this.lastHoveredOptionText);
         } else {
           this.$emit('hide-dropdown-menu');
         }
@@ -395,6 +412,7 @@ export default {
     // the dev has two options, either insert custom event handlers object via composition API (which should adhere to DropdownCompositionAPI)
     // or listen to the emitted events
     customEventHandlers: Function,
+    optionNameMap: Object,
     isButtonGroup: {
       type: Boolean,
       default: false,

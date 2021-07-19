@@ -109,6 +109,7 @@ export class ComponentBuilder {
       layeringType: 'vertical',
       layers: [],
       subcomponentDropdownStructure,
+      subcomponentNameToDropdownOptionName: {[baseSubcomponentName]: baseSubcomponentName},
     }
   }
 

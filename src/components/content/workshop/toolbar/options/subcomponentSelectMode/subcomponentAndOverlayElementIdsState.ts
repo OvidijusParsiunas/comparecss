@@ -22,7 +22,7 @@ function getSubcomponentIdViaSubcomponentName(subcomponentName: string): string 
 }
 
 function getOverlayIdViaSubcomponentName(subcomponentName: string): string {
-  return subcomponentAndOverlayElementIdsObject[subcomponentName] && subcomponentAndOverlayElementIdsObject[subcomponentName].overlayId;
+  return subcomponentAndOverlayElementIdsObject[subcomponentName]?.overlayId;
 }
 
 function getSubcomponentNameViaOverlayId(overlayId: string): string {

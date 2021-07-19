@@ -2,6 +2,10 @@ import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSect
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { SubcomponentProperties } from './workshopComponent';
 
+interface SubcomponentNameToDropdownOptionName {
+  [subcomponentName: string]: string;
+}
+
 export type NestedSubcomponent = {
   name: string;
   subcomponentProperties: SubcomponentProperties;
@@ -22,4 +26,5 @@ export interface ComponentPreviewStructure {
   layeringType?: string;
   layers?: Layer[];
   subcomponentDropdownStructure?: NestedDropdownStructure;
+  subcomponentNameToDropdownOptionName: SubcomponentNameToDropdownOptionName;
 }
