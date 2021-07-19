@@ -1,82 +1,57 @@
+import { DropdownOptionAuxDetails, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
 import ComponentTraversalUtils, { ComponentTraversalState } from '../../componentTraversal/componentTraversalUtils';
+import { SubcomponentNameToDropdownOptionName } from '../../../../../../interfaces/componentPreviewStructure';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../../interfaces/subcomponentOrderDirections.enum';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { UpdateGenericComponentNames } from '../updateNestedComponentNames/updateGenericComponentNames';
-import { UpdateLayerComponentNames } from '../updateNestedComponentNames/updateLayerComponentNames';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
-import { AlignedSections } from '../../../../../../interfaces/componentPreviewStructure';
-import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { ArrayUtils } from '../../generic/arrayUtils';
-import { layer } from '@fortawesome/fontawesome-svg-core';
 
 interface SubcomponentValues {
   direction: SUBCOMPONENT_ORDER_DIRECTIONS;
-  subcomponentName: string;
+  targetSubcomponentName: string;
+  targetDropdownOptionName: string;
   parentComponent: WorkshopComponent;
-  subcomponentProperties: SubcomponentProperties;
-  // parentLayerAlignedSections?: AlignedSections;
+  targetSubcomponentProperties: SubcomponentProperties;
 }
 
-// WORK2
 type CompositeTraversalResult = ComponentTraversalState & { nestedComponentMovable: boolean } 
 
 export class ChangeLayerOrder {
 
-  private static updateSubcomponentNames(subcomponentValues: SubcomponentValues, subcomponentDropdownStructure: NestedDropdownStructure,
-      removedSubcomponentDropdownIndex: number): void {
-    const { parentComponent } = subcomponentValues;
-    UpdateLayerComponentNames.update(parentComponent, removedSubcomponentDropdownIndex);
+  private static swapSubcomponentDropdownStructure(subcomponentDropdownStructure: NestedDropdownStructure, currentName: string,
+      destinationName: string): void {
+    const temp = subcomponentDropdownStructure[destinationName];
+    subcomponentDropdownStructure[destinationName] = subcomponentDropdownStructure[currentName];
+    subcomponentDropdownStructure[currentName] = temp;
   }
 
-  private static setNewActiveSubcomponentName(subcomponentValues: SubcomponentValues, subcomponentDropdownStructure: NestedDropdownStructure,
-      targetIndex: number): void {
-    const dropdownOptionNames = Object.keys(subcomponentDropdownStructure);
-    subcomponentValues.parentComponent.activeSubcomponentName = dropdownOptionNames[targetIndex];
+  private static getActualObjectName(subcomponentDropdownStructure: NestedDropdownStructure, destinationName: string): string {
+    return (subcomponentDropdownStructure[destinationName][DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).actualObjectName;
   }
 
-  private static moveObjectPropertyToEnd(subcomponentDropdownStructure: NestedDropdownStructure, propertyKey: string): void {
-    const tempProp = subcomponentDropdownStructure[propertyKey];
-    delete subcomponentDropdownStructure[propertyKey];
-    subcomponentDropdownStructure[propertyKey] = tempProp;
+  private static swapSubcomponentNameToDropdownOptionNameDetails(subcomponentNameToDropdownOptionName: SubcomponentNameToDropdownOptionName,
+      subcomponentDropdownStructure: NestedDropdownStructure, currentName: string, destinationName: string): void {
+    subcomponentNameToDropdownOptionName[ChangeLayerOrder.getActualObjectName(subcomponentDropdownStructure, destinationName)] = currentName;
+    subcomponentNameToDropdownOptionName[ChangeLayerOrder.getActualObjectName(subcomponentDropdownStructure, currentName)] = destinationName;
   }
 
-  private static moveObjectPropertiesAfterIndexToEnd(subcomponentDropdownStructure: NestedDropdownStructure, currentIndex: number): void {
-    const dropdownOptionNames = Object.keys(subcomponentDropdownStructure);
-    for (let i = currentIndex + 1; i < dropdownOptionNames.length - 1; i += 1) {
-      ChangeLayerOrder.moveObjectPropertyToEnd(subcomponentDropdownStructure, dropdownOptionNames[i]);
-    }
-  }
-
-  private static getRightMoveIndexes(initialDropdownOptionNames: string[], subcomponentName: string): number[] {
-    const currentIndex = initialDropdownOptionNames.indexOf(subcomponentName);
-    const targetIndex = currentIndex + 1;
-    return [currentIndex, targetIndex];
-  }
-
-  private static getLeftMoveIndexes(initialDropdownOptionNames: string[], subcomponentName: string): number[] {
-    const currentIndex = initialDropdownOptionNames.indexOf(subcomponentName) - 1;
-    const targetIndex = currentIndex;
-    return [currentIndex, targetIndex];
-  }
-
-  private static getMoveIndexes(direction: string, initialDropdownOptionNames: string[], subcomponentName: string): number[] {
-    if (direction === SUBCOMPONENT_ORDER_DIRECTIONS.RIGHT) {
-      return ChangeLayerOrder.getRightMoveIndexes(initialDropdownOptionNames, subcomponentName);
-    }
-    return ChangeLayerOrder.getLeftMoveIndexes(initialDropdownOptionNames, subcomponentName);
+  private static swapDetails(parentComponent: WorkshopComponent, subcomponentDropdownStructure: NestedDropdownStructure,
+      destinationIndex: number, currentIndex: number): void {
+    const dropdownNames = Object.keys(subcomponentDropdownStructure);
+    const currentName = dropdownNames[currentIndex];
+    const destinationName = dropdownNames[destinationIndex];
+    ChangeLayerOrder.swapSubcomponentNameToDropdownOptionNameDetails(parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName,
+      subcomponentDropdownStructure, currentName, destinationName);
+    ChangeLayerOrder.swapSubcomponentDropdownStructure(subcomponentDropdownStructure, currentName, destinationName);
   }
 
   private static moveNestedComponentInDropdownStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
-    const { dropdownOptionName, subcomponentDropdownStructure, index } = componentTraversalState;
+    const { dropdownOptionName, subcomponentDropdownStructure, index: currentIndex } = componentTraversalState;
     const subcomponentValues = this as any as SubcomponentValues;
-    if (subcomponentValues.subcomponentName === dropdownOptionName) {
-      const moveIndex = subcomponentValues.direction === SUBCOMPONENT_ORDER_DIRECTIONS.UP ? index - 1: index;
-      const initialDropdownOptionNames = Object.keys(subcomponentDropdownStructure);
-      ChangeLayerOrder.moveObjectPropertyToEnd(subcomponentDropdownStructure, initialDropdownOptionNames[moveIndex]);
-      ChangeLayerOrder.moveObjectPropertiesAfterIndexToEnd(subcomponentDropdownStructure, moveIndex);
-      ChangeLayerOrder.updateSubcomponentNames(subcomponentValues, subcomponentDropdownStructure, moveIndex);
-      const newIndex = subcomponentValues.direction === SUBCOMPONENT_ORDER_DIRECTIONS.UP ? index - 1 : index + 1;
-      subcomponentValues.parentComponent.activeSubcomponentName = subcomponentValues.parentComponent.componentPreviewStructure.layers[newIndex].name;
+    if (subcomponentValues.targetDropdownOptionName === dropdownOptionName) {
+      const destinationIndex = subcomponentValues.direction === SUBCOMPONENT_ORDER_DIRECTIONS.UP ? currentIndex - 1 : currentIndex + 1;
+      ChangeLayerOrder.swapDetails(subcomponentValues.parentComponent, subcomponentDropdownStructure, destinationIndex, currentIndex)
+      subcomponentValues.parentComponent.activeSubcomponentName = subcomponentValues.parentComponent.componentPreviewStructure.layers[destinationIndex].name;
       return componentTraversalState;
     }
     return null;
@@ -84,7 +59,7 @@ export class ChangeLayerOrder {
 
   private static moveNestedComponentInPreviewStructureIfFound(componentTraversalState: ComponentTraversalState): CompositeTraversalResult {
     const { subcomponentProperties, layers, index } = componentTraversalState;
-    const { subcomponentProperties: targetSubcomponentProperties, direction } = this as any as SubcomponentValues;
+    const { targetSubcomponentProperties, direction } = this as any as SubcomponentValues;
     if (targetSubcomponentProperties === subcomponentProperties) {
       if (direction === SUBCOMPONENT_ORDER_DIRECTIONS.UP && index !== 0) {
         ArrayUtils.changeElementPosition(layers, index, index - 1);
@@ -99,10 +74,12 @@ export class ChangeLayerOrder {
   }
 
   public static change(direction: SUBCOMPONENT_ORDER_DIRECTIONS, parentComponent: WorkshopComponent): void {
+    // WORK2: generator?
     const subcomponentValues: SubcomponentValues = {
-      subcomponentName: parentComponent.activeSubcomponentName,
+      targetSubcomponentName: parentComponent.activeSubcomponentName,
+      targetDropdownOptionName: parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[parentComponent.activeSubcomponentName],
       parentComponent,
-      subcomponentProperties: parentComponent.subcomponents[parentComponent.activeSubcomponentName],
+      targetSubcomponentProperties: parentComponent.subcomponents[parentComponent.activeSubcomponentName],
       direction,
     };
     const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(

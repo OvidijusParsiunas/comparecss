@@ -41,11 +41,8 @@ export class UpdateLayerComponentNames extends UpdateComponentNamesShared {
       if (layersDropdownStructure[newDropdownName]) {
         UpdateLayerComponentNames.moveExistingDropdownOptionToTheBottom(layersDropdownStructure, newDropdownName);
       }
-      // WORK2: the if statement is currently not required
-      if (subcomponentName !== newDropdownName) {
-        UpdateLayerComponentNames.updateLayerName(parentComponent, layersDropdownStructure, subcomponentName,
-          overwrittenDropdownNames, newDropdownName, oldDropdownName);
-      }
+      UpdateLayerComponentNames.updateLayerName(parentComponent, layersDropdownStructure, subcomponentName,
+        overwrittenDropdownNames, newDropdownName, oldDropdownName);
       newDrodpownValues.push(newDropdownName);
     }
     return overwrittenDropdownNames.filter(x => !newDrodpownValues.includes(x));
