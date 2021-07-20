@@ -45,13 +45,21 @@ export class ChangeLayerOrder {
     ChangeLayerOrder.swapSubcomponentDropdownStructure(subcomponentDropdownStructure, currentName, destinationName);
   }
 
+  private static isActualObjectNameMatching(subcomponentValues: SubcomponentValues, componentTraversalState: ComponentTraversalState): boolean {
+    const { dropdownOptionName, subcomponentDropdownStructure } = componentTraversalState;
+    const { targetDropdownOptionName, targetSubcomponentName } = subcomponentValues;
+    if (targetDropdownOptionName !== dropdownOptionName) return false;
+    const { actualObjectName } = subcomponentDropdownStructure[dropdownOptionName][DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails;
+    if (actualObjectName) return targetSubcomponentName === actualObjectName;
+    return true;
+  }
+
   private static moveNestedComponentInDropdownStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
-    const { dropdownOptionName, subcomponentDropdownStructure, index: currentIndex } = componentTraversalState;
+    const { subcomponentDropdownStructure, index: currentIndex } = componentTraversalState;
     const subcomponentValues = this as any as SubcomponentValues;
-    if (subcomponentValues.targetDropdownOptionName === dropdownOptionName) {
+    if (ChangeLayerOrder.isActualObjectNameMatching(subcomponentValues, componentTraversalState)) {
       const destinationIndex = subcomponentValues.direction === SUBCOMPONENT_ORDER_DIRECTIONS.UP ? currentIndex - 1 : currentIndex + 1;
       ChangeLayerOrder.swapDetails(subcomponentValues.parentComponent, subcomponentDropdownStructure, destinationIndex, currentIndex)
-      subcomponentValues.parentComponent.activeSubcomponentName = subcomponentValues.parentComponent.componentPreviewStructure.layers[destinationIndex].name;
       return componentTraversalState;
     }
     return null;

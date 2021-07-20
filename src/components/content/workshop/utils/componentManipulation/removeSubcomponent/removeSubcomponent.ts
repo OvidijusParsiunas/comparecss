@@ -67,10 +67,10 @@ export class RemoveSubcomponent {
 
   private static isActualObjectNameMatching(subcomponentValues: SubcomponentValues, componentTraversalState: ComponentTraversalState): boolean {
     const { dropdownOptionName, subcomponentDropdownStructure } = componentTraversalState;
-    const { targetDropdownOptionName } = subcomponentValues;
+    const { targetDropdownOptionName, targetSubcomponentName } = subcomponentValues;
     if (targetDropdownOptionName !== dropdownOptionName) return false;
     const { actualObjectName } = subcomponentDropdownStructure[dropdownOptionName][DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails;
-    if (actualObjectName) return targetDropdownOptionName !== actualObjectName;
+    if (actualObjectName) return targetSubcomponentName === actualObjectName;
     return true;
   }
 

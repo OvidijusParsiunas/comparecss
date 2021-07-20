@@ -9,7 +9,7 @@ import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMark
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 
 export default class ComponentPreviewUtils {
-  
+
   private static readonly SUBCOMPONENT_ID_PREFIX = 'subcomponent-id-';
   private static readonly OVERLAY_ID_PREFIX = 'overlay-id-';
 
