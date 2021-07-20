@@ -74,6 +74,9 @@ export class UpdateGenericComponentNames extends UpdateComponentNamesShared {
       ? UpdateGenericComponentNames.generateSingleDropdownOptionName(subcomponentName)
       : UpdateGenericComponentNames.generateDropdownOptionName(subcomponentName, UpdateGenericComponentNames.getNewPostfix(subcomponentPrefixToTotal, subcomponentNameToPrefix, singleSubcomponentPrefixes, subcomponentName));
     //
+    if (containingDropdownStructure[newDropdownName]) {
+      UpdateGenericComponentNames.moveExistingDropdownOptionToTheBottom(containingDropdownStructure, newDropdownName);
+    }
     UpdateGenericComponentNames.updateComponentName(parentComponent, containingDropdownStructure, subcomponentName,
       overwrittenDropdownNames, newDropdownName, oldDropdownName);
     newDrodpownValues.push(newDropdownName);
