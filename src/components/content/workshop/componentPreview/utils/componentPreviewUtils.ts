@@ -16,6 +16,7 @@ export default class ComponentPreviewUtils {
   public static generateSubcomponentAndOverlayIds(component: WorkshopComponent): SubcomponentAndOverlayElementIds {
     const subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds = {};
     Object.keys(component.subcomponents).forEach((subcomponentName: string, index: number) => {
+      if (!component.componentPreviewStructure.subcomponentNameToDropdownOptionName[subcomponentName]) return;
       subcomponentAndOverlayElementIdsObject[subcomponentName] = {
         subcomponentId: `${ComponentPreviewUtils.SUBCOMPONENT_ID_PREFIX}${index}`,
         overlayId: `${ComponentPreviewUtils.OVERLAY_ID_PREFIX}${index}`,

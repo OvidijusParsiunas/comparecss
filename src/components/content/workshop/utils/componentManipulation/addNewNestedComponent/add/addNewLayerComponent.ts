@@ -15,7 +15,9 @@ import JSONUtils from '../../../generic/jsonUtils';
 export class AddNewLayerComponent extends AddNewComponentShared {
 
   // WORK2 - repeated
-  private static addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
+  private static addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent: WorkshopComponent,
+      newComponent: WorkshopComponent, isEditable: boolean): void {
+    if (!isEditable) return;
     const baseName = newComponent.coreSubcomponentNames.base;
     parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[baseName] = baseName;
   }
@@ -77,7 +79,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, overwritePropertiesFunc);
     JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
     AddNewLayerComponent.addNewComponentToComponentPreview(parentComponent, newComponent, isEditable);
-    AddNewLayerComponent.addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent, newComponent);
+    AddNewLayerComponent.addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent, newComponent, isEditable);
     return newComponent;
   }
 }
