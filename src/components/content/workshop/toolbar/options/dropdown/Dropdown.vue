@@ -181,10 +181,11 @@ export default {
     },
     searchForOpion(dropdownOptions: NestedDropdownStructure, dropdownOptionName: string, dropdownOptionsIndex: number, actualObjectName?: string): SearchForOptionResult {
       if (!dropdownOptions) return null;
+      const optionNames = Object.keys(dropdownOptions);
+      if (optionNames.length === 1 && optionNames[0] === DROPDOWN_OPTION_AUX_DETAILS_REF) return null;
       if (this.isOptionFound(dropdownOptions[dropdownOptionName], actualObjectName)) {
         return { dropdowns: [dropdownOptions], optionIndexes: [Object.keys(dropdownOptions).indexOf(dropdownOptionName)] };
       } else {
-        const optionNames = Object.keys(dropdownOptions);
         const childDropdownIndex = dropdownOptionsIndex + 1;
         for (let i = 0; i <= optionNames.length; i += 1) {
           const optionName = optionNames[i];

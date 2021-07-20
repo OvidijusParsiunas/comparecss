@@ -35,11 +35,19 @@ export class AddNewGenericComponent extends AddNewComponentShared {
   }
   public static readonly DEFAULT_TOP_PROPERTY = '50%';
 
-  private static updateComponentDropdownStructure(nestedComponent: WorkshopComponent,
+  // WORK2 - repeated
+  private static addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
+    const baseName = newComponent.coreSubcomponentNames.base;
+    parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[baseName] = baseName;
+  }
+
+  // WORK2 - refactor
+  private static updateComponentDropdownStructure(newComponent: WorkshopComponent,
       subcomponentDropdownStructure: NestedDropdownStructure, baseSubcomponentName: string): void {
-    const { coreSubcomponentNames: { base: baseName }, componentPreviewStructure } = nestedComponent;
+    const { coreSubcomponentNames: { base: baseName }, componentPreviewStructure } = newComponent;
     const nestedComponentBaseDropdownStructure = componentPreviewStructure.subcomponentDropdownStructure[baseName];
     (nestedComponentBaseDropdownStructure[DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).isEnabled = true;
+    (nestedComponentBaseDropdownStructure[DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).actualObjectName = baseName;
     const newComponentDropdownStructure = { [baseName]: { ...nestedComponentBaseDropdownStructure }};
     JSONUtils.addObjects(subcomponentDropdownStructure, baseSubcomponentName, newComponentDropdownStructure, true);
   }
@@ -49,34 +57,35 @@ export class AddNewGenericComponent extends AddNewComponentShared {
   }
 
   private static addNewSubcomponentToParentLayer(parentLayer: Layer, baseSubcomponentProperties: SubcomponentProperties,
-      nestedComponent: WorkshopComponent): void {
+    newComponent: WorkshopComponent): void {
     const alignment = baseSubcomponentProperties?.customFeatures?.alignedLayerSection?.section;
     const nestedSubcomponentProperties: NestedSubcomponent = {
-      name: nestedComponent.coreSubcomponentNames.base, subcomponentProperties: baseSubcomponentProperties};
+      name: newComponent.coreSubcomponentNames.base, subcomponentProperties: baseSubcomponentProperties};
     parentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][alignment || ALIGNED_SECTION_TYPES.LEFT].push(nestedSubcomponentProperties);
   }
 
-  private static assembleSubcomponentData(parentComponent: WorkshopComponent, nestedComponent: WorkshopComponent,
+  private static assembleSubcomponentData(parentComponent: WorkshopComponent, newComponent: WorkshopComponent,
       layerName: string): SubcomponentData {
     const parentLayer = ComponentPreviewStructureSearchUtils.getLayerByName(parentComponent, layerName);
-    const baseSubcomponentProperties = nestedComponent.componentPreviewStructure.baseSubcomponentProperties;
+    const baseSubcomponentProperties = newComponent.componentPreviewStructure.baseSubcomponentProperties;
     const { subcomponentDropdownStructure } = parentComponent.componentPreviewStructure;
     const parentComponentBaseName = Object.keys(subcomponentDropdownStructure)[0];
-    const isParentLayerInSubcomponentsDropdown = !!subcomponentDropdownStructure[parentComponentBaseName][parentLayer.name];
+    const isParentLayerInSubcomponentsDropdown = !!subcomponentDropdownStructure[parentComponentBaseName][parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[parentLayer.name]];
     return { parentLayer, baseSubcomponentProperties, subcomponentDropdownStructure, parentComponentBaseName, isParentLayerInSubcomponentsDropdown };
   }
 
-  private static addNewSubcomponentsToComponentPreview(parentComponent: WorkshopComponent, nestedComponent: WorkshopComponent,
+  private static addNewSubcomponentsToComponentPreview(parentComponent: WorkshopComponent, newComponent: WorkshopComponent,
       layerName: string): void {
     const { parentLayer, baseSubcomponentProperties, subcomponentDropdownStructure, parentComponentBaseName,
-      isParentLayerInSubcomponentsDropdown } = AddNewGenericComponent.assembleSubcomponentData(parentComponent, nestedComponent, layerName);
-    AddNewGenericComponent.addNewSubcomponentToParentLayer(parentLayer, baseSubcomponentProperties, nestedComponent);
+      isParentLayerInSubcomponentsDropdown } = AddNewGenericComponent.assembleSubcomponentData(parentComponent, newComponent, layerName);
+    AddNewGenericComponent.addNewSubcomponentToParentLayer(parentLayer, baseSubcomponentProperties, newComponent);
     if (isParentLayerInSubcomponentsDropdown) {
       AddNewGenericComponent.updateNewSubcomponentParentLayer(baseSubcomponentProperties, parentLayer);
-      AddNewGenericComponent.updateComponentDropdownStructure(nestedComponent,
-        subcomponentDropdownStructure[parentComponentBaseName] as NestedDropdownStructure, parentLayer.name);
+      const parentLayerDropdownName = parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[parentLayer.name];
+      AddNewGenericComponent.updateComponentDropdownStructure(newComponent,
+        subcomponentDropdownStructure[parentComponentBaseName] as NestedDropdownStructure, parentLayerDropdownName);
     } else {
-      AddNewGenericComponent.updateComponentDropdownStructure(nestedComponent, subcomponentDropdownStructure, parentComponentBaseName);
+      AddNewGenericComponent.updateComponentDropdownStructure(newComponent, subcomponentDropdownStructure, parentComponentBaseName);
     }
   }
 
@@ -112,10 +121,11 @@ export class AddNewGenericComponent extends AddNewComponentShared {
   public static add(parentComponent: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, layerName: string,
       overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
-    const nestedComponent = AddNewGenericComponent.createNewComponent(componentType, componentGenerator, overwritePropertiesFunc);
-    JSONUtils.addObjects(parentComponent, 'subcomponents', nestedComponent.subcomponents);
-    AddNewGenericComponent.addNewSubcomponentsToComponentPreview(parentComponent, nestedComponent, layerName);
-    InterconnectedSettings.update(true, parentComponent, nestedComponent.subcomponents[nestedComponent.coreSubcomponentNames.base]);
-    return nestedComponent;
+    const newComponent = AddNewGenericComponent.createNewComponent(componentType, componentGenerator, overwritePropertiesFunc);
+    JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
+    AddNewGenericComponent.addNewSubcomponentsToComponentPreview(parentComponent, newComponent, layerName);
+    InterconnectedSettings.update(true, parentComponent, newComponent.subcomponents[newComponent.coreSubcomponentNames.base]);
+    AddNewGenericComponent.addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent, newComponent);
+    return newComponent;
   }
 }
