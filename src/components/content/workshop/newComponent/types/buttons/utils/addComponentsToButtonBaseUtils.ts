@@ -1,3 +1,4 @@
+import { UpdateGenericComponentNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateGenericComponentNames';
 import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewGenericComponent';
 import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
 import { Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
@@ -20,5 +21,6 @@ export class AddComponentsToButtonBaseUtils {
     const { coreSubcomponentNames } = component;
     component.componentPreviewStructure.baseSubcomponentProperties.nameOfAnotherSubcomponetToTrigger = textSubcomponent.coreSubcomponentNames.base;
     coreSubcomponentNames.text = textSubcomponent.coreSubcomponentNames.base;
+    UpdateGenericComponentNames.updateViaLayerObject(component, component.componentPreviewStructure.layers[0]);
   }
 }

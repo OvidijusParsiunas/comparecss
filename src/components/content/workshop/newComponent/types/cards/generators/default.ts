@@ -78,8 +78,8 @@ class DefaultCard extends ComponentBuilder {
   }
 
   private static overwriteSubmitButtonProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
-    subcomponents[coreSubcomponentNames.base].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    subcomponents[coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    subcomponents[coreSubcomponentNames.base].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT);
+    subcomponents[coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT);
     subcomponents[coreSubcomponentNames.text].customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Submit');
     subcomponents[coreSubcomponentNames.text].defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Submit');
   }
@@ -94,14 +94,16 @@ class DefaultCard extends ComponentBuilder {
   public static addComponentsToBase(cardComponent: WorkshopComponent): void {
     const layer1Component = AddNewLayerComponent.add(cardComponent, DEFAULT_STYLES.DEFAULT, true, DefaultCard.overwriteTopLayerProperties);
     const layer2Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
-    // const layer3Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
+    const layer3Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
     UpdateLayerComponentNames.update(cardComponent, 0);
     // AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
     //   layer1Component.coreSubcomponentNames.base, [DefaultCard.overwriteTitleProperties]);
     // AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
+    //   layer1Component.coreSubcomponentNames.base, [DefaultCard.overwriteTitleProperties]);
+    // AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
     //   layer2Component.coreSubcomponentNames.base, [DefaultCard.overwriteDescriptionProperties]);
-    // AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
-    //   layer3Component.coreSubcomponentNames.base, [DefaultCard.overwriteSubmitButtonProperties]);
+    AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
+      layer1Component.coreSubcomponentNames.base, [DefaultCard.overwriteSubmitButtonProperties]);
     // AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
     //   layer3Component.coreSubcomponentNames.base, [DefaultCard.overwriteCancelButtonProperties]);
     // UpdateGenericComponentNames.updateViaLayerObject(cardComponent, cardComponent.componentPreviewStructure.layers[2]);
@@ -109,7 +111,7 @@ class DefaultCard extends ComponentBuilder {
     //   layer1Component.coreSubcomponentNames.base);
     // AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.AVATAR, DEFAULT_STYLES.DEFAULT,
     //   layer1Component.coreSubcomponentNames.base);
-    // UpdateGenericComponentNames.updateViaLayerObject(cardComponent, cardComponent.componentPreviewStructure.layers[0]);
+    UpdateGenericComponentNames.updateViaLayerObject(cardComponent, cardComponent.componentPreviewStructure.layers[0]);
   }
 }
 

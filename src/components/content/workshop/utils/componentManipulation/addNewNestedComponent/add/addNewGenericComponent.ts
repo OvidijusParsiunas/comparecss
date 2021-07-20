@@ -41,15 +41,15 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[baseName] = baseName;
   }
 
-  // WORK2 - refactor
-  private static updateComponentDropdownStructure(newComponent: WorkshopComponent,
+  private static updateComponentDropdownStructure(parentComponent: WorkshopComponent, newComponent: WorkshopComponent,
       subcomponentDropdownStructure: NestedDropdownStructure, baseSubcomponentName: string): void {
     const { coreSubcomponentNames: { base: baseName }, componentPreviewStructure } = newComponent;
-    const nestedComponentBaseDropdownStructure = componentPreviewStructure.subcomponentDropdownStructure[baseName];
-    (nestedComponentBaseDropdownStructure[DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).isEnabled = true;
-    (nestedComponentBaseDropdownStructure[DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).actualObjectName = baseName;
+    const nestedComponentBaseDropdownStructure = componentPreviewStructure.subcomponentDropdownStructure[baseName]; 
+    nestedComponentBaseDropdownStructure[DROPDOWN_OPTION_AUX_DETAILS_REF] = { isEnabled: true, actualObjectName: baseName }
     const newComponentDropdownStructure = { [baseName]: { ...nestedComponentBaseDropdownStructure }};
     JSONUtils.addObjects(subcomponentDropdownStructure, baseSubcomponentName, newComponentDropdownStructure, true);
+    JSONUtils.addObjects(parentComponent.componentPreviewStructure, 'subcomponentNameToDropdownOptionName',
+      newComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName, true);
   }
 
   private static updateNewSubcomponentParentLayer(baseSubcomponentProperties: SubcomponentProperties, parentLayer: Layer): void {
@@ -82,10 +82,11 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     if (isParentLayerInSubcomponentsDropdown) {
       AddNewGenericComponent.updateNewSubcomponentParentLayer(baseSubcomponentProperties, parentLayer);
       const parentLayerDropdownName = parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[parentLayer.name];
-      AddNewGenericComponent.updateComponentDropdownStructure(newComponent,
+      AddNewGenericComponent.updateComponentDropdownStructure(parentComponent, newComponent,
         subcomponentDropdownStructure[parentComponentBaseName] as NestedDropdownStructure, parentLayerDropdownName);
     } else {
-      AddNewGenericComponent.updateComponentDropdownStructure(newComponent, subcomponentDropdownStructure, parentComponentBaseName);
+      AddNewGenericComponent.updateComponentDropdownStructure(parentComponent, newComponent,
+        subcomponentDropdownStructure, parentComponentBaseName);
     }
   }
 
