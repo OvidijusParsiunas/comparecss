@@ -89,24 +89,26 @@ class DefaultModal extends ComponentBuilder {
     subcomponents[coreSubcomponentNames.text].defaultCustomStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Cancel');
   }
 
-  public static addComponentsToBase(component: WorkshopComponent): void {
-    const layer1Component = AddNewLayerComponent.add(component, DEFAULT_STYLES.DEFAULT, true, DefaultModal.overwriteTopLayerProperties);
-    const layer2Component = AddNewLayerComponent.add(component, LAYER_STYLES.CARD, true);
-    const layer3Component = AddNewLayerComponent.add(component, LAYER_STYLES.CARD, true);
-    UpdateLayerComponentNames.update(component, 0);
-    AddNewGenericComponent.add(component, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
+  public static addComponentsToBase(modalComponent: WorkshopComponent): void {
+    const layer1Component = AddNewLayerComponent.add(modalComponent, DEFAULT_STYLES.DEFAULT, true, DefaultModal.overwriteTopLayerProperties);
+    const layer2Component = AddNewLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true);
+    const layer3Component = AddNewLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true);
+    UpdateLayerComponentNames.update(modalComponent, 0);
+    AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentNames.base, [DefaultModal.overwriteTitleProperties]);
-    AddNewGenericComponent.add(component, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
+    AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layer2Component.coreSubcomponentNames.base, [DefaultModal.overwriteDescriptionProperties]);
-    AddNewGenericComponent.add(component, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
+    AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
       layer3Component.coreSubcomponentNames.base, [DefaultModal.overwriteSubmitButtonProperties]);
-    AddNewGenericComponent.add(component, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
+    AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
       layer3Component.coreSubcomponentNames.base, [DefaultModal.overwriteCancelButtonProperties]);
-    UpdateGenericComponentNames.updateViaLayerObject(component, component.componentPreviewStructure.layers[2]);
-    AddNewGenericComponent.add(component, COMPONENT_TYPES.BUTTON,
+    AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.BUTTON,
       BUTTON_STYLES.CLOSE, layer1Component.coreSubcomponentNames.base);
-    AddNewGenericComponent.add(component, COMPONENT_TYPES.AVATAR, DEFAULT_STYLES.DEFAULT,
+    AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.AVATAR, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentNames.base);
+    UpdateGenericComponentNames.updateViaLayerObject(modalComponent, modalComponent.componentPreviewStructure.layers[0]);
+    UpdateGenericComponentNames.updateViaLayerObject(modalComponent, modalComponent.componentPreviewStructure.layers[1]);
+    UpdateGenericComponentNames.updateViaLayerObject(modalComponent, modalComponent.componentPreviewStructure.layers[2]);
   }
 }
 

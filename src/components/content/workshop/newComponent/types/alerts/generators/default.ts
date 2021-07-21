@@ -1,3 +1,4 @@
+import { UpdateGenericComponentNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateGenericComponentNames';
 import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewGenericComponent';
 import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
 import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -23,6 +24,7 @@ class DefaultAlert extends ComponentBuilder {
       layetComponentBaseName, [DefaultAlert.overwriteTextProperties]);
     AddNewGenericComponent.add(alertComponent, COMPONENT_TYPES.BUTTON,
       BUTTON_STYLES.CLOSE, layetComponentBaseName);
+    UpdateGenericComponentNames.updateViaLayerObject(alertComponent, alertComponent.componentPreviewStructure.layers[0]);
   }
 }
 
