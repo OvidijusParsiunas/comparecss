@@ -5,6 +5,7 @@ import { UpdateGenericComponentNames } from '../updateNestedComponentNames/updat
 import { subcomponentAlignmentDropdownState } from './subcomponentAlignmentDropdownState';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 
+// WORK2: change to nested component
 export class ChangeSubcomponentAlignment {
 
   private static addSubcomponentToNewAlignment(newAlignment: ALIGNED_SECTION_TYPES, alignedSections: AlignedSections): void {

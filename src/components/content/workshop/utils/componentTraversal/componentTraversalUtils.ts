@@ -1,25 +1,30 @@
-import { AlignedSections, ComponentPreviewStructure, Layer, NestedSubcomponent } from '../../../../../interfaces/componentPreviewStructure';
+import { AlignedSections, ComponentPreviewStructure, NestedSubcomponent } from '../../../../../interfaces/componentPreviewStructure';
 import { DropdownOptionAuxDetails, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../interfaces/dropdownOptionDisplayStatus';
-import { ChangeOrderTargetDetails } from '../../../../../interfaces/changeOrderTargetDetails';
+import { ChangeOrderCallback, TargetDetails, ComponentTraversalState } from '../../../../../interfaces/componentTraversal';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
-import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
+import { WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 
-export interface ComponentTraversalState {
-  dropdownOptionName?: string;
-  dropdownOptionNamesStack?: string[];
-  subcomponentDropdownStructure?: NestedDropdownStructure;
-  subcomponentProperties?: SubcomponentProperties;
-  alignedNestedComponents?: NestedSubcomponent[];
-  alignedSections?: AlignedSections;
-  layers?: Layer[];
-  index?: number;
-}
 type TraverseComponentCallback = (componentTraversalState: ComponentTraversalState) => ComponentTraversalState;
+
+interface AuxiliaryTraversalDetails {
+  targetSubcomponentName?: string;
+  callback?: ChangeOrderCallback;
+}
 
 export default class ComponentTraversalUtils {
 
-  public static isActualObjectNameMatching(targetDetails: ChangeOrderTargetDetails, componentTraversalState: ComponentTraversalState): boolean {
+  public static generateTargetDetails(parentComponent: WorkshopComponent, { targetSubcomponentName, callback }: AuxiliaryTraversalDetails): TargetDetails {
+    return {
+      targetSubcomponentName: targetSubcomponentName || parentComponent.activeSubcomponentName,
+      targetDropdownOptionName: parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[parentComponent.activeSubcomponentName],
+      parentComponent,
+      targetSubcomponentProperties: parentComponent.subcomponents[parentComponent.activeSubcomponentName],
+      callback,
+    };
+  }
+
+  public static isActualObjectNameMatching(targetDetails: TargetDetails, componentTraversalState: ComponentTraversalState): boolean {
     const { dropdownOptionName, subcomponentDropdownStructure } = componentTraversalState;
     const { targetDropdownOptionName, targetSubcomponentName } = targetDetails;
     if (targetDropdownOptionName !== dropdownOptionName) return false;

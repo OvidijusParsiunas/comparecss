@@ -1,12 +1,11 @@
 import { ImportComponentModeCardEvents } from '../../toolbar/options/importComponent/modeUtils/importComponentModeCardEvents';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../interfaces/subcomponentOrderDirections.enum';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
-import { ChangeSubcomponentAlignment } from './moveSubcomponent/changeSubcomponentAlignment';
+import { ChangeSubcomponentAlignment } from './moveNestedComponent/changeSubcomponentAlignment';
+import { ChangeNestedComponentOrder } from './moveNestedComponent/changeNestedComponentOrder';
 import { AddNewNestedComponent } from './addNewNestedComponent/addNewNestedComponent';
-import { ChangeSubcomponentOrder } from './moveSubcomponent/changeSubcomponentOrder';
 import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
 import { RemoveSubcomponent } from './removeSubcomponent/removeSubcomponent';
-import { ChangeLayerOrder } from './moveSubcomponent/changeLayerOrder';
 import CopyComponent from './copyComponent/copyComponent';
 import ComponentJs from '../generic/componentJs';
 import { ComponentOptions } from 'vue';
@@ -50,9 +49,7 @@ export class ComponentManipulation {
 
   public static changeSubcomponentOrder(workshopComponent: ComponentOptions, direction: SUBCOMPONENT_ORDER_DIRECTIONS,
       parentComponent: WorkshopComponent): void {
-    // WORK2: this will need to be moved out
-    if (direction === SUBCOMPONENT_ORDER_DIRECTIONS.LEFT || direction === SUBCOMPONENT_ORDER_DIRECTIONS.RIGHT) ChangeSubcomponentOrder.change(direction, parentComponent);
-    if (direction === SUBCOMPONENT_ORDER_DIRECTIONS.UP || direction === SUBCOMPONENT_ORDER_DIRECTIONS.DOWN) ChangeLayerOrder.change(direction, parentComponent);
+    ChangeNestedComponentOrder.change(parentComponent, direction);
     workshopComponent.$refs.contents.refreshComponent();
   }
 

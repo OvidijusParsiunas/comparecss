@@ -1,5 +1,5 @@
 import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallbacks } from '../../../../../../interfaces/actionsDropdownsMouseEventCallbacks';
-import { subcomponentAlignmentDropdownState } from '../../../utils/componentManipulation/moveSubcomponent/subcomponentAlignmentDropdownState';
+import { subcomponentAlignmentDropdownState } from '../../../utils/componentManipulation/moveNestedComponent/subcomponentAlignmentDropdownState';
 import { ChangeSubcomponentAlignmentEvent, ChangeSubcomponentOrderEvent } from '../../../../../../interfaces/settingsComponentEvents';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../../interfaces/subcomponentOrderDirections.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
