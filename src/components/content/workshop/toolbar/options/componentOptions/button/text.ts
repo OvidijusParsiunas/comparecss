@@ -21,7 +21,7 @@ export const buttonTextOptions: SubcomponentOptions<TextWithNoBackgroundOptions>
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_MARGIN,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,

@@ -24,8 +24,12 @@ export const avatarOptions: SubcomponentOptions<AvatarOptionsModes> = {
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE,
     },
     {
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
+    },
+    {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.FULL_POSITION,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION,
     },
   ],
 };

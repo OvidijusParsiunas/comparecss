@@ -20,7 +20,7 @@ export const closeButtonTextOptions: SubcomponentOptions<TextWithNoBackgroundOpt
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING,
     },
     {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION_NO_ALIGN,
     },
   ],

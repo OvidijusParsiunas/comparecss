@@ -1,7 +1,6 @@
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../consts/workshopToolbarOptionTypes.enum';
 import nestedComponentPositionNoAlign from './nestedComponentPositionNoAlign';
 import nestedComponentPosition from './nestedComponentPosition';
-import nestedComponentMargin from './nestedComponentMargin';
 import buttonAnimations from './buttonAnimations';
 import modalAnimations from './modalAnimations';
 import alertAnimations from './alertAnimations';
@@ -10,7 +9,6 @@ import modalPosition from './modalPosition';
 import layerPosition from './layerPosition';
 import borderBottom from './borderBottom';
 import circleBorder from './circleBorder';
-import fullPosition from './fullPosition';
 import modalActions from './modalActions';
 import sizeHeight from './sizeHeight';
 import background from './background';
@@ -52,11 +50,9 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_COLOR]: textColor,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND]: background,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_POSITION]: modalPosition,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.FULL_POSITION]: fullPosition,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION_NO_ALIGN]: nestedComponentPositionNoAlign,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_SIZE]: textSize,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION]: nestedComponentPosition,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_MARGIN]: nestedComponentMargin,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKDROP]: backdrop,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS]: buttonAnimations,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.ALERT_ANIMATIONS]: alertAnimations,

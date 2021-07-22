@@ -3,10 +3,9 @@ import { BUTTON_STYLES, TEXT_STYLES } from '../../../../../../../consts/componen
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { Options } from '../../../../../../../interfaces/options';
-import { closeButtonTextOptions } from '../button/closeText';
+import { closeButtonTextOptions } from '../text/closeButtonText';
 import { nestedButtonOptions } from '../button/nestedButton';
 import { closeButtonOptions } from '../button/closeButton';
-import { imageLayerOptions } from '../layer/imageLayer';
 import { cardLayerOptions } from '../layer/cardLayer';
 import { buttonTextOptions } from '../button/text';
 import { textOptions } from '../text/text';
@@ -18,6 +17,7 @@ export class CardOptions {
   private static readonly STATIC_CARD_OPTIONS: SubcomponentTypeToOptions = {
     [SUBCOMPONENT_TYPES.BASE]: cardBaseOptions as Options,
     [SUBCOMPONENT_TYPES.AVATAR]: avatarOptions as Options,
+    [SUBCOMPONENT_TYPES.LAYER]: cardLayerOptions as Options,
   };
 
   protected static getTextOptions(component: WorkshopComponent): Options {
@@ -37,19 +37,7 @@ export class CardOptions {
     return nestedButtonOptions;
   }
 
-  protected static getLayerOptions(component: WorkshopComponent): Options {
-    const currentLayerIndex = component.componentPreviewStructure.layers
-      .findIndex((layer) => layer.name === component.activeSubcomponentName);
-    if (currentLayerIndex === 0) {
-      return imageLayerOptions as Options;
-    }
-    return cardLayerOptions as Options;
-  }
-
   public static getCardOptions(subcomponentType: SUBCOMPONENT_TYPES, component: WorkshopComponent): Options {
-    if (subcomponentType === SUBCOMPONENT_TYPES.LAYER) {
-      return CardOptions.getLayerOptions(component);
-    }
     if (subcomponentType === SUBCOMPONENT_TYPES.BUTTON) {
       return CardOptions.getButtonOptions(component);
     }

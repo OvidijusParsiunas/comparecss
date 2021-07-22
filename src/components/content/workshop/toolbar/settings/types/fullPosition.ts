@@ -1,22 +1,18 @@
 import { SubcomponentCssPropertyDetails } from '../../../../../../interfaces/subcomponentCssPropertyDetails';
 import { PARENT_COMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
-import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import { LAYER_SECTION_DIVISOR } from '../../../../../../consts/layerSectionDivisor';
-import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 
+// ATTENTION!!!!!!!!!!!!!!!!!!!!!!
+// This option list has been retired and only serves as a demonstarion for the following nested component options:
+// Example of vertical offset and horizontal offset
+// Example of interconnected settings via updateSettingSpecViaOtherCssProperties
 function getOtherSubcomponentCssPropertyDetails(): SubcomponentCssPropertyDetails {
   return [
     {subcomponentName: PARENT_COMPONENT_BASE_NAME.BASE, cssProperty: 'width'},
   ];
 }
 
-function changeSubcomponentOrder(optionName: string, subcomponentProperties: SubcomponentProperties): void {
-  console.log(optionName);
-  console.log(subcomponentProperties.nestedComponent.ref.componentPreviewStructure.layers);
-}
-
-// create an optional interface
 export default {
   options: [
     {
@@ -30,8 +26,6 @@ export default {
         postfix: '%',
       },
     },
-    // WORK2
-    // this may not be required and it may just end up being replaced by margin - this file may not be needed
     {
       type: SETTINGS_TYPES.RANGE,
       spec: {
@@ -47,25 +41,6 @@ export default {
           isScaleNegativeToPositive: true,
           divisor: LAYER_SECTION_DIVISOR,
         },
-      },
-    },
-    { 
-      type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
-      spec: {
-        name: 'Align',
-        options: { [ALIGNED_SECTION_TYPES.LEFT]: null, [ALIGNED_SECTION_TYPES.CENTER]: null, [ALIGNED_SECTION_TYPES.RIGHT]: null },
-        activeOptionPropertyKeyName: 'section',
-        customFeatureObjectKeys: ['customFeatures', 'alignedLayerSection', 'section'],
-        // WORK2
-        // ...SubcomponentAlignment.generateMouseEventCallbacks(),
-      },
-    },
-    { 
-      type: SETTINGS_TYPES.BUTTONS,
-      spec: {
-        name: 'Order',
-        options: { ['Left']: null, ['Right']: null },
-        optionAction: changeSubcomponentOrder,
       },
     },
   ]

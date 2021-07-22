@@ -3,7 +3,7 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentType
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { Options } from '../../../../../../../interfaces/options';
-import { closeButtonTextOptions } from '../button/closeText';
+import { closeButtonTextOptions } from '../text/closeButtonText';
 import { closeButtonOptions } from '../button/closeButton';
 import { textOptions } from '../text/text';
 import { alertBaseOptions } from './base';
