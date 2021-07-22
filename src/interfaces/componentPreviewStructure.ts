@@ -28,3 +28,24 @@ export interface ComponentPreviewStructure {
   subcomponentDropdownStructure?: NestedDropdownStructure;
   subcomponentNameToDropdownOptionName: SubcomponentNameToDropdownOptionName;
 }
+
+// current dropdown strategy:
+
+// Each dropdown option has an actual object name which is the name of the subcomponent that it is representing, e.g. dropdown structure:
+// Button: {
+//  Text: {dropdownOptionAuxiliaryDetailsReferenceObject: {…}}
+//  dropdownOptionAuxiliaryDetailsReferenceObject: {isEnabled: true, actualObjectName: "Button 7"}
+// }
+
+// SubcomponentNameToDropdownOptionName is a map that tracks what dropdown option each subcomponent name corresponds to, e,g:
+// subcomponentNameToDropdownOptionName: {
+//  Avatar 10: "Avatar"
+//  Base: "Base"
+//  Button 7: "Button"
+//  Button 12: "Button 1"
+//  Button 15: "Button 2"
+//  Layer 3: "Layer 1"
+//  Layer 4: "Layer 2"
+//  Layer 5: "Layer 3"
+//  Text 6: "Text"
+// }

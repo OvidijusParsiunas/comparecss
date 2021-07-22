@@ -140,13 +140,13 @@ export interface SubcomponentProperties {
   customStaticFeatures?: CustomStaticFeatures; 
   defaultCustomStaticFeatures?: CustomStaticFeatures;
   layerSectionsType?: LAYER_SECTIONS_TYPES;
-  // it is important to understand that the subcomponents of a nested component are in the very parent component's subcomponents,
-  // however they all still keep a reference of their own parent components
-  // nestedComponent is only appended to their bases (the nested ones access this via baseSubcomponentRef)
+  // it is important to understand that the subcomponents of a nested component are in its subcomponent section, additionally all of the nested components'
+  // subcomponents are also referenced in the parent component's subcomponents section
+  // nested component subcomponents keep a reference to it via the nestedComponent property
   // full structure explained at the bottom of the file titled: 'Reference for component structure'
   nestedComponent?: NestedComponent;
-  // baseSubcomponentRef is only appended to the nested subcomponents, not the base subcomponents
-  // used to track the nested component's inSync property and also used to identify whether the subcomponent is nested (not the base subcomponent)
+  // baseSubcomponentRef is only appended to all the nested subcomponents (except the base subcomponents)
+  // this is mostly used to track the nested component's inSync property and identify whether the subcomponent is nested and not base
   baseSubcomponentRef?: SubcomponentProperties;
   // this is used for overwriting css properties on mouse actions as adding css directly to customCss causes in-sync components to be edited all at once
   overwrittenCustomCssObj?: CustomCss;
@@ -183,22 +183,27 @@ export interface WorkshopComponent {
 }
 
 // Reference for component structure:
-// Overall:
-//   component -> subcomponents (parent base subcomponent + nested subcomponents)
-// Nested subcomponents (all except the very base of the parent component) have a reference to their own components:
-// Base subcomponents access it via the following properties:
+
+//   component -> subcomponents (parent base subcomponent + nested component subcomponents)
+
+// Subcomponents that do not belong to nested components and are not the base of the parent can access the parent component as follows:
+// parent component -> subcomponents (not base)
+//                          |
+//                    nestedComponent
+//                          |
+//                         ref
+//                          |
+//                   parent component
+
+// Subcomponents of the nested components can access the components via the following properties:
 //   nestedComponent -> ref
-// Nested subcomponent access it via the following properties:
-//   baseSubcomponentRef -> nestedComponent -> ref
-// a complete diagram may look like this:
-// component -> subcomponents
-//              |          |
-//      nested base sub  nested sub
-//              |          |
-//      nestedComponent  baseSubcomponentRef
-//              |          |
-//             ref       nestedComponent
-//              |          |
-//           component   component
-// (xForAllSubcomponents except for the very base subcomponent of parent)
-// Hence a nested button component which has its own base, layer and text subcomponents - all reference the same button component
+// Also, subcomponents of the nested components that are not their bases cass access their base subcomponent via the following properties:
+//   baseSubcomponentRef
+// parent component -> subcomponents (not base)        +        subcomponents (base)
+//                     |          |                                   |
+//         nestedComponent       baseSubcomponentRef           nestedComponent
+//                     |                                              |            
+//                    ref                                            ref
+//                     |                                              |
+//       nested component                                       nested component
+// baseSubcomponentRef allows base, layer and text subcomponents to all reference the same component (such as a button) 
