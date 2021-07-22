@@ -106,5 +106,6 @@ export default {
     left: -1px;
     width: calc(100% + 1px);
     background-color: unset !important;
+    border: unset !important;
   }
 </style>

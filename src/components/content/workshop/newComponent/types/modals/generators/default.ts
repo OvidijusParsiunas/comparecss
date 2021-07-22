@@ -90,9 +90,9 @@ class DefaultModal extends ComponentBuilder {
   }
 
   public static addComponentsToBase(modalComponent: WorkshopComponent): void {
-    const layer1Component = AddNewLayerComponent.add(modalComponent, DEFAULT_STYLES.DEFAULT, true, DefaultModal.overwriteTopLayerProperties);
+    const layer1Component = AddNewLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true, DefaultModal.overwriteTopLayerProperties);
     const layer2Component = AddNewLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true);
-    const layer3Component = AddNewLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true);
+    const layer3Component = AddNewLayerComponent.add(modalComponent, DEFAULT_STYLES.DEFAULT, true);
     UpdateLayerDropdownOptionNames.update(modalComponent, 0);
     AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentNames.base, [DefaultModal.overwriteTitleProperties]);

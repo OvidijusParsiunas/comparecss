@@ -7,7 +7,6 @@ after adding a new subcomponent, open its options
 zoom in image when hovered on
 think about computed property solution
 when a layer has no image and the image option is clicked, a new error is thrown
-layer borders should be at the bottom
 upon the removal of a subcomponent, maybe move to the next one instead of the base
 may need to call the close subcomponent dropdown option as close
 

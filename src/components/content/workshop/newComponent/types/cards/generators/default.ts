@@ -92,9 +92,9 @@ class DefaultCard extends ComponentBuilder {
   }
 
   public static addComponentsToBase(cardComponent: WorkshopComponent): void {
-    const layer1Component = AddNewLayerComponent.add(cardComponent, DEFAULT_STYLES.DEFAULT, true, DefaultCard.overwriteTopLayerProperties);
+    const layer1Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true, DefaultCard.overwriteTopLayerProperties);
     const layer2Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
-    const layer3Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
+    const layer3Component = AddNewLayerComponent.add(cardComponent, DEFAULT_STYLES.DEFAULT, true);
     UpdateLayerDropdownOptionNames.update(cardComponent, 0);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentNames.base, [DefaultCard.overwriteTitleProperties]);

@@ -2,17 +2,9 @@ import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../../const
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
-import { ComponentOptionsUtils } from '../componentOptionsUtils';
 import { defaultLayerOptions } from './defaultLayer';
 
 type LayerOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT;
-
-const cardLayerSpecificOptionsOverwrite = [
-  {
-    buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
-    type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER_BOTTOM,
-  },
-];
 
 const cardLayerSpecificOptionsStatic = [
   {
@@ -25,9 +17,9 @@ const cardLayerSpecificOptionsStatic = [
   }
 ];
 
-export const cardLayerOptions: SubcomponentOptions<LayerOptionsModes> = {
+export const cardBottomLayerOptions: SubcomponentOptions<LayerOptionsModes> = {
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
-    ...ComponentOptionsUtils.overwriteOptions(defaultLayerOptions[CSS_PSEUDO_CLASSES.DEFAULT], cardLayerSpecificOptionsOverwrite),
+    ...defaultLayerOptions[CSS_PSEUDO_CLASSES.DEFAULT],
     ...cardLayerSpecificOptionsStatic,
   ],
 };
