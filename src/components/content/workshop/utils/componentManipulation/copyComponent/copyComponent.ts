@@ -1,8 +1,8 @@
+import { UpdateGenericComponentDropdownOptionNames } from '../updateNestedComponentNames/updateGenericComponentDropdownOptionNames';
+import { UpdateLayerDropdownOptionNames } from '../updateNestedComponentNames/updateLayerDropdownOptionNames';
 import { componentTypeToStyleGenerators } from '../../../newComponent/types/componentTypeToStyleGenerators';
-import { UpdateGenericComponentNames } from '../updateNestedComponentNames/updateGenericComponentNames';
-import { UpdateLayerComponentNames } from '../updateNestedComponentNames/updateLayerComponentNames';
-import { Layer, NestedSubcomponent } from '../../../../../../interfaces/componentPreviewStructure';
 import { Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { Layer, NestedComponent } from '../../../../../../interfaces/componentPreviewStructure';
 import { uniqueSubcomponentIdState } from '../../componentGenerator/uniqueSubcomponentIdState';
 import { CoreSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
 import { AddNewGenericComponent } from '../addNewNestedComponent/add/addNewGenericComponent';
@@ -34,7 +34,7 @@ export default class CopyComponent {
   private static copyAlignedSectionComponents(newLayer: Layer, copiedLayer: Layer, newComponent: WorkshopComponent, baseComponentRefs: WorkshopComponent[]): void {
     const { alignedSections } = copiedLayer.sections;
     Object.keys(alignedSections).forEach((section: ALIGNED_SECTION_TYPES) => {
-      alignedSections[section].forEach((subcomponent: NestedSubcomponent) => {
+      alignedSections[section].forEach((subcomponent: NestedComponent) => {
         const { type, style } = subcomponent.subcomponentProperties.nestedComponent.ref;
         const newNestedComponent = AddNewGenericComponent.add(
           newComponent, type, style, newLayer.name, [CopyComponent.overwriteAlignedLayerSectionProperties.bind(section)]);
@@ -49,10 +49,10 @@ export default class CopyComponent {
       const copiedLayerStyle = componentBeingCopied.subcomponents[layer.name].nestedComponent.ref.style;
       const newLayer = AddNewLayerComponent.add(newComponent, copiedLayerStyle, true);
       CopyComponent.copyAlignedSectionComponents(newComponent.componentPreviewStructure.layers[index], layer, newComponent, baseComponentRefs);
-      UpdateGenericComponentNames.updateViaLayerObject(newComponent, newComponent.componentPreviewStructure.layers[index]);
+      UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(newComponent, newComponent.componentPreviewStructure.layers[index]);
       CopySubcomponents.copyComponentSubcomponents(layer.subcomponentProperties.nestedComponent.ref, newLayer);
     });
-    UpdateLayerComponentNames.update(newComponent, 0);
+    UpdateLayerDropdownOptionNames.update(newComponent, 0);
   }
 
   private static copySubcomponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {

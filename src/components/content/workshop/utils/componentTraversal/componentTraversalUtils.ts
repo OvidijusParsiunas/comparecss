@@ -1,26 +1,20 @@
-import { AlignedSections, ComponentPreviewStructure, NestedSubcomponent } from '../../../../../interfaces/componentPreviewStructure';
+import { AlignedSections, ComponentPreviewStructure, NestedComponent } from '../../../../../interfaces/componentPreviewStructure';
 import { DropdownOptionAuxDetails, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../interfaces/dropdownOptionDisplayStatus';
-import { ChangeOrderCallback, TargetDetails, ComponentTraversalState } from '../../../../../interfaces/componentTraversal';
+import { TargetDetails, ComponentTraversalState } from '../../../../../interfaces/componentTraversal';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
 import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
 import { WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 
 type TraverseComponentCallback = (componentTraversalState: ComponentTraversalState) => ComponentTraversalState;
 
-interface AuxiliaryTraversalDetails {
-  targetSubcomponentName?: string;
-  callback?: ChangeOrderCallback;
-}
-
 export default class ComponentTraversalUtils {
 
-  public static generateTargetDetails(parentComponent: WorkshopComponent, { targetSubcomponentName, callback }: AuxiliaryTraversalDetails): TargetDetails {
+  public static generateTargetDetails(parentComponent: WorkshopComponent): TargetDetails {
     return {
-      targetSubcomponentName: targetSubcomponentName || parentComponent.activeSubcomponentName,
+      targetSubcomponentName: parentComponent.activeSubcomponentName,
       targetDropdownOptionName: parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[parentComponent.activeSubcomponentName],
       parentComponent,
       targetSubcomponentProperties: parentComponent.subcomponents[parentComponent.activeSubcomponentName],
-      callback,
     };
   }
 
@@ -63,7 +57,7 @@ export default class ComponentTraversalUtils {
     return null;
   }
 
-  private static inspectAlignedNestedComponent(alignedNestedComponents: NestedSubcomponent[], index: number, alignedSections: AlignedSections,
+  private static inspectAlignedNestedComponent(alignedNestedComponents: NestedComponent[], index: number, alignedSections: AlignedSections,
       callback: TraverseComponentCallback): ComponentTraversalState {
     const { subcomponentProperties } = alignedNestedComponents[index];
     const callbackResult = callback({subcomponentProperties, alignedNestedComponents, alignedSections, index});

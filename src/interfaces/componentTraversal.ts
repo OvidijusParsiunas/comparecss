@@ -1,4 +1,4 @@
-import { AlignedSections, Layer, NestedSubcomponent } from './componentPreviewStructure';
+import { AlignedSections, Layer, NestedComponent } from './componentPreviewStructure';
 import { SubcomponentProperties, WorkshopComponent } from './workshopComponent';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 
@@ -10,8 +10,6 @@ export interface TargetDetails {
   parentComponent: WorkshopComponent;
   targetSubcomponentProperties: SubcomponentProperties;
   parentLayerAlignedSections?: AlignedSections;
-  // WORK2: will need to be removed from down here
-  callback?: ChangeOrderCallback;
 }
 
 export interface ComponentTraversalState {
@@ -19,7 +17,7 @@ export interface ComponentTraversalState {
   dropdownOptionNamesStack?: string[];
   subcomponentDropdownStructure?: NestedDropdownStructure;
   subcomponentProperties?: SubcomponentProperties;
-  alignedNestedComponents?: NestedSubcomponent[];
+  alignedNestedComponents?: NestedComponent[];
   alignedSections?: AlignedSections;
   layers?: Layer[];
   index?: number;

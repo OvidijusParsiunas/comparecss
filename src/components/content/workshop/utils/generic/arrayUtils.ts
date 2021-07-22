@@ -5,4 +5,8 @@ export class ArrayUtils {
     array.splice(startingIndex, 1);
     array.splice(finalIndex, 0, subjectElement);
   }
+
+  public static differenceInArrays<T>(array1: T[], array2: T[]): T[] {
+    return array1.filter(x => !array2.includes(x));
+  }
 }

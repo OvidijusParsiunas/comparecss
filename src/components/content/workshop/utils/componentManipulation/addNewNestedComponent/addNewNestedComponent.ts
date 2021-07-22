@@ -1,5 +1,5 @@
-import { UpdateGenericComponentNames } from '../updateNestedComponentNames/updateGenericComponentNames';
-import { UpdateLayerComponentNames } from '../updateNestedComponentNames/updateLayerComponentNames';
+import { UpdateGenericComponentDropdownOptionNames } from '../updateNestedComponentNames/updateGenericComponentDropdownOptionNames';
+import { UpdateLayerDropdownOptionNames } from '../updateNestedComponentNames/updateLayerDropdownOptionNames';
 import { ComponentPreviewStructureSearchUtils } from './utils/componentPreviewStractureSearchUtils';
 import { DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../consts/componentStyles.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
@@ -12,13 +12,13 @@ export class AddNewNestedComponent {
 
   private static updateGenericComponentNames(currentlySelectedComponent: WorkshopComponent): void {
     const parentLayer = ComponentPreviewStructureSearchUtils.getLayerByName(currentlySelectedComponent, currentlySelectedComponent.activeSubcomponentName);
-    UpdateGenericComponentNames.updateViaLayerObject(currentlySelectedComponent, parentLayer);
+    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(currentlySelectedComponent, parentLayer);
   }
 
   private static updateLayerComponentNames(currentlySelectedComponent: WorkshopComponent): void {
     const layerComponentsNames = Object.keys(ComponentPreviewStructureSearchUtils.getComponentLayers(currentlySelectedComponent));
     const startingIndex = layerComponentsNames.length === 2 ? 0 : layerComponentsNames.length - 1;
-    UpdateLayerComponentNames.update(currentlySelectedComponent, startingIndex);
+    UpdateLayerDropdownOptionNames.update(currentlySelectedComponent, startingIndex);
   }
 
   public static add(currentlySelectedComponent: WorkshopComponent, subcomponentType = 'nestedButton'): void {

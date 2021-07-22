@@ -68,7 +68,7 @@ import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcompon
 import { componentTypeToStyleGenerators } from '../newComponent/types/componentTypeToStyleGenerators';
 import { animationTypeToFunctionality } from './utils/animations/animationToFunctionality';
 import { PlayAnimationPreviewEvent } from '../../../../interfaces/settingsComponentEvents';
-import { PARENT_SUBCOMPONENT_NAME } from '../../../../consts/baseSubcomponentNames.enum';
+import { PARENT_COMPONENT_BASE_NAME } from '../../../../consts/baseSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import ToggleFullPreviewMode from './utils/fullPreviewMode/toggleFullPreviewMode';
 import { OpenAnimation, CloseAnimation } from '../../../../interfaces/animations';
@@ -107,7 +107,7 @@ export default {
   }),
   methods: {
     getComponentPreviewContentsDynamicClass(): string {
-      const { componentCenteringInParent } = this.component.subcomponents[PARENT_SUBCOMPONENT_NAME.BASE].customFeatures || {};
+      const { componentCenteringInParent } = this.component.subcomponents[PARENT_COMPONENT_BASE_NAME.BASE].customFeatures || {};
       if (componentCenteringInParent) {
         if (componentCenteringInParent.vertical && !componentCenteringInParent.horizontal) return 'component-preview-centered-vertically';
         if (componentCenteringInParent.horizontal && !componentCenteringInParent.vertical) return 'component-preview-centered-horizontally';
@@ -180,12 +180,12 @@ export default {
       if (isOpenAnimation) {
         PreviewOpenAnimation.start(
           animationTypeToFunctionality[animationType] as OpenAnimation,
-          (this.component.subcomponents[PARENT_SUBCOMPONENT_NAME.BASE].customFeatures as CustomFeatures).animations.display.open.duration,
+          (this.component.subcomponents[PARENT_COMPONENT_BASE_NAME.BASE].customFeatures as CustomFeatures).animations.display.open.duration,
           this.$refs.baseComponent.$refs.componentPreview);
       } else {
         PreviewCloseAnimation.start(
           animationTypeToFunctionality[animationType] as CloseAnimation,
-          (this.component.subcomponents[PARENT_SUBCOMPONENT_NAME.BASE].customFeatures as CustomFeatures).animations.display.close.duration,
+          (this.component.subcomponents[PARENT_COMPONENT_BASE_NAME.BASE].customFeatures as CustomFeatures).animations.display.close.duration,
           this.$refs.baseComponent.$refs.componentPreview);
       }
     },
@@ -193,7 +193,7 @@ export default {
       AnimationUtils.cancelAnimationPreview(this.$refs.baseComponent.$refs.componentPreview);
     },
     refreshTemporaryComponentPropertiesBeforeUse(): void {
-      if (this.component.subcomponents[PARENT_SUBCOMPONENT_NAME.BASE].customFeatures?.closeTriggers && !this.temporaryComponent.displayed) {
+      if (this.component.subcomponents[PARENT_COMPONENT_BASE_NAME.BASE].customFeatures?.closeTriggers && !this.temporaryComponent.displayed) {
         this.temporaryComponent.subcomponentAndOverlayElementIds = null;
         this.temporaryComponent.mouseEvents = null;
       }

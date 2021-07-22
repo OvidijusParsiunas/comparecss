@@ -1,7 +1,7 @@
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../consts/workshopToolbarOptionTypes.enum';
-import nestedSubcomponentPositionNoAlign from './nestedSubcomponentPositionNoAlign';
-import nestedSubcomponentPosition from './nestedSubcomponentPosition';
-import nestedSubcomponentMargin from './nestedSubcomponentMargin';
+import nestedComponentPositionNoAlign from './nestedComponentPositionNoAlign';
+import nestedComponentPosition from './nestedComponentPosition';
+import nestedComponentMargin from './nestedComponentMargin';
 import buttonAnimations from './buttonAnimations';
 import modalAnimations from './modalAnimations';
 import alertAnimations from './alertAnimations';
@@ -53,10 +53,10 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND]: background,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_POSITION]: modalPosition,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.FULL_POSITION]: fullPosition,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_POSITION_NO_ALIGN]: nestedSubcomponentPositionNoAlign,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION_NO_ALIGN]: nestedComponentPositionNoAlign,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_SIZE]: textSize,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_POSITION]: nestedSubcomponentPosition,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_MARGIN]: nestedSubcomponentMargin,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION]: nestedComponentPosition,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_MARGIN]: nestedComponentMargin,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKDROP]: backdrop,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS]: buttonAnimations,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.ALERT_ANIMATIONS]: alertAnimations,

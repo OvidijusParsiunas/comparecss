@@ -151,8 +151,8 @@ import { subcomponentSelectModeState } from './subcomponentSelectMode/subcompone
 import ImportComponentModeToggleUtils from './importComponent/modeUtils/importComponentModeToggle';
 import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFullPreviewModeEvent';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
+import { PARENT_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../consts/componentStyles.enum';
-import { PARENT_SUBCOMPONENT_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
@@ -438,7 +438,7 @@ export default {
     resetComponentPreviewMarginAssistance(): void {
       this.$nextTick(() => {
         this.componentPreviewAssistance.margin = this.activeOption.type === WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN
-          && this.component.activeSubcomponentName === PARENT_SUBCOMPONENT_NAME.BASE
+          && this.component.activeSubcomponentName === PARENT_COMPONENT_BASE_NAME.BASE
           && this.isSettingsDisplayed
           && !this.isExpandedModalPreviewModeActive;
       });

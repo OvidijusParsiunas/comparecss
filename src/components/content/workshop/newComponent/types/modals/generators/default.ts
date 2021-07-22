@@ -1,6 +1,6 @@
+import { UpdateGenericComponentDropdownOptionNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateGenericComponentDropdownOptionNames';
 import { CustomCss, CustomFeatures, CustomStaticFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { UpdateGenericComponentNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateGenericComponentNames';
-import { UpdateLayerComponentNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateLayerComponentNames';
+import { UpdateLayerDropdownOptionNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateLayerDropdownOptionNames';
 import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewGenericComponent';
 import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
 import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -93,7 +93,7 @@ class DefaultModal extends ComponentBuilder {
     const layer1Component = AddNewLayerComponent.add(modalComponent, DEFAULT_STYLES.DEFAULT, true, DefaultModal.overwriteTopLayerProperties);
     const layer2Component = AddNewLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true);
     const layer3Component = AddNewLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true);
-    UpdateLayerComponentNames.update(modalComponent, 0);
+    UpdateLayerDropdownOptionNames.update(modalComponent, 0);
     AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentNames.base, [DefaultModal.overwriteTitleProperties]);
     AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
@@ -106,9 +106,9 @@ class DefaultModal extends ComponentBuilder {
       BUTTON_STYLES.CLOSE, layer1Component.coreSubcomponentNames.base);
     AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.AVATAR, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentNames.base);
-    UpdateGenericComponentNames.updateViaLayerObject(modalComponent, modalComponent.componentPreviewStructure.layers[0]);
-    UpdateGenericComponentNames.updateViaLayerObject(modalComponent, modalComponent.componentPreviewStructure.layers[1]);
-    UpdateGenericComponentNames.updateViaLayerObject(modalComponent, modalComponent.componentPreviewStructure.layers[2]);
+    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(modalComponent, modalComponent.componentPreviewStructure.layers[0]);
+    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(modalComponent, modalComponent.componentPreviewStructure.layers[1]);
+    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(modalComponent, modalComponent.componentPreviewStructure.layers[2]);
   }
 }
 

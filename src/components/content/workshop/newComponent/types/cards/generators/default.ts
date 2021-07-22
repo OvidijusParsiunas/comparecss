@@ -1,6 +1,6 @@
+import { UpdateGenericComponentDropdownOptionNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateGenericComponentDropdownOptionNames';
 import { CustomCss, CustomFeatures, CustomStaticFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { UpdateGenericComponentNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateGenericComponentNames';
-import { UpdateLayerComponentNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateLayerComponentNames';
+import { UpdateLayerDropdownOptionNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateLayerDropdownOptionNames';
 import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewGenericComponent';
 import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
 import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -95,7 +95,7 @@ class DefaultCard extends ComponentBuilder {
     const layer1Component = AddNewLayerComponent.add(cardComponent, DEFAULT_STYLES.DEFAULT, true, DefaultCard.overwriteTopLayerProperties);
     const layer2Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
     const layer3Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
-    UpdateLayerComponentNames.update(cardComponent, 0);
+    UpdateLayerDropdownOptionNames.update(cardComponent, 0);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentNames.base, [DefaultCard.overwriteTitleProperties]);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, BUTTON_STYLES.CLOSE,
@@ -108,9 +108,9 @@ class DefaultCard extends ComponentBuilder {
       layer3Component.coreSubcomponentNames.base, [DefaultCard.overwriteSubmitButtonProperties]);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
       layer3Component.coreSubcomponentNames.base, [DefaultCard.overwriteCancelButtonProperties]);
-    UpdateGenericComponentNames.updateViaLayerObject(cardComponent, cardComponent.componentPreviewStructure.layers[0]);
-    UpdateGenericComponentNames.updateViaLayerObject(cardComponent, cardComponent.componentPreviewStructure.layers[1]);
-    UpdateGenericComponentNames.updateViaLayerObject(cardComponent, cardComponent.componentPreviewStructure.layers[2]);
+    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[0]);
+    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[1]);
+    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[2]);
   }
 }
 

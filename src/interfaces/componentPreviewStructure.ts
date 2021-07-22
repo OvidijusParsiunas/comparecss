@@ -6,19 +6,19 @@ export interface SubcomponentNameToDropdownOptionName {
   [subcomponentName: string]: string;
 }
 
-export type NestedSubcomponent = {
+export type NestedComponent = {
   name: string;
   subcomponentProperties: SubcomponentProperties;
 };
 
-export type AlignedSections = { [key in ALIGNED_SECTION_TYPES]: NestedSubcomponent[] };
+export type AlignedSections = { [key in ALIGNED_SECTION_TYPES]: NestedComponent[] };
 
 interface Sections {
   [LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS]?: AlignedSections;
-  [LAYER_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS]?: NestedSubcomponent[];
+  [LAYER_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS]?: NestedComponent[];
 }
 
-export type Layer = { sections: Sections; } & NestedSubcomponent;
+export type Layer = { sections: Sections; } & NestedComponent;
 
 export interface ComponentPreviewStructure {
   baseSubcomponentProperties: SubcomponentProperties;

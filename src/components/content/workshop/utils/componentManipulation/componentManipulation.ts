@@ -1,11 +1,11 @@
 import { ImportComponentModeCardEvents } from '../../toolbar/options/importComponent/modeUtils/importComponentModeCardEvents';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../interfaces/subcomponentOrderDirections.enum';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
-import { ChangeSubcomponentAlignment } from './moveNestedComponent/changeSubcomponentAlignment';
+import { ChangeNestedComponentAlignment } from './moveNestedComponent/changeNestedComponentAlignment';
 import { ChangeNestedComponentOrder } from './moveNestedComponent/changeNestedComponentOrder';
 import { AddNewNestedComponent } from './addNewNestedComponent/addNewNestedComponent';
+import { RemoveNestedComponent } from './removeNestedComponent/removeNestedComponent';
 import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
-import { RemoveSubcomponent } from './removeSubcomponent/removeSubcomponent';
 import CopyComponent from './copyComponent/copyComponent';
 import ComponentJs from '../generic/componentJs';
 import { ComponentOptions } from 'vue';
@@ -43,7 +43,7 @@ export class ComponentManipulation {
 
   public static removeSubcomponent(workshopComponent: ComponentOptions, selectNewSubcomponentCallback: () => void): void {
     const { currentlySelectedComponent } = workshopComponent;
-    RemoveSubcomponent.remove(currentlySelectedComponent, currentlySelectedComponent.activeSubcomponentName, selectNewSubcomponentCallback);
+    RemoveNestedComponent.remove(currentlySelectedComponent, selectNewSubcomponentCallback);
     workshopComponent.$refs.contents.refreshComponent();
   }
 
@@ -55,7 +55,7 @@ export class ComponentManipulation {
 
   public static changeSubcomponentAlignment(workshopComponent: ComponentOptions, previousAlignment: ALIGNED_SECTION_TYPES,
       newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties, shouldSubcomponentNamesBeUpdated: boolean): void {
-    ChangeSubcomponentAlignment.change(previousAlignment, newAlignment, subcomponentProperties, shouldSubcomponentNamesBeUpdated,
+    ChangeNestedComponentAlignment.change(previousAlignment, newAlignment, subcomponentProperties, shouldSubcomponentNamesBeUpdated,
       workshopComponent.currentlySelectedComponent);
     if (shouldSubcomponentNamesBeUpdated) workshopComponent.$refs.contents.refreshComponent();
   }

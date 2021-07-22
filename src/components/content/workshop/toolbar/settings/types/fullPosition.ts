@@ -1,5 +1,5 @@
 import { SubcomponentCssPropertyDetails } from '../../../../../../interfaces/subcomponentCssPropertyDetails';
-import { PARENT_SUBCOMPONENT_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
+import { PARENT_COMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import { LAYER_SECTION_DIVISOR } from '../../../../../../consts/layerSectionDivisor';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
@@ -7,7 +7,7 @@ import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 
 function getOtherSubcomponentCssPropertyDetails(): SubcomponentCssPropertyDetails {
   return [
-    {subcomponentName: PARENT_SUBCOMPONENT_NAME.BASE, cssProperty: 'width'},
+    {subcomponentName: PARENT_COMPONENT_BASE_NAME.BASE, cssProperty: 'width'},
   ];
 }
 

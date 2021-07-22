@@ -3,7 +3,7 @@ import { DropdownOptionsDisplayStatusUtils } from '../../../utils/dropdownOption
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { NewComponentStyleProperties } from '../../../../../../consts/newComponentStyleProperties';
 import { ComponentPreviewStructure } from '../../../../../../interfaces/componentPreviewStructure';
-import { PARENT_SUBCOMPONENT_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
+import { PARENT_COMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { CoreSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
@@ -115,7 +115,7 @@ export class ComponentBuilder {
 
   public static createBaseComponent(componentStyle: NewComponentStyleProperties,
       createBaseSubcomponent: (componentStyle: NewComponentStyleProperties) => SubcomponentProperties, isBaseOptional = true): WorkshopComponent {
-    const coreSubcomponentNames: CoreSubcomponentNames = { base: componentStyle.baseName || PARENT_SUBCOMPONENT_NAME.BASE };
+    const coreSubcomponentNames: CoreSubcomponentNames = { base: componentStyle.baseName || PARENT_COMPONENT_BASE_NAME.BASE };
     const subcomponents = {[coreSubcomponentNames.base]: createBaseSubcomponent(componentStyle)};
     const componentPreviewStructure = ComponentBuilder.createEmptyComponentPreviewStructure(subcomponents, coreSubcomponentNames.base, isBaseOptional);
     return {

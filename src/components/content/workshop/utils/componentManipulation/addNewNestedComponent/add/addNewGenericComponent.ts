@@ -4,9 +4,9 @@ import { componentTypeToStyleGenerators } from '../../../../newComponent/types/c
 import { OverwritePropertiesFunc } from '../../../../../../../interfaces/overwriteSubcomponentPropertiesFunc';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
-import { NESTED_SUBCOMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
-import { Layer, NestedSubcomponent } from '../../../../../../../interfaces/componentPreviewStructure';
+import { NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { ComponentPreviewStructureSearchUtils } from '../utils/componentPreviewStractureSearchUtils';
+import { Layer, NestedComponent } from '../../../../../../../interfaces/componentPreviewStructure';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -27,19 +27,13 @@ interface SubcomponentData {
 export class AddNewGenericComponent extends AddNewComponentShared {
 
   // base name is used in dropdown options
-  private static readonly componentTypeToBaseName: { [key in COMPONENT_TYPES]?: NESTED_SUBCOMPONENTS_BASE_NAMES } = {
-    [COMPONENT_TYPES.LAYER]: NESTED_SUBCOMPONENTS_BASE_NAMES.LAYER,
-    [COMPONENT_TYPES.BUTTON]: NESTED_SUBCOMPONENTS_BASE_NAMES.BUTTON,
-    [COMPONENT_TYPES.TEXT]: NESTED_SUBCOMPONENTS_BASE_NAMES.TEXT,
-    [COMPONENT_TYPES.AVATAR]: NESTED_SUBCOMPONENTS_BASE_NAMES.AVATAR,
+  private static readonly componentTypeToBaseName: { [key in COMPONENT_TYPES]?: NESTED_COMPONENTS_BASE_NAMES } = {
+    [COMPONENT_TYPES.LAYER]: NESTED_COMPONENTS_BASE_NAMES.LAYER,
+    [COMPONENT_TYPES.BUTTON]: NESTED_COMPONENTS_BASE_NAMES.BUTTON,
+    [COMPONENT_TYPES.TEXT]: NESTED_COMPONENTS_BASE_NAMES.TEXT,
+    [COMPONENT_TYPES.AVATAR]: NESTED_COMPONENTS_BASE_NAMES.AVATAR,
   }
   public static readonly DEFAULT_TOP_PROPERTY = '50%';
-
-  // WORK2 - repeated
-  private static addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
-    const baseName = newComponent.coreSubcomponentNames.base;
-    parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[baseName] = baseName;
-  }
 
   private static updateComponentDropdownStructure(parentComponent: WorkshopComponent, newComponent: WorkshopComponent,
       subcomponentDropdownStructure: NestedDropdownStructure, baseSubcomponentName: string): void {
@@ -59,9 +53,9 @@ export class AddNewGenericComponent extends AddNewComponentShared {
   private static addNewSubcomponentToParentLayer(parentLayer: Layer, baseSubcomponentProperties: SubcomponentProperties,
     newComponent: WorkshopComponent): void {
     const alignment = baseSubcomponentProperties?.customFeatures?.alignedLayerSection?.section;
-    const nestedSubcomponentProperties: NestedSubcomponent = {
+    const nestedComponent: NestedComponent = {
       name: newComponent.coreSubcomponentNames.base, subcomponentProperties: baseSubcomponentProperties};
-    parentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][alignment || ALIGNED_SECTION_TYPES.LEFT].push(nestedSubcomponentProperties);
+    parentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][alignment || ALIGNED_SECTION_TYPES.LEFT].push(nestedComponent);
   }
 
   private static assembleSubcomponentData(parentComponent: WorkshopComponent, newComponent: WorkshopComponent,
@@ -126,7 +120,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
     AddNewGenericComponent.addNewSubcomponentsToComponentPreview(parentComponent, newComponent, layerName);
     InterconnectedSettings.update(true, parentComponent, newComponent.subcomponents[newComponent.coreSubcomponentNames.base]);
-    AddNewGenericComponent.addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent, newComponent);
+    AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent, newComponent);
     return newComponent;
   }
 }

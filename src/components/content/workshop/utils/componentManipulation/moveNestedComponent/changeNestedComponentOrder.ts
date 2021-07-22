@@ -61,7 +61,7 @@ export class ChangeNestedComponentOrder {
       if (isLowerOrderDirection && index !== 0) {
         ArrayUtils.changeElementPosition(componentPreviewContainer, index, index - 1);
         return { ...componentTraversalState, nestedComponentMovable: true };
-      } else if (index !== componentPreviewContainer.length - 1) {
+      } else if (!isLowerOrderDirection && index !== componentPreviewContainer.length - 1) {
         ArrayUtils.changeElementPosition(componentPreviewContainer, index, index + 1);
         return { ...componentTraversalState, nestedComponentMovable: true };
       }
@@ -71,7 +71,7 @@ export class ChangeNestedComponentOrder {
   }
 
   public static change(parentComponent: WorkshopComponent, direction: SUBCOMPONENT_ORDER_DIRECTIONS): void {
-    const targetDetails: ChangeComponentTargetDetails = ComponentTraversalUtils.generateTargetDetails(parentComponent, {});
+    const targetDetails: ChangeComponentTargetDetails = ComponentTraversalUtils.generateTargetDetails(parentComponent);
     targetDetails.isLowerOrderDirection = direction === SUBCOMPONENT_ORDER_DIRECTIONS.LEFT || direction === SUBCOMPONENT_ORDER_DIRECTIONS.UP;
     const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
       parentComponent.componentPreviewStructure,

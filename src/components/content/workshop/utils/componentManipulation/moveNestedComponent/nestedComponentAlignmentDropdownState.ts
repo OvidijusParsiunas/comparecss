@@ -1,16 +1,16 @@
-import { NestedSubcomponent } from '../../../../../../interfaces/componentPreviewStructure';
+import { NestedComponent } from '../../../../../../interfaces/componentPreviewStructure';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 
-let subcomponent = null;
+let component = null;
 let initialAlignment = null
 let initialAlignmentIndex = -1;
 
-function getNestedSubcomponent(): NestedSubcomponent {
-  return subcomponent;
+function getNestedComponent(): NestedComponent {
+  return component;
 }
 
-function setNestedSubcomponent(nestedSubcomponent: NestedSubcomponent): void {
-  subcomponent = nestedSubcomponent;
+function setNestedComponent(nestedComponent: NestedComponent): void {
+  component = nestedComponent;
 }
 
 function getInitialAlignmentIndex(): number {
@@ -30,17 +30,17 @@ function setInitialAlignment(initialAlignmentState: ALIGNED_SECTION_TYPES): void
 }
 
 function reset(): void {
-  subcomponent = null;
+  component = null;
   initialAlignment = null;
   initialAlignmentIndex = -1;
 }
 
-export const subcomponentAlignmentDropdownState = {
+export const nestedComponentAlignmentDropdownState = {
   setInitialAlignmentIndex,
   getInitialAlignmentIndex,
   setInitialAlignment,
   getInitialAlignment,
-  setNestedSubcomponent,
-  getNestedSubcomponent,
+  setNestedComponent,
+  getNestedComponent,
   reset,
 }

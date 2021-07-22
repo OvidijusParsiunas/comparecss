@@ -7,20 +7,20 @@ import { buttonBaseOptions } from './base';
 
 type ButtonOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT | CSS_PSEUDO_CLASSES.HOVER | CSS_PSEUDO_CLASSES.CLICK;
 
-const nestedSubcomponentSpecificOptions = [
+const nestedComponentSpecificOptions = [
   {
     buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
-    type: WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_MARGIN,
+    type: WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_MARGIN,
   },
   {
     buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
-    type: WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_SUBCOMPONENT_POSITION,
+    type: WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION,
   },
 ]
 
 export const nestedButtonOptions: SubcomponentOptions<ButtonOptionsModes> = {
   ...buttonBaseOptions,
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
-    ...ComponentOptionsUtils.overwriteOptions(buttonBaseOptions[CSS_PSEUDO_CLASSES.DEFAULT], nestedSubcomponentSpecificOptions),
+    ...ComponentOptionsUtils.overwriteOptions(buttonBaseOptions[CSS_PSEUDO_CLASSES.DEFAULT], nestedComponentSpecificOptions),
   ],
 };

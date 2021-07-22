@@ -1,5 +1,5 @@
 import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallbacks } from '../../../../../../interfaces/actionsDropdownsMouseEventCallbacks';
-import { subcomponentAlignmentDropdownState } from '../../../utils/componentManipulation/moveNestedComponent/subcomponentAlignmentDropdownState';
+import { nestedComponentAlignmentDropdownState } from '../../../utils/componentManipulation/moveNestedComponent/nestedComponentAlignmentDropdownState';
 import { ChangeSubcomponentAlignmentEvent, ChangeSubcomponentOrderEvent } from '../../../../../../interfaces/settingsComponentEvents';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../../interfaces/subcomponentOrderDirections.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
@@ -21,7 +21,7 @@ function changeSubcomponentAlignment(event: ActionsDropdownMouseEventCallbackEve
 function changeSubcomponentAlignmentOptionSelect(event: ActionsDropdownMouseEventCallbackEvent): void {
   const isOptionSelected = this as any as boolean;
   changeSubcomponentAlignment(event, isOptionSelected);
-  if ((isOptionSelected || event.isDropdownHidden) && !event.isCustomFeatureResetTriggered) subcomponentAlignmentDropdownState.reset();
+  if ((isOptionSelected || event.isDropdownHidden) && !event.isCustomFeatureResetTriggered) nestedComponentAlignmentDropdownState.reset();
 }
 
 function generateMouseEventCallbacks(): ActionsDropdownMouseEventCallbacks {
