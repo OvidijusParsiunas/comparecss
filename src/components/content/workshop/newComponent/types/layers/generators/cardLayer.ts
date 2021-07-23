@@ -1,4 +1,4 @@
-import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -33,18 +33,31 @@ class CardLayer extends ComponentBuilder {
     };
   }
 
-  private static overwriteCustomCss(component: WorkshopComponent): void {
-    component.subcomponents[component.coreSubcomponentNames.base].customCss = CardLayer.createDefaultLayerCss();
-    component.subcomponents[component.coreSubcomponentNames.base].defaultCss = CardLayer.createDefaultLayerCss();
+  private static createDefaultLayerCustomStaticFeatures(): CustomStaticFeatures {
+    return {
+      image: ComponentBuilder.createImage(false),
+    };
   }
 
-  private static overwriteSubcomponentSpecificSettings(component: WorkshopComponent): void {
-    component.subcomponents[component.coreSubcomponentNames.base].subcomponentSpecificSettings = cardLayerSpecificSettings;
+  private static overwriteSubcomponentSpecificSettings(baseSubcomponent: SubcomponentProperties): void {
+    baseSubcomponent.subcomponentSpecificSettings = cardLayerSpecificSettings;
+  }
+
+  private static overwriteCustomStaticFeatures(baseSubcomponent: SubcomponentProperties): void {
+    baseSubcomponent.customStaticFeatures = CardLayer.createDefaultLayerCustomStaticFeatures();
+    baseSubcomponent.defaultCustomStaticFeatures = CardLayer.createDefaultLayerCustomStaticFeatures();
+  }
+
+  private static overwriteCustomCss(baseSubcomponent: SubcomponentProperties): void {
+    baseSubcomponent.customCss = CardLayer.createDefaultLayerCss();
+    baseSubcomponent.defaultCss = CardLayer.createDefaultLayerCss();
   }
 
   public static overwrite(component: WorkshopComponent): void {
-    CardLayer.overwriteCustomCss(component);
-    CardLayer.overwriteSubcomponentSpecificSettings(component);
+    const baseSubcomponent = component.subcomponents[component.coreSubcomponentNames.base];
+    CardLayer.overwriteCustomCss(baseSubcomponent);
+    CardLayer.overwriteCustomStaticFeatures(baseSubcomponent);
+    CardLayer.overwriteSubcomponentSpecificSettings(baseSubcomponent);
   }
 }
 

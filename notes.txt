@@ -6,10 +6,10 @@ maybe should allow import a new button alltogether instead of creating a new but
 after adding a new subcomponent, open its options
 zoom in image when hovered on
 think about computed property solution
-when a layer has no image and the image option is clicked, a new error is thrown
 upon the removal of a subcomponent, maybe move to the next one instead of the base
 may need to call the close subcomponent dropdown option as close
 image and color may need to be part of new background option
+need to figure out a way to not have a border at the bottom layer of the cards
 
 overflow
 try with button tags

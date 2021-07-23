@@ -15,12 +15,6 @@ import { modalBase } from './base';
 
 class DefaultModal extends ComponentBuilder {
 
-  private static createDefaultTopLayerCustomStaticFeatures(): CustomStaticFeatures {
-    return {
-      image: ComponentBuilder.createImage(false),
-    };
-  }
-
   private static createDefaultTextCustomFeatures(): CustomFeatures {
     return {
       autoSize: ComponentBuilder.createAutoSize(true, true),
@@ -55,12 +49,6 @@ class DefaultModal extends ComponentBuilder {
       subcomponentText: ComponentBuilder.createText(text || 'text'),
     }
   }
-
-  private static overwriteTopLayerProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
-    subcomponents[coreSubcomponentNames.base].customStaticFeatures = DefaultModal.createDefaultTopLayerCustomStaticFeatures();
-    subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures = DefaultModal.createDefaultTopLayerCustomStaticFeatures();
-  }
-
   private static overwriteTitleProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
     subcomponents[coreSubcomponentNames.base].customCss = DefaultModal.createDefaultTitleCss();
     subcomponents[coreSubcomponentNames.base].defaultCss = DefaultModal.createDefaultTitleCss();
@@ -90,9 +78,9 @@ class DefaultModal extends ComponentBuilder {
   }
 
   public static addComponentsToBase(modalComponent: WorkshopComponent): void {
-    const layer1Component = AddNewLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true, DefaultModal.overwriteTopLayerProperties);
+    const layer1Component = AddNewLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true);
     const layer2Component = AddNewLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true);
-    const layer3Component = AddNewLayerComponent.add(modalComponent, DEFAULT_STYLES.DEFAULT, true);
+    const layer3Component = AddNewLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true);
     UpdateLayerDropdownOptionNames.update(modalComponent, 0);
     AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentNames.base, [DefaultModal.overwriteTitleProperties]);

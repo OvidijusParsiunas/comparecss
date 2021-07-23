@@ -15,12 +15,6 @@ import { cardBase } from './base';
 
 class DefaultCard extends ComponentBuilder {
 
-  private static createDefaultTopLayerCustomStaticFeatures(): CustomStaticFeatures {
-    return {
-      image: ComponentBuilder.createImage(false),
-    };
-  }
-
   private static createDefaultTextCustomFeatures(): CustomFeatures {
     return {
       autoSize: ComponentBuilder.createAutoSize(true, true),
@@ -56,11 +50,6 @@ class DefaultCard extends ComponentBuilder {
     };
   }
 
-  private static overwriteTopLayerProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
-    subcomponents[coreSubcomponentNames.base].customStaticFeatures = DefaultCard.createDefaultTopLayerCustomStaticFeatures();
-    subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures = DefaultCard.createDefaultTopLayerCustomStaticFeatures();
-  }
-
   private static overwriteTitleProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
     subcomponents[coreSubcomponentNames.base].customCss = DefaultCard.createDefaultTitleCss();
     subcomponents[coreSubcomponentNames.base].defaultCss = DefaultCard.createDefaultTitleCss();
@@ -92,9 +81,9 @@ class DefaultCard extends ComponentBuilder {
   }
 
   public static addComponentsToBase(cardComponent: WorkshopComponent): void {
-    const layer1Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true, DefaultCard.overwriteTopLayerProperties);
+    const layer1Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
     const layer2Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
-    const layer3Component = AddNewLayerComponent.add(cardComponent, DEFAULT_STYLES.DEFAULT, true);
+    const layer3Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
     UpdateLayerDropdownOptionNames.update(cardComponent, 0);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentNames.base, [DefaultCard.overwriteTitleProperties]);
