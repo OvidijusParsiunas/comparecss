@@ -12,6 +12,10 @@ const cardLayerSpecificOptionsOverwrite = [
     buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
     type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER_BOTTOM,
   },
+  {
+    buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BACKGROUND,
+    type: WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_IMAGE,
+  },
 ];
 
 const cardLayerSpecificOptionsStatic = [
@@ -19,10 +23,6 @@ const cardLayerSpecificOptionsStatic = [
     buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
     type: WORKSHOP_TOOLBAR_OPTION_TYPES.LAYER_POSITION,
   },
-  {
-    buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.IMAGE,
-    type: WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE_SCALE,
-  }
 ];
 
 export const cardLayerOptions: SubcomponentOptions<LayerOptionsModes> = {

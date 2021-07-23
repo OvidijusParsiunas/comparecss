@@ -12,15 +12,19 @@ const cardLayerSpecificOptionsStatic = [
     buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
     type: WORKSHOP_TOOLBAR_OPTION_TYPES.LAYER_POSITION,
   },
+];
+
+const cardLayerSpecificOptionsOverwrite = [
   {
-    buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.IMAGE,
-    type: WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE_SCALE,
-  }
+    buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BACKGROUND,
+    type: WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_IMAGE,
+  },
 ];
 
 export const cardBottomLayerOptions: SubcomponentOptions<LayerOptionsModes> = {
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
-    ...ComponentOptionsUtils.removeOptions(defaultLayerOptions[CSS_PSEUDO_CLASSES.DEFAULT],
+    ...ComponentOptionsUtils.removeOptions(
+      ComponentOptionsUtils.overwriteOptions(defaultLayerOptions[CSS_PSEUDO_CLASSES.DEFAULT], cardLayerSpecificOptionsOverwrite),
       WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER, WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SHADOW),
     ...cardLayerSpecificOptionsStatic,
   ],

@@ -110,6 +110,7 @@ export default class SettingsUtils {
 
   public static resetSubcomponentProperties(options: any, subcomponentProperties: SubcomponentProperties): void {
     options.forEach((option) => {
+      if (!option.spec) return;
       const { cssProperty, customFeatureObjectKeys, lastSelectedValueObjectKeys } = option.spec;
       if (customFeatureObjectKeys) {
         SettingsUtils.resetCustomFeatures(option, subcomponentProperties, customFeatureObjectKeys);

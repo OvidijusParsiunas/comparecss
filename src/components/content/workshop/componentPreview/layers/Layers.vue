@@ -2,7 +2,7 @@
   <div class="layers" :class="COMPONENT_PREVIEW_MARKER">
     <div v-for="(layer, index) in layers" :key="layer" class="layer" :class="COMPONENT_PREVIEW_MARKER">
       <div :id="getLayerId(layer.name, 'subcomponentId')"
-        :style="getStyleProperties(layer)"
+        :style="getStyleProperties(layer, index === layers.length - 1)"
         :class="COMPONENT_PREVIEW_MARKER"
         @mouseenter="activateMouseEvent(layer.name, 'subcomponentMouseEnter')"
         @mouseleave="activateMouseEvent(layer.name, 'subcomponentMouseLeave')"
@@ -21,7 +21,7 @@
       <div :style="[{ zIndex: layers.length - index + 1}]"
         class="layer-shadow-overlay-container"
         :class="SUBCOMPONENT_OVERLAY_CLASSES.BASE">
-          <div :style="layer.subcomponentProperties.customCss[DEFAULT_CSS_PSEUDO_CLASS]"
+          <div :style="getLayerShadowOverlayStyleProperties(layer, index === layers.length - 1)"
             class="layer-shadow-overlay"></div>
       </div>
       <div :id="getLayerId(layer.name, 'overlayId')"
@@ -39,6 +39,7 @@ import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponent
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
+import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 import { Layer } from '../../../../../interfaces/componentPreviewStructure';
 import layerSections from './LayerSections.vue';
 
@@ -59,14 +60,21 @@ export default {
     };
   },
   methods: {
-    getStyleProperties(layer: Layer): WorkshopComponentCss[] {
+    getStyleProperties(layer: Layer, isLastLayer: boolean): WorkshopComponentCss[] {
       const { subcomponentProperties: { overwrittenCustomCssObj, customCss, customStaticFeatures } } = layer;
       const customCssObj = overwrittenCustomCssObj || customCss;
       return [
         customCssObj[CSS_PSEUDO_CLASSES.DEFAULT],
-        { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : ''},
-        { boxShadow: 'unset'},
+        { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : '' },
+        { boxShadow: CSS_PROPERTY_VALUES.UNSET },
+        isLastLayer ? { borderBottomWidth: '0px' } : {} // can alternatively use nth class
       ]
+    },
+    getLayerShadowOverlayStyleProperties(layer: Layer, isLastLayer: boolean): WorkshopComponentCss[] {
+      return [
+        layer.subcomponentProperties.customCss[this.DEFAULT_CSS_PSEUDO_CLASS],
+        isLastLayer ? { boxShadow: CSS_PROPERTY_VALUES.UNSET } : {}
+      ];
     },
     getLayerId(layerName: string, idType: keyof SubcomponentAndOverlayElementIds[string]): string {
       return this.subcomponentAndOverlayElementIds[layerName]?.[idType];

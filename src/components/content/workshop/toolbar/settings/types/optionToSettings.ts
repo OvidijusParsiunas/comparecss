@@ -4,6 +4,7 @@ import nestedComponentPosition from './nestedComponentPosition';
 import buttonAnimations from './buttonAnimations';
 import modalAnimations from './modalAnimations';
 import alertAnimations from './alertAnimations';
+import backgroundImage from './backgroundImage';
 import shadowVertical from './shadowVertical';
 import modalPosition from './modalPosition';
 import layerPosition from './layerPosition';
@@ -12,7 +13,6 @@ import circleBorder from './circleBorder';
 import modalActions from './modalActions';
 import sizeHeight from './sizeHeight';
 import background from './background';
-import imageScale from './imageScale';
 import borderTop from './borderTop';
 import sizeWidth from './sizeWidth';
 import textColor from './textColor';
@@ -49,6 +49,7 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_FONT]: font,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_COLOR]: textColor,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND]: background,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_IMAGE]: backgroundImage,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_POSITION]: modalPosition,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION_NO_ALIGN]: nestedComponentPositionNoAlign,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_SIZE]: textSize,
@@ -59,6 +60,5 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ANIMATIONS]: modalAnimations,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ACTIONS]: modalActions,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE]: image,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE_SCALE]: imageScale,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.LAYER_POSITION]: layerPosition,
 };
