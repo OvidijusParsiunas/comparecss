@@ -22,7 +22,6 @@ import padding from './padding';
 import border from './border';
 import shadow from './shadow';
 import margin from './margin';
-import color from './color';
 import image from './image';
 import size from './size';
 import font from './font';
@@ -37,7 +36,6 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER_BOTTOM]: borderBottom,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER_TOP]: borderTop,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.CIRCLE_BORDER]: circleBorder,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.COLOR]: color,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW]: shadow,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW_VERTICAL]: shadowVertical,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE]: size,
