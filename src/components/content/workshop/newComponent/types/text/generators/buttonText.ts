@@ -31,6 +31,8 @@ class ButtonText extends ComponentBuilder {
         paddingRight: '0px',
         marginLeft: '0px',
         marginRight: '0px',
+        marginTop: '0px',
+        marginBottom: '0px',
         transition: CSS_PROPERTY_VALUES.UNSET,
         outline: 'none',
         left: '0px',

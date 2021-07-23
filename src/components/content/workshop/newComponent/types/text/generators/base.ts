@@ -27,6 +27,8 @@ class TextBase extends ComponentBuilder {
         paddingRight: '0px',
         marginLeft: '0px',
         marginRight: '0px',
+        marginTop: '0px',
+        marginBottom: '0px',
         height: '',
         borderWidth: '0',
         borderColor: '#1779ba',

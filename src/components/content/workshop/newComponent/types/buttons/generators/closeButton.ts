@@ -47,6 +47,9 @@ class CloseButton extends ComponentBuilder {
         paddingRight: '0px',
         paddingBottom: '0px',
         marginRight: '5px',
+        marginLeft: '0px',
+        marginTop: '0px',
+        marginBottom: '0px',
         transition: CSS_PROPERTY_VALUES.UNSET,
         left: '0px',
       }

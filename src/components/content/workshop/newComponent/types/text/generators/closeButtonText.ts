@@ -5,9 +5,10 @@ import { ComponentGenerator } from '../../../../../../../interfaces/componentGen
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { inheritedCloseTextCss } from '../inheritedCss/inheritedCloseTextCss';
+import { ComponentBuilder } from '../../shared/componentBuilder';
 import { textBase } from './base';
 
-class CloseButtonText {
+class CloseButtonText extends ComponentBuilder {
 
   public static setStyle(component: WorkshopComponent): void {
     component.style = TEXT_STYLES.CLOSE_BUTTON;
@@ -38,9 +39,11 @@ class CloseButtonText {
     }
   }
   
-  private static overwriteAlignment(subcomponent: SubcomponentProperties): void {
+  private static overwriteCustomFeatures(subcomponent: SubcomponentProperties): void {
     subcomponent.customFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
     subcomponent.defaultCustomFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
+    subcomponent.customFeatures.animations = ComponentBuilder.createStaticFadeAnimation();
+    subcomponent.defaultCustomFeatures.animations = ComponentBuilder.createStaticFadeAnimation();
   }
 
   private static overwriteCustomCss(subcomponent: SubcomponentProperties): void {
@@ -56,7 +59,7 @@ class CloseButtonText {
     const baseSubcomponent = component.subcomponents[component.coreSubcomponentNames.base];
     CloseButtonText.overwriteInheritedCss(baseSubcomponent);
     CloseButtonText.overwriteCustomCss(baseSubcomponent);
-    CloseButtonText.overwriteAlignment(baseSubcomponent);
+    CloseButtonText.overwriteCustomFeatures(baseSubcomponent);
   }
 }
 
