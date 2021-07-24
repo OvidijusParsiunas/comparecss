@@ -27,6 +27,7 @@ export default class ImageUtils {
 
   public static uploadImage(settingsComponent: ComponentOptions, event: HTMLInputEvent, spec: any): void {
     const file = event.target.files[0];
+    if (!file) return;
     const reader = new FileReader();
     reader.onload = ImageUtils.fileLoaded.bind(settingsComponent, file, spec);
     reader.readAsDataURL(file);

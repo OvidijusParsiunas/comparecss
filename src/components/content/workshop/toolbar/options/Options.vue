@@ -141,6 +141,7 @@ import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../const
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../componentPreview/utils/animations/consts/sharedConsts';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ComponentTypeToOptions, componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
+import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../consts/workshopToolbarOptionButtonNames.enum';
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import SubcomponentOverlayToggleUtils from './subcomponentOverlayToggleUtils/subcomponentOverlayToggleUtils';
@@ -185,6 +186,7 @@ interface Consts {
   OPTION_MENU_SETTING_OPTION_BUTTON_MARKER: string;
   FONT_AWESOME_COLORS: typeof FONT_AWESOME_COLORS;
   HIGHLIGHTED_OPTION_BUTTON_CLASS: string;
+  HIGHLIGHTED_OPTION_BUTTON_TEXT_COLOR_CLASS: string;
   TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS: string;
   TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS: string;
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER: string;
@@ -234,6 +236,7 @@ export default {
       SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS,
       CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.CSS_PSEUDO_CLASSES,
       HIGHLIGHTED_OPTION_BUTTON_CLASS: BrowserType.isFirefox() ? 'highlighted-option-button-firefox' : 'highlighted-option-button-chromium',
+      HIGHLIGHTED_OPTION_BUTTON_TEXT_COLOR_CLASS: 'highlighted-option-button-text-color',
       ...useToolbarPositionToggle(),
     };
   },
@@ -283,6 +286,10 @@ export default {
       return componentTypeToOptions[this.component.type](subcomponentProperties.subcomponentType, this.component)
         [subcomponentProperties.activeCssPseudoClass];
     },
+    findOptionButtonElementViaName(optionName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES): HTMLElement {
+      const buttonElements = document.getElementsByClassName(this.OPTION_MENU_SETTING_OPTION_BUTTON_MARKER);
+      return Array.from(buttonElements).find((buttonElement: HTMLElement) => buttonElement.innerText === optionName) as HTMLElement;
+    },
     isExpandedModeOptionDisabled(option: Option): boolean {
       return option.enabledOnExpandedModalPreviewMode && !this.isExpandedModalPreviewModeActive;
     },
@@ -299,7 +306,7 @@ export default {
     mouseHoverOption(option: Option, isEntering: boolean): void {
       if (this.isExpandedModeOptionDisabled(option)) {
         this.changeElementHighlight(this.$refs.expandedModalPreviewModeToggle, isEntering);
-      } else if (option.buttonName === 'Actions') {
+      } else if (option.buttonName === WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ACTIONS) {
         if (isEntering) {
           this.$refs.fullPreviewModeToggle.classList.add(this.TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS);
         } else {
@@ -308,13 +315,20 @@ export default {
           }, 50); // the z-index appears to disappear too quickly
         }
         this.changeElementHighlight(this.$refs.fullPreviewModeToggle, isEntering);
+      } else if (option.buttonName === WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ANIMATIONS) {
+        if (option.enabledIfCustomFeaturePresentWithKeys && !this.getActiveSubcomponentCustomFeatureValue(option.enabledIfCustomFeaturePresentWithKeys)) {
+          const backgroundOptionButtonElement = this.findOptionButtonElementViaName(WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BACKGROUND);
+          this.changeElementHighlight(backgroundOptionButtonElement, isEntering);
+        }
       }
     },
     changeElementHighlight(element: HTMLElement, isEntering: boolean): void {
       if (isEntering) {
         element.classList.replace(this.TOOLBAR_GENERAL_BUTTON_CLASS, this.HIGHLIGHTED_OPTION_BUTTON_CLASS);
+        if (element.classList.contains(this.OPTION_MENU_SETTING_OPTION_BUTTON_MARKER)) element.classList.add(this.HIGHLIGHTED_OPTION_BUTTON_TEXT_COLOR_CLASS);
       } else {
         element.classList.replace(this.HIGHLIGHTED_OPTION_BUTTON_CLASS, this.TOOLBAR_GENERAL_BUTTON_CLASS); 
+        if (element.classList.contains(this.OPTION_MENU_SETTING_OPTION_BUTTON_MARKER)) element.classList.remove(this.HIGHLIGHTED_OPTION_BUTTON_TEXT_COLOR_CLASS);
       }
     },
     selectOption(option: Option, isManualSelect: boolean): void {
@@ -660,5 +674,8 @@ export default {
     transition-duration: 0s !important;
     background-color: rgb(255, 255, 220) !important;
     border-color: rgb(235, 199, 0) !important;
+  }
+  .highlighted-option-button-text-color {
+    color: rgb(102, 102, 102) !important;
   }
 </style>
