@@ -7,7 +7,7 @@ upon the removal of a subcomponent, maybe move to the next one instead of the ba
 may need to call the close subcomponent dropdown option as close
 rename avatar to image
 enable image animation when image has been uploaded
-fix issue where mouse leave cuts the image animation
+add this animation capability to image
 
 overflow
 try with button tags

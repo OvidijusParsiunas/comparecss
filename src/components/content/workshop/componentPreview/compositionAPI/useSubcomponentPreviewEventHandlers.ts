@@ -14,6 +14,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
 
   let overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
   let isUnsetButtonDisplayedForColorInputs = {};
+  let unsetTransitionPropertyTimeout = null;
 
   function setDefaultUnsetButtonStatesForColorInputs(customCss: CustomCss): void {
     Object.keys(customCss[CSS_PSEUDO_CLASSES.DEFAULT]).forEach((key) => {
@@ -41,8 +42,9 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   function unsetTransitionProperty(customCss: CustomCss, customFeatures: CustomFeatures): void {
     const transitionDuration = customFeatures?.animations?.stationary?.fade?.duration;
     if (!transitionDuration) return;
-    setTimeout(() => {
+    unsetTransitionPropertyTimeout = window.setTimeout(() => {
       customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition = CSS_PROPERTY_VALUES.UNSET;
+      unsetTransitionPropertyTimeout = null;
     }, Number.parseFloat(transitionDuration) * 1000);
   }
 
@@ -64,6 +66,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   }
 
   function setMouseEnterProperties(customCss: CustomCss, customFeatures: CustomFeatures): void {
+    if (unsetTransitionPropertyTimeout !== null) clearTimeout(unsetTransitionPropertyTimeout);
     if (customFeatures?.animations?.stationary?.fade) setTransitionCssProperty(customCss, customFeatures.animations.stationary.fade.duration);
     setCustomCss(customCss, CSS_PSEUDO_CLASSES.HOVER);
   }
