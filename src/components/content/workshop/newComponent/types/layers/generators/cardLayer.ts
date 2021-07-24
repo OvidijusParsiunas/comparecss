@@ -33,7 +33,6 @@ class CardLayer extends ComponentBuilder {
       },
       [CSS_PSEUDO_CLASSES.HOVER]: {
         backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
-        backgroundSize: '120% 120%',
       },
     };
   }

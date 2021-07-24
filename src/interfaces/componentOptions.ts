@@ -6,6 +6,7 @@ export interface Option {
   buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES;
   type: WORKSHOP_TOOLBAR_OPTION_TYPES;
   enabledOnExpandedModalPreviewMode?: boolean;
+  enabledIfCustomFeaturePresentWithKeys?: string[];
 }
 
 export type SubcomponentOptions<T extends keyof SubcomponentCssPseudoClasses> = {

@@ -109,11 +109,11 @@
               @mouseenter="mouseHoverOption(option, true)" @mouseleave="mouseHoverOption(option, false)">
             <button
               type="button"
-              :disabled="option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive"
+              :disabled="isOptionDisabled(option)"
               class="btn option-select-button-default"
               :class="[
                 option.type === activeOption.type ? 'option-select-button-active' : '',
-                option.enabledOnExpandedModalPreviewMode && !isExpandedModalPreviewModeActive ? 'option-select-button-default-disabled' : 'option-select-button-default-enabled',
+                isOptionDisabled(option) ? 'option-select-button-default-disabled' : 'option-select-button-default-enabled',
                 TOOLBAR_GENERAL_BUTTON_CLASS, OPTION_MENU_SETTING_OPTION_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
               @click="buttonClickMiddleware(selectOption.bind(this, option, true))">
                 {{option.buttonName}}
@@ -166,6 +166,7 @@ import { RemovalModalState } from '../../../../../interfaces/removalModalState';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import { Option } from '../../../../../interfaces/componentOptions';
 import BrowserType from '../../utils/generic/browserType';
+import SharedUtils from '../settings/utils/sharedUtils';
 import { InSync } from './importComponent/inSync';
 import { Ref } from 'node_modules/vue/dist/vue';
 import dropdown from './dropdown/Dropdown.vue';
@@ -282,8 +283,21 @@ export default {
       return componentTypeToOptions[this.component.type](subcomponentProperties.subcomponentType, this.component)
         [subcomponentProperties.activeCssPseudoClass];
     },
+    isExpandedModeOptionDisabled(option: Option): boolean {
+      return option.enabledOnExpandedModalPreviewMode && !this.isExpandedModalPreviewModeActive;
+    },
+    getActiveSubcomponentCustomFeatureValue(customFeatureObjectKeys: string[]): unknown {
+      const activeSubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
+      return SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, activeSubcomponentProperties[customFeatureObjectKeys[0]]);
+    },
+    isOptionDisabled(option: Option): boolean {
+      if (option.enabledIfCustomFeaturePresentWithKeys) {
+        return !this.getActiveSubcomponentCustomFeatureValue(option.enabledIfCustomFeaturePresentWithKeys);
+      }
+      return this.isExpandedModeOptionDisabled(option);
+    },
     mouseHoverOption(option: Option, isEntering: boolean): void {
-      if (!this.isExpandedModalPreviewModeActive && option.enabledOnExpandedModalPreviewMode) {
+      if (this.isExpandedModeOptionDisabled(option)) {
         this.changeElementHighlight(this.$refs.expandedModalPreviewModeToggle, isEntering);
       } else if (option.buttonName === 'Actions') {
         if (isEntering) {
@@ -347,7 +361,8 @@ export default {
     getOptionFromNewSubcomponent(activeOptions: Option[]): Option {
       return activeOptions.find((option: Option) => {
         return option.buttonName === this.activeOption.buttonName
-          && (this.isExpandedModalPreviewModeActive || option.enabledOnExpandedModalPreviewMode === this.activeOption.enabledOnExpandedModalPreviewMode);
+          && (this.isExpandedModalPreviewModeActive || (option.enabledOnExpandedModalPreviewMode && option.enabledOnExpandedModalPreviewMode === this.activeOption.enabledOnExpandedModalPreviewMode))
+            || (option.enabledIfCustomFeaturePresentWithKeys && this.getActiveSubcomponentCustomFeatureValue(option.enabledIfCustomFeaturePresentWithKeys))
       });
     },
     toggleSubcomponentImport(): void {
@@ -390,8 +405,7 @@ export default {
     },
     toggleModalExpandMode(): void {
       this.isExpandedModalPreviewModeActive = !this.isExpandedModalPreviewModeActive;
-      const setOptionToDefaultCallback = !this.isExpandedModalPreviewModeActive && this.activeOption.enabledOnExpandedModalPreviewMode
-        ? this.selectDefaultOption.bind(this) : () => { return; };
+      const setOptionToDefaultCallback = this.isOptionDisabled(this.activeOption) ? this.selectDefaultOption.bind(this) : () => { return; };
       this.$emit('toggle-expanded-modal-preview-mode',
         [this.isExpandedModalPreviewModeActive, setOptionToDefaultCallback, this.toolbarPositionToggleRef] as ToggleExpandedModalPreviewModeEvent);
     },
