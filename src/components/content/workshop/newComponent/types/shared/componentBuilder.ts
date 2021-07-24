@@ -12,6 +12,7 @@ import { CloseTriggers } from '../../../../../../interfaces/closeTriggers';
 import { Animations } from '../../../../../../interfaces/animations';
 import { defaultImage } from './images/default';
 
+// TO-DO should be using a builder pattern
 export class ComponentBuilder {
 
   public static createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayerSection {
@@ -61,14 +62,16 @@ export class ComponentBuilder {
     return animations;
   }
 
-  protected static createStaticFadeAnimation(duration = '0.25s'): Animations {
-    return {
+  protected static createStationaryAnimations({ isBackgroundZoomPresent = false, isBackgroundZoomOn = false, duration = '0.25s' }): Animations {
+    const stationaryAnimations: Animations = {
       stationary: {
         fade: {
           duration,
-        }
+        },
       }
     };
+    if (isBackgroundZoomPresent) stationaryAnimations.stationary.backgroundZoom = { isOn: isBackgroundZoomOn };
+    return stationaryAnimations;
   }
 
   protected static createComponentCenteringInParent(): ComponentCenteringInParent {

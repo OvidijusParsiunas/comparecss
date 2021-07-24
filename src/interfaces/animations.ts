@@ -27,6 +27,9 @@ interface DisplayAnimations {
 interface StationaryAnimations {
   fade?: {
     duration: string;
+  },
+  backgroundZoom?: {
+    isOn: boolean;
   }
 }
 

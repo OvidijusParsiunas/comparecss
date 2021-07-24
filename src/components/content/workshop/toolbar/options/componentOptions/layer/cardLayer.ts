@@ -23,6 +23,10 @@ const cardLayerSpecificOptionsStatic = [
     buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
     type: WORKSHOP_TOOLBAR_OPTION_TYPES.LAYER_POSITION,
   },
+  {
+    buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ANIMATIONS,
+    type: WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE_ANIMATIONS,
+  },
 ];
 
 export const cardLayerOptions: SubcomponentOptions<LayerOptionsModes> = {

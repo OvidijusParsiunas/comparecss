@@ -51,7 +51,7 @@ class ButtonBase extends ComponentBuilder {
     return {
       lastSelectedCssValues: ComponentBuilder.createLastSelectedCssLeftValue(),
       alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
-      animations: ComponentBuilder.createStaticFadeAnimation(),
+      animations: ComponentBuilder.createStationaryAnimations({}),
     };
   }
 

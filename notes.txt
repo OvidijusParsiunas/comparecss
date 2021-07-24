@@ -5,6 +5,9 @@ after adding a new subcomponent, open its options
 zoom in image when hovered on
 upon the removal of a subcomponent, maybe move to the next one instead of the base
 may need to call the close subcomponent dropdown option as close
+rename avatar to image
+enable image animation when image has been uploaded
+fix issue where mouse leave cuts the image animation
 
 overflow
 try with button tags
@@ -18,7 +21,6 @@ potentially add x button to border coloring
 close button should probably be imported - but need to work through the logistics of inherited css for it
 display second range value with 2 decimal points
 close button may need to be a badge
-modals with gifs in them - https://icepanel.io/?human=architect
 consider having a dropdown to choose which border side to edit
 have a builder for contents within the settings
 maybe each equal section should be selectable
@@ -52,6 +54,10 @@ the options/available components/subcomponents could all be fetched via an endpo
 interactice tool to demo css - like a runtime addon (like stackblitz)
 website builder
 the current infrastructure does not support layers within layers in the component preview and the subcomponent dropdown
+
+---------------------------------------------------
+show off components to design:
+modals with gifs in them - https://icepanel.io/?human=architect
 
 ---------------------------------------------------
 

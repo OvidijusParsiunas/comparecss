@@ -49,8 +49,8 @@ class ButtonText extends ComponentBuilder {
   private static overwriteCustomFeatures(subcomponent: SubcomponentProperties): void {
     subcomponent.customFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
     subcomponent.defaultCustomFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
-    subcomponent.customFeatures.animations = ComponentBuilder.createStaticFadeAnimation();
-    subcomponent.defaultCustomFeatures.animations = ComponentBuilder.createStaticFadeAnimation();
+    subcomponent.customFeatures.animations = ComponentBuilder.createStationaryAnimations({});
+    subcomponent.defaultCustomFeatures.animations = ComponentBuilder.createStationaryAnimations({});
   }
 
   private static overwriteCustomCss(subcomponent: SubcomponentProperties): void {

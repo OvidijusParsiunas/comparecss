@@ -5,6 +5,7 @@ import buttonAnimations from './buttonAnimations';
 import modalAnimations from './modalAnimations';
 import alertAnimations from './alertAnimations';
 import backgroundImage from './backgroundImage';
+import imageAnimations from './imageAnimations';
 import shadowVertical from './shadowVertical';
 import modalPosition from './modalPosition';
 import layerPosition from './layerPosition';
@@ -54,6 +55,7 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION]: nestedComponentPosition,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKDROP]: backdrop,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS]: buttonAnimations,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE_ANIMATIONS]: imageAnimations,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.ALERT_ANIMATIONS]: alertAnimations,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ANIMATIONS]: modalAnimations,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ACTIONS]: modalActions,

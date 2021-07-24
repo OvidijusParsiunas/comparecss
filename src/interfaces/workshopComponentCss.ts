@@ -15,6 +15,7 @@ export interface WorkshopComponentCss {
   boxShadow?: string; // should not start with '0px 0px 0px 0px'
   backgroundColor?: string;
   backgroundSize?: string;
+  backgroundPosition?: string;
   width?: string;
   height?: string;
   fontFamily?: string;

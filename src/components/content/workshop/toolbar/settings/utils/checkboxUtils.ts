@@ -14,11 +14,10 @@ export default class CheckboxUtils {
 
   private static updateCssProperty(trigger: any, subcomponentProperties: SubcomponentProperties, thisSettingSpec: any, allSettings: any): void {
     const { customCss, activeCssPseudoClass } = subcomponentProperties;
-    const { cssProperty, newValue } = trigger;
-    customCss[activeCssPseudoClass][cssProperty] = newValue;
+    const { cssProperty, newValue, pseudoClass } = trigger;
+    customCss[pseudoClass || activeCssPseudoClass][cssProperty] = newValue;
     for (let i = 0; i < allSettings.options.length; i += 1) {
-      if (thisSettingSpec !== allSettings.options[i].spec && allSettings.options[i].spec.cssProperty
-          && allSettings.options[i].spec.cssProperty === cssProperty) {
+      if (thisSettingSpec !== allSettings.options[i].spec && allSettings.options[i]?.spec?.cssProperty === cssProperty) {
         allSettings.options[i].spec.default = parseInt(newValue) || 0;
       }
     }
