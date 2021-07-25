@@ -6,8 +6,6 @@ zoom in image when hovered on
 upon the removal of a subcomponent, maybe move to the next one instead of the base
 may need to call the close subcomponent dropdown option as close
 rename avatar to image
-enable image animation when image has been uploaded
-add this animation capability to image
 
 overflow
 try with button tags

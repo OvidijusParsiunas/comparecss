@@ -1,4 +1,4 @@
-import { CustomCss, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -31,9 +31,6 @@ class CardLayer extends ComponentBuilder {
         backgroundSize: '100% 100%',
         backgroundPosition: 'center',
       },
-      [CSS_PSEUDO_CLASSES.HOVER]: {
-        backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
-      },
     };
   }
 
@@ -52,14 +49,26 @@ class CardLayer extends ComponentBuilder {
     baseSubcomponent.defaultCustomStaticFeatures = CardLayer.createDefaultLayerCustomStaticFeatures();
   }
 
+  private static createDefaultCustomFeatures(): CustomFeatures {
+    return {
+      animations: ComponentBuilder.createStationaryAnimations({isBackgroundZoomPresent: true, isBackgroundZoomOn: false}),
+    };
+  }
+
+  private static createCustomFeatures(baseSubcomponent: SubcomponentProperties): void {
+    baseSubcomponent.customFeatures = CardLayer.createDefaultCustomFeatures();
+    baseSubcomponent.defaultCustomFeatures = CardLayer.createDefaultCustomFeatures();
+  }
+
   private static overwriteCustomCss(baseSubcomponent: SubcomponentProperties): void {
     baseSubcomponent.customCss = CardLayer.createDefaultLayerCss();
     baseSubcomponent.defaultCss = CardLayer.createDefaultLayerCss();
   }
 
-  public static overwrite(component: WorkshopComponent): void {
+  public static overwriteBaseSubcomponent(component: WorkshopComponent): void {
     const baseSubcomponent = component.subcomponents[component.coreSubcomponentNames.base];
     CardLayer.overwriteCustomCss(baseSubcomponent);
+    CardLayer.createCustomFeatures(baseSubcomponent);
     CardLayer.overwriteCustomStaticFeatures(baseSubcomponent);
     CardLayer.overwriteSubcomponentSpecificSettings(baseSubcomponent);
   }
@@ -68,7 +77,7 @@ class CardLayer extends ComponentBuilder {
 export const cardLayer: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const layerComponent = layerBase.createNewComponent(baseName);
-    CardLayer.overwrite(layerComponent);
+    CardLayer.overwriteBaseSubcomponent(layerComponent);
     CardLayer.setStyle(layerComponent);
     return layerComponent;
   },

@@ -70,7 +70,7 @@ export class ComponentBuilder {
         },
       }
     };
-    if (isBackgroundZoomPresent) stationaryAnimations.stationary.backgroundZoom = { isOn: isBackgroundZoomOn };
+    if (isBackgroundZoomPresent) stationaryAnimations.stationary.backgroundZoom = { isOn: isBackgroundZoomOn, zoomLevels: '120% 120%' };
     return stationaryAnimations;
   }
 

@@ -6,6 +6,7 @@ import { CustomCss, CustomFeatures, SubcomponentProperties } from '../../../../.
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
+import { StationaryAnimations } from '../../../../../interfaces/animations';
 import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 import { animationState } from '../utils/animations/state';
 
@@ -39,13 +40,16 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
           && (animationState.getIsModeToggleAnimationInProgressState() || animationState.getIsAnimationPreviewInProgressState()))
   }
 
-  function unsetTransitionProperty(customCss: CustomCss, customFeatures: CustomFeatures): void {
-    const transitionDuration = customFeatures?.animations?.stationary?.fade?.duration;
-    if (!transitionDuration) return;
-    unsetTransitionPropertyTimeout = window.setTimeout(() => {
-      customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition = CSS_PROPERTY_VALUES.UNSET;
-      unsetTransitionPropertyTimeout = null;
-    }, Number.parseFloat(transitionDuration) * 1000);
+  function unsetStationaryAnimations(customCss: CustomCss, defaultCss: CustomCss, stationaryAnimations: StationaryAnimations): void {
+    if (stationaryAnimations.fade?.duration) {
+      unsetTransitionPropertyTimeout = window.setTimeout(() => {
+        customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition = CSS_PROPERTY_VALUES.UNSET;
+        unsetTransitionPropertyTimeout = null;
+      }, Number.parseFloat(stationaryAnimations.fade.duration) * 1000);
+    }
+    if (stationaryAnimations.backgroundZoom?.zoomLevels) {
+      customCss[CSS_PSEUDO_CLASSES.DEFAULT].backgroundSize = defaultCss[CSS_PSEUDO_CLASSES.DEFAULT].backgroundSize;
+    }
   }
 
   function buildTransitionCssProperty(customFeatures: string): string {
@@ -55,6 +59,15 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   function setTransitionCssProperty(customCss: CustomCss, transitionDuration: string): void {
     const transition = transitionDuration ? buildTransitionCssProperty(transitionDuration) : CSS_PROPERTY_VALUES.UNSET;
     customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition = transition;
+  }
+
+  function setZoomAnimation(customCss: CustomCss, zoomLevels: string): void {
+    customCss[CSS_PSEUDO_CLASSES.DEFAULT].backgroundSize = zoomLevels;
+  }
+
+  function setStationaryCssProperty(customCss: CustomCss, stationaryAnimations: StationaryAnimations): void {
+    if (stationaryAnimations.fade) setTransitionCssProperty(customCss, stationaryAnimations.fade.duration);
+    if (stationaryAnimations.backgroundZoom?.isOn) setZoomAnimation(customCss, stationaryAnimations.backgroundZoom.zoomLevels);
   }
 
   function setCustomCss(customCss: CustomCss, activeCssPseudoClass: CSS_PSEUDO_CLASSES): void {
@@ -67,7 +80,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
 
   function setMouseEnterProperties(customCss: CustomCss, customFeatures: CustomFeatures): void {
     if (unsetTransitionPropertyTimeout !== null) clearTimeout(unsetTransitionPropertyTimeout);
-    if (customFeatures?.animations?.stationary?.fade) setTransitionCssProperty(customCss, customFeatures.animations.stationary.fade.duration);
+    if (customFeatures?.animations?.stationary) setStationaryCssProperty(customCss, customFeatures.animations.stationary);
     setCustomCss(customCss, CSS_PSEUDO_CLASSES.HOVER);
   }
 
@@ -83,14 +96,14 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
 
   const subcomponentMouseLeave = (): void => {
     if (shoudPreventMouseEvent()) return;
-    const { customCss, customFeatures, nameOfAnotherSubcomponetToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
+    const { customCss, defaultCss, customFeatures, nameOfAnotherSubcomponetToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
     if (isTriggeredByAnotherSubcomponent && event.isTrusted) return;
     if (nameOfAnotherSubcomponetToTrigger) triggerAnotherSubcomponentMouseEvent(nameOfAnotherSubcomponetToTrigger, event.type);
     if (subcomponentProperties.overwrittenCustomCssObj) {
       delete subcomponentProperties.overwrittenCustomCssObj;
     }
     isUnsetButtonDisplayedForColorInputs = {};
-    if (customFeatures) unsetTransitionProperty(customCss, customFeatures); 
+    if (customFeatures?.animations?.stationary) unsetStationaryAnimations(customCss, defaultCss, customFeatures.animations.stationary); 
   }
 
   const subcomponentMouseDown = (): void => {

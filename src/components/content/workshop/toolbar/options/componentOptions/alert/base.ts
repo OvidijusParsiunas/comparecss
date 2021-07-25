@@ -13,7 +13,7 @@ export const alertBaseOptions: SubcomponentOptions<AlertBaseOptionsModes> = {
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BACKGROUND,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_IMAGE,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_COLOR_IMAGE,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SHADOW,

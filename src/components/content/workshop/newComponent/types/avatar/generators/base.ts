@@ -35,6 +35,7 @@ class AvatarBase extends ComponentBuilder {
         top: '50%',
         left: '0px',
         backgroundSize: '100% 100%',
+        backgroundPosition: 'center',
       },
     };
   }
@@ -44,6 +45,7 @@ class AvatarBase extends ComponentBuilder {
       circleBorder: false,
       lastSelectedCssValues: ComponentBuilder.createLastSelectedCssLeftValue(),
       alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
+      animations: ComponentBuilder.createStationaryAnimations({isBackgroundZoomPresent: true, isBackgroundZoomOn: false}),
     };
   }
 

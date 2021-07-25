@@ -31,12 +31,6 @@ class LayerBase extends ComponentBuilder {
       subcomponentType: SUBCOMPONENT_TYPES.LAYER,
       customCss: LayerBase.createDefaultBaseCss(),
       defaultCss: LayerBase.createDefaultBaseCss(),
-      customFeatures: {
-        animations: ComponentBuilder.createStationaryAnimations({isBackgroundZoomPresent: true, isBackgroundZoomOn: false}),
-      },
-      defaultCustomFeatures: {
-        animations: ComponentBuilder.createStationaryAnimations({isBackgroundZoomPresent: true, isBackgroundZoomOn: false}),
-      },
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,

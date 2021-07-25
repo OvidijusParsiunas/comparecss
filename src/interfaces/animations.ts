@@ -24,12 +24,13 @@ interface DisplayAnimations {
   };
 }
 
-interface StationaryAnimations {
+export interface StationaryAnimations {
   fade?: {
     duration: string;
   },
   backgroundZoom?: {
     isOn: boolean;
+    zoomLevels: string;
   }
 }
 
