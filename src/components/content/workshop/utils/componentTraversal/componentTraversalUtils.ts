@@ -28,30 +28,30 @@ export default class ComponentTraversalUtils {
   }
 
   private static inspectSubcomponent(subcomponentDropdownStructure: NestedDropdownStructure, index: number,
-      callback: TraverseComponentCallback, dropdownOptionNamesStack: string[], dropdownOptionName: string): ComponentTraversalState {
-    if (dropdownOptionName === DROPDOWN_OPTION_AUX_DETAILS_REF) {
-      dropdownOptionNamesStack.splice(dropdownOptionNamesStack.length - 1, 1);
-      return null;
-    }
-    dropdownOptionNamesStack.push(dropdownOptionName);
-    const callbackResult = callback({dropdownOptionName, subcomponentDropdownStructure, dropdownOptionNamesStack, index});
+      callback: TraverseComponentCallback, dropdownOptionDetailsStack: DropdownOptionAuxDetails[], dropdownOptionName: string): ComponentTraversalState {
+    if (dropdownOptionName === DROPDOWN_OPTION_AUX_DETAILS_REF) return null;
+    const callbackResult = callback({dropdownOptionName, subcomponentDropdownStructure, dropdownOptionDetailsStack, index});
     if (callbackResult) return callbackResult;
     if (Object.keys(subcomponentDropdownStructure[dropdownOptionName]).length > 0) {
+      dropdownOptionDetailsStack.push(null);
       const traversalResult = ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
-        subcomponentDropdownStructure[dropdownOptionName] as NestedDropdownStructure, callback, dropdownOptionNamesStack);
+        subcomponentDropdownStructure[dropdownOptionName] as NestedDropdownStructure, callback, dropdownOptionDetailsStack);
       if (traversalResult) return traversalResult;
+      dropdownOptionDetailsStack.splice(dropdownOptionDetailsStack.length - 1, 1);
     }
     return null;
   }
 
   public static traverseComponentUsingDropdownStructure(subcomponentDropdownStructure: NestedDropdownStructure,
-      callback: TraverseComponentCallback, dropdownOptionNamesStack?: string[]): ComponentTraversalState {
-    if (!dropdownOptionNamesStack) dropdownOptionNamesStack = [];
+      callback: TraverseComponentCallback, dropdownOptionDetailsStack?: DropdownOptionAuxDetails[]): ComponentTraversalState {
+    if (!dropdownOptionDetailsStack) dropdownOptionDetailsStack = [null];
     const subcomponentDropdownStructureKeys = Object.keys(subcomponentDropdownStructure);
     for (let i = 0; i < subcomponentDropdownStructureKeys.length; i += 1) {
       const subcomponentName = subcomponentDropdownStructureKeys[i];
+      dropdownOptionDetailsStack[dropdownOptionDetailsStack.length - 1] = subcomponentDropdownStructure
+        [subcomponentName][DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails;
       const inspectionResult = ComponentTraversalUtils.inspectSubcomponent(subcomponentDropdownStructure, i,
-        callback, dropdownOptionNamesStack, subcomponentName);
+        callback, dropdownOptionDetailsStack, subcomponentName);
       if (inspectionResult) return inspectionResult;
     }
     return null;

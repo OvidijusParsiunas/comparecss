@@ -372,20 +372,23 @@ export default {
       const activeOptions = this.getActiveOptions();
       return this.getOptionFromNewSubcomponent(activeOptions) || activeOptions[0];
     },
-    isSameOptionEnabledViaCustomFeatureKeys(option: Option): boolean {
-      const { enabledIfCustomFeaturePresentWithKeys } = option;
+    areOptionsEnabledViaCustomFeatureKeys(newOption: Option): boolean {
+      const { enabledIfCustomFeaturePresentWithKeys } = newOption;
       const { enabledIfCustomFeaturePresentWithKeys: activeEnabledIfCustomFeaturePresentWithKeys } = this.activeOption;
-      return enabledIfCustomFeaturePresentWithKeys
-        && activeEnabledIfCustomFeaturePresentWithKeys
-        && enabledIfCustomFeaturePresentWithKeys[enabledIfCustomFeaturePresentWithKeys.length - 1] === activeEnabledIfCustomFeaturePresentWithKeys[activeEnabledIfCustomFeaturePresentWithKeys.length - 1]
-        && this.getActiveSubcomponentCustomFeatureValue(enabledIfCustomFeaturePresentWithKeys);
+      return !activeEnabledIfCustomFeaturePresentWithKeys
+            || (enabledIfCustomFeaturePresentWithKeys
+                && enabledIfCustomFeaturePresentWithKeys[enabledIfCustomFeaturePresentWithKeys.length - 1] === activeEnabledIfCustomFeaturePresentWithKeys[activeEnabledIfCustomFeaturePresentWithKeys.length - 1]
+                && this.getActiveSubcomponentCustomFeatureValue(enabledIfCustomFeaturePresentWithKeys));
+    },
+    areExpandedModeOptionsEnabled(newOption: Option): boolean {
+      return !this.isExpandedModalPreviewModeActive
+            || (this.isExpandedModalPreviewModeActive
+                && newOption.enabledOnExpandedModalPreviewMode
+                && newOption.enabledOnExpandedModalPreviewMode === this.activeOption.enabledOnExpandedModalPreviewMode);
     },
     getOptionFromNewSubcomponent(activeOptions: Option[]): Option {
-      return activeOptions.find((option: Option) => {
-        return option.buttonName === this.activeOption.buttonName
-          && ((this.isExpandedModalPreviewModeActive || (option.enabledOnExpandedModalPreviewMode && option.enabledOnExpandedModalPreviewMode === this.activeOption.enabledOnExpandedModalPreviewMode))
-              || this.isSameOptionEnabledViaCustomFeatureKeys(option))
-      });
+      const newOption = activeOptions.find((option: Option) => option.buttonName === this.activeOption.buttonName);
+      return newOption && this.areExpandedModeOptionsEnabled(newOption) && this.areOptionsEnabledViaCustomFeatureKeys(newOption);
     },
     toggleSubcomponentImport(): void {
       ImportComponentModeToggleUtils.toggleSubcomponentImport(this);
@@ -400,6 +403,7 @@ export default {
         this.$emit('prepare-remove-subcomponent-modal', this.removeSubcomponent);
       } else {
         this.removeSubcomponent();
+        setTimeout(() => SubcomponentOverlayToggleUtils.displaySubcomponentOverlay(this.component));
       }
     },
     removeSubcomponent(): void {
@@ -410,7 +414,7 @@ export default {
       }
     },
     emitRemoveSubcomponentEvent(): void {
-      this.$emit('remove-subcomponent', this.selectNewSubcomponent);
+      this.$emit('remove-subcomponent');
     },
     addNewSubcomponent(): void {
       this.$emit('add-subcomponent');

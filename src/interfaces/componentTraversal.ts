@@ -1,5 +1,6 @@
 import { AlignedSections, Layer, NestedComponent } from './componentPreviewStructure';
 import { SubcomponentProperties, WorkshopComponent } from './workshopComponent';
+import { DropdownOptionAuxDetails } from './dropdownOptionDisplayStatus';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 
 export type ChangeOrderCallback = (param: string) => void;
@@ -14,7 +15,7 @@ export interface TargetDetails {
 
 export interface ComponentTraversalState {
   dropdownOptionName?: string;
-  dropdownOptionNamesStack?: string[];
+  dropdownOptionDetailsStack?: DropdownOptionAuxDetails[];
   subcomponentDropdownStructure?: NestedDropdownStructure;
   subcomponentProperties?: SubcomponentProperties;
   alignedNestedComponents?: NestedComponent[];

@@ -15,7 +15,7 @@
         @toggle-toolbar-position="toggleToolbarPosition"
         @toggle-import-subcomponent-mode="$emit('toggle-import-subcomponent-mode', $event)"
         @add-subcomponent="$emit('add-subcomponent')"
-        @remove-subcomponent="$emit('remove-subcomponent', $event)"/>
+        @remove-subcomponent="$emit('remove-subcomponent')"/>
       <settings v-if="isSettingsDisplayed" ref="settings"
         :component="component"
         :subcomponentProperties="component.subcomponents[component.activeSubcomponentName]"

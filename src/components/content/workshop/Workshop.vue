@@ -49,7 +49,7 @@
               @stop-animation-preview="$refs.contents.stopAnimationPreview()"
               @toggle-import-subcomponent-mode="toggleImportComponentMode($event)"
               @add-subcomponent="addNewSubcomponent"
-              @remove-subcomponent="removeSubcomponent($event)"
+              @remove-subcomponent="removeSubcomponent"
               @change-subcomponent-order="changeSubcomponentOrder($event)"
               @change-subcomponent-alignment="changeSubcomponentAlignment($event)"/>
             <component-contents ref="contents"
@@ -217,8 +217,8 @@ export default {
     addNewSubcomponent(): void {
       ComponentManipulation.addNewSubcomponent(this);
     },
-    removeSubcomponent(selectNewSubcomponentCallback: () => void): void {
-      ComponentManipulation.removeSubcomponent(this, selectNewSubcomponentCallback);
+    removeSubcomponent(): void {
+      ComponentManipulation.removeSubcomponent(this);
     },
     changeSubcomponentOrder(moveSubcomponentEvent: ChangeSubcomponentOrderEvent): void {
       ComponentManipulation.changeSubcomponentOrder(this, ...moveSubcomponentEvent);
