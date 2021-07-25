@@ -22,7 +22,7 @@ export class CardBaseSpecificSettings {
     const baseSubcomponent = component.subcomponents[component.coreSubcomponentNames.base];
     component.interconnectedSettings = [{
       updateOtherCssProperties: baseSubcomponent.subcomponentSpecificSettings[WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH][SETTING_NAMES.WIDTH].updateOtherCssProperties,
-      dependantChildrenTypes: new Set([SUBCOMPONENT_TYPES.AVATAR, SUBCOMPONENT_TYPES.BUTTON]),
+      dependantChildrenTypes: new Set([SUBCOMPONENT_TYPES.IMAGE, SUBCOMPONENT_TYPES.BUTTON]),
       updateOtherCssPropertiesObjGenerator: CardBaseSpecificSettings.getLeftPositionProperties,
     }];
   }

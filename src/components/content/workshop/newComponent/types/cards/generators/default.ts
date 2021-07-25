@@ -89,7 +89,7 @@ class DefaultCard extends ComponentBuilder {
       layer1Component.coreSubcomponentNames.base, [DefaultCard.overwriteTitleProperties]);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, BUTTON_STYLES.CLOSE,
       layer1Component.coreSubcomponentNames.base);
-    AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.AVATAR, DEFAULT_STYLES.DEFAULT,
+    AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.IMAGE, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentNames.base);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layer2Component.coreSubcomponentNames.base, [DefaultCard.overwriteDescriptionProperties]);

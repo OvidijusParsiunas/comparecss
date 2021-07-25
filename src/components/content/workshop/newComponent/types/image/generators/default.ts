@@ -1,9 +1,9 @@
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { avatarBase } from './base';
+import { imageBase } from './base';
 
-export const defaultAvatar: ComponentGenerator = {
+export const defaultImage: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
-    return avatarBase.createNewComponent(baseName);
+    return imageBase.createNewComponent(baseName);
   },
 };

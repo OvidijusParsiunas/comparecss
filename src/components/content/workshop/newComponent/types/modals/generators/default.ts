@@ -92,7 +92,7 @@ class DefaultModal extends ComponentBuilder {
       layer3Component.coreSubcomponentNames.base, [DefaultModal.overwriteCancelButtonProperties]);
     AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.BUTTON,
       BUTTON_STYLES.CLOSE, layer1Component.coreSubcomponentNames.base);
-    AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.AVATAR, DEFAULT_STYLES.DEFAULT,
+    AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.IMAGE, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentNames.base);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(modalComponent, modalComponent.componentPreviewStructure.layers[0]);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(modalComponent, modalComponent.componentPreviewStructure.layers[1]);

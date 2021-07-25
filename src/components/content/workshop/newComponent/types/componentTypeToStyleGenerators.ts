@@ -1,7 +1,7 @@
 import { ComponentStyleToGenerator } from '../../../../../interfaces/componentStyleToGenerator';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum'
 import { buttonStyleToGenerator } from './buttons/buttonStyleToGenerator';
-import { avatarStyleToGenerator } from './avatar/avatarStyleToGenerator';
+import { imageStyleToGenerator } from './image/imageStyleToGenerator';
 import { alertStyleToGenerator } from './alerts/alertStyleToGenerator';
 import { modalStyleToGenerator } from './modals/modalStyleToGenerator';
 import { layerStyleToGenerator } from './layers/layerStyleToGenerator';
@@ -19,5 +19,5 @@ export const componentTypeToStyleGenerators: ComponentTypeToStyleGenerators = {
   [COMPONENT_TYPES.BUTTON]: buttonStyleToGenerator,
   [COMPONENT_TYPES.ALERT]: alertStyleToGenerator,
   [COMPONENT_TYPES.TEXT]: textStyleToGenerator,
-  [COMPONENT_TYPES.AVATAR]: avatarStyleToGenerator,
+  [COMPONENT_TYPES.IMAGE]: imageStyleToGenerator,
 };

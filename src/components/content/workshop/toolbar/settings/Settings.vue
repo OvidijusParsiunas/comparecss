@@ -58,7 +58,7 @@
                   @click="colorInputClick(setting.spec.cssProperty)"
                   @input="changeSetting(colorChanged.bind(this, $event, setting))"
                   v-model="setting.spec.default"/>
-                <button class="unset-color-button" id="dropdownMenuButton"
+                <button class="unset-setting-button" id="dropdownMenuButton"
                   v-if="isUnsetColorButtonDisplayed(setting)"
                   @click="changeSetting(removeColor.bind(this, setting.spec, setting.removeColorTriggers))">
                   &times;
@@ -143,8 +143,8 @@
                     Upload
                 </button>
                 <div>{{imageNames[setting.spec.name]}}</div>
-                <button class="unset-color-button" id="dropdownMenuButton"
-                  v-if="imageNames[setting.spec.name]"
+                <button class="unset-setting-button" id="dropdownMenuButton"
+                  v-if="isRemoveImageButtonDisplayed(setting.spec.name)"
                   @click="changeSetting(removeImage.bind(this, setting.spec))">
                   &times;
                 </button>
@@ -185,6 +185,7 @@ import { TOOLBAR_GENERAL_BUTTON_CLASS } from '../../../../../consts/toolbarClass
 import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 import { UseActionsDropdown } from '../../../../../interfaces/UseActionsDropdown';
+import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { RANGE_SETTING_MARKER } from '../../../../../consts/elementClassMarkers';
 import { UnsetColorButton } from './utils/colorPickerUtils/unsetColorButton';
 import { ColorPickerUtils } from './utils/colorPickerUtils/colorPickerUtils';
@@ -361,6 +362,9 @@ export default {
     uploadImage(event: any, spec: any): void {
       ImageUtils.uploadImage(this, event, spec);
     },
+    isRemoveImageButtonDisplayed(settingName: string): boolean {
+      return this.subcomponentProperties.subcomponentType !== SUBCOMPONENT_TYPES.IMAGE && this.imageNames[settingName];
+    },
     removeImage(spec: any): void {
       ImageUtils.removeImage(this, spec);
     },
@@ -419,7 +423,7 @@ export default {
   .dropdown-toggle::after {
     vertical-align: 0.15em !important;
   }
-  .unset-color-button {
+  .unset-setting-button {
     font-size: 1.1em;
     line-height: 15px;
     padding-top: 2px;
@@ -430,10 +434,10 @@ export default {
     opacity: 0.5;
     outline: none;
   }
-  .unset-color-button:hover {
+  .unset-setting-button:hover {
     opacity: 0.7;    
   }
-  .unset-color-button:focus {
+  .unset-setting-button:focus {
     outline: none;
   }
   .reset-button {

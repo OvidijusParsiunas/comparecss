@@ -243,7 +243,7 @@ export default {
   data: (): Data => ({
     currentRemoveSubcomponentModalTargetId: '',
     isSubcomponentSelectModeButtonDisplayed: false,
-    activeOption: { buttonName: null, type: null },
+    activeOption: { buttonName: null, type: null, enabledOnExpandedModalPreviewMode: null, enabledIfCustomFeaturePresentWithKeys: null },
     isExpandedModalPreviewModeActive: false,
     isFullPreviewModeActive: false,
     isImportComponentModeActive: false,
@@ -333,7 +333,7 @@ export default {
     },
     selectOption(option: Option, isManualSelect: boolean): void {
       if (isManualSelect && this.activeOption.buttonName === option.buttonName && this.activeOption.type === option.type) {
-        this.activeOption = { buttonName: null, type: null };
+        this.activeOption = { buttonName: null, type: null, enabledOnExpandedModalPreviewMode: null, enabledIfCustomFeaturePresentWithKeys: null };
         this.hideSettings();
         return;
       }
@@ -372,11 +372,19 @@ export default {
       const activeOptions = this.getActiveOptions();
       return this.getOptionFromNewSubcomponent(activeOptions) || activeOptions[0];
     },
+    isSameOptionEnabledViaCustomFeatureKeys(option: Option): boolean {
+      const { enabledIfCustomFeaturePresentWithKeys } = option;
+      const { enabledIfCustomFeaturePresentWithKeys: activeEnabledIfCustomFeaturePresentWithKeys } = this.activeOption;
+      return enabledIfCustomFeaturePresentWithKeys
+        && activeEnabledIfCustomFeaturePresentWithKeys
+        && enabledIfCustomFeaturePresentWithKeys[enabledIfCustomFeaturePresentWithKeys.length - 1] === activeEnabledIfCustomFeaturePresentWithKeys[activeEnabledIfCustomFeaturePresentWithKeys.length - 1]
+        && this.getActiveSubcomponentCustomFeatureValue(enabledIfCustomFeaturePresentWithKeys);
+    },
     getOptionFromNewSubcomponent(activeOptions: Option[]): Option {
       return activeOptions.find((option: Option) => {
         return option.buttonName === this.activeOption.buttonName
-          && (this.isExpandedModalPreviewModeActive || (option.enabledOnExpandedModalPreviewMode && option.enabledOnExpandedModalPreviewMode === this.activeOption.enabledOnExpandedModalPreviewMode))
-            || (option.enabledIfCustomFeaturePresentWithKeys && this.getActiveSubcomponentCustomFeatureValue(option.enabledIfCustomFeaturePresentWithKeys))
+          && ((this.isExpandedModalPreviewModeActive || (option.enabledOnExpandedModalPreviewMode && option.enabledOnExpandedModalPreviewMode === this.activeOption.enabledOnExpandedModalPreviewMode))
+              || this.isSameOptionEnabledViaCustomFeatureKeys(option))
       });
     },
     toggleSubcomponentImport(): void {

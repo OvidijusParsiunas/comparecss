@@ -7,9 +7,9 @@ import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
-class AvatarBase extends ComponentBuilder {
+class ImageBase extends ComponentBuilder {
 
-  private static createDefaultAvatarCss(): CustomCss {
+  private static createDefaultImageCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
         borderRadius: '0px',
@@ -57,21 +57,21 @@ class AvatarBase extends ComponentBuilder {
 
   public static createBaseSubcomponent(): SubcomponentProperties {
     return {
-      subcomponentType: SUBCOMPONENT_TYPES.AVATAR,
-      customCss: AvatarBase.createDefaultAvatarCss(),
-      defaultCss: AvatarBase.createDefaultAvatarCss(),
+      subcomponentType: SUBCOMPONENT_TYPES.IMAGE,
+      customCss: ImageBase.createDefaultImageCss(),
+      defaultCss: ImageBase.createDefaultImageCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      customFeatures: AvatarBase.createDefaultCustomFeatures(),
-      defaultCustomFeatures: AvatarBase.createDefaultCustomFeatures(),
-      customStaticFeatures: AvatarBase.createDefaultCustomStaticFeatures(),
-      defaultCustomStaticFeatures: AvatarBase.createDefaultCustomStaticFeatures(),
+      customFeatures: ImageBase.createDefaultCustomFeatures(),
+      defaultCustomFeatures: ImageBase.createDefaultCustomFeatures(),
+      customStaticFeatures: ImageBase.createDefaultCustomStaticFeatures(),
+      defaultCustomStaticFeatures: ImageBase.createDefaultCustomStaticFeatures(),
     };
   }
 }
 
-export const avatarBase: ComponentGenerator = {
+export const imageBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
-    return ComponentBuilder.createBaseComponent({ componentType: COMPONENT_TYPES.AVATAR, baseName }, AvatarBase.createBaseSubcomponent);
+    return ComponentBuilder.createBaseComponent({ componentType: COMPONENT_TYPES.IMAGE, baseName }, ImageBase.createBaseSubcomponent);
   },
 }

@@ -3,14 +3,14 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentType
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { Options } from '../../../../../../../interfaces/options';
 import { CardOptions } from '../card/cardOptions';
-import { avatarOptions } from '../card/avatar';
+import { imageOptions } from '../image/image';
 import { modalBaseOptions } from './base';
 
 export class ModalOptions extends CardOptions {
 
   private static readonly STATIC_MODAL_OPTIONS: SubcomponentTypeToOptions = {
     [SUBCOMPONENT_TYPES.BASE]: modalBaseOptions as Options,
-    [SUBCOMPONENT_TYPES.AVATAR]: avatarOptions as Options,
+    [SUBCOMPONENT_TYPES.IMAGE]: imageOptions as Options,
   };
 
   public static getModalOptions(subcomponentType: SUBCOMPONENT_TYPES, component: WorkshopComponent): Options {

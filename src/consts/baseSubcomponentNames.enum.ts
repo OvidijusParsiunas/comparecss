@@ -8,5 +8,5 @@ export enum NESTED_COMPONENTS_BASE_NAMES {
   LAYER = 'Layer',
   BUTTON = 'Button',
   TEXT = 'Text',
-  AVATAR = 'Avatar',
+  IMAGE = 'Image',
 }

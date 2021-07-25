@@ -9,15 +9,15 @@ import { nestedButtonOptions } from '../button/nestedButton';
 import { closeButtonOptions } from '../button/closeButton';
 import { cardLayerOptions } from '../layer/cardLayer';
 import { buttonTextOptions } from '../button/text';
+import { imageOptions } from '../image/image';
 import { textOptions } from '../text/text';
-import { avatarOptions } from './avatar';
 import { cardBaseOptions } from './base';
 
 export class CardOptions {
 
   private static readonly STATIC_CARD_OPTIONS: SubcomponentTypeToOptions = {
     [SUBCOMPONENT_TYPES.BASE]: cardBaseOptions as Options,
-    [SUBCOMPONENT_TYPES.AVATAR]: avatarOptions as Options,
+    [SUBCOMPONENT_TYPES.IMAGE]: imageOptions as Options,
   };
 
   protected static getTextOptions(component: WorkshopComponent): Options {

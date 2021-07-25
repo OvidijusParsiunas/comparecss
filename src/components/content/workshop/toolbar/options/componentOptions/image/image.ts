@@ -3,9 +3,9 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/works
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
 
-type AvatarOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT;
+type ImageOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT;
 
-export const avatarOptions: SubcomponentOptions<AvatarOptionsModes> = {
+export const imageOptions: SubcomponentOptions<ImageOptionsModes> = {
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BACKGROUND,
