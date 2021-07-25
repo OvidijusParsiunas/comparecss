@@ -9,4 +9,5 @@ export enum NESTED_COMPONENTS_BASE_NAMES {
   BUTTON = 'Button',
   TEXT = 'Text',
   IMAGE = 'Image',
+  CLOSE = 'Close',
 }

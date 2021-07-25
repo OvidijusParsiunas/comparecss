@@ -3,6 +3,7 @@ import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDrop
 import { UpdateDropdownOptionNamesShared } from './updateDropdownOptionNamesShared';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ArrayUtils } from '../../generic/arrayUtils';
+import { StringUtils } from '../../generic/stringUtils';
 
 interface SubcomponentNameToPrefix {
   [subcomponentName: string]: string;
@@ -90,7 +91,7 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
     const subcomponentNames = UpdateDropdownOptionNamesShared.generateSubcomponentNames(containerDropdownStructure);
     for (let i = 0; i < subcomponentNames.length; i += 1) {
       const subcomponentName = subcomponentNames[i];
-      const subcomponentNamePrefix = UpdateDropdownOptionNamesShared.generateSingleOptionName(subcomponentName);
+      const subcomponentNamePrefix = StringUtils.getFirstWordInString(subcomponentName);
       subcomponentNameToPrefix[subcomponentName] = subcomponentNamePrefix;
       UpdateGenericComponentDropdownOptionNames.setTotals(subcomponentPrefixToTotal, subcomponentNamePrefix);
     }

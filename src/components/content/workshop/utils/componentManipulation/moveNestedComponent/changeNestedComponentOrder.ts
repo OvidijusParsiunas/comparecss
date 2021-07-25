@@ -1,9 +1,12 @@
 import { DropdownOptionAuxDetails, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
+import { UpdateGenericComponentDropdownOptionNames } from '../updateNestedComponentNames/updateGenericComponentDropdownOptionNames';
+import { ComponentPreviewStructureSearchUtils } from '../addNewNestedComponent/utils/componentPreviewStractureSearchUtils';
 import { SubcomponentNameToDropdownOptionName } from '../../../../../../interfaces/componentPreviewStructure';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../../interfaces/subcomponentOrderDirections.enum';
 import { ComponentTraversalState, TargetDetails } from '../../../../../../interfaces/componentTraversal';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
+import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ArrayUtils } from '../../generic/arrayUtils';
 
@@ -11,6 +14,12 @@ type CompositeTraversalResult = ComponentTraversalState & { nestedComponentMovab
 type ChangeComponentTargetDetails = TargetDetails & { isLowerOrderDirection?: boolean }
 
 export class ChangeNestedComponentOrder {
+
+  private static updateNames(targetDetails: TargetDetails): void {
+    const { parentComponent, targetSubcomponentProperties } = targetDetails;
+    const parentLayer = ComponentPreviewStructureSearchUtils.getLayerByName(parentComponent, targetSubcomponentProperties.parentLayer.name);
+    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(parentComponent, parentLayer);
+  }
 
   private static swapSubcomponentDropdownStructure(subcomponentDropdownStructure: NestedDropdownStructure, currentOptionName: string,
       swappedOptionName: string): void {
@@ -42,6 +51,7 @@ export class ChangeNestedComponentOrder {
     const swappedOptionIndex = targetDetails.isLowerOrderDirection ? index - 1 : index + 1;
     const swappedOptionName = dropdownOptionNames[swappedOptionIndex];
     ChangeNestedComponentOrder.swapDropdownDetails(targetDetails.parentComponent, subcomponentDropdownStructure, currentOptionName, swappedOptionName);
+    if (targetDetails.targetSubcomponentProperties.subcomponentType !== SUBCOMPONENT_TYPES.LAYER) ChangeNestedComponentOrder.updateNames(targetDetails);
   }
 
   private static swapNestedComponentInDropdownStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {

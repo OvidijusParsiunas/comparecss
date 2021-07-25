@@ -1,6 +1,7 @@
 import { DropdownOptionAuxDetails, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { StringUtils } from '../../generic/stringUtils';
 
 interface OptionNames {
   oldOptionName: string;
@@ -22,19 +23,15 @@ export class UpdateDropdownOptionNamesShared {
   }
 
   private static generateMultiOptionName(subcomponentName: string, newPostfix: number): string {
-    const words = subcomponentName.trim().split(/\s+/);
-    return words[0] + ' ' + newPostfix;
-  }
-
-  protected static generateSingleOptionName(subcomponentName: string): string {
-    return subcomponentName.trim().split(/\s+/)[0];
+    const subcomponentNamePrefix = StringUtils.getFirstWordInString(subcomponentName);
+    return subcomponentNamePrefix + ' ' + newPostfix;
   }
 
   protected static generateOptionNames(subcomponentName: string, newOptionNameIndex: number, parentComponent: WorkshopComponent,
       isSingleOption: boolean): OptionNames {
     const oldOptionName = parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[subcomponentName];
     const newOptionName = isSingleOption
-      ? UpdateDropdownOptionNamesShared.generateSingleOptionName(subcomponentName)
+      ? StringUtils.getFirstWordInString(subcomponentName)
       : UpdateDropdownOptionNamesShared.generateMultiOptionName(subcomponentName, newOptionNameIndex);
     return { oldOptionName, newOptionName };
   }
