@@ -25,6 +25,17 @@
           @mouse-click-new-option="selectNewSubcomponent($event)"
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       </div>
+      <dropdown
+          :class="TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS"
+          :uniqueIdentifier="SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
+          :dropdownOptions="getSubcomponentsToAdd()"
+          :highlightSubcomponents="true"
+          :isNested="false"
+          :consistentButtonContent="{'backgroundIconClass': 'subcomponent-display-toggle-add'}"
+          :timeoutFunc="executeCallbackAfterTimeout"
+          @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
+          @mouse-click-new-option="selectNewSubcomponent($event)"
+          @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       <div v-if="component.type === COMPONENT_TYPES.MODAL || component.type === COMPONENT_TYPES.ALERT || component.type === COMPONENT_TYPES.CARD"
         class="btn-group option-component-button-container">
         <button v-if="!isFullPreviewModeActive && component.type === COMPONENT_TYPES.MODAL" ref="expandedModalPreviewModeToggle"
@@ -71,7 +82,7 @@
           </button>
           <button v-if="true"
             type="button" class="btn-group-option" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
-            :class="['subcomponent-display-toggle-remove',
+            :class="['remove-subcomponent-button',
               {'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS, TOGGLE_SUBCOMPONENT_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
             @mouseenter="mouseEnterSubcomponentToggle"
             @mouseleave="mouseLeaveSubcomponentToggle"
@@ -388,7 +399,10 @@ export default {
     },
     getOptionFromNewSubcomponent(activeOptions: Option[]): Option {
       const newOption = activeOptions.find((option: Option) => option.buttonName === this.activeOption.buttonName);
-      return newOption && this.areExpandedModeOptionsEnabled(newOption) && this.areOptionsEnabledViaCustomFeatureKeys(newOption);
+      if (newOption && this.areExpandedModeOptionsEnabled(newOption) && this.areOptionsEnabledViaCustomFeatureKeys(newOption)) {
+        return newOption;
+      }
+      return null;
     },
     toggleSubcomponentImport(): void {
       ImportComponentModeToggleUtils.toggleSubcomponentImport(this);
@@ -415,6 +429,9 @@ export default {
     },
     emitRemoveSubcomponentEvent(): void {
       this.$emit('remove-subcomponent');
+    },
+    getSubcomponentsToAdd(): any {
+      return { 'button': null, 'text': null, 'close': null, 'image': null }
     },
     addNewSubcomponent(): void {
       this.$emit('add-subcomponent');
@@ -606,25 +623,15 @@ export default {
     background-color: inherit !important;
     border: unset !important;
   }
-  .subcomponent-display-toggle-remove {
+  .remove-subcomponent-button {
     width: 3em;
     height: 38px;
     background: url('../../../../../assets/svg/rubbish-can-default.svg') center no-repeat;
     background-size: 17px auto;
   }
   /* remove this if the red colour is a little distracting - UX */
-  .subcomponent-display-toggle-remove:active {
+  .remove-subcomponent-button:active {
     background-color: #f3eded !important;
-  }
-  .subcomponent-display-toggle-add {
-    width: 3em;
-    height: 38px;
-    background: url('../../../../../assets/svg/plus-default.svg') center no-repeat;
-    background-size: 14px auto;
-  }
-  /* remove this if the green colour is a little distracting - UX */
-  .subcomponent-display-toggle-add:active {
-    background-color: #e9f5e9 !important;
   }
   .option-select-button-default {
     color:#616161 !important;
@@ -689,5 +696,17 @@ export default {
   }
   .highlighted-option-button-text-color {
     color: rgb(102, 102, 102) !important;
+  }
+</style>
+<style lang="css">
+  .subcomponent-display-toggle-add {
+    width: 3em;
+    height: 38px;
+    background: url('../../../../../assets/svg/plus-default.svg') center no-repeat;
+    background-size: 14px auto;
+  }
+  /* remove this if the green colour is a little distracting - UX */
+  .subcomponent-display-toggle-add:active {
+    background-color: #e9f5e9 !important;
   }
 </style>

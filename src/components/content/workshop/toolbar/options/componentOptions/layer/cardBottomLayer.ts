@@ -22,6 +22,7 @@ const cardLayerSpecificOptionsStatic = [
   {
     buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ANIMATIONS,
     type: WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE_ANIMATIONS,
+    enabledIfCustomFeaturePresentWithKeys: ['customStaticFeatures', 'image', 'data'],
   },
 ];
 

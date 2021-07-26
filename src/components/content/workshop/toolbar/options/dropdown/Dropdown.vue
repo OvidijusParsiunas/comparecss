@@ -1,13 +1,15 @@
 <template>
   <div v-if="isComponentDisplayed" class="dropdown">
-    <button class="btn form-control dropdown-button" :class="[uniqueIdentifier, { 'button-group-border': isButtonGroup }, TOOLBAR_GENERAL_BUTTON_CLASS]" type="button"
+    <button type="button"
+      class="btn form-control dropdown-button"
+      :class="getButtonClasses()"
       @click="buttonClick"
       @mouseenter="mouseEnterButton"
       @mouseleave="mouseLeaveButton">
-      <div class="dropdown-button-text" :class="uniqueIdentifier">
+      <div v-if="!consistentButtonContent || !consistentButtonContent.backgroundIconClass" class="dropdown-button-text" :class="uniqueIdentifier">
         {{buttonText}}
       </div>
-      <font-awesome-icon :style="{ color: DEFAULT_FONT_AWESOME_COLOR }" class="arrow-down-icon" :icon="fontAwesomeIcon"/>
+      <font-awesome-icon :style="{ color: DEFAULT_FONT_AWESOME_COLOR }" class="arrow-down-icon" :class="getFontAwesomeIconClasses()" :icon="getFontAwesomeIcon()"/>
     </button>
     <div class="auxiliary-padding dropdown-menu-options-marker" :class="uniqueIdentifier"
       @click="buttonClick"
@@ -118,7 +120,7 @@ export default {
   },
   computed: {
     buttonText(): void {
-      return this.getOptionName(this.objectContainingActiveOption[this.activeOptionPropertyKeyName]);
+      return this.consistentButtonContent?.text || this.getOptionName(this.objectContainingActiveOption[this.activeOptionPropertyKeyName]);
     }
   },
   mounted(): void {
@@ -128,6 +130,20 @@ export default {
   methods: {
     getOptionName(dropdownOptionName: string): void {
       return this.optionNameMap ? this.optionNameMap[dropdownOptionName] : dropdownOptionName;
+    },
+    getButtonClasses(): string[] {
+      const classes = [this.uniqueIdentifier, TOOLBAR_GENERAL_BUTTON_CLASS];
+      if (this.consistentButtonContent?.backgroundIconClass) {
+        classes.push(this.consistentButtonContent.backgroundIconClass, 'dropdown-button-icon');
+      }
+      if (this.isButtonGroup) classes.push('button-group-border');
+      return classes;
+    },
+    getFontAwesomeIconClasses(): string[] {
+      return this.consistentButtonContent?.backgroundIconClass ? ['arrow-bottom-right-corner-icon'] : [];
+    },
+    getFontAwesomeIcon(): string {
+      return this.consistentButtonContent?.backgroundIconClass ? 'caret-down' : this.fontAwesomeIcon;
     },
     buttonClick(): void {
       if (this.timeoutFunc) { 
@@ -149,6 +165,10 @@ export default {
       this.areMenusDisplayed = true;
     },
     displayHighlightedOptionAndParentMenus(): void {
+      if (!this.objectContainingActiveOption) {
+        this.displayParentMenu();
+        return;
+      }
       const objectActiveOptionName = this.objectContainingActiveOption[this.activeOptionPropertyKeyName];
       const dropdownOptionName = this.getOptionName(objectActiveOptionName);
       const actualObjectName = dropdownOptionName !== objectActiveOptionName ? objectActiveOptionName : null;
@@ -426,6 +446,7 @@ export default {
       type: Number,
       default: 1,
     },
+    consistentButtonContent: Object,
   },
   watch: {
     objectContainingActiveOption(): void {
@@ -445,6 +466,10 @@ export default {
     border: 1px solid  #aaaaaa !important;
     background-color: white !important;
   }
+  .dropdown-button-icon {
+    min-width: 2.5rem;
+    padding-right: 1px !important;
+  }
   .dropdown-button-text {
     float: left;
     padding-left: 2px;
@@ -454,6 +479,12 @@ export default {
     margin-top: 0.3em;
     padding-left: 7px;
     width: 16.5px;
+  }
+  .arrow-bottom-right-corner-icon {
+    margin-top: 19px;
+    width: 15px;
+    transform: rotate(315deg);
+    color: #747474;
   }
   .auxiliary-padding {
     top: 36px;
