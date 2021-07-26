@@ -14,7 +14,7 @@
         @toggle-full-preview-mode="toggleFullPreviewMode($event)"
         @toggle-toolbar-position="toggleToolbarPosition"
         @toggle-import-subcomponent-mode="$emit('toggle-import-subcomponent-mode', $event)"
-        @add-subcomponent="$emit('add-subcomponent')"
+        @add-subcomponent="$emit('add-subcomponent', $event)"
         @remove-subcomponent="$emit('remove-subcomponent')"/>
       <settings v-if="isSettingsDisplayed" ref="settings"
         :component="component"

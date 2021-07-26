@@ -2,11 +2,11 @@
   <div ref="dropdownMenu" v-if="isMenuBeDisplayed(dropdownOptions)"
     :style="BROWSER_SPECIFIC_DROPDOWN_MENU_STYLE"
     class="dropdown-menu custom-dropdown-menu"
-    :class="[DROPDOWN_OPTION_MARKER, 'icon-menu']">
+    :class="[DROPDOWN_OPTION_MARKER, isButtonIcon ? 'icon-menu' : '']">
     <a v-for="(optionAuxDetails, optionName, optionIndex) in dropdownOptions" :key="optionName"
       class="dropdown-item custom-dropdown-item"
       :style="{ color: getDefaultTextColor(optionAuxDetails), display: getOptionDisplayValue(optionName) }"
-      :class="[DROPDOWN_OPTION_MARKER, 'icon-dropdown-item']"
+      :class="[DROPDOWN_OPTION_MARKER, isButtonIcon ? 'icon-dropdown-item' : '']"
       @mouseenter="mouseEnter(optionAuxDetails, optionIndex)"
       @mouseleave="mouseLeave(optionAuxDetails)">
         <div class="option-text" :class="DROPDOWN_OPTION_MARKER">{{optionName}}</div>
@@ -86,6 +86,7 @@ export default {
   props: {
     dropdownOptions: Object,
     nestedDropdownIndex: Number,
+    isButtonIcon: Boolean,
   },
 };
 </script>
@@ -105,7 +106,7 @@ export default {
     align-items: center;
     padding-bottom: 2px
   }
-  /* rename icon */
+  /* WORK2: rename icon */
   .icon-menu {
     min-width: 0.5rem !important;
   }

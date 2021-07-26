@@ -2,6 +2,7 @@ import { ImportComponentModeCardEvents } from '../../toolbar/options/importCompo
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../interfaces/subcomponentOrderDirections.enum';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { ChangeNestedComponentAlignment } from './moveNestedComponent/changeNestedComponentAlignment';
+import { NESTED_COMPONENTS_BASE_NAMES } from '../../../../../consts/baseSubcomponentNames.enum';
 import { ChangeNestedComponentOrder } from './moveNestedComponent/changeNestedComponentOrder';
 import { AddNewNestedComponent } from './addNewNestedComponent/addNewNestedComponent';
 import { RemoveNestedComponent } from './removeNestedComponent/removeNestedComponent';
@@ -36,8 +37,8 @@ export class ComponentManipulation {
     ComponentManipulation.switchActiveComponent(workshopComponent, component);
   }
 
-  public static addNewSubcomponent(workshopComponent: ComponentOptions): void {
-    AddNewNestedComponent.add(workshopComponent.currentlySelectedComponent);
+  public static addNewSubcomponent(workshopComponent: ComponentOptions, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
+    AddNewNestedComponent.add(workshopComponent.currentlySelectedComponent, nestedComponentBaseName);
     workshopComponent.$refs.contents.refreshComponent();
   }
 

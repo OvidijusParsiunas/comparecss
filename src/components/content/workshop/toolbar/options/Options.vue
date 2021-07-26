@@ -34,7 +34,7 @@
           :consistentButtonContent="{'backgroundIconClass': 'subcomponent-display-toggle-add'}"
           :timeoutFunc="executeCallbackAfterTimeout"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-          @mouse-click-new-option="selectNewSubcomponent($event)"
+          @mouse-click-new-option="buttonClickMiddleware(addNewSubcomponent.bind(this, $event), true)"
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       <div v-if="component.type === COMPONENT_TYPES.MODAL || component.type === COMPONENT_TYPES.ALERT || component.type === COMPONENT_TYPES.CARD"
         class="btn-group option-component-button-container">
@@ -91,12 +91,13 @@
           </button>
         </transition-group>
       </div>
+      <!-- WORK2: remove
       <button
         type="button"
         class="btn"
         :class="['subcomponent-display-toggle-add', TOOLBAR_GENERAL_BUTTON_CLASS, OPTION_MENU_BUTTON_MARKER]"
         @click="buttonClickMiddleware(addNewSubcomponent, true)">
-      </button>
+      </button> -->
       <transition-group :name="isDropdownAndOptionButtonsTransitionAllowed || isExpandedModalPreviewModeActive ? 'horizontal-transition' : ''">
         <button v-if="!isFullPreviewModeActive && isInSyncButtonDisplayed()"
           id="sync-transition-animation-padding"
@@ -149,6 +150,7 @@
 <script lang="ts">
 import { TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS } from '../../../../../consts/toolbarClasses';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
+import { NESTED_COMPONENTS_BASE_NAMES, PARENT_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../componentPreview/utils/animations/consts/sharedConsts';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ComponentTypeToOptions, componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
@@ -163,8 +165,8 @@ import { subcomponentSelectModeState } from './subcomponentSelectMode/subcompone
 import ImportComponentModeToggleUtils from './importComponent/modeUtils/importComponentModeToggle';
 import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFullPreviewModeEvent';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
-import { PARENT_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../consts/componentStyles.enum';
+import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
 import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
@@ -430,11 +432,11 @@ export default {
     emitRemoveSubcomponentEvent(): void {
       this.$emit('remove-subcomponent');
     },
-    getSubcomponentsToAdd(): any {
-      return { 'button': null, 'text': null, 'close': null, 'image': null }
+    getSubcomponentsToAdd(): NestedDropdownStructure {
+      return { [NESTED_COMPONENTS_BASE_NAMES.BUTTON]: null, [NESTED_COMPONENTS_BASE_NAMES.TEXT]: null, [NESTED_COMPONENTS_BASE_NAMES.CLOSE]: null, [NESTED_COMPONENTS_BASE_NAMES.IMAGE]: null };
     },
-    addNewSubcomponent(): void {
-      this.$emit('add-subcomponent');
+    addNewSubcomponent(nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
+      this.$emit('add-subcomponent', nestedComponentBaseName);
     },
     mouseEnterSubcomponentToggle(): void {
       SubcomponentOverlayToggleUtils.displaySubcomponentOverlay(this.component);

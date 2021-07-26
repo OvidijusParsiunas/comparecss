@@ -21,6 +21,7 @@
       <dropdown-menu v-for="(dropdownOptions, index) in dropdowns" :key="dropdownOptions"
         :dropdownOptions="dropdownOptions"
         :nestedDropdownIndex="index"
+        :isButtonIcon="!!(consistentButtonContent && consistentButtonContent.backgroundIconClass)"
         @mouse-enter-option="mouseEnterOption"
         @mouse-leave-option="mouseLeaveOption"/>
     </div>
@@ -362,7 +363,7 @@ export default {
       }
       if ((event.target as HTMLElement).classList.contains(DROPDOWN_OPTION_MARKER) || this.enterButtonClicked) {
         if (this.lastHoveredOptionText) {
-          const previousActiveOptionName = this.objectContainingActiveOption[this.activeOptionPropertyKeyName];
+          const previousActiveOptionName = this.objectContainingActiveOption?.[this.activeOptionPropertyKeyName];
           if (previousActiveOptionName !== this.lastHoveredOptionText) {
             this.$emit('mouse-click-new-option', this.lastHoveredOptionText);
           }
