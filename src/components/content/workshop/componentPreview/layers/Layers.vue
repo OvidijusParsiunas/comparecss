@@ -46,8 +46,6 @@ import layerSections from './LayerSections.vue';
 interface Consts {
   COMPONENT_PREVIEW_MARKER: string;
   SUBCOMPONENT_OVERLAY_CLASSES: typeof SUBCOMPONENT_OVERLAY_CLASSES;
-  DEFAULT_CSS_PSEUDO_CLASS: CSS_PSEUDO_CLASSES;
-  URL: string;
 }
 
 export default {
@@ -55,8 +53,6 @@ export default {
     return {
       COMPONENT_PREVIEW_MARKER, 
       SUBCOMPONENT_OVERLAY_CLASSES,
-      DEFAULT_CSS_PSEUDO_CLASS: CSS_PSEUDO_CLASSES.DEFAULT,
-      URL: require('@/assets/images/road.webp'),
     };
   },
   methods: {
@@ -72,7 +68,7 @@ export default {
     },
     getLayerShadowOverlayStyleProperties(layer: Layer, isLastLayer: boolean): WorkshopComponentCss[] {
       return [
-        layer.subcomponentProperties.customCss[this.DEFAULT_CSS_PSEUDO_CLASS],
+        layer.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
         isLastLayer ? { boxShadow: CSS_PROPERTY_VALUES.UNSET } : {}
       ];
     },
@@ -80,7 +76,7 @@ export default {
       return this.subcomponentAndOverlayElementIds[layerName]?.[idType];
     },
     getLayerStyleProperties(layer: NestedComponent, layers: NestedComponent[], currentIndex: number): WorkshopComponentCss {
-      const subcomponentCss = { ...layer.subcomponentProperties.customCss[this.DEFAULT_CSS_PSEUDO_CLASS] };
+      const subcomponentCss = { ...layer.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT] };
       subcomponentCss.zIndex = layers.length - currentIndex + 1;
       if (layer.subcomponentProperties.isTemporaryAddPreview) subcomponentCss.display = 'block';
       return subcomponentCss;

@@ -10,7 +10,7 @@ export class AddTemporaryAddPreviewComponent {
 
   public static add(currentlySelectedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
     if (currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].subcomponentType === SUBCOMPONENT_TYPES.BASE) {
-      AddTemporaryAddPreviewLayerComponent.add(currentlySelectedComponent, LAYER_STYLES.CARD, true, () => {});
+      AddTemporaryAddPreviewLayerComponent.add(currentlySelectedComponent, LAYER_STYLES.CARD, true);
     } else {
       const nestedComponentType = AddNewGenericComponent.componentBaseNameToType[nestedComponentBaseName];
       const nestedComponentStyle = nestedComponentBaseName === NESTED_COMPONENTS_BASE_NAMES.CLOSE ? BUTTON_STYLES.CLOSE : DEFAULT_STYLES.DEFAULT;

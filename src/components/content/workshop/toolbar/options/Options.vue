@@ -27,7 +27,7 @@
       </div>
       <dropdown
         :class="TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS"
-        :uniqueIdentifier="SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
+        :uniqueIdentifier="ADD_NEW_SUBCOMPONENT_DROPDOWN_UNIQUE_IDENTIFIER"
         :dropdownOptions="getSubcomponentsToAdd()"
         :highlightSubcomponents="true"
         :isNested="false"
@@ -35,8 +35,8 @@
         :timeoutFunc="executeCallbackAfterTimeout"
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
         @mouse-click-new-option="buttonClickMiddleware(addNewSubcomponent.bind(this, $event), true)"
-        @mouse-enter-option="mouseEnterSubcomponentToggle(true, $event)"
-        @mouse-leave-option="mouseLeaveSubcomponentToggle(true, $event)"
+        @mouse-enter-option="mouseEnterSubcomponentManipulationToggle(true, $event)"
+        @mouse-leave-option="mouseLeaveSubcomponentManipulationToggle(true, $event)"
         @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       <div v-if="component.type === COMPONENT_TYPES.MODAL || component.type === COMPONENT_TYPES.ALERT || component.type === COMPONENT_TYPES.CARD"
         class="btn-group option-component-button-container">
@@ -85,21 +85,14 @@
           <button v-if="true"
             type="button" class="btn-group-option" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
             :class="['remove-subcomponent-button',
-              {'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS, TOGGLE_SUBCOMPONENT_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
-            @mouseenter="mouseEnterSubcomponentToggle"
-            @mouseleave="mouseLeaveSubcomponentToggle"
+              {'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS, REMOVE_SUBCOMPONENT_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
+            @mouseenter="mouseEnterSubcomponentManipulationToggle(false)"
+            @mouseleave="mouseLeaveSubcomponentManipulationToggle(false)"
             @keydown.enter.prevent="$event.preventDefault()"
-            @click="buttonClickMiddleware(toggleSubcomponent, !getIsDoNotShowModalAgainState())">
+            @click="buttonClickMiddleware(beginRemoveSubcomponent, !getIsDoNotShowModalAgainState())">
           </button>
         </transition-group>
       </div>
-      <!-- WORK2: remove
-      <button
-        type="button"
-        class="btn"
-        :class="['subcomponent-display-toggle-add', TOOLBAR_GENERAL_BUTTON_CLASS, OPTION_MENU_BUTTON_MARKER]"
-        @click="buttonClickMiddleware(addNewSubcomponent, true)">
-      </button> -->
       <transition-group :name="isDropdownAndOptionButtonsTransitionAllowed || isExpandedModalPreviewModeActive ? 'horizontal-transition' : ''">
         <button v-if="!isFullPreviewModeActive && isInSyncButtonDisplayed()"
           id="sync-transition-animation-padding"
@@ -159,8 +152,8 @@ import { ComponentTypeToOptions, componentTypeToOptions } from '../options/compo
 import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../consts/workshopToolbarOptionButtonNames.enum';
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
-import SubcomponentOverlayToggleUtils from './subcomponentOverlayToggleUtils/subcomponentOverlayToggleUtils';
 import { removeSubcomponentModalState } from './removeSubcomponentModalState/removeSubcomponentModalState';
+import RemoveSubcomponentOverlay from './subcomponentOverlayToggleUtils/subcomponentOverlayToggleUtils';
 import { fulPreviewModeState } from '../../componentPreview/utils/fullPreviewMode/fullPreviewModeState';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
@@ -188,7 +181,7 @@ import { InSync } from './importComponent/inSync';
 import { Ref } from 'node_modules/vue/dist/vue';
 import dropdown from './dropdown/Dropdown.vue';
 import {
-  OPTION_MENU_SETTING_OPTION_BUTTON_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, TOGGLE_SUBCOMPONENT_BUTTON_MARKER,
+  OPTION_MENU_SETTING_OPTION_BUTTON_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, REMOVE_SUBCOMPONENT_BUTTON_MARKER,
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER, FULL_PREVIEW_MODE_BUTTON_MARKER,
 } from '../../../../../consts/elementClassMarkers';
 
@@ -198,7 +191,7 @@ interface Consts {
   OPTION_MENU_BUTTON_MARKER: string;
   TOOLBAR_GENERAL_BUTTON_CLASS: string;
   FULL_PREVIEW_MODE_BUTTON_MARKER: string;
-  TOGGLE_SUBCOMPONENT_BUTTON_MARKER: string;
+  REMOVE_SUBCOMPONENT_BUTTON_MARKER: string;
   OPTION_MENU_SETTING_OPTION_BUTTON_MARKER: string;
   FONT_AWESOME_COLORS: typeof FONT_AWESOME_COLORS;
   HIGHLIGHTED_OPTION_BUTTON_CLASS: string;
@@ -212,6 +205,7 @@ interface Consts {
   REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: string;
   BROWSER_SPECIFIC_MODAL_BUTTON_STYLE: WorkshopComponentCss;
   SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
+  ADD_NEW_SUBCOMPONENT_DROPDOWN_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
   CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
 }
 
@@ -240,7 +234,7 @@ export default {
       OPTION_MENU_BUTTON_MARKER,
       TOOLBAR_GENERAL_BUTTON_CLASS,
       FULL_PREVIEW_MODE_BUTTON_MARKER,
-      TOGGLE_SUBCOMPONENT_BUTTON_MARKER,
+      REMOVE_SUBCOMPONENT_BUTTON_MARKER,
       OPTION_MENU_SETTING_OPTION_BUTTON_MARKER,
       SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
       EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER,
@@ -250,6 +244,7 @@ export default {
       REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: `#${REMOVE_SUBCOMPONENT_MODAL_ID}`,
       BROWSER_SPECIFIC_MODAL_BUTTON_STYLE: { paddingTop: BrowserType.isFirefox() ? '1px' : '' },
       SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS,
+      ADD_NEW_SUBCOMPONENT_DROPDOWN_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.ADD_SUBCOMPONENT,
       CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.CSS_PSEUDO_CLASSES,
       HIGHLIGHTED_OPTION_BUTTON_CLASS: BrowserType.isFirefox() ? 'highlighted-option-button-firefox' : 'highlighted-option-button-chromium',
       HIGHLIGHTED_OPTION_BUTTON_TEXT_COLOR_CLASS: 'highlighted-option-button-text-color',
@@ -415,14 +410,14 @@ export default {
     toggleInSync(callback?: () => void): void {
       this.temporarilyAllowOptionAnimations(InSync.toggleSubcomponentInSync.bind(this, this.component, callback), true, true);
     },
-    toggleSubcomponent(): void {
+    beginRemoveSubcomponent(): void {
       if (!this.getIsDoNotShowModalAgainState()) {
         this.currentRemoveSubcomponentModalTargetId = this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID;
         setTimeout(() => { this.currentRemoveSubcomponentModalTargetId = ''; });
         this.$emit('prepare-remove-subcomponent-modal', this.removeSubcomponent);
       } else {
         this.removeSubcomponent();
-        setTimeout(() => SubcomponentOverlayToggleUtils.displaySubcomponentOverlay(this.component));
+        setTimeout(() => RemoveSubcomponentOverlay.display(this.component.activeSubcomponentName));
       }
     },
     removeSubcomponent(): void {
@@ -439,21 +434,22 @@ export default {
       return { [NESTED_COMPONENTS_BASE_NAMES.BUTTON]: null, [NESTED_COMPONENTS_BASE_NAMES.TEXT]: null, [NESTED_COMPONENTS_BASE_NAMES.CLOSE]: null, [NESTED_COMPONENTS_BASE_NAMES.IMAGE]: null };
     },
     addNewSubcomponent(nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
+      this.$emit('remove-subcomponent', true);
       this.$emit('add-subcomponent', [nestedComponentBaseName] as AddNewSubcomponentEvent);
     },
-    mouseEnterSubcomponentToggle(isAdd?: boolean, nestedComponentBaseName?: NESTED_COMPONENTS_BASE_NAMES): void {
+    mouseEnterSubcomponentManipulationToggle(isAdd: boolean, nestedComponentBaseName?: NESTED_COMPONENTS_BASE_NAMES): void {
       if (isAdd) {
         this.$emit('add-subcomponent', [nestedComponentBaseName, true] as AddNewSubcomponentEvent);
       } else {
-        SubcomponentOverlayToggleUtils.displaySubcomponentOverlay(this.component);
+        RemoveSubcomponentOverlay.display(this.component.activeSubcomponentName);
       }
     },
-    mouseLeaveSubcomponentToggle(isAdd?: boolean): void {
+    mouseLeaveSubcomponentManipulationToggle(isAdd: boolean): void {
       if (isAdd) {
         this.$emit('remove-subcomponent', true);
       } else {
         if (this.currentRemoveSubcomponentModalTargetId === this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID) return;
-        SubcomponentOverlayToggleUtils.hideSubcomponentOverlay(this.component);
+        RemoveSubcomponentOverlay.hide(this.component.activeSubcomponentName);
       }
     },
     toggleSubcomponentSelectModeButtonDisplay(isDropdownDisplayed: boolean): void {

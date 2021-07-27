@@ -108,17 +108,16 @@
 </template>
 
 <script lang="ts">
-import SubcomponentOverlayToggleUtils from './toolbar/options/subcomponentOverlayToggleUtils/subcomponentOverlayToggleUtils';
 import { ChangeSubcomponentAlignmentEvent, ChangeSubcomponentOrderEvent } from '../../../interfaces/settingsComponentEvents';
 import { removeSubcomponentModalState } from './toolbar/options/removeSubcomponentModalState/removeSubcomponentModalState';
 import { ImportComponentModeCardEvents } from './toolbar/options/importComponent/modeUtils/importComponentModeCardEvents';
+import RemoveSubcomponentOverlay from './toolbar/options/subcomponentOverlayToggleUtils/subcomponentOverlayToggleUtils';
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { ToggleImportComponentModeState } from './utils/importComponent/toggleImportComponentModeState';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { SwitchComponentsWithFadeOutCallback } from '../../../interfaces/toggleFullPreviewModeEvent';
 import { ToggleImportComponentModeEvent } from '../../../interfaces/toggleImportComponentModeEvent';
 import useWorkshopEventCallbacks from './utils/workshopEventCallbacks/useWorkshopEventCallbacks';
-import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../consts/subcomponentOverlayClasses.enum';
 import { ComponentManipulation } from './utils/componentManipulation/componentManipulation';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { removeComponentModalState } from './componentList/state/removeComponentModalState';
@@ -239,8 +238,7 @@ export default {
       switchComponentsWithFadeOutCallback(componentPreviewHTMLElement, ComponentManipulation.setActiveComponent.bind(this, this));
     },
     cancelSubcomponentRemovalEventHandler(): void {
-      SubcomponentOverlayToggleUtils.hideSubcomponentOverlayBySelectModeStatus(this.currentlySelectedComponent.activeSubcomponentName,
-        SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_REMOVE);
+      RemoveSubcomponentOverlay.hide(this.currentlySelectedComponent.activeSubcomponentName);
     },
     preloadIcons(): void {
       const WAIT_TO_START_DOWNLOADING_ICON_ICONS_MILLISECONDS = 5;

@@ -16,7 +16,7 @@ export class AddTemporaryAddPreviewGenericComponent extends AddNewGenericCompone
       overwritePropertiesFunc, NESTED_COMPONENTS_BASE_NAMES.TEMPORARY);
     newComponent.subcomponents[newComponent.coreSubcomponentNames.base].isTemporaryAddPreview = true;
     JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
-    AddNewGenericComponent.addNewSubcomponentsToComponentPreview(parentComponent, newComponent, layerName);
+    AddNewGenericComponent.addNewComponentToComponentPreview(parentComponent, newComponent, layerName);
     return newComponent;
   }
 }
