@@ -26,8 +26,8 @@
       </div>
       <div :id="getLayerId(layer.name, 'overlayId')"
         style="display: none"
-        :style="[layer.subcomponentProperties.customCss[DEFAULT_CSS_PSEUDO_CLASS], { zIndex: layers.length - index + 1 }]"
-        :class="[SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT]"></div>
+        :style="getLayerStyleProperties(layer, layers, index)"
+        :class="getLayerClasses(layer)"></div>
     </div>
   </div>
 </template>
@@ -36,11 +36,11 @@
 import { UseSubcomponentPreviewEventHandlers } from '../../../../../interfaces/useSubcomponentPreviewEventHandlers';
 import { SubcomponentAndOverlayElementIds } from '../../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
+import { Layer, NestedComponent } from '../../../../../interfaces/componentPreviewStructure';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
-import { Layer } from '../../../../../interfaces/componentPreviewStructure';
 import layerSections from './LayerSections.vue';
 
 interface Consts {
@@ -62,9 +62,9 @@ export default {
   methods: {
     getStyleProperties(layer: Layer, isLastLayer: boolean): WorkshopComponentCss[] {
       const { subcomponentProperties: { overwrittenCustomCssObj, customCss, customStaticFeatures } } = layer;
-      const customCssObj = overwrittenCustomCssObj || customCss;
+      const subcomponentCss = overwrittenCustomCssObj || customCss;
       return [
-        customCssObj[CSS_PSEUDO_CLASSES.DEFAULT],
+        subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT],
         { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : '' },
         { boxShadow: CSS_PROPERTY_VALUES.UNSET },
         isLastLayer ? { borderBottomWidth: '0px' } : {} // can alternatively use nth class
@@ -78,6 +78,19 @@ export default {
     },
     getLayerId(layerName: string, idType: keyof SubcomponentAndOverlayElementIds[string]): string {
       return this.subcomponentAndOverlayElementIds[layerName]?.[idType];
+    },
+    getLayerStyleProperties(layer: NestedComponent, layers: NestedComponent[], currentIndex: number): WorkshopComponentCss {
+      const subcomponentCss = { ...layer.subcomponentProperties.customCss[this.DEFAULT_CSS_PSEUDO_CLASS] };
+      subcomponentCss.zIndex = layers.length - currentIndex + 1;
+      if (layer.subcomponentProperties.isTemporaryAddPreview) subcomponentCss.display = 'block';
+      return subcomponentCss;
+    },
+    getLayerClasses(layer: NestedComponent): string[] {
+      const classes = [SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT];
+      if (layer.subcomponentProperties.isTemporaryAddPreview) {
+        classes.push(SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
+      }
+      return classes;
     },
     activateMouseEvent(layerName: string, subcomponentMouseEvent: keyof UseSubcomponentPreviewEventHandlers): void {
       const layerId = this.getLayerId(layerName, 'subcomponentId');

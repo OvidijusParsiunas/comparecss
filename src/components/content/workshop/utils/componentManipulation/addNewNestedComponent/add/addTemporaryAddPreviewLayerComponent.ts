@@ -14,6 +14,7 @@ export class AddTemporaryAddPreviewLayerComponent extends AddNewLayerComponent {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
     const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, overwritePropertiesFunc,
       NESTED_COMPONENTS_BASE_NAMES.TEMPORARY);
+    newComponent.subcomponents[newComponent.coreSubcomponentNames.base].isTemporaryAddPreview = true;
     JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
     AddNewLayerComponent.addNewComponentToComponentPreview(parentComponent, newComponent, isEditable);
     return newComponent;
