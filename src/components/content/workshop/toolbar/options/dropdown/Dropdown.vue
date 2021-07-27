@@ -9,7 +9,7 @@
       <div v-if="!consistentButtonContent || !consistentButtonContent.backgroundIconClass" class="dropdown-button-text" :class="uniqueIdentifier">
         {{buttonText}}
       </div>
-      <font-awesome-icon :style="{ color: DEFAULT_FONT_AWESOME_COLOR }" class="arrow-down-icon" :class="getFontAwesomeIconClasses()" :icon="getFontAwesomeIcon()"/>
+      <font-awesome-icon :style="getFontAwesomeIconStyle()" class="arrow-down-icon" :class="getFontAwesomeIconClasses()" :icon="getFontAwesomeIcon()"/>
     </button>
     <div class="auxiliary-padding dropdown-menu-options-marker" :class="uniqueIdentifier"
       @click="buttonClick"
@@ -40,6 +40,7 @@ import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDrop
 import { DropdownCompositionAPI } from '../../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
+import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { TOOLBAR_GENERAL_BUTTON_CLASS } from '../../../../../../consts/toolbarClasses';
 import { FONT_AWESOME_COLORS } from '../../../../../../consts/fontAwesomeColors.enum';
 import BrowserType from '../../../utils/generic/browserType';
@@ -58,7 +59,6 @@ interface Data {
   areDropdownOptionsProcessed: boolean;
   TOOLBAR_GENERAL_BUTTON_CLASS: string;
   processedOptions: NestedDropdownStructure[];
-  DEFAULT_FONT_AWESOME_COLOR: FONT_AWESOME_COLORS;
 }
 
 interface Props {
@@ -93,7 +93,6 @@ export default {
     TOOLBAR_GENERAL_BUTTON_CLASS,
     lastHoveredOptionElement: null,
     areDropdownOptionsProcessed: false,
-    DEFAULT_FONT_AWESOME_COLOR: FONT_AWESOME_COLORS.DEFAULT,
     dropdownDisplayDelayMilliseconds: BrowserType.isChromium() ? 10 : 13,
   }),
   setup(props: Props): DropdownCompositionAPI {
@@ -139,6 +138,9 @@ export default {
       }
       if (this.isButtonGroup) classes.push('button-group-border');
       return classes;
+    },
+    getFontAwesomeIconStyle(): WorkshopComponentCss {
+      return { color: this.consistentButtonContent?.backgroundIconClass ? '#6b6b6b' : FONT_AWESOME_COLORS.DEFAULT }
     },
     getFontAwesomeIconClasses(): string[] {
       return this.consistentButtonContent?.backgroundIconClass ? ['arrow-bottom-right-corner-icon'] : [];
@@ -345,10 +347,12 @@ export default {
       return (highlightedOptionElement.childNodes[0] as HTMLElement).innerHTML;
     },
     mouseLeaveOption(optionMouseLeaveEvent: OptionMouseLeave): void {
+      const [blurredOptionElement, actualObjectName] = optionMouseLeaveEvent;
+      const blurredOption = actualObjectName || this.extractHighlightedOptionText(blurredOptionElement);
       if (this.mouseLeaveOptionEventHandler) {
-        const [blurredOptionElement, actualObjectName] = optionMouseLeaveEvent;
         this.mouseLeaveOptionEventHandler(actualObjectName || this.extractHighlightedOptionText(blurredOptionElement));
       }
+      this.$emit('mouse-leave-option', blurredOption);
     },
     hideDropdownMenu(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
       if (event.type === 'mousedown' && this.isIgnoreOnMouseDown((event.target as HTMLElement).classList)) {
@@ -485,7 +489,6 @@ export default {
     margin-top: 19px;
     width: 15px;
     transform: rotate(315deg);
-    color: #747474;
   }
   .auxiliary-padding {
     top: 36px;

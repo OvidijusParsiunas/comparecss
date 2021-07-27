@@ -26,16 +26,18 @@
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       </div>
       <dropdown
-          :class="TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS"
-          :uniqueIdentifier="SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
-          :dropdownOptions="getSubcomponentsToAdd()"
-          :highlightSubcomponents="true"
-          :isNested="false"
-          :consistentButtonContent="{'backgroundIconClass': 'subcomponent-display-toggle-add'}"
-          :timeoutFunc="executeCallbackAfterTimeout"
-          @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-          @mouse-click-new-option="buttonClickMiddleware(addNewSubcomponent.bind(this, $event), true)"
-          @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
+        :class="TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS"
+        :uniqueIdentifier="SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
+        :dropdownOptions="getSubcomponentsToAdd()"
+        :highlightSubcomponents="true"
+        :isNested="false"
+        :consistentButtonContent="{'backgroundIconClass': 'subcomponent-display-toggle-add'}"
+        :timeoutFunc="executeCallbackAfterTimeout"
+        @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
+        @mouse-click-new-option="buttonClickMiddleware(addNewSubcomponent.bind(this, $event), true)"
+        @mouse-enter-option="mouseEnterSubcomponentToggle(true, $event)"
+        @mouse-leave-option="mouseLeaveSubcomponentToggle(true, $event)"
+        @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       <div v-if="component.type === COMPONENT_TYPES.MODAL || component.type === COMPONENT_TYPES.ALERT || component.type === COMPONENT_TYPES.CARD"
         class="btn-group option-component-button-container">
         <button v-if="!isFullPreviewModeActive && component.type === COMPONENT_TYPES.MODAL" ref="expandedModalPreviewModeToggle"
@@ -167,6 +169,7 @@ import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFull
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../consts/componentStyles.enum';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
+import { AddNewSubcomponentEvent } from '../../../../../interfaces/addNewSubcomponentEvent';
 import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
@@ -436,14 +439,22 @@ export default {
       return { [NESTED_COMPONENTS_BASE_NAMES.BUTTON]: null, [NESTED_COMPONENTS_BASE_NAMES.TEXT]: null, [NESTED_COMPONENTS_BASE_NAMES.CLOSE]: null, [NESTED_COMPONENTS_BASE_NAMES.IMAGE]: null };
     },
     addNewSubcomponent(nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
-      this.$emit('add-subcomponent', nestedComponentBaseName);
+      this.$emit('add-subcomponent', [nestedComponentBaseName] as AddNewSubcomponentEvent);
     },
-    mouseEnterSubcomponentToggle(): void {
-      SubcomponentOverlayToggleUtils.displaySubcomponentOverlay(this.component);
+    mouseEnterSubcomponentToggle(isAdd?: boolean, nestedComponentBaseName?: NESTED_COMPONENTS_BASE_NAMES): void {
+      if (isAdd) {
+        this.$emit('add-subcomponent', [nestedComponentBaseName, true] as AddNewSubcomponentEvent);
+      } else {
+        SubcomponentOverlayToggleUtils.displaySubcomponentOverlay(this.component);
+      }
     },
-    mouseLeaveSubcomponentToggle(): void {
-      if (this.currentRemoveSubcomponentModalTargetId === this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID) return;
+    mouseLeaveSubcomponentToggle(isAdd?: boolean): void {
+      if (isAdd) {
+        this.$emit('remove-subcomponent', true);
+      } else {
+        if (this.currentRemoveSubcomponentModalTargetId === this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID) return;
         SubcomponentOverlayToggleUtils.hideSubcomponentOverlay(this.component);
+      }
     },
     toggleSubcomponentSelectModeButtonDisplay(isDropdownDisplayed: boolean): void {
       this.isSubcomponentSelectModeButtonDisplayed = isDropdownDisplayed;

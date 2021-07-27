@@ -33,13 +33,9 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     [COMPONENT_TYPES.TEXT]: NESTED_COMPONENTS_BASE_NAMES.TEXT,
     [COMPONENT_TYPES.IMAGE]: NESTED_COMPONENTS_BASE_NAMES.IMAGE,
   }
-  // WORK2 - autoreverse
   public static readonly componentBaseNameToType: { [key in NESTED_COMPONENTS_BASE_NAMES]?: COMPONENT_TYPES } = {
-    [NESTED_COMPONENTS_BASE_NAMES.LAYER]: COMPONENT_TYPES.LAYER,
-    [NESTED_COMPONENTS_BASE_NAMES.BUTTON]: COMPONENT_TYPES.BUTTON,
+    ...JSONUtils.reverseMap(AddNewGenericComponent.componentTypeToBaseName),
     [NESTED_COMPONENTS_BASE_NAMES.CLOSE]: COMPONENT_TYPES.BUTTON,
-    [NESTED_COMPONENTS_BASE_NAMES.TEXT]: COMPONENT_TYPES.TEXT,
-    [NESTED_COMPONENTS_BASE_NAMES.IMAGE]: COMPONENT_TYPES.IMAGE,
   }
   public static readonly DEFAULT_TOP_PROPERTY = '50%';
 
@@ -86,7 +82,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     return { parentLayer, baseSubcomponentProperties, subcomponentDropdownStructure, parentComponentBaseName, isParentLayerInSubcomponentsDropdown };
   }
 
-  private static addNewSubcomponentsToComponentPreview(parentComponent: WorkshopComponent, newComponent: WorkshopComponent,
+  protected static addNewSubcomponentsToComponentPreview(parentComponent: WorkshopComponent, newComponent: WorkshopComponent,
       layerName: string): void {
     const { parentLayer, baseSubcomponentProperties, subcomponentDropdownStructure, parentComponentBaseName,
       isParentLayerInSubcomponentsDropdown } = AddNewGenericComponent.assembleSubcomponentData(parentComponent, newComponent, layerName);
@@ -120,10 +116,10 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     }
   }
 
-  private static createNewComponent(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
-      componentGenerator: ComponentGenerator, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
+  protected static createNewComponent(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
+      componentGenerator: ComponentGenerator, overwritePropertiesFunc?: OverwritePropertiesFunc[], customBaseName?: string): WorkshopComponent {
     const baseNamePrefix = AddNewGenericComponent.getBaseSubcomponentNamePrefix(componentType, componentStyle);
-    const baseName = UniqueSubcomponentNameGenerator.generate(baseNamePrefix);
+    const baseName = customBaseName || UniqueSubcomponentNameGenerator.generate(baseNamePrefix);
     const subcomponents = AddNewComponentShared.createNewComponentSubcomponents(componentGenerator, baseName);
     AddNewGenericComponent.applyTopProperty(subcomponents[baseName]);
     if (overwritePropertiesFunc) {

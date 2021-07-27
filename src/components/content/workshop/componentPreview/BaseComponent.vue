@@ -22,9 +22,8 @@
     <div ref="componentPreviewOverlay"
       :id="getBaseId('overlayId')"
       style="display: none"
-      :style="[component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
-        {color: '#ff000000'}, isNestedComponent ? {} : { height: '100% !important' }]"
-      :class="[isNestedComponent ? 'nested-component' : [STATIC_POSITION_CLASS, 'subcomponent-overlay-with-no-border-property-but-with-height'], getOverlayClasses()]">
+      :style="getOverlayStyleProperties()"
+      :class="getOverlayClasses()">
         {{getSubcomponentText()}}
         <!-- subOverlays are used for only displaying the container/actual overlay only when the mouse has reached it's actual content as in some cases (close button text) mouse
           enter event can be fired before the mouse actually reaches the actual subcomponent content -->
@@ -95,10 +94,28 @@ export default {
     getJsClasses(): string[] {
       return this.component.componentPreviewStructure.baseSubcomponentProperties?.customFeatures?.jsClasses || [];
     },
+    getOverlayStyleProperties(): WorkshopComponentCss {
+      const subcomponentCss = { ...this.component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT], color: '#ff000000' };
+      if (!this.isNestedComponent) subcomponentCss.height = '100% !important';
+      if (this.component.componentPreviewStructure.baseSubcomponentProperties.isTemporaryAddPreview) subcomponentCss.display = 'block'; 
+      return subcomponentCss;
+    },
     getOverlayClasses(): string[] {
-      return this.component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures?.subcomponentText?.text === CLOSE_BUTTON_X_TEXT
-        ? ['close-button-text-overlay-height', SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.SUB_CONTAINER]
-        : [SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT];
+      const classes: string[] = [SUBCOMPONENT_OVERLAY_CLASSES.BASE];
+      if (this.isNestedComponent) {
+        classes.push('nested-component');
+      } else {
+        classes.push(STATIC_POSITION_CLASS, 'subcomponent-overlay-with-no-border-property-but-with-height');
+      }
+      if (this.isXButtonText()) {
+        classes.push('close-button-text-overlay-height', SUBCOMPONENT_OVERLAY_CLASSES.SUB_CONTAINER);
+      } else {
+        classes.push(SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT);
+      }
+      if (this.component.componentPreviewStructure.baseSubcomponentProperties.isTemporaryAddPreview) {
+        classes.push(SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
+      }
+      return classes;
     },
     isXButtonText(): boolean {
       return this.component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures?.subcomponentText?.text === CLOSE_BUTTON_X_TEXT;

@@ -49,7 +49,7 @@
               @stop-animation-preview="$refs.contents.stopAnimationPreview()"
               @toggle-import-subcomponent-mode="toggleImportComponentMode($event)"
               @add-subcomponent="addNewSubcomponent($event)"
-              @remove-subcomponent="removeSubcomponent"
+              @remove-subcomponent="removeSubcomponent($event)"
               @change-subcomponent-order="changeSubcomponentOrder($event)"
               @change-subcomponent-alignment="changeSubcomponentAlignment($event)"/>
             <component-contents ref="contents"
@@ -112,7 +112,6 @@ import SubcomponentOverlayToggleUtils from './toolbar/options/subcomponentOverla
 import { ChangeSubcomponentAlignmentEvent, ChangeSubcomponentOrderEvent } from '../../../interfaces/settingsComponentEvents';
 import { removeSubcomponentModalState } from './toolbar/options/removeSubcomponentModalState/removeSubcomponentModalState';
 import { ImportComponentModeCardEvents } from './toolbar/options/importComponent/modeUtils/importComponentModeCardEvents';
-import { NESTED_COMPONENTS_BASE_NAMES, PARENT_COMPONENT_BASE_NAME } from '../../../consts/baseSubcomponentNames.enum';
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { ToggleImportComponentModeState } from './utils/importComponent/toggleImportComponentModeState';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
@@ -124,6 +123,8 @@ import { ComponentManipulation } from './utils/componentManipulation/componentMa
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { removeComponentModalState } from './componentList/state/removeComponentModalState';
 import { ComponentCardHoveredEvent } from '../../../interfaces/componentCardHoveredEvent';
+import { PARENT_COMPONENT_BASE_NAME } from '../../../consts/baseSubcomponentNames.enum';
+import { AddNewSubcomponentEvent } from '../../../interfaces/addNewSubcomponentEvent';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
 import { defaultCard } from './newComponent/types/cards/generators/default';
@@ -214,11 +215,11 @@ export default {
     exportFiles(): void {
       exportFiles.export(this.components);
     },
-    addNewSubcomponent(nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
-      ComponentManipulation.addNewSubcomponent(this, nestedComponentBaseName);
+    addNewSubcomponent(addNewSubcomponentEvent: AddNewSubcomponentEvent): void {
+      ComponentManipulation.addNewSubcomponent(this, addNewSubcomponentEvent);
     },
-    removeSubcomponent(): void {
-      ComponentManipulation.removeSubcomponent(this);
+    removeSubcomponent(isTemporaryAddPreview?: boolean): void {
+      ComponentManipulation.removeSubcomponent(this, isTemporaryAddPreview);
     },
     changeSubcomponentOrder(moveSubcomponentEvent: ChangeSubcomponentOrderEvent): void {
       ComponentManipulation.changeSubcomponentOrder(this, ...moveSubcomponentEvent);

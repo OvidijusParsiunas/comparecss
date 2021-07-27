@@ -11,7 +11,8 @@ import { AddNewLayerComponent } from './add/addNewLayerComponent';
 export class AddNewNestedComponent {
 
   private static updateGenericComponentNames(currentlySelectedComponent: WorkshopComponent): void {
-    const parentLayer = ComponentPreviewStructureSearchUtils.getLayerByName(currentlySelectedComponent, currentlySelectedComponent.activeSubcomponentName);
+    const parentLayer = ComponentPreviewStructureSearchUtils.getLayerByName(currentlySelectedComponent,
+      currentlySelectedComponent.activeSubcomponentName);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(currentlySelectedComponent, parentLayer);
   }
 

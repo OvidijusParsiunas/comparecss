@@ -1,5 +1,7 @@
 import { ImportComponentModeCardEvents } from '../../toolbar/options/importComponent/modeUtils/importComponentModeCardEvents';
+import { RemoveTemporaryAddPreviewComponent } from './removeNestedComponent/removeTemporaryAddPreviewComponent';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../interfaces/subcomponentOrderDirections.enum';
+import { AddTemporaryAddPreviewComponent } from './addNewNestedComponent/addTemporaryAddPreviewComponent';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { ChangeNestedComponentAlignment } from './moveNestedComponent/changeNestedComponentAlignment';
 import { NESTED_COMPONENTS_BASE_NAMES } from '../../../../../consts/baseSubcomponentNames.enum';
@@ -10,6 +12,7 @@ import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum'
 import CopyComponent from './copyComponent/copyComponent';
 import ComponentJs from '../generic/componentJs';
 import { ComponentOptions } from 'vue';
+import { AddNewSubcomponentEvent } from '../../../../../interfaces/addNewSubcomponentEvent';
 
 export class ComponentManipulation {
 
@@ -37,14 +40,23 @@ export class ComponentManipulation {
     ComponentManipulation.switchActiveComponent(workshopComponent, component);
   }
 
-  public static addNewSubcomponent(workshopComponent: ComponentOptions, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
-    AddNewNestedComponent.add(workshopComponent.currentlySelectedComponent, nestedComponentBaseName);
+  public static addNewSubcomponent(workshopComponent: ComponentOptions, addNewSubcomponentEvent: AddNewSubcomponentEvent): void {
+    const [nestedComponentBaseName, isTemporaryAddPreview] = addNewSubcomponentEvent;
+    if (isTemporaryAddPreview) {
+      AddTemporaryAddPreviewComponent.add(workshopComponent.currentlySelectedComponent, nestedComponentBaseName);
+    } else {
+      AddNewNestedComponent.add(workshopComponent.currentlySelectedComponent, nestedComponentBaseName);
+    }
     workshopComponent.$refs.contents.refreshComponent();
   }
 
-  public static removeSubcomponent(workshopComponent: ComponentOptions): void {
+  public static removeSubcomponent(workshopComponent: ComponentOptions, isTemporaryAddPreview?: boolean): void {
     const { currentlySelectedComponent } = workshopComponent;
-    RemoveNestedComponent.remove(currentlySelectedComponent);
+    if (isTemporaryAddPreview) {
+      RemoveTemporaryAddPreviewComponent.remove(currentlySelectedComponent);
+    } else {
+      RemoveNestedComponent.remove(currentlySelectedComponent);
+    }
     workshopComponent.$refs.contents.refreshComponent();
   }
 

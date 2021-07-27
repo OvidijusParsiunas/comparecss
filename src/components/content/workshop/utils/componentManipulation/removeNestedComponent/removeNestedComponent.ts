@@ -91,7 +91,7 @@ export class RemoveNestedComponent {
     return null;
   }
 
-  private static removeNestedComponentInPreviewStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
+  protected static removeNestedComponentInPreviewStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
     const { subcomponentProperties, layers, alignedNestedComponents, index } = componentTraversalState;
     const { targetSubcomponentProperties, parentComponent } = this as any as TargetDetails;
     if (targetSubcomponentProperties === subcomponentProperties) {
@@ -106,7 +106,7 @@ export class RemoveNestedComponent {
   }
 
   public static remove(parentComponent: WorkshopComponent): void {
-    const targetDetails: TargetDetails = ComponentTraversalUtils.generateTargetDetails(parentComponent);
+    const targetDetails: TargetDetails = ComponentTraversalUtils.generateTargetDetails(parentComponent, parentComponent.activeSubcomponentName);
     const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
       parentComponent.componentPreviewStructure,
       RemoveNestedComponent.removeNestedComponentInPreviewStructureIfFound.bind(targetDetails));

@@ -46,7 +46,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     };
   }
 
-  private static addNewComponentToComponentPreview(parentComponent: WorkshopComponent, newComponent: WorkshopComponent,
+  protected static addNewComponentToComponentPreview(parentComponent: WorkshopComponent, newComponent: WorkshopComponent,
       isEditable: boolean): void {
     const { base: newComponentBaseName } = newComponent.coreSubcomponentNames;
     const layerSubcomponent = newComponent.subcomponents[newComponentBaseName];
@@ -57,8 +57,9 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     }
   }
 
-  private static createNewComponent(componentGenerator: ComponentGenerator, overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
-    const baseName = UniqueSubcomponentNameGenerator.generate(NESTED_COMPONENTS_BASE_NAMES.LAYER);
+  protected static createNewComponent(componentGenerator: ComponentGenerator, overwritePropertiesFunc?: OverwritePropertiesFunc,
+      customBaseName?: string): WorkshopComponent {
+    const baseName = customBaseName || UniqueSubcomponentNameGenerator.generate(NESTED_COMPONENTS_BASE_NAMES.LAYER);
     const subcomponents = AddNewComponentShared.createNewComponentSubcomponents(componentGenerator, baseName);
     const { coreSubcomponentNames } = subcomponents[baseName].nestedComponent.ref;
     if (overwritePropertiesFunc) overwritePropertiesFunc(subcomponents, coreSubcomponentNames);

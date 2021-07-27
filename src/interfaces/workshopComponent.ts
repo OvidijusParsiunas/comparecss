@@ -156,6 +156,7 @@ export interface SubcomponentProperties {
   // when a subcomponent's mouse event is triggered, trigger another subcomponent's mouse events
   nameOfAnotherSubcomponetToTrigger?: string;
   isTriggeredByAnotherSubcomponent?: boolean;
+  isTemporaryAddPreview?: boolean; // used to temporarily display a nested component when hovering add subcomponent dropdown options with a mouse
 }
 
 export type Subcomponents = {

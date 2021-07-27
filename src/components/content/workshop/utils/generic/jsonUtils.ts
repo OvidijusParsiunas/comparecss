@@ -44,4 +44,9 @@ export default class JSONUtils {
       object1Parent[object1Key] = { ...object2, ...object1Parent[object1Key] };
     }
   }
+
+  public static reverseMap(map: any): any {
+    return Object.keys(map).reduce((accumulator, currentValue) =>
+      Object.assign(accumulator, { [map[currentValue]]: currentValue }), {});
+  }
 }
