@@ -77,6 +77,11 @@ class DefaultModal extends ComponentBuilder {
     subcomponents[coreSubcomponentNames.text].defaultCustomStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Cancel');
   }
 
+  private static overwriteCloseButtonProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
+    subcomponents[coreSubcomponentNames.base].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    subcomponents[coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+  }
+
   public static addComponentsToBase(modalComponent: WorkshopComponent): void {
     const layer1Component = AddNewLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true);
     const layer2Component = AddNewLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true);
@@ -91,7 +96,7 @@ class DefaultModal extends ComponentBuilder {
     AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
       layer3Component.coreSubcomponentNames.base, [DefaultModal.overwriteCancelButtonProperties]);
     AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.BUTTON,
-      BUTTON_STYLES.CLOSE, layer1Component.coreSubcomponentNames.base);
+      BUTTON_STYLES.CLOSE, layer1Component.coreSubcomponentNames.base, [DefaultModal.overwriteCloseButtonProperties]);
     AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.IMAGE, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentNames.base);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(modalComponent, modalComponent.componentPreviewStructure.layers[0]);

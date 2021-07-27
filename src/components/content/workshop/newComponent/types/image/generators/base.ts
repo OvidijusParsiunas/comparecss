@@ -44,7 +44,6 @@ class ImageBase extends ComponentBuilder {
     return {
       circleBorder: false,
       lastSelectedCssValues: ComponentBuilder.createLastSelectedCssLeftValue(),
-      alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
       animations: ComponentBuilder.createStationaryAnimations({isBackgroundZoomPresent: true, isBackgroundZoomOn: false}),
     };
   }

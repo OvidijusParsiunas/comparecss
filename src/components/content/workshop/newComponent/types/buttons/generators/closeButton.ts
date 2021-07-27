@@ -23,11 +23,6 @@ class CloseButton extends ComponentBuilder {
     component.referenceSharingExecutables = [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents];
   }
 
-  private static overwriteCustomFeatures(subcomponent: SubcomponentProperties): void {
-    subcomponent.customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    subcomponent.defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-  }
-
   private static createDefaultBaseCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
@@ -64,7 +59,6 @@ class CloseButton extends ComponentBuilder {
   public static overwriteBase(component: WorkshopComponent): void {
     const baseSubcomponent = component.subcomponents[component.coreSubcomponentNames.base];
     CloseButton.overwriteCustomCss(baseSubcomponent);
-    CloseButton.overwriteCustomFeatures(baseSubcomponent);
   }
 }
 

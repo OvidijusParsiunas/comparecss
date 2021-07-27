@@ -12,6 +12,11 @@ import { alertBase } from './base';
 
 class DefaultAlert extends ComponentBuilder {
 
+  private static overwriteCloseButtonProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
+    subcomponents[coreSubcomponentNames.base].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    subcomponents[coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+  }
+
   private static overwriteTextProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
     subcomponents[coreSubcomponentNames.base].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER);
     subcomponents[coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER);
@@ -19,11 +24,11 @@ class DefaultAlert extends ComponentBuilder {
 
   public static addComponentsToBase(alertComponent: WorkshopComponent): void {
     const layerComponent = AddNewLayerComponent.add(alertComponent, LAYER_STYLES.PLAIN, false);
-    const layetComponentBaseName = layerComponent.coreSubcomponentNames.base;
+    const layerComponentBaseName = layerComponent.coreSubcomponentNames.base;
     AddNewGenericComponent.add(alertComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
-      layetComponentBaseName, [DefaultAlert.overwriteTextProperties]);
+      layerComponentBaseName, [DefaultAlert.overwriteTextProperties]);
     AddNewGenericComponent.add(alertComponent, COMPONENT_TYPES.BUTTON,
-      BUTTON_STYLES.CLOSE, layetComponentBaseName);
+      BUTTON_STYLES.CLOSE, layerComponentBaseName, [DefaultAlert.overwriteCloseButtonProperties]);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(alertComponent, alertComponent.componentPreviewStructure.layers[0]);
   }
 }

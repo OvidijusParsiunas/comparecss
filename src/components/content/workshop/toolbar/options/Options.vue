@@ -34,9 +34,10 @@
         :consistentButtonContent="{'backgroundIconClass': 'subcomponent-display-toggle-add'}"
         :timeoutFunc="executeCallbackAfterTimeout"
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
+        @hide-dropdown-menu="mouseLeaveSubcomponentManipulationToggle(true)"
         @mouse-click-new-option="buttonClickMiddleware(addNewSubcomponent.bind(this, $event), true)"
         @mouse-enter-option="mouseEnterSubcomponentManipulationToggle(true, $event)"
-        @mouse-leave-option="mouseLeaveSubcomponentManipulationToggle(true, $event)"
+        @mouse-leave-option="mouseLeaveSubcomponentManipulationToggle(true)"
         @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       <div v-if="component.type === COMPONENT_TYPES.MODAL || component.type === COMPONENT_TYPES.ALERT || component.type === COMPONENT_TYPES.CARD"
         class="btn-group option-component-button-container">
