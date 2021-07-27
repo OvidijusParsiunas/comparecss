@@ -16,7 +16,7 @@ export class AddTemporaryAddPreviewLayerComponent extends AddNewLayerComponent {
       NESTED_COMPONENTS_BASE_NAMES.TEMPORARY);
     newComponent.subcomponents[newComponent.coreSubcomponentNames.base].isTemporaryAddPreview = true;
     JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
-    AddNewLayerComponent.addNewComponentToComponentPreview(parentComponent, newComponent, isEditable);
+    AddNewLayerComponent.addNewComponentToComponentPreview(parentComponent, newComponent);
     return newComponent;
   }
 }

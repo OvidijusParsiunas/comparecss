@@ -14,7 +14,8 @@ import JSONUtils from '../../../generic/jsonUtils';
 
 export class AddNewLayerComponent extends AddNewComponentShared {
 
-  private static updateComponentDropdownStructure(parentComponent: WorkshopComponent, newComponentBaseName: string): void {
+  private static updateComponentDropdownStructure(parentComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
+    const { base: newComponentBaseName } = newComponent.coreSubcomponentNames;
     const newComponentDropdownStructure = { [newComponentBaseName]: { 
       ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(newComponentBaseName),
     }};
@@ -46,15 +47,11 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     };
   }
 
-  protected static addNewComponentToComponentPreview(parentComponent: WorkshopComponent, newComponent: WorkshopComponent,
-      isEditable: boolean): void {
+  protected static addNewComponentToComponentPreview(parentComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     const { base: newComponentBaseName } = newComponent.coreSubcomponentNames;
     const layerSubcomponent = newComponent.subcomponents[newComponentBaseName];
     const layer: Layer = AddNewLayerComponent.createEmptyLayer(newComponentBaseName, layerSubcomponent);
     AddNewLayerComponent.addNewSubcomponentToBase(parentComponent, layer);
-    if (isEditable) {
-      AddNewLayerComponent.updateComponentDropdownStructure(parentComponent, newComponentBaseName);
-    }
   }
 
   protected static createNewComponent(componentGenerator: ComponentGenerator, overwritePropertiesFunc?: OverwritePropertiesFunc,
@@ -71,7 +68,8 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
     const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, overwritePropertiesFunc);
     JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
-    AddNewLayerComponent.addNewComponentToComponentPreview(parentComponent, newComponent, isEditable);
+    AddNewLayerComponent.addNewComponentToComponentPreview(parentComponent, newComponent);
+    if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(parentComponent, newComponent);
     AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent, newComponent, isEditable);
     return newComponent;
   }
