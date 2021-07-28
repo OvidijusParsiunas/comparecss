@@ -29,16 +29,15 @@
         :class="TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS"
         :uniqueIdentifier="ADD_NEW_SUBCOMPONENT_DROPDOWN_UNIQUE_IDENTIFIER"
         :dropdownOptions="getSubcomponentsToAdd()"
-        :highlightSubcomponents="true"
-        :isNested="false"
+        :reactiveObjects="[component, component.activeSubcomponentName]"
         :consistentButtonContent="{'backgroundIconClass': 'subcomponent-display-toggle-add'}"
         :timeoutFunc="executeCallbackAfterTimeout"
+        :minOptionsToDisplayDropdown="1"
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
         @hide-dropdown-menu="mouseLeaveSubcomponentManipulationToggle(true)"
         @mouse-click-new-option="buttonClickMiddleware(addNewSubcomponent.bind(this, $event), true)"
         @mouse-enter-option="mouseEnterSubcomponentManipulationToggle(true, $event)"
-        @mouse-leave-option="mouseLeaveSubcomponentManipulationToggle(true)"
-        @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
+        @mouse-leave-option="mouseLeaveSubcomponentManipulationToggle(true)"/>
       <div v-if="component.type === COMPONENT_TYPES.MODAL || component.type === COMPONENT_TYPES.ALERT || component.type === COMPONENT_TYPES.CARD"
         class="btn-group option-component-button-container">
         <button v-if="!isFullPreviewModeActive && component.type === COMPONENT_TYPES.MODAL" ref="expandedModalPreviewModeToggle"
@@ -432,7 +431,7 @@ export default {
       this.$emit('remove-subcomponent');
     },
     getSubcomponentsToAdd(): NestedDropdownStructure {
-      return { [NESTED_COMPONENTS_BASE_NAMES.BUTTON]: null, [NESTED_COMPONENTS_BASE_NAMES.TEXT]: null, [NESTED_COMPONENTS_BASE_NAMES.CLOSE]: null, [NESTED_COMPONENTS_BASE_NAMES.IMAGE]: null };
+      return this.component.subcomponents[this.component.activeSubcomponentName].newNestedComponentsOptions || {};
     },
     addNewSubcomponent(nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
       this.$emit('remove-subcomponent', true);

@@ -125,7 +125,7 @@ export default {
   },
   mounted(): void {
     if (!this.areDropdownOptionsProcessed) this.processDropdownOptions();
-    this.isDropdownDisplayed();
+    this.setIsDropdownDisplayed();
   },
   methods: {
     getOptionName(dropdownOptionName: string): void {
@@ -412,14 +412,14 @@ export default {
       });
       this.processedOptions = resultObject;
     },
-    isDropdownDisplayed(): void {
+    setIsDropdownDisplayed(): void {
       if (this.isNested) {
         this.isComponentDisplayed = !!this.dropdownOptions;
       } else {
-        this.isComponentDisplayed = Object.keys(this.dropdownOptions).length > this.minOptionsToDisplayDropdown;
+        this.isComponentDisplayed = Object.keys(this.dropdownOptions).length >= this.minOptionsToDisplayDropdown;
       }
       this.$emit('is-component-displayed', this.isComponentDisplayed);
-    }
+    },
   },
   components: {
     dropdownMenu,
@@ -449,16 +449,21 @@ export default {
     timeoutFunc: Function,
     minOptionsToDisplayDropdown: {
       type: Number,
-      default: 1,
+      default: 2,
     },
     consistentButtonContent: Object,
+    reactiveObjects: Array,
   },
   watch: {
+    reactiveObjects(): void {
+      // used to force the processing of new dropdown options object
+      this.processDropdownOptions();
+    },
     objectContainingActiveOption(): void {
       this.processDropdownOptions();
     },
     dropdownOptions(): void {
-      this.isDropdownDisplayed();
+      this.setIsDropdownDisplayed();
     }
   }
 };

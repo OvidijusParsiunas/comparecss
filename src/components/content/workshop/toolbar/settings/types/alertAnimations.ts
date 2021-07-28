@@ -1,4 +1,5 @@
 import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallbacks } from '../../../../../../interfaces/actionsDropdownsMouseEventCallbacks';
+import { UpdateDropdownOptionNamesShared } from '../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
 import { PlayAnimationPreviewEvent } from '../../../../../../interfaces/settingsComponentEvents';
 import { GENERAL_ANIMATION_CLOSE_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
@@ -31,7 +32,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Dismiss',
-        options: { [GENERAL_ANIMATION_CLOSE_TYPES.FADE_OUT]: null },
+        options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([GENERAL_ANIMATION_CLOSE_TYPES.FADE_OUT]),
         activeOptionPropertyKeyName: 'type',
         customFeatureObjectKeys: ['customFeatures', 'animations', 'display', 'close', 'type'],
         ...generateMouseEventCallbacks(false),

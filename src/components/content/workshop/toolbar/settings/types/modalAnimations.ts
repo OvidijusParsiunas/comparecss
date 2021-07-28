@@ -1,4 +1,5 @@
 import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallbacks } from '../../../../../../interfaces/actionsDropdownsMouseEventCallbacks';
+import { UpdateDropdownOptionNamesShared } from '../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
 import { MODAL_ANIMATION_OPEN_TYPES, MODAL_ANIMATION_CLOSE_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { PlayAnimationPreviewEvent } from '../../../../../../interfaces/settingsComponentEvents';
@@ -58,7 +59,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Entrance',
-        options: { [MODAL_ANIMATION_OPEN_TYPES.FADE_IN]: null, [MODAL_ANIMATION_OPEN_TYPES.SLIDE_IN]: null },
+        options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([MODAL_ANIMATION_OPEN_TYPES.FADE_IN, MODAL_ANIMATION_OPEN_TYPES.SLIDE_IN]),
         activeOptionPropertyKeyName: 'type',
         customFeatureObjectKeys: ['customFeatures', 'animations', 'display', 'open', 'type'],
         ...generateMouseEventCallbacks(true),
@@ -68,7 +69,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Exit',
-        options: { [MODAL_ANIMATION_CLOSE_TYPES.FADE_OUT]: null, [MODAL_ANIMATION_CLOSE_TYPES.SLIDE_OUT]: null },
+        options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([MODAL_ANIMATION_CLOSE_TYPES.FADE_OUT, MODAL_ANIMATION_CLOSE_TYPES.SLIDE_OUT]),
         activeOptionPropertyKeyName: 'type',
         customFeatureObjectKeys: ['customFeatures', 'animations', 'display', 'close', 'type'],
         ...generateMouseEventCallbacks(false),

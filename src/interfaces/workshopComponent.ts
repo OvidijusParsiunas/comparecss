@@ -5,6 +5,7 @@ import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { ReferenceSharingExecutable } from './referenceSharingExecutable';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
+import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
 import { CoreSubcomponentNames } from './customSubcomponentNames';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
@@ -156,6 +157,7 @@ export interface SubcomponentProperties {
   // when a subcomponent's mouse event is triggered, trigger another subcomponent's mouse events
   nameOfAnotherSubcomponetToTrigger?: string;
   isTriggeredByAnotherSubcomponent?: boolean;
+  newNestedComponentsOptions?: NestedDropdownStructure;
   isTemporaryAddPreview?: boolean; // used to temporarily display a nested component when hovering add subcomponent dropdown options with a mouse
 }
 

@@ -1,3 +1,4 @@
+import { UpdateDropdownOptionNamesShared } from '../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 
 // create an optional interface
@@ -31,7 +32,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Style',
-        options: { 'none': null, 'hidden': null, 'dotted': null, 'dashed': null, 'solid': null, 'double': null, 'groove': null, 'ridge': null, 'inset': null, 'outset': null },
+        options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure(['none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset']),
         default: 'none',
         cssProperty: 'borderBottomStyle',
       },

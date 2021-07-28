@@ -9,13 +9,15 @@ import { AddNewGenericComponent } from './add/addNewGenericComponent';
 export class AddTemporaryAddPreviewComponent {
 
   public static add(currentlySelectedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
-    if (currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].subcomponentType === SUBCOMPONENT_TYPES.BASE) {
+    if (currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].subcomponentType === SUBCOMPONENT_TYPES.BASE
+        && nestedComponentBaseName === NESTED_COMPONENTS_BASE_NAMES.LAYER) {
       AddTemporaryAddPreviewLayerComponent.add(currentlySelectedComponent, LAYER_STYLES.CARD, true);
     } else {
+      const activeSubcomponentName = currentlySelectedComponent.activeSubcomponentName === currentlySelectedComponent.coreSubcomponentNames.base
+        ? currentlySelectedComponent.componentPreviewStructure.layers[0].name : currentlySelectedComponent.activeSubcomponentName;
       const nestedComponentType = AddNewGenericComponent.componentBaseNameToType[nestedComponentBaseName];
       const nestedComponentStyle = nestedComponentBaseName === NESTED_COMPONENTS_BASE_NAMES.CLOSE ? BUTTON_STYLES.CLOSE : DEFAULT_STYLES.DEFAULT;
-      AddTemporaryAddPreviewGenericComponent.add(currentlySelectedComponent, nestedComponentType, nestedComponentStyle,
-        currentlySelectedComponent.activeSubcomponentName);
+      AddTemporaryAddPreviewGenericComponent.add(currentlySelectedComponent, nestedComponentType, nestedComponentStyle, activeSubcomponentName);
     }
   }
 }

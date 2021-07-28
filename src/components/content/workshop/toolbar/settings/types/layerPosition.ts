@@ -1,3 +1,4 @@
+import { UpdateDropdownOptionNamesShared } from '../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../../interfaces/subcomponentOrderDirections.enum';
 import { ChangeSubcomponentOrderEvent } from '../../../../../../interfaces/settingsComponentEvents';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
@@ -15,7 +16,7 @@ export default {
       type: SETTINGS_TYPES.BUTTONS,
       spec: {
         name: 'Order',
-        options: { [SUBCOMPONENT_ORDER_DIRECTIONS.UP]: null, [SUBCOMPONENT_ORDER_DIRECTIONS.DOWN]: null },
+        options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([SUBCOMPONENT_ORDER_DIRECTIONS.UP, SUBCOMPONENT_ORDER_DIRECTIONS.DOWN]),
         optionAction: changeSubcomponentOrder,
       },
     },

@@ -1,5 +1,6 @@
 import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallbacks } from '../../../../../../interfaces/actionsDropdownsMouseEventCallbacks';
 import { nestedComponentAlignmentDropdownState } from '../../../utils/componentManipulation/moveNestedComponent/nestedComponentAlignmentDropdownState';
+import { UpdateDropdownOptionNamesShared } from '../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
 import { ChangeSubcomponentAlignmentEvent, ChangeSubcomponentOrderEvent } from '../../../../../../interfaces/settingsComponentEvents';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../../interfaces/subcomponentOrderDirections.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
@@ -39,7 +40,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Align',
-        options: { [ALIGNED_SECTION_TYPES.LEFT]: null, [ALIGNED_SECTION_TYPES.CENTER]: null, [ALIGNED_SECTION_TYPES.RIGHT]: null },
+        options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([ALIGNED_SECTION_TYPES.LEFT, ALIGNED_SECTION_TYPES.CENTER, ALIGNED_SECTION_TYPES.RIGHT]),
         activeOptionPropertyKeyName: 'section',
         customFeatureObjectKeys: ['customFeatures', 'alignedLayerSection', 'section'],
         ...generateMouseEventCallbacks(),
@@ -49,7 +50,7 @@ export default {
       type: SETTINGS_TYPES.BUTTONS,
       spec: {
         name: 'Order',
-        options: { [SUBCOMPONENT_ORDER_DIRECTIONS.LEFT]: null, [SUBCOMPONENT_ORDER_DIRECTIONS.RIGHT]: null },
+        options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([SUBCOMPONENT_ORDER_DIRECTIONS.LEFT, SUBCOMPONENT_ORDER_DIRECTIONS.RIGHT]),
         optionAction: changeSubcomponentOrder,
       },
     },
