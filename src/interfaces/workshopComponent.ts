@@ -1,5 +1,6 @@
 import { InterconnectedSetting, SubcomponentSpecificSettings } from './subcomponentSpecificSettings';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
+import { NewNestedComponentsOptionsRefs } from './newNestedComponentsOptionsRefs';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
@@ -185,6 +186,7 @@ export interface WorkshopComponent {
   referenceSharingExecutables?: ReferenceSharingExecutable[];
   interconnectedSettings?: InterconnectedSetting[];
   nestedComponentCount?: NestedComponentCount;
+  newNestedComponentsOptionsRefs?: NewNestedComponentsOptionsRefs;
 }
 
 // Reference for component structure:

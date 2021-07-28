@@ -99,8 +99,7 @@ class DefaultCard extends ComponentBuilder {
   }
 
   private static addNewLayers(cardComponent: WorkshopComponent): WorkshopComponent[] {
-    const nestedDropdownStructure = UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([
-      NESTED_COMPONENTS_BASE_NAMES.BUTTON, NESTED_COMPONENTS_BASE_NAMES.TEXT, NESTED_COMPONENTS_BASE_NAMES.CLOSE, NESTED_COMPONENTS_BASE_NAMES.IMAGE]);
+    const nestedDropdownStructure = cardComponent.newNestedComponentsOptionsRefs.layer;
     const layer1Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true, DefaultCard.overwriteLayerProperties.bind(nestedDropdownStructure));
     const layer2Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true, DefaultCard.overwriteLayerProperties.bind(nestedDropdownStructure));
     const layer3Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true, DefaultCard.overwriteLayerProperties.bind(nestedDropdownStructure));
@@ -126,18 +125,11 @@ class DefaultCard extends ComponentBuilder {
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[1]);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[2]);
   }
-
-  public static overwriteBaseNewNestedComponentsOptions(cardComponent: WorkshopComponent): void {
-    const { subcomponents, coreSubcomponentNames } = cardComponent;
-    const nestedDropdownStructure = UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([NESTED_COMPONENTS_BASE_NAMES.LAYER]);
-    subcomponents[coreSubcomponentNames.base].newNestedComponentsOptions = nestedDropdownStructure;
-  }
 }
 
 export const defaultCard: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
     const cardComponent = cardBase.createNewComponent();
-    DefaultCard.overwriteBaseNewNestedComponentsOptions(cardComponent);
     DefaultCard.addComponentsToBase(cardComponent);
     return cardComponent;
   },

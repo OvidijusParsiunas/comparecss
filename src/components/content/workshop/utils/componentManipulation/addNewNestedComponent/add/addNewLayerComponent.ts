@@ -15,6 +15,13 @@ import JSONUtils from '../../../generic/jsonUtils';
 
 export class AddNewLayerComponent extends AddNewComponentShared {
 
+  private static addNewNestedComponentsOptions(parentComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
+    if (parentComponent.newNestedComponentsOptionsRefs?.layer) {
+      newComponent.subcomponents[newComponent.coreSubcomponentNames.base]
+      .newNestedComponentsOptions = parentComponent.newNestedComponentsOptionsRefs.layer;
+    }
+  }
+
   private static updateComponentDropdownStructure(parentComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     const { base: newComponentBaseName } = newComponent.coreSubcomponentNames;
     const newComponentDropdownStructure = { [newComponentBaseName]: { 
@@ -68,12 +75,13 @@ export class AddNewLayerComponent extends AddNewComponentShared {
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
     const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, overwritePropertiesFunc);
-    IncrementNestedComponentCount.increment(parentComponent, NESTED_COMPONENTS_BASE_NAMES.LAYER,
-      parentComponent.coreSubcomponentNames.base);
     JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
     AddNewLayerComponent.addNewComponentToComponentPreview(parentComponent, newComponent);
     if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(parentComponent, newComponent);
     AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent, newComponent, isEditable);
+    AddNewLayerComponent.addNewNestedComponentsOptions(parentComponent, newComponent);
+    IncrementNestedComponentCount.increment(parentComponent, NESTED_COMPONENTS_BASE_NAMES.LAYER,
+      parentComponent.coreSubcomponentNames.base);
     return newComponent;
   }
 }

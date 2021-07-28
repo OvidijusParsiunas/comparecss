@@ -4,7 +4,6 @@ maybe should allow import a new button alltogether instead of creating a new but
 after adding a new subcomponent, open its options
 when there is no close and the mouse hovers over it in the dropdown, the play button displays
 should not be allowed to preview or click option that is disabled
-new layers do not have add new options
 animation does not work for new close button
 
 overflow

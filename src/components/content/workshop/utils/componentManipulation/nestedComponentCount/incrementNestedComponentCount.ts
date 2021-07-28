@@ -13,8 +13,10 @@ export class IncrementNestedComponentCount {
   }
 
   private static incrementCurrentCount(nestedComponentCount: NestedComponentCount, nestedComponentBaseName: string): void {
-    if (nestedComponentCount.current === undefined || nestedComponentCount.current[nestedComponentBaseName] === undefined) {
+    if (nestedComponentCount.current === undefined) {
       nestedComponentCount.current = { [nestedComponentBaseName]: 1 }; 
+    } else if (nestedComponentCount.current[nestedComponentBaseName] === undefined) {
+      nestedComponentCount.current[nestedComponentBaseName] = 1 ; 
     } else {
       nestedComponentCount.current[nestedComponentBaseName] += 1;
     }

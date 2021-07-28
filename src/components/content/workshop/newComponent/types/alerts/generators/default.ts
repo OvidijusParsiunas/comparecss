@@ -1,9 +1,7 @@
 import { UpdateGenericComponentDropdownOptionNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateGenericComponentDropdownOptionNames';
-import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
 import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewGenericComponent';
 import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
 import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
-import { NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -33,19 +31,11 @@ class DefaultAlert extends ComponentBuilder {
       BUTTON_STYLES.CLOSE, layerComponentBaseName, [DefaultAlert.overwriteCloseButtonProperties]);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(alertComponent, alertComponent.componentPreviewStructure.layers[0]);
   }
-
-  public static overwriteBaseNewNestedComponentsOptions(alertComponent: WorkshopComponent): void {
-    const { subcomponents, coreSubcomponentNames } = alertComponent;
-    const nestedDropdownStructure = UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([
-      NESTED_COMPONENTS_BASE_NAMES.TEXT, NESTED_COMPONENTS_BASE_NAMES.CLOSE]);
-    subcomponents[coreSubcomponentNames.base].newNestedComponentsOptions = nestedDropdownStructure;
-  }
 }
 
 export const defaultAlert: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const alertComponent = alertBase.createNewComponent(baseName);
-    DefaultAlert.overwriteBaseNewNestedComponentsOptions(alertComponent);
     DefaultAlert.addComponentsToBase(alertComponent);
     return alertComponent;
   },

@@ -1,6 +1,8 @@
+import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
+import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -15,6 +17,12 @@ class AlertBase extends ComponentBuilder {
 
   public static setNestedComponentCountMax(alertBaseComponent: WorkshopComponent): void {
     alertBaseComponent.nestedComponentCount = { max: { [NESTED_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
+  }
+
+  public static setNewNestedComponentsOptionsRefs(alertBaseComponent: WorkshopComponent): void {
+    const newNestedComponentsOptions = UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([
+      NESTED_COMPONENTS_BASE_NAMES.TEXT, NESTED_COMPONENTS_BASE_NAMES.CLOSE]);
+    alertBaseComponent.newNestedComponentsOptionsRefs = { layer: newNestedComponentsOptions };
   }
 
   private static createDefaultCss(): CustomCss {
@@ -47,6 +55,11 @@ class AlertBase extends ComponentBuilder {
     };
   }
 
+  private static createDefaultNewNestedComponentsOptions(): NestedDropdownStructure {
+    return UpdateDropdownOptionNamesShared.generateNestedDropdownStructure(
+      [NESTED_COMPONENTS_BASE_NAMES.TEXT, NESTED_COMPONENTS_BASE_NAMES.CLOSE]);
+  }
+
   public static createBaseSubcomponent(): SubcomponentProperties {
     return {
       subcomponentType: SUBCOMPONENT_TYPES.BASE,
@@ -59,6 +72,7 @@ class AlertBase extends ComponentBuilder {
       subcomponentSpecificSettings: alertBaseSpecificSettings,
       customFeatures: AlertBase.createDefaultCustomFeatures(),
       defaultCustomFeatures: AlertBase.createDefaultCustomFeatures(),
+      newNestedComponentsOptions: AlertBase.createDefaultNewNestedComponentsOptions(),
     };
   }
 }
@@ -68,6 +82,7 @@ export const alertBase: ComponentGenerator = {
     uniqueSubcomponentIdState.resetUniqueId();
     const alertBaseComponent = ComponentBuilder.createBaseComponent(
       { componentType: COMPONENT_TYPES.ALERT, baseName }, AlertBase.createBaseSubcomponent, false);
+    AlertBase.setNewNestedComponentsOptionsRefs(alertBaseComponent);
     AlertBase.setNestedComponentCountMax(alertBaseComponent);
     return alertBaseComponent;
   },
