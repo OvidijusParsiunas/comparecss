@@ -12,8 +12,8 @@ export class AddTemporaryAddPreviewGenericComponent extends AddNewGenericCompone
   public static add(parentComponent: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
       layerName: string, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
-    const newComponent = AddNewGenericComponent.createNewComponent(componentType, componentStyle, componentGenerator,
-      overwritePropertiesFunc, NESTED_COMPONENTS_BASE_NAMES.TEMPORARY);
+    const [newComponent] = AddNewGenericComponent.createNewComponent(componentType, componentStyle,
+      componentGenerator, overwritePropertiesFunc, NESTED_COMPONENTS_BASE_NAMES.TEMPORARY);
     newComponent.subcomponents[newComponent.coreSubcomponentNames.base].isTemporaryAddPreview = true;
     JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
     AddNewGenericComponent.addNewComponentToComponentPreview(parentComponent, newComponent, layerName);

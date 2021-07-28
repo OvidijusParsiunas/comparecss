@@ -2,12 +2,14 @@ import { DropdownOptionAuxDetails, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../..
 import { UpdateGenericComponentDropdownOptionNames } from '../updateNestedComponentNames/updateGenericComponentDropdownOptionNames';
 import { UpdateLayerDropdownOptionNames } from '../updateNestedComponentNames/updateLayerDropdownOptionNames';
 import { ComponentTraversalState, TargetDetails } from '../../../../../../interfaces/componentTraversal';
+import { DecrementNestedComponentCount } from '../nestedComponentCount/decrementNesdtedComponentCount';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { InterconnectedSettings } from '../../interconnectedSettings/interconnectedSettings';
 import { AlignedSections } from '../../../../../../interfaces/componentPreviewStructure';
 import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { StringUtils } from '../../generic/stringUtils';
 
 export class RemoveNestedComponent {
 
@@ -46,30 +48,33 @@ export class RemoveNestedComponent {
     parentComponent.activeSubcomponentName = newSubcomponentName;
   }
 
-  private static selectParentSubcomponent(parentComponent: WorkshopComponent, dropdownOptionDetailsStack: DropdownOptionAuxDetails[]): void {
-    const parentDropdownOptionDetails = dropdownOptionDetailsStack[dropdownOptionDetailsStack.length - 2];
-    const newSubcomponentName = parentDropdownOptionDetails?.actualObjectName || parentComponent.coreSubcomponentNames.base;
-    parentComponent.activeSubcomponentName = newSubcomponentName;
-  }
-
-  private static selectNewActiveSubcomponent(parentComponent: WorkshopComponent, componentTraversalState: ComponentTraversalState): void {
-    const { dropdownOptionName, subcomponentDropdownStructure, dropdownOptionDetailsStack } = componentTraversalState;
+  private static selectNewActiveSubcomponent(parentComponent: WorkshopComponent, componentTraversalState: ComponentTraversalState,
+      parentSubcomponentName: string): void {
+    const { dropdownOptionName, subcomponentDropdownStructure } = componentTraversalState;
     const dropdownOptions = Object.keys(subcomponentDropdownStructure).filter((buttonName) => buttonName !== DROPDOWN_OPTION_AUX_DETAILS_REF);
     if (dropdownOptions.length === 1) {
-      RemoveNestedComponent.selectParentSubcomponent(parentComponent, dropdownOptionDetailsStack);
+      parentComponent.activeSubcomponentName = parentSubcomponentName;
     } else {
       RemoveNestedComponent.selectSiblingSubcomponent(parentComponent, dropdownOptions, dropdownOptionName, subcomponentDropdownStructure);
     }
   }
 
+  private static getParentSubcomponentName(parentComponent: WorkshopComponent, dropdownOptionDetailsStack: DropdownOptionAuxDetails[]): string {
+    const parentDropdownOptionDetails = dropdownOptionDetailsStack[dropdownOptionDetailsStack.length - 2];
+    return parentDropdownOptionDetails?.actualObjectName || parentComponent.coreSubcomponentNames.base;
+  }
+
   private static removeNestedComponent(componentTraversalState: ComponentTraversalState, targetDetails: TargetDetails): void {
-    const { dropdownOptionName, subcomponentDropdownStructure } = componentTraversalState;
-    RemoveNestedComponent.selectNewActiveSubcomponent(targetDetails.parentComponent, componentTraversalState);
+    const { dropdownOptionName, subcomponentDropdownStructure, dropdownOptionDetailsStack } = componentTraversalState;
+    const parentSubcomponentName = RemoveNestedComponent.getParentSubcomponentName(targetDetails.parentComponent, dropdownOptionDetailsStack);
+    RemoveNestedComponent.selectNewActiveSubcomponent(targetDetails.parentComponent, componentTraversalState, parentSubcomponentName);
     RemoveNestedComponent.removeSubcomponents(componentTraversalState, targetDetails.parentComponent);
     ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
       subcomponentDropdownStructure[dropdownOptionName] as NestedDropdownStructure,
       RemoveNestedComponent.removeNestedComponentNestedComponents.bind(targetDetails));
     delete subcomponentDropdownStructure[dropdownOptionName];
+    DecrementNestedComponentCount.decrement(targetDetails.parentComponent, StringUtils.getFirstWordInString(targetDetails.targetSubcomponentName),
+      parentSubcomponentName);
   }
 
   private static removeSubcomponentNameFromSubcomponentNameToDropdownOptionNameMap(targetDetails: TargetDetails): void {

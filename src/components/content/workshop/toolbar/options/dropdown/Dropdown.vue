@@ -408,7 +408,8 @@ export default {
     changeDropdownOptionsToAppropriateStructure(): void {
       const resultObject = {};
       Object.keys(this.dropdownOptions).forEach((keyName) => {
-        resultObject[keyName] = DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject();
+        resultObject[keyName] = this.dropdownOptions[keyName]?.[DROPDOWN_OPTION_AUX_DETAILS_REF]
+          ? this.dropdownOptions[keyName] : DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject();
       });
       this.processedOptions = resultObject;
     },

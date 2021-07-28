@@ -5,6 +5,7 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { OverwritePropertiesFunc } from '../../../../../../../interfaces/overwriteSubcomponentPropertiesFunc';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { IncrementNestedComponentCount } from '../../nestedComponentCount/incrementNestedComponentCount';
 import { AlignedSections, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -67,6 +68,8 @@ export class AddNewLayerComponent extends AddNewComponentShared {
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
     const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, overwritePropertiesFunc);
+    IncrementNestedComponentCount.increment(parentComponent, NESTED_COMPONENTS_BASE_NAMES.LAYER,
+      parentComponent.coreSubcomponentNames.base);
     JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
     AddNewLayerComponent.addNewComponentToComponentPreview(parentComponent, newComponent);
     if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(parentComponent, newComponent);

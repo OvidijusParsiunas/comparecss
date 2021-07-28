@@ -6,6 +6,7 @@ import { AddNewGenericComponent } from '../../../../utils/componentManipulation/
 import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
 import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
+import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
@@ -86,8 +87,7 @@ class DefaultCard extends ComponentBuilder {
   }
 
   private static overwriteLayerProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
-    const nestedDropdownStructure = UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([
-      NESTED_COMPONENTS_BASE_NAMES.BUTTON, NESTED_COMPONENTS_BASE_NAMES.TEXT, NESTED_COMPONENTS_BASE_NAMES.CLOSE, NESTED_COMPONENTS_BASE_NAMES.IMAGE]);
+    const nestedDropdownStructure = this as any as NestedDropdownStructure;
     subcomponents[coreSubcomponentNames.base].newNestedComponentsOptions = nestedDropdownStructure;
   }
 
@@ -98,10 +98,17 @@ class DefaultCard extends ComponentBuilder {
     subcomponents[coreSubcomponentNames.text].defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Cancel');
   }
 
+  private static addNewLayers(cardComponent: WorkshopComponent): WorkshopComponent[] {
+    const nestedDropdownStructure = UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([
+      NESTED_COMPONENTS_BASE_NAMES.BUTTON, NESTED_COMPONENTS_BASE_NAMES.TEXT, NESTED_COMPONENTS_BASE_NAMES.CLOSE, NESTED_COMPONENTS_BASE_NAMES.IMAGE]);
+    const layer1Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true, DefaultCard.overwriteLayerProperties.bind(nestedDropdownStructure));
+    const layer2Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true, DefaultCard.overwriteLayerProperties.bind(nestedDropdownStructure));
+    const layer3Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true, DefaultCard.overwriteLayerProperties.bind(nestedDropdownStructure));
+    return [layer1Component, layer2Component, layer3Component];
+  }
+
   public static addComponentsToBase(cardComponent: WorkshopComponent): void {
-    const layer1Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true, DefaultCard.overwriteLayerProperties);
-    const layer2Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true, DefaultCard.overwriteLayerProperties);
-    const layer3Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true, DefaultCard.overwriteLayerProperties);
+    const [layer1Component, layer2Component, layer3Component] = DefaultCard.addNewLayers(cardComponent);
     UpdateLayerDropdownOptionNames.update(cardComponent, 0);
     AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentNames.base, [DefaultCard.overwriteTitleProperties]);

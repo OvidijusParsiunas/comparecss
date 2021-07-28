@@ -10,6 +10,7 @@ import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
 import { CoreSubcomponentNames } from './customSubcomponentNames';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
+import { NestedComponentCount } from './nestedComponentCount';
 import { TempCustomCss } from './tempCustomCss';
 import { CloseTriggers } from './closeTriggers';
 import { Animations } from './animations';
@@ -183,6 +184,7 @@ export interface WorkshopComponent {
   // used to reassign references when the subcomponents have been deep copied
   referenceSharingExecutables?: ReferenceSharingExecutable[];
   interconnectedSettings?: InterconnectedSetting[];
+  nestedComponentCount?: NestedComponentCount;
 }
 
 // Reference for component structure:

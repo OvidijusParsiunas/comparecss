@@ -1,5 +1,6 @@
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
+import { NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -11,6 +12,10 @@ import { inheritedCardBaseCss } from '../../cards/inheritedCss/inheritedCardCss'
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class AlertBase extends ComponentBuilder {
+
+  public static setNestedComponentCountMax(alertBaseComponent: WorkshopComponent): void {
+    alertBaseComponent.nestedComponentCount = { max: { [NESTED_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
+  }
 
   private static createDefaultCss(): CustomCss {
     return {
@@ -61,7 +66,9 @@ class AlertBase extends ComponentBuilder {
 export const alertBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     uniqueSubcomponentIdState.resetUniqueId();
-    return ComponentBuilder.createBaseComponent(
+    const alertBaseComponent = ComponentBuilder.createBaseComponent(
       { componentType: COMPONENT_TYPES.ALERT, baseName }, AlertBase.createBaseSubcomponent, false);
+    AlertBase.setNestedComponentCountMax(alertBaseComponent);
+    return alertBaseComponent;
   },
 }
