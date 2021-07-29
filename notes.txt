@@ -2,7 +2,6 @@ instead of having a dropdown for active and removed subcomponents we can have a 
 ability to copy subcomponent instead of importing text/button
 maybe should allow import a new button alltogether instead of creating a new button and then changing its style
 after adding a new subcomponent, open its options
-when there is no close and the mouse hovers over it in the dropdown, the play button displays
 
 overflow
 try with button tags

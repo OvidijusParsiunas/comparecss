@@ -159,7 +159,7 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToo
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
 import ImportComponentModeToggleUtils from './importComponent/modeUtils/importComponentModeToggle';
 import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFullPreviewModeEvent';
-import { PARENT_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
+import { NESTED_COMPONENTS_BASE_NAMES, PARENT_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../consts/componentStyles.enum';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
@@ -167,7 +167,7 @@ import { AddNewSubcomponentEvent } from '../../../../../interfaces/addNewSubcomp
 import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
-import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
+import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectMode';
 import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
 import useToolbarPositionToggle from './compositionApi/useToolbarPositionToggle';
@@ -536,7 +536,8 @@ export default {
     },
     isSubcomponentPresent(subcomponentStyle: COMPONENT_STYLES): boolean {
       return !!Object.keys(this.component.subcomponents).find((subcomponentName) => {
-        return this.component.subcomponents[subcomponentName].nestedComponent?.ref.style === subcomponentStyle;
+        const component: WorkshopComponent = this.component.subcomponents[subcomponentName].nestedComponent?.ref;
+        return component?.style === subcomponentStyle && component.coreSubcomponentNames.base !== NESTED_COMPONENTS_BASE_NAMES.TEMPORARY;
       });
     },
     isFullPreviewModeButtonDisplayed(): boolean {
