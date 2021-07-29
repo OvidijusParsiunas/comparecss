@@ -29,12 +29,11 @@
 </template>
 
 <script lang="ts">
+import { MouseClickNewOptionEvent, MouseClickOptionEvent, MouseEnterMenuContainerOptionEvent, MouseEnterOptionEvent, MouseLeaveMenuContainerOptionEvent } from '../../../../../../interfaces/dropdownMenuMouseEvents';
 import { DropdownOptionAuxDetails, DropdownOptionAuxDetailsRef, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { DropdownOptionsDisplayStatusUtils } from '../../../utils/dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
 import { COMPONENT_CARD_MARKER, DROPDOWN_OPTION_MARKER, RANGE_SETTING_MARKER } from '../../../../../../consts/elementClassMarkers';
 import { CUSTOM_DROPDOWN_OPTION_CLASSES } from '../../../../../../consts/customDropdownOptionClasses.enum';
-import { DropdownMouseClickOptionEvent } from '../../../../../../interfaces/dropdownMouseClickOptionEvent';
-import { OptionMouseEnter, OptionMouseLeave } from '../../../../../../interfaces/dropdownMenuMouseEvents';
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { DropdownCompositionAPI } from '../../../../../../interfaces/dropdownCompositionAPI';
@@ -259,14 +258,16 @@ export default {
     extractHighlightedOptionText(optionElement: HTMLElement): string {
       return (optionElement.childNodes[0] as HTMLElement).innerHTML;
     },
-    mouseEnterOption(optionMouseEnterEvent: OptionMouseEnter): void {
-      const [dropdownOptions, dropdownMenuIndex, dropdownOptionIndex, actualObjectName] = optionMouseEnterEvent;
+    mouseEnterOption(optionMouseEnterEvent: MouseEnterMenuContainerOptionEvent): void {
+      const [dropdownOptions, dropdownMenuIndex, dropdownOptionIndex, actualObjectName, isOptionEnabled] = optionMouseEnterEvent;
+      const optionElement = event.target;
       this.removeChildDropdownMenus(dropdownMenuIndex);
-      this.displayChildDropdownMenu(event.target, dropdownMenuIndex, dropdownOptionIndex, dropdownOptions);
-      const highlightedOption = actualObjectName || this.extractHighlightedOptionText(event.target);
-      if (this.mouseEnterOptionEventHandler) { this.mouseEnterOptionEventHandler(highlightedOption); }
-      this.$emit('mouse-enter-option', highlightedOption);
-      this.highlightNewOption(event.target, dropdownMenuIndex);
+      this.displayChildDropdownMenu(optionElement, dropdownMenuIndex, dropdownOptionIndex, dropdownOptions);
+      const highlightedOption = actualObjectName || this.extractHighlightedOptionText(optionElement);
+      const mouseEnterOptionEvent: MouseEnterOptionEvent = [highlightedOption, isOptionEnabled];
+      if (this.mouseEnterOptionEventHandler) { this.mouseEnterOptionEventHandler(mouseEnterOptionEvent); }
+      this.$emit('mouse-enter-option', mouseEnterOptionEvent);
+      this.highlightNewOption(optionElement, dropdownMenuIndex);
       this.lastHoveredOptionText = highlightedOption;
     },
     removeChildDropdownMenus(dropdownMenuIndex: number): void {
@@ -346,7 +347,7 @@ export default {
     getOptionNameFromElement(highlightedOptionElement: HTMLElement): string {
       return (highlightedOptionElement.childNodes[0] as HTMLElement).innerHTML;
     },
-    mouseLeaveOption(optionMouseLeaveEvent: OptionMouseLeave): void {
+    mouseLeaveOption(optionMouseLeaveEvent: MouseLeaveMenuContainerOptionEvent): void {
       const [blurredOptionElement, actualObjectName] = optionMouseLeaveEvent;
       const blurredOption = actualObjectName || this.extractHighlightedOptionText(blurredOptionElement);
       if (this.mouseLeaveOptionEventHandler) {
@@ -368,10 +369,11 @@ export default {
       if ((event.target as HTMLElement).classList.contains(DROPDOWN_OPTION_MARKER) || this.enterButtonClicked) {
         if (this.lastHoveredOptionText) {
           const previousActiveOptionName = this.objectContainingActiveOption?.[this.activeOptionPropertyKeyName];
+          const isOptionEnabled = !this.lastHoveredOptionElement.classList.contains(CUSTOM_DROPDOWN_OPTION_CLASSES.INACTIVE);
           if (previousActiveOptionName !== this.lastHoveredOptionText) {
-            this.$emit('mouse-click-new-option', this.lastHoveredOptionText);
+            this.$emit('mouse-click-new-option', [this.lastHoveredOptionText, isOptionEnabled] as MouseClickNewOptionEvent);
           }
-          this.$emit('mouse-click-option', [previousActiveOptionName, this.lastHoveredOptionText] as DropdownMouseClickOptionEvent);
+          this.$emit('mouse-click-option', [previousActiveOptionName, this.lastHoveredOptionText, isOptionEnabled] as MouseClickOptionEvent);
         }
       }
       const isDropdownButtonClicked = (event.target as HTMLElement).classList.contains(this.uniqueIdentifier);

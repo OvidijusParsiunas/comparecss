@@ -22,7 +22,7 @@
           :customEventHandlers="useSubcomponentDropdownEventHandlers"
           :timeoutFunc="executeCallbackAfterTimeout"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-          @mouse-click-new-option="selectNewSubcomponent($event)"
+          @mouse-click-new-option="selectNewSubcomponent($event[0])"
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
       </div>
       <dropdown
@@ -145,10 +145,10 @@
 <script lang="ts">
 import { TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS } from '../../../../../consts/toolbarClasses';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
-import { NESTED_COMPONENTS_BASE_NAMES, PARENT_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../componentPreview/utils/animations/consts/sharedConsts';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ComponentTypeToOptions, componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
+import { MouseClickNewOptionEvent, MouseEnterOptionEvent } from '../../../../../interfaces/dropdownMenuMouseEvents';
 import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../consts/workshopToolbarOptionButtonNames.enum';
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
@@ -159,13 +159,13 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToo
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
 import ImportComponentModeToggleUtils from './importComponent/modeUtils/importComponentModeToggle';
 import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFullPreviewModeEvent';
+import { PARENT_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../consts/componentStyles.enum';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
 import { AddNewSubcomponentEvent } from '../../../../../interfaces/addNewSubcomponentEvent';
 import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
-import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectMode';
@@ -365,7 +365,8 @@ export default {
       this.component.activeSubcomponentName = subcomponentName;
       this.setNewOptionOnNewDropdownOptionSelect();
     },
-    selectNewCssPseudoClass(newCssPseudoClass: CSS_PSEUDO_CLASSES): void {
+    selectNewCssPseudoClass(mouseClickNewOptionEvent: MouseClickNewOptionEvent): void {
+      const [newCssPseudoClass] = mouseClickNewOptionEvent;
       this.component.subcomponents[this.component.activeSubcomponentName].activeCssPseudoClass = newCssPseudoClass;
       this.setNewOptionOnNewDropdownOptionSelect();
     },
@@ -433,12 +434,16 @@ export default {
     getSubcomponentsToAdd(): NestedDropdownStructure {
       return this.component.subcomponents[this.component.activeSubcomponentName].newNestedComponentsOptions || {};
     },
-    addNewSubcomponent(nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
+    addNewSubcomponent(mouseClickNewOptionEvent: MouseClickNewOptionEvent): void {
+      const [nestedComponentBaseName, isOptionEnabled] = mouseClickNewOptionEvent;
+      if (!isOptionEnabled) return;
       this.$emit('remove-subcomponent', true);
       this.$emit('add-subcomponent', [nestedComponentBaseName] as AddNewSubcomponentEvent);
     },
-    mouseEnterSubcomponentManipulationToggle(isAdd: boolean, nestedComponentBaseName?: NESTED_COMPONENTS_BASE_NAMES): void {
+    mouseEnterSubcomponentManipulationToggle(isAdd: boolean, mouseEnterOptionEvent?: MouseEnterOptionEvent): void {
       if (isAdd) {
+        const [nestedComponentBaseName, isOptionEnabled] = mouseEnterOptionEvent;
+        if (!isOptionEnabled) return;
         this.$emit('add-subcomponent', [nestedComponentBaseName, true] as AddNewSubcomponentEvent);
       } else {
         RemoveSubcomponentOverlay.display(this.component.activeSubcomponentName);

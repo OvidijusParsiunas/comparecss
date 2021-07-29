@@ -1,3 +1,4 @@
+import { MouseClickNewOptionEvent } from '../../../../../../interfaces/dropdownMenuMouseEvents';
 import { TemporaryDropdownValue } from '../../../../../../interfaces/temporaryDropdownValue';
 import { SubcomponentProperties, } from '../../../../../../interfaces/workshopComponent';
 import { UseActionsDropdown } from '../../../../../../interfaces/UseActionsDropdown';
@@ -72,8 +73,9 @@ export default function useActionsDropdown(): UseActionsDropdown {
     temporaryDropdownValue.value = ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED;
   }
   
-  const mouseClickActionsDropdownNewOption = (triggeredOptionName: string, settingSpec: any,
+  const mouseClickActionsDropdownNewOption = (mouseClickNewOptionEvent: MouseClickNewOptionEvent, settingSpec: any,
       subcomponentProperties: SubcomponentProperties, activeOptionsObject: any): void => {
+    const [triggeredOptionName] = mouseClickNewOptionEvent;
     if (animationState.getIsModeToggleAnimationInProgressState()) return;
     const { customFeatureObjectKeys, cssProperty } = settingSpec;
     if (cssProperty) ActionsDropdownUtils.mouseClickActionsDropdownNewOption(temporaryDropdownValue, triggeredOptionName,

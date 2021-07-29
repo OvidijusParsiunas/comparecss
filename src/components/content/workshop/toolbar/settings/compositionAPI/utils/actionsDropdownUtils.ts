@@ -1,5 +1,5 @@
-import { DropdownMouseClickOptionEvent } from '../../../../../../../interfaces/dropdownMouseClickOptionEvent';
 import { TemporaryDropdownValue } from '../../../../../../../interfaces/temporaryDropdownValue';
+import { MouseClickOptionEvent } from '../../../../../../../interfaces/dropdownMenuMouseEvents';
 import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
 import { SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
 import SharedUtils from '../../utils/sharedUtils';
@@ -102,7 +102,7 @@ export default class ActionsDropdownUtils {
     }
   }
 
-  public static mouseClickActionsDropdownOption(mouseClickOptionEvent: DropdownMouseClickOptionEvent, setting: any, allSettings: any,
+  public static mouseClickActionsDropdownOption(mouseClickOptionEvent: MouseClickOptionEvent, setting: any, allSettings: any,
       subcomponentProperties: SubcomponentProperties): void {
     const newOptionName = mouseClickOptionEvent[1];
     const { triggers, spec } = setting;

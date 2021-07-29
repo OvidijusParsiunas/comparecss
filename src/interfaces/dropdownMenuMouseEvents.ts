@@ -1,5 +1,11 @@
 import { DropdownOptionAuxDetailsRef } from './dropdownOptionDisplayStatus';
 
-export type OptionMouseEnter = [DropdownOptionAuxDetailsRef?, number?, number?, string?];
+export type MouseEnterMenuContainerOptionEvent = [DropdownOptionAuxDetailsRef?, number?, number?, string?, boolean?];
 
-export type OptionMouseLeave = [HTMLElement, string?];
+export type MouseLeaveMenuContainerOptionEvent = [HTMLElement, string?];
+
+export type MouseEnterOptionEvent = [string, boolean];
+
+export type MouseClickOptionEvent = [string, string, boolean];
+
+export type MouseClickNewOptionEvent = [string, boolean];

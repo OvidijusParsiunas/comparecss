@@ -6,7 +6,7 @@
     <a v-for="(optionAuxDetails, optionName, optionIndex) in dropdownOptions" :key="optionName"
       class="dropdown-item custom-dropdown-item"
       :style="{ color: getDefaultTextColor(optionAuxDetails), display: getOptionDisplayValue(optionName) }"
-      :class="[DROPDOWN_OPTION_MARKER, isButtonIcon ? 'icon-dropdown-item' : '']"
+      :class="getOptionClasses(optionAuxDetails)"
       @mouseenter="mouseEnter(optionAuxDetails, optionIndex)"
       @mouseleave="mouseLeave(optionAuxDetails)">
         <div class="option-text" :class="DROPDOWN_OPTION_MARKER">{{optionName}}</div>
@@ -21,7 +21,7 @@
 
 <script lang="ts">
 import { DropdownOptionAuxDetails, DropdownOptionAuxDetailsRef, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
-import { OptionMouseEnter, OptionMouseLeave } from '../../../../../../interfaces/dropdownMenuMouseEvents'
+import { MouseEnterMenuContainerOptionEvent, MouseLeaveMenuContainerOptionEvent } from '../../../../../../interfaces/dropdownMenuMouseEvents'
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { FONT_AWESOME_COLORS } from '../../../../../../consts/fontAwesomeColors.enum';
@@ -59,9 +59,18 @@ export default {
     isMenuBeDisplayed(dropdownOptions: NestedDropdownStructure): boolean {
       return Object.keys(dropdownOptions).length > 0;
     },
+    isOptionEnabled(optionAuxDetails: DropdownOptionAuxDetailsRef): boolean {
+      return !optionAuxDetails[DROPDOWN_OPTION_AUX_DETAILS_REF] || (optionAuxDetails[DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).isEnabled;
+    },
     getDefaultTextColor(optionAuxDetails: DropdownOptionAuxDetailsRef): string {
-      return !optionAuxDetails[DROPDOWN_OPTION_AUX_DETAILS_REF] || (optionAuxDetails[DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).isEnabled
-        ? 'black' : 'grey';
+      // color value cannot be set in class because the Dropdown.vue component overwrites it
+      return this.isOptionEnabled(optionAuxDetails) ? 'black' : 'grey';
+    },
+    getOptionClasses(optionAuxDetails: DropdownOptionAuxDetailsRef): string[] {
+      const classes = [DROPDOWN_OPTION_MARKER];
+      if (this.isButtonIcon) classes.push('icon-dropdown-item');
+      classes.push(this.isOptionEnabled(optionAuxDetails) ? 'option-enabled' : 'option-disabled');
+      return classes;
     },
     getOptionDisplayValue(optionName: string): string {
         return optionName === DROPDOWN_OPTION_AUX_DETAILS_REF ? 'none !important' : '';
@@ -69,11 +78,12 @@ export default {
     mouseEnter(optionAuxDetails: DropdownOptionAuxDetailsRef, optionIndex: number): void {
       if (this.isFirstOptionNotDisplayed) optionIndex -= 1;
       const actualObjectName = optionAuxDetails[DROPDOWN_OPTION_AUX_DETAILS_REF]?.actualObjectName;
-      this.$emit('mouse-enter-option', [optionAuxDetails, this.nestedDropdownIndex, optionIndex, actualObjectName] as OptionMouseEnter);
+      this.$emit('mouse-enter-option', [
+        optionAuxDetails, this.nestedDropdownIndex, optionIndex, actualObjectName, this.isOptionEnabled(optionAuxDetails)] as MouseEnterMenuContainerOptionEvent);
     },
     mouseLeave(optionAuxDetails: DropdownOptionAuxDetailsRef): void {
       const actualObjectName = optionAuxDetails[DROPDOWN_OPTION_AUX_DETAILS_REF]?.actualObjectName;
-      this.$emit('mouse-leave-option', [event.target as HTMLElement, actualObjectName] as OptionMouseLeave);
+      this.$emit('mouse-leave-option', [event.target as HTMLElement, actualObjectName] as MouseLeaveMenuContainerOptionEvent);
     },
     isArrowDisplayed(optionAuxDetails: DropdownOptionAuxDetailsRef): boolean {
       if (optionAuxDetails[DROPDOWN_OPTION_AUX_DETAILS_REF]) {
@@ -136,5 +146,11 @@ export default {
     float: right;
     width: 11px;
     height: 15px;
+  }
+  .option-disabled {
+    cursor: default;
+  }
+  .option-enabled {
+    cursor: pointer;
   }
 </style>

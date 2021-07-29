@@ -3,6 +3,7 @@ import { SUBCOMPONENT_OVERLAY_BACKGROUND_COLOR } from '../../../../../../../cons
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../../../consts/subcomponentOverlayClasses.enum';
 import { subcomponentSelectModeState } from '../../subcomponentSelectMode/subcomponentSelectModeState';
 import { DropdownCompositionAPI } from '../../../../../../../interfaces/dropdownCompositionAPI';
+import { MouseEnterOptionEvent } from '../../../../../../../interfaces/dropdownMenuMouseEvents';
 import { animationState } from '../../../../componentPreview/utils/animations/state';
 import { Ref } from 'vue';
 
@@ -43,7 +44,8 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
     toggleSubcomponentOverlayDisplay(objectContainingActiveOption.value[activeOptionPropertyKeyName.value], 'none');
   }
 
-  const mouseEnterOptionEventHandler = (highlightedOption: string): void => {
+  const mouseEnterOptionEventHandler = (mouseEnterOptionEvent: MouseEnterOptionEvent): void => {
+    const [highlightedOption] = mouseEnterOptionEvent;
     toggleSubcomponentOverlayDisplay(highlightedOption, 'block');
   }
 

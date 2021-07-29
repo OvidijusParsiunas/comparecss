@@ -1,3 +1,4 @@
+import { MouseClickNewOptionEvent } from './dropdownMenuMouseEvents';
 import { SubcomponentProperties } from './workshopComponent';
 import { ComponentOptions } from 'vue';
 
@@ -8,5 +9,5 @@ export interface UseActionsDropdown {
   mouseEnterActionsDropdownOption: (settingsComponent: ComponentOptions, triggeredOptionName: string, settingSpecs: any, subcomponentProperties: SubcomponentProperties) => void;
   mouseLeaveActionsDropdown: (settingsComponent: ComponentOptions, settingSpecs: any, subcomponentProperties: SubcomponentProperties, isDropdownHidden: boolean, triggeredOptionName?: string) => void;
   mouseClickActionsDropdownOption: (settingsComponent: ComponentOptions, triggeredOptionName: string, setting: any, allSettings: any, subcomponentProperties: SubcomponentProperties) => void;
-  mouseClickActionsDropdownNewOption: (event: unknown, settingSpecs: any, subcomponentProperties: SubcomponentProperties, activeOptionsObject: any) => void;
+  mouseClickActionsDropdownNewOption: (mouseClickNewOptionEvent: MouseClickNewOptionEvent, settingSpecs: any, subcomponentProperties: SubcomponentProperties, activeOptionsObject: any) => void;
 }
