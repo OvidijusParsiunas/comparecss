@@ -3,8 +3,6 @@ ability to copy subcomponent instead of importing text/button
 maybe should allow import a new button alltogether instead of creating a new button and then changing its style
 after adding a new subcomponent, open its options
 when there is no close and the mouse hovers over it in the dropdown, the play button displays
-should not be allowed to preview or click option that is disabled
-animation does not work for new close button
 
 overflow
 try with button tags
@@ -35,6 +33,7 @@ UX:
   see if the subcomponent add and subcomponent remove hover and active css is ok
   check if position option in the modal is ok to use
 
+when leaving dropdown option with mouse - remove the option highlight
 importing existing subcomponent will also need to offer an option from the app defaults
 update the range using the scroll wheel
 ability to group the components

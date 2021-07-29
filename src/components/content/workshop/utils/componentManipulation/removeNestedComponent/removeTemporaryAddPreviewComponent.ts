@@ -11,5 +11,8 @@ export class RemoveTemporaryAddPreviewComponent extends RemoveNestedComponent {
     ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
       parentComponent.componentPreviewStructure,
       RemoveTemporaryAddPreviewComponent.removeNestedComponentInPreviewStructureIfFound.bind(targetDetails));
+    Object.keys(targetDetails.targetSubcomponentProperties?.nestedComponent?.ref?.subcomponents || {}).forEach((keyName) => {
+      delete parentComponent.subcomponents[keyName];
+    });
   }
 }
