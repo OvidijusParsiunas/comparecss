@@ -69,7 +69,7 @@
         v-if="!isFullPreviewModeActive">
         <transition-group name="horizontal-transition">
           <button ref="importComponentToggle"
-            v-if="component.subcomponents[component.activeSubcomponentName].nestedComponent"
+            v-if="isImportButtonDisplayed()"
             type="button" class="btn-group-option" :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, OPTION_MENU_BUTTON_MARKER]"
             @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleSubcomponentImport, true)">
               <font-awesome-icon
@@ -82,14 +82,14 @@
             @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleInSync)">
               <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
           </button>
-          <button v-if="true"
+          <button v-if="isRemoveSubcomponentButtonDisplayed()"
             type="button" class="btn-group-option" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
             :class="['remove-subcomponent-button',
               {'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS, REMOVE_SUBCOMPONENT_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
             @mouseenter="mouseEnterSubcomponentManipulationToggle(false)"
             @mouseleave="mouseLeaveSubcomponentManipulationToggle(false)"
             @keydown.enter.prevent="$event.preventDefault()"
-            @click="buttonClickMiddleware(beginRemoveSubcomponent, !getIsDoNotShowModalAgainState())">
+            @click="buttonClickMiddleware(beginToRemoveSubcomponent, !getIsDoNotShowModalAgainState())">
           </button>
         </transition-group>
       </div>
@@ -145,6 +145,7 @@
 <script lang="ts">
 import { TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS } from '../../../../../consts/toolbarClasses';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
+import { NESTED_COMPONENTS_BASE_NAMES, PARENT_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../componentPreview/utils/animations/consts/sharedConsts';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ComponentTypeToOptions, componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
@@ -155,11 +156,12 @@ import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/tog
 import { removeSubcomponentModalState } from './removeSubcomponentModalState/removeSubcomponentModalState';
 import RemoveSubcomponentOverlay from './subcomponentOverlayToggleUtils/subcomponentOverlayToggleUtils';
 import { fulPreviewModeState } from '../../componentPreview/utils/fullPreviewMode/fullPreviewModeState';
+import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
 import ImportComponentModeToggleUtils from './importComponent/modeUtils/importComponentModeToggle';
 import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFullPreviewModeEvent';
-import { NESTED_COMPONENTS_BASE_NAMES, PARENT_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
+import { IMPORTABLE_SUBCOMPONENT_TYPES } from './importComponent/importableSubcomponentTypes';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../consts/componentStyles.enum';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
@@ -167,7 +169,6 @@ import { AddNewSubcomponentEvent } from '../../../../../interfaces/addNewSubcomp
 import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
-import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectMode';
 import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
 import useToolbarPositionToggle from './compositionApi/useToolbarPositionToggle';
@@ -405,13 +406,20 @@ export default {
       }
       return null;
     },
+    isImportButtonDisplayed(): boolean {
+      const subcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
+      return !!(IMPORTABLE_SUBCOMPONENT_TYPES.has(subcomponent.subcomponentType) && subcomponent.nestedComponent);
+    },
     toggleSubcomponentImport(): void {
       ImportComponentModeToggleUtils.toggleSubcomponentImport(this);
     },
     toggleInSync(callback?: () => void): void {
       this.temporarilyAllowOptionAnimations(InSync.toggleSubcomponentInSync.bind(this, this.component, callback), true, true);
     },
-    beginRemoveSubcomponent(): void {
+    isRemoveSubcomponentButtonDisplayed(): boolean {
+      return this.component.subcomponents[this.component.activeSubcomponentName].isRemovable;
+    },
+    beginToRemoveSubcomponent(): void {
       if (!this.getIsDoNotShowModalAgainState()) {
         this.currentRemoveSubcomponentModalTargetId = this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID;
         setTimeout(() => { this.currentRemoveSubcomponentModalTargetId = ''; });

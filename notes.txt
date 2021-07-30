@@ -1,5 +1,5 @@
 instead of having a dropdown for active and removed subcomponents we can have a + for adding subcomponents to it - base -> layer -> button/text
-ability to copy subcomponent instead of importing text/button
+ability to copy sibling subcomponent instead of importing style
 maybe should allow import a new button alltogether instead of creating a new button and then changing its style
 after adding a new subcomponent, open its options
 

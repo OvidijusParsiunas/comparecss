@@ -60,16 +60,19 @@ class DefaultCard extends ComponentBuilder {
     subcomponents[coreSubcomponentNames.base].defaultCustomFeatures = DefaultCard.createDefaultTextCustomFeatures();
     subcomponents[coreSubcomponentNames.base].customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Card title');
     subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Card title');
+    subcomponents[coreSubcomponentNames.base].isRemovable = true;
   }
 
   private static overwriteCloseButtonProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
     subcomponents[coreSubcomponentNames.base].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
     subcomponents[coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    subcomponents[coreSubcomponentNames.base].isRemovable = true;
   }
 
   private static overwriteImageProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
     subcomponents[coreSubcomponentNames.base].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER);
     subcomponents[coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER);
+    subcomponents[coreSubcomponentNames.base].isRemovable = true;
   }
 
   private static overwriteDescriptionProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
@@ -77,6 +80,7 @@ class DefaultCard extends ComponentBuilder {
     subcomponents[coreSubcomponentNames.base].defaultCustomFeatures = DefaultCard.createDefaultTextCustomFeatures();
     subcomponents[coreSubcomponentNames.base].customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Description');
     subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Description');
+    subcomponents[coreSubcomponentNames.base].isRemovable = true;
   }
 
   private static overwriteSubmitButtonProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
@@ -84,11 +88,13 @@ class DefaultCard extends ComponentBuilder {
     subcomponents[coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
     subcomponents[coreSubcomponentNames.text].customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Submit');
     subcomponents[coreSubcomponentNames.text].defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Submit');
+    subcomponents[coreSubcomponentNames.base].isRemovable = true;
   }
 
   private static overwriteLayerProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
     const nestedDropdownStructure = this as any as NestedDropdownStructure;
     subcomponents[coreSubcomponentNames.base].newNestedComponentsOptions = nestedDropdownStructure;
+    subcomponents[coreSubcomponentNames.base].isRemovable = true;
   }
 
   private static overwriteCancelButtonProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
@@ -96,6 +102,7 @@ class DefaultCard extends ComponentBuilder {
     subcomponents[coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
     subcomponents[coreSubcomponentNames.text].customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Cancel');
     subcomponents[coreSubcomponentNames.text].defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Cancel');
+    subcomponents[coreSubcomponentNames.base].isRemovable = true;
   }
 
   private static addNewLayers(cardComponent: WorkshopComponent): WorkshopComponent[] {

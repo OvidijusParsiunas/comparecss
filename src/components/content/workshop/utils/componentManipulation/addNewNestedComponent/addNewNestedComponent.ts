@@ -14,7 +14,9 @@ export class AddNewNestedComponent {
       layerName: string): void {
     const nestedComponentType = AddNewGenericComponent.componentBaseNameToType[nestedComponentBaseName];
     const nestedComponentStyle = nestedComponentBaseName === NESTED_COMPONENTS_BASE_NAMES.CLOSE ? BUTTON_STYLES.CLOSE : DEFAULT_STYLES.DEFAULT;
-    AddNewGenericComponent.add(currentlySelectedComponent, nestedComponentType, nestedComponentStyle, layerName);
+    const newComponent = AddNewGenericComponent.add(currentlySelectedComponent, nestedComponentType, nestedComponentStyle, layerName);
+    // set here because not all nested components are removable, but the ones added by the user are 
+    newComponent.subcomponents[newComponent.coreSubcomponentNames.base].isRemovable = true;
   }
 
   private static updateGenericComponentNames(currentlySelectedComponent: WorkshopComponent): void {
@@ -41,7 +43,8 @@ export class AddNewNestedComponent {
   }
 
   private static addNewLayerToBase(currentlySelectedComponent: WorkshopComponent): void {
-    AddNewLayerComponent.add(currentlySelectedComponent, LAYER_STYLES.CARD, true);
+    const newComponent = AddNewLayerComponent.add(currentlySelectedComponent, LAYER_STYLES.CARD, true);
+    newComponent.subcomponents[newComponent.coreSubcomponentNames.base].isRemovable = true;
     AddNewNestedComponent.updateLayerComponentNames(currentlySelectedComponent);
   }
 
