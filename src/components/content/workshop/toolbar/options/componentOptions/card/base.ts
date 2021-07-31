@@ -27,5 +27,9 @@ export const cardBaseOptions: SubcomponentOptions<ModalBaseOptionsModes> = {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
     },
+    {
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ANIMATIONS,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.CLOSE_ANIMATION,
+    },
   ],
 };

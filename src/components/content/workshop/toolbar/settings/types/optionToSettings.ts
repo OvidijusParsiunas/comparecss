@@ -4,10 +4,10 @@ import nestedComponentPosition from './nestedComponentPosition';
 import backgroundColorImage from './backgroundColorImage';
 import buttonAnimations from './buttonAnimations';
 import modalAnimations from './modalAnimations';
-import alertAnimations from './alertAnimations';
 import imageAnimations from './imageAnimations';
 import backgroundColor from './backgroundColor';
 import backgroundImage from './backgroundImage';
+import closeAnimation from './closeAnimation';
 import shadowVertical from './shadowVertical';
 import modalPosition from './modalPosition';
 import layerPosition from './layerPosition';
@@ -57,8 +57,8 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKDROP]: backdrop,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS]: buttonAnimations,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE_ANIMATIONS]: imageAnimations,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.ALERT_ANIMATIONS]: alertAnimations,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ANIMATIONS]: modalAnimations,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.CLOSE_ANIMATION]: closeAnimation,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ACTIONS]: modalActions,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.LAYER_POSITION]: layerPosition,
 };

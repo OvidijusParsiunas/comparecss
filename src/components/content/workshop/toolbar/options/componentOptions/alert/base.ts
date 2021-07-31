@@ -33,7 +33,7 @@ export const alertBaseOptions: SubcomponentOptions<AlertBaseOptionsModes> = {
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ANIMATIONS,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.ALERT_ANIMATIONS,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.CLOSE_ANIMATION,
     },
   ],
 };

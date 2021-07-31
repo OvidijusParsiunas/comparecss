@@ -168,6 +168,7 @@ import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKey
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectMode';
 import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
+import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import useToolbarPositionToggle from './compositionApi/useToolbarPositionToggle';
 import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
@@ -186,7 +187,6 @@ import {
   TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS,
   TOOLBAR_BUTTON_GROUP_TERTIARY_COMPONENT_CLASS, TOOLBAR_BUTTON_GROUP_MIDDLE_COMPONENT_CLASS, TOOLBAR_BUTTON_GROUP_END_COMPONENT_CLASS,
  } from '../../../../../consts/toolbarClasses';
-
 
 interface Consts {
   componentTypeToOptions: ComponentTypeToOptions;
@@ -402,7 +402,7 @@ export default {
                 && this.getActiveSubcomponentCustomFeatureValue(enabledIfCustomFeaturePresentWithKeys));
     },
     areExpandedModeOptionsEnabled(newOption: Option): boolean {
-      return !this.isExpandedModalPreviewModeActive
+      return (!this.isExpandedModalPreviewModeActive && !newOption.enabledOnExpandedModalPreviewMode)
             || (this.isExpandedModalPreviewModeActive
                 && newOption.enabledOnExpandedModalPreviewMode
                 && newOption.enabledOnExpandedModalPreviewMode === this.activeOption.enabledOnExpandedModalPreviewMode);
@@ -416,6 +416,7 @@ export default {
     },
     isImportButtonDisplayed(): boolean {
       const subcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
+      if (subcomponent.subcomponentType === SUBCOMPONENT_TYPES.BUTTON && subcomponent.nestedComponent.ref.style === BUTTON_STYLES.CLOSE) return false;
       return !!(IMPORTABLE_SUBCOMPONENT_TYPES.has(subcomponent.subcomponentType) && subcomponent.nestedComponent);
     },
     toggleSubcomponentImport(): void {
