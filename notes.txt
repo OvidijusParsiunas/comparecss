@@ -3,9 +3,11 @@ ability to copy sibling subcomponent instead of importing style
 maybe should allow import a new button alltogether instead of creating a new button and then changing its style
 after adding a new subcomponent, open its options
 rename import button to copy
-when close removed in alert - animations should be disabled
 make sure sync animation still works as expected
 make sure the spacing between buttons consistent
+can't close dropdown when clicking on arrow icon
+ability for highlight to disappear when leaving an option
+display auxiliary padding only when dropdown visible
 
 overflow
 try with button tags

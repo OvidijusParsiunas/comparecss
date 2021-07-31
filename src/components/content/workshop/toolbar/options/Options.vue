@@ -33,6 +33,7 @@
           :consistentButtonContent="{'backgroundIconClass': 'add-subcomponent-button-icon'}"
           :timeoutFunc="executeCallbackAfterTimeout"
           :minOptionsToDisplayDropdown="1"
+          :displayArrowOnMouseEnter="true"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
           @hide-dropdown-menu="mouseLeaveSubcomponentManipulationToggle(true)"
           @mouse-click-new-option="buttonClickMiddleware(addNewSubcomponent.bind(this, $event), true)"
@@ -430,7 +431,7 @@ export default {
     },
     isImportButtonDisplayed(): boolean {
       const subcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
-      if (subcomponent.subcomponentType === SUBCOMPONENT_TYPES.BUTTON && subcomponent.nestedComponent.ref.style === BUTTON_STYLES.CLOSE) return false;
+      if (subcomponent.subcomponentType === SUBCOMPONENT_TYPES.BUTTON && subcomponent.nestedComponent?.ref.style === BUTTON_STYLES.CLOSE) return false;
       return !!(IMPORTABLE_SUBCOMPONENT_TYPES.has(subcomponent.subcomponentType) && subcomponent.nestedComponent);
     },
     toggleSubcomponentImport(): void {

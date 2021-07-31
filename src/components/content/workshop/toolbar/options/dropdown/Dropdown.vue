@@ -1,6 +1,7 @@
 <template>
   <div v-if="isComponentDisplayed" class="dropdown">
-    <button type="button"
+    <button ref="button"
+      type="button"
       class="btn form-control dropdown-button"
       :class="getButtonClasses()"
       @click="buttonClick"
@@ -9,9 +10,13 @@
       <div v-if="!consistentButtonContent || !consistentButtonContent.backgroundIconClass" class="dropdown-button-text" :class="uniqueIdentifier">
         {{buttonText}}
       </div>
-      <font-awesome-icon :style="getFontAwesomeIconStyle()" class="arrow-down-icon" :class="getFontAwesomeIconClasses()" :icon="getFontAwesomeIcon()"/>
+      <font-awesome-icon :style="{color: fontAwesomeIconColor}"
+        class="arrow-down-icon"
+        :class="getFontAwesomeIconClasses()"
+        :icon="getFontAwesomeIcon()"/>
     </button>
-    <div class="auxiliary-padding dropdown-menu-options-marker" :class="uniqueIdentifier"
+    <div class="auxiliary-padding dropdown-menu-options-marker"
+      :class="uniqueIdentifier"
       @click="buttonClick"
       @mouseenter="mouseEnterAuxiliaryPadding"
       @mouseleave="mouseLeaveAuxiliaryPadding">
@@ -39,7 +44,6 @@ import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDrop
 import { DropdownCompositionAPI } from '../../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
-import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { TOOLBAR_GENERAL_BUTTON_CLASS } from '../../../../../../consts/toolbarClasses';
 import { FONT_AWESOME_COLORS } from '../../../../../../consts/fontAwesomeColors.enum';
 import BrowserType from '../../../utils/generic/browserType';
@@ -57,6 +61,7 @@ interface Data {
   dropdownDisplayDelayMilliseconds: number;
   areDropdownOptionsProcessed: boolean;
   TOOLBAR_GENERAL_BUTTON_CLASS: string;
+  fontAwesomeIconColor: string;
   processedOptions: NestedDropdownStructure[];
 }
 
@@ -92,6 +97,7 @@ export default {
     lastHoveredOptionElement: null,
     areDropdownOptionsProcessed: false,
     dropdownDisplayDelayMilliseconds: BrowserType.isChromium() ? 10 : 13,
+    fontAwesomeIconColor: FONT_AWESOME_COLORS.DEFAULT,
   }),
   setup(props: Props): DropdownCompositionAPI {
     // If you want to pass down a data variable into compositionAPI, use the code below and pass areMenusDisplayed into the customEventHandlers function and return customEventHandlers
@@ -124,6 +130,8 @@ export default {
   mounted(): void {
     if (!this.areDropdownOptionsProcessed) this.processDropdownOptions();
     this.setIsDropdownDisplayed();
+    this.fontAwesomeIconColor = this.displayArrowOnMouseEnter ? FONT_AWESOME_COLORS.WHITE : FONT_AWESOME_COLORS.DEFAULT;
+    setTimeout(() => { if (this.$refs.button) this.changeArrowIconProperty(this.$refs.button, 'transition', 'all 0.3s'); });
   },
   methods: {
     getOptionName(dropdownOptionName: string): void {
@@ -136,10 +144,6 @@ export default {
       }
       if (this.additionalButtonClasses) classes.push(this.additionalButtonClasses);
       return classes;
-    },
-    getFontAwesomeIconStyle(): WorkshopComponentCss {
-      // WORK2: butto should turn dark when hovered
-      return { color: this.consistentButtonContent?.backgroundIconClass ? 'white' : FONT_AWESOME_COLORS.DEFAULT }
     },
     getFontAwesomeIconClasses(): string[] {
       return this.consistentButtonContent?.backgroundIconClass ? ['arrow-bottom-right-corner-icon'] : [];
@@ -222,12 +226,19 @@ export default {
       }
       return null;
     },
+    changeArrowIconProperty(buttonElemenet: HTMLElement, propertyName: string, newValue: string): void {
+      const HTMLElements = Array.from(buttonElemenet.childNodes) as HTMLElement[];
+      const arrowIconHTMLElement = HTMLElements.find((element) => element && element.style);
+      arrowIconHTMLElement.style[propertyName] = newValue;
+    },
     mouseEnterButton(): void {
-      if (this.mouseEnterButtonEventHandler) { this.mouseEnterButtonEventHandler(); }
+      if (this.mouseEnterButtonEventHandler) this.mouseEnterButtonEventHandler();
+      if (this.displayArrowOnMouseEnter) this.fontAwesomeIconColor = FONT_AWESOME_COLORS.DEFAULT;
       this.$emit('mouse-enter-button');
     },
     mouseLeaveButton(): void {
-      if (this.mouseLeaveButtonEventHandler) { this.mouseLeaveButtonEventHandler(); }
+      if (this.mouseLeaveButtonEventHandler) this.mouseLeaveButtonEventHandler();
+      if (this.displayArrowOnMouseEnter) this.fontAwesomeIconColor = FONT_AWESOME_COLORS.WHITE;
       this.$emit('mouse-leave-button');
     },
     mouseEnterAuxiliaryPadding(): void {
@@ -453,6 +464,7 @@ export default {
     consistentButtonContent: Object,
     reactiveObjects: Array,
     additionalButtonClasses: Array,
+    displayArrowOnMouseEnter: Boolean,
   },
   watch: {
     reactiveObjects(): void {
@@ -475,6 +487,7 @@ export default {
     min-width: 6.5rem;
     border: 1px solid  #aaaaaa !important;
     background-color: white !important;
+    overflow: hidden;
   }
   .dropdown-button-icon {
     min-width: 2.3rem;
