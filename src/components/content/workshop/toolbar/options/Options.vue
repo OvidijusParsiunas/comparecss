@@ -155,6 +155,7 @@ import RemoveSubcomponentOverlay from './subcomponentOverlayToggleUtils/subcompo
 import { fulPreviewModeState } from '../../componentPreview/utils/fullPreviewMode/fullPreviewModeState';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
+import { EnabledIfNestedComponentPresent, Option } from '../../../../../interfaces/componentOptions';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
 import ImportComponentModeToggleUtils from './importComponent/modeUtils/importComponentModeToggle';
 import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFullPreviewModeEvent';
@@ -173,7 +174,6 @@ import useToolbarPositionToggle from './compositionApi/useToolbarPositionToggle'
 import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
-import { Option } from '../../../../../interfaces/componentOptions';
 import BrowserType from '../../utils/generic/browserType';
 import SharedUtils from '../settings/utils/sharedUtils';
 import { InSync } from './importComponent/inSync';
@@ -310,6 +310,17 @@ export default {
       const buttonElements = document.getElementsByClassName(this.OPTION_MENU_SETTING_OPTION_BUTTON_MARKER);
       return Array.from(buttonElements).find((buttonElement: HTMLElement) => buttonElement.innerText === optionName) as HTMLElement;
     },
+    isNestedComponentPresentOptionDisabled(enabledIfNestedComponentPresent: EnabledIfNestedComponentPresent): boolean {
+      const { type, style } = enabledIfNestedComponentPresent;
+      const resultSubcomponent = Object.keys(this.component.subcomponents).find((subcomponentName) => {
+        const subcomponentProperties = this.component.subcomponents[subcomponentName];
+        if (subcomponentProperties.subcomponentType === type) {
+          return style ? subcomponentProperties.nestedComponent.ref.style === style : true;
+        }
+        return false;
+      });
+      return !resultSubcomponent;
+    },
     isExpandedModeOptionDisabled(option: Option): boolean {
       return option.enabledOnExpandedModalPreviewMode && !this.isExpandedModalPreviewModeActive;
     },
@@ -320,6 +331,9 @@ export default {
     isOptionDisabled(option: Option): boolean {
       if (option.enabledIfCustomFeaturePresentWithKeys) {
         return !this.getActiveSubcomponentCustomFeatureValue(option.enabledIfCustomFeaturePresentWithKeys);
+      }
+      if (option.enabledIfNestedComponentPresent) {
+        return this.isNestedComponentPresentOptionDisabled(option.enabledIfNestedComponentPresent);
       }
       return this.isExpandedModeOptionDisabled(option);
     },

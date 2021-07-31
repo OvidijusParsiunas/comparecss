@@ -1,7 +1,9 @@
 import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../../consts/workshopToolbarOptionButtonNames.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
+import { BUTTON_STYLES } from '../../../../../../../consts/componentStyles.enum';
 
 type ModalBaseOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT;
 
@@ -30,6 +32,7 @@ export const cardBaseOptions: SubcomponentOptions<ModalBaseOptionsModes> = {
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ANIMATIONS,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.CLOSE_ANIMATION,
+      enabledIfNestedComponentPresent: { type: SUBCOMPONENT_TYPES.BUTTON, style: BUTTON_STYLES.CLOSE },
     },
   ],
 };
