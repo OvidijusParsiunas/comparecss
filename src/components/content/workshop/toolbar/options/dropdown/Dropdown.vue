@@ -62,7 +62,6 @@ interface Data {
 
 interface Props {
   isNested: boolean;
-  isButtonGroup: boolean,
   uniqueIdentifier: string;
   highlightSubcomponents: boolean;
   fontAwesomeIcon: string;
@@ -135,11 +134,12 @@ export default {
       if (this.consistentButtonContent?.backgroundIconClass) {
         classes.push(this.consistentButtonContent.backgroundIconClass, 'dropdown-button-icon');
       }
-      if (this.isButtonGroup) classes.push('button-group-border');
+      if (this.additionalButtonClasses) classes.push(this.additionalButtonClasses);
       return classes;
     },
     getFontAwesomeIconStyle(): WorkshopComponentCss {
-      return { color: this.consistentButtonContent?.backgroundIconClass ? '#6b6b6b' : FONT_AWESOME_COLORS.DEFAULT }
+      // WORK2: butto should turn dark when hovered
+      return { color: this.consistentButtonContent?.backgroundIconClass ? 'white' : FONT_AWESOME_COLORS.DEFAULT }
     },
     getFontAwesomeIconClasses(): string[] {
       return this.consistentButtonContent?.backgroundIconClass ? ['arrow-bottom-right-corner-icon'] : [];
@@ -441,10 +441,6 @@ export default {
     // or listen to the emitted events
     customEventHandlers: Function,
     optionNameMap: Object,
-    isButtonGroup: {
-      type: Boolean,
-      default: false,
-    },
     isNested: {
       type: Boolean,
       default: false,
@@ -456,6 +452,7 @@ export default {
     },
     consistentButtonContent: Object,
     reactiveObjects: Array,
+    additionalButtonClasses: Array,
   },
   watch: {
     reactiveObjects(): void {
@@ -480,7 +477,7 @@ export default {
     background-color: white !important;
   }
   .dropdown-button-icon {
-    min-width: 2.5rem;
+    min-width: 2.3rem;
     padding-right: 1px !important;
   }
   .dropdown-button-text {
@@ -505,8 +502,5 @@ export default {
     z-index: 9990;
     position: absolute;
     cursor: pointer;
-  }
-  .button-group-border {
-    border-radius: 0px 0.25rem 0.25rem 0px !important;
   }
 </style>

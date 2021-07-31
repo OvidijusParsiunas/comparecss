@@ -10,6 +10,7 @@
         </button>
         <dropdown
           :class="TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS"
+          :additionalButtonClasses="getSubcomponentDropdownButtonBorderClasses()"
           :uniqueIdentifier="SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
           :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
           :objectContainingActiveOption="component"
@@ -17,27 +18,54 @@
           :optionNameMap="component.componentPreviewStructure.subcomponentNameToDropdownOptionName"
           :fontAwesomeIcon="'angle-double-down'"
           :highlightSubcomponents="true"
-          :isButtonGroup="true"
           :isNested="true"
           :customEventHandlers="useSubcomponentDropdownEventHandlers"
           :timeoutFunc="executeCallbackAfterTimeout"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
           @mouse-click-new-option="selectNewSubcomponent($event[0])"
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
+        <dropdown
+          :class="TOOLBAR_BUTTON_GROUP_TERTIARY_COMPONENT_CLASS"
+          :additionalButtonClasses="[TOOLBAR_BUTTON_GROUP_END_COMPONENT_CLASS]"
+          :uniqueIdentifier="ADD_NEW_SUBCOMPONENT_DROPDOWN_UNIQUE_IDENTIFIER"
+          :dropdownOptions="getSubcomponentsToAdd()"
+          :reactiveObjects="[component, component.activeSubcomponentName]"
+          :consistentButtonContent="{'backgroundIconClass': 'add-subcomponent-button-icon'}"
+          :timeoutFunc="executeCallbackAfterTimeout"
+          :minOptionsToDisplayDropdown="1"
+          @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
+          @hide-dropdown-menu="mouseLeaveSubcomponentManipulationToggle(true)"
+          @mouse-click-new-option="buttonClickMiddleware(addNewSubcomponent.bind(this, $event), true)"
+          @mouse-enter-option="mouseEnterSubcomponentManipulationToggle(true, $event)"
+          @mouse-leave-option="mouseLeaveSubcomponentManipulationToggle(true)"/>
       </div>
-      <dropdown
-        :class="TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS"
-        :uniqueIdentifier="ADD_NEW_SUBCOMPONENT_DROPDOWN_UNIQUE_IDENTIFIER"
-        :dropdownOptions="getSubcomponentsToAdd()"
-        :reactiveObjects="[component, component.activeSubcomponentName]"
-        :consistentButtonContent="{'backgroundIconClass': 'subcomponent-display-toggle-add'}"
-        :timeoutFunc="executeCallbackAfterTimeout"
-        :minOptionsToDisplayDropdown="1"
-        @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-        @hide-dropdown-menu="mouseLeaveSubcomponentManipulationToggle(true)"
-        @mouse-click-new-option="buttonClickMiddleware(addNewSubcomponent.bind(this, $event), true)"
-        @mouse-enter-option="mouseEnterSubcomponentManipulationToggle(true, $event)"
-        @mouse-leave-option="mouseLeaveSubcomponentManipulationToggle(true)"/>
+      <div
+        :style="{marginRight: component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef ? '0px' : '8px'}"
+        class="btn-group option-component-button-container"
+        v-if="!isFullPreviewModeActive">
+        <transition-group name="horizontal-transition">
+          <button ref="importComponentToggle"
+            v-if="isImportButtonDisplayed()" style="min-width: 28px; padding-left: 28px; height: 38px;"
+            type="button" class="btn-group-option copy-subcomponent-button-icon" :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, OPTION_MENU_BUTTON_MARKER]"
+            @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleSubcomponentImport, true)">
+          </button>
+          <button v-if="isInSyncButtonDisplayed()"
+            type="button" class="btn-group-option"
+            :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS, OPTION_MENU_BUTTON_MARKER]"
+            @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleInSync)">
+              <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
+          </button>
+          <button v-if="isRemoveSubcomponentButtonDisplayed()"
+            type="button" style="margin-right: 8px" class="btn-group-option" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
+            :class="['remove-subcomponent-button-icon',
+              {'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS, REMOVE_SUBCOMPONENT_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
+            @mouseenter="mouseEnterSubcomponentManipulationToggle(false)"
+            @mouseleave="mouseLeaveSubcomponentManipulationToggle(false)"
+            @keydown.enter.prevent="$event.preventDefault()"
+            @click="buttonClickMiddleware(beginToRemoveSubcomponent, !getIsDoNotShowModalAgainState())">
+          </button>
+        </transition-group>
+      </div>
       <div v-if="component.type === COMPONENT_TYPES.MODAL || component.type === COMPONENT_TYPES.ALERT || component.type === COMPONENT_TYPES.CARD"
         class="btn-group option-component-button-container">
         <button v-if="!isFullPreviewModeActive && component.type === COMPONENT_TYPES.MODAL" ref="expandedModalPreviewModeToggle"
@@ -62,36 +90,6 @@
             :style="{ ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
             class="modal-button-icon full-preview-icon" icon="play"/>
         </button>
-      </div>
-      <div
-        :style="{marginRight: component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef ? '0px' : '8px'}"
-        class="btn-group option-component-button-container"
-        v-if="!isFullPreviewModeActive">
-        <transition-group name="horizontal-transition">
-          <button ref="importComponentToggle"
-            v-if="isImportButtonDisplayed()"
-            type="button" class="btn-group-option" :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, OPTION_MENU_BUTTON_MARKER]"
-            @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleSubcomponentImport, true)">
-              <font-awesome-icon
-                :style="{ color: isImportComponentModeActive ? FONT_AWESOME_COLORS.ACTIVE : FONT_AWESOME_COLORS.DEFAULT }"
-                class="import-icon" icon="long-arrow-alt-down"/>
-          </button>
-          <button v-if="isInSyncButtonDisplayed()"
-            type="button" class="btn-group-option"
-            :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS, OPTION_MENU_BUTTON_MARKER]"
-            @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleInSync)">
-              <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
-          </button>
-          <button v-if="isRemoveSubcomponentButtonDisplayed()"
-            type="button" class="btn-group-option" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
-            :class="['remove-subcomponent-button',
-              {'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS, REMOVE_SUBCOMPONENT_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
-            @mouseenter="mouseEnterSubcomponentManipulationToggle(false)"
-            @mouseleave="mouseLeaveSubcomponentManipulationToggle(false)"
-            @keydown.enter.prevent="$event.preventDefault()"
-            @click="buttonClickMiddleware(beginToRemoveSubcomponent, !getIsDoNotShowModalAgainState())">
-          </button>
-        </transition-group>
       </div>
       <transition-group :name="isDropdownAndOptionButtonsTransitionAllowed || isExpandedModalPreviewModeActive ? 'horizontal-transition' : ''">
         <button v-if="!isFullPreviewModeActive && isInSyncButtonDisplayed()"
@@ -143,7 +141,6 @@
 </template>
 
 <script lang="ts">
-import { TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS } from '../../../../../consts/toolbarClasses';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import { NESTED_COMPONENTS_BASE_NAMES, PARENT_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../componentPreview/utils/animations/consts/sharedConsts';
@@ -185,6 +182,11 @@ import {
   OPTION_MENU_SETTING_OPTION_BUTTON_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, REMOVE_SUBCOMPONENT_BUTTON_MARKER,
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER, FULL_PREVIEW_MODE_BUTTON_MARKER,
 } from '../../../../../consts/elementClassMarkers';
+import {
+  TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS,
+  TOOLBAR_BUTTON_GROUP_TERTIARY_COMPONENT_CLASS, TOOLBAR_BUTTON_GROUP_MIDDLE_COMPONENT_CLASS, TOOLBAR_BUTTON_GROUP_END_COMPONENT_CLASS,
+ } from '../../../../../consts/toolbarClasses';
+
 
 interface Consts {
   componentTypeToOptions: ComponentTypeToOptions;
@@ -199,6 +201,9 @@ interface Consts {
   HIGHLIGHTED_OPTION_BUTTON_TEXT_COLOR_CLASS: string;
   TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS: string;
   TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS: string;
+  TOOLBAR_BUTTON_GROUP_TERTIARY_COMPONENT_CLASS: string;
+  TOOLBAR_BUTTON_GROUP_MIDDLE_COMPONENT_CLASS: string;
+  TOOLBAR_BUTTON_GROUP_END_COMPONENT_CLASS: string;
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER: string;
   EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER: string;
   COMPONENT_TYPES: typeof COMPONENT_TYPES;
@@ -242,6 +247,9 @@ export default {
       BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS: 500,
       TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS,
       TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS,
+      TOOLBAR_BUTTON_GROUP_TERTIARY_COMPONENT_CLASS,
+      TOOLBAR_BUTTON_GROUP_MIDDLE_COMPONENT_CLASS,
+      TOOLBAR_BUTTON_GROUP_END_COMPONENT_CLASS,
       REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: `#${REMOVE_SUBCOMPONENT_MODAL_ID}`,
       BROWSER_SPECIFIC_MODAL_BUTTON_STYLE: { paddingTop: BrowserType.isFirefox() ? '1px' : '' },
       SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS,
@@ -468,6 +476,10 @@ export default {
     toggleSubcomponentSelectModeButtonDisplay(isDropdownDisplayed: boolean): void {
       this.isSubcomponentSelectModeButtonDisplayed = isDropdownDisplayed;
     },
+    getSubcomponentDropdownButtonBorderClasses(): string[] {
+      const isAddNewSubcomponentDropdownDisplayed = Object.keys(this.getSubcomponentsToAdd()).length > 0;
+      return [isAddNewSubcomponentDropdownDisplayed ? TOOLBAR_BUTTON_GROUP_MIDDLE_COMPONENT_CLASS : TOOLBAR_BUTTON_GROUP_END_COMPONENT_CLASS];
+    },
     toggleModalExpandMode(): void {
       this.isExpandedModalPreviewModeActive = !this.isExpandedModalPreviewModeActive;
       const setOptionToDefaultCallback = this.isOptionDisabled(this.activeOption) ? this.selectDefaultOption.bind(this) : () => { return; };
@@ -632,10 +644,11 @@ export default {
   .horizontal-transition-leave-active {
     position: absolute !important;
   }
-  .import-icon {
-    width: 14px;
-    height: 16px;
-    margin-top: -4px;
+  .copy-subcomponent-button-icon {
+    width: 1em;
+    height: 35px;
+    background: url('../../../../../assets/svg/copy.svg') center no-repeat;
+    background-size: 15px auto;
   }
   .sync-icon {
     height: 13px;
@@ -646,14 +659,14 @@ export default {
     background-color: inherit !important;
     border: unset !important;
   }
-  .remove-subcomponent-button {
+  .remove-subcomponent-button-icon {
     width: 3em;
     height: 38px;
     background: url('../../../../../assets/svg/rubbish-can-default.svg') center no-repeat;
     background-size: 17px auto;
   }
   /* remove this if the red colour is a little distracting - UX */
-  .remove-subcomponent-button:active {
+  .remove-subcomponent-button-icon:active {
     background-color: #f3eded !important;
   }
   .option-select-button-default {
@@ -722,14 +735,14 @@ export default {
   }
 </style>
 <style lang="css">
-  .subcomponent-display-toggle-add {
-    width: 3em;
-    height: 38px;
-    background: url('../../../../../assets/svg/plus-default.svg') center no-repeat;
-    background-size: 14px auto;
+  .add-subcomponent-button-icon {
+    width: 1em;
+    height: 35px;
+    background: url('../../../../../assets/svg/plus.svg') center no-repeat;
+    background-size: 13.5px auto;
   }
   /* remove this if the green colour is a little distracting - UX */
-  .subcomponent-display-toggle-add:active {
+  .add-subcomponent-button-icon:active {
     background-color: #e9f5e9 !important;
   }
 </style>

@@ -4,15 +4,14 @@ import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../interfaces/subcomp
 import { AddTemporaryAddPreviewComponent } from './addNewNestedComponent/addTemporaryAddPreviewComponent';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { ChangeNestedComponentAlignment } from './moveNestedComponent/changeNestedComponentAlignment';
-import { NESTED_COMPONENTS_BASE_NAMES } from '../../../../../consts/baseSubcomponentNames.enum';
 import { ChangeNestedComponentOrder } from './moveNestedComponent/changeNestedComponentOrder';
+import { AddNewSubcomponentEvent } from '../../../../../interfaces/addNewSubcomponentEvent';
 import { AddNewNestedComponent } from './addNewNestedComponent/addNewNestedComponent';
 import { RemoveNestedComponent } from './removeNestedComponent/removeNestedComponent';
 import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
 import CopyComponent from './copyComponent/copyComponent';
 import ComponentJs from '../generic/componentJs';
 import { ComponentOptions } from 'vue';
-import { AddNewSubcomponentEvent } from '../../../../../interfaces/addNewSubcomponentEvent';
 
 export class ComponentManipulation {
 

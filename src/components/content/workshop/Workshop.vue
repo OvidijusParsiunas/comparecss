@@ -288,7 +288,7 @@ export default {
        they are needed - which causes flickering. Downloading these images in run-time by appending <img> tags to the head
        element does not work because those images need to be in the public folder. The svgs referenced in the css within
        the <styles> tags are located in the src file but are referenced with a unique file hash during compile time */
-    background: url('../../../assets/svg/plus-default.svg'),
+    background: url('../../../assets/svg/plus.svg'),
                 url('../../../assets/svg/rubbish-can-default.svg'),
   }
   #preloadedIcons {

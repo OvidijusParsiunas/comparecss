@@ -19,7 +19,7 @@
         </div>
         <div v-else :class="COMPONENT_CARD_MARKER">
           <a class="btn btn-success" :class="CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER">
-            <font-awesome-icon class="import-icon" icon="check"/>
+            <font-awesome-icon icon="check"/>
           </a>
         </div>
       </div>

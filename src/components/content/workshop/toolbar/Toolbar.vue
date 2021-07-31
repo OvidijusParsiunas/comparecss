@@ -170,13 +170,24 @@ export default {
   }
   .toolbar-button-group-primary-component {
     left: 0px;
-    z-index: 2 !important;
+    z-index: 3 !important;
     background-color: white !important;
   }
   .toolbar-button-group-secondary-component {
     left: -1px;
+    z-index: 2;
+    background-color: white !important;
+  }
+  .toolbar-button-group-tertiary-component {
+    left: -2px;
     z-index: 1;
     background-color: white !important;
+  }
+  .toolbar-button-group-middle-component {
+    border-radius: 0 0 0 0 !important;
+  }
+  .toolbar-button-group-end-component {
+    border-radius: 0px 0.25rem 0.25rem 0px !important;
   }
   .toolbar-general-button {
     border: 1px solid #9d9d9d !important;
