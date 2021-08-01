@@ -243,7 +243,7 @@ export default {
       this.$emit('mouse-leave-button');
     },
     mouseEnterAuxiliaryPadding(): void {
-      if (this.areMenusDisplayed) {
+      if (this.areMenusDisplayed && !this.consistentButtonContent) {
         this.removeChildDropdownMenus(0);
         const optionElementToBeHighlighted = this.$refs.dropdownMenus.childNodes[1].childNodes[1];
         if (!optionElementToBeHighlighted) return;
@@ -265,6 +265,12 @@ export default {
       }
     },
     mouseLeaveDropdown(): void {
+      // when there is no nesting - the highlight is set to disappear when user mouse leaves the dropdown
+      if (!this.isNested && this.lastHoveredOptionElement) {
+        this.resetLastHighlightedOptionStyle();
+        this.lastHoveredOptionElement = null;
+        this.lastHoveredOptionText = null;
+      }
       this.$emit('mouse-leave-dropdown');
     },
     extractHighlightedOptionText(optionElement: HTMLElement): string {

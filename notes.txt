@@ -5,7 +5,6 @@ after adding a new subcomponent, open its options
 rename import button to copy
 make sure sync animation still works as expected
 make sure the spacing between buttons consistent
-ability for highlight to disappear when leaving an option
 
 overflow
 try with button tags
