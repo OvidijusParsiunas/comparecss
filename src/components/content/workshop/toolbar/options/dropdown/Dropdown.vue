@@ -15,7 +15,8 @@
         :class="getFontAwesomeIconClasses()"
         :icon="getFontAwesomeIcon()"/>
     </button>
-    <div class="auxiliary-padding dropdown-menu-options-marker"
+    <div v-if="areMenusDisplayed"
+      class="auxiliary-padding dropdown-menu-options-marker"
       :class="uniqueIdentifier"
       @click="buttonClick"
       @mouseenter="mouseEnterAuxiliaryPadding"
@@ -166,7 +167,7 @@ export default {
       }
       this.displayHighlightedOptionAndParentMenus();
       const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE]);
-      const workshopEventCallback: WorkshopEventCallback = {keyTriggers, func: this.hideDropdownMenu};
+      const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.hideDropdownMenu };
       this.$emit('hide-dropdown-menu-callback', workshopEventCallback);
       this.areMenusDisplayed = true;
     },
@@ -502,6 +503,7 @@ export default {
     margin-top: 0.3em;
     padding-left: 7px;
     width: 16.5px;
+    pointer-events: none;
   }
   .arrow-bottom-right-corner-icon {
     margin-top: 19px;
@@ -509,8 +511,8 @@ export default {
     transform: rotate(315deg);
   }
   .auxiliary-padding {
-    top: 36px;
-    height: 5px;
+    top: 38px;
+    height: 3px;
     width: 100%;
     z-index: 9990;
     position: absolute;
