@@ -1,10 +1,9 @@
-fix padding and change isDropdownAndOptionButtonsTransitionAllowed to isSubcomponentButtonsTransitionAllowed in a separate commit for tracking
-fix issue where the second dropdown button border bottom is affected by card button click - only when a particular window height is set
-
 overflow
 try with button tags
 check to see if text can be placed into another div
+the dropdown button bottom border issue fixed via auxiliary overlay with no pointer events
 
+when moving into copying a nested component - can quickly click on add new component (fix this when implemented final add new component button)
 when switching subcomponent alignment, highlight the subcomponent so that it is clear where it is being moved
 an alternative to using spaces for ids would be to append id numbers at the start and cut them out from the dropdown option elements
 when a subcomponent is added or removed - should have an appropriate animation like stretch to make it more interactive

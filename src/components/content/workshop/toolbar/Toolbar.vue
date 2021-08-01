@@ -15,7 +15,8 @@
         @toggle-toolbar-position="toggleToolbarPosition"
         @toggle-copy-nested-component-mode="$emit('toggle-copy-nested-component-mode', $event)"
         @add-subcomponent="$emit('add-subcomponent', $event)"
-        @remove-subcomponent="$emit('remove-subcomponent', $event)"/>
+        @remove-subcomponent="$emit('remove-subcomponent', $event)"
+        @display-copyable-component-card-overlays="$emit('display-copyable-component-card-overlays', $event)"/>
       <settings v-if="isSettingsDisplayed" ref="settings"
         :component="component"
         :subcomponentProperties="component.subcomponents[component.activeSubcomponentName]"

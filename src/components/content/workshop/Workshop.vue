@@ -17,6 +17,7 @@
             :isCopyNestedComponentModeActive="isCopyNestedComponentModeActive"
             :currentlyHoveredComponentForCopyNested="currentlyHoveredComponentForCopyNested"
             :currentlySelectedComponentForCopyNested="currentlySelectedComponentForCopyNested"
+            :copyableComponentCardOverlaysToDisplay="copyableComponentCardOverlaysToDisplay"
             @set-active-component="setActiveComponent($event)"
             @copy-component="copyComponent($event)"
             @remove-component="removeComponent($event)"
@@ -51,7 +52,8 @@
               @add-subcomponent="addNewSubcomponent($event)"
               @remove-subcomponent="removeSubcomponent($event)"
               @change-subcomponent-order="changeSubcomponentOrder($event)"
-              @change-subcomponent-alignment="changeSubcomponentAlignment($event)"/>
+              @change-subcomponent-alignment="changeSubcomponentAlignment($event)"
+              @display-copyable-component-card-overlays="displayCopyableComponentCardOverlays($event)"/>
             <component-contents ref="contents"
               :component="currentlySelectedComponent"
               :componentPreviewAssistance="componentPreviewAssistance"
@@ -113,6 +115,7 @@ import { ChangeSubcomponentAlignmentEvent, ChangeSubcomponentOrderEvent } from '
 import { removeSubcomponentModalState } from './toolbar/options/removeSubcomponentModalState/removeSubcomponentModalState';
 import RemoveSubcomponentOverlay from './toolbar/options/subcomponentOverlayToggleUtils/subcomponentOverlayToggleUtils';
 import { ToggleCopyNestedComponentModeState } from './utils/copyNestedComponent/toggleCopyNestedComponentModeState';
+import { CopyableComponentCardOverlaysToDisplay } from '../../../interfaces/copyableComponentCardOverlaysToDisplay';
 import { ToggleCopyNestedComponentModeEvent } from '../../../interfaces/toggleCopyNestedComponentModeEvent';
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
@@ -154,6 +157,7 @@ interface Data {
   workshopEventCallbacks: (() => boolean)[];
   isCopyNestedComponentModeActive: boolean;
   componentSelectedBeforeFadeAnimation: WorkshopComponent;
+  copyableComponentCardOverlaysToDisplay: CopyableComponentCardOverlaysToDisplay;
 }
 
 export default {
@@ -180,6 +184,7 @@ export default {
     componentSelectedBeforeFadeAnimation: null,
     workshopEventCallbacks: [],
     isCopyNestedComponentModeActive: false,
+    copyableComponentCardOverlaysToDisplay: null,
   }),
   mounted(): void {
     document.getElementById('comparecss-sidenav').style.display = 'none';
@@ -189,6 +194,9 @@ export default {
     document.addEventListener('mouseup', this.triggerWorkshopEventCallbacks);
   },
   methods: {
+    displayCopyableComponentCardOverlays(copyableComponentCardOverlaysToDisplay: CopyableComponentCardOverlaysToDisplay): void {
+      this.copyableComponentCardOverlaysToDisplay = copyableComponentCardOverlaysToDisplay;
+    },
     addNewComponent(newComponent: WorkshopComponent): void {
       ComponentManipulation.addNewComponent(this, newComponent);
     },

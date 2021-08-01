@@ -1,6 +1,7 @@
 <template>
   <div class="component-card" :class="COMPONENT_CARD_MARKER">
-    <div class="component-body-container" :class="[highlightCard(), COMPONENT_CARD_MARKER]"
+    <div class="component-body-container component-card-dimensions"
+    :class="[highlightCard(), COMPONENT_CARD_MARKER]"
       @mousedown="setActiveComponent"
       @mouseenter="mouseHoverComponentCard(true)"
       @mouseleave="mouseHoverComponentCard(false)">
@@ -23,11 +24,13 @@
           </a>
         </div>
       </div>
+      <div v-if="isDisplayingCopyableComponentCardOverlay()" class="copy-nested-component-overlay static-position"></div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
+import { CopyableComponentCardOverlaysToDisplay } from '../../../../interfaces/copyableComponentCardOverlaysToDisplay';
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
 import { CONFIRM_NESTED_COMPONENT_TO_COPY_MARKER } from '../../../../consts/elementClassMarkers';
 import { ComponentCardHoveredEvent } from '../../../../interfaces/componentCardHoveredEvent'
@@ -165,6 +168,15 @@ export default {
     stopEditing(): void {
       this.setIsClassNameEditingInProgressState(false);
       this.isInputElementDisplayed = false;
+    },
+    isDisplayingCopyableComponentCardOverlay(): boolean {
+      if (!this.copyableComponentCardOverlaysToDisplay) return;
+      const { isDisplaying, baseType, componentStyle } = this.copyableComponentCardOverlaysToDisplay as CopyableComponentCardOverlaysToDisplay;
+      if (isDisplaying) {
+        if (componentStyle && this.thisComponent.nestedComponent?.ref.style !== componentStyle) return false;
+        return this.thisComponent.subcomponents[this.thisComponent.coreSubcomponentNames.base].subcomponentType === baseType;
+      }
+      return false;
     }
   },
   props: {
@@ -173,6 +185,7 @@ export default {
     currentlySelectedComponent: Object,
     currentlyHoveredComponentForCopyNested: Object,
     currentlySelectedComponentForCopyNested: Object,
+    copyableComponentCardOverlaysToDisplay: Object,
     isCopyNestedComponentModeActive: Boolean,
   }
 };
@@ -215,5 +228,18 @@ export default {
     background-color: rgb(255, 255, 253) !important;
     box-shadow: 0 0 1px rgb(212, 204, 124) !important;
     border-color: #fff6a3 !important;
-  } 
+  }
+  /* used to enable the overlay to inherit width/height */
+  .component-card-dimensions {
+    width: 100%;
+    height: 100%;
+    position: relative;
+  }
+  .copy-nested-component-overlay {
+    width: inherit;
+    height: inherit;
+    position: absolute;
+    background-color: #f4ff0033;
+    border: 1px solid yellow;
+  }
 </style>

@@ -10,12 +10,12 @@
       <div v-if="!consistentButtonContent || !consistentButtonContent.backgroundIconClass" class="dropdown-button-text" :class="uniqueIdentifier">
         {{buttonText}}
       </div>
-      <font-awesome-icon :style="{color: fontAwesomeIconColor}"
+      <font-awesome-icon :style="getFontAwesomeIconStyle()"
         class="arrow-down-icon"
         :class="getFontAwesomeIconClasses()"
         :icon="getFontAwesomeIcon()"/>
     </button>
-    <div v-if="areMenusDisplayed"
+    <div :style="getAuxiliaryPaddingStyle()"
       class="auxiliary-padding dropdown-menu-options-marker"
       :class="uniqueIdentifier"
       @click="buttonClick"
@@ -45,6 +45,7 @@ import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDrop
 import { DropdownCompositionAPI } from '../../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../../../interfaces/workshopEventCallback';
+import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { TOOLBAR_GENERAL_BUTTON_CLASS } from '../../../../../../consts/toolbarClasses';
 import { FONT_AWESOME_COLORS } from '../../../../../../consts/fontAwesomeColors.enum';
 import BrowserType from '../../../utils/generic/browserType';
@@ -132,7 +133,6 @@ export default {
     if (!this.areDropdownOptionsProcessed) this.processDropdownOptions();
     this.setIsDropdownDisplayed();
     this.fontAwesomeIconColor = this.displayArrowOnMouseEnter ? FONT_AWESOME_COLORS.WHITE : FONT_AWESOME_COLORS.DEFAULT;
-    setTimeout(() => { if (this.$refs.button) this.changeArrowIconProperty(this.$refs.button, 'transition', 'all 0.3s'); });
   },
   methods: {
     getOptionName(dropdownOptionName: string): void {
@@ -146,11 +146,17 @@ export default {
       if (this.additionalButtonClasses) classes.push(this.additionalButtonClasses);
       return classes;
     },
+    getFontAwesomeIconStyle(): WorkshopComponentCss {
+      return { color: this.fontAwesomeIconColor };
+    },
     getFontAwesomeIconClasses(): string[] {
       return this.consistentButtonContent?.backgroundIconClass ? ['arrow-bottom-right-corner-icon'] : [];
     },
     getFontAwesomeIcon(): string {
       return this.consistentButtonContent?.backgroundIconClass ? 'caret-down' : this.fontAwesomeIcon;
+    },
+    setArrowIconTransitionProperty(): void {
+      setTimeout(() => { if (this.$refs.button) this.changeArrowIconProperty(this.$refs.button, 'transition', 'all 0.3s'); });
     },
     buttonClick(): void {
       if (this.timeoutFunc) { 
@@ -241,6 +247,9 @@ export default {
       if (this.mouseLeaveButtonEventHandler) this.mouseLeaveButtonEventHandler();
       if (this.displayArrowOnMouseEnter) this.fontAwesomeIconColor = FONT_AWESOME_COLORS.WHITE;
       this.$emit('mouse-leave-button');
+    },
+    getAuxiliaryPaddingStyle(): WorkshopComponentCss {
+      return { pointerEvents: this.areMenusDisplayed ? '' : 'none' };
     },
     mouseEnterAuxiliaryPadding(): void {
       if (this.areMenusDisplayed && !this.consistentButtonContent) {
@@ -475,8 +484,9 @@ export default {
   },
   watch: {
     reactiveObjects(): void {
-      // used to force the processing of new dropdown options object
+      // used to force the processing of dropdown properties when any of the reactive objects in the array change
       this.processDropdownOptions();
+      this.setArrowIconTransitionProperty();
     },
     objectContainingActiveOption(): void {
       this.processDropdownOptions();

@@ -11,6 +11,7 @@
           :isCopyNestedComponentModeActive="isCopyNestedComponentModeActive"
           :currentlyHoveredComponentForCopyNested="currentlyHoveredComponentForCopyNested"
           :currentlySelectedComponentForCopyNested="currentlySelectedComponentForCopyNested"
+          :copyableComponentCardOverlaysToDisplay="copyableComponentCardOverlaysToDisplay"
           @set-active-component="$emit('set-active-component', $event)"
           @component-card-hovered="$emit('component-card-hovered', $event)"
           @copy-component="$emit('copy-component', $event)"
@@ -65,6 +66,7 @@ export default {
     currentlySelectedComponent: Object,
     currentlyHoveredComponentForCopyNested: Object,
     currentlySelectedComponentForCopyNested: Object,
+    copyableComponentCardOverlaysToDisplay: Object,
     isCopyNestedComponentModeActive: Boolean,
   },
   watch: {

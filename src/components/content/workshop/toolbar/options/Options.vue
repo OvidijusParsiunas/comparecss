@@ -41,66 +41,71 @@
           @mouse-leave-option="mouseLeaveSubcomponentManipulationToggle(true)"/>
       </div>
       <transition-group name="horizontal-transition">
-      <div class="btn-group component-manipulation-options-group"
-        :class="{'transition-item': isSubcomponentButtonsTransitionAllowed}"
-        v-if="!isFullPreviewModeActive">
-        <transition-group name="horizontal-transition">
-          <button ref="copyNestedComponentToggle"
-            v-if="isCopyButtonDisplayed()"
-            type="button" class="btn-group-option copy-subcomponent-button-icon" :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, OPTION_MENU_BUTTON_MARKER]"
-            @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleCopyNestedComponentMode, true)">
+        <div class="btn-group component-manipulation-options-group"
+          :class="{'transition-item': areOptionButtonTransitionsAllowed}"
+          v-if="!isFullPreviewModeActive">
+          <transition-group name="horizontal-transition">
+            <button ref="copyNestedComponentToggle"
+              v-if="isCopyButtonDisplayed()"
+              type="button" class="btn-group-option copy-nested-component-button" :class="[
+              {'transition-item': areOptionButtonTransitionsAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, OPTION_MENU_BUTTON_MARKER]"
+              @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleCopyNestedComponentMode, true)"
+              @mouseenter="mouseHoverCopyNestedComponentToggle(true)"
+              @mouseleave="mouseHoverCopyNestedComponentToggle(false)">
+              <!-- placed inside the button element to not have the transition -->
+              <div :class="isCopyNestedComponentModeActive ? 'copy-nested-component-icon-active' : 'copy-nested-component-icon-default'"></div> 
+            </button>
+            <button v-if="isInSyncButtonDisplayed()"
+              type="button" class="btn-group-option"
+              :class="[{'transition-item': areOptionButtonTransitionsAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS, OPTION_MENU_BUTTON_MARKER]"
+              @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleInSync)">
+                <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
+            </button>
+            <button v-if="isRemoveSubcomponentButtonDisplayed()"
+              type="button" style="margin-right: 8px" class="btn-group-option" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
+              :class="['remove-subcomponent-button-icon',
+                {'transition-item': areOptionButtonTransitionsAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS, REMOVE_SUBCOMPONENT_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
+              @mouseenter="mouseEnterSubcomponentManipulationToggle(false)"
+              @mouseleave="mouseLeaveSubcomponentManipulationToggle(false)"
+              @keydown.enter.prevent="$event.preventDefault()"
+              @click="buttonClickMiddleware(beginToRemoveSubcomponent, !getIsDoNotShowModalAgainState())">
+            </button>
+          </transition-group>
+        </div>
+        <div v-if="component.type === COMPONENT_TYPES.MODAL || component.type === COMPONENT_TYPES.ALERT || component.type === COMPONENT_TYPES.CARD"
+          class="btn-group option-component-button-container"
+          :class="{'transition-item': areOptionButtonTransitionsAllowed}">
+          <button v-if="!isFullPreviewModeActive && component.type === COMPONENT_TYPES.MODAL" ref="expandedModalPreviewModeToggle"
+            type="button" class="btn btn-group-option expanded-modal-preview-mode-button"
+            :class="[TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS, TOOLBAR_GENERAL_BUTTON_CLASS, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
+            @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleModalExpandMode)">
+            <font-awesome-icon v-if="isExpandedModalPreviewModeActive"
+              :style="{ color: FONT_AWESOME_COLORS.DEFAULT, ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
+              class="modal-button-icon expand-icon" icon="compress"/>
+            <font-awesome-icon v-else
+              :style="{ color: FONT_AWESOME_COLORS.DEFAULT, ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
+              class="modal-button-icon expand-icon" icon="expand"/>
           </button>
-          <button v-if="isInSyncButtonDisplayed()"
-            type="button" class="btn-group-option"
-            :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS, OPTION_MENU_BUTTON_MARKER]"
-            @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleInSync)">
-              <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
+          <button v-if="isFullPreviewModeButtonDisplayed()" ref="fullPreviewModeToggle"
+            type="button" class="btn btn-group-option expanded-modal-preview-mode-button"
+            :class="[TOOLBAR_GENERAL_BUTTON_CLASS, FULL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
+            @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleFullPreviewMode)">
+            <font-awesome-icon v-if="isFullPreviewModeActive"
+              :style="{ ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
+              class="modal-button-icon full-preview-icon" icon="stop"/>
+            <font-awesome-icon v-else
+              :style="{ ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
+              class="modal-button-icon full-preview-icon" icon="play"/>
           </button>
-          <button v-if="isRemoveSubcomponentButtonDisplayed()"
-            type="button" style="margin-right: 8px" class="btn-group-option" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
-            :class="['remove-subcomponent-button-icon',
-              {'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS, REMOVE_SUBCOMPONENT_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
-            @mouseenter="mouseEnterSubcomponentManipulationToggle(false)"
-            @mouseleave="mouseLeaveSubcomponentManipulationToggle(false)"
-            @keydown.enter.prevent="$event.preventDefault()"
-            @click="buttonClickMiddleware(beginToRemoveSubcomponent, !getIsDoNotShowModalAgainState())">
-          </button>
-        </transition-group>
-      </div>
-      <div v-if="component.type === COMPONENT_TYPES.MODAL || component.type === COMPONENT_TYPES.ALERT || component.type === COMPONENT_TYPES.CARD"
-        class="btn-group option-component-button-container"
-        :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
-        <button v-if="!isFullPreviewModeActive && component.type === COMPONENT_TYPES.MODAL" ref="expandedModalPreviewModeToggle"
-          type="button" class="btn btn-group-option expanded-modal-preview-mode-button"
-          :class="[TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS, TOOLBAR_GENERAL_BUTTON_CLASS, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
-          @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleModalExpandMode)">
-          <font-awesome-icon v-if="isExpandedModalPreviewModeActive"
-            :style="{ color: FONT_AWESOME_COLORS.DEFAULT, ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
-            class="modal-button-icon expand-icon" icon="compress"/>
-          <font-awesome-icon v-else
-            :style="{ color: FONT_AWESOME_COLORS.DEFAULT, ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
-            class="modal-button-icon expand-icon" icon="expand"/>
-        </button>
-        <button v-if="isFullPreviewModeButtonDisplayed()" ref="fullPreviewModeToggle"
-          type="button" class="btn btn-group-option expanded-modal-preview-mode-button"
-          :class="[TOOLBAR_GENERAL_BUTTON_CLASS, FULL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
-          @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleFullPreviewMode)">
-          <font-awesome-icon v-if="isFullPreviewModeActive"
-            :style="{ ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
-            class="modal-button-icon full-preview-icon" icon="stop"/>
-          <font-awesome-icon v-else
-            :style="{ ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
-            class="modal-button-icon full-preview-icon" icon="play"/>
-        </button>
-      </div>
+        </div>
         <button v-if="!isFullPreviewModeActive && isInSyncButtonDisplayed()"
           id="sync-transition-animation-padding"
           :style="{marginLeft: component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef ? '-23px' : '-29px'}"
-          :class="[{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS]">
+          :class="[{'transition-item': areOptionButtonTransitionsAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS]">
             <font-awesome-icon style="color: #54a9f100" class="sync-icon" icon="sync-alt"/>
         </button>
         <div v-if="true" v-show="!isFullPreviewModeActive"
-          :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}" > 
+          :class="{'transition-item': areOptionButtonTransitionsAllowed}" > 
           <dropdown
             class="option-component-button-container"
             :uniqueIdentifier="CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
@@ -127,7 +132,7 @@
           </div>
         </div>
         <div v-if="!isFullPreviewModeActive" style="display: none" ref="toolbarPositionToggle"
-          class="toolbar-position-toggle-container" :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
+          class="toolbar-position-toggle-container" :class="{'transition-item': areOptionButtonTransitionsAllowed}">
           <button
             type="button" class="btn toolbar-position-toggle"
             @click="buttonClickMiddleware(toolbarPositionToggleMouseClick.bind(this))"
@@ -145,6 +150,7 @@
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import { NESTED_COMPONENTS_BASE_NAMES, PARENT_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../componentPreview/utils/animations/consts/sharedConsts';
+import { CopyableComponentCardOverlaysToDisplay } from '../../../../../interfaces/copyableComponentCardOverlaysToDisplay';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ComponentTypeToOptions, componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
 import { MouseClickNewOptionEvent, MouseEnterOptionEvent } from '../../../../../interfaces/dropdownMenuMouseEvents';
@@ -224,8 +230,7 @@ interface Data {
   isFullPreviewModeActive: boolean;
   isCopyNestedComponentModeActive: boolean;
   hasCopyNestedComponentModeClosedExpandedModal: boolean;
-  isSubcomponentButtonsTransitionAllowed: boolean;
-  isDropdownAndOptionButtonsTransitionAllowed: boolean;
+  areOptionButtonTransitionsAllowed: boolean;
   optionAnimationsInProgress: boolean;
   toolbarPositionToggleRef: HTMLElement;
 }
@@ -269,8 +274,7 @@ export default {
     isFullPreviewModeActive: false,
     isCopyNestedComponentModeActive: false,
     hasCopyNestedComponentModeClosedExpandedModal: false,
-    isSubcomponentButtonsTransitionAllowed: false,
-    isDropdownAndOptionButtonsTransitionAllowed: false,
+    areOptionButtonTransitionsAllowed: false,
     optionAnimationsInProgress: false,
     toolbarPositionToggleRef: null,
   }),
@@ -435,11 +439,17 @@ export default {
       if (subcomponent.subcomponentType === SUBCOMPONENT_TYPES.BUTTON && subcomponent.nestedComponent?.ref.style === BUTTON_STYLES.CLOSE) return false;
       return !!(COPYABLE_COMPONENT_BASE_TYPES.has(subcomponent.subcomponentType) && subcomponent.nestedComponent);
     },
+    mouseHoverCopyNestedComponentToggle(isMouseEnter: boolean): void {
+      const activeSubcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
+      const copyableComponentCardOverlaysToDisplay: CopyableComponentCardOverlaysToDisplay = {
+        isDisplaying: isMouseEnter, baseType: activeSubcomponent.subcomponentType }
+      this.$emit('display-copyable-component-card-overlays', copyableComponentCardOverlaysToDisplay);
+    },
     toggleCopyNestedComponentMode(): void {
       CopyNestedComponentModeToggleUtils.toggleCopyNestedComponentMode(this);
     },
     toggleInSync(callback?: () => void): void {
-      this.temporarilyAllowOptionAnimations(InSync.toggleSubcomponentInSync.bind(this, this.component, callback), true, true);
+      this.temporarilyAllowOptionAnimations(InSync.toggleSubcomponentInSync.bind(this, this.component, callback));
     },
     isRemoveSubcomponentButtonDisplayed(): boolean {
       return this.component.subcomponents[this.component.activeSubcomponentName].isRemovable;
@@ -456,7 +466,7 @@ export default {
     },
     removeSubcomponent(): void {
       if (this.component.subcomponents[this.component.activeSubcomponentName].nestedComponent?.inSync) {
-        this.temporarilyAllowOptionAnimations(this.emitRemoveSubcomponentEvent, true, false);
+        this.temporarilyAllowOptionAnimations(this.emitRemoveSubcomponentEvent);
       } else {
         this.emitRemoveSubcomponentEvent();
       }
@@ -551,17 +561,14 @@ export default {
           && !this.isExpandedModalPreviewModeActive;
       });
     },
-    temporarilyAllowOptionAnimations(callback: () => unknown, isSubcomponentButtonsTransitionAllowed: boolean,
-        isDropdownAndOptionButtonsTransitionAllowed: boolean): void {
+    temporarilyAllowOptionAnimations(callback: () => unknown): void {
       if (this.optionAnimationsInProgress) return;
       this.setOptionAnimationsToInProgress();
-      this.isSubcomponentButtonsTransitionAllowed = isSubcomponentButtonsTransitionAllowed;
-      this.isDropdownAndOptionButtonsTransitionAllowed = isDropdownAndOptionButtonsTransitionAllowed;
+      this.areOptionButtonTransitionsAllowed = true;
       setTimeout(() => {
         callback();
         setTimeout(() => {
-          this.isSubcomponentButtonsTransitionAllowed = false;
-          this.isDropdownAndOptionButtonsTransitionAllowed = false;
+          this.areOptionButtonTransitionsAllowed = false;
         }, this.BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS);
       });
     },
@@ -660,12 +667,20 @@ export default {
   .horizontal-transition-leave-active {
     position: absolute !important;
   }
-  .copy-subcomponent-button-icon {
-    width: 2em;
+  .copy-nested-component-button {
     height: 38px;
+  }
+  .copy-nested-component-icon-default {
+    width: 1em;
+    height: 100%;
     background: url('../../../../../assets/svg/copy.svg') center no-repeat;
     background-size: 15px auto;
-    padding-left: 28px !important;
+  }
+  .copy-nested-component-icon-active {
+    width: 1em;
+    height: 100%;
+    background: url('../../../../../assets/svg/copy-active.svg') center no-repeat;
+    background-size: 15px auto;
   }
   .sync-icon {
     height: 13px;

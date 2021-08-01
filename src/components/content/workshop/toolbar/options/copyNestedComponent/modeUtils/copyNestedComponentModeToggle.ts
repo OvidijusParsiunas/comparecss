@@ -22,8 +22,10 @@ export default class CopyNestedComponentModeToggleUtils {
   public static toggleCopyNestedComponentMode(optionsComponent: ComponentOptions): void {
     optionsComponent.isCopyNestedComponentModeActive = !optionsComponent.isCopyNestedComponentModeActive;
     if (optionsComponent.isCopyNestedComponentModeActive) {
+      // on
       optionsComponent.hideSettings();
     } else {
+      // off
       CopyNestedComponedModeToggleOff.displayOptionSettings(optionsComponent);
     }
     const hasBeenToggled = CopyNestedComponentModeToggleUtils.toggleDuringExpandedModalMode(optionsComponent);
