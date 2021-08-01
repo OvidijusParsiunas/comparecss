@@ -4,7 +4,7 @@ import JSONUtils from '../../../utils/generic/jsonUtils';
 
 export class InSync {
   
-  private static dereferenceImportedComponentCustomProperties(activeComponent: WorkshopComponent, baseSubcomponent: SubcomponentProperties): void {
+  private static dereferenceCopiedComponentCustomProperties(activeComponent: WorkshopComponent, baseSubcomponent: SubcomponentProperties): void {
     const { subcomponents, referenceSharingExecutables, coreSubcomponentNames } = baseSubcomponent.nestedComponent.ref;
     Object.keys(subcomponents).forEach((subcomponentName: string) => {
       const nestedComponent = activeComponent.subcomponents[subcomponentName];
@@ -20,7 +20,7 @@ export class InSync {
     const activeSubcomponent = activeComponent.subcomponents[activeComponent.activeSubcomponentName];
     const baseSubcomponent = activeSubcomponent.baseSubcomponentRef || activeSubcomponent;
     if (baseSubcomponent.nestedComponent.inSync) {
-      InSync.dereferenceImportedComponentCustomProperties(activeComponent, baseSubcomponent);
+      InSync.dereferenceCopiedComponentCustomProperties(activeComponent, baseSubcomponent);
     }
     baseSubcomponent.nestedComponent.inSync = !baseSubcomponent.nestedComponent.inSync;
     if (callback) callback();

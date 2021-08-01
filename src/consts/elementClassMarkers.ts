@@ -8,6 +8,6 @@ export const OPTION_MENU_BUTTON_MARKER = 'option-menu-button-marker';
 export const OPTION_MENU_SETTING_OPTION_BUTTON_MARKER = 'option-menu-setting-option-button-marker';
 export const FULL_PREVIEW_MODE_BUTTON_MARKER = 'full-preview-mode-button-marker';
 export const REMOVE_SUBCOMPONENT_BUTTON_MARKER = 'remove-subcomponent-button-icon-marker';
-export const CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER = 'confirm-subcomponent-to-import-marker';
+export const CONFIRM_NESTED_COMPONENT_TO_COPY_MARKER = 'confirm-nested-component-to-copy-marker';
 export const COMPONENT_PREVIEW_MARKER = 'component-preview-marker';
 export const COMPONENT_LIST_ITEM_MARKER = 'component-list-item-marker';

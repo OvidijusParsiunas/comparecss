@@ -1,3 +1,3 @@
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 
-export const IMPORTABLE_SUBCOMPONENT_TYPES = new Set([SUBCOMPONENT_TYPES.BUTTON]);
+export const COPYABLE_COMPONENT_BASE_TYPES = new Set([SUBCOMPONENT_TYPES.BUTTON]);

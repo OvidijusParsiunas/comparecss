@@ -45,10 +45,10 @@
         :class="{'transition-item': isSubcomponentButtonsTransitionAllowed}"
         v-if="!isFullPreviewModeActive">
         <transition-group name="horizontal-transition">
-          <button ref="importComponentToggle"
-            v-if="isImportButtonDisplayed()"
+          <button ref="copyNestedComponentToggle"
+            v-if="isCopyButtonDisplayed()"
             type="button" class="btn-group-option copy-subcomponent-button-icon" :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, OPTION_MENU_BUTTON_MARKER]"
-            @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleSubcomponentImport, true)">
+            @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleCopyNestedComponentMode, true)">
           </button>
           <button v-if="isInSyncButtonDisplayed()"
             type="button" class="btn-group-option"
@@ -151,16 +151,16 @@ import { MouseClickNewOptionEvent, MouseEnterOptionEvent } from '../../../../../
 import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../consts/workshopToolbarOptionButtonNames.enum';
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
+import CopyNestedComponentModeToggleUtils from './copyNestedComponent/modeUtils/copyNestedComponentModeToggle';
 import { removeSubcomponentModalState } from './removeSubcomponentModalState/removeSubcomponentModalState';
 import RemoveSubcomponentOverlay from './subcomponentOverlayToggleUtils/subcomponentOverlayToggleUtils';
 import { fulPreviewModeState } from '../../componentPreview/utils/fullPreviewMode/fullPreviewModeState';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import { EnabledIfNestedComponentPresent, Option } from '../../../../../interfaces/componentOptions';
+import { COPYABLE_COMPONENT_BASE_TYPES } from './copyNestedComponent/copyableNestedComponentTypes';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
-import ImportComponentModeToggleUtils from './importComponent/modeUtils/importComponentModeToggle';
 import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFullPreviewModeEvent';
-import { IMPORTABLE_SUBCOMPONENT_TYPES } from './importComponent/importableSubcomponentTypes';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../consts/componentStyles.enum';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
@@ -177,7 +177,7 @@ import { RemovalModalState } from '../../../../../interfaces/removalModalState';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import BrowserType from '../../utils/generic/browserType';
 import SharedUtils from '../settings/utils/sharedUtils';
-import { InSync } from './importComponent/inSync';
+import { InSync } from './copyNestedComponent/inSync';
 import { Ref } from 'node_modules/vue/dist/vue';
 import dropdown from './dropdown/Dropdown.vue';
 import {
@@ -222,8 +222,8 @@ interface Data {
   activeOption: Option;
   isExpandedModalPreviewModeActive: boolean;
   isFullPreviewModeActive: boolean;
-  isImportComponentModeActive: boolean;
-  hasImportComponentModeClosedExpandedModal: boolean;
+  isCopyNestedComponentModeActive: boolean;
+  hasCopyNestedComponentModeClosedExpandedModal: boolean;
   isSubcomponentButtonsTransitionAllowed: boolean;
   isDropdownAndOptionButtonsTransitionAllowed: boolean;
   optionAnimationsInProgress: boolean;
@@ -267,8 +267,8 @@ export default {
     activeOption: { buttonName: null, type: null, enabledOnExpandedModalPreviewMode: null, enabledIfCustomFeaturePresentWithKeys: null },
     isExpandedModalPreviewModeActive: false,
     isFullPreviewModeActive: false,
-    isImportComponentModeActive: false,
-    hasImportComponentModeClosedExpandedModal: false,
+    isCopyNestedComponentModeActive: false,
+    hasCopyNestedComponentModeClosedExpandedModal: false,
     isSubcomponentButtonsTransitionAllowed: false,
     isDropdownAndOptionButtonsTransitionAllowed: false,
     optionAnimationsInProgress: false,
@@ -290,7 +290,7 @@ export default {
     executeCallbackAfterTimeout(callback: () => void): void {
       setTimeout(() => {
         callback();
-      }, this.hasImportComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
+      }, this.hasCopyNestedComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     },
     initiateSubcomponentSelectMode(buttonElement: HTMLElement): void {
       if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) {
@@ -430,13 +430,13 @@ export default {
       }
       return null;
     },
-    isImportButtonDisplayed(): boolean {
+    isCopyButtonDisplayed(): boolean {
       const subcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
       if (subcomponent.subcomponentType === SUBCOMPONENT_TYPES.BUTTON && subcomponent.nestedComponent?.ref.style === BUTTON_STYLES.CLOSE) return false;
-      return !!(IMPORTABLE_SUBCOMPONENT_TYPES.has(subcomponent.subcomponentType) && subcomponent.nestedComponent);
+      return !!(COPYABLE_COMPONENT_BASE_TYPES.has(subcomponent.subcomponentType) && subcomponent.nestedComponent);
     },
-    toggleSubcomponentImport(): void {
-      ImportComponentModeToggleUtils.toggleSubcomponentImport(this);
+    toggleCopyNestedComponentMode(): void {
+      CopyNestedComponentModeToggleUtils.toggleCopyNestedComponentMode(this);
     },
     toggleInSync(callback?: () => void): void {
       this.temporarilyAllowOptionAnimations(InSync.toggleSubcomponentInSync.bind(this, this.component, callback), true, true);
@@ -586,11 +586,6 @@ export default {
       const activeSubcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
       InSync.updateIfSubcomponentNotInSync(this.component, activeSubcomponent);
       return InSync.isInSyncButtonDisplayed(activeSubcomponent);
-    },
-    isRemovedComponentCurrentlySelectedForImport(): void {
-      const { nestedComponent } = this.component.subcomponents[this.component.activeSubcomponentName];
-      return this.isImportComponentModeActive
-        && nestedComponent.ref.componentPreviewStructure.baseSubcomponentProperties.tempOriginalCustomProperties;
     },
     reassignToolbarPositionToggleRef(): void {
       this.toolbarPositionToggleRef = this.$refs.toolbarPositionToggle;

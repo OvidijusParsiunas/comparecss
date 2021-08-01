@@ -112,7 +112,7 @@ interface TempCustomProperties {
 export interface NestedComponent {
   ref: WorkshopComponent;
   inSync: boolean;
-  lastSelectedComponentToImport?: WorkshopComponent;
+  lastSelectedComponentToCopy?: WorkshopComponent;
 }
 
 export interface SubcomponentProperties {

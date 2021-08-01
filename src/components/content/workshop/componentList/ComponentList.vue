@@ -8,16 +8,16 @@
           :thisComponent="component"
           :allComponents="components"
           :currentlySelectedComponent="currentlySelectedComponent"
-          :isImportComponentModeActive="isImportComponentModeActive"
-          :currentlyHoveredImportComponent="currentlyHoveredImportComponent"
-          :currentlySelectedImportComponent="currentlySelectedImportComponent"
+          :isCopyNestedComponentModeActive="isCopyNestedComponentModeActive"
+          :currentlyHoveredComponentForCopyNested="currentlyHoveredComponentForCopyNested"
+          :currentlySelectedComponentForCopyNested="currentlySelectedComponentForCopyNested"
           @set-active-component="$emit('set-active-component', $event)"
           @component-card-hovered="$emit('component-card-hovered', $event)"
           @copy-component="$emit('copy-component', $event)"
           @remove-component="$emit('remove-component', $event)"
           @stop-editing-class-name-callback="$emit('stop-editing-class-name-callback', $event)"
           @prepare-remove-component-modal="$emit('prepare-remove-component-modal', $event)"/>
-        <div v-if="!isImportComponentModeActive"
+        <div v-if="!isCopyNestedComponentModeActive"
           class="transition-item component-card component-body-container add-card"
           :class="COMPONENT_LIST_ITEM_MARKER"
           data-toggle="modal" :data-target="`#${NEW_COMPONENT_MODAL_ID}`"
@@ -63,12 +63,12 @@ export default {
   props: {
     components: Array,
     currentlySelectedComponent: Object,
-    currentlyHoveredImportComponent: Object,
-    currentlySelectedImportComponent: Object,
-    isImportComponentModeActive: Boolean,
+    currentlyHoveredComponentForCopyNested: Object,
+    currentlySelectedComponentForCopyNested: Object,
+    isCopyNestedComponentModeActive: Boolean,
   },
   watch: {
-    isImportComponentModeActive(): void {
+    isCopyNestedComponentModeActive(): void {
       if (this.listAnimationName === 'vertical-transition') {
         setTimeout(() => {
            this.listAnimationName = 'horizontal-transition';

@@ -1,4 +1,3 @@
-rename import button to copy
 fix padding and change isDropdownAndOptionButtonsTransitionAllowed to isSubcomponentButtonsTransitionAllowed in a separate commit for tracking
 fix issue where the second dropdown button border bottom is affected by card button click - only when a particular window height is set
 
@@ -11,7 +10,7 @@ an alternative to using spaces for ids would be to append id numbers at the star
 when a subcomponent is added or removed - should have an appropriate animation like stretch to make it more interactive
 when hovering the insync button - the popover should say what component/subcomponent is it in-sync to
 potentially add x button to border coloring
-close button should probably be imported - but need to work through the logistics of inherited css for it
+close button should probably be copied - but need to work through the logistics of inherited css for it
 display second range value with 2 decimal points
 close button may need to be a badge
 consider having a dropdown to choose which border side to edit
@@ -32,8 +31,8 @@ UX:
   see if the subcomponent add and subcomponent remove hover and active css is ok
   check if position option in the modal is ok to use
 
-ability to copy sibling subcomponent instead of importing style
-importing existing subcomponent will also need to offer an option from the app defaults
+ability to copy sibling nested component instead of copying a standalone component
+copying nested component will also need to offer an option from the app defaults
 update the range using the scroll wheel
 ability to group the components
 option to see what the actual css looks like and to edit it

@@ -2,35 +2,35 @@ import { AddNewGenericComponent } from '../../../../utils/componentManipulation/
 import { SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 
-export class ImportComponentModeTempPropertiesUtils {
+export class CopyNestedComponentModeTempPropertiesUtils {
   
   private static moveCustomPropertiesToTempProperties(activeComponentSubcomponents: Subcomponents, activeComponentSubcomponentName: string): void {
     const activeSubcomponent = activeComponentSubcomponents[activeComponentSubcomponentName];
-    activeSubcomponent.tempOriginalCustomProperties = { 
+    activeSubcomponent.tempOriginalCustomProperties = {
       customCss: activeSubcomponent.customCss,
       customFeatures: activeSubcomponent.customFeatures,
     };
   }
 
-  private static copyTargetSubcomponent(subcomponentsToBeImported: Subcomponents, subcomponentToBeImportedName: string,
+  private static copyTargetSubcomponent(subcomponentsToBeCopied: Subcomponents, subcomponentToBeCopiedName: string,
       activeComponentSubcomponents: Subcomponents, activeComponentSubcomponentName: string): void {
     const activeSubcomponent = activeComponentSubcomponents[activeComponentSubcomponentName];
     if (!activeSubcomponent.tempOriginalCustomProperties) {
-      ImportComponentModeTempPropertiesUtils.moveCustomPropertiesToTempProperties(activeComponentSubcomponents, activeComponentSubcomponentName);
+      CopyNestedComponentModeTempPropertiesUtils.moveCustomPropertiesToTempProperties(activeComponentSubcomponents, activeComponentSubcomponentName);
     }
-    const subcomponentToBeImportedCustomCss = subcomponentsToBeImported[subcomponentToBeImportedName].customCss;
-    activeSubcomponent.customCss = subcomponentToBeImportedCustomCss;
-    activeSubcomponent.customFeatures = subcomponentsToBeImported[subcomponentToBeImportedName].customFeatures;
-    if (!subcomponentToBeImportedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top) {
-      subcomponentToBeImportedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top = AddNewGenericComponent.DEFAULT_TOP_PROPERTY;
+    const componentToBeCopiedCustomCss = subcomponentsToBeCopied[subcomponentToBeCopiedName].customCss;
+    activeSubcomponent.customCss = componentToBeCopiedCustomCss;
+    activeSubcomponent.customFeatures = subcomponentsToBeCopied[subcomponentToBeCopiedName].customFeatures;
+    if (!componentToBeCopiedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top) {
+      componentToBeCopiedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top = AddNewGenericComponent.DEFAULT_TOP_PROPERTY;
     }
   }
 
-  public static setActiveComponentToImportComponent(componentToBeImported: WorkshopComponent, activeComponent: WorkshopComponent): void {
-    const componentToBeImportedComponentNames = componentToBeImported.coreSubcomponentNames;
+  public static setActiveComponentToCopyNestedComponent(componentToBeCopied: WorkshopComponent, activeComponent: WorkshopComponent): void {
+    const componentToBeCopiedSubcomponentNames = componentToBeCopied.coreSubcomponentNames;
     const activeComponentSubcomponentNames = activeComponent.subcomponents[activeComponent.activeSubcomponentName].nestedComponent.ref.coreSubcomponentNames;
     Object.keys(activeComponentSubcomponentNames).forEach((subcomponentName: string) => {
-      ImportComponentModeTempPropertiesUtils.copyTargetSubcomponent(componentToBeImported.subcomponents, componentToBeImportedComponentNames[subcomponentName],
+      CopyNestedComponentModeTempPropertiesUtils.copyTargetSubcomponent(componentToBeCopied.subcomponents, componentToBeCopiedSubcomponentNames[subcomponentName],
         activeComponent.subcomponents, activeComponentSubcomponentNames[subcomponentName]);
     });
   }
@@ -47,17 +47,17 @@ export class ImportComponentModeTempPropertiesUtils {
     for (let i = 0; i < activeComponentSubcomponentNamesArr.length; i += 1) {
       const activeSubcomponent = activeComponent.subcomponents[activeComponentSubcomponentNamesObj[activeComponentSubcomponentNamesArr[i]]];
       if (!activeSubcomponent.tempOriginalCustomProperties) break;
-      if (resetOriginalProperties) { ImportComponentModeTempPropertiesUtils.resetOriginalCss(activeSubcomponent); }
+      if (resetOriginalProperties) { CopyNestedComponentModeTempPropertiesUtils.resetOriginalCss(activeSubcomponent); }
       delete activeSubcomponent.tempOriginalCustomProperties;
     }
   }
 
-  public static setLastSelectectedSubcomponentToImport(componentToBeImported: WorkshopComponent, activeComponent: WorkshopComponent): void {
+  public static setLastSelectectedComponentToCopy(componentToBeCopied: WorkshopComponent, activeComponent: WorkshopComponent): void {
     activeComponent.subcomponents
-      [activeComponent.activeSubcomponentName].nestedComponent.lastSelectedComponentToImport = componentToBeImported;
+      [activeComponent.activeSubcomponentName].nestedComponent.lastSelectedComponentToCopy = componentToBeCopied;
   }
 
-  public static deleteLastSelectedSubcomponentToImport(activeComponent: WorkshopComponent): void {
-    delete activeComponent.subcomponents[activeComponent.activeSubcomponentName].nestedComponent.lastSelectedComponentToImport;
+  public static deleteLastSelectedComponentToCopy(activeComponent: WorkshopComponent): void {
+    delete activeComponent.subcomponents[activeComponent.activeSubcomponentName].nestedComponent.lastSelectedComponentToCopy;
   }
 }

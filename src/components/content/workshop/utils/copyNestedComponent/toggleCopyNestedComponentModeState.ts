@@ -1,22 +1,22 @@
-import { ImportComponedModeToggleOff } from '../../toolbar/options/importComponent/modeUtils/importComponentModeToggleOff';
+import { CopyNestedComponedModeToggleOff } from '../../toolbar/options/copyNestedComponent/modeUtils/copyNestedComponentModeToggleOff';
 import { WorkshopEventCallback } from '../../../../../interfaces/workshopEventCallback';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { ComponentOptions } from 'vue';
 
-export class ToggleImportComponentModeState {
+export class ToggleCopyNestedComponentModeState {
 
   private static toggleOff(workshopComponent: ComponentOptions & { components: WorkshopComponent[] }): void {
     workshopComponent.components = workshopComponent.tempComponents;
     workshopComponent.tempComponents = [];
-    workshopComponent.currentlySelectedImportComponent = null;
-    workshopComponent.currentlyHoveredImportComponent = null;
+    workshopComponent.currentlySelectedComponentForCopyNested = null;
+    workshopComponent.currentlyHoveredComponentForCopyNested = null;
   }
 
-  private static toggleImportComponentMode(workshopComponent: ComponentOptions & { components: WorkshopComponent[] }, optionsComponent: ComponentOptions): void {
+  private static toggleCopyNestedComponentMode(workshopComponent: ComponentOptions & { components: WorkshopComponent[] }, optionsComponent: ComponentOptions): void {
     const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
     const workshopEventCallback: WorkshopEventCallback = {
-      keyTriggers, func: ImportComponedModeToggleOff.toggleImportComponentModeOff.bind(this, workshopComponent, optionsComponent) };
+      keyTriggers, func: CopyNestedComponedModeToggleOff.toggleCopyNestedComponentModeOff.bind(this, workshopComponent, optionsComponent) };
     workshopComponent.addWorkshopEventCallback(workshopEventCallback);
   }
 
@@ -25,15 +25,15 @@ export class ToggleImportComponentModeState {
     const componentType = workshopComponent.currentlySelectedComponent.subcomponents[workshopComponent.currentlySelectedComponent.activeSubcomponentName]
       .nestedComponent.ref.type;
     (workshopComponent.components as WorkshopComponent[]) = workshopComponent.components.filter((component: WorkshopComponent) => component.type === componentType);
-    ToggleImportComponentModeState.toggleImportComponentMode(workshopComponent, optionsComponent);
+    ToggleCopyNestedComponentModeState.toggleCopyNestedComponentMode(workshopComponent, optionsComponent);
   }
   
   public static toggle(workshopComponent: ComponentOptions & { components: WorkshopComponent[] }, optionsComponent: ComponentOptions): void {
-    if (optionsComponent.isImportComponentModeActive) {
-      ToggleImportComponentModeState.toggleOn(workshopComponent, optionsComponent);
+    if (optionsComponent.isCopyNestedComponentModeActive) {
+      ToggleCopyNestedComponentModeState.toggleOn(workshopComponent, optionsComponent);
     } else {
-      ToggleImportComponentModeState.toggleOff(workshopComponent);
+      ToggleCopyNestedComponentModeState.toggleOff(workshopComponent);
     }
-    workshopComponent.isImportComponentModeActive = optionsComponent.isImportComponentModeActive;
+    workshopComponent.isCopyNestedComponentModeActive = optionsComponent.isCopyNestedComponentModeActive;
   }
 }

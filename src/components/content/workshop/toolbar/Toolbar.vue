@@ -13,7 +13,7 @@
         @toggle-expanded-modal-preview-mode="toggleExpandModalPreviewMode($event)"
         @toggle-full-preview-mode="toggleFullPreviewMode($event)"
         @toggle-toolbar-position="toggleToolbarPosition"
-        @toggle-import-subcomponent-mode="$emit('toggle-import-subcomponent-mode', $event)"
+        @toggle-copy-nested-component-mode="$emit('toggle-copy-nested-component-mode', $event)"
         @add-subcomponent="$emit('add-subcomponent', $event)"
         @remove-subcomponent="$emit('remove-subcomponent', $event)"/>
       <settings v-if="isSettingsDisplayed" ref="settings"

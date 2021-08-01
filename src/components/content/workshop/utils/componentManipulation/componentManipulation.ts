@@ -1,4 +1,4 @@
-import { ImportComponentModeCardEvents } from '../../toolbar/options/importComponent/modeUtils/importComponentModeCardEvents';
+import { CopyNestedComponentModeCardEvents } from '../../toolbar/options/copyNestedComponent/modeUtils/copyNestedComponentModeCardEvents';
 import { RemoveTemporaryAddPreviewComponent } from './removeNestedComponent/removeTemporaryAddPreviewComponent';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../interfaces/subcomponentOrderDirections.enum';
 import { AddTemporaryAddPreviewComponent } from './addNewNestedComponent/addTemporaryAddPreviewComponent';
@@ -87,8 +87,8 @@ export class ComponentManipulation {
       workshopComponent.componentSelectedBeforeFadeAnimation = null;
     }
     if (!component) return;
-    if (workshopComponent.isImportComponentModeActive) {
-      ImportComponentModeCardEvents.mouseClick(workshopComponent, component);
+    if (workshopComponent.isCopyNestedComponentModeActive) {
+      CopyNestedComponentModeCardEvents.mouseClick(workshopComponent, component);
     } else if (workshopComponent.currentlySelectedComponent !== component) {
       ComponentManipulation.switchActiveComponent(workshopComponent, component);
     }

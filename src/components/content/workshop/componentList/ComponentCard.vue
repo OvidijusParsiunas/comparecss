@@ -12,13 +12,13 @@
           @input="classNameInputEvent"
           >
         <h5 v-else class="card-title component-card-title" :class="COMPONENT_CARD_MARKER">{{thisComponent.className}}</h5>
-        <div v-if="!isImportComponentModeActive" :class="COMPONENT_CARD_MARKER">
+        <div v-if="!isCopyNestedComponentModeActive" :class="COMPONENT_CARD_MARKER">
           <a ref="componentCardClassNameEditorButton" class="btn btn-success" :class="COMPONENT_CARD_MARKER" @mousedown="preventBubbling" @mouseup="editClassName">Edit</a>
           <a class="btn btn-warning" :class="COMPONENT_CARD_MARKER" @mousedown="preventBubbling" @mouseup="copyComponent">Copy</a>
           <a class="btn btn-danger component-card-remove" :class="COMPONENT_CARD_MARKER" data-toggle="modal" :data-target="removeComponentModalId" @mousedown="preventBubbling" @mouseup="removeComponent">Remove</a>
         </div>
         <div v-else :class="COMPONENT_CARD_MARKER">
-          <a class="btn btn-success" :class="CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER">
+          <a class="btn btn-success" :class="CONFIRM_NESTED_COMPONENT_TO_COPY_MARKER">
             <font-awesome-icon icon="check"/>
           </a>
         </div>
@@ -29,7 +29,7 @@
 
 <script lang="ts">
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
-import { CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER } from '../../../../consts/elementClassMarkers';
+import { CONFIRM_NESTED_COMPONENT_TO_COPY_MARKER } from '../../../../consts/elementClassMarkers';
 import { ComponentCardHoveredEvent } from '../../../../interfaces/componentCardHoveredEvent'
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
@@ -48,7 +48,7 @@ interface Data {
   removeComponentModalId: string;
   isInputElementDisplayed: boolean;
   editorButtonClickedOnStopEditing: boolean;
-  CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER: string;
+  CONFIRM_NESTED_COMPONENT_TO_COPY_MARKER: string;
 }
 
 export default {
@@ -60,16 +60,16 @@ export default {
     COMPONENT_CARD_MARKER,
     removeComponentModalId: '',
     isInputElementDisplayed: false,
-    CONFIRM_SUBCOMPONENT_TO_IMPORT_MARKER,
+    CONFIRM_NESTED_COMPONENT_TO_COPY_MARKER,
     editorButtonClickedOnStopEditing: false,
   }),
   methods: {
     highlightCard(): string {
-      if (this.isImportComponentModeActive) {
-        if (this.currentlySelectedImportComponent === this.thisComponent) {
-          return 'component-selected-import-component-mode';
-        } else if (this.currentlyHoveredImportComponent === this.thisComponent) {
-          return 'component-hovered-import-component-mode';
+      if (this.isCopyNestedComponentModeActive) {
+        if (this.currentlySelectedComponentForCopyNested === this.thisComponent) {
+          return 'component-selected-during-copy-nested-component-mode';
+        } else if (this.currentlyHoveredComponentForCopyNested === this.thisComponent) {
+          return 'component-hovered-during-copy-nested-component-mode';
         }
       }
       if (this.thisComponent === this.currentlySelectedComponent) {
@@ -171,9 +171,9 @@ export default {
     thisComponent: Object,
     allComponents: Object,
     currentlySelectedComponent: Object,
-    currentlyHoveredImportComponent: Object,
-    currentlySelectedImportComponent: Object,
-    isImportComponentModeActive: Boolean,
+    currentlyHoveredComponentForCopyNested: Object,
+    currentlySelectedComponentForCopyNested: Object,
+    isCopyNestedComponentModeActive: Boolean,
   }
 };
 </script>
@@ -206,12 +206,12 @@ export default {
   .component-selected:hover {
     border-color: #72abf0 !important;
   }
-  .component-selected-import-component-mode {
+  .component-selected-during-copy-nested-component-mode {
     box-shadow: 0 0 1px rgb(194, 183, 87) !important;
     border-color: #fff6a3 !important;
     background-color: rgb(255, 255, 244) !important;
   }
-  .component-hovered-import-component-mode:hover {
+  .component-hovered-during-copy-nested-component-mode:hover {
     background-color: rgb(255, 255, 253) !important;
     box-shadow: 0 0 1px rgb(212, 204, 124) !important;
     border-color: #fff6a3 !important;

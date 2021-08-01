@@ -191,7 +191,7 @@ import { UnsetColorButton } from './utils/colorPickerUtils/unsetColorButton';
 import { ColorPickerUtils } from './utils/colorPickerUtils/colorPickerUtils';
 import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
 import useActionsDropdown from './compositionAPI/useActionsDropdown';
-import { InSync } from '../options/importComponent/inSync';
+import { InSync } from '../options/copyNestedComponent/inSync';
 import dropdown from '../options/dropdown/Dropdown.vue';
 import RangeUtils from './utils/rangeUtils/rangeUtils';
 import SettingsUtils from './utils/settingsUtils';
