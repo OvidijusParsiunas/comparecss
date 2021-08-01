@@ -1,10 +1,6 @@
-instead of having a dropdown for active and removed subcomponents we can have a + for adding subcomponents to it - base -> layer -> button/text
-ability to copy sibling subcomponent instead of importing style
-maybe should allow import a new button alltogether instead of creating a new button and then changing its style
-after adding a new subcomponent, open its options
 rename import button to copy
-make sure sync animation still works as expected
-make sure the spacing between buttons consistent
+fix padding and change isDropdownAndOptionButtonsTransitionAllowed to isSubcomponentButtonsTransitionAllowed in a separate commit for tracking
+fix issue where the second dropdown button border bottom is affected by card button click - only when a particular window height is set
 
 overflow
 try with button tags
@@ -25,6 +21,7 @@ consider making alert and button into a separately generated compontes in compon
 when changing the range and clicking the right mouse button causes the popover to disappear
 
 UX:
+  after adding a new subcomponent should it move to its options
   when moving subcomponent alignment, should the subcomponent be placed at the right or left of the alignment
   which expanded modal preview toggle button highlighted style is more preferable, the chromium or firefox one
   on using the select key for picking a subcomponent, check whether the mouse should always be a pointer, marked with UX - SUBCOMPONENT SELECT
@@ -35,7 +32,7 @@ UX:
   see if the subcomponent add and subcomponent remove hover and active css is ok
   check if position option in the modal is ok to use
 
-when leaving dropdown option with mouse - remove the option highlight
+ability to copy sibling subcomponent instead of importing style
 importing existing subcomponent will also need to offer an option from the app defaults
 update the range using the scroll wheel
 ability to group the components

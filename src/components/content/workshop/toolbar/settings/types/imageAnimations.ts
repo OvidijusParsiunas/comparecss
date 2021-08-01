@@ -6,7 +6,7 @@ export default {
     {
       type: SETTINGS_TYPES.CHECKBOX,
       spec: {
-        name: 'Zoom',
+        name: 'Hover zoom',
         customFeatureObjectKeys: ['customFeatures', 'animations', 'stationary', 'backgroundZoom', 'isOn'],
         default: false,
       },

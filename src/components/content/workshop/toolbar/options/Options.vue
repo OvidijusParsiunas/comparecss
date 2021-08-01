@@ -40,13 +40,13 @@
           @mouse-enter-option="mouseEnterSubcomponentManipulationToggle(true, $event)"
           @mouse-leave-option="mouseLeaveSubcomponentManipulationToggle(true)"/>
       </div>
-      <div
-        :style="{marginRight: component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef ? '0px' : '8px'}"
-        class="btn-group option-component-button-container"
+      <transition-group name="horizontal-transition">
+      <div class="btn-group component-manipulation-options-group"
+        :class="{'transition-item': isSubcomponentButtonsTransitionAllowed}"
         v-if="!isFullPreviewModeActive">
         <transition-group name="horizontal-transition">
           <button ref="importComponentToggle"
-            v-if="isImportButtonDisplayed()" style="min-width: 28px; padding-left: 28px; height: 38px;"
+            v-if="isImportButtonDisplayed()"
             type="button" class="btn-group-option copy-subcomponent-button-icon" :class="[{'transition-item': isSubcomponentButtonsTransitionAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, OPTION_MENU_BUTTON_MARKER]"
             @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleSubcomponentImport, true)">
           </button>
@@ -68,7 +68,8 @@
         </transition-group>
       </div>
       <div v-if="component.type === COMPONENT_TYPES.MODAL || component.type === COMPONENT_TYPES.ALERT || component.type === COMPONENT_TYPES.CARD"
-        class="btn-group option-component-button-container">
+        class="btn-group option-component-button-container"
+        :class="{'transition-item': isDropdownAndOptionButtonsTransitionAllowed}">
         <button v-if="!isFullPreviewModeActive && component.type === COMPONENT_TYPES.MODAL" ref="expandedModalPreviewModeToggle"
           type="button" class="btn btn-group-option expanded-modal-preview-mode-button"
           :class="[TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS, TOOLBAR_GENERAL_BUTTON_CLASS, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
@@ -92,7 +93,6 @@
             class="modal-button-icon full-preview-icon" icon="play"/>
         </button>
       </div>
-      <transition-group :name="isDropdownAndOptionButtonsTransitionAllowed || isExpandedModalPreviewModeActive ? 'horizontal-transition' : ''">
         <button v-if="!isFullPreviewModeActive && isInSyncButtonDisplayed()"
           id="sync-transition-animation-padding"
           :style="{marginLeft: component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef ? '-23px' : '-29px'}"
@@ -279,6 +279,7 @@ export default {
     this.reassignToolbarPositionToggleRef();
   },
   methods: {
+    // mostly used to allow the transitions to work correctly
     buttonClickMiddleware(callback: () => void, activateImmediately: boolean): void {
       if (activateImmediately) {
          callback();
@@ -632,6 +633,10 @@ export default {
     font-size: 13px !important;
     color: #5c5c5c;
   }
+  .component-manipulation-options-group {
+    float: left;
+    margin: 0px;
+  }
   .option-component-button-container {
     float: left;
     margin-right: 8px;
@@ -661,10 +666,11 @@ export default {
     position: absolute !important;
   }
   .copy-subcomponent-button-icon {
-    width: 1em;
-    height: 35px;
+    width: 2em;
+    height: 38px;
     background: url('../../../../../assets/svg/copy.svg') center no-repeat;
     background-size: 15px auto;
+    padding-left: 28px !important;
   }
   .sync-icon {
     height: 13px;
@@ -676,10 +682,11 @@ export default {
     border: unset !important;
   }
   .remove-subcomponent-button-icon {
-    width: 3em;
+    width: 42px;
     height: 38px;
     background: url('../../../../../assets/svg/rubbish-can-default.svg') center no-repeat;
     background-size: 17px auto;
+    left: -1px;
   }
   /* remove this if the red colour is a little distracting - UX */
   .remove-subcomponent-button-icon:active {
