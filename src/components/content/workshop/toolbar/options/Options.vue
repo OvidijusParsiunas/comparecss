@@ -675,12 +675,14 @@ export default {
     height: 100%;
     background: url('../../../../../assets/svg/copy.svg') center no-repeat;
     background-size: 15px auto;
+    pointer-events: none;
   }
   .copy-nested-component-icon-active {
     width: 1em;
     height: 100%;
     background: url('../../../../../assets/svg/copy-active.svg') center no-repeat;
     background-size: 15px auto;
+    pointer-events: none;
   }
   .sync-icon {
     height: 13px;

@@ -501,7 +501,7 @@ export default {
 <style lang="css" scoped>
   .dropdown-button {
     font-family: 'Poppins', sans-serif;
-    min-width: 6.5rem;
+    min-width: 6.7rem;
     border: 1px solid  #aaaaaa !important;
     background-color: white !important;
     overflow: hidden;

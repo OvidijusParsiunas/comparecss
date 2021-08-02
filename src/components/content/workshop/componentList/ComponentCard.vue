@@ -220,12 +220,12 @@ export default {
     border-color: #72abf0 !important;
   }
   .component-selected-during-copy-nested-component-mode {
+    background-color: rgb(255, 255, 213) !important;
     box-shadow: 0 0 1px rgb(194, 183, 87) !important;
     border-color: #fff6a3 !important;
-    background-color: rgb(255, 255, 244) !important;
   }
   .component-hovered-during-copy-nested-component-mode:hover {
-    background-color: rgb(255, 255, 253) !important;
+    background-color: rgb(255, 255, 231) !important;
     box-shadow: 0 0 1px rgb(212, 204, 124) !important;
     border-color: #fff6a3 !important;
   }
