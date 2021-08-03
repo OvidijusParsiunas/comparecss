@@ -23,7 +23,7 @@ class DropdownMenuBase extends ComponentBuilder {
         borderWidth: '1px',
         borderStyle: 'solid',
         borderRadius: '4px',
-        width: '70px',
+        width: '160px',
         boxSizing: CSS_PROPERTY_VALUES.UNSET,
         boxShadow: CSS_PROPERTY_VALUES.UNSET,
         top: '0px',

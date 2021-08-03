@@ -39,7 +39,7 @@ class TextBase extends ComponentBuilder {
         outline: 'none',
         left: '0px',
       },
-    }
+    };
   }
 
   private static createDefaultTextCustomFeatures(): CustomFeatures {

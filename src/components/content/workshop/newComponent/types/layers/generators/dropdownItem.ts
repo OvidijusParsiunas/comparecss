@@ -22,11 +22,15 @@ class DropdownItemLayer extends ComponentBuilder {
         paddingTop: '0px',
         paddingRight: '0px',
         paddingBottom: '0px',
-        borderBottomWidth: '1px',
+        borderBottomWidth: '0px',
         borderBottomStyle: 'solid',
         borderBottomColor: '#e9ecef',
+        cursor: 'pointer',
         backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
         boxShadow: CSS_PROPERTY_VALUES.UNSET,
+      },
+      [CSS_PSEUDO_CLASSES.HOVER]: {
+        backgroundColor: '#5050da',
       },
     };
   }

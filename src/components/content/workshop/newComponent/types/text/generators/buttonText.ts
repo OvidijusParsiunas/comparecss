@@ -73,9 +73,9 @@ class ButtonText extends ComponentBuilder {
 
 export const buttonText: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
-    const closeButtonTextComponent = textBase.createNewComponent(baseName);
-    ButtonText.overwriteBase(closeButtonTextComponent);
-    ButtonText.setStyle(closeButtonTextComponent);
-    return closeButtonTextComponent;
+    const buttonTextComponent = textBase.createNewComponent(baseName);
+    ButtonText.overwriteBase(buttonTextComponent);
+    ButtonText.setStyle(buttonTextComponent);
+    return buttonTextComponent;
   },
 };
