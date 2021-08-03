@@ -16,4 +16,5 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
   [COMPONENT_TYPES.ALERT]: AlertOptions.getAlertOptions,
   [COMPONENT_TYPES.MODAL]: ModalOptions.getModalOptions,
   [COMPONENT_TYPES.CARD]: CardOptions.getCardOptions,
+  [COMPONENT_TYPES.DROPDOWN]: CardOptions.getCardOptions,
 };

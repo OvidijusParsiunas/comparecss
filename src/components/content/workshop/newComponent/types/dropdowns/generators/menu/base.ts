@@ -4,7 +4,6 @@ import { NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/bas
 import { NestedDropdownStructure } from '../../../../../../../../interfaces/nestedDropdownStructure';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../../consts/cssPropertyValues.enum';
-import { CardBaseSpecificSettings } from '../../../cards/settings/cardBaseSpecificSettings';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../../interfaces/componentGenerator';
 import { inheritedBaseChildCss } from '../../../shared/childCss/inheritedBaseChildCss';
@@ -65,8 +64,6 @@ export const dropdownMenuBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const dropdownMenuBaseComponent = ComponentBuilder.createBaseComponent(
       { componentType: COMPONENT_TYPES.DROPDOWN, baseName }, DropdownMenuBase.createBaseSubcomponent, false);
-    // interconnected settings
-    // CardBaseSpecificSettings.set(dropdownMenuBaseComponent);
     return dropdownMenuBaseComponent;
   },
 }

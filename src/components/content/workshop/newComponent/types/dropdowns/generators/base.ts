@@ -94,6 +94,9 @@ class DropdownBase extends ComponentBuilder {
     const layer1Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
     const layer2Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
     const layer3Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
+    const customCss = layer1Component.subcomponents[layer1Component.coreSubcomponentNames.base].customCss;
+    layer2Component.subcomponents[layer2Component.coreSubcomponentNames.base].customCss = customCss;
+    layer3Component.subcomponents[layer3Component.coreSubcomponentNames.base].customCss = customCss;
     return [layer1Component, layer2Component, layer3Component];
   }
 
@@ -109,6 +112,9 @@ class DropdownBase extends ComponentBuilder {
     const textComponent3 = AddNewGenericComponent.add(cardComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
       layer3Component.coreSubcomponentNames.base, [DropdownBase.overwriteTextProperties]);
     layer3Component.componentPreviewStructure.baseSubcomponentProperties.nameOfAnotherSubcomponetToTrigger = textComponent3.coreSubcomponentNames.base;
+    const customCss = textComponent1.subcomponents[textComponent1.coreSubcomponentNames.base].customCss;
+    textComponent2.subcomponents[textComponent2.coreSubcomponentNames.base].customCss = customCss;
+    textComponent3.subcomponents[textComponent3.coreSubcomponentNames.base].customCss = customCss;
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[0]);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[1]);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[2]);
@@ -119,6 +125,7 @@ export const dropdownBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     uniqueSubcomponentIdState.resetUniqueId();
     const buttonComponent = defaultButton.createNewComponent(baseName);
+    buttonComponent.type = COMPONENT_TYPES.DROPDOWN;
     DropdownBase.overwriteCustomCss(buttonComponent);
     const dropdownMenuBaseComponent = dropdownMenuBase.createNewComponent('Menu');
     DropdownBase.addComponentsToBase(dropdownMenuBaseComponent);

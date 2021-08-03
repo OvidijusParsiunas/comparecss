@@ -63,6 +63,7 @@ export default class CopyComponent {
   }
 
   public static copyComponent(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {
+    // WORK2: copy auxiliary component and shared customCss
     // used here as button builders do not inherently reset the unique id
     uniqueSubcomponentIdState.resetUniqueId();
     const newComponent = componentTypeToStyleGenerators[componentBeingCopied.type][DEFAULT_STYLES.BASE].createNewComponent();

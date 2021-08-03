@@ -72,14 +72,14 @@ export default {
     getStyleProperties(): WorkshopComponentCss[] {
       const { baseSubcomponentProperties: {
         overwrittenCustomCssObj, customCss, inheritedCss, activeCssPseudoClass, customStaticFeatures} } = this.component.componentPreviewStructure;
-      const customCssObj = overwrittenCustomCssObj || customCss;
+      const subcomponentCss = overwrittenCustomCssObj || customCss;
       return [
         inheritedCss || '',
-        customCssObj[CSS_PSEUDO_CLASSES.DEFAULT],
-        customCssObj[activeCssPseudoClass],
+        subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT],
+        subcomponentCss[activeCssPseudoClass],
         { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : ''},
-        { backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCssObj, 'backgroundColor') },
-        { color: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCssObj, 'color') },
+        { backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'backgroundColor') },
+        { color: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'color') },
       ];
     },
     getBaseId(idType: keyof SubcomponentAndOverlayElementIds[string]): string {

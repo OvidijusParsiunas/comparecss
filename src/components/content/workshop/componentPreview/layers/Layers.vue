@@ -41,6 +41,7 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
+import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 import layerSections from './LayerSections.vue';
 
 interface Consts {
@@ -57,11 +58,13 @@ export default {
   },
   methods: {
     getStyleProperties(layer: Layer, isLastLayer: boolean): WorkshopComponentCss[] {
-      const { subcomponentProperties: { overwrittenCustomCssObj, customCss, customStaticFeatures } } = layer;
+      const { subcomponentProperties: { overwrittenCustomCssObj, customCss, customStaticFeatures, activeCssPseudoClass } } = layer;
       const subcomponentCss = overwrittenCustomCssObj || customCss;
       return [
         subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT],
+        subcomponentCss[activeCssPseudoClass],
         { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : '' },
+        { backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'backgroundColor') },
         { boxShadow: CSS_PROPERTY_VALUES.UNSET },
         isLastLayer ? { borderBottomWidth: '0px' } : {} // can alternatively use nth class
       ]

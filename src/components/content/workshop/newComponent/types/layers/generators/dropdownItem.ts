@@ -1,4 +1,4 @@
-import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -10,6 +10,12 @@ class DropdownItemLayer extends ComponentBuilder {
 
   public static setStyle(component: WorkshopComponent): void {
     component.style = LAYER_STYLES.DROPDOWN_ITEM;
+  }
+
+  private static createDefaultButtonBaseCustomFeatures(): CustomFeatures {
+    return {
+      animations: ComponentBuilder.createStationaryAnimations({}),
+    };
   }
 
   private static createDefaultLayerCss(): CustomCss {
@@ -32,12 +38,18 @@ class DropdownItemLayer extends ComponentBuilder {
       [CSS_PSEUDO_CLASSES.HOVER]: {
         backgroundColor: '#5050da',
       },
+      [CSS_PSEUDO_CLASSES.CLICK]: {
+        backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
+      },
     };
   }
 
   private static overwriteCustomCss(baseSubcomponent: SubcomponentProperties): void {
     baseSubcomponent.customCss = DropdownItemLayer.createDefaultLayerCss();
     baseSubcomponent.defaultCss = DropdownItemLayer.createDefaultLayerCss();
+    // WORK2: add animation
+    // baseSubcomponent.customFeatures = DropdownItemLayer.createDefaultButtonBaseCustomFeatures();
+    // baseSubcomponent.defaultCustomFeatures = DropdownItemLayer.createDefaultButtonBaseCustomFeatures();
   }
 
   public static overwriteBase(component: WorkshopComponent): void {
