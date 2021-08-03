@@ -2,6 +2,7 @@ import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentMani
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
+import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -11,7 +12,6 @@ import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum
 import { CardBaseSpecificSettings } from '../settings/cardBaseSpecificSettings';
 import { inheritedCardBaseCss } from '../inheritedCss/inheritedCardCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
-import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 
 class CardBase extends ComponentBuilder {
 
@@ -74,11 +74,10 @@ class CardBase extends ComponentBuilder {
 }
 
 export const cardBase: ComponentGenerator = {
-  // WORK2: may not need baseName
-  createNewComponent(baseName?: string): WorkshopComponent {
+  createNewComponent(): WorkshopComponent {
     uniqueSubcomponentIdState.resetUniqueId();
     const cardBaseComponent = ComponentBuilder.createBaseComponent(
-      { componentType: COMPONENT_TYPES.CARD, baseName }, CardBase.createBaseSubcomponent, false);
+      { componentType: COMPONENT_TYPES.CARD }, CardBase.createBaseSubcomponent, false);
     CardBase.setNewNestedComponentsOptionsRefs(cardBaseComponent);
     CardBase.setNestedComponentCountMax(cardBaseComponent);
     CardBaseSpecificSettings.set(cardBaseComponent);

@@ -65,7 +65,7 @@ class CardLayer extends ComponentBuilder {
     baseSubcomponent.defaultCss = CardLayer.createDefaultLayerCss();
   }
 
-  public static overwriteBaseSubcomponent(component: WorkshopComponent): void {
+  public static overwriteBase(component: WorkshopComponent): void {
     const baseSubcomponent = component.subcomponents[component.coreSubcomponentNames.base];
     CardLayer.overwriteCustomCss(baseSubcomponent);
     CardLayer.createCustomFeatures(baseSubcomponent);
@@ -77,7 +77,7 @@ class CardLayer extends ComponentBuilder {
 export const cardLayer: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const layerComponent = layerBase.createNewComponent(baseName);
-    CardLayer.overwriteBaseSubcomponent(layerComponent);
+    CardLayer.overwriteBase(layerComponent);
     CardLayer.setStyle(layerComponent);
     return layerComponent;
   },

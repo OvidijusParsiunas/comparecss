@@ -10,5 +10,6 @@ export enum NESTED_COMPONENTS_BASE_NAMES {
   TEXT = 'Text',
   IMAGE = 'Image',
   CLOSE = 'Close',
+  DROPDOWN_MENU_ITEM = 'Item',
   TEMPORARY = 'Temporary' // used for previewing a new subcomponent when hovering over a dropdown option
 }

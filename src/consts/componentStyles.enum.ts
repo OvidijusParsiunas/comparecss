@@ -12,7 +12,8 @@ export enum TEXT_STYLES {
 
 export enum LAYER_STYLES {
   PLAIN = 'Plain layer',
-  CARD = 'Card layer'
+  CARD = 'Card layer',
+  DROPDOWN_ITEM = 'Dropdown item layer',
 }
 
 export enum BUTTON_STYLES {
