@@ -28,7 +28,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
       ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(newComponentBaseName),
     }};
     const parentComponentDropdownStructure = parentComponent.componentPreviewStructure.subcomponentDropdownStructure;
-    JSONUtils.addObjects(parentComponentDropdownStructure, PARENT_COMPONENT_BASE_NAME.BASE, newComponentDropdownStructure);
+    JSONUtils.addObjects(parentComponentDropdownStructure, parentComponent.coreSubcomponentNames.base, newComponentDropdownStructure);
   }
 
   private static addNewSubcomponentToBase(parentComponent: WorkshopComponent, layer: Layer): void {

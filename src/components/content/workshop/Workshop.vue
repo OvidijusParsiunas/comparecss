@@ -127,9 +127,9 @@ import { removeComponentModalState } from './componentList/state/removeComponent
 import { ComponentCardHoveredEvent } from '../../../interfaces/componentCardHoveredEvent';
 import { PARENT_COMPONENT_BASE_NAME } from '../../../consts/baseSubcomponentNames.enum';
 import { AddNewSubcomponentEvent } from '../../../interfaces/addNewSubcomponentEvent';
+import { defaultDropdown } from './newComponent/types/dropdowns/generators/default';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
-import { defaultCard } from './newComponent/types/cards/generators/default';
 import { RemovalModalState } from '../../../interfaces/removalModalState';
 import { WorkshopComponent } from '../../../interfaces/workshopComponent';
 import componentContents from './componentPreview/ComponentPreview.vue';
@@ -175,7 +175,7 @@ export default {
     isIconsPreloaded: false,
     componentPreviewAssistance: { margin: false },
     components: [
-      defaultCard.createNewComponent(),
+      defaultDropdown.createNewComponent(),
     ],
     tempComponents: [],
     currentlySelectedComponent: null,

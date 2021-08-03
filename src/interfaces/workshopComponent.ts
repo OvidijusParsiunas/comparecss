@@ -190,6 +190,7 @@ export interface WorkshopComponent {
   interconnectedSettings?: InterconnectedSetting[];
   nestedComponentCount?: NestedComponentCount;
   newNestedComponentsOptionsRefs?: NewNestedComponentsOptionsRefs;
+  auxiliaryComponent?: WorkshopComponent;
 }
 
 // Reference for component structure:

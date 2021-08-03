@@ -13,15 +13,27 @@ export default class ComponentPreviewUtils {
   private static readonly SUBCOMPONENT_ID_PREFIX = 'subcomponent-id-';
   private static readonly OVERLAY_ID_PREFIX = 'overlay-id-';
 
-  public static generateSubcomponentAndOverlayIds(component: WorkshopComponent): SubcomponentAndOverlayElementIds {
-    const subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds = {};
-    Object.keys(component.subcomponents).forEach((subcomponentName: string, index: number) => {
+  private static populateSubcomponentAndOverlayElementIdsObject(subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds,
+      component: WorkshopComponent, index: number): number {
+    Object.keys(component.subcomponents).forEach((subcomponentName: string) => {
       if (!component.componentPreviewStructure.subcomponentNameToDropdownOptionName[subcomponentName]) return;
       subcomponentAndOverlayElementIdsObject[subcomponentName] = {
         subcomponentId: `${ComponentPreviewUtils.SUBCOMPONENT_ID_PREFIX}${index}`,
         overlayId: `${ComponentPreviewUtils.OVERLAY_ID_PREFIX}${index}`,
       };
+      index += 1;
     });
+    return index;
+  }
+
+  public static generateSubcomponentAndOverlayIds(component: WorkshopComponent): SubcomponentAndOverlayElementIds {
+    const subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds = {};
+    let index = 0;
+    index = ComponentPreviewUtils.populateSubcomponentAndOverlayElementIdsObject(subcomponentAndOverlayElementIdsObject, component, index);
+    if (component.auxiliaryComponent) {
+      ComponentPreviewUtils.populateSubcomponentAndOverlayElementIdsObject(subcomponentAndOverlayElementIdsObject,
+        component.auxiliaryComponent, index);
+    }
     return subcomponentAndOverlayElementIdsObject;
   }
 

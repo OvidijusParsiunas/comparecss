@@ -74,10 +74,11 @@ class CardBase extends ComponentBuilder {
 }
 
 export const cardBase: ComponentGenerator = {
-  createNewComponent(): WorkshopComponent {
+  // WORK2: may not need baseName
+  createNewComponent(baseName?: string): WorkshopComponent {
     uniqueSubcomponentIdState.resetUniqueId();
     const cardBaseComponent = ComponentBuilder.createBaseComponent(
-      { componentType: COMPONENT_TYPES.CARD }, CardBase.createBaseSubcomponent, false);
+      { componentType: COMPONENT_TYPES.CARD, baseName }, CardBase.createBaseSubcomponent, false);
     CardBase.setNewNestedComponentsOptionsRefs(cardBaseComponent);
     CardBase.setNestedComponentCountMax(cardBaseComponent);
     CardBaseSpecificSettings.set(cardBaseComponent);
