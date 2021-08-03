@@ -34,11 +34,11 @@ export class DropdownOptions {
   }
 
   protected static getLayerOptions(component: WorkshopComponent): Options {
-    const { layers } = component.componentPreviewStructure;
-    const currentLayerIndex = layers.findIndex((layer) => layer.name === component.activeSubcomponentName);
-    if (currentLayerIndex === layers.length - 1) {
-      return cardBottomLayerOptions as Options;
-    }
+    // const { layers } = component.componentPreviewStructure;
+    // const currentLayerIndex = layers.findIndex((layer) => layer.name === component.activeSubcomponentName);
+    // if (currentLayerIndex === layers.length - 1) {
+    //   return cardBottomLayerOptions as Options;
+    // }
     return cardLayerOptions as Options;
   }
 

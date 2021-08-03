@@ -2,6 +2,7 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.e
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 import { Options } from '../../../../../../interfaces/options';
+import { DropdownOptions } from './dropdown/dropdownOptions';
 import { ButtonOptions } from './button/buttonOptions';
 import { AlertOptions } from './alert/alertOptions';
 import { ModalOptions } from './modal/modalOptions';
@@ -16,5 +17,5 @@ export const componentTypeToOptions: ComponentTypeToOptions = {
   [COMPONENT_TYPES.ALERT]: AlertOptions.getAlertOptions,
   [COMPONENT_TYPES.MODAL]: ModalOptions.getModalOptions,
   [COMPONENT_TYPES.CARD]: CardOptions.getCardOptions,
-  [COMPONENT_TYPES.DROPDOWN]: CardOptions.getCardOptions,
+  [COMPONENT_TYPES.DROPDOWN]: DropdownOptions.getDropdownOptions,
 };
