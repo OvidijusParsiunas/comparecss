@@ -38,6 +38,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
   public static readonly componentBaseNameToType: { [key in NESTED_COMPONENTS_BASE_NAMES]?: COMPONENT_TYPES } = {
     ...JSONUtils.reverseMap(AddNewGenericComponent.componentTypeToBaseName),
     [NESTED_COMPONENTS_BASE_NAMES.CLOSE]: COMPONENT_TYPES.BUTTON,
+    [NESTED_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]: COMPONENT_TYPES.LAYER,
   }
   public static readonly DEFAULT_TOP_PROPERTY = '50%';
 

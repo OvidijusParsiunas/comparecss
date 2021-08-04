@@ -7,4 +7,5 @@ export enum COMPONENT_TYPES {
   IMAGE = 'Image',
   LAYER = 'Layer',
   DROPDOWN = 'Dropdown',
+  DROPDOWN_MENU = 'Menu',
 }

@@ -362,7 +362,7 @@ export default {
       this.changeOptionArrowColor(optionElementToBeHighlighted, 'white');
     },
     isOptionInactive(dropdowns: NestedDropdownStructure[], optionElement: HTMLElement, dropdownMenuIndex: number): boolean {
-      return dropdowns[dropdownMenuIndex][(optionElement.childNodes[0] as HTMLElement).innerHTML][DROPDOWN_OPTION_AUX_DETAILS_REF]
+      return dropdowns[dropdownMenuIndex][(optionElement.childNodes[0] as HTMLElement)?.innerHTML]?.[DROPDOWN_OPTION_AUX_DETAILS_REF]
         && !(dropdowns[dropdownMenuIndex][(optionElement.childNodes[0] as HTMLElement).innerHTML][DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).isEnabled;
     },
     changeOptionArrowColor(optionElement: Element, newColor: 'white'|'#6d6d6d'): void {

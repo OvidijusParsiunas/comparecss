@@ -23,6 +23,7 @@
           <!-- parent component -->
           <base-component ref="baseComponent"
             class="grid-item-position"
+            style="z-index: 1"
             :style="{display: !isFullPreviewModeOn || !temporaryComponent.displayed ? 'block' : 'none'}"
             :component="component"
             :mouseEvents="mouseEvents"

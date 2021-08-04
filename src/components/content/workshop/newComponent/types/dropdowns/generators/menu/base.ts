@@ -30,6 +30,7 @@ class DropdownMenuBase extends ComponentBuilder {
         marginRight: '0px',
         marginTop: '0px',
         marginBottom: '0px',
+        userSelect: 'none',
       },
     };
   }
@@ -41,7 +42,7 @@ class DropdownMenuBase extends ComponentBuilder {
   }
 
   private static createDefaultNewNestedComponentsOptions(): NestedDropdownStructure {
-    return UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([NESTED_COMPONENTS_BASE_NAMES.LAYER]);
+    return UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([NESTED_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]);
   }
 
   public static createBaseSubcomponent(): SubcomponentProperties {
@@ -63,7 +64,7 @@ class DropdownMenuBase extends ComponentBuilder {
 export const dropdownMenuBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const dropdownMenuBaseComponent = ComponentBuilder.createBaseComponent(
-      { componentType: COMPONENT_TYPES.DROPDOWN, baseName }, DropdownMenuBase.createBaseSubcomponent, false);
+      { componentType: COMPONENT_TYPES.DROPDOWN_MENU, baseName }, DropdownMenuBase.createBaseSubcomponent, false);
     return dropdownMenuBaseComponent;
   },
 }

@@ -22,4 +22,5 @@ export const componentTypeToStyleGenerators: ComponentTypeToStyleGenerators = {
   [COMPONENT_TYPES.TEXT]: textStyleToGenerator,
   [COMPONENT_TYPES.IMAGE]: imageStyleToGenerator,
   [COMPONENT_TYPES.DROPDOWN]: dropdownStyleToGenerator,
+  [COMPONENT_TYPES.DROPDOWN_MENU]: dropdownStyleToGenerator,
 };

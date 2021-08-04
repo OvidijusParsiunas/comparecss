@@ -9,9 +9,11 @@ import { AddNewGenericComponent } from './add/addNewGenericComponent';
 export class AddTemporaryAddPreviewComponent {
 
   public static add(currentlySelectedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
-    if (currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].subcomponentType === SUBCOMPONENT_TYPES.BASE
-        && nestedComponentBaseName === NESTED_COMPONENTS_BASE_NAMES.LAYER) {
-      AddTemporaryAddPreviewLayerComponent.add(currentlySelectedComponent, LAYER_STYLES.CARD, true);
+    // WORK1: extract this if statemt
+    const { subcomponentType } = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName];
+    if ((subcomponentType === SUBCOMPONENT_TYPES.BASE && nestedComponentBaseName === NESTED_COMPONENTS_BASE_NAMES.LAYER)
+        || (subcomponentType === SUBCOMPONENT_TYPES.DROPDOWN_MENU && nestedComponentBaseName === NESTED_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM)) {
+      AddTemporaryAddPreviewLayerComponent.add(currentlySelectedComponent, nestedComponentBaseName === NESTED_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM ? LAYER_STYLES.DROPDOWN_ITEM : LAYER_STYLES.CARD, true);
     } else {
       const activeSubcomponentName = currentlySelectedComponent.activeSubcomponentName === currentlySelectedComponent.coreSubcomponentNames.base
         ? currentlySelectedComponent.componentPreviewStructure.layers[0].name : currentlySelectedComponent.activeSubcomponentName;

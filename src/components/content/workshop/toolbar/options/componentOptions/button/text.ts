@@ -20,10 +20,6 @@ export const buttonTextOptions: SubcomponentOptions<TextWithNoBackgroundOptions>
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING,
     },
     {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
-    },
-    {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION_NO_ALIGN,
     },

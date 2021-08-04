@@ -1,6 +1,7 @@
 set the dropdown button width by a prop - should also set the option menu width
 when adding a new component - the select new component arrow seems to blink
 rename dropdown option to dropdown item
+when in hover/click mode and some nested subcomponent is isTriggeredByAnotherSubcomponent, that component should also be in that mode
 
 overflow
 try with button tags
