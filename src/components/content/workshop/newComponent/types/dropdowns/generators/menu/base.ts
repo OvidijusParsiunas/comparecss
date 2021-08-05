@@ -13,6 +13,10 @@ import { ComponentBuilder } from '../../../shared/componentBuilder';
 
 class DropdownMenuBase extends ComponentBuilder {
 
+  private static createDefaultNewNestedComponentsOptions(): NestedDropdownStructure {
+    return UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([NESTED_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]);
+  }
+
   private static createDefaultMenuCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
@@ -41,10 +45,6 @@ class DropdownMenuBase extends ComponentBuilder {
     };
   }
 
-  private static createDefaultNewNestedComponentsOptions(): NestedDropdownStructure {
-    return UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([NESTED_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]);
-  }
-
   public static createBaseSubcomponent(): SubcomponentProperties {
     return {
       subcomponentType: SUBCOMPONENT_TYPES.DROPDOWN_MENU,
@@ -63,8 +63,7 @@ class DropdownMenuBase extends ComponentBuilder {
 
 export const dropdownMenuBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
-    const dropdownMenuBaseComponent = ComponentBuilder.createBaseComponent(
+    return ComponentBuilder.createBaseComponent(
       { componentType: COMPONENT_TYPES.DROPDOWN_MENU, baseName }, DropdownMenuBase.createBaseSubcomponent, false);
-    return dropdownMenuBaseComponent;
   },
 }

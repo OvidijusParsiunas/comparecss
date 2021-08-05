@@ -1,13 +1,14 @@
-import { NESTED_COMPONENTS_BASE_NAMES, PARENT_COMPONENT_BASE_NAME } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { DropdownOptionsDisplayStatusUtils } from '../../../dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
+import { OverwritePropertiesFunc } from '../../../../../../../interfaces/overwriteSubcomponentPropertiesFunc';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
-import { OverwritePropertiesFunc } from '../../../../../../../interfaces/overwriteSubcomponentPropertiesFunc';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { IncrementNestedComponentCount } from '../../nestedComponentCount/incrementNestedComponentCount';
+import { NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { AlignedSections, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { COMPONENT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
+import { MultiBaseComponentUtils } from '../../../multiBaseComponent/multiBaseComponentUtils';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { AddNewComponentShared } from './addNewComponentShared';
@@ -65,13 +66,12 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     };
   }
 
-  protected static addNewComponentToComponentPreview(parentComponent: WorkshopComponent, newComponent: WorkshopComponent, isAuxiliaryComponent = false): void {
+  protected static addNewComponentToComponentPreview(parentComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     const { base: newComponentBaseName } = newComponent.coreSubcomponentNames;
     const layerSubcomponent = newComponent.subcomponents[newComponentBaseName];
     const layer: Layer = AddNewLayerComponent.createEmptyLayer(newComponentBaseName, layerSubcomponent);
-    // WORK1: find a better way
-    AddNewLayerComponent.copySiblingSubcomponentCustomCss(isAuxiliaryComponent ? parentComponent.auxiliaryComponent : parentComponent, layer);
-    AddNewLayerComponent.addNewSubcomponentToBase(isAuxiliaryComponent ? parentComponent.auxiliaryComponent : parentComponent, layer);
+    AddNewLayerComponent.copySiblingSubcomponentCustomCss(parentComponent, layer);
+    AddNewLayerComponent.addNewSubcomponentToBase(parentComponent, layer);
   }
 
   protected static createNewComponent(componentGenerator: ComponentGenerator, baseName?: string,
@@ -89,12 +89,13 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     const layerName = componentStyle === LAYER_STYLES.DROPDOWN_ITEM
       ? NESTED_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM : NESTED_COMPONENTS_BASE_NAMES.LAYER;
     const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
-    JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
-    AddNewLayerComponent.addNewComponentToComponentPreview(parentComponent, newComponent, parentComponent.type !== COMPONENT_TYPES.DROPDOWN_MENU && LAYER_STYLES.DROPDOWN_ITEM === componentStyle);
-    if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(parentComponent, newComponent);
-    AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent, newComponent, isEditable);
-    AddNewLayerComponent.addNewNestedComponentsOptions(parentComponent, newComponent);
-    IncrementNestedComponentCount.increment(parentComponent, layerName, parentComponent.coreSubcomponentNames.base);
+    const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
+    JSONUtils.addObjects(activeBaseComponent, 'subcomponents', newComponent.subcomponents);
+    AddNewLayerComponent.addNewComponentToComponentPreview(activeBaseComponent, newComponent);
+    if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(activeBaseComponent, newComponent);
+    AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(activeBaseComponent, newComponent, isEditable);
+    AddNewLayerComponent.addNewNestedComponentsOptions(activeBaseComponent, newComponent);
+    IncrementNestedComponentCount.increment(activeBaseComponent, layerName, activeBaseComponent.coreSubcomponentNames.base);
     return newComponent;
   }
 }

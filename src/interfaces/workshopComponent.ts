@@ -7,6 +7,7 @@ import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { ReferenceSharingExecutable } from './referenceSharingExecutable';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
+import { NestedComponentsInLayer } from './nestedComponentsInLayer';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
 import { CoreSubcomponentNames } from './customSubcomponentNames';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
@@ -187,9 +188,16 @@ export interface WorkshopComponent {
   componentStatus: { isRemoved: boolean };
   // used to reassign references when the subcomponents have been deep copied
   referenceSharingExecutables?: ReferenceSharingExecutable[];
+  // a layer cannot be a standalone nested component that contains other nested components, thus this function adds nested components to the layer
+  // with a reference the parent component
+  nestedComponentsInLayer?: NestedComponentsInLayer;
   interconnectedSettings?: InterconnectedSetting[];
   nestedComponentCount?: NestedComponentCount;
+  // used to share add dropdown options across components such as layers - in order to make sure that the enabled and disabled items are in-sync
   newNestedComponentsOptionsRefs?: NewNestedComponentsOptionsRefs;
+  // the auxiliary component preview structure is utilised in the preview, however the dropdown structure and subcomponents are merged and used
+  // as part of the core parent component (in a dropdown that will be the button - note that its component type is dropdown),
+  // therefore caution needs to be exercised around managing these as their refs exist in both components of the base components
   auxiliaryComponent?: WorkshopComponent;
 }
 
