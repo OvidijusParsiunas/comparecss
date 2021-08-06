@@ -23,13 +23,13 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     }
   }
 
-  private static updateComponentDropdownStructure(parentComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
+  private static updateComponentDropdownStructure(parentComponent: WorkshopComponent, activeBaseComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     const { base: newComponentBaseName } = newComponent.coreSubcomponentNames;
     const newComponentDropdownStructure = { [newComponentBaseName]: { 
       ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(newComponentBaseName),
     }};
     const parentComponentDropdownStructure = parentComponent.componentPreviewStructure.subcomponentDropdownStructure;
-    JSONUtils.addObjects(parentComponentDropdownStructure, parentComponent.coreSubcomponentNames.base, newComponentDropdownStructure);
+    JSONUtils.addObjects(parentComponentDropdownStructure, activeBaseComponent.coreSubcomponentNames.base, newComponentDropdownStructure);
   }
 
   private static addNewSubcomponentToBase(parentComponent: WorkshopComponent, layer: Layer): void {
@@ -90,10 +90,10 @@ export class AddNewLayerComponent extends AddNewComponentShared {
       ? NESTED_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM : NESTED_COMPONENTS_BASE_NAMES.LAYER;
     const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
     const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
-    JSONUtils.addObjects(activeBaseComponent, 'subcomponents', newComponent.subcomponents);
+    JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
     AddNewLayerComponent.addNewComponentToComponentPreview(activeBaseComponent, newComponent);
-    if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(activeBaseComponent, newComponent);
-    AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(activeBaseComponent, newComponent, isEditable);
+    if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(parentComponent, activeBaseComponent, newComponent);
+    AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent, newComponent, isEditable);
     AddNewLayerComponent.addNewNestedComponentsOptions(activeBaseComponent, newComponent);
     IncrementNestedComponentCount.increment(activeBaseComponent, layerName, activeBaseComponent.coreSubcomponentNames.base);
     return newComponent;

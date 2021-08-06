@@ -195,9 +195,8 @@ export interface WorkshopComponent {
   nestedComponentCount?: NestedComponentCount;
   // used to share add dropdown options across components such as layers - in order to make sure that the enabled and disabled items are in-sync
   newNestedComponentsOptionsRefs?: NewNestedComponentsOptionsRefs;
-  // the auxiliary component preview structure is utilised in the preview, however the dropdown structure and subcomponents are merged and used
-  // as part of the core parent component (in a dropdown that will be the button - note that its component type is dropdown),
-  // therefore caution needs to be exercised around managing these as their refs exist in both components of the base components
+  // the auxiliary component holds the preview structure, however its dropdown structure, subcomponents and subcomponentNameToDropdownOptionName
+  // are placed in the core parent component
   auxiliaryComponent?: WorkshopComponent;
 }
 

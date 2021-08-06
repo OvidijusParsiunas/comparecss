@@ -1,9 +1,10 @@
 import { AlignedSections, Layer, NestedComponent } from '../../../../../../interfaces/componentPreviewStructure';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
+import { MultiBaseComponentUtils } from '../../multiBaseComponent/multiBaseComponentUtils';
 import { UpdateDropdownOptionNamesShared } from './updateDropdownOptionNamesShared';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { ArrayUtils } from '../../generic/arrayUtils';
 import { StringUtils } from '../../generic/stringUtils';
+import { ArrayUtils } from '../../generic/arrayUtils';
 
 interface SubcomponentNameToPrefix {
   [subcomponentName: string]: string;
@@ -104,7 +105,8 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
   }
 
   private static getBaseDropdownStructure(parentComponent: WorkshopComponent): NestedDropdownStructure {
-    const baseName = parentComponent.coreSubcomponentNames.base;
+    const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
+    const baseName = activeBaseComponent.coreSubcomponentNames.base;
     return parentComponent.componentPreviewStructure.subcomponentDropdownStructure[baseName] as NestedDropdownStructure;
   }
 
@@ -123,8 +125,9 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
 
   public static updateViaParentLayerPreviewStructure(parentComponent: WorkshopComponent, layer: Layer): void {
     const { name, sections: { alignedSections }} = layer;
+    const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
     const { subcomponentDropdownStructure } = parentComponent.componentPreviewStructure;
-    const nestedComponents = subcomponentDropdownStructure[parentComponent.coreSubcomponentNames.base]
+    const nestedComponents = subcomponentDropdownStructure[activeBaseComponent.coreSubcomponentNames.base]
       [parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[name]];
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(parentComponent, nestedComponents, alignedSections);
   }

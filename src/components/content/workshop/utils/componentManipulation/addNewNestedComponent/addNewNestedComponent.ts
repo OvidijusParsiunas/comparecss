@@ -3,7 +3,6 @@ import { UpdateLayerDropdownOptionNames } from '../updateNestedComponentNames/up
 import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../consts/componentStyles.enum';
 import { ComponentPreviewStructureSearchUtils } from './utils/componentPreviewStractureSearchUtils';
 import { NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../consts/baseSubcomponentNames.enum';
-import { MultiBaseComponentUtils } from '../../multiBaseComponent/multiBaseComponentUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { AddNewGenericComponent } from './add/addNewGenericComponent';
@@ -28,7 +27,7 @@ export class AddNewNestedComponent {
 
   private static addNewSubcomponentToCurrentLayer(currentlySelectedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
     AddNewNestedComponent.addNewSubcomponent(currentlySelectedComponent, nestedComponentBaseName, currentlySelectedComponent.activeSubcomponentName);
-    AddNewNestedComponent.updateGenericComponentNames(currentlySelectedComponent);  
+    AddNewNestedComponent.updateGenericComponentNames(currentlySelectedComponent);
   }
 
   private static addNewSubcomponentToDefaultBaseLayer(currentlySelectedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
@@ -47,11 +46,8 @@ export class AddNewNestedComponent {
     // WORK1: change how dropdown menu item is aggregated
     const newComponent = AddNewLayerComponent.add(currentlySelectedComponent, nestedComponentBaseName === NESTED_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM ? LAYER_STYLES.DROPDOWN_ITEM : LAYER_STYLES.CARD, true);
     newComponent.subcomponents[newComponent.coreSubcomponentNames.base].isRemovable = true;
-    const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(currentlySelectedComponent);
-    AddNewNestedComponent.updateLayerComponentNames(activeBaseComponent);
-    newComponent.nestedComponentsInLayer?.add(activeBaseComponent);
-    if (currentlySelectedComponent.auxiliaryComponent) MultiBaseComponentUtils.addAuxiliarySubcomponentDetails(currentlySelectedComponent,
-      currentlySelectedComponent.auxiliaryComponent);
+    AddNewNestedComponent.updateLayerComponentNames(currentlySelectedComponent);
+    newComponent.nestedComponentsInLayer?.add(currentlySelectedComponent);
   }
 
   public static add(currentlySelectedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {

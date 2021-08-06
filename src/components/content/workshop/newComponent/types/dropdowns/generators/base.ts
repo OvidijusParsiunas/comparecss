@@ -1,7 +1,6 @@
 import { UpdateLayerDropdownOptionNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateLayerDropdownOptionNames';
 import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
-import { MultiBaseComponentUtils } from '../../../../utils/multiBaseComponent/multiBaseComponentUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
@@ -24,20 +23,20 @@ class DropdownBase extends ComponentBuilder {
     textSubcomponent.defaultCustomStaticFeatures.subcomponentText.text = 'Dropdown button';
   }
 
-  public static addComponentsToBase(menuComponent: WorkshopComponent): void {
-    const layer1Component = AddNewLayerComponent.add(menuComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    const [textComponent1] = layer1Component.nestedComponentsInLayer.add(menuComponent);
-    const layer2Component = AddNewLayerComponent.add(menuComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    const [textComponent2] = layer2Component.nestedComponentsInLayer.add(menuComponent);
-    const layer3Component = AddNewLayerComponent.add(menuComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    const [textComponent3] = layer3Component.nestedComponentsInLayer.add(menuComponent);
+  public static addComponentsToBase(buttonComponent: WorkshopComponent): void {
+    const layer1Component = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
+    const [textComponent1] = layer1Component.nestedComponentsInLayer.add(buttonComponent);
+    const layer2Component = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
+    const [textComponent2] = layer2Component.nestedComponentsInLayer.add(buttonComponent);
+    const layer3Component = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
+    const [textComponent3] = layer3Component.nestedComponentsInLayer.add(buttonComponent);
     const layerCustomCss = layer1Component.subcomponents[layer1Component.coreSubcomponentNames.base].customCss;
     layer2Component.subcomponents[layer2Component.coreSubcomponentNames.base].customCss = layerCustomCss;
     layer3Component.subcomponents[layer3Component.coreSubcomponentNames.base].customCss = layerCustomCss;
     const textCustomCss = textComponent1.subcomponents[textComponent1.coreSubcomponentNames.base].customCss;
     textComponent2.subcomponents[textComponent2.coreSubcomponentNames.base].customCss = textCustomCss;
     textComponent3.subcomponents[textComponent3.coreSubcomponentNames.base].customCss = textCustomCss;
-    UpdateLayerDropdownOptionNames.update(menuComponent, 0);
+    UpdateLayerDropdownOptionNames.update(buttonComponent, 0);
   }
 }
 
@@ -48,9 +47,12 @@ export const dropdownBase: ComponentGenerator = {
     buttonComponent.type = COMPONENT_TYPES.DROPDOWN;
     DropdownBase.overwriteCustomCss(buttonComponent);
     const dropdownMenuBaseComponent = dropdownMenuBase.createNewComponent('Menu');
-    DropdownBase.addComponentsToBase(dropdownMenuBaseComponent);
+    Object.assign(buttonComponent.subcomponents, dropdownMenuBaseComponent.subcomponents);
+    Object.assign(buttonComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName, dropdownMenuBaseComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName);
     buttonComponent.auxiliaryComponent = dropdownMenuBaseComponent;
-    MultiBaseComponentUtils.addAuxiliarySubcomponentDetails(buttonComponent, dropdownMenuBaseComponent);
+    buttonComponent.activeSubcomponentName = dropdownMenuBaseComponent.coreSubcomponentNames.base;
+    DropdownBase.addComponentsToBase(buttonComponent);
+    buttonComponent.activeSubcomponentName = buttonComponent.defaultSubcomponentName;
     return buttonComponent;
   },
 }
