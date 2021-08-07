@@ -1,7 +1,7 @@
 import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { GENERIC_COMPONENTS_BASE_NAMES, LAYER_COMPONENTS_BASE_NAMES, } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
-import { NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
@@ -17,12 +17,12 @@ class CardBase extends ComponentBuilder {
 
   public static setNestedComponentCountMax(cardBaseComponent: WorkshopComponent): void {
     cardBaseComponent.nestedComponentCount = {
-      max: { [NESTED_COMPONENTS_BASE_NAMES.LAYER]: 5, [NESTED_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
+      max: { [LAYER_COMPONENTS_BASE_NAMES.LAYER]: 5, [GENERIC_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
   }
 
   public static setNewNestedComponentsOptionsRefs(cardBaseComponent: WorkshopComponent): void {
     const newNestedComponentsOptions = UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([
-      NESTED_COMPONENTS_BASE_NAMES.BUTTON, NESTED_COMPONENTS_BASE_NAMES.TEXT, NESTED_COMPONENTS_BASE_NAMES.CLOSE, NESTED_COMPONENTS_BASE_NAMES.IMAGE]);
+      GENERIC_COMPONENTS_BASE_NAMES.BUTTON, GENERIC_COMPONENTS_BASE_NAMES.TEXT, GENERIC_COMPONENTS_BASE_NAMES.CLOSE, GENERIC_COMPONENTS_BASE_NAMES.IMAGE]);
     cardBaseComponent.newNestedComponentsOptionsRefs = { layer: newNestedComponentsOptions };
   }
 
@@ -54,7 +54,7 @@ class CardBase extends ComponentBuilder {
   }
 
   private static createDefaultNewNestedComponentsOptions(): NestedDropdownStructure {
-    return UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([NESTED_COMPONENTS_BASE_NAMES.LAYER]);
+    return UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);
   }
 
   public static createBaseSubcomponent(): SubcomponentProperties {

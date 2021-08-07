@@ -1,6 +1,6 @@
 import { UpdateDropdownOptionNamesShared } from '../../../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
-import { NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
+import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { NestedDropdownStructure } from '../../../../../../../../interfaces/nestedDropdownStructure';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../../consts/cssPropertyValues.enum';
@@ -14,7 +14,7 @@ import { ComponentBuilder } from '../../../shared/componentBuilder';
 class DropdownMenuBase extends ComponentBuilder {
 
   private static createDefaultNewNestedComponentsOptions(): NestedDropdownStructure {
-    return UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([NESTED_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]);
+    return UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]);
   }
 
   private static createDefaultMenuCss(): CustomCss {

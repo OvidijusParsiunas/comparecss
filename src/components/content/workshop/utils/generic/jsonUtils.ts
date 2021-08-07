@@ -45,6 +45,7 @@ export default class JSONUtils {
     }
   }
 
+  //WORK1: add type
   public static reverseMap(map: any): any {
     return Object.keys(map).reduce((accumulator, currentValue) =>
       Object.assign(accumulator, { [map[currentValue]]: currentValue }), {});

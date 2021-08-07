@@ -5,7 +5,7 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { IncrementNestedComponentCount } from '../../nestedComponentCount/incrementNestedComponentCount';
-import { NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
+import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { AlignedSections, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { COMPONENT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { MultiBaseComponentUtils } from '../../../multiBaseComponent/multiBaseComponentUtils';
@@ -87,7 +87,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
     // WORK1: find a better way
     const layerName = componentStyle === LAYER_STYLES.DROPDOWN_ITEM
-      ? NESTED_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM : NESTED_COMPONENTS_BASE_NAMES.LAYER;
+      ? LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM : LAYER_COMPONENTS_BASE_NAMES.LAYER;
     const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
     const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
     JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);

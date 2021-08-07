@@ -148,7 +148,7 @@
 
 <script lang="ts">
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
-import { NESTED_COMPONENTS_BASE_NAMES, PARENT_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
+import { PARENT_COMPONENT_BASE_NAME, TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../componentPreview/utils/animations/consts/sharedConsts';
 import { CopyableComponentCardOverlaysToDisplay } from '../../../../../interfaces/copyableComponentCardOverlaysToDisplay';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
@@ -581,7 +581,7 @@ export default {
     isSubcomponentPresent(subcomponentStyle: COMPONENT_STYLES): boolean {
       return !!Object.keys(this.component.subcomponents).find((subcomponentName) => {
         const component: WorkshopComponent = this.component.subcomponents[subcomponentName].nestedComponent?.ref;
-        return component?.style === subcomponentStyle && component.coreSubcomponentNames.base !== NESTED_COMPONENTS_BASE_NAMES.TEMPORARY;
+        return component?.style === subcomponentStyle && component.coreSubcomponentNames.base !== TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY;
       });
     },
     isFullPreviewModeButtonDisplayed(): boolean {

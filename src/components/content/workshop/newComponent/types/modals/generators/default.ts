@@ -5,7 +5,7 @@ import { UpdateLayerDropdownOptionNames } from '../../../../utils/componentManip
 import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewGenericComponent';
 import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
 import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
-import { NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
+import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -119,7 +119,7 @@ class DefaultModal extends ComponentBuilder {
 
   public static overwriteBaseNewNestedComponentsOptions(modalComponent: WorkshopComponent): void {
     const { subcomponents, coreSubcomponentNames } = modalComponent;
-    const nestedDropdownStructure = UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([NESTED_COMPONENTS_BASE_NAMES.LAYER]);
+    const nestedDropdownStructure = UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);
     subcomponents[coreSubcomponentNames.base].newNestedComponentsOptions = nestedDropdownStructure;
   }
 }

@@ -1,9 +1,8 @@
+import { GENERIC_COMPONENTS_BASE_NAMES, LAYER_COMPONENTS_BASE_NAMES, NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { UpdateGenericComponentDropdownOptionNames } from '../updateNestedComponentNames/updateGenericComponentDropdownOptionNames';
 import { UpdateLayerDropdownOptionNames } from '../updateNestedComponentNames/updateLayerDropdownOptionNames';
 import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../consts/componentStyles.enum';
 import { ComponentPreviewStructureSearchUtils } from './utils/componentPreviewStractureSearchUtils';
-import { NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../consts/baseSubcomponentNames.enum';
-import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { AddNewGenericComponent } from './add/addNewGenericComponent';
 import { AddNewLayerComponent } from './add/addNewLayerComponent';
@@ -13,7 +12,7 @@ export class AddNewNestedComponent {
   private static addNewSubcomponent(currentlySelectedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES,
       layerName: string): void {
     const nestedComponentType = AddNewGenericComponent.componentBaseNameToType[nestedComponentBaseName];
-    const nestedComponentStyle = nestedComponentBaseName === NESTED_COMPONENTS_BASE_NAMES.CLOSE ? BUTTON_STYLES.CLOSE : DEFAULT_STYLES.DEFAULT;
+    const nestedComponentStyle = nestedComponentBaseName === GENERIC_COMPONENTS_BASE_NAMES.CLOSE ? BUTTON_STYLES.CLOSE : DEFAULT_STYLES.DEFAULT;
     const newComponent = AddNewGenericComponent.add(currentlySelectedComponent, nestedComponentType, nestedComponentStyle, layerName);
     // set here because not all nested components are removable, but the ones added by the user are 
     newComponent.subcomponents[newComponent.coreSubcomponentNames.base].isRemovable = true;
@@ -44,17 +43,14 @@ export class AddNewNestedComponent {
 
   private static addNewLayerToBase(currentlySelectedComponent: WorkshopComponent, nestedComponentBaseName: string): void {
     // WORK1: change how dropdown menu item is aggregated
-    const newComponent = AddNewLayerComponent.add(currentlySelectedComponent, nestedComponentBaseName === NESTED_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM ? LAYER_STYLES.DROPDOWN_ITEM : LAYER_STYLES.CARD, true);
+    const newComponent = AddNewLayerComponent.add(currentlySelectedComponent, nestedComponentBaseName === LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM ? LAYER_STYLES.DROPDOWN_ITEM : LAYER_STYLES.CARD, true);
     newComponent.subcomponents[newComponent.coreSubcomponentNames.base].isRemovable = true;
     AddNewNestedComponent.updateLayerComponentNames(currentlySelectedComponent);
     newComponent.nestedComponentsInLayer?.add(currentlySelectedComponent);
   }
 
   public static add(currentlySelectedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
-    // WORK1: extract this if statemt
-    const { subcomponentType } = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName];
-    if ((subcomponentType === SUBCOMPONENT_TYPES.BASE && nestedComponentBaseName === NESTED_COMPONENTS_BASE_NAMES.LAYER)
-        || (subcomponentType === SUBCOMPONENT_TYPES.DROPDOWN_MENU && nestedComponentBaseName === NESTED_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM)) {
+    if (Object.values(LAYER_COMPONENTS_BASE_NAMES).includes(nestedComponentBaseName as LAYER_COMPONENTS_BASE_NAMES)) {
       AddNewNestedComponent.addNewLayerToBase(currentlySelectedComponent, nestedComponentBaseName);
     } else if (currentlySelectedComponent.activeSubcomponentName === currentlySelectedComponent.coreSubcomponentNames.base) {
       AddNewNestedComponent.addNewSubcomponentToDefaultBaseLayer(currentlySelectedComponent, nestedComponentBaseName);

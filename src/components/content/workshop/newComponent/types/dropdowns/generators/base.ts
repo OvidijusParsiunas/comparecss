@@ -24,6 +24,7 @@ class DropdownBase extends ComponentBuilder {
   }
 
   public static addComponentsToBase(buttonComponent: WorkshopComponent): void {
+    // WORK1: potentially add a property to nested subcomponent - signifying which auxiliary component it belongs to (easier for remove/copy)
     const layer1Component = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
     const [textComponent1] = layer1Component.nestedComponentsInLayer.add(buttonComponent);
     const layer2Component = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
