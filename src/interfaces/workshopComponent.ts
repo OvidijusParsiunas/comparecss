@@ -5,9 +5,9 @@ import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { ReferenceSharingExecutable } from './referenceSharingExecutable';
+import { NestedComponentsInLayer } from './nestedComponentsLockedToLayer';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
-import { NestedComponentsInLayer } from './nestedComponentsInLayer';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
 import { CoreSubcomponentNames } from './customSubcomponentNames';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
@@ -190,7 +190,7 @@ export interface WorkshopComponent {
   referenceSharingExecutables?: ReferenceSharingExecutable[];
   // a layer cannot be a standalone nested component that contains other nested components, thus this function adds nested components to the layer
   // with a reference the parent component
-  nestedComponentsInLayer?: NestedComponentsInLayer;
+  nestedComponentsLockedToLayer?: NestedComponentsInLayer;
   interconnectedSettings?: InterconnectedSetting[];
   nestedComponentCount?: NestedComponentCount;
   // used to share add dropdown options across components such as layers - in order to make sure that the enabled and disabled items are in-sync
@@ -198,6 +198,7 @@ export interface WorkshopComponent {
   // the auxiliary component holds the preview structure, however its dropdown structure, subcomponents and subcomponentNameToDropdownOptionName
   // are placed in the core parent component
   auxiliaryComponent?: WorkshopComponent;
+  areLayersInSyncByDefault?: boolean;
 }
 
 // Reference for component structure:

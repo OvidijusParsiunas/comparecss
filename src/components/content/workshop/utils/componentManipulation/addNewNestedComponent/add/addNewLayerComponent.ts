@@ -37,12 +37,11 @@ export class AddNewLayerComponent extends AddNewComponentShared {
   }
 
   private static copySiblingSubcomponentCustomCss(parentComponent: WorkshopComponent, layer: Layer): void {
-    // WORK1: needs work
     if (parentComponent.componentPreviewStructure.layers.length > 0) {
       const siblingSubcomponent = parentComponent.componentPreviewStructure.layers[parentComponent.componentPreviewStructure.layers.length - 1];
-      const { customCss, defaultCss, nestedComponent } = siblingSubcomponent.subcomponentProperties;
-      layer.subcomponentProperties.customCss = customCss;
-      layer.subcomponentProperties.defaultCss = defaultCss;
+      const { customCss, defaultCss } = siblingSubcomponent.subcomponentProperties;
+      layer.subcomponentProperties.customCss = parentComponent.areLayersInSyncByDefault ? customCss : JSONUtils.deepCopy(customCss);
+      layer.subcomponentProperties.defaultCss = parentComponent.areLayersInSyncByDefault ? defaultCss : JSONUtils.deepCopy(defaultCss);
     }
   }
 

@@ -1,6 +1,6 @@
+import { NestedComponentsInLayer } from '../../../../../../interfaces/nestedComponentsLockedToLayer';
 import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { NestedComponentsInLayer } from '../../../../../../interfaces/nestedComponentsInLayer';
 import { MultiBaseComponentUtils } from '../../multiBaseComponent/multiBaseComponentUtils';
 import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
 import { TargetDetails } from '../../../../../../interfaces/componentTraversal';
@@ -19,16 +19,16 @@ export class RemoveTemporaryAddPreviewComponent extends RemoveNestedComponent {
 
   // the reason why we need to fully remove the layer's nested component properties is because their addition alters the parent dropdown structure
   // (nested components within other temp nested components (text in button component) do not affect dropdown structure as they don't use parent)
-  private static removeNestedComponentsInLayer(parentComponent: WorkshopComponent, nestedComponentsInLayer: NestedComponentsInLayer): void {
-    nestedComponentsInLayer?.list.forEach((subcomponentName) => RemoveNestedComponent.remove(parentComponent, subcomponentName));
+  private static removeNestedComponentsInLayer(parentComponent: WorkshopComponent, nestedComponentsLockedToLayer: NestedComponentsInLayer): void {
+    nestedComponentsLockedToLayer?.list.forEach((subcomponentName) => RemoveNestedComponent.remove(parentComponent, subcomponentName));
   }
 
   public static remove(parentComponent: WorkshopComponent): void {
     const targetDetails: TargetDetails = ComponentTraversalUtils.generateTargetDetails(parentComponent, TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY);
     const nestedComponentParentRef = targetDetails.targetSubcomponentProperties?.nestedComponent?.ref;
     if (!nestedComponentParentRef) return;
-    const { nestedComponentsInLayer, subcomponents } = nestedComponentParentRef;
-    RemoveTemporaryAddPreviewComponent.removeNestedComponentsInLayer(parentComponent, nestedComponentsInLayer);
+    const { nestedComponentsLockedToLayer, subcomponents } = nestedComponentParentRef;
+    RemoveTemporaryAddPreviewComponent.removeNestedComponentsInLayer(parentComponent, nestedComponentsLockedToLayer);
     RemoveTemporaryAddPreviewComponent.removeTargetNestedComponent(parentComponent, targetDetails, subcomponents);
   }
 }

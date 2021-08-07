@@ -26,11 +26,11 @@ class DropdownBase extends ComponentBuilder {
   public static addComponentsToBase(buttonComponent: WorkshopComponent): void {
     // WORK1: potentially add a property to nested subcomponent - signifying which auxiliary component it belongs to (easier for remove/copy)
     const layer1Component = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    const [textComponent1] = layer1Component.nestedComponentsInLayer.add(buttonComponent);
+    const [textComponent1] = layer1Component.nestedComponentsLockedToLayer.add(buttonComponent);
     const layer2Component = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    const [textComponent2] = layer2Component.nestedComponentsInLayer.add(buttonComponent);
+    const [textComponent2] = layer2Component.nestedComponentsLockedToLayer.add(buttonComponent);
     const layer3Component = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    const [textComponent3] = layer3Component.nestedComponentsInLayer.add(buttonComponent);
+    const [textComponent3] = layer3Component.nestedComponentsLockedToLayer.add(buttonComponent);
     const layerCustomCss = layer1Component.subcomponents[layer1Component.coreSubcomponentNames.base].customCss;
     layer2Component.subcomponents[layer2Component.coreSubcomponentNames.base].customCss = layerCustomCss;
     layer3Component.subcomponents[layer3Component.coreSubcomponentNames.base].customCss = layerCustomCss;

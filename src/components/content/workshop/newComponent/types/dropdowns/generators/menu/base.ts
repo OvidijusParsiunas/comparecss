@@ -13,6 +13,10 @@ import { ComponentBuilder } from '../../../shared/componentBuilder';
 
 class DropdownMenuBase extends ComponentBuilder {
 
+  public static setAreLayersInSyncByDefault(dropdownMenuComponent: WorkshopComponent): void {
+    dropdownMenuComponent.areLayersInSyncByDefault = true;
+  }
+
   private static createDefaultNewNestedComponentsOptions(): NestedDropdownStructure {
     return UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]);
   }
@@ -63,7 +67,9 @@ class DropdownMenuBase extends ComponentBuilder {
 
 export const dropdownMenuBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
-    return ComponentBuilder.createBaseComponent(
+    const dropdownMenuComponent = ComponentBuilder.createBaseComponent(
       { componentType: COMPONENT_TYPES.DROPDOWN_MENU, baseName }, DropdownMenuBase.createBaseSubcomponent, false);
+    DropdownMenuBase.setAreLayersInSyncByDefault(dropdownMenuComponent);
+    return dropdownMenuComponent;
   },
 }

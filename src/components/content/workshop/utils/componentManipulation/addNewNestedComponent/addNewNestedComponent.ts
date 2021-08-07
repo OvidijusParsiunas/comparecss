@@ -45,7 +45,7 @@ export class AddNewNestedComponent {
     const newComponent = AddNewLayerComponent.add(currentlySelectedComponent, NestedComponentBaseNamesToStyles.LAYER_TO_STYLE[nestedComponentBaseName], true);
     newComponent.subcomponents[newComponent.coreSubcomponentNames.base].isRemovable = true;
     AddNewNestedComponent.updateLayerComponentNames(currentlySelectedComponent);
-    newComponent.nestedComponentsInLayer?.add(currentlySelectedComponent);
+    newComponent.nestedComponentsLockedToLayer?.add(currentlySelectedComponent);
   }
 
   public static add(currentlySelectedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
