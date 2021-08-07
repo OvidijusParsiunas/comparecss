@@ -5,11 +5,11 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { IncrementNestedComponentCount } from '../../nestedComponentCount/incrementNestedComponentCount';
-import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { AlignedSections, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
-import { COMPONENT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { MultiBaseComponentUtils } from '../../../multiBaseComponent/multiBaseComponentUtils';
+import { NestedComponentBaseNamesToStyles } from '../utils/nestedComponentBaseNamesToStyles';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
+import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { AddNewComponentShared } from './addNewComponentShared';
 import JSONUtils from '../../../generic/jsonUtils';
@@ -85,9 +85,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
   public static add(parentComponent: WorkshopComponent, componentStyle: COMPONENT_STYLES, isEditable: boolean,
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
-    // WORK1: find a better way
-    const layerName = componentStyle === LAYER_STYLES.DROPDOWN_ITEM
-      ? LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM : LAYER_COMPONENTS_BASE_NAMES.LAYER;
+    const layerName = NestedComponentBaseNamesToStyles.STYLE_TO_LAYER[componentStyle];
     const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
     const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
     JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);

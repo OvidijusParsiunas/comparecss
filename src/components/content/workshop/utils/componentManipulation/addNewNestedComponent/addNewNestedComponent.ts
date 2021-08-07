@@ -1,8 +1,8 @@
-import { GENERIC_COMPONENTS_BASE_NAMES, LAYER_COMPONENTS_BASE_NAMES, NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { UpdateGenericComponentDropdownOptionNames } from '../updateNestedComponentNames/updateGenericComponentDropdownOptionNames';
+import { LAYER_COMPONENTS_BASE_NAMES, NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { UpdateLayerDropdownOptionNames } from '../updateNestedComponentNames/updateLayerDropdownOptionNames';
-import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../consts/componentStyles.enum';
 import { ComponentPreviewStructureSearchUtils } from './utils/componentPreviewStractureSearchUtils';
+import { NestedComponentBaseNamesToStyles } from './utils/nestedComponentBaseNamesToStyles';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { AddNewGenericComponent } from './add/addNewGenericComponent';
 import { AddNewLayerComponent } from './add/addNewLayerComponent';
@@ -12,7 +12,7 @@ export class AddNewNestedComponent {
   private static addNewSubcomponent(currentlySelectedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES,
       layerName: string): void {
     const nestedComponentType = AddNewGenericComponent.componentBaseNameToType[nestedComponentBaseName];
-    const nestedComponentStyle = nestedComponentBaseName === GENERIC_COMPONENTS_BASE_NAMES.CLOSE ? BUTTON_STYLES.CLOSE : DEFAULT_STYLES.DEFAULT;
+    const nestedComponentStyle = NestedComponentBaseNamesToStyles.genericToStyle(nestedComponentBaseName);
     const newComponent = AddNewGenericComponent.add(currentlySelectedComponent, nestedComponentType, nestedComponentStyle, layerName);
     // set here because not all nested components are removable, but the ones added by the user are 
     newComponent.subcomponents[newComponent.coreSubcomponentNames.base].isRemovable = true;
@@ -42,8 +42,7 @@ export class AddNewNestedComponent {
   }
 
   private static addNewLayerToBase(currentlySelectedComponent: WorkshopComponent, nestedComponentBaseName: string): void {
-    // WORK1: change how dropdown menu item is aggregated
-    const newComponent = AddNewLayerComponent.add(currentlySelectedComponent, nestedComponentBaseName === LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM ? LAYER_STYLES.DROPDOWN_ITEM : LAYER_STYLES.CARD, true);
+    const newComponent = AddNewLayerComponent.add(currentlySelectedComponent, NestedComponentBaseNamesToStyles.LAYER_TO_STYLE[nestedComponentBaseName], true);
     newComponent.subcomponents[newComponent.coreSubcomponentNames.base].isRemovable = true;
     AddNewNestedComponent.updateLayerComponentNames(currentlySelectedComponent);
     newComponent.nestedComponentsInLayer?.add(currentlySelectedComponent);

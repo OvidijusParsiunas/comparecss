@@ -1,4 +1,4 @@
-import { GENERIC_COMPONENTS_BASE_NAMES, LAYER_COMPONENTS_BASE_NAMES, NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
+import { BUTTON_COMPONENTS_BASE_NAMES, PRIMITIVE_COMPONENTS_BASE_NAMES, LAYER_COMPONENTS_BASE_NAMES, NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownOptionDisplayStatus';
@@ -32,23 +32,23 @@ export class AddNewGenericComponent extends AddNewComponentShared {
   // base name is used in dropdown options
   private static readonly componentTypeToBaseName: { [key in COMPONENT_TYPES]?: NESTED_COMPONENTS_BASE_NAMES } = {
     [COMPONENT_TYPES.LAYER]: LAYER_COMPONENTS_BASE_NAMES.LAYER,
-    [COMPONENT_TYPES.BUTTON]: GENERIC_COMPONENTS_BASE_NAMES.BUTTON,
-    [COMPONENT_TYPES.TEXT]: GENERIC_COMPONENTS_BASE_NAMES.TEXT,
-    [COMPONENT_TYPES.IMAGE]: GENERIC_COMPONENTS_BASE_NAMES.IMAGE,
-  }
+    [COMPONENT_TYPES.BUTTON]: BUTTON_COMPONENTS_BASE_NAMES.BUTTON,
+    [COMPONENT_TYPES.TEXT]: PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT,
+    [COMPONENT_TYPES.IMAGE]: PRIMITIVE_COMPONENTS_BASE_NAMES.IMAGE,
+  };
   public static readonly componentBaseNameToType: { [key in NESTED_COMPONENTS_BASE_NAMES]?: COMPONENT_TYPES } = {
     ...JSONUtils.reverseMap(AddNewGenericComponent.componentTypeToBaseName),
-    [GENERIC_COMPONENTS_BASE_NAMES.CLOSE]: COMPONENT_TYPES.BUTTON,
+    [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: COMPONENT_TYPES.BUTTON,
     [LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]: COMPONENT_TYPES.LAYER,
-  }
+  };
   public static readonly DEFAULT_TOP_PROPERTY = '50%';
 
   private static getBaseSubcomponentNamePrefix(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES): NESTED_COMPONENTS_BASE_NAMES {
     if (componentType === COMPONENT_TYPES.BUTTON) {
       if (componentStyle === BUTTON_STYLES.CLOSE) {
-        return GENERIC_COMPONENTS_BASE_NAMES.CLOSE;
+        return BUTTON_COMPONENTS_BASE_NAMES.CLOSE;
       }
-      return GENERIC_COMPONENTS_BASE_NAMES.BUTTON;
+      return BUTTON_COMPONENTS_BASE_NAMES.BUTTON;
     }
     return AddNewGenericComponent.componentTypeToBaseName[componentType];
   }

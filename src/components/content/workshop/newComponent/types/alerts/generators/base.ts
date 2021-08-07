@@ -1,7 +1,7 @@
 import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { BUTTON_COMPONENTS_BASE_NAMES, PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
-import { GENERIC_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
@@ -16,12 +16,12 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 class AlertBase extends ComponentBuilder {
 
   public static setNestedComponentCountMax(alertBaseComponent: WorkshopComponent): void {
-    alertBaseComponent.nestedComponentCount = { max: { [GENERIC_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
+    alertBaseComponent.nestedComponentCount = { max: { [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
   }
 
   public static setNewNestedComponentsOptionsRefs(alertBaseComponent: WorkshopComponent): void {
     const newNestedComponentsOptions = UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([
-      GENERIC_COMPONENTS_BASE_NAMES.TEXT, GENERIC_COMPONENTS_BASE_NAMES.CLOSE]);
+      PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE]);
     alertBaseComponent.newNestedComponentsOptionsRefs = { layer: newNestedComponentsOptions };
   }
 
@@ -57,7 +57,7 @@ class AlertBase extends ComponentBuilder {
 
   private static createDefaultNewNestedComponentsOptions(): NestedDropdownStructure {
     return UpdateDropdownOptionNamesShared.generateNestedDropdownStructure(
-      [GENERIC_COMPONENTS_BASE_NAMES.TEXT, GENERIC_COMPONENTS_BASE_NAMES.CLOSE]);
+      [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE]);
   }
 
   public static createBaseSubcomponent(): SubcomponentProperties {
