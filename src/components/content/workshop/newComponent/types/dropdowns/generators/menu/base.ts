@@ -17,6 +17,10 @@ class DropdownMenuBase extends ComponentBuilder {
     dropdownMenuComponent.areLayersInSyncByDefault = true;
   }
 
+  public static setAuxiliaryComponentReferenceOnBase(dropdownMenuComponent: WorkshopComponent): void {
+    dropdownMenuComponent.subcomponents[dropdownMenuComponent.coreSubcomponentNames.base].parentAuxiliaryComponent = dropdownMenuComponent;
+  }
+
   private static createDefaultNewNestedComponentsOptions(): NestedDropdownStructure {
     return UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]);
   }
@@ -69,6 +73,7 @@ export const dropdownMenuBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const dropdownMenuComponent = ComponentBuilder.createBaseComponent(
       { componentType: COMPONENT_TYPES.DROPDOWN_MENU, baseName }, DropdownMenuBase.createBaseSubcomponent, false);
+    DropdownMenuBase.setAuxiliaryComponentReferenceOnBase(dropdownMenuComponent);
     DropdownMenuBase.setAreLayersInSyncByDefault(dropdownMenuComponent);
     return dropdownMenuComponent;
   },

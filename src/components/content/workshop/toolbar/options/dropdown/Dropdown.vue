@@ -311,7 +311,7 @@ export default {
     },
     displayChildDropdownMenu(parentOptionElement: HTMLElement, parentDropdownMenuIndex: number, parentDropdownOptionIndex: number,
         childDropdownOptions: NestedDropdownStructure | DropdownOptionAuxDetailsRef): void {
-      if (!parentOptionElement) return;
+      if (!parentOptionElement || !(parentOptionElement instanceof Element)) return;
       if (!childDropdownOptions[DROPDOWN_OPTION_AUX_DETAILS_REF]
           || (Object.keys(childDropdownOptions).length > 1 && (childDropdownOptions[DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).isEnabled)) {
         this.dropdowns.push(childDropdownOptions);

@@ -126,11 +126,11 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     }
   }
 
-  protected static createNewComponent(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
-      componentGenerator: ComponentGenerator, overwritePropertiesFunc?: OverwritePropertiesFunc[], customBaseName?: string): NewComponentDetails {
+  protected static createNewComponent(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, componentGenerator: ComponentGenerator,
+      activeBaseComponent: WorkshopComponent, overwritePropertiesFunc?: OverwritePropertiesFunc[], customBaseName?: string): NewComponentDetails {
     const baseNamePrefix = AddNewGenericComponent.getBaseSubcomponentNamePrefix(componentType, componentStyle);
     const baseName = customBaseName || UniqueSubcomponentNameGenerator.generate(baseNamePrefix);
-    const subcomponents = AddNewComponentShared.createNewComponentSubcomponents(componentGenerator, baseName);
+    const subcomponents = AddNewComponentShared.createNewComponentSubcomponents(componentGenerator, activeBaseComponent, baseName);
     AddNewGenericComponent.applyTopProperty(subcomponents[baseName]);
     if (overwritePropertiesFunc) {
       AddNewGenericComponent.executeOverwritePropertiesFuncs(overwritePropertiesFunc, subcomponents, baseName);
@@ -141,10 +141,10 @@ export class AddNewGenericComponent extends AddNewComponentShared {
   public static add(parentComponent: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
       layerName: string, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
-    const [newComponent, baseNamePrefix] = AddNewGenericComponent.createNewComponent(componentType, componentStyle,
-      componentGenerator, overwritePropertiesFunc);
-    JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
     const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
+    const [newComponent, baseNamePrefix] = AddNewGenericComponent.createNewComponent(componentType, componentStyle,
+      componentGenerator, activeBaseComponent, overwritePropertiesFunc);
+    JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
     const subcomponentData = AddNewGenericComponent.addNewComponentToComponentPreview(parentComponent, newComponent, layerName);
     AddNewGenericComponent.addNewComponentToDropdownStructure(parentComponent, activeBaseComponent, newComponent, subcomponentData);
     AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent, newComponent);

@@ -1,4 +1,5 @@
 import { UpdateLayerDropdownOptionNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateLayerDropdownOptionNames';
+import { DropdownOptionsDisplayStatusUtils } from '../../../../utils/dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
 import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -24,19 +25,12 @@ class DropdownBase extends ComponentBuilder {
   }
 
   public static addComponentsToBase(buttonComponent: WorkshopComponent): void {
-    // WORK1: potentially add a property to nested subcomponent - signifying which auxiliary component it belongs to (easier for remove/copy)
     const layer1Component = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    const [textComponent1] = layer1Component.nestedComponentsLockedToLayer.add(buttonComponent);
+    layer1Component.nestedComponentsLockedToLayer.add(buttonComponent);
     const layer2Component = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    const [textComponent2] = layer2Component.nestedComponentsLockedToLayer.add(buttonComponent);
+    layer2Component.nestedComponentsLockedToLayer.add(buttonComponent);
     const layer3Component = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    const [textComponent3] = layer3Component.nestedComponentsLockedToLayer.add(buttonComponent);
-    const layerCustomCss = layer1Component.subcomponents[layer1Component.coreSubcomponentNames.base].customCss;
-    layer2Component.subcomponents[layer2Component.coreSubcomponentNames.base].customCss = layerCustomCss;
-    layer3Component.subcomponents[layer3Component.coreSubcomponentNames.base].customCss = layerCustomCss;
-    const textCustomCss = textComponent1.subcomponents[textComponent1.coreSubcomponentNames.base].customCss;
-    textComponent2.subcomponents[textComponent2.coreSubcomponentNames.base].customCss = textCustomCss;
-    textComponent3.subcomponents[textComponent3.coreSubcomponentNames.base].customCss = textCustomCss;
+    layer3Component.nestedComponentsLockedToLayer.add(buttonComponent);
     UpdateLayerDropdownOptionNames.update(buttonComponent, 0);
   }
 }
@@ -50,7 +44,9 @@ export const dropdownBase: ComponentGenerator = {
     const dropdownMenuBaseComponent = dropdownMenuBase.createNewComponent('Menu');
     Object.assign(buttonComponent.subcomponents, dropdownMenuBaseComponent.subcomponents);
     Object.assign(buttonComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName, dropdownMenuBaseComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName);
+    buttonComponent.componentPreviewStructure.subcomponentDropdownStructure[dropdownMenuBaseComponent.coreSubcomponentNames.base] = { ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(dropdownMenuBaseComponent.coreSubcomponentNames.base) };
     buttonComponent.auxiliaryComponent = dropdownMenuBaseComponent;
+    dropdownMenuBaseComponent.isAuxiliaryComponent = true;
     buttonComponent.activeSubcomponentName = dropdownMenuBaseComponent.coreSubcomponentNames.base;
     DropdownBase.addComponentsToBase(buttonComponent);
     buttonComponent.activeSubcomponentName = buttonComponent.defaultSubcomponentName;

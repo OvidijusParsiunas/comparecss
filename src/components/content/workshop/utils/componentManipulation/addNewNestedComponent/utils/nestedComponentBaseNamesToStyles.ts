@@ -9,8 +9,9 @@ export class NestedComponentBaseNamesToStyles {
     [LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]: LAYER_STYLES.DROPDOWN_ITEM,
   };
 
-  public static readonly STYLE_TO_LAYER: { [key in COMPONENT_STYLES]?: LAYER_COMPONENTS_BASE_NAMES } = {
+  public static readonly STYLE_TO_LAYER: { [key in LAYER_STYLES]: LAYER_COMPONENTS_BASE_NAMES } = {
     ...JSONUtils.reverseMap(NestedComponentBaseNamesToStyles.LAYER_TO_STYLE),
+    [LAYER_STYLES.PLAIN]: LAYER_COMPONENTS_BASE_NAMES.LAYER,
   };
   
   public static genericToStyle(nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): COMPONENT_STYLES {

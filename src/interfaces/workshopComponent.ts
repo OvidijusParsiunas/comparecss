@@ -165,6 +165,8 @@ export interface SubcomponentProperties {
    // used to temporarily display a nested component when hovering add subcomponent dropdown options with a mouse
   isTemporaryAddPreview?: boolean;
   isRemovable?: boolean;
+  // reference to the parent auxiliary component if this subcomponent is originally owned by it
+  parentAuxiliaryComponent?: WorkshopComponent;
 }
 
 export type Subcomponents = {
@@ -195,9 +197,11 @@ export interface WorkshopComponent {
   nestedComponentCount?: NestedComponentCount;
   // used to share add dropdown options across components such as layers - in order to make sure that the enabled and disabled items are in-sync
   newNestedComponentsOptionsRefs?: NewNestedComponentsOptionsRefs;
-  // the auxiliary component holds the preview structure, however its dropdown structure, subcomponents and subcomponentNameToDropdownOptionName
-  // are placed in the core parent component
+  // reference to the auxiliary component which holds the preview structure of its subcomponents, however the dropdown structure, subcomponents
+  // and subcomponentNameToDropdownOptionName are placed in the core parent (base) component instead (for purposes of maintainability)
   auxiliaryComponent?: WorkshopComponent;
+  // is this component an auxiliary component
+  isAuxiliaryComponent?: boolean;
   areLayersInSyncByDefault?: boolean;
 }
 

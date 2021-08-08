@@ -12,6 +12,14 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonBase extends ComponentBuilder {
 
+  public static cleanBaseDropdownIfNotNested(buttonComponent: WorkshopComponent, baseName?: string): void {
+    if (!baseName) {
+      const { componentPreviewStructure, coreSubcomponentNames } = buttonComponent;
+      const buttonBaseCustomponent = componentPreviewStructure.subcomponentDropdownStructure[coreSubcomponentNames.base];
+      delete buttonBaseCustomponent[DROPDOWN_OPTION_AUX_DETAILS_REF];
+    }
+  }
+
   private static createDefaultBaseCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
@@ -67,14 +75,6 @@ class ButtonBase extends ComponentBuilder {
       customFeatures: ButtonBase.createDefaultButtonBaseCustomFeatures(),
       defaultCustomFeatures: ButtonBase.createDefaultButtonBaseCustomFeatures(),
     };
-  }
-
-  public static cleanBaseDropdownIfNotNested(buttonComponent: WorkshopComponent, baseName?: string): void {
-    if (!baseName) {
-      const { componentPreviewStructure, coreSubcomponentNames } = buttonComponent;
-      const buttonBaseCustomponent = componentPreviewStructure.subcomponentDropdownStructure[coreSubcomponentNames.base];
-      delete buttonBaseCustomponent[DROPDOWN_OPTION_AUX_DETAILS_REF];
-    }
   }
 }
 

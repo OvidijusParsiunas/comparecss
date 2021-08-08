@@ -73,9 +73,9 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     AddNewLayerComponent.addNewSubcomponentToBase(parentComponent, layer);
   }
 
-  protected static createNewComponent(componentGenerator: ComponentGenerator, baseName?: string,
+  protected static createNewComponent(componentGenerator: ComponentGenerator, activeBaseComponent: WorkshopComponent, baseName?: string,
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
-    const subcomponents = AddNewComponentShared.createNewComponentSubcomponents(componentGenerator, baseName);
+    const subcomponents = AddNewComponentShared.createNewComponentSubcomponents(componentGenerator, activeBaseComponent, baseName);
     const { coreSubcomponentNames } = subcomponents[baseName].nestedComponent.ref;
     if (overwritePropertiesFunc) overwritePropertiesFunc(subcomponents, coreSubcomponentNames);
     return subcomponents[baseName].nestedComponent.ref;
@@ -85,8 +85,9 @@ export class AddNewLayerComponent extends AddNewComponentShared {
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
     const layerName = NestedComponentBaseNamesToStyles.STYLE_TO_LAYER[componentStyle];
-    const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
     const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
+    const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, activeBaseComponent,
+      UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
     JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
     AddNewLayerComponent.addNewComponentToComponentPreview(activeBaseComponent, newComponent);
     if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(parentComponent, activeBaseComponent, newComponent);
