@@ -21,5 +21,5 @@ export class DropdownOptions {
 
   public static getDropdownOptions(subcomponentType: SUBCOMPONENT_TYPES): Options {
     return DropdownOptions.STATIC_CARD_OPTIONS[subcomponentType];
-  } 
+  }
 }

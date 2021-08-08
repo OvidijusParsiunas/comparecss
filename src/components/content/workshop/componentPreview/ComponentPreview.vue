@@ -38,6 +38,7 @@
           </div>
           <!-- :style="{top: `-${component.subcomponents[component.coreSubcomponentNames.base].customCss[CSS_PSEUDO_CLASSES.DEFAULT].height}`}" -->
           <base-component v-if="component.auxiliaryComponent"
+            style="position: absolute"
             class="grid-item-position"
             :component="component.auxiliaryComponent"
             :mouseEvents="mouseEvents"

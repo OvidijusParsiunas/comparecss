@@ -96,8 +96,9 @@ export default {
     },
     getOverlayStyleProperties(): WorkshopComponentCss {
       const subcomponentCss = { ...this.component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT], color: '#ff000000' };
-      if (!this.isNestedComponent) subcomponentCss.height = '100% !important';
+      if (!this.isNestedComponent) subcomponentCss.height = this.component.isAuxiliaryComponent ? 'unset' : '100% !important';
       if (this.component.componentPreviewStructure.baseSubcomponentProperties.isTemporaryAddPreview) subcomponentCss.display = 'block'; 
+      if (!this.component.isAuxiliaryComponent && !this.isNestedComponent) subcomponentCss.marginTop = '0px';
       return subcomponentCss;
     },
     getOverlayClasses(): string[] {
