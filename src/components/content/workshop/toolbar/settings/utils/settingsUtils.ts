@@ -1,3 +1,4 @@
+import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import { UpdateOtherRangesUtils } from './rangeUtils/updateOtherRangesUtils';
@@ -120,5 +121,11 @@ export default class SettingsUtils {
         if (lastSelectedValueObjectKeys) SettingsUtils.resetCustomFeatures(option, subcomponentProperties, lastSelectedValueObjectKeys);
       }
     });
+  }
+
+  public static triggerComponentFunc(settingType: SETTINGS_TYPES, subcomponentProperties: SubcomponentProperties, updatedSetting?: any): void {
+    const parentComponent = subcomponentProperties.parentAuxiliaryComponent || subcomponentProperties.nestedComponent.ref;
+    const funcs = parentComponent?.triggerFuncOnSettingChange;
+    funcs?.[settingType]?.(subcomponentProperties, updatedSetting);
   }
 }

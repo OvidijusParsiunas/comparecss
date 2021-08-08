@@ -1,4 +1,4 @@
-import { AlignedLayerSection, AutoSize, SubcomponentProperties, Image, Text, WorkshopComponent, ComponentCenteringInParent, BackdropProperties, Subcomponents } from '../../../../../../interfaces/workshopComponent';
+import { AlignedLayerSection, SubcomponentProperties, Image, Text, WorkshopComponent, ComponentCenteringInParent, BackdropProperties, Subcomponents } from '../../../../../../interfaces/workshopComponent';
 import { DropdownOptionsDisplayStatusUtils } from '../../../utils/dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { NewComponentStyleProperties } from '../../../../../../consts/newComponentStyleProperties';
@@ -7,6 +7,7 @@ import { PARENT_COMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomp
 import { CoreSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
+import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
 import { CloseTriggers } from '../../../../../../interfaces/closeTriggers';
 import { Animations } from '../../../../../../interfaces/animations';
@@ -23,10 +24,13 @@ export class ComponentBuilder {
     return { left: pixels };
   }
 
-  protected static createAutoSize(isWidthAuto: boolean, isHeightAuto: boolean): AutoSize {
+  protected static createAutoSize(isWidthAuto: boolean, isHeightAuto: boolean, AutoSizeFuncs?: AutoSizeFuncs): AutoSize {
+    const { widthCalculationFunc, heightCalucationFunc } = AutoSizeFuncs || {};
     return {
       width: isWidthAuto,
       height: isHeightAuto,
+      widthCalculationFunc,
+      heightCalucationFunc,
     };
   }
 

@@ -6,6 +6,7 @@ import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { ReferenceSharingExecutable } from './referenceSharingExecutable';
 import { NestedComponentsInLayer } from './nestedComponentsLockedToLayer';
+import { TriggerFuncOnSettingChange } from './triggerFuncOnSettingChange';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
@@ -16,6 +17,7 @@ import { NestedComponentCount } from './nestedComponentCount';
 import { TempCustomCss } from './tempCustomCss';
 import { CloseTriggers } from './closeTriggers';
 import { Animations } from './animations';
+import { AutoSize } from './autoSize';
 
 export interface ChildCss {
   elementTag: string;
@@ -65,11 +67,6 @@ export interface BackdropProperties {
 export interface ComponentCenteringInParent {
   vertical: boolean;
   horizontal: boolean;
-}
-
-export interface AutoSize {
-  width?: boolean;
-  height?: boolean;
 }
 
 export interface Text {
@@ -203,6 +200,8 @@ export interface WorkshopComponent {
   // is this component an auxiliary component
   isAuxiliaryComponent?: boolean;
   areLayersInSyncByDefault?: boolean;
+  // when a particular setting is changed (e.g. input or range) - call a particular function
+  triggerFuncOnSettingChange?: TriggerFuncOnSettingChange;
 }
 
 // Reference for component structure:

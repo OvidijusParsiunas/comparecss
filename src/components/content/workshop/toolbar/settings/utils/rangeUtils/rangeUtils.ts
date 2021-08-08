@@ -1,10 +1,12 @@
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
+import { SETTINGS_TYPES } from '../../../../../../../consts/settingsTypes.enum';
 import { SettingPaths } from '../../../../../../../interfaces/settingPaths';
 import { UpdateOtherRangesUtils } from './updateOtherRangesUtils';
 import { optionToSettings } from '../../types/optionToSettings';
 import { FindSettings } from '../../types/utils/findSetting';
 import BoxShadowUtils from '../boxShadowUtils';
+import SettingsUtils from '../settingsUtils';
 import { UpdateRange } from './updateRange';
 import SharedUtils from '../sharedUtils';
 
@@ -78,6 +80,7 @@ export default class RangeUtils extends UpdateRange {
       realRangeValue = UpdateRange.updateCustomCss(rangeValue, spec, subcomponentProperties);
     }
     if (spec.updateOtherCssProperties) UpdateOtherRangesUtils.updateOtherSubcomponentRanges(spec.updateOtherCssProperties, realRangeValue);
+    SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.RANGE, subcomponentProperties, updatedSetting);
   }
 
   private static updateCustomCssSetting(settingToBeUpdated: any, cssPropertyValue: string): void {
@@ -118,5 +121,6 @@ export default class RangeUtils extends UpdateRange {
     } else {
       settingToBeUpdated.spec.default = RangeUtils.DEFAULT_RANGE_VALUE;
     }
+    SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.RANGE, subcomponentProperties, settingToBeUpdated);
   }
 }

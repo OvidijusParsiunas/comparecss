@@ -1,5 +1,6 @@
 import { UpdateDropdownOptionNamesShared } from '../../../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
+import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/autoDropdownMenuWidthUtils';
 import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { NestedDropdownStructure } from '../../../../../../../../interfaces/nestedDropdownStructure';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentCssClasses.enum';
@@ -9,6 +10,7 @@ import { ComponentGenerator } from '../../../../../../../../interfaces/component
 import { inheritedBaseChildCss } from '../../../shared/childCss/inheritedBaseChildCss';
 import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
 import { inheritedCardBaseCss } from '../../../cards/inheritedCss/inheritedCardCss';
+import { AutoSize } from '../../../../../../../../interfaces/autoSize';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
 
 class DropdownMenuBase extends ComponentBuilder {
@@ -43,13 +45,20 @@ class DropdownMenuBase extends ComponentBuilder {
         marginTop: '0px',
         marginBottom: '0px',
         userSelect: 'none',
+        minWidth: '0px',
       },
     };
+  }
+
+  private static createDefaultAutoSize(): AutoSize {
+    const widthCalculationFunc = DropdownMenuAutoWidthUtils.setWidth;
+    return ComponentBuilder.createAutoSize(false, false, { widthCalculationFunc })
   }
 
   private static createDefaultCustomFeatures(): CustomFeatures {
     return {
       animations: ComponentBuilder.createDisplayAnimationsProperties(),
+      autoSize: DropdownMenuBase.createDefaultAutoSize(),
     };
   }
 

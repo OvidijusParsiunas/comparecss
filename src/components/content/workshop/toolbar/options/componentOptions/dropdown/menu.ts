@@ -21,7 +21,7 @@ export const menuOptions: SubcomponentOptions<MenuOptionsModes> = {
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SIZE,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH_AUTO,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,

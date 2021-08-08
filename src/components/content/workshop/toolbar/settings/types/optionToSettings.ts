@@ -9,6 +9,7 @@ import backgroundColor from './backgroundColor';
 import backgroundImage from './backgroundImage';
 import closeAnimation from './closeAnimation';
 import shadowVertical from './shadowVertical';
+import sizeWidthAuto from './sizeWidthAuto';
 import modalPosition from './modalPosition';
 import layerPosition from './layerPosition';
 import borderBottom from './borderBottom';
@@ -41,6 +42,7 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW_VERTICAL]: shadowVertical,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE]: size,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH]: sizeWidth,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH_AUTO]: sizeWidthAuto,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_HEIGHT]: sizeHeight,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING]: padding,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN]: margin,

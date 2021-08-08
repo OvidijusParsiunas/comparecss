@@ -244,6 +244,7 @@ export default {
             } else if (setting.type === SETTINGS_TYPES.INPUT) {
               const keys = setting.spec.customFeatureObjectKeys;
               this.inputsValues[setting.spec.name] = SharedUtils.getCustomFeatureValue(keys, this.subcomponentProperties[keys[0]]);
+              SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.INPUT, this.subcomponentProperties)
             } else if (setting.type === SETTINGS_TYPES.INPUT_DROPDOWN) {
               const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClass, setting.spec.cssProperty);
               if (cssPropertyValue) { this.inputDropdownsValues[setting.spec.cssProperty] = cssPropertyValue; }
@@ -338,6 +339,7 @@ export default {
       this.subcomponentProperties.customCss[this.subcomponentProperties.activeCssPseudoClass][cssProperty] = (event.target as HTMLInputElement).value;
     },
     inputEventForInput(event: KeyboardEvent, customFeatureObjectKeys: string[]): void {
+      SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.INPUT, this.subcomponentProperties)
       SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, this.subcomponentProperties, (event.target as HTMLInputElement).value);
     },
     blurInputDropdown(referenceId: string): void {

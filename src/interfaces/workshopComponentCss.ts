@@ -17,6 +17,7 @@ export interface WorkshopComponentCss {
   backgroundSize?: string;
   backgroundPosition?: string;
   width?: string;
+  minWidth?: string;
   height?: string;
   fontFamily?: string;
   textAlign?: string;

@@ -2,6 +2,11 @@ import { SubcomponentProperties } from '../../../../../../interfaces/workshopCom
 import { UpdateOtherRangesUtils } from './rangeUtils/updateOtherRangesUtils';
 import SharedUtils from './sharedUtils';
 
+type CustomTriggerFunc = (
+  subcomponentProperties: SubcomponentProperties,
+  updateCssProperty: (trigger: any, subcomponentProperties: SubcomponentProperties, thisSettingSpec: any,
+    allSettings: any, newCalculatedValue?: string) => void) => void
+
 export default class CheckboxUtils {
 
   private static updateCustomFeatureViaTrigger(trigger: any, subcomponentProperties: SubcomponentProperties): void {
@@ -12,13 +17,15 @@ export default class CheckboxUtils {
     }
   }
 
-  private static updateCssProperty(trigger: any, subcomponentProperties: SubcomponentProperties, thisSettingSpec: any, allSettings: any): void {
+  private static updateCssProperty(trigger: any, subcomponentProperties: SubcomponentProperties, thisSettingSpec: any,
+      allSettings: any, newCalculatedValue?: string): void {
     const { customCss, activeCssPseudoClass } = subcomponentProperties;
     const { cssProperty, newValue, pseudoClass } = trigger;
-    customCss[pseudoClass || activeCssPseudoClass][cssProperty] = newValue;
+    const newResultValue = newCalculatedValue || newValue;
+    customCss[pseudoClass || activeCssPseudoClass][cssProperty] = newResultValue;
     for (let i = 0; i < allSettings.options.length; i += 1) {
       if (thisSettingSpec !== allSettings.options[i].spec && allSettings.options[i]?.spec?.cssProperty === cssProperty) {
-        allSettings.options[i].spec.default = parseInt(newValue) || 0;
+        allSettings.options[i].spec.default = parseInt(newResultValue) || 0;
       }
     }
   }
@@ -26,7 +33,10 @@ export default class CheckboxUtils {
   private static activateTriggers(newCheckboxValue: boolean, triggers: any, subcomponentProperties: SubcomponentProperties,
       thisSettingSpec: any, allSettings: any): void {
     (triggers[newCheckboxValue.toString()] || []).forEach((trigger) => {
-      if (trigger.cssProperty) {
+      if (trigger.customFunctionKeys) {
+        const customFunction = SharedUtils.getCustomFeatureValue(trigger.customFunctionKeys, subcomponentProperties[trigger.customFunctionKeys[0]]) as CustomTriggerFunc;
+        customFunction(subcomponentProperties, CheckboxUtils.updateCssProperty.bind(this, trigger, subcomponentProperties, thisSettingSpec, allSettings));
+      } else if (trigger.cssProperty) {
         CheckboxUtils.updateCssProperty(trigger, subcomponentProperties, thisSettingSpec, allSettings);
       } else if (trigger.customFeatureObjectKeys) {
         CheckboxUtils.updateCustomFeatureViaTrigger(trigger, subcomponentProperties)

@@ -1,17 +1,33 @@
 import { UpdateLayerDropdownOptionNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateLayerDropdownOptionNames';
 import { DropdownOptionsDisplayStatusUtils } from '../../../../utils/dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
 import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
+import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
+import { DropdownMenuAutoWidthUtils } from '../../../../toolbar/settings/utils/autoDropdownMenuWidthUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
+import { SETTINGS_TYPES } from '../../../../../../../consts/settingsTypes.enum';
 import { defaultButton } from '../../buttons/generators/default';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { dropdownMenuBase } from './menu/base';
 
 class DropdownBase extends ComponentBuilder {
+
+  private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, updatedSetting: any): void {
+    const { cssProperty } = updatedSetting.spec;
+    if (cssProperty === 'paddingLeft' || cssProperty === 'paddingRight') {
+      DropdownMenuAutoWidthUtils.setWidth(subcomponentProperties);
+    }
+  }
+
+  public static setTriggerFuncOnSettingChange(dropdownMenuBaseComponent: WorkshopComponent): void {
+    dropdownMenuBaseComponent.triggerFuncOnSettingChange = {
+      [SETTINGS_TYPES.INPUT]: DropdownMenuAutoWidthUtils.setWidth,
+      [SETTINGS_TYPES.RANGE]: DropdownBase.setWidthViaRange,
+    };
+  }
 
   public static overwriteCustomCss(dropdownBaseComponent: WorkshopComponent): void {
     const baseSubcomponent = dropdownBaseComponent.subcomponents[dropdownBaseComponent.coreSubcomponentNames.base];
@@ -50,6 +66,7 @@ export const dropdownBase: ComponentGenerator = {
     buttonComponent.activeSubcomponentName = dropdownMenuBaseComponent.coreSubcomponentNames.base;
     DropdownBase.addComponentsToBase(buttonComponent);
     buttonComponent.activeSubcomponentName = buttonComponent.defaultSubcomponentName;
+    DropdownBase.setTriggerFuncOnSettingChange(dropdownMenuBaseComponent);
     return buttonComponent;
   },
 }
