@@ -33,6 +33,11 @@
           @mouseEnter="useSubcomponentPreviewSelectModeEventHandlers.subcomponentMouseEnter"
           @mouseLeave="useSubcomponentPreviewSelectModeEventHandlers.subcomponentMouseLeave"></div>
     </div>
+    <base-component v-if="component.auxiliaryComponent"
+      :style="getAuxiliaryComponentParentElementStyleProperties()"
+      :component="component.auxiliaryComponent"
+      :mouseEvents="mouseEvents"
+      :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"/>
   </div>    
 </template>
 
@@ -45,6 +50,8 @@ import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOve
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../consts/elementClassMarkers';
+import { DROPDOWN_POSITIONS } from '../../../../consts/dropdownPositions.enum';
+import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../consts/closeButtonXText';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 import ComponentPreviewUtils from './utils/componentPreviewUtils';
@@ -129,6 +136,17 @@ export default {
       const customCssObj = overwrittenCustomCssObj || customCss;
       return [customCssObj[CSS_PSEUDO_CLASSES.DEFAULT], { top: '', color: 'none', backgroundColor: 'none'}];
     },
+    getAuxiliaryComponentParentElementStyleProperties(): WorkshopComponentCss {
+      const positions: { [key in DROPDOWN_POSITIONS]: WorkshopComponentCss } = {
+        [DROPDOWN_POSITIONS.TOP]: { bottom: '100%' },
+        [DROPDOWN_POSITIONS.BOTTOM]: {},
+        [DROPDOWN_POSITIONS.LEFT]: { top: '0px', right: '100%' },
+        [DROPDOWN_POSITIONS.RIGHT]: { top: '0px', left: '100%' },
+      };
+      const { subcomponents, coreSubcomponentNames } = this.component.auxiliaryComponent as WorkshopComponent;
+      const { position } = subcomponents[coreSubcomponentNames.base].customFeatures.dropdownPosition;
+      return { position: 'absolute', zIndex: 1, ...positions[position] };
+    }
   },
   components: {
     layers,

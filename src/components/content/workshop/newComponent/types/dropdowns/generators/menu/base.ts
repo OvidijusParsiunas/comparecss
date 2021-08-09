@@ -1,5 +1,5 @@
+import { CustomCss, CustomFeatures, DropdownPosition, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { UpdateDropdownOptionNamesShared } from '../../../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
-import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/autoDropdownMenuWidthUtils';
 import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { NestedDropdownStructure } from '../../../../../../../../interfaces/nestedDropdownStructure';
@@ -7,9 +7,11 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentC
 import { CSS_PROPERTY_VALUES } from '../../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../../interfaces/componentGenerator';
+import { DROPDOWN_POSITIONS } from '../../../../../../../../consts/dropdownPositions.enum';
 import { inheritedBaseChildCss } from '../../../shared/childCss/inheritedBaseChildCss';
 import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
 import { inheritedCardBaseCss } from '../../../cards/inheritedCss/inheritedCardCss';
+import { MenuBaseSpecificSettings } from '../../settings/menuBaseSpecificSettings';
 import { AutoSize } from '../../../../../../../../interfaces/autoSize';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
 
@@ -54,6 +56,10 @@ class DropdownMenuBase extends ComponentBuilder {
     };
   }
 
+  private static createDropdownMenuPosition(): DropdownPosition {
+    return { position: DROPDOWN_POSITIONS.BOTTOM };
+  }
+
   private static createDefaultAutoSize(): AutoSize {
     const widthCalculationFunc = DropdownMenuAutoWidthUtils.setWidth;
     return ComponentBuilder.createAutoSize(false, false, { widthCalculationFunc })
@@ -63,6 +69,7 @@ class DropdownMenuBase extends ComponentBuilder {
     return {
       animations: ComponentBuilder.createDisplayAnimationsProperties(),
       autoSize: DropdownMenuBase.createDefaultAutoSize(),
+      dropdownPosition: DropdownMenuBase.createDropdownMenuPosition(),
     };
   }
 
@@ -88,6 +95,7 @@ export const dropdownMenuBase: ComponentGenerator = {
       { componentType: COMPONENT_TYPES.DROPDOWN_MENU, baseName }, DropdownMenuBase.createBaseSubcomponent, false);
     DropdownMenuBase.setAuxiliaryComponentReferenceOnBase(dropdownMenuComponent);
     DropdownMenuBase.setAreLayersInSyncByDefault(dropdownMenuComponent);
+    MenuBaseSpecificSettings.set(dropdownMenuComponent);
     return dropdownMenuComponent;
   },
 }

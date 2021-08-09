@@ -32,6 +32,10 @@ export const menuOptions: SubcomponentOptions<MenuOptionsModes> = {
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
     },
     {
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_POSITIONS,
+    },
+    {
       // WORK2: animations
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ANIMATIONS,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.CLOSE_ANIMATION,

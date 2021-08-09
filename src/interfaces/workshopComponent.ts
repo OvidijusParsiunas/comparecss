@@ -8,6 +8,7 @@ import { ReferenceSharingExecutable } from './referenceSharingExecutable';
 import { NestedComponentsInLayer } from './nestedComponentsLockedToLayer';
 import { TriggerFuncOnSettingChange } from './triggerFuncOnSettingChange';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
+import { DROPDOWN_POSITIONS } from '../consts/dropdownPositions.enum';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
 import { CoreSubcomponentNames } from './customSubcomponentNames';
@@ -77,6 +78,10 @@ export interface AlignedLayerSection {
   section: ALIGNED_SECTION_TYPES;
 }
 
+export interface DropdownPosition {
+  position: DROPDOWN_POSITIONS;
+}
+
 // should not be primitives as these values are copied by key
 export interface CustomFeatures {
   backdrop?: BackdropProperties;
@@ -89,6 +94,7 @@ export interface CustomFeatures {
   alignedLayerSection?: AlignedLayerSection;
   circleBorder?: boolean;
   lastSelectedCssValues?: WorkshopComponentCss;
+  dropdownPosition?: DropdownPosition;
 }
 
 export interface Image {

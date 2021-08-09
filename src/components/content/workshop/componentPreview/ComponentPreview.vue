@@ -36,13 +36,6 @@
               :mouseEvents="temporaryComponent.mouseEvents"
               :subcomponentAndOverlayElementIds="temporaryComponent.subcomponentAndOverlayElementIds"/>
           </div>
-          <!-- :style="{top: `-${component.subcomponents[component.coreSubcomponentNames.base].customCss[CSS_PSEUDO_CLASSES.DEFAULT].height}`}" -->
-          <base-component v-if="component.auxiliaryComponent"
-            style="position: absolute"
-            class="grid-item-position"
-            :component="component.auxiliaryComponent"
-            :mouseEvents="mouseEvents"
-            :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"/>
           <!-- UX - SUBCOMPONENT SELECT - set this to appropriate dimensions when the event is fired -->
           <!-- <div ref="selectSubcomponentOverlay1" style="width: 1000px; height: 700px; background-color: #ff010100; position: absolute; border: 0px; top: -221px; left: -220px; z-index: 1; cursor: pointer;"></div> -->
         </div>

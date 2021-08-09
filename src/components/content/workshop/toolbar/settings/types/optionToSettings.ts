@@ -3,6 +3,7 @@ import nestedComponentPositionNoAlign from './nestedComponentPositionNoAlign';
 import nestedComponentPosition from './nestedComponentPosition';
 import backgroundColorImage from './backgroundColorImage';
 import buttonAnimations from './buttonAnimations';
+import dropdownPosition from './dropdownPosition';
 import modalAnimations from './modalAnimations';
 import imageAnimations from './imageAnimations';
 import backgroundColor from './backgroundColor';
@@ -63,4 +64,5 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.CLOSE_ANIMATION]: closeAnimation,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ACTIONS]: modalActions,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.LAYER_POSITION]: layerPosition,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_POSITIONS]: dropdownPosition,
 };

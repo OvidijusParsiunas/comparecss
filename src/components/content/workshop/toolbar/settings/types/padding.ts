@@ -18,7 +18,7 @@ export default {
     { 
       type: SETTINGS_TYPES.RANGE,
       spec: {
-        name: 'Top',
+        name: SETTING_NAMES.TOP,
         default: 0,
         scale: [0, 250],
         smoothingDivisible: 1,
@@ -29,7 +29,7 @@ export default {
     { 
       type: SETTINGS_TYPES.RANGE,
       spec: {
-        name: 'Right',
+        name: SETTING_NAMES.RIGHT,
         default: 0,
         scale: [0, 250],
         smoothingDivisible: 1,
@@ -40,7 +40,7 @@ export default {
     { 
       type: SETTINGS_TYPES.RANGE,
       spec: {
-        name: 'Bottom',
+        name: SETTING_NAMES.BOTTOM,
         default: 0,
         scale: [0, 250],
         smoothingDivisible: 1,

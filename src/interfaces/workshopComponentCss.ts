@@ -43,6 +43,7 @@ export interface WorkshopComponentCss {
   top?: string;
   left?: string;
   right?: string;
+  bottom?: string;
   float?: string;
   overflow?: string;
   transform?: string;
