@@ -12,6 +12,10 @@ export const menuOptions: SubcomponentOptions<MenuOptionsModes> = {
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER,
     },
     {
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.PADDING,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING,
+    },
+    {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BACKGROUND,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_COLOR,
     },

@@ -46,6 +46,10 @@ class DropdownMenuBase extends ComponentBuilder {
         marginBottom: '0px',
         userSelect: 'none',
         minWidth: '0px',
+        paddingTop: '0px',
+        paddingRight: '0px',
+        paddingLeft: '0px',
+        paddingBottom: '0px',
       },
     };
   }
