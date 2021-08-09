@@ -1,3 +1,4 @@
 export interface TemporaryDropdownValue {
-  value: string;
+  new: string;
+  old: string;
 }

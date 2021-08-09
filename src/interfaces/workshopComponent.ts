@@ -2,13 +2,13 @@ import { InterconnectedSetting, SubcomponentSpecificSettings } from './subcompon
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
 import { NewNestedComponentsOptionsRefs } from './newNestedComponentsOptionsRefs';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
+import { DROPDOWN_MENU_POSITIONS } from '../consts/dropdownMenuPositions.enum';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { ReferenceSharingExecutable } from './referenceSharingExecutable';
 import { NestedComponentsInLayer } from './nestedComponentsLockedToLayer';
 import { TriggerFuncOnSettingChange } from './triggerFuncOnSettingChange';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
-import { DROPDOWN_POSITIONS } from '../consts/dropdownPositions.enum';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
 import { CoreSubcomponentNames } from './customSubcomponentNames';
@@ -78,8 +78,8 @@ export interface AlignedLayerSection {
   section: ALIGNED_SECTION_TYPES;
 }
 
-export interface DropdownPosition {
-  position: DROPDOWN_POSITIONS;
+export interface DropdownMenuPosition {
+  position: DROPDOWN_MENU_POSITIONS;
 }
 
 // should not be primitives as these values are copied by key
@@ -94,7 +94,10 @@ export interface CustomFeatures {
   alignedLayerSection?: AlignedLayerSection;
   circleBorder?: boolean;
   lastSelectedCssValues?: WorkshopComponentCss;
-  dropdownPosition?: DropdownPosition;
+  dropdownMenuPosition?: DropdownMenuPosition;
+  // WORK1
+  dropdownSelect?: { enabled: boolean, lastSelectedItemText: string, callback: any };
+  mouseEventCallbacks?: any;
 }
 
 export interface Image {
@@ -105,6 +108,8 @@ export interface Image {
 
 export interface CustomStaticFeatures {
   subcomponentText?: Text;
+  // WORK1
+  dropdownSelect?: { enabled: boolean, lastSelectedItemText: string, callback: any };
   image?: Image;
 }
 
@@ -203,8 +208,8 @@ export interface WorkshopComponent {
   // reference to the auxiliary component which holds the preview structure of its subcomponents, however the dropdown structure, subcomponents
   // and subcomponentNameToDropdownOptionName are placed in the core parent (base) component instead (for purposes of maintainability)
   auxiliaryComponent?: WorkshopComponent;
-  // is this component an auxiliary component
-  isAuxiliaryComponent?: boolean;
+  // used to identify if this component is an auxiliary component and for referencing the core base component
+  auxiliaryComponentCoreComponentRef?: WorkshopComponent;
   areLayersInSyncByDefault?: boolean;
   // when a particular setting is changed (e.g. input or range) - call a particular function
   triggerFuncOnSettingChange?: TriggerFuncOnSettingChange;
@@ -214,7 +219,7 @@ export interface WorkshopComponent {
 
 //   component -> subcomponents (parent base subcomponent + nested component subcomponents)
 
-// Subcomponents that do not belong to nested components and are not the base of the parent can access the parent component as follows:
+// Subcomponents that do not belong to nested components and are not the base of the parent can access their parent component as follows:
 // parent component -> subcomponents (not base)
 //                          |
 //                    nestedComponent

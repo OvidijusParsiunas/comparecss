@@ -407,8 +407,8 @@ export default {
       if (isDropdownButtonClicked && !closedViaKey) {
         this.clickedButton = true;
       }
-      if ((!isDropdownButtonClicked || closedViaKey) && this.lastHoveredOptionText) {
-        if (this.hideDropdownMenuEventHandler) {
+      if (!isDropdownButtonClicked || closedViaKey) {
+        if (this.hideDropdownMenuEventHandler && this.lastHoveredOptionText) {
           this.hideDropdownMenuEventHandler(this.lastHoveredOptionText);
         } else {
           this.$emit('hide-dropdown-menu');

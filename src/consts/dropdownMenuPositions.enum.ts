@@ -1,4 +1,4 @@
-export enum DROPDOWN_POSITIONS {
+export enum DROPDOWN_MENU_POSITIONS {
   LEFT = 'Left',
   TOP = 'Top',
   RIGHT = 'Right',

@@ -47,10 +47,10 @@ import useSubcomponentPreviewSelectModeEventHandlers from './compositionAPI/useS
 import { UseSubcomponentPreviewEventHandlers } from '../../../../interfaces/useSubcomponentPreviewEventHandlers';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
+import { DROPDOWN_MENU_POSITIONS } from '../../../../consts/dropdownMenuPositions.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../consts/elementClassMarkers';
-import { DROPDOWN_POSITIONS } from '../../../../consts/dropdownPositions.enum';
 import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../consts/closeButtonXText';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
@@ -93,19 +93,23 @@ export default {
       return this.subcomponentAndOverlayElementIds[this.component.coreSubcomponentNames.base]?.[idType];
     },
     activateSubcomponentMouseEvent(subcomponentMouseEvent: keyof UseSubcomponentPreviewEventHandlers): void {
-      this.mouseEvents[this.getBaseId('subcomponentId')][subcomponentMouseEvent]()
+      this.mouseEvents[this.getBaseId('subcomponentId')][subcomponentMouseEvent]();
     },
     getSubcomponentText(): string {
-      return this.component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures?.subcomponentText?.text || '';
-    },
+      // WORK1
+      if ((this.component as WorkshopComponent).componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures?.dropdownSelect?.enabled) {
+        return (this.component as WorkshopComponent).componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures?.dropdownSelect?.lastSelectedItemText;
+      }
+        return this.component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures?.subcomponentText?.text || '';
+      },
     getJsClasses(): string[] {
       return this.component.componentPreviewStructure.baseSubcomponentProperties?.customFeatures?.jsClasses || [];
     },
     getOverlayStyleProperties(): WorkshopComponentCss {
       const subcomponentCss = { ...this.component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT], color: '#ff000000' };
-      if (!this.isNestedComponent) subcomponentCss.height = this.component.isAuxiliaryComponent ? 'unset' : '100% !important';
+      if (!this.isNestedComponent) subcomponentCss.height = this.component.auxiliaryComponentCoreComponentRef ? 'unset' : '100% !important';
       if (this.component.componentPreviewStructure.baseSubcomponentProperties.isTemporaryAddPreview) subcomponentCss.display = 'block'; 
-      if (!this.component.isAuxiliaryComponent && !this.isNestedComponent) subcomponentCss.marginTop = '0px';
+      if (!this.component.auxiliaryComponentCoreComponentRef && !this.isNestedComponent) subcomponentCss.marginTop = '0px';
       return subcomponentCss;
     },
     getOverlayClasses(): string[] {
@@ -137,14 +141,14 @@ export default {
       return [customCssObj[CSS_PSEUDO_CLASSES.DEFAULT], { top: '', color: 'none', backgroundColor: 'none'}];
     },
     getAuxiliaryComponentParentElementStyleProperties(): WorkshopComponentCss {
-      const positions: { [key in DROPDOWN_POSITIONS]: WorkshopComponentCss } = {
-        [DROPDOWN_POSITIONS.TOP]: { bottom: '100%' },
-        [DROPDOWN_POSITIONS.BOTTOM]: {},
-        [DROPDOWN_POSITIONS.LEFT]: { top: '0px', right: '100%' },
-        [DROPDOWN_POSITIONS.RIGHT]: { top: '0px', left: '100%' },
+      const positions: { [key in DROPDOWN_MENU_POSITIONS]: WorkshopComponentCss } = {
+        [DROPDOWN_MENU_POSITIONS.TOP]: { bottom: '100%' },
+        [DROPDOWN_MENU_POSITIONS.BOTTOM]: {},
+        [DROPDOWN_MENU_POSITIONS.LEFT]: { top: '0px', right: '100%' },
+        [DROPDOWN_MENU_POSITIONS.RIGHT]: { top: '0px', left: '100%' },
       };
       const { subcomponents, coreSubcomponentNames } = this.component.auxiliaryComponent as WorkshopComponent;
-      const { position } = subcomponents[coreSubcomponentNames.base].customFeatures.dropdownPosition;
+      const { position } = subcomponents[coreSubcomponentNames.base].customFeatures.dropdownMenuPosition;
       return { position: 'absolute', zIndex: 1, ...positions[position] };
     }
   },

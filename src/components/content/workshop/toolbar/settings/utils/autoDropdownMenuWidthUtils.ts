@@ -41,6 +41,9 @@ export class DropdownMenuAutoWidthUtils {
   public static setWidth(subcomponentProperties: SubcomponentProperties, callback?: (newValue: string) => void): void {
     if (DropdownMenuAutoWidthUtils.canNewWidthBeSet(subcomponentProperties)) {
       setTimeout(() => DropdownMenuAutoWidthUtils.set(subcomponentProperties.parentAuxiliaryComponent, callback));
+    // WORK1
+    } else if (subcomponentProperties.customStaticFeatures?.dropdownSelect?.enabled) {
+      subcomponentProperties.customStaticFeatures.dropdownSelect.enabled = false;
     }
   }
 }

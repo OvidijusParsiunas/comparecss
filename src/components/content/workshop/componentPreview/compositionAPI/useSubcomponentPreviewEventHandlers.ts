@@ -11,7 +11,7 @@ import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 import { animationState } from '../utils/animations/state';
 
 export default function useSubcomponentPreviewEventHandlers(subcomponentProperties: SubcomponentProperties,
-    clickCallback: () => void): UseSubcomponentPreviewEventHandlers {
+    refreshComponentCallback: () => void, clickCallback: () => void): UseSubcomponentPreviewEventHandlers {
 
   let overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
   let isUnsetButtonDisplayedForColorInputs = {};
@@ -131,7 +131,10 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   }
 
   const subcomponentClick = (): void => {
+    // WORK1
+    subcomponentProperties.customFeatures?.mouseEventCallbacks?.click?.(subcomponentProperties);
     if (clickCallback) clickCallback();
+    refreshComponentCallback();
   }
 
   return {

@@ -116,14 +116,15 @@
                   :activeOptionPropertyKeyName="setting.spec.cssProperty || setting.spec.activeOptionPropertyKeyName"
                   :fontAwesomeIcon="'caret-down'"
                   :minOptionsToDisplayDropdown="1"
-                  @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
+                  :consistentButtonContent="{'text': actionsDropdownsButtonText[setting.spec.name]}"
+                  @hide-dropdown-menu-callback="openActionsDropdownMenu($event, setting.spec)"
                   @mouse-enter-button="mouseEnterActionsDropdownButton(this, setting.spec, subcomponentProperties)"
                   @mouse-leave-button="mouseLeaveActionsDropdownButton(this, setting.spec, subcomponentProperties)"
                   @mouse-enter-option="mouseEnterActionsDropdownOption(this, $event, setting.spec, subcomponentProperties)"
                   @mouse-leave-dropdown="mouseLeaveActionsDropdown(this, setting.spec, subcomponentProperties, false)"
                   @mouse-click-option="changeSetting(mouseClickActionsDropdownOption.bind(this, this, $event, setting, settings, subcomponentProperties))"
                   @mouse-click-new-option="mouseClickActionsDropdownNewOption($event, setting.spec, subcomponentProperties, actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.activeOptionPropertyKeyName])"
-                  @hide-dropdown-menu="mouseLeaveActionsDropdown(this, setting.spec, subcomponentProperties, true)"/>
+                  @hide-dropdown-menu="hideActionsDropdownMenu(setting.spec)"/>
               </div>
 
               <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.CHECKBOX">
@@ -181,6 +182,7 @@
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import { RemoveInSyncOptionButton } from '../../../../../interfaces/settingsComponentEvents';
 import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSettingsState';
+import { WorkshopEventCallback } from '../../../../../interfaces/workshopEventCallback';
 import { TOOLBAR_GENERAL_BUTTON_CLASS } from '../../../../../consts/toolbarClasses';
 import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
@@ -215,6 +217,7 @@ interface Data {
   inputsValues: unknown;
   inputDropdownsValues: unknown;
   actionsDropdownsObjects: unknown;
+  actionsDropdownsButtonText: unknown; 
   customFeatureRangeValue: unknown;
   settingsVisible: boolean;
 }
@@ -235,7 +238,11 @@ export default {
           this.subcomponentProperties.subcomponentSpecificSettings, this.settings.options);
         this.$nextTick(() => {
           const { customCss, activeCssPseudoClass } = this.subcomponentProperties;
+          this.imageNames = {};
+          this.inputsValues = {};
           this.inputDropdownsValues = {};
+          this.actionsDropdownsObjects = {};
+          this.actionsDropdownsButtonText = {};
           (this.settings.options || []).forEach((setting) => {
             if (setting.type === SETTINGS_TYPES.RANGE) {
               RangeUtils.updateSettings(setting, this.subcomponentProperties);
@@ -244,7 +251,7 @@ export default {
             } else if (setting.type === SETTINGS_TYPES.INPUT) {
               const keys = setting.spec.customFeatureObjectKeys;
               this.inputsValues[setting.spec.name] = SharedUtils.getCustomFeatureValue(keys, this.subcomponentProperties[keys[0]]);
-              SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.INPUT, this.subcomponentProperties)
+              if (!newSettings) SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.INPUT, this.subcomponentProperties)
             } else if (setting.type === SETTINGS_TYPES.INPUT_DROPDOWN) {
               const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClass, setting.spec.cssProperty);
               if (cssPropertyValue) { this.inputDropdownsValues[setting.spec.cssProperty] = cssPropertyValue; }
@@ -273,6 +280,7 @@ export default {
     inputsValues: {},
     inputDropdownsValues: {},
     actionsDropdownsObjects: {},
+    actionsDropdownsButtonText: {},
     customFeatureRangeValue: null,
     settings: {},
     settingsVisible: true,
@@ -369,6 +377,15 @@ export default {
     },
     removeImage(spec: any): void {
       ImageUtils.removeImage(this, spec);
+    },
+    openActionsDropdownMenu(hideDropdownMenuCallbackEvent: WorkshopEventCallback, spec: any): void {
+      const keys = spec.customFeatureObjectKeys;
+      this.actionsDropdownsButtonText[spec.name] = SharedUtils.getCustomFeatureValue(keys, this.subcomponentProperties[keys[0]]);
+      this.$emit('hide-dropdown-menu-callback', hideDropdownMenuCallbackEvent);
+    },
+    hideActionsDropdownMenu(spec: any): void {
+      this.actionsDropdownsButtonText[spec.name] = null;
+      this.mouseLeaveActionsDropdown(this, spec, this.subcomponentProperties, true)
     },
     resetSubcomponentProperties(options: any): void {
       SettingsUtils.resetSubcomponentProperties(options, this.subcomponentProperties);

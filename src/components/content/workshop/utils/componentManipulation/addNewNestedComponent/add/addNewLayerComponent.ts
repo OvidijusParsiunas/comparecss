@@ -36,12 +36,21 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     parentComponent.componentPreviewStructure.layers.push(layer);
   }
 
-  private static copySiblingSubcomponentCustomCss(parentComponent: WorkshopComponent, layer: Layer): void {
+  private static copySiblingSubcomponentCustomProperties(parentComponent: WorkshopComponent, layer: Layer): void {
     if (parentComponent.componentPreviewStructure.layers.length > 0) {
       const siblingSubcomponent = parentComponent.componentPreviewStructure.layers[parentComponent.componentPreviewStructure.layers.length - 1];
-      const { customCss, defaultCss } = siblingSubcomponent.subcomponentProperties;
-      layer.subcomponentProperties.customCss = parentComponent.areLayersInSyncByDefault ? customCss : JSONUtils.deepCopy(customCss);
-      layer.subcomponentProperties.defaultCss = parentComponent.areLayersInSyncByDefault ? defaultCss : JSONUtils.deepCopy(defaultCss);
+      const { customCss, defaultCss, customFeatures, defaultCustomFeatures } = siblingSubcomponent.subcomponentProperties;
+      if (parentComponent.areLayersInSyncByDefault) {
+        layer.subcomponentProperties.customCss = customCss;
+        layer.subcomponentProperties.defaultCss = defaultCss;
+        layer.subcomponentProperties.customFeatures = customFeatures;
+        layer.subcomponentProperties.defaultCustomFeatures = defaultCustomFeatures;
+      } else {
+        layer.subcomponentProperties.customCss = JSONUtils.deepCopy(customCss);
+        layer.subcomponentProperties.defaultCss = JSONUtils.deepCopy(defaultCss);
+        layer.subcomponentProperties.customFeatures = JSONUtils.deepCopy(customFeatures);
+        layer.subcomponentProperties.defaultCustomFeatures = JSONUtils.deepCopy(defaultCustomFeatures); 
+      }
     }
   }
 
@@ -69,7 +78,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     const { base: newComponentBaseName } = newComponent.coreSubcomponentNames;
     const layerSubcomponent = newComponent.subcomponents[newComponentBaseName];
     const layer: Layer = AddNewLayerComponent.createEmptyLayer(newComponentBaseName, layerSubcomponent);
-    AddNewLayerComponent.copySiblingSubcomponentCustomCss(parentComponent, layer);
+    AddNewLayerComponent.copySiblingSubcomponentCustomProperties(parentComponent, layer);
     AddNewLayerComponent.addNewSubcomponentToBase(parentComponent, layer);
   }
 

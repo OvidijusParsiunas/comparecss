@@ -125,7 +125,8 @@ export default {
     },
     componentPreviewMouseEnter(): void {
       if (this.changeMouseEventsToDefaultOnComponentPreviewMouseEnter) {
-        this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(this.subcomponentAndOverlayElementIds, this.component.subcomponents);
+        this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(this.subcomponentAndOverlayElementIds,
+          this.component.subcomponents, this.refreshComponent);
         // bug fix - when in select subcomponent mode, clicked the subcomponent dropdown and then clicked the subcomponet select mode again
         // caused the preview mouse events to not activate
         this.changeMouseEventsToDefaultOnComponentPreviewMouseEnter = false;
@@ -148,7 +149,8 @@ export default {
           // and resetting the subcomponents display properties to 'none' - style="display: none"
           this.changeMouseEventsToDefaultOnComponentPreviewMouseEnter = true;
         } else {
-          this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(this.subcomponentAndOverlayElementIds, this.component.subcomponents);
+          this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(this.subcomponentAndOverlayElementIds,
+            this.component.subcomponents, this.refreshComponent);
         }
       }
     },
@@ -204,7 +206,8 @@ export default {
       const subcomponentAndOverlayElementIds = ComponentPreviewUtils.generateSubcomponentAndOverlayIds(this.component);
       this.subcomponentAndOverlayElementIds = subcomponentAndOverlayElementIds;
       subcomponentAndOverlayElementIdsState.setSubcomponentAndOverlayElementIdsState(subcomponentAndOverlayElementIds);
-      this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(subcomponentAndOverlayElementIds, this.component.subcomponents);
+      this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(subcomponentAndOverlayElementIds,
+        this.component.subcomponents, this.refreshComponent);
     }
   },
   props: {

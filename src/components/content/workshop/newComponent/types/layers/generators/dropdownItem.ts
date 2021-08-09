@@ -17,23 +17,23 @@ interface OverwriteTextPropertiesBaseComponents {
   activeBaseComponent: WorkshopComponent;
 }
 
-class DropdownItemLayer extends ComponentBuilder {
+export class DropdownItemLayer extends ComponentBuilder {
 
-  public static addNestedComponentsToLayer(parentComponent: WorkshopComponent): WorkshopComponent[] {
+  private static addNestedComponentsToLayer(parentComponent: WorkshopComponent): WorkshopComponent[] {
     const layerComponent = this as undefined as WorkshopComponent;
     const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
     const textComponent = AddNewGenericComponent.add(parentComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
       layerComponent.coreSubcomponentNames.base,
       [DropdownItemLayer.overwriteTextProperties.bind({parentComponent, activeBaseComponent} as OverwriteTextPropertiesBaseComponents)]);
     layerComponent.componentPreviewStructure.baseSubcomponentProperties.nameOfAnotherSubcomponetToTrigger = textComponent.coreSubcomponentNames.base;
-    layerComponent.nestedComponentsLockedToLayer.list = [textComponent.coreSubcomponentNames.base];
+    layerComponent.nestedComponentsLockedToLayer.list.push(textComponent.coreSubcomponentNames.base);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(parentComponent,
       activeBaseComponent.componentPreviewStructure.layers[activeBaseComponent.componentPreviewStructure.layers.length - 1]);
     return [textComponent];
   }
 
   public static createNestedComponentsLockedToLayer(layerComponent: WorkshopComponent): void {
-    layerComponent.nestedComponentsLockedToLayer = { add: DropdownItemLayer.addNestedComponentsToLayer.bind(layerComponent) };
+    layerComponent.nestedComponentsLockedToLayer = { add: DropdownItemLayer.addNestedComponentsToLayer.bind(layerComponent), list: [] };
   }
 
   private static createDefaultTextCustomCss(): CustomCss {
@@ -96,12 +96,14 @@ class DropdownItemLayer extends ComponentBuilder {
       const nestedTextComponentName = siblingDropdownItem.subcomponentProperties.nestedComponent.ref.nestedComponentsLockedToLayer.list[0];
       subcomponents[coreSubcomponentNames.base].customCss = parentComponent.subcomponents[nestedTextComponentName].customCss;
       subcomponents[coreSubcomponentNames.base].defaultCss = parentComponent.subcomponents[nestedTextComponentName].defaultCss;
+      subcomponents[coreSubcomponentNames.base].customFeatures = parentComponent.subcomponents[nestedTextComponentName].customFeatures;
+      subcomponents[coreSubcomponentNames.base].defaultCustomFeatures = parentComponent.subcomponents[nestedTextComponentName].defaultCustomFeatures;
     } else {
       subcomponents[coreSubcomponentNames.base].customCss = DropdownItemLayer.createDefaultTextCustomCss();
-      subcomponents[coreSubcomponentNames.base].defaultCss = DropdownItemLayer.createDefaultTextCustomCss(); 
+      subcomponents[coreSubcomponentNames.base].defaultCss = DropdownItemLayer.createDefaultTextCustomCss();
+      subcomponents[coreSubcomponentNames.base].customFeatures = DropdownItemLayer.createDefaultTextCustomFeatures();
+      subcomponents[coreSubcomponentNames.base].defaultCustomFeatures = DropdownItemLayer.createDefaultTextCustomFeatures();
     }
-    subcomponents[coreSubcomponentNames.base].customFeatures = DropdownItemLayer.createDefaultTextCustomFeatures();
-    subcomponents[coreSubcomponentNames.base].defaultCustomFeatures = DropdownItemLayer.createDefaultTextCustomFeatures();
     subcomponents[coreSubcomponentNames.base].customStaticFeatures = DropdownItemLayer.createDefaultTextCustomStaticFeatures('Dropdown item');
     subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures = DropdownItemLayer.createDefaultTextCustomStaticFeatures('Dropdown item');
   }
@@ -110,9 +112,28 @@ class DropdownItemLayer extends ComponentBuilder {
     component.style = LAYER_STYLES.DROPDOWN_ITEM;
   }
 
+  // WORK1
+  // the reason why subcomponentProperties need to be passed in via arg rather than being binded by default is because the first dropdownItem's customFeatures reference is copied
+  // across all items in the dropdown menu
+  public static callback(subcomponentProperties: SubcomponentProperties): void {
+    if (subcomponentProperties.parentAuxiliaryComponent.subcomponents[subcomponentProperties.parentAuxiliaryComponent.coreSubcomponentNames.base].customFeatures.dropdownSelect.enabled) {
+      if (subcomponentProperties.nestedComponent) {
+        const newText = subcomponentProperties.parentAuxiliaryComponent.auxiliaryComponentCoreComponentRef.subcomponents[subcomponentProperties.nestedComponent.ref.nestedComponentsLockedToLayer.list[0]].customStaticFeatures.subcomponentText.text;
+        subcomponentProperties.parentAuxiliaryComponent.subcomponents[subcomponentProperties.parentAuxiliaryComponent.coreSubcomponentNames.base].customFeatures.dropdownSelect.lastSelectedItemText = newText;
+      } else {
+        const coreBaseComponent = subcomponentProperties.parentAuxiliaryComponent.auxiliaryComponentCoreComponentRef;
+        coreBaseComponent.subcomponents[coreBaseComponent.coreSubcomponentNames.text].customStaticFeatures.dropdownSelect = subcomponentProperties.customFeatures.dropdownSelect; 
+      }
+    }
+  }
+
   private static createDefaultButtonBaseCustomFeatures(): CustomFeatures {
     return {
       animations: ComponentBuilder.createStationaryAnimations({}),
+      // WORK1
+      mouseEventCallbacks: {
+        'click': DropdownItemLayer.callback,
+      }
     };
   }
 
@@ -145,9 +166,8 @@ class DropdownItemLayer extends ComponentBuilder {
   private static overwriteCustomCss(baseSubcomponent: SubcomponentProperties): void {
     baseSubcomponent.customCss = DropdownItemLayer.createDefaultLayerCss();
     baseSubcomponent.defaultCss = DropdownItemLayer.createDefaultLayerCss();
-    // WORK2: add animation
-    // baseSubcomponent.customFeatures = DropdownItemLayer.createDefaultButtonBaseCustomFeatures();
-    // baseSubcomponent.defaultCustomFeatures = DropdownItemLayer.createDefaultButtonBaseCustomFeatures();
+    baseSubcomponent.customFeatures = DropdownItemLayer.createDefaultButtonBaseCustomFeatures();
+    baseSubcomponent.defaultCustomFeatures = DropdownItemLayer.createDefaultButtonBaseCustomFeatures();
   }
 
   public static overwriteBase(component: WorkshopComponent): void {

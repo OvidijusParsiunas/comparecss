@@ -2,17 +2,19 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../consts/workshop
 import nestedComponentPositionNoAlign from './nestedComponentPositionNoAlign';
 import nestedComponentPosition from './nestedComponentPosition';
 import backgroundColorImage from './backgroundColorImage';
+import dropdownMenuPosition from './dropdownPosition';
 import buttonAnimations from './buttonAnimations';
-import dropdownPosition from './dropdownPosition';
 import modalAnimations from './modalAnimations';
 import imageAnimations from './imageAnimations';
 import backgroundColor from './backgroundColor';
 import backgroundImage from './backgroundImage';
 import closeAnimation from './closeAnimation';
 import shadowVertical from './shadowVertical';
+import dropdownSelect from './dropdownSelect';
 import sizeWidthAuto from './sizeWidthAuto';
 import modalPosition from './modalPosition';
 import layerPosition from './layerPosition';
+import fadeAnimation from './fadeAnimation';
 import borderBottom from './borderBottom';
 import circleBorder from './circleBorder';
 import modalActions from './modalActions';
@@ -64,5 +66,7 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.CLOSE_ANIMATION]: closeAnimation,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ACTIONS]: modalActions,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.LAYER_POSITION]: layerPosition,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_POSITIONS]: dropdownPosition,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_MENU_POSITIONS]: dropdownMenuPosition,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.FADE_ANIMATION]: fadeAnimation,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_SELECT]: dropdownSelect,
 };

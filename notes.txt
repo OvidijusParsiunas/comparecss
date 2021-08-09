@@ -3,6 +3,7 @@ when adding a new component - the select new component arrow seems to blink
 rename dropdown option to dropdown item
 when in hover/click mode and some nested subcomponent is isTriggeredByAnotherSubcomponent, that component should also be in that mode
 dropdown will probably need to have its own base name when nested
+animation - open on hover, slide in/ fade in
 
 overflow
 try with button tags

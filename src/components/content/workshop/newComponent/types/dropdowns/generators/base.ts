@@ -22,7 +22,10 @@ class DropdownBase extends ComponentBuilder {
     }
   }
 
-  public static setTriggerFuncOnSettingChange(dropdownMenuBaseComponent: WorkshopComponent): void {
+  public static setTriggerFuncOnSettingChange(buttonComponent: WorkshopComponent, dropdownMenuBaseComponent: WorkshopComponent): void {
+    buttonComponent.subcomponents[buttonComponent.coreSubcomponentNames.text].nestedComponent.ref.triggerFuncOnSettingChange = {
+      [SETTINGS_TYPES.INPUT]: DropdownMenuAutoWidthUtils.setWidth,
+    };
     dropdownMenuBaseComponent.triggerFuncOnSettingChange = {
       [SETTINGS_TYPES.INPUT]: DropdownMenuAutoWidthUtils.setWidth,
       [SETTINGS_TYPES.RANGE]: DropdownBase.setWidthViaRange,
@@ -62,11 +65,11 @@ export const dropdownBase: ComponentGenerator = {
     Object.assign(buttonComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName, dropdownMenuBaseComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName);
     buttonComponent.componentPreviewStructure.subcomponentDropdownStructure[dropdownMenuBaseComponent.coreSubcomponentNames.base] = { ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(dropdownMenuBaseComponent.coreSubcomponentNames.base) };
     buttonComponent.auxiliaryComponent = dropdownMenuBaseComponent;
-    dropdownMenuBaseComponent.isAuxiliaryComponent = true;
+    dropdownMenuBaseComponent.auxiliaryComponentCoreComponentRef = buttonComponent;
     buttonComponent.activeSubcomponentName = dropdownMenuBaseComponent.coreSubcomponentNames.base;
     DropdownBase.addComponentsToBase(buttonComponent);
     buttonComponent.activeSubcomponentName = buttonComponent.defaultSubcomponentName;
-    DropdownBase.setTriggerFuncOnSettingChange(dropdownMenuBaseComponent);
+    DropdownBase.setTriggerFuncOnSettingChange(buttonComponent, dropdownMenuBaseComponent);
     return buttonComponent;
   },
 }

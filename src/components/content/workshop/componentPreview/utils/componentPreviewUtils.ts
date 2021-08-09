@@ -26,11 +26,11 @@ export default class ComponentPreviewUtils {
   }
 
   public static generateMouseEvents(subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds,
-      subcomponents: Subcomponents, clickCallback?: () => void): SubcomponentPreviewMouseEvents {
+      subcomponents: Subcomponents, refreshComponentCallback: () => void, clickCallback?: () => void): SubcomponentPreviewMouseEvents {
     const mouseEvents: SubcomponentPreviewMouseEvents = {};
     Object.keys(subcomponentAndOverlayElementIdsObject).forEach((subcomponentName: string) => {
       mouseEvents[subcomponentAndOverlayElementIdsObject[subcomponentName].subcomponentId] = {
-        ...useSubcomponentPreviewEventHandlers(subcomponents[subcomponentName], clickCallback) };
+        ...useSubcomponentPreviewEventHandlers(subcomponents[subcomponentName], refreshComponentCallback, clickCallback) };
     });
     return mouseEvents;
   }

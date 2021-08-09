@@ -19,7 +19,7 @@ export class AddNewComponentShared {
       newComponentName: string): Subcomponents {
     const newComponent = componentGenerator.createNewComponent(newComponentName);
     newComponent.subcomponents[newComponentName].nestedComponent = { ref: newComponent, inSync: false };
-    if (activeBaseComponent.isAuxiliaryComponent) {
+    if (activeBaseComponent.auxiliaryComponentCoreComponentRef) {
       AddNewComponentShared.addParentAuxiliaryComponentReference(newComponent, activeBaseComponent);
     }
     return newComponent.subcomponents;
