@@ -16,7 +16,7 @@ export class ButtonBaseSpecificSettings {
   }
 
   private static setInterconnectedSettings(component: WorkshopComponent): void {
-    const baseSubcomponent = component.subcomponents[component.coreSubcomponentNames.base];
+    const baseSubcomponent = component.coreSubcomponentRefs.base;
     component.interconnectedSettings = [{
       updateOtherCssProperties: baseSubcomponent.subcomponentSpecificSettings[WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS]
         [SETTING_NAMES.FADE].updateOtherCssProperties,
@@ -40,7 +40,7 @@ export class ButtonBaseSpecificSettings {
   }
 
   private static setSubcomponentSpecificSettings(component: WorkshopComponent): void {
-    const baseSubcomponent = component.subcomponents[component.coreSubcomponentNames.base];
+    const baseSubcomponent = component.coreSubcomponentRefs.base;
     baseSubcomponent.subcomponentSpecificSettings = ButtonBaseSpecificSettings.getButtonBaseSpecificSettings();
   }
 

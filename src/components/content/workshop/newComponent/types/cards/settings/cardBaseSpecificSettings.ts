@@ -19,7 +19,7 @@ export class CardBaseSpecificSettings {
   }
 
   private static setInterconnectedSettings(component: WorkshopComponent): void {
-    const baseSubcomponent = component.subcomponents[component.coreSubcomponentNames.base];
+    const baseSubcomponent = component.coreSubcomponentRefs.base;
     component.interconnectedSettings = [{
       updateOtherCssProperties: baseSubcomponent.subcomponentSpecificSettings[WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH][SETTING_NAMES.WIDTH].updateOtherCssProperties,
       dependantChildrenTypes: new Set([SUBCOMPONENT_TYPES.IMAGE, SUBCOMPONENT_TYPES.BUTTON]),
@@ -39,7 +39,7 @@ export class CardBaseSpecificSettings {
   }
 
   private static setSubcomponentSpecificSettings(component: WorkshopComponent): void {
-    const baseSubcomponent = component.subcomponents[component.coreSubcomponentNames.base];
+    const baseSubcomponent = component.coreSubcomponentRefs.base;
     baseSubcomponent.subcomponentSpecificSettings = CardBaseSpecificSettings.getCardBaseSpecificSettings();
   }
 

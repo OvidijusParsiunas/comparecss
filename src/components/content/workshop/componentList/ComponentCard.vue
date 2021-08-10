@@ -174,7 +174,7 @@ export default {
       const { isDisplaying, baseType, componentStyle } = this.copyableComponentCardOverlaysToDisplay as CopyableComponentCardOverlaysToDisplay;
       if (isDisplaying) {
         if (componentStyle && this.thisComponent.nestedComponent?.ref.style !== componentStyle) return false;
-        return this.thisComponent.subcomponents[this.thisComponent.coreSubcomponentNames.base].subcomponentType === baseType;
+        return this.thisComponent.coreSubcomponentRefs.base.subcomponentType === baseType;
       }
       return false;
     }

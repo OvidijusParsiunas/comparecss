@@ -79,7 +79,7 @@ export default {
   },
   methods: {
     getBaseId(idType: keyof SubcomponentAndOverlayElementIds[string]): string {
-      return this.subcomponentAndOverlayElementIds[this.component.coreSubcomponentNames.base]?.[idType];
+      return this.subcomponentAndOverlayElementIds[this.component.coreSubcomponentRefs.base.name]?.[idType];
     },
     activateSubcomponentMouseEvent(subcomponentMouseEvent: keyof UseSubcomponentPreviewEventHandlers): void {
       this.mouseEvents[this.getBaseId('subcomponentId')][subcomponentMouseEvent]();
@@ -129,8 +129,7 @@ export default {
         [DROPDOWN_MENU_POSITIONS.LEFT]: { top: '0px', right: '100%' },
         [DROPDOWN_MENU_POSITIONS.RIGHT]: { top: '0px', left: '100%' },
       };
-      const { subcomponents, coreSubcomponentNames } = this.component.auxiliaryComponent as WorkshopComponent;
-      const { position } = subcomponents[coreSubcomponentNames.base].customFeatures.dropdownMenuPosition;
+      const { position } = this.component.auxiliaryComponent.coreSubcomponentRefs.base.customFeatures.dropdownMenuPosition;
       return { position: 'absolute', zIndex: 1, ...positions[position] };
     }
   },

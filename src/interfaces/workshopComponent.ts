@@ -16,6 +16,7 @@ import { CoreSubcomponentNames } from './customSubcomponentNames';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { NestedComponentCount } from './nestedComponentCount';
+import { CoreSubcomponentRefs } from './coreSubcomponentRefs';
 import { SelectDropdown } from './selectDropdown';
 import { TempCustomCss } from './tempCustomCss';
 import { CloseTriggers } from './closeTriggers';
@@ -194,6 +195,7 @@ export interface WorkshopComponent {
   // used for referencing core subcomponent names like component base and text
   // also used to reference components that should share base jsclasses refs
   coreSubcomponentNames?: CoreSubcomponentNames;
+  coreSubcomponentRefs?: CoreSubcomponentRefs;
   // gives an in sync nested component to identify if the copied component has not been deleted
   componentStatus: { isRemoved: boolean };
   // used to reassign references when the subcomponents have been deep copied

@@ -66,7 +66,7 @@ class CardLayer extends ComponentBuilder {
   }
 
   public static overwriteBase(component: WorkshopComponent): void {
-    const baseSubcomponent = component.subcomponents[component.coreSubcomponentNames.base];
+    const baseSubcomponent = component.coreSubcomponentRefs.base;
     CardLayer.overwriteCustomCss(baseSubcomponent);
     CardLayer.createCustomFeatures(baseSubcomponent);
     CardLayer.overwriteCustomStaticFeatures(baseSubcomponent);

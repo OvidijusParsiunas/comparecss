@@ -6,6 +6,7 @@ import { ComponentPreviewStructure } from '../../../../../../interfaces/componen
 import { PARENT_COMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { CoreSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
+import { CoreSubcomponentRefs } from '../../../../../../interfaces/coreSubcomponentRefs';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
@@ -125,6 +126,7 @@ export class ComponentBuilder {
     const coreSubcomponentNames: CoreSubcomponentNames = { base: componentStyle.baseName || PARENT_COMPONENT_BASE_NAME.BASE };
     const subcomponents = {[coreSubcomponentNames.base]: createBaseSubcomponent(coreSubcomponentNames.base)};
     const componentPreviewStructure = ComponentBuilder.createEmptyComponentPreviewStructure(subcomponents, coreSubcomponentNames.base, isBaseOptional);
+    const coreSubcomponentRefs: CoreSubcomponentRefs =  { base: subcomponents[coreSubcomponentNames.base] };
     return {
       type: componentStyle.componentType,
       style: DEFAULT_STYLES.DEFAULT,
@@ -134,6 +136,7 @@ export class ComponentBuilder {
       componentPreviewStructure,
       className: 'default-class-name',
       coreSubcomponentNames,
+      coreSubcomponentRefs,
       componentStatus: { isRemoved: false },
     };
   }

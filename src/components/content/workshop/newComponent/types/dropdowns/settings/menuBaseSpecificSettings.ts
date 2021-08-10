@@ -29,7 +29,7 @@ export class MenuBaseSpecificSettings {
   }
 
   private static setSubcomponentSpecificSettings(component: WorkshopComponent): void {
-    const baseSubcomponent = component.subcomponents[component.coreSubcomponentNames.base];
+    const baseSubcomponent = component.coreSubcomponentRefs.base;
     baseSubcomponent.subcomponentSpecificSettings = MenuBaseSpecificSettings.getMenuBaseSpecificSettings();
   }
 

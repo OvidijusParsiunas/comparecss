@@ -14,8 +14,8 @@ class ButtonBase extends ComponentBuilder {
 
   public static cleanBaseDropdownIfNotNested(buttonComponent: WorkshopComponent, baseName?: string): void {
     if (!baseName) {
-      const { componentPreviewStructure, coreSubcomponentNames } = buttonComponent;
-      const buttonBaseCustomponent = componentPreviewStructure.subcomponentDropdownStructure[coreSubcomponentNames.base];
+      const { componentPreviewStructure, coreSubcomponentRefs } = buttonComponent;
+      const buttonBaseCustomponent = componentPreviewStructure.subcomponentDropdownStructure[coreSubcomponentRefs.base.name];
       delete buttonBaseCustomponent[DROPDOWN_OPTION_AUX_DETAILS_REF];
     }
   }

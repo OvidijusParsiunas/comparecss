@@ -18,9 +18,10 @@ export class AddComponentsToButtonBaseUtils {
     const layerSubcomponent = AddNewLayerComponent.add(component, LAYER_STYLES.PLAIN, false);
     const textSubcomponent = AddNewGenericComponent.add(component, COMPONENT_TYPES.TEXT, textStyle,
       layerSubcomponent.coreSubcomponentNames.base, [AddComponentsToButtonBaseUtils.overwriteButtonTextProperties.bind(textContent)]);
-    const { coreSubcomponentNames } = component;
+    const { coreSubcomponentNames, coreSubcomponentRefs } = component;
     component.componentPreviewStructure.baseSubcomponentProperties.nameOfAnotherSubcomponetToTrigger = textSubcomponent.coreSubcomponentNames.base;
     coreSubcomponentNames.text = textSubcomponent.coreSubcomponentNames.base;
+    coreSubcomponentRefs.text = textSubcomponent.coreSubcomponentRefs.base;
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(component, component.componentPreviewStructure.layers[0]);
   }
 }

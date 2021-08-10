@@ -4,7 +4,7 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../
 export class SelectDropdownUtils {
   
   public static refresh(parentAuxiliaryComponent: WorkshopComponent, checkBeforeProceeding = false): void {
-    const { selectDropdown } = parentAuxiliaryComponent?.subcomponents[parentAuxiliaryComponent.coreSubcomponentNames.base].customStaticFeatures || {};
+    const { selectDropdown } = parentAuxiliaryComponent?.coreSubcomponentRefs.base.customStaticFeatures || {};
     if (!checkBeforeProceeding || selectDropdown?.enabled) {
       selectDropdown.lastHoveredItemText = null;
       selectDropdown.lastSelectedItemText = null;
@@ -25,7 +25,7 @@ export class SelectDropdownUtils {
 
   private static setDetails(subcomponentProperties: SubcomponentProperties, itemTextKey: keyof SubcomponentMouseEventItemText, canBeUnset = false): void {
     const { parentAuxiliaryComponent } = subcomponentProperties;
-    const { selectDropdown } = parentAuxiliaryComponent.subcomponents[parentAuxiliaryComponent.coreSubcomponentNames.base].customStaticFeatures;
+    const { selectDropdown } = parentAuxiliaryComponent.coreSubcomponentRefs.base.customStaticFeatures;
     if (selectDropdown.enabled) {
       SelectDropdownUtils.setMouseEventText(parentAuxiliaryComponent, subcomponentProperties, selectDropdown, itemTextKey);
     } else if (canBeUnset) {
