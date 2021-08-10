@@ -22,17 +22,14 @@ class DropdownBase extends ComponentBuilder {
     }
   }
 
-  public static setTriggerFuncOnSettingChange(buttonComponent: WorkshopComponent, dropdownMenuBaseComponent: WorkshopComponent): void {
-    buttonComponent.subcomponents[buttonComponent.coreSubcomponentNames.text].nestedComponent.ref.triggerFuncOnSettingChange = {
-      [SETTINGS_TYPES.INPUT]: DropdownMenuAutoWidthUtils.setWidth,
-    };
+  public static setTriggerFuncOnSettingChange(dropdownMenuBaseComponent: WorkshopComponent): void {
     dropdownMenuBaseComponent.triggerFuncOnSettingChange = {
       [SETTINGS_TYPES.INPUT]: DropdownMenuAutoWidthUtils.setWidth,
       [SETTINGS_TYPES.RANGE]: DropdownBase.setWidthViaRange,
     };
   }
 
-  public static overwriteCustomCss(dropdownBaseComponent: WorkshopComponent): void {
+  public static overwriteCustomCss(dropdownBaseComponent: WorkshopComponent, dropdownMenuBaseComponent: WorkshopComponent): void {
     const baseSubcomponent = dropdownBaseComponent.subcomponents[dropdownBaseComponent.coreSubcomponentNames.base];
     baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = '125px';
     baseSubcomponent.defaultCss[CSS_PSEUDO_CLASSES.DEFAULT].width = '125px';
@@ -41,6 +38,8 @@ class DropdownBase extends ComponentBuilder {
     const textSubcomponent = dropdownBaseComponent.subcomponents[dropdownBaseComponent.coreSubcomponentNames.text];
     textSubcomponent.customStaticFeatures.subcomponentText.text = 'Dropdown button';
     textSubcomponent.defaultCustomStaticFeatures.subcomponentText.text = 'Dropdown button';
+    textSubcomponent.customStaticFeatures.dropdownSelect = dropdownMenuBaseComponent.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.dropdownSelect;
+    textSubcomponent.defaultCustomStaticFeatures.dropdownSelect = dropdownMenuBaseComponent.componentPreviewStructure.baseSubcomponentProperties.defaultCustomStaticFeatures.dropdownSelect;
   }
 
   public static addComponentsToBase(buttonComponent: WorkshopComponent): void {
@@ -59,17 +58,17 @@ export const dropdownBase: ComponentGenerator = {
     uniqueSubcomponentIdState.resetUniqueId();
     const buttonComponent = defaultButton.createNewComponent(baseName);
     buttonComponent.type = COMPONENT_TYPES.DROPDOWN;
-    DropdownBase.overwriteCustomCss(buttonComponent);
     const dropdownMenuBaseComponent = dropdownMenuBase.createNewComponent('Menu');
+    DropdownBase.overwriteCustomCss(buttonComponent, dropdownMenuBaseComponent);
     Object.assign(buttonComponent.subcomponents, dropdownMenuBaseComponent.subcomponents);
     Object.assign(buttonComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName, dropdownMenuBaseComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName);
     buttonComponent.componentPreviewStructure.subcomponentDropdownStructure[dropdownMenuBaseComponent.coreSubcomponentNames.base] = { ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(dropdownMenuBaseComponent.coreSubcomponentNames.base) };
     buttonComponent.auxiliaryComponent = dropdownMenuBaseComponent;
-    dropdownMenuBaseComponent.auxiliaryComponentCoreComponentRef = buttonComponent;
+    dropdownMenuBaseComponent.coreBaseComponent = buttonComponent;
     buttonComponent.activeSubcomponentName = dropdownMenuBaseComponent.coreSubcomponentNames.base;
     DropdownBase.addComponentsToBase(buttonComponent);
     buttonComponent.activeSubcomponentName = buttonComponent.defaultSubcomponentName;
-    DropdownBase.setTriggerFuncOnSettingChange(buttonComponent, dropdownMenuBaseComponent);
+    DropdownBase.setTriggerFuncOnSettingChange(dropdownMenuBaseComponent);
     return buttonComponent;
   },
 }

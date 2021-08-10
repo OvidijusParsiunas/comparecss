@@ -3,6 +3,7 @@ import nestedComponentPositionNoAlign from './nestedComponentPositionNoAlign';
 import nestedComponentPosition from './nestedComponentPosition';
 import backgroundColorImage from './backgroundColorImage';
 import dropdownMenuPosition from './dropdownPosition';
+import dropdownButtonText from './dropdownButtonText';
 import buttonAnimations from './buttonAnimations';
 import modalAnimations from './modalAnimations';
 import imageAnimations from './imageAnimations';
@@ -69,4 +70,5 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_MENU_POSITIONS]: dropdownMenuPosition,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.FADE_ANIMATION]: fadeAnimation,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_SELECT]: dropdownSelect,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_BUTTON_TEXT]: dropdownButtonText,
 };

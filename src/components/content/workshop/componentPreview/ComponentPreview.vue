@@ -70,6 +70,7 @@ import { componentTypeToStyleGenerators } from '../newComponent/types/componentT
 import { animationTypeToFunctionality } from './utils/animations/animationToFunctionality';
 import { PlayAnimationPreviewEvent } from '../../../../interfaces/settingsComponentEvents';
 import { PARENT_COMPONENT_BASE_NAME } from '../../../../consts/baseSubcomponentNames.enum';
+import { DropdownItemLayer } from '../newComponent/types/layers/generators/dropdownItem';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import ToggleFullPreviewMode from './utils/fullPreviewMode/toggleFullPreviewMode';
 import { OpenAnimation, CloseAnimation } from '../../../../interfaces/animations';
@@ -125,8 +126,7 @@ export default {
     },
     componentPreviewMouseEnter(): void {
       if (this.changeMouseEventsToDefaultOnComponentPreviewMouseEnter) {
-        this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(this.subcomponentAndOverlayElementIds,
-          this.component.subcomponents, this.refreshComponent);
+        this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(this.subcomponentAndOverlayElementIds, this.component.subcomponents);
         // bug fix - when in select subcomponent mode, clicked the subcomponent dropdown and then clicked the subcomponet select mode again
         // caused the preview mouse events to not activate
         this.changeMouseEventsToDefaultOnComponentPreviewMouseEnter = false;
@@ -149,8 +149,7 @@ export default {
           // and resetting the subcomponents display properties to 'none' - style="display: none"
           this.changeMouseEventsToDefaultOnComponentPreviewMouseEnter = true;
         } else {
-          this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(this.subcomponentAndOverlayElementIds,
-            this.component.subcomponents, this.refreshComponent);
+          this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(this.subcomponentAndOverlayElementIds, this.component.subcomponents);
         }
       }
     },
@@ -206,8 +205,8 @@ export default {
       const subcomponentAndOverlayElementIds = ComponentPreviewUtils.generateSubcomponentAndOverlayIds(this.component);
       this.subcomponentAndOverlayElementIds = subcomponentAndOverlayElementIds;
       subcomponentAndOverlayElementIdsState.setSubcomponentAndOverlayElementIdsState(subcomponentAndOverlayElementIds);
-      this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(subcomponentAndOverlayElementIds,
-        this.component.subcomponents, this.refreshComponent);
+      this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(subcomponentAndOverlayElementIds, this.component.subcomponents);
+      DropdownItemLayer.refreshDropdownSelectTextDetails(this.component.auxiliaryComponent, true);
     }
   },
   props: {

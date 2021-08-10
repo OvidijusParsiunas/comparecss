@@ -259,7 +259,7 @@ export default {
               const objectContainingActiveOption = this.getObjectContainingActiveOption(setting.spec, this.subcomponentProperties);
               if (objectContainingActiveOption) { this.actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.name] = objectContainingActiveOption; }
             } else if (setting.type === SETTINGS_TYPES.CHECKBOX) {
-              CheckboxUtils.updateSettings(setting.spec, this.subcomponentProperties);
+              CheckboxUtils.updateSettings(setting, this.subcomponentProperties);
             } else if (setting.type === SETTINGS_TYPES.UPLOAD_FILE) {
               const keys = setting.spec.auxiliaryCustomFeatureObjectKeys;
               this.imageNames[setting.spec.name] = SharedUtils.getCustomFeatureValue(keys, this.subcomponentProperties[keys[0]]);

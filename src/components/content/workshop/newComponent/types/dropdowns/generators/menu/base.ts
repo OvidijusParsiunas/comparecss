@@ -1,4 +1,4 @@
-import { CustomCss, CustomFeatures, DropdownMenuPosition, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, CustomStaticFeatures, DropdownMenuPosition, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { UpdateDropdownOptionNamesShared } from '../../../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
 import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/autoDropdownMenuWidthUtils';
 import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
@@ -12,6 +12,7 @@ import { inheritedBaseChildCss } from '../../../shared/childCss/inheritedBaseChi
 import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
 import { inheritedCardBaseCss } from '../../../cards/inheritedCss/inheritedCardCss';
 import { MenuBaseSpecificSettings } from '../../settings/menuBaseSpecificSettings';
+import { DropdownSelect } from '../../../../../../../../interfaces/dropdownSelect';
 import { DropdownItemLayer } from '../../../layers/generators/dropdownItem';
 import { AutoSize } from '../../../../../../../../interfaces/autoSize';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
@@ -57,6 +58,22 @@ class DropdownMenuBase extends ComponentBuilder {
     };
   }
 
+  private static createDropdownSelectProperties(): DropdownSelect {
+    return {
+      enabled: false,
+      defaultText: 'Select',
+      lastHoveredItemText: null,
+      lastSelectedItemText: null,
+      callback: DropdownItemLayer.setDropdownSelectText,
+    };
+  }
+
+  private static createDefaultStaticCustomFeatures(): CustomStaticFeatures {
+    return {
+      dropdownSelect: DropdownMenuBase.createDropdownSelectProperties(),
+    };
+  }
+
   private static createDropdownMenuPosition(): DropdownMenuPosition {
     return { position: DROPDOWN_MENU_POSITIONS.BOTTOM };
   }
@@ -71,8 +88,6 @@ class DropdownMenuBase extends ComponentBuilder {
       animations: ComponentBuilder.createDisplayAnimationsProperties(),
       autoSize: DropdownMenuBase.createDefaultAutoSize(),
       dropdownMenuPosition: DropdownMenuBase.createDropdownMenuPosition(),
-      // WORK1
-      dropdownSelect: { enabled: false, lastSelectedItemText: 'Select', callback: DropdownItemLayer.callback },
     };
   }
 
@@ -87,6 +102,8 @@ class DropdownMenuBase extends ComponentBuilder {
       childCss: inheritedBaseChildCss,
       customFeatures: DropdownMenuBase.createDefaultCustomFeatures(),
       defaultCustomFeatures: DropdownMenuBase.createDefaultCustomFeatures(),
+      customStaticFeatures: DropdownMenuBase.createDefaultStaticCustomFeatures(),
+      defaultCustomStaticFeatures: DropdownMenuBase.createDefaultStaticCustomFeatures(),
       newNestedComponentsOptions: DropdownMenuBase.createDefaultNewNestedComponentsOptions(),
     };
   }

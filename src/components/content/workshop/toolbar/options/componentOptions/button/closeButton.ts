@@ -16,7 +16,7 @@ const closeButtonSpecificOptions = [
     buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
     type: WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION,
   },
-]
+];
 
 export const closeButtonOptions: SubcomponentOptions<ButtonOptionsModes> = {
   ...buttonBaseOptions,

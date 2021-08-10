@@ -36,12 +36,13 @@
 import { UseSubcomponentPreviewEventHandlers } from '../../../../../interfaces/useSubcomponentPreviewEventHandlers';
 import { SubcomponentAndOverlayElementIds } from '../../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
+import { UseLayerComponentGeneric } from '../../../../../interfaces/useLayerComponentGeneric';
 import { Layer, NestedComponent } from '../../../../../interfaces/componentPreviewStructure';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
-import ComponentPreviewUtils from '../utils/componentPreviewUtils';
+import useLayerComponentGeneric from '../compositionAPI/useLayerComponentGeneric';
 import layerSections from './LayerSections.vue';
 
 interface Consts {
@@ -50,25 +51,14 @@ interface Consts {
 }
 
 export default {
-  setup(): Consts {
+  setup(): Consts & UseLayerComponentGeneric {
     return {
       COMPONENT_PREVIEW_MARKER, 
       SUBCOMPONENT_OVERLAY_CLASSES,
+      ...useLayerComponentGeneric(),
     };
   },
   methods: {
-    getStyleProperties(layer: Layer, isLastLayer: boolean): WorkshopComponentCss[] {
-      const { subcomponentProperties: { overwrittenCustomCssObj, customCss, customStaticFeatures, activeCssPseudoClass } } = layer;
-      const subcomponentCss = overwrittenCustomCssObj || customCss;
-      return [
-        subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT],
-        subcomponentCss[activeCssPseudoClass],
-        { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : '' },
-        { backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'backgroundColor') },
-        { boxShadow: CSS_PROPERTY_VALUES.UNSET },
-        isLastLayer ? { borderBottomWidth: '0px' } : {} // can alternatively use nth class
-      ]
-    },
     getLayerShadowOverlayStyleProperties(layer: Layer, isLastLayer: boolean): WorkshopComponentCss[] {
       return [
         layer.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],

@@ -4,6 +4,7 @@ import { WorkshopComponent } from '../../../../../../../interfaces/workshopCompo
 import { Options } from '../../../../../../../interfaces/options';
 import { nestedButtonOptions } from '../button/nestedButton';
 import { dropdownItemOptions } from '../layer/dropdownItem';
+import { dropdownButtonTextOptions } from './buttonText';
 import { menuItemTextOptions } from './menuItemText';
 import { buttonTextOptions } from '../button/text';
 import { imageOptions } from '../image/image';
@@ -21,8 +22,12 @@ export class DropdownOptions {
   };
 
   private static getTextOptions(component: WorkshopComponent): Options {
-    if (component.subcomponents[component.activeSubcomponentName].parentAuxiliaryComponent) {
+    const { parentAuxiliaryComponent, customStaticFeatures } = component.subcomponents[component.activeSubcomponentName];
+    if (parentAuxiliaryComponent) {
       return menuItemTextOptions;
+    }
+    if (customStaticFeatures.dropdownSelect.enabled) {
+      return dropdownButtonTextOptions;
     }
     return buttonTextOptions;
   }

@@ -3,6 +3,7 @@ import { subcomponentAndOverlayElementIdsState } from '../../toolbar/options/sub
 import { subcomponentSelectModeState } from '../../toolbar/options/subcomponentSelectMode/subcomponentSelectModeState';
 import { UseSubcomponentPreviewEventHandlers } from '../../../../../interfaces/useSubcomponentPreviewEventHandlers';
 import { CustomCss, CustomFeatures, SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
+import { SubcomponentMouseEventCallbacks } from '../../../../../interfaces/subcomponentMouseEventCallbacks';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
@@ -11,11 +12,18 @@ import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 import { animationState } from '../utils/animations/state';
 
 export default function useSubcomponentPreviewEventHandlers(subcomponentProperties: SubcomponentProperties,
-    refreshComponentCallback: () => void, clickCallback: () => void): UseSubcomponentPreviewEventHandlers {
+    clickCallback: () => void): UseSubcomponentPreviewEventHandlers {
 
   let overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
   let isUnsetButtonDisplayedForColorInputs = {};
   let unsetTransitionPropertyTimeout = null;
+
+  function triggerSubcomponentMouseEventCallback(mouseEvent: keyof SubcomponentMouseEventCallbacks): void {
+    const callback = subcomponentProperties.customFeatures?.mouseEventCallbacks?.[mouseEvent];
+    if (callback) {
+      callback(subcomponentProperties);
+    }
+  }
 
   function setDefaultUnsetButtonStatesForColorInputs(customCss: CustomCss): void {
     Object.keys(customCss[CSS_PSEUDO_CLASSES.DEFAULT]).forEach((key) => {
@@ -92,6 +100,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     if (nameOfAnotherSubcomponetToTrigger) triggerAnotherSubcomponentMouseEvent(nameOfAnotherSubcomponetToTrigger, event.type);
     setDefaultUnsetButtonStatesForColorInputs(customCss);
     setMouseEnterProperties(customCss, customFeatures);
+    triggerSubcomponentMouseEventCallback('mouseEnter');
   }
 
   const subcomponentMouseLeave = (): void => {
@@ -131,10 +140,8 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   }
 
   const subcomponentClick = (): void => {
-    // WORK1
-    subcomponentProperties.customFeatures?.mouseEventCallbacks?.click?.(subcomponentProperties);
+    triggerSubcomponentMouseEventCallback('click');
     if (clickCallback) clickCallback();
-    refreshComponentCallback();
   }
 
   return {

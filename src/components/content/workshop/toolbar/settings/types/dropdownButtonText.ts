@@ -6,11 +6,10 @@ export default {
     {
       type: SETTINGS_TYPES.INPUT,
       spec: {
-        name: 'Text',
-        customFeatureObjectKeys: ['customStaticFeatures', 'subcomponentText', 'text'],
-        default: 'text',
+        name: 'Default text',
+        customFeatureObjectKeys: ['customStaticFeatures', 'dropdownSelect', 'defaultText'],
+        default: '',
       },
     },
   ]
 };
-    

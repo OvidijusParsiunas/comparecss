@@ -1,5 +1,6 @@
 import { InterconnectedSetting, SubcomponentSpecificSettings } from './subcomponentSpecificSettings';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
+import { SubcomponentMouseEventCallbacks } from './subcomponentMouseEventCallbacks';
 import { NewNestedComponentsOptionsRefs } from './newNestedComponentsOptionsRefs';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { DROPDOWN_MENU_POSITIONS } from '../consts/dropdownMenuPositions.enum';
@@ -15,6 +16,7 @@ import { CoreSubcomponentNames } from './customSubcomponentNames';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { NestedComponentCount } from './nestedComponentCount';
+import { DropdownSelect } from './dropdownSelect';
 import { TempCustomCss } from './tempCustomCss';
 import { CloseTriggers } from './closeTriggers';
 import { Animations } from './animations';
@@ -95,9 +97,7 @@ export interface CustomFeatures {
   circleBorder?: boolean;
   lastSelectedCssValues?: WorkshopComponentCss;
   dropdownMenuPosition?: DropdownMenuPosition;
-  // WORK1
-  dropdownSelect?: { enabled: boolean, lastSelectedItemText: string, callback: any };
-  mouseEventCallbacks?: any;
+  mouseEventCallbacks?: SubcomponentMouseEventCallbacks;
 }
 
 export interface Image {
@@ -108,8 +108,7 @@ export interface Image {
 
 export interface CustomStaticFeatures {
   subcomponentText?: Text;
-  // WORK1
-  dropdownSelect?: { enabled: boolean, lastSelectedItemText: string, callback: any };
+  dropdownSelect?: DropdownSelect;
   image?: Image;
 }
 
@@ -208,8 +207,8 @@ export interface WorkshopComponent {
   // reference to the auxiliary component which holds the preview structure of its subcomponents, however the dropdown structure, subcomponents
   // and subcomponentNameToDropdownOptionName are placed in the core parent (base) component instead (for purposes of maintainability)
   auxiliaryComponent?: WorkshopComponent;
-  // used to identify if this component is an auxiliary component and for referencing the core base component
-  auxiliaryComponentCoreComponentRef?: WorkshopComponent;
+  // only present in an auxiliary component and is additionally used to identify if this component is an auxiliary component 
+  coreBaseComponent?: WorkshopComponent;
   areLayersInSyncByDefault?: boolean;
   // when a particular setting is changed (e.g. input or range) - call a particular function
   triggerFuncOnSettingChange?: TriggerFuncOnSettingChange;

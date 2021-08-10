@@ -2,7 +2,7 @@
   <div>
     <div ref="componentPreview"
       :id="getBaseId('subcomponentId')"
-      :style="getStyleProperties()"
+      :style="getStyleProperties(component)"
       class="parent-component"
       :class="[COMPONENT_PREVIEW_MARKER, (isNestedComponent ? 'nested-component' : STATIC_POSITION_CLASS),
         ...getJsClasses(), getSubcomponentMouseEventsDisabledClassForXButtonText()]"
@@ -11,7 +11,7 @@
       @mousedown="activateSubcomponentMouseEvent('subcomponentMouseDown')"
       @mouseup="activateSubcomponentMouseEvent('subcomponentMouseUp')"
       @click="activateSubcomponentMouseEvent('subcomponentClick')">
-        {{getSubcomponentText()}}
+        {{getSubcomponentText(component)}}
         <layers
           :classes="[...getJsClasses()]"
           :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
@@ -24,7 +24,7 @@
       style="display: none"
       :style="getOverlayStyleProperties()"
       :class="getOverlayClasses()">
-        {{getSubcomponentText()}}
+        {{getSubcomponentText(component)}}
         <!-- subOverlays are used for only displaying the container/actual overlay only when the mouse has reached it's actual content as in some cases (close button text) mouse
           enter event can be fired before the mouse actually reaches the actual subcomponent content -->
         <div v-if="isXButtonText()"
@@ -47,14 +47,15 @@ import useSubcomponentPreviewSelectModeEventHandlers from './compositionAPI/useS
 import { UseSubcomponentPreviewEventHandlers } from '../../../../interfaces/useSubcomponentPreviewEventHandlers';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
+import { UseBaseComponentGeneric } from '../../../../interfaces/useBasicComponentGeneric';
 import { DROPDOWN_MENU_POSITIONS } from '../../../../consts/dropdownMenuPositions.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../consts/elementClassMarkers';
+import useBaseComponentGeneric from './compositionAPI/useBaseComponentGeneric';
 import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../consts/closeButtonXText';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
-import ComponentPreviewUtils from './utils/componentPreviewUtils';
 import layers from './layers/Layers.vue';
 
 interface Consts {
@@ -66,50 +67,31 @@ interface Consts {
 }
 
 export default {
-  setup(): Consts {
+  setup(): Consts & UseBaseComponentGeneric {
     return {
       SUBCOMPONENT_OVERLAY_CLASSES,
       STATIC_POSITION_CLASS: STATIC_POSITION_CLASS,
       COMPONENT_PREVIEW_MARKER,
       CSS_PSEUDO_CLASSES,
       useSubcomponentPreviewSelectModeEventHandlers: useSubcomponentPreviewSelectModeEventHandlers(),
+      ...useBaseComponentGeneric(),
     };
   },
   methods: {
-    getStyleProperties(): WorkshopComponentCss[] {
-      const { baseSubcomponentProperties: {
-        overwrittenCustomCssObj, customCss, inheritedCss, activeCssPseudoClass, customStaticFeatures} } = this.component.componentPreviewStructure;
-      const subcomponentCss = overwrittenCustomCssObj || customCss;
-      return [
-        inheritedCss || '',
-        subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT],
-        subcomponentCss[activeCssPseudoClass],
-        { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : ''},
-        { backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'backgroundColor') },
-        { color: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'color') },
-      ];
-    },
     getBaseId(idType: keyof SubcomponentAndOverlayElementIds[string]): string {
       return this.subcomponentAndOverlayElementIds[this.component.coreSubcomponentNames.base]?.[idType];
     },
     activateSubcomponentMouseEvent(subcomponentMouseEvent: keyof UseSubcomponentPreviewEventHandlers): void {
       this.mouseEvents[this.getBaseId('subcomponentId')][subcomponentMouseEvent]();
     },
-    getSubcomponentText(): string {
-      // WORK1
-      if ((this.component as WorkshopComponent).componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures?.dropdownSelect?.enabled) {
-        return (this.component as WorkshopComponent).componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures?.dropdownSelect?.lastSelectedItemText;
-      }
-        return this.component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures?.subcomponentText?.text || '';
-      },
     getJsClasses(): string[] {
       return this.component.componentPreviewStructure.baseSubcomponentProperties?.customFeatures?.jsClasses || [];
     },
     getOverlayStyleProperties(): WorkshopComponentCss {
       const subcomponentCss = { ...this.component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT], color: '#ff000000' };
-      if (!this.isNestedComponent) subcomponentCss.height = this.component.auxiliaryComponentCoreComponentRef ? 'unset' : '100% !important';
+      if (!this.isNestedComponent) subcomponentCss.height = this.component.coreBaseComponent ? 'unset' : '100% !important';
       if (this.component.componentPreviewStructure.baseSubcomponentProperties.isTemporaryAddPreview) subcomponentCss.display = 'block'; 
-      if (!this.component.auxiliaryComponentCoreComponentRef && !this.isNestedComponent) subcomponentCss.marginTop = '0px';
+      if (!this.component.coreBaseComponent && !this.isNestedComponent) subcomponentCss.marginTop = '0px';
       return subcomponentCss;
     },
     getOverlayClasses(): string[] {

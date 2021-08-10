@@ -25,7 +25,7 @@ export default class ToggleOn {
     const subcomponentAndOverlayElementIds = ComponentPreviewUtils.generateSubcomponentAndOverlayIds(
       componentPreviewComponent.temporaryComponent.component);
     const mouseEvents = ComponentPreviewUtils.generateMouseEvents(subcomponentAndOverlayElementIds,
-      componentPreviewComponent.temporaryComponent.component.subcomponents, () => {},
+      componentPreviewComponent.temporaryComponent.component.subcomponents,
       ToggleDisplays.displayModal.bind(this, componentPreviewComponent, componentElement, temporaryComponentElement,
         toolbarContainerElement, toolbarElement, isExpandedModalPreviewModeActive, toggleFullPreviewModeOffCallbacks));
     componentPreviewComponent.temporaryComponent.subcomponentAndOverlayElementIds = subcomponentAndOverlayElementIds;

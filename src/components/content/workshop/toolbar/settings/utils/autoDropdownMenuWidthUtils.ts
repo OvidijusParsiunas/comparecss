@@ -21,16 +21,12 @@ export class DropdownMenuAutoWidthUtils {
     });
   }
   
-  private static set(auxiliaryComponent: WorkshopComponent, callback?: (newValue: string) => void): void {
+  private static set(auxiliaryComponent: WorkshopComponent): void {
     const textWidths = DropdownMenuAutoWidthUtils.getTextWidths(auxiliaryComponent);
     const maxTextWidth = Math.max(...textWidths);
     const firstLayerDefaultCss = DropdownMenuAutoWidthUtils.getFirstLayerDefaultCss(auxiliaryComponent);
     const newWidth = DropdownMenuAutoWidthUtils.calculateNewWidth(maxTextWidth, firstLayerDefaultCss);
-    if (callback) {
-      callback(newWidth);
-    } else {
-      auxiliaryComponent.subcomponents[auxiliaryComponent.coreSubcomponentNames.base].customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = newWidth;
-    }
+    auxiliaryComponent.subcomponents[auxiliaryComponent.coreSubcomponentNames.base].customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = newWidth;
   }
 
   private static canNewWidthBeSet(subcomponentProperties: SubcomponentProperties): boolean {
@@ -38,12 +34,9 @@ export class DropdownMenuAutoWidthUtils {
     return type === COMPONENT_TYPES.DROPDOWN_MENU && subcomponents[coreSubcomponentNames.base].customFeatures.autoSize?.width;
   }
 
-  public static setWidth(subcomponentProperties: SubcomponentProperties, callback?: (newValue: string) => void): void {
+  public static setWidth(subcomponentProperties: SubcomponentProperties): void {
     if (DropdownMenuAutoWidthUtils.canNewWidthBeSet(subcomponentProperties)) {
-      setTimeout(() => DropdownMenuAutoWidthUtils.set(subcomponentProperties.parentAuxiliaryComponent, callback));
-    // WORK1
-    } else if (subcomponentProperties.customStaticFeatures?.dropdownSelect?.enabled) {
-      subcomponentProperties.customStaticFeatures.dropdownSelect.enabled = false;
+      setTimeout(() => DropdownMenuAutoWidthUtils.set(subcomponentProperties.parentAuxiliaryComponent));
     }
   }
 }

@@ -2,10 +2,7 @@ import { SubcomponentProperties } from '../../../../../../interfaces/workshopCom
 import { UpdateOtherRangesUtils } from './rangeUtils/updateOtherRangesUtils';
 import SharedUtils from './sharedUtils';
 
-type CustomTriggerFunc = (
-  subcomponentProperties: SubcomponentProperties,
-  updateCssProperty: (trigger: any, subcomponentProperties: SubcomponentProperties, thisSettingSpec: any,
-    allSettings: any, newCalculatedValue?: string) => void) => void
+type CustomTriggerFunc = (subcomponentProperties: SubcomponentProperties) => void
 
 export default class CheckboxUtils {
 
@@ -30,12 +27,16 @@ export default class CheckboxUtils {
     }
   }
   
+  private static triggerCustomFunction(trigger: any, subcomponentProperties: SubcomponentProperties): void {
+    const customFunction = SharedUtils.getCustomFeatureValue(trigger.customFunctionKeys, subcomponentProperties[trigger.customFunctionKeys[0]]) as CustomTriggerFunc;
+    customFunction(subcomponentProperties);
+  }
+  
   private static activateTriggers(newCheckboxValue: boolean, triggers: any, subcomponentProperties: SubcomponentProperties,
       thisSettingSpec: any, allSettings: any): void {
     (triggers[newCheckboxValue.toString()] || []).forEach((trigger) => {
       if (trigger.customFunctionKeys) {
-        const customFunction = SharedUtils.getCustomFeatureValue(trigger.customFunctionKeys, subcomponentProperties[trigger.customFunctionKeys[0]]) as CustomTriggerFunc;
-        customFunction(subcomponentProperties, CheckboxUtils.updateCssProperty.bind(this, trigger, subcomponentProperties, thisSettingSpec, allSettings));
+        CheckboxUtils.triggerCustomFunction(trigger, subcomponentProperties);
       } else if (trigger.cssProperty) {
         CheckboxUtils.updateCssProperty(trigger, subcomponentProperties, thisSettingSpec, allSettings);
       } else if (trigger.customFeatureObjectKeys) {
@@ -79,22 +80,24 @@ export default class CheckboxUtils {
     if (cssPropertyValue) { settingToBeUpdatedSpec.default = (cssPropertyValue === settingToBeUpdatedSpec.conditionalStyle.truthy); }
   }
 
-  private static updateCustomFeatureSetting(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
-    const keys = settingToBeUpdatedSpec.customFeatureObjectKeys
-    if (settingToBeUpdatedSpec.valueInSetObject) {
-      settingToBeUpdatedSpec.default = (
-        SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys[0]]) as Set<undefined>
-      ).has(settingToBeUpdatedSpec.valueInSetObject);
+  private static updateCustomFeatureSetting(settingToBeUpdated: any, subcomponentProperties: SubcomponentProperties): void {
+    const { spec, triggers } = settingToBeUpdated;
+    const keys = spec.customFeatureObjectKeys
+    if (spec.valueInSetObject) {
+      spec.default = (SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys[0]]) as Set<undefined>).has(spec.valueInSetObject);
     } else {
-      settingToBeUpdatedSpec.default = SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys[0]]);
+      spec.default = SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys[0]]);
+      (triggers[spec.default] || []).forEach((trigger) => {
+        if (trigger.customFunctionKeys) { CheckboxUtils.triggerCustomFunction(trigger, subcomponentProperties); }
+      });
     }
   }
 
-  public static updateSettings(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
-    if (settingToBeUpdatedSpec.customFeatureObjectKeys) {
-      CheckboxUtils.updateCustomFeatureSetting(settingToBeUpdatedSpec, subcomponentProperties);
+  public static updateSettings(settingToBeUpdated: any, subcomponentProperties: SubcomponentProperties): void {
+    if (settingToBeUpdated.spec.customFeatureObjectKeys) {
+      CheckboxUtils.updateCustomFeatureSetting(settingToBeUpdated, subcomponentProperties);
     } else {
-      CheckboxUtils.updateCustomCssSetting(settingToBeUpdatedSpec, subcomponentProperties);
+      CheckboxUtils.updateCustomCssSetting(settingToBeUpdated.spec, subcomponentProperties);
     }
   }
 }
