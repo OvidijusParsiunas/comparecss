@@ -60,8 +60,9 @@ class AlertBase extends ComponentBuilder {
       [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE]);
   }
 
-  public static createBaseSubcomponent(): SubcomponentProperties {
+  public static createBaseSubcomponent(name: string): SubcomponentProperties {
     return {
+      name,
       subcomponentType: SUBCOMPONENT_TYPES.BASE,
       customCss: AlertBase.createDefaultCss(),
       defaultCss: AlertBase.createDefaultCss(),

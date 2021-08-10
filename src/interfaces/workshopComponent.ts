@@ -124,6 +124,7 @@ export interface NestedComponent {
 }
 
 export interface SubcomponentProperties {
+  name: string;
   // used for defining options and adding new subcomponents to a layer
   subcomponentType?: SUBCOMPONENT_TYPES;
   customCss: CustomCss;

@@ -42,7 +42,7 @@ export class UpdateLayerDropdownOptionNames extends UpdateDropdownOptionNamesSha
     const { componentPreviewStructure: { subcomponentDropdownStructure } } = parentComponent;
     const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
     const layersDropdownStructure = subcomponentDropdownStructure[activeBaseComponent.coreSubcomponentNames.base] as NestedDropdownStructure;
-    const subcomponentNames = UpdateDropdownOptionNamesShared.generateSubcomponentNames(layersDropdownStructure);
+    const subcomponentNames = UpdateDropdownOptionNamesShared.getSubcomponentNames(layersDropdownStructure);
     let overwrittenOptionNames: string[] = [];
     if (subcomponentNames.length === 1) {
       UpdateLayerDropdownOptionNames.updateFirstLayerName(parentComponent, subcomponentNames, layersDropdownStructure,

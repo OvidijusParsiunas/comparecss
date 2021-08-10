@@ -89,7 +89,7 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
 
   private static setPrefixesAndTotals(containerDropdownStructure: NestedDropdownStructure, subcomponentNameToPrefix: SubcomponentNameToPrefix,
       subcomponentPrefixToTotal: SubcomponentPrefixToTotal): void {
-    const subcomponentNames = UpdateDropdownOptionNamesShared.generateSubcomponentNames(containerDropdownStructure);
+    const subcomponentNames = UpdateDropdownOptionNamesShared.getSubcomponentNames(containerDropdownStructure);
     for (let i = 0; i < subcomponentNames.length; i += 1) {
       const subcomponentName = subcomponentNames[i];
       const subcomponentNamePrefix = StringUtils.getFirstWordInString(subcomponentName);

@@ -26,8 +26,9 @@ class LayerBase extends ComponentBuilder {
     };
   }
 
-  public static createBaseSubcomponent(): SubcomponentProperties {
+  public static createBaseSubcomponent(name: string): SubcomponentProperties {
     return {
+      name,
       subcomponentType: SUBCOMPONENT_TYPES.LAYER,
       customCss: LayerBase.createDefaultBaseCss(),
       defaultCss: LayerBase.createDefaultBaseCss(),

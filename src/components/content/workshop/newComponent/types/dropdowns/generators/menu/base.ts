@@ -91,8 +91,9 @@ class DropdownMenuBase extends ComponentBuilder {
     };
   }
 
-  public static createBaseSubcomponent(): SubcomponentProperties {
+  public static createBaseSubcomponent(name: string): SubcomponentProperties {
     return {
+      name,
       subcomponentType: SUBCOMPONENT_TYPES.DROPDOWN_MENU,
       customCss: DropdownMenuBase.createDefaultMenuCss(),
       defaultCss: DropdownMenuBase.createDefaultMenuCss(),

@@ -3,7 +3,6 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssC
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
@@ -54,8 +53,9 @@ class ImageBase extends ComponentBuilder {
     };
   }
 
-  public static createBaseSubcomponent(): SubcomponentProperties {
+  public static createBaseSubcomponent(name: string): SubcomponentProperties {
     return {
+      name,
       subcomponentType: SUBCOMPONENT_TYPES.IMAGE,
       customCss: ImageBase.createDefaultImageCss(),
       defaultCss: ImageBase.createDefaultImageCss(),

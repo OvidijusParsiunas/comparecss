@@ -57,8 +57,9 @@ class CardBase extends ComponentBuilder {
     return UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);
   }
 
-  public static createBaseSubcomponent(): SubcomponentProperties {
+  public static createBaseSubcomponent(name: string): SubcomponentProperties {
     return {
+      name,
       subcomponentType: SUBCOMPONENT_TYPES.BASE,
       customCss: CardBase.createDefaultCardCss(),
       defaultCss: CardBase.createDefaultCardCss(),

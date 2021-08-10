@@ -18,7 +18,7 @@ export class AddNewNestedComponent {
     newComponent.subcomponents[newComponent.coreSubcomponentNames.base].isRemovable = true;
   }
 
-  private static updateGenericComponentNames(currentlySelectedComponent: WorkshopComponent): void {
+  private static updateGenericComponentDropdownOptionNames(currentlySelectedComponent: WorkshopComponent): void {
     const parentLayer = ComponentPreviewStructureSearchUtils.getLayerByName(currentlySelectedComponent,
       currentlySelectedComponent.activeSubcomponentName);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(currentlySelectedComponent, parentLayer);
@@ -26,7 +26,7 @@ export class AddNewNestedComponent {
 
   private static addNewSubcomponentToCurrentLayer(currentlySelectedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
     AddNewNestedComponent.addNewSubcomponent(currentlySelectedComponent, nestedComponentBaseName, currentlySelectedComponent.activeSubcomponentName);
-    AddNewNestedComponent.updateGenericComponentNames(currentlySelectedComponent);
+    AddNewNestedComponent.updateGenericComponentDropdownOptionNames(currentlySelectedComponent);
   }
 
   private static addNewSubcomponentToDefaultBaseLayer(currentlySelectedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {

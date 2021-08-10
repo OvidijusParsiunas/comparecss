@@ -121,9 +121,9 @@ export class ComponentBuilder {
   }
 
   public static createBaseComponent(componentStyle: NewComponentStyleProperties,
-      createBaseSubcomponent: (componentStyle: NewComponentStyleProperties) => SubcomponentProperties, isBaseOptional = true): WorkshopComponent {
+      createBaseSubcomponent: (name: string) => SubcomponentProperties, isBaseOptional = true): WorkshopComponent {
     const coreSubcomponentNames: CoreSubcomponentNames = { base: componentStyle.baseName || PARENT_COMPONENT_BASE_NAME.BASE };
-    const subcomponents = {[coreSubcomponentNames.base]: createBaseSubcomponent(componentStyle)};
+    const subcomponents = {[coreSubcomponentNames.base]: createBaseSubcomponent(coreSubcomponentNames.base)};
     const componentPreviewStructure = ComponentBuilder.createEmptyComponentPreviewStructure(subcomponents, coreSubcomponentNames.base, isBaseOptional);
     return {
       type: componentStyle.componentType,
