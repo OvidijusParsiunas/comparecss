@@ -16,7 +16,7 @@ import { CoreSubcomponentNames } from './customSubcomponentNames';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { NestedComponentCount } from './nestedComponentCount';
-import { DropdownSelect } from './dropdownSelect';
+import { SelectDropdown } from './selectDropdown';
 import { TempCustomCss } from './tempCustomCss';
 import { CloseTriggers } from './closeTriggers';
 import { Animations } from './animations';
@@ -108,7 +108,7 @@ export interface Image {
 
 export interface CustomStaticFeatures {
   subcomponentText?: Text;
-  dropdownSelect?: DropdownSelect;
+  selectDropdown?: SelectDropdown;
   image?: Image;
 }
 

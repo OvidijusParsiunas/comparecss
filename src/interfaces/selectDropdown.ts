@@ -5,7 +5,7 @@ export interface SubcomponentMouseEventItemText {
   lastSelectedItemText: string;
 }
 
-export type DropdownSelect = {
+export type SelectDropdown = {
   enabled: boolean;
   defaultText: string;
   callback: (subcomponentProperties: SubcomponentProperties) => void;

@@ -38,8 +38,8 @@ class DropdownBase extends ComponentBuilder {
     const textSubcomponent = dropdownBaseComponent.subcomponents[dropdownBaseComponent.coreSubcomponentNames.text];
     textSubcomponent.customStaticFeatures.subcomponentText.text = 'Dropdown button';
     textSubcomponent.defaultCustomStaticFeatures.subcomponentText.text = 'Dropdown button';
-    textSubcomponent.customStaticFeatures.dropdownSelect = dropdownMenuBaseComponent.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.dropdownSelect;
-    textSubcomponent.defaultCustomStaticFeatures.dropdownSelect = dropdownMenuBaseComponent.componentPreviewStructure.baseSubcomponentProperties.defaultCustomStaticFeatures.dropdownSelect;
+    textSubcomponent.customStaticFeatures.selectDropdown = dropdownMenuBaseComponent.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures.selectDropdown;
+    textSubcomponent.defaultCustomStaticFeatures.selectDropdown = dropdownMenuBaseComponent.componentPreviewStructure.baseSubcomponentProperties.defaultCustomStaticFeatures.selectDropdown;
   }
 
   public static addComponentsToBase(buttonComponent: WorkshopComponent): void {

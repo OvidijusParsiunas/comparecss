@@ -11,7 +11,7 @@ import backgroundColor from './backgroundColor';
 import backgroundImage from './backgroundImage';
 import closeAnimation from './closeAnimation';
 import shadowVertical from './shadowVertical';
-import dropdownSelect from './dropdownSelect';
+import selectDropdown from './selectDropdown';
 import sizeWidthAuto from './sizeWidthAuto';
 import modalPosition from './modalPosition';
 import layerPosition from './layerPosition';
@@ -69,6 +69,6 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.LAYER_POSITION]: layerPosition,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_MENU_POSITIONS]: dropdownMenuPosition,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.FADE_ANIMATION]: fadeAnimation,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_SELECT]: dropdownSelect,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.SELECT_DROPDOWN]: selectDropdown,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_BUTTON_TEXT]: dropdownButtonText,
 };

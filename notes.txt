@@ -6,7 +6,6 @@ when in hover/click mode and some nested subcomponent is isTriggeredByAnotherSub
 dropdown will probably need to have its own base name when nested
 animation - open on hover, slide in/ fade in
 button width should maybe be auto
-rename dropdown select to select dropdown
 
 overflow
 try with button tags

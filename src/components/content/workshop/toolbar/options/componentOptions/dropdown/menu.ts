@@ -37,7 +37,7 @@ export const menuOptions: SubcomponentOptions<MenuOptionsModes> = {
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SELECT,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_SELECT,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.SELECT_DROPDOWN,
     },
     {
       // WORK2: animations

@@ -65,12 +65,12 @@ import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../consts/c
 import ExpandedModalPreviewModeToggleOpenAnimation from './utils/animations/expandedModalPreviewMode/toggleAnimations/open';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
+import { SelectDropdownUtils } from '../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils'
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
 import { componentTypeToStyleGenerators } from '../newComponent/types/componentTypeToStyleGenerators';
 import { animationTypeToFunctionality } from './utils/animations/animationToFunctionality';
 import { PlayAnimationPreviewEvent } from '../../../../interfaces/settingsComponentEvents';
 import { PARENT_COMPONENT_BASE_NAME } from '../../../../consts/baseSubcomponentNames.enum';
-import { DropdownItemLayer } from '../newComponent/types/layers/generators/dropdownItem';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import ToggleFullPreviewMode from './utils/fullPreviewMode/toggleFullPreviewMode';
 import { OpenAnimation, CloseAnimation } from '../../../../interfaces/animations';
@@ -206,7 +206,7 @@ export default {
       this.subcomponentAndOverlayElementIds = subcomponentAndOverlayElementIds;
       subcomponentAndOverlayElementIdsState.setSubcomponentAndOverlayElementIdsState(subcomponentAndOverlayElementIds);
       this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(subcomponentAndOverlayElementIds, this.component.subcomponents);
-      DropdownItemLayer.refreshDropdownSelectTextDetails(this.component.auxiliaryComponent, true);
+      SelectDropdownUtils.refresh(this.component.auxiliaryComponent, true);
     }
   },
   props: {

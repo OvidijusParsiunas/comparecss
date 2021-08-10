@@ -12,8 +12,8 @@ import { inheritedBaseChildCss } from '../../../shared/childCss/inheritedBaseChi
 import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
 import { inheritedCardBaseCss } from '../../../cards/inheritedCss/inheritedCardCss';
 import { MenuBaseSpecificSettings } from '../../settings/menuBaseSpecificSettings';
-import { DropdownSelect } from '../../../../../../../../interfaces/dropdownSelect';
-import { DropdownItemLayer } from '../../../layers/generators/dropdownItem';
+import { SelectDropdown } from '../../../../../../../../interfaces/selectDropdown';
+import { SelectDropdownUtils } from '../../selectDropdown/selectDropdownUtils';
 import { AutoSize } from '../../../../../../../../interfaces/autoSize';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
 
@@ -58,19 +58,19 @@ class DropdownMenuBase extends ComponentBuilder {
     };
   }
 
-  private static createDropdownSelectProperties(): DropdownSelect {
+  private static createSelectDropdownProperties(): SelectDropdown {
     return {
       enabled: false,
       defaultText: 'Select',
       lastHoveredItemText: null,
       lastSelectedItemText: null,
-      callback: DropdownItemLayer.setDropdownSelectText,
+      callback: SelectDropdownUtils.setSelectDropdownText,
     };
   }
 
   private static createDefaultStaticCustomFeatures(): CustomStaticFeatures {
     return {
-      dropdownSelect: DropdownMenuBase.createDropdownSelectProperties(),
+      selectDropdown: DropdownMenuBase.createSelectDropdownProperties(),
     };
   }
 

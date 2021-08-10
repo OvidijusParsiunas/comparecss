@@ -26,7 +26,7 @@ export class DropdownOptions {
     if (parentAuxiliaryComponent) {
       return menuItemTextOptions;
     }
-    if (customStaticFeatures.dropdownSelect.enabled) {
+    if (customStaticFeatures.selectDropdown.enabled) {
       return dropdownButtonTextOptions;
     }
     return buttonTextOptions;

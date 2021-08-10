@@ -7,10 +7,10 @@ import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 export default function useBaseComponentGeneric(): UseBaseComponentGeneric {
 
   function getSelectedDropdownCss(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {
-    // go to parent auxiliary component and check dropdownSelect properties
+    // go to parent auxiliary component and check selectDropdown properties
     const { parentAuxiliaryComponent, customStaticFeatures } = component.componentPreviewStructure.baseSubcomponentProperties;
-    const { dropdownSelect } = parentAuxiliaryComponent?.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures || {};
-    if (dropdownSelect?.enabled && dropdownSelect.lastSelectedItemText && dropdownSelect.lastHoveredItemText === customStaticFeatures?.subcomponentText?.text) {
+    const { selectDropdown } = parentAuxiliaryComponent?.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures || {};
+    if (selectDropdown?.enabled && selectDropdown.lastSelectedItemText && selectDropdown.lastHoveredItemText === customStaticFeatures?.subcomponentText?.text) {
       return subcomponentCss[CSS_PSEUDO_CLASSES.HOVER];
     }
     return {};
@@ -33,10 +33,10 @@ export default function useBaseComponentGeneric(): UseBaseComponentGeneric {
   };
 
   const getSubcomponentText = (component: WorkshopComponent): string => {
-    const { dropdownSelect, subcomponentText } = (component as WorkshopComponent).componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures || {};
-    // checks if this is a text subcomponent, if it has a dropdownSelect reference (dropdown item texts subcomponents do not) and whether it is enabled
-    if (subcomponentText?.text && dropdownSelect?.enabled) {
-      return dropdownSelect.lastSelectedItemText || dropdownSelect.defaultText;
+    const { selectDropdown, subcomponentText } = (component as WorkshopComponent).componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures || {};
+    // checks if this is a text subcomponent, if it has a selectDropdown reference (dropdown item texts subcomponents do not) and whether it is enabled
+    if (subcomponentText?.text && selectDropdown?.enabled) {
+      return selectDropdown.lastSelectedItemText || selectDropdown.defaultText;
     }
     return subcomponentText?.text || '';
   }

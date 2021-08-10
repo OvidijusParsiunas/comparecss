@@ -4,10 +4,10 @@ import { AddNewGenericComponent } from '../../../../utils/componentManipulation/
 import { SubcomponentMouseEventCallbacks } from '../../../../../../../interfaces/subcomponentMouseEventCallbacks';
 import { MultiBaseComponentUtils } from '../../../../utils/multiBaseComponent/multiBaseComponentUtils';
 import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
-import { SubcomponentMouseEventItemText } from '../../../../../../../interfaces/dropdownSelect';
-import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
+import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
+import { SelectDropdownUtils } from '../../dropdowns/selectDropdown/selectDropdownUtils';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -114,45 +114,10 @@ export class DropdownItemLayer extends ComponentBuilder {
     component.style = LAYER_STYLES.DROPDOWN_ITEM;
   }
 
-  public static refreshDropdownSelectTextDetails(parentAuxiliaryComponent: WorkshopComponent, checkBeforeProceeding = false): void {
-    const { dropdownSelect } = parentAuxiliaryComponent?.subcomponents[parentAuxiliaryComponent.coreSubcomponentNames.base].customStaticFeatures || {};
-    if (!checkBeforeProceeding || dropdownSelect?.enabled) {
-      dropdownSelect.lastHoveredItemText = null
-      dropdownSelect.lastSelectedItemText = null; 
-    }
-  }
-
-  private static setDropdownSelectDetails(subcomponentProperties: SubcomponentProperties, itemTextKey: keyof SubcomponentMouseEventItemText,
-      canBeUnset = false): void {
-    const { parentAuxiliaryComponent } = subcomponentProperties;
-    const { dropdownSelect } = parentAuxiliaryComponent.subcomponents[parentAuxiliaryComponent.coreSubcomponentNames.base].customStaticFeatures;
-    if (dropdownSelect.enabled) {
-      // if dropdown item
-      if (subcomponentProperties.nestedComponent) {
-        const dropdownItemTextSubcomponentName = subcomponentProperties.nestedComponent.ref.nestedComponentsLockedToLayer.list[0];
-        const dropdownItemText = parentAuxiliaryComponent.coreBaseComponent.subcomponents[dropdownItemTextSubcomponentName]
-          .customStaticFeatures.subcomponentText.text;
-        dropdownSelect[itemTextKey] = dropdownItemText;
-      }
-    } else if (canBeUnset) {
-      DropdownItemLayer.refreshDropdownSelectTextDetails(parentAuxiliaryComponent);
-    }
-  }
-
-  // the reason why subcomponentProperties need to be passed in via arg rather than being binded is because the first dropdownItem's customFeatures reference is copied
-  // across all items in the dropdown menu, hence they will all reference the first dropdown menu item's text
-  private static setDropdownSelectLastHoveredItemText(subcomponentProperties: SubcomponentProperties): void {
-    DropdownItemLayer.setDropdownSelectDetails(subcomponentProperties, 'lastHoveredItemText');
-  }
-
-  public static setDropdownSelectText(subcomponentProperties: SubcomponentProperties): void {
-    DropdownItemLayer.setDropdownSelectDetails(subcomponentProperties, 'lastSelectedItemText', true);
-  }
-
   private static createMouseEventCallbacks(): SubcomponentMouseEventCallbacks {
     return {
-      click: DropdownItemLayer.setDropdownSelectText,
-      mouseEnter: DropdownItemLayer.setDropdownSelectLastHoveredItemText,
+      click: SelectDropdownUtils.setSelectDropdownText,
+      mouseEnter: SelectDropdownUtils.setSelectDropdownLastHoveredItemText,
     }
   }
 

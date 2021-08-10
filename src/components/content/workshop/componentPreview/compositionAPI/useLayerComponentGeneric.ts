@@ -10,10 +10,10 @@ export default function useLayerComponentGeneric(): UseLayerComponentGeneric {
 
   function getSelectedDropdownCss(layer: Layer, subcomponentCss: CustomCss): WorkshopComponentCss {
     const { componentPreviewStructure, coreBaseComponent } = layer.subcomponentProperties.parentAuxiliaryComponent || {}
-    const { dropdownSelect } = componentPreviewStructure?.baseSubcomponentProperties.customStaticFeatures || {};
-    if (dropdownSelect?.enabled) {
-      const subcomponent = coreBaseComponent?.subcomponents[layer.subcomponentProperties.nestedComponent?.ref.nestedComponentsLockedToLayer.list[0]];
-      if (dropdownSelect.lastSelectedItemText && subcomponent?.customStaticFeatures.subcomponentText.text === dropdownSelect.lastHoveredItemText) {
+    const { selectDropdown } = componentPreviewStructure?.baseSubcomponentProperties.customStaticFeatures || {};
+    if (selectDropdown?.enabled) {
+      const itemTextSubcomponent = coreBaseComponent?.subcomponents[layer.subcomponentProperties.nestedComponent?.ref.nestedComponentsLockedToLayer.list[0]];
+      if (selectDropdown.lastSelectedItemText && itemTextSubcomponent?.customStaticFeatures.subcomponentText.text === selectDropdown.lastHoveredItemText) {
         return subcomponentCss[CSS_PSEUDO_CLASSES.HOVER];
       }
     }
