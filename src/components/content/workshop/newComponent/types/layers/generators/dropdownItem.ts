@@ -25,10 +25,10 @@ export class DropdownItemLayer extends ComponentBuilder {
     const layerComponent = this as undefined as WorkshopComponent;
     const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
     const textComponent = AddNewGenericComponent.add(parentComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
-      layerComponent.coreSubcomponentNames.base,
+      layerComponent.coreSubcomponentRefs.base.name,
       [DropdownItemLayer.overwriteTextProperties.bind({parentComponent, activeBaseComponent} as OverwriteTextPropertiesBaseComponents)]);
-    layerComponent.componentPreviewStructure.baseSubcomponentProperties.nameOfAnotherSubcomponetToTrigger = textComponent.coreSubcomponentNames.base;
-    layerComponent.nestedComponentsLockedToLayer.list.push(textComponent.coreSubcomponentNames.base);
+    layerComponent.componentPreviewStructure.baseSubcomponentProperties.nameOfAnotherSubcomponetToTrigger = textComponent.coreSubcomponentRefs.base.name;
+    layerComponent.nestedComponentsLockedToLayer.list.push(textComponent.coreSubcomponentRefs.base.name);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(parentComponent,
       activeBaseComponent.componentPreviewStructure.layers[activeBaseComponent.componentPreviewStructure.layers.length - 1]);
     return [textComponent];

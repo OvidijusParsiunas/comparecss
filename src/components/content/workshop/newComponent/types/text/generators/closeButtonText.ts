@@ -56,7 +56,7 @@ class CloseButtonText extends ComponentBuilder {
   }
 
   public static overwriteBase(component: WorkshopComponent): void {
-    const baseSubcomponent = component.subcomponents[component.coreSubcomponentNames.base];
+    const baseSubcomponent = component.coreSubcomponentRefs.base;
     CloseButtonText.overwriteInheritedCss(baseSubcomponent);
     CloseButtonText.overwriteCustomCss(baseSubcomponent);
     CloseButtonText.overwriteCustomFeatures(baseSubcomponent);

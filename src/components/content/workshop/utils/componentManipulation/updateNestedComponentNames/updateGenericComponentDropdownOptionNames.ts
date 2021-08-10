@@ -106,7 +106,7 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
 
   private static getBaseDropdownStructure(parentComponent: WorkshopComponent): NestedDropdownStructure {
     const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
-    const baseName = activeBaseComponent.coreSubcomponentNames.base;
+    const baseName = activeBaseComponent.coreSubcomponentRefs.base.name;
     return parentComponent.componentPreviewStructure.subcomponentDropdownStructure[baseName] as NestedDropdownStructure;
   }
 
@@ -127,7 +127,7 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
     const { name, sections: { alignedSections }} = layer;
     const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
     const { subcomponentDropdownStructure } = parentComponent.componentPreviewStructure;
-    const nestedComponents = subcomponentDropdownStructure[activeBaseComponent.coreSubcomponentNames.base]
+    const nestedComponents = subcomponentDropdownStructure[activeBaseComponent.coreSubcomponentRefs.base.name]
       [parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[name]];
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(parentComponent, nestedComponents, alignedSections);
   }

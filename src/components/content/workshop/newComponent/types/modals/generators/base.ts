@@ -17,8 +17,8 @@ class ModalBase extends ComponentBuilder {
   }
 
   public static overwriteBaseCustomFeatures(cardComponent: WorkshopComponent): void {
-    cardComponent.subcomponents[cardComponent.coreSubcomponentNames.base].customFeatures = ModalBase.createDefaultBaseCustomFeatures();
-    cardComponent.subcomponents[cardComponent.coreSubcomponentNames.base].defaultCustomFeatures = ModalBase.createDefaultBaseCustomFeatures();
+    cardComponent.coreSubcomponentRefs.base.customFeatures = ModalBase.createDefaultBaseCustomFeatures();
+    cardComponent.coreSubcomponentRefs.base.defaultCustomFeatures = ModalBase.createDefaultBaseCustomFeatures();
   }
 }
 

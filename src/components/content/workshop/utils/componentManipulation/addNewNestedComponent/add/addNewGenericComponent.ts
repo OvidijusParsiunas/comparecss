@@ -72,7 +72,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     newComponent: WorkshopComponent): void {
     const alignment = baseSubcomponentProperties?.customFeatures?.alignedLayerSection?.section;
     const nestedComponent: NestedComponent = {
-      name: newComponent.coreSubcomponentNames.base, subcomponentProperties: baseSubcomponentProperties};
+      name: newComponent.coreSubcomponentRefs.base.name, subcomponentProperties: baseSubcomponentProperties};
     parentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][alignment || ALIGNED_SECTION_TYPES.LEFT].push(nestedComponent);
   }
 

@@ -26,12 +26,12 @@ export class DropdownMenuAutoWidthUtils {
     const maxTextWidth = Math.max(...textWidths);
     const firstLayerDefaultCss = DropdownMenuAutoWidthUtils.getFirstLayerDefaultCss(auxiliaryComponent);
     const newWidth = DropdownMenuAutoWidthUtils.calculateNewWidth(maxTextWidth, firstLayerDefaultCss);
-    auxiliaryComponent.subcomponents[auxiliaryComponent.coreSubcomponentNames.base].customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = newWidth;
+    auxiliaryComponent.coreSubcomponentRefs.base.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = newWidth;
   }
 
   private static canNewWidthBeSet(subcomponentProperties: SubcomponentProperties): boolean {
-    const { type, subcomponents, coreSubcomponentNames } = subcomponentProperties.parentAuxiliaryComponent || {};
-    return type === COMPONENT_TYPES.DROPDOWN_MENU && subcomponents[coreSubcomponentNames.base].customFeatures.autoSize?.width;
+    const { type,  coreSubcomponentRefs } = subcomponentProperties.parentAuxiliaryComponent || {};
+    return type === COMPONENT_TYPES.DROPDOWN_MENU && coreSubcomponentRefs.base.customFeatures.autoSize?.width;
   }
 
   public static setWidth(subcomponentProperties: SubcomponentProperties): void {

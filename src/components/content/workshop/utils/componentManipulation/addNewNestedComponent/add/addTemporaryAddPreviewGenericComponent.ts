@@ -16,7 +16,7 @@ export class AddTemporaryAddPreviewGenericComponent extends AddNewGenericCompone
     const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
     const [newComponent] = AddNewGenericComponent.createNewComponent(componentType, componentStyle,
       componentGenerator, activeBaseComponent, overwritePropertiesFunc, TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY);
-    newComponent.subcomponents[newComponent.coreSubcomponentNames.base].isTemporaryAddPreview = true;
+    newComponent.coreSubcomponentRefs.base.isTemporaryAddPreview = true;
     JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
     AddNewGenericComponent.addNewComponentToComponentPreview(parentComponent, newComponent, layerName);
     return newComponent;

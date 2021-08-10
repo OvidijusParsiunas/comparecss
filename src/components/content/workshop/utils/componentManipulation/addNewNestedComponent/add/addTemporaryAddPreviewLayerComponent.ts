@@ -16,7 +16,7 @@ export class AddTemporaryAddPreviewLayerComponent extends AddNewLayerComponent {
     const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
     const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, activeBaseComponent,
       TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY, overwritePropertiesFunc);
-    newComponent.subcomponents[newComponent.coreSubcomponentNames.base].isTemporaryAddPreview = true;
+    newComponent.coreSubcomponentRefs.base.isTemporaryAddPreview = true;
     JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
     AddNewLayerComponent.addNewComponentToComponentPreview(activeBaseComponent, newComponent);
     newComponent.nestedComponentsLockedToLayer?.add(parentComponent);

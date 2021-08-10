@@ -4,7 +4,7 @@ import { textSpecificSettings } from '../settings/textSpecificSettings';
 import { textBase } from './base';
 
 function addSubcomponentSpecificSettings(textComponent: WorkshopComponent): void {
-  textComponent.subcomponents[textComponent.coreSubcomponentNames.base].subcomponentSpecificSettings = textSpecificSettings;
+  textComponent.coreSubcomponentRefs.base.subcomponentSpecificSettings = textSpecificSettings;
 }
 
 export const defaultText: ComponentGenerator = {

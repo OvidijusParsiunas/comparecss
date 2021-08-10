@@ -77,10 +77,10 @@ export default class CssBuilder {
     const sharedInheritedParentCss: SharedInheritedCss = {};
     const sharedInhertedChildCss: SharedInheritedCss = {};
     components.forEach((component) => {
-      const { className, subcomponents, coreSubcomponentNames, type } = component;
+      const { className, subcomponents, coreSubcomponentRefs, type } = component;
       Object.keys(subcomponents).forEach((subcomponentName: string) => {
         const subcomponent: SubcomponentProperties = subcomponents[subcomponentName];
-        if (subcomponentName === coreSubcomponentNames.base) {
+        if (subcomponentName === coreSubcomponentRefs.base.name) {
           const componentToSubcomponentId = SharedCssUtils.generateComponentToSubcomponentId(type, subcomponentName);
           const processedCustomCss: CustomCssWithInheritedCss = SharedCssUtils.allocateSharedInheritedCss(subcomponent.customCss,
             (subcomponent.inheritedCss ? subcomponent.inheritedCss : undefined), repeatedSubcomponents[componentToSubcomponentId], sharedInheritedParentCss, type, className);

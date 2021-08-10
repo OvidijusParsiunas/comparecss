@@ -18,8 +18,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
 
   private static addNewNestedComponentsOptions(parentComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     if (parentComponent.newNestedComponentsOptionsRefs?.layer) {
-      newComponent.subcomponents[newComponent.coreSubcomponentNames.base]
-        .newNestedComponentsOptions = parentComponent.newNestedComponentsOptionsRefs.layer;
+      newComponent.coreSubcomponentRefs.base.newNestedComponentsOptions = parentComponent.newNestedComponentsOptionsRefs.layer;
     }
   }
 

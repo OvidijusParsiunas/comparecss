@@ -77,7 +77,7 @@ export class RemoveNestedComponent {
 
   private static getParentSubcomponentName(parentComponent: WorkshopComponent, dropdownOptionDetailsStack: DropdownOptionAuxDetails[]): string {
     const parentDropdownOptionDetails = dropdownOptionDetailsStack[dropdownOptionDetailsStack.length - 2];
-    return parentDropdownOptionDetails?.actualObjectName || parentComponent.coreSubcomponentNames.base;
+    return parentDropdownOptionDetails?.actualObjectName || parentComponent.coreSubcomponentRefs.base.name;
   }
 
   private static removeNestedComponent(componentTraversalState: ComponentTraversalState, targetDetails: TargetRemovalDetails,

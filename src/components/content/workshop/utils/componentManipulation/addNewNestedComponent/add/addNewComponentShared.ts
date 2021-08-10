@@ -6,7 +6,7 @@ export class AddNewComponentShared {
   protected static addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent: WorkshopComponent,
       newComponent: WorkshopComponent, isEditable = true): void {
     if (!isEditable) return;
-    const baseName = newComponent.coreSubcomponentNames.base;
+    const baseName = newComponent.coreSubcomponentRefs.base.name;
     parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[baseName] = baseName;
   }
 

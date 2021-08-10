@@ -15,7 +15,7 @@ export class AddNewNestedComponent {
     const nestedComponentStyle = NestedComponentBaseNamesToStyles.genericToStyle(nestedComponentBaseName);
     const newComponent = AddNewGenericComponent.add(currentlySelectedComponent, nestedComponentType, nestedComponentStyle, layerName);
     // set here because not all nested components are removable, but the ones added by the user are 
-    newComponent.subcomponents[newComponent.coreSubcomponentNames.base].isRemovable = true;
+    newComponent.coreSubcomponentRefs.base.isRemovable = true;
   }
 
   private static updateGenericComponentDropdownOptionNames(currentlySelectedComponent: WorkshopComponent): void {
@@ -43,7 +43,7 @@ export class AddNewNestedComponent {
 
   private static addNewLayerToBase(currentlySelectedComponent: WorkshopComponent, nestedComponentBaseName: string): void {
     const newComponent = AddNewLayerComponent.add(currentlySelectedComponent, NestedComponentBaseNamesToStyles.LAYER_TO_STYLE[nestedComponentBaseName], true);
-    newComponent.subcomponents[newComponent.coreSubcomponentNames.base].isRemovable = true;
+    newComponent.coreSubcomponentRefs.base.isRemovable = true;
     AddNewNestedComponent.updateLayerComponentNames(currentlySelectedComponent);
     newComponent.nestedComponentsLockedToLayer?.add(currentlySelectedComponent);
   }
@@ -51,7 +51,7 @@ export class AddNewNestedComponent {
   public static add(currentlySelectedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
     if (Object.values(LAYER_COMPONENTS_BASE_NAMES).includes(nestedComponentBaseName as LAYER_COMPONENTS_BASE_NAMES)) {
       AddNewNestedComponent.addNewLayerToBase(currentlySelectedComponent, nestedComponentBaseName);
-    } else if (currentlySelectedComponent.activeSubcomponentName === currentlySelectedComponent.coreSubcomponentNames.base) {
+    } else if (currentlySelectedComponent.activeSubcomponentName === currentlySelectedComponent.coreSubcomponentRefs.base.name) {
       AddNewNestedComponent.addNewSubcomponentToDefaultBaseLayer(currentlySelectedComponent, nestedComponentBaseName);
     } else {
       AddNewNestedComponent.addNewSubcomponentToCurrentLayer(currentlySelectedComponent, nestedComponentBaseName);

@@ -64,7 +64,7 @@ class ButtonText extends ComponentBuilder {
   }
 
   public static overwriteBase(component: WorkshopComponent): void {
-    const baseSubcomponent = component.subcomponents[component.coreSubcomponentNames.base];
+    const baseSubcomponent = component.coreSubcomponentRefs.base;
     ButtonText.overwriteCustomCss(baseSubcomponent);
     ButtonText.overwriteCustomFeatures(baseSubcomponent);
     ButtonText.overwriteSubcomponentProperties(baseSubcomponent);

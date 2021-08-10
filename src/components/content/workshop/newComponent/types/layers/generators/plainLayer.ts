@@ -19,16 +19,16 @@ class PlaneLayer extends ComponentBuilder {
     };
   }
 
-  public static overwriteCustomCss(component: WorkshopComponent): void {
-    component.subcomponents[component.coreSubcomponentNames.base].customCss = PlaneLayer.createDefaultBaseCss();
-    component.subcomponents[component.coreSubcomponentNames.base].defaultCss = PlaneLayer.createDefaultBaseCss();
+  public static overwriteBaseCustomCss(component: WorkshopComponent): void {
+    component.coreSubcomponentRefs.base.customCss = PlaneLayer.createDefaultBaseCss();
+    component.coreSubcomponentRefs.base.defaultCss = PlaneLayer.createDefaultBaseCss();
   }
 }
 
 export const plainLayer: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const layerComponent = layerBase.createNewComponent(baseName);
-    PlaneLayer.overwriteCustomCss(layerComponent);
+    PlaneLayer.overwriteBaseCustomCss(layerComponent);
     PlaneLayer.setStyle(layerComponent);
     return layerComponent;
   },
