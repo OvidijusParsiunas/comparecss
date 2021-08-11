@@ -132,7 +132,7 @@ export class ComponentBuilder {
     const subcomponents = {[baseName]: baseSubcomponent};
     const componentPreviewStructure = ComponentBuilder.createEmptyComponentPreviewStructure(baseName, isBaseOptional);
     const coreSubcomponentRefs: CoreSubcomponentRefs =  { base: baseSubcomponent };
-    return {
+    const baseComponent = {
       type: componentStyle.componentType,
       style: DEFAULT_STYLES.DEFAULT,
       subcomponents,
@@ -143,5 +143,7 @@ export class ComponentBuilder {
       coreSubcomponentRefs,
       componentStatus: { isRemoved: false },
     };
+    baseSubcomponent.parentBaseComponentRef = baseComponent;
+    return baseComponent;
   }
 }

@@ -7,18 +7,14 @@ import { dropdownItemOptions } from '../layer/dropdownItem';
 import { dropdownButtonTextOptions } from './buttonText';
 import { menuItemTextOptions } from './menuItemText';
 import { buttonTextOptions } from '../button/text';
-import { imageOptions } from '../image/image';
-import { cardBaseOptions } from './base';
 import { menuOptions } from './menu';
 
 export class DropdownOptions {
 
-  private static readonly STATIC_CARD_OPTIONS: SubcomponentTypeToOptions = {
-    [SUBCOMPONENT_TYPES.BASE]: cardBaseOptions as Options,
-    [SUBCOMPONENT_TYPES.IMAGE]: imageOptions as Options,
+  private static readonly STATIC_DROPDOWN_OPTIONS: SubcomponentTypeToOptions = {
+    [SUBCOMPONENT_TYPES.BUTTON]: nestedButtonOptions as Options,
     [SUBCOMPONENT_TYPES.DROPDOWN_MENU]: menuOptions as Options,
     [SUBCOMPONENT_TYPES.LAYER]: dropdownItemOptions as Options,
-    [SUBCOMPONENT_TYPES.BUTTON]: nestedButtonOptions as Options,
   };
 
   private static getTextOptions(component: WorkshopComponent): Options {
@@ -36,6 +32,6 @@ export class DropdownOptions {
     if (subcomponentType === SUBCOMPONENT_TYPES.TEXT) {
       return DropdownOptions.getTextOptions(component);
     }
-    return DropdownOptions.STATIC_CARD_OPTIONS[subcomponentType];
+    return DropdownOptions.STATIC_DROPDOWN_OPTIONS[subcomponentType];
   }
 }
