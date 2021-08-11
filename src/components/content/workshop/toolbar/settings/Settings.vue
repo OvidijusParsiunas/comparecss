@@ -347,7 +347,7 @@ export default {
       this.subcomponentProperties.customCss[this.subcomponentProperties.activeCssPseudoClass][cssProperty] = (event.target as HTMLInputElement).value;
     },
     inputEventForInput(event: KeyboardEvent, customFeatureObjectKeys: string[]): void {
-      SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.INPUT, this.subcomponentProperties)
+      SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.INPUT, this.subcomponentProperties);
       SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, this.subcomponentProperties, (event.target as HTMLInputElement).value);
     },
     blurInputDropdown(referenceId: string): void {
@@ -364,7 +364,7 @@ export default {
     },
     checkboxMouseClick(currentCheckboxValue: boolean, spec: any, triggers: any): void {
       CheckboxUtils.updateProperties(currentCheckboxValue, spec, triggers, this.subcomponentProperties, this.settings);
-      this.refreshSettings();
+      setTimeout(() => this.refreshSettings());
     },
     triggerImageUpload(): void {
       this.$refs.uploadImage.click();

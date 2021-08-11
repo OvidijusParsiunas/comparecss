@@ -1,29 +1,22 @@
 import { UpdateLayerDropdownOptionNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateLayerDropdownOptionNames';
 import { DropdownOptionsDisplayStatusUtils } from '../../../../utils/dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
 import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
-import { DropdownMenuAutoWidthUtils } from '../../../../toolbar/settings/utils/autoDropdownMenuWidthUtils';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
-import { AutoSize } from '../../../../../../../interfaces/autoSize';
 import { defaultButton } from '../../buttons/generators/default';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { dropdownMenuBase } from './menu/base';
 
 class DropdownBase extends ComponentBuilder {
 
-  private static createDefaultAutoSize(): AutoSize {
-    const widthCalculationFunc = DropdownMenuAutoWidthUtils.setWidth;
-    return ComponentBuilder.createAutoSize(false, false, { widthCalculationFunc })
-  }
-
-  public static setButtonAutosSize(buttonComponent: WorkshopComponent): void {
+  public static setButtonAutoSize(buttonComponent: WorkshopComponent, dropdownMenuBaseComponent: WorkshopComponent): void {
     const { customFeatures, defaultCustomFeatures } = buttonComponent.coreSubcomponentRefs.base;
-    customFeatures.autoSize = DropdownBase.createDefaultAutoSize();
-    defaultCustomFeatures.autoSize = DropdownBase.createDefaultAutoSize();
+    customFeatures.autoSize = dropdownMenuBaseComponent.coreSubcomponentRefs.base.customFeatures.autoSize;
+    defaultCustomFeatures.autoSize = dropdownMenuBaseComponent.coreSubcomponentRefs.base.defaultCustomFeatures.autoSize;
   }
 
   public static overwriteCustomCss(dropdownBaseComponent: WorkshopComponent, dropdownMenuBaseComponent: WorkshopComponent): void {
@@ -55,8 +48,8 @@ export const dropdownBase: ComponentGenerator = {
     uniqueSubcomponentIdState.resetUniqueId();
     const buttonComponent = defaultButton.createNewComponent(baseName);
     buttonComponent.type = COMPONENT_TYPES.DROPDOWN;
-    DropdownBase.setButtonAutosSize(buttonComponent);
     const dropdownMenuBaseComponent = dropdownMenuBase.createNewComponent('Menu');
+    DropdownBase.setButtonAutoSize(buttonComponent, dropdownMenuBaseComponent);
     DropdownBase.overwriteCustomCss(buttonComponent, dropdownMenuBaseComponent);
     Object.assign(buttonComponent.subcomponents, dropdownMenuBaseComponent.subcomponents);
     Object.assign(buttonComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName, dropdownMenuBaseComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName);

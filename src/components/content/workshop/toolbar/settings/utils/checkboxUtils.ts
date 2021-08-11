@@ -66,7 +66,8 @@ export default class CheckboxUtils {
     }
   }
 
-  public static updateProperties(currentCheckboxValue: boolean, spec: any, triggers: any, subcomponentProperties: SubcomponentProperties, allSettings: any): void {
+  public static updateProperties(currentCheckboxValue: boolean, spec: any, triggers: any, subcomponentProperties: SubcomponentProperties,
+      allSettings: any): void {
     // need to pass the currentCheckboxValue directly instead of using spec.default as its value will already have been
     // changed by the time this method is called by the following: this.$emit('remove-insync-option-button', callback as RemoveInSyncOptionButton);
     const newCheckboxValue = !currentCheckboxValue;

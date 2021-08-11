@@ -28,17 +28,12 @@ export class DropdownMenuAutoWidthUtils {
     return DropdownMenuAutoWidthUtils.calculateTotalWidth(maxItemTextWidth, firstItemDefaultClassCustomCss);
   }
 
-  private static setButtonWidth(coreBaseComponent: WorkshopComponent): void {
-    const { customCss, customFeatures } = coreBaseComponent.coreSubcomponentRefs.base;
+  private static setComponentWidths(coreBaseComponent: WorkshopComponent, auxiliaryComponent: WorkshopComponent): void {
+    const { customFeatures } = coreBaseComponent.coreSubcomponentRefs.base;
     if (customFeatures.autoSize?.width) {
-      customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = DropdownMenuAutoWidthUtils.getLargestItemWidth(coreBaseComponent.auxiliaryComponent);
-    }
-  }
-
-  private static setMenuWidth(auxiliaryComponent: WorkshopComponent): void {
-    const { customCss, customFeatures } = auxiliaryComponent.coreSubcomponentRefs.base;
-    if (customFeatures.autoSize?.width) {
-      customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = DropdownMenuAutoWidthUtils.getLargestItemWidth(auxiliaryComponent);
+      const width = DropdownMenuAutoWidthUtils.getLargestItemWidth(coreBaseComponent.auxiliaryComponent);
+      coreBaseComponent.coreSubcomponentRefs.base.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = width;
+      auxiliaryComponent.coreSubcomponentRefs.base.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = width;
     }
   }
 
@@ -46,11 +41,10 @@ export class DropdownMenuAutoWidthUtils {
     setTimeout(() => {
       const { parentBaseComponentRef } = subcomponentProperties;
       if (parentBaseComponentRef.type === COMPONENT_TYPES.DROPDOWN_MENU) {
-        DropdownMenuAutoWidthUtils.setMenuWidth(parentBaseComponentRef);
-        DropdownMenuAutoWidthUtils.setButtonWidth(parentBaseComponentRef.coreBaseComponent);
+        DropdownMenuAutoWidthUtils.setComponentWidths(parentBaseComponentRef.coreBaseComponent, parentBaseComponentRef);
         // activated by clicking select on the button
       } else if (parentBaseComponentRef.type === COMPONENT_TYPES.DROPDOWN) {
-        DropdownMenuAutoWidthUtils.setButtonWidth(parentBaseComponentRef);
+        DropdownMenuAutoWidthUtils.setComponentWidths(parentBaseComponentRef, parentBaseComponentRef.auxiliaryComponent);
       }
     });
   }
