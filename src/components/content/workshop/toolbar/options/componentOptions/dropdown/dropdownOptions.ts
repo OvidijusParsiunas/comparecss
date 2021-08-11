@@ -22,8 +22,8 @@ export class DropdownOptions {
   };
 
   private static getTextOptions(component: WorkshopComponent): Options {
-    const { parentAuxiliaryComponent, customStaticFeatures } = component.subcomponents[component.activeSubcomponentName];
-    if (parentAuxiliaryComponent) {
+    const { parentBaseComponentRef, customStaticFeatures } = component.subcomponents[component.activeSubcomponentName];
+    if (parentBaseComponentRef.coreBaseComponent) {
       return menuItemTextOptions;
     }
     if (customStaticFeatures.selectDropdown.enabled) {

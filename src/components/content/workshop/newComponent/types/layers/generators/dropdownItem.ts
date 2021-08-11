@@ -1,5 +1,5 @@
-import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { UpdateGenericComponentDropdownOptionNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateGenericComponentDropdownOptionNames';
+import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewGenericComponent';
 import { SubcomponentMouseEventCallbacks } from '../../../../../../../interfaces/subcomponentMouseEventCallbacks';
 import { MultiBaseComponentUtils } from '../../../../utils/multiBaseComponent/multiBaseComponentUtils';
@@ -27,8 +27,8 @@ export class DropdownItemLayer extends ComponentBuilder {
     const textComponent = AddNewGenericComponent.add(parentComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
       layerComponent.coreSubcomponentRefs.base.name,
       [DropdownItemLayer.overwriteTextProperties.bind({parentComponent, activeBaseComponent} as OverwriteTextPropertiesBaseComponents)]);
-    layerComponent.coreSubcomponentRefs.base.nameOfAnotherSubcomponetToTrigger = textComponent.coreSubcomponentRefs.base.name;
-    layerComponent.nestedComponentsLockedToLayer.list.push(textComponent.coreSubcomponentRefs.base.name);
+    layerComponent.coreSubcomponentRefs.base.anotherSubcomponetToTrigger = textComponent.coreSubcomponentRefs.base;
+    layerComponent.nestedComponentsLockedToLayer.list.push(textComponent.coreSubcomponentRefs.base);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(parentComponent,
       activeBaseComponent.componentPreviewStructure.layers[activeBaseComponent.componentPreviewStructure.layers.length - 1]);
     return [textComponent];
@@ -91,15 +91,15 @@ export class DropdownItemLayer extends ComponentBuilder {
   }
 
   public static overwriteTextProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
-    const { parentComponent, activeBaseComponent } = this as unknown as OverwriteTextPropertiesBaseComponents;
+    const { activeBaseComponent } = this as unknown as OverwriteTextPropertiesBaseComponents;
     const { layers: activeBaseComponentLayers } = activeBaseComponent.componentPreviewStructure;
     if (activeBaseComponentLayers.length > 1) {
       const siblingDropdownItem = activeBaseComponentLayers[activeBaseComponentLayers.length - 2];
-      const nestedTextComponentName = siblingDropdownItem.subcomponentProperties.nestedComponent.ref.nestedComponentsLockedToLayer.list[0];
-      coreSubcomponentRefs.base.customCss = parentComponent.subcomponents[nestedTextComponentName].customCss;
-      coreSubcomponentRefs.base.defaultCss = parentComponent.subcomponents[nestedTextComponentName].defaultCss;
-      coreSubcomponentRefs.base.customFeatures = parentComponent.subcomponents[nestedTextComponentName].customFeatures;
-      coreSubcomponentRefs.base.defaultCustomFeatures = parentComponent.subcomponents[nestedTextComponentName].defaultCustomFeatures;
+      const nestedTextComponent = siblingDropdownItem.subcomponentProperties.nestedComponent.ref.nestedComponentsLockedToLayer.list[0];
+      coreSubcomponentRefs.base.customCss = nestedTextComponent.customCss;
+      coreSubcomponentRefs.base.defaultCss = nestedTextComponent.defaultCss;
+      coreSubcomponentRefs.base.customFeatures = nestedTextComponent.customFeatures;
+      coreSubcomponentRefs.base.defaultCustomFeatures = nestedTextComponent.defaultCustomFeatures;
     } else {
       coreSubcomponentRefs.base.customCss = DropdownItemLayer.createDefaultTextCustomCss();
       coreSubcomponentRefs.base.defaultCss = DropdownItemLayer.createDefaultTextCustomCss();

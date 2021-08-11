@@ -22,9 +22,10 @@ class DropdownBase extends ComponentBuilder {
     }
   }
 
-  public static setTriggerFuncOnSettingChange(dropdownMenuBaseComponent: WorkshopComponent): void {
-    dropdownMenuBaseComponent.triggerFuncOnSettingChange = {
-      [SETTINGS_TYPES.INPUT]: DropdownMenuAutoWidthUtils.setWidth,
+    // WORK1
+    public static setTriggerFuncOnSettingChange(buttonComponent: WorkshopComponent): void {
+    buttonComponent.triggerFuncOnSettingChange = {
+      [SETTINGS_TYPES.INPUT]: DropdownMenuAutoWidthUtils.setButtonWidth,
       [SETTINGS_TYPES.RANGE]: DropdownBase.setWidthViaRange,
     };
   }
@@ -68,7 +69,7 @@ export const dropdownBase: ComponentGenerator = {
     buttonComponent.activeSubcomponentName = dropdownMenuBaseComponent.coreSubcomponentRefs.base.name;
     DropdownBase.addComponentsToBase(buttonComponent);
     buttonComponent.activeSubcomponentName = buttonComponent.defaultSubcomponentName;
-    DropdownBase.setTriggerFuncOnSettingChange(dropdownMenuBaseComponent);
+    DropdownBase.setTriggerFuncOnSettingChange(buttonComponent);
     return buttonComponent;
   },
 }

@@ -166,16 +166,15 @@ export interface SubcomponentProperties {
   // temporarily holds the original customCss when a component card has been hovered/selected during component import mode 
   tempOriginalCustomProperties?: TempCustomProperties;
   // when a subcomponent's mouse event is triggered, trigger another subcomponent's mouse events
-  // WORK1: maybe should pass ref instead
-  nameOfAnotherSubcomponetToTrigger?: string;
+  anotherSubcomponetToTrigger?: SubcomponentProperties;
   isTriggeredByAnotherSubcomponent?: boolean;
   // options for the add nested component dropdown
   newNestedComponentsOptions?: NestedDropdownStructure;
    // used to temporarily display a nested component when hovering add subcomponent dropdown options with a mouse
   isTemporaryAddPreview?: boolean;
   isRemovable?: boolean;
-  // reference to the parent auxiliary component if this subcomponent is originally owned by it
-  parentAuxiliaryComponent?: WorkshopComponent;
+  // reference to the parent base component - can be either the core component or the auxiliary component
+  parentBaseComponentRef?: WorkshopComponent;
 }
 
 export type Subcomponents = {
@@ -218,20 +217,11 @@ export interface WorkshopComponent {
 
 // Reference for component structure:
 
-//   component -> subcomponents (parent base subcomponent + nested component subcomponents)
+// parent component -> subcomponents (parent base subcomponent + nested component subcomponents + any auxiliary subcomponents)
 
-// Subcomponents that do not belong to nested components and are not the base of the parent can access their parent component as follows:
-// parent component -> subcomponents (not base)
-//                          |
-//                    nestedComponent
-//                          |
-//                         ref
-//                          |
-//                   parent component
-
-// Subcomponents of the nested components can access the components via the following properties:
+// Subcomponents of the nested components can access their own components via the following properties:
 //   nestedComponent -> ref
-// Also, subcomponents of the nested components that are not their bases cass access their base subcomponent via the following properties:
+// Also, subcomponents of the nested components that are not their bases cass access their base subcomponent via the following property:
 //   baseSubcomponentRef
 // parent component -> subcomponents (not base)        +        subcomponents (base)
 //                     |          |                                   |
@@ -241,3 +231,19 @@ export interface WorkshopComponent {
 //                     |                                              |
 //       nested component                                       nested component
 // baseSubcomponentRef allows base, layer and text subcomponents to all reference the same component (such as a button) 
+
+// Subcomponents that do not belong to nested components and are not the base of the parent can access the parent base component as follows:
+// parent component -> subcomponents (not base)
+//                          |
+//                    nestedComponent
+//                          |
+//                         ref
+//                          |
+//                   parent component
+
+// All subcomponents can access the parent base component via the parentBaseComponentRef property
+// parent component    ---->                        <-------------
+//                          |                                    |
+//                     subcomponents -> parentBaseComponentRef ->
+//                          |                                    |
+// auxiliary component ---->                        <-------------

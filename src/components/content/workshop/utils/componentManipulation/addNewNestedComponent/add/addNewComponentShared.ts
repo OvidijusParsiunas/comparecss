@@ -10,18 +10,16 @@ export class AddNewComponentShared {
     parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[baseName] = baseName;
   }
 
-  private static addParentAuxiliaryComponentReference(newComponent: WorkshopComponent, activeBaseComponent: WorkshopComponent): void {
+  private static setParentComponentReference(newComponent: WorkshopComponent, activeBaseComponent: WorkshopComponent): void {
     Object.keys(newComponent.subcomponents)
-      .forEach((subcomponentName) => newComponent.subcomponents[subcomponentName].parentAuxiliaryComponent = activeBaseComponent);
+      .forEach((subcomponentName) => newComponent.subcomponents[subcomponentName].parentBaseComponentRef = activeBaseComponent);
   }
 
   protected static createNewComponentViaGenerator(componentGenerator: ComponentGenerator, activeBaseComponent: WorkshopComponent,
       newComponentName: string): WorkshopComponent {
     const newComponent = componentGenerator.createNewComponent(newComponentName);
     newComponent.subcomponents[newComponentName].nestedComponent = { ref: newComponent, inSync: false };
-    if (activeBaseComponent.coreBaseComponent) {
-      AddNewComponentShared.addParentAuxiliaryComponentReference(newComponent, activeBaseComponent);
-    }
+    AddNewComponentShared.setParentComponentReference(newComponent, activeBaseComponent);
     return newComponent;
   }
 }

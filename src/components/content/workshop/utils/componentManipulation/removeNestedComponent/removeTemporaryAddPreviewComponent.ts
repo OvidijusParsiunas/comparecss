@@ -20,7 +20,7 @@ export class RemoveTemporaryAddPreviewComponent extends RemoveNestedComponent {
   // the reason why we need to fully remove the layer's nested component properties is because their addition alters the parent dropdown structure
   // (nested components within other temp nested components (text in button component) do not affect dropdown structure as they don't use parent)
   private static removeNestedComponentsInLayer(parentComponent: WorkshopComponent, nestedComponentsLockedToLayer: NestedComponentsInLayer): void {
-    nestedComponentsLockedToLayer?.list.forEach((subcomponentName) => RemoveNestedComponent.remove(parentComponent, subcomponentName));
+    nestedComponentsLockedToLayer?.list.forEach((subcomponent) => RemoveNestedComponent.remove(parentComponent, subcomponent.name));
   }
 
   public static remove(parentComponent: WorkshopComponent): void {

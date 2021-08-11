@@ -78,13 +78,13 @@ export class AddNewGenericComponent extends AddNewComponentShared {
   }
 
   private static assembleSubcomponentData(parentComponent: WorkshopComponent, newComponent: WorkshopComponent,
-      layerName: string): SubcomponentData {
+      parentLayerName: string): SubcomponentData {
     const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
-    const parentLayer = ComponentPreviewStructureSearchUtils.getLayerByName(activeBaseComponent, layerName);
+    const parentLayer = ComponentPreviewStructureSearchUtils.getLayerByName(activeBaseComponent, parentLayerName);
     const baseSubcomponent = newComponent.coreSubcomponentRefs.base;
     const parentComponentBaseName = Object.keys(activeBaseComponent.componentPreviewStructure.subcomponentDropdownStructure)[0];
     const isParentLayerInSubcomponentsDropdown = !!parentComponent.componentPreviewStructure.subcomponentDropdownStructure[parentComponentBaseName]
-      [parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[parentLayer.name]];
+      [parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[parentLayerName]];
     return { parentLayer, baseSubcomponent, subcomponentDropdownStructure: parentComponent.componentPreviewStructure.subcomponentDropdownStructure, parentComponentBaseName, isParentLayerInSubcomponentsDropdown };
   }
 
@@ -102,8 +102,8 @@ export class AddNewGenericComponent extends AddNewComponentShared {
   }
 
   protected static addNewComponentToComponentPreview(parentComponent: WorkshopComponent, newComponent: WorkshopComponent,
-      layerName: string): SubcomponentData {
-    const subcomponentData = AddNewGenericComponent.assembleSubcomponentData(parentComponent, newComponent, layerName);
+      parentLayerName: string): SubcomponentData {
+    const subcomponentData = AddNewGenericComponent.assembleSubcomponentData(parentComponent, newComponent, parentLayerName);
     const { parentLayer, baseSubcomponent } = subcomponentData;
     AddNewGenericComponent.addNewSubcomponentToParentLayer(parentLayer, baseSubcomponent, newComponent);
     return subcomponentData;
@@ -137,19 +137,18 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     return [newComponent, baseNamePrefix];
   }
 
-  // WORK1: may not need layer name
   public static add(parentComponent: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
-      layerName: string, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
+      parentLayerName: string, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
     const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
     const [newComponent, baseNamePrefix] = AddNewGenericComponent.createNewComponent(componentType, componentStyle,
       componentGenerator, activeBaseComponent, overwritePropertiesFunc);
     JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
-    const subcomponentData = AddNewGenericComponent.addNewComponentToComponentPreview(parentComponent, newComponent, layerName);
+    const subcomponentData = AddNewGenericComponent.addNewComponentToComponentPreview(parentComponent, newComponent, parentLayerName);
     AddNewGenericComponent.addNewComponentToDropdownStructure(parentComponent, newComponent, subcomponentData);
     AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent, newComponent);
     InterconnectedSettings.update(true, activeBaseComponent, newComponent.coreSubcomponentRefs.base);
-    IncrementNestedComponentCount.increment(activeBaseComponent, baseNamePrefix, layerName);
+    IncrementNestedComponentCount.increment(activeBaseComponent, baseNamePrefix, parentLayerName);
     return newComponent;
   }
 }

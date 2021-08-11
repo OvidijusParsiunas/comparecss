@@ -13,18 +13,33 @@ import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.e
 import { inheritedCardBaseCss } from '../../../cards/inheritedCss/inheritedCardCss';
 import { MenuBaseSpecificSettings } from '../../settings/menuBaseSpecificSettings';
 import { SelectDropdown } from '../../../../../../../../interfaces/selectDropdown';
+import { SETTINGS_TYPES } from '../../../../../../../../consts/settingsTypes.enum';
 import { SelectDropdownUtils } from '../../selectDropdown/selectDropdownUtils';
 import { AutoSize } from '../../../../../../../../interfaces/autoSize';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
 
 class DropdownMenuBase extends ComponentBuilder {
 
+  private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, updatedSetting: any): void {
+    const { cssProperty } = updatedSetting.spec;
+    if (cssProperty === 'paddingLeft' || cssProperty === 'paddingRight') {
+      DropdownMenuAutoWidthUtils.setWidth(subcomponentProperties);
+    }
+  }
+
+  public static setTriggerFuncOnSettingChange(dropdownMenuBaseComponent: WorkshopComponent): void {
+    dropdownMenuBaseComponent.triggerFuncOnSettingChange = {
+      [SETTINGS_TYPES.INPUT]: DropdownMenuAutoWidthUtils.setWidth,
+      [SETTINGS_TYPES.RANGE]: DropdownMenuBase.setWidthViaRange,
+    };
+  }
+
   public static setAreLayersInSyncByDefault(dropdownMenuComponent: WorkshopComponent): void {
     dropdownMenuComponent.areLayersInSyncByDefault = true;
   }
 
   public static setAuxiliaryComponentReferenceOnBase(dropdownMenuComponent: WorkshopComponent): void {
-    dropdownMenuComponent.subcomponents[dropdownMenuComponent.coreSubcomponentRefs.base.name].parentAuxiliaryComponent = dropdownMenuComponent;
+    dropdownMenuComponent.subcomponents[dropdownMenuComponent.coreSubcomponentRefs.base.name].parentBaseComponentRef = dropdownMenuComponent;
   }
 
   private static createDefaultNewNestedComponentsOptions(): NestedDropdownStructure {
@@ -116,6 +131,7 @@ export const dropdownMenuBase: ComponentGenerator = {
       { componentType: COMPONENT_TYPES.DROPDOWN_MENU, baseName }, DropdownMenuBase.createBaseSubcomponent, false);
     DropdownMenuBase.setAuxiliaryComponentReferenceOnBase(dropdownMenuComponent);
     DropdownMenuBase.setAreLayersInSyncByDefault(dropdownMenuComponent);
+    DropdownMenuBase.setTriggerFuncOnSettingChange(dropdownMenuComponent);
     MenuBaseSpecificSettings.set(dropdownMenuComponent);
     return dropdownMenuComponent;
   },

@@ -116,7 +116,6 @@ export default {
     align-items: center;
     padding-bottom: 2px
   }
-  /* WORK2: rename icon */
   .icon-menu {
     min-width: 0.5rem !important;
   }

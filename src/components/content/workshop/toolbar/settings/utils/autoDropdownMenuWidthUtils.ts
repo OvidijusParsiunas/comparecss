@@ -30,13 +30,20 @@ export class DropdownMenuAutoWidthUtils {
   }
 
   private static canNewWidthBeSet(subcomponentProperties: SubcomponentProperties): boolean {
-    const { type,  coreSubcomponentRefs } = subcomponentProperties.parentAuxiliaryComponent || {};
+    const { type, coreSubcomponentRefs } = subcomponentProperties.parentBaseComponentRef || {};
     return type === COMPONENT_TYPES.DROPDOWN_MENU && coreSubcomponentRefs.base.customFeatures.autoSize?.width;
   }
 
   public static setWidth(subcomponentProperties: SubcomponentProperties): void {
     if (DropdownMenuAutoWidthUtils.canNewWidthBeSet(subcomponentProperties)) {
-      setTimeout(() => DropdownMenuAutoWidthUtils.set(subcomponentProperties.parentAuxiliaryComponent));
+      setTimeout(() => DropdownMenuAutoWidthUtils.set(subcomponentProperties.parentBaseComponentRef));
     }
+  }
+
+  public static setButtonWidth(subcomponentProperties: SubcomponentProperties): void {
+    // if (DropdownMenuAutoWidthUtils.canNewWidthBeSet(subcomponentProperties)) {
+    //   setTimeout(() => DropdownMenuAutoWidthUtils.set(subcomponentProperties.parentAuxiliaryComponent));
+    // }
+    console.log(subcomponentProperties);
   }
 }
