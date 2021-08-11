@@ -1,4 +1,3 @@
-import { CoreSubcomponentNames } from './customSubcomponentNames';
-import { Subcomponents } from './workshopComponent';
+import { CoreSubcomponentRefs } from './coreSubcomponentRefs';
 
-export type OverwritePropertiesFunc = (subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames) => void;
+export type OverwritePropertiesFunc = (coreSubcomponentRefs: CoreSubcomponentRefs) => void;

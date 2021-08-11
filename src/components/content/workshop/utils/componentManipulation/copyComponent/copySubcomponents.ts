@@ -43,18 +43,16 @@ export class CopySubcomponents {
   }
 
   public static copyComponentSubcomponents(componentBeingCopied: WorkshopComponent, newNestedComponent: WorkshopComponent): void {
-    const newCoreSubcomponentNames = Object.keys(newNestedComponent.coreSubcomponentNames);
-    for (let i = 0; i < newCoreSubcomponentNames.length; i += 1) {
-      const coreSubcomponent = newCoreSubcomponentNames[i];
-      const newSubcomponent = newNestedComponent.subcomponents[newNestedComponent.coreSubcomponentNames[coreSubcomponent]];
-      const subcomponentBeingCopied = componentBeingCopied.subcomponents[componentBeingCopied.coreSubcomponentNames[coreSubcomponent]];
+    Object.keys(newNestedComponent.coreSubcomponentRefs).forEach((coreSubcomponentType) => {
+      const newSubcomponent = newNestedComponent.coreSubcomponentRefs[coreSubcomponentType];
+      const subcomponentBeingCopied = componentBeingCopied.coreSubcomponentRefs[coreSubcomponentType];
       CopySubcomponents.copyExistingSubcomponentProperties(newSubcomponent, subcomponentBeingCopied);
-    }
+    });
   }
 
   public static copyBaseSubcomponent(newComponent: WorkshopComponent, copiedComponent: WorkshopComponent): void {
-    const newBaseSubcomponent = newComponent.subcomponents[newComponent.coreSubcomponentNames.base];
-    const copiedBaseSubcomponent = copiedComponent.subcomponents[copiedComponent.coreSubcomponentNames.base]
+    const newBaseSubcomponent = newComponent.coreSubcomponentRefs.base;
+    const copiedBaseSubcomponent = copiedComponent.coreSubcomponentRefs.base;
     if (copiedBaseSubcomponent.nestedComponent?.inSync) {
       CopySubcomponents.copyInSyncSubcomponent(copiedBaseSubcomponent.nestedComponent, newBaseSubcomponent, copiedBaseSubcomponent);
     } else {

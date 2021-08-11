@@ -1,14 +1,14 @@
 import { UpdateGenericComponentDropdownOptionNames } from '../updateNestedComponentNames/updateGenericComponentDropdownOptionNames';
 import { UpdateLayerDropdownOptionNames } from '../updateNestedComponentNames/updateLayerDropdownOptionNames';
 import { componentTypeToStyleGenerators } from '../../../newComponent/types/componentTypeToStyleGenerators';
-import { Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { Layer, NestedComponent } from '../../../../../../interfaces/componentPreviewStructure';
 import { uniqueSubcomponentIdState } from '../../componentGenerator/uniqueSubcomponentIdState';
-import { CoreSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
 import { AddNewGenericComponent } from '../addNewNestedComponent/add/addNewGenericComponent';
+import { CoreSubcomponentRefs } from '../../../../../../interfaces/coreSubcomponentRefs';
 import { AddNewLayerComponent } from '../addNewNestedComponent/add/addNewLayerComponent';
 import { ComponentBuilder } from '../../../newComponent/types/shared/componentBuilder';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
+import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
 import ProcessClassName from '../../componentGenerator/processClassName';
 import { CopySubcomponents } from './copySubcomponents';
@@ -16,19 +16,17 @@ import { ComponentOptions } from 'vue';
 
 export default class CopyComponent {
 
-  private static executeReferenceSharingExecutables(baseComponentRefs: WorkshopComponent[], newComponent: WorkshopComponent): void {
+  private static executeReferenceSharingExecutables(baseComponentRefs: WorkshopComponent[],): void {
     baseComponentRefs.forEach((nestedComponentRef) => {
-      const { coreSubcomponentNames, referenceSharingExecutables } = nestedComponentRef;
-      (referenceSharingExecutables || []).forEach((executable: (subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames) => void) => {
-        executable(newComponent.subcomponents, coreSubcomponentNames);
-      });
+      const { referenceSharingExecutables, coreSubcomponentRefs } = nestedComponentRef;
+      (referenceSharingExecutables || []).forEach((executable) => executable(coreSubcomponentRefs));
     });
   }
 
-  private static overwriteAlignedLayerSectionProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
+  private static overwriteAlignedLayerSectionProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
     const newAlignedSection = this as any as ALIGNED_SECTION_TYPES;
-    subcomponents[coreSubcomponentNames.base].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(newAlignedSection);
-    subcomponents[coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(newAlignedSection);
+    coreSubcomponentRefs.base.customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(newAlignedSection);
+    coreSubcomponentRefs.base.defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(newAlignedSection);
   }
 
   private static copyAlignedSectionComponents(newLayer: Layer, copiedLayer: Layer, newComponent: WorkshopComponent, baseComponentRefs: WorkshopComponent[]): void {
@@ -59,7 +57,7 @@ export default class CopyComponent {
     const baseComponentRefs: WorkshopComponent[] = [];
     CopySubcomponents.copyBaseSubcomponent(newComponent, componentBeingCopied);
     CopyComponent.copyLayerComponents(newComponent, componentBeingCopied, baseComponentRefs);
-    CopyComponent.executeReferenceSharingExecutables(baseComponentRefs, newComponent);
+    CopyComponent.executeReferenceSharingExecutables(baseComponentRefs);
   }
 
   public static copyComponent(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {

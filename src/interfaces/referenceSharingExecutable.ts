@@ -1,4 +1,3 @@
-import { CoreSubcomponentNames } from './customSubcomponentNames';
-import { Subcomponents } from './workshopComponent';
+import { CoreSubcomponentRefs } from './coreSubcomponentRefs';
 
-export type ReferenceSharingExecutable = (subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames) => void;
+export type ReferenceSharingExecutable = (coreSubcomponentRefs: CoreSubcomponentRefs) => void;

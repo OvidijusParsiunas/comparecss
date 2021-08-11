@@ -1,14 +1,14 @@
 import { UpdateGenericComponentDropdownOptionNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateGenericComponentDropdownOptionNames';
-import { CustomCss, CustomFeatures, CustomStaticFeatures, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
 import { UpdateLayerDropdownOptionNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateLayerDropdownOptionNames';
+import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewGenericComponent';
 import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
 import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
-import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
@@ -52,48 +52,48 @@ class DefaultModal extends ComponentBuilder {
       subcomponentText: ComponentBuilder.createText(text || 'text'),
     }
   }
-  private static overwriteTitleProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
-    subcomponents[coreSubcomponentNames.base].customCss = DefaultModal.createDefaultTitleCss();
-    subcomponents[coreSubcomponentNames.base].defaultCss = DefaultModal.createDefaultTitleCss();
-    subcomponents[coreSubcomponentNames.base].customFeatures = DefaultModal.createDefaultTextCustomFeatures();
-    subcomponents[coreSubcomponentNames.base].defaultCustomFeatures = DefaultModal.createDefaultTextCustomFeatures();
-    subcomponents[coreSubcomponentNames.base].customStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Card title');
-    subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Card title');
-    subcomponents[coreSubcomponentNames.base].isRemovable = true;
+  private static overwriteTitleProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
+    coreSubcomponentRefs.base.customCss = DefaultModal.createDefaultTitleCss();
+    coreSubcomponentRefs.base.defaultCss = DefaultModal.createDefaultTitleCss();
+    coreSubcomponentRefs.base.customFeatures = DefaultModal.createDefaultTextCustomFeatures();
+    coreSubcomponentRefs.base.defaultCustomFeatures = DefaultModal.createDefaultTextCustomFeatures();
+    coreSubcomponentRefs.base.customStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Card title');
+    coreSubcomponentRefs.base.defaultCustomStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Card title');
+    coreSubcomponentRefs.base.isRemovable = true;
   }
 
-  private static overwriteDescriptionProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
-    subcomponents[coreSubcomponentNames.base].customStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Description');
-    subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Description');
-    subcomponents[coreSubcomponentNames.base].isRemovable = true;
+  private static overwriteDescriptionProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
+    coreSubcomponentRefs.base.customStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Description');
+    coreSubcomponentRefs.base.defaultCustomStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Description');
+    coreSubcomponentRefs.base.isRemovable = true;
   }
 
-  private static overwriteSubmitButtonProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
-    subcomponents[coreSubcomponentNames.base].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    subcomponents[coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    subcomponents[coreSubcomponentNames.text].customStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Submit');
-    subcomponents[coreSubcomponentNames.text].defaultCustomStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Submit');
-    subcomponents[coreSubcomponentNames.base].isRemovable = true;
+  private static overwriteSubmitButtonProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
+    coreSubcomponentRefs.base.customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    coreSubcomponentRefs.base.defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    coreSubcomponentRefs.text.customStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Submit');
+    coreSubcomponentRefs.text.defaultCustomStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Submit');
+    coreSubcomponentRefs.base.isRemovable = true;
   }
 
-  private static overwriteCancelButtonProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
-    subcomponents[coreSubcomponentNames.base].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    subcomponents[coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    subcomponents[coreSubcomponentNames.text].customStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Cancel');
-    subcomponents[coreSubcomponentNames.text].defaultCustomStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Cancel');
-    subcomponents[coreSubcomponentNames.base].isRemovable = true;
+  private static overwriteCancelButtonProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
+    coreSubcomponentRefs.base.customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    coreSubcomponentRefs.base.defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    coreSubcomponentRefs.text.customStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Cancel');
+    coreSubcomponentRefs.text.defaultCustomStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Cancel');
+    coreSubcomponentRefs.base.isRemovable = true;
   }
 
-  private static overwriteCloseButtonProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
-    subcomponents[coreSubcomponentNames.base].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    subcomponents[coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    subcomponents[coreSubcomponentNames.base].isRemovable = true;
+  private static overwriteCloseButtonProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
+    coreSubcomponentRefs.base.customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    coreSubcomponentRefs.base.defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    coreSubcomponentRefs.base.isRemovable = true;
   }
 
-  private static overwriteLayerProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
+  private static overwriteLayerProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
     const nestedDropdownStructure = this as any as NestedDropdownStructure;
-    subcomponents[coreSubcomponentNames.base].newNestedComponentsOptions = nestedDropdownStructure;
-    subcomponents[coreSubcomponentNames.base].isRemovable = true;
+    coreSubcomponentRefs.base.newNestedComponentsOptions = nestedDropdownStructure;
+    coreSubcomponentRefs.base.isRemovable = true;
   }
 
   public static addComponentsToBase(modalComponent: WorkshopComponent): void {
@@ -103,24 +103,23 @@ class DefaultModal extends ComponentBuilder {
     const layer3Component = AddNewLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true, DefaultModal.overwriteLayerProperties.bind(nestedDropdownStructure));
     UpdateLayerDropdownOptionNames.update(modalComponent, 0);
     AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
-      layer1Component.coreSubcomponentNames.base, [DefaultModal.overwriteTitleProperties]);
+      layer1Component.coreSubcomponentRefs.base.name, [DefaultModal.overwriteTitleProperties]);
     AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.BUTTON, BUTTON_STYLES.CLOSE,
-      layer1Component.coreSubcomponentNames.base, [DefaultModal.overwriteCloseButtonProperties]);
+      layer1Component.coreSubcomponentRefs.base.name, [DefaultModal.overwriteCloseButtonProperties]);
     AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
-      layer2Component.coreSubcomponentNames.base, [DefaultModal.overwriteDescriptionProperties]);
+      layer2Component.coreSubcomponentRefs.base.name, [DefaultModal.overwriteDescriptionProperties]);
     AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
-      layer3Component.coreSubcomponentNames.base, [DefaultModal.overwriteSubmitButtonProperties]);
+      layer3Component.coreSubcomponentRefs.base.name, [DefaultModal.overwriteSubmitButtonProperties]);
     AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
-      layer3Component.coreSubcomponentNames.base, [DefaultModal.overwriteCancelButtonProperties]);
+      layer3Component.coreSubcomponentRefs.base.name, [DefaultModal.overwriteCancelButtonProperties]);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(modalComponent, modalComponent.componentPreviewStructure.layers[0]);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(modalComponent, modalComponent.componentPreviewStructure.layers[1]);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(modalComponent, modalComponent.componentPreviewStructure.layers[2]);
   }
 
   public static overwriteBaseNewNestedComponentsOptions(modalComponent: WorkshopComponent): void {
-    const { subcomponents, coreSubcomponentNames } = modalComponent;
     const nestedDropdownStructure = UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);
-    subcomponents[coreSubcomponentNames.base].newNestedComponentsOptions = nestedDropdownStructure;
+    modalComponent.coreSubcomponentRefs.base.newNestedComponentsOptions = nestedDropdownStructure;
   }
 }
 

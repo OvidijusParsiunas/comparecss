@@ -1,6 +1,6 @@
-import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
+import { SubcomponentProperties, Subcomponents } from '../../../../../../../interfaces/workshopComponent';
+import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
-import { Subcomponents } from '../../../../../../../interfaces/workshopComponent';
 
 export default class ReferenceSharingUtils {
 
@@ -8,12 +8,12 @@ export default class ReferenceSharingUtils {
     return new Set([JAVASCRIPT_CLASSES.RIPPLES])
   }
 
-  public static appendJsClassesRefToAllSubcomponents(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
-    const baseSubcomponent = subcomponents[coreSubcomponentNames.base];
+  public static appendJsClassesRefToAllSubcomponents(coreSubcomponentRefs: CoreSubcomponentRefs): void {
+    const baseSubcomponent = coreSubcomponentRefs.base;
     const jsClasses = baseSubcomponent.customFeatures && baseSubcomponent.customFeatures.jsClasses
       ? baseSubcomponent.customFeatures.jsClasses : ReferenceSharingUtils.createDefaultButtonJsClasses();
-    Object.keys(coreSubcomponentNames).forEach((subcomponentName) => {
-      const subcomponent = subcomponents[coreSubcomponentNames[subcomponentName]];
+    Object.keys(coreSubcomponentRefs).forEach((coreName) => {
+      const subcomponent = coreSubcomponentRefs[coreName];
       if (!subcomponent.customFeatures) {
         subcomponent.customFeatures = {};
         subcomponent.defaultCustomFeatures = {};
@@ -23,11 +23,11 @@ export default class ReferenceSharingUtils {
     });
   }
 
-  public static appendBaseSubcomponentRefToAllChildSubcomponents(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
-    const baseSubcomponent = subcomponents[coreSubcomponentNames.base];
+  public static appendBaseSubcomponentRefToAllChildSubcomponents(baseSubcomponent: SubcomponentProperties, subcomponents: Subcomponents): void {
     Object.keys(subcomponents).forEach((subcomponentName) => {
-      if (subcomponentName !== coreSubcomponentNames.base) {
-        subcomponents[subcomponentName].baseSubcomponentRef = baseSubcomponent;
+      const subcomponent = subcomponents[subcomponentName];
+      if (subcomponent !== baseSubcomponent) {
+        subcomponent.baseSubcomponentRef = baseSubcomponent;
       }
     });
   }

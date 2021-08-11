@@ -12,7 +12,6 @@ import { TriggerFuncOnSettingChange } from './triggerFuncOnSettingChange';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
-import { CoreSubcomponentNames } from './customSubcomponentNames';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { NestedComponentCount } from './nestedComponentCount';
@@ -167,6 +166,7 @@ export interface SubcomponentProperties {
   // temporarily holds the original customCss when a component card has been hovered/selected during component import mode 
   tempOriginalCustomProperties?: TempCustomProperties;
   // when a subcomponent's mouse event is triggered, trigger another subcomponent's mouse events
+  // WORK1: maybe should pass ref instead
   nameOfAnotherSubcomponetToTrigger?: string;
   isTriggeredByAnotherSubcomponent?: boolean;
   // options for the add nested component dropdown
@@ -192,9 +192,8 @@ export interface WorkshopComponent {
   componentPreviewStructure: ComponentPreviewStructure;
   // class name for the component
   className: string;
-  // used for referencing core subcomponent names like component base and text
-  // also used to reference components that should share base jsclasses refs
-  coreSubcomponentNames?: CoreSubcomponentNames;
+  // used for referencing component's core subcomponents like base and text
+  // also used for referencing subcomponents that should share jsclasses refs
   coreSubcomponentRefs?: CoreSubcomponentRefs;
   // gives an in sync nested component to identify if the copied component has not been deleted
   componentStatus: { isRemoved: boolean };

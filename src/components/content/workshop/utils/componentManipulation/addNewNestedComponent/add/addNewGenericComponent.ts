@@ -1,6 +1,6 @@
 import { BUTTON_COMPONENTS_BASE_NAMES, PRIMITIVE_COMPONENTS_BASE_NAMES, LAYER_COMPONENTS_BASE_NAMES, NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
-import { SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
+import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { OverwritePropertiesFunc } from '../../../../../../../interfaces/overwriteSubcomponentPropertiesFunc';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
@@ -21,7 +21,7 @@ import JSONUtils from '../../../generic/jsonUtils';
 interface SubcomponentData {
   parentLayer: Layer;
   parentComponentBaseName: string;
-  baseSubcomponentProperties: SubcomponentProperties;
+  baseSubcomponent: SubcomponentProperties;
   subcomponentDropdownStructure: NestedDropdownStructure;
   isParentLayerInSubcomponentsDropdown: boolean;
 }
@@ -55,7 +55,8 @@ export class AddNewGenericComponent extends AddNewComponentShared {
 
   private static updateComponentDropdownStructure(parentComponent: WorkshopComponent, newComponent: WorkshopComponent,
       subcomponentDropdownStructure: NestedDropdownStructure, baseSubcomponentName: string): void {
-    const { coreSubcomponentNames: { base: baseName }, componentPreviewStructure } = newComponent;
+    const { componentPreviewStructure, coreSubcomponentRefs } = newComponent;
+    const baseName = coreSubcomponentRefs.base.name;
     const nestedComponentBaseDropdownStructure = componentPreviewStructure.subcomponentDropdownStructure[baseName]; 
     nestedComponentBaseDropdownStructure[DROPDOWN_OPTION_AUX_DETAILS_REF] = { isEnabled: true, actualObjectName: baseName };
     const newComponentDropdownStructure = { [baseName]: { ...nestedComponentBaseDropdownStructure }};
@@ -64,15 +65,15 @@ export class AddNewGenericComponent extends AddNewComponentShared {
       newComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName, true);
   }
 
-  private static updateNewSubcomponentParentLayer(baseSubcomponentProperties: SubcomponentProperties, parentLayer: Layer): void {
-    baseSubcomponentProperties.parentLayer = parentLayer;
+  private static updateNewSubcomponentParentLayer(baseSubcomponent: SubcomponentProperties, parentLayer: Layer): void {
+    baseSubcomponent.parentLayer = parentLayer;
   }
 
-  private static addNewSubcomponentToParentLayer(parentLayer: Layer, baseSubcomponentProperties: SubcomponentProperties,
+  private static addNewSubcomponentToParentLayer(parentLayer: Layer, baseSubcomponent: SubcomponentProperties,
     newComponent: WorkshopComponent): void {
-    const alignment = baseSubcomponentProperties?.customFeatures?.alignedLayerSection?.section;
+    const alignment = baseSubcomponent?.customFeatures?.alignedLayerSection?.section;
     const nestedComponent: NestedComponent = {
-      name: newComponent.coreSubcomponentRefs.base.name, subcomponentProperties: baseSubcomponentProperties};
+      name: newComponent.coreSubcomponentRefs.base.name, subcomponentProperties: baseSubcomponent};
     parentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][alignment || ALIGNED_SECTION_TYPES.LEFT].push(nestedComponent);
   }
 
@@ -80,18 +81,18 @@ export class AddNewGenericComponent extends AddNewComponentShared {
       layerName: string): SubcomponentData {
     const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
     const parentLayer = ComponentPreviewStructureSearchUtils.getLayerByName(activeBaseComponent, layerName);
-    const baseSubcomponentProperties = newComponent.componentPreviewStructure.baseSubcomponentProperties;
+    const baseSubcomponent = newComponent.coreSubcomponentRefs.base;
     const parentComponentBaseName = Object.keys(activeBaseComponent.componentPreviewStructure.subcomponentDropdownStructure)[0];
     const isParentLayerInSubcomponentsDropdown = !!parentComponent.componentPreviewStructure.subcomponentDropdownStructure[parentComponentBaseName]
       [parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[parentLayer.name]];
-    return { parentLayer, baseSubcomponentProperties, subcomponentDropdownStructure: parentComponent.componentPreviewStructure.subcomponentDropdownStructure, parentComponentBaseName, isParentLayerInSubcomponentsDropdown };
+    return { parentLayer, baseSubcomponent, subcomponentDropdownStructure: parentComponent.componentPreviewStructure.subcomponentDropdownStructure, parentComponentBaseName, isParentLayerInSubcomponentsDropdown };
   }
 
-  private static addNewComponentToDropdownStructure(parentComponent: WorkshopComponent, activeBaseComponent: WorkshopComponent, newComponent: WorkshopComponent,
+  private static addNewComponentToDropdownStructure(parentComponent: WorkshopComponent, newComponent: WorkshopComponent,
       subcomponentData: SubcomponentData): void {
-    const { parentLayer, baseSubcomponentProperties, subcomponentDropdownStructure, parentComponentBaseName, isParentLayerInSubcomponentsDropdown } = subcomponentData;
+    const { parentLayer, baseSubcomponent, subcomponentDropdownStructure, parentComponentBaseName, isParentLayerInSubcomponentsDropdown } = subcomponentData;
     if (isParentLayerInSubcomponentsDropdown) {
-      AddNewGenericComponent.updateNewSubcomponentParentLayer(baseSubcomponentProperties, parentLayer);
+      AddNewGenericComponent.updateNewSubcomponentParentLayer(baseSubcomponent, parentLayer);
       const parentLayerDropdownName = parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[parentLayer.name];
       AddNewGenericComponent.updateComponentDropdownStructure(parentComponent, newComponent,
         subcomponentDropdownStructure[parentComponentBaseName] as NestedDropdownStructure, parentLayerDropdownName);
@@ -103,17 +104,15 @@ export class AddNewGenericComponent extends AddNewComponentShared {
   protected static addNewComponentToComponentPreview(parentComponent: WorkshopComponent, newComponent: WorkshopComponent,
       layerName: string): SubcomponentData {
     const subcomponentData = AddNewGenericComponent.assembleSubcomponentData(parentComponent, newComponent, layerName);
-    const { parentLayer, baseSubcomponentProperties } = subcomponentData;
-    AddNewGenericComponent.addNewSubcomponentToParentLayer(parentLayer, baseSubcomponentProperties, newComponent);
+    const { parentLayer, baseSubcomponent } = subcomponentData;
+    AddNewGenericComponent.addNewSubcomponentToParentLayer(parentLayer, baseSubcomponent, newComponent);
     return subcomponentData;
   }
 
-  private static executeOverwritePropertiesFuncs(overwritePropertiesFunc: OverwritePropertiesFunc[], subcomponents: Subcomponents,
-      baseName: string): void {
-    const { coreSubcomponentNames } = subcomponents[baseName].nestedComponent.ref;
+  private static executeOverwritePropertiesFuncs(overwritePropertiesFunc: OverwritePropertiesFunc[], newComponent: WorkshopComponent): void {
     const funcArray = overwritePropertiesFunc.filter((func) => typeof func === 'function');
     funcArray.forEach((overwritePropertiesFunc) => {
-      overwritePropertiesFunc(subcomponents, coreSubcomponentNames);
+      overwritePropertiesFunc(newComponent.coreSubcomponentRefs);
     });
   }
 
@@ -130,14 +129,15 @@ export class AddNewGenericComponent extends AddNewComponentShared {
       activeBaseComponent: WorkshopComponent, overwritePropertiesFunc?: OverwritePropertiesFunc[], customBaseName?: string): NewComponentDetails {
     const baseNamePrefix = AddNewGenericComponent.getBaseSubcomponentNamePrefix(componentType, componentStyle);
     const baseName = customBaseName || UniqueSubcomponentNameGenerator.generate(baseNamePrefix);
-    const subcomponents = AddNewComponentShared.createNewComponentSubcomponents(componentGenerator, activeBaseComponent, baseName);
-    AddNewGenericComponent.applyTopProperty(subcomponents[baseName]);
+    const newComponent = AddNewComponentShared.createNewComponentViaGenerator(componentGenerator, activeBaseComponent, baseName);
+    AddNewGenericComponent.applyTopProperty(newComponent.coreSubcomponentRefs.base);
     if (overwritePropertiesFunc) {
-      AddNewGenericComponent.executeOverwritePropertiesFuncs(overwritePropertiesFunc, subcomponents, baseName);
+      AddNewGenericComponent.executeOverwritePropertiesFuncs(overwritePropertiesFunc, newComponent);
     }
-    return [subcomponents[baseName].nestedComponent.ref, baseNamePrefix];
+    return [newComponent, baseNamePrefix];
   }
 
+  // WORK1: may not need layer name
   public static add(parentComponent: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
       layerName: string, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
@@ -146,9 +146,9 @@ export class AddNewGenericComponent extends AddNewComponentShared {
       componentGenerator, activeBaseComponent, overwritePropertiesFunc);
     JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
     const subcomponentData = AddNewGenericComponent.addNewComponentToComponentPreview(parentComponent, newComponent, layerName);
-    AddNewGenericComponent.addNewComponentToDropdownStructure(parentComponent, activeBaseComponent, newComponent, subcomponentData);
+    AddNewGenericComponent.addNewComponentToDropdownStructure(parentComponent, newComponent, subcomponentData);
     AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent, newComponent);
-    InterconnectedSettings.update(true, activeBaseComponent, newComponent.subcomponents[newComponent.coreSubcomponentNames.base]);
+    InterconnectedSettings.update(true, activeBaseComponent, newComponent.coreSubcomponentRefs.base);
     IncrementNestedComponentCount.increment(activeBaseComponent, baseNamePrefix, layerName);
     return newComponent;
   }

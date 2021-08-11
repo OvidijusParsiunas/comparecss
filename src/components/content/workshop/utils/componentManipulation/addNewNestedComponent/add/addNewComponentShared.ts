@@ -1,5 +1,5 @@
-import { Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
+import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 
 export class AddNewComponentShared {
 
@@ -15,13 +15,13 @@ export class AddNewComponentShared {
       .forEach((subcomponentName) => newComponent.subcomponents[subcomponentName].parentAuxiliaryComponent = activeBaseComponent);
   }
 
-  protected static createNewComponentSubcomponents(componentGenerator: ComponentGenerator, activeBaseComponent: WorkshopComponent,
-      newComponentName: string): Subcomponents {
+  protected static createNewComponentViaGenerator(componentGenerator: ComponentGenerator, activeBaseComponent: WorkshopComponent,
+      newComponentName: string): WorkshopComponent {
     const newComponent = componentGenerator.createNewComponent(newComponentName);
     newComponent.subcomponents[newComponentName].nestedComponent = { ref: newComponent, inSync: false };
     if (activeBaseComponent.coreBaseComponent) {
       AddNewComponentShared.addParentAuxiliaryComponentReference(newComponent, activeBaseComponent);
     }
-    return newComponent.subcomponents;
+    return newComponent;
   }
 }

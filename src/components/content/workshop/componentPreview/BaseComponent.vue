@@ -85,12 +85,12 @@ export default {
       this.mouseEvents[this.getBaseId('subcomponentId')][subcomponentMouseEvent]();
     },
     getJsClasses(): string[] {
-      return this.component.componentPreviewStructure.baseSubcomponentProperties?.customFeatures?.jsClasses || [];
+      return this.component.coreSubcomponentRefs.base.customFeatures?.jsClasses || [];
     },
     getOverlayStyleProperties(): WorkshopComponentCss {
-      const subcomponentCss = { ...this.component.componentPreviewStructure.baseSubcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT], color: '#ff000000' };
+      const subcomponentCss = { ...this.component.coreSubcomponentRefs.base.customCss[CSS_PSEUDO_CLASSES.DEFAULT], color: '#ff000000' };
       if (!this.isNestedComponent) subcomponentCss.height = this.component.coreBaseComponent ? 'unset' : '100% !important';
-      if (this.component.componentPreviewStructure.baseSubcomponentProperties.isTemporaryAddPreview) subcomponentCss.display = 'block'; 
+      if (this.component.coreSubcomponentRefs.base.isTemporaryAddPreview) subcomponentCss.display = 'block'; 
       if (!this.component.coreBaseComponent && !this.isNestedComponent) subcomponentCss.marginTop = '0px';
       return subcomponentCss;
     },
@@ -106,19 +106,19 @@ export default {
       } else {
         classes.push(SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT);
       }
-      if (this.component.componentPreviewStructure.baseSubcomponentProperties.isTemporaryAddPreview) {
+      if (this.component.coreSubcomponentRefs.base.isTemporaryAddPreview) {
         classes.push(SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
       }
       return classes;
     },
     isXButtonText(): boolean {
-      return this.component.componentPreviewStructure.baseSubcomponentProperties.customStaticFeatures?.subcomponentText?.text === CLOSE_BUTTON_X_TEXT;
+      return this.component.coreSubcomponentRefs.base.customStaticFeatures?.subcomponentText?.text === CLOSE_BUTTON_X_TEXT;
     },
     getSubcomponentMouseEventsDisabledClassForXButtonText(): string {
       return this.isXButtonText() ? SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS : '';
     },
     getXButtonOverlayStyleProperties(): WorkshopComponentCss[] {
-      const { baseSubcomponentProperties: { overwrittenCustomCssObj, customCss } } = this.component.componentPreviewStructure;
+      const { overwrittenCustomCssObj, customCss } = this.component.coreSubcomponentRefs.base;
       const customCssObj = overwrittenCustomCssObj || customCss;
       return [customCssObj[CSS_PSEUDO_CLASSES.DEFAULT], { top: '', color: 'none', backgroundColor: 'none'}];
     },

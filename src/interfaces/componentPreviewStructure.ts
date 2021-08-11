@@ -21,13 +21,11 @@ interface Sections {
 export type Layer = { sections: Sections; } & NestedComponent;
 
 export interface ComponentPreviewStructure {
-  // WORK1: this may not be required
-  baseSubcomponentProperties: SubcomponentProperties;
-  // will be used in the future, can be horizontal or vertical
-  layeringType?: string;
   layers?: Layer[];
   subcomponentDropdownStructure?: NestedDropdownStructure;
   subcomponentNameToDropdownOptionName: SubcomponentNameToDropdownOptionName;
+  // will be used in the future, can be horizontal or vertical
+  layeringType?: string;
 }
 
 // current dropdown strategy:

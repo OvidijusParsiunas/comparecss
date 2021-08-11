@@ -4,13 +4,13 @@ import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../..
 import { NewComponentStyleProperties } from '../../../../../../consts/newComponentStyleProperties';
 import { ComponentPreviewStructure } from '../../../../../../interfaces/componentPreviewStructure';
 import { PARENT_COMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
-import { CoreSubcomponentNames } from '../../../../../../interfaces/customSubcomponentNames';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { CoreSubcomponentRefs } from '../../../../../../interfaces/coreSubcomponentRefs';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
 import { CloseTriggers } from '../../../../../../interfaces/closeTriggers';
+import ReferenceSharingUtils from '../buttons/utils/referenceSharingUtils';
 import { Animations } from '../../../../../../interfaces/animations';
 import { defaultImage } from './images/default';
 
@@ -108,34 +108,38 @@ export class ComponentBuilder {
     };
   }
 
-  private static createEmptyComponentPreviewStructure(subcomponents: Subcomponents, baseSubcomponentName: string,
-      isBaseOptional = true): ComponentPreviewStructure {
+  protected static populateReferences(component: WorkshopComponent): void {
+    const { coreSubcomponentRefs, subcomponents } = component;
+    ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(coreSubcomponentRefs);
+    ReferenceSharingUtils.appendBaseSubcomponentRefToAllChildSubcomponents(coreSubcomponentRefs.base, subcomponents);
+    component.referenceSharingExecutables = [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents];
+  }
+
+  private static createEmptyComponentPreviewStructure(baseSubcomponentName: string, isBaseOptional = true): ComponentPreviewStructure {
     const subcomponentDropdownStructure = { [baseSubcomponentName]:
       isBaseOptional ? DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject() : {} };
     return {
-      baseSubcomponentProperties: subcomponents[baseSubcomponentName],
       layeringType: 'vertical',
       layers: [],
       subcomponentDropdownStructure,
       subcomponentNameToDropdownOptionName: {[baseSubcomponentName]: baseSubcomponentName},
     }
   }
-
   public static createBaseComponent(componentStyle: NewComponentStyleProperties,
       createBaseSubcomponent: (name: string) => SubcomponentProperties, isBaseOptional = true): WorkshopComponent {
-    const coreSubcomponentNames: CoreSubcomponentNames = { base: componentStyle.baseName || PARENT_COMPONENT_BASE_NAME.BASE };
-    const subcomponents = {[coreSubcomponentNames.base]: createBaseSubcomponent(coreSubcomponentNames.base)};
-    const componentPreviewStructure = ComponentBuilder.createEmptyComponentPreviewStructure(subcomponents, coreSubcomponentNames.base, isBaseOptional);
-    const coreSubcomponentRefs: CoreSubcomponentRefs =  { base: subcomponents[coreSubcomponentNames.base] };
+    const baseName = componentStyle.baseName || PARENT_COMPONENT_BASE_NAME.BASE;
+    const baseSubcomponent = createBaseSubcomponent(baseName);
+    const subcomponents = {[baseName]: baseSubcomponent};
+    const componentPreviewStructure = ComponentBuilder.createEmptyComponentPreviewStructure(baseName, isBaseOptional);
+    const coreSubcomponentRefs: CoreSubcomponentRefs =  { base: baseSubcomponent };
     return {
       type: componentStyle.componentType,
       style: DEFAULT_STYLES.DEFAULT,
       subcomponents,
-      activeSubcomponentName: coreSubcomponentNames.base,
-      defaultSubcomponentName: coreSubcomponentNames.base,
+      activeSubcomponentName: baseName,
+      defaultSubcomponentName: baseName,
       componentPreviewStructure,
       className: 'default-class-name',
-      coreSubcomponentNames,
       coreSubcomponentRefs,
       componentStatus: { isRemoved: false },
     };

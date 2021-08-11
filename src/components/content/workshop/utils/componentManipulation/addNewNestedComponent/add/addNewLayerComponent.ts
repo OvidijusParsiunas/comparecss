@@ -23,12 +23,12 @@ export class AddNewLayerComponent extends AddNewComponentShared {
   }
 
   private static updateComponentDropdownStructure(parentComponent: WorkshopComponent, activeBaseComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
-    const { base: newComponentBaseName } = newComponent.coreSubcomponentNames;
-    const newComponentDropdownStructure = { [newComponentBaseName]: { 
-      ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(newComponentBaseName),
+    const baseName = newComponent.coreSubcomponentRefs.base.name;
+    const newComponentDropdownStructure = { [baseName]: { 
+      ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(baseName),
     }};
     const parentComponentDropdownStructure = parentComponent.componentPreviewStructure.subcomponentDropdownStructure;
-    JSONUtils.addObjects(parentComponentDropdownStructure, activeBaseComponent.coreSubcomponentNames.base, newComponentDropdownStructure);
+    JSONUtils.addObjects(parentComponentDropdownStructure, activeBaseComponent.coreSubcomponentRefs.base.name, newComponentDropdownStructure);
   }
 
   private static addNewSubcomponentToBase(parentComponent: WorkshopComponent, layer: Layer): void {
@@ -74,19 +74,18 @@ export class AddNewLayerComponent extends AddNewComponentShared {
   }
 
   protected static addNewComponentToComponentPreview(parentComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
-    const { base: newComponentBaseName } = newComponent.coreSubcomponentNames;
-    const layerSubcomponent = newComponent.subcomponents[newComponentBaseName];
-    const layer: Layer = AddNewLayerComponent.createEmptyLayer(newComponentBaseName, layerSubcomponent);
+    const baseName = newComponent.coreSubcomponentRefs.base.name;
+    const layerSubcomponent = newComponent.subcomponents[baseName];
+    const layer: Layer = AddNewLayerComponent.createEmptyLayer(baseName, layerSubcomponent);
     AddNewLayerComponent.copySiblingSubcomponentCustomProperties(parentComponent, layer);
     AddNewLayerComponent.addNewSubcomponentToBase(parentComponent, layer);
   }
 
   protected static createNewComponent(componentGenerator: ComponentGenerator, activeBaseComponent: WorkshopComponent, baseName?: string,
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
-    const subcomponents = AddNewComponentShared.createNewComponentSubcomponents(componentGenerator, activeBaseComponent, baseName);
-    const { coreSubcomponentNames } = subcomponents[baseName].nestedComponent.ref;
-    if (overwritePropertiesFunc) overwritePropertiesFunc(subcomponents, coreSubcomponentNames);
-    return subcomponents[baseName].nestedComponent.ref;
+    const newComponent = AddNewComponentShared.createNewComponentViaGenerator(componentGenerator, activeBaseComponent, baseName);
+    if (overwritePropertiesFunc) overwritePropertiesFunc(newComponent.coreSubcomponentRefs);
+    return newComponent;
   }
 
   public static add(parentComponent: WorkshopComponent, componentStyle: COMPONENT_STYLES, isEditable: boolean,
@@ -101,7 +100,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(parentComponent, activeBaseComponent, newComponent);
     AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent, newComponent, isEditable);
     AddNewLayerComponent.addNewNestedComponentsOptions(activeBaseComponent, newComponent);
-    IncrementNestedComponentCount.increment(activeBaseComponent, layerName, activeBaseComponent.coreSubcomponentNames.base);
+    IncrementNestedComponentCount.increment(activeBaseComponent, layerName, activeBaseComponent.coreSubcomponentRefs.base.name);
     return newComponent;
   }
 }

@@ -5,14 +5,14 @@ import JSONUtils from '../../../utils/generic/jsonUtils';
 export class InSync {
   
   private static dereferenceCopiedComponentCustomProperties(activeComponent: WorkshopComponent, baseSubcomponent: SubcomponentProperties): void {
-    const { subcomponents, referenceSharingExecutables, coreSubcomponentNames } = baseSubcomponent.nestedComponent.ref;
+    const { subcomponents, referenceSharingExecutables, coreSubcomponentRefs } = baseSubcomponent.nestedComponent.ref;
     Object.keys(subcomponents).forEach((subcomponentName: string) => {
       const nestedComponent = activeComponent.subcomponents[subcomponentName];
       nestedComponent.customCss = JSONUtils.deepCopy(nestedComponent.customCss);
       nestedComponent.customFeatures = JSONUtils.deepCopy(nestedComponent.customFeatures);
     });
     referenceSharingExecutables.forEach((executable: ReferenceSharingExecutable) => {
-      executable(activeComponent.subcomponents, coreSubcomponentNames);
+      executable(coreSubcomponentRefs);
     });
   }
 

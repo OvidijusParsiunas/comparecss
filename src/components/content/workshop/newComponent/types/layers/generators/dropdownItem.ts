@@ -3,9 +3,9 @@ import { UpdateGenericComponentDropdownOptionNames } from '../../../../utils/com
 import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewGenericComponent';
 import { SubcomponentMouseEventCallbacks } from '../../../../../../../interfaces/subcomponentMouseEventCallbacks';
 import { MultiBaseComponentUtils } from '../../../../utils/multiBaseComponent/multiBaseComponentUtils';
-import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
 import { LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SelectDropdownUtils } from '../../dropdowns/selectDropdown/selectDropdownUtils';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -27,7 +27,7 @@ export class DropdownItemLayer extends ComponentBuilder {
     const textComponent = AddNewGenericComponent.add(parentComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
       layerComponent.coreSubcomponentRefs.base.name,
       [DropdownItemLayer.overwriteTextProperties.bind({parentComponent, activeBaseComponent} as OverwriteTextPropertiesBaseComponents)]);
-    layerComponent.componentPreviewStructure.baseSubcomponentProperties.nameOfAnotherSubcomponetToTrigger = textComponent.coreSubcomponentRefs.base.name;
+    layerComponent.coreSubcomponentRefs.base.nameOfAnotherSubcomponetToTrigger = textComponent.coreSubcomponentRefs.base.name;
     layerComponent.nestedComponentsLockedToLayer.list.push(textComponent.coreSubcomponentRefs.base.name);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(parentComponent,
       activeBaseComponent.componentPreviewStructure.layers[activeBaseComponent.componentPreviewStructure.layers.length - 1]);
@@ -90,24 +90,24 @@ export class DropdownItemLayer extends ComponentBuilder {
     };
   }
 
-  public static overwriteTextProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
+  public static overwriteTextProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
     const { parentComponent, activeBaseComponent } = this as unknown as OverwriteTextPropertiesBaseComponents;
     const { layers: activeBaseComponentLayers } = activeBaseComponent.componentPreviewStructure;
     if (activeBaseComponentLayers.length > 1) {
       const siblingDropdownItem = activeBaseComponentLayers[activeBaseComponentLayers.length - 2];
       const nestedTextComponentName = siblingDropdownItem.subcomponentProperties.nestedComponent.ref.nestedComponentsLockedToLayer.list[0];
-      subcomponents[coreSubcomponentNames.base].customCss = parentComponent.subcomponents[nestedTextComponentName].customCss;
-      subcomponents[coreSubcomponentNames.base].defaultCss = parentComponent.subcomponents[nestedTextComponentName].defaultCss;
-      subcomponents[coreSubcomponentNames.base].customFeatures = parentComponent.subcomponents[nestedTextComponentName].customFeatures;
-      subcomponents[coreSubcomponentNames.base].defaultCustomFeatures = parentComponent.subcomponents[nestedTextComponentName].defaultCustomFeatures;
+      coreSubcomponentRefs.base.customCss = parentComponent.subcomponents[nestedTextComponentName].customCss;
+      coreSubcomponentRefs.base.defaultCss = parentComponent.subcomponents[nestedTextComponentName].defaultCss;
+      coreSubcomponentRefs.base.customFeatures = parentComponent.subcomponents[nestedTextComponentName].customFeatures;
+      coreSubcomponentRefs.base.defaultCustomFeatures = parentComponent.subcomponents[nestedTextComponentName].defaultCustomFeatures;
     } else {
-      subcomponents[coreSubcomponentNames.base].customCss = DropdownItemLayer.createDefaultTextCustomCss();
-      subcomponents[coreSubcomponentNames.base].defaultCss = DropdownItemLayer.createDefaultTextCustomCss();
-      subcomponents[coreSubcomponentNames.base].customFeatures = DropdownItemLayer.createDefaultTextCustomFeatures();
-      subcomponents[coreSubcomponentNames.base].defaultCustomFeatures = DropdownItemLayer.createDefaultTextCustomFeatures();
+      coreSubcomponentRefs.base.customCss = DropdownItemLayer.createDefaultTextCustomCss();
+      coreSubcomponentRefs.base.defaultCss = DropdownItemLayer.createDefaultTextCustomCss();
+      coreSubcomponentRefs.base.customFeatures = DropdownItemLayer.createDefaultTextCustomFeatures();
+      coreSubcomponentRefs.base.defaultCustomFeatures = DropdownItemLayer.createDefaultTextCustomFeatures();
     }
-    subcomponents[coreSubcomponentNames.base].customStaticFeatures = DropdownItemLayer.createDefaultTextCustomStaticFeatures('Dropdown item');
-    subcomponents[coreSubcomponentNames.base].defaultCustomStaticFeatures = DropdownItemLayer.createDefaultTextCustomStaticFeatures('Dropdown item');
+    coreSubcomponentRefs.base.customStaticFeatures = DropdownItemLayer.createDefaultTextCustomStaticFeatures('Dropdown item');
+    coreSubcomponentRefs.base.defaultCustomStaticFeatures = DropdownItemLayer.createDefaultTextCustomStaticFeatures('Dropdown item');
   }
 
   public static setStyle(component: WorkshopComponent): void {
@@ -162,7 +162,7 @@ export class DropdownItemLayer extends ComponentBuilder {
   }
 
   public static overwriteBase(component: WorkshopComponent): void {
-    const baseSubcomponent = component.subcomponents[component.coreSubcomponentNames.base];
+    const baseSubcomponent = component.coreSubcomponentRefs.base;
     DropdownItemLayer.overwriteCustomCss(baseSubcomponent);
     baseSubcomponent.isRemovable = true;
   }

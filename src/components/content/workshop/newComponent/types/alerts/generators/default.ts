@@ -2,31 +2,31 @@ import { UpdateGenericComponentDropdownOptionNames } from '../../../../utils/com
 import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewGenericComponent';
 import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
 import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
-import { Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { CoreSubcomponentNames } from '../../../../../../../interfaces/customSubcomponentNames';
+import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { alertBase } from './base';
 
 class DefaultAlert extends ComponentBuilder {
 
-  private static overwriteCloseButtonProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
-    subcomponents[coreSubcomponentNames.base].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    subcomponents[coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    subcomponents[coreSubcomponentNames.base].isRemovable = true;
+  private static overwriteCloseButtonProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
+    coreSubcomponentRefs.base.customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    coreSubcomponentRefs.base.defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    coreSubcomponentRefs.base.isRemovable = true;
   }
 
-  private static overwriteTextProperties(subcomponents: Subcomponents, coreSubcomponentNames: CoreSubcomponentNames): void {
-    subcomponents[coreSubcomponentNames.base].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER);
-    subcomponents[coreSubcomponentNames.base].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER);
-    subcomponents[coreSubcomponentNames.base].isRemovable = true;
+  private static overwriteTextProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
+    coreSubcomponentRefs.base.customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER);
+    coreSubcomponentRefs.base.defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER);
+    coreSubcomponentRefs.base.isRemovable = true;
   }
 
   public static addComponentsToBase(alertComponent: WorkshopComponent): void {
     const layerComponent = AddNewLayerComponent.add(alertComponent, LAYER_STYLES.PLAIN, false);
-    const layerComponentBaseName = layerComponent.coreSubcomponentNames.base;
+    const layerComponentBaseName = layerComponent.coreSubcomponentRefs.base.name;
     AddNewGenericComponent.add(alertComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layerComponentBaseName, [DefaultAlert.overwriteTextProperties]);
     AddNewGenericComponent.add(alertComponent, COMPONENT_TYPES.BUTTON,

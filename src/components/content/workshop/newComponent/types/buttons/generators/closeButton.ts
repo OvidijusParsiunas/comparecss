@@ -5,7 +5,6 @@ import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValu
 import { AddComponentsToButtonBaseUtils } from '../utils/addComponentsToButtonBaseUtils';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../../../../consts/closeButtonXText';
-import ReferenceSharingUtils from '../utils/referenceSharingUtils';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { buttonBase } from './base';
 
@@ -13,13 +12,6 @@ class CloseButton extends ComponentBuilder {
 
   public static setStyle(component: WorkshopComponent): void {
     component.style = BUTTON_STYLES.CLOSE;
-  }
-
-  public static addReferences(component: WorkshopComponent): void {
-    const { coreSubcomponentNames } = component;
-    ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(component.subcomponents, coreSubcomponentNames);
-    ReferenceSharingUtils.appendBaseSubcomponentRefToAllChildSubcomponents(component.subcomponents, coreSubcomponentNames);
-    component.referenceSharingExecutables = [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents];
   }
 
   private static createDefaultBaseCss(): CustomCss {
@@ -55,19 +47,23 @@ class CloseButton extends ComponentBuilder {
     subcomponent.defaultCss = CloseButton.createDefaultBaseCss();
   }
 
-  public static overwriteBase(component: WorkshopComponent): void {
+  private static overwriteBase(component: WorkshopComponent): void {
     const baseSubcomponent = component.coreSubcomponentRefs.base;
     CloseButton.overwriteCustomCss(baseSubcomponent);
+  }
+
+  public static overwrite(component: WorkshopComponent): void {
+    CloseButton.overwriteBase(component);
+    ComponentBuilder.populateReferences(component);
+    CloseButton.setStyle(component);
   }
 }
 
 export const closeButton: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const buttonComponent = buttonBase.createNewComponent(baseName);
-    CloseButton.overwriteBase(buttonComponent);
+    CloseButton.overwrite(buttonComponent);
     AddComponentsToButtonBaseUtils.add(buttonComponent, TEXT_STYLES.CLOSE_BUTTON, CLOSE_BUTTON_X_TEXT);
-    CloseButton.addReferences(buttonComponent);
-    CloseButton.setStyle(buttonComponent);
     return buttonComponent;
   }
 };
