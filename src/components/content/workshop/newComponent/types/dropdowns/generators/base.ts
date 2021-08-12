@@ -4,10 +4,11 @@ import { AddNewLayerComponent } from '../../../../utils/componentManipulation/ad
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
+import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
-import { defaultButton } from '../../buttons/generators/default';
+import { buttonWithIcon } from '../../buttons/generators/buttonWithIcon';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { dropdownMenuBase } from './menu/base';
 
@@ -19,13 +20,13 @@ class DropdownBase extends ComponentBuilder {
     defaultCustomFeatures.autoSize = dropdownMenuBaseComponent.coreSubcomponentRefs.base.defaultCustomFeatures.autoSize;
   }
 
-  public static overwriteCustomCss(dropdownBaseComponent: WorkshopComponent, dropdownMenuBaseComponent: WorkshopComponent): void {
-    const baseSubcomponent = dropdownBaseComponent.coreSubcomponentRefs.base;
-    baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = '125px';
-    baseSubcomponent.defaultCss[CSS_PSEUDO_CLASSES.DEFAULT].width = '125px';
+  public static overwriteCustomCss(buttonComponent: WorkshopComponent, dropdownMenuBaseComponent: WorkshopComponent): void {
+    const baseSubcomponent = buttonComponent.coreSubcomponentRefs.base;
+    baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = '155px';
+    baseSubcomponent.defaultCss[CSS_PSEUDO_CLASSES.DEFAULT].width = '155px';
     baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = '4px';
     baseSubcomponent.defaultCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = '4px';
-    const textSubcomponent = dropdownBaseComponent.coreSubcomponentRefs.text;
+    const textSubcomponent = buttonComponent.coreSubcomponentRefs.text;
     textSubcomponent.customStaticFeatures.subcomponentText.text = 'Dropdown button';
     textSubcomponent.defaultCustomStaticFeatures.subcomponentText.text = 'Dropdown button';
     textSubcomponent.customStaticFeatures.selectDropdown = dropdownMenuBaseComponent.coreSubcomponentRefs.base.customStaticFeatures.selectDropdown;
@@ -46,7 +47,8 @@ class DropdownBase extends ComponentBuilder {
 export const dropdownBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     uniqueSubcomponentIdState.resetUniqueId();
-    const buttonComponent = defaultButton.createNewComponent(baseName);
+    // will pronbably need to be a style
+    const buttonComponent = buttonWithIcon.createNewComponent(baseName);
     buttonComponent.type = COMPONENT_TYPES.DROPDOWN;
     const dropdownMenuBaseComponent = dropdownMenuBase.createNewComponent('Menu');
     DropdownBase.setButtonAutoSize(buttonComponent, dropdownMenuBaseComponent);

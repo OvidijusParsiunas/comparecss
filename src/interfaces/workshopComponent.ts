@@ -21,6 +21,7 @@ import { TempCustomCss } from './tempCustomCss';
 import { CloseTriggers } from './closeTriggers';
 import { Animations } from './animations';
 import { AutoSize } from './autoSize';
+import { Icon } from './icon';
 
 export interface ChildCss {
   elementTag: string;
@@ -98,6 +99,7 @@ export interface CustomFeatures {
   lastSelectedCssValues?: WorkshopComponentCss;
   dropdownMenuPosition?: DropdownMenuPosition;
   mouseEventCallbacks?: SubcomponentMouseEventCallbacks;
+  icon?: Icon;
 }
 
 export interface Image {

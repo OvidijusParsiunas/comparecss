@@ -8,4 +8,5 @@ export enum COMPONENT_TYPES {
   LAYER = 'Layer',
   DROPDOWN = 'Dropdown',
   DROPDOWN_MENU = 'Menu',
+  ICON = 'Icon',
 }

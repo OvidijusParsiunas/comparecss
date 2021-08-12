@@ -1,6 +1,6 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, DropdownMenuPosition, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { UpdateDropdownOptionNamesShared } from '../../../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
-import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/autoDropdownMenuWidthUtils';
+import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
 import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { NestedDropdownStructure } from '../../../../../../../../interfaces/nestedDropdownStructure';
 import { DROPDOWN_MENU_POSITIONS } from '../../../../../../../../consts/dropdownMenuPositions.enum';

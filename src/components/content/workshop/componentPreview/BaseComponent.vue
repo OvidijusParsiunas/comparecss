@@ -12,6 +12,9 @@
       @mouseup="activateSubcomponentMouseEvent('subcomponentMouseUp')"
       @click="activateSubcomponentMouseEvent('subcomponentClick')">
         {{getSubcomponentText(component)}}
+        <font-awesome-icon v-if="isIcon()"
+          :style="{ color: 'white', height: '24px', width: '14px' }"
+          :icon="getIconName()"/>
         <layers
           :classes="[...getJsClasses()]"
           :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
@@ -131,6 +134,12 @@ export default {
       };
       const { position } = this.component.auxiliaryComponent.coreSubcomponentRefs.base.customFeatures.dropdownMenuPosition;
       return { position: 'absolute', zIndex: 1, ...positions[position] };
+    },
+    isIcon(): boolean {
+      return !!(this.component as WorkshopComponent).coreSubcomponentRefs.base.customFeatures?.icon;
+    },
+    getIconName(): string {
+      return (this.component as WorkshopComponent).coreSubcomponentRefs.base.customFeatures.icon.name;
     }
   },
   components: {
