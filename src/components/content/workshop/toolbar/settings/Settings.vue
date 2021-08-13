@@ -192,12 +192,12 @@ import { RANGE_SETTING_MARKER } from '../../../../../consts/elementClassMarkers'
 import { UnsetColorButton } from './utils/colorPickerUtils/unsetColorButton';
 import { ColorPickerUtils } from './utils/colorPickerUtils/colorPickerUtils';
 import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
+import CheckboxUtils, { CustomTriggerFunc } from './utils/checkboxUtils';
 import useActionsDropdown from './compositionAPI/useActionsDropdown';
 import { InSync } from '../options/copyNestedComponent/inSync';
 import dropdown from '../options/dropdown/Dropdown.vue';
 import RangeUtils from './utils/rangeUtils/rangeUtils';
 import SettingsUtils from './utils/settingsUtils';
-import CheckboxUtils from './utils/checkboxUtils';
 import SharedUtils from './utils/sharedUtils';
 import ImageUtils from './utils/imageUtils';
 
@@ -258,6 +258,11 @@ export default {
             } else if (setting.type === SETTINGS_TYPES.ACTIONS_DROPDOWN) {
               const objectContainingActiveOption = this.getObjectContainingActiveOption(setting.spec, this.subcomponentProperties);
               if (objectContainingActiveOption) { this.actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.name] = objectContainingActiveOption; }
+              // WORK1
+              if (setting.spec.customFunctionKeys && !newSettings) {
+                const customFunction = SharedUtils.getCustomFeatureValue(setting.spec.customFunctionKeys, this.subcomponentProperties[setting.spec.customFunctionKeys[0]]) as CustomTriggerFunc;
+                customFunction(this.subcomponentProperties, objectContainingActiveOption[setting.spec.activeOptionPropertyKeyName]);
+              }
             } else if (setting.type === SETTINGS_TYPES.CHECKBOX) {
               CheckboxUtils.updateSettings(setting, this.subcomponentProperties);
             } else if (setting.type === SETTINGS_TYPES.UPLOAD_FILE) {

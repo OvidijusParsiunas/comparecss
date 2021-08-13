@@ -2,7 +2,7 @@ import { SubcomponentProperties } from '../../../../../../interfaces/workshopCom
 import { UpdateOtherRangesUtils } from './rangeUtils/updateOtherRangesUtils';
 import SharedUtils from './sharedUtils';
 
-type CustomTriggerFunc = (subcomponentProperties: SubcomponentProperties) => void
+export type CustomTriggerFunc = (subcomponentProperties: SubcomponentProperties, newValue?: string) => void
 
 export default class CheckboxUtils {
 

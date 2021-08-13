@@ -4,7 +4,7 @@ import { LAYER_SECTION_DIVISOR } from '../../../../../../consts/layerSectionDivi
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 
 // ATTENTION!!!!!!!!!!!!!!!!!!!!!!
-// This option list has been retired and only serves as a demonstarion for the following nested component options:
+// This option has been retired and only serves as a demonstarion for the following nested component options:
 // Example of vertical offset and horizontal offset
 // Example of interconnected settings via updateSettingSpecViaOtherCssProperties
 function getOtherSubcomponentCssPropertyDetails(): SubcomponentCssPropertyDetails {

@@ -33,6 +33,7 @@ import color from './color';
 import size from './size';
 import font from './font';
 import text from './text';
+import icon from './icon';
 
 type OptionToSettings = {
   [key in WORKSHOP_TOOLBAR_OPTION_TYPES]?: any;
@@ -73,4 +74,5 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.FADE_ANIMATION]: fadeAnimation,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SELECT_DROPDOWN]: selectDropdown,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_BUTTON_TEXT]: dropdownButtonText,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.ICON]: icon,
 };

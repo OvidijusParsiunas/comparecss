@@ -1,5 +1,6 @@
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { DROPDOWN_ARROW_ICON_TYPES } from '../../../../../../../consts/dropdownArrowIcons';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -8,7 +9,7 @@ import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum
 import { inheritedTextCss } from '../inheritedCss/inheritedTextCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
-class IconBase extends ComponentBuilder {
+export class IconBase extends ComponentBuilder {
 
   private static createTextCss(): CustomCss {
     return {
@@ -42,11 +43,19 @@ class IconBase extends ComponentBuilder {
     };
   }
 
+  public static changeIconFunc(subcomponentProperties: SubcomponentProperties, newValue: string): void {
+    subcomponentProperties.customFeatures.icon.isComponentDisplayed = false;
+    subcomponentProperties.customFeatures.icon.name = newValue;
+    setTimeout(() => {
+      subcomponentProperties.customFeatures.icon.isComponentDisplayed = true;
+    });
+  }
+
   private static createDefaultTextCustomFeatures(): CustomFeatures {
     return {
       autoSize: ComponentBuilder.createAutoSize(true, false),
       alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
-      icon: { name: 'caret-down' },
+      icon: { name: DROPDOWN_ARROW_ICON_TYPES.CARET, isComponentDisplayed: true, changeIconFunc: IconBase.changeIconFunc },
     };
   }
 

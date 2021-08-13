@@ -1,6 +1,6 @@
 <template>
   <div>
-    <component :is="getTag()" ref="componentPreview"
+    <component :is="getTag()" v-if="isComponentDisplayed()" ref="componentPreview"
       :id="getBaseId('subcomponentId')"
       :icon="getIconName()"
       :style="getStyleProperties(component)"
@@ -47,6 +47,7 @@ import { SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS } from '../../../../con
 import useSubcomponentPreviewSelectModeEventHandlers from './compositionAPI/useSubcomponentPreviewSelectModeEventHandlers';
 import { UseSubcomponentPreviewEventHandlers } from '../../../../interfaces/useSubcomponentPreviewEventHandlers';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
+import { DROPDOWN_ARROW_ICON_TYPES_TO_FONT_AWESOME_NAMES } from '../../../../consts/dropdownArrowIcons';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
 import { UseBaseComponentGeneric } from '../../../../interfaces/useBasicComponentGeneric';
 import { DROPDOWN_MENU_POSITIONS } from '../../../../consts/dropdownMenuPositions.enum';
@@ -141,7 +142,15 @@ export default {
       return !!(this.component as WorkshopComponent).coreSubcomponentRefs.base.customFeatures?.icon;
     },
     getIconName(): string {
-      return (this.component as WorkshopComponent).coreSubcomponentRefs.base.customFeatures?.icon?.name;
+      const iconName = (this.component as WorkshopComponent).coreSubcomponentRefs.base.customFeatures?.icon?.name;
+      return iconName ? DROPDOWN_ARROW_ICON_TYPES_TO_FONT_AWESOME_NAMES[iconName] : null;
+    },
+    isComponentDisplayed(): boolean {
+      const { customFeatures } = (this.component as WorkshopComponent).coreSubcomponentRefs.base;
+      if (customFeatures?.icon) {
+        return customFeatures.icon.isComponentDisplayed;
+      }
+      return true;
     }
   },
   components: {

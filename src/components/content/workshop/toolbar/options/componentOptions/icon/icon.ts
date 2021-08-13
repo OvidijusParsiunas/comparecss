@@ -8,6 +8,10 @@ type IconOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT | CSS_PSEUDO_CLASSES.HOVER | 
 export const iconOptions: SubcomponentOptions<IconOptionsModes> = {
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
     {
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ICON,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.ICON,
+    },
+    {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SIZE,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH_SIZE_NAME,
     },

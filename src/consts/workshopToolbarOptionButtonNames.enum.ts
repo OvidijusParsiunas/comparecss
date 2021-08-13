@@ -14,4 +14,5 @@ export enum WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES {
   ACTIONS = 'Actions',
   IMAGE = 'Image',
   SELECT = 'Select',
+  ICON = 'Icon'
 }

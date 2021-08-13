@@ -21,8 +21,9 @@ function generateMouseEventCallbacks(isOpenAnimation: boolean): ActionsDropdownM
       event.settingsComponent.$emit('stop-animation-preview');
     },
     mouseClickOptionCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
-      if (event.isCustomFeatureResetTriggered) return;
-      event.settingsComponent.$emit('stop-animation-preview');
+      if (!event.isCustomFeatureResetTriggered) {
+        event.settingsComponent.$emit('stop-animation-preview');
+      }
     },
   };
 }
