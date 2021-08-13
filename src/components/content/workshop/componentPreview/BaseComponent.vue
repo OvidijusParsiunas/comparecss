@@ -1,7 +1,8 @@
 <template>
   <div>
-    <div ref="componentPreview"
+    <component :is="getTag()" ref="componentPreview"
       :id="getBaseId('subcomponentId')"
+      :icon="getIconName()"
       :style="getStyleProperties(component)"
       class="parent-component"
       :class="[COMPONENT_PREVIEW_MARKER, (isNestedComponent ? 'nested-component' : STATIC_POSITION_CLASS),
@@ -12,16 +13,13 @@
       @mouseup="activateSubcomponentMouseEvent('subcomponentMouseUp')"
       @click="activateSubcomponentMouseEvent('subcomponentClick')">
         {{getSubcomponentText(component)}}
-        <font-awesome-icon v-if="isIcon()"
-          :style="{ color: 'white', height: '24px', width: '14px' }"
-          :icon="getIconName()"/>
         <layers
           :classes="[...getJsClasses()]"
           :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
           :mouseEvents="mouseEvents"
           :layers="component.componentPreviewStructure.layers"
         />
-    </div>
+    </component>
     <div ref="componentPreviewOverlay"
       :id="getBaseId('overlayId')"
       style="display: none"
@@ -95,6 +93,7 @@ export default {
       if (!this.isNestedComponent) subcomponentCss.height = this.component.coreBaseComponent ? 'unset' : '100% !important';
       if (this.component.coreSubcomponentRefs.base.isTemporaryAddPreview) subcomponentCss.display = 'block'; 
       if (!this.component.coreBaseComponent && !this.isNestedComponent) subcomponentCss.marginTop = '0px';
+      if (this.isIcon()) subcomponentCss.height = subcomponentCss.width;
       return subcomponentCss;
     },
     getOverlayClasses(): string[] {
@@ -135,11 +134,14 @@ export default {
       const { position } = this.component.auxiliaryComponent.coreSubcomponentRefs.base.customFeatures.dropdownMenuPosition;
       return { position: 'absolute', zIndex: 1, ...positions[position] };
     },
+    getTag(): string {
+      return this.isIcon() ? 'font-awesome-icon' : 'div';
+    },
     isIcon(): boolean {
       return !!(this.component as WorkshopComponent).coreSubcomponentRefs.base.customFeatures?.icon;
     },
     getIconName(): string {
-      return (this.component as WorkshopComponent).coreSubcomponentRefs.base.customFeatures.icon.name;
+      return (this.component as WorkshopComponent).coreSubcomponentRefs.base.customFeatures?.icon?.name;
     }
   },
   components: {

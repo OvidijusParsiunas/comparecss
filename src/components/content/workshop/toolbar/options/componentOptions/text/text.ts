@@ -17,7 +17,7 @@ export const textOptions: SubcomponentOptions<TextOptionsModes> = {
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.COLOR,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_COLOR,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.COLOR,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.PADDING,

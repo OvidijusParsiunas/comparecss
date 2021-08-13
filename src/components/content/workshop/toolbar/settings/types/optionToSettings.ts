@@ -4,6 +4,7 @@ import nestedComponentPosition from './nestedComponentPosition';
 import backgroundColorImage from './backgroundColorImage';
 import dropdownMenuPosition from './dropdownPosition';
 import dropdownButtonText from './dropdownButtonText';
+import sizeWidthSizeName from './sizeWidthSizeName';
 import buttonAnimations from './buttonAnimations';
 import modalAnimations from './modalAnimations';
 import imageAnimations from './imageAnimations';
@@ -22,13 +23,13 @@ import modalActions from './modalActions';
 import sizeHeight from './sizeHeight';
 import borderTop from './borderTop';
 import sizeWidth from './sizeWidth';
-import textColor from './textColor';
 import backdrop from './backdrop';
 import textSize from './textSize';
 import padding from './padding';
 import border from './border';
 import shadow from './shadow';
 import margin from './margin';
+import color from './color';
 import size from './size';
 import font from './font';
 import text from './text';
@@ -47,12 +48,13 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE]: size,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH]: sizeWidth,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH_AUTO]: sizeWidthAuto,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH_SIZE_NAME]: sizeWidthSizeName,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_HEIGHT]: sizeHeight,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING]: padding,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN]: margin,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT]: text,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_FONT]: font,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_COLOR]: textColor,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.COLOR]: color,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_COLOR]: backgroundColor,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_IMAGE]: backgroundImage,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_COLOR_IMAGE]: backgroundColorImage,

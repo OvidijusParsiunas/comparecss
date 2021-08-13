@@ -14,11 +14,11 @@ class IconBase extends ComponentBuilder {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
         top: '50%',
-        width: 'max-content',
+        width: '10px',
         fontWeight: '400',
         fontFamily: '"Poppins", sans-serif',
         fontSize: '16px',
-        color: '#004085',
+        color: '#ffffff',
         textAlign: 'left',
         backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
         paddingTop: '0px',
@@ -29,8 +29,8 @@ class IconBase extends ComponentBuilder {
         marginRight: '0px',
         marginTop: '0px',
         marginBottom: '0px',
-        height: '',
-        borderWidth: '0',
+        height: '80px',
+        borderWidth: '0px',
         borderColor: '#1779ba',
         borderStyle: 'solid',
         borderRightWidth: '0px',
@@ -46,7 +46,7 @@ class IconBase extends ComponentBuilder {
     return {
       autoSize: ComponentBuilder.createAutoSize(true, false),
       alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
-      icon: { name: 'sync-alt' },
+      icon: { name: 'caret-down' },
     };
   }
 

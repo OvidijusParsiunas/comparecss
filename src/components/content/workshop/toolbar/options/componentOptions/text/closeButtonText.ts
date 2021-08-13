@@ -13,7 +13,7 @@ export const closeButtonTextOptions: SubcomponentOptions<TextWithNoBackgroundOpt
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.COLOR,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_COLOR,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.COLOR,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.PADDING,
@@ -27,13 +27,13 @@ export const closeButtonTextOptions: SubcomponentOptions<TextWithNoBackgroundOpt
   [CSS_PSEUDO_CLASSES.HOVER]: [
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.COLOR,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_COLOR,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.COLOR,
     },
   ],
   [CSS_PSEUDO_CLASSES.CLICK]: [
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.COLOR,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_COLOR,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.COLOR,
     },
   ],
 };

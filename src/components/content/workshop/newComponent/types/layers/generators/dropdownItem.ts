@@ -58,7 +58,7 @@ export class DropdownItemLayer extends ComponentBuilder {
         marginTop: '0px',
         marginBottom: '0px',
         height: '',
-        borderWidth: '0',
+        borderWidth: '0px',
         borderColor: '#1779ba',
         borderStyle: 'solid',
         borderRightWidth: '0px',

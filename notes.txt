@@ -7,6 +7,7 @@ dropdown will probably need to have its own base name when nested
 animation - open on hover, slide in/ fade in
 button width should maybe be auto
 copy highlights dropdown card
+fix button sections, button events, custom size
 
 overflow
 try with button tags

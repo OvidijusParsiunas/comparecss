@@ -7,6 +7,7 @@ import { dropdownItemOptions } from '../layer/dropdownItem';
 import { dropdownButtonTextOptions } from './buttonText';
 import { menuItemTextOptions } from './menuItemText';
 import { buttonTextOptions } from '../button/text';
+import { iconOptions } from '../icon/icon';
 import { menuOptions } from './menu';
 
 export class DropdownOptions {
@@ -15,6 +16,7 @@ export class DropdownOptions {
     [SUBCOMPONENT_TYPES.BUTTON]: nestedButtonOptions as Options,
     [SUBCOMPONENT_TYPES.DROPDOWN_MENU]: menuOptions as Options,
     [SUBCOMPONENT_TYPES.LAYER]: dropdownItemOptions as Options,
+    [SUBCOMPONENT_TYPES.ICON]: iconOptions as Options,
   };
 
   private static getTextOptions(component: WorkshopComponent): Options {

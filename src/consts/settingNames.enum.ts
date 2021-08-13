@@ -8,4 +8,5 @@ export enum SETTING_NAMES {
   HEIGHT = 'Height',
   FADE = 'Fade',
   Y_OFFSET = 'Y-Offset',
+  SIZE = 'Size',
 }

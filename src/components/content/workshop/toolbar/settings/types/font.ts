@@ -1,5 +1,6 @@
 import { UpdateDropdownOptionNamesShared } from '../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
+import { SETTING_NAMES } from '../../../../../../consts/settingNames.enum';
 
 // create an optional interface
 export default {
@@ -7,7 +8,7 @@ export default {
     {
       type: SETTINGS_TYPES.RANGE,
       spec: {
-        name: 'Size',
+        name: SETTING_NAMES.SIZE,
         default: 0,
         scale: [0, 100],
         smoothingDivisible: 4,
