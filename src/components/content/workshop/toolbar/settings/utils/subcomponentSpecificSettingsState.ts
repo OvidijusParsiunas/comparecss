@@ -25,17 +25,21 @@ export default class SubcomponentSpecificSettingsState {
 
   private static setNewSubcomponentSpecificSettings(optionType: WORKSHOP_TOOLBAR_OPTION_TYPES,
       subcomponentSpecificSettings: SubcomponentSpecificSettings, settingsOptions: any): void {
-    if (subcomponentSpecificSettings && subcomponentSpecificSettings[optionType]) {
+    if (subcomponentSpecificSettings?.[optionType]) {
       settingsOptions.forEach((setting) => {
         const settingName = setting.spec.name;
         if (subcomponentSpecificSettings[optionType][settingName]) {
-          const { scale, updateOtherCssProperties } = subcomponentSpecificSettings[optionType][settingName];
+          const { scale, updateOtherCssProperties, actionsDropdownMouseEvents } = subcomponentSpecificSettings[optionType][settingName];
           if (scale) {
             const overwrittenSettingDefaultValues: OverwrittenSettingDefaultValues = { spec: setting.spec, originalValues: { name: 'scale', value: setting.spec.scale }};
             this.overwrittenSettingsDefaultValues.push(overwrittenSettingDefaultValues);
             setting.spec.scale = scale;
           }
           if (updateOtherCssProperties) setting.spec.updateOtherCssProperties = updateOtherCssProperties;
+          // WORK1
+          if (actionsDropdownMouseEvents) {
+            Object.assign(setting.spec, actionsDropdownMouseEvents);
+          }
         }
       });
     }

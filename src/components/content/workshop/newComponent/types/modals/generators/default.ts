@@ -13,6 +13,7 @@ import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValu
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
+import { ModalBaseSpecificSettings } from '../settings/modalBaseSpecificSettings';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { modalBase } from './base';
 
@@ -128,6 +129,7 @@ export const defaultModal: ComponentGenerator = {
     const modalComponent = modalBase.createNewComponent();
     DefaultModal.overwriteBaseNewNestedComponentsOptions(modalComponent);
     DefaultModal.addComponentsToBase(modalComponent);
+    ModalBaseSpecificSettings.set(modalComponent);
     return modalComponent;
   },
 }

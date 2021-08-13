@@ -32,6 +32,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Style',
+        // WORK1 - should be enum
         options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure(['none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset']),
         default: 'none',
         cssProperty: 'borderTopStyle',

@@ -6,6 +6,23 @@ import { SETTING_NAMES } from '../../../../../../../consts/settingNames.enum';
 
 export class ButtonBaseSpecificSettings {
 
+  private static readonly MENU_BASE_SPECIFIC_COMPONENTS: SubcomponentSpecificSettings = {
+    [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE]: {
+      [SETTING_NAMES.WIDTH]: { scale: [0, 250] },
+      [SETTING_NAMES.HEIGHT]: { scale: [0, 250] },
+    },
+    [WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS]: {
+      [SETTING_NAMES.FADE]: {
+        updateOtherCssProperties: [],
+      },
+    },
+  };
+
+  private static setSubcomponentSpecificSettings(component: WorkshopComponent): void {
+    const baseSubcomponent = component.coreSubcomponentRefs.base;
+    baseSubcomponent.subcomponentSpecificSettings = ButtonBaseSpecificSettings.MENU_BASE_SPECIFIC_COMPONENTS;
+  }
+
   private static getLeftPositionProperties(subcomponentProperties: SubcomponentProperties): UpdateOtherCssProperties {
     const { customFeatures } = subcomponentProperties;
     return {
@@ -23,25 +40,6 @@ export class ButtonBaseSpecificSettings {
       dependantChildrenTypes: new Set([SUBCOMPONENT_TYPES.TEXT]),
       updateOtherCssPropertiesObjGenerator: ButtonBaseSpecificSettings.getLeftPositionProperties,
     }];
-  }
-
-  private static getButtonBaseSpecificSettings(): SubcomponentSpecificSettings {
-    return {
-      [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE]: {
-        [SETTING_NAMES.WIDTH]: { scale: [0, 250] },
-        [SETTING_NAMES.HEIGHT]: { scale: [0, 250] },
-      },
-      [WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS]: {
-        [SETTING_NAMES.FADE]: {
-          updateOtherCssProperties: [],
-        },
-      },
-    };
-  }
-
-  private static setSubcomponentSpecificSettings(component: WorkshopComponent): void {
-    const baseSubcomponent = component.coreSubcomponentRefs.base;
-    baseSubcomponent.subcomponentSpecificSettings = ButtonBaseSpecificSettings.getButtonBaseSpecificSettings();
   }
 
   public static set(component: WorkshopComponent): void {

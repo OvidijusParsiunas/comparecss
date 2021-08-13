@@ -19,8 +19,9 @@ function generateMouseEventCallbacks(isOpenAnimation: boolean): ActionsDropdownM
       event.settingsComponent.$emit('stop-animation-preview');
     },
     mouseClickOptionCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
-      if (event.isCustomFeatureResetTriggered) return;
-      event.settingsComponent.$emit('stop-animation-preview');
+      if (!event.isCustomFeatureResetTriggered) {
+        event.settingsComponent.$emit('stop-animation-preview');
+      }
     },
   };
 }
@@ -32,7 +33,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Dismiss',
-        options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([GENERAL_ANIMATION_CLOSE_TYPES.FADE_OUT]),
+        options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure(Object.values(GENERAL_ANIMATION_CLOSE_TYPES)),
         activeOptionPropertyKeyName: 'type',
         customFeatureObjectKeys: ['customFeatures', 'animations', 'display', 'close', 'type'],
         ...generateMouseEventCallbacks(false),

@@ -1,3 +1,4 @@
+import { ActionsDropdownMouseEventCallbacks } from './actionsDropdownsMouseEventCallbacks';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../consts/workshopToolbarOptionTypes.enum';
 import { SubcomponentProperties, UpdateOtherCssProperties } from './workshopComponent';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
@@ -8,6 +9,7 @@ export type SubcomponentSpecificSettings = {
     [key in SETTING_NAMES]?: {
       scale?: [number, number];
       updateOtherCssProperties?: UpdateOtherCssProperties[];
+      actionsDropdownMouseEvents?: ActionsDropdownMouseEventCallbacks;
     }
   };
 }

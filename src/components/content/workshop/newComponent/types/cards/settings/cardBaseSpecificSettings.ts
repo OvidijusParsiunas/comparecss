@@ -7,6 +7,20 @@ import { SETTING_NAMES } from '../../../../../../../consts/settingNames.enum';
 
 export class CardBaseSpecificSettings {
 
+  public static readonly CARD_BASE_SPECIFIC_COMPONENTS: SubcomponentSpecificSettings = {
+    [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH]: {
+      [SETTING_NAMES.WIDTH]: {
+        scale: [170, 700],
+        updateOtherCssProperties: [],
+      },
+    },
+  };
+
+  private static setSubcomponentSpecificSettings(component: WorkshopComponent): void {
+    const baseSubcomponent = component.coreSubcomponentRefs.base;
+    baseSubcomponent.subcomponentSpecificSettings = CardBaseSpecificSettings.CARD_BASE_SPECIFIC_COMPONENTS;
+  }
+
   private static getLeftPositionProperties(subcomponentProperties: SubcomponentProperties): UpdateOtherCssProperties {
     const { customCss, customFeatures } = subcomponentProperties;
     return {
@@ -25,22 +39,6 @@ export class CardBaseSpecificSettings {
       dependantChildrenTypes: new Set([SUBCOMPONENT_TYPES.IMAGE, SUBCOMPONENT_TYPES.BUTTON]),
       updateOtherCssPropertiesObjGenerator: CardBaseSpecificSettings.getLeftPositionProperties,
     }];
-  }
-
-  private static getCardBaseSpecificSettings(): SubcomponentSpecificSettings {
-    return {
-      [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH]: {
-        [SETTING_NAMES.WIDTH]: {
-          scale: [170, 700],
-          updateOtherCssProperties: [],
-        },
-      },
-    };
-  }
-
-  private static setSubcomponentSpecificSettings(component: WorkshopComponent): void {
-    const baseSubcomponent = component.coreSubcomponentRefs.base;
-    baseSubcomponent.subcomponentSpecificSettings = CardBaseSpecificSettings.getCardBaseSpecificSettings();
   }
 
   public static set(component: WorkshopComponent): void {

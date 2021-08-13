@@ -40,7 +40,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Align',
-        options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([ALIGNED_SECTION_TYPES.LEFT, ALIGNED_SECTION_TYPES.CENTER, ALIGNED_SECTION_TYPES.RIGHT]),
+        options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure(Object.values(ALIGNED_SECTION_TYPES)),
         activeOptionPropertyKeyName: 'section',
         customFeatureObjectKeys: ['customFeatures', 'alignedLayerSection', 'section'],
         ...generateMouseEventCallbacks(),

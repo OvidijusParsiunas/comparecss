@@ -5,32 +5,30 @@ import { SETTING_NAMES } from '../../../../../../../consts/settingNames.enum';
 
 export class MenuBaseSpecificSettings {
 
-  private static getMenuBaseSpecificSettings(): SubcomponentSpecificSettings {
-    return {
-      [WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN]: {
-        [SETTING_NAMES.LEFT]: {
-          scale: [-200, 200],
-          updateOtherCssProperties: [],
-        },
-        [SETTING_NAMES.TOP]: {
-          scale: [-200, 200],
-          updateOtherCssProperties: [],
-        },
-        [SETTING_NAMES.RIGHT]: {
-          scale: [-200, 200],
-          updateOtherCssProperties: [],
-        },
-        [SETTING_NAMES.BOTTOM]: {
-          scale: [-200, 200],
-          updateOtherCssProperties: [],
-        },
+  private static readonly MENU_BASE_SPECIFIC_COMPONENTS: SubcomponentSpecificSettings = {
+    [WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN]: {
+      [SETTING_NAMES.LEFT]: {
+        scale: [-200, 200],
+        updateOtherCssProperties: [],
       },
-    };
-  }
+      [SETTING_NAMES.TOP]: {
+        scale: [-200, 200],
+        updateOtherCssProperties: [],
+      },
+      [SETTING_NAMES.RIGHT]: {
+        scale: [-200, 200],
+        updateOtherCssProperties: [],
+      },
+      [SETTING_NAMES.BOTTOM]: {
+        scale: [-200, 200],
+        updateOtherCssProperties: [],
+      },
+    },
+  };
 
   private static setSubcomponentSpecificSettings(component: WorkshopComponent): void {
     const baseSubcomponent = component.coreSubcomponentRefs.base;
-    baseSubcomponent.subcomponentSpecificSettings = MenuBaseSpecificSettings.getMenuBaseSpecificSettings();
+    baseSubcomponent.subcomponentSpecificSettings = MenuBaseSpecificSettings.MENU_BASE_SPECIFIC_COMPONENTS;
   }
 
   public static set(component: WorkshopComponent): void {
