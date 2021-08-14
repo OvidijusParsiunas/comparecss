@@ -13,8 +13,6 @@ export class ModalBaseSpecificSettings {
       [SETTING_NAMES.ENTRANCE]: {
         actionsDropdownMouseEvents: AnimationPreview.ENTRANCE_ACTIONS_DROPDOWN_MOUSE_EVENT_CALLBACKS,
       },
-    },
-    [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_ANIMATIONS]: {
       [SETTING_NAMES.EXIT]: {
         actionsDropdownMouseEvents: AnimationPreview.EXIT_ACTIONS_DROPDOWN_MOUSE_EVENT_CALLBACKS,
       },

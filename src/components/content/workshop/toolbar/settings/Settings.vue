@@ -189,6 +189,7 @@ import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enu
 import { UseActionsDropdown } from '../../../../../interfaces/UseActionsDropdown';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { RANGE_SETTING_MARKER } from '../../../../../consts/elementClassMarkers';
+import ActionsDropdownUtils from './compositionAPI/utils/actionsDropdownUtils';
 import { UnsetColorButton } from './utils/colorPickerUtils/unsetColorButton';
 import { ColorPickerUtils } from './utils/colorPickerUtils/colorPickerUtils';
 import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
@@ -384,8 +385,7 @@ export default {
       ImageUtils.removeImage(this, spec);
     },
     openActionsDropdownMenu(hideDropdownMenuCallbackEvent: WorkshopEventCallback, spec: any): void {
-      const keys = spec.customFeatureObjectKeys;
-      this.actionsDropdownsButtonText[spec.name] = SharedUtils.getCustomFeatureValue(keys, this.subcomponentProperties[keys[0]]);
+      ActionsDropdownUtils.setConsistentButtonContent(this, spec, this.subcomponentProperties);
       this.$emit('hide-dropdown-menu-callback', hideDropdownMenuCallbackEvent);
     },
     hideActionsDropdownMenu(spec: any): void {

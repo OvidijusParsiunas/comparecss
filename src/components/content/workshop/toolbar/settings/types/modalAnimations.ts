@@ -45,7 +45,7 @@ export default {
     {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
-        name: 'Exit',
+        name: SETTING_NAMES.EXIT,
         options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure(Object.values(MODAL_ANIMATION_CLOSE_TYPES)),
         activeOptionPropertyKeyName: 'type',
         customFeatureObjectKeys: ['customFeatures', 'animations', 'display', 'close', 'type'],
