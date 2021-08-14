@@ -166,8 +166,10 @@
               </div>
             </div>
           </div>
-          <button class="reset-button" @click="changeSetting(resetSubcomponentProperties.bind(this, settings.options))">
-            &#8634;
+          <button v-if="isResetButtonDisplayed()"
+            class="reset-button"
+            @click="changeSetting(resetSubcomponentProperties.bind(this, settings.options))">
+              &#8634;
             <!-- <i :class="['fa', 'fa-history']"></i> -->
           </button>
         </div>
@@ -194,6 +196,7 @@ import { UnsetColorButton } from './utils/colorPickerUtils/unsetColorButton';
 import { ColorPickerUtils } from './utils/colorPickerUtils/colorPickerUtils';
 import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
 import CheckboxUtils, { CustomTriggerFunc } from './utils/checkboxUtils';
+import { SETTING_NAMES } from '../../../../../consts/settingNames.enum';
 import useActionsDropdown from './compositionAPI/useActionsDropdown';
 import { InSync } from '../options/copyNestedComponent/inSync';
 import dropdown from '../options/dropdown/Dropdown.vue';
@@ -395,6 +398,11 @@ export default {
     resetSubcomponentProperties(options: any): void {
       SettingsUtils.resetSubcomponentProperties(options, this.subcomponentProperties);
       this.refreshSettings();
+    },
+    isResetButtonDisplayed(): boolean {
+      const notResettableOption = this.settings.options?.find((option) => {
+        return (option.spec.name === SETTING_NAMES.ALIGN || option.spec.name === SETTING_NAMES.ORDER)});
+      return !(!!notResettableOption);
     },
     // UX - SUBCOMPONENT SELECT
     toggleSubcomponentSelectMode(): void {

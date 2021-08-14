@@ -1,7 +1,7 @@
 import { SubcomponentTypeToOptions } from '../../../../../../../interfaces/subcomponentTypeToOptions';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { Options } from '../../../../../../../interfaces/options';
-import { buttonTextOptions } from './text';
+import { buttonTextOptions } from '../text/buttonText';
 import { buttonBaseOptions } from './base';
 
 export class ButtonOptions {

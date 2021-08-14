@@ -66,7 +66,8 @@ export class AddNewGenericComponent extends AddNewComponentShared {
       newComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName, true);
   }
 
-  private static updateNewSubcomponentParentLayer(baseSubcomponent: SubcomponentProperties, parentLayer: Layer): void {
+  private static updateNewSubcomponentParentLayer(subcomponentData: SubcomponentData): void {
+    const { baseSubcomponent, parentLayer } = subcomponentData;
     baseSubcomponent.parentLayer = parentLayer;
   }
 
@@ -91,9 +92,8 @@ export class AddNewGenericComponent extends AddNewComponentShared {
 
   private static addNewComponentToDropdownStructure(parentComponent: WorkshopComponent, newComponent: WorkshopComponent,
       subcomponentData: SubcomponentData): void {
-    const { parentLayer, baseSubcomponent, subcomponentDropdownStructure, parentComponentBaseName, isParentLayerInSubcomponentsDropdown } = subcomponentData;
+    const { parentLayer, subcomponentDropdownStructure, parentComponentBaseName, isParentLayerInSubcomponentsDropdown } = subcomponentData;
     if (isParentLayerInSubcomponentsDropdown) {
-      AddNewGenericComponent.updateNewSubcomponentParentLayer(baseSubcomponent, parentLayer);
       const parentLayerDropdownName = parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[parentLayer.name];
       AddNewGenericComponent.updateComponentDropdownStructure(parentComponent, newComponent,
         subcomponentDropdownStructure[parentComponentBaseName] as NestedDropdownStructure, parentLayerDropdownName);
@@ -146,6 +146,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
       componentGenerator, activeBaseComponent, overwritePropertiesFunc);
     JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
     const subcomponentData = AddNewGenericComponent.addNewComponentToComponentPreview(parentComponent, newComponent, parentLayerName);
+    AddNewGenericComponent.updateNewSubcomponentParentLayer(subcomponentData);
     AddNewGenericComponent.addNewComponentToDropdownStructure(parentComponent, newComponent, subcomponentData);
     AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent, newComponent);
     InterconnectedSettings.update(true, activeBaseComponent, newComponent.coreSubcomponentRefs.base);

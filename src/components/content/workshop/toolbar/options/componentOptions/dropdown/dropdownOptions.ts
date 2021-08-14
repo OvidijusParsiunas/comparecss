@@ -2,18 +2,18 @@ import { SubcomponentTypeToOptions } from '../../../../../../../interfaces/subco
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { Options } from '../../../../../../../interfaces/options';
-import { nestedButtonOptions } from '../button/nestedButton';
+import { dropdownButtonOptions } from '../button/dropdownButton';
 import { dropdownItemOptions } from '../layer/dropdownItem';
 import { dropdownButtonTextOptions } from './buttonText';
+import { buttonTextOptions } from '../text/buttonText';
 import { menuItemTextOptions } from './menuItemText';
-import { buttonTextOptions } from '../button/text';
 import { iconOptions } from '../icon/icon';
 import { menuOptions } from './menu';
 
 export class DropdownOptions {
 
   private static readonly STATIC_DROPDOWN_OPTIONS: SubcomponentTypeToOptions = {
-    [SUBCOMPONENT_TYPES.BUTTON]: nestedButtonOptions as Options,
+    [SUBCOMPONENT_TYPES.BUTTON]: dropdownButtonOptions as Options,
     [SUBCOMPONENT_TYPES.DROPDOWN_MENU]: menuOptions as Options,
     [SUBCOMPONENT_TYPES.LAYER]: dropdownItemOptions as Options,
     [SUBCOMPONENT_TYPES.ICON]: iconOptions as Options,

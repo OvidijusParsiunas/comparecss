@@ -1,11 +1,14 @@
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../consts/workshopToolbarOptionTypes.enum';
 import nestedComponentPositionNoAlign from './nestedComponentPositionNoAlign';
+import nestedComponentPositionAlign from './nestedComponentPositionAlign';
 import nestedComponentPosition from './nestedComponentPosition';
 import backgroundColorImage from './backgroundColorImage';
 import dropdownMenuPosition from './dropdownPosition';
 import dropdownButtonText from './dropdownButtonText';
 import sizeWidthSizeName from './sizeWidthSizeName';
+import dropdownWidthAuto from './dropdownWidthAuto';
 import buttonAnimations from './buttonAnimations';
+import marginHorizontal from './marginHorizontal';
 import modalAnimations from './modalAnimations';
 import imageAnimations from './imageAnimations';
 import backgroundColor from './backgroundColor';
@@ -13,7 +16,6 @@ import backgroundImage from './backgroundImage';
 import closeAnimation from './closeAnimation';
 import shadowVertical from './shadowVertical';
 import selectDropdown from './selectDropdown';
-import sizeWidthAuto from './sizeWidthAuto';
 import modalPosition from './modalPosition';
 import layerPosition from './layerPosition';
 import fadeAnimation from './fadeAnimation';
@@ -48,11 +50,12 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW_VERTICAL]: shadowVertical,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE]: size,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH]: sizeWidth,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH_AUTO]: sizeWidthAuto,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_WIDTH_AUTO]: dropdownWidthAuto,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH_SIZE_NAME]: sizeWidthSizeName,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_HEIGHT]: sizeHeight,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING]: padding,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN]: margin,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN_HORIZONTAL]: marginHorizontal,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT]: text,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_FONT]: font,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.COLOR]: color,
@@ -60,9 +63,10 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_IMAGE]: backgroundImage,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_COLOR_IMAGE]: backgroundColorImage,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_POSITION]: modalPosition,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION_NO_ALIGN]: nestedComponentPositionNoAlign,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_SIZE]: textSize,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION]: nestedComponentPosition,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION_ALIGN]: nestedComponentPositionAlign,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION_NO_ALIGN]: nestedComponentPositionNoAlign,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKDROP]: backdrop,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS]: buttonAnimations,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.IMAGE_ANIMATIONS]: imageAnimations,

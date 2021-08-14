@@ -3,6 +3,7 @@ import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../../interfaces/subc
 import { ChangeSubcomponentOrderEvent } from '../../../../../../interfaces/settingsComponentEvents';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
+import { SETTING_NAMES } from '../../../../../../consts/settingNames.enum';
 import { ComponentOptions } from 'vue';
 
 function changeSubcomponentOrder(settingsComponent: ComponentOptions, direction: SUBCOMPONENT_ORDER_DIRECTIONS, parentComponent: WorkshopComponent): void {
@@ -15,7 +16,7 @@ export default {
     {
       type: SETTINGS_TYPES.BUTTONS,
       spec: {
-        name: 'Order',
+        name: SETTING_NAMES.ORDER,
         options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([SUBCOMPONENT_ORDER_DIRECTIONS.UP, SUBCOMPONENT_ORDER_DIRECTIONS.DOWN]),
         optionAction: changeSubcomponentOrder,
       },

@@ -68,6 +68,7 @@ export class ChangeNestedComponentAlignment {
 
   public static change(previousAlignment: ALIGNED_SECTION_TYPES, newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties,
       shouldSubcomponentNamesBeUpdated: boolean, parentComponent: WorkshopComponent): void {
+    if (previousAlignment === newAlignment) return;
     if (shouldSubcomponentNamesBeUpdated) {
       ChangeNestedComponentAlignment.updateNames(newAlignment, subcomponentProperties, parentComponent);
     } else {

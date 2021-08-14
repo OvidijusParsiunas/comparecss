@@ -54,11 +54,11 @@ export default class ActionsDropdownUtils {
   public static mouseEnterActionsDropdownOptionCustomFeature(temporaryDropdownValue: TemporaryDropdownValue, triggeredOptionName: string,
       subcomponentProperties: SubcomponentProperties, settingSpec: any, settingsComponent: ComponentOptions): void {
     const { customFeatureObjectKeys, mouseEnterOptionCallback } = settingSpec;
+    const previousOptionName = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]) as string;
     if (temporaryDropdownValue.initial === ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED) {
-      temporaryDropdownValue.initial = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]) as string;
+      temporaryDropdownValue.initial = previousOptionName;
     }
-    if (mouseEnterOptionCallback) mouseEnterOptionCallback({subcomponentProperties, settingsComponent,
-      previousOptionName: SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]) as string, triggeredOptionName});
+    if (mouseEnterOptionCallback) mouseEnterOptionCallback({subcomponentProperties, settingsComponent, previousOptionName, triggeredOptionName});
     SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties, triggeredOptionName);
     temporaryDropdownValue.new = triggeredOptionName;
   }
@@ -66,7 +66,6 @@ export default class ActionsDropdownUtils {
   // called third when selecting option (if statement to prevent logic from triggering on select)
   public static mouseLeaveActionsDropdownOptionCustomFeature(temporaryDropdownValue: TemporaryDropdownValue,
       subcomponentProperties: SubcomponentProperties, settingSpec: any, settingsComponent: ComponentOptions, isDropdownHidden: boolean): void {
-    console.log('2');
     if (temporaryDropdownValue.new !== ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED) {
       const { customFeatureObjectKeys, mouseLeaveDropdownCallback } = settingSpec;
       if (mouseLeaveDropdownCallback) mouseLeaveDropdownCallback({subcomponentProperties, settingsComponent,

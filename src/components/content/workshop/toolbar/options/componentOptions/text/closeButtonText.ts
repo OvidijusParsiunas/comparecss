@@ -3,9 +3,9 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/works
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
 
-type TextWithNoBackgroundOptions = CSS_PSEUDO_CLASSES.DEFAULT | CSS_PSEUDO_CLASSES.HOVER | CSS_PSEUDO_CLASSES.CLICK;
+type TextOptions = CSS_PSEUDO_CLASSES.DEFAULT | CSS_PSEUDO_CLASSES.HOVER | CSS_PSEUDO_CLASSES.CLICK;
 
-export const closeButtonTextOptions: SubcomponentOptions<TextWithNoBackgroundOptions> = {
+export const closeButtonTextOptions: SubcomponentOptions<TextOptions> = {
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.TEXT_FONT,

@@ -3,7 +3,7 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/works
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
 import { ComponentOptionsUtils } from '../componentOptionsUtils';
-import { buttonTextOptions } from '../button/text';
+import { buttonTextOptions } from '../text/buttonText';
 
 type DropdownButtonTextOptions = CSS_PSEUDO_CLASSES.DEFAULT | CSS_PSEUDO_CLASSES.HOVER | CSS_PSEUDO_CLASSES.CLICK;
 

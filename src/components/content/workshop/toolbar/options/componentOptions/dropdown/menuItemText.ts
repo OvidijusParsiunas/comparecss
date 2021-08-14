@@ -2,7 +2,7 @@ import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../../const
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
 import { ComponentOptionsUtils } from '../componentOptionsUtils';
-import { buttonTextOptions } from '../button/text';
+import { buttonTextOptions } from '../text/buttonText';
 
 type MenuItemTextOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT | CSS_PSEUDO_CLASSES.HOVER | CSS_PSEUDO_CLASSES.CLICK;
 

@@ -21,7 +21,7 @@ export const iconOptions: SubcomponentOptions<IconOptionsModes> = {
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN_HORIZONTAL,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,

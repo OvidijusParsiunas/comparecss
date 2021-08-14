@@ -13,4 +13,6 @@ export enum SETTING_NAMES {
   DISMISS = 'Dismiss',
   SIZE = 'Size',
   TYPE = 'Type',
+  ALIGN = 'Align',
+  ORDER = 'Order',
 }

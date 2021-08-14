@@ -41,7 +41,8 @@ export default function useActionsDropdown(): UseActionsDropdown {
       mouseLeaveButtonCallback({subcomponentProperties, settingsComponent, triggeredOptionName});
     }
   }
-  
+
+  // be aware that enter option can be called multiple times without leave dropdown having been activated due to bottom and top padding
   const mouseEnterActionsDropdownOption = (settingsComponent: ComponentOptions, mouseEnterOptionEvent: MouseEnterOptionEvent,
       settingSpec: any, subcomponentProperties: SubcomponentProperties): void => {
     const [triggeredOptionName] = mouseEnterOptionEvent;
