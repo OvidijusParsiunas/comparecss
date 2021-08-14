@@ -112,7 +112,7 @@
                 <dropdown class="option-component-button"
                   :uniqueIdentifier="`${ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX}${settingIndex}`"
                   :dropdownOptions="setting.spec.options"
-                  :objectContainingActiveOption="setting.spec.tempCustomCssObject || actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.name] || {}"
+                  :objectContainingActiveOption="actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.name] || {}"
                   :activeOptionPropertyKeyName="setting.spec.cssProperty || setting.spec.activeOptionPropertyKeyName"
                   :fontAwesomeIcon="'caret-down'"
                   :minOptionsToDisplayDropdown="1"
