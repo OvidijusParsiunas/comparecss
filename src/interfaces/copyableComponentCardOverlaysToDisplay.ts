@@ -1,8 +1,6 @@
-import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
-import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
+import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 
 export interface CopyableComponentCardOverlaysToDisplay {
   isDisplaying: boolean;
-  baseType?: SUBCOMPONENT_TYPES;
-  componentStyle?: COMPONENT_STYLES;
+  componentType?: COMPONENT_TYPES;
 }

@@ -10,6 +10,10 @@ import { buttonBase } from './base';
 
 class CloseButton extends ComponentBuilder {
 
+  public static populateReferences(component: WorkshopComponent): void {
+    ComponentBuilder.populateReferences(component);
+  }
+
   public static setStyle(component: WorkshopComponent): void {
     component.style = BUTTON_STYLES.CLOSE;
   }
@@ -54,7 +58,6 @@ class CloseButton extends ComponentBuilder {
 
   public static overwrite(component: WorkshopComponent): void {
     CloseButton.overwriteBase(component);
-    ComponentBuilder.populateReferences(component);
     CloseButton.setStyle(component);
   }
 }
@@ -64,6 +67,7 @@ export const closeButton: ComponentGenerator = {
     const buttonComponent = buttonBase.createNewComponent(baseName);
     CloseButton.overwrite(buttonComponent);
     AddComponentsToButtonBaseUtils.add(buttonComponent, TEXT_STYLES.CLOSE_BUTTON, CLOSE_BUTTON_X_TEXT);
+    CloseButton.populateReferences(buttonComponent);
     return buttonComponent;
   }
 };

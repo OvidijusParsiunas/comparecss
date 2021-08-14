@@ -442,7 +442,7 @@ export default {
     mouseHoverCopyNestedComponentToggle(isMouseEnter: boolean): void {
       const activeSubcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
       const copyableComponentCardOverlaysToDisplay: CopyableComponentCardOverlaysToDisplay = {
-        isDisplaying: isMouseEnter, baseType: activeSubcomponent.subcomponentType }
+        isDisplaying: isMouseEnter, componentType: activeSubcomponent.nestedComponent.ref.type };
       this.$emit('display-copyable-component-card-overlays', copyableComponentCardOverlaysToDisplay);
     },
     toggleCopyNestedComponentMode(): void {

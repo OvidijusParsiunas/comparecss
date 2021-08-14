@@ -75,7 +75,7 @@ export default {
           return 'component-hovered-during-copy-nested-component-mode';
         }
       }
-      if (this.thisComponent === this.currentlySelectedComponent) {
+      if (this.currentlySelectedComponent === this.thisComponent) {
         return 'component-selected';
       }
       return '';
@@ -171,10 +171,9 @@ export default {
     },
     isDisplayingCopyableComponentCardOverlay(): boolean {
       if (!this.copyableComponentCardOverlaysToDisplay) return;
-      const { isDisplaying, baseType, componentStyle } = this.copyableComponentCardOverlaysToDisplay as CopyableComponentCardOverlaysToDisplay;
+      const { isDisplaying, componentType } = this.copyableComponentCardOverlaysToDisplay as CopyableComponentCardOverlaysToDisplay;
       if (isDisplaying) {
-        if (componentStyle && this.thisComponent.nestedComponent?.ref.style !== componentStyle) return false;
-        return this.thisComponent.coreSubcomponentRefs.base.subcomponentType === baseType;
+        return this.thisComponent.type === componentType;
       }
       return false;
     }
