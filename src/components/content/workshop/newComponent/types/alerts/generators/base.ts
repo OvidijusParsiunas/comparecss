@@ -9,7 +9,7 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentType
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
-import { alertBaseSpecificSettings } from '../settings/alertBaseSpecificSettings';
+import { AlertBaseSpecificSettings } from '../settings/alertBaseSpecificSettings';
 import { inheritedCardBaseCss } from '../../cards/inheritedCss/inheritedCardCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
@@ -70,7 +70,6 @@ class AlertBase extends ComponentBuilder {
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       inheritedCss: inheritedCardBaseCss,
       childCss: inheritedBaseChildCss,
-      subcomponentSpecificSettings: alertBaseSpecificSettings,
       customFeatures: AlertBase.createDefaultCustomFeatures(),
       defaultCustomFeatures: AlertBase.createDefaultCustomFeatures(),
       newNestedComponentsOptions: AlertBase.createDefaultNewNestedComponentsOptions(),
@@ -85,6 +84,7 @@ export const alertBase: ComponentGenerator = {
       { componentType: COMPONENT_TYPES.ALERT, baseName }, AlertBase.createBaseSubcomponent, false);
     AlertBase.setNewNestedComponentsOptionsRefs(alertBaseComponent);
     AlertBase.setNestedComponentCountMax(alertBaseComponent);
+    AlertBaseSpecificSettings.set(alertBaseComponent);
     return alertBaseComponent;
   },
 }

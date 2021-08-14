@@ -18,7 +18,7 @@ export class ButtonBaseSpecificSettings {
     },
   };
 
-  private static setSubcomponentSpecificSettings(component: WorkshopComponent): void {
+  private static setSettingsOnBaseSubcomponent(component: WorkshopComponent): void {
     const baseSubcomponent = component.coreSubcomponentRefs.base;
     baseSubcomponent.subcomponentSpecificSettings = ButtonBaseSpecificSettings.MENU_BASE_SPECIFIC_COMPONENTS;
   }
@@ -43,7 +43,7 @@ export class ButtonBaseSpecificSettings {
   }
 
   public static set(component: WorkshopComponent): void {
-    ButtonBaseSpecificSettings.setSubcomponentSpecificSettings(component);
+    ButtonBaseSpecificSettings.setSettingsOnBaseSubcomponent(component);
     ButtonBaseSpecificSettings.setInterconnectedSettings(component);
   }
 }

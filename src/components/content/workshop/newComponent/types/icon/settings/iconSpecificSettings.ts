@@ -22,14 +22,9 @@ export class IconSpecificSettings {
         actionsDropdownMouseEvents: IconSpecificSettings.ACTIONS_DROPDOWN_MOUSE_EVENT_CALLBACKS,
       },
     },
-  }
-
-  private static setSubcomponentSpecificSettings(component: WorkshopComponent): void {
-    const baseSubcomponent = component.coreSubcomponentRefs.base;
-    baseSubcomponent.subcomponentSpecificSettings = IconSpecificSettings.ICON_BASE_SPECIFIC_SETTINGS;
-  }
+  };
 
   public static set(component: WorkshopComponent): void {
-    IconSpecificSettings.setSubcomponentSpecificSettings(component);
+    component.coreSubcomponentRefs.base.subcomponentSpecificSettings = IconSpecificSettings.ICON_BASE_SPECIFIC_SETTINGS;
   }
 }

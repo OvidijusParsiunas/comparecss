@@ -26,12 +26,7 @@ export class MenuBaseSpecificSettings {
     },
   };
 
-  private static setSubcomponentSpecificSettings(component: WorkshopComponent): void {
-    const baseSubcomponent = component.coreSubcomponentRefs.base;
-    baseSubcomponent.subcomponentSpecificSettings = MenuBaseSpecificSettings.MENU_BASE_SPECIFIC_COMPONENTS;
-  }
-
   public static set(component: WorkshopComponent): void {
-    MenuBaseSpecificSettings.setSubcomponentSpecificSettings(component);
+    component.coreSubcomponentRefs.base.subcomponentSpecificSettings = MenuBaseSpecificSettings.MENU_BASE_SPECIFIC_COMPONENTS;
   }
 }

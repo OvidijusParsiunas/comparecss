@@ -6,6 +6,7 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentType
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
+import { IconSpecificSettings } from '../settings/iconSpecificSettings';
 import { inheritedTextCss } from '../inheritedCss/inheritedTextCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
@@ -77,7 +78,9 @@ export class IconBase extends ComponentBuilder {
 
 export const iconBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
-    return ComponentBuilder.createBaseComponent(
+    const iconBaseComponent = ComponentBuilder.createBaseComponent(
       { componentType: COMPONENT_TYPES.ICON, baseName }, IconBase.createBaseSubcomponent);
+    IconSpecificSettings.set(iconBaseComponent);
+    return iconBaseComponent;
   },
 }

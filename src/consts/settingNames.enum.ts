@@ -9,6 +9,8 @@ export enum SETTING_NAMES {
   FADE = 'Fade',
   Y_OFFSET = 'Y-Offset',
   ENTRANCE = 'Entrance',
+  EXIT = 'Exit',
+  DISMISS = 'Dismiss',
   SIZE = 'Size',
   TYPE = 'Type',
 }

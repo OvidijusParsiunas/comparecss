@@ -11,12 +11,7 @@ export class TextSpecificSettings {
     },
   };
 
-  private static setSubcomponentSpecificSettings(textComponent: WorkshopComponent): void {
-    textComponent.coreSubcomponentRefs.base.subcomponentSpecificSettings = TextSpecificSettings.TEXT_BASE_SPECIFIC_SETTINGS;
-  }
-
-
   public static set(component: WorkshopComponent): void {
-    TextSpecificSettings.setSubcomponentSpecificSettings(component);
+    component.coreSubcomponentRefs.base.subcomponentSpecificSettings = TextSpecificSettings.TEXT_BASE_SPECIFIC_SETTINGS;
   }
 }

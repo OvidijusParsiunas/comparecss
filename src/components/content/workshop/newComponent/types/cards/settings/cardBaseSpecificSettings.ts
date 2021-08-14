@@ -4,10 +4,11 @@ import { SubcomponentSpecificSettings } from '../../../../../../../interfaces/su
 import { LAYER_SECTION_DIVISOR } from '../../../../../../../consts/layerSectionDivisor';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { SETTING_NAMES } from '../../../../../../../consts/settingNames.enum';
+import { AnimationPreview } from '../../shared/settings/animationPreview';
 
 export class CardBaseSpecificSettings {
 
-  public static readonly CARD_BASE_SPECIFIC_COMPONENTS: SubcomponentSpecificSettings = {
+  public static readonly CARD_BASE_GENERIC_COMPONENTS: SubcomponentSpecificSettings = {
     [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH]: {
       [SETTING_NAMES.WIDTH]: {
         scale: [170, 700],
@@ -15,10 +16,18 @@ export class CardBaseSpecificSettings {
       },
     },
   };
+  private static readonly CARD_BASE_SPECIFIC_COMPONENTS: SubcomponentSpecificSettings = {
+    [WORKSHOP_TOOLBAR_OPTION_TYPES.CLOSE_ANIMATION]: {
+      [SETTING_NAMES.DISMISS]: {
+        actionsDropdownMouseEvents: AnimationPreview.EXIT_ACTIONS_DROPDOWN_MOUSE_EVENT_CALLBACKS,
+      },
+    },
+  };
 
-  private static setSubcomponentSpecificSettings(component: WorkshopComponent): void {
+  private static setSettingsOnBaseSubcomponent(component: WorkshopComponent): void {
     const baseSubcomponent = component.coreSubcomponentRefs.base;
-    baseSubcomponent.subcomponentSpecificSettings = CardBaseSpecificSettings.CARD_BASE_SPECIFIC_COMPONENTS;
+    baseSubcomponent.subcomponentSpecificSettings = {
+      ...CardBaseSpecificSettings.CARD_BASE_GENERIC_COMPONENTS, ...CardBaseSpecificSettings.CARD_BASE_SPECIFIC_COMPONENTS };
   }
 
   private static getLeftPositionProperties(subcomponentProperties: SubcomponentProperties): UpdateOtherCssProperties {
@@ -42,7 +51,7 @@ export class CardBaseSpecificSettings {
   }
 
   public static set(component: WorkshopComponent): void {
-    CardBaseSpecificSettings.setSubcomponentSpecificSettings(component);
+    CardBaseSpecificSettings.setSettingsOnBaseSubcomponent(component);
     CardBaseSpecificSettings.setInterconnectedSettings(component);
   }
 }

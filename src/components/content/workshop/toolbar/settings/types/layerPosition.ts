@@ -12,7 +12,7 @@ function changeSubcomponentOrder(settingsComponent: ComponentOptions, direction:
 // create an optional interface
 export default {
   options: [
-    { 
+    {
       type: SETTINGS_TYPES.BUTTONS,
       spec: {
         name: 'Order',
