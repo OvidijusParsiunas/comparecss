@@ -19,12 +19,14 @@ export class AddComponentsToButtonBaseUtils {
     const textSubcomponent = AddNewGenericComponent.add(component, COMPONENT_TYPES.TEXT, textStyle,
       layerSubcomponent.coreSubcomponentRefs.base.name, [AddComponentsToButtonBaseUtils.overwriteButtonTextProperties.bind(textContent)]);
     // WORK1
+    const otherSubcomponentsToTrigger = [textSubcomponent.coreSubcomponentRefs.base];
     if (icon) {
-      const iconSubcomponent = AddNewGenericComponent.add(component, COMPONENT_TYPES.ICON, DEFAULT_STYLES.DEFAULT,
+      const iconComponent = AddNewGenericComponent.add(component, COMPONENT_TYPES.ICON, DEFAULT_STYLES.DEFAULT,
         layerSubcomponent.coreSubcomponentRefs.base.name);
+      otherSubcomponentsToTrigger.push(iconComponent.coreSubcomponentRefs.base);
     }
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(component, component.componentPreviewStructure.layers[0]);
-    component.coreSubcomponentRefs.base.anotherSubcomponetToTrigger = textSubcomponent.coreSubcomponentRefs.base;
+    component.coreSubcomponentRefs.base.otherSubcomponentsToTrigger = otherSubcomponentsToTrigger;
     component.coreSubcomponentRefs.text = textSubcomponent.coreSubcomponentRefs.base;
   }
 }

@@ -10,7 +10,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: SETTING_NAMES.DISMISS,
-        options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure(Object.values(GENERAL_ANIMATION_CLOSE_TYPES)),
+        options: UpdateDropdownOptionNamesShared.generateDropdownStructure(Object.values(GENERAL_ANIMATION_CLOSE_TYPES)),
         activeOptionPropertyKeyName: 'type',
         customFeatureObjectKeys: ['customFeatures', 'animations', 'display', 'close', 'type'],
       },

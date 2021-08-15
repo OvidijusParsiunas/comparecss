@@ -27,7 +27,7 @@ export class DropdownItemLayer extends ComponentBuilder {
     const textComponent = AddNewGenericComponent.add(parentComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
       layerComponent.coreSubcomponentRefs.base.name,
       [DropdownItemLayer.overwriteTextProperties.bind({parentComponent, activeBaseComponent} as OverwriteTextPropertiesBaseComponents)]);
-    layerComponent.coreSubcomponentRefs.base.anotherSubcomponetToTrigger = textComponent.coreSubcomponentRefs.base;
+    layerComponent.coreSubcomponentRefs.base.otherSubcomponentsToTrigger = [textComponent.coreSubcomponentRefs.base];
     layerComponent.nestedComponentsLockedToLayer.list.push(textComponent.coreSubcomponentRefs.base);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(parentComponent,
       activeBaseComponent.componentPreviewStructure.layers[activeBaseComponent.componentPreviewStructure.layers.length - 1]);

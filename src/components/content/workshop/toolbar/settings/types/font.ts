@@ -20,7 +20,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Weight',
-        options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure(['100', '200', '300', '400', '500', '600', '700', '800', '900', '1000']),
+        options: UpdateDropdownOptionNamesShared.generateDropdownStructure(['100', '200', '300', '400', '500', '600', '700', '800', '900', '1000']),
         default: '100',
         cssProperty: 'fontWeight',
       },

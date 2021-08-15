@@ -43,7 +43,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: SETTING_NAMES.ALIGN,
-        options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure(Object.values(ALIGNED_SECTION_TYPES)),
+        options: UpdateDropdownOptionNamesShared.generateDropdownStructure(Object.values(ALIGNED_SECTION_TYPES)),
         activeOptionPropertyKeyName: 'section',
         customFeatureObjectKeys: ['customFeatures', 'alignedLayerSection', 'section'],
         ...generateMouseEventCallbacks(),
@@ -53,7 +53,7 @@ export default {
       type: SETTINGS_TYPES.BUTTONS,
       spec: {
         name: SETTING_NAMES.ORDER,
-        options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([SUBCOMPONENT_ORDER_DIRECTIONS.LEFT, SUBCOMPONENT_ORDER_DIRECTIONS.RIGHT]),
+        options: UpdateDropdownOptionNamesShared.generateDropdownStructure([SUBCOMPONENT_ORDER_DIRECTIONS.LEFT, SUBCOMPONENT_ORDER_DIRECTIONS.RIGHT]),
         optionAction: changeSubcomponentOrder,
       },
     },

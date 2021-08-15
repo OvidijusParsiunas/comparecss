@@ -9,7 +9,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Position',
-        options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure(Object.values(DROPDOWN_MENU_POSITIONS)),
+        options: UpdateDropdownOptionNamesShared.generateDropdownStructure(Object.values(DROPDOWN_MENU_POSITIONS)),
         activeOptionPropertyKeyName: 'position',
         customFeatureObjectKeys: ['customFeatures', 'dropdownMenuPosition', 'position'],
       },

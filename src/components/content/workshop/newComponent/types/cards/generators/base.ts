@@ -21,7 +21,7 @@ class CardBase extends ComponentBuilder {
   }
 
   public static setNewNestedComponentsOptionsRefs(cardBaseComponent: WorkshopComponent): void {
-    const newNestedComponentsOptions = UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([
+    const newNestedComponentsOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([
       BUTTON_COMPONENTS_BASE_NAMES.BUTTON, PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE, PRIMITIVE_COMPONENTS_BASE_NAMES.IMAGE]);
     cardBaseComponent.newNestedComponentsOptionsRefs = { layer: newNestedComponentsOptions };
   }
@@ -54,7 +54,7 @@ class CardBase extends ComponentBuilder {
   }
 
   private static createDefaultNewNestedComponentsOptions(): NestedDropdownStructure {
-    return UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);
+    return UpdateDropdownOptionNamesShared.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);
   }
 
   public static createBaseSubcomponent(name: string): SubcomponentProperties {

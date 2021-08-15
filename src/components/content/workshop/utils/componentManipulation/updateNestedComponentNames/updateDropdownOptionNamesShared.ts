@@ -42,7 +42,7 @@ export class UpdateDropdownOptionNamesShared {
       .filter((optionName) => optionName !== undefined);
   }
 
-  public static generateNestedDropdownStructure(options: string[]): NestedDropdownStructure {
+  public static generateDropdownStructure(options: string[]): NestedDropdownStructure {
     return options.reduce((accummulator, currentValue) => Object.assign(accummulator, {[currentValue]: null}), {});
   }
 }

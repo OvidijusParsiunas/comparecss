@@ -17,7 +17,7 @@ export default {
       type: SETTINGS_TYPES.BUTTONS,
       spec: {
         name: SETTING_NAMES.ORDER,
-        options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([SUBCOMPONENT_ORDER_DIRECTIONS.UP, SUBCOMPONENT_ORDER_DIRECTIONS.DOWN]),
+        options: UpdateDropdownOptionNamesShared.generateDropdownStructure([SUBCOMPONENT_ORDER_DIRECTIONS.UP, SUBCOMPONENT_ORDER_DIRECTIONS.DOWN]),
         optionAction: changeSubcomponentOrder,
       },
     },

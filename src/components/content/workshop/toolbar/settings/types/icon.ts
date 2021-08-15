@@ -10,7 +10,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: SETTING_NAMES.TYPE,
-        options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure(Object.values(DROPDOWN_ARROW_ICON_TYPES)),
+        options: UpdateDropdownOptionNamesShared.generateDropdownStructure(Object.values(DROPDOWN_ARROW_ICON_TYPES)),
         activeOptionPropertyKeyName: 'name',
         customFeatureObjectKeys: ['customFeatures', 'icon', 'name'],
         customFunctionKeys: ['customFeatures', 'icon', 'changeIconFunc'],

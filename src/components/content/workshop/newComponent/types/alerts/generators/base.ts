@@ -20,9 +20,10 @@ class AlertBase extends ComponentBuilder {
   }
 
   public static setNewNestedComponentsOptionsRefs(alertBaseComponent: WorkshopComponent): void {
-    const newNestedComponentsOptions = UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([
+    const newNestedComponentsOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([
       PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE]);
     alertBaseComponent.newNestedComponentsOptionsRefs = { layer: newNestedComponentsOptions };
+    alertBaseComponent.coreSubcomponentRefs.base.newNestedComponentsOptions = newNestedComponentsOptions;
   }
 
   private static createDefaultCss(): CustomCss {
@@ -55,11 +56,6 @@ class AlertBase extends ComponentBuilder {
     };
   }
 
-  private static createDefaultNewNestedComponentsOptions(): NestedDropdownStructure {
-    return UpdateDropdownOptionNamesShared.generateNestedDropdownStructure(
-      [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE]);
-  }
-
   public static createBaseSubcomponent(name: string): SubcomponentProperties {
     return {
       name,
@@ -72,7 +68,6 @@ class AlertBase extends ComponentBuilder {
       childCss: inheritedBaseChildCss,
       customFeatures: AlertBase.createDefaultCustomFeatures(),
       defaultCustomFeatures: AlertBase.createDefaultCustomFeatures(),
-      newNestedComponentsOptions: AlertBase.createDefaultNewNestedComponentsOptions(),
     };
   }
 }

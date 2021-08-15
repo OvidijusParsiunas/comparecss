@@ -5,8 +5,9 @@ rename dropdown option to dropdown item
 when in hover/click mode and some nested subcomponent is isTriggeredByAnotherSubcomponent, that component should also be in that mode
 dropdown will probably need to have its own base name when nested
 animation - open on hover, slide in/ fade in
-button events, custom size
-undo largest item width does not undo the dropdwon width
+new subcomponent
+make sure to calculate largest item with the icon
+undo largest item width does not undo the dropdown width
 
 overflow
 try with button tags

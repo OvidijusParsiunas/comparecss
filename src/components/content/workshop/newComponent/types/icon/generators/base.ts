@@ -55,7 +55,7 @@ export class IconBase extends ComponentBuilder {
   private static createDefaultTextCustomFeatures(): CustomFeatures {
     return {
       autoSize: ComponentBuilder.createAutoSize(true, false),
-      alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT),
+      alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
       // WORK1: shoudn't need changeIconFunc
       icon: { name: DROPDOWN_ARROW_ICON_TYPES.CARET, isComponentDisplayed: true, changeIconFunc: IconBase.changeIconFunc },
     };

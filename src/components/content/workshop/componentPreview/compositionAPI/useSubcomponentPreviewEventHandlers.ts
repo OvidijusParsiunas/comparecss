@@ -19,10 +19,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   let unsetTransitionPropertyTimeout = null;
 
   function triggerSubcomponentMouseEventCallback(mouseEvent: keyof SubcomponentMouseEventCallbacks): void {
-    const callback = subcomponentProperties.customFeatures?.mouseEventCallbacks?.[mouseEvent];
-    if (callback) {
-      callback(subcomponentProperties);
-    }
+    subcomponentProperties.customFeatures?.mouseEventCallbacks?.[mouseEvent]?.(subcomponentProperties);
   }
 
   function setDefaultUnsetButtonStatesForColorInputs(customCss: CustomCss): void {
@@ -35,10 +32,12 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     });
   }
 
-  function triggerAnotherSubcomponentMouseEvent(anotherSubcomponetToTrigger: SubcomponentProperties, mouseEventType: string): void {
-    const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(anotherSubcomponetToTrigger.name);
-    const element = document.getElementById(subcomponentId);
-    element.dispatchEvent(new MouseEvent(mouseEventType));
+  function triggerOtherSubcomponentsMouseEvents(otherSubcomponentsToTrigger: SubcomponentProperties[], mouseEventType: string): void {
+    (otherSubcomponentsToTrigger || []).forEach((subcomponent) => {
+      const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(subcomponent.name);
+      const element = document.getElementById(subcomponentId);
+      element.dispatchEvent(new MouseEvent(mouseEventType));
+    });
   }
 
   // the following is used to prevent the modal animation from stopping when the user moves their mouse and triggers the modal's base mouse events
@@ -94,10 +93,10 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
 
   const subcomponentMouseEnter = (): void => {
     if (shoudPreventMouseEvent()) return;
-    const { customCss, customFeatures, anotherSubcomponetToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
+    const { customCss, customFeatures, otherSubcomponentsToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
     // even.isTrusted means that the event was triggered by a mouse instead of a dispatch
     if (isTriggeredByAnotherSubcomponent && event.isTrusted) return;
-    if (anotherSubcomponetToTrigger) triggerAnotherSubcomponentMouseEvent(anotherSubcomponetToTrigger, event.type);
+    triggerOtherSubcomponentsMouseEvents(otherSubcomponentsToTrigger, event.type);
     setDefaultUnsetButtonStatesForColorInputs(customCss);
     setMouseEnterProperties(customCss, customFeatures);
     triggerSubcomponentMouseEventCallback('mouseEnter');
@@ -105,9 +104,9 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
 
   const subcomponentMouseLeave = (): void => {
     if (shoudPreventMouseEvent()) return;
-    const { customCss, defaultCss, customFeatures, anotherSubcomponetToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
+    const { customCss, defaultCss, customFeatures, otherSubcomponentsToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
     if (isTriggeredByAnotherSubcomponent && event.isTrusted) return;
-    if (anotherSubcomponetToTrigger) triggerAnotherSubcomponentMouseEvent(anotherSubcomponetToTrigger, event.type);
+    triggerOtherSubcomponentsMouseEvents(otherSubcomponentsToTrigger, event.type);
     if (subcomponentProperties.overwrittenCustomCssObj) {
       delete subcomponentProperties.overwrittenCustomCssObj;
     }
@@ -117,9 +116,9 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
 
   const subcomponentMouseDown = (): void => {
     if (shoudPreventMouseEvent()) return;
-    const { customCss, customFeatures, anotherSubcomponetToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
+    const { customCss, customFeatures, otherSubcomponentsToTrigger, isTriggeredByAnotherSubcomponent } = subcomponentProperties;
     if (isTriggeredByAnotherSubcomponent && event.isTrusted) return;
-    if (anotherSubcomponetToTrigger) triggerAnotherSubcomponentMouseEvent(anotherSubcomponetToTrigger, event.type);
+    triggerOtherSubcomponentsMouseEvents(otherSubcomponentsToTrigger, event.type);
     // this is a bug fix for when the user clicks a button without entering it (after subcomponent select mode)
     if (!subcomponentProperties.overwrittenCustomCssObj) {
       setMouseEnterProperties(customCss, customFeatures);
@@ -130,8 +129,8 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
 
   const subcomponentMouseUp = (): void => {
     if (shoudPreventMouseEvent()) return;
-    const { anotherSubcomponetToTrigger } = subcomponentProperties;
-    if (anotherSubcomponetToTrigger) triggerAnotherSubcomponentMouseEvent(anotherSubcomponetToTrigger, event.type);
+    const { otherSubcomponentsToTrigger } = subcomponentProperties;
+    triggerOtherSubcomponentsMouseEvents(otherSubcomponentsToTrigger, event.type);
     if (overwrittenDefaultPropertiesByClick.hasBeenSet
         && subcomponentProperties.overwrittenCustomCssObj) {
       subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };

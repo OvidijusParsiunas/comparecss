@@ -119,7 +119,7 @@ class DefaultModal extends ComponentBuilder {
   }
 
   public static overwriteBaseNewNestedComponentsOptions(modalComponent: WorkshopComponent): void {
-    const nestedDropdownStructure = UpdateDropdownOptionNamesShared.generateNestedDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);
+    const nestedDropdownStructure = UpdateDropdownOptionNamesShared.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);
     modalComponent.coreSubcomponentRefs.base.newNestedComponentsOptions = nestedDropdownStructure;
   }
 }

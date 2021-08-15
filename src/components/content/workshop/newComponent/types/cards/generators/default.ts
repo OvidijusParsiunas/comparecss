@@ -90,8 +90,6 @@ class DefaultCard extends ComponentBuilder {
   }
 
   private static overwriteLayerProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
-    const nestedDropdownStructure = this as any as NestedDropdownStructure;
-    coreSubcomponentRefs.base.newNestedComponentsOptions = nestedDropdownStructure;
     coreSubcomponentRefs.base.isRemovable = true;
   }
 
@@ -104,10 +102,9 @@ class DefaultCard extends ComponentBuilder {
   }
 
   private static addNewLayers(cardComponent: WorkshopComponent): WorkshopComponent[] {
-    const nestedDropdownStructure = cardComponent.newNestedComponentsOptionsRefs.layer;
-    const layer1Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true, DefaultCard.overwriteLayerProperties.bind(nestedDropdownStructure));
-    const layer2Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true, DefaultCard.overwriteLayerProperties.bind(nestedDropdownStructure));
-    const layer3Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true, DefaultCard.overwriteLayerProperties.bind(nestedDropdownStructure));
+    const layer1Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true, DefaultCard.overwriteLayerProperties);
+    const layer2Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true, DefaultCard.overwriteLayerProperties);
+    const layer3Component = AddNewLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true, DefaultCard.overwriteLayerProperties);
     return [layer1Component, layer2Component, layer3Component];
   }
 

@@ -37,7 +37,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: SETTING_NAMES.ENTRANCE,
-        options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure(Object.values(MODAL_ANIMATION_OPEN_TYPES)),
+        options: UpdateDropdownOptionNamesShared.generateDropdownStructure(Object.values(MODAL_ANIMATION_OPEN_TYPES)),
         activeOptionPropertyKeyName: 'type',
         customFeatureObjectKeys: ['customFeatures', 'animations', 'display', 'open', 'type'],
       },
@@ -46,7 +46,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: SETTING_NAMES.EXIT,
-        options: UpdateDropdownOptionNamesShared.generateNestedDropdownStructure(Object.values(MODAL_ANIMATION_CLOSE_TYPES)),
+        options: UpdateDropdownOptionNamesShared.generateDropdownStructure(Object.values(MODAL_ANIMATION_CLOSE_TYPES)),
         activeOptionPropertyKeyName: 'type',
         customFeatureObjectKeys: ['customFeatures', 'animations', 'display', 'close', 'type'],
       },

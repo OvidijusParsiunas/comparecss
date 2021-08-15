@@ -167,8 +167,8 @@ export interface SubcomponentProperties {
   parentLayer?: Layer;
   // temporarily holds the original customCss when a component card has been hovered/selected during component import mode 
   tempOriginalCustomProperties?: TempCustomProperties;
-  // when a subcomponent's mouse event is triggered, trigger another subcomponent's mouse events
-  anotherSubcomponetToTrigger?: SubcomponentProperties;
+  // when a subcomponent's mouse event is triggered, trigger other subcomponents' mouse events
+  otherSubcomponentsToTrigger?: SubcomponentProperties[];
   isTriggeredByAnotherSubcomponent?: boolean;
   // options for the add nested component dropdown
   newNestedComponentsOptions?: NestedDropdownStructure;
