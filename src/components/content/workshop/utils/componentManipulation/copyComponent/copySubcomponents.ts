@@ -43,7 +43,7 @@ export class CopySubcomponents {
   }
 
   public static copyComponentSubcomponents(componentBeingCopied: WorkshopComponent, newNestedComponent: WorkshopComponent): void {
-    Object.keys(newNestedComponent.coreSubcomponentRefs).forEach((coreSubcomponentType) => {
+    Object.keys(newNestedComponent.coreSubcomponentRefs).filter((coreSubcomponentKey) => newNestedComponent.coreSubcomponentRefs[coreSubcomponentKey]).forEach((coreSubcomponentType) => {
       const newSubcomponent = newNestedComponent.coreSubcomponentRefs[coreSubcomponentType];
       const subcomponentBeingCopied = componentBeingCopied.coreSubcomponentRefs[coreSubcomponentType];
       CopySubcomponents.copyExistingSubcomponentProperties(newSubcomponent, subcomponentBeingCopied);

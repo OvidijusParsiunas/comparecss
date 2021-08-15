@@ -12,6 +12,11 @@ export class AddComponentsToButtonBaseUtils {
     const textContent = this as any as string;
     coreSubcomponentRefs.base.customStaticFeatures.subcomponentText.text = textContent;
     coreSubcomponentRefs.base.defaultCustomStaticFeatures.subcomponentText.text = textContent;
+    coreSubcomponentRefs.base.isRemovable = true;
+  }
+
+  private static overwriteIconProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
+    coreSubcomponentRefs.base.isRemovable = true;
   }
 
   public static add(component: WorkshopComponent, textStyle: TEXT_STYLES, textContent: string, icon = false): void {
@@ -22,7 +27,7 @@ export class AddComponentsToButtonBaseUtils {
     const otherSubcomponentsToTrigger = [textSubcomponent.coreSubcomponentRefs.base];
     if (icon) {
       const iconComponent = AddNewGenericComponent.add(component, COMPONENT_TYPES.ICON, DEFAULT_STYLES.DEFAULT,
-        layerSubcomponent.coreSubcomponentRefs.base.name);
+        layerSubcomponent.coreSubcomponentRefs.base.name, [AddComponentsToButtonBaseUtils.overwriteIconProperties]);
       otherSubcomponentsToTrigger.push(iconComponent.coreSubcomponentRefs.base);
     }
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(component, component.componentPreviewStructure.layers[0]);

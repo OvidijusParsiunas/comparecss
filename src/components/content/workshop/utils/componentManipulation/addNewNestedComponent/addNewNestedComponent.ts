@@ -14,7 +14,7 @@ export class AddNewNestedComponent {
     const nestedComponentType = AddNewGenericComponent.componentBaseNameToType[nestedComponentBaseName];
     const nestedComponentStyle = NestedComponentBaseNamesToStyles.genericToStyle(nestedComponentBaseName);
     const newComponent = AddNewGenericComponent.add(currentlySelectedComponent, nestedComponentType, nestedComponentStyle, layerName);
-    // set here because not all nested components are removable, but the ones added by the user are 
+    // set here because not all nested components are removable, but the ones added by the user are
     newComponent.coreSubcomponentRefs.base.isRemovable = true;
   }
 

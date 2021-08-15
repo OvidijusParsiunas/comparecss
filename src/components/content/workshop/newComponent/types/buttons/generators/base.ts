@@ -14,16 +14,13 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonBase extends ComponentBuilder {
 
-  public static setNestedComponentCountMax(cardBaseComponent: WorkshopComponent): void {
-    cardBaseComponent.nestedComponentCount = {
-      max: { [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT]: 1, [PRIMITIVE_COMPONENTS_BASE_NAMES.ICON]: 1 }};
-  }
-
-  public static setNewNestedComponentsOptionsRefs(cardBaseComponent: WorkshopComponent): void {
-    const newNestedComponentsOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([
+  public static setNestedComponentsOptions(buttonBaseComponent: WorkshopComponent): void {
+    const baseComponentOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([
       PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, PRIMITIVE_COMPONENTS_BASE_NAMES.ICON]);
-    cardBaseComponent.newNestedComponentsOptionsRefs = { layer: newNestedComponentsOptions };
-    cardBaseComponent.coreSubcomponentRefs.base.newNestedComponentsOptions = newNestedComponentsOptions;
+    buttonBaseComponent.coreSubcomponentRefs.base.newNestedComponentsOptions = baseComponentOptions;
+    buttonBaseComponent.newNestedComponentsOptionsRefs = { layer: baseComponentOptions };
+    buttonBaseComponent.nestedComponentCount = {
+      max: { [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT]: 1, [PRIMITIVE_COMPONENTS_BASE_NAMES.ICON]: 1 }};
   }
 
   public static cleanBaseDropdownIfNotNested(buttonComponent: WorkshopComponent, baseName?: string): void {
@@ -98,8 +95,7 @@ export const buttonBase: ComponentGenerator = {
     const buttonBaseComponent = ComponentBuilder.createBaseComponent(
       { componentType: COMPONENT_TYPES.BUTTON, baseName }, ButtonBase.createBaseSubcomponent);
     ButtonBaseSpecificSettings.set(buttonBaseComponent);
-    ButtonBase.setNewNestedComponentsOptionsRefs(buttonBaseComponent);
-    ButtonBase.setNestedComponentCountMax(buttonBaseComponent);
+    ButtonBase.setNestedComponentsOptions(buttonBaseComponent);
     ButtonBase.cleanBaseDropdownIfNotNested(buttonBaseComponent, baseName);
     return buttonBaseComponent;
   },

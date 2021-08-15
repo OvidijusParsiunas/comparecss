@@ -11,6 +11,7 @@ import ComponentTraversalUtils from '../../componentTraversal/componentTraversal
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { StringUtils } from '../../generic/stringUtils';
+import { ArrayUtils } from '../../generic/arrayUtils';
 
 type TargetRemovalDetails = TargetDetails & { isRemovingActiveSubcomponent?: boolean };
 
@@ -120,10 +121,25 @@ export class RemoveNestedComponent {
     return null;
   }
 
+  // WORK1 - copy/add core subcomponent ref
+  private static removeCoreSubcomponentRef(targetDetails: TargetRemovalDetails): void {
+    const { parentComponent: { coreSubcomponentRefs }, targetSubcomponentProperties } = targetDetails;
+    const coreSubcomponent = Object.keys(coreSubcomponentRefs).find((coreSubcomponentKey) => coreSubcomponentRefs[coreSubcomponentKey] === targetSubcomponentProperties);
+    if (coreSubcomponent) coreSubcomponentRefs[coreSubcomponent] = null;
+  }
+
+  // WORK1 - copy/add triggerable subcomponent
+  private static removeTriggerableSubcomponent(targetDetails: TargetRemovalDetails): void {
+    const { parentComponent: { coreSubcomponentRefs: { base: { otherSubcomponentsToTrigger }}}, targetSubcomponentProperties } = targetDetails;
+    if (otherSubcomponentsToTrigger) ArrayUtils.removeItem(otherSubcomponentsToTrigger, targetSubcomponentProperties)
+  }
+
   public static remove(parentComponent: WorkshopComponent, subcomponentName?: string): void {
     const targetDetails: TargetRemovalDetails = ComponentTraversalUtils.generateTargetDetails(parentComponent,
       subcomponentName || parentComponent.activeSubcomponentName);
     targetDetails.isRemovingActiveSubcomponent = !subcomponentName;
+    RemoveNestedComponent.removeCoreSubcomponentRef(targetDetails);
+    RemoveNestedComponent.removeTriggerableSubcomponent(targetDetails);
     const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
     const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
       activeBaseComponent.componentPreviewStructure,

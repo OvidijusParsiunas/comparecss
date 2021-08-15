@@ -39,7 +39,7 @@ export class CopyNestedComponentModeTempPropertiesUtils {
 
   public static cleanComponent(activeComponent: WorkshopComponent, resetOriginalProperties: boolean): void {
     const { coreSubcomponentRefs } = activeComponent.subcomponents[activeComponent.activeSubcomponentName].nestedComponent.ref;
-    const coreSubcomponentTypes = Object.keys(coreSubcomponentRefs);
+    const coreSubcomponentTypes = Object.keys(coreSubcomponentRefs).filter((coreSubcomponentKey) => coreSubcomponentRefs[coreSubcomponentKey]);
     for (let i = 0; i < coreSubcomponentTypes.length; i += 1) {
       const activeSubcomponent = coreSubcomponentRefs[coreSubcomponentTypes[i]];
       if (!activeSubcomponent.tempOriginalCustomProperties) break;

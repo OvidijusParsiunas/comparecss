@@ -2,7 +2,6 @@ import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentMani
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { BUTTON_COMPONENTS_BASE_NAMES, PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
-import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -15,15 +14,12 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class AlertBase extends ComponentBuilder {
 
-  public static setNestedComponentCountMax(alertBaseComponent: WorkshopComponent): void {
-    alertBaseComponent.nestedComponentCount = { max: { [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
-  }
-
-  public static setNewNestedComponentsOptionsRefs(alertBaseComponent: WorkshopComponent): void {
-    const newNestedComponentsOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([
+  public static setNestedComponentsOptions(alertBaseComponent: WorkshopComponent): void {
+    const baseComponentOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([
       PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE]);
-    alertBaseComponent.newNestedComponentsOptionsRefs = { layer: newNestedComponentsOptions };
-    alertBaseComponent.coreSubcomponentRefs.base.newNestedComponentsOptions = newNestedComponentsOptions;
+    alertBaseComponent.coreSubcomponentRefs.base.newNestedComponentsOptions = baseComponentOptions;
+    alertBaseComponent.newNestedComponentsOptionsRefs = { layer: baseComponentOptions };
+    alertBaseComponent.nestedComponentCount = { max: { [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
   }
 
   private static createDefaultCss(): CustomCss {
@@ -77,8 +73,7 @@ export const alertBase: ComponentGenerator = {
     uniqueSubcomponentIdState.resetUniqueId();
     const alertBaseComponent = ComponentBuilder.createBaseComponent(
       { componentType: COMPONENT_TYPES.ALERT, baseName }, AlertBase.createBaseSubcomponent, false);
-    AlertBase.setNewNestedComponentsOptionsRefs(alertBaseComponent);
-    AlertBase.setNestedComponentCountMax(alertBaseComponent);
+    AlertBase.setNestedComponentsOptions(alertBaseComponent);
     AlertBaseSpecificSettings.set(alertBaseComponent);
     return alertBaseComponent;
   },

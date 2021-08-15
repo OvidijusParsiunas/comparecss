@@ -20,10 +20,14 @@ class CardBase extends ComponentBuilder {
       max: { [LAYER_COMPONENTS_BASE_NAMES.LAYER]: 5, [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
   }
 
-  public static setNewNestedComponentsOptionsRefs(cardBaseComponent: WorkshopComponent): void {
-    const newNestedComponentsOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([
+  public static setNestedComponentsOptions(cardBaseComponent: WorkshopComponent): void {
+    const layerComponentsOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([
       BUTTON_COMPONENTS_BASE_NAMES.BUTTON, PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE, PRIMITIVE_COMPONENTS_BASE_NAMES.IMAGE]);
-    cardBaseComponent.newNestedComponentsOptionsRefs = { layer: newNestedComponentsOptions };
+    cardBaseComponent.newNestedComponentsOptionsRefs = { layer: layerComponentsOptions };
+    const baseComponentOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);
+    cardBaseComponent.coreSubcomponentRefs.base.newNestedComponentsOptions = baseComponentOptions;
+    cardBaseComponent.nestedComponentCount = {
+      max: { [LAYER_COMPONENTS_BASE_NAMES.LAYER]: 5, [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
   }
 
   private static createDefaultCardCss(): CustomCss {
@@ -69,7 +73,6 @@ class CardBase extends ComponentBuilder {
       childCss: inheritedBaseChildCss,
       customFeatures: CardBase.createDefaultCustomFeatures(),
       defaultCustomFeatures: CardBase.createDefaultCustomFeatures(),
-      newNestedComponentsOptions: CardBase.createDefaultNewNestedComponentsOptions(),
     };
   }
 }
@@ -79,8 +82,7 @@ export const cardBase: ComponentGenerator = {
     uniqueSubcomponentIdState.resetUniqueId();
     const cardBaseComponent = ComponentBuilder.createBaseComponent(
       { componentType: COMPONENT_TYPES.CARD }, CardBase.createBaseSubcomponent, false);
-    CardBase.setNewNestedComponentsOptionsRefs(cardBaseComponent);
-    CardBase.setNestedComponentCountMax(cardBaseComponent);
+    CardBase.setNestedComponentsOptions(cardBaseComponent);
     CardBaseSpecificSettings.set(cardBaseComponent);
     return cardBaseComponent;
   },
