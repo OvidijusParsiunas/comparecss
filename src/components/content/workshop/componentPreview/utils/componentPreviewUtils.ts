@@ -3,6 +3,7 @@ import { SubcomponentAndOverlayElementIds } from '../../../../../interfaces/subc
 import { SubcomponentPreviewMouseEvents } from '../../../../../interfaces/subcomponentPreviewMouseEvents';
 import { CustomCss, Subcomponents, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import useSubcomponentPreviewEventHandlers from '../compositionAPI/useSubcomponentPreviewEventHandlers';
+import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../../consts/subcomponentCursorClasses.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
@@ -53,12 +54,14 @@ export default class ComponentPreviewUtils {
     elements.forEach((element) => { element.classList.remove(classToRemove); });
   }
 
-  public static setAllSubcomponentsCursorsToPointer(): void {
+  public static setAllSubcomponentsCursors(): void {
     ComponentPreviewUtils.addNewClassToSubcomponentsWithExistingClass(COMPONENT_PREVIEW_MARKER, SUBCOMPONENT_CURSOR_CLASSES.SELECT_MODE);
+    ComponentPreviewUtils.addNewClassToSubcomponentsWithExistingClass(SUBCOMPONENT_OVERLAY_CLASSES.OVERLAY_TRIGGER, SUBCOMPONENT_OVERLAY_CLASSES.OVERLAY_TRIGGER_ACTIVE);
   }
 
-  public static unsetAllSubcomponentsCursorsFromPointer(): void {
+  public static unsetAllSubcomponentsCursors(): void {
     ComponentPreviewUtils.removeClassFromAllElements(SUBCOMPONENT_CURSOR_CLASSES.SELECT_MODE);
+    ComponentPreviewUtils.removeClassFromAllElements(SUBCOMPONENT_OVERLAY_CLASSES.OVERLAY_TRIGGER_ACTIVE);
   }
 
   // inherit strategy:

@@ -22,16 +22,13 @@ export class AddComponentsToButtonBaseUtils {
 
   public static add(component: WorkshopComponent, textStyle: TEXT_STYLES, textContent: string, icon = false): void {
     const layerComponent = AddNewLayerComponent.add(component, LAYER_STYLES.PLAIN, false);
-    const textComponent = AddNewGenericComponent.add(component, COMPONENT_TYPES.TEXT, textStyle,
+    AddNewGenericComponent.add(component, COMPONENT_TYPES.TEXT, textStyle,
       layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name, [AddComponentsToButtonBaseUtils.overwriteButtonTextProperties.bind(textContent)]);
     // WORK1
-    component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].otherSubcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     if (icon) {
-      const iconComponent = AddNewGenericComponent.add(component, COMPONENT_TYPES.ICON, DEFAULT_STYLES.DEFAULT,
+      AddNewGenericComponent.add(component, COMPONENT_TYPES.ICON, DEFAULT_STYLES.DEFAULT,
         layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name, [AddComponentsToButtonBaseUtils.overwriteIconProperties]);
-      component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].otherSubcomponentsToTrigger[SUBCOMPONENT_TYPES.ICON] = iconComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     }
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(component, component.componentPreviewStructure.layers[0]);
-    component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.TEXT] = textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
   }
 }

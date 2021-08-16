@@ -16,6 +16,10 @@ export default function useBaseComponentGeneric(): UseBaseComponentGeneric {
     return {};
   }
 
+  const isIcon = (component: WorkshopComponent): boolean => {
+    return component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].subcomponentType === SUBCOMPONENT_TYPES.ICON;
+  }
+
   const getStyleProperties = (component: WorkshopComponent): WorkshopComponentCss[] => {
     const { overwrittenCustomCssObj, customCss, inheritedCss, activeCssPseudoClass, customStaticFeatures } = component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const subcomponentCss = overwrittenCustomCssObj || customCss;
@@ -27,6 +31,7 @@ export default function useBaseComponentGeneric(): UseBaseComponentGeneric {
       { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : ''},
       { backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'backgroundColor') },
       { color: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'color') },
+      isIcon(component) ? { pointerEvents: 'none' } : {},
       selectedDropdownCss,
     ];
   };
@@ -41,6 +46,7 @@ export default function useBaseComponentGeneric(): UseBaseComponentGeneric {
   }
 
   return {
+    isIcon,
     getStyleProperties,
     getSubcomponentText,
   };

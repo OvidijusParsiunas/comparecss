@@ -20,6 +20,12 @@
           :layers="component.componentPreviewStructure.layers"
         />
     </component>
+    <div v-if="isIcon(component)"
+      :id="getBaseId('subcomponentId')"
+      :style="getOverlayStyleProperties()"
+      :class="getOverlayClasses(true)"
+      @mouseenter="activateSubcomponentMouseEvent('subcomponentMouseEnter')"
+      @mouseleave="activateSubcomponentMouseEvent('subcomponentMouseLeave')"></div>
     <div ref="componentPreviewOverlay"
       :id="getBaseId('overlayId')"
       style="display: none"
@@ -95,10 +101,10 @@ export default {
       if (!this.isNestedComponent) subcomponentCss.height = this.component.coreBaseComponent ? 'unset' : '100% !important';
       if (this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isTemporaryAddPreview) subcomponentCss.display = 'block'; 
       if (!this.component.coreBaseComponent && !this.isNestedComponent) subcomponentCss.marginTop = '0px';
-      if (this.isIcon()) subcomponentCss.height = subcomponentCss.width;
+      if (this.isIcon(this.component)) subcomponentCss.height = subcomponentCss.width;
       return subcomponentCss;
     },
-    getOverlayClasses(): string[] {
+    getOverlayClasses(isIconOverlayTrigger: boolean): string[] {
       const classes: string[] = [SUBCOMPONENT_OVERLAY_CLASSES.BASE];
       if (this.isNestedComponent) {
         classes.push('nested-component');
@@ -107,6 +113,8 @@ export default {
       }
       if (this.isXButtonText()) {
         classes.push('close-button-text-overlay-height', SUBCOMPONENT_OVERLAY_CLASSES.SUB_CONTAINER);
+      } else if (isIconOverlayTrigger) {
+        classes.push(SUBCOMPONENT_OVERLAY_CLASSES.OVERLAY_TRIGGER);
       } else {
         classes.push(SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT);
       }
@@ -137,10 +145,7 @@ export default {
       return { position: 'absolute', zIndex: 1, ...positions[position] };
     },
     getTag(): string {
-      return this.isIcon() ? 'font-awesome-icon' : 'div';
-    },
-    isIcon(): boolean {
-      return !!(this.component as WorkshopComponent).coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures?.icon;
+      return this.isIcon(this.component) ? 'font-awesome-icon' : 'div';
     },
     getIconName(): string {
       const iconName = (this.component as WorkshopComponent).coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures?.icon?.name;
@@ -219,12 +224,17 @@ export default {
     border-bottom-width: 0px !important;
     height: 100%;
   }
+  .subcomponent-overlay-trigger {
+    pointer-events: none;
+    background-color: '#ff000000';
+    z-index: 0;
+  }
+  .subcomponent-overlay-trigger-active {
+    pointer-events: all;
+  }
   .sub-overlay {
     position: absolute;
     top: 0px;
-  }
-  .subcomponent-cursor-auto {
-    cursor: auto;
   }
   .subcomponent-cursor-select-mode {
     cursor: pointer !important;

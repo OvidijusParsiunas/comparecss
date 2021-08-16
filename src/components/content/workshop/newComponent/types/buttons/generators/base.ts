@@ -94,12 +94,21 @@ class ButtonBase extends ComponentBuilder {
       otherSubcomponentsToTrigger: ButtonBase.createOtherSubcomponentsToTriggerTemplate(),
     };
   }
+
+  public static createBaseComponentCoreSubcomponentRefsTemplate(): CoreSubcomponentRefs {
+    return {
+      [SUBCOMPONENT_TYPES.BASE]: null,
+      [SUBCOMPONENT_TYPES.TEXT]: null,
+      [SUBCOMPONENT_TYPES.ICON]: null,
+    }
+  }
 }
 
 export const buttonBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
+    const coreSubcomponentRefs = ButtonBase.createBaseComponentCoreSubcomponentRefsTemplate();
     const buttonBaseComponent = ComponentBuilder.createBaseComponent(
-      { componentType: COMPONENT_TYPES.BUTTON, baseName }, ButtonBase.createBaseSubcomponent);
+      { componentType: COMPONENT_TYPES.BUTTON, baseName, coreSubcomponentRefs }, ButtonBase.createBaseSubcomponent);
     ButtonBaseSpecificSettings.set(buttonBaseComponent);
     ButtonBase.setNestedComponentsOptions(buttonBaseComponent);
     ButtonBase.cleanBaseDropdownIfNotNested(buttonBaseComponent, baseName);

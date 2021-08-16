@@ -49,4 +49,10 @@ export default class JSONUtils {
     return Object.keys(map).reduce((accumulator, currentValue) =>
       Object.assign(accumulator, { [map[currentValue]]: currentValue }), {});
   }
+
+  public static setPropertyIfExists<T>(object: T, keyName: keyof T, newValue: T[keyof T]): void {
+    if (Object.prototype.hasOwnProperty.call(object, keyName)) {
+      object[keyName] = newValue;
+    }
+  }
 }

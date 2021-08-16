@@ -136,12 +136,12 @@ export default {
     toggleSubcomponentSelectMode(isActivated: boolean): void {
       // this.$refs.selectSubcomponentOverlay1.style.display = 'block';
       if (isActivated) {
-        ComponentPreviewUtils.setAllSubcomponentsCursorsToPointer();
+        ComponentPreviewUtils.setAllSubcomponentsCursors();
         this.mouseEvents = ComponentPreviewUtils.generateSubcomponentSelectModeMouseEvents(this.subcomponentAndOverlayElementIds);
         this.changeMouseEventsToDefaultOnComponentPreviewMouseEnter = false;
         SubcomponentSelectModeSubOverlay.displaySubOverlays();    
       } else {
-        ComponentPreviewUtils.unsetAllSubcomponentsCursorsFromPointer();
+        ComponentPreviewUtils.unsetAllSubcomponentsCursors();
         SubcomponentSelectModeSubOverlay.toggleDisabledSubcomponentPointerEvents('');
         if ((event.target as HTMLElement).classList.contains(CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS)) {
           // bug fix - when in select subcomponent mode and click on the subcomponent dropdown button, the overlay disappears

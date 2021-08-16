@@ -10,6 +10,7 @@ import { ComponentPreviewStructureSearchUtils } from '../utils/componentPreviewS
 import { Layer, NestedComponent } from '../../../../../../../interfaces/componentPreviewStructure';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
+import { CoreSubcomponentRefsUtils } from '../../coreSubcomponentRefs/coreSubcomponentRefsUtils';
 import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
 import { MultiBaseComponentUtils } from '../../../multiBaseComponent/multiBaseComponentUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -45,12 +46,19 @@ export class AddNewGenericComponent extends AddNewComponentShared {
   };
   public static readonly DEFAULT_TOP_PROPERTY = '50%';
 
+  private static populateCoreComponentRef(parentComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
+    const baseSubcomponent = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    const { subcomponentType }: { subcomponentType?: number } = baseSubcomponent;
+    JSONUtils.setPropertyIfExists(parentComponent.coreSubcomponentRefs, subcomponentType, baseSubcomponent);
+    const { otherSubcomponentsToTrigger } = parentComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    if (otherSubcomponentsToTrigger) JSONUtils.setPropertyIfExists(otherSubcomponentsToTrigger, subcomponentType, baseSubcomponent);
+    CoreSubcomponentRefsUtils.executeReferenceSharingExecutables(parentComponent);
+    parentComponent.referenceSharingExecutables?.[0]?.(parentComponent.coreSubcomponentRefs);
+  }
+
   private static getBaseSubcomponentNamePrefix(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES): NESTED_COMPONENTS_BASE_NAMES {
     if (componentType === COMPONENT_TYPES.BUTTON) {
-      if (componentStyle === BUTTON_STYLES.CLOSE) {
-        return BUTTON_COMPONENTS_BASE_NAMES.CLOSE;
-      }
-      return BUTTON_COMPONENTS_BASE_NAMES.BUTTON;
+      return componentStyle === BUTTON_STYLES.CLOSE ? BUTTON_COMPONENTS_BASE_NAMES.CLOSE : BUTTON_COMPONENTS_BASE_NAMES.BUTTON;
     }
     return AddNewGenericComponent.componentTypeToBaseName[componentType];
   }
@@ -152,6 +160,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent, newComponent);
     InterconnectedSettings.update(true, activeBaseComponent, newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
     IncrementNestedComponentCount.increment(activeBaseComponent, baseNamePrefix, parentLayerName);
+    AddNewGenericComponent.populateCoreComponentRef(parentComponent, newComponent);
     return newComponent;
   }
 }

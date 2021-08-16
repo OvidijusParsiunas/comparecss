@@ -116,6 +116,14 @@ export class ComponentBuilder {
     component.referenceSharingExecutables = [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents];
   }
 
+  private static createCoreSubcomponentRefs(baseSubcomponent: SubcomponentProperties, coreSubcomponentRefs: CoreSubcomponentRefs): CoreSubcomponentRefs {
+    if (coreSubcomponentRefs) {
+      coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE] = baseSubcomponent;
+      return coreSubcomponentRefs;
+    }
+    return { [SUBCOMPONENT_TYPES.BASE]: baseSubcomponent };
+  }
+
   private static createEmptyComponentPreviewStructure(baseSubcomponentName: string, isBaseOptional = true): ComponentPreviewStructure {
     const subcomponentDropdownStructure = { [baseSubcomponentName]:
       isBaseOptional ? DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject() : {} };
@@ -126,13 +134,14 @@ export class ComponentBuilder {
       subcomponentNameToDropdownOptionName: {[baseSubcomponentName]: baseSubcomponentName},
     }
   }
+
   public static createBaseComponent(componentStyle: NewComponentStyleProperties,
       createBaseSubcomponent: (name: string) => SubcomponentProperties, isBaseOptional = true): WorkshopComponent {
     const baseName = componentStyle.baseName || PARENT_COMPONENT_BASE_NAME.BASE;
     const baseSubcomponent = createBaseSubcomponent(baseName);
     const subcomponents = {[baseName]: baseSubcomponent};
     const componentPreviewStructure = ComponentBuilder.createEmptyComponentPreviewStructure(baseName, isBaseOptional);
-    const coreSubcomponentRefs: CoreSubcomponentRefs =  { [SUBCOMPONENT_TYPES.BASE]: baseSubcomponent };
+    const coreSubcomponentRefs = ComponentBuilder.createCoreSubcomponentRefs(baseSubcomponent, componentStyle.coreSubcomponentRefs);
     const baseComponent = {
       type: componentStyle.componentType,
       style: DEFAULT_STYLES.DEFAULT,

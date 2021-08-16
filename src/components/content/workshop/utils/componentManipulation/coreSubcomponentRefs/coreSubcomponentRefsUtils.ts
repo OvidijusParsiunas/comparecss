@@ -1,5 +1,5 @@
+import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { CoreSubcomponentRefs } from '../../../../../../interfaces/coreSubcomponentRefs';
-import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 
 export class CoreSubcomponentRefsUtils {
 
@@ -11,5 +11,12 @@ export class CoreSubcomponentRefsUtils {
   public static getActiveRefsArray(coreSubcomponentRefs: CoreSubcomponentRefs): SubcomponentProperties[] {
     return CoreSubcomponentRefsUtils.getActiveRefKeys(coreSubcomponentRefs || {})
       .map((coreSubcomponentKey) => coreSubcomponentRefs[coreSubcomponentKey]);
+  }
+
+  public static executeReferenceSharingExecutables(...components: WorkshopComponent[]): void {
+    components.forEach((nestedComponentRef) => {
+      const { referenceSharingExecutables, coreSubcomponentRefs } = nestedComponentRef;
+      (referenceSharingExecutables || []).forEach((executable) => executable(coreSubcomponentRefs));
+    });
   }
 }

@@ -3,6 +3,7 @@ import { UpdateLayerDropdownOptionNames } from '../updateNestedComponentNames/up
 import { componentTypeToStyleGenerators } from '../../../newComponent/types/componentTypeToStyleGenerators';
 import { Layer, NestedComponent } from '../../../../../../interfaces/componentPreviewStructure';
 import { uniqueSubcomponentIdState } from '../../componentGenerator/uniqueSubcomponentIdState';
+import { CoreSubcomponentRefsUtils } from '../coreSubcomponentRefs/coreSubcomponentRefsUtils';
 import { AddNewGenericComponent } from '../addNewNestedComponent/add/addNewGenericComponent';
 import { CoreSubcomponentRefs } from '../../../../../../interfaces/coreSubcomponentRefs';
 import { AddNewLayerComponent } from '../addNewNestedComponent/add/addNewLayerComponent';
@@ -16,13 +17,6 @@ import { CopySubcomponents } from './copySubcomponents';
 import { ComponentOptions } from 'vue';
 
 export default class CopyComponent {
-
-  private static executeReferenceSharingExecutables(baseComponentRefs: WorkshopComponent[],): void {
-    baseComponentRefs.forEach((nestedComponentRef) => {
-      const { referenceSharingExecutables, coreSubcomponentRefs } = nestedComponentRef;
-      (referenceSharingExecutables || []).forEach((executable) => executable(coreSubcomponentRefs));
-    });
-  }
 
   private static overwriteAlignedLayerSectionProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
     const newAlignedSection = this as any as ALIGNED_SECTION_TYPES;
@@ -58,7 +52,7 @@ export default class CopyComponent {
     const baseComponentRefs: WorkshopComponent[] = [];
     CopySubcomponents.copyBaseSubcomponent(newComponent, componentBeingCopied);
     CopyComponent.copyLayerComponents(newComponent, componentBeingCopied, baseComponentRefs);
-    CopyComponent.executeReferenceSharingExecutables(baseComponentRefs);
+    CoreSubcomponentRefsUtils.executeReferenceSharingExecutables(...baseComponentRefs);
   }
 
   public static copyComponent(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {

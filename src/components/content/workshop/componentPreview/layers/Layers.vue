@@ -4,11 +4,11 @@
       <div :id="getLayerId(layer.name, 'subcomponentId')"
         :style="getStyleProperties(layer, index === layers.length - 1)"
         :class="COMPONENT_PREVIEW_MARKER"
-        @mouseenter="activateMouseEvent(layer.name, 'subcomponentMouseEnter')"
-        @mouseleave="activateMouseEvent(layer.name, 'subcomponentMouseLeave')"
-        @mousedown="activateMouseEvent(layer.name, 'subcomponentMouseDown')"
-        @mouseup="activateMouseEvent(layer.name, 'subcomponentMouseUp')"
-        @click="activateMouseEvent(layer.name, 'subcomponentClick')">
+        @mouseenter="activateSubcomponentMouseEvent(layer.name, 'subcomponentMouseEnter')"
+        @mouseleave="activateSubcomponentMouseEvent(layer.name, 'subcomponentMouseLeave')"
+        @mousedown="activateSubcomponentMouseEvent(layer.name, 'subcomponentMouseDown')"
+        @mouseup="activateSubcomponentMouseEvent(layer.name, 'subcomponentMouseUp')"
+        @click="activateSubcomponentMouseEvent(layer.name, 'subcomponentClick')">
           <layer-sections
             v-if="layer.sections"
             :class="COMPONENT_PREVIEW_MARKER"
@@ -81,7 +81,7 @@ export default {
       }
       return classes;
     },
-    activateMouseEvent(layerName: string, subcomponentMouseEvent: keyof UseSubcomponentPreviewEventHandlers): void {
+    activateSubcomponentMouseEvent(layerName: string, subcomponentMouseEvent: keyof UseSubcomponentPreviewEventHandlers): void {
       const layerId = this.getLayerId(layerName, 'subcomponentId');
       return layerId && this.mouseEvents[layerId][subcomponentMouseEvent]()
     },
