@@ -1,7 +1,7 @@
+import { CoreSubcomponentRefsUtils } from '../../../../utils/componentManipulation/coreSubcomponentRefs/coreSubcomponentRefsUtils';
 import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewGenericComponent';
-import { SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
 
 export class CopyNestedComponentModeTempPropertiesUtils {
   
@@ -26,7 +26,7 @@ export class CopyNestedComponentModeTempPropertiesUtils {
 
   public static setActiveComponentToCopyNestedComponent(componentToBeCopied: WorkshopComponent, activeComponent: WorkshopComponent): void {
     const activeComponentSubcomponentCoreRefs = activeComponent.subcomponents[activeComponent.activeSubcomponentName].nestedComponent.ref.coreSubcomponentRefs;
-    Object.keys(activeComponentSubcomponentCoreRefs).forEach((coreSubcomponentType: keyof CoreSubcomponentRefs) => {
+    Object.keys(activeComponentSubcomponentCoreRefs).forEach((coreSubcomponentType) => {
       CopyNestedComponentModeTempPropertiesUtils.copyTargetSubcomponent(componentToBeCopied.coreSubcomponentRefs[coreSubcomponentType],
         activeComponentSubcomponentCoreRefs[coreSubcomponentType]);
     });
@@ -39,9 +39,9 @@ export class CopyNestedComponentModeTempPropertiesUtils {
 
   public static cleanComponent(activeComponent: WorkshopComponent, resetOriginalProperties: boolean): void {
     const { coreSubcomponentRefs } = activeComponent.subcomponents[activeComponent.activeSubcomponentName].nestedComponent.ref;
-    const coreSubcomponentTypes = Object.keys(coreSubcomponentRefs).filter((coreSubcomponentKey) => coreSubcomponentRefs[coreSubcomponentKey]);
-    for (let i = 0; i < coreSubcomponentTypes.length; i += 1) {
-      const activeSubcomponent = coreSubcomponentRefs[coreSubcomponentTypes[i]];
+    const coreSubcomponentRefsArray = CoreSubcomponentRefsUtils.getActiveRefsArray(coreSubcomponentRefs);
+    for (let i = 0; i < coreSubcomponentRefsArray.length; i += 1) {
+      const activeSubcomponent = coreSubcomponentRefsArray[i];
       if (!activeSubcomponent.tempOriginalCustomProperties) break;
       if (resetOriginalProperties) { CopyNestedComponentModeTempPropertiesUtils.resetOriginalCss(activeSubcomponent); }
       delete activeSubcomponent.tempOriginalCustomProperties;

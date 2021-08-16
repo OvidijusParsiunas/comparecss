@@ -3,6 +3,7 @@ import { LAYER_COMPONENTS_BASE_NAMES, NESTED_COMPONENTS_BASE_NAMES } from '../..
 import { UpdateLayerDropdownOptionNames } from '../updateNestedComponentNames/updateLayerDropdownOptionNames';
 import { ComponentPreviewStructureSearchUtils } from './utils/componentPreviewStractureSearchUtils';
 import { NestedComponentBaseNamesToStyles } from './utils/nestedComponentBaseNamesToStyles';
+import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { AddNewGenericComponent } from './add/addNewGenericComponent';
 import { AddNewLayerComponent } from './add/addNewLayerComponent';
@@ -15,7 +16,7 @@ export class AddNewNestedComponent {
     const nestedComponentStyle = NestedComponentBaseNamesToStyles.genericToStyle(nestedComponentBaseName);
     const newComponent = AddNewGenericComponent.add(currentlySelectedComponent, nestedComponentType, nestedComponentStyle, layerName);
     // set here because not all nested components are removable, but the ones added by the user are
-    newComponent.coreSubcomponentRefs.base.isRemovable = true;
+    newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
   }
 
   private static updateGenericComponentDropdownOptionNames(currentlySelectedComponent: WorkshopComponent): void {
@@ -43,7 +44,7 @@ export class AddNewNestedComponent {
 
   private static addNewLayerToBase(currentlySelectedComponent: WorkshopComponent, nestedComponentBaseName: string): void {
     const newComponent = AddNewLayerComponent.add(currentlySelectedComponent, NestedComponentBaseNamesToStyles.LAYER_TO_STYLE[nestedComponentBaseName], true);
-    newComponent.coreSubcomponentRefs.base.isRemovable = true;
+    newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
     AddNewNestedComponent.updateLayerComponentNames(currentlySelectedComponent);
     newComponent.nestedComponentsLockedToLayer?.add(currentlySelectedComponent);
   }
@@ -51,7 +52,7 @@ export class AddNewNestedComponent {
   public static add(currentlySelectedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
     if (Object.values(LAYER_COMPONENTS_BASE_NAMES).includes(nestedComponentBaseName as LAYER_COMPONENTS_BASE_NAMES)) {
       AddNewNestedComponent.addNewLayerToBase(currentlySelectedComponent, nestedComponentBaseName);
-    } else if (currentlySelectedComponent.activeSubcomponentName === currentlySelectedComponent.coreSubcomponentRefs.base.name) {
+    } else if (currentlySelectedComponent.activeSubcomponentName === currentlySelectedComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name) {
       AddNewNestedComponent.addNewSubcomponentToDefaultBaseLayer(currentlySelectedComponent, nestedComponentBaseName);
     } else {
       AddNewNestedComponent.addNewSubcomponentToCurrentLayer(currentlySelectedComponent, nestedComponentBaseName);

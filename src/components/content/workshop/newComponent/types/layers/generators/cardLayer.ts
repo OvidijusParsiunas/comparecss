@@ -2,6 +2,7 @@ import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
+import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { CardLayerSpecificSettings } from '../settings/cardLayerSpecificSettings';
 import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
@@ -62,7 +63,7 @@ class CardLayer extends ComponentBuilder {
   }
 
   public static overwriteBase(component: WorkshopComponent): void {
-    const baseSubcomponent = component.coreSubcomponentRefs.base;
+    const baseSubcomponent = component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     CardLayer.overwriteCustomCss(baseSubcomponent);
     CardLayer.createCustomFeatures(baseSubcomponent);
     CardLayer.overwriteCustomStaticFeatures(baseSubcomponent);

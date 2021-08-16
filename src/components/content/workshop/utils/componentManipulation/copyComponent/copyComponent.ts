@@ -7,6 +7,7 @@ import { AddNewGenericComponent } from '../addNewNestedComponent/add/addNewGener
 import { CoreSubcomponentRefs } from '../../../../../../interfaces/coreSubcomponentRefs';
 import { AddNewLayerComponent } from '../addNewNestedComponent/add/addNewLayerComponent';
 import { ComponentBuilder } from '../../../newComponent/types/shared/componentBuilder';
+import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
@@ -25,8 +26,8 @@ export default class CopyComponent {
 
   private static overwriteAlignedLayerSectionProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
     const newAlignedSection = this as any as ALIGNED_SECTION_TYPES;
-    coreSubcomponentRefs.base.customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(newAlignedSection);
-    coreSubcomponentRefs.base.defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(newAlignedSection);
+    coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(newAlignedSection);
+    coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(newAlignedSection);
   }
 
   private static copyAlignedSectionComponents(newLayer: Layer, copiedLayer: Layer, newComponent: WorkshopComponent, baseComponentRefs: WorkshopComponent[]): void {

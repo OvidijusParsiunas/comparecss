@@ -11,7 +11,6 @@ import ComponentTraversalUtils from '../../componentTraversal/componentTraversal
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { StringUtils } from '../../generic/stringUtils';
-import { ArrayUtils } from '../../generic/arrayUtils';
 
 type TargetRemovalDetails = TargetDetails & { isRemovingActiveSubcomponent?: boolean };
 
@@ -78,7 +77,7 @@ export class RemoveNestedComponent {
 
   private static getParentSubcomponentName(parentComponent: WorkshopComponent, dropdownOptionDetailsStack: DropdownOptionAuxDetails[]): string {
     const parentDropdownOptionDetails = dropdownOptionDetailsStack[dropdownOptionDetailsStack.length - 2];
-    return parentDropdownOptionDetails?.actualObjectName || parentComponent.coreSubcomponentRefs.base.name;
+    return parentDropdownOptionDetails?.actualObjectName || parentComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
   }
 
   private static removeNestedComponent(componentTraversalState: ComponentTraversalState, targetDetails: TargetRemovalDetails,
@@ -130,8 +129,9 @@ export class RemoveNestedComponent {
 
   // WORK1 - copy/add triggerable subcomponent
   private static removeTriggerableSubcomponent(targetDetails: TargetRemovalDetails): void {
-    const { parentComponent: { coreSubcomponentRefs: { base: { otherSubcomponentsToTrigger }}}, targetSubcomponentProperties } = targetDetails;
-    if (otherSubcomponentsToTrigger) ArrayUtils.removeItem(otherSubcomponentsToTrigger, targetSubcomponentProperties)
+    const { parentComponent: { coreSubcomponentRefs: { [SUBCOMPONENT_TYPES.BASE]: { otherSubcomponentsToTrigger }}}, targetSubcomponentProperties } = targetDetails;
+    const coreSubcomponent = Object.keys(otherSubcomponentsToTrigger).find((coreSubcomponentKey) => otherSubcomponentsToTrigger[coreSubcomponentKey] === targetSubcomponentProperties);
+    if (coreSubcomponent) otherSubcomponentsToTrigger[coreSubcomponent] = null;
   }
 
   public static remove(parentComponent: WorkshopComponent, subcomponentName?: string): void {

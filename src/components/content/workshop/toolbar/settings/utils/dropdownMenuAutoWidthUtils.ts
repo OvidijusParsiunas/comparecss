@@ -2,6 +2,7 @@ import { subcomponentAndOverlayElementIdsState } from '../../options/subcomponen
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
+import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 
 export class DropdownMenuAutoWidthUtils {
@@ -29,11 +30,12 @@ export class DropdownMenuAutoWidthUtils {
   }
 
   private static setComponentWidths(coreBaseComponent: WorkshopComponent, auxiliaryComponent: WorkshopComponent): void {
-    const { customFeatures } = coreBaseComponent.coreSubcomponentRefs.base;
+    const { customFeatures } = coreBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     if (customFeatures.autoSize?.width) {
       const width = DropdownMenuAutoWidthUtils.getLargestItemWidth(coreBaseComponent.auxiliaryComponent);
-      coreBaseComponent.coreSubcomponentRefs.base.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = width;
-      auxiliaryComponent.coreSubcomponentRefs.base.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = width;
+      // WORK2: use actual dropdown structure to get icon subcomponent name
+      coreBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = width;
+      auxiliaryComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = width;
     }
   }
 

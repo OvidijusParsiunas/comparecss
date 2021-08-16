@@ -1,5 +1,6 @@
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { MultiBaseComponentUtils } from '../../multiBaseComponent/multiBaseComponentUtils';
+import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { UpdateDropdownOptionNamesShared } from './updateDropdownOptionNamesShared';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ArrayUtils } from '../../generic/arrayUtils';
@@ -41,7 +42,7 @@ export class UpdateLayerDropdownOptionNames extends UpdateDropdownOptionNamesSha
   public static update(parentComponent: WorkshopComponent, startingLayerNumber: number): void {
     const { componentPreviewStructure: { subcomponentDropdownStructure } } = parentComponent;
     const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
-    const layersDropdownStructure = subcomponentDropdownStructure[activeBaseComponent.coreSubcomponentRefs.base.name] as NestedDropdownStructure;
+    const layersDropdownStructure = subcomponentDropdownStructure[activeBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] as NestedDropdownStructure;
     const subcomponentNames = UpdateDropdownOptionNamesShared.getSubcomponentNames(layersDropdownStructure);
     let overwrittenOptionNames: string[] = [];
     if (subcomponentNames.length === 1) {

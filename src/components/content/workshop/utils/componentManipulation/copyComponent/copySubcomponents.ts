@@ -1,4 +1,6 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, NestedComponent, SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { CoreSubcomponentRefsUtils } from '../coreSubcomponentRefs/coreSubcomponentRefsUtils';
+import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import JSONUtils from '../../generic/jsonUtils';
 
 type CopyableSubcomponentProperties = CustomCss|CustomFeatures|CustomStaticFeatures;
@@ -43,7 +45,7 @@ export class CopySubcomponents {
   }
 
   public static copyComponentSubcomponents(componentBeingCopied: WorkshopComponent, newNestedComponent: WorkshopComponent): void {
-    Object.keys(newNestedComponent.coreSubcomponentRefs).filter((coreSubcomponentKey) => newNestedComponent.coreSubcomponentRefs[coreSubcomponentKey]).forEach((coreSubcomponentType) => {
+    CoreSubcomponentRefsUtils.getActiveRefKeys(newNestedComponent.coreSubcomponentRefs).forEach((coreSubcomponentType) => {
       const newSubcomponent = newNestedComponent.coreSubcomponentRefs[coreSubcomponentType];
       const subcomponentBeingCopied = componentBeingCopied.coreSubcomponentRefs[coreSubcomponentType];
       CopySubcomponents.copyExistingSubcomponentProperties(newSubcomponent, subcomponentBeingCopied);
@@ -51,8 +53,8 @@ export class CopySubcomponents {
   }
 
   public static copyBaseSubcomponent(newComponent: WorkshopComponent, copiedComponent: WorkshopComponent): void {
-    const newBaseSubcomponent = newComponent.coreSubcomponentRefs.base;
-    const copiedBaseSubcomponent = copiedComponent.coreSubcomponentRefs.base;
+    const newBaseSubcomponent = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    const copiedBaseSubcomponent = copiedComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     if (copiedBaseSubcomponent.nestedComponent?.inSync) {
       CopySubcomponents.copyInSyncSubcomponent(copiedBaseSubcomponent.nestedComponent, newBaseSubcomponent, copiedBaseSubcomponent);
     } else {

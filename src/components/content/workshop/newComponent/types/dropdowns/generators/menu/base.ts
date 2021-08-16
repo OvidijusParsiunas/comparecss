@@ -39,7 +39,7 @@ class DropdownMenuBase extends ComponentBuilder {
   }
 
   public static setAuxiliaryComponentReferenceOnBase(dropdownMenuComponent: WorkshopComponent): void {
-    dropdownMenuComponent.subcomponents[dropdownMenuComponent.coreSubcomponentRefs.base.name].parentBaseComponentRef = dropdownMenuComponent;
+    dropdownMenuComponent.subcomponents[dropdownMenuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name].parentBaseComponentRef = dropdownMenuComponent;
   }
 
   private static createDefaultNewNestedComponentsOptions(): NestedDropdownStructure {

@@ -17,7 +17,7 @@ class AlertBase extends ComponentBuilder {
   public static setNestedComponentsOptions(alertBaseComponent: WorkshopComponent): void {
     const baseComponentOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([
       PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE]);
-    alertBaseComponent.coreSubcomponentRefs.base.newNestedComponentsOptions = baseComponentOptions;
+    alertBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newNestedComponentsOptions = baseComponentOptions;
     alertBaseComponent.newNestedComponentsOptionsRefs = { layer: baseComponentOptions };
     alertBaseComponent.nestedComponentCount = { max: { [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
   }

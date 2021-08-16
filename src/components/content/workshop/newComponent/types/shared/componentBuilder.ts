@@ -6,6 +6,7 @@ import { ComponentPreviewStructure } from '../../../../../../interfaces/componen
 import { PARENT_COMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { CoreSubcomponentRefs } from '../../../../../../interfaces/coreSubcomponentRefs';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
+import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
@@ -111,7 +112,7 @@ export class ComponentBuilder {
   protected static populateReferences(component: WorkshopComponent): void {
     const { coreSubcomponentRefs, subcomponents } = component;
     ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(coreSubcomponentRefs);
-    ReferenceSharingUtils.appendBaseSubcomponentRefToAllChildSubcomponents(coreSubcomponentRefs.base, subcomponents);
+    ReferenceSharingUtils.appendBaseSubcomponentRefToAllChildSubcomponents(coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE], subcomponents);
     component.referenceSharingExecutables = [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents];
   }
 
@@ -131,7 +132,7 @@ export class ComponentBuilder {
     const baseSubcomponent = createBaseSubcomponent(baseName);
     const subcomponents = {[baseName]: baseSubcomponent};
     const componentPreviewStructure = ComponentBuilder.createEmptyComponentPreviewStructure(baseName, isBaseOptional);
-    const coreSubcomponentRefs: CoreSubcomponentRefs =  { base: baseSubcomponent };
+    const coreSubcomponentRefs: CoreSubcomponentRefs =  { [SUBCOMPONENT_TYPES.BASE]: baseSubcomponent };
     const baseComponent = {
       type: componentStyle.componentType,
       style: DEFAULT_STYLES.DEFAULT,

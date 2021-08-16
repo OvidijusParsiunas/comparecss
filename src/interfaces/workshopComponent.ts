@@ -169,7 +169,7 @@ export interface SubcomponentProperties {
   tempOriginalCustomProperties?: TempCustomProperties;
   // when a subcomponent's mouse event is triggered, trigger other subcomponents' mouse events
   // should currently be placed on base subcomponent only, if that changes - ammend the removeTriggerableSubcomponent method in RemoveNestedComponent class
-  otherSubcomponentsToTrigger?: SubcomponentProperties[];
+  otherSubcomponentsToTrigger?: CoreSubcomponentRefs;
   isTriggeredByAnotherSubcomponent?: boolean;
   // options for the add nested component dropdown
   newNestedComponentsOptions?: NestedDropdownStructure;

@@ -2,6 +2,7 @@ import { WorkshopComponent, CustomCss, ChildCss, SubcomponentProperties } from '
 import { CustomCssWithInheritedCss, InitialCssBuild, SharedInheritedCss } from '../../../../../interfaces/cssBuilder';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
+import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { TempCustomCss } from '../../../../../interfaces/tempCustomCss';
 import SharedCssUtils from './sharedCssUtils';
 import GeneralUtils from './generalUtils';
@@ -80,7 +81,7 @@ export default class CssBuilder {
       const { className, subcomponents, coreSubcomponentRefs, type } = component;
       Object.keys(subcomponents).forEach((subcomponentName: string) => {
         const subcomponent: SubcomponentProperties = subcomponents[subcomponentName];
-        if (subcomponentName === coreSubcomponentRefs.base.name) {
+        if (subcomponentName === coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name) {
           const componentToSubcomponentId = SharedCssUtils.generateComponentToSubcomponentId(type, subcomponentName);
           const processedCustomCss: CustomCssWithInheritedCss = SharedCssUtils.allocateSharedInheritedCss(subcomponent.customCss,
             (subcomponent.inheritedCss ? subcomponent.inheritedCss : undefined), repeatedSubcomponents[componentToSubcomponentId], sharedInheritedParentCss, type, className);

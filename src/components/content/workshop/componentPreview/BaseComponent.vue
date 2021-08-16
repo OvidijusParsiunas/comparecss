@@ -55,6 +55,7 @@ import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.en
 import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../consts/elementClassMarkers';
 import useBaseComponentGeneric from './compositionAPI/useBaseComponentGeneric';
+import { SUBCOMPONENT_TYPES } from '../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../consts/closeButtonXText';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
@@ -81,18 +82,18 @@ export default {
   },
   methods: {
     getBaseId(idType: keyof SubcomponentAndOverlayElementIds[string]): string {
-      return this.subcomponentAndOverlayElementIds[this.component.coreSubcomponentRefs.base.name]?.[idType];
+      return this.subcomponentAndOverlayElementIds[this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name]?.[idType];
     },
     activateSubcomponentMouseEvent(subcomponentMouseEvent: keyof UseSubcomponentPreviewEventHandlers): void {
       this.mouseEvents[this.getBaseId('subcomponentId')][subcomponentMouseEvent]();
     },
     getJsClasses(): string[] {
-      return this.component.coreSubcomponentRefs.base.customFeatures?.jsClasses || [];
+      return this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures?.jsClasses || [];
     },
     getOverlayStyleProperties(): WorkshopComponentCss {
-      const subcomponentCss = { ...this.component.coreSubcomponentRefs.base.customCss[CSS_PSEUDO_CLASSES.DEFAULT], color: '#ff000000' };
+      const subcomponentCss = { ...this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT], color: '#ff000000' };
       if (!this.isNestedComponent) subcomponentCss.height = this.component.coreBaseComponent ? 'unset' : '100% !important';
-      if (this.component.coreSubcomponentRefs.base.isTemporaryAddPreview) subcomponentCss.display = 'block'; 
+      if (this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isTemporaryAddPreview) subcomponentCss.display = 'block'; 
       if (!this.component.coreBaseComponent && !this.isNestedComponent) subcomponentCss.marginTop = '0px';
       if (this.isIcon()) subcomponentCss.height = subcomponentCss.width;
       return subcomponentCss;
@@ -109,19 +110,19 @@ export default {
       } else {
         classes.push(SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT);
       }
-      if (this.component.coreSubcomponentRefs.base.isTemporaryAddPreview) {
+      if (this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isTemporaryAddPreview) {
         classes.push(SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
       }
       return classes;
     },
     isXButtonText(): boolean {
-      return this.component.coreSubcomponentRefs.base.customStaticFeatures?.subcomponentText?.text === CLOSE_BUTTON_X_TEXT;
+      return this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures?.subcomponentText?.text === CLOSE_BUTTON_X_TEXT;
     },
     getSubcomponentMouseEventsDisabledClassForXButtonText(): string {
       return this.isXButtonText() ? SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS : '';
     },
     getXButtonOverlayStyleProperties(): WorkshopComponentCss[] {
-      const { overwrittenCustomCssObj, customCss } = this.component.coreSubcomponentRefs.base;
+      const { overwrittenCustomCssObj, customCss } = this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
       const customCssObj = overwrittenCustomCssObj || customCss;
       return [customCssObj[CSS_PSEUDO_CLASSES.DEFAULT], { top: '', color: 'none', backgroundColor: 'none'}];
     },
@@ -132,21 +133,21 @@ export default {
         [DROPDOWN_MENU_POSITIONS.LEFT]: { top: '0px', right: '100%' },
         [DROPDOWN_MENU_POSITIONS.RIGHT]: { top: '0px', left: '100%' },
       };
-      const { position } = this.component.auxiliaryComponent.coreSubcomponentRefs.base.customFeatures.dropdownMenuPosition;
+      const { position } = this.component.auxiliaryComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.dropdownMenuPosition;
       return { position: 'absolute', zIndex: 1, ...positions[position] };
     },
     getTag(): string {
       return this.isIcon() ? 'font-awesome-icon' : 'div';
     },
     isIcon(): boolean {
-      return !!(this.component as WorkshopComponent).coreSubcomponentRefs.base.customFeatures?.icon;
+      return !!(this.component as WorkshopComponent).coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures?.icon;
     },
     getIconName(): string {
-      const iconName = (this.component as WorkshopComponent).coreSubcomponentRefs.base.customFeatures?.icon?.name;
+      const iconName = (this.component as WorkshopComponent).coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures?.icon?.name;
       return iconName ? DROPDOWN_ARROW_ICON_TYPES_TO_FONT_AWESOME_NAMES[iconName] : null;
     },
     isComponentDisplayed(): boolean {
-      const { customFeatures } = (this.component as WorkshopComponent).coreSubcomponentRefs.base;
+      const { customFeatures } = (this.component as WorkshopComponent).coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
       if (customFeatures?.icon) {
         return customFeatures.icon.isComponentDisplayed;
       }

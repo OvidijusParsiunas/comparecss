@@ -1,6 +1,7 @@
 import { AlignedSections, Layer, NestedComponent } from '../../../../../../interfaces/componentPreviewStructure';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { MultiBaseComponentUtils } from '../../multiBaseComponent/multiBaseComponentUtils';
+import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { UpdateDropdownOptionNamesShared } from './updateDropdownOptionNamesShared';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { StringUtils } from '../../generic/stringUtils';
@@ -106,7 +107,7 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
 
   private static getBaseDropdownStructure(parentComponent: WorkshopComponent): NestedDropdownStructure {
     const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
-    const baseName = activeBaseComponent.coreSubcomponentRefs.base.name;
+    const baseName = activeBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
     return parentComponent.componentPreviewStructure.subcomponentDropdownStructure[baseName] as NestedDropdownStructure;
   }
 
@@ -127,7 +128,7 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
     const { name, sections: { alignedSections }} = layer;
     const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
     const { subcomponentDropdownStructure } = parentComponent.componentPreviewStructure;
-    const nestedComponents = subcomponentDropdownStructure[activeBaseComponent.coreSubcomponentRefs.base.name]
+    const nestedComponents = subcomponentDropdownStructure[activeBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name]
       [parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[name]];
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(parentComponent, nestedComponents, alignedSections);
   }

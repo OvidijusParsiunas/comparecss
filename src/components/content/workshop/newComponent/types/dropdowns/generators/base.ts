@@ -4,7 +4,7 @@ import { AddNewLayerComponent } from '../../../../utils/componentManipulation/ad
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -15,22 +15,22 @@ import { dropdownMenuBase } from './menu/base';
 class DropdownBase extends ComponentBuilder {
 
   public static setButtonAutoSize(buttonComponent: WorkshopComponent, dropdownMenuBaseComponent: WorkshopComponent): void {
-    const { customFeatures, defaultCustomFeatures } = buttonComponent.coreSubcomponentRefs.base;
-    customFeatures.autoSize = dropdownMenuBaseComponent.coreSubcomponentRefs.base.customFeatures.autoSize;
-    defaultCustomFeatures.autoSize = dropdownMenuBaseComponent.coreSubcomponentRefs.base.defaultCustomFeatures.autoSize;
+    const { customFeatures, defaultCustomFeatures } = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    customFeatures.autoSize = dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.autoSize;
+    defaultCustomFeatures.autoSize = dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures.autoSize;
   }
 
   public static overwriteCustomCss(buttonComponent: WorkshopComponent, dropdownMenuBaseComponent: WorkshopComponent): void {
-    const baseSubcomponent = buttonComponent.coreSubcomponentRefs.base;
+    const baseSubcomponent = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = '155px';
     baseSubcomponent.defaultCss[CSS_PSEUDO_CLASSES.DEFAULT].width = '155px';
     baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = '4px';
     baseSubcomponent.defaultCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = '4px';
-    const textSubcomponent = buttonComponent.coreSubcomponentRefs.text;
+    const textSubcomponent = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.TEXT];
     textSubcomponent.customStaticFeatures.subcomponentText.text = 'Dropdown button';
     textSubcomponent.defaultCustomStaticFeatures.subcomponentText.text = 'Dropdown button';
-    textSubcomponent.customStaticFeatures.selectDropdown = dropdownMenuBaseComponent.coreSubcomponentRefs.base.customStaticFeatures.selectDropdown;
-    textSubcomponent.defaultCustomStaticFeatures.selectDropdown = dropdownMenuBaseComponent.coreSubcomponentRefs.base.defaultCustomStaticFeatures.selectDropdown;
+    textSubcomponent.customStaticFeatures.selectDropdown = dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures.selectDropdown;
+    textSubcomponent.defaultCustomStaticFeatures.selectDropdown = dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomStaticFeatures.selectDropdown;
   }
 
   public static addComponentsToBase(buttonComponent: WorkshopComponent): void {
@@ -55,10 +55,10 @@ export const dropdownBase: ComponentGenerator = {
     DropdownBase.overwriteCustomCss(buttonComponent, dropdownMenuBaseComponent);
     Object.assign(buttonComponent.subcomponents, dropdownMenuBaseComponent.subcomponents);
     Object.assign(buttonComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName, dropdownMenuBaseComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName);
-    buttonComponent.componentPreviewStructure.subcomponentDropdownStructure[dropdownMenuBaseComponent.coreSubcomponentRefs.base.name] = { ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(dropdownMenuBaseComponent.coreSubcomponentRefs.base.name) };
+    buttonComponent.componentPreviewStructure.subcomponentDropdownStructure[dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] = { ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name) };
     buttonComponent.auxiliaryComponent = dropdownMenuBaseComponent;
     dropdownMenuBaseComponent.coreBaseComponent = buttonComponent;
-    buttonComponent.activeSubcomponentName = dropdownMenuBaseComponent.coreSubcomponentRefs.base.name;
+    buttonComponent.activeSubcomponentName = dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
     DropdownBase.addComponentsToBase(buttonComponent);
     buttonComponent.activeSubcomponentName = buttonComponent.defaultSubcomponentName;
     return buttonComponent;

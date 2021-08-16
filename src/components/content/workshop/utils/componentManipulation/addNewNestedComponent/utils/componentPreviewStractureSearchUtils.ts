@@ -1,11 +1,12 @@
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
+import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 
 export class ComponentPreviewStructureSearchUtils {
 
   public static getComponentLayers(currentlySelectedComponent: WorkshopComponent): NestedDropdownStructure {
-    const { coreSubcomponentRefs: { base: { name } }, componentPreviewStructure: { subcomponentDropdownStructure } } = currentlySelectedComponent;
+    const { coreSubcomponentRefs: { [SUBCOMPONENT_TYPES.BASE]: { name } }, componentPreviewStructure: { subcomponentDropdownStructure } } = currentlySelectedComponent;
     return subcomponentDropdownStructure[name] as NestedDropdownStructure;
   }
 

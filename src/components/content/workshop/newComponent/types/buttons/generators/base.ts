@@ -3,6 +3,7 @@ import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } 
 import { DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -17,7 +18,7 @@ class ButtonBase extends ComponentBuilder {
   public static setNestedComponentsOptions(buttonBaseComponent: WorkshopComponent): void {
     const baseComponentOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([
       PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, PRIMITIVE_COMPONENTS_BASE_NAMES.ICON]);
-    buttonBaseComponent.coreSubcomponentRefs.base.newNestedComponentsOptions = baseComponentOptions;
+    buttonBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newNestedComponentsOptions = baseComponentOptions;
     buttonBaseComponent.newNestedComponentsOptionsRefs = { layer: baseComponentOptions };
     buttonBaseComponent.nestedComponentCount = {
       max: { [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT]: 1, [PRIMITIVE_COMPONENTS_BASE_NAMES.ICON]: 1 }};
@@ -26,9 +27,13 @@ class ButtonBase extends ComponentBuilder {
   public static cleanBaseDropdownIfNotNested(buttonComponent: WorkshopComponent, baseName?: string): void {
     if (!baseName) {
       const { componentPreviewStructure, coreSubcomponentRefs } = buttonComponent;
-      const buttonBaseCustomponent = componentPreviewStructure.subcomponentDropdownStructure[coreSubcomponentRefs.base.name];
+      const buttonBaseCustomponent = componentPreviewStructure.subcomponentDropdownStructure[coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name];
       delete buttonBaseCustomponent[DROPDOWN_OPTION_AUX_DETAILS_REF];
     }
+  }
+
+  private static createOtherSubcomponentsToTriggerTemplate(): CoreSubcomponentRefs {
+    return { [SUBCOMPONENT_TYPES.TEXT]: null, [SUBCOMPONENT_TYPES.ICON]: null };
   }
 
   private static createDefaultBaseCss(): CustomCss {
@@ -86,6 +91,7 @@ class ButtonBase extends ComponentBuilder {
       inheritedCss: inheritedButtonCss,
       customFeatures: ButtonBase.createDefaultButtonBaseCustomFeatures(),
       defaultCustomFeatures: ButtonBase.createDefaultButtonBaseCustomFeatures(),
+      otherSubcomponentsToTrigger: ButtonBase.createOtherSubcomponentsToTriggerTemplate(),
     };
   }
 }

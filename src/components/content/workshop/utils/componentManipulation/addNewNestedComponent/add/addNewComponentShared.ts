@@ -1,3 +1,4 @@
+import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 
@@ -6,7 +7,7 @@ export class AddNewComponentShared {
   protected static addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent: WorkshopComponent,
       newComponent: WorkshopComponent, isEditable = true): void {
     if (!isEditable) return;
-    const baseName = newComponent.coreSubcomponentRefs.base.name;
+    const baseName = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
     parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[baseName] = baseName;
   }
 

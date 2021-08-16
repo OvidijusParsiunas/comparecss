@@ -1,10 +1,12 @@
 import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../../consts/unsetColotButtonDisplayed';
 import { subcomponentAndOverlayElementIdsState } from '../../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
+import { CoreSubcomponentRefsUtils } from '../../utils/componentManipulation/coreSubcomponentRefs/coreSubcomponentRefsUtils';
 import { subcomponentSelectModeState } from '../../toolbar/options/subcomponentSelectMode/subcomponentSelectModeState';
 import { UseSubcomponentPreviewEventHandlers } from '../../../../../interfaces/useSubcomponentPreviewEventHandlers';
 import { CustomCss, CustomFeatures, SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { SubcomponentMouseEventCallbacks } from '../../../../../interfaces/subcomponentMouseEventCallbacks';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
+import { CoreSubcomponentRefs } from '../../../../../interfaces/coreSubcomponentRefs';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { StationaryAnimations } from '../../../../../interfaces/animations';
@@ -32,8 +34,8 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     });
   }
 
-  function triggerOtherSubcomponentsMouseEvents(otherSubcomponentsToTrigger: SubcomponentProperties[], mouseEventType: string): void {
-    (otherSubcomponentsToTrigger || []).forEach((subcomponent) => {
+  function triggerOtherSubcomponentsMouseEvents(otherSubcomponentsToTrigger: CoreSubcomponentRefs, mouseEventType: string): void {
+    CoreSubcomponentRefsUtils.getActiveRefsArray(otherSubcomponentsToTrigger).forEach((subcomponent) => {
       const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(subcomponent.name);
       const element = document.getElementById(subcomponentId);
       element.dispatchEvent(new MouseEvent(mouseEventType));

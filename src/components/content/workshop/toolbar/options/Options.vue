@@ -581,7 +581,8 @@ export default {
     isSubcomponentPresent(subcomponentStyle: COMPONENT_STYLES): boolean {
       return !!Object.keys(this.component.subcomponents).find((subcomponentName) => {
         const component: WorkshopComponent = this.component.subcomponents[subcomponentName].nestedComponent?.ref;
-        return component?.style === subcomponentStyle && component.coreSubcomponentRefs.base.name !== TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY;
+        return component?.style === subcomponentStyle
+          && component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name !== TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY;
       });
     },
     isFullPreviewModeButtonDisplayed(): boolean {

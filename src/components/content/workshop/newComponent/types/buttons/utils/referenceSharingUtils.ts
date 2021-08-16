@@ -1,6 +1,8 @@
+import { CoreSubcomponentRefsUtils } from '../../../../utils/componentManipulation/coreSubcomponentRefs/coreSubcomponentRefsUtils';
 import { SubcomponentProperties, Subcomponents } from '../../../../../../../interfaces/workshopComponent';
 import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
+import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 
 export default class ReferenceSharingUtils {
 
@@ -8,12 +10,12 @@ export default class ReferenceSharingUtils {
     return new Set([JAVASCRIPT_CLASSES.RIPPLES])
   }
 
+  // WORK1 - will need to be called again
   public static appendJsClassesRefToAllSubcomponents(coreSubcomponentRefs: CoreSubcomponentRefs): void {
-    const baseSubcomponent = coreSubcomponentRefs.base;
+    const baseSubcomponent = coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const jsClasses = baseSubcomponent.customFeatures && baseSubcomponent.customFeatures.jsClasses
       ? baseSubcomponent.customFeatures.jsClasses : ReferenceSharingUtils.createDefaultButtonJsClasses();
-    Object.keys(coreSubcomponentRefs).filter((coreSubcomponentKey) => coreSubcomponentRefs[coreSubcomponentKey]).forEach((coreName) => {
-      const subcomponent = coreSubcomponentRefs[coreName];
+    CoreSubcomponentRefsUtils.getActiveRefsArray(coreSubcomponentRefs).forEach((subcomponent) => {
       if (!subcomponent.customFeatures) {
         subcomponent.customFeatures = {};
         subcomponent.defaultCustomFeatures = {};

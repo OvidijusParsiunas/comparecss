@@ -1,6 +1,7 @@
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SubcomponentSpecificSettings } from '../../../../../../../interfaces/subcomponentSpecificSettings';
 import { CardBaseSpecificSettings } from '../../cards/settings/cardBaseSpecificSettings';
+import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SETTING_NAMES } from '../../../../../../../consts/settingNames.enum';
 import { AnimationPreview } from '../../shared/settings/animationPreview';
@@ -20,6 +21,6 @@ export class ModalBaseSpecificSettings {
   };
 
   public static set(component: WorkshopComponent): void {
-    component.coreSubcomponentRefs.base.subcomponentSpecificSettings = ModalBaseSpecificSettings.MODAL_BASE_SPECIFIC_COMPONENTS;
+    component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].subcomponentSpecificSettings = ModalBaseSpecificSettings.MODAL_BASE_SPECIFIC_COMPONENTS;
   }
 }
