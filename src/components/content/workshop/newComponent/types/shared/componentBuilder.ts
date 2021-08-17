@@ -135,6 +135,7 @@ export class ComponentBuilder {
     }
   }
 
+  // WORK1: refactor
   public static createBaseComponent(componentStyle: NewComponentStyleProperties,
       createBaseSubcomponent: (name: string) => SubcomponentProperties, isBaseOptional = true): WorkshopComponent {
     const baseName = componentStyle.baseName || PARENT_COMPONENT_BASE_NAME.BASE;
@@ -153,6 +154,7 @@ export class ComponentBuilder {
       coreSubcomponentRefs,
       componentStatus: { isRemoved: false },
     };
+    baseSubcomponent.nestedComponent = { ref: baseComponent, inSync: false };
     baseSubcomponent.parentBaseComponentRef = baseComponent;
     return baseComponent;
   }

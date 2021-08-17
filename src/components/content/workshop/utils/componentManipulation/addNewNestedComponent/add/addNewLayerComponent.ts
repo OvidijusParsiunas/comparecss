@@ -6,10 +6,10 @@ import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uni
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { IncrementNestedComponentCount } from '../../nestedComponentCount/incrementNestedComponentCount';
 import { AlignedSections, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
-import { MultiBaseComponentUtils } from '../../../multiBaseComponent/multiBaseComponentUtils';
 import { NestedComponentBaseNamesToStyles } from '../utils/nestedComponentBaseNamesToStyles';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
+import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUtils';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { AddNewComponentShared } from './addNewComponentShared';
@@ -93,7 +93,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
     const layerName = NestedComponentBaseNamesToStyles.STYLE_TO_LAYER[componentStyle];
-    const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
+    const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(parentComponent);
     const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, activeBaseComponent,
       UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
     JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
@@ -102,6 +102,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent, newComponent, isEditable);
     AddNewLayerComponent.addNewNestedComponentsOptions(activeBaseComponent, newComponent);
     IncrementNestedComponentCount.increment(activeBaseComponent, layerName, activeBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name);
+    newComponent.nestedComponentParent = parentComponent;
     return newComponent;
   }
 }

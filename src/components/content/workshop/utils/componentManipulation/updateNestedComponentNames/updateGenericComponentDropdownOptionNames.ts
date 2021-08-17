@@ -1,9 +1,9 @@
 import { AlignedSections, Layer, NestedComponent } from '../../../../../../interfaces/componentPreviewStructure';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
-import { MultiBaseComponentUtils } from '../../multiBaseComponent/multiBaseComponentUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { UpdateDropdownOptionNamesShared } from './updateDropdownOptionNamesShared';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { ActiveComponentUtils } from '../../activeComponent/activeComponentUtils';
 import { StringUtils } from '../../generic/stringUtils';
 import { ArrayUtils } from '../../generic/arrayUtils';
 
@@ -21,14 +21,14 @@ interface SingleSubcomponentPrefixes {
 
 export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOptionNamesShared {
 
-  private static updateNewAndOldOptionNames(parentComponent: WorkshopComponent, subcomponentDropdownStructure: NestedDropdownStructure, subcomponentName: string,
+  private static updateNewAndOldOptionNames(component: WorkshopComponent, subcomponentDropdownStructure: NestedDropdownStructure, subcomponentName: string,
       overwrittenOptionNames: string[], newOptionName: string, oldOptionName: string, overwrittenDropdownStructures: NestedDropdownStructure): void {
     if (subcomponentDropdownStructure[newOptionName] && oldOptionName !== newOptionName) {
       overwrittenDropdownStructures[newOptionName] = subcomponentDropdownStructure[newOptionName];
     }
     const oldDropdownStructure = overwrittenDropdownStructures[oldOptionName] || subcomponentDropdownStructure[oldOptionName];
     subcomponentDropdownStructure[newOptionName] = oldDropdownStructure;
-    parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[subcomponentName] = newOptionName;
+    component.componentPreviewStructure.subcomponentNameToDropdownOptionName[subcomponentName] = newOptionName;
     overwrittenOptionNames.push(oldOptionName); 
   }
 
@@ -37,22 +37,22 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
     return subcomponentPrefixToTotal[subcomponentNameToPrefix[subcomponentName]] += 1;
   }
 
-  private static updateOptionNames(parentComponent: WorkshopComponent, subcomponentNameToPrefix: SubcomponentNameToPrefix,
+  private static updateOptionNames(component: WorkshopComponent, subcomponentNameToPrefix: SubcomponentNameToPrefix,
       subcomponentPrefixToTotal: SubcomponentPrefixToTotal, singleSubcomponentPrefixes: SingleSubcomponentPrefixes, containerDropdownStructure: NestedDropdownStructure,
       overwrittenOptionNames: string[], newDrodpownValues: string[], nestedComponent: NestedComponent, overwrittenDropdownStructures: NestedDropdownStructure): void {
     const subcomponentName = nestedComponent.name;
     const newPostfix = UpdateGenericComponentDropdownOptionNames.getNewPostfix(subcomponentPrefixToTotal, subcomponentNameToPrefix, subcomponentName);
     const { oldOptionName, newOptionName } = UpdateDropdownOptionNamesShared
-      .generateOptionNames(nestedComponent.name, newPostfix, parentComponent, singleSubcomponentPrefixes[subcomponentNameToPrefix[subcomponentName]]);
+      .generateOptionNames(nestedComponent.name, newPostfix, component, singleSubcomponentPrefixes[subcomponentNameToPrefix[subcomponentName]]);
     if (containerDropdownStructure[newOptionName]) {
       UpdateDropdownOptionNamesShared.moveExistingOptionToTheBottom(containerDropdownStructure, newOptionName);
     }
-    UpdateGenericComponentDropdownOptionNames.updateNewAndOldOptionNames(parentComponent, containerDropdownStructure, subcomponentName,
+    UpdateGenericComponentDropdownOptionNames.updateNewAndOldOptionNames(component, containerDropdownStructure, subcomponentName,
       overwrittenOptionNames, newOptionName, oldOptionName, overwrittenDropdownStructures);
     newDrodpownValues.push(newOptionName);
   }
 
-  private static updateAllOptionNames(parentComponent: WorkshopComponent, subcomponentNameToPrefix: SubcomponentNameToPrefix,
+  private static updateAllOptionNames(component: WorkshopComponent, subcomponentNameToPrefix: SubcomponentNameToPrefix,
       subcomponentPrefixToTotal: SubcomponentPrefixToTotal, singleSubcomponentPrefixes: SingleSubcomponentPrefixes, containerDropdownStructure: NestedDropdownStructure,
       alignedSections: AlignedSections): string[] {
     const overwrittenOptionNames = [];
@@ -62,7 +62,7 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
     for (let i = 0; i < alignedSectionsKeys.length; i += 1) {
       const section = alignedSections[alignedSectionsKeys[i]];
       for (let j = 0; j < section.length; j += 1) {
-         UpdateGenericComponentDropdownOptionNames.updateOptionNames(parentComponent, subcomponentNameToPrefix, subcomponentPrefixToTotal,
+         UpdateGenericComponentDropdownOptionNames.updateOptionNames(component, subcomponentNameToPrefix, subcomponentPrefixToTotal,
           singleSubcomponentPrefixes, containerDropdownStructure, overwrittenOptionNames, newDrodpownNames, section[j], overwrittenDropdownStructures);
       }
     }
@@ -105,31 +105,38 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
     UpdateGenericComponentDropdownOptionNames.setSinglePrefixesAndResetTotals(subcomponentPrefixToTotal, singleSubcomponentPrefixes);
   }
 
-  private static getBaseDropdownStructure(parentComponent: WorkshopComponent): NestedDropdownStructure {
-    const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
+  private static getBaseDropdownStructure(component: WorkshopComponent): NestedDropdownStructure {
+    // WORK1 - check if this affects anything
+    const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(component);
     const baseName = activeBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
-    return parentComponent.componentPreviewStructure.subcomponentDropdownStructure[baseName] as NestedDropdownStructure;
+    return component.componentPreviewStructure.subcomponentDropdownStructure[baseName] as NestedDropdownStructure;
   }
 
-  public static updateViaParentLayerDropdownStructure(parentComponent: WorkshopComponent, parentLayerDropdownStructure: NestedDropdownStructure,
+  public static updateViaParentLayerDropdownStructure(component: WorkshopComponent, parentLayerDropdownStructure: NestedDropdownStructure,
       alignedSections: AlignedSections): void {
     const subcomponentNameToPrefix: SubcomponentNameToPrefix = {};
     const subcomponentPrefixToTotal: SubcomponentPrefixToTotal = {};
     const singleSubcomponentPrefixes: SingleSubcomponentPrefixes = {};
     // some nested components do not have a parent layer dropdown structure and their parent is the base (e.g. button -> text)
-    const containerDropdownStructure = parentLayerDropdownStructure || UpdateGenericComponentDropdownOptionNames.getBaseDropdownStructure(parentComponent);
+    const containerDropdownStructure = parentLayerDropdownStructure || UpdateGenericComponentDropdownOptionNames.getBaseDropdownStructure(component);
     UpdateGenericComponentDropdownOptionNames.populateMaps(containerDropdownStructure, subcomponentNameToPrefix, subcomponentPrefixToTotal, singleSubcomponentPrefixes);
-    const overwrittenOptionNames = UpdateGenericComponentDropdownOptionNames.updateAllOptionNames(parentComponent, subcomponentNameToPrefix, subcomponentPrefixToTotal,
+    const overwrittenOptionNames = UpdateGenericComponentDropdownOptionNames.updateAllOptionNames(component, subcomponentNameToPrefix, subcomponentPrefixToTotal,
       singleSubcomponentPrefixes, containerDropdownStructure, alignedSections);
     UpdateDropdownOptionNamesShared.removeOverwrittenOptionNames(overwrittenOptionNames, containerDropdownStructure);
   }
 
-  public static updateViaParentLayerPreviewStructure(parentComponent: WorkshopComponent, layer: Layer): void {
-    const { name, sections: { alignedSections }} = layer;
-    const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
-    const { subcomponentDropdownStructure } = parentComponent.componentPreviewStructure;
-    const nestedComponents = subcomponentDropdownStructure[activeBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name]
-      [parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[name]];
-    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(parentComponent, nestedComponents, alignedSections);
+  private static getNestedDropdownStructure(component: WorkshopComponent, layerName: string, useArgComponentDropdownStructure: boolean): NestedDropdownStructure {
+    const { subcomponentDropdownStructure, subcomponentNameToDropdownOptionName } = component.componentPreviewStructure;
+    const activeComponent = useArgComponentDropdownStructure ? component : ActiveComponentUtils.getActiveNestedComponentParent(component);
+    const activeComponentName = activeComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+    const activeComponentDropdownStructure = subcomponentDropdownStructure[activeComponentName];
+    // if there is no dropdown structure for layer, use the parent dropdown structure (e.g. button)
+    return activeComponentDropdownStructure[subcomponentNameToDropdownOptionName[layerName]] || activeComponentDropdownStructure;
+  }
+
+  public static updateViaParentLayerPreviewStructure(component: WorkshopComponent, layer: Layer, useArgComponentStructure = false): void {
+    const { name: layerName, sections: { alignedSections }} = layer;
+    const nestedStructure = UpdateGenericComponentDropdownOptionNames.getNestedDropdownStructure(component, layerName, useArgComponentStructure);
+    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(component, nestedStructure, alignedSections);
   }
 }

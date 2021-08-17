@@ -8,6 +8,10 @@ animation - open on hover, slide in/ fade in
 new subcomponent
 make sure to calculate largest item with the icon
 undo largest item width does not undo the dropdown width
+copy button
+change icon text flash
+dropdown arrows not showing up on card's button 2
+update the dropdown structure
 
 overflow
 try with button tags

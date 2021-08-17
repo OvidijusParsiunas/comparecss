@@ -9,6 +9,7 @@ import { AddNewSubcomponentEvent } from '../../../../../interfaces/addNewSubcomp
 import { AddNewNestedComponent } from './addNewNestedComponent/addNewNestedComponent';
 import { RemoveNestedComponent } from './removeNestedComponent/removeNestedComponent';
 import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
+import { ActiveComponentUtils } from '../activeComponent/activeComponentUtils';
 import CopyComponent from './copyComponent/copyComponent';
 import ComponentJs from '../generic/componentJs';
 import { ComponentOptions } from 'vue';
@@ -50,11 +51,12 @@ export class ComponentManipulation {
   }
 
   public static removeSubcomponent(workshopComponent: ComponentOptions, isTemporaryAddPreview?: boolean): void {
-    const { currentlySelectedComponent } = workshopComponent;
+    // WORK1 - refactor
+    const nestedComponentParent = ActiveComponentUtils.getActiveNestedComponentParent(workshopComponent.currentlySelectedComponent);
     if (isTemporaryAddPreview) {
-      RemoveTemporaryAddPreviewComponent.remove(currentlySelectedComponent);
+      RemoveTemporaryAddPreviewComponent.remove(nestedComponentParent);
     } else {
-      RemoveNestedComponent.remove(currentlySelectedComponent);
+      RemoveNestedComponent.remove(nestedComponentParent);
     }
     workshopComponent.$refs.contents.refreshComponent();
   }

@@ -18,7 +18,7 @@ export class ChangeNestedComponentOrder {
   private static updateNames(targetDetails: TargetDetails): void {
     const { parentComponent, targetSubcomponentProperties } = targetDetails;
     const parentLayer = ComponentPreviewStructureSearchUtils.getLayerByName(parentComponent, targetSubcomponentProperties.parentLayer.name);
-    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(parentComponent, parentLayer);
+    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(parentComponent, parentLayer, true);
   }
 
   private static swapSubcomponentDropdownStructure(subcomponentDropdownStructure: NestedDropdownStructure, currentOptionName: string,

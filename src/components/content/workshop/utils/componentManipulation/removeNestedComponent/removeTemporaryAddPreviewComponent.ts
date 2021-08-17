@@ -1,8 +1,8 @@
 import { NestedComponentsInLayer } from '../../../../../../interfaces/nestedComponentsLockedToLayer';
 import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { MultiBaseComponentUtils } from '../../multiBaseComponent/multiBaseComponentUtils';
 import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
+import { ActiveComponentUtils } from '../../activeComponent/activeComponentUtils';
 import { TargetDetails } from '../../../../../../interfaces/componentTraversal';
 import { RemoveNestedComponent } from './removeNestedComponent';
 
@@ -11,7 +11,7 @@ export class RemoveTemporaryAddPreviewComponent extends RemoveNestedComponent {
   // all subcomponents are stored in the core parentComponent, however the preview structure for an auxiliary component is within its component
   private static removeTargetNestedComponent(parentComponent: WorkshopComponent, targetDetails: TargetDetails, subcomponents: Subcomponents): void {
     Object.keys(subcomponents).forEach((subcomponentName) => delete parentComponent.subcomponents[subcomponentName]);
-    const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
+    const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(parentComponent);
     ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
       activeBaseComponent.componentPreviewStructure,
       RemoveTemporaryAddPreviewComponent.removeNestedComponentInPreviewStructureIfFound.bind(targetDetails));

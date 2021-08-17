@@ -177,6 +177,8 @@ export interface SubcomponentProperties {
   isTemporaryAddPreview?: boolean;
   isRemovable?: boolean;
   // reference to the parent base component - can be either the core component or the auxiliary component
+  // full structure explained at the bottom of the file titled: 'Reference for component structure'
+  // WORK1 - rename to topLevelParentBaseComponentRef
   parentBaseComponentRef?: WorkshopComponent;
 }
 
@@ -206,21 +208,24 @@ export interface WorkshopComponent {
   nestedComponentsLockedToLayer?: NestedComponentsInLayer;
   interconnectedSettings?: InterconnectedSetting[];
   nestedComponentCount?: NestedComponentCount;
-  // used to share add dropdown options across components such as layers - in order to make sure that the enabled and disabled items are in-sync
-  newNestedComponentsOptionsRefs?: NewNestedComponentsOptionsRefs;
-  // reference to the auxiliary component which holds the preview structure of its subcomponents, however the dropdown structure, subcomponents
-  // and subcomponentNameToDropdownOptionName are placed in the core parent (base) component instead (for purposes of maintainability)
-  auxiliaryComponent?: WorkshopComponent;
-  // only present in an auxiliary component and is additionally used to identify if this component is an auxiliary component 
-  coreBaseComponent?: WorkshopComponent;
   areLayersInSyncByDefault?: boolean;
   // when a particular setting is changed (e.g. input or range) - call a particular function
   triggerFuncOnSettingChange?: TriggerFuncOnSettingChange;
+  // used to share add dropdown options across components such as layers - in order to make sure that the enabled and disabled items are in-sync
+  newNestedComponentsOptionsRefs?: NewNestedComponentsOptionsRefs;
+  // reference to the auxiliary component (side componnet) which holds the preview structure of its subcomponents, however the dropdown structure, subcomponents
+  // and subcomponentNameToDropdownOptionName are placed in the core parent (base) component instead (for purposes of maintainability)
+  auxiliaryComponent?: WorkshopComponent;
+  // only present in an auxiliary component (reverse) and is additionally used to identify if this component is an auxiliary component 
+  coreBaseComponent?: WorkshopComponent;
+  // reference to the parent that contains this component's base
+  // full structure explained at the bottom of the file titled: 'Reference for component structure'
+  nestedComponentParent?: WorkshopComponent;
 }
 
 // Reference for component structure:
 
-// parent component -> subcomponents (parent base subcomponent + nested component subcomponents + any auxiliary subcomponents)
+// parent component -> subcomponents (nested component subcomponents + all auxiliary subcomponents)
 
 // Subcomponents of the nested components can access their own components via the following properties:
 //   nestedComponent -> ref
@@ -233,20 +238,32 @@ export interface WorkshopComponent {
 //                    ref                                            ref
 //                     |                                              |
 //       nested component                                       nested component
-// baseSubcomponentRef allows base, layer and text subcomponents to all reference the same component (such as a button) 
+// baseSubcomponentRef allows base, layer and text subcomponents to all reference the same component (such as a button)
 
-// Subcomponents that do not belong to nested components and are not the base of the parent can access the parent base component as follows:
-// parent component -> subcomponents (not base)
-//                          |
-//                    nestedComponent
-//                          |
-//                         ref
-//                          |
-//                   parent component
+// All subcomponents can access the very top parent base component via the parentBaseComponentRef property (no matter how deeply they are nested)
+// top parent component -------> <------------------------------------
+//                              |                                    |
+//                          subcomponents -> parentBaseComponentRef ->
+//                              |                                    |
+// top auxiliary component ----> <------------------------------------
 
-// All subcomponents can access the parent base component via the parentBaseComponentRef property
-// parent component    ---->                        <-------------
-//                          |                                    |
-//                     subcomponents -> parentBaseComponentRef ->
-//                          |                                    |
-// auxiliary component ---->                        <-------------
+// Nested components can access the parent which they are nested in via nestedComponentParent
+// (as their subcomponents' nestedComponent -> ref property is pointing to the nested component itself which does not hold the nesting structure)
+// it is important to note that the top level parent component subcomponents property contains all subcomponents (including nested subcomponents)
+// base subcomponents' nestedComponent -> ref -> nestedComponentParent property directly references the nested component's parent
+// as base does not have its own component
+// top parent component -> subcomponents (e.g. button text)    +   subcomponents (button base)
+//                                      |                                    |
+//                               nestedComponent                      nestedComponent
+//                                      |                                    |
+//                                     ref                                  ref
+//                                      |                                    |
+//                             component (e.g. text)                component (button)
+//                                      |                                    |
+//                             nestedComponentParent               nestedComponentParent
+//                                      |                                    |
+//                              component (button)                    parent component
+//                                      |
+//                             nestedComponentParent
+//                                      |
+//                               parent component

@@ -5,11 +5,11 @@ import { ComponentTraversalState, TargetDetails } from '../../../../../../interf
 import { DecrementNestedComponentCount } from '../nestedComponentCount/decrementNestedComponentCount';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { InterconnectedSettings } from '../../interconnectedSettings/interconnectedSettings';
-import { MultiBaseComponentUtils } from '../../multiBaseComponent/multiBaseComponentUtils';
 import { AlignedSections } from '../../../../../../interfaces/componentPreviewStructure';
 import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { ActiveComponentUtils } from '../../activeComponent/activeComponentUtils';
 import { StringUtils } from '../../generic/stringUtils';
 
 type TargetRemovalDetails = TargetDetails & { isRemovingActiveSubcomponent?: boolean };
@@ -130,7 +130,7 @@ export class RemoveNestedComponent {
   // WORK1 - copy/add triggerable subcomponent
   private static removeTriggerableSubcomponent(targetDetails: TargetRemovalDetails): void {
     const { parentComponent: { coreSubcomponentRefs: { [SUBCOMPONENT_TYPES.BASE]: { otherSubcomponentsToTrigger }}}, targetSubcomponentProperties } = targetDetails;
-    const coreSubcomponent = Object.keys(otherSubcomponentsToTrigger).find((coreSubcomponentKey) => otherSubcomponentsToTrigger[coreSubcomponentKey] === targetSubcomponentProperties);
+    const coreSubcomponent = Object.keys(otherSubcomponentsToTrigger || []).find((coreSubcomponentKey) => otherSubcomponentsToTrigger[coreSubcomponentKey] === targetSubcomponentProperties);
     if (coreSubcomponent) otherSubcomponentsToTrigger[coreSubcomponent] = null;
   }
 
@@ -140,7 +140,7 @@ export class RemoveNestedComponent {
     targetDetails.isRemovingActiveSubcomponent = !subcomponentName;
     RemoveNestedComponent.removeCoreSubcomponentRef(targetDetails);
     RemoveNestedComponent.removeTriggerableSubcomponent(targetDetails);
-    const activeBaseComponent = MultiBaseComponentUtils.getCurrentlyActiveBaseComponent(parentComponent);
+    const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(parentComponent);
     const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
       activeBaseComponent.componentPreviewStructure,
       RemoveNestedComponent.removeNestedComponentInPreviewStructureIfFound.bind(targetDetails));
