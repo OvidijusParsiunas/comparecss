@@ -16,8 +16,9 @@ export class DecrementNestedComponentCount {
     nestedComponentCount.current[nestedComponentBaseName] -= 1;
   }
 
-  public static decrement(parentComponent: WorkshopComponent, nestedComponentBaseName: string, parentSubcomponentName: string): void {
-    const { nestedComponentCount, subcomponents } = parentComponent;
+  public static decrement(activeNestedComponent: WorkshopComponent, nestedComponentBaseName: string, parentSubcomponentName: string): void {
+    // the auxiliary component's nested components currently all referto the auxiliary base
+    const { nestedComponentCount, subcomponents } = activeNestedComponent.auxiliaryComponent || activeNestedComponent;
     if (nestedComponentCount) {
       DecrementNestedComponentCount.decrementCurrentCount(nestedComponentCount, nestedComponentBaseName);
       DecrementNestedComponentCount.disableAddPreviewDropdownOptionIfAtMax(nestedComponentCount, subcomponents,
