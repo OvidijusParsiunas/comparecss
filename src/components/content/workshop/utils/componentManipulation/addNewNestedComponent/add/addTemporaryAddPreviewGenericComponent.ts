@@ -12,14 +12,14 @@ import JSONUtils from '../../../generic/jsonUtils';
 export class AddTemporaryAddPreviewGenericComponent extends AddNewGenericComponent {
 
   public static add(parentComponent: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
-      layerName: string, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
+      parentLayerName: string, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
     const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(parentComponent);
     const [newComponent] = AddNewGenericComponent.createNewComponent(componentType, componentStyle,
       componentGenerator, activeBaseComponent, overwritePropertiesFunc, TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY);
     newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isTemporaryAddPreview = true;
     JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
-    AddNewGenericComponent.addNewComponentToComponentPreview(parentComponent, newComponent, layerName);
+    AddNewGenericComponent.addNewComponentToComponentPreview(parentComponent, newComponent, parentLayerName);
     return newComponent;
   }
 }

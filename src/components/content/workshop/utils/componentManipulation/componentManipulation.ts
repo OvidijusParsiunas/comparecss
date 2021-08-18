@@ -1,5 +1,4 @@
 import { CopyNestedComponentModeCardEvents } from '../../toolbar/options/copyNestedComponent/modeUtils/copyNestedComponentModeCardEvents';
-import { RemoveTemporaryAddPreviewComponent } from './removeNestedComponent/removeTemporaryAddPreviewComponent';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../interfaces/subcomponentOrderDirections.enum';
 import { AddTemporaryAddPreviewComponent } from './addNewNestedComponent/addTemporaryAddPreviewComponent';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
@@ -9,7 +8,6 @@ import { AddNewSubcomponentEvent } from '../../../../../interfaces/addNewSubcomp
 import { AddNewNestedComponent } from './addNewNestedComponent/addNewNestedComponent';
 import { RemoveNestedComponent } from './removeNestedComponent/removeNestedComponent';
 import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
-import { ActiveComponentUtils } from '../activeComponent/activeComponentUtils';
 import CopyComponent from './copyComponent/copyComponent';
 import ComponentJs from '../generic/componentJs';
 import { ComponentOptions } from 'vue';
@@ -51,13 +49,7 @@ export class ComponentManipulation {
   }
 
   public static removeSubcomponent(workshopComponent: ComponentOptions, isTemporaryAddPreview?: boolean): void {
-    // WORK1 - refactor
-    const nestedComponentParent = ActiveComponentUtils.getActiveNestedComponentParent(workshopComponent.currentlySelectedComponent);
-    if (isTemporaryAddPreview) {
-      RemoveTemporaryAddPreviewComponent.remove(nestedComponentParent);
-    } else {
-      RemoveNestedComponent.remove(nestedComponentParent);
-    }
+    RemoveNestedComponent.remove(workshopComponent.currentlySelectedComponent, isTemporaryAddPreview);
     workshopComponent.$refs.contents.refreshComponent();
   }
 
