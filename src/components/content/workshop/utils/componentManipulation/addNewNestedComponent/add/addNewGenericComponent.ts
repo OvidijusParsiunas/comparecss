@@ -181,15 +181,11 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
     const [newComponent, baseNamePrefix] = AddNewGenericComponent.createNewComponent(componentType, componentStyle,
       componentGenerator, activeBaseComponent, overwritePropertiesFunc);
-    // WORK2 - check if this is needed
-    JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
     JSONUtils.addObjects(activeBaseComponent.coreBaseComponent || activeBaseComponent, 'subcomponents', newComponent.subcomponents);
     const subcomponentData = AddNewGenericComponent.addNewComponentToComponentPreview(parentComponent, newComponent, parentLayerName);
     AddNewGenericComponent.updateNewSubcomponentParentLayer(subcomponentData);
     AddNewGenericComponent.addNewComponentToDropdownStructure(parentComponent, newComponent, activeBaseComponent, subcomponentData, dropdownStructure);
     AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(activeBaseComponent.coreBaseComponent || activeBaseComponent, newComponent);
-    // WORK2 - check if this is needed
-    AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent, newComponent);
     InterconnectedSettings.update(true, activeBaseComponent, newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
     IncrementNestedComponentCount.increment(activeBaseComponent, baseNamePrefix, parentLayerName);
     AddNewGenericComponent.populateCoreComponentRef(parentComponent, newComponent);
