@@ -176,11 +176,9 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     // newComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName = {};
   }
 
-  public static add(parentComponent: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
-      parentLayerName: string, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
+  public static addWithDropdown(parentComponent: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
+      parentLayerName: string, activeBaseComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
-    // WORK1 - check if this affects anything
-    const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(parentComponent);
     const [newComponent, baseNamePrefix] = AddNewGenericComponent.createNewComponent(componentType, componentStyle,
       componentGenerator, activeBaseComponent, overwritePropertiesFunc);
     // WORK2 - check if this is needed
@@ -188,11 +186,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     JSONUtils.addObjects(activeBaseComponent.coreBaseComponent || activeBaseComponent, 'subcomponents', newComponent.subcomponents);
     const subcomponentData = AddNewGenericComponent.addNewComponentToComponentPreview(parentComponent, newComponent, parentLayerName);
     AddNewGenericComponent.updateNewSubcomponentParentLayer(subcomponentData);
-    // WORK3: repeatable
-    const targetDetails = ComponentTraversalUtils.generateTargetDetails(activeBaseComponent, activeBaseComponent.activeSubcomponentName);
-    ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
-      activeBaseComponent.componentPreviewStructure.subcomponentDropdownStructure,
-      AddNewGenericComponent.addNewComponentToDropdownStructureIfFound.bind(targetDetails, parentComponent, newComponent, subcomponentData, activeBaseComponent));
+    AddNewGenericComponent.addNewComponentToDropdownStructure(parentComponent, newComponent, activeBaseComponent, subcomponentData, dropdownStructure);
     AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(activeBaseComponent.coreBaseComponent || activeBaseComponent, newComponent);
     // WORK2 - check if this is needed
     AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent, newComponent);
@@ -202,5 +196,26 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     newComponent.nestedComponentParent = parentComponent;
     AddNewGenericComponent.removeInnerContents(newComponent);
     return newComponent;
+  }
+
+  private static addWithDropdownIfFound(parentComponent: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
+      parentLayerName: string, activeBaseComponent: WorkshopComponent, overwritePropertiesFunc: OverwritePropertiesFunc[], componentTraversalState: ComponentTraversalState): WorkshopComponent {
+    const targetDetails = this as any as TargetDetails;
+    if (ComponentTraversalUtils.isActualObjectNameMatching(targetDetails, componentTraversalState)) {
+      const { subcomponentDropdownStructure } = componentTraversalState;
+      const newComponent = AddNewGenericComponent.addWithDropdown(parentComponent, componentType, componentStyle, parentLayerName, activeBaseComponent, subcomponentDropdownStructure, overwritePropertiesFunc);
+      return newComponent;
+    }
+    return null;
+  }
+
+  public static add(parentComponent: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
+      parentLayerName: string, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
+    // WORK1 - check if this affects anything
+    const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(parentComponent);
+    const targetDetails = ComponentTraversalUtils.generateTargetDetails(activeBaseComponent, activeBaseComponent.activeSubcomponentName);
+    return ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
+      activeBaseComponent.componentPreviewStructure.subcomponentDropdownStructure,
+      AddNewGenericComponent.addWithDropdownIfFound.bind(targetDetails, parentComponent, componentType, componentStyle, parentLayerName, activeBaseComponent, overwritePropertiesFunc)) as WorkshopComponent;
   }
 }

@@ -15,10 +15,10 @@ import { AddNewLayerComponent } from './add/addNewLayerComponent';
 export class AddNewNestedComponent {
 
   private static addNewSubcomponent(selectedNestedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES,
-      layerName: string): void {
+      layerName: string, activeBaseComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure): void {
     const nestedComponentType = AddNewGenericComponent.componentBaseNameToType[nestedComponentBaseName];
     const nestedComponentStyle = NestedComponentBaseNamesToStyles.genericToStyle(nestedComponentBaseName);
-    const newComponent = AddNewGenericComponent.add(selectedNestedComponent, nestedComponentType, nestedComponentStyle, layerName);
+    const newComponent = AddNewGenericComponent.addWithDropdown(selectedNestedComponent, nestedComponentType, nestedComponentStyle, layerName, activeBaseComponent, dropdownStructure);
     // set here because not all nested components are removable, but the ones added by the user are
     newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
   }
@@ -30,16 +30,15 @@ export class AddNewNestedComponent {
   }
 
   private static addNewSubcomponentToCurrentLayer(selectedNestedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
-    AddNewNestedComponent.addNewSubcomponent(selectedNestedComponent, nestedComponentBaseName, selectedNestedComponent.activeSubcomponentName);
+    // AddNewNestedComponent.addNewSubcomponent(selectedNestedComponent, nestedComponentBaseName, selectedNestedComponent.activeSubcomponentName);
     AddNewNestedComponent.updateGenericComponentDropdownOptionNames(selectedNestedComponent);
   }
 
   // WORK3: refactor
   private static addNewSubcomponentToDefaultBaseLayer(selectedNestedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES,
-      dropdownStructure: NestedDropdownStructure): void {
+      activeBaseComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure): void {
     const { parentNestedComponent, parentLayer } = ActiveComponentUtils.getParentComponentProperties(selectedNestedComponent, true);
-    AddNewNestedComponent.addNewSubcomponent(parentNestedComponent, nestedComponentBaseName, parentLayer.name);
-    const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(selectedNestedComponent);
+    AddNewNestedComponent.addNewSubcomponent(parentNestedComponent, nestedComponentBaseName, parentLayer.name, activeBaseComponent, dropdownStructure);
     const parentNestedComponentDropdownOptionName = activeBaseComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[Object.keys(parentNestedComponent.componentPreviewStructure.subcomponentDropdownStructure)[0]];
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(activeBaseComponent, (dropdownStructure[parentNestedComponentDropdownOptionName] || dropdownStructure[activeBaseComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[parentLayer.name]]) as NestedDropdownStructure, parentLayer.sections.alignedSections);
   }
@@ -51,7 +50,7 @@ export class AddNewNestedComponent {
     const targetDetails = this as any as TargetDetails;
     if (ComponentTraversalUtils.isActualObjectNameMatching(targetDetails, componentTraversalState)) {
       const { subcomponentDropdownStructure } = componentTraversalState;
-      AddNewNestedComponent.addNewSubcomponentToDefaultBaseLayer(selectedNestedComponent, nestedComponentBaseName, subcomponentDropdownStructure);
+      AddNewNestedComponent.addNewSubcomponentToDefaultBaseLayer(selectedNestedComponent, nestedComponentBaseName, targetDetails.parentComponent, subcomponentDropdownStructure);
       return componentTraversalState;
     }
     return null;
