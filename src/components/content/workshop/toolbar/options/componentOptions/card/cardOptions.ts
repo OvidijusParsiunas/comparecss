@@ -11,6 +11,7 @@ import { buttonTextOptions } from '../text/buttonText';
 import { cardLayerOptions } from '../layer/cardLayer';
 import { imageOptions } from '../image/image';
 import { textOptions } from '../text/text';
+import { iconOptions } from '../icon/icon';
 import { cardBaseOptions } from './base';
 
 export class CardOptions {
@@ -18,6 +19,7 @@ export class CardOptions {
   private static readonly STATIC_CARD_OPTIONS: SubcomponentTypeToOptions = {
     [SUBCOMPONENT_TYPES.BASE]: cardBaseOptions as Options,
     [SUBCOMPONENT_TYPES.IMAGE]: imageOptions as Options,
+    [SUBCOMPONENT_TYPES.ICON]: iconOptions as Options,
   };
 
   protected static getTextOptions(component: WorkshopComponent): Options {

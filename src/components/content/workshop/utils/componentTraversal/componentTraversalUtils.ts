@@ -2,6 +2,7 @@ import { AlignedSections, ComponentPreviewStructure, NestedComponent } from '../
 import { DropdownOptionAuxDetails, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../interfaces/dropdownOptionDisplayStatus';
 import { TargetDetails, ComponentTraversalState } from '../../../../../interfaces/componentTraversal';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
+import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
 import { WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 
@@ -14,7 +15,8 @@ export default class ComponentTraversalUtils {
       targetSubcomponentName,
       targetDropdownOptionName: parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[targetSubcomponentName],
       parentComponent,
-      targetSubcomponentProperties: parentComponent.subcomponents[targetSubcomponentName],
+      // WORK1: confirm that this is needed
+      targetSubcomponentProperties: parentComponent.subcomponents[targetSubcomponentName] || parentComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
     };
   }
 
@@ -22,7 +24,8 @@ export default class ComponentTraversalUtils {
     const { dropdownOptionName, subcomponentDropdownStructure } = componentTraversalState;
     const { targetDropdownOptionName, targetSubcomponentName } = targetDetails;
     if (targetDropdownOptionName !== dropdownOptionName) return false;
-    const { actualObjectName } = subcomponentDropdownStructure[dropdownOptionName][DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails;
+    // if there is no DROPDOWN_OPTION_AUX_DETAILS_REF - the component can be considered as the base and return true
+    const { actualObjectName } = subcomponentDropdownStructure[dropdownOptionName]?.[DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails || {};
     if (actualObjectName) return targetSubcomponentName === actualObjectName;
     return true;
   }

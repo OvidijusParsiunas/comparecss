@@ -111,6 +111,7 @@ export const buttonBase: ComponentGenerator = {
       { componentType: COMPONENT_TYPES.BUTTON, baseName, coreSubcomponentRefs }, ButtonBase.createBaseSubcomponent);
     ButtonBaseSpecificSettings.set(buttonBaseComponent);
     ButtonBase.setNestedComponentsOptions(buttonBaseComponent);
+    // WORK1 - not sure if this is needed
     ButtonBase.cleanBaseDropdownIfNotNested(buttonBaseComponent, baseName);
     return buttonBaseComponent;
   },

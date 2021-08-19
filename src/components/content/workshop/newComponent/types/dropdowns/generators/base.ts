@@ -47,7 +47,7 @@ class DropdownBase extends ComponentBuilder {
 export const dropdownBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     uniqueSubcomponentIdState.resetUniqueId();
-    // will pronbably need to be a style
+    // will probably need to be a style
     const buttonComponent = buttonWithIcon.createNewComponent(baseName);
     buttonComponent.type = COMPONENT_TYPES.DROPDOWN;
     const dropdownMenuBaseComponent = dropdownMenuBase.createNewComponent('Menu');

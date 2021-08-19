@@ -24,9 +24,9 @@ export class RemoveTemporaryAddPreviewComponent extends RemoveAnyNestedComponent
   }
 
   public static remove(activeComponent: WorkshopComponent): void {
+    if (!activeComponent.subcomponents[TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY]) return;
     const targetDetails: TargetDetails = ComponentTraversalUtils.generateTargetDetails(activeComponent, TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY);
     const nestedComponentParentRef = targetDetails.targetSubcomponentProperties?.nestedComponent?.ref;
-    if (!nestedComponentParentRef) return;
     const { nestedComponentsLockedToLayer, subcomponents } = nestedComponentParentRef;
     RemoveTemporaryAddPreviewComponent.removeNestedComponentsInLayer(activeComponent, nestedComponentsLockedToLayer);
     RemoveTemporaryAddPreviewComponent.removeTargetNestedComponent(activeComponent, targetDetails, subcomponents);

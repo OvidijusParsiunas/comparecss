@@ -142,8 +142,6 @@ export class RemoveAnyNestedComponent {
     const targetDetails: TargetRemovalDetails = ComponentTraversalUtils.generateTargetDetails(parentComponent,
       subcomponentName || parentComponent.activeSubcomponentName);
     targetDetails.isRemovingActiveSubcomponent = isRemovingActiveSubcomponent;
-    RemoveAnyNestedComponent.removeCoreSubcomponentRef(targetDetails);
-    RemoveAnyNestedComponent.removeTriggerableSubcomponent(targetDetails);
     const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(parentComponent);
     const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
       activeBaseComponent.componentPreviewStructure,
@@ -153,5 +151,7 @@ export class RemoveAnyNestedComponent {
     ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
       targetDetails.activeBaseComponent.componentPreviewStructure.subcomponentDropdownStructure,
       RemoveAnyNestedComponent.removeNestedComponentUsingDropdownStructureIfFound.bind(targetDetails));
+    RemoveAnyNestedComponent.removeCoreSubcomponentRef(targetDetails);
+    RemoveAnyNestedComponent.removeTriggerableSubcomponent(targetDetails);
   }
 }
