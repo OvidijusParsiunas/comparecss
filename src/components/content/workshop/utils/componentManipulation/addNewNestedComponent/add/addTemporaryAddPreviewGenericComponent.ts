@@ -7,7 +7,6 @@ import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUt
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { AddNewGenericComponent } from './addNewGenericComponent';
-import JSONUtils from '../../../generic/jsonUtils';
 
 export class AddTemporaryAddPreviewGenericComponent extends AddNewGenericComponent {
 
@@ -18,7 +17,7 @@ export class AddTemporaryAddPreviewGenericComponent extends AddNewGenericCompone
     const [newComponent] = AddNewGenericComponent.createNewComponent(componentType, componentStyle,
       componentGenerator, activeBaseComponent, overwritePropertiesFunc, TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY);
     newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isTemporaryAddPreview = true;
-    JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
+    Object.assign(parentComponent.subcomponents, newComponent.subcomponents);
     AddNewGenericComponent.addNewComponentToComponentPreview(parentComponent, newComponent, parentLayerName);
     return newComponent;
   }

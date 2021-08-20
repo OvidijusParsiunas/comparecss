@@ -7,7 +7,6 @@ import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUt
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { AddNewLayerComponent } from './addNewLayerComponent';
-import JSONUtils from '../../../generic/jsonUtils';
 
 export class AddTemporaryAddPreviewLayerComponent extends AddNewLayerComponent {
 
@@ -18,7 +17,7 @@ export class AddTemporaryAddPreviewLayerComponent extends AddNewLayerComponent {
     const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, parentComponent,
       TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY, overwritePropertiesFunc);
     newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isTemporaryAddPreview = true;
-    JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
+    Object.assign(parentComponent.subcomponents, newComponent.subcomponents);
     AddNewLayerComponent.addNewComponentToComponentPreview(activeBaseComponent, newComponent);
     newComponent.nestedComponentsLockedToLayer?.add(parentComponent);
     return newComponent;

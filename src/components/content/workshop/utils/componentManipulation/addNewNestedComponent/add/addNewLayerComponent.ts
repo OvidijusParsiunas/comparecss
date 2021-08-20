@@ -29,7 +29,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
       ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(baseName),
     }};
     const parentComponentDropdownStructure = parentComponent.componentPreviewStructure.subcomponentDropdownStructure;
-    JSONUtils.addObjects(parentComponentDropdownStructure, activeBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name, newComponentDropdownStructure);
+    Object.assign(parentComponentDropdownStructure[activeBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name], newComponentDropdownStructure);
   }
 
   private static addNewSubcomponentToBase(parentComponent: WorkshopComponent, layer: Layer): void {
@@ -96,7 +96,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(parentComponent);
     const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, activeBaseComponent,
       UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
-    JSONUtils.addObjects(parentComponent, 'subcomponents', newComponent.subcomponents);
+    Object.assign(parentComponent.subcomponents, newComponent.subcomponents);
     AddNewLayerComponent.addNewComponentToComponentPreview(activeBaseComponent, newComponent);
     if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(parentComponent, activeBaseComponent, newComponent);
     AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(parentComponent, newComponent, isEditable);
