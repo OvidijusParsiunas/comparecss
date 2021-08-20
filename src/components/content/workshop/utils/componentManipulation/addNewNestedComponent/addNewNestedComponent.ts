@@ -24,18 +24,7 @@ export class AddNewNestedComponent extends AddNewComponentShared {
     return [newComponent, parentLayer];
   }
 
-  private static updateGenericComponentDropdownOptionNames(selectedNestedComponent: WorkshopComponent): void {
-    const parentLayer = ComponentPreviewStructureSearchUtils.getLayerByName(selectedNestedComponent,
-      selectedNestedComponent.activeSubcomponentName);
-    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(selectedNestedComponent, parentLayer);
-  }
-
-  private static addNewSubcomponentToCurrentLayer(selectedNestedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
-    // AddNewNestedComponent.addNewSubcomponent(selectedNestedComponent, nestedComponentBaseName, selectedNestedComponent.activeSubcomponentName);
-    AddNewNestedComponent.updateGenericComponentDropdownOptionNames(selectedNestedComponent);
-  }
-
-  private static addNewComponentToDefaultBaseLayer(selectedNestedComponent: WorkshopComponent, activeBaseComponent: WorkshopComponent,
+  private static addNewComponentToLayer(selectedNestedComponent: WorkshopComponent, activeBaseComponent: WorkshopComponent,
       dropdownStructure: NestedDropdownStructure, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): WorkshopComponent {
     const [newComponent, parentLayer] = AddNewNestedComponent.addNewComponent(selectedNestedComponent, nestedComponentBaseName,
       activeBaseComponent, dropdownStructure);
@@ -63,12 +52,9 @@ export class AddNewNestedComponent extends AddNewComponentShared {
     const selectedNestedComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].nestedComponent.ref;
     if (Object.values(LAYER_COMPONENTS_BASE_NAMES).includes(nestedComponentBaseName as LAYER_COMPONENTS_BASE_NAMES)) {
       AddNewNestedComponent.addNewLayerToBase(selectedNestedComponent, nestedComponentBaseName);
-    } else if (selectedNestedComponent.activeSubcomponentName === selectedNestedComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name) {
-      AddNewGenericComponent.addComponentViaDropdownStructureSearch(
-        selectedNestedComponent, AddNewNestedComponent.addNewComponentToDefaultBaseLayer, nestedComponentBaseName);
     } else {
-      // WORK1 probably not needed
-      AddNewNestedComponent.addNewSubcomponentToCurrentLayer(selectedNestedComponent, nestedComponentBaseName);
+      AddNewGenericComponent.addComponentViaDropdownStructureSearch(
+        selectedNestedComponent, AddNewNestedComponent.addNewComponentToLayer, nestedComponentBaseName);
     }
   }
 }
