@@ -139,10 +139,10 @@ export class RemoveAnyNestedComponent {
   }
 
   public static remove(parentComponent: WorkshopComponent, subcomponentName: string, isRemovingActiveSubcomponent = false): void {
-    const targetDetails: TargetRemovalDetails = ComponentTraversalUtils.generateTargetDetails(parentComponent,
+    const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(parentComponent);
+    const targetDetails: TargetRemovalDetails = ComponentTraversalUtils.generateTargetDetails(activeBaseComponent,
       subcomponentName || parentComponent.activeSubcomponentName);
     targetDetails.isRemovingActiveSubcomponent = isRemovingActiveSubcomponent;
-    const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(parentComponent);
     const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
       activeBaseComponent.componentPreviewStructure,
       RemoveAnyNestedComponent.removeNestedComponentInPreviewStructureIfFound.bind(targetDetails));
