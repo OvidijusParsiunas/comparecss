@@ -3,8 +3,6 @@ import { AddTemporaryAddPreviewGenericComponent } from './add/addTemporaryAddPre
 import { AddTemporaryAddPreviewLayerComponent } from './add/addTemporaryAddPreviewLayerComponent';
 import { NestedComponentBaseNamesToStyles } from './utils/nestedComponentBaseNamesToStyles';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { ActiveComponentUtils } from '../../activeComponent/activeComponentUtils';
-import { AddNewGenericComponent } from './add/addNewGenericComponent';
 
 export class AddTemporaryAddPreviewComponent {
 
@@ -13,10 +11,7 @@ export class AddTemporaryAddPreviewComponent {
     if (Object.values(LAYER_COMPONENTS_BASE_NAMES).includes(nestedComponentBaseName as LAYER_COMPONENTS_BASE_NAMES)) {
       AddTemporaryAddPreviewLayerComponent.add(selectedNestedComponent, NestedComponentBaseNamesToStyles.LAYER_TO_STYLE[nestedComponentBaseName], true);
     } else {
-      const nestedComponentType = AddNewGenericComponent.componentBaseNameToType[nestedComponentBaseName];
-      const nestedComponentStyle = NestedComponentBaseNamesToStyles.genericToStyle(nestedComponentBaseName);
-      const { parentNestedComponent, parentLayer } = ActiveComponentUtils.getParentComponentProperties(selectedNestedComponent);
-      AddTemporaryAddPreviewGenericComponent.add(parentNestedComponent, nestedComponentType, nestedComponentStyle, parentLayer.name);
+      AddTemporaryAddPreviewGenericComponent.addTemporary(selectedNestedComponent, nestedComponentBaseName);
     }
   }
 }

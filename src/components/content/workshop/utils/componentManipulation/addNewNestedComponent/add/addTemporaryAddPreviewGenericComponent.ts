@@ -1,24 +1,20 @@
+import { NESTED_COMPONENTS_BASE_NAMES, TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
-import { OverwritePropertiesFunc } from '../../../../../../../interfaces/overwriteSubcomponentPropertiesFunc';
-import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUtils';
-import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
-import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { AddNewGenericComponent } from './addNewGenericComponent';
 
 export class AddTemporaryAddPreviewGenericComponent extends AddNewGenericComponent {
 
-  public static add(parentComponent: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
-      parentLayerName: string, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
+  public static addTemporary(selectedNestedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): WorkshopComponent {
+    const { componentType, componentStyle, parentLayer, parentComponent }
+      = AddNewGenericComponent.getNewComponentProperties(selectedNestedComponent, nestedComponentBaseName);
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
-    const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(parentComponent);
     const [newComponent] = AddNewGenericComponent.createNewComponent(componentType, componentStyle,
-      componentGenerator, activeBaseComponent, overwritePropertiesFunc, TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY);
+      componentGenerator, null, null, TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY);
     newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isTemporaryAddPreview = true;
     Object.assign(parentComponent.subcomponents, newComponent.subcomponents);
-    AddNewGenericComponent.addNewComponentToComponentPreview(parentComponent, newComponent, parentLayerName);
+    AddNewGenericComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
     return newComponent;
   }
 }

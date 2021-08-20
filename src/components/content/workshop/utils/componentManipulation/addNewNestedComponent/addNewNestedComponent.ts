@@ -6,21 +6,22 @@ import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDrop
 import { NestedComponentBaseNamesToStyles } from './utils/nestedComponentBaseNamesToStyles';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { ActiveComponentUtils } from '../../activeComponent/activeComponentUtils';
+import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
 import { AddNewGenericComponent } from './add/addNewGenericComponent';
 import { AddNewComponentShared } from './add/addNewComponentShared';
 import { AddNewLayerComponent } from './add/addNewLayerComponent';
 
 export class AddNewNestedComponent extends AddNewComponentShared {
 
-  private static addNewSubcomponent(selectedNestedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES,
-      layerName: string, activeBaseComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure): WorkshopComponent {
-    const nestedComponentType = AddNewGenericComponent.componentBaseNameToType[nestedComponentBaseName];
-    const nestedComponentStyle = NestedComponentBaseNamesToStyles.genericToStyle(nestedComponentBaseName);
-    const newComponent = AddNewGenericComponent.addUsingParentDropdownStructure(selectedNestedComponent, activeBaseComponent, dropdownStructure, nestedComponentType, nestedComponentStyle, layerName);
-    // set here because not all nested components are removable, but the ones added by the user are
+  private static addNewComponent(selectedNestedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES,
+      activeBaseComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure): [WorkshopComponent, Layer] {
+    const { componentType, componentStyle, parentLayer, parentComponent }
+      = AddNewGenericComponent.getNewComponentProperties(selectedNestedComponent, nestedComponentBaseName);
+    const newComponent = AddNewGenericComponent.addUsingParentDropdownStructure(parentComponent,
+      activeBaseComponent, dropdownStructure, componentType, componentStyle, parentLayer);
+    // set here because not all nested components are removable, but the ones manually added by the user are
     newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
-    return newComponent;
+    return [newComponent, parentLayer];
   }
 
   private static updateGenericComponentDropdownOptionNames(selectedNestedComponent: WorkshopComponent): void {
@@ -34,13 +35,14 @@ export class AddNewNestedComponent extends AddNewComponentShared {
     AddNewNestedComponent.updateGenericComponentDropdownOptionNames(selectedNestedComponent);
   }
 
-  // WORK3: refactor
-  private static addNewSubcomponentToDefaultBaseLayer(selectedNestedComponent: WorkshopComponent, activeBaseComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure,
-      nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): WorkshopComponent {
-    const { parentNestedComponent, parentLayer } = ActiveComponentUtils.getParentComponentProperties(selectedNestedComponent, true);
-    const newComponent = AddNewNestedComponent.addNewSubcomponent(parentNestedComponent, nestedComponentBaseName, parentLayer.name, activeBaseComponent, dropdownStructure);
-    const parentNestedComponentDropdownOptionName = activeBaseComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[Object.keys(parentNestedComponent.componentPreviewStructure.subcomponentDropdownStructure)[0]];
-    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(activeBaseComponent, (dropdownStructure[parentNestedComponentDropdownOptionName] || dropdownStructure[activeBaseComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[parentLayer.name]]) as NestedDropdownStructure, parentLayer.sections.alignedSections);
+  private static addNewComponentToDefaultBaseLayer(selectedNestedComponent: WorkshopComponent, activeBaseComponent: WorkshopComponent,
+      dropdownStructure: NestedDropdownStructure, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): WorkshopComponent {
+    const [newComponent, parentLayer] = AddNewNestedComponent.addNewComponent(selectedNestedComponent, nestedComponentBaseName,
+      activeBaseComponent, dropdownStructure);
+    const { componentPreviewStructure: { subcomponentNameToDropdownOptionName }, activeSubcomponentName } = activeBaseComponent;
+    const activeParentComponentOptionName = subcomponentNameToDropdownOptionName[activeSubcomponentName];
+    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(
+      activeBaseComponent, dropdownStructure[activeParentComponentOptionName] as NestedDropdownStructure, parentLayer.sections.alignedSections);
     return newComponent;
   }
 
@@ -63,7 +65,7 @@ export class AddNewNestedComponent extends AddNewComponentShared {
       AddNewNestedComponent.addNewLayerToBase(selectedNestedComponent, nestedComponentBaseName);
     } else if (selectedNestedComponent.activeSubcomponentName === selectedNestedComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name) {
       AddNewGenericComponent.addComponentViaDropdownStructureSearch(
-        selectedNestedComponent, AddNewNestedComponent.addNewSubcomponentToDefaultBaseLayer, nestedComponentBaseName);
+        selectedNestedComponent, AddNewNestedComponent.addNewComponentToDefaultBaseLayer, nestedComponentBaseName);
     } else {
       // WORK1 probably not needed
       AddNewNestedComponent.addNewSubcomponentToCurrentLayer(selectedNestedComponent, nestedComponentBaseName);

@@ -6,7 +6,6 @@ import { OverwritePropertiesFunc } from '../../../../../../../interfaces/overwri
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { IncrementNestedComponentCount } from '../../nestedComponentCount/incrementNestedComponentCount';
-import { ComponentPreviewStructureSearchUtils } from '../utils/componentPreviewStractureSearchUtils';
 import { Layer, NestedComponent } from '../../../../../../../interfaces/componentPreviewStructure';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
@@ -15,7 +14,6 @@ import { InterconnectedSettings } from '../../../interconnectedSettings/intercon
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
-import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUtils';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { AddNewComponentShared } from './addNewComponentShared';
 import JSONUtils from '../../../generic/jsonUtils';
@@ -96,10 +94,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     }
   }
 
-  protected static addNewComponentToComponentPreview(activeBaseComponent: WorkshopComponent, newComponent: WorkshopComponent,
-      parentLayerName: string): void {
-    const activeNestedComponent = ActiveComponentUtils.getActiveNestedComponentParent(activeBaseComponent);
-    const parentLayer = ComponentPreviewStructureSearchUtils.getLayerByName(activeNestedComponent, parentLayerName);
+  protected static addNewComponentToComponentPreview(newComponent: WorkshopComponent, parentLayer: Layer): void {
     const baseSubcomponent = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     AddNewGenericComponent.addNewSubcomponentToParentLayer(parentLayer, baseSubcomponent, newComponent);
     baseSubcomponent.parentLayer = parentLayer;
@@ -122,7 +117,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
   }
 
   protected static createNewComponent(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, componentGenerator: ComponentGenerator,
-      activeBaseComponent: WorkshopComponent, overwritePropertiesFunc?: OverwritePropertiesFunc[], customBaseName?: string): NewComponentDetails {
+      activeBaseComponent?: WorkshopComponent, overwritePropertiesFunc?: OverwritePropertiesFunc[], customBaseName?: string): NewComponentDetails {
     const baseNamePrefix = AddNewGenericComponent.getBaseSubcomponentNamePrefix(componentType, componentStyle);
     const baseName = customBaseName || UniqueSubcomponentNameGenerator.generate(baseNamePrefix);
     const newComponent = AddNewComponentShared.createNewComponentViaGenerator(componentGenerator, activeBaseComponent, baseName);
@@ -142,15 +137,15 @@ export class AddNewGenericComponent extends AddNewComponentShared {
 
   public static addUsingParentDropdownStructure(parentComponent: WorkshopComponent, activeBaseComponent: WorkshopComponent,
       dropdownStructure: NestedDropdownStructure, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
-      parentLayerName: string, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
+      parentLayer: Layer, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
     const [newComponent, baseNamePrefix] = AddNewGenericComponent.createNewComponent(componentType, componentStyle,
       componentGenerator, activeBaseComponent, overwritePropertiesFunc);
     Object.assign((activeBaseComponent.coreBaseComponent || activeBaseComponent).subcomponents, newComponent.subcomponents);
-    AddNewGenericComponent.addNewComponentToComponentPreview(parentComponent, newComponent, parentLayerName);
+    AddNewGenericComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
     AddNewGenericComponent.addNewComponentToDropdownStructure(newComponent, activeBaseComponent, dropdownStructure);
     InterconnectedSettings.update(true, activeBaseComponent, newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
-    IncrementNestedComponentCount.increment(activeBaseComponent, baseNamePrefix, parentLayerName);
+    IncrementNestedComponentCount.increment(activeBaseComponent, baseNamePrefix, parentLayer.name);
     AddNewGenericComponent.populateCoreComponentRef(parentComponent, newComponent);
     newComponent.nestedComponentParent = parentComponent;
     AddNewGenericComponent.removeInnerContents(newComponent);
@@ -159,7 +154,8 @@ export class AddNewGenericComponent extends AddNewComponentShared {
 
   public static add(parentComponent: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
       parentLayerName: string, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
+    const parentLayer = AddNewComponentShared.getParentLayer(parentComponent, parentLayerName);
     return AddNewComponentShared.addComponentViaDropdownStructureSearch(parentComponent, AddNewGenericComponent.addUsingParentDropdownStructure,
-      componentType, componentStyle, parentLayerName, overwritePropertiesFunc)
+      componentType, componentStyle, parentLayer, overwritePropertiesFunc)
   }
 }
