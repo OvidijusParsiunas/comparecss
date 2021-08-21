@@ -145,7 +145,6 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     Object.assign(coreBaseComponent.subcomponents, newComponent.subcomponents);
     AddNewGenericComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
     AddNewGenericComponent.addNewComponentToDropdownStructure(newComponent, coreBaseComponent, dropdownStructure);
-    // WORK1: check this
     InterconnectedSettings.update(true, activeBaseComponent, newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
     IncrementNestedComponentCount.increment(activeBaseComponent, baseNamePrefix, parentLayer.name);
     AddNewGenericComponent.populateCoreComponentRef(parentComponent, newComponent);

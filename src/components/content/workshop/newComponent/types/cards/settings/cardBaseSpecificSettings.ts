@@ -30,6 +30,7 @@ export class CardBaseSpecificSettings {
       ...CardBaseSpecificSettings.CARD_BASE_GENERIC_COMPONENTS, ...CardBaseSpecificSettings.CARD_BASE_SPECIFIC_COMPONENTS };
   }
 
+  // this is no longer used, but remains as an exemplar for future cssProperty interconnected settings
   private static getLeftPositionProperties(subcomponentProperties: SubcomponentProperties): UpdateOtherCssProperties {
     const { customCss, customFeatures } = subcomponentProperties;
     return {
@@ -41,6 +42,7 @@ export class CardBaseSpecificSettings {
     };
   }
 
+  // this is no longer used, but remains as an exemplar for future cssProperty interconnected settings
   private static setInterconnectedSettings(component: WorkshopComponent): void {
     const baseSubcomponent = component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     component.interconnectedSettings = [{
@@ -52,6 +54,6 @@ export class CardBaseSpecificSettings {
 
   public static set(component: WorkshopComponent): void {
     CardBaseSpecificSettings.setSettingsOnBaseSubcomponent(component);
-    CardBaseSpecificSettings.setInterconnectedSettings(component);
+    // CardBaseSpecificSettings.setInterconnectedSettings(component);
   }
 }
