@@ -1,9 +1,11 @@
 import { UpdateGenericComponentDropdownOptionNames } from '../updateNestedComponentNames/updateGenericComponentDropdownOptionNames';
-import { ComponentPreviewStructureSearchUtils } from '../addNewNestedComponent/utils/componentPreviewStractureSearchUtils';
-import { AlignedSections, NestedComponent } from '../../../../../../interfaces/componentPreviewStructure';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { AlignedSections, NestedComponent } from '../../../../../../interfaces/componentPreviewStructure';
+import { ComponentTraversalState, TargetDetails } from '../../../../../../interfaces/componentTraversal';
 import { nestedComponentAlignmentDropdownState } from './nestedComponentAlignmentDropdownState';
+import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
+import { ActiveComponentUtils } from '../../activeComponent/activeComponentUtils';
 
 export class ChangeNestedComponentAlignment {
 
@@ -57,9 +59,25 @@ export class ChangeNestedComponentAlignment {
     }
   }
 
+  private static updateDropdownStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
+    const targetDetails = this as any as TargetDetails;
+    if (ComponentTraversalUtils.isActualObjectNameMatching(targetDetails, componentTraversalState)) {
+      const { parentComponent, parentLayerAlignedSections } = targetDetails;
+      UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(parentComponent,
+        componentTraversalState.subcomponentDropdownStructure, parentLayerAlignedSections);
+      return componentTraversalState;
+    }
+    return null;
+  }
+
   private static updateNames(newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties, parentComponent: WorkshopComponent): void {
-    const parentLayer = ComponentPreviewStructureSearchUtils.getLayerByName(parentComponent, subcomponentProperties.parentLayer.name);
-    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(parentComponent, parentLayer, true);
+    const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(parentComponent);
+    const coreBaseComponent = activeBaseComponent.coreBaseComponent || activeBaseComponent;
+    const targetDetails = ComponentTraversalUtils.generateTargetDetails(coreBaseComponent, coreBaseComponent.activeSubcomponentName);
+    targetDetails.parentLayerAlignedSections = subcomponentProperties.parentLayer.sections.alignedSections;
+    ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
+      coreBaseComponent.componentPreviewStructure.subcomponentDropdownStructure,
+      ChangeNestedComponentAlignment.updateDropdownStructureIfFound.bind(targetDetails));
     // UX - check if need to set the subcomponent to the right of the alignment
     // parentComponent.activeSubcomponentName = newAlignmentSubcomponents[newAlignmentSubcomponents.length - 1].name;
     const newAlignmentSubcomponents = subcomponentProperties.parentLayer.sections.alignedSections[newAlignment];

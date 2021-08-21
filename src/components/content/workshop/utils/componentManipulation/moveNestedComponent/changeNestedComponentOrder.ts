@@ -1,6 +1,5 @@
 import { DropdownOptionAuxDetails, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { UpdateGenericComponentDropdownOptionNames } from '../updateNestedComponentNames/updateGenericComponentDropdownOptionNames';
-import { ComponentPreviewStructureSearchUtils } from '../addNewNestedComponent/utils/componentPreviewStractureSearchUtils';
 import { SubcomponentNameToDropdownOptionName } from '../../../../../../interfaces/componentPreviewStructure';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../../interfaces/subcomponentOrderDirections.enum';
 import { ComponentTraversalState, TargetDetails } from '../../../../../../interfaces/componentTraversal';
@@ -8,6 +7,7 @@ import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDrop
 import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { ActiveComponentUtils } from '../../activeComponent/activeComponentUtils';
 import { ArrayUtils } from '../../generic/arrayUtils';
 
 type CompositeTraversalResult = ComponentTraversalState & { nestedComponentMovable: boolean } 
@@ -15,10 +15,9 @@ type ChangeComponentTargetDetails = TargetDetails & { isLowerOrderDirection?: bo
 
 export class ChangeNestedComponentOrder {
 
-  private static updateNames(targetDetails: TargetDetails): void {
-    const { parentComponent, targetSubcomponentProperties } = targetDetails;
-    const parentLayer = ComponentPreviewStructureSearchUtils.getLayerByName(parentComponent, targetSubcomponentProperties.parentLayer.name);
-    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(parentComponent, parentLayer, true);
+  private static updateNames(targetDetails: TargetDetails, subcomponentDropdownStructure: NestedDropdownStructure): void {
+    const { parentComponent, parentLayerAlignedSections } = targetDetails;
+    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(parentComponent, subcomponentDropdownStructure, parentLayerAlignedSections);
   }
 
   private static swapSubcomponentDropdownStructure(subcomponentDropdownStructure: NestedDropdownStructure, currentOptionName: string,
@@ -51,7 +50,9 @@ export class ChangeNestedComponentOrder {
     const swappedOptionIndex = targetDetails.isLowerOrderDirection ? index - 1 : index + 1;
     const swappedOptionName = dropdownOptionNames[swappedOptionIndex];
     ChangeNestedComponentOrder.swapDropdownDetails(targetDetails.parentComponent, subcomponentDropdownStructure, currentOptionName, swappedOptionName);
-    if (targetDetails.targetSubcomponentProperties.subcomponentType !== SUBCOMPONENT_TYPES.LAYER) ChangeNestedComponentOrder.updateNames(targetDetails);
+    if (targetDetails.targetSubcomponentProperties.subcomponentType !== SUBCOMPONENT_TYPES.LAYER) {
+      ChangeNestedComponentOrder.updateNames(targetDetails, subcomponentDropdownStructure);
+    }
   }
 
   private static swapNestedComponentInDropdownStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
@@ -81,7 +82,9 @@ export class ChangeNestedComponentOrder {
   }
 
   public static change(parentComponent: WorkshopComponent, direction: SUBCOMPONENT_ORDER_DIRECTIONS): void {
-    const targetDetails: ChangeComponentTargetDetails = ComponentTraversalUtils.generateTargetDetails(parentComponent, parentComponent.activeSubcomponentName);
+    const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(parentComponent);
+    const coreBaseComponent = activeBaseComponent.coreBaseComponent || activeBaseComponent;
+    const targetDetails: ChangeComponentTargetDetails = ComponentTraversalUtils.generateTargetDetails(coreBaseComponent, coreBaseComponent.activeSubcomponentName);
     targetDetails.isLowerOrderDirection = direction === SUBCOMPONENT_ORDER_DIRECTIONS.LEFT || direction === SUBCOMPONENT_ORDER_DIRECTIONS.UP;
     const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
       parentComponent.componentPreviewStructure,
@@ -89,7 +92,7 @@ export class ChangeNestedComponentOrder {
     if (!traversalResult.nestedComponentMovable) return;
     if (traversalResult) targetDetails.parentLayerAlignedSections = traversalResult.alignedSections;
     ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
-      parentComponent.componentPreviewStructure.subcomponentDropdownStructure,
+      coreBaseComponent.componentPreviewStructure.subcomponentDropdownStructure,
       ChangeNestedComponentOrder.swapNestedComponentInDropdownStructureIfFound.bind(targetDetails));
   }
 }

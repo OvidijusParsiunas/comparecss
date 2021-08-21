@@ -134,6 +134,7 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
     return activeComponentDropdownStructure[subcomponentNameToDropdownOptionName[layerName]] || activeComponentDropdownStructure;
   }
 
+  // for shallow component updates only
   public static updateViaParentLayerPreviewStructure(baseComponent: WorkshopComponent, layer: Layer, useArgComponentStructure = false): void {
     const { name: layerName, sections: { alignedSections }} = layer;
     const coreBaseComponent = baseComponent.coreBaseComponent || baseComponent;
