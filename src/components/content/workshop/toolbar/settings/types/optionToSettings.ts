@@ -1,6 +1,6 @@
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../consts/workshopToolbarOptionTypes.enum';
+import nestedComponentPositionVerticalOffset from './nestedComponentPositionVerticalOffset';
 import nestedComponentPositionNoAlign from './nestedComponentPositionNoAlign';
-import nestedComponentPositionAlign from './nestedComponentPositionAlign';
 import nestedComponentPosition from './nestedComponentPosition';
 import backgroundColorImage from './backgroundColorImage';
 import dropdownMenuPosition from './dropdownPosition';
@@ -65,7 +65,7 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MODAL_POSITION]: modalPosition,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT_SIZE]: textSize,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION]: nestedComponentPosition,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION_ALIGN]: nestedComponentPositionAlign,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION_VERTICAL_OFFSET]: nestedComponentPositionVerticalOffset,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION_NO_ALIGN]: nestedComponentPositionNoAlign,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BACKDROP]: backdrop,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS]: buttonAnimations,

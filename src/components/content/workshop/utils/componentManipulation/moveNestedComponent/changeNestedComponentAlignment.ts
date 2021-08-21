@@ -59,7 +59,7 @@ export class ChangeNestedComponentAlignment {
 
   private static updateNames(newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties, parentComponent: WorkshopComponent): void {
     const parentLayer = ComponentPreviewStructureSearchUtils.getLayerByName(parentComponent, subcomponentProperties.parentLayer.name);
-    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(parentComponent, parentLayer);
+    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(parentComponent, parentLayer, true);
     // UX - check if need to set the subcomponent to the right of the alignment
     // parentComponent.activeSubcomponentName = newAlignmentSubcomponents[newAlignmentSubcomponents.length - 1].name;
     const newAlignmentSubcomponents = subcomponentProperties.parentLayer.sections.alignedSections[newAlignment];
@@ -68,11 +68,10 @@ export class ChangeNestedComponentAlignment {
 
   public static change(previousAlignment: ALIGNED_SECTION_TYPES, newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties,
       shouldSubcomponentNamesBeUpdated: boolean, parentComponent: WorkshopComponent): void {
-    if (previousAlignment === newAlignment) return;
     if (shouldSubcomponentNamesBeUpdated) {
       ChangeNestedComponentAlignment.updateNames(newAlignment, subcomponentProperties, parentComponent);
-    } else {
-      if (newAlignment !== previousAlignment) ChangeNestedComponentAlignment.setStateAndRemoveSubcomponent(previousAlignment, subcomponentProperties);
+    } else if (newAlignment !== previousAlignment) {
+      ChangeNestedComponentAlignment.setStateAndRemoveSubcomponent(previousAlignment, subcomponentProperties);
       ChangeNestedComponentAlignment.addSubcomponentToAlignment(previousAlignment, newAlignment, subcomponentProperties);
     }
   }
