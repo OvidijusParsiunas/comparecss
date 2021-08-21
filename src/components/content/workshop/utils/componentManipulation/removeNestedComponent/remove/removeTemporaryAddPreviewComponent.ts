@@ -11,7 +11,7 @@ export class RemoveTemporaryAddPreviewComponent extends RemoveAnyNestedComponent
   // all subcomponents are stored in the core activeComponent, however the preview structure for an auxiliary component is within its component
   private static removeTargetNestedComponent(activeComponent: WorkshopComponent, targetDetails: TargetDetails, subcomponents: Subcomponents): void {
     Object.keys(subcomponents).forEach((subcomponentName) => delete activeComponent.subcomponents[subcomponentName]);
-    const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(activeComponent);
+    const { activeBaseComponent } = ActiveComponentUtils.getBaseComponents(activeComponent);
     ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
       activeBaseComponent.componentPreviewStructure,
       RemoveTemporaryAddPreviewComponent.removeNestedComponentInPreviewStructureIfFound.bind(targetDetails));

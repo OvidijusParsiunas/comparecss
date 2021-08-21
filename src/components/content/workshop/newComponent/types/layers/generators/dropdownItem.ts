@@ -100,7 +100,7 @@ export class DropdownItemLayer extends ComponentBuilder {
 
   private static addNestedComponentsToLayer(parentComponent: WorkshopComponent): WorkshopComponent[] {
     const layerComponent = this as undefined as WorkshopComponent;
-    const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(parentComponent);
+    const { activeBaseComponent } = ActiveComponentUtils.getBaseComponents(parentComponent);
     const textComponent = AddNewGenericComponent.add(parentComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
       layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name,
       [DropdownItemLayer.overwriteTextProperties.bind({parentComponent, activeBaseComponent} as OverwriteTextPropertiesBaseComponents)]);

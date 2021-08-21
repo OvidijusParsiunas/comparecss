@@ -71,8 +71,7 @@ export class ChangeNestedComponentAlignment {
   }
 
   private static updateNames(newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties, parentComponent: WorkshopComponent): void {
-    const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(parentComponent);
-    const coreBaseComponent = activeBaseComponent.coreBaseComponent || activeBaseComponent;
+    const { coreBaseComponent } = ActiveComponentUtils.getBaseComponents(parentComponent);
     const targetDetails = ComponentTraversalUtils.generateTargetDetails(coreBaseComponent, coreBaseComponent.activeSubcomponentName);
     targetDetails.parentLayerAlignedSections = subcomponentProperties.parentLayer.sections.alignedSections;
     ComponentTraversalUtils.traverseComponentUsingDropdownStructure(

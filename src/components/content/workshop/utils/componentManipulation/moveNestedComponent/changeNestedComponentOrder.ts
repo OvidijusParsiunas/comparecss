@@ -82,8 +82,7 @@ export class ChangeNestedComponentOrder {
   }
 
   public static change(parentComponent: WorkshopComponent, direction: SUBCOMPONENT_ORDER_DIRECTIONS): void {
-    const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(parentComponent);
-    const coreBaseComponent = activeBaseComponent.coreBaseComponent || activeBaseComponent;
+    const { coreBaseComponent } = ActiveComponentUtils.getBaseComponents(parentComponent);
     const targetDetails: ChangeComponentTargetDetails = ComponentTraversalUtils.generateTargetDetails(coreBaseComponent, coreBaseComponent.activeSubcomponentName);
     targetDetails.isLowerOrderDirection = direction === SUBCOMPONENT_ORDER_DIRECTIONS.LEFT || direction === SUBCOMPONENT_ORDER_DIRECTIONS.UP;
     const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(

@@ -94,8 +94,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
     const layerName = NestedComponentBaseNamesToStyles.STYLE_TO_LAYER[componentStyle];
-    const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(parentComponent);
-    const coreBaseComponent = activeBaseComponent.coreBaseComponent || activeBaseComponent;
+    const { activeBaseComponent, coreBaseComponent } = ActiveComponentUtils.getBaseComponents(parentComponent);
     const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, activeBaseComponent,
       UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
     Object.assign(coreBaseComponent.subcomponents, newComponent.subcomponents);
