@@ -134,9 +134,10 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
     return activeComponentDropdownStructure[subcomponentNameToDropdownOptionName[layerName]] || activeComponentDropdownStructure;
   }
 
-  public static updateViaParentLayerPreviewStructure(component: WorkshopComponent, layer: Layer, useArgComponentStructure = false): void {
+  public static updateViaParentLayerPreviewStructure(baseComponent: WorkshopComponent, layer: Layer, useArgComponentStructure = false): void {
     const { name: layerName, sections: { alignedSections }} = layer;
-    const nestedStructure = UpdateGenericComponentDropdownOptionNames.getNestedDropdownStructure(component, layerName, useArgComponentStructure);
-    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(component, nestedStructure, alignedSections);
+    const coreBaseComponent = baseComponent.coreBaseComponent || baseComponent;
+    const nestedStructure = UpdateGenericComponentDropdownOptionNames.getNestedDropdownStructure(coreBaseComponent, layerName, useArgComponentStructure);
+    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(coreBaseComponent, nestedStructure, alignedSections);
   }
 }

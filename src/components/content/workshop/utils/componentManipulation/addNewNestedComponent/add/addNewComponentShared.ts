@@ -53,11 +53,11 @@ export class AddNewComponentShared {
 
   protected static addComponentViaDropdownStructureSearch(parentComponent: WorkshopComponent, callback: DropdownStructureSearchCallback,
       ...args: unknown[]): WorkshopComponent {
-    // WORK1 - check if this affects anything
     const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(parentComponent);
-    const targetDetails = ComponentTraversalUtils.generateTargetDetails(activeBaseComponent, activeBaseComponent.activeSubcomponentName);
+    const coreBaseComponent = activeBaseComponent.coreBaseComponent || activeBaseComponent;
+    const targetDetails = ComponentTraversalUtils.generateTargetDetails(coreBaseComponent, coreBaseComponent.activeSubcomponentName);
     return ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
-      activeBaseComponent.componentPreviewStructure.subcomponentDropdownStructure,
+      coreBaseComponent.componentPreviewStructure.subcomponentDropdownStructure,
       AddNewGenericComponent.proceedToInvokeAddCallbackIfFound.bind(targetDetails,
         parentComponent, activeBaseComponent, callback, args)) as WorkshopComponent;
   }

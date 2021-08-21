@@ -1,7 +1,6 @@
 import { UpdateGenericComponentDropdownOptionNames } from '../updateNestedComponentNames/updateGenericComponentDropdownOptionNames';
 import { LAYER_COMPONENTS_BASE_NAMES, NESTED_COMPONENTS_BASE_NAMES } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { UpdateLayerDropdownOptionNames } from '../updateNestedComponentNames/updateLayerDropdownOptionNames';
-import { ComponentPreviewStructureSearchUtils } from './utils/componentPreviewStractureSearchUtils';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { NestedComponentBaseNamesToStyles } from './utils/nestedComponentBaseNamesToStyles';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
@@ -36,8 +35,8 @@ export class AddNewNestedComponent extends AddNewComponentShared {
   }
 
   private static updateLayerComponentNames(selectedNestedComponent: WorkshopComponent): void {
-    const layerComponentsNames = Object.keys(ComponentPreviewStructureSearchUtils.getComponentLayers(selectedNestedComponent));
-    const startingIndex = layerComponentsNames.length === 2 ? 0 : layerComponentsNames.length - 1;
+    const numberOfLayers = selectedNestedComponent.componentPreviewStructure.layers.length;
+    const startingIndex = numberOfLayers === 2 ? 0 : numberOfLayers - 1;
     UpdateLayerDropdownOptionNames.update(selectedNestedComponent, startingIndex);
   }
 
