@@ -8,9 +8,8 @@ import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 export default function useBaseComponentGeneric(): UseBaseComponentGeneric {
 
   function getSelectedDropdownCss(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {
-    const { parentBaseComponentRef, customStaticFeatures } = component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    const { selectDropdown } = parentBaseComponentRef?.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures || {};
-    if (selectDropdown?.enabled && selectDropdown.lastSelectedItemText && selectDropdown.lastHoveredItemText === customStaticFeatures?.subcomponentText?.text) {
+    const { selectDropdown, subcomponentText } = component.nestedComponentParent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures || {};
+    if (selectDropdown?.enabled && selectDropdown.lastSelectedItemText && selectDropdown.lastHoveredItemText === subcomponentText?.text) {
       return subcomponentCss[CSS_PSEUDO_CLASSES.HOVER];
     }
     return {};

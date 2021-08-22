@@ -245,7 +245,7 @@ export interface WorkshopComponent {
 // All subcomponents can access their parent base component via the parentBaseComponentRef property (no matter how deeply they are nested)
 // core base component -------> <------------------------------------
 //                             |                                    |
-//                         subcomponents -> parentBaseComponentRef ->
+//                      subcomponents ---> parentBaseComponentRef -->
 //                             |                                    |
 // auxiliary component -------> <------------------------------------
 

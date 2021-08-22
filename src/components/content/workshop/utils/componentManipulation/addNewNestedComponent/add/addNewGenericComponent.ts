@@ -147,7 +147,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     InterconnectedSettings.update(true, activeBaseComponent, newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
     IncrementNestedComponentCount.increment(activeBaseComponent, baseNamePrefix, parentLayer.name);
     AddNewGenericComponent.populateCoreComponentRef(parentComponent, newComponent);
-    newComponent.nestedComponentParent = parentComponent;
+    newComponent.nestedComponentParent = activeBaseComponent;
     AddNewGenericComponent.removeContents(newComponent);
     return newComponent;
   }

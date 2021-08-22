@@ -16,15 +16,10 @@ export class ActiveComponentUtils {
     return subcomponents[activeSubcomponentName] || coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
   }
 
-  private static getActiveBaseComponent(parentComponent: WorkshopComponent): WorkshopComponent {
-    const activeSubcomponent = ActiveComponentUtils.getActiveSubcomponent(parentComponent);
-    // if the parentBaseComponentRef property has not yet been set, reference the current parent component as the base
-    return activeSubcomponent.parentBaseComponentRef || parentComponent;
-  }
-
   // WORK1: rename to activeTopParentComponent
   public static getBaseComponents(parentComponent: WorkshopComponent): BaseComponents {
-    const activeBaseComponent = ActiveComponentUtils.getActiveBaseComponent(parentComponent);
+    const activeBaseComponent = ActiveComponentUtils.getActiveSubcomponent(parentComponent).parentBaseComponentRef;
+    // this serves as a way to get to the master subcomponents, dropdown properties
     const coreBaseComponent = activeBaseComponent.coreBaseComponent || activeBaseComponent;
     return { activeBaseComponent, coreBaseComponent };
   }
