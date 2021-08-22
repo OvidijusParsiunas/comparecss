@@ -154,9 +154,8 @@ export interface SubcomponentProperties {
   customStaticFeatures?: CustomStaticFeatures; 
   defaultCustomStaticFeatures?: CustomStaticFeatures;
   layerSectionsType?: LAYER_SECTIONS_TYPES;
-  // it is important to understand that the subcomponents of a nested component are in its subcomponent section, additionally all of the nested components'
-  // subcomponents are also referenced in the parent component's subcomponents section
-  // nested component subcomponents keep a reference to it via the nestedComponent property
+  // it is important to understand that the subcomponents of a nested component are located in the core base component's subcomponents section
+  // and the nestedComponent property is used to reference the nestedComponent they belong to
   // full structure explained at the bottom of the file titled: 'Reference for component structure'
   nestedComponent?: NestedComponent;
   // baseSubcomponentRef is only appended to all the nested subcomponents (except the base subcomponents)
@@ -213,8 +212,8 @@ export interface WorkshopComponent {
   triggerFuncOnSettingChange?: TriggerFuncOnSettingChange;
   // used to share add dropdown options across components such as layers - in order to make sure that the enabled and disabled items are in-sync
   newNestedComponentsOptionsRefs?: NewNestedComponentsOptionsRefs;
-  // reference to the auxiliary component (side componnet) which holds the preview structure of its subcomponents, however the dropdown structure, subcomponents
-  // and subcomponentNameToDropdownOptionName are placed in the core parent (base) component instead (for purposes of maintainability)
+  // reference to the auxiliary component (side component) which holds the preview structure of its subcomponents
+  // the dropdown structure and its subcomponents are located in the core base component's subcomponents section
   auxiliaryComponent?: WorkshopComponent;
   // only present in an auxiliary component (reverse) and is additionally used to identify if this component is an auxiliary component 
   coreBaseComponent?: WorkshopComponent;
@@ -225,11 +224,14 @@ export interface WorkshopComponent {
 
 // Reference for component structure:
 
-// parent component -> subcomponents (nested component subcomponents + all auxiliary subcomponents)
+// core base component -> subcomponents (all of the components subcomponents)
+// All of the nested components' (incl auxiliary component's) subcomponents, subcomponentDropdownStructure and subcomponentNameToDropdownOptionName
+// property values are placed in the core base component (and removed from the nested components)
+// This approach allows these values to be maintained (e.g. added/removed) all in one place 
 
-// Subcomponents of the nested components can access their own components via the following properties:
+// Subcomponents that belong to nested components can access their own immediate components via the following properties:
 //   nestedComponent -> ref
-// Also, subcomponents of the nested components that are not their bases cass access their base subcomponent via the following property:
+// Also, subcomponents of the nested components that are not their bases can access their base subcomponent via the following property:
 //   baseSubcomponentRef
 // parent component -> subcomponents (not base)        +        subcomponents (base)
 //                     |          |                                   |
@@ -240,18 +242,18 @@ export interface WorkshopComponent {
 //       nested component                                       nested component
 // baseSubcomponentRef allows base, layer and text subcomponents to all reference the same component (such as a button)
 
-// All subcomponents can access the very top parent base component via the parentBaseComponentRef property (no matter how deeply they are nested)
-// top parent component -------> <------------------------------------
-//                              |                                    |
-//                          subcomponents -> parentBaseComponentRef ->
-//                              |                                    |
-// top auxiliary component ----> <------------------------------------
+// All subcomponents can access their parent base component via the parentBaseComponentRef property (no matter how deeply they are nested)
+// core base component -------> <------------------------------------
+//                             |                                    |
+//                         subcomponents -> parentBaseComponentRef ->
+//                             |                                    |
+// auxiliary component -------> <------------------------------------
 
 // Nested components can access the parent which they are nested in via nestedComponentParent
-// (as their subcomponents' nestedComponent -> ref property is pointing to the nested component itself which does not hold the nesting structure)
-// it is important to note that the top level parent component subcomponents property contains all subcomponents (including nested subcomponents)
-// base subcomponents' nestedComponent -> ref -> nestedComponentParent property directly references the nested component's parent
-// as base does not have its own component
+// (their subcomponents' nestedComponent -> ref property only points to their immediate component which may not hold useful information
+// as the subcomponents and componentPreviewStructure data are all maintaintained in the parental components - e.g. text subcomponent)
+// It is important to understand that base subcomponents' nestedComponent -> ref -> nestedComponentParent property directly references the nested
+// component's parent as base does not have its own immediate component
 // top parent component -> subcomponents (e.g. button text)    +   subcomponents (button base)
 //                                      |                                    |
 //                               nestedComponent                      nestedComponent

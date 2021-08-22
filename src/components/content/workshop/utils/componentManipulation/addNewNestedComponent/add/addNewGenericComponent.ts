@@ -37,6 +37,12 @@ export class AddNewGenericComponent extends AddNewComponentShared {
   };
   public static readonly DEFAULT_TOP_PROPERTY = '50%';
 
+  private static removeContents(newComponent: WorkshopComponent): void {
+    newComponent.subcomponents = {};
+    newComponent.componentPreviewStructure.subcomponentDropdownStructure = {};
+    newComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName = {};
+  }
+
   private static populateCoreComponentRef(parentComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     // WORK1
     // get copy to work first
@@ -128,13 +134,6 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     return [newComponent, baseNamePrefix];
   }
 
-  // WORK1
-  private static removeInnerContents(newComponent: WorkshopComponent): void {
-    // newComponent.subcomponents = {};
-    // newComponent.componentPreviewStructure.subcomponentDropdownStructure = {};
-    // newComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName = {};
-  }
-
   public static addUsingParentDropdownStructure(parentComponent: WorkshopComponent, activeBaseComponent: WorkshopComponent,
       dropdownStructure: NestedDropdownStructure, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
       parentLayer: Layer, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
@@ -149,7 +148,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     IncrementNestedComponentCount.increment(activeBaseComponent, baseNamePrefix, parentLayer.name);
     AddNewGenericComponent.populateCoreComponentRef(parentComponent, newComponent);
     newComponent.nestedComponentParent = parentComponent;
-    AddNewGenericComponent.removeInnerContents(newComponent);
+    AddNewGenericComponent.removeContents(newComponent);
     return newComponent;
   }
 
