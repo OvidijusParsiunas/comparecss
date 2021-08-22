@@ -4,17 +4,17 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentType
 
 export class SelectDropdownUtils {
   
-  public static refresh(parentBaseComponentRef: WorkshopComponent, checkBeforeProceeding = false): void {
-    const { selectDropdown } = parentBaseComponentRef?.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures || {};
+  public static refresh(menuComponent: WorkshopComponent, checkBeforeProceeding = false): void {
+    const { selectDropdown } = menuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures || {};
     if (!checkBeforeProceeding || selectDropdown?.enabled) {
       selectDropdown.lastHoveredItemText = null;
       selectDropdown.lastSelectedItemText = null;
     }
   }
 
-  private static setMouseEventText(subcomponentProperties: SubcomponentProperties, selectDropdown: SelectDropdown,
+  private static setMouseEventText(layerComponent: WorkshopComponent, selectDropdown: SelectDropdown,
       itemTextKey: keyof SubcomponentMouseEventItemText): void {
-    const { nestedComponentsLockedToLayer } = subcomponentProperties.nestedComponent.ref;
+    const { nestedComponentsLockedToLayer } = layerComponent;
     if (nestedComponentsLockedToLayer) {
       const dropdownItemText = nestedComponentsLockedToLayer.list[0].customStaticFeatures.subcomponentText.text;
       selectDropdown[itemTextKey] = dropdownItemText;
@@ -22,12 +22,13 @@ export class SelectDropdownUtils {
   }
 
   private static setDetails(subcomponentProperties: SubcomponentProperties, itemTextKey: keyof SubcomponentMouseEventItemText, canBeUnset = false): void {
-    const { parentBaseComponentRef } = subcomponentProperties;
-    const { selectDropdown } = parentBaseComponentRef.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures;
+    const nestedComponent = subcomponentProperties.nestedComponent.ref;
+    const menuComponent = nestedComponent.nestedComponentParent || nestedComponent;
+    const { selectDropdown } = menuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures;
     if (selectDropdown.enabled) {
-      SelectDropdownUtils.setMouseEventText(subcomponentProperties, selectDropdown, itemTextKey);
+      SelectDropdownUtils.setMouseEventText(nestedComponent, selectDropdown, itemTextKey);
     } else if (canBeUnset) {
-      SelectDropdownUtils.refresh(parentBaseComponentRef);
+      SelectDropdownUtils.refresh(menuComponent);
     }
   }
 
