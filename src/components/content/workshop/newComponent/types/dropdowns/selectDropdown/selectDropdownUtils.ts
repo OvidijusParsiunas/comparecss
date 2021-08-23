@@ -5,9 +5,11 @@ import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum
 
 export class SelectDropdownUtils {
   
-  public static refresh(menuComponent: WorkshopComponent, checkBeforeProceeding = false): void {
-    const { selectDropdown } = menuComponent?.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures || {};
-    if (!checkBeforeProceeding || selectDropdown?.enabled) {
+  public static refresh(components: WorkshopComponent[], checkBeforeProceeding = false): void {
+    const menuComponent = (components || []).find((component) => component.type === COMPONENT_TYPES.DROPDOWN_MENU);
+    if (!menuComponent) return;
+    const { selectDropdown } = menuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures;
+    if (!checkBeforeProceeding || selectDropdown.enabled) {
       selectDropdown.lastHoveredItemText = null;
       selectDropdown.lastSelectedItemText = null;
     }
@@ -28,7 +30,7 @@ export class SelectDropdownUtils {
     if (selectDropdown.enabled) {
       SelectDropdownUtils.setMouseEventText(nestedComponent, selectDropdown, itemTextKey);
     } else if (canBeUnset) {
-      SelectDropdownUtils.refresh(menuComponent);
+      SelectDropdownUtils.refresh([menuComponent]);
     }
   }
 

@@ -82,8 +82,8 @@ export class ChangeNestedComponentOrder {
   }
 
   public static change(parentComponent: WorkshopComponent, direction: SUBCOMPONENT_ORDER_DIRECTIONS): void {
-    const { coreBaseComponent } = ActiveComponentUtils.getBaseComponents(parentComponent);
-    const targetDetails: ChangeComponentTargetDetails = ComponentTraversalUtils.generateTargetDetails(coreBaseComponent, coreBaseComponent.activeSubcomponentName);
+    const { masterComponent } = ActiveComponentUtils.getBaseComponents(parentComponent);
+    const targetDetails: ChangeComponentTargetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName);
     targetDetails.isLowerOrderDirection = direction === SUBCOMPONENT_ORDER_DIRECTIONS.LEFT || direction === SUBCOMPONENT_ORDER_DIRECTIONS.UP;
     const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
       parentComponent.componentPreviewStructure,
@@ -91,7 +91,7 @@ export class ChangeNestedComponentOrder {
     if (!traversalResult.nestedComponentMovable) return;
     if (traversalResult) targetDetails.parentLayerAlignedSections = traversalResult.alignedSections;
     ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
-      coreBaseComponent.componentPreviewStructure.subcomponentDropdownStructure,
+      masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       ChangeNestedComponentOrder.swapNestedComponentInDropdownStructureIfFound.bind(targetDetails));
   }
 }

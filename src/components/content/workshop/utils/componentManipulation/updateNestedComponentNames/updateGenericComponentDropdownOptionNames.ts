@@ -116,9 +116,9 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
     UpdateDropdownOptionNamesShared.removeOverwrittenOptionNames(overwrittenOptionNames, containerDropdownStructure);
   }
 
-  private static getNestedDropdownStructure(component: WorkshopComponent, layerName: string, useArgComponentDropdownStructure: boolean): NestedDropdownStructure {
-    const { subcomponentDropdownStructure, subcomponentNameToDropdownOptionName } = component.componentPreviewStructure;
-    const activeComponent = useArgComponentDropdownStructure ? component : ActiveComponentUtils.getActiveNestedComponentParent(component);
+  private static getNestedDropdownStructure(masterComponent: WorkshopComponent, layerName: string, useArgComponentDropdownStructure: boolean): NestedDropdownStructure {
+    const { subcomponentDropdownStructure, subcomponentNameToDropdownOptionName } = masterComponent.componentPreviewStructure;
+    const activeComponent = useArgComponentDropdownStructure ? masterComponent : ActiveComponentUtils.getActiveNestedComponentParent(masterComponent);
     const activeComponentName = activeComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
     const activeComponentDropdownStructure = subcomponentDropdownStructure[activeComponentName];
     // if there is no dropdown structure for layer, use the parent dropdown structure (e.g. button)
@@ -126,10 +126,10 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
   }
 
   // for shallow component updates only
-  public static updateViaParentLayerPreviewStructure(baseComponent: WorkshopComponent, layer: Layer, useArgComponentStructure = false): void {
+  public static updateViaParentLayerPreviewStructure(parentComponent: WorkshopComponent, layer: Layer, useArgComponentStructure = false): void {
     const { name: layerName, sections: { alignedSections }} = layer;
-    const coreBaseComponent = baseComponent.coreBaseComponent || baseComponent;
-    const nestedStructure = UpdateGenericComponentDropdownOptionNames.getNestedDropdownStructure(coreBaseComponent, layerName, useArgComponentStructure);
-    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(coreBaseComponent, nestedStructure, alignedSections);
+    const masterComponent = parentComponent.masterComponentRef;
+    const nestedStructure = UpdateGenericComponentDropdownOptionNames.getNestedDropdownStructure(masterComponent, layerName, useArgComponentStructure);
+    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(masterComponent, nestedStructure, alignedSections);
   }
 }

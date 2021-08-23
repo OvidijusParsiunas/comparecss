@@ -4,7 +4,7 @@ import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 
 interface BaseComponents {
   activeBaseComponent: WorkshopComponent;
-  coreBaseComponent: WorkshopComponent;
+  masterComponent: WorkshopComponent;
 }
 
 export class ActiveComponentUtils {
@@ -21,9 +21,8 @@ export class ActiveComponentUtils {
     const parentComponentBase = ActiveComponentUtils.getActiveSubcomponent(parentComponent).nestedComponent.ref;
     const activeBaseComponent = parentComponentBase.nestedComponentParent || parentComponentBase;
     // this serves as a way to get to the master subcomponents, dropdown properties
-    // need a different way for that
-    const coreBaseComponent = activeBaseComponent.coreBaseComponent || activeBaseComponent;
-    return { activeBaseComponent, coreBaseComponent };
+    const masterComponent = parentComponent.masterComponentRef;
+    return { activeBaseComponent, masterComponent };
   }
 
   public static getActiveNestedComponentParent(parentComponent: WorkshopComponent): WorkshopComponent {

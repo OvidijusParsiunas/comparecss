@@ -56,8 +56,8 @@ export const dropdownBase: ComponentGenerator = {
     Object.assign(buttonComponent.subcomponents, dropdownMenuBaseComponent.subcomponents);
     Object.assign(buttonComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName, dropdownMenuBaseComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName);
     buttonComponent.componentPreviewStructure.subcomponentDropdownStructure[dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] = { ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name) };
-    buttonComponent.auxiliaryComponent = dropdownMenuBaseComponent;
-    dropdownMenuBaseComponent.coreBaseComponent = buttonComponent;
+    buttonComponent.linkedComponents = { auxiliary: [dropdownMenuBaseComponent] };
+    dropdownMenuBaseComponent.linkedComponents = { base: buttonComponent };
     dropdownMenuBaseComponent.masterComponentRef = buttonComponent;
     buttonComponent.activeSubcomponentName = dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
     DropdownBase.addComponentsToBase(buttonComponent);

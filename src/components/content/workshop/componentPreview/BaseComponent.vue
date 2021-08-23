@@ -40,12 +40,14 @@
           @mouseEnter="useSubcomponentPreviewSelectModeEventHandlers.subcomponentMouseEnter"
           @mouseLeave="useSubcomponentPreviewSelectModeEventHandlers.subcomponentMouseLeave"></div>
     </div>
-    <base-component v-if="component.auxiliaryComponent"
-      :style="getAuxiliaryComponentParentElementStyleProperties()"
-      :component="component.auxiliaryComponent"
+    <div v-if="component.linkedComponents && component.linkedComponents.auxiliary">
+      <base-component v-for="auxiliaryComponent in component.linkedComponents.auxiliary" :key="auxiliaryComponent"
+      :style="getAuxiliaryComponentParentElementStyleProperties(auxiliaryComponent)"
+      :component="auxiliaryComponent"
       :mouseEvents="mouseEvents"
       :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"/>
-  </div>    
+    </div>
+  </div>
 </template>
 
 <script lang="ts">
@@ -98,9 +100,9 @@ export default {
     },
     getOverlayStyleProperties(): WorkshopComponentCss {
       const subcomponentCss = { ...this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT], color: '#ff000000' };
-      if (!this.isNestedComponent) subcomponentCss.height = this.component.coreBaseComponent ? 'unset' : '100% !important';
+      if (!this.isNestedComponent) subcomponentCss.height = this.component.linkedComponents?.base ? 'unset' : '100% !important';
       if (this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isTemporaryAddPreview) subcomponentCss.display = 'block'; 
-      if (!this.component.coreBaseComponent && !this.isNestedComponent) subcomponentCss.marginTop = '0px';
+      if (!this.component.linkedComponents?.base && !this.isNestedComponent) subcomponentCss.marginTop = '0px';
       if (this.isIcon(this.component)) subcomponentCss.height = subcomponentCss.width;
       return subcomponentCss;
     },
@@ -134,14 +136,14 @@ export default {
       const customCssObj = overwrittenCustomCssObj || customCss;
       return [customCssObj[CSS_PSEUDO_CLASSES.DEFAULT], { top: '', color: 'none', backgroundColor: 'none'}];
     },
-    getAuxiliaryComponentParentElementStyleProperties(): WorkshopComponentCss {
+    getAuxiliaryComponentParentElementStyleProperties(auxiliaryComponent: WorkshopComponent): WorkshopComponentCss {
       const positions: { [key in DROPDOWN_MENU_POSITIONS]: WorkshopComponentCss } = {
         [DROPDOWN_MENU_POSITIONS.TOP]: { bottom: '100%' },
         [DROPDOWN_MENU_POSITIONS.BOTTOM]: {},
         [DROPDOWN_MENU_POSITIONS.LEFT]: { top: '0px', right: '100%' },
         [DROPDOWN_MENU_POSITIONS.RIGHT]: { top: '0px', left: '100%' },
       };
-      const { position } = this.component.auxiliaryComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.dropdownMenuPosition;
+      const { position } = auxiliaryComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.dropdownMenuPosition;
       return { position: 'absolute', zIndex: 1, ...positions[position] };
     },
     getTag(): string {

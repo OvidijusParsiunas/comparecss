@@ -23,13 +23,13 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     }
   }
 
-  // only works for adding layers to the top level parent component (coreBaseComponent)
-  private static updateComponentDropdownStructure(activeBaseComponent: WorkshopComponent, coreBaseComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
+  // only works for adding layers to the top level parent component (masterComponent)
+  private static updateComponentDropdownStructure(activeBaseComponent: WorkshopComponent, masterComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     const baseName = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
     const newComponentDropdownStructure = { [baseName]: { 
       ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(baseName),
     }};
-    const parentComponentDropdownStructure = coreBaseComponent.componentPreviewStructure.subcomponentDropdownStructure;
+    const parentComponentDropdownStructure = masterComponent.componentPreviewStructure.subcomponentDropdownStructure;
     Object.assign(parentComponentDropdownStructure[activeBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name], newComponentDropdownStructure);
   }
 
@@ -83,9 +83,9 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     AddNewLayerComponent.addNewSubcomponentToBase(parentComponent, layer);
   }
 
-  protected static createNewComponent(componentGenerator: ComponentGenerator, coreBaseComponent: WorkshopComponent, baseName?: string,
+  protected static createNewComponent(componentGenerator: ComponentGenerator, masterComponent: WorkshopComponent, baseName?: string,
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
-    const newComponent = AddNewComponentShared.createNewComponentViaGenerator(componentGenerator, coreBaseComponent, baseName);
+    const newComponent = AddNewComponentShared.createNewComponentViaGenerator(componentGenerator, masterComponent, baseName);
     if (overwritePropertiesFunc) overwritePropertiesFunc(newComponent.coreSubcomponentRefs);
     return newComponent;
   }
@@ -94,13 +94,13 @@ export class AddNewLayerComponent extends AddNewComponentShared {
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
     const layerName = NestedComponentBaseNamesToStyles.STYLE_TO_LAYER[componentStyle];
-    const { activeBaseComponent, coreBaseComponent } = ActiveComponentUtils.getBaseComponents(parentComponent);
-    const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, coreBaseComponent,
+    const { activeBaseComponent, masterComponent } = ActiveComponentUtils.getBaseComponents(parentComponent);
+    const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, masterComponent,
       UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
-    Object.assign(coreBaseComponent.subcomponents, newComponent.subcomponents);
+    Object.assign(masterComponent.subcomponents, newComponent.subcomponents);
     AddNewLayerComponent.addNewComponentToComponentPreview(activeBaseComponent, newComponent);
-    if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(activeBaseComponent, coreBaseComponent, newComponent);
-    AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(coreBaseComponent, newComponent, isEditable);
+    if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(activeBaseComponent, masterComponent, newComponent);
+    AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(masterComponent, newComponent, isEditable);
     AddNewLayerComponent.addNewNestedComponentsOptions(activeBaseComponent, newComponent);
     IncrementNestedComponentCount.increment(activeBaseComponent, layerName, activeBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name);
     newComponent.nestedComponentParent = activeBaseComponent;

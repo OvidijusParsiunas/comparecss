@@ -27,16 +27,16 @@ export class AddNewComponentShared {
     parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[baseName] = baseName;
   }
 
-  private static setMasterComponentReference(newComponent: WorkshopComponent, coreBaseComponent: WorkshopComponent): void {
+  private static setMasterComponentReference(newComponent: WorkshopComponent, masterComponent: WorkshopComponent): void {
     Object.keys(newComponent.subcomponents)
-      .forEach((subcomponentName) => newComponent.subcomponents[subcomponentName].nestedComponent.ref.masterComponentRef = coreBaseComponent);
+      .forEach((subcomponentName) => newComponent.subcomponents[subcomponentName].nestedComponent.ref.masterComponentRef = masterComponent);
   }
 
-  protected static createNewComponentViaGenerator(componentGenerator: ComponentGenerator, coreBaseComponent: WorkshopComponent,
+  protected static createNewComponentViaGenerator(componentGenerator: ComponentGenerator, masterComponent: WorkshopComponent,
       newComponentName: string): WorkshopComponent {
     const newComponent = componentGenerator.createNewComponent(newComponentName);
     newComponent.subcomponents[newComponentName].nestedComponent = { ref: newComponent, inSync: false };
-    AddNewComponentShared.setMasterComponentReference(newComponent, coreBaseComponent);
+    AddNewComponentShared.setMasterComponentReference(newComponent, masterComponent);
     return newComponent;
   }
 
@@ -53,10 +53,10 @@ export class AddNewComponentShared {
 
   protected static addComponentViaDropdownStructureSearch(parentComponent: WorkshopComponent, callback: DropdownStructureSearchCallback,
       ...args: unknown[]): WorkshopComponent {
-    const { activeBaseComponent, coreBaseComponent } = ActiveComponentUtils.getBaseComponents(parentComponent);
-    const targetDetails = ComponentTraversalUtils.generateTargetDetails(coreBaseComponent, coreBaseComponent.activeSubcomponentName);
+    const { activeBaseComponent, masterComponent } = ActiveComponentUtils.getBaseComponents(parentComponent);
+    const targetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName);
     return ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
-      coreBaseComponent.componentPreviewStructure.subcomponentDropdownStructure,
+      masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       AddNewGenericComponent.proceedToInvokeAddCallbackIfFound.bind(targetDetails,
         parentComponent, activeBaseComponent, callback, args)) as WorkshopComponent;
   }

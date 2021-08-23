@@ -71,11 +71,11 @@ export class ChangeNestedComponentAlignment {
   }
 
   private static updateNames(newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties, parentComponent: WorkshopComponent): void {
-    const { coreBaseComponent } = ActiveComponentUtils.getBaseComponents(parentComponent);
-    const targetDetails = ComponentTraversalUtils.generateTargetDetails(coreBaseComponent, coreBaseComponent.activeSubcomponentName);
+    const { masterComponent } = ActiveComponentUtils.getBaseComponents(parentComponent);
+    const targetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName);
     targetDetails.parentLayerAlignedSections = subcomponentProperties.parentLayer.sections.alignedSections;
     ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
-      coreBaseComponent.componentPreviewStructure.subcomponentDropdownStructure,
+      masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       ChangeNestedComponentAlignment.updateDropdownStructureIfFound.bind(targetDetails));
     // UX - check if need to set the subcomponent to the right of the alignment
     // parentComponent.activeSubcomponentName = newAlignmentSubcomponents[newAlignmentSubcomponents.length - 1].name;

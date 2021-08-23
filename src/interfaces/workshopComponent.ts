@@ -208,11 +208,11 @@ export interface WorkshopComponent {
   triggerFuncOnSettingChange?: TriggerFuncOnSettingChange;
   // used to share add dropdown options across components such as layers - in order to make sure that the enabled and disabled items are in-sync
   newNestedComponentsOptionsRefs?: NewNestedComponentsOptionsRefs;
-  // reference to the auxiliary component (side component) which holds the preview structure of its subcomponents
-  // the dropdown structure and its subcomponents are located in the core base component's subcomponents section
-  auxiliaryComponent?: WorkshopComponent;
-  // only present in an auxiliary component (reverse) and is additionally used to identify if this component is an auxiliary component 
-  coreBaseComponent?: WorkshopComponent;
+  // WORK 1: include this in an explanation
+  linkedComponents?: {
+    auxiliary?: WorkshopComponent[];
+    base?: WorkshopComponent;
+  }
   // reference to the parent that contains this component's base
   // full structure explained at the bottom of the file titled: 'Reference for component structure'
   nestedComponentParent?: WorkshopComponent;

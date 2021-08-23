@@ -11,31 +11,31 @@ export class DropdownMenuAutoWidthUtils {
     return `${maxTextWidth + Number.parseFloat(paddingLeft) + Number.parseFloat(paddingRight)}px`;
   }
 
-  private static getFirstItemDefaultClassCustomCss(auxiliaryComponent: WorkshopComponent): WorkshopComponentCss {
-    return auxiliaryComponent.componentPreviewStructure.layers[0].subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
+  private static getFirstItemDefaultClassCustomCss(menuComponent: WorkshopComponent): WorkshopComponentCss {
+    return menuComponent.componentPreviewStructure.layers[0].subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
   }
 
-  private static getItemTextWidths(auxiliaryComponent: WorkshopComponent): number[] {
-    return auxiliaryComponent.componentPreviewStructure.layers.map((layer) => {
+  private static getItemTextWidths(menuComponent: WorkshopComponent): number[] {
+    return menuComponent.componentPreviewStructure.layers.map((layer) => {
       const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(layer.sections.alignedSections.left[0].name);
       return document.getElementById(subcomponentId).clientWidth;
     });
   }
 
-  private static getLargestItemWidth(auxiliaryComponent: WorkshopComponent): string {
-    const itemTextWidths = DropdownMenuAutoWidthUtils.getItemTextWidths(auxiliaryComponent);
+  private static getLargestItemWidth(menuComponent: WorkshopComponent): string {
+    const itemTextWidths = DropdownMenuAutoWidthUtils.getItemTextWidths(menuComponent);
     const maxItemTextWidth = Math.max(...itemTextWidths);
-    const firstItemDefaultClassCustomCss = DropdownMenuAutoWidthUtils.getFirstItemDefaultClassCustomCss(auxiliaryComponent);
+    const firstItemDefaultClassCustomCss = DropdownMenuAutoWidthUtils.getFirstItemDefaultClassCustomCss(menuComponent);
     return DropdownMenuAutoWidthUtils.calculateTotalWidth(maxItemTextWidth, firstItemDefaultClassCustomCss);
   }
 
-  private static setComponentWidths(coreBaseComponent: WorkshopComponent, auxiliaryComponent: WorkshopComponent): void {
-    const { customFeatures } = coreBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+  private static setComponentWidths(buttonComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
+    const { customFeatures } = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     if (customFeatures.autoSize?.width) {
-      const width = DropdownMenuAutoWidthUtils.getLargestItemWidth(coreBaseComponent.auxiliaryComponent);
+      const width = DropdownMenuAutoWidthUtils.getLargestItemWidth(menuComponent);
       // WORK2: use actual dropdown structure to get icon subcomponent name
-      coreBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = width;
-      auxiliaryComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = width;
+      buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = width;
+      menuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = width;
     }
   }
 
@@ -43,10 +43,10 @@ export class DropdownMenuAutoWidthUtils {
     setTimeout(() => {
       const component = subcomponentProperties.nestedComponent.ref;
       if (component.type === COMPONENT_TYPES.DROPDOWN_MENU) {
-        DropdownMenuAutoWidthUtils.setComponentWidths(component.coreBaseComponent, component);
+        DropdownMenuAutoWidthUtils.setComponentWidths(component.linkedComponents.base, component);
         // activated by clicking select option on the button
       } else if (component.type === COMPONENT_TYPES.DROPDOWN) {
-        DropdownMenuAutoWidthUtils.setComponentWidths(component, component.auxiliaryComponent);
+        DropdownMenuAutoWidthUtils.setComponentWidths(component, component.linkedComponents.auxiliary[0]);
       }
     });
   }

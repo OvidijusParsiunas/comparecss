@@ -206,7 +206,7 @@ export default {
       this.subcomponentAndOverlayElementIds = subcomponentAndOverlayElementIds;
       subcomponentAndOverlayElementIdsState.setSubcomponentAndOverlayElementIdsState(subcomponentAndOverlayElementIds);
       this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(subcomponentAndOverlayElementIds, this.component.subcomponents);
-      SelectDropdownUtils.refresh(this.component.auxiliaryComponent, true);
+      SelectDropdownUtils.refresh(this.component.linkedComponents?.auxiliary, true);
     }
   },
   props: {
