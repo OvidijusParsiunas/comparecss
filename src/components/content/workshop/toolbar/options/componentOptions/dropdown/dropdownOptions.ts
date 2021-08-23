@@ -1,6 +1,7 @@
 import { SubcomponentTypeToOptions } from '../../../../../../../interfaces/subcomponentTypeToOptions';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { Options } from '../../../../../../../interfaces/options';
 import { dropdownButtonOptions } from '../button/dropdownButton';
 import { dropdownItemOptions } from '../layer/dropdownItem';
@@ -20,8 +21,8 @@ export class DropdownOptions {
   };
 
   private static getTextOptions(component: WorkshopComponent): Options {
-    const { parentBaseComponentRef, customStaticFeatures } = component.subcomponents[component.activeSubcomponentName];
-    if (parentBaseComponentRef.coreBaseComponent) {
+    const { nestedComponent: { ref: { nestedComponentParent }}, customStaticFeatures } = component.subcomponents[component.activeSubcomponentName];
+    if (nestedComponentParent.type === COMPONENT_TYPES.DROPDOWN_MENU) {
       return menuItemTextOptions;
     }
     if (customStaticFeatures.selectDropdown.enabled) {

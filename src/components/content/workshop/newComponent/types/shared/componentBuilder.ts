@@ -143,7 +143,7 @@ export class ComponentBuilder {
     const subcomponents = {[baseName]: baseSubcomponent};
     const componentPreviewStructure = ComponentBuilder.createEmptyComponentPreviewStructure(baseName, isBaseOptional);
     const coreSubcomponentRefs = ComponentBuilder.createCoreSubcomponentRefs(baseSubcomponent, componentStyle.coreSubcomponentRefs);
-    const baseComponent = {
+    const baseComponent: WorkshopComponent = {
       type: componentStyle.componentType,
       style: DEFAULT_STYLES.DEFAULT,
       subcomponents,
@@ -155,7 +155,7 @@ export class ComponentBuilder {
       componentStatus: { isRemoved: false },
     };
     baseSubcomponent.nestedComponent = { ref: baseComponent, inSync: false };
-    baseSubcomponent.parentBaseComponentRef = baseComponent;
+    baseComponent.masterComponentRef = baseComponent;
     return baseComponent;
   }
 }

@@ -1,22 +1,22 @@
 import { SelectDropdown, SubcomponentMouseEventItemText } from '../../../../../../../interfaces/selectDropdown';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
+import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 
 export class SelectDropdownUtils {
   
   public static refresh(menuComponent: WorkshopComponent, checkBeforeProceeding = false): void {
-    const { selectDropdown } = menuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures || {};
+    const { selectDropdown } = menuComponent?.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures || {};
     if (!checkBeforeProceeding || selectDropdown?.enabled) {
       selectDropdown.lastHoveredItemText = null;
       selectDropdown.lastSelectedItemText = null;
     }
   }
 
-  private static setMouseEventText(layerComponent: WorkshopComponent, selectDropdown: SelectDropdown,
+  private static setMouseEventText(nestedComponent: WorkshopComponent, selectDropdown: SelectDropdown,
       itemTextKey: keyof SubcomponentMouseEventItemText): void {
-    const { nestedComponentsLockedToLayer } = layerComponent;
-    if (nestedComponentsLockedToLayer) {
-      const dropdownItemText = nestedComponentsLockedToLayer.list[0].customStaticFeatures.subcomponentText.text;
+    if (nestedComponent.type === COMPONENT_TYPES.LAYER) {
+      const dropdownItemText = nestedComponent.nestedComponentsLockedToLayer.list[0].customStaticFeatures.subcomponentText.text;
       selectDropdown[itemTextKey] = dropdownItemText;
     }
   }

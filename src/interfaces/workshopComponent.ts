@@ -175,10 +175,6 @@ export interface SubcomponentProperties {
    // used to temporarily display a nested component when hovering add subcomponent dropdown options with a mouse
   isTemporaryAddPreview?: boolean;
   isRemovable?: boolean;
-  // reference to the parent base component - can be either the core component or the auxiliary component
-  // full structure explained at the bottom of the file titled: 'Reference for component structure'
-  // WORK1 - rename to topLevelParentBaseComponentRef
-  parentBaseComponentRef?: WorkshopComponent;
 }
 
 export type Subcomponents = {
@@ -220,6 +216,8 @@ export interface WorkshopComponent {
   // reference to the parent that contains this component's base
   // full structure explained at the bottom of the file titled: 'Reference for component structure'
   nestedComponentParent?: WorkshopComponent;
+  // WORK1: update the diagram with all the new details
+  masterComponentRef?: WorkshopComponent;
 }
 
 // Reference for component structure:
@@ -241,13 +239,6 @@ export interface WorkshopComponent {
 //                     |                                              |
 //       nested component                                       nested component
 // baseSubcomponentRef allows base, layer and text subcomponents to all reference the same component (such as a button)
-
-// All subcomponents can access their parent base component via the parentBaseComponentRef property (no matter how deeply they are nested)
-// core base component -------> <------------------------------------
-//                             |                                    |
-//                      subcomponents ---> parentBaseComponentRef -->
-//                             |                                    |
-// auxiliary component -------> <------------------------------------
 
 // Nested components can access the parent which they are nested in via nestedComponentParent
 // (their subcomponents' nestedComponent -> ref property only points to their immediate component which may not hold useful information

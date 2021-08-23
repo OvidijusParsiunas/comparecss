@@ -123,10 +123,10 @@ export class AddNewGenericComponent extends AddNewComponentShared {
   }
 
   protected static createNewComponent(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, componentGenerator: ComponentGenerator,
-      activeBaseComponent?: WorkshopComponent, overwritePropertiesFunc?: OverwritePropertiesFunc[], customBaseName?: string): NewComponentDetails {
+      coreBaseComponent?: WorkshopComponent, overwritePropertiesFunc?: OverwritePropertiesFunc[], customBaseName?: string): NewComponentDetails {
     const baseNamePrefix = AddNewGenericComponent.getBaseSubcomponentNamePrefix(componentType, componentStyle);
     const baseName = customBaseName || UniqueSubcomponentNameGenerator.generate(baseNamePrefix);
-    const newComponent = AddNewComponentShared.createNewComponentViaGenerator(componentGenerator, activeBaseComponent, baseName);
+    const newComponent = AddNewComponentShared.createNewComponentViaGenerator(componentGenerator, coreBaseComponent, baseName);
     AddNewGenericComponent.applyTopProperty(newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
     if (overwritePropertiesFunc) {
       AddNewGenericComponent.executeOverwritePropertiesFuncs(overwritePropertiesFunc, newComponent);
@@ -138,9 +138,9 @@ export class AddNewGenericComponent extends AddNewComponentShared {
       dropdownStructure: NestedDropdownStructure, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
       parentLayer: Layer, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
-    const [newComponent, baseNamePrefix] = AddNewGenericComponent.createNewComponent(componentType, componentStyle,
-      componentGenerator, activeBaseComponent, overwritePropertiesFunc);
     const coreBaseComponent = activeBaseComponent.coreBaseComponent || activeBaseComponent;
+    const [newComponent, baseNamePrefix] = AddNewGenericComponent.createNewComponent(componentType, componentStyle,
+      componentGenerator, coreBaseComponent, overwritePropertiesFunc);
     Object.assign(coreBaseComponent.subcomponents, newComponent.subcomponents);
     AddNewGenericComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
     AddNewGenericComponent.addNewComponentToDropdownStructure(newComponent, coreBaseComponent, dropdownStructure);

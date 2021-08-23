@@ -41,12 +41,12 @@ export class DropdownMenuAutoWidthUtils {
 
   public static setWidth(subcomponentProperties: SubcomponentProperties): void {
     setTimeout(() => {
-      const { parentBaseComponentRef } = subcomponentProperties;
-      if (parentBaseComponentRef.type === COMPONENT_TYPES.DROPDOWN_MENU) {
-        DropdownMenuAutoWidthUtils.setComponentWidths(parentBaseComponentRef.coreBaseComponent, parentBaseComponentRef);
-        // activated by clicking select on the button
-      } else if (parentBaseComponentRef.type === COMPONENT_TYPES.DROPDOWN) {
-        DropdownMenuAutoWidthUtils.setComponentWidths(parentBaseComponentRef, parentBaseComponentRef.auxiliaryComponent);
+      const component = subcomponentProperties.nestedComponent.ref;
+      if (component.type === COMPONENT_TYPES.DROPDOWN_MENU) {
+        DropdownMenuAutoWidthUtils.setComponentWidths(component.coreBaseComponent, component);
+        // activated by clicking select option on the button
+      } else if (component.type === COMPONENT_TYPES.DROPDOWN) {
+        DropdownMenuAutoWidthUtils.setComponentWidths(component, component.auxiliaryComponent);
       }
     });
   }

@@ -18,8 +18,10 @@ export class ActiveComponentUtils {
 
   // WORK1: rename to activeTopParentComponent
   public static getBaseComponents(parentComponent: WorkshopComponent): BaseComponents {
-    const activeBaseComponent = ActiveComponentUtils.getActiveSubcomponent(parentComponent).parentBaseComponentRef;
+    const parentComponentBase = ActiveComponentUtils.getActiveSubcomponent(parentComponent).nestedComponent.ref;
+    const activeBaseComponent = parentComponentBase.nestedComponentParent || parentComponentBase;
     // this serves as a way to get to the master subcomponents, dropdown properties
+    // need a different way for that
     const coreBaseComponent = activeBaseComponent.coreBaseComponent || activeBaseComponent;
     return { activeBaseComponent, coreBaseComponent };
   }

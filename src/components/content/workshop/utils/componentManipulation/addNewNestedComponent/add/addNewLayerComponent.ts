@@ -83,9 +83,9 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     AddNewLayerComponent.addNewSubcomponentToBase(parentComponent, layer);
   }
 
-  protected static createNewComponent(componentGenerator: ComponentGenerator, activeBaseComponent: WorkshopComponent, baseName?: string,
+  protected static createNewComponent(componentGenerator: ComponentGenerator, coreBaseComponent: WorkshopComponent, baseName?: string,
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
-    const newComponent = AddNewComponentShared.createNewComponentViaGenerator(componentGenerator, activeBaseComponent, baseName);
+    const newComponent = AddNewComponentShared.createNewComponentViaGenerator(componentGenerator, coreBaseComponent, baseName);
     if (overwritePropertiesFunc) overwritePropertiesFunc(newComponent.coreSubcomponentRefs);
     return newComponent;
   }
@@ -95,7 +95,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
     const layerName = NestedComponentBaseNamesToStyles.STYLE_TO_LAYER[componentStyle];
     const { activeBaseComponent, coreBaseComponent } = ActiveComponentUtils.getBaseComponents(parentComponent);
-    const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, activeBaseComponent,
+    const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, coreBaseComponent,
       UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
     Object.assign(coreBaseComponent.subcomponents, newComponent.subcomponents);
     AddNewLayerComponent.addNewComponentToComponentPreview(activeBaseComponent, newComponent);
