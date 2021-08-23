@@ -30,16 +30,16 @@ export class RemoveAnyNestedComponent {
     const subcomponentBaseName = (subcomponentDropdownStructure[dropdownOptionName]
       [DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).actualObjectName;
     const activeSubcomponent = parentComponent.subcomponents[subcomponentBaseName];
-    Object.keys(activeSubcomponent?.nestedComponent?.ref.subcomponents || {}).forEach((keyName) => {
+    Object.keys(activeSubcomponent?.seedComponent?.ref.subcomponents || {}).forEach((keyName) => {
       delete parentComponent.subcomponents[keyName];
       delete parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[keyName];
     });
   }
 
   private static removeNestedComponentSubcomponents(nestedComponentBaseName: string, nestedDropdownStructure: NestedDropdownStructure,
-      parentSubcomponentName: string, masterComponent: WorkshopComponent, nestedComponentParent: WorkshopComponent): void {
+      parentSubcomponentName: string, masterComponent: WorkshopComponent, parentComponent: WorkshopComponent): void {
     RemoveAnyNestedComponent.removeSubcomponents(nestedDropdownStructure, nestedComponentBaseName, masterComponent);
-    DecrementNestedComponentCount.decrement(nestedComponentParent, StringUtils.getFirstWordInString(nestedComponentBaseName), parentSubcomponentName);
+    DecrementNestedComponentCount.decrement(parentComponent, StringUtils.getFirstWordInString(nestedComponentBaseName), parentSubcomponentName);
   }
 
   private static getDropdownOptionNames(nestedDropdownStructure: NestedDropdownStructure): string[] {
@@ -48,14 +48,14 @@ export class RemoveAnyNestedComponent {
 
   // WORK1: check if this removes all child components children completely
   private static removeNestedComponentNestedComponentsSubcomponents(componentTraversalState: ComponentTraversalState, masterComponent: WorkshopComponent,
-      nestedComponentParent: WorkshopComponent): void {
+      parentComponent: WorkshopComponent): void {
     const { dropdownOptionName, subcomponentDropdownStructure } = componentTraversalState;
     const dropdownOptionNames = RemoveAnyNestedComponent.getDropdownOptionNames(subcomponentDropdownStructure[dropdownOptionName] as NestedDropdownStructure);
     dropdownOptionNames.forEach((newDropdownName) => {
       RemoveAnyNestedComponent.removeNestedComponentSubcomponents(newDropdownName,
         subcomponentDropdownStructure[dropdownOptionName] as NestedDropdownStructure,
         (subcomponentDropdownStructure[dropdownOptionName][DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).actualObjectName,
-        masterComponent, nestedComponentParent);
+        masterComponent, parentComponent);
     });
   }
 
@@ -88,8 +88,8 @@ export class RemoveAnyNestedComponent {
     const { dropdownOptionName, subcomponentDropdownStructure, dropdownOptionDetailsStack } = componentTraversalState;
     const { masterComponent, parentComponent, isRemovingActiveSubcomponent, targetSubcomponentProperties } = targetDetails;
     const parentSubcomponentName = RemoveAnyNestedComponent.getParentSubcomponentName(masterComponent, dropdownOptionDetailsStack);
-    const nestedComponentParent = targetSubcomponentProperties.nestedComponent.ref;
-    RemoveAnyNestedComponent.removeNestedComponentNestedComponentsSubcomponents(componentTraversalState, masterComponent, nestedComponentParent);
+    const seedComponent = targetSubcomponentProperties.seedComponent.ref;
+    RemoveAnyNestedComponent.removeNestedComponentNestedComponentsSubcomponents(componentTraversalState, masterComponent, seedComponent);
     RemoveAnyNestedComponent.removeNestedComponentSubcomponents(dropdownOptionName, subcomponentDropdownStructure, parentSubcomponentName, masterComponent, parentComponent);
     if (isRemovingActiveSubcomponent) RemoveAnyNestedComponent.selectNewActiveSubcomponent(componentTraversalState, masterComponent,
       parentSubcomponentName, dropdownOptions);

@@ -3,14 +3,14 @@
     <!-- when clicked on button text - the ripples don't fade far - this can be fixed on export, alternatively to achieve full ripple effect in the app,
          will have to disable pointer events in the layer sections and have the js class in the layer parent, will also need to find a way to be able to
          highlight the text in the subcomponent select mode -->
-    <div v-for="(nestedComponent, index) in nestedComponents" :key="nestedComponent"
+    <div v-for="(seedComponent, index) in nestedComponents" :key="seedComponent"
       :style="{order: `${index}`}"
       class="subcomponent-element-container"
-      :class="[COMPONENT_PREVIEW_MARKER, specialisedSectionContainerClass, ...getNestedComponentJs(nestedComponent)]">
-      <base-component v-if="nestedComponent.subcomponentProperties.nestedComponent"
+      :class="[COMPONENT_PREVIEW_MARKER, specialisedSectionContainerClass, ...getNestedComponentJs(seedComponent)]">
+      <base-component v-if="seedComponent.subcomponentProperties.seedComponent"
         class="nested-component-container"
-        :class="[COMPONENT_PREVIEW_MARKER, ...getNestedComponentContainerJsClasses(nestedComponent)]"
-        :component="nestedComponent.subcomponentProperties.nestedComponent.ref"
+        :class="[COMPONENT_PREVIEW_MARKER, ...getNestedComponentContainerJsClasses(seedComponent)]"
+        :component="seedComponent.subcomponentProperties.seedComponent.ref"
         :mouseEvents="mouseEvents"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
         :isNestedComponent="true"/>
@@ -35,12 +35,12 @@ export default {
     };
   },
   methods: {
-    getNestedComponentContainerJsClasses(nestedComponent: NestedComponent): ComponentJavascriptClasses | undefined[] {
-      if (nestedComponent.subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BUTTON) return [];
-      return this.getNestedComponentJs(nestedComponent);
+    getNestedComponentContainerJsClasses(seedComponent: NestedComponent): ComponentJavascriptClasses | undefined[] {
+      if (seedComponent.subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BUTTON) return [];
+      return this.getNestedComponentJs(seedComponent);
     },
-    getNestedComponentJs(nestedComponent: NestedComponent): ComponentJavascriptClasses | undefined[] {
-      return nestedComponent.subcomponentProperties.customFeatures?.jsClasses || [];
+    getNestedComponentJs(seedComponent: NestedComponent): ComponentJavascriptClasses | undefined[] {
+      return seedComponent.subcomponentProperties.customFeatures?.jsClasses || [];
     }
   },
   props: {

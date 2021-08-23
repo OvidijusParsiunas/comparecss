@@ -63,7 +63,7 @@ export default class ComponentTraversalUtils {
     const { subcomponentProperties } = alignedNestedComponents[index];
     const callbackResult = callback({subcomponentProperties, alignedNestedComponents, alignedSections, index});
     if (callbackResult) return callbackResult;
-    const { componentPreviewStructure } = subcomponentProperties.nestedComponent.ref;
+    const { componentPreviewStructure } = subcomponentProperties.seedComponent.ref;
     const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(componentPreviewStructure, callback);
     if (traversalResult) return traversalResult;
     return null;

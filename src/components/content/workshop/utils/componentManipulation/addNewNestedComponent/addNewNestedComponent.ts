@@ -48,7 +48,7 @@ export class AddNewNestedComponent extends AddNewComponentShared {
   }
 
   public static add(currentlySelectedComponent: WorkshopComponent, nestedComponentBaseName: NESTED_COMPONENTS_BASE_NAMES): void {
-    const selectedNestedComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].nestedComponent.ref;
+    const selectedNestedComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent.ref;
     if (Object.values(LAYER_COMPONENTS_BASE_NAMES).includes(nestedComponentBaseName as LAYER_COMPONENTS_BASE_NAMES)) {
       AddNewNestedComponent.addNewLayerToBase(selectedNestedComponent, nestedComponentBaseName);
     } else {

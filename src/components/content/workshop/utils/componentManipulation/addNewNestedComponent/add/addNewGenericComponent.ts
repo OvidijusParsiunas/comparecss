@@ -78,9 +78,9 @@ export class AddNewGenericComponent extends AddNewComponentShared {
   private static addNewSubcomponentToParentLayer(parentLayer: Layer, baseSubcomponent: SubcomponentProperties,
     newComponent: WorkshopComponent): void {
     const alignment = baseSubcomponent?.customFeatures?.alignedLayerSection?.section;
-    const nestedComponent: NestedComponent = {
+    const seedComponent: NestedComponent = {
       name: newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name, subcomponentProperties: baseSubcomponent};
-    parentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][alignment || ALIGNED_SECTION_TYPES.LEFT].push(nestedComponent);
+    parentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][alignment || ALIGNED_SECTION_TYPES.LEFT].push(seedComponent);
   }
 
   private static addNewComponentToDropdownStructure(newComponent: WorkshopComponent, masterComponent: WorkshopComponent,
@@ -88,7 +88,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     const { componentPreviewStructure: { subcomponentNameToDropdownOptionName }, subcomponents, activeSubcomponentName } = masterComponent;
     const parentLayerOptionName = subcomponentNameToDropdownOptionName[newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].parentLayer.name];
     // this gets activated when the user is manually adding a component to a layer
-    if (subcomponents[activeSubcomponentName].nestedComponent.ref.type === COMPONENT_TYPES.LAYER) {
+    if (subcomponents[activeSubcomponentName].seedComponent.ref.type === COMPONENT_TYPES.LAYER) {
       const layerDropdownStructure = dropdownStructure[parentLayerOptionName];
       AddNewGenericComponent.updateComponentDropdownStructure(masterComponent, newComponent, layerDropdownStructure as NestedDropdownStructure);
     } else {
@@ -147,7 +147,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     InterconnectedSettings.update(true, activeBaseComponent, newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
     IncrementNestedComponentCount.increment(activeBaseComponent, baseNamePrefix, parentLayer.name);
     AddNewGenericComponent.populateCoreComponentRef(parentComponent, newComponent);
-    newComponent.nestedComponentParent = activeBaseComponent;
+    newComponent.parentComponent = activeBaseComponent;
     AddNewGenericComponent.removeContents(newComponent);
     return newComponent;
   }

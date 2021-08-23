@@ -15,20 +15,20 @@ export class SelectDropdownUtils {
     }
   }
 
-  private static setMouseEventText(nestedComponent: WorkshopComponent, selectDropdown: SelectDropdown,
+  private static setMouseEventText(seedComponent: WorkshopComponent, selectDropdown: SelectDropdown,
       itemTextKey: keyof SubcomponentMouseEventItemText): void {
-    if (nestedComponent.type === COMPONENT_TYPES.LAYER) {
-      const dropdownItemText = nestedComponent.nestedComponentsLockedToLayer.list[0].customStaticFeatures.subcomponentText.text;
+    if (seedComponent.type === COMPONENT_TYPES.LAYER) {
+      const dropdownItemText = seedComponent.nestedComponentsLockedToLayer.list[0].customStaticFeatures.subcomponentText.text;
       selectDropdown[itemTextKey] = dropdownItemText;
     }
   }
 
   private static setDetails(subcomponentProperties: SubcomponentProperties, itemTextKey: keyof SubcomponentMouseEventItemText, canBeUnset = false): void {
-    const nestedComponent = subcomponentProperties.nestedComponent.ref;
-    const menuComponent = nestedComponent.nestedComponentParent || nestedComponent;
+    const seedComponent = subcomponentProperties.seedComponent.ref;
+    const menuComponent = seedComponent.parentComponent || seedComponent;
     const { selectDropdown } = menuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures;
     if (selectDropdown.enabled) {
-      SelectDropdownUtils.setMouseEventText(nestedComponent, selectDropdown, itemTextKey);
+      SelectDropdownUtils.setMouseEventText(seedComponent, selectDropdown, itemTextKey);
     } else if (canBeUnset) {
       SelectDropdownUtils.refresh([menuComponent]);
     }

@@ -18,8 +18,8 @@ export class ActiveComponentUtils {
 
   // WORK1: rename to activeTopParentComponent
   public static getBaseComponents(parentComponent: WorkshopComponent): BaseComponents {
-    const parentComponentBase = ActiveComponentUtils.getActiveSubcomponent(parentComponent).nestedComponent.ref;
-    const activeBaseComponent = parentComponentBase.nestedComponentParent || parentComponentBase;
+    const parentComponentBase = ActiveComponentUtils.getActiveSubcomponent(parentComponent).seedComponent.ref;
+    const activeBaseComponent = parentComponentBase.parentComponent || parentComponentBase;
     // this serves as a way to get to the master subcomponents, dropdown properties
     const masterComponent = parentComponent.masterComponentRef;
     return { activeBaseComponent, masterComponent };
@@ -27,7 +27,7 @@ export class ActiveComponentUtils {
 
   public static getActiveNestedComponentParent(parentComponent: WorkshopComponent): WorkshopComponent {
     const activeSubcomponent = ActiveComponentUtils.getActiveSubcomponent(parentComponent);
-    const activeNestedComponent = activeSubcomponent.nestedComponent.ref;
-    return activeNestedComponent.type === COMPONENT_TYPES.LAYER ? activeNestedComponent.nestedComponentParent : activeNestedComponent;
+    const activeNestedComponent = activeSubcomponent.seedComponent.ref;
+    return activeNestedComponent.type === COMPONENT_TYPES.LAYER ? activeNestedComponent.parentComponent : activeNestedComponent;
   }
 }

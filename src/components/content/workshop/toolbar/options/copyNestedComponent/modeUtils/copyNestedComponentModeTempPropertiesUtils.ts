@@ -25,7 +25,7 @@ export class CopyNestedComponentModeTempPropertiesUtils {
   }
 
   public static setActiveComponentToCopyNestedComponent(componentToBeCopied: WorkshopComponent, activeComponent: WorkshopComponent): void {
-    const activeComponentSubcomponentCoreRefs = activeComponent.subcomponents[activeComponent.activeSubcomponentName].nestedComponent.ref.coreSubcomponentRefs;
+    const activeComponentSubcomponentCoreRefs = activeComponent.subcomponents[activeComponent.activeSubcomponentName].seedComponent.ref.coreSubcomponentRefs;
     Object.keys(activeComponentSubcomponentCoreRefs).forEach((coreSubcomponentType) => {
       CopyNestedComponentModeTempPropertiesUtils.copyTargetSubcomponent(componentToBeCopied.coreSubcomponentRefs[coreSubcomponentType],
         activeComponentSubcomponentCoreRefs[coreSubcomponentType]);
@@ -38,7 +38,7 @@ export class CopyNestedComponentModeTempPropertiesUtils {
   }
 
   public static cleanComponent(activeComponent: WorkshopComponent, resetOriginalProperties: boolean): void {
-    const { coreSubcomponentRefs } = activeComponent.subcomponents[activeComponent.activeSubcomponentName].nestedComponent.ref;
+    const { coreSubcomponentRefs } = activeComponent.subcomponents[activeComponent.activeSubcomponentName].seedComponent.ref;
     const coreSubcomponentRefsArray = CoreSubcomponentRefsUtils.getActiveRefsArray(coreSubcomponentRefs);
     for (let i = 0; i < coreSubcomponentRefsArray.length; i += 1) {
       const activeSubcomponent = coreSubcomponentRefsArray[i];
@@ -50,10 +50,10 @@ export class CopyNestedComponentModeTempPropertiesUtils {
 
   public static setLastSelectectedComponentToCopy(componentToBeCopied: WorkshopComponent, activeComponent: WorkshopComponent): void {
     activeComponent.subcomponents
-      [activeComponent.activeSubcomponentName].nestedComponent.lastSelectedComponentToCopy = componentToBeCopied;
+      [activeComponent.activeSubcomponentName].seedComponent.lastSelectedComponentToCopy = componentToBeCopied;
   }
 
   public static deleteLastSelectedComponentToCopy(activeComponent: WorkshopComponent): void {
-    delete activeComponent.subcomponents[activeComponent.activeSubcomponentName].nestedComponent.lastSelectedComponentToCopy;
+    delete activeComponent.subcomponents[activeComponent.activeSubcomponentName].seedComponent.lastSelectedComponentToCopy;
   }
 }

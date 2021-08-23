@@ -13,7 +13,7 @@ export class CopyNestedComponentModeCardEvents {
   public static mouseEnter(workshopComponent: ComponentOptions, componentToBeCopied: WorkshopComponent): void {
     // the condition is a bug fix as when the copy nested component mode is toggled on, during the component list animation the user can hover over a modal card
     if (workshopComponent.currentlySelectedComponent.subcomponents[workshopComponent.currentlySelectedComponent.activeSubcomponentName]
-      .nestedComponent.ref.type !== componentToBeCopied.type) return;
+      .seedComponent.ref.type !== componentToBeCopied.type) return;
     CopyNestedComponentModeTempPropertiesUtils.setActiveComponentToCopyNestedComponent(componentToBeCopied, workshopComponent.currentlySelectedComponent);
     workshopComponent.currentlyHoveredComponentForCopyNested = componentToBeCopied;
   }

@@ -29,13 +29,13 @@ export class AddNewComponentShared {
 
   private static setMasterComponentReference(newComponent: WorkshopComponent, masterComponent: WorkshopComponent): void {
     Object.keys(newComponent.subcomponents)
-      .forEach((subcomponentName) => newComponent.subcomponents[subcomponentName].nestedComponent.ref.masterComponentRef = masterComponent);
+      .forEach((subcomponentName) => newComponent.subcomponents[subcomponentName].seedComponent.ref.masterComponentRef = masterComponent);
   }
 
   protected static createNewComponentViaGenerator(componentGenerator: ComponentGenerator, masterComponent: WorkshopComponent,
       newComponentName: string): WorkshopComponent {
     const newComponent = componentGenerator.createNewComponent(newComponentName);
-    newComponent.subcomponents[newComponentName].nestedComponent = { ref: newComponent, inSync: false };
+    newComponent.subcomponents[newComponentName].seedComponent = { ref: newComponent, inSync: false };
     AddNewComponentShared.setMasterComponentReference(newComponent, masterComponent);
     return newComponent;
   }

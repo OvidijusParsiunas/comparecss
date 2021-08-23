@@ -43,12 +43,12 @@ export class CopyNestedComponedModeToggleOff {
 
   private static setCopiedNestedComponentProperties(optionsComponent: ComponentOptions): void {
     const { subcomponents, activeSubcomponentName } = optionsComponent.component;
-    if (subcomponents[activeSubcomponentName].nestedComponent.lastSelectedComponentToCopy) {
-      subcomponents[activeSubcomponentName].nestedComponent.ref.componentStatus = subcomponents[activeSubcomponentName]
-        .nestedComponent.lastSelectedComponentToCopy.componentStatus;
+    if (subcomponents[activeSubcomponentName].seedComponent.lastSelectedComponentToCopy) {
+      subcomponents[activeSubcomponentName].seedComponent.ref.componentStatus = subcomponents[activeSubcomponentName]
+        .seedComponent.lastSelectedComponentToCopy.componentStatus;
       // timeout used to not display the animation immediately if expanded modal mode has been temporarily closed
       setTimeout(() => {
-          subcomponents[activeSubcomponentName].nestedComponent.inSync = true;
+          subcomponents[activeSubcomponentName].seedComponent.inSync = true;
       }, optionsComponent.hasCopyNestedComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     }
     CopyNestedComponentModeTempPropertiesUtils.cleanComponent(optionsComponent.component, false);

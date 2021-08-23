@@ -28,22 +28,22 @@ export default class CopyComponent {
     const { alignedSections } = copiedLayer.sections;
     Object.keys(alignedSections).forEach((section: ALIGNED_SECTION_TYPES) => {
       alignedSections[section].forEach((subcomponent: NestedComponent) => {
-        const { type, style } = subcomponent.subcomponentProperties.nestedComponent.ref;
+        const { type, style } = subcomponent.subcomponentProperties.seedComponent.ref;
         const newNestedComponent = AddNewGenericComponent.add(
           newComponent, type, style, newLayer.name, [CopyComponent.overwriteAlignedLayerSectionProperties.bind(section)]);
         baseComponentRefs.push(newNestedComponent);
-        CopySubcomponents.copyComponentSubcomponents(subcomponent.subcomponentProperties.nestedComponent.ref, newNestedComponent);
+        CopySubcomponents.copyComponentSubcomponents(subcomponent.subcomponentProperties.seedComponent.ref, newNestedComponent);
       });
     });
   }
 
   private static copyLayerComponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent, baseComponentRefs: WorkshopComponent[]): void {
     componentBeingCopied.componentPreviewStructure.layers.forEach((layer, index) => {
-      const copiedLayerStyle = componentBeingCopied.subcomponents[layer.name].nestedComponent.ref.style;
+      const copiedLayerStyle = componentBeingCopied.subcomponents[layer.name].seedComponent.ref.style;
       const newLayer = AddNewLayerComponent.add(newComponent, copiedLayerStyle, true);
       CopyComponent.copyAlignedSectionComponents(newComponent.componentPreviewStructure.layers[index], layer, newComponent, baseComponentRefs);
       UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(newComponent, newComponent.componentPreviewStructure.layers[index]);
-      CopySubcomponents.copyComponentSubcomponents(layer.subcomponentProperties.nestedComponent.ref, newLayer);
+      CopySubcomponents.copyComponentSubcomponents(layer.subcomponentProperties.seedComponent.ref, newLayer);
     });
     UpdateLayerDropdownOptionNames.update(newComponent, 0);
   }

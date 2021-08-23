@@ -154,7 +154,7 @@ export class ComponentBuilder {
       coreSubcomponentRefs,
       componentStatus: { isRemoved: false },
     };
-    baseSubcomponent.nestedComponent = { ref: baseComponent, inSync: false };
+    baseSubcomponent.seedComponent = { ref: baseComponent, inSync: false };
     baseComponent.masterComponentRef = baseComponent;
     return baseComponent;
   }

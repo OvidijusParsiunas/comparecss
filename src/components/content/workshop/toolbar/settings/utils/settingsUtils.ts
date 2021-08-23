@@ -124,8 +124,8 @@ export default class SettingsUtils {
   }
 
   public static triggerComponentFunc(settingType: SETTINGS_TYPES, subcomponentProperties: SubcomponentProperties, updatedSetting?: any): void {
-    const component = subcomponentProperties.nestedComponent.ref;
-    const parentComponent = component.nestedComponentParent || component;
+    const component = subcomponentProperties.seedComponent.ref;
+    const parentComponent = component.parentComponent || component;
     const funcs = parentComponent.triggerFuncOnSettingChange;
     funcs?.[settingType]?.(subcomponentProperties, updatedSetting);
   }

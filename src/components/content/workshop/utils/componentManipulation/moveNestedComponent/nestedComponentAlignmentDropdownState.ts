@@ -9,8 +9,8 @@ function getNestedComponent(): NestedComponent {
   return component;
 }
 
-function setNestedComponent(nestedComponent: NestedComponent): void {
-  component = nestedComponent;
+function setNestedComponent(seedComponent: NestedComponent): void {
+  component = seedComponent;
 }
 
 function getInitialAlignmentIndex(): number {

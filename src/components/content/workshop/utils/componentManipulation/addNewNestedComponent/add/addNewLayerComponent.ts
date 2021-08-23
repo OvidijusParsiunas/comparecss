@@ -103,7 +103,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(masterComponent, newComponent, isEditable);
     AddNewLayerComponent.addNewNestedComponentsOptions(activeBaseComponent, newComponent);
     IncrementNestedComponentCount.increment(activeBaseComponent, layerName, activeBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name);
-    newComponent.nestedComponentParent = activeBaseComponent;
+    newComponent.parentComponent = activeBaseComponent;
     return newComponent;
   }
 }

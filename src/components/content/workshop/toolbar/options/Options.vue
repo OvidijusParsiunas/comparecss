@@ -321,7 +321,7 @@ export default {
       const resultSubcomponent = Object.keys(this.component.subcomponents).find((subcomponentName) => {
         const subcomponentProperties = this.component.subcomponents[subcomponentName];
         if (subcomponentProperties.subcomponentType === type) {
-          return style ? subcomponentProperties.nestedComponent.ref.style === style : true;
+          return style ? subcomponentProperties.seedComponent.ref.style === style : true;
         }
         return false;
       });
@@ -436,13 +436,13 @@ export default {
     },
     isCopyButtonDisplayed(): boolean {
       const subcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
-      if (subcomponent.subcomponentType === SUBCOMPONENT_TYPES.BUTTON && subcomponent.nestedComponent?.ref.style === BUTTON_STYLES.CLOSE) return false;
-      return !!(COPYABLE_COMPONENT_BASE_TYPES.has(subcomponent.subcomponentType) && subcomponent.nestedComponent);
+      if (subcomponent.subcomponentType === SUBCOMPONENT_TYPES.BUTTON && subcomponent.seedComponent?.ref.style === BUTTON_STYLES.CLOSE) return false;
+      return !!(COPYABLE_COMPONENT_BASE_TYPES.has(subcomponent.subcomponentType) && subcomponent.seedComponent);
     },
     mouseHoverCopyNestedComponentToggle(isMouseEnter: boolean): void {
       const activeSubcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
       const copyableComponentCardOverlaysToDisplay: CopyableComponentCardOverlaysToDisplay = {
-        isDisplaying: isMouseEnter, componentType: activeSubcomponent.nestedComponent.ref.type };
+        isDisplaying: isMouseEnter, componentType: activeSubcomponent.seedComponent.ref.type };
       this.$emit('display-copyable-component-card-overlays', copyableComponentCardOverlaysToDisplay);
     },
     toggleCopyNestedComponentMode(): void {
@@ -465,7 +465,7 @@ export default {
       }
     },
     removeSubcomponent(): void {
-      if (this.component.subcomponents[this.component.activeSubcomponentName].nestedComponent?.inSync) {
+      if (this.component.subcomponents[this.component.activeSubcomponentName].seedComponent?.inSync) {
         this.temporarilyAllowOptionAnimations(this.emitRemoveSubcomponentEvent);
       } else {
         this.emitRemoveSubcomponentEvent();
@@ -580,7 +580,7 @@ export default {
     },
     isSubcomponentPresent(subcomponentStyle: COMPONENT_STYLES): boolean {
       return !!Object.keys(this.component.subcomponents).find((subcomponentName) => {
-        const component: WorkshopComponent = this.component.subcomponents[subcomponentName].nestedComponent?.ref;
+        const component: WorkshopComponent = this.component.subcomponents[subcomponentName].seedComponent?.ref;
         return component?.style === subcomponentStyle
           && component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name !== TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY;
       });

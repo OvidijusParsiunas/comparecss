@@ -13,7 +13,7 @@ export class RemoveNestedComponent {
     } else {
       // when removing an actual component - retrieve the parent component of the currently active subcomponent
       const { subcomponents, activeSubcomponentName } = currentlySelectedComponent;
-      const activeComponentParent = subcomponents[activeSubcomponentName].nestedComponent.ref.nestedComponentParent;
+      const activeComponentParent = subcomponents[activeSubcomponentName].seedComponent.ref.parentComponent;
       RemoveAnyNestedComponent.remove(activeComponentParent?.linkedComponents?.base || activeComponentParent, activeSubcomponentName, true);
     }
   }

@@ -5,11 +5,11 @@ import JSONUtils from '../../../utils/generic/jsonUtils';
 export class InSync {
   
   private static dereferenceCopiedComponentCustomProperties(activeComponent: WorkshopComponent, baseSubcomponent: SubcomponentProperties): void {
-    const { subcomponents, referenceSharingExecutables, coreSubcomponentRefs } = baseSubcomponent.nestedComponent.ref;
+    const { subcomponents, referenceSharingExecutables, coreSubcomponentRefs } = baseSubcomponent.seedComponent.ref;
     Object.keys(subcomponents).forEach((subcomponentName: string) => {
-      const nestedComponent = activeComponent.subcomponents[subcomponentName];
-      nestedComponent.customCss = JSONUtils.deepCopy(nestedComponent.customCss);
-      nestedComponent.customFeatures = JSONUtils.deepCopy(nestedComponent.customFeatures);
+      const seedComponent = activeComponent.subcomponents[subcomponentName];
+      seedComponent.customCss = JSONUtils.deepCopy(seedComponent.customCss);
+      seedComponent.customFeatures = JSONUtils.deepCopy(seedComponent.customFeatures);
     });
     referenceSharingExecutables.forEach((executable: ReferenceSharingExecutable) => {
       executable(coreSubcomponentRefs);
@@ -19,15 +19,15 @@ export class InSync {
   public static toggleSubcomponentInSync(activeComponent: WorkshopComponent, callback?: () => void): void {
     const activeSubcomponent = activeComponent.subcomponents[activeComponent.activeSubcomponentName];
     const baseSubcomponent = activeSubcomponent.baseSubcomponentRef || activeSubcomponent;
-    if (baseSubcomponent.nestedComponent.inSync) {
+    if (baseSubcomponent.seedComponent.inSync) {
       InSync.dereferenceCopiedComponentCustomProperties(activeComponent, baseSubcomponent);
     }
-    baseSubcomponent.nestedComponent.inSync = !baseSubcomponent.nestedComponent.inSync;
+    baseSubcomponent.seedComponent.inSync = !baseSubcomponent.seedComponent.inSync;
     if (callback) callback();
   }
 
   private static getBaseSubcomponent(activeSubcomponent: SubcomponentProperties): NestedComponent {
-    return activeSubcomponent.baseSubcomponentRef?.nestedComponent || activeSubcomponent.nestedComponent;
+    return activeSubcomponent.baseSubcomponentRef?.seedComponent || activeSubcomponent.seedComponent;
   }
 
   public static updateIfSubcomponentNotInSync(activeComponent: WorkshopComponent, activeSubcomponent: SubcomponentProperties): void {

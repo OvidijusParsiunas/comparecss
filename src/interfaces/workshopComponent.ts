@@ -155,9 +155,9 @@ export interface SubcomponentProperties {
   defaultCustomStaticFeatures?: CustomStaticFeatures;
   layerSectionsType?: LAYER_SECTIONS_TYPES;
   // it is important to understand that the subcomponents of a nested component are located in the core base component's subcomponents section
-  // and the nestedComponent property is used to reference the nestedComponent they belong to
+  // and the seedComponent property is used to reference the seedComponent they belong to
   // full structure explained at the bottom of the file titled: 'Reference for component structure'
-  nestedComponent?: NestedComponent;
+  seedComponent?: NestedComponent;
   // baseSubcomponentRef is only appended to all the nested subcomponents (except the base subcomponents)
   // this is mostly used to track the nested component's inSync property and identify whether the subcomponent is nested and not base
   baseSubcomponentRef?: SubcomponentProperties;
@@ -215,7 +215,7 @@ export interface WorkshopComponent {
   }
   // reference to the parent that contains this component's base
   // full structure explained at the bottom of the file titled: 'Reference for component structure'
-  nestedComponentParent?: WorkshopComponent;
+  parentComponent?: WorkshopComponent;
   // WORK1: update the diagram with all the new details
   masterComponentRef?: WorkshopComponent;
 }
@@ -228,35 +228,35 @@ export interface WorkshopComponent {
 // This approach allows these values to be maintained (e.g. added/removed) all in one place 
 
 // Subcomponents that belong to nested components can access their own immediate components via the following properties:
-//   nestedComponent -> ref
+//   seedComponent -> ref
 // Also, subcomponents of the nested components that are not their bases can access their base subcomponent via the following property:
 //   baseSubcomponentRef
 // parent component -> subcomponents (not base)        +        subcomponents (base)
 //                     |          |                                   |
-//         nestedComponent       baseSubcomponentRef           nestedComponent
+//         seedComponent       baseSubcomponentRef           seedComponent
 //                     |                                              |            
 //                    ref                                            ref
 //                     |                                              |
 //       nested component                                       nested component
 // baseSubcomponentRef allows base, layer and text subcomponents to all reference the same component (such as a button)
 
-// Nested components can access the parent which they are nested in via nestedComponentParent
-// (their subcomponents' nestedComponent -> ref property only points to their immediate component which may not hold useful information
+// Nested components can access the parent which they are nested in via parentComponent
+// (their subcomponents' seedComponent -> ref property only points to their immediate component which may not hold useful information
 // as the subcomponents and componentPreviewStructure data are all maintaintained in the parental components - e.g. text subcomponent)
-// It is important to understand that base subcomponents' nestedComponent -> ref -> nestedComponentParent property directly references the nested
+// It is important to understand that base subcomponents' seedComponent -> ref -> parentComponent property directly references the nested
 // component's parent as base does not have its own immediate component
 // top parent component -> subcomponents (e.g. button text)    +   subcomponents (button base)
 //                                      |                                    |
-//                               nestedComponent                      nestedComponent
+//                               seedComponent                      seedComponent
 //                                      |                                    |
 //                                     ref                                  ref
 //                                      |                                    |
 //                             component (e.g. text)                component (button)
 //                                      |                                    |
-//                             nestedComponentParent               nestedComponentParent
+//                             parentComponent               parentComponent
 //                                      |                                    |
 //                              component (button)                    parent component
 //                                      |
-//                             nestedComponentParent
+//                             parentComponent
 //                                      |
 //                               parent component

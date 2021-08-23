@@ -39,11 +39,11 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
 
   private static updateOptionNames(component: WorkshopComponent, subcomponentNameToPrefix: SubcomponentNameToPrefix,
       subcomponentPrefixToTotal: SubcomponentPrefixToTotal, singleSubcomponentPrefixes: SingleSubcomponentPrefixes, containerDropdownStructure: NestedDropdownStructure,
-      overwrittenOptionNames: string[], newDrodpownValues: string[], nestedComponent: NestedComponent, overwrittenDropdownStructures: NestedDropdownStructure): void {
-    const subcomponentName = nestedComponent.name;
+      overwrittenOptionNames: string[], newDrodpownValues: string[], seedComponent: NestedComponent, overwrittenDropdownStructures: NestedDropdownStructure): void {
+    const subcomponentName = seedComponent.name;
     const newPostfix = UpdateGenericComponentDropdownOptionNames.getNewPostfix(subcomponentPrefixToTotal, subcomponentNameToPrefix, subcomponentName);
     const { oldOptionName, newOptionName } = UpdateDropdownOptionNamesShared
-      .generateOptionNames(nestedComponent.name, newPostfix, component, singleSubcomponentPrefixes[subcomponentNameToPrefix[subcomponentName]]);
+      .generateOptionNames(seedComponent.name, newPostfix, component, singleSubcomponentPrefixes[subcomponentNameToPrefix[subcomponentName]]);
     if (containerDropdownStructure[newOptionName]) {
       UpdateDropdownOptionNamesShared.moveExistingOptionToTheBottom(containerDropdownStructure, newOptionName);
     }

@@ -15,11 +15,11 @@ export class CopySubcomponents {
     });
   }
 
-  private static copyInSyncSubcomponent(nestedComponent: NestedComponent, newSubcomponent: SubcomponentProperties,
+  private static copyInSyncSubcomponent(seedComponent: NestedComponent, newSubcomponent: SubcomponentProperties,
       subcomponentBeingCopied: SubcomponentProperties): void {
-    if (newSubcomponent.nestedComponent) {
-      newSubcomponent.nestedComponent.inSync = true;
-      newSubcomponent.nestedComponent.ref.componentStatus = nestedComponent.ref.componentStatus;
+    if (newSubcomponent.seedComponent) {
+      newSubcomponent.seedComponent.inSync = true;
+      newSubcomponent.seedComponent.ref.componentStatus = seedComponent.ref.componentStatus;
     }
     newSubcomponent.customCss = subcomponentBeingCopied.customCss;
     newSubcomponent.customFeatures = subcomponentBeingCopied.customFeatures;
@@ -37,8 +37,8 @@ export class CopySubcomponents {
   }
 
   private static copyExistingSubcomponentProperties(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
-    if (!subcomponentBeingCopied.baseSubcomponentRef && subcomponentBeingCopied.nestedComponent?.inSync) {
-      CopySubcomponents.copyInSyncSubcomponent(subcomponentBeingCopied.nestedComponent, newSubcomponent, subcomponentBeingCopied);
+    if (!subcomponentBeingCopied.baseSubcomponentRef && subcomponentBeingCopied.seedComponent?.inSync) {
+      CopySubcomponents.copyInSyncSubcomponent(subcomponentBeingCopied.seedComponent, newSubcomponent, subcomponentBeingCopied);
     } else {
       CopySubcomponents.copySubcomponentProperties(newSubcomponent, subcomponentBeingCopied); 
     }
@@ -55,8 +55,8 @@ export class CopySubcomponents {
   public static copyBaseSubcomponent(newComponent: WorkshopComponent, copiedComponent: WorkshopComponent): void {
     const newBaseSubcomponent = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const copiedBaseSubcomponent = copiedComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    if (copiedBaseSubcomponent.nestedComponent?.inSync) {
-      CopySubcomponents.copyInSyncSubcomponent(copiedBaseSubcomponent.nestedComponent, newBaseSubcomponent, copiedBaseSubcomponent);
+    if (copiedBaseSubcomponent.seedComponent?.inSync) {
+      CopySubcomponents.copyInSyncSubcomponent(copiedBaseSubcomponent.seedComponent, newBaseSubcomponent, copiedBaseSubcomponent);
     } else {
       CopySubcomponents.copySubcomponentProperties(newBaseSubcomponent, copiedBaseSubcomponent);
     }
