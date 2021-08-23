@@ -2,7 +2,6 @@ import { BUTTON_COMPONENTS_BASE_NAMES, LAYER_COMPONENTS_BASE_NAMES, PRIMITIVE_CO
 import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
-import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -10,6 +9,7 @@ import { ComponentGenerator } from '../../../../../../../interfaces/componentGen
 import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { CardBaseSpecificSettings } from '../settings/cardBaseSpecificSettings';
+import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { inheritedCardBaseCss } from '../inheritedCss/inheritedCardCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
@@ -37,7 +37,7 @@ class CardBase extends ComponentBuilder {
         backgroundColor: '#ffffff',
         borderColor: '#00000033',
         borderWidth: '1px',
-        borderStyle: 'solid',
+        borderStyle: BORDER_STYLES.SOLID,
         borderRadius: '4px',
         width: '450px',
         boxSizing: CSS_PROPERTY_VALUES.UNSET,
@@ -55,10 +55,6 @@ class CardBase extends ComponentBuilder {
     return {
       animations: ComponentBuilder.createDisplayAnimationsProperties(),
     };
-  }
-
-  private static createDefaultNewNestedComponentsOptions(): NestedDropdownStructure {
-    return UpdateDropdownOptionNamesShared.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);
   }
 
   public static createBaseSubcomponent(name: string): SubcomponentProperties {

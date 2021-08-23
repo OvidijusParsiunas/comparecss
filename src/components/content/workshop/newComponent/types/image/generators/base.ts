@@ -4,6 +4,7 @@ import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValu
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
+import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ImageBase extends ComponentBuilder {
@@ -14,7 +15,7 @@ class ImageBase extends ComponentBuilder {
         borderRadius: '0px',
         borderWidth: '0px',
         borderColor: '#1779ba',
-        borderStyle: 'solid',
+        borderStyle: BORDER_STYLES.SOLID,
         boxShadow: CSS_PROPERTY_VALUES.UNSET,
         outline: 'none',
         paddingTop: '0px',

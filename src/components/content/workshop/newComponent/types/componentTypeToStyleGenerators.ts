@@ -24,6 +24,5 @@ export const componentTypeToStyleGenerators: ComponentTypeToStyleGenerators = {
   [COMPONENT_TYPES.IMAGE]: imageStyleToGenerator,
   [COMPONENT_TYPES.ICON]: iconStyleToGenerator,
   [COMPONENT_TYPES.DROPDOWN]: dropdownStyleToGenerator,
-  // WORK2: check if this will actually be needed
   [COMPONENT_TYPES.DROPDOWN_MENU]: dropdownStyleToGenerator,
 };

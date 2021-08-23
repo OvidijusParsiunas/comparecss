@@ -1,6 +1,5 @@
 import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
@@ -10,6 +9,7 @@ import { ComponentGenerator } from '../../../../../../../interfaces/componentGen
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { ButtonBaseSpecificSettings } from '../settings/buttonBaseSpecificSettings';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
+import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { inheritedButtonCss } from '../inheritedCss/inheritedCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
@@ -24,14 +24,6 @@ class ButtonBase extends ComponentBuilder {
       max: { [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT]: 1, [PRIMITIVE_COMPONENTS_BASE_NAMES.ICON]: 1 }};
   }
 
-  public static cleanBaseDropdownIfNotNested(buttonComponent: WorkshopComponent, baseName?: string): void {
-    if (!baseName) {
-      const { componentPreviewStructure, coreSubcomponentRefs } = buttonComponent;
-      const buttonBaseCustomponent = componentPreviewStructure.subcomponentDropdownStructure[coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name];
-      delete buttonBaseCustomponent[DROPDOWN_OPTION_AUX_DETAILS_REF];
-    }
-  }
-
   private static createOtherSubcomponentsToTriggerTemplate(): CoreSubcomponentRefs {
     return { [SUBCOMPONENT_TYPES.TEXT]: null, [SUBCOMPONENT_TYPES.ICON]: null };
   }
@@ -43,7 +35,7 @@ class ButtonBase extends ComponentBuilder {
         borderWidth: '0px',
         borderColor: '#1779ba',
         backgroundColor: '#1779ba',
-        borderStyle: 'solid',
+        borderStyle: BORDER_STYLES.SOLID,
         boxShadow: CSS_PROPERTY_VALUES.UNSET,
         outline: 'none',
         paddingTop: '0px',
@@ -111,8 +103,6 @@ export const buttonBase: ComponentGenerator = {
       { componentType: COMPONENT_TYPES.BUTTON, baseName, coreSubcomponentRefs }, ButtonBase.createBaseSubcomponent);
     ButtonBaseSpecificSettings.set(buttonBaseComponent);
     ButtonBase.setNestedComponentsOptions(buttonBaseComponent);
-    // WORK1 - not sure if this is needed
-    ButtonBase.cleanBaseDropdownIfNotNested(buttonBaseComponent, baseName);
     return buttonBaseComponent;
   },
 }

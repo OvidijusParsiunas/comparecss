@@ -12,6 +12,7 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentType
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
+import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { layerBase } from './base';
 
@@ -48,7 +49,7 @@ export class DropdownItemLayer extends ComponentBuilder {
         height: '',
         borderWidth: '0px',
         borderColor: '#1779ba',
-        borderStyle: 'solid',
+        borderStyle: BORDER_STYLES.SOLID,
         borderRightWidth: '0px',
         borderLeftWidth: '0px',
         transition: CSS_PROPERTY_VALUES.UNSET,
@@ -144,7 +145,7 @@ export class DropdownItemLayer extends ComponentBuilder {
         paddingRight: '0px',
         paddingBottom: '0px',
         borderBottomWidth: '0px',
-        borderBottomStyle: 'solid',
+        borderBottomStyle: BORDER_STYLES.SOLID,
         borderBottomColor: '#e9ecef',
         cursor: 'pointer',
         backgroundColor: CSS_PROPERTY_VALUES.INHERIT,

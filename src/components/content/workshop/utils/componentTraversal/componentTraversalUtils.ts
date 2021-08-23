@@ -2,7 +2,6 @@ import { AlignedSections, ComponentPreviewStructure, NestedComponent } from '../
 import { DropdownOptionAuxDetails, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../interfaces/dropdownOptionDisplayStatus';
 import { TargetDetails, ComponentTraversalState } from '../../../../../interfaces/componentTraversal';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
-import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
 import { WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 
@@ -15,8 +14,7 @@ export default class ComponentTraversalUtils {
       targetSubcomponentName,
       targetDropdownOptionName: parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[targetSubcomponentName],
       parentComponent,
-      // WORK1: confirm that this is needed
-      targetSubcomponentProperties: parentComponent.subcomponents[targetSubcomponentName] || parentComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
+      targetSubcomponentProperties: parentComponent.subcomponents[targetSubcomponentName],
     };
   }
 

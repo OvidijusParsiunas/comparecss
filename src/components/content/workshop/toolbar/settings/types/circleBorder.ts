@@ -1,5 +1,6 @@
-import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { UpdateDropdownOptionNamesShared } from '../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
+import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
+import { BORDER_STYLES } from '../../../../../../consts/borderStyles.enum';
 
 // create an optional interface
 export default {
@@ -63,8 +64,8 @@ export default {
         },
         {
           cssProperty: 'borderStyle',
-          defaultValue: 'solid',
-          conditions: new Set([undefined, 'none', 'hidden']),
+          defaultValue: BORDER_STYLES.SOLID,
+          conditions: new Set([undefined, BORDER_STYLES.NONE, BORDER_STYLES.HIDDEN]),
           selector: true,
         }
       ]
@@ -73,8 +74,8 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Style',
-        options: UpdateDropdownOptionNamesShared.generateDropdownStructure(['none', 'hidden', 'dotted', 'dashed', 'solid', 'double', 'groove', 'ridge', 'inset', 'outset']),
-        default: 'none',
+        options: UpdateDropdownOptionNamesShared.generateDropdownStructure(Object.values(BORDER_STYLES)),
+        default: BORDER_STYLES.NONE,
         cssProperty: 'borderStyle',
       },
       triggers: {

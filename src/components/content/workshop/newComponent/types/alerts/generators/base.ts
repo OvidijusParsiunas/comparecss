@@ -10,6 +10,7 @@ import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildC
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { AlertBaseSpecificSettings } from '../settings/alertBaseSpecificSettings';
 import { inheritedCardBaseCss } from '../../cards/inheritedCss/inheritedCardCss';
+import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class AlertBase extends ComponentBuilder {
@@ -29,7 +30,7 @@ class AlertBase extends ComponentBuilder {
         backgroundColor: '#cce5ff',
         borderColor: '#b8daff',
         borderWidth: '1px',
-        borderStyle: 'solid',
+        borderStyle: BORDER_STYLES.SOLID,
         borderRadius: '4px',
         width: '400px',
         height: '50px',

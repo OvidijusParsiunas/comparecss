@@ -5,6 +5,7 @@ import { ComponentGenerator } from '../../../../../../../interfaces/componentGen
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { CardLayerSpecificSettings } from '../settings/cardLayerSpecificSettings';
 import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
+import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { layerBase } from './base';
 
@@ -25,7 +26,7 @@ class CardLayer extends ComponentBuilder {
         paddingRight: '0px',
         paddingBottom: '0px',
         borderBottomWidth: '1px',
-        borderBottomStyle: 'solid',
+        borderBottomStyle: BORDER_STYLES.SOLID,
         borderBottomColor: '#e9ecef',
         backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
         boxShadow: CSS_PROPERTY_VALUES.UNSET,

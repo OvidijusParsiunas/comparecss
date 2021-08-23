@@ -33,7 +33,6 @@ export class DropdownMenuAutoWidthUtils {
     const { customFeatures } = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     if (customFeatures.autoSize?.width) {
       const width = DropdownMenuAutoWidthUtils.getLargestItemWidth(menuComponent);
-      // WORK2: use actual dropdown structure to get icon subcomponent name
       buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = width;
       menuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = width;
     }

@@ -5,6 +5,7 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentType
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
+import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { inheritedTextCss } from '../inheritedCss/inheritedTextCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
@@ -32,7 +33,7 @@ class TextBase extends ComponentBuilder {
         height: '',
         borderWidth: '0',
         borderColor: '#1779ba',
-        borderStyle: 'solid',
+        borderStyle: BORDER_STYLES.SOLID,
         borderRightWidth: '0px',
         borderLeftWidth: '0px',
         transition: CSS_PROPERTY_VALUES.UNSET,

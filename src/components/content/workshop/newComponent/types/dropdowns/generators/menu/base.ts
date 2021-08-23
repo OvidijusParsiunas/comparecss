@@ -14,6 +14,7 @@ import { inheritedCardBaseCss } from '../../../cards/inheritedCss/inheritedCardC
 import { MenuBaseSpecificSettings } from '../../settings/menuBaseSpecificSettings';
 import { SelectDropdown } from '../../../../../../../../interfaces/selectDropdown';
 import { SETTINGS_TYPES } from '../../../../../../../../consts/settingsTypes.enum';
+import { BORDER_STYLES } from '../../../../../../../../consts/borderStyles.enum';
 import { SelectDropdownUtils } from '../../selectDropdown/selectDropdownUtils';
 import { AutoSize } from '../../../../../../../../interfaces/autoSize';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
@@ -49,7 +50,7 @@ class DropdownMenuBase extends ComponentBuilder {
         backgroundColor: '#ffffff',
         borderColor: '#00000033',
         borderWidth: '1px',
-        borderStyle: 'solid',
+        borderStyle: BORDER_STYLES.SOLID,
         borderRadius: '4px',
         width: '160px',
         boxSizing: CSS_PROPERTY_VALUES.UNSET,

@@ -82,9 +82,7 @@ export class RemoveAnyNestedComponent {
     const parentDropdownOptionDetails = dropdownOptionDetailsStack[dropdownOptionDetailsStack.length - 2];
     return parentDropdownOptionDetails?.actualObjectName || parentComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
   }
-  // WORK1
-  // will need to remove parent subcomponents, nested subcomponents and actual component subcomponents
-  // consider moving all subcomponents to core base subcomponent
+
   private static removeNestedComponent(componentTraversalState: ComponentTraversalState, targetDetails: TargetRemovalDetails,
       dropdownOptions: string[]): void {
     const { dropdownOptionName, subcomponentDropdownStructure, dropdownOptionDetailsStack } = componentTraversalState;
