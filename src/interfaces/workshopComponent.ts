@@ -157,7 +157,7 @@ export interface SubcomponentProperties {
   layerSectionsType?: LAYER_SECTIONS_TYPES;
   // it is important to understand that the subcomponents of a child component are located in the core base component's subcomponents section
   // and the seedComponent property is used to reference the seedComponent they belong to
-  // full structure explained at the bottom of the file titled: 'Reference for component structure'
+  // full structure explained at the bottom of the file titled: 'Component Architecture Information'
   seedComponent?: SeedComponent;
   // baseSubcomponentRef is only appended to all the child subcomponents (except the base subcomponents)
   // this is mostly used to track the child component's inSync property and identify whether the subcomponent is child and not base
@@ -209,52 +209,123 @@ export interface WorkshopComponent {
   triggerFuncOnSettingChange?: TriggerFuncOnSettingChange;
   // used to share add dropdown options across components such as layers - in order to make sure that the enabled and disabled items are in-sync
   newChildComponentsOptionsRefs?: NewChildComponentsOptionsRefs;
-  // WORK 1: include this in an explanation
+  // used to reference the linked component - where the base component refereneces the auxiliary component and vice versa
   linkedComponents?: LinkedComponents;
   // reference to the parent that contains this component's base
-  // full structure explained at the bottom of the file titled: 'Reference for component structure'
+  // full structure explained at the bottom of the file titled: 'Component Architecture Information'
   parentComponent?: WorkshopComponent;
-  // WORK1: update the diagram with all the new details
+  // each seed component is assigned a reference to the master component - primarily used to access the dropdown structure
   masterComponentRef?: WorkshopComponent;
 }
 
-// Reference for component structure:
+// Component Architecture Information:
 
-// core base component -> subcomponents (all of the components subcomponents)
-// All of the nested components' (incl auxiliary component's) subcomponents, subcomponentDropdownStructure and subcomponentNameToDropdownOptionName
-// property values are placed in the core base component (and removed from the nested components)
-// This approach allows these values to be maintained (e.g. added/removed) all in one place 
+// Component:
+// An entity containing information about the subcomponents that it encapsulates.
 
-// Subcomponents that belong to nested components can access their own immediate components via the following properties:
-//   seedComponent -> ref
-// Also, subcomponents of the nested components that are not their bases can access their base subcomponent via the following property:
-//   baseSubcomponentRef
-// parent component -> subcomponents (not base)        +        subcomponents (base)
-//                     |          |                                   |
-//         seedComponent       baseSubcomponentRef           seedComponent
-//                     |                                              |            
-//                    ref                                            ref
-//                     |                                              |
-//       nested component                                       nested component
-// baseSubcomponentRef allows base, layer and text subcomponents to all reference the same component (such as a button)
+// Subcomponent:
+// An entity containing information about the content and styling that it should display.
 
-// Nested components can access the parent which they are nested in via parentComponent
-// (their subcomponents' seedComponent -> ref property only points to their immediate component which may not hold useful information
-// as the subcomponents and componentPreviewStructure data are all maintaintained in the parental components - e.g. text subcomponent)
-// It is important to understand that base subcomponents' seedComponent -> ref -> parentComponent property directly references the nested
-// component's parent as base does not have its own immediate component
-// top parent component -> subcomponents (e.g. button text)    +   subcomponents (button base)
-//                                      |                                    |
-//                               seedComponent                      seedComponent
-//                                      |                                    |
-//                                     ref                                  ref
-//                                      |                                    |
-//                             component (e.g. text)                component (button)
-//                                      |                                    |
-//                             parentComponent               parentComponent
-//                                      |                                    |
-//                              component (button)                    parent component
-//                                      |
-//                             parentComponent
-//                                      |
-//                               parent component
+
+// Single subcomponent example (text component):
+//
+// Text Component -> Text Subcomponent
+//
+// Explanation:
+// Text Subcomponent is accessed via subcomponents property in text component.
+// Text Subcomponent is considered as a base subcomponent within the Text Component as it is
+// used to define the styling for the component's infrastructure.
+
+
+// Multiple subcomponents example (button component):
+//
+// Button Component --> { Base Subcomponent, Layer Subcomponent, Text Subcomponent }
+//      |                        |                   |                   |
+//      |                   seedComponent       seedComponent       seedComponent
+//      |                        |                   |                   |
+//      <-----------<---------- ref                 ref                 ref
+//                                                   |                   |
+//                                             Layer Component      Text Component 
+//
+// Explanation:
+// Button component is an ensamble of multiple subcomponents.
+// Whilst the Base Subcomponent is owned by the Button itself, the other components are brought
+// in from other components - known as seed components. Layer and Text subcomponents have their
+// own seed components - whilst the Base subcomponent's seed component is the current context's
+// component, which in this case is the Button (true for all base subcomponents).
+// To note, Layer Subcomponent and Text Subcomponent are technically both base subcomponents
+// - but are not in the context of the Button component.
+// Both Layer and Text Subcomponent seed components are regarded as child components to the button
+// component.
+
+
+// Multiple components example (Card component):
+//
+// Card Component -> Layers Components -> Text/Button/Image Components etc.
+//
+// Explanation:
+// Card Component encompasses multi-level children components.
+// In this architecture, layers are children of the component card (or more accurately its base)
+// and Text/Button/Image Components are children of the layer components.
+// This hierarchy is defined through componentPreviewStructure -> layers -> sections -> base
+// subcomponents (of the child components) -> seed component -> and the loop is repeated.
+// Each seed component contains a reference to the component that nested it called 'parentComponent'.
+// Hence a text component has reference to button, a button component has reference to card etc.
+// To note, a child component will never refer to the layer that it is nested in, hence within a card
+// component - the button and the layer components would both be referring to the card component.
+
+
+// Linked components example (Dropdown example):
+// 
+// Dropdown Button Component           Dropdown Menu Component
+//            |         |                          |        |
+//    linkedComponents  |                  linkedComponents |
+//            |         |                          |        |
+//        auxiliary     <--------<-------<------ base       |
+//            |                                             |
+//            ----------->----------------->---------------->
+//
+// Explanation:
+// Dropdown component encompasses two components - Button and Menu
+// Button component is considered as the base component because it is the originating component
+// from which the linked components (Menu) are branching from.
+// Menu component is considered as an auxiliary component which branches from the Button.
+// Auxiliary components are considered to have absolute position styling and are positioned somewhere
+// close to the linked base component. Additionally both the base and auxiliary components hold a
+// reference to each other via the 'linkedComponents' property.
+// To note - a base can link to multiple auxiliary components whereas the auxiliary component
+// can only be linked to one base component
+
+// Master component (Dropdown example):
+// 
+// Dropdown Button Component -> { base, layer, text }
+//    |                            |       |     |
+//    |                            |       |     |
+//    <---- { subcomponents, subcomponentDropdownStructure, subcomponentNameToDropdownOptionName }
+//    <------------<--------- { ref: { masterComponent } }
+//                                 |       |     |
+//                                 |       |     |
+// Dropdown Menu Component ->   { base, layers, text }
+//
+// ---------------------------------------------------------------------------------------
+//
+// Dropdown Button Component -> { base, layer, text }
+//                                 |
+//                                 |
+//         <---------------------- seed : { ref: { masterComponentRef } }
+//  { subcomponents, subcomponentDropdownStructure, subcomponentNameToDropdownOptionName }
+//                                 |
+//                                 |
+// Dropdown Menu Component ->   { base, layers, text }
+//
+// Explanation:
+// All of the dropdown's child components' (any level, incl. auxiliary component's) subcomponents,
+// subcomponentDropdownStructure and subcomponentNameToDropdownOptionName property values are moved
+// to the very top level component (and removed from the original components). This is carried out
+// to maintain all of these values in the same place.
+// Hence this component is known as the Master component and all of the seed components have a
+// reference to it via the masterComponentRef property.
+// When referring to the examples above chronologically - master components of would be the very parent
+// eacg component i.e. Text, Button, Card and Dropdown Button components.
+// To note, seed components can still refer to their core subcomponents via the coreSubcomponentRefs
+// property.
