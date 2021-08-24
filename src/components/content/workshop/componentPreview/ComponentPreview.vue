@@ -20,7 +20,7 @@
           </transition>
         </div>
         <div :style="{'background-color': componentPreviewAssistance.margin ? '#f9f9f9' : ''}" class="grid-item grid-item-position">
-          <!-- parent component -->
+          <!-- master component -->
           <base-component ref="baseComponent"
             class="grid-item-position"
             style="z-index: 1"
@@ -68,9 +68,9 @@ import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomp
 import { SelectDropdownUtils } from '../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils'
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
 import { componentTypeToStyleGenerators } from '../newComponent/types/componentTypeToStyleGenerators';
+import { MASTER_COMPONENT_BASE_NAME } from '../../../../consts/baseSubcomponentNames.enum';
 import { animationTypeToFunctionality } from './utils/animations/animationToFunctionality';
 import { PlayAnimationPreviewEvent } from '../../../../interfaces/settingsComponentEvents';
-import { PARENT_COMPONENT_BASE_NAME } from '../../../../consts/baseSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import ToggleFullPreviewMode from './utils/fullPreviewMode/toggleFullPreviewMode';
 import { OpenAnimation, CloseAnimation } from '../../../../interfaces/animations';
@@ -109,10 +109,10 @@ export default {
   }),
   methods: {
     getComponentPreviewContentsDynamicClass(): string {
-      const { componentCenteringInParent } = this.component.subcomponents[PARENT_COMPONENT_BASE_NAME.BASE].customFeatures || {};
-      if (componentCenteringInParent) {
-        if (componentCenteringInParent.vertical && !componentCenteringInParent.horizontal) return 'component-preview-centered-vertically';
-        if (componentCenteringInParent.horizontal && !componentCenteringInParent.vertical) return 'component-preview-centered-horizontally';
+      const { componentCenteringInScreen } = this.component.subcomponents[MASTER_COMPONENT_BASE_NAME.BASE].customFeatures || {};
+      if (componentCenteringInScreen) {
+        if (componentCenteringInScreen.vertical && !componentCenteringInScreen.horizontal) return 'component-preview-centered-vertically';
+        if (componentCenteringInScreen.horizontal && !componentCenteringInScreen.vertical) return 'component-preview-centered-horizontally';
       }
       return 'component-preview-centered';
     },
@@ -179,15 +179,16 @@ export default {
     },
     playAnimationPreview(playAnimationPreviewEvent: PlayAnimationPreviewEvent): void {
       const [animationType, isOpenAnimation] = playAnimationPreviewEvent;
+      const { display: displayAnimation } = (this.component.subcomponents[MASTER_COMPONENT_BASE_NAME.BASE].customFeatures as CustomFeatures).animations;
       if (isOpenAnimation) {
         PreviewOpenAnimation.start(
           animationTypeToFunctionality[animationType] as OpenAnimation,
-          (this.component.subcomponents[PARENT_COMPONENT_BASE_NAME.BASE].customFeatures as CustomFeatures).animations.display.open.duration,
+          displayAnimation.open.duration,
           this.$refs.baseComponent.$refs.componentPreview);
       } else {
         PreviewCloseAnimation.start(
           animationTypeToFunctionality[animationType] as CloseAnimation,
-          (this.component.subcomponents[PARENT_COMPONENT_BASE_NAME.BASE].customFeatures as CustomFeatures).animations.display.close.duration,
+          displayAnimation.close.duration,
           this.$refs.baseComponent.$refs.componentPreview);
       }
     },
@@ -195,7 +196,7 @@ export default {
       AnimationUtils.cancelAnimationPreview(this.$refs.baseComponent.$refs.componentPreview);
     },
     refreshTemporaryComponentPropertiesBeforeUse(): void {
-      if (this.component.subcomponents[PARENT_COMPONENT_BASE_NAME.BASE].customFeatures?.closeTriggers && !this.temporaryComponent.displayed) {
+      if (this.component.subcomponents[MASTER_COMPONENT_BASE_NAME.BASE].customFeatures?.closeTriggers && !this.temporaryComponent.displayed) {
         this.temporaryComponent.subcomponentAndOverlayElementIds = null;
         this.temporaryComponent.mouseEvents = null;
       }

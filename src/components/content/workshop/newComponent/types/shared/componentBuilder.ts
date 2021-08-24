@@ -1,9 +1,9 @@
-import { AlignedLayerSection, BackdropProperties, ComponentCenteringInParent, Image, SubcomponentProperties, Text, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { AlignedLayerSection, BackdropProperties, ComponentCenteringInScreen, Image, SubcomponentProperties, Text, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { DropdownOptionsDisplayStatusUtils } from '../../../utils/dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { NewComponentStyleProperties } from '../../../../../../consts/newComponentStyleProperties';
 import { ComponentPreviewStructure } from '../../../../../../interfaces/componentPreviewStructure';
-import { PARENT_COMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
+import { MASTER_COMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { CoreSubcomponentRefs } from '../../../../../../interfaces/coreSubcomponentRefs';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
@@ -80,7 +80,7 @@ export class ComponentBuilder {
     return stationaryAnimations;
   }
 
-  protected static createComponentCenteringInParent(): ComponentCenteringInParent {
+  protected static createComponentCenteringInParent(): ComponentCenteringInScreen {
     return {
       vertical: true,
       horizontal: true,
@@ -138,7 +138,7 @@ export class ComponentBuilder {
   // WORK1: refactor
   public static createBaseComponent(componentStyle: NewComponentStyleProperties,
       createBaseSubcomponent: (name: string) => SubcomponentProperties, isBaseOptional = true): WorkshopComponent {
-    const baseName = componentStyle.baseName || PARENT_COMPONENT_BASE_NAME.BASE;
+    const baseName = componentStyle.baseName || MASTER_COMPONENT_BASE_NAME.BASE;
     const baseSubcomponent = createBaseSubcomponent(baseName);
     const subcomponents = {[baseName]: baseSubcomponent};
     const componentPreviewStructure = ComponentBuilder.createEmptyComponentPreviewStructure(baseName, isBaseOptional);

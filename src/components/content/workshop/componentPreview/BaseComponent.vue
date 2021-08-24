@@ -4,8 +4,8 @@
       :id="getBaseId('subcomponentId')"
       :icon="getIconName()"
       :style="getStyleProperties(component)"
-      class="parent-component"
-      :class="[COMPONENT_PREVIEW_MARKER, (isNestedComponent ? 'nested-component' : STATIC_POSITION_CLASS),
+      class="base-component"
+      :class="[COMPONENT_PREVIEW_MARKER, (isChildComponent ? 'child-component' : STATIC_POSITION_CLASS),
         ...getJsClasses(), getSubcomponentMouseEventsDisabledClassForXButtonText()]"
       @mouseenter="activateSubcomponentMouseEvent('subcomponentMouseEnter')"
       @mouseleave="activateSubcomponentMouseEvent('subcomponentMouseLeave')"
@@ -100,16 +100,16 @@ export default {
     },
     getOverlayStyleProperties(): WorkshopComponentCss {
       const subcomponentCss = { ...this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT], color: '#ff000000' };
-      if (!this.isNestedComponent) subcomponentCss.height = this.component.linkedComponents?.base ? 'unset' : '100% !important';
+      if (!this.isChildComponent) subcomponentCss.height = this.component.linkedComponents?.base ? 'unset' : '100% !important';
       if (this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isTemporaryAddPreview) subcomponentCss.display = 'block'; 
-      if (!this.component.linkedComponents?.base && !this.isNestedComponent) subcomponentCss.marginTop = '0px';
+      if (!this.component.linkedComponents?.base && !this.isChildComponent) subcomponentCss.marginTop = '0px';
       if (this.isIcon(this.component)) subcomponentCss.height = subcomponentCss.width;
       return subcomponentCss;
     },
     getOverlayClasses(isIconOverlayTrigger: boolean): string[] {
       const classes: string[] = [SUBCOMPONENT_OVERLAY_CLASSES.BASE];
-      if (this.isNestedComponent) {
-        classes.push('nested-component');
+      if (this.isChildComponent) {
+        classes.push('child-component');
       } else {
         classes.push(STATIC_POSITION_CLASS, 'subcomponent-overlay-with-no-border-property-but-with-height');
       }
@@ -167,17 +167,17 @@ export default {
   props: {
     component: Object,
     mouseEvents: Object,
-    isNestedComponent: Boolean,
+    isChildComponent: Boolean,
     subcomponentAndOverlayElementIds: Object,
   },
 };
 </script>
 
 <style lang="css" scoped>
-  .parent-component {
+  .base-component {
     overflow: hidden;
   }
-  .nested-component {
+  .child-component {
     position: relative;
     transform: translateY(-50%);
   }

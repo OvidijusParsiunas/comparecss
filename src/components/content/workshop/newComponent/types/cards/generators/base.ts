@@ -1,5 +1,5 @@
 import { BUTTON_COMPONENTS_BASE_NAMES, LAYER_COMPONENTS_BASE_NAMES, PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
-import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
+import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -15,18 +15,18 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class CardBase extends ComponentBuilder {
 
-  public static setNestedComponentCountMax(cardBaseComponent: WorkshopComponent): void {
-    cardBaseComponent.nestedComponentCount = {
+  public static setChildComponentCountMax(cardBaseComponent: WorkshopComponent): void {
+    cardBaseComponent.childComponentCount = {
       max: { [LAYER_COMPONENTS_BASE_NAMES.LAYER]: 5, [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
   }
 
-  public static setNestedComponentsOptions(cardBaseComponent: WorkshopComponent): void {
+  public static setChildComponentsOptions(cardBaseComponent: WorkshopComponent): void {
     const layerComponentsOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([
       BUTTON_COMPONENTS_BASE_NAMES.BUTTON, PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE, PRIMITIVE_COMPONENTS_BASE_NAMES.IMAGE]);
-    cardBaseComponent.newNestedComponentsOptionsRefs = { layer: layerComponentsOptions };
+    cardBaseComponent.newChildComponentsOptionsRefs = { layer: layerComponentsOptions };
     const baseComponentOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);
-    cardBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newNestedComponentsOptions = baseComponentOptions;
-    cardBaseComponent.nestedComponentCount = {
+    cardBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsOptions = baseComponentOptions;
+    cardBaseComponent.childComponentCount = {
       max: { [LAYER_COMPONENTS_BASE_NAMES.LAYER]: 5, [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
   }
 
@@ -78,7 +78,7 @@ export const cardBase: ComponentGenerator = {
     uniqueSubcomponentIdState.resetUniqueId();
     const cardBaseComponent = ComponentBuilder.createBaseComponent(
       { componentType: COMPONENT_TYPES.CARD }, CardBase.createBaseSubcomponent, false);
-    CardBase.setNestedComponentsOptions(cardBaseComponent);
+    CardBase.setChildComponentsOptions(cardBaseComponent);
     CardBaseSpecificSettings.set(cardBaseComponent);
     return cardBaseComponent;
   },

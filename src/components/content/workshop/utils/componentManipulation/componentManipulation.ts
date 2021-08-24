@@ -1,12 +1,12 @@
-import { CopyNestedComponentModeCardEvents } from '../../toolbar/options/copyNestedComponent/modeUtils/copyNestedComponentModeCardEvents';
+import { CopyChildComponentModeCardEvents } from '../../toolbar/options/copyChildComponent/modeUtils/copyChildComponentModeCardEvents';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../interfaces/subcomponentOrderDirections.enum';
-import { AddTemporaryAddPreviewComponent } from './addNewNestedComponent/addTemporaryAddPreviewComponent';
+import { AddTemporaryAddPreviewComponent } from './addNewChildComponent/addTemporaryAddPreviewComponent';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
-import { ChangeNestedComponentAlignment } from './moveNestedComponent/changeNestedComponentAlignment';
-import { ChangeNestedComponentOrder } from './moveNestedComponent/changeNestedComponentOrder';
+import { ChangeChildComponentAlignment } from './moveChildComponent/changeChildComponentAlignment';
 import { AddNewSubcomponentEvent } from '../../../../../interfaces/addNewSubcomponentEvent';
-import { AddNewNestedComponent } from './addNewNestedComponent/addNewNestedComponent';
-import { RemoveNestedComponent } from './removeNestedComponent/removeNestedComponent';
+import { ChangeChildComponentOrder } from './moveChildComponent/changeChildComponentOrder';
+import { RemoveChildComponent } from './removeChildComponent/removeChildComponent';
+import { AddNewChildComponent } from './addNewChildComponent/addNewChildComponent';
 import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
 import CopyComponent from './copyComponent/copyComponent';
 import ComponentJs from '../generic/componentJs';
@@ -39,29 +39,29 @@ export class ComponentManipulation {
   }
 
   public static addNewSubcomponent(workshopComponent: ComponentOptions, addNewSubcomponentEvent: AddNewSubcomponentEvent): void {
-    const [nestedComponentBaseName, isTemporaryAddPreview] = addNewSubcomponentEvent;
+    const [childComponentBaseName, isTemporaryAddPreview] = addNewSubcomponentEvent;
     if (isTemporaryAddPreview) {
-      AddTemporaryAddPreviewComponent.add(workshopComponent.currentlySelectedComponent, nestedComponentBaseName);
+      AddTemporaryAddPreviewComponent.add(workshopComponent.currentlySelectedComponent, childComponentBaseName);
     } else {
-      AddNewNestedComponent.add(workshopComponent.currentlySelectedComponent, nestedComponentBaseName);
+      AddNewChildComponent.add(workshopComponent.currentlySelectedComponent, childComponentBaseName);
     }
     workshopComponent.$refs.contents.refreshComponent();
   }
 
   public static removeSubcomponent(workshopComponent: ComponentOptions, isTemporaryAddPreview?: boolean): void {
-    RemoveNestedComponent.remove(workshopComponent.currentlySelectedComponent, isTemporaryAddPreview);
+    RemoveChildComponent.remove(workshopComponent.currentlySelectedComponent, isTemporaryAddPreview);
     workshopComponent.$refs.contents.refreshComponent();
   }
 
   public static changeSubcomponentOrder(workshopComponent: ComponentOptions, direction: SUBCOMPONENT_ORDER_DIRECTIONS,
       parentComponent: WorkshopComponent): void {
-    ChangeNestedComponentOrder.change(parentComponent, direction);
+    ChangeChildComponentOrder.change(parentComponent, direction);
     workshopComponent.$refs.contents.refreshComponent();
   }
 
   public static changeSubcomponentAlignment(workshopComponent: ComponentOptions, previousAlignment: ALIGNED_SECTION_TYPES,
       newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties, shouldSubcomponentNamesBeUpdated: boolean): void {
-    ChangeNestedComponentAlignment.change(previousAlignment, newAlignment, subcomponentProperties, shouldSubcomponentNamesBeUpdated,
+    ChangeChildComponentAlignment.change(previousAlignment, newAlignment, subcomponentProperties, shouldSubcomponentNamesBeUpdated,
       workshopComponent.currentlySelectedComponent);
     if (shouldSubcomponentNamesBeUpdated) workshopComponent.$refs.contents.refreshComponent();
   }
@@ -81,8 +81,8 @@ export class ComponentManipulation {
       workshopComponent.componentSelectedBeforeFadeAnimation = null;
     }
     if (!component) return;
-    if (workshopComponent.isCopyNestedComponentModeActive) {
-      CopyNestedComponentModeCardEvents.mouseClick(workshopComponent, component);
+    if (workshopComponent.isCopyChildComponentModeActive) {
+      CopyChildComponentModeCardEvents.mouseClick(workshopComponent, component);
     } else if (workshopComponent.currentlySelectedComponent !== component) {
       ComponentManipulation.switchActiveComponent(workshopComponent, component);
     }

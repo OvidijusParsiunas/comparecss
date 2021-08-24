@@ -13,18 +13,18 @@
           @input="classNameInputEvent"
           >
         <h5 v-else class="card-title component-card-title" :class="COMPONENT_CARD_MARKER">{{thisComponent.className}}</h5>
-        <div v-if="!isCopyNestedComponentModeActive" :class="COMPONENT_CARD_MARKER">
+        <div v-if="!isCopyChildComponentModeActive" :class="COMPONENT_CARD_MARKER">
           <a ref="componentCardClassNameEditorButton" class="btn btn-success" :class="COMPONENT_CARD_MARKER" @mousedown="preventBubbling" @mouseup="editClassName">Edit</a>
           <a class="btn btn-warning" :class="COMPONENT_CARD_MARKER" @mousedown="preventBubbling" @mouseup="copyComponent">Copy</a>
           <a class="btn btn-danger component-card-remove" :class="COMPONENT_CARD_MARKER" data-toggle="modal" :data-target="removeComponentModalId" @mousedown="preventBubbling" @mouseup="removeComponent">Remove</a>
         </div>
         <div v-else :class="COMPONENT_CARD_MARKER">
-          <a class="btn btn-success" :class="CONFIRM_NESTED_COMPONENT_TO_COPY_MARKER">
+          <a class="btn btn-success" :class="CONFIRM_CHILD_COMPONENT_TO_COPY_MARKER">
             <font-awesome-icon icon="check"/>
           </a>
         </div>
       </div>
-      <div v-if="isDisplayingCopyableComponentCardOverlay()" class="copy-nested-component-overlay static-position"></div>
+      <div v-if="isDisplayingCopyableComponentCardOverlay()" class="copy-child-component-overlay static-position"></div>
     </div>
   </div>
 </template>
@@ -32,7 +32,7 @@
 <script lang="ts">
 import { CopyableComponentCardOverlaysToDisplay } from '../../../../interfaces/copyableComponentCardOverlaysToDisplay';
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
-import { CONFIRM_NESTED_COMPONENT_TO_COPY_MARKER } from '../../../../consts/elementClassMarkers';
+import { CONFIRM_CHILD_COMPONENT_TO_COPY_MARKER } from '../../../../consts/elementClassMarkers';
 import { ComponentCardHoveredEvent } from '../../../../interfaces/componentCardHoveredEvent'
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
@@ -51,7 +51,7 @@ interface Data {
   removeComponentModalId: string;
   isInputElementDisplayed: boolean;
   editorButtonClickedOnStopEditing: boolean;
-  CONFIRM_NESTED_COMPONENT_TO_COPY_MARKER: string;
+  CONFIRM_CHILD_COMPONENT_TO_COPY_MARKER: string;
 }
 
 export default {
@@ -63,16 +63,16 @@ export default {
     COMPONENT_CARD_MARKER,
     removeComponentModalId: '',
     isInputElementDisplayed: false,
-    CONFIRM_NESTED_COMPONENT_TO_COPY_MARKER,
+    CONFIRM_CHILD_COMPONENT_TO_COPY_MARKER,
     editorButtonClickedOnStopEditing: false,
   }),
   methods: {
     highlightCard(): string {
-      if (this.isCopyNestedComponentModeActive) {
-        if (this.currentlySelectedComponentForCopyNested === this.thisComponent) {
-          return 'component-selected-during-copy-nested-component-mode';
-        } else if (this.currentlyHoveredComponentForCopyNested === this.thisComponent) {
-          return 'component-hovered-during-copy-nested-component-mode';
+      if (this.isCopyChildComponentModeActive) {
+        if (this.currentlySelectedComponentForCopyChild === this.thisComponent) {
+          return 'component-selected-during-copy-child-component-mode';
+        } else if (this.currentlyHoveredComponentForCopyChild === this.thisComponent) {
+          return 'component-hovered-during-copy-child-component-mode';
         }
       }
       if (this.currentlySelectedComponent === this.thisComponent) {
@@ -182,10 +182,10 @@ export default {
     thisComponent: Object,
     allComponents: Object,
     currentlySelectedComponent: Object,
-    currentlyHoveredComponentForCopyNested: Object,
-    currentlySelectedComponentForCopyNested: Object,
+    currentlyHoveredComponentForCopyChild: Object,
+    currentlySelectedComponentForCopyChild: Object,
     copyableComponentCardOverlaysToDisplay: Object,
-    isCopyNestedComponentModeActive: Boolean,
+    isCopyChildComponentModeActive: Boolean,
   }
 };
 </script>
@@ -218,12 +218,12 @@ export default {
   .component-selected:hover {
     border-color: #72abf0 !important;
   }
-  .component-selected-during-copy-nested-component-mode {
+  .component-selected-during-copy-child-component-mode {
     background-color: rgb(255, 255, 213) !important;
     box-shadow: 0 0 1px rgb(194, 183, 87) !important;
     border-color: #fff6a3 !important;
   }
-  .component-hovered-during-copy-nested-component-mode:hover {
+  .component-hovered-during-copy-child-component-mode:hover {
     background-color: rgb(255, 255, 231) !important;
     box-shadow: 0 0 1px rgb(212, 204, 124) !important;
     border-color: #fff6a3 !important;
@@ -234,7 +234,7 @@ export default {
     height: 100%;
     position: relative;
   }
-  .copy-nested-component-overlay {
+  .copy-child-component-overlay {
     width: inherit;
     height: inherit;
     position: absolute;

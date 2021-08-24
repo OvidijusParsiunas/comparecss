@@ -1,4 +1,4 @@
-import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
+import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -15,12 +15,12 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonBase extends ComponentBuilder {
 
-  public static setNestedComponentsOptions(buttonBaseComponent: WorkshopComponent): void {
+  public static setChildComponentsOptions(buttonBaseComponent: WorkshopComponent): void {
     const baseComponentOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([
       PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, PRIMITIVE_COMPONENTS_BASE_NAMES.ICON]);
-    buttonBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newNestedComponentsOptions = baseComponentOptions;
-    buttonBaseComponent.newNestedComponentsOptionsRefs = { layer: baseComponentOptions };
-    buttonBaseComponent.nestedComponentCount = {
+    buttonBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsOptions = baseComponentOptions;
+    buttonBaseComponent.newChildComponentsOptionsRefs = { layer: baseComponentOptions };
+    buttonBaseComponent.childComponentCount = {
       max: { [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT]: 1, [PRIMITIVE_COMPONENTS_BASE_NAMES.ICON]: 1 }};
   }
 
@@ -102,7 +102,7 @@ export const buttonBase: ComponentGenerator = {
     const buttonBaseComponent = ComponentBuilder.createBaseComponent(
       { componentType: COMPONENT_TYPES.BUTTON, baseName, coreSubcomponentRefs }, ButtonBase.createBaseSubcomponent);
     ButtonBaseSpecificSettings.set(buttonBaseComponent);
-    ButtonBase.setNestedComponentsOptions(buttonBaseComponent);
+    ButtonBase.setChildComponentsOptions(buttonBaseComponent);
     return buttonBaseComponent;
   },
 }

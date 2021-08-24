@@ -36,7 +36,7 @@ export const alertBaseOptions: SubcomponentOptions<AlertBaseOptionsModes> = {
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ANIMATIONS,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.CLOSE_ANIMATION,
-      enabledIfNestedComponentPresent: { type: SUBCOMPONENT_TYPES.BUTTON, style: BUTTON_STYLES.CLOSE },
+      enabledIfChildComponentPresent: { type: SUBCOMPONENT_TYPES.BUTTON, style: BUTTON_STYLES.CLOSE },
     },
   ],
 };

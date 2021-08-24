@@ -198,7 +198,7 @@ import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
 import CheckboxUtils, { CustomTriggerFunc } from './utils/checkboxUtils';
 import { SETTING_NAMES } from '../../../../../consts/settingNames.enum';
 import useActionsDropdown from './compositionAPI/useActionsDropdown';
-import { InSync } from '../options/copyNestedComponent/inSync';
+import { InSync } from '../options/copyChildComponent/inSync';
 import dropdown from '../options/dropdown/Dropdown.vue';
 import RangeUtils from './utils/rangeUtils/rangeUtils';
 import SettingsUtils from './utils/settingsUtils';

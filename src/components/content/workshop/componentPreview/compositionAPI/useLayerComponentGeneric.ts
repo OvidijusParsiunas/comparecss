@@ -10,10 +10,10 @@ import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 export default function useLayerComponentGeneric(): UseLayerComponentGeneric {
 
   function getSelectedDropdownCss(layer: Layer, subcomponentCss: CustomCss): WorkshopComponentCss {
-    const { parentComponent, nestedComponentsLockedToLayer } = layer.subcomponentProperties.seedComponent.ref;
+    const { parentComponent, childComponentsLockedToLayer } = layer.subcomponentProperties.seedComponent.ref;
     const { selectDropdown } = parentComponent?.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures || {};
     if (selectDropdown?.enabled) {
-      const itemTextSubcomponent = nestedComponentsLockedToLayer.list[0];
+      const itemTextSubcomponent = childComponentsLockedToLayer.list[0];
       if (selectDropdown.lastSelectedItemText && itemTextSubcomponent.customStaticFeatures.subcomponentText.text === selectDropdown.lastHoveredItemText) {
         return subcomponentCss[CSS_PSEUDO_CLASSES.HOVER];
       }

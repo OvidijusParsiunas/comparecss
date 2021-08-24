@@ -1,4 +1,4 @@
-import { UpdateDropdownOptionNamesShared } from '../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
+import { UpdateDropdownOptionNamesShared } from '../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { BORDER_STYLES } from '../../../../../../consts/borderStyles.enum';
 

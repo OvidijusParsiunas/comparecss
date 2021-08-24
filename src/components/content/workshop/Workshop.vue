@@ -14,9 +14,9 @@
           <component-list ref="componentList"
             :components="components"
             :currentlySelectedComponent="componentSelectedBeforeFadeAnimation || currentlySelectedComponent"
-            :isCopyNestedComponentModeActive="isCopyNestedComponentModeActive"
-            :currentlyHoveredComponentForCopyNested="currentlyHoveredComponentForCopyNested"
-            :currentlySelectedComponentForCopyNested="currentlySelectedComponentForCopyNested"
+            :isCopyChildComponentModeActive="isCopyChildComponentModeActive"
+            :currentlyHoveredComponentForCopyChild="currentlyHoveredComponentForCopyChild"
+            :currentlySelectedComponentForCopyChild="currentlySelectedComponentForCopyChild"
             :copyableComponentCardOverlaysToDisplay="copyableComponentCardOverlaysToDisplay"
             @set-active-component="setActiveComponent($event)"
             @copy-component="copyComponent($event)"
@@ -48,7 +48,7 @@
               @toggle-full-preview-mode="$refs.contents.toggleFullPreviewMode($event, toggleFullPreviewModeOffCallback)"
               @play-animation-preview="$refs.contents.playAnimationPreview($event)"
               @stop-animation-preview="$refs.contents.stopAnimationPreview()"
-              @toggle-copy-nested-component-mode="toggleCopyNestedComponentMode($event)"
+              @toggle-copy-child-component-mode="toggleCopyChildComponentMode($event)"
               @add-subcomponent="addNewSubcomponent($event)"
               @remove-subcomponent="removeSubcomponent($event)"
               @change-subcomponent-order="changeSubcomponentOrder($event)"
@@ -110,13 +110,13 @@
 </template>
 
 <script lang="ts">
-import { CopyNestedComponentModeCardEvents } from './toolbar/options/copyNestedComponent/modeUtils/copyNestedComponentModeCardEvents';
+import { CopyChildComponentModeCardEvents } from './toolbar/options/copyChildComponent/modeUtils/copyChildComponentModeCardEvents';
 import { ChangeSubcomponentAlignmentEvent, ChangeSubcomponentOrderEvent } from '../../../interfaces/settingsComponentEvents';
 import { removeSubcomponentModalState } from './toolbar/options/removeSubcomponentModalState/removeSubcomponentModalState';
 import RemoveSubcomponentOverlay from './toolbar/options/subcomponentOverlayToggleUtils/subcomponentOverlayToggleUtils';
-import { ToggleCopyNestedComponentModeState } from './utils/copyNestedComponent/toggleCopyNestedComponentModeState';
 import { CopyableComponentCardOverlaysToDisplay } from '../../../interfaces/copyableComponentCardOverlaysToDisplay';
-import { ToggleCopyNestedComponentModeEvent } from '../../../interfaces/toggleCopyNestedComponentModeEvent';
+import { ToggleCopyChildComponentModeState } from './utils/copyChildComponent/toggleCopyChildComponentModeState';
+import { ToggleCopyChildComponentModeEvent } from '../../../interfaces/toggleCopyChildComponentModeEvent';
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { SwitchComponentsWithFadeOutCallback } from '../../../interfaces/toggleFullPreviewModeEvent';
@@ -125,7 +125,7 @@ import { ComponentManipulation } from './utils/componentManipulation/componentMa
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { removeComponentModalState } from './componentList/state/removeComponentModalState';
 import { ComponentCardHoveredEvent } from '../../../interfaces/componentCardHoveredEvent';
-import { PARENT_COMPONENT_BASE_NAME } from '../../../consts/baseSubcomponentNames.enum';
+import { MASTER_COMPONENT_BASE_NAME } from '../../../consts/baseSubcomponentNames.enum';
 import { AddNewSubcomponentEvent } from '../../../interfaces/addNewSubcomponentEvent';
 import { defaultDropdown } from './newComponent/types/dropdowns/generators/default';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
@@ -153,11 +153,11 @@ interface Data {
   components: WorkshopComponent[];
   tempComponents: WorkshopComponent[];
   currentlySelectedComponent: WorkshopComponent;
-  currentlyHoveredComponentForCopyNested: WorkshopComponent;
-  currentlySelectedComponentForCopyNested: WorkshopComponent;
+  currentlyHoveredComponentForCopyChild: WorkshopComponent;
+  currentlySelectedComponentForCopyChild: WorkshopComponent;
   componentPreviewAssistance: ComponentPreviewAssistance;
   workshopEventCallbacks: (() => boolean)[];
-  isCopyNestedComponentModeActive: boolean;
+  isCopyChildComponentModeActive: boolean;
   componentSelectedBeforeFadeAnimation: WorkshopComponent;
   copyableComponentCardOverlaysToDisplay: CopyableComponentCardOverlaysToDisplay;
 }
@@ -182,11 +182,11 @@ export default {
     ],
     tempComponents: [],
     currentlySelectedComponent: null,
-    currentlyHoveredComponentForCopyNested: null,
-    currentlySelectedComponentForCopyNested: null,
+    currentlyHoveredComponentForCopyChild: null,
+    currentlySelectedComponentForCopyChild: null,
     componentSelectedBeforeFadeAnimation: null,
     workshopEventCallbacks: [],
-    isCopyNestedComponentModeActive: false,
+    isCopyChildComponentModeActive: false,
     copyableComponentCardOverlaysToDisplay: null,
   }),
   mounted(): void {
@@ -214,11 +214,11 @@ export default {
     },
     componentCardHovered(componentCardHoveredEvent: ComponentCardHoveredEvent): void {
       const [hoveredComponent, isMouseEnter] = componentCardHoveredEvent;
-      if (this.isCopyNestedComponentModeActive) {
+      if (this.isCopyChildComponentModeActive) {
         if (isMouseEnter) {
-          CopyNestedComponentModeCardEvents.mouseEnter(this, hoveredComponent);
+          CopyChildComponentModeCardEvents.mouseEnter(this, hoveredComponent);
         } else {
-          CopyNestedComponentModeCardEvents.mouseLeave(this);
+          CopyChildComponentModeCardEvents.mouseLeave(this);
         }
       }
     },
@@ -267,13 +267,13 @@ export default {
       this.addWorkshopEventCallback(workshopEventCallback); 
       this.$refs.contents.toggleSubcomponentSelectMode(true);
     },
-    toggleCopyNestedComponentMode(event: ToggleCopyNestedComponentModeEvent): void {
-      ToggleCopyNestedComponentModeState.toggle(this, event);
+    toggleCopyChildComponentMode(event: ToggleCopyChildComponentModeEvent): void {
+      ToggleCopyChildComponentModeState.toggle(this, event);
     },
     isExpandedModalPreviewBackdropVisible(): boolean {
       const { subcomponents } = this.currentlySelectedComponent || {};
       if (subcomponents) {
-        return subcomponents[PARENT_COMPONENT_BASE_NAME.BASE].customFeatures?.backdrop?.visible;
+        return subcomponents[MASTER_COMPONENT_BASE_NAME.BASE].customFeatures?.backdrop?.visible;
       }
       return false;
     }

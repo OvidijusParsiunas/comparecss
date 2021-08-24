@@ -44,9 +44,9 @@ export class CopySubcomponents {
     }
   }
 
-  public static copyComponentSubcomponents(componentBeingCopied: WorkshopComponent, newNestedComponent: WorkshopComponent): void {
-    CoreSubcomponentRefsUtils.getActiveRefKeys(newNestedComponent.coreSubcomponentRefs).forEach((coreSubcomponentType) => {
-      const newSubcomponent = newNestedComponent.coreSubcomponentRefs[coreSubcomponentType];
+  public static copyComponentSubcomponents(componentBeingCopied: WorkshopComponent, newChildComponent: WorkshopComponent): void {
+    CoreSubcomponentRefsUtils.getActiveRefKeys(newChildComponent.coreSubcomponentRefs).forEach((coreSubcomponentType) => {
+      const newSubcomponent = newChildComponent.coreSubcomponentRefs[coreSubcomponentType];
       const subcomponentBeingCopied = componentBeingCopied.coreSubcomponentRefs[coreSubcomponentType];
       CopySubcomponents.copyExistingSubcomponentProperties(newSubcomponent, subcomponentBeingCopied);
     });

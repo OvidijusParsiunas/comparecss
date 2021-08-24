@@ -1,9 +1,9 @@
-import { UpdateGenericComponentDropdownOptionNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateGenericComponentDropdownOptionNames';
-import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
-import { UpdateLayerDropdownOptionNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateLayerDropdownOptionNames';
+import { UpdateGenericComponentDropdownOptionNames } from '../../../../utils/componentManipulation/updateChildComponent/updateGenericComponentDropdownOptionNames';
+import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
+import { UpdateLayerDropdownOptionNames } from '../../../../utils/componentManipulation/updateChildComponent/updateLayerDropdownOptionNames';
 import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewGenericComponent';
-import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
+import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewChildComponent/add/addNewGenericComponent';
+import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewChildComponent/add/addNewLayerComponent';
 import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
@@ -94,12 +94,12 @@ class DefaultModal extends ComponentBuilder {
 
   private static overwriteLayerProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
     const nestedDropdownStructure = this as any as NestedDropdownStructure;
-    coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newNestedComponentsOptions = nestedDropdownStructure;
+    coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsOptions = nestedDropdownStructure;
     coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
   }
 
   public static addComponentsToBase(modalComponent: WorkshopComponent): void {
-    const nestedDropdownStructure = modalComponent.newNestedComponentsOptionsRefs.layer;
+    const nestedDropdownStructure = modalComponent.newChildComponentsOptionsRefs.layer;
     const layer1Component = AddNewLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true, DefaultModal.overwriteLayerProperties.bind(nestedDropdownStructure));
     const layer2Component = AddNewLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true, DefaultModal.overwriteLayerProperties.bind(nestedDropdownStructure));
     const layer3Component = AddNewLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true, DefaultModal.overwriteLayerProperties.bind(nestedDropdownStructure));
@@ -119,16 +119,16 @@ class DefaultModal extends ComponentBuilder {
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(modalComponent, modalComponent.componentPreviewStructure.layers[2]);
   }
 
-  public static overwriteBaseNewNestedComponentsOptions(modalComponent: WorkshopComponent): void {
+  public static overwriteBaseNewChildComponentsOptions(modalComponent: WorkshopComponent): void {
     const nestedDropdownStructure = UpdateDropdownOptionNamesShared.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);
-    modalComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newNestedComponentsOptions = nestedDropdownStructure;
+    modalComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsOptions = nestedDropdownStructure;
   }
 }
 
 export const defaultModal: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
     const modalComponent = modalBase.createNewComponent();
-    DefaultModal.overwriteBaseNewNestedComponentsOptions(modalComponent);
+    DefaultModal.overwriteBaseNewChildComponentsOptions(modalComponent);
     DefaultModal.addComponentsToBase(modalComponent);
     ModalBaseSpecificSettings.set(modalComponent);
     return modalComponent;

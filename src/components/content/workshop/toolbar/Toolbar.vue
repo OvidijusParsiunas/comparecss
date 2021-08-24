@@ -13,7 +13,7 @@
         @toggle-expanded-modal-preview-mode="toggleExpandModalPreviewMode($event)"
         @toggle-full-preview-mode="toggleFullPreviewMode($event)"
         @toggle-toolbar-position="toggleToolbarPosition"
-        @toggle-copy-nested-component-mode="$emit('toggle-copy-nested-component-mode', $event)"
+        @toggle-copy-child-component-mode="$emit('toggle-copy-child-component-mode', $event)"
         @add-subcomponent="$emit('add-subcomponent', $event)"
         @remove-subcomponent="$emit('remove-subcomponent', $event)"
         @display-copyable-component-card-overlays="$emit('display-copyable-component-card-overlays', $event)"/>

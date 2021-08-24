@@ -1,15 +1,15 @@
 import { SubcomponentCssPropertyDetails } from '../../../../../../interfaces/subcomponentCssPropertyDetails';
-import { PARENT_COMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
+import { MASTER_COMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { LAYER_SECTION_DIVISOR } from '../../../../../../consts/layerSectionDivisor';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 
 // ATTENTION!!!!!!!!!!!!!!!!!!!!!!
-// This option has been retired and only serves as a demonstarion for the following nested component options:
+// This option has been retired and only serves as a demonstarion for the following child component options:
 // Example of vertical offset and horizontal offset
 // Example of interconnected settings via updateSettingSpecViaOtherCssProperties
 function getOtherSubcomponentCssPropertyDetails(): SubcomponentCssPropertyDetails {
   return [
-    {subcomponentName: PARENT_COMPONENT_BASE_NAME.BASE, cssProperty: 'width'},
+    {subcomponentName: MASTER_COMPONENT_BASE_NAME.BASE, cssProperty: 'width'},
   ];
 }
 

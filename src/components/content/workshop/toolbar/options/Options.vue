@@ -45,15 +45,15 @@
           :class="{'transition-item': areOptionButtonTransitionsAllowed}"
           v-if="!isFullPreviewModeActive">
           <transition-group name="horizontal-transition">
-            <button ref="copyNestedComponentToggle"
+            <button ref="copyChildComponentToggle"
               v-if="isCopyButtonDisplayed()"
-              type="button" class="btn-group-option copy-nested-component-button" :class="[
+              type="button" class="btn-group-option copy-child-component-button" :class="[
               {'transition-item': areOptionButtonTransitionsAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, OPTION_MENU_BUTTON_MARKER]"
-              @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleCopyNestedComponentMode, true)"
-              @mouseenter="mouseHoverCopyNestedComponentToggle(true)"
-              @mouseleave="mouseHoverCopyNestedComponentToggle(false)">
+              @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleCopyChildComponentMode, true)"
+              @mouseenter="mouseHoverCopyChildComponentToggle(true)"
+              @mouseleave="mouseHoverCopyChildComponentToggle(false)">
               <!-- placed inside the button element to not have the transition -->
-              <div :class="isCopyNestedComponentModeActive ? 'copy-nested-component-icon-active' : 'copy-nested-component-icon-default'"></div> 
+              <div :class="isCopyChildComponentModeActive ? 'copy-child-component-icon-active' : 'copy-child-component-icon-default'"></div> 
             </button>
             <button v-if="isInSyncButtonDisplayed()"
               type="button" class="btn-group-option"
@@ -148,7 +148,7 @@
 
 <script lang="ts">
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
-import { PARENT_COMPONENT_BASE_NAME, TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
+import { MASTER_COMPONENT_BASE_NAME, TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../componentPreview/utils/animations/consts/sharedConsts';
 import { CopyableComponentCardOverlaysToDisplay } from '../../../../../interfaces/copyableComponentCardOverlaysToDisplay';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
@@ -157,14 +157,12 @@ import { MouseClickNewOptionEvent, MouseEnterOptionEvent } from '../../../../../
 import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../consts/workshopToolbarOptionButtonNames.enum';
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
-import CopyNestedComponentModeToggleUtils from './copyNestedComponent/modeUtils/copyNestedComponentModeToggle';
 import { removeSubcomponentModalState } from './removeSubcomponentModalState/removeSubcomponentModalState';
 import RemoveSubcomponentOverlay from './subcomponentOverlayToggleUtils/subcomponentOverlayToggleUtils';
 import { fulPreviewModeState } from '../../componentPreview/utils/fullPreviewMode/fullPreviewModeState';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
-import { EnabledIfNestedComponentPresent, Option } from '../../../../../interfaces/componentOptions';
-import { COPYABLE_COMPONENT_BASE_TYPES } from './copyNestedComponent/copyableNestedComponentTypes';
+import { EnabledIfChildComponentPresent, Option } from '../../../../../interfaces/componentOptions';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
 import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFullPreviewModeEvent';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
@@ -183,7 +181,7 @@ import { RemovalModalState } from '../../../../../interfaces/removalModalState';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import BrowserType from '../../utils/generic/browserType';
 import SharedUtils from '../settings/utils/sharedUtils';
-import { InSync } from './copyNestedComponent/inSync';
+import { InSync } from './copyChildComponent/inSync';
 import { Ref } from 'node_modules/vue/dist/vue';
 import dropdown from './dropdown/Dropdown.vue';
 import {
@@ -194,6 +192,8 @@ import {
   TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS,
   TOOLBAR_BUTTON_GROUP_TERTIARY_COMPONENT_CLASS, TOOLBAR_BUTTON_GROUP_MIDDLE_COMPONENT_CLASS, TOOLBAR_BUTTON_GROUP_END_COMPONENT_CLASS,
  } from '../../../../../consts/toolbarClasses';
+import { COPYABLE_COMPONENT_BASE_TYPES } from './copyChildComponent/copyableComponentTypes';
+import CopyChildComponentModeToggleUtils from './copyChildComponent/modeUtils/copyChildComponentModeToggle';
 
 interface Consts {
   componentTypeToOptions: ComponentTypeToOptions;
@@ -228,8 +228,8 @@ interface Data {
   activeOption: Option;
   isExpandedModalPreviewModeActive: boolean;
   isFullPreviewModeActive: boolean;
-  isCopyNestedComponentModeActive: boolean;
-  hasCopyNestedComponentModeClosedExpandedModal: boolean;
+  isCopyChildComponentModeActive: boolean;
+  hasCopyChildComponentModeClosedExpandedModal: boolean;
   areOptionButtonTransitionsAllowed: boolean;
   optionAnimationsInProgress: boolean;
   toolbarPositionToggleRef: HTMLElement;
@@ -272,8 +272,8 @@ export default {
     activeOption: { buttonName: null, type: null, enabledOnExpandedModalPreviewMode: null, enabledIfCustomFeaturePresentWithKeys: null },
     isExpandedModalPreviewModeActive: false,
     isFullPreviewModeActive: false,
-    isCopyNestedComponentModeActive: false,
-    hasCopyNestedComponentModeClosedExpandedModal: false,
+    isCopyChildComponentModeActive: false,
+    hasCopyChildComponentModeClosedExpandedModal: false,
     areOptionButtonTransitionsAllowed: false,
     optionAnimationsInProgress: false,
     toolbarPositionToggleRef: null,
@@ -294,7 +294,7 @@ export default {
     executeCallbackAfterTimeout(callback: () => void): void {
       setTimeout(() => {
         callback();
-      }, this.hasCopyNestedComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
+      }, this.hasCopyChildComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     },
     initiateSubcomponentSelectMode(buttonElement: HTMLElement): void {
       if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) {
@@ -316,8 +316,8 @@ export default {
       const buttonElements = document.getElementsByClassName(this.OPTION_MENU_SETTING_OPTION_BUTTON_MARKER);
       return Array.from(buttonElements).find((buttonElement: HTMLElement) => buttonElement.innerText === optionName) as HTMLElement;
     },
-    isNestedComponentPresentOptionDisabled(enabledIfNestedComponentPresent: EnabledIfNestedComponentPresent): boolean {
-      const { type, style } = enabledIfNestedComponentPresent;
+    isChildComponentPresentOptionDisabled(enabledIfChildComponentPresent: EnabledIfChildComponentPresent): boolean {
+      const { type, style } = enabledIfChildComponentPresent;
       const resultSubcomponent = Object.keys(this.component.subcomponents).find((subcomponentName) => {
         const subcomponentProperties = this.component.subcomponents[subcomponentName];
         if (subcomponentProperties.subcomponentType === type) {
@@ -338,8 +338,8 @@ export default {
       if (option.enabledIfCustomFeaturePresentWithKeys) {
         return !this.getActiveSubcomponentCustomFeatureValue(option.enabledIfCustomFeaturePresentWithKeys);
       }
-      if (option.enabledIfNestedComponentPresent) {
-        return this.isNestedComponentPresentOptionDisabled(option.enabledIfNestedComponentPresent);
+      if (option.enabledIfChildComponentPresent) {
+        return this.isChildComponentPresentOptionDisabled(option.enabledIfChildComponentPresent);
       }
       return this.isExpandedModeOptionDisabled(option);
     },
@@ -439,14 +439,14 @@ export default {
       if (subcomponent.subcomponentType === SUBCOMPONENT_TYPES.BUTTON && subcomponent.seedComponent?.ref.style === BUTTON_STYLES.CLOSE) return false;
       return !!(COPYABLE_COMPONENT_BASE_TYPES.has(subcomponent.subcomponentType) && subcomponent.seedComponent);
     },
-    mouseHoverCopyNestedComponentToggle(isMouseEnter: boolean): void {
+    mouseHoverCopyChildComponentToggle(isMouseEnter: boolean): void {
       const activeSubcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
       const copyableComponentCardOverlaysToDisplay: CopyableComponentCardOverlaysToDisplay = {
         isDisplaying: isMouseEnter, componentType: activeSubcomponent.seedComponent.ref.type };
       this.$emit('display-copyable-component-card-overlays', copyableComponentCardOverlaysToDisplay);
     },
-    toggleCopyNestedComponentMode(): void {
-      CopyNestedComponentModeToggleUtils.toggleCopyNestedComponentMode(this);
+    toggleCopyChildComponentMode(): void {
+      CopyChildComponentModeToggleUtils.toggleCopyChildComponentMode(this);
     },
     toggleInSync(callback?: () => void): void {
       this.temporarilyAllowOptionAnimations(InSync.toggleSubcomponentInSync.bind(this, this.component, callback));
@@ -475,19 +475,19 @@ export default {
       this.$emit('remove-subcomponent');
     },
     getSubcomponentsToAdd(): NestedDropdownStructure {
-      return this.component.subcomponents[this.component.activeSubcomponentName].newNestedComponentsOptions || {};
+      return this.component.subcomponents[this.component.activeSubcomponentName].newChildComponentsOptions || {};
     },
     addNewSubcomponent(mouseClickNewOptionEvent: MouseClickNewOptionEvent): void {
-      const [nestedComponentBaseName, isOptionEnabled] = mouseClickNewOptionEvent;
+      const [childComponentBaseName, isOptionEnabled] = mouseClickNewOptionEvent;
       if (!isOptionEnabled) return;
       this.$emit('remove-subcomponent', true);
-      this.$emit('add-subcomponent', [nestedComponentBaseName] as AddNewSubcomponentEvent);
+      this.$emit('add-subcomponent', [childComponentBaseName] as AddNewSubcomponentEvent);
     },
     mouseEnterSubcomponentManipulationToggle(isAdd: boolean, mouseEnterOptionEvent?: MouseEnterOptionEvent): void {
       if (isAdd) {
-        const [nestedComponentBaseName, isOptionEnabled] = mouseEnterOptionEvent;
+        const [childComponentBaseName, isOptionEnabled] = mouseEnterOptionEvent;
         if (!isOptionEnabled) return;
-        this.$emit('add-subcomponent', [nestedComponentBaseName, true] as AddNewSubcomponentEvent);
+        this.$emit('add-subcomponent', [childComponentBaseName, true] as AddNewSubcomponentEvent);
       } else {
         RemoveSubcomponentOverlay.display(this.component.activeSubcomponentName);
       }
@@ -556,7 +556,7 @@ export default {
     resetComponentPreviewMarginAssistance(): void {
       this.$nextTick(() => {
         this.componentPreviewAssistance.margin = this.activeOption.type === WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN
-          && this.component.activeSubcomponentName === PARENT_COMPONENT_BASE_NAME.BASE
+          && this.component.activeSubcomponentName === MASTER_COMPONENT_BASE_NAME.BASE
           && this.isSettingsDisplayed
           && !this.isExpandedModalPreviewModeActive;
       });
@@ -668,17 +668,17 @@ export default {
   .horizontal-transition-leave-active {
     position: absolute !important;
   }
-  .copy-nested-component-button {
+  .copy-child-component-button {
     height: 38px;
   }
-  .copy-nested-component-icon-default {
+  .copy-child-component-icon-default {
     width: 1em;
     height: 100%;
     background: url('../../../../../assets/svg/copy.svg') center no-repeat;
     background-size: 15px auto;
     pointer-events: none;
   }
-  .copy-nested-component-icon-active {
+  .copy-child-component-icon-active {
     width: 1em;
     height: 100%;
     background: url('../../../../../assets/svg/copy-active.svg') center no-repeat;

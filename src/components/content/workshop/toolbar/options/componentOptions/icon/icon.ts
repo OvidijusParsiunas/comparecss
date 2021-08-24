@@ -25,7 +25,7 @@ export const iconOptions: SubcomponentOptions<IconOptionsModes> = {
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.CHILD_COMPONENT_POSITION,
     },
   ],
   [CSS_PSEUDO_CLASSES.HOVER]: [

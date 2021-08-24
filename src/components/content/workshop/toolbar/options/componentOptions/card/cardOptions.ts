@@ -5,7 +5,7 @@ import { WorkshopComponent } from '../../../../../../../interfaces/workshopCompo
 import { Options } from '../../../../../../../interfaces/options';
 import { cardBottomLayerOptions } from '../layer/cardBottomLayer';
 import { closeButtonTextOptions } from '../text/closeButtonText';
-import { nestedButtonOptions } from '../button/nestedButton';
+import { childButtonOptions } from '../button/childButton';
 import { closeButtonOptions } from '../button/closeButton';
 import { buttonTextOptions } from '../text/buttonText';
 import { cardLayerOptions } from '../layer/cardLayer';
@@ -36,7 +36,7 @@ export class CardOptions {
     if (component.subcomponents[component.activeSubcomponentName].seedComponent.ref.style === BUTTON_STYLES.CLOSE) {
       return closeButtonOptions;
     }
-    return nestedButtonOptions;
+    return childButtonOptions;
   }
 
   protected static getLayerOptions(component: WorkshopComponent): Options {

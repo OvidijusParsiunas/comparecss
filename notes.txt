@@ -2,8 +2,8 @@ set the dropdown button width by a prop - should also set the option menu width
 pseudo css dropdown highligthed items not showing correctly
 when adding a new component - the select new component arrow seems to blink
 rename dropdown option to dropdown item
-when in hover/click mode and some nested subcomponent is isTriggeredByAnotherSubcomponent, that component should also be in that mode
-dropdown will probably need to have its own base name when nested
+when in hover/click mode and some child subcomponent is isTriggeredByAnotherSubcomponent, that component should also be in that mode
+dropdown will probably need to have its own base name when child
 animation - open on hover, slide in/ fade in
 new subcomponent
 make sure to calculate largest item with the icon
@@ -12,16 +12,17 @@ copy button
 change icon text flash
 dropdown arrows not showing up on card's button 2
 update the dropdown structure
-nested text ripple effects
-nested card button width
-subcomponents removed from nested components
+child text ripple effects
+child card button width
+subcomponents removed from child components
+change copy child component to link child component
 
 overflow
 try with button tags
 check to see if text can be placed into another div
 the dropdown button bottom border issue fixed via auxiliary overlay with no pointer events
 
-when moving into copying a nested component - can quickly click on add new component (fix this when implemented final add new component button)
+when moving into copying a child component - can quickly click on add new component (fix this when implemented final add new component button)
 when switching subcomponent alignment, highlight the subcomponent so that it is clear where it is being moved
 an alternative to using spaces for ids would be to append id numbers at the start and cut them out from the dropdown option elements
 when a subcomponent is added or removed - should have an appropriate animation like stretch to make it more interactive
@@ -48,8 +49,8 @@ UX:
   see if the subcomponent add and subcomponent remove hover and active css is ok
   check if position option in the modal is ok to use
 
-ability to copy sibling nested component instead of copying a standalone component
-copying nested component will also need to offer an option from the app defaults
+ability to copy sibling child component instead of copying a standalone component
+copying child component will also need to offer an option from the app defaults
 update the range using the scroll wheel
 ability to group the components
 option to see what the actual css looks like and to edit it

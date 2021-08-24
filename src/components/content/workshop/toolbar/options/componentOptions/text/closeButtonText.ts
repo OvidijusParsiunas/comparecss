@@ -21,7 +21,7 @@ export const closeButtonTextOptions: SubcomponentOptions<TextOptions> = {
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.NESTED_COMPONENT_POSITION_NO_ALIGN,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.CHILD_COMPONENT_POSITION_NO_ALIGN,
     },
   ],
   [CSS_PSEUDO_CLASSES.HOVER]: [

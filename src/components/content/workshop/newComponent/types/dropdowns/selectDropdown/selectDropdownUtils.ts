@@ -18,7 +18,7 @@ export class SelectDropdownUtils {
   private static setMouseEventText(seedComponent: WorkshopComponent, selectDropdown: SelectDropdown,
       itemTextKey: keyof SubcomponentMouseEventItemText): void {
     if (seedComponent.type === COMPONENT_TYPES.LAYER) {
-      const dropdownItemText = seedComponent.nestedComponentsLockedToLayer.list[0].customStaticFeatures.subcomponentText.text;
+      const dropdownItemText = seedComponent.childComponentsLockedToLayer.list[0].customStaticFeatures.subcomponentText.text;
       selectDropdown[itemTextKey] = dropdownItemText;
     }
   }

@@ -6,14 +6,14 @@
     <div v-for="(subcomponent, index) in subcomponents" :key="subcomponent"
       :style="{order: `${index}`}"
       class="subcomponent-element-container"
-      :class="[COMPONENT_PREVIEW_MARKER, specialisedSectionContainerClass, ...getNestedComponentJs(subcomponent)]">
+      :class="[COMPONENT_PREVIEW_MARKER, specialisedSectionContainerClass, ...getChildComponentJs(subcomponent)]">
       <base-component v-if="subcomponent.subcomponentProperties.seedComponent"
-        class="nested-component-container"
-        :class="[COMPONENT_PREVIEW_MARKER, ...getNestedComponentContainerJsClasses(subcomponent)]"
+        class="child-component-container"
+        :class="[COMPONENT_PREVIEW_MARKER, ...getChildComponentContainerJsClasses(subcomponent)]"
         :component="subcomponent.subcomponentProperties.seedComponent.ref"
         :mouseEvents="mouseEvents"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-        :isNestedComponent="true"/>
+        :isChildComponent="true"/>
     </div>
   </div>
 </template>
@@ -35,11 +35,11 @@ export default {
     };
   },
   methods: {
-    getNestedComponentContainerJsClasses(subcomponent: BaseSubcomponentRef): ComponentJavascriptClasses | undefined[] {
+    getChildComponentContainerJsClasses(subcomponent: BaseSubcomponentRef): ComponentJavascriptClasses | undefined[] {
       if (subcomponent.subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BUTTON) return [];
-      return this.getNestedComponentJs(subcomponent);
+      return this.getChildComponentJs(subcomponent);
     },
-    getNestedComponentJs(layerBaseSubcomponent: BaseSubcomponentRef): ComponentJavascriptClasses | undefined[] {
+    getChildComponentJs(layerBaseSubcomponent: BaseSubcomponentRef): ComponentJavascriptClasses | undefined[] {
       return layerBaseSubcomponent.subcomponentProperties.customFeatures?.jsClasses || [];
     }
   },
@@ -68,7 +68,7 @@ export default {
     place-items: baseline;
     position: relative;
   }
-  .nested-component-container {
+  .child-component-container {
     height: 100%;
   }
 </style>

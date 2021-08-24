@@ -1,6 +1,6 @@
-import { UpdateLayerDropdownOptionNames } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateLayerDropdownOptionNames';
+import { UpdateLayerDropdownOptionNames } from '../../../../utils/componentManipulation/updateChildComponent/updateLayerDropdownOptionNames';
 import { DropdownOptionsDisplayStatusUtils } from '../../../../utils/dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
-import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewNestedComponent/add/addNewLayerComponent';
+import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewChildComponent/add/addNewLayerComponent';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -35,11 +35,11 @@ class DropdownBase extends ComponentBuilder {
 
   public static addComponentsToBase(buttonComponent: WorkshopComponent): void {
     const layer1Component = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    layer1Component.nestedComponentsLockedToLayer.add(buttonComponent);
+    layer1Component.childComponentsLockedToLayer.add(buttonComponent);
     const layer2Component = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    layer2Component.nestedComponentsLockedToLayer.add(buttonComponent);
+    layer2Component.childComponentsLockedToLayer.add(buttonComponent);
     const layer3Component = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    layer3Component.nestedComponentsLockedToLayer.add(buttonComponent);
+    layer3Component.childComponentsLockedToLayer.add(buttonComponent);
     UpdateLayerDropdownOptionNames.update(buttonComponent, 0);
   }
 }

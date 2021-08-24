@@ -4,7 +4,7 @@ import { SubcomponentCssPseudoClasses } from './SubcomponentCssPseudoClasses';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
 
-export interface EnabledIfNestedComponentPresent {
+export interface EnabledIfChildComponentPresent {
   type: SUBCOMPONENT_TYPES;
   style?: COMPONENT_STYLES;
 }
@@ -14,7 +14,7 @@ export interface Option {
   type: WORKSHOP_TOOLBAR_OPTION_TYPES;
   enabledOnExpandedModalPreviewMode?: boolean;
   enabledIfCustomFeaturePresentWithKeys?: string[];
-  enabledIfNestedComponentPresent?: EnabledIfNestedComponentPresent;
+  enabledIfChildComponentPresent?: EnabledIfChildComponentPresent;
 }
 
 export type SubcomponentOptions<T extends keyof SubcomponentCssPseudoClasses> = {

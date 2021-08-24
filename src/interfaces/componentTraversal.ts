@@ -18,7 +18,7 @@ export interface ComponentTraversalState {
   dropdownOptionDetailsStack?: DropdownOptionAuxDetails[];
   subcomponentDropdownStructure?: NestedDropdownStructure;
   subcomponentProperties?: SubcomponentProperties;
-  alignedNestedComponents?: BaseSubcomponentRef[];
+  alignedChildComponents?: BaseSubcomponentRef[];
   alignedSections?: AlignedSections;
   layers?: Layer[];
   index?: number;

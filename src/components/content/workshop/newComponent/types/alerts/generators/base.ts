@@ -1,4 +1,4 @@
-import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
+import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { BUTTON_COMPONENTS_BASE_NAMES, PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
@@ -15,12 +15,12 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class AlertBase extends ComponentBuilder {
 
-  public static setNestedComponentsOptions(alertBaseComponent: WorkshopComponent): void {
+  public static setChildComponentsOptions(alertBaseComponent: WorkshopComponent): void {
     const baseComponentOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([
       PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE]);
-    alertBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newNestedComponentsOptions = baseComponentOptions;
-    alertBaseComponent.newNestedComponentsOptionsRefs = { layer: baseComponentOptions };
-    alertBaseComponent.nestedComponentCount = { max: { [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
+    alertBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsOptions = baseComponentOptions;
+    alertBaseComponent.newChildComponentsOptionsRefs = { layer: baseComponentOptions };
+    alertBaseComponent.childComponentCount = { max: { [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
   }
 
   private static createDefaultCss(): CustomCss {
@@ -74,7 +74,7 @@ export const alertBase: ComponentGenerator = {
     uniqueSubcomponentIdState.resetUniqueId();
     const alertBaseComponent = ComponentBuilder.createBaseComponent(
       { componentType: COMPONENT_TYPES.ALERT, baseName }, AlertBase.createBaseSubcomponent, false);
-    AlertBase.setNestedComponentsOptions(alertBaseComponent);
+    AlertBase.setChildComponentsOptions(alertBaseComponent);
     AlertBaseSpecificSettings.set(alertBaseComponent);
     return alertBaseComponent;
   },

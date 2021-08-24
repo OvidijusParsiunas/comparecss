@@ -58,10 +58,10 @@ export default class ComponentTraversalUtils {
     return null;
   }
 
-  private static inspectAlignedNestedComponent(alignedNestedComponents: BaseSubcomponentRef[], index: number, alignedSections: AlignedSections,
+  private static inspectAlignedChildComponent(alignedChildComponents: BaseSubcomponentRef[], index: number, alignedSections: AlignedSections,
       callback: TraverseComponentCallback): ComponentTraversalState {
-    const { subcomponentProperties } = alignedNestedComponents[index];
-    const callbackResult = callback({subcomponentProperties, alignedNestedComponents, alignedSections, index});
+    const { subcomponentProperties } = alignedChildComponents[index];
+    const callbackResult = callback({subcomponentProperties, alignedChildComponents, alignedSections, index});
     if (callbackResult) return callbackResult;
     const { componentPreviewStructure } = subcomponentProperties.seedComponent.ref;
     const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(componentPreviewStructure, callback);
@@ -72,9 +72,9 @@ export default class ComponentTraversalUtils {
   private static iterateAlignedSections(alignedSections: AlignedSections, callback: TraverseComponentCallback): ComponentTraversalState {
     const alignedSectionKeyValues = Object.keys(ALIGNED_SECTION_TYPES);
     for (let i = 0; i < alignedSectionKeyValues.length; i += 1) {
-      const alignedNestedComponents = alignedSections[ALIGNED_SECTION_TYPES[alignedSectionKeyValues[i]]];
-      for (let i = 0; i < alignedNestedComponents.length; i += 1) {
-        const iterationResult = ComponentTraversalUtils.inspectAlignedNestedComponent(alignedNestedComponents, i, alignedSections, callback);
+      const alignedChildComponents = alignedSections[ALIGNED_SECTION_TYPES[alignedSectionKeyValues[i]]];
+      for (let i = 0; i < alignedChildComponents.length; i += 1) {
+        const iterationResult = ComponentTraversalUtils.inspectAlignedChildComponent(alignedChildComponents, i, alignedSections, callback);
         if (iterationResult) return iterationResult;
       }
     }

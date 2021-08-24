@@ -1,7 +1,7 @@
 import { JavascriptCode } from '../../../../../../../interfaces/javascriptCode';
 
 // TO-DO:
-// Strategy for nested elements where we want scoped nested animations for each button and one for the background element:
+// Strategy for child elements where we want scoped child animations for each button and one for the background element:
 // <div class="csssymphony-ripples">
 //  <button class="csssymphony-ripples"></button>
 //  <button class="csssymphony-ripples"></button>

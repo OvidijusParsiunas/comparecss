@@ -8,9 +8,9 @@
           :thisComponent="component"
           :allComponents="components"
           :currentlySelectedComponent="currentlySelectedComponent"
-          :isCopyNestedComponentModeActive="isCopyNestedComponentModeActive"
-          :currentlyHoveredComponentForCopyNested="currentlyHoveredComponentForCopyNested"
-          :currentlySelectedComponentForCopyNested="currentlySelectedComponentForCopyNested"
+          :isCopyChildComponentModeActive="isCopyChildComponentModeActive"
+          :currentlyHoveredComponentForCopyChild="currentlyHoveredComponentForCopyChild"
+          :currentlySelectedComponentForCopyChild="currentlySelectedComponentForCopyChild"
           :copyableComponentCardOverlaysToDisplay="copyableComponentCardOverlaysToDisplay"
           @set-active-component="$emit('set-active-component', $event)"
           @component-card-hovered="$emit('component-card-hovered', $event)"
@@ -18,7 +18,7 @@
           @remove-component="$emit('remove-component', $event)"
           @stop-editing-class-name-callback="$emit('stop-editing-class-name-callback', $event)"
           @prepare-remove-component-modal="$emit('prepare-remove-component-modal', $event)"/>
-        <div v-if="!isCopyNestedComponentModeActive"
+        <div v-if="!isCopyChildComponentModeActive"
           class="transition-item component-card component-body-container add-card"
           :class="COMPONENT_LIST_ITEM_MARKER"
           data-toggle="modal" :data-target="`#${NEW_COMPONENT_MODAL_ID}`"
@@ -64,13 +64,13 @@ export default {
   props: {
     components: Array,
     currentlySelectedComponent: Object,
-    currentlyHoveredComponentForCopyNested: Object,
-    currentlySelectedComponentForCopyNested: Object,
+    currentlyHoveredComponentForCopyChild: Object,
+    currentlySelectedComponentForCopyChild: Object,
     copyableComponentCardOverlaysToDisplay: Object,
-    isCopyNestedComponentModeActive: Boolean,
+    isCopyChildComponentModeActive: Boolean,
   },
   watch: {
-    isCopyNestedComponentModeActive(): void {
+    isCopyChildComponentModeActive(): void {
       if (this.listAnimationName === 'vertical-transition') {
         setTimeout(() => {
            this.listAnimationName = 'horizontal-transition';

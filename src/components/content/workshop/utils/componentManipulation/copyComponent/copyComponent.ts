@@ -1,12 +1,12 @@
-import { UpdateGenericComponentDropdownOptionNames } from '../updateNestedComponentNames/updateGenericComponentDropdownOptionNames';
-import { UpdateLayerDropdownOptionNames } from '../updateNestedComponentNames/updateLayerDropdownOptionNames';
+import { UpdateGenericComponentDropdownOptionNames } from '../updateChildComponent/updateGenericComponentDropdownOptionNames';
 import { componentTypeToStyleGenerators } from '../../../newComponent/types/componentTypeToStyleGenerators';
+import { UpdateLayerDropdownOptionNames } from '../updateChildComponent/updateLayerDropdownOptionNames';
 import { Layer, BaseSubcomponentRef } from '../../../../../../interfaces/componentPreviewStructure';
 import { uniqueSubcomponentIdState } from '../../componentGenerator/uniqueSubcomponentIdState';
 import { CoreSubcomponentRefsUtils } from '../coreSubcomponentRefs/coreSubcomponentRefsUtils';
-import { AddNewGenericComponent } from '../addNewNestedComponent/add/addNewGenericComponent';
+import { AddNewGenericComponent } from '../addNewChildComponent/add/addNewGenericComponent';
 import { CoreSubcomponentRefs } from '../../../../../../interfaces/coreSubcomponentRefs';
-import { AddNewLayerComponent } from '../addNewNestedComponent/add/addNewLayerComponent';
+import { AddNewLayerComponent } from '../addNewChildComponent/add/addNewLayerComponent';
 import { ComponentBuilder } from '../../../newComponent/types/shared/componentBuilder';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
@@ -29,10 +29,10 @@ export default class CopyComponent {
     Object.keys(alignedSections).forEach((section: ALIGNED_SECTION_TYPES) => {
       alignedSections[section].forEach((subcomponent: BaseSubcomponentRef) => {
         const { type, style } = subcomponent.subcomponentProperties.seedComponent.ref;
-        const newNestedComponent = AddNewGenericComponent.add(
+        const newChildComponent = AddNewGenericComponent.add(
           newComponent, type, style, newLayer.subcomponentProperties.name, [CopyComponent.overwriteAlignedLayerSectionProperties.bind(section)]);
-        baseComponentRefs.push(newNestedComponent);
-        CopySubcomponents.copyComponentSubcomponents(subcomponent.subcomponentProperties.seedComponent.ref, newNestedComponent);
+        baseComponentRefs.push(newChildComponent);
+        CopySubcomponents.copyComponentSubcomponents(subcomponent.subcomponentProperties.seedComponent.ref, newChildComponent);
       });
     });
   }

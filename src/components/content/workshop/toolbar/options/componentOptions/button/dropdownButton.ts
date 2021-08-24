@@ -7,7 +7,7 @@ import { buttonBaseOptions } from './base';
 
 type DropdownButtonOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT | CSS_PSEUDO_CLASSES.HOVER | CSS_PSEUDO_CLASSES.CLICK;
 
-const nestedComponentSpecificOptions = [
+const childComponentSpecificOptions = [
   {
     buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
     type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
@@ -21,6 +21,6 @@ const nestedComponentSpecificOptions = [
 export const dropdownButtonOptions: SubcomponentOptions<DropdownButtonOptionsModes> = {
   ...buttonBaseOptions,
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
-    ...ComponentOptionsUtils.overwriteOptions(buttonBaseOptions[CSS_PSEUDO_CLASSES.DEFAULT], nestedComponentSpecificOptions),
+    ...ComponentOptionsUtils.overwriteOptions(buttonBaseOptions[CSS_PSEUDO_CLASSES.DEFAULT], childComponentSpecificOptions),
   ],
 };

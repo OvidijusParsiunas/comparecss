@@ -11,7 +11,7 @@ export class ActiveComponentUtils {
 
   private static getActiveSubcomponent(parentComponent: WorkshopComponent): SubcomponentProperties {
     const { subcomponents, activeSubcomponentName, coreSubcomponentRefs } = parentComponent;
-    // when working with nested components inside nested components (e.g. card component's nested button arrow) - the parent component is the button
+    // when working with child components inside child components (e.g. card component's child button arrow) - the parent component is the button
     // which no longer has its subcomponents - hence its base can still be referenced via coreSubcomponentRefs
     return subcomponents[activeSubcomponentName] || coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
   }
@@ -25,9 +25,9 @@ export class ActiveComponentUtils {
     return { activeBaseComponent, masterComponent };
   }
 
-  public static getActiveNestedComponentParent(parentComponent: WorkshopComponent): WorkshopComponent {
+  public static getActiveChildComponentParent(parentComponent: WorkshopComponent): WorkshopComponent {
     const activeSubcomponent = ActiveComponentUtils.getActiveSubcomponent(parentComponent);
-    const activeNestedComponent = activeSubcomponent.seedComponent.ref;
-    return activeNestedComponent.type === COMPONENT_TYPES.LAYER ? activeNestedComponent.parentComponent : activeNestedComponent;
+    const activeChildComponent = activeSubcomponent.seedComponent.ref;
+    return activeChildComponent.type === COMPONENT_TYPES.LAYER ? activeChildComponent.parentComponent : activeChildComponent;
   }
 }

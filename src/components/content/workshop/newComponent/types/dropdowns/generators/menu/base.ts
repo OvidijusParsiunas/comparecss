@@ -1,5 +1,5 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, DropdownMenuPosition, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
-import { UpdateDropdownOptionNamesShared } from '../../../../../utils/componentManipulation/updateNestedComponentNames/updateDropdownOptionNamesShared';
+import { UpdateDropdownOptionNamesShared } from '../../../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
 import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
 import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { NestedDropdownStructure } from '../../../../../../../../interfaces/nestedDropdownStructure';
@@ -39,7 +39,7 @@ class DropdownMenuBase extends ComponentBuilder {
     dropdownMenuComponent.areLayersInSyncByDefault = true;
   }
 
-  private static createDefaultNewNestedComponentsOptions(): NestedDropdownStructure {
+  private static createDefaultNewChildComponentsOptions(): NestedDropdownStructure {
     return UpdateDropdownOptionNamesShared.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]);
   }
 
@@ -117,7 +117,7 @@ class DropdownMenuBase extends ComponentBuilder {
       defaultCustomFeatures: DropdownMenuBase.createDefaultCustomFeatures(),
       customStaticFeatures: DropdownMenuBase.createDefaultStaticCustomFeatures(),
       defaultCustomStaticFeatures: DropdownMenuBase.createDefaultStaticCustomFeatures(),
-      newNestedComponentsOptions: DropdownMenuBase.createDefaultNewNestedComponentsOptions(),
+      newChildComponentsOptions: DropdownMenuBase.createDefaultNewChildComponentsOptions(),
     };
   }
 }

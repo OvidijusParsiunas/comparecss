@@ -1,21 +1,21 @@
 import { InterconnectedSetting, SubcomponentSpecificSettings } from './subcomponentSpecificSettings';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
 import { SubcomponentMouseEventCallbacks } from './subcomponentMouseEventCallbacks';
-import { NewNestedComponentsOptionsRefs } from './newNestedComponentsOptionsRefs';
+import { NewChildComponentsOptionsRefs } from './newChildComponentsOptionsRefs';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { DROPDOWN_MENU_POSITIONS } from '../consts/dropdownMenuPositions.enum';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { ReferenceSharingExecutable } from './referenceSharingExecutable';
-import { NestedComponentsInLayer } from './nestedComponentsLockedToLayer';
 import { TriggerFuncOnSettingChange } from './triggerFuncOnSettingChange';
+import { ChildComponentsInLayer } from './childComponentsLockedToLayer';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
-import { NestedComponentCount } from './nestedComponentCount';
 import { CoreSubcomponentRefs } from './coreSubcomponentRefs';
+import { ChildComponentCount } from './childComponentCount';
 import { LinkedComponents } from './linkedComponents';
 import { SelectDropdown } from './selectDropdown';
 import { TempCustomCss } from './tempCustomCss';
@@ -69,7 +69,7 @@ export interface BackdropProperties {
   visible: boolean;
 }
 
-export interface ComponentCenteringInParent {
+export interface ComponentCenteringInScreen {
   vertical: boolean;
   horizontal: boolean;
 }
@@ -90,7 +90,7 @@ export interface DropdownMenuPosition {
 export interface CustomFeatures {
   backdrop?: BackdropProperties;
   // currently used to position modal either in the center of the screen or the top
-  componentCenteringInParent?: ComponentCenteringInParent;
+  componentCenteringInScreen?: ComponentCenteringInScreen;
   animations?: Animations;
   closeTriggers?: CloseTriggers;
   jsClasses?: ComponentJavascriptClasses;
@@ -142,7 +142,7 @@ export interface SubcomponentProperties {
   // this css is used for nested classes or element tags e.g. .my-component div {
   // the code to export this has been removed on the 19th of Dec 2020 - commit id: f6391eb61305106001709130ce4f45877226069b, remove if all component types added and this is not needed
   descendantCss?: DescendantCss;
-  // this css is used during export for elements that have nested children (.default-class-name > div:nth-child(2))
+  // this css is used during export for elements that have children (.default-class-name > div:nth-child(2))
   childCss?: ChildCss[];
   activeCssPseudoClass: CSS_PSEUDO_CLASSES;
   // the motivator for this is the fact that the first subcomponent css pseudo class should not be assumed to be the default one
@@ -151,16 +151,16 @@ export interface SubcomponentProperties {
   subcomponentSpecificSettings?: SubcomponentSpecificSettings;
   customFeatures?: CustomFeatures;
   defaultCustomFeatures?: CustomFeatures;
-  // features that would not be overwritten by imported nested component's subcomponents
+  // features that would not be overwritten by imported child component's subcomponents
   customStaticFeatures?: CustomStaticFeatures; 
   defaultCustomStaticFeatures?: CustomStaticFeatures;
   layerSectionsType?: LAYER_SECTIONS_TYPES;
-  // it is important to understand that the subcomponents of a nested component are located in the core base component's subcomponents section
+  // it is important to understand that the subcomponents of a child component are located in the core base component's subcomponents section
   // and the seedComponent property is used to reference the seedComponent they belong to
   // full structure explained at the bottom of the file titled: 'Reference for component structure'
   seedComponent?: SeedComponent;
-  // baseSubcomponentRef is only appended to all the nested subcomponents (except the base subcomponents)
-  // this is mostly used to track the nested component's inSync property and identify whether the subcomponent is nested and not base
+  // baseSubcomponentRef is only appended to all the child subcomponents (except the base subcomponents)
+  // this is mostly used to track the child component's inSync property and identify whether the subcomponent is child and not base
   baseSubcomponentRef?: SubcomponentProperties;
   // this is used for overwriting css properties on mouse actions as adding css directly to customCss causes in-sync components to be edited all at once
   overwrittenCustomCssObj?: CustomCss;
@@ -168,12 +168,12 @@ export interface SubcomponentProperties {
   // temporarily holds the original customCss when a component card has been hovered/selected during component import mode 
   tempOriginalCustomProperties?: TempCustomProperties;
   // when a subcomponent's mouse event is triggered, trigger other subcomponents' mouse events
-  // should currently be placed on base subcomponent only, if that changes - ammend the removeTriggerableSubcomponent method in RemoveAnyNestedComponent class
+  // should currently be placed on base subcomponent only, if that changes - ammend the removeTriggerableSubcomponent method in RemoveAnyChildComponent class
   otherSubcomponentsToTrigger?: CoreSubcomponentRefs;
   isTriggeredByAnotherSubcomponent?: boolean;
-  // options for the add nested component dropdown
-  newNestedComponentsOptions?: NestedDropdownStructure;
-   // used to temporarily display a nested component when hovering add subcomponent dropdown options with a mouse
+  // options for the add child component dropdown
+  newChildComponentsOptions?: NestedDropdownStructure;
+   // used to temporarily display a child component when hovering add subcomponent dropdown options with a mouse
   isTemporaryAddPreview?: boolean;
   isRemovable?: boolean;
 }
@@ -195,20 +195,20 @@ export interface WorkshopComponent {
   // used for referencing component's core subcomponents like base and text
   // also used for referencing subcomponents that should share jsclasses refs
   coreSubcomponentRefs?: CoreSubcomponentRefs;
-  // gives an in sync nested component to identify if the copied component has not been deleted
+  // gives an in sync child component to identify if the copied component has not been deleted
   componentStatus: { isRemoved: boolean };
   // used to reassign references when the subcomponents have been deep copied
   referenceSharingExecutables?: ReferenceSharingExecutable[];
-  // a layer cannot be a standalone nested component that contains other nested components, thus this function adds nested components to the layer
+  // a layer cannot be a standalone child component that contains other child components, thus this function adds child components to the layer
   // with a reference the parent component
-  nestedComponentsLockedToLayer?: NestedComponentsInLayer;
+  childComponentsLockedToLayer?: ChildComponentsInLayer;
   interconnectedSettings?: InterconnectedSetting[];
-  nestedComponentCount?: NestedComponentCount;
+  childComponentCount?: ChildComponentCount;
   areLayersInSyncByDefault?: boolean;
   // when a particular setting is changed (e.g. input or range) - call a particular function
   triggerFuncOnSettingChange?: TriggerFuncOnSettingChange;
   // used to share add dropdown options across components such as layers - in order to make sure that the enabled and disabled items are in-sync
-  newNestedComponentsOptionsRefs?: NewNestedComponentsOptionsRefs;
+  newChildComponentsOptionsRefs?: NewChildComponentsOptionsRefs;
   // WORK 1: include this in an explanation
   linkedComponents?: LinkedComponents;
   // reference to the parent that contains this component's base
