@@ -1,4 +1,4 @@
-import { CustomCss, CustomFeatures, CustomStaticFeatures, NestedComponent, SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, CustomStaticFeatures, SeedComponent, SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { CoreSubcomponentRefsUtils } from '../coreSubcomponentRefs/coreSubcomponentRefsUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import JSONUtils from '../../generic/jsonUtils';
@@ -15,7 +15,7 @@ export class CopySubcomponents {
     });
   }
 
-  private static copyInSyncSubcomponent(seedComponent: NestedComponent, newSubcomponent: SubcomponentProperties,
+  private static copyInSyncSubcomponent(seedComponent: SeedComponent, newSubcomponent: SubcomponentProperties,
       subcomponentBeingCopied: SubcomponentProperties): void {
     if (newSubcomponent.seedComponent) {
       newSubcomponent.seedComponent.inSync = true;

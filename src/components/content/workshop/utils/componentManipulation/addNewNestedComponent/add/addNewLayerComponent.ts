@@ -63,22 +63,21 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     };
   }
 
-  private static createEmptyLayer(layerName: string, layerSubcomponent: SubcomponentProperties): Layer {
-    const layerSections = layerSubcomponent.layerSectionsType === LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS
+  private static createEmptyLayer(newComponent: WorkshopComponent): Layer {
+    const baseName = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+    const baseSubcomponent = newComponent.subcomponents[baseName];
+    const layerSections = baseSubcomponent.layerSectionsType === LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS
       ? AddNewLayerComponent.createEmptyAlignedSections() : [];
     return {
-      name: layerName,
-      subcomponentProperties: layerSubcomponent,
+      subcomponentProperties: baseSubcomponent,
       sections: {
-        [layerSubcomponent.layerSectionsType]: layerSections,
+        [baseSubcomponent.layerSectionsType]: layerSections,
       },
     };
   }
 
   protected static addNewComponentToComponentPreview(parentComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
-    const baseName = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
-    const layerSubcomponent = newComponent.subcomponents[baseName];
-    const layer: Layer = AddNewLayerComponent.createEmptyLayer(baseName, layerSubcomponent);
+    const layer: Layer = AddNewLayerComponent.createEmptyLayer(newComponent);
     AddNewLayerComponent.copySiblingSubcomponentCustomProperties(parentComponent, layer);
     AddNewLayerComponent.addNewSubcomponentToBase(parentComponent, layer);
   }

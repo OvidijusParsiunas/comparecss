@@ -1,4 +1,4 @@
-import { AlignedSections, Layer, NestedComponent } from './componentPreviewStructure';
+import { AlignedSections, Layer, BaseSubcomponentRef } from './componentPreviewStructure';
 import { SubcomponentProperties, WorkshopComponent } from './workshopComponent';
 import { DropdownOptionAuxDetails } from './dropdownOptionDisplayStatus';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
@@ -18,7 +18,7 @@ export interface ComponentTraversalState {
   dropdownOptionDetailsStack?: DropdownOptionAuxDetails[];
   subcomponentDropdownStructure?: NestedDropdownStructure;
   subcomponentProperties?: SubcomponentProperties;
-  alignedNestedComponents?: NestedComponent[];
+  alignedNestedComponents?: BaseSubcomponentRef[];
   alignedSections?: AlignedSections;
   layers?: Layer[];
   index?: number;

@@ -16,6 +16,7 @@ import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { NestedComponentCount } from './nestedComponentCount';
 import { CoreSubcomponentRefs } from './coreSubcomponentRefs';
+import { LinkedComponents } from './linkedComponents';
 import { SelectDropdown } from './selectDropdown';
 import { TempCustomCss } from './tempCustomCss';
 import { CloseTriggers } from './closeTriggers';
@@ -119,7 +120,7 @@ interface TempCustomProperties {
   customFeatures?: CustomFeatures;
 }
 
-export interface NestedComponent {
+export interface SeedComponent {
   ref: WorkshopComponent;
   inSync: boolean;
   lastSelectedComponentToCopy?: WorkshopComponent;
@@ -157,7 +158,7 @@ export interface SubcomponentProperties {
   // it is important to understand that the subcomponents of a nested component are located in the core base component's subcomponents section
   // and the seedComponent property is used to reference the seedComponent they belong to
   // full structure explained at the bottom of the file titled: 'Reference for component structure'
-  seedComponent?: NestedComponent;
+  seedComponent?: SeedComponent;
   // baseSubcomponentRef is only appended to all the nested subcomponents (except the base subcomponents)
   // this is mostly used to track the nested component's inSync property and identify whether the subcomponent is nested and not base
   baseSubcomponentRef?: SubcomponentProperties;
@@ -209,10 +210,7 @@ export interface WorkshopComponent {
   // used to share add dropdown options across components such as layers - in order to make sure that the enabled and disabled items are in-sync
   newNestedComponentsOptionsRefs?: NewNestedComponentsOptionsRefs;
   // WORK 1: include this in an explanation
-  linkedComponents?: {
-    auxiliary?: WorkshopComponent[];
-    base?: WorkshopComponent;
-  }
+  linkedComponents?: LinkedComponents;
   // reference to the parent that contains this component's base
   // full structure explained at the bottom of the file titled: 'Reference for component structure'
   parentComponent?: WorkshopComponent;

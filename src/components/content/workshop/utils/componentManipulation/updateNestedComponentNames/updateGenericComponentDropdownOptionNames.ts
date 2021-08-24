@@ -1,4 +1,4 @@
-import { AlignedSections, Layer, NestedComponent } from '../../../../../../interfaces/componentPreviewStructure';
+import { AlignedSections, Layer, BaseSubcomponentRef } from '../../../../../../interfaces/componentPreviewStructure';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { UpdateDropdownOptionNamesShared } from './updateDropdownOptionNamesShared';
@@ -39,11 +39,11 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
 
   private static updateOptionNames(component: WorkshopComponent, subcomponentNameToPrefix: SubcomponentNameToPrefix,
       subcomponentPrefixToTotal: SubcomponentPrefixToTotal, singleSubcomponentPrefixes: SingleSubcomponentPrefixes, containerDropdownStructure: NestedDropdownStructure,
-      overwrittenOptionNames: string[], newDrodpownValues: string[], seedComponent: NestedComponent, overwrittenDropdownStructures: NestedDropdownStructure): void {
-    const subcomponentName = seedComponent.name;
+      overwrittenOptionNames: string[], newDrodpownValues: string[], baseSubcomponent: BaseSubcomponentRef, overwrittenDropdownStructures: NestedDropdownStructure): void {
+    const subcomponentName = baseSubcomponent.subcomponentProperties.name;
     const newPostfix = UpdateGenericComponentDropdownOptionNames.getNewPostfix(subcomponentPrefixToTotal, subcomponentNameToPrefix, subcomponentName);
     const { oldOptionName, newOptionName } = UpdateDropdownOptionNamesShared
-      .generateOptionNames(seedComponent.name, newPostfix, component, singleSubcomponentPrefixes[subcomponentNameToPrefix[subcomponentName]]);
+      .generateOptionNames(baseSubcomponent.subcomponentProperties.name, newPostfix, component, singleSubcomponentPrefixes[subcomponentNameToPrefix[subcomponentName]]);
     if (containerDropdownStructure[newOptionName]) {
       UpdateDropdownOptionNamesShared.moveExistingOptionToTheBottom(containerDropdownStructure, newOptionName);
     }
@@ -127,7 +127,7 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
 
   // for shallow component updates only
   public static updateViaParentLayerPreviewStructure(parentComponent: WorkshopComponent, layer: Layer, useArgComponentStructure = false): void {
-    const { name: layerName, sections: { alignedSections }} = layer;
+    const { subcomponentProperties: { name: layerName }, sections: { alignedSections }} = layer;
     const masterComponent = parentComponent.masterComponentRef;
     const nestedStructure = UpdateGenericComponentDropdownOptionNames.getNestedDropdownStructure(masterComponent, layerName, useArgComponentStructure);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(masterComponent, nestedStructure, alignedSections);

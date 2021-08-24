@@ -11,6 +11,6 @@ export class ComponentPreviewStructureSearchUtils {
   }
 
   public static getLayerByName(parentComponent: WorkshopComponent, layerName: string): Layer {
-    return parentComponent.componentPreviewStructure.layers.find((layer) => layer.name === layerName);
+    return parentComponent.componentPreviewStructure.layers.find((layer) => layer.subcomponentProperties.name === layerName);
   }
 }

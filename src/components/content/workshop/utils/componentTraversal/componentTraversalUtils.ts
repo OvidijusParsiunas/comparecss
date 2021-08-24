@@ -1,4 +1,4 @@
-import { AlignedSections, ComponentPreviewStructure, NestedComponent } from '../../../../../interfaces/componentPreviewStructure';
+import { AlignedSections, ComponentPreviewStructure, BaseSubcomponentRef } from '../../../../../interfaces/componentPreviewStructure';
 import { DropdownOptionAuxDetails, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../interfaces/dropdownOptionDisplayStatus';
 import { TargetDetails, ComponentTraversalState } from '../../../../../interfaces/componentTraversal';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
@@ -58,7 +58,7 @@ export default class ComponentTraversalUtils {
     return null;
   }
 
-  private static inspectAlignedNestedComponent(alignedNestedComponents: NestedComponent[], index: number, alignedSections: AlignedSections,
+  private static inspectAlignedNestedComponent(alignedNestedComponents: BaseSubcomponentRef[], index: number, alignedSections: AlignedSections,
       callback: TraverseComponentCallback): ComponentTraversalState {
     const { subcomponentProperties } = alignedNestedComponents[index];
     const callbackResult = callback({subcomponentProperties, alignedNestedComponents, alignedSections, index});

@@ -17,7 +17,8 @@ export class DropdownMenuAutoWidthUtils {
 
   private static getItemTextWidths(menuComponent: WorkshopComponent): number[] {
     return menuComponent.componentPreviewStructure.layers.map((layer) => {
-      const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(layer.sections.alignedSections.left[0].name);
+      const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(
+        layer.sections.alignedSections.left[0].subcomponentProperties.name);
       return document.getElementById(subcomponentId).clientWidth;
     });
   }

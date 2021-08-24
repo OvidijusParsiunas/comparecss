@@ -1,4 +1,4 @@
-import { NestedComponent, SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { SeedComponent, SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ReferenceSharingExecutable } from '../../../../../../interfaces/referenceSharingExecutable';
 import JSONUtils from '../../../utils/generic/jsonUtils';
 
@@ -26,19 +26,19 @@ export class InSync {
     if (callback) callback();
   }
 
-  private static getBaseSubcomponent(activeSubcomponent: SubcomponentProperties): NestedComponent {
+  private static getSeedSubcomponent(activeSubcomponent: SubcomponentProperties): SeedComponent {
     return activeSubcomponent.baseSubcomponentRef?.seedComponent || activeSubcomponent.seedComponent;
   }
 
   public static updateIfSubcomponentNotInSync(activeComponent: WorkshopComponent, activeSubcomponent: SubcomponentProperties): void {
-    const activeBaseSubcomponent = InSync.getBaseSubcomponent(activeSubcomponent);
-    if (activeBaseSubcomponent?.inSync && activeBaseSubcomponent.ref.componentStatus.isRemoved) {
+    const seedComponent = InSync.getSeedSubcomponent(activeSubcomponent);
+    if (seedComponent?.inSync && seedComponent.ref.componentStatus.isRemoved) {
       InSync.toggleSubcomponentInSync(activeComponent);
     }
   }
 
   public static isInSyncButtonDisplayed(activeSubcomponent: SubcomponentProperties): boolean {
-    const activeBaseSubcomponent = InSync.getBaseSubcomponent(activeSubcomponent);
-    return activeBaseSubcomponent?.inSync && !activeBaseSubcomponent.ref.componentStatus.isRemoved;
+    const seedComponent = InSync.getSeedSubcomponent(activeSubcomponent);
+    return seedComponent?.inSync && !seedComponent.ref.componentStatus.isRemoved;
   }
 }

@@ -1,6 +1,6 @@
 import { UpdateGenericComponentDropdownOptionNames } from '../updateNestedComponentNames/updateGenericComponentDropdownOptionNames';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { AlignedSections, NestedComponent } from '../../../../../../interfaces/componentPreviewStructure';
+import { AlignedSections, BaseSubcomponentRef } from '../../../../../../interfaces/componentPreviewStructure';
 import { ComponentTraversalState, TargetDetails } from '../../../../../../interfaces/componentTraversal';
 import { nestedComponentAlignmentDropdownState } from './nestedComponentAlignmentDropdownState';
 import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
@@ -37,7 +37,7 @@ export class ChangeNestedComponentAlignment {
     nestedComponentAlignmentDropdownState.setInitialAlignmentIndex(currentSubcomponentIndex);
   }
 
-  private static indexOfNestedComponents(nestedComponents: NestedComponent[], subcomponentProperties: SubcomponentProperties): number {
+  private static indexOfNestedComponents(nestedComponents: BaseSubcomponentRef[], subcomponentProperties: SubcomponentProperties): number {
     for (let i = 0; i < nestedComponents.length; i += 1) {
       if (nestedComponents[i].subcomponentProperties === subcomponentProperties) {
         return i;
@@ -45,7 +45,7 @@ export class ChangeNestedComponentAlignment {
     }
   }
 
-  private static saveStateAndRemoveSubcomponent(nestedComponents: NestedComponent[], currentSubcomponentIndex: number): void {
+  private static saveStateAndRemoveSubcomponent(nestedComponents: BaseSubcomponentRef[], currentSubcomponentIndex: number): void {
     nestedComponentAlignmentDropdownState.setNestedComponent(nestedComponents[currentSubcomponentIndex]);
     nestedComponents.splice(currentSubcomponentIndex, 1);
   }
@@ -80,7 +80,7 @@ export class ChangeNestedComponentAlignment {
     // UX - check if need to set the subcomponent to the right of the alignment
     // parentComponent.activeSubcomponentName = newAlignmentSubcomponents[newAlignmentSubcomponents.length - 1].name;
     const newAlignmentSubcomponents = subcomponentProperties.parentLayer.sections.alignedSections[newAlignment];
-    parentComponent.activeSubcomponentName = newAlignmentSubcomponents[0].name;
+    parentComponent.activeSubcomponentName = newAlignmentSubcomponents[0].subcomponentProperties.name;
   }
 
   public static change(previousAlignment: ALIGNED_SECTION_TYPES, newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties,

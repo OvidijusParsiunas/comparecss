@@ -41,7 +41,7 @@ export class CardOptions {
 
   protected static getLayerOptions(component: WorkshopComponent): Options {
     const { layers } = component.componentPreviewStructure;
-    const currentLayerIndex = layers.findIndex((layer) => layer.name === component.activeSubcomponentName);
+    const currentLayerIndex = layers.findIndex((layer) => layer.subcomponentProperties.name === component.activeSubcomponentName);
     if (currentLayerIndex === layers.length - 1) {
       return cardBottomLayerOptions as Options;
     }

@@ -1,15 +1,15 @@
-import { NestedComponent } from '../../../../../../interfaces/componentPreviewStructure';
+import { BaseSubcomponentRef } from '../../../../../../interfaces/componentPreviewStructure';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 
 let component = null;
 let initialAlignment = null
 let initialAlignmentIndex = -1;
 
-function getNestedComponent(): NestedComponent {
+function getNestedComponent(): BaseSubcomponentRef {
   return component;
 }
 
-function setNestedComponent(seedComponent: NestedComponent): void {
+function setNestedComponent(seedComponent: BaseSubcomponentRef): void {
   component = seedComponent;
 }
 

@@ -1,14 +1,14 @@
 <template>
   <div class="layers" :class="COMPONENT_PREVIEW_MARKER">
     <div v-for="(layer, index) in layers" :key="layer" class="layer" :class="COMPONENT_PREVIEW_MARKER">
-      <div :id="getLayerId(layer.name, 'subcomponentId')"
+      <div :id="getLayerId(layer.subcomponentProperties.name, 'subcomponentId')"
         :style="getStyleProperties(layer, index === layers.length - 1)"
         :class="COMPONENT_PREVIEW_MARKER"
-        @mouseenter="activateSubcomponentMouseEvent(layer.name, 'subcomponentMouseEnter')"
-        @mouseleave="activateSubcomponentMouseEvent(layer.name, 'subcomponentMouseLeave')"
-        @mousedown="activateSubcomponentMouseEvent(layer.name, 'subcomponentMouseDown')"
-        @mouseup="activateSubcomponentMouseEvent(layer.name, 'subcomponentMouseUp')"
-        @click="activateSubcomponentMouseEvent(layer.name, 'subcomponentClick')">
+        @mouseenter="activateSubcomponentMouseEvent(layer.subcomponentProperties.name, 'subcomponentMouseEnter')"
+        @mouseleave="activateSubcomponentMouseEvent(layer.subcomponentProperties.name, 'subcomponentMouseLeave')"
+        @mousedown="activateSubcomponentMouseEvent(layer.subcomponentProperties.name, 'subcomponentMouseDown')"
+        @mouseup="activateSubcomponentMouseEvent(layer.subcomponentProperties.name, 'subcomponentMouseUp')"
+        @click="activateSubcomponentMouseEvent(layer.subcomponentProperties.name, 'subcomponentClick')">
           <layer-sections
             v-if="layer.sections"
             :class="COMPONENT_PREVIEW_MARKER"
@@ -24,7 +24,7 @@
           <div :style="getLayerShadowOverlayStyleProperties(layer, index === layers.length - 1)"
             class="layer-shadow-overlay"></div>
       </div>
-      <div :id="getLayerId(layer.name, 'overlayId')"
+      <div :id="getLayerId(layer.subcomponentProperties.name, 'overlayId')"
         style="display: none"
         :style="getLayerStyleProperties(layer, layers, index)"
         :class="getLayerClasses(layer)"></div>
@@ -37,12 +37,12 @@ import { UseSubcomponentPreviewEventHandlers } from '../../../../../interfaces/u
 import { SubcomponentAndOverlayElementIds } from '../../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 import { UseLayerComponentGeneric } from '../../../../../interfaces/useLayerComponentGeneric';
-import { Layer, NestedComponent } from '../../../../../interfaces/componentPreviewStructure';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 import useLayerComponentGeneric from '../compositionAPI/useLayerComponentGeneric';
+import { Layer } from '../../../../../interfaces/componentPreviewStructure';
 import layerSections from './LayerSections.vue';
 
 interface Consts {
@@ -68,13 +68,13 @@ export default {
     getLayerId(layerName: string, idType: keyof SubcomponentAndOverlayElementIds[string]): string {
       return this.subcomponentAndOverlayElementIds[layerName]?.[idType];
     },
-    getLayerStyleProperties(layer: NestedComponent, layers: NestedComponent[], currentIndex: number): WorkshopComponentCss {
+    getLayerStyleProperties(layer: Layer, layers: Layer[], currentIndex: number): WorkshopComponentCss {
       const subcomponentCss = { ...layer.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT] };
       subcomponentCss.zIndex = layers.length - currentIndex + 1;
       if (layer.subcomponentProperties.isTemporaryAddPreview) subcomponentCss.display = 'block';
       return subcomponentCss;
     },
-    getLayerClasses(layer: NestedComponent): string[] {
+    getLayerClasses(layer: Layer): string[] {
       const classes = [SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT];
       if (layer.subcomponentProperties.isTemporaryAddPreview) {
         classes.push(SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
