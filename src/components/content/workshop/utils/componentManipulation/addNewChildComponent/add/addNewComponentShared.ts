@@ -14,7 +14,7 @@ import { AddNewGenericComponent } from './addNewGenericComponent';
 
 type DropdownStructureSearchCallback = (
   parentComponent: WorkshopComponent,
-  activeBaseComponent: WorkshopComponent,
+  activeLinkedComponent: WorkshopComponent,
   dropdownStructure: NestedDropdownStructure,
   ...args: unknown[]) => WorkshopComponent;
 
@@ -40,12 +40,12 @@ export class AddNewComponentShared {
     return newComponent;
   }
 
-  private static proceedToInvokeAddCallbackIfFound(parentComponent: WorkshopComponent, activeBaseComponent: WorkshopComponent,
+  private static proceedToInvokeAddCallbackIfFound(parentComponent: WorkshopComponent, activeLinkedComponent: WorkshopComponent,
       callback: DropdownStructureSearchCallback, args: unknown[], componentTraversalState: ComponentTraversalState): WorkshopComponent {
     const targetDetails = this as any as TargetDetails;
     if (ComponentTraversalUtils.isActualObjectNameMatching(targetDetails, componentTraversalState)) {
       const { subcomponentDropdownStructure } = componentTraversalState;
-      const newComponent = callback(parentComponent, activeBaseComponent, subcomponentDropdownStructure, ...args);
+      const newComponent = callback(parentComponent, activeLinkedComponent, subcomponentDropdownStructure, ...args);
       return newComponent;
     }
     return null;
@@ -53,12 +53,12 @@ export class AddNewComponentShared {
 
   protected static addComponentViaDropdownStructureSearch(parentComponent: WorkshopComponent, callback: DropdownStructureSearchCallback,
       ...args: unknown[]): WorkshopComponent {
-    const { activeBaseComponent, masterComponent } = ActiveComponentUtils.getBaseComponents(parentComponent);
+    const { activeLinkedComponent, masterComponent } = ActiveComponentUtils.getActiveHighLevelComponents(parentComponent);
     const targetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName);
     return ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
       masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       AddNewGenericComponent.proceedToInvokeAddCallbackIfFound.bind(targetDetails,
-        parentComponent, activeBaseComponent, callback, args)) as WorkshopComponent;
+        parentComponent, activeLinkedComponent, callback, args)) as WorkshopComponent;
   }
 
   protected static getParentLayer(parentComponent: WorkshopComponent, parentLayerName: string): Layer {

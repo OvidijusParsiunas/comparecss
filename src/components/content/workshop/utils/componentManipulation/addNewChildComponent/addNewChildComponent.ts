@@ -13,24 +13,24 @@ import { AddNewLayerComponent } from './add/addNewLayerComponent';
 export class AddNewChildComponent extends AddNewComponentShared {
 
   private static addNewComponent(selectedChildComponent: WorkshopComponent, childComponentBaseName: CHILD_COMPONENTS_BASE_NAMES,
-      activeBaseComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure): [WorkshopComponent, Layer] {
+      activeLinkedComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure): [WorkshopComponent, Layer] {
     const { componentType, componentStyle, parentLayer, parentComponent,
       } = AddNewGenericComponent.getNewComponentProperties(selectedChildComponent, childComponentBaseName);
     const newComponent = AddNewGenericComponent.addUsingParentDropdownStructure(parentComponent,
-      activeBaseComponent, dropdownStructure, componentType, componentStyle, parentLayer);
+      activeLinkedComponent, dropdownStructure, componentType, componentStyle, parentLayer);
     // set here because not all child components are removable, but the ones manually added by the user are
     newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
     return [newComponent, parentLayer];
   }
 
-  private static addNewComponentToLayer(selectedChildComponent: WorkshopComponent, activeBaseComponent: WorkshopComponent,
+  private static addNewComponentToLayer(selectedChildComponent: WorkshopComponent, activeLinkedComponent: WorkshopComponent,
       dropdownStructure: NestedDropdownStructure, childComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): WorkshopComponent {
     const [newComponent, parentLayer] = AddNewChildComponent.addNewComponent(selectedChildComponent, childComponentBaseName,
-      activeBaseComponent, dropdownStructure);
-    const { componentPreviewStructure: { subcomponentNameToDropdownOptionName }, activeSubcomponentName } = activeBaseComponent;
+      activeLinkedComponent, dropdownStructure);
+    const { componentPreviewStructure: { subcomponentNameToDropdownOptionName }, activeSubcomponentName } = activeLinkedComponent;
     const activeParentComponentOptionName = subcomponentNameToDropdownOptionName[activeSubcomponentName];
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(
-      activeBaseComponent, dropdownStructure[activeParentComponentOptionName] as NestedDropdownStructure, parentLayer.sections.alignedSections);
+      activeLinkedComponent, dropdownStructure[activeParentComponentOptionName] as NestedDropdownStructure, parentLayer.sections.alignedSections);
     return newComponent;
   }
 

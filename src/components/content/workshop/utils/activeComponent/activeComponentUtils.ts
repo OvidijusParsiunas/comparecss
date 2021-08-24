@@ -2,8 +2,8 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../interf
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 
-interface BaseComponents {
-  activeBaseComponent: WorkshopComponent;
+interface ActiveHighLevelComponents {
+  activeLinkedComponent: WorkshopComponent;
   masterComponent: WorkshopComponent;
 }
 
@@ -16,13 +16,12 @@ export class ActiveComponentUtils {
     return subcomponents[activeSubcomponentName] || coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
   }
 
-  // WORK1: rename to activeTopParentComponent
-  public static getBaseComponents(parentComponent: WorkshopComponent): BaseComponents {
+  public static getActiveHighLevelComponents(parentComponent: WorkshopComponent): ActiveHighLevelComponents {
     const parentComponentBase = ActiveComponentUtils.getActiveSubcomponent(parentComponent).seedComponent.ref;
-    const activeBaseComponent = parentComponentBase.parentComponent || parentComponentBase;
+    const activeLinkedComponent = parentComponentBase.parentComponent || parentComponentBase;
     // this serves as a way to get to the master subcomponents, dropdown properties
     const masterComponent = parentComponent.masterComponentRef;
-    return { activeBaseComponent, masterComponent };
+    return { activeLinkedComponent, masterComponent };
   }
 
   public static getActiveChildComponentParent(parentComponent: WorkshopComponent): WorkshopComponent {

@@ -13,12 +13,12 @@ export class AddTemporaryAddPreviewLayerComponent extends AddNewLayerComponent {
   public static add(parentComponent: WorkshopComponent, componentStyle: COMPONENT_STYLES, isEditable: boolean,
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
-    const { activeBaseComponent } = ActiveComponentUtils.getBaseComponents(parentComponent);
+    const { activeLinkedComponent } = ActiveComponentUtils.getActiveHighLevelComponents(parentComponent);
     const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, parentComponent,
       TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY, overwritePropertiesFunc);
     newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isTemporaryAddPreview = true;
     Object.assign(parentComponent.subcomponents, newComponent.subcomponents);
-    AddNewLayerComponent.addNewComponentToComponentPreview(activeBaseComponent, newComponent);
+    AddNewLayerComponent.addNewComponentToComponentPreview(activeLinkedComponent, newComponent);
     newComponent.childComponentsLockedToLayer?.add(parentComponent);
     return newComponent;
   }

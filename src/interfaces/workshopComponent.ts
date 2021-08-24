@@ -293,8 +293,9 @@ export interface WorkshopComponent {
 // Auxiliary components are considered to have absolute position styling and are positioned somewhere
 // close to the linked base component. Additionally both the base and auxiliary components hold a
 // reference to each other via the 'linkedComponents' property.
-// To note - a base can link to multiple auxiliary components whereas the auxiliary component
-// can only be linked to one base component
+// To note, a base can link to multiple auxiliary components whereas the auxiliary component
+// can only be linked to one base component.
+// Additionally, such links can exist within child components too.
 
 // Master component (Dropdown example):
 // 
@@ -305,18 +306,7 @@ export interface WorkshopComponent {
 //    <------------<--------- { ref: { masterComponent } }
 //                                 |       |     |
 //                                 |       |     |
-// Dropdown Menu Component ->   { base, layers, text }
-//
-// ---------------------------------------------------------------------------------------
-//
-// Dropdown Button Component -> { base, layer, text }
-//                                 |
-//                                 |
-//         <---------------------- seed : { ref: { masterComponentRef } }
-//  { subcomponents, subcomponentDropdownStructure, subcomponentNameToDropdownOptionName }
-//                                 |
-//                                 |
-// Dropdown Menu Component ->   { base, layers, text }
+// Dropdown Menu Component ---> { base, layers, text }
 //
 // Explanation:
 // All of the dropdown's child components' (any level, incl. auxiliary component's) subcomponents,

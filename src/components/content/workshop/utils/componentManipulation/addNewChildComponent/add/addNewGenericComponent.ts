@@ -133,7 +133,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     return [newComponent, baseNamePrefix];
   }
 
-  public static addUsingParentDropdownStructure(parentComponent: WorkshopComponent, activeBaseComponent: WorkshopComponent,
+  public static addUsingParentDropdownStructure(parentComponent: WorkshopComponent, activeLinkedComponent: WorkshopComponent,
       dropdownStructure: NestedDropdownStructure, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
       parentLayer: Layer, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
@@ -143,10 +143,10 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     Object.assign(masterComponent.subcomponents, newComponent.subcomponents);
     AddNewGenericComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
     AddNewGenericComponent.addNewComponentToDropdownStructure(newComponent, masterComponent, dropdownStructure);
-    InterconnectedSettings.update(true, activeBaseComponent, newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
-    IncrementChildComponentCount.increment(activeBaseComponent, baseNamePrefix, parentLayer.subcomponentProperties.name);
+    InterconnectedSettings.update(true, activeLinkedComponent, newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
+    IncrementChildComponentCount.increment(activeLinkedComponent, baseNamePrefix, parentLayer.subcomponentProperties.name);
     AddNewGenericComponent.populateCoreComponentRef(parentComponent, newComponent);
-    newComponent.parentComponent = activeBaseComponent;
+    newComponent.parentComponent = activeLinkedComponent;
     AddNewGenericComponent.removeContents(newComponent);
     return newComponent;
   }

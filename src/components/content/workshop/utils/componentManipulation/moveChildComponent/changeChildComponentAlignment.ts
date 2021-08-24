@@ -71,7 +71,7 @@ export class ChangeChildComponentAlignment {
   }
 
   private static updateNames(newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties, parentComponent: WorkshopComponent): void {
-    const { masterComponent } = ActiveComponentUtils.getBaseComponents(parentComponent);
+    const { masterComponent } = ActiveComponentUtils.getActiveHighLevelComponents(parentComponent);
     const targetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName);
     targetDetails.parentLayerAlignedSections = subcomponentProperties.parentLayer.sections.alignedSections;
     ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
