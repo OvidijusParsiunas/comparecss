@@ -15,7 +15,7 @@ update the dropdown structure
 child text ripple effects
 child card button width
 subcomponents removed from child components
-change copy child component to link child component
+change copy child component to sync child component - new UX
 
 overflow
 try with button tags

@@ -13,6 +13,7 @@ export class CopyChildComponentModeTempPropertiesUtils {
   }
 
   private static copyTargetSubcomponent(subcomponentToBeCopied: SubcomponentProperties, activeComponentSubcomponent: SubcomponentProperties): void {
+    if (!activeComponentSubcomponent) return;
     if (!activeComponentSubcomponent.tempOriginalCustomProperties) {
       CopyChildComponentModeTempPropertiesUtils.moveCustomPropertiesToTempProperties(activeComponentSubcomponent);
     }
@@ -26,6 +27,7 @@ export class CopyChildComponentModeTempPropertiesUtils {
 
   public static setActiveComponentToCopyChildComponent(componentToBeCopied: WorkshopComponent, activeComponent: WorkshopComponent): void {
     const activeComponentSubcomponentCoreRefs = activeComponent.subcomponents[activeComponent.activeSubcomponentName].seedComponent.ref.coreSubcomponentRefs;
+    console.log(activeComponentSubcomponentCoreRefs);
     Object.keys(activeComponentSubcomponentCoreRefs).forEach((coreSubcomponentType) => {
       CopyChildComponentModeTempPropertiesUtils.copyTargetSubcomponent(componentToBeCopied.coreSubcomponentRefs[coreSubcomponentType],
         activeComponentSubcomponentCoreRefs[coreSubcomponentType]);
