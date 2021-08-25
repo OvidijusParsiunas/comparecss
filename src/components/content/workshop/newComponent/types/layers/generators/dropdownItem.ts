@@ -18,7 +18,7 @@ import { layerBase } from './base';
 
 interface OverwriteTextPropertiesBaseComponents {
   parentComponent: WorkshopComponent;
-  activeLinkedComponent: WorkshopComponent;
+  activeComponentParent: WorkshopComponent;
 }
 
 export class DropdownItemLayer extends ComponentBuilder {
@@ -80,8 +80,8 @@ export class DropdownItemLayer extends ComponentBuilder {
   }
 
   public static overwriteTextProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
-    const { activeLinkedComponent } = this as unknown as OverwriteTextPropertiesBaseComponents;
-    const { layers: activeBaseComponentLayers } = activeLinkedComponent.componentPreviewStructure;
+    const { activeComponentParent } = this as unknown as OverwriteTextPropertiesBaseComponents;
+    const { layers: activeBaseComponentLayers } = activeComponentParent.componentPreviewStructure;
     if (activeBaseComponentLayers.length > 1) {
       const siblingDropdownItem = activeBaseComponentLayers[activeBaseComponentLayers.length - 2];
       const childTextComponent = siblingDropdownItem.subcomponentProperties.seedComponent.ref.childComponentsLockedToLayer.list[0];
@@ -101,14 +101,14 @@ export class DropdownItemLayer extends ComponentBuilder {
 
   private static addChildComponentsToLayer(parentComponent: WorkshopComponent): WorkshopComponent[] {
     const layerComponent = this as undefined as WorkshopComponent;
-    const { activeLinkedComponent } = ActiveComponentUtils.getActiveHighLevelComponents(parentComponent);
+    const { activeComponentParent } = ActiveComponentUtils.getComponentParents(parentComponent);
     const textComponent = AddNewGenericComponent.add(parentComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
       layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name,
-      [DropdownItemLayer.overwriteTextProperties.bind({parentComponent, activeLinkedComponent} as OverwriteTextPropertiesBaseComponents)]);
+      [DropdownItemLayer.overwriteTextProperties.bind({parentComponent, activeComponentParent} as OverwriteTextPropertiesBaseComponents)]);
     layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].otherSubcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     layerComponent.childComponentsLockedToLayer.list.push(textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(parentComponent,
-      activeLinkedComponent.componentPreviewStructure.layers[activeLinkedComponent.componentPreviewStructure.layers.length - 1]);
+      activeComponentParent.componentPreviewStructure.layers[activeComponentParent.componentPreviewStructure.layers.length - 1]);
     return [textComponent];
   }
 

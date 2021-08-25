@@ -6,12 +6,12 @@ import { WorkshopComponent } from '../../../../../../interfaces/workshopComponen
 
 export class AddTemporaryAddPreviewComponent {
 
-  public static add(currentlySelectedComponent: WorkshopComponent, childComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): void {
-    const selectedSeedComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent.ref;
-    if (Object.values(LAYER_COMPONENTS_BASE_NAMES).includes(childComponentBaseName as LAYER_COMPONENTS_BASE_NAMES)) {
-      AddTemporaryAddPreviewLayerComponent.add(selectedSeedComponent, ChildComponentBaseNamesToStyles.LAYER_TO_STYLE[childComponentBaseName], true);
+  public static add(masterComponent: WorkshopComponent, newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): void {
+    const activeComponent = masterComponent.subcomponents[masterComponent.activeSubcomponentName].seedComponent.ref;
+    if (Object.values(LAYER_COMPONENTS_BASE_NAMES).includes(newComponentBaseName as LAYER_COMPONENTS_BASE_NAMES)) {
+      AddTemporaryAddPreviewLayerComponent.add(activeComponent, ChildComponentBaseNamesToStyles.LAYER_TO_STYLE[newComponentBaseName], true);
     } else {
-      AddTemporaryAddPreviewGenericComponent.addTemporary(selectedSeedComponent, childComponentBaseName);
+      AddTemporaryAddPreviewGenericComponent.addTemporary(activeComponent, newComponentBaseName);
     }
   }
 }

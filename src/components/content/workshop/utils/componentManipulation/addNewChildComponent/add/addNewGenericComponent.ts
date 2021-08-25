@@ -43,17 +43,17 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     newComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName = {};
   }
 
-  private static populateCoreComponentRef(parentComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
+  private static populateCoreComponentRef(newComponentParent: WorkshopComponent, newComponent: WorkshopComponent): void {
     // WORK1
     // get copy to work first
     // check isTriggeredByAnotherSubcomponent
     const baseSubcomponent = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const { subcomponentType }: { subcomponentType?: number } = baseSubcomponent;
-    JSONUtils.setPropertyIfExists(parentComponent.coreSubcomponentRefs, subcomponentType, baseSubcomponent);
-    const { otherSubcomponentsToTrigger } = parentComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    JSONUtils.setPropertyIfExists(newComponentParent.coreSubcomponentRefs, subcomponentType, baseSubcomponent);
+    const { otherSubcomponentsToTrigger } = newComponentParent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     if (otherSubcomponentsToTrigger) JSONUtils.setPropertyIfExists(otherSubcomponentsToTrigger, subcomponentType, baseSubcomponent);
-    CoreSubcomponentRefsUtils.executeReferenceSharingExecutables(parentComponent);
-    parentComponent.referenceSharingExecutables?.[0]?.(parentComponent.coreSubcomponentRefs);
+    CoreSubcomponentRefsUtils.executeReferenceSharingExecutables(newComponentParent);
+    newComponentParent.referenceSharingExecutables?.[0]?.(newComponentParent.coreSubcomponentRefs);
   }
 
   private static getBaseSubcomponentNamePrefix(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES): CHILD_COMPONENTS_BASE_NAMES {
@@ -133,28 +133,32 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     return [newComponent, baseNamePrefix];
   }
 
-  public static addUsingParentDropdownStructure(parentComponent: WorkshopComponent, activeLinkedComponent: WorkshopComponent,
+  // parent component is never the layer but the higher component that contains it
+  // newComponentParent and activeComponentParent are very similar, however in the instance of adding a child component to a
+  // child component e.g. Icon to a Button in a Card - newComponentParent would be Button whereas activeComponentParent would
+  // be Card
+  public static addUsingParentDropdownStructure(newComponentParent: WorkshopComponent, activeComponentParent: WorkshopComponent,
       dropdownStructure: NestedDropdownStructure, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
       parentLayer: Layer, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
-    const masterComponent = parentComponent.masterComponentRef;
+    const masterComponent = newComponentParent.masterComponentRef;
     const [newComponent, baseNamePrefix] = AddNewGenericComponent.createNewComponent(componentType, componentStyle,
       componentGenerator, masterComponent, overwritePropertiesFunc);
     Object.assign(masterComponent.subcomponents, newComponent.subcomponents);
     AddNewGenericComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
     AddNewGenericComponent.addNewComponentToDropdownStructure(newComponent, masterComponent, dropdownStructure);
-    InterconnectedSettings.update(true, activeLinkedComponent, newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
-    IncrementChildComponentCount.increment(activeLinkedComponent, baseNamePrefix, parentLayer.subcomponentProperties.name);
-    AddNewGenericComponent.populateCoreComponentRef(parentComponent, newComponent);
-    newComponent.parentComponent = activeLinkedComponent;
+    InterconnectedSettings.update(true, activeComponentParent, newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
+    IncrementChildComponentCount.increment(activeComponentParent, baseNamePrefix, parentLayer.subcomponentProperties.name);
+    AddNewGenericComponent.populateCoreComponentRef(newComponentParent, newComponent);
+    newComponent.parentComponent = activeComponentParent;
     AddNewGenericComponent.removeContents(newComponent);
     return newComponent;
   }
 
-  public static add(parentComponent: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
+  public static add(newComponentParent: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
       parentLayerName: string, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
-    const parentLayer = AddNewComponentShared.getParentLayer(parentComponent, parentLayerName);
-    return AddNewComponentShared.addComponentViaDropdownStructureSearch(parentComponent, AddNewGenericComponent.addUsingParentDropdownStructure,
+    const parentLayer = AddNewComponentShared.getParentLayer(newComponentParent, parentLayerName);
+    return AddNewComponentShared.addComponentViaDropdownStructureSearch(newComponentParent, AddNewGenericComponent.addUsingParentDropdownStructure,
       componentType, componentStyle, parentLayer, overwritePropertiesFunc)
   }
 }

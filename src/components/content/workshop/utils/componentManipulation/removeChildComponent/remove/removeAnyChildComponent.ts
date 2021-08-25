@@ -36,10 +36,10 @@ export class RemoveAnyChildComponent {
     });
   }
 
-  private static removeChildComponentSubcomponents(childComponentBaseName: string, nestedDropdownStructure: NestedDropdownStructure,
+  private static removeChildComponentSubcomponents(newComponentBaseName: string, nestedDropdownStructure: NestedDropdownStructure,
       parentSubcomponentName: string, masterComponent: WorkshopComponent, parentComponent: WorkshopComponent): void {
-    RemoveAnyChildComponent.removeSubcomponents(nestedDropdownStructure, childComponentBaseName, masterComponent);
-    DecrementChildComponentCount.decrement(parentComponent, StringUtils.getFirstWordInString(childComponentBaseName), parentSubcomponentName);
+    RemoveAnyChildComponent.removeSubcomponents(nestedDropdownStructure, newComponentBaseName, masterComponent);
+    DecrementChildComponentCount.decrement(parentComponent, StringUtils.getFirstWordInString(newComponentBaseName), parentSubcomponentName);
   }
 
   private static getDropdownOptionNames(nestedDropdownStructure: NestedDropdownStructure): string[] {
@@ -140,12 +140,13 @@ export class RemoveAnyChildComponent {
   }
 
   public static remove(parentComponent: WorkshopComponent, subcomponentName: string, isRemovingActiveSubcomponent = false): void {
-    const { activeLinkedComponent, masterComponent } = ActiveComponentUtils.getActiveHighLevelComponents(parentComponent);
+    // WORK1: fix
+    const { activeComponentParent, masterComponent } = ActiveComponentUtils.getComponentParents(parentComponent);
     const targetDetails: TargetRemovalDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent,
       subcomponentName || parentComponent.activeSubcomponentName);
     targetDetails.isRemovingActiveSubcomponent = isRemovingActiveSubcomponent;
     const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
-      activeLinkedComponent.componentPreviewStructure,
+      activeComponentParent.componentPreviewStructure,
       RemoveAnyChildComponent.removeChildComponentInPreviewStructureIfFound.bind(targetDetails));
     if (traversalResult) targetDetails.parentLayerAlignedSections = traversalResult.alignedSections;
     targetDetails.masterComponent = masterComponent;

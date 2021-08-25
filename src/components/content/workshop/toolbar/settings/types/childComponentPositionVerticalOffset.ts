@@ -11,8 +11,8 @@ import { ComponentOptions } from 'vue';
 
 // leaving the functions in here instead of the shared settings folder as this is a very generic function and should only be moved if everything else is
 // being moved
-function changeSubcomponentOrder(settingsComponent: ComponentOptions, direction: SUBCOMPONENT_ORDER_DIRECTIONS, parentComponent: WorkshopComponent): void {
-  settingsComponent.$emit('change-subcomponent-order', [direction, parentComponent] as ChangeSubcomponentOrderEvent);
+function changeSubcomponentOrder(settingsComponent: ComponentOptions, direction: SUBCOMPONENT_ORDER_DIRECTIONS, masterComponent: WorkshopComponent): void {
+  settingsComponent.$emit('change-subcomponent-order', [direction, masterComponent] as ChangeSubcomponentOrderEvent);
 }
 
 function changeSubcomponentAlignment(event: ActionsDropdownMouseEventCallbackEvent, shouldSubcomponentNamesBeUpdated?: boolean): void {

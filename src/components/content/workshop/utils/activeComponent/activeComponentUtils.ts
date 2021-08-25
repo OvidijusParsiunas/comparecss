@@ -2,12 +2,19 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../interf
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 
-interface ActiveHighLevelComponents {
-  activeLinkedComponent: WorkshopComponent;
+interface ActiveComponentParents {
+  activeComponentParent: WorkshopComponent;
   masterComponent: WorkshopComponent;
 }
 
 export class ActiveComponentUtils {
+
+  // parentComponent around the project should perhaps be renamed to component
+  public static getComponentParents(component: WorkshopComponent): ActiveComponentParents {
+    const activeComponentParent = component.parentComponent || component;
+    const masterComponent = component.masterComponentRef;
+    return { activeComponentParent, masterComponent };
+  }
 
   private static getActiveSubcomponent(parentComponent: WorkshopComponent): SubcomponentProperties {
     const { subcomponents, activeSubcomponentName, coreSubcomponentRefs } = parentComponent;
@@ -16,15 +23,8 @@ export class ActiveComponentUtils {
     return subcomponents[activeSubcomponentName] || coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
   }
 
-  public static getActiveHighLevelComponents(parentComponent: WorkshopComponent): ActiveHighLevelComponents {
-    const parentComponentBase = ActiveComponentUtils.getActiveSubcomponent(parentComponent).seedComponent.ref;
-    const activeLinkedComponent = parentComponentBase.parentComponent || parentComponentBase;
-    // this serves as a way to get to the master subcomponents, dropdown properties
-    const masterComponent = parentComponent.masterComponentRef;
-    return { activeLinkedComponent, masterComponent };
-  }
-
-  public static getActiveChildComponentParent(parentComponent: WorkshopComponent): WorkshopComponent {
+  // WORK1: may not be needed
+  public static getActiveSeedComponentParent(parentComponent: WorkshopComponent): WorkshopComponent {
     const activeSubcomponent = ActiveComponentUtils.getActiveSubcomponent(parentComponent);
     const activeChildComponent = activeSubcomponent.seedComponent.ref;
     return activeChildComponent.type === COMPONENT_TYPES.LAYER ? activeChildComponent.parentComponent : activeChildComponent;

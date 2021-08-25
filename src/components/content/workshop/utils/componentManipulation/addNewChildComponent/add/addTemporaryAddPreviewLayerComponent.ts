@@ -10,16 +10,16 @@ import { AddNewLayerComponent } from './addNewLayerComponent';
 
 export class AddTemporaryAddPreviewLayerComponent extends AddNewLayerComponent {
 
-  public static add(parentComponent: WorkshopComponent, componentStyle: COMPONENT_STYLES, isEditable: boolean,
+  public static add(activeComponent: WorkshopComponent, componentStyle: COMPONENT_STYLES, isEditable: boolean,
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
-    const { activeLinkedComponent } = ActiveComponentUtils.getActiveHighLevelComponents(parentComponent);
-    const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, parentComponent,
+    const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, activeComponent,
       TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY, overwritePropertiesFunc);
     newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isTemporaryAddPreview = true;
-    Object.assign(parentComponent.subcomponents, newComponent.subcomponents);
-    AddNewLayerComponent.addNewComponentToComponentPreview(activeLinkedComponent, newComponent);
-    newComponent.childComponentsLockedToLayer?.add(parentComponent);
+    Object.assign(activeComponent.subcomponents, newComponent.subcomponents);
+    const { activeComponentParent } = ActiveComponentUtils.getComponentParents(activeComponent);
+    AddNewLayerComponent.addNewComponentToComponentPreview(activeComponentParent, newComponent);
+    newComponent.childComponentsLockedToLayer?.add(activeComponent);
     return newComponent;
   }
 }

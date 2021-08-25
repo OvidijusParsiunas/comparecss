@@ -14,7 +14,7 @@ import { AddNewGenericComponent } from './addNewGenericComponent';
 
 type DropdownStructureSearchCallback = (
   parentComponent: WorkshopComponent,
-  activeLinkedComponent: WorkshopComponent,
+  activeComponentParent: WorkshopComponent,
   dropdownStructure: NestedDropdownStructure,
   ...args: unknown[]) => WorkshopComponent;
 
@@ -40,38 +40,39 @@ export class AddNewComponentShared {
     return newComponent;
   }
 
-  private static proceedToInvokeAddCallbackIfFound(parentComponent: WorkshopComponent, activeLinkedComponent: WorkshopComponent,
+  private static proceedToInvokeAddCallbackIfFound(parentComponent: WorkshopComponent, activeComponentParent: WorkshopComponent,
       callback: DropdownStructureSearchCallback, args: unknown[], componentTraversalState: ComponentTraversalState): WorkshopComponent {
     const targetDetails = this as any as TargetDetails;
     if (ComponentTraversalUtils.isActualObjectNameMatching(targetDetails, componentTraversalState)) {
       const { subcomponentDropdownStructure } = componentTraversalState;
-      const newComponent = callback(parentComponent, activeLinkedComponent, subcomponentDropdownStructure, ...args);
+      const newComponent = callback(parentComponent, activeComponentParent, subcomponentDropdownStructure, ...args);
       return newComponent;
     }
     return null;
   }
 
-  protected static addComponentViaDropdownStructureSearch(parentComponent: WorkshopComponent, callback: DropdownStructureSearchCallback,
+  protected static addComponentViaDropdownStructureSearch(parentOptionComponent: WorkshopComponent, callback: DropdownStructureSearchCallback,
       ...args: unknown[]): WorkshopComponent {
-    const { activeLinkedComponent, masterComponent } = ActiveComponentUtils.getActiveHighLevelComponents(parentComponent);
+    const { activeComponentParent, masterComponent } = ActiveComponentUtils.getComponentParents(parentOptionComponent);
     const targetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName);
     return ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
       masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       AddNewGenericComponent.proceedToInvokeAddCallbackIfFound.bind(targetDetails,
-        parentComponent, activeLinkedComponent, callback, args)) as WorkshopComponent;
+        parentOptionComponent, activeComponentParent, callback, args)) as WorkshopComponent;
   }
 
   protected static getParentLayer(parentComponent: WorkshopComponent, parentLayerName: string): Layer {
-    const activeChildComponentParent = ActiveComponentUtils.getActiveChildComponentParent(parentComponent);
+    const activeChildComponentParent = ActiveComponentUtils.getActiveSeedComponentParent(parentComponent);
     return ComponentPreviewStructureSearchUtils.getLayerByName(activeChildComponentParent, parentLayerName);
   }
 
-  protected static getNewComponentProperties(selectedChildComponent: WorkshopComponent, childComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): any {
-    const componentType = AddNewGenericComponent.componentBaseNameToType[childComponentBaseName];
-    const componentStyle = ChildComponentBaseNamesToStyles.genericToStyle(childComponentBaseName);
-    const parentComponent = ActiveComponentUtils.getActiveChildComponentParent(selectedChildComponent);
-    const parentLayer = selectedChildComponent.type === COMPONENT_TYPES.LAYER
-      ? AddNewGenericComponent.getParentLayer(parentComponent, selectedChildComponent.coreSubcomponentRefs[0].name)
+  protected static getNewComponentProperties(activeComponent: WorkshopComponent, newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): any {
+    const componentType = AddNewGenericComponent.componentBaseNameToType[newComponentBaseName];
+    const componentStyle = ChildComponentBaseNamesToStyles.genericToStyle(newComponentBaseName);
+    // WORK 1 - is this needed, maybe can reuse getComponentParents
+    const parentComponent = ActiveComponentUtils.getActiveSeedComponentParent(activeComponent);
+    const parentLayer = activeComponent.type === COMPONENT_TYPES.LAYER
+      ? AddNewGenericComponent.getParentLayer(parentComponent, activeComponent.coreSubcomponentRefs[0].name)
       : parentComponent.componentPreviewStructure.layers[0];
     return { componentType, componentStyle, parentLayer, parentComponent };
   }

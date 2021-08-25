@@ -14,7 +14,7 @@ export class ChildComponentBaseNamesToStyles {
     [LAYER_STYLES.PLAIN]: LAYER_COMPONENTS_BASE_NAMES.LAYER,
   };
   
-  public static genericToStyle(childComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): COMPONENT_STYLES {
-    return childComponentBaseName === BUTTON_COMPONENTS_BASE_NAMES.CLOSE ? BUTTON_STYLES.CLOSE : DEFAULT_STYLES.DEFAULT;
+  public static genericToStyle(newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): COMPONENT_STYLES {
+    return newComponentBaseName === BUTTON_COMPONENTS_BASE_NAMES.CLOSE ? BUTTON_STYLES.CLOSE : DEFAULT_STYLES.DEFAULT;
   }
 }

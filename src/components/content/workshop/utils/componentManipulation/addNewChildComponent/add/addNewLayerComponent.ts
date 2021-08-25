@@ -24,13 +24,13 @@ export class AddNewLayerComponent extends AddNewComponentShared {
   }
 
   // only works for adding layers to the top level parent component (masterComponent)
-  private static updateComponentDropdownStructure(activeLinkedComponent: WorkshopComponent, masterComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
+  private static updateComponentDropdownStructure(activeComponentParent: WorkshopComponent, masterComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     const baseName = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
     const newComponentDropdownStructure = { [baseName]: { 
       ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(baseName),
     }};
     const parentComponentDropdownStructure = masterComponent.componentPreviewStructure.subcomponentDropdownStructure;
-    Object.assign(parentComponentDropdownStructure[activeLinkedComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name], newComponentDropdownStructure);
+    Object.assign(parentComponentDropdownStructure[activeComponentParent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name], newComponentDropdownStructure);
   }
 
   private static addNewSubcomponentToBase(parentComponent: WorkshopComponent, layer: Layer): void {
@@ -82,6 +82,11 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     AddNewLayerComponent.addNewSubcomponentToBase(parentComponent, layer);
   }
 
+  // masterComponent is relative to the current parent component that the new component is being added to:
+  // e.g. when creating a button within a card, upon adding text to a button - the master component to text is the button,
+  // as the button is then added to the card - all of its subcomponents including text have card set as their master component
+  // when adding text/icon to an existing button - it uses its parent's master ref (button pointing to card),
+  // hence its masterComponentRef property is going to point towards the card component
   protected static createNewComponent(componentGenerator: ComponentGenerator, masterComponent: WorkshopComponent, baseName?: string,
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
     const newComponent = AddNewComponentShared.createNewComponentViaGenerator(componentGenerator, masterComponent, baseName);
@@ -93,16 +98,16 @@ export class AddNewLayerComponent extends AddNewComponentShared {
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
     const layerName = ChildComponentBaseNamesToStyles.STYLE_TO_LAYER[componentStyle];
-    const { activeLinkedComponent, masterComponent } = ActiveComponentUtils.getActiveHighLevelComponents(parentComponent);
+    const { activeComponentParent, masterComponent } = ActiveComponentUtils.getComponentParents(parentComponent);
     const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, masterComponent,
       UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
     Object.assign(masterComponent.subcomponents, newComponent.subcomponents);
-    AddNewLayerComponent.addNewComponentToComponentPreview(activeLinkedComponent, newComponent);
-    if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(activeLinkedComponent, masterComponent, newComponent);
+    AddNewLayerComponent.addNewComponentToComponentPreview(activeComponentParent, newComponent);
+    if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(activeComponentParent, masterComponent, newComponent);
     AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(masterComponent, newComponent, isEditable);
-    AddNewLayerComponent.addNewChildComponentsOptions(activeLinkedComponent, newComponent);
-    IncrementChildComponentCount.increment(activeLinkedComponent, layerName, activeLinkedComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name);
-    newComponent.parentComponent = activeLinkedComponent;
+    AddNewLayerComponent.addNewChildComponentsOptions(activeComponentParent, newComponent);
+    IncrementChildComponentCount.increment(activeComponentParent, layerName, activeComponentParent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name);
+    newComponent.parentComponent = activeComponentParent;
     return newComponent;
   }
 }

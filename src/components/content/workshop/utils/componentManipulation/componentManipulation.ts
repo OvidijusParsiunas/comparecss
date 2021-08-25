@@ -39,11 +39,11 @@ export class ComponentManipulation {
   }
 
   public static addNewSubcomponent(workshopComponent: ComponentOptions, addNewSubcomponentEvent: AddNewSubcomponentEvent): void {
-    const [childComponentBaseName, isTemporaryAddPreview] = addNewSubcomponentEvent;
+    const [newComponentBaseName, isTemporaryAddPreview] = addNewSubcomponentEvent;
     if (isTemporaryAddPreview) {
-      AddTemporaryAddPreviewComponent.add(workshopComponent.currentlySelectedComponent, childComponentBaseName);
+      AddTemporaryAddPreviewComponent.add(workshopComponent.currentlySelectedComponent, newComponentBaseName);
     } else {
-      AddNewChildComponent.add(workshopComponent.currentlySelectedComponent, childComponentBaseName);
+      AddNewChildComponent.add(workshopComponent.currentlySelectedComponent, newComponentBaseName);
     }
     workshopComponent.$refs.contents.refreshComponent();
   }
@@ -54,8 +54,8 @@ export class ComponentManipulation {
   }
 
   public static changeSubcomponentOrder(workshopComponent: ComponentOptions, direction: SUBCOMPONENT_ORDER_DIRECTIONS,
-      parentComponent: WorkshopComponent): void {
-    ChangeChildComponentOrder.change(parentComponent, direction);
+      masterComponent: WorkshopComponent): void {
+    ChangeChildComponentOrder.change(masterComponent, direction);
     workshopComponent.$refs.contents.refreshComponent();
   }
 

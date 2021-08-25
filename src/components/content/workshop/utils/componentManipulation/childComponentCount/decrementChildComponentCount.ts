@@ -5,24 +5,24 @@ import { ChildComponentCount } from '../../../../../../interfaces/childComponent
 export class DecrementChildComponentCount {
 
   private static disableAddPreviewDropdownOptionIfAtMax(childComponentCount: ChildComponentCount, subcomponents: Subcomponents,
-      childComponentBaseName: string, parentSubcomponentName: string): void {
-    if (childComponentCount.max[childComponentBaseName]
-        && childComponentCount.current[childComponentBaseName] < childComponentCount.max[childComponentBaseName]) {
-      subcomponents[parentSubcomponentName].newChildComponentsOptions[childComponentBaseName] = { [DROPDOWN_OPTION_AUX_DETAILS_REF]: { isEnabled: true } };
+      newComponentBaseName: string, parentSubcomponentName: string): void {
+    if (childComponentCount.max[newComponentBaseName]
+        && childComponentCount.current[newComponentBaseName] < childComponentCount.max[newComponentBaseName]) {
+      subcomponents[parentSubcomponentName].newChildComponentsOptions[newComponentBaseName] = { [DROPDOWN_OPTION_AUX_DETAILS_REF]: { isEnabled: true } };
     }
   }
 
-  private static decrementCurrentCount(childComponentCount: ChildComponentCount, childComponentBaseName: string): void {
-    childComponentCount.current[childComponentBaseName] -= 1;
+  private static decrementCurrentCount(childComponentCount: ChildComponentCount, newComponentBaseName: string): void {
+    childComponentCount.current[newComponentBaseName] -= 1;
   }
 
-  public static decrement(parentComponent: WorkshopComponent, childComponentBaseName: string, parentSubcomponentName: string): void {
+  public static decrement(parentComponent: WorkshopComponent, newComponentBaseName: string, parentSubcomponentName: string): void {
     const { childComponentCount } = parentComponent;
     const { subcomponents } = parentComponent.masterComponentRef;
     if (childComponentCount) {
-      DecrementChildComponentCount.decrementCurrentCount(childComponentCount, childComponentBaseName);
+      DecrementChildComponentCount.decrementCurrentCount(childComponentCount, newComponentBaseName);
       DecrementChildComponentCount.disableAddPreviewDropdownOptionIfAtMax(childComponentCount, subcomponents,
-        childComponentBaseName, parentSubcomponentName);
+        newComponentBaseName, parentSubcomponentName);
     }
   }
 }

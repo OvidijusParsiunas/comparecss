@@ -33,14 +33,14 @@ class DropdownBase extends ComponentBuilder {
     textSubcomponent.defaultCustomStaticFeatures.selectDropdown = dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomStaticFeatures.selectDropdown;
   }
 
-  public static addComponentsToBase(buttonComponent: WorkshopComponent): void {
-    const layer1Component = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    layer1Component.childComponentsLockedToLayer.add(buttonComponent);
-    const layer2Component = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    layer2Component.childComponentsLockedToLayer.add(buttonComponent);
-    const layer3Component = AddNewLayerComponent.add(buttonComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    layer3Component.childComponentsLockedToLayer.add(buttonComponent);
-    UpdateLayerDropdownOptionNames.update(buttonComponent, 0);
+  public static addComponentsToBase(dropdownMenuBaseComponent: WorkshopComponent): void {
+    const layer1Component = AddNewLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
+    layer1Component.childComponentsLockedToLayer.add(dropdownMenuBaseComponent);
+    const layer2Component = AddNewLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
+    layer2Component.childComponentsLockedToLayer.add(dropdownMenuBaseComponent);
+    const layer3Component = AddNewLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
+    layer3Component.childComponentsLockedToLayer.add(dropdownMenuBaseComponent);
+    UpdateLayerDropdownOptionNames.update(dropdownMenuBaseComponent, 0);
   }
 }
 
@@ -60,7 +60,7 @@ export const dropdownBase: ComponentGenerator = {
     dropdownMenuBaseComponent.linkedComponents = { base: buttonComponent };
     dropdownMenuBaseComponent.masterComponentRef = buttonComponent;
     buttonComponent.activeSubcomponentName = dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
-    DropdownBase.addComponentsToBase(buttonComponent);
+    DropdownBase.addComponentsToBase(dropdownMenuBaseComponent);
     buttonComponent.activeSubcomponentName = buttonComponent.defaultSubcomponentName;
     return buttonComponent;
   },

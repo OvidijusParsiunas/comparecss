@@ -5,8 +5,8 @@ import { Layer } from '../../../../../../../interfaces/componentPreviewStructure
 
 export class ComponentPreviewStructureSearchUtils {
 
-  public static getComponentLayers(currentlySelectedComponent: WorkshopComponent): NestedDropdownStructure {
-    const { coreSubcomponentRefs: { [SUBCOMPONENT_TYPES.BASE]: { name } }, componentPreviewStructure: { subcomponentDropdownStructure } } = currentlySelectedComponent;
+  public static getComponentLayers(masterComponent: WorkshopComponent): NestedDropdownStructure {
+    const { coreSubcomponentRefs: { [SUBCOMPONENT_TYPES.BASE]: { name } }, componentPreviewStructure: { subcomponentDropdownStructure } } = masterComponent;
     return subcomponentDropdownStructure[name] as NestedDropdownStructure;
   }
 

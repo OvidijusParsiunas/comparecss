@@ -5,7 +5,6 @@ import { ComponentTraversalState, TargetDetails } from '../../../../../../interf
 import { childComponentAlignmentDropdownState } from './childComponentAlignmentDropdownState';
 import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
-import { ActiveComponentUtils } from '../../activeComponent/activeComponentUtils';
 
 export class ChangeChildComponentAlignment {
 
@@ -70,23 +69,22 @@ export class ChangeChildComponentAlignment {
     return null;
   }
 
-  private static updateNames(newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties, parentComponent: WorkshopComponent): void {
-    const { masterComponent } = ActiveComponentUtils.getActiveHighLevelComponents(parentComponent);
+  private static updateNames(newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties, masterComponent: WorkshopComponent): void {
     const targetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName);
     targetDetails.parentLayerAlignedSections = subcomponentProperties.parentLayer.sections.alignedSections;
     ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
       masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       ChangeChildComponentAlignment.updateDropdownStructureIfFound.bind(targetDetails));
     // UX - check if need to set the subcomponent to the right of the alignment
-    // parentComponent.activeSubcomponentName = newAlignmentSubcomponents[newAlignmentSubcomponents.length - 1].name;
+    // masterComponent.activeSubcomponentName = newAlignmentSubcomponents[newAlignmentSubcomponents.length - 1].name;
     const newAlignmentSubcomponents = subcomponentProperties.parentLayer.sections.alignedSections[newAlignment];
-    parentComponent.activeSubcomponentName = newAlignmentSubcomponents[0].subcomponentProperties.name;
+    masterComponent.activeSubcomponentName = newAlignmentSubcomponents[0].subcomponentProperties.name;
   }
 
   public static change(previousAlignment: ALIGNED_SECTION_TYPES, newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties,
-      shouldSubcomponentNamesBeUpdated: boolean, parentComponent: WorkshopComponent): void {
+      shouldSubcomponentNamesBeUpdated: boolean, masterComponent: WorkshopComponent): void {
     if (shouldSubcomponentNamesBeUpdated) {
-      ChangeChildComponentAlignment.updateNames(newAlignment, subcomponentProperties, parentComponent);
+      ChangeChildComponentAlignment.updateNames(newAlignment, subcomponentProperties, masterComponent);
     } else if (newAlignment !== previousAlignment) {
       ChangeChildComponentAlignment.setStateAndRemoveSubcomponent(previousAlignment, subcomponentProperties);
       ChangeChildComponentAlignment.addSubcomponentToAlignment(previousAlignment, newAlignment, subcomponentProperties);

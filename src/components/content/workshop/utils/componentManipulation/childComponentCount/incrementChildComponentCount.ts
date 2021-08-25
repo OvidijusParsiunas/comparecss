@@ -5,29 +5,33 @@ import { ChildComponentCount } from '../../../../../../interfaces/childComponent
 export class IncrementChildComponentCount {
 
   private static disableAddPreviewDropdownOptionIfAtMax(childComponentCount: ChildComponentCount, subcomponents: Subcomponents,
-      childComponentBaseName: string, parentSubcomponentName: string): void {
-    if (childComponentCount.max[childComponentBaseName]
-        && childComponentCount.current[childComponentBaseName] >= childComponentCount.max[childComponentBaseName]) {
-      subcomponents[parentSubcomponentName].newChildComponentsOptions[childComponentBaseName] = { [DROPDOWN_OPTION_AUX_DETAILS_REF]: { isEnabled: false } };
+      newComponentBaseName: string, encapsulatingComponentName: string): void {
+    if (childComponentCount.max[newComponentBaseName]
+        && childComponentCount.current[newComponentBaseName] >= childComponentCount.max[newComponentBaseName]) {
+      subcomponents[encapsulatingComponentName].newChildComponentsOptions[newComponentBaseName] = { [DROPDOWN_OPTION_AUX_DETAILS_REF]: { isEnabled: false } };
     }
   }
 
-  private static incrementCurrentCount(childComponentCount: ChildComponentCount, childComponentBaseName: string): void {
+  private static incrementCurrentCount(childComponentCount: ChildComponentCount, newComponentBaseName: string): void {
     if (childComponentCount.current === undefined) {
-      childComponentCount.current = { [childComponentBaseName]: 1 }; 
-    } else if (childComponentCount.current[childComponentBaseName] === undefined) {
-      childComponentCount.current[childComponentBaseName] = 1 ; 
+      childComponentCount.current = { [newComponentBaseName]: 1 }; 
+    } else if (childComponentCount.current[newComponentBaseName] === undefined) {
+      childComponentCount.current[newComponentBaseName] = 1 ; 
     } else {
-      childComponentCount.current[childComponentBaseName] += 1;
+      childComponentCount.current[newComponentBaseName] += 1;
     }
   }
 
-  public static increment(parentComponent: WorkshopComponent, childComponentBaseName: string, parentSubcomponentName: string): void {
-    const { childComponentCount, subcomponents } = parentComponent;
+  // WORK1: rename active component parent (structure that does not allow layers) to base?
+  // rename encapsulating component name to parent component
+  public static increment(activeComponentParent: WorkshopComponent, newComponentBaseName: string, encapsulatingComponentName: string): void {
+    console.log(encapsulatingComponentName);
+    console.log(activeComponentParent);
+    const { childComponentCount, subcomponents } = activeComponentParent;
     if (childComponentCount) {
-      IncrementChildComponentCount.incrementCurrentCount(childComponentCount, childComponentBaseName);
+      IncrementChildComponentCount.incrementCurrentCount(childComponentCount, newComponentBaseName);
       IncrementChildComponentCount.disableAddPreviewDropdownOptionIfAtMax(childComponentCount, subcomponents,
-        childComponentBaseName, parentSubcomponentName);
+        newComponentBaseName, encapsulatingComponentName);
     }
   }
 }

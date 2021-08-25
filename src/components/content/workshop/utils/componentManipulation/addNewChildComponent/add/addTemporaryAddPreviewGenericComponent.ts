@@ -6,9 +6,9 @@ import { AddNewGenericComponent } from './addNewGenericComponent';
 
 export class AddTemporaryAddPreviewGenericComponent extends AddNewGenericComponent {
 
-  public static addTemporary(selectedChildComponent: WorkshopComponent, childComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): WorkshopComponent {
+  public static addTemporary(activeComponent: WorkshopComponent, newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): WorkshopComponent {
     const { componentType, componentStyle, parentLayer, parentComponent,
-      } = AddNewGenericComponent.getNewComponentProperties(selectedChildComponent, childComponentBaseName);
+      } = AddNewGenericComponent.getNewComponentProperties(activeComponent, newComponentBaseName);
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
     const [newComponent] = AddNewGenericComponent.createNewComponent(componentType, componentStyle,
       componentGenerator, null, null, TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY);

@@ -478,16 +478,16 @@ export default {
       return this.component.subcomponents[this.component.activeSubcomponentName].newChildComponentsOptions || {};
     },
     addNewSubcomponent(mouseClickNewOptionEvent: MouseClickNewOptionEvent): void {
-      const [childComponentBaseName, isOptionEnabled] = mouseClickNewOptionEvent;
+      const [newComponentBaseName, isOptionEnabled] = mouseClickNewOptionEvent;
       if (!isOptionEnabled) return;
       this.$emit('remove-subcomponent', true);
-      this.$emit('add-subcomponent', [childComponentBaseName] as AddNewSubcomponentEvent);
+      this.$emit('add-subcomponent', [newComponentBaseName] as AddNewSubcomponentEvent);
     },
     mouseEnterSubcomponentManipulationToggle(isAdd: boolean, mouseEnterOptionEvent?: MouseEnterOptionEvent): void {
       if (isAdd) {
-        const [childComponentBaseName, isOptionEnabled] = mouseEnterOptionEvent;
+        const [newComponentBaseName, isOptionEnabled] = mouseEnterOptionEvent;
         if (!isOptionEnabled) return;
-        this.$emit('add-subcomponent', [childComponentBaseName, true] as AddNewSubcomponentEvent);
+        this.$emit('add-subcomponent', [newComponentBaseName, true] as AddNewSubcomponentEvent);
       } else {
         RemoveSubcomponentOverlay.display(this.component.activeSubcomponentName);
       }

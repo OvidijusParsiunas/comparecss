@@ -81,12 +81,11 @@ export class ChangeChildComponentOrder {
     return null;
   }
 
-  public static change(parentComponent: WorkshopComponent, direction: SUBCOMPONENT_ORDER_DIRECTIONS): void {
-    const { masterComponent } = ActiveComponentUtils.getActiveHighLevelComponents(parentComponent);
+  public static change(masterComponent: WorkshopComponent, direction: SUBCOMPONENT_ORDER_DIRECTIONS): void {
     const targetDetails: ChangeComponentTargetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName);
     targetDetails.isLowerOrderDirection = direction === SUBCOMPONENT_ORDER_DIRECTIONS.LEFT || direction === SUBCOMPONENT_ORDER_DIRECTIONS.UP;
     const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
-      parentComponent.componentPreviewStructure,
+      masterComponent.componentPreviewStructure,
       ChangeChildComponentOrder.swapChildComponentInPreviewStructureIfFound.bind(targetDetails)) as CompositeTraversalResult;
     if (!traversalResult.childComponentMovable) return;
     if (traversalResult) targetDetails.parentLayerAlignedSections = traversalResult.alignedSections;

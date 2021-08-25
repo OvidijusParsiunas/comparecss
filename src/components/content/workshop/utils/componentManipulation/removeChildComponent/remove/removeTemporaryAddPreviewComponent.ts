@@ -11,9 +11,9 @@ export class RemoveTemporaryAddPreviewComponent extends RemoveAnyChildComponent 
   // all subcomponents are stored in the core activeComponent, however the preview structure for an auxiliary component is within its component
   private static removeTargetChildComponent(activeComponent: WorkshopComponent, targetDetails: TargetDetails, subcomponents: Subcomponents): void {
     Object.keys(subcomponents).forEach((subcomponentName) => delete activeComponent.subcomponents[subcomponentName]);
-    const { activeLinkedComponent } = ActiveComponentUtils.getActiveHighLevelComponents(activeComponent);
+    const { activeComponentParent } = ActiveComponentUtils.getComponentParents(activeComponent);
     ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
-      activeLinkedComponent.componentPreviewStructure,
+      activeComponentParent.componentPreviewStructure,
       RemoveTemporaryAddPreviewComponent.removeChildComponentInPreviewStructureIfFound.bind(targetDetails));
   }
 
