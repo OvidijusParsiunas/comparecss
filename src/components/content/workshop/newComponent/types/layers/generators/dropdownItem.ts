@@ -16,10 +16,9 @@ import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { layerBase } from './base';
 
-// WORK1: change to activeContainerComponent
 interface OverwriteTextPropertiesBaseComponents {
-  parentComponent: WorkshopComponent;
-  activeComponentParent: WorkshopComponent;
+  containerComponent: WorkshopComponent;
+  higherComponentContainer: WorkshopComponent;
 }
 
 export class DropdownItemLayer extends ComponentBuilder {
@@ -81,8 +80,8 @@ export class DropdownItemLayer extends ComponentBuilder {
   }
 
   public static overwriteTextProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
-    const { activeComponentParent } = this as unknown as OverwriteTextPropertiesBaseComponents;
-    const { layers: activeBaseComponentLayers } = activeComponentParent.componentPreviewStructure;
+    const { higherComponentContainer } = this as unknown as OverwriteTextPropertiesBaseComponents;
+    const { layers: activeBaseComponentLayers } = higherComponentContainer.componentPreviewStructure;
     if (activeBaseComponentLayers.length > 1) {
       const siblingDropdownItem = activeBaseComponentLayers[activeBaseComponentLayers.length - 2];
       const childTextComponent = siblingDropdownItem.subcomponentProperties.seedComponent.ref.childComponentsLockedToLayer.list[0];
@@ -100,16 +99,17 @@ export class DropdownItemLayer extends ComponentBuilder {
     coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomStaticFeatures = DropdownItemLayer.createDefaultTextCustomStaticFeatures('Dropdown item');
   }
 
-  private static addChildComponentsToLayer(parentComponent: WorkshopComponent): WorkshopComponent[] {
+  private static addChildComponentsToLayer(containerComponent: WorkshopComponent): WorkshopComponent[] {
     const layerComponent = this as undefined as WorkshopComponent;
-    const { containerComponent } = ActiveComponentUtils.getHigherLevelComponents(parentComponent);
-    const textComponent = AddNewGenericComponent.add(parentComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
+    const { higherComponentContainer } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
+    const textComponent = AddNewGenericComponent.add(containerComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
       layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name,
-      [DropdownItemLayer.overwriteTextProperties.bind({parentComponent, activeComponentParent: containerComponent} as OverwriteTextPropertiesBaseComponents)]);
+      // WORK1: are both of the properties needed
+      [DropdownItemLayer.overwriteTextProperties.bind({ containerComponent, higherComponentContainer } as OverwriteTextPropertiesBaseComponents)]);
     layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].otherSubcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     layerComponent.childComponentsLockedToLayer.list.push(textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
-    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(parentComponent,
-      containerComponent.componentPreviewStructure.layers[containerComponent.componentPreviewStructure.layers.length - 1]);
+    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(containerComponent,
+      higherComponentContainer.componentPreviewStructure.layers[higherComponentContainer.componentPreviewStructure.layers.length - 1]);
     return [textComponent];
   }
 

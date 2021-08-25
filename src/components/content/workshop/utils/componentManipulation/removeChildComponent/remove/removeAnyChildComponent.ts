@@ -18,28 +18,28 @@ export class RemoveAnyChildComponent {
 
   private static updateDropdownOptionNames(targetDetails: TargetRemovalDetails, subcomponentDropdownStructure: NestedDropdownStructure,
       removedSubcomponentDropdownIndex: number, alignedSections: AlignedSections): void {
-    const { parentComponent, targetSubcomponentProperties: { subcomponentType } } = targetDetails;
+    const { containerComponent, targetSubcomponentProperties: { subcomponentType } } = targetDetails;
     if (subcomponentType !== SUBCOMPONENT_TYPES.LAYER) {
-      UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(parentComponent, subcomponentDropdownStructure, alignedSections);
+      UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(containerComponent, subcomponentDropdownStructure, alignedSections);
     } else {
-      UpdateLayerDropdownOptionNames.update(parentComponent, removedSubcomponentDropdownIndex);
+      UpdateLayerDropdownOptionNames.update(containerComponent, removedSubcomponentDropdownIndex);
     }
   }
 
-  private static removeSubcomponents(subcomponentDropdownStructure: NestedDropdownStructure, dropdownOptionName: string, parentComponent: WorkshopComponent): void {
+  private static removeSubcomponents(subcomponentDropdownStructure: NestedDropdownStructure, dropdownOptionName: string, containerComponent: WorkshopComponent): void {
     const subcomponentBaseName = (subcomponentDropdownStructure[dropdownOptionName]
       [DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).actualObjectName;
-    const activeSubcomponent = parentComponent.subcomponents[subcomponentBaseName];
+    const activeSubcomponent = containerComponent.subcomponents[subcomponentBaseName];
     Object.keys(activeSubcomponent?.seedComponent?.ref.subcomponents || {}).forEach((keyName) => {
-      delete parentComponent.subcomponents[keyName];
-      delete parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[keyName];
+      delete containerComponent.subcomponents[keyName];
+      delete containerComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[keyName];
     });
   }
 
   private static removeChildComponentSubcomponents(newComponentBaseName: string, nestedDropdownStructure: NestedDropdownStructure,
-      parentSubcomponentName: string, masterComponent: WorkshopComponent, parentComponent: WorkshopComponent): void {
+      parentSubcomponentName: string, masterComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
     RemoveAnyChildComponent.removeSubcomponents(nestedDropdownStructure, newComponentBaseName, masterComponent);
-    DecrementChildComponentCount.decrement(parentComponent, StringUtils.getFirstWordInString(newComponentBaseName), parentSubcomponentName);
+    DecrementChildComponentCount.decrement(containerComponent, StringUtils.getFirstWordInString(newComponentBaseName), parentSubcomponentName);
   }
 
   private static getDropdownOptionNames(nestedDropdownStructure: NestedDropdownStructure): string[] {
@@ -48,49 +48,49 @@ export class RemoveAnyChildComponent {
 
   // WORK1: check if this removes all child components children completely
   private static removeChildComponentChildComponentsSubcomponents(componentTraversalState: ComponentTraversalState, masterComponent: WorkshopComponent,
-      parentComponent: WorkshopComponent): void {
+      containerComponent: WorkshopComponent): void {
     const { dropdownOptionName, subcomponentDropdownStructure } = componentTraversalState;
     const dropdownOptionNames = RemoveAnyChildComponent.getDropdownOptionNames(subcomponentDropdownStructure[dropdownOptionName] as NestedDropdownStructure);
     dropdownOptionNames.forEach((newDropdownName) => {
       RemoveAnyChildComponent.removeChildComponentSubcomponents(newDropdownName,
         subcomponentDropdownStructure[dropdownOptionName] as NestedDropdownStructure,
         (subcomponentDropdownStructure[dropdownOptionName][DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).actualObjectName,
-        masterComponent, parentComponent);
+        masterComponent, containerComponent);
     });
   }
 
-  private static selectSiblingSubcomponent(parentComponent: WorkshopComponent, dropdownOptions: string[],
+  private static selectSiblingSubcomponent(containerComponent: WorkshopComponent, dropdownOptions: string[],
       componentTraversalState: ComponentTraversalState): void {
     const { dropdownOptionName, subcomponentDropdownStructure } = componentTraversalState;
     const currentDropdownOptionIndex = dropdownOptions.indexOf(dropdownOptionName);
     const newDropdownOptionName = currentDropdownOptionIndex === dropdownOptions.length - 1
       ? dropdownOptions[currentDropdownOptionIndex - 1] : dropdownOptions[currentDropdownOptionIndex + 1];
     const newSubcomponentName = (subcomponentDropdownStructure[newDropdownOptionName][DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).actualObjectName;
-    parentComponent.activeSubcomponentName = newSubcomponentName;
+    containerComponent.activeSubcomponentName = newSubcomponentName;
   }
 
-  private static selectNewActiveSubcomponent(componentTraversalState: ComponentTraversalState, parentComponent: WorkshopComponent,
+  private static selectNewActiveSubcomponent(componentTraversalState: ComponentTraversalState, containerComponent: WorkshopComponent,
       parentSubcomponentName: string, dropdownOptions: string[]): void {
     if (dropdownOptions.length === 1) {
-      parentComponent.activeSubcomponentName = parentSubcomponentName;
+      containerComponent.activeSubcomponentName = parentSubcomponentName;
     } else {
-      RemoveAnyChildComponent.selectSiblingSubcomponent(parentComponent, dropdownOptions, componentTraversalState);
+      RemoveAnyChildComponent.selectSiblingSubcomponent(containerComponent, dropdownOptions, componentTraversalState);
     }
   }
 
-  private static getParentSubcomponentName(parentComponent: WorkshopComponent, dropdownOptionDetailsStack: DropdownOptionAuxDetails[]): string {
+  private static getParentSubcomponentName(containerComponent: WorkshopComponent, dropdownOptionDetailsStack: DropdownOptionAuxDetails[]): string {
     const parentDropdownOptionDetails = dropdownOptionDetailsStack[dropdownOptionDetailsStack.length - 2];
-    return parentDropdownOptionDetails?.actualObjectName || parentComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+    return parentDropdownOptionDetails?.actualObjectName || containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
   }
 
   private static removeChildComponent(componentTraversalState: ComponentTraversalState, targetDetails: TargetRemovalDetails,
       dropdownOptions: string[]): void {
     const { dropdownOptionName, subcomponentDropdownStructure, dropdownOptionDetailsStack } = componentTraversalState;
-    const { masterComponent, parentComponent, isRemovingActiveSubcomponent, targetSubcomponentProperties } = targetDetails;
+    const { masterComponent, containerComponent, isRemovingActiveSubcomponent, targetSubcomponentProperties } = targetDetails;
     const parentSubcomponentName = RemoveAnyChildComponent.getParentSubcomponentName(masterComponent, dropdownOptionDetailsStack);
     const seedComponent = targetSubcomponentProperties.seedComponent.ref;
     RemoveAnyChildComponent.removeChildComponentChildComponentsSubcomponents(componentTraversalState, masterComponent, seedComponent);
-    RemoveAnyChildComponent.removeChildComponentSubcomponents(dropdownOptionName, subcomponentDropdownStructure, parentSubcomponentName, masterComponent, parentComponent);
+    RemoveAnyChildComponent.removeChildComponentSubcomponents(dropdownOptionName, subcomponentDropdownStructure, parentSubcomponentName, masterComponent, containerComponent);
     if (isRemovingActiveSubcomponent) RemoveAnyChildComponent.selectNewActiveSubcomponent(componentTraversalState, masterComponent,
       parentSubcomponentName, dropdownOptions);
     delete subcomponentDropdownStructure[dropdownOptionName];
@@ -112,12 +112,12 @@ export class RemoveAnyChildComponent {
 
   protected static removeChildComponentInPreviewStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
     const { subcomponentProperties, layers, alignedChildComponents, index } = componentTraversalState;
-    const { targetSubcomponentProperties, parentComponent } = this as any as TargetRemovalDetails;
+    const { targetSubcomponentProperties, containerComponent } = this as any as TargetRemovalDetails;
     if (targetSubcomponentProperties === subcomponentProperties) {
       if (layers) layers.splice(index, 1);
       if (alignedChildComponents) {
         alignedChildComponents.splice(index, 1);
-        InterconnectedSettings.update(false, parentComponent, subcomponentProperties);
+        InterconnectedSettings.update(false, containerComponent, subcomponentProperties);
       }
       return componentTraversalState;
     }
@@ -126,26 +126,26 @@ export class RemoveAnyChildComponent {
 
   // WORK1 - copy/add core subcomponent ref
   private static removeCoreSubcomponentRef(targetDetails: TargetRemovalDetails): void {
-    const { parentComponent: { coreSubcomponentRefs }, targetSubcomponentProperties } = targetDetails;
+    const { containerComponent: { coreSubcomponentRefs }, targetSubcomponentProperties } = targetDetails;
     const coreSubcomponent = Object.keys(coreSubcomponentRefs).find((coreSubcomponentKey) => coreSubcomponentRefs[coreSubcomponentKey] === targetSubcomponentProperties);
     if (coreSubcomponent) coreSubcomponentRefs[coreSubcomponent] = null;
   }
 
   // WORK1 - copy/add triggerable subcomponent
   private static removeTriggerableSubcomponent(targetDetails: TargetRemovalDetails): void {
-    if (!targetDetails.parentComponent.coreSubcomponentRefs[0]) return;
-    const { parentComponent: { coreSubcomponentRefs: { [SUBCOMPONENT_TYPES.BASE]: { otherSubcomponentsToTrigger }}}, targetSubcomponentProperties } = targetDetails;
+    if (!targetDetails.containerComponent.coreSubcomponentRefs[0]) return;
+    const { containerComponent: { coreSubcomponentRefs: { [SUBCOMPONENT_TYPES.BASE]: { otherSubcomponentsToTrigger }}}, targetSubcomponentProperties } = targetDetails;
     const coreSubcomponent = Object.keys(otherSubcomponentsToTrigger || []).find((coreSubcomponentKey) => otherSubcomponentsToTrigger[coreSubcomponentKey] === targetSubcomponentProperties);
     if (coreSubcomponent) otherSubcomponentsToTrigger[coreSubcomponent] = null;
   }
 
   public static remove(parentComponent: WorkshopComponent, subcomponentName: string, isRemovingActiveSubcomponent = false): void {
-    const { containerComponent, masterComponent } = ActiveComponentUtils.getHigherLevelComponents(parentComponent);
+    const { higherComponentContainer, masterComponent } = ActiveComponentUtils.getHigherLevelComponents(parentComponent);
     const targetDetails: TargetRemovalDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent,
       subcomponentName || parentComponent.activeSubcomponentName);
     targetDetails.isRemovingActiveSubcomponent = isRemovingActiveSubcomponent;
     const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
-      containerComponent.componentPreviewStructure,
+      higherComponentContainer.componentPreviewStructure,
       RemoveAnyChildComponent.removeChildComponentInPreviewStructureIfFound.bind(targetDetails));
     if (traversalResult) targetDetails.parentLayerAlignedSections = traversalResult.alignedSections;
     targetDetails.masterComponent = masterComponent;

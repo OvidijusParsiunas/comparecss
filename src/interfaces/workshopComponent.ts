@@ -213,6 +213,7 @@ export interface WorkshopComponent {
   linkedComponents?: LinkedComponents;
   // contains a reference to the component that nests it, e.g. if it was button text - the reference would be to button, if it was dropdown menu
   // item text - the reference would be to menu (layers are not regarded as container components to children, but can be parent components)
+  // to note - container components of container components can be referred via the following name: higherComponentContainer
   containerComponent?: WorkshopComponent;
   // each seed component is assigned a reference to the master component - primarily used to access the dropdown structure
   masterComponent?: WorkshopComponent;

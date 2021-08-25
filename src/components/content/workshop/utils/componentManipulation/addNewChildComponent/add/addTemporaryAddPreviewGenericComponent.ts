@@ -7,13 +7,13 @@ import { AddNewGenericComponent } from './addNewGenericComponent';
 export class AddTemporaryAddPreviewGenericComponent extends AddNewGenericComponent {
 
   public static addTemporary(activeComponent: WorkshopComponent, newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): WorkshopComponent {
-    const { componentType, componentStyle, parentLayer, parentComponent,
+    const { componentType, componentStyle, parentLayer, containerComponent,
       } = AddNewGenericComponent.getNewComponentProperties(activeComponent, newComponentBaseName);
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
     const [newComponent] = AddNewGenericComponent.createNewComponent(componentType, componentStyle,
       componentGenerator, null, null, TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY);
     newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isTemporaryAddPreview = true;
-    Object.assign(parentComponent.subcomponents, newComponent.subcomponents);
+    Object.assign(containerComponent.subcomponents, newComponent.subcomponents);
     AddNewGenericComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
     return newComponent;
   }

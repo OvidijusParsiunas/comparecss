@@ -10,7 +10,7 @@ export class ComponentPreviewStructureSearchUtils {
     return subcomponentDropdownStructure[name] as NestedDropdownStructure;
   }
 
-  public static getLayerByName(parentComponent: WorkshopComponent, layerName: string): Layer {
-    return parentComponent.componentPreviewStructure.layers.find((layer) => layer.subcomponentProperties.name === layerName);
+  public static getLayerByName(containerComponent: WorkshopComponent, layerName: string): Layer {
+    return containerComponent.componentPreviewStructure.layers.find((layer) => layer.subcomponentProperties.name === layerName);
   }
 }

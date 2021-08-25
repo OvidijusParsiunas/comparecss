@@ -22,9 +22,8 @@ export class IncrementChildComponentCount {
     }
   }
 
-  // WORK1: rename active component parent (structure that does not allow layers) to base?
-  public static increment(activeComponentParent: WorkshopComponent, newComponentBaseName: string, containerComponentName: string): void {
-    const { childComponentCount, subcomponents } = activeComponentParent;
+  public static increment(containerComponent: WorkshopComponent, newComponentBaseName: string, containerComponentName: string): void {
+    const { childComponentCount, subcomponents } = containerComponent;
     if (childComponentCount) {
       IncrementChildComponentCount.incrementCurrentCount(childComponentCount, newComponentBaseName);
       IncrementChildComponentCount.disableAddPreviewDropdownOptionIfAtMax(childComponentCount, subcomponents,

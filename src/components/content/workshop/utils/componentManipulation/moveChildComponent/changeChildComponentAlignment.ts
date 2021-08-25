@@ -61,8 +61,8 @@ export class ChangeChildComponentAlignment {
   private static updateDropdownStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
     const targetDetails = this as any as TargetDetails;
     if (ComponentTraversalUtils.isActualObjectNameMatching(targetDetails, componentTraversalState)) {
-      const { parentComponent, parentLayerAlignedSections } = targetDetails;
-      UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(parentComponent,
+      const { containerComponent, parentLayerAlignedSections } = targetDetails;
+      UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(containerComponent,
         componentTraversalState.subcomponentDropdownStructure, parentLayerAlignedSections);
       return componentTraversalState;
     }

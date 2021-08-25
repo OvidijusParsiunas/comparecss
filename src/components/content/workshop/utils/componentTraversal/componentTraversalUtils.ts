@@ -9,12 +9,12 @@ type TraverseComponentCallback = (componentTraversalState: ComponentTraversalSta
 
 export default class ComponentTraversalUtils {
 
-  public static generateTargetDetails(parentComponent: WorkshopComponent, targetSubcomponentName: string): TargetDetails {
+  public static generateTargetDetails(containerComponent: WorkshopComponent, targetSubcomponentName: string): TargetDetails {
     return {
       targetSubcomponentName,
-      targetDropdownOptionName: parentComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[targetSubcomponentName],
-      parentComponent,
-      targetSubcomponentProperties: parentComponent.subcomponents[targetSubcomponentName],
+      targetDropdownOptionName: containerComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[targetSubcomponentName],
+      containerComponent,
+      targetSubcomponentProperties: containerComponent.subcomponents[targetSubcomponentName],
     };
   }
 

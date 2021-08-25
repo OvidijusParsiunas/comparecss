@@ -27,9 +27,9 @@ export class InterconnectedSettings {
     }
   }
 
-  // currently used only for generic components but can be repurposed for layers
-  public static update(isAdd: boolean, parentComponent: WorkshopComponent, subcomponentProperties: SubcomponentProperties): void {
-    parentComponent.interconnectedSettings?.forEach((interconnectedSetting: InterconnectedSetting) => {
+  // currently used only for container components but can be repurposed for all parent components
+  public static update(isAdd: boolean, containerComponent: WorkshopComponent, subcomponentProperties: SubcomponentProperties): void {
+    containerComponent.interconnectedSettings?.forEach((interconnectedSetting: InterconnectedSetting) => {
       if (interconnectedSetting.dependantChildrenTypes.has(subcomponentProperties.subcomponentType)) {
         InterconnectedSettings.updateUpdateOtherCssPropertiesArray(isAdd, subcomponentProperties, interconnectedSetting);
       }

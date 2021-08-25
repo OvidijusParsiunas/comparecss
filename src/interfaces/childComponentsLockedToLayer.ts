@@ -1,6 +1,6 @@
 import { SubcomponentProperties, WorkshopComponent } from './workshopComponent';
 
 export class ChildComponentsInLayer {
-  add: (parentComponent: WorkshopComponent) => WorkshopComponent[];
+  add: (containerComponent: WorkshopComponent) => WorkshopComponent[];
   list: SubcomponentProperties[];
 }

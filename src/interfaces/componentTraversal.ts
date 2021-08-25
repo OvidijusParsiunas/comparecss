@@ -8,7 +8,7 @@ export type ChangeOrderCallback = (param: string) => void;
 export interface TargetDetails {
   targetSubcomponentName: string;
   targetDropdownOptionName: string;
-  parentComponent: WorkshopComponent;
+  containerComponent: WorkshopComponent;
   targetSubcomponentProperties: SubcomponentProperties;
   parentLayerAlignedSections?: AlignedSections;
 }

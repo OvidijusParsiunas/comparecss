@@ -16,8 +16,8 @@ export class DecrementChildComponentCount {
     childComponentCount.current[newComponentBaseName] -= 1;
   }
 
-  public static decrement(parentComponent: WorkshopComponent, newComponentBaseName: string, parentSubcomponentName: string): void {
-    const { childComponentCount, masterComponent: { subcomponents } } = parentComponent;
+  public static decrement(containerComponent: WorkshopComponent, newComponentBaseName: string, parentSubcomponentName: string): void {
+    const { childComponentCount, masterComponent: { subcomponents } } = containerComponent;
     if (childComponentCount) {
       DecrementChildComponentCount.decrementCurrentCount(childComponentCount, newComponentBaseName);
       DecrementChildComponentCount.disableAddPreviewDropdownOptionIfAtMax(childComponentCount, subcomponents,

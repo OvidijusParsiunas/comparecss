@@ -17,31 +17,31 @@ import JSONUtils from '../../../generic/jsonUtils';
 
 export class AddNewLayerComponent extends AddNewComponentShared {
 
-  private static addNewChildComponentsOptions(parentComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
-    if (parentComponent.newChildComponentsOptionsRefs?.layer) {
-      newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsOptions = parentComponent.newChildComponentsOptionsRefs.layer;
+  private static addNewChildComponentsOptions(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
+    if (containerComponent.newChildComponentsOptionsRefs?.layer) {
+      newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsOptions = containerComponent.newChildComponentsOptionsRefs.layer;
     }
   }
 
-  // only works for adding layers to the top level parent component (masterComponent)
-  private static updateComponentDropdownStructure(activeComponentParent: WorkshopComponent, masterComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
+  // only works for adding layers to the top level container component (masterComponent)
+  private static updateComponentDropdownStructure(containerComponent: WorkshopComponent, masterComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     const baseName = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
     const newComponentDropdownStructure = { [baseName]: { 
       ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(baseName),
     }};
-    const parentComponentDropdownStructure = masterComponent.componentPreviewStructure.subcomponentDropdownStructure;
-    Object.assign(parentComponentDropdownStructure[activeComponentParent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name], newComponentDropdownStructure);
+    const containerComponentDropdownStructure = masterComponent.componentPreviewStructure.subcomponentDropdownStructure;
+    Object.assign(containerComponentDropdownStructure[containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name], newComponentDropdownStructure);
   }
 
-  private static addNewSubcomponentToBase(parentComponent: WorkshopComponent, layer: Layer): void {
-    parentComponent.componentPreviewStructure.layers.push(layer);
+  private static addNewSubcomponentToBase(containerComponent: WorkshopComponent, layer: Layer): void {
+    containerComponent.componentPreviewStructure.layers.push(layer);
   }
 
-  private static copySiblingSubcomponentCustomProperties(parentComponent: WorkshopComponent, layer: Layer): void {
-    if (parentComponent.componentPreviewStructure.layers.length > 0) {
-      const siblingSubcomponent = parentComponent.componentPreviewStructure.layers[parentComponent.componentPreviewStructure.layers.length - 1];
+  private static copySiblingSubcomponentCustomProperties(containerComponent: WorkshopComponent, layer: Layer): void {
+    if (containerComponent.componentPreviewStructure.layers.length > 0) {
+      const siblingSubcomponent = containerComponent.componentPreviewStructure.layers[containerComponent.componentPreviewStructure.layers.length - 1];
       const { customCss, defaultCss, customFeatures, defaultCustomFeatures } = siblingSubcomponent.subcomponentProperties;
-      if (parentComponent.areLayersInSyncByDefault) {
+      if (containerComponent.areLayersInSyncByDefault) {
         layer.subcomponentProperties.customCss = customCss;
         layer.subcomponentProperties.defaultCss = defaultCss;
         layer.subcomponentProperties.customFeatures = customFeatures;
@@ -76,16 +76,16 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     };
   }
 
-  protected static addNewComponentToComponentPreview(parentComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
+  protected static addNewComponentToComponentPreview(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     const layer: Layer = AddNewLayerComponent.createEmptyLayer(newComponent);
-    AddNewLayerComponent.copySiblingSubcomponentCustomProperties(parentComponent, layer);
-    AddNewLayerComponent.addNewSubcomponentToBase(parentComponent, layer);
+    AddNewLayerComponent.copySiblingSubcomponentCustomProperties(containerComponent, layer);
+    AddNewLayerComponent.addNewSubcomponentToBase(containerComponent, layer);
   }
 
-  // masterComponent is relative to the current parent component that the new component is being added to:
+  // masterComponent is relative to the current container component that the new component is being added to:
   // e.g. when creating a button within a card, upon adding text to a button - the master component to text is the button,
   // as the button is then added to the card - all of its subcomponents including text have card set as their master component
-  // when adding text/icon to an existing button - it uses its parent's master ref (button pointing to card),
+  // when adding text/icon to an existing button - it uses its container's master ref (button pointing to card),
   // hence its masterComponentRef property is going to point towards the card component
   protected static createNewComponent(componentGenerator: ComponentGenerator, masterComponent: WorkshopComponent, baseName?: string,
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
@@ -94,20 +94,21 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     return newComponent;
   }
 
-  public static add(parentComponent: WorkshopComponent, componentStyle: COMPONENT_STYLES, isEditable: boolean,
+  public static add(containerComponent: WorkshopComponent, componentStyle: COMPONENT_STYLES, isEditable: boolean,
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
     const layerName = ChildComponentBaseNamesToStyles.STYLE_TO_LAYER[componentStyle];
-    const { containerComponent, masterComponent } = ActiveComponentUtils.getHigherLevelComponents(parentComponent);
+    const { higherComponentContainer, masterComponent } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
     const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, masterComponent,
       UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
     Object.assign(masterComponent.subcomponents, newComponent.subcomponents);
-    AddNewLayerComponent.addNewComponentToComponentPreview(containerComponent, newComponent);
-    if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(containerComponent, masterComponent, newComponent);
+    AddNewLayerComponent.addNewComponentToComponentPreview(higherComponentContainer, newComponent);
+    if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(higherComponentContainer, masterComponent, newComponent);
     AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(masterComponent, newComponent, isEditable);
-    AddNewLayerComponent.addNewChildComponentsOptions(containerComponent, newComponent);
-    IncrementChildComponentCount.increment(containerComponent, layerName, containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name);
-    newComponent.containerComponent = containerComponent;
+    AddNewLayerComponent.addNewChildComponentsOptions(higherComponentContainer, newComponent);
+    IncrementChildComponentCount.increment(higherComponentContainer, layerName,
+      higherComponentContainer.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name);
+    newComponent.containerComponent = higherComponentContainer;
     return newComponent;
   }
 }
