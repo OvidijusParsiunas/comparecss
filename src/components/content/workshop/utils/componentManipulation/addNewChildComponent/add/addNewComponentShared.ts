@@ -29,7 +29,7 @@ export class AddNewComponentShared {
 
   private static setMasterComponentReference(newComponent: WorkshopComponent, masterComponent: WorkshopComponent): void {
     Object.keys(newComponent.subcomponents)
-      .forEach((subcomponentName) => newComponent.subcomponents[subcomponentName].seedComponent.ref.masterComponentRef = masterComponent);
+      .forEach((subcomponentName) => newComponent.subcomponents[subcomponentName].seedComponent.ref.masterComponent = masterComponent);
   }
 
   protected static createNewComponentViaGenerator(componentGenerator: ComponentGenerator, masterComponent: WorkshopComponent,

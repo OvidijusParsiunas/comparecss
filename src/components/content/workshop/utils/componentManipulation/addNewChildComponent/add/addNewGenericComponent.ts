@@ -142,7 +142,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
       dropdownStructure: NestedDropdownStructure, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
       parentLayer: Layer, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
-    const masterComponent = newComponentParent.masterComponentRef;
+    const { masterComponent } = newComponentParent;
     const [newComponent, baseNamePrefix] = AddNewGenericComponent.createNewComponent(componentType, componentStyle,
       componentGenerator, masterComponent, overwritePropertiesFunc);
     Object.assign(masterComponent.subcomponents, newComponent.subcomponents);

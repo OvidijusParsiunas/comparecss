@@ -215,7 +215,7 @@ export interface WorkshopComponent {
   // item text - the reference would be to menu (layers are not regarded as container components to children, but can be parent components)
   containerComponent?: WorkshopComponent;
   // each seed component is assigned a reference to the master component - primarily used to access the dropdown structure
-  masterComponentRef?: WorkshopComponent;
+  masterComponent?: WorkshopComponent;
 }
 
 // Component Architecture Information:

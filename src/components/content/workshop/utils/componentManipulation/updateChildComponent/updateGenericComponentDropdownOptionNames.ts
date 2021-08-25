@@ -126,9 +126,8 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
   }
 
   // for shallow component updates only
-  public static updateViaParentLayerPreviewStructure(parentComponent: WorkshopComponent, layer: Layer, useArgComponentStructure = false): void {
+  public static updateViaParentLayerPreviewStructure({masterComponent}: WorkshopComponent, layer: Layer, useArgComponentStructure = false): void {
     const { subcomponentProperties: { name: layerName }, sections: { alignedSections }} = layer;
-    const masterComponent = parentComponent.masterComponentRef;
     const nestedStructure = UpdateGenericComponentDropdownOptionNames.getNestedDropdownStructure(masterComponent, layerName, useArgComponentStructure);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(masterComponent, nestedStructure, alignedSections);
   }
