@@ -21,8 +21,8 @@ export class DropdownOptions {
   };
 
   private static getTextOptions(component: WorkshopComponent): Options {
-    const { seedComponent: { ref: { parentComponent }}, customStaticFeatures } = component.subcomponents[component.activeSubcomponentName];
-    if (parentComponent.type === COMPONENT_TYPES.DROPDOWN_MENU) {
+    const { seedComponent: { ref: { containerComponent }}, customStaticFeatures } = component.subcomponents[component.activeSubcomponentName];
+    if (containerComponent.type === COMPONENT_TYPES.DROPDOWN_MENU) {
       return menuItemTextOptions;
     }
     if (customStaticFeatures.selectDropdown.enabled) {

@@ -98,16 +98,16 @@ export class AddNewLayerComponent extends AddNewComponentShared {
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
     const layerName = ChildComponentBaseNamesToStyles.STYLE_TO_LAYER[componentStyle];
-    const { activeComponentParent, masterComponent } = ActiveComponentUtils.getComponentParents(parentComponent);
+    const { containerComponent, masterComponent } = ActiveComponentUtils.getHigherLevelComponents(parentComponent);
     const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, masterComponent,
       UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
     Object.assign(masterComponent.subcomponents, newComponent.subcomponents);
-    AddNewLayerComponent.addNewComponentToComponentPreview(activeComponentParent, newComponent);
-    if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(activeComponentParent, masterComponent, newComponent);
+    AddNewLayerComponent.addNewComponentToComponentPreview(containerComponent, newComponent);
+    if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(containerComponent, masterComponent, newComponent);
     AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(masterComponent, newComponent, isEditable);
-    AddNewLayerComponent.addNewChildComponentsOptions(activeComponentParent, newComponent);
-    IncrementChildComponentCount.increment(activeComponentParent, layerName, activeComponentParent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name);
-    newComponent.parentComponent = activeComponentParent;
+    AddNewLayerComponent.addNewChildComponentsOptions(containerComponent, newComponent);
+    IncrementChildComponentCount.increment(containerComponent, layerName, containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name);
+    newComponent.containerComponent = containerComponent;
     return newComponent;
   }
 }

@@ -137,6 +137,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
   // newComponentParent and activeComponentParent are very similar, however in the instance of adding a child component to a
   // child component e.g. Icon to a Button in a Card - newComponentParent would be Button whereas activeComponentParent would
   // be Card
+  // WORK1: activeComponentParent does not seem correct here
   public static addUsingParentDropdownStructure(newComponentParent: WorkshopComponent, activeComponentParent: WorkshopComponent,
       dropdownStructure: NestedDropdownStructure, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
       parentLayer: Layer, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
@@ -150,7 +151,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     InterconnectedSettings.update(true, activeComponentParent, newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
     IncrementChildComponentCount.increment(activeComponentParent, baseNamePrefix, parentLayer.subcomponentProperties.name);
     AddNewGenericComponent.populateCoreComponentRef(newComponentParent, newComponent);
-    newComponent.parentComponent = activeComponentParent;
+    newComponent.containerComponent = activeComponentParent;
     AddNewGenericComponent.removeContents(newComponent);
     return newComponent;
   }

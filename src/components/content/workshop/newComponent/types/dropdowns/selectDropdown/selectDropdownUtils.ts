@@ -25,7 +25,7 @@ export class SelectDropdownUtils {
 
   private static setDetails(subcomponentProperties: SubcomponentProperties, itemTextKey: keyof SubcomponentMouseEventItemText, canBeUnset = false): void {
     const seedComponent = subcomponentProperties.seedComponent.ref;
-    const menuComponent = seedComponent.parentComponent || seedComponent;
+    const menuComponent = seedComponent.containerComponent || seedComponent;
     const { selectDropdown } = menuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures;
     if (selectDropdown.enabled) {
       SelectDropdownUtils.setMouseEventText(seedComponent, selectDropdown, itemTextKey);

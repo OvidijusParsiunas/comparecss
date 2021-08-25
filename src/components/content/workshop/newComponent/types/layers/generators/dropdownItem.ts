@@ -16,6 +16,7 @@ import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { layerBase } from './base';
 
+// WORK1: change to activeContainerComponent
 interface OverwriteTextPropertiesBaseComponents {
   parentComponent: WorkshopComponent;
   activeComponentParent: WorkshopComponent;
@@ -101,14 +102,14 @@ export class DropdownItemLayer extends ComponentBuilder {
 
   private static addChildComponentsToLayer(parentComponent: WorkshopComponent): WorkshopComponent[] {
     const layerComponent = this as undefined as WorkshopComponent;
-    const { activeComponentParent } = ActiveComponentUtils.getComponentParents(parentComponent);
+    const { containerComponent } = ActiveComponentUtils.getHigherLevelComponents(parentComponent);
     const textComponent = AddNewGenericComponent.add(parentComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
       layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name,
-      [DropdownItemLayer.overwriteTextProperties.bind({parentComponent, activeComponentParent} as OverwriteTextPropertiesBaseComponents)]);
+      [DropdownItemLayer.overwriteTextProperties.bind({parentComponent, activeComponentParent: containerComponent} as OverwriteTextPropertiesBaseComponents)]);
     layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].otherSubcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     layerComponent.childComponentsLockedToLayer.list.push(textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(parentComponent,
-      activeComponentParent.componentPreviewStructure.layers[activeComponentParent.componentPreviewStructure.layers.length - 1]);
+      containerComponent.componentPreviewStructure.layers[containerComponent.componentPreviewStructure.layers.length - 1]);
     return [textComponent];
   }
 

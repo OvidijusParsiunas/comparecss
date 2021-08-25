@@ -7,14 +7,15 @@ export class RemoveChildComponent {
 
   public static remove(masterComponent: WorkshopComponent, isTemporaryAddPreview?: boolean): void {
     if (isTemporaryAddPreview) {
-      // when removing an add preview component - the currently active subcomponent is the parent
-      const activeComponent = ActiveComponentUtils.getActiveSeedComponentParent(masterComponent);
+      // when removing a temporary add preview component - the currently active component is the container component
+      const activeComponent = ActiveComponentUtils.getActiveContainerComponent(masterComponent);
       RemoveTemporaryAddPreviewComponent.remove(activeComponent);
     } else {
-      // when removing an actual component - retrieve the parent component of the currently active subcomponent
+      // when removing an actual component - retrieve the container component of the currently active component
       const { subcomponents, activeSubcomponentName } = masterComponent;
-      const activeComponentParent = subcomponents[activeSubcomponentName].seedComponent.ref.parentComponent;
-      RemoveAnyChildComponent.remove(activeComponentParent?.linkedComponents?.base || activeComponentParent, activeSubcomponentName, true);
+      const activeContainerComponent = subcomponents[activeSubcomponentName].seedComponent.ref.containerComponent;
+      RemoveAnyChildComponent.remove(
+        activeContainerComponent?.linkedComponents?.base || activeContainerComponent, activeSubcomponentName, true);
     }
   }
 }

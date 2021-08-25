@@ -211,9 +211,9 @@ export interface WorkshopComponent {
   newChildComponentsOptionsRefs?: NewChildComponentsOptionsRefs;
   // used to reference the linked component - where the base component refereneces the auxiliary component and vice versa
   linkedComponents?: LinkedComponents;
-  // reference to the parent that contains this component's base
-  // full structure explained at the bottom of the file titled: 'Component Architecture Information'
-  parentComponent?: WorkshopComponent;
+  // contains a reference to the component that nests it, e.g. if it was button text - the reference would be to button, if it was dropdown menu
+  // item text - the reference would be to menu (layers are not regarded as container components to children, but can be parent components)
+  containerComponent?: WorkshopComponent;
   // each seed component is assigned a reference to the master component - primarily used to access the dropdown structure
   masterComponentRef?: WorkshopComponent;
 }
@@ -269,9 +269,9 @@ export interface WorkshopComponent {
 // and Text/Button/Image Components are children of the layer components.
 // This hierarchy is defined through componentPreviewStructure -> layers -> sections -> base
 // subcomponents (of the child components) -> seed component -> and the loop is repeated.
-// Each seed component contains a reference to the component that nested it called 'parentComponent'.
+// Each seed component contains a reference to the component that owns it called 'containerComponent'.
 // Hence a text component has reference to button, a button component has reference to card etc.
-// To note, a child component will never refer to the layer that it is nested in, hence within a card
+// To note, this property will never refer to the layer that nested the child, hence within a card
 // component - the button and the layer components would both be referring to the card component.
 
 
@@ -316,6 +316,6 @@ export interface WorkshopComponent {
 // Hence this component is known as the Master component and all of the seed components have a
 // reference to it via the masterComponentRef property.
 // When referring to the examples above chronologically - master components of would be the very parent
-// eacg component i.e. Text, Button, Card and Dropdown Button components.
+// each component i.e. Text, Button, Card and Dropdown Button components.
 // To note, seed components can still refer to their core subcomponents via the coreSubcomponentRefs
 // property.

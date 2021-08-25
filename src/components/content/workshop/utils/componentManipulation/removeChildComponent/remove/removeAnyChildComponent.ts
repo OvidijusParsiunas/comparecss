@@ -140,13 +140,12 @@ export class RemoveAnyChildComponent {
   }
 
   public static remove(parentComponent: WorkshopComponent, subcomponentName: string, isRemovingActiveSubcomponent = false): void {
-    // WORK1: fix
-    const { activeComponentParent, masterComponent } = ActiveComponentUtils.getComponentParents(parentComponent);
+    const { containerComponent, masterComponent } = ActiveComponentUtils.getHigherLevelComponents(parentComponent);
     const targetDetails: TargetRemovalDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent,
       subcomponentName || parentComponent.activeSubcomponentName);
     targetDetails.isRemovingActiveSubcomponent = isRemovingActiveSubcomponent;
     const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
-      activeComponentParent.componentPreviewStructure,
+      containerComponent.componentPreviewStructure,
       RemoveAnyChildComponent.removeChildComponentInPreviewStructureIfFound.bind(targetDetails));
     if (traversalResult) targetDetails.parentLayerAlignedSections = traversalResult.alignedSections;
     targetDetails.masterComponent = masterComponent;
