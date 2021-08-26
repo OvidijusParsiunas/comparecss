@@ -1,0 +1,27 @@
+import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
+import JSONUtils from '../../generic/jsonUtils';
+
+export class SubcomponentTriggers {
+
+  private static setPropertyValues(newComponentBase: SubcomponentProperties, subcomponentType: number,
+      triggerSubcomponent: SubcomponentProperties): void {
+    if (!triggerSubcomponent.otherSubcomponentsToTrigger) return;
+    newComponentBase.triggeredByAnotherSubcomponent = triggerSubcomponent;
+    JSONUtils.setPropertyIfExists(triggerSubcomponent.otherSubcomponentsToTrigger, subcomponentType, newComponentBase);
+  }
+
+  public static set(newComponentContainer: WorkshopComponent, newComponentParentLayerSubcomponent: SubcomponentProperties,
+      newComponentBase: SubcomponentProperties, subcomponentType: number): void {
+    const newComponentContainerBase = newComponentContainer.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    SubcomponentTriggers.setPropertyValues(newComponentBase, subcomponentType, newComponentContainerBase);
+    SubcomponentTriggers.setPropertyValues(newComponentBase, subcomponentType, newComponentParentLayerSubcomponent);
+  }
+
+  // Only need to set one value to null as a component can only be triggered by one other subcomponent
+  // WORK1 - copy/add
+  public static remove({triggeredByAnotherSubcomponent, subcomponentType }: SubcomponentProperties): void {
+    if (!triggeredByAnotherSubcomponent) return;
+    triggeredByAnotherSubcomponent.otherSubcomponentsToTrigger[subcomponentType] = null;
+  }
+}

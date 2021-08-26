@@ -168,9 +168,9 @@ export interface SubcomponentProperties {
   // temporarily holds the original customCss when a component card has been hovered/selected during component import mode 
   tempOriginalCustomProperties?: TempCustomProperties;
   // when a subcomponent's mouse event is triggered, trigger other subcomponents' mouse events
-  // should currently be placed on base subcomponent only, if that changes - ammend the removeTriggerableSubcomponent method in RemoveAnyChildComponent class
   otherSubcomponentsToTrigger?: CoreSubcomponentRefs;
-  isTriggeredByAnotherSubcomponent?: boolean;
+  // reference to the subcomponent that triggers it (can currently be triggered by one subcomponent)
+  triggeredByAnotherSubcomponent?: SubcomponentProperties;
   // options for the add child component dropdown
   newChildComponentsOptions?: NestedDropdownStructure;
    // used to temporarily display a child component when hovering add subcomponent dropdown options with a mouse

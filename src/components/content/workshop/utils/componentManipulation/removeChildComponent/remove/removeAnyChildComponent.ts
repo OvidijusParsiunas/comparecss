@@ -10,6 +10,7 @@ import ComponentTraversalUtils from '../../../componentTraversal/componentTraver
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUtils';
+import { SubcomponentTriggers } from '../../utils/subcomponentTriggers';
 import { StringUtils } from '../../../generic/stringUtils';
 
 type TargetRemovalDetails = TargetDetails & { isRemovingActiveSubcomponent?: boolean, masterComponent?: WorkshopComponent };
@@ -30,9 +31,12 @@ export class RemoveAnyChildComponent {
     const subcomponentBaseName = (subcomponentDropdownStructure[dropdownOptionName]
       [DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).actualObjectName;
     const activeSubcomponent = containerComponent.subcomponents[subcomponentBaseName];
-    Object.keys(activeSubcomponent?.seedComponent?.ref.subcomponents || {}).forEach((keyName) => {
-      delete containerComponent.subcomponents[keyName];
-      delete containerComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[keyName];
+    const activeComponentCoreSusbcomponents = activeSubcomponent?.seedComponent?.ref.coreSubcomponentRefs;
+    Object.keys(activeComponentCoreSusbcomponents || {}).forEach((keyName) => {
+      if (!activeComponentCoreSusbcomponents[keyName]) return;
+      const subcomponentName = activeComponentCoreSusbcomponents[keyName].name;
+      delete containerComponent.subcomponents[subcomponentName];
+      delete containerComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[subcomponentName];
     });
   }
 
@@ -131,21 +135,13 @@ export class RemoveAnyChildComponent {
     if (coreSubcomponent) coreSubcomponentRefs[coreSubcomponent] = null;
   }
 
-  // WORK1 - copy/add triggerable subcomponent
-  private static removeTriggerableSubcomponent(targetDetails: TargetRemovalDetails): void {
-    if (!targetDetails.containerComponent.coreSubcomponentRefs[0]) return;
-    const { containerComponent: { coreSubcomponentRefs: { [SUBCOMPONENT_TYPES.BASE]: { otherSubcomponentsToTrigger }}}, targetSubcomponentProperties } = targetDetails;
-    const coreSubcomponent = Object.keys(otherSubcomponentsToTrigger || []).find((coreSubcomponentKey) => otherSubcomponentsToTrigger[coreSubcomponentKey] === targetSubcomponentProperties);
-    if (coreSubcomponent) otherSubcomponentsToTrigger[coreSubcomponent] = null;
-  }
-
   public static remove(parentComponent: WorkshopComponent, subcomponentName: string, isRemovingActiveSubcomponent = false): void {
-    const { higherComponentContainer, masterComponent } = ActiveComponentUtils.getHigherLevelComponents(parentComponent);
+    const { higherActiveComponentContainer, masterComponent } = ActiveComponentUtils.getHigherLevelComponents(parentComponent);
     const targetDetails: TargetRemovalDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent,
       subcomponentName || parentComponent.activeSubcomponentName);
     targetDetails.isRemovingActiveSubcomponent = isRemovingActiveSubcomponent;
     const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
-      higherComponentContainer.componentPreviewStructure,
+      higherActiveComponentContainer.componentPreviewStructure,
       RemoveAnyChildComponent.removeChildComponentInPreviewStructureIfFound.bind(targetDetails));
     if (traversalResult) targetDetails.parentLayerAlignedSections = traversalResult.alignedSections;
     targetDetails.masterComponent = masterComponent;
@@ -153,6 +149,6 @@ export class RemoveAnyChildComponent {
       targetDetails.masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       RemoveAnyChildComponent.removeChildComponentUsingDropdownStructureIfFound.bind(targetDetails));
     RemoveAnyChildComponent.removeCoreSubcomponentRef(targetDetails);
-    RemoveAnyChildComponent.removeTriggerableSubcomponent(targetDetails);
+    SubcomponentTriggers.remove(targetDetails.targetSubcomponentProperties);
   }
 }

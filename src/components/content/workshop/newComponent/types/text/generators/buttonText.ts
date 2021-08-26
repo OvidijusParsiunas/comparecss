@@ -60,7 +60,6 @@ class ButtonText extends ComponentBuilder {
   }
 
   private static overwriteSubcomponentProperties(subcomponent: SubcomponentProperties): void {
-    subcomponent.isTriggeredByAnotherSubcomponent = true;
     subcomponent.tempCustomCss = new Set(['transition']);
   }
 

@@ -15,6 +15,7 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssC
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
+import { SubcomponentTriggers } from '../../utils/subcomponentTriggers';
 import { AddNewComponentShared } from './addNewComponentShared';
 import JSONUtils from '../../../generic/jsonUtils';
 
@@ -46,12 +47,10 @@ export class AddNewGenericComponent extends AddNewComponentShared {
   private static populateCoreComponentRef(newComponentContainer: WorkshopComponent, newComponent: WorkshopComponent): void {
     // WORK1
     // get copy to work first
-    // check isTriggeredByAnotherSubcomponent
-    const baseSubcomponent = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    const { subcomponentType }: { subcomponentType?: number } = baseSubcomponent;
-    JSONUtils.setPropertyIfExists(newComponentContainer.coreSubcomponentRefs, subcomponentType, baseSubcomponent);
-    const { otherSubcomponentsToTrigger } = newComponentContainer.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    if (otherSubcomponentsToTrigger) JSONUtils.setPropertyIfExists(otherSubcomponentsToTrigger, subcomponentType, baseSubcomponent);
+    const newComponentBase = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    const { subcomponentType, parentLayer } = newComponentBase;
+    JSONUtils.setPropertyIfExists(newComponentContainer.coreSubcomponentRefs, subcomponentType as number, newComponentBase);
+    SubcomponentTriggers.set(newComponentContainer, parentLayer.subcomponentProperties, newComponentBase, subcomponentType);
     CoreSubcomponentRefsUtils.executeReferenceSharingExecutables(newComponentContainer);
     newComponentContainer.referenceSharingExecutables?.[0]?.(newComponentContainer.coreSubcomponentRefs);
   }
