@@ -1,6 +1,6 @@
 import { UpdateGenericComponentDropdownOptionNames } from '../../../../utils/componentManipulation/updateChildComponent/updateGenericComponentDropdownOptionNames';
 import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewChildComponent/add/addNewGenericComponent';
+import { AddNewContainerComponent } from '../../../../utils/componentManipulation/addNewChildComponent/add/addNewContainerComponent';
 import { SubcomponentMouseEventCallbacks } from '../../../../../../../interfaces/subcomponentMouseEventCallbacks';
 import { ActiveComponentUtils } from '../../../../utils/activeComponent/activeComponentUtils';
 import { LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -97,7 +97,7 @@ export class DropdownItemLayer extends ComponentBuilder {
   private static addChildComponentsToLayer(containerComponent: WorkshopComponent): WorkshopComponent[] {
     const layerComponent = this as undefined as WorkshopComponent;
     const { higherComponentContainer } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
-    const textComponent = AddNewGenericComponent.add(containerComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
+    const textComponent = AddNewContainerComponent.add(containerComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
       layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name,
       [DropdownItemLayer.overwriteTextProperties.bind(higherComponentContainer)]);
     layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].otherSubcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];

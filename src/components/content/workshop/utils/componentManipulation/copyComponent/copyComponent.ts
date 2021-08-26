@@ -2,9 +2,9 @@ import { UpdateGenericComponentDropdownOptionNames } from '../updateChildCompone
 import { componentTypeToStyleGenerators } from '../../../newComponent/types/componentTypeToStyleGenerators';
 import { UpdateLayerDropdownOptionNames } from '../updateChildComponent/updateLayerDropdownOptionNames';
 import { Layer, BaseSubcomponentRef } from '../../../../../../interfaces/componentPreviewStructure';
+import { AddNewContainerComponent } from '../addNewChildComponent/add/addNewContainerComponent';
 import { uniqueSubcomponentIdState } from '../../componentGenerator/uniqueSubcomponentIdState';
 import { CoreSubcomponentRefsUtils } from '../coreSubcomponentRefs/coreSubcomponentRefsUtils';
-import { AddNewGenericComponent } from '../addNewChildComponent/add/addNewGenericComponent';
 import { CoreSubcomponentRefs } from '../../../../../../interfaces/coreSubcomponentRefs';
 import { AddNewLayerComponent } from '../addNewChildComponent/add/addNewLayerComponent';
 import { ComponentBuilder } from '../../../newComponent/types/shared/componentBuilder';
@@ -29,7 +29,7 @@ export default class CopyComponent {
     Object.keys(alignedSections).forEach((section: ALIGNED_SECTION_TYPES) => {
       alignedSections[section].forEach((subcomponent: BaseSubcomponentRef) => {
         const { type, style } = subcomponent.subcomponentProperties.seedComponent.ref;
-        const newChildComponent = AddNewGenericComponent.add(
+        const newChildComponent = AddNewContainerComponent.add(
           newComponent, type, style, newLayer.subcomponentProperties.name, [CopyComponent.overwriteAlignedLayerSectionProperties.bind(section)]);
         baseComponentRefs.push(newChildComponent);
         CopySubcomponents.copyComponentSubcomponents(subcomponent.subcomponentProperties.seedComponent.ref, newChildComponent);

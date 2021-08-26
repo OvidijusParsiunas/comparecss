@@ -1,5 +1,5 @@
+import { AddNewContainerComponent } from '../../../../utils/componentManipulation/addNewChildComponent/add/addNewContainerComponent';
 import { CoreSubcomponentRefsUtils } from '../../../../utils/componentManipulation/coreSubcomponentRefs/coreSubcomponentRefsUtils';
-import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewChildComponent/add/addNewGenericComponent';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 
@@ -21,7 +21,7 @@ export class CopyChildComponentModeTempPropertiesUtils {
     const componentToBeCopiedCustomCss = subcomponentToBeCopied.customCss;
     activeComponentSubcomponent.customCss = componentToBeCopiedCustomCss;
     if (!componentToBeCopiedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top) {
-      componentToBeCopiedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top = AddNewGenericComponent.DEFAULT_TOP_PROPERTY;
+      componentToBeCopiedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top = AddNewContainerComponent.DEFAULT_TOP_PROPERTY;
     }
   }
 

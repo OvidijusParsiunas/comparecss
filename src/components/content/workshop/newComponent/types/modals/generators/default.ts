@@ -2,7 +2,7 @@ import { UpdateGenericComponentDropdownOptionNames } from '../../../../utils/com
 import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
 import { UpdateLayerDropdownOptionNames } from '../../../../utils/componentManipulation/updateChildComponent/updateLayerDropdownOptionNames';
 import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewChildComponent/add/addNewGenericComponent';
+import { AddNewContainerComponent } from '../../../../utils/componentManipulation/addNewChildComponent/add/addNewContainerComponent';
 import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewChildComponent/add/addNewLayerComponent';
 import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
@@ -104,15 +104,15 @@ class DefaultModal extends ComponentBuilder {
     const layer2Component = AddNewLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true, DefaultModal.overwriteLayerProperties.bind(nestedDropdownStructure));
     const layer3Component = AddNewLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true, DefaultModal.overwriteLayerProperties.bind(nestedDropdownStructure));
     UpdateLayerDropdownOptionNames.update(modalComponent, 0);
-    AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
+    AddNewContainerComponent.add(modalComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name, [DefaultModal.overwriteTitleProperties]);
-    AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.BUTTON, BUTTON_STYLES.CLOSE,
+    AddNewContainerComponent.add(modalComponent, COMPONENT_TYPES.BUTTON, BUTTON_STYLES.CLOSE,
       layer1Component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name, [DefaultModal.overwriteCloseButtonProperties]);
-    AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
+    AddNewContainerComponent.add(modalComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layer2Component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name, [DefaultModal.overwriteDescriptionProperties]);
-    AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
+    AddNewContainerComponent.add(modalComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
       layer3Component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name, [DefaultModal.overwriteSubmitButtonProperties]);
-    AddNewGenericComponent.add(modalComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
+    AddNewContainerComponent.add(modalComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
       layer3Component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name, [DefaultModal.overwriteCancelButtonProperties]);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(modalComponent, modalComponent.componentPreviewStructure.layers[0]);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(modalComponent, modalComponent.componentPreviewStructure.layers[1]);

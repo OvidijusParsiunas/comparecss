@@ -6,7 +6,7 @@ import { ChildComponentBaseNamesToStyles } from './utils/childComponentBaseNames
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
-import { AddNewGenericComponent } from './add/addNewGenericComponent';
+import { AddNewContainerComponent } from './add/addNewContainerComponent';
 import { AddNewComponentShared } from './add/addNewComponentShared';
 import { AddNewLayerComponent } from './add/addNewLayerComponent';
 
@@ -15,8 +15,8 @@ export class AddNewChildComponent extends AddNewComponentShared {
   private static addNewComponent(activeComponent: WorkshopComponent, newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES,
       activeComponentContainer: WorkshopComponent, dropdownStructure: NestedDropdownStructure): [WorkshopComponent, Layer] {
     const { componentType, componentStyle, parentLayer, containerComponent,
-      } = AddNewGenericComponent.getNewComponentProperties(activeComponent, newComponentBaseName);
-    const newComponent = AddNewGenericComponent.addUsingParentDropdownStructure(containerComponent,
+      } = AddNewContainerComponent.getNewComponentProperties(activeComponent, newComponentBaseName);
+    const newComponent = AddNewContainerComponent.addUsingParentDropdownStructure(containerComponent,
       activeComponentContainer, dropdownStructure, componentType, componentStyle, parentLayer);
     // set here because not all child components are removable, but the ones manually added by the user are
     newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
@@ -52,7 +52,7 @@ export class AddNewChildComponent extends AddNewComponentShared {
     if (Object.values(LAYER_COMPONENTS_BASE_NAMES).includes(newComponentBaseName as LAYER_COMPONENTS_BASE_NAMES)) {
       AddNewChildComponent.addNewLayerToBase(activeComponent, newComponentBaseName);
     } else {
-      AddNewGenericComponent.addComponentViaDropdownStructureSearch(
+      AddNewContainerComponent.addComponentViaDropdownStructureSearch(
         activeComponent, AddNewChildComponent.addNewComponentToLayer, newComponentBaseName);
     }
   }

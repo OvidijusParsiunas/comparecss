@@ -11,7 +11,7 @@ import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUt
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
-import { AddNewGenericComponent } from './addNewGenericComponent';
+import { AddNewContainerComponent } from './addNewContainerComponent';
 
 type DropdownStructureSearchCallback = (
   containerComponent: WorkshopComponent,
@@ -65,7 +65,7 @@ export class AddNewComponentShared {
     const targetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName);
     return ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
       masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
-      AddNewGenericComponent.proceedToInvokeAddCallbackIfFound.bind(targetDetails,
+      AddNewContainerComponent.proceedToInvokeAddCallbackIfFound.bind(targetDetails,
         parentOptionComponent, higherComponentContainer, callback, args)) as WorkshopComponent;
   }
 
@@ -75,11 +75,11 @@ export class AddNewComponentShared {
   }
 
   protected static getNewComponentProperties(activeComponent: WorkshopComponent, newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): NewComponentProperties {
-    const componentType = AddNewGenericComponent.componentBaseNameToType[newComponentBaseName];
+    const componentType = AddNewContainerComponent.componentBaseNameToType[newComponentBaseName];
     const componentStyle = ChildComponentBaseNamesToStyles.genericToStyle(newComponentBaseName);
     const containerComponent = ActiveComponentUtils.getActiveContainerComponent(activeComponent);
     const parentLayer = activeComponent.type === COMPONENT_TYPES.LAYER
-      ? AddNewGenericComponent.getContainerComponentLayer(containerComponent, activeComponent.coreSubcomponentRefs[0].name)
+      ? AddNewContainerComponent.getContainerComponentLayer(containerComponent, activeComponent.coreSubcomponentRefs[0].name)
       : containerComponent.componentPreviewStructure.layers[0];
     return { componentType, componentStyle, parentLayer, containerComponent };
   }

@@ -1,5 +1,5 @@
 import { UpdateGenericComponentDropdownOptionNames } from '../../../../utils/componentManipulation/updateChildComponent/updateGenericComponentDropdownOptionNames';
-import { AddNewGenericComponent } from '../../../../utils/componentManipulation/addNewChildComponent/add/addNewGenericComponent';
+import { AddNewContainerComponent } from '../../../../utils/componentManipulation/addNewChildComponent/add/addNewContainerComponent';
 import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewChildComponent/add/addNewLayerComponent';
 import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
@@ -28,9 +28,9 @@ class DefaultAlert extends ComponentBuilder {
   public static addComponentsToBase(alertComponent: WorkshopComponent): void {
     const layerComponent = AddNewLayerComponent.add(alertComponent, LAYER_STYLES.PLAIN, false);
     const layerComponentBaseName = layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
-    AddNewGenericComponent.add(alertComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
+    AddNewContainerComponent.add(alertComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layerComponentBaseName, [DefaultAlert.overwriteTextProperties]);
-    AddNewGenericComponent.add(alertComponent, COMPONENT_TYPES.BUTTON,
+    AddNewContainerComponent.add(alertComponent, COMPONENT_TYPES.BUTTON,
       BUTTON_STYLES.CLOSE, layerComponentBaseName, [DefaultAlert.overwriteCloseButtonProperties]);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(alertComponent, alertComponent.componentPreviewStructure.layers[0]);
   }

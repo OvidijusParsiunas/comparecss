@@ -21,7 +21,7 @@ import JSONUtils from '../../../generic/jsonUtils';
 
 type NewComponentDetails = [WorkshopComponent, string];
 
-export class AddNewGenericComponent extends AddNewComponentShared {
+export class AddNewContainerComponent extends AddNewComponentShared {
 
   // base name is used in dropdown options
   private static readonly componentTypeToBaseName: { [key in COMPONENT_TYPES]?: CHILD_COMPONENTS_BASE_NAMES } = {
@@ -32,7 +32,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     [COMPONENT_TYPES.ICON]: PRIMITIVE_COMPONENTS_BASE_NAMES.ICON,
   };
   public static readonly componentBaseNameToType: { [key in CHILD_COMPONENTS_BASE_NAMES]?: COMPONENT_TYPES } = {
-    ...JSONUtils.reverseMap(AddNewGenericComponent.componentTypeToBaseName),
+    ...JSONUtils.reverseMap(AddNewContainerComponent.componentTypeToBaseName),
     [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: COMPONENT_TYPES.BUTTON,
     [LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]: COMPONENT_TYPES.LAYER,
   };
@@ -53,7 +53,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     if (componentType === COMPONENT_TYPES.BUTTON) {
       return componentStyle === BUTTON_STYLES.CLOSE ? BUTTON_COMPONENTS_BASE_NAMES.CLOSE : BUTTON_COMPONENTS_BASE_NAMES.BUTTON;
     }
-    return AddNewGenericComponent.componentTypeToBaseName[componentType];
+    return AddNewContainerComponent.componentTypeToBaseName[componentType];
   }
 
   private static updateComponentDropdownStructure(masterComponent: WorkshopComponent, newComponent: WorkshopComponent,
@@ -82,19 +82,19 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     // this gets activated when the user is manually adding a component to a layer
     if (subcomponents[activeSubcomponentName].seedComponent.ref.type === COMPONENT_TYPES.LAYER) {
       const layerDropdownStructure = dropdownStructure[parentLayerOptionName];
-      AddNewGenericComponent.updateComponentDropdownStructure(masterComponent, newComponent, layerDropdownStructure as NestedDropdownStructure);
+      AddNewContainerComponent.updateComponentDropdownStructure(masterComponent, newComponent, layerDropdownStructure as NestedDropdownStructure);
     } else {
       // this gets activated when a new component is being programmatically generated or the user is manually adding a component to a base
       const subcomponentBaseName = subcomponents[activeSubcomponentName].name;
       const subcomponentOptionName = subcomponentNameToDropdownOptionName[subcomponentBaseName];
       const componentBaseDropdownStructure = dropdownStructure[subcomponentOptionName][parentLayerOptionName] || dropdownStructure[subcomponentOptionName];
-      AddNewGenericComponent.updateComponentDropdownStructure(masterComponent, newComponent, componentBaseDropdownStructure as NestedDropdownStructure);
+      AddNewContainerComponent.updateComponentDropdownStructure(masterComponent, newComponent, componentBaseDropdownStructure as NestedDropdownStructure);
     }
   }
 
   protected static addNewComponentToComponentPreview(newComponent: WorkshopComponent, parentLayer: Layer): void {
     const baseSubcomponent = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    AddNewGenericComponent.addNewSubcomponentToParentLayer(parentLayer, baseSubcomponent);
+    AddNewContainerComponent.addNewSubcomponentToParentLayer(parentLayer, baseSubcomponent);
     baseSubcomponent.parentLayer = parentLayer;
   }
 
@@ -109,19 +109,19 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     const customCssProperties = baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
     const defaultCustomCssProperties = baseSubcomponent.defaultCss[CSS_PSEUDO_CLASSES.DEFAULT];
     if (!customCssProperties.top) {
-      customCssProperties.top = AddNewGenericComponent.DEFAULT_TOP_PROPERTY;
-      defaultCustomCssProperties.top = AddNewGenericComponent.DEFAULT_TOP_PROPERTY;
+      customCssProperties.top = AddNewContainerComponent.DEFAULT_TOP_PROPERTY;
+      defaultCustomCssProperties.top = AddNewContainerComponent.DEFAULT_TOP_PROPERTY;
     }
   }
 
   protected static createNewComponent(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, componentGenerator: ComponentGenerator,
       masterComponent?: WorkshopComponent, overwritePropertiesFunc?: OverwritePropertiesFunc[], customBaseName?: string): NewComponentDetails {
-    const baseNamePrefix = AddNewGenericComponent.getBaseSubcomponentNamePrefix(componentType, componentStyle);
+    const baseNamePrefix = AddNewContainerComponent.getBaseSubcomponentNamePrefix(componentType, componentStyle);
     const baseName = customBaseName || UniqueSubcomponentNameGenerator.generate(baseNamePrefix);
     const newComponent = AddNewComponentShared.createNewComponentViaGenerator(componentGenerator, masterComponent, baseName);
-    AddNewGenericComponent.applyTopProperty(newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
+    AddNewContainerComponent.applyTopProperty(newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
     if (overwritePropertiesFunc) {
-      AddNewGenericComponent.executeOverwritePropertiesFuncs(overwritePropertiesFunc, newComponent);
+      AddNewContainerComponent.executeOverwritePropertiesFuncs(overwritePropertiesFunc, newComponent);
     }
     return [newComponent, baseNamePrefix];
   }
@@ -135,14 +135,14 @@ export class AddNewGenericComponent extends AddNewComponentShared {
       parentLayer: Layer, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
     const { masterComponent } = newComponentContainer;
-    const [newComponent, baseNamePrefix] = AddNewGenericComponent.createNewComponent(componentType, componentStyle,
+    const [newComponent, baseNamePrefix] = AddNewContainerComponent.createNewComponent(componentType, componentStyle,
       componentGenerator, masterComponent, overwritePropertiesFunc);
     Object.assign(masterComponent.subcomponents, newComponent.subcomponents);
-    AddNewGenericComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
-    AddNewGenericComponent.addNewComponentToDropdownStructure(newComponent, masterComponent, dropdownStructure);
+    AddNewContainerComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
+    AddNewContainerComponent.addNewComponentToDropdownStructure(newComponent, masterComponent, dropdownStructure);
     InterconnectedSettings.update(true, activeComponentContainer, newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
     IncrementChildComponentCount.increment(activeComponentContainer, baseNamePrefix);
-    AddNewGenericComponent.populateCoreComponentRef(newComponentContainer, newComponent);
+    AddNewContainerComponent.populateCoreComponentRef(newComponentContainer, newComponent);
     AddNewComponentShared.cleanSubcomponentProperties(newComponent);
     newComponent.containerComponent = activeComponentContainer;
     return newComponent;
@@ -151,7 +151,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
   public static add(newComponentContainer: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
       parentLayerName: string, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
     const parentLayer = AddNewComponentShared.getContainerComponentLayer(newComponentContainer, parentLayerName);
-    return AddNewComponentShared.addComponentViaDropdownStructureSearch(newComponentContainer, AddNewGenericComponent.addUsingParentDropdownStructure,
+    return AddNewComponentShared.addComponentViaDropdownStructureSearch(newComponentContainer, AddNewContainerComponent.addUsingParentDropdownStructure,
       componentType, componentStyle, parentLayer, overwritePropertiesFunc)
   }
 }
