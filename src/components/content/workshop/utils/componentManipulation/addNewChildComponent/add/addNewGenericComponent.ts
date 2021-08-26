@@ -38,12 +38,6 @@ export class AddNewGenericComponent extends AddNewComponentShared {
   };
   public static readonly DEFAULT_TOP_PROPERTY = '50%';
 
-  private static removeContents(newComponent: WorkshopComponent): void {
-    newComponent.subcomponents = {};
-    newComponent.componentPreviewStructure.subcomponentDropdownStructure = {};
-    newComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName = {};
-  }
-
   private static populateCoreComponentRef(newComponentContainer: WorkshopComponent, newComponent: WorkshopComponent): void {
     // WORK1
     // get copy to work first
@@ -149,8 +143,8 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     InterconnectedSettings.update(true, activeComponentContainer, newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
     IncrementChildComponentCount.increment(activeComponentContainer, baseNamePrefix, parentLayer.subcomponentProperties.name);
     AddNewGenericComponent.populateCoreComponentRef(newComponentContainer, newComponent);
+    AddNewComponentShared.cleanSubcomponentProperties(newComponent);
     newComponent.containerComponent = activeComponentContainer;
-    AddNewGenericComponent.removeContents(newComponent);
     return newComponent;
   }
 

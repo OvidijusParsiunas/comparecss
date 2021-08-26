@@ -108,6 +108,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     AddNewLayerComponent.addNewChildComponentsOptions(higherComponentContainer, newComponent);
     IncrementChildComponentCount.increment(higherComponentContainer, layerName,
       higherComponentContainer.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name);
+    AddNewComponentShared.cleanSubcomponentProperties(newComponent);
     newComponent.containerComponent = higherComponentContainer;
     return newComponent;
   }

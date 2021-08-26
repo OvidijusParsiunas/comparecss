@@ -27,16 +27,16 @@ export class RemoveAnyChildComponent {
     }
   }
 
-  private static removeSubcomponents(subcomponentDropdownStructure: NestedDropdownStructure, dropdownOptionName: string, containerComponent: WorkshopComponent): void {
+  private static removeSubcomponents(subcomponentDropdownStructure: NestedDropdownStructure, dropdownOptionName: string, masterComponent: WorkshopComponent): void {
     const subcomponentBaseName = (subcomponentDropdownStructure[dropdownOptionName]
       [DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).actualObjectName;
-    const activeSubcomponent = containerComponent.subcomponents[subcomponentBaseName];
+    const activeSubcomponent = masterComponent.subcomponents[subcomponentBaseName];
     const activeComponentCoreSusbcomponents = activeSubcomponent?.seedComponent?.ref.coreSubcomponentRefs;
     Object.keys(activeComponentCoreSusbcomponents || {}).forEach((keyName) => {
       if (!activeComponentCoreSusbcomponents[keyName]) return;
       const subcomponentName = activeComponentCoreSusbcomponents[keyName].name;
-      delete containerComponent.subcomponents[subcomponentName];
-      delete containerComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[subcomponentName];
+      delete masterComponent.subcomponents[subcomponentName];
+      delete masterComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[subcomponentName];
     });
   }
 

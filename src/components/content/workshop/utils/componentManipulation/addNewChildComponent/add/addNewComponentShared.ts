@@ -8,6 +8,7 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentType
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUtils';
+import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { AddNewGenericComponent } from './addNewGenericComponent';
@@ -17,6 +18,13 @@ type DropdownStructureSearchCallback = (
   activeComponentContainer: WorkshopComponent,
   dropdownStructure: NestedDropdownStructure,
   ...args: unknown[]) => WorkshopComponent;
+
+interface NewComponentProperties {
+  componentType: COMPONENT_TYPES;
+  componentStyle: COMPONENT_STYLES;
+  parentLayer: Layer;
+  containerComponent: WorkshopComponent;
+}
 
 export class AddNewComponentShared {
 
@@ -66,8 +74,7 @@ export class AddNewComponentShared {
     return ComponentPreviewStructureSearchUtils.getLayerByName(activeContainerComponent, parentLayerName);
   }
 
-  // WORK1: add type
-  protected static getNewComponentProperties(activeComponent: WorkshopComponent, newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): any {
+  protected static getNewComponentProperties(activeComponent: WorkshopComponent, newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): NewComponentProperties {
     const componentType = AddNewGenericComponent.componentBaseNameToType[newComponentBaseName];
     const componentStyle = ChildComponentBaseNamesToStyles.genericToStyle(newComponentBaseName);
     const containerComponent = ActiveComponentUtils.getActiveContainerComponent(activeComponent);
@@ -75,5 +82,11 @@ export class AddNewComponentShared {
       ? AddNewGenericComponent.getContainerComponentLayer(containerComponent, activeComponent.coreSubcomponentRefs[0].name)
       : containerComponent.componentPreviewStructure.layers[0];
     return { componentType, componentStyle, parentLayer, containerComponent };
+  }
+
+  protected static cleanSubcomponentProperties(newComponent: WorkshopComponent): void {
+    newComponent.subcomponents = {};
+    newComponent.componentPreviewStructure.subcomponentDropdownStructure = {};
+    newComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName = {};
   }
 }

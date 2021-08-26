@@ -118,7 +118,6 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
 
   private static getNestedDropdownStructure(masterComponent: WorkshopComponent, layerName: string, useArgComponentDropdownStructure: boolean): NestedDropdownStructure {
     const { subcomponentDropdownStructure, subcomponentNameToDropdownOptionName } = masterComponent.componentPreviewStructure;
-    // WORK1 not sure if this is needed
     const activeComponent = useArgComponentDropdownStructure ? masterComponent : ActiveComponentUtils.getActiveContainerComponent(masterComponent);
     const activeComponentName = activeComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
     const activeComponentDropdownStructure = subcomponentDropdownStructure[activeComponentName];

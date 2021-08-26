@@ -16,11 +16,6 @@ import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { layerBase } from './base';
 
-interface OverwriteTextPropertiesBaseComponents {
-  containerComponent: WorkshopComponent;
-  higherComponentContainer: WorkshopComponent;
-}
-
 export class DropdownItemLayer extends ComponentBuilder {
 
   public static setStyle(component: WorkshopComponent): void {
@@ -80,7 +75,7 @@ export class DropdownItemLayer extends ComponentBuilder {
   }
 
   public static overwriteTextProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
-    const { higherComponentContainer } = this as unknown as OverwriteTextPropertiesBaseComponents;
+    const higherComponentContainer = this as unknown as WorkshopComponent;
     const { layers: activeBaseComponentLayers } = higherComponentContainer.componentPreviewStructure;
     if (activeBaseComponentLayers.length > 1) {
       const siblingDropdownItem = activeBaseComponentLayers[activeBaseComponentLayers.length - 2];
@@ -104,8 +99,7 @@ export class DropdownItemLayer extends ComponentBuilder {
     const { higherComponentContainer } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
     const textComponent = AddNewGenericComponent.add(containerComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
       layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name,
-      // WORK1: are both of the properties needed
-      [DropdownItemLayer.overwriteTextProperties.bind({ containerComponent, higherComponentContainer } as OverwriteTextPropertiesBaseComponents)]);
+      [DropdownItemLayer.overwriteTextProperties.bind(higherComponentContainer)]);
     layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].otherSubcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     layerComponent.childComponentsLockedToLayer.list.push(textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(containerComponent,
