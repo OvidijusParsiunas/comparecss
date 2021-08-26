@@ -141,7 +141,7 @@ export class AddNewGenericComponent extends AddNewComponentShared {
     AddNewGenericComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
     AddNewGenericComponent.addNewComponentToDropdownStructure(newComponent, masterComponent, dropdownStructure);
     InterconnectedSettings.update(true, activeComponentContainer, newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
-    IncrementChildComponentCount.increment(activeComponentContainer, baseNamePrefix, parentLayer.subcomponentProperties.name);
+    IncrementChildComponentCount.increment(activeComponentContainer, baseNamePrefix);
     AddNewGenericComponent.populateCoreComponentRef(newComponentContainer, newComponent);
     AddNewComponentShared.cleanSubcomponentProperties(newComponent);
     newComponent.containerComponent = activeComponentContainer;

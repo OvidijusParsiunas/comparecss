@@ -1,33 +1,39 @@
-import { DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
-import { Subcomponents, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ChildComponentCount } from '../../../../../../interfaces/childComponentCount';
+import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
+import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { ChildComponentCountShared } from './childComponentCountShared';
 
-export class IncrementChildComponentCount {
+interface ConditionFuncContextValues {
+  childComponentCount: ChildComponentCount;
+  newComponentNamePrefix: string;
+}
 
-  private static disableAddPreviewDropdownOptionIfAtMax(childComponentCount: ChildComponentCount, subcomponents: Subcomponents,
-      newComponentBaseName: string, containerComponentName: string): void {
-    if (childComponentCount.max[newComponentBaseName]
-        && childComponentCount.current[newComponentBaseName] >= childComponentCount.max[newComponentBaseName]) {
-      subcomponents[containerComponentName].newChildComponentsOptions[newComponentBaseName] = { [DROPDOWN_OPTION_AUX_DETAILS_REF]: { isEnabled: false } };
-    }
+export class IncrementChildComponentCount extends ChildComponentCountShared {
+
+  private static isChildComponentCountAtMax(): boolean {
+    const { childComponentCount, newComponentNamePrefix } = this as any as ConditionFuncContextValues;
+    return childComponentCount.max[newComponentNamePrefix]
+      && childComponentCount.current[newComponentNamePrefix] >= childComponentCount.max[newComponentNamePrefix];
   }
 
-  private static incrementCurrentCount(childComponentCount: ChildComponentCount, newComponentBaseName: string): void {
+  private static incrementCurrentCount(childComponentCount: ChildComponentCount, newComponentNamePrefix: string): void {
     if (childComponentCount.current === undefined) {
-      childComponentCount.current = { [newComponentBaseName]: 1 }; 
-    } else if (childComponentCount.current[newComponentBaseName] === undefined) {
-      childComponentCount.current[newComponentBaseName] = 1 ; 
+      childComponentCount.current = { [newComponentNamePrefix]: 1 }; 
+    } else if (childComponentCount.current[newComponentNamePrefix] === undefined) {
+      childComponentCount.current[newComponentNamePrefix] = 1; 
     } else {
-      childComponentCount.current[newComponentBaseName] += 1;
+      childComponentCount.current[newComponentNamePrefix] += 1;
     }
   }
 
-  public static increment(containerComponent: WorkshopComponent, newComponentBaseName: string, containerComponentName: string): void {
-    const { childComponentCount, subcomponents } = containerComponent;
+  public static increment(parentComponent: WorkshopComponent, newComponentNamePrefix: string): void {
+    const { childComponentCount } = parentComponent;
     if (childComponentCount) {
-      IncrementChildComponentCount.incrementCurrentCount(childComponentCount, newComponentBaseName);
-      IncrementChildComponentCount.disableAddPreviewDropdownOptionIfAtMax(childComponentCount, subcomponents,
-        newComponentBaseName, containerComponentName);
+      IncrementChildComponentCount.incrementCurrentCount(childComponentCount, newComponentNamePrefix);
+      ChildComponentCountShared.setAddPreviewDropdownOptionStateIfConditionMet(
+        IncrementChildComponentCount.isChildComponentCountAtMax.bind({ childComponentCount, newComponentNamePrefix } as ConditionFuncContextValues),
+        parentComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE], 
+        newComponentNamePrefix, false);
     }
   }
 }

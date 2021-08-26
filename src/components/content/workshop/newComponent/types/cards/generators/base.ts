@@ -15,11 +15,6 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class CardBase extends ComponentBuilder {
 
-  public static setChildComponentCountMax(cardBaseComponent: WorkshopComponent): void {
-    cardBaseComponent.childComponentCount = {
-      max: { [LAYER_COMPONENTS_BASE_NAMES.LAYER]: 5, [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
-  }
-
   public static setChildComponentsOptions(cardBaseComponent: WorkshopComponent): void {
     const layerComponentsOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([
       BUTTON_COMPONENTS_BASE_NAMES.BUTTON, PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE, PRIMITIVE_COMPONENTS_BASE_NAMES.IMAGE]);

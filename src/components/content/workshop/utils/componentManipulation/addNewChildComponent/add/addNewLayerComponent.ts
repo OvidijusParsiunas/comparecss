@@ -106,8 +106,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(higherComponentContainer, masterComponent, newComponent);
     AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(masterComponent, newComponent, isEditable);
     AddNewLayerComponent.addNewChildComponentsOptions(higherComponentContainer, newComponent);
-    IncrementChildComponentCount.increment(higherComponentContainer, layerName,
-      higherComponentContainer.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name);
+    IncrementChildComponentCount.increment(higherComponentContainer, layerName);
     AddNewComponentShared.cleanSubcomponentProperties(newComponent);
     newComponent.containerComponent = higherComponentContainer;
     return newComponent;
