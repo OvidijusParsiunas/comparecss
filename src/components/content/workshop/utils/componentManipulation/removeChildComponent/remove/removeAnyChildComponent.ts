@@ -107,6 +107,8 @@ export class RemoveAnyChildComponent {
       RemoveAnyChildComponent.removeLayerComponents(layer, masterComponent, containerComponent);
     });
     const childName = subcomponentProperties.name;
+    // a child component can be counted by either the layer or the container component, hence need to make sure the count is
+    // decremented at both components
     DecrementChildComponentCount.decrement(seedComponent.containerComponent, childName);
     DecrementChildComponentCount.decrement(subcomponentProperties.parentLayer.subcomponentProperties.seedComponent.ref, childName);
     RemoveAnyChildComponent.removeSubcomponentProperties(childName, masterComponent);
