@@ -137,7 +137,7 @@ export class AddNewContainerComponent extends AddNewComponentShared {
     const { masterComponent } = newComponentContainer;
     const [newComponent, baseNamePrefix] = AddNewContainerComponent.createNewComponent(componentType, componentStyle,
       componentGenerator, masterComponent, overwritePropertiesFunc);
-    Object.assign(masterComponent.subcomponents, newComponent.subcomponents);
+    AddNewComponentShared.populateMasterComponentWithNewSubcomponents(masterComponent, newComponent.subcomponents);
     AddNewContainerComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
     AddNewContainerComponent.addNewComponentToDropdownStructure(newComponent, masterComponent, dropdownStructure);
     InterconnectedSettings.update(true, activeComponentContainer, newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);

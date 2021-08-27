@@ -29,7 +29,7 @@
           :additionalButtonClasses="[TOOLBAR_BUTTON_GROUP_END_COMPONENT_CLASS]"
           :uniqueIdentifier="ADD_NEW_SUBCOMPONENT_DROPDOWN_UNIQUE_IDENTIFIER"
           :dropdownOptions="getSubcomponentsToAdd()"
-          :reactiveObjects="[component, component.activeSubcomponentName]"
+          :callWatchWhenDropdownOptionsValueChangeDetectionTriggered="{}"
           :consistentButtonContent="{'backgroundIconClass': 'add-subcomponent-button-icon'}"
           :timeoutFunc="executeCallbackAfterTimeout"
           :minOptionsToDisplayDropdown="1"

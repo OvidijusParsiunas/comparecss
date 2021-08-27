@@ -16,7 +16,6 @@ child text ripple effects
 child card button width
 subcomponents removed from child components
 change copy child component to sync child component - new UX
-new component options are not changing state
 
 overflow
 try with button tags

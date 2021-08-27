@@ -1,17 +1,18 @@
 import { ComponentTraversalState, TargetDetails } from '../../../../../../../interfaces/componentTraversal';
 import { CHILD_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { ComponentPreviewStructureSearchUtils } from '../utils/componentPreviewStractureSearchUtils';
+import { Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { ChildComponentBaseNamesToStyles } from '../utils/childComponentBaseNamesToStyles';
 import ComponentTraversalUtils from '../../../componentTraversal/componentTraversalUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUtils';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { AddNewContainerComponent } from './addNewContainerComponent';
+import JSONUtils from '../../../generic/jsonUtils';
 
 type DropdownStructureSearchCallback = (
   containerComponent: WorkshopComponent,
@@ -82,6 +83,11 @@ export class AddNewComponentShared {
       ? AddNewContainerComponent.getContainerComponentLayer(containerComponent, activeComponent.coreSubcomponentRefs[0].name)
       : containerComponent.componentPreviewStructure.layers[0];
     return { componentType, componentStyle, parentLayer, containerComponent };
+  }
+
+  protected static populateMasterComponentWithNewSubcomponents(masterComponent: WorkshopComponent, newSubcomponents: Subcomponents): void {
+    // utilising this method to cause the reactive masterComponent variable to trigger change detection in the add new component dropdown
+    JSONUtils.addObjects(masterComponent, 'subcomponents', newSubcomponents);
   }
 
   protected static cleanSubcomponentProperties(newComponent: WorkshopComponent): void {

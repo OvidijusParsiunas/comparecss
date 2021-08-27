@@ -47,4 +47,9 @@ export default class JSONUtils {
       object[keyName] = newValue;
     }
   }
+
+  // used as an alternative to Object.assign to force change detection in vue components
+  public static addObjects<T>(object1Parent: T, object1Key: keyof T, object2: T[keyof T]): void {
+    object1Parent[object1Key] = { ...object1Parent[object1Key], ...object2 };
+  }
 }

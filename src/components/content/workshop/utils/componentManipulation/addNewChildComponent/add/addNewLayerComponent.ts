@@ -101,7 +101,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     const { higherComponentContainer, masterComponent } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
     const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, masterComponent,
       UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
-    Object.assign(masterComponent.subcomponents, newComponent.subcomponents);
+    AddNewComponentShared.populateMasterComponentWithNewSubcomponents(masterComponent, newComponent.subcomponents);
     AddNewLayerComponent.addNewComponentToComponentPreview(higherComponentContainer, newComponent);
     if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(higherComponentContainer, masterComponent, newComponent);
     AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(masterComponent, newComponent, isEditable);

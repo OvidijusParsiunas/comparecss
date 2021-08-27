@@ -478,13 +478,12 @@ export default {
       default: 2,
     },
     consistentButtonContent: Object,
-    reactiveObjects: Array,
     additionalButtonClasses: Array,
     displayArrowOnMouseEnter: Boolean,
+    callWatchWhenDropdownOptionsValueChangeDetectionTriggered: Object,
   },
   watch: {
-    reactiveObjects(): void {
-      // used to force the processing of dropdown properties when any of the reactive objects in the array change
+    callWatchWhenDropdownOptionsValueChangeDetectionTriggered(): void {
       this.processDropdownOptions();
       this.setArrowIconTransitionProperty();
     },
