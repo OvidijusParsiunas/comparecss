@@ -22,6 +22,7 @@ export class DecrementChildComponentCount extends ChildComponentCountShared {
   }
 
   public static decrement(parentComponent: WorkshopComponent, removedSubomponentBaseName: string): void {
+    // if temp component
     if (!parentComponent || !parentComponent.masterComponent) return;
     const { childComponentCount } = parentComponent;
     if (childComponentCount) {

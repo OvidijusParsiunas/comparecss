@@ -19,8 +19,8 @@ class CardBase extends ComponentBuilder {
     const layerComponentsOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([
       BUTTON_COMPONENTS_BASE_NAMES.BUTTON, PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE, PRIMITIVE_COMPONENTS_BASE_NAMES.IMAGE]);
     cardBaseComponent.newChildComponentsOptionsRefs = { layer: layerComponentsOptions };
-    const baseComponentOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);
-    cardBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsOptions = baseComponentOptions;
+    cardBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsOptions = UpdateDropdownOptionNamesShared
+      .generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);
     cardBaseComponent.childComponentCount = {
       max: { [LAYER_COMPONENTS_BASE_NAMES.LAYER]: 5, [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
   }

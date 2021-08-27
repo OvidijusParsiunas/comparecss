@@ -141,10 +141,10 @@ export class AddNewContainerComponent extends AddNewComponentShared {
     AddNewContainerComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
     AddNewContainerComponent.addNewComponentToDropdownStructure(newComponent, masterComponent, dropdownStructure);
     InterconnectedSettings.update(true, activeComponentContainer, newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
-    IncrementChildComponentCount.increment(activeComponentContainer, baseNamePrefix);
+    IncrementChildComponentCount.increment(newComponentContainer, baseNamePrefix);
     AddNewContainerComponent.populateCoreComponentRef(newComponentContainer, newComponent);
     AddNewComponentShared.cleanSubcomponentProperties(newComponent);
-    newComponent.containerComponent = activeComponentContainer;
+    newComponent.containerComponent = newComponentContainer;
     return newComponent;
   }
 

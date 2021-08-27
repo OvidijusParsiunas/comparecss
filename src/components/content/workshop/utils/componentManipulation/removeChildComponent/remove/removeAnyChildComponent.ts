@@ -80,6 +80,7 @@ export class RemoveAnyChildComponent {
   }
 
   private static removeSubcomponentProperties(subcomponentName: string, masterComponent: WorkshopComponent): void {
+    // if temp component
     if (!masterComponent) return;
     delete masterComponent.subcomponents[subcomponentName];
     delete masterComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[subcomponentName];
@@ -107,8 +108,8 @@ export class RemoveAnyChildComponent {
       RemoveAnyChildComponent.removeLayerComponents(layer, masterComponent, containerComponent);
     });
     const childName = subcomponentProperties.name;
-    // a child component can be counted by either the layer or the container component, hence need to make sure the count is
-    // decremented at both components
+    // a child component can be counted by either the parent layer or the container component, hence need to make sure the count is
+    // decremented at both of these components
     DecrementChildComponentCount.decrement(seedComponent.containerComponent, childName);
     DecrementChildComponentCount.decrement(subcomponentProperties.parentLayer.subcomponentProperties.seedComponent.ref, childName);
     RemoveAnyChildComponent.removeSubcomponentProperties(childName, masterComponent);
