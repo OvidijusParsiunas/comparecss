@@ -57,6 +57,7 @@ export class IconBase extends ComponentBuilder {
     return {
       autoSize: ComponentBuilder.createAutoSize(true, false),
       alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
+      animations: ComponentBuilder.createStationaryAnimations({}),
       // WORK1: shoudn't need changeIconFunc
       icon: { name: DROPDOWN_ARROW_ICON_TYPES.CARET, isComponentDisplayed: true, changeIconFunc: IconBase.changeIconFunc },
     };

@@ -23,7 +23,7 @@ export class ButtonBaseSpecificSettings {
     baseSubcomponent.subcomponentSpecificSettings = ButtonBaseSpecificSettings.MENU_BASE_SPECIFIC_COMPONENTS;
   }
 
-  private static getLeftPositionProperties(subcomponentProperties: SubcomponentProperties): UpdateOtherCssProperties {
+  private static getFadeAnimationDurationProperties(subcomponentProperties: SubcomponentProperties): UpdateOtherCssProperties {
     const { customFeatures } = subcomponentProperties;
     return {
       customFeatures,
@@ -37,8 +37,8 @@ export class ButtonBaseSpecificSettings {
     component.interconnectedSettings = [{
       updateOtherCssProperties: baseSubcomponent.subcomponentSpecificSettings[WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS]
         [SETTING_NAMES.FADE].updateOtherCssProperties,
-      dependantChildrenTypes: new Set([SUBCOMPONENT_TYPES.TEXT]),
-      updateOtherCssPropertiesObjGenerator: ButtonBaseSpecificSettings.getLeftPositionProperties,
+      dependantChildrenTypes: new Set([SUBCOMPONENT_TYPES.TEXT, SUBCOMPONENT_TYPES.ICON]),
+      updateOtherCssPropertiesObjGenerator: ButtonBaseSpecificSettings.getFadeAnimationDurationProperties,
     }];
   }
 

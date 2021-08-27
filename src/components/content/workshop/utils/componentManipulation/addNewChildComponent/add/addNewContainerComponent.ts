@@ -126,13 +126,9 @@ export class AddNewContainerComponent extends AddNewComponentShared {
     return [newComponent, baseNamePrefix];
   }
 
-  // parent component is never the layer but the higher component that contains it
-  // newComponentContainer and activeComponentContainer are very similar, however in the instance of adding a child component to
-  // anotehr child component e.g. Icon to a Button inside a Card - newComponentContainer value would be Button whereas the
-  // activeComponentContainer value would be Card
-  public static addUsingParentDropdownStructure(newComponentContainer: WorkshopComponent, activeComponentContainer: WorkshopComponent,
-      dropdownStructure: NestedDropdownStructure, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
-      parentLayer: Layer, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
+  public static addUsingParentDropdownStructure(newComponentContainer: WorkshopComponent, dropdownStructure: NestedDropdownStructure,
+      componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, parentLayer: Layer,
+      overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
     const { masterComponent } = newComponentContainer;
     const [newComponent, baseNamePrefix] = AddNewContainerComponent.createNewComponent(componentType, componentStyle,
@@ -140,7 +136,7 @@ export class AddNewContainerComponent extends AddNewComponentShared {
     AddNewComponentShared.populateMasterComponentWithNewSubcomponents(masterComponent, newComponent.subcomponents);
     AddNewContainerComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
     AddNewContainerComponent.addNewComponentToDropdownStructure(newComponent, masterComponent, dropdownStructure);
-    InterconnectedSettings.update(true, activeComponentContainer, newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
+    InterconnectedSettings.update(true, newComponentContainer, newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
     IncrementChildComponentCount.increment(newComponentContainer, baseNamePrefix);
     AddNewContainerComponent.populateCoreComponentRef(newComponentContainer, newComponent);
     AddNewComponentShared.cleanSubcomponentProperties(newComponent);

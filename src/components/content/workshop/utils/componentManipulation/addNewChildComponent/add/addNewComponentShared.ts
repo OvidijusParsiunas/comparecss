@@ -16,7 +16,6 @@ import JSONUtils from '../../../generic/jsonUtils';
 
 type DropdownStructureSearchCallback = (
   containerComponent: WorkshopComponent,
-  activeComponentContainer: WorkshopComponent,
   dropdownStructure: NestedDropdownStructure,
   ...args: unknown[]) => WorkshopComponent;
 
@@ -49,12 +48,12 @@ export class AddNewComponentShared {
     return newComponent;
   }
 
-  private static proceedToInvokeAddCallbackIfFound(containerComponent: WorkshopComponent, activeComponentContainer: WorkshopComponent,
-      callback: DropdownStructureSearchCallback, args: unknown[], componentTraversalState: ComponentTraversalState): WorkshopComponent {
+  private static proceedToInvokeAddCallbackIfFound(containerComponent: WorkshopComponent, callback: DropdownStructureSearchCallback,
+      args: unknown[], componentTraversalState: ComponentTraversalState): WorkshopComponent {
     const targetDetails = this as any as TargetDetails;
     if (ComponentTraversalUtils.isActualObjectNameMatching(targetDetails, componentTraversalState)) {
       const { subcomponentDropdownStructure } = componentTraversalState;
-      const newComponent = callback(containerComponent, activeComponentContainer, subcomponentDropdownStructure, ...args);
+      const newComponent = callback(containerComponent, subcomponentDropdownStructure, ...args);
       return newComponent;
     }
     return null;
@@ -62,12 +61,12 @@ export class AddNewComponentShared {
 
   protected static addComponentViaDropdownStructureSearch(parentOptionComponent: WorkshopComponent, callback: DropdownStructureSearchCallback,
       ...args: unknown[]): WorkshopComponent {
-    const { higherComponentContainer, masterComponent } = ActiveComponentUtils.getHigherLevelComponents(parentOptionComponent);
+    const masterComponent = parentOptionComponent.masterComponent;
     const targetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName);
     return ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
       masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       AddNewContainerComponent.proceedToInvokeAddCallbackIfFound.bind(targetDetails,
-        parentOptionComponent, higherComponentContainer, callback, args)) as WorkshopComponent;
+        parentOptionComponent, callback, args)) as WorkshopComponent;
   }
 
   protected static getContainerComponentLayer(containerComponent: WorkshopComponent, parentLayerName: string): Layer {
