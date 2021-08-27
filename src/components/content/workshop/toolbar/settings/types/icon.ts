@@ -12,8 +12,8 @@ export default {
         name: SETTING_NAMES.TYPE,
         options: UpdateDropdownOptionNamesShared.generateDropdownStructure(Object.values(DROPDOWN_ARROW_ICON_TYPES)),
         activeOptionPropertyKeyName: 'name',
-        customFeatureObjectKeys: ['customFeatures', 'icon', 'name'],
-        customFunctionKeys: ['customFeatures', 'icon', 'changeIconFunc'],
+        customFeatureObjectKeys: ['customStaticFeatures', 'icon', 'name'],
+        customFunctionKeys: ['customStaticFeatures', 'icon', 'changeIconFunc'],
       },
     },
   ]

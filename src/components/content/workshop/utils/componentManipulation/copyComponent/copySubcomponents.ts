@@ -5,6 +5,10 @@ import JSONUtils from '../../generic/jsonUtils';
 
 type CopyableSubcomponentProperties = CustomCss|CustomFeatures|CustomStaticFeatures;
 
+// current subcomponent copy strategy:
+// if a subcomponent has a text or icon subcomponents - the copyable component's properties are copied onto them if that component has these subcomponents
+// this similarly works if the copyable component has these subcomponents and the current one doesn't - these properties don't get copied
+// if any subcomponent is added or removed - the component remains in sync and any subcomponents have their own properties
 export class CopySubcomponents {
 
   // copying property values instead of the objects containing them because their references are assigned in InterconnectedSettings

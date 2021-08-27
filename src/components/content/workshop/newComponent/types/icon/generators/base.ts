@@ -1,4 +1,4 @@
-import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { DROPDOWN_ARROW_ICON_TYPES } from '../../../../../../../consts/dropdownArrowIcons';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
@@ -46,20 +46,25 @@ export class IconBase extends ComponentBuilder {
   }
 
   public static changeIconFunc(subcomponentProperties: SubcomponentProperties, newValue: string): void {
-    subcomponentProperties.customFeatures.icon.isComponentDisplayed = false;
-    subcomponentProperties.customFeatures.icon.name = newValue;
+    subcomponentProperties.customStaticFeatures.icon.isComponentDisplayed = false;
+    subcomponentProperties.customStaticFeatures.icon.name = newValue;
     setTimeout(() => {
-      subcomponentProperties.customFeatures.icon.isComponentDisplayed = true;
+      subcomponentProperties.customStaticFeatures.icon.isComponentDisplayed = true;
     });
   }
 
-  private static createDefaultTextCustomFeatures(): CustomFeatures {
+  private static createDefaultCustomStaticFeatures(): CustomStaticFeatures {
+    return {
+      // WORK1: shoudn't need changeIconFunc
+      icon: { name: DROPDOWN_ARROW_ICON_TYPES.CARET, isComponentDisplayed: true, changeIconFunc: IconBase.changeIconFunc },
+    };
+  }
+
+  private static createDefaultCustomFeatures(): CustomFeatures {
     return {
       autoSize: ComponentBuilder.createAutoSize(true, false),
       alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
       animations: ComponentBuilder.createStationaryAnimations({}),
-      // WORK1: shoudn't need changeIconFunc
-      icon: { name: DROPDOWN_ARROW_ICON_TYPES.CARET, isComponentDisplayed: true, changeIconFunc: IconBase.changeIconFunc },
     };
   }
 
@@ -72,8 +77,10 @@ export class IconBase extends ComponentBuilder {
       inheritedCss: inheritedTextCss,
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      customFeatures: IconBase.createDefaultTextCustomFeatures(),
-      defaultCustomFeatures: IconBase.createDefaultTextCustomFeatures(),
+      customFeatures: IconBase.createDefaultCustomFeatures(),
+      defaultCustomFeatures: IconBase.createDefaultCustomFeatures(),
+      customStaticFeatures: IconBase.createDefaultCustomStaticFeatures(),
+      defaultCustomStaticFeatures: IconBase.createDefaultCustomStaticFeatures(),
     };
   }
 }

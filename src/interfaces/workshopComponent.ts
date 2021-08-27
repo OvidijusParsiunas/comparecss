@@ -100,7 +100,6 @@ export interface CustomFeatures {
   lastSelectedCssValues?: WorkshopComponentCss;
   dropdownMenuPosition?: DropdownMenuPosition;
   mouseEventCallbacks?: SubcomponentMouseEventCallbacks;
-  icon?: Icon;
 }
 
 export interface Image {
@@ -113,6 +112,7 @@ export interface CustomStaticFeatures {
   subcomponentText?: Text;
   selectDropdown?: SelectDropdown;
   image?: Image;
+  icon?: Icon;
 }
 
 interface TempCustomProperties {

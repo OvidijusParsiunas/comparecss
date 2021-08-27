@@ -84,7 +84,7 @@ export default class SettingsUtils {
   // currently only being used to reset other settings and their custom features
   private static activateTriggers(option: any, subcomponentProperties: SubcomponentProperties): void {
     const { triggers, spec } = option;
-    if (triggers && triggers.true) SettingsUtils.updateCurrentOptionSettingViaTrigger(triggers, subcomponentProperties);
+    if (triggers?.true) SettingsUtils.updateCurrentOptionSettingViaTrigger(triggers, subcomponentProperties);
     if (Array.isArray(triggers)) SettingsUtils.updateOtherOptionSettingViaTrigger(triggers, spec, subcomponentProperties);
   }
 

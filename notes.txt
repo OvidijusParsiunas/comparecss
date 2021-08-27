@@ -17,6 +17,7 @@ child card button width
 subcomponents removed from child components
 change copy child component to sync child component - new UX
 when moving between card component and dropdown - select cursor is flashing
+nested component dropdown menu appears to be too low when child selected and then clicking on the subcomponent dropdown button 
 
 overflow
 try with button tags

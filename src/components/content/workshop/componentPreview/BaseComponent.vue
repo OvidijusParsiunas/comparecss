@@ -150,13 +150,13 @@ export default {
       return this.isIcon(this.component) ? 'font-awesome-icon' : 'div';
     },
     getIconName(): string {
-      const iconName = (this.component as WorkshopComponent).coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures?.icon?.name;
+      const iconName = (this.component as WorkshopComponent).coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures?.icon?.name;
       return iconName ? DROPDOWN_ARROW_ICON_TYPES_TO_FONT_AWESOME_NAMES[iconName] : null;
     },
     isComponentDisplayed(): boolean {
-      const { customFeatures } = (this.component as WorkshopComponent).coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-      if (customFeatures?.icon) {
-        return customFeatures.icon.isComponentDisplayed;
+      const { customStaticFeatures } = (this.component as WorkshopComponent).coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+      if (customStaticFeatures?.icon) {
+        return customStaticFeatures.icon.isComponentDisplayed;
       }
       return true;
     }
