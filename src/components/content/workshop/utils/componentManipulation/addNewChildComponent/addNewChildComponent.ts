@@ -5,6 +5,7 @@ import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDrop
 import { ChildComponentBaseNamesToStyles } from './utils/childComponentBaseNamesToStyles';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { ActiveComponentUtils } from '../../activeComponent/activeComponentUtils';
 import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
 import { AddNewContainerComponent } from './add/addNewContainerComponent';
 import { AddNewComponentShared } from './add/addNewComponentShared';
@@ -48,11 +49,12 @@ export class AddNewChildComponent extends AddNewComponentShared {
 
   public static add(masterComponent: WorkshopComponent, newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): void {
     const activeComponent = masterComponent.subcomponents[masterComponent.activeSubcomponentName].seedComponent.ref;
+    const { higherComponentContainer } = ActiveComponentUtils.getHigherLevelComponents(activeComponent);
     if (Object.values(LAYER_COMPONENTS_BASE_NAMES).includes(newComponentBaseName as LAYER_COMPONENTS_BASE_NAMES)) {
       AddNewChildComponent.addNewLayerToBase(activeComponent, newComponentBaseName);
     } else {
       AddNewContainerComponent.addComponentViaDropdownStructureSearch(
-        activeComponent, AddNewChildComponent.addNewComponentToLayer, activeComponent.containerComponent, newComponentBaseName);
+        activeComponent, AddNewChildComponent.addNewComponentToLayer, higherComponentContainer, newComponentBaseName);
     }
   }
 }

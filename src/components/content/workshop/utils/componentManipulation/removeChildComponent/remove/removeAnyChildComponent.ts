@@ -16,6 +16,14 @@ type TargetRemovalDetails = TargetDetails & { isRemovingActiveSubcomponent?: boo
 
 export class RemoveAnyChildComponent {
 
+  // WORK1 - copy
+  private static removeCoreSubcomponentRef(parentComponent: WorkshopComponent, removedSubcomponentProperties: SubcomponentProperties): void {
+    const { coreSubcomponentRefs } = parentComponent;
+    const coreSubcomponentToBeRemoved = Object.keys(coreSubcomponentRefs).find(
+      (coreSubcomponentKey) => coreSubcomponentRefs[coreSubcomponentKey] === removedSubcomponentProperties);
+    if (coreSubcomponentToBeRemoved) coreSubcomponentRefs[coreSubcomponentToBeRemoved] = null;
+  }
+
   private static updateDropdownOptionNames(targetDetails: TargetRemovalDetails, subcomponentDropdownStructure: NestedDropdownStructure,
       removedSubcomponentDropdownIndex: number, alignedSections: AlignedSections): void {
     const { containerComponent, targetSubcomponentProperties: { subcomponentType } } = targetDetails;
@@ -133,13 +141,6 @@ export class RemoveAnyChildComponent {
     return null;
   }
 
-  // WORK1 - copy/add core subcomponent ref
-  private static removeCoreSubcomponentRef(targetDetails: TargetRemovalDetails): void {
-    const { containerComponent: { coreSubcomponentRefs }, targetSubcomponentProperties } = targetDetails;
-    const coreSubcomponent = Object.keys(coreSubcomponentRefs).find((coreSubcomponentKey) => coreSubcomponentRefs[coreSubcomponentKey] === targetSubcomponentProperties);
-    if (coreSubcomponent) coreSubcomponentRefs[coreSubcomponent] = null;
-  }
-
   public static remove(parentComponent: WorkshopComponent, subcomponentName: string, isRemovingActiveSubcomponent = false): void {
     const { higherActiveComponentContainer, masterComponent } = ActiveComponentUtils.getHigherLevelComponents(parentComponent);
     const targetDetails: TargetRemovalDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent,
@@ -153,7 +154,7 @@ export class RemoveAnyChildComponent {
     ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
       targetDetails.masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       RemoveAnyChildComponent.removeChildComponentUsingDropdownStructureIfFound.bind(targetDetails));
-    RemoveAnyChildComponent.removeCoreSubcomponentRef(targetDetails);
+    RemoveAnyChildComponent.removeCoreSubcomponentRef(parentComponent, targetDetails.targetSubcomponentProperties);
     SubcomponentTriggers.remove(targetDetails.targetSubcomponentProperties);
   }
 }

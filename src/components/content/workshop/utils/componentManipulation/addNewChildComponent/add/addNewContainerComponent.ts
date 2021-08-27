@@ -46,7 +46,6 @@ export class AddNewContainerComponent extends AddNewComponentShared {
     JSONUtils.setPropertyIfExists(newComponentContainer.coreSubcomponentRefs, subcomponentType as number, newComponentBase);
     SubcomponentTriggers.set(newComponentContainer, parentLayer.subcomponentProperties, newComponentBase, subcomponentType);
     CoreSubcomponentRefsUtils.executeReferenceSharingExecutables(newComponentContainer);
-    newComponentContainer.referenceSharingExecutables?.[0]?.(newComponentContainer.coreSubcomponentRefs);
   }
 
   private static getBaseSubcomponentNamePrefix(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES): CHILD_COMPONENTS_BASE_NAMES {

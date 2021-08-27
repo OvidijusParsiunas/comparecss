@@ -14,8 +14,8 @@ export class CoreSubcomponentRefsUtils {
   }
 
   public static executeReferenceSharingExecutables(...components: WorkshopComponent[]): void {
-    components.forEach((childComponent) => {
-      const { referenceSharingExecutables, coreSubcomponentRefs } = childComponent;
+    components.forEach((component) => {
+      const { referenceSharingExecutables, coreSubcomponentRefs } = component;
       (referenceSharingExecutables || []).forEach((executable) => executable(coreSubcomponentRefs));
     });
   }

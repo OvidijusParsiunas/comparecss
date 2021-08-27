@@ -18,9 +18,10 @@ export class SubcomponentTriggers {
     SubcomponentTriggers.setPropertyValues(newComponentBase, subcomponentType, newComponentParentLayerSubcomponent);
   }
 
-  // Only need to set one value to null as a component can only be triggered by one other subcomponent
-  // WORK1 - copy/add
-  public static remove({triggeredByAnotherSubcomponent, subcomponentType }: SubcomponentProperties): void {
+  // Only need to set one other subcomponent's otherSubcomponentsToTrigger value to null as this subcomponent can only be triggered
+  // by one other subcomponent
+  // WORK1 - copy
+  public static remove({ triggeredByAnotherSubcomponent, subcomponentType }: SubcomponentProperties): void {
     if (!triggeredByAnotherSubcomponent) return;
     triggeredByAnotherSubcomponent.otherSubcomponentsToTrigger[subcomponentType] = null;
   }
