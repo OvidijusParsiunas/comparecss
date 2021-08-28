@@ -4,12 +4,13 @@ import JSONUtils from '../../../utils/generic/jsonUtils';
 
 export class SyncedComponent {
   
-  private static dereferenceCopiedComponentCustomProperties(activeComponent: WorkshopComponent, baseSubcomponent: SubcomponentProperties): void {
-    const { subcomponents, referenceSharingExecutables, coreSubcomponentRefs } = baseSubcomponent.seedComponent;
-    Object.keys(subcomponents).forEach((subcomponentName: string) => {
-      const seedComponent = activeComponent.subcomponents[subcomponentName];
-      seedComponent.customCss = JSONUtils.deepCopy(seedComponent.customCss);
-      seedComponent.customFeatures = JSONUtils.deepCopy(seedComponent.customFeatures);
+  private static dereferenceCopiedComponentCustomProperties(activeComponentBase: SubcomponentProperties): void {
+    const { referenceSharingExecutables, coreSubcomponentRefs } = activeComponentBase.seedComponent;
+    Object.keys(coreSubcomponentRefs).forEach((subcomponentType) => {
+      const subcomponent = coreSubcomponentRefs[subcomponentType];
+      if (!subcomponent) return;
+      subcomponent.customCss = JSONUtils.deepCopy(subcomponent.customCss);
+      subcomponent.customFeatures = JSONUtils.deepCopy(subcomponent.customFeatures);
     });
     referenceSharingExecutables.forEach((executable: ReferenceSharingExecutable) => {
       executable(coreSubcomponentRefs);
@@ -18,12 +19,12 @@ export class SyncedComponent {
 
   public static toggleSubcomponentInSync(activeComponent: WorkshopComponent, callback?: () => void): void {
     const activeSubcomponent = activeComponent.subcomponents[activeComponent.activeSubcomponentName];
-    const baseSubcomponent = activeSubcomponent.baseSubcomponentRef || activeSubcomponent;
-    if (baseSubcomponent.seedComponent.sync.syncedComponent) {
-      SyncedComponent.dereferenceCopiedComponentCustomProperties(activeComponent, baseSubcomponent);
+    const activeComponentBase = activeSubcomponent.baseSubcomponentRef || activeSubcomponent;
+    if (activeComponentBase.seedComponent.sync.syncedComponent) {
+      SyncedComponent.dereferenceCopiedComponentCustomProperties(activeComponentBase);
     }
-    // WORK3: baseSubcomponent.seedComponent.inSync &&= null;
-    if (baseSubcomponent.seedComponent.sync.syncedComponent) baseSubcomponent.seedComponent.sync.syncedComponent = null;
+    // WORK3: activeComponentBase.seedComponent.inSync &&= null;
+    if (activeComponentBase.seedComponent.sync.syncedComponent) activeComponentBase.seedComponent.sync.syncedComponent = null;
     if (callback) callback();
   }
 
