@@ -11,7 +11,7 @@ export class AddTemporaryAddPreviewGenericComponent extends AddNewContainerCompo
       } = AddNewContainerComponent.getNewComponentProperties(activeComponent, newComponentBaseName);
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
     const [newComponent] = AddNewContainerComponent.createNewComponent(componentType, componentStyle,
-      componentGenerator, null, null, TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY);
+      componentGenerator, activeComponent, null, null, TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY);
     newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isTemporaryAddPreview = true;
     Object.assign(containerComponent.subcomponents, newComponent.subcomponents);
     AddNewContainerComponent.addNewComponentToComponentPreview(newComponent, parentLayer);

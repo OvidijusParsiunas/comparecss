@@ -19,11 +19,11 @@ export class CopySubcomponents {
     });
   }
 
-  private static copyInSyncSubcomponent(seedComponent: SeedComponent, newSubcomponent: SubcomponentProperties,
-      subcomponentBeingCopied: SubcomponentProperties): void {
+  private static copyInSyncSubcomponent(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
     if (newSubcomponent.seedComponent) {
-      newSubcomponent.seedComponent.inSync = true;
-      newSubcomponent.seedComponent.ref.componentStatus = seedComponent.ref.componentStatus;
+      const copiedSeedComponentRef = subcomponentBeingCopied.seedComponent.ref;
+      newSubcomponent.seedComponent.inSync = copiedSeedComponentRef.containerComponent || copiedSeedComponentRef;
+      newSubcomponent.seedComponent.ref.componentStatus = copiedSeedComponentRef.componentStatus;
     }
     newSubcomponent.customCss = subcomponentBeingCopied.customCss;
     newSubcomponent.customFeatures = subcomponentBeingCopied.customFeatures;
@@ -42,7 +42,7 @@ export class CopySubcomponents {
 
   private static copyExistingSubcomponentProperties(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
     if (!subcomponentBeingCopied.baseSubcomponentRef && subcomponentBeingCopied.seedComponent?.inSync) {
-      CopySubcomponents.copyInSyncSubcomponent(subcomponentBeingCopied.seedComponent, newSubcomponent, subcomponentBeingCopied);
+      CopySubcomponents.copyInSyncSubcomponent(newSubcomponent, subcomponentBeingCopied);
     } else {
       CopySubcomponents.copySubcomponentProperties(newSubcomponent, subcomponentBeingCopied); 
     }
@@ -60,7 +60,7 @@ export class CopySubcomponents {
     const newBaseSubcomponent = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const copiedBaseSubcomponent = copiedComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     if (copiedBaseSubcomponent.seedComponent?.inSync) {
-      CopySubcomponents.copyInSyncSubcomponent(copiedBaseSubcomponent.seedComponent, newBaseSubcomponent, copiedBaseSubcomponent);
+      CopySubcomponents.copyInSyncSubcomponent(newBaseSubcomponent, copiedBaseSubcomponent);
     } else {
       CopySubcomponents.copySubcomponentProperties(newBaseSubcomponent, copiedBaseSubcomponent);
     }

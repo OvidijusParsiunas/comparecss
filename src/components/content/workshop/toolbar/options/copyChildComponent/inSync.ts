@@ -22,7 +22,8 @@ export class InSync {
     if (baseSubcomponent.seedComponent.inSync) {
       InSync.dereferenceCopiedComponentCustomProperties(activeComponent, baseSubcomponent);
     }
-    baseSubcomponent.seedComponent.inSync = !baseSubcomponent.seedComponent.inSync;
+    // WORK3: baseSubcomponent.seedComponent.inSync &&= null;
+    if (baseSubcomponent.seedComponent.inSync) baseSubcomponent.seedComponent.inSync = null;
     if (callback) callback();
   }
 

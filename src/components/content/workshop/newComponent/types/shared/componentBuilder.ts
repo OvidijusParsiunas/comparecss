@@ -154,7 +154,7 @@ export class ComponentBuilder {
       coreSubcomponentRefs,
       componentStatus: { isRemoved: false },
     };
-    baseSubcomponent.seedComponent = { ref: baseComponent, inSync: false };
+    baseSubcomponent.seedComponent = { ref: baseComponent, inSync: null };
     baseComponent.masterComponent = baseComponent;
     return baseComponent;
   }

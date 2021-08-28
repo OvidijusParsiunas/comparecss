@@ -43,12 +43,15 @@ export class CopyChildComponedModeToggleOff {
 
   private static setCopiedChildComponentProperties(optionsComponent: ComponentOptions): void {
     const { subcomponents, activeSubcomponentName } = optionsComponent.component;
-    if (subcomponents[activeSubcomponentName].seedComponent.lastSelectedComponentToCopy) {
-      subcomponents[activeSubcomponentName].seedComponent.ref.componentStatus = subcomponents[activeSubcomponentName]
+    const activeSeedComponent = subcomponents[activeSubcomponentName].seedComponent;
+    if (activeSeedComponent.lastSelectedComponentToCopy) {
+      activeSeedComponent.ref.componentStatus = subcomponents[activeSubcomponentName]
         .seedComponent.lastSelectedComponentToCopy.componentStatus;
+      // saving reference to use it in timeout
+      const lastSelectedComponentToCopy = activeSeedComponent.lastSelectedComponentToCopy;
       // timeout used to not display the animation immediately if expanded modal mode has been temporarily closed
       setTimeout(() => {
-          subcomponents[activeSubcomponentName].seedComponent.inSync = true;
+        activeSeedComponent.inSync = lastSelectedComponentToCopy;
       }, optionsComponent.hasCopyChildComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     }
     CopyChildComponentModeTempPropertiesUtils.cleanComponent(optionsComponent.component, false);
@@ -101,7 +104,8 @@ export class CopyChildComponedModeToggleOff {
     }
     if (targetElement.classList.contains(OPTION_MENU_BUTTON_MARKER)
         || targetElement.classList.contains(optionsComponent.SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)
-        || targetElement.classList.contains(optionsComponent.CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)) {
+        || targetElement.classList.contains(optionsComponent.CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)
+        || targetElement.classList.contains(optionsComponent.ADD_NEW_SUBCOMPONENT_DROPDOWN_UNIQUE_IDENTIFIER)) {
       CopyChildComponedModeToggleOff.resetComponent(optionsComponent.component, optionsComponent.hasCopyChildComponentModeClosedExpandedModal);
       return CopyChildComponedModeToggleOff.toggleOff(optionsComponent, false);
     }

@@ -43,7 +43,7 @@ export class AddNewComponentShared {
   protected static createNewComponentViaGenerator(componentGenerator: ComponentGenerator, masterComponent: WorkshopComponent,
       newComponentName: string): WorkshopComponent {
     const newComponent = componentGenerator.createNewComponent(newComponentName);
-    newComponent.subcomponents[newComponentName].seedComponent = { ref: newComponent, inSync: false };
+    newComponent.subcomponents[newComponentName].seedComponent = { ref: newComponent, inSync: null };
     AddNewComponentShared.setMasterComponentReference(newComponent, masterComponent);
     return newComponent;
   }

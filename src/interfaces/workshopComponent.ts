@@ -120,9 +120,10 @@ interface TempCustomProperties {
   customFeatures?: CustomFeatures;
 }
 
+// WORK1: maybe inSync and lastSelectedComponentToCopy should be in the actual component and ref seedComponent can point to the seed component directly
 export interface SeedComponent {
   ref: WorkshopComponent;
-  inSync: boolean;
+  inSync: WorkshopComponent;
   lastSelectedComponentToCopy?: WorkshopComponent;
 }
 
