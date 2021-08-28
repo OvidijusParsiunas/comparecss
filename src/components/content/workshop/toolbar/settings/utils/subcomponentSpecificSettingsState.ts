@@ -36,10 +36,7 @@ export default class SubcomponentSpecificSettingsState {
             setting.spec.scale = scale;
           }
           if (updateOtherCssProperties) setting.spec.updateOtherCssProperties = updateOtherCssProperties;
-          // WORK1
-          if (actionsDropdownMouseEvents) {
-            Object.assign(setting.spec, actionsDropdownMouseEvents);
-          }
+          if (actionsDropdownMouseEvents) Object.assign(setting.spec, actionsDropdownMouseEvents);
         }
       });
     }
