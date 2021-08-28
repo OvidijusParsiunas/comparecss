@@ -41,7 +41,7 @@ export class DropdownMenuAutoWidthUtils {
 
   public static setWidth(subcomponentProperties: SubcomponentProperties): void {
     setTimeout(() => {
-      const component = subcomponentProperties.seedComponent.ref;
+      const component = subcomponentProperties.seedComponent;
       if (component.type === COMPONENT_TYPES.DROPDOWN_MENU) {
         DropdownMenuAutoWidthUtils.setComponentWidths(component.linkedComponents.base, component);
         // activated by clicking select option on the button

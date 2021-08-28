@@ -18,7 +18,7 @@ export class ChildComponentCountShared {
       parentBaseSubcomponent: SubcomponentProperties, newComponentNamePrefix: string, isEnabled: boolean): void {
     if (conditionFunc()) {
       ChildComponentCountShared.enable(parentBaseSubcomponent.newChildComponentsOptions, newComponentNamePrefix, isEnabled);
-      ChildComponentCountShared.enable(parentBaseSubcomponent.seedComponent.ref.newChildComponentsOptionsRefs?.layer,
+      ChildComponentCountShared.enable(parentBaseSubcomponent.seedComponent.newChildComponentsOptionsRefs?.layer,
         newComponentNamePrefix, isEnabled);
     }
   }

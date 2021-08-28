@@ -10,7 +10,7 @@ import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 export default function useLayerComponentGeneric(): UseLayerComponentGeneric {
 
   function getSelectedDropdownCss(layer: Layer, subcomponentCss: CustomCss): WorkshopComponentCss {
-    const { containerComponent, childComponentsLockedToLayer } = layer.subcomponentProperties.seedComponent.ref;
+    const { containerComponent, childComponentsLockedToLayer } = layer.subcomponentProperties.seedComponent;
     const { selectDropdown } = containerComponent?.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures || {};
     if (selectDropdown?.enabled) {
       const itemTextSubcomponent = childComponentsLockedToLayer.list[0];

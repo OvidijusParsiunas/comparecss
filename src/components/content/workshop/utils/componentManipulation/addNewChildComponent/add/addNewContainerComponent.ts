@@ -80,7 +80,7 @@ export class AddNewContainerComponent extends AddNewComponentShared {
     const parentLayerOptionName = subcomponentNameToDropdownOptionName[
       newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].parentLayer.subcomponentProperties.name];
     // this gets activated when the user is manually adding a component to a layer
-    if (subcomponents[activeSubcomponentName].seedComponent.ref.type === COMPONENT_TYPES.LAYER) {
+    if (subcomponents[activeSubcomponentName].seedComponent.type === COMPONENT_TYPES.LAYER) {
       const layerDropdownStructure = dropdownStructure[parentLayerOptionName];
       AddNewContainerComponent.updateComponentDropdownStructure(masterComponent, newComponent, layerDropdownStructure as NestedDropdownStructure);
     } else {
@@ -115,9 +115,9 @@ export class AddNewContainerComponent extends AddNewComponentShared {
   }
 
   private static copyInSyncProperties(newComponent: WorkshopComponent, newComponentContainer: WorkshopComponent): void {
-    const { inSync } = newComponentContainer.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].seedComponent;
-    if (inSync) {
-      const { coreSubcomponentRefs } = inSync;
+    const { syncedComponent } = newComponentContainer.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].seedComponent.sync;
+    if (syncedComponent) {
+      const { coreSubcomponentRefs } = syncedComponent;
       const newComponentBase = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
       if (coreSubcomponentRefs[newComponentBase.subcomponentType]) {
         CopyChildComponentModeTempPropertiesUtils.copyTargetSubcomponent(coreSubcomponentRefs[newComponentBase.subcomponentType], newComponentBase);

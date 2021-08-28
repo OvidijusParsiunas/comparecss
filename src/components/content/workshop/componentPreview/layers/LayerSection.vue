@@ -10,7 +10,7 @@
       <base-component v-if="subcomponent.subcomponentProperties.seedComponent"
         class="child-component-container"
         :class="[COMPONENT_PREVIEW_MARKER, ...getChildComponentContainerJsClasses(subcomponent)]"
-        :component="subcomponent.subcomponentProperties.seedComponent.ref"
+        :component="subcomponent.subcomponentProperties.seedComponent"
         :mouseEvents="mouseEvents"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
         :isChildComponent="true"/>

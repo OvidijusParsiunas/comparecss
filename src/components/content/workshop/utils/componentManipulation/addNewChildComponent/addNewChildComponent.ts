@@ -48,7 +48,7 @@ export class AddNewChildComponent extends AddNewComponentShared {
   }
 
   public static add(masterComponent: WorkshopComponent, newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): void {
-    const activeComponent = masterComponent.subcomponents[masterComponent.activeSubcomponentName].seedComponent.ref;
+    const activeComponent = masterComponent.subcomponents[masterComponent.activeSubcomponentName].seedComponent;
     const { higherComponentContainer } = ActiveComponentUtils.getHigherLevelComponents(activeComponent);
     if (Object.values(LAYER_COMPONENTS_BASE_NAMES).includes(newComponentBaseName as LAYER_COMPONENTS_BASE_NAMES)) {
       AddNewChildComponent.addNewLayerToBase(activeComponent, newComponentBaseName);

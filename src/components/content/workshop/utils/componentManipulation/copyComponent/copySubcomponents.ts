@@ -1,4 +1,4 @@
-import { CustomCss, CustomFeatures, CustomStaticFeatures, SeedComponent, SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { CoreSubcomponentRefsUtils } from '../coreSubcomponentRefs/coreSubcomponentRefsUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import JSONUtils from '../../generic/jsonUtils';
@@ -21,9 +21,9 @@ export class CopySubcomponents {
 
   private static copyInSyncSubcomponent(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
     if (newSubcomponent.seedComponent) {
-      const copiedSeedComponentRef = subcomponentBeingCopied.seedComponent.ref;
-      newSubcomponent.seedComponent.inSync = copiedSeedComponentRef.containerComponent || copiedSeedComponentRef;
-      newSubcomponent.seedComponent.ref.componentStatus = copiedSeedComponentRef.componentStatus;
+      const copiedSeedComponent = subcomponentBeingCopied.seedComponent;
+      newSubcomponent.seedComponent.sync.syncedComponent = copiedSeedComponent.containerComponent || copiedSeedComponent;
+      newSubcomponent.seedComponent.componentStatus = copiedSeedComponent.componentStatus;
     }
     newSubcomponent.customCss = subcomponentBeingCopied.customCss;
     newSubcomponent.customFeatures = subcomponentBeingCopied.customFeatures;
@@ -41,7 +41,7 @@ export class CopySubcomponents {
   }
 
   private static copyExistingSubcomponentProperties(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
-    if (!subcomponentBeingCopied.baseSubcomponentRef && subcomponentBeingCopied.seedComponent?.inSync) {
+    if (!subcomponentBeingCopied.baseSubcomponentRef && subcomponentBeingCopied.seedComponent?.sync.syncedComponent) {
       CopySubcomponents.copyInSyncSubcomponent(newSubcomponent, subcomponentBeingCopied);
     } else {
       CopySubcomponents.copySubcomponentProperties(newSubcomponent, subcomponentBeingCopied); 
@@ -59,7 +59,7 @@ export class CopySubcomponents {
   public static copyBaseSubcomponent(newComponent: WorkshopComponent, copiedComponent: WorkshopComponent): void {
     const newBaseSubcomponent = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const copiedBaseSubcomponent = copiedComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    if (copiedBaseSubcomponent.seedComponent?.inSync) {
+    if (copiedBaseSubcomponent.seedComponent?.sync.syncedComponent) {
       CopySubcomponents.copyInSyncSubcomponent(newBaseSubcomponent, copiedBaseSubcomponent);
     } else {
       CopySubcomponents.copySubcomponentProperties(newBaseSubcomponent, copiedBaseSubcomponent);

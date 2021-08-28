@@ -1,11 +1,11 @@
-import { SeedComponent, SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ReferenceSharingExecutable } from '../../../../../../interfaces/referenceSharingExecutable';
 import JSONUtils from '../../../utils/generic/jsonUtils';
 
-export class InSync {
+export class SyncedComponent {
   
   private static dereferenceCopiedComponentCustomProperties(activeComponent: WorkshopComponent, baseSubcomponent: SubcomponentProperties): void {
-    const { subcomponents, referenceSharingExecutables, coreSubcomponentRefs } = baseSubcomponent.seedComponent.ref;
+    const { subcomponents, referenceSharingExecutables, coreSubcomponentRefs } = baseSubcomponent.seedComponent;
     Object.keys(subcomponents).forEach((subcomponentName: string) => {
       const seedComponent = activeComponent.subcomponents[subcomponentName];
       seedComponent.customCss = JSONUtils.deepCopy(seedComponent.customCss);
@@ -19,27 +19,27 @@ export class InSync {
   public static toggleSubcomponentInSync(activeComponent: WorkshopComponent, callback?: () => void): void {
     const activeSubcomponent = activeComponent.subcomponents[activeComponent.activeSubcomponentName];
     const baseSubcomponent = activeSubcomponent.baseSubcomponentRef || activeSubcomponent;
-    if (baseSubcomponent.seedComponent.inSync) {
-      InSync.dereferenceCopiedComponentCustomProperties(activeComponent, baseSubcomponent);
+    if (baseSubcomponent.seedComponent.sync.syncedComponent) {
+      SyncedComponent.dereferenceCopiedComponentCustomProperties(activeComponent, baseSubcomponent);
     }
     // WORK3: baseSubcomponent.seedComponent.inSync &&= null;
-    if (baseSubcomponent.seedComponent.inSync) baseSubcomponent.seedComponent.inSync = null;
+    if (baseSubcomponent.seedComponent.sync.syncedComponent) baseSubcomponent.seedComponent.sync.syncedComponent = null;
     if (callback) callback();
   }
 
-  private static getSeedSubcomponent(activeSubcomponent: SubcomponentProperties): SeedComponent {
+  private static getSeedSubcomponent(activeSubcomponent: SubcomponentProperties): WorkshopComponent {
     return activeSubcomponent.baseSubcomponentRef?.seedComponent || activeSubcomponent.seedComponent;
   }
 
   public static updateIfSubcomponentNotInSync(activeComponent: WorkshopComponent, activeSubcomponent: SubcomponentProperties): void {
-    const seedComponent = InSync.getSeedSubcomponent(activeSubcomponent);
-    if (seedComponent?.inSync && seedComponent.ref.componentStatus.isRemoved) {
-      InSync.toggleSubcomponentInSync(activeComponent);
+    const seedComponent = SyncedComponent.getSeedSubcomponent(activeSubcomponent);
+    if (seedComponent?.sync.syncedComponent && seedComponent.componentStatus.isRemoved) {
+      SyncedComponent.toggleSubcomponentInSync(activeComponent);
     }
   }
 
   public static isInSyncButtonDisplayed(activeSubcomponent: SubcomponentProperties): boolean {
-    const seedComponent = InSync.getSeedSubcomponent(activeSubcomponent);
-    return seedComponent?.inSync && !seedComponent.ref.componentStatus.isRemoved;
+    const seedComponent = SyncedComponent.getSeedSubcomponent(activeSubcomponent);
+    return seedComponent?.sync.syncedComponent && !seedComponent.componentStatus.isRemoved;
   }
 }

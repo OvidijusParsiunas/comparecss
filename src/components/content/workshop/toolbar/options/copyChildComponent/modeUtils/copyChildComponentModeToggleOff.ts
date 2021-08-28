@@ -43,15 +43,14 @@ export class CopyChildComponedModeToggleOff {
 
   private static setCopiedChildComponentProperties(optionsComponent: ComponentOptions): void {
     const { subcomponents, activeSubcomponentName } = optionsComponent.component;
-    const activeSeedComponent = subcomponents[activeSubcomponentName].seedComponent;
-    if (activeSeedComponent.lastSelectedComponentToCopy) {
-      activeSeedComponent.ref.componentStatus = subcomponents[activeSubcomponentName]
-        .seedComponent.lastSelectedComponentToCopy.componentStatus;
-      // saving reference to use it in timeout
-      const lastSelectedComponentToCopy = activeSeedComponent.lastSelectedComponentToCopy;
+    const activeSeedComponent: WorkshopComponent = subcomponents[activeSubcomponentName].seedComponent;
+    if (activeSeedComponent.sync.lastSelectedComponentToSync) {
+      // saving reference as it gets removed before timeout gets executed
+      const lastSelectedComponentToSync = activeSeedComponent.sync.lastSelectedComponentToSync;
+      activeSeedComponent.componentStatus = lastSelectedComponentToSync.componentStatus;
       // timeout used to not display the animation immediately if expanded modal mode has been temporarily closed
       setTimeout(() => {
-        activeSeedComponent.inSync = lastSelectedComponentToCopy;
+        activeSeedComponent.sync.syncedComponent = lastSelectedComponentToSync;
       }, optionsComponent.hasCopyChildComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     }
     CopyChildComponentModeTempPropertiesUtils.cleanComponent(optionsComponent.component, false);

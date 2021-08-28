@@ -25,7 +25,7 @@ export default class Dismiss {
     const { subcomponents } = componentPreviewComponent.component as WorkshopComponent;
     const subcomponentNames = Object.keys(subcomponents);
     for (let i = 0; i < subcomponentNames.length; i += 1) {
-      if (subcomponents[subcomponentNames[i]].seedComponent?.ref.style === BUTTON_STYLES.CLOSE) {
+      if (subcomponents[subcomponentNames[i]].seedComponent?.style === BUTTON_STYLES.CLOSE) {
         const buttonSubcomponentProperties: SubcomponentProperties = subcomponents[subcomponentNames[i]];
         buttonSubcomponentProperties.customFeatures.jsClasses[methodName](JAVASCRIPT_CLASSES.CLOSE_COMPONENT);
         break;

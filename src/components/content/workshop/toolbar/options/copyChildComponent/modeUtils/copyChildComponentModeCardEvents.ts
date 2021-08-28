@@ -13,7 +13,7 @@ export class CopyChildComponentModeCardEvents {
   public static mouseEnter(workshopComponent: ComponentOptions, componentToBeCopied: WorkshopComponent): void {
     // the condition is a bug fix as when the copy child component mode is toggled on, during the component list animation the user can hover over a modal card
     if (workshopComponent.currentlySelectedComponent.subcomponents[workshopComponent.currentlySelectedComponent.activeSubcomponentName]
-      .seedComponent.ref.type !== componentToBeCopied.type) return;
+      .seedComponent.type !== componentToBeCopied.type) return;
     CopyChildComponentModeTempPropertiesUtils.setActiveComponentToCopyChildComponent(componentToBeCopied, workshopComponent.currentlySelectedComponent);
     workshopComponent.currentlyHoveredComponentForCopyChild = componentToBeCopied;
   }

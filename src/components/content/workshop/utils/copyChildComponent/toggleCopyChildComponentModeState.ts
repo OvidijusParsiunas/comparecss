@@ -23,7 +23,7 @@ export class ToggleCopyChildComponentModeState {
   private static toggleOn(workshopComponent: ComponentOptions & { components: WorkshopComponent[] }, optionsComponent: ComponentOptions): void {
     workshopComponent.tempComponents = workshopComponent.components;
     const componentType = workshopComponent.currentlySelectedComponent.subcomponents[workshopComponent.currentlySelectedComponent.activeSubcomponentName]
-      .seedComponent.ref.type;
+      .seedComponent.type;
     (workshopComponent.components as WorkshopComponent[]) = workshopComponent.components.filter((component: WorkshopComponent) => component.type === componentType);
     ToggleCopyChildComponentModeState.toggleCopyChildComponentMode(workshopComponent, optionsComponent);
   }

@@ -153,8 +153,9 @@ export class ComponentBuilder {
       className: 'default-class-name',
       coreSubcomponentRefs,
       componentStatus: { isRemoved: false },
+      sync: { syncedComponent: null },
     };
-    baseSubcomponent.seedComponent = { ref: baseComponent, inSync: null };
+    baseSubcomponent.seedComponent = baseComponent;
     baseComponent.masterComponent = baseComponent;
     return baseComponent;
   }

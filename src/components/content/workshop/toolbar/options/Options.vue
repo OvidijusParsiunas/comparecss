@@ -179,9 +179,9 @@ import useToolbarPositionToggle from './compositionApi/useToolbarPositionToggle'
 import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
+import { SyncedComponent } from './copyChildComponent/syncedComponent';
 import BrowserType from '../../utils/generic/browserType';
 import SharedUtils from '../settings/utils/sharedUtils';
-import { InSync } from './copyChildComponent/inSync';
 import { Ref } from 'node_modules/vue/dist/vue';
 import dropdown from './dropdown/Dropdown.vue';
 import {
@@ -321,7 +321,7 @@ export default {
       const resultSubcomponent = Object.keys(this.component.subcomponents).find((subcomponentName) => {
         const subcomponentProperties = this.component.subcomponents[subcomponentName];
         if (subcomponentProperties.subcomponentType === type) {
-          return style ? subcomponentProperties.seedComponent.ref.style === style : true;
+          return style ? subcomponentProperties.seedComponent.style === style : true;
         }
         return false;
       });
@@ -436,20 +436,20 @@ export default {
     },
     isCopyButtonDisplayed(): boolean {
       const subcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
-      if (subcomponent.subcomponentType === SUBCOMPONENT_TYPES.BUTTON && subcomponent.seedComponent?.ref.style === BUTTON_STYLES.CLOSE) return false;
+      if (subcomponent.subcomponentType === SUBCOMPONENT_TYPES.BUTTON && subcomponent.seedComponent?.style === BUTTON_STYLES.CLOSE) return false;
       return !!(COPYABLE_COMPONENT_BASE_TYPES.has(subcomponent.subcomponentType) && subcomponent.seedComponent);
     },
     mouseHoverCopyChildComponentToggle(isMouseEnter: boolean): void {
       const activeSubcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
       const copyableComponentCardOverlaysToDisplay: CopyableComponentCardOverlaysToDisplay = {
-        isDisplaying: isMouseEnter, componentType: activeSubcomponent.seedComponent.ref.type };
+        isDisplaying: isMouseEnter, componentType: activeSubcomponent.seedComponent.type };
       this.$emit('display-copyable-component-card-overlays', copyableComponentCardOverlaysToDisplay);
     },
     toggleCopyChildComponentMode(): void {
       CopyChildComponentModeToggleUtils.toggleCopyChildComponentMode(this);
     },
     toggleInSync(callback?: () => void): void {
-      this.temporarilyAllowOptionAnimations(InSync.toggleSubcomponentInSync.bind(this, this.component, callback));
+      this.temporarilyAllowOptionAnimations(SyncedComponent.toggleSubcomponentInSync.bind(this, this.component, callback));
     },
     isRemoveSubcomponentButtonDisplayed(): boolean {
       return this.component.subcomponents[this.component.activeSubcomponentName].isRemovable;
@@ -465,7 +465,7 @@ export default {
       }
     },
     removeSubcomponent(): void {
-      if (this.component.subcomponents[this.component.activeSubcomponentName].seedComponent?.inSync) {
+      if (this.component.subcomponents[this.component.activeSubcomponentName].seedComponent?.sync.inSync) {
         this.temporarilyAllowOptionAnimations(this.emitRemoveSubcomponentEvent);
       } else {
         this.emitRemoveSubcomponentEvent();
@@ -580,7 +580,7 @@ export default {
     },
     isSubcomponentPresent(subcomponentStyle: COMPONENT_STYLES): boolean {
       return !!Object.keys(this.component.subcomponents).find((subcomponentName) => {
-        const component: WorkshopComponent = this.component.subcomponents[subcomponentName].seedComponent?.ref;
+        const component: WorkshopComponent = this.component.subcomponents[subcomponentName].seedComponent;
         return component?.style === subcomponentStyle
           && component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name !== TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY;
       });
@@ -592,8 +592,8 @@ export default {
     },
     isInSyncButtonDisplayed(): boolean {
       const activeSubcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
-      InSync.updateIfSubcomponentNotInSync(this.component, activeSubcomponent);
-      return InSync.isInSyncButtonDisplayed(activeSubcomponent);
+      SyncedComponent.updateIfSubcomponentNotInSync(this.component, activeSubcomponent);
+      return SyncedComponent.isInSyncButtonDisplayed(activeSubcomponent);
     },
     reassignToolbarPositionToggleRef(): void {
       this.toolbarPositionToggleRef = this.$refs.toolbarPositionToggle;

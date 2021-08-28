@@ -16,7 +16,7 @@ export class AlertOptions {
   }
 
   private static getTextOptions(component: WorkshopComponent): Options {
-    const subcomponentStyle = component.subcomponents[component.activeSubcomponentName].seedComponent.ref.style;
+    const subcomponentStyle = component.subcomponents[component.activeSubcomponentName].seedComponent.style;
     if (subcomponentStyle === TEXT_STYLES.CLOSE_BUTTON) {
       return closeButtonTextOptions as Options;
     }

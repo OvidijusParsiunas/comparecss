@@ -26,7 +26,7 @@ export class RemoveTemporaryAddPreviewComponent extends RemoveAnyChildComponent 
   public static remove(activeComponent: WorkshopComponent): void {
     if (!activeComponent.subcomponents[TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY]) return;
     const targetDetails: TargetDetails = ComponentTraversalUtils.generateTargetDetails(activeComponent, TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY);
-    const seedComponent = targetDetails.targetSubcomponentProperties?.seedComponent?.ref;
+    const seedComponent = targetDetails.targetSubcomponentProperties?.seedComponent;
     const { childComponentsLockedToLayer, subcomponents } = seedComponent;
     RemoveTemporaryAddPreviewComponent.removeChildComponentsInLayer(activeComponent, childComponentsLockedToLayer);
     RemoveTemporaryAddPreviewComponent.removeTargetChildComponent(activeComponent, targetDetails, subcomponents);

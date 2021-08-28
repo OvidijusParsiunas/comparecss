@@ -13,7 +13,7 @@ export class RemoveChildComponent {
     } else {
       // when removing an actual component - retrieve the container component of the currently active component
       const { subcomponents, activeSubcomponentName } = masterComponent;
-      const activeContainerComponent = subcomponents[activeSubcomponentName].seedComponent.ref.containerComponent;
+      const activeContainerComponent = subcomponents[activeSubcomponentName].seedComponent.containerComponent;
       RemoveAnyChildComponent.remove(
         activeContainerComponent?.linkedComponents?.base || activeContainerComponent, activeSubcomponentName, true);
     }

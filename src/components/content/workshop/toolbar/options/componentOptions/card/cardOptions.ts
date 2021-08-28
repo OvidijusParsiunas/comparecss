@@ -23,7 +23,7 @@ export class CardOptions {
   };
 
   protected static getTextOptions(component: WorkshopComponent): Options {
-    const subcomponentStyle = component.subcomponents[component.activeSubcomponentName].seedComponent.ref.style;
+    const subcomponentStyle = component.subcomponents[component.activeSubcomponentName].seedComponent.style;
     if (subcomponentStyle === TEXT_STYLES.BUTTON) {
       return buttonTextOptions as Options;
     } else if (subcomponentStyle === TEXT_STYLES.CLOSE_BUTTON) {
@@ -33,7 +33,7 @@ export class CardOptions {
   }
 
   protected static getButtonOptions(component: WorkshopComponent): Options {
-    if (component.subcomponents[component.activeSubcomponentName].seedComponent.ref.style === BUTTON_STYLES.CLOSE) {
+    if (component.subcomponents[component.activeSubcomponentName].seedComponent.style === BUTTON_STYLES.CLOSE) {
       return closeButtonOptions;
     }
     return childButtonOptions;

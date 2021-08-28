@@ -26,7 +26,7 @@ export class CopyChildComponentModeTempPropertiesUtils {
   }
 
   public static setActiveComponentToCopyChildComponent(componentToBeCopied: WorkshopComponent, activeComponent: WorkshopComponent): void {
-    const activeComponentSubcomponentCoreRefs = activeComponent.subcomponents[activeComponent.activeSubcomponentName].seedComponent.ref.coreSubcomponentRefs;
+    const activeComponentSubcomponentCoreRefs = activeComponent.subcomponents[activeComponent.activeSubcomponentName].seedComponent.coreSubcomponentRefs;
     Object.keys(activeComponentSubcomponentCoreRefs).forEach((coreSubcomponentType) => {
       if (!componentToBeCopied.coreSubcomponentRefs[coreSubcomponentType]) return;
       CopyChildComponentModeTempPropertiesUtils.copyTargetSubcomponent(componentToBeCopied.coreSubcomponentRefs[coreSubcomponentType],
@@ -40,7 +40,7 @@ export class CopyChildComponentModeTempPropertiesUtils {
   }
 
   public static cleanComponent(activeComponent: WorkshopComponent, resetOriginalProperties: boolean): void {
-    const { coreSubcomponentRefs } = activeComponent.subcomponents[activeComponent.activeSubcomponentName].seedComponent.ref;
+    const { coreSubcomponentRefs } = activeComponent.subcomponents[activeComponent.activeSubcomponentName].seedComponent;
     const coreSubcomponentRefsArray = CoreSubcomponentRefsUtils.getActiveRefsArray(coreSubcomponentRefs);
     for (let i = 0; i < coreSubcomponentRefsArray.length; i += 1) {
       const activeSubcomponent = coreSubcomponentRefsArray[i];
@@ -52,10 +52,10 @@ export class CopyChildComponentModeTempPropertiesUtils {
 
   public static setLastSelectectedComponentToCopy(componentToBeCopied: WorkshopComponent, activeComponent: WorkshopComponent): void {
     activeComponent.subcomponents
-      [activeComponent.activeSubcomponentName].seedComponent.lastSelectedComponentToCopy = componentToBeCopied;
+      [activeComponent.activeSubcomponentName].seedComponent.sync.lastSelectedComponentToSync = componentToBeCopied;
   }
 
   public static deleteLastSelectedComponentToCopy(activeComponent: WorkshopComponent): void {
-    delete activeComponent.subcomponents[activeComponent.activeSubcomponentName].seedComponent.lastSelectedComponentToCopy;
+    delete activeComponent.subcomponents[activeComponent.activeSubcomponentName].seedComponent.sync.lastSelectedComponentToSync;
   }
 }

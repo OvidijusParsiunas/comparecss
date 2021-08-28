@@ -191,6 +191,7 @@ import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enu
 import { UseActionsDropdown } from '../../../../../interfaces/UseActionsDropdown';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { RANGE_SETTING_MARKER } from '../../../../../consts/elementClassMarkers';
+import { SyncedComponent } from '../options/copyChildComponent/syncedComponent';
 import ActionsDropdownUtils from './compositionAPI/utils/actionsDropdownUtils';
 import { UnsetColorButton } from './utils/colorPickerUtils/unsetColorButton';
 import { ColorPickerUtils } from './utils/colorPickerUtils/colorPickerUtils';
@@ -198,7 +199,6 @@ import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
 import CheckboxUtils, { CustomTriggerFunc } from './utils/checkboxUtils';
 import { SETTING_NAMES } from '../../../../../consts/settingNames.enum';
 import useActionsDropdown from './compositionAPI/useActionsDropdown';
-import { InSync } from '../options/copyChildComponent/inSync';
 import dropdown from '../options/dropdown/Dropdown.vue';
 import RangeUtils from './utils/rangeUtils/rangeUtils';
 import SettingsUtils from './utils/settingsUtils';
@@ -409,7 +409,7 @@ export default {
       // this.$refs.selectSubcomponentOverlay2.style.display = 'block';
     },
     changeSetting(callback: () => void, firstCustomFeatureObjectKey?: string): void {
-      if (InSync.isInSyncButtonDisplayed(this.subcomponentProperties) && firstCustomFeatureObjectKey !== 'customStaticFeatures') {
+      if (SyncedComponent.isInSyncButtonDisplayed(this.subcomponentProperties) && firstCustomFeatureObjectKey !== 'customStaticFeatures') {
         this.$emit('remove-insync-option-button', callback as RemoveInSyncOptionButton);
       } else {
         callback();

@@ -37,13 +37,13 @@ export class AddNewComponentShared {
 
   private static setMasterComponentReference(newComponent: WorkshopComponent, masterComponent: WorkshopComponent): void {
     Object.keys(newComponent.subcomponents)
-      .forEach((subcomponentName) => newComponent.subcomponents[subcomponentName].seedComponent.ref.masterComponent = masterComponent);
+      .forEach((subcomponentName) => newComponent.subcomponents[subcomponentName].seedComponent.masterComponent = masterComponent);
   }
 
   protected static createNewComponentViaGenerator(componentGenerator: ComponentGenerator, masterComponent: WorkshopComponent,
       newComponentName: string): WorkshopComponent {
     const newComponent = componentGenerator.createNewComponent(newComponentName);
-    newComponent.subcomponents[newComponentName].seedComponent = { ref: newComponent, inSync: null };
+    newComponent.subcomponents[newComponentName].seedComponent = newComponent;
     AddNewComponentShared.setMasterComponentReference(newComponent, masterComponent);
     return newComponent;
   }

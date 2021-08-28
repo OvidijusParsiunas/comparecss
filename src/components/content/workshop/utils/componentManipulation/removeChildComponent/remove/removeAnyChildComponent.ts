@@ -104,23 +104,22 @@ export class RemoveAnyChildComponent {
         });
       });
       const layerName = layer.subcomponentProperties.name;
-      DecrementChildComponentCount.decrement(layer.subcomponentProperties.seedComponent.ref.containerComponent, layerName);
+      DecrementChildComponentCount.decrement(layer.subcomponentProperties.seedComponent.containerComponent, layerName);
       RemoveAnyChildComponent.removeSubcomponentProperties(layerName, masterComponent);
     }
   }
 
   private static removeAlignedComponents(subcomponentProperties: SubcomponentProperties, masterComponent: WorkshopComponent,
       containerComponent: WorkshopComponent): void {
-    const seedComponent = subcomponentProperties.seedComponent.ref;
+    const { seedComponent, name } = subcomponentProperties;
     seedComponent.componentPreviewStructure.layers.forEach((layer) => {
       RemoveAnyChildComponent.removeLayerComponents(layer, masterComponent, containerComponent);
     });
-    const childName = subcomponentProperties.name;
     // a child component can be counted by either the parent layer or the container component, hence need to make sure the count is
     // decremented at both of these components
-    DecrementChildComponentCount.decrement(seedComponent.containerComponent, childName);
-    DecrementChildComponentCount.decrement(subcomponentProperties.parentLayer.subcomponentProperties.seedComponent.ref, childName);
-    RemoveAnyChildComponent.removeSubcomponentProperties(childName, masterComponent);
+    DecrementChildComponentCount.decrement(seedComponent.containerComponent, name);
+    DecrementChildComponentCount.decrement(subcomponentProperties.parentLayer.subcomponentProperties.seedComponent, name);
+    RemoveAnyChildComponent.removeSubcomponentProperties(name, masterComponent);
   }
 
   protected static removeChildComponentInPreviewStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {

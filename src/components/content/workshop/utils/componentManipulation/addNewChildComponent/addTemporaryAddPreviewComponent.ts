@@ -7,7 +7,7 @@ import { WorkshopComponent } from '../../../../../../interfaces/workshopComponen
 export class AddTemporaryAddPreviewComponent {
 
   public static add(masterComponent: WorkshopComponent, newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): void {
-    const activeComponent = masterComponent.subcomponents[masterComponent.activeSubcomponentName].seedComponent.ref;
+    const activeComponent = masterComponent.subcomponents[masterComponent.activeSubcomponentName].seedComponent;
     if (Object.values(LAYER_COMPONENTS_BASE_NAMES).includes(newComponentBaseName as LAYER_COMPONENTS_BASE_NAMES)) {
       AddTemporaryAddPreviewLayerComponent.add(activeComponent, ChildComponentBaseNamesToStyles.LAYER_TO_STYLE[newComponentBaseName], true);
     } else {

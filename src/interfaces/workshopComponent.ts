@@ -23,6 +23,7 @@ import { CloseTriggers } from './closeTriggers';
 import { Animations } from './animations';
 import { AutoSize } from './autoSize';
 import { Icon } from './icon';
+import { Sync } from './sync';
 
 export interface ChildCss {
   elementTag: string;
@@ -120,13 +121,6 @@ interface TempCustomProperties {
   customFeatures?: CustomFeatures;
 }
 
-// WORK1: maybe inSync and lastSelectedComponentToCopy should be in the actual component and ref seedComponent can point to the seed component directly
-export interface SeedComponent {
-  ref: WorkshopComponent;
-  inSync: WorkshopComponent;
-  lastSelectedComponentToCopy?: WorkshopComponent;
-}
-
 export interface SubcomponentProperties {
   name: string;
   // used for defining options and adding new subcomponents to a layer
@@ -156,12 +150,12 @@ export interface SubcomponentProperties {
   customStaticFeatures?: CustomStaticFeatures; 
   defaultCustomStaticFeatures?: CustomStaticFeatures;
   layerSectionsType?: LAYER_SECTIONS_TYPES;
-  // it is important to understand that the subcomponents of a child component are located in the core base component's subcomponents section
-  // and the seedComponent property is used to reference the seedComponent they belong to
+  // it is important to understand that all subcomponents from child components are moved to the masterComponent and are removed from the children
+  // components. However, these subcomponents still hold a reference to the component that they originally came from using the seedComponent property.
   // full structure explained at the bottom of the file titled: 'Component Architecture Information'
-  seedComponent?: SeedComponent;
+  seedComponent?: WorkshopComponent;
   // baseSubcomponentRef is only appended to all the child subcomponents (except the base subcomponents)
-  // this is mostly used to track the child component's inSync property and identify whether the subcomponent is child and not base
+  // this is mostly used to track the child component's syncedComponent property and identify whether the subcomponent is child and not base
   baseSubcomponentRef?: SubcomponentProperties;
   // this is used for overwriting css properties on mouse actions as adding css directly to customCss causes in-sync components to be edited all at once
   overwrittenCustomCssObj?: CustomCss;
@@ -218,6 +212,7 @@ export interface WorkshopComponent {
   containerComponent?: WorkshopComponent;
   // each seed component is assigned a reference to the master component - primarily used to access the dropdown structure
   masterComponent?: WorkshopComponent;
+  sync: Sync;
 }
 
 // Component Architecture Information:
@@ -243,11 +238,9 @@ export interface WorkshopComponent {
 //
 // Button Component --> { Base Subcomponent, Layer Subcomponent, Text Subcomponent }
 //      |                        |                   |                   |
-//      |                   seedComponent       seedComponent       seedComponent
-//      |                        |                   |                   |
-//      <-----------<---------- ref                 ref                 ref
+//      <---------<------- seedComponent       seedComponent       seedComponent
 //                                                   |                   |
-//                                             Layer Component      Text Component 
+//                                            Layer Component      Text Component 
 //
 // Explanation:
 // Button component is an ensamble of multiple subcomponents.
@@ -256,7 +249,7 @@ export interface WorkshopComponent {
 // own seed components - whilst the Base subcomponent's seed component is the current context's
 // component, which in this case is the Button (true for all base subcomponents).
 // To note, Layer Subcomponent and Text Subcomponent are technically both base subcomponents
-// - but are not in the context of the Button component.
+// - but are as such for their seed components and not the Button component.
 // Both Layer and Text Subcomponent seed components are regarded as child components to the button
 // component.
 
@@ -305,7 +298,7 @@ export interface WorkshopComponent {
 //    |                            |       |     |
 //    |                            |       |     |
 //    <---- { subcomponents, subcomponentDropdownStructure, subcomponentNameToDropdownOptionName }
-//    <------------<--------- { ref: { masterComponent } }
+//    <------------<-------------- masterComponent
 //                                 |       |     |
 //                                 |       |     |
 // Dropdown Menu Component ---> { base, layers, text }
@@ -316,7 +309,7 @@ export interface WorkshopComponent {
 // to the very top level component (and removed from the original components). This is carried out
 // to maintain all of these values in the same place.
 // Hence this component is known as the Master component and all of the seed components have a
-// reference to it via the masterComponentRef property.
+// reference to it via the masterComponent property.
 // When referring to the examples above chronologically - master components of would be the very parent
 // each component i.e. Text, Button, Card and Dropdown Button components.
 // To note, seed components can still refer to their core subcomponents via the coreSubcomponentRefs
