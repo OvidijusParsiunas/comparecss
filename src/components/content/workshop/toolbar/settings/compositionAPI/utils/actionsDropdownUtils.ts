@@ -1,3 +1,4 @@
+import { CustomSettingTriggerFunction } from '../../../../../../../interfaces/CustomSettingTriggerFunction';
 import { TemporaryDropdownValue } from '../../../../../../../interfaces/temporaryDropdownValue';
 import { MouseClickOptionEvent } from '../../../../../../../interfaces/dropdownMenuMouseEvents';
 import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
@@ -136,6 +137,15 @@ export default class ActionsDropdownUtils {
     } else if (customFeatureObjectKeys) {
       settingsComponent.actionsDropdownsButtonText[name] = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys,
         subcomponentProperties[customFeatureObjectKeys[0]]);
+    }
+  }
+
+  // called when setting is reset
+  public static callSettingCustomFunction(settingSpec: any, subcomponentProperties: SubcomponentProperties, newValue: string): void {
+    if (settingSpec.customFunctionKeys) {
+      const customFunction = SharedUtils.getCustomFeatureValue(
+        settingSpec.customFunctionKeys, subcomponentProperties[settingSpec.customFunctionKeys[0]]) as CustomSettingTriggerFunction;
+      customFunction(subcomponentProperties, newValue);
     }
   }
 }

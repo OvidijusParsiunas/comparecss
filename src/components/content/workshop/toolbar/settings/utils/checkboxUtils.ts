@@ -1,8 +1,7 @@
+import { CustomSettingTriggerFunction } from '../../../../../../interfaces/CustomSettingTriggerFunction';
 import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import { UpdateOtherRangesUtils } from './rangeUtils/updateOtherRangesUtils';
 import SharedUtils from './sharedUtils';
-
-export type CustomTriggerFunc = (subcomponentProperties: SubcomponentProperties, newValue?: string) => void
 
 export default class CheckboxUtils {
 
@@ -28,7 +27,8 @@ export default class CheckboxUtils {
   }
   
   private static triggerCustomFunction(trigger: any, subcomponentProperties: SubcomponentProperties): void {
-    const customFunction = SharedUtils.getCustomFeatureValue(trigger.customFunctionKeys, subcomponentProperties[trigger.customFunctionKeys[0]]) as CustomTriggerFunc;
+    const customFunction = SharedUtils.getCustomFeatureValue(
+      trigger.customFunctionKeys, subcomponentProperties[trigger.customFunctionKeys[0]]) as CustomSettingTriggerFunction;
     customFunction(subcomponentProperties);
   }
   
