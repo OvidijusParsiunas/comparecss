@@ -110,9 +110,7 @@ export class ComponentBuilder {
   }
 
   protected static populateReferences(component: WorkshopComponent): void {
-    const { coreSubcomponentRefs, subcomponents } = component;
-    ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(coreSubcomponentRefs);
-    ReferenceSharingUtils.appendBaseSubcomponentRefToAllChildSubcomponents(coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE], subcomponents);
+    ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(component.coreSubcomponentRefs);
     component.referenceSharingExecutables = [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents];
   }
 

@@ -100,7 +100,7 @@
         </div>
         <button v-if="!isFullPreviewModeActive && isInSyncButtonDisplayed()"
           id="sync-transition-animation-padding"
-          :style="{marginLeft: component.subcomponents[component.activeSubcomponentName].baseSubcomponentRef ? '-23px' : '-29px'}"
+          :style="{marginLeft: component.subcomponents[component.activeSubcomponentName].subcomponentType == SUBCOMPONENT_TYPES.BASE ? '-29px' : '-23px' }"
           :class="[{'transition-item': areOptionButtonTransitionsAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS]">
             <font-awesome-icon style="color: #54a9f100" class="sync-icon" icon="sync-alt"/>
         </button>
@@ -220,6 +220,7 @@ interface Consts {
   SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
   ADD_NEW_SUBCOMPONENT_DROPDOWN_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
   CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
+  SUBCOMPONENT_TYPES: typeof SUBCOMPONENT_TYPES;
 }
 
 interface Data {
@@ -243,6 +244,7 @@ export default {
       ...removeSubcomponentModalState,
       FONT_AWESOME_COLORS,
       COMPONENT_TYPES,
+      SUBCOMPONENT_TYPES,
       OPTION_MENU_BUTTON_MARKER,
       TOOLBAR_GENERAL_BUTTON_CLASS,
       FULL_PREVIEW_MODE_BUTTON_MARKER,

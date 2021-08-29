@@ -1,16 +1,16 @@
 import { BaseSubcomponentRef } from '../../../../../../interfaces/componentPreviewStructure';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 
-let component = null;
-let initialAlignment = null
+let baseSubcomponent: BaseSubcomponentRef = null;
+let initialAlignment: ALIGNED_SECTION_TYPES = null
 let initialAlignmentIndex = -1;
 
-function getChildComponent(): BaseSubcomponentRef {
-  return component;
+function getChildBaseSubcomponent(): BaseSubcomponentRef {
+  return baseSubcomponent;
 }
 
-function setChildComponent(seedComponent: BaseSubcomponentRef): void {
-  component = seedComponent;
+function setChildBaseComponent(newBaseSubcomponent: BaseSubcomponentRef): void {
+  baseSubcomponent = newBaseSubcomponent;
 }
 
 function getInitialAlignmentIndex(): number {
@@ -30,7 +30,7 @@ function setInitialAlignment(initialAlignmentState: ALIGNED_SECTION_TYPES): void
 }
 
 function reset(): void {
-  component = null;
+  baseSubcomponent = null;
   initialAlignment = null;
   initialAlignmentIndex = -1;
 }
@@ -40,7 +40,7 @@ export const childComponentAlignmentDropdownState = {
   getInitialAlignmentIndex,
   setInitialAlignment,
   getInitialAlignment,
-  setChildComponent,
-  getChildComponent,
+  setChildBaseComponent,
+  getChildBaseSubcomponent,
   reset,
 }

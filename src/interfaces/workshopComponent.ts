@@ -154,9 +154,6 @@ export interface SubcomponentProperties {
   // components. However, these subcomponents still hold a reference to the component that they originally came from using the seedComponent property.
   // full structure explained at the bottom of the file titled: 'Component Architecture Information'
   seedComponent?: WorkshopComponent;
-  // baseSubcomponentRef is only appended to all the child subcomponents (except the base subcomponents)
-  // this is mostly used to track the child component's syncedComponent property and identify whether the subcomponent is child and not base
-  baseSubcomponentRef?: SubcomponentProperties;
   // this is used for overwriting css properties on mouse actions as adding css directly to customCss causes in-sync components to be edited all at once
   overwrittenCustomCssObj?: CustomCss;
   parentLayer?: Layer;

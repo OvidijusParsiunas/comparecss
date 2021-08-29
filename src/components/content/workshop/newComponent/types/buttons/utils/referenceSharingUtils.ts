@@ -1,5 +1,4 @@
 import { CoreSubcomponentRefsUtils } from '../../../../utils/componentManipulation/coreSubcomponentRefs/coreSubcomponentRefsUtils';
-import { SubcomponentProperties, Subcomponents } from '../../../../../../../interfaces/workshopComponent';
 import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -23,15 +22,6 @@ export default class ReferenceSharingUtils {
       }
       subcomponent.customFeatures.jsClasses = jsClasses;
       subcomponent.defaultCustomFeatures.jsClasses = new Set(jsClasses);
-    });
-  }
-
-  public static appendBaseSubcomponentRefToAllChildSubcomponents(baseSubcomponent: SubcomponentProperties, subcomponents: Subcomponents): void {
-    Object.keys(subcomponents).forEach((subcomponentName) => {
-      const subcomponent = subcomponents[subcomponentName];
-      if (subcomponent !== baseSubcomponent) {
-        subcomponent.baseSubcomponentRef = baseSubcomponent;
-      }
     });
   }
 }

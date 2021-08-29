@@ -41,7 +41,7 @@ export class CopySubcomponents {
   }
 
   private static copyExistingSubcomponentProperties(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
-    if (!subcomponentBeingCopied.baseSubcomponentRef && subcomponentBeingCopied.seedComponent?.sync.syncedComponent) {
+    if (subcomponentBeingCopied.subcomponentType === SUBCOMPONENT_TYPES.BASE && subcomponentBeingCopied.seedComponent?.sync.syncedComponent) {
       CopySubcomponents.copyInSyncSubcomponent(newSubcomponent, subcomponentBeingCopied);
     } else {
       CopySubcomponents.copySubcomponentProperties(newSubcomponent, subcomponentBeingCopied); 

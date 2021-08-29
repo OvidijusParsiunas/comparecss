@@ -9,15 +9,15 @@ import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.en
 export class ChangeChildComponentAlignment {
 
   private static addSubcomponentToNewAlignment(newAlignment: ALIGNED_SECTION_TYPES, alignedSections: AlignedSections): void {
-    // alignedSections[newAlignment].push(subcomponentAlignmentDropdownState.getChildComponent());
-    alignedSections[newAlignment].unshift(childComponentAlignmentDropdownState.getChildComponent());
+    // alignedSections[newAlignment].push(subcomponentAlignmentDropdownState.getChildBaseSubcomponent());
+    alignedSections[newAlignment].unshift(childComponentAlignmentDropdownState.getChildBaseSubcomponent());
   }
 
   private static addSubcomponentBackToInitialAlignment(previousAlignment: ALIGNED_SECTION_TYPES, newAlignment: ALIGNED_SECTION_TYPES,
       alignedSections: AlignedSections): void {
     if (previousAlignment !== newAlignment) {
       alignedSections[childComponentAlignmentDropdownState.getInitialAlignment()].splice(
-        childComponentAlignmentDropdownState.getInitialAlignmentIndex(), 0, childComponentAlignmentDropdownState.getChildComponent());
+        childComponentAlignmentDropdownState.getInitialAlignmentIndex(), 0, childComponentAlignmentDropdownState.getChildBaseSubcomponent());
     }
   }
 
@@ -26,7 +26,7 @@ export class ChangeChildComponentAlignment {
     const { alignedSections } = subcomponentProperties.parentLayer.sections;
     if (newAlignment === childComponentAlignmentDropdownState.getInitialAlignment()) {
       ChangeChildComponentAlignment.addSubcomponentBackToInitialAlignment(previousAlignment, newAlignment, alignedSections);
-    } else if (childComponentAlignmentDropdownState.getChildComponent()) {
+    } else if (childComponentAlignmentDropdownState.getChildBaseSubcomponent()) {
       ChangeChildComponentAlignment.addSubcomponentToNewAlignment(newAlignment, alignedSections);
     }
   }
@@ -45,7 +45,7 @@ export class ChangeChildComponentAlignment {
   }
 
   private static saveStateAndRemoveSubcomponent(subcomponents: BaseSubcomponentRef[], currentSubcomponentIndex: number): void {
-    childComponentAlignmentDropdownState.setChildComponent(subcomponents[currentSubcomponentIndex]);
+    childComponentAlignmentDropdownState.setChildBaseComponent(subcomponents[currentSubcomponentIndex]);
     subcomponents.splice(currentSubcomponentIndex, 1);
   }
 
