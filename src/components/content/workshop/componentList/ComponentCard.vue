@@ -31,6 +31,7 @@
 
 <script lang="ts">
 import { CopyableComponentCardOverlaysToDisplay } from '../../../../interfaces/copyableComponentCardOverlaysToDisplay';
+import { CopyChildComponentUtils } from '../toolbar/options/copyChildComponent/copyChildComponentUtils';
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
 import { CONFIRM_CHILD_COMPONENT_TO_COPY_MARKER } from '../../../../consts/elementClassMarkers';
 import { ComponentCardHoveredEvent } from '../../../../interfaces/componentCardHoveredEvent'
@@ -171,9 +172,9 @@ export default {
     },
     isDisplayingCopyableComponentCardOverlay(): boolean {
       if (!this.copyableComponentCardOverlaysToDisplay) return;
-      const { isDisplaying, componentType } = this.copyableComponentCardOverlaysToDisplay as CopyableComponentCardOverlaysToDisplay;
+      const { isDisplaying, activeComponent } = this.copyableComponentCardOverlaysToDisplay as CopyableComponentCardOverlaysToDisplay;
       if (isDisplaying) {
-        return this.thisComponent.type === componentType;
+        return CopyChildComponentUtils.isComponentCopyable(this.thisComponent, activeComponent);
       }
       return false;
     }

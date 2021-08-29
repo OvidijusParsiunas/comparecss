@@ -157,6 +157,7 @@ import { MouseClickNewOptionEvent, MouseEnterOptionEvent } from '../../../../../
 import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../consts/workshopToolbarOptionButtonNames.enum';
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
+import CopyChildComponentModeToggleUtils from './copyChildComponent/modeUtils/copyChildComponentModeToggle';
 import { removeSubcomponentModalState } from './removeSubcomponentModalState/removeSubcomponentModalState';
 import RemoveSubcomponentOverlay from './subcomponentOverlayToggleUtils/subcomponentOverlayToggleUtils';
 import { fulPreviewModeState } from '../../componentPreview/utils/fullPreviewMode/fullPreviewModeState';
@@ -171,6 +172,7 @@ import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdow
 import { AddNewSubcomponentEvent } from '../../../../../interfaces/addNewSubcomponentEvent';
 import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
+import { CopyChildComponentUtils } from './copyChildComponent/copyChildComponentUtils';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectMode';
 import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
@@ -192,8 +194,6 @@ import {
   TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_PRIMARY_COMPONENT_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS,
   TOOLBAR_BUTTON_GROUP_TERTIARY_COMPONENT_CLASS, TOOLBAR_BUTTON_GROUP_MIDDLE_COMPONENT_CLASS, TOOLBAR_BUTTON_GROUP_END_COMPONENT_CLASS,
  } from '../../../../../consts/toolbarClasses';
-import { COPYABLE_COMPONENT_BASE_TYPES } from './copyChildComponent/copyableComponentTypes';
-import CopyChildComponentModeToggleUtils from './copyChildComponent/modeUtils/copyChildComponentModeToggle';
 
 interface Consts {
   componentTypeToOptions: ComponentTypeToOptions;
@@ -435,21 +435,18 @@ export default {
       return null;
     },
     isCopyButtonDisplayed(): boolean {
-      const subcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
-      if (subcomponent.subcomponentType === SUBCOMPONENT_TYPES.BUTTON && subcomponent.seedComponent?.style === BUTTON_STYLES.CLOSE) return false;
-      return !!(COPYABLE_COMPONENT_BASE_TYPES.has(subcomponent.subcomponentType) && subcomponent.seedComponent);
+      return CopyChildComponentUtils.isCopyOptionButtonDisplayed(this.component);
     },
     mouseHoverCopyChildComponentToggle(isMouseEnter: boolean): void {
-      const activeSubcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
-      const copyableComponentCardOverlaysToDisplay: CopyableComponentCardOverlaysToDisplay = {
-        isDisplaying: isMouseEnter, componentType: activeSubcomponent.seedComponent.type };
+      const activeComponent: WorkshopComponent = this.component.subcomponents[this.component.activeSubcomponentName].seedComponent;
+      const copyableComponentCardOverlaysToDisplay: CopyableComponentCardOverlaysToDisplay = { isDisplaying: isMouseEnter, activeComponent };
       this.$emit('display-copyable-component-card-overlays', copyableComponentCardOverlaysToDisplay);
     },
     toggleCopyChildComponentMode(): void {
       CopyChildComponentModeToggleUtils.toggleCopyChildComponentMode(this);
     },
     toggleInSync(callback?: () => void): void {
-      this.temporarilyAllowOptionAnimations(SyncedComponent.toggleSubcomponentInSync.bind(this, this.component, callback));
+      this.temporarilyAllowOptionAnimations(SyncedComponent.toggleSubcomponentSync.bind(this, this.component, true, callback));
     },
     isRemoveSubcomponentButtonDisplayed(): boolean {
       return this.component.subcomponents[this.component.activeSubcomponentName].isRemovable;

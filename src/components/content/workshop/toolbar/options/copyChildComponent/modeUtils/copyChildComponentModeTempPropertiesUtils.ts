@@ -2,6 +2,7 @@ import { AddNewContainerComponent } from '../../../../utils/componentManipulatio
 import { CoreSubcomponentRefsUtils } from '../../../../utils/componentManipulation/coreSubcomponentRefs/coreSubcomponentRefsUtils';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import JSONUtils from '../../../../utils/generic/jsonUtils';
 
 export class CopyChildComponentModeTempPropertiesUtils {
   
@@ -12,16 +13,29 @@ export class CopyChildComponentModeTempPropertiesUtils {
     };
   }
 
-  public static copyTargetSubcomponent(subcomponentToBeCopied: SubcomponentProperties, activeComponentSubcomponent: SubcomponentProperties): void {
-    if (!activeComponentSubcomponent) return;
-    if (!activeComponentSubcomponent.tempOriginalCustomProperties) {
-      CopyChildComponentModeTempPropertiesUtils.moveCustomPropertiesToTempProperties(activeComponentSubcomponent);
-    }
+  private static copyAllCustomProperties(subcomponentToBeCopied: SubcomponentProperties, activeComponentSubcomponent: SubcomponentProperties): void {
     activeComponentSubcomponent.customFeatures = subcomponentToBeCopied.customFeatures;
     const componentToBeCopiedCustomCss = subcomponentToBeCopied.customCss;
     activeComponentSubcomponent.customCss = componentToBeCopiedCustomCss;
     if (!componentToBeCopiedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top) {
       componentToBeCopiedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top = AddNewContainerComponent.DEFAULT_TOP_PROPERTY;
+    }
+  }
+
+  private static copyComponentSpecificProperties(subcomponentToBeCopied: SubcomponentProperties, activeComponentSubcomponent: SubcomponentProperties): void {
+    activeComponentSubcomponent.customCss = subcomponentToBeCopied.customCss;
+    JSONUtils.copyPropertiesThatExistInTarget(activeComponentSubcomponent.customFeatures, subcomponentToBeCopied.customFeatures);
+  }
+
+  public static copyTargetSubcomponent(subcomponentToBeCopied: SubcomponentProperties, activeComponentSubcomponent: SubcomponentProperties): void {
+    if (!activeComponentSubcomponent) return;
+    if (!activeComponentSubcomponent.tempOriginalCustomProperties) {
+      CopyChildComponentModeTempPropertiesUtils.moveCustomPropertiesToTempProperties(activeComponentSubcomponent);
+    }
+    if (subcomponentToBeCopied.seedComponent.type !== activeComponentSubcomponent.seedComponent.type) {
+      CopyChildComponentModeTempPropertiesUtils.copyComponentSpecificProperties(subcomponentToBeCopied, activeComponentSubcomponent);
+    } else {
+      CopyChildComponentModeTempPropertiesUtils.copyAllCustomProperties(subcomponentToBeCopied, activeComponentSubcomponent);
     }
   }
 

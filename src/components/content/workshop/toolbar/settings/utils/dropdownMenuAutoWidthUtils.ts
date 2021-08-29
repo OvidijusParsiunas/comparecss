@@ -3,6 +3,7 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../int
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
+import { SyncedComponent } from '../../options/copyChildComponent/syncedComponent';
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 
 export class DropdownMenuAutoWidthUtils {
@@ -39,13 +40,21 @@ export class DropdownMenuAutoWidthUtils {
     }
   }
 
+  private static dereferenceBaseIfInSync(baseComponent: WorkshopComponent): void {
+    if (baseComponent.linkedComponents.base.sync.syncedComponent) {
+      SyncedComponent.toggleSubcomponentSync(baseComponent.linkedComponents.base, false);
+    }
+  }
+
   public static setWidth(subcomponentProperties: SubcomponentProperties): void {
     setTimeout(() => {
       const component = subcomponentProperties.seedComponent;
       if (component.type === COMPONENT_TYPES.DROPDOWN_MENU) {
+        DropdownMenuAutoWidthUtils.dereferenceBaseIfInSync(component);
         DropdownMenuAutoWidthUtils.setComponentWidths(component.linkedComponents.base, component);
         // activated by clicking select option on the button
       } else if (component.type === COMPONENT_TYPES.DROPDOWN) {
+        // when active component is dropdown base, by setting the width - settings component dereferences sync automatically
         DropdownMenuAutoWidthUtils.setComponentWidths(component, component.linkedComponents.auxiliary[0]);
       }
     });

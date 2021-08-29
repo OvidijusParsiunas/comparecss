@@ -1,6 +1,7 @@
 import { CoreSubcomponentRefsUtils } from '../../../utils/componentManipulation/coreSubcomponentRefs/coreSubcomponentRefsUtils';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ReferenceSharingExecutable } from '../../../../../../interfaces/referenceSharingExecutable';
+import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import JSONUtils from '../../../utils/generic/jsonUtils';
 
 export class SyncedComponent {
@@ -16,12 +17,18 @@ export class SyncedComponent {
     referenceSharingExecutables.forEach((executable: ReferenceSharingExecutable) => executable(coreSubcomponentRefs));
   }
 
-  public static toggleSubcomponentInSync(activeComponent: WorkshopComponent, callback?: () => void): void {
-    const activeSubcomponent = activeComponent.subcomponents[activeComponent.activeSubcomponentName];
-    const activeComponentBase = activeSubcomponent.baseSubcomponentRef || activeSubcomponent;
-    if (activeComponentBase.seedComponent.sync.syncedComponent) {
-      SyncedComponent.dereferenceCopiedComponentCustomProperties(activeComponentBase);
-    }
+  // if active subcomponent is text in a nested button, need to make sure to get the button base
+  private static getActiveContainerComponentBase(activeComponent: WorkshopComponent): SubcomponentProperties {
+    const activeBaseSubcomponent = activeComponent.subcomponents[activeComponent.activeSubcomponentName];
+    const activeSeedComponent = activeBaseSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.BASE
+      ? activeBaseSubcomponent.seedComponent : activeBaseSubcomponent.seedComponent.containerComponent;
+    return activeSeedComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+  }
+
+  public static toggleSubcomponentSync(activeComponent: WorkshopComponent, useActiveSeedComponentBase = true, callback?: () => void): void {
+    const activeComponentBase = useActiveSeedComponentBase
+      ? SyncedComponent.getActiveContainerComponentBase(activeComponent) : activeComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    if (activeComponentBase.seedComponent.sync.syncedComponent) SyncedComponent.dereferenceCopiedComponentCustomProperties(activeComponentBase);
     // WORK3: activeComponentBase.seedComponent.inSync &&= null;
     if (activeComponentBase.seedComponent.sync.syncedComponent) activeComponentBase.seedComponent.sync.syncedComponent = null;
     if (callback) callback();
@@ -34,7 +41,7 @@ export class SyncedComponent {
   public static updateIfSubcomponentNotInSync(activeComponent: WorkshopComponent, activeSubcomponent: SubcomponentProperties): void {
     const seedComponent = SyncedComponent.getSeedSubcomponent(activeSubcomponent);
     if (seedComponent?.sync.syncedComponent && seedComponent.componentStatus.isRemoved) {
-      SyncedComponent.toggleSubcomponentInSync(activeComponent);
+      SyncedComponent.toggleSubcomponentSync(activeComponent);
     }
   }
 

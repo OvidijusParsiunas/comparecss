@@ -52,4 +52,10 @@ export default class JSONUtils {
   public static addObjects<T>(object1Parent: T, object1Key: keyof T, object2: T[keyof T]): void {
     object1Parent[object1Key] = { ...object1Parent[object1Key], ...object2 };
   }
+
+  public static copyPropertiesThatExistInTarget(targetObject: unknown, copyObject: unknown): void {
+    Object.keys(targetObject).forEach((key) => {
+      if (copyObject.hasOwnProperty(key)) targetObject[key] = copyObject[key];
+    })
+  }
 }

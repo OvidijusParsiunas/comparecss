@@ -1,4 +1,5 @@
 import { CopyChildComponedModeToggleOff } from '../../toolbar/options/copyChildComponent/modeUtils/copyChildComponentModeToggleOff';
+import { CopyChildComponentUtils } from '../../toolbar/options/copyChildComponent/copyChildComponentUtils';
 import { WorkshopEventCallback } from '../../../../../interfaces/workshopEventCallback';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopComponent } from '../../../../../interfaces/workshopComponent';
@@ -22,9 +23,9 @@ export class ToggleCopyChildComponentModeState {
 
   private static toggleOn(workshopComponent: ComponentOptions & { components: WorkshopComponent[] }, optionsComponent: ComponentOptions): void {
     workshopComponent.tempComponents = workshopComponent.components;
-    const componentType = workshopComponent.currentlySelectedComponent.subcomponents[workshopComponent.currentlySelectedComponent.activeSubcomponentName]
-      .seedComponent.type;
-    (workshopComponent.components as WorkshopComponent[]) = workshopComponent.components.filter((component: WorkshopComponent) => component.type === componentType);
+    const activeComponent: WorkshopComponent = workshopComponent.currentlySelectedComponent.subcomponents[workshopComponent.currentlySelectedComponent.activeSubcomponentName].seedComponent;
+    (workshopComponent.components as WorkshopComponent[]) = workshopComponent.components
+      .filter((component: WorkshopComponent) => CopyChildComponentUtils.isComponentCopyable(component, activeComponent));
     ToggleCopyChildComponentModeState.toggleCopyChildComponentMode(workshopComponent, optionsComponent);
   }
   
