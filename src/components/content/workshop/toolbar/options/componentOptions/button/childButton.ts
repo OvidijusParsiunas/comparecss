@@ -16,10 +16,6 @@ const childComponentSpecificOptions = [
     buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
     type: WORKSHOP_TOOLBAR_OPTION_TYPES.CHILD_COMPONENT_POSITION,
   },
-  {
-    buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SIZE,
-    type: WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_WIDTH_AUTO,
-  },
 ]
 
 export const childButtonOptions: SubcomponentOptions<ButtonOptionsModes> = {

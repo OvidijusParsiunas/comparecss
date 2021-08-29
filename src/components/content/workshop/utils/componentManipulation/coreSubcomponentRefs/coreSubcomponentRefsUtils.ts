@@ -5,12 +5,12 @@ export class CoreSubcomponentRefsUtils {
 
   public static getActiveRefKeys(coreSubcomponentRefs: CoreSubcomponentRefs): string[] {
     return Object.keys(coreSubcomponentRefs || {})
-      .filter((coreSubcomponentKey) => coreSubcomponentRefs[coreSubcomponentKey]);
+      .filter((subcomponentType) => coreSubcomponentRefs[subcomponentType]);
   }
 
   public static getActiveRefsArray(coreSubcomponentRefs: CoreSubcomponentRefs): SubcomponentProperties[] {
     return CoreSubcomponentRefsUtils.getActiveRefKeys(coreSubcomponentRefs || {})
-      .map((coreSubcomponentKey) => coreSubcomponentRefs[coreSubcomponentKey]);
+      .map((subcomponentType) => coreSubcomponentRefs[subcomponentType]);
   }
 
   public static executeReferenceSharingExecutables(...components: WorkshopComponent[]): void {

@@ -1,3 +1,4 @@
+import { CoreSubcomponentRefsUtils } from '../../../utils/componentManipulation/coreSubcomponentRefs/coreSubcomponentRefsUtils';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ReferenceSharingExecutable } from '../../../../../../interfaces/referenceSharingExecutable';
 import JSONUtils from '../../../utils/generic/jsonUtils';
@@ -6,15 +7,13 @@ export class SyncedComponent {
   
   private static dereferenceCopiedComponentCustomProperties(activeComponentBase: SubcomponentProperties): void {
     const { referenceSharingExecutables, coreSubcomponentRefs } = activeComponentBase.seedComponent;
-    Object.keys(coreSubcomponentRefs).forEach((subcomponentType) => {
+    CoreSubcomponentRefsUtils.getActiveRefKeys(coreSubcomponentRefs).forEach((subcomponentType) => {
       const subcomponent = coreSubcomponentRefs[subcomponentType];
       if (!subcomponent) return;
       subcomponent.customCss = JSONUtils.deepCopy(subcomponent.customCss);
       subcomponent.customFeatures = JSONUtils.deepCopy(subcomponent.customFeatures);
     });
-    referenceSharingExecutables.forEach((executable: ReferenceSharingExecutable) => {
-      executable(coreSubcomponentRefs);
-    });
+    referenceSharingExecutables.forEach((executable: ReferenceSharingExecutable) => executable(coreSubcomponentRefs));
   }
 
   public static toggleSubcomponentInSync(activeComponent: WorkshopComponent, callback?: () => void): void {

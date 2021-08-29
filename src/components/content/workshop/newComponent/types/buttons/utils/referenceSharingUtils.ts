@@ -15,7 +15,8 @@ export default class ReferenceSharingUtils {
     const baseSubcomponent = coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const jsClasses = baseSubcomponent.customFeatures && baseSubcomponent.customFeatures.jsClasses
       ? baseSubcomponent.customFeatures.jsClasses : ReferenceSharingUtils.createDefaultButtonJsClasses();
-    CoreSubcomponentRefsUtils.getActiveRefsArray(coreSubcomponentRefs).forEach((subcomponent) => {
+    CoreSubcomponentRefsUtils.getActiveRefKeys(coreSubcomponentRefs).forEach((subcomponentType) => {
+      const subcomponent = coreSubcomponentRefs[subcomponentType];
       if (!subcomponent.customFeatures) {
         subcomponent.customFeatures = {};
         subcomponent.defaultCustomFeatures = {};

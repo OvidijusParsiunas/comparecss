@@ -6,6 +6,7 @@ import { ComponentTraversalState, TargetDetails } from '../../../../../../../int
 import { UpdateLayerDropdownOptionNames } from '../../updateChildComponent/updateLayerDropdownOptionNames';
 import { DecrementChildComponentCount } from '../../childComponentCount/decrementChildComponentCount';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
+import { CoreSubcomponentRefsUtils } from '../../coreSubcomponentRefs/coreSubcomponentRefsUtils';
 import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
 import ComponentTraversalUtils from '../../../componentTraversal/componentTraversalUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -19,8 +20,8 @@ export class RemoveAnyChildComponent {
   // WORK1 - copy
   private static removeCoreSubcomponentRef(parentComponent: WorkshopComponent, removedSubcomponentProperties: SubcomponentProperties): void {
     const { coreSubcomponentRefs } = parentComponent;
-    const coreSubcomponentToBeRemoved = Object.keys(coreSubcomponentRefs).find(
-      (coreSubcomponentKey) => coreSubcomponentRefs[coreSubcomponentKey] === removedSubcomponentProperties);
+    const coreSubcomponentToBeRemoved = CoreSubcomponentRefsUtils.getActiveRefKeys(coreSubcomponentRefs)
+      .find((subcomponentType) => coreSubcomponentRefs[subcomponentType] === removedSubcomponentProperties);
     if (coreSubcomponentToBeRemoved) coreSubcomponentRefs[coreSubcomponentToBeRemoved] = null;
   }
 

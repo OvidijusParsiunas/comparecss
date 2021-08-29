@@ -1,6 +1,6 @@
-import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
+import { WorkshopComponent } from './workshopComponent';
 
 export interface CopyableComponentCardOverlaysToDisplay {
   isDisplaying: boolean;
-  componentType?: COMPONENT_TYPES;
+  activeComponent: WorkshopComponent;
 }

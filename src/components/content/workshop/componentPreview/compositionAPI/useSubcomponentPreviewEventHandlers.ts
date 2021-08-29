@@ -35,7 +35,8 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   }
 
   function triggerOtherSubcomponentsMouseEvents(otherSubcomponentsToTrigger: CoreSubcomponentRefs, mouseEventType: string): void {
-    CoreSubcomponentRefsUtils.getActiveRefsArray(otherSubcomponentsToTrigger).forEach((subcomponent) => {
+    CoreSubcomponentRefsUtils.getActiveRefKeys(otherSubcomponentsToTrigger).forEach((subcomponentType) => {
+      const subcomponent = otherSubcomponentsToTrigger[subcomponentType];
       const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(subcomponent.name);
       const element = document.getElementById(subcomponentId);
       element.dispatchEvent(new MouseEvent(mouseEventType));

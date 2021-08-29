@@ -49,9 +49,9 @@ export class CopySubcomponents {
   }
 
   public static copyComponentSubcomponents(componentBeingCopied: WorkshopComponent, newChildComponent: WorkshopComponent): void {
-    CoreSubcomponentRefsUtils.getActiveRefKeys(newChildComponent.coreSubcomponentRefs).forEach((coreSubcomponentType) => {
-      const newSubcomponent = newChildComponent.coreSubcomponentRefs[coreSubcomponentType];
-      const subcomponentBeingCopied = componentBeingCopied.coreSubcomponentRefs[coreSubcomponentType];
+    CoreSubcomponentRefsUtils.getActiveRefKeys(newChildComponent.coreSubcomponentRefs).forEach((subcomponentType) => {
+      const newSubcomponent = newChildComponent.coreSubcomponentRefs[subcomponentType];
+      const subcomponentBeingCopied = componentBeingCopied.coreSubcomponentRefs[subcomponentType];
       CopySubcomponents.copyExistingSubcomponentProperties(newSubcomponent, subcomponentBeingCopied);
     });
   }
