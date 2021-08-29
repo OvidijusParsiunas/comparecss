@@ -34,20 +34,15 @@ export class SyncedComponent {
     if (callback) callback();
   }
 
-  private static getActiveContainerComponent(activeSubcomponent: SubcomponentProperties): WorkshopComponent {
-    return activeSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.BASE ?
-      activeSubcomponent.seedComponent : activeSubcomponent.seedComponent.containerComponent;
-  }
-
   public static updateIfSubcomponentNotInSync(activeComponent: WorkshopComponent, activeSubcomponent: SubcomponentProperties): void {
-    const containerComponent = SyncedComponent.getActiveContainerComponent(activeSubcomponent);
-    if (containerComponent?.sync.syncedComponent && containerComponent.componentStatus.isRemoved) {
+    const seedComponent = activeSubcomponent.seedComponent;
+    if (seedComponent?.sync.syncedComponent && seedComponent.componentStatus.isRemoved) {
       SyncedComponent.toggleSubcomponentSync(activeComponent);
     }
   }
 
   public static isInSyncButtonDisplayed(activeSubcomponent: SubcomponentProperties): boolean {
-    const containerComponent = SyncedComponent.getActiveContainerComponent(activeSubcomponent);
-    return containerComponent?.sync.syncedComponent && !containerComponent.componentStatus.isRemoved;
+    const seedComponent = activeSubcomponent.seedComponent;
+    return seedComponent?.sync.syncedComponent && !seedComponent.componentStatus.isRemoved;
   }
 }

@@ -40,9 +40,9 @@ export class CopySubcomponents {
     CopySubcomponents.copyProperties(newSubcomponent.defaultCustomStaticFeatures, subcomponentBeingCopied.defaultCustomStaticFeatures);
   }
 
-  private static copyExistingSubcomponentProperties(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
-    if (subcomponentBeingCopied.subcomponentType === SUBCOMPONENT_TYPES.BASE && subcomponentBeingCopied.seedComponent?.sync.syncedComponent) {
-      CopySubcomponents.copyInSyncSubcomponent(newSubcomponent, subcomponentBeingCopied);
+  private static copyExistingSubcomponentProperties(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties, isBase: boolean): void {
+    if (isBase && subcomponentBeingCopied.seedComponent?.sync.syncedComponent) {
+        CopySubcomponents.copyInSyncSubcomponent(newSubcomponent, subcomponentBeingCopied);
     } else {
       CopySubcomponents.copySubcomponentProperties(newSubcomponent, subcomponentBeingCopied); 
     }
@@ -52,7 +52,7 @@ export class CopySubcomponents {
     CoreSubcomponentRefsUtils.getActiveRefKeys(newChildComponent.coreSubcomponentRefs).forEach((subcomponentType) => {
       const newSubcomponent = newChildComponent.coreSubcomponentRefs[subcomponentType];
       const subcomponentBeingCopied = componentBeingCopied.coreSubcomponentRefs[subcomponentType];
-      CopySubcomponents.copyExistingSubcomponentProperties(newSubcomponent, subcomponentBeingCopied);
+      CopySubcomponents.copyExistingSubcomponentProperties(newSubcomponent, subcomponentBeingCopied, subcomponentType == SUBCOMPONENT_TYPES.BASE);
     });
   }
 
