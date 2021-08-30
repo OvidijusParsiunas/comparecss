@@ -197,7 +197,11 @@ export default {
             if (!parentOptionElement) {
               this.displayParentMenu();
             } else {
-              this.displayChildDropdownMenu(parentOptionElement, parentDropdownIndex, parentOptionIndex, dropdown);
+              // this is a bug fix for when the parentOptionIndex is incorrectly increased by one when there is an extra element generated at the start
+              // due to dropdownOptionAuxiliaryDetailsReferenceObject property being placed at the start of the dropdownOptions object (with display still set to none) 
+              const parentOptionIndexWithoutAuxInfo = this.$refs.dropdownMenus.childNodes[parentDropdownIndex + 1].childNodes[1].style.display === 'none'
+                ? parentOptionIndex - 1 : parentOptionIndex;
+              this.displayChildDropdownMenu(parentOptionElement, parentDropdownIndex, parentOptionIndexWithoutAuxInfo, dropdown);
             }
           }, i * this.dropdownDisplayDelayMilliseconds);
         }
