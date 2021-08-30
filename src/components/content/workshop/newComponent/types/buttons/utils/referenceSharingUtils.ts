@@ -9,7 +9,6 @@ export default class ReferenceSharingUtils {
     return new Set([JAVASCRIPT_CLASSES.RIPPLES])
   }
 
-  // WORK1 - will need to be called again
   public static appendJsClassesRefToAllSubcomponents(coreSubcomponentRefs: CoreSubcomponentRefs): void {
     const baseSubcomponent = coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const jsClasses = baseSubcomponent.customFeatures && baseSubcomponent.customFeatures.jsClasses

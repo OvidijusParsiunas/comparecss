@@ -1,5 +1,5 @@
 import { SubcomponentCssPropertyDetails } from '../../../../../../interfaces/subcomponentCssPropertyDetails';
-import { MASTER_COMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
+import { MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { LAYER_SECTION_DIVISOR } from '../../../../../../consts/layerSectionDivisor';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 
@@ -9,7 +9,7 @@ import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 // Example of interconnected settings via updateSettingSpecViaOtherCssProperties
 function getOtherSubcomponentCssPropertyDetails(): SubcomponentCssPropertyDetails {
   return [
-    {subcomponentName: MASTER_COMPONENT_BASE_NAME.BASE, cssProperty: 'width'},
+    {subcomponentName: MASTER_SUBCOMPONENT_BASE_NAME.BASE, cssProperty: 'width'},
   ];
 }
 

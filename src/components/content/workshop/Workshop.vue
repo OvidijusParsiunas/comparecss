@@ -124,8 +124,8 @@ import useWorkshopEventCallbacks from './utils/workshopEventCallbacks/useWorksho
 import { ComponentManipulation } from './utils/componentManipulation/componentManipulation';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { removeComponentModalState } from './componentList/state/removeComponentModalState';
+import { MASTER_SUBCOMPONENT_BASE_NAME } from '../../../consts/baseSubcomponentNames.enum';
 import { ComponentCardHoveredEvent } from '../../../interfaces/componentCardHoveredEvent';
-import { MASTER_COMPONENT_BASE_NAME } from '../../../consts/baseSubcomponentNames.enum';
 import { AddNewSubcomponentEvent } from '../../../interfaces/addNewSubcomponentEvent';
 import { defaultDropdown } from './newComponent/types/dropdowns/generators/default';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
@@ -273,7 +273,7 @@ export default {
     isExpandedModalPreviewBackdropVisible(): boolean {
       const { subcomponents } = this.currentlySelectedComponent || {};
       if (subcomponents) {
-        return subcomponents[MASTER_COMPONENT_BASE_NAME.BASE].customFeatures?.backdrop?.visible;
+        return subcomponents[MASTER_SUBCOMPONENT_BASE_NAME.BASE].customFeatures?.backdrop?.visible;
       }
       return false;
     }

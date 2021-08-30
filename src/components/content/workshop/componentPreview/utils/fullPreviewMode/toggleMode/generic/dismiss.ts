@@ -4,7 +4,7 @@ import { ToggleFullPreviewModeOffCallbacks } from '../../../../../../../../inter
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { WorkshopEventCallbackReturn } from '../../../../../../../../interfaces/workshopEventCallbackReturn';
 import { OtherWorkshopEventCallbackDetails } from '../../../../../../../../interfaces/workshopEventCallback';
-import { MASTER_COMPONENT_BASE_NAME } from '../../../../../../../../consts/baseSubcomponentNames.enum';
+import { MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { animationTypeToFunctionality } from '../../../animations/animationToFunctionality';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
 import { BUTTON_STYLES } from '../../../../../../../../consts/componentStyles.enum';
@@ -43,7 +43,7 @@ export default class Dismiss {
   }
 
   private static close(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement): WorkshopEventCallbackReturn {
-    const { type, duration } = (componentPreviewComponent.component as WorkshopComponent).subcomponents[MASTER_COMPONENT_BASE_NAME.BASE]
+    const { type, duration } = (componentPreviewComponent.component as WorkshopComponent).subcomponents[MASTER_SUBCOMPONENT_BASE_NAME.BASE]
       .customFeatures.animations.display.close;
     const closeAnimation = animationTypeToFunctionality[type] as CloseAnimation;
     const animationDuration = duration;

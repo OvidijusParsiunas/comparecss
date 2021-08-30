@@ -147,8 +147,8 @@
 </template>
 
 <script lang="ts">
+import { MASTER_SUBCOMPONENT_BASE_NAME, TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
-import { MASTER_COMPONENT_BASE_NAME, TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../componentPreview/utils/animations/consts/sharedConsts';
 import { CopyableComponentCardOverlaysToDisplay } from '../../../../../interfaces/copyableComponentCardOverlaysToDisplay';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
@@ -555,7 +555,7 @@ export default {
     resetComponentPreviewMarginAssistance(): void {
       this.$nextTick(() => {
         this.componentPreviewAssistance.margin = this.activeOption.type === WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN
-          && this.component.activeSubcomponentName === MASTER_COMPONENT_BASE_NAME.BASE
+          && this.component.activeSubcomponentName === MASTER_SUBCOMPONENT_BASE_NAME.BASE
           && this.isSettingsDisplayed
           && !this.isExpandedModalPreviewModeActive;
       });

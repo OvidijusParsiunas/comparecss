@@ -4,7 +4,7 @@ import { WorkshopEventCallbackReturn } from '../../../../../../../../interfaces/
 import ModeToggleCloseAnimation from '../../../animations/expandedModalPreviewMode/toggleAnimations/close';
 import ModeToggleOpenAnimation from '../../../animations/expandedModalPreviewMode/toggleAnimations/open';
 import { ELEMENT_CSS_CHANGE_MILLISECONDS, SET_METHODS } from '../../../animations/consts/sharedConsts';
-import { MASTER_COMPONENT_BASE_NAME } from '../../../../../../../../consts/baseSubcomponentNames.enum';
+import { MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { COMPONENT_PREVIEW_CLASSES } from '../../../../../../../../consts/componentPreviewClasses';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../../../consts/domEventTriggerKeys.enum';
 import { OPTION_MENU_BUTTON_MARKER } from '../../../../../../../../consts/elementClassMarkers';
@@ -74,7 +74,7 @@ export default class ToggleModal {
       event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
     if (animationState.getIsModalCloseEventPreventedState()) return { shouldRepeat: true };
     fulPreviewModeState.setIsAnimationInProgress(false);
-    const closeTriggers: CloseTriggers = componentPreviewComponent.component.subcomponents[MASTER_COMPONENT_BASE_NAME.BASE]
+    const closeTriggers: CloseTriggers = componentPreviewComponent.component.subcomponents[MASTER_SUBCOMPONENT_BASE_NAME.BASE]
       .customFeatures.closeTriggers;
     if (event instanceof KeyboardEvent) {
       if ((event.key === DOM_EVENT_TRIGGER_KEYS.ESCAPE && closeTriggers.escape)
