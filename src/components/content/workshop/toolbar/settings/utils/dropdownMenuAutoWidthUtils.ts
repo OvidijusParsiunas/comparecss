@@ -48,14 +48,14 @@ export class DropdownMenuAutoWidthUtils {
 
   public static setWidth(subcomponentProperties: SubcomponentProperties): void {
     setTimeout(() => {
-      const component = subcomponentProperties.seedComponent;
-      if (component.type === COMPONENT_TYPES.DROPDOWN_MENU) {
-        DropdownMenuAutoWidthUtils.dereferenceBaseIfInSync(component);
-        DropdownMenuAutoWidthUtils.setComponentWidths(component.linkedComponents.base, component);
+      const seedComponent = subcomponentProperties.seedComponent?.containerComponent || subcomponentProperties.seedComponent;
+      if (seedComponent.type === COMPONENT_TYPES.DROPDOWN_MENU) {
+        DropdownMenuAutoWidthUtils.dereferenceBaseIfInSync(seedComponent);
+        DropdownMenuAutoWidthUtils.setComponentWidths(seedComponent.linkedComponents.base, seedComponent);
         // activated by clicking select option on the button
-      } else if (component.type === COMPONENT_TYPES.DROPDOWN) {
+      } else if (seedComponent.type === COMPONENT_TYPES.DROPDOWN) {
         // when active component is dropdown base, by setting the width - settings component dereferences sync automatically
-        DropdownMenuAutoWidthUtils.setComponentWidths(component, component.linkedComponents.auxiliary[0]);
+        DropdownMenuAutoWidthUtils.setComponentWidths(seedComponent, seedComponent.linkedComponents.auxiliary[0]);
       }
     });
   }
