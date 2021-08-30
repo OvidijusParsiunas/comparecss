@@ -24,24 +24,24 @@ export default class CopyComponent {
     coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(newAlignedSection);
   }
 
-  private static copyAlignedSectionComponents(newLayer: Layer, copiedLayer: Layer, newComponent: WorkshopComponent, baseComponentRefs: WorkshopComponent[]): void {
+  private static copyAlignedSectionComponents(newLayer: Layer, copiedLayer: Layer, newComponent: WorkshopComponent, baseComponents: WorkshopComponent[]): void {
     const { alignedSections } = copiedLayer.sections;
     Object.keys(alignedSections).forEach((section: ALIGNED_SECTION_TYPES) => {
       alignedSections[section].forEach((subcomponent: BaseSubcomponentRef) => {
         const { type, style } = subcomponent.subcomponentProperties.seedComponent;
         const newChildComponent = AddNewContainerComponent.add(
           newComponent, type, style, newLayer.subcomponentProperties.name, [CopyComponent.overwriteAlignedLayerSectionProperties.bind(section)]);
-        baseComponentRefs.push(newChildComponent);
+        baseComponents.push(newChildComponent);
         CopySubcomponents.copyComponentSubcomponents(subcomponent.subcomponentProperties.seedComponent, newChildComponent);
       });
     });
   }
 
-  private static copyLayerComponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent, baseComponentRefs: WorkshopComponent[]): void {
+  private static copyLayerComponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent, baseComponents: WorkshopComponent[]): void {
     componentBeingCopied.componentPreviewStructure.layers.forEach((layer, index) => {
       const copiedLayerStyle = componentBeingCopied.subcomponents[layer.subcomponentProperties.name].seedComponent.style;
       const newLayer = AddNewLayerComponent.add(newComponent, copiedLayerStyle, true);
-      CopyComponent.copyAlignedSectionComponents(newComponent.componentPreviewStructure.layers[index], layer, newComponent, baseComponentRefs);
+      CopyComponent.copyAlignedSectionComponents(newComponent.componentPreviewStructure.layers[index], layer, newComponent, baseComponents);
       UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(newComponent, newComponent.componentPreviewStructure.layers[index]);
       CopySubcomponents.copyComponentSubcomponents(layer.subcomponentProperties.seedComponent, newLayer);
     });
@@ -49,10 +49,10 @@ export default class CopyComponent {
   }
 
   private static copySubcomponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
-    const baseComponentRefs: WorkshopComponent[] = [];
+    const baseComponents: WorkshopComponent[] = [newComponent];
     CopySubcomponents.copyBaseSubcomponent(newComponent, componentBeingCopied);
-    CopyComponent.copyLayerComponents(newComponent, componentBeingCopied, baseComponentRefs);
-    CoreSubcomponentRefsUtils.executeReferenceSharingExecutables(...baseComponentRefs);
+    CopyComponent.copyLayerComponents(newComponent, componentBeingCopied, baseComponents);
+    CoreSubcomponentRefsUtils.executeReferenceSharingExecutables(...baseComponents);
   }
 
   public static copyComponent(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {

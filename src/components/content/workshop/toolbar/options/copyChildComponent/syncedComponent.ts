@@ -6,8 +6,8 @@ import JSONUtils from '../../../utils/generic/jsonUtils';
 
 export class SyncedComponent {
   
-  private static dereferenceCopiedComponentCustomProperties(activeComponentBase: SubcomponentProperties): void {
-    const { referenceSharingExecutables, coreSubcomponentRefs } = activeComponentBase.seedComponent;
+  private static dereferenceCopiedComponentCustomProperties(baseSubcomponent: SubcomponentProperties): void {
+    const { referenceSharingExecutables, coreSubcomponentRefs } = baseSubcomponent.seedComponent;
     CoreSubcomponentRefsUtils.getActiveRefKeys(coreSubcomponentRefs).forEach((subcomponentType) => {
       const subcomponent = coreSubcomponentRefs[subcomponentType];
       if (!subcomponent) return;
@@ -18,31 +18,36 @@ export class SyncedComponent {
   }
 
   // if active subcomponent is text in a nested button, need to make sure to get the button base
-  private static getActiveContainerComponentBase(activeComponent: WorkshopComponent): SubcomponentProperties {
-    const activeBaseSubcomponent = activeComponent.subcomponents[activeComponent.activeSubcomponentName];
-    const activeSeedComponent = activeBaseSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.BASE
-      ? activeBaseSubcomponent.seedComponent : activeBaseSubcomponent.seedComponent.containerComponent;
+  private static getActiveReferenceSharingComponentBase(containerComponent: WorkshopComponent): SubcomponentProperties {
+    const activeSubcomponent = containerComponent.subcomponents[containerComponent.activeSubcomponentName];
+    const activeSeedComponent = activeSubcomponent.seedComponent.referenceSharingExecutables
+      ? activeSubcomponent.seedComponent : activeSubcomponent.seedComponent.containerComponent;
     return activeSeedComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
   }
 
-  public static toggleSubcomponentSync(activeComponent: WorkshopComponent, useActiveSeedComponentBase = true, callback?: () => void): void {
-    const activeComponentBase = useActiveSeedComponentBase
-      ? SyncedComponent.getActiveContainerComponentBase(activeComponent) : activeComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    if (activeComponentBase.seedComponent.sync.syncedComponent) SyncedComponent.dereferenceCopiedComponentCustomProperties(activeComponentBase);
+  public static toggleSubcomponentSync(containerComponent: WorkshopComponent, useActiveReferenceSharingComponent = true, callback?: () => void): void {
+    const baseSubcomponent = useActiveReferenceSharingComponent
+      ? SyncedComponent.getActiveReferenceSharingComponentBase(containerComponent) : containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    if (baseSubcomponent.seedComponent.sync.syncedComponent) SyncedComponent.dereferenceCopiedComponentCustomProperties(baseSubcomponent);
     // WORK3: activeComponentBase.seedComponent.inSync &&= null;
-    if (activeComponentBase.seedComponent.sync.syncedComponent) activeComponentBase.seedComponent.sync.syncedComponent = null;
+    if (baseSubcomponent.seedComponent.sync.syncedComponent) baseSubcomponent.seedComponent.sync.syncedComponent = null;
     if (callback) callback();
   }
 
-  public static updateIfSubcomponentNotInSync(activeComponent: WorkshopComponent, activeSubcomponent: SubcomponentProperties): void {
-    const seedComponent = activeSubcomponent.seedComponent;
-    if (seedComponent?.sync.syncedComponent && seedComponent.componentStatus.isRemoved) {
-      SyncedComponent.toggleSubcomponentSync(activeComponent);
+  private static getReferenceSharingComponent(activeSubcomponent: SubcomponentProperties): WorkshopComponent {
+    return activeSubcomponent.seedComponent.referenceSharingExecutables ?
+      activeSubcomponent.seedComponent : activeSubcomponent.seedComponent.containerComponent;
+  }
+
+  public static updateIfSubcomponentNotInSync(masterComponent: WorkshopComponent, activeSubcomponent: SubcomponentProperties): void {
+    const referenceSharingComponent = SyncedComponent.getReferenceSharingComponent(activeSubcomponent);
+    if (referenceSharingComponent?.sync.syncedComponent && referenceSharingComponent.componentStatus.isRemoved) {
+      SyncedComponent.toggleSubcomponentSync(masterComponent);
     }
   }
 
   public static isInSyncButtonDisplayed(activeSubcomponent: SubcomponentProperties): boolean {
-    const seedComponent = activeSubcomponent.seedComponent;
-    return seedComponent?.sync.syncedComponent && !seedComponent.componentStatus.isRemoved;
+    const referenceSharingComponent = SyncedComponent.getReferenceSharingComponent(activeSubcomponent);
+    return referenceSharingComponent?.sync.syncedComponent && !referenceSharingComponent.componentStatus.isRemoved;
   }
 }

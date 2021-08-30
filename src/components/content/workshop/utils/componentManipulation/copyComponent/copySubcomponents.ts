@@ -3,7 +3,7 @@ import { CoreSubcomponentRefsUtils } from '../coreSubcomponentRefs/coreSubcompon
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import JSONUtils from '../../generic/jsonUtils';
 
-type CopyableSubcomponentProperties = CustomCss|CustomFeatures|CustomStaticFeatures;
+type CopyableSubcomponentProperties = CustomCss | CustomFeatures | CustomStaticFeatures;
 
 // current subcomponent copy strategy:
 // if a subcomponent has a text or icon subcomponents - the copyable component's properties are copied onto them if that component has these subcomponents
@@ -40,8 +40,8 @@ export class CopySubcomponents {
     CopySubcomponents.copyProperties(newSubcomponent.defaultCustomStaticFeatures, subcomponentBeingCopied.defaultCustomStaticFeatures);
   }
 
-  private static copyExistingSubcomponentProperties(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties, isBase: boolean): void {
-    if (isBase && subcomponentBeingCopied.seedComponent?.sync.syncedComponent) {
+  private static copyExistingSubcomponentProperties(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
+    if (subcomponentBeingCopied.seedComponent.referenceSharingExecutables && subcomponentBeingCopied.seedComponent?.sync.syncedComponent) {
       CopySubcomponents.copyInSyncSubcomponent(newSubcomponent, subcomponentBeingCopied);
     } else {
       CopySubcomponents.copySubcomponentProperties(newSubcomponent, subcomponentBeingCopied); 
@@ -52,7 +52,7 @@ export class CopySubcomponents {
     CoreSubcomponentRefsUtils.getActiveRefKeys(newChildComponent.coreSubcomponentRefs).forEach((subcomponentType) => {
       const newSubcomponent = newChildComponent.coreSubcomponentRefs[subcomponentType];
       const subcomponentBeingCopied = componentBeingCopied.coreSubcomponentRefs[subcomponentType];
-      CopySubcomponents.copyExistingSubcomponentProperties(newSubcomponent, subcomponentBeingCopied, subcomponentType == SUBCOMPONENT_TYPES.BASE);
+      CopySubcomponents.copyExistingSubcomponentProperties(newSubcomponent, subcomponentBeingCopied);
     });
   }
 

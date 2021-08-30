@@ -13,8 +13,6 @@ change icon text flash
 dropdown arrows not showing up on card's button 2
 update the dropdown structure
 child text ripple effects
-child card button width
-subcomponents removed from child components
 change copy child component to sync child component - new UX
 when moving between card component and dropdown - select cursor is flashing
 nested component dropdown menu appears to be too low when child selected and then clicking on the subcomponent dropdown button

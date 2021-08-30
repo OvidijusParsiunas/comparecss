@@ -1,5 +1,6 @@
 import { AlignedLayerSection, BackdropProperties, ComponentCenteringInScreen, Image, SubcomponentProperties, Text, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { DropdownOptionsDisplayStatusUtils } from '../../../utils/dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
+import { CoreSubcomponentRefsUtils } from '../../../utils/componentManipulation/coreSubcomponentRefs/coreSubcomponentRefsUtils';
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { NewComponentStyleProperties } from '../../../../../../consts/newComponentStyleProperties';
 import { ComponentPreviewStructure } from '../../../../../../interfaces/componentPreviewStructure';
@@ -11,7 +12,6 @@ import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.en
 import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
 import { CloseTriggers } from '../../../../../../interfaces/closeTriggers';
-import ReferenceSharingUtils from '../buttons/utils/referenceSharingUtils';
 import { Animations } from '../../../../../../interfaces/animations';
 import { defaultImage } from './images/default';
 
@@ -110,8 +110,7 @@ export class ComponentBuilder {
   }
 
   protected static populateReferences(component: WorkshopComponent): void {
-    ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents(component.coreSubcomponentRefs);
-    component.referenceSharingExecutables = [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents];
+    CoreSubcomponentRefsUtils.executeReferenceSharingExecutables(component);
   }
 
   private static createCoreSubcomponentRefs(baseSubcomponent: SubcomponentProperties, coreSubcomponentRefs: CoreSubcomponentRefs): CoreSubcomponentRefs {

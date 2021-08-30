@@ -10,10 +10,15 @@ import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections
 import { ButtonBaseSpecificSettings } from '../settings/buttonBaseSpecificSettings';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
+import ReferenceSharingUtils from '../utils/referenceSharingUtils';
 import { inheritedButtonCss } from '../inheritedCss/inheritedCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonBase extends ComponentBuilder {
+
+  public static setReferenceSharingExecutables(buttonBaseComponent: WorkshopComponent): void {
+    buttonBaseComponent.referenceSharingExecutables = [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents];
+  }
 
   public static setChildComponentsOptions(buttonBaseComponent: WorkshopComponent): void {
     const baseComponentOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([
@@ -92,7 +97,7 @@ class ButtonBase extends ComponentBuilder {
       [SUBCOMPONENT_TYPES.BASE]: null,
       [SUBCOMPONENT_TYPES.TEXT]: null,
       [SUBCOMPONENT_TYPES.ICON]: null,
-    }
+    };
   }
 }
 
@@ -103,6 +108,7 @@ export const buttonBase: ComponentGenerator = {
       { componentType: COMPONENT_TYPES.BUTTON, baseName, coreSubcomponentRefs }, ButtonBase.createBaseSubcomponent);
     ButtonBaseSpecificSettings.set(buttonBaseComponent);
     ButtonBase.setChildComponentsOptions(buttonBaseComponent);
+    ButtonBase.setReferenceSharingExecutables(buttonBaseComponent);
     return buttonBaseComponent;
   },
 }

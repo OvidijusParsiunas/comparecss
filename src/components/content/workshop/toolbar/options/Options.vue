@@ -100,7 +100,7 @@
         </div>
         <button v-if="!isFullPreviewModeActive && isInSyncButtonDisplayed()"
           id="sync-transition-animation-padding"
-          :style="{marginLeft: component.subcomponents[component.activeSubcomponentName].subcomponentType == SUBCOMPONENT_TYPES.BASE ? '-29px' : '-23px' }"
+          :style="{marginLeft: component.subcomponents[component.activeSubcomponentName].seedComponent.referenceSharingExecutables ? '-29px' : '-23px' }"
           :class="[{'transition-item': areOptionButtonTransitionsAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS]">
             <font-awesome-icon style="color: #54a9f100" class="sync-icon" icon="sync-alt"/>
         </button>
