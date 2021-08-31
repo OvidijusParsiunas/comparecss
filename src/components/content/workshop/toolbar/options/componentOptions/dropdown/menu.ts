@@ -13,7 +13,7 @@ export const menuOptions: SubcomponentOptions<MenuOptionsModes> = {
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.PADDING,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING_VERTICAL,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BACKGROUND,
@@ -25,7 +25,7 @@ export const menuOptions: SubcomponentOptions<MenuOptionsModes> = {
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SIZE,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_WIDTH_AUTO,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,

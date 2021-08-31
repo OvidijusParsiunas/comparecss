@@ -3,16 +3,18 @@ import childComponentPositionVerticalOffset from './childComponentPositionVertic
 import childComponentPositionNoAlign from './childComponentPositionNoAlign';
 import childComponentPosition from './childComponentPosition';
 import backgroundColorImage from './backgroundColorImage';
+import selectDropdownWidth from './selectDropdownWidth';
+import selectDropdownSize from './selectDropdownSize';
 import dropdownMenuPosition from './dropdownPosition';
 import dropdownButtonText from './dropdownButtonText';
 import sizeWidthSizeName from './sizeWidthSizeName';
-import dropdownWidthAuto from './dropdownWidthAuto';
 import buttonAnimations from './buttonAnimations';
 import marginHorizontal from './marginHorizontal';
 import modalAnimations from './modalAnimations';
 import imageAnimations from './imageAnimations';
 import backgroundColor from './backgroundColor';
 import backgroundImage from './backgroundImage';
+import paddingVertical from './paddingVertical';
 import closeAnimation from './closeAnimation';
 import shadowVertical from './shadowVertical';
 import selectDropdown from './selectDropdown';
@@ -50,10 +52,10 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW_VERTICAL]: shadowVertical,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE]: size,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH]: sizeWidth,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_WIDTH_AUTO]: dropdownWidthAuto,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH_SIZE_NAME]: sizeWidthSizeName,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_HEIGHT]: sizeHeight,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING]: padding,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING_VERTICAL]: paddingVertical,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN]: margin,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN_HORIZONTAL]: marginHorizontal,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.TEXT]: text,
@@ -77,6 +79,8 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_MENU_POSITIONS]: dropdownMenuPosition,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.FADE_ANIMATION]: fadeAnimation,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SELECT_DROPDOWN]: selectDropdown,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.SELECT_DROPDOWN_SIZE]: selectDropdownSize,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.SELECT_DROPDOWN_WIDTH]: selectDropdownWidth,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_BUTTON_TEXT]: dropdownButtonText,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.ICON]: icon,
 };
