@@ -4,6 +4,7 @@ import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponen
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { Layer } from '../../../../../interfaces/componentPreviewStructure';
+import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import { CustomCss } from '../../../../../interfaces/workshopComponent';
 import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 
@@ -11,7 +12,8 @@ export default function useLayerComponentGeneric(): UseLayerComponentGeneric {
 
   function getSelectedDropdownCss(layer: Layer, subcomponentCss: CustomCss): WorkshopComponentCss {
     const { containerComponent, childComponentsLockedToLayer } = layer.subcomponentProperties.seedComponent;
-    const { selectDropdown } = containerComponent?.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures || {};
+    if (containerComponent?.type !== COMPONENT_TYPES.DROPDOWN_MENU) return {};
+    const { selectDropdown } = containerComponent.linkedComponents.base.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures || {};
     if (selectDropdown?.enabled) {
       const itemTextSubcomponent = childComponentsLockedToLayer.list[0];
       if (selectDropdown.lastSelectedItemText && itemTextSubcomponent.customStaticFeatures.subcomponentText.text === selectDropdown.lastHoveredItemText) {

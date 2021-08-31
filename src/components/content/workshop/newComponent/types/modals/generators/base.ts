@@ -30,4 +30,4 @@ export const modalBase: ComponentGenerator = {
     ModalBase.overwriteBaseCustomFeatures(modalComponent);
     return modalComponent;
   },
-}
+};

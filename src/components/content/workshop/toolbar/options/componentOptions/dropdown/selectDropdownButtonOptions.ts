@@ -12,6 +12,10 @@ const selectDropdownButtonSpecificOptions = [
     buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SIZE,
     type: WORKSHOP_TOOLBAR_OPTION_TYPES.SELECT_DROPDOWN_SIZE,
   },
+  {
+    buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SELECT,
+    type: WORKSHOP_TOOLBAR_OPTION_TYPES.SELECT_DROPDOWN,
+  },
 ];
 
 export const selectDropdownButtonOptions: SubcomponentOptions<MenuOptionsModes> = {

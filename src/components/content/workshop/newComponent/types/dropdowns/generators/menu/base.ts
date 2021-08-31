@@ -1,4 +1,4 @@
-import { CustomCss, CustomFeatures, CustomStaticFeatures, DropdownMenuPosition, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, DropdownMenuPosition, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { UpdateDropdownOptionNamesShared } from '../../../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
 import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
 import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
@@ -11,12 +11,9 @@ import { ComponentGenerator } from '../../../../../../../../interfaces/component
 import { inheritedBaseChildCss } from '../../../shared/childCss/inheritedBaseChildCss';
 import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
 import { inheritedCardBaseCss } from '../../../cards/inheritedCss/inheritedCardCss';
-import { MenuBaseSpecificSettings } from '../../settings/menuBaseSpecificSettings';
-import { SelectDropdown } from '../../../../../../../../interfaces/selectDropdown';
 import { SETTINGS_TYPES } from '../../../../../../../../consts/settingsTypes.enum';
+import { MenuBaseSpecificSettings } from '../../settings/menuBaseSpecificSettings';
 import { BORDER_STYLES } from '../../../../../../../../consts/borderStyles.enum';
-import { SelectDropdownUtils } from '../../selectDropdown/selectDropdownUtils';
-import { AutoSize } from '../../../../../../../../interfaces/autoSize';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
 
 class DropdownMenuBase extends ComponentBuilder {
@@ -61,7 +58,7 @@ class DropdownMenuBase extends ComponentBuilder {
         marginTop: '0px',
         marginBottom: '0px',
         userSelect: 'none',
-        minWidth: '0px',
+        minWidth: '160px',
         paddingTop: '0px',
         paddingRight: '0px',
         paddingLeft: '0px',
@@ -70,35 +67,13 @@ class DropdownMenuBase extends ComponentBuilder {
     };
   }
 
-  private static createSelectDropdownProperties(): SelectDropdown {
-    return {
-      enabled: false,
-      defaultText: 'Select',
-      lastHoveredItemText: null,
-      lastSelectedItemText: null,
-      callback: SelectDropdownUtils.setSelectDropdownText,
-    };
-  }
-
-  private static createDefaultStaticCustomFeatures(): CustomStaticFeatures {
-    return {
-      selectDropdown: DropdownMenuBase.createSelectDropdownProperties(),
-    };
-  }
-
   private static createDropdownMenuPosition(): DropdownMenuPosition {
     return { position: DROPDOWN_MENU_POSITIONS.BOTTOM };
-  }
-
-  private static createDefaultAutoSize(): AutoSize {
-    const widthCalculationFunc = DropdownMenuAutoWidthUtils.setWidth;
-    return ComponentBuilder.createAutoSize(false, false, { widthCalculationFunc })
   }
 
   private static createDefaultCustomFeatures(): CustomFeatures {
     return {
       animations: ComponentBuilder.createDisplayAnimationsProperties(),
-      autoSize: DropdownMenuBase.createDefaultAutoSize(),
       dropdownMenuPosition: DropdownMenuBase.createDropdownMenuPosition(),
     };
   }
@@ -115,8 +90,6 @@ class DropdownMenuBase extends ComponentBuilder {
       childCss: inheritedBaseChildCss,
       customFeatures: DropdownMenuBase.createDefaultCustomFeatures(),
       defaultCustomFeatures: DropdownMenuBase.createDefaultCustomFeatures(),
-      customStaticFeatures: DropdownMenuBase.createDefaultStaticCustomFeatures(),
-      defaultCustomStaticFeatures: DropdownMenuBase.createDefaultStaticCustomFeatures(),
       newChildComponentsOptions: DropdownMenuBase.createDefaultNewChildComponentsOptions(),
     };
   }

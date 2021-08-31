@@ -3,9 +3,9 @@ import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/works
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
 
-type MenuOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT;
+type DropdownMenuOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT;
 
-export const menuOptions: SubcomponentOptions<MenuOptionsModes> = {
+export const dropdownMenuOptions: SubcomponentOptions<DropdownMenuOptionsModes> = {
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
@@ -24,20 +24,12 @@ export const menuOptions: SubcomponentOptions<MenuOptionsModes> = {
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW,
     },
     {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SIZE,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH,
-    },
-    {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_MENU_POSITIONS,
-    },
-    {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SELECT,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.SELECT_DROPDOWN,
     },
     {
       // WORK2: animations

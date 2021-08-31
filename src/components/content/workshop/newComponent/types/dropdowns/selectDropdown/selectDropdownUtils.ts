@@ -5,11 +5,9 @@ import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum
 
 export class SelectDropdownUtils {
   
-  public static refresh(components: WorkshopComponent[], checkBeforeProceeding = false): void {
-    const menuComponent = (components || []).find((component) => component.type === COMPONENT_TYPES.DROPDOWN_MENU);
-    if (!menuComponent) return;
-    const { selectDropdown } = menuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures;
-    if (!checkBeforeProceeding || selectDropdown.enabled) {
+  public static refresh(components: WorkshopComponent, checkBeforeProceeding = false): void {
+    const { selectDropdown } = components.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures || {};
+    if (selectDropdown && (selectDropdown.enabled || !checkBeforeProceeding)) {
       selectDropdown.lastHoveredItemText = null;
       selectDropdown.lastSelectedItemText = null;
     }
@@ -25,12 +23,13 @@ export class SelectDropdownUtils {
 
   private static setDetails(subcomponentProperties: SubcomponentProperties, itemTextKey: keyof SubcomponentMouseEventItemText, canBeUnset = false): void {
     const seedComponent = subcomponentProperties.seedComponent;
-    const menuComponent = seedComponent.containerComponent || seedComponent;
+    const containerComponent = seedComponent.containerComponent || seedComponent;
+    const menuComponent = containerComponent.linkedComponents?.base || containerComponent;
     const { selectDropdown } = menuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures;
     if (selectDropdown.enabled) {
       SelectDropdownUtils.setMouseEventText(seedComponent, selectDropdown, itemTextKey);
     } else if (canBeUnset) {
-      SelectDropdownUtils.refresh([menuComponent]);
+      SelectDropdownUtils.refresh(menuComponent);
     }
   }
 

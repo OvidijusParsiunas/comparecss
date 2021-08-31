@@ -4,9 +4,9 @@ import { SubcomponentOptions } from '../../../../../../../interfaces/componentOp
 import { ComponentOptionsUtils } from '../componentOptionsUtils';
 import { buttonTextOptions } from '../text/buttonText';
 
-type MenuItemTextOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT | CSS_PSEUDO_CLASSES.HOVER | CSS_PSEUDO_CLASSES.CLICK;
+type DropdownMenuItemTextOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT | CSS_PSEUDO_CLASSES.HOVER | CSS_PSEUDO_CLASSES.CLICK;
 
-export const menuItemTextOptions: SubcomponentOptions<MenuItemTextOptionsModes> = {
+export const dropdownMenuItemTextOptions: SubcomponentOptions<DropdownMenuItemTextOptionsModes> = {
   ...buttonTextOptions,
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
     ...ComponentOptionsUtils.removeOptions(buttonTextOptions[CSS_PSEUDO_CLASSES.DEFAULT], WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.PADDING),

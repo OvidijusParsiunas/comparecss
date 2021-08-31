@@ -3,7 +3,6 @@ import childComponentPositionVerticalOffset from './childComponentPositionVertic
 import childComponentPositionNoAlign from './childComponentPositionNoAlign';
 import childComponentPosition from './childComponentPosition';
 import backgroundColorImage from './backgroundColorImage';
-import selectDropdownWidth from './selectDropdownWidth';
 import selectDropdownSize from './selectDropdownSize';
 import dropdownMenuPosition from './dropdownPosition';
 import dropdownButtonText from './dropdownButtonText';
@@ -27,6 +26,7 @@ import modalActions from './modalActions';
 import sizeHeight from './sizeHeight';
 import borderTop from './borderTop';
 import sizeWidth from './sizeWidth';
+import minWidth from './minWidth';
 import backdrop from './backdrop';
 import textSize from './textSize';
 import padding from './padding';
@@ -53,6 +53,7 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE]: size,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH]: sizeWidth,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_WIDTH_SIZE_NAME]: sizeWidthSizeName,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.MIN_WIDTH]: minWidth,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SIZE_HEIGHT]: sizeHeight,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING]: padding,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING_VERTICAL]: paddingVertical,
@@ -80,7 +81,6 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.FADE_ANIMATION]: fadeAnimation,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SELECT_DROPDOWN]: selectDropdown,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SELECT_DROPDOWN_SIZE]: selectDropdownSize,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.SELECT_DROPDOWN_WIDTH]: selectDropdownWidth,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_BUTTON_TEXT]: dropdownButtonText,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.ICON]: icon,
 };

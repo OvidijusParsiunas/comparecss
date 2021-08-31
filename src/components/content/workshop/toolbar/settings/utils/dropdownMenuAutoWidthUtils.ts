@@ -3,7 +3,6 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../int
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
-import { SyncedComponent } from '../../options/copyChildComponent/syncedComponent';
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 
 export class DropdownMenuAutoWidthUtils {
@@ -31,31 +30,26 @@ export class DropdownMenuAutoWidthUtils {
     return DropdownMenuAutoWidthUtils.calculateTotalWidth(maxItemTextWidth, firstItemDefaultClassCustomCss);
   }
 
-  private static setComponentWidths(buttonComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
-    const { customFeatures } = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    if (customFeatures.autoSize?.width) {
-      const width = DropdownMenuAutoWidthUtils.getLargestItemWidth(menuComponent);
-      buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = width;
-      menuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = width;
-    }
+  private static setContainerComponentWidthViaLargestItem(containerComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
+    const width = DropdownMenuAutoWidthUtils.getLargestItemWidth(menuComponent);
+    containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = width;
   }
 
-  private static dereferenceBaseIfInSync(baseComponent: WorkshopComponent): void {
-    if (baseComponent.linkedComponents.base.sync.syncedComponent) {
-      SyncedComponent.toggleSubcomponentSync(baseComponent.linkedComponents.base, false);
+  private static setButtonWidth(buttonComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
+    if (buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]?.customFeatures?.autoSize?.width) {
+      DropdownMenuAutoWidthUtils.setContainerComponentWidthViaLargestItem(buttonComponent, menuComponent);
     }
   }
 
   public static setWidth(subcomponentProperties: SubcomponentProperties): void {
     setTimeout(() => {
-      const seedComponent = subcomponentProperties.seedComponent?.containerComponent || subcomponentProperties.seedComponent;
-      if (seedComponent.type === COMPONENT_TYPES.DROPDOWN_MENU) {
-        DropdownMenuAutoWidthUtils.dereferenceBaseIfInSync(seedComponent);
-        DropdownMenuAutoWidthUtils.setComponentWidths(seedComponent.linkedComponents.base, seedComponent);
+      // activated by changing padding on dropdown menu item or changing dropdown menu item text
+      const containerComponent = subcomponentProperties.seedComponent?.containerComponent || subcomponentProperties.seedComponent;
+      if (containerComponent.type === COMPONENT_TYPES.DROPDOWN_MENU) {
+        DropdownMenuAutoWidthUtils.setContainerComponentWidthViaLargestItem(containerComponent, containerComponent);
         // activated by clicking select option on the button
-      } else if (seedComponent.type === COMPONENT_TYPES.DROPDOWN) {
-        // when active component is dropdown base, by setting the width - settings component dereferences sync automatically
-        DropdownMenuAutoWidthUtils.setComponentWidths(seedComponent, seedComponent.linkedComponents.auxiliary[0]);
+      } else if (containerComponent.type === COMPONENT_TYPES.DROPDOWN) {
+        DropdownMenuAutoWidthUtils.setButtonWidth(containerComponent, containerComponent.linkedComponents.auxiliary[0]);
       }
     });
   }

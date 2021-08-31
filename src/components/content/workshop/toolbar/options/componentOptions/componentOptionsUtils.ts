@@ -2,7 +2,8 @@ import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../../consts/w
 import { Option } from '../../../../../../interfaces/componentOptions';
 
 export class ComponentOptionsUtils {
-  
+
+  // can replace original options and additionally append entirely new options to the end
   public static overwriteOptions(oldOptions: Option[], newOptions: Option[]): Option[] {
     let resultOptions: Option[] = [];
     oldOptions.forEach((oldOption: Option) => {
