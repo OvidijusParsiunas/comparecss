@@ -80,7 +80,7 @@ export default class RangeUtils extends UpdateRange {
       realRangeValue = UpdateRange.updateCustomCss(rangeValue, spec, subcomponentProperties);
     }
     if (spec.updateOtherCssProperties) UpdateOtherRangesUtils.updateOtherSubcomponentRanges(spec.updateOtherCssProperties, realRangeValue);
-    SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.RANGE, subcomponentProperties, updatedSetting);
+    SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.RANGE, subcomponentProperties, updatedSetting.spec.cssProperty);
   }
 
   private static updateCustomCssSetting(settingToBeUpdated: any, cssPropertyValue: string): void {
@@ -121,6 +121,6 @@ export default class RangeUtils extends UpdateRange {
     } else {
       settingToBeUpdated.spec.default = RangeUtils.DEFAULT_RANGE_VALUE;
     }
-    SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.RANGE, subcomponentProperties, settingToBeUpdated);
+    SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.RANGE, subcomponentProperties, settingToBeUpdated.spec.cssProperty);
   }
 }

@@ -123,10 +123,10 @@ export default class SettingsUtils {
     });
   }
 
-  public static triggerComponentFunc(settingType: SETTINGS_TYPES, subcomponentProperties: SubcomponentProperties, updatedSetting?: any): void {
+  public static triggerComponentFunc(settingType: SETTINGS_TYPES, subcomponentProperties: SubcomponentProperties, cssProperty?: string): void {
     const { seedComponent } = subcomponentProperties;
     const containerComponent = seedComponent.containerComponent || seedComponent;
     const funcs = containerComponent.triggerFuncOnSettingChange;
-    funcs?.[settingType]?.(subcomponentProperties, updatedSetting);
+    funcs?.[settingType]?.(subcomponentProperties, cssProperty);
   }
 }

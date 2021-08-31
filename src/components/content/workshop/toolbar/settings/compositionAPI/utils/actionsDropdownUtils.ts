@@ -3,6 +3,8 @@ import { TemporaryDropdownValue } from '../../../../../../../interfaces/temporar
 import { MouseClickOptionEvent } from '../../../../../../../interfaces/dropdownMenuMouseEvents';
 import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
 import { SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
+import { SETTINGS_TYPES } from '../../../../../../../consts/settingsTypes.enum';
+import SettingsUtils from '../../utils/settingsUtils';
 import SharedUtils from '../../utils/sharedUtils';
 import { ComponentOptions } from 'vue';
 
@@ -40,6 +42,7 @@ export default class ActionsDropdownUtils {
     } else {
       customCss[activeCssPseudoClass] = { [cssProperty]: triggeredOptionName };
     }
+    SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.ACTIONS_DROPDOWN, subcomponentProperties, cssProperty);
   }
 
   // called third when selecting option (if statement to prevent logic from triggering on select)
@@ -49,6 +52,7 @@ export default class ActionsDropdownUtils {
       const { customCss, activeCssPseudoClass } = subcomponentProperties;
       customCss[activeCssPseudoClass][settingSpec.cssProperty] = temporaryDropdownValue.initial;
       temporaryDropdownValue.initial = ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED;
+      SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.ACTIONS_DROPDOWN, subcomponentProperties, settingSpec.cssProperty);
     }
   }
 

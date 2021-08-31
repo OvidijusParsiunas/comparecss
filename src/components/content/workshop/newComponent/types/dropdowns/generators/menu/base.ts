@@ -18,9 +18,8 @@ import { ComponentBuilder } from '../../../shared/componentBuilder';
 
 class DropdownMenuBase extends ComponentBuilder {
 
-  private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, updatedSetting: any): void {
-    const { cssProperty } = updatedSetting.spec;
-    if (cssProperty === 'paddingLeft' || cssProperty === 'paddingRight') {
+  private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
+    if (cssProperty === 'paddingLeft' || cssProperty === 'paddingRight' || cssProperty === 'fontSize' || cssProperty === 'fontWeight') {
       DropdownMenuAutoWidthUtils.setWidth(subcomponentProperties);
     }
   }
@@ -29,6 +28,7 @@ class DropdownMenuBase extends ComponentBuilder {
     dropdownMenuBaseComponent.triggerFuncOnSettingChange = {
       [SETTINGS_TYPES.INPUT]: DropdownMenuAutoWidthUtils.setWidth,
       [SETTINGS_TYPES.RANGE]: DropdownMenuBase.setWidthViaRange,
+      [SETTINGS_TYPES.ACTIONS_DROPDOWN]: DropdownMenuBase.setWidthViaRange,
     };
   }
 
