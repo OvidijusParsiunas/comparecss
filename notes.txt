@@ -11,7 +11,6 @@ change icon text flash
 dropdown arrows not showing up on card's button 2
 change copy child component to sync child component - new UX
 when moving between card component and dropdown - select cursor is flashing
-increase button z-index
 
 overflow
 try with button tags
