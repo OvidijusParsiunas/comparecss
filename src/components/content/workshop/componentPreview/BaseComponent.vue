@@ -20,6 +20,8 @@
           :layers="component.componentPreviewStructure.layers"
         />
     </component>
+    <!-- this is used to prevent the button text from flashing when switching between different icon types in the settings dropdown -->
+    <div v-else :style="getStyleProperties(component)"></div>
     <div v-if="isIcon(component)"
       :id="getBaseId('subcomponentId')"
       :style="getOverlayStyleProperties()"

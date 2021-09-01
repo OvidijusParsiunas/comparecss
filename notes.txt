@@ -5,8 +5,6 @@ rename dropdown option to dropdown item
 when in hover/click mode and some child subcomponent is triggeredByAnotherSubcomponent, that component should also be in that mode
 dropdown will probably need to have its own base name when child
 animation - open on hover, slide in/ fade in
-make sure to calculate largest item with the icon
-change icon text flash
 dropdown arrows not showing up on card's button 2
 change copy child component to sync child component - new UX
 when moving between card component and dropdown - select cursor is flashing
