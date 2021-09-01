@@ -6,7 +6,6 @@ when in hover/click mode and some child subcomponent is triggeredByAnotherSubcom
 dropdown will probably need to have its own base name when child
 animation - open on hover, slide in/ fade in
 make sure to calculate largest item with the icon
-undo largest item width does not undo the dropdown width
 change icon text flash
 dropdown arrows not showing up on card's button 2
 change copy child component to sync child component - new UX

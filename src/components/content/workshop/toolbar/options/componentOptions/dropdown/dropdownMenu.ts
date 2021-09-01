@@ -24,6 +24,10 @@ export const dropdownMenuOptions: SubcomponentOptions<DropdownMenuOptionsModes> 
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW,
     },
     {
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SIZE,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.MIN_WIDTH,
+    },
+    {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.MARGIN,
     },
