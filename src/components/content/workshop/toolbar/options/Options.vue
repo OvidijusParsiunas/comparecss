@@ -72,7 +72,7 @@
             </button>
           </transition-group>
         </div>
-        <div v-if="component.type === COMPONENT_TYPES.MODAL || component.type === COMPONENT_TYPES.ALERT || component.type === COMPONENT_TYPES.CARD"
+        <div
           class="btn-group option-component-button-container"
           :class="{'transition-item': areOptionButtonTransitionsAllowed}">
           <button v-if="!isFullPreviewModeActive && component.type === COMPONENT_TYPES.MODAL" ref="expandedModalPreviewModeToggle"
@@ -86,7 +86,8 @@
               :style="{ color: FONT_AWESOME_COLORS.DEFAULT, ...BROWSER_SPECIFIC_MODAL_BUTTON_STYLE }"
               class="modal-button-icon expand-icon" icon="expand"/>
           </button>
-          <button v-if="isFullPreviewModeButtonDisplayed()" ref="fullPreviewModeToggle"
+          <button v-if="isFullPreviewModeButtonDisplayed() && (component.type === COMPONENT_TYPES.MODAL || component.type === COMPONENT_TYPES.ALERT || component.type === COMPONENT_TYPES.CARD)"
+            ref="fullPreviewModeToggle"
             type="button" class="btn btn-group-option expanded-modal-preview-mode-button"
             :class="[TOOLBAR_GENERAL_BUTTON_CLASS, FULL_PREVIEW_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
             @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleFullPreviewMode)">
