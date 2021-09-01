@@ -81,6 +81,7 @@ export class IconBase extends ComponentBuilder {
       defaultCustomFeatures: IconBase.createDefaultCustomFeatures(),
       customStaticFeatures: IconBase.createDefaultCustomStaticFeatures(),
       defaultCustomStaticFeatures: IconBase.createDefaultCustomStaticFeatures(),
+      otherSubcomponentTriggers: {},
     };
   }
 }

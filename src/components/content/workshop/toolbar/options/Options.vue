@@ -72,7 +72,7 @@
             </button>
           </transition-group>
         </div>
-        <div
+        <div v-if="true"
           class="btn-group option-component-button-container"
           :class="{'transition-item': areOptionButtonTransitionsAllowed}">
           <button v-if="!isFullPreviewModeActive && component.type === COMPONENT_TYPES.MODAL" ref="expandedModalPreviewModeToggle"

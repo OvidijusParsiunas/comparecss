@@ -69,6 +69,7 @@ class TextBase extends ComponentBuilder {
       defaultCustomFeatures: TextBase.createDefaultTextCustomFeatures(),
       customStaticFeatures: TextBase.createDefaultTextCustomStaticFeatures(),
       defaultCustomStaticFeatures: TextBase.createDefaultTextCustomStaticFeatures(),
+      otherSubcomponentTriggers: {},
     };
   }
 }

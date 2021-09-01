@@ -2,6 +2,7 @@ import { UpdateGenericComponentDropdownOptionNames } from '../../../../utils/com
 import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddNewContainerComponent } from '../../../../utils/componentManipulation/addNewChildComponent/add/addNewContainerComponent';
 import { SubcomponentMouseEventCallbacks } from '../../../../../../../interfaces/subcomponentMouseEventCallbacks';
+import { OtherSubcomponentTriggers } from '../../../../../../../interfaces/otherSubcomponentTriggers';
 import { ActiveComponentUtils } from '../../../../utils/activeComponent/activeComponentUtils';
 import { LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -100,7 +101,8 @@ export class DropdownItemLayer extends ComponentBuilder {
     const textComponent = AddNewContainerComponent.add(containerComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
       layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name,
       [DropdownItemLayer.overwriteTextProperties.bind(higherComponentContainer)]);
-    layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].otherSubcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].otherSubcomponentTriggers
+      .otherSubcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     layerComponent.childComponentsLockedToLayer.list.push(textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(containerComponent,
       higherComponentContainer.componentPreviewStructure.layers[higherComponentContainer.componentPreviewStructure.layers.length - 1]);
@@ -111,8 +113,9 @@ export class DropdownItemLayer extends ComponentBuilder {
     layerComponent.childComponentsLockedToLayer = { add: DropdownItemLayer.addChildComponentsToLayer.bind(layerComponent), list: [] };
   }
 
-  private static createOtherSubcomponentsToTriggerTemplate(): CoreSubcomponentRefs {
-    return { [SUBCOMPONENT_TYPES.TEXT]: null };
+  // WORK 1 - place this inside DropdownItemLayer
+  private static createOtherSubcomponentTriggersTemplate(): OtherSubcomponentTriggers {
+    return { otherSubcomponentsToTrigger: { [SUBCOMPONENT_TYPES.TEXT]: null, [SUBCOMPONENT_TYPES.ICON]: null }};
   }
 
   private static createMouseEventCallbacks(): SubcomponentMouseEventCallbacks {
@@ -161,7 +164,7 @@ export class DropdownItemLayer extends ComponentBuilder {
     baseSubcomponent.defaultCss = DropdownItemLayer.createDefaultLayerCss();
     baseSubcomponent.customFeatures = DropdownItemLayer.createDefaultButtonBaseCustomFeatures();
     baseSubcomponent.defaultCustomFeatures = DropdownItemLayer.createDefaultButtonBaseCustomFeatures();
-    baseSubcomponent.otherSubcomponentsToTrigger = DropdownItemLayer.createOtherSubcomponentsToTriggerTemplate();
+    baseSubcomponent.otherSubcomponentTriggers = DropdownItemLayer.createOtherSubcomponentTriggersTemplate(),
     baseSubcomponent.isRemovable = true;
   }
 }

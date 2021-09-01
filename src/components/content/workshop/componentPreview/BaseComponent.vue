@@ -3,7 +3,7 @@
     <component :is="getTag()" v-if="isComponentDisplayed()" ref="componentPreview"
       :id="getBaseId('subcomponentId')"
       :icon="getIconName()"
-      :style="getStyleProperties(component)"
+      :style="generateStyleProperties(component)"
       class="base-component"
       :class="[COMPONENT_PREVIEW_MARKER, (isChildComponent ? 'child-component' : STATIC_POSITION_CLASS),
         ...getJsClasses(), getSubcomponentMouseEventsDisabledClassForXButtonText()]"
@@ -21,7 +21,7 @@
         />
     </component>
     <!-- this is used to prevent the button text from flashing when switching between different icon types in the settings dropdown -->
-    <div v-else :style="getStyleProperties(component)"></div>
+    <div v-else :style="generateStyleProperties(component)"></div>
     <div v-if="isIcon(component)"
       :id="getBaseId('subcomponentId')"
       :style="getOverlayStyleProperties()"

@@ -9,6 +9,7 @@ import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { ReferenceSharingExecutable } from './referenceSharingExecutable';
 import { TriggerFuncOnSettingChange } from './triggerFuncOnSettingChange';
 import { ChildComponentsInLayer } from './childComponentsLockedToLayer';
+import { OtherSubcomponentTriggers } from './otherSubcomponentTriggers';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
@@ -159,15 +160,17 @@ export interface SubcomponentProperties {
   parentLayer?: Layer;
   // temporarily holds the original customCss when a component card has been hovered/selected during component import mode 
   tempOriginalCustomProperties?: TempCustomProperties;
-  // when a subcomponent's mouse event is triggered, trigger other subcomponents' mouse events
-  otherSubcomponentsToTrigger?: CoreSubcomponentRefs;
-  // reference to the subcomponent that triggers it (can currently be triggered by one subcomponent)
-  triggeredByAnotherSubcomponent?: SubcomponentProperties;
+  // this subcomponent can trigger and be triggered by other subcomponents
+  // WORK 1 - consider making this optional or create a base subcomponent constructor
+  otherSubcomponentTriggers: OtherSubcomponentTriggers;
   // options for the add child component dropdown
   newChildComponentsOptions?: NestedDropdownStructure;
    // used to temporarily display a child component when hovering add subcomponent dropdown options with a mouse
   isTemporaryAddPreview?: boolean;
   isRemovable?: boolean;
+  // WORK 1 - move these to otherSubcomponentTriggers interface
+  initiator?: boolean;
+  triggered?: boolean;
 }
 
 export type Subcomponents = {

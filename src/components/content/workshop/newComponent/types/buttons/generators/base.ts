@@ -1,6 +1,7 @@
 import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
+import { OtherSubcomponentTriggers } from '../../../../../../../interfaces/otherSubcomponentTriggers';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
@@ -29,8 +30,8 @@ class ButtonBase extends ComponentBuilder {
       max: { [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT]: 1, [PRIMITIVE_COMPONENTS_BASE_NAMES.ICON]: 1 }};
   }
 
-  private static createOtherSubcomponentsToTriggerTemplate(): CoreSubcomponentRefs {
-    return { [SUBCOMPONENT_TYPES.TEXT]: null, [SUBCOMPONENT_TYPES.ICON]: null };
+  private static createOtherSubcomponentTriggersTemplate(): OtherSubcomponentTriggers {
+    return { otherSubcomponentsToTrigger: { [SUBCOMPONENT_TYPES.TEXT]: null, [SUBCOMPONENT_TYPES.ICON]: null }};
   }
 
   private static createDefaultBaseCss(): CustomCss {
@@ -88,7 +89,7 @@ class ButtonBase extends ComponentBuilder {
       inheritedCss: inheritedButtonCss,
       customFeatures: ButtonBase.createDefaultButtonBaseCustomFeatures(),
       defaultCustomFeatures: ButtonBase.createDefaultButtonBaseCustomFeatures(),
-      otherSubcomponentsToTrigger: ButtonBase.createOtherSubcomponentsToTriggerTemplate(),
+      otherSubcomponentTriggers: ButtonBase.createOtherSubcomponentTriggersTemplate(),
     };
   }
 

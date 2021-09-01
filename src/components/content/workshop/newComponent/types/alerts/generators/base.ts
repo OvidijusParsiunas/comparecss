@@ -65,6 +65,7 @@ class AlertBase extends ComponentBuilder {
       childCss: inheritedBaseChildCss,
       customFeatures: AlertBase.createDefaultCustomFeatures(),
       defaultCustomFeatures: AlertBase.createDefaultCustomFeatures(),
+      otherSubcomponentTriggers: {},
     };
   }
 }

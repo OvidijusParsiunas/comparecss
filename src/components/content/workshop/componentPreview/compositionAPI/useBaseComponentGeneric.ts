@@ -1,3 +1,5 @@
+import { CompositionAPISubcomponentTriggerState } from '../../../../../interfaces/compositionAPISubcomponentTriggerState';
+import { SubcomponentTriggers } from '../../utils/componentManipulation/utils/subcomponentTriggers';
 import { UseBaseComponentGeneric } from '../../../../../interfaces/useBasicComponentGeneric';
 import { CustomCss, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
@@ -6,6 +8,8 @@ import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum
 import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 
 export default function useBaseComponentGeneric(): UseBaseComponentGeneric {
+
+  const otherSubcomponentTriggerState: CompositionAPISubcomponentTriggerState = { subcomponentProperties: null };
 
   function getSelectedDropdownCss(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {
     const { selectDropdown, subcomponentText } = component.containerComponent?.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures || {};
@@ -19,9 +23,10 @@ export default function useBaseComponentGeneric(): UseBaseComponentGeneric {
     return component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].subcomponentType === SUBCOMPONENT_TYPES.ICON;
   }
 
-  const getStyleProperties = (component: WorkshopComponent): WorkshopComponentCss[] => {
+  const generateStyleProperties = (component: WorkshopComponent): WorkshopComponentCss[] => {
     const { overwrittenCustomCssObj, customCss, inheritedCss, activeCssPseudoClass, customStaticFeatures } = component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const subcomponentCss = overwrittenCustomCssObj || customCss;
+    SubcomponentTriggers.triggerOtherSubcomponentsCss(component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE], activeCssPseudoClass, otherSubcomponentTriggerState);
     const selectedDropdownCss = getSelectedDropdownCss(component, subcomponentCss);
     return [
       inheritedCss || {},
@@ -46,7 +51,7 @@ export default function useBaseComponentGeneric(): UseBaseComponentGeneric {
 
   return {
     isIcon,
-    getStyleProperties,
+    generateStyleProperties,
     getSubcomponentText,
   };
 }

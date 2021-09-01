@@ -1,14 +1,18 @@
+import { CompositionAPISubcomponentTriggerState } from '../../../../../interfaces/compositionAPISubcomponentTriggerState';
+import { SubcomponentTriggers } from '../../utils/componentManipulation/utils/subcomponentTriggers';
 import { UseLayerComponentGeneric } from '../../../../../interfaces/useLayerComponentGeneric';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
-import { Layer } from '../../../../../interfaces/componentPreviewStructure';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
+import { Layer } from '../../../../../interfaces/componentPreviewStructure';
 import { CustomCss } from '../../../../../interfaces/workshopComponent';
 import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 
 export default function useLayerComponentGeneric(): UseLayerComponentGeneric {
+
+  const otherSubcomponentTriggerState: CompositionAPISubcomponentTriggerState = { subcomponentProperties: null };
 
   function getSelectedDropdownCss(layer: Layer, subcomponentCss: CustomCss): WorkshopComponentCss {
     const { containerComponent, childComponentsLockedToLayer } = layer.subcomponentProperties.seedComponent;
@@ -23,8 +27,9 @@ export default function useLayerComponentGeneric(): UseLayerComponentGeneric {
     return {};
   }
 
-  const getStyleProperties = (layer: Layer, isLastLayer: boolean): WorkshopComponentCss[] => {
+  const generateStyleProperties = (layer: Layer, isLastLayer: boolean): WorkshopComponentCss[] => {
     const { subcomponentProperties: { overwrittenCustomCssObj, customCss, customStaticFeatures, activeCssPseudoClass } } = layer;
+    SubcomponentTriggers.triggerOtherSubcomponentsCss(layer.subcomponentProperties, activeCssPseudoClass, otherSubcomponentTriggerState);
     const subcomponentCss = overwrittenCustomCssObj || customCss;
     const selectedDropdownCss = getSelectedDropdownCss(layer, subcomponentCss);
     return [
@@ -39,6 +44,6 @@ export default function useLayerComponentGeneric(): UseLayerComponentGeneric {
   };
 
   return {
-    getStyleProperties,
+    generateStyleProperties,
   };
 }
