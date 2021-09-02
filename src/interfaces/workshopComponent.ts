@@ -161,16 +161,12 @@ export interface SubcomponentProperties {
   // temporarily holds the original customCss when a component card has been hovered/selected during component import mode 
   tempOriginalCustomProperties?: TempCustomProperties;
   // this subcomponent can trigger and be triggered by other subcomponents
-  // WORK 1 - consider making this optional or create a base subcomponent constructor
-  otherSubcomponentTriggers: OtherSubcomponentTriggers;
+  otherSubcomponentTriggers?: OtherSubcomponentTriggers;
   // options for the add child component dropdown
   newChildComponentsOptions?: NestedDropdownStructure;
    // used to temporarily display a child component when hovering add subcomponent dropdown options with a mouse
   isTemporaryAddPreview?: boolean;
   isRemovable?: boolean;
-  // WORK 1 - move these to otherSubcomponentTriggers interface
-  initiator?: boolean;
-  triggered?: boolean;
 }
 
 export type Subcomponents = {

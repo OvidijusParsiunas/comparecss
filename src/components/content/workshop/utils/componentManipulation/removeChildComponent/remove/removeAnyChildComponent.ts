@@ -155,6 +155,6 @@ export class RemoveAnyChildComponent {
       targetDetails.masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       RemoveAnyChildComponent.removeChildComponentUsingDropdownStructureIfFound.bind(targetDetails));
     RemoveAnyChildComponent.removeCoreSubcomponentRef(parentComponent, targetDetails.targetSubcomponentProperties);
-    SubcomponentTriggers.remove(targetDetails.targetSubcomponentProperties);
+    SubcomponentTriggers.removeTriggerReferenceFromSubcomponentThatTriggersThis(targetDetails.targetSubcomponentProperties);
   }
 }

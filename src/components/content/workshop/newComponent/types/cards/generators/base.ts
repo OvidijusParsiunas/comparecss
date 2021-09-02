@@ -64,7 +64,6 @@ class CardBase extends ComponentBuilder {
       childCss: inheritedBaseChildCss,
       customFeatures: CardBase.createDefaultCustomFeatures(),
       defaultCustomFeatures: CardBase.createDefaultCustomFeatures(),
-      otherSubcomponentTriggers: {},
     };
   }
 }

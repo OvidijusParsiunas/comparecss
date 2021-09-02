@@ -31,7 +31,7 @@ class ButtonBase extends ComponentBuilder {
   }
 
   private static createOtherSubcomponentTriggersTemplate(): OtherSubcomponentTriggers {
-    return { otherSubcomponentsToTrigger: { [SUBCOMPONENT_TYPES.TEXT]: null, [SUBCOMPONENT_TYPES.ICON]: null }};
+    return { subcomponentsToTrigger: { [SUBCOMPONENT_TYPES.TEXT]: null, [SUBCOMPONENT_TYPES.ICON]: null }, componentCompositionAPI: {} };
   }
 
   private static createDefaultBaseCss(): CustomCss {

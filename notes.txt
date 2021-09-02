@@ -1,7 +1,7 @@
 set the dropdown button width by a prop - should also set the option menu width
 pseudo css dropdown highligthed items not showing correctly
 rename dropdown option to dropdown item
-when in hover/click mode and some child subcomponent is triggeredByAnotherSubcomponent, that component should also be in that mode
+when in hover/click mode and some child subcomponent is subcomponentThatTriggersThis, that component should also be in that mode
 dropdown will probably need to have its own base name when child
 animation - open on hover, slide in/ fade in
 dropdown arrows not showing up on card's button 2

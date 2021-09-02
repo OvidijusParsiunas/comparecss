@@ -35,7 +35,6 @@ class LayerBase extends ComponentBuilder {
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
-      otherSubcomponentTriggers: {},
     };
   }
 }

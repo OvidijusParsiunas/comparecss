@@ -133,6 +133,7 @@ export class ComponentBuilder {
   }
 
   // WORK1: refactor
+  // WORK1 - should use protected access modifier
   public static createBaseComponent(componentStyle: NewComponentStyleProperties,
       createBaseSubcomponent: (name: string) => SubcomponentProperties, isBaseOptional = true): WorkshopComponent {
     const baseName = componentStyle.baseName || MASTER_SUBCOMPONENT_BASE_NAME.BASE;

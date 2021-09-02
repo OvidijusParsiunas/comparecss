@@ -66,7 +66,6 @@ class ImageBase extends ComponentBuilder {
       defaultCustomFeatures: ImageBase.createDefaultCustomFeatures(),
       customStaticFeatures: ImageBase.createDefaultCustomStaticFeatures(),
       defaultCustomStaticFeatures: ImageBase.createDefaultCustomStaticFeatures(),
-      otherSubcomponentTriggers: {},
     };
   }
 }

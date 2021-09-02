@@ -91,7 +91,6 @@ class DropdownMenuBase extends ComponentBuilder {
       customFeatures: DropdownMenuBase.createDefaultCustomFeatures(),
       defaultCustomFeatures: DropdownMenuBase.createDefaultCustomFeatures(),
       newChildComponentsOptions: DropdownMenuBase.createDefaultNewChildComponentsOptions(),
-      otherSubcomponentTriggers: {},
     };
   }
 }

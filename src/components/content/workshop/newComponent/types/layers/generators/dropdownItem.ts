@@ -102,7 +102,7 @@ export class DropdownItemLayer extends ComponentBuilder {
       layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name,
       [DropdownItemLayer.overwriteTextProperties.bind(higherComponentContainer)]);
     layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].otherSubcomponentTriggers
-      .otherSubcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+      .subcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     layerComponent.childComponentsLockedToLayer.list.push(textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(containerComponent,
       higherComponentContainer.componentPreviewStructure.layers[higherComponentContainer.componentPreviewStructure.layers.length - 1]);
@@ -115,7 +115,7 @@ export class DropdownItemLayer extends ComponentBuilder {
 
   // WORK 1 - place this inside DropdownItemLayer
   private static createOtherSubcomponentTriggersTemplate(): OtherSubcomponentTriggers {
-    return { otherSubcomponentsToTrigger: { [SUBCOMPONENT_TYPES.TEXT]: null, [SUBCOMPONENT_TYPES.ICON]: null }};
+    return { subcomponentsToTrigger: { [SUBCOMPONENT_TYPES.TEXT]: null, [SUBCOMPONENT_TYPES.ICON]: null }, componentCompositionAPI: {} };
   }
 
   private static createMouseEventCallbacks(): SubcomponentMouseEventCallbacks {
