@@ -2,6 +2,7 @@ import { UpdateGenericComponentDropdownOptionNames } from '../../../../utils/com
 import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddNewContainerComponent } from '../../../../utils/componentManipulation/addNewChildComponent/add/addNewContainerComponent';
 import { SubcomponentMouseEventCallbacks } from '../../../../../../../interfaces/subcomponentMouseEventCallbacks';
+import { SubcomponentTriggers } from '../../../../utils/componentManipulation/utils/subcomponentTriggers';
 import { OtherSubcomponentTriggers } from '../../../../../../../interfaces/otherSubcomponentTriggers';
 import { ActiveComponentUtils } from '../../../../utils/activeComponent/activeComponentUtils';
 import { LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -113,9 +114,8 @@ export class DropdownItemLayer extends ComponentBuilder {
     layerComponent.childComponentsLockedToLayer = { add: DropdownItemLayer.addChildComponentsToLayer.bind(layerComponent), list: [] };
   }
 
-  // WORK 1 - place this inside DropdownItemLayer
   private static createOtherSubcomponentTriggersTemplate(): OtherSubcomponentTriggers {
-    return { subcomponentsToTrigger: { [SUBCOMPONENT_TYPES.TEXT]: null, [SUBCOMPONENT_TYPES.ICON]: null }, componentCompositionAPI: {} };
+    return SubcomponentTriggers.createOtherSubcomponentTriggersTemplate([SUBCOMPONENT_TYPES.TEXT, SUBCOMPONENT_TYPES.ICON]);
   }
 
   private static createMouseEventCallbacks(): SubcomponentMouseEventCallbacks {

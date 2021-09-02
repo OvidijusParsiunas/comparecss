@@ -1,18 +1,36 @@
 import { CompositionAPISubcomponentTriggerState } from '../../../../../../interfaces/compositionAPISubcomponentTriggerState';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { OtherSubcomponentTriggers } from '../../../../../../interfaces/otherSubcomponentTriggers';
 import { CoreSubcomponentRefsUtils } from '../coreSubcomponentRefs/coreSubcomponentRefsUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
+import { CoreSubcomponentRefs } from '../../../../../../interfaces/coreSubcomponentRefs';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import JSONUtils from '../../generic/jsonUtils';
 
 export class SubcomponentTriggers {
 
+  private static createSubcomponentsToTriggerObject(subcomponentsToTrigger?: SUBCOMPONENT_TYPES[]): CoreSubcomponentRefs {
+    return (subcomponentsToTrigger || []).reduce((accummulator, currentValue) => Object.assign(accummulator, {[currentValue]: null}), {});
+  }
+
+  public static createOtherSubcomponentTriggersTemplate(subcomponentsToTrigger?: SUBCOMPONENT_TYPES[]): OtherSubcomponentTriggers {
+    const otherSubcomponentTriggers: OtherSubcomponentTriggers = { componentCompositionAPI: {} };
+    if (subcomponentsToTrigger) otherSubcomponentTriggers.subcomponentsToTrigger = SubcomponentTriggers.createSubcomponentsToTriggerObject(subcomponentsToTrigger);
+    return otherSubcomponentTriggers;
+  }
+
+  private static setSubcomponentThatTriggersThis(newComponentBase: SubcomponentProperties, triggerSubcomponent: SubcomponentProperties): void {
+    if (!newComponentBase.otherSubcomponentTriggers) {
+      newComponentBase.otherSubcomponentTriggers = SubcomponentTriggers.createOtherSubcomponentTriggersTemplate();
+    }
+    newComponentBase.otherSubcomponentTriggers.subcomponentThatTriggersThis = triggerSubcomponent;
+  }
+
   private static setPropertyValues(newComponentBase: SubcomponentProperties, subcomponentType: number,
       triggerSubcomponent: SubcomponentProperties): void {
     const { subcomponentsToTrigger } = triggerSubcomponent.otherSubcomponentTriggers || {};
     if (!subcomponentsToTrigger) return;
-    // WORK1 - create a consructor func for this
-    newComponentBase.otherSubcomponentTriggers = { subcomponentThatTriggersThis: triggerSubcomponent, componentCompositionAPI: { }};
+    SubcomponentTriggers.setSubcomponentThatTriggersThis(newComponentBase, triggerSubcomponent)
     JSONUtils.setPropertyIfExists(subcomponentsToTrigger, subcomponentType, newComponentBase);
   }
 
