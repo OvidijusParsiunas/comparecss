@@ -20,7 +20,7 @@ export const closeButtonTextOptions: SubcomponentOptions<TextOptions> = {
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.PADDING,
     },
     {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.MARGIN,
+      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.CHILD_COMPONENT_POSITION_NO_ALIGN,
     },
   ],

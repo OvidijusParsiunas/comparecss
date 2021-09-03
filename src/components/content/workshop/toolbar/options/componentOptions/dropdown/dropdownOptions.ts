@@ -37,7 +37,6 @@ export class DropdownOptions {
   }
 
   public static getDropdownOptions(subcomponentType: SUBCOMPONENT_TYPES, component: WorkshopComponent): Options {
-    // WORK1: text should not have margin
     if (subcomponentType === SUBCOMPONENT_TYPES.TEXT) {
       return DropdownOptions.getTextOptions(component);
     }
