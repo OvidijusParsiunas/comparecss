@@ -8,7 +8,7 @@ import { buttonBase } from './base';
 export class DefaultButton extends ComponentBuilder {
 
   public static populateReferences(buttonComponent: WorkshopComponent): void {
-    ComponentBuilder.populateReferences(buttonComponent);
+    ComponentBuilder.executeReferenceSharingExecutables(buttonComponent);
   }
 }
 

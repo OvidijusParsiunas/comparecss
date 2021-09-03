@@ -6,12 +6,14 @@ animation - open on hover, slide in/ fade in
 dropdown arrows not showing up on card's button 2
 change copy child component to sync child component - new UX
 prevent mouse events on button text and icons so that ripple can render
+add shadow on click - with animation, also allow it for the dropdown button (like bootstrap)
 
 overflow
 try with button tags
 check to see if text can be placed into another div
 the dropdown button bottom border issue fixed via auxiliary overlay with no pointer events
 
+dropdown menu should switch upwards when there is not enough screen space
 for sync to be effective (especially buttons) need to have width property as staticCss
 when moving into copying a child component - can quickly click on add new component (fix this when implemented final add new component button)
 when switching subcomponent alignment, highlight the subcomponent so that it is clear where it is being moved

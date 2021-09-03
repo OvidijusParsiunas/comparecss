@@ -9,7 +9,8 @@ export default class ReferenceSharingUtils {
     return new Set([JAVASCRIPT_CLASSES.RIPPLES])
   }
 
-  public static appendJsClassesRefToAllSubcomponents(coreSubcomponentRefs: CoreSubcomponentRefs): void {
+  public static appendJsClassesRefToAllSubcomponents(coreSubcomponentRefs: CoreSubcomponentRefs,
+      overrideJsClasses?: Set<JAVASCRIPT_CLASSES>): void {
     const baseSubcomponent = coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const jsClasses = baseSubcomponent.customFeatures && baseSubcomponent.customFeatures.jsClasses
       ? baseSubcomponent.customFeatures.jsClasses : ReferenceSharingUtils.createDefaultButtonJsClasses();
@@ -19,8 +20,8 @@ export default class ReferenceSharingUtils {
         subcomponent.customFeatures = {};
         subcomponent.defaultCustomFeatures = {};
       }
-      subcomponent.customFeatures.jsClasses = jsClasses;
-      subcomponent.defaultCustomFeatures.jsClasses = new Set(jsClasses);
+      subcomponent.customFeatures.jsClasses = overrideJsClasses || jsClasses;
+      subcomponent.defaultCustomFeatures.jsClasses = new Set(overrideJsClasses || jsClasses);
     });
   }
 }

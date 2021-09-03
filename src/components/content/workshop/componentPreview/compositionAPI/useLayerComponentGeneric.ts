@@ -17,7 +17,7 @@ export default function useLayerComponentGeneric(): UseLayerComponentGeneric {
   // part of a fix to make sure that the ripples are rendered on the layers and not on the bases of button components as
   // the overflow: hidden property on the base does not prevent the ripples from leaving the button when the base is clicked
   function getButtonPadding(containerComponent: WorkshopComponent): WorkshopComponentCss {
-    if (containerComponent.type === COMPONENT_TYPES.BUTTON || containerComponent.type === COMPONENT_TYPES.DROPDOWN) {
+    if (containerComponent && (containerComponent.type === COMPONENT_TYPES.BUTTON || containerComponent.type === COMPONENT_TYPES.DROPDOWN)) {
       const { paddingLeft, paddingRight } = containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT];
       return { paddingLeft, paddingRight };
     }

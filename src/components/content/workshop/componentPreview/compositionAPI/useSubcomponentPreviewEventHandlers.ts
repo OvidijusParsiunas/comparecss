@@ -138,7 +138,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     if (overwrittenDefaultPropertiesByClick.hasBeenSet
         && subcomponentProperties.overwrittenCustomCssObj) {
       subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };
-      overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} }; 
+      overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
     }
   }
 

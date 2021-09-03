@@ -13,7 +13,7 @@ import { buttonBase } from './base';
 class CloseButton extends ComponentBuilder {
 
   public static populateReferences(component: WorkshopComponent): void {
-    ComponentBuilder.populateReferences(component);
+    ComponentBuilder.executeReferenceSharingExecutables(component);
   }
 
   public static setStyle(component: WorkshopComponent): void {

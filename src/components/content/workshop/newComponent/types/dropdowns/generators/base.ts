@@ -7,6 +7,7 @@ import { DropdownMenuAutoWidthUtils } from '../../../../toolbar/settings/utils/d
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
+import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { SelectDropdown } from '../../../../../../../interfaces/selectDropdown';
@@ -70,11 +71,22 @@ class DropdownBase extends ComponentBuilder {
   public static addComponentsToBase(dropdownMenuBaseComponent: WorkshopComponent): void {
     const layer1Component = AddNewLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
     layer1Component.childComponentsLockedToLayer.add(dropdownMenuBaseComponent);
+    ComponentBuilder.executeReferenceSharingExecutables(layer1Component);
     const layer2Component = AddNewLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
     layer2Component.childComponentsLockedToLayer.add(dropdownMenuBaseComponent);
+    ComponentBuilder.executeReferenceSharingExecutables(layer2Component);
     const layer3Component = AddNewLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
     layer3Component.childComponentsLockedToLayer.add(dropdownMenuBaseComponent);
+    ComponentBuilder.executeReferenceSharingExecutables(layer3Component);
     UpdateLayerDropdownOptionNames.update(dropdownMenuBaseComponent, 0);
+  }
+
+  public static populateReferences(buttonComponent: WorkshopComponent, dropdownMenuBaseComponent: WorkshopComponent): void {
+    buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.jsClasses.add(JAVASCRIPT_CLASSES.DROPDOWN_MENU_BUTTON);
+    buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures.jsClasses.add(JAVASCRIPT_CLASSES.DROPDOWN_MENU_BUTTON);
+    dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.jsClasses = new Set([JAVASCRIPT_CLASSES.DROPDOWN_MENU]) as Set<JAVASCRIPT_CLASSES>;
+    dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures.jsClasses = new Set([JAVASCRIPT_CLASSES.DROPDOWN_MENU]) as Set<JAVASCRIPT_CLASSES>;
+    ComponentBuilder.executeReferenceSharingExecutables(buttonComponent, dropdownMenuBaseComponent);
   }
 }
 
@@ -97,6 +109,7 @@ export const dropdownBase: ComponentGenerator = {
     DropdownBase.addComponentsToBase(dropdownMenuBaseComponent);
     DropdownBase.setTriggerFuncOnSettingChange(buttonComponent);
     buttonComponent.activeSubcomponentName = buttonComponent.defaultSubcomponentName;
+    DropdownBase.populateReferences(buttonComponent, dropdownMenuBaseComponent);
     return buttonComponent;
   },
 }

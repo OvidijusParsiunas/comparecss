@@ -12,13 +12,19 @@ import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValu
 import { SelectDropdownUtils } from '../../dropdowns/selectDropdown/selectDropdownUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
+import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
+import ReferenceSharingUtils from '../../buttons/utils/referenceSharingUtils';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { layerBase } from './base';
 
 export class DropdownItemLayer extends ComponentBuilder {
+
+  public static setReferenceSharingExecutables(buttonBaseComponent: WorkshopComponent): void {
+    buttonBaseComponent.referenceSharingExecutables = [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents];
+  }
 
   public static setStyle(component: WorkshopComponent): void {
     component.style = LAYER_STYLES.DROPDOWN_ITEM;
@@ -129,6 +135,7 @@ export class DropdownItemLayer extends ComponentBuilder {
     return {
       animations: ComponentBuilder.createStationaryAnimations({}),
       mouseEventCallbacks: DropdownItemLayer.createMouseEventCallbacks(),
+      jsClasses: new Set([JAVASCRIPT_CLASSES.DROPDOWN_MENU]) as Set<JAVASCRIPT_CLASSES>,
     };
   }
 
@@ -175,6 +182,7 @@ export const dropdownItemLayer: ComponentGenerator = {
     DropdownItemLayer.overwriteBase(layerComponent);
     DropdownItemLayer.createChildComponentsLockedToLayer(layerComponent);
     DropdownItemLayer.setStyle(layerComponent);
+    DropdownItemLayer.setReferenceSharingExecutables(layerComponent);
     return layerComponent;
   },
 };

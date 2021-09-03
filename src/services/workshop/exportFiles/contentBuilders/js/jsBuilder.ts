@@ -1,4 +1,4 @@
-import { javascriptClassesToCode } from '../../../../../components/content/workshop/toolbar/settings/javascript/javascriptClassToCode';
+import { javascriptInitializerClassesToCode } from '../../../../../components/content/workshop/toolbar/settings/javascript/javascriptInitializerClassesToCode';
 import { JAVASCRIPT_CLASSES } from '../../../../../consts/javascriptClasses.enum';
 import { WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { JSBuilderResult } from '../../../../../interfaces/jsBuilderResult';
@@ -19,7 +19,7 @@ export default class JSBuilder {
       Object.keys(component.subcomponents).forEach((key: string) => {
         ((component.subcomponents[key].customFeatures && component.subcomponents[key].customFeatures.jsClasses) || [])
           .forEach((jsClass: string) => {
-            if (!utilisedJavascriptCode[jsClass]) { utilisedJavascriptCode[jsClass] = javascriptClassesToCode[jsClass] }
+            if (!utilisedJavascriptCode[jsClass]) { utilisedJavascriptCode[jsClass] = javascriptInitializerClassesToCode[jsClass] }
         });
       });
     });

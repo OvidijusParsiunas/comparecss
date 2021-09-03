@@ -109,8 +109,8 @@ export class ComponentBuilder {
     };
   }
 
-  protected static populateReferences(component: WorkshopComponent): void {
-    CoreSubcomponentRefsUtils.executeReferenceSharingExecutables(component);
+  protected static executeReferenceSharingExecutables(...components: WorkshopComponent[]): void {
+    components.forEach((component) => CoreSubcomponentRefsUtils.executeReferenceSharingExecutables(component));
   }
 
   private static createCoreSubcomponentRefs(baseSubcomponent: SubcomponentProperties, coreSubcomponentRefs: CoreSubcomponentRefs): CoreSubcomponentRefs {
