@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div ondragstart="return false;">
     <component :is="getTag()" v-if="isComponentDisplayed()" ref="componentPreview"
       :id="getBaseId('subcomponentId')"
       :icon="getIconName()"

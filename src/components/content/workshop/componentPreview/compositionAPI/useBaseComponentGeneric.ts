@@ -5,11 +5,27 @@ import { CustomCss, WorkshopComponent } from '../../../../../interfaces/workshop
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
+import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 
 export default function useBaseComponentGeneric(): UseBaseComponentGeneric {
 
   const otherSubcomponentTriggerState: CompositionAPISubcomponentTriggerState = { subcomponentProperties: null };
+
+  const isIcon = (component: WorkshopComponent): boolean => {
+    return component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].subcomponentType === SUBCOMPONENT_TYPES.ICON;
+  }
+
+  // part of a fix to make sure that the ripples are rendered on the layers and not on the bases of button components as
+  // the overflow: hidden property on the base does not prevent the ripples from leaving the button when the base is clicked
+  function substituteButtonPaddingToWidth(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {
+    if (component.type === COMPONENT_TYPES.BUTTON || component.type === COMPONENT_TYPES.DROPDOWN) {
+      const { paddingLeft, paddingRight, width } = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT];
+      const newWidth = `${Number.parseFloat(paddingLeft) + Number.parseFloat(width) + Number.parseFloat(paddingRight)}px`;
+      return { paddingLeft: '0px', paddingRight: '0px', width: newWidth };
+    }
+    return {};
+  }
 
   function getSelectedDropdownCss(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {
     const { selectDropdown, subcomponentText } = component.containerComponent?.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures || {};
@@ -19,15 +35,12 @@ export default function useBaseComponentGeneric(): UseBaseComponentGeneric {
     return {};
   }
 
-  const isIcon = (component: WorkshopComponent): boolean => {
-    return component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].subcomponentType === SUBCOMPONENT_TYPES.ICON;
-  }
-
   const generateStyleProperties = (component: WorkshopComponent): WorkshopComponentCss[] => {
     const { overwrittenCustomCssObj, customCss, inheritedCss, activeCssPseudoClass, customStaticFeatures } = component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const subcomponentCss = overwrittenCustomCssObj || customCss;
     SubcomponentTriggers.triggerOtherSubcomponentsCss(component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE], activeCssPseudoClass, otherSubcomponentTriggerState);
     const selectedDropdownCss = getSelectedDropdownCss(component, subcomponentCss);
+    const buttonPaddingSubstitutedToWidth = substituteButtonPaddingToWidth(component, subcomponentCss);
     return [
       inheritedCss || {},
       subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT],
@@ -36,6 +49,7 @@ export default function useBaseComponentGeneric(): UseBaseComponentGeneric {
       { backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'backgroundColor') },
       { color: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'color') },
       isIcon(component) ? { pointerEvents: 'none' } : {},
+      buttonPaddingSubstitutedToWidth,
       selectedDropdownCss,
     ];
   };

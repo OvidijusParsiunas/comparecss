@@ -1,18 +1,28 @@
 import { CompositionAPISubcomponentTriggerState } from '../../../../../interfaces/compositionAPISubcomponentTriggerState';
 import { SubcomponentTriggers } from '../../utils/componentManipulation/utils/subcomponentTriggers';
 import { UseLayerComponentGeneric } from '../../../../../interfaces/useLayerComponentGeneric';
+import { CustomCss, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import { Layer } from '../../../../../interfaces/componentPreviewStructure';
-import { CustomCss } from '../../../../../interfaces/workshopComponent';
 import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 
 export default function useLayerComponentGeneric(): UseLayerComponentGeneric {
 
   const otherSubcomponentTriggerState: CompositionAPISubcomponentTriggerState = { subcomponentProperties: null };
+
+  // part of a fix to make sure that the ripples are rendered on the layers and not on the bases of button components as
+  // the overflow: hidden property on the base does not prevent the ripples from leaving the button when the base is clicked
+  function getButtonPadding(containerComponent: WorkshopComponent): WorkshopComponentCss {
+    if (containerComponent.type === COMPONENT_TYPES.BUTTON || containerComponent.type === COMPONENT_TYPES.DROPDOWN) {
+      const { paddingLeft, paddingRight } = containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT];
+      return { paddingLeft, paddingRight };
+    }
+    return {};
+  }
 
   function getSelectedDropdownCss(layer: Layer, subcomponentCss: CustomCss): WorkshopComponentCss {
     const { containerComponent, childComponentsLockedToLayer } = layer.subcomponentProperties.seedComponent;
@@ -32,6 +42,7 @@ export default function useLayerComponentGeneric(): UseLayerComponentGeneric {
     SubcomponentTriggers.triggerOtherSubcomponentsCss(layer.subcomponentProperties, activeCssPseudoClass, otherSubcomponentTriggerState);
     const subcomponentCss = overwrittenCustomCssObj || customCss;
     const selectedDropdownCss = getSelectedDropdownCss(layer, subcomponentCss);
+    const buttonPaddingCss = getButtonPadding(layer.subcomponentProperties.seedComponent.containerComponent);
     return [
       subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT],
       subcomponentCss[activeCssPseudoClass],
@@ -40,6 +51,7 @@ export default function useLayerComponentGeneric(): UseLayerComponentGeneric {
       { boxShadow: CSS_PROPERTY_VALUES.UNSET },
       isLastLayer ? { borderBottomWidth: '0px' } : {}, // can alternatively use nth class
       selectedDropdownCss,
+      buttonPaddingCss,
     ];
   };
 
