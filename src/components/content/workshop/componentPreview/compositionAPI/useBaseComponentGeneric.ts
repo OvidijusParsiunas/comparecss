@@ -14,17 +14,23 @@ export default function useBaseComponentGeneric(): UseBaseComponentGeneric {
 
   const isIcon = (component: WorkshopComponent): boolean => {
     return component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].subcomponentType === SUBCOMPONENT_TYPES.ICON;
-  }
+  };
 
   // part of a fix to make sure that the ripples are rendered on the layers and not on the bases of button components as
   // the overflow: hidden property on the base does not prevent the ripples from leaving the button when the base is clicked
   function substituteButtonPaddingToWidth(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {
+    const buttonPaddingSubstitutedToWidth: WorkshopComponentCss = {};
+    if (component.type === COMPONENT_TYPES.DROPDOWN) {
+      buttonPaddingSubstitutedToWidth.boxShadow = '';
+    }
     if (component.type === COMPONENT_TYPES.BUTTON || component.type === COMPONENT_TYPES.DROPDOWN) {
       const { paddingLeft, paddingRight, width } = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT];
       const newWidth = `${Number.parseFloat(paddingLeft) + Number.parseFloat(width) + Number.parseFloat(paddingRight)}px`;
-      return { paddingLeft: '0px', paddingRight: '0px', width: newWidth };
+      buttonPaddingSubstitutedToWidth.paddingLeft = '0px';
+      buttonPaddingSubstitutedToWidth.paddingRight = '0px';
+      buttonPaddingSubstitutedToWidth.width = newWidth;
     }
-    return {};
+    return buttonPaddingSubstitutedToWidth;
   }
 
   function getSelectedDropdownCss(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {

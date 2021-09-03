@@ -17,6 +17,8 @@ export interface OtherSubcomponentTriggers {
   // on the other hand when the user changes the css pseudo class using the mouse - a simple event trigger does
   // the trick as default hover and click are triggered in a natural way. Additionally there is no need to worry
   // about triggering the parent subcomponent as parent is the one that does all the triggering
+  // WORK 1 - try to explore opportunity of mouse event triggers (try it after removing mouse events from
+  // button text and icon)
   subcomponentsToTrigger?: CoreSubcomponentRefs;
   // reference to the subcomponent that triggered it (can currently be triggered by one subcomponent)
   subcomponentThatTriggersThis?: SubcomponentProperties;
