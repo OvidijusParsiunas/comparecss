@@ -5,7 +5,6 @@ dropdown will probably need to have its own base name when child
 animation - open on hover, slide in/ fade in
 dropdown arrows not showing up on card's button 2
 change copy child component to sync child component - new UX
-when in click mode, the user can still hover
 prevent mouse events on button text and icons so that ripple can render
 
 overflow

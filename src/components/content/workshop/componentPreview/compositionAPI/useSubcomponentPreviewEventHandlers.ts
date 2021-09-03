@@ -44,10 +44,11 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   }
 
   // the following is used to prevent the modal animation from stopping when the user moves their mouse and triggers the modal's base mouse events
-  function shoudPreventMouseEvent(): boolean {
+  function shoudMouseEventBePrevented(): boolean {
     return subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()
+      || subcomponentProperties.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK
       || (subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE
-          && (animationState.getIsModeToggleAnimationInProgressState() || animationState.getIsAnimationPreviewInProgressState()))
+          && (animationState.getIsModeToggleAnimationInProgressState() || animationState.getIsAnimationPreviewInProgressState()));
   }
 
   function unsetStationaryAnimations(customCss: CustomCss, defaultCss: CustomCss, stationaryAnimations: StationaryAnimations): void {
@@ -95,7 +96,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   }
 
   const subcomponentMouseEnter = (): void => {
-    if (shoudPreventMouseEvent()) return;
+    if (shoudMouseEventBePrevented()) return;
     const { customCss, customFeatures, otherSubcomponentTriggers } = subcomponentProperties;
     // even.isTrusted means that the event was triggered by a mouse instead of a dispatch
     if (otherSubcomponentTriggers?.subcomponentThatTriggersThis && event.isTrusted) return;
@@ -106,7 +107,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   }
 
   const subcomponentMouseLeave = (): void => {
-    if (shoudPreventMouseEvent()) return;
+    if (shoudMouseEventBePrevented()) return;
     const { customCss, defaultCss, customFeatures, otherSubcomponentTriggers } = subcomponentProperties;
     if (otherSubcomponentTriggers?.subcomponentThatTriggersThis && event.isTrusted) return;
     triggerOtherSubcomponentsMouseEvents(otherSubcomponentTriggers?.subcomponentsToTrigger, event.type);
@@ -118,7 +119,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   }
 
   const subcomponentMouseDown = (): void => {
-    if (shoudPreventMouseEvent()) return;
+    if (shoudMouseEventBePrevented()) return;
     const { customCss, customFeatures, otherSubcomponentTriggers } = subcomponentProperties;
     if (otherSubcomponentTriggers?.subcomponentThatTriggersThis && event.isTrusted) return;
     triggerOtherSubcomponentsMouseEvents(otherSubcomponentTriggers?.subcomponentsToTrigger, event.type);
@@ -131,7 +132,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   }
 
   const subcomponentMouseUp = (): void => {
-    if (shoudPreventMouseEvent()) return;
+    if (shoudMouseEventBePrevented()) return;
     const { subcomponentsToTrigger } = subcomponentProperties.otherSubcomponentTriggers || {};
     triggerOtherSubcomponentsMouseEvents(subcomponentsToTrigger, event.type);
     if (overwrittenDefaultPropertiesByClick.hasBeenSet
