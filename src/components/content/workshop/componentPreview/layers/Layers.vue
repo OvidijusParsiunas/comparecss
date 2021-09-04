@@ -36,13 +36,13 @@
 import { UseSubcomponentPreviewEventHandlers } from '../../../../../interfaces/useSubcomponentPreviewEventHandlers';
 import { SubcomponentAndOverlayElementIds } from '../../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
-import { UseLayerComponentGeneric } from '../../../../../interfaces/useLayerComponentGeneric';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
-import useLayerComponentGeneric from '../compositionAPI/useLayerComponentGeneric';
+import { UseLayerComponent } from '../../../../../interfaces/useLayerComponent';
 import { Layer } from '../../../../../interfaces/componentPreviewStructure';
+import useLayerComponent from '../compositionAPI/useLayerComponent';
 import layerSections from './LayerSections.vue';
 
 interface Consts {
@@ -51,11 +51,11 @@ interface Consts {
 }
 
 export default {
-  setup(): Consts & UseLayerComponentGeneric {
+  setup(): Consts & UseLayerComponent {
     return {
       COMPONENT_PREVIEW_MARKER, 
       SUBCOMPONENT_OVERLAY_CLASSES,
-      ...useLayerComponentGeneric(),
+      ...useLayerComponent(),
     };
   },
   methods: {

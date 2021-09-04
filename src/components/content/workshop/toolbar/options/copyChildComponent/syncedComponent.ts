@@ -29,7 +29,6 @@ export class SyncedComponent {
     const baseSubcomponent = useActiveReferenceSharingComponent
       ? SyncedComponent.getActiveReferenceSharingComponentBase(containerComponent) : containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     if (baseSubcomponent.seedComponent.sync.syncedComponent) SyncedComponent.dereferenceCopiedComponentCustomProperties(baseSubcomponent);
-    // WORK3: baseSubcomponent.seedComponent.syncedComponent &&= null;
     if (baseSubcomponent.seedComponent.sync.syncedComponent) baseSubcomponent.seedComponent.sync.syncedComponent = null;
     if (callback) callback();
   }

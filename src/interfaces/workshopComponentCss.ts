@@ -52,4 +52,5 @@ export interface WorkshopComponentCss {
   zIndex?: number;
   wordBreak?: string;
   backgroundImage?: string;
+  order?: string;
 }

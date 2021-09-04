@@ -1,16 +1,16 @@
 import { CompositionAPISubcomponentTriggerState } from '../../../../../interfaces/compositionAPISubcomponentTriggerState';
 import { SubcomponentTriggers } from '../../utils/componentManipulation/utils/subcomponentTriggers';
-import { UseLayerComponentGeneric } from '../../../../../interfaces/useLayerComponentGeneric';
 import { CustomCss, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
+import { UseLayerComponent } from '../../../../../interfaces/useLayerComponent';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import { Layer } from '../../../../../interfaces/componentPreviewStructure';
 import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 
-export default function useLayerComponentGeneric(): UseLayerComponentGeneric {
+export default function useLayerComponent(): UseLayerComponent {
 
   const otherSubcomponentTriggerState: CompositionAPISubcomponentTriggerState = { subcomponentProperties: null };
 

@@ -4,7 +4,7 @@
          will have to disable pointer events in the layer sections and have the js class in the layer parent, will also need to find a way to be able to
          highlight the text in the subcomponent select mode -->
     <div v-for="(subcomponent, index) in subcomponents" :key="subcomponent"
-      :style="{order: `${index}`}"
+      :style="generateStyleProperties(subcomponent.subcomponentProperties, index)"
       class="subcomponent-element-container"
       :class="[COMPONENT_PREVIEW_MARKER, specialisedSectionContainerClass, ...getChildComponentJs(subcomponent)]">
       <base-component v-if="subcomponent.subcomponentProperties.seedComponent"
@@ -20,18 +20,21 @@
                     
 <script lang="ts">
 import { ComponentJavascriptClasses } from '../../../../../interfaces/componentJavascriptClasses';
+import { UseLayerSectionComponent } from '../../../../../interfaces/useLayerSectionComponent';
 import { BaseSubcomponentRef } from '../../../../../interfaces/componentPreviewStructure';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
+import useLayerSectionComponent from '../compositionAPI/useLayerSectionComponent';
 
 interface Consts {
   COMPONENT_PREVIEW_MARKER: string;
 }
 
 export default {
-  setup(): Consts {
+  setup(): Consts & UseLayerSectionComponent {
     return {
       COMPONENT_PREVIEW_MARKER,
+      ...useLayerSectionComponent(),
     };
   },
   methods: {

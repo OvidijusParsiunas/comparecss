@@ -59,16 +59,16 @@ import { UseSubcomponentPreviewEventHandlers } from '../../../../interfaces/useS
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { DROPDOWN_ARROW_ICON_TYPES_TO_FONT_AWESOME_NAMES } from '../../../../consts/dropdownArrowIcons';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
-import { UseBaseComponentGeneric } from '../../../../interfaces/useBasicComponentGeneric';
 import { DROPDOWN_MENU_POSITIONS } from '../../../../consts/dropdownMenuPositions.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../consts/elementClassMarkers';
-import useBaseComponentGeneric from './compositionAPI/useBaseComponentGeneric';
 import { SUBCOMPONENT_TYPES } from '../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
+import { UseBaseComponent } from '../../../../interfaces/useBaseComponent';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../consts/closeButtonXText';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
+import useBaseComponent from './compositionAPI/useBaseComponent';
 import layers from './layers/Layers.vue';
 
 interface Consts {
@@ -80,14 +80,14 @@ interface Consts {
 }
 
 export default {
-  setup(): Consts & UseBaseComponentGeneric {
+  setup(): Consts & UseBaseComponent {
     return {
       SUBCOMPONENT_OVERLAY_CLASSES,
       STATIC_POSITION_CLASS: STATIC_POSITION_CLASS,
       COMPONENT_PREVIEW_MARKER,
       CSS_PSEUDO_CLASSES,
       useSubcomponentPreviewSelectModeEventHandlers: useSubcomponentPreviewSelectModeEventHandlers(),
-      ...useBaseComponentGeneric(),
+      ...useBaseComponent(),
     };
   },
   methods: {
