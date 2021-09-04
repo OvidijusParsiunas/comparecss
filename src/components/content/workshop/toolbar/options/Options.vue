@@ -3,12 +3,13 @@
     <div class="options-container-inner">
       <div v-if="!isFullPreviewModeActive" class="btn-group option-component-button-container">
         <button v-if="isSubcomponentSelectModeButtonDisplayed"
-          id="component-select-button" type="button" class="btn"
+          id="subcomponent-select-button" type="button" class="btn"
           :class="[TOOLBAR_GENERAL_BUTTON_CLASS, SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
           @click="buttonClickMiddleware(initiateSubcomponentSelectMode.bind(this, $event.currentTarget))">
             <i class="fa fa-mouse-pointer" :class="[SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"></i>
         </button>
         <dropdown
+          id="subcomponent-dropdown-button"
           :class="TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS"
           :additionalButtonClasses="getSubcomponentDropdownButtonBorderClasses()"
           :uniqueIdentifier="SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
@@ -630,11 +631,14 @@ export default {
     margin-top: 10px !important;
     margin-bottom: 10px !important;
   }
-  #component-select-button {
+  #subcomponent-select-button {
     padding-left: 10px !important;
     padding-right: 9px !important;
     font-size: 13px !important;
     color: #5c5c5c;
+  }
+  #subcomponent-dropdown-button {
+    width: 112px;
   }
   .component-manipulation-options-group {
     float: left;

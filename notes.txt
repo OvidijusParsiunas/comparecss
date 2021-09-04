@@ -1,9 +1,6 @@
 set the dropdown button width by a prop - should also set the option menu width
-pseudo css dropdown highligthed items not showing correctly
 rename dropdown option to dropdown item
 dropdown will probably need to have its own base name when child
-animation - open on hover, slide in/ fade in
-dropdown arrows not showing up on card's button 2
 change copy child component to sync child component - new UX
 prevent mouse events on button text and icons so that ripple can render
 add shadow on click - with animation, also allow it for the dropdown button (like bootstrap)

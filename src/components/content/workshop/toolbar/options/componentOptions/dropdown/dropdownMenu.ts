@@ -35,10 +35,5 @@ export const dropdownMenuOptions: SubcomponentOptions<DropdownMenuOptionsModes> 
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_MENU_POSITIONS,
     },
-    {
-      // WORK2: animations
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.ANIMATIONS,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.CLOSE_ANIMATION,
-    },
   ],
 };
