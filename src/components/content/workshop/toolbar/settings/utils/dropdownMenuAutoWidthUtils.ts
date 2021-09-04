@@ -50,6 +50,12 @@ export class DropdownMenuAutoWidthUtils {
     }
   }
 
+  private static unsetMenuElementDisplayNoneProperty(menuComponent: WorkshopComponent): void {
+    const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(menuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name);
+    const element = document.getElementById(subcomponentId);
+    if (element.style.display === 'none') element.style.display = '';
+  }
+
   private static setMenuWidth(containerComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
     const largestItemWidth = DropdownMenuAutoWidthUtils.getLargestItemWidth(menuComponent);
     containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = largestItemWidth;
@@ -61,9 +67,12 @@ export class DropdownMenuAutoWidthUtils {
       const containerComponent = subcomponentProperties.seedComponent?.containerComponent || subcomponentProperties.seedComponent;
       if (containerComponent.type === COMPONENT_TYPES.DROPDOWN_MENU) {
         DropdownMenuAutoWidthUtils.setMenuWidth(containerComponent, containerComponent);
+        DropdownMenuAutoWidthUtils.setButtonWidth(containerComponent.linkedComponents.base, containerComponent);
         // activated by clicking select option on the button or changing the text fontSize option
       } else if (containerComponent.type === COMPONENT_TYPES.DROPDOWN) {
-        DropdownMenuAutoWidthUtils.setButtonWidth(containerComponent, containerComponent.linkedComponents.auxiliary[0]);
+        const menuComponent = containerComponent.linkedComponents.auxiliary[0];
+        DropdownMenuAutoWidthUtils.unsetMenuElementDisplayNoneProperty(menuComponent);
+        setTimeout(() => DropdownMenuAutoWidthUtils.setButtonWidth(containerComponent, menuComponent));
       }
     });
   }

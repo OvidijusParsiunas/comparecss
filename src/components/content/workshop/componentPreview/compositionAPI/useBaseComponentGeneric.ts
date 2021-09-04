@@ -34,9 +34,12 @@ export default function useBaseComponentGeneric(): UseBaseComponentGeneric {
   }
 
   function getSelectedDropdownCss(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {
-    const { selectDropdown, subcomponentText } = component.containerComponent?.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures || {};
-    if (selectDropdown?.enabled && selectDropdown.lastSelectedItemText && selectDropdown.lastHoveredItemText === subcomponentText?.text) {
-      return subcomponentCss[CSS_PSEUDO_CLASSES.HOVER];
+    if (component.type === COMPONENT_TYPES.TEXT && component.containerComponent.type === COMPONENT_TYPES.DROPDOWN_MENU) {
+      const { selectDropdown } = component.masterComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures;
+      if (selectDropdown?.enabled && selectDropdown.lastSelectedItemText
+          && selectDropdown.lastHoveredItemText === component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures.subcomponentText?.text) {
+        return subcomponentCss[CSS_PSEUDO_CLASSES.HOVER];
+      }
     }
     return {};
   }

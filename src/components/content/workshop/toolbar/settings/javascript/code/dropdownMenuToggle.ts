@@ -17,11 +17,11 @@ function toggleDropdown(event) {
 }
 
 function removeScript() {
-  document.body.removeEventListener('mousedown', toggleDropdown);
+  document.body.removeEventListener('mouseup', toggleDropdown);
 }
 
 function initializeScript() {
-  document.body.addEventListener('mousedown', toggleDropdown, false);
+  document.body.addEventListener('mouseup', toggleDropdown, false);
   setTimeout(() => {
     vars.dropdownMenuElement = document.getElementsByClassName(vars.dropdownMenuClassName)[0];
   });

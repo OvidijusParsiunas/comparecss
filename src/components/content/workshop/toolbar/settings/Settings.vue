@@ -37,7 +37,7 @@
                     v-bind:min="setting.spec.scale[0]"
                     v-bind:max="setting.spec.scale[1]"
                     v-model="setting.spec.default"
-                    @mousedown="rangeMouseDown($event, setting.spec)"
+                    @mousedown="selectSetting(rangeMouseDown.bind(this, $event, setting.spec))"
                     @mouseup="rangeMouseUp($event, setting.spec)"
                     @contextmenu="preventRightClickEvent"
                     @input="changeSetting(updateRange.bind(this, $event, setting))">
@@ -54,12 +54,14 @@
                   <button onclick="var s = Dlg.ChooseColorDlg(clr1.value); window.event.srcElement.style.color = s; clr1.value = s">&#9608;&#9608;&#9608;&#9608;&#9608;</button>
                   <object id="Dlg" classid="CLSID:3050F819-98B5-11CF-BB82-00AA00BDCE0B" width="0" height="0"></object>
                 -->
-                <input style="float: left" type="color" name="clr1" 
+                <input style="float: left" type="color" name="clr1"
+                  @mousedown="selectSetting()"
                   @click="colorInputClick(setting.spec.cssProperty)"
                   @input="changeSetting(colorChanged.bind(this, $event, setting))"
                   v-model="setting.spec.default"/>
                 <button class="unset-setting-button" id="dropdownMenuButton"
                   v-if="isUnsetColorButtonDisplayed(setting)"
+                  @mousedown="selectSetting()"
                   @click="changeSetting(removeColor.bind(this, setting.spec, setting.removeColorTriggers))">
                   &times;
                 </button>
@@ -74,6 +76,7 @@
                     class="form-control"
                     :ref="`elementReference${settingIndex}`"
                     v-bind:value="inputsValues[setting.spec.name] || setting.spec.default"
+                    @mousedown="selectSetting()"
                     @input="changeSetting(inputEventForInput.bind(this, $event, setting.spec.customFeatureObjectKeys), setting.spec.customFeatureObjectKeys[0])"
                     @keyup.enter="blurInputDropdown(`elementReference${settingIndex}`)">
                 </div>
@@ -88,16 +91,17 @@
                     class="form-control"
                     :ref="`elementReference${settingIndex}`"
                     v-bind:value="inputDropdownsValues[setting.spec.cssProperty] || subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass][setting.spec.cssProperty]"
+                    @mousedown="selectSetting()"
                     @input="changeSetting(inputEventForDropdownInput.bind(this, $event, setting.spec.cssProperty))"
                     @keyup.enter="blurInputDropdown(`elementReference${settingIndex}`)">
                   <div class="input-group-append">
                     <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                       class="btn dropdown-toggle" :class="TOOLBAR_GENERAL_BUTTON_CLASS"
-                      @click="openDropdown(setting.spec.cssProperty)"></button>
+                      @click="selectSetting(openDropdown.bind(this, setting.spec.cssProperty))"></button>
                     <div class="dropdown-menu" @mouseleave="inputDropdownOptionMouseLeave(setting.spec.cssProperty)">
                       <a class="dropdown-item" v-for="(option) in setting.spec.options" :key="option"
-                        @mouseover="inputDropdownOptionMouseOver(option, setting.spec.cssProperty)"
-                        @click="changeSetting(inputDropdownOptionClick.bind(this, option, setting.spec.cssProperty))">
+                        @click="changeSetting(inputDropdownOptionClick.bind(this, option, setting.spec.cssProperty))"
+                        @mouseover="inputDropdownOptionMouseOver(option, setting.spec.cssProperty)">
                           {{option}}
                       </a>
                     </div>
@@ -117,6 +121,7 @@
                   :fontAwesomeIcon="'caret-down'"
                   :minOptionsToDisplayDropdown="1"
                   :consistentButtonContent="{'text': actionsDropdownsButtonText[setting.spec.name]}"
+                  @click="selectSetting()"
                   @hide-dropdown-menu-callback="openActionsDropdownMenu($event, setting.spec)"
                   @mouse-enter-button="mouseEnterActionsDropdownButton(this, setting.spec, subcomponentProperties)"
                   @mouse-leave-button="mouseLeaveActionsDropdownButton(this, setting.spec, subcomponentProperties)"
@@ -131,7 +136,9 @@
                 <div style="text-align: left">
                   {{setting.spec.name}}
                 </div>
-                <input type="checkbox" v-model="setting.spec.default" @click="changeSetting(checkboxMouseClick.bind(this, setting.spec.default, setting.spec, setting.triggers))">
+                <input type="checkbox" v-model="setting.spec.default"
+                  @mousedown="selectSetting()"
+                  @click="changeSetting(checkboxMouseClick.bind(this, setting.spec.default, setting.spec, setting.triggers))">
               </div>
               
               <div style="display: flex" v-if="setting.type === SETTINGS_TYPES.UPLOAD_FILE">
@@ -139,6 +146,7 @@
                 <button
                   class="btn btn-group-option"
                   :class="TOOLBAR_GENERAL_BUTTON_CLASS"
+                  @mousedown="selectSetting()"
                   @click="triggerImageUpload(event)">
                     <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.DEFAULT }" class="sync-icon" icon="upload"/>
                     Upload
@@ -146,6 +154,7 @@
                 <div>{{imageNames[setting.spec.name]}}</div>
                 <button class="unset-setting-button" id="dropdownMenuButton"
                   v-if="isRemoveImageButtonDisplayed(setting.spec.name)"
+                  @mousedown="selectSetting()"
                   @click="changeSetting(removeImage.bind(this, setting.spec))">
                   &times;
                 </button>
@@ -158,6 +167,7 @@
                 <div class="btn-group option-component-button-container">
                   <button v-for="(option, name) in setting.spec.options" :key="option"
                     class="btn btn-group-option" :class="TOOLBAR_GENERAL_BUTTON_CLASS"
+                    @mousedown="selectSetting()"
                     @click="activateButton(setting.spec.optionAction, name)">
                     {{name}}
                   </button>
@@ -168,7 +178,7 @@
           </div>
           <button v-if="isResetButtonDisplayed()"
             class="reset-button"
-            @click="changeSetting(resetSubcomponentProperties.bind(this, settings.options))">
+            @click="selectSetting(changeSetting.bind(this, resetSubcomponentProperties.bind(this, settings.options)))">
               &#8634;
             <!-- <i :class="['fa', 'fa-history']"></i> -->
           </button>
@@ -181,6 +191,7 @@
 </template>
 
 <script lang="ts">
+import { subcomponentAndOverlayElementIdsState } from '../options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import { RemoveInSyncOptionButton } from '../../../../../interfaces/settingsComponentEvents';
 import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSettingsState';
@@ -199,6 +210,7 @@ import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
 import { SETTING_NAMES } from '../../../../../consts/settingNames.enum';
 import useActionsDropdown from './compositionAPI/useActionsDropdown';
 import dropdown from '../options/dropdown/Dropdown.vue';
+import { DOMUtils } from '../../utils/generic/DOMUtils';
 import RangeUtils from './utils/rangeUtils/rangeUtils';
 import CheckboxUtils from './utils/checkboxUtils';
 import SettingsUtils from './utils/settingsUtils';
@@ -292,6 +304,17 @@ export default {
     settingsVisible: true,
   }),
   methods: {
+    displaySubcomponentElementIfHidden(): void {
+      const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(this.subcomponentProperties.name);
+      const subcomponentElement = document.getElementById(subcomponentId);
+      if (subcomponentElement.offsetParent === null) {
+        DOMUtils.bubbleUnsetElementDisplayNoneProperty(subcomponentElement);
+      }
+    },
+    selectSetting(callback?: () => void): void {
+      this.displaySubcomponentElementIfHidden();
+      callback?.();
+    },
     activateButton(optionAction: any, actionName: string): void {
       optionAction(this, actionName, this.component);
     },

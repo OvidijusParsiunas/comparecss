@@ -23,8 +23,8 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
     if (!highlightSubcomponents.value) return;
     const subcomponentOverlayElementId = subcomponentAndOverlayElementIdsState.getOverlayIdViaSubcomponentName(subcomponentName);
     const subcomponentOverlayElement = document.getElementById(subcomponentOverlayElementId);
-    const subcomponentElementId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(subcomponentName);
-    const subcomponentElement = document.getElementById(subcomponentElementId);
+    const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(subcomponentName);
+    const subcomponentElement = document.getElementById(subcomponentId);
     if (subcomponentOverlayElement && subcomponentElement) {
       if (subcomponentOverlayElement.classList.contains(SUBCOMPONENT_OVERLAY_CLASSES.SUB_CONTAINER)) {
         toggleSubOverlayContainerDisplay(subcomponentOverlayElement, displayValue);
