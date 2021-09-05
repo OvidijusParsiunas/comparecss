@@ -146,7 +146,7 @@ export default {
         [DROPDOWN_MENU_POSITIONS.RIGHT]: { top: '0px', left: '100%' },
       };
       const { position } = auxiliaryComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.dropdownMenuPosition;
-      return { position: 'absolute', zIndex: -1, ...positions[position] };
+      return { position: 'absolute', ...positions[position] };
     },
     getTag(): string {
       return this.isIcon(this.component) ? 'font-awesome-icon' : 'div';

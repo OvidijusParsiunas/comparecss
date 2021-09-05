@@ -38,10 +38,6 @@ export const buttonBaseOptions: SubcomponentOptions<ButtonOptionsModes> = {
   ],
   [CSS_PSEUDO_CLASSES.HOVER]: [
     {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER,
-    },
-    {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BACKGROUND,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_COLOR,
     },
@@ -51,10 +47,6 @@ export const buttonBaseOptions: SubcomponentOptions<ButtonOptionsModes> = {
     },
   ],
   [CSS_PSEUDO_CLASSES.CLICK]: [
-    {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER,
-    },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BACKGROUND,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_COLOR,

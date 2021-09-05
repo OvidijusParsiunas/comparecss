@@ -20,9 +20,6 @@ export default function useBaseComponent(): UseBaseComponent {
   // the overflow: hidden property on the base does not prevent the ripples from leaving the button when the base is clicked
   function substituteButtonPaddingToWidth(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {
     const buttonPaddingSubstitutedToWidth: WorkshopComponentCss = {};
-    if (component.type === COMPONENT_TYPES.DROPDOWN) {
-      buttonPaddingSubstitutedToWidth.boxShadow = '';
-    }
     if (component.type === COMPONENT_TYPES.BUTTON || component.type === COMPONENT_TYPES.DROPDOWN) {
       const { paddingLeft, paddingRight, width } = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT];
       const newWidth = `${Number.parseFloat(paddingLeft) + Number.parseFloat(width) + Number.parseFloat(paddingRight)}px`;
