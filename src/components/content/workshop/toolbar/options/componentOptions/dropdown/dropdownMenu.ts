@@ -33,7 +33,7 @@ export const dropdownMenuOptions: SubcomponentOptions<DropdownMenuOptionsModes> 
     },
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_MENU_POSITIONS,
+      type: WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_MENU_POSITION,
     },
   ],
 };

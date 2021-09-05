@@ -115,6 +115,8 @@ export interface CustomStaticFeatures {
   selectDropdown?: SelectDropdown;
   image?: Image;
   icon?: Icon;
+  // WORK1: refactor
+  dropdownAlignment?: { position: string };
 }
 
 interface TempCustomProperties {

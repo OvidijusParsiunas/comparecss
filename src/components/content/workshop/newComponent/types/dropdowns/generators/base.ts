@@ -59,8 +59,8 @@ class DropdownBase extends ComponentBuilder {
     baseSubcomponent.defaultCss[CSS_PSEUDO_CLASSES.DEFAULT].width = '155px';
     baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = '4px';
     baseSubcomponent.defaultCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = '4px';
-    baseSubcomponent.customStaticFeatures = { selectDropdown: DropdownBase.createSelectDropdownProperties() };
-    baseSubcomponent.defaultCustomStaticFeatures = { selectDropdown: DropdownBase.createSelectDropdownProperties() };
+    baseSubcomponent.customStaticFeatures = { selectDropdown: DropdownBase.createSelectDropdownProperties(), dropdownAlignment: { position: 'Below' } };
+    baseSubcomponent.defaultCustomStaticFeatures = { selectDropdown: DropdownBase.createSelectDropdownProperties(), dropdownAlignment: { position: 'Below' } };
     const textSubcomponent = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.TEXT];
     textSubcomponent.customStaticFeatures.subcomponentText.text = 'Dropdown button';
     textSubcomponent.defaultCustomStaticFeatures.subcomponentText.text = 'Dropdown button';

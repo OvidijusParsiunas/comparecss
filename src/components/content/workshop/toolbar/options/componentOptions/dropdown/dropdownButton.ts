@@ -11,6 +11,10 @@ const dropdownButtonSpecificOptions = [
     buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SELECT,
     type: WORKSHOP_TOOLBAR_OPTION_TYPES.SELECT_DROPDOWN,
   },
+  {
+    buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.POSITION,
+    type: WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_BUTTON_POSITION,
+  },
 ];
 
 export const dropdownButtonOptions: SubcomponentOptions<DropdownButtonOptionsModes> = {

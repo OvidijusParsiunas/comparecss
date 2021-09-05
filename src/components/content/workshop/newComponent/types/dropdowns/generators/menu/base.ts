@@ -1,4 +1,4 @@
-import { CustomCss, CustomFeatures, DropdownMenuPosition, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, CustomStaticFeatures, DropdownMenuPosition, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { UpdateDropdownOptionNamesShared } from '../../../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
 import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
 import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
@@ -40,6 +40,10 @@ class DropdownMenuBase extends ComponentBuilder {
     return UpdateDropdownOptionNamesShared.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]);
   }
 
+  private static createDefaultCustomStaticFeatures(): CustomStaticFeatures {
+    return { dropdownAlignment: { position: 'Above' } };
+  }
+
   private static createDefaultMenuCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
@@ -63,6 +67,7 @@ class DropdownMenuBase extends ComponentBuilder {
         paddingRight: '0px',
         paddingLeft: '0px',
         paddingBottom: '0px',
+        zIndex: 1,
       },
     };
   }
@@ -90,6 +95,8 @@ class DropdownMenuBase extends ComponentBuilder {
       childCss: inheritedBaseChildCss,
       customFeatures: DropdownMenuBase.createDefaultCustomFeatures(),
       defaultCustomFeatures: DropdownMenuBase.createDefaultCustomFeatures(),
+      customStaticFeatures: DropdownMenuBase.createDefaultCustomStaticFeatures(),
+      defaultCustomStaticFeatures: DropdownMenuBase.createDefaultCustomStaticFeatures(),
       newChildComponentsOptions: DropdownMenuBase.createDefaultNewChildComponentsOptions(),
     };
   }
