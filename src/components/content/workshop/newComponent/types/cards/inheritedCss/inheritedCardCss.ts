@@ -2,5 +2,4 @@ import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopCo
 
 export const inheritedCardBaseCss: WorkshopComponentCss = {
   position: 'relative',
-  overflow: 'hidden',
 };

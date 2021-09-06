@@ -16,8 +16,9 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 class CardBase extends ComponentBuilder {
 
   public static setChildComponentsOptions(cardBaseComponent: WorkshopComponent): void {
+    // WORK1 - remove
     const layerComponentsOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([
-      BUTTON_COMPONENTS_BASE_NAMES.BUTTON, PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE, PRIMITIVE_COMPONENTS_BASE_NAMES.IMAGE]);
+      BUTTON_COMPONENTS_BASE_NAMES.BUTTON, PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE, PRIMITIVE_COMPONENTS_BASE_NAMES.IMAGE, BUTTON_COMPONENTS_BASE_NAMES.DROPDOWN]);
     cardBaseComponent.newChildComponentsOptionsRefs = { layer: layerComponentsOptions };
     cardBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsOptions = UpdateDropdownOptionNamesShared
       .generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);

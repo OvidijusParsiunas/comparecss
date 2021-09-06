@@ -13,7 +13,7 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 export class IconBase extends ComponentBuilder {
 
-  private static createTextCss(): CustomCss {
+  private static createIconCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
         top: '50%',
@@ -63,8 +63,8 @@ export class IconBase extends ComponentBuilder {
     return {
       name,
       subcomponentType: SUBCOMPONENT_TYPES.ICON,
-      customCss: IconBase.createTextCss(),
-      defaultCss: IconBase.createTextCss(),
+      customCss: IconBase.createIconCss(),
+      defaultCss: IconBase.createIconCss(),
       inheritedCss: inheritedTextCss,
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,

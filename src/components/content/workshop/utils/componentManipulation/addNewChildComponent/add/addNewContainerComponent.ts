@@ -31,6 +31,7 @@ export class AddNewContainerComponent extends AddNewComponentShared {
     [COMPONENT_TYPES.TEXT]: PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT,
     [COMPONENT_TYPES.IMAGE]: PRIMITIVE_COMPONENTS_BASE_NAMES.IMAGE,
     [COMPONENT_TYPES.ICON]: PRIMITIVE_COMPONENTS_BASE_NAMES.ICON,
+    [COMPONENT_TYPES.DROPDOWN]: BUTTON_COMPONENTS_BASE_NAMES.DROPDOWN,
   };
   public static readonly componentBaseNameToType: { [key in CHILD_COMPONENTS_BASE_NAMES]?: COMPONENT_TYPES } = {
     ...JSONUtils.reverseMap(AddNewContainerComponent.componentTypeToBaseName),

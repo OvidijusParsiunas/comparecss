@@ -1,53 +1,55 @@
 <template>
   <div ondragstart="return false;">
-    <component :is="getTag()" v-if="isComponentDisplayed()" ref="componentPreview"
-      :id="getBaseId('subcomponentId')"
-      :icon="getIconName()"
-      :style="generateStyleProperties(component)"
-      class="base-component"
-      :class="[COMPONENT_PREVIEW_MARKER, (isChildComponent ? 'child-component' : STATIC_POSITION_CLASS),
-        ...getJsClasses(), getSubcomponentMouseEventsDisabledClassForXButtonText()]"
-      @mouseenter="activateSubcomponentMouseEvent('subcomponentMouseEnter')"
-      @mouseleave="activateSubcomponentMouseEvent('subcomponentMouseLeave')"
-      @mousedown="activateSubcomponentMouseEvent('subcomponentMouseDown')"
-      @mouseup="activateSubcomponentMouseEvent('subcomponentMouseUp')"
-      @click="activateSubcomponentMouseEvent('subcomponentClick')">
-        {{getSubcomponentText(component)}}
-        <layers
-          :classes="[...getJsClasses()]"
-          :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-          :mouseEvents="mouseEvents"
-          :layers="component.componentPreviewStructure.layers"
-        />
-    </component>
-    <!-- this is used to prevent the button text from flashing when switching between different icon types in the settings dropdown -->
-    <div v-else :style="generateStyleProperties(component)"></div>
-    <div v-if="isIcon(component)"
-      :id="getBaseId('subcomponentId')"
-      :style="getOverlayStyleProperties()"
-      :class="getOverlayClasses(true)"
-      @mouseenter="activateSubcomponentMouseEvent('subcomponentMouseEnter')"
-      @mouseleave="activateSubcomponentMouseEvent('subcomponentMouseLeave')"></div>
-    <div ref="componentPreviewOverlay"
-      :id="getBaseId('overlayId')"
-      style="display: none"
-      :style="getOverlayStyleProperties()"
-      :class="getOverlayClasses()">
-        {{getSubcomponentText(component)}}
-        <!-- subOverlays are used for only displaying the container/actual overlay only when the mouse has reached it's actual content as in some cases (close button text) mouse
-          enter event can be fired before the mouse actually reaches the actual subcomponent content -->
-        <div v-if="isXButtonText()"
-          :class="SUBCOMPONENT_OVERLAY_CLASSES.SUB"
-          :style="getXButtonOverlayStyleProperties()"
-          @mouseEnter="useSubcomponentPreviewSelectModeEventHandlers.subcomponentMouseEnter"
-          @mouseLeave="useSubcomponentPreviewSelectModeEventHandlers.subcomponentMouseLeave"></div>
-    </div>
-    <div v-if="component.linkedComponents && component.linkedComponents.auxiliary">
-      <base-component v-for="auxiliaryComponent in component.linkedComponents.auxiliary" :key="auxiliaryComponent"
-      :style="getAuxiliaryComponentParentElementStyleProperties(auxiliaryComponent)"
-      :component="auxiliaryComponent"
-      :mouseEvents="mouseEvents"
-      :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"/>
+    <!-- WORK1 - use the top value from custom css -->
+    <div :class="(isChildComponent ? 'child-component' : STATIC_POSITION_CLASS)" style="top: 50%">
+      <component :is="getTag()" v-if="isComponentDisplayed()" ref="componentPreview"
+        :id="getBaseId('subcomponentId')"
+        :icon="getIconName()"
+        :style="generateStyleProperties(component)"
+        class="base-component"
+        :class="[COMPONENT_PREVIEW_MARKER, ...getJsClasses(), getSubcomponentMouseEventsDisabledClassForXButtonText()]"
+        @mouseenter="activateSubcomponentMouseEvent('subcomponentMouseEnter')"
+        @mouseleave="activateSubcomponentMouseEvent('subcomponentMouseLeave')"
+        @mousedown="activateSubcomponentMouseEvent('subcomponentMouseDown')"
+        @mouseup="activateSubcomponentMouseEvent('subcomponentMouseUp')"
+        @click="activateSubcomponentMouseEvent('subcomponentClick')">
+          {{getSubcomponentText(component)}}
+          <layers
+            :classes="[...getJsClasses()]"
+            :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
+            :mouseEvents="mouseEvents"
+            :layers="component.componentPreviewStructure.layers"
+          />
+      </component>
+      <!-- this is used to prevent the button text from flashing when switching between different icon types in the settings dropdown -->
+      <div v-else :style="generateStyleProperties(component)"></div>
+      <div v-if="isIcon(component)"
+        :id="getBaseId('subcomponentId')"
+        :style="getOverlayStyleProperties()"
+        :class="getOverlayClasses(true)"
+        @mouseenter="activateSubcomponentMouseEvent('subcomponentMouseEnter')"
+        @mouseleave="activateSubcomponentMouseEvent('subcomponentMouseLeave')"></div>
+      <div ref="componentPreviewOverlay"
+        :id="getBaseId('overlayId')"
+        style="display: none"
+        :style="getOverlayStyleProperties()"
+        :class="getOverlayClasses()">
+          {{getSubcomponentText(component)}}
+          <!-- subOverlays are used for only displaying the container/actual overlay only when the mouse has reached it's actual content as in some cases (close button text) mouse
+            enter event can be fired before the mouse actually reaches the actual subcomponent content -->
+          <div v-if="isXButtonText()"
+            :class="SUBCOMPONENT_OVERLAY_CLASSES.SUB"
+            :style="getXButtonOverlayStyleProperties()"
+            @mouseEnter="useSubcomponentPreviewSelectModeEventHandlers.subcomponentMouseEnter"
+            @mouseLeave="useSubcomponentPreviewSelectModeEventHandlers.subcomponentMouseLeave"></div>
+      </div>
+      <div v-if="component.linkedComponents && component.linkedComponents.auxiliary">
+        <base-component v-for="auxiliaryComponent in component.linkedComponents.auxiliary" :key="auxiliaryComponent"
+        :style="getAuxiliaryComponentParentElementStyleProperties(auxiliaryComponent)"
+        :component="auxiliaryComponent"
+        :mouseEvents="mouseEvents"
+        :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"/>
+      </div>
     </div>
   </div>
 </template>
@@ -177,6 +179,7 @@ export default {
 
 <style lang="css" scoped>
   .base-component {
+    /* WORK1 - should only be used if there are jsclasses present or not dropdown component */
     overflow: hidden;
   }
   .child-component {

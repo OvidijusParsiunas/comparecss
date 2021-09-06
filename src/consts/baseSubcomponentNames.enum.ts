@@ -15,6 +15,7 @@ export enum PRIMITIVE_COMPONENTS_BASE_NAMES {
 export enum BUTTON_COMPONENTS_BASE_NAMES {
   BUTTON = 'Button',
   CLOSE = 'Close',
+  DROPDOWN = 'Dropdown',
 }
 
 export enum LAYER_COMPONENTS_BASE_NAMES {

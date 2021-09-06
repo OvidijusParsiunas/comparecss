@@ -31,7 +31,8 @@ export default function useBaseComponent(): UseBaseComponent {
   }
 
   function getSelectedDropdownCss(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {
-    if (component.type === COMPONENT_TYPES.TEXT && component.containerComponent.type === COMPONENT_TYPES.DROPDOWN_MENU) {
+    // WORK 1 - component.masterComponent && component.masterComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures were added exclusively for when adding dropdown as child
+    if (component.type === COMPONENT_TYPES.TEXT && component.containerComponent?.type === COMPONENT_TYPES.DROPDOWN_MENU && component.masterComponent && component.masterComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures) {
       const { select } = component.masterComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures.dropdown;
       if (select?.enabled && select.lastSelectedItemText
           && select.lastHoveredItemText === component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures.subcomponentText?.text) {
