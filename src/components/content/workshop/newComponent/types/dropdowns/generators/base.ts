@@ -4,13 +4,14 @@ import { AddNewLayerComponent } from '../../../../utils/componentManipulation/ad
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { DropdownMenuAutoWidthUtils } from '../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
+import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../consts/dropdownMenuAlignment.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
+import { SelectDropdown } from '../../../../../../../interfaces/dropdownStaticFeatures';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
-import { SelectDropdown } from '../../../../../../../interfaces/selectDropdown';
 import { SETTINGS_TYPES } from '../../../../../../../consts/settingsTypes.enum';
 import { SelectDropdownUtils } from '../selectDropdown/selectDropdownUtils';
 import { buttonWithIcon } from '../../buttons/generators/buttonWithIcon';
@@ -59,13 +60,13 @@ class DropdownBase extends ComponentBuilder {
     baseSubcomponent.defaultCss[CSS_PSEUDO_CLASSES.DEFAULT].width = '155px';
     baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = '4px';
     baseSubcomponent.defaultCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = '4px';
-    baseSubcomponent.customStaticFeatures = { selectDropdown: DropdownBase.createSelectDropdownProperties(), dropdownAlignment: { position: 'Below' } };
-    baseSubcomponent.defaultCustomStaticFeatures = { selectDropdown: DropdownBase.createSelectDropdownProperties(), dropdownAlignment: { position: 'Below' } };
+    baseSubcomponent.customStaticFeatures = { dropdown: { select: DropdownBase.createSelectDropdownProperties(), indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW } };
+    baseSubcomponent.defaultCustomStaticFeatures = { dropdown: { select: DropdownBase.createSelectDropdownProperties(), indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW } };
     const textSubcomponent = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.TEXT];
     textSubcomponent.customStaticFeatures.subcomponentText.text = 'Dropdown button';
     textSubcomponent.defaultCustomStaticFeatures.subcomponentText.text = 'Dropdown button';
-    textSubcomponent.customStaticFeatures.selectDropdown = baseSubcomponent.customStaticFeatures.selectDropdown;
-    textSubcomponent.defaultCustomStaticFeatures.selectDropdown = baseSubcomponent.defaultCustomStaticFeatures.selectDropdown;
+    textSubcomponent.customStaticFeatures.dropdown = { select: baseSubcomponent.customStaticFeatures.dropdown.select };
+    textSubcomponent.defaultCustomStaticFeatures.dropdown = { select: baseSubcomponent.customStaticFeatures.dropdown.select };
   }
 
   public static addComponentsToBase(dropdownMenuBaseComponent: WorkshopComponent): void {

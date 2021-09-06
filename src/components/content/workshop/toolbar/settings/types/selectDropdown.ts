@@ -7,18 +7,18 @@ export default {
       type: SETTINGS_TYPES.CHECKBOX,
       spec: {
         name: 'Enabled',
-        customFeatureObjectKeys: ['customStaticFeatures', 'selectDropdown', 'enabled'],
+        customFeatureObjectKeys: ['customStaticFeatures', 'dropdown', 'select', 'enabled'],
         default: false,
       },
       triggers: {
         true: [
           {
-            customFunctionKeys: ['customStaticFeatures', 'selectDropdown', 'callback'],
+            customFunctionKeys: ['customStaticFeatures', 'dropdown', 'select', 'callback'],
           }
         ],
         false: [
           {
-            customFunctionKeys: ['customStaticFeatures', 'selectDropdown', 'callback'],
+            customFunctionKeys: ['customStaticFeatures', 'dropdown', 'select', 'callback'],
           }
         ],
       },

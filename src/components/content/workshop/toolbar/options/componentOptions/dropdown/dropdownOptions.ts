@@ -26,14 +26,14 @@ export class DropdownOptions {
     if (containerComponent.type === COMPONENT_TYPES.DROPDOWN_MENU) {
       return dropdownMenuItemTextOptions;
     }
-    if (customStaticFeatures.selectDropdown.enabled) {
+    if (customStaticFeatures.dropdown.select.enabled) {
       return dropdownButtonTextOptions;
     }
     return buttonTextOptions;
   }
 
   private static isSelectDropdownEnabled(component: WorkshopComponent): boolean {
-    return component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures?.selectDropdown?.enabled;
+    return component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures?.dropdown?.select?.enabled;
   }
 
   public static getDropdownOptions(subcomponentType: SUBCOMPONENT_TYPES, component: WorkshopComponent): Options {

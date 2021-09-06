@@ -32,9 +32,9 @@ export default function useBaseComponent(): UseBaseComponent {
 
   function getSelectedDropdownCss(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {
     if (component.type === COMPONENT_TYPES.TEXT && component.containerComponent.type === COMPONENT_TYPES.DROPDOWN_MENU) {
-      const { selectDropdown } = component.masterComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures;
-      if (selectDropdown?.enabled && selectDropdown.lastSelectedItemText
-          && selectDropdown.lastHoveredItemText === component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures.subcomponentText?.text) {
+      const { select } = component.masterComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures.dropdown;
+      if (select?.enabled && select.lastSelectedItemText
+          && select.lastHoveredItemText === component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures.subcomponentText?.text) {
         return subcomponentCss[CSS_PSEUDO_CLASSES.HOVER];
       }
     }
@@ -61,10 +61,10 @@ export default function useBaseComponent(): UseBaseComponent {
   };
 
   const getSubcomponentText = (component: WorkshopComponent): string => {
-    const { selectDropdown, subcomponentText } = component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures || {};
-    // checks if this is a text subcomponent, if it has a selectDropdown reference (dropdown item texts subcomponents do not) and whether it is enabled
-    if (subcomponentText?.text && selectDropdown?.enabled) {
-      return selectDropdown.lastSelectedItemText || selectDropdown.defaultText;
+    const { dropdown, subcomponentText } = component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures || {};
+    // checks if this is a text subcomponent, if it has a select property reference (dropdown item text subcomponents do not) and whether it is enabled
+    if (subcomponentText?.text && dropdown?.select?.enabled) {
+      return dropdown?.select.lastSelectedItemText || dropdown?.select.defaultText;
     }
     return subcomponentText?.text || '';
   }

@@ -1,4 +1,4 @@
-import { SelectDropdown, SubcomponentMouseEventItemText } from '../../../../../../../interfaces/selectDropdown';
+import { SelectDropdown, SubcomponentMouseEventItemText } from '../../../../../../../interfaces/dropdownStaticFeatures';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -6,10 +6,10 @@ import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum
 export class SelectDropdownUtils {
   
   public static refresh(components: WorkshopComponent, checkBeforeProceeding = false): void {
-    const { selectDropdown } = components.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures || {};
-    if (selectDropdown && (selectDropdown.enabled || !checkBeforeProceeding)) {
-      selectDropdown.lastHoveredItemText = null;
-      selectDropdown.lastSelectedItemText = null;
+    const { select } = components.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures?.dropdown || {};
+    if (select && (select.enabled || !checkBeforeProceeding)) {
+      select.lastHoveredItemText = null;
+      select.lastSelectedItemText = null;
     }
   }
 
@@ -25,9 +25,9 @@ export class SelectDropdownUtils {
     const seedComponent = subcomponentProperties.seedComponent;
     const containerComponent = seedComponent.containerComponent || seedComponent;
     const menuComponent = containerComponent.linkedComponents?.base || containerComponent;
-    const { selectDropdown } = menuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures;
-    if (selectDropdown.enabled) {
-      SelectDropdownUtils.setMouseEventText(seedComponent, selectDropdown, itemTextKey);
+    const { select } = menuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures?.dropdown;
+    if (select.enabled) {
+      SelectDropdownUtils.setMouseEventText(seedComponent, select, itemTextKey);
     } else if (canBeUnset) {
       SelectDropdownUtils.refresh(menuComponent);
     }

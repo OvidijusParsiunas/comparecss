@@ -27,10 +27,10 @@ export default function useLayerComponent(): UseLayerComponent {
   function getSelectedDropdownCss(layer: Layer, subcomponentCss: CustomCss): WorkshopComponentCss {
     const { containerComponent, childComponentsLockedToLayer } = layer.subcomponentProperties.seedComponent;
     if (containerComponent?.type !== COMPONENT_TYPES.DROPDOWN_MENU) return {};
-    const { selectDropdown } = containerComponent.linkedComponents.base.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures || {};
-    if (selectDropdown?.enabled) {
+    const { select } = containerComponent.linkedComponents.base.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures?.dropdown || {};
+    if (select?.enabled) {
       const itemTextSubcomponent = childComponentsLockedToLayer.list[0];
-      if (selectDropdown.lastSelectedItemText && itemTextSubcomponent.customStaticFeatures.subcomponentText.text === selectDropdown.lastHoveredItemText) {
+      if (select.lastSelectedItemText && itemTextSubcomponent.customStaticFeatures.subcomponentText.text === select.lastHoveredItemText) {
         return subcomponentCss[CSS_PSEUDO_CLASSES.HOVER];
       }
     }

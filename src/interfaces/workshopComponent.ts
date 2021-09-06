@@ -13,12 +13,12 @@ import { OtherSubcomponentTriggers } from './otherSubcomponentTriggers';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
+import { DropdownStaticFeatures } from './dropdownStaticFeatures';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { CoreSubcomponentRefs } from './coreSubcomponentRefs';
 import { ChildComponentCount } from './childComponentCount';
 import { LinkedComponents } from './linkedComponents';
-import { SelectDropdown } from './selectDropdown';
 import { TempCustomCss } from './tempCustomCss';
 import { CloseTriggers } from './closeTriggers';
 import { Animations } from './animations';
@@ -112,11 +112,9 @@ export interface Image {
 
 export interface CustomStaticFeatures {
   subcomponentText?: Text;
-  selectDropdown?: SelectDropdown;
   image?: Image;
   icon?: Icon;
-  // WORK1: refactor
-  dropdownAlignment?: { position: string };
+  dropdown?: DropdownStaticFeatures;
 }
 
 interface TempCustomProperties {

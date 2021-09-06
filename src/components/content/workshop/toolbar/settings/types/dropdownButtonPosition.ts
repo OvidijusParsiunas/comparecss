@@ -1,13 +1,13 @@
 import { UpdateDropdownOptionNamesShared } from '../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
 import { ActionsDropdownMouseEventCallbacks } from '../../../../../../interfaces/actionsDropdownsMouseEventCallbacks';
-import { MenuPositionAlignment } from '../../../newComponent/types/dropdowns/settings/menuPositionAlignment';
+import { MenuIndexAlignment } from '../../../newComponent/types/dropdowns/settings/menuIndexAlignment';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 
 function generateMouseEventCallbacks(): ActionsDropdownMouseEventCallbacks {
   return {
-    mouseClickOptionCallback: MenuPositionAlignment.change,
-    mouseEnterOptionCallback: MenuPositionAlignment.change,
-    mouseLeaveDropdownCallback: MenuPositionAlignment.change,
+    mouseClickOptionCallback: MenuIndexAlignment.change,
+    mouseEnterOptionCallback: MenuIndexAlignment.change,
+    mouseLeaveDropdownCallback: MenuIndexAlignment.change,
   };
 }
 
@@ -19,8 +19,8 @@ export default {
       spec: {
         name: 'Alignment',
         options: UpdateDropdownOptionNamesShared.generateDropdownStructure(['Above', 'Below']),
-        activeOptionPropertyKeyName: 'position',
-        customFeatureObjectKeys: ['customStaticFeatures', 'dropdownAlignment', 'position'],
+        activeOptionPropertyKeyName: 'indexAlignment',
+        customFeatureObjectKeys: ['customStaticFeatures', 'dropdown', 'indexAlignment'],
         ...generateMouseEventCallbacks(),
       },
     },

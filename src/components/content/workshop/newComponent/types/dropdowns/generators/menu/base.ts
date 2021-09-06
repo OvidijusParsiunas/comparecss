@@ -1,6 +1,7 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, DropdownMenuPosition, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { UpdateDropdownOptionNamesShared } from '../../../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
 import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
+import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
 import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { NestedDropdownStructure } from '../../../../../../../../interfaces/nestedDropdownStructure';
 import { DROPDOWN_MENU_POSITIONS } from '../../../../../../../../consts/dropdownMenuPositions.enum';
@@ -41,7 +42,7 @@ class DropdownMenuBase extends ComponentBuilder {
   }
 
   private static createDefaultCustomStaticFeatures(): CustomStaticFeatures {
-    return { dropdownAlignment: { position: 'Above' } };
+    return { dropdown: { indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.ABOVE } };
   }
 
   private static createDefaultMenuCss(): CustomCss {
