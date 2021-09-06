@@ -14,7 +14,6 @@ class TextBase extends ComponentBuilder {
   private static createTextCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
-        top: '50%',
         width: 'max-content',
         fontWeight: '400',
         fontFamily: '"Poppins", sans-serif',

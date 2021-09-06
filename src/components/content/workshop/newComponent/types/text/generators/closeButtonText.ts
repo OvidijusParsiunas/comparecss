@@ -18,7 +18,6 @@ class CloseButtonText extends ComponentBuilder {
   private static createDefaultTextCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
-        top: '50%',
         width: 'max-content',
         color: '#ff0000',
         userSelect: 'none',

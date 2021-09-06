@@ -16,7 +16,6 @@ export class IconBase extends ComponentBuilder {
   private static createIconCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
-        top: '50%',
         width: '10px',
         fontWeight: '400',
         fontFamily: '"Poppins", sans-serif',

@@ -32,7 +32,6 @@ class ImageBase extends ComponentBuilder {
         color: '#ffffff',
         fontSize: '14px',
         transition: CSS_PROPERTY_VALUES.UNSET,
-        top: '50%',
         left: '0px',
         backgroundSize: '100% 100%',
         backgroundPosition: 'center',

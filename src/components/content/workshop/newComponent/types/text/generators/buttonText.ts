@@ -17,7 +17,6 @@ class ButtonText extends ComponentBuilder {
   private static createDefaultTextCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
-        top: '50%',
         width: 'max-content',
         userSelect: 'none',
         overflow: CSS_PROPERTY_VALUES.UNSET,

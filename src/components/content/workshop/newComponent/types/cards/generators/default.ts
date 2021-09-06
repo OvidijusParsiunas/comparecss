@@ -26,7 +26,6 @@ class DefaultCard extends ComponentBuilder {
   private static createDefaultTitleCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
-        top: '50%',
         width: 'max-content',
         fontWeight: '500',
         fontSize: '20px',

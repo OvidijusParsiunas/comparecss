@@ -33,7 +33,6 @@ export class DropdownItemLayer extends ComponentBuilder {
   private static createDefaultTextCustomCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
-        top: '50%',
         width: 'max-content',
         fontWeight: '400',
         fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
