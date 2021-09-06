@@ -1,12 +1,10 @@
 <template>
   <div ondragstart="return false;">
-    <!-- WORK1 - use the top value from custom css -->
-    <div :class="(isChildComponent ? 'child-component' : STATIC_POSITION_CLASS)" style="top: 50%">
+    <div :class="(isChildComponent ? 'child-component' : STATIC_POSITION_CLASS)" :style="getTopCssProperty()">
       <component :is="getTag()" v-if="isComponentDisplayed()" ref="componentPreview"
         :id="getBaseId('subcomponentId')"
         :icon="getIconName()"
         :style="generateStyleProperties(component)"
-        class="base-component"
         :class="[COMPONENT_PREVIEW_MARKER, ...getJsClasses(), getSubcomponentMouseEventsDisabledClassForXButtonText()]"
         @mouseenter="activateSubcomponentMouseEvent('subcomponentMouseEnter')"
         @mouseleave="activateSubcomponentMouseEvent('subcomponentMouseLeave')"
@@ -93,6 +91,10 @@ export default {
     };
   },
   methods: {
+    getTopCssProperty(): WorkshopComponentCss {
+      const { top } = (this.component as WorkshopComponent).coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT];
+      return { top: top || '50%' };
+    },
     getBaseId(idType: keyof SubcomponentAndOverlayElementIds[string]): string {
       return this.subcomponentAndOverlayElementIds[this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name]?.[idType];
     },
@@ -178,10 +180,6 @@ export default {
 </script>
 
 <style lang="css" scoped>
-  .base-component {
-    /* WORK1 - should only be used if there are jsclasses present or not dropdown component */
-    overflow: hidden;
-  }
   .child-component {
     position: relative;
     transform: translateY(-50%);

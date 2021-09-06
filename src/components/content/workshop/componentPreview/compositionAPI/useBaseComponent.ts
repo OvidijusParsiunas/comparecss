@@ -1,9 +1,10 @@
 import { CompositionAPISubcomponentTriggerState } from '../../../../../interfaces/compositionAPISubcomponentTriggerState';
+import { CustomCss, CustomFeatures, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { SubcomponentTriggers } from '../../utils/componentManipulation/utils/subcomponentTriggers';
-import { CustomCss, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
+import { JAVASCRIPT_CLASSES } from '../../../../../consts/javascriptClasses.enum';
 import { UseBaseComponent } from '../../../../../interfaces/useBaseComponent';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import ComponentPreviewUtils from '../utils/componentPreviewUtils';
@@ -16,9 +17,16 @@ export default function useBaseComponent(): UseBaseComponent {
     return component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].subcomponentType === SUBCOMPONENT_TYPES.ICON;
   };
 
+  function getOverflowHiddenCss(customFeatures: CustomFeatures): WorkshopComponentCss {
+    if (customFeatures?.jsClasses?.has(JAVASCRIPT_CLASSES.RIPPLES)) {
+      return { overflow: 'hidden' };
+    }
+    return {};
+  }
+
   // part of a fix to make sure that the ripples are rendered on the layers and not on the bases of button components as
   // the overflow: hidden property on the base does not prevent the ripples from leaving the button when the base is clicked
-  function substituteButtonPaddingToWidth(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {
+  function substituteButtonPaddingToWidthCss(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {
     const buttonPaddingSubstitutedToWidth: WorkshopComponentCss = {};
     if (component.type === COMPONENT_TYPES.BUTTON || component.type === COMPONENT_TYPES.DROPDOWN) {
       const { paddingLeft, paddingRight, width } = subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT];
@@ -43,11 +51,12 @@ export default function useBaseComponent(): UseBaseComponent {
   }
 
   const generateStyleProperties = (component: WorkshopComponent): WorkshopComponentCss[] => {
-    const { overwrittenCustomCssObj, customCss, inheritedCss, activeCssPseudoClass, customStaticFeatures } = component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    const { overwrittenCustomCssObj, customCss, customFeatures, inheritedCss, activeCssPseudoClass, customStaticFeatures } = component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const subcomponentCss = overwrittenCustomCssObj || customCss;
     SubcomponentTriggers.triggerOtherSubcomponentsCss(component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE], activeCssPseudoClass, otherSubcomponentTriggerState);
     const selectedDropdownCss = getSelectedDropdownCss(component, subcomponentCss);
-    const buttonPaddingSubstitutedToWidth = substituteButtonPaddingToWidth(component, subcomponentCss);
+    const buttonPaddingSubstitutedToWidthCss = substituteButtonPaddingToWidthCss(component, subcomponentCss);
+    const overflowHiddenCss = getOverflowHiddenCss(customFeatures);
     return [
       inheritedCss || {},
       subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT],
@@ -56,8 +65,9 @@ export default function useBaseComponent(): UseBaseComponent {
       { backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'backgroundColor') },
       { color: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'color') },
       isIcon(component) ? { pointerEvents: 'none' } : {},
-      buttonPaddingSubstitutedToWidth,
+      buttonPaddingSubstitutedToWidthCss,
       selectedDropdownCss,
+      overflowHiddenCss,
     ];
   };
 
