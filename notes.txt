@@ -2,7 +2,6 @@ set the dropdown button width by a prop - should also set the option menu width
 rename dropdown option to dropdown item
 dropdown will probably need to have its own base name when child
 change copy child component to sync child component - new UX
-add shadow on click - with animation, also allow it for the dropdown button (like bootstrap)
 
 overflow
 try with button tags

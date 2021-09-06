@@ -13,7 +13,6 @@ export default {
         options: UpdateDropdownOptionNamesShared.generateDropdownStructure(Object.values(DROPDOWN_ARROW_ICON_TYPES)),
         activeOptionPropertyKeyName: 'name',
         customFeatureObjectKeys: ['customStaticFeatures', 'icon', 'name'],
-        customFunctionKeys: ['customStaticFeatures', 'icon', 'changeIconFunc'],
       },
     },
   ]

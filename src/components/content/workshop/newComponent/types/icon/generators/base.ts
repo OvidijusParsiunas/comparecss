@@ -45,18 +45,9 @@ export class IconBase extends ComponentBuilder {
     };
   }
 
-  public static changeIconFunc(subcomponentProperties: SubcomponentProperties, newValue: string): void {
-    subcomponentProperties.customStaticFeatures.icon.isComponentDisplayed = false;
-    subcomponentProperties.customStaticFeatures.icon.name = newValue;
-    setTimeout(() => {
-      subcomponentProperties.customStaticFeatures.icon.isComponentDisplayed = true;
-    });
-  }
-
   private static createDefaultCustomStaticFeatures(): CustomStaticFeatures {
     return {
-      // WORK1: shoudn't need changeIconFunc
-      icon: { name: DROPDOWN_ARROW_ICON_TYPES.CARET, isComponentDisplayed: true, changeIconFunc: IconBase.changeIconFunc },
+      icon: { name: DROPDOWN_ARROW_ICON_TYPES.CARET, isComponentDisplayed: true },
     };
   }
 
