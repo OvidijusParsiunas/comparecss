@@ -105,7 +105,10 @@ export default {
       return this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures?.jsClasses || [];
     },
     getOverlayStyleProperties(): WorkshopComponentCss {
-      const subcomponentCss = { ...this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT], color: '#ff000000' };
+      const subcomponentCss = {
+        ...this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT], color: '#ff000000',
+        ...this.getTopCssProperty()
+      };
       if (!this.isChildComponent) subcomponentCss.height = this.component.linkedComponents?.base ? 'unset' : '100% !important';
       if (this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isTemporaryAddPreview) subcomponentCss.display = 'block'; 
       if (!this.component.linkedComponents?.base && !this.isChildComponent) subcomponentCss.marginTop = '0px';
