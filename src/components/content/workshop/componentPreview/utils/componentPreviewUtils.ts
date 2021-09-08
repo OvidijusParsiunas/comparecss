@@ -18,11 +18,14 @@ export default class ComponentPreviewUtils {
   private static setPaddingComponentOverlayIds(paddingComponents: WorkshopComponent[], subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds): void {
     paddingComponents.forEach((paddingComponent) => {
       const paddingComponentBaseName = paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+      const paddingComponentMasterBaseName = paddingComponent.paddingComponentMaster.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
       subcomponentAndOverlayElementIdsObject[paddingComponentBaseName].paddingComponentOverlayIds = [
-        // WORK 2 - once children are changed into a list - can add them via a list
-        subcomponentAndOverlayElementIdsObject[paddingComponent.paddingComponentChildren.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name].overlayId,
-        subcomponentAndOverlayElementIdsObject[paddingComponent.paddingComponentChildren.linkedComponents.auxiliary[0].coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name].overlayId,
+        subcomponentAndOverlayElementIdsObject[paddingComponentMasterBaseName].overlayId,
       ];
+      paddingComponent.paddingComponentMaster.linkedComponents.auxiliary.forEach((auxiliaryComponent) => {
+        const auxiliaryComponentBaseName = auxiliaryComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+        subcomponentAndOverlayElementIdsObject[auxiliaryComponentBaseName].overlayId;
+      });
     });
   }
 
@@ -36,7 +39,7 @@ export default class ComponentPreviewUtils {
         subcomponentId: `${ComponentPreviewUtils.SUBCOMPONENT_ID_PREFIX}${index}`,
         overlayId: `${ComponentPreviewUtils.OVERLAY_ID_PREFIX}${index}`,
       };
-      if (component.subcomponents[subcomponentName].seedComponent.paddingComponentChildren) {
+      if (component.subcomponents[subcomponentName].seedComponent.paddingComponentMaster) {
         paddingComponents.push(component.subcomponents[subcomponentName].seedComponent);
       }
     });

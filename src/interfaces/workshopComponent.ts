@@ -210,8 +210,7 @@ export interface WorkshopComponent {
   masterComponent?: WorkshopComponent;
   sync: Sync;
   // WORK 2 - document this
-  // WORK 2 - should be a list of children
-  paddingComponentChildren?: WorkshopComponent;
+  paddingComponentMaster?: WorkshopComponent;
 }
 
 // Component Architecture Information:

@@ -40,17 +40,17 @@ class DropdownBase extends ComponentBuilder {
 
 export const dropdownBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
-    const overlayComponent = plainLayer.createNewComponent(baseName);
-    overlayComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].subcomponentType = SUBCOMPONENT_TYPES.DROPDOWN;
-    overlayComponent.type = COMPONENT_TYPES.DROPDOWN;
+    const paddingComponent = plainLayer.createNewComponent(baseName);
+    paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].subcomponentType = SUBCOMPONENT_TYPES.DROPDOWN;
+    paddingComponent.type = COMPONENT_TYPES.DROPDOWN;
     const dropdownComponent = dropdownButtonBase.createNewComponent();
     // updated names
-    DropdownBase.createStaticFeatures(overlayComponent);
-    DropdownBase.overwriteCustomStaticFeatures(dropdownComponent, overlayComponent);
-    Object.assign(overlayComponent.subcomponents, dropdownComponent.subcomponents);
-    Object.assign(overlayComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName, dropdownComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName);
-    overlayComponent.componentPreviewStructure.subcomponentDropdownStructure[overlayComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] = { ...dropdownComponent.componentPreviewStructure.subcomponentDropdownStructure };
-    overlayComponent.paddingComponentChildren = dropdownComponent;
-    return overlayComponent;
+    DropdownBase.createStaticFeatures(paddingComponent);
+    DropdownBase.overwriteCustomStaticFeatures(dropdownComponent, paddingComponent);
+    Object.assign(paddingComponent.subcomponents, dropdownComponent.subcomponents);
+    Object.assign(paddingComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName, dropdownComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName);
+    paddingComponent.componentPreviewStructure.subcomponentDropdownStructure[paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] = { ...dropdownComponent.componentPreviewStructure.subcomponentDropdownStructure };
+    paddingComponent.paddingComponentMaster = dropdownComponent;
+    return paddingComponent;
   },
 }
