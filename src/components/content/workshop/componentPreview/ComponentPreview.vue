@@ -25,7 +25,7 @@
             class="grid-item-position"
             style="z-index: 1"
             :style="{display: !isFullPreviewModeOn || !temporaryComponent.displayed ? 'block' : 'none'}"
-            :component="component"
+            :component="component.paddingComponentChildren || component"
             :mouseEvents="mouseEvents"
             :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"/>
           <div ref="temporaryComponent"

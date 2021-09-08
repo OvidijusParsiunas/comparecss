@@ -25,6 +25,10 @@ function getOverlayIdViaSubcomponentName(subcomponentName: string): string {
   return subcomponentAndOverlayElementIdsObject[subcomponentName]?.overlayId;
 }
 
+function getPaddingComponentOverlayIdsViaSubcomponentName(subcomponentName: string): string[] {
+  return subcomponentAndOverlayElementIdsObject[subcomponentName]?.paddingComponentOverlayIds;
+}
+
 function getSubcomponentNameViaOverlayId(overlayId: string): string {
   return Object.keys(subcomponentAndOverlayElementIdsObject)
     .find((key) => { return subcomponentAndOverlayElementIdsObject[key].overlayId === overlayId; });
@@ -41,6 +45,7 @@ function getOverlayIdViaSubcomponentId(subcomponentId: string): string {
 }
 
 export const subcomponentAndOverlayElementIdsState = {
+  getPaddingComponentOverlayIdsViaSubcomponentName,
   setSubcomponentAndOverlayElementIdsState,
   addSubcomponentAndOverlayElementIdsState,
   getSubcomponentIdViaSubcomponentName,

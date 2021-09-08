@@ -12,4 +12,4 @@ function resetUniqueId(): void {
 export const uniqueSubcomponentIdState = {
   getUniqueId,
   resetUniqueId,
-}
+};

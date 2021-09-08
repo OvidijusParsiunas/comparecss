@@ -110,7 +110,7 @@ export default {
     let customEventHandlers = {} as DropdownCompositionAPI;
     if (props.customEventHandlers) {
       watch(() => props.objectContainingActiveOption, (newObjectContainingActiveOption) => {
-      objectContainingActiveOptionRef.value = newObjectContainingActiveOption;
+        objectContainingActiveOptionRef.value = newObjectContainingActiveOption;
       });
       watch(() => props.activeOptionPropertyKeyName, (newActiveModePropertyKeyName) => {
         activeModePropertyKeyNameRef.value = newActiveModePropertyKeyName;

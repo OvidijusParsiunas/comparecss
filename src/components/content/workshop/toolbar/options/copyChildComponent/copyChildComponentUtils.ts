@@ -11,7 +11,6 @@ export class CopyChildComponentUtils {
   };
 
   private static canActiveButtonSubcomponentCopy(buttonSubcomponent: SubcomponentProperties, activeComponent: WorkshopComponent): boolean {
-    if (activeComponent.type === COMPONENT_TYPES.DROPDOWN) return !buttonSubcomponent.customFeatures.autoSize.width;
     if (buttonSubcomponent.seedComponent?.style === BUTTON_STYLES.CLOSE) return false;
     return buttonSubcomponent.seedComponent !== buttonSubcomponent.seedComponent.masterComponent;
   }

@@ -3,6 +3,11 @@ rename dropdown option to dropdown item
 dropdown will probably need to have its own base name when child
 change copy child component to sync child component - new UX
 nested button vertical position needs to be changeable
+when selecting dropdown menu component don't close
+upon selecting menu component in dropdown - display it
+generateSubcomponentAndOverlayIds gets called many times when adding a new child componnet
+
+night diving
 
 overflow
 try with button tags

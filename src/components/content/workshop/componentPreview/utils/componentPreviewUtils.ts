@@ -8,21 +8,44 @@ import { SUBCOMPONENT_CURSOR_CLASSES } from '../../../../../consts/subcomponentC
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
+import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 
 export default class ComponentPreviewUtils {
 
   private static readonly SUBCOMPONENT_ID_PREFIX = 'subcomponent-id-';
   private static readonly OVERLAY_ID_PREFIX = 'overlay-id-';
 
-  public static generateSubcomponentAndOverlayIds(component: WorkshopComponent): SubcomponentAndOverlayElementIds {
+  private static setPaddingComponentOverlayIds(paddingComponents: WorkshopComponent[], subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds): void {
+    paddingComponents.forEach((paddingComponent) => {
+      const paddingComponentBaseName = paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+      subcomponentAndOverlayElementIdsObject[paddingComponentBaseName].paddingComponentOverlayIds = [
+        // WORK 2 - once children are changed into a list - can add them via a list
+        subcomponentAndOverlayElementIdsObject[paddingComponent.paddingComponentChildren.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name].overlayId,
+        subcomponentAndOverlayElementIdsObject[paddingComponent.paddingComponentChildren.linkedComponents.auxiliary[0].coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name].overlayId,
+      ];
+    });
+  }
+
+  private static generateIdsAndPaddingComponentObjects(component: WorkshopComponent): {
+      subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds, paddingComponents: WorkshopComponent[] } {
     const subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds = {};
+    const paddingComponents: WorkshopComponent[] = [];
     Object.keys(component.subcomponents).forEach((subcomponentName: string, index: number) => {
       if (!component.componentPreviewStructure.subcomponentNameToDropdownOptionName[subcomponentName]) return;
       subcomponentAndOverlayElementIdsObject[subcomponentName] = {
         subcomponentId: `${ComponentPreviewUtils.SUBCOMPONENT_ID_PREFIX}${index}`,
         overlayId: `${ComponentPreviewUtils.OVERLAY_ID_PREFIX}${index}`,
       };
+      if (component.subcomponents[subcomponentName].seedComponent.paddingComponentChildren) {
+        paddingComponents.push(component.subcomponents[subcomponentName].seedComponent);
+      }
     });
+    return { subcomponentAndOverlayElementIdsObject, paddingComponents };
+  }
+
+  public static generateSubcomponentAndOverlayIds(component: WorkshopComponent): SubcomponentAndOverlayElementIds {
+    const { subcomponentAndOverlayElementIdsObject, paddingComponents } = ComponentPreviewUtils.generateIdsAndPaddingComponentObjects(component);
+    ComponentPreviewUtils.setPaddingComponentOverlayIds(paddingComponents, subcomponentAndOverlayElementIdsObject);
     return subcomponentAndOverlayElementIdsObject;
   }
 

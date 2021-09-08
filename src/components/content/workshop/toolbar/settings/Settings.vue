@@ -307,7 +307,7 @@ export default {
     displaySubcomponentElementIfHidden(): void {
       const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(this.subcomponentProperties.name);
       const subcomponentElement = document.getElementById(subcomponentId);
-      if (subcomponentElement.offsetParent === null) {
+      if (subcomponentElement?.offsetParent === null) {
         DOMUtils.bubbleUnsetElementDisplayNoneProperty(subcomponentElement);
       }
     },

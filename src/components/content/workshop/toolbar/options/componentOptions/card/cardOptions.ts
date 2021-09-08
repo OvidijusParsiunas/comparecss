@@ -8,6 +8,7 @@ import { closeButtonTextOptions } from '../text/closeButtonText';
 import { childButtonOptions } from '../button/childButton';
 import { closeButtonOptions } from '../button/closeButton';
 import { buttonTextOptions } from '../text/buttonText';
+import { dropdownOptions } from '../dropdown/dropdown';
 import { cardLayerOptions } from '../layer/cardLayer';
 import { imageOptions } from '../image/image';
 import { textOptions } from '../text/text';
@@ -17,6 +18,8 @@ import { cardBaseOptions } from './base';
 export class CardOptions {
 
   private static readonly STATIC_CARD_OPTIONS: SubcomponentTypeToOptions = {
+    // WORK 2 - may need to be removed from Card
+    [SUBCOMPONENT_TYPES.DROPDOWN]: dropdownOptions as Options,
     [SUBCOMPONENT_TYPES.BASE]: cardBaseOptions as Options,
     [SUBCOMPONENT_TYPES.IMAGE]: imageOptions as Options,
     [SUBCOMPONENT_TYPES.ICON]: iconOptions as Options,

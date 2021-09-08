@@ -10,6 +10,7 @@ import { dropdownButtonOptions } from './dropdownButton';
 import { dropdownButtonTextOptions } from './buttonText';
 import { buttonTextOptions } from '../text/buttonText';
 import { dropdownMenuOptions } from './dropdownMenu';
+import { dropdownOptions } from './dropdown';
 import { iconOptions } from '../icon/icon';
 
 export class DropdownOptions {
@@ -18,6 +19,7 @@ export class DropdownOptions {
     [SUBCOMPONENT_TYPES.DROPDOWN_MENU]: dropdownMenuOptions as Options,
     [SUBCOMPONENT_TYPES.BUTTON]: dropdownButtonOptions as Options,
     [SUBCOMPONENT_TYPES.LAYER]: dropdownItemOptions as Options,
+    [SUBCOMPONENT_TYPES.DROPDOWN]: dropdownOptions as Options,
     [SUBCOMPONENT_TYPES.ICON]: iconOptions as Options,
   };
 
