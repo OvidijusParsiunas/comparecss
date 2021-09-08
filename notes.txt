@@ -6,6 +6,7 @@ nested button vertical position needs to be changeable
 when selecting dropdown menu component don't close
 upon selecting menu component in dropdown - display it
 generateSubcomponentAndOverlayIds gets called many times when adding a new child componnet
+have button selected in card, open up subcomponent dropdown and navigate to different component
 
 night diving
 
