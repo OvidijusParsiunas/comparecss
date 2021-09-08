@@ -1,12 +1,10 @@
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { PaddingComponentUtils } from './paddingComponentUtils';
 
 export class SetNewActiveSubcomponent {
 
   public static set(component: WorkshopComponent, newActiveSubcomponentName: string, isDefault = false): void {
     component.activeSubcomponentName = newActiveSubcomponentName;
-    const paddingComponentLink = component.paddingComponent || component.paddingComponentChild;
-    if (paddingComponentLink) { 
-      paddingComponentLink.activeSubcomponentName = isDefault ? paddingComponentLink.defaultSubcomponentName : newActiveSubcomponentName;
-    }
+    PaddingComponentUtils.setActiveSubcomponent(component, newActiveSubcomponentName, isDefault);
   }
 }

@@ -11,6 +11,7 @@ import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUt
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
+import { PaddingComponentUtils } from '../../utils/paddingComponentUtils';
 import { AddNewContainerComponent } from './addNewContainerComponent';
 import JSONUtils from '../../../generic/jsonUtils';
 
@@ -85,11 +86,9 @@ export class AddNewComponentShared {
   }
 
   protected static populateMasterComponentWithNewSubcomponents(masterComponent: WorkshopComponent, newSubcomponents: Subcomponents): void {
-    // utilising this method to cause the reactive masterComponent variable to trigger change detection in the add new component dropdown
-    // WORK 2 - Does not work eiter way
-    Object.assign(masterComponent.subcomponents, newSubcomponents);
-    // original way
-    // JSONUtils.addObjects(masterComponent, 'subcomponents', newSubcomponents);
+    // using this instead of Object.assign in order to cause the reactive masterComponent variable to trigger change detection in the add new component dropdown
+    JSONUtils.addObjects(masterComponent, 'subcomponents', newSubcomponents);
+    PaddingComponentUtils.overwriteSubcomponentsRef(masterComponent);
   }
 
   protected static cleanSubcomponentProperties(newComponent: WorkshopComponent): void {
