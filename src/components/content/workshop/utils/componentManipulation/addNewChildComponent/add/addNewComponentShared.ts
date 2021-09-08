@@ -86,7 +86,10 @@ export class AddNewComponentShared {
 
   protected static populateMasterComponentWithNewSubcomponents(masterComponent: WorkshopComponent, newSubcomponents: Subcomponents): void {
     // utilising this method to cause the reactive masterComponent variable to trigger change detection in the add new component dropdown
-    JSONUtils.addObjects(masterComponent, 'subcomponents', newSubcomponents);
+    // WORK 2 - Does not work eiter way
+    Object.assign(masterComponent.subcomponents, newSubcomponents);
+    // original way
+    // JSONUtils.addObjects(masterComponent, 'subcomponents', newSubcomponents);
   }
 
   protected static cleanSubcomponentProperties(newComponent: WorkshopComponent): void {

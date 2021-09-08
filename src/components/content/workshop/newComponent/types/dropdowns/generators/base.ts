@@ -43,14 +43,17 @@ export const dropdownBase: ComponentGenerator = {
     const paddingComponent = plainLayer.createNewComponent(baseName);
     paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].subcomponentType = SUBCOMPONENT_TYPES.DROPDOWN;
     paddingComponent.type = COMPONENT_TYPES.DROPDOWN;
-    const dropdownComponent = dropdownButtonBase.createNewComponent();
+    const buttonComponent = dropdownButtonBase.createNewComponent();
     // updated names
     DropdownBase.createStaticFeatures(paddingComponent);
-    DropdownBase.overwriteCustomStaticFeatures(dropdownComponent, paddingComponent);
-    Object.assign(paddingComponent.subcomponents, dropdownComponent.subcomponents);
-    Object.assign(paddingComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName, dropdownComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName);
-    paddingComponent.componentPreviewStructure.subcomponentDropdownStructure[paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] = { ...dropdownComponent.componentPreviewStructure.subcomponentDropdownStructure };
-    paddingComponent.paddingComponentMaster = dropdownComponent;
+    DropdownBase.overwriteCustomStaticFeatures(buttonComponent, paddingComponent);
+    Object.assign(buttonComponent.subcomponents, paddingComponent.subcomponents);
+    paddingComponent.subcomponents = buttonComponent.subcomponents;
+    Object.assign(buttonComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName, paddingComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName);
+    paddingComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName = buttonComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName;
+    paddingComponent.componentPreviewStructure.subcomponentDropdownStructure[paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] = { ...buttonComponent.componentPreviewStructure.subcomponentDropdownStructure };
+    paddingComponent.paddingComponentChild = buttonComponent;
+    buttonComponent.paddingComponent = paddingComponent;
     return paddingComponent;
   },
 }

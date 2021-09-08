@@ -8,6 +8,7 @@ import { ChangeChildComponentOrder } from './moveChildComponent/changeChildCompo
 import { RemoveChildComponent } from './removeChildComponent/removeChildComponent';
 import { AddNewChildComponent } from './addNewChildComponent/addNewChildComponent';
 import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
+import { SetNewActiveSubcomponent } from './utils/setNewActiveSubcomponent';
 import CopyComponent from './copyComponent/copyComponent';
 import ComponentJs from '../generic/componentJs';
 import { ComponentOptions } from 'vue';
@@ -16,7 +17,7 @@ export class ComponentManipulation {
 
   private static resetComponentModes(previousComponent: WorkshopComponent): void {
     if (!previousComponent) return;
-    previousComponent.activeSubcomponentName = previousComponent.defaultSubcomponentName;
+    SetNewActiveSubcomponent.set(previousComponent, previousComponent.defaultSubcomponentName, true);
     Object.keys(previousComponent.subcomponents).forEach((key) => {
       const subcomponent: SubcomponentProperties = previousComponent.subcomponents[key];
       subcomponent.activeCssPseudoClass = subcomponent.defaultCssPseudoClass;
