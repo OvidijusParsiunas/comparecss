@@ -191,7 +191,7 @@
 </template>
 
 <script lang="ts">
-import { subcomponentAndOverlayElementIdsState } from '../options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
+import { subcomponentAndOverlayElementIdsState } from '../../componentPreview/utils/elements/subcomponentAndOverlayElementIdsState';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import { RemoveInSyncOptionButton } from '../../../../../interfaces/settingsComponentEvents';
 import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSettingsState';

@@ -1,4 +1,4 @@
-import { SubcomponentDropdownOverlaysToggling } from './utils/subcomponentDropdownOverlaysToggling';
+import { SubcomponentDropdownOverlay } from '../../../../componentPreview/utils/elements/overlays/subcomponentDropdownOverlay';
 import { DropdownCompositionAPI } from '../../../../../../../interfaces/dropdownCompositionAPI';
 import { MouseEnterOptionEvent } from '../../../../../../../interfaces/dropdownMenuMouseEvents';
 import { animationState } from '../../../../componentPreview/utils/animations/state';
@@ -12,7 +12,7 @@ export default function useSubcomponentDropdownEventHandlers(objectContainingAct
     // is highlighting subcomponents allowed
     // WORK 2 - refactor - may potentially not need this anymore
     if (!highlightSubcomponents.value) return;
-    SubcomponentDropdownOverlaysToggling.toggle(subcomponentName, displayValue);
+    SubcomponentDropdownOverlay.toggle(subcomponentName, displayValue);
   }
 
   const mouseEnterButtonEventHandler = (): void => {

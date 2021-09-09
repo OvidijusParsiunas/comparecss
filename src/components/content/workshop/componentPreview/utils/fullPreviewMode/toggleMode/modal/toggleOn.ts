@@ -1,5 +1,5 @@
-import { subcomponentAndOverlayElementIdsState } from '../../../../../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import { ToggleFullPreviewModeOffCallbacks } from '../../../../../../../../interfaces/toggleFullPreviewModeEvent';
+import { subcomponentAndOverlayElementIdsState } from '../../../elements/subcomponentAndOverlayElementIdsState';
 import { POINTER_EVENTS_NONE, SET_METHODS } from '../../../animations/consts/sharedConsts';
 import { SubcomponentAndOverlayIds } from '../../../subcomponentAndOverlayIds';
 import ComponentPreviewUtils from '../../../componentPreviewUtils';

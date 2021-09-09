@@ -1,4 +1,4 @@
-import { subcomponentAndOverlayElementIdsState } from '../../../options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
+import { subcomponentAndOverlayElementIdsState } from '../../../../componentPreview/utils/elements/subcomponentAndOverlayElementIdsState';
 import { CustomCss, SubcomponentProperties, UpdateOtherCssProperties } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SettingPaths } from '../../../../../../../interfaces/settingPaths';

@@ -1,7 +1,7 @@
-import { subcomponentAndOverlayElementIdsState } from '../../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import { subcomponentSelectModeState } from '../../toolbar/options/subcomponentSelectMode/subcomponentSelectModeState';
 import { UseSubcomponentPreviewEventHandlers } from '../../../../../interfaces/useSubcomponentPreviewEventHandlers';
 import { SUBCOMPONENT_OVERLAY_BACKGROUND_COLOR } from '../../../../../consts/subcomponentOverlayBackgroundColor';
+import { subcomponentAndOverlayElementIdsState } from '../utils/elements/subcomponentAndOverlayElementIdsState';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../consts/subcomponentOverlayClasses.enum';
 
 export default function useSubcomponentPreviewSelectModeEventHandlers(): UseSubcomponentPreviewEventHandlers {

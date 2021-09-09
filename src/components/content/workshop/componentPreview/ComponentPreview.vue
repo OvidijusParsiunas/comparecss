@@ -57,13 +57,13 @@
 </template>
 
 <script lang="ts">
-import { subcomponentAndOverlayElementIdsState } from '../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import { ToggleFullPreviewModeEvent, ToggleFullPreviewModeOffCallbacks } from '../../../../interfaces/toggleFullPreviewModeEvent';
 import { SubcomponentSelectModeSubOverlay } from '../toolbar/options/subcomponentSelectMode/subcomponentSelectModeSubOverlay';
 import ExpandedModalPreviewModeToggleCloseAnimation from './utils/animations/expandedModalPreviewMode/toggleAnimations/close';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import ExpandedModalPreviewModeToggleOpenAnimation from './utils/animations/expandedModalPreviewMode/toggleAnimations/open';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
+import { subcomponentAndOverlayElementIdsState } from './utils/elements/subcomponentAndOverlayElementIdsState';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SelectDropdownUtils } from '../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils'
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';

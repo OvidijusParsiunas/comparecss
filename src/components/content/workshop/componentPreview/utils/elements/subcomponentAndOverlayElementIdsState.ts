@@ -1,6 +1,5 @@
 import { SubcomponentAndOverlayElementIds } from '../../../../../../interfaces/subcomponentAndOverlayElementIds';
 
-// WORK - 2 move
 let subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds = {};
 
 function setSubcomponentAndOverlayElementIdsState(state: SubcomponentAndOverlayElementIds): SubcomponentAndOverlayElementIds {
@@ -54,4 +53,4 @@ export const subcomponentAndOverlayElementIdsState = {
   getOverlayIdViaSubcomponentName,
   getOverlayIdViaSubcomponentId,
   getLastSubcomponentIdNumber,
-}
+};
