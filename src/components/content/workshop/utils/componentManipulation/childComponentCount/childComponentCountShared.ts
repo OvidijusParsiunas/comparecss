@@ -4,9 +4,9 @@ import { SubcomponentProperties } from '../../../../../../interfaces/workshopCom
 
 export class ChildComponentCountShared {
   
-  private static enable(newChildComponentsOptions: NestedDropdownStructure, removeSubcomponentNamePrefix: string, isEnabled: boolean): void {
-    if (newChildComponentsOptions?.hasOwnProperty(removeSubcomponentNamePrefix)) {
-      newChildComponentsOptions[removeSubcomponentNamePrefix] = { [DROPDOWN_OPTION_AUX_DETAILS_REF]: { isEnabled } };
+  private static enable(newChildComponentsOptions: NestedDropdownStructure, removedSubcomponentNamePrefix: string, isEnabled: boolean): void {
+    if (newChildComponentsOptions?.hasOwnProperty(removedSubcomponentNamePrefix)) {
+      newChildComponentsOptions[removedSubcomponentNamePrefix] = { [DROPDOWN_OPTION_AUX_DETAILS_REF]: { isEnabled } };
     }
   }
 

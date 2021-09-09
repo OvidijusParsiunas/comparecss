@@ -1,10 +1,10 @@
 export class StringUtils {
 
-  private static splitStringIntoWords(subjectString: string): string[] {
-    return subjectString.trim().split(/\s+/);
+  private static splitStringIntoWords(string: string): string[] {
+    return string.trim().split(/\s+/);
   }
 
-  public static getFirstWordInString(subjectString: string): string {
-    return StringUtils.splitStringIntoWords(subjectString)[0];
+  public static getFirstWordInString(string: string): string {
+    return StringUtils.splitStringIntoWords(string)[0];
   }
 }

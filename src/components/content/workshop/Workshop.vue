@@ -42,7 +42,7 @@
               :component="currentlySelectedComponent"
               :componentPreviewAssistance="componentPreviewAssistance"
               @hide-dropdown-menu-callback="addWorkshopEventCallback($event)"
-              @prepare-remove-subcomponent-modal="$refs.removeSubcomponentModal.prepare($event)"
+              @prepare-remove-child-component-modal="$refs.removeChildComponentModal.prepare($event)"
               @toggle-subcomponent-select-mode="toggleSubcomponentSelectMode($event)"
               @toggle-expanded-modal-preview-mode="$refs.contents.toggleExpandModalPreviewMode($event)"
               @toggle-full-preview-mode="$refs.contents.toggleFullPreviewMode($event, toggleFullPreviewModeOffCallback)"
@@ -50,7 +50,7 @@
               @stop-animation-preview="$refs.contents.stopAnimationPreview()"
               @toggle-copy-child-component-mode="toggleCopyChildComponentMode($event)"
               @add-subcomponent="addNewSubcomponent($event)"
-              @remove-subcomponent="removeSubcomponent($event)"
+              @remove-child-component="removeChildComponent($event)"
               @change-subcomponent-order="changeSubcomponentOrder($event)"
               @change-subcomponent-alignment="changeSubcomponentAlignment($event)"
               @display-copyable-component-card-overlays="displayCopyableComponentCardOverlays($event)"/>
@@ -92,9 +92,9 @@
         Are you sure you want to remove this component?
       </removal-modal-template>
       <removal-modal-template
-        ref="removeSubcomponentModal"
-        :modalId="REMOVE_SUBCOMPONENT_MODAL_ID"
-        :removalModalState="removeSubcomponentModalState"
+        ref="removeChildComponentModal"
+        :modalId="REMOVE_CHILD_COMPONENT_MODAL_ID"
+        :removalModalState="removeChildComponentModalState"
         @cancel-event="cancelSubcomponentRemovalEventHandler"
         @remove-modal-template-callback="addWorkshopEventCallback($event)">
         Are you sure you want to remove this subcomponent?
@@ -111,14 +111,14 @@
 
 <script lang="ts">
 import { CopyChildComponentModeCardEvents } from './toolbar/options/copyChildComponent/modeUtils/copyChildComponentModeCardEvents';
-import { removeSubcomponentModalState } from './utils/componentManipulation/removeChildComponent/removeSubcomponentModalState';
+import { removeChildComponentModalState } from './utils/componentManipulation/removeChildComponent/removeChildComponentModalState';
+import { RemoveChildComponentOverlay } from './utils/componentManipulation/removeChildComponent/subcomponentOverlayToggleUtils';
 import { ChangeSubcomponentAlignmentEvent, ChangeSubcomponentOrderEvent } from '../../../interfaces/settingsComponentEvents';
-import RemoveSubcomponentOverlay from './utils/componentManipulation/removeChildComponent/subcomponentOverlayToggleUtils';
 import { CopyableComponentCardOverlaysToDisplay } from '../../../interfaces/copyableComponentCardOverlaysToDisplay';
 import { ToggleCopyChildComponentModeState } from './utils/copyChildComponent/toggleCopyChildComponentModeState';
 import { ToggleCopyChildComponentModeEvent } from '../../../interfaces/toggleCopyChildComponentModeEvent';
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
-import { REMOVE_COMPONENT_MODAL_ID, REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../consts/elementIds';
+import { REMOVE_COMPONENT_MODAL_ID, REMOVE_CHILD_COMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { SwitchComponentsWithFadeOutCallback } from '../../../interfaces/toggleFullPreviewModeEvent';
 import useWorkshopEventCallbacks from './utils/workshopEventCallbacks/useWorkshopEventCallbacks';
 import { ComponentManipulation } from './utils/componentManipulation/componentManipulation';
@@ -142,9 +142,9 @@ import toolbar from './toolbar/Toolbar.vue';
 interface Consts {
   preloadedIconsElementId: string;
   removeComponentModalState: RemovalModalState;
-  removeSubcomponentModalState: RemovalModalState;
+  removeChildComponentModalState: RemovalModalState;
   REMOVE_COMPONENT_MODAL_ID: string;
-  REMOVE_SUBCOMPONENT_MODAL_ID: string;
+  REMOVE_CHILD_COMPONENT_MODAL_ID: string;
   SUBCOMPONENT_TYPES: typeof SUBCOMPONENT_TYPES;
 }
 
@@ -167,9 +167,9 @@ export default {
     return {
       preloadedIconsElementId: 'preloadedIcons',
       removeComponentModalState,
-      removeSubcomponentModalState,
+      removeChildComponentModalState,
       REMOVE_COMPONENT_MODAL_ID,
-      REMOVE_SUBCOMPONENT_MODAL_ID,
+      REMOVE_CHILD_COMPONENT_MODAL_ID,
       SUBCOMPONENT_TYPES,
       ...useWorkshopEventCallbacks(),
     };
@@ -228,8 +228,8 @@ export default {
     addNewSubcomponent(addNewSubcomponentEvent: AddNewSubcomponentEvent): void {
       ComponentManipulation.addNewSubcomponent(this, addNewSubcomponentEvent);
     },
-    removeSubcomponent(isTemporaryAddPreview?: boolean): void {
-      ComponentManipulation.removeSubcomponent(this, isTemporaryAddPreview);
+    removeChildComponent(isTemporaryAddPreview?: boolean): void {
+      ComponentManipulation.removeChildComponent(this, isTemporaryAddPreview);
     },
     changeSubcomponentOrder(moveSubcomponentEvent: ChangeSubcomponentOrderEvent): void {
       ComponentManipulation.changeSubcomponentOrder(this, ...moveSubcomponentEvent);
@@ -249,7 +249,7 @@ export default {
       switchComponentsWithFadeOutCallback(componentPreviewHTMLElement, ComponentManipulation.setActiveComponent.bind(this, this));
     },
     cancelSubcomponentRemovalEventHandler(): void {
-      RemoveSubcomponentOverlay.hide(this.currentlySelectedComponent.activeSubcomponentName);
+      RemoveChildComponentOverlay.hide(this.currentlySelectedComponent.activeSubcomponentName);
     },
     preloadIcons(): void {
       const WAIT_TO_START_DOWNLOADING_ICON_ICONS_MILLISECONDS = 5;

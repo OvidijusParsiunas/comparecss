@@ -49,7 +49,7 @@ export class ComponentManipulation {
     workshopComponent.$refs.contents.refreshComponent();
   }
 
-  public static removeSubcomponent(workshopComponent: ComponentOptions, isTemporaryAddPreview?: boolean): void {
+  public static removeChildComponent(workshopComponent: ComponentOptions, isTemporaryAddPreview?: boolean): void {
     RemoveChildComponent.remove(workshopComponent.currentlySelectedComponent, isTemporaryAddPreview);
     workshopComponent.$refs.contents.refreshComponent();
   }

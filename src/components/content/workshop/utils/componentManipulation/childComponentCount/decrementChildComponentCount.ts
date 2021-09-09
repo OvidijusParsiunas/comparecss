@@ -6,32 +6,32 @@ import { StringUtils } from '../../generic/stringUtils';
 
 interface ConditionFuncContextValues {
   childComponentCount: ChildComponentCount;
-  removeSubcomponentNamePrefix: string;
+  removedSubcomponentNamePrefix: string;
 }
 
 export class DecrementChildComponentCount extends ChildComponentCountShared {
 
   private static isChildComponentCountLowerThanMax(): boolean {
-    const { childComponentCount, removeSubcomponentNamePrefix } = this as any as ConditionFuncContextValues;
-    return childComponentCount.max[removeSubcomponentNamePrefix]
-      && childComponentCount.current[removeSubcomponentNamePrefix] < childComponentCount.max[removeSubcomponentNamePrefix];
+    const { childComponentCount, removedSubcomponentNamePrefix } = this as any as ConditionFuncContextValues;
+    return childComponentCount.max[removedSubcomponentNamePrefix]
+      && childComponentCount.current[removedSubcomponentNamePrefix] < childComponentCount.max[removedSubcomponentNamePrefix];
   }
 
-  private static decrementCurrentCount(childComponentCount: ChildComponentCount, removeSubcomponentNamePrefix: string): void {
-    childComponentCount.current[removeSubcomponentNamePrefix] -= 1;
+  private static decrementCurrentCount(childComponentCount: ChildComponentCount, removedSubcomponentNamePrefix: string): void {
+    childComponentCount.current[removedSubcomponentNamePrefix] -= 1;
   }
 
-  public static decrement(parentComponent: WorkshopComponent, removedSubomponentBaseName: string): void {
+  public static decrement(parentComponent: WorkshopComponent, removedChildComponentBaseName: string): void {
     // if temp component
     if (!parentComponent || !parentComponent.masterComponent) return;
     const { childComponentCount } = parentComponent;
     if (childComponentCount) {
-      const removeSubcomponentNamePrefix = StringUtils.getFirstWordInString(removedSubomponentBaseName);
-      DecrementChildComponentCount.decrementCurrentCount(childComponentCount, removeSubcomponentNamePrefix);
+      const removedSubcomponentNamePrefix = StringUtils.getFirstWordInString(removedChildComponentBaseName);
+      DecrementChildComponentCount.decrementCurrentCount(childComponentCount, removedSubcomponentNamePrefix);
       ChildComponentCountShared.setAddPreviewDropdownOptionStateIfConditionMet(
-        DecrementChildComponentCount.isChildComponentCountLowerThanMax.bind({ childComponentCount, removeSubcomponentNamePrefix } as ConditionFuncContextValues),
+        DecrementChildComponentCount.isChildComponentCountLowerThanMax.bind({ childComponentCount, removedSubcomponentNamePrefix } as ConditionFuncContextValues),
         parentComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE], 
-        removeSubcomponentNamePrefix, true);
+        removedSubcomponentNamePrefix, true);
     }
   }
 }

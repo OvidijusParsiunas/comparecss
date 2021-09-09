@@ -62,14 +62,14 @@
               @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleInSync)">
                 <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
             </button>
-            <button v-if="isRemoveSubcomponentButtonDisplayed()"
-              type="button" style="margin-right: 8px" class="btn-group-option" data-toggle="modal" :data-target="currentRemoveSubcomponentModalTargetId"
-              :class="['remove-subcomponent-button-icon',
-                {'transition-item': areOptionButtonTransitionsAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS, REMOVE_SUBCOMPONENT_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
+            <button v-if="isRemoveChildComponentButtonDisplayed()"
+              type="button" style="margin-right: 8px" class="btn-group-option" data-toggle="modal" :data-target="currentRemoveChildComponentModalTargetId"
+              :class="['remove-child-component-button-icon',
+                {'transition-item': areOptionButtonTransitionsAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS, REMOVE_CHILD_COMPONENT_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"
               @mouseenter="mouseEnterSubcomponentManipulationToggle(false)"
               @mouseleave="mouseLeaveSubcomponentManipulationToggle(false)"
               @keydown.enter.prevent="$event.preventDefault()"
-              @click="buttonClickMiddleware(beginToRemoveSubcomponent, !getIsDoNotShowModalAgainState())">
+              @click="buttonClickMiddleware(beginToRemoveChildComponent, !getIsDoNotShowModalAgainState())">
             </button>
           </transition-group>
         </div>
@@ -149,10 +149,10 @@
 </template>
 
 <script lang="ts">
-import { removeSubcomponentModalState } from '../../utils/componentManipulation/removeChildComponent/removeSubcomponentModalState';
+import { removeChildComponentModalState } from '../../utils/componentManipulation/removeChildComponent/removeChildComponentModalState';
+import { RemoveChildComponentOverlay } from '../../utils/componentManipulation/removeChildComponent/subcomponentOverlayToggleUtils';
 import { MASTER_SUBCOMPONENT_BASE_NAME, TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
-import RemoveSubcomponentOverlay from '../../utils/componentManipulation/removeChildComponent/subcomponentOverlayToggleUtils';
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../componentPreview/utils/animations/consts/sharedConsts';
 import { CopyableComponentCardOverlaysToDisplay } from '../../../../../interfaces/copyableComponentCardOverlaysToDisplay';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
@@ -179,9 +179,9 @@ import { CopyChildComponentUtils } from './copyChildComponent/copyChildComponent
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectMode';
 import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
+import { REMOVE_CHILD_COMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import useToolbarPositionToggle from './compositionApi/useToolbarPositionToggle';
-import { REMOVE_SUBCOMPONENT_MODAL_ID } from '../../../../../consts/elementIds';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import { SyncedComponent } from './copyChildComponent/syncedComponent';
@@ -190,7 +190,7 @@ import SharedUtils from '../settings/utils/sharedUtils';
 import { Ref } from 'node_modules/vue/dist/vue';
 import dropdown from './dropdown/Dropdown.vue';
 import {
-  OPTION_MENU_SETTING_OPTION_BUTTON_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, REMOVE_SUBCOMPONENT_BUTTON_MARKER,
+  OPTION_MENU_SETTING_OPTION_BUTTON_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, REMOVE_CHILD_COMPONENT_BUTTON_MARKER,
   SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER, FULL_PREVIEW_MODE_BUTTON_MARKER,
 } from '../../../../../consts/elementClassMarkers';
 import {
@@ -204,7 +204,7 @@ interface Consts {
   OPTION_MENU_BUTTON_MARKER: string;
   TOOLBAR_GENERAL_BUTTON_CLASS: string;
   FULL_PREVIEW_MODE_BUTTON_MARKER: string;
-  REMOVE_SUBCOMPONENT_BUTTON_MARKER: string;
+  REMOVE_CHILD_COMPONENT_BUTTON_MARKER: string;
   OPTION_MENU_SETTING_OPTION_BUTTON_MARKER: string;
   FONT_AWESOME_COLORS: typeof FONT_AWESOME_COLORS;
   HIGHLIGHTED_OPTION_BUTTON_CLASS: string;
@@ -218,7 +218,7 @@ interface Consts {
   EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER: string;
   COMPONENT_TYPES: typeof COMPONENT_TYPES;
   BUTTON_HORIZONTAL_TRANSITION_DURATION_MILLISECONDS: number;
-  REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: string;
+  REMOVE_CHILD_COMPONENT_MODAL_TARGET_ID: string;
   BROWSER_SPECIFIC_MODAL_BUTTON_STYLE: WorkshopComponentCss;
   SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
   ADD_NEW_SUBCOMPONENT_DROPDOWN_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
@@ -227,7 +227,7 @@ interface Consts {
 }
 
 interface Data {
-  currentRemoveSubcomponentModalTargetId: string;
+  currentRemoveChildComponentModalTargetId: string;
   isSubcomponentSelectModeButtonDisplayed: boolean;
   activeOption: Option;
   isExpandedModalPreviewModeActive: boolean;
@@ -244,14 +244,14 @@ export default {
     return {
       componentTypeToOptions,
       useSubcomponentDropdownEventHandlers,
-      ...removeSubcomponentModalState,
+      ...removeChildComponentModalState,
       FONT_AWESOME_COLORS,
       COMPONENT_TYPES,
       SUBCOMPONENT_TYPES,
       OPTION_MENU_BUTTON_MARKER,
       TOOLBAR_GENERAL_BUTTON_CLASS,
       FULL_PREVIEW_MODE_BUTTON_MARKER,
-      REMOVE_SUBCOMPONENT_BUTTON_MARKER,
+      REMOVE_CHILD_COMPONENT_BUTTON_MARKER,
       OPTION_MENU_SETTING_OPTION_BUTTON_MARKER,
       SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER,
       EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER,
@@ -261,7 +261,7 @@ export default {
       TOOLBAR_BUTTON_GROUP_TERTIARY_COMPONENT_CLASS,
       TOOLBAR_BUTTON_GROUP_MIDDLE_COMPONENT_CLASS,
       TOOLBAR_BUTTON_GROUP_END_COMPONENT_CLASS,
-      REMOVE_SUBCOMPONENT_MODAL_TARGET_ID: `#${REMOVE_SUBCOMPONENT_MODAL_ID}`,
+      REMOVE_CHILD_COMPONENT_MODAL_TARGET_ID: `#${REMOVE_CHILD_COMPONENT_MODAL_ID}`,
       BROWSER_SPECIFIC_MODAL_BUTTON_STYLE: { paddingTop: BrowserType.isFirefox() ? '1px' : '' },
       SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS,
       ADD_NEW_SUBCOMPONENT_DROPDOWN_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.ADD_SUBCOMPONENT,
@@ -272,7 +272,7 @@ export default {
     };
   },
   data: (): Data => ({
-    currentRemoveSubcomponentModalTargetId: '',
+    currentRemoveChildComponentModalTargetId: '',
     isSubcomponentSelectModeButtonDisplayed: false,
     activeOption: { buttonName: null, type: null, enabledOnExpandedModalPreviewMode: null, enabledIfCustomFeaturePresentWithKeys: null },
     isExpandedModalPreviewModeActive: false,
@@ -453,28 +453,28 @@ export default {
     toggleInSync(callback?: () => void): void {
       this.temporarilyAllowOptionAnimations(SyncedComponent.toggleSubcomponentSync.bind(this, this.component, true, callback));
     },
-    isRemoveSubcomponentButtonDisplayed(): boolean {
+    isRemoveChildComponentButtonDisplayed(): boolean {
       return this.component.subcomponents[this.component.activeSubcomponentName].isRemovable;
     },
-    beginToRemoveSubcomponent(): void {
+    beginToRemoveChildComponent(): void {
       if (!this.getIsDoNotShowModalAgainState()) {
-        this.currentRemoveSubcomponentModalTargetId = this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID;
-        setTimeout(() => { this.currentRemoveSubcomponentModalTargetId = ''; });
-        this.$emit('prepare-remove-subcomponent-modal', this.removeSubcomponent);
+        this.currentRemoveChildComponentModalTargetId = this.REMOVE_CHILD_COMPONENT_MODAL_TARGET_ID;
+        setTimeout(() => { this.currentRemoveChildComponentModalTargetId = ''; });
+        this.$emit('prepare-remove-child-component-modal', this.removeChildComponent);
       } else {
-        this.removeSubcomponent();
-        setTimeout(() => RemoveSubcomponentOverlay.display(this.component.activeSubcomponentName));
+        this.removeChildComponent();
+        setTimeout(() => RemoveChildComponentOverlay.display(this.component.activeSubcomponentName));
       }
     },
-    removeSubcomponent(): void {
+    removeChildComponent(): void {
       if (this.component.subcomponents[this.component.activeSubcomponentName].seedComponent?.sync.inSync) {
-        this.temporarilyAllowOptionAnimations(this.emitRemoveSubcomponentEvent);
+        this.temporarilyAllowOptionAnimations(this.emitRemoveChildComponentEvent);
       } else {
-        this.emitRemoveSubcomponentEvent();
+        this.emitRemoveChildComponentEvent();
       }
     },
-    emitRemoveSubcomponentEvent(): void {
-      this.$emit('remove-subcomponent');
+    emitRemoveChildComponentEvent(): void {
+      this.$emit('remove-child-component');
     },
     getSubcomponentsToAdd(): NestedDropdownStructure {
       return this.component.subcomponents[this.component.activeSubcomponentName].newChildComponentsOptions || {};
@@ -482,7 +482,7 @@ export default {
     addNewSubcomponent(mouseClickNewOptionEvent: MouseClickNewOptionEvent): void {
       const [newComponentBaseName, isOptionEnabled] = mouseClickNewOptionEvent;
       if (!isOptionEnabled) return;
-      this.$emit('remove-subcomponent', true);
+      this.$emit('remove-child-component', true);
       this.$emit('add-subcomponent', [newComponentBaseName] as AddNewSubcomponentEvent);
     },
     mouseEnterSubcomponentManipulationToggle(isAdd: boolean, mouseEnterOptionEvent?: MouseEnterOptionEvent): void {
@@ -491,15 +491,15 @@ export default {
         if (!isOptionEnabled) return;
         this.$emit('add-subcomponent', [newComponentBaseName, true] as AddNewSubcomponentEvent);
       } else {
-        RemoveSubcomponentOverlay.display(this.component.activeSubcomponentName);
+        RemoveChildComponentOverlay.display(this.component.activeSubcomponentName);
       }
     },
     mouseLeaveSubcomponentManipulationToggle(isAdd: boolean): void {
       if (isAdd) {
-        this.$emit('remove-subcomponent', true);
+        this.$emit('remove-child-component', true);
       } else {
-        if (this.currentRemoveSubcomponentModalTargetId === this.REMOVE_SUBCOMPONENT_MODAL_TARGET_ID) return;
-        RemoveSubcomponentOverlay.hide(this.component.activeSubcomponentName);
+        if (this.currentRemoveChildComponentModalTargetId === this.REMOVE_CHILD_COMPONENT_MODAL_TARGET_ID) return;
+        RemoveChildComponentOverlay.hide(this.component.activeSubcomponentName);
       }
     },
     toggleSubcomponentSelectModeButtonDisplay(isDropdownDisplayed: boolean): void {
@@ -699,7 +699,7 @@ export default {
     background-color: inherit !important;
     border: unset !important;
   }
-  .remove-subcomponent-button-icon {
+  .remove-child-component-button-icon {
     width: 42px;
     height: 38px;
     background: url('../../../../../assets/svg/rubbish-can-default.svg') center no-repeat;
@@ -707,7 +707,7 @@ export default {
     left: -1px;
   }
   /* remove this if the red colour is a little distracting - UX */
-  .remove-subcomponent-button-icon:active {
+  .remove-child-component-button-icon:active {
     background-color: #f3eded !important;
   }
   .option-select-button-default {

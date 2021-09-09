@@ -7,8 +7,8 @@ import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../../consts/domEventTrig
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ComponentOptions } from 'vue';
 import {
-  OPTION_MENU_BUTTON_MARKER, OPTION_MENU_SETTING_OPTION_BUTTON_MARKER, COMPONENT_PREVIEW_MARKER, COMPONENT_CARD_MARKER,
-  CONFIRM_CHILD_COMPONENT_TO_COPY_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER, FULL_PREVIEW_MODE_BUTTON_MARKER, REMOVE_SUBCOMPONENT_BUTTON_MARKER,
+  CONFIRM_CHILD_COMPONENT_TO_COPY_MARKER, COMPONENT_CARD_MARKER, FULL_PREVIEW_MODE_BUTTON_MARKER, REMOVE_CHILD_COMPONENT_BUTTON_MARKER,
+  OPTION_MENU_BUTTON_MARKER, OPTION_MENU_SETTING_OPTION_BUTTON_MARKER, COMPONENT_PREVIEW_MARKER, EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER,
 } from '../../../../../../../consts/elementClassMarkers';
 
 export class CopyChildComponedModeToggleOff {
@@ -97,7 +97,7 @@ export class CopyChildComponedModeToggleOff {
       CopyChildComponedModeToggleOff.resetComponent(optionsComponent.component, optionsComponent.hasCopyChildComponentModeClosedExpandedModal);
       return CopyChildComponedModeToggleOff.toggleOff(optionsComponent, true);
     }
-    if (targetElement.classList.contains(REMOVE_SUBCOMPONENT_BUTTON_MARKER)) {
+    if (targetElement.classList.contains(REMOVE_CHILD_COMPONENT_BUTTON_MARKER)) {
       CopyChildComponedModeToggleOff.resetComponent(optionsComponent.component, optionsComponent.hasCopyChildComponentModeClosedExpandedModal);
       return CopyChildComponedModeToggleOff.toggleOff(optionsComponent, false);
     }
