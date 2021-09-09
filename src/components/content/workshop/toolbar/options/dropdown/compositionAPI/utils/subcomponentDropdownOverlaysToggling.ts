@@ -5,6 +5,7 @@ import { subcomponentSelectModeState } from '../../../subcomponentSelectMode/sub
 
 type DisplayValues = 'block'|'none';
 
+// WORK 2 - potentially move out
 export class SubcomponentDropdownOverlaysToggling {
 
   private static toggleSubcomponentOverlayContainerDisplay(subcomponentOverlayElement: HTMLElement, displayValue: DisplayValues): void {
@@ -16,29 +17,25 @@ export class SubcomponentDropdownOverlaysToggling {
     }
   }
 
-  private static toggleSubcomponentOverlay(subcomponentOverlayElementId: string, displayValue: DisplayValues): void {
-    const subcomponentOverlayElement = document.getElementById(subcomponentOverlayElementId);
-    if (subcomponentOverlayElement.classList.contains(SUBCOMPONENT_OVERLAY_CLASSES.SUB_CONTAINER)) {
-      SubcomponentDropdownOverlaysToggling.toggleSubcomponentOverlayContainerDisplay(subcomponentOverlayElement, displayValue);
+  private static toggleSubcomponentOverlay(overlayElement: HTMLElement, displayValue: DisplayValues): void {
+    if (overlayElement.classList.contains(SUBCOMPONENT_OVERLAY_CLASSES.SUB_CONTAINER)) {
+      SubcomponentDropdownOverlaysToggling.toggleSubcomponentOverlayContainerDisplay(overlayElement, displayValue);
     } else {
-      subcomponentOverlayElement.style.display = displayValue;
+      overlayElement.style.display = displayValue;
     }
   }
 
-  // these are padding component's children subcomponent overlays
-  private static togglePaddingComponentSubcomponentOverlays(paddingComponentOverlayIds: string[], displayValue: DisplayValues): void {
-    paddingComponentOverlayIds.forEach((paddingOverlayId) => {
-      SubcomponentDropdownOverlaysToggling.toggleSubcomponentOverlay(paddingOverlayId, displayValue);
-    });
+  // WORK 2 - move out
+  private static getElementOverlays(activeSubcomponentName: string): HTMLElement[] {
+    const elementIds = subcomponentAndOverlayElementIdsState.getPaddingComponentOverlayIdsViaSubcomponentName(activeSubcomponentName)
+      || [subcomponentAndOverlayElementIdsState.getOverlayIdViaSubcomponentName(activeSubcomponentName)];
+    return elementIds.map((elementId) => document.getElementById(elementId));
   }
 
   public static toggle(subcomponentName: string, displayValue: DisplayValues): void {
-    const paddingComponentOverlayIds = subcomponentAndOverlayElementIdsState.getPaddingComponentOverlayIdsViaSubcomponentName(subcomponentName);
-    if (paddingComponentOverlayIds) {
-      SubcomponentDropdownOverlaysToggling.togglePaddingComponentSubcomponentOverlays(paddingComponentOverlayIds, displayValue)
-    } else {
-      const subcomponentOverlayElementId = subcomponentAndOverlayElementIdsState.getOverlayIdViaSubcomponentName(subcomponentName);
-      SubcomponentDropdownOverlaysToggling.toggleSubcomponentOverlay(subcomponentOverlayElementId, displayValue);
-    }
+    const overlayElements = SubcomponentDropdownOverlaysToggling.getElementOverlays(subcomponentName);
+    overlayElements.forEach((overlayElement) => {
+      SubcomponentDropdownOverlaysToggling.toggleSubcomponentOverlay(overlayElement, displayValue);
+    });
   }
 }

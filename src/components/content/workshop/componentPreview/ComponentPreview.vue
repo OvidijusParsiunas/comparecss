@@ -77,6 +77,7 @@ import { OpenAnimation, CloseAnimation } from '../../../../interfaces/animations
 import { CSS_PROPERTY_VALUES } from '../../../../consts/cssPropertyValues.enum';
 import { TemporaryComponent } from '../../../../interfaces/temporaryComponent';
 import PreviewCloseAnimation from './utils/animations/previewAnimations/close';
+import { SubcomponentAndOverlayIds } from './utils/subcomponentAndOverlayIds';
 import PreviewOpenAnimation from './utils/animations/previewAnimations/open';
 import { CustomFeatures } from '../../../../interfaces/workshopComponent';
 import { COMPONENT_TYPES } from '../../../../consts/componentTypes.enum';
@@ -203,7 +204,7 @@ export default {
     },
     refreshComponent(): void {
       this.refreshTemporaryComponentPropertiesBeforeUse();
-      const subcomponentAndOverlayElementIds = ComponentPreviewUtils.generateSubcomponentAndOverlayIds(this.component);
+      const subcomponentAndOverlayElementIds = SubcomponentAndOverlayIds.generate(this.component);
       this.subcomponentAndOverlayElementIds = subcomponentAndOverlayElementIds;
       subcomponentAndOverlayElementIdsState.setSubcomponentAndOverlayElementIdsState(subcomponentAndOverlayElementIds);
       this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(subcomponentAndOverlayElementIds, this.component.subcomponents);

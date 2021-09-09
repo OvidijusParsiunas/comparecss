@@ -149,8 +149,10 @@
 </template>
 
 <script lang="ts">
+import { removeSubcomponentModalState } from '../../utils/componentManipulation/removeChildComponent/removeSubcomponentModalState';
 import { MASTER_SUBCOMPONENT_BASE_NAME, TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
+import RemoveSubcomponentOverlay from '../../utils/componentManipulation/removeChildComponent/subcomponentOverlayToggleUtils';
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../componentPreview/utils/animations/consts/sharedConsts';
 import { CopyableComponentCardOverlaysToDisplay } from '../../../../../interfaces/copyableComponentCardOverlaysToDisplay';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
@@ -161,8 +163,6 @@ import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useS
 import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import CopyChildComponentModeToggleUtils from './copyChildComponent/modeUtils/copyChildComponentModeToggle';
 import { SetNewActiveSubcomponent } from '../../utils/componentManipulation/utils/setNewActiveSubcomponent';
-import { removeSubcomponentModalState } from './removeSubcomponentModalState/removeSubcomponentModalState';
-import RemoveSubcomponentOverlay from './subcomponentOverlayToggleUtils/subcomponentOverlayToggleUtils';
 import { fulPreviewModeState } from '../../componentPreview/utils/fullPreviewMode/fullPreviewModeState';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';

@@ -10,7 +10,7 @@ import { AddNewLayerComponent } from './addNewLayerComponent';
 
 export class AddTemporaryAddPreviewLayerComponent extends AddNewLayerComponent {
 
-  public static add(activeComponent: WorkshopComponent, componentStyle: COMPONENT_STYLES, isEditable: boolean,
+  public static addTemporary(activeComponent: WorkshopComponent, componentStyle: COMPONENT_STYLES, isEditable: boolean,
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
     const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, activeComponent,

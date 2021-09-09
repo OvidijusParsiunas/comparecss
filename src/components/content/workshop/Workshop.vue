@@ -111,9 +111,9 @@
 
 <script lang="ts">
 import { CopyChildComponentModeCardEvents } from './toolbar/options/copyChildComponent/modeUtils/copyChildComponentModeCardEvents';
+import { removeSubcomponentModalState } from './utils/componentManipulation/removeChildComponent/removeSubcomponentModalState';
 import { ChangeSubcomponentAlignmentEvent, ChangeSubcomponentOrderEvent } from '../../../interfaces/settingsComponentEvents';
-import { removeSubcomponentModalState } from './toolbar/options/removeSubcomponentModalState/removeSubcomponentModalState';
-import RemoveSubcomponentOverlay from './toolbar/options/subcomponentOverlayToggleUtils/subcomponentOverlayToggleUtils';
+import RemoveSubcomponentOverlay from './utils/componentManipulation/removeChildComponent/subcomponentOverlayToggleUtils';
 import { CopyableComponentCardOverlaysToDisplay } from '../../../interfaces/copyableComponentCardOverlaysToDisplay';
 import { ToggleCopyChildComponentModeState } from './utils/copyChildComponent/toggleCopyChildComponentModeState';
 import { ToggleCopyChildComponentModeEvent } from '../../../interfaces/toggleCopyChildComponentModeEvent';

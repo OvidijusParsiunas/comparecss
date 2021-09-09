@@ -13,4 +13,4 @@ function setIsDoNotShowModalAgainState(state: boolean): void {
 export const removeComponentModalState: RemovalModalState = {
   getIsDoNotShowModalAgainState,
   setIsDoNotShowModalAgainState,
-}
+};

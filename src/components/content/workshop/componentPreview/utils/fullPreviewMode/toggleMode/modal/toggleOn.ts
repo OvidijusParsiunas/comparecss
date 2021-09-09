@@ -1,6 +1,7 @@
 import { subcomponentAndOverlayElementIdsState } from '../../../../../toolbar/options/subcomponentSelectMode/subcomponentAndOverlayElementIdsState';
 import { ToggleFullPreviewModeOffCallbacks } from '../../../../../../../../interfaces/toggleFullPreviewModeEvent';
 import { POINTER_EVENTS_NONE, SET_METHODS } from '../../../animations/consts/sharedConsts';
+import { SubcomponentAndOverlayIds } from '../../../subcomponentAndOverlayIds';
 import ComponentPreviewUtils from '../../../componentPreviewUtils';
 import { fulPreviewModeState } from '../../fullPreviewModeState';
 import ToggleDisplays from './toggleModal';
@@ -22,8 +23,7 @@ export default class ToggleOn {
   private static createButtonForFullPreviewMode(componentPreviewComponent: ComponentOptions, componentElement: HTMLElement,
       temporaryComponentElement: HTMLElement, toolbarContainerElement: HTMLElement, toolbarElement: HTMLElement,
       isExpandedModalPreviewModeActive: boolean, toggleFullPreviewModeOffCallbacks: ToggleFullPreviewModeOffCallbacks): void {
-    const subcomponentAndOverlayElementIds = ComponentPreviewUtils.generateSubcomponentAndOverlayIds(
-      componentPreviewComponent.temporaryComponent.component);
+    const subcomponentAndOverlayElementIds = SubcomponentAndOverlayIds.generate(componentPreviewComponent.temporaryComponent.component);
     const mouseEvents = ComponentPreviewUtils.generateMouseEvents(subcomponentAndOverlayElementIds,
       componentPreviewComponent.temporaryComponent.component.subcomponents,
       ToggleDisplays.displayModal.bind(this, componentPreviewComponent, componentElement, temporaryComponentElement,
