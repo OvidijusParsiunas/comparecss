@@ -1,4 +1,5 @@
 import { AlignedSections, Layer, BaseSubcomponentRef } from '../../../../../../interfaces/componentPreviewStructure';
+import { UpdateContainerComponentDropdownUtils } from './updateContainerComponentDropdownUtils';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { OptionDataMaps } from '../../../../../../interfaces/updateDropdownOptionNames';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
@@ -16,7 +17,7 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
     for (let i = 0; i < alignedSectionsKeys.length; i += 1) {
       const section = alignedSections[alignedSectionsKeys[i]];
       for (let j = 0; j < section.length; j += 1) {
-        UpdateDropdownOptionNamesShared.updateOptionNames(containerComponent, optionDataMaps, containerDropdownStructure,
+        UpdateContainerComponentDropdownUtils.updateOptionNames(containerComponent, optionDataMaps, containerDropdownStructure,
           overwrittenOptionNames, newDrodpownNames, (section[j] as BaseSubcomponentRef).subcomponentProperties.name,
           overwrittenDropdownStructures);
       }
@@ -26,7 +27,7 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
   public static updateViaParentLayerDropdownStructure(containerComponent: WorkshopComponent, containerDropdownStructure: NestedDropdownStructure,
       alignedSections: AlignedSections): void {
     const { optionDataMaps, stateObjects: { overwrittenOptionNames, newDrodpownNames, overwrittenDropdownStructures },
-      } = UpdateDropdownOptionNamesShared.generateOptionUpdateInitializationObjects(containerDropdownStructure);
+      } = UpdateContainerComponentDropdownUtils.generateOptionUpdateInitializationObjects(containerDropdownStructure);
     UpdateGenericComponentDropdownOptionNames.updateLayerChildOptions(containerComponent, containerDropdownStructure, alignedSections,
       optionDataMaps, overwrittenOptionNames, newDrodpownNames, overwrittenDropdownStructures);
     const removableOptionNames = ArrayUtils.differenceInArrays(overwrittenOptionNames, newDrodpownNames);
