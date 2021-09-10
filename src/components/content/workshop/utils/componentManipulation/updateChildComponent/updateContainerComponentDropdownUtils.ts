@@ -12,8 +12,8 @@ export class UpdateContainerComponentDropdownUtils extends UpdateDropdownOptionN
 
   public static removeOldOptionNames(overwrittenOptionNames: string[], newDrodpownNames: string[],
       subcomponentDropdownStructure: NestedDropdownStructure): void {
-    ArrayUtils.differenceInArrays(overwrittenOptionNames, newDrodpownNames);
-    UpdateDropdownOptionNamesShared.removeOverwrittenOptionNames(overwrittenOptionNames, subcomponentDropdownStructure);
+    const oldOptionNames = ArrayUtils.differenceInArrays(overwrittenOptionNames, newDrodpownNames);
+    UpdateDropdownOptionNamesShared.removeOverwrittenOptionNames(oldOptionNames, subcomponentDropdownStructure);
   }
 
   private static updateNewAndOldOptionNames(containerComponent: WorkshopComponent, subcomponentDropdownStructure: NestedDropdownStructure,
