@@ -1,4 +1,4 @@
-import { UpdateDropdownOptionNamesShared } from '../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
+import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { BORDER_STYLES } from '../../../../../../consts/borderStyles.enum';
 
@@ -33,7 +33,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Style',
-        options: UpdateDropdownOptionNamesShared.generateDropdownStructure(Object.values(BORDER_STYLES)),
+        options: DropdownUtils.generateDropdownStructure(Object.values(BORDER_STYLES)),
         default: BORDER_STYLES.NONE,
         cssProperty: 'borderTopStyle',
       },

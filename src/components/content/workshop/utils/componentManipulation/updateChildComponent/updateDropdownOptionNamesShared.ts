@@ -37,8 +37,4 @@ export class UpdateDropdownOptionNamesShared {
       .map((optionName) => (layersDropdownStructure[optionName][DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails)?.actualObjectName)
       .filter((optionName) => optionName !== undefined);
   }
-
-  public static generateDropdownStructure(options: string[]): NestedDropdownStructure {
-    return options.reduce((accummulator, currentValue) => Object.assign(accummulator, {[currentValue]: null}), {});
-  }
 }

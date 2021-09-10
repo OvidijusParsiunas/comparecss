@@ -15,6 +15,6 @@ export class UpdatePaddingComponentDropdownOptions extends UpdateDropdownOptionN
         overwrittenOptionNames, newDrodpownNames, subcomponentName, overwrittenDropdownStructures);
     });
     ArrayUtils.differenceInArrays(overwrittenOptionNames, newDrodpownNames);
-    UpdateDropdownOptionNamesShared.removeOverwrittenOptionNames(overwrittenOptionNames, subcomponentDropdownStructure);
+    UpdateContainerComponentDropdownUtils.removeOldOptionNames(overwrittenOptionNames, newDrodpownNames, subcomponentDropdownStructure);
   }
 }

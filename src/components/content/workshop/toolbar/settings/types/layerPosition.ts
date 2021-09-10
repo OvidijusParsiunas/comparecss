@@ -1,6 +1,6 @@
-import { UpdateDropdownOptionNamesShared } from '../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../../interfaces/subcomponentOrderDirections.enum';
 import { ChangeSubcomponentOrderEvent } from '../../../../../../interfaces/settingsComponentEvents';
+import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { SETTING_NAMES } from '../../../../../../consts/settingNames.enum';
@@ -17,7 +17,7 @@ export default {
       type: SETTINGS_TYPES.BUTTONS,
       spec: {
         name: SETTING_NAMES.ORDER,
-        options: UpdateDropdownOptionNamesShared.generateDropdownStructure([SUBCOMPONENT_ORDER_DIRECTIONS.UP, SUBCOMPONENT_ORDER_DIRECTIONS.DOWN]),
+        options: DropdownUtils.generateDropdownStructure([SUBCOMPONENT_ORDER_DIRECTIONS.UP, SUBCOMPONENT_ORDER_DIRECTIONS.DOWN]),
         optionAction: changeSubcomponentOrder,
       },
     },

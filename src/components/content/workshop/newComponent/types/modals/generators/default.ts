@@ -1,5 +1,4 @@
 import { UpdateGenericComponentDropdownOptionNames } from '../../../../utils/componentManipulation/updateChildComponent/updateGenericComponentDropdownOptionNames';
-import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
 import { UpdateLayerDropdownOptionNames } from '../../../../utils/componentManipulation/updateChildComponent/updateLayerDropdownOptionNames';
 import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
@@ -9,9 +8,10 @@ import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSub
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
+import { DropdownUtils } from '../../../../utils/componentManipulation/utils/dropdownUtils';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
-import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
+import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { ModalBaseSpecificSettings } from '../settings/modalBaseSpecificSettings';
@@ -119,7 +119,7 @@ class DefaultModal extends ComponentBuilder {
   }
 
   public static overwriteBaseNewChildComponentsOptions(modalComponent: WorkshopComponent): void {
-    const nestedDropdownStructure = UpdateDropdownOptionNamesShared.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);
+    const nestedDropdownStructure = DropdownUtils.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);
     modalComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsOptions = nestedDropdownStructure;
   }
 }

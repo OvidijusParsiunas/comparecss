@@ -6,7 +6,6 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.e
 import { UpdateDropdownOptionNamesShared } from './updateDropdownOptionNamesShared';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ActiveComponentUtils } from '../../activeComponent/activeComponentUtils';
-import { ArrayUtils } from '../../generic/arrayUtils';
 
 export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOptionNamesShared {
 
@@ -30,8 +29,7 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
       } = UpdateContainerComponentDropdownUtils.generateOptionUpdateInitializationObjects(containerDropdownStructure);
     UpdateGenericComponentDropdownOptionNames.updateLayerChildOptions(containerComponent, containerDropdownStructure, alignedSections,
       optionDataMaps, overwrittenOptionNames, newDrodpownNames, overwrittenDropdownStructures);
-    const removableOptionNames = ArrayUtils.differenceInArrays(overwrittenOptionNames, newDrodpownNames);
-    UpdateDropdownOptionNamesShared.removeOverwrittenOptionNames(removableOptionNames, containerDropdownStructure);
+    UpdateContainerComponentDropdownUtils.removeOldOptionNames(overwrittenOptionNames, newDrodpownNames, containerDropdownStructure);
   }
 
   private static getNestedDropdownStructure(masterComponent: WorkshopComponent, layerName: string,

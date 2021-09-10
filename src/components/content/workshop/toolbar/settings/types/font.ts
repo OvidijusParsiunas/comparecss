@@ -1,4 +1,4 @@
-import { UpdateDropdownOptionNamesShared } from '../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
+import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { SETTING_NAMES } from '../../../../../../consts/settingNames.enum';
 
@@ -20,7 +20,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Weight',
-        options: UpdateDropdownOptionNamesShared.generateDropdownStructure(['100', '200', '300', '400', '500', '600', '700', '800', '900', '1000']),
+        options: DropdownUtils.generateDropdownStructure(['100', '200', '300', '400', '500', '600', '700', '800', '900', '1000']),
         default: '100',
         cssProperty: 'fontWeight',
       },

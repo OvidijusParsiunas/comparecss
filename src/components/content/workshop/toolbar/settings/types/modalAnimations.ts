@@ -1,6 +1,6 @@
-import { UpdateDropdownOptionNamesShared } from '../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
 import { MODAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../consts/workshopToolbarOptionTypes.enum';
+import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { SETTING_NAMES } from '../../../../../../consts/settingNames.enum';
 import { SettingPaths } from '../../../../../../interfaces/settingPaths';
@@ -37,7 +37,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: SETTING_NAMES.ENTRANCE,
-        options: UpdateDropdownOptionNamesShared.generateDropdownStructure(Object.values(MODAL_ANIMATION_OPEN_TYPES)),
+        options: DropdownUtils.generateDropdownStructure(Object.values(MODAL_ANIMATION_OPEN_TYPES)),
         activeOptionPropertyKeyName: 'type',
         customFeatureObjectKeys: ['customFeatures', 'animations', 'display', 'open', 'type'],
       },
@@ -46,7 +46,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: SETTING_NAMES.EXIT,
-        options: UpdateDropdownOptionNamesShared.generateDropdownStructure(Object.values(MODAL_ANIMATION_CLOSE_TYPES)),
+        options: DropdownUtils.generateDropdownStructure(Object.values(MODAL_ANIMATION_CLOSE_TYPES)),
         activeOptionPropertyKeyName: 'type',
         customFeatureObjectKeys: ['customFeatures', 'animations', 'display', 'close', 'type'],
       },

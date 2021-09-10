@@ -1,8 +1,8 @@
 import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallbacks } from '../../../../../../interfaces/actionsDropdownsMouseEventCallbacks';
 import { childComponentAlignmentDropdownState } from '../../../utils/componentManipulation/moveChildComponent/childComponentAlignmentDropdownState';
-import { UpdateDropdownOptionNamesShared } from '../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
 import { ChangeSubcomponentAlignmentEvent, ChangeSubcomponentOrderEvent } from '../../../../../../interfaces/settingsComponentEvents';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../../interfaces/subcomponentOrderDirections.enum';
+import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
@@ -43,7 +43,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: SETTING_NAMES.ALIGN,
-        options: UpdateDropdownOptionNamesShared.generateDropdownStructure(Object.values(ALIGNED_SECTION_TYPES)),
+        options: DropdownUtils.generateDropdownStructure(Object.values(ALIGNED_SECTION_TYPES)),
         activeOptionPropertyKeyName: 'section',
         customFeatureObjectKeys: ['customFeatures', 'alignedLayerSection', 'section'],
         ...generateMouseEventCallbacks(),
@@ -53,7 +53,7 @@ export default {
       type: SETTINGS_TYPES.BUTTONS,
       spec: {
         name: SETTING_NAMES.ORDER,
-        options: UpdateDropdownOptionNamesShared.generateDropdownStructure([SUBCOMPONENT_ORDER_DIRECTIONS.LEFT, SUBCOMPONENT_ORDER_DIRECTIONS.RIGHT]),
+        options: DropdownUtils.generateDropdownStructure([SUBCOMPONENT_ORDER_DIRECTIONS.LEFT, SUBCOMPONENT_ORDER_DIRECTIONS.RIGHT]),
         optionAction: changeSubcomponentOrder,
       },
     },

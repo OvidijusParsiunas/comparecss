@@ -1,5 +1,5 @@
-import { UpdateDropdownOptionNamesShared } from '../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
 import { GENERAL_ANIMATION_CLOSE_TYPES } from '../../../../../../consts/animationTypes.enum';
+import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { SETTING_NAMES } from '../../../../../../consts/settingNames.enum';
 
@@ -10,7 +10,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: SETTING_NAMES.DISMISS,
-        options: UpdateDropdownOptionNamesShared.generateDropdownStructure(Object.values(GENERAL_ANIMATION_CLOSE_TYPES)),
+        options: DropdownUtils.generateDropdownStructure(Object.values(GENERAL_ANIMATION_CLOSE_TYPES)),
         activeOptionPropertyKeyName: 'type',
         customFeatureObjectKeys: ['customFeatures', 'animations', 'display', 'close', 'type'],
       },

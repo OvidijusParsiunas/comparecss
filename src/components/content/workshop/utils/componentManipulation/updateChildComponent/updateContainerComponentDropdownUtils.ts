@@ -2,12 +2,19 @@ import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDrop
 import { UpdateDropdownOptionNamesShared } from './updateDropdownOptionNamesShared';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { StringUtils } from '../../generic/stringUtils';
+import { ArrayUtils } from '../../generic/arrayUtils';
 import {
   SingleSubcomponentPrefixes, StateObjects, OptionNameInitializationObjects,
   SubcomponentPrefixToTotal, SubcomponentNameToPrefix, OptionDataMaps,
 } from '../../../../../../interfaces/updateDropdownOptionNames';
 
 export class UpdateContainerComponentDropdownUtils extends UpdateDropdownOptionNamesShared {
+
+  public static removeOldOptionNames(overwrittenOptionNames: string[], newDrodpownNames: string[],
+      subcomponentDropdownStructure: NestedDropdownStructure): void {
+    ArrayUtils.differenceInArrays(overwrittenOptionNames, newDrodpownNames);
+    UpdateDropdownOptionNamesShared.removeOverwrittenOptionNames(overwrittenOptionNames, subcomponentDropdownStructure);
+  }
 
   private static updateNewAndOldOptionNames(containerComponent: WorkshopComponent, subcomponentDropdownStructure: NestedDropdownStructure,
       subcomponentName: string, overwrittenOptionNames: string[], newOptionName: string, oldOptionName: string,

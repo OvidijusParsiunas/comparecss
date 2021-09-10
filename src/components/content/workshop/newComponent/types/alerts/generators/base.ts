@@ -1,8 +1,8 @@
-import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { BUTTON_COMPONENTS_BASE_NAMES, PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { DropdownUtils } from '../../../../utils/componentManipulation/utils/dropdownUtils';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -16,7 +16,7 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 class AlertBase extends ComponentBuilder {
 
   public static setChildComponentsOptions(alertBaseComponent: WorkshopComponent): void {
-    const baseComponentOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([
+    const baseComponentOptions = DropdownUtils.generateDropdownStructure([
       PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE]);
     alertBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsOptions = baseComponentOptions;
     alertBaseComponent.newChildComponentsOptionsRefs = { layer: baseComponentOptions };

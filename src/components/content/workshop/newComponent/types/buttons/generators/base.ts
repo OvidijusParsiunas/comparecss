@@ -1,10 +1,10 @@
-import { UpdateDropdownOptionNamesShared } from '../../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SubcomponentTriggers } from '../../../../utils/componentManipulation/utils/subcomponentTriggers';
 import { PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { OtherSubcomponentTriggers } from '../../../../../../../interfaces/otherSubcomponentTriggers';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
+import { DropdownUtils } from '../../../../utils/componentManipulation/utils/dropdownUtils';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -23,7 +23,7 @@ class ButtonBase extends ComponentBuilder {
   }
 
   public static setChildComponentsOptions(buttonBaseComponent: WorkshopComponent): void {
-    const baseComponentOptions = UpdateDropdownOptionNamesShared.generateDropdownStructure([
+    const baseComponentOptions = DropdownUtils.generateDropdownStructure([
       PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, PRIMITIVE_COMPONENTS_BASE_NAMES.ICON]);
     buttonBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsOptions = baseComponentOptions;
     buttonBaseComponent.newChildComponentsOptionsRefs = { layer: baseComponentOptions };

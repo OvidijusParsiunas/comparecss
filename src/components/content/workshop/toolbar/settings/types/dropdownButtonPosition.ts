@@ -1,6 +1,6 @@
-import { UpdateDropdownOptionNamesShared } from '../../../utils/componentManipulation/updateChildComponent/updateDropdownOptionNamesShared';
 import { ActionsDropdownMouseEventCallbacks } from '../../../../../../interfaces/actionsDropdownsMouseEventCallbacks';
 import { MenuIndexAlignment } from '../../../newComponent/types/dropdowns/settings/menuIndexAlignment';
+import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 
 function generateMouseEventCallbacks(): ActionsDropdownMouseEventCallbacks {
@@ -18,7 +18,7 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: 'Alignment',
-        options: UpdateDropdownOptionNamesShared.generateDropdownStructure(['Above', 'Below']),
+        options: DropdownUtils.generateDropdownStructure(['Above', 'Below']),
         activeOptionPropertyKeyName: 'indexAlignment',
         customFeatureObjectKeys: ['customStaticFeatures', 'dropdown', 'indexAlignment'],
         ...generateMouseEventCallbacks(),
