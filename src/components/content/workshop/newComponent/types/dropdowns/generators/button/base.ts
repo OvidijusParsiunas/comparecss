@@ -84,6 +84,7 @@ export const dropdownButtonBase: ComponentGenerator = {
     DropdownButton.overwriteCustomCss(buttonComponent);
     Object.assign(buttonComponent.subcomponents, dropdownMenuBaseComponent.subcomponents);
     Object.assign(buttonComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName, dropdownMenuBaseComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName);
+    buttonComponent.componentPreviewStructure.subcomponentDropdownStructure[buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] = { ...{ ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name) }};
     buttonComponent.componentPreviewStructure.subcomponentDropdownStructure[dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] = { ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name) };
     buttonComponent.linkedComponents = { auxiliary: [dropdownMenuBaseComponent] };
     dropdownMenuBaseComponent.linkedComponents = { base: buttonComponent };

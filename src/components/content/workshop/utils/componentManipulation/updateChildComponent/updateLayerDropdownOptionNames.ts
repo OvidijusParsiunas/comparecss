@@ -42,9 +42,9 @@ export class UpdateLayerDropdownOptionNames extends UpdateDropdownOptionNamesSha
   // only works for adding layers to the top level container component
   public static update(containerComponent: WorkshopComponent, startingLayerNumber: number): void {
     const { higherActiveComponentContainer, masterComponent } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
-    const { componentPreviewStructure: { subcomponentDropdownStructure } } = masterComponent;
+    const { subcomponentDropdownStructure, subcomponentNameToDropdownOptionName } = masterComponent.componentPreviewStructure;
     const layersDropdownStructure = subcomponentDropdownStructure[
-      higherActiveComponentContainer.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] as NestedDropdownStructure;
+      subcomponentNameToDropdownOptionName[higherActiveComponentContainer.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name]] as NestedDropdownStructure;
     const subcomponentNames = UpdateDropdownOptionNamesShared.getSubcomponentNames(layersDropdownStructure);
     let overwrittenOptionNames: string[] = [];
     if (subcomponentNames.length === 1) {

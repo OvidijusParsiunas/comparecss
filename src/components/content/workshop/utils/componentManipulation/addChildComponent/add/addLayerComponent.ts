@@ -29,8 +29,8 @@ export class AddLayerComponent extends AddComponentShared {
     const newComponentDropdownStructure = { [baseName]: { 
       ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(baseName),
     }};
-    const containerComponentDropdownStructure = masterComponent.componentPreviewStructure.subcomponentDropdownStructure;
-    Object.assign(containerComponentDropdownStructure[containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name], newComponentDropdownStructure);
+    const { subcomponentDropdownStructure, subcomponentNameToDropdownOptionName } = masterComponent.componentPreviewStructure;
+    Object.assign(subcomponentDropdownStructure[subcomponentNameToDropdownOptionName[containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name]], newComponentDropdownStructure);
   }
 
   private static addNewSubcomponentToBase(containerComponent: WorkshopComponent, layer: Layer): void {

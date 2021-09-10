@@ -5,6 +5,7 @@ import { WorkshopComponent } from '../../../../../../../interfaces/workshopCompo
 import { Options } from '../../../../../../../interfaces/options';
 import { cardBottomLayerOptions } from '../layer/cardBottomLayer';
 import { closeButtonTextOptions } from '../text/closeButtonText';
+import { dropdownMenuOptions } from '../dropdown/dropdownMenu';
 import { childButtonOptions } from '../button/childButton';
 import { closeButtonOptions } from '../button/closeButton';
 import { buttonTextOptions } from '../text/buttonText';
@@ -19,6 +20,7 @@ export class CardOptions {
 
   private static readonly STATIC_CARD_OPTIONS: SubcomponentTypeToOptions = {
     // WORK 2 - may need to be removed from Card
+    [SUBCOMPONENT_TYPES.DROPDOWN_MENU]: dropdownMenuOptions as Options,
     [SUBCOMPONENT_TYPES.DROPDOWN]: dropdownOptions as Options,
     [SUBCOMPONENT_TYPES.BASE]: cardBaseOptions as Options,
     [SUBCOMPONENT_TYPES.IMAGE]: imageOptions as Options,

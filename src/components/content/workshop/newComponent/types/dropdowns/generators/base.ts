@@ -1,3 +1,4 @@
+import { UpdatePaddingComponentDropdownOptions } from '../../../../utils/componentManipulation/updateChildComponent/updatePaddingComponentDropdownOptionNames';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../consts/dropdownMenuAlignment.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -44,7 +45,8 @@ export const dropdownBase: ComponentGenerator = {
     paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].subcomponentType = SUBCOMPONENT_TYPES.DROPDOWN;
     paddingComponent.type = COMPONENT_TYPES.DROPDOWN;
     const buttonComponent = dropdownButtonBase.createNewComponent();
-    // WORK 2 - updated names
+    UpdatePaddingComponentDropdownOptions.updatePaddingComponentChildren(buttonComponent);
+    // WORK 2 - add/remove subcomponent from child dropdown
     DropdownBase.createStaticFeatures(paddingComponent);
     DropdownBase.overwriteCustomStaticFeatures(buttonComponent, paddingComponent);
     Object.assign(buttonComponent.subcomponents, paddingComponent.subcomponents);
