@@ -1,5 +1,5 @@
-import { SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS } from '../../../../../../consts/subcomponentSelectModeDisabledElementClass';
-import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../../consts/subcomponentOverlayClasses.enum';
+import { SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS } from '../../../../../../../consts/subcomponentSelectModeDisabledElementClass';
+import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../../../../consts/subcomponentOverlayClasses.enum';
 
 export class SubcomponentSelectModeSubOverlay {
 
@@ -22,7 +22,7 @@ export class SubcomponentSelectModeSubOverlay {
     });
   }
 
-  public static displaySubOverlays(): void {
+  public static display(): void {
     SubcomponentSelectModeSubOverlay.toggleDisabledSubcomponentPointerEvents('none');
     setTimeout(SubcomponentSelectModeSubOverlay.activateSubOverlays);
   }

@@ -1,6 +1,6 @@
 import { UpdateGenericComponentDropdownOptionNames } from '../../../../utils/componentManipulation/updateChildComponent/updateGenericComponentDropdownOptionNames';
-import { AddNewContainerComponent } from '../../../../utils/componentManipulation/addNewChildComponent/add/addNewContainerComponent';
-import { AddNewLayerComponent } from '../../../../utils/componentManipulation/addNewChildComponent/add/addNewLayerComponent';
+import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
+import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -26,11 +26,11 @@ class DefaultAlert extends ComponentBuilder {
   }
 
   public static addComponentsToBase(alertComponent: WorkshopComponent): void {
-    const layerComponent = AddNewLayerComponent.add(alertComponent, LAYER_STYLES.PLAIN, false);
+    const layerComponent = AddLayerComponent.add(alertComponent, LAYER_STYLES.PLAIN, false);
     const layerComponentBaseName = layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
-    AddNewContainerComponent.add(alertComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
+    AddContainerComponent.add(alertComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layerComponentBaseName, [DefaultAlert.overwriteTextProperties]);
-    AddNewContainerComponent.add(alertComponent, COMPONENT_TYPES.BUTTON,
+    AddContainerComponent.add(alertComponent, COMPONENT_TYPES.BUTTON,
       BUTTON_STYLES.CLOSE, layerComponentBaseName, [DefaultAlert.overwriteCloseButtonProperties]);
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(alertComponent, alertComponent.componentPreviewStructure.layers[0]);
   }

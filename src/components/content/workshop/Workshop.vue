@@ -49,7 +49,7 @@
               @play-animation-preview="$refs.contents.playAnimationPreview($event)"
               @stop-animation-preview="$refs.contents.stopAnimationPreview()"
               @toggle-copy-child-component-mode="toggleCopyChildComponentMode($event)"
-              @add-subcomponent="addNewSubcomponent($event)"
+              @add-child-component="addChildComponent($event)"
               @remove-child-component="removeChildComponent($event)"
               @change-subcomponent-order="changeSubcomponentOrder($event)"
               @change-subcomponent-alignment="changeSubcomponentAlignment($event)"
@@ -81,7 +81,7 @@
       <new-component-modal
         ref="newComponentModal"
         :components="components"
-        @add-new-component="addNewComponent($event)"
+        @add-component="addComponent($event)"
         @new-component-modal-callback="addWorkshopEventCallback($event)"/>
       <removal-modal-template
         ref="removeComponentModal"
@@ -126,7 +126,7 @@ import { ComponentPreviewAssistance } from '../../../interfaces/componentPreview
 import { removeComponentModalState } from './componentList/state/removeComponentModalState';
 import { MASTER_SUBCOMPONENT_BASE_NAME } from '../../../consts/baseSubcomponentNames.enum';
 import { ComponentCardHoveredEvent } from '../../../interfaces/componentCardHoveredEvent';
-import { AddNewSubcomponentEvent } from '../../../interfaces/addNewSubcomponentEvent';
+import { AddChildComponentEvent } from '../../../interfaces/addChildComponentEvent';
 import { defaultDropdown } from './newComponent/types/dropdowns/generators/default';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
@@ -200,8 +200,8 @@ export default {
     displayCopyableComponentCardOverlays(copyableComponentCardOverlaysToDisplay: CopyableComponentCardOverlaysToDisplay): void {
       this.copyableComponentCardOverlaysToDisplay = copyableComponentCardOverlaysToDisplay;
     },
-    addNewComponent(newComponent: WorkshopComponent): void {
-      ComponentManipulation.addNewComponent(this, newComponent);
+    addComponent(newComponent: WorkshopComponent): void {
+      ComponentManipulation.addComponent(this, newComponent);
     },
     setActiveComponent(component: WorkshopComponent): void {
       ComponentManipulation.setActiveComponent(this, component);
@@ -225,8 +225,8 @@ export default {
     exportFiles(): void {
       exportFiles.export(this.components);
     },
-    addNewSubcomponent(addNewSubcomponentEvent: AddNewSubcomponentEvent): void {
-      ComponentManipulation.addNewSubcomponent(this, addNewSubcomponentEvent);
+    addChildComponent(addChildComponentEvent: AddChildComponentEvent): void {
+      ComponentManipulation.addChildComponent(this, addChildComponentEvent);
     },
     removeChildComponent(isTemporaryAddPreview?: boolean): void {
       ComponentManipulation.removeChildComponent(this, isTemporaryAddPreview);

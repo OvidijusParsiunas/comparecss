@@ -14,7 +14,7 @@
         @toggle-full-preview-mode="toggleFullPreviewMode($event)"
         @toggle-toolbar-position="toggleToolbarPosition"
         @toggle-copy-child-component-mode="$emit('toggle-copy-child-component-mode', $event)"
-        @add-subcomponent="$emit('add-subcomponent', $event)"
+        @add-child-component="$emit('add-child-component', $event)"
         @remove-child-component="$emit('remove-child-component', $event)"
         @display-copyable-component-card-overlays="$emit('display-copyable-component-card-overlays', $event)"/>
       <settings v-if="isSettingsDisplayed" ref="settings"

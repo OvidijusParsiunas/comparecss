@@ -58,12 +58,12 @@
 
 <script lang="ts">
 import { ToggleFullPreviewModeEvent, ToggleFullPreviewModeOffCallbacks } from '../../../../interfaces/toggleFullPreviewModeEvent';
-import { SubcomponentSelectModeSubOverlay } from '../toolbar/options/subcomponentSelectMode/subcomponentSelectModeSubOverlay';
 import ExpandedModalPreviewModeToggleCloseAnimation from './utils/animations/expandedModalPreviewMode/toggleAnimations/close';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import ExpandedModalPreviewModeToggleOpenAnimation from './utils/animations/expandedModalPreviewMode/toggleAnimations/open';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { subcomponentAndOverlayElementIdsState } from './utils/elements/subcomponentAndOverlayElementIdsState';
+import { SubcomponentSelectModeSubOverlay } from './utils/elements/overlays/subcomponentSelectModeSubOverlay';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { SelectDropdownUtils } from '../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils'
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
@@ -140,7 +140,7 @@ export default {
         ComponentPreviewUtils.setAllSubcomponentsCursors();
         this.mouseEvents = ComponentPreviewUtils.generateSubcomponentSelectModeMouseEvents(this.subcomponentAndOverlayElementIds);
         this.changeMouseEventsToDefaultOnComponentPreviewMouseEnter = false;
-        SubcomponentSelectModeSubOverlay.displaySubOverlays();    
+        SubcomponentSelectModeSubOverlay.display();    
       } else {
         ComponentPreviewUtils.unsetAllSubcomponentsCursors();
         SubcomponentSelectModeSubOverlay.toggleDisabledSubcomponentPointerEvents('');

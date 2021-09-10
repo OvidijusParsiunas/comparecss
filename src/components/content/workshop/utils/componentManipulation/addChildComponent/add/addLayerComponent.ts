@@ -12,10 +12,10 @@ import { WorkshopComponent } from '../../../../../../../interfaces/workshopCompo
 import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUtils';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
-import { AddNewComponentShared } from './addNewComponentShared';
+import { AddComponentShared } from './addComponentShared';
 import JSONUtils from '../../../generic/jsonUtils';
 
-export class AddNewLayerComponent extends AddNewComponentShared {
+export class AddLayerComponent extends AddComponentShared {
 
   private static addNewChildComponentsOptions(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     if (containerComponent.newChildComponentsOptionsRefs?.layer) {
@@ -67,7 +67,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     const baseName = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
     const baseSubcomponent = newComponent.subcomponents[baseName];
     const layerSections = baseSubcomponent.layerSectionsType === LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS
-      ? AddNewLayerComponent.createEmptyAlignedSections() : [];
+      ? AddLayerComponent.createEmptyAlignedSections() : [];
     return {
       subcomponentProperties: baseSubcomponent,
       sections: {
@@ -77,9 +77,9 @@ export class AddNewLayerComponent extends AddNewComponentShared {
   }
 
   protected static addNewComponentToComponentPreview(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
-    const layer: Layer = AddNewLayerComponent.createEmptyLayer(newComponent);
-    AddNewLayerComponent.copySiblingSubcomponentCustomProperties(containerComponent, layer);
-    AddNewLayerComponent.addNewSubcomponentToBase(containerComponent, layer);
+    const layer: Layer = AddLayerComponent.createEmptyLayer(newComponent);
+    AddLayerComponent.copySiblingSubcomponentCustomProperties(containerComponent, layer);
+    AddLayerComponent.addNewSubcomponentToBase(containerComponent, layer);
   }
 
   // masterComponent is relative to the current container component that the new component is being added to:
@@ -89,7 +89,7 @@ export class AddNewLayerComponent extends AddNewComponentShared {
   // hence its masterComponentRef property is going to point towards the card component
   protected static createNewComponent(componentGenerator: ComponentGenerator, masterComponent: WorkshopComponent, baseName?: string,
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
-    const newComponent = AddNewComponentShared.createNewComponentViaGenerator(componentGenerator, masterComponent, baseName);
+    const newComponent = AddComponentShared.createNewComponentViaGenerator(componentGenerator, masterComponent, baseName);
     if (overwritePropertiesFunc) overwritePropertiesFunc(newComponent.coreSubcomponentRefs);
     return newComponent;
   }
@@ -99,15 +99,15 @@ export class AddNewLayerComponent extends AddNewComponentShared {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
     const layerName = ChildComponentBaseNamesToStyles.STYLE_TO_LAYER[componentStyle];
     const { higherComponentContainer, masterComponent } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
-    const newComponent = AddNewLayerComponent.createNewComponent(componentGenerator, masterComponent,
+    const newComponent = AddLayerComponent.createNewComponent(componentGenerator, masterComponent,
       UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
-    AddNewComponentShared.populateMasterComponentWithNewSubcomponents(masterComponent, newComponent.subcomponents);
-    AddNewLayerComponent.addNewComponentToComponentPreview(higherComponentContainer, newComponent);
-    if (isEditable) AddNewLayerComponent.updateComponentDropdownStructure(higherComponentContainer, masterComponent, newComponent);
-    AddNewComponentShared.addNewComponentToSubcomponentNameToDropdownOptionNameMap(masterComponent, newComponent, isEditable);
-    AddNewLayerComponent.addNewChildComponentsOptions(higherComponentContainer, newComponent);
+    AddComponentShared.populateMasterComponentWithNewSubcomponents(masterComponent, newComponent.subcomponents);
+    AddLayerComponent.addNewComponentToComponentPreview(higherComponentContainer, newComponent);
+    if (isEditable) AddLayerComponent.updateComponentDropdownStructure(higherComponentContainer, masterComponent, newComponent);
+    AddComponentShared.addNewSubcomponentNameInContainerDropdownOptionNameMap(masterComponent, newComponent, isEditable);
+    AddLayerComponent.addNewChildComponentsOptions(higherComponentContainer, newComponent);
     IncrementChildComponentCount.increment(higherComponentContainer, layerName);
-    AddNewComponentShared.cleanSubcomponentProperties(newComponent);
+    AddComponentShared.cleanSubcomponentProperties(newComponent);
     newComponent.containerComponent = higherComponentContainer;
     return newComponent;
   }

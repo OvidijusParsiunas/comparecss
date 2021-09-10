@@ -104,7 +104,7 @@ export class CopyChildComponedModeToggleOff {
     if (targetElement.classList.contains(OPTION_MENU_BUTTON_MARKER)
         || targetElement.classList.contains(optionsComponent.SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)
         || targetElement.classList.contains(optionsComponent.CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER)
-        || targetElement.classList.contains(optionsComponent.ADD_NEW_SUBCOMPONENT_DROPDOWN_UNIQUE_IDENTIFIER)) {
+        || targetElement.classList.contains(optionsComponent.ADD_CHILD_COMPONENT_DROPDOWN_UNIQUE_IDENTIFIER)) {
       CopyChildComponedModeToggleOff.resetComponent(optionsComponent.component, optionsComponent.hasCopyChildComponentModeClosedExpandedModal);
       return CopyChildComponedModeToggleOff.toggleOff(optionsComponent, false);
     }

@@ -7,17 +7,17 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.e
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ActiveComponentUtils } from '../../activeComponent/activeComponentUtils';
 import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
-import { AddNewContainerComponent } from './add/addNewContainerComponent';
-import { AddNewComponentShared } from './add/addNewComponentShared';
-import { AddNewLayerComponent } from './add/addNewLayerComponent';
+import { AddContainerComponent } from './add/addContainerComponent';
+import { AddComponentShared } from './add/addComponentShared';
+import { AddLayerComponent } from './add/addLayerComponent';
 
-export class AddNewChildComponent extends AddNewComponentShared {
+export class AddChildComponent extends AddComponentShared {
 
   private static addNewComponent(activeComponent: WorkshopComponent, newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES,
       dropdownStructure: NestedDropdownStructure): [WorkshopComponent, Layer] {
     const { componentType, componentStyle, parentLayer, containerComponent,
-      } = AddNewContainerComponent.getNewComponentProperties(activeComponent, newComponentBaseName);
-    const newComponent = AddNewContainerComponent.addUsingParentDropdownStructure(containerComponent,
+      } = AddContainerComponent.getNewComponentProperties(activeComponent, newComponentBaseName);
+    const newComponent = AddContainerComponent.addUsingParentDropdownStructure(containerComponent,
       dropdownStructure, componentType, componentStyle, parentLayer);
     // set here because not all child components are removable, but the ones manually added by the user are
     newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
@@ -26,7 +26,7 @@ export class AddNewChildComponent extends AddNewComponentShared {
 
   private static addNewComponentToLayer(activeComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure,
       activeComponentContainer: WorkshopComponent, newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): WorkshopComponent {
-    const [newComponent, parentLayer] = AddNewChildComponent.addNewComponent(activeComponent, newComponentBaseName, dropdownStructure);
+    const [newComponent, parentLayer] = AddChildComponent.addNewComponent(activeComponent, newComponentBaseName, dropdownStructure);
     const { componentPreviewStructure: { subcomponentNameToDropdownOptionName }, activeSubcomponentName } = activeComponentContainer;
     const activeContainerComponentOptionName = subcomponentNameToDropdownOptionName[activeSubcomponentName];
     UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(
@@ -41,9 +41,9 @@ export class AddNewChildComponent extends AddNewComponentShared {
   }
 
   private static addNewLayerToBase(activeComponent: WorkshopComponent, newComponentBaseName: string): void {
-    const newComponent = AddNewLayerComponent.add(activeComponent, ChildComponentBaseNamesToStyles.LAYER_TO_STYLE[newComponentBaseName], true);
+    const newComponent = AddLayerComponent.add(activeComponent, ChildComponentBaseNamesToStyles.LAYER_TO_STYLE[newComponentBaseName], true);
     newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
-    AddNewChildComponent.updateLayerComponentNames(activeComponent);
+    AddChildComponent.updateLayerComponentNames(activeComponent);
     newComponent.childComponentsLockedToLayer?.add(activeComponent);
   }
 
@@ -51,10 +51,10 @@ export class AddNewChildComponent extends AddNewComponentShared {
     const activeComponent = masterComponent.subcomponents[masterComponent.activeSubcomponentName].seedComponent;
     const { higherComponentContainer } = ActiveComponentUtils.getHigherLevelComponents(activeComponent);
     if (Object.values(LAYER_COMPONENTS_BASE_NAMES).includes(newComponentBaseName as LAYER_COMPONENTS_BASE_NAMES)) {
-      AddNewChildComponent.addNewLayerToBase(activeComponent, newComponentBaseName);
+      AddChildComponent.addNewLayerToBase(activeComponent, newComponentBaseName);
     } else {
-      AddNewContainerComponent.addComponentViaDropdownStructureSearch(
-        activeComponent, AddNewChildComponent.addNewComponentToLayer, higherComponentContainer, newComponentBaseName);
+      AddContainerComponent.addComponentViaDropdownStructureSearch(
+        activeComponent, AddChildComponent.addNewComponentToLayer, higherComponentContainer, newComponentBaseName);
     }
   }
 }

@@ -28,16 +28,16 @@
         <dropdown
           :class="TOOLBAR_BUTTON_GROUP_TERTIARY_COMPONENT_CLASS"
           :additionalButtonClasses="[TOOLBAR_BUTTON_GROUP_END_COMPONENT_CLASS]"
-          :uniqueIdentifier="ADD_NEW_SUBCOMPONENT_DROPDOWN_UNIQUE_IDENTIFIER"
+          :uniqueIdentifier="ADD_CHILD_COMPONENT_DROPDOWN_UNIQUE_IDENTIFIER"
           :dropdownOptions="getSubcomponentsToAdd()"
           :callWatchWhenDropdownOptionsValueChangeDetectionTriggered="{}"
-          :consistentButtonContent="{'backgroundIconClass': 'add-subcomponent-button-icon'}"
+          :consistentButtonContent="{'backgroundIconClass': 'add-child-component-button-icon'}"
           :timeoutFunc="executeCallbackAfterTimeout"
           :minOptionsToDisplayDropdown="1"
           :displayArrowOnMouseEnter="true"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
           @hide-dropdown-menu="mouseLeaveSubcomponentManipulationToggle(true)"
-          @mouse-click-new-option="buttonClickMiddleware(addNewSubcomponent.bind(this, $event), true)"
+          @mouse-click-new-option="buttonClickMiddleware(addChildComponent.bind(this, $event), true)"
           @mouse-enter-option="mouseEnterSubcomponentManipulationToggle(true, $event)"
           @mouse-leave-option="mouseLeaveSubcomponentManipulationToggle(true)"/>
       </div>
@@ -172,7 +172,7 @@ import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFull
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../consts/componentStyles.enum';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
-import { AddNewSubcomponentEvent } from '../../../../../interfaces/addNewSubcomponentEvent';
+import { AddChildComponentEvent } from '../../../../../interfaces/addChildComponentEvent';
 import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
 import { CopyChildComponentUtils } from './copyChildComponent/copyChildComponentUtils';
@@ -221,7 +221,7 @@ interface Consts {
   REMOVE_CHILD_COMPONENT_MODAL_TARGET_ID: string;
   BROWSER_SPECIFIC_MODAL_BUTTON_STYLE: WorkshopComponentCss;
   SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
-  ADD_NEW_SUBCOMPONENT_DROPDOWN_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
+  ADD_CHILD_COMPONENT_DROPDOWN_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
   CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS;
   SUBCOMPONENT_TYPES: typeof SUBCOMPONENT_TYPES;
 }
@@ -264,7 +264,7 @@ export default {
       REMOVE_CHILD_COMPONENT_MODAL_TARGET_ID: `#${REMOVE_CHILD_COMPONENT_MODAL_ID}`,
       BROWSER_SPECIFIC_MODAL_BUTTON_STYLE: { paddingTop: BrowserType.isFirefox() ? '1px' : '' },
       SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.SUBCOMPONENTS,
-      ADD_NEW_SUBCOMPONENT_DROPDOWN_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.ADD_SUBCOMPONENT,
+      ADD_CHILD_COMPONENT_DROPDOWN_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.ADD_CHILD_COMPONENT,
       CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER: CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS.CSS_PSEUDO_CLASSES,
       HIGHLIGHTED_OPTION_BUTTON_CLASS: BrowserType.isFirefox() ? 'highlighted-option-button-firefox' : 'highlighted-option-button-chromium',
       HIGHLIGHTED_OPTION_BUTTON_TEXT_COLOR_CLASS: 'highlighted-option-button-text-color',
@@ -479,17 +479,17 @@ export default {
     getSubcomponentsToAdd(): NestedDropdownStructure {
       return this.component.subcomponents[this.component.activeSubcomponentName].newChildComponentsOptions || {};
     },
-    addNewSubcomponent(mouseClickNewOptionEvent: MouseClickNewOptionEvent): void {
+    addChildComponent(mouseClickNewOptionEvent: MouseClickNewOptionEvent): void {
       const [newComponentBaseName, isOptionEnabled] = mouseClickNewOptionEvent;
       if (!isOptionEnabled) return;
       this.$emit('remove-child-component', true);
-      this.$emit('add-subcomponent', [newComponentBaseName] as AddNewSubcomponentEvent);
+      this.$emit('add-child-component', [newComponentBaseName] as AddChildComponentEvent);
     },
     mouseEnterSubcomponentManipulationToggle(isAdd: boolean, mouseEnterOptionEvent?: MouseEnterOptionEvent): void {
       if (isAdd) {
         const [newComponentBaseName, isOptionEnabled] = mouseEnterOptionEvent;
         if (!isOptionEnabled) return;
-        this.$emit('add-subcomponent', [newComponentBaseName, true] as AddNewSubcomponentEvent);
+        this.$emit('add-child-component', [newComponentBaseName, true] as AddChildComponentEvent);
       } else {
         RemoveChildComponentOverlay.display(this.component.activeSubcomponentName);
       }
@@ -506,8 +506,8 @@ export default {
       this.isSubcomponentSelectModeButtonDisplayed = isDropdownDisplayed;
     },
     getSubcomponentDropdownButtonBorderClasses(): string[] {
-      const isAddNewSubcomponentDropdownDisplayed = Object.keys(this.getSubcomponentsToAdd()).length > 0;
-      return [isAddNewSubcomponentDropdownDisplayed ? TOOLBAR_BUTTON_GROUP_MIDDLE_COMPONENT_CLASS : TOOLBAR_BUTTON_GROUP_END_COMPONENT_CLASS];
+      const isAddChildComponentDropdownDisplayed = Object.keys(this.getSubcomponentsToAdd()).length > 0;
+      return [isAddChildComponentDropdownDisplayed ? TOOLBAR_BUTTON_GROUP_MIDDLE_COMPONENT_CLASS : TOOLBAR_BUTTON_GROUP_END_COMPONENT_CLASS];
     },
     toggleModalExpandMode(): void {
       this.isExpandedModalPreviewModeActive = !this.isExpandedModalPreviewModeActive;
@@ -776,14 +776,14 @@ export default {
   }
 </style>
 <style lang="css">
-  .add-subcomponent-button-icon {
+  .add-child-component-button-icon {
     width: 1em;
     height: 35px;
     background: url('../../../../../assets/svg/plus.svg') center no-repeat;
     background-size: 13.5px auto;
   }
   /* remove this if the green colour is a little distracting - UX */
-  .add-subcomponent-button-icon:active {
+  .add-child-component-button-icon:active {
     background-color: #e9f5e9 !important;
   }
 </style>

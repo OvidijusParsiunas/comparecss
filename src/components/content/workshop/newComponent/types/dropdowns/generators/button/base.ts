@@ -1,8 +1,8 @@
 import { UpdateLayerDropdownOptionNames } from '../../../../../utils/componentManipulation/updateChildComponent/updateLayerDropdownOptionNames';
 import { DropdownOptionsDisplayStatusUtils } from '../../../../../utils/dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
 import { BUTTON_COMPONENTS_BASE_NAMES, DROPDOWN_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
-import { AddNewLayerComponent } from '../../../../../utils/componentManipulation/addNewChildComponent/add/addNewLayerComponent';
 import { UniqueSubcomponentNameGenerator } from '../../../../../utils/componentGenerator/uniqueSubcomponentNameGenerator';
+import { AddLayerComponent } from '../../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentCssClasses.enum';
@@ -53,13 +53,13 @@ class DropdownButton extends ComponentBuilder {
   }
 
   public static addComponentsToBase(dropdownMenuBaseComponent: WorkshopComponent): void {
-    const layer1Component = AddNewLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
+    const layer1Component = AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
     layer1Component.childComponentsLockedToLayer.add(dropdownMenuBaseComponent);
     ComponentBuilder.executeReferenceSharingExecutables(layer1Component);
-    const layer2Component = AddNewLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
+    const layer2Component = AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
     layer2Component.childComponentsLockedToLayer.add(dropdownMenuBaseComponent);
     ComponentBuilder.executeReferenceSharingExecutables(layer2Component);
-    const layer3Component = AddNewLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
+    const layer3Component = AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
     layer3Component.childComponentsLockedToLayer.add(dropdownMenuBaseComponent);
     ComponentBuilder.executeReferenceSharingExecutables(layer3Component);
     UpdateLayerDropdownOptionNames.update(dropdownMenuBaseComponent, 0);

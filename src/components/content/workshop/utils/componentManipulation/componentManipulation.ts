@@ -1,14 +1,14 @@
 import { CopyChildComponentModeCardEvents } from '../../toolbar/options/copyChildComponent/modeUtils/copyChildComponentModeCardEvents';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../interfaces/subcomponentOrderDirections.enum';
-import { AddTemporaryAddPreviewComponent } from './addNewChildComponent/addTemporaryAddPreviewComponent';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
+import { AddTemporaryAddPreviewComponent } from './addChildComponent/addTemporaryAddPreviewComponent';
 import { ChangeChildComponentAlignment } from './moveChildComponent/changeChildComponentAlignment';
-import { AddNewSubcomponentEvent } from '../../../../../interfaces/addNewSubcomponentEvent';
 import { ChangeChildComponentOrder } from './moveChildComponent/changeChildComponentOrder';
+import { AddChildComponentEvent } from '../../../../../interfaces/addChildComponentEvent';
 import { RemoveChildComponent } from './removeChildComponent/removeChildComponent';
-import { AddNewChildComponent } from './addNewChildComponent/addNewChildComponent';
 import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
 import { SetNewActiveSubcomponent } from './utils/setNewActiveSubcomponent';
+import { AddChildComponent } from './addChildComponent/addChildComponent';
 import CopyComponent from './copyComponent/copyComponent';
 import ComponentJs from '../generic/componentJs';
 import { ComponentOptions } from 'vue';
@@ -34,17 +34,17 @@ export class ComponentManipulation {
     workshopComponent.$refs.toolbar.updateToolbarForNewComponent();
   }
 
-  public static addNewComponent(workshopComponent: ComponentOptions, component: WorkshopComponent): void {
+  public static addComponent(workshopComponent: ComponentOptions, component: WorkshopComponent): void {
     (workshopComponent.components as undefined as WorkshopComponent[]).push(component);
     ComponentManipulation.switchActiveComponent(workshopComponent, component);
   }
 
-  public static addNewSubcomponent(workshopComponent: ComponentOptions, addNewSubcomponentEvent: AddNewSubcomponentEvent): void {
-    const [newComponentBaseName, isTemporaryAddPreview] = addNewSubcomponentEvent;
+  public static addChildComponent(workshopComponent: ComponentOptions, addChildComponentEvent: AddChildComponentEvent): void {
+    const [newComponentBaseName, isTemporaryAddPreview] = addChildComponentEvent;
     if (isTemporaryAddPreview) {
       AddTemporaryAddPreviewComponent.add(workshopComponent.currentlySelectedComponent, newComponentBaseName);
     } else {
-      AddNewChildComponent.add(workshopComponent.currentlySelectedComponent, newComponentBaseName);
+      AddChildComponent.add(workshopComponent.currentlySelectedComponent, newComponentBaseName);
     }
     workshopComponent.$refs.contents.refreshComponent();
   }
@@ -69,7 +69,7 @@ export class ComponentManipulation {
 
   public static copyComponent(workshopComponent: ComponentOptions, setActiveComponent: WorkshopComponent): void {
     const newComponent = CopyComponent.copyComponent(workshopComponent, setActiveComponent);
-    ComponentManipulation.addNewComponent(workshopComponent, newComponent);
+    ComponentManipulation.addComponent(workshopComponent, newComponent);
   }
 
   public static setActiveComponent(workshopComponent: ComponentOptions, component?: WorkshopComponent): void {

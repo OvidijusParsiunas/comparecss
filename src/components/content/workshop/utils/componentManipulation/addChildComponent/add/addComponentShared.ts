@@ -12,7 +12,7 @@ import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.en
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { PaddingComponentUtils } from '../../utils/paddingComponentUtils';
-import { AddNewContainerComponent } from './addNewContainerComponent';
+import { AddContainerComponent } from './addContainerComponent';
 import JSONUtils from '../../../generic/jsonUtils';
 
 type DropdownStructureSearchCallback = (
@@ -27,9 +27,9 @@ interface NewComponentProperties {
   containerComponent: WorkshopComponent;
 }
 
-export class AddNewComponentShared {
+export class AddComponentShared {
 
-  protected static addNewComponentToSubcomponentNameToDropdownOptionNameMap(containerComponent: WorkshopComponent,
+  protected static addNewSubcomponentNameInContainerDropdownOptionNameMap(containerComponent: WorkshopComponent,
       newComponent: WorkshopComponent, isEditable = true): void {
     if (!isEditable) return;
     const baseName = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
@@ -45,7 +45,7 @@ export class AddNewComponentShared {
       newComponentName: string): WorkshopComponent {
     const newComponent = componentGenerator.createNewComponent(newComponentName);
     newComponent.subcomponents[newComponentName].seedComponent = newComponent;
-    AddNewComponentShared.setMasterComponentReference(newComponent, masterComponent);
+    AddComponentShared.setMasterComponentReference(newComponent, masterComponent);
     return newComponent;
   }
 
@@ -66,7 +66,7 @@ export class AddNewComponentShared {
     const targetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName);
     return ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
       masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
-      AddNewContainerComponent.proceedToInvokeAddCallbackIfFound.bind(targetDetails,
+      AddContainerComponent.proceedToInvokeAddCallbackIfFound.bind(targetDetails,
         parentOptionComponent, callback, args)) as WorkshopComponent;
   }
 
@@ -76,11 +76,11 @@ export class AddNewComponentShared {
   }
 
   protected static getNewComponentProperties(activeComponent: WorkshopComponent, newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): NewComponentProperties {
-    const componentType = AddNewContainerComponent.componentBaseNameToType[newComponentBaseName];
+    const componentType = AddContainerComponent.componentBaseNameToType[newComponentBaseName];
     const componentStyle = ChildComponentBaseNamesToStyles.genericToStyle(newComponentBaseName);
     const containerComponent = ActiveComponentUtils.getActiveContainerComponent(activeComponent);
     const parentLayer = activeComponent.type === COMPONENT_TYPES.LAYER
-      ? AddNewContainerComponent.getContainerComponentLayer(containerComponent, activeComponent.coreSubcomponentRefs[0].name)
+      ? AddContainerComponent.getContainerComponentLayer(containerComponent, activeComponent.coreSubcomponentRefs[0].name)
       : containerComponent.componentPreviewStructure.layers[0];
     return { componentType, componentStyle, parentLayer, containerComponent };
   }

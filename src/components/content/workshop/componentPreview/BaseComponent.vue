@@ -38,8 +38,8 @@
           <div v-if="isXButtonText()"
             :class="SUBCOMPONENT_OVERLAY_CLASSES.SUB"
             :style="getXButtonOverlayStyleProperties()"
-            @mouseEnter="useSubcomponentPreviewSelectModeEventHandlers.subcomponentMouseEnter"
-            @mouseLeave="useSubcomponentPreviewSelectModeEventHandlers.subcomponentMouseLeave"></div>
+            @mouseEnter="useSubcomponentSelectModeEventHandlers.subcomponentMouseEnter"
+            @mouseLeave="useSubcomponentSelectModeEventHandlers.subcomponentMouseLeave"></div>
       </div>
       <div v-if="component.linkedComponents && component.linkedComponents.auxiliary">
         <base-component v-for="auxiliaryComponent in component.linkedComponents.auxiliary" :key="auxiliaryComponent"
@@ -54,8 +54,8 @@
 
 <script lang="ts">
 import { SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS } from '../../../../consts/subcomponentSelectModeDisabledElementClass';
-import useSubcomponentPreviewSelectModeEventHandlers from './compositionAPI/useSubcomponentPreviewSelectModeEventHandlers';
 import { UseSubcomponentPreviewEventHandlers } from '../../../../interfaces/useSubcomponentPreviewEventHandlers';
+import useSubcomponentSelectModeEventHandlers from './compositionAPI/useSubcomponentSelectModeEventHandlers';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { DROPDOWN_ARROW_ICON_TYPES_TO_FONT_AWESOME_NAMES } from '../../../../consts/dropdownArrowIcons';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
@@ -76,7 +76,7 @@ interface Consts {
   STATIC_POSITION_CLASS: string;
   COMPONENT_PREVIEW_MARKER: string;
   CSS_PSEUDO_CLASSES: typeof CSS_PSEUDO_CLASSES;
-  useSubcomponentPreviewSelectModeEventHandlers: UseSubcomponentPreviewEventHandlers;
+  useSubcomponentSelectModeEventHandlers: UseSubcomponentPreviewEventHandlers;
 }
 
 export default {
@@ -86,7 +86,7 @@ export default {
       STATIC_POSITION_CLASS: STATIC_POSITION_CLASS,
       COMPONENT_PREVIEW_MARKER,
       CSS_PSEUDO_CLASSES,
-      useSubcomponentPreviewSelectModeEventHandlers: useSubcomponentPreviewSelectModeEventHandlers(),
+      useSubcomponentSelectModeEventHandlers: useSubcomponentSelectModeEventHandlers(),
       ...useBaseComponent(),
     };
   },

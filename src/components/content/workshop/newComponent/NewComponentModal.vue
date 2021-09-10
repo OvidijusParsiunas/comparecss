@@ -40,7 +40,7 @@
         <div class="modal-footer">
           <button ref="addButton"
             type="button" class="btn btn-primary" data-dismiss="modal"
-            @click="addNewComponent">
+            @click="addComponent">
             Add
           </button>
         </div>
@@ -156,10 +156,10 @@ export default {
     selectComponentType(componentType: COMPONENT_TYPES): void {
       this.currentlySelectedComponentType = componentType;
     },
-    addNewComponent(): void {
+    addComponent(): void {
       const newComponent = componentTypeToStyleGenerators[this.currentlySelectedComponentType][DEFAULT_STYLES.DEFAULT].createNewComponent();
       newComponent.className = this.className;
-      this.$emit('add-new-component', newComponent);
+      this.$emit('add-component', newComponent);
       // updates modal only after it has closed
       setTimeout(() => {
         this.classNameIndex++;
