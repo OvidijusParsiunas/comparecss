@@ -101,7 +101,7 @@ export class DropdownItemLayer extends ComponentBuilder {
     coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomStaticFeatures = DropdownItemLayer.createDefaultTextCustomStaticFeatures('Dropdown item');
   }
 
-  private static addChildComponentsToLayer(containerComponent: WorkshopComponent): WorkshopComponent[] {
+  private static addChildComponentsToLayer(containerComponent: WorkshopComponent, isTemporary = false): WorkshopComponent[] {
     const layerComponent = this as undefined as WorkshopComponent;
     const { higherComponentContainer } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
     const textComponent = AddContainerComponent.add(containerComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
@@ -110,8 +110,10 @@ export class DropdownItemLayer extends ComponentBuilder {
     layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].otherSubcomponentTriggers
       .subcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     layerComponent.childComponentsLockedToLayer.list.push(textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
-    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(containerComponent,
-      higherComponentContainer.componentPreviewStructure.layers[higherComponentContainer.componentPreviewStructure.layers.length - 1]);
+    if (!isTemporary) {
+      UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(containerComponent,
+        higherComponentContainer.componentPreviewStructure.layers[higherComponentContainer.componentPreviewStructure.layers.length - 1]); 
+    }
     return [textComponent];
   }
 
