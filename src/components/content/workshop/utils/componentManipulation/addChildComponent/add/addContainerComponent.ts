@@ -13,6 +13,7 @@ import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedD
 import { CoreSubcomponentRefsUtils } from '../../coreSubcomponentRefs/coreSubcomponentRefsUtils';
 import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import ComponentTraversalUtils from '../../../componentTraversal/componentTraversalUtils';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -128,7 +129,7 @@ export class AddContainerComponent extends AddComponentShared {
   }
 
   protected static createNewComponent(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, componentGenerator: ComponentGenerator,
-      newComponentContainer: WorkshopComponent, masterComponent?: WorkshopComponent, overwritePropertiesFunc?: OverwritePropertiesFunc[],
+      newComponentContainer: WorkshopComponent, masterComponent: WorkshopComponent, overwritePropertiesFunc?: OverwritePropertiesFunc[],
       customBaseName?: string): NewComponentDetails {
     const baseNamePrefix = AddContainerComponent.getBaseSubcomponentNamePrefix(componentType, componentStyle);
     const baseName = customBaseName || UniqueSubcomponentNameGenerator.generate(baseNamePrefix);
@@ -160,7 +161,8 @@ export class AddContainerComponent extends AddComponentShared {
   public static add(newComponentContainer: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
       parentLayerName: string, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
     const parentLayer = AddComponentShared.getContainerComponentLayer(newComponentContainer, parentLayerName);
-    return AddComponentShared.addComponentViaDropdownStructureSearch(newComponentContainer, AddContainerComponent.addUsingParentDropdownStructure,
-      componentType, componentStyle, parentLayer, overwritePropertiesFunc)
+    return ComponentTraversalUtils.traverseComponentDropdownStructureFromStart(
+      newComponentContainer, AddContainerComponent.addUsingParentDropdownStructure,
+      componentType, componentStyle, parentLayer, overwritePropertiesFunc) as WorkshopComponent;
   }
 }

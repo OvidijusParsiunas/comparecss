@@ -1,4 +1,5 @@
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
+import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { UpdateDropdownOptionNamesShared } from './updateDropdownOptionNamesShared';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
@@ -39,11 +40,10 @@ export class UpdateLayerDropdownOptionNames extends UpdateDropdownOptionNamesSha
       newOptionName, oldOptionName);
   }
 
-  // only works for adding layers to the top level container component
-  public static update(containerComponent: WorkshopComponent, startingLayerNumber: number): void {
-    const { higherActiveComponentContainer, masterComponent } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
-    const { subcomponentDropdownStructure, subcomponentNameToDropdownOptionName } = masterComponent.componentPreviewStructure;
-    const layersDropdownStructure = subcomponentDropdownStructure[
+  private static updateIfActiveOptionFound(containerComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure,
+      higherActiveComponentContainer: WorkshopComponent, masterComponent: WorkshopComponent, startingLayerNumber: number): boolean {
+    const { subcomponentNameToDropdownOptionName } = masterComponent.componentPreviewStructure;
+    const layersDropdownStructure = dropdownStructure[
       subcomponentNameToDropdownOptionName[higherActiveComponentContainer.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name]] as NestedDropdownStructure;
     const subcomponentNames = UpdateDropdownOptionNamesShared.getSubcomponentNames(layersDropdownStructure);
     let overwrittenOptionNames: string[] = [];
@@ -55,5 +55,12 @@ export class UpdateLayerDropdownOptionNames extends UpdateDropdownOptionNamesSha
         layersDropdownStructure, startingLayerNumber);
     }
     UpdateDropdownOptionNamesShared.removeOverwrittenOptionNames(overwrittenOptionNames, layersDropdownStructure);
+    return true;
+  }
+
+  public static update(containerComponent: WorkshopComponent, startingLayerNumber: number): void {
+    const { higherActiveComponentContainer, masterComponent } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
+    ComponentTraversalUtils.traverseComponentDropdownStructureFromStart(containerComponent, UpdateLayerDropdownOptionNames.updateIfActiveOptionFound,
+      higherActiveComponentContainer, masterComponent, startingLayerNumber);
   }
 }

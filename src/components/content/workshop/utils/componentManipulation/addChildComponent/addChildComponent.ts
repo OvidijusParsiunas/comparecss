@@ -3,6 +3,7 @@ import { UpdateGenericComponentDropdownOptionNames } from '../updateChildCompone
 import { UpdateLayerDropdownOptionNames } from '../updateChildComponent/updateLayerDropdownOptionNames';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { ChildComponentBaseNamesToStyles } from './utils/childComponentBaseNamesToStyles';
+import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ActiveComponentUtils } from '../../activeComponent/activeComponentUtils';
@@ -53,7 +54,7 @@ export class AddChildComponent extends AddComponentShared {
     if (Object.values(LAYER_COMPONENTS_BASE_NAMES).includes(newComponentBaseName as LAYER_COMPONENTS_BASE_NAMES)) {
       AddChildComponent.addNewLayerToBase(activeComponent, newComponentBaseName);
     } else {
-      AddContainerComponent.addComponentViaDropdownStructureSearch(
+      ComponentTraversalUtils.traverseComponentDropdownStructureFromStart(
         activeComponent, AddChildComponent.addNewComponentToLayer, higherComponentContainer, newComponentBaseName);
     }
   }

@@ -5,7 +5,9 @@ import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uni
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { IncrementChildComponentCount } from '../../childComponentCount/incrementChildComponentCount';
 import { AlignedSections, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
+import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { ChildComponentBaseNamesToStyles } from '../utils/childComponentBaseNamesToStyles';
+import ComponentTraversalUtils from '../../../componentTraversal/componentTraversalUtils';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
@@ -23,14 +25,16 @@ export class AddLayerComponent extends AddComponentShared {
     }
   }
 
-  // only works for adding layers to the top level container component (masterComponent)
-  private static updateComponentDropdownStructure(containerComponent: WorkshopComponent, masterComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
-    const baseName = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
-    const newComponentDropdownStructure = { [baseName]: { 
-      ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(baseName),
+  private static updateDropdownStructureIfOptionFound(containerComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure,
+      newComponent: WorkshopComponent, masterComponent: WorkshopComponent): boolean {
+    const newComponentBaseName = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+    const newComponentDropdownStructure = { [newComponentBaseName]: { 
+      ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(newComponentBaseName),
     }};
-    const { subcomponentDropdownStructure, subcomponentNameToDropdownOptionName } = masterComponent.componentPreviewStructure;
-    Object.assign(subcomponentDropdownStructure[subcomponentNameToDropdownOptionName[containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name]], newComponentDropdownStructure);
+    const { subcomponentNameToDropdownOptionName } = masterComponent.componentPreviewStructure;
+    const containerComponentBaseName = containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+    Object.assign(dropdownStructure[subcomponentNameToDropdownOptionName[containerComponentBaseName]], newComponentDropdownStructure);
+    return true;
   }
 
   private static addNewSubcomponentToBase(containerComponent: WorkshopComponent, layer: Layer): void {
@@ -103,7 +107,8 @@ export class AddLayerComponent extends AddComponentShared {
       UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
     AddComponentShared.populateMasterComponentWithNewSubcomponents(masterComponent, newComponent.subcomponents);
     AddLayerComponent.addNewComponentToComponentPreview(higherComponentContainer, newComponent);
-    if (isEditable) AddLayerComponent.updateComponentDropdownStructure(higherComponentContainer, masterComponent, newComponent);
+    if (isEditable) ComponentTraversalUtils.traverseComponentDropdownStructureFromStart(containerComponent,
+      AddLayerComponent.updateDropdownStructureIfOptionFound, newComponent, masterComponent);
     AddComponentShared.addNewSubcomponentNameInContainerDropdownOptionNameMap(masterComponent, newComponent, isEditable);
     AddLayerComponent.addNewChildComponentsOptions(higherComponentContainer, newComponent);
     IncrementChildComponentCount.increment(higherComponentContainer, layerName);

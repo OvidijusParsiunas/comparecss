@@ -7,6 +7,11 @@ import { WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 
 type TraverseComponentCallback = (componentTraversalState: ComponentTraversalState) => ComponentTraversalState;
 
+type DropdownStructureSearchCallback = (
+  containerComponent: WorkshopComponent,
+  dropdownStructure: NestedDropdownStructure,
+  ...args: unknown[]) => unknown;
+
 export default class ComponentTraversalUtils {
 
   public static generateTargetDetails(containerComponent: WorkshopComponent, targetSubcomponentName: string): TargetDetails {
@@ -56,6 +61,26 @@ export default class ComponentTraversalUtils {
       if (inspectionResult) return inspectionResult;
     }
     return null;
+  }
+
+  private static proceedToInvokeCallbackIfFound(containerComponent: WorkshopComponent, callback: DropdownStructureSearchCallback,
+      args: unknown[], componentTraversalState: ComponentTraversalState): unknown {
+    const targetDetails = this as any as TargetDetails;
+    if (ComponentTraversalUtils.isActualObjectNameMatching(targetDetails, componentTraversalState)) {
+      const { subcomponentDropdownStructure } = componentTraversalState;
+      return callback(containerComponent, subcomponentDropdownStructure, ...args);
+    }
+    return null;
+  }
+
+  public static traverseComponentDropdownStructureFromStart(parentOptionComponent: WorkshopComponent, callback: DropdownStructureSearchCallback,
+      ...args: unknown[]): unknown {
+    const masterComponent = parentOptionComponent.masterComponent;
+    const targetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName);
+    return ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
+      masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
+      ComponentTraversalUtils.proceedToInvokeCallbackIfFound.bind(targetDetails,
+        parentOptionComponent, callback, args)) as WorkshopComponent;
   }
 
   private static inspectAlignedChildComponent(alignedChildComponents: BaseSubcomponentRef[], index: number, alignedSections: AlignedSections,
