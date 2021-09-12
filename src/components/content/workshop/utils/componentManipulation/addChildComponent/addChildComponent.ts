@@ -6,7 +6,6 @@ import { ChildComponentBaseNamesToStyles } from './utils/childComponentBaseNames
 import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { ActiveComponentUtils } from '../../activeComponent/activeComponentUtils';
 import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
 import { AddContainerComponent } from './add/addContainerComponent';
 import { AddComponentShared } from './add/addComponentShared';
@@ -25,13 +24,13 @@ export class AddChildComponent extends AddComponentShared {
     return [newComponent, parentLayer];
   }
 
-  private static addNewComponentToLayer(activeComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure,
-      activeComponentContainer: WorkshopComponent, newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): WorkshopComponent {
+  private static addNewComponentToLayerIfOptionFound(activeComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure,
+      newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): WorkshopComponent {
     const [newComponent, parentLayer] = AddChildComponent.addNewComponent(activeComponent, newComponentBaseName, dropdownStructure);
-    const { componentPreviewStructure: { subcomponentNameToDropdownOptionName }, activeSubcomponentName } = activeComponentContainer;
+    const { componentPreviewStructure: { subcomponentNameToDropdownOptionName }, activeSubcomponentName } = activeComponent.masterComponent;
     const activeContainerComponentOptionName = subcomponentNameToDropdownOptionName[activeSubcomponentName];
-    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(
-      activeComponentContainer, dropdownStructure[activeContainerComponentOptionName] as NestedDropdownStructure, parentLayer.sections.alignedSections);
+    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(activeComponent.masterComponent,
+      dropdownStructure[activeContainerComponentOptionName] as NestedDropdownStructure, parentLayer.sections.alignedSections);
     return newComponent;
   }
 
@@ -50,12 +49,11 @@ export class AddChildComponent extends AddComponentShared {
 
   public static add(masterComponent: WorkshopComponent, newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): void {
     const activeComponent = masterComponent.subcomponents[masterComponent.activeSubcomponentName].seedComponent;
-    const { higherComponentContainer } = ActiveComponentUtils.getHigherLevelComponents(activeComponent);
     if (Object.values(LAYER_COMPONENTS_BASE_NAMES).includes(newComponentBaseName as LAYER_COMPONENTS_BASE_NAMES)) {
       AddChildComponent.addNewLayerToBase(activeComponent, newComponentBaseName);
     } else {
       ComponentTraversalUtils.traverseComponentDropdownStructureFromStart(
-        activeComponent, AddChildComponent.addNewComponentToLayer, higherComponentContainer, newComponentBaseName);
+        activeComponent, AddChildComponent.addNewComponentToLayerIfOptionFound, newComponentBaseName);
     }
   }
 }

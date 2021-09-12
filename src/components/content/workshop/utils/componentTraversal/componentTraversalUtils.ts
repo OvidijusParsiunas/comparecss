@@ -19,6 +19,7 @@ export default class ComponentTraversalUtils {
       targetSubcomponentName,
       targetDropdownOptionName: containerComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[targetSubcomponentName],
       containerComponent,
+      masterComponent: containerComponent.masterComponent,
       targetSubcomponentProperties: containerComponent.subcomponents[targetSubcomponentName],
     };
   }

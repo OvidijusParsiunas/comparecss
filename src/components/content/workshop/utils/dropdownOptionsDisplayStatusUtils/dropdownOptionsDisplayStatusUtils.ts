@@ -2,7 +2,7 @@ import { DropdownOptionAuxDetails, DropdownOptionAuxDetailsRef, DROPDOWN_OPTION_
 
 export class DropdownOptionsDisplayStatusUtils {
 
-  private static createDefaultOptionDisplayStatus(actualObjectName?: string): DropdownOptionAuxDetails {
+  public static createDefaultOptionDisplayStatus(actualObjectName?: string): DropdownOptionAuxDetails {
     const defaultOptionDisplayStatus: DropdownOptionAuxDetails = { isEnabled: true };
     if (actualObjectName) defaultOptionDisplayStatus.actualObjectName = actualObjectName;
     return defaultOptionDisplayStatus;

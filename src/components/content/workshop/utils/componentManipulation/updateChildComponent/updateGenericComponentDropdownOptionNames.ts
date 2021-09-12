@@ -10,25 +10,25 @@ import { ActiveComponentUtils } from '../../activeComponent/activeComponentUtils
 
 export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOptionNamesShared {
 
-  private static updateLayerChildOptions(containerComponent: WorkshopComponent, containerDropdownStructure: NestedDropdownStructure,
+  private static updateLayerChildOptions(masterComponent: WorkshopComponent, containerDropdownStructure: NestedDropdownStructure,
       alignedSections: AlignedSections, optionDataMaps: OptionDataMaps, overwrittenOptionNames: string[], newDrodpownNames: string[],
       overwrittenDropdownStructures: NestedDropdownStructure): void {
     const alignedSectionsKeys = Object.keys(alignedSections);
     for (let i = 0; i < alignedSectionsKeys.length; i += 1) {
       const section = alignedSections[alignedSectionsKeys[i]];
       for (let j = 0; j < section.length; j += 1) {
-        UpdateContainerComponentDropdownUtils.updateOptionNames(containerComponent, optionDataMaps, containerDropdownStructure,
+        UpdateContainerComponentDropdownUtils.updateOptionNames(masterComponent, optionDataMaps, containerDropdownStructure,
           overwrittenOptionNames, newDrodpownNames, (section[j] as BaseSubcomponentRef).subcomponentProperties.name,
           overwrittenDropdownStructures);
       }
     }
   }
 
-  public static updateViaParentLayerDropdownStructure(containerComponent: WorkshopComponent, containerDropdownStructure: NestedDropdownStructure,
+  public static updateViaParentLayerDropdownStructure(masterComponent: WorkshopComponent, containerDropdownStructure: NestedDropdownStructure,
       alignedSections: AlignedSections): void {
     const { optionDataMaps, stateObjects: { overwrittenOptionNames, newDrodpownNames, overwrittenDropdownStructures },
       } = UpdateContainerComponentDropdownUtils.generateOptionUpdateInitializationObjects(containerDropdownStructure);
-    UpdateGenericComponentDropdownOptionNames.updateLayerChildOptions(containerComponent, containerDropdownStructure, alignedSections,
+    UpdateGenericComponentDropdownOptionNames.updateLayerChildOptions(masterComponent, containerDropdownStructure, alignedSections,
       optionDataMaps, overwrittenOptionNames, newDrodpownNames, overwrittenDropdownStructures);
     UpdateContainerComponentDropdownUtils.removeOldOptionNames(overwrittenOptionNames, newDrodpownNames, containerDropdownStructure);
   }

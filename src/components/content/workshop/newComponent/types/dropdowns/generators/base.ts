@@ -46,7 +46,6 @@ export const dropdownBase: ComponentGenerator = {
     paddingComponent.type = COMPONENT_TYPES.DROPDOWN;
     const buttonComponent = dropdownButtonBase.createNewComponent();
     UpdatePaddingComponentDropdownOptions.updatePaddingComponentChildren(buttonComponent);
-    // WORK 2 - add/remove subcomponent from child dropdown
     DropdownBase.createStaticFeatures(paddingComponent);
     DropdownBase.overwriteCustomStaticFeatures(buttonComponent, paddingComponent);
     Object.assign(buttonComponent.subcomponents, paddingComponent.subcomponents);

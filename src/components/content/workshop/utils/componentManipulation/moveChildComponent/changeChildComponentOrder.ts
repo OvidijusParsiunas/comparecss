@@ -14,9 +14,9 @@ type ChangeComponentTargetDetails = TargetDetails & { isLowerOrderDirection?: bo
 
 export class ChangeChildComponentOrder {
 
-  private static updateNames(targetDetails: TargetDetails, subcomponentDropdownStructure: NestedDropdownStructure): void {
-    const { containerComponent, parentLayerAlignedSections } = targetDetails;
-    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(containerComponent, subcomponentDropdownStructure, parentLayerAlignedSections);
+  private static updateNames(targetDetails: ChangeComponentTargetDetails, subcomponentDropdownStructure: NestedDropdownStructure): void {
+    const { masterComponent, parentLayerAlignedSections } = targetDetails;
+    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(masterComponent, subcomponentDropdownStructure, parentLayerAlignedSections);
   }
 
   private static swapSubcomponentDropdownStructure(subcomponentDropdownStructure: NestedDropdownStructure, currentOptionName: string,
@@ -36,9 +36,9 @@ export class ChangeChildComponentOrder {
     subcomponentNameToDropdownOptionName[ChangeChildComponentOrder.getActualObjectName(subcomponentDropdownStructure, currentOptionName)] = swappedOptionName;
   }
 
-  private static swapDropdownDetails(containerComponent: WorkshopComponent, subcomponentDropdownStructure: NestedDropdownStructure,
+  private static swapDropdownDetails(masterComponent: WorkshopComponent, subcomponentDropdownStructure: NestedDropdownStructure,
       currentOptionName: string, swappedOptionName: string): void {
-    ChangeChildComponentOrder.swapSubcomponentNameToDropdownOptionNameMapDetails(containerComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName,
+    ChangeChildComponentOrder.swapSubcomponentNameToDropdownOptionNameMapDetails(masterComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName,
       subcomponentDropdownStructure, currentOptionName, swappedOptionName);
     ChangeChildComponentOrder.swapSubcomponentDropdownStructure(subcomponentDropdownStructure, currentOptionName, swappedOptionName);
   }
@@ -48,7 +48,7 @@ export class ChangeChildComponentOrder {
     const dropdownOptionNames = Object.keys(subcomponentDropdownStructure);
     const swappedOptionIndex = targetDetails.isLowerOrderDirection ? index - 1 : index + 1;
     const swappedOptionName = dropdownOptionNames[swappedOptionIndex];
-    ChangeChildComponentOrder.swapDropdownDetails(targetDetails.containerComponent, subcomponentDropdownStructure, currentOptionName, swappedOptionName);
+    ChangeChildComponentOrder.swapDropdownDetails(targetDetails.masterComponent, subcomponentDropdownStructure, currentOptionName, swappedOptionName);
     if (targetDetails.targetSubcomponentProperties.subcomponentType !== SUBCOMPONENT_TYPES.LAYER) {
       ChangeChildComponentOrder.updateNames(targetDetails, subcomponentDropdownStructure);
     }

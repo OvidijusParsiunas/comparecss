@@ -23,9 +23,9 @@ export class UpdateDropdownOptionNamesShared {
     return subcomponentNamePrefix + ' ' + newPostfix;
   }
 
-  protected static generateOptionNames(subcomponentName: string, newOptionNameIndex: number, containerComponent: WorkshopComponent,
+  protected static generateOptionNames(subcomponentName: string, newOptionNameIndex: number, masterComponent: WorkshopComponent,
       isSingleOption: boolean): OptionNames {
-    const oldOptionName = containerComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[subcomponentName];
+    const oldOptionName = masterComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[subcomponentName];
     const newOptionName = isSingleOption
       ? StringUtils.getFirstWordInString(subcomponentName)
       : UpdateDropdownOptionNamesShared.generateMultiOptionName(subcomponentName, newOptionNameIndex);

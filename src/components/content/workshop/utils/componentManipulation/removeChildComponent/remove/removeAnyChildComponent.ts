@@ -14,7 +14,7 @@ import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUt
 import { SetNewActiveSubcomponent } from '../../utils/setNewActiveSubcomponent';
 import { SubcomponentTriggers } from '../../utils/subcomponentTriggers';
 
-type TargetRemovalDetails = TargetDetails & { isRemovingActiveSubcomponent?: boolean, masterComponent?: WorkshopComponent };
+type TargetRemovalDetails = TargetDetails & { isRemovingActiveSubcomponent?: boolean };
 
 export class RemoveAnyChildComponent {
 
@@ -29,11 +29,11 @@ export class RemoveAnyChildComponent {
   private static updateDropdownOptionNames(targetDetails: TargetRemovalDetails, subcomponentDropdownStructure: NestedDropdownStructure,
       removedSubcomponentDropdownIndex: number, alignedSections: AlignedSections, dropdownOptions: string[]): void {
     if (dropdownOptions.length === 1) return;
-    const { containerComponent, targetSubcomponentProperties: { subcomponentType } } = targetDetails;
+    const { masterComponent, targetSubcomponentProperties: { subcomponentType } } = targetDetails;
     if (subcomponentType !== SUBCOMPONENT_TYPES.LAYER) {
-      UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(containerComponent, subcomponentDropdownStructure, alignedSections);
+      UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(masterComponent, subcomponentDropdownStructure, alignedSections);
     } else {
-      UpdateLayerDropdownOptionNames.update(containerComponent, removedSubcomponentDropdownIndex);
+      UpdateLayerDropdownOptionNames.update(masterComponent, removedSubcomponentDropdownIndex);
     }
   }
 
@@ -41,28 +41,28 @@ export class RemoveAnyChildComponent {
     return Object.keys(nestedDropdownStructure).filter((buttonName) => buttonName !== DROPDOWN_OPTION_AUX_DETAILS_REF);
   }
 
-  private static selectSiblingSubcomponent(containerComponent: WorkshopComponent, dropdownOptions: string[],
+  private static selectSiblingSubcomponent(masterComponent: WorkshopComponent, dropdownOptions: string[],
       componentTraversalState: ComponentTraversalState): void {
     const { dropdownOptionName, subcomponentDropdownStructure } = componentTraversalState;
     const currentDropdownOptionIndex = dropdownOptions.indexOf(dropdownOptionName);
     const newDropdownOptionName = currentDropdownOptionIndex === dropdownOptions.length - 1
       ? dropdownOptions[currentDropdownOptionIndex - 1] : dropdownOptions[currentDropdownOptionIndex + 1];
     const newSubcomponentName = (subcomponentDropdownStructure[newDropdownOptionName][DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).actualObjectName;
-    SetNewActiveSubcomponent.set(containerComponent, newSubcomponentName);
+    SetNewActiveSubcomponent.set(masterComponent, newSubcomponentName);
   }
 
-  private static selectNewActiveSubcomponent(componentTraversalState: ComponentTraversalState, containerComponent: WorkshopComponent,
+  private static selectNewActiveSubcomponent(componentTraversalState: ComponentTraversalState, masterComponent: WorkshopComponent,
       parentSubcomponentName: string, dropdownOptions: string[]): void {
     if (dropdownOptions.length === 1) {
-      SetNewActiveSubcomponent.set(containerComponent, parentSubcomponentName);
+      SetNewActiveSubcomponent.set(masterComponent, parentSubcomponentName);
     } else {
-      RemoveAnyChildComponent.selectSiblingSubcomponent(containerComponent, dropdownOptions, componentTraversalState);
+      RemoveAnyChildComponent.selectSiblingSubcomponent(masterComponent, dropdownOptions, componentTraversalState);
     }
   }
 
-  private static getParentSubcomponentName(containerComponent: WorkshopComponent, dropdownOptionDetailsStack: DropdownOptionAuxDetails[]): string {
+  private static getParentSubcomponentName(masterComponent: WorkshopComponent, dropdownOptionDetailsStack: DropdownOptionAuxDetails[]): string {
     const parentDropdownOptionDetails = dropdownOptionDetailsStack[dropdownOptionDetailsStack.length - 2];
-    return parentDropdownOptionDetails?.actualObjectName || containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+    return parentDropdownOptionDetails?.actualObjectName || masterComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
   }
 
   private static removeDropdownStructure(componentTraversalState: ComponentTraversalState, targetDetails: TargetRemovalDetails,
@@ -148,7 +148,6 @@ export class RemoveAnyChildComponent {
     const targetDetails: TargetRemovalDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent,
       subcomponentName || parentComponent.activeSubcomponentName);
     targetDetails.isRemovingActiveSubcomponent = isRemovingActiveSubcomponent;
-    targetDetails.masterComponent = masterComponent;
     const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
       higherActiveComponentContainer.componentPreviewStructure,
       RemoveAnyChildComponent.removeChildComponentInPreviewStructureIfFound.bind(targetDetails));

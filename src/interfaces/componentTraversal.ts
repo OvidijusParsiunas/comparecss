@@ -9,6 +9,7 @@ export interface TargetDetails {
   targetSubcomponentName: string;
   targetDropdownOptionName: string;
   containerComponent: WorkshopComponent;
+  masterComponent: WorkshopComponent;
   targetSubcomponentProperties: SubcomponentProperties;
   parentLayerAlignedSections?: AlignedSections;
 }
