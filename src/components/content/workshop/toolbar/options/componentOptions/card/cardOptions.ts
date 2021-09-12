@@ -3,14 +3,15 @@ import { BUTTON_STYLES, TEXT_STYLES } from '../../../../../../../consts/componen
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
+import { dropdownButtonOptions } from '../dropdown/dropdownButton';
 import { Options } from '../../../../../../../interfaces/options';
 import { cardBottomLayerOptions } from '../layer/cardBottomLayer';
 import { closeButtonTextOptions } from '../text/closeButtonText';
+import { childDropdownOptions } from '../dropdown/childDropdown';
 import { dropdownMenuOptions } from '../dropdown/dropdownMenu';
 import { childButtonOptions } from '../button/childButton';
 import { closeButtonOptions } from '../button/closeButton';
 import { buttonTextOptions } from '../text/buttonText';
-import { dropdownOptions } from '../dropdown/dropdown';
 import { cardLayerOptions } from '../layer/cardLayer';
 import { imageOptions } from '../image/image';
 import { textOptions } from '../text/text';
@@ -22,7 +23,7 @@ export class CardOptions {
   private static readonly STATIC_CARD_OPTIONS: SubcomponentTypeToOptions = {
     // WORK 2 - may need to be removed from Card
     [SUBCOMPONENT_TYPES.DROPDOWN_MENU]: dropdownMenuOptions as Options,
-    [SUBCOMPONENT_TYPES.DROPDOWN]: dropdownOptions as Options,
+    [SUBCOMPONENT_TYPES.DROPDOWN]: childDropdownOptions as Options,
     [SUBCOMPONENT_TYPES.BASE]: cardBaseOptions as Options,
     [SUBCOMPONENT_TYPES.IMAGE]: imageOptions as Options,
     [SUBCOMPONENT_TYPES.ICON]: iconOptions as Options,
@@ -39,6 +40,10 @@ export class CardOptions {
   }
 
   protected static getButtonOptions(component: WorkshopComponent): Options {
+    // WORK 2 - may need to be removed from Card
+    if (component.subcomponents[component.activeSubcomponentName].seedComponent.paddingComponent?.type === COMPONENT_TYPES.DROPDOWN) {
+      return dropdownButtonOptions;
+    }
     if (component.subcomponents[component.activeSubcomponentName].seedComponent.style === BUTTON_STYLES.CLOSE) {
       return closeButtonOptions;
     }
