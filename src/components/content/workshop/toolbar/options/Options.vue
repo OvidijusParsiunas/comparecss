@@ -463,7 +463,8 @@ export default {
         this.$emit('prepare-remove-child-component-modal', this.removeChildComponent);
       } else {
         this.removeChildComponent();
-        setTimeout(() => RemoveChildComponentOverlay.display(this.component.activeSubcomponentName));
+        setTimeout(() => {
+          if (this.isRemoveChildComponentButtonDisplayed()) RemoveChildComponentOverlay.display(this.component.activeSubcomponentName)});
       }
     },
     removeChildComponent(): void {
