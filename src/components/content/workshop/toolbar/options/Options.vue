@@ -639,7 +639,7 @@ export default {
     color: #5c5c5c;
   }
   #subcomponent-dropdown-button {
-    width: 112px;
+    width: 128px;
   }
   .component-manipulation-options-group {
     float: left;

@@ -1,4 +1,4 @@
-set the dropdown button width by a prop - should also set the option menu width
+set the dropdown button width by a prop - should also set the option menu width (increase the size to the selected option - dropdown is longest)
 rename dropdown option to dropdown item
 dropdown will probably need to have its own base name when child
 change copy child component to sync child component - new UX
@@ -8,7 +8,6 @@ upon selecting menu component in dropdown - display it
 SubcomponentAndOverlayIds.generate gets called many times when adding a new child componnet
 have button selected in card, open up subcomponent dropdown and navigate to different component
 after removing all menu items (with no modal checked), menu overlay is red
-dropdown name does not display double arrow in dropdown
 
 night diving
 

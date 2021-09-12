@@ -35,8 +35,8 @@ class DropdownBase extends ComponentBuilder {
     paddingBaseSubcomponent.defaultCustomFeatures = DropdownBase.createDefaultCustomFeatures();
   }
 
-  public static createStaticFeatures(overlayComponent: WorkshopComponent): void {
-    const baseSubcomponent = overlayComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+  public static createStaticFeatures(paddingComponent: WorkshopComponent): void {
+    const baseSubcomponent = paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     baseSubcomponent.customStaticFeatures = { dropdown: { select: DropdownBase.createSelectDropdownProperties(), indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW } };
     baseSubcomponent.defaultCustomStaticFeatures = { dropdown: { select: DropdownBase.createSelectDropdownProperties(), indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW } };
   }
@@ -69,7 +69,6 @@ export const dropdownBase: ComponentGenerator = {
     paddingComponent.componentPreviewStructure.subcomponentDropdownStructure[paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] = { ...buttonComponent.componentPreviewStructure.subcomponentDropdownStructure };
     paddingComponent.paddingComponentChild = buttonComponent;
     buttonComponent.paddingComponent = paddingComponent;
-    // change position
     return paddingComponent;
   },
 }

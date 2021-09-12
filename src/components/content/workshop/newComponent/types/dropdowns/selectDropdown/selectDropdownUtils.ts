@@ -21,23 +21,22 @@ export class SelectDropdownUtils {
     }
   }
 
-  private static setDetails(subcomponentProperties: SubcomponentProperties, itemTextKey: keyof SubcomponentMouseEventItemText, canBeUnset = false): void {
-    const seedComponent = subcomponentProperties.seedComponent;
-    const containerComponent = seedComponent.containerComponent || seedComponent;
-    const menuComponent = containerComponent.linkedComponents?.base || containerComponent;
-    const { select } = menuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures?.dropdown;
+  private static setDetails(seedComponent: WorkshopComponent, itemTextKey: keyof SubcomponentMouseEventItemText, canBeUnset = false): void {
+    const dropdownPaddingComponent = seedComponent.type === COMPONENT_TYPES.DROPDOWN
+      ? seedComponent : seedComponent.containerComponent.linkedComponents.base.paddingComponent;
+    const { select } = dropdownPaddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures?.dropdown;
     if (select.enabled) {
       SelectDropdownUtils.setMouseEventText(seedComponent, select, itemTextKey);
     } else if (canBeUnset) {
-      SelectDropdownUtils.refresh(menuComponent);
+      SelectDropdownUtils.refresh(dropdownPaddingComponent);
     }
   }
 
   public static setSelectDropdownLastHoveredItemText(subcomponentProperties: SubcomponentProperties): void {
-    SelectDropdownUtils.setDetails(subcomponentProperties, 'lastHoveredItemText');
+    SelectDropdownUtils.setDetails(subcomponentProperties.seedComponent, 'lastHoveredItemText');
   }
 
   public static setSelectDropdownText(subcomponentProperties: SubcomponentProperties): void {
-    SelectDropdownUtils.setDetails(subcomponentProperties, 'lastSelectedItemText', true);
+    SelectDropdownUtils.setDetails(subcomponentProperties.seedComponent, 'lastSelectedItemText', true);
   }
 }
