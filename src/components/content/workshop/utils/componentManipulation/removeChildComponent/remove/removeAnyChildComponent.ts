@@ -27,7 +27,8 @@ export class RemoveAnyChildComponent {
   }
 
   private static updateDropdownOptionNames(targetDetails: TargetRemovalDetails, subcomponentDropdownStructure: NestedDropdownStructure,
-      removedSubcomponentDropdownIndex: number, alignedSections: AlignedSections): void {
+      removedSubcomponentDropdownIndex: number, alignedSections: AlignedSections, dropdownOptions: string[]): void {
+    if (dropdownOptions.length === 1) return;
     const { containerComponent, targetSubcomponentProperties: { subcomponentType } } = targetDetails;
     if (subcomponentType !== SUBCOMPONENT_TYPES.LAYER) {
       UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(containerComponent, subcomponentDropdownStructure, alignedSections);
@@ -83,7 +84,7 @@ export class RemoveAnyChildComponent {
       const removedSubcomponentDropdownIndex = dropdownOptions.indexOf(targetDetails.targetDropdownOptionName);
       RemoveAnyChildComponent.removeDropdownStructure(componentTraversalState, targetDetails, dropdownOptions);
       RemoveAnyChildComponent.updateDropdownOptionNames(targetDetails, subcomponentDropdownStructure, removedSubcomponentDropdownIndex,
-        targetDetails.parentLayerAlignedSections);
+        targetDetails.parentLayerAlignedSections, dropdownOptions);
       return componentTraversalState;
     }
     return null;

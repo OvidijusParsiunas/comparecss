@@ -2,6 +2,7 @@ import { SubcomponentTypeToOptions } from '../../../../../../../interfaces/subco
 import { BUTTON_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { Options } from '../../../../../../../interfaces/options';
 import { cardBottomLayerOptions } from '../layer/cardBottomLayer';
 import { closeButtonTextOptions } from '../text/closeButtonText';
@@ -45,6 +46,10 @@ export class CardOptions {
   }
 
   protected static getLayerOptions(component: WorkshopComponent): Options {
+    // WORK 2 - may need to be removed from Card
+    if (component.subcomponents[component.activeSubcomponentName].seedComponent.containerComponent.type === COMPONENT_TYPES.DROPDOWN_MENU) {
+      return dropdownMenuOptions as Options;
+    }
     const { layers } = component.componentPreviewStructure;
     const currentLayerIndex = layers.findIndex((layer) => layer.subcomponentProperties.name === component.activeSubcomponentName);
     if (currentLayerIndex === layers.length - 1) {

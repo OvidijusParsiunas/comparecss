@@ -10,7 +10,7 @@ interface HigherLevelComponents {
 export class ActiveComponentUtils {
 
   public static getActiveContainerComponent(containerComponent: WorkshopComponent): WorkshopComponent {
-    const { masterComponent: { subcomponents }, activeSubcomponentName } = containerComponent;
+    const { subcomponents, activeSubcomponentName } = containerComponent.masterComponent;
     const activeComponent = subcomponents[activeSubcomponentName].seedComponent;
     return activeComponent.type === COMPONENT_TYPES.LAYER ? activeComponent.containerComponent : activeComponent;
   }

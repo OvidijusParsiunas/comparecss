@@ -23,16 +23,6 @@ export default class ComponentTraversalUtils {
     };
   }
 
-  public static isActualObjectNameMatching(targetDetails: TargetDetails, componentTraversalState: ComponentTraversalState): boolean {
-    const { dropdownOptionName, subcomponentDropdownStructure } = componentTraversalState;
-    const { targetDropdownOptionName, targetSubcomponentName } = targetDetails;
-    if (targetDropdownOptionName !== dropdownOptionName) return false;
-    // if there is no DROPDOWN_OPTION_AUX_DETAILS_REF - the component can be considered as the base and return true
-    const { actualObjectName } = subcomponentDropdownStructure[dropdownOptionName]?.[DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails || {};
-    if (actualObjectName) return targetSubcomponentName === actualObjectName;
-    return true;
-  }
-
   private static inspectSubcomponent(subcomponentDropdownStructure: NestedDropdownStructure, index: number,
       callback: TraverseComponentCallback, dropdownOptionDetailsStack: DropdownOptionAuxDetails[], dropdownOptionName: string): ComponentTraversalState {
     if (dropdownOptionName === DROPDOWN_OPTION_AUX_DETAILS_REF) return null;
@@ -61,6 +51,16 @@ export default class ComponentTraversalUtils {
       if (inspectionResult) return inspectionResult;
     }
     return null;
+  }
+
+  public static isActualObjectNameMatching(targetDetails: TargetDetails, componentTraversalState: ComponentTraversalState): boolean {
+    const { dropdownOptionName, subcomponentDropdownStructure } = componentTraversalState;
+    const { targetDropdownOptionName, targetSubcomponentName } = targetDetails;
+    if (targetDropdownOptionName !== dropdownOptionName) return false;
+    // if there is no DROPDOWN_OPTION_AUX_DETAILS_REF - the component can be considered as the base and return true
+    const { actualObjectName } = subcomponentDropdownStructure[dropdownOptionName]?.[DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails || {};
+    if (actualObjectName) return targetSubcomponentName === actualObjectName;
+    return true;
   }
 
   private static proceedToInvokeCallbackIfFound(containerComponent: WorkshopComponent, callback: DropdownStructureSearchCallback,
