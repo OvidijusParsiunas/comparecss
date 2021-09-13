@@ -193,7 +193,7 @@ export default {
           const parentDropdownIndex = i - 1;
           const parentOptionIndex = optionIndexes[i - 1];
           setTimeout(() => {
-            let parentOptionElement = this.$refs.dropdownMenus.childNodes[parentDropdownIndex + 1].childNodes[parentOptionIndex + 1];
+            let parentOptionElement = this.$refs.dropdownMenus.childNodes[parentDropdownIndex + 1]?.childNodes[parentOptionIndex + 1];
             if (!parentOptionElement) {
               this.displayParentMenu();
             } else {

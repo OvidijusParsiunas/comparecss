@@ -3,34 +3,65 @@ import { JavascriptCode } from '../../../../../../../interfaces/javascriptCode';
 const vars = {
   dropdownButtonClassName: 'csssymphony-dropdown-button',
   dropdownMenuClassName: 'csssymphony-dropdown-menu',
+  auxiliaryComponentClassName: 'auxiliary-component',
   dropdownMenuElement: null,
 };
 
-function toggleDropdown(event) {
-  const { classList } = event.target;
-  // the reason why there are separate dropdpown button and menu classes is because they could be utilized
-  // differently in the future if this file will provide more functionality, hence this is a good example
-  if (classList.contains(vars.dropdownButtonClassName) || classList.contains(vars.dropdownMenuClassName)) {
-    const { style } = vars.dropdownMenuElement;
-    style.display = style.display ? '' : 'none';
+function setMenuElementDisplayProperty(menuElement) {
+  const { style } = menuElement;
+  style.display = style.display ? '' : 'none';
+}
+
+function isMenuElement(element) {
+  if (element.classList) {
+    return element.classList.contains(vars.auxiliaryComponentClassName)
   }
+  return undefined;
+}
+
+function findMenuElementFromButtonChildElement(element) {
+  const { parentElement } = element;
+  const childElementsArr = Array.from(parentElement.childNodes);
+  const result = childElementsArr.find((element) => isMenuElement(element));
+  return result || findMenuElementFromButtonChildElement(parentElement);
+}
+
+function findMenuElementFromChildElement(element) {
+  const { parentElement } = element;
+  if (parentElement.classList.contains(vars.auxiliaryComponentClassName)) {
+    return parentElement;
+  }
+  return findMenuElementFromChildElement(parentElement);
+}
+
+function getMenuElement(targetElement) {
+  if (targetElement.classList.contains(vars.dropdownMenuClassName)) {
+    return findMenuElementFromChildElement(targetElement);
+  } else if (targetElement.classList.contains(vars.dropdownButtonClassName)) {
+    return findMenuElementFromButtonChildElement(targetElement);
+  }
+  return null;
+}
+
+function toggleMenu(event) {
+  const targetElement = event.target;
+  const menuElement = getMenuElement(targetElement);
+  if (!menuElement) return;
+  setMenuElementDisplayProperty(menuElement);
 }
 
 function removeScript() {
-  document.body.removeEventListener('mouseup', toggleDropdown);
+  document.body.removeEventListener('mouseup', toggleMenu);
 }
 
 function initializeScript() {
-  document.body.addEventListener('mouseup', toggleDropdown, false);
-  setTimeout(() => {
-    vars.dropdownMenuElement = document.getElementsByClassName(vars.dropdownMenuClassName)[0];
-  });
+  document.body.addEventListener('mouseup', toggleMenu, false);
 }
 
 // downloadableJS and downloadableCSS embody the below structure in order to be formatted correctly for the output file
 const downloadableJS = `var vars = ${JSON.stringify(vars)};
 
-${toggleDropdown.toString()}
+${toggleMenu.toString()}
 
 (${initializeScript.toString()})();
 `;

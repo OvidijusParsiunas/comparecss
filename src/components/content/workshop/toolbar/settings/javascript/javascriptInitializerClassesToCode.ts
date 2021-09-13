@@ -9,5 +9,5 @@ type JavascriptInitializerClassesToCode = {
 
 export const javascriptInitializerClassesToCode: JavascriptInitializerClassesToCode = {
   [JAVASCRIPT_CLASSES.RIPPLES]: ripplesCode,
-  [JAVASCRIPT_CLASSES.DROPDOWN_MENU_BUTTON]: dropdownMenuToggleCode,
+  [JAVASCRIPT_CLASSES.DROPDOWN_BUTTON]: dropdownMenuToggleCode,
 };
