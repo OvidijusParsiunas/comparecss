@@ -1,4 +1,5 @@
 import { CompositionAPISubcomponentTriggerState } from '../../../../../interfaces/compositionAPISubcomponentTriggerState';
+import { SelectDropdownUtils } from '../../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils';
 import { CustomCss, CustomFeatures, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { SubcomponentTriggers } from '../../utils/componentManipulation/utils/subcomponentTriggers';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
@@ -38,23 +39,15 @@ export default function useBaseComponent(): UseBaseComponent {
     return buttonPaddingSubstitutedToWidth;
   }
 
-  function getSelectedDropdownCss(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {
-    // WORK 1 - component.masterComponent && component.masterComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures were added exclusively for when adding dropdown as child
-    if (component.type === COMPONENT_TYPES.TEXT && component.containerComponent?.type === COMPONENT_TYPES.DROPDOWN_MENU && component.masterComponent && component.masterComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures) {
-      const { select } = component.masterComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures.dropdown;
-      if (select?.enabled && select.lastSelectedItemText
-          && select.lastHoveredItemText === component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures.subcomponentText?.text) {
-        return subcomponentCss[CSS_PSEUDO_CLASSES.HOVER];
-      }
-    }
-    return {};
+  function getSelectedDropdownMenuTextCss(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {
+    return SelectDropdownUtils.isTextSelected(component) ? subcomponentCss[CSS_PSEUDO_CLASSES.HOVER] : {};
   }
 
   const generateStyleProperties = (component: WorkshopComponent): WorkshopComponentCss[] => {
     const { overwrittenCustomCssObj, customCss, customFeatures, inheritedCss, activeCssPseudoClass, customStaticFeatures } = component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const subcomponentCss = overwrittenCustomCssObj || customCss;
     SubcomponentTriggers.triggerOtherSubcomponentsCss(component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE], activeCssPseudoClass, otherSubcomponentTriggerState);
-    const selectedDropdownCss = getSelectedDropdownCss(component, subcomponentCss);
+    const selectedDropdownMenuTextCss = getSelectedDropdownMenuTextCss(component, subcomponentCss);
     const buttonPaddingSubstitutedToWidthCss = substituteButtonPaddingToWidthCss(component, subcomponentCss);
     const overflowHiddenCss = getOverflowHiddenCss(customFeatures);
     return [
@@ -66,7 +59,7 @@ export default function useBaseComponent(): UseBaseComponent {
       { color: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'color') },
       isIcon(component) ? { pointerEvents: 'none' } : {},
       buttonPaddingSubstitutedToWidthCss,
-      selectedDropdownCss,
+      selectedDropdownMenuTextCss,
       overflowHiddenCss,
     ];
   };

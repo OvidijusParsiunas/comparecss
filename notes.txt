@@ -7,6 +7,7 @@ when selecting dropdown menu component don't close
 upon selecting menu component in dropdown - display it
 SubcomponentAndOverlayIds.generate gets called many times when adding a new child componnet
 have button selected in card, open up subcomponent dropdown and navigate to different component
+lock button for dropdown menu (additionally could do the same for modal component)
 
 night diving
 

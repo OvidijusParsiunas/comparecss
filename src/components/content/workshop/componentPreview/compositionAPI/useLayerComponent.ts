@@ -1,4 +1,5 @@
 import { CompositionAPISubcomponentTriggerState } from '../../../../../interfaces/compositionAPISubcomponentTriggerState';
+import { SelectDropdownUtils } from '../../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils';
 import { SubcomponentTriggers } from '../../utils/componentManipulation/utils/subcomponentTriggers';
 import { CustomCss, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
@@ -24,24 +25,15 @@ export default function useLayerComponent(): UseLayerComponent {
     return {};
   }
 
-  function getSelectedDropdownCss(layer: Layer, subcomponentCss: CustomCss): WorkshopComponentCss {
-    const { containerComponent, childComponentsLockedToLayer } = layer.subcomponentProperties.seedComponent;
-    if (containerComponent?.type !== COMPONENT_TYPES.DROPDOWN_MENU) return {};
-    const { select } = containerComponent.linkedComponents.base.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures?.dropdown || {};
-    if (select?.enabled) {
-      const itemTextSubcomponent = childComponentsLockedToLayer.list[0];
-      if (select.lastSelectedItemText && itemTextSubcomponent.customStaticFeatures.subcomponentText.text === select.lastHoveredItemText) {
-        return subcomponentCss[CSS_PSEUDO_CLASSES.HOVER];
-      }
-    }
-    return {};
+  function getSelectedDropdownMenuItemCss(layer: Layer, subcomponentCss: CustomCss): WorkshopComponentCss {
+    return SelectDropdownUtils.isItemSelected(layer) ? subcomponentCss[CSS_PSEUDO_CLASSES.HOVER] : {};
   }
 
   const generateStyleProperties = (layer: Layer, isLastLayer: boolean): WorkshopComponentCss[] => {
     const { subcomponentProperties: { overwrittenCustomCssObj, customCss, customStaticFeatures, activeCssPseudoClass } } = layer;
     SubcomponentTriggers.triggerOtherSubcomponentsCss(layer.subcomponentProperties, activeCssPseudoClass, otherSubcomponentTriggerState);
     const subcomponentCss = overwrittenCustomCssObj || customCss;
-    const selectedDropdownCss = getSelectedDropdownCss(layer, subcomponentCss);
+    const selectedDropdownMenuItemCss = getSelectedDropdownMenuItemCss(layer, subcomponentCss);
     const buttonPaddingCss = getButtonPadding(layer.subcomponentProperties.seedComponent.containerComponent);
     return [
       subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT],
@@ -50,7 +42,7 @@ export default function useLayerComponent(): UseLayerComponent {
       { backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'backgroundColor') },
       { boxShadow: CSS_PROPERTY_VALUES.UNSET },
       isLastLayer ? { borderBottomWidth: '0px' } : {}, // can alternatively use nth class
-      selectedDropdownCss,
+      selectedDropdownMenuItemCss,
       buttonPaddingCss,
     ];
   };

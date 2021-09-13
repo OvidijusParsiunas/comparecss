@@ -2,6 +2,7 @@ import { SelectDropdown, SubcomponentMouseEventItemText } from '../../../../../.
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
+import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 
 export class SelectDropdownUtils {
   
@@ -38,5 +39,26 @@ export class SelectDropdownUtils {
 
   public static setSelectDropdownText(subcomponentProperties: SubcomponentProperties): void {
     SelectDropdownUtils.setDetails(subcomponentProperties.seedComponent, 'lastSelectedItemText', true);
+  }
+
+  public static isItemSelected(layer: Layer): boolean {
+    const { containerComponent, childComponentsLockedToLayer } = layer.subcomponentProperties.seedComponent;
+    if (containerComponent?.type === COMPONENT_TYPES.DROPDOWN_MENU) {
+      const { select } = containerComponent.linkedComponents.base.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures.dropdown;
+      return select?.enabled && select.lastSelectedItemText
+        && childComponentsLockedToLayer.list[0].customStaticFeatures.subcomponentText.text === select.lastHoveredItemText; 
+    }
+    return false;
+  }
+
+
+  public static isTextSelected(component: WorkshopComponent): boolean {
+    if (component.type === COMPONENT_TYPES.TEXT && component.containerComponent?.type === COMPONENT_TYPES.DROPDOWN_MENU) {
+      const { select } = component.containerComponent.linkedComponents.base.paddingComponent
+        .coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures.dropdown;
+      return select?.enabled && select.lastSelectedItemText
+        && select.lastHoveredItemText === component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures.subcomponentText.text;
+    }
+    return false;
   }
 }
