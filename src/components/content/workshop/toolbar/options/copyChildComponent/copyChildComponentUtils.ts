@@ -10,15 +10,17 @@ export class CopyChildComponentUtils {
     [COMPONENT_TYPES.DROPDOWN]: new Set([COMPONENT_TYPES.BUTTON]),
   };
 
-  private static canActiveButtonSubcomponentCopy(buttonSubcomponent: SubcomponentProperties, activeComponent: WorkshopComponent): boolean {
-    if (buttonSubcomponent.seedComponent?.style === BUTTON_STYLES.CLOSE) return false;
+  private static canActiveButtonSubcomponentCopy(buttonSubcomponent: SubcomponentProperties): boolean {
+    if (buttonSubcomponent.seedComponent.style === BUTTON_STYLES.CLOSE) return false;
+    if (buttonSubcomponent.seedComponent.paddingComponent?.type === COMPONENT_TYPES.DROPDOWN) return true;
+    // do not allow to copy if the current component itself is a button
     return buttonSubcomponent.seedComponent !== buttonSubcomponent.seedComponent.masterComponent;
   }
 
   public static isCopyOptionButtonDisplayed(activeComponent: WorkshopComponent): boolean {
     const activeSubcomponent = activeComponent.subcomponents[activeComponent.activeSubcomponentName];
     if (activeSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.BUTTON) {
-      return CopyChildComponentUtils.canActiveButtonSubcomponentCopy(activeSubcomponent, activeComponent);
+      return CopyChildComponentUtils.canActiveButtonSubcomponentCopy(activeSubcomponent);
     }
     return false;
   }
