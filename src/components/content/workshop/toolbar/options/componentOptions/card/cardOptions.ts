@@ -9,6 +9,7 @@ import { cardBottomLayerOptions } from '../layer/cardBottomLayer';
 import { closeButtonTextOptions } from '../text/closeButtonText';
 import { childDropdownOptions } from '../dropdown/childDropdown';
 import { dropdownMenuOptions } from '../dropdown/dropdownMenu';
+import { dropdownItemOptions } from '../layer/dropdownItem';
 import { childButtonOptions } from '../button/childButton';
 import { closeButtonOptions } from '../button/closeButton';
 import { buttonTextOptions } from '../text/buttonText';
@@ -53,7 +54,7 @@ export class CardOptions {
   protected static getLayerOptions(component: WorkshopComponent): Options {
     // WORK 2 - may need to be removed from Card
     if (component.subcomponents[component.activeSubcomponentName].seedComponent.containerComponent.type === COMPONENT_TYPES.DROPDOWN_MENU) {
-      return dropdownMenuOptions as Options;
+      return dropdownItemOptions as Options;
     }
     const { layers } = component.componentPreviewStructure;
     const currentLayerIndex = layers.findIndex((layer) => layer.subcomponentProperties.name === component.activeSubcomponentName);
