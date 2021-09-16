@@ -19,30 +19,37 @@ export class CopySubcomponents {
     });
   }
 
-  private static copyInSyncSubcomponent(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
-    if (newSubcomponent.seedComponent) {
-      const copiedSeedComponent = subcomponentBeingCopied.seedComponent;
-      newSubcomponent.seedComponent.sync.syncedComponent = copiedSeedComponent.containerComponent || copiedSeedComponent;
-      newSubcomponent.seedComponent.componentStatus = copiedSeedComponent.componentStatus;
-    }
-    newSubcomponent.customCss = subcomponentBeingCopied.customCss;
-    newSubcomponent.customFeatures = subcomponentBeingCopied.customFeatures;
+  private static copyStaticAndDefaultProperties(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
+    CopySubcomponents.copyProperties(newSubcomponent.customStaticFeatures, subcomponentBeingCopied.customStaticFeatures);
     CopySubcomponents.copyProperties(newSubcomponent.defaultCss, subcomponentBeingCopied.defaultCss);
     CopySubcomponents.copyProperties(newSubcomponent.defaultCustomFeatures, subcomponentBeingCopied.defaultCustomFeatures);
+    CopySubcomponents.copyProperties(newSubcomponent.defaultCustomStaticFeatures, subcomponentBeingCopied.defaultCustomStaticFeatures);
   }
 
   private static copySubcomponentProperties(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
     CopySubcomponents.copyProperties(newSubcomponent.customCss, subcomponentBeingCopied.customCss);
-    CopySubcomponents.copyProperties(newSubcomponent.defaultCss, subcomponentBeingCopied.defaultCss);
     CopySubcomponents.copyProperties(newSubcomponent.customFeatures, subcomponentBeingCopied.customFeatures);
-    CopySubcomponents.copyProperties(newSubcomponent.defaultCustomFeatures, subcomponentBeingCopied.defaultCustomFeatures);
-    CopySubcomponents.copyProperties(newSubcomponent.customStaticFeatures, subcomponentBeingCopied.customStaticFeatures);
-    CopySubcomponents.copyProperties(newSubcomponent.defaultCustomStaticFeatures, subcomponentBeingCopied.defaultCustomStaticFeatures);
+    CopySubcomponents.copyStaticAndDefaultProperties(newSubcomponent, subcomponentBeingCopied);
+  }
+
+  private static copySubcomponentReferenceProperties(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
+    newSubcomponent.customCss = subcomponentBeingCopied.customCss;
+    newSubcomponent.customFeatures = subcomponentBeingCopied.customFeatures;
+    CopySubcomponents.copyStaticAndDefaultProperties(newSubcomponent, subcomponentBeingCopied);
+  }
+
+  private static setInSyncComponent(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
+    const copiedSeedComponent = subcomponentBeingCopied.seedComponent;
+    newSubcomponent.seedComponent.sync.syncedComponent = copiedSeedComponent;
+    newSubcomponent.seedComponent.componentStatus = copiedSeedComponent.componentStatus;
   }
 
   private static copyExistingSubcomponentProperties(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
-    if (subcomponentBeingCopied.seedComponent.referenceSharingExecutables && subcomponentBeingCopied.seedComponent?.sync.syncedComponent) {
-      CopySubcomponents.copyInSyncSubcomponent(newSubcomponent, subcomponentBeingCopied);
+    if (subcomponentBeingCopied.seedComponent.sync.syncedComponent) {
+      CopySubcomponents.setInSyncComponent(newSubcomponent, subcomponentBeingCopied);
+      CopySubcomponents.copySubcomponentReferenceProperties(newSubcomponent, subcomponentBeingCopied);
+    } else if (subcomponentBeingCopied.seedComponent.containerComponent.sync.syncedComponent) {
+      CopySubcomponents.copySubcomponentReferenceProperties(newSubcomponent, subcomponentBeingCopied);
     } else {
       CopySubcomponents.copySubcomponentProperties(newSubcomponent, subcomponentBeingCopied); 
     }
@@ -60,7 +67,7 @@ export class CopySubcomponents {
     const newBaseSubcomponent = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const copiedBaseSubcomponent = copiedComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     if (copiedBaseSubcomponent.seedComponent?.sync.syncedComponent) {
-      CopySubcomponents.copyInSyncSubcomponent(newBaseSubcomponent, copiedBaseSubcomponent);
+      CopySubcomponents.setInSyncComponent(newBaseSubcomponent, copiedBaseSubcomponent);
     } else {
       CopySubcomponents.copySubcomponentProperties(newBaseSubcomponent, copiedBaseSubcomponent);
     }

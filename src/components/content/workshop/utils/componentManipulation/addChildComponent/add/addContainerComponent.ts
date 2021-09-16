@@ -117,7 +117,8 @@ export class AddContainerComponent extends AddComponentShared {
     }
   }
 
-  private static copyInSyncProperties(newComponent: WorkshopComponent, newComponentContainer: WorkshopComponent): void {
+    // this is used in instances if a child component is being added to a component that is already in sync. e.g. icon to a button
+    private static copyInSyncProperties(newComponent: WorkshopComponent, newComponentContainer: WorkshopComponent): void {
     const { syncedComponent } = newComponentContainer.sync;
     if (syncedComponent) CopyChildComponentModeTempPropertiesUtils.copyComponent(syncedComponent, newComponent);
   }
