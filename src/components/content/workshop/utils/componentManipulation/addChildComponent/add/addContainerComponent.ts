@@ -118,14 +118,8 @@ export class AddContainerComponent extends AddComponentShared {
   }
 
   private static copyInSyncProperties(newComponent: WorkshopComponent, newComponentContainer: WorkshopComponent): void {
-    const { syncedComponent } = newComponentContainer.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].seedComponent.sync;
-    if (syncedComponent) {
-      const { coreSubcomponentRefs } = syncedComponent;
-      const newComponentBase = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-      if (coreSubcomponentRefs[newComponentBase.subcomponentType]) {
-        CopyChildComponentModeTempPropertiesUtils.copyTargetSubcomponent(coreSubcomponentRefs[newComponentBase.subcomponentType], newComponentBase);
-      }
-    }
+    const { syncedComponent } = newComponentContainer.sync;
+    if (syncedComponent) CopyChildComponentModeTempPropertiesUtils.copyComponent(syncedComponent, newComponent);
   }
 
   protected static createNewComponent(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, componentGenerator: ComponentGenerator,
