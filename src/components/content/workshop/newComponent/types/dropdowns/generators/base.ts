@@ -1,17 +1,36 @@
 import { UpdatePaddingComponentDropdownOptions } from '../../../../utils/componentManipulation/updateChildComponent/updatePaddingComponentDropdownOptionNames';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../consts/dropdownMenuAlignment.enum';
 import { CustomFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { SelectDropdown } from '../../../../../../../interfaces/dropdownStaticFeatures';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { SelectDropdownUtils } from '../selectDropdown/selectDropdownUtils';
+import { DropdownItemLayer } from '../../layers/generators/dropdownItem';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { plainLayer } from '../../layers/generators/plainLayer';
 import { dropdownButtonBase } from './button/base';
 
 class DropdownBase extends ComponentBuilder {
+
+  private static setAllItemAndItemTextComponentsToBeInSync(coreSubcomponentRefs: CoreSubcomponentRefs): void {
+    const menuComponent = coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].seedComponent
+      .paddingComponentChild.linkedComponents.auxiliary[0].coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].seedComponent;
+    const firstLayerSubcomponentProperties = menuComponent.componentPreviewStructure.layers[0].subcomponentProperties;
+    menuComponent.componentPreviewStructure.layers.forEach((layer) => {
+      layer.subcomponentProperties.customCss = firstLayerSubcomponentProperties.customCss;
+      layer.subcomponentProperties.customFeatures = firstLayerSubcomponentProperties.customFeatures;
+      const { coreSubcomponentRefs } = layer.subcomponentProperties.seedComponent.childComponentsLockedToLayer.list[0].seedComponent;
+      DropdownItemLayer.setTextSubcomponentProperties.bind(menuComponent)(coreSubcomponentRefs);
+    });
+  }
+
+  public static setAndExecuteReferenceSharingExecutables(paddingComponent: WorkshopComponent): void {
+    paddingComponent.referenceSharingExecutables = [DropdownBase.setAllItemAndItemTextComponentsToBeInSync];
+    DropdownBase.setAllItemAndItemTextComponentsToBeInSync(paddingComponent.coreSubcomponentRefs);
+  }
 
   private static createSelectDropdownProperties(): SelectDropdown {
     return {
@@ -69,6 +88,7 @@ export const dropdownBase: ComponentGenerator = {
     paddingComponent.componentPreviewStructure.subcomponentDropdownStructure[paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] = { ...buttonComponent.componentPreviewStructure.subcomponentDropdownStructure };
     paddingComponent.paddingComponentChild = buttonComponent;
     buttonComponent.paddingComponent = paddingComponent;
+    DropdownBase.setAndExecuteReferenceSharingExecutables(paddingComponent);
     return paddingComponent;
   },
 }

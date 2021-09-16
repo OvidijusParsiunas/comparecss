@@ -9,6 +9,7 @@ export default class ReferenceSharingUtils {
     return new Set([JAVASCRIPT_CLASSES.RIPPLES])
   }
 
+  // WORK2 - instead of coreSubcomponentRefs should just be the component
   public static appendJsClassesRefToAllSubcomponents(coreSubcomponentRefs: CoreSubcomponentRefs,
       overrideJsClasses?: Set<JAVASCRIPT_CLASSES>): void {
     const baseSubcomponent = coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];

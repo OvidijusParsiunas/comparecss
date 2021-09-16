@@ -22,8 +22,35 @@ import { layerBase } from './base';
 
 export class DropdownItemLayer extends ComponentBuilder {
 
-  public static setReferenceSharingExecutables(buttonBaseComponent: WorkshopComponent): void {
-    buttonBaseComponent.referenceSharingExecutables = [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents];
+  // split this into more granular methods
+  public static setTextSubcomponentProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
+    const menuComponent = this as unknown as WorkshopComponent;
+    const { layers: activeBaseComponentLayers } = menuComponent.componentPreviewStructure;
+    if (activeBaseComponentLayers.length > 1) {
+      const siblingDropdownItem = activeBaseComponentLayers[activeBaseComponentLayers.length - 2];
+      const childTextComponent = siblingDropdownItem.subcomponentProperties.seedComponent.childComponentsLockedToLayer.list[0];
+      coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss = childTextComponent.customCss;
+      coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCss = childTextComponent.defaultCss;
+      coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures = childTextComponent.customFeatures;
+      coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures = childTextComponent.defaultCustomFeatures;
+    } else {
+      coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss = DropdownItemLayer.createDefaultTextCustomCss();
+      coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCss = DropdownItemLayer.createDefaultTextCustomCss();
+      coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures = DropdownItemLayer.createDefaultTextCustomFeatures();
+      coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures = DropdownItemLayer.createDefaultTextCustomFeatures();
+    }
+    if (menuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.jsClasses) {
+      if (!coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.jsClasses) {
+        coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.jsClasses = new Set();
+      }
+      // WORK2 - create a shareable method to add a set to set
+      // var merged = new Set([...set1, ...set2, ...set3])
+      // and array
+      // array.forEach(item => mySet.add(item))
+      coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.jsClasses = menuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.jsClasses;
+    }
+    coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures = DropdownItemLayer.createDefaultTextCustomStaticFeatures('Dropdown item');
+    coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomStaticFeatures = DropdownItemLayer.createDefaultTextCustomStaticFeatures('Dropdown item');
   }
 
   public static setStyle(component: WorkshopComponent): void {
@@ -81,38 +108,21 @@ export class DropdownItemLayer extends ComponentBuilder {
     };
   }
 
-  public static overwriteTextProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
-    const higherComponentContainer = this as unknown as WorkshopComponent;
-    const { layers: activeBaseComponentLayers } = higherComponentContainer.componentPreviewStructure;
-    if (activeBaseComponentLayers.length > 1) {
-      const siblingDropdownItem = activeBaseComponentLayers[activeBaseComponentLayers.length - 2];
-      const childTextComponent = siblingDropdownItem.subcomponentProperties.seedComponent.childComponentsLockedToLayer.list[0];
-      coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss = childTextComponent.customCss;
-      coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCss = childTextComponent.defaultCss;
-      coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures = childTextComponent.customFeatures;
-      coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures = childTextComponent.defaultCustomFeatures;
-    } else {
-      coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss = DropdownItemLayer.createDefaultTextCustomCss();
-      coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCss = DropdownItemLayer.createDefaultTextCustomCss();
-      coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures = DropdownItemLayer.createDefaultTextCustomFeatures();
-      coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures = DropdownItemLayer.createDefaultTextCustomFeatures();
-    }
-    coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures = DropdownItemLayer.createDefaultTextCustomStaticFeatures('Dropdown item');
-    coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomStaticFeatures = DropdownItemLayer.createDefaultTextCustomStaticFeatures('Dropdown item');
-  }
-
   private static addChildComponentsToLayer(containerComponent: WorkshopComponent, isTemporary = false): WorkshopComponent[] {
+    // WORK2 - should not be binded
     const layerComponent = this as undefined as WorkshopComponent;
-    const { higherComponentContainer } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
+    const { higherComponentContainer: menuComponent } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
     const textComponent = AddContainerComponent.add(containerComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
       layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name,
-      [DropdownItemLayer.overwriteTextProperties.bind(higherComponentContainer)]);
+      [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents.bind(menuComponent),
+        DropdownItemLayer.setTextSubcomponentProperties.bind(menuComponent)
+      ]);
     layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].otherSubcomponentTriggers
       .subcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     layerComponent.childComponentsLockedToLayer.list.push(textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
     if (!isTemporary) {
       UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(containerComponent,
-        higherComponentContainer.componentPreviewStructure.layers[higherComponentContainer.componentPreviewStructure.layers.length - 1]); 
+        menuComponent.componentPreviewStructure.layers[menuComponent.componentPreviewStructure.layers.length - 1]); 
     }
     return [textComponent];
   }
@@ -183,7 +193,6 @@ export const dropdownItemLayer: ComponentGenerator = {
     DropdownItemLayer.overwriteBase(layerComponent);
     DropdownItemLayer.createChildComponentsLockedToLayer(layerComponent);
     DropdownItemLayer.setStyle(layerComponent);
-    DropdownItemLayer.setReferenceSharingExecutables(layerComponent);
     return layerComponent;
   },
 };

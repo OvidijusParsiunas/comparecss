@@ -1,7 +1,10 @@
 import { CoreSubcomponentRefsUtils } from '../../../../utils/componentManipulation/coreSubcomponentRefs/coreSubcomponentRefsUtils';
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { BaseSubcomponentRef } from '../../../../../../../interfaces/componentPreviewStructure';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
+import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import JSONUtils from '../../../../utils/generic/jsonUtils';
 
 export class CopyChildComponentModeTempPropertiesUtils {
@@ -17,7 +20,7 @@ export class CopyChildComponentModeTempPropertiesUtils {
     activeComponentSubcomponent.customFeatures = subcomponentToBeCopied.customFeatures;
     const componentToBeCopiedCustomCss = subcomponentToBeCopied.customCss;
     activeComponentSubcomponent.customCss = componentToBeCopiedCustomCss;
-    if (!componentToBeCopiedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top) {
+    if (!componentToBeCopiedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top && subcomponentToBeCopied.subcomponentType !== SUBCOMPONENT_TYPES.LAYER) {
       componentToBeCopiedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top = AddContainerComponent.DEFAULT_TOP_PROPERTY;
     }
   }
@@ -39,13 +42,43 @@ export class CopyChildComponentModeTempPropertiesUtils {
     }
   }
 
-  public static setActiveComponentToCopyChildComponent(componentToBeCopied: WorkshopComponent, activeComponent: WorkshopComponent): void {
-    const activeComponentSubcomponentCoreRefs = activeComponent.subcomponents[activeComponent.activeSubcomponentName].seedComponent.coreSubcomponentRefs;
+  private static copySubcomponentReferences(componentToBeCopied: WorkshopComponent, activeComponentSubcomponentCoreRefs: CoreSubcomponentRefs): void {
     Object.keys(activeComponentSubcomponentCoreRefs).forEach((coreSubcomponentType) => {
       if (!componentToBeCopied.coreSubcomponentRefs[coreSubcomponentType]) return;
       CopyChildComponentModeTempPropertiesUtils.copyTargetSubcomponent(componentToBeCopied.coreSubcomponentRefs[coreSubcomponentType],
         activeComponentSubcomponentCoreRefs[coreSubcomponentType]);
     });
+  }
+
+  // WORK2 - refactor
+  private static copyPaddingComponent(componentToBeCopied: WorkshopComponent, activeComponent: WorkshopComponent): void {
+    CopyChildComponentModeTempPropertiesUtils.copyTargetSubcomponent(componentToBeCopied.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
+      activeComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
+    CopyChildComponentModeTempPropertiesUtils.copySubcomponentReferences(componentToBeCopied.paddingComponentChild, activeComponent.paddingComponentChild.coreSubcomponentRefs);
+    activeComponent.paddingComponentChild.linkedComponents.auxiliary.forEach((auxiliaryComponent, index) => {
+      CopyChildComponentModeTempPropertiesUtils.copySubcomponentReferences(componentToBeCopied.paddingComponentChild.linkedComponents.auxiliary[index], auxiliaryComponent.coreSubcomponentRefs);
+      auxiliaryComponent.componentPreviewStructure.layers.forEach((layer, layerIndex) => {
+        const { alignedSections } = layer.sections;
+        Object.keys(alignedSections).forEach((alignedSection) => {
+          (alignedSections[alignedSection] || []).forEach((baseSubcomponentRef: BaseSubcomponentRef, baseSubcomponentIndex) => {
+            CopyChildComponentModeTempPropertiesUtils.copySubcomponentReferences(
+              (componentToBeCopied.paddingComponentChild.linkedComponents.auxiliary[index].componentPreviewStructure.layers[layerIndex].sections.alignedSections[alignedSection] as BaseSubcomponentRef[])[baseSubcomponentIndex].subcomponentProperties.seedComponent,
+              baseSubcomponentRef.subcomponentProperties.seedComponent.coreSubcomponentRefs);
+          });
+        });
+        CopyChildComponentModeTempPropertiesUtils.copySubcomponentReferences(componentToBeCopied.paddingComponentChild.linkedComponents.auxiliary[index].componentPreviewStructure.layers[layerIndex].subcomponentProperties.seedComponent, layer.subcomponentProperties.seedComponent.coreSubcomponentRefs);
+      });
+    });
+  }
+
+  // WORK2 - refactor
+  public static setActiveComponentToCopyChildComponent(componentToBeCopied: WorkshopComponent, activeComponent: WorkshopComponent): void {
+    const activeComponentSubcomponentCoreRefs = activeComponent.subcomponents[activeComponent.activeSubcomponentName].seedComponent.coreSubcomponentRefs;
+    if (componentToBeCopied.paddingComponentChild) {
+      CopyChildComponentModeTempPropertiesUtils.copyPaddingComponent(componentToBeCopied, activeComponent.subcomponents[activeComponent.activeSubcomponentName].seedComponent);
+    } else {
+      CopyChildComponentModeTempPropertiesUtils.copySubcomponentReferences(componentToBeCopied, activeComponentSubcomponentCoreRefs);
+    } 
   }
 
   private static resetOriginalCss(subcomponentProperties: SubcomponentProperties): void {

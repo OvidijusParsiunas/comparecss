@@ -114,6 +114,7 @@ export interface CustomStaticFeatures {
   subcomponentText?: Text;
   image?: Image;
   icon?: Icon;
+  // WORK2 - should be in custom features as it is no longer part of button
   dropdown?: DropdownStaticFeatures;
 }
 
@@ -183,6 +184,7 @@ export interface WorkshopComponent {
   componentPreviewStructure: ComponentPreviewStructure;
   // class name for the component
   className: string;
+  // WORK2 - should restrategise and probably not needed any more
   // used for referencing component's core subcomponents like base and text
   // also used for referencing subcomponents that should share jsclasses refs
   coreSubcomponentRefs?: CoreSubcomponentRefs;

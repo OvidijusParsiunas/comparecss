@@ -5,29 +5,29 @@ import { BUTTON_STYLES } from '../../../../../../consts/componentStyles.enum';
 
 export class CopyChildComponentUtils {
 
-  private static readonly SUBCOMPONENT_TYPES_TO_COPYABLE_TYPES = {
-    [COMPONENT_TYPES.BUTTON]: new Set([COMPONENT_TYPES.BUTTON]),
-    [COMPONENT_TYPES.DROPDOWN]: new Set([COMPONENT_TYPES.BUTTON]),
-  };
+  private static canSeedComponentBeOverwrittenByCopy(activeSubcomponent: SubcomponentProperties): boolean {
+    return activeSubcomponent.seedComponent !== activeSubcomponent.seedComponent.masterComponent;
+  }
 
-  private static canActiveButtonSubcomponentCopy(buttonSubcomponent: SubcomponentProperties): boolean {
+  private static canButtonBeOverwrittenByCopy(buttonSubcomponent: SubcomponentProperties): boolean {
     if (buttonSubcomponent.seedComponent.style === BUTTON_STYLES.CLOSE) return false;
     if (buttonSubcomponent.seedComponent.paddingComponent?.type === COMPONENT_TYPES.DROPDOWN) return true;
-    // do not allow to copy if the current component itself is a button
-    return buttonSubcomponent.seedComponent !== buttonSubcomponent.seedComponent.masterComponent;
+    return CopyChildComponentUtils.canSeedComponentBeOverwrittenByCopy(buttonSubcomponent);
   }
 
   public static isCopyOptionButtonDisplayed(activeComponent: WorkshopComponent): boolean {
     const activeSubcomponent = activeComponent.subcomponents[activeComponent.activeSubcomponentName];
     if (activeSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.BUTTON) {
-      return CopyChildComponentUtils.canActiveButtonSubcomponentCopy(activeSubcomponent);
+      return CopyChildComponentUtils.canButtonBeOverwrittenByCopy(activeSubcomponent);
+    } else if (activeSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.DROPDOWN) {
+      return CopyChildComponentUtils.canSeedComponentBeOverwrittenByCopy(activeSubcomponent);
     }
     return false;
   }
 
   public static isComponentCopyable(subjectCopyableComponent: WorkshopComponent, activeComponent: WorkshopComponent): boolean {
     if (subjectCopyableComponent !== activeComponent) {
-      return CopyChildComponentUtils.SUBCOMPONENT_TYPES_TO_COPYABLE_TYPES[activeComponent.type]?.has(subjectCopyableComponent.type);
+      return activeComponent.type === subjectCopyableComponent.type;
     }
     return false;
   }
