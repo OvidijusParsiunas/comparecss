@@ -1,4 +1,5 @@
 import { CoreSubcomponentRefsUtils } from '../../../utils/componentManipulation/coreSubcomponentRefs/coreSubcomponentRefsUtils';
+import { CopyChildComponentModeTempPropertiesUtils } from './modeUtils/copyChildComponentModeTempPropertiesUtils';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ReferenceSharingExecutable } from '../../../../../../interfaces/referenceSharingExecutable';
 import { BaseSubcomponentRef } from '../../../../../../interfaces/componentPreviewStructure';
@@ -56,6 +57,20 @@ export class SyncedComponent {
       baseSubcomponent.seedComponent.sync.syncedComponent = null;
     }
     if (callback) callback();
+  }
+
+  private static findSubcomponentToCopy(syncedComponent: WorkshopComponent, newComponentBase: SubcomponentProperties): SubcomponentProperties {
+    const { subcomponents } = syncedComponent;
+    const subcomponentToCopy = Object.keys(subcomponents).find((subcomponentName) => {
+      return subcomponents[subcomponentName].subcomponentType === newComponentBase.subcomponentType;
+    });
+    return subcomponents[subcomponentToCopy];
+  }
+
+  public static copyChildPropertiesFromInSyncContainerComponent(newComponent: WorkshopComponent, syncedComponent: WorkshopComponent): void {
+    const newComponentBase = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    const subcomponentToCopy = SyncedComponent.findSubcomponentToCopy(syncedComponent, newComponentBase);
+    if (subcomponentToCopy) CopyChildComponentModeTempPropertiesUtils.copyTargetSubcomponent(subcomponentToCopy, newComponentBase);
   }
 
   public static updateIfSubcomponentNotInSync(masterComponent: WorkshopComponent, activeSubcomponent: SubcomponentProperties): void {

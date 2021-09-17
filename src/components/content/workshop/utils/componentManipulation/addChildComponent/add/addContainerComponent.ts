@@ -1,5 +1,4 @@
 import { BUTTON_COMPONENTS_BASE_NAMES, PRIMITIVE_COMPONENTS_BASE_NAMES, LAYER_COMPONENTS_BASE_NAMES, CHILD_COMPONENTS_BASE_NAMES, DROPDOWN_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
-import { CopyChildComponentModeTempPropertiesUtils } from '../../../../toolbar/options/copyChildComponent/modeUtils/copyChildComponentModeTempPropertiesUtils';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownOptionDisplayStatus';
@@ -11,6 +10,7 @@ import { IncrementChildComponentCount } from '../../childComponentCount/incremen
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { CoreSubcomponentRefsUtils } from '../../coreSubcomponentRefs/coreSubcomponentRefsUtils';
+import { SyncedComponent } from '../../../../toolbar/options/copyChildComponent/syncedComponent';
 import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import ComponentTraversalUtils from '../../../componentTraversal/componentTraversalUtils';
@@ -117,21 +117,15 @@ export class AddContainerComponent extends AddComponentShared {
     }
   }
 
-    // this is used in instances if a child component is being added to a component that is already in sync. e.g. icon to a button
-    private static copyInSyncProperties(newComponent: WorkshopComponent, newComponentContainer: WorkshopComponent): void {
-    const { syncedComponent } = newComponentContainer.sync;
-    if (syncedComponent) CopyChildComponentModeTempPropertiesUtils.copyComponent(syncedComponent, newComponent);
-  }
-
   protected static createNewComponent(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, componentGenerator: ComponentGenerator,
-      newComponentContainer: WorkshopComponent, masterComponent: WorkshopComponent, overwritePropertiesFunc?: OverwritePropertiesFunc[],
+      syncedComponent: WorkshopComponent, masterComponent: WorkshopComponent, overwritePropertiesFunc?: OverwritePropertiesFunc[],
       customBaseName?: string): NewComponentDetails {
     const baseNamePrefix = AddContainerComponent.getBaseSubcomponentNamePrefix(componentType, componentStyle);
     const baseName = customBaseName || UniqueSubcomponentNameGenerator.generate(baseNamePrefix);
     const newComponent = AddComponentShared.createNewComponentViaGenerator(componentGenerator, masterComponent, baseName);
     AddContainerComponent.applyTopProperty(newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
     if (overwritePropertiesFunc) AddContainerComponent.executeOverwritePropertiesFuncs(overwritePropertiesFunc, newComponent);
-    AddContainerComponent.copyInSyncProperties(newComponent, newComponentContainer);
+    if (syncedComponent) SyncedComponent.copyChildPropertiesFromInSyncContainerComponent(newComponent, syncedComponent);
     return [newComponent, baseNamePrefix];
   }
 
@@ -139,9 +133,9 @@ export class AddContainerComponent extends AddComponentShared {
       componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, parentLayer: Layer,
       overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
-    const { masterComponent } = newComponentContainer;
+    const { masterComponent, sync: { syncedComponent } } = newComponentContainer;
     const [newComponent, baseNamePrefix] = AddContainerComponent.createNewComponent(componentType, componentStyle, componentGenerator,
-      newComponentContainer, masterComponent, overwritePropertiesFunc);
+      syncedComponent, masterComponent, overwritePropertiesFunc);
     AddComponentShared.populateMasterComponentWithNewSubcomponents(masterComponent, newComponent.subcomponents);
     AddContainerComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
     AddContainerComponent.addNewComponentToDropdownStructure(newComponent, masterComponent, dropdownStructure);

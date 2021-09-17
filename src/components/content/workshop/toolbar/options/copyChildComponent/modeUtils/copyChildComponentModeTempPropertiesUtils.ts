@@ -30,11 +30,12 @@ export class CopyChildComponentModeTempPropertiesUtils {
     JSONUtils.copyPropertiesThatExistInTarget(activeComponentSubcomponent.customFeatures, subcomponentToBeCopied.customFeatures);
   }
 
-  private static copyTargetSubcomponent(subcomponentToBeCopied: SubcomponentProperties, activeComponentSubcomponent: SubcomponentProperties): void {
-    if (!activeComponentSubcomponent) return;
+  public static copyTargetSubcomponent(subcomponentToBeCopied: SubcomponentProperties, activeComponentSubcomponent: SubcomponentProperties): void {
+    // WORK2 - this is added to the seed component of the copied child component, does it remain after the component has been successfully added?
     if (!activeComponentSubcomponent.tempOriginalCustomProperties) {
       CopyChildComponentModeTempPropertiesUtils.moveCustomPropertiesToTempProperties(activeComponentSubcomponent);
     }
+    // WORK2 - not sure if this is required any more
     if (subcomponentToBeCopied.seedComponent.type !== activeComponentSubcomponent.seedComponent.type) {
       CopyChildComponentModeTempPropertiesUtils.copyComponentSpecificProperties(subcomponentToBeCopied, activeComponentSubcomponent);
     } else {
@@ -48,12 +49,13 @@ export class CopyChildComponentModeTempPropertiesUtils {
       activeComponentSubcomponentCoreRefs[SUBCOMPONENT_TYPES.BASE]);
   }
 
-  public static copyComponent(componentToBeCopied: WorkshopComponent, activeComponent: WorkshopComponent): void {
+  private static copyComponent(componentToBeCopied: WorkshopComponent, activeComponent: WorkshopComponent): void {
     CopyChildComponentModeTempPropertiesUtils.copySubcomponent(componentToBeCopied, activeComponent.coreSubcomponentRefs);
     activeComponent.componentPreviewStructure.layers.forEach((layer, layerIndex) => {
       const { alignedSections } = layer.sections;
       Object.keys(alignedSections).forEach((alignedSection) => {
         (alignedSections[alignedSection] || []).forEach((baseSubcomponentRef: BaseSubcomponentRef, baseSubcomponentIndex) => {
+          if (!(componentToBeCopied.componentPreviewStructure.layers[layerIndex].sections.alignedSections[alignedSection] as BaseSubcomponentRef[])[baseSubcomponentIndex]) return;
           CopyChildComponentModeTempPropertiesUtils.copySubcomponent(
             (componentToBeCopied.componentPreviewStructure.layers[layerIndex].sections.alignedSections[alignedSection] as BaseSubcomponentRef[])[baseSubcomponentIndex].subcomponentProperties.seedComponent,
             baseSubcomponentRef.subcomponentProperties.seedComponent.coreSubcomponentRefs);
