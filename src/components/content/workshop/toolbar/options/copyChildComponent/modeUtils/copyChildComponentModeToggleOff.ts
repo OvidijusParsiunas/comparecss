@@ -53,7 +53,7 @@ export class CopyChildComponedModeToggleOff {
         activeSeedComponent.sync.syncedComponent = lastSelectedComponentToSync;
       }, optionsComponent.hasCopyChildComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     }
-    CopyChildComponentModeTempPropertiesUtils.cleanComponent(optionsComponent.component, false);
+    CopyChildComponentModeTempPropertiesUtils.cleanComponent(optionsComponent.component);
     CopyChildComponentModeTempPropertiesUtils.deleteLastSelectedComponentToCopy(optionsComponent.component);
     CopyChildComponedModeToggleOff.toggleOff(optionsComponent, false);
   }
@@ -61,7 +61,7 @@ export class CopyChildComponedModeToggleOff {
   public static resetComponent(activeComponent: WorkshopComponent, isWaitFadeAnimation: boolean): void {
     // timeout is used to not reset component immediately when the expanded modal mode has been closed by the copy child component mode
     setTimeout(() => {
-      CopyChildComponentModeTempPropertiesUtils.cleanComponent(activeComponent, true);
+      CopyChildComponentModeTempPropertiesUtils.cleanComponent(activeComponent);
     }, isWaitFadeAnimation ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     CopyChildComponentModeTempPropertiesUtils.deleteLastSelectedComponentToCopy(activeComponent);
   }
@@ -111,7 +111,7 @@ export class CopyChildComponedModeToggleOff {
     // if a component card has been selected and the user clicks on the background - reset
     if (!targetElement.classList.contains(COMPONENT_CARD_MARKER) && !targetElement.classList.contains(COMPONENT_PREVIEW_MARKER)
         && workshopComponent.currentlySelectedComponentForCopyChild) {
-      CopyChildComponentModeTempPropertiesUtils.cleanComponent(optionsComponent.component, true);
+      CopyChildComponentModeTempPropertiesUtils.cleanComponent(optionsComponent.component);
       workshopComponent.currentlySelectedComponentForCopyChild = null;
     }
     return { shouldRepeat: true };

@@ -24,7 +24,7 @@ export class CopyChildComponentModeCardEvents {
     if (currentlySelectedComponentForCopyChild) {
       CopyChildComponentModeTempPropertiesUtils.setActiveComponentToChildComponentCopy(currentlySelectedComponentForCopyChild, currentlySelectedComponent);
     } else {
-      CopyChildComponentModeTempPropertiesUtils.cleanComponent(currentlySelectedComponent, true);
+      CopyChildComponentModeTempPropertiesUtils.cleanComponent(currentlySelectedComponent);
     }
   }
 }

@@ -1,10 +1,10 @@
-import { CoreSubcomponentRefsUtils } from '../../../../utils/componentManipulation/coreSubcomponentRefs/coreSubcomponentRefsUtils';
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { AlignedSections, BaseSubcomponentRef, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
+
+type TraversableCallback = (activeSubcomponent: SubcomponentProperties, subcomponentToBeCopied?: SubcomponentProperties) => void;
 
 export class CopyChildComponentModeTempPropertiesUtils {
   
@@ -24,7 +24,7 @@ export class CopyChildComponentModeTempPropertiesUtils {
     }
   }
 
-  public static copyTargetSubcomponent(subcomponentToBeCopied: SubcomponentProperties, activeComponentSubcomponent: SubcomponentProperties): void {
+  public static copySubcomponent(activeComponentSubcomponent: SubcomponentProperties, subcomponentToBeCopied: SubcomponentProperties): void {
     // WORK2 - this is added to the seed component of the copied child component, does it remain after the component has been successfully added?
     if (!activeComponentSubcomponent.tempOriginalCustomProperties) {
       CopyChildComponentModeTempPropertiesUtils.moveCustomPropertiesToTempProperties(activeComponentSubcomponent);
@@ -32,71 +32,74 @@ export class CopyChildComponentModeTempPropertiesUtils {
     CopyChildComponentModeTempPropertiesUtils.copyAllCustomProperties(subcomponentToBeCopied, activeComponentSubcomponent);
   }
 
-  private static copySubcomponent(componentToBeCopied: WorkshopComponent, activeComponentSubcomponentCoreRefs: CoreSubcomponentRefs): void {
-    CopyChildComponentModeTempPropertiesUtils.copyTargetSubcomponent(componentToBeCopied.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
-      activeComponentSubcomponentCoreRefs[SUBCOMPONENT_TYPES.BASE]);
-  }
-
-  private static copyAlignedComponents(alignedComponentsToBeCopied: BaseSubcomponentRef[], activeLayerComponents: BaseSubcomponentRef[]): void {
-    (alignedComponentsToBeCopied || []).forEach((baseSubcomponentRef: BaseSubcomponentRef, baseSubcomponentIndex) => {
-      const alignedComponentToBeCopied = activeLayerComponents[baseSubcomponentIndex];
+  private static copyAlignedComponents(callback: TraversableCallback, activeLayerComponents: BaseSubcomponentRef[],
+      alignedComponentsToBeCopied: BaseSubcomponentRef[]): void {
+    (activeLayerComponents || []).forEach((baseSubcomponentRef: BaseSubcomponentRef, baseSubcomponentIndex) => {
+      const alignedComponentToBeCopied = alignedComponentsToBeCopied?.[baseSubcomponentIndex];
       if (!alignedComponentToBeCopied) return;
-      CopyChildComponentModeTempPropertiesUtils.copySubcomponent(
-        alignedComponentToBeCopied.subcomponentProperties.seedComponent, baseSubcomponentRef.subcomponentProperties.seedComponent.coreSubcomponentRefs);
+      callback(baseSubcomponentRef.subcomponentProperties, alignedComponentToBeCopied.subcomponentProperties);
     });
   }
 
-  private static copyAlignedSections(alignedSectionsToBeCopied: AlignedSections, activeAlignedSections: AlignedSections): void {
-    Object.keys(alignedSectionsToBeCopied).forEach((alignedSection) => {
+  private static copyAlignedSections(callback: TraversableCallback, activeAlignedSections: AlignedSections, alignedSectionsToBeCopied: AlignedSections): void {
+    Object.keys(activeAlignedSections).forEach((alignedSection) => {
       CopyChildComponentModeTempPropertiesUtils.copyAlignedComponents(
-        alignedSectionsToBeCopied[alignedSection], activeAlignedSections[alignedSection]);
+        callback, activeAlignedSections[alignedSection], alignedSectionsToBeCopied?.[alignedSection]);
     });
   }
 
-  private static copyLayers(layersToBeCopied: Layer[], activeLayers: Layer[]): void {
+  private static copyLayers(callback: TraversableCallback, activeLayers: Layer[], layersToBeCopied: Layer[]): void {
     activeLayers.forEach((layer, layerIndex) => {
-      const layerToBeCopied = layersToBeCopied[layerIndex];
-      CopyChildComponentModeTempPropertiesUtils.copyAlignedSections(layerToBeCopied.sections.alignedSections, layer.sections.alignedSections);
-      CopyChildComponentModeTempPropertiesUtils.copySubcomponent(
-        layerToBeCopied.subcomponentProperties.seedComponent, layer.subcomponentProperties.seedComponent.coreSubcomponentRefs);
+      const layerToBeCopied = layersToBeCopied?.[layerIndex];
+      CopyChildComponentModeTempPropertiesUtils.copyAlignedSections(callback, layer.sections.alignedSections, layerToBeCopied?.sections.alignedSections);
+      callback(layer.subcomponentProperties, layerToBeCopied?.subcomponentProperties);
     });
   }
 
-  private static copyComponent(componentToBeCopied: WorkshopComponent, activeComponent: WorkshopComponent): void {
-    CopyChildComponentModeTempPropertiesUtils.copySubcomponent(componentToBeCopied, activeComponent.coreSubcomponentRefs);
+  private static copyComponent(callback: TraversableCallback, activeComponent: WorkshopComponent, componentToBeCopied: WorkshopComponent): void {
+    callback(activeComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE], componentToBeCopied?.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
     CopyChildComponentModeTempPropertiesUtils.copyLayers(
-      componentToBeCopied.componentPreviewStructure.layers, activeComponent.componentPreviewStructure.layers);
+      callback, activeComponent.componentPreviewStructure.layers, componentToBeCopied?.componentPreviewStructure.layers);
   }
 
-  private static copyPaddingComponentChild(paddingChildToBeCopied: WorkshopComponent, activePaddingChild: WorkshopComponent): void {
-    CopyChildComponentModeTempPropertiesUtils.copyComponent(paddingChildToBeCopied, activePaddingChild);
+  private static copyPaddingComponentChild(callback: TraversableCallback, activePaddingChild: WorkshopComponent, paddingChildToBeCopied: WorkshopComponent): void {
+    CopyChildComponentModeTempPropertiesUtils.copyComponent(callback, activePaddingChild, paddingChildToBeCopied);
     activePaddingChild.linkedComponents.auxiliary.forEach((auxiliaryComponent, index) => {
-      CopyChildComponentModeTempPropertiesUtils.copyComponent(paddingChildToBeCopied.linkedComponents.auxiliary[index], auxiliaryComponent);
+      CopyChildComponentModeTempPropertiesUtils.copyComponent(callback, auxiliaryComponent, paddingChildToBeCopied?.linkedComponents.auxiliary[index]);
     });
   }
 
-  public static setActiveComponentToChildComponentCopy(componentToBeCopied: WorkshopComponent, currentlySelectedComponent: WorkshopComponent): void {
-    const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
-    CopyChildComponentModeTempPropertiesUtils.copyComponent(componentToBeCopied, activeComponent);
-    if (componentToBeCopied.paddingComponentChild) {
-      CopyChildComponentModeTempPropertiesUtils.copyPaddingComponentChild(componentToBeCopied.paddingComponentChild, activeComponent.paddingComponentChild);
+  private static traverseSubcomponentPreviewStructureOfSameComponents(callback: TraversableCallback, activeComponent: WorkshopComponent,
+      componentToBeCopied: WorkshopComponent): void {
+    CopyChildComponentModeTempPropertiesUtils.copyComponent(callback, activeComponent, componentToBeCopied);
+    if (activeComponent.paddingComponentChild) {
+      CopyChildComponentModeTempPropertiesUtils.copyPaddingComponentChild(callback, activeComponent.paddingComponentChild, componentToBeCopied?.paddingComponentChild);
     }
   }
 
+  public static setActiveComponentToChildComponentCopy(currentlySelectedComponent: WorkshopComponent, componentToBeCopied: WorkshopComponent): void {
+    const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
+    CopyChildComponentModeTempPropertiesUtils.traverseSubcomponentPreviewStructureOfSameComponents(
+      CopyChildComponentModeTempPropertiesUtils.copySubcomponent, activeComponent, componentToBeCopied);
+  }
+
   private static resetOriginalCss(subcomponentProperties: SubcomponentProperties): void {
+    if (!subcomponentProperties.tempOriginalCustomProperties) return;
     subcomponentProperties.customCss = subcomponentProperties.tempOriginalCustomProperties.customCss;
     subcomponentProperties.customFeatures = subcomponentProperties.tempOriginalCustomProperties.customFeatures; 
   }
 
-  public static cleanComponent(activeComponent: WorkshopComponent, resetOriginalProperties: boolean): void {
-    const { coreSubcomponentRefs } = activeComponent.subcomponents[activeComponent.activeSubcomponentName].seedComponent;
-    const coreSubcomponentRefsArray = CoreSubcomponentRefsUtils.getActiveRefsArray(coreSubcomponentRefs);
-    for (let i = 0; i < coreSubcomponentRefsArray.length; i += 1) {
-      const activeSubcomponent = coreSubcomponentRefsArray[i];
-      if (!activeSubcomponent.tempOriginalCustomProperties) break;
-      if (resetOriginalProperties) { CopyChildComponentModeTempPropertiesUtils.resetOriginalCss(activeSubcomponent); }
+  private static resetSubcomponentProperties(activeSubcomponent: SubcomponentProperties): void {
+    if (activeSubcomponent.tempOriginalCustomProperties) {
       delete activeSubcomponent.tempOriginalCustomProperties;
+      CopyChildComponentModeTempPropertiesUtils.resetOriginalCss(activeSubcomponent);
     }
+  }
+
+  public static cleanComponent(currentlySelectedComponent: WorkshopComponent): void {
+    const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
+    CopyChildComponentModeTempPropertiesUtils.traverseSubcomponentPreviewStructureOfSameComponents(
+      CopyChildComponentModeTempPropertiesUtils.resetSubcomponentProperties, activeComponent, null);
   }
 
   public static setLastSelectectedComponentToCopy(componentToBeCopied: WorkshopComponent, activeComponent: WorkshopComponent): void {
