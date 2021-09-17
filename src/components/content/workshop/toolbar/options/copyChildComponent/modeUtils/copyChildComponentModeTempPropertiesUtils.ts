@@ -5,7 +5,6 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
-import JSONUtils from '../../../../utils/generic/jsonUtils';
 
 export class CopyChildComponentModeTempPropertiesUtils {
   
@@ -25,22 +24,12 @@ export class CopyChildComponentModeTempPropertiesUtils {
     }
   }
 
-  private static copyComponentSpecificProperties(subcomponentToBeCopied: SubcomponentProperties, activeComponentSubcomponent: SubcomponentProperties): void {
-    activeComponentSubcomponent.customCss = subcomponentToBeCopied.customCss;
-    JSONUtils.copyPropertiesThatExistInTarget(activeComponentSubcomponent.customFeatures, subcomponentToBeCopied.customFeatures);
-  }
-
   public static copyTargetSubcomponent(subcomponentToBeCopied: SubcomponentProperties, activeComponentSubcomponent: SubcomponentProperties): void {
     // WORK2 - this is added to the seed component of the copied child component, does it remain after the component has been successfully added?
     if (!activeComponentSubcomponent.tempOriginalCustomProperties) {
       CopyChildComponentModeTempPropertiesUtils.moveCustomPropertiesToTempProperties(activeComponentSubcomponent);
     }
-    // WORK2 - not sure if this is required any more
-    if (subcomponentToBeCopied.seedComponent.type !== activeComponentSubcomponent.seedComponent.type) {
-      CopyChildComponentModeTempPropertiesUtils.copyComponentSpecificProperties(subcomponentToBeCopied, activeComponentSubcomponent);
-    } else {
-      CopyChildComponentModeTempPropertiesUtils.copyAllCustomProperties(subcomponentToBeCopied, activeComponentSubcomponent);
-    }
+    CopyChildComponentModeTempPropertiesUtils.copyAllCustomProperties(subcomponentToBeCopied, activeComponentSubcomponent);
   }
 
   private static copySubcomponent(componentToBeCopied: WorkshopComponent, activeComponentSubcomponentCoreRefs: CoreSubcomponentRefs): void {
