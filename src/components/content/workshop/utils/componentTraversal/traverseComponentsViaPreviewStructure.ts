@@ -1,14 +1,16 @@
-import { AlignedSections, BaseSubcomponentRef, Layer } from '../../../../../interfaces/componentPreviewStructure';
+import { AlignedSections, BaseSubcomponentRef, ComponentPreviewStructure, Layer } from '../../../../../interfaces/componentPreviewStructure';
 import { SubcomponentPreviewTraversalState } from '../../../../../interfaces/componentTraversal';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 
 type TraversalCallback = (...activeSubcomponent: SubcomponentPreviewTraversalState[]) => SubcomponentPreviewTraversalState;
+
 type AlignedComponentWithMeta = [BaseSubcomponentRef[], AlignedSections];
 
-export class TraverseComponentsViaFullPreviewStructure {
+// this class is set up to allow the traversal of multiple same type component structures at the same time
+export class TraverseComponentViaPreviewStructure {
 
-  private static createSubcomponentPreviewTraversalState(alignedComponentWithMeta: AlignedComponentWithMeta, index: number): SubcomponentPreviewTraversalState {
+  private static createTraversalStateFromAlignedComponentWithMeta(alignedComponentWithMeta: AlignedComponentWithMeta, index: number): SubcomponentPreviewTraversalState {
     const [ alignedChildComponents, alignedSections ] = alignedComponentWithMeta;
     return {
       subcomponentProperties: alignedChildComponents[index].subcomponentProperties,
@@ -18,12 +20,18 @@ export class TraverseComponentsViaFullPreviewStructure {
     }
   }
 
+  // for performance - can set a parameter to stop shallow preview traversal
   private static traverseAlignedComponents(callback: TraversalCallback, alignedComponentsWithMetaArr: AlignedComponentWithMeta[]): SubcomponentPreviewTraversalState {
     let traversalResult: SubcomponentPreviewTraversalState = null;
     for (let i = 0; i < (alignedComponentsWithMetaArr[0][0] || []).length; i += 1) {
-      traversalResult = callback(...alignedComponentsWithMetaArr
+      const availableComponents = alignedComponentsWithMetaArr
         .filter((alignedComponentWithMeta) => alignedComponentWithMeta[0][i])
-        .map((alignedComponentWithMeta) => TraverseComponentsViaFullPreviewStructure.createSubcomponentPreviewTraversalState(alignedComponentWithMeta, i)));
+      traversalResult = callback(
+        ...availableComponents.map((alignedComponentWithMeta) => TraverseComponentViaPreviewStructure.createTraversalStateFromAlignedComponentWithMeta(alignedComponentWithMeta, i)));
+      if (traversalResult?.stopTraversal) return traversalResult;
+      traversalResult = TraverseComponentViaPreviewStructure.traverse(
+        callback, ...availableComponents.map((alignedComponentWithMeta) => alignedComponentWithMeta[0][i].subcomponentProperties.seedComponent.componentPreviewStructure)
+      )
       if (traversalResult?.stopTraversal) return traversalResult;
     }
     return traversalResult;
@@ -33,7 +41,7 @@ export class TraverseComponentsViaFullPreviewStructure {
     let traversalResult: SubcomponentPreviewTraversalState = null;
     const alignedSectionKeys = Object.keys(alignedSectionsArr[0]);
     for (let i = 0; i < alignedSectionKeys[0].length; i += 1) {
-      traversalResult = TraverseComponentsViaFullPreviewStructure.traverseAlignedComponents(
+      traversalResult = TraverseComponentViaPreviewStructure.traverseAlignedComponents(
         callback, alignedSectionsArr.map((alignedSections) => { return [alignedSections[alignedSectionKeys[i]], alignedSections]; }));
       if (traversalResult?.stopTraversal) return traversalResult;
     }
@@ -43,7 +51,7 @@ export class TraverseComponentsViaFullPreviewStructure {
   private static traverseLayers(callback: TraversalCallback, layersArr: Layer[][]): SubcomponentPreviewTraversalState {
     let traversalResult: SubcomponentPreviewTraversalState = null;
     for (let i = 0; i < layersArr[0].length; i += 1) {
-      traversalResult = TraverseComponentsViaFullPreviewStructure.traverseAlignedSections(
+      traversalResult = TraverseComponentViaPreviewStructure.traverseAlignedSections(
         callback, [...layersArr.map((activeLayers) => activeLayers[i].sections.alignedSections)]);
       if (traversalResult?.stopTraversal) return traversalResult;
       traversalResult = callback(...layersArr.map((layers) => {
@@ -53,28 +61,33 @@ export class TraverseComponentsViaFullPreviewStructure {
     return traversalResult;
   }
 
+  public static traverse(callback: TraversalCallback, ...componentPreviewArr: ComponentPreviewStructure[]): SubcomponentPreviewTraversalState {
+    return TraverseComponentViaPreviewStructure.traverseLayers(
+      callback, [...componentPreviewArr.map((componentPreview) => componentPreview.layers)]);
+  }
+
   private static traverseComponent(callback: TraversalCallback, componentsArr: WorkshopComponent[]): SubcomponentPreviewTraversalState {
     const traversalResult = callback(...componentsArr.map((activeComponent) => {
       return { subcomponentProperties: activeComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE] }}));
     if (traversalResult?.stopTraversal) return traversalResult;
-    return TraverseComponentsViaFullPreviewStructure.traverseLayers(
-      callback, [...componentsArr.map((components) => components.componentPreviewStructure.layers)]);
+    return TraverseComponentViaPreviewStructure.traverse(
+      callback, ...componentsArr.map((components) => components.componentPreviewStructure));
   }
   
   private static traversePaddingComponentChild(callback: TraversalCallback, paddingChildrenArr: WorkshopComponent[]): SubcomponentPreviewTraversalState {
-    let traversalResult = TraverseComponentsViaFullPreviewStructure.traverseComponent(callback, paddingChildrenArr);
+    let traversalResult = TraverseComponentViaPreviewStructure.traverseComponent(callback, paddingChildrenArr);
     for (let i = 0; i < paddingChildrenArr[0].linkedComponents.auxiliary.length; i += 1) {
-      traversalResult = TraverseComponentsViaFullPreviewStructure.traverseComponent(
+      traversalResult = TraverseComponentViaPreviewStructure.traverseComponent(
         callback, [...paddingChildrenArr.map((paddingChildren) => paddingChildren.linkedComponents.auxiliary[i])]);
       if (traversalResult?.stopTraversal) return traversalResult;
     }
     return traversalResult;
   }
 
-  public static traverseSameComponentTypes(callback: TraversalCallback, ...componentsArr: WorkshopComponent[]): SubcomponentPreviewTraversalState {
-    let traversalResult = TraverseComponentsViaFullPreviewStructure.traverseComponent(callback, componentsArr);
+  public static traverseFromStart(callback: TraversalCallback, ...componentsArr: WorkshopComponent[]): SubcomponentPreviewTraversalState {
+    let traversalResult = TraverseComponentViaPreviewStructure.traverseComponent(callback, componentsArr);
     if (componentsArr[0].paddingComponentChild) {
-      traversalResult = TraverseComponentsViaFullPreviewStructure.traversePaddingComponentChild(
+      traversalResult = TraverseComponentViaPreviewStructure.traversePaddingComponentChild(
         callback, [...componentsArr.map((components) => components.paddingComponentChild)]);
     }
     return traversalResult;
@@ -83,8 +96,10 @@ export class TraverseComponentsViaFullPreviewStructure {
 
 /*
 
-if there are performance issues with the use of map and arbitrary array lengths - please refer to the following
-initial implementation of traversal made specifically for two components:
+If there are performance issues with the use of map and arbitrary array lengths - please refer to the following
+initial implementation of traversal made specifically for two components or traversal for one component:
+
+2 components:
 
   private static copyAlignedComponents(callback: TraversableCallback, activeLayerComponents: BaseSubcomponentRef[],
       alignedComponentsToBeCopied: BaseSubcomponentRef[]): void {
@@ -129,5 +144,43 @@ initial implementation of traversal made specifically for two components:
     if (activeComponent.paddingComponentChild) {
       CopyChildComponentModeTempPropertiesUtils.copyPaddingComponentChild(callback, activeComponent.paddingComponentChild, componentToBeCopied?.paddingComponentChild);
     }
+  }
+
+
+1 component:
+
+  private static inspectAlignedChildComponent(alignedChildComponents: BaseSubcomponentRef[], index: number, alignedSections: AlignedSections,
+      callback: TraversalCallback): SubcomponentPreviewTraversalState {
+    const { subcomponentProperties } = alignedChildComponents[index];
+    const callbackResult = callback({subcomponentProperties, alignedChildComponents, alignedSections, index});
+    if (callbackResult) return callbackResult;
+    const { componentPreviewStructure } = subcomponentProperties.seedComponent;
+    const traversalResult = TraverseComponentViaPreviewStructure.traverse(callback, componentPreviewStructure, );
+    if (traversalResult) return traversalResult;
+    return null;
+  }
+
+  private static iterateAlignedSections(callback: TraversalCallback, alignedSections: AlignedSections): SubcomponentPreviewTraversalState {
+    const alignedSectionKeyValues = Object.keys(ALIGNED_SECTION_TYPES);
+    for (let i = 0; i < alignedSectionKeyValues.length; i += 1) {
+      const alignedChildComponents = alignedSections[ALIGNED_SECTION_TYPES[alignedSectionKeyValues[i]]];
+      for (let i = 0; i < alignedChildComponents.length; i += 1) {
+        const iterationResult = TraverseComponentViaPreviewStructure.inspectAlignedChildComponent(alignedChildComponents, i, alignedSections, callback);
+        if (iterationResult) return iterationResult;
+      }
+    }
+    return null;
+  }
+
+  public static traverse(callback: TraversalCallback, previewStructure: ComponentPreviewStructure): SubcomponentPreviewTraversalState {
+    const { layers } = previewStructure;
+    for (let i = 0; i < layers.length; i += 1) {
+      const { sections: { alignedSections }, subcomponentProperties } = layers[i];
+      const callbackResult = callback({subcomponentProperties, layers, index: i});
+      if (callbackResult) return callbackResult;
+      const iterationResult = TraverseComponentViaPreviewStructure.iterateAlignedSections(callback, alignedSections);
+      if (iterationResult) return iterationResult;
+    }
+    return null;
   }
 */

@@ -2,8 +2,8 @@ import { DropdownStructureTraversalState, SubcomponentPreviewTraversalState, Tar
 import { DropdownOptionAuxDetails, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { UpdateGenericComponentDropdownOptionNames } from '../../updateChildComponent/updateGenericComponentDropdownOptionNames';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
+import { TraverseComponentViaPreviewStructure } from '../../../componentTraversal/traverseComponentsViaPreviewStructure';
 import { AlignedSections, BaseSubcomponentRef, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
-import { TraverseComponentViaPreviewStructure } from '../../../componentTraversal/traverseComponentViaPreviewStructure';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { UpdateLayerDropdownOptionNames } from '../../updateChildComponent/updateLayerDropdownOptionNames';
 import { DecrementChildComponentCount } from '../../childComponentCount/decrementChildComponentCount';
@@ -140,6 +140,7 @@ export class RemoveAnyChildComponent {
         alignedChildComponents.splice(index, 1);
         InterconnectedSettings.update(false, containerComponent, subcomponentProperties);
       }
+      traversalState.stopTraversal = true;
       return traversalState;
     }
     return null;

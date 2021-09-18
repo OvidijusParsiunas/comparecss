@@ -1,4 +1,4 @@
-import { TraverseComponentViaPreviewStructure } from '../../../componentTraversal/traverseComponentViaPreviewStructure';
+import { TraverseComponentViaPreviewStructure } from '../../../componentTraversal/traverseComponentsViaPreviewStructure';
 import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { ChildComponentsInLayer } from '../../../../../../../interfaces/childComponentsLockedToLayer';
 import { Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';

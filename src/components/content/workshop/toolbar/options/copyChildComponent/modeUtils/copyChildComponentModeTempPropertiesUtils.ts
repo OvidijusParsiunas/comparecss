@@ -1,4 +1,4 @@
-import { TraverseComponentsViaFullPreviewStructure } from '../../../../utils/componentTraversal/traverseComponentsViaFullPreviewStructure';
+import { TraverseComponentViaPreviewStructure } from '../../../../utils/componentTraversal/traverseComponentsViaPreviewStructure';
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SubcomponentPreviewTraversalState } from '../../../../../../../interfaces/componentTraversal';
@@ -40,7 +40,7 @@ export class CopyChildComponentModeTempPropertiesUtils {
 
   public static setActiveComponentToChildComponentCopy(currentlySelectedComponent: WorkshopComponent, componentToBeCopied: WorkshopComponent): void {
     const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
-    TraverseComponentsViaFullPreviewStructure.traverseSameComponentTypes(
+    TraverseComponentViaPreviewStructure.traverseFromStart(
       CopyChildComponentModeTempPropertiesUtils.copySubcomponentDuringPreviewTraversal, activeComponent, componentToBeCopied);
   }
 
@@ -60,7 +60,7 @@ export class CopyChildComponentModeTempPropertiesUtils {
 
   public static cleanComponent(currentlySelectedComponent: WorkshopComponent, resetSubcomponentProperties = true): void {
     const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
-    TraverseComponentsViaFullPreviewStructure.traverseSameComponentTypes(
+    TraverseComponentViaPreviewStructure.traverseFromStart(
       CopyChildComponentModeTempPropertiesUtils.resetSubcomponentProperties.bind(resetSubcomponentProperties), activeComponent);
   }
 

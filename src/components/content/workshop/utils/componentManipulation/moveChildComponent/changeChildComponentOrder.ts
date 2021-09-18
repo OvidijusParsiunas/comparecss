@@ -1,9 +1,9 @@
 import { DropdownStructureTraversalState, SubcomponentPreviewTraversalState, TargetDetails } from '../../../../../../interfaces/componentTraversal';
+import { BaseSubcomponentRef, Layer, SubcomponentNameToDropdownOptionName } from '../../../../../../interfaces/componentPreviewStructure';
 import { DropdownOptionAuxDetails, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { UpdateGenericComponentDropdownOptionNames } from '../updateChildComponent/updateGenericComponentDropdownOptionNames';
 import { TraverseComponentViaDropdownStructure } from '../../componentTraversal/traverseComponentViaDropdownStructure';
-import { TraverseComponentViaPreviewStructure } from '../../componentTraversal/traverseComponentViaPreviewStructure';
-import { SubcomponentNameToDropdownOptionName } from '../../../../../../interfaces/componentPreviewStructure';
+import { TraverseComponentViaPreviewStructure } from '../../componentTraversal/traverseComponentsViaPreviewStructure';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../../interfaces/subcomponentOrderDirections.enum';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
@@ -66,19 +66,24 @@ export class ChangeChildComponentOrder {
     return null;
   }
 
+  private static swapArrayElements(isLowerOrderDirection: boolean, index: number, componentsToSwap: BaseSubcomponentRef[] | Layer[]): boolean {
+    if (isLowerOrderDirection && index !== 0) {
+      ArrayUtils.changeElementPosition(componentsToSwap, index, index - 1);
+      return true;
+    } else if (!isLowerOrderDirection && index !== componentsToSwap.length - 1) {
+      ArrayUtils.changeElementPosition(componentsToSwap, index, index + 1);
+      return true;
+    }
+    return false;
+  }
+
   private static swapChildComponentInPreviewStructureIfFound(traversalState: SubcomponentPreviewTraversalState): CompositeTraversalResult {
     const { subcomponentProperties, alignedChildComponents, layers, index } = traversalState;
     const { targetSubcomponentProperties, isLowerOrderDirection } = this as any as ChangeComponentTargetDetails;
     if (targetSubcomponentProperties === subcomponentProperties) {
-      const componentPreviewContainer = alignedChildComponents || layers;
-      if (isLowerOrderDirection && index !== 0) {
-        ArrayUtils.changeElementPosition(componentPreviewContainer, index, index - 1);
-        return { ...traversalState, childComponentMovable: true };
-      } else if (!isLowerOrderDirection && index !== componentPreviewContainer.length - 1) {
-        ArrayUtils.changeElementPosition(componentPreviewContainer, index, index + 1);
-        return { ...traversalState, childComponentMovable: true };
-      }
-      return { ...traversalState, childComponentMovable: false };
+      const componentsToSwap = alignedChildComponents || layers;
+      const isSwapped = ChangeChildComponentOrder.swapArrayElements(isLowerOrderDirection, index, componentsToSwap);
+      return { ...traversalState, stopTraversal: true, childComponentMovable: isSwapped };
     }
     return null;
   }
