@@ -53,7 +53,7 @@ export class CopyChildComponedModeToggleOff {
         activeSeedComponent.sync.syncedComponent = lastSelectedComponentToSync;
       }, optionsComponent.hasCopyChildComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     }
-    CopyChildComponentModeTempPropertiesUtils.cleanComponent(optionsComponent.component);
+    CopyChildComponentModeTempPropertiesUtils.cleanComponent(optionsComponent.component, false);
     CopyChildComponentModeTempPropertiesUtils.deleteLastSelectedComponentToCopy(optionsComponent.component);
     CopyChildComponedModeToggleOff.toggleOff(optionsComponent, false);
   }

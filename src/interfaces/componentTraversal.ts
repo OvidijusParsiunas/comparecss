@@ -29,4 +29,5 @@ export interface SubcomponentPreviewTraversalState {
   alignedSections?: AlignedSections;
   layers?: Layer[];
   index?: number;
+  stopTraversal?: boolean;
 }

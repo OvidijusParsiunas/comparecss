@@ -1,6 +1,7 @@
 import { TraverseComponentsViaFullPreviewStructure } from '../../../../utils/componentTraversal/traverseComponentsViaFullPreviewStructure';
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { SubcomponentPreviewTraversalState } from '../../../../../../../interfaces/componentTraversal';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 
@@ -30,10 +31,17 @@ export class CopyChildComponentModeTempPropertiesUtils {
     CopyChildComponentModeTempPropertiesUtils.copyAllCustomProperties(subcomponentToBeCopied, activeComponentSubcomponent);
   }
 
+  private static copySubcomponentDuringPreviewTraversal(activeComponentTraversal: SubcomponentPreviewTraversalState, componentToBeCopiedTraversal: SubcomponentPreviewTraversalState): SubcomponentPreviewTraversalState {
+    const activeSubcomponent = activeComponentTraversal.subcomponentProperties;
+    const subcomponentToBeCopied = componentToBeCopiedTraversal.subcomponentProperties;
+    CopyChildComponentModeTempPropertiesUtils.copySubcomponent(activeSubcomponent, subcomponentToBeCopied);
+    return activeComponentTraversal;
+  }
+
   public static setActiveComponentToChildComponentCopy(currentlySelectedComponent: WorkshopComponent, componentToBeCopied: WorkshopComponent): void {
     const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
     TraverseComponentsViaFullPreviewStructure.traverseSameComponentTypes(
-      CopyChildComponentModeTempPropertiesUtils.copySubcomponent, activeComponent, componentToBeCopied);
+      CopyChildComponentModeTempPropertiesUtils.copySubcomponentDuringPreviewTraversal, activeComponent, componentToBeCopied);
   }
 
   private static resetOriginalCss(subcomponentProperties: SubcomponentProperties): void {
@@ -42,17 +50,18 @@ export class CopyChildComponentModeTempPropertiesUtils {
     subcomponentProperties.customFeatures = subcomponentProperties.tempOriginalCustomProperties.customFeatures; 
   }
 
-  private static resetSubcomponentProperties(activeSubcomponent: SubcomponentProperties): void {
-    if (activeSubcomponent.tempOriginalCustomProperties) {
-      delete activeSubcomponent.tempOriginalCustomProperties;
-      CopyChildComponentModeTempPropertiesUtils.resetOriginalCss(activeSubcomponent);
-    }
+  private static resetSubcomponentProperties(activeComponentTraversal: SubcomponentPreviewTraversalState): SubcomponentPreviewTraversalState {
+    const resetSubcomponentProperties = this as any as boolean;
+    const activeSubcomponent = activeComponentTraversal.subcomponentProperties;
+    if (resetSubcomponentProperties) CopyChildComponentModeTempPropertiesUtils.resetOriginalCss(activeSubcomponent);
+    delete activeSubcomponent.tempOriginalCustomProperties;
+    return activeComponentTraversal;
   }
 
-  public static cleanComponent(currentlySelectedComponent: WorkshopComponent): void {
+  public static cleanComponent(currentlySelectedComponent: WorkshopComponent, resetSubcomponentProperties = true): void {
     const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
     TraverseComponentsViaFullPreviewStructure.traverseSameComponentTypes(
-      CopyChildComponentModeTempPropertiesUtils.resetSubcomponentProperties, activeComponent);
+      CopyChildComponentModeTempPropertiesUtils.resetSubcomponentProperties.bind(resetSubcomponentProperties), activeComponent);
   }
 
   public static setLastSelectectedComponentToCopy(componentToBeCopied: WorkshopComponent, activeComponent: WorkshopComponent): void {
