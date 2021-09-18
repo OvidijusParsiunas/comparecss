@@ -1,10 +1,12 @@
+import { DropdownStructureTraversalState, TargetDetails, TraverseComponentCallback } from '../../../../../interfaces/componentTraversal';
 import { DropdownOptionAuxDetails, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../interfaces/dropdownOptionDisplayStatus';
-import { ComponentTraversalState, TargetDetails, TraverseComponentCallback } from '../../../../../interfaces/componentTraversal';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
 import { WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import ComponentTraversalUtils from './componentTraversalUtils';
 
-type DropdownStructureSearchCallback = (
+type TraversalCallback = TraverseComponentCallback<DropdownStructureTraversalState>
+
+type DropdownStructureSearchFromStartCallback = (
   containerComponent: WorkshopComponent,
   dropdownStructure: NestedDropdownStructure,
   ...args: unknown[]) => unknown;
@@ -12,7 +14,7 @@ type DropdownStructureSearchCallback = (
 export class TraverseComponentViaDropdownStructure {
 
   private static inspectSubcomponent(subcomponentDropdownStructure: NestedDropdownStructure, index: number,
-      callback: TraverseComponentCallback, dropdownOptionDetailsStack: DropdownOptionAuxDetails[], dropdownOptionName: string): ComponentTraversalState {
+      callback: TraversalCallback, dropdownOptionDetailsStack: DropdownOptionAuxDetails[], dropdownOptionName: string): DropdownStructureTraversalState {
     if (dropdownOptionName === DROPDOWN_OPTION_AUX_DETAILS_REF) return null;
     const callbackResult = callback({dropdownOptionName, subcomponentDropdownStructure, dropdownOptionDetailsStack, index});
     if (callbackResult) return callbackResult;
@@ -26,8 +28,8 @@ export class TraverseComponentViaDropdownStructure {
     return null;
   }
 
-  public static traverse(subcomponentDropdownStructure: NestedDropdownStructure, callback: TraverseComponentCallback,
-      dropdownOptionDetailsStack?: DropdownOptionAuxDetails[]): ComponentTraversalState {
+  public static traverse(subcomponentDropdownStructure: NestedDropdownStructure, callback: TraversalCallback,
+      dropdownOptionDetailsStack?: DropdownOptionAuxDetails[]): DropdownStructureTraversalState {
     if (!dropdownOptionDetailsStack) dropdownOptionDetailsStack = [null];
     const subcomponentDropdownStructureKeys = Object.keys(subcomponentDropdownStructure);
     for (let i = 0; i < subcomponentDropdownStructureKeys.length; i += 1) {
@@ -41,8 +43,8 @@ export class TraverseComponentViaDropdownStructure {
     return null;
   }
 
-  public static isActualObjectNameMatching(targetDetails: TargetDetails, componentTraversalState: ComponentTraversalState): boolean {
-    const { dropdownOptionName, subcomponentDropdownStructure } = componentTraversalState;
+  public static isActualObjectNameMatching(targetDetails: TargetDetails, traversalState: DropdownStructureTraversalState): boolean {
+    const { dropdownOptionName, subcomponentDropdownStructure } = traversalState;
     const { targetDropdownOptionName, targetSubcomponentName } = targetDetails;
     if (targetDropdownOptionName !== dropdownOptionName) return false;
     // if there is no DROPDOWN_OPTION_AUX_DETAILS_REF - the component can be considered as the base and return true
@@ -51,17 +53,17 @@ export class TraverseComponentViaDropdownStructure {
     return true;
   }
 
-  private static proceedToInvokeCallbackIfFound(containerComponent: WorkshopComponent, callback: DropdownStructureSearchCallback,
-      args: unknown[], componentTraversalState: ComponentTraversalState): unknown {
+  private static proceedToInvokeCallbackIfFound(containerComponent: WorkshopComponent, callback: DropdownStructureSearchFromStartCallback,
+      args: unknown[], traversalState: DropdownStructureTraversalState): unknown {
     const targetDetails = this as any as TargetDetails;
-    if (TraverseComponentViaDropdownStructure.isActualObjectNameMatching(targetDetails, componentTraversalState)) {
-      const { subcomponentDropdownStructure } = componentTraversalState;
+    if (TraverseComponentViaDropdownStructure.isActualObjectNameMatching(targetDetails, traversalState)) {
+      const { subcomponentDropdownStructure } = traversalState;
       return callback(containerComponent, subcomponentDropdownStructure, ...args);
     }
     return null;
   }
 
-  public static traverseFromStart(parentOptionComponent: WorkshopComponent, callback: DropdownStructureSearchCallback, ...args: unknown[]): unknown {
+  public static traverseFromStart(parentOptionComponent: WorkshopComponent, callback: DropdownStructureSearchFromStartCallback, ...args: unknown[]): unknown {
     const masterComponent = parentOptionComponent.masterComponent;
     const targetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName);
     return TraverseComponentViaDropdownStructure.traverse(

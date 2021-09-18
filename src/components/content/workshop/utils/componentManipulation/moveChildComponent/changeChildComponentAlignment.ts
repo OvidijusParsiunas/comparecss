@@ -2,10 +2,10 @@ import { UpdateGenericComponentDropdownOptionNames } from '../updateChildCompone
 import { TraverseComponentViaDropdownStructure } from '../../componentTraversal/traverseComponentViaDropdownStructure';
 import { AlignedSections, BaseSubcomponentRef } from '../../../../../../interfaces/componentPreviewStructure';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { ComponentTraversalState, TargetDetails } from '../../../../../../interfaces/componentTraversal';
 import { childComponentAlignmentDropdownState } from './childComponentAlignmentDropdownState';
 import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
+import { DropdownStructureTraversalState, TargetDetails } from '../../../../../../interfaces/componentTraversal';
 import { SetNewActiveSubcomponent } from '../utils/setNewActiveSubcomponent';
 
 export class ChangeChildComponentAlignment {
@@ -60,13 +60,13 @@ export class ChangeChildComponentAlignment {
     }
   }
 
-  private static updateDropdownStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
+  private static updateDropdownStructureIfFound(traversalState: DropdownStructureTraversalState): DropdownStructureTraversalState {
     const targetDetails = this as any as TargetDetails;
-    if (TraverseComponentViaDropdownStructure.isActualObjectNameMatching(targetDetails, componentTraversalState)) {
+    if (TraverseComponentViaDropdownStructure.isActualObjectNameMatching(targetDetails, traversalState)) {
       const { masterComponent, parentLayerAlignedSections } = targetDetails;
       UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(masterComponent,
-        componentTraversalState.subcomponentDropdownStructure, parentLayerAlignedSections);
-      return componentTraversalState;
+        traversalState.subcomponentDropdownStructure, parentLayerAlignedSections);
+      return traversalState;
     }
     return null;
   }

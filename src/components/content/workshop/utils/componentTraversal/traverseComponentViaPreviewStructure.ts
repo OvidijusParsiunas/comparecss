@@ -1,23 +1,23 @@
 import { AlignedSections, BaseSubcomponentRef, ComponentPreviewStructure } from '../../../../../interfaces/componentPreviewStructure';
-import { ComponentTraversalState } from '../../../../../interfaces/componentTraversal';
+import { SubcomponentPreviewTraversalState, TraverseComponentCallback } from '../../../../../interfaces/componentTraversal';
 import { ALIGNED_SECTION_TYPES } from '../../../../../consts/layerSections.enum';
 
-type TraverseComponentCallback = (componentTraversalState: ComponentTraversalState) => ComponentTraversalState;
+type TraversalCallback = TraverseComponentCallback<SubcomponentPreviewTraversalState>
 
 export class TraverseComponentViaPreviewStructure {
 
   private static inspectAlignedChildComponent(alignedChildComponents: BaseSubcomponentRef[], index: number, alignedSections: AlignedSections,
-      callback: TraverseComponentCallback): ComponentTraversalState {
+      callback: TraversalCallback): SubcomponentPreviewTraversalState {
     const { subcomponentProperties } = alignedChildComponents[index];
     const callbackResult = callback({subcomponentProperties, alignedChildComponents, alignedSections, index});
     if (callbackResult) return callbackResult;
     const { componentPreviewStructure } = subcomponentProperties.seedComponent;
-    const traversalResult = TraverseComponentViaPreviewStructure.traverse(componentPreviewStructure, callback);
+    const traversalResult = TraverseComponentViaPreviewStructure.traverse(callback, componentPreviewStructure, );
     if (traversalResult) return traversalResult;
     return null;
   }
 
-  private static iterateAlignedSections(alignedSections: AlignedSections, callback: TraverseComponentCallback): ComponentTraversalState {
+  private static iterateAlignedSections(callback: TraversalCallback, alignedSections: AlignedSections): SubcomponentPreviewTraversalState {
     const alignedSectionKeyValues = Object.keys(ALIGNED_SECTION_TYPES);
     for (let i = 0; i < alignedSectionKeyValues.length; i += 1) {
       const alignedChildComponents = alignedSections[ALIGNED_SECTION_TYPES[alignedSectionKeyValues[i]]];
@@ -29,14 +29,13 @@ export class TraverseComponentViaPreviewStructure {
     return null;
   }
 
-  public static traverse(previewStructure: ComponentPreviewStructure,
-      callback: TraverseComponentCallback): ComponentTraversalState {
+  public static traverse(callback: TraversalCallback, previewStructure: ComponentPreviewStructure): SubcomponentPreviewTraversalState {
     const { layers } = previewStructure;
     for (let i = 0; i < layers.length; i += 1) {
       const { sections: { alignedSections }, subcomponentProperties } = layers[i];
       const callbackResult = callback({subcomponentProperties, layers, index: i});
       if (callbackResult) return callbackResult;
-      const iterationResult = TraverseComponentViaPreviewStructure.iterateAlignedSections(alignedSections, callback);
+      const iterationResult = TraverseComponentViaPreviewStructure.iterateAlignedSections(callback, alignedSections);
       if (iterationResult) return iterationResult;
     }
     return null;

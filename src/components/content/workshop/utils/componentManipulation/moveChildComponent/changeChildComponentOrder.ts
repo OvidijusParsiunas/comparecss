@@ -1,17 +1,18 @@
+import { DropdownStructureTraversalState, SubcomponentPreviewTraversalState, TargetDetails } from '../../../../../../interfaces/componentTraversal';
 import { DropdownOptionAuxDetails, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { UpdateGenericComponentDropdownOptionNames } from '../updateChildComponent/updateGenericComponentDropdownOptionNames';
 import { TraverseComponentViaDropdownStructure } from '../../componentTraversal/traverseComponentViaDropdownStructure';
 import { TraverseComponentViaPreviewStructure } from '../../componentTraversal/traverseComponentViaPreviewStructure';
 import { SubcomponentNameToDropdownOptionName } from '../../../../../../interfaces/componentPreviewStructure';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../../interfaces/subcomponentOrderDirections.enum';
-import { ComponentTraversalState, TargetDetails } from '../../../../../../interfaces/componentTraversal';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ArrayUtils } from '../../generic/arrayUtils';
 
-type CompositeTraversalResult = ComponentTraversalState & { childComponentMovable: boolean } 
+// WORK2 - what is a composite traversal result - is it same as taversing a paddiang component
+type CompositeTraversalResult = SubcomponentPreviewTraversalState & { childComponentMovable: boolean } 
 type ChangeComponentTargetDetails = TargetDetails & { isLowerOrderDirection?: boolean }
 
 export class ChangeChildComponentOrder {
@@ -45,8 +46,8 @@ export class ChangeChildComponentOrder {
     ChangeChildComponentOrder.swapSubcomponentDropdownStructure(subcomponentDropdownStructure, currentOptionName, swappedOptionName);
   }
 
-  private static swapChildComponentInDropdown(targetDetails: ChangeComponentTargetDetails, componentTraversalState: ComponentTraversalState): void {
-    const { dropdownOptionName: currentOptionName, subcomponentDropdownStructure, index } = componentTraversalState;
+  private static swapChildComponentInDropdown(targetDetails: ChangeComponentTargetDetails, traversalState: DropdownStructureTraversalState): void {
+    const { dropdownOptionName: currentOptionName, subcomponentDropdownStructure, index } = traversalState;
     const dropdownOptionNames = Object.keys(subcomponentDropdownStructure);
     const swappedOptionIndex = targetDetails.isLowerOrderDirection ? index - 1 : index + 1;
     const swappedOptionName = dropdownOptionNames[swappedOptionIndex];
@@ -56,28 +57,28 @@ export class ChangeChildComponentOrder {
     }
   }
 
-  private static swapChildComponentInDropdownStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
+  private static swapChildComponentInDropdownStructureIfFound(traversalState: DropdownStructureTraversalState): DropdownStructureTraversalState {
     const targetDetails = this as any as ChangeComponentTargetDetails;
-    if (TraverseComponentViaDropdownStructure.isActualObjectNameMatching(targetDetails, componentTraversalState)) {
-      ChangeChildComponentOrder.swapChildComponentInDropdown(targetDetails, componentTraversalState);
-      return componentTraversalState;
+    if (TraverseComponentViaDropdownStructure.isActualObjectNameMatching(targetDetails, traversalState)) {
+      ChangeChildComponentOrder.swapChildComponentInDropdown(targetDetails, traversalState);
+      return traversalState;
     }
     return null;
   }
 
-  private static swapChildComponentInPreviewStructureIfFound(componentTraversalState: ComponentTraversalState): CompositeTraversalResult {
-    const { subcomponentProperties, alignedChildComponents, layers, index } = componentTraversalState;
+  private static swapChildComponentInPreviewStructureIfFound(traversalState: SubcomponentPreviewTraversalState): CompositeTraversalResult {
+    const { subcomponentProperties, alignedChildComponents, layers, index } = traversalState;
     const { targetSubcomponentProperties, isLowerOrderDirection } = this as any as ChangeComponentTargetDetails;
     if (targetSubcomponentProperties === subcomponentProperties) {
       const componentPreviewContainer = alignedChildComponents || layers;
       if (isLowerOrderDirection && index !== 0) {
         ArrayUtils.changeElementPosition(componentPreviewContainer, index, index - 1);
-        return { ...componentTraversalState, childComponentMovable: true };
+        return { ...traversalState, childComponentMovable: true };
       } else if (!isLowerOrderDirection && index !== componentPreviewContainer.length - 1) {
         ArrayUtils.changeElementPosition(componentPreviewContainer, index, index + 1);
-        return { ...componentTraversalState, childComponentMovable: true };
+        return { ...traversalState, childComponentMovable: true };
       }
-      return { ...componentTraversalState, childComponentMovable: false };
+      return { ...traversalState, childComponentMovable: false };
     }
     return null;
   }
@@ -86,8 +87,8 @@ export class ChangeChildComponentOrder {
     const targetDetails: ChangeComponentTargetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName);
     targetDetails.isLowerOrderDirection = direction === SUBCOMPONENT_ORDER_DIRECTIONS.LEFT || direction === SUBCOMPONENT_ORDER_DIRECTIONS.UP;
     const traversalResult = TraverseComponentViaPreviewStructure.traverse(
-      masterComponent.componentPreviewStructure,
-      ChangeChildComponentOrder.swapChildComponentInPreviewStructureIfFound.bind(targetDetails)) as CompositeTraversalResult;
+      ChangeChildComponentOrder.swapChildComponentInPreviewStructureIfFound.bind(targetDetails),
+      masterComponent.componentPreviewStructure) as CompositeTraversalResult;
     if (!traversalResult.childComponentMovable) return;
     if (traversalResult) targetDetails.parentLayerAlignedSections = traversalResult.alignedSections;
     TraverseComponentViaDropdownStructure.traverse(
