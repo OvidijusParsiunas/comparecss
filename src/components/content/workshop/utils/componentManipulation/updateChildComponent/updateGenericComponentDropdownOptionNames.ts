@@ -1,8 +1,8 @@
+import { TraverseComponentViaDropdownStructure } from '../../componentTraversal/traverseComponentViaDropdownStructure';
 import { AlignedSections, BaseSubcomponentRef, Layer } from '../../../../../../interfaces/componentPreviewStructure';
 import { UpdateContainerComponentDropdownUtils } from './updateContainerComponentDropdownUtils';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { OptionDataMaps } from '../../../../../../interfaces/updateDropdownOptionNames';
-import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { UpdateDropdownOptionNamesShared } from './updateDropdownOptionNamesShared';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
@@ -48,7 +48,7 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
   public static updateViaParentLayerPreviewStructure({ masterComponent }: WorkshopComponent, layer: Layer,
       useArgComponentStructure = false): void {
     const { subcomponentProperties: { name: layerName }, sections: { alignedSections }} = layer;
-    ComponentTraversalUtils.traverseComponentDropdownStructureFromStart(masterComponent,
+    TraverseComponentViaDropdownStructure.traverseFromStart(masterComponent,
       UpdateGenericComponentDropdownOptionNames.updateViaParentLayerIfOptionFound, layerName, useArgComponentStructure, alignedSections);
   }
 }

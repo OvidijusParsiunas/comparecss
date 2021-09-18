@@ -1,4 +1,5 @@
 import { DropdownOptionsDisplayStatusUtils } from '../../../dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
+import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { OverwritePropertiesFunc } from '../../../../../../../interfaces/overwriteSubcomponentPropertiesFunc';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
@@ -7,7 +8,6 @@ import { IncrementChildComponentCount } from '../../childComponentCount/incremen
 import { AlignedSections, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { ChildComponentBaseNamesToStyles } from '../utils/childComponentBaseNamesToStyles';
-import ComponentTraversalUtils from '../../../componentTraversal/componentTraversalUtils';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
@@ -107,7 +107,7 @@ export class AddLayerComponent extends AddComponentShared {
       UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
     AddComponentShared.populateMasterComponentWithNewSubcomponents(masterComponent, newComponent.subcomponents);
     AddLayerComponent.addNewComponentToComponentPreview(higherComponentContainer, newComponent);
-    if (isEditable) ComponentTraversalUtils.traverseComponentDropdownStructureFromStart(containerComponent,
+    if (isEditable) TraverseComponentViaDropdownStructure.traverseFromStart(containerComponent,
       AddLayerComponent.updateDropdownStructureIfOptionFound, newComponent, masterComponent);
     AddComponentShared.addNewSubcomponentNameInContainerDropdownOptionNameMap(masterComponent, newComponent, isEditable);
     AddLayerComponent.addNewChildComponentsOptions(higherComponentContainer, newComponent);

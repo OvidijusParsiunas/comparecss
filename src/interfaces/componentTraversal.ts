@@ -3,6 +3,8 @@ import { SubcomponentProperties, WorkshopComponent } from './workshopComponent';
 import { DropdownOptionAuxDetails } from './dropdownOptionDisplayStatus';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 
+export type TraverseComponentCallback = (componentTraversalState: ComponentTraversalState) => ComponentTraversalState;
+
 export type ChangeOrderCallback = (param: string) => void;
 
 export interface TargetDetails {
@@ -24,4 +26,3 @@ export interface ComponentTraversalState {
   layers?: Layer[];
   index?: number;
 }
-

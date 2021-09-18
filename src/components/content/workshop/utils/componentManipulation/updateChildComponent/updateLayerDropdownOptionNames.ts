@@ -1,6 +1,6 @@
+import { TraverseComponentViaDropdownStructure } from '../../componentTraversal/traverseComponentViaDropdownStructure';
 import { SubcomponentNameToDropdownOptionName } from '../../../../../../interfaces/componentPreviewStructure';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
-import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { UpdateDropdownOptionNamesShared } from './updateDropdownOptionNamesShared';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
@@ -68,7 +68,7 @@ export class UpdateLayerDropdownOptionNames extends UpdateDropdownOptionNamesSha
   }
 
   public static update(containerComponent: WorkshopComponent, startingLayerNumber: number): void {
-    ComponentTraversalUtils.traverseComponentDropdownStructureFromStart(containerComponent,
+    TraverseComponentViaDropdownStructure.traverseFromStart(containerComponent,
       UpdateLayerDropdownOptionNames.updateIfActiveOptionFound, startingLayerNumber);
   }
 }

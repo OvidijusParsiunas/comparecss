@@ -1,4 +1,5 @@
 import { UpdateGenericComponentDropdownOptionNames } from '../updateChildComponent/updateGenericComponentDropdownOptionNames';
+import { TraverseComponentViaDropdownStructure } from '../../componentTraversal/traverseComponentViaDropdownStructure';
 import { AlignedSections, BaseSubcomponentRef } from '../../../../../../interfaces/componentPreviewStructure';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ComponentTraversalState, TargetDetails } from '../../../../../../interfaces/componentTraversal';
@@ -61,7 +62,7 @@ export class ChangeChildComponentAlignment {
 
   private static updateDropdownStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
     const targetDetails = this as any as TargetDetails;
-    if (ComponentTraversalUtils.isActualObjectNameMatching(targetDetails, componentTraversalState)) {
+    if (TraverseComponentViaDropdownStructure.isActualObjectNameMatching(targetDetails, componentTraversalState)) {
       const { masterComponent, parentLayerAlignedSections } = targetDetails;
       UpdateGenericComponentDropdownOptionNames.updateViaParentLayerDropdownStructure(masterComponent,
         componentTraversalState.subcomponentDropdownStructure, parentLayerAlignedSections);
@@ -73,7 +74,7 @@ export class ChangeChildComponentAlignment {
   private static updateNames(newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties, masterComponent: WorkshopComponent): void {
     const targetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName) as TargetDetails;
     targetDetails.parentLayerAlignedSections = subcomponentProperties.parentLayer.sections.alignedSections;
-    ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
+    TraverseComponentViaDropdownStructure.traverse(
       masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       ChangeChildComponentAlignment.updateDropdownStructureIfFound.bind(targetDetails));
     // UX - check if need to set the subcomponent to the right of the alignment

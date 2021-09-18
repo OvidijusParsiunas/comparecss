@@ -1,4 +1,5 @@
 import { BUTTON_COMPONENTS_BASE_NAMES, PRIMITIVE_COMPONENTS_BASE_NAMES, LAYER_COMPONENTS_BASE_NAMES, CHILD_COMPONENTS_BASE_NAMES, DROPDOWN_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
+import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownOptionDisplayStatus';
@@ -13,7 +14,6 @@ import { CoreSubcomponentRefsUtils } from '../../coreSubcomponentRefs/coreSubcom
 import { SyncedComponent } from '../../../../toolbar/options/copyChildComponent/syncedComponent';
 import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import ComponentTraversalUtils from '../../../componentTraversal/componentTraversalUtils';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -150,7 +150,7 @@ export class AddContainerComponent extends AddComponentShared {
   public static add(newComponentContainer: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
       parentLayerName: string, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
     const parentLayer = AddComponentShared.getContainerComponentLayer(newComponentContainer, parentLayerName);
-    return ComponentTraversalUtils.traverseComponentDropdownStructureFromStart(
+    return TraverseComponentViaDropdownStructure.traverseFromStart(
       newComponentContainer, AddContainerComponent.addUsingParentDropdownStructure,
       componentType, componentStyle, parentLayer, overwritePropertiesFunc) as WorkshopComponent;
   }

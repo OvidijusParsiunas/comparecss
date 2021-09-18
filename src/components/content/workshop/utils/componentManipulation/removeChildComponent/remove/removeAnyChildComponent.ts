@@ -1,6 +1,8 @@
 import { DropdownOptionAuxDetails, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { UpdateGenericComponentDropdownOptionNames } from '../../updateChildComponent/updateGenericComponentDropdownOptionNames';
+import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
 import { AlignedSections, BaseSubcomponentRef, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
+import { TraverseComponentViaPreviewStructure } from '../../../componentTraversal/traverseComponentViaPreviewStructure';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ComponentTraversalState, TargetDetails } from '../../../../../../../interfaces/componentTraversal';
 import { UpdateLayerDropdownOptionNames } from '../../updateChildComponent/updateLayerDropdownOptionNames';
@@ -79,7 +81,7 @@ export class RemoveAnyChildComponent {
   private static removeChildComponentUsingDropdownStructureIfFound(componentTraversalState: ComponentTraversalState): ComponentTraversalState {
     const { subcomponentDropdownStructure } = componentTraversalState;
     const targetDetails = this as any as TargetRemovalDetails;
-    if (ComponentTraversalUtils.isActualObjectNameMatching(targetDetails, componentTraversalState)) {
+    if (TraverseComponentViaDropdownStructure.isActualObjectNameMatching(targetDetails, componentTraversalState)) {
       const dropdownOptions = RemoveAnyChildComponent.getDropdownOptionNames(subcomponentDropdownStructure);
       const removedSubcomponentDropdownIndex = dropdownOptions.indexOf(targetDetails.targetDropdownOptionName);
       RemoveAnyChildComponent.removeDropdownStructure(componentTraversalState, targetDetails, dropdownOptions);
@@ -148,11 +150,11 @@ export class RemoveAnyChildComponent {
     const targetDetails: TargetRemovalDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent,
       subcomponentName || parentComponent.activeSubcomponentName);
     targetDetails.isRemovingActiveSubcomponent = isRemovingActiveSubcomponent;
-    const traversalResult = ComponentTraversalUtils.traverseComponentUsingPreviewStructure(
+    const traversalResult = TraverseComponentViaPreviewStructure.traverse(
       higherActiveComponentContainer.componentPreviewStructure,
       RemoveAnyChildComponent.removeChildComponentInPreviewStructureIfFound.bind(targetDetails));
     if (traversalResult) targetDetails.parentLayerAlignedSections = traversalResult.alignedSections;
-    ComponentTraversalUtils.traverseComponentUsingDropdownStructure(
+    TraverseComponentViaDropdownStructure.traverse(
       targetDetails.masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       RemoveAnyChildComponent.removeChildComponentUsingDropdownStructureIfFound.bind(targetDetails));
     RemoveAnyChildComponent.removeCoreSubcomponentRef(parentComponent, targetDetails.targetSubcomponentProperties);
