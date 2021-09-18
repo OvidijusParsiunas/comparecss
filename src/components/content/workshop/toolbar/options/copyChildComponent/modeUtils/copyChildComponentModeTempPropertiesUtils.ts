@@ -1,4 +1,4 @@
-import { TraverseComponentViaPreviewStructure } from '../../../../utils/componentTraversal/traverseComponentsViaPreviewStructure';
+import { TraverseComponentViaPreviewStructureParentFirst } from '../../../../utils/componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SubcomponentPreviewTraversalState } from '../../../../../../../interfaces/componentTraversal';
@@ -24,7 +24,6 @@ export class CopyChildComponentModeTempPropertiesUtils {
   }
 
   public static copySubcomponent(activeComponentSubcomponent: SubcomponentProperties, subcomponentToBeCopied: SubcomponentProperties): void {
-    // WORK2 - this is added to the seed component of the copied child component, does it remain after the component has been successfully added?
     if (!activeComponentSubcomponent.tempOriginalCustomProperties) {
       CopyChildComponentModeTempPropertiesUtils.moveCustomPropertiesToTempProperties(activeComponentSubcomponent);
     }
@@ -40,7 +39,7 @@ export class CopyChildComponentModeTempPropertiesUtils {
 
   public static setActiveComponentToChildComponentCopy(currentlySelectedComponent: WorkshopComponent, componentToBeCopied: WorkshopComponent): void {
     const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
-    TraverseComponentViaPreviewStructure.traverseFromStart(
+    TraverseComponentViaPreviewStructureParentFirst.traverseUsingComponent(
       CopyChildComponentModeTempPropertiesUtils.copySubcomponentDuringPreviewTraversal, activeComponent, componentToBeCopied);
   }
 
@@ -60,7 +59,7 @@ export class CopyChildComponentModeTempPropertiesUtils {
 
   public static cleanComponent(currentlySelectedComponent: WorkshopComponent, resetSubcomponentProperties = true): void {
     const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
-    TraverseComponentViaPreviewStructure.traverseFromStart(
+    TraverseComponentViaPreviewStructureParentFirst.traverseUsingComponent(
       CopyChildComponentModeTempPropertiesUtils.resetSubcomponentProperties.bind(resetSubcomponentProperties), activeComponent);
   }
 

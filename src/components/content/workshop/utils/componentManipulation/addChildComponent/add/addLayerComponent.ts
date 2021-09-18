@@ -107,7 +107,7 @@ export class AddLayerComponent extends AddComponentShared {
       UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
     AddComponentShared.populateMasterComponentWithNewSubcomponents(masterComponent, newComponent.subcomponents);
     AddLayerComponent.addNewComponentToComponentPreview(higherComponentContainer, newComponent);
-    if (isEditable) TraverseComponentViaDropdownStructure.traverseFromStart(containerComponent,
+    if (isEditable) TraverseComponentViaDropdownStructure.traverseUsingComponent(containerComponent,
       AddLayerComponent.updateDropdownStructureIfOptionFound, newComponent, masterComponent);
     AddComponentShared.addNewSubcomponentNameInContainerDropdownOptionNameMap(masterComponent, newComponent, isEditable);
     AddLayerComponent.addNewChildComponentsOptions(higherComponentContainer, newComponent);

@@ -48,7 +48,7 @@ export class UpdateGenericComponentDropdownOptionNames extends UpdateDropdownOpt
   public static updateViaParentLayerPreviewStructure({ masterComponent }: WorkshopComponent, layer: Layer,
       useArgComponentStructure = false): void {
     const { subcomponentProperties: { name: layerName }, sections: { alignedSections }} = layer;
-    TraverseComponentViaDropdownStructure.traverseFromStart(masterComponent,
+    TraverseComponentViaDropdownStructure.traverseUsingComponent(masterComponent,
       UpdateGenericComponentDropdownOptionNames.updateViaParentLayerIfOptionFound, layerName, useArgComponentStructure, alignedSections);
   }
 }

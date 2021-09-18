@@ -3,9 +3,12 @@ import { SubcomponentProperties, WorkshopComponent } from './workshopComponent';
 import { DropdownOptionAuxDetails } from './dropdownOptionDisplayStatus';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 
-export type TraverseComponentCallback<T> = (traversalState: T) => T;
+export type DropdownTraversalCallback<T> = (traversalState: T) => T;
 
-export type ChangeOrderCallback = (param: string) => void;
+export type PreviewTraversalCallback = (...activeSubcomponent: SubcomponentPreviewTraversalState[]) => SubcomponentPreviewTraversalState;
+
+// currently used for preview traversal callback only
+export type AlignedComponentWithMeta = [BaseSubcomponentRef[], AlignedSections];
 
 export interface TargetDetails {
   targetSubcomponentName: string;

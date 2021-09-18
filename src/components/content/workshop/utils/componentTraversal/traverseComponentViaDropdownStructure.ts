@@ -1,10 +1,10 @@
-import { DropdownStructureTraversalState, TargetDetails, TraverseComponentCallback } from '../../../../../interfaces/componentTraversal';
+import { DropdownStructureTraversalState, TargetDetails, DropdownTraversalCallback } from '../../../../../interfaces/componentTraversal';
 import { DropdownOptionAuxDetails, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../interfaces/dropdownOptionDisplayStatus';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
 import { WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import ComponentTraversalUtils from './componentTraversalUtils';
 
-type TraversalCallback = TraverseComponentCallback<DropdownStructureTraversalState>
+type TraversalCallback = DropdownTraversalCallback<DropdownStructureTraversalState>
 
 type DropdownStructureSearchFromStartCallback = (
   containerComponent: WorkshopComponent,
@@ -63,7 +63,7 @@ export class TraverseComponentViaDropdownStructure {
     return null;
   }
 
-  public static traverseFromStart(parentOptionComponent: WorkshopComponent, callback: DropdownStructureSearchFromStartCallback, ...args: unknown[]): unknown {
+  public static traverseUsingComponent(parentOptionComponent: WorkshopComponent, callback: DropdownStructureSearchFromStartCallback, ...args: unknown[]): unknown {
     const masterComponent = parentOptionComponent.masterComponent;
     const targetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName);
     return TraverseComponentViaDropdownStructure.traverse(

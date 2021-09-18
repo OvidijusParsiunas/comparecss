@@ -1,9 +1,9 @@
+import { TraverseComponentViaPreviewStructureParentFirst } from '../../componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
 import { DropdownStructureTraversalState, SubcomponentPreviewTraversalState, TargetDetails } from '../../../../../../interfaces/componentTraversal';
 import { BaseSubcomponentRef, Layer, SubcomponentNameToDropdownOptionName } from '../../../../../../interfaces/componentPreviewStructure';
 import { DropdownOptionAuxDetails, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { UpdateGenericComponentDropdownOptionNames } from '../updateChildComponent/updateGenericComponentDropdownOptionNames';
 import { TraverseComponentViaDropdownStructure } from '../../componentTraversal/traverseComponentViaDropdownStructure';
-import { TraverseComponentViaPreviewStructure } from '../../componentTraversal/traverseComponentsViaPreviewStructure';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../../interfaces/subcomponentOrderDirections.enum';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
@@ -11,8 +11,9 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.e
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ArrayUtils } from '../../generic/arrayUtils';
 
-// WORK2 - what is a composite traversal result - is it same as taversing a paddiang component
-type CompositeTraversalResult = SubcomponentPreviewTraversalState & { childComponentMovable: boolean } 
+// WORK2 - what is a composite traversal result - is it same as taversing a padding component
+type CompositeTraversalResult = SubcomponentPreviewTraversalState & { childComponentMovable: boolean }
+
 type ChangeComponentTargetDetails = TargetDetails & { isLowerOrderDirection?: boolean }
 
 export class ChangeChildComponentOrder {
@@ -91,7 +92,7 @@ export class ChangeChildComponentOrder {
   public static change(masterComponent: WorkshopComponent, direction: SUBCOMPONENT_ORDER_DIRECTIONS): void {
     const targetDetails: ChangeComponentTargetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName);
     targetDetails.isLowerOrderDirection = direction === SUBCOMPONENT_ORDER_DIRECTIONS.LEFT || direction === SUBCOMPONENT_ORDER_DIRECTIONS.UP;
-    const traversalResult = TraverseComponentViaPreviewStructure.traverse(
+    const traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverse(
       ChangeChildComponentOrder.swapChildComponentInPreviewStructureIfFound.bind(targetDetails),
       masterComponent.componentPreviewStructure) as CompositeTraversalResult;
     if (!traversalResult.childComponentMovable) return;

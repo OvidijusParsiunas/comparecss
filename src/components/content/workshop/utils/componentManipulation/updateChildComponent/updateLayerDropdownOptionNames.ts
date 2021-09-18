@@ -68,7 +68,7 @@ export class UpdateLayerDropdownOptionNames extends UpdateDropdownOptionNamesSha
   }
 
   public static update(containerComponent: WorkshopComponent, startingLayerNumber: number): void {
-    TraverseComponentViaDropdownStructure.traverseFromStart(containerComponent,
+    TraverseComponentViaDropdownStructure.traverseUsingComponent(containerComponent,
       UpdateLayerDropdownOptionNames.updateIfActiveOptionFound, startingLayerNumber);
   }
 }

@@ -1,8 +1,8 @@
+import { TraverseComponentViaPreviewStructureParentFirst } from '../../../componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
 import { DropdownStructureTraversalState, SubcomponentPreviewTraversalState, TargetDetails } from '../../../../../../../interfaces/componentTraversal';
 import { DropdownOptionAuxDetails, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { UpdateGenericComponentDropdownOptionNames } from '../../updateChildComponent/updateGenericComponentDropdownOptionNames';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
-import { TraverseComponentViaPreviewStructure } from '../../../componentTraversal/traverseComponentsViaPreviewStructure';
 import { AlignedSections, BaseSubcomponentRef, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { UpdateLayerDropdownOptionNames } from '../../updateChildComponent/updateLayerDropdownOptionNames';
@@ -151,7 +151,7 @@ export class RemoveAnyChildComponent {
     const targetDetails: TargetRemovalDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent,
       subcomponentName || parentComponent.activeSubcomponentName);
     targetDetails.isRemovingActiveSubcomponent = isRemovingActiveSubcomponent;
-    const traversalResult = TraverseComponentViaPreviewStructure.traverse(
+    const traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverse(
       RemoveAnyChildComponent.removeChildComponentInPreviewStructureIfFound.bind(targetDetails),
       higherActiveComponentContainer.componentPreviewStructure);
     if (traversalResult) targetDetails.parentLayerAlignedSections = traversalResult.alignedSections;

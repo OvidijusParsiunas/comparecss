@@ -1,22 +1,22 @@
-import { CoreSubcomponentRefsUtils } from '../../../utils/componentManipulation/coreSubcomponentRefs/coreSubcomponentRefsUtils';
+import { TraverseComponentViaPreviewStructureChildFirst } from '../../../utils/componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureChildFirst';
 import { CopyChildComponentModeTempPropertiesUtils } from './modeUtils/copyChildComponentModeTempPropertiesUtils';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ReferenceSharingExecutable } from '../../../../../../interfaces/referenceSharingExecutable';
-import { BaseSubcomponentRef } from '../../../../../../interfaces/componentPreviewStructure';
+import { SubcomponentPreviewTraversalState } from '../../../../../../interfaces/componentTraversal';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import JSONUtils from '../../../utils/generic/jsonUtils';
 
 export class SyncedComponent {
 
-  private static dereferenceCopiedComponentCustomProperties(baseSubcomponent: SubcomponentProperties): void {
-    const { referenceSharingExecutables, coreSubcomponentRefs } = baseSubcomponent.seedComponent;
-    CoreSubcomponentRefsUtils.getActiveRefKeys(coreSubcomponentRefs).forEach((subcomponentType) => {
-      const subcomponent = coreSubcomponentRefs[subcomponentType];
-      if (!subcomponent) return;
-      subcomponent.customCss = JSONUtils.deepCopy(subcomponent.customCss);
-      subcomponent.customFeatures = JSONUtils.deepCopy(subcomponent.customFeatures);
-    });
-    (referenceSharingExecutables || []).forEach((executable: ReferenceSharingExecutable) => executable(coreSubcomponentRefs));
+  private static dereferenceCopiedComponentCustomProperties(componentTraversalState: SubcomponentPreviewTraversalState): SubcomponentPreviewTraversalState {
+    const { subcomponentProperties } = componentTraversalState;
+    subcomponentProperties.customCss = JSONUtils.deepCopy(subcomponentProperties.customCss);
+    subcomponentProperties.customFeatures = JSONUtils.deepCopy(subcomponentProperties.customFeatures);
+    const { coreSubcomponentRefs, referenceSharingExecutables } = subcomponentProperties.seedComponent;
+    if (coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE] === subcomponentProperties) {
+      (referenceSharingExecutables || []).forEach((executable: ReferenceSharingExecutable) => executable(coreSubcomponentRefs));
+    }
+    return componentTraversalState;
   }
 
   // WORK2 - refactor
@@ -36,26 +36,8 @@ export class SyncedComponent {
   public static toggleSubcomponentSync(containerComponent: WorkshopComponent, useActiveReferenceSharingComponent = true, callback?: () => void): void {
     const baseSubcomponent = useActiveReferenceSharingComponent
       ? SyncedComponent.getActiveReferenceSharingComponentBase(containerComponent) : containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    if (baseSubcomponent.seedComponent.paddingComponentChild) {
-      baseSubcomponent.seedComponent.paddingComponentChild.linkedComponents.auxiliary.forEach((auxiliary) => {
-        SyncedComponent.dereferenceCopiedComponentCustomProperties(auxiliary.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
-        auxiliary.componentPreviewStructure.layers.forEach((layer) => {
-          const { alignedSections } = layer.sections;
-          Object.keys(alignedSections).forEach((alignedSection) => {
-            alignedSections[alignedSection].forEach((baseSubcomponentRef: BaseSubcomponentRef) => {
-              SyncedComponent.dereferenceCopiedComponentCustomProperties(baseSubcomponentRef.subcomponentProperties);
-            });
-          });
-          SyncedComponent.dereferenceCopiedComponentCustomProperties(layer.subcomponentProperties);
-        });
-      });
-      SyncedComponent.dereferenceCopiedComponentCustomProperties(baseSubcomponent);
-      SyncedComponent.dereferenceCopiedComponentCustomProperties(baseSubcomponent.seedComponent.paddingComponentChild.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
-      baseSubcomponent.seedComponent.sync.syncedComponent = null;
-    } else if (baseSubcomponent.seedComponent.sync.syncedComponent) {
-      SyncedComponent.dereferenceCopiedComponentCustomProperties(baseSubcomponent);
-      baseSubcomponent.seedComponent.sync.syncedComponent = null;
-    }
+    TraverseComponentViaPreviewStructureChildFirst.traverseUsingComponent(SyncedComponent.dereferenceCopiedComponentCustomProperties, baseSubcomponent.seedComponent);
+    baseSubcomponent.seedComponent.sync.syncedComponent = null;
     if (callback) callback();
   }
 

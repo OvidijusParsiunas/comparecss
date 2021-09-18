@@ -1,4 +1,4 @@
-import { TraverseComponentViaPreviewStructure } from '../../../componentTraversal/traverseComponentsViaPreviewStructure';
+import { TraverseComponentViaPreviewStructureParentFirst } from '../../../componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
 import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { ChildComponentsInLayer } from '../../../../../../../interfaces/childComponentsLockedToLayer';
 import { Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
@@ -13,7 +13,7 @@ export class RemoveTemporaryAddPreviewComponent extends RemoveAnyChildComponent 
   private static removeTargetChildComponent(activeComponent: WorkshopComponent, targetDetails: TargetDetails, subcomponents: Subcomponents): void {
     Object.keys(subcomponents).forEach((subcomponentName) => delete activeComponent.subcomponents[subcomponentName]);
     const { higherComponentContainer } = ActiveComponentUtils.getHigherLevelComponents(activeComponent);
-    TraverseComponentViaPreviewStructure.traverse(
+    TraverseComponentViaPreviewStructureParentFirst.traverse(
       RemoveTemporaryAddPreviewComponent.removeChildComponentInPreviewStructureIfFound.bind(targetDetails),
       higherComponentContainer.componentPreviewStructure);
   }

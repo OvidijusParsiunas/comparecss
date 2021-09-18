@@ -52,7 +52,7 @@ export class AddChildComponent extends AddComponentShared {
     if (Object.values(LAYER_COMPONENTS_BASE_NAMES).includes(newComponentBaseName as LAYER_COMPONENTS_BASE_NAMES)) {
       AddChildComponent.addNewLayerToBase(activeComponent, newComponentBaseName);
     } else {
-      TraverseComponentViaDropdownStructure.traverseFromStart(
+      TraverseComponentViaDropdownStructure.traverseUsingComponent(
         activeComponent, AddChildComponent.addNewComponentToLayerIfOptionFound, newComponentBaseName);
     }
   }
