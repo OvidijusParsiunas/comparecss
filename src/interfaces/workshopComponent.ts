@@ -190,8 +190,8 @@ export interface WorkshopComponent {
   coreSubcomponentRefs?: CoreSubcomponentRefs;
   // gives an in sync child component to identify if the copied component has not been deleted
   componentStatus: { isRemoved: boolean };
-  // used to reassign references when the subcomponents have been deep copied
-  referenceSharingExecutables?: OverwritePropertiesFunc[];
+  // used to overwrite component and its children properties post processing such as passing a property reference after copying, desyncing etc
+  propertyOverwritingExecutables?: OverwritePropertiesFunc[];
   // a layer cannot be a standalone child component that contains other child components, thus this function adds child components to the layer
   // with a reference the parent component
   childComponentsLockedToLayer?: ChildComponentsInLayer;

@@ -26,8 +26,8 @@ class DropdownBase extends ComponentBuilder {
     });
   }
 
-  public static setAndExecuteReferenceSharingExecutables(paddingComponent: WorkshopComponent): void {
-    paddingComponent.referenceSharingExecutables = [DropdownBase.setAllItemAndItemTextComponentsToBeInSync];
+  public static setAndExecutePropertyOverwritingExecutables(paddingComponent: WorkshopComponent): void {
+    paddingComponent.propertyOverwritingExecutables = [DropdownBase.setAllItemAndItemTextComponentsToBeInSync];
     DropdownBase.setAllItemAndItemTextComponentsToBeInSync(paddingComponent);
   }
 
@@ -87,7 +87,7 @@ export const dropdownBase: ComponentGenerator = {
     paddingComponent.componentPreviewStructure.subcomponentDropdownStructure[paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] = { ...buttonComponent.componentPreviewStructure.subcomponentDropdownStructure };
     paddingComponent.paddingComponentChild = buttonComponent;
     buttonComponent.paddingComponent = paddingComponent;
-    DropdownBase.setAndExecuteReferenceSharingExecutables(paddingComponent);
+    DropdownBase.setAndExecutePropertyOverwritingExecutables(paddingComponent);
     return paddingComponent;
   },
 }

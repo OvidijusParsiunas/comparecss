@@ -1,3 +1,4 @@
+import { PropertyOverwritingExecutablesUtils } from '../../shared/propertyOverwritingExecutables/propertyOverwritingExecutablesUtils';
 import { AddComponentsToButtonBaseUtils } from '../utils/addComponentsToButtonBaseUtils';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
@@ -8,7 +9,7 @@ import { buttonBase } from './base';
 export class DefaultButton extends ComponentBuilder {
 
   public static populateReferences(buttonComponent: WorkshopComponent): void {
-    ComponentBuilder.executeReferenceSharingExecutables(buttonComponent);
+    PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(buttonComponent);
   }
 }
 

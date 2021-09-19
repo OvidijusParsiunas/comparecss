@@ -12,7 +12,6 @@ import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
 import { CloseTriggers } from '../../../../../../interfaces/closeTriggers';
 import { Animations } from '../../../../../../interfaces/animations';
-import { JsClassesUtils } from './jsClasses/jsClassesUtils';
 import { defaultImage } from './images/default';
 
 interface StationaryAnimationsArgs {
@@ -114,10 +113,6 @@ export class ComponentBuilder {
       escape: false,
       backdrop: false,
     };
-  }
-
-  protected static executeReferenceSharingExecutables(...components: WorkshopComponent[]): void {
-    components.forEach((component) => JsClassesUtils.executeReferenceSharingExecutables(component));
   }
 
   private static createCoreSubcomponentRefs(baseSubcomponent: SubcomponentProperties, coreSubcomponentRefs: CoreSubcomponentRefs): CoreSubcomponentRefs {

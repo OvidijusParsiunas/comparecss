@@ -1,6 +1,7 @@
 import { UpdateLayerDropdownOptionNames } from '../../../../../utils/componentManipulation/updateChildComponent/updateLayerDropdownOptionNames';
 import { DropdownOptionsDisplayStatusUtils } from '../../../../../utils/dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
 import { BUTTON_COMPONENTS_BASE_NAMES, DROPDOWN_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
+import { PropertyOverwritingExecutablesUtils } from '../../../shared/propertyOverwritingExecutables/propertyOverwritingExecutablesUtils';
 import { UniqueSubcomponentNameGenerator } from '../../../../../utils/componentGenerator/uniqueSubcomponentNameGenerator';
 import { AddLayerComponent } from '../../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
@@ -56,13 +57,13 @@ class DropdownButton extends ComponentBuilder {
   public static addComponentsToBase(dropdownMenuBaseComponent: WorkshopComponent): void {
     const layer1Component = AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
     layer1Component.childComponentsLockedToLayer.add(dropdownMenuBaseComponent);
-    ComponentBuilder.executeReferenceSharingExecutables(layer1Component);
+    PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(layer1Component);
     const layer2Component = AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
     layer2Component.childComponentsLockedToLayer.add(dropdownMenuBaseComponent);
-    ComponentBuilder.executeReferenceSharingExecutables(layer2Component);
+    PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(layer2Component);
     const layer3Component = AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
     layer3Component.childComponentsLockedToLayer.add(dropdownMenuBaseComponent);
-    ComponentBuilder.executeReferenceSharingExecutables(layer3Component);
+    PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(layer3Component);
     UpdateLayerDropdownOptionNames.update(dropdownMenuBaseComponent, 0);
   }
 
@@ -71,7 +72,7 @@ class DropdownButton extends ComponentBuilder {
     buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures.jsClasses.add(JAVASCRIPT_CLASSES.DROPDOWN_BUTTON);
     dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.jsClasses = new Set([JAVASCRIPT_CLASSES.DROPDOWN_MENU]) as Set<JAVASCRIPT_CLASSES>;
     dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures.jsClasses = new Set([JAVASCRIPT_CLASSES.DROPDOWN_MENU]) as Set<JAVASCRIPT_CLASSES>;
-    ComponentBuilder.executeReferenceSharingExecutables(buttonComponent, dropdownMenuBaseComponent);
+    PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(buttonComponent, dropdownMenuBaseComponent);
   }
 }
 

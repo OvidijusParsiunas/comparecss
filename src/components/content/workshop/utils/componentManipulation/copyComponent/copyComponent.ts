@@ -1,16 +1,16 @@
+import { PropertyOverwritingExecutablesUtils } from '../../../newComponent/types/shared/propertyOverwritingExecutables/propertyOverwritingExecutablesUtils';
 import { UpdateGenericComponentDropdownOptionNames } from '../updateChildComponent/updateGenericComponentDropdownOptionNames';
 import { componentTypeToStyleGenerators } from '../../../newComponent/types/componentTypeToStyleGenerators';
 import { UpdateLayerDropdownOptionNames } from '../updateChildComponent/updateLayerDropdownOptionNames';
-import { Layer, BaseSubcomponentRef } from '../../../../../../interfaces/componentPreviewStructure';
+import { BaseSubcomponentRef, Layer } from '../../../../../../interfaces/componentPreviewStructure';
 import { uniqueSubcomponentIdState } from '../../componentGenerator/uniqueSubcomponentIdState';
-import { JsClassesUtils } from '../../../newComponent/types/shared/jsClasses/jsClassesUtils';
-import { AddContainerComponent } from '../addChildComponent/add/addContainerComponent';
 import { ComponentBuilder } from '../../../newComponent/types/shared/componentBuilder';
+import { AddContainerComponent } from '../addChildComponent/add/addContainerComponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { AddLayerComponent } from '../addChildComponent/add/addLayerComponent';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
+import { AddLayerComponent } from '../addChildComponent/add/addLayerComponent';
 import ProcessClassName from '../../componentGenerator/processClassName';
 import { CopySubcomponents } from './copySubcomponents';
 import { ComponentOptions } from 'vue';
@@ -51,7 +51,7 @@ export default class CopyComponent {
     const baseComponents: WorkshopComponent[] = [newComponent];
     CopySubcomponents.copyBaseSubcomponent(newComponent, componentBeingCopied);
     CopyComponent.copyLayerComponents(newComponent, componentBeingCopied, baseComponents);
-    JsClassesUtils.executeReferenceSharingExecutables(...baseComponents);
+    PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(...baseComponents);
   }
 
   public static copyComponent(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {

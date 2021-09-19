@@ -25,11 +25,4 @@ export class JsClassesUtils {
     TraverseComponentViaPreviewStructureParentFirst.traverseUsingComponent(
       JsClassesUtils.assign.bind(jsClasses), component);
   }
-
-  // WORK2 - rename reference sharing executable to something else and move
-  public static executeReferenceSharingExecutables(...components: WorkshopComponent[]): void {
-    components.forEach((component) => {
-      (component.referenceSharingExecutables || []).forEach((executable) => executable(component));        
-    });
-  }
 }

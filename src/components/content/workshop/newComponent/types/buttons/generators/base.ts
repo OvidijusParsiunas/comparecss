@@ -23,8 +23,8 @@ class ButtonBase extends ComponentBuilder {
     return new Set([JAVASCRIPT_CLASSES.RIPPLES]);
   }
 
-  public static setReferenceSharingExecutables(buttonBaseComponent: WorkshopComponent): void {
-    buttonBaseComponent.referenceSharingExecutables = [
+  public static setPropertyOverwritingExecutables(buttonBaseComponent: WorkshopComponent): void {
+    buttonBaseComponent.propertyOverwritingExecutables = [
       JsClassesUtils.assignJsClassesRefToAllSubcomponents.bind(ButtonBase.createDefaultButtonJsClasses())];
   }
 
@@ -116,7 +116,7 @@ export const buttonBase: ComponentGenerator = {
       { componentType: COMPONENT_TYPES.BUTTON, baseName, coreSubcomponentRefs }, ButtonBase.createBaseSubcomponent);
     ButtonBaseSpecificSettings.set(buttonBaseComponent);
     ButtonBase.setChildComponentsOptions(buttonBaseComponent);
-    ButtonBase.setReferenceSharingExecutables(buttonBaseComponent);
+    ButtonBase.setPropertyOverwritingExecutables(buttonBaseComponent);
     return buttonBaseComponent;
   },
 }

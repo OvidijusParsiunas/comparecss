@@ -11,9 +11,9 @@ export class SyncedComponent {
     const { subcomponentProperties } = componentTraversalState;
     subcomponentProperties.customCss = JSONUtils.deepCopy(subcomponentProperties.customCss);
     subcomponentProperties.customFeatures = JSONUtils.deepCopy(subcomponentProperties.customFeatures);
-    const { coreSubcomponentRefs, referenceSharingExecutables } = subcomponentProperties.seedComponent;
+    const { coreSubcomponentRefs, propertyOverwritingExecutables } = subcomponentProperties.seedComponent;
     if (coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE] === subcomponentProperties) {
-      (referenceSharingExecutables || []).forEach((executable) => executable(subcomponentProperties.seedComponent));
+      (propertyOverwritingExecutables || []).forEach((executable) => executable(subcomponentProperties.seedComponent));
     }
     return componentTraversalState;
   }

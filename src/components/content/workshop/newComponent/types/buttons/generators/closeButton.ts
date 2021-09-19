@@ -1,3 +1,4 @@
+import { PropertyOverwritingExecutablesUtils } from '../../shared/propertyOverwritingExecutables/propertyOverwritingExecutablesUtils';
 import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { BUTTON_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -13,7 +14,7 @@ import { buttonBase } from './base';
 class CloseButton extends ComponentBuilder {
 
   public static populateReferences(component: WorkshopComponent): void {
-    ComponentBuilder.executeReferenceSharingExecutables(component);
+    PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(component);
   }
 
   public static setStyle(component: WorkshopComponent): void {
