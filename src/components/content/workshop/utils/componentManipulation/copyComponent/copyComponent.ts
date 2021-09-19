@@ -3,8 +3,7 @@ import { componentTypeToStyleGenerators } from '../../../newComponent/types/comp
 import { UpdateLayerDropdownOptionNames } from '../updateChildComponent/updateLayerDropdownOptionNames';
 import { Layer, BaseSubcomponentRef } from '../../../../../../interfaces/componentPreviewStructure';
 import { uniqueSubcomponentIdState } from '../../componentGenerator/uniqueSubcomponentIdState';
-import { CoreSubcomponentRefsUtils } from '../coreSubcomponentRefs/coreSubcomponentRefsUtils';
-import { CoreSubcomponentRefs } from '../../../../../../interfaces/coreSubcomponentRefs';
+import { JsClassesUtils } from '../../../newComponent/types/shared/jsClasses/jsClassesUtils';
 import { AddContainerComponent } from '../addChildComponent/add/addContainerComponent';
 import { ComponentBuilder } from '../../../newComponent/types/shared/componentBuilder';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
@@ -18,10 +17,10 @@ import { ComponentOptions } from 'vue';
 
 export default class CopyComponent {
 
-  private static overwriteAlignedLayerSectionProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
+  private static overwriteAlignedLayerSectionProperties(component: WorkshopComponent): void {
     const newAlignedSection = this as any as ALIGNED_SECTION_TYPES;
-    coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(newAlignedSection);
-    coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(newAlignedSection);
+    component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(newAlignedSection);
+    component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(newAlignedSection);
   }
 
   private static copyAlignedSectionComponents(newLayer: Layer, copiedLayer: Layer, newComponent: WorkshopComponent, baseComponents: WorkshopComponent[]): void {
@@ -52,7 +51,7 @@ export default class CopyComponent {
     const baseComponents: WorkshopComponent[] = [newComponent];
     CopySubcomponents.copyBaseSubcomponent(newComponent, componentBeingCopied);
     CopyComponent.copyLayerComponents(newComponent, componentBeingCopied, baseComponents);
-    CoreSubcomponentRefsUtils.executeReferenceSharingExecutables(...baseComponents);
+    JsClassesUtils.executeReferenceSharingExecutables(...baseComponents);
   }
 
   public static copyComponent(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {

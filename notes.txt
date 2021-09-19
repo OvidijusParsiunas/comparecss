@@ -11,6 +11,8 @@ lock button for dropdown menu (additionally could do the same for modal componen
 remove text from dropdown button then add and attempt to open it in subcomponent dropdown
 when insync component's subcomponent (icon) is added to dropdown button (where copyable already has a button icon), properties are not in sync
 if a copied component's subcomponent is removed then added, the insync components should be updated
+when a button is in sync, the ripple animation is on - the component in sync then undoes animation to get ripple but it does not work
+in card - open button animations option then move to layer subcomponent which will cause an error
 
 night diving
 

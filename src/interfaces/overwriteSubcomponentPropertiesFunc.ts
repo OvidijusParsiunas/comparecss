@@ -1,3 +1,3 @@
-import { CoreSubcomponentRefs } from './coreSubcomponentRefs';
+import { WorkshopComponent } from './workshopComponent';
 
-export type OverwritePropertiesFunc = (coreSubcomponentRefs: CoreSubcomponentRefs) => void;
+export type OverwritePropertiesFunc = (component: WorkshopComponent) => void;

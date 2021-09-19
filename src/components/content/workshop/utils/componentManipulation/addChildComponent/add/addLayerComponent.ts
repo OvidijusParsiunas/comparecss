@@ -94,7 +94,7 @@ export class AddLayerComponent extends AddComponentShared {
   protected static createNewComponent(componentGenerator: ComponentGenerator, masterComponent: WorkshopComponent, baseName?: string,
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
     const newComponent = AddComponentShared.createNewComponentViaGenerator(componentGenerator, masterComponent, baseName);
-    if (overwritePropertiesFunc) overwritePropertiesFunc(newComponent.coreSubcomponentRefs);
+    if (overwritePropertiesFunc) overwritePropertiesFunc(newComponent);
     return newComponent;
   }
 

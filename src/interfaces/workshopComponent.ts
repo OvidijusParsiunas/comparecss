@@ -2,11 +2,11 @@ import { InterconnectedSetting, SubcomponentSpecificSettings } from './subcompon
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
 import { SubcomponentMouseEventCallbacks } from './subcomponentMouseEventCallbacks';
 import { NewChildComponentsOptionsRefs } from './newChildComponentsOptionsRefs';
+import { OverwritePropertiesFunc } from './overwriteSubcomponentPropertiesFunc';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { DROPDOWN_MENU_POSITIONS } from '../consts/dropdownMenuPositions.enum';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
-import { ReferenceSharingExecutable } from './referenceSharingExecutable';
 import { TriggerFuncOnSettingChange } from './triggerFuncOnSettingChange';
 import { ChildComponentsInLayer } from './childComponentsLockedToLayer';
 import { OtherSubcomponentTriggers } from './otherSubcomponentTriggers';
@@ -191,7 +191,7 @@ export interface WorkshopComponent {
   // gives an in sync child component to identify if the copied component has not been deleted
   componentStatus: { isRemoved: boolean };
   // used to reassign references when the subcomponents have been deep copied
-  referenceSharingExecutables?: ReferenceSharingExecutable[];
+  referenceSharingExecutables?: OverwritePropertiesFunc[];
   // a layer cannot be a standalone child component that contains other child components, thus this function adds child components to the layer
   // with a reference the parent component
   childComponentsLockedToLayer?: ChildComponentsInLayer;

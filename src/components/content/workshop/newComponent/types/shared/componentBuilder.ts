@@ -1,6 +1,5 @@
 import { AlignedLayerSection, BackdropProperties, ComponentCenteringInScreen, Image, SubcomponentProperties, Text, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { DropdownOptionsDisplayStatusUtils } from '../../../utils/dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
-import { CoreSubcomponentRefsUtils } from '../../../utils/componentManipulation/coreSubcomponentRefs/coreSubcomponentRefsUtils';
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { NewComponentStyleProperties } from '../../../../../../consts/newComponentStyleProperties';
@@ -13,7 +12,14 @@ import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
 import { CloseTriggers } from '../../../../../../interfaces/closeTriggers';
 import { Animations } from '../../../../../../interfaces/animations';
+import { JsClassesUtils } from './jsClasses/jsClassesUtils';
 import { defaultImage } from './images/default';
+
+interface StationaryAnimationsArgs {
+  isBackgroundZoomPresent?: boolean;
+  isBackgroundZoomOn?: boolean;
+  duration?: string;
+}
 
 // TO-DO should be using a builder pattern
 export class ComponentBuilder {
@@ -68,7 +74,8 @@ export class ComponentBuilder {
     return animations;
   }
 
-  protected static createStationaryAnimations({ isBackgroundZoomPresent = false, isBackgroundZoomOn = false, duration = '0.25s' }): Animations {
+  protected static createStationaryAnimations(
+      { isBackgroundZoomPresent = false, isBackgroundZoomOn = false, duration = '0.25s' }: StationaryAnimationsArgs): Animations {
     const stationaryAnimations: Animations = {
       stationary: {
         fade: {
@@ -110,7 +117,7 @@ export class ComponentBuilder {
   }
 
   protected static executeReferenceSharingExecutables(...components: WorkshopComponent[]): void {
-    components.forEach((component) => CoreSubcomponentRefsUtils.executeReferenceSharingExecutables(component));
+    components.forEach((component) => JsClassesUtils.executeReferenceSharingExecutables(component));
   }
 
   private static createCoreSubcomponentRefs(baseSubcomponent: SubcomponentProperties, coreSubcomponentRefs: CoreSubcomponentRefs): CoreSubcomponentRefs {

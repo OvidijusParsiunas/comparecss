@@ -2,22 +2,21 @@ import { UpdateGenericComponentDropdownOptionNames } from '../../../../utils/com
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { DEFAULT_STYLES, LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
-import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 
 export class AddComponentsToButtonBaseUtils {
-  
-  private static overwriteButtonTextProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
+
+  private static overwriteButtonTextProperties(textComponent: WorkshopComponent): void {
     const textContent = this as any as string;
-    coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures.subcomponentText.text = textContent;
-    coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomStaticFeatures.subcomponentText.text = textContent;
-    coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
+    textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures.subcomponentText.text = textContent;
+    textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomStaticFeatures.subcomponentText.text = textContent;
+    textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
   }
 
-  private static overwriteIconProperties(coreSubcomponentRefs: CoreSubcomponentRefs): void {
-    coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
+  private static overwriteIconProperties(iconComponent: WorkshopComponent): void {
+    iconComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
   }
 
   public static add(component: WorkshopComponent, textStyle: TEXT_STYLES, textContent: string, icon = false): void {

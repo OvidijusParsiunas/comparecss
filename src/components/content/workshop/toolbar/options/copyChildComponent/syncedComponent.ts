@@ -1,7 +1,6 @@
 import { TraverseComponentViaPreviewStructureChildFirst } from '../../../utils/componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureChildFirst';
 import { CopyChildComponentModeTempPropertiesUtils } from './modeUtils/copyChildComponentModeTempPropertiesUtils';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { ReferenceSharingExecutable } from '../../../../../../interfaces/referenceSharingExecutable';
 import { SubcomponentPreviewTraversalState } from '../../../../../../interfaces/componentTraversal';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import JSONUtils from '../../../utils/generic/jsonUtils';
@@ -14,7 +13,7 @@ export class SyncedComponent {
     subcomponentProperties.customFeatures = JSONUtils.deepCopy(subcomponentProperties.customFeatures);
     const { coreSubcomponentRefs, referenceSharingExecutables } = subcomponentProperties.seedComponent;
     if (coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE] === subcomponentProperties) {
-      (referenceSharingExecutables || []).forEach((executable: ReferenceSharingExecutable) => executable(coreSubcomponentRefs));
+      (referenceSharingExecutables || []).forEach((executable) => executable(subcomponentProperties.seedComponent));
     }
     return componentTraversalState;
   }

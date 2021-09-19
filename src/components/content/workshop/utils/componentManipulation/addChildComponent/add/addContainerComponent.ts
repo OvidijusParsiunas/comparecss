@@ -10,9 +10,9 @@ import { Layer, BaseSubcomponentRef } from '../../../../../../../interfaces/comp
 import { IncrementChildComponentCount } from '../../childComponentCount/incrementChildComponentCount';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
-import { CoreSubcomponentRefsUtils } from '../../coreSubcomponentRefs/coreSubcomponentRefsUtils';
 import { SyncedComponent } from '../../../../toolbar/options/copyChildComponent/syncedComponent';
 import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
+import { JsClassesUtils } from '../../../../newComponent/types/shared/jsClasses/jsClassesUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -49,7 +49,7 @@ export class AddContainerComponent extends AddComponentShared {
     const { subcomponentType, parentLayer } = newComponentBase;
     JSONUtils.setPropertyIfExists(newComponentContainer.coreSubcomponentRefs, subcomponentType as number, newComponentBase);
     SubcomponentTriggers.set(newComponentContainer, parentLayer.subcomponentProperties, newComponentBase, subcomponentType);
-    CoreSubcomponentRefsUtils.executeReferenceSharingExecutables(newComponentContainer);
+    JsClassesUtils.executeReferenceSharingExecutables(newComponentContainer);
   }
 
   private static getBaseSubcomponentNamePrefix(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES): CHILD_COMPONENTS_BASE_NAMES {
@@ -101,11 +101,10 @@ export class AddContainerComponent extends AddComponentShared {
     baseSubcomponent.parentLayer = parentLayer;
   }
 
-  private static executeOverwritePropertiesFuncs(overwritePropertiesFunc: OverwritePropertiesFunc[], newComponent: WorkshopComponent): void {
-    const funcArray = overwritePropertiesFunc.filter((func) => typeof func === 'function');
-    funcArray.forEach((overwritePropertiesFunc) => {
-      overwritePropertiesFunc(newComponent.coreSubcomponentRefs);
-    });
+  private static executeOverwritePropertiesFuncs(overwritePropertiesFuncs: OverwritePropertiesFunc[], newComponent: WorkshopComponent): void {
+    overwritePropertiesFuncs
+      .filter((func) => typeof func === 'function')
+      .forEach((overwritePropertiesFunc) => overwritePropertiesFunc(newComponent));
   }
 
   private static applyTopProperty(baseSubcomponent: SubcomponentProperties): void {

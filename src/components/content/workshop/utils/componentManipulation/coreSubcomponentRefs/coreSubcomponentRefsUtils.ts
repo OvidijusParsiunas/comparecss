@@ -13,11 +13,4 @@ export class CoreSubcomponentRefsUtils {
     return CoreSubcomponentRefsUtils.getActiveRefKeys(coreSubcomponentRefs || {})
       .map((subcomponentType) => coreSubcomponentRefs[subcomponentType]);
   }
-
-  public static executeReferenceSharingExecutables(...components: WorkshopComponent[]): void {
-    components.forEach((component) => {
-      const { referenceSharingExecutables, coreSubcomponentRefs } = component;
-      (referenceSharingExecutables || []).forEach((executable) => executable(coreSubcomponentRefs));        
-    });
-  }
 }

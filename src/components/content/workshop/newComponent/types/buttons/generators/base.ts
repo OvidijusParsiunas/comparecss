@@ -8,18 +8,24 @@ import { DropdownUtils } from '../../../../utils/componentManipulation/utils/dro
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
+import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { ButtonBaseSpecificSettings } from '../settings/buttonBaseSpecificSettings';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
-import ReferenceSharingUtils from '../utils/referenceSharingUtils';
+import { JsClassesUtils } from '../../shared/jsClasses/jsClassesUtils';
 import { inheritedButtonCss } from '../inheritedCss/inheritedCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonBase extends ComponentBuilder {
 
+  private static createDefaultButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
+    return new Set([JAVASCRIPT_CLASSES.RIPPLES]);
+  }
+
   public static setReferenceSharingExecutables(buttonBaseComponent: WorkshopComponent): void {
-    buttonBaseComponent.referenceSharingExecutables = [ReferenceSharingUtils.appendJsClassesRefToAllSubcomponents];
+    buttonBaseComponent.referenceSharingExecutables = [
+      JsClassesUtils.assignJsClassesRefToAllSubcomponents.bind(ButtonBase.createDefaultButtonJsClasses())];
   }
 
   public static setChildComponentsOptions(buttonBaseComponent: WorkshopComponent): void {
