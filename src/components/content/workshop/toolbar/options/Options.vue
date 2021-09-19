@@ -59,7 +59,7 @@
             <button v-if="isInSyncButtonDisplayed()"
               type="button" class="btn-group-option"
               :class="[{'transition-item': areOptionButtonTransitionsAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS, OPTION_MENU_BUTTON_MARKER]"
-              @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleInSync)">
+              @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleInSyncToOff)">
                 <font-awesome-icon :style="{ color: FONT_AWESOME_COLORS.ACTIVE }" class="sync-icon" icon="sync-alt"/>
             </button>
             <button v-if="isRemoveChildComponentButtonDisplayed()"
@@ -449,8 +449,8 @@ export default {
     toggleCopyChildComponentMode(): void {
       CopyChildComponentModeToggleUtils.toggleCopyChildComponentMode(this);
     },
-    toggleInSync(callback?: () => void): void {
-      this.temporarilyAllowOptionAnimations(SyncedComponent.toggleSubcomponentSync.bind(this, this.component, true, callback));
+    toggleInSyncToOff(callback?: () => void): void {
+      this.temporarilyAllowOptionAnimations(SyncedComponent.toggleSubcomponentSyncToOff.bind(this, this.component, callback));
     },
     isRemoveChildComponentButtonDisplayed(): boolean {
       return this.component.subcomponents[this.component.activeSubcomponentName].isRemovable;

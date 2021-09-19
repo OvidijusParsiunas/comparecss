@@ -19,25 +19,24 @@ export class SyncedComponent {
     return componentTraversalState;
   }
 
-  // WORK2 - refactor
-  private static getReferenceSharingComponent({ seedComponent }: SubcomponentProperties): WorkshopComponent {
-    const { referenceSharingExecutables, containerComponent } = seedComponent;
-    const activeSeedComponent = referenceSharingExecutables ? seedComponent : containerComponent;
-    return activeSeedComponent?.paddingComponent || activeSeedComponent?.linkedComponents?.base?.paddingComponent || activeSeedComponent;
+  private static getPaddingComponent(component: WorkshopComponent): WorkshopComponent {
+    return component?.paddingComponent || component?.linkedComponents?.base?.paddingComponent
   }
 
-  // if active subcomponent is text in a nested button, need to make sure to get the button base
-  private static getActiveReferenceSharingComponentBase(containerComponent: WorkshopComponent): SubcomponentProperties {
-    const activeSubcomponent = containerComponent.subcomponents[containerComponent.activeSubcomponentName];
-    return SyncedComponent.getReferenceSharingComponent(activeSubcomponent).coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+  private static getParentComponent(component: WorkshopComponent): WorkshopComponent {
+    return SyncedComponent.getPaddingComponent(component)
+      || SyncedComponent.getPaddingComponent(component.containerComponent)
+      || component.containerComponent;
   }
 
-  // WORK2 - refactor
-  public static toggleSubcomponentSync(containerComponent: WorkshopComponent, useActiveReferenceSharingComponent = true, callback?: () => void): void {
-    const baseSubcomponent = useActiveReferenceSharingComponent
-      ? SyncedComponent.getActiveReferenceSharingComponentBase(containerComponent) : containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    TraverseComponentViaPreviewStructureChildFirst.traverseUsingComponent(SyncedComponent.dereferenceCopiedComponentCustomProperties, baseSubcomponent.seedComponent);
-    baseSubcomponent.seedComponent.sync.syncedComponent = null;
+  private static getActiveInSyncComponent({ seedComponent }: SubcomponentProperties): WorkshopComponent {
+    return seedComponent.sync?.syncedComponent ? seedComponent : SyncedComponent.getParentComponent(seedComponent);
+  }
+
+  public static toggleSubcomponentSyncToOff(containerComponent: WorkshopComponent, callback?: () => void): void {
+    const inSyncComponent = SyncedComponent.getActiveInSyncComponent(containerComponent.subcomponents[containerComponent.activeSubcomponentName]);
+    TraverseComponentViaPreviewStructureChildFirst.traverseUsingComponent(SyncedComponent.dereferenceCopiedComponentCustomProperties, inSyncComponent);
+    inSyncComponent.sync.syncedComponent = null;
     if (callback) callback();
   }
 
@@ -56,14 +55,14 @@ export class SyncedComponent {
   }
 
   public static updateIfSubcomponentNotInSync(masterComponent: WorkshopComponent, activeSubcomponent: SubcomponentProperties): void {
-    const referenceSharingComponent = SyncedComponent.getReferenceSharingComponent(activeSubcomponent);
-    if (referenceSharingComponent?.sync.syncedComponent && referenceSharingComponent.componentStatus.isRemoved) {
-      SyncedComponent.toggleSubcomponentSync(masterComponent);
+    const inSyncComponent = SyncedComponent.getActiveInSyncComponent(activeSubcomponent);
+    if (inSyncComponent?.sync.syncedComponent && inSyncComponent.componentStatus.isRemoved) {
+      SyncedComponent.toggleSubcomponentSyncToOff(masterComponent);
     }
   }
 
   public static isInSyncButtonDisplayed(activeSubcomponent: SubcomponentProperties): boolean {
-    const referenceSharingComponent = SyncedComponent.getReferenceSharingComponent(activeSubcomponent);
-    return referenceSharingComponent?.sync.syncedComponent && !referenceSharingComponent.componentStatus.isRemoved;
+    const inSyncComponent = SyncedComponent.getActiveInSyncComponent(activeSubcomponent);
+    return inSyncComponent?.sync.syncedComponent && !inSyncComponent.componentStatus.isRemoved;
   }
 }

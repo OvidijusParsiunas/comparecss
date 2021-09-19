@@ -23,7 +23,7 @@
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
         @play-animation-preview="$emit('play-animation-preview', $event)"
         @stop-animation-preview="$emit('stop-animation-preview')"
-        @remove-insync-option-button="$refs.options.toggleInSync($event)"
+        @remove-insync-option-button="$refs.options.toggleInSyncToOff($event)"
         @change-subcomponent-order="$emit('change-subcomponent-order', $event)"
         @change-subcomponent-alignment="$emit('change-subcomponent-alignment', $event)"/>
     </div>

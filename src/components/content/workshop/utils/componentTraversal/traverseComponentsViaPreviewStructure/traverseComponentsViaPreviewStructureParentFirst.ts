@@ -11,8 +11,7 @@ export class TraverseComponentViaPreviewStructureParentFirst extends TraverseCom
   private static traverseAlignedComponents(callback: PreviewTraversalCallback, alignedComponentsWithMetaArr: AlignedComponentWithMeta[]): SubcomponentPreviewTraversalState {
     let traversalResult: SubcomponentPreviewTraversalState = null;
     for (let i = 0; i < (alignedComponentsWithMetaArr[0][0] || []).length; i += 1) {
-      const availableComponents = alignedComponentsWithMetaArr
-        .filter((alignedComponentWithMeta) => alignedComponentWithMeta[0][i])
+      const availableComponents = alignedComponentsWithMetaArr.filter((alignedComponentWithMeta) => alignedComponentWithMeta[0][i]);
       traversalResult = callback(
         ...availableComponents.map((alignedComponentWithMeta) => TraverseComponentViaPreviewStructureShared.createTraversalStateFromAlignedComponentWithMeta(alignedComponentWithMeta, i)));
       if (traversalResult?.stopTraversal) return traversalResult;

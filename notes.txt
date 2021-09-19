@@ -8,6 +8,9 @@ upon selecting menu component in dropdown - display it
 SubcomponentAndOverlayIds.generate gets called many times when adding a new child componnet
 have button selected in card, open up subcomponent dropdown and navigate to different component
 lock button for dropdown menu (additionally could do the same for modal component) - or close it when another component is clicked (when child)
+remove text from dropdown button then add and attempt to open it in subcomponent dropdown
+when insync component's subcomponent (icon) is added to dropdown button (where copyable already has a button icon), properties are not in sync
+if a copied component's subcomponent is removed then added, the insync components should be updated
 
 night diving
 

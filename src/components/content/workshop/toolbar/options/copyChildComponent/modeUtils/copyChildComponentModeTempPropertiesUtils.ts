@@ -31,9 +31,11 @@ export class CopyChildComponentModeTempPropertiesUtils {
   }
 
   private static copySubcomponentDuringPreviewTraversal(activeComponentTraversal: SubcomponentPreviewTraversalState, componentToBeCopiedTraversal: SubcomponentPreviewTraversalState): SubcomponentPreviewTraversalState {
-    const activeSubcomponent = activeComponentTraversal.subcomponentProperties;
-    const subcomponentToBeCopied = componentToBeCopiedTraversal.subcomponentProperties;
-    CopyChildComponentModeTempPropertiesUtils.copySubcomponent(activeSubcomponent, subcomponentToBeCopied);
+    if (componentToBeCopiedTraversal) {
+      const activeSubcomponent = activeComponentTraversal.subcomponentProperties;
+      const subcomponentToBeCopied = componentToBeCopiedTraversal.subcomponentProperties;
+      CopyChildComponentModeTempPropertiesUtils.copySubcomponent(activeSubcomponent, subcomponentToBeCopied);
+    }
     return activeComponentTraversal;
   }
 
