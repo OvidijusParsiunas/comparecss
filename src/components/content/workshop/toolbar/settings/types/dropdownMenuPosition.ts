@@ -21,7 +21,7 @@ export default {
         name: 'Position',
         options: DropdownUtils.generateDropdownStructure(Object.values(DROPDOWN_MENU_POSITIONS)),
         activeOptionPropertyKeyName: 'position',
-        customFeatureObjectKeys: ['customFeatures', 'dropdownMenuPosition', 'position'],
+        customFeatureObjectKeys: ['customFeatures', 'dropdown', 'menuPosition', 'position'],
       },
     },
     {
@@ -30,7 +30,7 @@ export default {
         name: 'Alignment',
         options: DropdownUtils.generateDropdownStructure(['Above', 'Below']),
         activeOptionPropertyKeyName: 'indexAlignment',
-        customFeatureObjectKeys: ['customStaticFeatures', 'dropdown', 'indexAlignment'],
+        customFeatureObjectKeys: ['customFeatures', 'dropdown', 'indexAlignment'],
         ...generateMouseEventCallbacks(),
       },
     },

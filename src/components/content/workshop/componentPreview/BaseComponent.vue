@@ -152,7 +152,7 @@ export default {
         [DROPDOWN_MENU_POSITIONS.LEFT]: { top: '0px', right: '100%' },
         [DROPDOWN_MENU_POSITIONS.RIGHT]: { top: '0px', left: '100%' },
       };
-      const { position } = auxiliaryComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.dropdownMenuPosition;
+      const { position } = auxiliaryComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.dropdown.menuPosition;
       return { position: 'absolute', ...positions[position] };
     },
     getTag(): string {

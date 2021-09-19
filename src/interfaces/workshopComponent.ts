@@ -4,7 +4,6 @@ import { SubcomponentMouseEventCallbacks } from './subcomponentMouseEventCallbac
 import { NewChildComponentsOptionsRefs } from './newChildComponentsOptionsRefs';
 import { OverwritePropertiesFunc } from './overwriteSubcomponentPropertiesFunc';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
-import { DROPDOWN_MENU_POSITIONS } from '../consts/dropdownMenuPositions.enum';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { TriggerFuncOnSettingChange } from './triggerFuncOnSettingChange';
@@ -13,11 +12,11 @@ import { OtherSubcomponentTriggers } from './otherSubcomponentTriggers';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
-import { DropdownStaticFeatures } from './dropdownStaticFeatures';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { CoreSubcomponentRefs } from './coreSubcomponentRefs';
 import { ChildComponentCount } from './childComponentCount';
+import { DropdownFeatures } from './dropdownFeatures';
 import { LinkedComponents } from './linkedComponents';
 import { TempCustomCss } from './tempCustomCss';
 import { CloseTriggers } from './closeTriggers';
@@ -84,10 +83,6 @@ export interface AlignedLayerSection {
   section: ALIGNED_SECTION_TYPES;
 }
 
-export interface DropdownMenuPosition {
-  position: DROPDOWN_MENU_POSITIONS;
-}
-
 // should not be primitives as these values are copied by key
 export interface CustomFeatures {
   backdrop?: BackdropProperties;
@@ -100,8 +95,8 @@ export interface CustomFeatures {
   alignedLayerSection?: AlignedLayerSection;
   circleBorder?: boolean;
   lastSelectedCssValues?: WorkshopComponentCss;
-  dropdownMenuPosition?: DropdownMenuPosition;
   mouseEventCallbacks?: SubcomponentMouseEventCallbacks;
+  dropdown?: DropdownFeatures;
 }
 
 export interface Image {
@@ -114,8 +109,6 @@ export interface CustomStaticFeatures {
   subcomponentText?: Text;
   image?: Image;
   icon?: Icon;
-  // WORK2 - should be in custom features as it is no longer part of button
-  dropdown?: DropdownStaticFeatures;
 }
 
 interface TempCustomProperties {

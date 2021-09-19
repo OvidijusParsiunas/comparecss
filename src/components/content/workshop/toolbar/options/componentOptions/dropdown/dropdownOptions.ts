@@ -24,18 +24,18 @@ export class DropdownOptions {
   };
 
   private static getTextOptions(component: WorkshopComponent): Options {
-    const { seedComponent: { containerComponent }, customStaticFeatures } = component.subcomponents[component.activeSubcomponentName];
+    const { seedComponent: { containerComponent }, customFeatures } = component.subcomponents[component.activeSubcomponentName];
     if (containerComponent.type === COMPONENT_TYPES.DROPDOWN_MENU) {
       return dropdownMenuItemTextOptions;
     }
-    if (customStaticFeatures.dropdown.select.enabled) {
+    if (customFeatures.dropdown.select.enabled) {
       return dropdownButtonTextOptions;
     }
     return buttonTextOptions;
   }
 
   private static isSelectDropdownEnabled(component: WorkshopComponent): boolean {
-    return component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures?.dropdown?.select?.enabled;
+    return component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures?.dropdown?.select?.enabled;
   }
 
   public static getDropdownOptions(subcomponentType: SUBCOMPONENT_TYPES, component: WorkshopComponent): Options {

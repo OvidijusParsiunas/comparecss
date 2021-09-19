@@ -20,7 +20,7 @@ export default {
         name: 'Alignment',
         options: DropdownUtils.generateDropdownStructure(['Above', 'Below']),
         activeOptionPropertyKeyName: 'indexAlignment',
-        customFeatureObjectKeys: ['customStaticFeatures', 'dropdown', 'indexAlignment'],
+        customFeatureObjectKeys: ['customFeatures', 'dropdown', 'indexAlignment'],
         ...generateMouseEventCallbacks(),
       },
     },

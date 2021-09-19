@@ -3,8 +3,8 @@ import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../consts/dropd
 import { CustomFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { SelectDropdown } from '../../../../../../../interfaces/dropdownStaticFeatures';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { SelectDropdown } from '../../../../../../../interfaces/dropdownFeatures';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { SelectDropdownUtils } from '../selectDropdown/selectDropdownUtils';
 import { DropdownItemLayer } from '../../layers/generators/dropdownItem';
@@ -55,18 +55,18 @@ class DropdownBase extends ComponentBuilder {
 
   public static createStaticFeatures(paddingComponent: WorkshopComponent): void {
     const paddingBaseSubcomponent = paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    paddingBaseSubcomponent.customStaticFeatures = { dropdown: { select: DropdownBase.createSelectDropdownProperties(), indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW } };
-    paddingBaseSubcomponent.defaultCustomStaticFeatures = { dropdown: { select: DropdownBase.createSelectDropdownProperties(), indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW } };
+    paddingBaseSubcomponent.customFeatures = { dropdown: { select: DropdownBase.createSelectDropdownProperties(), indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW } };
+    paddingBaseSubcomponent.defaultCustomFeatures = { dropdown: { select: DropdownBase.createSelectDropdownProperties(), indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW } };
   }
 
   public static overwriteCustomStaticFeatures(buttonComponent: WorkshopComponent, paddingComponent: WorkshopComponent): void {
     const paddingBaseSubcomponent = paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const baseSubcomponent = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    baseSubcomponent.customStaticFeatures = { dropdown: { select: paddingBaseSubcomponent.customStaticFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW } };
-    baseSubcomponent.defaultCustomStaticFeatures = { dropdown: { select: paddingBaseSubcomponent.customStaticFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW } };
+    baseSubcomponent.customFeatures = { dropdown: { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW } };
+    baseSubcomponent.defaultCustomFeatures = { dropdown: { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW } };
     const textSubcomponent = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.TEXT];
-    textSubcomponent.customStaticFeatures.dropdown = { select: baseSubcomponent.customStaticFeatures.dropdown.select };
-    textSubcomponent.defaultCustomStaticFeatures.dropdown = { select: baseSubcomponent.customStaticFeatures.dropdown.select };
+    textSubcomponent.customFeatures.dropdown = { select: baseSubcomponent.customFeatures.dropdown.select };
+    textSubcomponent.defaultCustomFeatures.dropdown = { select: baseSubcomponent.customFeatures.dropdown.select };
   }
 }
 

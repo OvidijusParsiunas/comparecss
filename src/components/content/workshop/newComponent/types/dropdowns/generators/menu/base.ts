@@ -1,5 +1,6 @@
-import { CustomCss, CustomFeatures, CustomStaticFeatures, DropdownMenuPosition, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
+import { DropdownFeatures, DropdownMenuPosition } from '../../../../../../../../interfaces/dropdownFeatures';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
 import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { NestedDropdownStructure } from '../../../../../../../../interfaces/nestedDropdownStructure';
@@ -41,10 +42,6 @@ class DropdownMenuBase extends ComponentBuilder {
     return DropdownUtils.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]);
   }
 
-  private static createDefaultCustomStaticFeatures(): CustomStaticFeatures {
-    return { dropdown: { indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.ABOVE } };
-  }
-
   private static createDefaultMenuCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
@@ -73,14 +70,21 @@ class DropdownMenuBase extends ComponentBuilder {
     };
   }
 
-  private static createDropdownMenuPosition(): DropdownMenuPosition {
+  private static createDefaultMenuPosition(): DropdownMenuPosition {
     return { position: DROPDOWN_MENU_POSITIONS.BOTTOM };
+  }
+
+  private static createDefaultDropdownProperties(): DropdownFeatures {
+    return {
+      indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.ABOVE,
+      menuPosition: DropdownMenuBase.createDefaultMenuPosition(),
+    };
   }
 
   private static createDefaultCustomFeatures(): CustomFeatures {
     return {
       animations: ComponentBuilder.createDisplayAnimationsProperties(),
-      dropdownMenuPosition: DropdownMenuBase.createDropdownMenuPosition(),
+      dropdown: DropdownMenuBase.createDefaultDropdownProperties(),
     };
   }
 
@@ -96,8 +100,6 @@ class DropdownMenuBase extends ComponentBuilder {
       childCss: inheritedBaseChildCss,
       customFeatures: DropdownMenuBase.createDefaultCustomFeatures(),
       defaultCustomFeatures: DropdownMenuBase.createDefaultCustomFeatures(),
-      customStaticFeatures: DropdownMenuBase.createDefaultCustomStaticFeatures(),
-      defaultCustomStaticFeatures: DropdownMenuBase.createDefaultCustomStaticFeatures(),
       newChildComponentsOptions: DropdownMenuBase.createDefaultNewChildComponentsOptions(),
     };
   }

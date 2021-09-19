@@ -13,7 +13,7 @@ export class MenuIndexAlignment {
 
   private static setOtherSubcomponentAlignment(alignment: DROPDOWN_MENU_INDEX_ALIGNMENT, otherSubcomponent: SubcomponentProperties): void {
     const counterAlignment = MenuIndexAlignment.getCounterAlignment(alignment);
-    otherSubcomponent.customStaticFeatures.dropdown.indexAlignment = counterAlignment;
+    otherSubcomponent.customFeatures.dropdown.indexAlignment = counterAlignment;
   }
 
   private static setZIndex(newAlignment: string, subcomponentProperties: SubcomponentProperties): void {
@@ -27,7 +27,7 @@ export class MenuIndexAlignment {
     const newSubcomponentAlignment = triggeredOptionName as DROPDOWN_MENU_INDEX_ALIGNMENT;
     MenuIndexAlignment.setZIndex(newMenuAlignment, menuSubcomponent);
     MenuIndexAlignment.setOtherSubcomponentAlignment(newSubcomponentAlignment, otherSubcomponent);
-    if (isCustomFeatureResetTriggered) currentSubcomponent.customStaticFeatures.dropdown.indexAlignment = newSubcomponentAlignment;
+    if (isCustomFeatureResetTriggered) currentSubcomponent.customFeatures.dropdown.indexAlignment = newSubcomponentAlignment;
   }
 
   private static changeFromMenuSubcomponent(event: ActionsDropdownMouseEventCallbackEvent): void {
