@@ -1,5 +1,5 @@
-import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { CoreSubcomponentRefs } from '../../../../../../interfaces/coreSubcomponentRefs';
+import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 
 export class CoreSubcomponentRefsUtils {

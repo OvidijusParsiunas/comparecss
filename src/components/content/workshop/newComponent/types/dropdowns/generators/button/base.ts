@@ -56,13 +56,13 @@ class DropdownButton extends ComponentBuilder {
 
   public static addComponentsToBase(dropdownMenuBaseComponent: WorkshopComponent): void {
     const layer1Component = AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    layer1Component.childComponentsLockedToLayer.add(dropdownMenuBaseComponent);
+    layer1Component.childComponentsLockedToLayer.add(layer1Component, dropdownMenuBaseComponent);
     PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(layer1Component);
     const layer2Component = AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    layer2Component.childComponentsLockedToLayer.add(dropdownMenuBaseComponent);
+    layer2Component.childComponentsLockedToLayer.add(layer2Component, dropdownMenuBaseComponent);
     PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(layer2Component);
     const layer3Component = AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    layer3Component.childComponentsLockedToLayer.add(dropdownMenuBaseComponent);
+    layer3Component.childComponentsLockedToLayer.add(layer3Component, dropdownMenuBaseComponent);
     PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(layer3Component);
     UpdateLayerDropdownOptionNames.update(dropdownMenuBaseComponent, 0);
   }

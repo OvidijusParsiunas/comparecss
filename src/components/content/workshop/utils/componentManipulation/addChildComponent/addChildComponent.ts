@@ -44,7 +44,7 @@ export class AddChildComponent extends AddComponentShared {
     const newComponent = AddLayerComponent.add(activeComponent, ChildComponentBaseNamesToStyles.LAYER_TO_STYLE[newComponentBaseName], true);
     newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
     AddChildComponent.updateLayerComponentNames(activeComponent);
-    newComponent.childComponentsLockedToLayer?.add(activeComponent);
+    newComponent.childComponentsLockedToLayer?.add(newComponent, activeComponent);
   }
 
   public static add(masterComponent: WorkshopComponent, newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): void {

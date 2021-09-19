@@ -3,6 +3,7 @@ import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } fr
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { SubcomponentMouseEventCallbacks } from '../../../../../../../interfaces/subcomponentMouseEventCallbacks';
 import { SubcomponentTriggers } from '../../../../utils/componentManipulation/utils/subcomponentTriggers';
+import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { OtherSubcomponentTriggers } from '../../../../../../../interfaces/otherSubcomponentTriggers';
 import { ActiveComponentUtils } from '../../../../utils/activeComponent/activeComponentUtils';
 import { LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -16,6 +17,7 @@ import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
+import { SetUtils } from '../../../../utils/generic/setUtils';
 import { layerBase } from './base';
 
 export class DropdownItemLayer extends ComponentBuilder {
@@ -41,11 +43,8 @@ export class DropdownItemLayer extends ComponentBuilder {
       if (!textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.jsClasses) {
         textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.jsClasses = new Set();
       }
-      // WORK2 - create a shareable method to add a set to set
-      // var merged = new Set([...set1, ...set2, ...set3])
-      // and array
-      // array.forEach(item => mySet.add(item))
-      textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.jsClasses = menuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.jsClasses;
+      SetUtils.addSetsToSet(textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.jsClasses,
+        menuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.jsClasses);
     }
     textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures = DropdownItemLayer.createDefaultTextCustomStaticFeatures('Dropdown item');
     textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomStaticFeatures = DropdownItemLayer.createDefaultTextCustomStaticFeatures('Dropdown item');
@@ -106,9 +105,7 @@ export class DropdownItemLayer extends ComponentBuilder {
     };
   }
 
-  private static addChildComponentsToLayer(containerComponent: WorkshopComponent, isTemporary = false): WorkshopComponent[] {
-    // WORK2 - should not be binded
-    const layerComponent = this as undefined as WorkshopComponent;
+  private static addChildComponentsToLayer(layerComponent: WorkshopComponent, containerComponent: WorkshopComponent): WorkshopComponent[] {
     const { higherComponentContainer: menuComponent } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
     const textComponent = AddContainerComponent.add(containerComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
       layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name,
@@ -116,7 +113,7 @@ export class DropdownItemLayer extends ComponentBuilder {
     layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].otherSubcomponentTriggers
       .subcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     layerComponent.childComponentsLockedToLayer.list.push(textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
-    if (!isTemporary) {
+    if (layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name !== TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY) {
       UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(containerComponent,
         menuComponent.componentPreviewStructure.layers[menuComponent.componentPreviewStructure.layers.length - 1]); 
     }
@@ -124,7 +121,7 @@ export class DropdownItemLayer extends ComponentBuilder {
   }
 
   public static createChildComponentsLockedToLayer(layerComponent: WorkshopComponent): void {
-    layerComponent.childComponentsLockedToLayer = { add: DropdownItemLayer.addChildComponentsToLayer.bind(layerComponent), list: [] };
+    layerComponent.childComponentsLockedToLayer = { add: DropdownItemLayer.addChildComponentsToLayer, list: [] };
   }
 
   private static createOtherSubcomponentTriggersTemplate(): OtherSubcomponentTriggers {

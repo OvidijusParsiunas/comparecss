@@ -1,7 +1,8 @@
-import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
+import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { UpdateOtherRangesUtils } from './rangeUtils/updateOtherRangesUtils';
+import { SetUtils } from '../../../utils/generic/setUtils';
 import { UpdateRange } from './rangeUtils/updateRange';
 import SharedUtils from './sharedUtils';
 
@@ -47,7 +48,7 @@ export default class SettingsUtils {
   
   private static resetSetObject(currentValue: Set<undefined>, defaultValue: Set<undefined>): void {
     currentValue.clear();
-    defaultValue.forEach((value) => currentValue.add(value));
+    SetUtils.addSetsToSet(currentValue, defaultValue);
   }
 
   private static resetAuxiliaryCustomFeature(auxiliaryCustomFeatureObjectKeys: string[], subcomponentProperties: SubcomponentProperties,
