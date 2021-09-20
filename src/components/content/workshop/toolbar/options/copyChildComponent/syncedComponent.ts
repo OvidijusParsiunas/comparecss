@@ -13,7 +13,7 @@ export class SyncedComponent {
     subcomponentProperties.customFeatures = JSONUtils.deepCopy(subcomponentProperties.customFeatures);
     const { coreSubcomponentRefs, propertyOverwritingExecutables } = subcomponentProperties.seedComponent;
     if (coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE] === subcomponentProperties) {
-      (propertyOverwritingExecutables || []).forEach((executable) => executable(subcomponentProperties.seedComponent));
+      (propertyOverwritingExecutables || []).forEach((executable) => executable(subcomponentProperties.seedComponent, false));
     }
     return componentTraversalState;
   }
