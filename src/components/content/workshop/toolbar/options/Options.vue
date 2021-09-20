@@ -417,23 +417,17 @@ export default {
       const activeOptions = this.getActiveOptions();
       return this.getOptionFromNewSubcomponent(activeOptions) || activeOptions[0];
     },
-    areOptionsEnabledViaCustomFeatureKeys(newOption: Option): boolean {
+    validateCustomFeatureKeysOptions(newOption: Option): boolean {
       const { enabledIfCustomFeaturePresentWithKeys } = newOption;
-      const { enabledIfCustomFeaturePresentWithKeys: activeEnabledIfCustomFeaturePresentWithKeys } = this.activeOption;
-      return !activeEnabledIfCustomFeaturePresentWithKeys
-            || (enabledIfCustomFeaturePresentWithKeys
-                && enabledIfCustomFeaturePresentWithKeys[enabledIfCustomFeaturePresentWithKeys.length - 1] === activeEnabledIfCustomFeaturePresentWithKeys[activeEnabledIfCustomFeaturePresentWithKeys.length - 1]
-                && this.getActiveSubcomponentCustomFeatureValue(enabledIfCustomFeaturePresentWithKeys));
+      return !enabledIfCustomFeaturePresentWithKeys
+        || this.getActiveSubcomponentCustomFeatureValue(enabledIfCustomFeaturePresentWithKeys);
     },
-    areExpandedModeOptionsEnabled(newOption: Option): boolean {
-      return (!this.isExpandedModalPreviewModeActive && !newOption.enabledOnExpandedModalPreviewMode)
-            || (this.isExpandedModalPreviewModeActive
-                && newOption.enabledOnExpandedModalPreviewMode
-                && newOption.enabledOnExpandedModalPreviewMode === this.activeOption.enabledOnExpandedModalPreviewMode);
+    validateExpandedOptions(newOption: Option): boolean {
+       return !newOption.enabledOnExpandedModalPreviewMode || this.isExpandedModalPreviewModeActive;
     },
     getOptionFromNewSubcomponent(activeOptions: Option[]): Option {
       const newOption = activeOptions.find((option: Option) => option.buttonName === this.activeOption.buttonName);
-      if (newOption && this.areExpandedModeOptionsEnabled(newOption) && this.areOptionsEnabledViaCustomFeatureKeys(newOption)) {
+      if (newOption && this.validateExpandedOptions(newOption) && this.validateCustomFeatureKeysOptions(newOption)) {
         return newOption;
       }
       return null;
