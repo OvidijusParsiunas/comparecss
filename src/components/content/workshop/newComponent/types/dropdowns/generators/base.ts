@@ -7,29 +7,11 @@ import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections
 import { SelectDropdown } from '../../../../../../../interfaces/dropdownFeatures';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { SelectDropdownUtils } from '../selectDropdown/selectDropdownUtils';
-import { DropdownItemLayer } from '../../layers/generators/dropdownItem';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { plainLayer } from '../../layers/generators/plainLayer';
 import { dropdownButtonBase } from './button/base';
 
 class DropdownBase extends ComponentBuilder {
-
-  private static setAllItemAndItemTextComponentsToBeInSync(component: WorkshopComponent): void {
-    const menuComponent = component.paddingComponentChild.linkedComponents
-      .auxiliary[0].coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].seedComponent;
-    const firstLayerSubcomponentProperties = menuComponent.componentPreviewStructure.layers[0].subcomponentProperties;
-    menuComponent.componentPreviewStructure.layers.forEach((layer) => {
-      layer.subcomponentProperties.customCss = firstLayerSubcomponentProperties.customCss;
-      layer.subcomponentProperties.customFeatures = firstLayerSubcomponentProperties.customFeatures;
-      DropdownItemLayer.setTextSubcomponentProperties
-        .bind(menuComponent)(layer.subcomponentProperties.seedComponent.childComponentsLockedToLayer.list[0].seedComponent);
-    });
-  }
-
-  public static setAndExecutePropertyOverwritingExecutables(paddingComponent: WorkshopComponent): void {
-    paddingComponent.propertyOverwritingExecutables = [DropdownBase.setAllItemAndItemTextComponentsToBeInSync];
-    DropdownBase.setAllItemAndItemTextComponentsToBeInSync(paddingComponent);
-  }
 
   private static createSelectDropdownProperties(): SelectDropdown {
     return {
@@ -87,7 +69,6 @@ export const dropdownBase: ComponentGenerator = {
     paddingComponent.componentPreviewStructure.subcomponentDropdownStructure[paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] = { ...buttonComponent.componentPreviewStructure.subcomponentDropdownStructure };
     paddingComponent.paddingComponentChild = buttonComponent;
     buttonComponent.paddingComponent = paddingComponent;
-    DropdownBase.setAndExecutePropertyOverwritingExecutables(paddingComponent);
     return paddingComponent;
   },
 }

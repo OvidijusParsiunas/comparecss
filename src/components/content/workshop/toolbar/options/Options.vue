@@ -422,12 +422,12 @@ export default {
       return !enabledIfCustomFeaturePresentWithKeys
         || this.getActiveSubcomponentCustomFeatureValue(enabledIfCustomFeaturePresentWithKeys);
     },
-    validateExpandedOptions(newOption: Option): boolean {
+    validateExpandedModalOptions(newOption: Option): boolean {
        return !newOption.enabledOnExpandedModalPreviewMode || this.isExpandedModalPreviewModeActive;
     },
     getOptionFromNewSubcomponent(activeOptions: Option[]): Option {
       const newOption = activeOptions.find((option: Option) => option.buttonName === this.activeOption.buttonName);
-      if (newOption && this.validateExpandedOptions(newOption) && this.validateCustomFeatureKeysOptions(newOption)) {
+      if (newOption && this.validateExpandedModalOptions(newOption) && this.validateCustomFeatureKeysOptions(newOption)) {
         return newOption;
       }
       return null;

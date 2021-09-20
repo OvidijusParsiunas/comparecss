@@ -1,4 +1,3 @@
-import { PropertyOverwritingExecutablesUtils } from '../../shared/propertyOverwritingExecutables/propertyOverwritingExecutablesUtils';
 import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { BUTTON_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -12,10 +11,6 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 import { buttonBase } from './base';
 
 class CloseButton extends ComponentBuilder {
-
-  public static populateReferences(component: WorkshopComponent): void {
-    PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(component);
-  }
 
   public static setStyle(component: WorkshopComponent): void {
     component.style = BUTTON_STYLES.CLOSE;
@@ -70,7 +65,6 @@ export const closeButton: ComponentGenerator = {
     const buttonComponent = buttonBase.createNewComponent(baseName);
     CloseButton.overwrite(buttonComponent);
     AddComponentsToButtonBaseUtils.add(buttonComponent, TEXT_STYLES.CLOSE_BUTTON, CLOSE_BUTTON_X_TEXT);
-    CloseButton.populateReferences(buttonComponent);
     return buttonComponent;
   }
 };
