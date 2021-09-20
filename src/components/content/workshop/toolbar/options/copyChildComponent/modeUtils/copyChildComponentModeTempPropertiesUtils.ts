@@ -4,6 +4,7 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../
 import { SubcomponentPreviewTraversalState } from '../../../../../../../interfaces/componentTraversal';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
+import JSONUtils from '../../../../utils/generic/jsonUtils';
 
 export class CopyChildComponentModeTempPropertiesUtils {
   
@@ -14,7 +15,7 @@ export class CopyChildComponentModeTempPropertiesUtils {
     };
   }
 
-  private static copyAllCustomProperties(subcomponentToBeCopied: SubcomponentProperties, activeComponentSubcomponent: SubcomponentProperties): void {
+  private static copyAllCustomProperties(activeComponentSubcomponent: SubcomponentProperties, subcomponentToBeCopied: SubcomponentProperties): void {
     activeComponentSubcomponent.customFeatures = subcomponentToBeCopied.customFeatures;
     const componentToBeCopiedCustomCss = subcomponentToBeCopied.customCss;
     activeComponentSubcomponent.customCss = componentToBeCopiedCustomCss;
@@ -23,11 +24,24 @@ export class CopyChildComponentModeTempPropertiesUtils {
     }
   }
 
+  private static copyPropertiesThatOnlyExistInActiveComponent(activeComponentSubcomponent: SubcomponentProperties, subcomponentToBeCopied: SubcomponentProperties): void {
+    activeComponentSubcomponent.customCss = subcomponentToBeCopied.customCss;
+    // need to create a new object as otherwise tempOriginalCustomProperties would be overwritten by a normal traversal
+    activeComponentSubcomponent.customFeatures = JSONUtils.createObjectUsingObject1AndSameObject2Properties(
+      activeComponentSubcomponent.customFeatures, subcomponentToBeCopied.customFeatures);
+  }
+
   public static copySubcomponent(activeComponentSubcomponent: SubcomponentProperties, subcomponentToBeCopied: SubcomponentProperties): void {
     if (!activeComponentSubcomponent.tempOriginalCustomProperties) {
       CopyChildComponentModeTempPropertiesUtils.moveCustomPropertiesToTempProperties(activeComponentSubcomponent);
     }
-    CopyChildComponentModeTempPropertiesUtils.copyAllCustomProperties(subcomponentToBeCopied, activeComponentSubcomponent);
+    // this is a very naive approach to check if customFeatures are different but is a useful form of lazy evaluation to prevent all
+    // features from being traversed all the time (used for components like drodpown button)
+    if (Object.keys(subcomponentToBeCopied.customFeatures).length !== Object.keys(activeComponentSubcomponent.customFeatures).length) {
+      CopyChildComponentModeTempPropertiesUtils.copyPropertiesThatOnlyExistInActiveComponent(activeComponentSubcomponent, subcomponentToBeCopied);
+    } else {
+      CopyChildComponentModeTempPropertiesUtils.copyAllCustomProperties(activeComponentSubcomponent, subcomponentToBeCopied);
+    }
   }
 
   private static copySubcomponentDuringPreviewTraversal(activeComponentTraversal: SubcomponentPreviewTraversalState, componentToBeCopiedTraversal: SubcomponentPreviewTraversalState): SubcomponentPreviewTraversalState {

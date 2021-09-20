@@ -47,8 +47,8 @@ class DropdownBase extends ComponentBuilder {
     baseSubcomponent.customFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW };
     baseSubcomponent.defaultCustomFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW };
     const textSubcomponent = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.TEXT];
-    textSubcomponent.customFeatures.dropdown = { select: baseSubcomponent.customFeatures.dropdown.select };
-    textSubcomponent.defaultCustomFeatures.dropdown = { select: baseSubcomponent.customFeatures.dropdown.select };
+    textSubcomponent.customFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select };
+    textSubcomponent.defaultCustomFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select };
   }
 }
 

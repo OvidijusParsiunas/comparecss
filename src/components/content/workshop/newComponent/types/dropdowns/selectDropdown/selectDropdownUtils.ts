@@ -44,7 +44,7 @@ export class SelectDropdownUtils {
   public static isItemSelected(layer: Layer): boolean {
     const { containerComponent, childComponentsLockedToLayer } = layer.subcomponentProperties.seedComponent;
     if (containerComponent?.type === COMPONENT_TYPES.DROPDOWN_MENU) {
-      const { select } = containerComponent.linkedComponents.base.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.dropdown;
+      const { select } = containerComponent.linkedComponents.base.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.dropdown || {};
       return select?.enabled && select.lastSelectedItemText
         && childComponentsLockedToLayer.list[0].customStaticFeatures.subcomponentText.text === select.lastHoveredItemText; 
     }

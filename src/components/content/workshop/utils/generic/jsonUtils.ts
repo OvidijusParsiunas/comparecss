@@ -56,6 +56,14 @@ export default class JSONUtils {
   public static copyPropertiesThatExistInTarget(targetObject: unknown, copyObject: unknown): void {
     Object.keys(targetObject).forEach((key) => {
       if (copyObject.hasOwnProperty(key)) targetObject[key] = copyObject[key];
-    })
+    });
+  }
+
+  public static createObjectUsingObject1AndSameObject2Properties(object1: unknown, object2: unknown): unknown {
+    const newObject = {};
+    Object.keys(object1).forEach((key) => {
+      newObject[key] = object2.hasOwnProperty(key) ? object2[key] : object1[key];
+    });
+    return newObject;
   }
 }
