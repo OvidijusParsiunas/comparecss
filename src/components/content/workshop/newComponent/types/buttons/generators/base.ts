@@ -4,7 +4,6 @@ import { PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/bas
 import { OtherSubcomponentTriggers } from '../../../../../../../interfaces/otherSubcomponentTriggers';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
-import { DropdownUtils } from '../../../../utils/componentManipulation/utils/dropdownUtils';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -29,12 +28,10 @@ class ButtonBase extends ComponentBuilder {
   }
 
   public static setChildComponentsOptions(buttonBaseComponent: WorkshopComponent): void {
-    const baseComponentOptions = DropdownUtils.generateDropdownStructure([
-      PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, PRIMITIVE_COMPONENTS_BASE_NAMES.ICON]);
-    buttonBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsOptions = baseComponentOptions;
-    buttonBaseComponent.newChildComponentsOptionsRefs = { layer: baseComponentOptions };
-    buttonBaseComponent.childComponentCount = {
-      max: { [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT]: 1, [PRIMITIVE_COMPONENTS_BASE_NAMES.ICON]: 1 }};
+    const baseComponentOptions = [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, PRIMITIVE_COMPONENTS_BASE_NAMES.ICON];
+    const childComponentMaxCount = { max: { [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT]: 1, [PRIMITIVE_COMPONENTS_BASE_NAMES.ICON]: 1 }};
+    ComponentBuilder.setChildComponentsOptionsProperties(buttonBaseComponent,
+      baseComponentOptions, baseComponentOptions, childComponentMaxCount);
   }
 
   private static createOtherSubcomponentTriggersTemplate(): OtherSubcomponentTriggers {

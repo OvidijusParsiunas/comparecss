@@ -5,45 +5,37 @@ import { animationState } from '../../../../componentPreview/utils/animations/st
 import { Ref } from 'vue';
 
 export default function useSubcomponentDropdownEventHandlers(objectContainingActiveOption: Ref<unknown>,
-    activeOptionPropertyKeyName: Ref<string>, highlightSubcomponents: Ref<boolean>): DropdownCompositionAPI {
-
-
-  function toggleSubcomponentOverlayDisplay(subcomponentName: string, displayValue: 'block'|'none'): void {
-    // is highlighting subcomponents allowed
-    // WORK 2 - refactor - may potentially not need this anymore
-    if (!highlightSubcomponents.value) return;
-    SubcomponentDropdownOverlay.toggle(subcomponentName, displayValue);
-  }
+    activeOptionPropertyKeyName: Ref<string>): DropdownCompositionAPI {
 
   const mouseEnterButtonEventHandler = (): void => {
     if (!animationState.getIsModeToggleAnimationInProgressState()) {
-      toggleSubcomponentOverlayDisplay(objectContainingActiveOption.value[activeOptionPropertyKeyName.value], 'block'); 
+      SubcomponentDropdownOverlay.toggle(objectContainingActiveOption.value[activeOptionPropertyKeyName.value], 'block'); 
     }
   }
 
   const mouseLeaveButtonEventHandler = (): void => {
-    toggleSubcomponentOverlayDisplay(objectContainingActiveOption.value[activeOptionPropertyKeyName.value], 'none');
+    SubcomponentDropdownOverlay.toggle(objectContainingActiveOption.value[activeOptionPropertyKeyName.value], 'none');
   }
 
   const mouseEnterOptionEventHandler = (mouseEnterOptionEvent: MouseEnterOptionEvent): void => {
     const [highlightedOption] = mouseEnterOptionEvent;
-    toggleSubcomponentOverlayDisplay(highlightedOption, 'block');
+    SubcomponentDropdownOverlay.toggle(highlightedOption, 'block');
   }
 
   const mouseLeaveOptionEventHandler = (highlightedOption: string): void => {
-    toggleSubcomponentOverlayDisplay(highlightedOption, 'none');
+    SubcomponentDropdownOverlay.toggle(highlightedOption, 'none');
   }
 
   const hideDropdownMenuEventHandler = (highlightedOption: string): void => {
-    toggleSubcomponentOverlayDisplay(highlightedOption, 'none');
+    SubcomponentDropdownOverlay.toggle(highlightedOption, 'none');
   }
 
   const mouseEnterAuxiliaryPaddingEventHandler = (highlightedOption: string): void => {
-    toggleSubcomponentOverlayDisplay(highlightedOption, 'block');
+    SubcomponentDropdownOverlay.toggle(highlightedOption, 'block');
   }
 
   const mouseLeaveAuxiliaryPaddingEventHandler = (highlightedOption: string): void => {
-    toggleSubcomponentOverlayDisplay(highlightedOption, 'none');
+    SubcomponentDropdownOverlay.toggle(highlightedOption, 'none');
   }
 
   return {

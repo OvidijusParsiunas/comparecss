@@ -5,9 +5,9 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentType
 import { SubcomponentOptions } from '../../../../../../../interfaces/componentOptions';
 import { BUTTON_STYLES } from '../../../../../../../consts/componentStyles.enum';
 
-type ModalBaseOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT;
+type CardBaseOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT;
 
-export const cardBaseOptions: SubcomponentOptions<ModalBaseOptionsModes> = {
+export const cardBaseOptions: SubcomponentOptions<CardBaseOptionsModes> = {
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
     {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,

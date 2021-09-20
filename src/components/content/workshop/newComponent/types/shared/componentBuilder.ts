@@ -1,11 +1,13 @@
 import { AlignedLayerSection, BackdropProperties, ComponentCenteringInScreen, Image, SubcomponentProperties, Text, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { DropdownOptionsDisplayStatusUtils } from '../../../utils/dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
+import { BASE_SUBCOMPONENT_NAMES, MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../../../../../../consts/animationTypes.enum';
-import { MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { NewComponentStyleProperties } from '../../../../../../consts/newComponentStyleProperties';
 import { ComponentPreviewStructure } from '../../../../../../interfaces/componentPreviewStructure';
 import { CoreSubcomponentRefs } from '../../../../../../interfaces/coreSubcomponentRefs';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
+import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
+import { ChildComponentCount } from '../../../../../../interfaces/childComponentCount';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
@@ -113,6 +115,15 @@ export class ComponentBuilder {
       escape: false,
       backdrop: false,
     };
+  }
+
+  protected static setChildComponentsOptionsProperties(component: WorkshopComponent, layerComponentsOptions: BASE_SUBCOMPONENT_NAMES[],
+      newChildComponentsOptions: BASE_SUBCOMPONENT_NAMES[], childComponentCount: ChildComponentCount): void {
+    const layerComponentOptionsStructure = DropdownUtils.generateDropdownStructure(layerComponentsOptions);
+    const newChildComponentsOptionsStructure = DropdownUtils.generateDropdownStructure(newChildComponentsOptions);
+    component.newChildComponentsOptionsRefs = { layer: layerComponentOptionsStructure };
+    component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsOptions = newChildComponentsOptionsStructure;
+    component.childComponentCount = childComponentCount;
   }
 
   private static createCoreSubcomponentRefs(baseSubcomponent: SubcomponentProperties, coreSubcomponentRefs: CoreSubcomponentRefs): CoreSubcomponentRefs {

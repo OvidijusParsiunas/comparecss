@@ -2,7 +2,6 @@ import { BUTTON_COMPONENTS_BASE_NAMES, DROPDOWN_COMPONENTS_BASE_NAMES, LAYER_COM
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { DropdownUtils } from '../../../../utils/componentManipulation/utils/dropdownUtils';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -16,16 +15,14 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 class CardBase extends ComponentBuilder {
 
   public static setChildComponentsOptions(cardBaseComponent: WorkshopComponent): void {
-    // WORK 2 - remove
-    const layerComponentsOptions = DropdownUtils.generateDropdownStructure([
+    const layerComponentsOptions = [
       BUTTON_COMPONENTS_BASE_NAMES.BUTTON, PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT,
       BUTTON_COMPONENTS_BASE_NAMES.CLOSE, PRIMITIVE_COMPONENTS_BASE_NAMES.IMAGE,
-      DROPDOWN_COMPONENTS_BASE_NAMES.DROPDOWN]);
-    cardBaseComponent.newChildComponentsOptionsRefs = { layer: layerComponentsOptions };
-    cardBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsOptions = DropdownUtils
-      .generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);
-    cardBaseComponent.childComponentCount = {
-      max: { [LAYER_COMPONENTS_BASE_NAMES.LAYER]: 5, [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
+      DROPDOWN_COMPONENTS_BASE_NAMES.DROPDOWN];
+    const newChildComponentsOptions = [LAYER_COMPONENTS_BASE_NAMES.LAYER];
+    const childComponentMaxCount = { max: { [LAYER_COMPONENTS_BASE_NAMES.LAYER]: 5, [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
+    ComponentBuilder.setChildComponentsOptionsProperties(cardBaseComponent,
+      layerComponentsOptions, newChildComponentsOptions, childComponentMaxCount);
   }
 
   private static createDefaultCardCss(): CustomCss {

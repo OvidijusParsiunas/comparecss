@@ -70,13 +70,12 @@ interface Data {
 interface Props {
   isNested: boolean;
   uniqueIdentifier: string;
-  highlightSubcomponents: boolean;
   fontAwesomeIcon: string;
   minOptionsToDisplayDropdown: number;
   activeOptionPropertyKeyName: string;
   objectContainingActiveOption: unknown;
   dropdownOptions: NestedDropdownStructure;
-  customEventHandlers: (param1: Ref<unknown>, param2: Ref<string>, param3: Ref<boolean>) => DropdownCompositionAPI;
+  customEventHandlers: (param1: Ref<unknown>, param2: Ref<string>) => DropdownCompositionAPI;
 }
 
 interface SearchForOptionResultData {
@@ -106,7 +105,6 @@ export default {
     // const areMenusDisplayed: Ref<boolean> = ref(false);
     const objectContainingActiveOptionRef: Ref<Props['objectContainingActiveOption']> = ref(props.objectContainingActiveOption);
     const activeModePropertyKeyNameRef: Ref<Props['activeOptionPropertyKeyName']> = ref(props.activeOptionPropertyKeyName);
-    const highlightSubcomponentsRef: Ref<Props['highlightSubcomponents']> = ref(props.highlightSubcomponents);
     let customEventHandlers = {} as DropdownCompositionAPI;
     if (props.customEventHandlers) {
       watch(() => props.objectContainingActiveOption, (newObjectContainingActiveOption) => {
@@ -115,10 +113,7 @@ export default {
       watch(() => props.activeOptionPropertyKeyName, (newActiveModePropertyKeyName) => {
         activeModePropertyKeyNameRef.value = newActiveModePropertyKeyName;
       });
-      watch(() => props.highlightSubcomponents, (newHighlightSubcomponents) => {
-        highlightSubcomponentsRef.value = newHighlightSubcomponents;
-      });
-      customEventHandlers = props.customEventHandlers(objectContainingActiveOptionRef, activeModePropertyKeyNameRef, highlightSubcomponentsRef);
+      customEventHandlers = props.customEventHandlers(objectContainingActiveOptionRef, activeModePropertyKeyNameRef);
     }
     return {
       ...customEventHandlers,
@@ -465,7 +460,6 @@ export default {
     objectContainingActiveOption: Object,
     activeOptionPropertyKeyName: String,
     fontAwesomeIcon: String,
-    highlightSubcomponents: Boolean,
     // this is used to allow the dropdown to close when clicked on other dropdowns
     uniqueIdentifier: String,
     // the dev has two options, either insert custom event handlers object via composition API (which should adhere to DropdownCompositionAPI)

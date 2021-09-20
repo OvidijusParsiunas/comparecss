@@ -59,11 +59,11 @@ class DropdownBase extends ComponentBuilder {
     paddingBaseSubcomponent.defaultCustomFeatures = { dropdown: { select: DropdownBase.createSelectDropdownProperties(), indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW } };
   }
 
-  public static overwriteCustomStaticFeatures(buttonComponent: WorkshopComponent, paddingComponent: WorkshopComponent): void {
+  public static overwriteButtonCustomFeatures(buttonComponent: WorkshopComponent, paddingComponent: WorkshopComponent): void {
     const paddingBaseSubcomponent = paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const baseSubcomponent = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    baseSubcomponent.customFeatures = { dropdown: { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW } };
-    baseSubcomponent.defaultCustomFeatures = { dropdown: { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW } };
+    baseSubcomponent.customFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW };
+    baseSubcomponent.defaultCustomFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW };
     const textSubcomponent = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.TEXT];
     textSubcomponent.customFeatures.dropdown = { select: baseSubcomponent.customFeatures.dropdown.select };
     textSubcomponent.defaultCustomFeatures.dropdown = { select: baseSubcomponent.customFeatures.dropdown.select };
@@ -79,7 +79,7 @@ export const dropdownBase: ComponentGenerator = {
     const buttonComponent = dropdownButtonBase.createNewComponent();
     UpdatePaddingComponentDropdownOptions.updatePaddingComponentChildren(buttonComponent);
     DropdownBase.createStaticFeatures(paddingComponent);
-    DropdownBase.overwriteCustomStaticFeatures(buttonComponent, paddingComponent);
+    DropdownBase.overwriteButtonCustomFeatures(buttonComponent, paddingComponent);
     Object.assign(buttonComponent.subcomponents, paddingComponent.subcomponents);
     paddingComponent.subcomponents = buttonComponent.subcomponents;
     Object.assign(buttonComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName, paddingComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName);

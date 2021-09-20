@@ -88,7 +88,7 @@ export default class CheckboxUtils {
       spec.default = (SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys[0]]) as Set<undefined>).has(spec.valueInSetObject);
     } else {
       spec.default = SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys[0]]);
-      (triggers[spec.default] || []).forEach((trigger) => {
+      (triggers?.[spec.default] || []).forEach((trigger) => {
         if (trigger.customFunctionKeys) { CheckboxUtils.triggerCustomFunction(trigger, subcomponentProperties); }
       });
     }
