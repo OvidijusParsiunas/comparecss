@@ -12,7 +12,7 @@ export class CopyChildComponentUtils {
   private static canButtonBeOverwrittenByCopy(buttonSubcomponent: SubcomponentProperties): boolean {
     if (buttonSubcomponent.seedComponent.style === BUTTON_STYLES.CLOSE) return false;
     if (buttonSubcomponent.seedComponent.paddingComponent?.type === COMPONENT_TYPES.DROPDOWN) {
-      return buttonSubcomponent.seedComponent.masterComponent.type === COMPONENT_TYPES.BUTTON;
+      return !buttonSubcomponent.seedComponent.paddingComponent.sync.syncedComponent;
     }
     return CopyChildComponentUtils.canSeedComponentBeOverwrittenByCopy(buttonSubcomponent);
   }

@@ -24,7 +24,7 @@ export class SyncedComponent {
 
   private static getInSyncPaddingComponent(component: WorkshopComponent): WorkshopComponent {
     const paddingComponent = SyncedComponent.getPaddingComponent(component) || SyncedComponent.getPaddingComponent(component.containerComponent);
-    return paddingComponent?.sync?.syncedComponent;
+    return paddingComponent?.sync?.syncedComponent ? paddingComponent : null;
   }
 
   private static getActiveInSyncComponent({ seedComponent }: SubcomponentProperties): WorkshopComponent {
