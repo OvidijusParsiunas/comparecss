@@ -19,17 +19,21 @@ export class SyncedComponent {
   }
 
   private static getPaddingComponent(component: WorkshopComponent): WorkshopComponent {
-    return component?.paddingComponent || component?.linkedComponents?.base?.paddingComponent
+    return component?.paddingComponent || component?.linkedComponents?.base?.paddingComponent;
   }
 
-  private static getParentComponent(component: WorkshopComponent): WorkshopComponent {
-    return SyncedComponent.getPaddingComponent(component)
-      || SyncedComponent.getPaddingComponent(component.containerComponent)
-      || component.containerComponent;
+  private static getInSyncPaddingComponent(component: WorkshopComponent): WorkshopComponent {
+    const paddingComponent = SyncedComponent.getPaddingComponent(component) || SyncedComponent.getPaddingComponent(component.containerComponent);
+    return paddingComponent?.sync?.syncedComponent;
   }
 
   private static getActiveInSyncComponent({ seedComponent }: SubcomponentProperties): WorkshopComponent {
-    return seedComponent.sync?.syncedComponent ? seedComponent : SyncedComponent.getParentComponent(seedComponent);
+    if (seedComponent.sync?.syncedComponent) {
+      return seedComponent;
+    } else if (seedComponent.containerComponent?.sync?.syncedComponent) {
+      return seedComponent.containerComponent;
+    }
+    return SyncedComponent.getInSyncPaddingComponent(seedComponent);
   }
 
   public static toggleSubcomponentSyncToOff(containerComponent: WorkshopComponent, callback?: () => void): void {
@@ -55,13 +59,13 @@ export class SyncedComponent {
 
   public static updateIfSubcomponentNotInSync(masterComponent: WorkshopComponent, activeSubcomponent: SubcomponentProperties): void {
     const inSyncComponent = SyncedComponent.getActiveInSyncComponent(activeSubcomponent);
-    if (inSyncComponent?.sync.syncedComponent && inSyncComponent.componentStatus.isRemoved) {
+    if (inSyncComponent && inSyncComponent.componentStatus.isRemoved) {
       SyncedComponent.toggleSubcomponentSyncToOff(masterComponent);
     }
   }
 
   public static isInSyncButtonDisplayed(activeSubcomponent: SubcomponentProperties): boolean {
     const inSyncComponent = SyncedComponent.getActiveInSyncComponent(activeSubcomponent);
-    return inSyncComponent?.sync.syncedComponent && !inSyncComponent.componentStatus.isRemoved;
+    return inSyncComponent && !inSyncComponent.componentStatus.isRemoved;
   }
 }
