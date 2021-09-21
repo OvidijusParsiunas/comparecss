@@ -40,15 +40,16 @@ export class CopySubcomponents {
 
   private static setInSyncComponent(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
     const copiedSeedComponent = subcomponentBeingCopied.seedComponent;
-    newSubcomponent.seedComponent.sync.syncedComponent = copiedSeedComponent;
+    newSubcomponent.seedComponent.sync.componentThisIsSyncedTo = copiedSeedComponent;
     newSubcomponent.seedComponent.componentStatus = copiedSeedComponent.componentStatus;
   }
 
   private static copyExistingSubcomponentProperties(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
-    if (subcomponentBeingCopied.seedComponent.sync.syncedComponent) {
+    if (subcomponentBeingCopied.seedComponent.sync.componentThisIsSyncedTo) {
       CopySubcomponents.setInSyncComponent(newSubcomponent, subcomponentBeingCopied);
       CopySubcomponents.copySubcomponentReferenceProperties(newSubcomponent, subcomponentBeingCopied);
-    } else if (subcomponentBeingCopied.seedComponent.containerComponent.sync.syncedComponent) {
+      subcomponentBeingCopied.seedComponent.sync.componentThisIsSyncedTo.sync.componentsSyncedToThis.add(subcomponentBeingCopied.seedComponent);
+    } else if (subcomponentBeingCopied.seedComponent.containerComponent.sync.componentThisIsSyncedTo) {
       CopySubcomponents.copySubcomponentReferenceProperties(newSubcomponent, subcomponentBeingCopied);
     } else {
       CopySubcomponents.copySubcomponentProperties(newSubcomponent, subcomponentBeingCopied); 
@@ -66,7 +67,7 @@ export class CopySubcomponents {
   public static copyBaseSubcomponent(newComponent: WorkshopComponent, copiedComponent: WorkshopComponent): void {
     const newBaseSubcomponent = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const copiedBaseSubcomponent = copiedComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    if (copiedBaseSubcomponent.seedComponent?.sync.syncedComponent) {
+    if (copiedBaseSubcomponent.seedComponent?.sync.componentThisIsSyncedTo) {
       CopySubcomponents.setInSyncComponent(newBaseSubcomponent, copiedBaseSubcomponent);
     } else {
       CopySubcomponents.copySubcomponentProperties(newBaseSubcomponent, copiedBaseSubcomponent);

@@ -1,6 +1,7 @@
 import { WorkshopComponent } from './workshopComponent';
 
 export interface Sync {
-  syncedComponent: WorkshopComponent;
+  componentThisIsSyncedTo: WorkshopComponent;
   lastSelectedComponentToSync?: WorkshopComponent;
+  componentsSyncedToThis: Set<WorkshopComponent>;
 }

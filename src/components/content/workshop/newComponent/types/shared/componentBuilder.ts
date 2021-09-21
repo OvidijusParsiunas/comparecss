@@ -141,7 +141,7 @@ export class ComponentBuilder {
       layeringType: 'vertical',
       layers: [],
       subcomponentDropdownStructure,
-      subcomponentNameToDropdownOptionName: {[baseSubcomponentName]: baseSubcomponentName},
+      subcomponentNameToDropdownOptionName: { [baseSubcomponentName]: baseSubcomponentName },
     }
   }
 
@@ -151,7 +151,7 @@ export class ComponentBuilder {
       createBaseSubcomponent: (name: string) => SubcomponentProperties, isBaseOptional = true): WorkshopComponent {
     const baseName = componentStyle.baseName || MASTER_SUBCOMPONENT_BASE_NAME.BASE;
     const baseSubcomponent = createBaseSubcomponent(baseName);
-    const subcomponents = {[baseName]: baseSubcomponent};
+    const subcomponents = { [baseName]: baseSubcomponent };
     const componentPreviewStructure = ComponentBuilder.createEmptyComponentPreviewStructure(baseName, isBaseOptional);
     const coreSubcomponentRefs = ComponentBuilder.createCoreSubcomponentRefs(baseSubcomponent, componentStyle.coreSubcomponentRefs);
     const baseComponent: WorkshopComponent = {
@@ -164,7 +164,7 @@ export class ComponentBuilder {
       className: 'default-class-name',
       coreSubcomponentRefs,
       componentStatus: { isRemoved: false },
-      sync: { syncedComponent: null },
+      sync: { componentThisIsSyncedTo: null, componentsSyncedToThis: new Set() },
     };
     baseSubcomponent.seedComponent = baseComponent;
     baseComponent.masterComponent = baseComponent;

@@ -24,13 +24,13 @@ export class SyncedComponent {
 
   private static getInSyncPaddingComponent(component: WorkshopComponent): WorkshopComponent {
     const paddingComponent = SyncedComponent.getPaddingComponent(component) || SyncedComponent.getPaddingComponent(component.containerComponent);
-    return paddingComponent?.sync?.syncedComponent ? paddingComponent : null;
+    return paddingComponent?.sync?.componentThisIsSyncedTo ? paddingComponent : null;
   }
 
   private static getActiveInSyncComponent({ seedComponent }: SubcomponentProperties): WorkshopComponent {
-    if (seedComponent.sync?.syncedComponent) {
+    if (seedComponent.sync?.componentThisIsSyncedTo) {
       return seedComponent;
-    } else if (seedComponent.containerComponent?.sync?.syncedComponent) {
+    } else if (seedComponent.containerComponent?.sync?.componentThisIsSyncedTo) {
       return seedComponent.containerComponent;
     }
     return SyncedComponent.getInSyncPaddingComponent(seedComponent);
@@ -39,22 +39,22 @@ export class SyncedComponent {
   public static toggleSubcomponentSyncToOff(containerComponent: WorkshopComponent, callback?: () => void): void {
     const inSyncComponent = SyncedComponent.getActiveInSyncComponent(containerComponent.subcomponents[containerComponent.activeSubcomponentName]);
     TraverseComponentViaPreviewStructureChildFirst.traverseUsingComponent(SyncedComponent.dereferenceCopiedComponentCustomProperties, inSyncComponent);
-    inSyncComponent.sync.syncedComponent = null;
+    inSyncComponent.sync.componentThisIsSyncedTo = null;
     if (callback) callback();
   }
 
-  private static findSubcomponentToCopy(syncedComponent: WorkshopComponent, newComponentBase: SubcomponentProperties): SubcomponentProperties {
-    const { subcomponents } = syncedComponent;
+  private static findSubcomponentToCopy(componentThisIsSyncedTo: WorkshopComponent, newComponentBase: SubcomponentProperties): SubcomponentProperties {
+    const { subcomponents } = componentThisIsSyncedTo;
     const subcomponentToCopy = Object.keys(subcomponents).find((subcomponentName) => {
       return subcomponents[subcomponentName].subcomponentType === newComponentBase.subcomponentType;
     });
     return subcomponents[subcomponentToCopy];
   }
 
-  public static copyChildPropertiesFromInSyncContainerComponent(newComponent: WorkshopComponent, syncedComponent: WorkshopComponent): void {
+  public static copyChildPropertiesFromInSyncContainerComponent(newComponent: WorkshopComponent, componentThisIsSyncedTo: WorkshopComponent): void {
     const newComponentBase = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    const subcomponentToCopy = SyncedComponent.findSubcomponentToCopy(syncedComponent, newComponentBase);
-    if (subcomponentToCopy) CopyChildComponentModeTempPropertiesUtils.copySubcomponent(newComponentBase, subcomponentToCopy);
+    const subcomponentToCopy = SyncedComponent.findSubcomponentToCopy(componentThisIsSyncedTo, newComponentBase);
+    if (subcomponentToCopy) CopyChildComponentModeTempPropertiesUtils.copySubcomponent(newComponentBase, subcomponentToCopy, false);
   }
 
   public static updateIfSubcomponentNotInSync(masterComponent: WorkshopComponent, activeSubcomponent: SubcomponentProperties): void {

@@ -50,7 +50,8 @@ export class CopyChildComponedModeToggleOff {
       activeSeedComponent.componentStatus = lastSelectedComponentToSync.componentStatus;
       // timeout used to not display the animation immediately if expanded modal mode has been temporarily closed
       setTimeout(() => {
-        activeSeedComponent.sync.syncedComponent = lastSelectedComponentToSync;
+        activeSeedComponent.sync.componentThisIsSyncedTo = lastSelectedComponentToSync;
+        lastSelectedComponentToSync.sync.componentsSyncedToThis.add(activeSeedComponent);
       }, optionsComponent.hasCopyChildComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     }
     CopyChildComponentModeTempPropertiesUtils.cleanComponent(optionsComponent.component, false);
