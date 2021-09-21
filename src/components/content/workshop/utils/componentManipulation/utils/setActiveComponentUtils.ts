@@ -1,3 +1,4 @@
+import { CopyChildComponentModeCardEvents } from '../../../toolbar/options/copyChildComponent/modeUtils/copyChildComponentModeCardEvents';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { PaddingComponentUtils } from './paddingComponentUtils';
 import ComponentJs from '../../generic/componentJs';
@@ -27,5 +28,22 @@ export class SetActiveComponentUtils {
     workshopComponent.currentlySelectedComponent = component;
     ComponentJs.manipulateJSClasses(workshopComponent.currentlySelectedComponent.type, 'initializeJS');
     workshopComponent.$refs.toolbar.updateToolbarForNewComponent();
+  }
+
+  public static setActiveComponent(workshopComponent: ComponentOptions, component?: WorkshopComponent): void {
+    if (workshopComponent.$refs.contents.isFullPreviewModeOn) {
+      workshopComponent.componentSelectedBeforeFadeAnimation = component;
+      return;
+    }
+    if (workshopComponent.componentSelectedBeforeFadeAnimation) {
+      component = workshopComponent.componentSelectedBeforeFadeAnimation;
+      workshopComponent.componentSelectedBeforeFadeAnimation = null;
+    }
+    if (!component) return;
+    if (workshopComponent.isCopyChildComponentModeActive) {
+      CopyChildComponentModeCardEvents.mouseClick(workshopComponent, component);
+    } else if (workshopComponent.currentlySelectedComponent !== component) {
+      SetActiveComponentUtils.switchActiveComponent(workshopComponent, component);
+    }
   }
 }

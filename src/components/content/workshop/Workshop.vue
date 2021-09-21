@@ -19,8 +19,8 @@
             :currentlySelectedComponentForCopyChild="currentlySelectedComponentForCopyChild"
             :copyableComponentCardOverlaysToDisplay="copyableComponentCardOverlaysToDisplay"
             @set-active-component="setActiveComponent($event)"
-            @copy-component="copyComponent($event)"
-            @remove-component="removeComponent($event)"
+            @copy-component="copyComponent(this, $event)"
+            @remove-component="removeComponent(this, $event)"
             @component-card-hovered="componentCardHovered($event)"
             @stop-editing-class-name-callback="addWorkshopEventCallback($event)"
             @prepare-new-component-modal="$refs.newComponentModal.prepare()"
@@ -49,10 +49,10 @@
               @play-animation-preview="$refs.contents.playAnimationPreview($event)"
               @stop-animation-preview="$refs.contents.stopAnimationPreview()"
               @toggle-copy-child-component-mode="toggleCopyChildComponentMode($event)"
-              @add-child-component="addChildComponent($event)"
-              @remove-child-component="removeChildComponent($event)"
-              @change-subcomponent-order="changeSubcomponentOrder($event)"
-              @change-subcomponent-alignment="changeSubcomponentAlignment($event)"
+              @add-child-component="addChildComponent(this, $event)"
+              @remove-child-component="removeChildComponent(this, $event)"
+              @change-subcomponent-order="changeSubcomponentOrder(this, $event)"
+              @change-subcomponent-alignment="changeSubcomponentAlignment(this, $event)"
               @display-copyable-component-card-overlays="displayCopyableComponentCardOverlays($event)"/>
             <component-contents ref="contents"
               :component="currentlySelectedComponent"
@@ -81,13 +81,13 @@
       <new-component-modal
         ref="newComponentModal"
         :components="components"
-        @add-component="addComponent($event)"
+        @add-component="addComponent(this, $event)"
         @new-component-modal-callback="addWorkshopEventCallback($event)"/>
       <removal-modal-template
         ref="removeComponentModal"
         :modalId="REMOVE_COMPONENT_MODAL_ID"
         :removalModalState="removeComponentModalState"
-        @remove-event="removeComponent"
+        @remove-event="removeComponent(this)"
         @remove-modal-template-callback="addWorkshopEventCallback($event)">
         Are you sure you want to remove this component?
       </removal-modal-template>
@@ -112,23 +112,22 @@
 <script lang="ts">
 import { CopyChildComponentModeCardEvents } from './toolbar/options/copyChildComponent/modeUtils/copyChildComponentModeCardEvents';
 import { removeChildComponentModalState } from './utils/componentManipulation/removeChildComponent/removeChildComponentModalState';
-import { ChangeSubcomponentAlignmentEvent, ChangeSubcomponentOrderEvent } from '../../../interfaces/settingsComponentEvents';
 import { RemoveChildComponentOverlay } from './componentPreview/utils/elements/overlays/removeChildComponentOverlay';
 import { CopyableComponentCardOverlaysToDisplay } from '../../../interfaces/copyableComponentCardOverlaysToDisplay';
 import { ToggleCopyChildComponentModeState } from './utils/copyChildComponent/toggleCopyChildComponentModeState';
 import { ToggleCopyChildComponentModeEvent } from '../../../interfaces/toggleCopyChildComponentModeEvent';
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_CHILD_COMPONENT_MODAL_ID } from '../../../consts/elementIds';
+import { SetActiveComponentUtils } from './utils/componentManipulation/utils/setActiveComponentUtils';
 import { SwitchComponentsWithFadeOutCallback } from '../../../interfaces/toggleFullPreviewModeEvent';
 import useWorkshopEventCallbacks from './utils/workshopEventCallbacks/useWorkshopEventCallbacks';
-import { ComponentManipulation } from './utils/componentManipulation/componentManipulation';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { removeComponentModalState } from './componentList/state/removeComponentModalState';
 import { MASTER_SUBCOMPONENT_BASE_NAME } from '../../../consts/baseSubcomponentNames.enum';
 import { ComponentCardHoveredEvent } from '../../../interfaces/componentCardHoveredEvent';
-import { AddChildComponentEvent } from '../../../interfaces/addChildComponentEvent';
 import { defaultDropdown } from './newComponent/types/dropdowns/generators/default';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
+import useComponentManipulation from './compositionAPI/useComponentManipulation';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
 import { SUBCOMPONENT_TYPES } from '../../../consts/subcomponentTypes.enum';
 import { RemovalModalState } from '../../../interfaces/removalModalState';
@@ -171,6 +170,7 @@ export default {
       REMOVE_COMPONENT_MODAL_ID,
       REMOVE_CHILD_COMPONENT_MODAL_ID,
       SUBCOMPONENT_TYPES,
+      ...useComponentManipulation(),
       ...useWorkshopEventCallbacks(),
     };
   },
@@ -200,17 +200,8 @@ export default {
     displayCopyableComponentCardOverlays(copyableComponentCardOverlaysToDisplay: CopyableComponentCardOverlaysToDisplay): void {
       this.copyableComponentCardOverlaysToDisplay = copyableComponentCardOverlaysToDisplay;
     },
-    addComponent(newComponent: WorkshopComponent): void {
-      ComponentManipulation.addComponent(this, newComponent);
-    },
     setActiveComponent(component: WorkshopComponent): void {
-      ComponentManipulation.setActiveComponent(this, component);
-    },
-    copyComponent(component: WorkshopComponent): void {
-      ComponentManipulation.copyComponent(this, component);
-    },
-    removeComponent(componentToBeRemovedWithoutSelecting: WorkshopComponent): void {
-      ComponentManipulation.removeComponent(this, componentToBeRemovedWithoutSelecting);
+      SetActiveComponentUtils.setActiveComponent(this, component);
     },
     componentCardHovered(componentCardHoveredEvent: ComponentCardHoveredEvent): void {
       const [hoveredComponent, isMouseEnter] = componentCardHoveredEvent;
@@ -225,18 +216,6 @@ export default {
     exportFiles(): void {
       exportFiles.export(this.components);
     },
-    addChildComponent(addChildComponentEvent: AddChildComponentEvent): void {
-      ComponentManipulation.addChildComponent(this, addChildComponentEvent);
-    },
-    removeChildComponent(isTemporaryAddPreview?: boolean): void {
-      ComponentManipulation.removeChildComponent(this, isTemporaryAddPreview);
-    },
-    changeSubcomponentOrder(moveSubcomponentEvent: ChangeSubcomponentOrderEvent): void {
-      ComponentManipulation.changeSubcomponentOrder(this, ...moveSubcomponentEvent);
-    },
-    changeSubcomponentAlignment(changeSubcomponentAlignmentEvent: ChangeSubcomponentAlignmentEvent): void {
-      ComponentManipulation.changeSubcomponentAlignment(this, ...changeSubcomponentAlignmentEvent);
-    },
     toggleFullPreviewModeOffCallback(switchComponentsWithFadeOutCallback: SwitchComponentsWithFadeOutCallback,
         componentPreviewHTMLElement?: HTMLElement): void {
       if (this.componentSelectedBeforeFadeAnimation === this.currentlySelectedComponent) {
@@ -246,7 +225,7 @@ export default {
       // when a different component card has been selected during temporary button view (modal), this call selects the new
       // subcomponent after the fadeout timer, but does not fade out the actual component preview element itself as 
       // componentPreviewHTMLElement is undefined and the fading for it is done in modal/ToggleOff.start
-      switchComponentsWithFadeOutCallback(componentPreviewHTMLElement, ComponentManipulation.setActiveComponent.bind(this, this));
+      switchComponentsWithFadeOutCallback(componentPreviewHTMLElement, SetActiveComponentUtils.setActiveComponent.bind(this, this));
     },
     cancelSubcomponentRemovalEventHandler(): void {
       RemoveChildComponentOverlay.hide(this.currentlySelectedComponent.activeSubcomponentName);
