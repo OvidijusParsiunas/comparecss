@@ -161,7 +161,7 @@ import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../consts/work
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import CopyChildComponentModeToggleUtils from './copyChildComponent/modeUtils/copyChildComponentModeToggle';
-import { SetNewActiveSubcomponent } from '../../utils/componentManipulation/utils/setNewActiveSubcomponent';
+import { SetActiveComponentUtils } from '../../utils/componentManipulation/utils/setActiveComponentUtils';
 import { fulPreviewModeState } from '../../componentPreview/utils/fullPreviewMode/fullPreviewModeState';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
@@ -395,7 +395,7 @@ export default {
       // reset css state of the previous subcomponent to the first one
       const oldActiveSubcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
       oldActiveSubcomponent.activeCssPseudoClass = oldActiveSubcomponent.defaultCssPseudoClass;
-      SetNewActiveSubcomponent.set(this.component, subcomponentName);
+      SetActiveComponentUtils.setActiveSubcomponent(this.component, subcomponentName);
       this.setNewOptionOnNewDropdownOptionSelect();
     },
     selectNewCssPseudoClass(mouseClickNewOptionEvent: MouseClickNewOptionEvent): void {

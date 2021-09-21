@@ -6,7 +6,7 @@ import { childComponentAlignmentDropdownState } from './childComponentAlignmentD
 import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { DropdownStructureTraversalState, TargetDetails } from '../../../../../../interfaces/componentTraversal';
-import { SetNewActiveSubcomponent } from '../utils/setNewActiveSubcomponent';
+import { SetActiveComponentUtils } from '../utils/setActiveComponentUtils';
 
 export class ChangeChildComponentAlignment {
 
@@ -80,7 +80,7 @@ export class ChangeChildComponentAlignment {
     // UX - check if need to set the subcomponent to the right of the alignment
     // masterComponent.activeSubcomponentName = newAlignmentSubcomponents[newAlignmentSubcomponents.length - 1].name;
     const newAlignmentSubcomponents = subcomponentProperties.parentLayer.sections.alignedSections[newAlignment];
-    SetNewActiveSubcomponent.set(masterComponent, newAlignmentSubcomponents[0].subcomponentProperties.name);
+    SetActiveComponentUtils.setActiveSubcomponent(masterComponent, newAlignmentSubcomponents[0].subcomponentProperties.name);
   }
 
   public static change(previousAlignment: ALIGNED_SECTION_TYPES, newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties,

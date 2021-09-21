@@ -13,7 +13,7 @@ import { InterconnectedSettings } from '../../../interconnectedSettings/intercon
 import ComponentTraversalUtils from '../../../componentTraversal/componentTraversalUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUtils';
-import { SetNewActiveSubcomponent } from '../../utils/setNewActiveSubcomponent';
+import { SetActiveComponentUtils } from '../../utils/setActiveComponentUtils';
 import { SubcomponentTriggers } from '../../utils/subcomponentTriggers';
 
 type TargetRemovalDetails = TargetDetails & { isRemovingActiveSubcomponent?: boolean };
@@ -50,13 +50,13 @@ export class RemoveAnyChildComponent {
     const newDropdownOptionName = currentDropdownOptionIndex === dropdownOptions.length - 1
       ? dropdownOptions[currentDropdownOptionIndex - 1] : dropdownOptions[currentDropdownOptionIndex + 1];
     const newSubcomponentName = (subcomponentDropdownStructure[newDropdownOptionName][DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).actualObjectName;
-    SetNewActiveSubcomponent.set(masterComponent, newSubcomponentName);
+    SetActiveComponentUtils.setActiveSubcomponent(masterComponent, newSubcomponentName);
   }
 
   private static selectNewActiveSubcomponent(traversalState: DropdownStructureTraversalState, masterComponent: WorkshopComponent,
       parentSubcomponentName: string, dropdownOptions: string[]): void {
     if (dropdownOptions.length === 1) {
-      SetNewActiveSubcomponent.set(masterComponent, parentSubcomponentName);
+      SetActiveComponentUtils.setActiveSubcomponent(masterComponent, parentSubcomponentName);
     } else {
       RemoveAnyChildComponent.selectSiblingSubcomponent(masterComponent, dropdownOptions, traversalState);
     }
