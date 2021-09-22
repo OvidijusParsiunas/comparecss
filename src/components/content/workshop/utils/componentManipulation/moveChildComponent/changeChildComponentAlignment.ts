@@ -83,8 +83,8 @@ export class ChangeChildComponentAlignment {
     SetActiveComponentUtils.setActiveSubcomponent(masterComponent, newAlignmentSubcomponents[0].subcomponentProperties.name);
   }
 
-  public static change(previousAlignment: ALIGNED_SECTION_TYPES, newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties,
-      shouldSubcomponentNamesBeUpdated: boolean, masterComponent: WorkshopComponent): void {
+  public static change(masterComponent: WorkshopComponent, previousAlignment: ALIGNED_SECTION_TYPES, newAlignment: ALIGNED_SECTION_TYPES,
+      subcomponentProperties: SubcomponentProperties, shouldSubcomponentNamesBeUpdated: boolean): void {
     if (shouldSubcomponentNamesBeUpdated) {
       ChangeChildComponentAlignment.updateNames(newAlignment, subcomponentProperties, masterComponent);
     } else if (newAlignment !== previousAlignment) {

@@ -5,13 +5,14 @@ import { ChangeChildComponentOrder } from '../utils/componentManipulation/moveCh
 import { RemoveChildComponent } from '../utils/componentManipulation/removeChildComponent/removeChildComponent';
 import { AddChildComponent } from '../utils/componentManipulation/addChildComponent/addChildComponent';
 import { RemoveComponent } from '../utils/componentManipulation/removeComponent/removeComponent';
+import { UseComponentManipulation } from '../../../../interfaces/useComponentManipulation';
 import { AddComponent } from '../utils/componentManipulation/addComponent/addComponent';
 import { AddChildComponentEvent } from '../../../../interfaces/addChildComponentEvent';
 import CopyComponent from '../utils/componentManipulation/copyComponent/copyComponent';
 import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { ComponentOptions } from 'vue';
 
-export default function useComponentManipulation(): any {
+export default function useComponentManipulation(): UseComponentManipulation {
 
   const addComponent = (workshopComponent: ComponentOptions, component: WorkshopComponent): void => {
     AddComponent.add(workshopComponent, component);
@@ -37,15 +38,14 @@ export default function useComponentManipulation(): any {
   };
 
   const changeSubcomponentOrder = (workshopComponent: ComponentOptions, moveSubcomponentEvent: ChangeSubcomponentOrderEvent): void => {
-    // WORK 2 - refactor
-    ChangeChildComponentOrder.change(moveSubcomponentEvent[1], moveSubcomponentEvent[0]);
+    ChangeChildComponentOrder.change(...moveSubcomponentEvent);
     workshopComponent.$refs.contents.refreshComponent();
   };
 
   const changeSubcomponentAlignment = (workshopComponent: ComponentOptions, changeSubcomponentAlignmentEvent: ChangeSubcomponentAlignmentEvent): void => {
-    // WORK 2 - refactor
-    ChangeChildComponentAlignment.change(changeSubcomponentAlignmentEvent[0], changeSubcomponentAlignmentEvent[1], changeSubcomponentAlignmentEvent[2], changeSubcomponentAlignmentEvent[3], workshopComponent.currentlySelectedComponent);
-    if (changeSubcomponentAlignmentEvent[3]) workshopComponent.$refs.contents.refreshComponent();
+    ChangeChildComponentAlignment.change(workshopComponent.currentlySelectedComponent, ...changeSubcomponentAlignmentEvent);
+    const shouldSubcomponentNamesBeUpdated = changeSubcomponentAlignmentEvent[3];
+    if (shouldSubcomponentNamesBeUpdated) workshopComponent.$refs.contents.refreshComponent();
   };
 
   const copyComponent = (workshopComponent: ComponentOptions, setActiveComponent: WorkshopComponent): void => {

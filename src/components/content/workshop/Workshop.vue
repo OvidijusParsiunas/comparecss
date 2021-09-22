@@ -125,6 +125,8 @@ import { ComponentPreviewAssistance } from '../../../interfaces/componentPreview
 import { removeComponentModalState } from './componentList/state/removeComponentModalState';
 import { MASTER_SUBCOMPONENT_BASE_NAME } from '../../../consts/baseSubcomponentNames.enum';
 import { ComponentCardHoveredEvent } from '../../../interfaces/componentCardHoveredEvent';
+import { UseWorkshopEventCallbacks } from '../../../interfaces/useWorkshopEventCallbacks'
+import { UseComponentManipulation } from '../../../interfaces/useComponentManipulation'
 import { defaultDropdown } from './newComponent/types/dropdowns/generators/default';
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
 import useComponentManipulation from './compositionAPI/useComponentManipulation';
@@ -162,7 +164,7 @@ interface Data {
 }
 
 export default {
-  setup(): Consts {
+  setup(): Consts & UseComponentManipulation & UseWorkshopEventCallbacks {
     return {
       preloadedIconsElementId: 'preloadedIcons',
       removeComponentModalState,
