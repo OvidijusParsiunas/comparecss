@@ -28,7 +28,7 @@ export default function useComponentManipulation(): UseComponentManipulation {
     workshopComponent.$refs.contents.refreshComponent();
   };
 
-  const removeComponent = (workshopComponent: ComponentOptions, componentToBeRemovedWithoutSelecting: WorkshopComponent): void => {
+  const removeComponent = (workshopComponent: ComponentOptions, componentToBeRemovedWithoutSelecting?: WorkshopComponent): void => {
     RemoveComponent.remove(workshopComponent, componentToBeRemovedWithoutSelecting);
   };
 

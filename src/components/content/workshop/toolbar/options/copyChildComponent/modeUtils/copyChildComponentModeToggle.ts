@@ -1,5 +1,5 @@
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../../../componentPreview/utils/animations/consts/sharedConsts';
-import { CopyChildComponedModeToggleOff } from './copyChildComponentModeToggleOff';
+import { CopyChildComponentModeToggleOff } from './copyChildComponentModeToggleOff';
 import { ComponentOptions } from 'vue';
 
 export default class CopyChildComponentModeToggleUtils {
@@ -26,7 +26,7 @@ export default class CopyChildComponentModeToggleUtils {
       optionsComponent.hideSettings();
     } else {
       // off
-      CopyChildComponedModeToggleOff.displayOptionSettings(optionsComponent);
+      CopyChildComponentModeToggleOff.displayOptionSettings(optionsComponent);
     }
     const hasBeenToggled = CopyChildComponentModeToggleUtils.toggleDuringExpandedModalMode(optionsComponent);
     if (!hasBeenToggled) optionsComponent.$emit('toggle-copy-child-component-mode', optionsComponent);

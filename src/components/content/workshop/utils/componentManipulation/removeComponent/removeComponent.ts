@@ -45,7 +45,6 @@ export class RemoveComponent {
     return componentToBeRemovedIndex;
   }
 
-  // WORK 2 - move to a new file
   public static remove(workshopComponent: ComponentOptions, componentToBeRemovedWithoutSelecting: WorkshopComponent): void {
     // only switch after using the removal modal (componentToBeRemovedWithoutSelecting is undefined)
     // or not using the modal but directly removing the component that is currently selected

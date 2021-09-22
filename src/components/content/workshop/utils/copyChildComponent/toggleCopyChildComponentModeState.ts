@@ -1,4 +1,4 @@
-import { CopyChildComponedModeToggleOff } from '../../toolbar/options/copyChildComponent/modeUtils/copyChildComponentModeToggleOff';
+import { CopyChildComponentModeToggleOff } from '../../toolbar/options/copyChildComponent/modeUtils/copyChildComponentModeToggleOff';
 import { CopyChildComponentUtils } from '../../toolbar/options/copyChildComponent/copyChildComponentUtils';
 import { WorkshopEventCallback } from '../../../../../interfaces/workshopEventCallback';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
@@ -17,7 +17,7 @@ export class ToggleCopyChildComponentModeState {
   private static toggleCopyChildComponentMode(workshopComponent: ComponentOptions & { components: WorkshopComponent[] }, optionsComponent: ComponentOptions): void {
     const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE])
     const workshopEventCallback: WorkshopEventCallback = {
-      keyTriggers, func: CopyChildComponedModeToggleOff.toggleCopyChildComponentModeOff.bind(this, workshopComponent, optionsComponent) };
+      keyTriggers, func: CopyChildComponentModeToggleOff.toggleCopyChildComponentModeOff.bind(this, workshopComponent, optionsComponent) };
     workshopComponent.addWorkshopEventCallback(workshopEventCallback);
   }
 
