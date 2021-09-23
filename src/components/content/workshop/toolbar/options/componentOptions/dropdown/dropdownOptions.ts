@@ -17,7 +17,6 @@ export class DropdownOptions {
 
   private static readonly STATIC_DROPDOWN_OPTIONS: SubcomponentTypeToOptions = {
     [SUBCOMPONENT_TYPES.DROPDOWN_MENU]: dropdownMenuOptions as Options,
-    [SUBCOMPONENT_TYPES.BUTTON]: dropdownButtonOptions as Options,
     [SUBCOMPONENT_TYPES.LAYER]: dropdownItemOptions as Options,
     [SUBCOMPONENT_TYPES.DROPDOWN]: dropdownOptions as Options,
     [SUBCOMPONENT_TYPES.ICON]: iconOptions as Options,
