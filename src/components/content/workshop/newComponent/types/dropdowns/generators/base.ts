@@ -1,6 +1,6 @@
 import { UpdatePaddingComponentDropdownOptions } from '../../../../utils/componentManipulation/updateChildComponent/updatePaddingComponentDropdownOptionNames';
+import { CustomStaticFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../consts/dropdownMenuAlignment.enum';
-import { CustomFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
@@ -23,7 +23,7 @@ class DropdownBase extends ComponentBuilder {
     };
   }
 
-  private static createDefaultCustomFeatures(): CustomFeatures {
+  private static createDefaultCustomStaticFeatures(): CustomStaticFeatures {
     return {
       alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
     };
@@ -31,8 +31,8 @@ class DropdownBase extends ComponentBuilder {
 
   public static overwriteCustomFeatures(paddingComponent: WorkshopComponent): void {
     const paddingBaseSubcomponent = paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    paddingBaseSubcomponent.customFeatures = DropdownBase.createDefaultCustomFeatures();
-    paddingBaseSubcomponent.defaultCustomFeatures = DropdownBase.createDefaultCustomFeatures();
+    paddingBaseSubcomponent.customStaticFeatures = DropdownBase.createDefaultCustomStaticFeatures();
+    paddingBaseSubcomponent.defaultCustomStaticFeatures = DropdownBase.createDefaultCustomStaticFeatures();
   }
 
   public static createStaticFeatures(paddingComponent: WorkshopComponent): void {

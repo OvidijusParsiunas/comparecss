@@ -45,7 +45,7 @@ export default {
         name: SETTING_NAMES.ALIGN,
         options: DropdownUtils.generateDropdownStructure(Object.values(ALIGNED_SECTION_TYPES)),
         activeOptionPropertyKeyName: 'section',
-        customFeatureObjectKeys: ['customFeatures', 'alignedLayerSection', 'section'],
+        customFeatureObjectKeys: ['customStaticFeatures', 'alignedLayerSection', 'section'],
         ...generateMouseEventCallbacks(),
       },
     },

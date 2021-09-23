@@ -92,7 +92,6 @@ export interface CustomFeatures {
   closeTriggers?: CloseTriggers;
   jsClasses?: ComponentJavascriptClasses;
   autoSize?: AutoSize;
-  alignedLayerSection?: AlignedLayerSection;
   circleBorder?: boolean;
   lastSelectedCssValues?: WorkshopComponentCss;
   mouseEventCallbacks?: SubcomponentMouseEventCallbacks;
@@ -106,6 +105,7 @@ export interface Image {
 }
 
 export interface CustomStaticFeatures {
+  alignedLayerSection?: AlignedLayerSection;
   subcomponentText?: Text;
   image?: Image;
   icon?: Icon;
@@ -170,6 +170,7 @@ export type Subcomponents = {
 export interface WorkshopComponent {
   type: COMPONENT_TYPES;
   style: COMPONENT_STYLES;
+  // WORK 2 - should maybe be a set of subcomponents
   subcomponents: Subcomponents;
   activeSubcomponentName: string;
   // the motivator for this is the fact that the first subcomponent should not be assumed to be the default one

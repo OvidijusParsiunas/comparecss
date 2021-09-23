@@ -45,13 +45,13 @@ class TextBase extends ComponentBuilder {
   private static createDefaultTextCustomFeatures(): CustomFeatures {
     return {
       autoSize: ComponentBuilder.createAutoSize(true, false),
-      alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
     };
   }
 
   private static createDefaultTextCustomStaticFeatures(): CustomStaticFeatures {
     return {
       subcomponentText: ComponentBuilder.createText(),
+      alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
     };
   }
 

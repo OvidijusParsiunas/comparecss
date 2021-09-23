@@ -47,13 +47,13 @@ export class IconBase extends ComponentBuilder {
   private static createDefaultCustomStaticFeatures(): CustomStaticFeatures {
     return {
       icon: { name: DROPDOWN_ARROW_ICON_TYPES.CARET, isComponentDisplayed: true },
+      alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
     };
   }
 
   private static createDefaultCustomFeatures(): CustomFeatures {
     return {
       autoSize: ComponentBuilder.createAutoSize(true, false),
-      alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
       animations: ComponentBuilder.createStationaryAnimations({}),
     };
   }

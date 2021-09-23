@@ -79,7 +79,7 @@ export class AddContainerComponent extends AddComponentShared {
   }
 
   private static addNewSubcomponentToParentLayer(parentLayer: Layer, baseSubcomponent: SubcomponentProperties): void {
-    const alignment = baseSubcomponent?.customFeatures?.alignedLayerSection?.section;
+    const alignment = baseSubcomponent?.customStaticFeatures?.alignedLayerSection?.section;
     const baseSubcomponentRef: BaseSubcomponentRef = { subcomponentProperties: baseSubcomponent };
     parentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][alignment || ALIGNED_SECTION_TYPES.LEFT].push(baseSubcomponentRef);
   }

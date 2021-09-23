@@ -40,8 +40,8 @@ class CloseButtonText extends ComponentBuilder {
   }
   
   private static overwriteCustomFeatures(subcomponent: SubcomponentProperties): void {
-    subcomponent.customFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
-    subcomponent.defaultCustomFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
+    subcomponent.customStaticFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
+    subcomponent.defaultCustomStaticFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
     subcomponent.customFeatures.animations = ComponentBuilder.createStationaryAnimations({});
     subcomponent.defaultCustomFeatures.animations = ComponentBuilder.createStationaryAnimations({});
   }

@@ -95,13 +95,13 @@ export class DropdownItemLayer extends ComponentBuilder {
   private static createDefaultTextCustomFeatures(): CustomFeatures {
     return {
       autoSize: ComponentBuilder.createAutoSize(true, true),
-      alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
     };
   }
 
   private static createDefaultTextCustomStaticFeatures(text?: string): CustomStaticFeatures {
     return {
       subcomponentText: ComponentBuilder.createText(text || 'text'),
+      alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
     };
   }
 

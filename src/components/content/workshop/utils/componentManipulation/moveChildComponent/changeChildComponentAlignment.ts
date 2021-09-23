@@ -73,14 +73,14 @@ export class ChangeChildComponentAlignment {
 
   private static updateNames(newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties, masterComponent: WorkshopComponent): void {
     const targetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName) as TargetDetails;
-    targetDetails.parentLayerAlignedSections = subcomponentProperties.parentLayer.sections.alignedSections;
+    const { alignedSections } = subcomponentProperties.parentLayer.sections;
+    targetDetails.parentLayerAlignedSections = alignedSections;
     TraverseComponentViaDropdownStructure.traverse(
       masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       ChangeChildComponentAlignment.updateDropdownStructureIfFound.bind(targetDetails));
     // UX - check if need to set the subcomponent to the right of the alignment
     // masterComponent.activeSubcomponentName = newAlignmentSubcomponents[newAlignmentSubcomponents.length - 1].name;
-    const newAlignmentSubcomponents = subcomponentProperties.parentLayer.sections.alignedSections[newAlignment];
-    SetActiveComponentUtils.setActiveSubcomponent(masterComponent, newAlignmentSubcomponents[0].subcomponentProperties.name);
+    SetActiveComponentUtils.setActiveSubcomponent(masterComponent, alignedSections[newAlignment][0].subcomponentProperties.name);
   }
 
   public static change(masterComponent: WorkshopComponent, previousAlignment: ALIGNED_SECTION_TYPES, newAlignment: ALIGNED_SECTION_TYPES,

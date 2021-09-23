@@ -1,4 +1,4 @@
-import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SubcomponentTriggers } from '../../../../utils/componentManipulation/utils/subcomponentTriggers';
 import { PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { OtherSubcomponentTriggers } from '../../../../../../../interfaces/otherSubcomponentTriggers';
@@ -73,10 +73,15 @@ class ButtonBase extends ComponentBuilder {
     }
   }
 
+  private static createDefaultButtonBaseCustomStaticFeatures(): CustomStaticFeatures {
+    return {
+      alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
+    }
+  }
+
   private static createDefaultButtonBaseCustomFeatures(): CustomFeatures {
     return {
       lastSelectedCssValues: ComponentBuilder.createLastSelectedCssLeftValue(),
-      alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
       animations: ComponentBuilder.createStationaryAnimations({}),
     };
   }
@@ -93,6 +98,8 @@ class ButtonBase extends ComponentBuilder {
       inheritedCss: inheritedButtonCss,
       customFeatures: ButtonBase.createDefaultButtonBaseCustomFeatures(),
       defaultCustomFeatures: ButtonBase.createDefaultButtonBaseCustomFeatures(),
+      customStaticFeatures: ButtonBase.createDefaultButtonBaseCustomStaticFeatures(),
+      defaultCustomStaticFeatures: ButtonBase.createDefaultButtonBaseCustomStaticFeatures(),
       otherSubcomponentTriggers: ButtonBase.createOtherSubcomponentTriggersTemplate(),
     };
   }

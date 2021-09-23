@@ -6,9 +6,9 @@ import { RemoveChildComponent } from '../utils/componentManipulation/removeChild
 import { AddChildComponent } from '../utils/componentManipulation/addChildComponent/addChildComponent';
 import { RemoveComponent } from '../utils/componentManipulation/removeComponent/removeComponent';
 import { UseComponentManipulation } from '../../../../interfaces/useComponentManipulation';
+import { CopyComponent } from '../utils/componentManipulation/copyComponent/copyComponent';
 import { AddComponent } from '../utils/componentManipulation/addComponent/addComponent';
 import { AddChildComponentEvent } from '../../../../interfaces/addChildComponentEvent';
-import CopyComponent from '../utils/componentManipulation/copyComponent/copyComponent';
 import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { ComponentOptions } from 'vue';
 
