@@ -6,7 +6,7 @@ type TraverseAlignedComponentsCallback = (callback: PreviewTraversalCallback, al
 export class TraverseComponentViaPreviewStructureShared {
 
   protected static createTraversalStateFromAlignedComponentWithMeta(alignedComponentWithMeta: AlignedComponentWithMeta, index: number): SubcomponentPreviewTraversalState {
-    const [ alignedChildComponents, alignedSections ] = alignedComponentWithMeta;
+    const [alignedChildComponents, alignedSections] = alignedComponentWithMeta;
     return {
       subcomponentProperties: alignedChildComponents[index].subcomponentProperties,
       alignedChildComponents,

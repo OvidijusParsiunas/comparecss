@@ -4,7 +4,10 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../
 import { SubcomponentPreviewTraversalState } from '../../../../../../../interfaces/componentTraversal';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
+import { CopyableSubcomponents } from '../../../../../../../interfaces/sync';
 import JSONUtils from '../../../../utils/generic/jsonUtils';
+
+type CopyCopyablesCallback = (isTemporary: boolean, targetSubcomponent: SubcomponentProperties, ...otherSubcomponents: SubcomponentProperties[]) => void;
 
 export class CopyChildComponentModeTempPropertiesUtils {
   
@@ -31,7 +34,8 @@ export class CopyChildComponentModeTempPropertiesUtils {
       activeComponentSubcomponent.customFeatures, subcomponentToBeCopied.customFeatures);
   }
 
-  public static copySubcomponent(activeComponentSubcomponent: SubcomponentProperties, subcomponentToBeCopied: SubcomponentProperties, addTemporaryProperties: boolean): void {
+  public static copySubcomponent(addTemporaryProperties: boolean, activeComponentSubcomponent: SubcomponentProperties, subcomponentToBeCopied: SubcomponentProperties): void {
+    if (!subcomponentToBeCopied) return;
     if (addTemporaryProperties && !activeComponentSubcomponent.tempOriginalCustomProperties) {
       CopyChildComponentModeTempPropertiesUtils.moveCustomPropertiesToTempProperties(activeComponentSubcomponent);
     }
@@ -44,33 +48,40 @@ export class CopyChildComponentModeTempPropertiesUtils {
     }
   }
 
-  private static copySubcomponentDuringPreviewTraversal(activeComponentTraversal: SubcomponentPreviewTraversalState, componentToBeCopiedTraversal: SubcomponentPreviewTraversalState): SubcomponentPreviewTraversalState {
-    const addTemporaryProperties = this as any as boolean;
-    if (componentToBeCopiedTraversal) {
-      const activeSubcomponent = activeComponentTraversal.subcomponentProperties;
-      const subcomponentToBeCopied = componentToBeCopiedTraversal.subcomponentProperties;
-      CopyChildComponentModeTempPropertiesUtils.copySubcomponent(activeSubcomponent, subcomponentToBeCopied, addTemporaryProperties);
-    }
-    return activeComponentTraversal;
+  private static copyCopyableSubcomponents(callback: CopyCopyablesCallback, isTemporary: boolean, copyableSubcomponents: CopyableSubcomponents,
+      targetComponents: WorkshopComponent[]): void {
+    Object.keys(copyableSubcomponents).forEach((subcomponentType) => {
+      const targetSubcomponent: SubcomponentProperties = copyableSubcomponents[subcomponentType];
+      if (!targetSubcomponent) return;
+      callback(isTemporary, targetSubcomponent,
+        ...targetComponents.map((component) => component.sync.copyables.subcomponents[subcomponentType]));
+    });
+  }
+
+  private static copyCopyables(callback: CopyCopyablesCallback, isTemporary: boolean, targetComponent: WorkshopComponent, ...targetComponents: WorkshopComponent[]): void {
+    const { subcomponents, childComponents } = targetComponent.sync.copyables;
+    CopyChildComponentModeTempPropertiesUtils.copyCopyableSubcomponents(callback, isTemporary, subcomponents, targetComponents);
+    childComponents.forEach((component, index) => {
+      CopyChildComponentModeTempPropertiesUtils.copyCopyables(callback, isTemporary, component,
+        ...targetComponents.map((component) => component.sync.copyables.childComponents[index]));
+    });
   }
 
   public static copyComponentToTarget(currentlySelectedComponent: WorkshopComponent, componentToBeCopied: WorkshopComponent): void {
     const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
-    TraverseComponentViaPreviewStructureParentFirst.traverseUsingComponent(
-      CopyChildComponentModeTempPropertiesUtils.copySubcomponentDuringPreviewTraversal.bind(true), activeComponent, componentToBeCopied);
+    CopyChildComponentModeTempPropertiesUtils.copyCopyables(CopyChildComponentModeTempPropertiesUtils.copySubcomponent, true, activeComponent, componentToBeCopied);
   }
 
-  private static copySubcomponentToMultipleDuringPreviewTraversal(componentToBeCopiedTraversal: SubcomponentPreviewTraversalState,
-      ...activeComponentTraversal: SubcomponentPreviewTraversalState[]): SubcomponentPreviewTraversalState {
-    activeComponentTraversal.forEach((traversalState) => {
-      CopyChildComponentModeTempPropertiesUtils.copySubcomponentDuringPreviewTraversal.bind(false)(traversalState, componentToBeCopiedTraversal);
+  private static copySubcomponentToMultipleDuringPreviewTraversal(isTemporary: boolean, subcomponentToCopy: SubcomponentProperties,
+      ...targetSubcomponents: SubcomponentProperties[]): void {
+    targetSubcomponents.forEach((targetSubcomponent) => {
+      CopyChildComponentModeTempPropertiesUtils.copySubcomponent(isTemporary, targetSubcomponent, subcomponentToCopy);
     });
-    return activeComponentTraversal[0];
   }
 
   public static copyComponentToMultipleTargets(componentToBeCopied: WorkshopComponent, targetComponents: Set<WorkshopComponent>): void {
-    TraverseComponentViaPreviewStructureParentFirst.traverseUsingComponent(
-      CopyChildComponentModeTempPropertiesUtils.copySubcomponentToMultipleDuringPreviewTraversal, componentToBeCopied, ...targetComponents);
+    CopyChildComponentModeTempPropertiesUtils.copyCopyables(CopyChildComponentModeTempPropertiesUtils.copySubcomponentToMultipleDuringPreviewTraversal,
+      false, componentToBeCopied, ...targetComponents);
   }
 
   private static resetOriginalCss(subcomponentProperties: SubcomponentProperties): void {

@@ -13,6 +13,16 @@ import { dropdownButtonBase } from './button/base';
 
 class DropdownBase extends ComponentBuilder {
 
+  public static addCopyableSubcomponents(dropdownComponent: WorkshopComponent): void {
+    const { coreSubcomponentRefs } = dropdownComponent;
+    dropdownComponent.sync.copyables = {
+      subcomponents: {
+        [SUBCOMPONENT_TYPES.BASE]: coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
+      },
+      childComponents: [dropdownComponent.paddingComponentChild, dropdownComponent.paddingComponentChild.linkedComponents.auxiliary[0]],
+    };
+  }
+
   private static createSelectDropdownProperties(): SelectDropdown {
     return {
       enabled: false,
@@ -69,6 +79,7 @@ export const dropdownBase: ComponentGenerator = {
     paddingComponent.componentPreviewStructure.subcomponentDropdownStructure[paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] = { ...buttonComponent.componentPreviewStructure.subcomponentDropdownStructure };
     paddingComponent.paddingComponentChild = buttonComponent;
     buttonComponent.paddingComponent = paddingComponent;
+    DropdownBase.addCopyableSubcomponents(paddingComponent);
     return paddingComponent;
   },
 }

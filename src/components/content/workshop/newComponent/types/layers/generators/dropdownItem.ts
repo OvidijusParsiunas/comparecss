@@ -22,6 +22,18 @@ import { layerBase } from './base';
 
 export class DropdownItemLayer extends ComponentBuilder {
 
+  // WORK 3 - population will be automatic
+  private static addCopyableSubcomponents(layerComponent: WorkshopComponent, textComponent: WorkshopComponent): void {
+    const { coreSubcomponentRefs } = layerComponent;
+    layerComponent.sync.copyables = {
+      subcomponents: {
+        [SUBCOMPONENT_TYPES.BASE]: coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
+        [SUBCOMPONENT_TYPES.TEXT]: textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
+      },
+      childComponents: [],
+    };
+  }
+
   // split this into more granular methods
   public static setTextSubcomponentProperties(textComponent: WorkshopComponent): void {
     const menuComponent = this as unknown as WorkshopComponent;
@@ -115,8 +127,10 @@ export class DropdownItemLayer extends ComponentBuilder {
     layerComponent.childComponentsLockedToLayer.list.push(textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
     if (layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name !== TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY) {
       UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(containerComponent,
-        menuComponent.componentPreviewStructure.layers[menuComponent.componentPreviewStructure.layers.length - 1]); 
+        menuComponent.componentPreviewStructure.layers[menuComponent.componentPreviewStructure.layers.length - 1]);
     }
+    DropdownItemLayer.addCopyableSubcomponents(layerComponent, textComponent);
+    menuComponent.sync.copyables.childComponents.push(layerComponent);
     return [textComponent];
   }
 

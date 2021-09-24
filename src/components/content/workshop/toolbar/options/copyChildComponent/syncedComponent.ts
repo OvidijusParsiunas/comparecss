@@ -63,7 +63,7 @@ export class SyncedComponent {
   public static copyChildPropertiesFromInSyncContainerComponent(newComponent: WorkshopComponent, componentThisIsSyncedTo: WorkshopComponent): void {
     const newComponentBase = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const subcomponentToCopy = SyncedComponent.findSubcomponentToCopy(componentThisIsSyncedTo, newComponentBase);
-    if (subcomponentToCopy) CopyChildComponentModeTempPropertiesUtils.copySubcomponent(newComponentBase, subcomponentToCopy, false);
+    if (subcomponentToCopy) CopyChildComponentModeTempPropertiesUtils.copySubcomponent(false, newComponentBase, subcomponentToCopy);
   }
 
   public static updateIfSubcomponentNotInSync(masterComponent: WorkshopComponent, activeSubcomponent: SubcomponentProperties): void {

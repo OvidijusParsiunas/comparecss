@@ -20,6 +20,17 @@ import { ComponentBuilder } from '../../../shared/componentBuilder';
 
 class DropdownMenuBase extends ComponentBuilder {
 
+  // WORK 3 - refactor into component builder
+  public static addCopyableSubcomponents(dropdownMenuComponent: WorkshopComponent): void {
+    const { coreSubcomponentRefs } = dropdownMenuComponent;
+    dropdownMenuComponent.sync.copyables = {
+      subcomponents: {
+        [SUBCOMPONENT_TYPES.BASE]: coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
+      },
+      childComponents: [],
+    };
+  }
+
   private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
     if (cssProperty === 'paddingLeft' || cssProperty === 'paddingRight' || cssProperty === 'fontSize' || cssProperty === 'fontWeight') {
       DropdownMenuAutoWidthUtils.setWidth(subcomponentProperties);
@@ -111,6 +122,7 @@ export const dropdownMenuBase: ComponentGenerator = {
       { componentType: COMPONENT_TYPES.DROPDOWN_MENU, baseName }, DropdownMenuBase.createBaseSubcomponent, false);
     DropdownMenuBase.setAreLayersInSyncByDefault(dropdownMenuComponent);
     DropdownMenuBase.setTriggerFuncOnSettingChange(dropdownMenuComponent);
+    DropdownMenuBase.addCopyableSubcomponents(dropdownMenuComponent);
     MenuBaseSpecificSettings.set(dropdownMenuComponent);
     return dropdownMenuComponent;
   },

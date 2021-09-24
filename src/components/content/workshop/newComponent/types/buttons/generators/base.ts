@@ -111,6 +111,18 @@ class ButtonBase extends ComponentBuilder {
       [SUBCOMPONENT_TYPES.ICON]: null,
     };
   }
+
+  // WORK 3 - populate like the core subcomponents
+  public static addCopyableSubcomponents(buttonComponent: WorkshopComponent): void {
+    buttonComponent.sync.copyables = {
+      subcomponents: {
+        [SUBCOMPONENT_TYPES.BASE]: null,
+        [SUBCOMPONENT_TYPES.TEXT]: null,
+        [SUBCOMPONENT_TYPES.ICON]: null,
+      },
+      childComponents: [],
+    };
+  }
 }
 
 export const buttonBase: ComponentGenerator = {
@@ -121,6 +133,7 @@ export const buttonBase: ComponentGenerator = {
     ButtonBaseSpecificSettings.set(buttonBaseComponent);
     ButtonBase.setChildComponentsOptions(buttonBaseComponent);
     ButtonBase.setPropertyOverwritingExecutables(buttonBaseComponent);
+    ButtonBase.addCopyableSubcomponents(buttonBaseComponent);
     return buttonBaseComponent;
   },
 }
