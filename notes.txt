@@ -11,7 +11,7 @@ lock button for dropdown menu (additionally could do the same for modal componen
 remove text from dropdown button then add and attempt to open it in subcomponent dropdown
 select dropdown can be enabled without text, potentially disabled it if text is not there
 dropdown button child component order change throws an error
-dropdown item text weight
+when a synced dropdown selects a dropdown item and then the component it is synced to also selects one - change is reflected (should not)
 
 night diving
 

@@ -77,7 +77,7 @@
                     :ref="`elementReference${settingIndex}`"
                     v-bind:value="inputsValues[setting.spec.name] || setting.spec.default"
                     @mousedown="selectSetting()"
-                    @input="changeSetting(inputEventForInput.bind(this, $event, setting.spec.customFeatureObjectKeys), setting.spec.customFeatureObjectKeys[0])"
+                    @input="changeSetting(inputEventForInput.bind(this, $event, setting.spec.customFeatureObjectKeys), setting.spec.customFeatureObjectKeys)"
                     @keyup.enter="blurInputDropdown(`elementReference${settingIndex}`)">
                 </div>
               </div>
@@ -127,7 +127,7 @@
                   @mouse-leave-button="mouseLeaveActionsDropdownButton(this, setting.spec, subcomponentProperties)"
                   @mouse-enter-option="mouseEnterActionsDropdownOption(this, $event, setting.spec, subcomponentProperties)"
                   @mouse-leave-dropdown="mouseLeaveActionsDropdown(this, setting.spec, subcomponentProperties, false)"
-                  @mouse-click-option="changeSetting(mouseClickActionsDropdownOption.bind(this, this, $event, setting, settings, subcomponentProperties), setting.spec.customFeatureObjectKeys[0])"
+                  @mouse-click-option="changeSetting(mouseClickActionsDropdownOption.bind(this, this, $event, setting, settings, subcomponentProperties), setting.spec.customFeatureObjectKeys)"
                   @mouse-click-new-option="mouseClickActionsDropdownNewOption($event, setting.spec, subcomponentProperties, actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.activeOptionPropertyKeyName])"
                   @hide-dropdown-menu="hideActionsDropdownMenu(setting.spec)"/>
               </div>
@@ -428,8 +428,9 @@ export default {
     toggleSubcomponentSelectMode(): void {
       // this.$refs.selectSubcomponentOverlay2.style.display = 'block';
     },
-    changeSetting(callback: () => void, firstCustomFeatureObjectKey?: string): void {
-      if (SyncedComponent.isInSyncButtonDisplayed(this.subcomponentProperties) && firstCustomFeatureObjectKey !== 'customStaticFeatures') {
+    changeSetting(callback: () => void, customFeatureObjectKeys?: string[]): void {
+      if (SyncedComponent.isInSyncButtonDisplayed(this.subcomponentProperties)
+          && customFeatureObjectKeys && (customFeatureObjectKeys[0] !== 'customStaticFeatures')) {
         this.$emit('remove-insync-option-button', callback as RemoveInSyncOptionButton);
       } else {
         callback();
