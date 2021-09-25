@@ -22,16 +22,11 @@ import { layerBase } from './base';
 
 export class DropdownItemLayer extends ComponentBuilder {
 
-  // WORK 3 - population will be automatic
   private static addCopyableSubcomponents(layerComponent: WorkshopComponent, textComponent: WorkshopComponent): void {
-    const { coreSubcomponentRefs } = layerComponent;
-    layerComponent.sync.copyables = {
-      subcomponents: {
-        [SUBCOMPONENT_TYPES.BASE]: coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
-        [SUBCOMPONENT_TYPES.TEXT]: textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
-      },
-      childComponents: [],
-    };
+    layerComponent.sync.copyables = ComponentBuilder.createCopyablesWithSubcomponents({
+      [SUBCOMPONENT_TYPES.BASE]: layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
+      [SUBCOMPONENT_TYPES.TEXT]: textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
+    });
   }
 
   // split this into more granular methods

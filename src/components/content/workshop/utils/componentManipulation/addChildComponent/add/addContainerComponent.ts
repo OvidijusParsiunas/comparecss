@@ -55,6 +55,7 @@ export class AddContainerComponent extends AddComponentShared {
     const newComponentBase = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const { subcomponentType, parentLayer } = newComponentBase;
     JSONUtils.setPropertyIfExists(newComponentContainer.coreSubcomponentRefs, subcomponentType as number, newComponentBase);
+    JSONUtils.setPropertyIfExists(newComponentContainer.sync.copyables?.subcomponents, subcomponentType as number, newComponentBase);
     SubcomponentTriggers.set(newComponentContainer, parentLayer.subcomponentProperties, newComponentBase, subcomponentType);
     PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(newComponentContainer);
   }

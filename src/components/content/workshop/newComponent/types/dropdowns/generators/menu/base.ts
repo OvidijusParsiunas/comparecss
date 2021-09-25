@@ -20,15 +20,9 @@ import { ComponentBuilder } from '../../../shared/componentBuilder';
 
 class DropdownMenuBase extends ComponentBuilder {
 
-  // WORK 3 - refactor into component builder
   public static addCopyableSubcomponents(dropdownMenuComponent: WorkshopComponent): void {
-    const { coreSubcomponentRefs } = dropdownMenuComponent;
-    dropdownMenuComponent.sync.copyables = {
-      subcomponents: {
-        [SUBCOMPONENT_TYPES.BASE]: coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
-      },
-      childComponents: [],
-    };
+    dropdownMenuComponent.sync.copyables = ComponentBuilder.createCopyablesWithSubcomponents({
+      [SUBCOMPONENT_TYPES.BASE]: dropdownMenuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE] });
   }
 
   private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {

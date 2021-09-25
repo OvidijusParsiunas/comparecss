@@ -18,6 +18,14 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonBase extends ComponentBuilder {
 
+  public static addCopyableSubcomponents(buttonComponent: WorkshopComponent): void {
+    buttonComponent.sync.copyables = ComponentBuilder.createCopyablesWithSubcomponents(
+      {[SUBCOMPONENT_TYPES.BASE]: buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
+       [SUBCOMPONENT_TYPES.TEXT]: null,
+       [SUBCOMPONENT_TYPES.ICON]: null,
+      });
+  }
+
   private static createDefaultButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
     return new Set([JAVASCRIPT_CLASSES.RIPPLES]);
   }
@@ -109,18 +117,6 @@ class ButtonBase extends ComponentBuilder {
       [SUBCOMPONENT_TYPES.BASE]: null,
       [SUBCOMPONENT_TYPES.TEXT]: null,
       [SUBCOMPONENT_TYPES.ICON]: null,
-    };
-  }
-
-  // WORK 3 - populate like the core subcomponents
-  public static addCopyableSubcomponents(buttonComponent: WorkshopComponent): void {
-    buttonComponent.sync.copyables = {
-      subcomponents: {
-        [SUBCOMPONENT_TYPES.BASE]: null,
-        [SUBCOMPONENT_TYPES.TEXT]: null,
-        [SUBCOMPONENT_TYPES.ICON]: null,
-      },
-      childComponents: [],
     };
   }
 }

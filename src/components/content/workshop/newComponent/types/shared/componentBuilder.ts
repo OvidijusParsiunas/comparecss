@@ -9,6 +9,7 @@ import { WorkshopComponentCss } from '../../../../../../interfaces/workshopCompo
 import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { ChildComponentCount } from '../../../../../../interfaces/childComponentCount';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
+import { Copyables, CopyableSubcomponents } from '../../../../../../interfaces/sync';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
@@ -94,7 +95,7 @@ export class ComponentBuilder {
       horizontal: true,
     };
   }
-  
+
   protected static createBackdropProperties(): BackdropProperties {
     return {
       color: '#6d6d6dcc',
@@ -108,7 +109,7 @@ export class ComponentBuilder {
       visible: false,
     };
   }
-  
+
   protected static createComponentCloseTriggerProperties(): CloseTriggers {
     return {
       enter: false,
@@ -124,6 +125,13 @@ export class ComponentBuilder {
     component.newChildComponentsOptionsRefs = { layer: layerComponentOptionsStructure };
     component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsOptions = newChildComponentsOptionsStructure;
     component.childComponentCount = childComponentCount;
+  }
+
+  protected static createCopyablesWithSubcomponents(copyableSubcomponents: CopyableSubcomponents): Copyables {
+    return {
+      subcomponents: copyableSubcomponents,
+      childComponents: [],
+    };
   }
 
   private static createCoreSubcomponentRefs(baseSubcomponent: SubcomponentProperties, coreSubcomponentRefs: CoreSubcomponentRefs): CoreSubcomponentRefs {

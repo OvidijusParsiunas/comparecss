@@ -5,7 +5,7 @@ export type CopyableSubcomponents = {
   [key in SUBCOMPONENT_TYPES]?: SubcomponentProperties;
 }
 
-interface Copyables {
+export interface Copyables {
   subcomponents: CopyableSubcomponents;
   childComponents: WorkshopComponent[];
 }

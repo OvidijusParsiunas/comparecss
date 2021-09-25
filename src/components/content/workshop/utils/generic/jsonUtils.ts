@@ -43,7 +43,7 @@ export default class JSONUtils {
   }
 
   public static setPropertyIfExists<T>(object: T, keyName: keyof T, newValue: T[keyof T]): void {
-    if (Object.prototype.hasOwnProperty.call(object, keyName)) {
+    if (object && Object.prototype.hasOwnProperty.call(object, keyName)) {
       object[keyName] = newValue;
     }
   }
