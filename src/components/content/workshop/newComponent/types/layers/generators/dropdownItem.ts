@@ -22,7 +22,7 @@ import { layerBase } from './base';
 
 export class DropdownItemLayer extends ComponentBuilder {
 
-  private static addCopyableSubcomponents(layerComponent: WorkshopComponent, textComponent: WorkshopComponent): void {
+  private static setCopyableSubcomponents(layerComponent: WorkshopComponent, textComponent: WorkshopComponent): void {
     layerComponent.sync.copyables = ComponentBuilder.createCopyablesWithSubcomponents({
       [SUBCOMPONENT_TYPES.BASE]: layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
       [SUBCOMPONENT_TYPES.TEXT]: textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
@@ -124,7 +124,7 @@ export class DropdownItemLayer extends ComponentBuilder {
       UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(containerComponent,
         menuComponent.componentPreviewStructure.layers[menuComponent.componentPreviewStructure.layers.length - 1]);
     }
-    DropdownItemLayer.addCopyableSubcomponents(layerComponent, textComponent);
+    DropdownItemLayer.setCopyableSubcomponents(layerComponent, textComponent);
     menuComponent.sync.copyables.childComponents.push(layerComponent);
     return [textComponent];
   }

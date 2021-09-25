@@ -18,7 +18,7 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonBase extends ComponentBuilder {
 
-  public static addCopyableSubcomponents(buttonComponent: WorkshopComponent): void {
+  public static setCopyableSubcomponents(buttonComponent: WorkshopComponent): void {
     buttonComponent.sync.copyables = ComponentBuilder.createCopyablesWithSubcomponents(
       {[SUBCOMPONENT_TYPES.BASE]: buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
        [SUBCOMPONENT_TYPES.TEXT]: null,
@@ -129,7 +129,7 @@ export const buttonBase: ComponentGenerator = {
     ButtonBaseSpecificSettings.set(buttonBaseComponent);
     ButtonBase.setChildComponentsOptions(buttonBaseComponent);
     ButtonBase.setPropertyOverwritingExecutables(buttonBaseComponent);
-    ButtonBase.addCopyableSubcomponents(buttonBaseComponent);
+    ButtonBase.setCopyableSubcomponents(buttonBaseComponent);
     return buttonBaseComponent;
   },
 }

@@ -32,7 +32,7 @@ class DropdownBase extends ComponentBuilder {
     paddingComponent.propertyOverwritingExecutables = [DropdownBase.setAllItemAndItemTextComponentsToBeInSync];
   }
   
-  public static addCopyableSubcomponents(dropdownComponent: WorkshopComponent): void {
+  public static setCopyableSubcomponents(dropdownComponent: WorkshopComponent): void {
     const { coreSubcomponentRefs } = dropdownComponent;
     dropdownComponent.sync.copyables = {
       subcomponents: {
@@ -98,7 +98,7 @@ export const dropdownBase: ComponentGenerator = {
     paddingComponent.componentPreviewStructure.subcomponentDropdownStructure[paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] = { ...buttonComponent.componentPreviewStructure.subcomponentDropdownStructure };
     paddingComponent.paddingComponentChild = buttonComponent;
     buttonComponent.paddingComponent = paddingComponent;
-    DropdownBase.addCopyableSubcomponents(paddingComponent);
+    DropdownBase.setCopyableSubcomponents(paddingComponent);
     DropdownBase.setAndExecutePropertyOverwritingExecutables(paddingComponent);
     return paddingComponent;
   },
