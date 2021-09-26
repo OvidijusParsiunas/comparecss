@@ -7,7 +7,7 @@ export default {
       type: SETTINGS_TYPES.INPUT,
       spec: {
         name: 'Default text',
-        customFeatureObjectKeys: ['customFeatures', 'dropdown', 'select', 'defaultText'],
+        customFeatureObjectKeys: ['customStaticFeatures', 'dropdownSelectedText', 'defaultText'],
         default: '',
       },
     },

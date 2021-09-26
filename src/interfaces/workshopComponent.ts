@@ -4,6 +4,7 @@ import { SubcomponentMouseEventCallbacks } from './subcomponentMouseEventCallbac
 import { NewChildComponentsOptionsRefs } from './newChildComponentsOptionsRefs';
 import { OverwritePropertiesFunc } from './overwriteSubcomponentPropertiesFunc';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
+import { DropdownFeatures, SelectedDropdownText } from './dropdownFeatures';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { TriggerFuncOnSettingChange } from './triggerFuncOnSettingChange';
@@ -16,7 +17,6 @@ import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { CoreSubcomponentRefs } from './coreSubcomponentRefs';
 import { ChildComponentCount } from './childComponentCount';
-import { DropdownFeatures } from './dropdownFeatures';
 import { LinkedComponents } from './linkedComponents';
 import { TempCustomCss } from './tempCustomCss';
 import { CloseTriggers } from './closeTriggers';
@@ -106,6 +106,7 @@ export interface Image {
 
 export interface CustomStaticFeatures {
   alignedLayerSection?: AlignedLayerSection;
+  dropdownSelectedText?: SelectedDropdownText;
   subcomponentText?: Text;
   image?: Image;
   icon?: Icon;

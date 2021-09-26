@@ -4,6 +4,7 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentType
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { dropdownButtonOptions } from '../dropdown/dropdownButton';
+import { dropdownButtonTextOptions } from '../dropdown/buttonText';
 import { Options } from '../../../../../../../interfaces/options';
 import { cardBottomLayerOptions } from '../layer/cardBottomLayer';
 import { closeButtonTextOptions } from '../text/closeButtonText';
@@ -31,10 +32,16 @@ export class CardOptions {
   };
 
   protected static getTextOptions(component: WorkshopComponent): Options {
-    const subcomponentStyle = component.subcomponents[component.activeSubcomponentName].seedComponent.style;
-    if (subcomponentStyle === TEXT_STYLES.BUTTON) {
+    const { style, containerComponent: { paddingComponent } } = component.subcomponents[component.activeSubcomponentName].seedComponent;
+    // WORK 2 - may need to be removed from Card
+    if (paddingComponent?.type === COMPONENT_TYPES.DROPDOWN) {
+      if (paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.dropdown.select.enabled) {
+        return dropdownButtonTextOptions;
+      }
+      return buttonTextOptions;
+    } else if (style === TEXT_STYLES.BUTTON) {
       return buttonTextOptions as Options;
-    } else if (subcomponentStyle === TEXT_STYLES.CLOSE_BUTTON) {
+    } else if (style === TEXT_STYLES.CLOSE_BUTTON) {
       return closeButtonTextOptions as Options;
     }
     return textOptions as Options;

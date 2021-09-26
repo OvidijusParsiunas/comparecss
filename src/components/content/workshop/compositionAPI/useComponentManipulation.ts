@@ -25,7 +25,7 @@ export default function useComponentManipulation(): UseComponentManipulation {
     } else {
       AddChildComponent.add(workshopComponent.currentlySelectedComponent, newComponentBaseName);
     }
-    workshopComponent.$refs.contents.refreshComponent();
+    workshopComponent.$refs.contents.refreshCurrentComponent();
   };
 
   const removeComponent = (workshopComponent: ComponentOptions, componentToBeRemovedWithoutSelecting?: WorkshopComponent): void => {
@@ -34,18 +34,18 @@ export default function useComponentManipulation(): UseComponentManipulation {
 
   const removeChildComponent = (workshopComponent: ComponentOptions, isTemporaryAddPreview?: boolean): void => {
     RemoveChildComponent.remove(workshopComponent.currentlySelectedComponent, isTemporaryAddPreview);
-    workshopComponent.$refs.contents.refreshComponent();
+    workshopComponent.$refs.contents.refreshCurrentComponent();
   };
 
   const changeSubcomponentOrder = (workshopComponent: ComponentOptions, moveSubcomponentEvent: ChangeSubcomponentOrderEvent): void => {
     ChangeChildComponentOrder.change(...moveSubcomponentEvent);
-    workshopComponent.$refs.contents.refreshComponent();
+    workshopComponent.$refs.contents.refreshCurrentComponent();
   };
 
   const changeSubcomponentAlignment = (workshopComponent: ComponentOptions, changeSubcomponentAlignmentEvent: ChangeSubcomponentAlignmentEvent): void => {
     ChangeChildComponentAlignment.change(workshopComponent.currentlySelectedComponent, ...changeSubcomponentAlignmentEvent);
     const shouldSubcomponentNamesBeUpdated = changeSubcomponentAlignmentEvent[3];
-    if (shouldSubcomponentNamesBeUpdated) workshopComponent.$refs.contents.refreshComponent();
+    if (shouldSubcomponentNamesBeUpdated) workshopComponent.$refs.contents.refreshCurrentComponent();
   };
 
   const copyComponent = (workshopComponent: ComponentOptions, setActiveComponent: WorkshopComponent): void => {

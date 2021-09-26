@@ -69,6 +69,7 @@ import { SelectDropdownUtils } from '../newComponent/types/dropdowns/selectDropd
 import { SubcomponentPreviewMouseEvents } from '../../../../interfaces/subcomponentPreviewMouseEvents';
 import { componentTypeToStyleGenerators } from '../newComponent/types/componentTypeToStyleGenerators';
 import { MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../consts/baseSubcomponentNames.enum';
+import { CustomFeatures, WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { animationTypeToFunctionality } from './utils/animations/animationToFunctionality';
 import { PlayAnimationPreviewEvent } from '../../../../interfaces/settingsComponentEvents';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
@@ -79,7 +80,6 @@ import { TemporaryComponent } from '../../../../interfaces/temporaryComponent';
 import PreviewCloseAnimation from './utils/animations/previewAnimations/close';
 import { SubcomponentAndOverlayIds } from './utils/subcomponentAndOverlayIds';
 import PreviewOpenAnimation from './utils/animations/previewAnimations/open';
-import { CustomFeatures } from '../../../../interfaces/workshopComponent';
 import { COMPONENT_TYPES } from '../../../../consts/componentTypes.enum';
 import { DEFAULT_STYLES } from '../../../../consts/componentStyles.enum';
 import AnimationUtils from './utils/animations/utils/animationUtils';
@@ -202,13 +202,16 @@ export default {
         this.temporaryComponent.mouseEvents = null;
       }
     },
-    refreshComponent(): void {
+    refreshCurrentComponent(): void {
       this.refreshTemporaryComponentPropertiesBeforeUse();
       const subcomponentAndOverlayElementIds = SubcomponentAndOverlayIds.generate(this.component);
       this.subcomponentAndOverlayElementIds = subcomponentAndOverlayElementIds;
       subcomponentAndOverlayElementIdsState.setSubcomponentAndOverlayElementIdsState(subcomponentAndOverlayElementIds);
       this.mouseEvents = ComponentPreviewUtils.generateMouseEvents(subcomponentAndOverlayElementIds, this.component.subcomponents);
-      SelectDropdownUtils.refresh(this.component, true);
+    },
+    refreshPreviousComponent(previousComponent: WorkshopComponent): void {
+      // the reason why refreshed when moving away from component is because it can take to process upfront
+      SelectDropdownUtils.refresh(previousComponent, true);
     }
   },
   props: {
@@ -216,9 +219,9 @@ export default {
     componentPreviewAssistance: Object,
   },
   watch: {
-    component(): void {
-      if (!this.component) return;
-      this.refreshComponent();
+    component(currentComponent: WorkshopComponent, previousComponent: WorkshopComponent): void {
+      if (currentComponent) this.refreshCurrentComponent();
+      if (previousComponent) this.refreshPreviousComponent(previousComponent);
     }
   }
 };
