@@ -31,7 +31,7 @@ export class JsClassesUtils {
     const baseSubcomponent = component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const defaultJsClasses = this as any as Set<JAVASCRIPT_CLASSES>;
     const jsClasses = baseSubcomponent.customFeatures.jsClasses || defaultJsClasses;
-    TraverseComponentViaPreviewStructureParentFirst.traverseUsingComponent(
+    TraverseComponentViaPreviewStructureParentFirst.traverse(
       JsClassesUtils.assign.bind(this, jsClasses, overwriteDefaultProperties), component);
   }
 }

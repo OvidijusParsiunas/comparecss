@@ -100,7 +100,7 @@ export class CopyChildComponentModeTempPropertiesUtils {
 
   public static cleanComponent(currentlySelectedComponent: WorkshopComponent, resetSubcomponentProperties = true): void {
     const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
-    TraverseComponentViaPreviewStructureParentFirst.traverseUsingComponent(
+    TraverseComponentViaPreviewStructureParentFirst.traverse(
       CopyChildComponentModeTempPropertiesUtils.resetSubcomponentProperties.bind(resetSubcomponentProperties), activeComponent);
   }
 

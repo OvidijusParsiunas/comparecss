@@ -91,7 +91,7 @@ export class ChangeChildComponentOrder {
   public static change(direction: SUBCOMPONENT_ORDER_DIRECTIONS, masterComponent: WorkshopComponent): void {
     const targetDetails: ChangeComponentTargetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName);
     targetDetails.isLowerOrderDirection = direction === SUBCOMPONENT_ORDER_DIRECTIONS.LEFT || direction === SUBCOMPONENT_ORDER_DIRECTIONS.UP;
-    const traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverseUsingComponent(
+    const traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverse(
       ChangeChildComponentOrder.swapChildComponentInPreviewStructureIfFound.bind(targetDetails),
       masterComponent) as TraversalResultForChangeChildOrder;
     if (!traversalResult.childComponentOrderChanged) return;

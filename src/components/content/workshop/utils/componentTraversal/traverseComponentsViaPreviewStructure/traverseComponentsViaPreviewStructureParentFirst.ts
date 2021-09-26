@@ -1,8 +1,8 @@
 import { AlignedComponentWithMeta, PreviewTraversalCallback, SubcomponentPreviewTraversalState } from '../../../../../../interfaces/componentTraversal';
-import { ComponentPreviewStructure, Layer } from '../../../../../../interfaces/componentPreviewStructure';
 import { TraverseComponentViaPreviewStructureShared } from './traverseComponentViaPreviewStructureShared';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
 
 // this class is set up to allow the traversal of multiple same type component structures at the same time
 export class TraverseComponentViaPreviewStructureParentFirst extends TraverseComponentViaPreviewStructureShared {
@@ -15,8 +15,8 @@ export class TraverseComponentViaPreviewStructureParentFirst extends TraverseCom
       traversalResult = callback(
         ...availableComponents.map((alignedComponentWithMeta) => TraverseComponentViaPreviewStructureShared.createTraversalStateFromAlignedComponentWithMeta(alignedComponentWithMeta, i)));
       if (traversalResult?.stopTraversal) return traversalResult;
-      traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverse(
-        callback, ...availableComponents.map((alignedComponentWithMeta) => alignedComponentWithMeta[0][i].subcomponentProperties.seedComponent.componentPreviewStructure)
+      traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverseLayers(
+        callback, availableComponents.map((alignedComponentWithMeta) => alignedComponentWithMeta[0][i].subcomponentProperties.seedComponent.componentPreviewStructure.layers)
       );
       if (traversalResult?.stopTraversal) return traversalResult;
     }
@@ -37,17 +37,12 @@ export class TraverseComponentViaPreviewStructureParentFirst extends TraverseCom
     return traversalResult;
   }
 
-  public static traverse(callback: PreviewTraversalCallback, ...componentPreviewArr: ComponentPreviewStructure[]): SubcomponentPreviewTraversalState {
-    return TraverseComponentViaPreviewStructureParentFirst.traverseLayers(
-      callback, [...componentPreviewArr.map((componentPreview) => componentPreview.layers)]);
-  }
-
   private static traverseComponent(callback: PreviewTraversalCallback, componentsArr: WorkshopComponent[]): SubcomponentPreviewTraversalState {
     const traversalResult = callback(...componentsArr.map((activeComponent) => {
       return { subcomponentProperties: activeComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE] }}));
     if (traversalResult?.stopTraversal) return traversalResult;
-    return TraverseComponentViaPreviewStructureParentFirst.traverse(
-      callback, ...componentsArr.map((components) => components.componentPreviewStructure));
+    return TraverseComponentViaPreviewStructureParentFirst.traverseLayers(
+      callback, componentsArr.map((components) => components.componentPreviewStructure.layers));
   }
   
   private static traversePaddingComponentChild(callback: PreviewTraversalCallback, paddingChildrenArr: WorkshopComponent[]): SubcomponentPreviewTraversalState {
@@ -61,7 +56,7 @@ export class TraverseComponentViaPreviewStructureParentFirst extends TraverseCom
     return traversalResult;
   }
 
-  public static traverseUsingComponent(callback: PreviewTraversalCallback, ...componentsArr: WorkshopComponent[]): SubcomponentPreviewTraversalState {
+  public static traverse(callback: PreviewTraversalCallback, ...componentsArr: WorkshopComponent[]): SubcomponentPreviewTraversalState {
     let traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverseComponent(callback, componentsArr);
     if (traversalResult?.stopTraversal) return traversalResult;
     if (componentsArr[0].paddingComponentChild) {

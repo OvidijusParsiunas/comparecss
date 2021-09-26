@@ -47,7 +47,7 @@ export class SyncedComponent {
 
   public static toggleSubcomponentSyncToOff(containerComponent: WorkshopComponent, callback?: () => void): void {
     const inSyncComponent = SyncedComponent.getInSyncComponent(containerComponent.subcomponents[containerComponent.activeSubcomponentName]);
-    TraverseComponentViaPreviewStructureChildFirst.traverseUsingComponent(SyncedComponent.dereferenceCopiedComponentCustomProperties, inSyncComponent);
+    TraverseComponentViaPreviewStructureChildFirst.traverse(SyncedComponent.dereferenceCopiedComponentCustomProperties, inSyncComponent);
     inSyncComponent.sync.componentThisIsSyncedTo = null;
     if (callback) callback();
   }

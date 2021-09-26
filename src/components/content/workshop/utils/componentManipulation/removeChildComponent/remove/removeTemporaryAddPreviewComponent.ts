@@ -15,7 +15,7 @@ export class RemoveTemporaryAddPreviewComponent extends RemoveAnyChildComponent 
     const { higherComponentContainer } = ActiveComponentUtils.getHigherLevelComponents(activeComponent);
     TraverseComponentViaPreviewStructureParentFirst.traverse(
       RemoveTemporaryAddPreviewComponent.removeChildComponentInPreviewStructureIfFound.bind(targetDetails),
-      higherComponentContainer.componentPreviewStructure);
+      higherComponentContainer);
   }
 
   // the reason why we need to fully remove the layer's child component properties is because their addition alters the parent dropdown structure
