@@ -14,6 +14,7 @@ import { dropdownButtonBase } from './button/base';
 
 class DropdownBase extends ComponentBuilder {
 
+  // will need to be placed in the same class as the one in DropdownButton
   private static overwriteButtonCustomFeatures(paddingComponent: WorkshopComponent): void {
     const buttonComponent = paddingComponent.paddingComponentChild;
     const paddingBaseSubcomponent = paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];

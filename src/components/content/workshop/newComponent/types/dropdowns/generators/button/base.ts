@@ -6,6 +6,7 @@ import { AddLayerComponent } from '../../../../../utils/componentManipulation/ad
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
+import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentCssClasses.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
@@ -18,6 +19,33 @@ import { ComponentBuilder } from '../../../shared/componentBuilder';
 import { dropdownMenuBase } from '../menu/base';
 
 class DropdownButton extends ComponentBuilder {
+
+  private static populateReferences(buttonComponent: WorkshopComponent): void {
+    buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.jsClasses.add(JAVASCRIPT_CLASSES.DROPDOWN_BUTTON);
+    buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures.jsClasses.add(JAVASCRIPT_CLASSES.DROPDOWN_BUTTON);
+    const dropdownMenuBaseComponent = buttonComponent.linkedComponents.auxiliary[0];
+    dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.jsClasses = new Set([JAVASCRIPT_CLASSES.DROPDOWN_MENU]) as Set<JAVASCRIPT_CLASSES>;
+    dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures.jsClasses = new Set([JAVASCRIPT_CLASSES.DROPDOWN_MENU]) as Set<JAVASCRIPT_CLASSES>;
+  }
+
+  public static overwriteButtonCustomFeatures(buttonComponent: WorkshopComponent): void {
+    const paddingBaseSubcomponent = buttonComponent.paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    const baseSubcomponent = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    baseSubcomponent.customFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW };
+    baseSubcomponent.defaultCustomFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW };
+    baseSubcomponent.customStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.customStaticFeatures.dropdownSelectedText;
+    baseSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText;
+    const textSubcomponent = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.TEXT];
+    textSubcomponent.customFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select };
+    textSubcomponent.defaultCustomFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select };
+    textSubcomponent.customStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.customStaticFeatures.dropdownSelectedText;
+    textSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText;
+  }
+
+  public static setAndExecutePropertyOverwritingExecutables(buttonComponent: WorkshopComponent): void {
+    buttonComponent.propertyOverwritingExecutables.push(DropdownButton.overwriteButtonCustomFeatures, DropdownButton.populateReferences);
+    DropdownButton.populateReferences(buttonComponent);
+  }
 
   private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
     if (cssProperty === 'fontSize') {
@@ -62,13 +90,6 @@ class DropdownButton extends ComponentBuilder {
     layer3Component.childComponentsLockedToLayer.add(layer3Component, dropdownMenuBaseComponent);
     UpdateLayerDropdownOptionNames.update(dropdownMenuBaseComponent, 0);
   }
-
-  public static populateReferences(buttonComponent: WorkshopComponent, dropdownMenuBaseComponent: WorkshopComponent): void {
-    buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.jsClasses.add(JAVASCRIPT_CLASSES.DROPDOWN_BUTTON);
-    buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures.jsClasses.add(JAVASCRIPT_CLASSES.DROPDOWN_BUTTON);
-    dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.jsClasses = new Set([JAVASCRIPT_CLASSES.DROPDOWN_MENU]) as Set<JAVASCRIPT_CLASSES>;
-    dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures.jsClasses = new Set([JAVASCRIPT_CLASSES.DROPDOWN_MENU]) as Set<JAVASCRIPT_CLASSES>;
-  }
 }
 
 // WORK 2 - make the button style swappable
@@ -87,10 +108,10 @@ export const dropdownButtonBase: ComponentGenerator = {
     dropdownMenuBaseComponent.linkedComponents = { base: buttonComponent };
     dropdownMenuBaseComponent.masterComponent = buttonComponent;
     buttonComponent.activeSubcomponentName = dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
-    DropdownButton.populateReferences(buttonComponent, dropdownMenuBaseComponent);
     DropdownButton.addComponentsToBase(dropdownMenuBaseComponent);
     DropdownButton.setTriggerFuncOnSettingChange(buttonComponent);
     buttonComponent.activeSubcomponentName = buttonComponent.defaultSubcomponentName;
+    DropdownButton.setAndExecutePropertyOverwritingExecutables(buttonComponent);
     return buttonComponent;
   },
 }
