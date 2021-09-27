@@ -67,7 +67,6 @@ export class SelectDropdownUtils {
     return false;
   }
 
-
   public static isTextSelected(component: WorkshopComponent): boolean {
     if (component.type === COMPONENT_TYPES.TEXT && component.containerComponent?.type === COMPONENT_TYPES.DROPDOWN_MENU) {
       return SelectDropdownUtils.isSelected(

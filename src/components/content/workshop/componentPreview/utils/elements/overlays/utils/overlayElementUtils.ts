@@ -2,9 +2,14 @@ import { subcomponentAndOverlayElementIdsState } from '../../subcomponentAndOver
 
 export class OverlayElementUtils {
 
+  private static getSingleOverlayElementId(activeSubcomponentName: string): string[] {
+    const overlayElementId = subcomponentAndOverlayElementIdsState.getOverlayIdViaSubcomponentName(activeSubcomponentName);
+    return overlayElementId ? [overlayElementId] : [];
+  }
+
   public static getOverlayElements(activeSubcomponentName: string): HTMLElement[] {
-    const elementIds = subcomponentAndOverlayElementIdsState.getPaddingComponentOverlayIdsViaSubcomponentName(activeSubcomponentName)
-      || [subcomponentAndOverlayElementIdsState.getOverlayIdViaSubcomponentName(activeSubcomponentName)];
+    let elementIds = subcomponentAndOverlayElementIdsState.getPaddingComponentOverlayIdsViaSubcomponentName(activeSubcomponentName);
+    if (!elementIds) elementIds = OverlayElementUtils.getSingleOverlayElementId(activeSubcomponentName);
     return elementIds.map((elementId) => document.getElementById(elementId));
   }
 }

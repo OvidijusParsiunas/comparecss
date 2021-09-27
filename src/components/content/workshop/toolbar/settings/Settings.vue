@@ -429,8 +429,7 @@ export default {
       // this.$refs.selectSubcomponentOverlay2.style.display = 'block';
     },
     changeSetting(callback: () => void, customFeatureObjectKeys?: string[]): void {
-      if (SyncedComponent.isInSyncButtonDisplayed(this.subcomponentProperties)
-          && customFeatureObjectKeys && (customFeatureObjectKeys[0] !== 'customStaticFeatures')) {
+      if (SyncedComponent.isInSyncButtonDisplayed(this.subcomponentProperties) && customFeatureObjectKeys?.[0] !== 'customStaticFeatures') {
         this.$emit('remove-insync-option-button', callback as RemoveInSyncOptionButton);
       } else {
         callback();
