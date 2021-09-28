@@ -1,6 +1,6 @@
+import { ChangeSubcomponentAlignmentEvent, ChangeSubcomponentOrderEvent, RemoveChildComponentEvent } from '../../../../interfaces/settingsComponentEvents';
 import { AddTemporaryAddPreviewComponent } from '../utils/componentManipulation/addChildComponent/addTemporaryAddPreviewComponent';
 import { ChangeChildComponentAlignment } from '../utils/componentManipulation/moveChildComponent/changeChildComponentAlignment';
-import { ChangeSubcomponentAlignmentEvent, ChangeSubcomponentOrderEvent } from '../../../../interfaces/settingsComponentEvents';
 import { ChangeChildComponentOrder } from '../utils/componentManipulation/moveChildComponent/changeChildComponentOrder';
 import { RemoveChildComponent } from '../utils/componentManipulation/removeChildComponent/removeChildComponent';
 import { AddChildComponent } from '../utils/componentManipulation/addChildComponent/addChildComponent';
@@ -32,9 +32,10 @@ export default function useComponentManipulation(): UseComponentManipulation {
     RemoveComponent.remove(workshopComponent, componentToBeRemovedWithoutSelecting);
   };
 
-  const removeChildComponent = (workshopComponent: ComponentOptions, isTemporaryAddPreview?: boolean): void => {
+  const removeChildComponent = (workshopComponent: ComponentOptions, removeChildComponentEvent: RemoveChildComponentEvent): void => {
+    const [shouldSubcomponentNamesBeUpdated, isTemporaryAddPreview] = removeChildComponentEvent;
     RemoveChildComponent.remove(workshopComponent.currentlySelectedComponent, isTemporaryAddPreview);
-    workshopComponent.$refs.contents.refreshCurrentComponent();
+    if (shouldSubcomponentNamesBeUpdated) workshopComponent.$refs.contents.refreshCurrentComponent();
   };
 
   const changeSubcomponentOrder = (workshopComponent: ComponentOptions, moveSubcomponentEvent: ChangeSubcomponentOrderEvent): void => {

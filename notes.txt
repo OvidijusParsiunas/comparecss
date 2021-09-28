@@ -4,7 +4,6 @@ dropdown will probably need to have its own base name when child
 change copy child component to sync child component - new UX
 when selecting dropdown menu component don't close
 upon selecting menu component in dropdown - display it
-SubcomponentAndOverlayIds.generate gets called many times when adding a new child componnet
 lock button for dropdown menu (additionally could do the same for modal component) - or close it when another component is clicked (when child)
 
 night diving

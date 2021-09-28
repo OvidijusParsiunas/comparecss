@@ -39,7 +39,7 @@
           @hide-dropdown-menu="mouseLeaveSubcomponentManipulationToggle(true)"
           @mouse-click-new-option="buttonClickMiddleware(addChildComponent.bind(this, $event), true)"
           @mouse-enter-option="mouseEnterSubcomponentManipulationToggle(true, $event)"
-          @mouse-leave-option="mouseLeaveSubcomponentManipulationToggle(true)"/>
+          @mouse-leave-option="mouseLeaveSubcomponentManipulationToggle(true, true)"/>
       </div>
       <transition-group name="horizontal-transition">
         <div class="btn-group component-manipulation-options-group"
@@ -169,6 +169,7 @@ import { EnabledIfChildComponentPresent, Option } from '../../../../../interface
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
 import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFullPreviewModeEvent';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
+import { RemoveChildComponentEvent } from '../../../../../interfaces/settingsComponentEvents';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../consts/componentStyles.enum';
 import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdownStructure';
 import { AddChildComponentEvent } from '../../../../../interfaces/addChildComponentEvent';
@@ -468,7 +469,7 @@ export default {
       }
     },
     emitRemoveChildComponentEvent(): void {
-      this.$emit('remove-child-component');
+      this.$emit('remove-child-component', [true] as RemoveChildComponentEvent);
     },
     getSubcomponentsToAdd(): NestedDropdownStructure {
       return this.component.subcomponents[this.component.activeSubcomponentName].newChildComponentsOptions || {};
@@ -476,7 +477,7 @@ export default {
     addChildComponent(mouseClickNewOptionEvent: MouseClickNewOptionEvent): void {
       const [newComponentBaseName, isOptionEnabled] = mouseClickNewOptionEvent;
       if (!isOptionEnabled) return;
-      this.$emit('remove-child-component', true);
+      this.$emit('remove-child-component', [false, true] as RemoveChildComponentEvent);
       this.$emit('add-child-component', [newComponentBaseName] as AddChildComponentEvent);
     },
     mouseEnterSubcomponentManipulationToggle(isAdd: boolean, mouseEnterOptionEvent?: MouseEnterOptionEvent): void {
@@ -488,9 +489,9 @@ export default {
         RemoveChildComponentOverlay.display(this.component.activeSubcomponentName);
       }
     },
-    mouseLeaveSubcomponentManipulationToggle(isAdd: boolean): void {
+    mouseLeaveSubcomponentManipulationToggle(isAdd: boolean, shouldSubcomponentNamesBeUpdated: boolean): void {
       if (isAdd) {
-        this.$emit('remove-child-component', true);
+        this.$emit('remove-child-component', [shouldSubcomponentNamesBeUpdated, true] as RemoveChildComponentEvent);
       } else {
         if (this.currentRemoveChildComponentModalTargetId === this.REMOVE_CHILD_COMPONENT_MODAL_TARGET_ID) return;
         RemoveChildComponentOverlay.hide(this.component.activeSubcomponentName);

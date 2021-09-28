@@ -9,4 +9,6 @@ export type RemoveInSyncOptionButton = () => void;
 
 export type ChangeSubcomponentOrderEvent = [SUBCOMPONENT_ORDER_DIRECTIONS, WorkshopComponent];
 
+export type RemoveChildComponentEvent = [boolean, boolean?];
+
 export type ChangeSubcomponentAlignmentEvent = [ALIGNED_SECTION_TYPES, ALIGNED_SECTION_TYPES, SubcomponentProperties, boolean];
