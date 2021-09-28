@@ -1,5 +1,5 @@
 import { UpdatePaddingComponentDropdownOptions } from '../../../../utils/componentManipulation/updateChildComponent/updatePaddingComponentDropdownOptionNames';
-import { CustomStaticFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SelectedDropdownText, SelectDropdown } from '../../../../../../../interfaces/dropdownFeatures';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../consts/dropdownMenuAlignment.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -79,21 +79,24 @@ class DropdownBase extends ComponentBuilder {
   private static createDefaultCustomStaticFeatures(): CustomStaticFeatures {
     return {
       alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
+      dropdownSelectedText: DropdownBase.createSelectDropdownTextProperties(),
     };
   }
 
-  public static overwriteCustomFeatures(paddingComponent: WorkshopComponent): void {
-    const paddingBaseSubcomponent = paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+  public static overwriteStaticFeatures(paddingBaseSubcomponent: SubcomponentProperties): void {
     paddingBaseSubcomponent.customStaticFeatures = DropdownBase.createDefaultCustomStaticFeatures();
     paddingBaseSubcomponent.defaultCustomStaticFeatures = DropdownBase.createDefaultCustomStaticFeatures();
   }
 
-  public static createStaticFeatures(paddingComponent: WorkshopComponent): void {
-    const paddingBaseSubcomponent = paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+  public static overwriteCustomFeatures(paddingBaseSubcomponent: SubcomponentProperties): void {
     paddingBaseSubcomponent.customFeatures = { dropdown: { select: DropdownBase.createSelectDropdownProperties(), indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW } };
     paddingBaseSubcomponent.defaultCustomFeatures = { dropdown: { select: DropdownBase.createSelectDropdownProperties(), indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW } };
-    paddingBaseSubcomponent.customStaticFeatures = { dropdownSelectedText: DropdownBase.createSelectDropdownTextProperties() };
-    paddingBaseSubcomponent.defaultCustomStaticFeatures = { dropdownSelectedText: DropdownBase.createSelectDropdownTextProperties() };
+  }
+
+  public static overwriteBase(paddingComponent: WorkshopComponent): void {
+    const paddingBaseSubcomponent = paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    DropdownBase.overwriteCustomFeatures(paddingBaseSubcomponent);
+    DropdownBase.overwriteStaticFeatures(paddingBaseSubcomponent);
   }
 }
 
@@ -102,10 +105,9 @@ export const dropdownBase: ComponentGenerator = {
     const paddingComponent = plainLayer.createNewComponent(baseName);
     paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].subcomponentType = SUBCOMPONENT_TYPES.DROPDOWN;
     paddingComponent.type = COMPONENT_TYPES.DROPDOWN;
-    DropdownBase.overwriteCustomFeatures(paddingComponent);
     const buttonComponent = dropdownButtonBase.createNewComponent();
     UpdatePaddingComponentDropdownOptions.updatePaddingComponentChildren(buttonComponent);
-    DropdownBase.createStaticFeatures(paddingComponent);
+    DropdownBase.overwriteBase(paddingComponent);
     Object.assign(buttonComponent.subcomponents, paddingComponent.subcomponents);
     paddingComponent.subcomponents = buttonComponent.subcomponents;
     Object.assign(buttonComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName, paddingComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName);
