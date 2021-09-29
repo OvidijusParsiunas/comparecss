@@ -1,6 +1,6 @@
-import { javascriptInitializerClassesToCode } from '../../toolbar/settings/javascript/javascriptInitializerClassesToCode';
-import { componentTypeToJavascriptClasses } from '../../toolbar/settings/javascript/componentTypeToJavascriptClasses';
-import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
+import { javascriptInitializerClassesToCode } from './maps/javascriptInitializerClassesToCode';
+import { componentTypeToJavascriptClasses } from './maps/componentTypeToJavascriptClasses';
+import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 
 export default class ComponentJs {
   

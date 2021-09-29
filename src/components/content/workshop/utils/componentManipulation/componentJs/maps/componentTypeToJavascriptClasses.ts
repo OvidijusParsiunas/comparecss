@@ -1,6 +1,6 @@
-import { ComponentJavascriptClasses } from '../../../../../../interfaces/componentJavascriptClasses';
-import { JAVASCRIPT_CLASSES } from '../../../../../../consts/javascriptClasses.enum';
-import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum'
+import { ComponentJavascriptClasses } from '../../../../../../../interfaces/componentJavascriptClasses';
+import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
+import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum'
 
 type ComponentTypeToJavascriptClasses = {
   [key in COMPONENT_TYPES]?: ComponentJavascriptClasses;

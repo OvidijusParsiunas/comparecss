@@ -1,6 +1,6 @@
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SetActiveComponentUtils } from '../utils/setActiveComponentUtils';
-import ComponentJs from '../../generic/componentJs';
+import ComponentJs from '../componentJs/componentJs';
 import { ComponentOptions } from 'vue';
 
 export class RemoveComponent {

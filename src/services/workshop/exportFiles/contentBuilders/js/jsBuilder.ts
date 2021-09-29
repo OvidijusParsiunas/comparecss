@@ -1,4 +1,4 @@
-import { javascriptInitializerClassesToCode } from '../../../../../components/content/workshop/toolbar/settings/javascript/javascriptInitializerClassesToCode';
+import { javascriptInitializerClassesToCode } from '../../../../../components/content/workshop/utils/componentManipulation/componentJs/maps/javascriptInitializerClassesToCode';
 import { JAVASCRIPT_CLASSES } from '../../../../../consts/javascriptClasses.enum';
 import { WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { JSBuilderResult } from '../../../../../interfaces/jsBuilderResult';

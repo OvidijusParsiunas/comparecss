@@ -1,7 +1,7 @@
 import { CopyChildComponentModeCardEvents } from '../../../toolbar/options/copyChildComponent/modeUtils/copyChildComponentModeCardEvents';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { PaddingComponentUtils } from './paddingComponentUtils';
-import ComponentJs from '../../generic/componentJs';
+import ComponentJs from '../componentJs/componentJs';
 import { ComponentOptions } from 'vue';
 
 export class SetActiveComponentUtils {
