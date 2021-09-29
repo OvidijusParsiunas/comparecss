@@ -191,7 +191,7 @@
 </template>
 
 <script lang="ts">
-import { subcomponentAndOverlayElementIdsState } from '../../componentPreview/utils/elements/subcomponentAndOverlayElementIdsState';
+import { ComponentDOMElementUtils } from '../../utils/componentManipulation/componentDOMElementUtils/componentDOMElementUtils'
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import { RemoveInSyncOptionButton } from '../../../../../interfaces/settingsComponentEvents';
 import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSettingsState';
@@ -210,7 +210,6 @@ import { SETTINGS_TYPES } from '../../../../../consts/settingsTypes.enum';
 import { SETTING_NAMES } from '../../../../../consts/settingNames.enum';
 import useActionsDropdown from './compositionAPI/useActionsDropdown';
 import dropdown from '../options/dropdown/Dropdown.vue';
-import { DOMUtils } from '../../utils/generic/DOMUtils';
 import RangeUtils from './utils/rangeUtils/rangeUtils';
 import CheckboxUtils from './utils/checkboxUtils';
 import SettingsUtils from './utils/settingsUtils';
@@ -304,15 +303,8 @@ export default {
     settingsVisible: true,
   }),
   methods: {
-    displaySubcomponentElementIfHidden(): void {
-      const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(this.subcomponentProperties.name);
-      const subcomponentElement = document.getElementById(subcomponentId);
-      if (subcomponentElement?.offsetParent === null) {
-        DOMUtils.bubbleUnsetElementDisplayNoneProperty(subcomponentElement);
-      }
-    },
     selectSetting(callback?: () => void): void {
-      this.displaySubcomponentElementIfHidden();
+      ComponentDOMElementUtils.displaySubcomponentElementIfHidden(this.subcomponentProperties.name);
       callback?.();
     },
     activateButton(optionAction: any, actionName: string): void {

@@ -23,6 +23,7 @@
           :customEventHandlers="useSubcomponentDropdownEventHandlers"
           :timeoutFunc="executeCallbackAfterTimeout"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
+          @mouse-click-option="selectSubcomponent()"
           @mouse-click-new-option="selectNewSubcomponent($event[0])"
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
         <dropdown
@@ -151,6 +152,7 @@
 import { removeChildComponentModalState } from '../../utils/componentManipulation/removeChildComponent/removeChildComponentModalState';
 import { MASTER_SUBCOMPONENT_BASE_NAME, TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../consts/baseSubcomponentNames.enum';
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
+import { ComponentDOMElementUtils } from '../../utils/componentManipulation/componentDOMElementUtils/componentDOMElementUtils';
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../componentPreview/utils/animations/consts/sharedConsts';
 import { CopyableComponentCardOverlaysToDisplay } from '../../../../../interfaces/copyableComponentCardOverlaysToDisplay';
 import { RemoveChildComponentOverlay } from '../../componentPreview/utils/elements/overlays/removeChildComponentOverlay';
@@ -306,7 +308,7 @@ export default {
         subcomponentSelectModeState.setIsSubcomponentSelectModeActiveState(false);
         return;
       }
-      const subcomponentSelectModeCallbackFunction = SubcomponentSelectMode.initiate(buttonElement);
+      const subcomponentSelectModeCallbackFunction = SubcomponentSelectMode.initiate(buttonElement, this.component.type);
       const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.ESCAPE]);
       const subcomponentNameClickedFunc = this.selectNewSubcomponent;
       this.$emit('toggle-subcomponent-select-mode',
@@ -398,6 +400,11 @@ export default {
       oldActiveSubcomponent.activeCssPseudoClass = oldActiveSubcomponent.defaultCssPseudoClass;
       SetActiveComponentUtils.setActiveSubcomponent(this.component, subcomponentName);
       this.setNewOptionOnNewDropdownOptionSelect();
+    },
+    selectSubcomponent(): void {
+      // the reason why this is called on any dropdown option click is because the user can close the dropdown menu (component) and select the same option again
+      // this always needs to be called after selectNewSubcomponent in order to use the correct activeSubcomponentName property
+      ComponentDOMElementUtils.displaySubcomponentElementIfHidden(this.component.subcomponents[this.component.activeSubcomponentName].name);
     },
     selectNewCssPseudoClass(mouseClickNewOptionEvent: MouseClickNewOptionEvent): void {
       const [newCssPseudoClass] = mouseClickNewOptionEvent;
