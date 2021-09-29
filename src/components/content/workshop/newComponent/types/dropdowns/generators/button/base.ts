@@ -108,10 +108,10 @@ export const dropdownButtonBase: ComponentGenerator = {
     dropdownMenuBaseComponent.linkedComponents = { base: buttonComponent };
     dropdownMenuBaseComponent.masterComponent = buttonComponent;
     buttonComponent.activeSubcomponentName = dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+    DropdownButton.setAndExecutePropertyOverwritingExecutables(buttonComponent);
     DropdownButton.addComponentsToBase(dropdownMenuBaseComponent);
     DropdownButton.setTriggerFuncOnSettingChange(buttonComponent);
     buttonComponent.activeSubcomponentName = buttonComponent.defaultSubcomponentName;
-    DropdownButton.setAndExecutePropertyOverwritingExecutables(buttonComponent);
     return buttonComponent;
   },
 }
