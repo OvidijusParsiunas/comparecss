@@ -119,12 +119,13 @@ export default {
       }
       if (event.target !== this.$refs.componentCardClassNameEditorInput) {
         this.stopEditing();
-        if (this.className && this.className.length) {
+        if (this.className?.length) {
           this.thisComponent.className = ProcessClassName.finalize(this.className, this.thisComponent.className, this.allComponents, this.thisComponent.className);
         }
         if (event.target === this.$refs.componentCardClassNameEditorButton) {
           this.editorButtonClickedOnStopEditing = true;
-          return { shouldRepeat: false, newCallback: this.clearEditClassName };
+          const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_UP]);
+          return { shouldRepeat: false, newCallback: { keyTriggers, func: this.clearEditClassName }};
         }
         return { shouldRepeat: false };
       }
