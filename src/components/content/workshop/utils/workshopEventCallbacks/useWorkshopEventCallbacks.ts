@@ -28,13 +28,18 @@ export default function useWorkshopEventCallbacks(): UseWorkshopEventCallbacks {
       });
       workshopEventCallbacks = remainingCallbacks;
     }
-  }
+  };
 
   const addWorkshopEventCallback = (callback: WorkshopEventCallback): void => {
     workshopEventCallbacks.push(callback);
-  }
+  };
+
+  const getNumberOfPendingWorkshopEventCallbacks = (): number => {
+    return workshopEventCallbacks.length; 
+  };
 
   return {
+    getNumberOfPendingWorkshopEventCallbacks,
     triggerWorkshopEventCallbacks,
     addWorkshopEventCallback,
   }

@@ -143,7 +143,7 @@ export default {
       this.$emit('component-card-hovered', [this.thisComponent, isMouseEnter] as ComponentCardHoveredEvent);
     },
     preventBubbling(): void {
-      if (this.getIsClassNameEditingInProgressState()) return;
+      if (this.getIsClassNameEditingInProgressState() || this.$parent.$parent.$parent.getNumberOfPendingWorkshopEventCallbacks() > 0) return;
       // remove/copy component without selecting its card
       event.stopPropagation();
     },
