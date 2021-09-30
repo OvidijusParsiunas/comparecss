@@ -1,5 +1,4 @@
 set the dropdown button width by a prop - should also set the option menu width (increase the size to the selected option - dropdown is longest)
-lock button for dropdown menu (additionally could do the same for modal component) - or close it when another component is clicked (when child)
 
 night diving
 
@@ -8,6 +7,7 @@ try with button tags
 check to see if text can be placed into another div
 the dropdown button bottom border issue fixed via auxiliary overlay with no pointer events
 
+lock button for dropdown menu (additionally could do the same for modal component)
 dropdown menu should switch upwards when there is not enough screen space
 for sync to be effective (especially buttons) need to have width property as staticCss
 when moving into copying a child component - can quickly click on add new component (fix this when implemented final add new component button)
