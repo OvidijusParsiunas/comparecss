@@ -1,8 +1,8 @@
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 
-export interface OptionNames {
-  oldOptionName: string;
-  newOptionName: string;
+export interface ItemNames {
+  oldItemName: string;
+  newItemName: string;
 }
 
 export interface SubcomponentNameToPrefix {
@@ -17,19 +17,19 @@ export interface SingleSubcomponentPrefixes {
   [subcomponentPrefix: string]: boolean;
 }
 
-export interface OptionDataMaps {
+export interface ItemDataMaps {
   subcomponentNameToPrefix: SubcomponentNameToPrefix;
   subcomponentPrefixToTotal: SubcomponentPrefixToTotal;
   singleSubcomponentPrefixes: SingleSubcomponentPrefixes;
 }
 
 export interface StateObjects {
-  overwrittenOptionNames: string[];
+  overwrittenItemNames: string[];
   newDrodpownNames: string[];
   overwrittenDropdownStructures: NestedDropdownStructure;
 }
 
-export interface OptionNameInitializationObjects {
-  optionDataMaps: OptionDataMaps;
+export interface ItemNameInitializationObjects {
+  itemDataMaps: ItemDataMaps;
   stateObjects: StateObjects;
 }

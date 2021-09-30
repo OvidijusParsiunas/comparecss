@@ -56,7 +56,7 @@ export class SubcomponentAndOverlayIds {
     const subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds = {};
     const paddingComponents: WorkshopComponent[] = [];
     Object.keys(component.subcomponents).forEach((subcomponentName: string, index: number) => {
-      if (!component.componentPreviewStructure.subcomponentNameToDropdownOptionName[subcomponentName]) return;
+      if (!component.componentPreviewStructure.subcomponentNameToDropdownItemName[subcomponentName]) return;
       SubcomponentAndOverlayIds.addSubcomponentAndOverlayIds(subcomponentName, index, subcomponentAndOverlayElementIdsObject);
       SubcomponentAndOverlayIds.addPaddingComponents(component, subcomponentName, paddingComponents);
     });

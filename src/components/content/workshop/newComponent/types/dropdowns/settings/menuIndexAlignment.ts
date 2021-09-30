@@ -23,8 +23,8 @@ export class MenuIndexAlignment {
 
   private static changeSubcomponentAlignment(event: ActionsDropdownMouseEventCallbackEvent, newMenuAlignment: string,
       menuSubcomponent: SubcomponentProperties, otherSubcomponent: SubcomponentProperties): void {
-    const { triggeredOptionName, subcomponentProperties: currentSubcomponent, isCustomFeatureResetTriggered } = event;
-    const newSubcomponentAlignment = triggeredOptionName as DROPDOWN_MENU_INDEX_ALIGNMENT;
+    const { triggeredItemName, subcomponentProperties: currentSubcomponent, isCustomFeatureResetTriggered } = event;
+    const newSubcomponentAlignment = triggeredItemName as DROPDOWN_MENU_INDEX_ALIGNMENT;
     MenuIndexAlignment.setZIndex(newMenuAlignment, menuSubcomponent);
     MenuIndexAlignment.setOtherSubcomponentAlignment(newSubcomponentAlignment, otherSubcomponent);
     if (isCustomFeatureResetTriggered) currentSubcomponent.customFeatures.dropdown.indexAlignment = newSubcomponentAlignment;
@@ -33,13 +33,13 @@ export class MenuIndexAlignment {
   private static changeFromMenuSubcomponent(event: ActionsDropdownMouseEventCallbackEvent): void {
     const menuSubcomponent = event.subcomponentProperties;
     const buttonSubcomponent = menuSubcomponent.seedComponent.linkedComponents.base.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    MenuIndexAlignment.changeSubcomponentAlignment(event, event.triggeredOptionName, menuSubcomponent, buttonSubcomponent);
+    MenuIndexAlignment.changeSubcomponentAlignment(event, event.triggeredItemName, menuSubcomponent, buttonSubcomponent);
   }
 
   private static changeFromButtonSubcomponent(event: ActionsDropdownMouseEventCallbackEvent): void {
     const buttonSubcomponent = event.subcomponentProperties;
     const menuSubcomponent = buttonSubcomponent.seedComponent.linkedComponents.auxiliary[0].coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    const newMenuAlignment = MenuIndexAlignment.getCounterAlignment(event.triggeredOptionName as DROPDOWN_MENU_INDEX_ALIGNMENT);
+    const newMenuAlignment = MenuIndexAlignment.getCounterAlignment(event.triggeredItemName as DROPDOWN_MENU_INDEX_ALIGNMENT);
     MenuIndexAlignment.changeSubcomponentAlignment(event, newMenuAlignment, menuSubcomponent, menuSubcomponent);
   }
 

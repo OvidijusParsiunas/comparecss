@@ -2,7 +2,7 @@ import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSect
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { SubcomponentProperties } from './workshopComponent';
 
-export interface SubcomponentNameToDropdownOptionName {
+export interface SubcomponentNameToDropdownItemName {
   [subcomponentName: string]: string;
 }
 
@@ -22,21 +22,21 @@ export type Layer = { sections: Sections; } & BaseSubcomponentRef;
 export interface ComponentPreviewStructure {
   layers?: Layer[];
   subcomponentDropdownStructure?: NestedDropdownStructure;
-  subcomponentNameToDropdownOptionName: SubcomponentNameToDropdownOptionName;
+  subcomponentNameToDropdownItemName: SubcomponentNameToDropdownItemName;
   // will be used in the future, can be horizontal or vertical
   layeringType?: string;
 }
 
 // current dropdown strategy:
 
-// Each dropdown option has an actual object name which is the name of the subcomponent that it is representing, e.g. dropdown structure:
+// Each dropdown item has an actual object name which is the name of the subcomponent that it is representing, e.g. dropdown structure:
 // Button: {
-//  Text: {dropdownOptionAuxiliaryDetailsReferenceObject: {…}}
-//  dropdownOptionAuxiliaryDetailsReferenceObject: {isEnabled: true, actualObjectName: "Button 7"}
+//  Text: {dropdownItemAuxiliaryDetailsReferenceObject: {…}}
+//  dropdownItemAuxiliaryDetailsReferenceObject: {isEnabled: true, actualObjectName: "Button 7"}
 // }
 
-// SubcomponentNameToDropdownOptionName is a map that tracks what dropdown option each subcomponent name corresponds to, e,g:
-// subcomponentNameToDropdownOptionName: {
+// SubcomponentNameToDropdownItemName is a map that tracks what dropdown item each subcomponent name corresponds to, e,g:
+// subcomponentNameToDropdownItemName: {
 //  Avatar 10: "Avatar"
 //  Base: "Base"
 //  Button 7: "Button"

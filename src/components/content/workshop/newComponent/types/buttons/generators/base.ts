@@ -35,11 +35,11 @@ class ButtonBase extends ComponentBuilder {
       JsClassesUtils.assignJsClassesRefToAllSubcomponents.bind(ButtonBase.createDefaultButtonJsClasses())];
   }
 
-  public static setChildComponentsOptions(buttonBaseComponent: WorkshopComponent): void {
-    const baseComponentOptions = [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, PRIMITIVE_COMPONENTS_BASE_NAMES.ICON];
+  public static setChildComponentsItems(buttonBaseComponent: WorkshopComponent): void {
+    const baseComponentItems = [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, PRIMITIVE_COMPONENTS_BASE_NAMES.ICON];
     const childComponentMaxCount = { max: { [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT]: 1, [PRIMITIVE_COMPONENTS_BASE_NAMES.ICON]: 1 }};
-    ComponentBuilder.setChildComponentsOptionsProperties(buttonBaseComponent,
-      baseComponentOptions, baseComponentOptions, childComponentMaxCount);
+    ComponentBuilder.setChildComponentsItemsProperties(buttonBaseComponent,
+      baseComponentItems, baseComponentItems, childComponentMaxCount);
   }
 
   private static createOtherSubcomponentTriggersTemplate(): OtherSubcomponentTriggers {
@@ -127,7 +127,7 @@ export const buttonBase: ComponentGenerator = {
     const buttonBaseComponent = ComponentBuilder.createBaseComponent(
       { componentType: COMPONENT_TYPES.BUTTON, baseName, coreSubcomponentRefs }, ButtonBase.createBaseSubcomponent);
     ButtonBaseSpecificSettings.set(buttonBaseComponent);
-    ButtonBase.setChildComponentsOptions(buttonBaseComponent);
+    ButtonBase.setChildComponentsItems(buttonBaseComponent);
     ButtonBase.setPropertyOverwritingExecutables(buttonBaseComponent);
     ButtonBase.setCopyableSubcomponents(buttonBaseComponent);
     return buttonBaseComponent;

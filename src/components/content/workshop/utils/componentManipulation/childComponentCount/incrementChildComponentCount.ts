@@ -30,7 +30,7 @@ export class IncrementChildComponentCount extends ChildComponentCountShared {
     const { childComponentCount } = parentComponent;
     if (childComponentCount) {
       IncrementChildComponentCount.incrementCurrentCount(childComponentCount, newComponentNamePrefix);
-      ChildComponentCountShared.setAddPreviewDropdownOptionStateIfConditionMet(
+      ChildComponentCountShared.setAddPreviewDropdownItemStateIfConditionMet(
         IncrementChildComponentCount.isChildComponentCountAtMax.bind({ childComponentCount, newComponentNamePrefix } as ConditionFuncContextValues),
         parentComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE], 
         newComponentNamePrefix, false);

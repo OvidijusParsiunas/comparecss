@@ -1,4 +1,4 @@
-import { UpdateGenericComponentDropdownOptionNames } from '../../../../utils/componentManipulation/updateChildComponent/updateGenericComponentDropdownOptionNames';
+import { UpdateGenericComponentDropdownItemNames } from '../../../../utils/componentManipulation/updateChildComponent/updateGenericComponentDropdownItemNames';
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { DEFAULT_STYLES, LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -28,6 +28,6 @@ export class AddComponentsToButtonBaseUtils {
       AddContainerComponent.add(component, COMPONENT_TYPES.ICON, DEFAULT_STYLES.DEFAULT,
         layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name, [AddComponentsToButtonBaseUtils.overwriteIconProperties]);
     }
-    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(component, component.componentPreviewStructure.layers[0]);
+    UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(component, component.componentPreviewStructure.layers[0]);
   }
 }

@@ -1,6 +1,6 @@
 export const COMPONENT_CARD_MARKER = 'component-card-marker';
 export const COMPONENT_CARD_BUTTON_MARKER = 'component-card-button-marker';
-export const DROPDOWN_OPTION_MARKER = 'dropdown-option-marker';
+export const DROPDOWN_ITEM_MARKER = 'dropdown-item-marker';
 export const SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER = 'subcomponent-select-mode-button-marker';
 export const EXPANDED_MODAL_PREVIEW_MODE_BUTTON_MARKER = 'expanded-modal-preview-mode-button-marker';
 export const RANGE_SETTING_MARKER = 'range-setting-marker';

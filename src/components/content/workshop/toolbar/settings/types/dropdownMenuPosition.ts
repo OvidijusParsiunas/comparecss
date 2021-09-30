@@ -6,8 +6,8 @@ import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 
 function generateMouseEventCallbacks(): ActionsDropdownMouseEventCallbacks {
   return {
-    mouseClickOptionCallback: MenuIndexAlignment.change,
-    mouseEnterOptionCallback: MenuIndexAlignment.change,
+    mouseClickItemCallback: MenuIndexAlignment.change,
+    mouseEnterItemCallback: MenuIndexAlignment.change,
     mouseLeaveDropdownCallback: MenuIndexAlignment.change,
   };
 }
@@ -20,7 +20,7 @@ export default {
       spec: {
         name: 'Position',
         options: DropdownUtils.generateDropdownStructure(Object.values(DROPDOWN_MENU_POSITIONS)),
-        activeOptionPropertyKeyName: 'position',
+        activeItemPropertyKeyName: 'position',
         customFeatureObjectKeys: ['customFeatures', 'dropdown', 'menuPosition', 'position'],
       },
     },
@@ -29,7 +29,7 @@ export default {
       spec: {
         name: 'Alignment',
         options: DropdownUtils.generateDropdownStructure(['Above', 'Below']),
-        activeOptionPropertyKeyName: 'indexAlignment',
+        activeItemPropertyKeyName: 'indexAlignment',
         customFeatureObjectKeys: ['customFeatures', 'dropdown', 'indexAlignment'],
         ...generateMouseEventCallbacks(),
       },

@@ -13,34 +13,34 @@
           :class="TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS"
           :additionalButtonClasses="getSubcomponentDropdownButtonBorderClasses()"
           :uniqueIdentifier="SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
-          :dropdownOptions="component.componentPreviewStructure.subcomponentDropdownStructure"
-          :objectContainingActiveOption="component"
-          :activeOptionPropertyKeyName="'activeSubcomponentName'"
-          :optionNameMap="component.componentPreviewStructure.subcomponentNameToDropdownOptionName"
+          :dropdownItems="component.componentPreviewStructure.subcomponentDropdownStructure"
+          :objectContainingActiveItem="component"
+          :activeItemPropertyKeyName="'activeSubcomponentName'"
+          :itemNameMap="component.componentPreviewStructure.subcomponentNameToDropdownItemName"
           :fontAwesomeIcon="'angle-double-down'"
           :highlightSubcomponents="true"
           :isNested="true"
           :customEventHandlers="useSubcomponentDropdownEventHandlers"
           :timeoutFunc="executeCallbackAfterTimeout"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-          @mouse-click-option="selectSubcomponent()"
-          @mouse-click-new-option="selectNewSubcomponent($event[0])"
+          @mouse-click-item="selectSubcomponent()"
+          @mouse-click-new-item="selectNewSubcomponent($event[0])"
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
         <dropdown
           :class="TOOLBAR_BUTTON_GROUP_TERTIARY_COMPONENT_CLASS"
           :additionalButtonClasses="[TOOLBAR_BUTTON_GROUP_END_COMPONENT_CLASS]"
           :uniqueIdentifier="ADD_CHILD_COMPONENT_DROPDOWN_UNIQUE_IDENTIFIER"
-          :dropdownOptions="getSubcomponentsToAdd()"
-          :callWatchWhenDropdownOptionsValueChangeDetectionTriggered="{}"
+          :dropdownItems="getSubcomponentsToAdd()"
+          :callWatchWhenDropdownItemsValueChangeDetectionTriggered="{}"
           :consistentButtonContent="{'backgroundIconClass': 'add-child-component-button-icon'}"
           :timeoutFunc="executeCallbackAfterTimeout"
-          :minOptionsToDisplayDropdown="1"
+          :minItemsToDisplayDropdown="1"
           :displayArrowOnMouseEnter="true"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
           @hide-dropdown-menu="mouseLeaveSubcomponentManipulationToggle(true)"
-          @mouse-click-new-option="buttonClickMiddleware(addChildComponent.bind(this, $event), true)"
-          @mouse-enter-option="mouseEnterSubcomponentManipulationToggle(true, $event)"
-          @mouse-leave-option="mouseLeaveSubcomponentManipulationToggle(true, true)"/>
+          @mouse-click-new-item="buttonClickMiddleware(addChildComponent.bind(this, $event), true)"
+          @mouse-enter-item="mouseEnterSubcomponentManipulationToggle(true, $event)"
+          @mouse-leave-item="mouseLeaveSubcomponentManipulationToggle(true, true)"/>
       </div>
       <transition-group name="horizontal-transition">
         <div class="btn-group component-manipulation-options-group"
@@ -111,13 +111,13 @@
           <dropdown
             class="option-component-button-container"
             :uniqueIdentifier="CSS_PSEUDO_CLASSES_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
-            :dropdownOptions="componentTypeToOptions[component.type](component.subcomponents[component.activeSubcomponentName].subcomponentType, component)"
-            :objectContainingActiveOption="component.subcomponents[component.activeSubcomponentName]"
-            :activeOptionPropertyKeyName="'activeCssPseudoClass'"
+            :dropdownItems="componentTypeToOptions[component.type](component.subcomponents[component.activeSubcomponentName].subcomponentType, component)"
+            :objectContainingActiveItem="component.subcomponents[component.activeSubcomponentName]"
+            :activeItemPropertyKeyName="'activeCssPseudoClass'"
             :fontAwesomeIcon="'angle-down'"
             :timeoutFunc="executeCallbackAfterTimeout"
             @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
-            @mouse-click-new-option="selectNewCssPseudoClass($event)"/>
+            @mouse-click-new-item="selectNewCssPseudoClass($event)"/>
           <div v-for="option in getOptionsForActiveCssPseudoClass()" :key="option" class="option-component-button-container"
               @mouseenter="mouseHoverOption(option, true)" @mouseleave="mouseHoverOption(option, false)">
             <button
@@ -158,9 +158,9 @@ import { CopyableComponentCardOverlaysToDisplay } from '../../../../../interface
 import { RemoveChildComponentOverlay } from '../../componentPreview/utils/elements/overlays/removeChildComponentOverlay';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ComponentTypeToOptions, componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
-import { MouseClickNewOptionEvent, MouseEnterOptionEvent } from '../../../../../interfaces/dropdownMenuMouseEvents';
 import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../consts/workshopToolbarOptionButtonNames.enum';
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
+import { MouseClickNewItemEvent, MouseEnterItemEvent } from '../../../../../interfaces/dropdownMenuMouseEvents';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
 import CopyChildComponentModeToggleUtils from './copyChildComponent/modeUtils/copyChildComponentModeToggle';
 import { SetActiveComponentUtils } from '../../utils/componentManipulation/utils/setActiveComponentUtils';
@@ -202,7 +202,7 @@ import {
 
 interface Consts {
   componentTypeToOptions: ComponentTypeToOptions;
-  useSubcomponentDropdownEventHandlers: (objectContainingActiveOption: Ref<unknown>, activeOptionPropertyKeyName: Ref<string>, highlightSubcomponents: Ref<boolean>) => DropdownCompositionAPI;
+  useSubcomponentDropdownEventHandlers: (objectContainingActiveItem: Ref<unknown>, activeItemPropertyKeyName: Ref<string>, highlightSubcomponents: Ref<boolean>) => DropdownCompositionAPI;
   OPTION_MENU_BUTTON_MARKER: string;
   TOOLBAR_GENERAL_BUTTON_CLASS: string;
   FULL_PREVIEW_MODE_BUTTON_MARKER: string;
@@ -399,23 +399,23 @@ export default {
       const oldActiveSubcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
       oldActiveSubcomponent.activeCssPseudoClass = oldActiveSubcomponent.defaultCssPseudoClass;
       SetActiveComponentUtils.setActiveSubcomponent(this.component, subcomponentName);
-      this.setNewOptionOnNewDropdownOptionSelect();
+      this.setNewOptionOnNewDropdownItemSelect();
     },
     selectSubcomponent(): void {
       // the reason why this is called on any dropdown option click is because the user can close the dropdown menu (component) and select the same option again
       // this always needs to be called after selectNewSubcomponent in order to use the correct activeSubcomponentName property
       ComponentDOMElementUtils.displaySubcomponentElementIfHidden(this.component.subcomponents[this.component.activeSubcomponentName].name);
     },
-    selectNewCssPseudoClass(mouseClickNewOptionEvent: MouseClickNewOptionEvent): void {
-      const [newCssPseudoClass] = mouseClickNewOptionEvent;
+    selectNewCssPseudoClass(mouseClickNewItemEvent: MouseClickNewItemEvent): void {
+      const [newCssPseudoClass] = mouseClickNewItemEvent;
       this.component.subcomponents[this.component.activeSubcomponentName].activeCssPseudoClass = newCssPseudoClass;
-      this.setNewOptionOnNewDropdownOptionSelect();
+      this.setNewOptionOnNewDropdownItemSelect();
     },
     updateOptionsForNewComponent(lastActiveOptionPriorToAllComponentsDeletion: Option): void {
       if (lastActiveOptionPriorToAllComponentsDeletion) this.activeOption = lastActiveOptionPriorToAllComponentsDeletion;
-      this.setNewOptionOnNewDropdownOptionSelect()
+      this.setNewOptionOnNewDropdownItemSelect()
     },
-    setNewOptionOnNewDropdownOptionSelect(): void {
+    setNewOptionOnNewDropdownItemSelect(): void {
       if (this.activeOption.buttonName) {
         const newOption = this.getNewSuitableOption();
         this.selectOption(newOption);
@@ -479,17 +479,17 @@ export default {
       this.$emit('remove-child-component', [true] as RemoveChildComponentEvent);
     },
     getSubcomponentsToAdd(): NestedDropdownStructure {
-      return this.component.subcomponents[this.component.activeSubcomponentName].newChildComponentsOptions || {};
+      return this.component.subcomponents[this.component.activeSubcomponentName].newChildComponentsItems || {};
     },
-    addChildComponent(mouseClickNewOptionEvent: MouseClickNewOptionEvent): void {
-      const [newComponentBaseName, isOptionEnabled] = mouseClickNewOptionEvent;
+    addChildComponent(mouseClickNewItemEvent: MouseClickNewItemEvent): void {
+      const [newComponentBaseName, isOptionEnabled] = mouseClickNewItemEvent;
       if (!isOptionEnabled) return;
       this.$emit('remove-child-component', [false, true] as RemoveChildComponentEvent);
       this.$emit('add-child-component', [newComponentBaseName] as AddChildComponentEvent);
     },
-    mouseEnterSubcomponentManipulationToggle(isAdd: boolean, mouseEnterOptionEvent?: MouseEnterOptionEvent): void {
+    mouseEnterSubcomponentManipulationToggle(isAdd: boolean, mouseEnterItemEvent?: MouseEnterItemEvent): void {
       if (isAdd) {
-        const [newComponentBaseName, isOptionEnabled] = mouseEnterOptionEvent;
+        const [newComponentBaseName, isOptionEnabled] = mouseEnterItemEvent;
         if (!isOptionEnabled) return;
         this.$emit('add-child-component', [newComponentBaseName, true] as AddChildComponentEvent);
       } else {

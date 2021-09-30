@@ -11,7 +11,7 @@ export default {
       spec: {
         name: SETTING_NAMES.DISMISS,
         options: DropdownUtils.generateDropdownStructure(Object.values(GENERAL_ANIMATION_CLOSE_TYPES)),
-        activeOptionPropertyKeyName: 'type',
+        activeItemPropertyKeyName: 'type',
         customFeatureObjectKeys: ['customFeatures', 'animations', 'display', 'close', 'type'],
       },
     },

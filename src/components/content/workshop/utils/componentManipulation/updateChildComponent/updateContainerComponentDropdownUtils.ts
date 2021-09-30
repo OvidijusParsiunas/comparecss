@@ -1,31 +1,31 @@
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
-import { UpdateDropdownOptionNamesShared } from './updateDropdownOptionNamesShared';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { UpdateDropdownItemNamesShared } from './updateDropdownItemNamesShared';
 import { StringUtils } from '../../generic/stringUtils';
 import { ArrayUtils } from '../../generic/arrayUtils';
 import {
-  SingleSubcomponentPrefixes, StateObjects, OptionNameInitializationObjects,
-  SubcomponentPrefixToTotal, SubcomponentNameToPrefix, OptionDataMaps,
-} from '../../../../../../interfaces/updateDropdownOptionNames';
+  SingleSubcomponentPrefixes, StateObjects, ItemNameInitializationObjects,
+  SubcomponentPrefixToTotal, SubcomponentNameToPrefix, ItemDataMaps,
+} from '../../../../../../interfaces/updateDropdownItemNames';
 
-export class UpdateContainerComponentDropdownUtils extends UpdateDropdownOptionNamesShared {
+export class UpdateContainerComponentDropdownUtils extends UpdateDropdownItemNamesShared {
 
-  public static removeOldOptionNames(overwrittenOptionNames: string[], newDrodpownNames: string[],
+  public static removeOldItemNames(overwrittenItemNames: string[], newDrodpownNames: string[],
       subcomponentDropdownStructure: NestedDropdownStructure): void {
-    const oldOptionNames = ArrayUtils.differenceInArrays(overwrittenOptionNames, newDrodpownNames);
-    UpdateDropdownOptionNamesShared.removeOverwrittenOptionNames(oldOptionNames, subcomponentDropdownStructure);
+    const oldItemNames = ArrayUtils.differenceInArrays(overwrittenItemNames, newDrodpownNames);
+    UpdateDropdownItemNamesShared.removeOverwrittenItemNames(oldItemNames, subcomponentDropdownStructure);
   }
 
-  private static updateNewAndOldOptionNames(containerComponent: WorkshopComponent, subcomponentDropdownStructure: NestedDropdownStructure,
-      subcomponentName: string, overwrittenOptionNames: string[], newOptionName: string, oldOptionName: string,
+  private static updateNewAndOlditemNames(containerComponent: WorkshopComponent, subcomponentDropdownStructure: NestedDropdownStructure,
+      subcomponentName: string, overwrittenItemNames: string[], newItemName: string, oldItemName: string,
       overwrittenDropdownStructures: NestedDropdownStructure): void {
-    if (subcomponentDropdownStructure[newOptionName] && oldOptionName !== newOptionName) {
-      overwrittenDropdownStructures[newOptionName] = subcomponentDropdownStructure[newOptionName];
+    if (subcomponentDropdownStructure[newItemName] && oldItemName !== newItemName) {
+      overwrittenDropdownStructures[newItemName] = subcomponentDropdownStructure[newItemName];
     }
-    const oldDropdownStructure = overwrittenDropdownStructures[oldOptionName] || subcomponentDropdownStructure[oldOptionName];
-    subcomponentDropdownStructure[newOptionName] = oldDropdownStructure;
-    containerComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[subcomponentName] = newOptionName;
-    overwrittenOptionNames.push(oldOptionName);
+    const oldDropdownStructure = overwrittenDropdownStructures[oldItemName] || subcomponentDropdownStructure[oldItemName];
+    subcomponentDropdownStructure[newItemName] = oldDropdownStructure;
+    containerComponent.componentPreviewStructure.subcomponentNameToDropdownItemName[subcomponentName] = newItemName;
+    overwrittenItemNames.push(oldItemName);
   }
 
   private static getNewPostfix(subcomponentPrefixToTotal: SubcomponentPrefixToTotal, subcomponentNameToPrefix: SubcomponentNameToPrefix,
@@ -33,18 +33,18 @@ export class UpdateContainerComponentDropdownUtils extends UpdateDropdownOptionN
     return subcomponentPrefixToTotal[subcomponentNameToPrefix[subcomponentName]] += 1;
   }
 
-  public static updateOptionNames(masterComponent: WorkshopComponent, optionDataMaps: OptionDataMaps, containerDropdownStructure: NestedDropdownStructure,
-      overwrittenOptionNames: string[], newDrodpownValues: string[], baseSubcomponentName: string, overwrittenDropdownStructures: NestedDropdownStructure): void {
-    const { subcomponentNameToPrefix, subcomponentPrefixToTotal, singleSubcomponentPrefixes } = optionDataMaps;
+  public static updateItemNames(masterComponent: WorkshopComponent, itemDataMaps: ItemDataMaps, containerDropdownStructure: NestedDropdownStructure,
+      overwrittenItemNames: string[], newDrodpownValues: string[], baseSubcomponentName: string, overwrittenDropdownStructures: NestedDropdownStructure): void {
+    const { subcomponentNameToPrefix, subcomponentPrefixToTotal, singleSubcomponentPrefixes } = itemDataMaps;
     const newPostfix = UpdateContainerComponentDropdownUtils.getNewPostfix(subcomponentPrefixToTotal, subcomponentNameToPrefix, baseSubcomponentName);
-    const { oldOptionName, newOptionName } = UpdateDropdownOptionNamesShared
-      .generateOptionNames(baseSubcomponentName, newPostfix, masterComponent, singleSubcomponentPrefixes[subcomponentNameToPrefix[baseSubcomponentName]]);
-    if (containerDropdownStructure[newOptionName]) {
-      UpdateDropdownOptionNamesShared.moveExistingOptionToTheBottom(containerDropdownStructure, newOptionName);
+    const { oldItemName, newItemName } = UpdateDropdownItemNamesShared
+      .generateItemNames(baseSubcomponentName, newPostfix, masterComponent, singleSubcomponentPrefixes[subcomponentNameToPrefix[baseSubcomponentName]]);
+    if (containerDropdownStructure[newItemName]) {
+      UpdateDropdownItemNamesShared.moveExistingItemToTheBottom(containerDropdownStructure, newItemName);
     }
-    UpdateContainerComponentDropdownUtils.updateNewAndOldOptionNames(masterComponent, containerDropdownStructure, baseSubcomponentName,
-      overwrittenOptionNames, newOptionName, oldOptionName, overwrittenDropdownStructures);
-    newDrodpownValues.push(newOptionName);
+    UpdateContainerComponentDropdownUtils.updateNewAndOlditemNames(masterComponent, containerDropdownStructure, baseSubcomponentName,
+      overwrittenItemNames, newItemName, oldItemName, overwrittenDropdownStructures);
+    newDrodpownValues.push(newItemName);
   }
 
   private static setSinglePrefixesAndResetTotals(subcomponentPrefixToTotal: SubcomponentPrefixToTotal,
@@ -68,7 +68,7 @@ export class UpdateContainerComponentDropdownUtils extends UpdateDropdownOptionN
 
   private static setPrefixesAndTotals(containerDropdownStructure: NestedDropdownStructure, subcomponentNameToPrefix: SubcomponentNameToPrefix,
       subcomponentPrefixToTotal: SubcomponentPrefixToTotal): void {
-    const subcomponentNames = UpdateDropdownOptionNamesShared.getSubcomponentNames(containerDropdownStructure);
+    const subcomponentNames = UpdateDropdownItemNamesShared.getSubcomponentNames(containerDropdownStructure);
     for (let i = 0; i < subcomponentNames.length; i += 1) {
       const subcomponentName = subcomponentNames[i];
       const subcomponentNamePrefix = StringUtils.getFirstWordInString(subcomponentName);
@@ -77,7 +77,7 @@ export class UpdateContainerComponentDropdownUtils extends UpdateDropdownOptionN
     }
   }
 
-  private static generateOptionDataMaps(containerDropdownStructure: NestedDropdownStructure): OptionDataMaps {
+  private static generateItemDataMaps(containerDropdownStructure: NestedDropdownStructure): ItemDataMaps {
     const subcomponentNameToPrefix: SubcomponentNameToPrefix = {};
     const subcomponentPrefixToTotal: SubcomponentPrefixToTotal = {};
     const singleSubcomponentPrefixes: SingleSubcomponentPrefixes = {};
@@ -88,15 +88,15 @@ export class UpdateContainerComponentDropdownUtils extends UpdateDropdownOptionN
 
   private static generateStateObjects(): StateObjects {
     return { 
-      overwrittenOptionNames: [],
+      overwrittenItemNames: [],
       newDrodpownNames: [],
       overwrittenDropdownStructures: {},
     };
   }
 
-  public static generateOptionUpdateInitializationObjects(containerDropdownStructure: NestedDropdownStructure): OptionNameInitializationObjects {
-    const optionDataMaps = UpdateContainerComponentDropdownUtils.generateOptionDataMaps(containerDropdownStructure);
+  public static generateItemUpdateInitializationObjects(containerDropdownStructure: NestedDropdownStructure): ItemNameInitializationObjects {
+    const itemDataMaps = UpdateContainerComponentDropdownUtils.generateItemDataMaps(containerDropdownStructure);
     const stateObjects = UpdateContainerComponentDropdownUtils.generateStateObjects();
-    return { optionDataMaps, stateObjects };
+    return { itemDataMaps, stateObjects };
   }
 }

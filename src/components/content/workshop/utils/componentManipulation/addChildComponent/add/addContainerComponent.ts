@@ -3,11 +3,11 @@ import { PropertyOverwritingExecutablesUtils } from '../../../../newComponent/ty
 import { CopyChildComponentModeTempPropertiesUtils } from '../../../../toolbar/options/copyChildComponent/modeUtils/copyChildComponentModeTempPropertiesUtils';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
-import { DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { OverwritePropertiesFunc } from '../../../../../../../interfaces/overwriteSubcomponentPropertiesFunc';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownItemDisplayStatus';
 import { BaseSubcomponentRef, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { IncrementChildComponentCount } from '../../childComponentCount/incrementChildComponentCount';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -26,7 +26,7 @@ type NewComponentDetails = [WorkshopComponent, string];
 
 export class AddContainerComponent extends AddComponentShared {
 
-  // base name is used in dropdown options
+  // base name is used in dropdown items
   private static readonly componentTypeToBaseName: { [key in COMPONENT_TYPES]?: CHILD_COMPONENTS_BASE_NAMES } = {
     [COMPONENT_TYPES.LAYER]: LAYER_COMPONENTS_BASE_NAMES.LAYER,
     [COMPONENT_TYPES.BUTTON]: BUTTON_COMPONENTS_BASE_NAMES.BUTTON,
@@ -72,11 +72,11 @@ export class AddContainerComponent extends AddComponentShared {
     const { componentPreviewStructure, coreSubcomponentRefs } = newComponent;
     const baseName = coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
     const childComponentBaseDropdownStructure = componentPreviewStructure.subcomponentDropdownStructure[baseName]; 
-    childComponentBaseDropdownStructure[DROPDOWN_OPTION_AUX_DETAILS_REF] = { isEnabled: true, actualObjectName: baseName };
+    childComponentBaseDropdownStructure[DROPDOWN_ITEM_AUX_DETAILS_REF] = { isEnabled: true, actualObjectName: baseName };
     const newComponentDropdownStructure = { [baseName]: { ...childComponentBaseDropdownStructure }};
     Object.assign(subcomponentDropdownStructure, newComponentDropdownStructure);
-    Object.assign(masterComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName,
-      newComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName);
+    Object.assign(masterComponent.componentPreviewStructure.subcomponentNameToDropdownItemName,
+      newComponent.componentPreviewStructure.subcomponentNameToDropdownItemName);
   }
 
   private static addNewSubcomponentToParentLayer(parentLayer: Layer, baseSubcomponent: SubcomponentProperties): void {
@@ -87,18 +87,18 @@ export class AddContainerComponent extends AddComponentShared {
 
   private static addNewComponentToDropdownStructure(newComponent: WorkshopComponent, masterComponent: WorkshopComponent,
       dropdownStructure: NestedDropdownStructure): void {
-    const { componentPreviewStructure: { subcomponentNameToDropdownOptionName }, subcomponents, activeSubcomponentName } = masterComponent;
-    const parentLayerOptionName = subcomponentNameToDropdownOptionName[
+    const { componentPreviewStructure: { subcomponentNameToDropdownItemName }, subcomponents, activeSubcomponentName } = masterComponent;
+    const parentLayerItemName = subcomponentNameToDropdownItemName[
       newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].parentLayer.subcomponentProperties.name];
     // this gets activated when the user is manually adding a component to a layer
     if (subcomponents[activeSubcomponentName].seedComponent.type === COMPONENT_TYPES.LAYER) {
-      const layerDropdownStructure = dropdownStructure[parentLayerOptionName] as NestedDropdownStructure;
+      const layerDropdownStructure = dropdownStructure[parentLayerItemName] as NestedDropdownStructure;
       AddContainerComponent.updateComponentDropdownStructure(masterComponent, newComponent, layerDropdownStructure);
     } else {
       // this gets activated when a new component is being programmatically generated or the user is manually adding a component to a base
       const subcomponentBaseName = subcomponents[activeSubcomponentName].name;
-      const subcomponentOptionName = subcomponentNameToDropdownOptionName[subcomponentBaseName];
-      const componentBaseDropdownStructure = dropdownStructure[subcomponentOptionName][parentLayerOptionName] || dropdownStructure[subcomponentOptionName];
+      const subcomponentItemName = subcomponentNameToDropdownItemName[subcomponentBaseName];
+      const componentBaseDropdownStructure = dropdownStructure[subcomponentItemName][parentLayerItemName] || dropdownStructure[subcomponentItemName];
       AddContainerComponent.updateComponentDropdownStructure(masterComponent, newComponent, componentBaseDropdownStructure as NestedDropdownStructure);
     }
   }

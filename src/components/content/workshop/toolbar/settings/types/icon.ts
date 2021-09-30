@@ -11,7 +11,7 @@ export default {
       spec: {
         name: SETTING_NAMES.TYPE,
         options: DropdownUtils.generateDropdownStructure(Object.values(DROPDOWN_ARROW_ICON_TYPES)),
-        activeOptionPropertyKeyName: 'name',
+        activeItemPropertyKeyName: 'name',
         customFeatureObjectKeys: ['customStaticFeatures', 'icon', 'name'],
       },
     },

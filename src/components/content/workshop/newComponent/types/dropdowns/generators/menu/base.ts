@@ -43,7 +43,7 @@ class DropdownMenuBase extends ComponentBuilder {
     dropdownMenuComponent.areLayersInSyncByDefault = true;
   }
 
-  private static createDefaultNewChildComponentsOptions(): NestedDropdownStructure {
+  private static createDefaultNewChildComponentsItems(): NestedDropdownStructure {
     return DropdownUtils.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]);
   }
 
@@ -105,7 +105,7 @@ class DropdownMenuBase extends ComponentBuilder {
       childCss: inheritedBaseChildCss,
       customFeatures: DropdownMenuBase.createDefaultCustomFeatures(),
       defaultCustomFeatures: DropdownMenuBase.createDefaultCustomFeatures(),
-      newChildComponentsOptions: DropdownMenuBase.createDefaultNewChildComponentsOptions(),
+      newChildComponentsItems: DropdownMenuBase.createDefaultNewChildComponentsItems(),
     };
   }
 }

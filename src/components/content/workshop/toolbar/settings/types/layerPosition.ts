@@ -18,7 +18,7 @@ export default {
       spec: {
         name: SETTING_NAMES.ORDER,
         options: DropdownUtils.generateDropdownStructure([SUBCOMPONENT_ORDER_DIRECTIONS.UP, SUBCOMPONENT_ORDER_DIRECTIONS.DOWN]),
-        optionAction: changeSubcomponentOrder,
+        itemAction: changeSubcomponentOrder,
       },
     },
   ]

@@ -1,5 +1,5 @@
-import { UpdateGenericComponentDropdownOptionNames } from '../../../../utils/componentManipulation/updateChildComponent/updateGenericComponentDropdownOptionNames';
-import { UpdateLayerDropdownOptionNames } from '../../../../utils/componentManipulation/updateChildComponent/updateLayerDropdownOptionNames';
+import { UpdateGenericComponentDropdownItemNames } from '../../../../utils/componentManipulation/updateChildComponent/updateGenericComponentDropdownItemNames';
+import { UpdateLayerDropdownItemNames } from '../../../../utils/componentManipulation/updateChildComponent/updateLayerDropdownItemNames';
 import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
@@ -111,7 +111,7 @@ class DefaultModal extends ComponentBuilder {
 
   public static addComponentsToBase(cardComponent: WorkshopComponent): void {
     const [layer1Component, layer2Component, layer3Component] = DefaultModal.addNewLayers(cardComponent);
-    UpdateLayerDropdownOptionNames.update(cardComponent, 0);
+    UpdateLayerDropdownItemNames.update(cardComponent, 0);
     AddContainerComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
       layer1Component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name, [DefaultModal.overwriteTitleProperties]);
     AddContainerComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, BUTTON_STYLES.CLOSE,
@@ -124,21 +124,21 @@ class DefaultModal extends ComponentBuilder {
       layer3Component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name, [DefaultModal.overwriteSubmitButtonProperties]);
     AddContainerComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
       layer3Component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name, [DefaultModal.overwriteCancelButtonProperties]);
-    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[0]);
-    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[1]);
-    UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[2]);
+    UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[0]);
+    UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[1]);
+    UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[2]);
   }
 
-  public static overwriteBaseNewChildComponentsOptions(modalComponent: WorkshopComponent): void {
+  public static overwriteBaseNewChildComponentsItems(modalComponent: WorkshopComponent): void {
     const nestedDropdownStructure = DropdownUtils.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);
-    modalComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsOptions = nestedDropdownStructure;
+    modalComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsItems = nestedDropdownStructure;
   }
 }
 
 export const defaultModal: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
     const modalComponent = modalBase.createNewComponent();
-    DefaultModal.overwriteBaseNewChildComponentsOptions(modalComponent);
+    DefaultModal.overwriteBaseNewChildComponentsItems(modalComponent);
     DefaultModal.addComponentsToBase(modalComponent);
     ModalBaseSpecificSettings.set(modalComponent);
     return modalComponent;

@@ -16,23 +16,23 @@ function changeSubcomponentOrder(settingsComponent: ComponentOptions, direction:
 }
 
 function changeSubcomponentAlignment(event: ActionsDropdownMouseEventCallbackEvent, shouldSubcomponentNamesBeUpdated?: boolean): void {
-  const { settingsComponent, previousOptionName, triggeredOptionName, subcomponentProperties, isCustomFeatureResetTriggered } = event;
+  const { settingsComponent, previousItemName, triggeredItemName, subcomponentProperties, isCustomFeatureResetTriggered } = event;
   if (isCustomFeatureResetTriggered) return;
   settingsComponent.$emit('change-subcomponent-alignment',
-    [previousOptionName, triggeredOptionName, subcomponentProperties, shouldSubcomponentNamesBeUpdated] as ChangeSubcomponentAlignmentEvent);
+    [previousItemName, triggeredItemName, subcomponentProperties, shouldSubcomponentNamesBeUpdated] as ChangeSubcomponentAlignmentEvent);
 }
 
-function changeSubcomponentAlignmentOptionSelect(event: ActionsDropdownMouseEventCallbackEvent): void {
-  const isOptionSelected = this as any as boolean;
-  changeSubcomponentAlignment(event, isOptionSelected);
-  if ((isOptionSelected || event.isDropdownHidden) && !event.isCustomFeatureResetTriggered) childComponentAlignmentDropdownState.reset();
+function changeSubcomponentAlignmentItemSelect(event: ActionsDropdownMouseEventCallbackEvent): void {
+  const isItemSelected = this as any as boolean;
+  changeSubcomponentAlignment(event, isItemSelected);
+  if ((isItemSelected || event.isDropdownHidden) && !event.isCustomFeatureResetTriggered) childComponentAlignmentDropdownState.reset();
 }
 
 function generateMouseEventCallbacks(): ActionsDropdownMouseEventCallbacks {
   return {
-    mouseClickOptionCallback: changeSubcomponentAlignmentOptionSelect.bind(true),
-    mouseEnterOptionCallback: changeSubcomponentAlignment,
-    mouseLeaveDropdownCallback: changeSubcomponentAlignmentOptionSelect,
+    mouseClickItemCallback: changeSubcomponentAlignmentItemSelect.bind(true),
+    mouseEnterItemCallback: changeSubcomponentAlignment,
+    mouseLeaveDropdownCallback: changeSubcomponentAlignmentItemSelect,
   };
 }
 
@@ -44,7 +44,7 @@ export default {
       spec: {
         name: SETTING_NAMES.ALIGN,
         options: DropdownUtils.generateDropdownStructure(Object.values(ALIGNED_SECTION_TYPES)),
-        activeOptionPropertyKeyName: 'section',
+        activeItemPropertyKeyName: 'section',
         customFeatureObjectKeys: ['customStaticFeatures', 'alignedLayerSection', 'section'],
         ...generateMouseEventCallbacks(),
       },
@@ -54,7 +54,7 @@ export default {
       spec: {
         name: SETTING_NAMES.ORDER,
         options: DropdownUtils.generateDropdownStructure([SUBCOMPONENT_ORDER_DIRECTIONS.LEFT, SUBCOMPONENT_ORDER_DIRECTIONS.RIGHT]),
-        optionAction: changeSubcomponentOrder,
+        itemAction: changeSubcomponentOrder,
       },
     },
     {

@@ -1,6 +1,6 @@
 import { CustomSettingTriggerFunction } from '../../../../../../../interfaces/CustomSettingTriggerFunction';
 import { TemporaryDropdownValue } from '../../../../../../../interfaces/temporaryDropdownValue';
-import { MouseClickOptionEvent } from '../../../../../../../interfaces/dropdownMenuMouseEvents';
+import { MouseClickItemEvent } from '../../../../../../../interfaces/dropdownMenuMouseEvents';
 import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
 import { SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
 import { SETTINGS_TYPES } from '../../../../../../../consts/settingsTypes.enum';
@@ -30,7 +30,7 @@ export default class ActionsDropdownUtils {
     }
   }
 
-  public static mouseEnterActionsDropdownOptionCustomCss(temporaryDropdownValue: TemporaryDropdownValue, triggeredOptionName: string,
+  public static mouseEnterActionsDropdownItemCustomCss(temporaryDropdownValue: TemporaryDropdownValue, triggeredItemName: string,
       subcomponentProperties: SubcomponentProperties, settingSpec: any): void {
     const { customCss, activeCssPseudoClass } = subcomponentProperties;
     const { cssProperty } = settingSpec;
@@ -38,14 +38,14 @@ export default class ActionsDropdownUtils {
       temporaryDropdownValue.initial = (customCss[activeCssPseudoClass]?.[cssProperty]);
     }
     if (customCss[activeCssPseudoClass]) {
-      customCss[activeCssPseudoClass][cssProperty] = triggeredOptionName;
+      customCss[activeCssPseudoClass][cssProperty] = triggeredItemName;
     } else {
-      customCss[activeCssPseudoClass] = { [cssProperty]: triggeredOptionName };
+      customCss[activeCssPseudoClass] = { [cssProperty]: triggeredItemName };
     }
     SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.ACTIONS_DROPDOWN, subcomponentProperties, cssProperty);
   }
 
-  // called third when selecting option (if statement to prevent logic from triggering on select)
+  // called third when selecting item (if statement to prevent logic from triggering on select)
   public static mouseLeaveActionsDropdownCustomCss(temporaryDropdownValue: TemporaryDropdownValue,
       subcomponentProperties: SubcomponentProperties, settingSpec: any): void {
     if (temporaryDropdownValue.initial !== ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED) {
@@ -56,25 +56,25 @@ export default class ActionsDropdownUtils {
     }
   }
 
-  public static mouseEnterActionsDropdownOptionCustomFeature(temporaryDropdownValue: TemporaryDropdownValue, triggeredOptionName: string,
+  public static mouseEnterActionsDropdownItemCustomFeature(temporaryDropdownValue: TemporaryDropdownValue, triggeredItemName: string,
       subcomponentProperties: SubcomponentProperties, settingSpec: any, settingsComponent: ComponentOptions): void {
-    const { customFeatureObjectKeys, mouseEnterOptionCallback } = settingSpec;
-    const previousOptionName = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]) as string;
+    const { customFeatureObjectKeys, mouseEnterItemCallback } = settingSpec;
+    const previousItemName = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]) as string;
     if (temporaryDropdownValue.initial === ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED) {
-      temporaryDropdownValue.initial = previousOptionName;
+      temporaryDropdownValue.initial = previousItemName;
     }
-    if (mouseEnterOptionCallback) mouseEnterOptionCallback({subcomponentProperties, settingsComponent, previousOptionName, triggeredOptionName});
-    SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties, triggeredOptionName);
-    temporaryDropdownValue.new = triggeredOptionName;
+    if (mouseEnterItemCallback) mouseEnterItemCallback({subcomponentProperties, settingsComponent, previousItemName, triggeredItemName});
+    SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties, triggeredItemName);
+    temporaryDropdownValue.new = triggeredItemName;
   }
 
-  // called third when selecting option (if statement to prevent logic from triggering on select)
-  public static mouseLeaveActionsDropdownOptionCustomFeature(temporaryDropdownValue: TemporaryDropdownValue,
+  // called third when selecting item (if statement to prevent logic from triggering on select)
+  public static mouseLeaveActionsDropdownItemCustomFeature(temporaryDropdownValue: TemporaryDropdownValue,
       subcomponentProperties: SubcomponentProperties, settingSpec: any, settingsComponent: ComponentOptions, isDropdownHidden: boolean): void {
     if (temporaryDropdownValue.new !== ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED) {
       const { customFeatureObjectKeys, mouseLeaveDropdownCallback } = settingSpec;
       if (mouseLeaveDropdownCallback) mouseLeaveDropdownCallback({subcomponentProperties, settingsComponent,
-        previousOptionName: temporaryDropdownValue.new, triggeredOptionName: temporaryDropdownValue.initial, isDropdownHidden});
+        previousItemName: temporaryDropdownValue.new, triggeredItemName: temporaryDropdownValue.initial, isDropdownHidden});
       SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties, temporaryDropdownValue.initial);
     }
     temporaryDropdownValue.new = ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED;
@@ -104,29 +104,29 @@ export default class ActionsDropdownUtils {
     }
   }
 
-  // called first when selecting option
-  public static mouseClickActionsDropdownNewOption(triggeredOptionName: string, subcomponentProperties: SubcomponentProperties,
+  // called first when selecting item
+  public static mouseClickActionsDropdownNewItem(triggeredItemName: string, subcomponentProperties: SubcomponentProperties,
       settingSpec: any, activeOptionsObject: any): void {
     const { cssProperty, customFeatureObjectKeys } = settingSpec;
     if (cssProperty) {
       const { activeCssPseudoClass, customCss } = subcomponentProperties;
-      customCss[activeCssPseudoClass][cssProperty] = triggeredOptionName;
-      activeOptionsObject[cssProperty] = triggeredOptionName;
+      customCss[activeCssPseudoClass][cssProperty] = triggeredItemName;
+      activeOptionsObject[cssProperty] = triggeredItemName;
     } else if (customFeatureObjectKeys) {
-      SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties, triggeredOptionName);
+      SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties, triggeredItemName);
     }
   }
 
-  // called second when selecting option
-  public static mouseClickActionsDropdownOption(temporaryDropdownValue: TemporaryDropdownValue, mouseClickOptionEvent: MouseClickOptionEvent,
+  // called second when selecting item
+  public static mouseClickActionsDropdownItem(temporaryDropdownValue: TemporaryDropdownValue, mouseClickItemEvent: MouseClickItemEvent,
       setting: any, allSettings: any, subcomponentProperties: SubcomponentProperties): void {
-    const newOptionName = mouseClickOptionEvent[1];
+    const newItemName = mouseClickItemEvent[1];
     const { triggers, spec } = setting;
     if (spec.cssProperty) {
       const { customCss, activeCssPseudoClass } = subcomponentProperties;
-      customCss[activeCssPseudoClass][spec.cssProperty] = newOptionName;
-      if (triggers && triggers[newOptionName]) {
-        ActionsDropdownUtils.activateCustomCssTriggers(triggers[newOptionName], allSettings, subcomponentProperties);
+      customCss[activeCssPseudoClass][spec.cssProperty] = newItemName;
+      if (triggers && triggers[newItemName]) {
+        ActionsDropdownUtils.activateCustomCssTriggers(triggers[newItemName], allSettings, subcomponentProperties);
       }
     }
     temporaryDropdownValue.new = ActionsDropdownUtils.TEMPORARY_VALUE_UNUSED;

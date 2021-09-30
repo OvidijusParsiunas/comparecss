@@ -1,7 +1,7 @@
-import { MouseClickNewOptionEvent, MouseClickOptionEvent, MouseEnterOptionEvent } from '../../../../../../interfaces/dropdownMenuMouseEvents';
+import { MouseClickNewItemEvent, MouseClickItemEvent, MouseEnterItemEvent } from '../../../../../../interfaces/dropdownMenuMouseEvents';
 import { TemporaryDropdownValue } from '../../../../../../interfaces/temporaryDropdownValue';
 import { SubcomponentProperties, } from '../../../../../../interfaces/workshopComponent';
-import { UseActionsDropdown } from '../../../../../../interfaces/UseActionsDropdown';
+import { UseActionsDropdown } from '../../../../../../interfaces/useActionsDropdown';
 import { animationState } from '../../../componentPreview/utils/animations/state';
 import ActionsDropdownUtils from './utils/actionsDropdownUtils';
 import CustomFeaturesUtils from './utils/customFeaturesUtils';
@@ -27,8 +27,8 @@ export default function useActionsDropdown(): UseActionsDropdown {
     if (cssProperty) ActionsDropdownUtils.mouseEnterActionsDropdownButton(temporaryDropdownValue,
       subcomponentProperties, settingSpec.cssProperty);
     if (mouseEnterButtonCallback) {
-      const triggeredOptionName = GeneralUtils.getTriggeredOptionName(subcomponentProperties, settingSpec);
-      mouseEnterButtonCallback({subcomponentProperties, settingsComponent, triggeredOptionName});
+      const triggeredItemName = GeneralUtils.getTriggeredOptionName(subcomponentProperties, settingSpec);
+      mouseEnterButtonCallback({subcomponentProperties, settingsComponent, triggeredItemName});
     }
   }
  
@@ -37,21 +37,21 @@ export default function useActionsDropdown(): UseActionsDropdown {
     if (animationState.getIsModeToggleAnimationInProgressState()) return;
     const { mouseLeaveButtonCallback } = settingSpec;
     if (mouseLeaveButtonCallback) {
-      const triggeredOptionName = GeneralUtils.getTriggeredOptionName(subcomponentProperties, settingSpec);
-      mouseLeaveButtonCallback({subcomponentProperties, settingsComponent, triggeredOptionName});
+      const triggeredItemName = GeneralUtils.getTriggeredOptionName(subcomponentProperties, settingSpec);
+      mouseLeaveButtonCallback({subcomponentProperties, settingsComponent, triggeredItemName});
     }
   }
 
-  // be aware that enter option can be called multiple times without leave dropdown having been activated due to bottom and top padding
-  const mouseEnterActionsDropdownOption = (settingsComponent: ComponentOptions, mouseEnterOptionEvent: MouseEnterOptionEvent,
+  // be aware that enter item can be called multiple times without leave dropdown having been activated due to bottom and top padding
+  const mouseEnterActionsDropdownItem = (settingsComponent: ComponentOptions, mouseEnterItemEvent: MouseEnterItemEvent,
       settingSpec: any, subcomponentProperties: SubcomponentProperties): void => {
-    const [triggeredOptionName] = mouseEnterOptionEvent;
+    const [triggeredItemName] = mouseEnterItemEvent;
     if (animationState.getIsModeToggleAnimationInProgressState()) return;
     const { cssProperty, customFeatureObjectKeys } = settingSpec;
-    if (cssProperty) ActionsDropdownUtils.mouseEnterActionsDropdownOptionCustomCss(temporaryDropdownValue,
-      triggeredOptionName, subcomponentProperties, settingSpec);
-    if (customFeatureObjectKeys) ActionsDropdownUtils.mouseEnterActionsDropdownOptionCustomFeature(temporaryDropdownValue,
-      triggeredOptionName, subcomponentProperties, settingSpec, settingsComponent);
+    if (cssProperty) ActionsDropdownUtils.mouseEnterActionsDropdownItemCustomCss(temporaryDropdownValue,
+      triggeredItemName, subcomponentProperties, settingSpec);
+    if (customFeatureObjectKeys) ActionsDropdownUtils.mouseEnterActionsDropdownItemCustomFeature(temporaryDropdownValue,
+      triggeredItemName, subcomponentProperties, settingSpec, settingsComponent);
   }
   
   const mouseLeaveActionsDropdown = (settingsComponent: ComponentOptions, settingSpec: any, subcomponentProperties: SubcomponentProperties,
@@ -59,33 +59,33 @@ export default function useActionsDropdown(): UseActionsDropdown {
     if (animationState.getIsModeToggleAnimationInProgressState()) return;
     const { cssProperty, customFeatureObjectKeys } = settingSpec;
     if (cssProperty) ActionsDropdownUtils.mouseLeaveActionsDropdownCustomCss(temporaryDropdownValue, subcomponentProperties, settingSpec);
-    if (customFeatureObjectKeys) ActionsDropdownUtils.mouseLeaveActionsDropdownOptionCustomFeature(temporaryDropdownValue,
+    if (customFeatureObjectKeys) ActionsDropdownUtils.mouseLeaveActionsDropdownItemCustomFeature(temporaryDropdownValue,
       subcomponentProperties, settingSpec, settingsComponent, isDropdownHidden);
   }
 
-  const mouseClickActionsDropdownOption = (settingsComponent: ComponentOptions, mouseClickOptionEvent: MouseClickOptionEvent, setting: any,
+  const mouseClickActionsDropdownItem = (settingsComponent: ComponentOptions, mouseClickItemEvent: MouseClickItemEvent, setting: any,
       allSettings: any, subcomponentProperties: SubcomponentProperties): void => {
     if (animationState.getIsModeToggleAnimationInProgressState()) return;
-    ActionsDropdownUtils.mouseClickActionsDropdownOption(temporaryDropdownValue, mouseClickOptionEvent, setting, allSettings, subcomponentProperties);
-    const { mouseClickOptionCallback } = setting.spec;
-    if (mouseClickOptionCallback) mouseClickOptionCallback({
-      subcomponentProperties, settingsComponent, previousOptionName: mouseClickOptionEvent[0], triggeredOptionName: mouseClickOptionEvent[1]});
+    ActionsDropdownUtils.mouseClickActionsDropdownItem(temporaryDropdownValue, mouseClickItemEvent, setting, allSettings, subcomponentProperties);
+    const { mouseClickItemCallback } = setting.spec;
+    if (mouseClickItemCallback) mouseClickItemCallback({
+      subcomponentProperties, settingsComponent, previousItemName: mouseClickItemEvent[0], triggeredItemName: mouseClickItemEvent[1]});
   }
   
-  const mouseClickActionsDropdownNewOption = (mouseClickNewOptionEvent: MouseClickNewOptionEvent, settingSpec: any,
+  const mouseClickActionsDropdownNewItem = (mouseClickNewItemEvent: MouseClickNewItemEvent, settingSpec: any,
       subcomponentProperties: SubcomponentProperties, activeOptionsObject: any): void => {
-    const [triggeredOptionName] = mouseClickNewOptionEvent;
+    const [triggeredItemName] = mouseClickNewItemEvent;
     if (animationState.getIsModeToggleAnimationInProgressState()) return;
-    ActionsDropdownUtils.mouseClickActionsDropdownNewOption(triggeredOptionName, subcomponentProperties, settingSpec, activeOptionsObject);
+    ActionsDropdownUtils.mouseClickActionsDropdownNewItem(triggeredItemName, subcomponentProperties, settingSpec, activeOptionsObject);
   }
   
   return {
     getObjectContainingActiveOption,
     mouseEnterActionsDropdownButton,
     mouseLeaveActionsDropdownButton,
-    mouseEnterActionsDropdownOption,
+    mouseEnterActionsDropdownItem,
     mouseLeaveActionsDropdown,
-    mouseClickActionsDropdownOption,
-    mouseClickActionsDropdownNewOption,
+    mouseClickActionsDropdownItem,
+    mouseClickActionsDropdownNewItem,
   };
 }

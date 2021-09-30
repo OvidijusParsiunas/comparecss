@@ -17,14 +17,14 @@ export class IconSpecificSettings {
   }
 
   private static readonly ACTIONS_DROPDOWN_MOUSE_EVENT_CALLBACKS: ActionsDropdownMouseEventCallbacks = {
-    mouseEnterOptionCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
-      IconSpecificSettings.changeIcon(event.subcomponentProperties, event.triggeredOptionName);
+    mouseEnterItemCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
+      IconSpecificSettings.changeIcon(event.subcomponentProperties, event.triggeredItemName);
     },
     mouseLeaveDropdownCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
-      IconSpecificSettings.changeIcon(event.subcomponentProperties, event.triggeredOptionName);
+      IconSpecificSettings.changeIcon(event.subcomponentProperties, event.triggeredItemName);
     },
-    mouseClickOptionCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
-      if (event.isCustomFeatureResetTriggered) IconSpecificSettings.changeIcon(event.subcomponentProperties, event.triggeredOptionName);
+    mouseClickItemCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
+      if (event.isCustomFeatureResetTriggered) IconSpecificSettings.changeIcon(event.subcomponentProperties, event.triggeredItemName);
     },
   };
 

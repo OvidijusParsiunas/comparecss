@@ -1,4 +1,4 @@
-import { UpdatePaddingComponentDropdownOptions } from '../../../../utils/componentManipulation/updateChildComponent/updatePaddingComponentDropdownOptionNames';
+import { UpdatePaddingComponentDropdownItemNames } from '../../../../utils/componentManipulation/updateChildComponent/updatePaddingComponentDropdownItemNames';
 import { CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SelectedDropdownText, SelectDropdown } from '../../../../../../../interfaces/dropdownFeatures';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../consts/dropdownMenuAlignment.enum';
@@ -106,12 +106,12 @@ export const dropdownBase: ComponentGenerator = {
     paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].subcomponentType = SUBCOMPONENT_TYPES.DROPDOWN;
     paddingComponent.type = COMPONENT_TYPES.DROPDOWN;
     const buttonComponent = dropdownButtonBase.createNewComponent();
-    UpdatePaddingComponentDropdownOptions.updatePaddingComponentChildren(buttonComponent);
+    UpdatePaddingComponentDropdownItemNames.updatePaddingComponentChildren(buttonComponent);
     DropdownBase.overwriteBase(paddingComponent);
     Object.assign(buttonComponent.subcomponents, paddingComponent.subcomponents);
     paddingComponent.subcomponents = buttonComponent.subcomponents;
-    Object.assign(buttonComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName, paddingComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName);
-    paddingComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName = buttonComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName;
+    Object.assign(buttonComponent.componentPreviewStructure.subcomponentNameToDropdownItemName, paddingComponent.componentPreviewStructure.subcomponentNameToDropdownItemName);
+    paddingComponent.componentPreviewStructure.subcomponentNameToDropdownItemName = buttonComponent.componentPreviewStructure.subcomponentNameToDropdownItemName;
     paddingComponent.componentPreviewStructure.subcomponentDropdownStructure[paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] = { ...buttonComponent.componentPreviewStructure.subcomponentDropdownStructure };
     paddingComponent.paddingComponentChild = buttonComponent;
     buttonComponent.paddingComponent = paddingComponent;

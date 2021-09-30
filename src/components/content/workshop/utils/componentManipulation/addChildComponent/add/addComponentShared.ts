@@ -21,11 +21,11 @@ interface NewComponentProperties {
 
 export class AddComponentShared {
 
-  protected static addNewSubcomponentNameInContainerDropdownOptionNameMap(containerComponent: WorkshopComponent,
+  protected static addNewSubcomponentNameInContainerDropdownItemNameMap(containerComponent: WorkshopComponent,
       newComponent: WorkshopComponent, isEditable = true): void {
     if (!isEditable) return;
     const baseName = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
-    containerComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[baseName] = baseName;
+    containerComponent.componentPreviewStructure.subcomponentNameToDropdownItemName[baseName] = baseName;
   }
 
   private static setMasterComponentReference(newComponent: WorkshopComponent, masterComponent: WorkshopComponent): void {
@@ -65,6 +65,6 @@ export class AddComponentShared {
   protected static cleanSubcomponentProperties(newComponent: WorkshopComponent): void {
     newComponent.subcomponents = {};
     newComponent.componentPreviewStructure.subcomponentDropdownStructure = {};
-    newComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName = {};
+    newComponent.componentPreviewStructure.subcomponentNameToDropdownItemName = {};
   }
 }

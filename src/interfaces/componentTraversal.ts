@@ -1,6 +1,6 @@
 import { AlignedSections, Layer, BaseSubcomponentRef } from './componentPreviewStructure';
 import { SubcomponentProperties, WorkshopComponent } from './workshopComponent';
-import { DropdownOptionAuxDetails } from './dropdownOptionDisplayStatus';
+import { DropdownItemAuxDetails } from './dropdownItemDisplayStatus';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 
 export type DropdownTraversalCallback<T> = (traversalState: T) => T;
@@ -12,7 +12,7 @@ export type AlignedComponentWithMeta = [BaseSubcomponentRef[], AlignedSections];
 
 export interface TargetDetails {
   targetSubcomponentName: string;
-  targetDropdownOptionName: string;
+  targetDropdownItemName: string;
   containerComponent: WorkshopComponent;
   masterComponent: WorkshopComponent;
   targetSubcomponentProperties: SubcomponentProperties;
@@ -20,8 +20,8 @@ export interface TargetDetails {
 }
 
 export interface DropdownStructureTraversalState {
-  dropdownOptionName?: string;
-  dropdownOptionDetailsStack?: DropdownOptionAuxDetails[];
+  dropdownItemName?: string;
+  dropdownItemDetailsStack?: DropdownItemAuxDetails[];
   subcomponentDropdownStructure?: NestedDropdownStructure;
   index?: number;
 }

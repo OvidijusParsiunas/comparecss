@@ -14,15 +14,15 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class CardBase extends ComponentBuilder {
 
-  public static setChildComponentsOptions(cardBaseComponent: WorkshopComponent): void {
-    const layerComponentsOptions = [
+  public static setChildComponentsItems(cardBaseComponent: WorkshopComponent): void {
+    const layerComponentsItems = [
       BUTTON_COMPONENTS_BASE_NAMES.BUTTON, PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT,
       BUTTON_COMPONENTS_BASE_NAMES.CLOSE, PRIMITIVE_COMPONENTS_BASE_NAMES.IMAGE,
       DROPDOWN_COMPONENTS_BASE_NAMES.DROPDOWN];
-    const newChildComponentsOptions = [LAYER_COMPONENTS_BASE_NAMES.LAYER];
+    const newChildComponentsItems = [LAYER_COMPONENTS_BASE_NAMES.LAYER];
     const childComponentMaxCount = { max: { [LAYER_COMPONENTS_BASE_NAMES.LAYER]: 5, [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
-    ComponentBuilder.setChildComponentsOptionsProperties(cardBaseComponent,
-      layerComponentsOptions, newChildComponentsOptions, childComponentMaxCount);
+    ComponentBuilder.setChildComponentsItemsProperties(cardBaseComponent,
+      layerComponentsItems, newChildComponentsItems, childComponentMaxCount);
   }
 
   private static createDefaultCardCss(): CustomCss {
@@ -73,7 +73,7 @@ export const cardBase: ComponentGenerator = {
     uniqueSubcomponentIdState.resetUniqueId();
     const cardBaseComponent = ComponentBuilder.createBaseComponent(
       { componentType: COMPONENT_TYPES.CARD }, CardBase.createBaseSubcomponent, false);
-    CardBase.setChildComponentsOptions(cardBaseComponent);
+    CardBase.setChildComponentsItems(cardBaseComponent);
     CardBaseSpecificSettings.set(cardBaseComponent);
     return cardBaseComponent;
   },

@@ -1,48 +1,48 @@
 import { SubcomponentDropdownOverlay } from '../../../../componentPreview/utils/elements/overlays/subcomponentDropdownOverlay';
 import { DropdownCompositionAPI } from '../../../../../../../interfaces/dropdownCompositionAPI';
-import { MouseEnterOptionEvent } from '../../../../../../../interfaces/dropdownMenuMouseEvents';
+import { MouseEnterItemEvent } from '../../../../../../../interfaces/dropdownMenuMouseEvents';
 import { animationState } from '../../../../componentPreview/utils/animations/state';
 import { Ref } from 'vue';
 
-export default function useSubcomponentDropdownEventHandlers(objectContainingActiveOption: Ref<unknown>,
-    activeOptionPropertyKeyName: Ref<string>): DropdownCompositionAPI {
+export default function useSubcomponentDropdownEventHandlers(objectContainingActiveItem: Ref<unknown>,
+    activeItemPropertyKeyName: Ref<string>): DropdownCompositionAPI {
 
   const mouseEnterButtonEventHandler = (): void => {
     if (!animationState.getIsModeToggleAnimationInProgressState()) {
-      SubcomponentDropdownOverlay.toggle(objectContainingActiveOption.value[activeOptionPropertyKeyName.value], 'block'); 
+      SubcomponentDropdownOverlay.toggle(objectContainingActiveItem.value[activeItemPropertyKeyName.value], 'block'); 
     }
   }
 
   const mouseLeaveButtonEventHandler = (): void => {
-    SubcomponentDropdownOverlay.toggle(objectContainingActiveOption.value[activeOptionPropertyKeyName.value], 'none');
+    SubcomponentDropdownOverlay.toggle(objectContainingActiveItem.value[activeItemPropertyKeyName.value], 'none');
   }
 
-  const mouseEnterOptionEventHandler = (mouseEnterOptionEvent: MouseEnterOptionEvent): void => {
-    const [highlightedOption] = mouseEnterOptionEvent;
-    SubcomponentDropdownOverlay.toggle(highlightedOption, 'block');
+  const mouseEnterItemEventHandler = (mouseEnterItemEvent: MouseEnterItemEvent): void => {
+    const [highlightedItem] = mouseEnterItemEvent;
+    SubcomponentDropdownOverlay.toggle(highlightedItem, 'block');
   }
 
-  const mouseLeaveOptionEventHandler = (highlightedOption: string): void => {
-    SubcomponentDropdownOverlay.toggle(highlightedOption, 'none');
+  const mouseLeaveItemEventHandler = (highlightedItem: string): void => {
+    SubcomponentDropdownOverlay.toggle(highlightedItem, 'none');
   }
 
-  const hideDropdownMenuEventHandler = (highlightedOption: string): void => {
-    SubcomponentDropdownOverlay.toggle(highlightedOption, 'none');
+  const hideDropdownMenuEventHandler = (highlightedItem: string): void => {
+    SubcomponentDropdownOverlay.toggle(highlightedItem, 'none');
   }
 
-  const mouseEnterAuxiliaryPaddingEventHandler = (highlightedOption: string): void => {
-    SubcomponentDropdownOverlay.toggle(highlightedOption, 'block');
+  const mouseEnterAuxiliaryPaddingEventHandler = (highlightedItem: string): void => {
+    SubcomponentDropdownOverlay.toggle(highlightedItem, 'block');
   }
 
-  const mouseLeaveAuxiliaryPaddingEventHandler = (highlightedOption: string): void => {
-    SubcomponentDropdownOverlay.toggle(highlightedOption, 'none');
+  const mouseLeaveAuxiliaryPaddingEventHandler = (highlightedItem: string): void => {
+    SubcomponentDropdownOverlay.toggle(highlightedItem, 'none');
   }
 
   return {
     mouseEnterButtonEventHandler,
     mouseLeaveButtonEventHandler,
-    mouseEnterOptionEventHandler,
-    mouseLeaveOptionEventHandler,
+    mouseEnterItemEventHandler,
+    mouseLeaveItemEventHandler,
     hideDropdownMenuEventHandler,
     mouseEnterAuxiliaryPaddingEventHandler,
     mouseLeaveAuxiliaryPaddingEventHandler,

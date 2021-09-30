@@ -98,10 +98,10 @@
                     <button type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"
                       class="btn dropdown-toggle" :class="TOOLBAR_GENERAL_BUTTON_CLASS"
                       @click="selectSetting(openDropdown.bind(this, setting.spec.cssProperty))"></button>
-                    <div class="dropdown-menu" @mouseleave="inputDropdownOptionMouseLeave(setting.spec.cssProperty)">
+                    <div class="dropdown-menu" @mouseleave="inputDropdownItemMouseLeave(setting.spec.cssProperty)">
                       <a class="dropdown-item" v-for="(option) in setting.spec.options" :key="option"
-                        @click="changeSetting(inputDropdownOptionClick.bind(this, option, setting.spec.cssProperty))"
-                        @mouseover="inputDropdownOptionMouseOver(option, setting.spec.cssProperty)">
+                        @click="changeSetting(inputDropdownItemClick.bind(this, option, setting.spec.cssProperty))"
+                        @mouseover="inputDropdownItemMouseOver(option, setting.spec.cssProperty)">
                           {{option}}
                       </a>
                     </div>
@@ -115,20 +115,20 @@
                 </div>
                 <dropdown class="option-component-button"
                   :uniqueIdentifier="`${ACTIONS_DROPDOWN_UNIQUE_IDENTIFIER_PREFIX}${settingIndex}`"
-                  :dropdownOptions="setting.spec.options"
-                  :objectContainingActiveOption="actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.name] || {}"
-                  :activeOptionPropertyKeyName="setting.spec.cssProperty || setting.spec.activeOptionPropertyKeyName"
+                  :dropdownItems="setting.spec.options"
+                  :objectContainingActiveItem="actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.name] || {}"
+                  :activeItemPropertyKeyName="setting.spec.cssProperty || setting.spec.activeItemPropertyKeyName"
                   :fontAwesomeIcon="'caret-down'"
-                  :minOptionsToDisplayDropdown="1"
+                  :minItemsToDisplayDropdown="1"
                   :consistentButtonContent="{'text': actionsDropdownsButtonText[setting.spec.name]}"
                   @click="selectSetting()"
                   @hide-dropdown-menu-callback="openActionsDropdownMenu($event, setting.spec)"
                   @mouse-enter-button="mouseEnterActionsDropdownButton(this, setting.spec, subcomponentProperties)"
                   @mouse-leave-button="mouseLeaveActionsDropdownButton(this, setting.spec, subcomponentProperties)"
-                  @mouse-enter-option="mouseEnterActionsDropdownOption(this, $event, setting.spec, subcomponentProperties)"
+                  @mouse-enter-item="mouseEnterActionsDropdownItem(this, $event, setting.spec, subcomponentProperties)"
                   @mouse-leave-dropdown="mouseLeaveActionsDropdown(this, setting.spec, subcomponentProperties, false)"
-                  @mouse-click-option="changeSetting(mouseClickActionsDropdownOption.bind(this, this, $event, setting, settings, subcomponentProperties), setting.spec.customFeatureObjectKeys)"
-                  @mouse-click-new-option="mouseClickActionsDropdownNewOption($event, setting.spec, subcomponentProperties, actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.activeOptionPropertyKeyName])"
+                  @mouse-click-item="changeSetting(mouseClickActionsDropdownItem.bind(this, this, $event, setting, settings, subcomponentProperties), setting.spec.customFeatureObjectKeys)"
+                  @mouse-click-new-item="mouseClickActionsDropdownNewItem($event, setting.spec, subcomponentProperties, actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.activeItemPropertyKeyName])"
                   @hide-dropdown-menu="hideActionsDropdownMenu(setting.spec)"/>
               </div>
 
@@ -168,7 +168,7 @@
                   <button v-for="(option, name) in setting.spec.options" :key="option"
                     class="btn btn-group-option" :class="TOOLBAR_GENERAL_BUTTON_CLASS"
                     @mousedown="selectSetting()"
-                    @click="activateButton(setting.spec.optionAction, name)">
+                    @click="activateButton(setting.spec.itemAction, name)">
                     {{name}}
                   </button>
                 </div>
@@ -199,7 +199,7 @@ import { WorkshopEventCallback } from '../../../../../interfaces/workshopEventCa
 import { TOOLBAR_GENERAL_BUTTON_CLASS } from '../../../../../consts/toolbarClasses';
 import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
-import { UseActionsDropdown } from '../../../../../interfaces/UseActionsDropdown';
+import { UseActionsDropdown } from '../../../../../interfaces/useActionsDropdown';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { RANGE_SETTING_MARKER } from '../../../../../consts/elementClassMarkers';
 import { SyncedComponent } from '../options/copyChildComponent/syncedComponent';
@@ -271,10 +271,10 @@ export default {
               const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClass, setting.spec.cssProperty);
               if (cssPropertyValue) { this.inputDropdownsValues[setting.spec.cssProperty] = cssPropertyValue; }
             } else if (setting.type === SETTINGS_TYPES.ACTIONS_DROPDOWN) {
-              const objectContainingActiveOption = this.getObjectContainingActiveOption(setting.spec, this.subcomponentProperties);
-              if (objectContainingActiveOption) { this.actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.name] = objectContainingActiveOption; }
+              const objectContainingActiveItem = this.getObjectContainingActiveOption(setting.spec, this.subcomponentProperties);
+              if (objectContainingActiveItem) { this.actionsDropdownsObjects[setting.spec.cssProperty || setting.spec.name] = objectContainingActiveItem; }
               if (!newSettings) ActionsDropdownUtils.callSettingCustomFunction(
-                setting.spec, this.subcomponentProperties, objectContainingActiveOption[setting.spec.activeOptionPropertyKeyName]);
+                setting.spec, this.subcomponentProperties, objectContainingActiveItem[setting.spec.activeItemPropertyKeyName]);
             } else if (setting.type === SETTINGS_TYPES.CHECKBOX) {
               CheckboxUtils.updateSettings(setting, this.subcomponentProperties);
             } else if (setting.type === SETTINGS_TYPES.UPLOAD_FILE) {
@@ -307,8 +307,8 @@ export default {
       ComponentDOMElementUtils.displaySubcomponentElementIfHidden(this.subcomponentProperties.name);
       callback?.();
     },
-    activateButton(optionAction: any, actionName: string): void {
-      optionAction(this, actionName, this.component);
+    activateButton(itemAction: any, actionName: string): void {
+      itemAction(this, actionName, this.component);
     },
     getCurrentCssProperty(setting: any): boolean {
       return this.subcomponentProperties.customCss[this.subcomponentProperties.activeCssPseudoClass]?.[setting.spec.cssProperty];
@@ -352,14 +352,14 @@ export default {
     openDropdown(cssProperty: string): void {
       this.inputDropdownsValues[cssProperty] = this.subcomponentProperties.customCss[this.subcomponentProperties.activeCssPseudoClass][cssProperty];
     },
-    inputDropdownOptionClick(option: string, cssProperty: string): void {
+    inputDropdownItemClick(option: string, cssProperty: string): void {
       this.subcomponentProperties.customCss[this.subcomponentProperties.activeCssPseudoClass][cssProperty] = option;
       this.inputDropdownsValues[cssProperty] = '';
     },
-    inputDropdownOptionMouseOver(option: string, cssProperty: string): void {
+    inputDropdownItemMouseOver(option: string, cssProperty: string): void {
       this.subcomponentProperties.customCss[this.subcomponentProperties.activeCssPseudoClass][cssProperty] = option;
     },
-    inputDropdownOptionMouseLeave(cssProperty: string): void {
+    inputDropdownItemMouseLeave(cssProperty: string): void {
       if (this.inputDropdownsValues[cssProperty]) {
         this.subcomponentProperties.customCss[this.subcomponentProperties.activeCssPseudoClass][cssProperty] = this.inputDropdownsValues[cssProperty];
       }

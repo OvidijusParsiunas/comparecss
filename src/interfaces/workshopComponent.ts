@@ -1,7 +1,7 @@
 import { InterconnectedSetting, SubcomponentSpecificSettings } from './subcomponentSpecificSettings';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
 import { SubcomponentMouseEventCallbacks } from './subcomponentMouseEventCallbacks';
-import { NewChildComponentsOptionsRefs } from './newChildComponentsOptionsRefs';
+import { NewChildComponentsItemsRefs } from './newChildComponentsItemsRefs';
 import { OverwritePropertiesFunc } from './overwriteSubcomponentPropertiesFunc';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { DropdownFeatures, SelectedDropdownText } from './dropdownFeatures';
@@ -157,9 +157,9 @@ export interface SubcomponentProperties {
   tempOriginalCustomProperties?: TempCustomProperties;
   // this subcomponent can trigger and be triggered by other subcomponents
   otherSubcomponentTriggers?: OtherSubcomponentTriggers;
-  // options for the add child component dropdown
-  newChildComponentsOptions?: NestedDropdownStructure;
-   // used to temporarily display a child component when hovering add subcomponent dropdown options with a mouse
+  // items for the add child component dropdown
+  newChildComponentsItems?: NestedDropdownStructure;
+   // used to temporarily display a child component when hovering add subcomponent dropdown items with a mouse
   isTemporaryAddPreview?: boolean;
   isRemovable?: boolean;
 }
@@ -195,8 +195,8 @@ export interface WorkshopComponent {
   areLayersInSyncByDefault?: boolean;
   // when a particular setting is changed (e.g. input or range) - call a particular function
   triggerFuncOnSettingChange?: TriggerFuncOnSettingChange;
-  // used to share add dropdown options across components such as layers - in order to make sure that the enabled and disabled items are in-sync
-  newChildComponentsOptionsRefs?: NewChildComponentsOptionsRefs;
+  // used to share add dropdown items across components such as layers - in order to make sure that the enabled and disabled items are in-sync
+  newChildComponentsItemsRefs?: NewChildComponentsItemsRefs;
   // used to reference the linked component - where the base component refereneces the auxiliary component and vice versa
   linkedComponents?: LinkedComponents;
   // contains a reference to the component that nests it, e.g. if it was button text - the reference would be to button, if it was dropdown menu
@@ -293,7 +293,7 @@ export interface WorkshopComponent {
 // Dropdown Button Component -> { base, layer, text }
 //    |                            |       |     |
 //    |                            |       |     |
-//    <---- { subcomponents, subcomponentDropdownStructure, subcomponentNameToDropdownOptionName }
+//    <---- { subcomponents, subcomponentDropdownStructure, subcomponentNameToDropdownItemName }
 //    <------------<-------------- masterComponent
 //                                 |       |     |
 //                                 |       |     |
@@ -301,7 +301,7 @@ export interface WorkshopComponent {
 //
 // Explanation:
 // All of the dropdown's child components' (any level, incl. auxiliary component's) subcomponents,
-// subcomponentDropdownStructure and subcomponentNameToDropdownOptionName property values are moved
+// subcomponentDropdownStructure and subcomponentNameToDropdownItemName property values are moved
 // to the very top level component (and removed from the original components). This is carried out
 // to maintain all of these values in the same place.
 // Hence this component is known as the Master component and all of the seed components have a

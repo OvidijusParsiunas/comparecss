@@ -1,11 +1,11 @@
-import { UpdateLayerDropdownOptionNames } from '../../../../../utils/componentManipulation/updateChildComponent/updateLayerDropdownOptionNames';
-import { DropdownOptionsDisplayStatusUtils } from '../../../../../utils/dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
+import { UpdateLayerDropdownItemNames } from '../../../../../utils/componentManipulation/updateChildComponent/updateLayerDropdownItemNames';
 import { BUTTON_COMPONENTS_BASE_NAMES, DROPDOWN_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
+import { DropdownItemsDisplayStatusUtils } from '../../../../../utils/dropdownItemsDisplayStatusUtils/dropdownItemsDisplayStatusUtils';
 import { UniqueSubcomponentNameGenerator } from '../../../../../utils/componentGenerator/uniqueSubcomponentNameGenerator';
 import { AddLayerComponent } from '../../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
-import { DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../../../interfaces/dropdownOptionDisplayStatus';
 import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
+import { DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../../../interfaces/dropdownItemDisplayStatus';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentCssClasses.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
@@ -88,7 +88,7 @@ class DropdownButton extends ComponentBuilder {
     layer2Component.childComponentsLockedToLayer.add(layer2Component, dropdownMenuBaseComponent);
     const layer3Component = AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
     layer3Component.childComponentsLockedToLayer.add(layer3Component, dropdownMenuBaseComponent);
-    UpdateLayerDropdownOptionNames.update(dropdownMenuBaseComponent, 0);
+    UpdateLayerDropdownItemNames.update(dropdownMenuBaseComponent, 0);
   }
 }
 
@@ -101,9 +101,9 @@ export const dropdownButtonBase: ComponentGenerator = {
     DropdownButton.setButtonAutoSize(buttonComponent);
     DropdownButton.overwriteCustomCss(buttonComponent);
     Object.assign(buttonComponent.subcomponents, dropdownMenuBaseComponent.subcomponents);
-    Object.assign(buttonComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName, dropdownMenuBaseComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName);
-    buttonComponent.componentPreviewStructure.subcomponentDropdownStructure[buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name][DROPDOWN_OPTION_AUX_DETAILS_REF] = { ...DropdownOptionsDisplayStatusUtils.createDefaultOptionDisplayStatus(buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name) };
-    buttonComponent.componentPreviewStructure.subcomponentDropdownStructure[dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] = { ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name) };
+    Object.assign(buttonComponent.componentPreviewStructure.subcomponentNameToDropdownItemName, dropdownMenuBaseComponent.componentPreviewStructure.subcomponentNameToDropdownItemName);
+    buttonComponent.componentPreviewStructure.subcomponentDropdownStructure[buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name][DROPDOWN_ITEM_AUX_DETAILS_REF] = { ...DropdownItemsDisplayStatusUtils.createDefaultItemDisplayStatus(buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name) };
+    buttonComponent.componentPreviewStructure.subcomponentDropdownStructure[dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] = { ...DropdownItemsDisplayStatusUtils.createDropdownItemDisplayStatusReferenceObject(dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name) };
     buttonComponent.linkedComponents = { auxiliary: [dropdownMenuBaseComponent] };
     dropdownMenuBaseComponent.linkedComponents = { base: buttonComponent };
     dropdownMenuBaseComponent.masterComponent = buttonComponent;

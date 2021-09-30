@@ -6,7 +6,7 @@ export default class ComponentTraversalUtils {
   public static generateTargetDetails(containerComponent: WorkshopComponent, targetSubcomponentName: string): TargetDetails {
     return {
       targetSubcomponentName,
-      targetDropdownOptionName: containerComponent.componentPreviewStructure.subcomponentNameToDropdownOptionName[targetSubcomponentName],
+      targetDropdownItemName: containerComponent.componentPreviewStructure.subcomponentNameToDropdownItemName[targetSubcomponentName],
       containerComponent,
       masterComponent: containerComponent.masterComponent,
       targetSubcomponentProperties: containerComponent.subcomponents[targetSubcomponentName],

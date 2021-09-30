@@ -16,7 +16,7 @@
         :icon="getFontAwesomeIcon()"/>
     </button>
     <div :style="getAuxiliaryPaddingStyle()"
-      class="auxiliary-padding dropdown-menu-options-marker"
+      class="auxiliary-padding dropdown-menu-items-marker"
       :class="uniqueIdentifier"
       @click="buttonClick"
       @mouseenter="mouseEnterAuxiliaryPadding"
@@ -24,22 +24,22 @@
     </div>
     <div ref="dropdownMenus"
       @mouseleave="mouseLeaveDropdown">
-      <dropdown-menu v-for="(dropdownOptions, index) in dropdowns" :key="dropdownOptions"
-        :dropdownOptions="dropdownOptions"
+      <dropdown-menu v-for="(dropdownItems, index) in dropdowns" :key="dropdownItems"
+        :dropdownItems="dropdownItems"
         :nestedDropdownIndex="index"
         :isButtonIcon="!!(consistentButtonContent && consistentButtonContent.backgroundIconClass)"
-        @mouse-enter-option="mouseEnterOption"
-        @mouse-leave-option="mouseLeaveOption"/>
+        @mouse-enter-item="mouseEnterItem"
+        @mouse-leave-item="mouseLeaveItem"/>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { MouseClickNewOptionEvent, MouseClickOptionEvent, MouseEnterMenuContainerOptionEvent, MouseEnterOptionEvent, MouseLeaveMenuContainerOptionEvent } from '../../../../../../interfaces/dropdownMenuMouseEvents';
-import { DropdownOptionAuxDetails, DropdownOptionAuxDetailsRef, DROPDOWN_OPTION_AUX_DETAILS_REF } from '../../../../../../interfaces/dropdownOptionDisplayStatus';
-import { DropdownOptionsDisplayStatusUtils } from '../../../utils/dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
-import { COMPONENT_CARD_MARKER, DROPDOWN_OPTION_MARKER, RANGE_SETTING_MARKER } from '../../../../../../consts/elementClassMarkers';
-import { CUSTOM_DROPDOWN_OPTION_CLASSES } from '../../../../../../consts/customDropdownOptionClasses.enum';
+import { MouseClickNewItemEvent, MouseClickItemEvent, MouseEnterMenuContainerItemEvent, MouseEnterItemEvent, MouseLeaveMenuContainerItemEvent } from '../../../../../../interfaces/dropdownMenuMouseEvents';
+import { DropdownItemAuxDetails, DropdownItemAuxDetailsRef, DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../interfaces/dropdownItemDisplayStatus';
+import { DropdownItemsDisplayStatusUtils } from '../../../utils/dropdownItemsDisplayStatusUtils/dropdownItemsDisplayStatusUtils';
+import { COMPONENT_CARD_MARKER, DROPDOWN_ITEM_MARKER, RANGE_SETTING_MARKER } from '../../../../../../consts/elementClassMarkers';
+import { CUSTOM_DROPDOWN_ITEM_CLASSES } from '../../../../../../consts/customDropdownItemClasses.enum';
 import { WorkshopEventCallbackReturn } from '../../../../../../interfaces/workshopEventCallbackReturn';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { DropdownCompositionAPI } from '../../../../../../interfaces/dropdownCompositionAPI';
@@ -54,66 +54,66 @@ import { Ref, ref, watch } from 'vue';
 
 interface Data {
   isComponentDisplayed: boolean;
-  lastHoveredOptionText: string;
+  lastHoveredItemText: string;
   dropdowns: NestedDropdownStructure[];
-  lastHoveredOptionElement: HTMLElement;
+  lastHoveredItemElement: HTMLElement;
   enterButtonClicked: boolean;
   areMenusDisplayed: boolean;
   clickedButton: boolean;
   dropdownDisplayDelayMilliseconds: number;
-  areDropdownOptionsProcessed: boolean;
+  areDropdownItemsProcessed: boolean;
   TOOLBAR_GENERAL_BUTTON_CLASS: string;
   fontAwesomeIconColor: string;
-  processedOptions: NestedDropdownStructure[];
+  processedItems: NestedDropdownStructure[];
 }
 
 interface Props {
   isNested: boolean;
   uniqueIdentifier: string;
   fontAwesomeIcon: string;
-  minOptionsToDisplayDropdown: number;
-  activeOptionPropertyKeyName: string;
-  objectContainingActiveOption: unknown;
-  dropdownOptions: NestedDropdownStructure;
+  minItemsToDisplayDropdown: number;
+  activeItemPropertyKeyName: string;
+  objectContainingActiveItem: unknown;
+  dropdownItems: NestedDropdownStructure;
   customEventHandlers: (param1: Ref<unknown>, param2: Ref<string>) => DropdownCompositionAPI;
 }
 
-interface SearchForOptionResultData {
+interface SearchForItemResultData {
   dropdowns: NestedDropdownStructure[];
-  optionIndexes: number[];
+  itemIndexes: number[];
 }
 
-type SearchForOptionResult = SearchForOptionResultData | null;
+type SearchForItemResult = SearchForItemResultData | null;
 
 export default {
   data: (): Data => ({
     dropdowns: [],
     clickedButton: false,
-    processedOptions: [],
+    processedItems: [],
     areMenusDisplayed: false,
     enterButtonClicked: false,
     isComponentDisplayed: true,
-    lastHoveredOptionText: null,
+    lastHoveredItemText: null,
     TOOLBAR_GENERAL_BUTTON_CLASS,
-    lastHoveredOptionElement: null,
-    areDropdownOptionsProcessed: false,
+    lastHoveredItemElement: null,
+    areDropdownItemsProcessed: false,
     dropdownDisplayDelayMilliseconds: BrowserType.isChromium() ? 10 : 13,
     fontAwesomeIconColor: FONT_AWESOME_COLORS.DEFAULT,
   }),
   setup(props: Props): DropdownCompositionAPI {
     // If you want to pass down a data variable into compositionAPI, use the code below and pass areMenusDisplayed into the customEventHandlers function and return customEventHandlers
     // const areMenusDisplayed: Ref<boolean> = ref(false);
-    const objectContainingActiveOptionRef: Ref<Props['objectContainingActiveOption']> = ref(props.objectContainingActiveOption);
-    const activeModePropertyKeyNameRef: Ref<Props['activeOptionPropertyKeyName']> = ref(props.activeOptionPropertyKeyName);
+    const objectContainingActiveItemRef: Ref<Props['objectContainingActiveItem']> = ref(props.objectContainingActiveItem);
+    const activeModePropertyKeyNameRef: Ref<Props['activeItemPropertyKeyName']> = ref(props.activeItemPropertyKeyName);
     let customEventHandlers = {} as DropdownCompositionAPI;
     if (props.customEventHandlers) {
-      watch(() => props.objectContainingActiveOption, (newObjectContainingActiveOption) => {
-        objectContainingActiveOptionRef.value = newObjectContainingActiveOption;
+      watch(() => props.objectContainingActiveItem, (newObjectContainingActiveItem) => {
+        objectContainingActiveItemRef.value = newObjectContainingActiveItem;
       });
-      watch(() => props.activeOptionPropertyKeyName, (newActiveModePropertyKeyName) => {
+      watch(() => props.activeItemPropertyKeyName, (newActiveModePropertyKeyName) => {
         activeModePropertyKeyNameRef.value = newActiveModePropertyKeyName;
       });
-      customEventHandlers = props.customEventHandlers(objectContainingActiveOptionRef, activeModePropertyKeyNameRef);
+      customEventHandlers = props.customEventHandlers(objectContainingActiveItemRef, activeModePropertyKeyNameRef);
     }
     return {
       ...customEventHandlers,
@@ -121,17 +121,17 @@ export default {
   },
   computed: {
     buttonText(): void {
-      return this.consistentButtonContent?.text || this.getOptionName(this.objectContainingActiveOption[this.activeOptionPropertyKeyName]);
+      return this.consistentButtonContent?.text || this.getItemName(this.objectContainingActiveItem[this.activeItemPropertyKeyName]);
     }
   },
   mounted(): void {
-    if (!this.areDropdownOptionsProcessed) this.processDropdownOptions();
+    if (!this.areDropdownItemsProcessed) this.processDropdownItems();
     this.setIsDropdownDisplayed();
     this.fontAwesomeIconColor = this.displayArrowOnMouseEnter ? FONT_AWESOME_COLORS.WHITE : FONT_AWESOME_COLORS.DEFAULT;
   },
   methods: {
-    getOptionName(dropdownOptionName: string): void {
-      return this.optionNameMap ? this.optionNameMap[dropdownOptionName] : dropdownOptionName;
+    getItemName(dropdownItemName: string): void {
+      return this.itemNameMap ? this.itemNameMap[dropdownItemName] : dropdownItemName;
     },
     getButtonClasses(): string[] {
       const classes = [this.uniqueIdentifier, TOOLBAR_GENERAL_BUTTON_CLASS];
@@ -166,65 +166,65 @@ export default {
         this.clickedButton = false;
         return;
       }
-      this.displayHighlightedOptionAndParentMenus();
+      this.displayHighlightedItemAndParentMenus();
       const keyTriggers = new Set([DOM_EVENT_TRIGGER_KEYS.MOUSE_DOWN, DOM_EVENT_TRIGGER_KEYS.MOUSE_UP, DOM_EVENT_TRIGGER_KEYS.ENTER, DOM_EVENT_TRIGGER_KEYS.ESCAPE]);
       const workshopEventCallback: WorkshopEventCallback = { keyTriggers, func: this.hideDropdownMenu };
       this.$emit('hide-dropdown-menu-callback', workshopEventCallback);
       this.areMenusDisplayed = true;
     },
-    displayHighlightedOptionAndParentMenus(): void {
-      if (!this.objectContainingActiveOption) {
+    displayHighlightedItemAndParentMenus(): void {
+      if (!this.objectContainingActiveItem) {
         this.displayParentMenu();
         return;
       }
-      const objectActiveOptionName = this.objectContainingActiveOption[this.activeOptionPropertyKeyName];
-      const dropdownOptionName = this.getOptionName(objectActiveOptionName);
-      const actualObjectName = dropdownOptionName !== objectActiveOptionName ? objectActiveOptionName : null;
-      const results: SearchForOptionResult = this.searchForOpion(this.processedOptions, dropdownOptionName, 0, actualObjectName);
+      const objectActiveItemName = this.objectContainingActiveItem[this.activeItemPropertyKeyName];
+      const dropdownItemName = this.getItemName(objectActiveItemName);
+      const actualObjectName = dropdownItemName !== objectActiveItemName ? objectActiveItemName : null;
+      const results: SearchForItemResult = this.searchForOpion(this.processedItems, dropdownItemName, 0, actualObjectName);
       if (results) {
-        const { dropdowns, optionIndexes } = results;
+        const { dropdowns, itemIndexes } = results;
         for (let i = 0; i < dropdowns.length; i++) {
           const dropdown = dropdowns[i];
           const parentDropdownIndex = i - 1;
-          const parentOptionIndex = optionIndexes[i - 1];
+          const parentItemIndex = itemIndexes[i - 1];
           setTimeout(() => {
-            let parentOptionElement = this.$refs.dropdownMenus.childNodes[parentDropdownIndex + 1]?.childNodes[parentOptionIndex + 1];
-            if (!parentOptionElement) {
+            let parentItemElement = this.$refs.dropdownMenus.childNodes[parentDropdownIndex + 1]?.childNodes[parentItemIndex + 1];
+            if (!parentItemElement) {
               this.displayParentMenu();
             } else {
-              // this is a bug fix for when the parentOptionIndex is incorrectly increased by one when there is an extra element generated at the start
-              // due to dropdownOptionAuxiliaryDetailsReferenceObject property being placed at the start of the dropdownOptions object (with display still set to none) 
-              const parentOptionIndexWithoutAuxInfo = this.$refs.dropdownMenus.childNodes[parentDropdownIndex + 1].childNodes[1].style.display === 'none'
-                ? parentOptionIndex - 1 : parentOptionIndex;
-              this.displayChildDropdownMenu(parentOptionElement, parentDropdownIndex, parentOptionIndexWithoutAuxInfo, dropdown);
+              // this is a bug fix for when the parentItemIndex is incorrectly increased by one when there is an extra element generated at the start
+              // due to dropdownItemAuxiliaryDetailsReferenceObject property being placed at the start of the dropdownItems object (with display still set to none) 
+              const parentItemIndexWithoutAuxInfo = this.$refs.dropdownMenus.childNodes[parentDropdownIndex + 1].childNodes[1].style.display === 'none'
+                ? parentItemIndex - 1 : parentItemIndex;
+              this.displayChildDropdownMenu(parentItemElement, parentDropdownIndex, parentItemIndexWithoutAuxInfo, dropdown);
             }
           }, i * this.dropdownDisplayDelayMilliseconds);
         }
         setTimeout(() => {
-          const optionElementToBeHighlighted = this.$refs.dropdownMenus.childNodes[dropdowns.length]?.childNodes[optionIndexes[optionIndexes.length - 1] + 1];
-          this.highlightNewOption(optionElementToBeHighlighted, dropdowns.length - 1);
+          const itemElementToBeHighlighted = this.$refs.dropdownMenus.childNodes[dropdowns.length]?.childNodes[itemIndexes[itemIndexes.length - 1] + 1];
+          this.highlightNewItem(itemElementToBeHighlighted, dropdowns.length - 1);
         }, (dropdowns.length - 1) * this.dropdownDisplayDelayMilliseconds);
       }
     },
-    isOptionFound(dropdownOptionDisplayStatus: DropdownOptionAuxDetailsRef, actualObjectName: string): boolean {
+    isItemFound(dropdownItemDisplayStatus: DropdownItemAuxDetailsRef, actualObjectName: string): boolean {
       let actualObjectNameMatch = true;
-      if (actualObjectName) actualObjectNameMatch = actualObjectName === dropdownOptionDisplayStatus?.[DROPDOWN_OPTION_AUX_DETAILS_REF].actualObjectName;
-      return dropdownOptionDisplayStatus !== undefined && actualObjectNameMatch;
+      if (actualObjectName) actualObjectNameMatch = actualObjectName === dropdownItemDisplayStatus?.[DROPDOWN_ITEM_AUX_DETAILS_REF].actualObjectName;
+      return dropdownItemDisplayStatus !== undefined && actualObjectNameMatch;
     },
-    searchForOpion(dropdownOptions: NestedDropdownStructure, dropdownOptionName: string, dropdownOptionsIndex: number, actualObjectName?: string): SearchForOptionResult {
-      if (!dropdownOptions) return null;
-      const optionNames = Object.keys(dropdownOptions);
-      if (this.isOptionFound(dropdownOptions[dropdownOptionName], actualObjectName)) {
-        return { dropdowns: [dropdownOptions], optionIndexes: [Object.keys(dropdownOptions).indexOf(dropdownOptionName)] };
+    searchForOpion(dropdownItems: NestedDropdownStructure, dropdownItemName: string, dropdownItemsIndex: number, actualObjectName?: string): SearchForItemResult {
+      if (!dropdownItems) return null;
+      const itemNames = Object.keys(dropdownItems);
+      if (this.isItemFound(dropdownItems[dropdownItemName], actualObjectName)) {
+        return { dropdowns: [dropdownItems], itemIndexes: [Object.keys(dropdownItems).indexOf(dropdownItemName)] };
       } else {
-        const childDropdownIndex = dropdownOptionsIndex + 1;
-        for (let i = 0; i <= optionNames.length; i += 1) {
-          const optionName = optionNames[i];
-          if (optionName !== DROPDOWN_OPTION_AUX_DETAILS_REF && optionName !== dropdownOptionName) {
-            const result: SearchForOptionResult = this.searchForOpion(dropdownOptions[optionName], dropdownOptionName, childDropdownIndex, actualObjectName);
+        const childDropdownIndex = dropdownItemsIndex + 1;
+        for (let i = 0; i <= itemNames.length; i += 1) {
+          const itemName = itemNames[i];
+          if (itemName !== DROPDOWN_ITEM_AUX_DETAILS_REF && itemName !== dropdownItemName) {
+            const result: SearchForItemResult = this.searchForOpion(dropdownItems[itemName], dropdownItemName, childDropdownIndex, actualObjectName);
             if (result) {
-              result.dropdowns.unshift(dropdownOptions);
-              result.optionIndexes.unshift(i);
+              result.dropdowns.unshift(dropdownItems);
+              result.itemIndexes.unshift(i);
               return result;
             }
           }
@@ -253,48 +253,48 @@ export default {
     mouseEnterAuxiliaryPadding(): void {
       if (this.areMenusDisplayed && !this.consistentButtonContent) {
         this.removeChildDropdownMenus(0);
-        const optionElementToBeHighlighted = this.$refs.dropdownMenus.childNodes[1].childNodes[1];
-        if (!optionElementToBeHighlighted) return;
-        this.displayChildDropdownMenu(optionElementToBeHighlighted, 0, 0, this.processedOptions[Object.keys(this.processedOptions)[0]]);
+        const itemElementToBeHighlighted = this.$refs.dropdownMenus.childNodes[1].childNodes[1];
+        if (!itemElementToBeHighlighted) return;
+        this.displayChildDropdownMenu(itemElementToBeHighlighted, 0, 0, this.processedItems[Object.keys(this.processedItems)[0]]);
         if (this.mouseEnterAuxiliaryPaddingEventHandler) {
-          const optionNameToBehighlighted = this.getOptionName(this.extractHighlightedOptionText(optionElementToBeHighlighted));
-          this.mouseEnterAuxiliaryPaddingEventHandler(optionNameToBehighlighted);
+          const itemNameToBehighlighted = this.getItemName(this.extractHighlightedItemText(itemElementToBeHighlighted));
+          this.mouseEnterAuxiliaryPaddingEventHandler(itemNameToBehighlighted);
           }
-        this.highlightNewOption(optionElementToBeHighlighted, 0);
+        this.highlightNewItem(itemElementToBeHighlighted, 0);
       }
     },
     mouseLeaveAuxiliaryPadding(): void {
       if (this.areMenusDisplayed) {
-        const blurredOptionElement = this.$refs.dropdownMenus.childNodes[1].childNodes[1];
+        const blurredItemElement = this.$refs.dropdownMenus.childNodes[1].childNodes[1];
         if (this.mouseLeaveAuxiliaryPaddingEventHandler) {
-          const blurredOptionName = this.getOptionName(this.extractHighlightedOptionText(blurredOptionElement));
-          this.mouseLeaveAuxiliaryPaddingEventHandler(blurredOptionName);
+          const blurredItemName = this.getItemName(this.extractHighlightedItemText(blurredItemElement));
+          this.mouseLeaveAuxiliaryPaddingEventHandler(blurredItemName);
         }
       }
     },
     mouseLeaveDropdown(): void {
       // when there is no nesting - the highlight is set to disappear when user mouse leaves the dropdown
-      if (!this.isNested && this.lastHoveredOptionElement) {
-        this.resetLastHighlightedOptionStyle();
-        this.lastHoveredOptionElement = null;
-        this.lastHoveredOptionText = null;
+      if (!this.isNested && this.lastHoveredItemElement) {
+        this.resetLastHighlightedItemStyle();
+        this.lastHoveredItemElement = null;
+        this.lastHoveredItemText = null;
       }
       this.$emit('mouse-leave-dropdown');
     },
-    extractHighlightedOptionText(optionElement: HTMLElement): string {
-      return (optionElement.childNodes[0] as HTMLElement).innerHTML;
+    extractHighlightedItemText(itemElement: HTMLElement): string {
+      return (itemElement.childNodes[0] as HTMLElement).innerHTML;
     },
-    mouseEnterOption(optionMouseEnterEvent: MouseEnterMenuContainerOptionEvent): void {
-      const [dropdownOptions, dropdownMenuIndex, dropdownOptionIndex, actualObjectName, isOptionEnabled] = optionMouseEnterEvent;
-      const optionElement = event.target;
+    mouseEnterItem(itemMouseEnterEvent: MouseEnterMenuContainerItemEvent): void {
+      const [dropdownItems, dropdownMenuIndex, dropdownItemIndex, actualObjectName, isItemEnabled] = itemMouseEnterEvent;
+      const itemElement = event.target;
       this.removeChildDropdownMenus(dropdownMenuIndex);
-      this.displayChildDropdownMenu(optionElement, dropdownMenuIndex, dropdownOptionIndex, dropdownOptions);
-      const highlightedOption = actualObjectName || this.extractHighlightedOptionText(optionElement);
-      const mouseEnterOptionEvent: MouseEnterOptionEvent = [highlightedOption, isOptionEnabled];
-      if (this.mouseEnterOptionEventHandler) { this.mouseEnterOptionEventHandler(mouseEnterOptionEvent); }
-      this.$emit('mouse-enter-option', mouseEnterOptionEvent);
-      this.highlightNewOption(optionElement, dropdownMenuIndex);
-      this.lastHoveredOptionText = highlightedOption;
+      this.displayChildDropdownMenu(itemElement, dropdownMenuIndex, dropdownItemIndex, dropdownItems);
+      const highlightedItem = actualObjectName || this.extractHighlightedItemText(itemElement);
+      const mouseEnterItemEvent: MouseEnterItemEvent = [highlightedItem, isItemEnabled];
+      if (this.mouseEnterItemEventHandler) { this.mouseEnterItemEventHandler(mouseEnterItemEvent); }
+      this.$emit('mouse-enter-item', mouseEnterItemEvent);
+      this.highlightNewItem(itemElement, dropdownMenuIndex);
+      this.lastHoveredItemText = highlightedItem;
     },
     removeChildDropdownMenus(dropdownMenuIndex: number): void {
       const removableDropdownMenusIndex = dropdownMenuIndex + 1;
@@ -303,83 +303,83 @@ export default {
       }
     },
     displayParentMenu(): void {
-      this.dropdowns.push(this.processedOptions);
+      this.dropdowns.push(this.processedItems);
       setTimeout(() => {
         this.$refs.dropdownMenus.childNodes[1].style.display = 'block';
       });
     },
-    displayChildDropdownMenu(parentOptionElement: HTMLElement, parentDropdownMenuIndex: number, parentDropdownOptionIndex: number,
-        childDropdownOptions: NestedDropdownStructure | DropdownOptionAuxDetailsRef): void {
-      if (!parentOptionElement || !(parentOptionElement instanceof Element)) return;
-      if (!childDropdownOptions[DROPDOWN_OPTION_AUX_DETAILS_REF]
-          || (Object.keys(childDropdownOptions).length > 1 && (childDropdownOptions[DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).isEnabled)) {
-        this.dropdowns.push(childDropdownOptions);
+    displayChildDropdownMenu(parentItemElement: HTMLElement, parentDropdownMenuIndex: number, parentDropdownItemIndex: number,
+        childDropdownItems: NestedDropdownStructure | DropdownItemAuxDetailsRef): void {
+      if (!parentItemElement || !(parentItemElement instanceof Element)) return;
+      if (!childDropdownItems[DROPDOWN_ITEM_AUX_DETAILS_REF]
+          || (Object.keys(childDropdownItems).length > 1 && (childDropdownItems[DROPDOWN_ITEM_AUX_DETAILS_REF] as DropdownItemAuxDetails).isEnabled)) {
+        this.dropdowns.push(childDropdownItems);
         const startOfLeftPropertyValueNumber = 11;
-        const dropdownMenuElement = parentOptionElement.parentNode as HTMLElement;
+        const dropdownMenuElement = parentItemElement.parentNode as HTMLElement;
         const topStyleValueRaw = dropdownMenuElement.style.top;
         const leftStyleValueRaw = dropdownMenuElement.style.left;
         const topStyleValueParsed = Number.parseInt(topStyleValueRaw.substring(startOfLeftPropertyValueNumber, topStyleValueRaw.length)) || 0;
         const leftStyleValueParsed = Number.parseInt(leftStyleValueRaw) || 0;
         const currentDropdownMenuWidth = dropdownMenuElement.offsetWidth;
-        const optionHeight = Number.parseFloat(window.getComputedStyle(parentOptionElement).height);
+        const itemHeight = Number.parseFloat(window.getComputedStyle(parentItemElement).height);
         setTimeout(() => {
           const newChildDropdownMenuElemIndex = parentDropdownMenuIndex + 2;
-          // if the user moves the mouse into an option that has children and quickly moves it back to its parent dropdown, the new child dropdown that was triggered to display
+          // if the user moves the mouse into an item that has children and quickly moves it back to its parent dropdown, the new child dropdown that was triggered to display
           // here no longer exists
           if (!this.$refs.dropdownMenus.childNodes[newChildDropdownMenuElemIndex]?.style) return;
-          this.$refs.dropdownMenus.childNodes[newChildDropdownMenuElemIndex].style.top = `calc(100% + ${(parentDropdownOptionIndex * optionHeight) + topStyleValueParsed}px)`;
+          this.$refs.dropdownMenus.childNodes[newChildDropdownMenuElemIndex].style.top = `calc(100% + ${(parentDropdownItemIndex * itemHeight) + topStyleValueParsed}px)`;
           this.$refs.dropdownMenus.childNodes[newChildDropdownMenuElemIndex].style.left = `${currentDropdownMenuWidth + leftStyleValueParsed}px`;
           this.$refs.dropdownMenus.childNodes[newChildDropdownMenuElemIndex].style.display = 'block';
         });
       }
     },
-    highlightNewOption(optionElementToBeHighlighted: HTMLElement, dropdownMenuIndex: number): void {
-      if (!optionElementToBeHighlighted) return;
-      if (this.lastHoveredOptionElement) { this.resetLastHighlightedOptionStyle(); }
-      this.setNewHighligtedOptionStyle(this.dropdowns, optionElementToBeHighlighted, dropdownMenuIndex);
-      this.lastHoveredOptionElement = optionElementToBeHighlighted;
+    highlightNewItem(itemElementToBeHighlighted: HTMLElement, dropdownMenuIndex: number): void {
+      if (!itemElementToBeHighlighted) return;
+      if (this.lastHoveredItemElement) { this.resetLastHighlightedItemStyle(); }
+      this.setNewHighligtedItemStyle(this.dropdowns, itemElementToBeHighlighted, dropdownMenuIndex);
+      this.lastHoveredItemElement = itemElementToBeHighlighted;
     },
-    resetLastHighlightedOptionStyle(): void {
-      this.lastHoveredOptionElement.classList.remove(CUSTOM_DROPDOWN_OPTION_CLASSES.ACTIVE);
-      if (this.lastHoveredOptionElement.classList.contains(CUSTOM_DROPDOWN_OPTION_CLASSES.INACTIVE)) {
-        this.lastHoveredOptionElement.style.color = 'grey';
-        this.lastHoveredOptionElement.classList.remove(CUSTOM_DROPDOWN_OPTION_CLASSES.INACTIVE);
+    resetLastHighlightedItemStyle(): void {
+      this.lastHoveredItemElement.classList.remove(CUSTOM_DROPDOWN_ITEM_CLASSES.ACTIVE);
+      if (this.lastHoveredItemElement.classList.contains(CUSTOM_DROPDOWN_ITEM_CLASSES.INACTIVE)) {
+        this.lastHoveredItemElement.style.color = 'grey';
+        this.lastHoveredItemElement.classList.remove(CUSTOM_DROPDOWN_ITEM_CLASSES.INACTIVE);
       } else {
-        this.lastHoveredOptionElement.style.color = 'black';
+        this.lastHoveredItemElement.style.color = 'black';
       }
-      // bug fix for resetting option colour when user clicks and drags an option
-      if (!document.activeElement.classList.contains(this.uniqueIdentifier)) this.lastHoveredOptionElement.classList.add(CUSTOM_DROPDOWN_OPTION_CLASSES.DEFAULT);
-      this.changeOptionArrowColor(this.lastHoveredOptionElement, '#6d6d6d');
+      // bug fix for resetting item colour when user clicks and drags an item
+      if (!document.activeElement.classList.contains(this.uniqueIdentifier)) this.lastHoveredItemElement.classList.add(CUSTOM_DROPDOWN_ITEM_CLASSES.DEFAULT);
+      this.changeItemArrowColor(this.lastHoveredItemElement, '#6d6d6d');
     },
-    setNewHighligtedOptionStyle(dropdowns: NestedDropdownStructure[], optionElementToBeHighlighted: HTMLElement, dropdownMenuIndex: number): void {
-      if (!optionElementToBeHighlighted) return;
+    setNewHighligtedItemStyle(dropdowns: NestedDropdownStructure[], itemElementToBeHighlighted: HTMLElement, dropdownMenuIndex: number): void {
+      if (!itemElementToBeHighlighted) return;
       const highlightedElementBackgroundClass = dropdownMenuIndex !== undefined && dropdowns[dropdownMenuIndex]
-        && this.isOptionInactive(dropdowns, optionElementToBeHighlighted, dropdownMenuIndex)
-        ? CUSTOM_DROPDOWN_OPTION_CLASSES.INACTIVE : CUSTOM_DROPDOWN_OPTION_CLASSES.ACTIVE;
-      optionElementToBeHighlighted.classList.add(highlightedElementBackgroundClass);
-      optionElementToBeHighlighted.style.color = 'white';
-      this.changeOptionArrowColor(optionElementToBeHighlighted, 'white');
+        && this.isItemInactive(dropdowns, itemElementToBeHighlighted, dropdownMenuIndex)
+        ? CUSTOM_DROPDOWN_ITEM_CLASSES.INACTIVE : CUSTOM_DROPDOWN_ITEM_CLASSES.ACTIVE;
+      itemElementToBeHighlighted.classList.add(highlightedElementBackgroundClass);
+      itemElementToBeHighlighted.style.color = 'white';
+      this.changeItemArrowColor(itemElementToBeHighlighted, 'white');
     },
-    isOptionInactive(dropdowns: NestedDropdownStructure[], optionElement: HTMLElement, dropdownMenuIndex: number): boolean {
-      return dropdowns[dropdownMenuIndex][(optionElement.childNodes[0] as HTMLElement)?.innerHTML]?.[DROPDOWN_OPTION_AUX_DETAILS_REF]
-        && !(dropdowns[dropdownMenuIndex][(optionElement.childNodes[0] as HTMLElement).innerHTML][DROPDOWN_OPTION_AUX_DETAILS_REF] as DropdownOptionAuxDetails).isEnabled;
+    isItemInactive(dropdowns: NestedDropdownStructure[], itemElement: HTMLElement, dropdownMenuIndex: number): boolean {
+      return dropdowns[dropdownMenuIndex][(itemElement.childNodes[0] as HTMLElement)?.innerHTML]?.[DROPDOWN_ITEM_AUX_DETAILS_REF]
+        && !(dropdowns[dropdownMenuIndex][(itemElement.childNodes[0] as HTMLElement).innerHTML][DROPDOWN_ITEM_AUX_DETAILS_REF] as DropdownItemAuxDetails).isEnabled;
     },
-    changeOptionArrowColor(optionElement: Element, newColor: 'white'|'#6d6d6d'): void {
-      const arrowElement = optionElement.childNodes[1];
+    changeItemArrowColor(itemElement: Element, newColor: 'white'|'#6d6d6d'): void {
+      const arrowElement = itemElement.childNodes[1];
       if (arrowElement instanceof Element || arrowElement instanceof HTMLDocument) {
         (arrowElement as HTMLElement).style.color = newColor;
       }
     },
-    getOptionNameFromElement(highlightedOptionElement: HTMLElement): string {
-      return (highlightedOptionElement.childNodes[0] as HTMLElement).innerHTML;
+    getItemNameFromElement(highlightedItemElement: HTMLElement): string {
+      return (highlightedItemElement.childNodes[0] as HTMLElement).innerHTML;
     },
-    mouseLeaveOption(optionMouseLeaveEvent: MouseLeaveMenuContainerOptionEvent): void {
-      const [blurredOptionElement, actualObjectName] = optionMouseLeaveEvent;
-      const blurredOption = actualObjectName || this.extractHighlightedOptionText(blurredOptionElement);
-      if (this.mouseLeaveOptionEventHandler) {
-        this.mouseLeaveOptionEventHandler(actualObjectName || this.extractHighlightedOptionText(blurredOptionElement));
+    mouseLeaveItem(itemMouseLeaveEvent: MouseLeaveMenuContainerItemEvent): void {
+      const [blurredItemElement, actualObjectName] = itemMouseLeaveEvent;
+      const blurredItem = actualObjectName || this.extractHighlightedItemText(blurredItemElement);
+      if (this.mouseLeaveItemEventHandler) {
+        this.mouseLeaveItemEventHandler(actualObjectName || this.extractHighlightedItemText(blurredItemElement));
       }
-      this.$emit('mouse-leave-option', blurredOption);
+      this.$emit('mouse-leave-item', blurredItem);
     },
     hideDropdownMenu(event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
       if (event.type === 'mousedown' && this.isIgnoreOnMouseDown((event.target as HTMLElement).classList)) {
@@ -392,14 +392,14 @@ export default {
         }
         closedViaKey = true;
       }
-      if ((event.target as HTMLElement).classList.contains(DROPDOWN_OPTION_MARKER) || this.enterButtonClicked) {
-        if (this.lastHoveredOptionText) {
-          const previousActiveOptionName = this.objectContainingActiveOption?.[this.activeOptionPropertyKeyName];
-          const isOptionEnabled = !this.lastHoveredOptionElement.classList.contains(CUSTOM_DROPDOWN_OPTION_CLASSES.INACTIVE);
-          if (previousActiveOptionName !== this.lastHoveredOptionText) {
-            this.$emit('mouse-click-new-option', [this.lastHoveredOptionText, isOptionEnabled] as MouseClickNewOptionEvent);
+      if ((event.target as HTMLElement).classList.contains(DROPDOWN_ITEM_MARKER) || this.enterButtonClicked) {
+        if (this.lastHoveredItemText) {
+          const previousActiveItemName = this.objectContainingActiveItem?.[this.activeItemPropertyKeyName];
+          const isItemEnabled = !this.lastHoveredItemElement.classList.contains(CUSTOM_DROPDOWN_ITEM_CLASSES.INACTIVE);
+          if (previousActiveItemName !== this.lastHoveredItemText) {
+            this.$emit('mouse-click-new-item', [this.lastHoveredItemText, isItemEnabled] as MouseClickNewItemEvent);
           }
-          this.$emit('mouse-click-option', [previousActiveOptionName, this.lastHoveredOptionText, isOptionEnabled] as MouseClickOptionEvent);
+          this.$emit('mouse-click-item', [previousActiveItemName, this.lastHoveredItemText, isItemEnabled] as MouseClickItemEvent);
         }
       }
       const isDropdownButtonClicked = (event.target as HTMLElement).classList.contains(this.uniqueIdentifier);
@@ -407,8 +407,8 @@ export default {
         this.clickedButton = true;
       }
       if (!isDropdownButtonClicked || closedViaKey) {
-        if (this.hideDropdownMenuEventHandler && this.lastHoveredOptionText) {
-          this.hideDropdownMenuEventHandler(this.lastHoveredOptionText);
+        if (this.hideDropdownMenuEventHandler && this.lastHoveredItemText) {
+          this.hideDropdownMenuEventHandler(this.lastHoveredItemText);
         } else {
           this.$emit('hide-dropdown-menu');
         }
@@ -423,29 +423,29 @@ export default {
     hideFirstMenu(): void {
       this.$refs.dropdownMenus.childNodes[1].style.display = 'none';
     },
-    processDropdownOptions(): void {
-      if (this.dropdownOptions) {
+    processDropdownItems(): void {
+      if (this.dropdownItems) {
         if (!this.isNested) {
-          this.changeDropdownOptionsToAppropriateStructure();
+          this.changeDropdownItemsToAppropriateStructure();
         } else {
-          this.processedOptions = this.dropdownOptions;
+          this.processedItems = this.dropdownItems;
         }
-        this.areDropdownOptionsProcessed = true;
+        this.areDropdownItemsProcessed = true;
       }
     },
-    changeDropdownOptionsToAppropriateStructure(): void {
+    changeDropdownItemsToAppropriateStructure(): void {
       const resultObject = {};
-      Object.keys(this.dropdownOptions).forEach((keyName) => {
-        resultObject[keyName] = this.dropdownOptions[keyName]?.[DROPDOWN_OPTION_AUX_DETAILS_REF]
-          ? this.dropdownOptions[keyName] : DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject();
+      Object.keys(this.dropdownItems).forEach((keyName) => {
+        resultObject[keyName] = this.dropdownItems[keyName]?.[DROPDOWN_ITEM_AUX_DETAILS_REF]
+          ? this.dropdownItems[keyName] : DropdownItemsDisplayStatusUtils.createDropdownItemDisplayStatusReferenceObject();
       });
-      this.processedOptions = resultObject;
+      this.processedItems = resultObject;
     },
     setIsDropdownDisplayed(): void {
       if (this.isNested) {
-        this.isComponentDisplayed = !!this.dropdownOptions;
+        this.isComponentDisplayed = !!this.dropdownItems;
       } else {
-        this.isComponentDisplayed = Object.keys(this.dropdownOptions).length >= this.minOptionsToDisplayDropdown;
+        this.isComponentDisplayed = Object.keys(this.dropdownItems).length >= this.minItemsToDisplayDropdown;
       }
       this.$emit('is-component-displayed', this.isComponentDisplayed);
     },
@@ -456,39 +456,39 @@ export default {
   // THIS COMPONENT OFFERS A TWO-WAY API, MOUSE EVENTS CAN BE EITHER PASSED IN
   // OR LISTENED TO VIA EVENT EMITTERS
   props: {
-    dropdownOptions: Object,
-    objectContainingActiveOption: Object,
-    activeOptionPropertyKeyName: String,
+    dropdownItems: Object,
+    objectContainingActiveItem: Object,
+    activeItemPropertyKeyName: String,
     fontAwesomeIcon: String,
     // this is used to allow the dropdown to close when clicked on other dropdowns
     uniqueIdentifier: String,
-    // the dev has two options, either insert custom event handlers object via composition API (which should adhere to DropdownCompositionAPI)
+    // the dev has two items, either insert custom event handlers object via composition API (which should adhere to DropdownCompositionAPI)
     // or listen to the emitted events
     customEventHandlers: Function,
-    optionNameMap: Object,
+    itemNameMap: Object,
     isNested: {
       type: Boolean,
       default: false,
     },
     timeoutFunc: Function,
-    minOptionsToDisplayDropdown: {
+    minItemsToDisplayDropdown: {
       type: Number,
       default: 2,
     },
     consistentButtonContent: Object,
     additionalButtonClasses: Array,
     displayArrowOnMouseEnter: Boolean,
-    callWatchWhenDropdownOptionsValueChangeDetectionTriggered: Object,
+    callWatchWhenDropdownItemsValueChangeDetectionTriggered: Object,
   },
   watch: {
-    callWatchWhenDropdownOptionsValueChangeDetectionTriggered(): void {
-      this.processDropdownOptions();
+    callWatchWhenDropdownItemsValueChangeDetectionTriggered(): void {
+      this.processDropdownItems();
       this.setArrowIconTransitionProperty();
     },
-    objectContainingActiveOption(): void {
-      this.processDropdownOptions();
+    objectContainingActiveItem(): void {
+      this.processDropdownItems();
     },
-    dropdownOptions(): void {
+    dropdownItems(): void {
       this.setIsDropdownDisplayed();
     }
   }

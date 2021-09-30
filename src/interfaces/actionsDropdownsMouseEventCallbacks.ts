@@ -4,8 +4,8 @@ import { ComponentOptions } from 'vue';
 
 export interface ActionsDropdownMouseEventCallbackEvent {
   subcomponentProperties?: SubcomponentProperties;
-  triggeredOptionName?: string;
-  previousOptionName?: string;
+  triggeredItemName?: string;
+  previousItemName?: string;
   settingsComponent?: ComponentOptions;
   isCustomFeatureResetTriggered?: boolean;
   isDropdownHidden?: boolean;
@@ -16,7 +16,7 @@ type ActionsDropdownMouseEventCallback = (event: ActionsDropdownMouseEventCallba
 export interface ActionsDropdownMouseEventCallbacks {
   mouseEnterButtonCallback?: ActionsDropdownMouseEventCallback;
   mouseLeaveButtonCallback?: ActionsDropdownMouseEventCallback;
-  mouseEnterOptionCallback?: ActionsDropdownMouseEventCallback;
+  mouseEnterItemCallback?: ActionsDropdownMouseEventCallback;
   mouseLeaveDropdownCallback?: ActionsDropdownMouseEventCallback;
-  mouseClickOptionCallback?: ActionsDropdownMouseEventCallback;
+  mouseClickItemCallback?: ActionsDropdownMouseEventCallback;
 }

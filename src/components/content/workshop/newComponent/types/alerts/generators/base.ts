@@ -14,11 +14,11 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class AlertBase extends ComponentBuilder {
 
-  public static setChildComponentsOptions(alertBaseComponent: WorkshopComponent): void {
-    const baseComponentOptions = [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE];
+  public static setChildComponentsItems(alertBaseComponent: WorkshopComponent): void {
+    const baseComponentItems = [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE];
     const childComponentMaxCount = { max: { [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
-    ComponentBuilder.setChildComponentsOptionsProperties(alertBaseComponent,
-      baseComponentOptions, baseComponentOptions, childComponentMaxCount);
+    ComponentBuilder.setChildComponentsItemsProperties(alertBaseComponent,
+      baseComponentItems, baseComponentItems, childComponentMaxCount);
   }
 
   private static createDefaultCss(): CustomCss {
@@ -72,7 +72,7 @@ export const alertBase: ComponentGenerator = {
     uniqueSubcomponentIdState.resetUniqueId();
     const alertBaseComponent = ComponentBuilder.createBaseComponent(
       { componentType: COMPONENT_TYPES.ALERT, baseName }, AlertBase.createBaseSubcomponent, false);
-    AlertBase.setChildComponentsOptions(alertBaseComponent);
+    AlertBase.setChildComponentsItems(alertBaseComponent);
     AlertBaseSpecificSettings.set(alertBaseComponent);
     return alertBaseComponent;
   },

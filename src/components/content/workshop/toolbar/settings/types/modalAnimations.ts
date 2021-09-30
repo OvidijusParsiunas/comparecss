@@ -8,7 +8,7 @@ import { SettingPaths } from '../../../../../../interfaces/settingPaths';
 // cannot point to the setting directly due to dependency invertion
 function getSettingPath(): SettingPaths {
   return [
-    {optionName: WORKSHOP_TOOLBAR_OPTION_TYPES.BACKDROP, settingName: 'Animation Duration'},
+    { optionName: WORKSHOP_TOOLBAR_OPTION_TYPES.BACKDROP, settingName: 'Animation Duration' },
   ];
 }
 
@@ -38,7 +38,7 @@ export default {
       spec: {
         name: SETTING_NAMES.ENTRANCE,
         options: DropdownUtils.generateDropdownStructure(Object.values(MODAL_ANIMATION_OPEN_TYPES)),
-        activeOptionPropertyKeyName: 'type',
+        activeItemPropertyKeyName: 'type',
         customFeatureObjectKeys: ['customFeatures', 'animations', 'display', 'open', 'type'],
       },
     },
@@ -47,7 +47,7 @@ export default {
       spec: {
         name: SETTING_NAMES.EXIT,
         options: DropdownUtils.generateDropdownStructure(Object.values(MODAL_ANIMATION_CLOSE_TYPES)),
-        activeOptionPropertyKeyName: 'type',
+        activeItemPropertyKeyName: 'type',
         customFeatureObjectKeys: ['customFeatures', 'animations', 'display', 'close', 'type'],
       },
     },

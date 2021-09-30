@@ -6,24 +6,24 @@ export class AnimationPreview {
   private static getActionsDropdownMouseEventCallbacks(isOpenAnimation: boolean): ActionsDropdownMouseEventCallbacks {
     return {
       mouseEnterButtonCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
-        event.settingsComponent.$emit('play-animation-preview', [event.triggeredOptionName, isOpenAnimation] as PlayAnimationPreviewEvent);
+        event.settingsComponent.$emit('play-animation-preview', [event.triggeredItemName, isOpenAnimation] as PlayAnimationPreviewEvent);
       },
       mouseLeaveButtonCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
         event.settingsComponent.$emit('stop-animation-preview');
       },
-      mouseEnterOptionCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
-        event.settingsComponent.$emit('play-animation-preview', [event.triggeredOptionName, isOpenAnimation] as PlayAnimationPreviewEvent);
+      mouseEnterItemCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
+        event.settingsComponent.$emit('play-animation-preview', [event.triggeredItemName, isOpenAnimation] as PlayAnimationPreviewEvent);
       },
       mouseLeaveDropdownCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
         event.settingsComponent.$emit('stop-animation-preview');
       },
-      mouseClickOptionCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
+      mouseClickItemCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
         if (!event.isCustomFeatureResetTriggered) {
           event.settingsComponent.$emit('stop-animation-preview');
         }
       }
     };
-  };
+  }
 
   public static readonly EXIT_ACTIONS_DROPDOWN_MOUSE_EVENT_CALLBACKS: ActionsDropdownMouseEventCallbacks = {
     ...AnimationPreview.getActionsDropdownMouseEventCallbacks(false),

@@ -1,5 +1,5 @@
 import { AlignedLayerSection, BackdropProperties, ComponentCenteringInScreen, Image, SubcomponentProperties, Text, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { DropdownOptionsDisplayStatusUtils } from '../../../utils/dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
+import { DropdownItemsDisplayStatusUtils } from '../../../utils/dropdownItemsDisplayStatusUtils/dropdownItemsDisplayStatusUtils';
 import { BASE_SUBCOMPONENT_NAMES, MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { NewComponentStyleProperties } from '../../../../../../consts/newComponentStyleProperties';
@@ -118,12 +118,12 @@ export class ComponentBuilder {
     };
   }
 
-  protected static setChildComponentsOptionsProperties(component: WorkshopComponent, layerComponentsOptions: BASE_SUBCOMPONENT_NAMES[],
-      newChildComponentsOptions: BASE_SUBCOMPONENT_NAMES[], childComponentCount: ChildComponentCount): void {
-    const layerComponentOptionsStructure = DropdownUtils.generateDropdownStructure(layerComponentsOptions);
-    const newChildComponentsOptionsStructure = DropdownUtils.generateDropdownStructure(newChildComponentsOptions);
-    component.newChildComponentsOptionsRefs = { layer: layerComponentOptionsStructure };
-    component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsOptions = newChildComponentsOptionsStructure;
+  protected static setChildComponentsItemsProperties(component: WorkshopComponent, layerComponentsItems: BASE_SUBCOMPONENT_NAMES[],
+      newChildComponentsItems: BASE_SUBCOMPONENT_NAMES[], childComponentCount: ChildComponentCount): void {
+    const layerComponentItemsStructure = DropdownUtils.generateDropdownStructure(layerComponentsItems);
+    const newChildComponentsItemsStructure = DropdownUtils.generateDropdownStructure(newChildComponentsItems);
+    component.newChildComponentsItemsRefs = { layer: layerComponentItemsStructure };
+    component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsItems = newChildComponentsItemsStructure;
     component.childComponentCount = childComponentCount;
   }
 
@@ -144,12 +144,12 @@ export class ComponentBuilder {
 
   private static createEmptyComponentPreviewStructure(baseSubcomponentName: string, isBaseOptional = true): ComponentPreviewStructure {
     const subcomponentDropdownStructure = { [baseSubcomponentName]:
-      isBaseOptional ? DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject() : {} };
+      isBaseOptional ? DropdownItemsDisplayStatusUtils.createDropdownItemDisplayStatusReferenceObject() : {} };
     return {
       layeringType: 'vertical',
       layers: [],
       subcomponentDropdownStructure,
-      subcomponentNameToDropdownOptionName: { [baseSubcomponentName]: baseSubcomponentName },
+      subcomponentNameToDropdownItemName: { [baseSubcomponentName]: baseSubcomponentName },
     }
   }
 

@@ -1,6 +1,4 @@
 set the dropdown button width by a prop - should also set the option menu width (increase the size to the selected option - dropdown is longest)
-rename dropdown option to dropdown item
-dropdown will probably need to have its own base name when child
 change copy child component to sync child component - new UX
 lock button for dropdown menu (additionally could do the same for modal component) - or close it when another component is clicked (when child)
 

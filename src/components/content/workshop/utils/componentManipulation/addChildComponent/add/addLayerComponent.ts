@@ -1,4 +1,4 @@
-import { DropdownOptionsDisplayStatusUtils } from '../../../dropdownOptionsDisplayStatusUtils/dropdownOptionsDisplayStatusUtils';
+import { DropdownItemsDisplayStatusUtils } from '../../../dropdownItemsDisplayStatusUtils/dropdownItemsDisplayStatusUtils';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { OverwritePropertiesFunc } from '../../../../../../../interfaces/overwriteSubcomponentPropertiesFunc';
@@ -19,21 +19,21 @@ import JSONUtils from '../../../generic/jsonUtils';
 
 export class AddLayerComponent extends AddComponentShared {
 
-  private static addNewChildComponentsOptions(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
-    if (containerComponent.newChildComponentsOptionsRefs?.layer) {
-      newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsOptions = containerComponent.newChildComponentsOptionsRefs.layer;
+  private static addNewChildComponentsItems(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
+    if (containerComponent.newChildComponentsItemsRefs?.layer) {
+      newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsItems = containerComponent.newChildComponentsItemsRefs.layer;
     }
   }
 
-  private static updateDropdownStructureIfOptionFound(containerComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure,
+  private static updateDropdownStructureIfItemFound(containerComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure,
       newComponent: WorkshopComponent, masterComponent: WorkshopComponent): boolean {
     const newComponentBaseName = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
     const newComponentDropdownStructure = { [newComponentBaseName]: { 
-      ...DropdownOptionsDisplayStatusUtils.createDropdownOptionDisplayStatusReferenceObject(newComponentBaseName),
+      ...DropdownItemsDisplayStatusUtils.createDropdownItemDisplayStatusReferenceObject(newComponentBaseName),
     }};
-    const { subcomponentNameToDropdownOptionName } = masterComponent.componentPreviewStructure;
+    const { subcomponentNameToDropdownItemName } = masterComponent.componentPreviewStructure;
     const containerComponentBaseName = containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
-    Object.assign(dropdownStructure[subcomponentNameToDropdownOptionName[containerComponentBaseName]], newComponentDropdownStructure);
+    Object.assign(dropdownStructure[subcomponentNameToDropdownItemName[containerComponentBaseName]], newComponentDropdownStructure);
     return true;
   }
 
@@ -108,9 +108,9 @@ export class AddLayerComponent extends AddComponentShared {
     AddComponentShared.populateMasterComponentWithNewSubcomponents(masterComponent, newComponent.subcomponents);
     AddLayerComponent.addNewComponentToComponentPreview(higherComponentContainer, newComponent);
     if (isEditable) TraverseComponentViaDropdownStructure.traverseUsingComponent(containerComponent,
-      AddLayerComponent.updateDropdownStructureIfOptionFound, newComponent, masterComponent);
-    AddComponentShared.addNewSubcomponentNameInContainerDropdownOptionNameMap(masterComponent, newComponent, isEditable);
-    AddLayerComponent.addNewChildComponentsOptions(higherComponentContainer, newComponent);
+      AddLayerComponent.updateDropdownStructureIfItemFound, newComponent, masterComponent);
+    AddComponentShared.addNewSubcomponentNameInContainerDropdownItemNameMap(masterComponent, newComponent, isEditable);
+    AddLayerComponent.addNewChildComponentsItems(higherComponentContainer, newComponent);
     IncrementChildComponentCount.increment(higherComponentContainer, layerName);
     AddComponentShared.cleanSubcomponentProperties(newComponent);
     newComponent.containerComponent = higherComponentContainer;

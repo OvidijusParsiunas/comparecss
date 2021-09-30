@@ -28,7 +28,7 @@ export class DecrementChildComponentCount extends ChildComponentCountShared {
     if (childComponentCount) {
       const removedSubcomponentNamePrefix = StringUtils.getFirstWordInString(removedChildComponentBaseName);
       DecrementChildComponentCount.decrementCurrentCount(childComponentCount, removedSubcomponentNamePrefix);
-      ChildComponentCountShared.setAddPreviewDropdownOptionStateIfConditionMet(
+      ChildComponentCountShared.setAddPreviewDropdownItemStateIfConditionMet(
         DecrementChildComponentCount.isChildComponentCountLowerThanMax.bind({ childComponentCount, removedSubcomponentNamePrefix } as ConditionFuncContextValues),
         parentComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE], 
         removedSubcomponentNamePrefix, true);

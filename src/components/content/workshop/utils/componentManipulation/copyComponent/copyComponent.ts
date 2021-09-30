@@ -1,7 +1,7 @@
 import { PropertyOverwritingExecutablesUtils } from '../../../newComponent/types/shared/propertyOverwritingExecutables/propertyOverwritingExecutablesUtils';
-import { UpdateGenericComponentDropdownOptionNames } from '../updateChildComponent/updateGenericComponentDropdownOptionNames';
+import { UpdateGenericComponentDropdownItemNames } from '../updateChildComponent/updateGenericComponentDropdownItemNames';
 import { componentTypeToStyleGenerators } from '../../../newComponent/types/componentTypeToStyleGenerators';
-import { UpdateLayerDropdownOptionNames } from '../updateChildComponent/updateLayerDropdownOptionNames';
+import { UpdateLayerDropdownItemNames } from '../updateChildComponent/updateLayerDropdownItemNames';
 import { BaseSubcomponentRef, Layer } from '../../../../../../interfaces/componentPreviewStructure';
 import { uniqueSubcomponentIdState } from '../../componentGenerator/uniqueSubcomponentIdState';
 import { ComponentBuilder } from '../../../newComponent/types/shared/componentBuilder';
@@ -41,10 +41,10 @@ export class CopyComponent {
       const copiedLayerStyle = componentBeingCopied.subcomponents[layer.subcomponentProperties.name].seedComponent.style;
       const newLayer = AddLayerComponent.add(newComponent, copiedLayerStyle, true);
       CopyComponent.copyAlignedSectionComponents(newComponent.componentPreviewStructure.layers[index], layer, newComponent, baseComponents);
-      UpdateGenericComponentDropdownOptionNames.updateViaParentLayerPreviewStructure(newComponent, newComponent.componentPreviewStructure.layers[index]);
+      UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(newComponent, newComponent.componentPreviewStructure.layers[index]);
       CopySubcomponents.copyComponentSubcomponents(layer.subcomponentProperties.seedComponent, newLayer);
     });
-    UpdateLayerDropdownOptionNames.update(newComponent, 0);
+    UpdateLayerDropdownItemNames.update(newComponent, 0);
   }
 
   private static copySubcomponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {

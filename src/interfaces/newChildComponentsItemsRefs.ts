@@ -1,5 +1,5 @@
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 
-export interface NewChildComponentsOptionsRefs {
+export interface NewChildComponentsItemsRefs {
   layer: NestedDropdownStructure;
 }

@@ -1,11 +1,11 @@
-import { MouseEnterOptionEvent } from './dropdownMenuMouseEvents';
+import { MouseEnterItemEvent } from './dropdownMenuMouseEvents';
 
 export interface DropdownCompositionAPI {
   mouseEnterButtonEventHandler?: () => void;
   mouseLeaveButtonEventHandler?: () => void;
-  mouseEnterOptionEventHandler?: (mouseEnterOptionEvent: MouseEnterOptionEvent) => void;
-  mouseLeaveOptionEventHandler?: (highlightedOption: string) => void;
-  hideDropdownMenuEventHandler?: (highlightedOption: string) => void;
-  mouseEnterAuxiliaryPaddingEventHandler?: (highlightedOption: string) => void;
-  mouseLeaveAuxiliaryPaddingEventHandler?: (highlightedOption: string) => void;
+  mouseEnterItemEventHandler?: (mouseEnterItemEvent: MouseEnterItemEvent) => void;
+  mouseLeaveItemEventHandler?: (highlightedItem: string) => void;
+  hideDropdownMenuEventHandler?: (highlightedItem: string) => void;
+  mouseEnterAuxiliaryPaddingEventHandler?: (highlightedItem: string) => void;
+  mouseLeaveAuxiliaryPaddingEventHandler?: (highlightedItem: string) => void;
 }
