@@ -1,5 +1,5 @@
 import { TraverseComponentViaPreviewStructureChildFirst } from '../../../utils/componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureChildFirst';
-import { CopyChildComponentModeTempPropertiesUtils } from './modeUtils/copyChildComponentModeTempPropertiesUtils';
+import { SyncChildComponentModeTempPropertiesUtils } from './modeUtils/syncChildComponentModeTempPropertiesUtils';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SubcomponentPreviewTraversalState } from '../../../../../../interfaces/componentTraversal';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
@@ -52,18 +52,19 @@ export class SyncedComponent {
     if (callback) callback();
   }
 
-  private static findSubcomponentToCopy(componentThisIsSyncedTo: WorkshopComponent, newComponentBase: SubcomponentProperties): SubcomponentProperties {
+  private static findSubcomponentToSync(componentThisIsSyncedTo: WorkshopComponent, newComponentBase: SubcomponentProperties): SubcomponentProperties {
     const { subcomponents } = componentThisIsSyncedTo;
-    const subcomponentToCopy = Object.keys(subcomponents).find((subcomponentName) => {
+    const subcomponentToSync = Object.keys(subcomponents).find((subcomponentName) => {
       return subcomponents[subcomponentName].subcomponentType === newComponentBase.subcomponentType;
     });
-    return subcomponents[subcomponentToCopy];
+    return subcomponents[subcomponentToSync];
   }
 
+  // WORK 3 - refactor in sync to synced
   public static copyChildPropertiesFromInSyncContainerComponent(newComponent: WorkshopComponent, componentThisIsSyncedTo: WorkshopComponent): void {
     const newComponentBase = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    const subcomponentToCopy = SyncedComponent.findSubcomponentToCopy(componentThisIsSyncedTo, newComponentBase);
-    if (subcomponentToCopy) CopyChildComponentModeTempPropertiesUtils.copySubcomponent(false, newComponentBase, subcomponentToCopy);
+    const subcomponentToSync = SyncedComponent.findSubcomponentToSync(componentThisIsSyncedTo, newComponentBase);
+    if (subcomponentToSync) SyncChildComponentModeTempPropertiesUtils.syncSubcomponent(false, newComponentBase, subcomponentToSync);
   }
 
   public static updateIfSubcomponentNotInSync(masterComponent: WorkshopComponent, activeSubcomponent: SubcomponentProperties): void {

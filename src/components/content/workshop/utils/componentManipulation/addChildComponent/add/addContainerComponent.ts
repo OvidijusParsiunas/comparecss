@@ -1,6 +1,6 @@
 import { BUTTON_COMPONENTS_BASE_NAMES, CHILD_COMPONENTS_BASE_NAMES, DROPDOWN_COMPONENTS_BASE_NAMES, LAYER_COMPONENTS_BASE_NAMES, PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { PropertyOverwritingExecutablesUtils } from '../../../../newComponent/types/shared/propertyOverwritingExecutables/propertyOverwritingExecutablesUtils';
-import { CopyChildComponentModeTempPropertiesUtils } from '../../../../toolbar/options/copyChildComponent/modeUtils/copyChildComponentModeTempPropertiesUtils';
+import { SyncChildComponentModeTempPropertiesUtils } from '../../../../toolbar/options/syncChildComponent/modeUtils/syncChildComponentModeTempPropertiesUtils';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { OverwritePropertiesFunc } from '../../../../../../../interfaces/overwriteSubcomponentPropertiesFunc';
@@ -12,7 +12,7 @@ import { BaseSubcomponentRef, Layer } from '../../../../../../../interfaces/comp
 import { IncrementChildComponentCount } from '../../childComponentCount/incrementChildComponentCount';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
-import { SyncedComponent } from '../../../../toolbar/options/copyChildComponent/syncedComponent';
+import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
 import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -45,7 +45,7 @@ export class AddContainerComponent extends AddComponentShared {
 
   private static updateSyncedComponents(newComponentContainer: WorkshopComponent): void {
     if (newComponentContainer.sync.componentsSyncedToThis.size > 0) {
-      CopyChildComponentModeTempPropertiesUtils.copyComponentToMultipleTargets(newComponentContainer, newComponentContainer.sync.componentsSyncedToThis);
+      SyncChildComponentModeTempPropertiesUtils.syncComponentToMultipleTargets(newComponentContainer, newComponentContainer.sync.componentsSyncedToThis);
     }
   }
 
@@ -55,7 +55,7 @@ export class AddContainerComponent extends AddComponentShared {
     const newComponentBase = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const { subcomponentType, parentLayer } = newComponentBase;
     JSONUtils.setPropertyIfExists(newComponentContainer.coreSubcomponentRefs, subcomponentType as number, newComponentBase);
-    JSONUtils.setPropertyIfExists(newComponentContainer.sync.copyables?.subcomponents, subcomponentType as number, newComponentBase);
+    JSONUtils.setPropertyIfExists(newComponentContainer.sync.syncables?.subcomponents, subcomponentType as number, newComponentBase);
     SubcomponentTriggers.set(newComponentContainer, parentLayer.subcomponentProperties, newComponentBase, subcomponentType);
     PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(newComponentContainer);
   }

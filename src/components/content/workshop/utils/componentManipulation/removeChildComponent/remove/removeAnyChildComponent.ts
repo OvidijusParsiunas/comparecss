@@ -22,11 +22,11 @@ export class RemoveAnyChildComponent {
 
   // WORK1 - copy
   private static removeCoreSubcomponentRef(parentComponent: WorkshopComponent, removedSubcomponentProperties: SubcomponentProperties): void {
-    const { coreSubcomponentRefs, sync: { copyables } } = parentComponent;
+    const { coreSubcomponentRefs, sync: { syncables } } = parentComponent;
     const coreSubcomponentToBeRemoved = CoreSubcomponentRefsUtils.getActiveRefKeys(coreSubcomponentRefs)
       .find((subcomponentType) => coreSubcomponentRefs[subcomponentType] === removedSubcomponentProperties);
     if (coreSubcomponentToBeRemoved) coreSubcomponentRefs[coreSubcomponentToBeRemoved] = null;
-    if (coreSubcomponentToBeRemoved && copyables) copyables.subcomponents[coreSubcomponentToBeRemoved] = null;
+    if (coreSubcomponentToBeRemoved && syncables) syncables.subcomponents[coreSubcomponentToBeRemoved] = null;
   }
 
   private static updateDropdownItemNames(targetDetails: TargetRemovalDetails, subcomponentDropdownStructure: NestedDropdownStructure,

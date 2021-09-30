@@ -47,15 +47,15 @@
           :class="{'transition-item': areOptionButtonTransitionsAllowed}"
           v-if="!isFullPreviewModeActive">
           <transition-group name="horizontal-transition">
-            <button ref="copyChildComponentToggle"
-              v-if="isCopyButtonDisplayed()"
-              type="button" class="btn-group-option copy-child-component-button" :class="[
+            <button ref="syncChildComponentToggle"
+              v-if="isSyncButtonDisplayed()"
+              type="button" class="btn-group-option sync-child-component-button" :class="[
               {'transition-item': areOptionButtonTransitionsAllowed}, TOOLBAR_GENERAL_BUTTON_CLASS, OPTION_MENU_BUTTON_MARKER]"
-              @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleCopyChildComponentMode, true)"
-              @mouseenter="mouseHoverCopyChildComponentToggle(true)"
-              @mouseleave="mouseHoverCopyChildComponentToggle(false)">
+              @keydown.enter.prevent="$event.preventDefault()" @click="buttonClickMiddleware(toggleSyncChildComponentMode, true)"
+              @mouseenter="mouseHoverSyncChildComponentToggle(true)"
+              @mouseleave="mouseHoverSyncChildComponentToggle(false)">
               <!-- placed inside the button element to not have the transition -->
-              <div :class="isCopyChildComponentModeActive ? 'copy-child-component-icon-active' : 'copy-child-component-icon-default'"></div> 
+              <div :class="isSyncChildComponentModeActive ? 'sync-child-component-icon-active' : 'sync-child-component-icon-default'"></div> 
             </button>
             <button v-if="isInSyncButtonDisplayed()"
               type="button" class="btn-group-option"
@@ -154,7 +154,7 @@ import { MASTER_SUBCOMPONENT_BASE_NAME, TEMPORARY_COMPONENT_BASE_NAME } from '..
 import { CUSTOM_DROPDOWN_BUTTONS_UNIQUE_IDENTIFIERS } from '../../../../../consts/customDropdownButtonsUniqueIdentifiers.enum';
 import { ComponentDOMElementUtils } from '../../utils/componentManipulation/componentDOMElementUtils/componentDOMElementUtils';
 import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../componentPreview/utils/animations/consts/sharedConsts';
-import { CopyableComponentCardOverlaysToDisplay } from '../../../../../interfaces/copyableComponentCardOverlaysToDisplay';
+import { SyncableComponentCardOverlaysToDisplay } from '../../../../../interfaces/syncableComponentCardOverlaysToDisplay';
 import { RemoveChildComponentOverlay } from '../../componentPreview/utils/elements/overlays/removeChildComponentOverlay';
 import { ToggleExpandedModalPreviewModeEvent } from '../../../../../interfaces/toggleExpandedModalPreviewModeEvent';
 import { ComponentTypeToOptions, componentTypeToOptions } from '../options/componentOptions/componentTypeToOptions';
@@ -162,7 +162,7 @@ import { WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES } from '../../../../../consts/work
 import useSubcomponentDropdownEventHandlers from './dropdown/compositionAPI/useSubcomponentDropdownEventHandlers';
 import { MouseClickNewItemEvent, MouseEnterItemEvent } from '../../../../../interfaces/dropdownMenuMouseEvents';
 import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/toggleSubcomponentSelectModeEvent';
-import CopyChildComponentModeToggleUtils from './copyChildComponent/modeUtils/copyChildComponentModeToggle';
+import SyncChildComponentModeToggleUtils from './syncChildComponent/modeUtils/syncChildComponentModeToggle';
 import { SetActiveComponentUtils } from '../../utils/componentManipulation/utils/setActiveComponentUtils';
 import { fulPreviewModeState } from '../../componentPreview/utils/fullPreviewMode/fullPreviewModeState';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
@@ -177,7 +177,7 @@ import { NestedDropdownStructure } from '../../../../../interfaces/nestedDropdow
 import { AddChildComponentEvent } from '../../../../../interfaces/addChildComponentEvent';
 import { DropdownCompositionAPI } from '../../../../../interfaces/dropdownCompositionAPI';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../consts/domEventTriggerKeys.enum';
-import { CopyChildComponentUtils } from './copyChildComponent/copyChildComponentUtils';
+import { SyncChildComponentUtils } from './syncChildComponent/syncChildComponentUtils';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import SubcomponentSelectMode from './subcomponentSelectMode/subcomponentSelectMode';
 import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
@@ -186,7 +186,7 @@ import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum
 import useToolbarPositionToggle from './compositionApi/useToolbarPositionToggle';
 import { RemovalModalState } from '../../../../../interfaces/removalModalState';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
-import { SyncedComponent } from './copyChildComponent/syncedComponent';
+import { SyncedComponent } from './syncChildComponent/syncedComponent';
 import BrowserType from '../../utils/generic/browserType';
 import SharedUtils from '../settings/utils/sharedUtils';
 import { Ref } from 'node_modules/vue/dist/vue';
@@ -234,8 +234,8 @@ interface Data {
   activeOption: Option;
   isExpandedModalPreviewModeActive: boolean;
   isFullPreviewModeActive: boolean;
-  isCopyChildComponentModeActive: boolean;
-  hasCopyChildComponentModeClosedExpandedModal: boolean;
+  isSyncChildComponentModeActive: boolean;
+  hasSyncChildComponentModeClosedExpandedModal: boolean;
   areOptionButtonTransitionsAllowed: boolean;
   optionAnimationsInProgress: boolean;
   toolbarPositionToggleRef: HTMLElement;
@@ -279,8 +279,8 @@ export default {
     activeOption: { buttonName: null, type: null, enabledOnExpandedModalPreviewMode: null, enabledIfCustomFeaturePresentWithKeys: null },
     isExpandedModalPreviewModeActive: false,
     isFullPreviewModeActive: false,
-    isCopyChildComponentModeActive: false,
-    hasCopyChildComponentModeClosedExpandedModal: false,
+    isSyncChildComponentModeActive: false,
+    hasSyncChildComponentModeClosedExpandedModal: false,
     areOptionButtonTransitionsAllowed: false,
     optionAnimationsInProgress: false,
     toolbarPositionToggleRef: null,
@@ -301,7 +301,7 @@ export default {
     executeCallbackAfterTimeout(callback: () => void): void {
       setTimeout(() => {
         callback();
-      }, this.hasCopyChildComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
+      }, this.hasSyncChildComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     },
     initiateSubcomponentSelectMode(buttonElement: HTMLElement): void {
       if (subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()) {
@@ -440,16 +440,16 @@ export default {
       }
       return null;
     },
-    isCopyButtonDisplayed(): boolean {
-      return CopyChildComponentUtils.isCopyOptionButtonDisplayed(this.component);
+    isSyncButtonDisplayed(): boolean {
+      return SyncChildComponentUtils.isSyncOptionButtonDisplayed(this.component);
     },
-    mouseHoverCopyChildComponentToggle(isMouseEnter: boolean): void {
+    mouseHoverSyncChildComponentToggle(isMouseEnter: boolean): void {
       const activeComponent: WorkshopComponent = this.component.subcomponents[this.component.activeSubcomponentName].seedComponent;
-      const copyableComponentCardOverlaysToDisplay: CopyableComponentCardOverlaysToDisplay = { isDisplaying: isMouseEnter, activeComponent };
-      this.$emit('display-copyable-component-card-overlays', copyableComponentCardOverlaysToDisplay);
+      const syncableComponentCardOverlaysToDisplay: SyncableComponentCardOverlaysToDisplay = { isDisplaying: isMouseEnter, activeComponent };
+      this.$emit('display-syncable-component-card-overlays', syncableComponentCardOverlaysToDisplay);
     },
-    toggleCopyChildComponentMode(): void {
-      CopyChildComponentModeToggleUtils.toggleCopyChildComponentMode(this);
+    toggleSyncChildComponentMode(): void {
+      SyncChildComponentModeToggleUtils.toggleSyncChildComponentMode(this);
     },
     toggleInSyncToOff(callback?: () => void): void {
       this.temporarilyAllowOptionAnimations(SyncedComponent.toggleSubcomponentSyncToOff.bind(this, this.component, callback));
@@ -675,17 +675,17 @@ export default {
   .horizontal-transition-leave-active {
     position: absolute !important;
   }
-  .copy-child-component-button {
+  .sync-child-component-button {
     height: 38px;
   }
-  .copy-child-component-icon-default {
+  .sync-child-component-icon-default {
     width: 1em;
     height: 100%;
     background: url('../../../../../assets/svg/copy.svg') center no-repeat;
     background-size: 15px auto;
     pointer-events: none;
   }
-  .copy-child-component-icon-active {
+  .sync-child-component-icon-active {
     width: 1em;
     height: 100%;
     background: url('../../../../../assets/svg/copy-active.svg') center no-repeat;

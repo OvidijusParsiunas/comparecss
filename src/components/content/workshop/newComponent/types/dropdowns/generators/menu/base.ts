@@ -20,8 +20,8 @@ import { ComponentBuilder } from '../../../shared/componentBuilder';
 
 class DropdownMenuBase extends ComponentBuilder {
 
-  public static setCopyableSubcomponents(dropdownMenuComponent: WorkshopComponent): void {
-    dropdownMenuComponent.sync.copyables = ComponentBuilder.createCopyablesWithSubcomponents({
+  public static setSyncableSubcomponents(dropdownMenuComponent: WorkshopComponent): void {
+    dropdownMenuComponent.sync.syncables = ComponentBuilder.createSyncablesObjectUsingSubcomponents({
       [SUBCOMPONENT_TYPES.BASE]: dropdownMenuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE] });
   }
 
@@ -116,7 +116,7 @@ export const dropdownMenuBase: ComponentGenerator = {
       { componentType: COMPONENT_TYPES.DROPDOWN_MENU, baseName }, DropdownMenuBase.createBaseSubcomponent, false);
     DropdownMenuBase.setAreLayersInSyncByDefault(dropdownMenuComponent);
     DropdownMenuBase.setTriggerFuncOnSettingChange(dropdownMenuComponent);
-    DropdownMenuBase.setCopyableSubcomponents(dropdownMenuComponent);
+    DropdownMenuBase.setSyncableSubcomponents(dropdownMenuComponent);
     MenuBaseSpecificSettings.set(dropdownMenuComponent);
     return dropdownMenuComponent;
   },

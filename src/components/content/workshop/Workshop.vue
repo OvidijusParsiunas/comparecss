@@ -14,10 +14,10 @@
           <component-list ref="componentList"
             :components="components"
             :currentlySelectedComponent="componentSelectedBeforeFadeAnimation || currentlySelectedComponent"
-            :isCopyChildComponentModeActive="isCopyChildComponentModeActive"
-            :currentlyHoveredComponentForCopyChild="currentlyHoveredComponentForCopyChild"
-            :currentlySelectedComponentForCopyChild="currentlySelectedComponentForCopyChild"
-            :copyableComponentCardOverlaysToDisplay="copyableComponentCardOverlaysToDisplay"
+            :isSyncChildComponentModeActive="isSyncChildComponentModeActive"
+            :currentlyHoveredComponentToSync="currentlyHoveredComponentToSync"
+            :currentlySelectedComponentForSync="currentlySelectedComponentForSync"
+            :syncableComponentCardOverlaysToDisplay="syncableComponentCardOverlaysToDisplay"
             @set-active-component="setActiveComponent($event)"
             @copy-component="copyComponent(this, $event)"
             @remove-component="removeComponent(this, $event)"
@@ -48,12 +48,12 @@
               @toggle-full-preview-mode="$refs.contents.toggleFullPreviewMode($event, toggleFullPreviewModeOffCallback)"
               @play-animation-preview="$refs.contents.playAnimationPreview($event)"
               @stop-animation-preview="$refs.contents.stopAnimationPreview()"
-              @toggle-copy-child-component-mode="toggleCopyChildComponentMode($event)"
+              @toggle-sync-child-component-mode="toggleSyncChildComponentMode($event)"
               @add-child-component="addChildComponent(this, $event)"
               @remove-child-component="removeChildComponent(this, $event)"
               @change-subcomponent-order="changeSubcomponentOrder(this, $event)"
               @change-subcomponent-alignment="changeSubcomponentAlignment(this, $event)"
-              @display-copyable-component-card-overlays="displayCopyableComponentCardOverlays($event)"/>
+              @display-syncable-component-card-overlays="displaySyncableComponentCardOverlays($event)"/>
             <component-contents ref="contents"
               :component="currentlySelectedComponent"
               :componentPreviewAssistance="componentPreviewAssistance"
@@ -110,12 +110,12 @@
 </template>
 
 <script lang="ts">
-import { CopyChildComponentModeCardEvents } from './toolbar/options/copyChildComponent/modeUtils/copyChildComponentModeCardEvents';
+import { ToggleSyncChildComponentModeState } from './toolbar/options/syncChildComponent/modeUtils/toggleSyncChildComponentModeState';
+import { SyncChildComponentModeCardEvents } from './toolbar/options/syncChildComponent/modeUtils/syncChildComponentModeCardEvents';
 import { removeChildComponentModalState } from './utils/componentManipulation/removeChildComponent/removeChildComponentModalState';
 import { RemoveChildComponentOverlay } from './componentPreview/utils/elements/overlays/removeChildComponentOverlay';
-import { CopyableComponentCardOverlaysToDisplay } from '../../../interfaces/copyableComponentCardOverlaysToDisplay';
-import { ToggleCopyChildComponentModeState } from './utils/copyChildComponent/toggleCopyChildComponentModeState';
-import { ToggleCopyChildComponentModeEvent } from '../../../interfaces/toggleCopyChildComponentModeEvent';
+import { SyncableComponentCardOverlaysToDisplay } from '../../../interfaces/syncableComponentCardOverlaysToDisplay';
+import { ToggleSyncChildComponentModeEvent } from '../../../interfaces/toggleSyncChildComponentModeEvent';
 import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSubcomponentSelectModeEvent';
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_CHILD_COMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { SetActiveComponentUtils } from './utils/componentManipulation/utils/setActiveComponentUtils';
@@ -154,13 +154,13 @@ interface Data {
   components: WorkshopComponent[];
   tempComponents: WorkshopComponent[];
   currentlySelectedComponent: WorkshopComponent;
-  currentlyHoveredComponentForCopyChild: WorkshopComponent;
-  currentlySelectedComponentForCopyChild: WorkshopComponent;
+  currentlyHoveredComponentToSync: WorkshopComponent;
+  currentlySelectedComponentForSync: WorkshopComponent;
   componentPreviewAssistance: ComponentPreviewAssistance;
   workshopEventCallbacks: (() => boolean)[];
-  isCopyChildComponentModeActive: boolean;
+  isSyncChildComponentModeActive: boolean;
   componentSelectedBeforeFadeAnimation: WorkshopComponent;
-  copyableComponentCardOverlaysToDisplay: CopyableComponentCardOverlaysToDisplay;
+  syncableComponentCardOverlaysToDisplay: SyncableComponentCardOverlaysToDisplay;
 }
 
 export default {
@@ -184,12 +184,12 @@ export default {
     ],
     tempComponents: [],
     currentlySelectedComponent: null,
-    currentlyHoveredComponentForCopyChild: null,
-    currentlySelectedComponentForCopyChild: null,
+    currentlyHoveredComponentToSync: null,
+    currentlySelectedComponentForSync: null,
     componentSelectedBeforeFadeAnimation: null,
     workshopEventCallbacks: [],
-    isCopyChildComponentModeActive: false,
-    copyableComponentCardOverlaysToDisplay: null,
+    isSyncChildComponentModeActive: false,
+    syncableComponentCardOverlaysToDisplay: null,
   }),
   mounted(): void {
     document.getElementById('comparecss-sidenav').style.display = 'none';
@@ -199,19 +199,19 @@ export default {
     document.addEventListener('mouseup', this.triggerWorkshopEventCallbacks);
   },
   methods: {
-    displayCopyableComponentCardOverlays(copyableComponentCardOverlaysToDisplay: CopyableComponentCardOverlaysToDisplay): void {
-      this.copyableComponentCardOverlaysToDisplay = copyableComponentCardOverlaysToDisplay;
+    displaySyncableComponentCardOverlays(syncableComponentCardOverlaysToDisplay: SyncableComponentCardOverlaysToDisplay): void {
+      this.syncableComponentCardOverlaysToDisplay = syncableComponentCardOverlaysToDisplay;
     },
     setActiveComponent(component: WorkshopComponent): void {
       SetActiveComponentUtils.setActiveComponent(this, component);
     },
     componentCardHovered(componentCardHoveredEvent: ComponentCardHoveredEvent): void {
       const [hoveredComponent, isMouseEnter] = componentCardHoveredEvent;
-      if (this.isCopyChildComponentModeActive) {
+      if (this.isSyncChildComponentModeActive) {
         if (isMouseEnter) {
-          CopyChildComponentModeCardEvents.mouseEnter(this, hoveredComponent);
+          SyncChildComponentModeCardEvents.mouseEnter(this, hoveredComponent);
         } else {
-          CopyChildComponentModeCardEvents.mouseLeave(this);
+          SyncChildComponentModeCardEvents.mouseLeave(this);
         }
       }
     },
@@ -248,8 +248,8 @@ export default {
       this.addWorkshopEventCallback(workshopEventCallback); 
       this.$refs.contents.toggleSubcomponentSelectMode(true);
     },
-    toggleCopyChildComponentMode(event: ToggleCopyChildComponentModeEvent): void {
-      ToggleCopyChildComponentModeState.toggle(this, event);
+    toggleSyncChildComponentMode(event: ToggleSyncChildComponentModeEvent): void {
+      ToggleSyncChildComponentModeState.toggle(this, event);
     },
     isExpandedModalPreviewBackdropVisible(): boolean {
       const { subcomponents } = this.currentlySelectedComponent || {};

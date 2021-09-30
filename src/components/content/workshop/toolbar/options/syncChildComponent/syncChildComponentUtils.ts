@@ -3,33 +3,33 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.e
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 import { BUTTON_STYLES } from '../../../../../../consts/componentStyles.enum';
 
-export class CopyChildComponentUtils {
+export class SyncChildComponentUtils {
 
-  private static canSeedComponentBeOverwrittenByCopy(activeSubcomponent: SubcomponentProperties): boolean {
+  private static canSeedComponentBeOverwrittenBySynced(activeSubcomponent: SubcomponentProperties): boolean {
     return activeSubcomponent.seedComponent !== activeSubcomponent.seedComponent.masterComponent;
   }
 
-  private static canButtonBeOverwrittenByCopy(buttonSubcomponent: SubcomponentProperties): boolean {
+  private static canButtonBeOverwrittenBySynced(buttonSubcomponent: SubcomponentProperties): boolean {
     if (buttonSubcomponent.seedComponent.style === BUTTON_STYLES.CLOSE) return false;
     if (buttonSubcomponent.seedComponent.paddingComponent?.type === COMPONENT_TYPES.DROPDOWN) {
       return !buttonSubcomponent.seedComponent.paddingComponent.sync.componentThisIsSyncedTo;
     }
-    return CopyChildComponentUtils.canSeedComponentBeOverwrittenByCopy(buttonSubcomponent);
+    return SyncChildComponentUtils.canSeedComponentBeOverwrittenBySynced(buttonSubcomponent);
   }
 
-  public static isCopyOptionButtonDisplayed(activeComponent: WorkshopComponent): boolean {
+  public static isSyncOptionButtonDisplayed(activeComponent: WorkshopComponent): boolean {
     const activeSubcomponent = activeComponent.subcomponents[activeComponent.activeSubcomponentName];
     if (activeSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.BUTTON) {
-      return CopyChildComponentUtils.canButtonBeOverwrittenByCopy(activeSubcomponent);
+      return SyncChildComponentUtils.canButtonBeOverwrittenBySynced(activeSubcomponent);
     } else if (activeSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.DROPDOWN) {
-      return CopyChildComponentUtils.canSeedComponentBeOverwrittenByCopy(activeSubcomponent);
+      return SyncChildComponentUtils.canSeedComponentBeOverwrittenBySynced(activeSubcomponent);
     }
     return false;
   }
 
-  public static isComponentCopyable(subjectCopyableComponent: WorkshopComponent, activeComponent: WorkshopComponent): boolean {
-    if (subjectCopyableComponent !== activeComponent) {
-      return activeComponent.type === subjectCopyableComponent.type;
+  public static isComponentSyncable(subjectSyncableComponent: WorkshopComponent, activeComponent: WorkshopComponent): boolean {
+    if (subjectSyncableComponent !== activeComponent) {
+      return activeComponent.type === subjectSyncableComponent.type;
     }
     return false;
   }

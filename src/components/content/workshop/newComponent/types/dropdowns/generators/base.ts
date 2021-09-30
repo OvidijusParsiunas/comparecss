@@ -51,9 +51,9 @@ class DropdownBase extends ComponentBuilder {
     DropdownBase.overwriteButtonCustomFeatures(paddingComponent);
   }
   
-  public static setCopyableSubcomponents(dropdownComponent: WorkshopComponent): void {
+  public static setSyncableSubcomponents(dropdownComponent: WorkshopComponent): void {
     const { coreSubcomponentRefs } = dropdownComponent;
-    dropdownComponent.sync.copyables = {
+    dropdownComponent.sync.syncables = {
       subcomponents: {
         [SUBCOMPONENT_TYPES.BASE]: coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
       },
@@ -115,7 +115,7 @@ export const dropdownBase: ComponentGenerator = {
     paddingComponent.componentPreviewStructure.subcomponentDropdownStructure[paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] = { ...buttonComponent.componentPreviewStructure.subcomponentDropdownStructure };
     paddingComponent.paddingComponentChild = buttonComponent;
     buttonComponent.paddingComponent = paddingComponent;
-    DropdownBase.setCopyableSubcomponents(paddingComponent);
+    DropdownBase.setSyncableSubcomponents(paddingComponent);
     DropdownBase.setAndExecutePropertyOverwritingExecutables(paddingComponent);
     return paddingComponent;
   },

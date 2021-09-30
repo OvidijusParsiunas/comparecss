@@ -43,7 +43,6 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: SETTING_NAMES.ALIGN,
-        // WORK3 - options will need to be changed to items
         options: DropdownUtils.generateDropdownStructure(Object.values(ALIGNED_SECTION_TYPES)),
         activeItemPropertyKeyName: 'section',
         customFeatureObjectKeys: ['customStaticFeatures', 'alignedLayerSection', 'section'],

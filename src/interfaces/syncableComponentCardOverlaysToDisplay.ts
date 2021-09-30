@@ -1,6 +1,6 @@
 import { WorkshopComponent } from './workshopComponent';
 
-export interface CopyableComponentCardOverlaysToDisplay {
+export interface SyncableComponentCardOverlaysToDisplay {
   isDisplaying: boolean;
   activeComponent: WorkshopComponent;
 }

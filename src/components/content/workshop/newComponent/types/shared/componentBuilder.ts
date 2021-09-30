@@ -9,7 +9,7 @@ import { WorkshopComponentCss } from '../../../../../../interfaces/workshopCompo
 import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { ChildComponentCount } from '../../../../../../interfaces/childComponentCount';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
-import { Copyables, CopyableSubcomponents } from '../../../../../../interfaces/sync';
+import { Syncables, SyncableSubcomponents } from '../../../../../../interfaces/sync';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
@@ -127,9 +127,9 @@ export class ComponentBuilder {
     component.childComponentCount = childComponentCount;
   }
 
-  protected static createCopyablesWithSubcomponents(copyableSubcomponents: CopyableSubcomponents): Copyables {
+  protected static createSyncablesObjectUsingSubcomponents(syncableSubcomponents: SyncableSubcomponents): Syncables {
     return {
-      subcomponents: copyableSubcomponents,
+      subcomponents: syncableSubcomponents,
       childComponents: [],
     };
   }

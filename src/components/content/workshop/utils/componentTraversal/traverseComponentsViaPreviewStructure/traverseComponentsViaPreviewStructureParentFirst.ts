@@ -85,7 +85,7 @@ initial implementation of traversal made specifically for two components or trav
 
   private static copyAlignedSections(callback: TraversableCallback, activeAlignedSections: AlignedSections, alignedSectionsToBeCopied: AlignedSections): void {
     Object.keys(activeAlignedSections).forEach((alignedSection) => {
-      CopyChildComponentModeTempPropertiesUtils.copyAlignedComponents(
+      SyncChildComponentModeTempPropertiesUtils.copyAlignedComponents(
         callback, activeAlignedSections[alignedSection], alignedSectionsToBeCopied?.[alignedSection]);
     });
   }
@@ -93,29 +93,29 @@ initial implementation of traversal made specifically for two components or trav
   private static copyLayers(callback: TraversableCallback, activeLayers: Layer[], layersToBeCopied: Layer[]): void {
     activeLayers.forEach((layer, layerIndex) => {
       const layerToBeCopied = layersToBeCopied?.[layerIndex];
-      CopyChildComponentModeTempPropertiesUtils.copyAlignedSections(callback, layer.sections.alignedSections, layerToBeCopied?.sections.alignedSections);
+      SyncChildComponentModeTempPropertiesUtils.copyAlignedSections(callback, layer.sections.alignedSections, layerToBeCopied?.sections.alignedSections);
       callback(layer.subcomponentProperties, layerToBeCopied?.subcomponentProperties);
     });
   }
 
-  private static copyComponent(callback: TraversableCallback, activeComponent: WorkshopComponent, componentToBeCopied: WorkshopComponent): void {
-    callback(activeComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE], componentToBeCopied?.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
-    CopyChildComponentModeTempPropertiesUtils.copyLayers(
-      callback, activeComponent.componentPreviewStructure.layers, componentToBeCopied?.componentPreviewStructure.layers);
+  private static copyComponent(callback: TraversableCallback, activeComponent: WorkshopComponent, componentToBeSynced: WorkshopComponent): void {
+    callback(activeComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE], componentToBeSynced?.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
+    SyncChildComponentModeTempPropertiesUtils.copyLayers(
+      callback, activeComponent.componentPreviewStructure.layers, componentToBeSynced?.componentPreviewStructure.layers);
   }
 
   private static copyPaddingComponentChild(callback: TraversableCallback, activePaddingChild: WorkshopComponent, paddingChildToBeCopied: WorkshopComponent): void {
-    CopyChildComponentModeTempPropertiesUtils.copyComponent(callback, activePaddingChild, paddingChildToBeCopied);
+    SyncChildComponentModeTempPropertiesUtils.copyComponent(callback, activePaddingChild, paddingChildToBeCopied);
     activePaddingChild.linkedComponents.auxiliary.forEach((auxiliaryComponent, index) => {
-      CopyChildComponentModeTempPropertiesUtils.copyComponent(callback, auxiliaryComponent, paddingChildToBeCopied?.linkedComponents.auxiliary[index]);
+      SyncChildComponentModeTempPropertiesUtils.copyComponent(callback, auxiliaryComponent, paddingChildToBeCopied?.linkedComponents.auxiliary[index]);
     });
   }
 
   private static traverseSubcomponentPreviewStructureOfSameComponents(callback: TraversableCallback, activeComponent: WorkshopComponent,
-      componentToBeCopied: WorkshopComponent): void {
-    CopyChildComponentModeTempPropertiesUtils.copyComponent(callback, activeComponent, componentToBeCopied);
+      componentToBeSynced: WorkshopComponent): void {
+    SyncChildComponentModeTempPropertiesUtils.copyComponent(callback, activeComponent, componentToBeSynced);
     if (activeComponent.paddingComponentChild) {
-      CopyChildComponentModeTempPropertiesUtils.copyPaddingComponentChild(callback, activeComponent.paddingComponentChild, componentToBeCopied?.paddingComponentChild);
+      SyncChildComponentModeTempPropertiesUtils.copyPaddingComponentChild(callback, activeComponent.paddingComponentChild, componentToBeSynced?.paddingComponentChild);
     }
   }
 

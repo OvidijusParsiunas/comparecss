@@ -8,17 +8,17 @@
           :thisComponent="component"
           :allComponents="components"
           :currentlySelectedComponent="currentlySelectedComponent"
-          :isCopyChildComponentModeActive="isCopyChildComponentModeActive"
-          :currentlyHoveredComponentForCopyChild="currentlyHoveredComponentForCopyChild"
-          :currentlySelectedComponentForCopyChild="currentlySelectedComponentForCopyChild"
-          :copyableComponentCardOverlaysToDisplay="copyableComponentCardOverlaysToDisplay"
+          :isSyncChildComponentModeActive="isSyncChildComponentModeActive"
+          :currentlyHoveredComponentToSync="currentlyHoveredComponentToSync"
+          :currentlySelectedComponentForSync="currentlySelectedComponentForSync"
+          :syncableComponentCardOverlaysToDisplay="syncableComponentCardOverlaysToDisplay"
           @set-active-component="$emit('set-active-component', $event)"
           @component-card-hovered="$emit('component-card-hovered', $event)"
           @copy-component="$emit('copy-component', $event)"
           @remove-component="$emit('remove-component', $event)"
           @stop-editing-class-name-callback="$emit('stop-editing-class-name-callback', $event)"
           @prepare-remove-component-modal="$emit('prepare-remove-component-modal', $event)"/>
-        <div v-if="!isCopyChildComponentModeActive"
+        <div v-if="!isSyncChildComponentModeActive"
           class="transition-item component-card component-body-container add-card"
           :class="COMPONENT_LIST_ITEM_MARKER"
           data-toggle="modal" :data-target="`#${NEW_COMPONENT_MODAL_ID}`"
@@ -64,13 +64,13 @@ export default {
   props: {
     components: Array,
     currentlySelectedComponent: Object,
-    currentlyHoveredComponentForCopyChild: Object,
-    currentlySelectedComponentForCopyChild: Object,
-    copyableComponentCardOverlaysToDisplay: Object,
-    isCopyChildComponentModeActive: Boolean,
+    currentlyHoveredComponentToSync: Object,
+    currentlySelectedComponentForSync: Object,
+    syncableComponentCardOverlaysToDisplay: Object,
+    isSyncChildComponentModeActive: Boolean,
   },
   watch: {
-    isCopyChildComponentModeActive(): void {
+    isSyncChildComponentModeActive(): void {
       if (this.listAnimationName === 'vertical-transition') {
         setTimeout(() => {
            this.listAnimationName = 'horizontal-transition';

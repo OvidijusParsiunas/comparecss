@@ -1,5 +1,4 @@
 set the dropdown button width by a prop - should also set the option menu width (increase the size to the selected option - dropdown is longest)
-change copy child component to sync child component - new UX
 lock button for dropdown menu (additionally could do the same for modal component) - or close it when another component is clicked (when child)
 
 night diving
@@ -38,7 +37,7 @@ UX:
   see if the subcomponent add and subcomponent remove hover and active css is ok
   check if position option in the modal is ok to use
 
-have a concept of a template component where the user can define what properties they want to be copyable and the custom Css that is not copyable can go under a staticCss object
+have a concept of a template component where the user can define what properties they want to be syncable and the custom Css that is not syncable can go under a staticCss object
 when this logic is added, sync button will be used for syncing with a template button and copy will be used to specifically copy a components
 ability to copy sibling child component instead of copying a standalone component
 copying child component will also need to offer an option from the app defaults

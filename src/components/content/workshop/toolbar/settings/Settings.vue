@@ -202,7 +202,7 @@ import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enu
 import { UseActionsDropdown } from '../../../../../interfaces/useActionsDropdown';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { RANGE_SETTING_MARKER } from '../../../../../consts/elementClassMarkers';
-import { SyncedComponent } from '../options/copyChildComponent/syncedComponent';
+import { SyncedComponent } from '../options/syncChildComponent/syncedComponent';
 import ActionsDropdownUtils from './compositionAPI/utils/actionsDropdownUtils';
 import { UnsetColorButton } from './utils/colorPickerUtils/unsetColorButton';
 import { ColorPickerUtils } from './utils/colorPickerUtils/colorPickerUtils';

@@ -13,27 +13,27 @@
           @input="classNameInputEvent"
           >
         <h5 v-else class="card-title component-card-title" :class="COMPONENT_CARD_MARKER">{{thisComponent.className}}</h5>
-        <div v-if="!isCopyChildComponentModeActive" :class="COMPONENT_CARD_MARKER">
+        <div v-if="!isSyncChildComponentModeActive" :class="COMPONENT_CARD_MARKER">
           <a ref="componentCardClassNameEditorButton" class="btn btn-success" :class="COMPONENT_CARD_MARKER" @mousedown="preventBubbling" @mouseup="editClassName">Edit</a>
           <a class="btn btn-warning" :class="COMPONENT_CARD_MARKER" @mousedown="preventBubbling" @mouseup="copyComponent">Copy</a>
           <a class="btn btn-danger component-card-remove" :class="COMPONENT_CARD_MARKER" data-toggle="modal" :data-target="removeComponentModalId" @mousedown="preventBubbling" @mouseup="removeComponent">Remove</a>
         </div>
         <div v-else :class="COMPONENT_CARD_MARKER">
-          <a class="btn btn-success" :class="CONFIRM_CHILD_COMPONENT_TO_COPY_MARKER">
+          <a class="btn btn-success" :class="CONFIRM_CHILD_COMPONENT_TO_SYNC_MARKER">
             <font-awesome-icon icon="check"/>
           </a>
         </div>
       </div>
-      <div v-if="isDisplayingCopyableComponentCardOverlay()" class="copy-child-component-overlay static-position"></div>
+      <div v-if="isDisplayingSyncableComponentCardOverlay()" class="sync-child-component-overlay static-position"></div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { CopyableComponentCardOverlaysToDisplay } from '../../../../interfaces/copyableComponentCardOverlaysToDisplay';
-import { CopyChildComponentUtils } from '../toolbar/options/copyChildComponent/copyChildComponentUtils';
+import { SyncableComponentCardOverlaysToDisplay } from '../../../../interfaces/syncableComponentCardOverlaysToDisplay';
+import { SyncChildComponentUtils } from '../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { WorkshopEventCallbackReturn } from '../../../../interfaces/workshopEventCallbackReturn';
-import { CONFIRM_CHILD_COMPONENT_TO_COPY_MARKER } from '../../../../consts/elementClassMarkers';
+import { CONFIRM_CHILD_COMPONENT_TO_SYNC_MARKER } from '../../../../consts/elementClassMarkers';
 import { ComponentCardHoveredEvent } from '../../../../interfaces/componentCardHoveredEvent'
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopEventCallback } from '../../../../interfaces/workshopEventCallback';
@@ -52,7 +52,7 @@ interface Data {
   removeComponentModalId: string;
   isInputElementDisplayed: boolean;
   editorButtonClickedOnStopEditing: boolean;
-  CONFIRM_CHILD_COMPONENT_TO_COPY_MARKER: string;
+  CONFIRM_CHILD_COMPONENT_TO_SYNC_MARKER: string;
 }
 
 export default {
@@ -64,16 +64,16 @@ export default {
     COMPONENT_CARD_MARKER,
     removeComponentModalId: '',
     isInputElementDisplayed: false,
-    CONFIRM_CHILD_COMPONENT_TO_COPY_MARKER,
+    CONFIRM_CHILD_COMPONENT_TO_SYNC_MARKER,
     editorButtonClickedOnStopEditing: false,
   }),
   methods: {
     highlightCard(): string {
-      if (this.isCopyChildComponentModeActive) {
-        if (this.currentlySelectedComponentForCopyChild === this.thisComponent) {
-          return 'component-selected-during-copy-child-component-mode';
-        } else if (this.currentlyHoveredComponentForCopyChild === this.thisComponent) {
-          return 'component-hovered-during-copy-child-component-mode';
+      if (this.isSyncChildComponentModeActive) {
+        if (this.currentlySelectedComponentForSync === this.thisComponent) {
+          return 'component-selected-during-sync-child-component-mode';
+        } else if (this.currentlyHoveredComponentToSync === this.thisComponent) {
+          return 'component-hovered-during-sync-child-component-mode';
         }
       }
       if (this.currentlySelectedComponent === this.thisComponent) {
@@ -171,11 +171,11 @@ export default {
       this.setIsClassNameEditingInProgressState(false);
       this.isInputElementDisplayed = false;
     },
-    isDisplayingCopyableComponentCardOverlay(): boolean {
-      if (!this.copyableComponentCardOverlaysToDisplay) return;
-      const { isDisplaying, activeComponent } = this.copyableComponentCardOverlaysToDisplay as CopyableComponentCardOverlaysToDisplay;
+    isDisplayingSyncableComponentCardOverlay(): boolean {
+      if (!this.syncableComponentCardOverlaysToDisplay) return;
+      const { isDisplaying, activeComponent } = this.syncableComponentCardOverlaysToDisplay as SyncableComponentCardOverlaysToDisplay;
       if (isDisplaying) {
-        return CopyChildComponentUtils.isComponentCopyable(this.thisComponent, activeComponent);
+        return SyncChildComponentUtils.isComponentSyncable(this.thisComponent, activeComponent);
       }
       return false;
     }
@@ -184,10 +184,10 @@ export default {
     thisComponent: Object,
     allComponents: Object,
     currentlySelectedComponent: Object,
-    currentlyHoveredComponentForCopyChild: Object,
-    currentlySelectedComponentForCopyChild: Object,
-    copyableComponentCardOverlaysToDisplay: Object,
-    isCopyChildComponentModeActive: Boolean,
+    currentlyHoveredComponentToSync: Object,
+    currentlySelectedComponentForSync: Object,
+    syncableComponentCardOverlaysToDisplay: Object,
+    isSyncChildComponentModeActive: Boolean,
   }
 };
 </script>
@@ -220,12 +220,12 @@ export default {
   .component-selected:hover {
     border-color: #72abf0 !important;
   }
-  .component-selected-during-copy-child-component-mode {
+  .component-selected-during-sync-child-component-mode {
     background-color: rgb(255, 255, 213) !important;
     box-shadow: 0 0 1px rgb(194, 183, 87) !important;
     border-color: #fff6a3 !important;
   }
-  .component-hovered-during-copy-child-component-mode:hover {
+  .component-hovered-during-sync-child-component-mode:hover {
     background-color: rgb(255, 255, 231) !important;
     box-shadow: 0 0 1px rgb(212, 204, 124) !important;
     border-color: #fff6a3 !important;
@@ -236,7 +236,7 @@ export default {
     height: 100%;
     position: relative;
   }
-  .copy-child-component-overlay {
+  .sync-child-component-overlay {
     width: inherit;
     height: inherit;
     position: absolute;

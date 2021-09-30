@@ -1,4 +1,4 @@
-import { CopyChildComponentModeCardEvents } from '../../../toolbar/options/copyChildComponent/modeUtils/copyChildComponentModeCardEvents';
+import { SyncChildComponentModeCardEvents } from '../../../toolbar/options/syncChildComponent/modeUtils/syncChildComponentModeCardEvents';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { PaddingComponentUtils } from './paddingComponentUtils';
 import ComponentJs from '../componentJs/componentJs';
@@ -40,8 +40,8 @@ export class SetActiveComponentUtils {
       workshopComponent.componentSelectedBeforeFadeAnimation = null;
     }
     if (!component) return;
-    if (workshopComponent.isCopyChildComponentModeActive) {
-      CopyChildComponentModeCardEvents.mouseClick(workshopComponent, component);
+    if (workshopComponent.isSyncChildComponentModeActive) {
+      SyncChildComponentModeCardEvents.mouseClick(workshopComponent, component);
     } else if (workshopComponent.currentlySelectedComponent !== component) {
       SetActiveComponentUtils.switchActiveComponent(workshopComponent, component);
     }
