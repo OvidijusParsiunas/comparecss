@@ -60,7 +60,6 @@ export class SyncedComponent {
     return subcomponents[subcomponentToSync];
   }
 
-  // WORK 3 - refactor in sync to synced
   public static copyChildPropertiesFromInSyncContainerComponent(newComponent: WorkshopComponent, componentThisIsSyncedTo: WorkshopComponent): void {
     const newComponentBase = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const subcomponentToSync = SyncedComponent.findSubcomponentToSync(componentThisIsSyncedTo, newComponentBase);
