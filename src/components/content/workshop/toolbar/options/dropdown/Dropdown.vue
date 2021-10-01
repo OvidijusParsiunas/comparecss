@@ -3,6 +3,7 @@
     <button ref="button"
       type="button"
       class="btn form-control dropdown-button"
+      :style="getButtonStyle()"
       :class="getButtonClasses()"
       @click="buttonClick"
       @mouseenter="mouseEnterButton"
@@ -132,6 +133,9 @@ export default {
   methods: {
     getItemName(dropdownItemName: string): void {
       return this.itemNameMap ? this.itemNameMap[dropdownItemName] : dropdownItemName;
+    },
+    getButtonStyle(): WorkshopComponentCss {
+      return this.minWidth !== undefined ? { width: `${this.minWidth}px` } : {};
     },
     getButtonClasses(): string[] {
       const classes = [this.uniqueIdentifier, TOOLBAR_GENERAL_BUTTON_CLASS];
@@ -305,6 +309,7 @@ export default {
     displayParentMenu(): void {
       this.dropdowns.push(this.processedItems);
       setTimeout(() => {
+        if (this.firstMenuWidthSameAsButton) this.$refs.dropdownMenus.childNodes[1].style.width = `${this.$refs.button.offsetWidth}px`;
         this.$refs.dropdownMenus.childNodes[1].style.display = 'block';
       });
     },
@@ -479,6 +484,9 @@ export default {
     additionalButtonClasses: Array,
     displayArrowOnMouseEnter: Boolean,
     callWatchWhenDropdownItemsValueChangeDetectionTriggered: Object,
+    // if the minwidth is too small, the fontAwesomeIcon will still not appear
+    minWidth: Number,
+    firstMenuWidthSameAsButton: Boolean,
   },
   watch: {
     callWatchWhenDropdownItemsValueChangeDetectionTriggered(): void {

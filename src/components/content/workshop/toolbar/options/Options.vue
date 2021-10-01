@@ -9,7 +9,6 @@
             <i class="fa fa-mouse-pointer" :class="[SUBCOMPONENT_SELECT_MODE_BUTTON_MARKER, OPTION_MENU_BUTTON_MARKER]"></i>
         </button>
         <dropdown
-          id="subcomponent-dropdown-button"
           :class="TOOLBAR_BUTTON_GROUP_SECONDARY_COMPONENT_CLASS"
           :additionalButtonClasses="getSubcomponentDropdownButtonBorderClasses()"
           :uniqueIdentifier="SUBCOMPONENTS_DROPDOWN_BUTTON_UNIQUE_IDENTIFIER"
@@ -22,6 +21,7 @@
           :isNested="true"
           :customEventHandlers="useSubcomponentDropdownEventHandlers"
           :timeoutFunc="executeCallbackAfterTimeout"
+          :firstMenuWidthSameAsButton="true"
           @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
           @mouse-click-item="selectSubcomponent()"
           @mouse-click-new-item="selectNewSubcomponent($event[0])"
@@ -639,9 +639,6 @@ export default {
     padding-right: 9px !important;
     font-size: 13px !important;
     color: #5c5c5c;
-  }
-  #subcomponent-dropdown-button {
-    width: 128px;
   }
   .component-manipulation-options-group {
     float: left;

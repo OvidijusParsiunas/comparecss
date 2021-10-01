@@ -1,5 +1,3 @@
-set the dropdown button width by a prop - should also set the option menu width (increase the size to the selected option - dropdown is longest)
-
 night diving
 
 overflow
