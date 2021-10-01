@@ -1,5 +1,4 @@
 import { SubcomponentAndOverlayElementIds } from '../../../../../interfaces/subcomponentAndOverlayElementIds';
-import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 
 export class SubcomponentAndOverlayIds {
@@ -10,7 +9,7 @@ export class SubcomponentAndOverlayIds {
   private static addPaddingComponentAuxiliaryComponentOverlayIds(paddingComponentChild: WorkshopComponent, paddingComponentBaseName: string,
       subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds): void {
     paddingComponentChild.linkedComponents.auxiliary.forEach((auxiliaryComponent) => {
-      const auxiliaryComponentBaseName = auxiliaryComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+      const auxiliaryComponentBaseName = auxiliaryComponent.baseSubcomponent.name;
       subcomponentAndOverlayElementIdsObject[paddingComponentBaseName].paddingComponentOverlayIds
         .push(subcomponentAndOverlayElementIdsObject[auxiliaryComponentBaseName].overlayId);
     });
@@ -18,7 +17,7 @@ export class SubcomponentAndOverlayIds {
 
   private static setPaddingComponentBaseComponentOverlayId(paddingComponentChild: WorkshopComponent, paddingComponentBaseName: string,
       subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds): void {
-    const paddingComponentMasterBaseName = paddingComponentChild.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+    const paddingComponentMasterBaseName = paddingComponentChild.baseSubcomponent.name;
     subcomponentAndOverlayElementIdsObject[paddingComponentBaseName].paddingComponentOverlayIds = [
       subcomponentAndOverlayElementIdsObject[paddingComponentMasterBaseName].overlayId,
     ];
@@ -27,8 +26,8 @@ export class SubcomponentAndOverlayIds {
   private static setPaddingComponentOverlayIds(paddingComponents: WorkshopComponent[],
       subcomponentAndOverlayElementIdsObject: SubcomponentAndOverlayElementIds): void {
     paddingComponents.forEach((paddingComponent) => {
-      const { coreSubcomponentRefs, paddingComponentChild } = paddingComponent;
-      const paddingComponentBaseName = coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+      const { baseSubcomponent, paddingComponentChild } = paddingComponent;
+      const paddingComponentBaseName = baseSubcomponent.name;
       SubcomponentAndOverlayIds.setPaddingComponentBaseComponentOverlayId(
         paddingComponentChild, paddingComponentBaseName, subcomponentAndOverlayElementIdsObject)
       SubcomponentAndOverlayIds.addPaddingComponentAuxiliaryComponentOverlayIds(

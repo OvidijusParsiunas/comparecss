@@ -50,53 +50,53 @@ class DefaultCard extends ComponentBuilder {
   }
 
   private static overwriteTitleProperties(textComponent: WorkshopComponent): void {
-    textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss = DefaultCard.createDefaultTitleCss();
-    textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCss = DefaultCard.createDefaultTitleCss();
-    textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures = DefaultCard.createDefaultTextCustomFeatures();
-    textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures = DefaultCard.createDefaultTextCustomFeatures();
-    textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Card title');
-    textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Card title');
-    textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
+    textComponent.baseSubcomponent.customCss = DefaultCard.createDefaultTitleCss();
+    textComponent.baseSubcomponent.defaultCss = DefaultCard.createDefaultTitleCss();
+    textComponent.baseSubcomponent.customFeatures = DefaultCard.createDefaultTextCustomFeatures();
+    textComponent.baseSubcomponent.defaultCustomFeatures = DefaultCard.createDefaultTextCustomFeatures();
+    textComponent.baseSubcomponent.customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Card title');
+    textComponent.baseSubcomponent.defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Card title');
+    textComponent.baseSubcomponent.isRemovable = true;
   }
 
   private static overwriteCloseButtonProperties(closeButtonComponent: WorkshopComponent): void {
-    closeButtonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    closeButtonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    closeButtonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
+    closeButtonComponent.baseSubcomponent.customStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    closeButtonComponent.baseSubcomponent.defaultCustomStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    closeButtonComponent.baseSubcomponent.isRemovable = true;
   }
 
   private static overwriteImageProperties(imageComponent: WorkshopComponent): void {
-    imageComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER);
-    imageComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER);
-    imageComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
+    imageComponent.baseSubcomponent.customStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER);
+    imageComponent.baseSubcomponent.defaultCustomStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER);
+    imageComponent.baseSubcomponent.isRemovable = true;
   }
 
   private static overwriteDescriptionProperties(textComponent: WorkshopComponent): void {
-    textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures = DefaultCard.createDefaultTextCustomFeatures();
-    textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures = DefaultCard.createDefaultTextCustomFeatures();
-    textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Description');
-    textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Description');
-    textComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
+    textComponent.baseSubcomponent.customFeatures = DefaultCard.createDefaultTextCustomFeatures();
+    textComponent.baseSubcomponent.defaultCustomFeatures = DefaultCard.createDefaultTextCustomFeatures();
+    textComponent.baseSubcomponent.customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Description');
+    textComponent.baseSubcomponent.defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Description');
+    textComponent.baseSubcomponent.isRemovable = true;
   }
 
   private static overwriteSubmitButtonProperties(submitButtonComponent: WorkshopComponent): void {
-    submitButtonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    submitButtonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    submitButtonComponent.baseSubcomponent.customStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    submitButtonComponent.baseSubcomponent.defaultCustomStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
     submitButtonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.TEXT].customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Submit');
     submitButtonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.TEXT].defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Submit');
-    submitButtonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
+    submitButtonComponent.baseSubcomponent.isRemovable = true;
   }
 
   private static overwriteLayerProperties(layerComponent: WorkshopComponent): void {
-    layerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
+    layerComponent.baseSubcomponent.isRemovable = true;
   }
 
   private static overwriteCancelButtonProperties(cancelButton: WorkshopComponent): void {
-    cancelButton.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    cancelButton.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    cancelButton.baseSubcomponent.customStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
+    cancelButton.baseSubcomponent.defaultCustomStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
     cancelButton.coreSubcomponentRefs[SUBCOMPONENT_TYPES.TEXT].customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Cancel');
     cancelButton.coreSubcomponentRefs[SUBCOMPONENT_TYPES.TEXT].defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Cancel');
-    cancelButton.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
+    cancelButton.baseSubcomponent.isRemovable = true;
   }
 
   private static addNewLayers(cardComponent: WorkshopComponent): WorkshopComponent[] {
@@ -110,17 +110,17 @@ class DefaultCard extends ComponentBuilder {
     const [layer1Component, layer2Component, layer3Component] = DefaultCard.addNewLayers(cardComponent);
     UpdateLayerDropdownItemNames.update(cardComponent, 0);
     AddContainerComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
-      layer1Component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name, [DefaultCard.overwriteTitleProperties]);
+      layer1Component.baseSubcomponent.name, [DefaultCard.overwriteTitleProperties]);
     AddContainerComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, BUTTON_STYLES.CLOSE,
-      layer1Component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name, [DefaultCard.overwriteCloseButtonProperties]);
+      layer1Component.baseSubcomponent.name, [DefaultCard.overwriteCloseButtonProperties]);
     AddContainerComponent.add(cardComponent, COMPONENT_TYPES.IMAGE, DEFAULT_STYLES.DEFAULT,
-      layer1Component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name, [DefaultCard.overwriteImageProperties]);
+      layer1Component.baseSubcomponent.name, [DefaultCard.overwriteImageProperties]);
     AddContainerComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
-      layer2Component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name, [DefaultCard.overwriteDescriptionProperties]);
+      layer2Component.baseSubcomponent.name, [DefaultCard.overwriteDescriptionProperties]);
     AddContainerComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
-      layer3Component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name, [DefaultCard.overwriteSubmitButtonProperties]);
+      layer3Component.baseSubcomponent.name, [DefaultCard.overwriteSubmitButtonProperties]);
     AddContainerComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT,
-      layer3Component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name, [DefaultCard.overwriteCancelButtonProperties]);
+      layer3Component.baseSubcomponent.name, [DefaultCard.overwriteCancelButtonProperties]);
     UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[0]);
     UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[1]);
     UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[2]);

@@ -4,7 +4,6 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssC
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { AddComponentsToButtonBaseUtils } from '../utils/addComponentsToButtonBaseUtils';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../../../../consts/closeButtonXText';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
@@ -44,18 +43,13 @@ class CloseButton extends ComponentBuilder {
     }
   }
 
-  private static overwriteCustomCss(subcomponent: SubcomponentProperties): void {
+  private static overwriteBaseCustomCss(subcomponent: SubcomponentProperties): void {
     subcomponent.customCss = CloseButton.createDefaultBaseCss();
     subcomponent.defaultCss = CloseButton.createDefaultBaseCss();
   }
 
-  private static overwriteBase(component: WorkshopComponent): void {
-    const baseSubcomponent = component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    CloseButton.overwriteCustomCss(baseSubcomponent);
-  }
-
   public static overwrite(component: WorkshopComponent): void {
-    CloseButton.overwriteBase(component);
+    CloseButton.overwriteBaseCustomCss(component.baseSubcomponent);
     CloseButton.setStyle(component);
   }
 }

@@ -2,7 +2,6 @@ import { TraverseComponentViaPreviewStructureChildFirst } from '../../../utils/c
 import { SyncChildComponentModeTempPropertiesUtils } from './modeUtils/syncChildComponentModeTempPropertiesUtils';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SubcomponentPreviewTraversalState } from '../../../../../../interfaces/componentTraversal';
-import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import JSONUtils from '../../../utils/generic/jsonUtils';
 
 export class SyncedComponent {
@@ -11,8 +10,8 @@ export class SyncedComponent {
     const { subcomponentProperties } = componentTraversalState;
     subcomponentProperties.customCss = JSONUtils.deepCopy(subcomponentProperties.customCss);
     subcomponentProperties.customFeatures = JSONUtils.deepCopy(subcomponentProperties.customFeatures);
-    const { coreSubcomponentRefs, propertyOverwritingExecutables } = subcomponentProperties.seedComponent;
-    if (coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE] === subcomponentProperties) {
+    const { baseSubcomponent, propertyOverwritingExecutables } = subcomponentProperties.seedComponent;
+    if (baseSubcomponent === subcomponentProperties) {
       (propertyOverwritingExecutables || []).forEach((executable) => executable(subcomponentProperties.seedComponent, false));
     }
     return componentTraversalState;
@@ -61,7 +60,7 @@ export class SyncedComponent {
   }
 
   public static copyChildPropertiesFromInSyncContainerComponent(newComponent: WorkshopComponent, componentThisIsSyncedTo: WorkshopComponent): void {
-    const newComponentBase = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    const newComponentBase = newComponent.baseSubcomponent;
     const subcomponentToSync = SyncedComponent.findSubcomponentToSync(componentThisIsSyncedTo, newComponentBase);
     if (subcomponentToSync) SyncChildComponentModeTempPropertiesUtils.syncSubcomponent(false, newComponentBase, subcomponentToSync);
   }

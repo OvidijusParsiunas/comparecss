@@ -19,8 +19,7 @@ export class ButtonBaseSpecificSettings {
   };
 
   private static setSettingsOnBaseSubcomponent(component: WorkshopComponent): void {
-    const baseSubcomponent = component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    baseSubcomponent.subcomponentSpecificSettings = ButtonBaseSpecificSettings.MENU_BASE_SPECIFIC_COMPONENTS;
+    component.baseSubcomponent.subcomponentSpecificSettings = ButtonBaseSpecificSettings.MENU_BASE_SPECIFIC_COMPONENTS;
   }
 
   private static getFadeAnimationDurationProperties(subcomponentProperties: SubcomponentProperties): UpdateOtherCssProperties {
@@ -33,9 +32,8 @@ export class ButtonBaseSpecificSettings {
   }
 
   private static setInterconnectedSettings(component: WorkshopComponent): void {
-    const baseSubcomponent = component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     component.interconnectedSettings = [{
-      updateOtherCssProperties: baseSubcomponent.subcomponentSpecificSettings[WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS]
+      updateOtherCssProperties: component.baseSubcomponent.subcomponentSpecificSettings[WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS]
         [SETTING_NAMES.FADE].updateOtherCssProperties,
       dependantChildrenTypes: new Set([SUBCOMPONENT_TYPES.TEXT, SUBCOMPONENT_TYPES.ICON]),
       updateOtherCssPropertiesObjGenerator: ButtonBaseSpecificSettings.getFadeAnimationDurationProperties,

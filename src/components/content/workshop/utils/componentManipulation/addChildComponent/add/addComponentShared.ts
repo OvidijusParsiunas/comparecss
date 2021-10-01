@@ -2,7 +2,6 @@ import { CHILD_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSub
 import { Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ComponentPreviewStructureSearchUtils } from '../utils/componentPreviewStractureSearchUtils';
 import { ChildComponentBaseNamesToStyles } from '../utils/childComponentBaseNamesToStyles';
-import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUtils';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -24,7 +23,7 @@ export class AddComponentShared {
   protected static addNewSubcomponentNameInContainerDropdownItemNameMap(containerComponent: WorkshopComponent,
       newComponent: WorkshopComponent, isEditable = true): void {
     if (!isEditable) return;
-    const baseName = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+    const baseName = newComponent.baseSubcomponent.name;
     containerComponent.componentPreviewStructure.subcomponentNameToDropdownItemName[baseName] = baseName;
   }
 

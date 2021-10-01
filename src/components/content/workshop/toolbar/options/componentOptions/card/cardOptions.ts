@@ -35,7 +35,7 @@ export class CardOptions {
     const { style, containerComponent: { paddingComponent } } = component.subcomponents[component.activeSubcomponentName].seedComponent;
     // WORK 2 - may need to be removed from Card
     if (paddingComponent?.type === COMPONENT_TYPES.DROPDOWN) {
-      if (paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.dropdown.select.enabled) {
+      if (paddingComponent.baseSubcomponent.customFeatures.dropdown.select.enabled) {
         return dropdownButtonTextOptions;
       }
       return buttonTextOptions;

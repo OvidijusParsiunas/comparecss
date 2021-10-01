@@ -34,7 +34,7 @@ export class DropdownOptions {
   }
 
   private static isSelectDropdownEnabled(component: WorkshopComponent): boolean {
-    return component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures?.dropdown?.select?.enabled;
+    return component.baseSubcomponent.customFeatures?.dropdown?.select?.enabled;
   }
 
   public static getDropdownOptions(subcomponentType: SUBCOMPONENT_TYPES, component: WorkshopComponent): Options {

@@ -17,12 +17,12 @@ class DropdownBase extends ComponentBuilder {
   // will need to be placed in the same class as the one in DropdownButton
   private static overwriteButtonCustomFeatures(paddingComponent: WorkshopComponent): void {
     const buttonComponent = paddingComponent.paddingComponentChild;
-    const paddingBaseSubcomponent = paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    const baseSubcomponent = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    baseSubcomponent.customFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW };
-    baseSubcomponent.defaultCustomFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW };
-    baseSubcomponent.customStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.customStaticFeatures.dropdownSelectedText;
-    baseSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText;
+    const paddingBaseSubcomponent = paddingComponent.baseSubcomponent;
+    const buttonBaseSubcomponent = buttonComponent.baseSubcomponent;
+    buttonBaseSubcomponent.customFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW };
+    buttonBaseSubcomponent.defaultCustomFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW };
+    buttonBaseSubcomponent.customStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.customStaticFeatures.dropdownSelectedText;
+    buttonBaseSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText;
     const textSubcomponent = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.TEXT];
     textSubcomponent.customFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select };
     textSubcomponent.defaultCustomFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select };
@@ -34,7 +34,7 @@ class DropdownBase extends ComponentBuilder {
   // when existing layers are copied - this method sets them in sync 
   private static setAllItemAndItemTextComponentsToBeInSync(component: WorkshopComponent): void {
     const menuComponent = component.paddingComponentChild.linkedComponents
-      .auxiliary[0].coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].seedComponent;
+      .auxiliary[0].baseSubcomponent.seedComponent;
     const firstLayerSubcomponentProperties = menuComponent.componentPreviewStructure.layers[0].subcomponentProperties;
     menuComponent.componentPreviewStructure.layers.forEach((layer) => {
       layer.subcomponentProperties.customCss = firstLayerSubcomponentProperties.customCss;
@@ -52,12 +52,12 @@ class DropdownBase extends ComponentBuilder {
   }
   
   public static setSyncableSubcomponents(dropdownComponent: WorkshopComponent): void {
-    const { coreSubcomponentRefs } = dropdownComponent;
-    dropdownComponent.sync.syncables = {
+    const { sync, baseSubcomponent, paddingComponentChild } = dropdownComponent;
+    sync.syncables = {
       subcomponents: {
-        [SUBCOMPONENT_TYPES.BASE]: coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
+        [SUBCOMPONENT_TYPES.BASE]: baseSubcomponent,
       },
-      childComponents: [dropdownComponent.paddingComponentChild, dropdownComponent.paddingComponentChild.linkedComponents.auxiliary[0]],
+      childComponents: [paddingComponentChild, paddingComponentChild.linkedComponents.auxiliary[0]],
     };
   }
 
@@ -94,7 +94,7 @@ class DropdownBase extends ComponentBuilder {
   }
 
   public static overwriteBase(paddingComponent: WorkshopComponent): void {
-    const paddingBaseSubcomponent = paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    const paddingBaseSubcomponent = paddingComponent.baseSubcomponent;
     DropdownBase.overwriteCustomFeatures(paddingBaseSubcomponent);
     DropdownBase.overwriteStaticFeatures(paddingBaseSubcomponent);
   }
@@ -103,7 +103,7 @@ class DropdownBase extends ComponentBuilder {
 export const dropdownBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const paddingComponent = plainLayer.createNewComponent(baseName);
-    paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].subcomponentType = SUBCOMPONENT_TYPES.DROPDOWN;
+    paddingComponent.baseSubcomponent.subcomponentType = SUBCOMPONENT_TYPES.DROPDOWN;
     paddingComponent.type = COMPONENT_TYPES.DROPDOWN;
     const buttonComponent = dropdownButtonBase.createNewComponent();
     UpdatePaddingComponentDropdownItemNames.updatePaddingComponentChildren(buttonComponent);
@@ -112,7 +112,7 @@ export const dropdownBase: ComponentGenerator = {
     paddingComponent.subcomponents = buttonComponent.subcomponents;
     Object.assign(buttonComponent.componentPreviewStructure.subcomponentNameToDropdownItemName, paddingComponent.componentPreviewStructure.subcomponentNameToDropdownItemName);
     paddingComponent.componentPreviewStructure.subcomponentNameToDropdownItemName = buttonComponent.componentPreviewStructure.subcomponentNameToDropdownItemName;
-    paddingComponent.componentPreviewStructure.subcomponentDropdownStructure[paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] = { ...buttonComponent.componentPreviewStructure.subcomponentDropdownStructure };
+    paddingComponent.componentPreviewStructure.subcomponentDropdownStructure[paddingComponent.baseSubcomponent.name] = { ...buttonComponent.componentPreviewStructure.subcomponentDropdownStructure };
     paddingComponent.paddingComponentChild = buttonComponent;
     buttonComponent.paddingComponent = paddingComponent;
     DropdownBase.setSyncableSubcomponents(paddingComponent);

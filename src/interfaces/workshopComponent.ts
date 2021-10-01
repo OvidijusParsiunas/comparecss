@@ -183,6 +183,8 @@ export interface WorkshopComponent {
   // used for referencing component's core subcomponents like base and text
   // also used for referencing subcomponents that should share jsclasses refs
   coreSubcomponentRefs?: CoreSubcomponentRefs;
+  // WORK 2 - change documentation to reflect this
+  baseSubcomponent: SubcomponentProperties;
   // gives an in sync child component to identify if the copied component has not been deleted
   componentStatus: { isRemoved: boolean };
   // used to overwrite component and its children properties post processing such as passing a property reference after copying, desyncing etc

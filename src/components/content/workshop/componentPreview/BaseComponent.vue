@@ -63,7 +63,6 @@ import { DROPDOWN_MENU_POSITIONS } from '../../../../consts/dropdownMenuPosition
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../consts/elementClassMarkers';
-import { SUBCOMPONENT_TYPES } from '../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { UseBaseComponent } from '../../../../interfaces/useBaseComponent';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../consts/closeButtonXText';
@@ -92,25 +91,25 @@ export default {
   },
   methods: {
     getTopCssProperty(): WorkshopComponentCss {
-      const { top } = (this.component as WorkshopComponent).coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT];
+      const { top } = (this.component as WorkshopComponent).baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
       return { top: top || '50%' };
     },
     getBaseId(idType: keyof SubcomponentAndOverlayElementIds[string]): string {
-      return this.subcomponentAndOverlayElementIds[this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name]?.[idType];
+      return this.subcomponentAndOverlayElementIds[this.component.baseSubcomponent.name]?.[idType];
     },
     activateSubcomponentMouseEvent(subcomponentMouseEvent: keyof UseSubcomponentPreviewEventHandlers): void {
       this.mouseEvents[this.getBaseId('subcomponentId')][subcomponentMouseEvent]();
     },
     getJsClasses(): string[] {
-      return this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures?.jsClasses || [];
+      return this.component.baseSubcomponent.customFeatures?.jsClasses || [];
     },
     getOverlayStyleProperties(): WorkshopComponentCss {
       const subcomponentCss = {
-        ...this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT], color: '#ff000000',
+        ...this.component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT], color: '#ff000000',
         ...this.getTopCssProperty()
       };
       if (!this.isChildComponent) subcomponentCss.height = this.component.linkedComponents?.base ? 'unset' : '100% !important';
-      if (this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isTemporaryAddPreview) subcomponentCss.display = 'block'; 
+      if (this.component.baseSubcomponent.isTemporaryAddPreview) subcomponentCss.display = 'block'; 
       if (!this.component.linkedComponents?.base && !this.isChildComponent) subcomponentCss.marginTop = '0px';
       if (this.isIcon(this.component)) subcomponentCss.height = subcomponentCss.width;
       return subcomponentCss;
@@ -129,19 +128,19 @@ export default {
       } else {
         classes.push(SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT);
       }
-      if (this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isTemporaryAddPreview) {
+      if (this.component.baseSubcomponent.isTemporaryAddPreview) {
         classes.push(SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
       }
       return classes;
     },
     isXButtonText(): boolean {
-      return this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures?.subcomponentText?.text === CLOSE_BUTTON_X_TEXT;
+      return this.component.baseSubcomponent.customStaticFeatures?.subcomponentText?.text === CLOSE_BUTTON_X_TEXT;
     },
     getSubcomponentMouseEventsDisabledClassForXButtonText(): string {
       return this.isXButtonText() ? SUBCOMPONENT_SELECT_MODE_DISABLED_ELEMENT_CLASS : '';
     },
     getXButtonOverlayStyleProperties(): WorkshopComponentCss[] {
-      const { overwrittenCustomCssObj, customCss } = this.component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+      const { overwrittenCustomCssObj, customCss } = this.component.baseSubcomponent;
       const customCssObj = overwrittenCustomCssObj || customCss;
       return [customCssObj[CSS_PSEUDO_CLASSES.DEFAULT], { top: '', color: 'none', backgroundColor: 'none'}];
     },
@@ -152,18 +151,18 @@ export default {
         [DROPDOWN_MENU_POSITIONS.LEFT]: { top: '0px', right: '100%' },
         [DROPDOWN_MENU_POSITIONS.RIGHT]: { top: '0px', left: '100%' },
       };
-      const { position } = auxiliaryComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.dropdown.menuPosition;
+      const { position } = auxiliaryComponent.baseSubcomponent.customFeatures.dropdown.menuPosition;
       return { position: 'absolute', ...positions[position] };
     },
     getTag(): string {
       return this.isIcon(this.component) ? 'font-awesome-icon' : 'div';
     },
     getIconName(): string {
-      const iconName = (this.component as WorkshopComponent).coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures?.icon?.name;
+      const iconName = (this.component as WorkshopComponent).baseSubcomponent.customStaticFeatures?.icon?.name;
       return iconName ? DROPDOWN_ARROW_ICON_TYPES_TO_FONT_AWESOME_NAMES[iconName] : null;
     },
     isComponentDisplayed(): boolean {
-      const { customStaticFeatures } = (this.component as WorkshopComponent).coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+      const { customStaticFeatures } = (this.component as WorkshopComponent).baseSubcomponent;
       if (customStaticFeatures?.icon) {
         return customStaticFeatures.icon.isComponentDisplayed;
       }

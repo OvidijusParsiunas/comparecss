@@ -2,7 +2,6 @@ import { TraverseComponentViaPreviewStructureParentFirst } from '../../../../uti
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SubcomponentPreviewTraversalState } from '../../../../../../../interfaces/componentTraversal';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
-import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 
 export class JsClassesUtils {
 
@@ -28,9 +27,8 @@ export class JsClassesUtils {
   }
 
   public static assignJsClassesRefToAllSubcomponents(component: WorkshopComponent, overwriteDefaultProperties = true): void {
-    const baseSubcomponent = component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
     const defaultJsClasses = this as any as Set<JAVASCRIPT_CLASSES>;
-    const jsClasses = baseSubcomponent.customFeatures.jsClasses || defaultJsClasses;
+    const jsClasses = component.baseSubcomponent.customFeatures.jsClasses || defaultJsClasses;
     TraverseComponentViaPreviewStructureParentFirst.traverse(
       JsClassesUtils.assign.bind(this, jsClasses, overwriteDefaultProperties), component);
   }

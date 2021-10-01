@@ -5,7 +5,6 @@ import { CustomCss, WorkshopComponent } from '../../../../../interfaces/workshop
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
-import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { UseLayerComponent } from '../../../../../interfaces/useLayerComponent';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import { Layer } from '../../../../../interfaces/componentPreviewStructure';
@@ -19,7 +18,7 @@ export default function useLayerComponent(): UseLayerComponent {
   // the overflow: hidden property on the base does not prevent the ripples from leaving the button when the base is clicked
   function getButtonPadding(containerComponent: WorkshopComponent): WorkshopComponentCss {
     if (containerComponent && (containerComponent.type === COMPONENT_TYPES.BUTTON || containerComponent.type === COMPONENT_TYPES.DROPDOWN)) {
-      const { paddingLeft, paddingRight } = containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT];
+      const { paddingLeft, paddingRight } = containerComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
       return { paddingLeft, paddingRight };
     }
     return {};

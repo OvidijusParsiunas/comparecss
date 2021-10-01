@@ -2,7 +2,6 @@ import { TraverseComponentViaDropdownStructure } from '../../componentTraversal/
 import { AlignedSections, BaseSubcomponentRef, Layer } from '../../../../../../interfaces/componentPreviewStructure';
 import { UpdateContainerComponentDropdownUtils } from './updateContainerComponentDropdownUtils';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
-import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { ItemDataMaps } from '../../../../../../interfaces/updateDropdownItemNames';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ActiveComponentUtils } from '../../activeComponent/activeComponentUtils';
@@ -37,7 +36,7 @@ export class UpdateGenericComponentDropdownItemNames extends UpdateDropdownItemN
       useArgComponentDropdownStructure: boolean, alignedSections: AlignedSections): boolean {
     const { subcomponentNameToDropdownItemName } = masterComponent.componentPreviewStructure;
     const activeComponent = useArgComponentDropdownStructure ? masterComponent : ActiveComponentUtils.getActiveContainerComponent(masterComponent);
-    const activeComponentName = activeComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+    const activeComponentName = activeComponent.baseSubcomponent.name;
     const activeComponentDropdownStructure = subcomponentDropdownStructure[subcomponentNameToDropdownItemName[activeComponentName]];
     // if there is no dropdown structure for layer, use the parent dropdown structure (e.g. button)
     const nestedStructure = activeComponentDropdownStructure[subcomponentNameToDropdownItemName[layerName]] || activeComponentDropdownStructure;

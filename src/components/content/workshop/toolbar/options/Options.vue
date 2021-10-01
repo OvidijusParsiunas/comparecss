@@ -586,7 +586,7 @@ export default {
       return !!Object.keys(this.component.subcomponents).find((subcomponentName) => {
         const component: WorkshopComponent = this.component.subcomponents[subcomponentName].seedComponent;
         return component?.style === subcomponentStyle
-          && component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name !== TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY;
+          && component.baseSubcomponent.name !== TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY;
       });
     },
     isFullPreviewModeButtonDisplayed(): boolean {

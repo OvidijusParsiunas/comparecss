@@ -2,7 +2,6 @@ import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../.
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { inheritedCloseTextCss } from '../inheritedCss/inheritedCloseTextCss';
@@ -56,7 +55,7 @@ class CloseButtonText extends ComponentBuilder {
   }
 
   public static overwriteBase(component: WorkshopComponent): void {
-    const baseSubcomponent = component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    const { baseSubcomponent } = component;
     CloseButtonText.overwriteInheritedCss(baseSubcomponent);
     CloseButtonText.overwriteCustomCss(baseSubcomponent);
     CloseButtonText.overwriteCustomFeatures(baseSubcomponent);

@@ -43,22 +43,22 @@ export class DropdownMenuAutoWidthUtils {
   }
 
   private static setButtonWidth(buttonComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
-    if (buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]?.customFeatures?.autoSize?.width) {
+    if (buttonComponent.baseSubcomponent?.customFeatures?.autoSize?.width) {
       const largestItemWidth = DropdownMenuAutoWidthUtils.getLargestItemWidth(menuComponent);
       const newButtonWidth = DropdownMenuAutoWidthUtils.calculateButtonWidth(menuComponent, largestItemWidth);
-      buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = newButtonWidth;
+      buttonComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = newButtonWidth;
     }
   }
 
   private static unsetMenuElementDisplayNoneProperty(menuComponent: WorkshopComponent): void {
-    const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(menuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name);
+    const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(menuComponent.baseSubcomponent.name);
     const element = document.getElementById(subcomponentId);
     if (element.style.display === 'none') element.style.display = '';
   }
 
   private static setMenuWidth(containerComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
     const largestItemWidth = DropdownMenuAutoWidthUtils.getLargestItemWidth(menuComponent);
-    containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = largestItemWidth;
+    containerComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = largestItemWidth;
   }
 
   public static setWidth(subcomponentProperties: SubcomponentProperties): void {

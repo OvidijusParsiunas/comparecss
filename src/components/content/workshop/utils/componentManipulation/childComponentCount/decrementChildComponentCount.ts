@@ -1,5 +1,4 @@
 import { ChildComponentCount } from '../../../../../../interfaces/childComponentCount';
-import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ChildComponentCountShared } from './childComponentCountShared';
 import { StringUtils } from '../../generic/stringUtils';
@@ -30,7 +29,7 @@ export class DecrementChildComponentCount extends ChildComponentCountShared {
       DecrementChildComponentCount.decrementCurrentCount(childComponentCount, removedSubcomponentNamePrefix);
       ChildComponentCountShared.setAddPreviewDropdownItemStateIfConditionMet(
         DecrementChildComponentCount.isChildComponentCountLowerThanMax.bind({ childComponentCount, removedSubcomponentNamePrefix } as ConditionFuncContextValues),
-        parentComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE], 
+        parentComponent.baseSubcomponent, 
         removedSubcomponentNamePrefix, true);
     }
   }

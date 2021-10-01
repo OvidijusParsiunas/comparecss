@@ -1,7 +1,6 @@
 import { TraverseComponentViaDropdownStructure } from '../../componentTraversal/traverseComponentViaDropdownStructure';
 import { SubcomponentNameToDropdownItemName } from '../../../../../../interfaces/componentPreviewStructure';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
-import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { UpdateDropdownItemNamesShared } from './updateDropdownItemNamesShared';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ArrayUtils } from '../../generic/arrayUtils';
@@ -45,7 +44,7 @@ export class UpdateLayerDropdownItemNames extends UpdateDropdownItemNamesShared 
   // it is also worth noting that container component will always be master when a layer is removed
   private static getLayersDropdownStructure(containerComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure,
       subcomponentNameToDropdownItemName: SubcomponentNameToDropdownItemName): NestedDropdownStructure {
-    const activeItemName = subcomponentNameToDropdownItemName[containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name];
+    const activeItemName = subcomponentNameToDropdownItemName[containerComponent.baseSubcomponent.name];
     return dropdownStructure[activeItemName] as NestedDropdownStructure || dropdownStructure;
   }
 

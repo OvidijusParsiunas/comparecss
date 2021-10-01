@@ -15,7 +15,6 @@ import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedD
 import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
 import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { SubcomponentTriggers } from '../../utils/subcomponentTriggers';
@@ -52,7 +51,7 @@ export class AddContainerComponent extends AddComponentShared {
   private static populateCoreComponentRef(newComponentContainer: WorkshopComponent, newComponent: WorkshopComponent): void {
     // WORK1
     // get copy to work first
-    const newComponentBase = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    const newComponentBase = newComponent.baseSubcomponent;
     const { subcomponentType, parentLayer } = newComponentBase;
     JSONUtils.setPropertyIfExists(newComponentContainer.coreSubcomponentRefs, subcomponentType as number, newComponentBase);
     JSONUtils.setPropertyIfExists(newComponentContainer.sync.syncables?.subcomponents, subcomponentType as number, newComponentBase);
@@ -69,8 +68,8 @@ export class AddContainerComponent extends AddComponentShared {
 
   private static updateComponentDropdownStructure(masterComponent: WorkshopComponent, newComponent: WorkshopComponent,
       subcomponentDropdownStructure: NestedDropdownStructure): void {
-    const { componentPreviewStructure, coreSubcomponentRefs } = newComponent;
-    const baseName = coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+    const { componentPreviewStructure, baseSubcomponent } = newComponent;
+    const baseName = baseSubcomponent.name;
     const childComponentBaseDropdownStructure = componentPreviewStructure.subcomponentDropdownStructure[baseName]; 
     childComponentBaseDropdownStructure[DROPDOWN_ITEM_AUX_DETAILS_REF] = { isEnabled: true, actualObjectName: baseName };
     const newComponentDropdownStructure = { [baseName]: { ...childComponentBaseDropdownStructure }};
@@ -89,7 +88,7 @@ export class AddContainerComponent extends AddComponentShared {
       dropdownStructure: NestedDropdownStructure): void {
     const { componentPreviewStructure: { subcomponentNameToDropdownItemName }, subcomponents, activeSubcomponentName } = masterComponent;
     const parentLayerItemName = subcomponentNameToDropdownItemName[
-      newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].parentLayer.subcomponentProperties.name];
+      newComponent.baseSubcomponent.parentLayer.subcomponentProperties.name];
     // this gets activated when the user is manually adding a component to a layer
     if (subcomponents[activeSubcomponentName].seedComponent.type === COMPONENT_TYPES.LAYER) {
       const layerDropdownStructure = dropdownStructure[parentLayerItemName] as NestedDropdownStructure;
@@ -104,7 +103,7 @@ export class AddContainerComponent extends AddComponentShared {
   }
 
   protected static addNewComponentToComponentPreview(newComponent: WorkshopComponent, parentLayer: Layer): void {
-    const baseSubcomponent = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    const baseSubcomponent = newComponent.baseSubcomponent;
     AddContainerComponent.addNewSubcomponentToParentLayer(parentLayer, baseSubcomponent);
     baseSubcomponent.parentLayer = parentLayer;
   }
@@ -130,7 +129,7 @@ export class AddContainerComponent extends AddComponentShared {
     const baseNamePrefix = AddContainerComponent.getBaseSubcomponentNamePrefix(componentType, componentStyle);
     const baseName = customBaseName || UniqueSubcomponentNameGenerator.generate(baseNamePrefix);
     const newComponent = AddComponentShared.createNewComponentViaGenerator(componentGenerator, masterComponent, baseName);
-    AddContainerComponent.applyTopProperty(newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
+    AddContainerComponent.applyTopProperty(newComponent.baseSubcomponent);
     if (overwritePropertiesFunc) AddContainerComponent.executeOverwritePropertiesFuncs(overwritePropertiesFunc, newComponent);
     if (componentContainerIsSyncedTo) SyncedComponent.copyChildPropertiesFromInSyncContainerComponent(newComponent, componentContainerIsSyncedTo);
     return [newComponent, baseNamePrefix];
@@ -146,7 +145,7 @@ export class AddContainerComponent extends AddComponentShared {
     AddComponentShared.populateMasterComponentWithNewSubcomponents(masterComponent, newComponent.subcomponents);
     AddContainerComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
     AddContainerComponent.addNewComponentToDropdownStructure(newComponent, masterComponent, dropdownStructure);
-    InterconnectedSettings.update(true, newComponentContainer, newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
+    InterconnectedSettings.update(true, newComponentContainer, newComponent.baseSubcomponent);
     IncrementChildComponentCount.increment(newComponentContainer, baseNamePrefix);
     AddContainerComponent.populateCoreComponentRef(newComponentContainer, newComponent);
     AddComponentShared.cleanSubcomponentProperties(newComponent);

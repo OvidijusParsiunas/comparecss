@@ -2,7 +2,6 @@ import { ActionsDropdownMouseEventCallbackEvent } from '../../../../../../../int
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../consts/dropdownMenuAlignment.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
-import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 
 export class MenuIndexAlignment {
@@ -32,13 +31,13 @@ export class MenuIndexAlignment {
 
   private static changeFromMenuSubcomponent(event: ActionsDropdownMouseEventCallbackEvent): void {
     const menuSubcomponent = event.subcomponentProperties;
-    const buttonSubcomponent = menuSubcomponent.seedComponent.linkedComponents.base.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    const buttonSubcomponent = menuSubcomponent.seedComponent.linkedComponents.base.baseSubcomponent;
     MenuIndexAlignment.changeSubcomponentAlignment(event, event.triggeredItemName, menuSubcomponent, buttonSubcomponent);
   }
 
   private static changeFromButtonSubcomponent(event: ActionsDropdownMouseEventCallbackEvent): void {
     const buttonSubcomponent = event.subcomponentProperties;
-    const menuSubcomponent = buttonSubcomponent.seedComponent.linkedComponents.auxiliary[0].coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    const menuSubcomponent = buttonSubcomponent.seedComponent.linkedComponents.auxiliary[0].baseSubcomponent;
     const newMenuAlignment = MenuIndexAlignment.getCounterAlignment(event.triggeredItemName as DROPDOWN_MENU_INDEX_ALIGNMENT);
     MenuIndexAlignment.changeSubcomponentAlignment(event, newMenuAlignment, menuSubcomponent, menuSubcomponent);
   }

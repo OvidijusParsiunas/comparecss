@@ -123,7 +123,7 @@ export class ComponentBuilder {
     const layerComponentItemsStructure = DropdownUtils.generateDropdownStructure(layerComponentsItems);
     const newChildComponentsItemsStructure = DropdownUtils.generateDropdownStructure(newChildComponentsItems);
     component.newChildComponentsItemsRefs = { layer: layerComponentItemsStructure };
-    component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsItems = newChildComponentsItemsStructure;
+    component.baseSubcomponent.newChildComponentsItems = newChildComponentsItemsStructure;
     component.childComponentCount = childComponentCount;
   }
 
@@ -173,6 +173,7 @@ export class ComponentBuilder {
       coreSubcomponentRefs,
       componentStatus: { isRemoved: false },
       sync: { componentThisIsSyncedTo: null, componentsSyncedToThis: new Set() },
+      baseSubcomponent: baseSubcomponent,
     };
     baseSubcomponent.seedComponent = baseComponent;
     baseComponent.masterComponent = baseComponent;

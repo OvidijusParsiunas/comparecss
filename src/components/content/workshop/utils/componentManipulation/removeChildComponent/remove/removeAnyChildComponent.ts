@@ -65,7 +65,7 @@ export class RemoveAnyChildComponent {
 
   private static getParentSubcomponentName(masterComponent: WorkshopComponent, dropdownItemDetailsStack: DropdownItemAuxDetails[]): string {
     const parentDropdownItemDetails = dropdownItemDetailsStack[dropdownItemDetailsStack.length - 2];
-    return parentDropdownItemDetails?.actualObjectName || masterComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+    return parentDropdownItemDetails?.actualObjectName || masterComponent.baseSubcomponent.name;
   }
 
   private static removeDropdownStructure(traversalState: DropdownStructureTraversalState, targetDetails: TargetRemovalDetails,

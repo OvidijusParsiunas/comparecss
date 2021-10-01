@@ -36,7 +36,7 @@ export class SubcomponentTriggers {
 
   public static set(newComponentContainer: WorkshopComponent, newComponentParentLayerSubcomponent: SubcomponentProperties,
       newComponentBase: SubcomponentProperties, subcomponentType: number): void {
-    const newComponentContainerBase = newComponentContainer.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    const newComponentContainerBase = newComponentContainer.baseSubcomponent;
     SubcomponentTriggers.setPropertyValues(newComponentBase, subcomponentType, newComponentContainerBase);
     SubcomponentTriggers.setPropertyValues(newComponentBase, subcomponentType, newComponentParentLayerSubcomponent);
   }

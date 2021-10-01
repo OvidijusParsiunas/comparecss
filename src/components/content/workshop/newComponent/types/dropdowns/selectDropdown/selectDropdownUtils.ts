@@ -1,5 +1,4 @@
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { SelectedDropdownText } from '../../../../../../../interfaces/dropdownFeatures';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
@@ -35,7 +34,7 @@ export class SelectDropdownUtils {
     const dropdownPaddingComponent = seedComponent.type === COMPONENT_TYPES.DROPDOWN
       ? seedComponent : seedComponent.containerComponent.linkedComponents.base.paddingComponent;
     const { customFeatures: { dropdown: { select } }, customStaticFeatures: { dropdownSelectedText }
-      } = dropdownPaddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+      } = dropdownPaddingComponent.baseSubcomponent;
     if (select.enabled) {
       SelectDropdownUtils.setMouseEventText(seedComponent, dropdownSelectedText, itemTextKey);
     } else if (canBeUnset) {
@@ -61,7 +60,7 @@ export class SelectDropdownUtils {
     const { containerComponent, childComponentsLockedToLayer } = layer.subcomponentProperties.seedComponent;
     if (containerComponent?.type === COMPONENT_TYPES.DROPDOWN_MENU) {
       return SelectDropdownUtils.isSelected(
-        containerComponent.linkedComponents.base.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
+        containerComponent.linkedComponents.base.baseSubcomponent,
         childComponentsLockedToLayer.list[0].customStaticFeatures.subcomponentText.text);
     }
     return false;
@@ -70,8 +69,8 @@ export class SelectDropdownUtils {
   public static isTextSelected(component: WorkshopComponent): boolean {
     if (component.type === COMPONENT_TYPES.TEXT && component.containerComponent?.type === COMPONENT_TYPES.DROPDOWN_MENU) {
       return SelectDropdownUtils.isSelected(
-        component.containerComponent.linkedComponents.base.paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
-        component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures.subcomponentText.text);
+        component.containerComponent.linkedComponents.base.paddingComponent.baseSubcomponent,
+        component.baseSubcomponent.customStaticFeatures.subcomponentText.text);
     }
     return false;
   }

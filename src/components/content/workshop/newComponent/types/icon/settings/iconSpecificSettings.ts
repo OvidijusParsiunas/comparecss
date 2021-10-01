@@ -2,7 +2,6 @@ import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallba
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SubcomponentSpecificSettings } from '../../../../../../../interfaces/subcomponentSpecificSettings';
-import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { SETTING_NAMES } from '../../../../../../../consts/settingNames.enum';
 
 export class IconSpecificSettings {
@@ -37,6 +36,6 @@ export class IconSpecificSettings {
   };
 
   public static set(component: WorkshopComponent): void {
-    component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].subcomponentSpecificSettings = IconSpecificSettings.ICON_BASE_SPECIFIC_SETTINGS;
+    component.baseSubcomponent.subcomponentSpecificSettings = IconSpecificSettings.ICON_BASE_SPECIFIC_SETTINGS;
   }
 }

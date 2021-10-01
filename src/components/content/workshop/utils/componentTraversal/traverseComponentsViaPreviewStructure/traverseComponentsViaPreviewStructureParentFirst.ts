@@ -1,6 +1,5 @@
 import { AlignedComponentWithMeta, PreviewTraversalCallback, SubcomponentPreviewTraversalState } from '../../../../../../interfaces/componentTraversal';
 import { TraverseComponentViaPreviewStructureShared } from './traverseComponentViaPreviewStructureShared';
-import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
 
@@ -39,7 +38,7 @@ export class TraverseComponentViaPreviewStructureParentFirst extends TraverseCom
 
   private static traverseComponent(callback: PreviewTraversalCallback, componentsArr: WorkshopComponent[]): SubcomponentPreviewTraversalState {
     const traversalResult = callback(...componentsArr.map((activeComponent) => {
-      return { subcomponentProperties: activeComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE] }}));
+      return { subcomponentProperties: activeComponent.baseSubcomponent }}));
     if (traversalResult?.stopTraversal) return traversalResult;
     return TraverseComponentViaPreviewStructureParentFirst.traverseLayers(
       callback, componentsArr.map((components) => components.componentPreviewStructure.layers));
@@ -99,7 +98,7 @@ initial implementation of traversal made specifically for two components or trav
   }
 
   private static copyComponent(callback: TraversableCallback, activeComponent: WorkshopComponent, componentToBeSynced: WorkshopComponent): void {
-    callback(activeComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE], componentToBeSynced?.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE]);
+    callback(activeComponent.baseSubcomponent, componentToBeSynced?.baseSubcomponent);
     SyncChildComponentModeTempPropertiesUtils.copyLayers(
       callback, activeComponent.componentPreviewStructure.layers, componentToBeSynced?.componentPreviewStructure.layers);
   }

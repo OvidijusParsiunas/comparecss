@@ -4,7 +4,6 @@ import { TraverseComponentViaDropdownStructure } from '../../componentTraversal/
 import { UpdateLayerDropdownItemNames } from '../updateChildComponent/updateLayerDropdownItemNames';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { ChildComponentBaseNamesToStyles } from './utils/childComponentBaseNamesToStyles';
-import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
 import { AddContainerComponent } from './add/addContainerComponent';
@@ -20,7 +19,7 @@ export class AddChildComponent extends AddComponentShared {
     const newComponent = AddContainerComponent.addUsingParentDropdownStructure(containerComponent,
       dropdownStructure, componentType, componentStyle, parentLayer);
     // set here because not all child components are removable, but the ones manually added by the user are
-    newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
+    newComponent.baseSubcomponent.isRemovable = true;
     return [newComponent, parentLayer];
   }
 
@@ -42,7 +41,7 @@ export class AddChildComponent extends AddComponentShared {
 
   private static addNewLayerToBase(activeComponent: WorkshopComponent, newComponentBaseName: string): void {
     const newComponent = AddLayerComponent.add(activeComponent, ChildComponentBaseNamesToStyles.LAYER_TO_STYLE[newComponentBaseName], true);
-    newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].isRemovable = true;
+    newComponent.baseSubcomponent.isRemovable = true;
     AddChildComponent.updateLayerComponentNames(activeComponent);
     newComponent.childComponentsLockedToLayer?.add(newComponent, activeComponent);
   }

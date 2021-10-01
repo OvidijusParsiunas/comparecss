@@ -3,10 +3,10 @@
     <div v-if="isExpandedModalPreviewBackdropVisible()"
       ref="modalBackdrop" id="modal-backdrop"
       :style="{
-        backgroundColor: currentlySelectedComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.backdrop.color,
-        transitionDuration: currentlySelectedComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.backdrop.closeAnimationDuration
-          || currentlySelectedComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.backdrop.openAnimationDuration.currentValue,
-        opacity: currentlySelectedComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.backdrop.opacity}">
+        backgroundColor: currentlySelectedComponent.baseSubcomponent.customFeatures.backdrop.color,
+        transitionDuration: currentlySelectedComponent.baseSubcomponent.customFeatures.backdrop.closeAnimationDuration
+          || currentlySelectedComponent.baseSubcomponent.customFeatures.backdrop.openAnimationDuration.currentValue,
+        opacity: currentlySelectedComponent.baseSubcomponent.customFeatures.backdrop.opacity}">
     </div>
     <div style="height: 100vh" class="bootstrap">
       <div style="height: 100%; margin-left: 0px; margin-right: 0px; display: flex">
@@ -131,7 +131,6 @@ import { defaultDropdown } from './newComponent/types/dropdowns/generators/defau
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
 import useComponentManipulation from './compositionAPI/useComponentManipulation';
 import exportFiles from '../../../services/workshop/exportFiles/exportFiles';
-import { SUBCOMPONENT_TYPES } from '../../../consts/subcomponentTypes.enum';
 import { RemovalModalState } from '../../../interfaces/removalModalState';
 import { WorkshopComponent } from '../../../interfaces/workshopComponent';
 import componentContents from './componentPreview/ComponentPreview.vue';
@@ -146,7 +145,6 @@ interface Consts {
   removeChildComponentModalState: RemovalModalState;
   REMOVE_COMPONENT_MODAL_ID: string;
   REMOVE_CHILD_COMPONENT_MODAL_ID: string;
-  SUBCOMPONENT_TYPES: typeof SUBCOMPONENT_TYPES;
 }
 
 interface Data {
@@ -171,7 +169,6 @@ export default {
       removeChildComponentModalState,
       REMOVE_COMPONENT_MODAL_ID,
       REMOVE_CHILD_COMPONENT_MODAL_ID,
-      SUBCOMPONENT_TYPES,
       ...useComponentManipulation(),
       ...useWorkshopEventCallbacks(),
     };

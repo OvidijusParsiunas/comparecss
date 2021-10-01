@@ -21,20 +21,20 @@ import { dropdownMenuBase } from '../menu/base';
 class DropdownButton extends ComponentBuilder {
 
   private static populateReferences(buttonComponent: WorkshopComponent): void {
-    buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.jsClasses.add(JAVASCRIPT_CLASSES.DROPDOWN_BUTTON);
-    buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures.jsClasses.add(JAVASCRIPT_CLASSES.DROPDOWN_BUTTON);
+    buttonComponent.baseSubcomponent.customFeatures.jsClasses.add(JAVASCRIPT_CLASSES.DROPDOWN_BUTTON);
+    buttonComponent.baseSubcomponent.defaultCustomFeatures.jsClasses.add(JAVASCRIPT_CLASSES.DROPDOWN_BUTTON);
     const dropdownMenuBaseComponent = buttonComponent.linkedComponents.auxiliary[0];
-    dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures.jsClasses = new Set([JAVASCRIPT_CLASSES.DROPDOWN_MENU]) as Set<JAVASCRIPT_CLASSES>;
-    dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures.jsClasses = new Set([JAVASCRIPT_CLASSES.DROPDOWN_MENU]) as Set<JAVASCRIPT_CLASSES>;
+    dropdownMenuBaseComponent.baseSubcomponent.customFeatures.jsClasses = new Set([JAVASCRIPT_CLASSES.DROPDOWN_MENU]) as Set<JAVASCRIPT_CLASSES>;
+    dropdownMenuBaseComponent.baseSubcomponent.defaultCustomFeatures.jsClasses = new Set([JAVASCRIPT_CLASSES.DROPDOWN_MENU]) as Set<JAVASCRIPT_CLASSES>;
   }
 
   public static overwriteButtonCustomFeatures(buttonComponent: WorkshopComponent): void {
-    const paddingBaseSubcomponent = buttonComponent.paddingComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    const baseSubcomponent = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    baseSubcomponent.customFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW };
-    baseSubcomponent.defaultCustomFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW };
-    baseSubcomponent.customStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.customStaticFeatures.dropdownSelectedText;
-    baseSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText;
+    const paddingBaseSubcomponent = buttonComponent.paddingComponent.baseSubcomponent;
+    const buttonBaseSubcomponent = buttonComponent.baseSubcomponent;
+    buttonBaseSubcomponent.customFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW };
+    buttonBaseSubcomponent.defaultCustomFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW };
+    buttonBaseSubcomponent.customStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.customStaticFeatures.dropdownSelectedText;
+    buttonBaseSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText;
     const textSubcomponent = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.TEXT];
     textSubcomponent.customFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select };
     textSubcomponent.defaultCustomFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select };
@@ -65,13 +65,13 @@ class DropdownButton extends ComponentBuilder {
   }
 
   public static setButtonAutoSize(buttonComponent: WorkshopComponent): void {
-    const { customFeatures, defaultCustomFeatures } = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    const { customFeatures, defaultCustomFeatures } = buttonComponent.baseSubcomponent;
     customFeatures.autoSize = DropdownButton.createDefaultAutoSize();
     defaultCustomFeatures.autoSize = DropdownButton.createDefaultAutoSize();
   }
 
   public static overwriteCustomCss(buttonComponent: WorkshopComponent): void {
-    const baseSubcomponent = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    const baseSubcomponent = buttonComponent.baseSubcomponent;
     baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = '155px';
     baseSubcomponent.defaultCss[CSS_PSEUDO_CLASSES.DEFAULT].width = '155px';
     baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = '4px';
@@ -102,12 +102,12 @@ export const dropdownButtonBase: ComponentGenerator = {
     DropdownButton.overwriteCustomCss(buttonComponent);
     Object.assign(buttonComponent.subcomponents, dropdownMenuBaseComponent.subcomponents);
     Object.assign(buttonComponent.componentPreviewStructure.subcomponentNameToDropdownItemName, dropdownMenuBaseComponent.componentPreviewStructure.subcomponentNameToDropdownItemName);
-    buttonComponent.componentPreviewStructure.subcomponentDropdownStructure[buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name][DROPDOWN_ITEM_AUX_DETAILS_REF] = { ...DropdownItemsDisplayStatusUtils.createDefaultItemDisplayStatus(buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name) };
-    buttonComponent.componentPreviewStructure.subcomponentDropdownStructure[dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name] = { ...DropdownItemsDisplayStatusUtils.createDropdownItemDisplayStatusReferenceObject(dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name) };
+    buttonComponent.componentPreviewStructure.subcomponentDropdownStructure[buttonComponent.baseSubcomponent.name][DROPDOWN_ITEM_AUX_DETAILS_REF] = { ...DropdownItemsDisplayStatusUtils.createDefaultItemDisplayStatus(buttonComponent.baseSubcomponent.name) };
+    buttonComponent.componentPreviewStructure.subcomponentDropdownStructure[dropdownMenuBaseComponent.baseSubcomponent.name] = { ...DropdownItemsDisplayStatusUtils.createDropdownItemDisplayStatusReferenceObject(dropdownMenuBaseComponent.baseSubcomponent.name) };
     buttonComponent.linkedComponents = { auxiliary: [dropdownMenuBaseComponent] };
     dropdownMenuBaseComponent.linkedComponents = { base: buttonComponent };
     dropdownMenuBaseComponent.masterComponent = buttonComponent;
-    buttonComponent.activeSubcomponentName = dropdownMenuBaseComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+    buttonComponent.activeSubcomponentName = dropdownMenuBaseComponent.baseSubcomponent.name;
     DropdownButton.setAndExecutePropertyOverwritingExecutables(buttonComponent);
     DropdownButton.addComponentsToBase(dropdownMenuBaseComponent);
     DropdownButton.setTriggerFuncOnSettingChange(buttonComponent);

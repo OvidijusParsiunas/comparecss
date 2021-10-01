@@ -15,7 +15,7 @@ export default function useBaseComponent(): UseBaseComponent {
   const otherSubcomponentTriggerState: CompositionAPISubcomponentTriggerState = { subcomponentProperties: null };
 
   const isIcon = (component: WorkshopComponent): boolean => {
-    return component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].subcomponentType === SUBCOMPONENT_TYPES.ICON;
+    return component.baseSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.ICON;
   };
 
   function getOverflowHiddenCss(customFeatures: CustomFeatures): WorkshopComponentCss {
@@ -44,9 +44,9 @@ export default function useBaseComponent(): UseBaseComponent {
   }
 
   const generateStyleProperties = (component: WorkshopComponent): WorkshopComponentCss[] => {
-    const { overwrittenCustomCssObj, customCss, customFeatures, inheritedCss, activeCssPseudoClass, customStaticFeatures } = component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    const { overwrittenCustomCssObj, customCss, customFeatures, inheritedCss, activeCssPseudoClass, customStaticFeatures } = component.baseSubcomponent;
     const subcomponentCss = overwrittenCustomCssObj || customCss;
-    SubcomponentTriggers.triggerOtherSubcomponentsCss(component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE], activeCssPseudoClass, otherSubcomponentTriggerState);
+    SubcomponentTriggers.triggerOtherSubcomponentsCss(component.baseSubcomponent, activeCssPseudoClass, otherSubcomponentTriggerState);
     const selectedDropdownMenuTextCss = getSelectedDropdownMenuTextCss(component, subcomponentCss);
     const buttonPaddingSubstitutedToWidthCss = substituteButtonPaddingToWidthCss(component, subcomponentCss);
     const overflowHiddenCss = getOverflowHiddenCss(customFeatures);
@@ -65,7 +65,7 @@ export default function useBaseComponent(): UseBaseComponent {
   };
 
   const getSubcomponentText = (component: WorkshopComponent): string => {
-    const { customFeatures, customStaticFeatures } = component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    const { customFeatures, customStaticFeatures } = component.baseSubcomponent;
     const { subcomponentText, dropdownSelectedText } = customStaticFeatures || {};
     const { dropdown } = customFeatures || {};
     // checks if this is a text subcomponent, if it has a select property reference (dropdown item text subcomponents do not) and whether it is enabled

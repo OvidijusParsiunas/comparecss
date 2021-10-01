@@ -1,6 +1,5 @@
 import { AlignedComponentWithMeta, PreviewTraversalCallback, SubcomponentPreviewTraversalState } from '../../../../../../interfaces/componentTraversal';
 import { TraverseComponentViaPreviewStructureShared } from './traverseComponentViaPreviewStructureShared';
-import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
 
@@ -42,7 +41,7 @@ export class TraverseComponentViaPreviewStructureChildFirst extends TraverseComp
       callback, [...componentsArr.map((component) => component.componentPreviewStructure.layers)]);
     if (traversalResult?.stopTraversal) return traversalResult;
     return callback(...componentsArr.map((activeComponent) => {
-      return { subcomponentProperties: activeComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE] }}));
+      return { subcomponentProperties: activeComponent.baseSubcomponent }}));
   }
   
   private static traversePaddingComponentChild(callback: PreviewTraversalCallback, paddingChildrenArr: WorkshopComponent[]): SubcomponentPreviewTraversalState {

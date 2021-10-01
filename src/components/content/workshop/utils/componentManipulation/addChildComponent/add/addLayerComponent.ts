@@ -9,7 +9,6 @@ import { AlignedSections, Layer } from '../../../../../../../interfaces/componen
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { ChildComponentBaseNamesToStyles } from '../utils/childComponentBaseNamesToStyles';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUtils';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -21,18 +20,18 @@ export class AddLayerComponent extends AddComponentShared {
 
   private static addNewChildComponentsItems(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     if (containerComponent.newChildComponentsItemsRefs?.layer) {
-      newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].newChildComponentsItems = containerComponent.newChildComponentsItemsRefs.layer;
+      newComponent.baseSubcomponent.newChildComponentsItems = containerComponent.newChildComponentsItemsRefs.layer;
     }
   }
 
   private static updateDropdownStructureIfItemFound(containerComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure,
       newComponent: WorkshopComponent, masterComponent: WorkshopComponent): boolean {
-    const newComponentBaseName = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+    const newComponentBaseName = newComponent.baseSubcomponent.name;
     const newComponentDropdownStructure = { [newComponentBaseName]: { 
       ...DropdownItemsDisplayStatusUtils.createDropdownItemDisplayStatusReferenceObject(newComponentBaseName),
     }};
     const { subcomponentNameToDropdownItemName } = masterComponent.componentPreviewStructure;
-    const containerComponentBaseName = containerComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+    const containerComponentBaseName = containerComponent.baseSubcomponent.name;
     Object.assign(dropdownStructure[subcomponentNameToDropdownItemName[containerComponentBaseName]], newComponentDropdownStructure);
     return true;
   }
@@ -68,7 +67,7 @@ export class AddLayerComponent extends AddComponentShared {
   }
 
   private static createEmptyLayer(newComponent: WorkshopComponent): Layer {
-    const baseName = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].name;
+    const baseName = newComponent.baseSubcomponent.name;
     const baseSubcomponent = newComponent.subcomponents[baseName];
     const layerSections = baseSubcomponent.layerSectionsType === LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS
       ? AddLayerComponent.createEmptyAlignedSections() : [];

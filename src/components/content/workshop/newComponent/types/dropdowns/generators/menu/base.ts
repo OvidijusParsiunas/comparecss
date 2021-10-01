@@ -22,7 +22,7 @@ class DropdownMenuBase extends ComponentBuilder {
 
   public static setSyncableSubcomponents(dropdownMenuComponent: WorkshopComponent): void {
     dropdownMenuComponent.sync.syncables = ComponentBuilder.createSyncablesObjectUsingSubcomponents({
-      [SUBCOMPONENT_TYPES.BASE]: dropdownMenuComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE] });
+      [SUBCOMPONENT_TYPES.BASE]: dropdownMenuComponent.baseSubcomponent });
   }
 
   private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {

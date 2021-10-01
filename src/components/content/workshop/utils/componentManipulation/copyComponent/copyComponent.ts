@@ -6,7 +6,6 @@ import { BaseSubcomponentRef, Layer } from '../../../../../../interfaces/compone
 import { uniqueSubcomponentIdState } from '../../componentGenerator/uniqueSubcomponentIdState';
 import { ComponentBuilder } from '../../../newComponent/types/shared/componentBuilder';
 import { AddContainerComponent } from '../addChildComponent/add/addContainerComponent';
-import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
@@ -19,8 +18,8 @@ export class CopyComponent {
 
   private static overwriteAlignedLayerSectionProperties(component: WorkshopComponent): void {
     const newAlignedSection = this as any as ALIGNED_SECTION_TYPES;
-    component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(newAlignedSection);
-    component.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(newAlignedSection);
+    component.baseSubcomponent.customStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(newAlignedSection);
+    component.baseSubcomponent.defaultCustomStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(newAlignedSection);
   }
 
   private static copyAlignedSectionComponents(newLayer: Layer, copiedLayer: Layer, newComponent: WorkshopComponent, baseComponents: WorkshopComponent[]): void {

@@ -20,7 +20,7 @@ class ButtonBase extends ComponentBuilder {
 
   public static setSyncableSubcomponents(buttonComponent: WorkshopComponent): void {
     buttonComponent.sync.syncables = ComponentBuilder.createSyncablesObjectUsingSubcomponents(
-      {[SUBCOMPONENT_TYPES.BASE]: buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE],
+      {[SUBCOMPONENT_TYPES.BASE]: buttonComponent.baseSubcomponent,
        [SUBCOMPONENT_TYPES.TEXT]: null,
        [SUBCOMPONENT_TYPES.ICON]: null,
       });

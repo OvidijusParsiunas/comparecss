@@ -1,6 +1,5 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { CoreSubcomponentRefsUtils } from '../coreSubcomponentRefs/coreSubcomponentRefsUtils';
-import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import JSONUtils from '../../generic/jsonUtils';
 
 type CopyableSubcomponentProperties = CustomCss | CustomFeatures | CustomStaticFeatures;
@@ -65,8 +64,8 @@ export class CopySubcomponents {
   }
 
   public static copyBaseSubcomponent(newComponent: WorkshopComponent, copiedComponent: WorkshopComponent): void {
-    const newBaseSubcomponent = newComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
-    const copiedBaseSubcomponent = copiedComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE];
+    const newBaseSubcomponent = newComponent.baseSubcomponent;
+    const copiedBaseSubcomponent = copiedComponent.baseSubcomponent;
     if (copiedBaseSubcomponent.seedComponent?.sync.componentThisIsSyncedTo) {
       CopySubcomponents.setInSyncComponent(newBaseSubcomponent, copiedBaseSubcomponent);
     } else {

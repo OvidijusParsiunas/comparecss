@@ -1,7 +1,6 @@
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../../../../../../../consts/animationTypes.enum';
 import { CustomFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { cardBase } from '../../cards/generators/base';
@@ -18,8 +17,8 @@ class ModalBase extends ComponentBuilder {
   }
 
   public static overwriteBaseCustomFeatures(cardComponent: WorkshopComponent): void {
-    cardComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].customFeatures = ModalBase.createDefaultBaseCustomFeatures();
-    cardComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE].defaultCustomFeatures = ModalBase.createDefaultBaseCustomFeatures();
+    cardComponent.baseSubcomponent.customFeatures = ModalBase.createDefaultBaseCustomFeatures();
+    cardComponent.baseSubcomponent.defaultCustomFeatures = ModalBase.createDefaultBaseCustomFeatures();
   }
 }
 
