@@ -58,11 +58,12 @@ export class SyncChildComponentModeTempPropertiesUtils {
     });
   }
 
-  private static syncSyncables(callback: SyncSyncablesCallback, isTemporary: boolean, targetComponent: WorkshopComponent, ...targetComponents: WorkshopComponent[]): void {
-    const { subcomponents, childComponents } = targetComponent.sync.syncables;
+  // not using TraverseComponentViaPreviewStructureChildFirst as it abides to subcomponent order and instead sync components are tracked via syncables
+  private static syncSyncables(callback: SyncSyncablesCallback, isTemporary: boolean, component: WorkshopComponent, ...targetComponents: WorkshopComponent[]): void {
+    const { subcomponents, childComponents } = component.sync.syncables;
     SyncChildComponentModeTempPropertiesUtils.syncSyncableSubcomponents(callback, isTemporary, subcomponents, targetComponents);
-    childComponents.forEach((component, index) => {
-      SyncChildComponentModeTempPropertiesUtils.syncSyncables(callback, isTemporary, component,
+    childComponents.forEach((childComponent, index) => {
+      SyncChildComponentModeTempPropertiesUtils.syncSyncables(callback, isTemporary, childComponent,
         ...targetComponents.map((component) => component.sync.syncables.childComponents[index]));
     });
   }

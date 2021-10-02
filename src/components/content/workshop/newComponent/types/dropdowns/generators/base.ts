@@ -35,7 +35,7 @@ class DropdownBase extends ComponentBuilder {
   private static setAllItemAndItemTextComponentsToBeInSync(component: WorkshopComponent): void {
     const menuComponent = component.paddingComponentChild.linkedComponents
       .auxiliary[0].baseSubcomponent.seedComponent;
-    const firstLayerSubcomponentProperties = menuComponent.componentPreviewStructure.layers[0].subcomponentProperties;
+    const firstLayerSubcomponentProperties = menuComponent.componentPreviewStructure.layers[0]?.subcomponentProperties;
     menuComponent.componentPreviewStructure.layers.forEach((layer) => {
       layer.subcomponentProperties.customCss = firstLayerSubcomponentProperties.customCss;
       layer.subcomponentProperties.customFeatures = firstLayerSubcomponentProperties.customFeatures;
