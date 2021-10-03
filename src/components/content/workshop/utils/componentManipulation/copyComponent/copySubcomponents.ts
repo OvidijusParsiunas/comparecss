@@ -31,26 +31,26 @@ export class CopySubcomponents {
     CopySubcomponents.copyStaticAndDefaultProperties(newSubcomponent, subcomponentBeingCopied);
   }
 
-  private static copySubcomponentReferenceProperties(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
+  private static copySyncedSubcomponentProperties(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
     newSubcomponent.customCss = subcomponentBeingCopied.customCss;
     newSubcomponent.customFeatures = subcomponentBeingCopied.customFeatures;
     CopySubcomponents.copyStaticAndDefaultProperties(newSubcomponent, subcomponentBeingCopied);
   }
 
   private static setInSyncComponent(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
-    const copiedSeedComponent = subcomponentBeingCopied.seedComponent;
-    newSubcomponent.seedComponent.sync.componentThisIsSyncedTo = copiedSeedComponent;
-    newSubcomponent.seedComponent.componentStatus = copiedSeedComponent.componentStatus;
+    const originalComponentThisIsSyncedTo = subcomponentBeingCopied.seedComponent.sync.componentThisIsSyncedTo;
+    newSubcomponent.seedComponent.sync.componentThisIsSyncedTo = originalComponentThisIsSyncedTo;
+    newSubcomponent.seedComponent.componentStatus = originalComponentThisIsSyncedTo.componentStatus;
+    originalComponentThisIsSyncedTo.sync.componentsSyncedToThis.add(newSubcomponent.seedComponent);
   }
 
   // WORK 2 - refactor this method or other ones as well when copy component logic is complete
   public static copy(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
     if (subcomponentBeingCopied.seedComponent.sync.componentThisIsSyncedTo) {
       CopySubcomponents.setInSyncComponent(newSubcomponent, subcomponentBeingCopied);
-      CopySubcomponents.copySubcomponentReferenceProperties(newSubcomponent, subcomponentBeingCopied);
-      subcomponentBeingCopied.seedComponent.sync.componentThisIsSyncedTo.sync.componentsSyncedToThis.add(subcomponentBeingCopied.seedComponent);
+      CopySubcomponents.copySyncedSubcomponentProperties(newSubcomponent, subcomponentBeingCopied);
     } else if (SyncChildComponentUtils.getInSyncComponent(subcomponentBeingCopied)) {
-      CopySubcomponents.copySubcomponentReferenceProperties(newSubcomponent, subcomponentBeingCopied);
+      CopySubcomponents.copySyncedSubcomponentProperties(newSubcomponent, subcomponentBeingCopied);
     } else {
       CopySubcomponents.copySubcomponentProperties(newSubcomponent, subcomponentBeingCopied); 
     }
