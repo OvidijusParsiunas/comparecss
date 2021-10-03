@@ -66,9 +66,11 @@ export class CopyComponent {
     if (componentBeingCopied.componentPreviewStructure.layers.length < newComponent.componentPreviewStructure.layers.length) {
       const diff = newComponent.componentPreviewStructure.layers.length - componentBeingCopied.componentPreviewStructure.layers.length;
       for (let i = 0; i < diff; i += 1) {
+        const temp = newComponent.masterComponent.activeSubcomponentName;
         newComponent.masterComponent.activeSubcomponentName = newComponent.componentPreviewStructure.layers[
           newComponent.componentPreviewStructure.layers.length - 1].subcomponentProperties.seedComponent.activeSubcomponentName;
         RemoveChildComponent.remove(newComponent.masterComponent);
+        newComponent.masterComponent.activeSubcomponentName = temp;
       }
     }
   }
