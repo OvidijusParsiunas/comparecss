@@ -7,7 +7,7 @@ type CopyableSubcomponentProperties = CustomCss | CustomFeatures | CustomStaticF
 // current subcomponent copy strategy:
 // if a subcomponent has a text or icon subcomponents - the copyable component's properties are copied onto them if that component has these subcomponents
 // this similarly works if the copyable component has these subcomponents and the current one doesn't - these properties don't get copied
-// if any subcomponent is added or removed - the component remains in sync and any subcomponents have their own properties
+// if any subcomponent is added or removed - the component remains in sync
 export class CopySubcomponents {
 
   // copying property values instead of the objects containing them because their references are assigned in InterconnectedSettings
@@ -43,12 +43,13 @@ export class CopySubcomponents {
     newSubcomponent.seedComponent.componentStatus = copiedSeedComponent.componentStatus;
   }
 
-  private static copyExistingSubcomponentProperties(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
+  // WORK 2 - refactor this method or other ones as well when copy component logic is complete
+  public static copyExistingSubcomponentProperties(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
     if (subcomponentBeingCopied.seedComponent.sync.componentThisIsSyncedTo) {
       CopySubcomponents.setInSyncComponent(newSubcomponent, subcomponentBeingCopied);
       CopySubcomponents.copySubcomponentReferenceProperties(newSubcomponent, subcomponentBeingCopied);
       subcomponentBeingCopied.seedComponent.sync.componentThisIsSyncedTo.sync.componentsSyncedToThis.add(subcomponentBeingCopied.seedComponent);
-    } else if (subcomponentBeingCopied.seedComponent.containerComponent.sync.componentThisIsSyncedTo) {
+    } else if (subcomponentBeingCopied.seedComponent.containerComponent?.sync.componentThisIsSyncedTo) {
       CopySubcomponents.copySubcomponentReferenceProperties(newSubcomponent, subcomponentBeingCopied);
     } else {
       CopySubcomponents.copySubcomponentProperties(newSubcomponent, subcomponentBeingCopied); 

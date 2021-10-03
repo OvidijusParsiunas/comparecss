@@ -6,6 +6,7 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentType
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
+import { DEFAULT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { SelectDropdownUtils } from '../selectDropdown/selectDropdownUtils';
 import { DropdownItemLayer } from '../../layers/generators/dropdownItem';
 import { ComponentBuilder } from '../../shared/componentBuilder';
@@ -24,6 +25,7 @@ class DropdownBase extends ComponentBuilder {
     buttonBaseSubcomponent.customStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.customStaticFeatures.dropdownSelectedText;
     buttonBaseSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText;
     const textSubcomponent = buttonComponent.coreSubcomponentRefs[SUBCOMPONENT_TYPES.TEXT];
+    if (!textSubcomponent) return;
     textSubcomponent.customFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select };
     textSubcomponent.defaultCustomFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select };
     textSubcomponent.customStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.customStaticFeatures.dropdownSelectedText;
@@ -105,6 +107,7 @@ export const dropdownBase: ComponentGenerator = {
     const paddingComponent = plainLayer.createNewComponent(baseName);
     paddingComponent.baseSubcomponent.subcomponentType = SUBCOMPONENT_TYPES.DROPDOWN;
     paddingComponent.type = COMPONENT_TYPES.DROPDOWN;
+    paddingComponent.style = DEFAULT_STYLES.BASE;
     const buttonComponent = dropdownButtonBase.createNewComponent();
     UpdatePaddingComponentDropdownItemNames.updatePaddingComponentChildren(buttonComponent);
     DropdownBase.overwriteBase(paddingComponent);
