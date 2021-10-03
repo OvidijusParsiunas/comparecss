@@ -5,6 +5,29 @@ import { BUTTON_STYLES } from '../../../../../../consts/componentStyles.enum';
 
 export class SyncChildComponentUtils {
 
+  private static getPaddingComponent(component: WorkshopComponent): WorkshopComponent {
+    return component?.paddingComponent || component?.linkedComponents?.base?.paddingComponent;
+  }
+
+  private static getPaddingComponentWithCondition(component: WorkshopComponent, conditionCallback: (component: WorkshopComponent) => boolean): WorkshopComponent {
+    const paddingComponent = SyncChildComponentUtils.getPaddingComponent(component) || SyncChildComponentUtils.getPaddingComponent(component.containerComponent);
+    return conditionCallback(paddingComponent) ? paddingComponent : null;
+  }
+
+  public static getParentComponentWithCondition(component: WorkshopComponent, conditionCallback: (component: WorkshopComponent) => boolean): WorkshopComponent {
+    if (conditionCallback(component.containerComponent)) {
+      return component.containerComponent;
+    }
+    return SyncChildComponentUtils.getPaddingComponentWithCondition(component, conditionCallback);
+  }
+
+  public static getInSyncComponent({ seedComponent }: SubcomponentProperties): WorkshopComponent {
+    if (seedComponent.sync?.componentThisIsSyncedTo) {
+      return seedComponent;
+    }
+    return SyncChildComponentUtils.getParentComponentWithCondition(seedComponent, (component) => !!component?.sync.componentThisIsSyncedTo);
+  }
+
   private static canSeedComponentBeOverwrittenBySynced(activeSubcomponent: SubcomponentProperties): boolean {
     return activeSubcomponent.seedComponent !== activeSubcomponent.seedComponent.masterComponent;
   }

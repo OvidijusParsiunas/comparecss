@@ -1,5 +1,5 @@
-import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { CoreSubcomponentRefsUtils } from '../coreSubcomponentRefs/coreSubcomponentRefsUtils';
+import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
+import { SyncChildComponentUtils } from '../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import JSONUtils from '../../generic/jsonUtils';
 
 type CopyableSubcomponentProperties = CustomCss | CustomFeatures | CustomStaticFeatures;
@@ -44,33 +44,15 @@ export class CopySubcomponents {
   }
 
   // WORK 2 - refactor this method or other ones as well when copy component logic is complete
-  public static copyExistingSubcomponentProperties(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
+  public static copy(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
     if (subcomponentBeingCopied.seedComponent.sync.componentThisIsSyncedTo) {
       CopySubcomponents.setInSyncComponent(newSubcomponent, subcomponentBeingCopied);
       CopySubcomponents.copySubcomponentReferenceProperties(newSubcomponent, subcomponentBeingCopied);
       subcomponentBeingCopied.seedComponent.sync.componentThisIsSyncedTo.sync.componentsSyncedToThis.add(subcomponentBeingCopied.seedComponent);
-    } else if (subcomponentBeingCopied.seedComponent.containerComponent?.sync.componentThisIsSyncedTo) {
+    } else if (SyncChildComponentUtils.getInSyncComponent(subcomponentBeingCopied)) {
       CopySubcomponents.copySubcomponentReferenceProperties(newSubcomponent, subcomponentBeingCopied);
     } else {
       CopySubcomponents.copySubcomponentProperties(newSubcomponent, subcomponentBeingCopied); 
-    }
-  }
-
-  public static copyComponentSubcomponents(componentBeingCopied: WorkshopComponent, newChildComponent: WorkshopComponent): void {
-    CoreSubcomponentRefsUtils.getActiveRefKeys(newChildComponent.coreSubcomponentRefs).forEach((subcomponentType) => {
-      const newSubcomponent = newChildComponent.coreSubcomponentRefs[subcomponentType];
-      const subcomponentBeingCopied = componentBeingCopied.coreSubcomponentRefs[subcomponentType];
-      CopySubcomponents.copyExistingSubcomponentProperties(newSubcomponent, subcomponentBeingCopied);
-    });
-  }
-
-  public static copyBaseSubcomponent(newComponent: WorkshopComponent, copiedComponent: WorkshopComponent): void {
-    const newBaseSubcomponent = newComponent.baseSubcomponent;
-    const copiedBaseSubcomponent = copiedComponent.baseSubcomponent;
-    if (copiedBaseSubcomponent.seedComponent?.sync.componentThisIsSyncedTo) {
-      CopySubcomponents.setInSyncComponent(newBaseSubcomponent, copiedBaseSubcomponent);
-    } else {
-      CopySubcomponents.copySubcomponentProperties(newBaseSubcomponent, copiedBaseSubcomponent);
     }
   }
 }

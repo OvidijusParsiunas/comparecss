@@ -93,7 +93,7 @@ export class CopyComponent {
       }
       CopyComponent.copyAlignedSectionComponents(newComponent.componentPreviewStructure.layers[index], layer, newComponent, baseComponents);
       UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(newComponent, newComponent.componentPreviewStructure.layers[index]);
-      CopySubcomponents.copyExistingSubcomponentProperties(newLayer.baseSubcomponent, layer.subcomponentProperties);
+      CopySubcomponents.copy(newLayer.baseSubcomponent, layer.subcomponentProperties);
       if (!isPresent && indexToUpdate === -1) indexToUpdate = index;
     });
     newComponent.masterComponent.activeSubcomponentName = temp;
@@ -109,7 +109,7 @@ export class CopyComponent {
   private static copySubcomponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
     // TraverseComponentViaPreviewStructureParentFirst.traverse(CopyComponent.callback, componentBeingCopied, newComponent);
     const baseComponents: WorkshopComponent[] = [newComponent];
-    CopySubcomponents.copyBaseSubcomponent(newComponent, componentBeingCopied);
+    CopySubcomponents.copy(newComponent.baseSubcomponent, componentBeingCopied.baseSubcomponent);
     CopyComponent.copyLayerComponents(newComponent, componentBeingCopied, baseComponents);
     if (newComponent.paddingComponentChild) {
       CopyComponent.copySubcomponents(newComponent.paddingComponentChild, componentBeingCopied.paddingComponentChild);
