@@ -78,13 +78,12 @@ export class CopyComponent {
   private static copyLayerComponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent, baseComponents: WorkshopComponent[]): void {
     CopyComponent.removeLayerComponents(newComponent, componentBeingCopied);
     let indexToUpdate = -1;
-    let isEditable = false;
     const temp = newComponent.masterComponent.activeSubcomponentName;
     newComponent.masterComponent.activeSubcomponentName = newComponent.activeSubcomponentName;
     componentBeingCopied.componentPreviewStructure.layers.forEach((layer, index) => {
       const copiedLayerStyle = layer.subcomponentProperties.seedComponent.style;
       const isPresent = newComponent.componentPreviewStructure.layers[index];
-      isEditable = !!componentBeingCopied.masterComponent.componentPreviewStructure.subcomponentNameToDropdownItemName[layer.subcomponentProperties.seedComponent.activeSubcomponentName];
+      const isEditable = !!componentBeingCopied.masterComponent.componentPreviewStructure.subcomponentNameToDropdownItemName[layer.subcomponentProperties.seedComponent.activeSubcomponentName];
       const newLayer = isPresent
         ? newComponent.componentPreviewStructure.layers[index].subcomponentProperties.seedComponent
         : AddLayerComponent.add(newComponent, copiedLayerStyle, isEditable);
@@ -96,10 +95,10 @@ export class CopyComponent {
       CopySubcomponents.copy(newLayer.baseSubcomponent, layer.subcomponentProperties);
       if (!isPresent && indexToUpdate === -1) indexToUpdate = index;
     });
-    newComponent.masterComponent.activeSubcomponentName = temp;
-    if (indexToUpdate > -1 && isEditable) {
+    if (indexToUpdate > -1) {
       UpdateLayerDropdownItemNames.update(newComponent, indexToUpdate);
     }
+    newComponent.masterComponent.activeSubcomponentName = temp;
   }
 
   // could not copy subcomponents by parent first preview structure traversal as upon dynamically creating child components

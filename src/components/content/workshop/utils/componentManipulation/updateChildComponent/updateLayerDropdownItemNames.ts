@@ -44,15 +44,15 @@ export class UpdateLayerDropdownItemNames extends UpdateDropdownItemNamesShared 
   // it is also worth noting that container component will always be master when a layer is removed
   private static getLayersDropdownStructure(containerComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure,
       subcomponentNameToDropdownItemName: SubcomponentNameToDropdownItemName): NestedDropdownStructure {
-    const activeItemName = subcomponentNameToDropdownItemName[containerComponent.baseSubcomponent.name];
-    return dropdownStructure[activeItemName] as NestedDropdownStructure || dropdownStructure;
+    const itemName = subcomponentNameToDropdownItemName[containerComponent.baseSubcomponent.name];
+    return dropdownStructure[itemName] as NestedDropdownStructure || dropdownStructure;
   }
 
   private static updateIfActiveItemFound(containerComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure,
       startingLayerNumber: number): boolean {
     const { masterComponent } = containerComponent;
     const layersDropdownStructure = UpdateLayerDropdownItemNames.getLayersDropdownStructure(containerComponent, dropdownStructure,
-        masterComponent.componentPreviewStructure.subcomponentNameToDropdownItemName);
+      masterComponent.componentPreviewStructure.subcomponentNameToDropdownItemName);
     const subcomponentNames = UpdateDropdownItemNamesShared.getSubcomponentNames(layersDropdownStructure);
     let overwrittenItemNames: string[] = [];
     if (subcomponentNames.length === 1) {
