@@ -50,7 +50,7 @@ export default function useComponentManipulation(): UseComponentManipulation {
   };
 
   const copyComponent = (workshopComponent: ComponentOptions, setActiveComponent: WorkshopComponent): void => {
-    const newComponent = CopyComponent.copyComponent(workshopComponent, setActiveComponent);
+    const newComponent = CopyComponent.copy(workshopComponent, setActiveComponent);
     addComponent(workshopComponent, newComponent);
   };
 

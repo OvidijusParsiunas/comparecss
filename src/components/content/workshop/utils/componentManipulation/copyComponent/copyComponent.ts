@@ -55,23 +55,29 @@ export class CopyComponent {
         } else {
           newChildComponent = newLayer.sections.alignedSections[section][index].subcomponentProperties.seedComponent;
         }
-        CopyComponent.copySubcomponents(newChildComponent, subcomponent.subcomponentProperties.seedComponent);
+        CopyComponent.copyComponent(newChildComponent, subcomponent.subcomponentProperties.seedComponent);
       });
     });
     newComponent.masterComponent.activeSubcomponentName = temp;
   }
 
+  private static removeLayerComponent(masterComponent: WorkshopComponent, layers: Layer[]): void {
+    masterComponent.activeSubcomponentName = layers[layers.length - 1].subcomponentProperties.seedComponent.activeSubcomponentName;
+    RemoveChildComponent.remove(masterComponent);
+  }
+
   // new components with base should not have layers to begin with so in the future this method may not be required
   private static removeLayerComponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
-    if (componentBeingCopied.componentPreviewStructure.layers.length < newComponent.componentPreviewStructure.layers.length) {
-      const diff = newComponent.componentPreviewStructure.layers.length - componentBeingCopied.componentPreviewStructure.layers.length;
-      for (let i = 0; i < diff; i += 1) {
-        const temp = newComponent.masterComponent.activeSubcomponentName;
-        newComponent.masterComponent.activeSubcomponentName = newComponent.componentPreviewStructure.layers[
-          newComponent.componentPreviewStructure.layers.length - 1].subcomponentProperties.seedComponent.activeSubcomponentName;
-        RemoveChildComponent.remove(newComponent.masterComponent);
-        newComponent.masterComponent.activeSubcomponentName = temp;
+    const newExistingLayers = newComponent.componentPreviewStructure.layers;
+    const copiedLayers = componentBeingCopied.componentPreviewStructure.layers;
+    if (copiedLayers.length < newExistingLayers.length) {
+      const newMasterComponent = newComponent.masterComponent;
+      const temp = newMasterComponent.activeSubcomponentName;
+      const lengthDiff = newExistingLayers.length - copiedLayers.length;
+      for (let i = 0; i < lengthDiff; i += 1) {
+        CopyComponent.removeLayerComponent(newMasterComponent, newExistingLayers);
       }
+      newMasterComponent.activeSubcomponentName = temp;
     }
   }
 
@@ -101,76 +107,37 @@ export class CopyComponent {
     newComponent.masterComponent.activeSubcomponentName = temp;
   }
 
-  // could not copy subcomponents by parent first preview structure traversal as upon dynamically creating child components
-  // the subcomponents hold references with seed component, however those woild be overwritten as such traversal calls
-  // copySubcomponents for every subcomponent
+  private static copyAuxiliaryComponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
+    newComponent.linkedComponents.auxiliary?.forEach((auxiliaryComponent, index) => {
+      CopyComponent.copyComponent(auxiliaryComponent, componentBeingCopied.linkedComponents.auxiliary[index]);
+    });
+  }
+
+  private static copyPaddingComponentChild(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
+    CopyComponent.copyComponent(newComponent.paddingComponentChild, componentBeingCopied.paddingComponentChild);
+    UpdatePaddingComponentDropdownItemNames.updatePaddingComponentChildren(newComponent.paddingComponentChild);
+  }
+
+  // could not use parent first preview structure traversal as upon dynamically creating child components the subcomponents
+  // hold references with seed component, however those woild be overwritten as such traversal calls
+  // copyComponent for every subcomponent
   // could not do child first traversal because some children do not exist for the new component
-  private static copySubcomponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
-    // TraverseComponentViaPreviewStructureParentFirst.traverse(CopyComponent.callback, componentBeingCopied, newComponent);
+  private static copyComponent(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
     const baseComponents: WorkshopComponent[] = [newComponent];
     CopySubcomponents.copy(newComponent.baseSubcomponent, componentBeingCopied.baseSubcomponent);
     CopyComponent.copyLayerComponents(newComponent, componentBeingCopied, baseComponents);
-    if (newComponent.paddingComponentChild) {
-      CopyComponent.copySubcomponents(newComponent.paddingComponentChild, componentBeingCopied.paddingComponentChild);
-      UpdatePaddingComponentDropdownItemNames.updatePaddingComponentChildren(newComponent.paddingComponentChild);
-    }
-    newComponent.linkedComponents?.auxiliary?.forEach((auxiliaryComponent, index) => {
-      CopyComponent.copySubcomponents(auxiliaryComponent, componentBeingCopied.linkedComponents.auxiliary[index]);
-    });
+    if (newComponent.paddingComponentChild) CopyComponent.copyPaddingComponentChild(newComponent, componentBeingCopied);
+    if (newComponent.linkedComponents?.auxiliary) CopyComponent.copyAuxiliaryComponents(newComponent, componentBeingCopied);
     PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(...baseComponents);
   }
 
-  public static copyComponent(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {
-    // WORK2: copy auxiliary component and shared customCss
+  public static copy(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {
     // used here as button builders do not inherently reset the unique id
     uniqueSubcomponentIdState.resetUniqueId();
     const newComponent = componentTypeToStyleGenerators[componentBeingCopied.type][DEFAULT_STYLES.BASE].createNewComponent();
-    CopyComponent.copySubcomponents(newComponent, componentBeingCopied);
+    CopyComponent.copyComponent(newComponent, componentBeingCopied);
     newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className,
       (optionsComponent.components as undefined as WorkshopComponent[]), '-copy');
     return newComponent;
   }
-
-  // private static callback(state: SubcomponentPreviewTraversalState, secondComponentState: SubcomponentPreviewTraversalState): SubcomponentPreviewTraversalState {
-  //   if (state.subcomponentProperties.seedComponent.componentPreviewStructure.layers.length < secondComponentState?.subcomponentProperties.seedComponent.componentPreviewStructure.layers.length) {
-  //     const diff = secondComponentState.subcomponentProperties.seedComponent.componentPreviewStructure.layers.length - state.subcomponentProperties.seedComponent.componentPreviewStructure.layers.length;
-  //     for (let i = 0; i < diff; i += 1) {
-  //       secondComponentState.subcomponentProperties.seedComponent.masterComponent.activeSubcomponentName = secondComponentState.subcomponentProperties.seedComponent.componentPreviewStructure.layers[
-  //         secondComponentState.subcomponentProperties.seedComponent.componentPreviewStructure.layers.length - 1].subcomponentProperties.seedComponent.activeSubcomponentName;
-  //       RemoveChildComponent.remove(secondComponentState.subcomponentProperties.seedComponent.masterComponent);
-  //     }
-  //   } else if (state.subcomponentProperties.seedComponent.componentPreviewStructure.layers.length > secondComponentState?.subcomponentProperties.seedComponent.componentPreviewStructure.layers.length) {
-  //     const initialLength = secondComponentState.subcomponentProperties.seedComponent.componentPreviewStructure.layers.length;
-  //     const diff = state.subcomponentProperties.seedComponent.componentPreviewStructure.layers.length - initialLength;
-  //     for (let i = 0; i < diff; i += 1) {
-  //       secondComponentState.subcomponentProperties.seedComponent.masterComponent.activeSubcomponentName = secondComponentState.subcomponentProperties.seedComponent.activeSubcomponentName;
-  //       const layer = state.subcomponentProperties.seedComponent.componentPreviewStructure.layers[0];
-  //       const newLayer = AddLayerComponent.add(secondComponentState.subcomponentProperties.seedComponent, layer.subcomponentProperties.seedComponent.style, true);
-  //       newLayer.childComponentsLockedToLayer?.add(newLayer, secondComponentState.subcomponentProperties.seedComponent);
-  //       // UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(secondComponentState.parentComponent, secondComponentState.parentComponent.componentPreviewStructure.layers[state.index]);
-  //     }
-  //     UpdateLayerDropdownItemNames.update(secondComponentState.subcomponentProperties.seedComponent, initialLength);
-  //   }
-  //   if (state.subcomponentProperties.seedComponent.type === COMPONENT_TYPES.LAYER) {
-  //     const { alignedSections } = state.layers[state.index].sections;
-  //     let updated = false;
-  //     Object.keys(alignedSections).forEach((section: ALIGNED_SECTION_TYPES) => {
-  //       alignedSections[section].forEach((subcomponent: BaseSubcomponentRef, index: number) => {
-  //         if (!secondComponentState.layers[state.index].sections.alignedSections[section][index]) {
-  //           const { type, style } = subcomponent.subcomponentProperties.seedComponent;
-  //           const newChildComponent = AddContainerComponent.add(
-  //             secondComponentState.parentComponent, type, style, secondComponentState.layers[state.index].subcomponentProperties.name, [CopyComponent.overwriteAlignedLayerSectionProperties.bind(section)]);
-  //           // baseComponents.push(newChildComponent);
-  //           CopySubcomponents.copyExistingSubcomponentProperties(newChildComponent.baseSubcomponent, state.layers[state.index].sections.alignedSections[section][index].subcomponentProperties);
-  //           PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(newChildComponent);
-  //           updated = true;
-  //         }
-  //       });
-  //     });
-  //     if (updated) UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(secondComponentState.parentComponent, secondComponentState.layers[state.index]);
-  //   }
-  //   CopySubcomponents.copyExistingSubcomponentProperties(secondComponentState.subcomponentProperties, state.subcomponentProperties);
-  //   PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(secondComponentState.subcomponentProperties.seedComponent);
-  //   return state;
-  // }
 }
