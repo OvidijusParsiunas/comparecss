@@ -11,8 +11,8 @@ export class TraverseComponentViaPreviewStructureChildFirst extends TraverseComp
     let traversalResult: SubcomponentPreviewTraversalState = null;
     for (let i = 0; i < (alignedComponentsWithMetaArr[0][0] || []).length; i += 1) {
       const availableComponents = alignedComponentsWithMetaArr.filter((alignedComponentWithMeta) => alignedComponentWithMeta[0][i]);
-      traversalResult = TraverseComponentViaPreviewStructureChildFirst.traverseLayers(
-        callback, availableComponents.map((alignedComponentWithMeta) => alignedComponentWithMeta[0][i].subcomponentProperties.seedComponent.componentPreviewStructure.layers)
+      traversalResult = TraverseComponentViaPreviewStructureChildFirst.traverse(
+        callback, ...availableComponents.map((alignedComponentWithMeta) => alignedComponentWithMeta[0][i].subcomponentProperties.seedComponent)
       );
       if (traversalResult?.stopTraversal) return traversalResult;
       traversalResult = callback(

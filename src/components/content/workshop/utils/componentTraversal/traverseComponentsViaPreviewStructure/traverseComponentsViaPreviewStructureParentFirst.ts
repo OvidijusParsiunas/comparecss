@@ -14,8 +14,8 @@ export class TraverseComponentViaPreviewStructureParentFirst extends TraverseCom
       traversalResult = callback(
         ...availableComponents.map((alignedComponentWithMeta) => TraverseComponentViaPreviewStructureShared.createTraversalStateFromAlignedComponentWithMeta(alignedComponentWithMeta, i)));
       if (traversalResult?.stopTraversal) return traversalResult;
-      traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverseLayers(
-        callback, availableComponents.map((alignedComponentWithMeta) => alignedComponentWithMeta[0][i].subcomponentProperties.seedComponent.componentPreviewStructure.layers)
+      traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverse(
+        callback, ...availableComponents.map((alignedComponentWithMeta) => alignedComponentWithMeta[0][i].subcomponentProperties.seedComponent)
       );
       if (traversalResult?.stopTraversal) return traversalResult;
     }
