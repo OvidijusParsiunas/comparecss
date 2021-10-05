@@ -48,9 +48,8 @@ export class AddContainerComponent extends AddComponentShared {
     }
   }
 
+  // WORK 2 - change name after refactoring core component ref
   private static populateCoreComponentRef(newComponentContainer: WorkshopComponent, newComponent: WorkshopComponent): void {
-    // WORK1
-    // get copy to work first
     const newComponentBase = newComponent.baseSubcomponent;
     const { subcomponentType, parentLayer } = newComponentBase;
     JSONUtils.setPropertyIfExists(newComponentContainer.coreSubcomponentRefs, subcomponentType as number, newComponentBase);

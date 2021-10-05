@@ -1,5 +1,4 @@
 import { CoreSubcomponentRefs } from '../../../../../../interfaces/coreSubcomponentRefs';
-import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 
 export class CoreSubcomponentRefsUtils {
@@ -7,10 +6,5 @@ export class CoreSubcomponentRefsUtils {
   public static getActiveRefKeys(coreSubcomponentRefs: CoreSubcomponentRefs): SUBCOMPONENT_TYPES[] {
     return Object.keys(coreSubcomponentRefs || {})
       .filter((subcomponentType) => coreSubcomponentRefs[subcomponentType]) as unknown as SUBCOMPONENT_TYPES[];
-  }
-
-  public static getActiveRefsArray(coreSubcomponentRefs: CoreSubcomponentRefs): SubcomponentProperties[] {
-    return CoreSubcomponentRefsUtils.getActiveRefKeys(coreSubcomponentRefs || {})
-      .map((subcomponentType) => coreSubcomponentRefs[subcomponentType]);
   }
 }

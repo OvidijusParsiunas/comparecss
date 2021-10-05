@@ -4,14 +4,10 @@ import JSONUtils from '../../generic/jsonUtils';
 
 type CopyableSubcomponentProperties = CustomCss | CustomFeatures | CustomStaticFeatures;
 
-// current subcomponent copy strategy:
-// if a subcomponent has a text or icon subcomponents - the copyable component's properties are copied onto them if that component has these subcomponents
-// this similarly works if the copyable component has these subcomponents and the current one doesn't - these properties don't get copied
-// if any subcomponent is added or removed - the component remains in sync
 export class CopySubcomponents {
 
-  // copying property values instead of the objects containing them because their references are assigned in InterconnectedSettings
-  // addUpdateOtherCssProperties method when creating/copying a subcomponent, hence they cannot be directly overwritten
+  // copying property values instead of the objects containing them because their references are assigned via addUpdateOtherCssProperties method
+  // in the InterconnectedSettings class when creating/copying a subcomponent, hence they cannot be directly overwritten
   private static copyProperties(newCustomCss: CopyableSubcomponentProperties = {}, customCssBeingCopied: CopyableSubcomponentProperties = {}): void {
     Object.keys(newCustomCss).forEach((pseudoCssClass) => {
       newCustomCss[pseudoCssClass] = JSONUtils.deepCopy(customCssBeingCopied[pseudoCssClass]);
@@ -44,7 +40,6 @@ export class CopySubcomponents {
     originalComponentThisIsSyncedTo.sync.componentsSyncedToThis.add(newSubcomponent.seedComponent);
   }
 
-  // WORK 2 - refactor this method or other ones as well when copy component logic is complete
   public static copy(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
     if (subcomponentBeingCopied.seedComponent.sync.componentThisIsSyncedTo) {
       CopySubcomponents.setInSyncComponent(newSubcomponent, subcomponentBeingCopied);

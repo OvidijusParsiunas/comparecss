@@ -50,7 +50,7 @@ export class AddComponentShared {
     const componentStyle = ChildComponentBaseNamesToStyles.genericToStyle(newComponentBaseName);
     const containerComponent = ActiveComponentUtils.getActiveContainerComponent(activeComponent);
     const parentLayer = activeComponent.type === COMPONENT_TYPES.LAYER
-      ? AddContainerComponent.getContainerComponentLayer(containerComponent, activeComponent.coreSubcomponentRefs[0].name)
+      ? AddContainerComponent.getContainerComponentLayer(containerComponent, activeComponent.baseSubcomponent.name)
       : containerComponent.componentPreviewStructure.layers[0];
     return { componentType, componentStyle, parentLayer, containerComponent };
   }

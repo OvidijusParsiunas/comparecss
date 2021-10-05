@@ -8,7 +8,6 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../
 import { UpdateLayerDropdownItemNames } from '../../updateChildComponent/updateLayerDropdownItemNames';
 import { DecrementChildComponentCount } from '../../childComponentCount/decrementChildComponentCount';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
-import { CoreSubcomponentRefsUtils } from '../../coreSubcomponentRefs/coreSubcomponentRefsUtils';
 import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
 import ComponentTraversalUtils from '../../../componentTraversal/componentTraversalUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -20,13 +19,12 @@ type TargetRemovalDetails = TargetDetails & { isRemovingActiveSubcomponent?: boo
 
 export class RemoveAnyChildComponent {
 
-  // WORK1 - copy
-  private static removeCoreSubcomponentRef(parentComponent: WorkshopComponent, removedSubcomponentProperties: SubcomponentProperties): void {
-    const { coreSubcomponentRefs, sync: { syncables } } = parentComponent;
-    const coreSubcomponentToBeRemoved = CoreSubcomponentRefsUtils.getActiveRefKeys(coreSubcomponentRefs)
-      .find((subcomponentType) => coreSubcomponentRefs[subcomponentType] === removedSubcomponentProperties);
-    if (coreSubcomponentToBeRemoved) coreSubcomponentRefs[coreSubcomponentToBeRemoved] = null;
-    if (coreSubcomponentToBeRemoved && syncables) syncables.subcomponents[coreSubcomponentToBeRemoved] = null;
+  private static removeSyncableSubcomponent(parentComponent: WorkshopComponent, removedSubcomponentProperties: SubcomponentProperties): void {
+    const { syncables } = parentComponent.sync;
+    if (syncables) {
+      const { type } = removedSubcomponentProperties.seedComponent;
+      if (syncables.subcomponents[type]) syncables.subcomponents[type] = null;
+    }
   }
 
   private static updateDropdownItemNames(targetDetails: TargetRemovalDetails, subcomponentDropdownStructure: NestedDropdownStructure,
@@ -159,7 +157,7 @@ export class RemoveAnyChildComponent {
     TraverseComponentViaDropdownStructure.traverse(
       targetDetails.masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       RemoveAnyChildComponent.removeChildComponentUsingDropdownStructureIfFound.bind(targetDetails));
-    RemoveAnyChildComponent.removeCoreSubcomponentRef(parentComponent, targetDetails.targetSubcomponentProperties);
+    RemoveAnyChildComponent.removeSyncableSubcomponent(parentComponent, targetDetails.targetSubcomponentProperties);
     SubcomponentTriggers.removeTriggerReferenceFromSubcomponentThatTriggersThis(targetDetails.targetSubcomponentProperties);
   }
 }

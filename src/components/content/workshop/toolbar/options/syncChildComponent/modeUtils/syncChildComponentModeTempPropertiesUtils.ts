@@ -64,7 +64,7 @@ export class SyncChildComponentModeTempPropertiesUtils {
     SyncChildComponentModeTempPropertiesUtils.syncSyncableSubcomponents(callback, isTemporary, subcomponents, targetComponents);
     childComponents.forEach((childComponent, index) => {
       SyncChildComponentModeTempPropertiesUtils.syncSyncables(callback, isTemporary, childComponent,
-        ...targetComponents.map((component) => component.sync.syncables.childComponents[index]));
+        ...targetComponents.map((targetComponent) => targetComponent.sync.syncables.childComponents[index]));
     });
   }
 
