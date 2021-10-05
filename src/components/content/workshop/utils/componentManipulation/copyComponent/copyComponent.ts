@@ -24,41 +24,64 @@ export class CopyComponent {
     component.baseSubcomponent.defaultCustomStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(newAlignedSection);
   }
 
-  private static removeAlignedSectionComponents(newLayer: Layer, newComponent: WorkshopComponent, section: ALIGNED_SECTION_TYPES): void {
-    const diff = newLayer.sections.alignedSections[section].length;
-    const temp = newComponent.masterComponent.activeSubcomponentName;
-    for (let i = 0; i < diff; i += 1) {
-      newComponent.masterComponent.activeSubcomponentName = newLayer.sections.alignedSections[section][newLayer.sections.alignedSections[section].length - 1].subcomponentProperties.seedComponent.activeSubcomponentName;
-      RemoveChildComponent.remove(newComponent.masterComponent);
+  private static getAlignedComponent(newLayer: Layer, subcomponent: BaseSubcomponentRef, section: ALIGNED_SECTION_TYPES,
+      index: number, newComponent: WorkshopComponent, baseComponents: WorkshopComponent[]): WorkshopComponent {
+    if (!newLayer.subcomponentProperties.seedComponent.childComponentsLockedToLayer) {
+      const { type, style } = subcomponent.subcomponentProperties.seedComponent;
+      const alignedComponent = AddContainerComponent.add(
+        newComponent, type, style, newLayer.subcomponentProperties.name, [CopyComponent.overwriteAlignedLayerSectionProperties.bind(section)]);
+      baseComponents.push(alignedComponent);
+      return alignedComponent;
     }
-    newComponent.masterComponent.activeSubcomponentName = temp;
+    return newLayer.sections.alignedSections[section][index].subcomponentProperties.seedComponent;
   }
 
-  private static copyAlignedSectionComponents(newLayer: Layer, copiedLayer: Layer, newComponent: WorkshopComponent, baseComponents: WorkshopComponent[]): void {
-    const { alignedSections } = copiedLayer.sections;
-    const temp = newComponent.masterComponent.activeSubcomponentName;
-    newComponent.masterComponent.activeSubcomponentName = newComponent
-        .masterComponent.componentPreviewStructure.subcomponentNameToDropdownItemName[newLayer.subcomponentProperties.seedComponent.activeSubcomponentName]
+  private static copyAlignedSectionComponents(alignedSectionBaseSubcomponents: BaseSubcomponentRef[], newLayer: Layer, section: ALIGNED_SECTION_TYPES,
+      newComponent: WorkshopComponent, baseComponents: WorkshopComponent[]): void {
+    alignedSectionBaseSubcomponents.forEach((subcomponent: BaseSubcomponentRef, index: number) => {
+      const alignedComponent = CopyComponent.getAlignedComponent(newLayer, subcomponent, section, index, newComponent, baseComponents);
+      CopyComponent.copyComponent(alignedComponent, subcomponent.subcomponentProperties.seedComponent);
+    });
+  }
+
+  // new components with base style should not have populated aligned sections so in the future this method will not be required
+  private static removeAllAlignedSectionComponents(section: ALIGNED_SECTION_TYPES, newLayer: Layer, newComponent: WorkshopComponent): void {
+    const defaultActiveSubcomponentName = newComponent.masterComponent.activeSubcomponentName;
+    const alignedSectionComponents = newLayer.sections.alignedSections[section];
+    const originalComponentsLength = alignedSectionComponents.length;
+    for (let i = 0; i < originalComponentsLength; i += 1) {
+      newComponent.masterComponent.activeSubcomponentName = alignedSectionComponents[alignedSectionComponents.length - 1]
+        .subcomponentProperties.seedComponent.activeSubcomponentName;
+      RemoveChildComponent.remove(newComponent.masterComponent);
+    }
+    newComponent.masterComponent.activeSubcomponentName = defaultActiveSubcomponentName;
+  }
+
+  private static setActiveSubcomponentNameForAlignedSectionComponents(newLayer: Layer, isLayerEditable: boolean, newComponent: WorkshopComponent): string {
+    const defaultActiveSubcomponentName = newComponent.masterComponent.activeSubcomponentName;
+    newComponent.masterComponent.activeSubcomponentName = isLayerEditable
       ? newLayer.subcomponentProperties.seedComponent.activeSubcomponentName
       : newComponent.activeSubcomponentName;
+    return defaultActiveSubcomponentName;
+  }
+
+  private static copyAlignedSectionsComponents(newLayer: Layer, copiedLayer: Layer, isLayerEditable: boolean, newComponent: WorkshopComponent,
+      baseComponents: WorkshopComponent[]): void {
+    const { alignedSections } = copiedLayer.sections;
+    const defaultActiveSubcomponentName = CopyComponent.setActiveSubcomponentNameForAlignedSectionComponents(newLayer, isLayerEditable, newComponent);
     Object.keys(alignedSections).forEach((section: ALIGNED_SECTION_TYPES) => {
       if (!newLayer.subcomponentProperties.seedComponent.childComponentsLockedToLayer) {
-        CopyComponent.removeAlignedSectionComponents(newLayer, newComponent, section);
+        CopyComponent.removeAllAlignedSectionComponents(section, newLayer, newComponent);
       }
-      alignedSections[section].forEach((subcomponent: BaseSubcomponentRef, index) => {
-        let newChildComponent = null;
-        if (!newLayer.subcomponentProperties.seedComponent.childComponentsLockedToLayer) {
-          const { type, style } = subcomponent.subcomponentProperties.seedComponent;
-          newChildComponent = AddContainerComponent.add(
-            newComponent, type, style, newLayer.subcomponentProperties.name, [CopyComponent.overwriteAlignedLayerSectionProperties.bind(section)]);
-          baseComponents.push(newChildComponent);
-        } else {
-          newChildComponent = newLayer.sections.alignedSections[section][index].subcomponentProperties.seedComponent;
-        }
-        CopyComponent.copyComponent(newChildComponent, subcomponent.subcomponentProperties.seedComponent);
-      });
+      CopyComponent.copyAlignedSectionComponents(alignedSections[section], newLayer, section, newComponent, baseComponents);
     });
-    newComponent.masterComponent.activeSubcomponentName = temp;
+    newComponent.masterComponent.activeSubcomponentName = defaultActiveSubcomponentName;
+  }
+
+  private static createNewLayer(layer: Layer, newComponent: WorkshopComponent, isEditable: boolean): void {
+    const copiedLayerStyle = layer.subcomponentProperties.seedComponent.style;
+    const newLayer = AddLayerComponent.add(newComponent, copiedLayerStyle, isEditable);
+    newLayer.childComponentsLockedToLayer?.add(newLayer, newComponent);
   }
 
   private static isLayerEditable(componentBeingCopied: WorkshopComponent, layer: Layer): boolean {
@@ -66,19 +89,13 @@ export class CopyComponent {
       layer.subcomponentProperties.seedComponent.activeSubcomponentName];
   }
 
-  private static createNewLayer(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent, layer: Layer): void {
-    const copiedLayerStyle = layer.subcomponentProperties.seedComponent.style;
-    const isEditable = CopyComponent.isLayerEditable(componentBeingCopied, layer);
-    const newLayer = AddLayerComponent.add(newComponent, copiedLayerStyle, isEditable);
-    newLayer.childComponentsLockedToLayer?.add(newLayer, newComponent);
-  }
-
   private static copyLayerComponent(layer: Layer, index: number, newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent,
       baseComponents: WorkshopComponent[]): number {
     const existantNewComponentLayer = newComponent.componentPreviewStructure.layers[index];
-    if (!existantNewComponentLayer) CopyComponent.createNewLayer(newComponent, componentBeingCopied, layer);
+    const isEditable = CopyComponent.isLayerEditable(componentBeingCopied, layer);
+    if (!existantNewComponentLayer) CopyComponent.createNewLayer(layer, newComponent, isEditable);
     const newLayerPreviewComponent = newComponent.componentPreviewStructure.layers[index];
-    CopyComponent.copyAlignedSectionComponents(newLayerPreviewComponent, layer, newComponent, baseComponents);
+    CopyComponent.copyAlignedSectionsComponents(newLayerPreviewComponent, layer, isEditable, newComponent, baseComponents);
     UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(newComponent, newLayerPreviewComponent);
     CopySubcomponents.copy(newLayerPreviewComponent.subcomponentProperties.seedComponent.baseSubcomponent, layer.subcomponentProperties);
     return !existantNewComponentLayer ? index : -1;
@@ -89,8 +106,8 @@ export class CopyComponent {
     RemoveChildComponent.remove(masterComponent);
   }
 
-  // new components with base should not have layers to begin with so in the future this method may not be required
-  private static removeLayerComponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
+  // new components with base style should not have layers so in the future this method will not be required
+  private static removeExcessLayerComponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
     const newExistingLayers = newComponent.componentPreviewStructure.layers;
     const copiedLayers = componentBeingCopied.componentPreviewStructure.layers;
     if (copiedLayers.length < newExistingLayers.length) {
@@ -105,7 +122,7 @@ export class CopyComponent {
   }
 
   private static copyLayerComponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent, baseComponents: WorkshopComponent[]): void {
-    CopyComponent.removeLayerComponents(newComponent, componentBeingCopied);
+    CopyComponent.removeExcessLayerComponents(newComponent, componentBeingCopied);
     let indexToUpdate = -1;
     const defaultActiveSubcomponentName = newComponent.masterComponent.activeSubcomponentName;
     newComponent.masterComponent.activeSubcomponentName = newComponent.activeSubcomponentName;
