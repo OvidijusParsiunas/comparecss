@@ -61,6 +61,29 @@ export class CopyComponent {
     newComponent.masterComponent.activeSubcomponentName = temp;
   }
 
+  private static isLayerEditable(componentBeingCopied: WorkshopComponent, layer: Layer): boolean {
+    return !!componentBeingCopied.masterComponent.componentPreviewStructure.subcomponentNameToDropdownItemName[
+      layer.subcomponentProperties.seedComponent.activeSubcomponentName];
+  }
+
+  private static createNewLayer(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent, layer: Layer): void {
+    const copiedLayerStyle = layer.subcomponentProperties.seedComponent.style;
+    const isEditable = CopyComponent.isLayerEditable(componentBeingCopied, layer);
+    const newLayer = AddLayerComponent.add(newComponent, copiedLayerStyle, isEditable);
+    newLayer.childComponentsLockedToLayer?.add(newLayer, newComponent);
+  }
+
+  private static copyLayerComponent(layer: Layer, index: number, newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent,
+      baseComponents: WorkshopComponent[]): number {
+    const existantNewComponentLayer = newComponent.componentPreviewStructure.layers[index];
+    if (!existantNewComponentLayer) CopyComponent.createNewLayer(newComponent, componentBeingCopied, layer);
+    const newLayerPreviewComponent = newComponent.componentPreviewStructure.layers[index];
+    CopyComponent.copyAlignedSectionComponents(newLayerPreviewComponent, layer, newComponent, baseComponents);
+    UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(newComponent, newLayerPreviewComponent);
+    CopySubcomponents.copy(newLayerPreviewComponent.subcomponentProperties.seedComponent.baseSubcomponent, layer.subcomponentProperties);
+    return !existantNewComponentLayer ? index : -1;
+  }
+
   private static removeLayerComponent(masterComponent: WorkshopComponent, layers: Layer[]): void {
     masterComponent.activeSubcomponentName = layers[layers.length - 1].subcomponentProperties.seedComponent.activeSubcomponentName;
     RemoveChildComponent.remove(masterComponent);
@@ -72,39 +95,26 @@ export class CopyComponent {
     const copiedLayers = componentBeingCopied.componentPreviewStructure.layers;
     if (copiedLayers.length < newExistingLayers.length) {
       const newMasterComponent = newComponent.masterComponent;
-      const temp = newMasterComponent.activeSubcomponentName;
+      const defaultActiveSubcomponentName = newMasterComponent.activeSubcomponentName;
       const lengthDiff = newExistingLayers.length - copiedLayers.length;
       for (let i = 0; i < lengthDiff; i += 1) {
         CopyComponent.removeLayerComponent(newMasterComponent, newExistingLayers);
       }
-      newMasterComponent.activeSubcomponentName = temp;
+      newMasterComponent.activeSubcomponentName = defaultActiveSubcomponentName;
     }
   }
 
   private static copyLayerComponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent, baseComponents: WorkshopComponent[]): void {
     CopyComponent.removeLayerComponents(newComponent, componentBeingCopied);
     let indexToUpdate = -1;
-    const temp = newComponent.masterComponent.activeSubcomponentName;
+    const defaultActiveSubcomponentName = newComponent.masterComponent.activeSubcomponentName;
     newComponent.masterComponent.activeSubcomponentName = newComponent.activeSubcomponentName;
     componentBeingCopied.componentPreviewStructure.layers.forEach((layer, index) => {
-      const copiedLayerStyle = layer.subcomponentProperties.seedComponent.style;
-      const isPresent = newComponent.componentPreviewStructure.layers[index];
-      const isEditable = !!componentBeingCopied.masterComponent.componentPreviewStructure.subcomponentNameToDropdownItemName[layer.subcomponentProperties.seedComponent.activeSubcomponentName];
-      const newLayer = isPresent
-        ? newComponent.componentPreviewStructure.layers[index].subcomponentProperties.seedComponent
-        : AddLayerComponent.add(newComponent, copiedLayerStyle, isEditable);
-      if (!isPresent) {
-        newLayer.childComponentsLockedToLayer?.add(newLayer, newComponent);
-      }
-      CopyComponent.copyAlignedSectionComponents(newComponent.componentPreviewStructure.layers[index], layer, newComponent, baseComponents);
-      UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(newComponent, newComponent.componentPreviewStructure.layers[index]);
-      CopySubcomponents.copy(newLayer.baseSubcomponent, layer.subcomponentProperties);
-      if (!isPresent && indexToUpdate === -1) indexToUpdate = index;
+      const indexOfNewLayer = CopyComponent.copyLayerComponent(layer, index, newComponent, componentBeingCopied, baseComponents);
+      if (indexToUpdate === -1 && indexOfNewLayer !== -1) indexToUpdate = index;
     });
-    if (indexToUpdate > -1) {
-      UpdateLayerDropdownItemNames.update(newComponent, indexToUpdate);
-    }
-    newComponent.masterComponent.activeSubcomponentName = temp;
+    if (indexToUpdate > -1) UpdateLayerDropdownItemNames.update(newComponent, indexToUpdate);
+    newComponent.masterComponent.activeSubcomponentName = defaultActiveSubcomponentName;
   }
 
   private static copyAuxiliaryComponents(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
