@@ -1,12 +1,12 @@
 import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../../consts/unsetColotButtonDisplayed';
-import { CoreSubcomponentRefsUtils } from '../../utils/componentManipulation/coreSubcomponentRefs/coreSubcomponentRefsUtils';
+import { SubcomponentTypeToPropertiesUtils } from '../../utils/subcomponentTypeToProperties/subcomponentTypeToPropertiesUtils';
 import { subcomponentSelectModeState } from '../../toolbar/options/subcomponentSelectMode/subcomponentSelectModeState';
 import { UseSubcomponentPreviewEventHandlers } from '../../../../../interfaces/useSubcomponentPreviewEventHandlers';
 import { subcomponentAndOverlayElementIdsState } from '../utils/elements/subcomponentAndOverlayElementIdsState';
 import { CustomCss, CustomFeatures, SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { SubcomponentMouseEventCallbacks } from '../../../../../interfaces/subcomponentMouseEventCallbacks';
+import { SubcomponentTypeToProperties } from '../../../../../interfaces/subcomponentTypeToProperties';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
-import { CoreSubcomponentRefs } from '../../../../../interfaces/coreSubcomponentRefs';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { StationaryAnimations } from '../../../../../interfaces/animations';
@@ -34,8 +34,8 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     });
   }
 
-  function triggerOtherSubcomponentsMouseEvents(subcomponentsToTrigger: CoreSubcomponentRefs, mouseEventType: string): void {
-    CoreSubcomponentRefsUtils.getActiveRefKeys(subcomponentsToTrigger).forEach((subcomponentType) => {
+  function triggerOtherSubcomponentsMouseEvents(subcomponentsToTrigger: SubcomponentTypeToProperties, mouseEventType: string): void {
+    SubcomponentTypeToPropertiesUtils.getTypesWithNonNullSubcomponents(subcomponentsToTrigger).forEach((subcomponentType) => {
       const subcomponent = subcomponentsToTrigger[subcomponentType];
       const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(subcomponent.name);
       const element = document.getElementById(subcomponentId);

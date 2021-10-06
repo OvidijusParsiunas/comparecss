@@ -1,15 +1,15 @@
 import { CompositionAPISubcomponentTriggerState } from '../../../../../../interfaces/compositionAPISubcomponentTriggerState';
+import { SubcomponentTypeToPropertiesUtils } from '../../subcomponentTypeToProperties/subcomponentTypeToPropertiesUtils';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { SubcomponentTypeToProperties } from '../../../../../../interfaces/subcomponentTypeToProperties';
 import { OtherSubcomponentTriggers } from '../../../../../../interfaces/otherSubcomponentTriggers';
-import { CoreSubcomponentRefsUtils } from '../coreSubcomponentRefs/coreSubcomponentRefsUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
-import { CoreSubcomponentRefs } from '../../../../../../interfaces/coreSubcomponentRefs';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import JSONUtils from '../../generic/jsonUtils';
 
 export class SubcomponentTriggers {
 
-  private static createSubcomponentsToTriggerObject(subcomponentsToTrigger?: SUBCOMPONENT_TYPES[]): CoreSubcomponentRefs {
+  private static createSubcomponentsToTriggerObject(subcomponentsToTrigger?: SUBCOMPONENT_TYPES[]): SubcomponentTypeToProperties {
     return (subcomponentsToTrigger || []).reduce((accummulator, currentValue) => Object.assign(accummulator, {[currentValue]: null}), {});
   }
 
@@ -71,7 +71,7 @@ export class SubcomponentTriggers {
   private static setOtherSubcomponentsCss(baseSubcomponent: SubcomponentProperties, activeCssPseudoClass: CSS_PSEUDO_CLASSES, isTriggered: boolean): void {
     const { subcomponentsToTrigger, subcomponentThatTriggersThis, componentCompositionAPI } = baseSubcomponent.otherSubcomponentTriggers || {};
     if (!componentCompositionAPI || componentCompositionAPI.triggered) return;
-    CoreSubcomponentRefsUtils.getActiveRefKeys(subcomponentsToTrigger).forEach((subcomponentType) => {
+    SubcomponentTypeToPropertiesUtils.getTypesWithNonNullSubcomponents(subcomponentsToTrigger).forEach((subcomponentType) => {
       const otherSubcomponentProperties = subcomponentsToTrigger[subcomponentType];
       SubcomponentTriggers.setOtherSubcomponentCss(otherSubcomponentProperties, activeCssPseudoClass, isTriggered);
     });

@@ -1,10 +1,10 @@
 import { TraverseComponentViaPreviewStructureParentFirst } from '../../../../utils/componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { SubcomponentTypeToProperties } from '../../../../../../../interfaces/subcomponentTypeToProperties';
 import { SubcomponentPreviewTraversalState } from '../../../../../../../interfaces/componentTraversal';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
-import { SyncableSubcomponents } from '../../../../../../../interfaces/sync';
 import JSONUtils from '../../../../utils/generic/jsonUtils';
 
 type SyncSyncablesCallback = (isTemporary: boolean, targetSubcomponent: SubcomponentProperties, ...otherSubcomponents: SubcomponentProperties[]) => void;
@@ -48,7 +48,7 @@ export class SyncChildComponentModeTempPropertiesUtils {
     }
   }
 
-  private static syncSyncableSubcomponents(callback: SyncSyncablesCallback, isTemporary: boolean, syncableSubcomponents: SyncableSubcomponents,
+  private static syncSyncableSubcomponents(callback: SyncSyncablesCallback, isTemporary: boolean, syncableSubcomponents: SubcomponentTypeToProperties,
       targetComponents: WorkshopComponent[]): void {
     Object.keys(syncableSubcomponents).forEach((subcomponentType) => {
       const targetSubcomponent: SubcomponentProperties = syncableSubcomponents[subcomponentType];

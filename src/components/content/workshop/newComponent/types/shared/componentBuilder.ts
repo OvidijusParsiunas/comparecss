@@ -2,6 +2,7 @@ import { AlignedLayerSection, BackdropProperties, ComponentCenteringInScreen, Im
 import { DropdownItemsDisplayStatusUtils } from '../../../utils/dropdownItemsDisplayStatusUtils/dropdownItemsDisplayStatusUtils';
 import { BASE_SUBCOMPONENT_NAMES, MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../../../../../../consts/animationTypes.enum';
+import { SubcomponentTypeToProperties } from '../../../../../../interfaces/subcomponentTypeToProperties';
 import { NewComponentStyleProperties } from '../../../../../../consts/newComponentStyleProperties';
 import { ComponentPreviewStructure } from '../../../../../../interfaces/componentPreviewStructure';
 import { CoreSubcomponentRefs } from '../../../../../../interfaces/coreSubcomponentRefs';
@@ -9,12 +10,12 @@ import { WorkshopComponentCss } from '../../../../../../interfaces/workshopCompo
 import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { ChildComponentCount } from '../../../../../../interfaces/childComponentCount';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
-import { Syncables, SyncableSubcomponents } from '../../../../../../interfaces/sync';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
 import { CloseTriggers } from '../../../../../../interfaces/closeTriggers';
 import { Animations } from '../../../../../../interfaces/animations';
+import { Syncables } from '../../../../../../interfaces/sync';
 import { defaultImage } from './images/default';
 
 interface StationaryAnimationsArgs {
@@ -127,7 +128,7 @@ export class ComponentBuilder {
     component.childComponentCount = childComponentCount;
   }
 
-  protected static createSyncablesObjectUsingSubcomponents(syncableSubcomponents: SyncableSubcomponents): Syncables {
+  protected static createSyncablesObjectUsingSubcomponents(syncableSubcomponents: SubcomponentTypeToProperties): Syncables {
     return {
       subcomponents: syncableSubcomponents,
       childComponents: [],
