@@ -12,8 +12,8 @@ export class RemoveComponent {
   }
 
   private static removeInSync(componentToBeRemoved: WorkshopComponent): void {
-    // WORK 2 - potentially can use componentsSyncedToThis to remove sync properties
-    // used to allow components that have copied this to remove insync properties when they are opened up
+    // used to allow components that have copied this to remove insync properties and dereference when they are opened up
+    // more information can be found in the documentation reference: DOC: 7878
     componentToBeRemoved.componentStatus.isRemoved = true;
     // remove all synced component references
     Object.keys(componentToBeRemoved.subcomponents).forEach((subcomponentName) => {

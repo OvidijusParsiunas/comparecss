@@ -52,7 +52,7 @@ class DropdownBase extends ComponentBuilder {
       DropdownBase.overwriteButtonCustomFeatures];
     DropdownBase.overwriteButtonCustomFeatures(paddingComponent);
   }
-  
+
   public static setSyncableSubcomponents(dropdownComponent: WorkshopComponent): void {
     const { sync, baseSubcomponent, paddingComponentChild } = dropdownComponent;
     sync.syncables = {

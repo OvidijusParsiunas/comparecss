@@ -170,7 +170,9 @@ export type Subcomponents = {
 export interface WorkshopComponent {
   type: COMPONENT_TYPES;
   style: COMPONENT_STYLES;
-  // WORK 2 - should maybe be a set of subcomponents
+  // I have considered making this a Set of subcomponents instead of the name to properties map, but because the selection of active subcomponents
+  // through the subcomponent selection dropdown in the toolbar returns a subcomponent name - pointing to the active subcomponent in the current
+  // map was the simplest way to retrieve the active subcomponent
   subcomponents: Subcomponents;
   activeSubcomponentName: string;
   // the motivator for this is the fact that the first subcomponent should not be assumed to be the default one
@@ -178,7 +180,6 @@ export interface WorkshopComponent {
   componentPreviewStructure: ComponentPreviewStructure;
   // class name for the component
   className: string;
-  // WORK 2 - change documentation to reflect this
   baseSubcomponent: SubcomponentProperties;
   // gives an in sync child component to identify if the copied component has not been deleted
   componentStatus: { isRemoved: boolean };
@@ -204,9 +205,8 @@ export interface WorkshopComponent {
   // contains all subcomponents and dropdown structure for all of its child components which is explained further below
   masterComponent?: WorkshopComponent;
   sync: Sync;
-  // WORK 2 - document this
-  paddingComponentChild?: WorkshopComponent;
   paddingComponent?: WorkshopComponent;
+  paddingComponentChild?: WorkshopComponent;
 }
 
 // Component Architecture Information:
@@ -236,7 +236,7 @@ export interface WorkshopComponent {
 //                                                   |                   |
 //                                            Layer Component      Text Component 
 //
-// Explanation:
+// 1. Explanation:
 // Button component is an ensamble of multiple subcomponents.
 // Whilst the Base Subcomponent is owned by the Button itself, the other components are brought
 // in from other components - known as seed components. Layer and Text subcomponents have their
@@ -246,7 +246,16 @@ export interface WorkshopComponent {
 // - but are as such for their seed components and not the Button component.
 // Both Layer and Text Subcomponent seed components are regarded as child components to the button
 // component.
-
+//
+// Button Component --> { Base Subcomponent, Layer Subcomponent, Text Subcomponent }
+//      |                        |                   |                   |
+//      --------->-------> baseSubcomponent   baseSubcomponent    baseSubcomponent
+//                                                   |                   |
+//                                            Layer Component      Text Component 
+// 
+// 2. Explanation:
+// Each seed component can additionally access their base subcomponet via the baseSubcomponent
+// property
 
 // Multiple components example (Card component):
 //
@@ -264,7 +273,7 @@ export interface WorkshopComponent {
 // component - the button and the layer components would both be referring to the card component.
 
 
-// Linked components example (Dropdown example):
+// Linked components example (Partial dropdown example - not showing the padding component):
 // 
 // Dropdown Button Component           Dropdown Menu Component
 //            |         |                          |        |
@@ -286,7 +295,7 @@ export interface WorkshopComponent {
 // can only be linked to one base component.
 // Additionally, such links can exist within child components too.
 
-// Master component (Dropdown example):
+// Master component (Partial dropdown example - not showing the padding component):
 // 
 // Dropdown Button Component -> { base, layer, text }
 //    |                            |       |     |
@@ -306,3 +315,49 @@ export interface WorkshopComponent {
 // reference to it via the masterComponent property.
 // When referring to the examples above chronologically - master components would be the very parent
 // of each component i.e. Text, Button, Card and Dropdown Button components.
+
+// Padding component (Partial dropdown example - only dropdown padding and dropdown button components):
+//
+// Dropdown Component                                                       Dropdown Button Component
+//  |      |      |                                                            |       |       |
+//  |      |      ------------------> paddingComponentChild ------------------->       |       |
+//  |      |                                                                           |       |
+//  |      <--------------------------- paddingComponent <------------------------------       |
+//  |                                                                                          |
+//  --> { subcomponents, subcomponentDropdownStructure, subcomponentNameToDropdownItemName } <--
+//
+//
+// Explanation:
+// 
+// Primary responsibility of a padding component is to represent multiple base components at the same level.
+// This is best reflected by the subcomponent selection dropdown menu (toolbar) for the dropdown component
+// where upon hovering on the first item - 'Base', two components are highlighted instead - Button and Menu.
+// Whilst it represents multiple components, it can only refer to one via the paddingComponentChild
+// property which is the true master component of all the other children components (incl. menu as
+// referenced by the examples above).
+// The padding component child can  refer to the padding component via the paddingComponent property.
+// It is important to understand that all of the underlying components inside the dropdown component
+// refer the dropdown button component as the master component, however the padding dropdown component
+// itself refers to master as itself (due to the default nature of parent-most components).
+// subcomponents, subcomponentNameToDropdownItemName and subcomponentDropdownStructure property values
+// in the padding dropdown and dropdown button components share the same reference due to the
+// subcomponent selection dropdown being generated using the dropdown padding component, whilst
+// everything else is referenced through the dropdown button component, hence sharing the same references
+// allows the dropdown component to have access to the values.
+
+
+// DOC: 7878
+// The use of isRemoved componentStatus to lazily dereference synced children:
+
+// Upon removing a component that has other components synced to it, instead of dereferencing all of those components
+// immediately, the subject component componentStatus ref's isRemoved property is instead marked as true and the synced
+// components are only dereferenced when they are actually opened up in the toolbar.
+// This is carried out in order to boost performance as a component could be synced by 10s or 100s other components and if
+// all of them would need to be dereferenced (incl. their own children via component preview traversal), it would be a
+// very expensive computational task.
+// Hence in the interest of preserving smooth user experience when using multiple components, we have opted to use this option.
+// Such functionality is made available by the fact that components that are still synced post removal can never really change
+// the custom properties' references as the user would need to first open them in the toolbar, and as soon as they do that
+// the component is dereferenced, hence the user can't change the previously synced custom properties and all of the other
+// components that are still synced will remain untouched.
+// If there is an easier way to simply derenence all synced components in one go in the future, use that option instead.

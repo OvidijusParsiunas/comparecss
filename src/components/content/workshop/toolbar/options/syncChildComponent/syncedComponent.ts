@@ -45,6 +45,7 @@ export class SyncedComponent {
 
   public static updateIfSubcomponentNotInSync(masterComponent: WorkshopComponent, activeSubcomponent: SubcomponentProperties): void {
     const inSyncComponent = SyncChildComponentUtils.getInSyncComponent(activeSubcomponent);
+    // more information can be found in the documentation reference: DOC: 7878
     if (inSyncComponent && inSyncComponent.componentStatus.isRemoved) {
       SyncedComponent.toggleSubcomponentSyncToOff(masterComponent);
     }
