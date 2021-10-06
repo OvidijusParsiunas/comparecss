@@ -114,7 +114,7 @@ class ButtonBase extends ComponentBuilder {
 
 export const buttonBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
-    const buttonBaseComponent = ComponentBuilder.createBaseComponent(
+    const buttonBaseComponent = ButtonBase.createBaseComponent(
       { componentType: COMPONENT_TYPES.BUTTON, baseName }, ButtonBase.createBaseSubcomponent);
     ButtonBaseSpecificSettings.set(buttonBaseComponent);
     ButtonBase.setChildComponentsItems(buttonBaseComponent);

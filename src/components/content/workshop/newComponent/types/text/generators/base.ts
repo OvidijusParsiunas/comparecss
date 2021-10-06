@@ -74,7 +74,7 @@ class TextBase extends ComponentBuilder {
 
 export const textBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
-    return ComponentBuilder.createBaseComponent(
+    return TextBase.createBaseComponent(
       { componentType: COMPONENT_TYPES.TEXT, baseName }, TextBase.createBaseSubcomponent);
   },
 }

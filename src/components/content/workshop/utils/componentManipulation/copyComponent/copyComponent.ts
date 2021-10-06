@@ -16,7 +16,7 @@ import ProcessClassName from '../../componentGenerator/processClassName';
 import { CopySubcomponents } from './copySubcomponents';
 import { ComponentOptions } from 'vue';
 
-export class CopyComponent {
+export class CopyComponent extends ComponentBuilder {
 
   private static overwriteAlignedLayerSectionProperties(component: WorkshopComponent): void {
     const newAlignedSection = this as any as ALIGNED_SECTION_TYPES;

@@ -77,7 +77,7 @@ export class IconBase extends ComponentBuilder {
 
 export const iconBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
-    const iconBaseComponent = ComponentBuilder.createBaseComponent(
+    const iconBaseComponent = IconBase.createBaseComponent(
       { componentType: COMPONENT_TYPES.ICON, baseName }, IconBase.createBaseSubcomponent);
     IconSpecificSettings.set(iconBaseComponent);
     return iconBaseComponent;

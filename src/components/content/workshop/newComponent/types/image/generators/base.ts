@@ -71,6 +71,7 @@ class ImageBase extends ComponentBuilder {
 
 export const imageBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
-    return ComponentBuilder.createBaseComponent({ componentType: COMPONENT_TYPES.IMAGE, baseName }, ImageBase.createBaseSubcomponent);
+    return ImageBase.createBaseComponent(
+      { componentType: COMPONENT_TYPES.IMAGE, baseName }, ImageBase.createBaseSubcomponent);
   },
 }

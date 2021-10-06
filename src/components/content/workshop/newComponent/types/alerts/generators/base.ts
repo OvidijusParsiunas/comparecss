@@ -70,7 +70,7 @@ class AlertBase extends ComponentBuilder {
 export const alertBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     uniqueSubcomponentIdState.resetUniqueId();
-    const alertBaseComponent = ComponentBuilder.createBaseComponent(
+    const alertBaseComponent = AlertBase.createBaseComponent(
       { componentType: COMPONENT_TYPES.ALERT, baseName }, AlertBase.createBaseSubcomponent, false);
     AlertBase.setChildComponentsItems(alertBaseComponent);
     AlertBaseSpecificSettings.set(alertBaseComponent);

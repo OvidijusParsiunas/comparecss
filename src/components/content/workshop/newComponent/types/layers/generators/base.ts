@@ -41,7 +41,7 @@ class LayerBase extends ComponentBuilder {
 
 export const layerBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
-    return ComponentBuilder.createBaseComponent(
+    return LayerBase.createBaseComponent(
       { componentType: COMPONENT_TYPES.LAYER, baseName }, LayerBase.createBaseSubcomponent);
   },
 }

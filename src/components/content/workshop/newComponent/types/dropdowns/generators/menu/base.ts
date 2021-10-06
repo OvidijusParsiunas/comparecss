@@ -112,7 +112,7 @@ class DropdownMenuBase extends ComponentBuilder {
 
 export const dropdownMenuBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
-    const dropdownMenuComponent = ComponentBuilder.createBaseComponent(
+    const dropdownMenuComponent = DropdownMenuBase.createBaseComponent(
       { componentType: COMPONENT_TYPES.DROPDOWN_MENU, baseName }, DropdownMenuBase.createBaseSubcomponent, false);
     DropdownMenuBase.setAreLayersInSyncByDefault(dropdownMenuComponent);
     DropdownMenuBase.setTriggerFuncOnSettingChange(dropdownMenuComponent);

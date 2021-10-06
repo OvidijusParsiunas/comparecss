@@ -25,7 +25,7 @@ interface StationaryAnimationsArgs {
 // TO-DO should be using a builder pattern
 export class ComponentBuilder {
 
-  public static createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayerSection {
+  protected static createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayerSection {
     return { section };
   }
 
@@ -141,18 +141,15 @@ export class ComponentBuilder {
       layers: [],
       subcomponentDropdownStructure,
       subcomponentNameToDropdownItemName: { [baseSubcomponentName]: baseSubcomponentName },
-    }
+    };
   }
 
-  // WORK1: refactor
-  // WORK1 - should use protected access modifier
-  public static createBaseComponent(componentStyle: NewComponentStyleProperties,
-      createBaseSubcomponent: (name: string) => SubcomponentProperties, isBaseOptional = true): WorkshopComponent {
-    const baseName = componentStyle.baseName || MASTER_SUBCOMPONENT_BASE_NAME.BASE;
-    const baseSubcomponent = createBaseSubcomponent(baseName);
+  private static createComponent(componentStyle: NewComponentStyleProperties, baseSubcomponent: SubcomponentProperties,
+      isBaseOptional = true): WorkshopComponent {
+    const baseName = baseSubcomponent.name;
     const subcomponents = { [baseName]: baseSubcomponent };
     const componentPreviewStructure = ComponentBuilder.createEmptyComponentPreviewStructure(baseName, isBaseOptional);
-    const baseComponent: WorkshopComponent = {
+    return {
       type: componentStyle.componentType,
       style: DEFAULT_STYLES.DEFAULT,
       subcomponents,
@@ -164,6 +161,13 @@ export class ComponentBuilder {
       sync: { componentThisIsSyncedTo: null, componentsSyncedToThis: new Set() },
       baseSubcomponent: baseSubcomponent,
     };
+  }
+
+  public static createBaseComponent(componentStyle: NewComponentStyleProperties,
+      createBaseSubcomponent: (name: string) => SubcomponentProperties, isBaseOptional = true): WorkshopComponent {
+    const baseName = componentStyle.baseName || MASTER_SUBCOMPONENT_BASE_NAME.BASE;
+    const baseSubcomponent = createBaseSubcomponent(baseName);
+    const baseComponent = ComponentBuilder.createComponent(componentStyle, baseSubcomponent, isBaseOptional);
     baseSubcomponent.seedComponent = baseComponent;
     baseComponent.masterComponent = baseComponent;
     return baseComponent;
