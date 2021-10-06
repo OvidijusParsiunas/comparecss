@@ -5,11 +5,9 @@ import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../..
 import { SubcomponentTypeToProperties } from '../../../../../../interfaces/subcomponentTypeToProperties';
 import { NewComponentStyleProperties } from '../../../../../../consts/newComponentStyleProperties';
 import { ComponentPreviewStructure } from '../../../../../../interfaces/componentPreviewStructure';
-import { CoreSubcomponentRefs } from '../../../../../../interfaces/coreSubcomponentRefs';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { ChildComponentCount } from '../../../../../../interfaces/childComponentCount';
-import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
@@ -135,14 +133,6 @@ export class ComponentBuilder {
     };
   }
 
-  private static createCoreSubcomponentRefs(baseSubcomponent: SubcomponentProperties, coreSubcomponentRefs: CoreSubcomponentRefs): CoreSubcomponentRefs {
-    if (coreSubcomponentRefs) {
-      coreSubcomponentRefs[SUBCOMPONENT_TYPES.BASE] = baseSubcomponent;
-      return coreSubcomponentRefs;
-    }
-    return { [SUBCOMPONENT_TYPES.BASE]: baseSubcomponent };
-  }
-
   private static createEmptyComponentPreviewStructure(baseSubcomponentName: string, isBaseOptional = true): ComponentPreviewStructure {
     const subcomponentDropdownStructure = { [baseSubcomponentName]:
       isBaseOptional ? DropdownItemsDisplayStatusUtils.createDropdownItemDisplayStatusReferenceObject() : {} };
@@ -162,7 +152,6 @@ export class ComponentBuilder {
     const baseSubcomponent = createBaseSubcomponent(baseName);
     const subcomponents = { [baseName]: baseSubcomponent };
     const componentPreviewStructure = ComponentBuilder.createEmptyComponentPreviewStructure(baseName, isBaseOptional);
-    const coreSubcomponentRefs = ComponentBuilder.createCoreSubcomponentRefs(baseSubcomponent, componentStyle.coreSubcomponentRefs);
     const baseComponent: WorkshopComponent = {
       type: componentStyle.componentType,
       style: DEFAULT_STYLES.DEFAULT,
@@ -171,7 +160,6 @@ export class ComponentBuilder {
       defaultSubcomponentName: baseName,
       componentPreviewStructure,
       className: 'default-class-name',
-      coreSubcomponentRefs,
       componentStatus: { isRemoved: false },
       sync: { componentThisIsSyncedTo: null, componentsSyncedToThis: new Set() },
       baseSubcomponent: baseSubcomponent,

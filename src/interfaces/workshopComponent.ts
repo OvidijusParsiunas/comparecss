@@ -15,7 +15,6 @@ import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
-import { CoreSubcomponentRefs } from './coreSubcomponentRefs';
 import { ChildComponentCount } from './childComponentCount';
 import { LinkedComponents } from './linkedComponents';
 import { TempCustomCss } from './tempCustomCss';
@@ -179,10 +178,6 @@ export interface WorkshopComponent {
   componentPreviewStructure: ComponentPreviewStructure;
   // class name for the component
   className: string;
-  // WORK2 - should restrategise and probably not needed any more
-  // used for referencing component's core subcomponents like base and text
-  // also used for referencing subcomponents that should share jsclasses refs
-  coreSubcomponentRefs?: CoreSubcomponentRefs;
   // WORK 2 - change documentation to reflect this
   baseSubcomponent: SubcomponentProperties;
   // gives an in sync child component to identify if the copied component has not been deleted
@@ -206,6 +201,7 @@ export interface WorkshopComponent {
   // to note - container components of container components can be referred via the following name: higherComponentContainer
   containerComponent?: WorkshopComponent;
   // each seed component is assigned a reference to the master component - primarily used to access the dropdown structure
+  // contains all subcomponents and dropdown structure for all of its child components which is explained further below
   masterComponent?: WorkshopComponent;
   sync: Sync;
   // WORK 2 - document this
@@ -308,7 +304,5 @@ export interface WorkshopComponent {
 // to maintain all of these values in the same place.
 // Hence this component is known as the Master component and all of the seed components have a
 // reference to it via the masterComponent property.
-// When referring to the examples above chronologically - master components of would be the very parent
-// each component i.e. Text, Button, Card and Dropdown Button components.
-// To note, seed components can still refer to their core subcomponents via the coreSubcomponentRefs
-// property.
+// When referring to the examples above chronologically - master components would be the very parent
+// of each component i.e. Text, Button, Card and Dropdown Button components.

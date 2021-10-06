@@ -3,7 +3,6 @@ import { SubcomponentTriggers } from '../../../../utils/componentManipulation/ut
 import { PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { OtherSubcomponentTriggers } from '../../../../../../../interfaces/otherSubcomponentTriggers';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { CoreSubcomponentRefs } from '../../../../../../../interfaces/coreSubcomponentRefs';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -111,21 +110,12 @@ class ButtonBase extends ComponentBuilder {
       otherSubcomponentTriggers: ButtonBase.createOtherSubcomponentTriggersTemplate(),
     };
   }
-
-  public static createBaseComponentCoreSubcomponentRefsTemplate(): CoreSubcomponentRefs {
-    return {
-      [SUBCOMPONENT_TYPES.BASE]: null,
-      [SUBCOMPONENT_TYPES.TEXT]: null,
-      [SUBCOMPONENT_TYPES.ICON]: null,
-    };
-  }
 }
 
 export const buttonBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
-    const coreSubcomponentRefs = ButtonBase.createBaseComponentCoreSubcomponentRefsTemplate();
     const buttonBaseComponent = ComponentBuilder.createBaseComponent(
-      { componentType: COMPONENT_TYPES.BUTTON, baseName, coreSubcomponentRefs }, ButtonBase.createBaseSubcomponent);
+      { componentType: COMPONENT_TYPES.BUTTON, baseName }, ButtonBase.createBaseSubcomponent);
     ButtonBaseSpecificSettings.set(buttonBaseComponent);
     ButtonBase.setChildComponentsItems(buttonBaseComponent);
     ButtonBase.setPropertyOverwritingExecutables(buttonBaseComponent);

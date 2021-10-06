@@ -48,11 +48,9 @@ export class AddContainerComponent extends AddComponentShared {
     }
   }
 
-  // WORK 2 - change name after refactoring core component ref
-  private static populateCoreComponentRef(newComponentContainer: WorkshopComponent, newComponent: WorkshopComponent): void {
+  private static updateComponentContainerProperties(newComponentContainer: WorkshopComponent, newComponent: WorkshopComponent): void {
     const newComponentBase = newComponent.baseSubcomponent;
     const { subcomponentType, parentLayer } = newComponentBase;
-    JSONUtils.setPropertyIfExists(newComponentContainer.coreSubcomponentRefs, subcomponentType as number, newComponentBase);
     JSONUtils.setPropertyIfExists(newComponentContainer.sync.syncables?.subcomponents, subcomponentType as number, newComponentBase);
     SubcomponentTriggers.set(newComponentContainer, parentLayer.subcomponentProperties, newComponentBase, subcomponentType);
     PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(newComponentContainer);
@@ -146,7 +144,7 @@ export class AddContainerComponent extends AddComponentShared {
     AddContainerComponent.addNewComponentToDropdownStructure(newComponent, masterComponent, dropdownStructure);
     InterconnectedSettings.update(true, newComponentContainer, newComponent.baseSubcomponent);
     IncrementChildComponentCount.increment(newComponentContainer, baseNamePrefix);
-    AddContainerComponent.populateCoreComponentRef(newComponentContainer, newComponent);
+    AddContainerComponent.updateComponentContainerProperties(newComponentContainer, newComponent);
     AddComponentShared.cleanSubcomponentProperties(newComponent);
     AddContainerComponent.updateSyncedComponents(newComponentContainer);
     newComponent.containerComponent = newComponentContainer;
