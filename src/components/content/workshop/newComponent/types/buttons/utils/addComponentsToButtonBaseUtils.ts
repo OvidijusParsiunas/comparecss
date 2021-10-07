@@ -22,7 +22,6 @@ export class AddComponentsToButtonBaseUtils {
     const layerComponent = AddLayerComponent.add(component, LAYER_STYLES.PLAIN, false);
     AddContainerComponent.add(component, COMPONENT_TYPES.TEXT, textStyle,
       layerComponent.baseSubcomponent.name, [AddComponentsToButtonBaseUtils.overwriteButtonTextProperties.bind(textContent)]);
-    // WORK1
     if (icon) {
       AddContainerComponent.add(component, COMPONENT_TYPES.ICON, DEFAULT_STYLES.DEFAULT,
         layerComponent.baseSubcomponent.name, [AddComponentsToButtonBaseUtils.overwriteIconProperties]);

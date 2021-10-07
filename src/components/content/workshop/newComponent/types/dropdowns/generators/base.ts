@@ -104,6 +104,7 @@ class DropdownBase extends ComponentBuilder {
 
 export const dropdownBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
+    // create paddingComponent
     const paddingComponent = plainLayer.createNewComponent(baseName);
     paddingComponent.baseSubcomponent.subcomponentType = SUBCOMPONENT_TYPES.DROPDOWN;
     paddingComponent.type = COMPONENT_TYPES.DROPDOWN;
@@ -113,6 +114,7 @@ export const dropdownBase: ComponentGenerator = {
     DropdownBase.overwriteBase(paddingComponent);
     Object.assign(buttonComponent.subcomponents, paddingComponent.subcomponents);
     paddingComponent.subcomponents = buttonComponent.subcomponents;
+    // assign padding component properties
     Object.assign(buttonComponent.componentPreviewStructure.subcomponentNameToDropdownItemName, paddingComponent.componentPreviewStructure.subcomponentNameToDropdownItemName);
     paddingComponent.componentPreviewStructure.subcomponentNameToDropdownItemName = buttonComponent.componentPreviewStructure.subcomponentNameToDropdownItemName;
     paddingComponent.componentPreviewStructure.subcomponentDropdownStructure[paddingComponent.baseSubcomponent.name] = { ...buttonComponent.componentPreviewStructure.subcomponentDropdownStructure };

@@ -18,19 +18,23 @@ import { MenuBaseSpecificSettings } from '../../settings/menuBaseSpecificSetting
 import { BORDER_STYLES } from '../../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
 
+// everything belongs to base but create default
 class DropdownMenuBase extends ComponentBuilder {
 
+  // base
   public static setSyncableSubcomponents(dropdownMenuComponent: WorkshopComponent): void {
     dropdownMenuComponent.sync.syncables = ComponentBuilder.createSyncablesObjectUsingSubcomponents({
       [SUBCOMPONENT_TYPES.BASE]: dropdownMenuComponent.baseSubcomponent });
   }
 
+  // base
   private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
     if (cssProperty === 'paddingLeft' || cssProperty === 'paddingRight' || cssProperty === 'fontSize' || cssProperty === 'fontWeight') {
       DropdownMenuAutoWidthUtils.setWidth(subcomponentProperties);
     }
   }
 
+  // base
   public static setTriggerFuncOnSettingChange(dropdownMenuBaseComponent: WorkshopComponent): void {
     dropdownMenuBaseComponent.triggerFuncOnSettingChange = {
       [SETTINGS_TYPES.INPUT]: DropdownMenuAutoWidthUtils.setWidth,
@@ -39,14 +43,17 @@ class DropdownMenuBase extends ComponentBuilder {
     };
   }
 
+  // base
   public static setAreLayersInSyncByDefault(dropdownMenuComponent: WorkshopComponent): void {
     dropdownMenuComponent.areLayersInSyncByDefault = true;
   }
 
+  // base
   private static createDefaultNewChildComponentsItems(): NestedDropdownStructure {
     return DropdownUtils.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]);
   }
 
+  // base
   private static createDefaultMenuCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
@@ -75,10 +82,12 @@ class DropdownMenuBase extends ComponentBuilder {
     };
   }
 
+  // base
   private static createDefaultMenuPosition(): DropdownMenuPosition {
     return { position: DROPDOWN_MENU_POSITIONS.BOTTOM };
   }
 
+  // base
   private static createDefaultDropdownProperties(): DropdownFeatures {
     return {
       indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.ABOVE,
@@ -86,6 +95,7 @@ class DropdownMenuBase extends ComponentBuilder {
     };
   }
 
+  // base
   private static createDefaultCustomFeatures(): CustomFeatures {
     return {
       animations: ComponentBuilder.createDisplayAnimationsProperties(),
@@ -93,6 +103,7 @@ class DropdownMenuBase extends ComponentBuilder {
     };
   }
 
+  // base
   public static createBaseSubcomponent(name: string): SubcomponentProperties {
     return {
       name,

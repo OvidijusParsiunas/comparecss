@@ -20,6 +20,7 @@ import { dropdownMenuBase } from '../menu/base';
 
 class DropdownButton extends ComponentBuilder {
 
+  // base
   private static populateReferences(buttonComponent: WorkshopComponent): void {
     buttonComponent.baseSubcomponent.customFeatures.jsClasses.add(JAVASCRIPT_CLASSES.DROPDOWN_BUTTON);
     buttonComponent.baseSubcomponent.defaultCustomFeatures.jsClasses.add(JAVASCRIPT_CLASSES.DROPDOWN_BUTTON);
@@ -28,7 +29,8 @@ class DropdownButton extends ComponentBuilder {
     dropdownMenuBaseComponent.baseSubcomponent.defaultCustomFeatures.jsClasses = new Set([JAVASCRIPT_CLASSES.DROPDOWN_MENU]) as Set<JAVASCRIPT_CLASSES>;
   }
 
-  public static overwriteButtonCustomFeatures(buttonComponent: WorkshopComponent): void {
+  // shared
+  private static overwriteButtonCustomFeatures(buttonComponent: WorkshopComponent): void {
     const paddingBaseSubcomponent = buttonComponent.paddingComponent.baseSubcomponent;
     const buttonBaseSubcomponent = buttonComponent.baseSubcomponent;
     buttonBaseSubcomponent.customFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW };
@@ -43,34 +45,40 @@ class DropdownButton extends ComponentBuilder {
     textSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText;
   }
 
+  // base
   public static setAndExecutePropertyOverwritingExecutables(buttonComponent: WorkshopComponent): void {
     buttonComponent.propertyOverwritingExecutables.push(DropdownButton.overwriteButtonCustomFeatures, DropdownButton.populateReferences);
     DropdownButton.populateReferences(buttonComponent);
   }
 
+  // base
   private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
     if (cssProperty === 'fontSize') {
       DropdownMenuAutoWidthUtils.setWidth(subcomponentProperties);
     }
   }
 
+  // base
   public static setTriggerFuncOnSettingChange(buttonBaseComponent: WorkshopComponent): void {
     buttonBaseComponent.triggerFuncOnSettingChange = {
       [SETTINGS_TYPES.RANGE]: DropdownButton.setWidthViaRange,
     };
   }
 
+  // base
   private static createDefaultAutoSize(): AutoSize {
     const widthCalculationFunc = DropdownMenuAutoWidthUtils.setWidth;
     return ComponentBuilder.createAutoSize(false, false, { widthCalculationFunc })
   }
 
+  // base
   public static setButtonAutoSize(buttonComponent: WorkshopComponent): void {
     const { customFeatures, defaultCustomFeatures } = buttonComponent.baseSubcomponent;
     customFeatures.autoSize = DropdownButton.createDefaultAutoSize();
     defaultCustomFeatures.autoSize = DropdownButton.createDefaultAutoSize();
   }
 
+  // default
   public static overwriteCustomCss(buttonComponent: WorkshopComponent): void {
     const baseSubcomponent = buttonComponent.baseSubcomponent;
     baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = '155px';
@@ -78,6 +86,7 @@ class DropdownButton extends ComponentBuilder {
     baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = '4px';
     baseSubcomponent.defaultCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = '4px';
     const textSubcomponent = buttonComponent.sync.syncables.subcomponents[SUBCOMPONENT_TYPES.TEXT];
+    // WORK 1 - static name
     textSubcomponent.customStaticFeatures.subcomponentText.text = 'Dropdown button';
     textSubcomponent.defaultCustomStaticFeatures.subcomponentText.text = 'Dropdown button';
   }
