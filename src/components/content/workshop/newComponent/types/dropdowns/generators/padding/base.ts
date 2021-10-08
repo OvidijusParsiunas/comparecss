@@ -1,9 +1,10 @@
-import { UpdatePaddingComponentDropdownItemNames } from '../../../../../utils/componentManipulation/updateChildComponent/updatePaddingComponentDropdownItemNames';
+import { UpdateLinkedComponentsDropdownItemNames } from '../../../../../utils/componentManipulation/updateChildComponent/updateLinkedComponentsDropdownItemNames';
 import { BUTTON_COMPONENTS_BASE_NAMES, DROPDOWN_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { UniqueSubcomponentNameGenerator } from '../../../../../utils/componentGenerator/uniqueSubcomponentNameGenerator';
 import { SelectedDropdownText, SelectDropdown } from '../../../../../../../../interfaces/dropdownFeatures';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
+import { PaddingComponentUtils } from '../../../shared/paddingComponent/paddingComponentUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../../consts/layerSections.enum';
@@ -14,30 +15,12 @@ import { DropdownItemLayer } from '../../../layers/generators/dropdownItem';
 import { buttonWithIcon } from '../../../buttons/generators/buttonWithIcon';
 import { ApplyDropdownButtonProperties } from '../button/applyProperties';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
-import { plainLayer } from '../../../layers/generators/plainLayer';
 import { defaultDropdownMenu } from '../menu/default';
 
 class DropdownPaddingBase extends ComponentBuilder {
 
-  // will need to be placed in the same class as the one in DropdownButton
-  private static overwriteButtonCustomFeatures(paddingComponent: WorkshopComponent): void {
-    const buttonComponent = paddingComponent.paddingComponentChild;
-    const paddingBaseSubcomponent = paddingComponent.baseSubcomponent;
-    const buttonBaseSubcomponent = buttonComponent.baseSubcomponent;
-    buttonBaseSubcomponent.customFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW };
-    buttonBaseSubcomponent.defaultCustomFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW };
-    buttonBaseSubcomponent.customStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.customStaticFeatures.dropdownSelectedText;
-    buttonBaseSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText;
-    const textSubcomponent = buttonComponent.sync.syncables.subcomponents[SUBCOMPONENT_TYPES.TEXT];
-    if (!textSubcomponent) return;
-    textSubcomponent.customFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select };
-    textSubcomponent.defaultCustomFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select };
-    textSubcomponent.customStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.customStaticFeatures.dropdownSelectedText;
-    textSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText;
-  }
-
   // custom properties references are instead shared on new layer additions by areLayersInSyncByDefault, however
-  // when existing layers are copied - this method sets them in sync 
+  // when existing layers are copied - this method sets them to be in sync 
   private static setAllItemAndItemTextComponentsToBeInSync(component: WorkshopComponent): void {
     const menuComponent = component.paddingComponentChild.linkedComponents
       .auxiliary[0].baseSubcomponent.seedComponent;
@@ -53,8 +36,8 @@ class DropdownPaddingBase extends ComponentBuilder {
   private static setAndExecutePropertyOverwritingExecutables(paddingComponent: WorkshopComponent): void {
     paddingComponent.propertyOverwritingExecutables = [
       DropdownPaddingBase.setAllItemAndItemTextComponentsToBeInSync,
-      DropdownPaddingBase.overwriteButtonCustomFeatures];
-    DropdownPaddingBase.overwriteButtonCustomFeatures(paddingComponent);
+      ApplyDropdownButtonProperties.overwriteButtonCustomFeatures];
+    ApplyDropdownButtonProperties.overwriteButtonCustomFeatures(paddingComponent);
   }
 
   private static setSyncableSubcomponents(dropdownComponent: WorkshopComponent): void {
@@ -105,24 +88,14 @@ class DropdownPaddingBase extends ComponentBuilder {
     DropdownPaddingBase.overwriteStaticFeatures(paddingBaseSubcomponent);
   }
 
-  // use this method for other styles
-  public static constructPaddingComponent(baseName: string, buttonComponent: WorkshopComponent, dropdownMenuComponent: WorkshopComponent): WorkshopComponent {
-    const paddingComponent = plainLayer.createNewComponent(baseName);
-    paddingComponent.baseSubcomponent.subcomponentType = SUBCOMPONENT_TYPES.DROPDOWN;
-    paddingComponent.type = COMPONENT_TYPES.DROPDOWN;
-    paddingComponent.style = DEFAULT_STYLES.BASE;
-    ApplyDropdownButtonProperties.apply(buttonComponent, dropdownMenuComponent);
+  // use this method for other button and menu styles
+  public static create(baseName: string, buttonComponent: WorkshopComponent, menuComponent: WorkshopComponent): WorkshopComponent {
+    ApplyDropdownButtonProperties.apply(buttonComponent, menuComponent);
+    UpdateLinkedComponentsDropdownItemNames.update(buttonComponent);
+    const paddingComponent = PaddingComponentUtils.create(baseName, COMPONENT_TYPES.DROPDOWN, DEFAULT_STYLES.BASE, SUBCOMPONENT_TYPES.DROPDOWN, buttonComponent);
     DropdownPaddingBase.overwriteBase(paddingComponent);
-    Object.assign(buttonComponent.subcomponents, paddingComponent.subcomponents);
-    paddingComponent.subcomponents = buttonComponent.subcomponents;
-    Object.assign(buttonComponent.componentPreviewStructure.subcomponentNameToDropdownItemName, paddingComponent.componentPreviewStructure.subcomponentNameToDropdownItemName);
-    paddingComponent.componentPreviewStructure.subcomponentNameToDropdownItemName = buttonComponent.componentPreviewStructure.subcomponentNameToDropdownItemName;
-    paddingComponent.componentPreviewStructure.subcomponentDropdownStructure[paddingComponent.baseSubcomponent.name] = { ...buttonComponent.componentPreviewStructure.subcomponentDropdownStructure };
-    paddingComponent.paddingComponentChild = buttonComponent;
-    buttonComponent.paddingComponent = paddingComponent;
     DropdownPaddingBase.setSyncableSubcomponents(paddingComponent);
     DropdownPaddingBase.setAndExecutePropertyOverwritingExecutables(paddingComponent);
-    UpdatePaddingComponentDropdownItemNames.updateChildAndAuxiliaryComponents(paddingComponent);
     return paddingComponent;
   }
 }
@@ -131,6 +104,6 @@ export const dropdownPaddingBase: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const buttonComponent = buttonWithIcon.createNewComponent(UniqueSubcomponentNameGenerator.generate(BUTTON_COMPONENTS_BASE_NAMES.BUTTON));
     const dropdownMenuComponent = defaultDropdownMenu.createNewComponent(UniqueSubcomponentNameGenerator.generate(DROPDOWN_COMPONENTS_BASE_NAMES.MENU));
-    return DropdownPaddingBase.constructPaddingComponent(baseName, buttonComponent, dropdownMenuComponent);
+    return DropdownPaddingBase.create(baseName, buttonComponent, dropdownMenuComponent);
   },
 }

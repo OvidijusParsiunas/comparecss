@@ -24,8 +24,7 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
     dropdownMenuBaseComponent.baseSubcomponent.defaultCustomFeatures.jsClasses = new Set([JAVASCRIPT_CLASSES.DROPDOWN_MENU]) as Set<JAVASCRIPT_CLASSES>;
   }
 
-  // shared
-  private static overwriteButtonCustomFeatures(buttonComponent: WorkshopComponent): void {
+  public static overwriteButtonCustomFeatures(buttonComponent: WorkshopComponent): void {
     const paddingBaseSubcomponent = buttonComponent.paddingComponent.baseSubcomponent;
     const buttonBaseSubcomponent = buttonComponent.baseSubcomponent;
     buttonBaseSubcomponent.customFeatures.dropdown = { select: paddingBaseSubcomponent.customFeatures.dropdown.select, indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW };

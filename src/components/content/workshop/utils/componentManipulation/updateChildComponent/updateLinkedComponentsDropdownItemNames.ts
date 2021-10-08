@@ -3,15 +3,15 @@ import { WorkshopComponent } from '../../../../../../interfaces/workshopComponen
 import { UpdateDropdownItemNamesShared } from './updateDropdownItemNamesShared';
 import { ArrayUtils } from '../../generic/arrayUtils';
 
-export class UpdatePaddingComponentDropdownItemNames extends UpdateDropdownItemNamesShared {
+export class UpdateLinkedComponentsDropdownItemNames extends UpdateDropdownItemNamesShared {
 
-  public static updateChildAndAuxiliaryComponents(paddingComponent: WorkshopComponent): void {
-    const { subcomponentDropdownStructure } = paddingComponent.paddingComponentChild.componentPreviewStructure;
+  public static update(baseComponent: WorkshopComponent): void {
+    const { subcomponentDropdownStructure } = baseComponent.componentPreviewStructure;
     const { itemDataMaps, stateObjects: { overwrittenItemNames, newDrodpownNames, overwrittenDropdownStructures },
       } = UpdateContainerComponentDropdownUtils.generateItemUpdateInitializationObjects(subcomponentDropdownStructure);
     const subcomponentNames = UpdateDropdownItemNamesShared.getSubcomponentNames(subcomponentDropdownStructure);
     subcomponentNames.forEach((subcomponentName) => {
-      UpdateContainerComponentDropdownUtils.updateItemNames(paddingComponent, itemDataMaps, subcomponentDropdownStructure,
+      UpdateContainerComponentDropdownUtils.updateItemNames(baseComponent, itemDataMaps, subcomponentDropdownStructure,
         overwrittenItemNames, newDrodpownNames, subcomponentName, overwrittenDropdownStructures);
     });
     ArrayUtils.differenceInArrays(overwrittenItemNames, newDrodpownNames);

@@ -1,6 +1,6 @@
 import { PropertyOverwritingExecutablesUtils } from '../../../newComponent/types/shared/propertyOverwritingExecutables/propertyOverwritingExecutablesUtils';
 import { UpdateGenericComponentDropdownItemNames } from '../updateChildComponent/updateGenericComponentDropdownItemNames';
-import { UpdatePaddingComponentDropdownItemNames } from '../updateChildComponent/updatePaddingComponentDropdownItemNames';
+import { UpdateLinkedComponentsDropdownItemNames } from '../updateChildComponent/updateLinkedComponentsDropdownItemNames';
 import { componentTypeToStyleGenerators } from '../../../newComponent/types/componentTypeToStyleGenerators';
 import { UpdateLayerDropdownItemNames } from '../updateChildComponent/updateLayerDropdownItemNames';
 import { BaseSubcomponentRef, Layer } from '../../../../../../interfaces/componentPreviewStructure';
@@ -142,7 +142,7 @@ export class CopyComponent extends ComponentBuilder {
 
   private static copyPaddingComponentChild(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
     CopyComponent.copyComponent(newComponent.paddingComponentChild, componentBeingCopied.paddingComponentChild);
-    UpdatePaddingComponentDropdownItemNames.updateChildAndAuxiliaryComponents(newComponent);
+    UpdateLinkedComponentsDropdownItemNames.update(newComponent.paddingComponentChild);
   }
 
   // could not use parent first preview structure traversal as upon dynamically creating child components the subcomponents
