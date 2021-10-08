@@ -142,7 +142,7 @@ export class CopyComponent extends ComponentBuilder {
 
   private static copyPaddingComponentChild(newComponent: WorkshopComponent, componentBeingCopied: WorkshopComponent): void {
     CopyComponent.copyComponent(newComponent.paddingComponentChild, componentBeingCopied.paddingComponentChild);
-    UpdatePaddingComponentDropdownItemNames.updatePaddingComponentChildren(newComponent.paddingComponentChild);
+    UpdatePaddingComponentDropdownItemNames.updateChildAndAuxiliaryComponents(newComponent);
   }
 
   // could not use parent first preview structure traversal as upon dynamically creating child components the subcomponents
