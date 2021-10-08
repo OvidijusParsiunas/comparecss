@@ -3,11 +3,15 @@ import { DropdownItemsDisplayStatusUtils } from '../../../utils/dropdownItemsDis
 import { BASE_SUBCOMPONENT_NAMES, MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { SubcomponentTypeToProperties } from '../../../../../../interfaces/subcomponentTypeToProperties';
+import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../consts/dropdownMenuAlignment.enum';
 import { NewComponentStyleProperties } from '../../../../../../consts/newComponentStyleProperties';
 import { ComponentPreviewStructure } from '../../../../../../interfaces/componentPreviewStructure';
+import { DropdownFeatures, SelectDropdown } from '../../../../../../interfaces/dropdownFeatures';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { ChildComponentCount } from '../../../../../../interfaces/childComponentCount';
+import { SelectDropdownUtils } from '../dropdowns/selectDropdown/selectDropdownUtils';
+import { JAVASCRIPT_CLASSES } from '../../../../../../consts/javascriptClasses.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
@@ -130,6 +134,29 @@ export class ComponentBuilder {
     return {
       subcomponents: syncableSubcomponents,
       childComponents: [],
+    };
+  }
+
+  protected static addJsClasses(subcomponent: SubcomponentProperties, javascriptClass: JAVASCRIPT_CLASSES): void {
+    if (!subcomponent.customFeatures.jsClasses) {
+      subcomponent.customFeatures.jsClasses = new Set();
+      subcomponent.defaultCustomFeatures.jsClasses = new Set();
+    }
+    subcomponent.customFeatures.jsClasses.add(javascriptClass);
+    subcomponent.defaultCustomFeatures.jsClasses.add(javascriptClass);
+  }
+
+  private static createSelectDropdownProperties(): SelectDropdown {
+    return {
+      enabled: false,
+      callback: SelectDropdownUtils.setSelectDropdownText,
+    };
+  }
+
+  protected static createDopdownFeatures(selectDropdown: SelectDropdown, indexAlignment?: DROPDOWN_MENU_INDEX_ALIGNMENT): DropdownFeatures {
+    return {
+      select: selectDropdown || ComponentBuilder.createSelectDropdownProperties(),
+      indexAlignment,
     };
   }
 

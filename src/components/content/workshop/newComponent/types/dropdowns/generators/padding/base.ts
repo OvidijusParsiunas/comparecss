@@ -2,22 +2,21 @@ import { UpdateLinkedComponentsDropdownItemNames } from '../../../../../utils/co
 import { BUTTON_COMPONENTS_BASE_NAMES, DROPDOWN_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { UniqueSubcomponentNameGenerator } from '../../../../../utils/componentGenerator/uniqueSubcomponentNameGenerator';
-import { SelectedDropdownText, SelectDropdown } from '../../../../../../../../interfaces/dropdownFeatures';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
 import { PaddingComponentUtils } from '../../../shared/paddingComponent/paddingComponentUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../../interfaces/componentGenerator';
+import { SelectedDropdownText } from '../../../../../../../../interfaces/dropdownFeatures';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../../consts/layerSections.enum';
-import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
 import { DEFAULT_STYLES } from '../../../../../../../../consts/componentStyles.enum';
-import { SelectDropdownUtils } from '../../selectDropdown/selectDropdownUtils';
-import { DropdownItemLayer } from '../../../layers/generators/dropdownItem';
+import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
 import { buttonWithIcon } from '../../../buttons/generators/buttonWithIcon';
+import { DropdownItemLayer } from '../../../layers/generators/dropdownItem';
 import { ApplyDropdownButtonProperties } from '../button/applyProperties';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
 import { defaultDropdownMenu } from '../menu/default';
 
-class DropdownPaddingBase extends ComponentBuilder {
+export class DropdownPaddingBase extends ComponentBuilder {
 
   // custom properties references are instead shared on new layer additions by areLayersInSyncByDefault, however
   // when existing layers are copied - this method sets them to be in sync 
@@ -58,13 +57,6 @@ class DropdownPaddingBase extends ComponentBuilder {
     };
   }
 
-  private static createSelectDropdownProperties(): SelectDropdown {
-    return {
-      enabled: false,
-      callback: SelectDropdownUtils.setSelectDropdownText,
-    };
-  }
-
   private static createDefaultCustomStaticFeatures(): CustomStaticFeatures {
     return {
       alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
@@ -78,8 +70,8 @@ class DropdownPaddingBase extends ComponentBuilder {
   }
 
   private static overwriteCustomFeatures(paddingBaseSubcomponent: SubcomponentProperties): void {
-    paddingBaseSubcomponent.customFeatures = { dropdown: { select: DropdownPaddingBase.createSelectDropdownProperties(), indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW } };
-    paddingBaseSubcomponent.defaultCustomFeatures = { dropdown: { select: DropdownPaddingBase.createSelectDropdownProperties(), indexAlignment: DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW } };
+    paddingBaseSubcomponent.customFeatures = { dropdown: ComponentBuilder.createDopdownFeatures(null, DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW) };
+    paddingBaseSubcomponent.defaultCustomFeatures = { dropdown: ComponentBuilder.createDopdownFeatures(null, DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW) };
   }
 
   private static overwriteBase(paddingComponent: WorkshopComponent): void {
@@ -92,7 +84,8 @@ class DropdownPaddingBase extends ComponentBuilder {
   public static create(baseName: string, buttonComponent: WorkshopComponent, menuComponent: WorkshopComponent): WorkshopComponent {
     ApplyDropdownButtonProperties.apply(buttonComponent, menuComponent);
     UpdateLinkedComponentsDropdownItemNames.update(buttonComponent);
-    const paddingComponent = PaddingComponentUtils.create(baseName, COMPONENT_TYPES.DROPDOWN, DEFAULT_STYLES.BASE, SUBCOMPONENT_TYPES.DROPDOWN, buttonComponent);
+    const paddingComponent = PaddingComponentUtils.create(baseName, COMPONENT_TYPES.DROPDOWN,
+      DEFAULT_STYLES.BASE, SUBCOMPONENT_TYPES.DROPDOWN, buttonComponent);
     DropdownPaddingBase.overwriteBase(paddingComponent);
     DropdownPaddingBase.setSyncableSubcomponents(paddingComponent);
     DropdownPaddingBase.setAndExecutePropertyOverwritingExecutables(paddingComponent);
