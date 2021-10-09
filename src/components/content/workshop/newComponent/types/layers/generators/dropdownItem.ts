@@ -22,6 +22,12 @@ import { layerBase } from './base';
 
 export class DropdownItemLayer extends ComponentBuilder {
 
+  private static createDefaultTextCustomFeatures(): CustomFeatures {
+    return {
+      autoSize: ComponentBuilder.createAutoSize(true, true),
+    };
+  }
+
   // split this into more granular methods
   public static setTextSubcomponentProperties(textComponent: WorkshopComponent): void {
     const menuComponent = this as unknown as WorkshopComponent;
@@ -34,10 +40,26 @@ export class DropdownItemLayer extends ComponentBuilder {
       textComponent.baseSubcomponent.customFeatures = childTextComponent.customFeatures;
       textComponent.baseSubcomponent.defaultCustomFeatures = childTextComponent.defaultCustomFeatures;
     } else {
-      textComponent.baseSubcomponent.customCss = DropdownItemLayer.createDefaultTextCustomCss();
-      textComponent.baseSubcomponent.defaultCss = DropdownItemLayer.createDefaultTextCustomCss();
+      const syncedDropdownComponent = menuComponent.linkedComponents.base.paddingComponent?.sync.componentThisIsSyncedTo;
+      if (!syncedDropdownComponent) {
+        textComponent.baseSubcomponent.customCss = menuComponent.newChildComponents.styles[SUBCOMPONENT_TYPES.TEXT]();
+        textComponent.baseSubcomponent.defaultCss = menuComponent.newChildComponents.styles[SUBCOMPONENT_TYPES.TEXT]();
+      } else {
+        const { layers } = syncedDropdownComponent.paddingComponentChild.linkedComponents.auxiliary[0].componentPreviewStructure;
+        const textSubcomponent = layers.length > 0
+          ? layers[0].sections.alignedSections.left[0].subcomponentProperties.customCss
+          : menuComponent.newChildComponents.styles[SUBCOMPONENT_TYPES.TEXT]();
+        textComponent.baseSubcomponent.customCss = textSubcomponent;
+        textComponent.baseSubcomponent.defaultCss = menuComponent.newChildComponents.styles[SUBCOMPONENT_TYPES.TEXT]();
+      }
       textComponent.baseSubcomponent.customFeatures = DropdownItemLayer.createDefaultTextCustomFeatures();
       textComponent.baseSubcomponent.defaultCustomFeatures = DropdownItemLayer.createDefaultTextCustomFeatures();
+      menuComponent.linkedComponents.base.paddingComponent?.sync.componentsSyncedToThis.forEach((component) => {
+        const { layers } = component.paddingComponentChild.linkedComponents.auxiliary[0].componentPreviewStructure;
+        if (layers.length > 0) {
+          layers[0].sections.alignedSections.left[0].subcomponentProperties.customCss = textComponent.baseSubcomponent.customCss;
+        }
+      })
     }
     if (menuComponent.baseSubcomponent.customFeatures.jsClasses) {
       if (!textComponent.baseSubcomponent.customFeatures.jsClasses) {
@@ -52,50 +74,6 @@ export class DropdownItemLayer extends ComponentBuilder {
 
   public static setStyle(component: WorkshopComponent): void {
     component.style = LAYER_STYLES.DROPDOWN_ITEM;
-  }
-
-  private static createDefaultTextCustomCss(): CustomCss {
-    return {
-      [CSS_PSEUDO_CLASSES.DEFAULT]: {
-        width: 'max-content',
-        fontWeight: '400',
-        fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
-        fontSize: '14px',
-        color: '#212529',
-        textAlign: 'left',
-        backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
-        paddingTop: '0px',
-        paddingBottom: '0px',
-        paddingLeft: '0px',
-        paddingRight: '0px',
-        marginLeft: '0px',
-        marginRight: '0px',
-        marginTop: '0px',
-        marginBottom: '0px',
-        height: '',
-        borderWidth: '0px',
-        borderColor: '#1779ba',
-        borderStyle: BORDER_STYLES.SOLID,
-        borderRightWidth: '0px',
-        borderLeftWidth: '0px',
-        transition: CSS_PROPERTY_VALUES.UNSET,
-        outline: 'none',
-        left: '0px',
-        cursor: 'pointer',
-      },
-      [CSS_PSEUDO_CLASSES.HOVER]: {
-        color: '#ffffff',
-      },
-      [CSS_PSEUDO_CLASSES.CLICK]: {
-        color: CSS_PROPERTY_VALUES.INHERIT,
-      },
-    };
-  }
-
-  private static createDefaultTextCustomFeatures(): CustomFeatures {
-    return {
-      autoSize: ComponentBuilder.createAutoSize(true, true),
-    };
   }
 
   private static createDefaultTextCustomStaticFeatures(text?: string): CustomStaticFeatures {

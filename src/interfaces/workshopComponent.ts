@@ -207,7 +207,7 @@ export interface WorkshopComponent {
   // new child component styles - for items - but can be used for button components as well
   newChildComponents?: {
     dropdownItems: NestedDropdownStructure;
-    styles?: { [key in SUBCOMPONENT_TYPES]?: CustomCss }
+    styles?: { [key in SUBCOMPONENT_TYPES]?: () => CustomCss };
   }
   // used to share add dropdown items across components such as layers - in order to make sure that the enabled and disabled items are in-sync
   newChildComponentsItemsRefs?: NewChildComponentsItemsRefs;
