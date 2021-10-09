@@ -17,7 +17,7 @@ class AlertBase extends ComponentBuilder {
   public static setChildComponentsItems(alertBaseComponent: WorkshopComponent): void {
     const baseComponentItems = [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE];
     const childComponentMaxCount = { max: { [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
-    ComponentBuilder.setChildComponentsItemsProperties(alertBaseComponent,
+    ComponentBuilder.setNewChildComponentsItemsProperties(alertBaseComponent,
       baseComponentItems, baseComponentItems, childComponentMaxCount);
   }
 

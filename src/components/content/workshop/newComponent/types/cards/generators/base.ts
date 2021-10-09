@@ -21,7 +21,7 @@ class CardBase extends ComponentBuilder {
       DROPDOWN_COMPONENTS_BASE_NAMES.DROPDOWN];
     const componentChildItems = [LAYER_COMPONENTS_BASE_NAMES.LAYER];
     const childComponentMaxCount = { max: { [LAYER_COMPONENTS_BASE_NAMES.LAYER]: 5, [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
-    ComponentBuilder.setChildComponentsItemsProperties(cardBaseComponent,
+    ComponentBuilder.setNewChildComponentsItemsProperties(cardBaseComponent,
       layerChildItems, componentChildItems, childComponentMaxCount);
   }
 

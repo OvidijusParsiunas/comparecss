@@ -1,7 +1,6 @@
 import { InterconnectedSetting, SubcomponentSpecificSettings } from './subcomponentSpecificSettings';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
 import { SubcomponentMouseEventCallbacks } from './subcomponentMouseEventCallbacks';
-import { NewChildComponentsItemsRefs } from './newChildComponentsItemsRefs';
 import { OverwritePropertiesFunc } from './overwriteSubcomponentPropertiesFunc';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { DropdownFeatures, SelectedDropdownText } from './dropdownFeatures';
@@ -11,14 +10,14 @@ import { TriggerFuncOnSettingChange } from './triggerFuncOnSettingChange';
 import { ChildComponentsInLayer } from './childComponentsLockedToLayer';
 import { OtherSubcomponentTriggers } from './otherSubcomponentTriggers';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
-import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { ChildComponentCount } from './childComponentCount';
+import { NewChildComponents } from './newChildComponents';
 import { LinkedComponents } from './linkedComponents';
-import { TempCustomCss } from './tempCustomCss';
 import { CloseTriggers } from './closeTriggers';
+import { TempCustomCss } from './tempCustomCss';
 import { Animations } from './animations';
 import { AutoSize } from './autoSize';
 import { Icon } from './icon';
@@ -203,14 +202,8 @@ export interface WorkshopComponent {
   sync: Sync;
   paddingComponent?: WorkshopComponent;
   paddingComponentChild?: WorkshopComponent;
-  // items for the add child component dropdown
-  // new child component styles - for items - but can be used for button components as well
-  newChildComponents?: {
-    dropdownItems: NestedDropdownStructure;
-    styles?: { [key in SUBCOMPONENT_TYPES]?: () => CustomCss };
-  }
-  // used to share add dropdown items across components such as layers - in order to make sure that the enabled and disabled items are in-sync
-  newChildComponentsItemsRefs?: NewChildComponentsItemsRefs;
+  // properties for components that can be added through the add child component dropdown
+  newChildComponents?: NewChildComponents;
 }
 
 // Component Architecture Information:

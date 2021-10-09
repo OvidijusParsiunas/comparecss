@@ -17,9 +17,9 @@ export class ChildComponentCountShared {
   protected static setAddPreviewDropdownItemStateIfConditionMet(conditionFunc: () => boolean,
       parentComponent: WorkshopComponent, newComponentNamePrefix: string, isEnabled: boolean): void {
     if (conditionFunc()) {
-      const { newChildComponents, newChildComponentsItemsRefs } = parentComponent;
-      ChildComponentCountShared.setItemState(newChildComponents.dropdownItems, newComponentNamePrefix, isEnabled);
-      ChildComponentCountShared.setItemState(newChildComponentsItemsRefs?.layer, newComponentNamePrefix, isEnabled);
+      const { newChildComponents: { dropdownItems, sharedDropdownItemsRefs } } = parentComponent;
+      ChildComponentCountShared.setItemState(dropdownItems, newComponentNamePrefix, isEnabled);
+      ChildComponentCountShared.setItemState(sharedDropdownItemsRefs?.layer, newComponentNamePrefix, isEnabled);
     }
   }
 }

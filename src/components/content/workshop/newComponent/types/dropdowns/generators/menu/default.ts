@@ -47,7 +47,7 @@ export class DefaultDropdownMenu {
   }
 
   public static overwrite(dropdownMenuComponent: WorkshopComponent): void {
-    dropdownMenuComponent.newChildComponents.styles = {
+    dropdownMenuComponent.newChildComponents.customCssOverwritables = {
       [SUBCOMPONENT_TYPES.TEXT]: DefaultDropdownMenu.createDefaultTextCustomCss,
     };
   }

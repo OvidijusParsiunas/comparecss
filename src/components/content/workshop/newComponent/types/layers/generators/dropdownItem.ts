@@ -42,15 +42,15 @@ export class DropdownItemLayer extends ComponentBuilder {
     } else {
       const syncedDropdownComponent = menuComponent.linkedComponents.base.paddingComponent?.sync.componentThisIsSyncedTo;
       if (!syncedDropdownComponent) {
-        textComponent.baseSubcomponent.customCss = menuComponent.newChildComponents.styles[SUBCOMPONENT_TYPES.TEXT]();
-        textComponent.baseSubcomponent.defaultCss = menuComponent.newChildComponents.styles[SUBCOMPONENT_TYPES.TEXT]();
+        textComponent.baseSubcomponent.customCss = menuComponent.newChildComponents.customCssOverwritables[SUBCOMPONENT_TYPES.TEXT]();
+        textComponent.baseSubcomponent.defaultCss = menuComponent.newChildComponents.customCssOverwritables[SUBCOMPONENT_TYPES.TEXT]();
       } else {
         const { layers } = syncedDropdownComponent.paddingComponentChild.linkedComponents.auxiliary[0].componentPreviewStructure;
         const textSubcomponent = layers.length > 0
           ? layers[0].sections.alignedSections.left[0].subcomponentProperties.customCss
-          : menuComponent.newChildComponents.styles[SUBCOMPONENT_TYPES.TEXT]();
+          : menuComponent.newChildComponents.customCssOverwritables[SUBCOMPONENT_TYPES.TEXT]();
         textComponent.baseSubcomponent.customCss = textSubcomponent;
-        textComponent.baseSubcomponent.defaultCss = menuComponent.newChildComponents.styles[SUBCOMPONENT_TYPES.TEXT]();
+        textComponent.baseSubcomponent.defaultCss = menuComponent.newChildComponents.customCssOverwritables[SUBCOMPONENT_TYPES.TEXT]();
       }
       textComponent.baseSubcomponent.customFeatures = DropdownItemLayer.createDefaultTextCustomFeatures();
       textComponent.baseSubcomponent.defaultCustomFeatures = DropdownItemLayer.createDefaultTextCustomFeatures();

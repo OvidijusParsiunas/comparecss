@@ -19,8 +19,8 @@ import JSONUtils from '../../../generic/jsonUtils';
 export class AddLayerComponent extends AddComponentShared {
 
   private static addNewChildComponentsItems(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
-    if (containerComponent.newChildComponentsItemsRefs?.layer) {
-      newComponent.newChildComponents = { dropdownItems: containerComponent.newChildComponentsItemsRefs.layer };
+    if (containerComponent.newChildComponents?.sharedDropdownItemsRefs?.layer) {
+      newComponent.newChildComponents = { dropdownItems: containerComponent.newChildComponents.sharedDropdownItemsRefs.layer };
     }
   }
 

@@ -37,7 +37,7 @@ class ButtonBase extends ComponentBuilder {
   public static setChildComponentsItems(buttonBaseComponent: WorkshopComponent): void {
     const baseComponentItems = [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, PRIMITIVE_COMPONENTS_BASE_NAMES.ICON];
     const childComponentMaxCount = { max: { [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT]: 1, [PRIMITIVE_COMPONENTS_BASE_NAMES.ICON]: 1 }};
-    ComponentBuilder.setChildComponentsItemsProperties(buttonBaseComponent,
+    ComponentBuilder.setNewChildComponentsItemsProperties(buttonBaseComponent,
       baseComponentItems, baseComponentItems, childComponentMaxCount);
   }
 

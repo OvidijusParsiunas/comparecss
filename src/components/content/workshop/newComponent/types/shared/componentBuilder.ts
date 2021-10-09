@@ -121,10 +121,11 @@ export class ComponentBuilder {
     };
   }
 
-  protected static setChildComponentsItemsProperties(component: WorkshopComponent, layerChildItems: BASE_SUBCOMPONENT_NAMES[],
+  protected static setNewChildComponentsItemsProperties(component: WorkshopComponent, layerChildItems: BASE_SUBCOMPONENT_NAMES[],
       componentChildItems: BASE_SUBCOMPONENT_NAMES[], childComponentCount: ChildComponentCount): void {
-    component.newChildComponentsItemsRefs = { layer: DropdownUtils.generateDropdownStructure(layerChildItems) };
-    component.newChildComponents = { dropdownItems: DropdownUtils.generateDropdownStructure(componentChildItems) };
+    component.newChildComponents = {
+      sharedDropdownItemsRefs: { layer: DropdownUtils.generateDropdownStructure(layerChildItems) },
+      dropdownItems: DropdownUtils.generateDropdownStructure(componentChildItems) };
     component.childComponentCount = childComponentCount;
   }
 
