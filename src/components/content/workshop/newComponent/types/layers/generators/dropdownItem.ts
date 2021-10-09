@@ -22,13 +22,6 @@ import { layerBase } from './base';
 
 export class DropdownItemLayer extends ComponentBuilder {
 
-  private static setSyncableSubcomponents(layerComponent: WorkshopComponent, textComponent: WorkshopComponent): void {
-    layerComponent.sync.syncables = ComponentBuilder.createSyncablesObjectUsingSubcomponents({
-      [SUBCOMPONENT_TYPES.BASE]: layerComponent.baseSubcomponent,
-      [SUBCOMPONENT_TYPES.TEXT]: textComponent.baseSubcomponent,
-    });
-  }
-
   // split this into more granular methods
   public static setTextSubcomponentProperties(textComponent: WorkshopComponent): void {
     const menuComponent = this as unknown as WorkshopComponent;
@@ -112,6 +105,13 @@ export class DropdownItemLayer extends ComponentBuilder {
     };
   }
 
+  private static setSyncableSubcomponents(layerComponent: WorkshopComponent, textComponent: WorkshopComponent): void {
+    layerComponent.sync.syncables = ComponentBuilder.createSyncablesObjectUsingSubcomponents({
+      [SUBCOMPONENT_TYPES.BASE]: layerComponent.baseSubcomponent,
+      [SUBCOMPONENT_TYPES.TEXT]: textComponent.baseSubcomponent,
+    });
+  }
+  
   private static addChildComponentsToLayer(layerComponent: WorkshopComponent, containerComponent: WorkshopComponent): WorkshopComponent[] {
     const { higherComponentContainer: menuComponent } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
     const textComponent = AddContainerComponent.add(containerComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,

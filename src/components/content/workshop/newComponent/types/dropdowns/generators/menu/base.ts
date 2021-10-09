@@ -1,9 +1,10 @@
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
+import { UpdateLayerDropdownItemNames } from '../../../../../utils/componentManipulation/updateChildComponent/updateLayerDropdownItemNames';
+import { AddLayerComponent } from '../../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
 import { DropdownFeatures, DropdownMenuPosition } from '../../../../../../../../interfaces/dropdownFeatures';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
 import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
-import { NestedDropdownStructure } from '../../../../../../../../interfaces/nestedDropdownStructure';
 import { DROPDOWN_MENU_POSITIONS } from '../../../../../../../../consts/dropdownMenuPositions.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentCssClasses.enum';
 import { DropdownUtils } from '../../../../../utils/componentManipulation/utils/dropdownUtils';
@@ -15,10 +16,16 @@ import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.e
 import { inheritedCardBaseCss } from '../../../cards/inheritedCss/inheritedCardCss';
 import { SETTINGS_TYPES } from '../../../../../../../../consts/settingsTypes.enum';
 import { MenuBaseSpecificSettings } from '../../settings/menuBaseSpecificSettings';
+import { LAYER_STYLES } from '../../../../../../../../consts/componentStyles.enum';
 import { BORDER_STYLES } from '../../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
 
 class DropdownMenuBase extends ComponentBuilder {
+
+  public static setNewChildComponents(dropdownMenuComponent: WorkshopComponent): void {
+    const dropdownItems = DropdownUtils.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]);
+    dropdownMenuComponent.newChildComponents = { dropdownItems };
+  }
 
   public static setSyncableSubcomponents(dropdownMenuComponent: WorkshopComponent): void {
     dropdownMenuComponent.sync.syncables = ComponentBuilder.createSyncablesObjectUsingSubcomponents({
@@ -41,10 +48,6 @@ class DropdownMenuBase extends ComponentBuilder {
 
   public static setAreLayersInSyncByDefault(dropdownMenuComponent: WorkshopComponent): void {
     dropdownMenuComponent.areLayersInSyncByDefault = true;
-  }
-
-  private static createDefaultNewChildComponentsItems(): NestedDropdownStructure {
-    return DropdownUtils.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]);
   }
 
   private static createDefaultMenuCss(): CustomCss {
@@ -105,9 +108,18 @@ class DropdownMenuBase extends ComponentBuilder {
       childCss: inheritedBaseChildCss,
       customFeatures: DropdownMenuBase.createDefaultCustomFeatures(),
       defaultCustomFeatures: DropdownMenuBase.createDefaultCustomFeatures(),
-      newChildComponentsItems: DropdownMenuBase.createDefaultNewChildComponentsItems(),
     };
   }
+
+  // public static addComponentsToBase(dropdownMenuBaseComponent: WorkshopComponent): void {
+  //   const layer1Component = AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
+  //   layer1Component.childComponentsLockedToLayer.add(layer1Component, dropdownMenuBaseComponent);
+  //   const layer2Component = AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
+  //   layer2Component.childComponentsLockedToLayer.add(layer2Component, dropdownMenuBaseComponent);
+  //   const layer3Component = AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
+  //   layer3Component.childComponentsLockedToLayer.add(layer3Component, dropdownMenuBaseComponent);
+  //   UpdateLayerDropdownItemNames.update(dropdownMenuBaseComponent, 0);
+  // }
 }
 
 export const dropdownMenuBase: ComponentGenerator = {
@@ -117,7 +129,9 @@ export const dropdownMenuBase: ComponentGenerator = {
     DropdownMenuBase.setAreLayersInSyncByDefault(dropdownMenuComponent);
     DropdownMenuBase.setTriggerFuncOnSettingChange(dropdownMenuComponent);
     DropdownMenuBase.setSyncableSubcomponents(dropdownMenuComponent);
+    DropdownMenuBase.setNewChildComponents(dropdownMenuComponent);
     MenuBaseSpecificSettings.set(dropdownMenuComponent);
+    // DropdownMenuBase.addComponentsToBase(dropdownMenuComponent);
     return dropdownMenuComponent;
   },
 }

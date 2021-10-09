@@ -29,8 +29,7 @@ export class DecrementChildComponentCount extends ChildComponentCountShared {
       DecrementChildComponentCount.decrementCurrentCount(childComponentCount, removedSubcomponentNamePrefix);
       ChildComponentCountShared.setAddPreviewDropdownItemStateIfConditionMet(
         DecrementChildComponentCount.isChildComponentCountLowerThanMax.bind({ childComponentCount, removedSubcomponentNamePrefix } as ConditionFuncContextValues),
-        parentComponent.baseSubcomponent, 
-        removedSubcomponentNamePrefix, true);
+        parentComponent, removedSubcomponentNamePrefix, true);
     }
   }
 }

@@ -97,7 +97,7 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
     UpdateLayerDropdownItemNames.update(dropdownMenuBaseComponent, 0);
   }
 
-  // the reason why this is not a generator is because button components are already constructed as separate components
+  // the reason why this is not a generator is because button components are already constructed separately
   public static apply(buttonComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
     ApplyDropdownButtonProperties.setButtonAutoSize(buttonComponent);
     LinkedComponentsUtils.setAuxiliaryComponents(buttonComponent, menuComponent);

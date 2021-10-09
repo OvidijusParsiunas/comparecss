@@ -23,7 +23,7 @@ export const dropdownItemOptions: SubcomponentOptions<DropdownItem> = {
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
     ...ComponentOptionsUtils.removeOptions(
       ComponentOptionsUtils.overwriteOptions(defaultLayerOptions[CSS_PSEUDO_CLASSES.DEFAULT], cardLayerSpecificOptionsOverwrite),
-    WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BACKGROUND, WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SHADOW),
+    WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SHADOW),
     animationOption,
   ],
   [CSS_PSEUDO_CLASSES.HOVER]: [

@@ -156,9 +156,7 @@ export interface SubcomponentProperties {
   tempOriginalCustomProperties?: TempCustomProperties;
   // this subcomponent can trigger and be triggered by other subcomponents
   otherSubcomponentTriggers?: OtherSubcomponentTriggers;
-  // items for the add child component dropdown
-  newChildComponentsItems?: NestedDropdownStructure;
-   // used to temporarily display a child component when hovering add subcomponent dropdown items with a mouse
+  // used to temporarily display a child component when hovering add subcomponent dropdown items with a mouse
   isTemporaryAddPreview?: boolean;
   isRemovable?: boolean;
 }
@@ -193,8 +191,6 @@ export interface WorkshopComponent {
   areLayersInSyncByDefault?: boolean;
   // when a particular setting is changed (e.g. input or range) - call a particular function
   triggerFuncOnSettingChange?: TriggerFuncOnSettingChange;
-  // used to share add dropdown items across components such as layers - in order to make sure that the enabled and disabled items are in-sync
-  newChildComponentsItemsRefs?: NewChildComponentsItemsRefs;
   // used to reference the linked component - where the base component refereneces the auxiliary component and vice versa
   linkedComponents?: LinkedComponents;
   // contains a reference to the component that nests it, e.g. if it was button text - the reference would be to button, if it was dropdown menu
@@ -207,6 +203,14 @@ export interface WorkshopComponent {
   sync: Sync;
   paddingComponent?: WorkshopComponent;
   paddingComponentChild?: WorkshopComponent;
+  // items for the add child component dropdown
+  // new child component styles - for items - but can be used for button components as well
+  newChildComponents?: {
+    dropdownItems: NestedDropdownStructure;
+    styles?: { [key in SUBCOMPONENT_TYPES]?: CustomCss }
+  }
+  // used to share add dropdown items across components such as layers - in order to make sure that the enabled and disabled items are in-sync
+  newChildComponentsItemsRefs?: NewChildComponentsItemsRefs;
 }
 
 // Component Architecture Information:

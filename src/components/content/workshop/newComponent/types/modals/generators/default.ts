@@ -18,6 +18,11 @@ import { modalBase } from './base';
 
 class DefaultModal extends ComponentBuilder {
 
+  public static setNewChildComponents(modalComponent: WorkshopComponent): void {
+    const dropdownItems = DropdownUtils.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);
+    modalComponent.newChildComponents = { dropdownItems };
+  }
+
   private static createDefaultTextCustomFeatures(): CustomFeatures {
     return {
       autoSize: ComponentBuilder.createAutoSize(true, true),
@@ -128,18 +133,13 @@ class DefaultModal extends ComponentBuilder {
     UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[1]);
     UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[2]);
   }
-
-  public static overwriteBaseNewChildComponentsItems(modalComponent: WorkshopComponent): void {
-    const nestedDropdownStructure = DropdownUtils.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.LAYER]);
-    modalComponent.baseSubcomponent.newChildComponentsItems = nestedDropdownStructure;
-  }
 }
 
 export const defaultModal: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
     const modalComponent = modalBase.createNewComponent();
-    DefaultModal.overwriteBaseNewChildComponentsItems(modalComponent);
     DefaultModal.addComponentsToBase(modalComponent);
+    DefaultModal.setNewChildComponents(modalComponent);
     ModalBaseSpecificSettings.set(modalComponent);
     return modalComponent;
   },

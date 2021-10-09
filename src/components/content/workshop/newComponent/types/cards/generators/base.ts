@@ -15,14 +15,14 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 class CardBase extends ComponentBuilder {
 
   public static setChildComponentsItems(cardBaseComponent: WorkshopComponent): void {
-    const layerComponentsItems = [
+    const layerChildItems = [
       BUTTON_COMPONENTS_BASE_NAMES.BUTTON, PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT,
       BUTTON_COMPONENTS_BASE_NAMES.CLOSE, PRIMITIVE_COMPONENTS_BASE_NAMES.IMAGE,
       DROPDOWN_COMPONENTS_BASE_NAMES.DROPDOWN];
-    const newChildComponentsItems = [LAYER_COMPONENTS_BASE_NAMES.LAYER];
+    const componentChildItems = [LAYER_COMPONENTS_BASE_NAMES.LAYER];
     const childComponentMaxCount = { max: { [LAYER_COMPONENTS_BASE_NAMES.LAYER]: 5, [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
     ComponentBuilder.setChildComponentsItemsProperties(cardBaseComponent,
-      layerComponentsItems, newChildComponentsItems, childComponentMaxCount);
+      layerChildItems, componentChildItems, childComponentMaxCount);
   }
 
   private static createDefaultCardCss(): CustomCss {

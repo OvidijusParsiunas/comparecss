@@ -479,7 +479,8 @@ export default {
       this.$emit('remove-child-component', [true] as RemoveChildComponentEvent);
     },
     getSubcomponentsToAdd(): NestedDropdownStructure {
-      return this.component.subcomponents[this.component.activeSubcomponentName].newChildComponentsItems || {};
+      return (this.component.subcomponents[this.component.activeSubcomponentName] as SubcomponentProperties)
+        .seedComponent.newChildComponents?.dropdownItems || {};
     },
     addChildComponent(mouseClickNewItemEvent: MouseClickNewItemEvent): void {
       const [newComponentBaseName, isOptionEnabled] = mouseClickNewItemEvent;

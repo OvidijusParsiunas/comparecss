@@ -20,7 +20,7 @@ export class AddLayerComponent extends AddComponentShared {
 
   private static addNewChildComponentsItems(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     if (containerComponent.newChildComponentsItemsRefs?.layer) {
-      newComponent.baseSubcomponent.newChildComponentsItems = containerComponent.newChildComponentsItemsRefs.layer;
+      newComponent.newChildComponents = { dropdownItems: containerComponent.newChildComponentsItemsRefs.layer };
     }
   }
 
