@@ -41,20 +41,21 @@ export class DropdownItemLayer extends ComponentBuilder {
       textComponent.baseSubcomponent.defaultCustomFeatures = childTextComponent.defaultCustomFeatures;
     } else {
       const syncedDropdownComponent = menuComponent.linkedComponents.base.paddingComponent?.sync.componentThisIsSyncedTo;
-      if (!syncedDropdownComponent) {
-        textComponent.baseSubcomponent.customCss = menuComponent.newChildComponents.customCssOverwritables[SUBCOMPONENT_TYPES.TEXT]();
-        textComponent.baseSubcomponent.defaultCss = menuComponent.newChildComponents.customCssOverwritables[SUBCOMPONENT_TYPES.TEXT]();
-      } else {
+      if (syncedDropdownComponent) {
         const { layers } = syncedDropdownComponent.paddingComponentChild.linkedComponents.auxiliary[0].componentPreviewStructure;
         const textSubcomponent = layers.length > 0
           ? layers[0].sections.alignedSections.left[0].subcomponentProperties.customCss
           : menuComponent.newChildComponents.customCssOverwritables[SUBCOMPONENT_TYPES.TEXT]();
         textComponent.baseSubcomponent.customCss = textSubcomponent;
         textComponent.baseSubcomponent.defaultCss = menuComponent.newChildComponents.customCssOverwritables[SUBCOMPONENT_TYPES.TEXT]();
+      } else {
+        textComponent.baseSubcomponent.customCss = menuComponent.newChildComponents.customCssOverwritables[SUBCOMPONENT_TYPES.TEXT]();
+        textComponent.baseSubcomponent.defaultCss = menuComponent.newChildComponents.customCssOverwritables[SUBCOMPONENT_TYPES.TEXT]();
       }
+      // will have to do the same for layers
       textComponent.baseSubcomponent.customFeatures = DropdownItemLayer.createDefaultTextCustomFeatures();
       textComponent.baseSubcomponent.defaultCustomFeatures = DropdownItemLayer.createDefaultTextCustomFeatures();
-      menuComponent.linkedComponents.base.paddingComponent?.sync.componentsSyncedToThis.forEach((component) => {
+      (menuComponent.linkedComponents.base.paddingComponent?.sync.componentsSyncedToThis || []).forEach((component) => {
         const { layers } = component.paddingComponentChild.linkedComponents.auxiliary[0].componentPreviewStructure;
         if (layers.length > 0) {
           layers[0].sections.alignedSections.left[0].subcomponentProperties.customCss = textComponent.baseSubcomponent.customCss;
@@ -108,6 +109,7 @@ export class DropdownItemLayer extends ComponentBuilder {
   }
 
   public static createChildComponentsLockedToLayer(layerComponent: WorkshopComponent): void {
+    // WORK 2 - the add may not be required as new properties overwritten by propertyOverwritables
     layerComponent.childComponentsLockedToLayer = { add: DropdownItemLayer.addChildComponentsToLayer, list: [] };
   }
 
@@ -130,36 +132,8 @@ export class DropdownItemLayer extends ComponentBuilder {
     };
   }
 
-  private static createDefaultLayerCss(): CustomCss {
-    return {
-      [CSS_PSEUDO_CLASSES.DEFAULT]: {
-        position: 'relative',
-        height: '30px',
-        textAlign: 'left',
-        paddingLeft: '20px',
-        paddingTop: '0px',
-        paddingRight: '0px',
-        paddingBottom: '0px',
-        borderBottomWidth: '0px',
-        borderBottomStyle: BORDER_STYLES.SOLID,
-        borderBottomColor: '#e9ecef',
-        cursor: 'pointer',
-        backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
-        boxShadow: CSS_PROPERTY_VALUES.UNSET,
-      },
-      [CSS_PSEUDO_CLASSES.HOVER]: {
-        backgroundColor: '#5050da',
-      },
-      [CSS_PSEUDO_CLASSES.CLICK]: {
-        backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
-      },
-    };
-  }
-
   public static overwriteBase(component: WorkshopComponent): void {
     const baseSubcomponent = component.baseSubcomponent;
-    baseSubcomponent.customCss = DropdownItemLayer.createDefaultLayerCss();
-    baseSubcomponent.defaultCss = DropdownItemLayer.createDefaultLayerCss();
     baseSubcomponent.customFeatures = DropdownItemLayer.createDefaultButtonBaseCustomFeatures();
     baseSubcomponent.defaultCustomFeatures = DropdownItemLayer.createDefaultButtonBaseCustomFeatures();
     baseSubcomponent.otherSubcomponentTriggers = DropdownItemLayer.createOtherSubcomponentTriggersTemplate(),

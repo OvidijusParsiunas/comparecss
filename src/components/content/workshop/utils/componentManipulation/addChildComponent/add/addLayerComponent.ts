@@ -40,6 +40,7 @@ export class AddLayerComponent extends AddComponentShared {
     containerComponent.componentPreviewStructure.layers.push(layer);
   }
 
+  // current strategy does not work if component is in sync and multiple layers have different child components
   private static copySiblingSubcomponentCustomProperties(containerComponent: WorkshopComponent, layer: Layer): void {
     if (containerComponent.componentPreviewStructure.layers.length > 0) {
       const siblingSubcomponent = containerComponent.componentPreviewStructure.layers[containerComponent.componentPreviewStructure.layers.length - 1];
@@ -55,6 +56,8 @@ export class AddLayerComponent extends AddComponentShared {
         layer.subcomponentProperties.customFeatures = JSONUtils.deepCopy(customFeatures);
         layer.subcomponentProperties.defaultCustomFeatures = JSONUtils.deepCopy(defaultCustomFeatures); 
       }
+    } else {
+      AddLayerComponent.applyCustomCssOverwritables(layer.subcomponentProperties.seedComponent, containerComponent);
     }
   }
 
@@ -93,8 +96,15 @@ export class AddLayerComponent extends AddComponentShared {
   protected static createNewComponent(componentGenerator: ComponentGenerator, masterComponent: WorkshopComponent, baseName?: string,
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
     const newComponent = AddComponentShared.createNewComponentViaGenerator(componentGenerator, masterComponent, baseName);
+    // WORK 2 - ovewritePropertiesFunc api does not work as it only works when the component is built first
     if (overwritePropertiesFunc) overwritePropertiesFunc(newComponent);
     return newComponent;
+  }
+
+  private static applyCustomCssOverwritables(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
+    // WORK 2 - strategy for getting in sync component is by having components synced to property inside container component
+    const overwritable = containerComponent.newChildComponents?.propertyOverwritables?.[newComponent.type];
+    overwritable?.(newComponent);
   }
 
   public static add(containerComponent: WorkshopComponent, componentStyle: COMPONENT_STYLES, isEditable: boolean,

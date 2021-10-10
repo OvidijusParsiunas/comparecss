@@ -5,8 +5,40 @@ import { ComponentGenerator } from '../../../../../../../../interfaces/component
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
 import { BORDER_STYLES } from '../../../../../../../../consts/borderStyles.enum';
 import { dropdownMenuBase } from './base';
+import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
 
 export class DefaultDropdownMenu {
+
+  private static createDefaultLayerCss(): CustomCss {
+    return {
+      [CSS_PSEUDO_CLASSES.DEFAULT]: {
+        position: 'relative',
+        height: '30px',
+        textAlign: 'left',
+        paddingLeft: '20px',
+        paddingTop: '0px',
+        paddingRight: '0px',
+        paddingBottom: '0px',
+        borderBottomWidth: '0px',
+        borderBottomStyle: BORDER_STYLES.SOLID,
+        borderBottomColor: '#e9ecef',
+        cursor: 'pointer',
+        backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
+        boxShadow: CSS_PROPERTY_VALUES.UNSET,
+      },
+      [CSS_PSEUDO_CLASSES.HOVER]: {
+        backgroundColor: '#5050da',
+      },
+      [CSS_PSEUDO_CLASSES.CLICK]: {
+        backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
+      },
+    };
+  }
+
+  private static overwriteLayerCss(layerComponent: WorkshopComponent): void {
+    layerComponent.baseSubcomponent.customCss = DefaultDropdownMenu.createDefaultLayerCss();
+    layerComponent.baseSubcomponent.defaultCss = DefaultDropdownMenu.createDefaultLayerCss();
+  }
 
   private static createDefaultTextCustomCss(): CustomCss {
     return {
@@ -50,6 +82,9 @@ export class DefaultDropdownMenu {
     dropdownMenuComponent.newChildComponents.customCssOverwritables = {
       [SUBCOMPONENT_TYPES.TEXT]: DefaultDropdownMenu.createDefaultTextCustomCss,
     };
+    dropdownMenuComponent.newChildComponents.propertyOverwritables = {
+      [COMPONENT_TYPES.LAYER]: DefaultDropdownMenu.overwriteLayerCss,
+    }
   }
 }
 

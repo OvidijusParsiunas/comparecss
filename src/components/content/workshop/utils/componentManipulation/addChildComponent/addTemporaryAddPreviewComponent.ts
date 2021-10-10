@@ -9,7 +9,7 @@ export class AddTemporaryAddPreviewComponent {
   public static add(masterComponent: WorkshopComponent, newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): void {
     const activeComponent = masterComponent.subcomponents[masterComponent.activeSubcomponentName].seedComponent;
     if (Object.values(LAYER_COMPONENTS_BASE_NAMES).includes(newComponentBaseName as LAYER_COMPONENTS_BASE_NAMES)) {
-      AddTemporaryAddPreviewLayerComponent.addTemporary(activeComponent, ChildComponentBaseNamesToStyles.LAYER_TO_STYLE[newComponentBaseName], true);
+      AddTemporaryAddPreviewLayerComponent.addTemporary(activeComponent, ChildComponentBaseNamesToStyles.LAYER_TO_STYLE[newComponentBaseName]);
     } else {
       AddTemporaryAddPreviewGenericComponent.addTemporary(activeComponent, newComponentBaseName);
     }

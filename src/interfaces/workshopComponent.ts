@@ -184,6 +184,7 @@ export interface WorkshopComponent {
   propertyOverwritingExecutables?: OverwritePropertiesFunc[];
   // a layer cannot be a standalone child component that contains other child components, thus this function adds child components to the layer
   // with a reference the parent component
+  // WORK 2 - can be merged with newChildComponents
   childComponentsLockedToLayer?: ChildComponentsInLayer;
   interconnectedSettings?: InterconnectedSetting[];
   childComponentCount?: ChildComponentCount;
@@ -203,6 +204,7 @@ export interface WorkshopComponent {
   paddingComponent?: WorkshopComponent;
   paddingComponentChild?: WorkshopComponent;
   // properties for components that can be added through the add child component dropdown
+  // WORK 2 - can be merged with childComponentsLockedToLayer
   newChildComponents?: NewChildComponents;
 }
 
