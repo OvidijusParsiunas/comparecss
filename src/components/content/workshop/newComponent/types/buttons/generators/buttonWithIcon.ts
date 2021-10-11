@@ -5,8 +5,8 @@ import { TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { buttonBase } from './base';
 
 export const buttonWithIcon: ComponentGenerator = {
-  createNewComponent(baseName?: string): WorkshopComponent {
-    const buttonComponent = buttonBase.createNewComponent(baseName);
+  createNewComponent(baseName?: string, paddingComponent?: WorkshopComponent): WorkshopComponent {
+    const buttonComponent = buttonBase.createNewComponent(baseName, paddingComponent);
     AddComponentsToButtonBaseUtils.add(buttonComponent, TEXT_STYLES.BUTTON, 'Button', true);
     return buttonComponent;
   },

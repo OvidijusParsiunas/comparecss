@@ -40,6 +40,12 @@ export class AddLayerComponent extends AddComponentShared {
     containerComponent.componentPreviewStructure.layers.push(layer);
   }
 
+  private static applyCustomCssOverwritables(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
+    // WORK 2 - strategy for getting in sync component is by having components synced to property inside container component
+    const overwritable = containerComponent.newChildComponents?.propertyOverwritables?.[newComponent.type];
+    overwritable?.(newComponent);
+  }
+
   // current strategy does not work if component is in sync and multiple layers have different child components
   private static copySiblingSubcomponentCustomProperties(containerComponent: WorkshopComponent, layer: Layer): void {
     if (containerComponent.componentPreviewStructure.layers.length > 0) {
@@ -101,12 +107,6 @@ export class AddLayerComponent extends AddComponentShared {
     return newComponent;
   }
 
-  private static applyCustomCssOverwritables(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
-    // WORK 2 - strategy for getting in sync component is by having components synced to property inside container component
-    const overwritable = containerComponent.newChildComponents?.propertyOverwritables?.[newComponent.type];
-    overwritable?.(newComponent);
-  }
-
   public static add(containerComponent: WorkshopComponent, componentStyle: COMPONENT_STYLES, isEditable: boolean,
       overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
@@ -122,6 +122,8 @@ export class AddLayerComponent extends AddComponentShared {
     AddLayerComponent.addNewChildComponentsItems(higherComponentContainer, newComponent);
     IncrementChildComponentCount.increment(higherComponentContainer, layerName);
     AddComponentShared.cleanSubcomponentProperties(newComponent);
+    // WORK 2
+    newComponent.sync.syncComponentReferences.push(...containerComponent.sync.syncComponentReferences)
     newComponent.containerComponent = higherComponentContainer;
     return newComponent;
   }

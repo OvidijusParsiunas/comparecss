@@ -32,9 +32,7 @@ class DefaultDropdownPadding {
 
 export const defaultDropdownPadding: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
-    const buttonComponent = buttonWithIcon.createNewComponent(UniqueSubcomponentNameGenerator.generate(BUTTON_COMPONENTS_BASE_NAMES.BUTTON));
-    DefaultDropdownPadding.overwrite(buttonComponent);
     const dropdownMenuComponent = defaultDropdownMenu.createNewComponent(UniqueSubcomponentNameGenerator.generate(DROPDOWN_COMPONENTS_BASE_NAMES.MENU));
-    return DropdownPaddingBase.create(baseName, buttonComponent, dropdownMenuComponent);
+    return DropdownPaddingBase.create(baseName, buttonWithIcon.createNewComponent, dropdownMenuComponent, DefaultDropdownPadding.overwrite);
   },
 }

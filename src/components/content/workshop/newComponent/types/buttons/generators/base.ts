@@ -22,7 +22,8 @@ class ButtonBase extends ComponentBuilder {
       {[SUBCOMPONENT_TYPES.BASE]: buttonComponent.baseSubcomponent,
        [SUBCOMPONENT_TYPES.TEXT]: null,
        [SUBCOMPONENT_TYPES.ICON]: null,
-      });
+    });
+    buttonComponent.sync.syncComponentReferences = [buttonComponent];
   }
 
   private static createDefaultButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
@@ -113,13 +114,15 @@ class ButtonBase extends ComponentBuilder {
 }
 
 export const buttonBase: ComponentGenerator = {
-  createNewComponent(baseName?: string): WorkshopComponent {
+  createNewComponent(baseName?: string, paddingComponent?: WorkshopComponent): WorkshopComponent {
     const buttonBaseComponent = ButtonBase.createBaseComponent(
       { componentType: COMPONENT_TYPES.BUTTON, baseName }, ButtonBase.createBaseSubcomponent);
     ButtonBaseSpecificSettings.set(buttonBaseComponent);
     ButtonBase.setChildComponentsItems(buttonBaseComponent);
     ButtonBase.setPropertyOverwritingExecutables(buttonBaseComponent);
     ButtonBase.setSyncableSubcomponents(buttonBaseComponent);
+    // WORK 2
+    if (paddingComponent) buttonBaseComponent.sync.syncComponentReferences.push(...paddingComponent.sync.syncComponentReferences);
     return buttonBaseComponent;
   },
 }

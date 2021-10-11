@@ -34,9 +34,9 @@ export class SubcomponentTriggers {
     JSONUtils.setPropertyIfExists(subcomponentsToTrigger, subcomponentType, newComponentBase);
   }
 
-  public static set(newComponentContainer: WorkshopComponent, newComponentParentLayerSubcomponent: SubcomponentProperties,
+  public static set(containerComponent: WorkshopComponent, newComponentParentLayerSubcomponent: SubcomponentProperties,
       newComponentBase: SubcomponentProperties, subcomponentType: number): void {
-    const newComponentContainerBase = newComponentContainer.baseSubcomponent;
+    const newComponentContainerBase = containerComponent.baseSubcomponent;
     SubcomponentTriggers.setPropertyValues(newComponentBase, subcomponentType, newComponentContainerBase);
     SubcomponentTriggers.setPropertyValues(newComponentBase, subcomponentType, newComponentParentLayerSubcomponent);
   }

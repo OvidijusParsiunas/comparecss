@@ -1,5 +1,4 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
-import { SyncChildComponentUtils } from '../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import JSONUtils from '../../generic/jsonUtils';
 
 type CopyableSubcomponentProperties = CustomCss | CustomFeatures | CustomStaticFeatures;
@@ -40,13 +39,17 @@ export class CopySubcomponents {
     originalComponentThisIsSyncedTo.sync.componentsSyncedToThis.add(newSubcomponent.seedComponent);
   }
 
+  private static copySyncedComponent(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties, isComponentInSync: number): void {
+    if (isComponentInSync === 0) CopySubcomponents.setInSyncComponent(newSubcomponent, subcomponentBeingCopied);
+    CopySubcomponents.copySyncedSubcomponentProperties(newSubcomponent, subcomponentBeingCopied);
+  }
+
   public static copy(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
-    if (subcomponentBeingCopied.seedComponent.sync.componentThisIsSyncedTo) {
-      CopySubcomponents.setInSyncComponent(newSubcomponent, subcomponentBeingCopied);
-      CopySubcomponents.copySyncedSubcomponentProperties(newSubcomponent, subcomponentBeingCopied);
-    } else if (SyncChildComponentUtils.getInSyncComponent(subcomponentBeingCopied)) {
-      CopySubcomponents.copySyncedSubcomponentProperties(newSubcomponent, subcomponentBeingCopied);
-    } else {
+    const isComponentInSync = subcomponentBeingCopied.seedComponent.sync.syncComponentReferences
+      .findIndex((reference) => reference.sync.componentThisIsSyncedTo);
+    if (isComponentInSync > -1) {
+      CopySubcomponents.copySyncedComponent(newSubcomponent, subcomponentBeingCopied, isComponentInSync);
+    }else {
       CopySubcomponents.copySubcomponentProperties(newSubcomponent, subcomponentBeingCopied); 
     }
   }

@@ -184,7 +184,7 @@ export class ComponentBuilder {
       componentPreviewStructure,
       className: 'default-class-name',
       componentStatus: { isRemoved: false },
-      sync: { componentThisIsSyncedTo: null, componentsSyncedToThis: new Set() },
+      sync: { componentThisIsSyncedTo: null, componentsSyncedToThis: new Set(), syncComponentReferences: [] },
       baseSubcomponent: baseSubcomponent,
     };
   }

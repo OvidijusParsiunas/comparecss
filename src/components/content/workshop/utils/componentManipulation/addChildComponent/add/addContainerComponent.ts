@@ -42,18 +42,18 @@ export class AddContainerComponent extends AddComponentShared {
   };
   public static readonly DEFAULT_TOP_PROPERTY = '50%';
 
-  private static updateSyncedComponents(newComponentContainer: WorkshopComponent): void {
-    if (newComponentContainer.sync.componentsSyncedToThis.size > 0) {
-      SyncChildComponentModeTempPropertiesUtils.syncComponentToMultipleTargets(newComponentContainer, newComponentContainer.sync.componentsSyncedToThis);
+  private static updateSyncedComponents(containerComponent: WorkshopComponent): void {
+    if (containerComponent.sync.componentsSyncedToThis.size > 0) {
+      SyncChildComponentModeTempPropertiesUtils.syncComponentToMultipleTargets(containerComponent, containerComponent.sync.componentsSyncedToThis);
     }
   }
 
-  private static updateComponentContainerProperties(newComponentContainer: WorkshopComponent, newComponent: WorkshopComponent): void {
+  private static updateComponentContainerProperties(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     const newComponentBase = newComponent.baseSubcomponent;
     const { subcomponentType, parentLayer } = newComponentBase;
-    JSONUtils.setPropertyIfExists(newComponentContainer.sync.syncables?.subcomponents, subcomponentType as number, newComponentBase);
-    SubcomponentTriggers.set(newComponentContainer, parentLayer.subcomponentProperties, newComponentBase, subcomponentType);
-    PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(newComponentContainer);
+    JSONUtils.setPropertyIfExists(containerComponent.sync.syncables?.subcomponents, subcomponentType as number, newComponentBase);
+    SubcomponentTriggers.set(containerComponent, parentLayer.subcomponentProperties, newComponentBase, subcomponentType);
+    PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(containerComponent);
   }
 
   private static getBaseSubcomponentNamePrefix(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES): CHILD_COMPONENTS_BASE_NAMES {
@@ -132,30 +132,32 @@ export class AddContainerComponent extends AddComponentShared {
     return [newComponent, baseNamePrefix];
   }
 
-  public static addUsingParentDropdownStructure(newComponentContainer: WorkshopComponent, dropdownStructure: NestedDropdownStructure,
+  public static addUsingParentDropdownStructure(containerComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure,
       componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, parentLayer: Layer,
       overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
-    const { masterComponent, sync: { componentThisIsSyncedTo } } = newComponentContainer;
+    const { masterComponent, sync: { componentThisIsSyncedTo } } = containerComponent;
     const [newComponent, baseNamePrefix] = AddContainerComponent.createNewComponent(componentType, componentStyle, componentGenerator,
       componentThisIsSyncedTo, masterComponent, overwritePropertiesFunc);
     AddComponentShared.populateMasterComponentWithNewSubcomponents(masterComponent, newComponent.subcomponents);
     AddContainerComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
     AddContainerComponent.addNewComponentToDropdownStructure(newComponent, masterComponent, dropdownStructure);
-    InterconnectedSettings.update(true, newComponentContainer, newComponent.baseSubcomponent);
-    IncrementChildComponentCount.increment(newComponentContainer, baseNamePrefix);
-    AddContainerComponent.updateComponentContainerProperties(newComponentContainer, newComponent);
+    InterconnectedSettings.update(true, containerComponent, newComponent.baseSubcomponent);
+    IncrementChildComponentCount.increment(containerComponent, baseNamePrefix);
+    AddContainerComponent.updateComponentContainerProperties(containerComponent, newComponent);
     AddComponentShared.cleanSubcomponentProperties(newComponent);
-    AddContainerComponent.updateSyncedComponents(newComponentContainer);
-    newComponent.containerComponent = newComponentContainer;
+    AddContainerComponent.updateSyncedComponents(containerComponent);
+    // WORK 2
+    newComponent.sync.syncComponentReferences.push(...containerComponent.sync.syncComponentReferences);
+    newComponent.containerComponent = containerComponent;
     return newComponent;
   }
 
-  public static add(newComponentContainer: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
+  public static add(containerComponent: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
       parentLayerName: string, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
-    const parentLayer = AddComponentShared.getContainerComponentLayer(newComponentContainer, parentLayerName);
+    const parentLayer = AddComponentShared.getContainerComponentLayer(containerComponent, parentLayerName);
     return TraverseComponentViaDropdownStructure.traverseUsingComponent(
-      newComponentContainer, AddContainerComponent.addUsingParentDropdownStructure,
+      containerComponent, AddContainerComponent.addUsingParentDropdownStructure,
       componentType, componentStyle, parentLayer, overwritePropertiesFunc) as WorkshopComponent;
   }
 }

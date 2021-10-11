@@ -8,9 +8,12 @@ export class LinkedComponentsUtils {
     const { subcomponentDropdownStructure } = baseComponent.componentPreviewStructure;
     const baseName = baseComponent.baseSubcomponent.name;
     subcomponentDropdownStructure[baseName][DROPDOWN_ITEM_AUX_DETAILS_REF] = { ...DropdownItemsDisplayStatusUtils.createDefaultItemDisplayStatus(baseName) };
+    // WORK 2
+    const parentComponentReferences = baseComponent.sync.syncComponentReferences.slice(1);
     auxiliaryComponents.forEach((auxiliaryComponent) => {
       const auxiliaryComponentName = auxiliaryComponent.baseSubcomponent.name;
       subcomponentDropdownStructure[auxiliaryComponentName] = { ...DropdownItemsDisplayStatusUtils.createDropdownItemDisplayStatusReferenceObject(auxiliaryComponentName) };
+      auxiliaryComponent.sync.syncComponentReferences.push(...parentComponentReferences);
     });
   }
 
@@ -24,7 +27,7 @@ export class LinkedComponentsUtils {
     auxiliaryComponents.forEach((auxiliaryComponent) => {
       auxiliaryComponent.linkedComponents = { base: baseComponent };
       auxiliaryComponent.masterComponent = baseComponent;
-    })
+    });
   }
 
   public static setAuxiliaryComponents(baseComponent: WorkshopComponent, ...auxiliaryComponents: WorkshopComponent[]): void {

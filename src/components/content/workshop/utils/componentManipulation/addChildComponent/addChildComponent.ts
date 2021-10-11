@@ -15,7 +15,7 @@ export class AddChildComponent extends AddComponentShared {
   private static addNewComponent(activeComponent: WorkshopComponent, newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES,
       dropdownStructure: NestedDropdownStructure): [WorkshopComponent, Layer] {
     const { componentType, componentStyle, parentLayer, containerComponent,
-      } = AddContainerComponent.getNewComponentProperties(activeComponent, newComponentBaseName);
+      } = AddComponentShared.getNewComponentProperties(activeComponent, newComponentBaseName);
     const newComponent = AddContainerComponent.addUsingParentDropdownStructure(containerComponent,
       dropdownStructure, componentType, componentStyle, parentLayer);
     // set here because not all child components are removable, but the ones manually added by the user are
