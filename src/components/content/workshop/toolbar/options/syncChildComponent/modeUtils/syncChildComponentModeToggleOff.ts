@@ -5,7 +5,7 @@ import { WorkshopEventCallbackUtils } from '../../workshopEventCallbackUtils/wor
 import { SyncChildComponentModeTempPropertiesUtils } from './syncChildComponentModeTempPropertiesUtils';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { SyncedComponent } from '../syncedComponent';
+import { SyncChildComponentUtils } from '../syncChildComponentUtils';
 import { ComponentOptions } from 'vue';
 import {
   CONFIRM_CHILD_COMPONENT_TO_SYNC_MARKER, COMPONENT_CARD_MARKER, FULL_PREVIEW_MODE_BUTTON_MARKER, REMOVE_CHILD_COMPONENT_BUTTON_MARKER,
@@ -43,9 +43,9 @@ export class SyncChildComponentModeToggleOff {
   }
 
   private static updateComponentsSyncedToThis(component: WorkshopComponent): void {
-    const inSyncParentComponent = SyncedComponent.getParentComponentWithComponentsSyncedToIt(component);
-    if (inSyncParentComponent) {
-      SyncChildComponentModeTempPropertiesUtils.syncComponentToMultipleTargets(inSyncParentComponent, inSyncParentComponent.sync.componentsSyncedToThis);
+    const parentComponent = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(component);
+    if (parentComponent) {
+      SyncChildComponentModeTempPropertiesUtils.syncComponentToMultipleTargets(parentComponent, parentComponent.sync.componentsSyncedToThis);
     }
   }
 

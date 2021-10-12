@@ -9,23 +9,22 @@ export class SyncChildComponentUtils {
     return component?.paddingComponent || component?.linkedComponents?.base?.paddingComponent;
   }
 
-  private static getPaddingComponentWithCondition(component: WorkshopComponent, conditionCallback: (component: WorkshopComponent) => boolean): WorkshopComponent {
+  private static getPaddingComponentWithCondition(component: WorkshopComponent): WorkshopComponent {
     const paddingComponent = SyncChildComponentUtils.getPaddingComponent(component) || SyncChildComponentUtils.getPaddingComponent(component.containerComponent);
-    return conditionCallback(paddingComponent) ? paddingComponent : null;
+    return paddingComponent?.sync.componentsSyncedToThis.size ? paddingComponent : null;
   }
 
-  public static getParentComponentWithCondition(component: WorkshopComponent, conditionCallback: (component: WorkshopComponent) => boolean): WorkshopComponent {
-    if (conditionCallback(component.containerComponent)) {
+  public static getParentComponentWithOtherComponentsSyncedToIt(component: WorkshopComponent): WorkshopComponent {
+    if (component.containerComponent?.sync.componentsSyncedToThis.size) {
       return component.containerComponent;
     }
-    return SyncChildComponentUtils.getPaddingComponentWithCondition(component, conditionCallback);
+    return SyncChildComponentUtils.getPaddingComponentWithCondition(component);
   }
 
-  public static getInSyncComponent({ seedComponent }: SubcomponentProperties): WorkshopComponent {
-    if (seedComponent.sync?.componentThisIsSyncedTo) {
-      return seedComponent;
-    }
-    return SyncChildComponentUtils.getParentComponentWithCondition(seedComponent, (component) => !!component?.sync.componentThisIsSyncedTo);
+  // traverses all components that could be synced to another component
+  // starting from the target component all the way to its top parent component
+  public static getComponentTheTargetOrItsParentIsSyncedTo(component: WorkshopComponent): WorkshopComponent {
+    return component.sync.parentComponentsThatCanBeSynced.find((reference) => reference.sync.componentThisIsSyncedTo);
   }
 
   private static canSeedComponentBeOverwrittenBySynced(activeSubcomponent: SubcomponentProperties): boolean {

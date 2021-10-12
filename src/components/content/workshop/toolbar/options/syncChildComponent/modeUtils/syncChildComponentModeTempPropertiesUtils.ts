@@ -11,40 +11,40 @@ type SyncSyncablesCallback = (isTemporary: boolean, targetSubcomponent: Subcompo
 
 export class SyncChildComponentModeTempPropertiesUtils {
   
-  private static moveCustomPropertiesToTempProperties(activeComponentSubcomponent: SubcomponentProperties): void {
-    activeComponentSubcomponent.tempOriginalCustomProperties = {
-      customCss: activeComponentSubcomponent.customCss,
-      customFeatures: activeComponentSubcomponent.customFeatures,
+  private static moveCustomPropertiesToTempProperties(syncableSubcomponent: SubcomponentProperties): void {
+    syncableSubcomponent.tempOriginalCustomProperties = {
+      customCss: syncableSubcomponent.customCss,
+      customFeatures: syncableSubcomponent.customFeatures,
     };
   }
 
-  private static syncAllCustomProperties(activeComponentSubcomponent: SubcomponentProperties, subcomponentToBeSynced: SubcomponentProperties): void {
-    activeComponentSubcomponent.customFeatures = subcomponentToBeSynced.customFeatures;
+  private static syncAllCustomProperties(syncableSubcomponent: SubcomponentProperties, subcomponentToBeSynced: SubcomponentProperties): void {
+    syncableSubcomponent.customFeatures = subcomponentToBeSynced.customFeatures;
     const componentToBeSyncedCustomCss = subcomponentToBeSynced.customCss;
-    activeComponentSubcomponent.customCss = componentToBeSyncedCustomCss;
+    syncableSubcomponent.customCss = componentToBeSyncedCustomCss;
     if (!componentToBeSyncedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top && subcomponentToBeSynced.subcomponentType !== SUBCOMPONENT_TYPES.LAYER) {
       componentToBeSyncedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top = AddContainerComponent.DEFAULT_TOP_PROPERTY;
     }
   }
 
-  private static syncPropertiesThatOnlyExistInActiveComponent(activeComponentSubcomponent: SubcomponentProperties, subcomponentToBeSynced: SubcomponentProperties): void {
-    activeComponentSubcomponent.customCss = subcomponentToBeSynced.customCss;
+  private static syncPropertiesThatOnlyExistInActiveComponent(syncableSubcomponent: SubcomponentProperties, subcomponentToBeSynced: SubcomponentProperties): void {
+    syncableSubcomponent.customCss = subcomponentToBeSynced.customCss;
     // need to create a new object as otherwise tempOriginalCustomProperties would be overwritten by a normal traversal
-    activeComponentSubcomponent.customFeatures = JSONUtils.createObjectUsingObject1AndSameObject2Properties(
-      activeComponentSubcomponent.customFeatures, subcomponentToBeSynced.customFeatures);
+    syncableSubcomponent.customFeatures = JSONUtils.createObjectUsingObject1AndSameObject2Properties(
+      syncableSubcomponent.customFeatures, subcomponentToBeSynced.customFeatures);
   }
 
-  public static syncSubcomponent(addTemporaryProperties: boolean, activeComponentSubcomponent: SubcomponentProperties, subcomponentToBeSynced: SubcomponentProperties): void {
+  public static syncSubcomponent(addTemporaryProperties: boolean, syncableSubcomponent: SubcomponentProperties, subcomponentToBeSynced: SubcomponentProperties): void {
     if (!subcomponentToBeSynced) return;
-    if (addTemporaryProperties && !activeComponentSubcomponent.tempOriginalCustomProperties) {
-      SyncChildComponentModeTempPropertiesUtils.moveCustomPropertiesToTempProperties(activeComponentSubcomponent);
+    if (addTemporaryProperties && !syncableSubcomponent.tempOriginalCustomProperties) {
+      SyncChildComponentModeTempPropertiesUtils.moveCustomPropertiesToTempProperties(syncableSubcomponent);
     }
     // this is a naive approach to check if customFeatures are different but is a useful form of lazy evaluation to prevent
     // all features from being traversed all the time (used for components like drodpown button)
-    if (Object.keys(subcomponentToBeSynced.customFeatures).length !== Object.keys(activeComponentSubcomponent.customFeatures).length) {
-      SyncChildComponentModeTempPropertiesUtils.syncPropertiesThatOnlyExistInActiveComponent(activeComponentSubcomponent, subcomponentToBeSynced);
+    if (Object.keys(subcomponentToBeSynced.customFeatures).length !== Object.keys(syncableSubcomponent.customFeatures).length) {
+      SyncChildComponentModeTempPropertiesUtils.syncPropertiesThatOnlyExistInActiveComponent(syncableSubcomponent, subcomponentToBeSynced);
     } else {
-      SyncChildComponentModeTempPropertiesUtils.syncAllCustomProperties(activeComponentSubcomponent, subcomponentToBeSynced);
+      SyncChildComponentModeTempPropertiesUtils.syncAllCustomProperties(syncableSubcomponent, subcomponentToBeSynced);
     }
   }
 
@@ -80,9 +80,9 @@ export class SyncChildComponentModeTempPropertiesUtils {
     });
   }
 
-  public static syncComponentToMultipleTargets(componentToBeSynced: WorkshopComponent, targetComponents: Set<WorkshopComponent>): void {
+  public static syncComponentToMultipleTargets(component: WorkshopComponent, targetComponents: Set<WorkshopComponent>): void {
     SyncChildComponentModeTempPropertiesUtils.syncSyncables(SyncChildComponentModeTempPropertiesUtils.syncSubcomponentToMultipleDuringPreviewTraversal,
-      false, componentToBeSynced, ...targetComponents);
+      false, component, ...targetComponents);
   }
 
   private static resetOriginalCss(subcomponentProperties: SubcomponentProperties): void {

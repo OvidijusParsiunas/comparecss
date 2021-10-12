@@ -123,7 +123,7 @@ export class AddLayerComponent extends AddComponentShared {
     IncrementChildComponentCount.increment(higherComponentContainer, layerName);
     AddComponentShared.cleanSubcomponentProperties(newComponent);
     // WORK 2
-    newComponent.sync.syncComponentReferences.push(...containerComponent.sync.syncComponentReferences)
+    newComponent.sync.parentComponentsThatCanBeSynced.push(...containerComponent.sync.parentComponentsThatCanBeSynced)
     newComponent.containerComponent = higherComponentContainer;
     return newComponent;
   }

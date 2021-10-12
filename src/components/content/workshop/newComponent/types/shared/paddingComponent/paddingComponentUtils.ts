@@ -34,14 +34,14 @@ export class PaddingComponentUtils {
     paddingComponent.type = componentType;
     paddingComponent.style = componentStyle;
     paddingComponent.baseSubcomponent.subcomponentType = baseType;
-    paddingComponent.sync.syncComponentReferences = [paddingComponent];
+    paddingComponent.sync.parentComponentsThatCanBeSynced = [paddingComponent];
     // WORK 2
     const childComponent = createChildComponentFunc(childBaseName, paddingComponent);
     overwriteChildComponentFunc(childComponent);
     paddingComponent.paddingComponentChild = childComponent;
     childComponent.paddingComponent = paddingComponent;
     // WORK 2
-    childComponent.sync.syncComponentReferences.push(...paddingComponent.sync.syncComponentReferences);
+    childComponent.sync.parentComponentsThatCanBeSynced.push(...paddingComponent.sync.parentComponentsThatCanBeSynced);
     PaddingComponentUtils.setSharedProperties(paddingComponent, childComponent);
     return paddingComponent;
   }

@@ -18,12 +18,9 @@ export class SyncedComponent {
     return componentTraversalState;
   }
 
-  public static getParentComponentWithComponentsSyncedToIt(component: WorkshopComponent): WorkshopComponent {
-    return SyncChildComponentUtils.getParentComponentWithCondition(component, (component) => component?.sync.componentsSyncedToThis.size > 0);
-  }
-
   public static toggleSubcomponentSyncToOff(containerComponent: WorkshopComponent, callback?: () => void): void {
-    const inSyncComponent = SyncChildComponentUtils.getInSyncComponent(containerComponent.subcomponents[containerComponent.activeSubcomponentName]);
+    const inSyncComponent = SyncChildComponentUtils.getComponentTheTargetOrItsParentIsSyncedTo(containerComponent
+      .subcomponents[containerComponent.activeSubcomponentName].seedComponent);
     TraverseComponentViaPreviewStructureChildFirst.traverse(SyncedComponent.dereferenceCopiedComponentCustomProperties, inSyncComponent);
     inSyncComponent.sync.componentThisIsSyncedTo = null;
     if (callback) callback();
@@ -44,7 +41,7 @@ export class SyncedComponent {
   }
 
   public static updateIfSubcomponentNotInSync(masterComponent: WorkshopComponent, activeSubcomponent: SubcomponentProperties): void {
-    const inSyncComponent = SyncChildComponentUtils.getInSyncComponent(activeSubcomponent);
+    const inSyncComponent = SyncChildComponentUtils.getComponentTheTargetOrItsParentIsSyncedTo(activeSubcomponent.seedComponent);
     // more information can be found in the documentation reference: DOC: 7878
     if (inSyncComponent && inSyncComponent.componentStatus.isRemoved) {
       SyncedComponent.toggleSubcomponentSyncToOff(masterComponent);
@@ -52,7 +49,7 @@ export class SyncedComponent {
   }
 
   public static isInSyncButtonDisplayed(activeSubcomponent: SubcomponentProperties): boolean {
-    const inSyncComponent = SyncChildComponentUtils.getInSyncComponent(activeSubcomponent);
+    const inSyncComponent = SyncChildComponentUtils.getComponentTheTargetOrItsParentIsSyncedTo(activeSubcomponent.seedComponent);
     return inSyncComponent && !inSyncComponent.componentStatus.isRemoved;
   }
 }

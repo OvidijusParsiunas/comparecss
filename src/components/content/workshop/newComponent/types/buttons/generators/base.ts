@@ -23,7 +23,7 @@ class ButtonBase extends ComponentBuilder {
        [SUBCOMPONENT_TYPES.TEXT]: null,
        [SUBCOMPONENT_TYPES.ICON]: null,
     });
-    buttonComponent.sync.syncComponentReferences = [buttonComponent];
+    buttonComponent.sync.parentComponentsThatCanBeSynced = [buttonComponent];
   }
 
   private static createDefaultButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
@@ -122,7 +122,7 @@ export const buttonBase: ComponentGenerator = {
     ButtonBase.setPropertyOverwritingExecutables(buttonBaseComponent);
     ButtonBase.setSyncableSubcomponents(buttonBaseComponent);
     // WORK 2
-    if (paddingComponent) buttonBaseComponent.sync.syncComponentReferences.push(...paddingComponent.sync.syncComponentReferences);
+    if (paddingComponent) buttonBaseComponent.sync.parentComponentsThatCanBeSynced.push(...paddingComponent.sync.parentComponentsThatCanBeSynced);
     return buttonBaseComponent;
   },
 }

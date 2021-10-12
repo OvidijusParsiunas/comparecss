@@ -23,6 +23,6 @@ export interface Sync {
   componentsSyncedToThis: Set<WorkshopComponent>;
   syncables?: Syncables;
   lastSelectedComponentToSync?: WorkshopComponent;
-  // WORK 2 - growing responsibility
-  syncComponentReferences: WorkshopComponent[];
+  // this property references components in a growing order - starting from child up to the top most parent component
+  parentComponentsThatCanBeSynced: WorkshopComponent[];
 }

@@ -47,7 +47,7 @@ export class DropdownPaddingBase extends ComponentBuilder {
       },
       childComponents: [paddingComponentChild, paddingComponentChild.linkedComponents.auxiliary[0]],
     };
-    dropdownComponent.sync.syncComponentReferences = [dropdownComponent];
+    dropdownComponent.sync.parentComponentsThatCanBeSynced = [dropdownComponent];
   }
 
   private static createSelectDropdownTextProperties(): SelectedDropdownText {
