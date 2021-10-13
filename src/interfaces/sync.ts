@@ -3,8 +3,7 @@ import { WorkshopComponent } from './workshopComponent';
 
 // in sync terminology refers to the component that is currently synced to another component
 
-// properties which would be synced if the component was synced to another component
-export interface Syncables {
+interface OnCopy {
   // this contains subcomponents that are directly owned by the component (if the component has
   // other subcomponents with same types, their seed components will be located in the child
   // components section)
@@ -18,11 +17,17 @@ export interface Syncables {
   childComponents: WorkshopComponent[];
 }
 
+export interface Syncables {
+  // container components that can be synced (can contain current and parent components)
+  // placed in a growing order starting from the current up to the top most parent
+  containerComponents: WorkshopComponent[];
+  // properties which would be synced if current component was synced to another component
+  onCopy?: OnCopy;
+}
+
 export interface Sync {
   componentThisIsSyncedTo: WorkshopComponent;
   componentsSyncedToThis: Set<WorkshopComponent>;
-  syncables?: Syncables;
+  syncables: Syncables;
   lastSelectedComponentToSync?: WorkshopComponent;
-  // this property references components in a growing order - starting from child up to the top most parent component
-  parentComponentsThatCanBeSynced: WorkshopComponent[];
 }

@@ -54,17 +54,17 @@ export class SyncChildComponentModeTempPropertiesUtils {
       const targetSubcomponent: SubcomponentProperties = syncableSubcomponents[subcomponentType];
       if (!targetSubcomponent) return;
       callback(isTemporary, targetSubcomponent,
-        ...targetComponents.map((component) => component.sync.syncables.subcomponents[subcomponentType]));
+        ...targetComponents.map((component) => component.sync.syncables.onCopy.subcomponents[subcomponentType]));
     });
   }
 
   // not using TraverseComponentViaPreviewStructureChildFirst as it abides to subcomponent order and instead sync components are tracked via syncables
   private static syncSyncables(callback: SyncSyncablesCallback, isTemporary: boolean, component: WorkshopComponent, ...targetComponents: WorkshopComponent[]): void {
-    const { subcomponents, childComponents } = component.sync.syncables;
+    const { subcomponents, childComponents } = component.sync.syncables.onCopy;
     SyncChildComponentModeTempPropertiesUtils.syncSyncableSubcomponents(callback, isTemporary, subcomponents, targetComponents);
     childComponents.forEach((childComponent, index) => {
       SyncChildComponentModeTempPropertiesUtils.syncSyncables(callback, isTemporary, childComponent,
-        ...targetComponents.map((targetComponent) => targetComponent.sync.syncables.childComponents[index]));
+        ...targetComponents.map((targetComponent) => targetComponent.sync.syncables.onCopy.childComponents[index]));
     });
   }
 

@@ -51,7 +51,7 @@ export class AddContainerComponent extends AddComponentShared {
   private static updateComponentContainerProperties(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     const newComponentBase = newComponent.baseSubcomponent;
     const { subcomponentType, parentLayer } = newComponentBase;
-    JSONUtils.setPropertyIfExists(containerComponent.sync.syncables?.subcomponents, subcomponentType as number, newComponentBase);
+    JSONUtils.setPropertyIfExists(containerComponent.sync.syncables.onCopy?.subcomponents, subcomponentType as number, newComponentBase);
     SubcomponentTriggers.set(containerComponent, parentLayer.subcomponentProperties, newComponentBase, subcomponentType);
     PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(containerComponent);
   }
@@ -148,7 +148,7 @@ export class AddContainerComponent extends AddComponentShared {
     AddComponentShared.cleanSubcomponentProperties(newComponent);
     AddContainerComponent.updateSyncedComponents(containerComponent);
     // WORK 2
-    newComponent.sync.parentComponentsThatCanBeSynced.push(...containerComponent.sync.parentComponentsThatCanBeSynced);
+    newComponent.sync.syncables.containerComponents.push(...containerComponent.sync.syncables.containerComponents);
     newComponent.containerComponent = containerComponent;
     return newComponent;
   }

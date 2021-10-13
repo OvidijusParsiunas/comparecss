@@ -104,7 +104,7 @@ export class DropdownItemLayer extends ComponentBuilder {
         menuComponent.componentPreviewStructure.layers[menuComponent.componentPreviewStructure.layers.length - 1]);
     }
     DropdownItemLayer.setSyncableSubcomponents(layerComponent, textComponent);
-    menuComponent.sync.syncables.childComponents.push(layerComponent);
+    menuComponent.sync.syncables.onCopy.childComponents.push(layerComponent);
     return [textComponent];
   }
 

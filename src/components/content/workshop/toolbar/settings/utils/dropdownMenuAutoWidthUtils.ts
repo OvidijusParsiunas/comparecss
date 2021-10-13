@@ -9,7 +9,7 @@ export class DropdownMenuAutoWidthUtils {
 
   // not doing a ratio for font weight because it does not scale linearly e.g. 100 is the same as 500 and 600 is the same as 700, but 800 is not same as 600
   private static calculateButtonWidth(menuComponent: WorkshopComponent, largestItemWidth: string): string {
-    const buttonTextFontSize = menuComponent.linkedComponents.base.sync.syncables.subcomponents[SUBCOMPONENT_TYPES.TEXT]
+    const buttonTextFontSize = menuComponent.linkedComponents.base.sync.syncables.onCopy.subcomponents[SUBCOMPONENT_TYPES.TEXT]
       .customCss[CSS_PSEUDO_CLASSES.DEFAULT].fontSize;
     const menuItemTextFontSize = menuComponent.componentPreviewStructure.layers[0].sections.alignedSections.left[0].subcomponentProperties
       .customCss[CSS_PSEUDO_CLASSES.DEFAULT].fontSize;

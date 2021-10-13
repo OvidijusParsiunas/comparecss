@@ -9,11 +9,11 @@ export class LinkedComponentsUtils {
     const baseName = baseComponent.baseSubcomponent.name;
     subcomponentDropdownStructure[baseName][DROPDOWN_ITEM_AUX_DETAILS_REF] = { ...DropdownItemsDisplayStatusUtils.createDefaultItemDisplayStatus(baseName) };
     // WORK 2
-    const parentComponentReferences = baseComponent.sync.parentComponentsThatCanBeSynced.slice(1);
+    const parentComponentReferences = baseComponent.sync.syncables.containerComponents.slice(1);
     auxiliaryComponents.forEach((auxiliaryComponent) => {
       const auxiliaryComponentName = auxiliaryComponent.baseSubcomponent.name;
       subcomponentDropdownStructure[auxiliaryComponentName] = { ...DropdownItemsDisplayStatusUtils.createDropdownItemDisplayStatusReferenceObject(auxiliaryComponentName) };
-      auxiliaryComponent.sync.parentComponentsThatCanBeSynced.push(...parentComponentReferences);
+      auxiliaryComponent.sync.syncables.containerComponents.push(...parentComponentReferences);
     });
   }
 

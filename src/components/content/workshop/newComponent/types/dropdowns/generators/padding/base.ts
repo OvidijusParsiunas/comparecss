@@ -40,14 +40,12 @@ export class DropdownPaddingBase extends ComponentBuilder {
   }
 
   private static setSyncableSubcomponents(dropdownComponent: WorkshopComponent): void {
-    const { sync, baseSubcomponent, paddingComponentChild } = dropdownComponent;
-    sync.syncables = {
-      subcomponents: {
-        [SUBCOMPONENT_TYPES.BASE]: baseSubcomponent,
-      },
-      childComponents: [paddingComponentChild, paddingComponentChild.linkedComponents.auxiliary[0]],
+    const { baseSubcomponent, paddingComponentChild } = dropdownComponent;
+    const syncableSubcomponents = {
+      [SUBCOMPONENT_TYPES.BASE]: baseSubcomponent,
     };
-    dropdownComponent.sync.parentComponentsThatCanBeSynced = [dropdownComponent];
+    const childComponents = [paddingComponentChild, paddingComponentChild.linkedComponents.auxiliary[0]];
+    dropdownComponent.sync.syncables = ComponentBuilder.createSyncablesObjectUsingSubcomponents(syncableSubcomponents, childComponents, dropdownComponent);
   }
 
   private static createSelectDropdownTextProperties(): SelectedDropdownText {

@@ -20,10 +20,10 @@ type TargetRemovalDetails = TargetDetails & { isRemovingActiveSubcomponent?: boo
 export class RemoveAnyChildComponent {
 
   private static removeSyncableSubcomponent(parentComponent: WorkshopComponent, removedSubcomponentProperties: SubcomponentProperties): void {
-    const { syncables } = parentComponent.sync;
-    if (syncables) {
+    const { onCopy } = parentComponent.sync.syncables;
+    if (onCopy) {
       const { type } = removedSubcomponentProperties.seedComponent;
-      if (syncables.subcomponents[type]) syncables.subcomponents[type] = null;
+      if (onCopy.subcomponents[type]) onCopy.subcomponents[type] = null;
     }
   }
 

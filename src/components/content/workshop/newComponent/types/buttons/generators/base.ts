@@ -18,12 +18,12 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 class ButtonBase extends ComponentBuilder {
 
   public static setSyncableSubcomponents(buttonComponent: WorkshopComponent): void {
-    buttonComponent.sync.syncables = ComponentBuilder.createSyncablesObjectUsingSubcomponents(
-      {[SUBCOMPONENT_TYPES.BASE]: buttonComponent.baseSubcomponent,
-       [SUBCOMPONENT_TYPES.TEXT]: null,
-       [SUBCOMPONENT_TYPES.ICON]: null,
-    });
-    buttonComponent.sync.parentComponentsThatCanBeSynced = [buttonComponent];
+    const syncableSubcomponents = {
+      [SUBCOMPONENT_TYPES.BASE]: buttonComponent.baseSubcomponent,
+      [SUBCOMPONENT_TYPES.TEXT]: null,
+      [SUBCOMPONENT_TYPES.ICON]: null,
+     };
+    buttonComponent.sync.syncables = ComponentBuilder.createSyncablesObjectUsingSubcomponents(syncableSubcomponents, [], buttonComponent);
   }
 
   private static createDefaultButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
@@ -122,7 +122,7 @@ export const buttonBase: ComponentGenerator = {
     ButtonBase.setPropertyOverwritingExecutables(buttonBaseComponent);
     ButtonBase.setSyncableSubcomponents(buttonBaseComponent);
     // WORK 2
-    if (paddingComponent) buttonBaseComponent.sync.parentComponentsThatCanBeSynced.push(...paddingComponent.sync.parentComponentsThatCanBeSynced);
+    if (paddingComponent) buttonBaseComponent.sync.syncables.containerComponents.push(...paddingComponent.sync.syncables.containerComponents);
     return buttonBaseComponent;
   },
 }

@@ -24,7 +24,7 @@ export class SyncChildComponentUtils {
   // traverses all components that could be synced to another component
   // starting from the target component all the way to its top parent component
   public static getComponentTheTargetOrItsParentIsSyncedTo(component: WorkshopComponent): WorkshopComponent {
-    return component.sync.parentComponentsThatCanBeSynced.find((reference) => reference.sync.componentThisIsSyncedTo);
+    return component.sync.syncables.containerComponents.find((reference) => reference.sync.componentThisIsSyncedTo);
   }
 
   private static canSeedComponentBeOverwrittenBySynced(activeSubcomponent: SubcomponentProperties): boolean {

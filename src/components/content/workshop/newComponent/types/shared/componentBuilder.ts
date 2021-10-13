@@ -17,7 +17,7 @@ import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
 import { CloseTriggers } from '../../../../../../interfaces/closeTriggers';
 import { Animations } from '../../../../../../interfaces/animations';
-import { Syncables } from '../../../../../../interfaces/sync';
+import { Sync, Syncables } from '../../../../../../interfaces/sync';
 import { defaultImage } from './images/default';
 
 interface StationaryAnimationsArgs {
@@ -129,11 +129,17 @@ export class ComponentBuilder {
     component.childComponentCount = childComponentCount;
   }
 
-  protected static createSyncablesObjectUsingSubcomponents(syncableSubcomponents: SubcomponentTypeToProperties): Syncables {
-    return {
-      subcomponents: syncableSubcomponents,
-      childComponents: [],
+  protected static createSyncablesObjectUsingSubcomponents(syncableSubcomponents: SubcomponentTypeToProperties,
+      childComponents: WorkshopComponent[] = [], componentThatCanBeSynced?: WorkshopComponent): Syncables {
+    const syncables: Syncables = {
+      onCopy: {
+        subcomponents: syncableSubcomponents,
+        childComponents, 
+      },
+      containerComponents: [],
     };
+    if (componentThatCanBeSynced) syncables.containerComponents.push(componentThatCanBeSynced);
+    return syncables;
   }
 
   protected static addJsClasses(subcomponent: SubcomponentProperties, javascriptClass: JAVASCRIPT_CLASSES): void {
@@ -159,6 +165,10 @@ export class ComponentBuilder {
     };
   }
 
+  private static createEmptySyncObject(): Sync {
+    return { componentThisIsSyncedTo: null, componentsSyncedToThis: new Set(), syncables: { containerComponents: [] } };
+  }
+
   private static createEmptyComponentPreviewStructure(baseSubcomponentName: string, isBaseOptional = true): ComponentPreviewStructure {
     const subcomponentDropdownStructure = { [baseSubcomponentName]:
       isBaseOptional ? DropdownItemsDisplayStatusUtils.createDropdownItemDisplayStatusReferenceObject() : {} };
@@ -169,7 +179,6 @@ export class ComponentBuilder {
       subcomponentNameToDropdownItemName: { [baseSubcomponentName]: baseSubcomponentName },
     };
   }
-
   private static createComponent(componentStyle: NewComponentStyleProperties, baseSubcomponent: SubcomponentProperties,
       isBaseOptional = true): WorkshopComponent {
     const baseName = baseSubcomponent.name;
@@ -184,7 +193,7 @@ export class ComponentBuilder {
       componentPreviewStructure,
       className: 'default-class-name',
       componentStatus: { isRemoved: false },
-      sync: { componentThisIsSyncedTo: null, componentsSyncedToThis: new Set(), parentComponentsThatCanBeSynced: [] },
+      sync: ComponentBuilder.createEmptySyncObject(),
       baseSubcomponent: baseSubcomponent,
     };
   }
