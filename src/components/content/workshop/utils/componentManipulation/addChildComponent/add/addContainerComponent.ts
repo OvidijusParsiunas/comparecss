@@ -147,8 +147,7 @@ export class AddContainerComponent extends AddComponentShared {
     AddContainerComponent.updateComponentContainerProperties(containerComponent, newComponent);
     AddComponentShared.cleanSubcomponentProperties(newComponent);
     AddContainerComponent.updateSyncedComponents(containerComponent);
-    // WORK 2
-    newComponent.sync.syncables.containerComponents.push(...containerComponent.sync.syncables.containerComponents);
+    SyncedComponent.addParentComponentSyncableContainerComponentsToChild(newComponent, containerComponent);
     newComponent.containerComponent = containerComponent;
     return newComponent;
   }

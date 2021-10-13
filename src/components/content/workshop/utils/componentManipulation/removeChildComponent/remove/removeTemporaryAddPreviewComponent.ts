@@ -28,8 +28,8 @@ export class RemoveTemporaryAddPreviewComponent extends RemoveAnyChildComponent 
     if (!activeComponent.subcomponents[TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY]) return;
     const targetDetails: TargetDetails = ComponentTraversalUtils.generateTargetDetails(activeComponent, TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY);
     const seedComponent = targetDetails.targetSubcomponentProperties?.seedComponent;
-    const { childComponentsLockedToLayer, subcomponents } = seedComponent;
-    RemoveTemporaryAddPreviewComponent.removeChildComponentsInLayer(activeComponent, childComponentsLockedToLayer);
+    const { newChildComponents, subcomponents } = seedComponent;
+    RemoveTemporaryAddPreviewComponent.removeChildComponentsInLayer(activeComponent, newChildComponents.childComponentsLockedToLayer);
     RemoveTemporaryAddPreviewComponent.removeTargetChildComponent(activeComponent, targetDetails, subcomponents);
   }
 }

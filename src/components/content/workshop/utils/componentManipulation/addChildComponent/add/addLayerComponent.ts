@@ -7,6 +7,7 @@ import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../.
 import { IncrementChildComponentCount } from '../../childComponentCount/incrementChildComponentCount';
 import { AlignedSections, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
+import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
 import { ChildComponentBaseNamesToStyles } from '../utils/childComponentBaseNamesToStyles';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
@@ -19,7 +20,7 @@ import JSONUtils from '../../../generic/jsonUtils';
 export class AddLayerComponent extends AddComponentShared {
 
   private static addNewChildComponentsItems(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
-    if (containerComponent.newChildComponents?.sharedDropdownItemsRefs?.layer) {
+    if (containerComponent.newChildComponents.sharedDropdownItemsRefs?.layer) {
       newComponent.newChildComponents = { dropdownItems: containerComponent.newChildComponents.sharedDropdownItemsRefs.layer };
     }
   }
@@ -122,8 +123,7 @@ export class AddLayerComponent extends AddComponentShared {
     AddLayerComponent.addNewChildComponentsItems(higherComponentContainer, newComponent);
     IncrementChildComponentCount.increment(higherComponentContainer, layerName);
     AddComponentShared.cleanSubcomponentProperties(newComponent);
-    // WORK 2
-    newComponent.sync.syncables.containerComponents.push(...containerComponent.sync.syncables.containerComponents)
+    SyncedComponent.addParentComponentSyncableContainerComponentsToChild(newComponent, containerComponent);
     newComponent.containerComponent = higherComponentContainer;
     return newComponent;
   }

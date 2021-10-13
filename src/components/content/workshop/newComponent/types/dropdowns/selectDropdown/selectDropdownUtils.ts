@@ -25,7 +25,7 @@ export class SelectDropdownUtils {
   private static setMouseEventText(seedComponent: WorkshopComponent, selectDropdown: SelectedDropdownText,
       itemTextKey: keyof SelectedDropdownText): void {
     if (seedComponent.type === COMPONENT_TYPES.LAYER) {
-      const dropdownItemText = seedComponent.childComponentsLockedToLayer.list[0].customStaticFeatures.subcomponentText.text;
+      const dropdownItemText = seedComponent.newChildComponents.childComponentsLockedToLayer.list[0].customStaticFeatures.subcomponentText.text;
       selectDropdown[itemTextKey] = dropdownItemText;
     }
   }
@@ -57,11 +57,11 @@ export class SelectDropdownUtils {
   }
 
   public static isItemSelected(layer: Layer): boolean {
-    const { containerComponent, childComponentsLockedToLayer } = layer.subcomponentProperties.seedComponent;
+    const { containerComponent, newChildComponents } = layer.subcomponentProperties.seedComponent;
     if (containerComponent?.type === COMPONENT_TYPES.DROPDOWN_MENU) {
       return SelectDropdownUtils.isSelected(
         containerComponent.linkedComponents.base.baseSubcomponent,
-        childComponentsLockedToLayer.list[0].customStaticFeatures.subcomponentText.text);
+        newChildComponents.childComponentsLockedToLayer.list[0].customStaticFeatures.subcomponentText.text);
     }
     return false;
   }

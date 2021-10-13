@@ -20,6 +20,8 @@ interface OnCopy {
 export interface Syncables {
   // container components that can be synced (can contain current and parent components)
   // placed in a growing order starting from the current up to the top most parent
+  // this is mostly used to find component if any container or parent is in sync and if other
+  // components are synced to them so they can be updated accordingly
   containerComponents: WorkshopComponent[];
   // properties which would be synced if current component was synced to another component
   onCopy?: OnCopy;

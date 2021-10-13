@@ -4,6 +4,7 @@ import { WorkshopComponent } from '../../../../../../../interfaces/workshopCompo
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { plainLayer } from '../../layers/generators/plainLayer';
+import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
 
 export class PaddingComponentUtils {
 
@@ -26,6 +27,16 @@ export class PaddingComponentUtils {
       paddingComponent.componentPreviewStructure, 'subcomponentNameToDropdownItemName');
     PaddingComponentUtils.updatePaddingDropdown(paddingComponent, childComponent);
   }
+
+  private static createChildComponent(paddingComponent: WorkshopComponent, createChildComponentFunc: CreateNewComponent, childBaseName: string,
+      overwriteChildComponentFunc: (childComponent: WorkshopComponent) => void): WorkshopComponent {
+    const childComponent = createChildComponentFunc(childBaseName, paddingComponent);
+    overwriteChildComponentFunc(childComponent);
+    SyncedComponent.addParentComponentSyncableContainerComponentsToChild(childComponent, paddingComponent);
+    childComponent.paddingComponent = paddingComponent;
+    paddingComponent.paddingComponentChild = childComponent;
+    return childComponent;
+  }
   
   public static create(baseName: string, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, baseType: SUBCOMPONENT_TYPES,
       createChildComponentFunc: CreateNewComponent, childBaseName: string,
@@ -35,13 +46,8 @@ export class PaddingComponentUtils {
     paddingComponent.style = componentStyle;
     paddingComponent.baseSubcomponent.subcomponentType = baseType;
     paddingComponent.sync.syncables.containerComponents = [paddingComponent];
-    // WORK 2
-    const childComponent = createChildComponentFunc(childBaseName, paddingComponent);
-    overwriteChildComponentFunc(childComponent);
-    paddingComponent.paddingComponentChild = childComponent;
-    childComponent.paddingComponent = paddingComponent;
-    // WORK 2
-    childComponent.sync.syncables.containerComponents.push(...paddingComponent.sync.syncables.containerComponents);
+    const childComponent = PaddingComponentUtils.createChildComponent(
+      paddingComponent, createChildComponentFunc, childBaseName, overwriteChildComponentFunc);
     PaddingComponentUtils.setSharedProperties(paddingComponent, childComponent);
     return paddingComponent;
   }

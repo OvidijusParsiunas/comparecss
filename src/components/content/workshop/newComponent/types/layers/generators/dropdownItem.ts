@@ -1,5 +1,5 @@
 import { UpdateGenericComponentDropdownItemNames } from '../../../../utils/componentManipulation/updateChildComponent/updateGenericComponentDropdownItemNames';
-import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomFeatures, CustomStaticFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { SubcomponentMouseEventCallbacks } from '../../../../../../../interfaces/subcomponentMouseEventCallbacks';
 import { SubcomponentTriggers } from '../../../../utils/componentManipulation/utils/subcomponentTriggers';
@@ -7,15 +7,12 @@ import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../../consts/baseS
 import { OtherSubcomponentTriggers } from '../../../../../../../interfaces/otherSubcomponentTriggers';
 import { ActiveComponentUtils } from '../../../../utils/activeComponent/activeComponentUtils';
 import { LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
-import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SelectDropdownUtils } from '../../dropdowns/selectDropdown/selectDropdownUtils';
+import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
-import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { SetUtils } from '../../../../utils/generic/setUtils';
 import { layerBase } from './base';
@@ -34,7 +31,7 @@ export class DropdownItemLayer extends ComponentBuilder {
     const { layers: activeBaseComponentLayers } = menuComponent.componentPreviewStructure;
     if (activeBaseComponentLayers.length > 1) {
       const siblingDropdownItem = activeBaseComponentLayers[activeBaseComponentLayers.length - 2];
-      const childTextComponent = siblingDropdownItem.subcomponentProperties.seedComponent.childComponentsLockedToLayer.list[0];
+      const childTextComponent = siblingDropdownItem.subcomponentProperties.seedComponent.newChildComponents.childComponentsLockedToLayer.list[0];
       textComponent.baseSubcomponent.customCss = childTextComponent.customCss;
       textComponent.baseSubcomponent.defaultCss = childTextComponent.defaultCss;
       textComponent.baseSubcomponent.customFeatures = childTextComponent.customFeatures;
@@ -98,7 +95,7 @@ export class DropdownItemLayer extends ComponentBuilder {
       [DropdownItemLayer.setTextSubcomponentProperties.bind(menuComponent)]);
     layerComponent.baseSubcomponent.otherSubcomponentTriggers
       .subcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.baseSubcomponent;
-    layerComponent.childComponentsLockedToLayer.list.push(textComponent.baseSubcomponent);
+    layerComponent.newChildComponents.childComponentsLockedToLayer.list.push(textComponent.baseSubcomponent);
     if (layerComponent.baseSubcomponent.name !== TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY) {
       UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(containerComponent,
         menuComponent.componentPreviewStructure.layers[menuComponent.componentPreviewStructure.layers.length - 1]);
@@ -110,7 +107,7 @@ export class DropdownItemLayer extends ComponentBuilder {
 
   public static createChildComponentsLockedToLayer(layerComponent: WorkshopComponent): void {
     // WORK 2 - the add may not be required as new properties overwritten by propertyOverwritables
-    layerComponent.childComponentsLockedToLayer = { add: DropdownItemLayer.addChildComponentsToLayer, list: [] };
+    layerComponent.newChildComponents.childComponentsLockedToLayer = { add: DropdownItemLayer.addChildComponentsToLayer, list: [] };
   }
 
   private static createOtherSubcomponentTriggersTemplate(): OtherSubcomponentTriggers {

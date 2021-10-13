@@ -5,25 +5,15 @@ import { BUTTON_STYLES } from '../../../../../../consts/componentStyles.enum';
 
 export class SyncChildComponentUtils {
 
-  private static getPaddingComponent(component: WorkshopComponent): WorkshopComponent {
-    return component?.paddingComponent || component?.linkedComponents?.base?.paddingComponent;
-  }
-
-  private static getPaddingComponentWithCondition(component: WorkshopComponent): WorkshopComponent {
-    const paddingComponent = SyncChildComponentUtils.getPaddingComponent(component) || SyncChildComponentUtils.getPaddingComponent(component.containerComponent);
-    return paddingComponent?.sync.componentsSyncedToThis.size ? paddingComponent : null;
-  }
-
   public static getParentComponentWithOtherComponentsSyncedToIt(component: WorkshopComponent): WorkshopComponent {
-    if (component.containerComponent?.sync.componentsSyncedToThis.size) {
-      return component.containerComponent;
-    }
-    return SyncChildComponentUtils.getPaddingComponentWithCondition(component);
+    const { containerComponents } = component.sync.syncables;
+    const parentComponents = (containerComponents[0] === component) ? containerComponents.slice(1) : containerComponents;
+    return parentComponents.find((reference) => reference.sync.componentsSyncedToThis.size);
   }
 
   // traverses all components that could be synced to another component
   // starting from the target component all the way to its top parent component
-  public static getComponentTheTargetOrItsParentIsSyncedTo(component: WorkshopComponent): WorkshopComponent {
+  public static getCurrentOrParentComponentThatIsInSync(component: WorkshopComponent): WorkshopComponent {
     return component.sync.syncables.containerComponents.find((reference) => reference.sync.componentThisIsSyncedTo);
   }
 

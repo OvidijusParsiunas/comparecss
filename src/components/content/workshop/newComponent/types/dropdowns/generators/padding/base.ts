@@ -16,6 +16,11 @@ import { ApplyDropdownButtonProperties } from '../button/applyProperties';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
 import { defaultDropdownMenu } from '../menu/default';
 
+interface ButtonAndMenuComponentsSetupProperties {
+  buttonComponentOverwritable?: (component: WorkshopComponent) => void;
+  menuComponent: WorkshopComponent;
+}
+
 export class DropdownPaddingBase extends ComponentBuilder {
 
   // custom properties references are instead shared on new layer additions by areLayersInSyncByDefault, however
@@ -28,7 +33,7 @@ export class DropdownPaddingBase extends ComponentBuilder {
       layer.subcomponentProperties.customCss = firstLayerSubcomponentProperties.customCss;
       layer.subcomponentProperties.customFeatures = firstLayerSubcomponentProperties.customFeatures;
       DropdownItemLayer.setTextSubcomponentProperties
-        .bind(menuComponent)(layer.subcomponentProperties.seedComponent.childComponentsLockedToLayer.list[0].seedComponent);
+        .bind(menuComponent)(layer.subcomponentProperties.seedComponent.newChildComponents.childComponentsLockedToLayer.list[0].seedComponent);
     });
   }
 
@@ -79,21 +84,20 @@ export class DropdownPaddingBase extends ComponentBuilder {
     DropdownPaddingBase.overwriteStaticFeatures(paddingBaseSubcomponent);
   }
 
-  private static buttonAndAuxiliaryComponentSetup(buttonComponent: WorkshopComponent): void {
-    // WORK 2
-    const { buttonComponentOverwritable, auxiliaryComponents } = this as any;
-    const menuComponent = auxiliaryComponents[0];
+  private static buttonAndMenuComponentsSetup(buttonComponent: WorkshopComponent): void {
+    const { buttonComponentOverwritable, menuComponent } = this as any as ButtonAndMenuComponentsSetupProperties;
     // WORK 2 - replace with property overwritables
     buttonComponentOverwritable?.(buttonComponent);
     ApplyDropdownButtonProperties.apply(buttonComponent, menuComponent);
     UpdateLinkedComponentsDropdownItemNames.update(buttonComponent);
   }
 
-  // use this method for other button and menu styles
-  public static create(baseName: string, createButtonFunc: CreateNewComponent, menuComponent: WorkshopComponent, buttonComponentOverwritable?: (component: WorkshopComponent) => void): WorkshopComponent {
+  // this method should also be used for other button and menu styles
+  public static create(baseName: string, createButtonFunc: CreateNewComponent, menuComponent: WorkshopComponent,
+      buttonComponentOverwritable?: (component: WorkshopComponent) => void): WorkshopComponent {
     const paddingComponent = PaddingComponentUtils.create(baseName, COMPONENT_TYPES.DROPDOWN,
       DEFAULT_STYLES.BASE, SUBCOMPONENT_TYPES.DROPDOWN, createButtonFunc, BUTTON_COMPONENTS_BASE_NAMES.BUTTON,
-      DropdownPaddingBase.buttonAndAuxiliaryComponentSetup.bind({ buttonComponentOverwritable, auxiliaryComponents: [menuComponent] }));
+      DropdownPaddingBase.buttonAndMenuComponentsSetup.bind({ buttonComponentOverwritable, menuComponent } as ButtonAndMenuComponentsSetupProperties));
     DropdownPaddingBase.overwriteBase(paddingComponent);
     DropdownPaddingBase.setSyncableSubcomponents(paddingComponent);
     DropdownPaddingBase.setAndExecutePropertyOverwritingExecutables(paddingComponent);

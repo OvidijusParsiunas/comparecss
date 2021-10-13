@@ -480,7 +480,7 @@ export default {
     },
     getSubcomponentsToAdd(): NestedDropdownStructure {
       return (this.component.subcomponents[this.component.activeSubcomponentName] as SubcomponentProperties)
-        .seedComponent.newChildComponents?.dropdownItems || {};
+        .seedComponent.newChildComponents.dropdownItems || {};
     },
     addChildComponent(mouseClickNewItemEvent: MouseClickNewItemEvent): void {
       const [newComponentBaseName, isOptionEnabled] = mouseClickNewItemEvent;

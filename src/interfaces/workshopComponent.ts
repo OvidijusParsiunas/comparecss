@@ -7,7 +7,6 @@ import { DropdownFeatures, SelectedDropdownText } from './dropdownFeatures';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { TriggerFuncOnSettingChange } from './triggerFuncOnSettingChange';
-import { ChildComponentsInLayer } from './childComponentsLockedToLayer';
 import { OtherSubcomponentTriggers } from './otherSubcomponentTriggers';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
@@ -182,10 +181,6 @@ export interface WorkshopComponent {
   componentStatus: { isRemoved: boolean };
   // used to overwrite component and its children properties post processing such as passing a property reference after copying, desyncing etc
   propertyOverwritingExecutables?: OverwritePropertiesFunc[];
-  // a layer cannot be a standalone child component that contains other child components, thus this function adds child components to the layer
-  // with a reference the parent component
-  // WORK 2 - can be merged with newChildComponents
-  childComponentsLockedToLayer?: ChildComponentsInLayer;
   interconnectedSettings?: InterconnectedSetting[];
   childComponentCount?: ChildComponentCount;
   areLayersInSyncByDefault?: boolean;
@@ -204,8 +199,7 @@ export interface WorkshopComponent {
   paddingComponent?: WorkshopComponent;
   paddingComponentChild?: WorkshopComponent;
   // properties for components that can be added through the add child component dropdown
-  // WORK 2 - can be merged with childComponentsLockedToLayer
-  newChildComponents?: NewChildComponents;
+  newChildComponents: NewChildComponents;
 }
 
 // Component Architecture Information:

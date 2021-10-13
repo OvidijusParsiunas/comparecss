@@ -2,6 +2,7 @@ import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties
 import { SubcomponentTriggers } from '../../../../utils/componentManipulation/utils/subcomponentTriggers';
 import { PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { OtherSubcomponentTriggers } from '../../../../../../../interfaces/otherSubcomponentTriggers';
+import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -121,8 +122,7 @@ export const buttonBase: ComponentGenerator = {
     ButtonBase.setChildComponentsItems(buttonBaseComponent);
     ButtonBase.setPropertyOverwritingExecutables(buttonBaseComponent);
     ButtonBase.setSyncableSubcomponents(buttonBaseComponent);
-    // WORK 2
-    if (paddingComponent) buttonBaseComponent.sync.syncables.containerComponents.push(...paddingComponent.sync.syncables.containerComponents);
+    if (paddingComponent) SyncedComponent.addParentComponentSyncableContainerComponentsToChild(buttonBaseComponent, paddingComponent);
     return buttonBaseComponent;
   },
 }

@@ -1,3 +1,4 @@
+import { ChildComponentsInLayer } from './childComponentsLockedToLayer';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { CustomCss, WorkshopComponent } from './workshopComponent';
@@ -16,7 +17,7 @@ type PropertyOverwritables = {
 }
 
 export interface NewChildComponents {
-  dropdownItems: NestedDropdownStructure;
+  dropdownItems?: NestedDropdownStructure;
   // this property is never used in the layer generator files and is instead set in the container component then appended when a new layer is created
   // this is done so that the same new component item list reference is shared across all layers and the enabled and disabled items would be in-sync
   sharedDropdownItemsRefs?: SharedDropdownItemsRefs;
@@ -24,4 +25,7 @@ export interface NewChildComponents {
   // WORK 2 - should probably be required
   propertyOverwritables?: PropertyOverwritables;
   customCssOverwritables?: NewChildComponentStyles;
+  // a layer cannot be a standalone child component that contains other child components, thus this function adds child components to the layer
+  // with a reference to the parent component
+  childComponentsLockedToLayer?: ChildComponentsInLayer;
 }

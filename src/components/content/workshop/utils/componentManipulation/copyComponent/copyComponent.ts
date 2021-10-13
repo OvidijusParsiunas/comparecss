@@ -26,7 +26,7 @@ export class CopyComponent extends ComponentBuilder {
 
   private static getAlignedComponent(newLayer: Layer, subcomponent: BaseSubcomponentRef, section: ALIGNED_SECTION_TYPES,
       index: number, newComponent: WorkshopComponent, baseComponents: WorkshopComponent[]): WorkshopComponent {
-    if (!newLayer.subcomponentProperties.seedComponent.childComponentsLockedToLayer) {
+    if (!newLayer.subcomponentProperties.seedComponent.newChildComponents.childComponentsLockedToLayer) {
       const { type, style } = subcomponent.subcomponentProperties.seedComponent;
       const alignedComponent = AddContainerComponent.add(
         newComponent, type, style, newLayer.subcomponentProperties.name, [CopyComponent.overwriteAlignedLayerSectionProperties.bind(section)]);
@@ -70,7 +70,7 @@ export class CopyComponent extends ComponentBuilder {
     const { alignedSections } = copiedLayer.sections;
     const defaultActiveSubcomponentName = CopyComponent.setActiveSubcomponentNameForAlignedSectionComponents(newLayer, isLayerEditable, newComponent);
     Object.keys(alignedSections).forEach((section: ALIGNED_SECTION_TYPES) => {
-      if (!newLayer.subcomponentProperties.seedComponent.childComponentsLockedToLayer) {
+      if (!newLayer.subcomponentProperties.seedComponent.newChildComponents.childComponentsLockedToLayer) {
         CopyComponent.removeAllAlignedSectionComponents(section, newLayer, newComponent);
       }
       CopyComponent.copyAlignedSectionComponents(alignedSections[section], newLayer, section, newComponent, baseComponents);
@@ -81,7 +81,7 @@ export class CopyComponent extends ComponentBuilder {
   private static createNewLayer(layer: Layer, newComponent: WorkshopComponent, isEditable: boolean): void {
     const copiedLayerStyle = layer.subcomponentProperties.seedComponent.style;
     const newLayer = AddLayerComponent.add(newComponent, copiedLayerStyle, isEditable);
-    newLayer.childComponentsLockedToLayer?.add(newLayer, newComponent);
+    newLayer.newChildComponents.childComponentsLockedToLayer?.add(newLayer, newComponent);
   }
 
   private static isLayerEditable(componentBeingCopied: WorkshopComponent, layer: Layer): boolean {

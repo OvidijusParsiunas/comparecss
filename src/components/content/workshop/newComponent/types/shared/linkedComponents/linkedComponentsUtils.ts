@@ -1,19 +1,24 @@
 import { DropdownItemsDisplayStatusUtils } from '../../../../utils/dropdownItemsDisplayStatusUtils/dropdownItemsDisplayStatusUtils';
 import { DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownItemDisplayStatus';
+import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 
 export class LinkedComponentsUtils {
 
-  private static updateBaseAndAuxiliaryDropdownStructures(baseComponent: WorkshopComponent, auxiliaryComponents: WorkshopComponent[]): void {
+  private static updateAuxiliaryDrodpownAndSyncableContainerComponnets(auxiliaryComponent: WorkshopComponent, subcomponentDropdownStructure: NestedDropdownStructure,
+      parentComponentReferences: WorkshopComponent[]): void {
+    const auxiliaryComponentName = auxiliaryComponent.baseSubcomponent.name;
+    subcomponentDropdownStructure[auxiliaryComponentName] = { ...DropdownItemsDisplayStatusUtils.createDropdownItemDisplayStatusReferenceObject(auxiliaryComponentName) };
+    auxiliaryComponent.sync.syncables.containerComponents.push(...parentComponentReferences);
+  }
+
+  private static updateDropdownStructuresAndSyncableContainerComponents(baseComponent: WorkshopComponent, auxiliaryComponents: WorkshopComponent[]): void {
     const { subcomponentDropdownStructure } = baseComponent.componentPreviewStructure;
     const baseName = baseComponent.baseSubcomponent.name;
     subcomponentDropdownStructure[baseName][DROPDOWN_ITEM_AUX_DETAILS_REF] = { ...DropdownItemsDisplayStatusUtils.createDefaultItemDisplayStatus(baseName) };
-    // WORK 2
     const parentComponentReferences = baseComponent.sync.syncables.containerComponents.slice(1);
     auxiliaryComponents.forEach((auxiliaryComponent) => {
-      const auxiliaryComponentName = auxiliaryComponent.baseSubcomponent.name;
-      subcomponentDropdownStructure[auxiliaryComponentName] = { ...DropdownItemsDisplayStatusUtils.createDropdownItemDisplayStatusReferenceObject(auxiliaryComponentName) };
-      auxiliaryComponent.sync.syncables.containerComponents.push(...parentComponentReferences);
+      LinkedComponentsUtils.updateAuxiliaryDrodpownAndSyncableContainerComponnets(auxiliaryComponent, subcomponentDropdownStructure, parentComponentReferences);
     });
   }
 
@@ -36,6 +41,6 @@ export class LinkedComponentsUtils {
     LinkedComponentsUtils.assignAuxiliaryPropertiesToBase(baseComponent, auxiliaryComponents, 'subcomponents');
     LinkedComponentsUtils.assignAuxiliaryPropertiesToBase(baseComponent.componentPreviewStructure,
       auxiliaryComponents.map((auxiliaryComponent) => auxiliaryComponent.componentPreviewStructure), 'subcomponentNameToDropdownItemName');
-    LinkedComponentsUtils.updateBaseAndAuxiliaryDropdownStructures(baseComponent, auxiliaryComponents);
+    LinkedComponentsUtils.updateDropdownStructuresAndSyncableContainerComponents(baseComponent, auxiliaryComponents);
   }
 }

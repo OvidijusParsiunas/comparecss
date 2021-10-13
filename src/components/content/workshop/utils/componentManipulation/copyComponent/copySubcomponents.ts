@@ -47,8 +47,8 @@ export class CopySubcomponents {
   }
 
   public static copy(newSubcomponent: SubcomponentProperties, subcomponentBeingCopied: SubcomponentProperties): void {
-    const componentCopyIsSyncedTo = SyncChildComponentUtils.getComponentTheTargetOrItsParentIsSyncedTo(subcomponentBeingCopied.seedComponent);
-    if (componentCopyIsSyncedTo) {
+    const inSyncComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(subcomponentBeingCopied.seedComponent);
+    if (inSyncComponent) {
       CopySubcomponents.copySyncedComponent(newSubcomponent, subcomponentBeingCopied);
     } else {
       CopySubcomponents.copySubcomponentProperties(newSubcomponent, subcomponentBeingCopied); 

@@ -195,6 +195,7 @@ export class ComponentBuilder {
       componentStatus: { isRemoved: false },
       sync: ComponentBuilder.createEmptySyncObject(),
       baseSubcomponent: baseSubcomponent,
+      newChildComponents: {},
     };
   }
 
