@@ -1,5 +1,5 @@
+import { DropdownStructureTraversalState, SubcomponentPreviewTraversalState, TargetDetails, PreviewTraversalResult, DropdownTraversalResult } from '../../../../../../interfaces/componentTraversal';
 import { TraverseComponentViaPreviewStructureParentFirst } from '../../componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
-import { DropdownStructureTraversalState, SubcomponentPreviewTraversalState, TargetDetails, TraversalResult } from '../../../../../../interfaces/componentTraversal';
 import { BaseSubcomponentRef, Layer, SubcomponentNameToDropdownItemName } from '../../../../../../interfaces/componentPreviewStructure';
 import { DropdownItemAuxDetails, DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../interfaces/dropdownItemDisplayStatus';
 import { UpdateGenericComponentDropdownItemNames } from '../updateChildComponent/updateGenericComponentDropdownItemNames';
@@ -11,7 +11,7 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.e
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ArrayUtils } from '../../generic/arrayUtils';
 
-type TraversalResultForChangeChildOrder = TraversalResult & { childComponentOrderChanged?: boolean };
+type TraversalResultForChangeChildOrder = PreviewTraversalResult & { childComponentOrderChanged?: boolean };
 
 type ChangeComponentTargetDetails = TargetDetails & { isLowerOrderDirection?: boolean };
 
@@ -57,13 +57,13 @@ export class ChangeChildComponentOrder {
     }
   }
 
-  private static swapChildComponentInDropdownStructureIfFound(traversalState: DropdownStructureTraversalState): DropdownStructureTraversalState {
+  private static swapChildComponentInDropdownStructureIfFound(traversalState: DropdownStructureTraversalState): DropdownTraversalResult {
     const targetDetails = this as any as ChangeComponentTargetDetails;
     if (TraverseComponentViaDropdownStructure.isActualObjectNameMatching(targetDetails, traversalState)) {
       ChangeChildComponentOrder.swapChildComponentInDropdown(targetDetails, traversalState);
-      return traversalState;
+      return { stopTraversal: true };
     }
-    return null;
+    return {};
   }
 
   private static swapArrayElements(isLowerOrderDirection: boolean, index: number, componentsToSwap: BaseSubcomponentRef[] | Layer[]): boolean {

@@ -1,3 +1,4 @@
+import { DropdownStructureTraversalState, DropdownTraversalResult, TargetDetails } from '../../../../../../interfaces/componentTraversal';
 import { UpdateGenericComponentDropdownItemNames } from '../updateChildComponent/updateGenericComponentDropdownItemNames';
 import { TraverseComponentViaDropdownStructure } from '../../componentTraversal/traverseComponentViaDropdownStructure';
 import { AlignedSections, BaseSubcomponentRef } from '../../../../../../interfaces/componentPreviewStructure';
@@ -5,7 +6,6 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../int
 import { childComponentAlignmentDropdownState } from './childComponentAlignmentDropdownState';
 import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
-import { DropdownStructureTraversalState, TargetDetails } from '../../../../../../interfaces/componentTraversal';
 import { SetActiveComponentUtils } from '../utils/setActiveComponentUtils';
 
 export class ChangeChildComponentAlignment {
@@ -60,15 +60,15 @@ export class ChangeChildComponentAlignment {
     }
   }
 
-  private static updateDropdownStructureIfFound(traversalState: DropdownStructureTraversalState): DropdownStructureTraversalState {
+  private static updateDropdownStructureIfFound(traversalState: DropdownStructureTraversalState): DropdownTraversalResult {
     const targetDetails = this as any as TargetDetails;
     if (TraverseComponentViaDropdownStructure.isActualObjectNameMatching(targetDetails, traversalState)) {
       const { masterComponent, parentLayerAlignedSections } = targetDetails;
       UpdateGenericComponentDropdownItemNames.updateViaParentLayerDropdownStructure(masterComponent,
         traversalState.subcomponentDropdownStructure, parentLayerAlignedSections);
-      return traversalState;
+      return { stopTraversal: true };
     }
-    return null;
+    return {};
   }
 
   private static updateNames(newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties, masterComponent: WorkshopComponent): void {

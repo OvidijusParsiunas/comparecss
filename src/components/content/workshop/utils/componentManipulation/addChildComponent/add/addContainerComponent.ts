@@ -155,8 +155,9 @@ export class AddContainerComponent extends AddComponentShared {
   public static add(containerComponent: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
       parentLayerName: string, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
     const parentLayer = AddComponentShared.getContainerComponentLayer(containerComponent, parentLayerName);
-    return TraverseComponentViaDropdownStructure.traverseUsingComponent(
+    const result = TraverseComponentViaDropdownStructure.traverseUsingComponent(
       containerComponent, AddContainerComponent.addUsingParentDropdownStructure,
-      componentType, componentStyle, parentLayer, overwritePropertiesFunc) as WorkshopComponent;
+      componentType, componentStyle, parentLayer, overwritePropertiesFunc);
+    return result.result;
   }
 }

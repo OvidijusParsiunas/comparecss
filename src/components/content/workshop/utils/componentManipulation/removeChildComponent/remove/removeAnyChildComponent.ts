@@ -1,5 +1,5 @@
+import { DropdownStructureTraversalState, SubcomponentPreviewTraversalState, TargetDetails, PreviewTraversalResult, DropdownTraversalResult } from '../../../../../../../interfaces/componentTraversal';
 import { TraverseComponentViaPreviewStructureParentFirst } from '../../../componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
-import { DropdownStructureTraversalState, SubcomponentPreviewTraversalState, TargetDetails, TraversalResult } from '../../../../../../../interfaces/componentTraversal';
 import { DropdownItemAuxDetails, DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownItemDisplayStatus';
 import { UpdateGenericComponentDropdownItemNames } from '../../updateChildComponent/updateGenericComponentDropdownItemNames';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
@@ -77,7 +77,7 @@ export class RemoveAnyChildComponent {
     delete subcomponentDropdownStructure[dropdownItemName];
   }
 
-  private static removeChildComponentUsingDropdownStructureIfFound(traversalState: DropdownStructureTraversalState): DropdownStructureTraversalState {
+  private static removeChildComponentUsingDropdownStructureIfFound(traversalState: DropdownStructureTraversalState): DropdownTraversalResult {
     const { subcomponentDropdownStructure } = traversalState;
     const targetDetails = this as any as TargetRemovalDetails;
     if (TraverseComponentViaDropdownStructure.isActualObjectNameMatching(targetDetails, traversalState)) {
@@ -86,9 +86,9 @@ export class RemoveAnyChildComponent {
       RemoveAnyChildComponent.removeDropdownStructure(traversalState, targetDetails, dropdownItems);
       RemoveAnyChildComponent.updateDropdownItemNames(targetDetails, subcomponentDropdownStructure, removedSubcomponentDropdownIndex,
         targetDetails.parentLayerAlignedSections, dropdownItems);
-      return traversalState;
+      return { stopTraversal: true };
     }
-    return null;
+    return {};
   }
 
   private static removeSubcomponentProperties(subcomponentName: string, masterComponent: WorkshopComponent): void {
@@ -126,7 +126,7 @@ export class RemoveAnyChildComponent {
     RemoveAnyChildComponent.removeSubcomponentProperties(name, masterComponent);
   }
 
-  protected static removeChildComponentInPreviewStructureIfFound(traversalState: SubcomponentPreviewTraversalState): TraversalResult {
+  protected static removeChildComponentInPreviewStructureIfFound(traversalState: SubcomponentPreviewTraversalState): PreviewTraversalResult {
     const { subcomponentProperties, layers, alignedChildComponents, index } = traversalState;
     const { targetSubcomponentProperties, containerComponent, masterComponent } = this as any as TargetRemovalDetails;
     if (targetSubcomponentProperties === subcomponentProperties) {
