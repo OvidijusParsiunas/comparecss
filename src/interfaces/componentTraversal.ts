@@ -3,6 +3,10 @@ import { SubcomponentProperties, WorkshopComponent } from './workshopComponent';
 import { DropdownItemAuxDetails } from './dropdownItemDisplayStatus';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 
+interface StopTraversal {
+  stopTraversal?: boolean;
+}
+
 export interface TargetDetails {
   targetSubcomponentName: string;
   targetDropdownItemName: string;
@@ -19,10 +23,9 @@ export interface DropdownStructureTraversalState {
   index?: number;
 }
 
-export interface DropdownTraversalResult<T = unknown> {
-  stopTraversal?: boolean;
+export type DropdownTraversalResult<T = unknown> = {
   result?: T;
-}
+} & StopTraversal;
 
 export type DropdownTraversalCallback<T = unknown> = (traversalState: DropdownStructureTraversalState) => DropdownTraversalResult<T>;
 
@@ -39,10 +42,9 @@ export interface SubcomponentPreviewTraversalState {
   index?: number;
 }
 
-export interface PreviewTraversalResult {
-  stopTraversal?: boolean;
+export type PreviewTraversalResult = {
   traversalState?: SubcomponentPreviewTraversalState;
-}
+} & StopTraversal;
 
 export type PreviewTraversalCallback = (...activeSubcomponent: SubcomponentPreviewTraversalState[]) => PreviewTraversalResult;
 
