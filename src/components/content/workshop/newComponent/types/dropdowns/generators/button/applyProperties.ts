@@ -88,12 +88,9 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
 
   // should be done in the menu base component itself
   public static addComponentsToBase(dropdownMenuBaseComponent: WorkshopComponent): void {
-    const layer1Component = AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    layer1Component.newChildComponents.childComponentsLockedToLayer.add(layer1Component, dropdownMenuBaseComponent);
-    const layer2Component = AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    layer2Component.newChildComponents.childComponentsLockedToLayer.add(layer2Component, dropdownMenuBaseComponent);
-    const layer3Component = AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    layer3Component.newChildComponents.childComponentsLockedToLayer.add(layer3Component, dropdownMenuBaseComponent);
+    AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
+    AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
+    AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
     UpdateLayerDropdownItemNames.update(dropdownMenuBaseComponent, 0);
   }
 

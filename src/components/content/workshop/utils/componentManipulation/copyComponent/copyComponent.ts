@@ -80,8 +80,7 @@ export class CopyComponent extends ComponentBuilder {
 
   private static createNewLayer(layer: Layer, newComponent: WorkshopComponent, isEditable: boolean): void {
     const copiedLayerStyle = layer.subcomponentProperties.seedComponent.style;
-    const newLayer = AddLayerComponent.add(newComponent, copiedLayerStyle, isEditable);
-    newLayer.newChildComponents.childComponentsLockedToLayer?.add(newLayer, newComponent);
+    AddLayerComponent.add(newComponent, copiedLayerStyle, isEditable);
   }
 
   private static isLayerEditable(componentBeingCopied: WorkshopComponent, layer: Layer): boolean {

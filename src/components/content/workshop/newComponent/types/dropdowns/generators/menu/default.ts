@@ -1,11 +1,13 @@
+import { SyncChildComponentUtils } from '../../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { CustomCss, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../../consts/cssPropertyValues.enum';
-import { ComponentGenerator } from '../../../../../../../../interfaces/componentGenerator';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
-import { BORDER_STYLES } from '../../../../../../../../consts/borderStyles.enum';
-import { dropdownMenuBase } from './base';
+import { ComponentGenerator } from '../../../../../../../../interfaces/componentGenerator';
 import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
+import { BORDER_STYLES } from '../../../../../../../../consts/borderStyles.enum';
+import { DropdownItemLayer } from '../../../layers/generators/dropdownItem';
+import { dropdownMenuBase } from './base';
 
 export class DefaultDropdownMenu {
 
@@ -78,12 +80,21 @@ export class DefaultDropdownMenu {
     };
   }
 
+  // WORK 2 - place in the dropdown item class
+  private static overwriteLayer(layerComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
+    DropdownItemLayer.addChildComponentsToLayer(layerComponent, menuComponent);
+    if (menuComponent.componentPreviewStructure.layers.length === 1
+        && !SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(menuComponent)) {
+      DefaultDropdownMenu.overwriteLayerCss(layerComponent);
+    }
+  }
+
   public static overwrite(dropdownMenuComponent: WorkshopComponent): void {
     dropdownMenuComponent.newChildComponents.customCssOverwritables = {
       [SUBCOMPONENT_TYPES.TEXT]: DefaultDropdownMenu.createDefaultTextCustomCss,
     };
     dropdownMenuComponent.newChildComponents.propertyOverwritables = {
-      [COMPONENT_TYPES.LAYER]: DefaultDropdownMenu.overwriteLayerCss,
+      [COMPONENT_TYPES.LAYER]: DefaultDropdownMenu.overwriteLayer,
     }
   }
 }

@@ -15,8 +15,8 @@ export class AddTemporaryAddPreviewLayerComponent extends AddLayerComponent {
     newComponent.baseSubcomponent.isTemporaryAddPreview = true;
     Object.assign(activeComponent.subcomponents, newComponent.subcomponents);
     const { higherComponentContainer } = ActiveComponentUtils.getHigherLevelComponents(activeComponent);
-    AddLayerComponent.addNewComponentToComponentPreview(higherComponentContainer, newComponent);
-    newComponent.newChildComponents.childComponentsLockedToLayer?.add(newComponent, activeComponent);
+    AddLayerComponent.addLayerToPreview(higherComponentContainer, newComponent);
+    AddLayerComponent.overwriteProperties(newComponent, activeComponent);
     return newComponent;
   }
 }

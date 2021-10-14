@@ -53,7 +53,7 @@ export default class JSONUtils {
     object1Parent[object1Key] = { ...object1Parent[object1Key], ...object2 };
   }
 
-  public static copyPropertiesThatExistInTarget(targetObject: unknown, copyObject: unknown): void {
+  public static copyPropertiesThatExistInTarget<T>(targetObject: T, copyObject: T): void {
     Object.keys(targetObject).forEach((key) => {
       if (copyObject.hasOwnProperty(key)) targetObject[key] = copyObject[key];
     });

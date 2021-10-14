@@ -13,7 +13,7 @@ type NewChildComponentStyles = {
 }
 
 type PropertyOverwritables = {
-  [key in COMPONENT_TYPES]?: (component: WorkshopComponent) => void;
+  [key in COMPONENT_TYPES]?: (component: WorkshopComponent, containerComponent: WorkshopComponent) => void;
 }
 
 export interface NewChildComponents {
@@ -24,8 +24,10 @@ export interface NewChildComponents {
   // WORK 2 - need to have overwritables for all areas where child components are added
   // WORK 2 - should probably be required
   propertyOverwritables?: PropertyOverwritables;
+  // WORK 2 - remove
   customCssOverwritables?: NewChildComponentStyles;
   // a layer cannot be a standalone child component that contains other child components, thus this function adds child components to the layer
   // with a reference to the parent component
+  // WORK 2 - remove
   childComponentsLockedToLayer?: ChildComponentsInLayer;
 }

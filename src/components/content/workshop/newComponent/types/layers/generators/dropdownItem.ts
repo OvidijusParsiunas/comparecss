@@ -15,6 +15,7 @@ import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { SetUtils } from '../../../../utils/generic/setUtils';
+import JSONUtils from '../../../../utils/generic/jsonUtils';
 import { layerBase } from './base';
 
 export class DropdownItemLayer extends ComponentBuilder {
@@ -55,7 +56,7 @@ export class DropdownItemLayer extends ComponentBuilder {
       (menuComponent.linkedComponents.base.paddingComponent?.sync.componentsSyncedToThis || []).forEach((component) => {
         const { layers } = component.paddingComponentChild.linkedComponents.auxiliary[0].componentPreviewStructure;
         if (layers.length > 0) {
-          layers[0].sections.alignedSections.left[0].subcomponentProperties.customCss = textComponent.baseSubcomponent.customCss;
+          JSONUtils.copyPropertiesThatExistInTarget(layers[0].sections.alignedSections.left[0].subcomponentProperties.customCss, textComponent.baseSubcomponent.customCss);
         }
       })
     }
@@ -88,7 +89,7 @@ export class DropdownItemLayer extends ComponentBuilder {
     });
   }
   
-  private static addChildComponentsToLayer(layerComponent: WorkshopComponent, containerComponent: WorkshopComponent): WorkshopComponent[] {
+  public static addChildComponentsToLayer(layerComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
     const { higherComponentContainer: menuComponent } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
     const textComponent = AddContainerComponent.add(containerComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
       layerComponent.baseSubcomponent.name,
@@ -102,12 +103,11 @@ export class DropdownItemLayer extends ComponentBuilder {
     }
     DropdownItemLayer.setSyncableSubcomponents(layerComponent, textComponent);
     menuComponent.sync.syncables.onCopy.childComponents.push(layerComponent);
-    return [textComponent];
   }
 
   public static createChildComponentsLockedToLayer(layerComponent: WorkshopComponent): void {
     // WORK 2 - the add may not be required as new properties overwritten by propertyOverwritables
-    layerComponent.newChildComponents.childComponentsLockedToLayer = { add: DropdownItemLayer.addChildComponentsToLayer, list: [] };
+    layerComponent.newChildComponents.childComponentsLockedToLayer = { list: [] };
   }
 
   private static createOtherSubcomponentTriggersTemplate(): OtherSubcomponentTriggers {
@@ -118,7 +118,7 @@ export class DropdownItemLayer extends ComponentBuilder {
     return {
       click: SelectDropdownUtils.setSelectDropdownText,
       mouseEnter: SelectDropdownUtils.setSelectDropdownLastHoveredItemText,
-    }
+    };
   }
 
   private static createDefaultButtonBaseCustomFeatures(): CustomFeatures {
