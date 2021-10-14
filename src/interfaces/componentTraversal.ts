@@ -5,7 +5,12 @@ import { NestedDropdownStructure } from './nestedDropdownStructure';
 
 export type DropdownTraversalCallback<T> = (traversalState: T) => T;
 
-export type PreviewTraversalCallback = (...activeSubcomponent: SubcomponentPreviewTraversalState[]) => SubcomponentPreviewTraversalState;
+export interface TraversalResult {
+  stopTraversal?: boolean;
+  traversalState?: SubcomponentPreviewTraversalState;
+}
+
+export type PreviewTraversalCallback = (...activeSubcomponent: SubcomponentPreviewTraversalState[]) => TraversalResult;
 
 // currently used for preview traversal callback only
 export type AlignedComponentWithMeta = [BaseSubcomponentRef[], AlignedSections];
@@ -32,5 +37,4 @@ export interface SubcomponentPreviewTraversalState {
   alignedSections?: AlignedSections;
   layers?: Layer[];
   index?: number;
-  stopTraversal?: boolean;
 }

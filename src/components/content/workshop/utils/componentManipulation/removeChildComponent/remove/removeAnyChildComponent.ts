@@ -1,5 +1,5 @@
 import { TraverseComponentViaPreviewStructureParentFirst } from '../../../componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
-import { DropdownStructureTraversalState, SubcomponentPreviewTraversalState, TargetDetails } from '../../../../../../../interfaces/componentTraversal';
+import { DropdownStructureTraversalState, SubcomponentPreviewTraversalState, TargetDetails, TraversalResult } from '../../../../../../../interfaces/componentTraversal';
 import { DropdownItemAuxDetails, DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownItemDisplayStatus';
 import { UpdateGenericComponentDropdownItemNames } from '../../updateChildComponent/updateGenericComponentDropdownItemNames';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
@@ -126,7 +126,7 @@ export class RemoveAnyChildComponent {
     RemoveAnyChildComponent.removeSubcomponentProperties(name, masterComponent);
   }
 
-  protected static removeChildComponentInPreviewStructureIfFound(traversalState: SubcomponentPreviewTraversalState): SubcomponentPreviewTraversalState {
+  protected static removeChildComponentInPreviewStructureIfFound(traversalState: SubcomponentPreviewTraversalState): TraversalResult {
     const { subcomponentProperties, layers, alignedChildComponents, index } = traversalState;
     const { targetSubcomponentProperties, containerComponent, masterComponent } = this as any as TargetRemovalDetails;
     if (targetSubcomponentProperties === subcomponentProperties) {
@@ -139,10 +139,9 @@ export class RemoveAnyChildComponent {
         alignedChildComponents.splice(index, 1);
         InterconnectedSettings.update(false, containerComponent, subcomponentProperties);
       }
-      traversalState.stopTraversal = true;
-      return traversalState;
+      return { stopTraversal: true, traversalState };
     }
-    return null;
+    return {};
   }
 
   public static remove(parentComponent: WorkshopComponent, subcomponentName: string, isRemovingActiveSubcomponent = false): void {
@@ -150,10 +149,10 @@ export class RemoveAnyChildComponent {
     const targetDetails: TargetRemovalDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent,
       subcomponentName || parentComponent.activeSubcomponentName);
     targetDetails.isRemovingActiveSubcomponent = isRemovingActiveSubcomponent;
-    const traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverse(
+    const { traversalState } = TraverseComponentViaPreviewStructureParentFirst.traverse(
       RemoveAnyChildComponent.removeChildComponentInPreviewStructureIfFound.bind(targetDetails),
       higherActiveComponentContainer);
-    if (traversalResult) targetDetails.parentLayerAlignedSections = traversalResult.alignedSections;
+    if (traversalState) targetDetails.parentLayerAlignedSections = traversalState.alignedSections;
     TraverseComponentViaDropdownStructure.traverse(
       targetDetails.masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       RemoveAnyChildComponent.removeChildComponentUsingDropdownStructureIfFound.bind(targetDetails));

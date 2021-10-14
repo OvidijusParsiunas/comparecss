@@ -1,7 +1,7 @@
-import { AlignedComponentWithMeta, PreviewTraversalCallback, SubcomponentPreviewTraversalState } from '../../../../../../interfaces/componentTraversal';
+import { AlignedComponentWithMeta, PreviewTraversalCallback, SubcomponentPreviewTraversalState, TraversalResult } from '../../../../../../interfaces/componentTraversal';
 import { AlignedSections } from '../../../../../../interfaces/componentPreviewStructure';
 
-type TraverseAlignedComponentsCallback = (callback: PreviewTraversalCallback, alignedComponentsWithMetaArr: AlignedComponentWithMeta[]) => SubcomponentPreviewTraversalState;
+type TraverseAlignedComponentsCallback = (callback: PreviewTraversalCallback, alignedComponentsWithMetaArr: AlignedComponentWithMeta[]) => TraversalResult;
 
 export class TraverseComponentViaPreviewStructureShared {
 
@@ -16,13 +16,13 @@ export class TraverseComponentViaPreviewStructureShared {
   }
 
   protected static traverseAlignedSections(callback: PreviewTraversalCallback, alignedSectionsArr: AlignedSections[],
-      traverseAlignedComponentsCallback: TraverseAlignedComponentsCallback): SubcomponentPreviewTraversalState {
-    let traversalResult: SubcomponentPreviewTraversalState = null;
+      traverseAlignedComponentsCallback: TraverseAlignedComponentsCallback): TraversalResult {
+    let traversalResult: TraversalResult = {};
     const alignedSectionKeys = Object.keys(alignedSectionsArr[0]);
     for (let i = 0; i < alignedSectionKeys.length; i += 1) {
       traversalResult = traverseAlignedComponentsCallback(
         callback, alignedSectionsArr.map((alignedSections) => { return [alignedSections[alignedSectionKeys[i]], alignedSections]; }));
-      if (traversalResult?.stopTraversal) return traversalResult;
+      if (traversalResult.stopTraversal) return traversalResult;
     }
     return traversalResult;
   }

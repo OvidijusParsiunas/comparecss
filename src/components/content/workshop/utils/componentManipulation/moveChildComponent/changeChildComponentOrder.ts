@@ -1,5 +1,5 @@
 import { TraverseComponentViaPreviewStructureParentFirst } from '../../componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
-import { DropdownStructureTraversalState, SubcomponentPreviewTraversalState, TargetDetails } from '../../../../../../interfaces/componentTraversal';
+import { DropdownStructureTraversalState, SubcomponentPreviewTraversalState, TargetDetails, TraversalResult } from '../../../../../../interfaces/componentTraversal';
 import { BaseSubcomponentRef, Layer, SubcomponentNameToDropdownItemName } from '../../../../../../interfaces/componentPreviewStructure';
 import { DropdownItemAuxDetails, DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../interfaces/dropdownItemDisplayStatus';
 import { UpdateGenericComponentDropdownItemNames } from '../updateChildComponent/updateGenericComponentDropdownItemNames';
@@ -11,7 +11,7 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.e
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ArrayUtils } from '../../generic/arrayUtils';
 
-type TraversalResultForChangeChildOrder = SubcomponentPreviewTraversalState & { childComponentOrderChanged: boolean };
+type TraversalResultForChangeChildOrder = TraversalResult & { childComponentOrderChanged?: boolean };
 
 type ChangeComponentTargetDetails = TargetDetails & { isLowerOrderDirection?: boolean };
 
@@ -83,9 +83,9 @@ export class ChangeChildComponentOrder {
     if (targetSubcomponentProperties === subcomponentProperties) {
       const componentsToSwap = alignedChildComponents || layers;
       const isSwapped = ChangeChildComponentOrder.swapArrayElements(isLowerOrderDirection, index, componentsToSwap);
-      return { ...traversalState, stopTraversal: true, childComponentOrderChanged: isSwapped };
+      return { stopTraversal: true, traversalState, childComponentOrderChanged: isSwapped };
     }
-    return null;
+    return {};
   }
 
   public static change(direction: SUBCOMPONENT_ORDER_DIRECTIONS, masterComponent: WorkshopComponent): void {
@@ -95,7 +95,7 @@ export class ChangeChildComponentOrder {
       ChangeChildComponentOrder.swapChildComponentInPreviewStructureIfFound.bind(targetDetails),
       masterComponent) as TraversalResultForChangeChildOrder;
     if (!traversalResult.childComponentOrderChanged) return;
-    if (traversalResult) targetDetails.parentLayerAlignedSections = traversalResult.alignedSections;
+    if (traversalResult.traversalState) targetDetails.parentLayerAlignedSections = traversalResult.traversalState.alignedSections;
     TraverseComponentViaDropdownStructure.traverse(
       masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       ChangeChildComponentOrder.swapChildComponentInDropdownStructureIfFound.bind(targetDetails));
