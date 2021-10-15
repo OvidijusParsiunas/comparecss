@@ -159,7 +159,6 @@ export class AddLayerComponent extends AddComponentShared {
       UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
     AddComponentShared.populateMasterComponentWithNewSubcomponents(masterComponent, newComponent.subcomponents);
     AddLayerComponent.addLayerToPreview(higherComponentContainer, newComponent);
-    AddLayerComponent.updateOtherLayersThatAreSyncedToThis(containerComponent, newComponent.baseSubcomponent);
     if (isEditable) TraverseComponentViaDropdownStructure.traverseUsingComponent(containerComponent,
       AddLayerComponent.updateDropdownStructureIfItemFound, newComponent, masterComponent);
     AddComponentShared.addNewSubcomponentNameInContainerDropdownItemNameMap(masterComponent, newComponent, isEditable);
@@ -167,6 +166,7 @@ export class AddLayerComponent extends AddComponentShared {
     IncrementChildComponentCount.increment(higherComponentContainer, layerName);
     AddComponentShared.cleanSubcomponentProperties(newComponent);
     AddLayerComponent.overwriteProperties(newComponent, containerComponent);
+    AddLayerComponent.updateOtherLayersThatAreSyncedToThis(containerComponent, newComponent.baseSubcomponent);
     SyncedComponent.addParentComponentSyncableContainerComponentsToChild(newComponent, containerComponent);
     newComponent.containerComponent = higherComponentContainer;
     return newComponent;

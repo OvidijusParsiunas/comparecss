@@ -1,4 +1,3 @@
-import { ChildComponentsInLayer } from './childComponentsLockedToLayer';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { CustomCss, WorkshopComponent } from './workshopComponent';
@@ -26,8 +25,7 @@ export interface NewChildComponents {
   propertyOverwritables?: PropertyOverwritables;
   // WORK 2 - remove
   customCssOverwritables?: NewChildComponentStyles;
-  // a layer cannot be a standalone child component that contains other child components, thus this function adds child components to the layer
-  // with a reference to the parent component
-  // WORK 2 - remove
-  childComponentsLockedToLayer?: ChildComponentsInLayer;
+  // this property references components that are automatically added to layer and removed a long with it
+  // it additionally helps when container component is being copied
+  childComponentsLockedToLayer?: WorkshopComponent[];
 }

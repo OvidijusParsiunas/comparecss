@@ -32,11 +32,12 @@ export class DropdownItemLayer extends ComponentBuilder {
     const { layers: activeBaseComponentLayers } = menuComponent.componentPreviewStructure;
     if (activeBaseComponentLayers.length > 1) {
       const siblingDropdownItem = activeBaseComponentLayers[activeBaseComponentLayers.length - 2];
-      const childTextComponent = siblingDropdownItem.subcomponentProperties.seedComponent.newChildComponents.childComponentsLockedToLayer.list[0];
-      textComponent.baseSubcomponent.customCss = childTextComponent.customCss;
-      textComponent.baseSubcomponent.defaultCss = childTextComponent.defaultCss;
-      textComponent.baseSubcomponent.customFeatures = childTextComponent.customFeatures;
-      textComponent.baseSubcomponent.defaultCustomFeatures = childTextComponent.defaultCustomFeatures;
+      const { baseSubcomponent: textSubcomponentToBeCopied } = siblingDropdownItem.subcomponentProperties.seedComponent
+        .newChildComponents.childComponentsLockedToLayer[0];
+      textComponent.baseSubcomponent.customCss = textSubcomponentToBeCopied.customCss;
+      textComponent.baseSubcomponent.defaultCss = textSubcomponentToBeCopied.defaultCss;
+      textComponent.baseSubcomponent.customFeatures = textSubcomponentToBeCopied.customFeatures;
+      textComponent.baseSubcomponent.defaultCustomFeatures = textSubcomponentToBeCopied.defaultCustomFeatures;
     } else {
       const syncedDropdownComponent = menuComponent.linkedComponents.base.paddingComponent?.sync.componentThisIsSyncedTo;
       if (syncedDropdownComponent) {
@@ -96,7 +97,7 @@ export class DropdownItemLayer extends ComponentBuilder {
       [DropdownItemLayer.setTextSubcomponentProperties.bind(menuComponent)]);
     layerComponent.baseSubcomponent.otherSubcomponentTriggers
       .subcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.baseSubcomponent;
-    layerComponent.newChildComponents.childComponentsLockedToLayer.list.push(textComponent.baseSubcomponent);
+    layerComponent.newChildComponents.childComponentsLockedToLayer.push(textComponent);
     if (layerComponent.baseSubcomponent.name !== TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY) {
       UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(containerComponent,
         menuComponent.componentPreviewStructure.layers[menuComponent.componentPreviewStructure.layers.length - 1]);
@@ -105,9 +106,9 @@ export class DropdownItemLayer extends ComponentBuilder {
     menuComponent.sync.syncables.onCopy.childComponents.push(layerComponent);
   }
 
-  public static createChildComponentsLockedToLayer(layerComponent: WorkshopComponent): void {
+  public static initializeChildComponentsLockedToLayer(layerComponent: WorkshopComponent): void {
     // WORK 2 - the add may not be required as new properties overwritten by propertyOverwritables
-    layerComponent.newChildComponents.childComponentsLockedToLayer = { list: [] };
+    layerComponent.newChildComponents.childComponentsLockedToLayer = [];
   }
 
   private static createOtherSubcomponentTriggersTemplate(): OtherSubcomponentTriggers {
@@ -142,7 +143,7 @@ export const dropdownItemLayer: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const layerComponent = layerBase.createNewComponent(baseName);
     DropdownItemLayer.overwriteBase(layerComponent);
-    DropdownItemLayer.createChildComponentsLockedToLayer(layerComponent);
+    DropdownItemLayer.initializeChildComponentsLockedToLayer(layerComponent);
     DropdownItemLayer.setStyle(layerComponent);
     return layerComponent;
   },

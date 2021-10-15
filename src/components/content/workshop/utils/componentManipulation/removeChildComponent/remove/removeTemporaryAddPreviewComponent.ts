@@ -1,6 +1,5 @@
 import { TraverseComponentViaPreviewStructureParentFirst } from '../../../componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
 import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../../consts/baseSubcomponentNames.enum';
-import { ChildComponentsInLayer } from '../../../../../../../interfaces/childComponentsLockedToLayer';
 import { Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import ComponentTraversalUtils from '../../../componentTraversal/componentTraversalUtils';
 import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUtils';
@@ -20,8 +19,8 @@ export class RemoveTemporaryAddPreviewComponent extends RemoveAnyChildComponent 
 
   // the reason why we need to fully remove the layer's child component properties is because their addition alters the parent dropdown structure
   // (child components within other temp child components (text in button component) do not affect dropdown structure as they don't use parent)
-  private static removeChildComponentsInLayer(activeComponent: WorkshopComponent, childComponentsLockedToLayer: ChildComponentsInLayer): void {
-    childComponentsLockedToLayer?.list.forEach((subcomponent) => RemoveAnyChildComponent.remove(activeComponent, subcomponent.name));
+  private static removeChildComponentsInLayer(activeComponent: WorkshopComponent, childComponentsLockedToLayer: WorkshopComponent[]): void {
+    childComponentsLockedToLayer?.forEach((component) => RemoveAnyChildComponent.remove(activeComponent, component.baseSubcomponent.name));
   }
 
   public static remove(activeComponent: WorkshopComponent): void {

@@ -33,7 +33,7 @@ export class DropdownPaddingBase extends ComponentBuilder {
       layer.subcomponentProperties.customCss = firstLayerSubcomponentProperties.customCss;
       layer.subcomponentProperties.customFeatures = firstLayerSubcomponentProperties.customFeatures;
       DropdownItemLayer.setTextSubcomponentProperties
-        .bind(menuComponent)(layer.subcomponentProperties.seedComponent.newChildComponents.childComponentsLockedToLayer.list[0].seedComponent);
+        .bind(menuComponent)(layer.subcomponentProperties.seedComponent.newChildComponents.childComponentsLockedToLayer[0]);
     });
   }
 
