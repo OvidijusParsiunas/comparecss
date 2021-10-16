@@ -95,10 +95,6 @@ class DefaultModal extends ComponentBuilder {
     submitButtonComponent.baseSubcomponent.isRemovable = true;
   }
 
-  private static overwriteLayerProperties(layerComponent: WorkshopComponent): void {
-    layerComponent.baseSubcomponent.isRemovable = true;
-  }
-
   private static overwriteCancelButtonProperties(cancelButton: WorkshopComponent): void {
     cancelButton.baseSubcomponent.customStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
     cancelButton.baseSubcomponent.defaultCustomStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
@@ -108,9 +104,9 @@ class DefaultModal extends ComponentBuilder {
   }
 
   private static addNewLayers(cardComponent: WorkshopComponent): WorkshopComponent[] {
-    const layer1Component = AddLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true, DefaultModal.overwriteLayerProperties);
-    const layer2Component = AddLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true, DefaultModal.overwriteLayerProperties);
-    const layer3Component = AddLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true, DefaultModal.overwriteLayerProperties);
+    const layer1Component = AddLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
+    const layer2Component = AddLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
+    const layer3Component = AddLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
     return [layer1Component, layer2Component, layer3Component];
   }
 
@@ -132,6 +128,16 @@ class DefaultModal extends ComponentBuilder {
     UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[0]);
     UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[1]);
     UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[2]);
+  }
+
+  private static overwriteLayer(layerComponent: WorkshopComponent): void {
+    layerComponent.baseSubcomponent.isRemovable = true;
+  }
+
+  public static setPropertyOverwritables(dropdownMenuComponent: WorkshopComponent): void {
+    dropdownMenuComponent.newChildComponents.propertyOverwritables = {
+      [COMPONENT_TYPES.LAYER]: DefaultModal.overwriteLayer,
+    };
   }
 }
 

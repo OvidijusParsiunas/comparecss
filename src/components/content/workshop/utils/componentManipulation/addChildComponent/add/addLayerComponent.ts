@@ -2,7 +2,6 @@ import { DropdownItemsDisplayStatusUtils } from '../../../dropdownItemsDisplaySt
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
-import { OverwritePropertiesFunc } from '../../../../../../../interfaces/overwriteSubcomponentPropertiesFunc';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
@@ -142,21 +141,16 @@ export class AddLayerComponent extends AddComponentShared {
   // as the button is then added to the card - all of its subcomponents including text have card set as their master component
   // when adding text/icon to an existing button - it uses its container's master ref (button pointing to card),
   // hence its masterComponentRef property is going to point towards the card component
-  protected static createNewComponent(componentGenerator: ComponentGenerator, masterComponent: WorkshopComponent, baseName?: string,
-      overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
-    const newComponent = AddComponentShared.createNewComponentViaGenerator(componentGenerator, masterComponent, baseName);
-    // WORK 2 - ovewritePropertiesFunc api does not work as it only works when the component is built first
-    // if (overwritePropertiesFunc) overwritePropertiesFunc(newComponent);
-    return newComponent;
+  protected static createNewComponent(componentGenerator: ComponentGenerator, masterComponent: WorkshopComponent, baseName?: string): WorkshopComponent {
+    return AddComponentShared.createNewComponentViaGenerator(componentGenerator, masterComponent, baseName);
   }
 
-  public static add(containerComponent: WorkshopComponent, componentStyle: COMPONENT_STYLES, isEditable: boolean,
-      overwritePropertiesFunc?: OverwritePropertiesFunc): WorkshopComponent {
+  public static add(containerComponent: WorkshopComponent, componentStyle: COMPONENT_STYLES, isEditable: boolean): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[COMPONENT_TYPES.LAYER][componentStyle];
     const layerName = ChildComponentBaseNamesToStyles.STYLE_TO_LAYER[componentStyle];
     const { higherComponentContainer, masterComponent } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
     const newComponent = AddLayerComponent.createNewComponent(componentGenerator, masterComponent,
-      UniqueSubcomponentNameGenerator.generate(layerName), overwritePropertiesFunc);
+      UniqueSubcomponentNameGenerator.generate(layerName));
     AddComponentShared.populateMasterComponentWithNewSubcomponents(masterComponent, newComponent.subcomponents);
     AddLayerComponent.addLayerToPreview(higherComponentContainer, newComponent);
     if (isEditable) TraverseComponentViaDropdownStructure.traverseUsingComponent(containerComponent,

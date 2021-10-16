@@ -88,7 +88,7 @@ export class DefaultDropdownMenu {
     }
   }
 
-  public static overwrite(dropdownMenuComponent: WorkshopComponent): void {
+  public static setPropertyOverwritables(dropdownMenuComponent: WorkshopComponent): void {
     dropdownMenuComponent.newChildComponents.propertyOverwritables = {
       [COMPONENT_TYPES.LAYER]: DefaultDropdownMenu.overwriteLayer,
     };
@@ -98,7 +98,7 @@ export class DefaultDropdownMenu {
 export const defaultDropdownMenu: ComponentGenerator = {
   createNewComponent(baseName?: string): WorkshopComponent {
     const dropdownMenuComponent = dropdownMenuBase.createNewComponent(baseName);
-    DefaultDropdownMenu.overwrite(dropdownMenuComponent);
+    DefaultDropdownMenu.setPropertyOverwritables(dropdownMenuComponent);
     return dropdownMenuComponent;
   },
 }

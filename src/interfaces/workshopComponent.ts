@@ -179,6 +179,7 @@ export interface WorkshopComponent {
   baseSubcomponent: SubcomponentProperties;
   // gives an in sync child component to identify if the copied component has not been deleted
   componentStatus: { isRemoved: boolean };
+  // WORK 2 - may no longer be needed
   // used to overwrite component and its children properties post processing such as passing a property reference after copying, desyncing etc
   propertyOverwritingExecutables?: OverwritePropertiesFunc[];
   interconnectedSettings?: InterconnectedSetting[];
