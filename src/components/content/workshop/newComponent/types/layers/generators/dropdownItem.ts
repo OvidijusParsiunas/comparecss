@@ -1,5 +1,5 @@
 import { UpdateGenericComponentDropdownItemNames } from '../../../../utils/componentManipulation/updateChildComponent/updateGenericComponentDropdownItemNames';
-import { CustomFeatures, CustomStaticFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { SubcomponentMouseEventCallbacks } from '../../../../../../../interfaces/subcomponentMouseEventCallbacks';
 import { SubcomponentTriggers } from '../../../../utils/componentManipulation/utils/subcomponentTriggers';
@@ -18,6 +18,11 @@ import { SetUtils } from '../../../../utils/generic/setUtils';
 import JSONUtils from '../../../../utils/generic/jsonUtils';
 import { layerBase } from './base';
 
+interface SetTextSubcomponentPropertiesContext {
+  menuComponent: WorkshopComponent;
+  createDefaultTextStyling: () => CustomCss;
+}
+
 export class DropdownItemLayer extends ComponentBuilder {
 
   private static createDefaultTextCustomFeatures(): CustomFeatures {
@@ -28,7 +33,7 @@ export class DropdownItemLayer extends ComponentBuilder {
 
   // split this into more granular methods
   public static setTextSubcomponentProperties(textComponent: WorkshopComponent): void {
-    const menuComponent = this as unknown as WorkshopComponent;
+    const { menuComponent, createDefaultTextStyling } = this as unknown as SetTextSubcomponentPropertiesContext;
     const { layers: activeBaseComponentLayers } = menuComponent.componentPreviewStructure;
     if (activeBaseComponentLayers.length > 1) {
       const siblingDropdownItem = activeBaseComponentLayers[activeBaseComponentLayers.length - 2];
@@ -44,12 +49,12 @@ export class DropdownItemLayer extends ComponentBuilder {
         const { layers } = syncedDropdownComponent.paddingComponentChild.linkedComponents.auxiliary[0].componentPreviewStructure;
         const textSubcomponent = layers.length > 0
           ? layers[0].sections.alignedSections.left[0].subcomponentProperties.customCss
-          : menuComponent.newChildComponents.customCssOverwritables[SUBCOMPONENT_TYPES.TEXT]();
+          : createDefaultTextStyling();
         textComponent.baseSubcomponent.customCss = textSubcomponent;
-        textComponent.baseSubcomponent.defaultCss = menuComponent.newChildComponents.customCssOverwritables[SUBCOMPONENT_TYPES.TEXT]();
+        textComponent.baseSubcomponent.defaultCss = createDefaultTextStyling();
       } else {
-        textComponent.baseSubcomponent.customCss = menuComponent.newChildComponents.customCssOverwritables[SUBCOMPONENT_TYPES.TEXT]();
-        textComponent.baseSubcomponent.defaultCss = menuComponent.newChildComponents.customCssOverwritables[SUBCOMPONENT_TYPES.TEXT]();
+        textComponent.baseSubcomponent.customCss = createDefaultTextStyling();
+        textComponent.baseSubcomponent.defaultCss = createDefaultTextStyling();
       }
       // will have to do the same for layers
       textComponent.baseSubcomponent.customFeatures = DropdownItemLayer.createDefaultTextCustomFeatures();
@@ -90,11 +95,11 @@ export class DropdownItemLayer extends ComponentBuilder {
     });
   }
   
-  public static addChildComponentsToLayer(layerComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
+  public static addChildComponentsToLayer(layerComponent: WorkshopComponent, containerComponent: WorkshopComponent, createDefaultTextStyling: () => CustomCss): void {
     const { higherComponentContainer: menuComponent } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
     const textComponent = AddContainerComponent.add(containerComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
       layerComponent.baseSubcomponent.name,
-      [DropdownItemLayer.setTextSubcomponentProperties.bind(menuComponent)]);
+      [DropdownItemLayer.setTextSubcomponentProperties.bind({ menuComponent, createDefaultTextStyling } as SetTextSubcomponentPropertiesContext)]);
     layerComponent.baseSubcomponent.otherSubcomponentTriggers
       .subcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.baseSubcomponent;
     layerComponent.newChildComponents.childComponentsLockedToLayer.push(textComponent);
@@ -107,7 +112,6 @@ export class DropdownItemLayer extends ComponentBuilder {
   }
 
   public static initializeChildComponentsLockedToLayer(layerComponent: WorkshopComponent): void {
-    // WORK 2 - the add may not be required as new properties overwritten by propertyOverwritables
     layerComponent.newChildComponents.childComponentsLockedToLayer = [];
   }
 

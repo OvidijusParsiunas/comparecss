@@ -2,7 +2,6 @@ import { SyncChildComponentUtils } from '../../../../../toolbar/options/syncChil
 import { CustomCss, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../../consts/cssPropertyValues.enum';
-import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../../interfaces/componentGenerator';
 import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
 import { BORDER_STYLES } from '../../../../../../../../consts/borderStyles.enum';
@@ -82,7 +81,7 @@ export class DefaultDropdownMenu {
 
   // WORK 2 - place in the dropdown item class
   private static overwriteLayer(layerComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
-    DropdownItemLayer.addChildComponentsToLayer(layerComponent, menuComponent);
+    DropdownItemLayer.addChildComponentsToLayer(layerComponent, menuComponent, DefaultDropdownMenu.createDefaultTextCustomCss);
     if (menuComponent.componentPreviewStructure.layers.length === 1
         && !SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(menuComponent)) {
       DefaultDropdownMenu.overwriteLayerCss(layerComponent);
@@ -90,12 +89,9 @@ export class DefaultDropdownMenu {
   }
 
   public static overwrite(dropdownMenuComponent: WorkshopComponent): void {
-    dropdownMenuComponent.newChildComponents.customCssOverwritables = {
-      [SUBCOMPONENT_TYPES.TEXT]: DefaultDropdownMenu.createDefaultTextCustomCss,
-    };
     dropdownMenuComponent.newChildComponents.propertyOverwritables = {
       [COMPONENT_TYPES.LAYER]: DefaultDropdownMenu.overwriteLayer,
-    }
+    };
   }
 }
 

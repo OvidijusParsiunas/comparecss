@@ -1,14 +1,9 @@
-import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
-import { CustomCss, WorkshopComponent } from './workshopComponent';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
+import { WorkshopComponent } from './workshopComponent';
 
 export interface SharedDropdownItemsRefs {
   layer: NestedDropdownStructure;
-}
-
-type NewChildComponentStyles = {
-  [key in SUBCOMPONENT_TYPES]?: () => CustomCss;
 }
 
 type PropertyOverwritables = {
@@ -23,8 +18,6 @@ export interface NewChildComponents {
   // WORK 2 - need to have overwritables for all areas where child components are added
   // WORK 2 - should probably be required
   propertyOverwritables?: PropertyOverwritables;
-  // WORK 2 - remove
-  customCssOverwritables?: NewChildComponentStyles;
   // this property references components that are automatically added to layer and removed a long with it
   // it additionally helps when container component is being copied
   childComponentsLockedToLayer?: WorkshopComponent[];
