@@ -142,7 +142,7 @@ export class AddLayerComponent extends AddComponentShared {
   // when adding text/icon to an existing button - it uses its container's master ref (button pointing to card),
   // hence its masterComponentRef property is going to point towards the card component
   protected static createNewComponent(componentGenerator: ComponentGenerator, masterComponent: WorkshopComponent, baseName?: string): WorkshopComponent {
-    return AddComponentShared.createNewComponentViaGenerator(componentGenerator, masterComponent, baseName);
+    return AddComponentShared.createNewComponentViaGenerator(componentGenerator, masterComponent, { baseName });
   }
 
   public static add(containerComponent: WorkshopComponent, componentStyle: COMPONENT_STYLES, isEditable: boolean): WorkshopComponent {

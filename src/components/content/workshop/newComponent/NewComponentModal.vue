@@ -157,7 +157,7 @@ export default {
       this.currentlySelectedComponentType = componentType;
     },
     addComponent(): void {
-      const newComponent = componentTypeToStyleGenerators[this.currentlySelectedComponentType][DEFAULT_STYLES.DEFAULT].createNewComponent();
+      const newComponent = componentTypeToStyleGenerators[this.currentlySelectedComponentType][DEFAULT_STYLES.DEFAULT].createNewComponent({});
       newComponent.className = this.className;
       this.$emit('add-component', newComponent);
       // updates modal only after it has closed

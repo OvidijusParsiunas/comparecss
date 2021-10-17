@@ -13,6 +13,7 @@ import { IncrementChildComponentCount } from '../../childComponentCount/incremen
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
+import { PropertiesAddedOnGeneration } from '../../../../../../../interfaces/newChildComponents';
 import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
@@ -127,11 +128,12 @@ export class AddContainerComponent extends AddComponentShared {
   }
 
   protected static createNewComponent(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, componentGenerator: ComponentGenerator,
-      componentContainerIsSyncedTo: WorkshopComponent, masterComponent: WorkshopComponent, overwritePropertiesFunc?: OverwritePropertiesFunc[],
-      customBaseName?: string): NewComponentDetails {
+      componentContainerIsSyncedTo: WorkshopComponent, masterComponent: WorkshopComponent, propertiesAddedOnGeneration: PropertiesAddedOnGeneration,
+      overwritePropertiesFunc?: OverwritePropertiesFunc[], customBaseName?: string): NewComponentDetails {
     const baseNamePrefix = AddContainerComponent.getBaseSubcomponentNamePrefix(componentType, componentStyle);
     const baseName = customBaseName || UniqueSubcomponentNameGenerator.generate(baseNamePrefix);
-    const newComponent = AddComponentShared.createNewComponentViaGenerator(componentGenerator, masterComponent, baseName);
+    const presetProperties = Object.assign({ baseName }, propertiesAddedOnGeneration);
+    const newComponent = AddComponentShared.createNewComponentViaGenerator(componentGenerator, masterComponent, presetProperties);
     AddContainerComponent.applyTopProperty(newComponent.baseSubcomponent);
     if (overwritePropertiesFunc) AddContainerComponent.executeOverwritePropertiesFuncs(overwritePropertiesFunc, newComponent);
     if (componentContainerIsSyncedTo) SyncedComponent.copyChildPropertiesFromInSyncContainerComponent(newComponent, componentContainerIsSyncedTo);
@@ -144,7 +146,7 @@ export class AddContainerComponent extends AddComponentShared {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
     const { masterComponent, sync: { componentThisIsSyncedTo } } = containerComponent;
     const [newComponent, baseNamePrefix] = AddContainerComponent.createNewComponent(componentType, componentStyle, componentGenerator,
-      componentThisIsSyncedTo, masterComponent, overwritePropertiesFunc);
+      componentThisIsSyncedTo, masterComponent, containerComponent.newChildComponents.propertiesAddedOnGeneration, overwritePropertiesFunc);
     AddComponentShared.populateMasterComponentWithNewSubcomponents(masterComponent, newComponent.subcomponents);
     AddContainerComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
     AddContainerComponent.addNewComponentToDropdownStructure(newComponent, masterComponent, dropdownStructure);

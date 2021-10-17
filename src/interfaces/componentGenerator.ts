@@ -1,13 +1,12 @@
-import { ALIGNED_SECTION_TYPES } from '../consts/layerSections.enum';
+import { PropertiesAddedOnGeneration } from './newChildComponents';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponent } from './workshopComponent';
 
-export interface PresetProperties {
+export type PresetProperties = {
   baseName?: string;
   componentType?: COMPONENT_TYPES;
   paddingComponent?: WorkshopComponent;
-  alignmentSection?: ALIGNED_SECTION_TYPES;
-}
+} & PropertiesAddedOnGeneration;
 
 export type CreateNewComponent = (presetProperties: PresetProperties) => WorkshopComponent;
 

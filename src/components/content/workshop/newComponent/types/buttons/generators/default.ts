@@ -16,8 +16,6 @@ class DefaultButton extends ComponentBuilder {
   }
 
   private static overwriteCustomFeatures(subcomponent: SubcomponentProperties): void {
-    subcomponent.customStaticFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
-    subcomponent.defaultCustomStaticFeatures.alignedLayerSection.section = ALIGNED_SECTION_TYPES.CENTER;
     subcomponent.customFeatures.animations = ComponentBuilder.createStationaryAnimations({});
     subcomponent.defaultCustomFeatures.animations = ComponentBuilder.createStationaryAnimations({});
   }
@@ -58,6 +56,7 @@ class DefaultButton extends ComponentBuilder {
     buttonComponent.newChildComponents.propertyOverwritables = {
       [COMPONENT_TYPES.TEXT]: DefaultButton.overwriteBase,
     };
+    buttonComponent.newChildComponents.propertiesAddedOnGeneration = { alignmentSection: ALIGNED_SECTION_TYPES.CENTER };
   }
 
   private static overwriteCustomCss(subcomponent: SubcomponentProperties): void {

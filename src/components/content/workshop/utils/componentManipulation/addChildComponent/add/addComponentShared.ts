@@ -1,8 +1,9 @@
+import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { CHILD_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ComponentPreviewStructureSearchUtils } from '../utils/componentPreviewStractureSearchUtils';
+import { PropertiesAddedOnGeneration } from '../../../../../../../interfaces/newChildComponents';
 import { ChildComponentBaseNamesToStyles } from '../utils/childComponentBaseNamesToStyles';
-import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUtils';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -33,9 +34,9 @@ export class AddComponentShared {
   }
 
   protected static createNewComponentViaGenerator(componentGenerator: ComponentGenerator, masterComponent: WorkshopComponent,
-      newComponentName: string): WorkshopComponent {
-    const newComponent = componentGenerator.createNewComponent({ baseName: newComponentName });
-    newComponent.subcomponents[newComponentName].seedComponent = newComponent;
+      presetProperties: PresetProperties): WorkshopComponent {
+    const newComponent = componentGenerator.createNewComponent(presetProperties);
+    newComponent.subcomponents[presetProperties.baseName].seedComponent = newComponent;
     AddComponentShared.setMasterComponentReference(newComponent, masterComponent);
     return newComponent;
   }

@@ -1,9 +1,14 @@
+import { ALIGNED_SECTION_TYPES } from '../consts/layerSections.enum';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponent } from './workshopComponent';
 
 export interface SharedDropdownItemsRefs {
   layer: NestedDropdownStructure;
+}
+
+export interface PropertiesAddedOnGeneration {
+  alignmentSection?: ALIGNED_SECTION_TYPES;
 }
 
 type PropertyOverwritables = {
@@ -18,6 +23,9 @@ export interface NewChildComponents {
   // WORK 2 - need to have overwritables for all areas where child components are added
   // WORK 2 - should probably be required
   propertyOverwritables?: PropertyOverwritables;
+  // this is mostly used for properties that are defined by the parent and need to be applied before any further processing is done during the addition
+  // e.g. the alignment of a button child component (text/icon) before the alignment property is read and the component is placed into a layer section
+  propertiesAddedOnGeneration?: PropertiesAddedOnGeneration;
   // this property references components that are automatically added to layer and removed a long with it
   // it additionally helps when container component is being copied
   childComponentsLockedToLayer?: WorkshopComponent[];
