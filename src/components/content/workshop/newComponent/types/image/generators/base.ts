@@ -1,8 +1,8 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
-import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
@@ -70,8 +70,8 @@ class ImageBase extends ComponentBuilder {
 }
 
 export const imageBase: ComponentGenerator = {
-  createNewComponent(baseName?: string): WorkshopComponent {
-    return ImageBase.createBaseComponent(
-      { componentType: COMPONENT_TYPES.IMAGE, baseName }, ImageBase.createBaseSubcomponent);
+  createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
+    presetProperties.componentType = COMPONENT_TYPES.IMAGE;
+    return ImageBase.createBaseComponent(presetProperties, ImageBase.createBaseSubcomponent);
   },
 }

@@ -34,7 +34,7 @@ export class AddComponentShared {
 
   protected static createNewComponentViaGenerator(componentGenerator: ComponentGenerator, masterComponent: WorkshopComponent,
       newComponentName: string): WorkshopComponent {
-    const newComponent = componentGenerator.createNewComponent(newComponentName);
+    const newComponent = componentGenerator.createNewComponent({ baseName: newComponentName });
     newComponent.subcomponents[newComponentName].seedComponent = newComponent;
     AddComponentShared.setMasterComponentReference(newComponent, masterComponent);
     return newComponent;

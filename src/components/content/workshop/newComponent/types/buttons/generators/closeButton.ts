@@ -1,9 +1,9 @@
 import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { BUTTON_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { AddComponentsToButtonBaseUtils } from '../utils/addComponentsToButtonBaseUtils';
-import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../../../../consts/closeButtonXText';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
@@ -55,8 +55,8 @@ class CloseButton extends ComponentBuilder {
 }
 
 export const closeButton: ComponentGenerator = {
-  createNewComponent(baseName?: string): WorkshopComponent {
-    const buttonComponent = buttonBase.createNewComponent(baseName);
+  createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
+    const buttonComponent = buttonBase.createNewComponent(presetProperties);
     CloseButton.overwrite(buttonComponent);
     AddComponentsToButtonBaseUtils.add(buttonComponent, TEXT_STYLES.CLOSE_BUTTON, CLOSE_BUTTON_X_TEXT);
     return buttonComponent;

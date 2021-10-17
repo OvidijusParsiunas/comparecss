@@ -1,8 +1,8 @@
 import { UniqueSubcomponentNameGenerator } from '../../../../../utils/componentGenerator/uniqueSubcomponentNameGenerator';
+import { ComponentGenerator, PresetProperties } from '../../../../../../../../interfaces/componentGenerator';
 import { DROPDOWN_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentCssClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
-import { ComponentGenerator } from '../../../../../../../../interfaces/componentGenerator';
 import { WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { buttonWithIcon } from '../../../buttons/generators/buttonWithIcon';
 import { defaultDropdownMenu } from '../menu/default';
@@ -31,8 +31,8 @@ class DefaultDropdownPadding {
 }
 
 export const defaultDropdownPadding: ComponentGenerator = {
-  createNewComponent(baseName?: string): WorkshopComponent {
-    const dropdownMenuComponent = defaultDropdownMenu.createNewComponent(UniqueSubcomponentNameGenerator.generate(DROPDOWN_COMPONENTS_BASE_NAMES.MENU));
-    return DropdownPaddingBase.create(baseName, buttonWithIcon.createNewComponent, dropdownMenuComponent, DefaultDropdownPadding.overwrite);
+  createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
+    const dropdownMenuComponent = defaultDropdownMenu.createNewComponent({ baseName: UniqueSubcomponentNameGenerator.generate(DROPDOWN_COMPONENTS_BASE_NAMES.MENU) });
+    return DropdownPaddingBase.create(presetProperties?.baseName, buttonWithIcon.createNewComponent, dropdownMenuComponent, DefaultDropdownPadding.overwrite);
   },
 }

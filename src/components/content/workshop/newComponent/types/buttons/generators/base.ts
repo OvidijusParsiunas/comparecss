@@ -1,12 +1,12 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SubcomponentTriggers } from '../../../../utils/componentManipulation/utils/subcomponentTriggers';
+import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { OtherSubcomponentTriggers } from '../../../../../../../interfaces/otherSubcomponentTriggers';
 import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
-import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { ButtonBaseSpecificSettings } from '../settings/buttonBaseSpecificSettings';
@@ -115,14 +115,15 @@ class ButtonBase extends ComponentBuilder {
 }
 
 export const buttonBase: ComponentGenerator = {
-  createNewComponent(baseName?: string, paddingComponent?: WorkshopComponent): WorkshopComponent {
-    const buttonBaseComponent = ButtonBase.createBaseComponent(
-      { componentType: COMPONENT_TYPES.BUTTON, baseName }, ButtonBase.createBaseSubcomponent);
+  createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
+    presetProperties.componentType = COMPONENT_TYPES.BUTTON;
+    const buttonBaseComponent = ButtonBase.createBaseComponent(presetProperties, ButtonBase.createBaseSubcomponent);
     ButtonBaseSpecificSettings.set(buttonBaseComponent);
     ButtonBase.setChildComponentsItems(buttonBaseComponent);
     ButtonBase.setPropertyOverwritingExecutables(buttonBaseComponent);
     ButtonBase.setSyncableSubcomponents(buttonBaseComponent);
-    if (paddingComponent) SyncedComponent.addParentComponentSyncableContainerComponentsToChild(buttonBaseComponent, paddingComponent);
+    if (presetProperties.paddingComponent) SyncedComponent.addParentComponentSyncableContainerComponentsToChild(
+      buttonBaseComponent, presetProperties.paddingComponent);
     return buttonBaseComponent;
   },
 }

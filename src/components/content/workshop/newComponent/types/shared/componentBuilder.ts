@@ -4,7 +4,6 @@ import { BASE_SUBCOMPONENT_NAMES, MASTER_SUBCOMPONENT_BASE_NAME } from '../../..
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { SubcomponentTypeToProperties } from '../../../../../../interfaces/subcomponentTypeToProperties';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../consts/dropdownMenuAlignment.enum';
-import { NewComponentStyleProperties } from '../../../../../../consts/newComponentStyleProperties';
 import { ComponentPreviewStructure } from '../../../../../../interfaces/componentPreviewStructure';
 import { DropdownFeatures, SelectDropdown } from '../../../../../../interfaces/dropdownFeatures';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
@@ -13,6 +12,7 @@ import { ChildComponentCount } from '../../../../../../interfaces/childComponent
 import { SelectDropdownUtils } from '../dropdowns/selectDropdown/selectDropdownUtils';
 import { JAVASCRIPT_CLASSES } from '../../../../../../consts/javascriptClasses.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
+import { PresetProperties } from '../../../../../../interfaces/componentGenerator';
 import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
 import { CloseTriggers } from '../../../../../../interfaces/closeTriggers';
@@ -179,13 +179,14 @@ export class ComponentBuilder {
       subcomponentNameToDropdownItemName: { [baseSubcomponentName]: baseSubcomponentName },
     };
   }
-  private static createComponent(componentStyle: NewComponentStyleProperties, baseSubcomponent: SubcomponentProperties,
+
+  private static createComponent(presetProperties: PresetProperties, baseSubcomponent: SubcomponentProperties,
       isBaseOptional = true): WorkshopComponent {
     const baseName = baseSubcomponent.name;
     const subcomponents = { [baseName]: baseSubcomponent };
     const componentPreviewStructure = ComponentBuilder.createEmptyComponentPreviewStructure(baseName, isBaseOptional);
     return {
-      type: componentStyle.componentType,
+      type: presetProperties.componentType,
       style: DEFAULT_STYLES.DEFAULT,
       subcomponents,
       activeSubcomponentName: baseName,
@@ -198,12 +199,21 @@ export class ComponentBuilder {
       newChildComponents: {},
     };
   }
+  
+  private static alignBase(baseSubcomponent: SubcomponentProperties, alignedSection: ALIGNED_SECTION_TYPES): void {
+    if (baseSubcomponent.customStaticFeatures) {
+      baseSubcomponent.customStaticFeatures.alignedLayerSection = { section: alignedSection };
+    } else {
+      baseSubcomponent.customStaticFeatures = { alignedLayerSection: { section: alignedSection } };
+    }
+  }
 
-  public static createBaseComponent(componentStyle: NewComponentStyleProperties,
+  public static createBaseComponent(presetProperties: PresetProperties,
       createBaseSubcomponent: (name: string) => SubcomponentProperties, isBaseOptional = true): WorkshopComponent {
-    const baseName = componentStyle.baseName || MASTER_SUBCOMPONENT_BASE_NAME.BASE;
+    const baseName = presetProperties.baseName || MASTER_SUBCOMPONENT_BASE_NAME.BASE;
     const baseSubcomponent = createBaseSubcomponent(baseName);
-    const baseComponent = ComponentBuilder.createComponent(componentStyle, baseSubcomponent, isBaseOptional);
+    if (presetProperties.alignmentSection) ComponentBuilder.alignBase(baseSubcomponent, presetProperties.alignmentSection);
+    const baseComponent = ComponentBuilder.createComponent(presetProperties, baseSubcomponent, isBaseOptional);
     baseSubcomponent.seedComponent = baseComponent;
     baseComponent.masterComponent = baseComponent;
     return baseComponent;

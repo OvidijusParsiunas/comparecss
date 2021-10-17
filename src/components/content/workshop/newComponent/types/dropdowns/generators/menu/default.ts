@@ -1,8 +1,8 @@
 import { SyncChildComponentUtils } from '../../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
+import { ComponentGenerator, PresetProperties } from '../../../../../../../../interfaces/componentGenerator';
 import { CustomCss, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../../consts/cssPropertyValues.enum';
-import { ComponentGenerator } from '../../../../../../../../interfaces/componentGenerator';
 import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
 import { BORDER_STYLES } from '../../../../../../../../consts/borderStyles.enum';
 import { DropdownItemLayer } from '../../../layers/generators/dropdownItem';
@@ -96,8 +96,8 @@ export class DefaultDropdownMenu {
 }
 
 export const defaultDropdownMenu: ComponentGenerator = {
-  createNewComponent(baseName?: string): WorkshopComponent {
-    const dropdownMenuComponent = dropdownMenuBase.createNewComponent(baseName);
+  createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
+    const dropdownMenuComponent = dropdownMenuBase.createNewComponent(presetProperties);
     DefaultDropdownMenu.setPropertyOverwritables(dropdownMenuComponent);
     return dropdownMenuComponent;
   },

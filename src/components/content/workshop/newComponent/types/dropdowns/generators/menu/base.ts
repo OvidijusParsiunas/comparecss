@@ -3,6 +3,7 @@ import { UpdateLayerDropdownItemNames } from '../../../../../utils/componentMani
 import { AddLayerComponent } from '../../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
 import { DropdownFeatures, DropdownMenuPosition } from '../../../../../../../../interfaces/dropdownFeatures';
+import { ComponentGenerator, PresetProperties } from '../../../../../../../../interfaces/componentGenerator';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
 import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { DROPDOWN_MENU_POSITIONS } from '../../../../../../../../consts/dropdownMenuPositions.enum';
@@ -10,7 +11,6 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentC
 import { DropdownUtils } from '../../../../../utils/componentManipulation/utils/dropdownUtils';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
-import { ComponentGenerator } from '../../../../../../../../interfaces/componentGenerator';
 import { inheritedBaseChildCss } from '../../../shared/childCss/inheritedBaseChildCss';
 import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
 import { inheritedCardBaseCss } from '../../../cards/inheritedCss/inheritedCardCss';
@@ -120,9 +120,9 @@ class DropdownMenuBase extends ComponentBuilder {
 }
 
 export const dropdownMenuBase: ComponentGenerator = {
-  createNewComponent(baseName?: string): WorkshopComponent {
-    const dropdownMenuComponent = DropdownMenuBase.createBaseComponent(
-      { componentType: COMPONENT_TYPES.DROPDOWN_MENU, baseName }, DropdownMenuBase.createBaseSubcomponent, false);
+  createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
+  presetProperties.componentType = COMPONENT_TYPES.DROPDOWN_MENU;
+    const dropdownMenuComponent = DropdownMenuBase.createBaseComponent(presetProperties, DropdownMenuBase.createBaseSubcomponent, false);
     DropdownMenuBase.setAreLayersInSyncByDefault(dropdownMenuComponent);
     DropdownMenuBase.setTriggerFuncOnSettingChange(dropdownMenuComponent);
     DropdownMenuBase.setSyncableSubcomponents(dropdownMenuComponent);

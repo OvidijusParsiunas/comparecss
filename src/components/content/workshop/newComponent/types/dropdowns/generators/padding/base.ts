@@ -1,8 +1,8 @@
 import { UpdateLinkedComponentsDropdownItemNames } from '../../../../../utils/componentManipulation/updateChildComponent/updateLinkedComponentsDropdownItemNames';
 import { BUTTON_COMPONENTS_BASE_NAMES, DROPDOWN_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
+import { ComponentGenerator, CreateNewComponent, PresetProperties } from '../../../../../../../../interfaces/componentGenerator';
 import { UniqueSubcomponentNameGenerator } from '../../../../../utils/componentGenerator/uniqueSubcomponentNameGenerator';
-import { ComponentGenerator, CreateNewComponent } from '../../../../../../../../interfaces/componentGenerator';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
 import { PaddingComponentUtils } from '../../../shared/paddingComponent/paddingComponentUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
@@ -106,8 +106,8 @@ export class DropdownPaddingBase extends ComponentBuilder {
 }
 
 export const dropdownPaddingBase: ComponentGenerator = {
-  createNewComponent(baseName?: string): WorkshopComponent {
-    const dropdownMenuComponent = defaultDropdownMenu.createNewComponent(UniqueSubcomponentNameGenerator.generate(DROPDOWN_COMPONENTS_BASE_NAMES.MENU));
-    return DropdownPaddingBase.create(baseName, buttonWithIcon.createNewComponent, dropdownMenuComponent);
+  createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
+    const dropdownMenuComponent = defaultDropdownMenu.createNewComponent({ baseName: UniqueSubcomponentNameGenerator.generate(DROPDOWN_COMPONENTS_BASE_NAMES.MENU) });
+    return DropdownPaddingBase.create(presetProperties.baseName, buttonWithIcon.createNewComponent, dropdownMenuComponent);
   },
 }

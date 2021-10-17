@@ -1,7 +1,7 @@
 import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
-import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { inheritedCloseTextCss } from '../inheritedCss/inheritedCloseTextCss';
@@ -63,8 +63,8 @@ class CloseButtonText extends ComponentBuilder {
 }
 
 export const closeButtonText: ComponentGenerator = {
-  createNewComponent(baseName?: string): WorkshopComponent {
-    const closeButtonTextComponent =  textBase.createNewComponent(baseName);
+  createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
+    const closeButtonTextComponent =  textBase.createNewComponent(presetProperties);
     CloseButtonText.overwriteBase(closeButtonTextComponent)
     CloseButtonText.setStyle(closeButtonTextComponent)
     return closeButtonTextComponent;

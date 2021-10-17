@@ -24,7 +24,7 @@ class ModalBase extends ComponentBuilder {
 
 export const modalBase: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
-    const modalComponent = cardBase.createNewComponent();
+    const modalComponent = cardBase.createNewComponent({});
     modalComponent.type = COMPONENT_TYPES.MODAL;
     ModalBase.overwriteBaseCustomFeatures(modalComponent);
     return modalComponent;

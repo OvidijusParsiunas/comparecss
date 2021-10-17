@@ -19,10 +19,57 @@ import JSONUtils from '../../../generic/jsonUtils';
 
 export class AddLayerComponent extends AddComponentShared {
 
+  // this should be in a shared utils file
+  private static executePropertyOverwritables(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
+    // WORK 2 - strategy for getting in sync component is by having components synced to property inside container component
+    const overwritable = containerComponent.newChildComponents.propertyOverwritables?.[newComponent.type];
+    overwritable?.(newComponent, containerComponent);
+  }
+
+  private static copySiblingSubcomponent(containerComponent: WorkshopComponent, newLayerProperties: SubcomponentProperties): void {
+    const siblingSubcomponent = containerComponent.componentPreviewStructure.layers[containerComponent.componentPreviewStructure.layers.length - 2];
+    const { customCss, defaultCss, customFeatures, defaultCustomFeatures } = siblingSubcomponent.subcomponentProperties;
+    if (containerComponent.areLayersInSyncByDefault) {
+      newLayerProperties.customCss = customCss;
+      newLayerProperties.defaultCss = defaultCss;
+      newLayerProperties.customFeatures = customFeatures;
+      newLayerProperties.defaultCustomFeatures = defaultCustomFeatures;
+    } else {
+      newLayerProperties.customCss = JSONUtils.deepCopy(customCss);
+      newLayerProperties.defaultCss = JSONUtils.deepCopy(defaultCss);
+      newLayerProperties.customFeatures = JSONUtils.deepCopy(customFeatures);
+      newLayerProperties.defaultCustomFeatures = JSONUtils.deepCopy(defaultCustomFeatures); 
+    }
+  }
+
+  private static getMatchingComponentFromAnotherContainerSyncables(targetComponent: WorkshopComponent, anotherContainer: WorkshopComponent): WorkshopComponent {
+    return anotherContainer.sync.syncables.onCopy.childComponents.find((component) => component.type === targetComponent.type);
+  }
+
+  private static copySyncedComponent(syncedComponent: WorkshopComponent, containerComponent: WorkshopComponent, newLayerProperties: SubcomponentProperties): void {
+    const sameContainerComponentInSyncedComponent = AddLayerComponent.getMatchingComponentFromAnotherContainerSyncables(
+      containerComponent, syncedComponent.sync.componentThisIsSyncedTo);
+    if (sameContainerComponentInSyncedComponent.componentPreviewStructure.layers.length > 0) {
+      const { customCss, customFeatures } = sameContainerComponentInSyncedComponent.componentPreviewStructure.layers[0].subcomponentProperties;
+      newLayerProperties.customCss = customCss;
+      newLayerProperties.customFeatures = customFeatures;
+    }
+  }
+
+  // current strategy does not work if component is in sync and multiple layers have different child components
+  private static overwriteSubcomponentCustomProperties(containerComponent: WorkshopComponent, newLayerProperties: SubcomponentProperties): void {
+    if (containerComponent.componentPreviewStructure.layers.length === 1) {
+      const syncedComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(containerComponent);
+      if (syncedComponent) AddLayerComponent.copySyncedComponent(syncedComponent, containerComponent, newLayerProperties);
+    } else {
+      AddLayerComponent.copySiblingSubcomponent(containerComponent, newLayerProperties);
+    }
+  }
+
   // needs to be done after dropdown items have been updated as property overwritables can add new components
   protected static overwriteProperties(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
     AddLayerComponent.overwriteSubcomponentCustomProperties(containerComponent, newComponent.baseSubcomponent);
-    AddLayerComponent.applyPropertyOverwritables(newComponent, containerComponent);
+    AddLayerComponent.executePropertyOverwritables(newComponent, containerComponent);
   }
 
   private static addNewChildComponentsItems(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
@@ -60,53 +107,6 @@ export class AddLayerComponent extends AddComponentShared {
     if (containerComponent.componentPreviewStructure.layers.length === 1 && containerComponent.areLayersInSyncByDefault) {
       const parentComponent = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(containerComponent);
       if (parentComponent) AddLayerComponent.updateOtherLayers(parentComponent, containerComponent, newLayer);
-    }
-  }
-
-  // this should be in a shared utils file
-  public static applyPropertyOverwritables(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
-    // WORK 2 - strategy for getting in sync component is by having components synced to property inside container component
-    const overwritable = containerComponent.newChildComponents.propertyOverwritables?.[newComponent.type];
-    overwritable?.(newComponent, containerComponent);
-  }
-
-  private static getMatchingComponentFromAnotherContainerSyncables(targetComponent: WorkshopComponent, anotherContainer: WorkshopComponent): WorkshopComponent {
-    return anotherContainer.sync.syncables.onCopy.childComponents.find((component) => component.type === targetComponent.type);
-  }
-
-  private static copySyncedComponent(syncedComponent: WorkshopComponent, containerComponent: WorkshopComponent, newLayerProperties: SubcomponentProperties): void {
-    const sameContainerComponentInSyncedComponent = AddLayerComponent.getMatchingComponentFromAnotherContainerSyncables(
-      containerComponent, syncedComponent.sync.componentThisIsSyncedTo);
-    if (sameContainerComponentInSyncedComponent.componentPreviewStructure.layers.length > 0) {
-      const { customCss, customFeatures } = sameContainerComponentInSyncedComponent.componentPreviewStructure.layers[0].subcomponentProperties;
-      newLayerProperties.customCss = customCss;
-      newLayerProperties.customFeatures = customFeatures;
-    }
-  }
-
-  private static copySiblingSubcomponent(containerComponent: WorkshopComponent, newLayerProperties: SubcomponentProperties): void {
-    const siblingSubcomponent = containerComponent.componentPreviewStructure.layers[containerComponent.componentPreviewStructure.layers.length - 2];
-    const { customCss, defaultCss, customFeatures, defaultCustomFeatures } = siblingSubcomponent.subcomponentProperties;
-    if (containerComponent.areLayersInSyncByDefault) {
-      newLayerProperties.customCss = customCss;
-      newLayerProperties.defaultCss = defaultCss;
-      newLayerProperties.customFeatures = customFeatures;
-      newLayerProperties.defaultCustomFeatures = defaultCustomFeatures;
-    } else {
-      newLayerProperties.customCss = JSONUtils.deepCopy(customCss);
-      newLayerProperties.defaultCss = JSONUtils.deepCopy(defaultCss);
-      newLayerProperties.customFeatures = JSONUtils.deepCopy(customFeatures);
-      newLayerProperties.defaultCustomFeatures = JSONUtils.deepCopy(defaultCustomFeatures); 
-    }
-  }
-
-  // current strategy does not work if component is in sync and multiple layers have different child components
-  private static overwriteSubcomponentCustomProperties(containerComponent: WorkshopComponent, newLayerProperties: SubcomponentProperties): void {
-    if (containerComponent.componentPreviewStructure.layers.length === 1) {
-      const syncedComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(containerComponent);
-      if (syncedComponent) AddLayerComponent.copySyncedComponent(syncedComponent, containerComponent, newLayerProperties);
-    } else {
-      AddLayerComponent.copySiblingSubcomponent(containerComponent, newLayerProperties);
     }
   }
 

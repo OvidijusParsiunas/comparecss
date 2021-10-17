@@ -3,6 +3,7 @@ import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } fr
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { SubcomponentMouseEventCallbacks } from '../../../../../../../interfaces/subcomponentMouseEventCallbacks';
 import { SubcomponentTriggers } from '../../../../utils/componentManipulation/utils/subcomponentTriggers';
+import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { OtherSubcomponentTriggers } from '../../../../../../../interfaces/otherSubcomponentTriggers';
 import { ActiveComponentUtils } from '../../../../utils/activeComponent/activeComponentUtils';
@@ -10,7 +11,6 @@ import { LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/component
 import { SelectDropdownUtils } from '../../dropdowns/selectDropdown/selectDropdownUtils';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
-import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
@@ -144,8 +144,8 @@ export class DropdownItemLayer extends ComponentBuilder {
 }
 
 export const dropdownItemLayer: ComponentGenerator = {
-  createNewComponent(baseName?: string): WorkshopComponent {
-    const layerComponent = layerBase.createNewComponent(baseName);
+  createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
+    const layerComponent = layerBase.createNewComponent(presetProperties);
     DropdownItemLayer.overwriteBase(layerComponent);
     DropdownItemLayer.initializeChildComponentsLockedToLayer(layerComponent);
     DropdownItemLayer.setStyle(layerComponent);

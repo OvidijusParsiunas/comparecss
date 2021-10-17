@@ -1,10 +1,10 @@
+import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { CreateNewComponent } from '../../../../../../../interfaces/componentGenerator';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { plainLayer } from '../../layers/generators/plainLayer';
-import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
 
 export class PaddingComponentUtils {
 
@@ -30,7 +30,7 @@ export class PaddingComponentUtils {
 
   private static createChildComponent(paddingComponent: WorkshopComponent, createChildComponentFunc: CreateNewComponent, childBaseName: string,
       overwriteChildComponentFunc: (childComponent: WorkshopComponent) => void): WorkshopComponent {
-    const childComponent = createChildComponentFunc(childBaseName, paddingComponent);
+    const childComponent = createChildComponentFunc({ baseName: childBaseName, paddingComponent });
     overwriteChildComponentFunc(childComponent);
     SyncedComponent.addParentComponentSyncableContainerComponentsToChild(childComponent, paddingComponent);
     childComponent.paddingComponent = paddingComponent;
@@ -41,7 +41,7 @@ export class PaddingComponentUtils {
   public static create(baseName: string, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, baseType: SUBCOMPONENT_TYPES,
       createChildComponentFunc: CreateNewComponent, childBaseName: string,
       overwriteChildComponentFunc: (childComponent: WorkshopComponent) => void): WorkshopComponent {
-    const paddingComponent = plainLayer.createNewComponent(baseName);
+    const paddingComponent = plainLayer.createNewComponent({ baseName });
     paddingComponent.type = componentType;
     paddingComponent.style = componentStyle;
     paddingComponent.baseSubcomponent.subcomponentType = baseType;

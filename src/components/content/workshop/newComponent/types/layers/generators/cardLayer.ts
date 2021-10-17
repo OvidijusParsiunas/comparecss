@@ -1,7 +1,7 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
-import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { CardLayerSpecificSettings } from '../settings/cardLayerSpecificSettings';
 import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
@@ -71,8 +71,8 @@ class CardLayer extends ComponentBuilder {
 }
 
 export const cardLayer: ComponentGenerator = {
-  createNewComponent(baseName?: string): WorkshopComponent {
-    const layerComponent = layerBase.createNewComponent(baseName);
+  createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
+    const layerComponent = layerBase.createNewComponent(presetProperties);
     CardLayer.overwriteBase(layerComponent);
     CardLayer.setStyle(layerComponent);
     CardLayerSpecificSettings.set(layerComponent);

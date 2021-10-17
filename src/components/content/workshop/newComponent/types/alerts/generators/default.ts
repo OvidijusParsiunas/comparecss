@@ -2,7 +2,7 @@ import { UpdateGenericComponentDropdownItemNames } from '../../../../utils/compo
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
-import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
+import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -35,8 +35,8 @@ class DefaultAlert extends ComponentBuilder {
 }
 
 export const defaultAlert: ComponentGenerator = {
-  createNewComponent(baseName?: string): WorkshopComponent {
-    const alertComponent = alertBase.createNewComponent(baseName);
+  createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
+    const alertComponent = alertBase.createNewComponent(presetProperties);
     DefaultAlert.addComponentsToBase(alertComponent);
     return alertComponent;
   },

@@ -143,7 +143,7 @@ class DefaultModal extends ComponentBuilder {
 
 export const defaultModal: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
-    const modalComponent = modalBase.createNewComponent();
+    const modalComponent = modalBase.createNewComponent({});
     DefaultModal.addComponentsToBase(modalComponent);
     DefaultModal.setNewChildComponents(modalComponent);
     ModalBaseSpecificSettings.set(modalComponent);

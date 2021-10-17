@@ -105,7 +105,7 @@ export default {
       displayed: false,
       mouseEvents: null,
       subcomponentAndOverlayElementIds: null,
-      component: componentTypeToStyleGenerators[COMPONENT_TYPES.BUTTON][DEFAULT_STYLES.DEFAULT].createNewComponent(),
+      component: componentTypeToStyleGenerators[COMPONENT_TYPES.BUTTON][DEFAULT_STYLES.DEFAULT].createNewComponent({}),
     },
   }),
   methods: {

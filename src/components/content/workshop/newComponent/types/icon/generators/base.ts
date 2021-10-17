@@ -1,9 +1,9 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { DROPDOWN_ARROW_ICON_TYPES } from '../../../../../../../consts/dropdownArrowIcons';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
-import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
@@ -76,9 +76,9 @@ export class IconBase extends ComponentBuilder {
 }
 
 export const iconBase: ComponentGenerator = {
-  createNewComponent(baseName?: string): WorkshopComponent {
-    const iconBaseComponent = IconBase.createBaseComponent(
-      { componentType: COMPONENT_TYPES.ICON, baseName }, IconBase.createBaseSubcomponent);
+  createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
+    presetProperties.componentType = COMPONENT_TYPES.ICON;
+    const iconBaseComponent = IconBase.createBaseComponent(presetProperties, IconBase.createBaseSubcomponent);
     IconSpecificSettings.set(iconBaseComponent);
     return iconBaseComponent;
   },

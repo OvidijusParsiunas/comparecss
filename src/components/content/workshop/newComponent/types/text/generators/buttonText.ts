@@ -1,7 +1,7 @@
 import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
-import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
@@ -70,8 +70,8 @@ class ButtonText extends ComponentBuilder {
 }
 
 export const buttonText: ComponentGenerator = {
-  createNewComponent(baseName?: string): WorkshopComponent {
-    const buttonTextComponent = textBase.createNewComponent(baseName);
+  createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
+    const buttonTextComponent = textBase.createNewComponent(presetProperties);
     ButtonText.overwriteBase(buttonTextComponent);
     ButtonText.setStyle(buttonTextComponent);
     return buttonTextComponent;

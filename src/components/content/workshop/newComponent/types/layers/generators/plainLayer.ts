@@ -1,6 +1,6 @@
+import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { layerBase } from './base';
@@ -26,8 +26,8 @@ class PlaneLayer extends ComponentBuilder {
 }
 
 export const plainLayer: ComponentGenerator = {
-  createNewComponent(baseName?: string): WorkshopComponent {
-    const layerComponent = layerBase.createNewComponent(baseName);
+  createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
+    const layerComponent = layerBase.createNewComponent(presetProperties);
     PlaneLayer.overwriteBaseCustomCss(layerComponent);
     PlaneLayer.setStyle(layerComponent);
     return layerComponent;

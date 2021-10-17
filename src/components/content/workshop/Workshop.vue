@@ -177,7 +177,7 @@ export default {
     isIconsPreloaded: false,
     componentPreviewAssistance: { margin: false },
     components: [
-      defaultDropdownPadding.createNewComponent(),
+      defaultDropdownPadding.createNewComponent({}),
     ],
     tempComponents: [],
     currentlySelectedComponent: null,

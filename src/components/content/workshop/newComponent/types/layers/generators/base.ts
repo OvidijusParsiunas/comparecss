@@ -1,8 +1,8 @@
 import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
-import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
@@ -40,8 +40,8 @@ class LayerBase extends ComponentBuilder {
 }
 
 export const layerBase: ComponentGenerator = {
-  createNewComponent(baseName?: string): WorkshopComponent {
-    return LayerBase.createBaseComponent(
-      { componentType: COMPONENT_TYPES.LAYER, baseName }, LayerBase.createBaseSubcomponent);
+  createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
+    presetProperties.componentType = COMPONENT_TYPES.LAYER;
+    return LayerBase.createBaseComponent(presetProperties, LayerBase.createBaseSubcomponent);
   },
 }

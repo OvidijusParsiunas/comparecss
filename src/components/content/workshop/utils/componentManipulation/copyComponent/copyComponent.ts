@@ -160,7 +160,7 @@ export class CopyComponent extends ComponentBuilder {
   public static copy(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {
     // used here as button builders do not inherently reset the unique id
     uniqueSubcomponentIdState.resetUniqueId();
-    const newComponent = componentTypeToStyleGenerators[componentBeingCopied.type][DEFAULT_STYLES.BASE].createNewComponent();
+    const newComponent = componentTypeToStyleGenerators[componentBeingCopied.type][DEFAULT_STYLES.BASE].createNewComponent({});
     CopyComponent.copyComponent(newComponent, componentBeingCopied);
     newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className,
       (optionsComponent.components as undefined as WorkshopComponent[]), '-copy');

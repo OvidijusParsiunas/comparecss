@@ -135,7 +135,7 @@ class DefaultCard extends ComponentBuilder {
 
 export const defaultCard: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
-    const cardComponent = cardBase.createNewComponent();
+    const cardComponent = cardBase.createNewComponent({});
     DefaultCard.setPropertyOverwritables(cardComponent);
     DefaultCard.addComponentsToBase(cardComponent);
     return cardComponent;

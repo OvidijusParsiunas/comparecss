@@ -1,12 +1,11 @@
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { BUTTON_COMPONENTS_BASE_NAMES, PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
+import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
-import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
-import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { AlertBaseSpecificSettings } from '../settings/alertBaseSpecificSettings';
 import { inheritedCardBaseCss } from '../../cards/inheritedCss/inheritedCardCss';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
@@ -68,10 +67,9 @@ class AlertBase extends ComponentBuilder {
 }
 
 export const alertBase: ComponentGenerator = {
-  createNewComponent(baseName?: string): WorkshopComponent {
+  createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
     uniqueSubcomponentIdState.resetUniqueId();
-    const alertBaseComponent = AlertBase.createBaseComponent(
-      { componentType: COMPONENT_TYPES.ALERT, baseName }, AlertBase.createBaseSubcomponent, false);
+    const alertBaseComponent = AlertBase.createBaseComponent(presetProperties, AlertBase.createBaseSubcomponent, false);
     AlertBase.setChildComponentsItems(alertBaseComponent);
     AlertBaseSpecificSettings.set(alertBaseComponent);
     return alertBaseComponent;

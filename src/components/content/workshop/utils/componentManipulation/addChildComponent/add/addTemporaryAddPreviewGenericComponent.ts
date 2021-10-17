@@ -15,6 +15,7 @@ export class AddTemporaryAddPreviewGenericComponent extends AddContainerComponen
     AddChildComponentOverlay.display(newComponent);
     Object.assign(containerComponent.subcomponents, newComponent.subcomponents);
     AddContainerComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
+    AddContainerComponent.executePropertyOverwritables(newComponent, activeComponent);
     return newComponent;
   }
 }

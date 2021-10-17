@@ -1,11 +1,11 @@
-import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
+import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { TextSpecificSettings } from '../settings/textSpecificSettings';
 import { textBase } from './base';
 
 export const defaultText: ComponentGenerator = {
-  createNewComponent(baseName?: string): WorkshopComponent {
-    const textComponent = textBase.createNewComponent(baseName);
+  createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
+    const textComponent = textBase.createNewComponent(presetProperties);
     TextSpecificSettings.set(textComponent);
     return textComponent;
   },
