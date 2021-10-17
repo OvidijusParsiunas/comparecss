@@ -107,7 +107,8 @@ export class DropdownPaddingBase extends ComponentBuilder {
 
 export const dropdownPaddingBase: ComponentGenerator = {
   createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
-    const dropdownMenuComponent = defaultDropdownMenu.createNewComponent({ baseName: UniqueSubcomponentNameGenerator.generate(DROPDOWN_COMPONENTS_BASE_NAMES.MENU) });
+    const dropdownMenuComponent = defaultDropdownMenu.createNewComponent(
+      { baseName: UniqueSubcomponentNameGenerator.generate(DROPDOWN_COMPONENTS_BASE_NAMES.MENU) });
     return DropdownPaddingBase.create(presetProperties.baseName, buttonWithIcon.createNewComponent, dropdownMenuComponent);
   },
 }

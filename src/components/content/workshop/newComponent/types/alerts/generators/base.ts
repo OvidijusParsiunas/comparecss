@@ -7,6 +7,7 @@ import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValu
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
 import { AlertBaseSpecificSettings } from '../settings/alertBaseSpecificSettings';
+import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { inheritedCardBaseCss } from '../../cards/inheritedCss/inheritedCardCss';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
@@ -69,7 +70,8 @@ class AlertBase extends ComponentBuilder {
 export const alertBase: ComponentGenerator = {
   createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
     uniqueSubcomponentIdState.resetUniqueId();
-    const alertBaseComponent = AlertBase.createBaseComponent(presetProperties, AlertBase.createBaseSubcomponent, false);
+    presetProperties.componentType = COMPONENT_TYPES.ALERT;
+    const alertBaseComponent = ComponentBuilder.createBaseComponent(presetProperties, AlertBase.createBaseSubcomponent, false);
     AlertBase.setChildComponentsItems(alertBaseComponent);
     AlertBaseSpecificSettings.set(alertBaseComponent);
     return alertBaseComponent;

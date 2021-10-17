@@ -11,32 +11,36 @@ import { alertBase } from './base';
 
 class DefaultAlert extends ComponentBuilder {
 
-  private static overwriteCloseButtonProperties(closeButtonComponent: WorkshopComponent): void {
-    closeButtonComponent.baseSubcomponent.customStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    closeButtonComponent.baseSubcomponent.defaultCustomStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.RIGHT);
-    closeButtonComponent.baseSubcomponent.isRemovable = true;
-  }
-
-  private static overwriteTextProperties(textComponent: WorkshopComponent): void {
-    textComponent.baseSubcomponent.customStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER);
-    textComponent.baseSubcomponent.defaultCustomStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER);
-    textComponent.baseSubcomponent.isRemovable = true;
+  private static setComponentToRemovable(component: WorkshopComponent): void {
+    component.baseSubcomponent.isRemovable = true;
   }
 
   public static addComponentsToBase(alertComponent: WorkshopComponent): void {
     const layerComponent = AddLayerComponent.add(alertComponent, LAYER_STYLES.PLAIN, false);
     const layerComponentBaseName = layerComponent.baseSubcomponent.name;
-    AddContainerComponent.add(alertComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
-      layerComponentBaseName, [DefaultAlert.overwriteTextProperties]);
-    AddContainerComponent.add(alertComponent, COMPONENT_TYPES.BUTTON,
-      BUTTON_STYLES.CLOSE, layerComponentBaseName, [DefaultAlert.overwriteCloseButtonProperties]);
+    AddContainerComponent.add(alertComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT, layerComponentBaseName);
+    AddContainerComponent.add(alertComponent, COMPONENT_TYPES.BUTTON, BUTTON_STYLES.CLOSE, layerComponentBaseName);
     UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(alertComponent, alertComponent.componentPreviewStructure.layers[0]);
+  }
+
+  public static setPropertyOverwritables(alertComponent: WorkshopComponent): void {
+    alertComponent.newChildComponents.propertyOverwritables = {
+      postBuildCallbacks: {
+        [COMPONENT_TYPES.TEXT]: DefaultAlert.setComponentToRemovable,
+        [COMPONENT_TYPES.BUTTON]: DefaultAlert.setComponentToRemovable,
+      },
+      propertiesAddedOnBuild: {
+        [COMPONENT_TYPES.TEXT]: { alignmentSection: ALIGNED_SECTION_TYPES.CENTER },
+        [COMPONENT_TYPES.BUTTON]: { alignmentSection: ALIGNED_SECTION_TYPES.RIGHT },
+      },
+    };
   }
 }
 
 export const defaultAlert: ComponentGenerator = {
   createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
     const alertComponent = alertBase.createNewComponent(presetProperties);
+    DefaultAlert.setPropertyOverwritables(alertComponent);
     DefaultAlert.addComponentsToBase(alertComponent);
     return alertComponent;
   },
