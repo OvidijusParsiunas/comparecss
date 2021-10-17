@@ -54,9 +54,13 @@ class DefaultButton extends ComponentBuilder {
 
   public static setPropertyOverwritables(buttonComponent: WorkshopComponent): void {
     buttonComponent.newChildComponents.propertyOverwritables = {
-      [COMPONENT_TYPES.TEXT]: DefaultButton.overwriteBase,
+      postGenerationCallbacks: {
+        [COMPONENT_TYPES.TEXT]: DefaultButton.overwriteBase,
+      },
+      propertiesAddedOnGeneration: {
+        [COMPONENT_TYPES.TEXT]: { alignmentSection: ALIGNED_SECTION_TYPES.CENTER },
+      },
     };
-    buttonComponent.newChildComponents.propertiesAddedOnGeneration = { alignmentSection: ALIGNED_SECTION_TYPES.CENTER };
   }
 
   private static overwriteCustomCss(subcomponent: SubcomponentProperties): void {

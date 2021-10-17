@@ -136,7 +136,9 @@ class DefaultModal extends ComponentBuilder {
 
   public static setPropertyOverwritables(dropdownMenuComponent: WorkshopComponent): void {
     dropdownMenuComponent.newChildComponents.propertyOverwritables = {
-      [COMPONENT_TYPES.LAYER]: DefaultModal.overwriteLayer,
+      postGenerationCallbacks: {
+        [COMPONENT_TYPES.LAYER]: DefaultModal.overwriteLayer,
+      },
     };
   }
 }

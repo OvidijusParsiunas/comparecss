@@ -90,7 +90,9 @@ export class DefaultDropdownMenu {
 
   public static setPropertyOverwritables(dropdownMenuComponent: WorkshopComponent): void {
     dropdownMenuComponent.newChildComponents.propertyOverwritables = {
-      [COMPONENT_TYPES.LAYER]: DefaultDropdownMenu.overwriteLayer,
+      postGenerationCallbacks: {
+        [COMPONENT_TYPES.LAYER]: DefaultDropdownMenu.overwriteLayer,
+      },
     };
   }
 }

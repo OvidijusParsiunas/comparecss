@@ -128,7 +128,9 @@ class DefaultCard extends ComponentBuilder {
 
   public static setPropertyOverwritables(cardComponent: WorkshopComponent): void {
     cardComponent.newChildComponents.propertyOverwritables = {
-      [COMPONENT_TYPES.LAYER]: DefaultCard.overwriteLayerProperties,
+      postGenerationCallbacks: {
+        [COMPONENT_TYPES.LAYER]: DefaultCard.overwriteLayerProperties,
+      },
     };
   }
 }
