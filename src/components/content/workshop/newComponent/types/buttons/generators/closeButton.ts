@@ -3,19 +3,59 @@ import { ComponentGenerator, PresetProperties } from '../../../../../../../inter
 import { BUTTON_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
-import { AddComponentsToButtonBaseUtils } from '../utils/addComponentsToButtonBaseUtils';
+import { inheritedCloseTextCss } from '../../text/inheritedCss/inheritedCloseTextCss';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../../../../consts/closeButtonXText';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
+import { AddTextComponentToButton } from '../utils/addTextComponentToButton';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { buttonBase } from './base';
 
 class CloseButton extends ComponentBuilder {
 
-  public static setStyle(component: WorkshopComponent): void {
-    component.style = BUTTON_STYLES.CLOSE;
+  private static overwriteButtonTextProperties(textBaseSubcomponent: SubcomponentProperties, textContent: string): void {
+    textBaseSubcomponent.customStaticFeatures.subcomponentText.text = textContent;
+    textBaseSubcomponent.defaultCustomStaticFeatures.subcomponentText.text = textContent;
+    textBaseSubcomponent.isRemovable = true;
   }
 
-  private static createDefaultBaseCss(): CustomCss {
+  private static overwriteInheritedCss(textBaseSubcomponent: SubcomponentProperties): void {
+    textBaseSubcomponent.inheritedCss = inheritedCloseTextCss;
+  }
+
+  public static overwriteTextBase(textBaseSubcomponent: SubcomponentProperties): void {
+    CloseButton.overwriteInheritedCss(textBaseSubcomponent);
+    CloseButton.overwriteButtonTextProperties(textBaseSubcomponent, CLOSE_BUTTON_X_TEXT);
+  }
+
+  public static createDefaultTextCss(): CustomCss {
+    return {
+      [CSS_PSEUDO_CLASSES.DEFAULT]: {
+        width: 'max-content',
+        color: '#ff0000',
+        userSelect: 'none',
+        overflow: CSS_PROPERTY_VALUES.UNSET,
+        fontSize: '18px',
+        fontFamily: '"Poppins", sans-serif',
+        backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
+        fontWeight: '300',
+        paddingTop: '1px',
+        paddingBottom: '0px',
+        paddingLeft: '0px',
+        paddingRight: '0px',
+        marginLeft: '0px',
+        marginRight: '0px',
+        transition: CSS_PROPERTY_VALUES.UNSET,
+        outline: 'none',
+        left: '0px',
+      },
+    };
+  }
+
+  private static setButtonStyle(buttonComponent: WorkshopComponent): void {
+    buttonComponent.style = BUTTON_STYLES.CLOSE;
+  }
+
+  private static createDefaultButtonBaseCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
         height: '18px',
@@ -39,26 +79,27 @@ class CloseButton extends ComponentBuilder {
         marginBottom: '0px',
         transition: CSS_PROPERTY_VALUES.UNSET,
         left: '0px',
-      }
-    }
+      },
+    };
   }
 
-  private static overwriteBaseCustomCss(subcomponent: SubcomponentProperties): void {
-    subcomponent.customCss = CloseButton.createDefaultBaseCss();
-    subcomponent.defaultCss = CloseButton.createDefaultBaseCss();
+  private static overwriteBaseCustomCss(buttonBaseSubcomponent: SubcomponentProperties): void {
+    buttonBaseSubcomponent.customCss = CloseButton.createDefaultButtonBaseCss();
+    buttonBaseSubcomponent.defaultCss = CloseButton.createDefaultButtonBaseCss();
   }
 
-  public static overwrite(component: WorkshopComponent): void {
-    CloseButton.overwriteBaseCustomCss(component.baseSubcomponent);
-    CloseButton.setStyle(component);
+  public static overwriteButton(buttonComponent: WorkshopComponent): void {
+    CloseButton.overwriteBaseCustomCss(buttonComponent.baseSubcomponent);
+    CloseButton.setButtonStyle(buttonComponent);
   }
 }
 
 export const closeButton: ComponentGenerator = {
   createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
     const buttonComponent = buttonBase.createNewComponent(presetProperties);
-    CloseButton.overwrite(buttonComponent);
-    AddComponentsToButtonBaseUtils.add(buttonComponent, TEXT_STYLES.CLOSE_BUTTON, CLOSE_BUTTON_X_TEXT);
+    CloseButton.overwriteButton(buttonComponent);
+    AddTextComponentToButton.add(buttonComponent, TEXT_STYLES.CLOSE_BUTTON,
+      CloseButton.createDefaultTextCss, CloseButton.overwriteTextBase);
     return buttonComponent;
   }
 };

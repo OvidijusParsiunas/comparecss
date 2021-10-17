@@ -45,7 +45,7 @@ export class AddContainerComponent extends AddComponentShared {
 
   // this should be in a shared utils file
   protected static executePropertyOverwritables(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
-    const overwritable = containerComponent.newChildComponents.propertyOverwritables?.postGenerationCallbacks?.[newComponent.type];
+    const overwritable = containerComponent.newChildComponents.propertyOverwritables?.postBuildCallbacks?.[newComponent.type];
     overwritable?.(newComponent, containerComponent);
   }
 
@@ -136,7 +136,7 @@ export class AddContainerComponent extends AddComponentShared {
       overwritePropertiesFunc?: OverwritePropertiesFunc[], customBaseName?: string): NewComponentDetails {
     const baseNamePrefix = AddContainerComponent.getBaseSubcomponentNamePrefix(componentType, componentStyle);
     const baseName = customBaseName || UniqueSubcomponentNameGenerator.generate(baseNamePrefix);
-    const presetProperties = AddContainerComponent.generatePresetProperties(baseName, propertiesAddedOnGeneration[componentType])
+    const presetProperties = AddContainerComponent.generatePresetProperties(baseName, propertiesAddedOnGeneration?.[componentType])
     const newComponent = AddComponentShared.createNewComponentViaGenerator(componentGenerator, masterComponent, presetProperties);
     AddContainerComponent.applyTopProperty(newComponent.baseSubcomponent);
     if (overwritePropertiesFunc) AddContainerComponent.executeOverwritePropertiesFuncs(overwritePropertiesFunc, newComponent);
@@ -150,7 +150,7 @@ export class AddContainerComponent extends AddComponentShared {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
     const { masterComponent, sync: { componentThisIsSyncedTo } } = containerComponent;
     const [newComponent, baseNamePrefix] = AddContainerComponent.createNewComponent(componentType, componentStyle, componentGenerator,
-      componentThisIsSyncedTo, masterComponent, containerComponent.newChildComponents.propertyOverwritables?.propertiesAddedOnGeneration,
+      componentThisIsSyncedTo, masterComponent, containerComponent.newChildComponents.propertyOverwritables?.propertiesAddedOnBuild,
       overwritePropertiesFunc);
     AddComponentShared.populateMasterComponentWithNewSubcomponents(masterComponent, newComponent.subcomponents);
     AddContainerComponent.addNewComponentToComponentPreview(newComponent, parentLayer);

@@ -1,26 +1,19 @@
 import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { AddComponentsToButtonBaseUtils } from '../utils/addComponentsToButtonBaseUtils';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
-import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
-import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
+import { AddTextComponentToButton } from '../utils/addTextComponentToButton';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { buttonBase } from './base';
 
 class DefaultButton extends ComponentBuilder {
 
-  private static overwriteSubcomponentProperties(subcomponent: SubcomponentProperties): void {
-    subcomponent.tempCustomCss = new Set(['transition']);
+  public static overwriteSubcomponentProperties(textBaseSubcomponent: SubcomponentProperties): void {
+    textBaseSubcomponent.tempCustomCss = new Set(['transition']);
   }
 
-  private static overwriteCustomFeatures(subcomponent: SubcomponentProperties): void {
-    subcomponent.customFeatures.animations = ComponentBuilder.createStationaryAnimations({});
-    subcomponent.defaultCustomFeatures.animations = ComponentBuilder.createStationaryAnimations({});
-  }
-
-  private static createDefaultTextCss(): CustomCss {
+  public static createDefaultTextCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
         width: 'max-content',
@@ -51,36 +44,13 @@ class DefaultButton extends ComponentBuilder {
       },
     };
   }
-
-  public static setPropertyOverwritables(buttonComponent: WorkshopComponent): void {
-    buttonComponent.newChildComponents.propertyOverwritables = {
-      postGenerationCallbacks: {
-        [COMPONENT_TYPES.TEXT]: DefaultButton.overwriteBase,
-      },
-      propertiesAddedOnGeneration: {
-        [COMPONENT_TYPES.TEXT]: { alignmentSection: ALIGNED_SECTION_TYPES.CENTER },
-      },
-    };
-  }
-
-  private static overwriteCustomCss(subcomponent: SubcomponentProperties): void {
-    subcomponent.customCss = DefaultButton.createDefaultTextCss();
-    subcomponent.defaultCss = DefaultButton.createDefaultTextCss();
-  }
-
-  public static overwriteBase(component: WorkshopComponent): void {
-    const { baseSubcomponent } = component;
-    DefaultButton.overwriteCustomCss(baseSubcomponent);
-    DefaultButton.overwriteCustomFeatures(baseSubcomponent);
-    DefaultButton.overwriteSubcomponentProperties(baseSubcomponent);
-  }
 }
 
 export const defaultButton: ComponentGenerator = {
   createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
     const buttonComponent = buttonBase.createNewComponent(presetProperties);
-    DefaultButton.setPropertyOverwritables(buttonComponent);
-    AddComponentsToButtonBaseUtils.add(buttonComponent, TEXT_STYLES.BUTTON, 'Button');
+    AddTextComponentToButton.add(buttonComponent, TEXT_STYLES.BUTTON,
+      DefaultButton.createDefaultTextCss, DefaultButton.overwriteSubcomponentProperties);
     return buttonComponent;
   },
 }
