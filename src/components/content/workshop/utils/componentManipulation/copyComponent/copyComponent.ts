@@ -1,4 +1,4 @@
-import { PropertyOverwritingExecutablesUtils } from '../../../newComponent/types/shared/propertyOverwritingExecutables/propertyOverwritingExecutablesUtils';
+import { PropertyReferenceSharingFuncsUtils } from '../../../newComponent/types/shared/propertyReferenceSharingFuncs/propertyReferenceSharingFuncsUtils';
 import { UpdateGenericComponentDropdownItemNames } from '../updateChildComponent/updateGenericComponentDropdownItemNames';
 import { UpdateLinkedComponentsDropdownItemNames } from '../updateChildComponent/updateLinkedComponentsDropdownItemNames';
 import { componentTypeToStyleGenerators } from '../../../newComponent/types/componentTypeToStyleGenerators';
@@ -166,7 +166,7 @@ export class CopyComponent extends ComponentBuilder {
     CopyComponent.copyLayerComponents(newComponent, componentBeingCopied, baseComponents);
     if (newComponent.paddingComponentChild) CopyComponent.copyPaddingComponentChild(newComponent, componentBeingCopied);
     if (newComponent.linkedComponents?.auxiliary) CopyComponent.copyAuxiliaryComponents(newComponent, componentBeingCopied);
-    PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(...baseComponents);
+    PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuns(true, ...baseComponents);
   }
 
   public static copy(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {

@@ -31,9 +31,10 @@ class ButtonBase extends ComponentBuilder {
     return new Set([JAVASCRIPT_CLASSES.RIPPLES]);
   }
 
-  public static setPropertyOverwritingExecutables(buttonBaseComponent: WorkshopComponent): void {
-    buttonBaseComponent.propertyOverwritingExecutables = [
-      JsClassesUtils.assignJsClassesRefToAllSubcomponents.bind(ButtonBase.createDefaultButtonJsClasses())];
+  public static setPropertyReferenceSharingFuncs(buttonBaseComponent: WorkshopComponent): void {
+    buttonBaseComponent.newChildComponents.propertyOverwritables = { propertyReferenceSharingFuncs: [
+      JsClassesUtils.assignJsClassesRefToAllSubcomponents.bind(ButtonBase.createDefaultButtonJsClasses())],
+    };
   }
 
   public static setChildComponentsItems(buttonBaseComponent: WorkshopComponent): void {
@@ -79,7 +80,7 @@ class ButtonBase extends ComponentBuilder {
       [CSS_PSEUDO_CLASSES.CLICK]: {
         backgroundColor: '#409441',
       },
-    }
+    };
   }
 
   private static createDefaultButtonBaseCustomStaticFeatures(): CustomStaticFeatures {
@@ -120,7 +121,7 @@ export const buttonBase: ComponentGenerator = {
     const buttonBaseComponent = ButtonBase.createBaseComponent(presetProperties, ButtonBase.createBaseSubcomponent);
     ButtonBaseSpecificSettings.set(buttonBaseComponent);
     ButtonBase.setChildComponentsItems(buttonBaseComponent);
-    ButtonBase.setPropertyOverwritingExecutables(buttonBaseComponent);
+    ButtonBase.setPropertyReferenceSharingFuncs(buttonBaseComponent);
     ButtonBase.setSyncableSubcomponents(buttonBaseComponent);
     if (presetProperties.paddingComponent) SyncedComponent.addParentComponentSyncableContainerComponentsToChild(
       buttonBaseComponent, presetProperties.paddingComponent);

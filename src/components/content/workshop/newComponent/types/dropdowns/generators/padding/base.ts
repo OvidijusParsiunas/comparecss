@@ -25,6 +25,7 @@ interface ButtonAndMenuComponentsSetupProperties {
 
 export class DropdownPaddingBase extends ComponentBuilder {
 
+  // only executed when padding component is dereferenced
   // custom properties references are instead shared on new layer additions by areLayersInSyncByDefault, however
   // when existing layers are copied - this method sets them to be in sync 
   private static setAllItemAndItemTextComponentsToBeInSync(component: WorkshopComponent): void {
@@ -40,10 +41,10 @@ export class DropdownPaddingBase extends ComponentBuilder {
     });
   }
 
-  private static setAndExecutePropertyOverwritingExecutables(paddingComponent: WorkshopComponent): void {
-    paddingComponent.propertyOverwritingExecutables = [
-      DropdownPaddingBase.setAllItemAndItemTextComponentsToBeInSync,
-      ApplyDropdownButtonProperties.overwriteButtonCustomFeatures];
+  private static setAndExecutePropertyReferenceSharingFuncs(paddingComponent: WorkshopComponent): void {
+    paddingComponent.newChildComponents.propertyOverwritables = {
+      propertyReferenceSharingFuncs: [DropdownPaddingBase.setAllItemAndItemTextComponentsToBeInSync],
+    }
     ApplyDropdownButtonProperties.overwriteButtonCustomFeatures(paddingComponent);
   }
 
@@ -117,7 +118,7 @@ export class DropdownPaddingBase extends ComponentBuilder {
       DropdownPaddingBase.buttonAndMenuComponentsSetup.bind({ buttonComponentOverwritable, menuComponent } as ButtonAndMenuComponentsSetupProperties));
     DropdownPaddingBase.overwriteBase(paddingComponent);
     DropdownPaddingBase.setSyncableSubcomponents(paddingComponent);
-    DropdownPaddingBase.setAndExecutePropertyOverwritingExecutables(paddingComponent);
+    DropdownPaddingBase.setAndExecutePropertyReferenceSharingFuncs(paddingComponent);
     return paddingComponent;
   }
 }

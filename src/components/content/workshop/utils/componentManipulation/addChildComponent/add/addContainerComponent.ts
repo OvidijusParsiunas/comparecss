@@ -1,6 +1,6 @@
 import { BUTTON_COMPONENTS_BASE_NAMES, CHILD_COMPONENTS_BASE_NAMES, DROPDOWN_COMPONENTS_BASE_NAMES, LAYER_COMPONENTS_BASE_NAMES, PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
-import { PropertyOverwritingExecutablesUtils } from '../../../../newComponent/types/shared/propertyOverwritingExecutables/propertyOverwritingExecutablesUtils';
 import { SyncChildComponentModeTempPropertiesUtils } from '../../../../toolbar/options/syncChildComponent/modeUtils/syncChildComponentModeTempPropertiesUtils';
+import { PropertyReferenceSharingFuncsUtils } from '../../../../newComponent/types/shared/propertyReferenceSharingFuncs/propertyReferenceSharingFuncsUtils';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
 import { ParentBasedPresetProperties, PropertiesAddedOnBuild } from '../../../../../../../interfaces/newChildComponents';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
@@ -42,10 +42,11 @@ export class AddContainerComponent extends AddComponentShared {
   };
   public static readonly DEFAULT_TOP_PROPERTY = '50%';
 
-  // this should be in a shared utils file
+  // WORK 2 - this should be in a shared utils file
   protected static executePropertyOverwritables(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
-    const overwritable = containerComponent.newChildComponents.propertyOverwritables?.postBuildCallback?.[newComponent.type];
+    const overwritable = containerComponent.newChildComponents.propertyOverwritables?.funcsToOverwritePropertiesPostBuild?.[newComponent.type];
     overwritable?.(newComponent, containerComponent);
+    PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuns(true, containerComponent);
   }
 
   private static updateOtherComponentsThatAreSyncedToThis(containerComponent: WorkshopComponent): void {
@@ -59,7 +60,6 @@ export class AddContainerComponent extends AddComponentShared {
     const { subcomponentType, parentLayer } = newComponentBase;
     JSONUtils.setPropertyIfExists(containerComponent.sync.syncables.onCopy?.subcomponents, subcomponentType as number, newComponentBase);
     SubcomponentTriggers.set(containerComponent, parentLayer.subcomponentProperties, newComponentBase, subcomponentType);
-    PropertyOverwritingExecutablesUtils.executePropertyOverwritingExecutables(containerComponent);
   }
 
   private static getBaseSubcomponentNamePrefix(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES): CHILD_COMPONENTS_BASE_NAMES {

@@ -40,9 +40,9 @@ class DefaultModal extends ComponentBuilder {
   }
 
   private static populateLayer3(cardComponent: WorkshopComponent, layer3Component: WorkshopComponent): void {
-    cardComponent.newChildComponents.propertyOverwritables.postBuildCallback[COMPONENT_TYPES.BUTTON] = DefaultModal.overwriteSubmitButtonProperties;
+    cardComponent.newChildComponents.propertyOverwritables.funcsToOverwritePropertiesPostBuild[COMPONENT_TYPES.BUTTON] = DefaultModal.overwriteSubmitButtonProperties;
     AddContainerComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT, layer3Component.baseSubcomponent.name);
-    cardComponent.newChildComponents.propertyOverwritables.postBuildCallback[COMPONENT_TYPES.BUTTON] = DefaultModal.overwriteCancelButtonProperties;
+    cardComponent.newChildComponents.propertyOverwritables.funcsToOverwritePropertiesPostBuild[COMPONENT_TYPES.BUTTON] = DefaultModal.overwriteCancelButtonProperties;
     AddContainerComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT, layer3Component.baseSubcomponent.name);
     UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[2]);
   }
@@ -62,7 +62,7 @@ class DefaultModal extends ComponentBuilder {
   }
 
   private static populateLayer2(cardComponent: WorkshopComponent, layer2Component: WorkshopComponent): void {
-    cardComponent.newChildComponents.propertyOverwritables.postBuildCallback[COMPONENT_TYPES.TEXT] = DefaultModal.overwriteDescriptionProperties;
+    cardComponent.newChildComponents.propertyOverwritables.funcsToOverwritePropertiesPostBuild[COMPONENT_TYPES.TEXT] = DefaultModal.overwriteDescriptionProperties;
     AddContainerComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT, layer2Component.baseSubcomponent.name);
     UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[1]);
   }
@@ -100,7 +100,7 @@ class DefaultModal extends ComponentBuilder {
 
   private static populateLayer1(cardComponent: WorkshopComponent, layer1Component: WorkshopComponent): void {
     cardComponent.newChildComponents.propertyOverwritables = {
-      postBuildCallback: {
+      funcsToOverwritePropertiesPostBuild: {
         [COMPONENT_TYPES.TEXT]: DefaultModal.overwriteTitleProperties,
         [COMPONENT_TYPES.IMAGE]: DefaultModal.setComponentToRemovable,
         [COMPONENT_TYPES.BUTTON]: DefaultModal.setComponentToRemovable,
@@ -128,7 +128,7 @@ class DefaultModal extends ComponentBuilder {
 
   public static setPropertyOverwritables(dropdownMenuComponent: WorkshopComponent): void {
     dropdownMenuComponent.newChildComponents.propertyOverwritables = {
-      postBuildCallback: {
+      funcsToOverwritePropertiesPostBuild: {
         [COMPONENT_TYPES.LAYER]: DefaultModal.setComponentToRemovable,
       },
     };

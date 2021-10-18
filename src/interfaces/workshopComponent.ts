@@ -1,7 +1,6 @@
 import { InterconnectedSetting, SubcomponentSpecificSettings } from './subcomponentSpecificSettings';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
 import { SubcomponentMouseEventCallbacks } from './subcomponentMouseEventCallbacks';
-import { OverwritePropertiesFunc } from './overwriteSubcomponentPropertiesFunc';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { DropdownFeatures, SelectedDropdownText } from './dropdownFeatures';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
@@ -179,9 +178,6 @@ export interface WorkshopComponent {
   baseSubcomponent: SubcomponentProperties;
   // gives an in sync child component to identify if the copied component has not been deleted
   componentStatus: { isRemoved: boolean };
-  // WORK 2 - may no longer be needed
-  // used to overwrite component and its children properties post processing such as passing a property reference after copying, desyncing etc
-  propertyOverwritingExecutables?: OverwritePropertiesFunc[];
   interconnectedSettings?: InterconnectedSetting[];
   childComponentCount?: ChildComponentCount;
   areLayersInSyncByDefault?: boolean;

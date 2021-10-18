@@ -1,4 +1,5 @@
 import { TraverseComponentViaPreviewStructureChildFirst } from '../../../utils/componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureChildFirst';
+import { PropertyReferenceSharingFuncsUtils } from '../../../newComponent/types/shared/propertyReferenceSharingFuncs/propertyReferenceSharingFuncsUtils';
 import { SubcomponentPreviewTraversalState, PreviewTraversalResult } from '../../../../../../interfaces/componentTraversal';
 import { SyncChildComponentModeTempPropertiesUtils } from './modeUtils/syncChildComponentModeTempPropertiesUtils';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
@@ -11,10 +12,7 @@ export class SyncedComponent {
     const { subcomponentProperties } = componentTraversalState;
     subcomponentProperties.customCss = JSONUtils.deepCopy(subcomponentProperties.customCss);
     subcomponentProperties.customFeatures = JSONUtils.deepCopy(subcomponentProperties.customFeatures);
-    const { baseSubcomponent, propertyOverwritingExecutables } = subcomponentProperties.seedComponent;
-    if (baseSubcomponent === subcomponentProperties) {
-      (propertyOverwritingExecutables || []).forEach((executable) => executable(subcomponentProperties.seedComponent, false));
-    }
+    PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuns(false, subcomponentProperties.seedComponent);
     return {};
   }
 

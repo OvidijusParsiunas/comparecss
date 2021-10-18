@@ -39,9 +39,9 @@ class DefaultCard extends ComponentBuilder {
   }
 
   private static populateLayer3(cardComponent: WorkshopComponent, layer3Component: WorkshopComponent): void {
-    cardComponent.newChildComponents.propertyOverwritables.postBuildCallback[COMPONENT_TYPES.BUTTON] = DefaultCard.overwriteSubmitButtonProperties;
+    cardComponent.newChildComponents.propertyOverwritables.funcsToOverwritePropertiesPostBuild[COMPONENT_TYPES.BUTTON] = DefaultCard.overwriteSubmitButtonProperties;
     AddContainerComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT, layer3Component.baseSubcomponent.name);
-    cardComponent.newChildComponents.propertyOverwritables.postBuildCallback[COMPONENT_TYPES.BUTTON] = DefaultCard.overwriteCancelButtonProperties;
+    cardComponent.newChildComponents.propertyOverwritables.funcsToOverwritePropertiesPostBuild[COMPONENT_TYPES.BUTTON] = DefaultCard.overwriteCancelButtonProperties;
     AddContainerComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT, layer3Component.baseSubcomponent.name);
     UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[2]);
   }
@@ -61,7 +61,7 @@ class DefaultCard extends ComponentBuilder {
   }
 
   private static populateLayer2(cardComponent: WorkshopComponent, layer2Component: WorkshopComponent): void {
-    cardComponent.newChildComponents.propertyOverwritables.postBuildCallback[COMPONENT_TYPES.TEXT] = DefaultCard.overwriteDescriptionProperties;
+    cardComponent.newChildComponents.propertyOverwritables.funcsToOverwritePropertiesPostBuild[COMPONENT_TYPES.TEXT] = DefaultCard.overwriteDescriptionProperties;
     AddContainerComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT, layer2Component.baseSubcomponent.name);
     UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[1]);
   }
@@ -99,7 +99,7 @@ class DefaultCard extends ComponentBuilder {
 
   private static populateLayer1(cardComponent: WorkshopComponent, layer1Component: WorkshopComponent): void {
     cardComponent.newChildComponents.propertyOverwritables = {
-      postBuildCallback: {
+      funcsToOverwritePropertiesPostBuild: {
         [COMPONENT_TYPES.TEXT]: DefaultCard.overwriteTitleProperties,
         [COMPONENT_TYPES.IMAGE]: DefaultCard.setComponentToRemovable,
         [COMPONENT_TYPES.BUTTON]: DefaultCard.setComponentToRemovable,
@@ -127,7 +127,7 @@ class DefaultCard extends ComponentBuilder {
 
   public static resetPropertyOverwritables(cardComponent: WorkshopComponent): void {
     cardComponent.newChildComponents.propertyOverwritables = {
-      postBuildCallback: {
+      funcsToOverwritePropertiesPostBuild: {
         [COMPONENT_TYPES.LAYER]: DefaultCard.setComponentToRemovable,
       },
     };

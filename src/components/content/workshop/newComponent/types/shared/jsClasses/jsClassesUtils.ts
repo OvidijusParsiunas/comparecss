@@ -26,7 +26,7 @@ export class JsClassesUtils {
     return componentTraversalState;
   }
 
-  public static assignJsClassesRefToAllSubcomponents(component: WorkshopComponent, overwriteDefaultProperties = true): void {
+  public static assignJsClassesRefToAllSubcomponents(component: WorkshopComponent, overwriteDefaultProperties: boolean): void {
     const defaultJsClasses = this as any as Set<JAVASCRIPT_CLASSES>;
     const jsClasses = component.baseSubcomponent.customFeatures.jsClasses || defaultJsClasses;
     TraverseComponentViaPreviewStructureParentFirst.traverse(
