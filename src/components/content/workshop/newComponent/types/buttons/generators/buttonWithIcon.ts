@@ -20,7 +20,7 @@ class ButtonWithIcon {
 
   public static setPropertyOverwritables(buttonComponent: WorkshopComponent): void {
     buttonComponent.newChildComponents.propertyOverwritables = {
-      postBuildCallbacks: {
+      postBuildCallback: {
         [COMPONENT_TYPES.ICON]: ButtonWithIcon.overwriteIconProperties,
       },
     };

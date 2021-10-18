@@ -203,8 +203,10 @@ export class ComponentBuilder {
   private static alignBase(baseSubcomponent: SubcomponentProperties, alignedSection: ALIGNED_SECTION_TYPES): void {
     if (baseSubcomponent.customStaticFeatures) {
       baseSubcomponent.customStaticFeatures.alignedLayerSection = { section: alignedSection };
+      baseSubcomponent.defaultCustomStaticFeatures.alignedLayerSection = { section: alignedSection };
     } else {
       baseSubcomponent.customStaticFeatures = { alignedLayerSection: { section: alignedSection } };
+      baseSubcomponent.defaultCustomStaticFeatures = { alignedLayerSection: { section: alignedSection } };
     }
   }
 

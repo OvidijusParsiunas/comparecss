@@ -45,7 +45,7 @@ export class AddContainerComponent extends AddComponentShared {
 
   // this should be in a shared utils file
   protected static executePropertyOverwritables(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
-    const overwritable = containerComponent.newChildComponents.propertyOverwritables?.postBuildCallbacks?.[newComponent.type];
+    const overwritable = containerComponent.newChildComponents.propertyOverwritables?.postBuildCallback?.[newComponent.type];
     overwritable?.(newComponent, containerComponent);
   }
 

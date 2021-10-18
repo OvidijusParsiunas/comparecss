@@ -71,7 +71,7 @@ class CardBase extends ComponentBuilder {
 export const cardBase: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
     uniqueSubcomponentIdState.resetUniqueId();
-    const cardBaseComponent = CardBase.createBaseComponent(
+    const cardBaseComponent = ComponentBuilder.createBaseComponent(
       { componentType: COMPONENT_TYPES.CARD }, CardBase.createBaseSubcomponent, false);
     CardBase.setChildComponentsItems(cardBaseComponent);
     CardBaseSpecificSettings.set(cardBaseComponent);

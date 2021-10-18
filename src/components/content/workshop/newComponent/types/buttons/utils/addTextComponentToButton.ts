@@ -53,7 +53,7 @@ export class AddTextComponentToButton extends ComponentBuilder {
   private static setPropertyOverwritables(buttonComponent: WorkshopComponent, createDefaultTextCss: () => CustomCss,
       overwriteOtherBaseProperties?: (textBaseSubcomponent: SubcomponentProperties) => void): void {
     buttonComponent.newChildComponents.propertyOverwritables = {
-      postBuildCallbacks: {
+      postBuildCallback: {
         [COMPONENT_TYPES.TEXT]: AddTextComponentToButton.overwriteTextBase
           .bind({ createDefaultTextCss, overwriteOtherBaseProperties } as OverwriteTextBaseContext),
       },

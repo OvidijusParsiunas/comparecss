@@ -22,7 +22,7 @@ export type PostGenerationOverwritableCallbacks = {
 interface PropertyOverwritables {
   // WORK 2 - need to have overwritables for all areas where child components are added
   // WORK 2 - should probably be required
-  postBuildCallbacks?: PostGenerationOverwritableCallbacks;
+  postBuildCallback?: PostGenerationOverwritableCallbacks;
   // this is mostly used for properties that are coupled to the parent and need to be applied before any further processing is done during the addition
   // e.g. the alignment of a button child component (text/icon) before the alignment property is read and the component is placed into a layer section
   propertiesAddedOnBuild?: PropertiesAddedOnGeneration;
