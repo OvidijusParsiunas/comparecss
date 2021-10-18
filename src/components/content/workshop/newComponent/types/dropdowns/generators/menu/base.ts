@@ -1,9 +1,7 @@
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
-import { UpdateLayerDropdownItemNames } from '../../../../../utils/componentManipulation/updateChildComponent/updateLayerDropdownItemNames';
-import { AddLayerComponent } from '../../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
-import { DropdownFeatures, DropdownMenuPosition } from '../../../../../../../../interfaces/dropdownFeatures';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../../interfaces/componentGenerator';
+import { DropdownFeatures, DropdownMenuPosition } from '../../../../../../../../interfaces/dropdownFeatures';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
 import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { DROPDOWN_MENU_POSITIONS } from '../../../../../../../../consts/dropdownMenuPositions.enum';
@@ -16,7 +14,6 @@ import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.e
 import { inheritedCardBaseCss } from '../../../cards/inheritedCss/inheritedCardCss';
 import { SETTINGS_TYPES } from '../../../../../../../../consts/settingsTypes.enum';
 import { MenuBaseSpecificSettings } from '../../settings/menuBaseSpecificSettings';
-import { LAYER_STYLES } from '../../../../../../../../consts/componentStyles.enum';
 import { BORDER_STYLES } from '../../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
 
@@ -110,13 +107,6 @@ class DropdownMenuBase extends ComponentBuilder {
       defaultCustomFeatures: DropdownMenuBase.createDefaultCustomFeatures(),
     };
   }
-
-  public static addComponentsToBase(dropdownMenuBaseComponent: WorkshopComponent): void {
-    AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    UpdateLayerDropdownItemNames.update(dropdownMenuBaseComponent, 0);
-  }
 }
 
 export const dropdownMenuBase: ComponentGenerator = {
@@ -128,7 +118,6 @@ export const dropdownMenuBase: ComponentGenerator = {
     DropdownMenuBase.setSyncableSubcomponents(dropdownMenuComponent);
     DropdownMenuBase.setNewChildComponents(dropdownMenuComponent);
     MenuBaseSpecificSettings.set(dropdownMenuComponent);
-    // DropdownMenuBase.addComponentsToBase(dropdownMenuComponent);
     return dropdownMenuComponent;
   },
 }

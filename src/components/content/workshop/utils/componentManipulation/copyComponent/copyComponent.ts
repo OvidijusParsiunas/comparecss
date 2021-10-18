@@ -5,6 +5,7 @@ import { componentTypeToStyleGenerators } from '../../../newComponent/types/comp
 import { UpdateLayerDropdownItemNames } from '../updateChildComponent/updateLayerDropdownItemNames';
 import { BaseSubcomponentRef, Layer } from '../../../../../../interfaces/componentPreviewStructure';
 import { uniqueSubcomponentIdState } from '../../componentGenerator/uniqueSubcomponentIdState';
+import { PropertyOverwritables } from '../../../../../../interfaces/newChildComponents';
 import { ComponentBuilder } from '../../../newComponent/types/shared/componentBuilder';
 import { AddContainerComponent } from '../addChildComponent/add/addContainerComponent';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
@@ -12,24 +13,35 @@ import { RemoveChildComponent } from '../removeChildComponent/removeChildCompone
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
 import { AddLayerComponent } from '../addChildComponent/add/addLayerComponent';
+import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 import ProcessClassName from '../../componentGenerator/processClassName';
 import { CopySubcomponents } from './copySubcomponents';
+import JSONUtils from '../../generic/jsonUtils';
 import { ComponentOptions } from 'vue';
 
 export class CopyComponent extends ComponentBuilder {
 
-  private static overwriteAlignedLayerSectionProperties(component: WorkshopComponent): void {
-    const newAlignedSection = this as any as ALIGNED_SECTION_TYPES;
-    component.baseSubcomponent.customStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(newAlignedSection);
-    component.baseSubcomponent.defaultCustomStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(newAlignedSection);
+  private static resetPropertiesAddedOnBuild(newComponent: WorkshopComponent, originalPropertyOverwritables: PropertyOverwritables): void {
+    newComponent.newChildComponents.propertyOverwritables = originalPropertyOverwritables;
+  }
+
+  private static overwritePropertiesAddedOnBuild(newComponent: WorkshopComponent, childType: COMPONENT_TYPES, section: ALIGNED_SECTION_TYPES): void {
+    const { propertyOverwritables } = newComponent.newChildComponents;
+    if (propertyOverwritables) {
+      propertyOverwritables.propertiesAddedOnBuild = { [childType]: { alignmentSection: section } };
+    } else {
+      newComponent.newChildComponents.propertyOverwritables = { propertiesAddedOnBuild: { [childType]: { alignmentSection: section } } };
+    }
   }
 
   private static getAlignedComponent(newLayer: Layer, subcomponent: BaseSubcomponentRef, section: ALIGNED_SECTION_TYPES,
       index: number, newComponent: WorkshopComponent, baseComponents: WorkshopComponent[]): WorkshopComponent {
     if (!newLayer.subcomponentProperties.seedComponent.newChildComponents.childComponentsLockedToLayer) {
       const { type, style } = subcomponent.subcomponentProperties.seedComponent;
-      const alignedComponent = AddContainerComponent.add(
-        newComponent, type, style, newLayer.subcomponentProperties.name, [CopyComponent.overwriteAlignedLayerSectionProperties.bind(section)]);
+      const originalPropertyOverwritables = JSONUtils.deepCopy(newComponent.newChildComponents.propertyOverwritables);
+      CopyComponent.overwritePropertiesAddedOnBuild(newComponent, type, section);
+      const alignedComponent = AddContainerComponent.add(newComponent, type, style, newLayer.subcomponentProperties.name);
+      CopyComponent.resetPropertiesAddedOnBuild(newComponent, originalPropertyOverwritables);
       baseComponents.push(alignedComponent);
       return alignedComponent;
     }
@@ -164,6 +176,7 @@ export class CopyComponent extends ComponentBuilder {
     CopyComponent.copyComponent(newComponent, componentBeingCopied);
     newComponent.className = ProcessClassName.addPostfixIfClassNameTaken(newComponent.className,
       (optionsComponent.components as undefined as WorkshopComponent[]), '-copy');
+    newComponent.activeSubcomponentName = newComponent.defaultSubcomponentName;
     return newComponent;
   }
 }

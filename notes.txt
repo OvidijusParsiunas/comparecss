@@ -1,7 +1,6 @@
 select dropdown longest item width
 sync menu when too many items in original
 synced menu item sync button not showing
-copy dropdown with no menu items then attempt to create a new one in the copied component
 
 night diving
 

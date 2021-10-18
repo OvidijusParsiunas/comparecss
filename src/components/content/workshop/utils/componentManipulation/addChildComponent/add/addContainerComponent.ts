@@ -1,10 +1,9 @@
 import { BUTTON_COMPONENTS_BASE_NAMES, CHILD_COMPONENTS_BASE_NAMES, DROPDOWN_COMPONENTS_BASE_NAMES, LAYER_COMPONENTS_BASE_NAMES, PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { PropertyOverwritingExecutablesUtils } from '../../../../newComponent/types/shared/propertyOverwritingExecutables/propertyOverwritingExecutablesUtils';
 import { SyncChildComponentModeTempPropertiesUtils } from '../../../../toolbar/options/syncChildComponent/modeUtils/syncChildComponentModeTempPropertiesUtils';
-import { ParentBasedPresetProperties, PropertiesAddedOnGeneration } from '../../../../../../../interfaces/newChildComponents';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
+import { ParentBasedPresetProperties, PropertiesAddedOnBuild } from '../../../../../../../interfaces/newChildComponents';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
-import { OverwritePropertiesFunc } from '../../../../../../../interfaces/overwriteSubcomponentPropertiesFunc';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
@@ -112,12 +111,6 @@ export class AddContainerComponent extends AddComponentShared {
     baseSubcomponent.parentLayer = parentLayer;
   }
 
-  private static executeOverwritePropertiesFuncs(overwritePropertiesFuncs: OverwritePropertiesFunc[], newComponent: WorkshopComponent): void {
-    overwritePropertiesFuncs
-      .filter((func) => typeof func === 'function')
-      .forEach((overwritePropertiesFunc) => overwritePropertiesFunc(newComponent));
-  }
-
   private static applyTopProperty(baseSubcomponent: SubcomponentProperties): void {
     const customCssProperties = baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
     const defaultCustomCssProperties = baseSubcomponent.defaultCss[CSS_PSEUDO_CLASSES.DEFAULT];
@@ -132,26 +125,23 @@ export class AddContainerComponent extends AddComponentShared {
   }
 
   protected static createNewComponent(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, componentGenerator: ComponentGenerator,
-      componentContainerIsSyncedTo: WorkshopComponent, masterComponent: WorkshopComponent, propertiesAddedOnGeneration: PropertiesAddedOnGeneration,
-      overwritePropertiesFunc?: OverwritePropertiesFunc[], customBaseName?: string): NewComponentDetails {
+      componentContainerIsSyncedTo: WorkshopComponent, masterComponent: WorkshopComponent, propertiesAddedOnGeneration: PropertiesAddedOnBuild,
+      customBaseName?: string): NewComponentDetails {
     const baseNamePrefix = AddContainerComponent.getBaseSubcomponentNamePrefix(componentType, componentStyle);
     const baseName = customBaseName || UniqueSubcomponentNameGenerator.generate(baseNamePrefix);
     const presetProperties = AddContainerComponent.generatePresetProperties(baseName, propertiesAddedOnGeneration?.[componentType])
     const newComponent = AddComponentShared.createNewComponentViaGenerator(componentGenerator, masterComponent, presetProperties);
     AddContainerComponent.applyTopProperty(newComponent.baseSubcomponent);
-    if (overwritePropertiesFunc) AddContainerComponent.executeOverwritePropertiesFuncs(overwritePropertiesFunc, newComponent);
     if (componentContainerIsSyncedTo) SyncedComponent.copyChildPropertiesFromInSyncContainerComponent(newComponent, componentContainerIsSyncedTo);
     return [newComponent, baseNamePrefix];
   }
 
   public static addUsingParentDropdownStructure(containerComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure,
-      componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, parentLayer: Layer,
-      overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
+      componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, parentLayer: Layer): WorkshopComponent {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
     const { masterComponent, sync: { componentThisIsSyncedTo } } = containerComponent;
     const [newComponent, baseNamePrefix] = AddContainerComponent.createNewComponent(componentType, componentStyle, componentGenerator,
-      componentThisIsSyncedTo, masterComponent, containerComponent.newChildComponents.propertyOverwritables?.propertiesAddedOnBuild,
-      overwritePropertiesFunc);
+      componentThisIsSyncedTo, masterComponent, containerComponent.newChildComponents.propertyOverwritables?.propertiesAddedOnBuild);
     AddComponentShared.populateMasterComponentWithNewSubcomponents(masterComponent, newComponent.subcomponents);
     AddContainerComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
     AddContainerComponent.addNewComponentToDropdownStructure(newComponent, masterComponent, dropdownStructure);
@@ -167,11 +157,11 @@ export class AddContainerComponent extends AddComponentShared {
   }
 
   public static add(containerComponent: WorkshopComponent, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES,
-      parentLayerName: string, overwritePropertiesFunc?: OverwritePropertiesFunc[]): WorkshopComponent {
+      parentLayerName: string): WorkshopComponent {
     const parentLayer = AddComponentShared.getContainerComponentLayer(containerComponent, parentLayerName);
     const result = TraverseComponentViaDropdownStructure.traverseUsingComponent(
       containerComponent, AddContainerComponent.addUsingParentDropdownStructure,
-      componentType, componentStyle, parentLayer, overwritePropertiesFunc);
+      componentType, componentStyle, parentLayer);
     return result.result;
   }
 }

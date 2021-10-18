@@ -95,13 +95,10 @@ export class DropdownItemLayer extends ComponentBuilder {
     });
   }
   
-  public static addChildComponentsToLayer(layerComponent: WorkshopComponent, containerComponent: WorkshopComponent, createDefaultTextStyling: () => CustomCss): void {
+  public static addChildComponentsToLayer(layerComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
     const { higherComponentContainer: menuComponent } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
-    const textComponent = AddContainerComponent.add(containerComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
-      layerComponent.baseSubcomponent.name,
-      [DropdownItemLayer.setTextSubcomponentProperties.bind({ menuComponent, createDefaultTextStyling } as SetTextSubcomponentPropertiesContext)]);
-    layerComponent.baseSubcomponent.otherSubcomponentTriggers
-      .subcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.baseSubcomponent;
+    const textComponent = AddContainerComponent.add(containerComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON, layerComponent.baseSubcomponent.name);
+    layerComponent.baseSubcomponent.otherSubcomponentTriggers.subcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.baseSubcomponent;
     layerComponent.newChildComponents.childComponentsLockedToLayer.push(textComponent);
     if (layerComponent.baseSubcomponent.name !== TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY) {
       UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(containerComponent,

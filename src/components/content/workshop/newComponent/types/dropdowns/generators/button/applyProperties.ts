@@ -1,12 +1,9 @@
-import { UpdateLayerDropdownItemNames } from '../../../../../utils/componentManipulation/updateChildComponent/updateLayerDropdownItemNames';
-import { AddLayerComponent } from '../../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
 import { LinkedComponentsUtils } from '../../../shared/linkedComponents/linkedComponentsUtils';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
-import { LAYER_STYLES } from '../../../../../../../../consts/componentStyles.enum';
 import { SETTINGS_TYPES } from '../../../../../../../../consts/settingsTypes.enum';
 import { AutoSize } from '../../../../../../../../interfaces/autoSize';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
@@ -86,22 +83,11 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
     defaultCustomFeatures.autoSize = ApplyDropdownButtonProperties.createDefaultAutoSize();
   }
 
-  // should be done in the menu base component itself
-  public static addComponentsToBase(dropdownMenuBaseComponent: WorkshopComponent): void {
-    AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
-    UpdateLayerDropdownItemNames.update(dropdownMenuBaseComponent, 0);
-  }
-
   // the reason why this is not a generator is because button components are already constructed separately
   public static apply(buttonComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
     ApplyDropdownButtonProperties.setButtonAutoSize(buttonComponent);
     LinkedComponentsUtils.setAuxiliaryComponents(buttonComponent, menuComponent);
     ApplyDropdownButtonProperties.setAndExecutePropertyOverwritingExecutables(buttonComponent);
     ApplyDropdownButtonProperties.setTriggerFuncOnSettingChange(buttonComponent);
-    buttonComponent.activeSubcomponentName = menuComponent.baseSubcomponent.name;
-    ApplyDropdownButtonProperties.addComponentsToBase(menuComponent);
-    buttonComponent.activeSubcomponentName = buttonComponent.defaultSubcomponentName;
   }
 }

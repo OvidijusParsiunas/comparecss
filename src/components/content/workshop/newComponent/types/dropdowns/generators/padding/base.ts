@@ -1,15 +1,17 @@
 import { UpdateLinkedComponentsDropdownItemNames } from '../../../../../utils/componentManipulation/updateChildComponent/updateLinkedComponentsDropdownItemNames';
+import { UpdateLayerDropdownItemNames } from '../../../../../utils/componentManipulation/updateChildComponent/updateLayerDropdownItemNames';
 import { BUTTON_COMPONENTS_BASE_NAMES, DROPDOWN_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { ComponentGenerator, CreateNewComponent, PresetProperties } from '../../../../../../../../interfaces/componentGenerator';
 import { UniqueSubcomponentNameGenerator } from '../../../../../utils/componentGenerator/uniqueSubcomponentNameGenerator';
+import { AddLayerComponent } from '../../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { DropdownItemLayer, SetTextSubcomponentPropertiesContext } from '../../../layers/generators/dropdownItem';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
+import { DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../../consts/componentStyles.enum';
 import { PaddingComponentUtils } from '../../../shared/paddingComponent/paddingComponentUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
 import { SelectedDropdownText } from '../../../../../../../../interfaces/dropdownFeatures';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../../consts/layerSections.enum';
-import { DEFAULT_STYLES } from '../../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
 import { buttonWithIcon } from '../../../buttons/generators/buttonWithIcon';
 import { ApplyDropdownButtonProperties } from '../button/applyProperties';
@@ -85,11 +87,25 @@ export class DropdownPaddingBase extends ComponentBuilder {
     DropdownPaddingBase.overwriteStaticFeatures(paddingBaseSubcomponent);
   }
 
+  private static addComponentsToBase(dropdownMenuBaseComponent: WorkshopComponent): void {
+    AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
+    AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
+    AddLayerComponent.add(dropdownMenuBaseComponent, LAYER_STYLES.DROPDOWN_ITEM, true);
+    UpdateLayerDropdownItemNames.update(dropdownMenuBaseComponent, 0);
+  }
+
+  private static addMenuItems(buttonComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
+    buttonComponent.activeSubcomponentName = menuComponent.baseSubcomponent.name;
+    DropdownPaddingBase.addComponentsToBase(menuComponent);
+    buttonComponent.activeSubcomponentName = buttonComponent.defaultSubcomponentName;
+  }
+  
   private static buttonAndMenuComponentsSetup(buttonComponent: WorkshopComponent): void {
     const { buttonComponentOverwritable, menuComponent } = this as any as ButtonAndMenuComponentsSetupProperties;
     // WORK 2 - replace with property overwritables
     buttonComponentOverwritable?.(buttonComponent);
     ApplyDropdownButtonProperties.apply(buttonComponent, menuComponent);
+    DropdownPaddingBase.addMenuItems(buttonComponent, menuComponent);
     UpdateLinkedComponentsDropdownItemNames.update(buttonComponent);
   }
 
