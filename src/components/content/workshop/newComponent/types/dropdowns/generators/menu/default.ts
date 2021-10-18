@@ -90,7 +90,7 @@ export class DefaultDropdownMenu {
 
   public static setPropertyOverwritables(menuComponent: WorkshopComponent): void {
     menuComponent.newChildComponents.propertyOverwritables = {
-      funcsToOverwritePropertiesPostBuild: {
+      postBuildFuncs: {
         [COMPONENT_TYPES.LAYER]: DefaultDropdownMenu.overwriteDropdownItem,
         [COMPONENT_TYPES.TEXT]: DropdownItemLayer.setTextSubcomponentProperties
           .bind({ menuComponent, createDefaultTextStyling: DefaultDropdownMenu.createDefaultTextCustomCss } as SetTextSubcomponentPropertiesContext),

@@ -22,7 +22,7 @@ export class AddLayerComponent extends AddComponentShared {
   // this should be in a shared utils file
   private static executePropertyOverwritables(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
     // WORK 2 - strategy for getting in sync component is by having components synced to property inside container component
-    const overwritable = containerComponent.newChildComponents.propertyOverwritables?.funcsToOverwritePropertiesPostBuild?.[newComponent.type];
+    const overwritable = containerComponent.newChildComponents.propertyOverwritables?.postBuildFuncs?.[newComponent.type];
     overwritable?.(newComponent, containerComponent);
   }
 

@@ -44,7 +44,7 @@ export class AddContainerComponent extends AddComponentShared {
 
   // WORK 2 - this should be in a shared utils file
   protected static executePropertyOverwritables(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
-    const overwritable = containerComponent.newChildComponents.propertyOverwritables?.funcsToOverwritePropertiesPostBuild?.[newComponent.type];
+    const overwritable = containerComponent.newChildComponents.propertyOverwritables?.postBuildFuncs?.[newComponent.type];
     overwritable?.(newComponent, containerComponent);
     PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuns(true, containerComponent);
   }
@@ -141,7 +141,7 @@ export class AddContainerComponent extends AddComponentShared {
     const componentGenerator = componentTypeToStyleGenerators[componentType][componentStyle];
     const { masterComponent, sync: { componentThisIsSyncedTo } } = containerComponent;
     const [newComponent, baseNamePrefix] = AddContainerComponent.createNewComponent(componentType, componentStyle, componentGenerator,
-      componentThisIsSyncedTo, masterComponent, containerComponent.newChildComponents.propertyOverwritables?.propertiesAddedOnBuild);
+      componentThisIsSyncedTo, masterComponent, containerComponent.newChildComponents.propertyOverwritables?.onBuildProperties);
     AddComponentShared.populateMasterComponentWithNewSubcomponents(masterComponent, newComponent.subcomponents);
     AddContainerComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
     AddContainerComponent.addNewComponentToDropdownStructure(newComponent, masterComponent, dropdownStructure);

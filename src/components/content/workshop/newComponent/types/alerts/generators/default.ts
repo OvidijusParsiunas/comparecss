@@ -25,11 +25,11 @@ class DefaultAlert extends ComponentBuilder {
 
   public static setPropertyOverwritables(alertComponent: WorkshopComponent): void {
     alertComponent.newChildComponents.propertyOverwritables = {
-      funcsToOverwritePropertiesPostBuild: {
+      postBuildFuncs: {
         [COMPONENT_TYPES.TEXT]: DefaultAlert.setComponentToRemovable,
         [COMPONENT_TYPES.BUTTON]: DefaultAlert.setComponentToRemovable,
       },
-      propertiesAddedOnBuild: {
+      onBuildProperties: {
         [COMPONENT_TYPES.TEXT]: { alignmentSection: ALIGNED_SECTION_TYPES.CENTER },
         [COMPONENT_TYPES.BUTTON]: { alignmentSection: ALIGNED_SECTION_TYPES.RIGHT },
       },

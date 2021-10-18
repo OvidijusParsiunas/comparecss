@@ -28,9 +28,9 @@ export class CopyComponent extends ComponentBuilder {
   private static overwritePropertiesAddedOnBuild(newComponent: WorkshopComponent, childType: COMPONENT_TYPES, section: ALIGNED_SECTION_TYPES): void {
     const { propertyOverwritables } = newComponent.newChildComponents;
     if (propertyOverwritables) {
-      propertyOverwritables.propertiesAddedOnBuild = { [childType]: { alignmentSection: section } };
+      propertyOverwritables.onBuildProperties = { [childType]: { alignmentSection: section } };
     } else {
-      newComponent.newChildComponents.propertyOverwritables = { propertiesAddedOnBuild: { [childType]: { alignmentSection: section } } };
+      newComponent.newChildComponents.propertyOverwritables = { onBuildProperties: { [childType]: { alignmentSection: section } } };
     }
   }
 
