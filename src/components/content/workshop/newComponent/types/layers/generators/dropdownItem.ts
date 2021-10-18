@@ -2,12 +2,12 @@ import { UpdateGenericComponentDropdownItemNames } from '../../../../utils/compo
 import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { SubcomponentMouseEventCallbacks } from '../../../../../../../interfaces/subcomponentMouseEventCallbacks';
-import { DEFAULT_STYLES, LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { SubcomponentTriggers } from '../../../../utils/componentManipulation/utils/subcomponentTriggers';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { OtherSubcomponentTriggers } from '../../../../../../../interfaces/otherSubcomponentTriggers';
 import { ActiveComponentUtils } from '../../../../utils/activeComponent/activeComponentUtils';
+import { LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { SelectDropdownUtils } from '../../dropdowns/selectDropdown/selectDropdownUtils';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -18,7 +18,7 @@ import { SetUtils } from '../../../../utils/generic/setUtils';
 import JSONUtils from '../../../../utils/generic/jsonUtils';
 import { layerBase } from './base';
 
-interface SetTextSubcomponentPropertiesContext {
+export interface SetTextSubcomponentPropertiesContext {
   menuComponent: WorkshopComponent;
   createDefaultTextStyling: () => CustomCss;
 }
@@ -97,10 +97,9 @@ export class DropdownItemLayer extends ComponentBuilder {
   
   public static addChildComponentsToLayer(layerComponent: WorkshopComponent, containerComponent: WorkshopComponent, createDefaultTextStyling: () => CustomCss): void {
     const { higherComponentContainer: menuComponent } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
-    const textComponent = AddContainerComponent.add(containerComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT,
+    const textComponent = AddContainerComponent.add(containerComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON,
       layerComponent.baseSubcomponent.name,
       [DropdownItemLayer.setTextSubcomponentProperties.bind({ menuComponent, createDefaultTextStyling } as SetTextSubcomponentPropertiesContext)]);
-    textComponent.style = TEXT_STYLES.BUTTON;
     layerComponent.baseSubcomponent.otherSubcomponentTriggers
       .subcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.baseSubcomponent;
     layerComponent.newChildComponents.childComponentsLockedToLayer.push(textComponent);

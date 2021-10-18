@@ -2,7 +2,7 @@ import { UpdateGenericComponentDropdownItemNames } from '../../../../utils/compo
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
-import { DEFAULT_STYLES, LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
+import { LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
@@ -14,15 +14,10 @@ interface OverwriteTextBaseContext {
 
 export class AddTextComponentToButton extends ComponentBuilder {
 
-  private static addStyle(textComponent: WorkshopComponent, textStyle: TEXT_STYLES): void {
-    textComponent.style = textStyle;
-  }
-
-  private static addTextComponent(buttonComponent: WorkshopComponent): WorkshopComponent {
+  private static addTextComponent(buttonComponent: WorkshopComponent, textStyle: TEXT_STYLES): void {
     const layerComponent = AddLayerComponent.add(buttonComponent, LAYER_STYLES.PLAIN, false);
-    const textComponent = AddContainerComponent.add(buttonComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT, layerComponent.baseSubcomponent.name);
+    AddContainerComponent.add(buttonComponent, COMPONENT_TYPES.TEXT, textStyle, layerComponent.baseSubcomponent.name);
     UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(buttonComponent, buttonComponent.componentPreviewStructure.layers[0]);
-    return textComponent;
   }
 
   private static overwriteButtonTextProperties(textComponent: WorkshopComponent, textContent: string): void {
@@ -66,7 +61,6 @@ export class AddTextComponentToButton extends ComponentBuilder {
   public static add(buttonComponent: WorkshopComponent, textStyle: TEXT_STYLES, createDefaultTextCss: () => CustomCss,
       overwriteOtherBaseProperties?: (textBaseSubcomponent: SubcomponentProperties) => void): void {
     AddTextComponentToButton.setPropertyOverwritables(buttonComponent, createDefaultTextCss, overwriteOtherBaseProperties);
-    const textComponent = AddTextComponentToButton.addTextComponent(buttonComponent);
-    AddTextComponentToButton.addStyle(textComponent, textStyle);
+    AddTextComponentToButton.addTextComponent(buttonComponent, textStyle);
   }
 }

@@ -3,6 +3,7 @@ import { BUTTON_COMPONENTS_BASE_NAMES, DROPDOWN_COMPONENTS_BASE_NAMES } from '..
 import { CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { ComponentGenerator, CreateNewComponent, PresetProperties } from '../../../../../../../../interfaces/componentGenerator';
 import { UniqueSubcomponentNameGenerator } from '../../../../../utils/componentGenerator/uniqueSubcomponentNameGenerator';
+import { DropdownItemLayer, SetTextSubcomponentPropertiesContext } from '../../../layers/generators/dropdownItem';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
 import { PaddingComponentUtils } from '../../../shared/paddingComponent/paddingComponentUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
@@ -11,7 +12,6 @@ import { ALIGNED_SECTION_TYPES } from '../../../../../../../../consts/layerSecti
 import { DEFAULT_STYLES } from '../../../../../../../../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
 import { buttonWithIcon } from '../../../buttons/generators/buttonWithIcon';
-import { DropdownItemLayer } from '../../../layers/generators/dropdownItem';
 import { ApplyDropdownButtonProperties } from '../button/applyProperties';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
 import { defaultDropdownMenu } from '../menu/default';
@@ -33,7 +33,8 @@ export class DropdownPaddingBase extends ComponentBuilder {
       layer.subcomponentProperties.customCss = firstLayerSubcomponentProperties.customCss;
       layer.subcomponentProperties.customFeatures = firstLayerSubcomponentProperties.customFeatures;
       DropdownItemLayer.setTextSubcomponentProperties
-        .bind(menuComponent)(layer.subcomponentProperties.seedComponent.newChildComponents.childComponentsLockedToLayer[0]);
+        .bind({ menuComponent } as SetTextSubcomponentPropertiesContext)
+        (layer.subcomponentProperties.seedComponent.newChildComponents.childComponentsLockedToLayer[0]);
     });
   }
 

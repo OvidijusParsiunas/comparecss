@@ -1,3 +1,5 @@
+import { UniqueSubcomponentNameGenerator } from '../../../../utils/componentGenerator/uniqueSubcomponentNameGenerator';
+import { BUTTON_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { CreateNewComponent } from '../../../../../../../interfaces/componentGenerator';
@@ -28,9 +30,9 @@ export class PaddingComponentUtils {
     PaddingComponentUtils.updatePaddingDropdown(paddingComponent, childComponent);
   }
 
-  private static createChildComponent(paddingComponent: WorkshopComponent, createChildComponentFunc: CreateNewComponent, childBaseName: string,
-      overwriteChildComponentFunc: (childComponent: WorkshopComponent) => void): WorkshopComponent {
-    const childComponent = createChildComponentFunc({ baseName: childBaseName, paddingComponent });
+  private static createChildComponent(paddingComponent: WorkshopComponent, createChildComponentFunc: CreateNewComponent,
+      childBaseName: BUTTON_COMPONENTS_BASE_NAMES, overwriteChildComponentFunc: (childComponent: WorkshopComponent) => void): WorkshopComponent {
+    const childComponent = createChildComponentFunc({ baseName: UniqueSubcomponentNameGenerator.generate(childBaseName), paddingComponent });
     overwriteChildComponentFunc(childComponent);
     SyncedComponent.addParentComponentSyncableContainerComponentsToChild(childComponent, paddingComponent);
     childComponent.paddingComponent = paddingComponent;
@@ -39,7 +41,7 @@ export class PaddingComponentUtils {
   }
   
   public static create(baseName: string, componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, baseType: SUBCOMPONENT_TYPES,
-      createChildComponentFunc: CreateNewComponent, childBaseName: string,
+      createChildComponentFunc: CreateNewComponent, childBaseName: BUTTON_COMPONENTS_BASE_NAMES,
       overwriteChildComponentFunc: (childComponent: WorkshopComponent) => void): WorkshopComponent {
     const paddingComponent = plainLayer.createNewComponent({ baseName });
     paddingComponent.type = componentType;
