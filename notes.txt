@@ -1,6 +1,4 @@
 select dropdown longest item width
-sync menu when too many items in original
-synced menu item sync button not showing
 
 night diving
 

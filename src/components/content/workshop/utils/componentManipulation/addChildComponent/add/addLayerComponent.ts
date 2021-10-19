@@ -20,7 +20,7 @@ import JSONUtils from '../../../generic/jsonUtils';
 export class AddLayerComponent extends AddComponentShared {
 
   private static updateOtherLayersThatAreSyncedToThis(containerComponent: WorkshopComponent, newLayer: SubcomponentProperties): void {
-    if (containerComponent.componentPreviewStructure.layers.length === 1 && containerComponent.areLayersInSyncByDefault) {
+    if (containerComponent.componentPreviewStructure.layers.length === 1 && containerComponent.siblingLayersInSyncWithEachOther) {
       const parentComponent = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(containerComponent);
       if (parentComponent) AddLayerComponent.updateOtherLayers(parentComponent, containerComponent, newLayer);
     }
@@ -47,7 +47,7 @@ export class AddLayerComponent extends AddComponentShared {
   private static copySiblingSubcomponent(containerComponent: WorkshopComponent, newLayerProperties: SubcomponentProperties): void {
     const siblingSubcomponent = containerComponent.componentPreviewStructure.layers[containerComponent.componentPreviewStructure.layers.length - 2];
     const { customCss, defaultCss, customFeatures, defaultCustomFeatures } = siblingSubcomponent.subcomponentProperties;
-    if (containerComponent.areLayersInSyncByDefault) {
+    if (containerComponent.siblingLayersInSyncWithEachOther) {
       newLayerProperties.customCss = customCss;
       newLayerProperties.defaultCss = defaultCss;
       newLayerProperties.customFeatures = customFeatures;

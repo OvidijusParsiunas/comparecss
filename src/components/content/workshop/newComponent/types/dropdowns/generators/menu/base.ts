@@ -1,4 +1,5 @@
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
+import { DropdownItemLayer, SetTextSubcomponentPropertiesContext } from '../../../layers/generators/dropdownItem';
 import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../../interfaces/componentGenerator';
 import { DropdownFeatures, DropdownMenuPosition } from '../../../../../../../../interfaces/dropdownFeatures';
@@ -17,7 +18,7 @@ import { MenuBaseSpecificSettings } from '../../settings/menuBaseSpecificSetting
 import { BORDER_STYLES } from '../../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
 
-class DropdownMenuBase extends ComponentBuilder {
+export class DropdownMenuBase extends ComponentBuilder {
 
   public static setNewChildComponents(dropdownMenuComponent: WorkshopComponent): void {
     const dropdownItems = DropdownUtils.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]);
@@ -43,8 +44,33 @@ class DropdownMenuBase extends ComponentBuilder {
     };
   }
 
-  public static setAreLayersInSyncByDefault(dropdownMenuComponent: WorkshopComponent): void {
-    dropdownMenuComponent.areLayersInSyncByDefault = true;
+  private static copyItemAndTextComponentProperties(layerSubcomponentToBeCopied: SubcomponentProperties, targetLayerSubcomponent: SubcomponentProperties,
+      menuComponent: WorkshopComponent): void {
+    targetLayerSubcomponent.customCss = layerSubcomponentToBeCopied.customCss;
+    targetLayerSubcomponent.customFeatures = layerSubcomponentToBeCopied.customFeatures;
+    DropdownItemLayer.setTextSubcomponentProperties
+      .bind({ menuComponent } as SetTextSubcomponentPropertiesContext)
+      (targetLayerSubcomponent.seedComponent.newChildComponents.childComponentsLockedToLayer[0]);
+  }
+
+  private static getMenuComponent(component: WorkshopComponent): WorkshopComponent {
+    if (component.paddingComponentChild) {
+      return component.paddingComponentChild.linkedComponents.auxiliary[0];
+    }
+    return component;
+  }
+
+  // component param can be either menu component or padding component
+  public static setAllItemAndItemTextComponentsToBeInSync(component: WorkshopComponent): void {
+    const menuComponent = DropdownMenuBase.getMenuComponent(component);
+    const firstLayerSubcomponentProperties = menuComponent.componentPreviewStructure.layers[0]?.subcomponentProperties;
+    menuComponent.componentPreviewStructure.layers.forEach((layer) => {
+      DropdownMenuBase.copyItemAndTextComponentProperties(firstLayerSubcomponentProperties, layer.subcomponentProperties, menuComponent);
+    });
+  }
+
+  public static setSiblingLayersInSyncWithEachOther(dropdownMenuComponent: WorkshopComponent): void {
+    dropdownMenuComponent.siblingLayersInSyncWithEachOther = { containerSyncFunc: DropdownMenuBase.setAllItemAndItemTextComponentsToBeInSync };
   }
 
   private static createDefaultMenuCss(): CustomCss {
@@ -113,7 +139,7 @@ export const dropdownMenuBase: ComponentGenerator = {
   createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
   presetProperties.componentType = COMPONENT_TYPES.DROPDOWN_MENU;
     const dropdownMenuComponent = DropdownMenuBase.createBaseComponent(presetProperties, DropdownMenuBase.createBaseSubcomponent, false);
-    DropdownMenuBase.setAreLayersInSyncByDefault(dropdownMenuComponent);
+    DropdownMenuBase.setSiblingLayersInSyncWithEachOther(dropdownMenuComponent);
     DropdownMenuBase.setTriggerFuncOnSettingChange(dropdownMenuComponent);
     DropdownMenuBase.setSyncableSubcomponents(dropdownMenuComponent);
     DropdownMenuBase.setNewChildComponents(dropdownMenuComponent);

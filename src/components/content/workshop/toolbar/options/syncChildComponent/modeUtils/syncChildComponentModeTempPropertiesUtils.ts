@@ -7,7 +7,7 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssC
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import JSONUtils from '../../../../utils/generic/jsonUtils';
 
-type SyncSyncablesCallback = (isTemporary: boolean, targetSubcomponent: SubcomponentProperties, ...otherSubcomponents: SubcomponentProperties[]) => void;
+type SyncSyncablesCallback = (isTemporary: boolean, targetSubcomponent: SubcomponentProperties, ...otherSubcomponents: SubcomponentProperties[]) => boolean | void;
 
 export class SyncChildComponentModeTempPropertiesUtils {
   
@@ -34,11 +34,11 @@ export class SyncChildComponentModeTempPropertiesUtils {
       syncableSubcomponent.customFeatures, subcomponentToBeSynced.customFeatures);
   }
 
-  public static syncSubcomponent(addTemporaryProperties: boolean, syncableSubcomponent: SubcomponentProperties, subcomponentToBeSynced: SubcomponentProperties): void {
-    if (!subcomponentToBeSynced) return;
+  public static syncSubcomponent(addTemporaryProperties: boolean, syncableSubcomponent: SubcomponentProperties, subcomponentToBeSynced: SubcomponentProperties): boolean {
     if (addTemporaryProperties && !syncableSubcomponent.tempOriginalCustomProperties) {
       SyncChildComponentModeTempPropertiesUtils.moveCustomPropertiesToTempProperties(syncableSubcomponent);
     }
+    if (!subcomponentToBeSynced) return true;
     // this is a naive approach to check if customFeatures are different but is a useful form of lazy evaluation to prevent
     // all features from being traversed all the time (used for components like drodpown button)
     if (Object.keys(subcomponentToBeSynced.customFeatures).length !== Object.keys(syncableSubcomponent.customFeatures).length) {
@@ -49,23 +49,33 @@ export class SyncChildComponentModeTempPropertiesUtils {
   }
 
   private static syncSyncableSubcomponents(callback: SyncSyncablesCallback, isTemporary: boolean, syncableSubcomponents: SubcomponentTypeToProperties,
-      targetComponents: WorkshopComponent[]): void {
+      targetComponents: WorkshopComponent[]): boolean {
+    let wasTargetComponentMissing = false;
     Object.keys(syncableSubcomponents).forEach((subcomponentType) => {
-      const targetSubcomponent: SubcomponentProperties = syncableSubcomponents[subcomponentType];
-      if (!targetSubcomponent) return;
-      callback(isTemporary, targetSubcomponent,
-        ...targetComponents.map((component) => component.sync.syncables.onCopy.subcomponents[subcomponentType]));
+      const syncableSubcomponent: SubcomponentProperties = syncableSubcomponents[subcomponentType];
+      if (!syncableSubcomponent) return;
+      wasTargetComponentMissing = !!callback(isTemporary, syncableSubcomponent,
+        ...targetComponents.map((targetComponent) => targetComponent?.sync.syncables.onCopy.subcomponents[subcomponentType]));
     });
+    return wasTargetComponentMissing;
+  }
+
+  private static syncLayers(syncableComponent: WorkshopComponent): void {
+    const { siblingLayersInSyncWithEachOther } = syncableComponent;
+    if (siblingLayersInSyncWithEachOther) siblingLayersInSyncWithEachOther.containerSyncFunc(syncableComponent);
   }
 
   // not using TraverseComponentViaPreviewStructureChildFirst as it abides to subcomponent order and instead sync components are tracked via syncables
-  private static syncSyncables(callback: SyncSyncablesCallback, isTemporary: boolean, component: WorkshopComponent, ...targetComponents: WorkshopComponent[]): void {
-    const { subcomponents, childComponents } = component.sync.syncables.onCopy;
-    SyncChildComponentModeTempPropertiesUtils.syncSyncableSubcomponents(callback, isTemporary, subcomponents, targetComponents);
+  private static syncSyncables(callback: SyncSyncablesCallback, isTemporary: boolean, syncableComponent: WorkshopComponent, ...targetComponents: WorkshopComponent[]): boolean {
+    const { subcomponents, childComponents } = syncableComponent.sync.syncables.onCopy;
+    let wasTargetComponentMissing = SyncChildComponentModeTempPropertiesUtils.syncSyncableSubcomponents(callback, isTemporary, subcomponents, targetComponents);
     childComponents.forEach((childComponent, index) => {
-      SyncChildComponentModeTempPropertiesUtils.syncSyncables(callback, isTemporary, childComponent,
+      const wasTargetComponentMissingForChild = SyncChildComponentModeTempPropertiesUtils.syncSyncables(callback, isTemporary, childComponent,
         ...targetComponents.map((targetComponent) => targetComponent.sync.syncables.onCopy.childComponents[index]));
+      if (wasTargetComponentMissingForChild && !wasTargetComponentMissing) wasTargetComponentMissing = true;
     });
+    if (wasTargetComponentMissing) SyncChildComponentModeTempPropertiesUtils.syncLayers(syncableComponent);
+    return wasTargetComponentMissing;
   }
 
   public static syncComponentToTarget(currentlySelectedComponent: WorkshopComponent, componentToBeSynced: WorkshopComponent): void {

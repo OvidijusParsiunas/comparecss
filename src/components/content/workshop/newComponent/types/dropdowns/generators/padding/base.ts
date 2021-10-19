@@ -5,7 +5,6 @@ import { CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from 
 import { ComponentGenerator, CreateNewComponent, PresetProperties } from '../../../../../../../../interfaces/componentGenerator';
 import { UniqueSubcomponentNameGenerator } from '../../../../../utils/componentGenerator/uniqueSubcomponentNameGenerator';
 import { AddLayerComponent } from '../../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
-import { DropdownItemLayer, SetTextSubcomponentPropertiesContext } from '../../../layers/generators/dropdownItem';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
 import { DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../../consts/componentStyles.enum';
 import { PaddingComponentUtils } from '../../../shared/paddingComponent/paddingComponentUtils';
@@ -17,6 +16,7 @@ import { buttonWithIcon } from '../../../buttons/generators/buttonWithIcon';
 import { ApplyDropdownButtonProperties } from '../button/applyProperties';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
 import { defaultDropdownMenu } from '../menu/default';
+import { DropdownMenuBase } from '../menu/base';
 
 interface ButtonAndMenuComponentsSetupProperties {
   buttonComponentOverwritable?: (component: WorkshopComponent) => void;
@@ -25,26 +25,13 @@ interface ButtonAndMenuComponentsSetupProperties {
 
 export class DropdownPaddingBase extends ComponentBuilder {
 
-  // only executed when padding component is dereferenced
-  // custom properties references are instead shared on new layer additions by areLayersInSyncByDefault, however
-  // when existing layers are copied - this method sets them to be in sync 
-  private static setAllItemAndItemTextComponentsToBeInSync(component: WorkshopComponent): void {
-    const menuComponent = component.paddingComponentChild.linkedComponents
-      .auxiliary[0].baseSubcomponent.seedComponent;
-    const firstLayerSubcomponentProperties = menuComponent.componentPreviewStructure.layers[0]?.subcomponentProperties;
-    menuComponent.componentPreviewStructure.layers.forEach((layer) => {
-      layer.subcomponentProperties.customCss = firstLayerSubcomponentProperties.customCss;
-      layer.subcomponentProperties.customFeatures = firstLayerSubcomponentProperties.customFeatures;
-      DropdownItemLayer.setTextSubcomponentProperties
-        .bind({ menuComponent } as SetTextSubcomponentPropertiesContext)
-        (layer.subcomponentProperties.seedComponent.newChildComponents.childComponentsLockedToLayer[0]);
-    });
-  }
-
   private static setAndExecutePropertyReferenceSharingFuncs(paddingComponent: WorkshopComponent): void {
     paddingComponent.newChildComponents.propertyOverwritables = {
       propertyReferenceSharingFuncsOnComponentChange: {
-        container: [DropdownPaddingBase.setAllItemAndItemTextComponentsToBeInSync],
+        // only executed when padding component is dereferenced
+        // custom properties references are signalled to be shared on new layer additions by siblingLayersInSyncWithEachOther,
+        // however when existing layers are copied - this method sets them to be in sync
+        container: [DropdownMenuBase.setAllItemAndItemTextComponentsToBeInSync],
       },
     };
     ApplyDropdownButtonProperties.overwriteButtonCustomFeatures(paddingComponent);

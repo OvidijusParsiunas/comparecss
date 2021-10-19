@@ -22,7 +22,7 @@ export class SyncChildComponentModeCardEvents {
   public static mouseLeave(workshopComponent: ComponentOptions): void {
     const { currentlySelectedComponentForSync, currentlySelectedComponent } = workshopComponent;
     if (currentlySelectedComponentForSync) {
-      SyncChildComponentModeTempPropertiesUtils.syncComponentToTarget(currentlySelectedComponent, currentlySelectedComponentForSync, );
+      SyncChildComponentModeTempPropertiesUtils.syncComponentToTarget(currentlySelectedComponent, currentlySelectedComponentForSync);
     } else {
       SyncChildComponentModeTempPropertiesUtils.cleanComponent(currentlySelectedComponent);
     }
