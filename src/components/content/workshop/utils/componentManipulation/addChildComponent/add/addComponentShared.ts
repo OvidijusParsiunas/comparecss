@@ -58,7 +58,8 @@ export class AddComponentShared {
   }
 
   protected static populateMasterComponentWithNewSubcomponents(masterComponent: WorkshopComponent, newSubcomponents: Subcomponents): void {
-    // using this instead of Object.assign in order to cause the reactive masterComponent variable to trigger change detection in the add new component dropdown
+    // using this instead of Object.assign in order to cause the reactive masterComponent
+    // variable to trigger change detection in the add new component dropdown
     JSONUtils.addObjects(masterComponent, 'subcomponents', newSubcomponents);
     PaddingComponentUtils.overwriteSubcomponentsRef(masterComponent);
   }

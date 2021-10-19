@@ -19,6 +19,31 @@ import JSONUtils from '../../../generic/jsonUtils';
 
 export class AddLayerComponent extends AddComponentShared {
 
+  private static updateOtherLayersThatAreSyncedToThis(containerComponent: WorkshopComponent, newLayer: SubcomponentProperties): void {
+    if (containerComponent.componentPreviewStructure.layers.length === 1 && containerComponent.areLayersInSyncByDefault) {
+      const parentComponent = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(containerComponent);
+      if (parentComponent) AddLayerComponent.updateOtherLayers(parentComponent, containerComponent, newLayer);
+    }
+  }
+
+  private static addNewChildComponentsItems(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
+    if (containerComponent.newChildComponents.sharedDropdownItemsRefs?.layer) {
+      newComponent.newChildComponents = { dropdownItems: containerComponent.newChildComponents.sharedDropdownItemsRefs.layer };
+    }
+  }
+
+  private static updateDropdownStructureIfItemFound(containerComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure,
+      newComponent: WorkshopComponent, masterComponent: WorkshopComponent): boolean {
+    const newComponentBaseName = newComponent.baseSubcomponent.name;
+    const newComponentDropdownStructure = { [newComponentBaseName]: { 
+      ...DropdownItemsDisplayStatusUtils.createDropdownItemDisplayStatusReferenceObject(newComponentBaseName),
+    }};
+    const { subcomponentNameToDropdownItemName } = masterComponent.componentPreviewStructure;
+    const containerComponentBaseName = containerComponent.baseSubcomponent.name;
+    Object.assign(dropdownStructure[subcomponentNameToDropdownItemName[containerComponentBaseName]], newComponentDropdownStructure);
+    return true;
+  }
+
   private static copySiblingSubcomponent(containerComponent: WorkshopComponent, newLayerProperties: SubcomponentProperties): void {
     const siblingSubcomponent = containerComponent.componentPreviewStructure.layers[containerComponent.componentPreviewStructure.layers.length - 2];
     const { customCss, defaultCss, customFeatures, defaultCustomFeatures } = siblingSubcomponent.subcomponentProperties;
@@ -59,30 +84,6 @@ export class AddLayerComponent extends AddComponentShared {
     }
   }
 
-  // needs to be done after dropdown items have been updated as property overwritables can add new components
-  protected static overwriteProperties(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
-    AddLayerComponent.overwriteSubcomponentCustomProperties(containerComponent, newComponent.baseSubcomponent);
-    AddComponentShared.executePropertyOverwritables(newComponent, containerComponent, 'layer');
-  }
-
-  private static addNewChildComponentsItems(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
-    if (containerComponent.newChildComponents.sharedDropdownItemsRefs?.layer) {
-      newComponent.newChildComponents = { dropdownItems: containerComponent.newChildComponents.sharedDropdownItemsRefs.layer };
-    }
-  }
-
-  private static updateDropdownStructureIfItemFound(containerComponent: WorkshopComponent, dropdownStructure: NestedDropdownStructure,
-      newComponent: WorkshopComponent, masterComponent: WorkshopComponent): boolean {
-    const newComponentBaseName = newComponent.baseSubcomponent.name;
-    const newComponentDropdownStructure = { [newComponentBaseName]: { 
-      ...DropdownItemsDisplayStatusUtils.createDropdownItemDisplayStatusReferenceObject(newComponentBaseName),
-    }};
-    const { subcomponentNameToDropdownItemName } = masterComponent.componentPreviewStructure;
-    const containerComponentBaseName = containerComponent.baseSubcomponent.name;
-    Object.assign(dropdownStructure[subcomponentNameToDropdownItemName[containerComponentBaseName]], newComponentDropdownStructure);
-    return true;
-  }
-
   private static addLayerToContainerComponentPreview(containerComponent: WorkshopComponent, layer: Layer): void {
     containerComponent.componentPreviewStructure.layers.push(layer);
   }
@@ -94,13 +95,6 @@ export class AddLayerComponent extends AddComponentShared {
       JSONUtils.copyPropertiesThatExistInTarget(subcomponentProperties.customCss, newLayer.customCss);
       JSONUtils.copyPropertiesThatExistInTarget(subcomponentProperties.customFeatures, newLayer.customFeatures);
     });
-  }
-
-  private static updateOtherLayersThatAreSyncedToThis(containerComponent: WorkshopComponent, newLayer: SubcomponentProperties): void {
-    if (containerComponent.componentPreviewStructure.layers.length === 1 && containerComponent.areLayersInSyncByDefault) {
-      const parentComponent = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(containerComponent);
-      if (parentComponent) AddLayerComponent.updateOtherLayers(parentComponent, containerComponent, newLayer);
-    }
   }
 
   private static createEmptyAlignedSections(): AlignedSections {
@@ -127,6 +121,7 @@ export class AddLayerComponent extends AddComponentShared {
   protected static addLayerToPreview(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     const layer: Layer = AddLayerComponent.createEmptyLayer(newComponent);
     AddLayerComponent.addLayerToContainerComponentPreview(containerComponent, layer);
+    AddLayerComponent.overwriteSubcomponentCustomProperties(containerComponent, newComponent.baseSubcomponent);
   }
 
   // masterComponent is relative to the current container component that the new component is being added to:
@@ -152,7 +147,8 @@ export class AddLayerComponent extends AddComponentShared {
     AddLayerComponent.addNewChildComponentsItems(higherComponentContainer, newComponent);
     IncrementChildComponentCount.increment(higherComponentContainer, layerName);
     AddComponentShared.cleanSubcomponentProperties(newComponent);
-    AddLayerComponent.overwriteProperties(newComponent, containerComponent);
+    // needs to be done after dropdown items have been updated as property overwritables can add new components
+    AddComponentShared.executePropertyOverwritables(newComponent, containerComponent, 'layer');
     AddLayerComponent.updateOtherLayersThatAreSyncedToThis(containerComponent, newComponent.baseSubcomponent);
     SyncedComponent.addParentComponentSyncableContainerComponentsToChild(newComponent, containerComponent);
     newComponent.containerComponent = higherComponentContainer;
