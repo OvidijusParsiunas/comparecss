@@ -1,5 +1,4 @@
-import { SyncChildComponentUtils } from '../../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
-import { DropdownItemLayer, SetTextSubcomponentPropertiesContext } from '../../../layers/generators/dropdownItem';
+import { DropdownItemLayer, OverwriteDropdownItemContext, SetTextSubcomponentPropertiesContext } from '../../../layers/generators/dropdownItem';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../../interfaces/componentGenerator';
 import { CustomCss, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentCssClasses.enum';
@@ -79,19 +78,11 @@ export class DefaultDropdownMenu {
     };
   }
 
-  // WORK 2 - place in the dropdown item class
-  private static overwriteDropdownItem(itemComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
-    DropdownItemLayer.addChildComponentsToLayer(itemComponent, menuComponent);
-    if (menuComponent.componentPreviewStructure.layers.length === 1
-        && !SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(menuComponent)) {
-      DefaultDropdownMenu.overwriteLayerCss(itemComponent);
-    }
-  }
-
   public static setPropertyOverwritables(menuComponent: WorkshopComponent): void {
     menuComponent.newChildComponents.propertyOverwritables = {
       postBuildFuncs: {
-        [COMPONENT_TYPES.LAYER]: DefaultDropdownMenu.overwriteDropdownItem,
+        [COMPONENT_TYPES.LAYER]: DropdownItemLayer.overwriteDropdownItem
+          .bind(DefaultDropdownMenu.overwriteLayerCss as OverwriteDropdownItemContext),
         [COMPONENT_TYPES.TEXT]: DropdownItemLayer.setTextSubcomponentProperties
           .bind({ menuComponent, createDefaultTextStyling: DefaultDropdownMenu.createDefaultTextCustomCss } as SetTextSubcomponentPropertiesContext),
       },

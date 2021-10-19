@@ -3,6 +3,7 @@ import { PropertyReferenceSharingFuncsUtils } from '../../../newComponent/types/
 import { SubcomponentPreviewTraversalState, PreviewTraversalResult } from '../../../../../../interfaces/componentTraversal';
 import { SyncChildComponentModeTempPropertiesUtils } from './modeUtils/syncChildComponentModeTempPropertiesUtils';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { SyncChildComponentUtils } from './syncChildComponentUtils';
 import JSONUtils from '../../../utils/generic/jsonUtils';
 
@@ -12,7 +13,8 @@ export class SyncedComponent {
     const { subcomponentProperties } = componentTraversalState;
     subcomponentProperties.customCss = JSONUtils.deepCopy(subcomponentProperties.customCss);
     subcomponentProperties.customFeatures = JSONUtils.deepCopy(subcomponentProperties.customFeatures);
-    PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuns(false, subcomponentProperties.seedComponent);
+    const propertySharingFuncType = subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.LAYER ? 'layer' : 'container';
+    PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuns(false, propertySharingFuncType, subcomponentProperties.seedComponent);
     return {};
   }
 

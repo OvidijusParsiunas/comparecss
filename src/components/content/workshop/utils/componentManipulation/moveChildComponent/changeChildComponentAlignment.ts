@@ -1,5 +1,5 @@
 import { DropdownStructureTraversalState, DropdownTraversalResult, TargetDetails } from '../../../../../../interfaces/componentTraversal';
-import { UpdateGenericComponentDropdownItemNames } from '../updateChildComponent/updateGenericComponentDropdownItemNames';
+import { UpdateContainerComponentDropdownItemNames } from '../updateChildComponent/updateContainerComponentDropdownItemNames';
 import { TraverseComponentViaDropdownStructure } from '../../componentTraversal/traverseComponentViaDropdownStructure';
 import { AlignedSections, BaseSubcomponentRef } from '../../../../../../interfaces/componentPreviewStructure';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
@@ -64,7 +64,7 @@ export class ChangeChildComponentAlignment {
     const targetDetails = this as any as TargetDetails;
     if (TraverseComponentViaDropdownStructure.isActualObjectNameMatching(targetDetails, traversalState)) {
       const { masterComponent, parentLayerAlignedSections } = targetDetails;
-      UpdateGenericComponentDropdownItemNames.updateViaParentLayerDropdownStructure(masterComponent,
+      UpdateContainerComponentDropdownItemNames.updateViaParentLayerDropdownStructure(masterComponent,
         traversalState.subcomponentDropdownStructure, parentLayerAlignedSections);
       return { stopTraversal: true };
     }

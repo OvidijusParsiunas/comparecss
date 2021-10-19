@@ -19,13 +19,6 @@ import JSONUtils from '../../../generic/jsonUtils';
 
 export class AddLayerComponent extends AddComponentShared {
 
-  // this should be in a shared utils file
-  private static executePropertyOverwritables(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
-    // WORK 2 - strategy for getting in sync component is by having components synced to property inside container component
-    const overwritable = containerComponent.newChildComponents.propertyOverwritables?.postBuildFuncs?.[newComponent.type];
-    overwritable?.(newComponent, containerComponent);
-  }
-
   private static copySiblingSubcomponent(containerComponent: WorkshopComponent, newLayerProperties: SubcomponentProperties): void {
     const siblingSubcomponent = containerComponent.componentPreviewStructure.layers[containerComponent.componentPreviewStructure.layers.length - 2];
     const { customCss, defaultCss, customFeatures, defaultCustomFeatures } = siblingSubcomponent.subcomponentProperties;
@@ -69,7 +62,7 @@ export class AddLayerComponent extends AddComponentShared {
   // needs to be done after dropdown items have been updated as property overwritables can add new components
   protected static overwriteProperties(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
     AddLayerComponent.overwriteSubcomponentCustomProperties(containerComponent, newComponent.baseSubcomponent);
-    AddLayerComponent.executePropertyOverwritables(newComponent, containerComponent);
+    AddComponentShared.executePropertyOverwritables(newComponent, containerComponent, 'layer');
   }
 
   private static addNewChildComponentsItems(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {

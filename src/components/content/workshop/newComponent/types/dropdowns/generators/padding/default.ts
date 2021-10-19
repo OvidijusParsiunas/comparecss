@@ -24,7 +24,7 @@ class DefaultDropdownPadding {
     baseSubcomponent.defaultCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = '4px';
   }
 
-  public static overwrite(buttonComponent: WorkshopComponent): void {
+  public static overwriteButton(buttonComponent: WorkshopComponent): void {
     DefaultDropdownPadding.overwriteButtonBaseCustomCss(buttonComponent);
     DefaultDropdownPadding.overwriteButtonTextCustomStaticFeatures(buttonComponent);
   }
@@ -35,6 +35,6 @@ export const defaultDropdownPadding: ComponentGenerator = {
     const dropdownMenuComponent = defaultDropdownMenu.createNewComponent(
       { baseName: UniqueSubcomponentNameGenerator.generate(DROPDOWN_COMPONENTS_BASE_NAMES.MENU) });
     return DropdownPaddingBase.create(presetProperties?.baseName, buttonWithIcon.createNewComponent,
-      dropdownMenuComponent, DefaultDropdownPadding.overwrite);
+      dropdownMenuComponent, DefaultDropdownPadding.overwriteButton);
   },
 }

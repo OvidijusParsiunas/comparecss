@@ -1,7 +1,9 @@
+import { PropertyReferenceSharingFuncsUtils } from '../../../../newComponent/types/shared/propertyReferenceSharingFuncs/propertyReferenceSharingFuncsUtils';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { CHILD_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ComponentPreviewStructureSearchUtils } from '../utils/componentPreviewStractureSearchUtils';
+import { ReferenceSharingFunType } from '../../../../../../../interfaces/newChildComponents';
 import { ChildComponentBaseNamesToStyles } from '../utils/childComponentBaseNamesToStyles';
 import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUtils';
 import { COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -65,5 +67,13 @@ export class AddComponentShared {
     newComponent.subcomponents = {};
     newComponent.componentPreviewStructure.subcomponentDropdownStructure = {};
     newComponent.componentPreviewStructure.subcomponentNameToDropdownItemName = {};
+  }
+  
+  protected static executePropertyOverwritables(newComponent: WorkshopComponent, containerComponent: WorkshopComponent,
+      sharingFuncType: keyof ReferenceSharingFunType): void {
+    // WORK 2 - strategy for getting in sync component is by having components synced to property inside container component
+    const overwritable = containerComponent.newChildComponents.propertyOverwritables?.postBuildFuncs?.[newComponent.type];
+    overwritable?.(newComponent, containerComponent);
+    PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuns(true, sharingFuncType, containerComponent);
   }
 }

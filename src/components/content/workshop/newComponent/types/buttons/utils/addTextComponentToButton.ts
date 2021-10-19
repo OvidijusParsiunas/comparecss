@@ -1,4 +1,4 @@
-import { UpdateGenericComponentDropdownItemNames } from '../../../../utils/componentManipulation/updateChildComponent/updateGenericComponentDropdownItemNames';
+import { UpdateContainerComponentDropdownItemNames } from '../../../../utils/componentManipulation/updateChildComponent/updateContainerComponentDropdownItemNames';
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
@@ -17,7 +17,7 @@ export class AddTextComponentToButton extends ComponentBuilder {
   private static addTextComponent(buttonComponent: WorkshopComponent, textStyle: TEXT_STYLES): void {
     const layerComponent = AddLayerComponent.add(buttonComponent, LAYER_STYLES.PLAIN, false);
     AddContainerComponent.add(buttonComponent, COMPONENT_TYPES.TEXT, textStyle, layerComponent.baseSubcomponent.name);
-    UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(buttonComponent, buttonComponent.componentPreviewStructure.layers[0]);
+    UpdateContainerComponentDropdownItemNames.updateViaParentLayerPreviewStructure(buttonComponent, buttonComponent.componentPreviewStructure.layers[0]);
   }
 
   private static overwriteButtonTextProperties(textComponent: WorkshopComponent, textContent: string): void {

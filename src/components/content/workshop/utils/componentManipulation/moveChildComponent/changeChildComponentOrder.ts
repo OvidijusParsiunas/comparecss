@@ -2,7 +2,7 @@ import { DropdownStructureTraversalState, SubcomponentPreviewTraversalState, Tar
 import { TraverseComponentViaPreviewStructureParentFirst } from '../../componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
 import { BaseSubcomponentRef, Layer, SubcomponentNameToDropdownItemName } from '../../../../../../interfaces/componentPreviewStructure';
 import { DropdownItemAuxDetails, DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../interfaces/dropdownItemDisplayStatus';
-import { UpdateGenericComponentDropdownItemNames } from '../updateChildComponent/updateGenericComponentDropdownItemNames';
+import { UpdateContainerComponentDropdownItemNames } from '../updateChildComponent/updateContainerComponentDropdownItemNames';
 import { TraverseComponentViaDropdownStructure } from '../../componentTraversal/traverseComponentViaDropdownStructure';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../../interfaces/subcomponentOrderDirections.enum';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
@@ -19,7 +19,7 @@ export class ChangeChildComponentOrder {
 
   private static updateNames(targetDetails: ChangeComponentTargetDetails, subcomponentDropdownStructure: NestedDropdownStructure): void {
     const { masterComponent, parentLayerAlignedSections } = targetDetails;
-    UpdateGenericComponentDropdownItemNames.updateViaParentLayerDropdownStructure(masterComponent, subcomponentDropdownStructure, parentLayerAlignedSections);
+    UpdateContainerComponentDropdownItemNames.updateViaParentLayerDropdownStructure(masterComponent, subcomponentDropdownStructure, parentLayerAlignedSections);
   }
 
   private static swapSubcomponentDropdownStructure(subcomponentDropdownStructure: NestedDropdownStructure, currentItemName: string,

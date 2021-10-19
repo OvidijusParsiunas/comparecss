@@ -1,4 +1,4 @@
-import { UpdateGenericComponentDropdownItemNames } from '../../../../utils/componentManipulation/updateChildComponent/updateGenericComponentDropdownItemNames';
+import { UpdateContainerComponentDropdownItemNames } from '../../../../utils/componentManipulation/updateChildComponent/updateContainerComponentDropdownItemNames';
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
@@ -11,7 +11,7 @@ class ButtonWithIcon {
   public static addIcon(buttonComponent: WorkshopComponent): void {
     const layer = buttonComponent.componentPreviewStructure.layers[0];
     AddContainerComponent.add(buttonComponent, COMPONENT_TYPES.ICON, DEFAULT_STYLES.DEFAULT, layer.subcomponentProperties.name);
-    UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(buttonComponent, layer);
+    UpdateContainerComponentDropdownItemNames.updateViaParentLayerPreviewStructure(buttonComponent, layer);
   }
 
   private static overwriteIconProperties(iconComponent: WorkshopComponent): void {

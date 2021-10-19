@@ -7,7 +7,7 @@ import { WorkshopComponent } from '../../../../../../interfaces/workshopComponen
 import { ActiveComponentUtils } from '../../activeComponent/activeComponentUtils';
 import { UpdateDropdownItemNamesShared } from './updateDropdownItemNamesShared';
 
-export class UpdateGenericComponentDropdownItemNames extends UpdateDropdownItemNamesShared {
+export class UpdateContainerComponentDropdownItemNames extends UpdateDropdownItemNamesShared {
 
   private static updateLayerChildItems(masterComponent: WorkshopComponent, containerDropdownStructure: NestedDropdownStructure,
       alignedSections: AlignedSections, itemDataMaps: ItemDataMaps, overwrittenItemNames: string[], newDrodpownNames: string[],
@@ -27,7 +27,7 @@ export class UpdateGenericComponentDropdownItemNames extends UpdateDropdownItemN
       alignedSections: AlignedSections): void {
     const { itemDataMaps, stateObjects: { overwrittenItemNames, newDrodpownNames, overwrittenDropdownStructures },
       } = UpdateContainerComponentDropdownUtils.generateItemUpdateInitializationObjects(containerDropdownStructure);
-    UpdateGenericComponentDropdownItemNames.updateLayerChildItems(masterComponent, containerDropdownStructure, alignedSections,
+    UpdateContainerComponentDropdownItemNames.updateLayerChildItems(masterComponent, containerDropdownStructure, alignedSections,
       itemDataMaps, overwrittenItemNames, newDrodpownNames, overwrittenDropdownStructures);
     UpdateContainerComponentDropdownUtils.removeOldItemNames(overwrittenItemNames, newDrodpownNames, containerDropdownStructure);
   }
@@ -40,7 +40,7 @@ export class UpdateGenericComponentDropdownItemNames extends UpdateDropdownItemN
     const activeComponentDropdownStructure = subcomponentDropdownStructure[subcomponentNameToDropdownItemName[activeComponentName]];
     // if there is no dropdown structure for layer, use the parent dropdown structure (e.g. button)
     const nestedStructure = activeComponentDropdownStructure[subcomponentNameToDropdownItemName[layerName]] || activeComponentDropdownStructure;
-    UpdateGenericComponentDropdownItemNames.updateViaParentLayerDropdownStructure(masterComponent, nestedStructure, alignedSections);
+    UpdateContainerComponentDropdownItemNames.updateViaParentLayerDropdownStructure(masterComponent, nestedStructure, alignedSections);
     return true;
   }
 
@@ -48,6 +48,6 @@ export class UpdateGenericComponentDropdownItemNames extends UpdateDropdownItemN
       useArgComponentStructure = false): void {
     const { subcomponentProperties: { name: layerName }, sections: { alignedSections }} = layer;
     TraverseComponentViaDropdownStructure.traverseUsingComponent(masterComponent,
-      UpdateGenericComponentDropdownItemNames.updateViaParentLayerIfItemFound, layerName, useArgComponentStructure, alignedSections);
+      UpdateContainerComponentDropdownItemNames.updateViaParentLayerIfItemFound, layerName, useArgComponentStructure, alignedSections);
   }
 }

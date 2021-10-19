@@ -43,8 +43,10 @@ export class DropdownPaddingBase extends ComponentBuilder {
 
   private static setAndExecutePropertyReferenceSharingFuncs(paddingComponent: WorkshopComponent): void {
     paddingComponent.newChildComponents.propertyOverwritables = {
-      propertyReferenceSharingFuncs: [DropdownPaddingBase.setAllItemAndItemTextComponentsToBeInSync],
-    }
+      propertyReferenceSharingFuncsOnComponentChange: {
+        container: [DropdownPaddingBase.setAllItemAndItemTextComponentsToBeInSync],
+      },
+    };
     ApplyDropdownButtonProperties.overwriteButtonCustomFeatures(paddingComponent);
   }
 
@@ -103,7 +105,6 @@ export class DropdownPaddingBase extends ComponentBuilder {
   
   private static buttonAndMenuComponentsSetup(buttonComponent: WorkshopComponent): void {
     const { buttonComponentOverwritable, menuComponent } = this as any as ButtonAndMenuComponentsSetupProperties;
-    // WORK 2 - replace with property overwritables
     buttonComponentOverwritable?.(buttonComponent);
     ApplyDropdownButtonProperties.apply(buttonComponent, menuComponent);
     DropdownPaddingBase.addMenuItems(buttonComponent, menuComponent);

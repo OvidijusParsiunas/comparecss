@@ -1,7 +1,8 @@
-import { UpdateGenericComponentDropdownItemNames } from '../../../../utils/componentManipulation/updateChildComponent/updateGenericComponentDropdownItemNames';
+import { UpdateContainerComponentDropdownItemNames } from '../../../../utils/componentManipulation/updateChildComponent/updateContainerComponentDropdownItemNames';
 import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { SubcomponentMouseEventCallbacks } from '../../../../../../../interfaces/subcomponentMouseEventCallbacks';
+import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { SubcomponentTriggers } from '../../../../utils/componentManipulation/utils/subcomponentTriggers';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../../consts/baseSubcomponentNames.enum';
@@ -22,6 +23,8 @@ export interface SetTextSubcomponentPropertiesContext {
   menuComponent: WorkshopComponent;
   createDefaultTextStyling: () => CustomCss;
 }
+
+export type OverwriteDropdownItemContext = (itemComponent: WorkshopComponent) => void;
 
 export class DropdownItemLayer extends ComponentBuilder {
 
@@ -94,18 +97,27 @@ export class DropdownItemLayer extends ComponentBuilder {
       [SUBCOMPONENT_TYPES.TEXT]: textComponent.baseSubcomponent,
     });
   }
-  
-  public static addChildComponentsToLayer(layerComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
+
+  private static addChildComponentsToLayer(layerComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
     const { higherComponentContainer: menuComponent } = ActiveComponentUtils.getHigherLevelComponents(containerComponent);
     const textComponent = AddContainerComponent.add(containerComponent, COMPONENT_TYPES.TEXT, TEXT_STYLES.BUTTON, layerComponent.baseSubcomponent.name);
     layerComponent.baseSubcomponent.otherSubcomponentTriggers.subcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.baseSubcomponent;
     layerComponent.newChildComponents.childComponentsLockedToLayer.push(textComponent);
     if (layerComponent.baseSubcomponent.name !== TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY) {
-      UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(containerComponent,
+      UpdateContainerComponentDropdownItemNames.updateViaParentLayerPreviewStructure(containerComponent,
         menuComponent.componentPreviewStructure.layers[menuComponent.componentPreviewStructure.layers.length - 1]);
     }
     DropdownItemLayer.setSyncableSubcomponents(layerComponent, textComponent);
     menuComponent.sync.syncables.onCopy.childComponents.push(layerComponent);
+  }
+
+  public static overwriteDropdownItem(itemComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
+    const overwriteLayerCss = this as unknown as OverwriteDropdownItemContext;
+    DropdownItemLayer.addChildComponentsToLayer(itemComponent, menuComponent);
+    if (menuComponent.componentPreviewStructure.layers.length === 1
+        && !SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(menuComponent)) {
+      overwriteLayerCss(itemComponent);
+    }
   }
 
   public static initializeChildComponentsLockedToLayer(layerComponent: WorkshopComponent): void {
@@ -131,8 +143,8 @@ export class DropdownItemLayer extends ComponentBuilder {
     };
   }
 
-  public static overwriteBase(component: WorkshopComponent): void {
-    const baseSubcomponent = component.baseSubcomponent;
+  public static overwriteBase(itemComponent: WorkshopComponent): void {
+    const baseSubcomponent = itemComponent.baseSubcomponent;
     baseSubcomponent.customFeatures = DropdownItemLayer.createDefaultButtonBaseCustomFeatures();
     baseSubcomponent.defaultCustomFeatures = DropdownItemLayer.createDefaultButtonBaseCustomFeatures();
     baseSubcomponent.otherSubcomponentTriggers = DropdownItemLayer.createOtherSubcomponentTriggersTemplate(),

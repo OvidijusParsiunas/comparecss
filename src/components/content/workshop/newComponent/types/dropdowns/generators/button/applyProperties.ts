@@ -57,7 +57,7 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
   private static setAndExecutePropertyReferenceSharingFuncs(buttonComponent: WorkshopComponent): void {
     // here button has already been created, so propertyReferenceSharingCallbacks will need to be executed separately
     // also overwriteButtonCustomFeatures needs to be executed when padding component has been created - hence it executes it
-    buttonComponent.newChildComponents.propertyOverwritables.propertyReferenceSharingFuncs.push(
+    buttonComponent.newChildComponents.propertyOverwritables.propertyReferenceSharingFuncsOnComponentChange.container.push(
       ApplyDropdownButtonProperties.overwriteButtonCustomFeatures,
       ApplyDropdownButtonProperties.populateReferences);
     ApplyDropdownButtonProperties.populateReferences(buttonComponent);

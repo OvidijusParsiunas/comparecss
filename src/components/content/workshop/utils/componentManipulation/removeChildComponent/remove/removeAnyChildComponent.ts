@@ -1,7 +1,7 @@
 import { DropdownStructureTraversalState, SubcomponentPreviewTraversalState, TargetDetails, PreviewTraversalResult, DropdownTraversalResult } from '../../../../../../../interfaces/componentTraversal';
 import { TraverseComponentViaPreviewStructureParentFirst } from '../../../componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
 import { DropdownItemAuxDetails, DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownItemDisplayStatus';
-import { UpdateGenericComponentDropdownItemNames } from '../../updateChildComponent/updateGenericComponentDropdownItemNames';
+import { UpdateContainerComponentDropdownItemNames } from '../../updateChildComponent/updateContainerComponentDropdownItemNames';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
 import { AlignedSections, BaseSubcomponentRef, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
@@ -32,7 +32,7 @@ export class RemoveAnyChildComponent {
     if (dropdownItems.length === 1) return;
     const { masterComponent, targetSubcomponentProperties: { subcomponentType } } = targetDetails;
     if (subcomponentType !== SUBCOMPONENT_TYPES.LAYER) {
-      UpdateGenericComponentDropdownItemNames.updateViaParentLayerDropdownStructure(masterComponent, subcomponentDropdownStructure, alignedSections);
+      UpdateContainerComponentDropdownItemNames.updateViaParentLayerDropdownStructure(masterComponent, subcomponentDropdownStructure, alignedSections);
     } else {
       UpdateLayerDropdownItemNames.update(masterComponent, removedSubcomponentDropdownIndex);
     }

@@ -4,10 +4,6 @@ import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponent } from './workshopComponent';
 
-export interface SharedDropdownItemsRefs {
-  layer: NestedDropdownStructure;
-}
-
 export interface ParentBasedPresetProperties {
   alignmentSection?: ALIGNED_SECTION_TYPES;
 }
@@ -16,19 +12,27 @@ export type PropertiesAddedOnBuild = {
   [key in COMPONENT_TYPES]?: ParentBasedPresetProperties;
 }
 
-export type postBuildPropertyOverwritableFuncs = {
+export interface ReferenceSharingFunType {
+  container?: PropertyReferenceSharingFunc[];
+  layer?: PropertyReferenceSharingFunc[];
+}
+
+export type PostBuildPropertyOverwritableFuncs = {
   [key in COMPONENT_TYPES]?: (component: WorkshopComponent, containerComponent: WorkshopComponent) => void;
 }
 
 export interface PropertyOverwritables {
   // WORK 2 - need to have overwritables for all areas where child components are added
-  // WORK 2 - should probably be required
-  postBuildFuncs?: postBuildPropertyOverwritableFuncs;
-  // executed for all child components - when they are added, copied or dereferenced
-  propertyReferenceSharingFuncs?: PropertyReferenceSharingFunc[];
+  postBuildFuncs?: PostBuildPropertyOverwritableFuncs;
+  // executed for different types of child components - when they are added, copied or dereferenced
+  propertyReferenceSharingFuncsOnComponentChange?: ReferenceSharingFunType;
   // this is mostly used for properties that are coupled to the parent and need to be applied before any further processing is done during the addition
   // e.g. the alignment of a button child component (text/icon) before the alignment property is read and the component is placed into a layer section
   onBuildProperties?: PropertiesAddedOnBuild;
+}
+
+export interface SharedDropdownItemsRefs {
+  layer: NestedDropdownStructure;
 }
 
 export interface NewChildComponents {

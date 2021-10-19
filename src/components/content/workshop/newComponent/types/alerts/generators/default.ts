@@ -1,4 +1,4 @@
-import { UpdateGenericComponentDropdownItemNames } from '../../../../utils/componentManipulation/updateChildComponent/updateGenericComponentDropdownItemNames';
+import { UpdateContainerComponentDropdownItemNames } from '../../../../utils/componentManipulation/updateChildComponent/updateContainerComponentDropdownItemNames';
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -20,7 +20,7 @@ class DefaultAlert extends ComponentBuilder {
     const layerComponentBaseName = layerComponent.baseSubcomponent.name;
     AddContainerComponent.add(alertComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT, layerComponentBaseName);
     AddContainerComponent.add(alertComponent, COMPONENT_TYPES.BUTTON, BUTTON_STYLES.CLOSE, layerComponentBaseName);
-    UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(alertComponent, alertComponent.componentPreviewStructure.layers[0]);
+    UpdateContainerComponentDropdownItemNames.updateViaParentLayerPreviewStructure(alertComponent, alertComponent.componentPreviewStructure.layers[0]);
   }
 
   public static setPropertyOverwritables(alertComponent: WorkshopComponent): void {

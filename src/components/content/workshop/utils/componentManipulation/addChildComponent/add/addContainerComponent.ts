@@ -42,13 +42,6 @@ export class AddContainerComponent extends AddComponentShared {
   };
   public static readonly DEFAULT_TOP_PROPERTY = '50%';
 
-  // WORK 2 - this should be in a shared utils file
-  protected static executePropertyOverwritables(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
-    const overwritable = containerComponent.newChildComponents.propertyOverwritables?.postBuildFuncs?.[newComponent.type];
-    overwritable?.(newComponent, containerComponent);
-    PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuns(true, containerComponent);
-  }
-
   private static updateOtherComponentsThatAreSyncedToThis(containerComponent: WorkshopComponent): void {
     if (containerComponent.sync.componentsSyncedToThis.size > 0) {
       SyncChildComponentModeTempPropertiesUtils.syncComponentToMultipleTargets(containerComponent, containerComponent.sync.componentsSyncedToThis);
@@ -149,7 +142,7 @@ export class AddContainerComponent extends AddComponentShared {
     IncrementChildComponentCount.increment(containerComponent, baseNamePrefix);
     AddContainerComponent.updateComponentContainerProperties(containerComponent, newComponent);
     AddComponentShared.cleanSubcomponentProperties(newComponent);
-    AddContainerComponent.executePropertyOverwritables(newComponent, containerComponent);
+    AddComponentShared.executePropertyOverwritables(newComponent, containerComponent, 'container');
     AddContainerComponent.updateOtherComponentsThatAreSyncedToThis(containerComponent);
     SyncedComponent.addParentComponentSyncableContainerComponentsToChild(newComponent, containerComponent);
     newComponent.containerComponent = containerComponent;

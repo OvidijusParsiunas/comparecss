@@ -4,7 +4,7 @@ import { componentTypeToStyleGenerators } from '../../../../newComponent/types/c
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddContainerComponent } from './addContainerComponent';
 
-export class AddTemporaryAddPreviewGenericComponent extends AddContainerComponent {
+export class AddTemporaryAddPreviewContainerComponent extends AddContainerComponent {
 
   public static addTemporary(activeComponent: WorkshopComponent, newComponentBaseName: CHILD_COMPONENTS_BASE_NAMES): WorkshopComponent {
     const { componentType, componentStyle, parentLayer, containerComponent,
@@ -16,7 +16,7 @@ export class AddTemporaryAddPreviewGenericComponent extends AddContainerComponen
     AddChildComponentOverlay.display(newComponent);
     Object.assign(containerComponent.subcomponents, newComponent.subcomponents);
     AddContainerComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
-    AddContainerComponent.executePropertyOverwritables(newComponent, activeComponent);
+    AddContainerComponent.executePropertyOverwritables(newComponent, activeComponent, 'container');
     return newComponent;
   }
 }

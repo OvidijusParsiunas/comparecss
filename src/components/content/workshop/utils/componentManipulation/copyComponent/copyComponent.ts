@@ -1,5 +1,5 @@
 import { PropertyReferenceSharingFuncsUtils } from '../../../newComponent/types/shared/propertyReferenceSharingFuncs/propertyReferenceSharingFuncsUtils';
-import { UpdateGenericComponentDropdownItemNames } from '../updateChildComponent/updateGenericComponentDropdownItemNames';
+import { UpdateContainerComponentDropdownItemNames } from '../updateChildComponent/updateContainerComponentDropdownItemNames';
 import { UpdateLinkedComponentsDropdownItemNames } from '../updateChildComponent/updateLinkedComponentsDropdownItemNames';
 import { componentTypeToStyleGenerators } from '../../../newComponent/types/componentTypeToStyleGenerators';
 import { UpdateLayerDropdownItemNames } from '../updateChildComponent/updateLayerDropdownItemNames';
@@ -107,8 +107,9 @@ export class CopyComponent extends ComponentBuilder {
     if (!existantNewComponentLayer) CopyComponent.createNewLayer(layer, newComponent, isEditable);
     const newLayerPreviewComponent = newComponent.componentPreviewStructure.layers[index];
     CopyComponent.copyAlignedSectionsComponents(newLayerPreviewComponent, layer, isEditable, newComponent, baseComponents);
-    UpdateGenericComponentDropdownItemNames.updateViaParentLayerPreviewStructure(newComponent, newLayerPreviewComponent);
+    UpdateContainerComponentDropdownItemNames.updateViaParentLayerPreviewStructure(newComponent, newLayerPreviewComponent);
     CopySubcomponents.copy(newLayerPreviewComponent.subcomponentProperties.seedComponent.baseSubcomponent, layer.subcomponentProperties);
+    PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuns(true, 'layer', newLayerPreviewComponent.subcomponentProperties.seedComponent);
     return !existantNewComponentLayer ? index : -1;
   }
 
@@ -166,7 +167,7 @@ export class CopyComponent extends ComponentBuilder {
     CopyComponent.copyLayerComponents(newComponent, componentBeingCopied, baseComponents);
     if (newComponent.paddingComponentChild) CopyComponent.copyPaddingComponentChild(newComponent, componentBeingCopied);
     if (newComponent.linkedComponents?.auxiliary) CopyComponent.copyAuxiliaryComponents(newComponent, componentBeingCopied);
-    PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuns(true, ...baseComponents);
+    PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuns(true, 'container', ...baseComponents);
   }
 
   public static copy(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {
