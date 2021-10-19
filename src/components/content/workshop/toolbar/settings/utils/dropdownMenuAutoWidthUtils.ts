@@ -8,7 +8,7 @@ import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 export class DropdownMenuAutoWidthUtils {
 
   // not doing a ratio for font weight because it does not scale linearly e.g. 100 is the same as 500 and 600 is the same as 700, but 800 is not same as 600
-  private static calculateButtonWidth(menuComponent: WorkshopComponent, largestItemWidth: string): string {
+  private static calculateButtonWidth(menuComponent: WorkshopComponent, largestTextWidth: number): string {
     const buttonTextFontSize = menuComponent.linkedComponents.base.sync.syncables.onCopy.subcomponents[SUBCOMPONENT_TYPES.TEXT]
       .customCss[CSS_PSEUDO_CLASSES.DEFAULT].fontSize;
     const menuItemTextFontSize = menuComponent.componentPreviewStructure.layers[0].sections.alignedSections.left[0].subcomponentProperties
@@ -16,12 +16,11 @@ export class DropdownMenuAutoWidthUtils {
     const buttonTextFontSizeNumber = Number.parseFloat(buttonTextFontSize);
     const menuItemTextFontSizeNumber = Number.parseFloat(menuItemTextFontSize);
     const buttonToMenuItemTextFontSizeRatio = buttonTextFontSizeNumber / menuItemTextFontSizeNumber;
-    const largestItemWidthNumber = Number.parseFloat(largestItemWidth);
-    return `${largestItemWidthNumber * buttonToMenuItemTextFontSizeRatio}px`;
+    return `${largestTextWidth * buttonToMenuItemTextFontSizeRatio}px`;
   }
 
-  private static calculateTotalWidth(maxTextWidth: number, { paddingLeft, paddingRight }: WorkshopComponentCss): string {
-    return `${maxTextWidth + Number.parseFloat(paddingLeft) + Number.parseFloat(paddingRight)}px`;
+  private static calculateTotalWidth(largestTextWidth: number, { paddingLeft, paddingRight }: WorkshopComponentCss): string {
+    return `${largestTextWidth + Number.parseFloat(paddingLeft) + Number.parseFloat(paddingRight)}px`;
   }
 
   private static getFirstItemDefaultClassCustomCss(menuComponent: WorkshopComponent): WorkshopComponentCss {
@@ -36,17 +35,24 @@ export class DropdownMenuAutoWidthUtils {
     });
   }
 
-  private static getLargestItemWidth(menuComponent: WorkshopComponent): string {
+  private static getLargestTextWidth(menuComponent: WorkshopComponent): number {
     const itemTextWidths = DropdownMenuAutoWidthUtils.getItemTextWidths(menuComponent);
-    const maxItemTextWidth = Math.max(...itemTextWidths);
+    return Math.max(...itemTextWidths);
+  }
+
+  private static getLargestItemWidth(menuComponent: WorkshopComponent): string {
+    const largestTextWidth = DropdownMenuAutoWidthUtils.getLargestTextWidth(menuComponent);
     const firstItemDefaultClassCustomCss = DropdownMenuAutoWidthUtils.getFirstItemDefaultClassCustomCss(menuComponent);
-    return DropdownMenuAutoWidthUtils.calculateTotalWidth(maxItemTextWidth, firstItemDefaultClassCustomCss);
+    return DropdownMenuAutoWidthUtils.calculateTotalWidth(largestTextWidth, firstItemDefaultClassCustomCss);
   }
 
   private static setButtonWidth(buttonComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
     if (buttonComponent.baseSubcomponent?.customFeatures?.autoSize?.width) {
-      const largestItemWidth = DropdownMenuAutoWidthUtils.getLargestItemWidth(menuComponent);
-      const newButtonWidth = DropdownMenuAutoWidthUtils.calculateButtonWidth(menuComponent, largestItemWidth);
+      // should be longest text
+      const largestTextWidth = DropdownMenuAutoWidthUtils.getLargestTextWidth(menuComponent);
+      // should add current button text properties to longest text
+      const newButtonWidth = DropdownMenuAutoWidthUtils.calculateButtonWidth(menuComponent, largestTextWidth);
+      // take icon into consideration
       buttonComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = newButtonWidth;
     }
   }
@@ -69,11 +75,11 @@ export class DropdownMenuAutoWidthUtils {
       if (containerComponent.type === COMPONENT_TYPES.DROPDOWN_MENU) {
         DropdownMenuAutoWidthUtils.setMenuWidth(containerComponent, containerComponent);
         DropdownMenuAutoWidthUtils.setButtonWidth(containerComponent.linkedComponents.base, containerComponent);
-        // activated by clicking select option on the button or changing the text fontSize option
-      } else if (containerComponent.type === COMPONENT_TYPES.DROPDOWN) {
+        // activated by clicking the 'Largest Item Text' option on the button or changing its children fontSize option
+      } else if (containerComponent.type === COMPONENT_TYPES.BUTTON) {
         const menuComponent = containerComponent.linkedComponents.auxiliary[0];
         DropdownMenuAutoWidthUtils.unsetMenuElementDisplayNoneProperty(menuComponent);
-        setTimeout(() => DropdownMenuAutoWidthUtils.setButtonWidth(containerComponent, menuComponent));
+        DropdownMenuAutoWidthUtils.setButtonWidth(containerComponent, menuComponent);
       }
     });
   }

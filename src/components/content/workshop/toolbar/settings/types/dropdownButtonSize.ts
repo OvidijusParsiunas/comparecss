@@ -25,7 +25,7 @@ export default {
     {
       type: SETTINGS_TYPES.CHECKBOX,
       spec: {
-        name: 'Largest Item',
+        name: 'Largest Item Text',
         customFeatureObjectKeys: ['customFeatures', 'autoSize', 'width'],
         default: true,
       },
