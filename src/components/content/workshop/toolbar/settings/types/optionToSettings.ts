@@ -5,7 +5,7 @@ import dropdownButtonPosition from './dropdownButtonPosition';
 import childComponentPosition from './childComponentPosition';
 import backgroundColorImage from './backgroundColorImage';
 import dropdownMenuPosition from './dropdownMenuPosition';
-import dropdownButtonSize from './dropdownButtonSize';
+import selectDropdownButtonSize from './dropdownButtonSize';
 import dropdownButtonText from './dropdownButtonText';
 import sizeWidthSizeName from './sizeWidthSizeName';
 import buttonAnimations from './buttonAnimations';
@@ -15,9 +15,9 @@ import imageAnimations from './imageAnimations';
 import backgroundColor from './backgroundColor';
 import backgroundImage from './backgroundImage';
 import paddingVertical from './paddingVertical';
+import selectDropdown from './selectDropdown';
 import closeAnimation from './closeAnimation';
 import shadowVertical from './shadowVertical';
-import selectDropdown from './selectDropdown';
 import modalPosition from './modalPosition';
 import layerPosition from './layerPosition';
 import fadeAnimation from './fadeAnimation';
@@ -82,7 +82,7 @@ export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_BUTTON_POSITION]: dropdownButtonPosition,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.FADE_ANIMATION]: fadeAnimation,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.SELECT_DROPDOWN]: selectDropdown,
-  [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_BUTTON_SIZE]: dropdownButtonSize,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.SELECT_DROPDOWN_BUTTON_SIZE]: selectDropdownButtonSize,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.DROPDOWN_BUTTON_TEXT]: dropdownButtonText,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.ICON]: icon,
 };
