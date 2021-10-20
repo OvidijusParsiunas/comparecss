@@ -32,13 +32,13 @@ export class DropdownMenuBase extends ComponentBuilder {
 
   private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
     if (cssProperty === 'paddingLeft' || cssProperty === 'paddingRight' || cssProperty === 'fontSize' || cssProperty === 'fontWeight') {
-      DropdownMenuAutoWidthUtils.setWidth(subcomponentProperties);
+      DropdownMenuAutoWidthUtils.setMenuWidthViaMenuItemOrTextChange(subcomponentProperties);
     }
   }
 
   public static setTriggerFuncOnSettingChange(dropdownMenuBaseComponent: WorkshopComponent): void {
     dropdownMenuBaseComponent.triggerFuncOnSettingChange = {
-      [SETTINGS_TYPES.INPUT]: DropdownMenuAutoWidthUtils.setWidth,
+      [SETTINGS_TYPES.INPUT]: DropdownMenuAutoWidthUtils.setDropdownButtonAndMenuWidthsViaItemTextContentChange,
       [SETTINGS_TYPES.RANGE]: DropdownMenuBase.setWidthViaRange,
       [SETTINGS_TYPES.ACTIONS_DROPDOWN]: DropdownMenuBase.setWidthViaRange,
     };

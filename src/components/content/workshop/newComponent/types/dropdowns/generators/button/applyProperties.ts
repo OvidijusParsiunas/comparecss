@@ -64,8 +64,8 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
   }
 
   private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
-    if (cssProperty === 'fontSize') {
-      DropdownMenuAutoWidthUtils.setWidth(subcomponentProperties);
+    if (cssProperty === 'fontSize' || cssProperty === 'marginLeft' || cssProperty === 'marginRight') {
+      DropdownMenuAutoWidthUtils.setButtonWidthViaButtonChildChange(subcomponentProperties);
     }
   }
 
@@ -76,7 +76,7 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
   }
 
   private static createDefaultAutoSize(): AutoSize {
-    const widthCalculationFunc = DropdownMenuAutoWidthUtils.setWidth;
+    const widthCalculationFunc = DropdownMenuAutoWidthUtils.initialiseSelectDropdownButtonWidthViaLargestItem;
     return ComponentBuilder.createAutoSize(false, false, { widthCalculationFunc });
   }
 

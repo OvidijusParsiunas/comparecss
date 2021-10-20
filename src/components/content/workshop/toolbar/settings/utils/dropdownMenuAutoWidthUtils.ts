@@ -10,8 +10,8 @@ export class DropdownMenuAutoWidthUtils {
 
   private static unsetMenuElementDisplayNoneProperty(menuComponent: WorkshopComponent): void {
     const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(menuComponent.baseSubcomponent.name);
-    const element = document.getElementById(subcomponentId);
-    if (element.style.display === 'none') element.style.display = '';
+    const menuElement = document.getElementById(subcomponentId);
+    if (menuElement.style.display === 'none') menuElement.style.display = '';
   }
 
   private static retrieveIconElementWidth(iconSubcomponent: SubcomponentProperties): number {
@@ -28,13 +28,6 @@ export class DropdownMenuAutoWidthUtils {
     return iconMarginLeft + iconMarginRight + iconWidth;
   }
 
-  private static calculateButtonPaddingWidth(buttonComponent: WorkshopComponent): number {
-    const buttonDefaultCss = buttonComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
-    const buttonPaddingLeft = Number.parseFloat(buttonDefaultCss.paddingLeft);
-    const buttonPaddingRight = Number.parseFloat(buttonDefaultCss.paddingRight);
-    return buttonPaddingLeft + buttonPaddingRight;
-  }
-
   private static calculateTextWidthThroughTextSizeEvaluatorElement(buttonTextDefaultCss: WorkshopComponentCss, text: string): number {
     const sizeEvaluatorElement = document.getElementById(TEXT_SIZE_EVALUATOR_ID);
     sizeEvaluatorElement.innerText = text;
@@ -46,20 +39,19 @@ export class DropdownMenuAutoWidthUtils {
 
   private static calculateTextWidth(textSubcomponent: SubcomponentProperties, text: string): number {
     const buttonTextDefaultCss = textSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
-    const textWidth = DropdownMenuAutoWidthUtils.calculateTextWidthThroughTextSizeEvaluatorElement(buttonTextDefaultCss, text);
+    const evaluatedTextWidth = DropdownMenuAutoWidthUtils.calculateTextWidthThroughTextSizeEvaluatorElement(buttonTextDefaultCss, text);
     const marginLeft = Number.parseFloat(buttonTextDefaultCss.marginLeft);
     const marginRight = Number.parseFloat(buttonTextDefaultCss.marginRight);
-    return marginLeft + marginRight + textWidth;
+    return marginLeft + marginRight + evaluatedTextWidth;
   }
 
   private static calculateNewButtonWidth(buttonComponent: WorkshopComponent, longestMenuText: string): string {
     const onCopySubcomponents = buttonComponent.sync.syncables.onCopy.subcomponents;
     const textSubcomponent = onCopySubcomponents[SUBCOMPONENT_TYPES.TEXT];
-    const longestMenuTextWidth = textSubcomponent ? DropdownMenuAutoWidthUtils.calculateTextWidth(textSubcomponent, longestMenuText) : 0;
-    const buttonPaddingWidth = DropdownMenuAutoWidthUtils.calculateButtonPaddingWidth(buttonComponent);
+    const textWidth = textSubcomponent ? DropdownMenuAutoWidthUtils.calculateTextWidth(textSubcomponent, longestMenuText) : 0;
     const iconSubcomponent = onCopySubcomponents[SUBCOMPONENT_TYPES.ICON];
     const iconWidth = iconSubcomponent ? DropdownMenuAutoWidthUtils.calculateIconWidth(iconSubcomponent) : 0;
-    const newButtonWidth = longestMenuTextWidth + buttonPaddingWidth + iconWidth;
+    const newButtonWidth = textWidth + iconWidth;
     return `${newButtonWidth}px`;
   }
 
@@ -109,24 +101,43 @@ export class DropdownMenuAutoWidthUtils {
     return DropdownMenuAutoWidthUtils.calculateTotalWidth(largestTextWidth, firstItemDefaultClassCustomCss);
   }
 
-  private static setMenuWidth(containerComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
+  private static setMenuWidth( menuComponent: WorkshopComponent): void {
     const largestItemWidth = DropdownMenuAutoWidthUtils.getLargestItemWidth(menuComponent);
-    containerComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = largestItemWidth;
+    menuComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = largestItemWidth;
   }
 
-  public static setWidth(subcomponentProperties: SubcomponentProperties): void {
+  public static initialiseSelectDropdownButtonWidthViaLargestItem(subcomponentProperties: SubcomponentProperties): void {
     setTimeout(() => {
-      // activated by changing padding on dropdown menu item or changing dropdown menu item text
-      const containerComponent = subcomponentProperties.seedComponent?.containerComponent || subcomponentProperties.seedComponent;
-      if (containerComponent.type === COMPONENT_TYPES.DROPDOWN_MENU) {
-        DropdownMenuAutoWidthUtils.setMenuWidth(containerComponent, containerComponent);
-        DropdownMenuAutoWidthUtils.setButtonWidth(containerComponent.linkedComponents.base, containerComponent);
-        // activated by clicking the 'Largest Item Text' option on the button or changing its children fontSize option
-      } else if (containerComponent.type === COMPONENT_TYPES.BUTTON) {
-        const menuComponent = containerComponent.linkedComponents.auxiliary[0];
-        DropdownMenuAutoWidthUtils.unsetMenuElementDisplayNoneProperty(menuComponent);
-        DropdownMenuAutoWidthUtils.setButtonWidth(containerComponent, menuComponent);
+      const buttonComponent = subcomponentProperties.seedComponent;
+      const menuComponent = buttonComponent.linkedComponents.auxiliary[0];
+      DropdownMenuAutoWidthUtils.setButtonWidth(buttonComponent, menuComponent); 
+    });
+  }
+
+  public static setButtonWidthViaButtonChildChange(subcomponentProperties: SubcomponentProperties): void {
+    setTimeout(() => {
+      // the reason why there is an if statement is because this can get triggered when margin left/right is changed in the button
+      if (subcomponentProperties.seedComponent.type === COMPONENT_TYPES.TEXT
+          || subcomponentProperties.seedComponent.type === COMPONENT_TYPES.ICON) {
+        const buttonComponent = subcomponentProperties.seedComponent.containerComponent;
+        const menuComponent = buttonComponent.linkedComponents.auxiliary[0];
+        DropdownMenuAutoWidthUtils.setButtonWidth(buttonComponent, menuComponent); 
       }
+    });
+  }
+
+  public static setDropdownButtonAndMenuWidthsViaItemTextContentChange(itemSubcomponentProperties: SubcomponentProperties): void {
+    setTimeout(() => {
+      const menuComponent = itemSubcomponentProperties.seedComponent.containerComponent;
+      DropdownMenuAutoWidthUtils.setMenuWidth(menuComponent);
+      DropdownMenuAutoWidthUtils.setButtonWidth(menuComponent.linkedComponents.base, menuComponent);
+    });
+  }
+
+  public static setMenuWidthViaMenuItemOrTextChange(subcomponentProperties: SubcomponentProperties): void {
+    setTimeout(() => {
+      const menuComponent = subcomponentProperties.seedComponent.containerComponent || subcomponentProperties.seedComponent;
+      DropdownMenuAutoWidthUtils.setMenuWidth(menuComponent);
     });
   }
 }

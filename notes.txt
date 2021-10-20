@@ -1,4 +1,6 @@
-select dropdown longest item width
+change width when new item is being added or being removed
+when a synced dropdown synced button is removed and the current button is then changed - the components that are synced to it should have those changes reflected
+when select is toggled off - the auto width functionality should also be switched off
 
 night diving
 
