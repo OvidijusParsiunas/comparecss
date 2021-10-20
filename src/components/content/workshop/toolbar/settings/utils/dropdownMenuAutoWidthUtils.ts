@@ -8,12 +8,6 @@ import { TEXT_SIZE_EVALUATOR_ID } from '../../../../../../consts/elementIds';
 
 export class DropdownMenuAutoWidthUtils {
 
-  private static unsetMenuElementDisplayNoneProperty(menuComponent: WorkshopComponent): void {
-    const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(menuComponent.baseSubcomponent.name);
-    const menuElement = document.getElementById(subcomponentId);
-    if (menuElement.style.display === 'none') menuElement.style.display = '';
-  }
-
   private static retrieveIconElementWidth(iconSubcomponent: SubcomponentProperties): number {
     const iconName = iconSubcomponent.name;
     const iconid = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(iconName);

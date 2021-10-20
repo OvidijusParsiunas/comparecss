@@ -64,7 +64,8 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
   }
 
   private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
-    if (cssProperty === 'fontSize' || cssProperty === 'marginLeft' || cssProperty === 'marginRight') {
+    // width is used by icon size
+    if (cssProperty === 'fontSize' || cssProperty === 'marginLeft' || cssProperty === 'marginRight' || cssProperty === 'width') {
       DropdownMenuAutoWidthUtils.setButtonWidthViaButtonChildChange(subcomponentProperties);
     }
   }
