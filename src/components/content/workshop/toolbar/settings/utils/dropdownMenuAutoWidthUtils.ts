@@ -4,19 +4,82 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClas
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
+import { TEXT_SIZE_EVALUATOR_ID } from '../../../../../../consts/elementIds';
 
 export class DropdownMenuAutoWidthUtils {
 
-  // not doing a ratio for font weight because it does not scale linearly e.g. 100 is the same as 500 and 600 is the same as 700, but 800 is not same as 600
-  private static calculateButtonWidth(menuComponent: WorkshopComponent, largestTextWidth: number): string {
-    const buttonTextFontSize = menuComponent.linkedComponents.base.sync.syncables.onCopy.subcomponents[SUBCOMPONENT_TYPES.TEXT]
-      .customCss[CSS_PSEUDO_CLASSES.DEFAULT].fontSize;
-    const menuItemTextFontSize = menuComponent.componentPreviewStructure.layers[0].sections.alignedSections.left[0].subcomponentProperties
-      .customCss[CSS_PSEUDO_CLASSES.DEFAULT].fontSize;
-    const buttonTextFontSizeNumber = Number.parseFloat(buttonTextFontSize);
-    const menuItemTextFontSizeNumber = Number.parseFloat(menuItemTextFontSize);
-    const buttonToMenuItemTextFontSizeRatio = buttonTextFontSizeNumber / menuItemTextFontSizeNumber;
-    return `${largestTextWidth * buttonToMenuItemTextFontSizeRatio}px`;
+  private static unsetMenuElementDisplayNoneProperty(menuComponent: WorkshopComponent): void {
+    const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(menuComponent.baseSubcomponent.name);
+    const element = document.getElementById(subcomponentId);
+    if (element.style.display === 'none') element.style.display = '';
+  }
+
+  private static retrieveIconElementWidth(iconSubcomponent: SubcomponentProperties): number {
+    const iconName = iconSubcomponent.name;
+    const iconid = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(iconName);
+    return document.getElementById(iconid).clientWidth;
+  }
+
+  private static calculateIconWidth(iconSubcomponent: SubcomponentProperties): number {
+    const iconDefaultCss = iconSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
+    const iconMarginLeft = Number.parseFloat(iconDefaultCss.marginLeft);
+    const iconMarginRight = Number.parseFloat(iconDefaultCss.marginRight);
+    const iconWidth = DropdownMenuAutoWidthUtils.retrieveIconElementWidth(iconSubcomponent);
+    return iconMarginLeft + iconMarginRight + iconWidth;
+  }
+
+  private static calculateButtonPaddingWidth(buttonComponent: WorkshopComponent): number {
+    const buttonDefaultCss = buttonComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
+    const buttonPaddingLeft = Number.parseFloat(buttonDefaultCss.paddingLeft);
+    const buttonPaddingRight = Number.parseFloat(buttonDefaultCss.paddingRight);
+    return buttonPaddingLeft + buttonPaddingRight;
+  }
+
+  private static calculateTextWidthThroughTextSizeEvaluatorElement(buttonTextDefaultCss: WorkshopComponentCss, text: string): number {
+    const sizeEvaluatorElement = document.getElementById(TEXT_SIZE_EVALUATOR_ID);
+    sizeEvaluatorElement.innerText = text;
+    sizeEvaluatorElement.style.fontSize = buttonTextDefaultCss.fontSize;
+    sizeEvaluatorElement.style.fontWeight = buttonTextDefaultCss.fontWeight;
+    sizeEvaluatorElement.style.fontFamily = buttonTextDefaultCss.fontFamily;
+    return sizeEvaluatorElement.clientWidth;
+  }
+
+  private static calculateTextWidth(textSubcomponent: SubcomponentProperties, text: string): number {
+    const buttonTextDefaultCss = textSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
+    const textWidth = DropdownMenuAutoWidthUtils.calculateTextWidthThroughTextSizeEvaluatorElement(buttonTextDefaultCss, text);
+    const marginLeft = Number.parseFloat(buttonTextDefaultCss.marginLeft);
+    const marginRight = Number.parseFloat(buttonTextDefaultCss.marginRight);
+    return marginLeft + marginRight + textWidth;
+  }
+
+  private static calculateNewButtonWidth(buttonComponent: WorkshopComponent, longestMenuText: string): string {
+    const onCopySubcomponents = buttonComponent.sync.syncables.onCopy.subcomponents;
+    const textSubcomponent = onCopySubcomponents[SUBCOMPONENT_TYPES.TEXT];
+    const longestMenuTextWidth = textSubcomponent ? DropdownMenuAutoWidthUtils.calculateTextWidth(textSubcomponent, longestMenuText) : 0;
+    const buttonPaddingWidth = DropdownMenuAutoWidthUtils.calculateButtonPaddingWidth(buttonComponent);
+    const iconSubcomponent = onCopySubcomponents[SUBCOMPONENT_TYPES.ICON];
+    const iconWidth = iconSubcomponent ? DropdownMenuAutoWidthUtils.calculateIconWidth(iconSubcomponent) : 0;
+    const newButtonWidth = longestMenuTextWidth + buttonPaddingWidth + iconWidth;
+    return `${newButtonWidth}px`;
+  }
+
+  private static getLongestString(strings: string[]): string {
+    return strings.reduce((a, b) =>  a.length > b.length ? a : b);
+  } 
+
+  private static getLongestMenuText(menuComponent: WorkshopComponent): string {
+    const menuItemTexts = menuComponent.componentPreviewStructure.layers.map((layer) => {      
+      return layer.sections.alignedSections.left[0].subcomponentProperties.customStaticFeatures.subcomponentText.text
+    });
+    return DropdownMenuAutoWidthUtils.getLongestString(menuItemTexts);
+  }
+
+  private static setButtonWidth(buttonComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
+    if (buttonComponent.baseSubcomponent?.customFeatures?.autoSize?.width) {
+      const longestMenuText = DropdownMenuAutoWidthUtils.getLongestMenuText(menuComponent);
+      const totalWidth = DropdownMenuAutoWidthUtils.calculateNewButtonWidth(buttonComponent, longestMenuText);
+      buttonComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = totalWidth;
+    }
   }
 
   private static calculateTotalWidth(largestTextWidth: number, { paddingLeft, paddingRight }: WorkshopComponentCss): string {
@@ -44,23 +107,6 @@ export class DropdownMenuAutoWidthUtils {
     const largestTextWidth = DropdownMenuAutoWidthUtils.getLargestTextWidth(menuComponent);
     const firstItemDefaultClassCustomCss = DropdownMenuAutoWidthUtils.getFirstItemDefaultClassCustomCss(menuComponent);
     return DropdownMenuAutoWidthUtils.calculateTotalWidth(largestTextWidth, firstItemDefaultClassCustomCss);
-  }
-
-  private static setButtonWidth(buttonComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
-    if (buttonComponent.baseSubcomponent?.customFeatures?.autoSize?.width) {
-      // should be longest text
-      const largestTextWidth = DropdownMenuAutoWidthUtils.getLargestTextWidth(menuComponent);
-      // should add current button text properties to longest text
-      const newButtonWidth = DropdownMenuAutoWidthUtils.calculateButtonWidth(menuComponent, largestTextWidth);
-      // take icon into consideration
-      buttonComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = newButtonWidth;
-    }
-  }
-
-  private static unsetMenuElementDisplayNoneProperty(menuComponent: WorkshopComponent): void {
-    const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(menuComponent.baseSubcomponent.name);
-    const element = document.getElementById(subcomponentId);
-    if (element.style.display === 'none') element.style.display = '';
   }
 
   private static setMenuWidth(containerComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {

@@ -106,6 +106,8 @@
       <i class="fa fa-angle-down"></i>
       <i class="fa fa-angle-double-down"></i>
     </div>
+    <!-- used for checking clientWidth of text with different fonts/sizes/weights -->
+    <div id="textSizeEvaluator"></div>
   </div>
 </template>
 
@@ -300,5 +302,13 @@ export default {
     z-index: 1;
     transition-property: opacity;
     transition-timing-function: linear;
+  }
+  #textSizeEvaluator {
+    width: fit-content;
+    height: 10px;
+    position: absolute;
+    top: 0px;
+    opacity: 0;
+    pointer-events: none;
   }
 </style>
