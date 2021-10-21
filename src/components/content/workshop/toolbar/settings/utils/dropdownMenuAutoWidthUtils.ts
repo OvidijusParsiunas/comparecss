@@ -136,7 +136,7 @@ export class DropdownMenuAutoWidthUtils {
     });
   }
 
-  public static updateButtonWidthOnLayerAddRemove(menuComponent: WorkshopComponent): void {
+  public static updateButtonWidthOnLayerAddRemove(itemComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
     const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(
       menuComponent.baseSubcomponent.name);
     if (!document.getElementById(subcomponentId)) return;

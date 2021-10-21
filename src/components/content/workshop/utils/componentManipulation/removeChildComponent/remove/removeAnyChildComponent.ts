@@ -127,18 +127,15 @@ export class RemoveAnyChildComponent {
   }
 
   private static removeAlignedChildComponent(alignedChildComponents: BaseSubcomponentRef[], subcomponentProperties: SubcomponentProperties,
-      masterComponent: WorkshopComponent, containerComponent: WorkshopComponent, index: number, deletedSubcomponentContainerComponent: WorkshopComponent): void {
+      masterComponent: WorkshopComponent, containerComponent: WorkshopComponent, index: number): void {
     RemoveAnyChildComponent.removeAlignedComponents(subcomponentProperties, masterComponent, containerComponent);
     alignedChildComponents.splice(index, 1);
     InterconnectedSettings.update(false, containerComponent, subcomponentProperties);
-    deletedSubcomponentContainerComponent?.removeChildComponentFuncs.container?.(deletedSubcomponentContainerComponent);
   }
 
-  private static removeLayer(layers: Layer[], index: number, masterComponent: WorkshopComponent, containerComponent: WorkshopComponent,
-      deletedSubcomponentContainerComponent: WorkshopComponent): void {
+  private static removeLayer(layers: Layer[], index: number, masterComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
     RemoveAnyChildComponent.removeLayerComponents(layers[index], masterComponent, containerComponent);
     layers.splice(index, 1);
-    deletedSubcomponentContainerComponent?.removeChildComponentFuncs.layer?.(deletedSubcomponentContainerComponent);
   }
 
   protected static removeChildComponentInPreviewStructureIfFound(traversalState: SubcomponentPreviewTraversalState): PreviewTraversalResult {
@@ -149,9 +146,11 @@ export class RemoveAnyChildComponent {
       // when actual container component not available (when temp), the seed component master is usuall the container
       const deletedSubcomponentContainerComponent = subcomponentProperties.seedComponent.containerComponent
         || subcomponentProperties.seedComponent.masterComponent;
-      if (layers) RemoveAnyChildComponent.removeLayer(layers, index, masterComponent, containerComponent, deletedSubcomponentContainerComponent);
+      if (layers) RemoveAnyChildComponent.removeLayer(layers, index, masterComponent, containerComponent);
       if (alignedChildComponents) RemoveAnyChildComponent.removeAlignedChildComponent(alignedChildComponents, subcomponentProperties, masterComponent,
-        containerComponent, index, deletedSubcomponentContainerComponent);
+        containerComponent, index);
+      // the reason why the container is getting passed along seed component is because the containerComponent may not exist because of temp removal
+      deletedSubcomponentContainerComponent?.onChildComponentRemovalFunc?.(subcomponentProperties.seedComponent, deletedSubcomponentContainerComponent);
       return { stopTraversal: true, traversalState };
     }
     return {};

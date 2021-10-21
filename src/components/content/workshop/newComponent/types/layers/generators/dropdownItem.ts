@@ -119,7 +119,7 @@ export class DropdownItemLayer extends ComponentBuilder {
         && !SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(menuComponent)) {
       overwriteLayerCss(itemComponent);
     }
-    DropdownMenuAutoWidthUtils.updateButtonWidthOnLayerAddRemove(menuComponent);
+    DropdownMenuAutoWidthUtils.updateButtonWidthOnLayerAddRemove(itemComponent, menuComponent);
   }
 
   public static initializeChildComponentsLockedToLayer(layerComponent: WorkshopComponent): void {

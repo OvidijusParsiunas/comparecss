@@ -9,6 +9,7 @@ import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { TriggerFuncOnSettingChange } from './triggerFuncOnSettingChange';
 import { OtherSubcomponentTriggers } from './otherSubcomponentTriggers';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
+import { PropertyOverwritableFunc } from './removeChildComponentFunc';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
@@ -198,11 +199,7 @@ export interface WorkshopComponent {
   paddingComponentChild?: WorkshopComponent;
   // properties for components that can be added through the add child component dropdown
   newChildComponents: NewChildComponents;
-  // WORK 2 refactor
-  removeChildComponentFuncs: {
-    layer?: (component: WorkshopComponent) => void;
-    container?: (component: WorkshopComponent) => void; 
-  },
+  onChildComponentRemovalFunc?: PropertyOverwritableFunc;
 }
 
 // Component Architecture Information:

@@ -1,4 +1,5 @@
 import { PropertyReferenceSharingFunc as PropertyReferenceSharingFunc } from './PropertyReferenceSharingFunc';
+import { PropertyOverwritableFunc } from './removeChildComponentFunc';
 import { ALIGNED_SECTION_TYPES } from '../consts/layerSections.enum';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
@@ -18,7 +19,7 @@ export interface ReferenceSharingFunType {
 }
 
 export type PostBuildPropertyOverwritableFuncs = {
-  [key in COMPONENT_TYPES]?: (component: WorkshopComponent, containerComponent: WorkshopComponent) => void;
+  [key in COMPONENT_TYPES]?: PropertyOverwritableFunc;
 }
 
 export interface PropertyOverwritables {
