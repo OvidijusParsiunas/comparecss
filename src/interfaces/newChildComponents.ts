@@ -22,8 +22,8 @@ export type PostBuildPropertyOverwritableFuncs = {
 }
 
 export interface PropertyOverwritables {
-  // WORK 2 - need to have overwritables for all areas where child components are added
   postBuildFuncs?: PostBuildPropertyOverwritableFuncs;
+  // WORK 2 - try to replace this with postBuildFuncs
   // executed for different types of child components - when they are added, copied or dereferenced
   propertyReferenceSharingFuncsOnComponentChange?: ReferenceSharingFunType;
   // this is mostly used for properties that are coupled to the parent and need to be applied before any further processing is done during the addition

@@ -51,7 +51,7 @@ export class DropdownMenuAutoWidthUtils {
 
   private static getLongestString(strings: string[]): string {
     return strings.reduce((a, b) =>  a.length > b.length ? a : b);
-  } 
+  }
 
   private static getLongestMenuText(menuComponent: WorkshopComponent): string {
     const menuItemTexts = menuComponent.componentPreviewStructure.layers.map((layer) => {      
@@ -95,11 +95,12 @@ export class DropdownMenuAutoWidthUtils {
     return DropdownMenuAutoWidthUtils.calculateTotalWidth(largestTextWidth, firstItemDefaultClassCustomCss);
   }
 
-  private static setMenuWidth( menuComponent: WorkshopComponent): void {
+  private static setMenuWidth(menuComponent: WorkshopComponent): void {
     const largestItemWidth = DropdownMenuAutoWidthUtils.getLargestItemWidth(menuComponent);
     menuComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = largestItemWidth;
   }
 
+  // WORK 2 - refactor all of these to not have the redundant functions
   public static initialiseSelectDropdownButtonWidthViaLargestItem(subcomponentProperties: SubcomponentProperties): void {
     setTimeout(() => {
       const buttonComponent = subcomponentProperties.seedComponent;
@@ -132,6 +133,16 @@ export class DropdownMenuAutoWidthUtils {
     setTimeout(() => {
       const menuComponent = subcomponentProperties.seedComponent.containerComponent || subcomponentProperties.seedComponent;
       DropdownMenuAutoWidthUtils.setMenuWidth(menuComponent);
+    });
+  }
+
+  public static updateButtonWidthOnLayerAddRemove(menuComponent: WorkshopComponent): void {
+    const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(
+      menuComponent.baseSubcomponent.name);
+    if (!document.getElementById(subcomponentId)) return;
+    setTimeout(() => {
+      DropdownMenuAutoWidthUtils.setMenuWidth(menuComponent);
+      DropdownMenuAutoWidthUtils.setButtonWidth(menuComponent.linkedComponents.base, menuComponent);
     });
   }
 }

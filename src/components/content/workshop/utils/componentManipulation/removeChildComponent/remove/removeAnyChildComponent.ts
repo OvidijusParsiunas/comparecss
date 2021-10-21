@@ -126,19 +126,32 @@ export class RemoveAnyChildComponent {
     RemoveAnyChildComponent.removeSubcomponentProperties(name, masterComponent);
   }
 
+  private static removeAlignedChildComponent(alignedChildComponents: BaseSubcomponentRef[], subcomponentProperties: SubcomponentProperties,
+      masterComponent: WorkshopComponent, containerComponent: WorkshopComponent, index: number, deletedSubcomponentContainerComponent: WorkshopComponent): void {
+    RemoveAnyChildComponent.removeAlignedComponents(subcomponentProperties, masterComponent, containerComponent);
+    alignedChildComponents.splice(index, 1);
+    InterconnectedSettings.update(false, containerComponent, subcomponentProperties);
+    deletedSubcomponentContainerComponent?.removeChildComponentFuncs.container?.(deletedSubcomponentContainerComponent);
+  }
+
+  private static removeLayer(layers: Layer[], index: number, masterComponent: WorkshopComponent, containerComponent: WorkshopComponent,
+      deletedSubcomponentContainerComponent: WorkshopComponent): void {
+    RemoveAnyChildComponent.removeLayerComponents(layers[index], masterComponent, containerComponent);
+    layers.splice(index, 1);
+    deletedSubcomponentContainerComponent?.removeChildComponentFuncs.layer?.(deletedSubcomponentContainerComponent);
+  }
+
   protected static removeChildComponentInPreviewStructureIfFound(traversalState: SubcomponentPreviewTraversalState): PreviewTraversalResult {
     const { subcomponentProperties, layers, alignedChildComponents, index } = traversalState;
     const { targetSubcomponentProperties, containerComponent, masterComponent } = this as any as TargetRemovalDetails;
     if (targetSubcomponentProperties === subcomponentProperties) {
-      if (layers) {
-        RemoveAnyChildComponent.removeLayerComponents(layers[index], masterComponent, containerComponent);
-        layers.splice(index, 1);
-      }
-      if (alignedChildComponents) {
-        RemoveAnyChildComponent.removeAlignedComponents(subcomponentProperties, masterComponent, containerComponent);
-        alignedChildComponents.splice(index, 1);
-        InterconnectedSettings.update(false, containerComponent, subcomponentProperties);
-      }
+      // containerComponent variable is not always the actual container component (set as masterComponent by the remove method below)
+      // when actual container component not available (when temp), the seed component master is usuall the container
+      const deletedSubcomponentContainerComponent = subcomponentProperties.seedComponent.containerComponent
+        || subcomponentProperties.seedComponent.masterComponent;
+      if (layers) RemoveAnyChildComponent.removeLayer(layers, index, masterComponent, containerComponent, deletedSubcomponentContainerComponent);
+      if (alignedChildComponents) RemoveAnyChildComponent.removeAlignedChildComponent(alignedChildComponents, subcomponentProperties, masterComponent,
+        containerComponent, index, deletedSubcomponentContainerComponent);
       return { stopTraversal: true, traversalState };
     }
     return {};

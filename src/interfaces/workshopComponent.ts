@@ -198,6 +198,11 @@ export interface WorkshopComponent {
   paddingComponentChild?: WorkshopComponent;
   // properties for components that can be added through the add child component dropdown
   newChildComponents: NewChildComponents;
+  // WORK 2 refactor
+  removeChildComponentFuncs: {
+    layer?: (component: WorkshopComponent) => void;
+    container?: (component: WorkshopComponent) => void; 
+  },
 }
 
 // Component Architecture Information:

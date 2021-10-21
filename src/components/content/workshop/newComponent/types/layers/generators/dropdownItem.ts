@@ -3,6 +3,7 @@ import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } fr
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { SubcomponentMouseEventCallbacks } from '../../../../../../../interfaces/subcomponentMouseEventCallbacks';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
+import { DropdownMenuAutoWidthUtils } from '../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
 import { SubcomponentTriggers } from '../../../../utils/componentManipulation/utils/subcomponentTriggers';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../../consts/baseSubcomponentNames.enum';
@@ -118,6 +119,7 @@ export class DropdownItemLayer extends ComponentBuilder {
         && !SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(menuComponent)) {
       overwriteLayerCss(itemComponent);
     }
+    DropdownMenuAutoWidthUtils.updateButtonWidthOnLayerAddRemove(menuComponent);
   }
 
   public static initializeChildComponentsLockedToLayer(layerComponent: WorkshopComponent): void {

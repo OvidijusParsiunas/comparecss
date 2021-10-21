@@ -104,10 +104,10 @@ class DefaultModal extends ComponentBuilder {
         [COMPONENT_TYPES.TEXT]: DefaultModal.overwriteTitleProperties,
         [COMPONENT_TYPES.IMAGE]: DefaultModal.setComponentToRemovable,
         [COMPONENT_TYPES.BUTTON]: DefaultModal.setComponentToRemovable,
-      }
+      },
     };
     cardComponent.newChildComponents.propertyOverwritables.onBuildProperties = {
-      [COMPONENT_TYPES.IMAGE]:  { alignmentSection: ALIGNED_SECTION_TYPES.CENTER },
+      [COMPONENT_TYPES.IMAGE]: { alignmentSection: ALIGNED_SECTION_TYPES.CENTER },
       [COMPONENT_TYPES.BUTTON]: { alignmentSection: ALIGNED_SECTION_TYPES.RIGHT },
     };
     AddContainerComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT, layer1Component.baseSubcomponent.name);

@@ -14,13 +14,13 @@ class ButtonWithIcon {
     UpdateContainerComponentDropdownItemNames.updateViaParentLayerPreviewStructure(buttonComponent, layer);
   }
 
-  private static overwriteIconProperties(iconComponent: WorkshopComponent): void {
+  private static setComponentToRemovable(iconComponent: WorkshopComponent): void {
     iconComponent.baseSubcomponent.isRemovable = true;
   }
 
   public static setPropertyOverwritables(buttonComponent: WorkshopComponent): void {
     buttonComponent.newChildComponents.propertyOverwritables.postBuildFuncs
-      [COMPONENT_TYPES.ICON] = ButtonWithIcon.overwriteIconProperties;
+      [COMPONENT_TYPES.ICON] = ButtonWithIcon.setComponentToRemovable;
   }
 }
 
