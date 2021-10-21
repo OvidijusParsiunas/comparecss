@@ -1,4 +1,5 @@
 import { UpdateContainerComponentDropdownItemNames } from '../../../../utils/componentManipulation/updateChildComponent/updateContainerComponentDropdownItemNames';
+import { subcomponentAndOverlayElementIdsState } from '../../../../componentPreview/utils/elements/subcomponentAndOverlayElementIdsState';
 import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { SubcomponentMouseEventCallbacks } from '../../../../../../../interfaces/subcomponentMouseEventCallbacks';
@@ -112,6 +113,14 @@ export class DropdownItemLayer extends ComponentBuilder {
     menuComponent.sync.syncables.onCopy.childComponents.push(layerComponent);
   }
 
+  public static updateButtonWidthOnLayerAddRemove(itemComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
+    const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(
+      menuComponent.baseSubcomponent.name);
+    if (!document.getElementById(subcomponentId)) return;
+    DropdownMenuAutoWidthUtils.setMenuWidth(menuComponent);
+    DropdownMenuAutoWidthUtils.setButtonWidth(menuComponent.linkedComponents.base, menuComponent);
+  }
+
   public static overwriteDropdownItem(itemComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
     const overwriteLayerCss = this as unknown as OverwriteDropdownItemContext;
     DropdownItemLayer.addChildComponentsToLayer(itemComponent, menuComponent);
@@ -119,7 +128,7 @@ export class DropdownItemLayer extends ComponentBuilder {
         && !SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(menuComponent)) {
       overwriteLayerCss(itemComponent);
     }
-    DropdownMenuAutoWidthUtils.updateButtonWidthOnLayerAddRemove(itemComponent, menuComponent);
+    DropdownItemLayer.updateButtonWidthOnLayerAddRemove(itemComponent, menuComponent);
   }
 
   public static initializeChildComponentsLockedToLayer(layerComponent: WorkshopComponent): void {

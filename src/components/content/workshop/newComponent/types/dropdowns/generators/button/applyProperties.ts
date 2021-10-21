@@ -4,6 +4,7 @@ import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dr
 import { LinkedComponentsUtils } from '../../../shared/linkedComponents/linkedComponentsUtils';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
+import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
 import { SETTINGS_TYPES } from '../../../../../../../../consts/settingsTypes.enum';
 import { AutoSize } from '../../../../../../../../interfaces/autoSize';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
@@ -64,9 +65,14 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
   }
 
   private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
+    const { type } = subcomponentProperties.seedComponent;
+    // the reason why there is an if statement is because this can get triggered when margin left/right is changed in the button
+    if (type === COMPONENT_TYPES.BUTTON) return;
     // width is used by icon size
     if (cssProperty === 'fontSize' || cssProperty === 'marginLeft' || cssProperty === 'marginRight' || cssProperty === 'width') {
-      DropdownMenuAutoWidthUtils.setButtonWidthViaButtonChildChange(subcomponentProperties);
+      const buttonComponent = subcomponentProperties.seedComponent.containerComponent;
+      const menuComponent = buttonComponent.linkedComponents.auxiliary[0];
+      DropdownMenuAutoWidthUtils.setButtonWidth(buttonComponent, menuComponent); 
     }
   }
 
@@ -76,8 +82,14 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
     };
   }
 
+  private static initialiseSelectDropdownButtonWidthViaLargestItem(subcomponentProperties: SubcomponentProperties): void {
+    const buttonComponent = subcomponentProperties.seedComponent;
+    const menuComponent = buttonComponent.linkedComponents.auxiliary[0];
+    DropdownMenuAutoWidthUtils.setButtonWidth(buttonComponent, menuComponent); 
+  }
+
   private static createDefaultAutoSize(): AutoSize {
-    const widthCalculationFunc = DropdownMenuAutoWidthUtils.initialiseSelectDropdownButtonWidthViaLargestItem;
+    const widthCalculationFunc = ApplyDropdownButtonProperties.initialiseSelectDropdownButtonWidthViaLargestItem;
     return ComponentBuilder.createAutoSize(false, false, { widthCalculationFunc });
   }
 

@@ -3,7 +3,6 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../int
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
-import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 import { TEXT_SIZE_EVALUATOR_ID } from '../../../../../../consts/elementIds';
 
 export class DropdownMenuAutoWidthUtils {
@@ -60,12 +59,14 @@ export class DropdownMenuAutoWidthUtils {
     return DropdownMenuAutoWidthUtils.getLongestString(menuItemTexts);
   }
 
-  private static setButtonWidth(buttonComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
-    if (buttonComponent.baseSubcomponent?.customFeatures?.autoSize?.width) {
-      const longestMenuText = DropdownMenuAutoWidthUtils.getLongestMenuText(menuComponent);
-      const totalWidth = DropdownMenuAutoWidthUtils.calculateNewButtonWidth(buttonComponent, longestMenuText);
-      buttonComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = totalWidth;
-    }
+  public static setButtonWidth(buttonComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
+    setTimeout(() => {
+      if (buttonComponent.baseSubcomponent?.customFeatures?.autoSize?.width) {
+        const longestMenuText = DropdownMenuAutoWidthUtils.getLongestMenuText(menuComponent);
+        const totalWidth = DropdownMenuAutoWidthUtils.calculateNewButtonWidth(buttonComponent, longestMenuText);
+        buttonComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = totalWidth;
+      }
+    });
   }
 
   private static calculateTotalWidth(largestTextWidth: number, { paddingLeft, paddingRight }: WorkshopComponentCss): string {
@@ -95,54 +96,10 @@ export class DropdownMenuAutoWidthUtils {
     return DropdownMenuAutoWidthUtils.calculateTotalWidth(largestTextWidth, firstItemDefaultClassCustomCss);
   }
 
-  private static setMenuWidth(menuComponent: WorkshopComponent): void {
-    const largestItemWidth = DropdownMenuAutoWidthUtils.getLargestItemWidth(menuComponent);
-    menuComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = largestItemWidth;
-  }
-
-  // WORK 2 - refactor all of these to not have the redundant functions
-  public static initialiseSelectDropdownButtonWidthViaLargestItem(subcomponentProperties: SubcomponentProperties): void {
+  public static setMenuWidth(menuComponent: WorkshopComponent): void {
     setTimeout(() => {
-      const buttonComponent = subcomponentProperties.seedComponent;
-      const menuComponent = buttonComponent.linkedComponents.auxiliary[0];
-      DropdownMenuAutoWidthUtils.setButtonWidth(buttonComponent, menuComponent); 
-    });
-  }
-
-  public static setButtonWidthViaButtonChildChange(subcomponentProperties: SubcomponentProperties): void {
-    setTimeout(() => {
-      // the reason why there is an if statement is because this can get triggered when margin left/right is changed in the button
-      if (subcomponentProperties.seedComponent.type === COMPONENT_TYPES.TEXT
-          || subcomponentProperties.seedComponent.type === COMPONENT_TYPES.ICON) {
-        const buttonComponent = subcomponentProperties.seedComponent.containerComponent;
-        const menuComponent = buttonComponent.linkedComponents.auxiliary[0];
-        DropdownMenuAutoWidthUtils.setButtonWidth(buttonComponent, menuComponent); 
-      }
-    });
-  }
-
-  public static setDropdownButtonAndMenuWidthsViaItemTextContentChange(itemSubcomponentProperties: SubcomponentProperties): void {
-    setTimeout(() => {
-      const menuComponent = itemSubcomponentProperties.seedComponent.containerComponent;
-      DropdownMenuAutoWidthUtils.setMenuWidth(menuComponent);
-      DropdownMenuAutoWidthUtils.setButtonWidth(menuComponent.linkedComponents.base, menuComponent);
-    });
-  }
-
-  public static setMenuWidthViaMenuItemOrTextChange(subcomponentProperties: SubcomponentProperties): void {
-    setTimeout(() => {
-      const menuComponent = subcomponentProperties.seedComponent.containerComponent || subcomponentProperties.seedComponent;
-      DropdownMenuAutoWidthUtils.setMenuWidth(menuComponent);
-    });
-  }
-
-  public static updateButtonWidthOnLayerAddRemove(itemComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
-    const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(
-      menuComponent.baseSubcomponent.name);
-    if (!document.getElementById(subcomponentId)) return;
-    setTimeout(() => {
-      DropdownMenuAutoWidthUtils.setMenuWidth(menuComponent);
-      DropdownMenuAutoWidthUtils.setButtonWidth(menuComponent.linkedComponents.base, menuComponent);
+      const largestItemWidth = DropdownMenuAutoWidthUtils.getLargestItemWidth(menuComponent);
+      menuComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = largestItemWidth; 
     });
   }
 }

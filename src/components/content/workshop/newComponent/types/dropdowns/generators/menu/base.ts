@@ -30,15 +30,26 @@ export class DropdownMenuBase extends ComponentBuilder {
       [SUBCOMPONENT_TYPES.BASE]: dropdownMenuComponent.baseSubcomponent });
   }
 
+  private static setMenuWidthViaMenuItemOrTextChange(subcomponentProperties: SubcomponentProperties): void {
+    const menuComponent = subcomponentProperties.seedComponent.containerComponent || subcomponentProperties.seedComponent;
+    DropdownMenuAutoWidthUtils.setMenuWidth(menuComponent);
+  }
+
   private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
     if (cssProperty === 'paddingLeft' || cssProperty === 'paddingRight' || cssProperty === 'fontSize' || cssProperty === 'fontWeight') {
-      DropdownMenuAutoWidthUtils.setMenuWidthViaMenuItemOrTextChange(subcomponentProperties);
+      DropdownMenuBase.setMenuWidthViaMenuItemOrTextChange(subcomponentProperties);
     }
+  }
+
+  private static setDropdownButtonAndMenuWidthsViaItemTextContentChange(itemSubcomponentProperties: SubcomponentProperties): void {
+    const menuComponent = itemSubcomponentProperties.seedComponent.containerComponent;
+    DropdownMenuAutoWidthUtils.setMenuWidth(menuComponent);
+    DropdownMenuAutoWidthUtils.setButtonWidth(menuComponent.linkedComponents.base, menuComponent);
   }
 
   public static setTriggerFuncOnSettingChange(dropdownMenuBaseComponent: WorkshopComponent): void {
     dropdownMenuBaseComponent.triggerFuncOnSettingChange = {
-      [SETTINGS_TYPES.INPUT]: DropdownMenuAutoWidthUtils.setDropdownButtonAndMenuWidthsViaItemTextContentChange,
+      [SETTINGS_TYPES.INPUT]: DropdownMenuBase.setDropdownButtonAndMenuWidthsViaItemTextContentChange,
       [SETTINGS_TYPES.RANGE]: DropdownMenuBase.setWidthViaRange,
       [SETTINGS_TYPES.ACTIONS_DROPDOWN]: DropdownMenuBase.setWidthViaRange,
     };
@@ -70,7 +81,7 @@ export class DropdownMenuBase extends ComponentBuilder {
   }
 
   public static setOnChildComponentRemovalFunc(dropdownMenuComponent: WorkshopComponent): void {
-    dropdownMenuComponent.onChildComponentRemovalFunc = DropdownMenuAutoWidthUtils.updateButtonWidthOnLayerAddRemove;
+    dropdownMenuComponent.onChildComponentRemovalFunc = DropdownItemLayer.updateButtonWidthOnLayerAddRemove;
   }
 
   public static setSiblingLayersInSyncWithEachOther(dropdownMenuComponent: WorkshopComponent): void {
