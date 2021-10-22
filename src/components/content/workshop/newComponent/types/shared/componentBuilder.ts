@@ -151,10 +151,17 @@ export class ComponentBuilder {
     subcomponent.defaultCustomFeatures.jsClasses.add(javascriptClass);
   }
 
+  private static toggleSelectDropdownTypeSetting(subcomponentProperties: SubcomponentProperties): void {
+    SelectDropdownUtils.setSelectDropdownText(subcomponentProperties);
+    if (!subcomponentProperties.customFeatures.dropdown.select.enabled) {
+      SelectDropdownUtils.setSelectDropdownAutoWidthToOff(subcomponentProperties);
+    }
+  }
+
   private static createSelectDropdownProperties(): SelectDropdown {
     return {
       enabled: false,
-      callback: SelectDropdownUtils.setSelectDropdownText,
+      callback: ComponentBuilder.toggleSelectDropdownTypeSetting,
     };
   }
 

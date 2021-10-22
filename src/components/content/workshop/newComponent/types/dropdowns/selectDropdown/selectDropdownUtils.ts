@@ -51,6 +51,12 @@ export class SelectDropdownUtils {
     SelectDropdownUtils.setDetails(subcomponentProperties.seedComponent, 'lastSelectedItemText', true);
   }
 
+  public static setSelectDropdownAutoWidthToOff(subcomponentProperties: SubcomponentProperties): void {
+    const buttonComponent = subcomponentProperties.seedComponent.paddingComponentChild;
+    const { autoSize } = buttonComponent.baseSubcomponent.customFeatures;
+    if (autoSize) autoSize.width = false;
+  }
+  
   private static isSelected(paddingComponentBase: SubcomponentProperties, text: string): boolean {
     const { customFeatures: { dropdown: { select } }, customStaticFeatures: { dropdownSelectedText: { lastSelectedItemText, lastHoveredItemText }}
       } = paddingComponentBase;

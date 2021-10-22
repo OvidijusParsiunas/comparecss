@@ -10,4 +10,4 @@ type ToggleFullPreviewModeOffWorkshopComponentCallback = (
 export interface ToggleFullPreviewModeOffCallbacks {
   toggleFullPreviewModeOptionsCallback: () => void;
   toggleFullPreviewModeOffWorkshopCallback: ToggleFullPreviewModeOffWorkshopComponentCallback;
-};
+}
