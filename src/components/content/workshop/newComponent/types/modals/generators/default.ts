@@ -39,12 +39,12 @@ class DefaultModal extends ComponentBuilder {
     DefaultModal.setComponentToRemovable(submitButtonComponent);
   }
 
-  private static populateLayer3(cardComponent: WorkshopComponent, layer3Component: WorkshopComponent): void {
-    cardComponent.newChildComponents.propertyOverwritables.postBuildFuncs[COMPONENT_TYPES.BUTTON] = DefaultModal.overwriteSubmitButtonProperties;
-    AddContainerComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT, layer3Component.baseSubcomponent.name);
-    cardComponent.newChildComponents.propertyOverwritables.postBuildFuncs[COMPONENT_TYPES.BUTTON] = DefaultModal.overwriteCancelButtonProperties;
-    AddContainerComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT, layer3Component.baseSubcomponent.name);
-    UpdateContainerComponentDropdownItemNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[2]);
+  private static populateLayer3(modalComponent: WorkshopComponent, layer3Component: WorkshopComponent): void {
+    modalComponent.newChildComponents.propertyOverwritables.postBuildFuncs[COMPONENT_TYPES.BUTTON] = DefaultModal.overwriteSubmitButtonProperties;
+    AddContainerComponent.add(modalComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT, layer3Component.baseSubcomponent.name);
+    modalComponent.newChildComponents.propertyOverwritables.postBuildFuncs[COMPONENT_TYPES.BUTTON] = DefaultModal.overwriteCancelButtonProperties;
+    AddContainerComponent.add(modalComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT, layer3Component.baseSubcomponent.name);
+    UpdateContainerComponentDropdownItemNames.updateViaParentLayerPreviewStructure(modalComponent, modalComponent.componentPreviewStructure.layers[2]);
   }
 
   private static createDefaultTextCustomFeatures(): CustomFeatures {
@@ -61,10 +61,10 @@ class DefaultModal extends ComponentBuilder {
     DefaultModal.setComponentToRemovable(textComponent);
   }
 
-  private static populateLayer2(cardComponent: WorkshopComponent, layer2Component: WorkshopComponent): void {
-    cardComponent.newChildComponents.propertyOverwritables.postBuildFuncs[COMPONENT_TYPES.TEXT] = DefaultModal.overwriteDescriptionProperties;
-    AddContainerComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT, layer2Component.baseSubcomponent.name);
-    UpdateContainerComponentDropdownItemNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[1]);
+  private static populateLayer2(modalComponent: WorkshopComponent, layer2Component: WorkshopComponent): void {
+    modalComponent.newChildComponents.propertyOverwritables.postBuildFuncs[COMPONENT_TYPES.TEXT] = DefaultModal.overwriteDescriptionProperties;
+    AddContainerComponent.add(modalComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT, layer2Component.baseSubcomponent.name);
+    UpdateContainerComponentDropdownItemNames.updateViaParentLayerPreviewStructure(modalComponent, modalComponent.componentPreviewStructure.layers[1]);
   }
 
   private static createDefaultTitleCss(): CustomCss {
@@ -98,40 +98,37 @@ class DefaultModal extends ComponentBuilder {
     DefaultModal.setComponentToRemovable(textComponent);
   }
 
-  private static populateLayer1(cardComponent: WorkshopComponent, layer1Component: WorkshopComponent): void {
-    cardComponent.newChildComponents.propertyOverwritables = {
-      postBuildFuncs: {
-        [COMPONENT_TYPES.TEXT]: DefaultModal.overwriteTitleProperties,
-        [COMPONENT_TYPES.IMAGE]: DefaultModal.setComponentToRemovable,
-        [COMPONENT_TYPES.BUTTON]: DefaultModal.setComponentToRemovable,
-      },
+  private static populateLayer1(modalComponent: WorkshopComponent, layer1Component: WorkshopComponent): void {
+    modalComponent.newChildComponents.propertyOverwritables.postBuildFuncs = {
+      [COMPONENT_TYPES.TEXT]: DefaultModal.overwriteTitleProperties,
+      [COMPONENT_TYPES.IMAGE]: DefaultModal.setComponentToRemovable,
+      [COMPONENT_TYPES.BUTTON]: DefaultModal.setComponentToRemovable,
     };
-    cardComponent.newChildComponents.propertyOverwritables.onBuildProperties = {
-      [COMPONENT_TYPES.IMAGE]: { alignmentSection: ALIGNED_SECTION_TYPES.CENTER },
+    modalComponent.newChildComponents.propertyOverwritables.onBuildProperties = {
+      [COMPONENT_TYPES.IMAGE]:  { alignmentSection: ALIGNED_SECTION_TYPES.CENTER },
       [COMPONENT_TYPES.BUTTON]: { alignmentSection: ALIGNED_SECTION_TYPES.RIGHT },
     };
-    AddContainerComponent.add(cardComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT, layer1Component.baseSubcomponent.name);
-    AddContainerComponent.add(cardComponent, COMPONENT_TYPES.BUTTON, BUTTON_STYLES.CLOSE, layer1Component.baseSubcomponent.name);
-    AddContainerComponent.add(cardComponent, COMPONENT_TYPES.IMAGE, DEFAULT_STYLES.DEFAULT, layer1Component.baseSubcomponent.name);
-    UpdateContainerComponentDropdownItemNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[0]);
+    AddContainerComponent.add(modalComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT, layer1Component.baseSubcomponent.name);
+    AddContainerComponent.add(modalComponent, COMPONENT_TYPES.BUTTON, BUTTON_STYLES.CLOSE, layer1Component.baseSubcomponent.name);
+    AddContainerComponent.add(modalComponent, COMPONENT_TYPES.IMAGE, DEFAULT_STYLES.DEFAULT, layer1Component.baseSubcomponent.name);
+    UpdateContainerComponentDropdownItemNames.updateViaParentLayerPreviewStructure(modalComponent, modalComponent.componentPreviewStructure.layers[0]);
   }
 
-  public static addComponentsToBase(cardComponent: WorkshopComponent): void {
-    const layer1Component = AddLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
-    DefaultModal.populateLayer1(cardComponent, layer1Component);
-    const layer2Component = AddLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
-    DefaultModal.populateLayer2(cardComponent, layer2Component);
-    const layer3Component = AddLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
-    DefaultModal.populateLayer3(cardComponent, layer3Component);
-    UpdateLayerDropdownItemNames.update(cardComponent, 0);
+  private static populateLayers(layer1Component: WorkshopComponent, layer2Component: WorkshopComponent,
+      layer3Component: WorkshopComponent, modalComponent: WorkshopComponent): void {
+    const tempPostBuildFuncs = modalComponent.newChildComponents.propertyOverwritables.postBuildFuncs;
+    DefaultModal.populateLayer1(modalComponent, layer1Component);
+    DefaultModal.populateLayer2(modalComponent, layer2Component);
+    DefaultModal.populateLayer3(modalComponent, layer3Component);
+    modalComponent.newChildComponents.propertyOverwritables.postBuildFuncs = tempPostBuildFuncs;
   }
 
-  public static setPropertyOverwritables(dropdownMenuComponent: WorkshopComponent): void {
-    dropdownMenuComponent.newChildComponents.propertyOverwritables = {
-      postBuildFuncs: {
-        [COMPONENT_TYPES.LAYER]: DefaultModal.setComponentToRemovable,
-      },
-    };
+  public static addComponentsToBase(modalComponent: WorkshopComponent): void {
+    const layer1Component = AddLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true);
+    const layer2Component = AddLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true);
+    const layer3Component = AddLayerComponent.add(modalComponent, LAYER_STYLES.CARD, true);
+    DefaultModal.populateLayers(layer1Component, layer2Component, layer3Component, modalComponent);
+    UpdateLayerDropdownItemNames.update(modalComponent, 0);
   }
 }
 

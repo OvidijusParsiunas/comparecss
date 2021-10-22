@@ -14,6 +14,18 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class CardBase extends ComponentBuilder {
 
+  private static setComponentToRemovable(component: WorkshopComponent): void {
+    component.baseSubcomponent.isRemovable = true;
+  }
+
+  public static setPropertyOverwritables(cardComponent: WorkshopComponent): void {
+    cardComponent.newChildComponents.propertyOverwritables = {
+      postBuildFuncs: {
+        [COMPONENT_TYPES.LAYER]: CardBase.setComponentToRemovable,
+      },
+    };
+  }
+
   public static setChildComponentsItems(cardBaseComponent: WorkshopComponent): void {
     const layerChildItems = [
       BUTTON_COMPONENTS_BASE_NAMES.BUTTON, PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT,
@@ -74,6 +86,7 @@ export const cardBase: ComponentGenerator = {
     const cardBaseComponent = ComponentBuilder.createBaseComponent(
       { componentType: COMPONENT_TYPES.CARD }, CardBase.createBaseSubcomponent, false);
     CardBase.setChildComponentsItems(cardBaseComponent);
+    CardBase.setPropertyOverwritables(cardBaseComponent);
     CardBaseSpecificSettings.set(cardBaseComponent);
     return cardBaseComponent;
   },

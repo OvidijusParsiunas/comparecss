@@ -1,6 +1,4 @@
-when select is toggled off - the auto width functionality should also be switched off
 when a synced dropdown synced button is removed and the current button is then changed - the components that are synced to it should have those changes reflected
-card layers are not removable
 
 night diving
 

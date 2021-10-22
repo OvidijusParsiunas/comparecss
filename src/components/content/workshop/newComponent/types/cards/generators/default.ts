@@ -98,12 +98,10 @@ class DefaultCard extends ComponentBuilder {
   }
 
   private static populateLayer1(cardComponent: WorkshopComponent, layer1Component: WorkshopComponent): void {
-    cardComponent.newChildComponents.propertyOverwritables = {
-      postBuildFuncs: {
-        [COMPONENT_TYPES.TEXT]: DefaultCard.overwriteTitleProperties,
-        [COMPONENT_TYPES.IMAGE]: DefaultCard.setComponentToRemovable,
-        [COMPONENT_TYPES.BUTTON]: DefaultCard.setComponentToRemovable,
-      }
+    cardComponent.newChildComponents.propertyOverwritables.postBuildFuncs = {
+      [COMPONENT_TYPES.TEXT]: DefaultCard.overwriteTitleProperties,
+      [COMPONENT_TYPES.IMAGE]: DefaultCard.setComponentToRemovable,
+      [COMPONENT_TYPES.BUTTON]: DefaultCard.setComponentToRemovable,
     };
     cardComponent.newChildComponents.propertyOverwritables.onBuildProperties = {
       [COMPONENT_TYPES.IMAGE]:  { alignmentSection: ALIGNED_SECTION_TYPES.CENTER },
@@ -115,22 +113,21 @@ class DefaultCard extends ComponentBuilder {
     UpdateContainerComponentDropdownItemNames.updateViaParentLayerPreviewStructure(cardComponent, cardComponent.componentPreviewStructure.layers[0]);
   }
 
-  public static addComponentsToBase(cardComponent: WorkshopComponent): void {
-    const layer1Component = AddLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
+  private static populateLayers(layer1Component: WorkshopComponent, layer2Component: WorkshopComponent,
+      layer3Component: WorkshopComponent, cardComponent: WorkshopComponent): void {
+    const tempPostBuildFuncs = cardComponent.newChildComponents.propertyOverwritables.postBuildFuncs;
     DefaultCard.populateLayer1(cardComponent, layer1Component);
-    const layer2Component = AddLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
     DefaultCard.populateLayer2(cardComponent, layer2Component);
-    const layer3Component = AddLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
     DefaultCard.populateLayer3(cardComponent, layer3Component);
-    UpdateLayerDropdownItemNames.update(cardComponent, 0);
+    cardComponent.newChildComponents.propertyOverwritables.postBuildFuncs = tempPostBuildFuncs;
   }
 
-  public static resetPropertyOverwritables(cardComponent: WorkshopComponent): void {
-    cardComponent.newChildComponents.propertyOverwritables = {
-      postBuildFuncs: {
-        [COMPONENT_TYPES.LAYER]: DefaultCard.setComponentToRemovable,
-      },
-    };
+  public static addComponentsToBase(cardComponent: WorkshopComponent): void {
+    const layer1Component = AddLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
+    const layer2Component = AddLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
+    const layer3Component = AddLayerComponent.add(cardComponent, LAYER_STYLES.CARD, true);
+    DefaultCard.populateLayers(layer1Component, layer2Component, layer3Component, cardComponent);
+    UpdateLayerDropdownItemNames.update(cardComponent, 0);
   }
 }
 
@@ -138,7 +135,6 @@ export const defaultCard: ComponentGenerator = {
   createNewComponent(): WorkshopComponent {
     const cardComponent = cardBase.createNewComponent({});
     DefaultCard.addComponentsToBase(cardComponent);
-    DefaultCard.resetPropertyOverwritables(cardComponent);
     return cardComponent;
   },
 }
