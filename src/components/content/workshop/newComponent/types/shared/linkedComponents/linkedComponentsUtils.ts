@@ -5,7 +5,7 @@ import { WorkshopComponent } from '../../../../../../../interfaces/workshopCompo
 
 export class LinkedComponentsUtils {
 
-  private static updateAuxiliaryDrodpownAndSyncableContainerComponnets(auxiliaryComponent: WorkshopComponent, subcomponentDropdownStructure: NestedDropdownStructure,
+  private static updateAuxiliaryDrodpownAndSyncableContainerComponents(auxiliaryComponent: WorkshopComponent, subcomponentDropdownStructure: NestedDropdownStructure,
       parentComponentReferences: WorkshopComponent[]): void {
     const auxiliaryComponentName = auxiliaryComponent.baseSubcomponent.name;
     subcomponentDropdownStructure[auxiliaryComponentName] = { ...DropdownItemsDisplayStatusUtils.createDropdownItemDisplayStatusReferenceObject(auxiliaryComponentName) };
@@ -18,7 +18,7 @@ export class LinkedComponentsUtils {
     subcomponentDropdownStructure[baseName][DROPDOWN_ITEM_AUX_DETAILS_REF] = { ...DropdownItemsDisplayStatusUtils.createDefaultItemDisplayStatus(baseName) };
     const parentComponentReferences = baseComponent.sync.syncables.containerComponents.slice(1);
     auxiliaryComponents.forEach((auxiliaryComponent) => {
-      LinkedComponentsUtils.updateAuxiliaryDrodpownAndSyncableContainerComponnets(auxiliaryComponent, subcomponentDropdownStructure, parentComponentReferences);
+      LinkedComponentsUtils.updateAuxiliaryDrodpownAndSyncableContainerComponents(auxiliaryComponent, subcomponentDropdownStructure, parentComponentReferences);
     });
   }
 

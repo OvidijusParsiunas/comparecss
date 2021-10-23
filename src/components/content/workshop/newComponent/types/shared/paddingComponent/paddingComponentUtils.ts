@@ -1,6 +1,5 @@
 import { UniqueSubcomponentNameGenerator } from '../../../../utils/componentGenerator/uniqueSubcomponentNameGenerator';
 import { BUTTON_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
-import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { CreateNewComponent } from '../../../../../../../interfaces/componentGenerator';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
@@ -34,7 +33,6 @@ export class PaddingComponentUtils {
       childBaseName: BUTTON_COMPONENTS_BASE_NAMES, overwriteChildComponentFunc: (childComponent: WorkshopComponent) => void): WorkshopComponent {
     const childComponent = createChildComponentFunc({ baseName: UniqueSubcomponentNameGenerator.generate(childBaseName), paddingComponent });
     overwriteChildComponentFunc(childComponent);
-    SyncedComponent.addParentComponentSyncableContainerComponentsToChild(childComponent, paddingComponent);
     childComponent.paddingComponent = paddingComponent;
     paddingComponent.paddingComponentChild = childComponent;
     return childComponent;

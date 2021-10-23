@@ -33,7 +33,6 @@ export class RemoveComponent {
     });
   }
 
-  // WORK 2 dropdown components in the syncables container components array
   private static removeInSync(componentToBeRemoved: WorkshopComponent): void {
     // used to allow components that have copied this to remove insync properties and dereference when they are opened up
     // more information can be found in the documentation reference: DOC: 7878
