@@ -13,23 +13,25 @@ export type PropertiesAddedOnBuild = {
   [key in COMPONENT_TYPES]?: ParentBasedPresetProperties;
 }
 
-export interface ReferenceSharingFunType {
+// each property has PropertyReferenceSharingFunc in arrays in order to allow further addition of functions after the base - e.g. default style
+export interface ReferenceSharingFuncType {
   container?: PropertyReferenceSharingFunc[];
   layer?: PropertyReferenceSharingFunc[];
 }
 
 export type PostBuildPropertyOverwritableFuncs = {
-  [key in COMPONENT_TYPES]?: PropertyOverwritableFunc;
+  [key in COMPONENT_TYPES]?: PropertyOverwritableFunc[];
 }
 
 export interface PropertyOverwritables {
   postBuildFuncs?: PostBuildPropertyOverwritableFuncs;
-  // WORK 2 - try to replace this with postBuildFuncs
-  // executed for different types of child components - when they are added, copied or dereferenced
-  propertyReferenceSharingFuncsOnComponentChange?: ReferenceSharingFunType;
   // this is mostly used for properties that are coupled to the parent and need to be applied before any further processing is done during the addition
   // e.g. the alignment of a button child component (text/icon) before the alignment property is read and the component is placed into a layer section
   onBuildProperties?: PropertiesAddedOnBuild;
+  // this is very similar to postBuildFuncs however the difference here is the fact that it gets executed when the component is fully added and not at the
+  // temp stage. This is done to optimise child component addition complexity and is currently focused on populating value references - e.g. jsClasses
+  // executed for different types of child components - when they are added, copied or dereferenced
+  propertyReferenceSharingFuncs?: ReferenceSharingFuncType;
 }
 
 export interface SharedDropdownItemsRefs {

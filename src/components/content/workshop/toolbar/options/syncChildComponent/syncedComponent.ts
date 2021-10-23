@@ -14,7 +14,7 @@ export class SyncedComponent {
     subcomponentProperties.customCss = JSONUtils.deepCopy(subcomponentProperties.customCss);
     subcomponentProperties.customFeatures = JSONUtils.deepCopy(subcomponentProperties.customFeatures);
     const propertySharingFuncType = subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.LAYER ? 'layer' : 'container';
-    PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuns(false, propertySharingFuncType, subcomponentProperties.seedComponent);
+    PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuncs(false, propertySharingFuncType, subcomponentProperties.seedComponent);
     return {};
   }
 

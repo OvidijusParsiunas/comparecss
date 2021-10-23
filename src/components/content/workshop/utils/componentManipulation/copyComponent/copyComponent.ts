@@ -109,7 +109,7 @@ export class CopyComponent extends ComponentBuilder {
     CopyComponent.copyAlignedSectionsComponents(newLayerPreviewComponent, layer, isEditable, newComponent, baseComponents);
     UpdateContainerComponentDropdownItemNames.updateViaParentLayerPreviewStructure(newComponent, newLayerPreviewComponent);
     CopySubcomponents.copy(newLayerPreviewComponent.subcomponentProperties.seedComponent.baseSubcomponent, layer.subcomponentProperties);
-    PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuns(true, 'layer', newLayerPreviewComponent.subcomponentProperties.seedComponent);
+    PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuncs(true, 'layer', newLayerPreviewComponent.subcomponentProperties.seedComponent);
     return !existantNewComponentLayer ? index : -1;
   }
 
@@ -167,7 +167,7 @@ export class CopyComponent extends ComponentBuilder {
     CopyComponent.copyLayerComponents(newComponent, componentBeingCopied, baseComponents);
     if (newComponent.paddingComponentChild) CopyComponent.copyPaddingComponentChild(newComponent, componentBeingCopied);
     if (newComponent.linkedComponents?.auxiliary) CopyComponent.copyAuxiliaryComponents(newComponent, componentBeingCopied);
-    PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuns(true, 'container', ...baseComponents);
+    PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuncs(true, 'container', ...baseComponents);
   }
 
   public static copy(optionsComponent: ComponentOptions, componentBeingCopied: WorkshopComponent): WorkshopComponent {

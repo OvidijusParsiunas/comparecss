@@ -40,9 +40,9 @@ class DefaultModal extends ComponentBuilder {
   }
 
   private static populateLayer3(modalComponent: WorkshopComponent, layer3Component: WorkshopComponent): void {
-    modalComponent.newChildComponents.propertyOverwritables.postBuildFuncs[COMPONENT_TYPES.BUTTON] = DefaultModal.overwriteSubmitButtonProperties;
+    modalComponent.newChildComponents.propertyOverwritables.postBuildFuncs[COMPONENT_TYPES.BUTTON] = [DefaultModal.overwriteSubmitButtonProperties];
     AddContainerComponent.add(modalComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT, layer3Component.baseSubcomponent.name);
-    modalComponent.newChildComponents.propertyOverwritables.postBuildFuncs[COMPONENT_TYPES.BUTTON] = DefaultModal.overwriteCancelButtonProperties;
+    modalComponent.newChildComponents.propertyOverwritables.postBuildFuncs[COMPONENT_TYPES.BUTTON] = [DefaultModal.overwriteCancelButtonProperties];
     AddContainerComponent.add(modalComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT, layer3Component.baseSubcomponent.name);
     UpdateContainerComponentDropdownItemNames.updateViaParentLayerPreviewStructure(modalComponent, modalComponent.componentPreviewStructure.layers[2]);
   }
@@ -62,7 +62,7 @@ class DefaultModal extends ComponentBuilder {
   }
 
   private static populateLayer2(modalComponent: WorkshopComponent, layer2Component: WorkshopComponent): void {
-    modalComponent.newChildComponents.propertyOverwritables.postBuildFuncs[COMPONENT_TYPES.TEXT] = DefaultModal.overwriteDescriptionProperties;
+    modalComponent.newChildComponents.propertyOverwritables.postBuildFuncs[COMPONENT_TYPES.TEXT] = [DefaultModal.overwriteDescriptionProperties];
     AddContainerComponent.add(modalComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT, layer2Component.baseSubcomponent.name);
     UpdateContainerComponentDropdownItemNames.updateViaParentLayerPreviewStructure(modalComponent, modalComponent.componentPreviewStructure.layers[1]);
   }
@@ -100,9 +100,9 @@ class DefaultModal extends ComponentBuilder {
 
   private static populateLayer1(modalComponent: WorkshopComponent, layer1Component: WorkshopComponent): void {
     modalComponent.newChildComponents.propertyOverwritables.postBuildFuncs = {
-      [COMPONENT_TYPES.TEXT]: DefaultModal.overwriteTitleProperties,
-      [COMPONENT_TYPES.IMAGE]: DefaultModal.setComponentToRemovable,
-      [COMPONENT_TYPES.BUTTON]: DefaultModal.setComponentToRemovable,
+      [COMPONENT_TYPES.TEXT]: [DefaultModal.overwriteTitleProperties],
+      [COMPONENT_TYPES.IMAGE]: [DefaultModal.setComponentToRemovable],
+      [COMPONENT_TYPES.BUTTON]: [DefaultModal.setComponentToRemovable],
     };
     modalComponent.newChildComponents.propertyOverwritables.onBuildProperties = {
       [COMPONENT_TYPES.IMAGE]:  { alignmentSection: ALIGNED_SECTION_TYPES.CENTER },

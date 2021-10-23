@@ -81,10 +81,10 @@ export class DefaultDropdownMenu {
   public static setPropertyOverwritables(menuComponent: WorkshopComponent): void {
     menuComponent.newChildComponents.propertyOverwritables = {
       postBuildFuncs: {
-        [COMPONENT_TYPES.LAYER]: DropdownItemLayer.overwriteDropdownItem
-          .bind(DefaultDropdownMenu.overwriteLayerCss as OverwriteDropdownItemContext),
-        [COMPONENT_TYPES.TEXT]: DropdownItemLayer.setTextSubcomponentProperties
-          .bind({ menuComponent, createDefaultTextStyling: DefaultDropdownMenu.createDefaultTextCustomCss } as SetTextSubcomponentPropertiesContext),
+        [COMPONENT_TYPES.LAYER]: [DropdownItemLayer.overwriteDropdownItem
+          .bind(DefaultDropdownMenu.overwriteLayerCss as OverwriteDropdownItemContext)],
+        [COMPONENT_TYPES.TEXT]: [DropdownItemLayer.setTextSubcomponentProperties
+          .bind({ menuComponent, createDefaultTextStyling: DefaultDropdownMenu.createDefaultTextCustomCss } as SetTextSubcomponentPropertiesContext)],
       },
     };
   }
