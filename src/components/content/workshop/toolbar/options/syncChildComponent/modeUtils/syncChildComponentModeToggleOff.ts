@@ -45,7 +45,7 @@ export class SyncChildComponentModeToggleOff {
   private static updateComponentsSyncedToThis(component: WorkshopComponent): void {
     const parentComponent = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(component);
     if (parentComponent) {
-      SyncChildComponentModeTempPropertiesUtils.syncComponentToMultipleTargets(parentComponent, parentComponent.sync.componentsSyncedToThis);
+      SyncChildComponentModeTempPropertiesUtils.syncComponentToTargets(parentComponent, ...parentComponent.sync.componentsSyncedToThis);
     }
   }
 

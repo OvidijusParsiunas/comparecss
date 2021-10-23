@@ -1,3 +1,5 @@
+import { SyncChildComponentModeTempPropertiesUtils } from '../../../toolbar/options/syncChildComponent/modeUtils/syncChildComponentModeTempPropertiesUtils';
+import { SyncChildComponentUtils } from '../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SetActiveComponentUtils } from '../utils/setActiveComponentUtils';
 import ComponentJs from '../componentJs/componentJs';
@@ -11,11 +13,7 @@ export class RemoveComponent {
     SetActiveComponentUtils.switchActiveComponent(workshopComponent, components[nextComponentIndex]);
   }
 
-  private static removeInSync(componentToBeRemoved: WorkshopComponent): void {
-    // used to allow components that have copied this to remove insync properties and dereference when they are opened up
-    // more information can be found in the documentation reference: DOC: 7878
-    componentToBeRemoved.componentStatus.isRemoved = true;
-    // remove all synced component references
+  private static removeRefFromComponentsThisIsSyncedTo(componentToBeRemoved: WorkshopComponent): void {
     Object.keys(componentToBeRemoved.subcomponents).forEach((subcomponentName) => {
       const subcomponent = componentToBeRemoved.subcomponents[subcomponentName];
       if (subcomponent.seedComponent.sync.componentThisIsSyncedTo) {
@@ -23,6 +21,25 @@ export class RemoveComponent {
         subcomponent.seedComponent.sync.componentThisIsSyncedTo = null;
       }
     });
+  }
+
+  private static updateComponentsThatAreSyncedToComponentsThisIsSyncedTo(componentToBeRemoved: WorkshopComponent): void {
+    (componentToBeRemoved.sync.componentsSyncedToThis || []).forEach((component: WorkshopComponent) => {
+      const parentComponent = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(component);
+      if (parentComponent) parentComponent.sync.componentsSyncedToThis.forEach((componentSyncedToThis: WorkshopComponent) => {
+        const childComponent = componentSyncedToThis.sync.syncables.onCopy.childComponents.find((childComponent) => childComponent.type === component.type);
+        if (childComponent) SyncChildComponentModeTempPropertiesUtils.syncComponentToTargets(component, childComponent);
+      });
+    });
+  }
+
+  // WORK 2 dropdown components in the syncables container components array
+  private static removeInSync(componentToBeRemoved: WorkshopComponent): void {
+    // used to allow components that have copied this to remove insync properties and dereference when they are opened up
+    // more information can be found in the documentation reference: DOC: 7878
+    componentToBeRemoved.componentStatus.isRemoved = true;
+    RemoveComponent.updateComponentsThatAreSyncedToComponentsThisIsSyncedTo(componentToBeRemoved);
+    RemoveComponent.removeRefFromComponentsThisIsSyncedTo(componentToBeRemoved);
   }
 
   private static removeComponentCallback(workshopComponent: ComponentOptions, componentToBeRemovedWithoutSelecting: WorkshopComponent): number {

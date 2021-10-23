@@ -43,7 +43,7 @@ export class AddContainerComponent extends AddComponentShared {
 
   private static updateOtherComponentsThatAreSyncedToThis(containerComponent: WorkshopComponent): void {
     if (containerComponent.sync.componentsSyncedToThis.size > 0) {
-      SyncChildComponentModeTempPropertiesUtils.syncComponentToMultipleTargets(containerComponent, containerComponent.sync.componentsSyncedToThis);
+      SyncChildComponentModeTempPropertiesUtils.syncComponentToTargets(containerComponent, ...containerComponent.sync.componentsSyncedToThis);
     }
   }
 

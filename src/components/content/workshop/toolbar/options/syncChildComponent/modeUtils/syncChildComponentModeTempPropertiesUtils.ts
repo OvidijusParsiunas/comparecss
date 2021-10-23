@@ -78,7 +78,7 @@ export class SyncChildComponentModeTempPropertiesUtils {
     return wasTargetComponentMissing;
   }
 
-  public static syncComponentToTarget(currentlySelectedComponent: WorkshopComponent, componentToBeSynced: WorkshopComponent): void {
+  public static syncComponentToTargetTemporarily(currentlySelectedComponent: WorkshopComponent, componentToBeSynced: WorkshopComponent): void {
     const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
     SyncChildComponentModeTempPropertiesUtils.syncSyncables(SyncChildComponentModeTempPropertiesUtils.syncSubcomponent, true, activeComponent, componentToBeSynced);
   }
@@ -90,7 +90,7 @@ export class SyncChildComponentModeTempPropertiesUtils {
     });
   }
 
-  public static syncComponentToMultipleTargets(component: WorkshopComponent, targetComponents: Set<WorkshopComponent>): void {
+  public static syncComponentToTargets(component: WorkshopComponent, ...targetComponents: WorkshopComponent[]): void {
     SyncChildComponentModeTempPropertiesUtils.syncSyncables(SyncChildComponentModeTempPropertiesUtils.syncSubcomponentToMultipleDuringPreviewTraversal,
       false, component, ...targetComponents);
   }

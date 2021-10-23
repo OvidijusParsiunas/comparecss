@@ -1,5 +1,3 @@
-when a synced dropdown synced button is removed and the current button is then changed - the components that are synced to it should have those changes reflected
-
 night diving
 
 overflow

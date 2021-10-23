@@ -44,7 +44,8 @@ export class SyncedComponent {
     const inSyncComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(activeSubcomponent.seedComponent);
     // more information can be found in the documentation reference: DOC: 7878
     if (inSyncComponent && inSyncComponent.componentStatus.isRemoved) {
-      SyncedComponent.toggleSubcomponentSyncToOff(masterComponent);
+      const componentsSyncedToThis = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(activeSubcomponent.seedComponent);
+      if (componentsSyncedToThis.sync.componentsSyncedToThis.size === 0) SyncedComponent.toggleSubcomponentSyncToOff(masterComponent);
     }
   }
 
