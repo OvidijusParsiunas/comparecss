@@ -1,5 +1,5 @@
-import { SyncChildComponentModeTempPropertiesUtils } from '../../../toolbar/options/syncChildComponent/modeUtils/syncChildComponentModeTempPropertiesUtils';
 import { SyncChildComponentUtils } from '../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
+import { SyncChildComponent } from '../../../toolbar/options/syncChildComponent/syncChildComponent';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SetActiveComponentUtils } from '../utils/setActiveComponentUtils';
 import ComponentJs from '../componentJs/componentJs';
@@ -28,7 +28,7 @@ export class RemoveComponent {
       const parentComponent = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(component);
       if (parentComponent) parentComponent.sync.componentsSyncedToThis.forEach((componentSyncedToThis: WorkshopComponent) => {
         const childComponent = componentSyncedToThis.sync.syncables.onCopy.childComponents.find((childComponent) => childComponent.type === component.type);
-        if (childComponent) SyncChildComponentModeTempPropertiesUtils.syncComponentToTargets(component, childComponent);
+        if (childComponent) SyncChildComponent.syncComponentToTargets(component, childComponent);
       });
     });
   }

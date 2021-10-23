@@ -2,10 +2,11 @@ import { TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS } from '../../../../compon
 import { ToggleSyncChildComponentModeEvent } from '../../../../../../../interfaces/toggleSyncChildComponentModeEvent';
 import { WorkshopEventCallbackReturn } from '../../../../../../../interfaces/workshopEventCallbackReturn';
 import { WorkshopEventCallbackUtils } from '../../workshopEventCallbackUtils/workshopEventCallbackUtils';
-import { SyncChildComponentModeTempPropertiesUtils } from './syncChildComponentModeTempPropertiesUtils';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CleanSyncChildComponentMode } from './cleanSyncChildComponentMode';
 import { SyncChildComponentUtils } from '../syncChildComponentUtils';
+import { SyncChildComponent } from '../syncChildComponent';
 import { ComponentOptions } from 'vue';
 import {
   CONFIRM_CHILD_COMPONENT_TO_SYNC_MARKER, COMPONENT_CARD_MARKER, FULL_PREVIEW_MODE_BUTTON_MARKER, REMOVE_CHILD_COMPONENT_BUTTON_MARKER,
@@ -45,7 +46,7 @@ export class SyncChildComponentModeToggleOff {
   private static updateComponentsSyncedToThis(component: WorkshopComponent): void {
     const parentComponent = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(component);
     if (parentComponent) {
-      SyncChildComponentModeTempPropertiesUtils.syncComponentToTargets(parentComponent, ...parentComponent.sync.componentsSyncedToThis);
+      SyncChildComponent.syncComponentToTargets(parentComponent, ...parentComponent.sync.componentsSyncedToThis);
     }
   }
 
@@ -63,17 +64,17 @@ export class SyncChildComponentModeToggleOff {
         SyncChildComponentModeToggleOff.updateComponentsSyncedToThis(activeSeedComponent);
       }, optionsComponent.hasSyncChildComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     }
-    SyncChildComponentModeTempPropertiesUtils.cleanComponent(optionsComponent.component, false);
-    SyncChildComponentModeTempPropertiesUtils.deleteLastSelectedComponentToSync(optionsComponent.component);
+    CleanSyncChildComponentMode.cleanComponent(optionsComponent.component, false);
+    CleanSyncChildComponentMode.deleteLastSelectedComponentToSync(optionsComponent.component);
     SyncChildComponentModeToggleOff.toggleOff(optionsComponent, false);
   }
 
   public static resetComponent(activeComponent: WorkshopComponent, isWaitFadeAnimation: boolean): void {
     // timeout is used to not reset component immediately when the expanded modal mode has been closed by the sync child component mode
     setTimeout(() => {
-      SyncChildComponentModeTempPropertiesUtils.cleanComponent(activeComponent);
+      CleanSyncChildComponentMode.cleanComponent(activeComponent);
     }, isWaitFadeAnimation ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
-    SyncChildComponentModeTempPropertiesUtils.deleteLastSelectedComponentToSync(activeComponent);
+    CleanSyncChildComponentMode.deleteLastSelectedComponentToSync(activeComponent);
   }
 
   public static toggleSyncChildComponentModeOff(workshopComponent: ComponentOptions, optionsComponent: ComponentOptions, event: Event | KeyboardEvent): WorkshopEventCallbackReturn {
@@ -121,7 +122,7 @@ export class SyncChildComponentModeToggleOff {
     // if a component card has been selected and the user clicks on the background - reset
     if (!targetElement.classList.contains(COMPONENT_CARD_MARKER) && !targetElement.classList.contains(COMPONENT_PREVIEW_MARKER)
         && workshopComponent.currentlySelectedComponentForSync) {
-      SyncChildComponentModeTempPropertiesUtils.cleanComponent(optionsComponent.component);
+      CleanSyncChildComponentMode.cleanComponent(optionsComponent.component);
       workshopComponent.currentlySelectedComponentForSync = null;
     }
     return { shouldRepeat: true };

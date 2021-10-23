@@ -1,5 +1,4 @@
 import { BUTTON_COMPONENTS_BASE_NAMES, CHILD_COMPONENTS_BASE_NAMES, DROPDOWN_COMPONENTS_BASE_NAMES, LAYER_COMPONENTS_BASE_NAMES, PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
-import { SyncChildComponentModeTempPropertiesUtils } from '../../../../toolbar/options/syncChildComponent/modeUtils/syncChildComponentModeTempPropertiesUtils';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
 import { ParentBasedPresetProperties, PropertiesAddedOnBuild } from '../../../../../../../interfaces/newChildComponents';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
@@ -8,6 +7,7 @@ import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uni
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownItemDisplayStatus';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
+import { SyncChildComponent } from '../../../../toolbar/options/syncChildComponent/syncChildComponent';
 import { BaseSubcomponentRef, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { IncrementChildComponentCount } from '../../childComponentCount/incrementChildComponentCount';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -43,7 +43,7 @@ export class AddContainerComponent extends AddComponentShared {
 
   private static updateOtherComponentsThatAreSyncedToThis(containerComponent: WorkshopComponent): void {
     if (containerComponent.sync.componentsSyncedToThis.size > 0) {
-      SyncChildComponentModeTempPropertiesUtils.syncComponentToTargets(containerComponent, ...containerComponent.sync.componentsSyncedToThis);
+      SyncChildComponent.syncComponentToTargets(containerComponent, ...containerComponent.sync.componentsSyncedToThis);
     }
   }
 
