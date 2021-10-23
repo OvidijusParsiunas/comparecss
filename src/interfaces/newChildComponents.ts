@@ -13,12 +13,12 @@ export type PropertiesAddedOnBuild = {
   [key in COMPONENT_TYPES]?: ParentBasedPresetProperties;
 }
 
-// each property has PropertyReferenceSharingFunc in arrays in order to allow further addition of functions after the base - e.g. default style
 export interface ReferenceSharingFuncType {
   container?: PropertyReferenceSharingFunc[];
   layer?: PropertyReferenceSharingFunc[];
 }
 
+// each property has an array of PropertyOverwritableFunc in order to allow further addition of functions after the base - e.g. default style
 export type PostBuildPropertyOverwritableFuncs = {
   [key in COMPONENT_TYPES]?: PropertyOverwritableFunc[];
 }

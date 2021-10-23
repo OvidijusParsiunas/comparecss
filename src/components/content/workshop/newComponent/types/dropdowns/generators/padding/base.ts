@@ -27,7 +27,7 @@ export class DropdownPaddingBase extends ComponentBuilder {
 
   private static setAndExecutePropertyReferenceSharingFuncs(paddingComponent: WorkshopComponent): void {
     paddingComponent.newChildComponents.propertyOverwritables = {
-      propertyReferenceSharingFuncsOnComponentChange: {
+      propertyReferenceSharingFuncs: {
         // only executed when padding component is dereferenced
         // custom properties references are signalled to be shared on new layer additions by siblingLayersInSyncWithEachOther,
         // however when existing layers are copied - this method sets them to be in sync
