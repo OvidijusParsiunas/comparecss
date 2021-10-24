@@ -26,7 +26,7 @@ export class RemoveComponent {
   private static updateComponentsThatAreSyncedToComponentsThisIsSyncedTo(componentToBeRemoved: WorkshopComponent): void {
     (componentToBeRemoved.sync.componentsSyncedToThis || []).forEach((component: WorkshopComponent) => {
       const parentComponent = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(component);
-      if (parentComponent) parentComponent.sync.componentsSyncedToThis.forEach((componentSyncedToThis: WorkshopComponent) => {
+      (parentComponent?.sync.componentsSyncedToThis || []).forEach((componentSyncedToThis: WorkshopComponent) => {
         const childComponent = componentSyncedToThis.sync.syncables.onCopy.childComponents.find((childComponent) => childComponent.type === component.type);
         if (childComponent) SyncChildComponent.syncComponentToTargets(component, childComponent);
       });

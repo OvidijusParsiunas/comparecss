@@ -88,6 +88,14 @@ export class SyncChildComponent {
     });
   }
 
+  public static reSyncSubcomponentsSyncedToThisSubcomponent(component: WorkshopComponent, ...targetComponents: WorkshopComponent[]): void {
+    targetComponents.forEach((targetComponent) => {
+      const childSubcomponent = targetComponent.sync.syncables.onCopy.subcomponents[component.baseSubcomponent.subcomponentType];
+      if (childSubcomponent) SyncChildComponent.syncSubcomponent(false, childSubcomponent, component.baseSubcomponent);
+    })
+  }
+
+  // WORK 2 - don't this this is required
   public static syncComponentToTargets(component: WorkshopComponent, ...targetComponents: WorkshopComponent[]): void {
     SyncChildComponent.syncSyncables(SyncChildComponent.syncSubcomponentToMultipleDuringPreviewTraversal,
       false, component, ...targetComponents);
