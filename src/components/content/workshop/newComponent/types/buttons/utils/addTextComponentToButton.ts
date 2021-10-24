@@ -2,6 +2,7 @@ import { UpdateContainerComponentDropdownItemNames } from '../../../../utils/com
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
+import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -31,15 +32,18 @@ export class AddTextComponentToButton extends ComponentBuilder {
     textBaseSubcomponent.defaultCustomFeatures.animations = ComponentBuilder.createStationaryAnimations({});
   }
 
-  private static overwriteCustomCss(textBaseSubcomponent: SubcomponentProperties, createDefaultTextCss: () => CustomCss): void {
-    textBaseSubcomponent.customCss = createDefaultTextCss();
-    textBaseSubcomponent.defaultCss = createDefaultTextCss();
+  private static overwriteCustomCss(buttonComponent: WorkshopComponent, textBaseSubcomponent: SubcomponentProperties,
+      createDefaultTextCss: () => CustomCss): void {
+    if (!SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(buttonComponent)) {
+      textBaseSubcomponent.customCss = createDefaultTextCss();
+      textBaseSubcomponent.defaultCss = createDefaultTextCss(); 
+    }
   }
 
-  private static overwriteTextBase(textComponent: WorkshopComponent): void {
+  private static overwriteTextBase(textComponent: WorkshopComponent, buttonComponent: WorkshopComponent): void {
     const { createDefaultTextCss, overwriteOtherBaseProperties } = this as any as OverwriteTextBaseContext;
     const { baseSubcomponent: textBaseSubcomponent } = textComponent;
-    AddTextComponentToButton.overwriteCustomCss(textBaseSubcomponent, createDefaultTextCss);
+    AddTextComponentToButton.overwriteCustomCss(buttonComponent, textBaseSubcomponent, createDefaultTextCss);
     AddTextComponentToButton.overwriteCustomFeatures(textBaseSubcomponent);
     AddTextComponentToButton.overwriteButtonTextProperties(textComponent, 'Button');
     overwriteOtherBaseProperties?.(textBaseSubcomponent);
