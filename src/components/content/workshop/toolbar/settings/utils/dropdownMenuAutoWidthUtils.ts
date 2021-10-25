@@ -98,8 +98,10 @@ export class DropdownMenuAutoWidthUtils {
 
   public static setMenuWidth(menuComponent: WorkshopComponent): void {
     setTimeout(() => {
-      const largestItemWidth = DropdownMenuAutoWidthUtils.getLargestItemWidth(menuComponent);
-      menuComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = largestItemWidth; 
+      if (menuComponent.componentPreviewStructure.layers.length > 0) {
+        const largestItemWidth = DropdownMenuAutoWidthUtils.getLargestItemWidth(menuComponent);
+        menuComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = largestItemWidth;  
+      }
     });
   }
 }
