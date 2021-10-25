@@ -19,11 +19,16 @@ export class SyncedComponent {
     return {};
   }
 
-  public static toggleSubcomponentSyncToOff(containerComponent: WorkshopComponent, callback?: () => void): void {
-    const inSyncComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(containerComponent
-      .subcomponents[containerComponent.activeSubcomponentName].seedComponent);
+  private static unSyncComponent(inSyncComponent: WorkshopComponent): void {
     TraverseComponentViaPreviewStructureChildFirst.traverse(SyncedComponent.dereferenceCopiedComponentCustomProperties, inSyncComponent);
     inSyncComponent.sync.componentThisIsSyncedTo = null;
+    SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(inSyncComponent);
+  }
+
+  public static toggleSubcomponentSyncToOff(containerComponent: WorkshopComponent, callback?: () => void): void {
+    const inSyncComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(
+      containerComponent.subcomponents[containerComponent.activeSubcomponentName].seedComponent)
+    SyncedComponent.unSyncComponent(inSyncComponent);
     if (callback) callback();
   }
 
@@ -44,12 +49,12 @@ export class SyncedComponent {
     if (subcomponentToSync) SyncChildComponent.syncSubcomponent(false, newComponentBase, subcomponentToSync);
   }
 
-  public static updateIfSubcomponentNotInSync(masterComponent: WorkshopComponent, activeSubcomponent: SubcomponentProperties): void {
+  public static updateIfComponentSyncedToIsRemoved(activeSubcomponent: SubcomponentProperties): void {
     const inSyncComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(activeSubcomponent.seedComponent);
     // more information can be found in the documentation reference: DOC: 7878
-    if (inSyncComponent && inSyncComponent.componentStatus.isRemoved) {
+    if (inSyncComponent?.componentStatus.isRemoved) {
       const componentsSyncedToThis = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(activeSubcomponent.seedComponent);
-      if (componentsSyncedToThis.sync.componentsSyncedToThis.size === 0) SyncedComponent.toggleSubcomponentSyncToOff(masterComponent);
+      if (!componentsSyncedToThis || componentsSyncedToThis.sync.componentsSyncedToThis.size === 0) SyncedComponent.unSyncComponent(inSyncComponent);
     }
   }
 

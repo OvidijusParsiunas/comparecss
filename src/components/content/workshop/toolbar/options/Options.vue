@@ -597,7 +597,7 @@ export default {
     },
     isInSyncButtonDisplayed(): boolean {
       const activeSubcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
-      SyncedComponent.updateIfSubcomponentNotInSync(this.component, activeSubcomponent);
+      SyncedComponent.updateIfComponentSyncedToIsRemoved(activeSubcomponent);
       return SyncedComponent.isInSyncButtonDisplayed(activeSubcomponent);
     },
     reassignToolbarPositionToggleRef(): void {

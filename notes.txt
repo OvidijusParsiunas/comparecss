@@ -1,5 +1,4 @@
 remove all menu items throws an error
-when button in dropdown is dereferenced - the components that are synced to it should still keep their references
 
 night diving
 
