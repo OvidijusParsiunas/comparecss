@@ -22,8 +22,8 @@ export class RemoveAnyChildComponent {
   private static removeSyncableSubcomponent(parentComponent: WorkshopComponent, removedSubcomponentProperties: SubcomponentProperties): void {
     const { onCopy } = parentComponent.sync.syncables;
     if (onCopy) {
-      const { type } = removedSubcomponentProperties.seedComponent;
-      if (onCopy.subcomponents[type]) onCopy.subcomponents[type] = null;
+      const { subcomponentType } = removedSubcomponentProperties;
+      if (onCopy.subcomponents[subcomponentType]) onCopy.subcomponents[subcomponentType] = null;
     }
   }
 

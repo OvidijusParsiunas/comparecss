@@ -3,6 +3,7 @@ import { PropertyReferenceSharingFuncsUtils } from '../../../newComponent/types/
 import { SubcomponentPreviewTraversalState, PreviewTraversalResult } from '../../../../../../interfaces/componentTraversal';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
+import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 import { SyncChildComponentUtils } from './syncChildComponentUtils';
 import { SyncChildComponent } from './syncChildComponent';
 import JSONUtils from '../../../utils/generic/jsonUtils';
@@ -26,17 +27,20 @@ export class SyncedComponent {
     if (callback) callback();
   }
 
-  private static findSubcomponentToSync(componentThisIsSyncedTo: WorkshopComponent, newComponentBase: SubcomponentProperties): SubcomponentProperties {
-    const { subcomponents } = componentThisIsSyncedTo;
-    const subcomponentToSync = Object.keys(subcomponents).find((subcomponentName) => {
-      return subcomponents[subcomponentName].subcomponentType === newComponentBase.subcomponentType;
-    });
-    return subcomponents[subcomponentToSync];
+  public static findSubcomponentToSync(componentThisIsSyncedTo: WorkshopComponent, newComponentBase: SubcomponentProperties,
+      containerType: COMPONENT_TYPES): SubcomponentProperties {
+    const { sync: { syncables: { onCopy: { subcomponents, childComponents } } } } = componentThisIsSyncedTo;
+    if (componentThisIsSyncedTo.type === containerType) {
+      return subcomponents[newComponentBase.subcomponentType];
+    }
+    const childComponentMatchingContainerType = childComponents.find((childComponent) => childComponent.type === containerType);
+    return childComponentMatchingContainerType.sync.syncables.onCopy.subcomponents[newComponentBase.subcomponentType];
   }
 
-  public static copyChildPropertiesFromInSyncContainerComponent(newComponent: WorkshopComponent, componentThisIsSyncedTo: WorkshopComponent): void {
+  public static copyChildPropertiesFromInSyncContainerComponent(newComponent: WorkshopComponent, componentThisIsSyncedTo: WorkshopComponent,
+      containerType: COMPONENT_TYPES): void {
     const newComponentBase = newComponent.baseSubcomponent;
-    const subcomponentToSync = SyncedComponent.findSubcomponentToSync(componentThisIsSyncedTo, newComponentBase);
+    const subcomponentToSync = SyncedComponent.findSubcomponentToSync(componentThisIsSyncedTo, newComponentBase, containerType);
     if (subcomponentToSync) SyncChildComponent.syncSubcomponent(false, newComponentBase, subcomponentToSync);
   }
 

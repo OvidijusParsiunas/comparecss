@@ -43,13 +43,6 @@ export class SyncChildComponentModeToggleOff {
     return { shouldRepeat: false };
   }
 
-  private static updateComponentsSyncedToThis(component: WorkshopComponent): void {
-    const parentComponent = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(component);
-    if (parentComponent) {
-      SyncChildComponent.syncComponentToTargets(parentComponent, ...parentComponent.sync.componentsSyncedToThis);
-    }
-  }
-
   private static setSyncedChildComponentProperties(optionsComponent: ComponentOptions): void {
     const { subcomponents, activeSubcomponentName } = optionsComponent.component as WorkshopComponent;
     const activeSeedComponent = subcomponents[activeSubcomponentName].seedComponent;
@@ -61,7 +54,7 @@ export class SyncChildComponentModeToggleOff {
       setTimeout(() => {
         activeSeedComponent.sync.componentThisIsSyncedTo = lastSelectedComponentToSync;
         lastSelectedComponentToSync.sync.componentsSyncedToThis.add(activeSeedComponent);
-        SyncChildComponentModeToggleOff.updateComponentsSyncedToThis(activeSeedComponent);
+        SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(activeSeedComponent);
       }, optionsComponent.hasSyncChildComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     }
     CleanSyncChildComponentMode.cleanComponent(optionsComponent.component, false);

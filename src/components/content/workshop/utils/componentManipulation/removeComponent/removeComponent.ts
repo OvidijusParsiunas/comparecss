@@ -1,4 +1,3 @@
-import { SyncChildComponentUtils } from '../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { SyncChildComponent } from '../../../toolbar/options/syncChildComponent/syncChildComponent';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SetActiveComponentUtils } from '../utils/setActiveComponentUtils';
@@ -18,18 +17,17 @@ export class RemoveComponent {
       const subcomponent = componentToBeRemoved.subcomponents[subcomponentName];
       if (subcomponent.seedComponent.sync.componentThisIsSyncedTo) {
         subcomponent.seedComponent.sync.componentThisIsSyncedTo.sync.componentsSyncedToThis.delete(subcomponent.seedComponent);
+        // WORK 2 - perhaps setting it to an empty array would be better
         subcomponent.seedComponent.sync.componentThisIsSyncedTo = null;
       }
     });
   }
 
+  // this is used in cases where a button that was synced by a dropdown button that was synced in a child dropdown was removed,
+  // the button inside the dropdown would need to be resynced by the dropdown components that are synced to it
   private static updateComponentsThatAreSyncedToComponentsThisIsSyncedTo(componentToBeRemoved: WorkshopComponent): void {
     (componentToBeRemoved.sync.componentsSyncedToThis || []).forEach((component: WorkshopComponent) => {
-      const parentComponent = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(component);
-      (parentComponent?.sync.componentsSyncedToThis || []).forEach((componentSyncedToThis: WorkshopComponent) => {
-        const childComponent = componentSyncedToThis.sync.syncables.onCopy.childComponents.find((childComponent) => childComponent.type === component.type);
-        if (childComponent) SyncChildComponent.syncComponentToTargets(component, childComponent);
-      });
+      SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(component);
     });
   }
 

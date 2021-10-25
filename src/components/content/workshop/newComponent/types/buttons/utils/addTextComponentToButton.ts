@@ -3,6 +3,7 @@ import { AddContainerComponent } from '../../../../utils/componentManipulation/a
 import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
+import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
 import { LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -34,9 +35,14 @@ export class AddTextComponentToButton extends ComponentBuilder {
 
   private static overwriteCustomCss(buttonComponent: WorkshopComponent, textBaseSubcomponent: SubcomponentProperties,
       createDefaultTextCss: () => CustomCss): void {
-    if (!SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(buttonComponent)) {
-      textBaseSubcomponent.customCss = createDefaultTextCss();
-      textBaseSubcomponent.defaultCss = createDefaultTextCss(); 
+    const inSyncParentComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(buttonComponent);
+    if (!inSyncParentComponent
+      // if button of a dropdown is in sync - but the button that it is synced to does not have text - overwrite
+      // SyncedComponent.findSubcomponentToSync is called by copyChildPropertiesFromInSyncContainerComponent in createNewComponent earlier and this is called again
+      // potential opportunity to use a variable to identify if text is sync to not have to call this again  
+      || !SyncedComponent.findSubcomponentToSync(inSyncParentComponent.sync.componentThisIsSyncedTo, textBaseSubcomponent, buttonComponent.type)) {
+        textBaseSubcomponent.customCss = createDefaultTextCss();
+        textBaseSubcomponent.defaultCss = createDefaultTextCss();  
     }
   }
 

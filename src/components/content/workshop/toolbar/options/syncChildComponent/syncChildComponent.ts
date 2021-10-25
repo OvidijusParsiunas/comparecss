@@ -3,6 +3,7 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../int
 import { SubcomponentTypeToProperties } from '../../../../../../interfaces/subcomponentTypeToProperties';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
+import { SyncChildComponentUtils } from './syncChildComponentUtils';
 import JSONUtils from '../../../utils/generic/jsonUtils';
 
 type SyncSyncablesCallback = (isTemporary: boolean, targetSubcomponent: SubcomponentProperties, ...otherSubcomponents: SubcomponentProperties[]) => boolean | void;
@@ -32,6 +33,7 @@ export class SyncChildComponent {
       syncableSubcomponent.customFeatures, subcomponentToBeSynced.customFeatures);
   }
 
+  // WORK 2 - can this be optimised to update specific component
   public static syncSubcomponent(addTemporaryProperties: boolean, syncableSubcomponent: SubcomponentProperties, subcomponentToBeSynced: SubcomponentProperties): boolean {
     if (addTemporaryProperties && !syncableSubcomponent.tempOriginalCustomProperties) {
       SyncChildComponent.moveCustomPropertiesToTempProperties(syncableSubcomponent);
@@ -76,29 +78,18 @@ export class SyncChildComponent {
     return wasTargetComponentMissing;
   }
 
+  // WORK 2 - no need for callback
   public static syncComponentToTargetTemporarily(currentlySelectedComponent: WorkshopComponent, componentToBeSynced: WorkshopComponent): void {
     const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
     SyncChildComponent.syncSyncables(SyncChildComponent.syncSubcomponent, true, activeComponent, componentToBeSynced);
   }
 
-  private static syncSubcomponentToMultipleDuringPreviewTraversal(isTemporary: boolean, subcomponentToSync: SubcomponentProperties,
-      ...targetSubcomponents: SubcomponentProperties[]): void {
-    targetSubcomponents.forEach((targetSubcomponent) => {
-      SyncChildComponent.syncSubcomponent(isTemporary, targetSubcomponent, subcomponentToSync);
-    });
-  }
-
-  public static reSyncSubcomponentsSyncedToThisSubcomponent(component: WorkshopComponent, ...targetComponents: WorkshopComponent[]): void {
-    targetComponents.forEach((targetComponent) => {
-      const childSubcomponent = targetComponent.sync.syncables.onCopy.subcomponents[component.baseSubcomponent.subcomponentType];
-      if (childSubcomponent) SyncChildComponent.syncSubcomponent(false, childSubcomponent, component.baseSubcomponent);
-    })
-  }
-
-  // WORK 2 - don't this this is required
-  public static syncComponentToTargets(component: WorkshopComponent, ...targetComponents: WorkshopComponent[]): void {
-    SyncChildComponent.syncSyncables(SyncChildComponent.syncSubcomponentToMultipleDuringPreviewTraversal,
-      false, component, ...targetComponents);
+  public static reSyncSubcomponentsSyncedToThisSubcomponent(component: WorkshopComponent): void {
+    const parentComponent = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(component);
+    parentComponent?.sync.componentsSyncedToThis.forEach((targetComponent) => {
+      SyncChildComponent.syncSyncables(SyncChildComponent.syncSubcomponent, false, targetComponent, parentComponent);
+      SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(targetComponent);
+    }); 
   }
 
   public static syncLastSelectectedComponentToTarget(activeComponent: WorkshopComponent, componentToBeSynced: WorkshopComponent): void {

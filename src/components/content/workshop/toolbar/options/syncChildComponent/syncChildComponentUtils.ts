@@ -8,7 +8,7 @@ export class SyncChildComponentUtils {
   public static getParentComponentWithOtherComponentsSyncedToIt(component: WorkshopComponent): WorkshopComponent {
     const { containerComponents } = component.sync.syncables;
     const parentComponents = (containerComponents[0] === component) ? containerComponents.slice(1) : containerComponents;
-    return parentComponents.find((reference) => reference.sync.componentsSyncedToThis.size);
+    return parentComponents.find((parentComponent) => parentComponent.sync.componentsSyncedToThis.size);
   }
 
   // traverses all components that could be synced to another component

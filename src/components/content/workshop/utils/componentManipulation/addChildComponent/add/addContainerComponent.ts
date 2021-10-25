@@ -42,12 +42,6 @@ export class AddContainerComponent extends AddComponentShared {
   };
   public static readonly DEFAULT_TOP_PROPERTY = '50%';
 
-  private static updateOtherComponentsThatAreSyncedToThis(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
-    if (containerComponent.sync.componentsSyncedToThis.size > 0) {
-      SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(newComponent, ...containerComponent.sync.componentsSyncedToThis);
-    }
-  }
-
   private static updateComponentContainerProperties(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     const newComponentBase = newComponent.baseSubcomponent;
     const { subcomponentType, parentLayer } = newComponentBase;
@@ -126,7 +120,8 @@ export class AddContainerComponent extends AddComponentShared {
     const newComponent = AddComponentShared.createNewComponentViaGenerator(componentGenerator, masterComponent, presetProperties);
     AddContainerComponent.applyTopProperty(newComponent.baseSubcomponent);
     const syncedComponent =  SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(containerComponent);
-    if (syncedComponent) SyncedComponent.copyChildPropertiesFromInSyncContainerComponent(newComponent, syncedComponent.sync.componentThisIsSyncedTo);
+    if (syncedComponent) SyncedComponent.copyChildPropertiesFromInSyncContainerComponent(newComponent,
+      syncedComponent.sync.componentThisIsSyncedTo, containerComponent.type);
     return [newComponent, baseNamePrefix];
   }
 
@@ -145,8 +140,8 @@ export class AddContainerComponent extends AddComponentShared {
     AddComponentShared.cleanSubcomponentProperties(newComponent);
     AddComponentShared.executePropertyOverwritables(newComponent, containerComponent, 'container');
     // WORK 2 - setTimeout
-    AddContainerComponent.updateOtherComponentsThatAreSyncedToThis(containerComponent, newComponent);
     SyncedComponent.addParentComponentSyncableContainerComponentsToChild(newComponent, containerComponent);
+    SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(newComponent);
     newComponent.containerComponent = containerComponent;
     return newComponent;
   }
