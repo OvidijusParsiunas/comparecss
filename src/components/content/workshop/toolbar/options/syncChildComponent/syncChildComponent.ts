@@ -6,8 +6,6 @@ import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.e
 import { SyncChildComponentUtils } from './syncChildComponentUtils';
 import JSONUtils from '../../../utils/generic/jsonUtils';
 
-type SyncSyncablesCallback = (isTemporary: boolean, targetSubcomponent: SubcomponentProperties, ...otherSubcomponents: SubcomponentProperties[]) => boolean | void;
-
 export class SyncChildComponent {
   
   private static moveCustomPropertiesToTempProperties(syncableSubcomponent: SubcomponentProperties): void {
@@ -48,14 +46,13 @@ export class SyncChildComponent {
     }
   }
 
-  private static syncSyncableSubcomponents(callback: SyncSyncablesCallback, isTemporary: boolean, syncableSubcomponents: SubcomponentTypeToProperties,
-      targetComponents: WorkshopComponent[]): boolean {
+  private static syncSyncableSubcomponents(isTemporary: boolean, syncableSubcomponents: SubcomponentTypeToProperties, targetComponent: WorkshopComponent): boolean {
     let wasTargetComponentMissing = false;
     Object.keys(syncableSubcomponents).forEach((subcomponentType) => {
       const syncableSubcomponent: SubcomponentProperties = syncableSubcomponents[subcomponentType];
       if (!syncableSubcomponent) return;
-      wasTargetComponentMissing = !!callback(isTemporary, syncableSubcomponent,
-        ...targetComponents.map((targetComponent) => targetComponent?.sync.syncables.onCopy.subcomponents[subcomponentType]));
+      wasTargetComponentMissing = !!SyncChildComponent.syncSubcomponent(isTemporary, syncableSubcomponent,
+        targetComponent?.sync.syncables.onCopy.subcomponents[subcomponentType]);
     });
     return wasTargetComponentMissing;
   }
@@ -66,28 +63,27 @@ export class SyncChildComponent {
   }
 
   // not using TraverseComponentViaPreviewStructureChildFirst as it abides to subcomponent order and instead sync components are tracked via syncables
-  private static syncSyncables(callback: SyncSyncablesCallback, isTemporary: boolean, syncableComponent: WorkshopComponent, ...targetComponents: WorkshopComponent[]): boolean {
+  private static syncSyncables(isTemporary: boolean, syncableComponent: WorkshopComponent, targetComponent: WorkshopComponent): boolean {
     const { subcomponents, childComponents } = syncableComponent.sync.syncables.onCopy;
-    let wasTargetComponentMissing = SyncChildComponent.syncSyncableSubcomponents(callback, isTemporary, subcomponents, targetComponents);
+    let wasTargetComponentMissing = SyncChildComponent.syncSyncableSubcomponents(isTemporary, subcomponents, targetComponent);
     childComponents.forEach((childComponent, index) => {
-      const wasTargetComponentMissingForChild = SyncChildComponent.syncSyncables(callback, isTemporary, childComponent,
-        ...targetComponents.map((targetComponent) => targetComponent.sync.syncables.onCopy.childComponents[index]));
+      const wasTargetComponentMissingForChild = SyncChildComponent.syncSyncables(isTemporary, childComponent,
+        targetComponent.sync.syncables.onCopy.childComponents[index]);
       if (wasTargetComponentMissingForChild && !wasTargetComponentMissing) wasTargetComponentMissing = true;
     });
     if (wasTargetComponentMissing) SyncChildComponent.syncLayers(syncableComponent);
     return wasTargetComponentMissing;
   }
 
-  // WORK 2 - no need for callback
   public static syncComponentToTargetTemporarily(currentlySelectedComponent: WorkshopComponent, componentToBeSynced: WorkshopComponent): void {
     const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
-    SyncChildComponent.syncSyncables(SyncChildComponent.syncSubcomponent, true, activeComponent, componentToBeSynced);
+    SyncChildComponent.syncSyncables(true, activeComponent, componentToBeSynced);
   }
 
   public static reSyncSubcomponentsSyncedToThisSubcomponent(component: WorkshopComponent): void {
     const parentComponent = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(component);
     parentComponent?.sync.componentsSyncedToThis.forEach((targetComponent) => {
-      SyncChildComponent.syncSyncables(SyncChildComponent.syncSubcomponent, false, targetComponent, parentComponent);
+      SyncChildComponent.syncSyncables(false, targetComponent, parentComponent);
       SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(targetComponent);
     }); 
   }
