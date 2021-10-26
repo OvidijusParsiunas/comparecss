@@ -42,6 +42,13 @@ export class AddContainerComponent extends AddComponentShared {
   };
   public static readonly DEFAULT_TOP_PROPERTY = '50%';
 
+  private static asyncUpdateSyncedComponents(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
+    setTimeout(() => {
+      SyncedComponent.addParentComponentSyncableContainerComponentsToChild(newComponent, containerComponent);
+      SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(newComponent);
+    });
+  }
+
   private static updateComponentContainerProperties(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     const newComponentBase = newComponent.baseSubcomponent;
     const { subcomponentType, parentLayer } = newComponentBase;
@@ -139,9 +146,7 @@ export class AddContainerComponent extends AddComponentShared {
     AddContainerComponent.updateComponentContainerProperties(containerComponent, newComponent);
     AddComponentShared.cleanSubcomponentProperties(newComponent);
     AddComponentShared.executePropertyOverwritables(newComponent, containerComponent, 'container');
-    // WORK 2 - setTimeout
-    SyncedComponent.addParentComponentSyncableContainerComponentsToChild(newComponent, containerComponent);
-    SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(newComponent);
+    AddContainerComponent.asyncUpdateSyncedComponents(newComponent, containerComponent);
     newComponent.containerComponent = containerComponent;
     return newComponent;
   }

@@ -35,8 +35,10 @@ export class RemoveComponent {
     // used to allow components that have copied this to remove insync properties and dereference when they are opened up
     // more information can be found in the documentation reference: DOC: 7878
     componentToBeRemoved.componentStatus.isRemoved = true;
-    RemoveComponent.updateComponentsThatAreSyncedToComponentsThisIsSyncedTo(componentToBeRemoved);
-    RemoveComponent.removeRefFromComponentsThisIsSyncedTo(componentToBeRemoved);
+    setTimeout(() => {
+      RemoveComponent.updateComponentsThatAreSyncedToComponentsThisIsSyncedTo(componentToBeRemoved);
+      RemoveComponent.removeRefFromComponentsThisIsSyncedTo(componentToBeRemoved);
+    });
   }
 
   private static removeComponentCallback(workshopComponent: ComponentOptions, componentToBeRemovedWithoutSelecting: WorkshopComponent): number {

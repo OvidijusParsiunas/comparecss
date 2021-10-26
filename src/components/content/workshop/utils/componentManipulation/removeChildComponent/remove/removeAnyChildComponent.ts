@@ -19,6 +19,12 @@ type TargetRemovalDetails = TargetDetails & { isRemovingActiveSubcomponent?: boo
 
 export class RemoveAnyChildComponent {
 
+  private static asyncUpdateComponentThatTriggerThis(removedSubcomponent: SubcomponentProperties): void {
+    setTimeout(() => {
+      SubcomponentTriggers.removeTriggerReferenceFromSubcomponentThatTriggersThis(removedSubcomponent);
+    });
+  }
+
   private static removeSyncableSubcomponent(parentComponent: WorkshopComponent, removedSubcomponentProperties: SubcomponentProperties): void {
     const { onCopy } = parentComponent.sync.syncables;
     if (onCopy) {
@@ -169,6 +175,6 @@ export class RemoveAnyChildComponent {
       targetDetails.masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       RemoveAnyChildComponent.removeChildComponentUsingDropdownStructureIfFound.bind(targetDetails));
     RemoveAnyChildComponent.removeSyncableSubcomponent(parentComponent, targetDetails.targetSubcomponentProperties);
-    SubcomponentTriggers.removeTriggerReferenceFromSubcomponentThatTriggersThis(targetDetails.targetSubcomponentProperties);
+    RemoveAnyChildComponent.asyncUpdateComponentThatTriggerThis(targetDetails.targetSubcomponentProperties);
   }
 }

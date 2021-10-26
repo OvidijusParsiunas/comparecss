@@ -26,6 +26,13 @@ export class AddLayerComponent extends AddComponentShared {
     }
   }
 
+  private static asyncUpdateSyncedComponents(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
+    setTimeout(() => {
+      AddLayerComponent.updateOtherLayersThatAreSyncedToThis(containerComponent, newComponent.baseSubcomponent);
+      SyncedComponent.addParentComponentSyncableContainerComponentsToChild(newComponent, containerComponent);
+    });
+  }
+
   private static addNewChildComponentsItems(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     if (containerComponent.newChildComponents.sharedDropdownItemsRefs?.layer) {
       newComponent.newChildComponents = { dropdownItems: containerComponent.newChildComponents.sharedDropdownItemsRefs.layer };
@@ -149,8 +156,7 @@ export class AddLayerComponent extends AddComponentShared {
     AddComponentShared.cleanSubcomponentProperties(newComponent);
     // needs to be done after dropdown items have been updated as property overwritables can add new components
     AddComponentShared.executePropertyOverwritables(newComponent, containerComponent, 'layer');
-    AddLayerComponent.updateOtherLayersThatAreSyncedToThis(containerComponent, newComponent.baseSubcomponent);
-    SyncedComponent.addParentComponentSyncableContainerComponentsToChild(newComponent, containerComponent);
+    AddLayerComponent.asyncUpdateSyncedComponents(newComponent, containerComponent);
     newComponent.containerComponent = higherComponentContainer;
     return newComponent;
   }
