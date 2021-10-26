@@ -71,15 +71,17 @@ export class DropdownItemLayer extends ComponentBuilder {
         }
       })
     }
-    if (menuComponent.baseSubcomponent.customFeatures.jsClasses) {
-      if (!textComponent.baseSubcomponent.customFeatures.jsClasses) {
-        textComponent.baseSubcomponent.customFeatures.jsClasses = new Set();
+    if (menuComponent.baseSubcomponent.customStaticFeatures.jsClasses) {
+      if (!textComponent.baseSubcomponent.customStaticFeatures.jsClasses) {
+        textComponent.baseSubcomponent.customStaticFeatures.jsClasses = new Set();
       }
-      SetUtils.addSetsToSet(textComponent.baseSubcomponent.customFeatures.jsClasses,
-        menuComponent.baseSubcomponent.customFeatures.jsClasses);
+      SetUtils.addSetsToSet(textComponent.baseSubcomponent.customStaticFeatures.jsClasses,
+        menuComponent.baseSubcomponent.customStaticFeatures.jsClasses);
     }
-    textComponent.baseSubcomponent.customStaticFeatures = DropdownItemLayer.createDefaultTextCustomStaticFeatures('Dropdown item');
-    textComponent.baseSubcomponent.defaultCustomStaticFeatures = DropdownItemLayer.createDefaultTextCustomStaticFeatures('Dropdown item');
+    textComponent.baseSubcomponent.customStaticFeatures.subcomponentText = ComponentBuilder.createText('Dropdown item');
+    textComponent.baseSubcomponent.customStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT);
+    textComponent.baseSubcomponent.defaultCustomStaticFeatures.subcomponentText = ComponentBuilder.createText('Dropdown item');
+    textComponent.baseSubcomponent.defaultCustomStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT);
   }
 
   public static setStyle(component: WorkshopComponent): void {
@@ -150,7 +152,6 @@ export class DropdownItemLayer extends ComponentBuilder {
     return {
       animations: ComponentBuilder.createStationaryAnimations({}),
       mouseEventCallbacks: DropdownItemLayer.createMouseEventCallbacks(),
-      jsClasses: new Set([JAVASCRIPT_CLASSES.DROPDOWN_MENU]) as Set<JAVASCRIPT_CLASSES>,
     };
   }
 
@@ -158,6 +159,8 @@ export class DropdownItemLayer extends ComponentBuilder {
     const baseSubcomponent = itemComponent.baseSubcomponent;
     baseSubcomponent.customFeatures = DropdownItemLayer.createDefaultButtonBaseCustomFeatures();
     baseSubcomponent.defaultCustomFeatures = DropdownItemLayer.createDefaultButtonBaseCustomFeatures();
+    baseSubcomponent.customStaticFeatures = { jsClasses: new Set([JAVASCRIPT_CLASSES.DROPDOWN_MENU]) };
+    baseSubcomponent.defaultCustomStaticFeatures = { jsClasses: new Set([JAVASCRIPT_CLASSES.DROPDOWN_MENU]) };
     baseSubcomponent.otherSubcomponentTriggers = DropdownItemLayer.createOtherSubcomponentTriggersTemplate(),
     baseSubcomponent.isRemovable = true;
   }

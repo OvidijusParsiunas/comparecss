@@ -42,12 +42,12 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
   }
 
   private static populateReferences(buttonComponent: WorkshopComponent): void {
-    ComponentBuilder.addJsClasses(buttonComponent.baseSubcomponent, JAVASCRIPT_CLASSES.DROPDOWN_BUTTON);
+    ComponentBuilder.addJsClasses(buttonComponent.baseSubcomponent, 'customStaticFeatures', JAVASCRIPT_CLASSES.DROPDOWN_BUTTON);
     const dropdownMenuBaseComponent = buttonComponent.linkedComponents.auxiliary[0];
-    ComponentBuilder.addJsClasses(dropdownMenuBaseComponent.baseSubcomponent, JAVASCRIPT_CLASSES.DROPDOWN_MENU);
+    ComponentBuilder.addJsClasses(dropdownMenuBaseComponent.baseSubcomponent, 'customStaticFeatures', JAVASCRIPT_CLASSES.DROPDOWN_MENU);
   }
 
-  public static overwriteButtonCustomFeatures(component: WorkshopComponent): void {
+  public static overwriteButtonFeatures(component: WorkshopComponent): void {
     const { paddingBaseSubcomponent, buttonBaseSubcomponent } = ApplyDropdownButtonProperties.getPaddingAndButtonSubcomponents(component);
     ApplyDropdownButtonProperties.overwriteButtonBaseDropdownProperties(paddingBaseSubcomponent, buttonBaseSubcomponent);
     const textSubcomponent = buttonBaseSubcomponent.seedComponent.sync.syncables.onCopy.subcomponents[SUBCOMPONENT_TYPES.TEXT];
@@ -60,7 +60,7 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
     // also overwriteButtonCustomFeatures needs to be executed when padding component has been created
     // hence padding component executes it explicitly
     buttonComponent.newChildComponents.propertyOverwritables.propertyReferenceSharingFuncs.container.push(
-      ApplyDropdownButtonProperties.overwriteButtonCustomFeatures,
+      ApplyDropdownButtonProperties.overwriteButtonFeatures,
       ApplyDropdownButtonProperties.populateReferences);
     ApplyDropdownButtonProperties.populateReferences(buttonComponent);
   }

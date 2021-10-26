@@ -105,6 +105,7 @@ export interface Image {
 export interface CustomStaticFeatures {
   alignedLayerSection?: AlignedLayerSection;
   dropdownSelectedText?: SelectedDropdownText;
+  jsClasses?: ComponentJavascriptClasses;
   subcomponentText?: Text;
   image?: Image;
   icon?: Icon;

@@ -18,6 +18,7 @@ const vars = {
   className: 'csssymphony-ripples',
 };
 
+// for text subcomponents: it has been identified that the more text there is - the bigger the ripple is which may need to be fixed in the future
 function createRipple(event, buttonElement) {
   const rippleElement = document.createElement('span');
   rippleElement.style.cssText = 'background-color: rgba(255, 255, 255, 0.5); pointer-events: none; position: absolute; border-radius: 50%';

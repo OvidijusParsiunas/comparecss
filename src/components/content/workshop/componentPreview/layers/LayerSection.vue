@@ -19,12 +19,12 @@
 </template>
                     
 <script lang="ts">
-import { ComponentJavascriptClasses } from '../../../../../interfaces/componentJavascriptClasses';
 import { UseLayerSectionComponent } from '../../../../../interfaces/useLayerSectionComponent';
 import { BaseSubcomponentRef } from '../../../../../interfaces/componentPreviewStructure';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import useLayerSectionComponent from '../compositionAPI/useLayerSectionComponent';
+import { SetUtils } from '../../utils/generic/setUtils';
 
 interface Consts {
   COMPONENT_PREVIEW_MARKER: string;
@@ -38,12 +38,13 @@ export default {
     };
   },
   methods: {
-    getChildComponentContainerJsClasses(subcomponent: BaseSubcomponentRef): ComponentJavascriptClasses | undefined[] {
+    getChildComponentContainerJsClasses(subcomponent: BaseSubcomponentRef): string[] {
       if (subcomponent.subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BUTTON) return [];
       return this.getChildComponentJs(subcomponent);
     },
-    getChildComponentJs(layerBaseSubcomponent: BaseSubcomponentRef): ComponentJavascriptClasses | undefined[] {
-      return layerBaseSubcomponent.subcomponentProperties.customFeatures?.jsClasses || [];
+    getChildComponentJs(layerBaseSubcomponent: BaseSubcomponentRef): string[] {
+      const { customFeatures, customStaticFeatures } = layerBaseSubcomponent.subcomponentProperties;
+      return SetUtils.transformSetsToOneDimensionalArray(customFeatures?.jsClasses, customStaticFeatures?.jsClasses);
     }
   },
   props: {

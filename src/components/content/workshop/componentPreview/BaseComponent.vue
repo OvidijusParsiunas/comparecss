@@ -58,16 +58,17 @@ import { UseSubcomponentPreviewEventHandlers } from '../../../../interfaces/useS
 import useSubcomponentSelectModeEventHandlers from './compositionAPI/useSubcomponentSelectModeEventHandlers';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { DROPDOWN_ARROW_ICON_TYPES_TO_FONT_AWESOME_NAMES } from '../../../../consts/dropdownArrowIcons';
+import { SubcomponentProperties, WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
 import { DROPDOWN_MENU_POSITIONS } from '../../../../consts/dropdownMenuPositions.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCss';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../consts/elementClassMarkers';
-import { WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { UseBaseComponent } from '../../../../interfaces/useBaseComponent';
 import { CLOSE_BUTTON_X_TEXT } from '../../../../consts/closeButtonXText';
 import { STATIC_POSITION_CLASS } from '../../../../consts/sharedClasses';
 import useBaseComponent from './compositionAPI/useBaseComponent';
+import { SetUtils } from '../utils/generic/setUtils';
 import layers from './layers/Layers.vue';
 
 interface Consts {
@@ -101,7 +102,8 @@ export default {
       this.mouseEvents[this.getBaseId('subcomponentId')][subcomponentMouseEvent]();
     },
     getJsClasses(): string[] {
-      return this.component.baseSubcomponent.customFeatures?.jsClasses || [];
+      const { customFeatures, customStaticFeatures } = this.component.baseSubcomponent as SubcomponentProperties;
+      return SetUtils.transformSetsToOneDimensionalArray(customFeatures?.jsClasses, customStaticFeatures?.jsClasses);
     },
     getOverlayStyleProperties(): WorkshopComponentCss {
       const subcomponentCss = {

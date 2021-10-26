@@ -5,6 +5,7 @@ import { PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/bas
 import { OtherSubcomponentTriggers } from '../../../../../../../interfaces/otherSubcomponentTriggers';
 import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { JsClassesReferences, JsClassesUtils } from '../../shared/jsClasses/jsClassesUtils';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
@@ -12,7 +13,6 @@ import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections
 import { ButtonBaseSpecificSettings } from '../settings/buttonBaseSpecificSettings';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
-import { JsClassesUtils } from '../../shared/jsClasses/jsClassesUtils';
 import { inheritedButtonCss } from '../inheritedCss/inheritedCss';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
@@ -27,8 +27,8 @@ class ButtonBase extends ComponentBuilder {
     buttonComponent.sync.syncables = ComponentBuilder.createSyncablesObjectUsingSubcomponents(syncableSubcomponents, [], buttonComponent);
   }
 
-  private static createDefaultButtonJsClasses(): Set<JAVASCRIPT_CLASSES> {
-    return new Set([JAVASCRIPT_CLASSES.RIPPLES]);
+  private static createDefaultButtonJsClasses(): JsClassesReferences {
+    return { defaultJsClasses: new Set([JAVASCRIPT_CLASSES.RIPPLES]), defaultStaticJsClasses: new Set([]) };
   }
 
   public static setPropertyReferenceSharingFuncs(buttonBaseComponent: WorkshopComponent): void {

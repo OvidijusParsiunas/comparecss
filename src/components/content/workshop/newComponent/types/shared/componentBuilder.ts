@@ -142,13 +142,19 @@ export class ComponentBuilder {
     return syncables;
   }
 
-  protected static addJsClasses(subcomponent: SubcomponentProperties, javascriptClass: JAVASCRIPT_CLASSES): void {
-    if (!subcomponent.customFeatures.jsClasses) {
-      subcomponent.customFeatures.jsClasses = new Set();
-      subcomponent.defaultCustomFeatures.jsClasses = new Set();
+  protected static addJsClasses(subcomponent: SubcomponentProperties, featureType: 'customFeatures'|'customStaticFeatures',
+      javascriptClass: JAVASCRIPT_CLASSES): void {
+    const defaultFeatureType = featureType === 'customFeatures' ? 'defaultCustomFeatures' : 'defaultCustomStaticFeatures';
+    if (!subcomponent[featureType]) {
+      subcomponent[featureType] = {};
+      subcomponent[defaultFeatureType] = {};
     }
-    subcomponent.customFeatures.jsClasses.add(javascriptClass);
-    subcomponent.defaultCustomFeatures.jsClasses.add(javascriptClass);
+    if (!subcomponent[featureType].jsClasses) {
+      subcomponent[featureType].jsClasses = new Set();
+      subcomponent[defaultFeatureType].jsClasses = new Set();
+    }
+    subcomponent[featureType].jsClasses.add(javascriptClass);
+    subcomponent[defaultFeatureType].jsClasses.add(javascriptClass);
   }
 
   private static toggleSelectDropdownTypeSetting(subcomponentProperties: SubcomponentProperties): void {

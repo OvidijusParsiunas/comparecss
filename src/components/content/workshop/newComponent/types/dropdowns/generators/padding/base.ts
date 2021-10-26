@@ -34,7 +34,7 @@ export class DropdownPaddingBase extends ComponentBuilder {
         container: [DropdownMenuBase.setAllItemAndItemTextComponentsToBeInSync],
       },
     };
-    ApplyDropdownButtonProperties.overwriteButtonCustomFeatures(paddingComponent);
+    ApplyDropdownButtonProperties.overwriteButtonFeatures(paddingComponent);
   }
 
   private static setSyncableSubcomponents(dropdownComponent: WorkshopComponent): void {
