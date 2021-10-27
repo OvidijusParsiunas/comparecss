@@ -22,7 +22,9 @@ export class SyncedComponent {
   private static unSyncComponent(inSyncComponent: WorkshopComponent, childComponentType: COMPONENT_TYPES): void {
     TraverseComponentViaPreviewStructureChildFirst.traverse(SyncedComponent.dereferenceCopiedComponentCustomProperties, inSyncComponent);
     inSyncComponent.sync.componentThisIsSyncedTo = null;
-    SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(inSyncComponent, childComponentType);
+    setTimeout(() => {
+      SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(inSyncComponent, childComponentType);
+    });
   }
 
   public static toggleSubcomponentSyncToOff(containerComponent: WorkshopComponent, callback?: () => void): void {
