@@ -52,12 +52,7 @@ export class SyncedComponent {
   public static updateIfComponentSyncedToIsRemoved(component: WorkshopComponent): void {
     const inSyncComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(component);
     // more information can be found in the documentation reference: DOC: 7878
-    if (inSyncComponent?.componentStatus.isRemoved) {
-      const componentsSyncedToThis = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(component);
-      if (!componentsSyncedToThis || componentsSyncedToThis.sync.componentsSyncedToThis.size === 0) {
-        SyncedComponent.unSyncComponent(inSyncComponent, component.type);
-      }
-    }
+    if (inSyncComponent?.componentStatus.isRemoved) SyncedComponent.unSyncComponent(inSyncComponent, component.type);
   }
 
   public static isInSyncButtonDisplayed(activeSubcomponent: SubcomponentProperties): boolean {

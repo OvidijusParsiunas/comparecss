@@ -120,7 +120,7 @@ export class SyncChildComponent {
   }
 }
 
-// Original implementation which synced all child components:
+// Original implementation which synced all components within syncableComponent:
 
 // private static syncSyncableSubcomponents(syncableSubcomponents: SubcomponentTypeToProperties, componentToBeSyncedTo: WorkshopComponent, isTemporary: boolean): boolean {
 //   let wasAComponentToBeSyncedToMissing = false;

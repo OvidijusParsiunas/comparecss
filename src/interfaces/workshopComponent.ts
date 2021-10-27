@@ -354,4 +354,4 @@ export interface WorkshopComponent {
 // the custom properties' references as the user would need to first open them in the toolbar, and as soon as they do that
 // the component is dereferenced, hence the user can't change the previously synced custom properties and all of the other
 // components that are still synced will remain untouched.
-// If there is an easier way to simply derenence all synced components in one go in the future, use that option instead.
+// If there is an easier way to simply dereference all synced components in one go in the future, use that option instead.
