@@ -8,8 +8,8 @@ import { SyncChildComponentUtils } from './syncChildComponentUtils';
 import JSONUtils from '../../../utils/generic/jsonUtils';
 
 interface SynSyncablesResult {
-  wasTargetFound: boolean;
-  wasTargetComponentMissing: boolean;
+  wasTargetChildFound: boolean;
+  wasAComponentToBeSyncedToMissing: boolean;
 }
 
 export class SyncChildComponent {
@@ -52,15 +52,15 @@ export class SyncChildComponent {
   }
 
   private static syncSyncableSubcomponents(syncableSubcomponents: SubcomponentTypeToProperties, componentToBeSyncedTo: WorkshopComponent, isTemporary: boolean): boolean {
-    let wasTargetComponentMissing = false;
+    let wasAComponentToBeSyncedToMissing = false;
     Object.keys(syncableSubcomponents).forEach((subcomponentType) => {
       const syncableSubcomponent: SubcomponentProperties = syncableSubcomponents[subcomponentType];
       if (!syncableSubcomponent) return;
-      const WasTargetComponentMissing = !!SyncChildComponent.syncSubcomponent(syncableSubcomponent,
+      const WasAComponentToBeSyncedToMissing = !!SyncChildComponent.syncSubcomponent(syncableSubcomponent,
         componentToBeSyncedTo?.sync.syncables.onCopy.subcomponents[subcomponentType], isTemporary);
-      if (!wasTargetComponentMissing && WasTargetComponentMissing) wasTargetComponentMissing = true;
+      if (!wasAComponentToBeSyncedToMissing && WasAComponentToBeSyncedToMissing) wasAComponentToBeSyncedToMissing = true;
     });
-    return wasTargetComponentMissing;
+    return wasAComponentToBeSyncedToMissing;
   }
 
   // used to resync layer components when there are too many in the syncable component e.g. dropdown menu
@@ -70,42 +70,42 @@ export class SyncChildComponent {
   }
 
   private static syncChildComponents(syncableComponent: WorkshopComponent, childComponents: WorkshopComponent[],
-      componentToBeSyncedTo: WorkshopComponent, childComponentType: COMPONENT_TYPES, traverseAll: boolean, isTemporary: boolean): boolean {
-    let wasTargetFound = false;
-    let wasTargetComponentMissing = false;
+      componentToBeSyncedTo: WorkshopComponent, targeChildComponentType: COMPONENT_TYPES, traverseAll: boolean, isTemporary: boolean): boolean {
+    let wasTargetChildFound = false;
+    let wasAComponentToBeSyncedToMissing = false;
     for (let i = 0; i < childComponents.length; i += 1) {
-      const { wasTargetFound: WasTargetFound, wasTargetComponentMissing: WasTargetComponentMissing } = SyncChildComponent.syncSyncables(
-        childComponents[i], componentToBeSyncedTo.sync.syncables.onCopy.childComponents[i], childComponentType, traverseAll, isTemporary);
-      if (!wasTargetFound && WasTargetFound) wasTargetFound = true;
-      if (!wasTargetComponentMissing && WasTargetComponentMissing) wasTargetComponentMissing = true;
-      if (!traverseAll && wasTargetFound) break;
+      const { wasTargetChildFound: WasTargetChildFound, wasAComponentToBeSyncedToMissing: WasAComponentToBeSyncedToMissing } = SyncChildComponent.syncSyncables(
+        childComponents[i], componentToBeSyncedTo.sync.syncables.onCopy.childComponents[i], targeChildComponentType, traverseAll, isTemporary);
+      if (!wasTargetChildFound && WasTargetChildFound) wasTargetChildFound = true;
+      if (!wasAComponentToBeSyncedToMissing && WasAComponentToBeSyncedToMissing) wasAComponentToBeSyncedToMissing = true;
+      if (!traverseAll && wasTargetChildFound) break;
     }
     // this is executed after the child components have all been traversed
-    if (wasTargetComponentMissing) SyncChildComponent.reSyncLayers(syncableComponent);
-    return wasTargetFound;
+    if (wasAComponentToBeSyncedToMissing) SyncChildComponent.reSyncLayers(syncableComponent);
+    return wasTargetChildFound;
   }
 
   // not using TraverseComponentViaPreviewStructureChildFirst as it abides to subcomponent order and instead sync components are tracked via syncables
-  private static syncSyncables(syncableComponent: WorkshopComponent, componentToBeSyncedTo: WorkshopComponent, childComponentType: COMPONENT_TYPES,
-      traversAll: boolean, isTemporary: boolean): SynSyncablesResult {
+  private static syncSyncables(syncableComponent: WorkshopComponent, componentToBeSyncedTo: WorkshopComponent, targeChildComponentType: COMPONENT_TYPES,
+      traverseAll: boolean, isTemporary: boolean): SynSyncablesResult {
     const { subcomponents, childComponents } = syncableComponent.sync.syncables.onCopy;
-    const wasTargetComponentMissing = SyncChildComponent.syncSyncableSubcomponents(subcomponents, componentToBeSyncedTo, isTemporary);
-    const sameComponent = childComponentType === syncableComponent.type;
-    if (!traversAll && sameComponent) return { wasTargetFound: true, wasTargetComponentMissing };
-    const wasTargetFound = SyncChildComponent.syncChildComponents(syncableComponent, childComponents, componentToBeSyncedTo, childComponentType,
-      traversAll, isTemporary);
-    return { wasTargetFound: sameComponent || wasTargetFound, wasTargetComponentMissing };
+    const wasAComponentToBeSyncedToMissing = SyncChildComponent.syncSyncableSubcomponents(subcomponents, componentToBeSyncedTo, isTemporary);
+    const areTargetSubcomponentsSynced = targeChildComponentType === syncableComponent.type;
+    if (!traverseAll && areTargetSubcomponentsSynced) return { wasTargetChildFound: true, wasAComponentToBeSyncedToMissing };
+    const wasTargetChildFound = SyncChildComponent.syncChildComponents(syncableComponent, childComponents, componentToBeSyncedTo, targeChildComponentType,
+      traverseAll, isTemporary);
+    return { wasTargetChildFound: areTargetSubcomponentsSynced || wasTargetChildFound, wasAComponentToBeSyncedToMissing };
   }
 
   // if this method does not work properly it could be because it is not traversing everything as traversAll is set to false
-  public static reSyncSubcomponentsSyncedToThisSubcomponent(component: WorkshopComponent, childComponentType: COMPONENT_TYPES): void {
+  public static reSyncSubcomponentsSyncedToThisSubcomponent(component: WorkshopComponent, targetChildComponentType: COMPONENT_TYPES): void {
     const parentComponent = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(component);
     if (!parentComponent) return;
     const componentsSyncedToThisArr = Array.from(parentComponent.sync.componentsSyncedToThis);
     for (let i = 0; i < componentsSyncedToThisArr.length; i += 1) {
       const componentSyncedToThis = componentsSyncedToThisArr[i];
-      SyncChildComponent.syncSyncables(componentSyncedToThis, parentComponent, childComponentType, false, false);
-      SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(componentSyncedToThis, childComponentType);
+      SyncChildComponent.syncSyncables(componentSyncedToThis, parentComponent, targetChildComponentType, false, false);
+      SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(componentSyncedToThis, targetChildComponentType);
     }
   }
 
@@ -123,14 +123,14 @@ export class SyncChildComponent {
 // Original implementation which synced all child components:
 
 // private static syncSyncableSubcomponents(syncableSubcomponents: SubcomponentTypeToProperties, componentToBeSyncedTo: WorkshopComponent, isTemporary: boolean): boolean {
-//   let wasTargetComponentMissing = false;
+//   let wasAComponentToBeSyncedToMissing = false;
 //   Object.keys(syncableSubcomponents).forEach((subcomponentType) => {
 //     const syncableSubcomponent: SubcomponentProperties = syncableSubcomponents[subcomponentType];
 //     if (!syncableSubcomponent) return;
-//     wasTargetComponentMissing = !!SyncChildComponent.syncSubcomponent(syncableSubcomponent,
+//     wasAComponentToBeSyncedToMissing = !!SyncChildComponent.syncSubcomponent(syncableSubcomponent,
 //       componentToBeSyncedTo?.sync.syncables.onCopy.subcomponents[subcomponentType], isTemporary);
 //   });
-//   return wasTargetComponentMissing;
+//   return wasAComponentToBeSyncedToMissing;
 // }
 
 // private static syncLayers(syncableComponent: WorkshopComponent): void {
@@ -141,12 +141,12 @@ export class SyncChildComponent {
 // // not using TraverseComponentViaPreviewStructureChildFirst as it abides to subcomponent order and instead sync components are tracked via syncables
 // private static syncSyncables(syncableComponent: WorkshopComponent, componentToBeSyncedTo: WorkshopComponent, isTemporary: boolean): boolean {
 //   const { subcomponents, childComponents } = syncableComponent.sync.syncables.onCopy;
-//   let wasTargetComponentMissing = SyncChildComponent.syncSyncableSubcomponents(subcomponents, componentToBeSyncedTo, isTemporary);
+//   let wasAComponentToBeSyncedToMissing = SyncChildComponent.syncSyncableSubcomponents(subcomponents, componentToBeSyncedTo, isTemporary);
 //   childComponents.forEach((childComponent, index) => {
 //     const wasTargetComponentMissingForChild = SyncChildComponent.syncSyncables(childComponent,
 //       componentToBeSyncedTo.sync.syncables.onCopy.childComponents[index], isTemporary);
-//     if (wasTargetComponentMissingForChild && !wasTargetComponentMissing) wasTargetComponentMissing = true;
+//     if (wasTargetComponentMissingForChild && !wasAComponentToBeSyncedToMissing) wasAComponentToBeSyncedToMissing = true;
 //   });
-//   if (wasTargetComponentMissing) SyncChildComponent.syncLayers(syncableComponent);
-//   return wasTargetComponentMissing;
+//   if (wasAComponentToBeSyncedToMissing) SyncChildComponent.syncLayers(syncableComponent);
+//   return wasAComponentToBeSyncedToMissing;
 // }
