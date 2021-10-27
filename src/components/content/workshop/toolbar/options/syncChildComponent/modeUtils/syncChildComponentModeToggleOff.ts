@@ -54,7 +54,7 @@ export class SyncChildComponentModeToggleOff {
       setTimeout(() => {
         activeSeedComponent.sync.componentThisIsSyncedTo = lastSelectedComponentToSync;
         lastSelectedComponentToSync.sync.componentsSyncedToThis.add(activeSeedComponent);
-        SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(activeSeedComponent);
+        SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(activeSeedComponent, activeSeedComponent.type);
       }, optionsComponent.hasSyncChildComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     }
     CleanSyncChildComponentMode.cleanComponent(optionsComponent.component, false);

@@ -45,7 +45,7 @@ export class AddContainerComponent extends AddComponentShared {
   private static asyncUpdateSyncedComponents(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
     setTimeout(() => {
       SyncedComponent.addParentComponentSyncableContainerComponentsToChild(newComponent, containerComponent);
-      SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(newComponent);
+      SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(newComponent, newComponent.type);
     });
   }
 

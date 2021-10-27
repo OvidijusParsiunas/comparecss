@@ -19,16 +19,16 @@ export class SyncedComponent {
     return {};
   }
 
-  private static unSyncComponent(inSyncComponent: WorkshopComponent): void {
+  private static unSyncComponent(inSyncComponent: WorkshopComponent, childComponentType: COMPONENT_TYPES): void {
     TraverseComponentViaPreviewStructureChildFirst.traverse(SyncedComponent.dereferenceCopiedComponentCustomProperties, inSyncComponent);
     inSyncComponent.sync.componentThisIsSyncedTo = null;
-    SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(inSyncComponent);
+    SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(inSyncComponent, childComponentType);
   }
 
   public static toggleSubcomponentSyncToOff(containerComponent: WorkshopComponent, callback?: () => void): void {
-    const inSyncComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(
-      containerComponent.subcomponents[containerComponent.activeSubcomponentName].seedComponent)
-    SyncedComponent.unSyncComponent(inSyncComponent);
+    const activeComponent = containerComponent.subcomponents[containerComponent.activeSubcomponentName].seedComponent;
+    const inSyncComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(activeComponent);
+    SyncedComponent.unSyncComponent(inSyncComponent, activeComponent.type);
     if (callback) callback();
   }
 
@@ -46,15 +46,17 @@ export class SyncedComponent {
       containerType: COMPONENT_TYPES): void {
     const newComponentBase = newComponent.baseSubcomponent;
     const subcomponentToSync = SyncedComponent.findSubcomponentToSync(componentThisIsSyncedTo, newComponentBase, containerType);
-    if (subcomponentToSync) SyncChildComponent.syncSubcomponent(false, newComponentBase, subcomponentToSync);
+    if (subcomponentToSync) SyncChildComponent.syncSubcomponent(newComponentBase, subcomponentToSync, false);
   }
 
-  public static updateIfComponentSyncedToIsRemoved(activeSubcomponent: SubcomponentProperties): void {
-    const inSyncComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(activeSubcomponent.seedComponent);
+  public static updateIfComponentSyncedToIsRemoved(component: WorkshopComponent): void {
+    const inSyncComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(component);
     // more information can be found in the documentation reference: DOC: 7878
     if (inSyncComponent?.componentStatus.isRemoved) {
-      const componentsSyncedToThis = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(activeSubcomponent.seedComponent);
-      if (!componentsSyncedToThis || componentsSyncedToThis.sync.componentsSyncedToThis.size === 0) SyncedComponent.unSyncComponent(inSyncComponent);
+      const componentsSyncedToThis = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(component);
+      if (!componentsSyncedToThis || componentsSyncedToThis.sync.componentsSyncedToThis.size === 0) {
+        SyncedComponent.unSyncComponent(inSyncComponent, component.type);
+      }
     }
   }
 

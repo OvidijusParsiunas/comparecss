@@ -596,8 +596,8 @@ export default {
           && (this.component.type === COMPONENT_TYPES.ALERT || this.component.type === COMPONENT_TYPES.CARD));
     },
     isInSyncButtonDisplayed(): boolean {
-      const activeSubcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
-      SyncedComponent.updateIfComponentSyncedToIsRemoved(activeSubcomponent);
+      const activeSubcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
+      SyncedComponent.updateIfComponentSyncedToIsRemoved(activeSubcomponent.seedComponent);
       return SyncedComponent.isInSyncButtonDisplayed(activeSubcomponent);
     },
     reassignToolbarPositionToggleRef(): void {

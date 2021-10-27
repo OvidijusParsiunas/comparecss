@@ -17,7 +17,6 @@ export class RemoveComponent {
       const subcomponent = componentToBeRemoved.subcomponents[subcomponentName];
       if (subcomponent.seedComponent.sync.componentThisIsSyncedTo) {
         subcomponent.seedComponent.sync.componentThisIsSyncedTo.sync.componentsSyncedToThis.delete(subcomponent.seedComponent);
-        // WORK 2 - perhaps setting it to an empty array would be better
         subcomponent.seedComponent.sync.componentThisIsSyncedTo = null;
       }
     });
@@ -27,7 +26,7 @@ export class RemoveComponent {
   // the button inside the dropdown would need to be resynced by the dropdown components that are synced to it
   private static updateComponentsThatAreSyncedToComponentsThisIsSyncedTo(componentToBeRemoved: WorkshopComponent): void {
     (componentToBeRemoved.sync.componentsSyncedToThis || []).forEach((component: WorkshopComponent) => {
-      SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(component);
+      SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(component, componentToBeRemoved.type);
     });
   }
 
