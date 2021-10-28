@@ -1,5 +1,5 @@
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { SelectedDropdownText } from '../../../../../../../interfaces/dropdownFeatures';
+import { SelectDropdownText } from '../../../../../../../interfaces/dropdownFeatures';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 
@@ -8,8 +8,8 @@ export class SelectDropdownUtils {
   private static refreshItemTextState(dropdownBaseSubcomponent: SubcomponentProperties, checkBeforeProceeding: boolean): void {
     const { customFeatures: { dropdown: { select }}, customStaticFeatures } = dropdownBaseSubcomponent;
     if (select.enabled || !checkBeforeProceeding) {
-      customStaticFeatures.dropdownSelectedText.lastHoveredItemText = null;
-      customStaticFeatures.dropdownSelectedText.lastSelectedItemText = null;
+      customStaticFeatures.selectDropdownText.lastHoveredItemText = null;
+      customStaticFeatures.selectDropdownText.lastSelectedItemText = null;
     }
   }
 
@@ -22,22 +22,22 @@ export class SelectDropdownUtils {
     });
   }
 
-  private static setMouseEventText(seedComponent: WorkshopComponent, selectDropdown: SelectedDropdownText,
-      itemTextKey: keyof SelectedDropdownText): void {
+  private static setMouseEventText(seedComponent: WorkshopComponent, selectDropdownText: SelectDropdownText,
+      itemTextKey: keyof SelectDropdownText): void {
     if (seedComponent.type === COMPONENT_TYPES.LAYER) {
       const dropdownItemText = seedComponent.newChildComponents.childComponentsLockedToLayer[0].baseSubcomponent
         .customStaticFeatures.subcomponentText.text;
-      selectDropdown[itemTextKey] = dropdownItemText;
+      selectDropdownText[itemTextKey] = dropdownItemText;
     }
   }
 
-  private static setDetails(seedComponent: WorkshopComponent, itemTextKey: keyof SelectedDropdownText, canBeUnset = false): void {
+  private static setDetails(seedComponent: WorkshopComponent, itemTextKey: keyof SelectDropdownText, canBeUnset = false): void {
     const dropdownPaddingComponent = seedComponent.type === COMPONENT_TYPES.DROPDOWN
       ? seedComponent : seedComponent.containerComponent.linkedComponents.base.paddingComponent;
-    const { customFeatures: { dropdown: { select } }, customStaticFeatures: { dropdownSelectedText }
+    const { customFeatures: { dropdown: { select } }, customStaticFeatures: { selectDropdownText }
       } = dropdownPaddingComponent.baseSubcomponent;
     if (select.enabled) {
-      SelectDropdownUtils.setMouseEventText(seedComponent, dropdownSelectedText, itemTextKey);
+      SelectDropdownUtils.setMouseEventText(seedComponent, selectDropdownText, itemTextKey);
     } else if (canBeUnset) {
       SelectDropdownUtils.refresh(dropdownPaddingComponent);
     }
@@ -58,7 +58,7 @@ export class SelectDropdownUtils {
   }
   
   private static isSelected(paddingComponentBase: SubcomponentProperties, text: string): boolean {
-    const { customFeatures: { dropdown: { select } }, customStaticFeatures: { dropdownSelectedText: { lastSelectedItemText, lastHoveredItemText }}
+    const { customFeatures: { dropdown: { select } }, customStaticFeatures: { selectDropdownText: { lastSelectedItemText, lastHoveredItemText }}
       } = paddingComponentBase;
     return select?.enabled && lastSelectedItemText && text === lastHoveredItemText; 
   }

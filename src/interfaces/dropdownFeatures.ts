@@ -2,10 +2,14 @@ import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../consts/dropdownMenuAlignment.e
 import { DROPDOWN_MENU_POSITIONS } from '../consts/dropdownMenuPositions.enum';
 import { SubcomponentProperties } from './workshopComponent';
 
-export interface SelectedDropdownText {
+export interface SelectDropdownText {
   defaultText: string;
   lastHoveredItemText: string;
   lastSelectedItemText: string;
+}
+
+export interface DropdownMenuData {
+  itemTextOptionIndex: number;
 }
 
 export interface DropdownMenuPosition {

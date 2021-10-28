@@ -2,30 +2,37 @@ import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } fr
 import { SetTextSubcomponentPropertiesContext } from '../../../layers/generators/dropdownItem';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../../consts/layerSections.enum';
 import { Layer } from '../../../../../../../../interfaces/componentPreviewStructure';
+import { DEFAULT_TEXT } from '../../../../../../../../consts/defaultText';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
 import { SetUtils } from '../../../../../utils/generic/setUtils';
 import JSONUtils from '../../../../../utils/generic/jsonUtils';
+import { ITEM_TEXT_OPTIONS } from './itemTextOptions';
 
 export class ApplyDropdownMenuItemTextProperties extends ComponentBuilder {
   
-  private static setTextProperties(customStaticFeatures: CustomStaticFeatures): void {
-    customStaticFeatures.subcomponentText = ComponentBuilder.createText('Dropdown item');
+  private static setTextProperties(customStaticFeatures: CustomStaticFeatures, menuComponent: WorkshopComponent): void {
+    const { itemTextOptionIndex } = menuComponent.baseSubcomponent.customStaticFeatures.dropdownMenuData;
+    const newDropdownText = ITEM_TEXT_OPTIONS[itemTextOptionIndex];
+    customStaticFeatures.subcomponentText = ComponentBuilder.createText(newDropdownText);
     customStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT);
   }
 
   private static addMenuJsClassesToText(menuComponent: WorkshopComponent, textComponent: WorkshopComponent): void {
     const { jsClasses: menuJsClasses } = menuComponent.baseSubcomponent.customStaticFeatures;
-    const { customStaticFeatures: itemCustomStaticFeatures } = textComponent.baseSubcomponent;
+    const { customStaticFeatures: textCustomStaticFeatures } = textComponent.baseSubcomponent;
     if (menuJsClasses) {
-      if (!itemCustomStaticFeatures.jsClasses) itemCustomStaticFeatures.jsClasses = new Set();
-      SetUtils.addSetsToSet(itemCustomStaticFeatures.jsClasses, menuJsClasses);
+      if (!textCustomStaticFeatures.jsClasses) textCustomStaticFeatures.jsClasses = new Set();
+      SetUtils.addSetsToSet(textCustomStaticFeatures.jsClasses, menuJsClasses);
     }
   }
 
   private static overwriteTextCustomStaticFeatures(menuComponent: WorkshopComponent, textComponent: WorkshopComponent): void {
     ApplyDropdownMenuItemTextProperties.addMenuJsClassesToText(menuComponent, textComponent);
-    ApplyDropdownMenuItemTextProperties.setTextProperties(textComponent.baseSubcomponent.customStaticFeatures);
-    ApplyDropdownMenuItemTextProperties.setTextProperties(textComponent.baseSubcomponent.defaultCustomStaticFeatures);
+    // used to prevent text option index from getting incremented when previewing a temporary item
+    if (textComponent.baseSubcomponent.customStaticFeatures.subcomponentText.text === DEFAULT_TEXT) {
+      ApplyDropdownMenuItemTextProperties.setTextProperties(textComponent.baseSubcomponent.customStaticFeatures, menuComponent);
+      ApplyDropdownMenuItemTextProperties.setTextProperties(textComponent.baseSubcomponent.defaultCustomStaticFeatures, menuComponent); 
+    }
   }
 
   private static updateItemsOfComponentsSyncedToThis(menuComponent: WorkshopComponent, textComponent: WorkshopComponent): void {

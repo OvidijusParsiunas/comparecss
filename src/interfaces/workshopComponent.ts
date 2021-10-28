@@ -1,9 +1,9 @@
 import { InterconnectedSetting, SubcomponentSpecificSettings } from './subcomponentSpecificSettings';
+import { DropdownFeatures, DropdownMenuData, SelectDropdownText } from './dropdownFeatures';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
 import { SiblingLayersInSyncWithEachOther } from './siblingLayersInSyncWithEachOther';
 import { SubcomponentMouseEventCallbacks } from './subcomponentMouseEventCallbacks';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
-import { DropdownFeatures, SelectedDropdownText } from './dropdownFeatures';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
 import { TriggerFuncOnSettingChange } from './triggerFuncOnSettingChange';
@@ -104,7 +104,10 @@ export interface Image {
 
 export interface CustomStaticFeatures {
   alignedLayerSection?: AlignedLayerSection;
-  dropdownSelectedText?: SelectedDropdownText;
+  // applied to the dropdown padding component
+  selectDropdownText?: SelectDropdownText;
+  // applied to the dropdown menu component
+  dropdownMenuData?: DropdownMenuData;
   jsClasses?: ComponentJavascriptClasses;
   subcomponentText?: Text;
   image?: Image;

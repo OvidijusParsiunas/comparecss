@@ -9,8 +9,8 @@ import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dr
 import { DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../../consts/componentStyles.enum';
 import { PaddingComponentUtils } from '../../../shared/paddingComponent/paddingComponentUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
-import { SelectedDropdownText } from '../../../../../../../../interfaces/dropdownFeatures';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../../consts/layerSections.enum';
+import { SelectDropdownText } from '../../../../../../../../interfaces/dropdownFeatures';
 import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
 import { buttonWithIcon } from '../../../buttons/generators/buttonWithIcon';
 import { ApplyDropdownButtonProperties } from '../button/applyProperties';
@@ -46,7 +46,7 @@ export class DropdownPaddingBase extends ComponentBuilder {
     dropdownComponent.sync.syncables = ComponentBuilder.createSyncablesObjectUsingSubcomponents(syncableSubcomponents, childComponents, dropdownComponent);
   }
 
-  private static createSelectDropdownTextProperties(): SelectedDropdownText {
+  private static createSelectDropdownTextProperties(): SelectDropdownText {
     return {
       defaultText: 'Select',
       lastHoveredItemText: null,
@@ -57,7 +57,7 @@ export class DropdownPaddingBase extends ComponentBuilder {
   private static createDefaultCustomStaticFeatures(): CustomStaticFeatures {
     return {
       alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
-      dropdownSelectedText: DropdownPaddingBase.createSelectDropdownTextProperties(),
+      selectDropdownText: DropdownPaddingBase.createSelectDropdownTextProperties(),
     };
   }
 

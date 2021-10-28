@@ -28,8 +28,8 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
   private static overwriteTextDropdownProperties(paddingBaseSubcomponent: SubcomponentProperties, textSubcomponent: SubcomponentProperties): void {
     textSubcomponent.customFeatures.dropdown = ComponentBuilder.createDopdownFeatures(paddingBaseSubcomponent.customFeatures.dropdown.select);
     textSubcomponent.defaultCustomFeatures.dropdown = ComponentBuilder.createDopdownFeatures(paddingBaseSubcomponent.customFeatures.dropdown.select);
-    textSubcomponent.customStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.customStaticFeatures.dropdownSelectedText;
-    textSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText;
+    textSubcomponent.customStaticFeatures.selectDropdownText = paddingBaseSubcomponent.customStaticFeatures.selectDropdownText;
+    textSubcomponent.defaultCustomStaticFeatures.selectDropdownText = paddingBaseSubcomponent.defaultCustomStaticFeatures.selectDropdownText;
   }
 
   private static overwriteButtonBaseDropdownProperties(paddingBaseSubcomponent: SubcomponentProperties, buttonBaseSubcomponent: SubcomponentProperties): void {
@@ -37,8 +37,8 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
       paddingBaseSubcomponent.customFeatures.dropdown.select, DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW);
     buttonBaseSubcomponent.defaultCustomFeatures.dropdown = ComponentBuilder.createDopdownFeatures(
       paddingBaseSubcomponent.customFeatures.dropdown.select, DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW);
-    buttonBaseSubcomponent.customStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.customStaticFeatures.dropdownSelectedText;
-    buttonBaseSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText = paddingBaseSubcomponent.defaultCustomStaticFeatures.dropdownSelectedText;
+    buttonBaseSubcomponent.customStaticFeatures.selectDropdownText = paddingBaseSubcomponent.customStaticFeatures.selectDropdownText;
+    buttonBaseSubcomponent.defaultCustomStaticFeatures.selectDropdownText = paddingBaseSubcomponent.defaultCustomStaticFeatures.selectDropdownText;
   }
 
   private static populateReferences(buttonComponent: WorkshopComponent): void {

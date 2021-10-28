@@ -66,11 +66,11 @@ export default function useBaseComponent(): UseBaseComponent {
 
   const getSubcomponentText = (component: WorkshopComponent): string => {
     const { customFeatures, customStaticFeatures } = component.baseSubcomponent;
-    const { subcomponentText, dropdownSelectedText } = customStaticFeatures || {};
+    const { subcomponentText, selectDropdownText } = customStaticFeatures || {};
     const { dropdown } = customFeatures || {};
     // checks if this is a text subcomponent, if it has a select property reference (dropdown item text subcomponents do not) and whether it is enabled
     if (subcomponentText?.text && dropdown?.select?.enabled) {
-      return dropdownSelectedText.lastSelectedItemText || dropdownSelectedText.defaultText;
+      return selectDropdownText.lastSelectedItemText || selectDropdownText.defaultText;
     }
     return subcomponentText?.text || '';
   }

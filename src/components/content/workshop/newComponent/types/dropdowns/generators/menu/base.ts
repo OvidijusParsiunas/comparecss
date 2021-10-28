@@ -1,9 +1,9 @@
-import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
+import { LAYER_COMPONENTS_BASE_NAMES, TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../../interfaces/componentGenerator';
 import { DropdownFeatures, DropdownMenuPosition } from '../../../../../../../../interfaces/dropdownFeatures';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
-import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { DROPDOWN_MENU_POSITIONS } from '../../../../../../../../consts/dropdownMenuPositions.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentCssClasses.enum';
 import { SetTextSubcomponentPropertiesContext } from '../../../layers/generators/dropdownItem';
@@ -18,17 +18,37 @@ import { MenuBaseSpecificSettings } from '../../settings/menuBaseSpecificSetting
 import { ApplyDropdownMenuItemTextProperties } from '../itemText/applyProperties';
 import { BORDER_STYLES } from '../../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
+import { ITEM_TEXT_OPTIONS } from '../itemText/itemTextOptions';
 
 export class DropdownMenuBase extends ComponentBuilder {
 
   public static setNewChildComponents(dropdownMenuComponent: WorkshopComponent): void {
     const dropdownItems = DropdownUtils.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]);
-    dropdownMenuComponent.newChildComponents = { dropdownItems };
+    dropdownMenuComponent.newChildComponents.dropdownItems = dropdownItems;
   }
 
   public static setSyncableSubcomponents(dropdownMenuComponent: WorkshopComponent): void {
     dropdownMenuComponent.sync.syncables = ComponentBuilder.createSyncablesObjectUsingSubcomponents({
       [SUBCOMPONENT_TYPES.BASE]: dropdownMenuComponent.baseSubcomponent });
+  }
+
+  private static incrementItemTextOptionIndex(itemComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
+    if (itemComponent.activeSubcomponentName !== TEMPORARY_COMPONENT_BASE_NAME.TEMPORARY) {
+      const { dropdownMenuData: dropdownMenu } = menuComponent.baseSubcomponent.customStaticFeatures;
+      if (dropdownMenu.itemTextOptionIndex < ITEM_TEXT_OPTIONS.length - 1) {
+        dropdownMenu.itemTextOptionIndex += 1;  
+      } else {
+        dropdownMenu.itemTextOptionIndex = 0;
+      }
+    }
+  }
+
+  public static setPropertyOverwritables(menuComponent: WorkshopComponent): void {
+    menuComponent.newChildComponents.propertyOverwritables = {
+      postBuildFuncs: {
+        [COMPONENT_TYPES.LAYER]: [DropdownMenuBase.incrementItemTextOptionIndex],
+      },
+    };
   }
 
   private static setMenuWidthViaMenuItemOrTextChange(subcomponentProperties: SubcomponentProperties): void {
@@ -128,6 +148,14 @@ export class DropdownMenuBase extends ComponentBuilder {
     };
   }
 
+  private static createDefaultCustomStaticFeatures(): CustomStaticFeatures {
+    return {
+      dropdownMenuData: {
+        itemTextOptionIndex: 0,
+      },
+    };
+  }
+
   private static createDefaultCustomFeatures(): CustomFeatures {
     return {
       animations: ComponentBuilder.createDisplayAnimationsProperties(),
@@ -147,6 +175,8 @@ export class DropdownMenuBase extends ComponentBuilder {
       childCss: inheritedBaseChildCss,
       customFeatures: DropdownMenuBase.createDefaultCustomFeatures(),
       defaultCustomFeatures: DropdownMenuBase.createDefaultCustomFeatures(),
+      customStaticFeatures: DropdownMenuBase.createDefaultCustomStaticFeatures(),
+      defaultCustomStaticFeatures: DropdownMenuBase.createDefaultCustomStaticFeatures(),
     };
   }
 }
@@ -158,6 +188,7 @@ export const dropdownMenuBase: ComponentGenerator = {
     DropdownMenuBase.setSiblingLayersInSyncWithEachOther(dropdownMenuComponent);
     DropdownMenuBase.setOnChildComponentRemovalFunc(dropdownMenuComponent);
     DropdownMenuBase.setTriggerFuncOnSettingChange(dropdownMenuComponent);
+    DropdownMenuBase.setPropertyOverwritables(dropdownMenuComponent);
     DropdownMenuBase.setSyncableSubcomponents(dropdownMenuComponent);
     DropdownMenuBase.setNewChildComponents(dropdownMenuComponent);
     MenuBaseSpecificSettings.set(dropdownMenuComponent);

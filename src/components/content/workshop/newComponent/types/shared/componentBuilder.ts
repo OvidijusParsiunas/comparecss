@@ -18,6 +18,7 @@ import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
 import { CloseTriggers } from '../../../../../../interfaces/closeTriggers';
 import { Animations } from '../../../../../../interfaces/animations';
 import { Sync, Syncables } from '../../../../../../interfaces/sync';
+import { DEFAULT_TEXT } from '../../../../../../consts/defaultText';
 import { defaultImage } from './images/default';
 
 interface StationaryAnimationsArgs {
@@ -47,7 +48,7 @@ export class ComponentBuilder {
     };
   }
 
-  protected static createText(text = 'Text'): Text {
+  protected static createText(text = DEFAULT_TEXT): Text {
     return { text };
   }
 
