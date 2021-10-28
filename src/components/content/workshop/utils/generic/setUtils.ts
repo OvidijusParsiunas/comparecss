@@ -18,7 +18,7 @@ export class SetUtils {
 		return new Set(oneDArray);
 	}
 
-	public static addSetsToSet<T, B>(targetSet: Set<T>, ...additionalSets: Set<any>[]): void {
+	public static addSetsToSet<T>(targetSet: Set<T>, ...additionalSets: Set<any>[]): void {
 		const oneDArray = SetUtils.transformSetsToOneDimensionalArray(...additionalSets);
 		oneDArray.forEach((property) => targetSet.add(property));
 	}

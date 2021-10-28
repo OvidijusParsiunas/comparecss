@@ -104,4 +104,13 @@ export class DropdownMenuAutoWidthUtils {
       }
     });
   }
+
+  // itemComponent is used in order to adhere to the PropertyOverwritableFunc type
+  public static updateButtonAndMenuWidth(itemComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
+    const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(
+      menuComponent.baseSubcomponent.name);
+    if (!document.getElementById(subcomponentId)) return;
+    DropdownMenuAutoWidthUtils.setMenuWidth(menuComponent);
+    DropdownMenuAutoWidthUtils.setButtonWidth(menuComponent.linkedComponents.base, menuComponent);
+  }
 }

@@ -4,6 +4,7 @@ import { CustomCss, WorkshopComponent } from '../../../../../../../../interfaces
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../../consts/cssPropertyValues.enum';
 import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
+import { ApplyDropdownMenuItemTextProperties } from '../itemText/applyProperties';
 import { BORDER_STYLES } from '../../../../../../../../consts/borderStyles.enum';
 import { dropdownMenuBase } from './base';
 
@@ -83,7 +84,7 @@ export class DefaultDropdownMenu {
       postBuildFuncs: {
         [COMPONENT_TYPES.LAYER]: [DropdownItemLayer.overwriteDropdownItem
           .bind(DefaultDropdownMenu.overwriteLayerCss as OverwriteDropdownItemContext)],
-        [COMPONENT_TYPES.TEXT]: [DropdownItemLayer.setTextSubcomponentProperties
+        [COMPONENT_TYPES.TEXT]: [ApplyDropdownMenuItemTextProperties.apply
           .bind({ menuComponent, createDefaultTextStyling: DefaultDropdownMenu.createDefaultTextCustomCss } as SetTextSubcomponentPropertiesContext)],
       },
     };

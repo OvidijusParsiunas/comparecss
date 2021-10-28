@@ -17,12 +17,12 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
       return {
         paddingBaseSubcomponent: component.paddingComponent.baseSubcomponent,
         buttonBaseSubcomponent: component.baseSubcomponent,
-      }
+      };
     }
     return {
       paddingBaseSubcomponent: component.baseSubcomponent,
       buttonBaseSubcomponent: component.paddingComponentChild.baseSubcomponent,
-    }
+    };
   }
 
   private static overwriteTextDropdownProperties(paddingBaseSubcomponent: SubcomponentProperties, textSubcomponent: SubcomponentProperties): void {

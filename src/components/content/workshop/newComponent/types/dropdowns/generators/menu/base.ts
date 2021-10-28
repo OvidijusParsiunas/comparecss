@@ -1,5 +1,4 @@
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
-import { DropdownItemLayer, SetTextSubcomponentPropertiesContext } from '../../../layers/generators/dropdownItem';
 import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../../interfaces/componentGenerator';
 import { DropdownFeatures, DropdownMenuPosition } from '../../../../../../../../interfaces/dropdownFeatures';
@@ -7,6 +6,7 @@ import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dr
 import { LAYER_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { DROPDOWN_MENU_POSITIONS } from '../../../../../../../../consts/dropdownMenuPositions.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentCssClasses.enum';
+import { SetTextSubcomponentPropertiesContext } from '../../../layers/generators/dropdownItem';
 import { DropdownUtils } from '../../../../../utils/componentManipulation/utils/dropdownUtils';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
@@ -15,6 +15,7 @@ import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.e
 import { inheritedCardBaseCss } from '../../../cards/inheritedCss/inheritedCardCss';
 import { SETTINGS_TYPES } from '../../../../../../../../consts/settingsTypes.enum';
 import { MenuBaseSpecificSettings } from '../../settings/menuBaseSpecificSettings';
+import { ApplyDropdownMenuItemTextProperties } from '../itemText/applyProperties';
 import { BORDER_STYLES } from '../../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
 
@@ -59,7 +60,7 @@ export class DropdownMenuBase extends ComponentBuilder {
       menuComponent: WorkshopComponent): void {
     targetLayerSubcomponent.customCss = layerSubcomponentToBeCopied.customCss;
     targetLayerSubcomponent.customFeatures = layerSubcomponentToBeCopied.customFeatures;
-    DropdownItemLayer.setTextSubcomponentProperties
+    ApplyDropdownMenuItemTextProperties.apply
       .bind({ menuComponent } as SetTextSubcomponentPropertiesContext)
       (targetLayerSubcomponent.seedComponent.newChildComponents.childComponentsLockedToLayer[0]);
   }
@@ -81,7 +82,7 @@ export class DropdownMenuBase extends ComponentBuilder {
   }
 
   public static setOnChildComponentRemovalFunc(dropdownMenuComponent: WorkshopComponent): void {
-    dropdownMenuComponent.onChildComponentRemovalFunc = DropdownItemLayer.updateButtonWidthOnLayerAddRemove;
+    dropdownMenuComponent.onChildComponentRemovalFunc = DropdownMenuAutoWidthUtils.updateButtonAndMenuWidth;
   }
 
   public static setSiblingLayersInSyncWithEachOther(dropdownMenuComponent: WorkshopComponent): void {
