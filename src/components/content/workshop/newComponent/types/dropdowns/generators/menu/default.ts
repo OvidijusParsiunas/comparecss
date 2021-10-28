@@ -48,7 +48,7 @@ export class DefaultDropdownMenu {
         fontWeight: '400',
         fontFamily: '"Helvetica Neue", Helvetica, Roboto, Arial, sans-serif',
         fontSize: '14px',
-        color: '#ff0000',
+        color: '#000000',
         textAlign: 'left',
         backgroundColor: CSS_PROPERTY_VALUES.INHERIT,
         paddingTop: '0px',
