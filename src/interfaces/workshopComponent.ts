@@ -13,7 +13,6 @@ import { PropertyOverwritableFunc } from './removeChildComponentFunc';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
-import { ChildComponentCount } from './childComponentCount';
 import { NewChildComponents } from './newChildComponents';
 import { LinkedComponents } from './linkedComponents';
 import { CloseTriggers } from './closeTriggers';
@@ -185,7 +184,6 @@ export interface WorkshopComponent {
   // gives an in sync child component to identify if the copied component has not been deleted
   componentStatus: { isRemoved: boolean };
   interconnectedSettings?: InterconnectedSetting[];
-  childComponentCount?: ChildComponentCount;
   siblingLayersInSyncWithEachOther?: SiblingLayersInSyncWithEachOther;
   // when a particular setting is changed (e.g. input or range) - call a particular function
   triggerFuncOnSettingChange?: TriggerFuncOnSettingChange;

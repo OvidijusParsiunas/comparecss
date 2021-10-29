@@ -1,4 +1,5 @@
 import { PropertyReferenceSharingFunc as PropertyReferenceSharingFunc } from './PropertyReferenceSharingFunc';
+import { ChildComponentCountLimitsState } from './childComponentCountLimitsState';
 import { PropertyOverwritableFunc } from './removeChildComponentFunc';
 import { ALIGNED_SECTION_TYPES } from '../consts/layerSections.enum';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
@@ -38,8 +39,13 @@ export interface SharedDropdownItemsRefs {
   layer: NestedDropdownStructure;
 }
 
+interface NewChildComponentsDropdown {
+  items?: NestedDropdownStructure;
+  childComponentCountLimitsState?: ChildComponentCountLimitsState;
+}
+
 export interface NewChildComponents {
-  dropdownItems?: NestedDropdownStructure;
+  dropdown?: NewChildComponentsDropdown;
   // this property is never used in the layer generator files and is instead set in the container component then appended when a new layer is created
   // this is done so that the same new component item list reference is shared across all layers and the enabled and disabled items would be in-sync
   sharedDropdownItemsRefs?: SharedDropdownItemsRefs;

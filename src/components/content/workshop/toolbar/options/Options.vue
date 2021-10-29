@@ -480,7 +480,7 @@ export default {
     },
     getChildComponentsToAdd(): NestedDropdownStructure {
       return (this.component.subcomponents[this.component.activeSubcomponentName] as SubcomponentProperties)
-        .seedComponent.newChildComponents.dropdownItems || {};
+        .seedComponent.newChildComponents?.dropdown?.items || {};
     },
     getChildComponentsToAddAndRefresh(): NestedDropdownStructure {
       // used to refresh dropdown items on a dynamic change of dropdown items obj contents - e.g. an item inside the obj can have isEnabled set to false

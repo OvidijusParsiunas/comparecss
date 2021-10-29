@@ -2,7 +2,7 @@ import { DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../interfaces/drop
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 
-export class ChildComponentCountShared {
+export class ChildComponentCountLimitsStateShared {
   
   private static setItemState(drpopdownItems: NestedDropdownStructure, removedSubcomponentNamePrefix: string, isEnabled: boolean): void {
     if (drpopdownItems?.hasOwnProperty(removedSubcomponentNamePrefix)) {
@@ -17,9 +17,9 @@ export class ChildComponentCountShared {
   protected static setAddPreviewDropdownItemStateIfConditionMet(conditionFunc: () => boolean,
       parentComponent: WorkshopComponent, newComponentNamePrefix: string, isEnabled: boolean): void {
     if (conditionFunc()) {
-      const { newChildComponents: { dropdownItems, sharedDropdownItemsRefs } } = parentComponent;
-      ChildComponentCountShared.setItemState(dropdownItems, newComponentNamePrefix, isEnabled);
-      ChildComponentCountShared.setItemState(sharedDropdownItemsRefs?.layer, newComponentNamePrefix, isEnabled);
+      const { newChildComponents: { dropdown: { items }, sharedDropdownItemsRefs } } = parentComponent;
+      ChildComponentCountLimitsStateShared.setItemState(items, newComponentNamePrefix, isEnabled);
+      ChildComponentCountLimitsStateShared.setItemState(sharedDropdownItemsRefs?.layer, newComponentNamePrefix, isEnabled);
     }
   }
 }

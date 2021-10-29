@@ -2,13 +2,13 @@ import { AlignedLayerSection, BackdropProperties, ComponentCenteringInScreen, Im
 import { DropdownItemsDisplayStatusUtils } from '../../../utils/dropdownItemsDisplayStatusUtils/dropdownItemsDisplayStatusUtils';
 import { BASE_SUBCOMPONENT_NAMES, MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../../../../../../consts/animationTypes.enum';
+import { ChildComponentCountLimitsState } from '../../../../../../interfaces/childComponentCountLimitsState';
 import { SubcomponentTypeToProperties } from '../../../../../../interfaces/subcomponentTypeToProperties';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../consts/dropdownMenuAlignment.enum';
 import { ComponentPreviewStructure } from '../../../../../../interfaces/componentPreviewStructure';
 import { DropdownFeatures, SelectDropdown } from '../../../../../../interfaces/dropdownFeatures';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
-import { ChildComponentCount } from '../../../../../../interfaces/childComponentCount';
 import { SelectDropdownUtils } from '../dropdowns/selectDropdown/selectDropdownUtils';
 import { JAVASCRIPT_CLASSES } from '../../../../../../consts/javascriptClasses.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
@@ -123,11 +123,14 @@ export class ComponentBuilder {
   }
 
   protected static setNewChildComponentsItemsProperties(component: WorkshopComponent, layerChildItems: BASE_SUBCOMPONENT_NAMES[],
-      componentChildItems: BASE_SUBCOMPONENT_NAMES[], childComponentCount: ChildComponentCount): void {
+      componentChildItems: BASE_SUBCOMPONENT_NAMES[], childComponentCountLimitsState: ChildComponentCountLimitsState): void {
     component.newChildComponents = {
       sharedDropdownItemsRefs: { layer: DropdownUtils.generateDropdownStructure(layerChildItems) },
-      dropdownItems: DropdownUtils.generateDropdownStructure(componentChildItems) };
-    component.childComponentCount = childComponentCount;
+      dropdown: {
+        items: DropdownUtils.generateDropdownStructure(componentChildItems),
+        childComponentCountLimitsState: childComponentCountLimitsState,
+      },
+    };
   }
 
   protected static createSyncablesObjectUsingSubcomponents(syncableSubcomponents: SubcomponentTypeToProperties,

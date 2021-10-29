@@ -1,3 +1,4 @@
+import { IncrementChildComponentCountLimitsState } from '../../childComponentCountLimitsState/incrementChildComponentCountLimitsState';
 import { DropdownItemsDisplayStatusUtils } from '../../../dropdownItemsDisplayStatusUtils/dropdownItemsDisplayStatusUtils';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
@@ -5,7 +6,6 @@ import { componentTypeToStyleGenerators } from '../../../../newComponent/types/c
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
-import { IncrementChildComponentCount } from '../../childComponentCount/incrementChildComponentCount';
 import { AlignedSections, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
@@ -35,7 +35,7 @@ export class AddLayerComponent extends AddComponentShared {
 
   private static addNewChildComponentsItems(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
     if (containerComponent.newChildComponents.sharedDropdownItemsRefs?.layer) {
-      newComponent.newChildComponents = { dropdownItems: containerComponent.newChildComponents.sharedDropdownItemsRefs.layer };
+      newComponent.newChildComponents = { dropdown: { items: containerComponent.newChildComponents.sharedDropdownItemsRefs.layer } };
     }
   }
 
@@ -152,7 +152,7 @@ export class AddLayerComponent extends AddComponentShared {
       AddLayerComponent.updateDropdownStructureIfItemFound, newComponent, masterComponent);
     AddComponentShared.addNewSubcomponentNameInContainerDropdownItemNameMap(masterComponent, newComponent, isEditable);
     AddLayerComponent.addNewChildComponentsItems(higherComponentContainer, newComponent);
-    IncrementChildComponentCount.increment(higherComponentContainer, layerName);
+    IncrementChildComponentCountLimitsState.increment(higherComponentContainer, layerName);
     AddComponentShared.cleanSubcomponentProperties(newComponent);
     // needs to be done after dropdown items have been updated as property overwritables can add new components
     AddComponentShared.executePropertyOverwritables(newComponent, containerComponent, 'layer');

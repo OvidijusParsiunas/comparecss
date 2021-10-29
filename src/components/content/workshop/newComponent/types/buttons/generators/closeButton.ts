@@ -12,6 +12,10 @@ import { buttonBase } from './base';
 
 class CloseButton extends ComponentBuilder {
 
+  public static removeNewChildComponentsDropdownProperties(buttonComponent: WorkshopComponent): void {
+    delete buttonComponent.newChildComponents.dropdown;
+  }
+
   private static overwriteButtonTextProperties(textBaseSubcomponent: SubcomponentProperties, textContent: string): void {
     textBaseSubcomponent.customStaticFeatures.subcomponentText.text = textContent;
     textBaseSubcomponent.defaultCustomStaticFeatures.subcomponentText.text = textContent;
@@ -91,6 +95,7 @@ class CloseButton extends ComponentBuilder {
   public static overwriteButton(buttonComponent: WorkshopComponent): void {
     CloseButton.overwriteBaseCustomCss(buttonComponent.baseSubcomponent);
     CloseButton.setButtonStyle(buttonComponent);
+    CloseButton.removeNewChildComponentsDropdownProperties(buttonComponent);
   }
 }
 

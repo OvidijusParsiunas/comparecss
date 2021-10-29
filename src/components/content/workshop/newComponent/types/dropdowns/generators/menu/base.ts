@@ -24,7 +24,7 @@ export class DropdownMenuBase extends ComponentBuilder {
 
   public static setNewChildComponents(dropdownMenuComponent: WorkshopComponent): void {
     const dropdownItems = DropdownUtils.generateDropdownStructure([LAYER_COMPONENTS_BASE_NAMES.DROPDOWN_MENU_ITEM]);
-    dropdownMenuComponent.newChildComponents.dropdownItems = dropdownItems;
+    dropdownMenuComponent.newChildComponents.dropdown = { items: dropdownItems };
   }
 
   public static setSyncableSubcomponents(dropdownMenuComponent: WorkshopComponent): void {

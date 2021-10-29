@@ -1,12 +1,12 @@
 import { DropdownStructureTraversalState, SubcomponentPreviewTraversalState, TargetDetails, PreviewTraversalResult, DropdownTraversalResult } from '../../../../../../../interfaces/componentTraversal';
 import { TraverseComponentViaPreviewStructureParentFirst } from '../../../componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
+import { DecrementChildComponentCountLimitsState } from '../../childComponentCountLimitsState/decrementChildComponentCountLimitsState';
 import { DropdownItemAuxDetails, DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownItemDisplayStatus';
 import { UpdateContainerComponentDropdownItemNames } from '../../updateChildComponent/updateContainerComponentDropdownItemNames';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
 import { AlignedSections, BaseSubcomponentRef, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { UpdateLayerDropdownItemNames } from '../../updateChildComponent/updateLayerDropdownItemNames';
-import { DecrementChildComponentCount } from '../../childComponentCount/decrementChildComponentCount';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
 import ComponentTraversalUtils from '../../../componentTraversal/componentTraversalUtils';
@@ -114,7 +114,7 @@ export class RemoveAnyChildComponent {
         });
       });
       const layerName = layer.subcomponentProperties.name;
-      DecrementChildComponentCount.decrement(layer.subcomponentProperties.seedComponent.containerComponent, layerName);
+      DecrementChildComponentCountLimitsState.decrement(layer.subcomponentProperties.seedComponent.containerComponent, layerName);
       RemoveAnyChildComponent.removeSubcomponentProperties(layerName, masterComponent);
     }
   }
@@ -127,8 +127,8 @@ export class RemoveAnyChildComponent {
     });
     // a child component can be counted by either the parent layer or the container component, hence need to make sure the count is
     // decremented at both of these components
-    DecrementChildComponentCount.decrement(seedComponent.containerComponent, name);
-    DecrementChildComponentCount.decrement(subcomponentProperties.parentLayer.subcomponentProperties.seedComponent, name);
+    DecrementChildComponentCountLimitsState.decrement(seedComponent.containerComponent, name);
+    DecrementChildComponentCountLimitsState.decrement(subcomponentProperties.parentLayer.subcomponentProperties.seedComponent, name);
     RemoveAnyChildComponent.removeSubcomponentProperties(name, masterComponent);
   }
 

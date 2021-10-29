@@ -4,7 +4,7 @@ export type BaseNameCount = {
   [key in CHILD_COMPONENTS_BASE_NAMES]?: number;
 }
 
-export interface ChildComponentCount {
+export interface ChildComponentCountLimitsState {
   current?: BaseNameCount;
   max: BaseNameCount;
 }

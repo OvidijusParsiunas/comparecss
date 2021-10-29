@@ -1,4 +1,5 @@
 import { BUTTON_COMPONENTS_BASE_NAMES, CHILD_COMPONENTS_BASE_NAMES, DROPDOWN_COMPONENTS_BASE_NAMES, LAYER_COMPONENTS_BASE_NAMES, PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
+import { IncrementChildComponentCountLimitsState } from '../../childComponentCountLimitsState/incrementChildComponentCountLimitsState';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
 import { ParentBasedPresetProperties, PropertiesAddedOnBuild } from '../../../../../../../interfaces/newChildComponents';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
@@ -10,7 +11,6 @@ import { DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../../interfaces/d
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { SyncChildComponent } from '../../../../toolbar/options/syncChildComponent/syncChildComponent';
 import { BaseSubcomponentRef, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
-import { IncrementChildComponentCount } from '../../childComponentCount/incrementChildComponentCount';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
@@ -142,7 +142,7 @@ export class AddContainerComponent extends AddComponentShared {
     AddContainerComponent.addNewComponentToComponentPreview(newComponent, parentLayer);
     AddContainerComponent.addNewComponentToDropdownStructure(newComponent, masterComponent, dropdownStructure);
     InterconnectedSettings.update(true, containerComponent, newComponent.baseSubcomponent);
-    IncrementChildComponentCount.increment(containerComponent, baseNamePrefix);
+    IncrementChildComponentCountLimitsState.increment(containerComponent, baseNamePrefix);
     AddContainerComponent.updateComponentContainerProperties(containerComponent, newComponent);
     AddComponentShared.cleanSubcomponentProperties(newComponent);
     AddComponentShared.executePropertyOverwritables(newComponent, containerComponent, 'container');
