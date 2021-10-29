@@ -154,9 +154,6 @@ export default {
     getFontAwesomeIcon(): string {
       return this.consistentButtonContent?.backgroundIconClass ? 'caret-down' : this.fontAwesomeIcon;
     },
-    setArrowIconTransitionProperty(): void {
-      setTimeout(() => { if (this.$refs.button) this.changeArrowIconProperty(this.$refs.button, 'transition', 'all 0.3s'); });
-    },
     buttonClick(): void {
       if (this.timeoutFunc) { 
         this.timeoutFunc(this.openDropdown.bind(this));
@@ -454,6 +451,13 @@ export default {
       }
       this.$emit('is-component-displayed', this.isComponentDisplayed);
     },
+    setArrowIconTransitionProperty(): void {
+      setTimeout(() => { if (this.$refs.button) this.changeArrowIconProperty(this.$refs.button, 'transition', 'all 0.3s'); });
+    },
+    refreshDropdownItemsWhenChangedDynamically(): void {
+      this.processDropdownItems();
+      this.setArrowIconTransitionProperty();
+    },
   },
   components: {
     dropdownMenu,
@@ -483,16 +487,11 @@ export default {
     consistentButtonContent: Object,
     additionalButtonClasses: Array,
     displayArrowOnMouseEnter: Boolean,
-    callWatchWhenDropdownItemsValueChangeDetectionTriggered: Object,
     // if the minwidth is too small, the fontAwesomeIcon will still not appear
     minWidth: Number,
     firstMenuWidthSameAsButton: Boolean,
   },
   watch: {
-    callWatchWhenDropdownItemsValueChangeDetectionTriggered(): void {
-      this.processDropdownItems();
-      this.setArrowIconTransitionProperty();
-    },
     objectContainingActiveItem(): void {
       this.processDropdownItems();
     },

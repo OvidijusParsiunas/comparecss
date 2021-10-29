@@ -27,11 +27,11 @@
           @mouse-click-new-item="selectNewSubcomponent($event[0])"
           @is-component-displayed="toggleSubcomponentSelectModeButtonDisplay($event)"/>
         <dropdown
+          ref="addChildComponentDropdown"
           :class="TOOLBAR_BUTTON_GROUP_TERTIARY_COMPONENT_CLASS"
           :additionalButtonClasses="[TOOLBAR_BUTTON_GROUP_END_COMPONENT_CLASS]"
           :uniqueIdentifier="ADD_CHILD_COMPONENT_DROPDOWN_UNIQUE_IDENTIFIER"
-          :dropdownItems="getSubcomponentsToAdd()"
-          :callWatchWhenDropdownItemsValueChangeDetectionTriggered="{}"
+          :dropdownItems="getChildComponentsToAddAndRefresh()"
           :consistentButtonContent="{'backgroundIconClass': 'add-child-component-button-icon'}"
           :timeoutFunc="executeCallbackAfterTimeout"
           :minItemsToDisplayDropdown="1"
@@ -478,9 +478,15 @@ export default {
     emitRemoveChildComponentEvent(): void {
       this.$emit('remove-child-component', [true] as RemoveChildComponentEvent);
     },
-    getSubcomponentsToAdd(): NestedDropdownStructure {
+    getChildComponentsToAdd(): NestedDropdownStructure {
       return (this.component.subcomponents[this.component.activeSubcomponentName] as SubcomponentProperties)
         .seedComponent.newChildComponents.dropdownItems || {};
+    },
+    getChildComponentsToAddAndRefresh(): NestedDropdownStructure {
+      // used to refresh dropdown items on a dynamic change of dropdown items obj contents - e.g. an item inside the obj can have isEnabled set to false
+      // and its item should become grey, however Dropdown component cannot detect this change and instead it needs to be refreshed manually
+      setTimeout(this.$refs.addChildComponentDropdown?.refreshDropdownItemsWhenChangedDynamically);
+      return this.getChildComponentsToAdd();
     },
     addChildComponent(mouseClickNewItemEvent: MouseClickNewItemEvent): void {
       const [newComponentBaseName, isOptionEnabled] = mouseClickNewItemEvent;
@@ -509,7 +515,7 @@ export default {
       this.isSubcomponentSelectModeButtonDisplayed = isDropdownDisplayed;
     },
     getSubcomponentDropdownButtonBorderClasses(): string[] {
-      const isAddChildComponentDropdownDisplayed = Object.keys(this.getSubcomponentsToAdd()).length > 0;
+      const isAddChildComponentDropdownDisplayed = Object.keys(this.getChildComponentsToAdd()).length > 0;
       return [isAddChildComponentDropdownDisplayed ? TOOLBAR_BUTTON_GROUP_MIDDLE_COMPONENT_CLASS : TOOLBAR_BUTTON_GROUP_END_COMPONENT_CLASS];
     },
     toggleModalExpandMode(): void {
