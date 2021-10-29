@@ -1,7 +1,7 @@
 import { MouseClickNewItemEvent, MouseClickItemEvent, MouseEnterItemEvent } from '../../../../../../interfaces/dropdownMenuMouseEvents';
+import { UseActionsDropdown } from '../../../../../../interfaces/useActionsDropdownComposition';
 import { TemporaryDropdownValue } from '../../../../../../interfaces/temporaryDropdownValue';
 import { SubcomponentProperties, } from '../../../../../../interfaces/workshopComponent';
-import { UseActionsDropdown } from '../../../../../../interfaces/useActionsDropdown';
 import { animationState } from '../../../componentPreview/utils/animations/state';
 import ActionsDropdownUtils from './utils/actionsDropdownUtils';
 import CustomFeaturesUtils from './utils/customFeaturesUtils';

@@ -194,12 +194,12 @@
 import { ComponentDOMElementUtils } from '../../utils/componentManipulation/componentDOMElementUtils/componentDOMElementUtils'
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import { RemoveInSyncOptionButton } from '../../../../../interfaces/settingsComponentEvents';
+import { UseActionsDropdown } from '../../../../../interfaces/useActionsDropdownComposition';
 import SubcomponentSpecificSettingsState from './utils/subcomponentSpecificSettingsState';
 import { WorkshopEventCallback } from '../../../../../interfaces/workshopEventCallback';
 import { TOOLBAR_GENERAL_BUTTON_CLASS } from '../../../../../consts/toolbarClasses';
 import { FONT_AWESOME_COLORS } from '../../../../../consts/fontAwesomeColors.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
-import { UseActionsDropdown } from '../../../../../interfaces/useActionsDropdown';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
 import { RANGE_SETTING_MARKER } from '../../../../../consts/elementClassMarkers';
 import { SyncedComponent } from '../options/syncChildComponent/syncedComponent';
