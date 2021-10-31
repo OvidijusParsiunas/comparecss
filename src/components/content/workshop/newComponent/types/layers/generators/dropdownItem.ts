@@ -60,10 +60,6 @@ export class DropdownItemLayer extends ComponentBuilder {
     DropdownMenuAutoWidthUtils.updateButtonAndMenuWidth(itemComponent, menuComponent);
   }
 
-  public static setStyle(component: WorkshopComponent): void {
-    component.style = LAYER_STYLES.DROPDOWN_ITEM;
-  }
-
   public static initializeChildComponentsLockedToLayer(itemComponent: WorkshopComponent): void {
     itemComponent.newChildComponents.childComponentsLockedToLayer = [];
   }
@@ -99,10 +95,9 @@ export class DropdownItemLayer extends ComponentBuilder {
 
 export const dropdownItemLayer: ComponentGenerator = {
   createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
-    const itemComponent = layerBase.createNewComponent(presetProperties);
+    const itemComponent = layerBase.createNewComponent({...presetProperties, componentStyle: LAYER_STYLES.DROPDOWN_ITEM });
     DropdownItemLayer.overwriteBase(itemComponent);
     DropdownItemLayer.initializeChildComponentsLockedToLayer(itemComponent);
-    DropdownItemLayer.setStyle(itemComponent);
     return itemComponent;
   },
 };

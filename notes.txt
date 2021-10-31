@@ -7,10 +7,9 @@ the dropdown button bottom border issue fixed via auxiliary overlay with no poin
 
 lock button for dropdown menu (additionally could do the same for modal component)
 dropdown menu should switch upwards when there is not enough screen space
-for sync to be effective (especially buttons) need to have width property as staticCss
-when moving into copying a child component - can quickly click on add new component (fix this when implemented final add new component button)
+for sync to be effective (especially buttons) need to have width property as staticCss - probably need other properties as well
+copy sibling child (container) component
 when switching subcomponent alignment, highlight the subcomponent so that it is clear where it is being moved
-an alternative to using spaces for ids would be to append id numbers at the start and cut them out from the dropdown option elements
 when a subcomponent is added or removed - should have an appropriate animation like stretch to make it more interactive
 when hovering the insync button - the popover should say what component/subcomponent is it in-sync to
 potentially add x button to border coloring
@@ -20,7 +19,7 @@ close button may need to be a badge
 consider having a dropdown to choose which border side to edit
 have a builder for contents within the settings
 maybe each equal section should be selectable
-consider making alert and button into a separately generated compontes in component preview as their contents shake when size is changed in firefox
+consider making alert and button into a separately generated components in component preview as their contents shake when size is changed in firefox
 when changing the range and clicking the right mouse button causes the popover to disappear
 
 UX:
@@ -36,13 +35,11 @@ UX:
   check if position option in the modal is ok to use
 
 have a concept of a template component where the user can define what properties they want to be syncable and the custom Css that is not syncable can go under a staticCss object
-when this logic is added, sync button will be used for syncing with a template button and copy will be used to specifically copy a components
-ability to copy sibling child component instead of copying a standalone component
-copying child component will also need to offer an option from the app defaults
+when this logic is added, sync button will be used for syncing with a template button and copy will be used to specifically copy a component
+copying component will also need to offer an option from the app defaults
 update the range using the scroll wheel
-ability to group the components
+ability to group components
 option to see what the actual css looks like and to edit it
-sometimes setting to auto option like the margin does not set desired results, potentially remove it - or set beginner components (in modal) to have no margin as auto
 decide where the display code and download buttons should go
 
 font-awesome pictures on buttons
@@ -53,7 +50,6 @@ the options/available components/subcomponents could all be fetched via an endpo
 
 interactice tool to demo css - like a runtime addon (like stackblitz)
 website builder
-the current infrastructure does not support layers within layers in the component preview and the subcomponent dropdown
 
 ---------------------------------------------------
 show off components to design:
@@ -63,7 +59,7 @@ modals with gifs in them - https://icepanel.io/?human=architect
 
 Future work
 
-Changing the overlay to blurred vision, protanopia atc to show what the users will see with the mew component
+Changing the overlay to blurred vision, protanopia etc to show what the users will see with the new component
 Room for optimising the exported css file contents to reuse repeated css properties
 Allow the button to have its text vertically centered for all heights via the use of a class without the need for it to be applied to a button tag:
 Currently works with the button tag only, this is due to the fact that if we are using <div> or <a> - we need to use display: table-cell property which does not allow for the use of margins.

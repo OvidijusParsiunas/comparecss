@@ -114,8 +114,8 @@ export class AddContainerComponent extends AddComponentShared {
     }
   }
 
-  private static generatePresetProperties(baseName: string, parentBasedPresetProperties: ParentBasedPresetProperties): PresetProperties {
-    return Object.assign({ baseName }, parentBasedPresetProperties);
+  private static generatePresetProperties(baseName: string, componentStyle: COMPONENT_STYLES, parentBasedPresetProperties: ParentBasedPresetProperties): PresetProperties {
+    return Object.assign({ baseName, componentStyle }, parentBasedPresetProperties);
   }
 
   protected static createNewComponent(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES, componentGenerator: ComponentGenerator,
@@ -123,7 +123,7 @@ export class AddContainerComponent extends AddComponentShared {
       customBaseName?: string): NewComponentDetails {
     const baseNamePrefix = AddContainerComponent.getBaseSubcomponentNamePrefix(componentType, componentStyle);
     const baseName = customBaseName || UniqueSubcomponentNameGenerator.generate(baseNamePrefix);
-    const presetProperties = AddContainerComponent.generatePresetProperties(baseName, propertiesAddedOnGeneration?.[componentType])
+    const presetProperties = AddContainerComponent.generatePresetProperties(baseName, componentStyle, propertiesAddedOnGeneration?.[componentType]);
     const newComponent = AddComponentShared.createNewComponentViaGenerator(componentGenerator, masterComponent, presetProperties);
     AddContainerComponent.applyTopProperty(newComponent.baseSubcomponent);
     const syncedComponent =  SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(containerComponent);

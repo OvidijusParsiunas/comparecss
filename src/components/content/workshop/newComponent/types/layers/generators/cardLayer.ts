@@ -10,10 +10,6 @@ import { layerBase } from './base';
 
 class CardLayer extends ComponentBuilder {
 
-  public static setStyle(component: WorkshopComponent): void {
-    component.style = LAYER_STYLES.CARD;
-  }
-
   private static createDefaultLayerCss(): CustomCss {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
@@ -72,9 +68,8 @@ class CardLayer extends ComponentBuilder {
 
 export const cardLayer: ComponentGenerator = {
   createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
-    const layerComponent = layerBase.createNewComponent(presetProperties);
+    const layerComponent = layerBase.createNewComponent({ ...presetProperties, componentStyle: LAYER_STYLES.CARD });
     CardLayer.overwriteBase(layerComponent);
-    CardLayer.setStyle(layerComponent);
     CardLayerSpecificSettings.set(layerComponent);
     return layerComponent;
   },

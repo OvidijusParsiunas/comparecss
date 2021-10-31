@@ -13,7 +13,7 @@ export class AlertOptions {
   private static readonly STATIC_ALERT_OPTIONS: SubcomponentTypeToOptions = {
     [SUBCOMPONENT_TYPES.BASE]: alertBaseOptions as Options,
     [SUBCOMPONENT_TYPES.BUTTON]: closeButtonOptions as Options,
-  }
+  };
 
   private static getTextOptions(component: WorkshopComponent): Options {
     const subcomponentStyle = component.subcomponents[component.activeSubcomponentName].seedComponent.style;
