@@ -6,18 +6,18 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssC
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
-import { AlertBaseSpecificSettings } from '../settings/alertBaseSpecificSettings';
+// import { AlertBaseSpecificSettings } from '../settings/alertBaseSpecificSettings';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { inheritedCardBaseCss } from '../../cards/inheritedCss/inheritedCardCss';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
-class AlertBase extends ComponentBuilder {
+class ButtonGroupBase extends ComponentBuilder {
 
-  public static setChildComponentsItems(alertBaseComponent: WorkshopComponent): void {
+  public static setChildComponentsItems(buttonGroupBaseComponent: WorkshopComponent): void {
     const baseComponentItems = [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE];
     const childComponentMaxCount = { max: { [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
-    ComponentBuilder.setNewChildComponentsItemsProperties(alertBaseComponent,
+    ComponentBuilder.setNewChildComponentsItemsProperties(buttonGroupBaseComponent,
       baseComponentItems, baseComponentItems, childComponentMaxCount);
   }
 
@@ -55,25 +55,25 @@ class AlertBase extends ComponentBuilder {
     return {
       name,
       subcomponentType: SUBCOMPONENT_TYPES.BASE,
-      customCss: AlertBase.createDefaultCss(),
-      defaultCss: AlertBase.createDefaultCss(),
+      customCss: ButtonGroupBase.createDefaultCss(),
+      defaultCss: ButtonGroupBase.createDefaultCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       inheritedCss: inheritedCardBaseCss,
       childCss: inheritedBaseChildCss,
-      customFeatures: AlertBase.createDefaultCustomFeatures(),
-      defaultCustomFeatures: AlertBase.createDefaultCustomFeatures(),
+      customFeatures: ButtonGroupBase.createDefaultCustomFeatures(),
+      defaultCustomFeatures: ButtonGroupBase.createDefaultCustomFeatures(),
     };
   }
 }
 
-export const alertBase: ComponentGenerator = {
+export const buttonGroupBase: ComponentGenerator = {
   createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
     uniqueSubcomponentIdState.resetUniqueId();
-    presetProperties.componentType = COMPONENT_TYPES.ALERT;
-    const alertBaseComponent = ComponentBuilder.createBaseComponent(presetProperties, AlertBase.createBaseSubcomponent, false);
-    AlertBase.setChildComponentsItems(alertBaseComponent);
-    AlertBaseSpecificSettings.set(alertBaseComponent);
-    return alertBaseComponent;
+    presetProperties.componentType = COMPONENT_TYPES.BUTTON_GROUP;
+    const buttonGroupBaseComponent = ComponentBuilder.createBaseComponent(presetProperties, ButtonGroupBase.createBaseSubcomponent, false);
+    ButtonGroupBase.setChildComponentsItems(buttonGroupBaseComponent);
+    // AlertBaseSpecificSettings.set(alertBaseComponent);
+    return buttonGroupBaseComponent;
   },
 }

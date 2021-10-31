@@ -122,12 +122,12 @@ import { ToggleSubcomponentSelectModeEvent } from '../../../interfaces/toggleSub
 import { REMOVE_COMPONENT_MODAL_ID, REMOVE_CHILD_COMPONENT_MODAL_ID } from '../../../consts/elementIds';
 import { SetActiveComponentUtils } from './utils/componentManipulation/utils/setActiveComponentUtils';
 import { SwitchComponentsWithFadeOutCallback } from '../../../interfaces/toggleFullPreviewModeEvent';
-import { defaultDropdownPadding } from './newComponent/types/dropdowns/generators/padding/default';
 import useWorkshopEventCallbacks from './utils/workshopEventCallbacks/useWorkshopEventCallbacks';
 import { ComponentPreviewAssistance } from '../../../interfaces/componentPreviewAssistance';
 import { removeComponentModalState } from './componentList/state/removeComponentModalState';
 import { MASTER_SUBCOMPONENT_BASE_NAME } from '../../../consts/baseSubcomponentNames.enum';
 import { ComponentCardHoveredEvent } from '../../../interfaces/componentCardHoveredEvent';
+import { defaultButtonGroup } from './newComponent/types/buttonGroups/generators/default';
 import { UseWorkshopEventCallbacks } from '../../../interfaces/useWorkshopEventCallbacks'
 import { UseComponentManipulation } from '../../../interfaces/useComponentManipulation'
 import { WorkshopEventCallback } from '../../../interfaces/workshopEventCallback';
@@ -179,7 +179,7 @@ export default {
     isIconsPreloaded: false,
     componentPreviewAssistance: { margin: false },
     components: [
-      defaultDropdownPadding.createNewComponent({}),
+      defaultButtonGroup.createNewComponent({}),
     ],
     tempComponents: [],
     currentlySelectedComponent: null,
