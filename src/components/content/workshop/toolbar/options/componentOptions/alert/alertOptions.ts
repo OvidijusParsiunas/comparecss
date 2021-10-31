@@ -23,7 +23,7 @@ export class AlertOptions {
     return textOptions as Options;
   }
 
-  public static getAlertOptions(subcomponentType: SUBCOMPONENT_TYPES, component: WorkshopComponent): Options {
+  public static get(subcomponentType: SUBCOMPONENT_TYPES, component: WorkshopComponent): Options {
     if (subcomponentType === SUBCOMPONENT_TYPES.TEXT) {
       return AlertOptions.getTextOptions(component);
     }

@@ -14,10 +14,10 @@ export type ComponentTypeToOptions = {
 };
 
 export const componentTypeToOptions: ComponentTypeToOptions = {
-  [COMPONENT_TYPES.BUTTON]: ButtonOptions.getButtonOptions,
-  [COMPONENT_TYPES.BUTTON_GROUP]: ButtonGroupOptions.getButtonGroupOptions,
-  [COMPONENT_TYPES.ALERT]: AlertOptions.getAlertOptions,
-  [COMPONENT_TYPES.MODAL]: ModalOptions.getModalOptions,
-  [COMPONENT_TYPES.CARD]: CardOptions.getCardOptions,
-  [COMPONENT_TYPES.DROPDOWN]: DropdownOptions.getDropdownOptions,
+  [COMPONENT_TYPES.BUTTON]: ButtonOptions.get,
+  [COMPONENT_TYPES.BUTTON_GROUP]: ButtonGroupOptions.get,
+  [COMPONENT_TYPES.ALERT]: AlertOptions.get,
+  [COMPONENT_TYPES.MODAL]: ModalOptions.get,
+  [COMPONENT_TYPES.CARD]: CardOptions.get,
+  [COMPONENT_TYPES.DROPDOWN]: DropdownOptions.get,
 };

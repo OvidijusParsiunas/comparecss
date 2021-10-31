@@ -71,7 +71,7 @@ export class CardOptions {
     return cardLayerOptions as Options;
   }
 
-  public static getCardOptions(subcomponentType: SUBCOMPONENT_TYPES, component: WorkshopComponent): Options {
+  public static get(subcomponentType: SUBCOMPONENT_TYPES, component: WorkshopComponent): Options {
     if (subcomponentType === SUBCOMPONENT_TYPES.LAYER) {
       return CardOptions.getLayerOptions(component);
     }

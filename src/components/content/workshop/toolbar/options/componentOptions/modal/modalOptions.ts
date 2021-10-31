@@ -13,7 +13,7 @@ export class ModalOptions extends CardOptions {
     [SUBCOMPONENT_TYPES.IMAGE]: imageOptions as Options,
   };
 
-  public static getModalOptions(subcomponentType: SUBCOMPONENT_TYPES, component: WorkshopComponent): Options {
+  public static get(subcomponentType: SUBCOMPONENT_TYPES, component: WorkshopComponent): Options {
     if (subcomponentType === SUBCOMPONENT_TYPES.LAYER) {
       return CardOptions.getLayerOptions(component);
     }

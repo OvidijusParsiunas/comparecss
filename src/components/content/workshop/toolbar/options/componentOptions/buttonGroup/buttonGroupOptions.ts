@@ -13,8 +13,7 @@ export class ButtonGroupOptions {
     [SUBCOMPONENT_TYPES.TEXT]: buttonTextOptions as Options,
   };
 
-  // WORK 2 - refactor getButtonGroupOptions options to get
-  public static getButtonGroupOptions(subcomponentType: SUBCOMPONENT_TYPES): Options {
+  public static get(subcomponentType: SUBCOMPONENT_TYPES): Options {
     return ButtonGroupOptions.STATIC_BUTTON_GROUP_OPTIONS[subcomponentType];
   }
 }

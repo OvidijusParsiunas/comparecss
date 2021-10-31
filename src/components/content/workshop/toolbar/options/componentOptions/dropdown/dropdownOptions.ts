@@ -37,7 +37,7 @@ export class DropdownOptions {
     return component.baseSubcomponent.customFeatures?.dropdown?.select?.enabled;
   }
 
-  public static getDropdownOptions(subcomponentType: SUBCOMPONENT_TYPES, component: WorkshopComponent): Options {
+  public static get(subcomponentType: SUBCOMPONENT_TYPES, component: WorkshopComponent): Options {
     if (subcomponentType === SUBCOMPONENT_TYPES.TEXT) {
       return DropdownOptions.getTextOptions(component);
     }

@@ -13,7 +13,7 @@ export class ButtonOptions {
     [SUBCOMPONENT_TYPES.ICON]: iconOptions as Options,
   }
 
-  public static getButtonOptions(subcomponentType: SUBCOMPONENT_TYPES): Options {
+  public static get(subcomponentType: SUBCOMPONENT_TYPES): Options {
     return ButtonOptions.STATIC_BUTTON_OPTIONS[subcomponentType];
   }
 }
