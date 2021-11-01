@@ -82,7 +82,7 @@ export default {
     height: 100%;
   }
   .default-sections-container {
-    position: absolute;
+    position: relative;
     transform: translateY(-50%);
     top: 50%;
     width: max-content;
