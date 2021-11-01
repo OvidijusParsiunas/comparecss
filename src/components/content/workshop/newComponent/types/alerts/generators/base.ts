@@ -5,6 +5,7 @@ import { ComponentGenerator, PresetProperties } from '../../../../../../../inter
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
+import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
 import { AlertBaseSpecificSettings } from '../settings/alertBaseSpecificSettings';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -13,6 +14,23 @@ import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class AlertBase extends ComponentBuilder {
+
+  private static setComponentToRemovable(component: WorkshopComponent): void {
+    component.baseSubcomponent.isRemovable = true;
+  }
+
+  public static setPropertyOverwritables(alertComponent: WorkshopComponent): void {
+    alertComponent.newChildComponents.propertyOverwritables = {
+      postBuildFuncs: {
+        [COMPONENT_TYPES.TEXT]: [AlertBase.setComponentToRemovable],
+        [COMPONENT_TYPES.BUTTON]: [AlertBase.setComponentToRemovable],
+      },
+      onBuildProperties: {
+        [COMPONENT_TYPES.TEXT]: { alignmentSection: ALIGNED_SECTION_TYPES.CENTER },
+        [COMPONENT_TYPES.BUTTON]: { alignmentSection: ALIGNED_SECTION_TYPES.RIGHT },
+      },
+    };
+  }
 
   public static setChildComponentsItems(alertBaseComponent: WorkshopComponent): void {
     const baseComponentItems = [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE];
@@ -73,6 +91,7 @@ export const alertBase: ComponentGenerator = {
     presetProperties.componentType = COMPONENT_TYPES.ALERT;
     const alertBaseComponent = ComponentBuilder.createBaseComponent(presetProperties, AlertBase.createBaseSubcomponent, false);
     AlertBase.setChildComponentsItems(alertBaseComponent);
+    AlertBase.setPropertyOverwritables(alertBaseComponent);
     AlertBaseSpecificSettings.set(alertBaseComponent);
     return alertBaseComponent;
   },

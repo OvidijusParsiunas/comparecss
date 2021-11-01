@@ -1,7 +1,7 @@
 import { PropertyReferenceSharingFuncsUtils } from '../../../../newComponent/types/shared/propertyReferenceSharingFuncs/propertyReferenceSharingFuncsUtils';
+import { SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { CHILD_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
-import { Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ComponentPreviewStructureSearchUtils } from '../utils/componentPreviewStractureSearchUtils';
 import { ReferenceSharingFuncType } from '../../../../../../../interfaces/newChildComponents';
 import { ChildComponentBaseNamesToStyles } from '../utils/childComponentBaseNamesToStyles';
@@ -75,5 +75,21 @@ export class AddComponentShared {
     const overwritables = containerComponent.newChildComponents.propertyOverwritables?.postBuildFuncs?.[newComponent.type];
     (overwritables || []).forEach((overwritable) => overwritable(newComponent, containerComponent));
     PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuncs(true, sharingFuncType, containerComponent);
+  }
+
+  protected static copySiblingSubcomponent(siblingSubcomponentProperties: SubcomponentProperties,
+      newSubcomponentProperties: SubcomponentProperties, withRefs = true): void {
+    const { customCss, defaultCss, customFeatures, defaultCustomFeatures } = siblingSubcomponentProperties;
+    if (withRefs) {
+      newSubcomponentProperties.customCss = customCss;
+      newSubcomponentProperties.defaultCss = defaultCss;
+      newSubcomponentProperties.customFeatures = customFeatures;
+      newSubcomponentProperties.defaultCustomFeatures = defaultCustomFeatures; 
+    } else {
+      newSubcomponentProperties.customCss = JSONUtils.deepCopy(customCss);
+      newSubcomponentProperties.defaultCss = JSONUtils.deepCopy(defaultCss);
+      newSubcomponentProperties.customFeatures = JSONUtils.deepCopy(customFeatures);
+      newSubcomponentProperties.defaultCustomFeatures = JSONUtils.deepCopy(defaultCustomFeatures);  
+    }
   }
 }

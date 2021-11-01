@@ -123,14 +123,14 @@ export class ComponentBuilder {
   }
 
   protected static setNewChildComponentsItemsProperties(component: WorkshopComponent, layerChildItems: BASE_SUBCOMPONENT_NAMES[],
-      componentChildItems: BASE_SUBCOMPONENT_NAMES[], childComponentCountLimitsState: ChildComponentCountLimitsState): void {
+      componentChildItems: BASE_SUBCOMPONENT_NAMES[], childComponentCountLimitsState?: ChildComponentCountLimitsState): void {
     component.newChildComponents = {
       sharedDropdownItemsRefs: { layer: DropdownUtils.generateDropdownStructure(layerChildItems) },
       dropdown: {
         items: DropdownUtils.generateDropdownStructure(componentChildItems),
-        childComponentCountLimitsState: childComponentCountLimitsState,
       },
     };
+    if (childComponentCountLimitsState) component.newChildComponents.dropdown.childComponentCountLimitsState = childComponentCountLimitsState;
   }
 
   protected static createSyncablesObjectUsingSubcomponents(syncableSubcomponents: SubcomponentTypeToProperties,

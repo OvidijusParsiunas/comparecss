@@ -76,6 +76,10 @@ export class DropdownMenuBase extends ComponentBuilder {
     };
   }
 
+  public static setOnChildComponentRemovalFunc(dropdownMenuComponent: WorkshopComponent): void {
+    dropdownMenuComponent.onChildComponentRemovalFunc = DropdownMenuAutoWidthUtils.updateButtonAndMenuWidth;
+  }
+
   private static copyItemAndTextComponentProperties(layerSubcomponentToBeCopied: SubcomponentProperties, targetLayerSubcomponent: SubcomponentProperties,
       menuComponent: WorkshopComponent): void {
     targetLayerSubcomponent.customCss = layerSubcomponentToBeCopied.customCss;
@@ -99,10 +103,6 @@ export class DropdownMenuBase extends ComponentBuilder {
     menuComponent.componentPreviewStructure.layers.forEach((layer) => {
       DropdownMenuBase.copyItemAndTextComponentProperties(firstLayerSubcomponentProperties, layer.subcomponentProperties, menuComponent);
     });
-  }
-
-  public static setOnChildComponentRemovalFunc(dropdownMenuComponent: WorkshopComponent): void {
-    dropdownMenuComponent.onChildComponentRemovalFunc = DropdownMenuAutoWidthUtils.updateButtonAndMenuWidth;
   }
 
   public static setSiblingLayersInSyncWithEachOther(dropdownMenuComponent: WorkshopComponent): void {

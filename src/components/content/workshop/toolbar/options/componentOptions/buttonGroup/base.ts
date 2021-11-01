@@ -12,10 +12,6 @@ export const buttonGroupBaseOptions: SubcomponentOptions<ButtonGroupBaseOptionsM
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER,
     },
     {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BACKGROUND,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BACKGROUND_COLOR_IMAGE,
-    },
-    {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SHADOW,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW,
     },

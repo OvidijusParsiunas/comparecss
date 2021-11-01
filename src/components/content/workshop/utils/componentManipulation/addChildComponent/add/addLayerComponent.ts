@@ -51,22 +51,6 @@ export class AddLayerComponent extends AddComponentShared {
     return true;
   }
 
-  private static copySiblingSubcomponent(containerComponent: WorkshopComponent, newLayerProperties: SubcomponentProperties): void {
-    const siblingSubcomponent = containerComponent.componentPreviewStructure.layers[containerComponent.componentPreviewStructure.layers.length - 2];
-    const { customCss, defaultCss, customFeatures, defaultCustomFeatures } = siblingSubcomponent.subcomponentProperties;
-    if (containerComponent.siblingLayersInSyncWithEachOther) {
-      newLayerProperties.customCss = customCss;
-      newLayerProperties.defaultCss = defaultCss;
-      newLayerProperties.customFeatures = customFeatures;
-      newLayerProperties.defaultCustomFeatures = defaultCustomFeatures;
-    } else {
-      newLayerProperties.customCss = JSONUtils.deepCopy(customCss);
-      newLayerProperties.defaultCss = JSONUtils.deepCopy(defaultCss);
-      newLayerProperties.customFeatures = JSONUtils.deepCopy(customFeatures);
-      newLayerProperties.defaultCustomFeatures = JSONUtils.deepCopy(defaultCustomFeatures); 
-    }
-  }
-
   private static getMatchingComponentFromAnotherContainerSyncables(targetComponent: WorkshopComponent, anotherContainer: WorkshopComponent): WorkshopComponent {
     return anotherContainer.sync.syncables.onCopy.childComponents.find((component) => component.type === targetComponent.type);
   }
@@ -87,7 +71,9 @@ export class AddLayerComponent extends AddComponentShared {
       const syncedComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(containerComponent);
       if (syncedComponent) AddLayerComponent.copySyncedComponent(syncedComponent, containerComponent, newLayerProperties);
     } else {
-      AddLayerComponent.copySiblingSubcomponent(containerComponent, newLayerProperties);
+      AddComponentShared.copySiblingSubcomponent(
+        containerComponent.componentPreviewStructure.layers[containerComponent.componentPreviewStructure.layers.length - 2].subcomponentProperties,
+        newLayerProperties, !!containerComponent.siblingLayersInSyncWithEachOther);
     }
   }
 

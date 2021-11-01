@@ -1,12 +1,13 @@
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { BUTTON_COMPONENTS_BASE_NAMES, PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
+import { BUTTON_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
-import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
+import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 // import { AlertBaseSpecificSettings } from '../settings/alertBaseSpecificSettings';
+import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { inheritedCardBaseCss } from '../../cards/inheritedCss/inheritedCardCss';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
@@ -14,11 +15,31 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonGroupBase extends ComponentBuilder {
 
+  public static setSiblingLayersInSyncWithEachOther(dropdownMenuComponent: WorkshopComponent): void {
+    dropdownMenuComponent.siblingLayersInSyncWithEachOther = { subcomponents: {} };
+  }
+
+  private static setComponentToRemovable(buttonComponent: WorkshopComponent): void {
+    buttonComponent.baseSubcomponent.isRemovable = true;
+  }
+
+  public static setPropertyOverwritables(buttonGroupComponent: WorkshopComponent): void {
+    buttonGroupComponent.newChildComponents.propertyOverwritables = {
+      postBuildFuncs: {
+        [COMPONENT_TYPES.BUTTON]: [ButtonGroupBase.setComponentToRemovable],
+      },
+      onBuildProperties: {
+        [COMPONENT_TYPES.BUTTON]: { alignmentSection: ALIGNED_SECTION_TYPES.LEFT },
+      },
+    };
+  }
+
   public static setChildComponentsItems(buttonGroupBaseComponent: WorkshopComponent): void {
-    const baseComponentItems = [PRIMITIVE_COMPONENTS_BASE_NAMES.TEXT, BUTTON_COMPONENTS_BASE_NAMES.CLOSE];
-    const childComponentMaxCount = { max: { [BUTTON_COMPONENTS_BASE_NAMES.CLOSE]: 1 }};
+    const baseComponentItems = [BUTTON_COMPONENTS_BASE_NAMES.BUTTON];
+    // WORK 2 - creat a min and have a minimum number of buttonas as 1
+    // const childComponentMaxCount = { max: { [BUTTON_COMPONENTS_BASE_NAMES.BUTTON]: 1 }};
     ComponentBuilder.setNewChildComponentsItemsProperties(buttonGroupBaseComponent,
-      baseComponentItems, baseComponentItems, childComponentMaxCount);
+      baseComponentItems, baseComponentItems);
   }
 
   private static createDefaultCss(): CustomCss {
@@ -69,6 +90,8 @@ export const buttonGroupBase: ComponentGenerator = {
     presetProperties.componentType = COMPONENT_TYPES.BUTTON_GROUP;
     const buttonGroupBaseComponent = ComponentBuilder.createBaseComponent(presetProperties, ButtonGroupBase.createBaseSubcomponent, false);
     ButtonGroupBase.setChildComponentsItems(buttonGroupBaseComponent);
+    ButtonGroupBase.setPropertyOverwritables(buttonGroupBaseComponent);
+    ButtonGroupBase.setSiblingLayersInSyncWithEachOther(buttonGroupBaseComponent);
     // AlertBaseSpecificSettings.set(alertBaseComponent);
     return buttonGroupBaseComponent;
   },
