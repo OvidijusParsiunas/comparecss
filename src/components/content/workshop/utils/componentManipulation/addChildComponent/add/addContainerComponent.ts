@@ -16,6 +16,7 @@ import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedD
 import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
 import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { SyncedSiblingComponentUtils } from '../../utils/syncedSiblingComponentUtils';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { SubcomponentTriggers } from '../../utils/subcomponentTriggers';
 import { AddComponentShared } from './addComponentShared';
@@ -114,23 +115,8 @@ export class AddContainerComponent extends AddComponentShared {
     }
   }
 
-  // note that this only works if the child container type that can be added is the same - e.g. only buttons
-  // this copies all child components within any section, if needed can add section type before the subcomponents property
-  // in the siblingLayersInSyncWithEachOther interface
-  private static overwriteIfSiblingsInSync(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
-    Object.keys(newComponent.subcomponents).forEach((subcomponentName) => {
-      const { subcomponents } = containerComponent.siblingLayersInSyncWithEachOther;
-      const newSubcomponent = newComponent.subcomponents[subcomponentName];
-      if (!subcomponents[newSubcomponent.subcomponentType]) {
-        subcomponents[newSubcomponent.subcomponentType] = newSubcomponent;
-      } else {
-        AddComponentShared.copySiblingSubcomponent(subcomponents[newSubcomponent.subcomponentType], newSubcomponent);
-      }
-    });
-  }
-
   private static overwriteSubcomponentCustomProperties(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
-    if (containerComponent.siblingLayersInSyncWithEachOther?.subcomponents) AddContainerComponent.overwriteIfSiblingsInSync(containerComponent, newComponent);
+    SyncedSiblingComponentUtils.copySiblingIfSiblingsSynced(containerComponent, newComponent);
     AddContainerComponent.applyTopProperty(newComponent.baseSubcomponent);
   }
 
