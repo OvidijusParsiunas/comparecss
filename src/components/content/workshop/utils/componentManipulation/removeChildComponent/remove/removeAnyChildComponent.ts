@@ -1,5 +1,6 @@
 import { DropdownStructureTraversalState, SubcomponentPreviewTraversalState, TargetDetails, PreviewTraversalResult, DropdownTraversalResult } from '../../../../../../../interfaces/componentTraversal';
 import { TraverseComponentViaPreviewStructureParentFirst } from '../../../componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
+import { AutoSyncedSiblingContainerComponentUtils } from '../../autoSyncedSiblingComponentUtils/autoSyncedSiblingContainerComponentUtils';
 import { DecrementChildComponentCountLimitsState } from '../../childComponentCountLimitsState/decrementChildComponentCountLimitsState';
 import { DropdownItemAuxDetails, DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownItemDisplayStatus';
 import { UpdateContainerComponentDropdownItemNames } from '../../updateChildComponent/updateContainerComponentDropdownItemNames';
@@ -9,7 +10,6 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../
 import { UpdateLayerDropdownItemNames } from '../../updateChildComponent/updateLayerDropdownItemNames';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
-import { AutoSyncedSiblingComponentUtils } from '../../utils/autoSyncedSiblingComponentUtils';
 import ComponentTraversalUtils from '../../../componentTraversal/componentTraversalUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUtils';
@@ -138,7 +138,7 @@ export class RemoveAnyChildComponent {
     RemoveAnyChildComponent.removeAlignedComponents(subcomponentProperties, masterComponent, containerComponent);
     alignedChildComponents.splice(index, 1);
     InterconnectedSettings.update(false, containerComponent, subcomponentProperties);
-    AutoSyncedSiblingComponentUtils.decrementSiblingSubcomponentCount(containerComponent, subcomponentProperties.seedComponent);
+    AutoSyncedSiblingContainerComponentUtils.decrementSiblingSubcomponentCount(subcomponentProperties.parentLayer, subcomponentProperties.seedComponent);
   }
 
   private static removeLayer(layers: Layer[], index: number, masterComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {

@@ -15,7 +15,6 @@ import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../../../consts/com
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
 import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
-import { AutoSyncedSiblingComponentUtils } from '../../utils/autoSyncedSiblingComponentUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { SubcomponentTriggers } from '../../utils/subcomponentTriggers';
@@ -115,12 +114,6 @@ export class AddContainerComponent extends AddComponentShared {
     }
   }
 
-  private static overwriteSubcomponentCustomProperties(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
-    // WORK 2 - should use the layer instead
-    AutoSyncedSiblingComponentUtils.copySiblingIfAutoSynced(containerComponent, newComponent);
-    AddContainerComponent.applyTopProperty(newComponent.baseSubcomponent);
-  }
-
   private static generatePresetProperties(baseName: string, componentStyle: COMPONENT_STYLES, parentBasedPresetProperties: ParentBasedPresetProperties): PresetProperties {
     return Object.assign({ baseName, componentStyle }, parentBasedPresetProperties);
   }
@@ -132,7 +125,7 @@ export class AddContainerComponent extends AddComponentShared {
     const baseName = customBaseName || UniqueSubcomponentNameGenerator.generate(baseNamePrefix);
     const presetProperties = AddContainerComponent.generatePresetProperties(baseName, componentStyle, propertiesAddedOnGeneration?.[componentType]);
     const newComponent = AddComponentShared.createNewComponentViaGenerator(componentGenerator, masterComponent, presetProperties);
-    AddContainerComponent.overwriteSubcomponentCustomProperties(newComponent, containerComponent);
+    AddContainerComponent.applyTopProperty(newComponent.baseSubcomponent);
     const syncedComponent =  SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(containerComponent);
     if (syncedComponent) SyncedComponent.copyChildPropertiesFromInSyncContainerComponent(newComponent,
       syncedComponent.sync.componentThisIsSyncedTo, containerComponent.type);
@@ -152,7 +145,7 @@ export class AddContainerComponent extends AddComponentShared {
     IncrementChildComponentCountLimitsState.increment(containerComponent, baseNamePrefix);
     AddContainerComponent.updateComponentContainerProperties(containerComponent, newComponent);
     AddComponentShared.cleanSubcomponentProperties(newComponent);
-    AddComponentShared.executePropertyOverwritables(newComponent, containerComponent, 'container');
+    AddComponentShared.executeOverwritables(newComponent, containerComponent, 'container', parentLayer);
     AddContainerComponent.asyncUpdateSyncedComponents(newComponent, containerComponent);
     newComponent.containerComponent = containerComponent;
     return newComponent;

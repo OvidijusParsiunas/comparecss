@@ -4,6 +4,7 @@ import { Options } from '../../../../../../../interfaces/options';
 import { childButtonOptions } from '../button/childButton';
 import { buttonTextOptions } from '../text/buttonText';
 import { buttonGroupBaseOptions } from './base';
+import { iconOptions } from '../icon/icon';
 
 export class ButtonGroupOptions {
 
@@ -11,6 +12,7 @@ export class ButtonGroupOptions {
     [SUBCOMPONENT_TYPES.BASE]: buttonGroupBaseOptions as Options,
     [SUBCOMPONENT_TYPES.BUTTON]: childButtonOptions as Options,
     [SUBCOMPONENT_TYPES.TEXT]: buttonTextOptions as Options,
+    [SUBCOMPONENT_TYPES.ICON]: iconOptions as Options,
   };
 
   public static get(subcomponentType: SUBCOMPONENT_TYPES): Options {

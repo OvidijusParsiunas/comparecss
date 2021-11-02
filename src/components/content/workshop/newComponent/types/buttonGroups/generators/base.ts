@@ -1,4 +1,5 @@
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { BUTTON_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
@@ -10,13 +11,15 @@ import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections
 import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { inheritedCardBaseCss } from '../../cards/inheritedCss/inheritedCardCss';
+import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonGroupBase extends ComponentBuilder {
 
-  public static setSiblingChildComponentsAutoSynced(dropdownMenuComponent: WorkshopComponent): void {
-    dropdownMenuComponent.sync.siblingChildComponentsAutoSynced = { siblingSubcomponents: {} };
+  public static addLayerAndSetSiblingChildComponentsAutoSynced(buttonGroupBaseComponent: WorkshopComponent): void {
+    const layerComponent = AddLayerComponent.add(buttonGroupBaseComponent, LAYER_STYLES.PLAIN, false);
+    layerComponent.sync.siblingChildComponentsAutoSynced = { siblingSubcomponents: {} };
   }
 
   private static setComponentToRemovable(buttonComponent: WorkshopComponent): void {
@@ -91,7 +94,7 @@ export const buttonGroupBase: ComponentGenerator = {
     const buttonGroupBaseComponent = ComponentBuilder.createBaseComponent(presetProperties, ButtonGroupBase.createBaseSubcomponent, false);
     ButtonGroupBase.setChildComponentsItems(buttonGroupBaseComponent);
     ButtonGroupBase.setPropertyOverwritables(buttonGroupBaseComponent);
-    ButtonGroupBase.setSiblingChildComponentsAutoSynced(buttonGroupBaseComponent);
+    ButtonGroupBase.addLayerAndSetSiblingChildComponentsAutoSynced(buttonGroupBaseComponent);
     // AlertBaseSpecificSettings.set(alertBaseComponent);
     return buttonGroupBaseComponent;
   },

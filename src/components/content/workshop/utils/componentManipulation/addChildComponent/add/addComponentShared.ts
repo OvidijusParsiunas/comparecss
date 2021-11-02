@@ -1,6 +1,7 @@
 import { PropertyReferenceSharingFuncsUtils } from '../../../../newComponent/types/shared/propertyReferenceSharingFuncs/propertyReferenceSharingFuncsUtils';
-import { SubcomponentProperties, Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { AutoSyncedSiblingContainerComponentUtils } from '../../autoSyncedSiblingComponentUtils/autoSyncedSiblingContainerComponentUtils';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
+import { Subcomponents, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CHILD_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { ComponentPreviewStructureSearchUtils } from '../utils/componentPreviewStractureSearchUtils';
 import { ReferenceSharingFuncType } from '../../../../../../../interfaces/newChildComponents';
@@ -69,7 +70,7 @@ export class AddComponentShared {
     newComponent.componentPreviewStructure.subcomponentDropdownStructure = {};
     newComponent.componentPreviewStructure.subcomponentNameToDropdownItemName = {};
   }
-  
+
   protected static executePropertyOverwritables(newComponent: WorkshopComponent, containerComponent: WorkshopComponent,
       sharingFuncType: keyof ReferenceSharingFuncType): void {
     const overwritables = containerComponent.newChildComponents.propertyOverwritables?.postBuildFuncs?.[newComponent.type];
@@ -77,19 +78,9 @@ export class AddComponentShared {
     PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuncs(true, sharingFuncType, containerComponent);
   }
 
-  protected static copySiblingSubcomponent(siblingSubcomponentProperties: SubcomponentProperties,
-      newSubcomponentProperties: SubcomponentProperties, withRefs = true): void {
-    const { customCss, defaultCss, customFeatures, defaultCustomFeatures } = siblingSubcomponentProperties;
-    if (withRefs) {
-      newSubcomponentProperties.customCss = customCss;
-      newSubcomponentProperties.defaultCss = defaultCss;
-      newSubcomponentProperties.customFeatures = customFeatures;
-      newSubcomponentProperties.defaultCustomFeatures = defaultCustomFeatures; 
-    } else {
-      newSubcomponentProperties.customCss = JSONUtils.deepCopy(customCss);
-      newSubcomponentProperties.defaultCss = JSONUtils.deepCopy(defaultCss);
-      newSubcomponentProperties.customFeatures = JSONUtils.deepCopy(customFeatures);
-      newSubcomponentProperties.defaultCustomFeatures = JSONUtils.deepCopy(defaultCustomFeatures);  
-    }
+  protected static executeOverwritables(newComponent: WorkshopComponent, containerComponent: WorkshopComponent,
+      sharingFuncType: keyof ReferenceSharingFuncType, parentLayer: Layer): void {
+    AddComponentShared.executePropertyOverwritables(newComponent, containerComponent, sharingFuncType);
+    AutoSyncedSiblingContainerComponentUtils.copySiblingIfAutoSynced(parentLayer, newComponent);
   }
 }

@@ -1,6 +1,7 @@
 import { IncrementChildComponentCountLimitsState } from '../../childComponentCountLimitsState/incrementChildComponentCountLimitsState';
 import { DropdownItemsDisplayStatusUtils } from '../../../dropdownItemsDisplayStatusUtils/dropdownItemsDisplayStatusUtils';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
+import { AutoSyncedSiblingComponentUtils } from '../../autoSyncedSiblingComponentUtils/autoSyncedSiblingComponentUtils';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
@@ -65,14 +66,14 @@ export class AddLayerComponent extends AddComponentShared {
     }
   }
 
-  // if child components should also be the same - then the siblingSubcomponents state will need to be stored at the container component,
-  // but there is no use case that requires such functionality as it is currently handled by the childComponentsLockedToLayer property
   private static overwriteSubcomponentCustomProperties(containerComponent: WorkshopComponent, newLayerProperties: SubcomponentProperties): void {
     if (containerComponent.componentPreviewStructure.layers.length === 1) {
       const syncedComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(containerComponent);
       if (syncedComponent) AddLayerComponent.copySyncedComponent(syncedComponent, containerComponent, newLayerProperties);
     } else {
-      AddComponentShared.copySiblingSubcomponent(
+      // if child components of auto synced layers should also be the same - then the siblingSubcomponents state will need to be stored at the container
+      // component, but there currently is no use case that requires such functionality as it is currently handled by childComponentsLockedToLayer
+      AutoSyncedSiblingComponentUtils.copySiblingSubcomponent(
         containerComponent.componentPreviewStructure.layers[containerComponent.componentPreviewStructure.layers.length - 2].subcomponentProperties,
         newLayerProperties, !!containerComponent.sync.siblingChildComponentsAutoSynced);
     }

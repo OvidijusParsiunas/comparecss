@@ -1,28 +1,30 @@
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SiblingSubcomponents } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
-import { AddComponentShared } from '../addChildComponent/add/addComponentShared';
+import { AutoSyncedSiblingComponentUtils } from './autoSyncedSiblingComponentUtils';
+import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
 
 type SiblingManipulationCallback = (siblingSubcomponents: SiblingSubcomponents, subcomponent: SubcomponentProperties) => void;
 
 // note that this only works if the child container type that can be added is the same - e.g. only buttons
 // current implementation copies all child components in any sections, however if needed can add section
 // type to abstract siblingSubcomponents property
-export class AutoSyncedSiblingComponentUtils extends AddComponentShared {
+export class AutoSyncedSiblingContainerComponentUtils {
 
   // only goes as far as 2 container component levels
-  private static getAutoSyncedSiblingSubcomponents(containerComponent: WorkshopComponent): SiblingSubcomponents {
-    if (containerComponent.sync.siblingChildComponentsAutoSynced) {
-      return containerComponent.sync.siblingChildComponentsAutoSynced?.siblingSubcomponents;
+  private static getAutoSyncedSiblingSubcomponents(parentLayer: Layer): SiblingSubcomponents {
+    const parentLayerComponent = parentLayer.subcomponentProperties.seedComponent;
+    if (parentLayerComponent.sync.siblingChildComponentsAutoSynced) {
+      return parentLayerComponent.sync.siblingChildComponentsAutoSynced?.siblingSubcomponents;
     }
-    if (containerComponent.containerComponent?.sync.siblingChildComponentsAutoSynced) {
-      return containerComponent.containerComponent?.sync.siblingChildComponentsAutoSynced?.siblingSubcomponents;
+    if (parentLayerComponent.containerComponent?.baseSubcomponent.parentLayer?.subcomponentProperties.seedComponent.sync.siblingChildComponentsAutoSynced) {
+      return parentLayerComponent.containerComponent?.baseSubcomponent.parentLayer?.subcomponentProperties.seedComponent.sync.siblingChildComponentsAutoSynced?.siblingSubcomponents;
     }
     return null;
   }
 
-  private static callCountManipulationCallbackOnSubcomponents(containerComponent: WorkshopComponent, childComponent: WorkshopComponent,
+  private static callCountManipulationCallbackOnSubcomponents(parentLayer: Layer, childComponent: WorkshopComponent,
       callback: SiblingManipulationCallback): void {
-    const autoSyncedSiblingSubcomponents = AutoSyncedSiblingComponentUtils.getAutoSyncedSiblingSubcomponents(containerComponent);
+    const autoSyncedSiblingSubcomponents = AutoSyncedSiblingContainerComponentUtils.getAutoSyncedSiblingSubcomponents(parentLayer);
     if (autoSyncedSiblingSubcomponents) {
       const syncableSubcomponents = childComponent.sync.syncables.onCopy?.subcomponents;
       if (syncableSubcomponents) {
@@ -41,13 +43,13 @@ export class AutoSyncedSiblingComponentUtils extends AddComponentShared {
       siblingSubcomponents[newSubcomponent.subcomponentType] = { currentCount: 1, subcomponentProperties: newSubcomponent };
     } else {
       siblingSubcomponents[newSubcomponent.subcomponentType].currentCount += 1;
-      AddComponentShared.copySiblingSubcomponent(siblingSubcomponents[newSubcomponent.subcomponentType].subcomponentProperties, newSubcomponent);
+      AutoSyncedSiblingComponentUtils.copySiblingSubcomponent(siblingSubcomponents[newSubcomponent.subcomponentType].subcomponentProperties, newSubcomponent);
     }
   }
 
-  public static copySiblingIfAutoSynced(containerComponent: WorkshopComponent, childComponent: WorkshopComponent): void {
-    AutoSyncedSiblingComponentUtils.callCountManipulationCallbackOnSubcomponents(
-      containerComponent, childComponent, AutoSyncedSiblingComponentUtils.incrementAndCopy);
+  public static copySiblingIfAutoSynced(parentLayer: Layer, childComponent: WorkshopComponent): void {
+    AutoSyncedSiblingContainerComponentUtils.callCountManipulationCallbackOnSubcomponents(
+      parentLayer, childComponent, AutoSyncedSiblingContainerComponentUtils.incrementAndCopy);
   }
 
   private static decrementAndRemoveIfNoneLeft(siblingSubcomponents: SiblingSubcomponents, subcomponent: SubcomponentProperties): void {
@@ -59,8 +61,8 @@ export class AutoSyncedSiblingComponentUtils extends AddComponentShared {
     }
   }
 
-  public static decrementSiblingSubcomponentCount(containerComponent: WorkshopComponent, childComponent: WorkshopComponent): void {
-    AutoSyncedSiblingComponentUtils.callCountManipulationCallbackOnSubcomponents(
-      containerComponent, childComponent, AutoSyncedSiblingComponentUtils.decrementAndRemoveIfNoneLeft);
+  public static decrementSiblingSubcomponentCount(parentLayer: Layer, childComponent: WorkshopComponent): void {
+    AutoSyncedSiblingContainerComponentUtils.callCountManipulationCallbackOnSubcomponents(
+      parentLayer, childComponent, AutoSyncedSiblingContainerComponentUtils.decrementAndRemoveIfNoneLeft);
   }
 }
