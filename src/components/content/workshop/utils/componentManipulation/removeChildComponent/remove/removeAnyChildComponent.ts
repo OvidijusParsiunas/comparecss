@@ -129,7 +129,7 @@ export class RemoveAnyChildComponent {
     // a child component can be counted by either the parent layer or the container component, hence need to make sure the count is
     // decremented at both of these components
     DecrementChildComponentCountLimitsState.decrement(seedComponent.containerComponent, name);
-    DecrementChildComponentCountLimitsState.decrement(subcomponentProperties.parentLayer.subcomponentProperties.seedComponent, name);
+    DecrementChildComponentCountLimitsState.decrement(subcomponentProperties.seedComponent.parentLayer.subcomponentProperties.seedComponent, name);
     RemoveAnyChildComponent.removeSubcomponentProperties(name, masterComponent);
   }
 
@@ -138,7 +138,8 @@ export class RemoveAnyChildComponent {
     RemoveAnyChildComponent.removeAlignedComponents(subcomponentProperties, masterComponent, containerComponent);
     alignedChildComponents.splice(index, 1);
     InterconnectedSettings.update(false, containerComponent, subcomponentProperties);
-    AutoSyncedSiblingContainerComponentUtils.decrementSiblingSubcomponentCount(subcomponentProperties.parentLayer, subcomponentProperties.seedComponent);
+    AutoSyncedSiblingContainerComponentUtils.decrementSiblingSubcomponentCount(
+      subcomponentProperties.seedComponent.parentLayer, subcomponentProperties.seedComponent);
   }
 
   private static removeLayer(layers: Layer[], index: number, masterComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {

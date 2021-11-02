@@ -25,7 +25,7 @@ export class ChangeChildComponentAlignment {
 
   private static addSubcomponentToAlignment(previousAlignment: ALIGNED_SECTION_TYPES, newAlignment: ALIGNED_SECTION_TYPES,
       subcomponentProperties: SubcomponentProperties): void {
-    const { alignedSections } = subcomponentProperties.parentLayer.sections;
+    const { alignedSections } = subcomponentProperties.seedComponent.parentLayer.sections;
     if (newAlignment === childComponentAlignmentDropdownState.getInitialAlignment()) {
       ChangeChildComponentAlignment.addSubcomponentBackToInitialAlignment(previousAlignment, newAlignment, alignedSections);
     } else if (childComponentAlignmentDropdownState.getChildBaseSubcomponent()) {
@@ -52,7 +52,7 @@ export class ChangeChildComponentAlignment {
   }
 
   private static setStateAndRemoveSubcomponent(previousAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties): void {
-    const previousAlignmentSubcomponents = subcomponentProperties.parentLayer.sections.alignedSections[previousAlignment];
+    const previousAlignmentSubcomponents = subcomponentProperties.seedComponent.parentLayer.sections.alignedSections[previousAlignment];
     const currentSubcomponentIndex = ChangeChildComponentAlignment.indexOfSubcomponent(previousAlignmentSubcomponents, subcomponentProperties);
     ChangeChildComponentAlignment.saveStateAndRemoveSubcomponent(previousAlignmentSubcomponents, currentSubcomponentIndex);
     if (childComponentAlignmentDropdownState.getInitialAlignmentIndex() < 0) {
@@ -73,7 +73,7 @@ export class ChangeChildComponentAlignment {
 
   private static updateNames(newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties, masterComponent: WorkshopComponent): void {
     const targetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName) as TargetDetails;
-    const { alignedSections } = subcomponentProperties.parentLayer.sections;
+    const { alignedSections } = subcomponentProperties.seedComponent.parentLayer.sections;
     targetDetails.parentLayerAlignedSections = alignedSections;
     TraverseComponentViaDropdownStructure.traverse(
       masterComponent.componentPreviewStructure.subcomponentDropdownStructure,

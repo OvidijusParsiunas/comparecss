@@ -152,7 +152,6 @@ export interface SubcomponentProperties {
   seedComponent?: WorkshopComponent;
   // this is used for overwriting css properties on mouse actions as adding css directly to customCss causes in-sync components to be edited all at once
   overwrittenCustomCssObj?: CustomCss;
-  parentLayer?: Layer;
   // temporarily holds the original customCss when a component card has been hovered/selected during component import mode 
   tempOriginalCustomProperties?: TempCustomProperties;
   // this subcomponent can trigger and be triggered by other subcomponents
@@ -180,6 +179,8 @@ export interface WorkshopComponent {
   // class name for the component
   className: string;
   baseSubcomponent: SubcomponentProperties;
+  // only on child container components
+  parentLayer?: Layer;
   // gives an in sync child component to identify if the copied component has not been deleted
   componentStatus: { isRemoved: boolean };
   interconnectedSettings?: InterconnectedSetting[];
@@ -250,11 +251,12 @@ export interface WorkshopComponent {
 // Each seed component can additionally access their base subcomponet via the baseSubcomponent
 // property
 
+
 // Multiple components example (Card component):
 //
 // Card Component -> Layers Components -> Text/Button/Image Components etc.
 //
-// Explanation:
+// 1. Explanation:
 // Card Component encompasses multi-level children components.
 // In this architecture, layers are children of the component card (or more accurately its base)
 // and Text/Button/Image Components are children of the layer components.
@@ -264,6 +266,16 @@ export interface WorkshopComponent {
 // Hence a text component has reference to button, a button component has reference to card etc.
 // To note, this property will never refer to the layer that nested the child, hence within a card
 // component - the button and the layer components would both be referring to the card component.
+//
+// 2. Explanation:
+// Each container child component can access the layer that they are currently in via parentLayer
+// property
+//
+// Card Component -> Layers Components -> Text/Button/Image Components etc.
+//                         |                           |
+//                         |                           |
+//                         <------- parentLayer <-------
+
 
 
 // Linked components example (Partial dropdown example - not showing the padding component):
@@ -288,6 +300,7 @@ export interface WorkshopComponent {
 // can only be linked to one base component.
 // Additionally, such links can exist within child components too.
 
+
 // Master component (Partial dropdown example - not showing the padding component):
 // 
 // Dropdown Button Component -> { base, layer, text }
@@ -308,6 +321,7 @@ export interface WorkshopComponent {
 // reference to it via the masterComponent property.
 // When referring to the examples above chronologically - master components would be the very parent
 // of each component i.e. Text, Button, Card and Dropdown Button components.
+
 
 // Padding component (Partial dropdown example - only dropdown padding and dropdown button components):
 //

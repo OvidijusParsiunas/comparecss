@@ -50,8 +50,8 @@ export class AddContainerComponent extends AddComponentShared {
   }
 
   private static updateComponentContainerProperties(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
-    const newComponentBase = newComponent.baseSubcomponent;
-    const { subcomponentType, parentLayer } = newComponentBase;
+    const { baseSubcomponent: newComponentBase, parentLayer } = newComponent;
+    const { subcomponentType } = newComponentBase;
     JSONUtils.setPropertyIfExists(containerComponent.sync.syncables.onCopy?.subcomponents, subcomponentType as number, newComponentBase);
     SubcomponentTriggers.set(containerComponent, parentLayer.subcomponentProperties, newComponentBase, subcomponentType);
   }
@@ -85,7 +85,7 @@ export class AddContainerComponent extends AddComponentShared {
       dropdownStructure: NestedDropdownStructure): void {
     const { componentPreviewStructure: { subcomponentNameToDropdownItemName }, subcomponents, activeSubcomponentName } = masterComponent;
     const parentLayerItemName = subcomponentNameToDropdownItemName[
-      newComponent.baseSubcomponent.parentLayer.subcomponentProperties.name];
+      newComponent.parentLayer.subcomponentProperties.name];
     // this gets activated when the user is manually adding a component to a layer
     if (subcomponents[activeSubcomponentName].seedComponent.type === COMPONENT_TYPES.LAYER) {
       const layerDropdownStructure = dropdownStructure[parentLayerItemName] as NestedDropdownStructure;
@@ -100,9 +100,8 @@ export class AddContainerComponent extends AddComponentShared {
   }
 
   protected static addNewComponentToComponentPreview(newComponent: WorkshopComponent, parentLayer: Layer): void {
-    const baseSubcomponent = newComponent.baseSubcomponent;
-    AddContainerComponent.addNewSubcomponentToParentLayer(parentLayer, baseSubcomponent);
-    baseSubcomponent.parentLayer = parentLayer;
+    AddContainerComponent.addNewSubcomponentToParentLayer(parentLayer, newComponent.baseSubcomponent);
+    newComponent.parentLayer = parentLayer;
   }
 
   private static applyTopProperty(baseSubcomponent: SubcomponentProperties): void {

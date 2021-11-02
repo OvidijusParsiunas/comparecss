@@ -10,14 +10,16 @@ type SiblingManipulationCallback = (siblingSubcomponents: SiblingSubcomponents, 
 // type to abstract siblingSubcomponents property
 export class AutoSyncedSiblingContainerComponentUtils {
 
-  // only goes as far as 2 container component levels
+  // only goes as far as 2 parent layer levels
   private static getAutoSyncedSiblingSubcomponents(parentLayer: Layer): SiblingSubcomponents {
     const parentLayerComponent = parentLayer.subcomponentProperties.seedComponent;
     if (parentLayerComponent.sync.siblingChildComponentsAutoSynced) {
       return parentLayerComponent.sync.siblingChildComponentsAutoSynced?.siblingSubcomponents;
     }
-    if (parentLayerComponent.containerComponent?.baseSubcomponent.parentLayer?.subcomponentProperties.seedComponent.sync.siblingChildComponentsAutoSynced) {
-      return parentLayerComponent.containerComponent?.baseSubcomponent.parentLayer?.subcomponentProperties.seedComponent.sync.siblingChildComponentsAutoSynced?.siblingSubcomponents;
+    const parentParentSiblingChildComponentsAutoSynced = parentLayerComponent.containerComponent
+      ?.parentLayer?.subcomponentProperties.seedComponent.sync.siblingChildComponentsAutoSynced;
+    if (parentParentSiblingChildComponentsAutoSynced) {
+      return parentParentSiblingChildComponentsAutoSynced.siblingSubcomponents;
     }
     return null;
   }
@@ -38,12 +40,12 @@ export class AutoSyncedSiblingContainerComponentUtils {
     }
   }
 
-  private static incrementAndCopy(siblingSubcomponents: SiblingSubcomponents, newSubcomponent: SubcomponentProperties): void {
-    if (!siblingSubcomponents[newSubcomponent.subcomponentType]) {
-      siblingSubcomponents[newSubcomponent.subcomponentType] = { currentCount: 1, subcomponentProperties: newSubcomponent };
+  private static incrementAndCopy(siblingSubcomponents: SiblingSubcomponents, subcomponent: SubcomponentProperties): void {
+    if (!siblingSubcomponents[subcomponent.subcomponentType]) {
+      siblingSubcomponents[subcomponent.subcomponentType] = { currentCount: 1, subcomponentProperties: subcomponent };
     } else {
-      siblingSubcomponents[newSubcomponent.subcomponentType].currentCount += 1;
-      AutoSyncedSiblingComponentUtils.copySiblingSubcomponent(siblingSubcomponents[newSubcomponent.subcomponentType].subcomponentProperties, newSubcomponent);
+      siblingSubcomponents[subcomponent.subcomponentType].currentCount += 1;
+      AutoSyncedSiblingComponentUtils.copySiblingSubcomponent(siblingSubcomponents[subcomponent.subcomponentType].subcomponentProperties, subcomponent);
     }
   }
 
