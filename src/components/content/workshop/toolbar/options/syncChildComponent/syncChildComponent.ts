@@ -65,8 +65,8 @@ export class SyncChildComponent {
 
   // used to resync layer components when there are too many in the syncable component e.g. dropdown menu
   private static reSyncLayers(syncableComponent: WorkshopComponent): void {
-    const { siblingLayersInSyncWithEachOther } = syncableComponent;
-    if (siblingLayersInSyncWithEachOther) siblingLayersInSyncWithEachOther.containerSyncFunc(syncableComponent);
+    const { siblingChildComponentsAutoSynced } = syncableComponent.sync;
+    if (siblingChildComponentsAutoSynced) siblingChildComponentsAutoSynced.resyncFunc(syncableComponent);
   }
 
   private static syncChildComponents(syncableComponent: WorkshopComponent, childComponents: WorkshopComponent[],
@@ -135,7 +135,7 @@ export class SyncChildComponent {
 
 // private static syncLayers(syncableComponent: WorkshopComponent): void {
 //   const { siblingLayersInSyncWithEachOther } = syncableComponent;
-//   if (siblingLayersInSyncWithEachOther) siblingLayersInSyncWithEachOther.containerSyncFunc(syncableComponent);
+//   if (siblingLayersInSyncWithEachOther) siblingLayersInSyncWithEachOther.resyncFunc(syncableComponent);
 // }
 
 // // not using TraverseComponentViaPreviewStructureChildFirst as it abides to subcomponent order and instead sync components are tracked via syncables

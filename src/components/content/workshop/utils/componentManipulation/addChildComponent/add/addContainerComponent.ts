@@ -15,8 +15,8 @@ import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../../../consts/com
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
 import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
+import { AutoSyncedSiblingComponentUtils } from '../../utils/autoSyncedSiblingComponentUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { SyncedSiblingComponentUtils } from '../../utils/syncedSiblingComponentUtils';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { SubcomponentTriggers } from '../../utils/subcomponentTriggers';
 import { AddComponentShared } from './addComponentShared';
@@ -116,7 +116,7 @@ export class AddContainerComponent extends AddComponentShared {
   }
 
   private static overwriteSubcomponentCustomProperties(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
-    SyncedSiblingComponentUtils.copySiblingIfSiblingsSynced(containerComponent, newComponent);
+    AutoSyncedSiblingComponentUtils.copySiblingIfAutoSynced(containerComponent, newComponent);
     AddContainerComponent.applyTopProperty(newComponent.baseSubcomponent);
   }
 

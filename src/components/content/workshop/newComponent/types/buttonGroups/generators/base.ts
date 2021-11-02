@@ -16,7 +16,7 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 class ButtonGroupBase extends ComponentBuilder {
 
   public static setSiblingLayersInSyncWithEachOther(dropdownMenuComponent: WorkshopComponent): void {
-    dropdownMenuComponent.siblingLayersInSyncWithEachOther = { subcomponents: {} };
+    dropdownMenuComponent.sync.siblingChildComponentsAutoSynced = { siblingSubcomponents: {} };
   }
 
   private static setComponentToRemovable(buttonComponent: WorkshopComponent): void {

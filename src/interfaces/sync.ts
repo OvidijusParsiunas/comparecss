@@ -1,3 +1,4 @@
+import { SiblingChildComponentsAutoSynced } from './siblingChildComponentsAutoSynced';
 import { SubcomponentTypeToProperties } from './subcomponentTypeToProperties';
 import { WorkshopComponent } from './workshopComponent';
 
@@ -32,4 +33,7 @@ export interface Sync {
   componentsSyncedToThis: Set<WorkshopComponent>;
   syncables: Syncables;
   lastSelectedComponentToSync?: WorkshopComponent;
+  // when sibling child components are auto synced - the sync button is not displayed, however
+  // it is displayed when the child components are synced to components outside
+  siblingChildComponentsAutoSynced?: SiblingChildComponentsAutoSynced;
 }

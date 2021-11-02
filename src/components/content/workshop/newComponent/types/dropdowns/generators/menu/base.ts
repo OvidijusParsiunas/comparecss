@@ -106,7 +106,7 @@ export class DropdownMenuBase extends ComponentBuilder {
   }
 
   public static setSiblingLayersInSyncWithEachOther(dropdownMenuComponent: WorkshopComponent): void {
-    dropdownMenuComponent.siblingLayersInSyncWithEachOther = { containerSyncFunc: DropdownMenuBase.setAllItemAndItemTextComponentsToBeInSync };
+    dropdownMenuComponent.sync.siblingChildComponentsAutoSynced = { resyncFunc: DropdownMenuBase.setAllItemAndItemTextComponentsToBeInSync };
   }
 
   private static createDefaultMenuCss(): CustomCss {

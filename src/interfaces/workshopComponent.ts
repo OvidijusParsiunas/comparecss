@@ -1,7 +1,6 @@
 import { InterconnectedSetting, SubcomponentSpecificSettings } from './subcomponentSpecificSettings';
 import { DropdownFeatures, DropdownMenuData, SelectDropdownText } from './dropdownFeatures';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
-import { SiblingLayersInSyncWithEachOther } from './siblingLayersInSyncWithEachOther';
 import { SubcomponentMouseEventCallbacks } from './subcomponentMouseEventCallbacks';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
@@ -184,7 +183,6 @@ export interface WorkshopComponent {
   // gives an in sync child component to identify if the copied component has not been deleted
   componentStatus: { isRemoved: boolean };
   interconnectedSettings?: InterconnectedSetting[];
-  siblingLayersInSyncWithEachOther?: SiblingLayersInSyncWithEachOther;
   // when a particular setting is changed (e.g. input or range) - call a particular function
   triggerFuncOnSettingChange?: TriggerFuncOnSettingChange;
   // used to reference the linked component - where the base component refereneces the auxiliary component and vice versa

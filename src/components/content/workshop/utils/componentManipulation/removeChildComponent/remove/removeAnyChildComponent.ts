@@ -9,9 +9,9 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../
 import { UpdateLayerDropdownItemNames } from '../../updateChildComponent/updateLayerDropdownItemNames';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
+import { AutoSyncedSiblingComponentUtils } from '../../utils/autoSyncedSiblingComponentUtils';
 import ComponentTraversalUtils from '../../../componentTraversal/componentTraversalUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
-import { SyncedSiblingComponentUtils } from '../../utils/syncedSiblingComponentUtils';
 import { ActiveComponentUtils } from '../../../activeComponent/activeComponentUtils';
 import { SetActiveComponentUtils } from '../../utils/setActiveComponentUtils';
 import { SubcomponentTriggers } from '../../utils/subcomponentTriggers';
@@ -138,7 +138,7 @@ export class RemoveAnyChildComponent {
     RemoveAnyChildComponent.removeAlignedComponents(subcomponentProperties, masterComponent, containerComponent);
     alignedChildComponents.splice(index, 1);
     InterconnectedSettings.update(false, containerComponent, subcomponentProperties);
-    SyncedSiblingComponentUtils.decrementSiblingSubcomponentCount(containerComponent, subcomponentProperties.seedComponent);
+    AutoSyncedSiblingComponentUtils.decrementSiblingSubcomponentCount(containerComponent, subcomponentProperties.seedComponent);
   }
 
   private static removeLayer(layers: Layer[], index: number, masterComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {

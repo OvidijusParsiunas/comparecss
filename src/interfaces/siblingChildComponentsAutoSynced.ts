@@ -10,7 +10,7 @@ export type SiblingSubcomponents = {
   [key in SUBCOMPONENT_TYPES]?: SubcomponentState;
 };
 
-export interface SiblingLayersInSyncWithEachOther {
-  containerSyncFunc?: (container: WorkshopComponent) => void;
-  subcomponents?: SiblingSubcomponents;
+export interface SiblingChildComponentsAutoSynced {
+  resyncFunc?: (container: WorkshopComponent) => void;
+  siblingSubcomponents?: SiblingSubcomponents;
 }
