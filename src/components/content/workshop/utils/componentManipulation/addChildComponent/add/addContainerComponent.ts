@@ -116,6 +116,7 @@ export class AddContainerComponent extends AddComponentShared {
   }
 
   private static overwriteSubcomponentCustomProperties(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
+    // WORK 2 - should use the layer instead
     AutoSyncedSiblingComponentUtils.copySiblingIfAutoSynced(containerComponent, newComponent);
     AddContainerComponent.applyTopProperty(newComponent.baseSubcomponent);
   }

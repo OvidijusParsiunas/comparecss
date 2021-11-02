@@ -29,7 +29,7 @@ export class DropdownPaddingBase extends ComponentBuilder {
     paddingComponent.newChildComponents.propertyOverwritables = {
       propertyReferenceSharingFuncs: {
         // only executed when padding component is dereferenced
-        // custom properties references are signalled to be shared on new layer additions by siblingLayersInSyncWithEachOther,
+        // custom properties references are signalled to be shared on new layer additions by siblingChildComponentsAutoSynced,
         // however when existing layers are copied - this method sets them to be in sync
         container: [DropdownMenuBase.setAllItemAndItemTextComponentsToBeInSync],
       },

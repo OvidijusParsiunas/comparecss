@@ -134,8 +134,8 @@ export class SyncChildComponent {
 // }
 
 // private static syncLayers(syncableComponent: WorkshopComponent): void {
-//   const { siblingLayersInSyncWithEachOther } = syncableComponent;
-//   if (siblingLayersInSyncWithEachOther) siblingLayersInSyncWithEachOther.resyncFunc(syncableComponent);
+//   const { siblingChildComponentsAutoSynced } = syncableComponent.sync;
+//   if (siblingChildComponentsAutoSynced) siblingChildComponentsAutoSynced.resyncFunc(syncableComponent);
 // }
 
 // // not using TraverseComponentViaPreviewStructureChildFirst as it abides to subcomponent order and instead sync components are tracked via syncables

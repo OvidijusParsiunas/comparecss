@@ -105,7 +105,7 @@ export class DropdownMenuBase extends ComponentBuilder {
     });
   }
 
-  public static setSiblingLayersInSyncWithEachOther(dropdownMenuComponent: WorkshopComponent): void {
+  public static setSiblingChildComponentsAutoSynced(dropdownMenuComponent: WorkshopComponent): void {
     dropdownMenuComponent.sync.siblingChildComponentsAutoSynced = { resyncFunc: DropdownMenuBase.setAllItemAndItemTextComponentsToBeInSync };
   }
 
@@ -185,7 +185,7 @@ export const dropdownMenuBase: ComponentGenerator = {
   createNewComponent(presetProperties: PresetProperties): WorkshopComponent {
   presetProperties.componentType = COMPONENT_TYPES.DROPDOWN_MENU;
     const dropdownMenuComponent = DropdownMenuBase.createBaseComponent(presetProperties, DropdownMenuBase.createBaseSubcomponent, false);
-    DropdownMenuBase.setSiblingLayersInSyncWithEachOther(dropdownMenuComponent);
+    DropdownMenuBase.setSiblingChildComponentsAutoSynced(dropdownMenuComponent);
     DropdownMenuBase.setOnChildComponentRemovalFunc(dropdownMenuComponent);
     DropdownMenuBase.setTriggerFuncOnSettingChange(dropdownMenuComponent);
     DropdownMenuBase.setPropertyOverwritables(dropdownMenuComponent);

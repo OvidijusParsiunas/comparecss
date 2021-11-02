@@ -65,7 +65,8 @@ export class AddLayerComponent extends AddComponentShared {
     }
   }
 
-  // current strategy does not work if component is in sync and multiple layers have different child components
+  // if child components should also be the same - then the siblingSubcomponents state will need to be stored at the container component,
+  // but there is no use case that requires such functionality as it is currently handled by the childComponentsLockedToLayer property
   private static overwriteSubcomponentCustomProperties(containerComponent: WorkshopComponent, newLayerProperties: SubcomponentProperties): void {
     if (containerComponent.componentPreviewStructure.layers.length === 1) {
       const syncedComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(containerComponent);

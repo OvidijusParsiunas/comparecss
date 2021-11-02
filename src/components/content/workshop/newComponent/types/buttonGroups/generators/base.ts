@@ -15,7 +15,7 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonGroupBase extends ComponentBuilder {
 
-  public static setSiblingLayersInSyncWithEachOther(dropdownMenuComponent: WorkshopComponent): void {
+  public static setSiblingChildComponentsAutoSynced(dropdownMenuComponent: WorkshopComponent): void {
     dropdownMenuComponent.sync.siblingChildComponentsAutoSynced = { siblingSubcomponents: {} };
   }
 
@@ -91,7 +91,7 @@ export const buttonGroupBase: ComponentGenerator = {
     const buttonGroupBaseComponent = ComponentBuilder.createBaseComponent(presetProperties, ButtonGroupBase.createBaseSubcomponent, false);
     ButtonGroupBase.setChildComponentsItems(buttonGroupBaseComponent);
     ButtonGroupBase.setPropertyOverwritables(buttonGroupBaseComponent);
-    ButtonGroupBase.setSiblingLayersInSyncWithEachOther(buttonGroupBaseComponent);
+    ButtonGroupBase.setSiblingChildComponentsAutoSynced(buttonGroupBaseComponent);
     // AlertBaseSpecificSettings.set(alertBaseComponent);
     return buttonGroupBaseComponent;
   },
