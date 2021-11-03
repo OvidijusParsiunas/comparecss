@@ -122,6 +122,7 @@ export class SyncChildComponent {
     Object.keys(alignedSections).forEach((alignedSectionType: ALIGNED_SECTION_TYPES) => {
       alignedSections[alignedSectionType].forEach((baseSubcomponent) => {
         baseSubcomponent.subcomponentProperties.seedComponent.sync.componentThisIsSyncedTo = componenetThisIsSyncedTo;
+        componenetThisIsSyncedTo.sync.componentsSyncedToThis.add(baseSubcomponent.subcomponentProperties.seedComponent);
       });
     });
   }
