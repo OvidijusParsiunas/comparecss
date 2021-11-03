@@ -6,8 +6,8 @@ export class CleanSyncChildComponentMode {
   
   private static resetOriginalCss(subcomponentProperties: SubcomponentProperties): void {
     if (!subcomponentProperties.tempOriginalCustomProperties) return;
-    subcomponentProperties.customCss = subcomponentProperties.tempOriginalCustomProperties.customCss;
-    subcomponentProperties.customFeatures = subcomponentProperties.tempOriginalCustomProperties.customFeatures; 
+    Object.assign(subcomponentProperties.customCss, subcomponentProperties.tempOriginalCustomProperties.customCss);
+    Object.assign(subcomponentProperties.customFeatures, subcomponentProperties.tempOriginalCustomProperties.customFeatures);
   }
 
   private static resetSubcomponentProperties(activeComponentTraversal: SubcomponentPreviewTraversalState): SubcomponentPreviewTraversalState {

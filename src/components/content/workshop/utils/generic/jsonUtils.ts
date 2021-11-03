@@ -30,7 +30,7 @@ export default class JSONUtils {
   }
 
   public static deepCopy<T>(object: Exclude<T, string>): T  {
-    return this.createNewObject(object) as T;
+    return JSONUtils.createNewObject(object) as T;
   }
 
   public static getKeyByValue(object: unknown, value: unknown): string {

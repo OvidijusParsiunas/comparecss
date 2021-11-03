@@ -3,6 +3,7 @@ import { SubcomponentProperties, WorkshopComponent } from '../../../../../../int
 import { SubcomponentTypeToProperties } from '../../../../../../interfaces/subcomponentTypeToProperties';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
+import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 import { SyncChildComponentUtils } from './syncChildComponentUtils';
 import JSONUtils from '../../../utils/generic/jsonUtils';
@@ -16,15 +17,15 @@ export class SyncChildComponent {
   
   private static moveCustomPropertiesToTempProperties(syncableSubcomponent: SubcomponentProperties): void {
     syncableSubcomponent.tempOriginalCustomProperties = {
-      customCss: syncableSubcomponent.customCss,
-      customFeatures: syncableSubcomponent.customFeatures,
+      customCss: JSONUtils.deepCopy(syncableSubcomponent.customCss),
+      customFeatures: JSONUtils.deepCopy(syncableSubcomponent.customFeatures),
     };
   }
 
   private static syncAllCustomProperties(syncableSubcomponent: SubcomponentProperties, subcomponentToBeSyncedTo: SubcomponentProperties): void {
-    syncableSubcomponent.customFeatures = subcomponentToBeSyncedTo.customFeatures;
+    Object.assign(syncableSubcomponent.customFeatures, subcomponentToBeSyncedTo.customFeatures);
+    Object.assign(syncableSubcomponent.customCss, subcomponentToBeSyncedTo.customCss);
     const componentToBeSyncedCustomCss = subcomponentToBeSyncedTo.customCss;
-    syncableSubcomponent.customCss = componentToBeSyncedCustomCss;
     if (!componentToBeSyncedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top && subcomponentToBeSyncedTo.subcomponentType !== SUBCOMPONENT_TYPES.LAYER) {
       componentToBeSyncedCustomCss[CSS_PSEUDO_CLASSES.DEFAULT].top = AddContainerComponent.DEFAULT_TOP_PROPERTY;
     }
@@ -112,6 +113,17 @@ export class SyncChildComponent {
   public static syncComponentToTargetTemporarily(currentlySelectedComponent: WorkshopComponent, componentToBeSyncedTo: WorkshopComponent): void {
     const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
     SyncChildComponent.syncSyncables(activeComponent, componentToBeSyncedTo, componentToBeSyncedTo.type, true, true);
+  }
+
+  public static setAutoSyncedSiblingComponentsToInSync(currentlySelectedComponent: WorkshopComponent, componenetThisIsSyncedTo: WorkshopComponent): void {
+    const { siblingSubcomponents } = currentlySelectedComponent.parentLayer.subcomponentProperties.seedComponent.sync?.siblingChildComponentsAutoSynced || {};
+    if (!siblingSubcomponents) return;
+    const { alignedSections } = currentlySelectedComponent.parentLayer.sections;
+    Object.keys(alignedSections).forEach((alignedSectionType: ALIGNED_SECTION_TYPES) => {
+      alignedSections[alignedSectionType].forEach((baseSubcomponent) => {
+        baseSubcomponent.subcomponentProperties.seedComponent.sync.componentThisIsSyncedTo = componenetThisIsSyncedTo;
+      });
+    });
   }
 
   public static syncLastSelectectedComponentToTarget(activeComponent: WorkshopComponent, componentToBeSynced: WorkshopComponent): void {
