@@ -67,4 +67,8 @@ export class AutoSyncedSiblingContainerComponentUtils {
     AutoSyncedSiblingContainerComponentUtils.callCountManipulationCallbackOnSubcomponents(
       parentLayer, childComponent, AutoSyncedSiblingContainerComponentUtils.decrementAndRemoveIfNoneLeft);
   }
+
+  public static getSiblingSubcomponents(component: WorkshopComponent): SiblingSubcomponents {
+    return component.parentLayer.subcomponentProperties.seedComponent.sync?.siblingChildComponentsAutoSynced.siblingSubcomponents;
+  }
 }

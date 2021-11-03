@@ -1,8 +1,11 @@
 import { TraverseComponentViaPreviewStructureChildFirst } from '../../../utils/componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureChildFirst';
+import { AutoSyncedSiblingContainerComponentUtils } from '../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingContainerComponentUtils';
 import { PropertyReferenceSharingFuncsUtils } from '../../../newComponent/types/shared/propertyReferenceSharingFuncs/propertyReferenceSharingFuncsUtils';
 import { SubcomponentPreviewTraversalState, PreviewTraversalResult } from '../../../../../../interfaces/componentTraversal';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { SiblingSubcomponents } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
+import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 import { SyncChildComponentUtils } from './syncChildComponentUtils';
 import { SyncChildComponent } from './syncChildComponent';
@@ -19,18 +22,47 @@ export class SyncedComponent {
     return {};
   }
 
-  private static unSyncComponent(inSyncComponent: WorkshopComponent, childComponentType: COMPONENT_TYPES): void {
-    TraverseComponentViaPreviewStructureChildFirst.traverse(SyncedComponent.dereferenceCopiedComponentCustomProperties, inSyncComponent);
+  private static resyncSiblingChildComponents(siblingSubcomponents: SiblingSubcomponents): void {
+    Object.keys(siblingSubcomponents).forEach((subcomponentType: keyof SUBCOMPONENT_TYPES) => {
+      const { subcomponentProperties } = siblingSubcomponents[subcomponentType];
+      Object.assign(subcomponentProperties.customCss, JSONUtils.deepCopy(subcomponentProperties.customCss));
+      Object.assign(subcomponentProperties.customFeatures, JSONUtils.deepCopy(subcomponentProperties.customFeatures));
+    });
+  }
+
+  private static unsyncFromComponentCurrentlySyncedTo(inSyncComponent: WorkshopComponent, siblingSubcomponents: SiblingSubcomponents): void {
+    if (siblingSubcomponents) {
+      SyncedComponent.resyncSiblingChildComponents(siblingSubcomponents);
+    } else {
+      TraverseComponentViaPreviewStructureChildFirst.traverse(SyncedComponent.dereferenceCopiedComponentCustomProperties, inSyncComponent);
+    }
+  }
+
+  private static unSyncComponent(inSyncComponent: WorkshopComponent, siblingSubcomponents: SiblingSubcomponents, childComponentType: COMPONENT_TYPES): void {
+    SyncedComponent.unsyncFromComponentCurrentlySyncedTo(inSyncComponent, siblingSubcomponents);
     inSyncComponent.sync.componentThisIsSyncedTo = null;
     setTimeout(() => {
       SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(inSyncComponent, childComponentType);
     });
   }
 
+  private static removeAutoSyncedSiblingComponentsSyncReferences(inSyncComponent: WorkshopComponent): void {
+    const { alignedSections } = inSyncComponent.parentLayer.sections;
+    Object.keys(alignedSections).forEach((alignedSectionType: ALIGNED_SECTION_TYPES) => {
+      alignedSections[alignedSectionType].forEach((baseSubcomponent) => {
+        const { seedComponent } = baseSubcomponent.subcomponentProperties;
+        seedComponent.sync.componentThisIsSyncedTo.sync.componentsSyncedToThis.delete(seedComponent);
+        seedComponent.sync.componentThisIsSyncedTo = null;
+      });
+    });
+  }
+
   public static toggleSubcomponentSyncToOff(containerComponent: WorkshopComponent, callback?: () => void): void {
     const activeComponent = containerComponent.subcomponents[containerComponent.activeSubcomponentName].seedComponent;
     const inSyncComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(activeComponent);
-    SyncedComponent.unSyncComponent(inSyncComponent, activeComponent.type);
+    const siblingSubcomponents = AutoSyncedSiblingContainerComponentUtils.getSiblingSubcomponents(inSyncComponent);
+    if (siblingSubcomponents) SyncedComponent.removeAutoSyncedSiblingComponentsSyncReferences(inSyncComponent);
+    SyncedComponent.unSyncComponent(inSyncComponent, siblingSubcomponents, activeComponent.type);
     if (callback) callback();
   }
 
@@ -54,7 +86,10 @@ export class SyncedComponent {
   public static updateIfComponentSyncedToIsRemoved(component: WorkshopComponent): void {
     const inSyncComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(component);
     // more information can be found in the documentation reference: DOC: 7878
-    if (inSyncComponent?.componentStatus.isRemoved) SyncedComponent.unSyncComponent(inSyncComponent, component.type);
+    if (inSyncComponent?.componentStatus.isRemoved) {
+      const siblingSubcomponents = AutoSyncedSiblingContainerComponentUtils.getSiblingSubcomponents(inSyncComponent);
+      SyncedComponent.unSyncComponent(inSyncComponent, siblingSubcomponents, component.type);
+    }
   }
 
   public static isInSyncButtonDisplayed(activeSubcomponent: SubcomponentProperties): boolean {
