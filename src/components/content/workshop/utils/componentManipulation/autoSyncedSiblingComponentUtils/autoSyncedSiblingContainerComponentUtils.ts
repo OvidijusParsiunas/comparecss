@@ -42,10 +42,10 @@ export class AutoSyncedSiblingContainerComponentUtils {
 
   private static incrementAndCopy(siblingSubcomponents: SiblingSubcomponents, subcomponent: SubcomponentProperties): void {
     if (!siblingSubcomponents[subcomponent.subcomponentType]) {
-      siblingSubcomponents[subcomponent.subcomponentType] = { currentCount: 1, subcomponentProperties: subcomponent };
+      siblingSubcomponents[subcomponent.subcomponentType] = { currentCount: 1, customDynamicProperties: subcomponent };
     } else {
       siblingSubcomponents[subcomponent.subcomponentType].currentCount += 1;
-      AutoSyncedSiblingComponentUtils.copySiblingSubcomponent(siblingSubcomponents[subcomponent.subcomponentType].subcomponentProperties, subcomponent);
+      AutoSyncedSiblingComponentUtils.copySiblingSubcomponent(siblingSubcomponents[subcomponent.subcomponentType].customDynamicProperties, subcomponent);
     }
   }
 

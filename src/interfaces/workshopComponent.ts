@@ -79,6 +79,12 @@ export interface AlignedLayerSection {
   section: ALIGNED_SECTION_TYPES;
 }
 
+export interface Image {
+  name: string;
+  data: string;
+  size: boolean;
+}
+
 // should not be primitives as these values are copied by key
 export interface CustomFeatures {
   backdrop?: BackdropProperties;
@@ -94,10 +100,9 @@ export interface CustomFeatures {
   dropdown?: DropdownFeatures;
 }
 
-export interface Image {
-  name: string;
-  data: string;
-  size: boolean;
+interface TempCustomProperties {
+  customCss: CustomCss;
+  customFeatures?: CustomFeatures;
 }
 
 export interface CustomStaticFeatures {
@@ -112,17 +117,19 @@ export interface CustomStaticFeatures {
   icon?: Icon;
 }
 
-interface TempCustomProperties {
+export interface CustomDynamicProperties {
   customCss: CustomCss;
+  defaultCss: CustomCss;
   customFeatures?: CustomFeatures;
+  defaultCustomFeatures?: CustomFeatures;
+  // temporarily holds the original customCss when a component card has been hovered/selected during child copy mode 
+  tempOriginalCustomProperties?: TempCustomProperties;
 }
 
-export interface SubcomponentProperties {
+export type SubcomponentProperties = CustomDynamicProperties & {
   name: string;
   // used for defining options and adding new subcomponents to a layer
   subcomponentType?: SUBCOMPONENT_TYPES;
-  customCss: CustomCss;
-  defaultCss: CustomCss;
   // this css is used in instances where partialCss has been overwritten by a single value, but a fraction of it
   // must be retained for use by settings - boxShadow (to note, this is mostly used by the app in runtime)
   auxiliaryPartialCss?: CustomCss;
@@ -140,8 +147,6 @@ export interface SubcomponentProperties {
   defaultCssPseudoClass: CSS_PSEUDO_CLASSES;
   // the reason why custom css is attached here is to not have to keep multiple unique settings for each and every subcomponent in memory all at once
   subcomponentSpecificSettings?: SubcomponentSpecificSettings;
-  customFeatures?: CustomFeatures;
-  defaultCustomFeatures?: CustomFeatures;
   // features that would not be overwritten by imported child component's subcomponents
   customStaticFeatures?: CustomStaticFeatures; 
   defaultCustomStaticFeatures?: CustomStaticFeatures;
@@ -152,8 +157,6 @@ export interface SubcomponentProperties {
   seedComponent?: WorkshopComponent;
   // this is used for overwriting css properties on mouse actions as adding css directly to customCss causes in-sync components to be edited all at once
   overwrittenCustomCssObj?: CustomCss;
-  // temporarily holds the original customCss when a component card has been hovered/selected during component import mode 
-  tempOriginalCustomProperties?: TempCustomProperties;
   // this subcomponent can trigger and be triggered by other subcomponents
   otherSubcomponentTriggers?: OtherSubcomponentTriggers;
   // used to temporarily display a child component when hovering add subcomponent dropdown items with a mouse

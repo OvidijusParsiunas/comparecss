@@ -1,9 +1,9 @@
-import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
+import { CustomDynamicProperties, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import JSONUtils from '../../generic/jsonUtils';
 
 export class AutoSyncedSiblingComponentUtils {
 
-  public static copySiblingSubcomponent(siblingSubcomponentProperties: SubcomponentProperties,
+  public static copySiblingSubcomponent(siblingSubcomponentProperties: CustomDynamicProperties,
       newSubcomponentProperties: SubcomponentProperties, withRefs = true): void {
     const { customCss, defaultCss, customFeatures, defaultCustomFeatures } = siblingSubcomponentProperties;
     if (withRefs) {

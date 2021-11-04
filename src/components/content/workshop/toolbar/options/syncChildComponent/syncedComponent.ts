@@ -1,9 +1,9 @@
 import { TraverseComponentViaPreviewStructureChildFirst } from '../../../utils/componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureChildFirst';
 import { AutoSyncedSiblingContainerComponentUtils } from '../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingContainerComponentUtils';
 import { PropertyReferenceSharingFuncsUtils } from '../../../newComponent/types/shared/propertyReferenceSharingFuncs/propertyReferenceSharingFuncsUtils';
+import { SiblingSubcomponents, SiblingSubcomponentState } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { SubcomponentPreviewTraversalState, PreviewTraversalResult } from '../../../../../../interfaces/componentTraversal';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { SiblingSubcomponents } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
@@ -13,6 +13,7 @@ import JSONUtils from '../../../utils/generic/jsonUtils';
 
 export class SyncedComponent {
 
+  // WORK 2 - what happens when a child component is removed from the component synced to
   private static dereferenceCopiedComponentCustomProperties(componentTraversalState: SubcomponentPreviewTraversalState): PreviewTraversalResult {
     const { subcomponentProperties } = componentTraversalState;
     subcomponentProperties.customCss = JSONUtils.deepCopy(subcomponentProperties.customCss);
@@ -24,9 +25,9 @@ export class SyncedComponent {
 
   private static resyncSiblingChildComponents(siblingSubcomponents: SiblingSubcomponents): void {
     Object.keys(siblingSubcomponents).forEach((subcomponentType: keyof SUBCOMPONENT_TYPES) => {
-      const { subcomponentProperties } = siblingSubcomponents[subcomponentType];
-      Object.assign(subcomponentProperties.customCss, JSONUtils.deepCopy(subcomponentProperties.customCss));
-      Object.assign(subcomponentProperties.customFeatures, JSONUtils.deepCopy(subcomponentProperties.customFeatures));
+      const { customDynamicProperties } = siblingSubcomponents[subcomponentType] as SiblingSubcomponentState;
+      Object.assign(customDynamicProperties.customCss, JSONUtils.deepCopy(customDynamicProperties.customCss));
+      Object.assign(customDynamicProperties.customFeatures, JSONUtils.deepCopy(customDynamicProperties.customFeatures));
     });
   }
 

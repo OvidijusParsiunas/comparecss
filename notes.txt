@@ -1,6 +1,7 @@
 when card button margin top is changed - the overlay position is incorrect
 
 button:
+when removing a child component when all components are in sync with another - do not remove its property
 make sure sibling child component functionality still works when these components are synced to other components
 calculate height based on the first button screen view height
 base will be used to set the margin of the button group
