@@ -1,7 +1,11 @@
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { SiblingSubcomponentTypes } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 import { BUTTON_STYLES } from '../../../../../../consts/componentStyles.enum';
+
+export type SyncableSubcomponentTraversalCallback = (
+  subcomponent: SubcomponentProperties, siblingSubcomponentTypes?: SiblingSubcomponentTypes) => void;
 
 export class SyncChildComponentUtils {
 
@@ -44,5 +48,18 @@ export class SyncChildComponentUtils {
       return activeComponent.type === subjectSyncableComponent.type;
     }
     return false;
+  }
+
+  public static callFuncOnSyncableSubcomponents(callback: SyncableSubcomponentTraversalCallback, childComponent: WorkshopComponent,
+      siblingSubcomponentTypes?: SiblingSubcomponentTypes): void {
+    const syncableSubcomponents = childComponent.sync.syncables.onCopy?.subcomponents;
+    if (syncableSubcomponents) {
+      Object.keys(syncableSubcomponents).forEach((subcomponentType) => {
+        const subcomponent = syncableSubcomponents[subcomponentType];
+        if (subcomponent) callback(subcomponent, siblingSubcomponentTypes);
+      });
+    } else {
+      callback(childComponent.baseSubcomponent, siblingSubcomponentTypes);
+    }
   }
 }

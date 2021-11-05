@@ -24,15 +24,16 @@ export class SyncedComponent {
     return {};
   }
 
-  private static removeAutoSyncedSiblingSyncReferencesAndResyncTogether(inSyncComponent: WorkshopComponent, siblingSubcomponentTypes: SiblingSubcomponentTypes): void {
+  private static removeAutoSyncedSiblingSyncReferencesAndResyncTogether(inSyncComponent: WorkshopComponent,
+      siblingSubcomponentTypes: SiblingSubcomponentTypes): void {
     const { alignedSections } = inSyncComponent.parentLayer.sections;
     Object.keys(alignedSections).forEach((alignedSectionType: ALIGNED_SECTION_TYPES) => {
       alignedSections[alignedSectionType].forEach((baseSubcomponent) => {
         const { seedComponent } = baseSubcomponent.subcomponentProperties;
         seedComponent.sync.componentThisIsSyncedTo.sync.componentsSyncedToThis.delete(seedComponent);
         seedComponent.sync.componentThisIsSyncedTo = null;
-        AutoSyncedSiblingComponentUtils.copySiblingSubcomponent(
-          siblingSubcomponentTypes[baseSubcomponent.subcomponentProperties.subcomponentType].customDynamicProperties, baseSubcomponent.subcomponentProperties); 
+        SyncChildComponentUtils.callFuncOnSyncableSubcomponents(AutoSyncedSiblingComponentUtils.copySiblingSubcomponentCopyableTraversalCallback,
+          seedComponent, siblingSubcomponentTypes);
       });
     });
   }

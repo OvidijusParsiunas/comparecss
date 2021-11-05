@@ -1,4 +1,5 @@
 import { CustomDynamicProperties, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
+import { SiblingSubcomponentTypes } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import JSONUtils from '../../generic/jsonUtils';
 
 export class AutoSyncedSiblingComponentUtils {
@@ -17,5 +18,11 @@ export class AutoSyncedSiblingComponentUtils {
       newSubcomponentProperties.customFeatures = JSONUtils.deepCopy(customFeatures);
       newSubcomponentProperties.defaultCustomFeatures = JSONUtils.deepCopy(defaultCustomFeatures);  
     }
+  }
+
+  public static copySiblingSubcomponentCopyableTraversalCallback(subcomponent: SubcomponentProperties,
+      siblingSubcomponentTypes: SiblingSubcomponentTypes): void {
+    AutoSyncedSiblingComponentUtils.copySiblingSubcomponent(
+      siblingSubcomponentTypes[subcomponent.subcomponentType].customDynamicProperties, subcomponent);
   }
 }

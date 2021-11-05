@@ -1,9 +1,8 @@
+import { SyncableSubcomponentTraversalCallback, SyncChildComponentUtils } from '../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SiblingSubcomponentTypes } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { AutoSyncedSiblingComponentUtils } from './autoSyncedSiblingComponentUtils';
 import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
-
-type SiblingManipulationCallback = (siblingSubcomponentTypes: SiblingSubcomponentTypes, subcomponent: SubcomponentProperties) => void;
 
 // note that this only works if the child container type that can be added is the same - e.g. only buttons
 // current implementation copies all child components in any sections, however if needed can add section
@@ -25,22 +24,14 @@ export class AutoSyncedSiblingContainerComponentUtils {
   }
 
   private static callCountManipulationCallbackOnSubcomponents(parentLayer: Layer, childComponent: WorkshopComponent,
-      callback: SiblingManipulationCallback): void {
-    const autoSyncedSiblingSubcomponents = AutoSyncedSiblingContainerComponentUtils.getAutoSyncedSiblingSubcomponents(parentLayer);
-    if (autoSyncedSiblingSubcomponents) {
-      const syncableSubcomponents = childComponent.sync.syncables.onCopy?.subcomponents;
-      if (syncableSubcomponents) {
-        Object.keys(syncableSubcomponents).forEach((subcomponentType) => {
-          const subcomponent = syncableSubcomponents[subcomponentType];
-          if (subcomponent) callback(autoSyncedSiblingSubcomponents, subcomponent);
-        });
-      } else {
-        callback(autoSyncedSiblingSubcomponents, childComponent.baseSubcomponent);
-      }
+      callback: SyncableSubcomponentTraversalCallback): void {
+    const siblingSubcomponentTypes = AutoSyncedSiblingContainerComponentUtils.getAutoSyncedSiblingSubcomponents(parentLayer);
+    if (siblingSubcomponentTypes) {
+      SyncChildComponentUtils.callFuncOnSyncableSubcomponents(callback, childComponent, siblingSubcomponentTypes);
     }
   }
 
-  private static incrementAndCopy(siblingSubcomponentTypes: SiblingSubcomponentTypes, subcomponent: SubcomponentProperties): void {
+  private static incrementAndCopy(subcomponent: SubcomponentProperties, siblingSubcomponentTypes: SiblingSubcomponentTypes): void {
     if (!siblingSubcomponentTypes[subcomponent.subcomponentType]) {
       siblingSubcomponentTypes[subcomponent.subcomponentType] = { currentCount: 1, customDynamicProperties: subcomponent };
     } else {
@@ -54,7 +45,7 @@ export class AutoSyncedSiblingContainerComponentUtils {
       parentLayer, childComponent, AutoSyncedSiblingContainerComponentUtils.incrementAndCopy);
   }
 
-  private static decrementAndRemoveIfNoneLeft(siblingSubcomponentTypes: SiblingSubcomponentTypes, subcomponent: SubcomponentProperties): void {
+  private static decrementAndRemoveIfNoneLeft(subcomponent: SubcomponentProperties, siblingSubcomponentTypes: SiblingSubcomponentTypes): void {
     if (siblingSubcomponentTypes[subcomponent.subcomponentType]) {
       siblingSubcomponentTypes[subcomponent.subcomponentType].currentCount -= 1;
     }

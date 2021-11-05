@@ -61,7 +61,7 @@ export class SyncChildComponent {
     // (if sibling component does have the subcomponent it is added by the normal syncSubcomponent process)
     if (!subcomponentToBeSyncedTo) return;
     if (!siblingSubcomponentTypes[subcomponentType]) {
-      siblingSubcomponentTypes[subcomponentType] = { currentCount: 0, subcomponentProperties: { customCss: {}, customFeatures: {}} } as any;
+      siblingSubcomponentTypes[subcomponentType] = { currentCount: 0, customDynamicProperties: { customCss: {}, customFeatures: {}} } as SiblingSubcomponentState;
     }
     const { customDynamicProperties: siblingSubcomponentProperties } = siblingSubcomponentTypes[subcomponentType] as SiblingSubcomponentState;
     if (isTemporary) SyncChildComponent.moveCustomPropertiesToTempProperties(siblingSubcomponentProperties);
