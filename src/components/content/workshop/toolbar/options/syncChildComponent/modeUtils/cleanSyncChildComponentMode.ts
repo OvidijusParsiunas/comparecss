@@ -26,12 +26,8 @@ export class CleanSyncChildComponentMode {
     Object.keys(siblingSubcomponentTypes).forEach((subcomponentType) => {
       const subcomponentProperties = (siblingSubcomponentTypes[subcomponentType] as SiblingSubcomponentState).customDynamicProperties;
       if (subcomponentProperties.tempOriginalCustomProperties) {
-        if (Object.keys(subcomponentProperties.tempOriginalCustomProperties.customCss).length === 0) {
-          delete siblingSubcomponentTypes[subcomponentType];
-        } else {
           Object.assign(subcomponentProperties.customCss, subcomponentProperties.tempOriginalCustomProperties.customCss);
           Object.assign(subcomponentProperties.customFeatures, subcomponentProperties.tempOriginalCustomProperties.customFeatures);
-        }
       }
     });
   }

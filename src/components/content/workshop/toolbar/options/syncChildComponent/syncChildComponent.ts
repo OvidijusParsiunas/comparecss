@@ -54,15 +54,13 @@ export class SyncChildComponent {
     }
   }
 
+  // if a subcomponent does not exist in the componentToBeSyncedTo, but does in its siblings - add it
   private static addMissingSiblingSubcomponentProperties(componentToBeSyncedTo: WorkshopComponent, isTemporary: boolean,
       siblingSubcomponentTypes: SiblingSubcomponentTypes, subcomponentType: keyof SUBCOMPONENT_TYPES): void {
     const subcomponentToBeSyncedTo = componentToBeSyncedTo?.sync.syncables.onCopy.subcomponents[subcomponentType];
     // when neither the component to be synced to nor the exact sibling component has a particular subcomponent
     // (if sibling component does have the subcomponent it is added by the normal syncSubcomponent process)
-    if (!subcomponentToBeSyncedTo) return;
-    if (!siblingSubcomponentTypes[subcomponentType]) {
-      siblingSubcomponentTypes[subcomponentType] = { currentCount: 0, customDynamicProperties: { customCss: {}, customFeatures: {}} } as SiblingSubcomponentState;
-    }
+    if (!subcomponentToBeSyncedTo || !siblingSubcomponentTypes[subcomponentType]) return;
     const { customDynamicProperties: siblingSubcomponentProperties } = siblingSubcomponentTypes[subcomponentType] as SiblingSubcomponentState;
     if (isTemporary) SyncChildComponent.moveCustomPropertiesToTempProperties(siblingSubcomponentProperties);
     Object.assign(siblingSubcomponentProperties.customCss, subcomponentToBeSyncedTo.customCss);
