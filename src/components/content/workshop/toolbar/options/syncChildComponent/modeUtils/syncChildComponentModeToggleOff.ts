@@ -5,7 +5,6 @@ import { WorkshopEventCallbackUtils } from '../../workshopEventCallbackUtils/wor
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../../consts/domEventTriggerKeys.enum';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CleanSyncChildComponentMode } from './cleanSyncChildComponentMode';
-import { SyncChildComponentUtils } from '../syncChildComponentUtils';
 import { SyncChildComponent } from '../syncChildComponent';
 import { ComponentOptions } from 'vue';
 import {
@@ -49,10 +48,10 @@ export class SyncChildComponentModeToggleOff {
     if (activeSeedComponent.sync.lastSelectedComponentToSync) {
       // saving reference as it gets removed before timeout gets executed
       const lastSelectedComponentToSync = activeSeedComponent.sync.lastSelectedComponentToSync;
-      activeSeedComponent.componentStatus = lastSelectedComponentToSync.componentStatus;
       // timeout used to not display the animation immediately if expanded modal mode has been temporarily closed
       setTimeout(() => {
         activeSeedComponent.sync.componentThisIsSyncedTo = lastSelectedComponentToSync;
+        activeSeedComponent.componentStatus = lastSelectedComponentToSync.componentStatus;
         lastSelectedComponentToSync.sync.componentsSyncedToThis.add(activeSeedComponent);
         SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(activeSeedComponent, activeSeedComponent.type);
         SyncChildComponent.setAutoSyncedSiblingComponentsToInSync(activeSeedComponent, lastSelectedComponentToSync);
