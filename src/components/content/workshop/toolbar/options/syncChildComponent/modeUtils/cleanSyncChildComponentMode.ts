@@ -21,12 +21,13 @@ export class CleanSyncChildComponentMode {
   }
 
   private static removeSiblingSubcomponentPropertiesThatWereMissing(activeComponent: WorkshopComponent): void {
-    const siblingSubcomponents = AutoSyncedSiblingContainerComponentUtils.getSiblingSubcomponents(activeComponent);
-    Object.keys(siblingSubcomponents).forEach((subcomponentType) => {
-      const subcomponentProperties = (siblingSubcomponents[subcomponentType] as SiblingSubcomponentState).customDynamicProperties;
+    const siblingSubcomponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingSubcomponents(activeComponent);
+    if (!siblingSubcomponentTypes) return;
+    Object.keys(siblingSubcomponentTypes).forEach((subcomponentType) => {
+      const subcomponentProperties = (siblingSubcomponentTypes[subcomponentType] as SiblingSubcomponentState).customDynamicProperties;
       if (subcomponentProperties.tempOriginalCustomProperties) {
         if (Object.keys(subcomponentProperties.tempOriginalCustomProperties.customCss).length === 0) {
-          delete siblingSubcomponents[subcomponentType];
+          delete siblingSubcomponentTypes[subcomponentType];
         } else {
           Object.assign(subcomponentProperties.customCss, subcomponentProperties.tempOriginalCustomProperties.customCss);
           Object.assign(subcomponentProperties.customFeatures, subcomponentProperties.tempOriginalCustomProperties.customFeatures);

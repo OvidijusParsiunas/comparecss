@@ -71,7 +71,7 @@ export class AddLayerComponent extends AddComponentShared {
       const syncedComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(containerComponent);
       if (syncedComponent) AddLayerComponent.copySyncedComponent(syncedComponent, containerComponent, newLayerProperties);
     } else {
-      // if child components of auto synced layers should also be the same - then the siblingSubcomponents state will need to be stored at the container
+      // if child components of auto synced layers should also be the same - then the siblingSubcomponentTypes state will need to be stored at the container
       // component, but there currently is no use case that requires such functionality as it is currently handled by childComponentsLockedToLayer
       AutoSyncedSiblingComponentUtils.copySiblingSubcomponent(
         containerComponent.componentPreviewStructure.layers[containerComponent.componentPreviewStructure.layers.length - 2].subcomponentProperties,

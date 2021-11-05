@@ -1,6 +1,6 @@
 import { AutoSyncedSiblingContainerComponentUtils } from '../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingContainerComponentUtils';
 import { CustomDynamicProperties, SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { SiblingSubcomponents, SiblingSubcomponentState } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
+import { SiblingSubcomponentTypes, SiblingSubcomponentState } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { AddContainerComponent } from '../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { SubcomponentTypeToProperties } from '../../../../../../interfaces/subcomponentTypeToProperties';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
@@ -55,28 +55,28 @@ export class SyncChildComponent {
   }
 
   private static addMissingSiblingSubcomponentProperties(componentToBeSyncedTo: WorkshopComponent, isTemporary: boolean,
-      siblingSubcomponents: SiblingSubcomponents, subcomponentType: keyof SUBCOMPONENT_TYPES): void {
+      siblingSubcomponentTypes: SiblingSubcomponentTypes, subcomponentType: keyof SUBCOMPONENT_TYPES): void {
     const subcomponentToBeSyncedTo = componentToBeSyncedTo?.sync.syncables.onCopy.subcomponents[subcomponentType];
     // when neither the component to be synced to nor the exact sibling component has a particular subcomponent
     // (if sibling component does have the subcomponent it is added by the normal syncSubcomponent process)
     if (!subcomponentToBeSyncedTo) return;
-    if (!siblingSubcomponents[subcomponentType]) {
-      siblingSubcomponents[subcomponentType] = { currentCount: 0, subcomponentProperties: { customCss: {}, customFeatures: {}} } as any;
+    if (!siblingSubcomponentTypes[subcomponentType]) {
+      siblingSubcomponentTypes[subcomponentType] = { currentCount: 0, subcomponentProperties: { customCss: {}, customFeatures: {}} } as any;
     }
-    const { customDynamicProperties: siblingSubcomponentProperties } = siblingSubcomponents[subcomponentType] as SiblingSubcomponentState;
+    const { customDynamicProperties: siblingSubcomponentProperties } = siblingSubcomponentTypes[subcomponentType] as SiblingSubcomponentState;
     if (isTemporary) SyncChildComponent.moveCustomPropertiesToTempProperties(siblingSubcomponentProperties);
     Object.assign(siblingSubcomponentProperties.customCss, subcomponentToBeSyncedTo.customCss);
     Object.assign(siblingSubcomponentProperties.customFeatures, subcomponentToBeSyncedTo.customFeatures);
   }
 
   private static syncSyncableSubcomponents(syncableSubcomponents: SubcomponentTypeToProperties, componentToBeSyncedTo: WorkshopComponent, isTemporary: boolean,
-      siblingSubcomponents?: SiblingSubcomponents): boolean {
+      siblingSubcomponentTypes?: SiblingSubcomponentTypes): boolean {
     let wasAComponentToBeSyncedToMissing = false;
     Object.keys(syncableSubcomponents).forEach((subcomponentType: keyof SUBCOMPONENT_TYPES) => {
       const syncableSubcomponent: SubcomponentProperties = syncableSubcomponents[subcomponentType];
       if (!syncableSubcomponent) {
-        if (siblingSubcomponents) SyncChildComponent.addMissingSiblingSubcomponentProperties(
-          componentToBeSyncedTo, isTemporary, siblingSubcomponents, subcomponentType);
+        if (siblingSubcomponentTypes) SyncChildComponent.addMissingSiblingSubcomponentProperties(
+          componentToBeSyncedTo, isTemporary, siblingSubcomponentTypes, subcomponentType);
         return;
       }
       const WasAComponentToBeSyncedToMissing = !!SyncChildComponent.syncSubcomponent(syncableSubcomponent,
@@ -94,12 +94,12 @@ export class SyncChildComponent {
 
   private static syncChildComponents(syncableComponent: WorkshopComponent, childComponents: WorkshopComponent[],
       componentToBeSyncedTo: WorkshopComponent, targeChildComponentType: COMPONENT_TYPES, traverseAll: boolean, isTemporary: boolean,
-      siblingSubcomponents?: SiblingSubcomponents): boolean {
+      siblingSubcomponentTypes?: SiblingSubcomponentTypes): boolean {
     let wasTargetChildFound = false;
     let wasAComponentToBeSyncedToMissing = false;
     for (let i = 0; i < childComponents.length; i += 1) {
       const { wasTargetChildFound: WasTargetChildFound, wasAComponentToBeSyncedToMissing: WasAComponentToBeSyncedToMissing } = SyncChildComponent.syncSyncables(
-        childComponents[i], componentToBeSyncedTo.sync.syncables.onCopy.childComponents[i], targeChildComponentType, traverseAll, isTemporary, siblingSubcomponents);
+        childComponents[i], componentToBeSyncedTo.sync.syncables.onCopy.childComponents[i], targeChildComponentType, traverseAll, isTemporary, siblingSubcomponentTypes);
       if (!wasTargetChildFound && WasTargetChildFound) wasTargetChildFound = true;
       if (!wasAComponentToBeSyncedToMissing && WasAComponentToBeSyncedToMissing) wasAComponentToBeSyncedToMissing = true;
       if (!traverseAll && wasTargetChildFound) break;
@@ -111,13 +111,13 @@ export class SyncChildComponent {
 
   // not using TraverseComponentViaPreviewStructureChildFirst as it abides to subcomponent order and instead sync components are tracked via syncables
   private static syncSyncables(syncableComponent: WorkshopComponent, componentToBeSyncedTo: WorkshopComponent, targeChildComponentType: COMPONENT_TYPES,
-      traverseAll: boolean, isTemporary: boolean, siblingSubcomponents?: SiblingSubcomponents): SynSyncablesResult {
+      traverseAll: boolean, isTemporary: boolean, siblingSubcomponentTypes?: SiblingSubcomponentTypes): SynSyncablesResult {
     const { subcomponents, childComponents } = syncableComponent.sync.syncables.onCopy;
-    const wasAComponentToBeSyncedToMissing = SyncChildComponent.syncSyncableSubcomponents(subcomponents, componentToBeSyncedTo, isTemporary, siblingSubcomponents);
+    const wasAComponentToBeSyncedToMissing = SyncChildComponent.syncSyncableSubcomponents(subcomponents, componentToBeSyncedTo, isTemporary, siblingSubcomponentTypes);
     const areTargetSubcomponentsSynced = targeChildComponentType === syncableComponent.type;
     if (!traverseAll && areTargetSubcomponentsSynced) return { wasTargetChildFound: true, wasAComponentToBeSyncedToMissing };
     const wasTargetChildFound = SyncChildComponent.syncChildComponents(syncableComponent, childComponents, componentToBeSyncedTo, targeChildComponentType,
-      traverseAll, isTemporary, siblingSubcomponents);
+      traverseAll, isTemporary, siblingSubcomponentTypes);
     return { wasTargetChildFound: areTargetSubcomponentsSynced || wasTargetChildFound, wasAComponentToBeSyncedToMissing };
   }
 
@@ -135,18 +135,19 @@ export class SyncChildComponent {
 
   public static syncComponentToTargetTemporarily(currentlySelectedComponent: WorkshopComponent, componentToBeSyncedTo: WorkshopComponent): void {
     const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
-    const siblingSubcomponents = AutoSyncedSiblingContainerComponentUtils.getSiblingSubcomponents(activeComponent);
-    SyncChildComponent.syncSyncables(activeComponent, componentToBeSyncedTo, componentToBeSyncedTo.type, true, true, siblingSubcomponents);
+    const siblingSubcomponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingSubcomponents(activeComponent);
+    SyncChildComponent.syncSyncables(activeComponent, componentToBeSyncedTo, componentToBeSyncedTo.type, true, true, siblingSubcomponentTypes);
   }
 
   public static setAutoSyncedSiblingComponentsToInSync(currentlySelectedComponent: WorkshopComponent, componenetThisIsSyncedTo: WorkshopComponent): void {
-    const siblingSubcomponents = AutoSyncedSiblingContainerComponentUtils.getSiblingSubcomponents(currentlySelectedComponent);
-    if (!siblingSubcomponents) return;
+    const siblingSubcomponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingSubcomponents(currentlySelectedComponent);
+    if (!siblingSubcomponentTypes) return;
     const { alignedSections } = currentlySelectedComponent.parentLayer.sections;
     Object.keys(alignedSections).forEach((alignedSectionType: ALIGNED_SECTION_TYPES) => {
       alignedSections[alignedSectionType].forEach((baseSubcomponent) => {
         baseSubcomponent.subcomponentProperties.seedComponent.sync.componentThisIsSyncedTo = componenetThisIsSyncedTo;
         componenetThisIsSyncedTo.sync.componentsSyncedToThis.add(baseSubcomponent.subcomponentProperties.seedComponent);
+        baseSubcomponent.subcomponentProperties.seedComponent.componentStatus = componenetThisIsSyncedTo.componentStatus;
       });
     });
   }

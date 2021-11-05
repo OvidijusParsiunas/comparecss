@@ -1,25 +1,25 @@
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { SiblingSubcomponents } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
+import { SiblingSubcomponentTypes } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { AutoSyncedSiblingComponentUtils } from './autoSyncedSiblingComponentUtils';
 import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
 
-type SiblingManipulationCallback = (siblingSubcomponents: SiblingSubcomponents, subcomponent: SubcomponentProperties) => void;
+type SiblingManipulationCallback = (siblingSubcomponentTypes: SiblingSubcomponentTypes, subcomponent: SubcomponentProperties) => void;
 
 // note that this only works if the child container type that can be added is the same - e.g. only buttons
 // current implementation copies all child components in any sections, however if needed can add section
-// type to abstract siblingSubcomponents property
+// type to abstract siblingSubcomponentTypes property
 export class AutoSyncedSiblingContainerComponentUtils {
 
   // only goes as far as 2 parent layer levels
-  private static getAutoSyncedSiblingSubcomponents(parentLayer: Layer): SiblingSubcomponents {
+  private static getAutoSyncedSiblingSubcomponents(parentLayer: Layer): SiblingSubcomponentTypes {
     const parentLayerComponent = parentLayer.subcomponentProperties.seedComponent;
     if (parentLayerComponent.sync.siblingChildComponentsAutoSynced) {
-      return parentLayerComponent.sync.siblingChildComponentsAutoSynced?.siblingSubcomponents;
+      return parentLayerComponent.sync.siblingChildComponentsAutoSynced?.siblingSubcomponentTypes;
     }
     const parentParentSiblingChildComponentsAutoSynced = parentLayerComponent.containerComponent
       ?.parentLayer?.subcomponentProperties.seedComponent.sync.siblingChildComponentsAutoSynced;
     if (parentParentSiblingChildComponentsAutoSynced) {
-      return parentParentSiblingChildComponentsAutoSynced.siblingSubcomponents;
+      return parentParentSiblingChildComponentsAutoSynced.siblingSubcomponentTypes;
     }
     return null;
   }
@@ -40,12 +40,12 @@ export class AutoSyncedSiblingContainerComponentUtils {
     }
   }
 
-  private static incrementAndCopy(siblingSubcomponents: SiblingSubcomponents, subcomponent: SubcomponentProperties): void {
-    if (!siblingSubcomponents[subcomponent.subcomponentType]) {
-      siblingSubcomponents[subcomponent.subcomponentType] = { currentCount: 1, customDynamicProperties: subcomponent };
+  private static incrementAndCopy(siblingSubcomponentTypes: SiblingSubcomponentTypes, subcomponent: SubcomponentProperties): void {
+    if (!siblingSubcomponentTypes[subcomponent.subcomponentType]) {
+      siblingSubcomponentTypes[subcomponent.subcomponentType] = { currentCount: 1, customDynamicProperties: subcomponent };
     } else {
-      siblingSubcomponents[subcomponent.subcomponentType].currentCount += 1;
-      AutoSyncedSiblingComponentUtils.copySiblingSubcomponent(siblingSubcomponents[subcomponent.subcomponentType].customDynamicProperties, subcomponent);
+      siblingSubcomponentTypes[subcomponent.subcomponentType].currentCount += 1;
+      AutoSyncedSiblingComponentUtils.copySiblingSubcomponent(siblingSubcomponentTypes[subcomponent.subcomponentType].customDynamicProperties, subcomponent);
     }
   }
 
@@ -54,12 +54,12 @@ export class AutoSyncedSiblingContainerComponentUtils {
       parentLayer, childComponent, AutoSyncedSiblingContainerComponentUtils.incrementAndCopy);
   }
 
-  private static decrementAndRemoveIfNoneLeft(siblingSubcomponents: SiblingSubcomponents, subcomponent: SubcomponentProperties): void {
-    if (siblingSubcomponents[subcomponent.subcomponentType]) {
-      siblingSubcomponents[subcomponent.subcomponentType].currentCount -= 1;
+  private static decrementAndRemoveIfNoneLeft(siblingSubcomponentTypes: SiblingSubcomponentTypes, subcomponent: SubcomponentProperties): void {
+    if (siblingSubcomponentTypes[subcomponent.subcomponentType]) {
+      siblingSubcomponentTypes[subcomponent.subcomponentType].currentCount -= 1;
     }
-    if (siblingSubcomponents[subcomponent.subcomponentType]?.currentCount === 0) {
-      delete siblingSubcomponents[subcomponent.subcomponentType];
+    if (siblingSubcomponentTypes[subcomponent.subcomponentType]?.currentCount === 0) {
+      delete siblingSubcomponentTypes[subcomponent.subcomponentType];
     }
   }
 
@@ -68,7 +68,7 @@ export class AutoSyncedSiblingContainerComponentUtils {
       parentLayer, childComponent, AutoSyncedSiblingContainerComponentUtils.decrementAndRemoveIfNoneLeft);
   }
 
-  public static getSiblingSubcomponents(component: WorkshopComponent): SiblingSubcomponents {
-    return component.parentLayer.subcomponentProperties.seedComponent.sync?.siblingChildComponentsAutoSynced.siblingSubcomponents;
+  public static getSiblingSubcomponents(component: WorkshopComponent): SiblingSubcomponentTypes {
+    return component.parentLayer.subcomponentProperties.seedComponent.sync?.siblingChildComponentsAutoSynced?.siblingSubcomponentTypes;
   }
 }

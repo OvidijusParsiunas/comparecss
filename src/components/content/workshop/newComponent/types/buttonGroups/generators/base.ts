@@ -19,7 +19,7 @@ class ButtonGroupBase extends ComponentBuilder {
 
   public static addLayerAndSetSiblingChildComponentsAutoSynced(buttonGroupBaseComponent: WorkshopComponent): void {
     const layerComponent = AddLayerComponent.add(buttonGroupBaseComponent, LAYER_STYLES.PLAIN, false);
-    layerComponent.sync.siblingChildComponentsAutoSynced = { siblingSubcomponents: {} };
+    layerComponent.sync.siblingChildComponentsAutoSynced = { siblingSubcomponentTypes: {} };
   }
 
   private static setComponentToRemovable(buttonComponent: WorkshopComponent): void {

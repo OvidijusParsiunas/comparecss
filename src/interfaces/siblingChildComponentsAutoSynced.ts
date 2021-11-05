@@ -7,11 +7,11 @@ export interface SiblingSubcomponentState {
   customDynamicProperties: CustomDynamicProperties;
 }
 
-export type SiblingSubcomponents = {
+export type SiblingSubcomponentTypes = {
   [key in SUBCOMPONENT_TYPES]?: SiblingSubcomponentState;
 };
 
 export interface SiblingChildComponentsAutoSynced {
   resyncFunc?: (container: WorkshopComponent) => void;
-  siblingSubcomponents?: SiblingSubcomponents;
+  siblingSubcomponentTypes?: SiblingSubcomponentTypes;
 }
