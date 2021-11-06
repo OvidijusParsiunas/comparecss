@@ -137,15 +137,19 @@ export class SyncChildComponent {
     SyncChildComponent.syncSyncables(activeComponent, componentToBeSyncedTo, componentToBeSyncedTo.type, true, true, siblingSubcomponentTypes);
   }
 
+  public static setComponentPropertiesToBeInSync(componentToBeSynced: WorkshopComponent, componentThisIsSyncedTo: WorkshopComponent): void {
+    componentToBeSynced.sync.componentThisIsSyncedTo = componentThisIsSyncedTo;
+    componentThisIsSyncedTo.sync.componentsSyncedToThis.add(componentToBeSynced);
+    componentToBeSynced.componentStatus = componentThisIsSyncedTo.componentStatus;
+  }
+
   public static setAutoSyncedSiblingComponentsToInSync(currentlySelectedComponent: WorkshopComponent, componenetThisIsSyncedTo: WorkshopComponent): void {
     const siblingSubcomponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingSubcomponents(currentlySelectedComponent);
     if (!siblingSubcomponentTypes) return;
     const { alignedSections } = currentlySelectedComponent.parentLayer.sections;
     Object.keys(alignedSections).forEach((alignedSectionType: ALIGNED_SECTION_TYPES) => {
       alignedSections[alignedSectionType].forEach((baseSubcomponent) => {
-        baseSubcomponent.subcomponentProperties.seedComponent.sync.componentThisIsSyncedTo = componenetThisIsSyncedTo;
-        componenetThisIsSyncedTo.sync.componentsSyncedToThis.add(baseSubcomponent.subcomponentProperties.seedComponent);
-        baseSubcomponent.subcomponentProperties.seedComponent.componentStatus = componenetThisIsSyncedTo.componentStatus;
+        SyncChildComponent.setComponentPropertiesToBeInSync(baseSubcomponent.subcomponentProperties.seedComponent, componenetThisIsSyncedTo);
       });
     });
   }

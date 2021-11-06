@@ -219,7 +219,7 @@ export default {
         return { dropdowns: [dropdownItems], itemIndexes: [Object.keys(dropdownItems).indexOf(dropdownItemName)] };
       } else {
         const childDropdownIndex = dropdownItemsIndex + 1;
-        for (let i = 0; i <= itemNames.length; i += 1) {
+        for (let i = 0; i < itemNames.length; i += 1) {
           const itemName = itemNames[i];
           if (itemName !== DROPDOWN_ITEM_AUX_DETAILS_REF && itemName !== dropdownItemName) {
             const result: SearchForItemResult = this.searchForOpion(dropdownItems[itemName], dropdownItemName, childDropdownIndex, actualObjectName);

@@ -1,8 +1,9 @@
 import { SyncableSubcomponentTraversalCallback, SyncChildComponentUtils } from '../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SiblingSubcomponentTypes } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
+import { BaseSubcomponentRef, Layer } from '../../../../../../interfaces/componentPreviewStructure';
+import { SyncChildComponent } from '../../../toolbar/options/syncChildComponent/syncChildComponent';
 import { AutoSyncedSiblingComponentUtils } from './autoSyncedSiblingComponentUtils';
-import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
 
 // note that this only works if the child container type that can be added is the same - e.g. only buttons
 // current implementation copies all child components in any sections, however if needed can add section
@@ -61,5 +62,25 @@ export class AutoSyncedSiblingContainerComponentUtils {
 
   public static getSiblingSubcomponents(component: WorkshopComponent): SiblingSubcomponentTypes {
     return component.parentLayer.subcomponentProperties.seedComponent.sync?.siblingChildComponentsAutoSynced?.siblingSubcomponentTypes;
+  }
+
+  private static findChildComponentSibling(parentLayer: Layer, childComponent: WorkshopComponent): WorkshopComponent {
+    const { alignedSections } = parentLayer.sections;
+    for (let i = 0; i < Object.keys(alignedSections).length; i += 1) {
+      const alignedSection: BaseSubcomponentRef[] = alignedSections[Object.keys(alignedSections)[i]];
+      for (let j = 0; j < alignedSection.length; j += 1) {
+        const alignedComponent = alignedSection[j].subcomponentProperties.seedComponent;
+        if (alignedComponent !== childComponent) return alignedComponent;
+      }
+    }
+    return null;
+  }
+
+  public static setComponentToBeInSyncIfSiblingsSynced(parentLayer: Layer, component: WorkshopComponent): void {
+    const siblingComponent = AutoSyncedSiblingContainerComponentUtils.findChildComponentSibling(parentLayer, component);
+    if (siblingComponent) {
+      const { componentThisIsSyncedTo } = siblingComponent.sync;
+      if (componentThisIsSyncedTo) SyncChildComponent.setComponentPropertiesToBeInSync(component, componentThisIsSyncedTo);
+    }
   }
 }

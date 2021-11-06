@@ -1,4 +1,5 @@
 import { BUTTON_COMPONENTS_BASE_NAMES, CHILD_COMPONENTS_BASE_NAMES, DROPDOWN_COMPONENTS_BASE_NAMES, LAYER_COMPONENTS_BASE_NAMES, PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
+import { AutoSyncedSiblingContainerComponentUtils } from '../../autoSyncedSiblingComponentUtils/autoSyncedSiblingContainerComponentUtils';
 import { IncrementChildComponentCountLimitsState } from '../../childComponentCountLimitsState/incrementChildComponentCountLimitsState';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
 import { ParentBasedPresetProperties, PropertiesAddedOnBuild } from '../../../../../../../interfaces/newChildComponents';
@@ -145,6 +146,7 @@ export class AddContainerComponent extends AddComponentShared {
     AddContainerComponent.updateComponentContainerProperties(containerComponent, newComponent);
     AddComponentShared.cleanSubcomponentProperties(newComponent);
     AddComponentShared.executeOverwritables(newComponent, containerComponent, 'container', parentLayer);
+    AutoSyncedSiblingContainerComponentUtils.setComponentToBeInSyncIfSiblingsSynced(parentLayer, newComponent);
     AddContainerComponent.asyncUpdateSyncedComponents(newComponent, containerComponent);
     newComponent.containerComponent = containerComponent;
     return newComponent;
