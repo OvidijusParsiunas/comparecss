@@ -5,7 +5,8 @@
         :id="getBaseId('subcomponentId')"
         :icon="getIconName()"
         :style="generateStyleProperties(component)"
-        :class="[COMPONENT_PREVIEW_MARKER, ...getJsClasses(), getSubcomponentMouseEventsDisabledClassForXButtonText()]"
+        :class="[COMPONENT_PREVIEW_MARKER,
+          ...getJsClasses(), ...getComponentCssClasses(), getSubcomponentMouseEventsDisabledClassForXButtonText()]"
         @mouseenter="activateSubcomponentMouseEvent('subcomponentMouseEnter')"
         @mouseleave="activateSubcomponentMouseEvent('subcomponentMouseLeave')"
         @mousedown="activateSubcomponentMouseEvent('subcomponentMouseDown')"
@@ -105,6 +106,9 @@ export default {
       const { customFeatures, customStaticFeatures } = this.component.baseSubcomponent as SubcomponentProperties;
       return SetUtils.transformSetsToOneDimensionalArray(customFeatures?.jsClasses, customStaticFeatures?.jsClasses);
     },
+    getComponentCssClasses(): string[] {
+      return this.component.componentClasses || [];
+    },
     getOverlayStyleProperties(): WorkshopComponentCss {
       const subcomponentCss = {
         ...this.component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT], color: '#ff000000',
@@ -133,7 +137,7 @@ export default {
       if (this.component.baseSubcomponent.isTemporaryAddPreview) {
         classes.push(SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
       }
-      return classes;
+      return [classes, ...this.getComponentCssClasses()];
     },
     isXButtonText(): boolean {
       return this.component.baseSubcomponent.customStaticFeatures?.subcomponentText?.text === CLOSE_BUTTON_X_TEXT;
@@ -190,6 +194,23 @@ export default {
   }
   .close-button-text-overlay-height {
     height: 50%;
+  }
+  .button-group-button {
+    border-top-width: 0px !important;
+    border-bottom-width: 0px !important;
+  }
+  .button-group-middle-button {
+    border-radius: 0px !important;
+  }
+  .button-group-left-button {
+    border-left-width: 0px !important;
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
+  }
+  .button-group-right-button {
+    border-right-width: 0px !important;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
   }
 </style>
 <style lang="css">

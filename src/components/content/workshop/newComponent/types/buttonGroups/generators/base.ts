@@ -6,7 +6,6 @@ import { BUTTON_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSu
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
-import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 // import { AlertBaseSpecificSettings } from '../settings/alertBaseSpecificSettings';
 import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -14,17 +13,18 @@ import { inheritedCardBaseCss } from '../../cards/inheritedCss/inheritedCardCss'
 import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { SETTINGS_TYPES } from '../../../../../../../consts/settingsTypes.enum';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
+import { ButtonGroupGenericUtils } from '../utils/buttonGroupGenericUtils';
+import { ButtonGroupBorderUtils } from '../utils/buttonGroupBorderUtils';
 import { ButtonGroupHeightUtils } from '../utils/buttonGroupHeightUtils';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonGroupBase extends ComponentBuilder {
 
-  private static BUTTONS_ALIGNED_SECTION_TYPE = ALIGNED_SECTION_TYPES.LEFT;
 
   private static onComponentDisplayFunc(buttonGroupBaseComponent: WorkshopComponent): void {
-    const buttonComponent = buttonGroupBaseComponent.componentPreviewStructure.layers[0]
-      .sections.alignedSections[ButtonGroupBase.BUTTONS_ALIGNED_SECTION_TYPE][0].subcomponentProperties.seedComponent;
-    ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(buttonComponent, buttonComponent.containerComponent);
+    const buttonComponents = ButtonGroupGenericUtils.getAllButtonComponents(buttonGroupBaseComponent);
+    const firstButton = buttonComponents[0];
+    ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(firstButton, firstButton.containerComponent);
   }
 
   public static setOnComponentDisplayFunc(buttonGroupBaseComponent: WorkshopComponent): void {
@@ -38,7 +38,7 @@ class ButtonGroupBase extends ComponentBuilder {
 
   private static setButtonGroupOnFirstNewChildButton(buttonComponent: WorkshopComponent, buttonGroupComponent: WorkshopComponent): void {
     if (buttonGroupComponent.componentPreviewStructure.layers[0].sections
-        .alignedSections[ButtonGroupBase.BUTTONS_ALIGNED_SECTION_TYPE].length === 1) {
+        .alignedSections[ButtonGroupGenericUtils.BUTTONS_ALIGNED_SECTION_TYPE].length === 1) {
       ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(buttonComponent, buttonGroupComponent);
     }
   }
@@ -63,18 +63,26 @@ class ButtonGroupBase extends ComponentBuilder {
       postBuildFuncs: {
         [COMPONENT_TYPES.BUTTON]: [
           ButtonGroupBase.setComponentToRemovable,
+          ButtonGroupBorderUtils.setBorderClasses,
+          ButtonGroupBorderUtils.setBorderProperties,
           ButtonGroupBase.setTemporarySyncExecutables,
           ButtonGroupBase.setButtonGroupOnFirstNewChildButton],
       },
       onBuildProperties: {
-        [COMPONENT_TYPES.BUTTON]: { alignmentSection: ButtonGroupBase.BUTTONS_ALIGNED_SECTION_TYPE },
+        [COMPONENT_TYPES.BUTTON]: { alignmentSection: ButtonGroupGenericUtils.BUTTONS_ALIGNED_SECTION_TYPE },
       },
     };
   }
 
-  private static setWidthViaRange(buttonProperties: SubcomponentProperties, cssProperty: string): void {
+  private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
     if (cssProperty === 'height' || cssProperty === 'paddingTop' || cssProperty === 'paddingBottom') {
-      ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(buttonProperties.seedComponent, buttonProperties.seedComponent.containerComponent);
+      // subcomponentProperties is from button component
+      ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(subcomponentProperties.seedComponent, subcomponentProperties.seedComponent.containerComponent);
+    } else if (cssProperty === 'borderRadius') {
+      // subcomponentProperties is from button group component
+      const borderRadius = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
+    const buttonComponents = ButtonGroupGenericUtils.getAllButtonComponents(subcomponentProperties.seedComponent);
+    buttonComponents[0].baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = borderRadius;
     }
   }
 
@@ -96,7 +104,7 @@ class ButtonGroupBase extends ComponentBuilder {
     return {
       [CSS_PSEUDO_CLASSES.DEFAULT]: {
         color: '#004085',
-        backgroundColor: '#cce5ff',
+        backgroundColor: 'unset',
         borderColor: '#b8daff',
         borderWidth: '0px',
         borderStyle: BORDER_STYLES.SOLID,

@@ -181,6 +181,8 @@ export interface WorkshopComponent {
   componentPreviewStructure: ComponentPreviewStructure;
   // class name for the component
   className: string;
+  // difference between this and jsClasses is that this is not used for js purposes and is not shared with child components
+  componentClasses?: string[];
   baseSubcomponent: SubcomponentProperties;
   // only on child container components
   parentLayer?: Layer;
