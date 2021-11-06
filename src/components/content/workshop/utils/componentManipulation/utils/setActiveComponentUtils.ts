@@ -45,5 +45,6 @@ export class SetActiveComponentUtils {
     } else if (workshopComponent.currentlySelectedComponent !== component) {
       SetActiveComponentUtils.switchActiveComponent(workshopComponent, component);
     }
+    workshopComponent.currentlySelectedComponent.onComponentDisplayFunc?.(workshopComponent.currentlySelectedComponent);
   }
 }

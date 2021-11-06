@@ -19,13 +19,26 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonGroupBase extends ComponentBuilder {
 
+  private static BUTTONS_ALIGNED_SECTION_TYPE = ALIGNED_SECTION_TYPES.LEFT;
+
+  private static onComponentDisplayFunc(buttonGroupBaseComponent: WorkshopComponent): void {
+    const buttonComponent = buttonGroupBaseComponent.componentPreviewStructure.layers[0]
+      .sections.alignedSections[ButtonGroupBase.BUTTONS_ALIGNED_SECTION_TYPE][0].subcomponentProperties.seedComponent;
+    ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(buttonComponent, buttonComponent.containerComponent);
+  }
+
+  public static setOnComponentDisplayFunc(buttonGroupBaseComponent: WorkshopComponent): void {
+    buttonGroupBaseComponent.onComponentDisplayFunc = ButtonGroupBase.onComponentDisplayFunc;
+  }
+
   public static addLayerAndSetSiblingChildComponentsAutoSynced(buttonGroupBaseComponent: WorkshopComponent): void {
     const layerComponent = AddLayerComponent.add(buttonGroupBaseComponent, LAYER_STYLES.PLAIN, false);
     layerComponent.sync.siblingChildComponentsAutoSynced = { siblingSubcomponentTypes: {} };
   }
 
   private static setButtonGroupOnFirstNewChildButton(buttonComponent: WorkshopComponent, buttonGroupComponent: WorkshopComponent): void {
-    if (buttonGroupComponent.componentPreviewStructure.layers[0].sections.alignedSections[ALIGNED_SECTION_TYPES.LEFT].length === 1) {
+    if (buttonGroupComponent.componentPreviewStructure.layers[0].sections
+        .alignedSections[ButtonGroupBase.BUTTONS_ALIGNED_SECTION_TYPE].length === 1) {
       ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(buttonComponent, buttonGroupComponent);
     }
   }
@@ -54,7 +67,7 @@ class ButtonGroupBase extends ComponentBuilder {
           ButtonGroupBase.setButtonGroupOnFirstNewChildButton],
       },
       onBuildProperties: {
-        [COMPONENT_TYPES.BUTTON]: { alignmentSection: ALIGNED_SECTION_TYPES.LEFT },
+        [COMPONENT_TYPES.BUTTON]: { alignmentSection: ButtonGroupBase.BUTTONS_ALIGNED_SECTION_TYPE },
       },
     };
   }
@@ -130,6 +143,7 @@ export const buttonGroupBase: ComponentGenerator = {
     ButtonGroupBase.setPropertyOverwritables(buttonGroupBaseComponent);
     ButtonGroupBase.addLayerAndSetSiblingChildComponentsAutoSynced(buttonGroupBaseComponent);
     ButtonGroupBase.setTriggerFuncOnSettingChange(buttonGroupBaseComponent);
+    ButtonGroupBase.setOnComponentDisplayFunc(buttonGroupBaseComponent);
     // AlertBaseSpecificSettings.set(alertBaseComponent);
     return buttonGroupBaseComponent;
   },

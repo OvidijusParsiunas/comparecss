@@ -204,6 +204,7 @@ export interface WorkshopComponent {
   // properties for components that can be added through the add child component dropdown
   newChildComponents: NewChildComponents;
   onChildComponentRemovalFunc?: PropertyOverwritableFunc;
+  onComponentDisplayFunc?: (component: WorkshopComponent) => void;
 }
 
 // Component Architecture Information:
