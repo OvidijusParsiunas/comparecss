@@ -135,6 +135,7 @@ export class SyncChildComponent {
     const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
     const siblingSubcomponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingSubcomponents(activeComponent);
     SyncChildComponent.syncSyncables(activeComponent, componentToBeSyncedTo, componentToBeSyncedTo.type, true, true, siblingSubcomponentTypes);
+    activeComponent.sync.temporarySyncExecutables?.on?.(activeComponent);
   }
 
   public static setComponentPropertiesToBeInSync(componentToBeSynced: WorkshopComponent, componentThisIsSyncedTo: WorkshopComponent): void {

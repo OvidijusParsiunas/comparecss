@@ -12,7 +12,9 @@ import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildC
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { inheritedCardBaseCss } from '../../cards/inheritedCss/inheritedCardCss';
 import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
+import { SETTINGS_TYPES } from '../../../../../../../consts/settingsTypes.enum';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
+import { ButtonGroupHeightUtils } from '../utils/buttonGroupHeightUtils';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonGroupBase extends ComponentBuilder {
@@ -22,6 +24,23 @@ class ButtonGroupBase extends ComponentBuilder {
     layerComponent.sync.siblingChildComponentsAutoSynced = { siblingSubcomponentTypes: {} };
   }
 
+  private static setButtonGroupOnFirstNewChildButton(buttonComponent: WorkshopComponent, buttonGroupComponent: WorkshopComponent): void {
+    if (buttonGroupComponent.componentPreviewStructure.layers[0].sections.alignedSections[ALIGNED_SECTION_TYPES.LEFT].length === 1) {
+      ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(buttonComponent, buttonGroupComponent);
+    }
+  }
+
+  private static onTemporarySyncExecutableFunc(buttonComponent: WorkshopComponent): void {
+    ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(buttonComponent, buttonComponent.containerComponent);
+  }
+
+  private static setTemporarySyncExecutables(buttonComponent: WorkshopComponent): void {
+    buttonComponent.sync.temporarySyncExecutables = {
+      on: ButtonGroupBase.onTemporarySyncExecutableFunc,
+      off: ButtonGroupBase.onTemporarySyncExecutableFunc,
+    }
+  }
+
   private static setComponentToRemovable(buttonComponent: WorkshopComponent): void {
     buttonComponent.baseSubcomponent.isRemovable = true;
   }
@@ -29,11 +48,26 @@ class ButtonGroupBase extends ComponentBuilder {
   public static setPropertyOverwritables(buttonGroupComponent: WorkshopComponent): void {
     buttonGroupComponent.newChildComponents.propertyOverwritables = {
       postBuildFuncs: {
-        [COMPONENT_TYPES.BUTTON]: [ButtonGroupBase.setComponentToRemovable],
+        [COMPONENT_TYPES.BUTTON]: [
+          ButtonGroupBase.setComponentToRemovable,
+          ButtonGroupBase.setTemporarySyncExecutables,
+          ButtonGroupBase.setButtonGroupOnFirstNewChildButton],
       },
       onBuildProperties: {
         [COMPONENT_TYPES.BUTTON]: { alignmentSection: ALIGNED_SECTION_TYPES.LEFT },
       },
+    };
+  }
+
+  private static setWidthViaRange(buttonProperties: SubcomponentProperties, cssProperty: string): void {
+    if (cssProperty === 'height' || cssProperty === 'paddingTop' || cssProperty === 'paddingBottom') {
+      ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(buttonProperties.seedComponent, buttonProperties.seedComponent.containerComponent);
+    }
+  }
+
+  public static setTriggerFuncOnSettingChange(dropdownMenuBaseComponent: WorkshopComponent): void {
+    dropdownMenuBaseComponent.triggerFuncOnSettingChange = {
+      [SETTINGS_TYPES.RANGE]: ButtonGroupBase.setWidthViaRange,
     };
   }
 
@@ -51,9 +85,9 @@ class ButtonGroupBase extends ComponentBuilder {
         color: '#004085',
         backgroundColor: '#cce5ff',
         borderColor: '#b8daff',
-        borderWidth: '1px',
+        borderWidth: '0px',
         borderStyle: BORDER_STYLES.SOLID,
-        borderRadius: '4px',
+        borderRadius: '0px',
         width: 'auto',
         height: '50px',
         boxSizing: CSS_PROPERTY_VALUES.UNSET,
@@ -95,6 +129,7 @@ export const buttonGroupBase: ComponentGenerator = {
     ButtonGroupBase.setChildComponentsItems(buttonGroupBaseComponent);
     ButtonGroupBase.setPropertyOverwritables(buttonGroupBaseComponent);
     ButtonGroupBase.addLayerAndSetSiblingChildComponentsAutoSynced(buttonGroupBaseComponent);
+    ButtonGroupBase.setTriggerFuncOnSettingChange(buttonGroupBaseComponent);
     // AlertBaseSpecificSettings.set(alertBaseComponent);
     return buttonGroupBaseComponent;
   },

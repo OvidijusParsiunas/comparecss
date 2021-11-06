@@ -15,7 +15,10 @@ export class CleanSyncChildComponentMode {
   private static resetSubcomponentProperties(activeComponentTraversal: SubcomponentPreviewTraversalState): SubcomponentPreviewTraversalState {
     const resetSubcomponentProperties = this as any as boolean;
     const activeSubcomponent = activeComponentTraversal.subcomponentProperties;
-    if (resetSubcomponentProperties) CleanSyncChildComponentMode.resetOriginalCss(activeSubcomponent);
+    if (resetSubcomponentProperties) {
+      CleanSyncChildComponentMode.resetOriginalCss(activeSubcomponent);
+      activeSubcomponent.seedComponent.sync.temporarySyncExecutables?.off?.(activeSubcomponent.seedComponent);
+    }
     delete activeSubcomponent.tempOriginalCustomProperties;
     return activeComponentTraversal;
   }
