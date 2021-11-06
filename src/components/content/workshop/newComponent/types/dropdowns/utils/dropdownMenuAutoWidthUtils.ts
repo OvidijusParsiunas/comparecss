@@ -1,9 +1,9 @@
-import { subcomponentAndOverlayElementIdsState } from '../../../componentPreview/utils/elements/subcomponentAndOverlayElementIdsState';
-import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
-import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
-import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
-import { TEXT_SIZE_EVALUATOR_ID } from '../../../../../../consts/elementIds';
+import { subcomponentAndOverlayElementIdsState } from '../../../../componentPreview/utils/elements/subcomponentAndOverlayElementIdsState';
+import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
+import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
+import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
+import { TEXT_SIZE_EVALUATOR_ID } from '../../../../../../../consts/elementIds';
 
 export class DropdownMenuAutoWidthUtils {
 

@@ -1,10 +1,10 @@
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
-import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
 import { LinkedComponentsUtils } from '../../../shared/linkedComponents/linkedComponentsUtils';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
 import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
+import { DropdownMenuAutoWidthUtils } from '../../utils/dropdownMenuAutoWidthUtils';
 import { SETTINGS_TYPES } from '../../../../../../../../consts/settingsTypes.enum';
 import { AutoSize } from '../../../../../../../../interfaces/autoSize';
 import { ComponentBuilder } from '../../../shared/componentBuilder';

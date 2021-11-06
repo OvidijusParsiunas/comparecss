@@ -3,11 +3,11 @@ import { AddContainerComponent } from '../../../../utils/componentManipulation/a
 import { SubcomponentMouseEventCallbacks } from '../../../../../../../interfaces/subcomponentMouseEventCallbacks';
 import { CustomCss, CustomFeatures, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
-import { DropdownMenuAutoWidthUtils } from '../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { SubcomponentTriggers } from '../../../../utils/componentManipulation/utils/subcomponentTriggers';
 import { TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { OtherSubcomponentTriggers } from '../../../../../../../interfaces/otherSubcomponentTriggers';
+import { DropdownMenuAutoWidthUtils } from '../../dropdowns/utils/dropdownMenuAutoWidthUtils';
 import { ActiveComponentUtils } from '../../../../utils/activeComponent/activeComponentUtils';
 import { LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { SelectDropdownUtils } from '../../dropdowns/selectDropdown/selectDropdownUtils';

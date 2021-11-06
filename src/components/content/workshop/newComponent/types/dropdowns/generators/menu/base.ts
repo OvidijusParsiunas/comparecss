@@ -1,6 +1,5 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { LAYER_COMPONENTS_BASE_NAMES, TEMPORARY_COMPONENT_BASE_NAME } from '../../../../../../../../consts/baseSubcomponentNames.enum';
-import { DropdownMenuAutoWidthUtils } from '../../../../../toolbar/settings/utils/dropdownMenuAutoWidthUtils';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../../interfaces/componentGenerator';
 import { DropdownFeatures, DropdownMenuPosition } from '../../../../../../../../interfaces/dropdownFeatures';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
@@ -12,6 +11,7 @@ import { CSS_PROPERTY_VALUES } from '../../../../../../../../consts/cssPropertyV
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
 import { inheritedBaseChildCss } from '../../../shared/childCss/inheritedBaseChildCss';
 import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
+import { DropdownMenuAutoWidthUtils } from '../../utils/dropdownMenuAutoWidthUtils';
 import { inheritedCardBaseCss } from '../../../cards/inheritedCss/inheritedCardCss';
 import { SETTINGS_TYPES } from '../../../../../../../../consts/settingsTypes.enum';
 import { MenuBaseSpecificSettings } from '../../settings/menuBaseSpecificSettings';
