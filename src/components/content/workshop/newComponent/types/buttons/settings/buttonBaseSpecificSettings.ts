@@ -18,12 +18,12 @@ export class ButtonBaseSpecificSettings {
     },
   };
 
-  private static setSettingsOnBaseSubcomponent(component: WorkshopComponent): void {
-    component.baseSubcomponent.subcomponentSpecificSettings = ButtonBaseSpecificSettings.MENU_BASE_SPECIFIC_COMPONENTS;
+  private static setSettingsOnBaseSubcomponent(buttonComponent: WorkshopComponent): void {
+    buttonComponent.baseSubcomponent.subcomponentSpecificSettings = ButtonBaseSpecificSettings.MENU_BASE_SPECIFIC_COMPONENTS;
   }
 
-  private static getFadeAnimationDurationProperties(subcomponentProperties: SubcomponentProperties): UpdateOtherCssProperties {
-    const { customFeatures } = subcomponentProperties;
+  private static getFadeAnimationDurationProperties(buttonSubcomponent: SubcomponentProperties): UpdateOtherCssProperties {
+    const { customFeatures } = buttonSubcomponent;
     return {
       customFeatures,
       customFeatureKeys: ['animations', 'stationary', 'fade', 'duration'],
@@ -31,17 +31,17 @@ export class ButtonBaseSpecificSettings {
     };
   }
 
-  private static setInterconnectedSettings(component: WorkshopComponent): void {
-    component.interconnectedSettings = [{
-      updateOtherCssProperties: component.baseSubcomponent.subcomponentSpecificSettings[WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS]
+  private static setInterconnectedSettings(buttonComponent: WorkshopComponent): void {
+    buttonComponent.interconnectedSettings = [{
+      updateOtherCssProperties: buttonComponent.baseSubcomponent.subcomponentSpecificSettings[WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_ANIMATIONS]
         [SETTING_NAMES.FADE].updateOtherCssProperties,
       dependantChildrenTypes: new Set([SUBCOMPONENT_TYPES.TEXT, SUBCOMPONENT_TYPES.ICON]),
       updateOtherCssPropertiesObjGenerator: ButtonBaseSpecificSettings.getFadeAnimationDurationProperties,
     }];
   }
 
-  public static set(component: WorkshopComponent): void {
-    ButtonBaseSpecificSettings.setSettingsOnBaseSubcomponent(component);
-    ButtonBaseSpecificSettings.setInterconnectedSettings(component);
+  public static set(buttonComponent: WorkshopComponent): void {
+    ButtonBaseSpecificSettings.setSettingsOnBaseSubcomponent(buttonComponent);
+    ButtonBaseSpecificSettings.setInterconnectedSettings(buttonComponent);
   }
 }

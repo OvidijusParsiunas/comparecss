@@ -15,4 +15,6 @@ export enum SETTING_NAMES {
   TYPE = 'Type',
   ALIGN = 'Align',
   ORDER = 'Order',
+  COLOR = 'Color',
+  RADIUS = 'Radius',
 }

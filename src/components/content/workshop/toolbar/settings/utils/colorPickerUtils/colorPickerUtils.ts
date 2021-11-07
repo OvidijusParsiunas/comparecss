@@ -1,5 +1,6 @@
 import { SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
+import { UpdateOtherColorsUtils } from './updateOtherColorsUtils';
 import BoxShadowUtils from '../boxShadowUtils';
 import SharedUtils from '../sharedUtils';
 
@@ -12,6 +13,7 @@ export class ColorPickerUtils {
       if (cssProperty === 'boxShadow') BoxShadowUtils.updateBoxShadowColorValue(hexColor, updatedSettingSpec, subcomponentProperties);
     } else {
       customCss[activeCssPseudoClass][cssProperty] = hexColor;
+      UpdateOtherColorsUtils.updateOtherCssProperties(updatedSettingSpec.updateOtherCssProperties, activeCssPseudoClass, hexColor);
     }
   }
 
@@ -49,6 +51,7 @@ export class ColorPickerUtils {
       BoxShadowUtils.setBoxShadowSettingsColorValue(cssPropertyValue, settingToBeUpdatedSpec, subcomponentProperties);
     } else {
       settingToBeUpdatedSpec.default = cssPropertyValue;
+      UpdateOtherColorsUtils.updateOtherCssProperties(settingToBeUpdatedSpec.updateOtherCssProperties, activeCssPseudoClass, cssPropertyValue);
     }
   }
 

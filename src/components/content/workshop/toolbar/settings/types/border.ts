@@ -1,6 +1,7 @@
 import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { BORDER_STYLES } from '../../../../../../consts/borderStyles.enum';
+import { SETTING_NAMES } from '../../../../../../consts/settingNames.enum';
 
 // create an optional interface
 export default {
@@ -8,7 +9,7 @@ export default {
     { 
       type: SETTINGS_TYPES.RANGE,
       spec: {
-        name: 'Radius',
+        name: SETTING_NAMES.RADIUS,
         default: 0,
         scale: [0, 120],
         smoothingDivisible: 4,
@@ -19,7 +20,7 @@ export default {
     {
       type: SETTINGS_TYPES.RANGE,
       spec: {
-        name: 'Width',
+        name: SETTING_NAMES.WIDTH,
         default: 0,
         scale: [0, 100],
         smoothingDivisible: 4,
@@ -59,7 +60,7 @@ export default {
     {
       type: SETTINGS_TYPES.COLOR_PICKER,
       spec: {
-        name: 'Color',
+        name: SETTING_NAMES.COLOR,
         default: '#000000',
         cssProperty: 'borderColor',
         unsetColorButtonAvailable: false,

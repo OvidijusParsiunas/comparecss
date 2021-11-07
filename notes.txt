@@ -1,7 +1,7 @@
 when card button margin top is changed - the overlay position is incorrect
 
 button:
-on component removal and fix border
+shadows
 base will also hold the button group properties - the left and right border radius, these will be settable via the actual buttons
 
 night diving

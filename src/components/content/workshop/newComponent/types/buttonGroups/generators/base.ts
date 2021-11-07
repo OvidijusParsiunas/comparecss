@@ -6,6 +6,7 @@ import { BUTTON_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSu
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
+import { ButtonGroupSpecificSettings } from '../settings/buttonGroupSpecificSettings';
 // import { AlertBaseSpecificSettings } from '../settings/alertBaseSpecificSettings';
 import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -20,7 +21,6 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonGroupBase extends ComponentBuilder {
 
-
   private static onComponentDisplayFunc(buttonGroupBaseComponent: WorkshopComponent): void {
     const buttonComponents = ButtonGroupGenericUtils.getAllButtonComponents(buttonGroupBaseComponent);
     const firstButton = buttonComponents[0];
@@ -29,6 +29,28 @@ class ButtonGroupBase extends ComponentBuilder {
 
   public static setOnComponentDisplayFunc(buttonGroupBaseComponent: WorkshopComponent): void {
     buttonGroupBaseComponent.onComponentDisplayFunc = ButtonGroupBase.onComponentDisplayFunc;
+  }
+
+  private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
+    if (cssProperty === 'height' || cssProperty === 'paddingTop' || cssProperty === 'paddingBottom') {
+      // subcomponentProperties is from button component
+      ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(subcomponentProperties.seedComponent, subcomponentProperties.seedComponent.containerComponent);
+    } else if (cssProperty === 'borderRadius') {
+      // subcomponentProperties is from button group component
+      const borderRadius = Number.parseFloat(subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius);
+      const buttonComponents = ButtonGroupGenericUtils.getAllButtonComponents(subcomponentProperties.seedComponent);
+      buttonComponents[0].baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = `${borderRadius}px`;
+    }
+  }
+
+  public static setTriggerFuncOnSettingChange(dropdownMenuBaseComponent: WorkshopComponent): void {
+    dropdownMenuBaseComponent.triggerFuncOnSettingChange = {
+      [SETTINGS_TYPES.RANGE]: ButtonGroupBase.setWidthViaRange,
+    };
+  }
+
+  public static setOnChildComponentRemovalFunc(buttonGroupComponent: WorkshopComponent): void {
+    buttonGroupComponent.onChildComponentRemovalFunc = ButtonGroupBorderUtils.setBorderClasses;
   }
 
   public static addLayerAndSetSiblingChildComponentsAutoSynced(buttonGroupBaseComponent: WorkshopComponent): void {
@@ -71,24 +93,6 @@ class ButtonGroupBase extends ComponentBuilder {
       onBuildProperties: {
         [COMPONENT_TYPES.BUTTON]: { alignmentSection: ButtonGroupGenericUtils.BUTTONS_ALIGNED_SECTION_TYPE },
       },
-    };
-  }
-
-  private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
-    if (cssProperty === 'height' || cssProperty === 'paddingTop' || cssProperty === 'paddingBottom') {
-      // subcomponentProperties is from button component
-      ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(subcomponentProperties.seedComponent, subcomponentProperties.seedComponent.containerComponent);
-    } else if (cssProperty === 'borderRadius') {
-      // subcomponentProperties is from button group component
-      const borderRadius = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
-    const buttonComponents = ButtonGroupGenericUtils.getAllButtonComponents(subcomponentProperties.seedComponent);
-    buttonComponents[0].baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = borderRadius;
-    }
-  }
-
-  public static setTriggerFuncOnSettingChange(dropdownMenuBaseComponent: WorkshopComponent): void {
-    dropdownMenuBaseComponent.triggerFuncOnSettingChange = {
-      [SETTINGS_TYPES.RANGE]: ButtonGroupBase.setWidthViaRange,
     };
   }
 
@@ -150,8 +154,10 @@ export const buttonGroupBase: ComponentGenerator = {
     ButtonGroupBase.setChildComponentsItems(buttonGroupBaseComponent);
     ButtonGroupBase.setPropertyOverwritables(buttonGroupBaseComponent);
     ButtonGroupBase.addLayerAndSetSiblingChildComponentsAutoSynced(buttonGroupBaseComponent);
+    ButtonGroupBase.setOnChildComponentRemovalFunc(buttonGroupBaseComponent);
     ButtonGroupBase.setTriggerFuncOnSettingChange(buttonGroupBaseComponent);
     ButtonGroupBase.setOnComponentDisplayFunc(buttonGroupBaseComponent);
+    ButtonGroupSpecificSettings.set(buttonGroupBaseComponent);
     // AlertBaseSpecificSettings.set(alertBaseComponent);
     return buttonGroupBaseComponent;
   },
