@@ -43,7 +43,7 @@ export default function useBaseComponent(): UseBaseComponent {
     return SelectDropdownUtils.isTextSelected(component) ? subcomponentCss[CSS_PSEUDO_CLASSES.HOVER] : {};
   }
 
-  const generateStyleProperties = (component: WorkshopComponent): WorkshopComponentCss[] => {
+  const getStyleProperties = (component: WorkshopComponent): WorkshopComponentCss[] => {
     const { overwrittenCustomCssObj, customCss, customFeatures, inheritedCss, activeCssPseudoClass, customStaticFeatures } = component.baseSubcomponent;
     const subcomponentCss = overwrittenCustomCssObj || customCss;
     SubcomponentTriggers.triggerOtherSubcomponentsCss(component.baseSubcomponent, activeCssPseudoClass, otherSubcomponentTriggerState);
@@ -77,7 +77,7 @@ export default function useBaseComponent(): UseBaseComponent {
 
   return {
     isIcon,
-    generateStyleProperties,
+    getStyleProperties,
     getSubcomponentText,
   };
 }

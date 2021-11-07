@@ -5,7 +5,7 @@ import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 
 export default function useLayerSectionComponent(): UseLayerSectionComponent {
 
-  const generateStyleProperties = (subcomponentProperties: SubcomponentProperties, index: string): WorkshopComponentCss[] => {
+  const getStyleProperties = (subcomponentProperties: SubcomponentProperties, index: string): WorkshopComponentCss[] => {
     return [
       { order: index },
       subcomponentProperties.seedComponent.type === COMPONENT_TYPES.ICON ? { pointerEvents: 'none' } : {},
@@ -13,6 +13,6 @@ export default function useLayerSectionComponent(): UseLayerSectionComponent {
   };
 
   return {
-    generateStyleProperties,
+    getStyleProperties,
   };
 }

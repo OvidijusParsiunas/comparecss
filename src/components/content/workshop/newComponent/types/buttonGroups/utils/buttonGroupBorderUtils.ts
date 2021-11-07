@@ -27,7 +27,7 @@ export class ButtonGroupBorderUtils {
     customCss[CSS_PSEUDO_CLASSES.DEFAULT][borderStyleKey] = BORDER_STYLES.SOLID;
   }
 
-  public static setBorderProperties(buttonComponent: WorkshopComponent): void {
+  public static setDefaultBorderProperties(buttonComponent: WorkshopComponent): void {
     const { customCss } = buttonComponent.baseSubcomponent;
     ButtonGroupBorderUtils.setBorderPropertyValues(customCss, 'borderLeftWidth', 'borderLeftColor', 'borderLeftStyle');
     ButtonGroupBorderUtils.setBorderPropertyValues(customCss, 'borderRightWidth', 'borderRightColor', 'borderRightStyle');

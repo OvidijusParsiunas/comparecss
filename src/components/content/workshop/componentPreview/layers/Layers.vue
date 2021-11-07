@@ -2,7 +2,7 @@
   <div class="layers" :class="COMPONENT_PREVIEW_MARKER">
     <div v-for="(layer, index) in layers" :key="layer" class="layer" :class="COMPONENT_PREVIEW_MARKER">
       <div :id="getLayerId(layer.subcomponentProperties.name, 'subcomponentId')"
-        :style="generateStyleProperties(layer, index === layers.length - 1)"
+        :style="getStyleProperties(layer, index === layers.length - 1)"
         :class="[...classes, COMPONENT_PREVIEW_MARKER]"
         @mouseenter="activateSubcomponentMouseEvent(layer.subcomponentProperties.name, 'subcomponentMouseEnter')"
         @mouseleave="activateSubcomponentMouseEvent(layer.subcomponentProperties.name, 'subcomponentMouseLeave')"

@@ -86,7 +86,7 @@ class ButtonGroupBase extends ComponentBuilder {
         [COMPONENT_TYPES.BUTTON]: [
           ButtonGroupBase.setComponentToRemovable,
           ButtonGroupBorderUtils.setBorderClasses,
-          ButtonGroupBorderUtils.setBorderProperties,
+          ButtonGroupBorderUtils.setDefaultBorderProperties,
           ButtonGroupBase.setTemporarySyncExecutables,
           ButtonGroupBase.setButtonGroupOnFirstNewChildButton],
       },
