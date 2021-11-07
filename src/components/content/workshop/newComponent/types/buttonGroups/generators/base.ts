@@ -37,9 +37,9 @@ class ButtonGroupBase extends ComponentBuilder {
       ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(subcomponentProperties.seedComponent, subcomponentProperties.seedComponent.containerComponent);
     } else if (cssProperty === 'borderRadius') {
       // subcomponentProperties is from button group component
-      const borderRadius = Number.parseFloat(subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius);
+      const borderRadius = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
       const buttonComponents = ButtonGroupGenericUtils.getAllButtonComponents(subcomponentProperties.seedComponent);
-      buttonComponents[0].baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = `${borderRadius}px`;
+      buttonComponents[0].baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = borderRadius;
     }
   }
 
