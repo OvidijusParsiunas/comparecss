@@ -27,7 +27,7 @@ export default class RangeUtils extends UpdateRange {
     const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, CSS_PSEUDO_CLASSES.CLICK, trigger.cssProperty);
     if (trigger.conditions.has(cssPropertyValue)) {
       customCss[activeCssPseudoClass][trigger.cssProperty] = trigger.defaultValue;
-      actionsDropdownsObjects[trigger.cssProperty][trigger.cssProperty] = trigger.defaultValue;
+      actionsDropdownsObjects[trigger.cssProperty] = trigger.defaultValue;
     }
   }
 
