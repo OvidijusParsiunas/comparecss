@@ -1,4 +1,5 @@
 when card button margin top is changed - the overlay position is incorrect
+ripples do not show up correctly when clicking on button border
 
 button:
 shadows
@@ -47,6 +48,7 @@ update the range using the scroll wheel
 ability to group components
 option to see what the actual css looks like and to edit it
 decide where the display code and download buttons should go
+the border radius range increases with the height/width of the div that it is encompassing - should reflect this in the option settings
 
 font-awesome pictures on buttons
 material design examples should have nice hover, and shadow increase events on mouse click

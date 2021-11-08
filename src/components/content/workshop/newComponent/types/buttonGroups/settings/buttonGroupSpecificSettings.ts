@@ -5,17 +5,14 @@ import { WorkshopComponent } from '../../../../../../../interfaces/workshopCompo
 
 export class ButtonGroupSpecificSettings {
 
+  // the functionality here is no longer used but remains as an example of an approach to update other color settings
+  // that are not within the same option
   public static readonly BUTTON_GROUP_BASE_GENERIC_COMPONENTS: SubcomponentSpecificSettings = {
     [WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER]: {
       [SETTING_NAMES.COLOR]: {
         updateOtherCssProperties: [{
           cssProperty: 'backgroundColor',
         }],
-      },
-      [SETTING_NAMES.RADIUS]: {
-        // the border radius range should increase with the border width - however this is not happening right now
-        // (default behaviour for all components)
-        scale: [0, 176],
       },
     },
   };
@@ -28,6 +25,6 @@ export class ButtonGroupSpecificSettings {
   }
 
   public static set(buttonGroupComponent: WorkshopComponent): void {
-    ButtonGroupSpecificSettings.setSettingsOnBaseSubcomponent(buttonGroupComponent);
+    // ButtonGroupSpecificSettings.setSettingsOnBaseSubcomponent(buttonGroupComponent);
   }
 }

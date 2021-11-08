@@ -8,8 +8,8 @@ export class OverlayElementUtils {
   }
 
   public static getOverlayElements(activeSubcomponentName: string): HTMLElement[] {
-    let elementIds = subcomponentAndOverlayElementIdsState.getPaddingComponentOverlayIdsViaSubcomponentName(activeSubcomponentName);
-    if (!elementIds) elementIds = OverlayElementUtils.getSingleOverlayElementId(activeSubcomponentName);
+    const elementIds = subcomponentAndOverlayElementIdsState.getPaddingComponentOverlayIdsViaSubcomponentName(activeSubcomponentName)
+      || OverlayElementUtils.getSingleOverlayElementId(activeSubcomponentName);
     return elementIds.map((elementId) => document.getElementById(elementId));
   }
 }

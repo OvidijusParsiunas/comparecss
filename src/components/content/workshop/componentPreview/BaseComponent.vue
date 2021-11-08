@@ -109,10 +109,12 @@ export default {
     getComponentCssClasses(): string[] {
       return this.component.componentClasses || [];
     },
+    // WORK 2 - move this to the use file
     getOverlayStyleProperties(): WorkshopComponentCss {
       const subcomponentCss = {
         ...this.component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT], color: '#ff000000',
-        ...this.getTopCssProperty()
+        ...this.getTopCssProperty(),
+        ...this.getButtonGroupBorderCss(this.component),
       };
       if (!this.isChildComponent) subcomponentCss.height = this.component.linkedComponents?.base ? 'unset' : '100% !important';
       if (this.component.baseSubcomponent.isTemporaryAddPreview) subcomponentCss.display = 'block'; 
@@ -195,22 +197,17 @@ export default {
   .close-button-text-overlay-height {
     height: 50%;
   }
-  .button-group-button {
-    border-top-width: 0px !important;
-    border-bottom-width: 0px !important;
-  }
   .button-group-middle-button {
-    border-radius: 0px !important;
+    border-radius: 0.00001px !important;
   }
   .button-group-left-button {
-    border-left-width: 0px !important;
-    border-top-right-radius: 0px !important;
-    border-bottom-right-radius: 0px !important;
+    border-top-right-radius: 0.000001px !important;
+    border-bottom-right-radius: 0.00001px !important;
+    margin-left: 0px !important;
   }
   .button-group-right-button {
-    border-right-width: 0px !important;
-    border-top-left-radius: 0px !important;
-    border-bottom-left-radius: 0px !important;
+    border-top-left-radius: 0.00001px !important;
+    border-bottom-left-radius: 0.00001px !important;
   }
 </style>
 <style lang="css">

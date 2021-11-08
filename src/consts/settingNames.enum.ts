@@ -17,4 +17,5 @@ export enum SETTING_NAMES {
   ORDER = 'Order',
   COLOR = 'Color',
   RADIUS = 'Radius',
+  DIVIDER_WIDTH = 'Divider Width',
 }

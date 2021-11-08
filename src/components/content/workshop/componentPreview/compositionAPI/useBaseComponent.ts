@@ -39,6 +39,18 @@ export default function useBaseComponent(): UseBaseComponent {
     return buttonPaddingSubstitutedToWidth;
   }
 
+  function getButtonGroupBorderCss(component: WorkshopComponent): WorkshopComponentCss {
+    const { buttonGroupSideBorders } = component.baseSubcomponent.customStaticFeatures || {};
+    if (buttonGroupSideBorders) {
+      if (buttonGroupSideBorders.left) {
+        return { borderLeftWidth: component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderTopWidth };
+      } else if (buttonGroupSideBorders.right) {
+        return { borderRightWidth: component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderTopWidth };
+      }
+    }
+    return {};
+  }
+
   function getSelectedDropdownMenuTextCss(component: WorkshopComponent, subcomponentCss: CustomCss): WorkshopComponentCss {
     return SelectDropdownUtils.isTextSelected(component) ? subcomponentCss[CSS_PSEUDO_CLASSES.HOVER] : {};
   }
@@ -47,8 +59,9 @@ export default function useBaseComponent(): UseBaseComponent {
     const { overwrittenCustomCssObj, customCss, customFeatures, inheritedCss, activeCssPseudoClass, customStaticFeatures } = component.baseSubcomponent;
     const subcomponentCss = overwrittenCustomCssObj || customCss;
     SubcomponentTriggers.triggerOtherSubcomponentsCss(component.baseSubcomponent, activeCssPseudoClass, otherSubcomponentTriggerState);
-    const selectedDropdownMenuTextCss = getSelectedDropdownMenuTextCss(component, subcomponentCss);
     const buttonPaddingSubstitutedToWidthCss = substituteButtonPaddingToWidthCss(component, subcomponentCss);
+    const selectedDropdownMenuTextCss = getSelectedDropdownMenuTextCss(component, subcomponentCss);
+    const buttonGroupButtonBorderCss = getButtonGroupBorderCss(component);
     const overflowHiddenCss = getOverflowHiddenCss(customFeatures);
     return [
       inheritedCss || {},
@@ -60,6 +73,7 @@ export default function useBaseComponent(): UseBaseComponent {
       isIcon(component) ? { pointerEvents: 'none' } : {},
       buttonPaddingSubstitutedToWidthCss,
       selectedDropdownMenuTextCss,
+      buttonGroupButtonBorderCss,
       overflowHiddenCss,
     ];
   };
@@ -79,5 +93,6 @@ export default function useBaseComponent(): UseBaseComponent {
     isIcon,
     getStyleProperties,
     getSubcomponentText,
+    getButtonGroupBorderCss,
   };
 }

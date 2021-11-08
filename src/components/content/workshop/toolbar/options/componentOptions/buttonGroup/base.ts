@@ -8,10 +8,6 @@ type ButtonGroupBaseOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT;
 export const buttonGroupBaseOptions: SubcomponentOptions<ButtonGroupBaseOptionsModes> = {
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
     {
-      buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
-      type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER,
-    },
-    {
       buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.SHADOW,
       type: WORKSHOP_TOOLBAR_OPTION_TYPES.SHADOW,
     },

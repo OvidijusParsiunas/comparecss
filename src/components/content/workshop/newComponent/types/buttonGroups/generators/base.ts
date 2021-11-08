@@ -6,7 +6,6 @@ import { BUTTON_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSu
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
-import { ButtonGroupSpecificSettings } from '../settings/buttonGroupSpecificSettings';
 // import { AlertBaseSpecificSettings } from '../settings/alertBaseSpecificSettings';
 import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -34,12 +33,22 @@ class ButtonGroupBase extends ComponentBuilder {
   private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
     if (cssProperty === 'height' || cssProperty === 'paddingTop' || cssProperty === 'paddingBottom') {
       // subcomponentProperties is from button component
-      ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(subcomponentProperties.seedComponent, subcomponentProperties.seedComponent.containerComponent);
+      ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(subcomponentProperties.seedComponent,
+        subcomponentProperties.seedComponent.containerComponent);
+    } else if (cssProperty === 'borderLeftWidth') {
+      // subcomponentProperties is from button component
+      const borderLeftWidth = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth;
+      subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].marginLeft = `-${borderLeftWidth}`;
+      subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRightWidth = borderLeftWidth;
+    } else if (cssProperty === 'borderTopWidth') {
+      // subcomponentProperties is from button component
+      const borderTopWidth = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderTopWidth;
+      subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderBottomWidth = borderTopWidth;
     } else if (cssProperty === 'borderRadius') {
-      // subcomponentProperties is from button group component
+      // subcomponentProperties is from button component
       const borderRadius = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
-      const buttonComponents = ButtonGroupGenericUtils.getAllButtonComponents(subcomponentProperties.seedComponent);
-      buttonComponents[0].baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = borderRadius;
+      // this is used to get a curve for the button group base
+      subcomponentProperties.seedComponent.containerComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = borderRadius;
     }
   }
 
@@ -157,7 +166,6 @@ export const buttonGroupBase: ComponentGenerator = {
     ButtonGroupBase.setOnChildComponentRemovalFunc(buttonGroupBaseComponent);
     ButtonGroupBase.setTriggerFuncOnSettingChange(buttonGroupBaseComponent);
     ButtonGroupBase.setOnComponentDisplayFunc(buttonGroupBaseComponent);
-    ButtonGroupSpecificSettings.set(buttonGroupBaseComponent);
     // AlertBaseSpecificSettings.set(alertBaseComponent);
     return buttonGroupBaseComponent;
   },

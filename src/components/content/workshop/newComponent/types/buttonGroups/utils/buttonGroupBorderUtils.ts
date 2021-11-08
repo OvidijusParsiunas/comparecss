@@ -1,12 +1,15 @@
 import { BUTTON_GROUP_BUTTON_CLASSES } from '../../../../../../../consts/buttonGroupButtonClasses.enum';
-import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { ButtonGroupButtonSpecificSettings } from '../settings/buttonGroupButtonSpecificSettings';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
+import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ButtonGroupGenericUtils } from './buttonGroupGenericUtils';
 
 export class ButtonGroupBorderUtils {
-  
+
+  private static readonly DEFAULT_BORDER_WIDTH = '0px';
+
   public static setBorderClasses(buttonComponent: WorkshopComponent, buttonGroupComponent: WorkshopComponent): void {
+    // WORK 2 - refactor
     const buttons = ButtonGroupGenericUtils.getAllButtonComponents(buttonGroupComponent);
     const sharedComponentClasses = [BUTTON_GROUP_BUTTON_CLASSES.BUTTON_GROUP_BUTTON];
     buttons[0].componentClasses = [
@@ -17,19 +20,27 @@ export class ButtonGroupBorderUtils {
       ...sharedComponentClasses, BUTTON_GROUP_BUTTON_CLASSES.BUTTON_GROUP_MIDDLE_BUTTON]
     for (let i = 1; i < buttons.length - 1; i += 1) {
       buttons[i].componentClasses = middleButtonComponentClasses;
+      delete buttons[i].baseSubcomponent.customStaticFeatures;
     }
-  }
 
-  private static setBorderPropertyValues(customCss: CustomCss, borderWidthKey: string,
-      borderColorKey: string, borderStyleKey: string): void {
-    customCss[CSS_PSEUDO_CLASSES.DEFAULT][borderWidthKey] = '0px';
-    customCss[CSS_PSEUDO_CLASSES.DEFAULT][borderColorKey] = '#1779ba';
-    customCss[CSS_PSEUDO_CLASSES.DEFAULT][borderStyleKey] = BORDER_STYLES.SOLID;
+    buttons[0].baseSubcomponent.customStaticFeatures = {
+      buttonGroupSideBorders: {
+        left: true,
+      }
+    }
+    buttons[buttons.length - 1].baseSubcomponent.customStaticFeatures = {
+      buttonGroupSideBorders: {
+        right: true,
+      }
+    }
   }
 
   public static setDefaultBorderProperties(buttonComponent: WorkshopComponent): void {
     const { customCss } = buttonComponent.baseSubcomponent;
-    ButtonGroupBorderUtils.setBorderPropertyValues(customCss, 'borderLeftWidth', 'borderLeftColor', 'borderLeftStyle');
-    ButtonGroupBorderUtils.setBorderPropertyValues(customCss, 'borderRightWidth', 'borderRightColor', 'borderRightStyle');
+    customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth = ButtonGroupBorderUtils.DEFAULT_BORDER_WIDTH;
+    customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRightWidth = ButtonGroupBorderUtils.DEFAULT_BORDER_WIDTH;
+    customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderTopWidth = ButtonGroupBorderUtils.DEFAULT_BORDER_WIDTH;
+    customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderBottomWidth = ButtonGroupBorderUtils.DEFAULT_BORDER_WIDTH;
+    ButtonGroupButtonSpecificSettings.set(buttonComponent);
   }
 }

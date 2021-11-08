@@ -10,6 +10,7 @@ import { OtherSubcomponentTriggers } from './otherSubcomponentTriggers';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
 import { PropertyOverwritableFunc } from './removeChildComponentFunc';
 import { COMPONENT_STYLES } from '../consts/componentStyles.enum';
+import { ButtonGroupSideBorders } from './buttonGroupSideBorders';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { NewChildComponents } from './newChildComponents';
@@ -111,6 +112,7 @@ export interface CustomStaticFeatures {
   selectDropdownText?: SelectDropdownText;
   // applied to the dropdown menu component
   dropdownMenuData?: DropdownMenuData;
+  buttonGroupSideBorders?: ButtonGroupSideBorders;
   jsClasses?: ComponentJavascriptClasses;
   subcomponentText?: Text;
   image?: Image;
