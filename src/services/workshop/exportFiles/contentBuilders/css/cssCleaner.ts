@@ -105,7 +105,8 @@ export default class CssCleaner {
   private static retrieveSubcomponentDimensions(customCss: CustomCss, cssPseudoClass: CSS_PSEUDO_CLASSES): SubcomponentDimensions {
     const subcomponentDimensions = { width: 0, paddingLeft: 0, paddingRight: 0, height: 0, paddingTop: 0, paddingBottom: 0 };
     Object.keys(subcomponentDimensions).map((key) => {
-      subcomponentDimensions[key] = customCss[cssPseudoClass].hasOwnProperty[key] ? Number.parseInt(customCss[cssPseudoClass][key]) : Number.parseInt(this.getCssValueAppropriateToState(cssPseudoClass, customCss, key));
+      subcomponentDimensions[key] = customCss[cssPseudoClass].hasOwnProperty[key]
+        ? Number.parseInt(customCss[cssPseudoClass][key]) : Number.parseInt(this.getCssValueAppropriateToState(cssPseudoClass, customCss, key));
     })
     return subcomponentDimensions;
   } 

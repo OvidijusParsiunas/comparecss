@@ -209,6 +209,10 @@ export interface WorkshopComponent {
   newChildComponents: NewChildComponents;
   onChildComponentRemovalFunc?: PropertyOverwritableFunc;
   onComponentDisplayFunc?: (component: WorkshopComponent) => void;
+  // WORK 2 - interface
+  displayInFrontOfSiblingsWhenActive?: {
+    isActive: boolean;
+  };
 }
 
 // Component Architecture Information:

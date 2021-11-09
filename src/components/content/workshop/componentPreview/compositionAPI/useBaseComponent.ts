@@ -18,6 +18,14 @@ export default function useBaseComponent(): UseBaseComponent {
     return component.baseSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.ICON;
   };
 
+  function getInheritedValues(activeCssPseudoClass: CSS_PSEUDO_CLASSES, subcomponentCss: CustomCss): WorkshopComponentCss {
+    return {
+      backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'backgroundColor'),
+      color: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'color'),
+      borderColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'borderColor'),
+    };
+  }
+
   function getOverflowHiddenCss(customFeatures: CustomFeatures): WorkshopComponentCss {
     if (customFeatures?.jsClasses?.has(JAVASCRIPT_CLASSES.RIPPLES)) {
       return { overflow: 'hidden' };
@@ -68,8 +76,7 @@ export default function useBaseComponent(): UseBaseComponent {
       subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT],
       subcomponentCss[activeCssPseudoClass],
       { backgroundImage: customStaticFeatures?.image?.data ? 'url(' + customStaticFeatures.image.data + ')' : ''},
-      { backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'backgroundColor') },
-      { color: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'color') },
+      getInheritedValues(activeCssPseudoClass, subcomponentCss),
       isIcon(component) ? { pointerEvents: 'none' } : {},
       buttonPaddingSubstitutedToWidthCss,
       selectedDropdownMenuTextCss,

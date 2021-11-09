@@ -20,6 +20,11 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   let isUnsetButtonDisplayedForColorInputs = {};
   let unsetTransitionPropertyTimeout = null;
 
+  function setDisplayInFrontOfSiblingsWhenActive(isActive: boolean): void {
+    const { displayInFrontOfSiblingsWhenActive } = subcomponentProperties.seedComponent;
+    if (displayInFrontOfSiblingsWhenActive) displayInFrontOfSiblingsWhenActive.isActive = isActive;
+  }
+
   function triggerSubcomponentMouseEventCallback(mouseEvent: keyof SubcomponentMouseEventCallbacks): void {
     subcomponentProperties.customFeatures?.mouseEventCallbacks?.[mouseEvent]?.(subcomponentProperties);
   }
@@ -104,6 +109,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     setDefaultUnsetButtonStatesForColorInputs(customCss);
     setMouseEnterProperties(customCss, customFeatures);
     triggerSubcomponentMouseEventCallback('mouseEnter');
+    setDisplayInFrontOfSiblingsWhenActive(true);
   }
 
   const subcomponentMouseLeave = (): void => {
@@ -115,7 +121,8 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
       delete subcomponentProperties.overwrittenCustomCssObj;
     }
     isUnsetButtonDisplayedForColorInputs = {};
-    if (customFeatures?.animations?.stationary) unsetStationaryAnimations(customCss, defaultCss, customFeatures.animations.stationary); 
+    setDisplayInFrontOfSiblingsWhenActive(false);
+    if (customFeatures?.animations?.stationary) unsetStationaryAnimations(customCss, defaultCss, customFeatures.animations.stationary);
   }
 
   const subcomponentMouseDown = (): void => {

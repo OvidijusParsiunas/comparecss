@@ -92,9 +92,20 @@ export default {
     };
   },
   methods: {
+    // WORK 2 - refactor
+    // WORK 2 - left button border moves on hover
+    // WORK 2 - upon undoing the border color in hover mode - the border turns to blue rather than default color
     getTopCssProperty(): WorkshopComponentCss {
       const { top } = (this.component as WorkshopComponent).baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
-      return { top: top || '50%' };
+      const topCssProperty = { top: top || '50%' };
+      if (this.component.displayOverSiblingsWhenHovered) {
+        if (this.component.displayOverSiblingsWhenHovered.isActive
+          || this.component.baseSubcomponent.activeCssPseudoClass === 'Hover'
+          || this.component.baseSubcomponent.activeCssPseudoClass === 'Click') {
+          return { ...topCssProperty, zIndex: 1 };
+        }
+      }
+      return topCssProperty;
     },
     getBaseId(idType: keyof SubcomponentAndOverlayElementIds[string]): string {
       return this.subcomponentAndOverlayElementIds[this.component.baseSubcomponent.name]?.[idType];
