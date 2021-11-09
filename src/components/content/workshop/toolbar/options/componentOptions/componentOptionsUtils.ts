@@ -6,16 +6,17 @@ export class ComponentOptionsUtils {
   // can replace original options and additionally append entirely new options to the end
   public static overwriteOptions(oldOptions: Option[], newOptions: Option[]): Option[] {
     let resultOptions: Option[] = [];
+    const newArrayOptionsCp = [...newOptions];
     oldOptions.forEach((oldOption: Option) => {
-      const newOptionIndex = newOptions.findIndex((newOption: Option) => newOption.buttonName === oldOption.buttonName);
+      const newOptionIndex = newArrayOptionsCp.findIndex((newOption: Option) => newOption.buttonName === oldOption.buttonName);
       if (newOptionIndex >= 0) {
-        resultOptions.push(newOptions[newOptionIndex]);
-        newOptions.splice(newOptionIndex, 1);
+        resultOptions.push(newArrayOptionsCp[newOptionIndex]);
+        newArrayOptionsCp.splice(newOptionIndex, 1);
       } else {
         resultOptions.push(oldOption);
       }
     });
-    resultOptions = [...resultOptions, ...newOptions];
+    resultOptions = [...resultOptions, ...newArrayOptionsCp];
     return resultOptions;
   }
 

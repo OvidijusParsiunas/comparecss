@@ -10,13 +10,27 @@ type ButtonGroupButtonOptionsModes = CSS_PSEUDO_CLASSES.DEFAULT | CSS_PSEUDO_CLA
 const buttonGroupButtonSpecificOptions = [
   {
     buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
-    type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER_RIGHT,
+    type: WORKSHOP_TOOLBAR_OPTION_TYPES.BUTTON_GROUP_BUTTON_BORDER,
+  },
+];
+
+const buttonGroupButtonSpecificActiveOptions = [
+  {
+    buttonName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES.BORDER,
+    type: WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER_COLOR,
   },
 ];
 
 export const buttonGroupButtonOptions: SubcomponentOptions<ButtonGroupButtonOptionsModes> = {
-  ...childButtonOptions,
   [CSS_PSEUDO_CLASSES.DEFAULT]: [
     ...ComponentOptionsUtils.overwriteOptions(childButtonOptions[CSS_PSEUDO_CLASSES.DEFAULT], buttonGroupButtonSpecificOptions),
+  ],
+  [CSS_PSEUDO_CLASSES.HOVER]: [
+    ...buttonGroupButtonSpecificActiveOptions,
+    ...childButtonOptions[CSS_PSEUDO_CLASSES.HOVER],
+  ],
+  [CSS_PSEUDO_CLASSES.CLICK]: [
+    ...buttonGroupButtonSpecificActiveOptions,
+    ...childButtonOptions[CSS_PSEUDO_CLASSES.CLICK],
   ],
 };

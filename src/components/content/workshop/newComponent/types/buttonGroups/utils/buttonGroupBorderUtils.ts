@@ -7,6 +7,7 @@ import { ButtonGroupGenericUtils } from './buttonGroupGenericUtils';
 export class ButtonGroupBorderUtils {
 
   private static readonly DEFAULT_BORDER_WIDTH = '0px';
+  private static readonly DEFAULT_MARGIN_LEFT = '-2px';
 
   public static setBorderClasses(buttonComponent: WorkshopComponent, buttonGroupComponent: WorkshopComponent): void {
     // WORK 2 - refactor
@@ -41,6 +42,7 @@ export class ButtonGroupBorderUtils {
     customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRightWidth = ButtonGroupBorderUtils.DEFAULT_BORDER_WIDTH;
     customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderTopWidth = ButtonGroupBorderUtils.DEFAULT_BORDER_WIDTH;
     customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderBottomWidth = ButtonGroupBorderUtils.DEFAULT_BORDER_WIDTH;
+    customCss[CSS_PSEUDO_CLASSES.DEFAULT].marginLeft = ButtonGroupBorderUtils.DEFAULT_MARGIN_LEFT;
     ButtonGroupButtonSpecificSettings.set(buttonComponent);
   }
 }

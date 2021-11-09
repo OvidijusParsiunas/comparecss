@@ -38,7 +38,8 @@ class ButtonGroupBase extends ComponentBuilder {
     } else if (cssProperty === 'borderLeftWidth') {
       // subcomponentProperties is from button component
       const borderLeftWidth = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth;
-      subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].marginLeft = `-${borderLeftWidth}`;
+      // setting to -2px due to chrome bug where there is a white horizontal border when top/bottom borders are set with 0px < widths
+      subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].marginLeft = borderLeftWidth === '0px' ? '-2px' : `-${borderLeftWidth}`;
       subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRightWidth = borderLeftWidth;
     } else if (cssProperty === 'borderTopWidth') {
       // subcomponentProperties is from button component

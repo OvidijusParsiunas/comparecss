@@ -198,6 +198,7 @@ export default {
     height: 50%;
   }
   .button-group-middle-button {
+    /* 0.00001px is used to prevent a bug in chrome where the background color bleeds past the border */
     border-radius: 0.00001px !important;
   }
   .button-group-left-button {

@@ -25,6 +25,7 @@ import fadeAnimation from './fadeAnimation';
 import borderBottom from './borderBottom';
 import circleBorder from './circleBorder';
 import modalActions from './modalActions';
+import borderColor from './borderColor';
 import borderRight from './borderRight';
 import borderLeft from './borderLeft';
 import sizeHeight from './sizeHeight';
@@ -49,6 +50,7 @@ type OptionToSettings = {
 
 export const optionToSettings: OptionToSettings = {
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER]: border,
+  [WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER_COLOR]: borderColor,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER_BOTTOM]: borderBottom,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER_TOP]: borderTop,
   [WORKSHOP_TOOLBAR_OPTION_TYPES.BORDER_LEFT]: borderLeft,
