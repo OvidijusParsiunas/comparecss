@@ -14,7 +14,6 @@ import JSONUtils from '../../../utils/generic/jsonUtils';
 
 export class SyncedComponent {
 
-  // WORK 2 - what happens when a child component is removed from the component synced to
   private static dereferenceCopiedComponentCustomProperties(componentTraversalState: SubcomponentPreviewTraversalState): PreviewTraversalResult {
     const { subcomponentProperties } = componentTraversalState;
     subcomponentProperties.customCss = JSONUtils.deepCopy(subcomponentProperties.customCss);

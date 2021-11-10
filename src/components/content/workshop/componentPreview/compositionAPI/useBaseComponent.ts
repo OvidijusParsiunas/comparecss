@@ -18,6 +18,25 @@ export default function useBaseComponent(): UseBaseComponent {
     return component.baseSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.ICON;
   };
 
+  // WORK 2 - left button border moves on hover
+  // WORK 2 - upon undoing the border color in hover mode - the border turns to blue rather than default color
+  function setZIndexToDisplayOverSignlingsWhenActive(component: WorkshopComponent, baseContainerCss: WorkshopComponentCss): void {
+    const { displayInFrontOfSiblingsWhenActive, baseSubcomponent } = component;
+    if (displayInFrontOfSiblingsWhenActive
+        && (displayInFrontOfSiblingsWhenActive.isActive
+          || baseSubcomponent.activeCssPseudoClass === CSS_PSEUDO_CLASSES.HOVER
+          || baseSubcomponent.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK)) {
+        baseContainerCss.zIndex = 1;
+    }
+  }
+
+  function getBaseContainerCss(component: WorkshopComponent): WorkshopComponentCss {
+    const { top } = component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
+    const baseContainerCss: WorkshopComponentCss = { top: top || '50%' };
+    setZIndexToDisplayOverSignlingsWhenActive(component, baseContainerCss);
+    return baseContainerCss;
+  }
+
   function getInheritedValues(activeCssPseudoClass: CSS_PSEUDO_CLASSES, subcomponentCss: CustomCss): WorkshopComponentCss {
     return {
       backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'backgroundColor'),
@@ -100,6 +119,7 @@ export default function useBaseComponent(): UseBaseComponent {
     isIcon,
     getStyleProperties,
     getSubcomponentText,
+    getBaseContainerCss,
     getButtonGroupBorderCss,
   };
 }
