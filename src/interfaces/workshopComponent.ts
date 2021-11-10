@@ -1,6 +1,7 @@
 import { InterconnectedSetting, SubcomponentSpecificSettings } from './subcomponentSpecificSettings';
 import { DropdownFeatures, DropdownMenuData, SelectDropdownText } from './dropdownFeatures';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
+import { DisplayInFrontOfSiblingsWhenActive } from './displayInFrontOfSiblingsWhenActive';
 import { SubcomponentMouseEventCallbacks } from './subcomponentMouseEventCallbacks';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
@@ -209,10 +210,7 @@ export interface WorkshopComponent {
   newChildComponents: NewChildComponents;
   onChildComponentRemovalFunc?: PropertyOverwritableFunc;
   onComponentDisplayFunc?: (component: WorkshopComponent) => void;
-  // WORK 2 - interface
-  displayInFrontOfSiblingsWhenActive?: {
-    isActive: boolean;
-  };
+  displayInFrontOfSiblingsWhenActive?: DisplayInFrontOfSiblingsWhenActive;
 }
 
 // Component Architecture Information:
