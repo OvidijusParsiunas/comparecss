@@ -111,8 +111,8 @@ export default {
         ...this.getTopCssProperty()
       };
       if (!this.isChildComponent) subcomponentCss.height = this.component.linkedComponents?.base ? 'unset' : '100% !important';
-      if (this.component.baseSubcomponent.isTemporaryAddPreview) subcomponentCss.display = 'block'; 
-      if (!this.component.linkedComponents?.base && !this.isChildComponent) subcomponentCss.marginTop = '0px';
+      if (this.component.baseSubcomponent.isTemporaryAddPreview) subcomponentCss.display = 'block';
+      if (!this.component.linkedComponents?.base) subcomponentCss.marginTop = '0px';
       if (this.isIcon(this.component)) subcomponentCss.height = subcomponentCss.width;
       return subcomponentCss;
     },
