@@ -1,6 +1,3 @@
-when card button margin top is changed - the overlay position is incorrect
-ripples do not show up correctly when clicking on button border
-
 button:
 shadows
 base will also hold the button group properties - the left and right border radius, these will be settable via the actual buttons

@@ -18,8 +18,15 @@ const vars = {
   className: 'csssymphony-ripples',
 };
 
+function getButtonLayerElement(buttonElement) {
+  return buttonElement.childNodes[1].childNodes[1].childNodes[0];
+}
+
 // for text subcomponents: it has been identified that the more text there is - the bigger the ripple is which may need to be fixed in the future
 function createRipple(event, buttonElement) {
+  // if user clicks on the button border - the ripple would be projected over the content around it,
+  // this sets the ripple on the button layer which keeps it within the button boundaries
+  if (buttonElement.style.borderWidth) buttonElement = getButtonLayerElement(buttonElement);
   const rippleElement = document.createElement('span');
   rippleElement.style.cssText = 'background-color: rgba(255, 255, 255, 0.5); pointer-events: none; position: absolute; border-radius: 50%';
   const diameter = Math.max(buttonElement.clientWidth, buttonElement.clientHeight);
