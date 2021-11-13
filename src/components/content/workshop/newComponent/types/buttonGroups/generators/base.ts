@@ -82,14 +82,20 @@ class ButtonGroupBase extends ComponentBuilder {
     return newBorderColor === CSS_PROPERTY_VALUES.INHERIT || newBorderColor === oldBorderColor;
   }
 
+  // this is a workaround for a bug in Chrome - the margin left property does not appear to align left/right borders correctly
+  // as some of them tend to be a little too far left or too far right - giving a sensation of border movement when a button
+  // is set to the front.
+  // Hence this is used to prevent the buttons from moving to front when there are no hover/click borders or when their colours
+  // are the same as their previous pseudo class as it would be pointless to do so. Also, this bug is less visible when border
+  // colours are different, hence it is allowed to occur then.
   private static shouldComponentBeInFront(subcomponentProperties: SubcomponentProperties, cssPseudoClass: CSS_PSEUDO_CLASSES): boolean {
     if (cssPseudoClass === CSS_PSEUDO_CLASSES.HOVER) {
       if (!subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER].borderColor
-          || ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.DEFAULT, CSS_PSEUDO_CLASSES.HOVER)) {
+          || ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER, CSS_PSEUDO_CLASSES.DEFAULT)) {
         return false;
       }
     } else if (cssPseudoClass === CSS_PSEUDO_CLASSES.CLICK
-        && ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER, CSS_PSEUDO_CLASSES.CLICK)) {
+        && ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.CLICK, CSS_PSEUDO_CLASSES.HOVER)) {
       return false;
     }
     return true;

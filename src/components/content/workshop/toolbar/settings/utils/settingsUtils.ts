@@ -17,7 +17,7 @@ export default class SettingsUtils {
 
   private static resetCssProperties(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
     const { customCss, defaultCss, activeCssPseudoClass } = subcomponentProperties;
-    if (defaultCss[activeCssPseudoClass] && defaultCss[activeCssPseudoClass][cssProperty]) {
+    if (defaultCss[activeCssPseudoClass]?.[cssProperty]) {
       const cssValue = defaultCss[activeCssPseudoClass][cssProperty];
       SettingsUtils.setCssProperty(subcomponentProperties, cssProperty, cssValue)
     } else if (customCss[activeCssPseudoClass]) {

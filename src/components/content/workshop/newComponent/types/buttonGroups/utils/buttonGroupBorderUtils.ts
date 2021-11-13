@@ -1,8 +1,8 @@
 import { BUTTON_GROUP_BUTTON_CLASSES } from '../../../../../../../consts/buttonGroupButtonClasses.enum';
 import { ButtonGroupButtonSpecificSettings } from '../settings/buttonGroupButtonSpecificSettings';
+import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
-import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ButtonGroupGenericUtils } from './buttonGroupGenericUtils';
 
 export class ButtonGroupBorderUtils {
@@ -38,8 +38,7 @@ export class ButtonGroupBorderUtils {
     }
   }
 
-  public static setDefaultBorderProperties(buttonComponent: WorkshopComponent): void {
-    const { customCss } = buttonComponent.baseSubcomponent;
+  private static setCustomCss(customCss: CustomCss): void {
     customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth = ButtonGroupBorderUtils.DEFAULT_BORDER_WIDTH;
     customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRightWidth = ButtonGroupBorderUtils.DEFAULT_BORDER_WIDTH;
     customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderTopWidth = ButtonGroupBorderUtils.DEFAULT_BORDER_WIDTH;
@@ -47,6 +46,12 @@ export class ButtonGroupBorderUtils {
     customCss[CSS_PSEUDO_CLASSES.DEFAULT].marginLeft = ButtonGroupBorderUtils.DEFAULT_MARGIN_LEFT;
     customCss[CSS_PSEUDO_CLASSES.HOVER].borderColor = ButtonGroupBorderUtils.ACTIVE_PSEUDO_CLASS_BORDER_COLOR;
     customCss[CSS_PSEUDO_CLASSES.CLICK].borderColor = ButtonGroupBorderUtils.ACTIVE_PSEUDO_CLASS_BORDER_COLOR;
+  }
+
+  public static setDefaultBorderProperties(buttonComponent: WorkshopComponent): void {
+    const { customCss, defaultCss } = buttonComponent.baseSubcomponent;
+    ButtonGroupBorderUtils.setCustomCss(customCss);
+    ButtonGroupBorderUtils.setCustomCss(defaultCss);
     ButtonGroupButtonSpecificSettings.set(buttonComponent);
   }
 }

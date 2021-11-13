@@ -1,6 +1,7 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import GeneralUtils from '../../../../../../services/workshop/exportFiles/contentBuilders/css/generalUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
+import { CSS_PROPERTY_VALUES } from '../../../../../../consts/cssPropertyValues.enum';
 
 export default class SharedUtils {
 
@@ -9,11 +10,13 @@ export default class SharedUtils {
     if (!customCss) return undefined;
     switch (activeMode) {
       case (CSS_PSEUDO_CLASSES.CLICK):
-        if (customCss[CSS_PSEUDO_CLASSES.CLICK] && customCss[CSS_PSEUDO_CLASSES.CLICK].hasOwnProperty(cssProperty)) {
+        if (customCss[CSS_PSEUDO_CLASSES.CLICK] && customCss[CSS_PSEUDO_CLASSES.CLICK].hasOwnProperty(cssProperty)
+            && customCss[CSS_PSEUDO_CLASSES.CLICK][cssProperty] !== CSS_PROPERTY_VALUES.INHERIT) {
           return customCss[CSS_PSEUDO_CLASSES.CLICK][cssProperty];
         }
       case (CSS_PSEUDO_CLASSES.HOVER):
-        if (customCss[CSS_PSEUDO_CLASSES.HOVER] && customCss[CSS_PSEUDO_CLASSES.HOVER].hasOwnProperty(cssProperty)) {
+        if (customCss[CSS_PSEUDO_CLASSES.HOVER] && customCss[CSS_PSEUDO_CLASSES.HOVER].hasOwnProperty(cssProperty)
+            && customCss[CSS_PSEUDO_CLASSES.HOVER][cssProperty] !== CSS_PROPERTY_VALUES.INHERIT) {
           return customCss[CSS_PSEUDO_CLASSES.HOVER][cssProperty];
         }
       case (CSS_PSEUDO_CLASSES.DEFAULT):

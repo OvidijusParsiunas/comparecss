@@ -19,6 +19,8 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   let overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
   let isUnsetButtonDisplayedForColorInputs = {};
   let unsetTransitionPropertyTimeout = null;
+  // can be any value, using null for simplicity
+  const transitionReadyToUnsetSignature = null;
 
   function displayInFrontOfSiblings(inFront: boolean, cssPseudoClass: CSS_PSEUDO_CLASSES): void {
     const { displayInFrontOfSiblingsState } = subcomponentProperties.seedComponent;
@@ -63,13 +65,17 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   function unsetStationaryAnimations(customCss: CustomCss, defaultCss: CustomCss, stationaryAnimations: StationaryAnimations): void {
     if (stationaryAnimations.fade?.duration) {
       unsetTransitionPropertyTimeout = window.setTimeout(() => {
-        customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition = CSS_PROPERTY_VALUES.UNSET;
         unsetTransitionPropertyTimeout = null;
+        if (customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition !== transitionReadyToUnsetSignature) return;
+        customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition = CSS_PROPERTY_VALUES.UNSET;
       }, Number.parseFloat(stationaryAnimations.fade.duration) * 1000);
     }
     if (stationaryAnimations.backgroundZoom?.zoomLevels) {
       customCss[CSS_PSEUDO_CLASSES.DEFAULT].backgroundSize = defaultCss[CSS_PSEUDO_CLASSES.DEFAULT].backgroundSize;
     }
+    // this is used to prevent a bug where sibling components that share customCss have their transition property
+    // unset when the user moves their mouse from one component to another as the timeout unsets the reference.
+    customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition = transitionReadyToUnsetSignature;
   }
 
   function buildTransitionCssProperty(customFeatures: string): string {
@@ -93,6 +99,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   function setCustomCss(customCss: CustomCss, activeCssPseudoClass: CSS_PSEUDO_CLASSES): void {
     const newDefaultProperties = {
       ...customCss[CSS_PSEUDO_CLASSES.DEFAULT], ...customCss[activeCssPseudoClass], ...isUnsetButtonDisplayedForColorInputs,
+      // WORK 2 - refactor
       backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCss, 'backgroundColor'),
       color: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCss, 'color'),
       borderColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCss, 'borderColor'),
