@@ -93,8 +93,8 @@ class ButtonGroupBase extends ComponentBuilder {
     return true;
   }
 
-  private static setDisplayInFrontOfSiblingsWhenActive(buttonComponent: WorkshopComponent): void {
-    buttonComponent.displayInFrontOfSiblingsWhenActive = { isActive: false, conditionalFunc: ButtonGroupBase.shouldComponentBeInFront };
+  private static setDisplayInFrontOfSiblingsState(buttonComponent: WorkshopComponent): void {
+    buttonComponent.displayInFrontOfSiblingsState = { isInFront: false, conditionalFunc: ButtonGroupBase.shouldComponentBeInFront };
   }
 
   private static onTemporarySyncExecutableFunc(buttonComponent: WorkshopComponent): void {
@@ -120,7 +120,7 @@ class ButtonGroupBase extends ComponentBuilder {
           ButtonGroupBorderUtils.setBorderClasses,
           ButtonGroupBorderUtils.setDefaultBorderProperties,
           ButtonGroupBase.setTemporarySyncExecutables,
-          ButtonGroupBase.setDisplayInFrontOfSiblingsWhenActive,
+          ButtonGroupBase.setDisplayInFrontOfSiblingsState,
           ButtonGroupBase.setButtonGroupOnFirstNewChildButton],
       },
       onBuildProperties: {

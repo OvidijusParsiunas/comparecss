@@ -20,11 +20,11 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   let isUnsetButtonDisplayedForColorInputs = {};
   let unsetTransitionPropertyTimeout = null;
 
-  function setDisplayInFrontOfSiblingsWhenActive(isActive: boolean, csspseudoClass: CSS_PSEUDO_CLASSES): void {
-    const { displayInFrontOfSiblingsWhenActive } = subcomponentProperties.seedComponent;
-    if (displayInFrontOfSiblingsWhenActive) {
-      if (!displayInFrontOfSiblingsWhenActive.conditionalFunc || displayInFrontOfSiblingsWhenActive.conditionalFunc(subcomponentProperties, csspseudoClass)) {
-        displayInFrontOfSiblingsWhenActive.isActive = isActive;
+  function displayInFrontOfSiblings(inFront: boolean, csspseudoClass: CSS_PSEUDO_CLASSES): void {
+    const { displayInFrontOfSiblingsState } = subcomponentProperties.seedComponent;
+    if (displayInFrontOfSiblingsState) {
+      if (!displayInFrontOfSiblingsState.conditionalFunc || displayInFrontOfSiblingsState.conditionalFunc(subcomponentProperties, csspseudoClass)) {
+        displayInFrontOfSiblingsState.isInFront = inFront;
       }
     }
   }
@@ -113,7 +113,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     setDefaultUnsetButtonStatesForColorInputs(customCss);
     setMouseEnterProperties(customCss, customFeatures);
     triggerSubcomponentMouseEventCallback('mouseEnter');
-    setDisplayInFrontOfSiblingsWhenActive(true, CSS_PSEUDO_CLASSES.HOVER);
+    displayInFrontOfSiblings(true, CSS_PSEUDO_CLASSES.HOVER);
   }
 
   const subcomponentMouseLeave = (): void => {
@@ -125,7 +125,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
       delete subcomponentProperties.overwrittenCustomCssObj;
     }
     isUnsetButtonDisplayedForColorInputs = {};
-    setDisplayInFrontOfSiblingsWhenActive(false, CSS_PSEUDO_CLASSES.HOVER);
+    displayInFrontOfSiblings(false, CSS_PSEUDO_CLASSES.HOVER);
     if (customFeatures?.animations?.stationary) unsetStationaryAnimations(customCss, defaultCss, customFeatures.animations.stationary);
   }
 
@@ -140,7 +140,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     }
     overwrittenDefaultPropertiesByClick = { hasBeenSet: true, css: { ...subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] } };
     setCustomCss(customCss, CSS_PSEUDO_CLASSES.CLICK);
-    setDisplayInFrontOfSiblingsWhenActive(true, CSS_PSEUDO_CLASSES.CLICK);
+    displayInFrontOfSiblings(true, CSS_PSEUDO_CLASSES.CLICK);
   }
 
   const subcomponentMouseUp = (): void => {
@@ -152,7 +152,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
       subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };
       overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
     }
-    setDisplayInFrontOfSiblingsWhenActive(false, CSS_PSEUDO_CLASSES.CLICK);
+    displayInFrontOfSiblings(false, CSS_PSEUDO_CLASSES.CLICK);
   }
 
   const subcomponentClick = (): void => {

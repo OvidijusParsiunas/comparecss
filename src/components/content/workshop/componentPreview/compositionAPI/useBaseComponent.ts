@@ -19,11 +19,11 @@ export default function useBaseComponent(): UseBaseComponent {
   };
 
   // WORK 2 - left button border moves on hover
-  // WORK 2 - upon undoing the border color in hover mode - the border turns to blue rather than default color
+  // WORK 2 - upon undoing the border color in hover mode - the border turns to blue rather than default color, undo does not work for border stuff
   function setZIndexToDisplayOverSignlingsWhenActive(component: WorkshopComponent, baseContainerCss: WorkshopComponentCss): void {
-    const { displayInFrontOfSiblingsWhenActive, baseSubcomponent } = component;
-    if (displayInFrontOfSiblingsWhenActive
-        && (displayInFrontOfSiblingsWhenActive.isActive
+    const { displayInFrontOfSiblingsState, baseSubcomponent } = component;
+    if (displayInFrontOfSiblingsState
+        && (displayInFrontOfSiblingsState.isInFront
           || baseSubcomponent.activeCssPseudoClass === CSS_PSEUDO_CLASSES.HOVER
           || baseSubcomponent.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK)) {
         baseContainerCss.zIndex = 1;
