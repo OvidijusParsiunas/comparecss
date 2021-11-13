@@ -6,10 +6,10 @@ import { subcomponentAndOverlayElementIdsState } from '../utils/elements/subcomp
 import { CustomCss, CustomFeatures, SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { SubcomponentMouseEventCallbacks } from '../../../../../interfaces/subcomponentMouseEventCallbacks';
 import { SubcomponentTypeToProperties } from '../../../../../interfaces/subcomponentTypeToProperties';
+import { StationaryAnimations, FadeAnimation } from '../../../../../interfaces/animations';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
-import { StationaryAnimations } from '../../../../../interfaces/animations';
 import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 import { animationState } from '../utils/animations/state';
 
@@ -19,14 +19,21 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   let overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
   let isUnsetButtonDisplayedForColorInputs = {};
   let unsetTransitionPropertyTimeout = null;
-  // can be any value, using null for simplicity
-  const transitionReadyToUnsetSignature = null;
+  let moveToFrontTransitionTimeout = null;
 
-  function displayInFrontOfSiblings(inFront: boolean, cssPseudoClass: CSS_PSEUDO_CLASSES): void {
+  // WORK 4 - refactor
+  function displayInFrontOfSiblings(toFront: boolean, customFeatuers: CustomFeatures, cssPseudoClass: CSS_PSEUDO_CLASSES): void {
     const { displayInFrontOfSiblingsState } = subcomponentProperties.seedComponent;
     if (displayInFrontOfSiblingsState) {
       if (!displayInFrontOfSiblingsState.conditionalFunc || displayInFrontOfSiblingsState.conditionalFunc(subcomponentProperties, cssPseudoClass)) {
-        displayInFrontOfSiblingsState.isInFront = inFront;
+        const duration = !toFront && customFeatuers.animations?.stationary?.fade?.duration ? Number.parseFloat(customFeatuers.animations.stationary.fade.duration) * 1000 : 0;
+        if (moveToFrontTransitionTimeout) {
+          clearTimeout(moveToFrontTransitionTimeout);
+        }
+        moveToFrontTransitionTimeout = window.setTimeout(() => {
+          displayInFrontOfSiblingsState.zIndex = toFront ? subcomponentProperties.seedComponent.containerComponent.baseSubcomponent.customStaticFeatures.displayInFrontOfSiblingsContainerState.highestZIndex += 1 : 0;
+          moveToFrontTransitionTimeout = null;
+        }, duration);
       }
     }
   }
@@ -66,24 +73,25 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     if (stationaryAnimations.fade?.duration) {
       unsetTransitionPropertyTimeout = window.setTimeout(() => {
         unsetTransitionPropertyTimeout = null;
-        if (customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition !== transitionReadyToUnsetSignature) return;
+        if (stationaryAnimations.fade.isTransitionCssPropertySet) return;
         customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition = CSS_PROPERTY_VALUES.UNSET;
       }, Number.parseFloat(stationaryAnimations.fade.duration) * 1000);
+      // this is used to prevent a bug where sibling components that share customCss have their transition property
+      // unset by the timeout when the user moves their mouse from one component to another.
+      stationaryAnimations.fade.isTransitionCssPropertySet = false;
     }
     if (stationaryAnimations.backgroundZoom?.zoomLevels) {
       customCss[CSS_PSEUDO_CLASSES.DEFAULT].backgroundSize = defaultCss[CSS_PSEUDO_CLASSES.DEFAULT].backgroundSize;
     }
-    // this is used to prevent a bug where sibling components that share customCss have their transition property
-    // unset when the user moves their mouse from one component to another as the timeout unsets the reference.
-    customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition = transitionReadyToUnsetSignature;
   }
 
   function buildTransitionCssProperty(customFeatures: string): string {
     return `all ${customFeatures} ease-out`;
   }
 
-  function setTransitionCssProperty(customCss: CustomCss, transitionDuration: string): void {
-    const transition = transitionDuration ? buildTransitionCssProperty(transitionDuration) : CSS_PROPERTY_VALUES.UNSET;
+  function setTransitionCssProperty(customCss: CustomCss, fadeAnimation: FadeAnimation): void {
+    if (fadeAnimation.duration) fadeAnimation.isTransitionCssPropertySet = true;
+    const transition = fadeAnimation.duration ? buildTransitionCssProperty(fadeAnimation.duration) : CSS_PROPERTY_VALUES.UNSET;
     customCss[CSS_PSEUDO_CLASSES.DEFAULT].transition = transition;
   }
 
@@ -92,7 +100,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   }
 
   function setStationaryCssProperty(customCss: CustomCss, stationaryAnimations: StationaryAnimations): void {
-    if (stationaryAnimations.fade) setTransitionCssProperty(customCss, stationaryAnimations.fade.duration);
+    if (stationaryAnimations.fade) setTransitionCssProperty(customCss, stationaryAnimations.fade);
     if (stationaryAnimations.backgroundZoom?.isOn) setZoomAnimation(customCss, stationaryAnimations.backgroundZoom.zoomLevels);
   }
 
@@ -103,6 +111,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
       backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCss, 'backgroundColor'),
       color: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCss, 'color'),
       borderColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCss, 'borderColor'),
+      boxShadow: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCss, 'boxShadow'),
     };
     subcomponentProperties.overwrittenCustomCssObj = { [CSS_PSEUDO_CLASSES.DEFAULT]: newDefaultProperties };
   }
@@ -122,7 +131,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     setDefaultUnsetButtonStatesForColorInputs(customCss);
     setMouseEnterProperties(customCss, customFeatures);
     triggerSubcomponentMouseEventCallback('mouseEnter');
-    displayInFrontOfSiblings(true, CSS_PSEUDO_CLASSES.HOVER);
+    displayInFrontOfSiblings(true, customFeatures, CSS_PSEUDO_CLASSES.HOVER);
   }
 
   const subcomponentMouseLeave = (): void => {
@@ -134,7 +143,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
       delete subcomponentProperties.overwrittenCustomCssObj;
     }
     isUnsetButtonDisplayedForColorInputs = {};
-    displayInFrontOfSiblings(false, CSS_PSEUDO_CLASSES.HOVER);
+    displayInFrontOfSiblings(false, customFeatures, CSS_PSEUDO_CLASSES.HOVER);
     if (customFeatures?.animations?.stationary) unsetStationaryAnimations(customCss, defaultCss, customFeatures.animations.stationary);
   }
 
@@ -149,7 +158,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     }
     overwrittenDefaultPropertiesByClick = { hasBeenSet: true, css: { ...subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] } };
     setCustomCss(customCss, CSS_PSEUDO_CLASSES.CLICK);
-    displayInFrontOfSiblings(true, CSS_PSEUDO_CLASSES.CLICK);
+    displayInFrontOfSiblings(true, customFeatures, CSS_PSEUDO_CLASSES.CLICK);
   }
 
   const subcomponentMouseUp = (): void => {
@@ -161,7 +170,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
       subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };
       overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
     }
-    displayInFrontOfSiblings(false, CSS_PSEUDO_CLASSES.CLICK);
+    displayInFrontOfSiblings(false, subcomponentProperties.customFeatures, CSS_PSEUDO_CLASSES.CLICK);
   }
 
   const subcomponentClick = (): void => {

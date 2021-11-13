@@ -18,13 +18,19 @@ export default function useBaseComponent(): UseBaseComponent {
     return component.baseSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.ICON;
   };
 
+  // WORK 4 - refactor to see if it is possible to not set zIndex which would set it to 0
   function setZIndexToDisplayOverSignlingsWhenActive(component: WorkshopComponent, baseContainerCss: WorkshopComponentCss): void {
     const { displayInFrontOfSiblingsState, baseSubcomponent } = component;
-    if (displayInFrontOfSiblingsState
-        && (displayInFrontOfSiblingsState.isInFront
-          || baseSubcomponent.activeCssPseudoClass === CSS_PSEUDO_CLASSES.HOVER
-          || baseSubcomponent.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK)) {
-        baseContainerCss.zIndex = 1;
+    if (displayInFrontOfSiblingsState) {
+      if (baseSubcomponent.activeCssPseudoClass === CSS_PSEUDO_CLASSES.HOVER
+        || baseSubcomponent.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK) {
+          baseContainerCss.zIndex = 99;
+      } else {
+        baseContainerCss.zIndex = displayInFrontOfSiblingsState.zIndex;
+      }
+    }
+    else {
+      baseContainerCss.zIndex = 0;
     }
   }
 
@@ -40,6 +46,7 @@ export default function useBaseComponent(): UseBaseComponent {
       backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'backgroundColor'),
       color: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'color'),
       borderColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'borderColor'),
+      boxShadow: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, subcomponentCss, 'boxShadow'),
     };
   }
 

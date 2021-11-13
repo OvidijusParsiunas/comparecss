@@ -194,17 +194,16 @@ export default {
     height: 50%;
   }
   .button-group-middle-button {
-    /* 0.00001px is used to prevent a bug in chrome where the background color bleeds past the border */
-    border-radius: 0.00001px !important;
+    border-radius: 0px !important;
   }
   .button-group-left-button {
-    border-top-right-radius: 0.000001px !important;
-    border-bottom-right-radius: 0.00001px !important;
+    border-top-right-radius: 0px !important;
+    border-bottom-right-radius: 0px !important;
     margin-left: 0px !important;
   }
   .button-group-right-button {
-    border-top-left-radius: 0.00001px !important;
-    border-bottom-left-radius: 0.00001px !important;
+    border-top-left-radius: 0px !important;
+    border-bottom-left-radius: 0px !important;
   }
 </style>
 <style lang="css">

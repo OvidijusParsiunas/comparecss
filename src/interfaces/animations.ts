@@ -24,14 +24,19 @@ interface DisplayAnimations {
   };
 }
 
+export interface FadeAnimation {
+  duration: string;
+  // this is used to prevent a bug where sibling components that share customCss have their transition property
+  // unset by unsetStationaryAnimations timeout when the user moves their mouse from one component to another
+  isTransitionCssPropertySet?: boolean;
+}
+
 export interface StationaryAnimations {
-  fade?: {
-    duration: string;
-  },
+  fade?: FadeAnimation
   backgroundZoom?: {
     isOn: boolean;
     zoomLevels: string;
-  }
+  };
 }
 
 export interface Animations {

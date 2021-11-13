@@ -1,5 +1,6 @@
 import { CustomCss, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
+import ComponentPreviewUtils from '../../../componentPreview/utils/componentPreviewUtils';
 import { CSS_PROPERTY_VALUES } from '../../../../../../consts/cssPropertyValues.enum';
 import SharedUtils from './sharedUtils';
 
@@ -7,27 +8,11 @@ import SharedUtils from './sharedUtils';
 // it has been identified that shadow values of 0px 0px 0px 0px still display a partial shadow
 export default class BoxShadowUtils {
 
-  private static readonly DEFAULT_BOX_SHADOW_PIXEL_VALUES = '0px 0px 0px 0px';
+  public static readonly DEFAULT_BOX_SHADOW_PIXEL_VALUES = '0px 0px 0px 0px';
   private static readonly DEFAULT_BOX_SHADOW_UNSET_VALUE = CSS_PROPERTY_VALUES.UNSET;
+  private static readonly DEFAULT_BOX_SHADOW_INHERITED_VALUE = CSS_PROPERTY_VALUES.INHERIT;
   private static readonly DEFAULT_BOX_SHADOW_COLOR_VALUE = '#000000';
   private static readonly DEFAULT_BOX_SHADOW_SETTINGS_RANGE_VALUE = '0';
-  
-  private static setUnsetBoxShadowPropertiesToZero(customCss: CustomCss, auxiliaryPartialCss: CustomCss, activeCssPseudoClass: CSS_PSEUDO_CLASSES): void {
-    if (customCss[activeCssPseudoClass].boxShadow === BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE) {
-      customCss[activeCssPseudoClass].boxShadow = auxiliaryPartialCss
-        && auxiliaryPartialCss[activeCssPseudoClass] && auxiliaryPartialCss[activeCssPseudoClass].boxShadow
-        ? auxiliaryPartialCss[activeCssPseudoClass].boxShadow : `${BoxShadowUtils.DEFAULT_BOX_SHADOW_PIXEL_VALUES} ${BoxShadowUtils.DEFAULT_BOX_SHADOW_COLOR_VALUE}`;
-    }
-  }
-
-  private static setZeroBoxShadowPropertiesToUnset(subcomponentproperties: SubcomponentProperties): void {
-    const { customCss, activeCssPseudoClass } = subcomponentproperties;
-    if (customCss[activeCssPseudoClass].boxShadow.startsWith(BoxShadowUtils.DEFAULT_BOX_SHADOW_PIXEL_VALUES)) {
-      BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(subcomponentproperties, customCss[activeCssPseudoClass]
-        .boxShadow.split(' ').pop());
-      customCss[activeCssPseudoClass].boxShadow = BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE;     
-    }
-  }
 
   private static setAuxiliaryBoxShadowPropertyWithCustomColor(subcomponentproperties: SubcomponentProperties, colorPickerValue: string): void {
     if (!subcomponentproperties.auxiliaryPartialCss) {
@@ -40,6 +25,35 @@ export default class BoxShadowUtils {
       .boxShadow = `${BoxShadowUtils.DEFAULT_BOX_SHADOW_PIXEL_VALUES} ${colorPickerValue}`;
   }
 
+  private static setZeroBoxShadowPropertiesToUnset(subcomponentproperties: SubcomponentProperties): void {
+    const { customCss, activeCssPseudoClass } = subcomponentproperties;
+    if (customCss[activeCssPseudoClass].boxShadow.startsWith(BoxShadowUtils.DEFAULT_BOX_SHADOW_PIXEL_VALUES)) {
+      BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(subcomponentproperties, customCss[activeCssPseudoClass]
+        .boxShadow.split(' ').pop());
+      customCss[activeCssPseudoClass].boxShadow = BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE;     
+    }
+  }
+
+  private static overwriteInheritedBoxShadowProperty(customCss: CustomCss, activeCssPseudoClass: CSS_PSEUDO_CLASSES): void {
+    if (customCss[activeCssPseudoClass].boxShadow === BoxShadowUtils.DEFAULT_BOX_SHADOW_INHERITED_VALUE) {
+      customCss[activeCssPseudoClass].boxShadow = ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCss, 'boxShadow');
+    }
+  }
+
+  private static overwriteUnsetBoxShadowPropertiesToZero(customCss: CustomCss, auxiliaryPartialCss: CustomCss, activeCssPseudoClass: CSS_PSEUDO_CLASSES): void {
+    if (customCss[activeCssPseudoClass].boxShadow === BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE) {
+      customCss[activeCssPseudoClass].boxShadow = auxiliaryPartialCss
+        && auxiliaryPartialCss[activeCssPseudoClass] && auxiliaryPartialCss[activeCssPseudoClass].boxShadow
+        ? auxiliaryPartialCss[activeCssPseudoClass].boxShadow : `${BoxShadowUtils.DEFAULT_BOX_SHADOW_PIXEL_VALUES} ${BoxShadowUtils.DEFAULT_BOX_SHADOW_COLOR_VALUE}`;
+    }
+  }
+
+  private static overwriteValues(customCss: CustomCss, auxiliaryPartialCss: CustomCss, activeCssPseudoClass: CSS_PSEUDO_CLASSES): void {
+    BoxShadowUtils.overwriteUnsetBoxShadowPropertiesToZero(customCss, auxiliaryPartialCss, activeCssPseudoClass);
+    BoxShadowUtils.overwriteInheritedBoxShadowProperty(customCss, activeCssPseudoClass);
+  }
+
+  // WORK 4 - bug where the value gets set to UNSET but cannot be redone
   public static updateBoxShadowRangeValue(rangeValue: string, spec: any, subcomponentProperties: SubcomponentProperties): void {
     const {cssProperty, partialCss} = spec;
     const { customCss, activeCssPseudoClass, auxiliaryPartialCss } = subcomponentProperties;
@@ -48,7 +62,7 @@ export default class BoxShadowUtils {
       defaultValues[partialCss.position] = rangeValue;
       customCss[activeCssPseudoClass][cssProperty] = defaultValues.join(' ');
     } else {
-      BoxShadowUtils.setUnsetBoxShadowPropertiesToZero(customCss, auxiliaryPartialCss, activeCssPseudoClass);
+      BoxShadowUtils.overwriteValues(customCss, auxiliaryPartialCss, activeCssPseudoClass);
       const cssPropertyValues = customCss[activeCssPseudoClass][cssProperty].split(' ');
       cssPropertyValues[partialCss.position] = `${rangeValue}px`;
       customCss[activeCssPseudoClass][cssProperty] = cssPropertyValues.join(' ');
@@ -67,12 +81,14 @@ export default class BoxShadowUtils {
       } else {
         customCss[activeCssPseudoClass][cssProperty] = BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE;
       }
-    } else if (customCss[activeCssPseudoClass][cssProperty] !== BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE) {
+    } else if (customCss[activeCssPseudoClass][cssProperty] == BoxShadowUtils.DEFAULT_BOX_SHADOW_INHERITED_VALUE) {
+      BoxShadowUtils.overwriteInheritedBoxShadowProperty(customCss, activeCssPseudoClass);
+    } else if (customCss[activeCssPseudoClass][cssProperty] === BoxShadowUtils.DEFAULT_BOX_SHADOW_UNSET_VALUE) {
+      BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(subcomponentProperties, hexColor);
+    } else {
       const cssPropertyValues = customCss[activeCssPseudoClass][cssProperty].split(' ');
       cssPropertyValues[partialCss.position] = hexColor;
       customCss[activeCssPseudoClass][cssProperty] = cssPropertyValues.join(' ');
-    } else {
-      BoxShadowUtils.setAuxiliaryBoxShadowPropertyWithCustomColor(subcomponentProperties, hexColor);
     }
   }
 

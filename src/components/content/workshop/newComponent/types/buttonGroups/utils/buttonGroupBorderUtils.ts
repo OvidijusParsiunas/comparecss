@@ -3,6 +3,7 @@ import { ButtonGroupButtonSpecificSettings } from '../settings/buttonGroupButton
 import { CustomCss, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
+import BoxShadowUtils from '../../../../toolbar/settings/utils/boxShadowUtils';
 import { ButtonGroupGenericUtils } from './buttonGroupGenericUtils';
 
 export class ButtonGroupBorderUtils {
@@ -46,6 +47,9 @@ export class ButtonGroupBorderUtils {
     customCss[CSS_PSEUDO_CLASSES.DEFAULT].marginLeft = ButtonGroupBorderUtils.DEFAULT_MARGIN_LEFT;
     customCss[CSS_PSEUDO_CLASSES.HOVER].borderColor = ButtonGroupBorderUtils.ACTIVE_PSEUDO_CLASS_BORDER_COLOR;
     customCss[CSS_PSEUDO_CLASSES.CLICK].borderColor = ButtonGroupBorderUtils.ACTIVE_PSEUDO_CLASS_BORDER_COLOR;
+    // WORK 4 - move out
+    customCss[CSS_PSEUDO_CLASSES.HOVER].boxShadow = BoxShadowUtils.DEFAULT_BOX_SHADOW_PIXEL_VALUES;
+    customCss[CSS_PSEUDO_CLASSES.CLICK].boxShadow = ButtonGroupBorderUtils.ACTIVE_PSEUDO_CLASS_BORDER_COLOR;
   }
 
   public static setDefaultBorderProperties(buttonComponent: WorkshopComponent): void {

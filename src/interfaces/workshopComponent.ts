@@ -1,8 +1,8 @@
+import { DisplayInFrontOfSiblingsContainerState, DisplayInFrontOfSiblingsState } from './displayInFrontOfSiblingsState';
 import { InterconnectedSetting, SubcomponentSpecificSettings } from './subcomponentSpecificSettings';
 import { DropdownFeatures, DropdownMenuData, SelectDropdownText } from './dropdownFeatures';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
 import { SubcomponentMouseEventCallbacks } from './subcomponentMouseEventCallbacks';
-import { DisplayInFrontOfSiblingsState } from './displayInFrontOfSiblingsState';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
 import { ComponentJavascriptClasses } from './componentJavascriptClasses';
@@ -118,6 +118,11 @@ export interface CustomStaticFeatures {
   subcomponentText?: Text;
   image?: Image;
   icon?: Icon;
+  // works with conjunction to the container child components DisplayInFrontOfSiblingsState object
+  // responsible for keeping track of the highest zIndex among the children so as to allow the newly highlighted/clicked
+  // component to appear on top whilst the blured or unclicked components can still be above other components during their
+  // transition animation
+  displayInFrontOfSiblingsContainerState?: DisplayInFrontOfSiblingsContainerState;
 }
 
 export interface CustomDynamicProperties {
