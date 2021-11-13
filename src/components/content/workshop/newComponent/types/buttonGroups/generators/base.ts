@@ -75,18 +75,20 @@ class ButtonGroupBase extends ComponentBuilder {
     }
   }
 
-  private static areBorderColorsMatching(subcomponentProperties: SubcomponentProperties, cssPseudoClass1: CSS_PSEUDO_CLASSES,
-      cssPseudoClass2: CSS_PSEUDO_CLASSES): boolean {
-    return subcomponentProperties.customCss[cssPseudoClass1].borderColor === subcomponentProperties.customCss[cssPseudoClass2].borderColor;
+  private static areBorderColorsMatching(subcomponentProperties: SubcomponentProperties, newModePseudoClass: CSS_PSEUDO_CLASSES,
+      oldModePseudoClass: CSS_PSEUDO_CLASSES): boolean {
+    const newBorderColor = subcomponentProperties.customCss[newModePseudoClass].borderColor;
+    const oldBorderColor = subcomponentProperties.customCss[oldModePseudoClass].borderColor;
+    return newBorderColor === CSS_PROPERTY_VALUES.INHERIT || newBorderColor === oldBorderColor;
   }
 
-  private static shouldComponentBeInFront(subcomponentProperties: SubcomponentProperties, csspseudoClass: CSS_PSEUDO_CLASSES): boolean {
-    if (csspseudoClass === CSS_PSEUDO_CLASSES.HOVER) {
+  private static shouldComponentBeInFront(subcomponentProperties: SubcomponentProperties, cssPseudoClass: CSS_PSEUDO_CLASSES): boolean {
+    if (cssPseudoClass === CSS_PSEUDO_CLASSES.HOVER) {
       if (!subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER].borderColor
           || ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.DEFAULT, CSS_PSEUDO_CLASSES.HOVER)) {
         return false;
       }
-    } else if (csspseudoClass === CSS_PSEUDO_CLASSES.CLICK
+    } else if (cssPseudoClass === CSS_PSEUDO_CLASSES.CLICK
         && ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER, CSS_PSEUDO_CLASSES.CLICK)) {
       return false;
     }

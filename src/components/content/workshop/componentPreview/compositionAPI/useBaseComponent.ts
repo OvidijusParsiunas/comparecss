@@ -18,8 +18,8 @@ export default function useBaseComponent(): UseBaseComponent {
     return component.baseSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.ICON;
   };
 
-  // WORK 2 - left button border moves on hover
   // WORK 2 - upon undoing the border color in hover mode - the border turns to blue rather than default color, undo does not work for border stuff
+  // WORK 2 - click animation is quick
   function setZIndexToDisplayOverSignlingsWhenActive(component: WorkshopComponent, baseContainerCss: WorkshopComponentCss): void {
     const { displayInFrontOfSiblingsState, baseSubcomponent } = component;
     if (displayInFrontOfSiblingsState

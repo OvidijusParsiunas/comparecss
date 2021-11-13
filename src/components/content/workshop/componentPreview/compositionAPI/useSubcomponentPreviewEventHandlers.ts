@@ -20,10 +20,10 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   let isUnsetButtonDisplayedForColorInputs = {};
   let unsetTransitionPropertyTimeout = null;
 
-  function displayInFrontOfSiblings(inFront: boolean, csspseudoClass: CSS_PSEUDO_CLASSES): void {
+  function displayInFrontOfSiblings(inFront: boolean, cssPseudoClass: CSS_PSEUDO_CLASSES): void {
     const { displayInFrontOfSiblingsState } = subcomponentProperties.seedComponent;
     if (displayInFrontOfSiblingsState) {
-      if (!displayInFrontOfSiblingsState.conditionalFunc || displayInFrontOfSiblingsState.conditionalFunc(subcomponentProperties, csspseudoClass)) {
+      if (!displayInFrontOfSiblingsState.conditionalFunc || displayInFrontOfSiblingsState.conditionalFunc(subcomponentProperties, cssPseudoClass)) {
         displayInFrontOfSiblingsState.isInFront = inFront;
       }
     }
@@ -94,7 +94,9 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     const newDefaultProperties = {
       ...customCss[CSS_PSEUDO_CLASSES.DEFAULT], ...customCss[activeCssPseudoClass], ...isUnsetButtonDisplayedForColorInputs,
       backgroundColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCss, 'backgroundColor'),
-      color: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCss, 'color')};
+      color: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCss, 'color'),
+      borderColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCss, 'borderColor'),
+    };
     subcomponentProperties.overwrittenCustomCssObj = { [CSS_PSEUDO_CLASSES.DEFAULT]: newDefaultProperties };
   }
 
