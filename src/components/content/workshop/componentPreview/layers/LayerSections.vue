@@ -92,7 +92,8 @@ export default {
     display: flex;
   }
   .default-section {
-    display: flex; height: 100%;
+    display: flex;
+    height: 100%;
   }
   .center-section {
     position: absolute;

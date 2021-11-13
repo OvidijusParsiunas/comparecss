@@ -29,8 +29,8 @@ export const buttonGroups: ComponentMarkup =  {
       <button class="button">Left</button>
       <button class="button">Middle</button>
       <button class="button">Right</button>
-   </div>
-  `,
+    </div>
+    `,
   semantic: `
     <div class="ui buttons">
       <button class="ui button">Left</button>

@@ -75,8 +75,26 @@ class ButtonGroupBase extends ComponentBuilder {
     }
   }
 
+  private static areBorderColorsMatching(subcomponentProperties: SubcomponentProperties, cssPseudoClass1: CSS_PSEUDO_CLASSES,
+      cssPseudoClass2: CSS_PSEUDO_CLASSES): boolean {
+    return subcomponentProperties.customCss[cssPseudoClass1].borderColor === subcomponentProperties.customCss[cssPseudoClass2].borderColor;
+  }
+
+  private static shouldComponentBeInFront(subcomponentProperties: SubcomponentProperties, csspseudoClass: CSS_PSEUDO_CLASSES): boolean {
+    if (csspseudoClass === CSS_PSEUDO_CLASSES.HOVER) {
+      if (!subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER].borderColor
+          || ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.DEFAULT, CSS_PSEUDO_CLASSES.HOVER)) {
+        return false;
+      }
+    } else if (csspseudoClass === CSS_PSEUDO_CLASSES.CLICK
+        && ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER, CSS_PSEUDO_CLASSES.CLICK)) {
+      return false;
+    }
+    return true;
+  }
+
   private static setDisplayInFrontOfSiblingsWhenActive(buttonComponent: WorkshopComponent): void {
-    buttonComponent.displayInFrontOfSiblingsWhenActive = { isActive: false };
+    buttonComponent.displayInFrontOfSiblingsWhenActive = { isActive: false, conditionalFunc: ButtonGroupBase.shouldComponentBeInFront };
   }
 
   private static onTemporarySyncExecutableFunc(buttonComponent: WorkshopComponent): void {
