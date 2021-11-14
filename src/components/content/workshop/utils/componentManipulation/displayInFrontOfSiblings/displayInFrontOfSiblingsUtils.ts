@@ -1,8 +1,11 @@
 import { DisplayInFrontOfSiblingsContainerState, DisplayInFrontOfSiblingsState } from '../../../../../../interfaces/displayInFrontOfSiblingsState';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
+import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
 
 export class DisplayInFrontOfSiblings {
+
+  private static readonly MAX_Z_INDEX = 999999;
 
   private static decrementNumberOfCurrentlyHighlightedButtons(displayInFrontOfSiblingsContainerState: DisplayInFrontOfSiblingsContainerState): void {
     if (displayInFrontOfSiblingsContainerState.numberOfCurrentlyHighlightedButtons > 0 ) {
@@ -62,6 +65,16 @@ export class DisplayInFrontOfSiblings {
         DisplayInFrontOfSiblings.clearSetZIndexTimeout(displayInFrontOfSiblingsState, displayInFrontOfSiblingsContainerState);
         DisplayInFrontOfSiblings.initializeSetZIndexTimeout(toFront, subcomponentProperties, displayInFrontOfSiblingsContainerState,
           displayInFrontOfSiblingsState);
+      }
+    }
+  }
+
+  public static setZIndexOnComponentCss(baseSubcomponent: SubcomponentProperties, baseContainerCss: WorkshopComponentCss): void {
+    if (baseSubcomponent.customStaticFeatures?.displayInFrontOfSiblingsState) {
+      if (baseSubcomponent.activeCssPseudoClass === CSS_PSEUDO_CLASSES.HOVER || baseSubcomponent.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK) {
+        baseContainerCss.zIndex = DisplayInFrontOfSiblings.MAX_Z_INDEX;
+      } else {
+        baseContainerCss.zIndex = baseSubcomponent.customStaticFeatures.displayInFrontOfSiblingsState.zIndex;
       }
     }
   }

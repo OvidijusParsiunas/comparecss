@@ -1,3 +1,4 @@
+import { DisplayInFrontOfSiblings } from '../../utils/componentManipulation/displayInFrontOfSiblings/displayInFrontOfSiblingsUtils';
 import { CompositionAPISubcomponentTriggerState } from '../../../../../interfaces/compositionAPISubcomponentTriggerState';
 import { SelectDropdownUtils } from '../../newComponent/types/dropdowns/selectDropdown/selectDropdownUtils';
 import { CustomCss, CustomFeatures, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
@@ -18,26 +19,11 @@ export default function useBaseComponent(): UseBaseComponent {
     return component.baseSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.ICON;
   };
 
-  // WORK 4 - refactor to see if it is possible to not set zIndex which would set it to 0
-  function setZIndexToDisplayOverSignlingsWhenActive(component: WorkshopComponent, baseContainerCss: WorkshopComponentCss): void {
-    const { baseSubcomponent } = component;
-    if (baseSubcomponent.customStaticFeatures?.displayInFrontOfSiblingsState) {
-      if (baseSubcomponent.activeCssPseudoClass === CSS_PSEUDO_CLASSES.HOVER
-        || baseSubcomponent.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK) {
-          baseContainerCss.zIndex = 999999;
-      } else {
-        baseContainerCss.zIndex = baseSubcomponent.customStaticFeatures.displayInFrontOfSiblingsState.zIndex;
-      }
-    }
-    else {
-      baseContainerCss.zIndex = 0;
-    }
-  }
-
   function getBaseContainerCss(component: WorkshopComponent): WorkshopComponentCss {
-    const { top } = component.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
+    const { baseSubcomponent } = component;
+    const { top } = baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
     const baseContainerCss: WorkshopComponentCss = { top: top || '50%' };
-    setZIndexToDisplayOverSignlingsWhenActive(component, baseContainerCss);
+    DisplayInFrontOfSiblings.setZIndexOnComponentCss(baseSubcomponent, baseContainerCss);
     return baseContainerCss;
   }
 
