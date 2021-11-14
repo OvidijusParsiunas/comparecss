@@ -6,7 +6,6 @@ import { BUTTON_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSu
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
-// import { AlertBaseSpecificSettings } from '../settings/alertBaseSpecificSettings';
 import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { inheritedCardBaseCss } from '../../cards/inheritedCss/inheritedCardCss';
@@ -26,20 +25,31 @@ class ButtonGroupBase extends ComponentBuilder {
     const oldBorderColor = subcomponentProperties.customCss[oldModePseudoClass].borderColor;
     return newBorderColor === CSS_PROPERTY_VALUES.INHERIT || newBorderColor === oldBorderColor;
   }
-
-  private static shouldComponentNotBeInFrontDuringClick(shadowSpreadHov: string, subcomponentProperties: SubcomponentProperties): boolean {
-    const numbersArrClck = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK].boxShadow.split(' ');
-    const shadowSpreadClck = numbersArrClck[numbersArrClck.length - 1];
-    return (subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK].boxShadow === CSS_PROPERTY_VALUES.INHERIT || shadowSpreadHov !== '0px' || shadowSpreadClck === '0px')
-      && (ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.CLICK, CSS_PSEUDO_CLASSES.HOVER)
-          || Number.parseFloat(subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRightWidth) === 0)
+  private static areBorderPropertiesDifferentDuringClick(subcomponentProperties: SubcomponentProperties): boolean {
+    return subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth !== '0px'
+      && !ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.CLICK, CSS_PSEUDO_CLASSES.HOVER);
   }
 
-  private static shouldComponentNotBeInFrontDuringHover(shadowSpreadHov: string, subcomponentProperties: SubcomponentProperties): boolean {
-    return shadowSpreadHov === '0px'
-      && (subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth === '0px'
-        || !subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER].borderColor
-        || ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER, CSS_PSEUDO_CLASSES.DEFAULT));
+  private static areShadowPropertiesDifferentDuringClick(subcomponentProperties: SubcomponentProperties): boolean {
+    const numbersArrClck = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK].boxShadow.split(' ');
+    const shadowSpreadClck = numbersArrClck[numbersArrClck.length - 2];
+    return subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK].boxShadow !== CSS_PROPERTY_VALUES.INHERIT && shadowSpreadClck !== '0px'
+  }
+
+  // checks if already set to front on hover in order to avoid sending component to front again
+  private static shouldComponentBeInFrontDuringClick(shadowSpreadOnHov: string, subcomponentProperties: SubcomponentProperties): boolean {
+    return (shadowSpreadOnHov === '0px' && ButtonGroupBase.areShadowPropertiesDifferentDuringClick(subcomponentProperties))
+      || (ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER, CSS_PSEUDO_CLASSES.DEFAULT)
+        && ButtonGroupBase.areBorderPropertiesDifferentDuringClick(subcomponentProperties));
+  }
+
+  private static areBorderPropertiesDifferentDuringHover(subcomponentProperties: SubcomponentProperties): boolean {
+    return subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth !== '0px'
+      && !ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER, CSS_PSEUDO_CLASSES.DEFAULT);
+  }
+
+  private static shouldComponentBeInFrontDuringHover(shadowSpreadOnHov: string, subcomponentProperties: SubcomponentProperties): boolean {
+    return shadowSpreadOnHov !== '0px' || ButtonGroupBase.areBorderPropertiesDifferentDuringHover(subcomponentProperties);
   }
 
   // WORK 4 - refactor
@@ -51,13 +61,13 @@ class ButtonGroupBase extends ComponentBuilder {
   // colours are different, hence it is allowed to occur then.
   private static shouldComponentBeInFront(subcomponentProperties: SubcomponentProperties, cssPseudoClass: CSS_PSEUDO_CLASSES): boolean {
     const numbersArrHov = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER].boxShadow.split(' ');
-    const shadowSpreadHov = numbersArrHov[numbersArrHov.length - 1];
+    const shadowSpreadOnHov = numbersArrHov[numbersArrHov.length - 1];
     if (cssPseudoClass === CSS_PSEUDO_CLASSES.HOVER) {
-      return !ButtonGroupBase.shouldComponentNotBeInFrontDuringHover(shadowSpreadHov, subcomponentProperties);
+      return ButtonGroupBase.shouldComponentBeInFrontDuringHover(shadowSpreadOnHov, subcomponentProperties);
     } else if (cssPseudoClass === CSS_PSEUDO_CLASSES.CLICK) {
-      return !ButtonGroupBase.shouldComponentNotBeInFrontDuringClick(shadowSpreadHov, subcomponentProperties);
+      return ButtonGroupBase.shouldComponentBeInFrontDuringClick(shadowSpreadOnHov, subcomponentProperties);
     }
-    return true;
+    return false;
   }
 
   public static setDisplayInFrontOfSiblingsContainerState(buttonGroupBaseComponent: WorkshopComponent): void {
