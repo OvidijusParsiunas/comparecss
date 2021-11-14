@@ -27,6 +27,21 @@ class ButtonGroupBase extends ComponentBuilder {
     return newBorderColor === CSS_PROPERTY_VALUES.INHERIT || newBorderColor === oldBorderColor;
   }
 
+  private static shouldComponentNotBeInFrontDuringClick(shadowSpreadHov: string, subcomponentProperties: SubcomponentProperties): boolean {
+    const numbersArrClck = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK].boxShadow.split(' ');
+    const shadowSpreadClck = numbersArrClck[numbersArrClck.length - 1];
+    return (subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK].boxShadow === CSS_PROPERTY_VALUES.INHERIT || shadowSpreadHov !== '0px' || shadowSpreadClck === '0px')
+      && (ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.CLICK, CSS_PSEUDO_CLASSES.HOVER)
+          || Number.parseFloat(subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRightWidth) === 0)
+  }
+
+  private static shouldComponentNotBeInFrontDuringHover(shadowSpreadHov: string, subcomponentProperties: SubcomponentProperties): boolean {
+    return shadowSpreadHov === '0px'
+      && (subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth === '0px'
+        || !subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER].borderColor
+        || ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER, CSS_PSEUDO_CLASSES.DEFAULT));
+  }
+
   // WORK 4 - refactor
   // this is a workaround for a bug in Chrome - the margin left property does not appear to align left/right borders correctly
   // as some of them tend to be a little too far left or too far right - giving a sensation of border movement when a button
@@ -38,20 +53,9 @@ class ButtonGroupBase extends ComponentBuilder {
     const numbersArrHov = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER].boxShadow.split(' ');
     const shadowSpreadHov = numbersArrHov[numbersArrHov.length - 1];
     if (cssPseudoClass === CSS_PSEUDO_CLASSES.HOVER) {
-      if (shadowSpreadHov === '0px'
-        && (subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth === '0px'
-          || !subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER].borderColor
-          || ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER, CSS_PSEUDO_CLASSES.DEFAULT))) {
-        return false;
-      }
+      return !ButtonGroupBase.shouldComponentNotBeInFrontDuringHover(shadowSpreadHov, subcomponentProperties);
     } else if (cssPseudoClass === CSS_PSEUDO_CLASSES.CLICK) {
-      const numbersArrClck = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK].boxShadow.split(' ');
-      const shadowSpreadClck = numbersArrClck[numbersArrClck.length - 1];
-      if ((subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK].boxShadow === CSS_PROPERTY_VALUES.INHERIT || shadowSpreadHov !== '0px' || shadowSpreadClck === '0px')
-          && (ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.CLICK, CSS_PSEUDO_CLASSES.HOVER)
-              || Number.parseFloat(subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRightWidth) === 0)) {
-        return false;
-      }
+      return !ButtonGroupBase.shouldComponentNotBeInFrontDuringClick(shadowSpreadHov, subcomponentProperties);
     }
     return true;
   }

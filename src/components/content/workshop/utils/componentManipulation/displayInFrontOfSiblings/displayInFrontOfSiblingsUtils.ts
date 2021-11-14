@@ -70,11 +70,12 @@ export class DisplayInFrontOfSiblings {
   }
 
   public static setZIndexOnComponentCss(baseSubcomponent: SubcomponentProperties, baseContainerCss: WorkshopComponentCss): void {
-    if (baseSubcomponent.customStaticFeatures?.displayInFrontOfSiblingsState) {
-      if (baseSubcomponent.activeCssPseudoClass === CSS_PSEUDO_CLASSES.HOVER || baseSubcomponent.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK) {
+    const { customStaticFeatures, activeCssPseudoClass } = baseSubcomponent || {};
+    if (customStaticFeatures?.displayInFrontOfSiblingsState) {
+      if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.HOVER || activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK) {
         baseContainerCss.zIndex = DisplayInFrontOfSiblings.MAX_Z_INDEX;
       } else {
-        baseContainerCss.zIndex = baseSubcomponent.customStaticFeatures.displayInFrontOfSiblingsState.zIndex;
+        baseContainerCss.zIndex = customStaticFeatures.displayInFrontOfSiblingsState.zIndex;
       }
     }
   }
