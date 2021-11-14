@@ -20,13 +20,13 @@ export default function useBaseComponent(): UseBaseComponent {
 
   // WORK 4 - refactor to see if it is possible to not set zIndex which would set it to 0
   function setZIndexToDisplayOverSignlingsWhenActive(component: WorkshopComponent, baseContainerCss: WorkshopComponentCss): void {
-    const { displayInFrontOfSiblingsState, baseSubcomponent } = component;
-    if (displayInFrontOfSiblingsState) {
+    const { baseSubcomponent } = component;
+    if (baseSubcomponent.customStaticFeatures?.displayInFrontOfSiblingsState) {
       if (baseSubcomponent.activeCssPseudoClass === CSS_PSEUDO_CLASSES.HOVER
         || baseSubcomponent.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK) {
-          baseContainerCss.zIndex = 99;
+          baseContainerCss.zIndex = 999999;
       } else {
-        baseContainerCss.zIndex = displayInFrontOfSiblingsState.zIndex;
+        baseContainerCss.zIndex = baseSubcomponent.customStaticFeatures.displayInFrontOfSiblingsState.zIndex;
       }
     }
     else {

@@ -20,8 +20,50 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonGroupBase extends ComponentBuilder {
 
+  private static areBorderColorsMatching(subcomponentProperties: SubcomponentProperties, newModePseudoClass: CSS_PSEUDO_CLASSES,
+      oldModePseudoClass: CSS_PSEUDO_CLASSES): boolean {
+    const newBorderColor = subcomponentProperties.customCss[newModePseudoClass].borderColor;
+    const oldBorderColor = subcomponentProperties.customCss[oldModePseudoClass].borderColor;
+    return newBorderColor === CSS_PROPERTY_VALUES.INHERIT || newBorderColor === oldBorderColor;
+  }
+
+  // WORK 4 - refactor
+  // this is a workaround for a bug in Chrome - the margin left property does not appear to align left/right borders correctly
+  // as some of them tend to be a little too far left or too far right - giving a sensation of border movement when a button
+  // is set to the front.
+  // Hence this is used to prevent the buttons from moving to front when there are no hover/click borders or when their colours
+  // are the same as their previous pseudo class as it would be pointless to do so. Also, this bug is less visible when border
+  // colours are different, hence it is allowed to occur then.
+  private static shouldComponentBeInFront(subcomponentProperties: SubcomponentProperties, cssPseudoClass: CSS_PSEUDO_CLASSES): boolean {
+    const numbersArrHov = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER].boxShadow.split(' ');
+    const shadowSpreadHov = numbersArrHov[numbersArrHov.length - 1];
+    if (cssPseudoClass === CSS_PSEUDO_CLASSES.HOVER) {
+      if (shadowSpreadHov === '0px'
+        && (subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth === '0px'
+          || !subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER].borderColor
+          || ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER, CSS_PSEUDO_CLASSES.DEFAULT))) {
+        return false;
+      }
+    } else if (cssPseudoClass === CSS_PSEUDO_CLASSES.CLICK) {
+      const numbersArrClck = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK].boxShadow.split(' ');
+      const shadowSpreadClck = numbersArrClck[numbersArrClck.length - 1];
+      if ((subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK].boxShadow === CSS_PROPERTY_VALUES.INHERIT || shadowSpreadHov !== '0px' || shadowSpreadClck === '0px')
+          && (ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.CLICK, CSS_PSEUDO_CLASSES.HOVER)
+              || Number.parseFloat(subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRightWidth) === 0)) {
+        return false;
+      }
+    }
+    return true;
+  }
+
   public static setDisplayInFrontOfSiblingsContainerState(buttonGroupBaseComponent: WorkshopComponent): void {
-    buttonGroupBaseComponent.baseSubcomponent.customStaticFeatures = { displayInFrontOfSiblingsContainerState: { highestZIndex: 0 } };
+    buttonGroupBaseComponent.baseSubcomponent.customStaticFeatures = {
+      displayInFrontOfSiblingsContainerState: {
+        highestZIndex: 0,
+        numberOfCurrentlyHighlightedButtons: 0,
+        conditionalFunc: ButtonGroupBase.shouldComponentBeInFront,
+      },
+    };
   }
 
   private static onComponentDisplayFunc(buttonGroupBaseComponent: WorkshopComponent): void {
@@ -79,46 +121,9 @@ class ButtonGroupBase extends ComponentBuilder {
     }
   }
 
-  private static areBorderColorsMatching(subcomponentProperties: SubcomponentProperties, newModePseudoClass: CSS_PSEUDO_CLASSES,
-      oldModePseudoClass: CSS_PSEUDO_CLASSES): boolean {
-    const newBorderColor = subcomponentProperties.customCss[newModePseudoClass].borderColor;
-    const oldBorderColor = subcomponentProperties.customCss[oldModePseudoClass].borderColor;
-    return newBorderColor === CSS_PROPERTY_VALUES.INHERIT || newBorderColor === oldBorderColor;
-  }
-
-  // WORK 4 - refactor
-  // this is a workaround for a bug in Chrome - the margin left property does not appear to align left/right borders correctly
-  // as some of them tend to be a little too far left or too far right - giving a sensation of border movement when a button
-  // is set to the front.
-  // Hence this is used to prevent the buttons from moving to front when there are no hover/click borders or when their colours
-  // are the same as their previous pseudo class as it would be pointless to do so. Also, this bug is less visible when border
-  // colours are different, hence it is allowed to occur then.
-  private static shouldComponentBeInFront(subcomponentProperties: SubcomponentProperties, cssPseudoClass: CSS_PSEUDO_CLASSES): boolean {
-    const numbersArrHov = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER].boxShadow.split(' ');
-    const shadowSpreadHov = numbersArrHov[numbersArrHov.length - 1];
-    if (cssPseudoClass === CSS_PSEUDO_CLASSES.HOVER) {
-      if (shadowSpreadHov === '0px'
-        && (subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth === '0px'
-            || !subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER].borderColor
-            || ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER, CSS_PSEUDO_CLASSES.DEFAULT))) {
-        return false;
-      }
-    } else if (cssPseudoClass === CSS_PSEUDO_CLASSES.CLICK) {
-      const numbersArrClck = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK].boxShadow.split(' ');
-      const shadowSpreadClck = numbersArrClck[numbersArrClck.length - 1];
-      if ((subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK].boxShadow === CSS_PROPERTY_VALUES.INHERIT || shadowSpreadHov !== '0px' || shadowSpreadClck === '0px')
-          && (ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.CLICK, CSS_PSEUDO_CLASSES.HOVER)
-              || Number.parseFloat(subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRightWidth) === 0)) {
-        return false;
-      }
-    }
-    console.log('active')
-    return true;
-  }
-
   private static setDisplayInFrontOfSiblingsState(buttonComponent: WorkshopComponent): void {
     // WORK 4 - refactor DEFAULT_COMPONENT_Z_INDEX
-    buttonComponent.displayInFrontOfSiblingsState = { zIndex: 0, conditionalFunc: ButtonGroupBase.shouldComponentBeInFront };
+    buttonComponent.baseSubcomponent.customStaticFeatures.displayInFrontOfSiblingsState = { zIndex: 0 };
   }
 
   private static onTemporarySyncExecutableFunc(buttonComponent: WorkshopComponent): void {
@@ -141,11 +146,11 @@ class ButtonGroupBase extends ComponentBuilder {
       postBuildFuncs: {
         [COMPONENT_TYPES.BUTTON]: [
           ButtonGroupBase.setComponentToRemovable,
-          ButtonGroupBorderUtils.setBorderClasses,
-          ButtonGroupBorderUtils.setDefaultBorderProperties,
           ButtonGroupBase.setTemporarySyncExecutables,
           ButtonGroupBase.setDisplayInFrontOfSiblingsState,
-          ButtonGroupBase.setButtonGroupOnFirstNewChildButton],
+          ButtonGroupBase.setButtonGroupOnFirstNewChildButton,
+          ButtonGroupBorderUtils.setBorderClasses,
+          ButtonGroupBorderUtils.setDefaultBorderProperties,],
       },
       onBuildProperties: {
         [COMPONENT_TYPES.BUTTON]: { alignmentSection: ButtonGroupGenericUtils.BUTTONS_ALIGNED_SECTION_TYPE },

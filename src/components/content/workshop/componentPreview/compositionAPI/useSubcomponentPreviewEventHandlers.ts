@@ -1,4 +1,5 @@
 import { UNSET_COLOR_BUTTON_DISPLAYED_STATE, UNSET_COLOR_BUTTON_DISPLAYED_STATE_PROPERTY_POSTFIX } from '../../../../../consts/unsetColotButtonDisplayed';
+import { DisplayInFrontOfSiblings } from '../../utils/componentManipulation/displayInFrontOfSiblings/displayInFrontOfSiblingsUtils';
 import { SubcomponentTypeToPropertiesUtils } from '../../utils/subcomponentTypeToProperties/subcomponentTypeToPropertiesUtils';
 import { subcomponentSelectModeState } from '../../toolbar/options/subcomponentSelectMode/subcomponentSelectModeState';
 import { UseSubcomponentPreviewEventHandlers } from '../../../../../interfaces/useSubcomponentPreviewEventHandlers';
@@ -19,24 +20,6 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   let overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
   let isUnsetButtonDisplayedForColorInputs = {};
   let unsetTransitionPropertyTimeout = null;
-  let moveToFrontTransitionTimeout = null;
-
-  // WORK 4 - refactor
-  function displayInFrontOfSiblings(toFront: boolean, customFeatuers: CustomFeatures, cssPseudoClass: CSS_PSEUDO_CLASSES): void {
-    const { displayInFrontOfSiblingsState } = subcomponentProperties.seedComponent;
-    if (displayInFrontOfSiblingsState) {
-      if (!displayInFrontOfSiblingsState.conditionalFunc || displayInFrontOfSiblingsState.conditionalFunc(subcomponentProperties, cssPseudoClass)) {
-        const duration = !toFront && customFeatuers.animations?.stationary?.fade?.duration ? Number.parseFloat(customFeatuers.animations.stationary.fade.duration) * 1000 : 0;
-        if (moveToFrontTransitionTimeout) {
-          clearTimeout(moveToFrontTransitionTimeout);
-        }
-        moveToFrontTransitionTimeout = window.setTimeout(() => {
-          displayInFrontOfSiblingsState.zIndex = toFront ? subcomponentProperties.seedComponent.containerComponent.baseSubcomponent.customStaticFeatures.displayInFrontOfSiblingsContainerState.highestZIndex += 1 : 0;
-          moveToFrontTransitionTimeout = null;
-        }, duration);
-      }
-    }
-  }
 
   function triggerSubcomponentMouseEventCallback(mouseEvent: keyof SubcomponentMouseEventCallbacks): void {
     subcomponentProperties.customFeatures?.mouseEventCallbacks?.[mouseEvent]?.(subcomponentProperties);
@@ -131,7 +114,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     setDefaultUnsetButtonStatesForColorInputs(customCss);
     setMouseEnterProperties(customCss, customFeatures);
     triggerSubcomponentMouseEventCallback('mouseEnter');
-    displayInFrontOfSiblings(true, customFeatures, CSS_PSEUDO_CLASSES.HOVER);
+    DisplayInFrontOfSiblings.changeSubcomponentZIndex(true, subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER);
   }
 
   const subcomponentMouseLeave = (): void => {
@@ -143,7 +126,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
       delete subcomponentProperties.overwrittenCustomCssObj;
     }
     isUnsetButtonDisplayedForColorInputs = {};
-    displayInFrontOfSiblings(false, customFeatures, CSS_PSEUDO_CLASSES.HOVER);
+    DisplayInFrontOfSiblings.changeSubcomponentZIndex(false, subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER);
     if (customFeatures?.animations?.stationary) unsetStationaryAnimations(customCss, defaultCss, customFeatures.animations.stationary);
   }
 
@@ -158,7 +141,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
     }
     overwrittenDefaultPropertiesByClick = { hasBeenSet: true, css: { ...subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] } };
     setCustomCss(customCss, CSS_PSEUDO_CLASSES.CLICK);
-    displayInFrontOfSiblings(true, customFeatures, CSS_PSEUDO_CLASSES.CLICK);
+    DisplayInFrontOfSiblings.changeSubcomponentZIndex(true, subcomponentProperties, CSS_PSEUDO_CLASSES.CLICK);
   }
 
   const subcomponentMouseUp = (): void => {
@@ -170,7 +153,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
       subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };
       overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
     }
-    displayInFrontOfSiblings(false, subcomponentProperties.customFeatures, CSS_PSEUDO_CLASSES.CLICK);
+    DisplayInFrontOfSiblings.changeSubcomponentZIndex(false, subcomponentProperties, CSS_PSEUDO_CLASSES.CLICK);
   }
 
   const subcomponentClick = (): void => {

@@ -3,9 +3,11 @@ import { SubcomponentProperties } from './workshopComponent';
 
 export interface DisplayInFrontOfSiblingsContainerState {
   highestZIndex: number;
+  numberOfCurrentlyHighlightedButtons: number;
+  conditionalFunc?: (subcomponentProperties: SubcomponentProperties, cssPseudoClass: CSS_PSEUDO_CLASSES) => boolean;
 }
 
 export interface DisplayInFrontOfSiblingsState {
   zIndex: number;
-  conditionalFunc?: (subcomponentProperties: SubcomponentProperties, cssPseudoClass: CSS_PSEUDO_CLASSES) => boolean;
+  setZIndexTimeout?: NodeJS.Timeout;
 }

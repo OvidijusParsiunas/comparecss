@@ -1,0 +1,68 @@
+import { DisplayInFrontOfSiblingsContainerState, DisplayInFrontOfSiblingsState } from '../../../../../../interfaces/displayInFrontOfSiblingsState';
+import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
+import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
+
+export class DisplayInFrontOfSiblings {
+
+  private static decrementNumberOfCurrentlyHighlightedButtons(displayInFrontOfSiblingsContainerState: DisplayInFrontOfSiblingsContainerState): void {
+    if (displayInFrontOfSiblingsContainerState.numberOfCurrentlyHighlightedButtons > 0 ) {
+      displayInFrontOfSiblingsContainerState.numberOfCurrentlyHighlightedButtons -= 1;
+    }
+  }
+
+  private static updateDisplayInFrontOfSiblingsContainerState(toFront: boolean, displayInFrontOfSiblingsState: DisplayInFrontOfSiblingsState,
+      displayInFrontOfSiblingsContainerState: DisplayInFrontOfSiblingsContainerState): void {
+    if (toFront) {
+      displayInFrontOfSiblingsContainerState.numberOfCurrentlyHighlightedButtons += 1;
+    } else {
+      DisplayInFrontOfSiblings.decrementNumberOfCurrentlyHighlightedButtons(displayInFrontOfSiblingsContainerState);
+      if (displayInFrontOfSiblingsContainerState.numberOfCurrentlyHighlightedButtons === 0) {
+        displayInFrontOfSiblingsContainerState.highestZIndex = 0;
+      }
+    }
+    displayInFrontOfSiblingsState.setZIndexTimeout = null;
+  }
+
+  private static setZIndex(toFront: boolean, displayInFrontOfSiblingsState: DisplayInFrontOfSiblingsState,
+      displayInFrontOfSiblingsContainerState: DisplayInFrontOfSiblingsContainerState): void {
+    displayInFrontOfSiblingsState.zIndex = toFront ? displayInFrontOfSiblingsContainerState.highestZIndex += 1 : 0;
+  }
+
+  private static calculateTimeoutDelay(toFront: boolean, subcomponentProperties: SubcomponentProperties): number {
+    const { duration } = subcomponentProperties.customFeatures.animations?.stationary?.fade || {};
+    return !toFront && duration ? Number.parseFloat(duration) * 1000 : 0;
+  }
+
+  private static initializeSetZIndexTimeout(toFront: boolean, subcomponentProperties: SubcomponentProperties,
+      displayInFrontOfSiblingsContainerState: DisplayInFrontOfSiblingsContainerState,
+      displayInFrontOfSiblingsState: DisplayInFrontOfSiblingsState): void {
+    const delayMilliseconds = DisplayInFrontOfSiblings.calculateTimeoutDelay(toFront, subcomponentProperties);
+    displayInFrontOfSiblingsState.setZIndexTimeout = setTimeout(() => {
+      DisplayInFrontOfSiblings.setZIndex(toFront, displayInFrontOfSiblingsState, displayInFrontOfSiblingsContainerState);
+      DisplayInFrontOfSiblings.updateDisplayInFrontOfSiblingsContainerState(toFront, displayInFrontOfSiblingsState,
+        displayInFrontOfSiblingsContainerState);
+    }, delayMilliseconds);
+  }
+
+  private static clearSetZIndexTimeout(displayInFrontOfSiblingsState: DisplayInFrontOfSiblingsState,
+      displayInFrontOfSiblingsContainerState: DisplayInFrontOfSiblingsContainerState): void {
+    if (displayInFrontOfSiblingsState.setZIndexTimeout) {
+      DisplayInFrontOfSiblings.decrementNumberOfCurrentlyHighlightedButtons(displayInFrontOfSiblingsContainerState);
+      clearTimeout(displayInFrontOfSiblingsState.setZIndexTimeout);
+    }
+  }
+
+  // the strategy here is to continuously keep increasing the zIndex of the newly activated components via the use of the highestZIndex
+  // the number of currently highlighted components is tracked and when there are no more - the highestZIndex is set back to 0
+  public static changeSubcomponentZIndex(toFront: boolean, subcomponentProperties: SubcomponentProperties, cssPseudoClass: CSS_PSEUDO_CLASSES): void {
+    const { displayInFrontOfSiblingsContainerState } = subcomponentProperties.seedComponent.containerComponent?.baseSubcomponent.customStaticFeatures || {};
+    if (displayInFrontOfSiblingsContainerState) {
+      if (!displayInFrontOfSiblingsContainerState.conditionalFunc || displayInFrontOfSiblingsContainerState.conditionalFunc(subcomponentProperties, cssPseudoClass)) {
+        const { displayInFrontOfSiblingsState } = subcomponentProperties.customStaticFeatures;
+        DisplayInFrontOfSiblings.clearSetZIndexTimeout(displayInFrontOfSiblingsState, displayInFrontOfSiblingsContainerState);
+        DisplayInFrontOfSiblings.initializeSetZIndexTimeout(toFront, subcomponentProperties, displayInFrontOfSiblingsContainerState,
+          displayInFrontOfSiblingsState);
+      }
+    }
+  }
+}

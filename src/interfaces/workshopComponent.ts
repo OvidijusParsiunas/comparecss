@@ -118,9 +118,12 @@ export interface CustomStaticFeatures {
   subcomponentText?: Text;
   image?: Image;
   icon?: Icon;
-  // works with conjunction to the container child components DisplayInFrontOfSiblingsState object
+  // works with conjunction to the DisplayInFrontOfSiblingsContainerState object in the container component
+  // responsible for keeping track of component's current zIndex and its changeZIndexTimeout func - used for the transition animation
+  displayInFrontOfSiblingsState?: DisplayInFrontOfSiblingsState;
+  // works with conjunction to the DisplayInFrontOfSiblingsState objects in container's child components 
   // responsible for keeping track of the highest zIndex among the children so as to allow the newly highlighted/clicked
-  // component to appear on top whilst the blured or unclicked components can still be above other components during their
+  // component to appear on top whilst the blurred or unclicked components can still be above other components during their
   // transition animation
   displayInFrontOfSiblingsContainerState?: DisplayInFrontOfSiblingsContainerState;
 }
@@ -215,7 +218,6 @@ export interface WorkshopComponent {
   newChildComponents: NewChildComponents;
   onChildComponentRemovalFunc?: PropertyOverwritableFunc;
   onComponentDisplayFunc?: (component: WorkshopComponent) => void;
-  displayInFrontOfSiblingsState?: DisplayInFrontOfSiblingsState;
 }
 
 // Component Architecture Information:

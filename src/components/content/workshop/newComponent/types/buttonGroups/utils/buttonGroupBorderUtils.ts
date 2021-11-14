@@ -24,19 +24,14 @@ export class ButtonGroupBorderUtils {
       ...sharedComponentClasses, BUTTON_GROUP_BUTTON_CLASSES.BUTTON_GROUP_MIDDLE_BUTTON]
     for (let i = 1; i < buttons.length - 1; i += 1) {
       buttons[i].componentClasses = middleButtonComponentClasses;
-      delete buttons[i].baseSubcomponent.customStaticFeatures;
+      delete buttons[i].baseSubcomponent.customStaticFeatures.buttonGroupSideBorders;
     }
-
-    buttons[0].baseSubcomponent.customStaticFeatures = {
-      buttonGroupSideBorders: {
-        left: true,
-      }
-    }
-    buttons[buttons.length - 1].baseSubcomponent.customStaticFeatures = {
-      buttonGroupSideBorders: {
-        right: true,
-      }
-    }
+    buttons[0].baseSubcomponent.customStaticFeatures.buttonGroupSideBorders = {
+      left: true,
+    };
+    buttons[buttons.length - 1].baseSubcomponent.customStaticFeatures.buttonGroupSideBorders = {
+      right: true,
+    };
   }
 
   private static setCustomCss(customCss: CustomCss): void {
