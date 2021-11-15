@@ -16,8 +16,8 @@ export class MenuIndexAlignment {
   }
 
   private static setZIndex(newAlignment: string, subcomponentProperties: SubcomponentProperties): void {
-    const newIndex = newAlignment === 'Above' ? 1 : -1;
-    subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].zIndex = newIndex;
+    const newZIndex = newAlignment === 'Above' ? 1 : -1;
+    subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].zIndex = newZIndex;
   }
 
   private static changeSubcomponentAlignment(event: ActionsDropdownMouseEventCallbackEvent, newMenuAlignment: string,

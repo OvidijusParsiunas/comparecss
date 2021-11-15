@@ -162,10 +162,10 @@ export class ComponentBuilder {
     subcomponent[defaultFeatureType].jsClasses.add(javascriptClass);
   }
 
-  protected static setCustomAndDefaultCssProperty(subcomponentProperties: SubcomponentProperties, cssPseudoClass: CSS_PSEUDO_CLASSES,
-      cssProperty: keyof WorkshopComponentCss, value: string): void {
-    (subcomponentProperties.customCss[cssPseudoClass] as any)[cssProperty] = value;
-    (subcomponentProperties.defaultCss[cssPseudoClass] as any)[cssProperty] = value;
+  protected static setCustomAndDefaultCssProperty<T extends keyof WorkshopComponentCss>(subcomponentProperties: SubcomponentProperties,
+      cssPseudoClass: CSS_PSEUDO_CLASSES, cssProperty: T, value: WorkshopComponentCss[T]): void {
+    subcomponentProperties.customCss[cssPseudoClass][cssProperty] = value;
+    subcomponentProperties.defaultCss[cssPseudoClass][cssProperty] = value;
   }
 
   private static toggleSelectDropdownTypeSetting(subcomponentProperties: SubcomponentProperties): void {
