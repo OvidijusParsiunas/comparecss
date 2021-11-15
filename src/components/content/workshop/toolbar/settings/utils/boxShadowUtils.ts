@@ -4,11 +4,13 @@ import ComponentPreviewUtils from '../../../componentPreview/utils/componentPrev
 import { CSS_PROPERTY_VALUES } from '../../../../../../consts/cssPropertyValues.enum';
 import SharedUtils from './sharedUtils';
 
+// DOC: 7879
 // the use of the auxiliary functionality and unset properties is mostly due to the fact that in firefox
-// it has been identified that shadow values of 0px 0px 0px 0px still display a partial shadow
+// it has been identified that shadow values of 0px 0px 0px 0px still displays a partial shadow
 export default class BoxShadowUtils {
 
-  public static readonly DEFAULT_BOX_SHADOW_PIXEL_VALUES = '0px 0px 0px 0px';
+  // must not be used to initialize box shadow custom css due to DOC: 7879
+  private static readonly DEFAULT_BOX_SHADOW_PIXEL_VALUES = '0px 0px 0px 0px';
   private static readonly DEFAULT_BOX_SHADOW_UNSET_VALUE = CSS_PROPERTY_VALUES.UNSET;
   private static readonly DEFAULT_BOX_SHADOW_INHERITED_VALUE = CSS_PROPERTY_VALUES.INHERIT;
   private static readonly DEFAULT_BOX_SHADOW_COLOR_VALUE = '#000000';
@@ -35,9 +37,7 @@ export default class BoxShadowUtils {
   }
 
   private static overwriteInheritedBoxShadowProperty(customCss: CustomCss, activeCssPseudoClass: CSS_PSEUDO_CLASSES): void {
-    if (customCss[activeCssPseudoClass].boxShadow === BoxShadowUtils.DEFAULT_BOX_SHADOW_INHERITED_VALUE) {
-      customCss[activeCssPseudoClass].boxShadow = ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCss, 'boxShadow');
-    }
+    customCss[activeCssPseudoClass].boxShadow = ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCss, 'boxShadow');
   }
 
   private static overwriteUnsetBoxShadowPropertiesToZero(customCss: CustomCss, auxiliaryPartialCss: CustomCss, activeCssPseudoClass: CSS_PSEUDO_CLASSES): void {
@@ -49,11 +49,12 @@ export default class BoxShadowUtils {
   }
 
   private static overwriteValues(customCss: CustomCss, auxiliaryPartialCss: CustomCss, activeCssPseudoClass: CSS_PSEUDO_CLASSES): void {
+    if (customCss[activeCssPseudoClass].boxShadow === BoxShadowUtils.DEFAULT_BOX_SHADOW_INHERITED_VALUE) {
+      BoxShadowUtils.overwriteInheritedBoxShadowProperty(customCss, activeCssPseudoClass);
+    }
     BoxShadowUtils.overwriteUnsetBoxShadowPropertiesToZero(customCss, auxiliaryPartialCss, activeCssPseudoClass);
-    BoxShadowUtils.overwriteInheritedBoxShadowProperty(customCss, activeCssPseudoClass);
   }
 
-  // WORK 4 - bug where the value gets set to UNSET but cannot be redone
   public static updateBoxShadowRangeValue(rangeValue: string, spec: any, subcomponentProperties: SubcomponentProperties): void {
     const {cssProperty, partialCss} = spec;
     const { customCss, activeCssPseudoClass, auxiliaryPartialCss } = subcomponentProperties;

@@ -107,8 +107,9 @@ class ButtonGroupBase extends ComponentBuilder {
   }
 
   private static setShadowProperties(buttonComponent: WorkshopComponent): void {
-    ComponentBuilder.setCustomAndDefaultCssProperty(buttonComponent.baseSubcomponent, CSS_PSEUDO_CLASSES.HOVER, 'boxShadow', BoxShadowUtils.DEFAULT_BOX_SHADOW_PIXEL_VALUES);
-    ComponentBuilder.setCustomAndDefaultCssProperty(buttonComponent.baseSubcomponent, CSS_PSEUDO_CLASSES.CLICK, 'boxShadow', CSS_PROPERTY_VALUES.INHERIT);
+    const { baseSubcomponent } = buttonComponent;
+    ComponentBuilder.setCustomAndDefaultCssProperty(baseSubcomponent, CSS_PSEUDO_CLASSES.HOVER, 'boxShadow', CSS_PROPERTY_VALUES.UNSET);
+    ComponentBuilder.setCustomAndDefaultCssProperty(baseSubcomponent, CSS_PSEUDO_CLASSES.CLICK, 'boxShadow', CSS_PROPERTY_VALUES.INHERIT);
   }
 
   public static setPropertyOverwritables(buttonGroupComponent: WorkshopComponent): void {

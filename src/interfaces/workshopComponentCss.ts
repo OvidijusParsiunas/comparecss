@@ -16,7 +16,7 @@ export interface WorkshopComponentCss {
   borderRightColor?: string;
   borderRadius?: string;
   transition?: string; // this is mostly used to mark a transition style that will be removed when exporting css files
-  boxShadow?: string; // should not start with '0px 0px 0px 0px'
+  boxShadow?: string; // should not start with '0px 0px 0px 0px' due to DOC: 7879
   backgroundColor?: string;
   backgroundSize?: string;
   backgroundPosition?: string;

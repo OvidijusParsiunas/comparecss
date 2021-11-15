@@ -75,7 +75,7 @@ export class ColorPickerUtils {
     updatedSettingSpec.default = '';
     if (!subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass]) {
       subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass] = {
-        [cssProperty]: CSS_PROPERTY_VALUES.INHERIT};
+        [cssProperty]: CSS_PROPERTY_VALUES.INHERIT };
     } else {
       subcomponentProperties.customCss[subcomponentProperties.activeCssPseudoClass]
         [cssProperty] = CSS_PROPERTY_VALUES.INHERIT;
