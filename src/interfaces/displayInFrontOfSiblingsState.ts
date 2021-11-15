@@ -9,5 +9,7 @@ export interface DisplayInFrontOfSiblingsContainerState {
 
 export interface DisplayInFrontOfSiblingsState {
   zIndex: number;
+  // used to not have to move to front on click when the component has already been moved on hover
+  isInFrontOnHover?: boolean;
   setZIndexTimeout?: NodeJS.Timeout;
 }

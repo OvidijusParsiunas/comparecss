@@ -60,8 +60,10 @@ export class DisplayInFrontOfSiblings {
   public static changeSubcomponentZIndex(toFront: boolean, subcomponentProperties: SubcomponentProperties, cssPseudoClass: CSS_PSEUDO_CLASSES): void {
     const { displayInFrontOfSiblingsContainerState } = subcomponentProperties.seedComponent.containerComponent?.baseSubcomponent.customStaticFeatures || {};
     if (displayInFrontOfSiblingsContainerState) {
+      const { displayInFrontOfSiblingsState } = subcomponentProperties.customStaticFeatures;
+      if (cssPseudoClass === CSS_PSEUDO_CLASSES.CLICK && displayInFrontOfSiblingsState.isInFrontOnHover) return;
       if (!displayInFrontOfSiblingsContainerState.conditionalFunc || displayInFrontOfSiblingsContainerState.conditionalFunc(subcomponentProperties, cssPseudoClass)) {
-        const { displayInFrontOfSiblingsState } = subcomponentProperties.customStaticFeatures;
+        if (cssPseudoClass === CSS_PSEUDO_CLASSES.HOVER) displayInFrontOfSiblingsState.isInFrontOnHover = toFront;
         DisplayInFrontOfSiblings.clearSetZIndexTimeout(displayInFrontOfSiblingsState, displayInFrontOfSiblingsContainerState);
         DisplayInFrontOfSiblings.initializeSetZIndexTimeout(toFront, subcomponentProperties, displayInFrontOfSiblingsContainerState,
           displayInFrontOfSiblingsState);

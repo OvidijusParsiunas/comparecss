@@ -25,47 +25,44 @@ class ButtonGroupBase extends ComponentBuilder {
     const oldBorderColor = subcomponentProperties.customCss[oldModePseudoClass].borderColor;
     return newBorderColor === CSS_PROPERTY_VALUES.INHERIT || newBorderColor === oldBorderColor;
   }
-  private static areBorderPropertiesDifferentDuringClick(subcomponentProperties: SubcomponentProperties): boolean {
+
+  private static areBorderPropertiesDifferent(subcomponentProperties: SubcomponentProperties, newModePseudoClass: CSS_PSEUDO_CLASSES,
+      oldModePseudoClass: CSS_PSEUDO_CLASSES): boolean {
     return subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth !== '0px'
-      && !ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.CLICK, CSS_PSEUDO_CLASSES.HOVER);
+      && !ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, newModePseudoClass, oldModePseudoClass);
+  }
+
+  private static isShadowSpreadMoreThanZero(subcomponentProperties: SubcomponentProperties, cssPseudoClass: CSS_PSEUDO_CLASSES): boolean {
+    const boxShadowProps = subcomponentProperties.customCss[cssPseudoClass].boxShadow.split(' ');
+    const shadowSpread = boxShadowProps[3];
+    return shadowSpread !== '0px';
   }
 
   private static areShadowPropertiesDifferentDuringClick(subcomponentProperties: SubcomponentProperties): boolean {
-    const numbersArrClck = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK].boxShadow.split(' ');
-    const shadowSpreadClck = numbersArrClck[numbersArrClck.length - 2];
-    return subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK].boxShadow !== CSS_PROPERTY_VALUES.INHERIT && shadowSpreadClck !== '0px'
+    return subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK].boxShadow !== CSS_PROPERTY_VALUES.INHERIT
+      && ButtonGroupBase.isShadowSpreadMoreThanZero(subcomponentProperties, CSS_PSEUDO_CLASSES.CLICK);
   }
 
-  // checks if already set to front on hover in order to avoid sending component to front again
-  private static shouldComponentBeInFrontDuringClick(shadowSpreadOnHov: string, subcomponentProperties: SubcomponentProperties): boolean {
-    return (shadowSpreadOnHov === '0px' && ButtonGroupBase.areShadowPropertiesDifferentDuringClick(subcomponentProperties))
-      || (ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER, CSS_PSEUDO_CLASSES.DEFAULT)
-        && ButtonGroupBase.areBorderPropertiesDifferentDuringClick(subcomponentProperties));
+  private static shouldComponentBeInFrontDuringClick(subcomponentProperties: SubcomponentProperties): boolean {
+    return (ButtonGroupBase.areShadowPropertiesDifferentDuringClick(subcomponentProperties))
+      || ButtonGroupBase.areBorderPropertiesDifferent(subcomponentProperties, CSS_PSEUDO_CLASSES.CLICK, CSS_PSEUDO_CLASSES.HOVER);
   }
 
-  private static areBorderPropertiesDifferentDuringHover(subcomponentProperties: SubcomponentProperties): boolean {
-    return subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth !== '0px'
-      && !ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER, CSS_PSEUDO_CLASSES.DEFAULT);
+  private static shouldComponentBeInFrontDuringHover(subcomponentProperties: SubcomponentProperties): boolean {
+    return ButtonGroupBase.isShadowSpreadMoreThanZero(subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER)
+      || ButtonGroupBase.areBorderPropertiesDifferent(subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER, CSS_PSEUDO_CLASSES.DEFAULT);
   }
 
-  private static shouldComponentBeInFrontDuringHover(shadowSpreadOnHov: string, subcomponentProperties: SubcomponentProperties): boolean {
-    return shadowSpreadOnHov !== '0px' || ButtonGroupBase.areBorderPropertiesDifferentDuringHover(subcomponentProperties);
-  }
-
-  // WORK 4 - refactor
   // this is a workaround for a bug in Chrome - the margin left property does not appear to align left/right borders correctly
   // as some of them tend to be a little too far left or too far right - giving a sensation of border movement when a button
-  // is set to the front.
-  // Hence this is used to prevent the buttons from moving to front when there are no hover/click borders or when their colours
-  // are the same as their previous pseudo class as it would be pointless to do so. Also, this bug is less visible when border
-  // colours are different, hence it is allowed to occur then.
-  private static shouldComponentBeInFront(subcomponentProperties: SubcomponentProperties, cssPseudoClass: CSS_PSEUDO_CLASSES): boolean {
-    const numbersArrHov = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.HOVER].boxShadow.split(' ');
-    const shadowSpreadOnHov = numbersArrHov[numbersArrHov.length - 1];
+  // is moved to the front.
+  // Hence this prevents buttons from being moved to the front when there are no border or shadow differences on hover/click
+  // as it would be pointless to do it otherwise.
+  private static shouldComponentBeMovedToFront(subcomponentProperties: SubcomponentProperties, cssPseudoClass: CSS_PSEUDO_CLASSES): boolean {
     if (cssPseudoClass === CSS_PSEUDO_CLASSES.HOVER) {
-      return ButtonGroupBase.shouldComponentBeInFrontDuringHover(shadowSpreadOnHov, subcomponentProperties);
+      return ButtonGroupBase.shouldComponentBeInFrontDuringHover(subcomponentProperties);
     } else if (cssPseudoClass === CSS_PSEUDO_CLASSES.CLICK) {
-      return ButtonGroupBase.shouldComponentBeInFrontDuringClick(shadowSpreadOnHov, subcomponentProperties);
+      return ButtonGroupBase.shouldComponentBeInFrontDuringClick(subcomponentProperties);
     }
     return false;
   }
@@ -75,7 +72,7 @@ class ButtonGroupBase extends ComponentBuilder {
       displayInFrontOfSiblingsContainerState: {
         highestZIndex: 0,
         numberOfCurrentlyHighlightedButtons: 0,
-        conditionalFunc: ButtonGroupBase.shouldComponentBeInFront,
+        conditionalFunc: ButtonGroupBase.shouldComponentBeMovedToFront,
       },
     };
   }
