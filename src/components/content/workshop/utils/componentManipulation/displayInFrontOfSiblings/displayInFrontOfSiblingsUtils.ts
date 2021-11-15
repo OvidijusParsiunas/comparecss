@@ -6,6 +6,7 @@ import { SubcomponentProperties } from '../../../../../../interfaces/workshopCom
 export class DisplayInFrontOfSiblings {
 
   private static readonly MAX_Z_INDEX = 999999;
+  public static readonly MIN_Z_INDEX = 0;
 
   private static decrementNumberOfCurrentlyHighlightedButtons(displayInFrontOfSiblingsContainerState: DisplayInFrontOfSiblingsContainerState): void {
     if (displayInFrontOfSiblingsContainerState.numberOfCurrentlyHighlightedButtons > 0 ) {

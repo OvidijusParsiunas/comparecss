@@ -7,6 +7,7 @@ import { SubcomponentTypeToProperties } from '../../../../../../interfaces/subco
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../consts/dropdownMenuAlignment.enum';
 import { ComponentPreviewStructure } from '../../../../../../interfaces/componentPreviewStructure';
 import { DropdownFeatures, SelectDropdown } from '../../../../../../interfaces/dropdownFeatures';
+import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
 import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { SelectDropdownUtils } from '../dropdowns/selectDropdown/selectDropdownUtils';
@@ -159,6 +160,12 @@ export class ComponentBuilder {
     }
     subcomponent[featureType].jsClasses.add(javascriptClass);
     subcomponent[defaultFeatureType].jsClasses.add(javascriptClass);
+  }
+
+  protected static setCustomAndDefaultCssProperty(subcomponentProperties: SubcomponentProperties, cssPseudoClass: CSS_PSEUDO_CLASSES,
+      cssProperty: keyof WorkshopComponentCss, value: string): void {
+    (subcomponentProperties.customCss[cssPseudoClass] as any)[cssProperty] = value;
+    (subcomponentProperties.defaultCss[cssPseudoClass] as any)[cssProperty] = value;
   }
 
   private static toggleSelectDropdownTypeSetting(subcomponentProperties: SubcomponentProperties): void {

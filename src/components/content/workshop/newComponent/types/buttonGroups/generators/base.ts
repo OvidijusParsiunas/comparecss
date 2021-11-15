@@ -1,5 +1,7 @@
+import { DisplayInFrontOfSiblings } from '../../../../utils/componentManipulation/displayInFrontOfSiblings/displayInFrontOfSiblingsUtils';
 import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
+import { ButtonGroupButtonDisplayInFrontOfSiblings } from '../utils/buttonGroupButtonDisplayInFrontOfSiblings';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { BUTTON_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
@@ -11,6 +13,7 @@ import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum
 import { inheritedCardBaseCss } from '../../cards/inheritedCss/inheritedCardCss';
 import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { SETTINGS_TYPES } from '../../../../../../../consts/settingsTypes.enum';
+import BoxShadowUtils from '../../../../toolbar/settings/utils/boxShadowUtils';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ButtonGroupGenericUtils } from '../utils/buttonGroupGenericUtils';
 import { ButtonGroupBorderUtils } from '../utils/buttonGroupBorderUtils';
@@ -19,60 +22,12 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonGroupBase extends ComponentBuilder {
 
-  private static areBorderColorsMatching(subcomponentProperties: SubcomponentProperties, newModePseudoClass: CSS_PSEUDO_CLASSES,
-      oldModePseudoClass: CSS_PSEUDO_CLASSES): boolean {
-    const newBorderColor = subcomponentProperties.customCss[newModePseudoClass].borderColor;
-    const oldBorderColor = subcomponentProperties.customCss[oldModePseudoClass].borderColor;
-    return newBorderColor === CSS_PROPERTY_VALUES.INHERIT || newBorderColor === oldBorderColor;
-  }
-
-  private static areBorderPropertiesDifferent(subcomponentProperties: SubcomponentProperties, newModePseudoClass: CSS_PSEUDO_CLASSES,
-      oldModePseudoClass: CSS_PSEUDO_CLASSES): boolean {
-    return subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth !== '0px'
-      && !ButtonGroupBase.areBorderColorsMatching(subcomponentProperties, newModePseudoClass, oldModePseudoClass);
-  }
-
-  private static isShadowSpreadMoreThanZero(subcomponentProperties: SubcomponentProperties, cssPseudoClass: CSS_PSEUDO_CLASSES): boolean {
-    const boxShadowProps = subcomponentProperties.customCss[cssPseudoClass].boxShadow.split(' ');
-    const shadowSpread = boxShadowProps[3];
-    return shadowSpread !== '0px';
-  }
-
-  private static areShadowPropertiesDifferentDuringClick(subcomponentProperties: SubcomponentProperties): boolean {
-    return subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.CLICK].boxShadow !== CSS_PROPERTY_VALUES.INHERIT
-      && ButtonGroupBase.isShadowSpreadMoreThanZero(subcomponentProperties, CSS_PSEUDO_CLASSES.CLICK);
-  }
-
-  private static shouldComponentBeInFrontDuringClick(subcomponentProperties: SubcomponentProperties): boolean {
-    return (ButtonGroupBase.areShadowPropertiesDifferentDuringClick(subcomponentProperties))
-      || ButtonGroupBase.areBorderPropertiesDifferent(subcomponentProperties, CSS_PSEUDO_CLASSES.CLICK, CSS_PSEUDO_CLASSES.HOVER);
-  }
-
-  private static shouldComponentBeInFrontDuringHover(subcomponentProperties: SubcomponentProperties): boolean {
-    return ButtonGroupBase.isShadowSpreadMoreThanZero(subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER)
-      || ButtonGroupBase.areBorderPropertiesDifferent(subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER, CSS_PSEUDO_CLASSES.DEFAULT);
-  }
-
-  // this is a workaround for a bug in Chrome - the margin left property does not appear to align left/right borders correctly
-  // as some of them tend to be a little too far left or too far right - giving a sensation of border movement when a button
-  // is moved to the front.
-  // Hence this prevents buttons from being moved to the front when there are no border or shadow differences on hover/click
-  // as it would be pointless to do it otherwise.
-  private static shouldComponentBeMovedToFront(subcomponentProperties: SubcomponentProperties, cssPseudoClass: CSS_PSEUDO_CLASSES): boolean {
-    if (cssPseudoClass === CSS_PSEUDO_CLASSES.HOVER) {
-      return ButtonGroupBase.shouldComponentBeInFrontDuringHover(subcomponentProperties);
-    } else if (cssPseudoClass === CSS_PSEUDO_CLASSES.CLICK) {
-      return ButtonGroupBase.shouldComponentBeInFrontDuringClick(subcomponentProperties);
-    }
-    return false;
-  }
-
   public static setDisplayInFrontOfSiblingsContainerState(buttonGroupBaseComponent: WorkshopComponent): void {
     buttonGroupBaseComponent.baseSubcomponent.customStaticFeatures = {
       displayInFrontOfSiblingsContainerState: {
         highestZIndex: 0,
         numberOfCurrentlyHighlightedButtons: 0,
-        conditionalFunc: ButtonGroupBase.shouldComponentBeMovedToFront,
+        conditionalFunc: ButtonGroupButtonDisplayInFrontOfSiblings.shouldComponentBeMovedToFront,
       },
     };
   }
@@ -133,8 +88,7 @@ class ButtonGroupBase extends ComponentBuilder {
   }
 
   private static setDisplayInFrontOfSiblingsState(buttonComponent: WorkshopComponent): void {
-    // WORK 4 - refactor DEFAULT_COMPONENT_Z_INDEX
-    buttonComponent.baseSubcomponent.customStaticFeatures.displayInFrontOfSiblingsState = { zIndex: 0 };
+    buttonComponent.baseSubcomponent.customStaticFeatures.displayInFrontOfSiblingsState = { zIndex: DisplayInFrontOfSiblings.MIN_Z_INDEX };
   }
 
   private static onTemporarySyncExecutableFunc(buttonComponent: WorkshopComponent): void {
@@ -152,10 +106,16 @@ class ButtonGroupBase extends ComponentBuilder {
     buttonComponent.baseSubcomponent.isRemovable = true;
   }
 
+  private static setShadowProperties(buttonComponent: WorkshopComponent): void {
+    ComponentBuilder.setCustomAndDefaultCssProperty(buttonComponent.baseSubcomponent, CSS_PSEUDO_CLASSES.HOVER, 'boxShadow', BoxShadowUtils.DEFAULT_BOX_SHADOW_PIXEL_VALUES);
+    ComponentBuilder.setCustomAndDefaultCssProperty(buttonComponent.baseSubcomponent, CSS_PSEUDO_CLASSES.CLICK, 'boxShadow', CSS_PROPERTY_VALUES.INHERIT);
+  }
+
   public static setPropertyOverwritables(buttonGroupComponent: WorkshopComponent): void {
     buttonGroupComponent.newChildComponents.propertyOverwritables = {
       postBuildFuncs: {
         [COMPONENT_TYPES.BUTTON]: [
+          ButtonGroupBase.setShadowProperties,
           ButtonGroupBase.setComponentToRemovable,
           ButtonGroupBase.setTemporarySyncExecutables,
           ButtonGroupBase.setDisplayInFrontOfSiblingsState,

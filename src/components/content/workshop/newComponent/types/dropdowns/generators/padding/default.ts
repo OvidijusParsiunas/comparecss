@@ -5,10 +5,11 @@ import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentC
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { buttonWithIcon } from '../../../buttons/generators/buttonWithIcon';
+import { ComponentBuilder } from '../../../shared/componentBuilder';
 import { defaultDropdownMenu } from '../menu/default';
 import { DropdownPaddingBase } from './base';
 
-class DefaultDropdownPadding {
+class DefaultDropdownPadding extends ComponentBuilder {
 
   private static overwriteButtonTextCustomStaticFeatures(buttonComponent: WorkshopComponent): void {
     const textSubcomponent = buttonComponent.sync.syncables.onCopy.subcomponents[SUBCOMPONENT_TYPES.TEXT];
@@ -18,10 +19,8 @@ class DefaultDropdownPadding {
 
   private static overwriteButtonBaseCustomCss(buttonComponent: WorkshopComponent): void {
     const baseSubcomponent = buttonComponent.baseSubcomponent;
-    baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].width = '155px';
-    baseSubcomponent.defaultCss[CSS_PSEUDO_CLASSES.DEFAULT].width = '155px';
-    baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = '4px';
-    baseSubcomponent.defaultCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = '4px';
+    ComponentBuilder.setCustomAndDefaultCssProperty(baseSubcomponent, CSS_PSEUDO_CLASSES.DEFAULT, 'width', '155px');
+    ComponentBuilder.setCustomAndDefaultCssProperty(baseSubcomponent, CSS_PSEUDO_CLASSES.DEFAULT, 'borderRadius', '4px');
   }
 
   public static overwriteButton(buttonComponent: WorkshopComponent): void {
