@@ -26,11 +26,11 @@ export class RemoveAnyChildComponent {
     });
   }
 
-  private static removeSyncableSubcomponent(parentComponent: WorkshopComponent, removedSubcomponentProperties: SubcomponentProperties): void {
+  private static removeSyncableComponent(parentComponent: WorkshopComponent, removedComponent: WorkshopComponent): void {
     const { onCopy } = parentComponent.sync.syncables;
     if (onCopy) {
-      const { subcomponentType } = removedSubcomponentProperties;
-      if (onCopy.subcomponents[subcomponentType]) onCopy.subcomponents[subcomponentType] = null;
+      const { type } = removedComponent;
+      if (onCopy.uniqueComponents[type]) onCopy.uniqueComponents[type] = null;
     }
   }
 
@@ -49,7 +49,7 @@ export class RemoveAnyChildComponent {
     return Object.keys(nestedDropdownStructure).filter((buttonName) => buttonName !== DROPDOWN_ITEM_AUX_DETAILS_REF);
   }
 
-  private static selectSiblingSubcomponent(masterComponent: WorkshopComponent, dropdownItems: string[],
+  private static selectSiblingComponent(masterComponent: WorkshopComponent, dropdownItems: string[],
       traversalState: DropdownStructureTraversalState): void {
     const { dropdownItemName, subcomponentDropdownStructure } = traversalState;
     const currentDropdownItemIndex = dropdownItems.indexOf(dropdownItemName);
@@ -64,7 +64,7 @@ export class RemoveAnyChildComponent {
     if (dropdownItems.length === 1) {
       SetActiveComponentUtils.setActiveSubcomponent(masterComponent, parentSubcomponentName);
     } else {
-      RemoveAnyChildComponent.selectSiblingSubcomponent(masterComponent, dropdownItems, traversalState);
+      RemoveAnyChildComponent.selectSiblingComponent(masterComponent, dropdownItems, traversalState);
     }
   }
 
@@ -138,7 +138,7 @@ export class RemoveAnyChildComponent {
     RemoveAnyChildComponent.removeAlignedComponents(subcomponentProperties, masterComponent, containerComponent);
     alignedChildComponents.splice(index, 1);
     InterconnectedSettings.update(false, containerComponent, subcomponentProperties);
-    AutoSyncedSiblingContainerComponentUtils.decrementSiblingSubcomponentCount(
+    AutoSyncedSiblingContainerComponentUtils.decrementSiblingComponentCount(
       subcomponentProperties.seedComponent.parentLayer, subcomponentProperties.seedComponent);
   }
 
@@ -177,7 +177,7 @@ export class RemoveAnyChildComponent {
     TraverseComponentViaDropdownStructure.traverse(
       targetDetails.masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       RemoveAnyChildComponent.removeChildComponentUsingDropdownStructureIfFound.bind(targetDetails));
-    RemoveAnyChildComponent.removeSyncableSubcomponent(parentComponent, targetDetails.targetSubcomponentProperties);
+    RemoveAnyChildComponent.removeSyncableComponent(parentComponent, targetDetails.targetSubcomponentProperties.seedComponent);
     RemoveAnyChildComponent.asyncUpdateComponentThatTriggerThis(targetDetails.targetSubcomponentProperties);
   }
 }

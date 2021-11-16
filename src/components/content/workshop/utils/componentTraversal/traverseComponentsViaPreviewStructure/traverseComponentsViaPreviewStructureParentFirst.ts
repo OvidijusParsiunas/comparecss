@@ -55,6 +55,7 @@ export class TraverseComponentViaPreviewStructureParentFirst extends TraverseCom
     return traversalResult;
   }
 
+  // WORK 2 - child components get called twice when syncing button to dropdown
   public static traverse(callback: PreviewTraversalCallback, ...componentsArr: WorkshopComponent[]): PreviewTraversalResult {
     let traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverseComponent(callback, componentsArr);
     if (traversalResult.stopTraversal) return traversalResult;

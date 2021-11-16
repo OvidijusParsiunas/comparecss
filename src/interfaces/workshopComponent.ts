@@ -137,6 +137,7 @@ export interface CustomDynamicProperties {
   tempOriginalCustomProperties?: TempCustomProperties;
 }
 
+// WORK 2 - change to Subcomponent
 export type SubcomponentProperties = CustomDynamicProperties & {
   name: string;
   // used for defining options and adding new subcomponents to a layer

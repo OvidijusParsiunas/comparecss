@@ -7,7 +7,6 @@ import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../.
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
@@ -27,14 +26,16 @@ class DefaultCard extends ComponentBuilder {
   }
 
   private static overwriteCancelButtonProperties(cancelButton: WorkshopComponent): void {
-    cancelButton.sync.syncables.onCopy.subcomponents[SUBCOMPONENT_TYPES.TEXT].customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Cancel');
-    cancelButton.sync.syncables.onCopy.subcomponents[SUBCOMPONENT_TYPES.TEXT].defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Cancel');
+    const { baseSubcomponent } = cancelButton.sync.syncables.onCopy.uniqueComponents[COMPONENT_TYPES.TEXT];
+    baseSubcomponent.customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Cancel');
+    baseSubcomponent.defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Cancel');
     DefaultCard.setComponentToRemovable(cancelButton);
   }
 
   private static overwriteSubmitButtonProperties(submitButtonComponent: WorkshopComponent): void {
-    submitButtonComponent.sync.syncables.onCopy.subcomponents[SUBCOMPONENT_TYPES.TEXT].customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Submit');
-    submitButtonComponent.sync.syncables.onCopy.subcomponents[SUBCOMPONENT_TYPES.TEXT].defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Submit');
+    const { baseSubcomponent } = submitButtonComponent.sync.syncables.onCopy.uniqueComponents[COMPONENT_TYPES.TEXT];
+    baseSubcomponent.customStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Submit');
+    baseSubcomponent.defaultCustomStaticFeatures = DefaultCard.createDefaultTextCustomStaticFeatures('Submit');
     DefaultCard.setComponentToRemovable(submitButtonComponent);
   }
 

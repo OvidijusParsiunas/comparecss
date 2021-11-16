@@ -2,7 +2,7 @@ import { TraverseComponentViaPreviewStructureChildFirst } from '../../../utils/c
 import { AutoSyncedSiblingContainerComponentUtils } from '../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingContainerComponentUtils';
 import { PropertyReferenceSharingFuncsUtils } from '../../../newComponent/types/shared/propertyReferenceSharingFuncs/propertyReferenceSharingFuncsUtils';
 import { AutoSyncedSiblingComponentUtils } from '../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingComponentUtils';
-import { SiblingSubcomponentTypes, SiblingSubcomponentState } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
+import { SiblingComponentTypes, SiblingComponentState } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { SubcomponentPreviewTraversalState, PreviewTraversalResult } from '../../../../../../interfaces/componentTraversal';
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
@@ -24,32 +24,32 @@ export class SyncedComponent {
   }
 
   private static removeAutoSyncedSiblingSyncReferencesAndResyncTogether(inSyncComponent: WorkshopComponent,
-      siblingSubcomponentTypes: SiblingSubcomponentTypes): void {
+      siblingComponentTypes: SiblingComponentTypes): void {
     const { alignedSections } = inSyncComponent.parentLayer.sections;
     Object.keys(alignedSections).forEach((alignedSectionType: ALIGNED_SECTION_TYPES) => {
       alignedSections[alignedSectionType].forEach((baseSubcomponent) => {
         const { seedComponent } = baseSubcomponent.subcomponentProperties;
         seedComponent.sync.componentThisIsSyncedTo.sync.componentsSyncedToThis.delete(seedComponent);
         seedComponent.sync.componentThisIsSyncedTo = null;
-        SyncChildComponentUtils.callFuncOnSyncableSubcomponents(AutoSyncedSiblingComponentUtils.copySiblingSubcomponentCopyableTraversalCallback,
-          seedComponent, siblingSubcomponentTypes);
+        SyncChildComponentUtils.callFuncOnSyncableComponents(AutoSyncedSiblingComponentUtils.copySiblingComponentSyncableTraversalCallback,
+          seedComponent, siblingComponentTypes);
       });
     });
   }
 
-  private static dereferenceSiblingChildComponents(siblingSubcomponentTypes: SiblingSubcomponentTypes): void {
-    Object.keys(siblingSubcomponentTypes).forEach((subcomponentType: keyof SUBCOMPONENT_TYPES) => {
-      const { customDynamicProperties } = siblingSubcomponentTypes[subcomponentType] as SiblingSubcomponentState;
+  private static dereferenceSiblingChildComponents(siblingComponentTypes: SiblingComponentTypes): void {
+    Object.keys(siblingComponentTypes).forEach((subcomponentType: keyof SUBCOMPONENT_TYPES) => {
+      const { customDynamicProperties } = siblingComponentTypes[subcomponentType] as SiblingComponentState;
       customDynamicProperties.customCss = JSONUtils.deepCopy(customDynamicProperties.customCss);
       customDynamicProperties.customFeatures = JSONUtils.deepCopy(customDynamicProperties.customFeatures);
     });
   }
 
   private static unsyncFromComponentCurrentlySyncedTo(inSyncComponent: WorkshopComponent): void {
-    const siblingSubcomponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingSubcomponents(inSyncComponent);
-    if (siblingSubcomponentTypes) {
-      SyncedComponent.dereferenceSiblingChildComponents(siblingSubcomponentTypes);
-      SyncedComponent.removeAutoSyncedSiblingSyncReferencesAndResyncTogether(inSyncComponent, siblingSubcomponentTypes);
+    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(inSyncComponent);
+    if (siblingComponentTypes) {
+      SyncedComponent.dereferenceSiblingChildComponents(siblingComponentTypes);
+      SyncedComponent.removeAutoSyncedSiblingSyncReferencesAndResyncTogether(inSyncComponent, siblingComponentTypes);
     } else {
       TraverseComponentViaPreviewStructureChildFirst.traverse(SyncedComponent.dereferenceCopiedComponentCustomProperties, inSyncComponent);
     }
@@ -59,32 +59,32 @@ export class SyncedComponent {
     SyncedComponent.unsyncFromComponentCurrentlySyncedTo(inSyncComponent);
     inSyncComponent.sync.componentThisIsSyncedTo = null;
     setTimeout(() => {
-      SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(inSyncComponent, childComponentType);
+      SyncChildComponent.reSyncComponentsSyncedToThisComponent(inSyncComponent, childComponentType);
     });
   }
 
-  public static toggleSubcomponentSyncToOff(containerComponent: WorkshopComponent, callback?: () => void): void {
+  public static toggleChildComponentSyncToOff(containerComponent: WorkshopComponent, callback?: () => void): void {
     const activeComponent = containerComponent.subcomponents[containerComponent.activeSubcomponentName].seedComponent;
     const inSyncComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(activeComponent);
     SyncedComponent.unSyncComponent(inSyncComponent, activeComponent.type);
     if (callback) callback();
   }
 
-  public static findSubcomponentToSync(componentThisIsSyncedTo: WorkshopComponent, newComponentBase: SubcomponentProperties,
-      containerType: COMPONENT_TYPES): SubcomponentProperties {
-    const { sync: { syncables: { onCopy: { subcomponents, childComponents } } } } = componentThisIsSyncedTo;
+  public static findChildComponentToSync(targetChildComponent: WorkshopComponent, componentThisIsSyncedTo: WorkshopComponent,
+      containerType: COMPONENT_TYPES): WorkshopComponent {
+    const { sync: { syncables: { onCopy: { uniqueComponents, repeatedComponents } } } } = componentThisIsSyncedTo;
     if (componentThisIsSyncedTo.type === containerType) {
-      return subcomponents[newComponentBase.subcomponentType];
+      return uniqueComponents[targetChildComponent.type];
     }
-    const childComponentMatchingContainerType = childComponents.find((childComponent) => childComponent.type === containerType);
-    return childComponentMatchingContainerType.sync.syncables.onCopy.subcomponents[newComponentBase.subcomponentType];
+    // WORK 2 - each text is called twice
+    const repeatedComponentMatchingContainerType = repeatedComponents.find((repeatedComponent) => repeatedComponent.type === containerType);
+    return repeatedComponentMatchingContainerType.sync.syncables.onCopy.uniqueComponents[targetChildComponent.type];
   }
 
-  public static copyChildPropertiesFromInSyncContainerComponent(newComponent: WorkshopComponent, componentThisIsSyncedTo: WorkshopComponent,
+  public static copyChildPropertiesFromInSyncContainerComponent(targetChildComponent: WorkshopComponent, componentThisIsSyncedTo: WorkshopComponent,
       containerType: COMPONENT_TYPES): void {
-    const newComponentBase = newComponent.baseSubcomponent;
-    const subcomponentToSync = SyncedComponent.findSubcomponentToSync(componentThisIsSyncedTo, newComponentBase, containerType);
-    if (subcomponentToSync) SyncChildComponent.syncSubcomponent(newComponentBase, subcomponentToSync, false);
+    const componentToSync = SyncedComponent.findChildComponentToSync(targetChildComponent, componentThisIsSyncedTo, containerType);
+    if (componentToSync) SyncChildComponent.syncSubcomponent(targetChildComponent.baseSubcomponent, componentToSync.baseSubcomponent, false);
   }
 
   public static updateIfComponentSyncedToIsRemoved(component: WorkshopComponent): void {

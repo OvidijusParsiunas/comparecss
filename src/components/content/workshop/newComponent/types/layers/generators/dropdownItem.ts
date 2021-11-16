@@ -26,18 +26,18 @@ export type OverwriteDropdownItemContext = (itemComponent: WorkshopComponent) =>
 
 export class DropdownItemLayer extends ComponentBuilder {
 
-  private static setSyncableSubcomponents(itemComponent: WorkshopComponent, textComponent: WorkshopComponent): void {
+  private static setSyncableComponents(itemComponent: WorkshopComponent, textComponent: WorkshopComponent): void {
     itemComponent.sync.syncables = ComponentBuilder.createSyncablesObjectUsingSubcomponents({
-      [SUBCOMPONENT_TYPES.BASE]: itemComponent.baseSubcomponent,
-      [SUBCOMPONENT_TYPES.TEXT]: textComponent.baseSubcomponent,
+      [COMPONENT_TYPES.LAYER]: itemComponent,
+      [COMPONENT_TYPES.TEXT]: textComponent,
     });
   }
 
   private static addTextComponentReferences(menuComponent: WorkshopComponent, itemComponent: WorkshopComponent, textComponent: WorkshopComponent): void {
     itemComponent.baseSubcomponent.otherSubcomponentTriggers.subcomponentsToTrigger[SUBCOMPONENT_TYPES.TEXT] = textComponent.baseSubcomponent;
     itemComponent.newChildComponents.childComponentsLockedToLayer.push(textComponent);
-    DropdownItemLayer.setSyncableSubcomponents(itemComponent, textComponent);
-    menuComponent.sync.syncables.onCopy.childComponents.push(itemComponent);
+    DropdownItemLayer.setSyncableComponents(itemComponent, textComponent);
+    menuComponent.sync.syncables.onCopy.repeatedComponents.push(itemComponent);
   }
 
   private static addTextComponentToItem(itemComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {

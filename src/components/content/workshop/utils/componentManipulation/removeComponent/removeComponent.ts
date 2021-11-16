@@ -26,7 +26,7 @@ export class RemoveComponent {
   // the button inside the dropdown would need to be resynced by the dropdown components that are synced to it
   private static updateComponentsThatAreSyncedToComponentsThisIsSyncedTo(componentToBeRemoved: WorkshopComponent): void {
     (componentToBeRemoved.sync.componentsSyncedToThis || []).forEach((component: WorkshopComponent) => {
-      SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(component, componentToBeRemoved.type);
+      SyncChildComponent.reSyncComponentsSyncedToThisComponent(component, componentToBeRemoved.type);
     });
   }
 

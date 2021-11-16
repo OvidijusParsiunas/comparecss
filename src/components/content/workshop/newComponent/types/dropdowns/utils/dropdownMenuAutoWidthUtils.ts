@@ -2,7 +2,7 @@ import { subcomponentAndOverlayElementIdsState } from '../../../../componentPrev
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
-import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
+import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { TEXT_SIZE_EVALUATOR_ID } from '../../../../../../../consts/elementIds';
 
 export class DropdownMenuAutoWidthUtils {
@@ -39,10 +39,10 @@ export class DropdownMenuAutoWidthUtils {
   }
 
   private static calculateNewButtonWidth(buttonComponent: WorkshopComponent, longestMenuText: string): string {
-    const onCopySubcomponents = buttonComponent.sync.syncables.onCopy.subcomponents;
-    const textSubcomponent = onCopySubcomponents[SUBCOMPONENT_TYPES.TEXT];
+    const uniqueComponents = buttonComponent.sync.syncables.onCopy.uniqueComponents;
+    const textSubcomponent = uniqueComponents[COMPONENT_TYPES.TEXT].baseSubcomponent;
     const textWidth = textSubcomponent ? DropdownMenuAutoWidthUtils.calculateTextWidth(textSubcomponent, longestMenuText) : 0;
-    const iconSubcomponent = onCopySubcomponents[SUBCOMPONENT_TYPES.ICON];
+    const iconSubcomponent = uniqueComponents[COMPONENT_TYPES.ICON].baseSubcomponent;
     const iconWidth = iconSubcomponent ? DropdownMenuAutoWidthUtils.calculateIconWidth(iconSubcomponent) : 0;
     const newButtonWidth = textWidth + iconWidth;
     return `${newButtonWidth}px`;

@@ -452,7 +452,7 @@ export default {
       SyncChildComponentModeToggleUtils.toggleSyncChildComponentMode(this);
     },
     toggleInSyncToOff(callback?: () => void): void {
-      this.temporarilyAllowOptionAnimations(SyncedComponent.toggleSubcomponentSyncToOff.bind(this, this.component, callback));
+      this.temporarilyAllowOptionAnimations(SyncedComponent.toggleChildComponentSyncToOff.bind(this, this.component, callback));
     },
     isRemoveChildComponentButtonDisplayed(): boolean {
       return this.component.subcomponents[this.component.activeSubcomponentName].isRemovable;

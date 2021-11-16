@@ -37,13 +37,13 @@ export class DropdownPaddingBase extends ComponentBuilder {
     ApplyDropdownButtonProperties.overwriteButtonFeatures(paddingComponent);
   }
 
-  private static setSyncableSubcomponents(dropdownComponent: WorkshopComponent): void {
-    const { baseSubcomponent, paddingComponentChild } = dropdownComponent;
-    const syncableSubcomponents = {
-      [SUBCOMPONENT_TYPES.BASE]: baseSubcomponent,
-    };
+  private static setSyncableComponents(dropdownComponent: WorkshopComponent): void {
+    const { paddingComponentChild } = dropdownComponent;
     const childComponents = [paddingComponentChild, paddingComponentChild.linkedComponents.auxiliary[0]];
-    dropdownComponent.sync.syncables = ComponentBuilder.createSyncablesObjectUsingSubcomponents(syncableSubcomponents, childComponents, dropdownComponent);
+    const uniqueComponents = {
+      [COMPONENT_TYPES.DROPDOWN]: dropdownComponent,
+    };
+    dropdownComponent.sync.syncables = ComponentBuilder.createSyncablesObjectUsingSubcomponents(uniqueComponents, childComponents, dropdownComponent);
   }
 
   private static createSelectDropdownTextProperties(): SelectDropdownText {
@@ -105,7 +105,7 @@ export class DropdownPaddingBase extends ComponentBuilder {
       DEFAULT_STYLES.BASE, SUBCOMPONENT_TYPES.DROPDOWN, createButtonFunc, BUTTON_COMPONENTS_BASE_NAMES.BUTTON,
       DropdownPaddingBase.buttonAndMenuComponentsSetup.bind({ buttonComponentOverwritable, menuComponent } as ButtonAndMenuComponentsSetupProperties));
     DropdownPaddingBase.overwriteBase(paddingComponent);
-    DropdownPaddingBase.setSyncableSubcomponents(paddingComponent);
+    DropdownPaddingBase.setSyncableComponents(paddingComponent);
     DropdownPaddingBase.setAndExecutePropertyReferenceSharingFuncs(paddingComponent);
     return paddingComponent;
   }

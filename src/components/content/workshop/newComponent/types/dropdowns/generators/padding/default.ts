@@ -2,8 +2,8 @@ import { UniqueSubcomponentNameGenerator } from '../../../../../utils/componentG
 import { ComponentGenerator, PresetProperties } from '../../../../../../../../interfaces/componentGenerator';
 import { DROPDOWN_COMPONENTS_BASE_NAMES } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentCssClasses.enum';
-import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
 import { WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
+import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
 import { buttonWithIcon } from '../../../buttons/generators/buttonWithIcon';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
 import { defaultDropdownMenu } from '../menu/default';
@@ -12,7 +12,7 @@ import { DropdownPaddingBase } from './base';
 class DefaultDropdownPadding extends ComponentBuilder {
 
   private static overwriteButtonTextCustomStaticFeatures(buttonComponent: WorkshopComponent): void {
-    const textSubcomponent = buttonComponent.sync.syncables.onCopy.subcomponents[SUBCOMPONENT_TYPES.TEXT];
+    const textSubcomponent = buttonComponent.sync.syncables.onCopy.uniqueComponents[COMPONENT_TYPES.TEXT].baseSubcomponent;
     textSubcomponent.customStaticFeatures.subcomponentText.text = 'Dropdown button';
     textSubcomponent.defaultCustomStaticFeatures.subcomponentText.text = 'Dropdown button';
   }

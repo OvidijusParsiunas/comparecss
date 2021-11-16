@@ -3,9 +3,9 @@ import { DropdownItemsDisplayStatusUtils } from '../../../utils/dropdownItemsDis
 import { BASE_SUBCOMPONENT_NAMES, MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { ChildComponentCountLimitsState } from '../../../../../../interfaces/childComponentCountLimitsState';
-import { SubcomponentTypeToProperties } from '../../../../../../interfaces/subcomponentTypeToProperties';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../consts/dropdownMenuAlignment.enum';
 import { ComponentPreviewStructure } from '../../../../../../interfaces/componentPreviewStructure';
+import { ComponentTypeToProperties } from '../../../../../../interfaces/componentTypeToProperties';
 import { DropdownFeatures, SelectDropdown } from '../../../../../../interfaces/dropdownFeatures';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../../interfaces/workshopComponentCss';
@@ -134,12 +134,12 @@ export class ComponentBuilder {
     if (childComponentCountLimitsState) component.newChildComponents.dropdown.childComponentCountLimitsState = childComponentCountLimitsState;
   }
 
-  protected static createSyncablesObjectUsingSubcomponents(syncableSubcomponents: SubcomponentTypeToProperties,
-      childComponents: WorkshopComponent[] = [], componentThatCanBeSynced?: WorkshopComponent): Syncables {
+  protected static createSyncablesObjectUsingSubcomponents(uniqueComponents: ComponentTypeToProperties,
+      repeatedComponents: WorkshopComponent[] = [], componentThatCanBeSynced?: WorkshopComponent): Syncables {
     const syncables: Syncables = {
       onCopy: {
-        subcomponents: syncableSubcomponents,
-        childComponents, 
+        uniqueComponents,
+        repeatedComponents, 
       },
       containerComponents: [],
     };

@@ -46,15 +46,14 @@ export class AddContainerComponent extends AddComponentShared {
   private static asyncUpdateSyncedComponents(newComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
     setTimeout(() => {
       SyncedComponent.addParentComponentSyncableContainerComponentsToChild(newComponent, containerComponent);
-      SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(newComponent, newComponent.type);
+      SyncChildComponent.reSyncComponentsSyncedToThisComponent(newComponent, newComponent.type);
     });
   }
 
   private static updateComponentContainerProperties(containerComponent: WorkshopComponent, newComponent: WorkshopComponent): void {
-    const { baseSubcomponent: newComponentBase, parentLayer } = newComponent;
-    const { subcomponentType } = newComponentBase;
-    JSONUtils.setPropertyIfExists(containerComponent.sync.syncables.onCopy?.subcomponents, subcomponentType as number, newComponentBase);
-    SubcomponentTriggers.set(containerComponent, parentLayer.subcomponentProperties, newComponentBase, subcomponentType);
+    const { baseSubcomponent, parentLayer } = newComponent;
+    JSONUtils.setPropertyIfExists(containerComponent.sync.syncables.onCopy?.uniqueComponents, newComponent.type, newComponent);
+    SubcomponentTriggers.set(containerComponent, parentLayer.subcomponentProperties, baseSubcomponent, baseSubcomponent.subcomponentType);
   }
 
   private static getBaseSubcomponentNamePrefix(componentType: COMPONENT_TYPES, componentStyle: COMPONENT_STYLES): CHILD_COMPONENTS_BASE_NAMES {

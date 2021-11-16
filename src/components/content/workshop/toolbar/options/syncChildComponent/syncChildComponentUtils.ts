@@ -1,11 +1,11 @@
 import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { SiblingSubcomponentTypes } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
+import { SiblingComponentTypes } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 import { BUTTON_STYLES } from '../../../../../../consts/componentStyles.enum';
 
-export type SyncableSubcomponentTraversalCallback = (
-  subcomponent: SubcomponentProperties, siblingSubcomponentTypes?: SiblingSubcomponentTypes) => void;
+export type SyncableComponentTraversalCallback = (
+  component: WorkshopComponent, siblingComponentTypes?: SiblingComponentTypes) => void;
 
 export class SyncChildComponentUtils {
 
@@ -50,16 +50,16 @@ export class SyncChildComponentUtils {
     return false;
   }
 
-  public static callFuncOnSyncableSubcomponents(callback: SyncableSubcomponentTraversalCallback, childComponent: WorkshopComponent,
-      siblingSubcomponentTypes?: SiblingSubcomponentTypes): void {
-    const syncableSubcomponents = childComponent.sync.syncables.onCopy?.subcomponents;
-    if (syncableSubcomponents) {
-      Object.keys(syncableSubcomponents).forEach((subcomponentType) => {
-        const subcomponent = syncableSubcomponents[subcomponentType];
-        if (subcomponent) callback(subcomponent, siblingSubcomponentTypes);
+  public static callFuncOnSyncableComponents(callback: SyncableComponentTraversalCallback, childComponent: WorkshopComponent,
+      siblingComponentTypes?: SiblingComponentTypes): void {
+    const { uniqueComponents } = childComponent.sync.syncables.onCopy || {};
+    if (uniqueComponents) {
+      Object.keys(uniqueComponents).forEach((componentType) => {
+        const component: WorkshopComponent = uniqueComponents[componentType];
+        if (component) callback(component, siblingComponentTypes);
       });
     } else {
-      callback(childComponent.baseSubcomponent, siblingSubcomponentTypes);
+      callback(childComponent, siblingComponentTypes);
     }
   }
 }

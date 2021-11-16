@@ -27,9 +27,9 @@ export class DropdownMenuBase extends ComponentBuilder {
     dropdownMenuComponent.newChildComponents.dropdown = { items: dropdownItems };
   }
 
-  public static setSyncableSubcomponents(dropdownMenuComponent: WorkshopComponent): void {
+  public static setSyncableComponents(dropdownMenuComponent: WorkshopComponent): void {
     dropdownMenuComponent.sync.syncables = ComponentBuilder.createSyncablesObjectUsingSubcomponents({
-      [SUBCOMPONENT_TYPES.BASE]: dropdownMenuComponent.baseSubcomponent });
+      [COMPONENT_TYPES.DROPDOWN_MENU]: dropdownMenuComponent });
   }
 
   private static incrementItemTextOptionIndex(itemComponent: WorkshopComponent, menuComponent: WorkshopComponent): void {
@@ -189,7 +189,7 @@ export const dropdownMenuBase: ComponentGenerator = {
     DropdownMenuBase.setOnChildComponentRemovalFunc(dropdownMenuComponent);
     DropdownMenuBase.setTriggerFuncOnSettingChange(dropdownMenuComponent);
     DropdownMenuBase.setPropertyOverwritables(dropdownMenuComponent);
-    DropdownMenuBase.setSyncableSubcomponents(dropdownMenuComponent);
+    DropdownMenuBase.setSyncableComponents(dropdownMenuComponent);
     DropdownMenuBase.setNewChildComponents(dropdownMenuComponent);
     MenuBaseSpecificSettings.set(dropdownMenuComponent);
     return dropdownMenuComponent;

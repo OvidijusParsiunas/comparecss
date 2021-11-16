@@ -1,5 +1,5 @@
 import { SiblingChildComponentsAutoSynced } from './siblingChildComponentsAutoSynced';
-import { SubcomponentTypeToProperties } from './subcomponentTypeToProperties';
+import { ComponentTypeToProperties } from './componentTypeToProperties';
 import { WorkshopComponent } from './workshopComponent';
 
 // in sync terminology refers to the component that is currently synced to another component
@@ -10,17 +10,16 @@ interface TemporarySyncExecutables {
 }
 
 interface OnCopy {
-  // this contains syncable component subcomponents (if the component has other subcomponents
-  // with same types, their seed components will be located in the child components section)
-  // the map structure is used to overcome the problem of different aligned component types being
-  // stored within layers with different orders - as we would originally run into problems on
-  // copying a button that has text as its first aligned component to a button which conains
-  // an icon as its first aligned component
-  subcomponents: SubcomponentTypeToProperties;
-  // used to store nested syncable components
-  // because a component can contain multiple child components with similar subcomponent types and
-  // their numbers can change (e.g. layers), this property is additionally used to encapsulate them
-  childComponents: WorkshopComponent[];
+  // this stores syncable components that are unique and not repeated - e.g button text and icon
+  // the map structure is used to overcome the problem of differently aligned components with
+  // different orders - as we would originally run into problems on copying a button that has
+  // text as its first aligned component with a button which contains an icon as its first
+  // aligned component
+  // this includes the component itself - so for button it would be:
+  // { button: ..., text: ..., icon... }
+  uniqueComponents: ComponentTypeToProperties;
+  // used to store syncable components that are repeated (e.g. layers)
+  repeatedComponents: WorkshopComponent[];
 }
 
 export interface Syncables {
@@ -30,6 +29,7 @@ export interface Syncables {
   // components are synced to them so they can be updated accordingly
   containerComponents: WorkshopComponent[];
   // properties which would be synced if current component was synced to another component
+  // WORK 2 - onSync?
   onCopy?: OnCopy;
 }
 

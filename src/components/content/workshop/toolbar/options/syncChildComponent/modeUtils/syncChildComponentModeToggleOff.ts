@@ -53,7 +53,7 @@ export class SyncChildComponentModeToggleOff {
         activeSeedComponent.sync.componentThisIsSyncedTo = lastSelectedComponentToSync;
         activeSeedComponent.componentStatus = lastSelectedComponentToSync.componentStatus;
         lastSelectedComponentToSync.sync.componentsSyncedToThis.add(activeSeedComponent);
-        SyncChildComponent.reSyncSubcomponentsSyncedToThisSubcomponent(activeSeedComponent, activeSeedComponent.type);
+        SyncChildComponent.reSyncComponentsSyncedToThisComponent(activeSeedComponent, activeSeedComponent.type);
         SyncChildComponent.setAutoSyncedSiblingComponentsToInSync(activeSeedComponent, lastSelectedComponentToSync);
       }, optionsComponent.hasSyncChildComponentModeClosedExpandedModal ? TOOLBAR_FADE_ANIMATION_DURATION_MILLISECONDS : 0);
     }

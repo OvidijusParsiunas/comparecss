@@ -1,17 +1,16 @@
 import { CustomDynamicProperties, WorkshopComponent } from './workshopComponent';
-import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
+import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 
-// WORK 2 - component?
-export interface SiblingSubcomponentState {
+export interface SiblingComponentState {
   currentCount: number;
   customDynamicProperties: CustomDynamicProperties;
 }
 
-export type SiblingSubcomponentTypes = {
-  [key in SUBCOMPONENT_TYPES]?: SiblingSubcomponentState;
+export type SiblingComponentTypes = {
+  [key in COMPONENT_TYPES]?: SiblingComponentState;
 };
 
 export interface SiblingChildComponentsAutoSynced {
   resyncFunc?: (container: WorkshopComponent) => void;
-  siblingSubcomponentTypes?: SiblingSubcomponentTypes;
+  siblingComponentTypes?: SiblingComponentTypes;
 }

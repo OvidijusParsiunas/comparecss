@@ -6,7 +6,6 @@ import { AddLayerComponent } from '../../../../utils/componentManipulation/addCh
 import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
-import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -28,14 +27,16 @@ class DefaultModal extends ComponentBuilder {
   }
 
   private static overwriteCancelButtonProperties(cancelButton: WorkshopComponent): void {
-    cancelButton.sync.syncables.onCopy.subcomponents[SUBCOMPONENT_TYPES.TEXT].customStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Cancel');
-    cancelButton.sync.syncables.onCopy.subcomponents[SUBCOMPONENT_TYPES.TEXT].defaultCustomStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Cancel');
+    const { baseSubcomponent } = cancelButton.sync.syncables.onCopy.uniqueComponents[COMPONENT_TYPES.TEXT];
+    baseSubcomponent.customStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Cancel');
+    baseSubcomponent.defaultCustomStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Cancel');
     DefaultModal.setComponentToRemovable(cancelButton);
   }
 
   private static overwriteSubmitButtonProperties(submitButtonComponent: WorkshopComponent): void {
-    submitButtonComponent.sync.syncables.onCopy.subcomponents[SUBCOMPONENT_TYPES.TEXT].customStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Submit');
-    submitButtonComponent.sync.syncables.onCopy.subcomponents[SUBCOMPONENT_TYPES.TEXT].defaultCustomStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Submit');
+    const { baseSubcomponent } = submitButtonComponent.sync.syncables.onCopy.uniqueComponents[COMPONENT_TYPES.TEXT];
+    baseSubcomponent.customStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Submit');
+    baseSubcomponent.defaultCustomStaticFeatures = DefaultModal.createDefaultTextCustomStaticFeatures('Submit');
     DefaultModal.setComponentToRemovable(submitButtonComponent);
   }
 

@@ -53,7 +53,7 @@ export class AddLayerComponent extends AddComponentShared {
   }
 
   private static getMatchingComponentFromAnotherContainerSyncables(targetComponent: WorkshopComponent, anotherContainer: WorkshopComponent): WorkshopComponent {
-    return anotherContainer.sync.syncables.onCopy.childComponents.find((component) => component.type === targetComponent.type);
+    return anotherContainer.sync.syncables.onCopy.repeatedComponents.find((component) => component.type === targetComponent.type);
   }
 
   private static copySyncedComponent(syncedComponent: WorkshopComponent, containerComponent: WorkshopComponent, newLayerProperties: SubcomponentProperties): void {
@@ -71,11 +71,12 @@ export class AddLayerComponent extends AddComponentShared {
       const syncedComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(containerComponent);
       if (syncedComponent) AddLayerComponent.copySyncedComponent(syncedComponent, containerComponent, newLayerProperties);
     } else {
-      // if child components of auto synced layers should also be the same - then the siblingSubcomponentTypes state will need to be stored at the container
+      // if child components of auto synced layers should also be the same - then the siblingComponentTypes state will need to be stored at the container
       // component, but there currently is no use case that requires such functionality as it is currently handled by childComponentsLockedToLayer
-      AutoSyncedSiblingComponentUtils.copySiblingSubcomponent(
+      AutoSyncedSiblingComponentUtils.copySiblingCustomDynamicProperties(
+        newLayerProperties,
         containerComponent.componentPreviewStructure.layers[containerComponent.componentPreviewStructure.layers.length - 2].subcomponentProperties,
-        newLayerProperties, !!containerComponent.sync.siblingChildComponentsAutoSynced);
+        !!containerComponent.sync.siblingChildComponentsAutoSynced);
     }
   }
 

@@ -1,43 +1,44 @@
-import { SyncableSubcomponentTraversalCallback, SyncChildComponentUtils } from '../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
-import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
-import { SiblingSubcomponentTypes } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
+import { SyncableComponentTraversalCallback, SyncChildComponentUtils } from '../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
+import { SiblingComponentTypes } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { BaseSubcomponentRef, Layer } from '../../../../../../interfaces/componentPreviewStructure';
 import { SyncChildComponent } from '../../../toolbar/options/syncChildComponent/syncChildComponent';
 import { AutoSyncedSiblingComponentUtils } from './autoSyncedSiblingComponentUtils';
+import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 
 // note that this only works if the child container type that can be added is the same - e.g. only buttons
 // current implementation copies all child components in any sections, however if needed can add section
-// type to abstract siblingSubcomponentTypes property
+// type to abstract siblingComponentTypes property
 export class AutoSyncedSiblingContainerComponentUtils {
 
   // only goes as far as 2 parent layer levels
-  private static getAutoSyncedSiblingSubcomponents(parentLayer: Layer): SiblingSubcomponentTypes {
+  private static getAutoSyncedSiblingComponents(parentLayer: Layer): SiblingComponentTypes {
     const parentLayerComponent = parentLayer.subcomponentProperties.seedComponent;
     if (parentLayerComponent.sync.siblingChildComponentsAutoSynced) {
-      return parentLayerComponent.sync.siblingChildComponentsAutoSynced?.siblingSubcomponentTypes;
+      return parentLayerComponent.sync.siblingChildComponentsAutoSynced?.siblingComponentTypes;
     }
     const parentParentSiblingChildComponentsAutoSynced = parentLayerComponent.containerComponent
       ?.parentLayer?.subcomponentProperties.seedComponent.sync.siblingChildComponentsAutoSynced;
     if (parentParentSiblingChildComponentsAutoSynced) {
-      return parentParentSiblingChildComponentsAutoSynced.siblingSubcomponentTypes;
+      return parentParentSiblingChildComponentsAutoSynced.siblingComponentTypes;
     }
     return null;
   }
 
   private static callCountManipulationCallbackOnSubcomponents(parentLayer: Layer, childComponent: WorkshopComponent,
-      callback: SyncableSubcomponentTraversalCallback): void {
-    const siblingSubcomponentTypes = AutoSyncedSiblingContainerComponentUtils.getAutoSyncedSiblingSubcomponents(parentLayer);
-    if (siblingSubcomponentTypes) {
-      SyncChildComponentUtils.callFuncOnSyncableSubcomponents(callback, childComponent, siblingSubcomponentTypes);
+      callback: SyncableComponentTraversalCallback): void {
+    const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getAutoSyncedSiblingComponents(parentLayer);
+    if (siblingComponentTypes) {
+      SyncChildComponentUtils.callFuncOnSyncableComponents(callback, childComponent, siblingComponentTypes);
     }
   }
 
-  private static incrementAndCopy(subcomponent: SubcomponentProperties, siblingSubcomponentTypes: SiblingSubcomponentTypes): void {
-    if (!siblingSubcomponentTypes[subcomponent.subcomponentType]) {
-      siblingSubcomponentTypes[subcomponent.subcomponentType] = { currentCount: 1, customDynamicProperties: subcomponent };
+  private static incrementAndCopy(component: WorkshopComponent, siblingComponentTypes: SiblingComponentTypes): void {
+    if (!siblingComponentTypes[component.type]) {
+      siblingComponentTypes[component.type] = { currentCount: 1, customDynamicProperties: component.baseSubcomponent };
     } else {
-      siblingSubcomponentTypes[subcomponent.subcomponentType].currentCount += 1;
-      AutoSyncedSiblingComponentUtils.copySiblingSubcomponent(siblingSubcomponentTypes[subcomponent.subcomponentType].customDynamicProperties, subcomponent);
+      siblingComponentTypes[component.type].currentCount += 1;
+      AutoSyncedSiblingComponentUtils.copySiblingCustomDynamicProperties(
+        component.baseSubcomponent, siblingComponentTypes[component.type].customDynamicProperties);
     }
   }
 
@@ -46,22 +47,22 @@ export class AutoSyncedSiblingContainerComponentUtils {
       parentLayer, childComponent, AutoSyncedSiblingContainerComponentUtils.incrementAndCopy);
   }
 
-  private static decrementAndRemoveIfNoneLeft(subcomponent: SubcomponentProperties, siblingSubcomponentTypes: SiblingSubcomponentTypes): void {
-    if (siblingSubcomponentTypes[subcomponent.subcomponentType]) {
-      siblingSubcomponentTypes[subcomponent.subcomponentType].currentCount -= 1;
+  private static decrementAndRemoveIfNoneLeft(component: WorkshopComponent, siblingComponentTypes: SiblingComponentTypes): void {
+    if (siblingComponentTypes[component.type]) {
+      siblingComponentTypes[component.type].currentCount -= 1;
     }
-    if (siblingSubcomponentTypes[subcomponent.subcomponentType]?.currentCount === 0) {
-      delete siblingSubcomponentTypes[subcomponent.subcomponentType];
+    if (siblingComponentTypes[component.type]?.currentCount === 0) {
+      delete siblingComponentTypes[component.type];
     }
   }
 
-  public static decrementSiblingSubcomponentCount(parentLayer: Layer, childComponent: WorkshopComponent): void {
+  public static decrementSiblingComponentCount(parentLayer: Layer, childComponent: WorkshopComponent): void {
     AutoSyncedSiblingContainerComponentUtils.callCountManipulationCallbackOnSubcomponents(
       parentLayer, childComponent, AutoSyncedSiblingContainerComponentUtils.decrementAndRemoveIfNoneLeft);
   }
 
-  public static getSiblingSubcomponents(component: WorkshopComponent): SiblingSubcomponentTypes {
-    return component.parentLayer.subcomponentProperties.seedComponent.sync?.siblingChildComponentsAutoSynced?.siblingSubcomponentTypes;
+  public static getSiblingComponentTypes(component: WorkshopComponent): SiblingComponentTypes {
+    return component.parentLayer?.subcomponentProperties.seedComponent.sync?.siblingChildComponentsAutoSynced?.siblingComponentTypes;
   }
 
   private static findChildComponentSibling(parentLayer: Layer, childComponent: WorkshopComponent): WorkshopComponent {

@@ -18,13 +18,13 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 class ButtonBase extends ComponentBuilder {
 
-  public static setSyncableSubcomponents(buttonComponent: WorkshopComponent): void {
-    const syncableSubcomponents = {
-      [SUBCOMPONENT_TYPES.BASE]: buttonComponent.baseSubcomponent,
-      [SUBCOMPONENT_TYPES.TEXT]: null,
-      [SUBCOMPONENT_TYPES.ICON]: null,
+  public static setSyncableComponents(buttonComponent: WorkshopComponent): void {
+    const uniqueComponents = {
+      [COMPONENT_TYPES.BUTTON]: buttonComponent,
+      [COMPONENT_TYPES.TEXT]: null,
+      [COMPONENT_TYPES.ICON]: null,
      };
-    buttonComponent.sync.syncables = ComponentBuilder.createSyncablesObjectUsingSubcomponents(syncableSubcomponents, [], buttonComponent);
+    buttonComponent.sync.syncables = ComponentBuilder.createSyncablesObjectUsingSubcomponents(uniqueComponents, [], buttonComponent);
   }
 
   private static createDefaultButtonJsClasses(): JsClassesReferences {
@@ -124,7 +124,7 @@ export const buttonBase: ComponentGenerator = {
     ButtonBaseSpecificSettings.set(buttonBaseComponent);
     ButtonBase.setChildComponentsItems(buttonBaseComponent);
     ButtonBase.setPropertyReferenceSharingFuncs(buttonBaseComponent);
-    ButtonBase.setSyncableSubcomponents(buttonBaseComponent);
+    ButtonBase.setSyncableComponents(buttonBaseComponent);
     if (presetProperties.paddingComponent) SyncedComponent.addParentComponentSyncableContainerComponentsToChild(
       buttonBaseComponent, presetProperties.paddingComponent);
     return buttonBaseComponent;

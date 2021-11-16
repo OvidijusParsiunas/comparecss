@@ -50,9 +50,9 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
   public static overwriteButtonFeatures(component: WorkshopComponent): void {
     const { paddingBaseSubcomponent, buttonBaseSubcomponent } = ApplyDropdownButtonProperties.getPaddingAndButtonSubcomponents(component);
     ApplyDropdownButtonProperties.overwriteButtonBaseDropdownProperties(paddingBaseSubcomponent, buttonBaseSubcomponent);
-    const textSubcomponent = buttonBaseSubcomponent.seedComponent.sync.syncables.onCopy.subcomponents[SUBCOMPONENT_TYPES.TEXT];
-    if (!textSubcomponent) return;
-    ApplyDropdownButtonProperties.overwriteTextDropdownProperties(paddingBaseSubcomponent, textSubcomponent);
+    const textComponent = buttonBaseSubcomponent.seedComponent.sync.syncables.onCopy.uniqueComponents[COMPONENT_TYPES.TEXT];
+    if (!textComponent) return;
+    ApplyDropdownButtonProperties.overwriteTextDropdownProperties(paddingBaseSubcomponent, textComponent.baseSubcomponent);
   }
 
   private static setAndExecutePropertyReferenceSharingFuncs(buttonComponent: WorkshopComponent): void {

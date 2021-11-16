@@ -13,7 +13,6 @@ import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum
 import { inheritedCardBaseCss } from '../../cards/inheritedCss/inheritedCardCss';
 import { LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { SETTINGS_TYPES } from '../../../../../../../consts/settingsTypes.enum';
-import BoxShadowUtils from '../../../../toolbar/settings/utils/boxShadowUtils';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { ButtonGroupGenericUtils } from '../utils/buttonGroupGenericUtils';
 import { ButtonGroupBorderUtils } from '../utils/buttonGroupBorderUtils';
@@ -77,7 +76,7 @@ class ButtonGroupBase extends ComponentBuilder {
 
   public static addLayerAndSetSiblingChildComponentsAutoSynced(buttonGroupBaseComponent: WorkshopComponent): void {
     const layerComponent = AddLayerComponent.add(buttonGroupBaseComponent, LAYER_STYLES.PLAIN, false);
-    layerComponent.sync.siblingChildComponentsAutoSynced = { siblingSubcomponentTypes: {} };
+    layerComponent.sync.siblingChildComponentsAutoSynced = { siblingComponentTypes: {} };
   }
 
   private static setButtonGroupOnFirstNewChildButton(buttonComponent: WorkshopComponent, buttonGroupComponent: WorkshopComponent): void {

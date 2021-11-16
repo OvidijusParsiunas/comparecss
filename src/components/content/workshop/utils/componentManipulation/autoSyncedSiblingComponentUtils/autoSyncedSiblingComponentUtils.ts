@@ -1,28 +1,28 @@
-import { CustomDynamicProperties, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
-import { SiblingSubcomponentTypes } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
+import { CustomDynamicProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { SiblingComponentTypes } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import JSONUtils from '../../generic/jsonUtils';
 
 export class AutoSyncedSiblingComponentUtils {
 
-  public static copySiblingSubcomponent(siblingSubcomponentProperties: CustomDynamicProperties,
-      newSubcomponentProperties: SubcomponentProperties, withRefs = true): void {
-    const { customCss, defaultCss, customFeatures, defaultCustomFeatures } = siblingSubcomponentProperties;
+  public static copySiblingCustomDynamicProperties(targetProperties: CustomDynamicProperties,
+      siblingroperties: CustomDynamicProperties, withRefs = true): void {
+    const { customCss, defaultCss, customFeatures, defaultCustomFeatures } = siblingroperties;
     if (withRefs) {
-      newSubcomponentProperties.customCss = customCss;
-      newSubcomponentProperties.defaultCss = defaultCss;
-      newSubcomponentProperties.customFeatures = customFeatures;
-      newSubcomponentProperties.defaultCustomFeatures = defaultCustomFeatures; 
+      targetProperties.customCss = customCss;
+      targetProperties.defaultCss = defaultCss;
+      targetProperties.customFeatures = customFeatures;
+      targetProperties.defaultCustomFeatures = defaultCustomFeatures; 
     } else {
-      newSubcomponentProperties.customCss = JSONUtils.deepCopy(customCss);
-      newSubcomponentProperties.defaultCss = JSONUtils.deepCopy(defaultCss);
-      newSubcomponentProperties.customFeatures = JSONUtils.deepCopy(customFeatures);
-      newSubcomponentProperties.defaultCustomFeatures = JSONUtils.deepCopy(defaultCustomFeatures);  
+      targetProperties.customCss = JSONUtils.deepCopy(customCss);
+      targetProperties.defaultCss = JSONUtils.deepCopy(defaultCss);
+      targetProperties.customFeatures = JSONUtils.deepCopy(customFeatures);
+      targetProperties.defaultCustomFeatures = JSONUtils.deepCopy(defaultCustomFeatures);  
     }
   }
 
-  public static copySiblingSubcomponentCopyableTraversalCallback(subcomponent: SubcomponentProperties,
-      siblingSubcomponentTypes: SiblingSubcomponentTypes): void {
-    AutoSyncedSiblingComponentUtils.copySiblingSubcomponent(
-      siblingSubcomponentTypes[subcomponent.subcomponentType].customDynamicProperties, subcomponent);
+  public static copySiblingComponentSyncableTraversalCallback(targetComponent: WorkshopComponent,
+      siblingComponentTypes: SiblingComponentTypes): void {
+    AutoSyncedSiblingComponentUtils.copySiblingCustomDynamicProperties(
+      targetComponent.baseSubcomponent, siblingComponentTypes[targetComponent.type].customDynamicProperties);
   }
 }
