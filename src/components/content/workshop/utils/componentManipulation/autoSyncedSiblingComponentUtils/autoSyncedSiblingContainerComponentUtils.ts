@@ -12,12 +12,12 @@ export class AutoSyncedSiblingContainerComponentUtils {
 
   // only goes as far as 2 parent layer levels
   private static getAutoSyncedSiblingComponents(parentLayer: Layer): SiblingComponentTypes {
-    const parentLayerComponent = parentLayer.subcomponentProperties.seedComponent;
+    const parentLayerComponent = parentLayer.subcomponent.seedComponent;
     if (parentLayerComponent.sync.siblingChildComponentsAutoSynced) {
       return parentLayerComponent.sync.siblingChildComponentsAutoSynced?.siblingComponentTypes;
     }
     const parentParentSiblingChildComponentsAutoSynced = parentLayerComponent.containerComponent
-      ?.parentLayer?.subcomponentProperties.seedComponent.sync.siblingChildComponentsAutoSynced;
+      ?.parentLayer?.subcomponent.seedComponent.sync.siblingChildComponentsAutoSynced;
     if (parentParentSiblingChildComponentsAutoSynced) {
       return parentParentSiblingChildComponentsAutoSynced.siblingComponentTypes;
     }
@@ -62,7 +62,7 @@ export class AutoSyncedSiblingContainerComponentUtils {
   }
 
   public static getSiblingComponentTypes(component: WorkshopComponent): SiblingComponentTypes {
-    return component.parentLayer?.subcomponentProperties.seedComponent.sync?.siblingChildComponentsAutoSynced?.siblingComponentTypes;
+    return component.parentLayer?.subcomponent.seedComponent.sync?.siblingChildComponentsAutoSynced?.siblingComponentTypes;
   }
 
   private static findChildComponentSibling(parentLayer: Layer, childComponent: WorkshopComponent): WorkshopComponent {
@@ -70,7 +70,7 @@ export class AutoSyncedSiblingContainerComponentUtils {
     for (let i = 0; i < Object.keys(alignedSections).length; i += 1) {
       const alignedSection: BaseSubcomponentRef[] = alignedSections[Object.keys(alignedSections)[i]];
       for (let j = 0; j < alignedSection.length; j += 1) {
-        const alignedComponent = alignedSection[j].subcomponentProperties.seedComponent;
+        const alignedComponent = alignedSection[j].subcomponent.seedComponent;
         if (alignedComponent !== childComponent) return alignedComponent;
       }
     }

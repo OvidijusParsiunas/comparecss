@@ -1,3 +1,3 @@
-import { SubcomponentProperties } from './workshopComponent';
+import { Subcomponent } from './workshopComponent';
 
-export type CustomSettingTriggerFunction = (subcomponentProperties: SubcomponentProperties, newValue?: string) => void;
+export type CustomSettingTriggerFunction = (subcomponent: Subcomponent, newValue?: string) => void;

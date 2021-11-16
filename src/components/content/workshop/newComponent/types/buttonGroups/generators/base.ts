@@ -1,5 +1,5 @@
 import { DisplayInFrontOfSiblings } from '../../../../utils/componentManipulation/displayInFrontOfSiblings/displayInFrontOfSiblingsUtils';
-import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { ButtonGroupButtonDisplayInFrontOfSiblings } from '../utils/buttonGroupButtonDisplayInFrontOfSiblings';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
@@ -41,26 +41,26 @@ class ButtonGroupBase extends ComponentBuilder {
     buttonGroupBaseComponent.onComponentDisplayFunc = ButtonGroupBase.onComponentDisplayFunc;
   }
 
-  private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
+  private static setWidthViaRange(subcomponent: Subcomponent, cssProperty: string): void {
     if (cssProperty === 'height' || cssProperty === 'paddingTop' || cssProperty === 'paddingBottom') {
-      // subcomponentProperties is from button component
-      ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(subcomponentProperties.seedComponent,
-        subcomponentProperties.seedComponent.containerComponent);
+      // subcomponent is from button component
+      ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(subcomponent.seedComponent,
+        subcomponent.seedComponent.containerComponent);
     } else if (cssProperty === 'borderLeftWidth') {
-      // subcomponentProperties is from button component
-      const borderLeftWidth = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth;
+      // subcomponent is from button component
+      const borderLeftWidth = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderLeftWidth;
       // setting to -2px due to chrome bug where there is a white horizontal border when top/bottom borders are set with 0px < widths
-      subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].marginLeft = borderLeftWidth === '0px' ? '-2px' : `-${borderLeftWidth}`;
-      subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRightWidth = borderLeftWidth;
+      subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].marginLeft = borderLeftWidth === '0px' ? '-2px' : `-${borderLeftWidth}`;
+      subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRightWidth = borderLeftWidth;
     } else if (cssProperty === 'borderTopWidth') {
-      // subcomponentProperties is from button component
-      const borderTopWidth = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderTopWidth;
-      subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderBottomWidth = borderTopWidth;
+      // subcomponent is from button component
+      const borderTopWidth = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderTopWidth;
+      subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderBottomWidth = borderTopWidth;
     } else if (cssProperty === 'borderRadius') {
-      // subcomponentProperties is from button component
-      const borderRadius = subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
+      // subcomponent is from button component
+      const borderRadius = subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius;
       // this is used to get a curve for the button group base
-      subcomponentProperties.seedComponent.containerComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = borderRadius;
+      subcomponent.seedComponent.containerComponent.baseSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].borderRadius = borderRadius;
     }
   }
 
@@ -163,7 +163,7 @@ class ButtonGroupBase extends ComponentBuilder {
     };
   }
 
-  public static createBaseSubcomponent(name: string): SubcomponentProperties {
+  public static createBaseSubcomponent(name: string): Subcomponent {
     return {
       name,
       subcomponentType: SUBCOMPONENT_TYPES.BASE,

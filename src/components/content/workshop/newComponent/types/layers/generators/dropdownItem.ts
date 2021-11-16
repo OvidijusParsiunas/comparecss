@@ -17,7 +17,7 @@ import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum
 import { ComponentBuilder } from '../../shared/componentBuilder';
 import { layerBase } from './base';
 
-export interface SetTextSubcomponentPropertiesContext {
+export interface SetTextSubcomponentContext {
   menuComponent: WorkshopComponent;
   createDefaultTextStyling: () => CustomCss;
 }

@@ -1,8 +1,8 @@
 import { UpdateContainerComponentDropdownItemNames } from '../../../../utils/componentManipulation/updateChildComponent/updateContainerComponentDropdownItemNames';
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
-import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
+import { CustomCss, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
 import { LAYER_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
@@ -11,7 +11,7 @@ import { ComponentBuilder } from '../../shared/componentBuilder';
 
 interface OverwriteTextBaseContext {
   createDefaultTextCss: () => CustomCss;
-  overwriteOtherBaseProperties?: (textBaseSubcomponent: SubcomponentProperties) => void;
+  overwriteOtherBaseProperties?: (textBaseSubcomponent: Subcomponent) => void;
 }
 
 export class AddTextComponentToButton extends ComponentBuilder {
@@ -28,7 +28,7 @@ export class AddTextComponentToButton extends ComponentBuilder {
     textComponent.baseSubcomponent.isRemovable = true;
   }
 
-  private static overwriteCustomFeatures(textBaseSubcomponent: SubcomponentProperties): void {
+  private static overwriteCustomFeatures(textBaseSubcomponent: Subcomponent): void {
     textBaseSubcomponent.customFeatures.animations = ComponentBuilder.createStationaryAnimations({});
     textBaseSubcomponent.defaultCustomFeatures.animations = ComponentBuilder.createStationaryAnimations({});
   }
@@ -56,7 +56,7 @@ export class AddTextComponentToButton extends ComponentBuilder {
   }
 
   private static setPropertyOverwritables(buttonComponent: WorkshopComponent, createDefaultTextCss: () => CustomCss,
-      overwriteOtherBaseProperties?: (textBaseSubcomponent: SubcomponentProperties) => void): void {
+      overwriteOtherBaseProperties?: (textBaseSubcomponent: Subcomponent) => void): void {
     buttonComponent.newChildComponents.propertyOverwritables.postBuildFuncs = {
       [COMPONENT_TYPES.TEXT]: [AddTextComponentToButton.overwriteTextBase
         .bind({ createDefaultTextCss, overwriteOtherBaseProperties } as OverwriteTextBaseContext)],
@@ -67,7 +67,7 @@ export class AddTextComponentToButton extends ComponentBuilder {
   }
 
   public static add(buttonComponent: WorkshopComponent, textStyle: TEXT_STYLES, createDefaultTextCss: () => CustomCss,
-      overwriteOtherBaseProperties?: (textBaseSubcomponent: SubcomponentProperties) => void): void {
+      overwriteOtherBaseProperties?: (textBaseSubcomponent: Subcomponent) => void): void {
     AddTextComponentToButton.setPropertyOverwritables(buttonComponent, createDefaultTextCss, overwriteOtherBaseProperties);
     AddTextComponentToButton.addTextComponent(buttonComponent, textStyle);
   }

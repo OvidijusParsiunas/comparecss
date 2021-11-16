@@ -1,8 +1,8 @@
 import { ActionsDropdownMouseEventCallbackEvent } from '../../../../../../../interfaces/actionsDropdownsMouseEventCallbacks';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../consts/dropdownMenuAlignment.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
+import { Subcomponent } from '../../../../../../../interfaces/workshopComponent';
 
 export class MenuIndexAlignment {
 
@@ -10,19 +10,19 @@ export class MenuIndexAlignment {
     return alignment === DROPDOWN_MENU_INDEX_ALIGNMENT.ABOVE ? DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW : DROPDOWN_MENU_INDEX_ALIGNMENT.ABOVE;
   }
 
-  private static setOtherSubcomponentAlignment(alignment: DROPDOWN_MENU_INDEX_ALIGNMENT, otherSubcomponent: SubcomponentProperties): void {
+  private static setOtherSubcomponentAlignment(alignment: DROPDOWN_MENU_INDEX_ALIGNMENT, otherSubcomponent: Subcomponent): void {
     const counterAlignment = MenuIndexAlignment.getCounterAlignment(alignment);
     otherSubcomponent.customFeatures.dropdown.indexAlignment = counterAlignment;
   }
 
-  private static setZIndex(newAlignment: string, subcomponentProperties: SubcomponentProperties): void {
+  private static setZIndex(newAlignment: string, subcomponent: Subcomponent): void {
     const newZIndex = newAlignment === 'Above' ? 1 : -1;
-    subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT].zIndex = newZIndex;
+    subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT].zIndex = newZIndex;
   }
 
   private static changeSubcomponentAlignment(event: ActionsDropdownMouseEventCallbackEvent, newMenuAlignment: string,
-      menuSubcomponent: SubcomponentProperties, otherSubcomponent: SubcomponentProperties): void {
-    const { triggeredItemName, subcomponentProperties: currentSubcomponent, isCustomFeatureResetTriggered } = event;
+      menuSubcomponent: Subcomponent, otherSubcomponent: Subcomponent): void {
+    const { triggeredItemName, subcomponent: currentSubcomponent, isCustomFeatureResetTriggered } = event;
     const newSubcomponentAlignment = triggeredItemName as DROPDOWN_MENU_INDEX_ALIGNMENT;
     MenuIndexAlignment.setZIndex(newMenuAlignment, menuSubcomponent);
     MenuIndexAlignment.setOtherSubcomponentAlignment(newSubcomponentAlignment, otherSubcomponent);
@@ -30,20 +30,20 @@ export class MenuIndexAlignment {
   }
 
   private static changeFromMenuSubcomponent(event: ActionsDropdownMouseEventCallbackEvent): void {
-    const menuSubcomponent = event.subcomponentProperties;
+    const menuSubcomponent = event.subcomponent;
     const buttonSubcomponent = menuSubcomponent.seedComponent.linkedComponents.base.baseSubcomponent;
     MenuIndexAlignment.changeSubcomponentAlignment(event, event.triggeredItemName, menuSubcomponent, buttonSubcomponent);
   }
 
   private static changeFromButtonSubcomponent(event: ActionsDropdownMouseEventCallbackEvent): void {
-    const buttonSubcomponent = event.subcomponentProperties;
+    const buttonSubcomponent = event.subcomponent;
     const menuSubcomponent = buttonSubcomponent.seedComponent.linkedComponents.auxiliary[0].baseSubcomponent;
     const newMenuAlignment = MenuIndexAlignment.getCounterAlignment(event.triggeredItemName as DROPDOWN_MENU_INDEX_ALIGNMENT);
     MenuIndexAlignment.changeSubcomponentAlignment(event, newMenuAlignment, menuSubcomponent, menuSubcomponent);
   }
 
   public static change(event: ActionsDropdownMouseEventCallbackEvent): void {
-    const currentComponent = event.subcomponentProperties.seedComponent;
+    const currentComponent = event.subcomponent.seedComponent;
     if (currentComponent.type === COMPONENT_TYPES.DROPDOWN_MENU) {
       MenuIndexAlignment.changeFromMenuSubcomponent(event);
     } else {

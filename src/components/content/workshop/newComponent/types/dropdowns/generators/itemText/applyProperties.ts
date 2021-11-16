@@ -1,6 +1,6 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
-import { SetTextSubcomponentPropertiesContext } from '../../../layers/generators/dropdownItem';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../../../consts/layerSections.enum';
+import { SetTextSubcomponentContext } from '../../../layers/generators/dropdownItem';
 import { Layer } from '../../../../../../../../interfaces/componentPreviewStructure';
 import { DEFAULT_TEXT } from '../../../../../../../../consts/defaultText';
 import { ComponentBuilder } from '../../../shared/componentBuilder';
@@ -40,7 +40,7 @@ export class ApplyDropdownMenuItemTextProperties extends ComponentBuilder {
       const { layers } = component.paddingComponentChild.linkedComponents.auxiliary[0].componentPreviewStructure;
       if (layers.length > 0) {
         JSONUtils.copyPropertiesThatExistInTarget(
-          layers[0].sections.alignedSections.left[0].subcomponentProperties.customCss, textComponent.baseSubcomponent.customCss);
+          layers[0].sections.alignedSections.left[0].subcomponent.customCss, textComponent.baseSubcomponent.customCss);
       }
     });
   }
@@ -59,7 +59,7 @@ export class ApplyDropdownMenuItemTextProperties extends ComponentBuilder {
   private static copyTextFromComponentThisIsSyncedTo(componentThisIsSyncedTo: WorkshopComponent, textComponent: WorkshopComponent, createDefaultTextStyling: () => CustomCss): void {
     const { layers } = componentThisIsSyncedTo.paddingComponentChild.linkedComponents.auxiliary[0].componentPreviewStructure;
     const textSubcomponent = layers.length > 0
-      ? layers[0].sections.alignedSections.left[0].subcomponentProperties.customCss
+      ? layers[0].sections.alignedSections.left[0].subcomponent.customCss
       : createDefaultTextStyling();
     textComponent.baseSubcomponent.customCss = textSubcomponent;
     textComponent.baseSubcomponent.defaultCss = createDefaultTextStyling();
@@ -83,7 +83,7 @@ export class ApplyDropdownMenuItemTextProperties extends ComponentBuilder {
 
   private static copyTextFromSiblingItem(activeBaseComponentLayers: Layer[], textComponent: WorkshopComponent): void {
     const siblingDropdownItem = activeBaseComponentLayers[activeBaseComponentLayers.length - 2];
-    const { baseSubcomponent: textSubcomponentToBeCopied } = siblingDropdownItem.subcomponentProperties.seedComponent
+    const { baseSubcomponent: textSubcomponentToBeCopied } = siblingDropdownItem.subcomponent.seedComponent
       .newChildComponents.childComponentsLockedToLayer[0];
     textComponent.baseSubcomponent.customCss = textSubcomponentToBeCopied.customCss;
     textComponent.baseSubcomponent.defaultCss = textSubcomponentToBeCopied.defaultCss;
@@ -92,7 +92,7 @@ export class ApplyDropdownMenuItemTextProperties extends ComponentBuilder {
   }
 
   public static apply(textComponent: WorkshopComponent): void {
-    const { menuComponent, createDefaultTextStyling } = this as unknown as SetTextSubcomponentPropertiesContext;
+    const { menuComponent, createDefaultTextStyling } = this as unknown as SetTextSubcomponentContext;
     const { layers: activeBaseComponentLayers } = menuComponent.componentPreviewStructure;
     if (activeBaseComponentLayers.length > 1) {
       ApplyDropdownMenuItemTextProperties.copyTextFromSiblingItem(activeBaseComponentLayers, textComponent);

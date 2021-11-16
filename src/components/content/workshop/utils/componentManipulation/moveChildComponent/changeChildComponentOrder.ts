@@ -52,7 +52,7 @@ export class ChangeChildComponentOrder {
     const swappedItemIndex = targetDetails.isLowerOrderDirection ? index - 1 : index + 1;
     const swappedItemName = dropdownItemNames[swappedItemIndex];
     ChangeChildComponentOrder.swapDropdownDetails(targetDetails.masterComponent, subcomponentDropdownStructure, currentItemName, swappedItemName);
-    if (targetDetails.targetSubcomponentProperties.subcomponentType !== SUBCOMPONENT_TYPES.LAYER) {
+    if (targetDetails.targetSubcomponent.subcomponentType !== SUBCOMPONENT_TYPES.LAYER) {
       ChangeChildComponentOrder.updateNames(targetDetails, subcomponentDropdownStructure);
     }
   }
@@ -78,9 +78,9 @@ export class ChangeChildComponentOrder {
   }
 
   private static swapChildComponentInPreviewStructureIfFound(traversalState: SubcomponentPreviewTraversalState): TraversalResultForChangeChildOrder {
-    const { subcomponentProperties, alignedChildComponents, layers, index } = traversalState;
-    const { targetSubcomponentProperties, isLowerOrderDirection } = this as any as ChangeComponentTargetDetails;
-    if (targetSubcomponentProperties === subcomponentProperties) {
+    const { subcomponent, alignedChildComponents, layers, index } = traversalState;
+    const { targetSubcomponent, isLowerOrderDirection } = this as any as ChangeComponentTargetDetails;
+    if (targetSubcomponent === subcomponent) {
       const componentsToSwap = alignedChildComponents || layers;
       const isSwapped = ChangeChildComponentOrder.swapArrayElements(isLowerOrderDirection, index, componentsToSwap);
       return { stopTraversal: true, traversalState, childComponentOrderChanged: isSwapped };

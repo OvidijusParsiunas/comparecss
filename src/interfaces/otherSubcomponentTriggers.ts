@@ -1,5 +1,5 @@
 import { SubcomponentTypeToProperties } from './subcomponentTypeToProperties';
-import { SubcomponentProperties } from './workshopComponent';
+import { Subcomponent } from './workshopComponent';
 
 interface ComponentCompositionAPI {
   trigger?: boolean;
@@ -19,6 +19,6 @@ export interface OtherSubcomponentTriggers {
   // about triggering the parent subcomponent as parent is the one that does all the triggering
   subcomponentsToTrigger?: SubcomponentTypeToProperties;
   // reference to the subcomponent that triggered it (can currently be triggered by one subcomponent)
-  subcomponentThatTriggersThis?: SubcomponentProperties;
+  subcomponentThatTriggersThis?: Subcomponent;
   componentCompositionAPI: ComponentCompositionAPI;
 }

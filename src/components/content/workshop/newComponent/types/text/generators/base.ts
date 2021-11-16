@@ -1,4 +1,4 @@
-import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, CustomStaticFeatures, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
@@ -55,7 +55,7 @@ class TextBase extends ComponentBuilder {
     };
   }
 
-  public static createBaseSubcomponent(name: string): SubcomponentProperties {
+  public static createBaseSubcomponent(name: string): Subcomponent {
     return {
       name,
       subcomponentType: SUBCOMPONENT_TYPES.TEXT,

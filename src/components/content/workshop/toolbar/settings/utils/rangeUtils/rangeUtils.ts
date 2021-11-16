@@ -1,5 +1,5 @@
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
-import { SubcomponentProperties } from '../../../../../../../interfaces/workshopComponent';
+import { Subcomponent } from '../../../../../../../interfaces/workshopComponent';
 import { SETTINGS_TYPES } from '../../../../../../../consts/settingsTypes.enum';
 import { SettingPaths } from '../../../../../../../interfaces/settingPaths';
 import { UpdateOtherRangesUtils } from './updateOtherRangesUtils';
@@ -14,16 +14,16 @@ export default class RangeUtils extends UpdateRange {
 
   private static readonly DEFAULT_RANGE_VALUE = 0;
 
-  public static saveLastSelectedValue(event: MouseEvent, settingSpec: any, subcomponentProperties: SubcomponentProperties): void {
+  public static saveLastSelectedValue(event: MouseEvent, settingSpec: any, subcomponent: Subcomponent): void {
     const rangeValue = (event.target as HTMLInputElement).value;
     if (settingSpec.lastSelectedValueObjectKeys) {
-      UpdateRange.updateRangeCustomFeature(rangeValue, settingSpec, subcomponentProperties, settingSpec.lastSelectedValueObjectKeys);
+      UpdateRange.updateRangeCustomFeature(rangeValue, settingSpec, subcomponent, settingSpec.lastSelectedValueObjectKeys);
     }
   }
 
-  private static activeTriggersForCustomCss(trigger: any, subcomponentProperties: SubcomponentProperties,
+  private static activeTriggersForCustomCss(trigger: any, subcomponent: Subcomponent,
       actionsDropdownsObjects: unknown): void {
-    const { customCss, activeCssPseudoClass } = subcomponentProperties;
+    const { customCss, activeCssPseudoClass } = subcomponent;
     const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, CSS_PSEUDO_CLASSES.CLICK, trigger.cssProperty);
     if (trigger.conditions.has(cssPropertyValue)) {
       customCss[activeCssPseudoClass][trigger.cssProperty] = trigger.defaultValue;
@@ -31,12 +31,12 @@ export default class RangeUtils extends UpdateRange {
     }
   }
 
-  private static activateTriggersForCustomSubcomponentProperties(trigger: any, subcomponentProperties: SubcomponentProperties,
+  private static activateTriggersForCustomFeature(trigger: any, subcomponent: Subcomponent,
       allSettings: any): void {
     const { conditions, customFeatureObjectKeys } = trigger;
-    const customFeatureValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]);
+    const customFeatureValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponent[customFeatureObjectKeys[0]]);
     if (!conditions.has(customFeatureValue)) return;
-    SharedUtils.setCustomFeatureSetting(trigger, subcomponentProperties, allSettings);
+    SharedUtils.setCustomFeatureSetting(trigger, subcomponent, allSettings);
   }
 
   public static getAggregatedSettingSpecs(aggregatedSettingsPaths: SettingPaths): any {
@@ -49,38 +49,38 @@ export default class RangeUtils extends UpdateRange {
     return settingsSpecs;
   }
 
-  private static activateTriggers(rangeValue: string, updatedSetting: any, subcomponentProperties: SubcomponentProperties, allSettings: any,
+  private static activateTriggers(rangeValue: string, updatedSetting: any, subcomponent: Subcomponent, allSettings: any,
       actionsDropdownsObjects: unknown, refreshSettingsCallback: () => void): void {
     const { triggers, spec } = updatedSetting;
     (triggers || []).forEach((trigger) => {
       if (trigger.customFeatureObjectKeys) {
-        RangeUtils.activateTriggersForCustomSubcomponentProperties(trigger, subcomponentProperties, allSettings);
+        RangeUtils.activateTriggersForCustomFeature(trigger, subcomponent, allSettings);
       } else if (trigger.otherOptionSettingPath) {
-        UpdateOtherRangesUtils.updateOtherOptionSettingAndCustomFeature(trigger, spec, rangeValue, subcomponentProperties, refreshSettingsCallback);
+        UpdateOtherRangesUtils.updateOtherOptionSettingAndCustomFeature(trigger, spec, rangeValue, subcomponent, refreshSettingsCallback);
       } else {
-        RangeUtils.activeTriggersForCustomCss(trigger, subcomponentProperties, actionsDropdownsObjects);
+        RangeUtils.activeTriggersForCustomCss(trigger, subcomponent, actionsDropdownsObjects);
       }
     });
   }
 
-  public static updateProperties(event: MouseEvent, updatedSetting: any, allSettings: any, subcomponentProperties: SubcomponentProperties, 
+  public static updateProperties(event: MouseEvent, updatedSetting: any, allSettings: any, subcomponent: Subcomponent, 
       actionsDropdownsObjects: unknown, refreshSettingsCallback: () => void): void {
     const { spec } = updatedSetting;
     const rangeValue = (event.target as HTMLInputElement).value;
     let realRangeValue = null;
-    RangeUtils.activateTriggers(rangeValue, updatedSetting, subcomponentProperties, allSettings, actionsDropdownsObjects, refreshSettingsCallback);
+    RangeUtils.activateTriggers(rangeValue, updatedSetting, subcomponent, allSettings, actionsDropdownsObjects, refreshSettingsCallback);
     if (spec.partialCss !== undefined) {
-      if (spec.cssProperty === 'boxShadow') BoxShadowUtils.updateBoxShadowRangeValue(rangeValue, spec, subcomponentProperties);
+      if (spec.cssProperty === 'boxShadow') BoxShadowUtils.updateBoxShadowRangeValue(rangeValue, spec, subcomponent);
     } else if (spec.customFeatureObjectKeys) {
-      UpdateRange.updateRangeCustomFeature(rangeValue, spec, subcomponentProperties);
+      UpdateRange.updateRangeCustomFeature(rangeValue, spec, subcomponent);
       if (spec.updateOtherCssProperties) {
         realRangeValue = Math.round(rangeValue as unknown as number / spec.smoothingDivisible);
       }
     } else {
-      realRangeValue = UpdateRange.updateCustomCss(rangeValue, spec, subcomponentProperties);
+      realRangeValue = UpdateRange.updateCustomCss(rangeValue, spec, subcomponent);
     }
     if (spec.updateOtherCssProperties) UpdateOtherRangesUtils.updateOtherSubcomponentRanges(spec.updateOtherCssProperties, realRangeValue);
-    SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.RANGE, subcomponentProperties, updatedSetting.spec.cssProperty);
+    SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.RANGE, subcomponent, updatedSetting.spec.cssProperty);
   }
 
   private static updateCustomCssSetting(settingToBeUpdated: any, cssPropertyValue: string): void {
@@ -93,8 +93,8 @@ export default class RangeUtils extends UpdateRange {
     }
   }
 
-  public static updateSettings(settingToBeUpdated: any, subcomponentProperties: SubcomponentProperties): void {
-    const { customCss, activeCssPseudoClass } = subcomponentProperties;
+  public static updateSettings(settingToBeUpdated: any, subcomponent: Subcomponent): void {
+    const { customCss, activeCssPseudoClass } = subcomponent;
     const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClass, settingToBeUpdated.spec.cssProperty);
     if (cssPropertyValue !== undefined) {
       const hasBoxShadowBeenSet = settingToBeUpdated.spec.cssProperty === 'boxShadow' && BoxShadowUtils.setBoxShadowSettingsRangeValue(cssPropertyValue,
@@ -103,24 +103,24 @@ export default class RangeUtils extends UpdateRange {
         RangeUtils.updateCustomCssSetting(settingToBeUpdated, cssPropertyValue);
         // update setting and adjust css to boundaries if resetting
         if (settingToBeUpdated.spec.updateSettingSpecViaOtherCssProperties) UpdateOtherRangesUtils.updateOtherOptionSettingAndCssProperties(
-          settingToBeUpdated.spec, subcomponentProperties);
+          settingToBeUpdated.spec, subcomponent);
         // when resetting subcomponent, update other interconnected subcomponent css that depend on it
         if (settingToBeUpdated.spec.updateOtherCssProperties) UpdateOtherRangesUtils.updateOtherSubcomponentRanges(
           settingToBeUpdated.spec.updateOtherCssProperties, Number.parseFloat(cssPropertyValue));
       }
     } else if (settingToBeUpdated.spec.customFeatureObjectKeys) {
-      settingToBeUpdated.spec.default = UpdateRange.getCustomFeatureRangeNumberValue(settingToBeUpdated.spec, subcomponentProperties);
+      settingToBeUpdated.spec.default = UpdateRange.getCustomFeatureRangeNumberValue(settingToBeUpdated.spec, subcomponent);
       if (settingToBeUpdated.spec.updateSettingSpecViaOtherSettings) {
-        UpdateOtherRangesUtils.updateCurrentOptionSettingAndCustomFeature(settingToBeUpdated.spec, subcomponentProperties);
+        UpdateOtherRangesUtils.updateCurrentOptionSettingAndCustomFeature(settingToBeUpdated.spec, subcomponent);
       }
       if (settingToBeUpdated.spec.updateOtherCssProperties) {
         // when resetting subcomponent, update other interconnected subcomponent features that depend on it
-        const rangeStringValue = UpdateRange.getCustomFeatureStringRangeValue(settingToBeUpdated.spec.customFeatureObjectKeys, subcomponentProperties);
+        const rangeStringValue = UpdateRange.getCustomFeatureStringRangeValue(settingToBeUpdated.spec.customFeatureObjectKeys, subcomponent);
         UpdateOtherRangesUtils.updateOtherSubcomponentRanges(settingToBeUpdated.spec.updateOtherCssProperties, rangeStringValue);
       }
     } else {
       settingToBeUpdated.spec.default = RangeUtils.DEFAULT_RANGE_VALUE;
     }
-    SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.RANGE, subcomponentProperties, settingToBeUpdated.spec.cssProperty);
+    SettingsUtils.triggerComponentFunc(SETTINGS_TYPES.RANGE, subcomponent, settingToBeUpdated.spec.cssProperty);
   }
 }

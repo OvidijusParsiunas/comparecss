@@ -1,5 +1,5 @@
 import { SyncChildComponentModeCardEvents } from '../../../toolbar/options/syncChildComponent/modeUtils/syncChildComponentModeCardEvents';
-import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { Subcomponent, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { PaddingComponentUtils } from './paddingComponentUtils';
 import ComponentJs from '../componentJs/componentJs';
 import { ComponentOptions } from 'vue';
@@ -15,7 +15,7 @@ export class SetActiveComponentUtils {
     if (!previousComponent) return;
     SetActiveComponentUtils.setActiveSubcomponent(previousComponent, previousComponent.defaultSubcomponentName, true);
     Object.keys(previousComponent.subcomponents).forEach((key) => {
-      const subcomponent: SubcomponentProperties = previousComponent.subcomponents[key];
+      const subcomponent: Subcomponent = previousComponent.subcomponents[key];
       subcomponent.activeCssPseudoClass = subcomponent.defaultCssPseudoClass;
     });
   }

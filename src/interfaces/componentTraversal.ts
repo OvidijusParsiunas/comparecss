@@ -1,5 +1,5 @@
 import { AlignedSections, Layer, BaseSubcomponentRef } from './componentPreviewStructure';
-import { SubcomponentProperties, WorkshopComponent } from './workshopComponent';
+import { Subcomponent, WorkshopComponent } from './workshopComponent';
 import { DropdownItemAuxDetails } from './dropdownItemDisplayStatus';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 
@@ -12,7 +12,7 @@ export interface TargetDetails {
   targetDropdownItemName: string;
   containerComponent: WorkshopComponent;
   masterComponent: WorkshopComponent;
-  targetSubcomponentProperties: SubcomponentProperties;
+  targetSubcomponent: Subcomponent;
   parentLayerAlignedSections?: AlignedSections;
 }
 
@@ -35,7 +35,7 @@ export type DropdownStructureSearchFromStartCallback<T> = (
   ...args: unknown[]) => T;
 
 export interface SubcomponentPreviewTraversalState {
-  subcomponentProperties?: SubcomponentProperties;
+  subcomponent?: Subcomponent;
   alignedChildComponents?: BaseSubcomponentRef[];
   alignedSections?: AlignedSections;
   layers?: Layer[];

@@ -1,4 +1,4 @@
-import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, CustomStaticFeatures, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { DROPDOWN_ARROW_ICON_TYPES } from '../../../../../../../consts/dropdownArrowIcons';
@@ -58,7 +58,7 @@ export class IconBase extends ComponentBuilder {
     };
   }
 
-  public static createBaseSubcomponent(name: string): SubcomponentProperties {
+  public static createBaseSubcomponent(name: string): Subcomponent {
     return {
       name,
       subcomponentType: SUBCOMPONENT_TYPES.ICON,

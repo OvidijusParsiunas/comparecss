@@ -4,8 +4,8 @@ import { SubcomponentTypeToPropertiesUtils } from '../../utils/subcomponentTypeT
 import { subcomponentSelectModeState } from '../../toolbar/options/subcomponentSelectMode/subcomponentSelectModeState';
 import { UseSubcomponentPreviewEventHandlers } from '../../../../../interfaces/useSubcomponentPreviewEventHandlers';
 import { subcomponentAndOverlayElementIdsState } from '../utils/elements/subcomponentAndOverlayElementIdsState';
-import { CustomCss, CustomFeatures, SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { SubcomponentMouseEventCallbacks } from '../../../../../interfaces/subcomponentMouseEventCallbacks';
+import { CustomCss, CustomFeatures, Subcomponent } from '../../../../../interfaces/workshopComponent';
 import { SubcomponentTypeToProperties } from '../../../../../interfaces/subcomponentTypeToProperties';
 import { StationaryAnimations, FadeAnimation } from '../../../../../interfaces/animations';
 import { CSS_PSEUDO_CLASSES } from '../../../../../consts/subcomponentCssClasses.enum';
@@ -14,7 +14,7 @@ import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum
 import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 import { animationState } from '../utils/animations/state';
 
-export default function useSubcomponentPreviewEventHandlers(subcomponentProperties: SubcomponentProperties,
+export default function useSubcomponentPreviewEventHandlers(subcomponent: Subcomponent,
     clickCallback: () => void): UseSubcomponentPreviewEventHandlers {
 
   let overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
@@ -22,7 +22,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   let unsetTransitionPropertyTimeout = null;
 
   function triggerSubcomponentMouseEventCallback(mouseEvent: keyof SubcomponentMouseEventCallbacks): void {
-    subcomponentProperties.customFeatures?.mouseEventCallbacks?.[mouseEvent]?.(subcomponentProperties);
+    subcomponent.customFeatures?.mouseEventCallbacks?.[mouseEvent]?.(subcomponent);
   }
 
   function setDefaultUnsetButtonStatesForColorInputs(customCss: CustomCss): void {
@@ -47,8 +47,8 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
   // the following is used to prevent the modal animation from stopping when the user moves their mouse and triggers the modal's base mouse events
   function shoudMouseEventBePrevented(): boolean {
     return subcomponentSelectModeState.getIsSubcomponentSelectModeActiveState()
-      || subcomponentProperties.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK
-      || (subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BASE
+      || subcomponent.activeCssPseudoClass === CSS_PSEUDO_CLASSES.CLICK
+      || (subcomponent.subcomponentType === SUBCOMPONENT_TYPES.BASE
           && (animationState.getIsModeToggleAnimationInProgressState() || animationState.getIsAnimationPreviewInProgressState()));
   }
 
@@ -96,7 +96,7 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
       borderColor: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCss, 'borderColor'),
       boxShadow: ComponentPreviewUtils.getInheritedCustomCssValue(activeCssPseudoClass, customCss, 'boxShadow'),
     };
-    subcomponentProperties.overwrittenCustomCssObj = { [CSS_PSEUDO_CLASSES.DEFAULT]: newDefaultProperties };
+    subcomponent.overwrittenCustomCssObj = { [CSS_PSEUDO_CLASSES.DEFAULT]: newDefaultProperties };
   }
 
   function setMouseEnterProperties(customCss: CustomCss, customFeatures: CustomFeatures): void {
@@ -107,53 +107,53 @@ export default function useSubcomponentPreviewEventHandlers(subcomponentProperti
 
   const subcomponentMouseEnter = (): void => {
     if (shoudMouseEventBePrevented()) return;
-    const { customCss, customFeatures, otherSubcomponentTriggers } = subcomponentProperties;
+    const { customCss, customFeatures, otherSubcomponentTriggers } = subcomponent;
     // even.isTrusted means that the event was triggered by a mouse instead of a dispatch
     if (otherSubcomponentTriggers?.subcomponentThatTriggersThis && event.isTrusted) return;
     triggerOtherSubcomponentsMouseEvents(otherSubcomponentTriggers?.subcomponentsToTrigger, event.type);
     setDefaultUnsetButtonStatesForColorInputs(customCss);
     setMouseEnterProperties(customCss, customFeatures);
     triggerSubcomponentMouseEventCallback('mouseEnter');
-    DisplayInFrontOfSiblings.changeSubcomponentZIndex(true, subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER);
+    DisplayInFrontOfSiblings.changeSubcomponentZIndex(true, subcomponent, CSS_PSEUDO_CLASSES.HOVER);
   }
 
   const subcomponentMouseLeave = (): void => {
     if (shoudMouseEventBePrevented()) return;
-    const { customCss, defaultCss, customFeatures, otherSubcomponentTriggers } = subcomponentProperties;
+    const { customCss, defaultCss, customFeatures, otherSubcomponentTriggers } = subcomponent;
     if (otherSubcomponentTriggers?.subcomponentThatTriggersThis && event.isTrusted) return;
     triggerOtherSubcomponentsMouseEvents(otherSubcomponentTriggers?.subcomponentsToTrigger, event.type);
-    if (subcomponentProperties.overwrittenCustomCssObj) {
-      delete subcomponentProperties.overwrittenCustomCssObj;
+    if (subcomponent.overwrittenCustomCssObj) {
+      delete subcomponent.overwrittenCustomCssObj;
     }
     isUnsetButtonDisplayedForColorInputs = {};
-    DisplayInFrontOfSiblings.changeSubcomponentZIndex(false, subcomponentProperties, CSS_PSEUDO_CLASSES.HOVER);
+    DisplayInFrontOfSiblings.changeSubcomponentZIndex(false, subcomponent, CSS_PSEUDO_CLASSES.HOVER);
     if (customFeatures?.animations?.stationary) unsetStationaryAnimations(customCss, defaultCss, customFeatures.animations.stationary);
   }
 
   const subcomponentMouseDown = (): void => {
     if (shoudMouseEventBePrevented()) return;
-    const { customCss, customFeatures, otherSubcomponentTriggers } = subcomponentProperties;
+    const { customCss, customFeatures, otherSubcomponentTriggers } = subcomponent;
     if (otherSubcomponentTriggers?.subcomponentThatTriggersThis && event.isTrusted) return;
     triggerOtherSubcomponentsMouseEvents(otherSubcomponentTriggers?.subcomponentsToTrigger, event.type);
     // this is a bug fix for when the user clicks a button without entering it (after subcomponent select mode)
-    if (!subcomponentProperties.overwrittenCustomCssObj) {
+    if (!subcomponent.overwrittenCustomCssObj) {
       setMouseEnterProperties(customCss, customFeatures);
     }
-    overwrittenDefaultPropertiesByClick = { hasBeenSet: true, css: { ...subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] } };
+    overwrittenDefaultPropertiesByClick = { hasBeenSet: true, css: { ...subcomponent.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] } };
     setCustomCss(customCss, CSS_PSEUDO_CLASSES.CLICK);
-    DisplayInFrontOfSiblings.changeSubcomponentZIndex(true, subcomponentProperties, CSS_PSEUDO_CLASSES.CLICK);
+    DisplayInFrontOfSiblings.changeSubcomponentZIndex(true, subcomponent, CSS_PSEUDO_CLASSES.CLICK);
   }
 
   const subcomponentMouseUp = (): void => {
     if (shoudMouseEventBePrevented()) return;
-    const { subcomponentsToTrigger } = subcomponentProperties.otherSubcomponentTriggers || {};
+    const { subcomponentsToTrigger } = subcomponent.otherSubcomponentTriggers || {};
     triggerOtherSubcomponentsMouseEvents(subcomponentsToTrigger, event.type);
     if (overwrittenDefaultPropertiesByClick.hasBeenSet
-        && subcomponentProperties.overwrittenCustomCssObj) {
-      subcomponentProperties.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };
+        && subcomponent.overwrittenCustomCssObj) {
+      subcomponent.overwrittenCustomCssObj[CSS_PSEUDO_CLASSES.DEFAULT] = { ...overwrittenDefaultPropertiesByClick.css };
       overwrittenDefaultPropertiesByClick = { hasBeenSet: false, css: {} };
     }
-    DisplayInFrontOfSiblings.changeSubcomponentZIndex(false, subcomponentProperties, CSS_PSEUDO_CLASSES.CLICK);
+    DisplayInFrontOfSiblings.changeSubcomponentZIndex(false, subcomponent, CSS_PSEUDO_CLASSES.CLICK);
   }
 
   const subcomponentClick = (): void => {

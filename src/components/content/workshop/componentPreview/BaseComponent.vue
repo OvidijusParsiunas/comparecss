@@ -59,8 +59,8 @@ import { UseSubcomponentPreviewEventHandlers } from '../../../../interfaces/useS
 import useSubcomponentSelectModeEventHandlers from './compositionAPI/useSubcomponentSelectModeEventHandlers';
 import { SubcomponentAndOverlayElementIds } from '../../../../interfaces/subcomponentAndOverlayElementIds';
 import { DROPDOWN_ARROW_ICON_TYPES_TO_FONT_AWESOME_NAMES } from '../../../../consts/dropdownArrowIcons';
-import { SubcomponentProperties, WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { SUBCOMPONENT_OVERLAY_CLASSES } from '../../../../consts/subcomponentOverlayClasses.enum';
+import { Subcomponent, WorkshopComponent } from '../../../../interfaces/workshopComponent';
 import { DROPDOWN_MENU_POSITIONS } from '../../../../consts/dropdownMenuPositions.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../interfaces/workshopComponentCss';
@@ -99,7 +99,7 @@ export default {
       this.mouseEvents[this.getBaseId('subcomponentId')][subcomponentMouseEvent]();
     },
     getJsClasses(): string[] {
-      const { customFeatures, customStaticFeatures } = this.component.baseSubcomponent as SubcomponentProperties;
+      const { customFeatures, customStaticFeatures } = this.component.baseSubcomponent as Subcomponent;
       return SetUtils.transformSetsToOneDimensionalArray(customFeatures?.jsClasses, customStaticFeatures?.jsClasses);
     },
     getComponentCssClasses(): string[] {

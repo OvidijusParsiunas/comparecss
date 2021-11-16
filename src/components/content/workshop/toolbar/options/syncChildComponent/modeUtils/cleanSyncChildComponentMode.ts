@@ -1,8 +1,8 @@
 import { TraverseComponentViaPreviewStructureParentFirst } from '../../../../utils/componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
 import { AutoSyncedSiblingContainerComponentUtils } from '../../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingContainerComponentUtils';
-import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SiblingComponentState } from '../../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { SubcomponentPreviewTraversalState } from '../../../../../../../interfaces/componentTraversal';
+import { Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 
 export class CleanSyncChildComponentMode {
 
@@ -11,24 +11,24 @@ export class CleanSyncChildComponentMode {
     const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(activeComponent);
     if (!siblingComponentTypes) return;
     Object.keys(siblingComponentTypes).forEach((subcomponentType) => {
-      const subcomponentProperties = (siblingComponentTypes[subcomponentType] as SiblingComponentState).customDynamicProperties;
-      if (subcomponentProperties.tempOriginalCustomProperties) {
-        Object.assign(subcomponentProperties.customCss, subcomponentProperties.tempOriginalCustomProperties.customCss);
-        Object.assign(subcomponentProperties.customFeatures, subcomponentProperties.tempOriginalCustomProperties.customFeatures);
+      const subcomponent = (siblingComponentTypes[subcomponentType] as SiblingComponentState).customDynamicProperties;
+      if (subcomponent.tempOriginalCustomProperties) {
+        Object.assign(subcomponent.customCss, subcomponent.tempOriginalCustomProperties.customCss);
+        Object.assign(subcomponent.customFeatures, subcomponent.tempOriginalCustomProperties.customFeatures);
       }
     });
   }
 
-  private static resetOriginalCss(subcomponentProperties: SubcomponentProperties): void {
-    if (!subcomponentProperties.tempOriginalCustomProperties) return;
-    Object.assign(subcomponentProperties.customCss, subcomponentProperties.tempOriginalCustomProperties.customCss);
-    Object.assign(subcomponentProperties.customFeatures, subcomponentProperties.tempOriginalCustomProperties.customFeatures);
+  private static resetOriginalCss(subcomponent: Subcomponent): void {
+    if (!subcomponent.tempOriginalCustomProperties) return;
+    Object.assign(subcomponent.customCss, subcomponent.tempOriginalCustomProperties.customCss);
+    Object.assign(subcomponent.customFeatures, subcomponent.tempOriginalCustomProperties.customFeatures);
   }
 
-  private static resetSubcomponentProperties(activeComponentTraversal: SubcomponentPreviewTraversalState): SubcomponentPreviewTraversalState {
-    const resetSubcomponentProperties = this as any as boolean;
-    const activeSubcomponent = activeComponentTraversal.subcomponentProperties;
-    if (resetSubcomponentProperties) {
+  private static resetSubcomponent(activeComponentTraversal: SubcomponentPreviewTraversalState): SubcomponentPreviewTraversalState {
+    const resetSubcomponent = this as any as boolean;
+    const activeSubcomponent = activeComponentTraversal.subcomponent;
+    if (resetSubcomponent) {
       CleanSyncChildComponentMode.resetOriginalCss(activeSubcomponent);
       activeSubcomponent.seedComponent.sync.temporarySyncExecutables?.off?.(activeSubcomponent.seedComponent);
     }
@@ -36,10 +36,10 @@ export class CleanSyncChildComponentMode {
     return activeComponentTraversal;
   }
 
-  public static cleanComponent(currentlySelectedComponent: WorkshopComponent, resetSubcomponentProperties = true): void {
+  public static cleanComponent(currentlySelectedComponent: WorkshopComponent, resetSubcomponent = true): void {
     const activeComponent = currentlySelectedComponent.subcomponents[currentlySelectedComponent.activeSubcomponentName].seedComponent;
     TraverseComponentViaPreviewStructureParentFirst.traverse(
-      CleanSyncChildComponentMode.resetSubcomponentProperties.bind(resetSubcomponentProperties), activeComponent);
+      CleanSyncChildComponentMode.resetSubcomponent.bind(resetSubcomponent), activeComponent);
     CleanSyncChildComponentMode.removeSiblingComponentPropertiesThatWereMissing(activeComponent);
   }
   

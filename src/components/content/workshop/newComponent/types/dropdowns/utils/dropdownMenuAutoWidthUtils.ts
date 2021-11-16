@@ -1,5 +1,5 @@
 import { subcomponentAndOverlayElementIdsState } from '../../../../componentPreview/utils/elements/subcomponentAndOverlayElementIdsState';
-import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -7,13 +7,13 @@ import { TEXT_SIZE_EVALUATOR_ID } from '../../../../../../../consts/elementIds';
 
 export class DropdownMenuAutoWidthUtils {
 
-  private static retrieveIconElementWidth(iconSubcomponent: SubcomponentProperties): number {
+  private static retrieveIconElementWidth(iconSubcomponent: Subcomponent): number {
     const iconName = iconSubcomponent.name;
     const iconid = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(iconName);
     return document.getElementById(iconid).clientWidth;
   }
 
-  private static calculateIconWidth(iconSubcomponent: SubcomponentProperties): number {
+  private static calculateIconWidth(iconSubcomponent: Subcomponent): number {
     const iconDefaultCss = iconSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
     const iconMarginLeft = Number.parseFloat(iconDefaultCss.marginLeft);
     const iconMarginRight = Number.parseFloat(iconDefaultCss.marginRight);
@@ -30,7 +30,7 @@ export class DropdownMenuAutoWidthUtils {
     return sizeEvaluatorElement.clientWidth;
   }
 
-  private static calculateTextWidth(textSubcomponent: SubcomponentProperties, text: string): number {
+  private static calculateTextWidth(textSubcomponent: Subcomponent, text: string): number {
     const buttonTextDefaultCss = textSubcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
     const evaluatedTextWidth = DropdownMenuAutoWidthUtils.calculateTextWidthThroughTextSizeEvaluatorElement(buttonTextDefaultCss, text);
     const marginLeft = Number.parseFloat(buttonTextDefaultCss.marginLeft);
@@ -54,7 +54,7 @@ export class DropdownMenuAutoWidthUtils {
 
   private static getLongestMenuText(menuComponent: WorkshopComponent): string {
     const menuItemTexts = menuComponent.componentPreviewStructure.layers.map((layer) => {      
-      return layer.sections.alignedSections.left[0].subcomponentProperties.customStaticFeatures.subcomponentText.text
+      return layer.sections.alignedSections.left[0].subcomponent.customStaticFeatures.subcomponentText.text
     });
     return DropdownMenuAutoWidthUtils.getLongestString(menuItemTexts);
   }
@@ -74,13 +74,13 @@ export class DropdownMenuAutoWidthUtils {
   }
 
   private static getFirstItemDefaultClassCustomCss(menuComponent: WorkshopComponent): WorkshopComponentCss {
-    return menuComponent.componentPreviewStructure.layers[0].subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
+    return menuComponent.componentPreviewStructure.layers[0].subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT];
   }
 
   private static getItemTextWidths(menuComponent: WorkshopComponent): number[] {
     return menuComponent.componentPreviewStructure.layers.map((layer) => {
       const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(
-        layer.sections.alignedSections.left[0].subcomponentProperties.name);
+        layer.sections.alignedSections.left[0].subcomponent.name);
       return document.getElementById(subcomponentId).clientWidth;
     });
   }

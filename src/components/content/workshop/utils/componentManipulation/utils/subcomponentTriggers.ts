@@ -1,8 +1,8 @@
 import { CompositionAPISubcomponentTriggerState } from '../../../../../../interfaces/compositionAPISubcomponentTriggerState';
 import { SubcomponentTypeToPropertiesUtils } from '../../subcomponentTypeToProperties/subcomponentTypeToPropertiesUtils';
-import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SubcomponentTypeToProperties } from '../../../../../../interfaces/subcomponentTypeToProperties';
 import { OtherSubcomponentTriggers } from '../../../../../../interfaces/otherSubcomponentTriggers';
+import { Subcomponent, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import JSONUtils from '../../generic/jsonUtils';
@@ -19,23 +19,23 @@ export class SubcomponentTriggers {
     return otherSubcomponentTriggers;
   }
 
-  private static setSubcomponentThatTriggersThis(newComponentBase: SubcomponentProperties, triggerSubcomponent: SubcomponentProperties): void {
+  private static setSubcomponentThatTriggersThis(newComponentBase: Subcomponent, triggerSubcomponent: Subcomponent): void {
     if (!newComponentBase.otherSubcomponentTriggers) {
       newComponentBase.otherSubcomponentTriggers = SubcomponentTriggers.createOtherSubcomponentTriggersTemplate();
     }
     newComponentBase.otherSubcomponentTriggers.subcomponentThatTriggersThis = triggerSubcomponent;
   }
 
-  private static setPropertyValues(newComponentBase: SubcomponentProperties, subcomponentType: number,
-      triggerSubcomponent: SubcomponentProperties): void {
+  private static setPropertyValues(newComponentBase: Subcomponent, subcomponentType: number,
+      triggerSubcomponent: Subcomponent): void {
     const { subcomponentsToTrigger } = triggerSubcomponent.otherSubcomponentTriggers || {};
     if (!subcomponentsToTrigger) return;
     SubcomponentTriggers.setSubcomponentThatTriggersThis(newComponentBase, triggerSubcomponent)
     JSONUtils.setPropertyIfExists(subcomponentsToTrigger, subcomponentType, newComponentBase);
   }
 
-  public static set(containerComponent: WorkshopComponent, newComponentParentLayerSubcomponent: SubcomponentProperties,
-      newComponentBase: SubcomponentProperties, subcomponentType: number): void {
+  public static set(containerComponent: WorkshopComponent, newComponentParentLayerSubcomponent: Subcomponent,
+      newComponentBase: Subcomponent, subcomponentType: number): void {
     const newComponentContainerBase = containerComponent.baseSubcomponent;
     SubcomponentTriggers.setPropertyValues(newComponentBase, subcomponentType, newComponentContainerBase);
     SubcomponentTriggers.setPropertyValues(newComponentBase, subcomponentType, newComponentParentLayerSubcomponent);
@@ -43,14 +43,14 @@ export class SubcomponentTriggers {
 
   // only need to set one other subcomponent's subcomponentsToTrigger value to null as this subcomponent can only be triggered
   // by one other subcomponent
-  public static removeTriggerReferenceFromSubcomponentThatTriggersThis(triggerSubcomponent: SubcomponentProperties): void {
+  public static removeTriggerReferenceFromSubcomponentThatTriggersThis(triggerSubcomponent: Subcomponent): void {
     const { subcomponentType, otherSubcomponentTriggers } = triggerSubcomponent;
     const { subcomponentThatTriggersThis } = otherSubcomponentTriggers || {};
     if (!subcomponentThatTriggersThis) return;
     subcomponentThatTriggersThis.otherSubcomponentTriggers.subcomponentsToTrigger[subcomponentType] = null;
   }
 
-  private static setThisSubcomponentTriggerCss(baseSubcomponent: SubcomponentProperties, subcomponentThatTriggersThis: SubcomponentProperties,
+  private static setThisSubcomponentTriggerCss(baseSubcomponent: Subcomponent, subcomponentThatTriggersThis: Subcomponent,
       activeCssPseudoClass: CSS_PSEUDO_CLASSES, isTriggered: boolean): void {
     const { componentCompositionAPI } = baseSubcomponent.otherSubcomponentTriggers || {};
     if (subcomponentThatTriggersThis && componentCompositionAPI && subcomponentThatTriggersThis.activeCssPseudoClass !== activeCssPseudoClass) {
@@ -59,35 +59,35 @@ export class SubcomponentTriggers {
     }
   }
 
-  private static setOtherSubcomponentCss(otherSubcomponentProperties: SubcomponentProperties, activeCssPseudoClass: CSS_PSEUDO_CLASSES,
+  private static setOtherSubcomponentCss(otherSubcomponent: Subcomponent, activeCssPseudoClass: CSS_PSEUDO_CLASSES,
       isTriggered: boolean): void {
-    const { componentCompositionAPI } = otherSubcomponentProperties.otherSubcomponentTriggers || {};
-    if (componentCompositionAPI && !componentCompositionAPI.trigger && otherSubcomponentProperties.activeCssPseudoClass !== activeCssPseudoClass) {
-      otherSubcomponentProperties.activeCssPseudoClass = activeCssPseudoClass;
+    const { componentCompositionAPI } = otherSubcomponent.otherSubcomponentTriggers || {};
+    if (componentCompositionAPI && !componentCompositionAPI.trigger && otherSubcomponent.activeCssPseudoClass !== activeCssPseudoClass) {
+      otherSubcomponent.activeCssPseudoClass = activeCssPseudoClass;
       componentCompositionAPI.triggered = isTriggered;
     }
   }
 
-  private static setOtherSubcomponentsCss(baseSubcomponent: SubcomponentProperties, activeCssPseudoClass: CSS_PSEUDO_CLASSES, isTriggered: boolean): void {
+  private static setOtherSubcomponentsCss(baseSubcomponent: Subcomponent, activeCssPseudoClass: CSS_PSEUDO_CLASSES, isTriggered: boolean): void {
     const { subcomponentsToTrigger, subcomponentThatTriggersThis, componentCompositionAPI } = baseSubcomponent.otherSubcomponentTriggers || {};
     if (!componentCompositionAPI || componentCompositionAPI.triggered) return;
     SubcomponentTypeToPropertiesUtils.getTypesWithNonNullSubcomponents(subcomponentsToTrigger).forEach((subcomponentType) => {
-      const otherSubcomponentProperties = subcomponentsToTrigger[subcomponentType];
-      SubcomponentTriggers.setOtherSubcomponentCss(otherSubcomponentProperties, activeCssPseudoClass, isTriggered);
+      const otherSubcomponent = subcomponentsToTrigger[subcomponentType];
+      SubcomponentTriggers.setOtherSubcomponentCss(otherSubcomponent, activeCssPseudoClass, isTriggered);
     });
     SubcomponentTriggers.setThisSubcomponentTriggerCss(baseSubcomponent, subcomponentThatTriggersThis, activeCssPseudoClass, isTriggered);
   }
 
   // subcomponents here are triggered slightly differently than the useSubcomponentPreviewHandlers file's triggerOtherSubcomponentsMouseEvents
   // method because there are no events fired and the customCss is augmented directly
-  public static triggerOtherSubcomponentsCss(baseSubcomponent: SubcomponentProperties, activeCssPseudoClass: CSS_PSEUDO_CLASSES,
+  public static triggerOtherSubcomponentsCss(baseSubcomponent: Subcomponent, activeCssPseudoClass: CSS_PSEUDO_CLASSES,
       otherSubcomponentTriggerState: CompositionAPISubcomponentTriggerState): void {
     if (activeCssPseudoClass !== CSS_PSEUDO_CLASSES.DEFAULT) {
       SubcomponentTriggers.setOtherSubcomponentsCss(baseSubcomponent, activeCssPseudoClass, true);
-      otherSubcomponentTriggerState.subcomponentProperties = baseSubcomponent;
-    } else if (otherSubcomponentTriggerState.subcomponentProperties === baseSubcomponent) {
+      otherSubcomponentTriggerState.subcomponent = baseSubcomponent;
+    } else if (otherSubcomponentTriggerState.subcomponent === baseSubcomponent) {
       SubcomponentTriggers.setOtherSubcomponentsCss(baseSubcomponent, activeCssPseudoClass, false);
-      otherSubcomponentTriggerState.subcomponentProperties = null;
+      otherSubcomponentTriggerState.subcomponent = null;
     }
   }
 }

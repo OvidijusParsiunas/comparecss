@@ -1,14 +1,14 @@
 import { UseLayerSectionComponent } from '../../../../../interfaces/useLayerSectionComponent';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
-import { SubcomponentProperties } from '../../../../../interfaces/workshopComponent';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
+import { Subcomponent } from '../../../../../interfaces/workshopComponent';
 
 export default function useLayerSectionComponent(): UseLayerSectionComponent {
 
-  const getStyleProperties = (subcomponentProperties: SubcomponentProperties, index: string): WorkshopComponentCss[] => {
+  const getStyleProperties = (subcomponent: Subcomponent, index: string): WorkshopComponentCss[] => {
     return [
       { order: index },
-      subcomponentProperties.seedComponent.type === COMPONENT_TYPES.ICON ? { pointerEvents: 'none' } : {},
+      subcomponent.seedComponent.type === COMPONENT_TYPES.ICON ? { pointerEvents: 'none' } : {},
     ];
   };
 

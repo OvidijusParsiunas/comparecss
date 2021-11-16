@@ -1,4 +1,4 @@
-import { UpdateOtherCssProperties, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { UpdateOtherCssProperties, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SubcomponentSpecificSettings } from '../../../../../../../interfaces/subcomponentSpecificSettings';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
@@ -22,7 +22,7 @@ export class ButtonBaseSpecificSettings {
     buttonComponent.baseSubcomponent.subcomponentSpecificSettings = ButtonBaseSpecificSettings.MENU_BASE_SPECIFIC_COMPONENTS;
   }
 
-  private static getFadeAnimationDurationProperties(buttonSubcomponent: SubcomponentProperties): UpdateOtherCssProperties {
+  private static getFadeAnimationDurationProperties(buttonSubcomponent: Subcomponent): UpdateOtherCssProperties {
     const { customFeatures } = buttonSubcomponent;
     return {
       customFeatures,

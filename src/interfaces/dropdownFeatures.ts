@@ -1,6 +1,6 @@
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../consts/dropdownMenuAlignment.enum';
 import { DROPDOWN_MENU_POSITIONS } from '../consts/dropdownMenuPositions.enum';
-import { SubcomponentProperties } from './workshopComponent';
+import { Subcomponent } from './workshopComponent';
 
 export interface SelectDropdownText {
   defaultText: string;
@@ -18,7 +18,7 @@ export interface DropdownMenuPosition {
 
 export type SelectDropdown = {
   enabled: boolean;
-  callback: (subcomponentProperties: SubcomponentProperties) => void;
+  callback: (subcomponent: Subcomponent) => void;
 };
 
 export interface DropdownFeatures {

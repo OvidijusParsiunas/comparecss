@@ -1,4 +1,4 @@
-import { UpdateOtherCssProperties, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { UpdateOtherCssProperties, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SubcomponentSpecificSettings } from '../../../../../../../interfaces/subcomponentSpecificSettings';
 import { LAYER_SECTION_DIVISOR } from '../../../../../../../consts/layerSectionDivisor';
@@ -30,8 +30,8 @@ export class CardBaseSpecificSettings {
   }
 
   // this is no longer used, but is kept as an exemplar for future cssProperty interconnected settings
-  private static getLeftPositionProperties(subcomponentProperties: SubcomponentProperties): UpdateOtherCssProperties {
-    const { customCss, customFeatures } = subcomponentProperties;
+  private static getLeftPositionProperties(subcomponent: Subcomponent): UpdateOtherCssProperties {
+    const { customCss, customFeatures } = subcomponent;
     return {
       cssProperty: 'left',
       customCss,

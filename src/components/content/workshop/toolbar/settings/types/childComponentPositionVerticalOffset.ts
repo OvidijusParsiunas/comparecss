@@ -16,10 +16,10 @@ function changeSubcomponentOrder(settingsComponent: ComponentOptions, direction:
 }
 
 function changeSubcomponentAlignment(event: ActionsDropdownMouseEventCallbackEvent, shouldSubcomponentNamesBeUpdated?: boolean): void {
-  const { settingsComponent, previousItemName, triggeredItemName, subcomponentProperties, isCustomFeatureResetTriggered } = event;
+  const { settingsComponent, previousItemName, triggeredItemName, subcomponent, isCustomFeatureResetTriggered } = event;
   if (isCustomFeatureResetTriggered) return;
   settingsComponent.$emit('change-subcomponent-alignment',
-    [previousItemName, triggeredItemName, subcomponentProperties, shouldSubcomponentNamesBeUpdated] as ChangeSubcomponentAlignmentEvent);
+    [previousItemName, triggeredItemName, subcomponent, shouldSubcomponentNamesBeUpdated] as ChangeSubcomponentAlignmentEvent);
 }
 
 function changeSubcomponentAlignmentItemSelect(event: ActionsDropdownMouseEventCallbackEvent): void {

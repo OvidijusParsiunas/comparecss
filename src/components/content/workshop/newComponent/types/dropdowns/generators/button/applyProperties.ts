@@ -1,8 +1,7 @@
-import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
+import { Subcomponent, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { LinkedComponentsUtils } from '../../../shared/linkedComponents/linkedComponentsUtils';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
-import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
 import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
 import { DropdownMenuAutoWidthUtils } from '../../utils/dropdownMenuAutoWidthUtils';
 import { SETTINGS_TYPES } from '../../../../../../../../consts/settingsTypes.enum';
@@ -12,7 +11,7 @@ import { ComponentBuilder } from '../../../shared/componentBuilder';
 export class ApplyDropdownButtonProperties extends ComponentBuilder {
 
   private static getPaddingAndButtonSubcomponents(component: WorkshopComponent):
-      { paddingBaseSubcomponent: SubcomponentProperties, buttonBaseSubcomponent: SubcomponentProperties } {
+      { paddingBaseSubcomponent: Subcomponent, buttonBaseSubcomponent: Subcomponent } {
     if (component.paddingComponent) {
       return {
         paddingBaseSubcomponent: component.paddingComponent.baseSubcomponent,
@@ -25,14 +24,14 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
     };
   }
 
-  private static overwriteTextDropdownProperties(paddingBaseSubcomponent: SubcomponentProperties, textSubcomponent: SubcomponentProperties): void {
+  private static overwriteTextDropdownProperties(paddingBaseSubcomponent: Subcomponent, textSubcomponent: Subcomponent): void {
     textSubcomponent.customFeatures.dropdown = ComponentBuilder.createDopdownFeatures(paddingBaseSubcomponent.customFeatures.dropdown.select);
     textSubcomponent.defaultCustomFeatures.dropdown = ComponentBuilder.createDopdownFeatures(paddingBaseSubcomponent.customFeatures.dropdown.select);
     textSubcomponent.customStaticFeatures.selectDropdownText = paddingBaseSubcomponent.customStaticFeatures.selectDropdownText;
     textSubcomponent.defaultCustomStaticFeatures.selectDropdownText = paddingBaseSubcomponent.defaultCustomStaticFeatures.selectDropdownText;
   }
 
-  private static overwriteButtonBaseDropdownProperties(paddingBaseSubcomponent: SubcomponentProperties, buttonBaseSubcomponent: SubcomponentProperties): void {
+  private static overwriteButtonBaseDropdownProperties(paddingBaseSubcomponent: Subcomponent, buttonBaseSubcomponent: Subcomponent): void {
     buttonBaseSubcomponent.customFeatures.dropdown = ComponentBuilder.createDopdownFeatures(
       paddingBaseSubcomponent.customFeatures.dropdown.select, DROPDOWN_MENU_INDEX_ALIGNMENT.BELOW);
     buttonBaseSubcomponent.defaultCustomFeatures.dropdown = ComponentBuilder.createDopdownFeatures(
@@ -65,13 +64,13 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
     ApplyDropdownButtonProperties.populateReferences(buttonComponent);
   }
 
-  private static setWidthViaRange(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
-    const { type } = subcomponentProperties.seedComponent;
+  private static setWidthViaRange(subcomponent: Subcomponent, cssProperty: string): void {
+    const { type } = subcomponent.seedComponent;
     // the reason why there is an if statement is because this can get triggered when margin left/right is changed in the button
     if (type === COMPONENT_TYPES.BUTTON) return;
     // width is used by icon size
     if (cssProperty === 'fontSize' || cssProperty === 'marginLeft' || cssProperty === 'marginRight' || cssProperty === 'width') {
-      const buttonComponent = subcomponentProperties.seedComponent.containerComponent;
+      const buttonComponent = subcomponent.seedComponent.containerComponent;
       const menuComponent = buttonComponent.linkedComponents.auxiliary[0];
       DropdownMenuAutoWidthUtils.setButtonWidth(buttonComponent, menuComponent); 
     }
@@ -83,8 +82,8 @@ export class ApplyDropdownButtonProperties extends ComponentBuilder {
     };
   }
 
-  private static initialiseSelectDropdownButtonWidthViaLargestItem(subcomponentProperties: SubcomponentProperties): void {
-    const buttonComponent = subcomponentProperties.seedComponent;
+  private static initialiseSelectDropdownButtonWidthViaLargestItem(subcomponent: Subcomponent): void {
+    const buttonComponent = subcomponent.seedComponent;
     const menuComponent = buttonComponent.linkedComponents.auxiliary[0];
     DropdownMenuAutoWidthUtils.setButtonWidth(buttonComponent, menuComponent); 
   }

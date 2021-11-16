@@ -1,21 +1,21 @@
 import { CustomSettingTriggerFunction } from '../../../../../../interfaces/CustomSettingTriggerFunction';
-import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
+import { Subcomponent } from '../../../../../../interfaces/workshopComponent';
 import { UpdateOtherRangesUtils } from './rangeUtils/updateOtherRangesUtils';
 import SharedUtils from './sharedUtils';
 
 export default class CheckboxUtils {
 
-  private static updateCustomFeatureViaTrigger(trigger: any, subcomponentProperties: SubcomponentProperties): void {
+  private static updateCustomFeatureViaTrigger(trigger: any, subcomponent: Subcomponent): void {
     if (trigger.updateUsingValueFromAnotherObjectKeys) {
       const keys = trigger.updateUsingValueFromAnotherObjectKeys;
-      const valueFromAnotherObject = SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys[0]]);
-      SharedUtils.setCustomFeatureValue(trigger.customFeatureObjectKeys, subcomponentProperties, valueFromAnotherObject);
+      const valueFromAnotherObject = SharedUtils.getCustomFeatureValue(keys, subcomponent[keys[0]]);
+      SharedUtils.setCustomFeatureValue(trigger.customFeatureObjectKeys, subcomponent, valueFromAnotherObject);
     }
   }
 
-  private static updateCssProperty(trigger: any, subcomponentProperties: SubcomponentProperties, thisSettingSpec: any,
+  private static updateCssProperty(trigger: any, subcomponent: Subcomponent, thisSettingSpec: any,
       allSettings: any, newCalculatedValue?: string): void {
-    const { customCss, activeCssPseudoClass } = subcomponentProperties;
+    const { customCss, activeCssPseudoClass } = subcomponent;
     const { cssProperty, newValue, pseudoClass } = trigger;
     const newResultValue = newCalculatedValue || newValue;
     customCss[pseudoClass || activeCssPseudoClass][cssProperty] = newResultValue;
@@ -26,30 +26,30 @@ export default class CheckboxUtils {
     }
   }
   
-  private static triggerCustomFunction(trigger: any, subcomponentProperties: SubcomponentProperties): void {
+  private static triggerCustomFunction(trigger: any, subcomponent: Subcomponent): void {
     const customFunction = SharedUtils.getCustomFeatureValue(
-      trigger.customFunctionKeys, subcomponentProperties[trigger.customFunctionKeys[0]]) as CustomSettingTriggerFunction;
-    customFunction(subcomponentProperties);
+      trigger.customFunctionKeys, subcomponent[trigger.customFunctionKeys[0]]) as CustomSettingTriggerFunction;
+    customFunction(subcomponent);
   }
   
-  private static activateTriggers(newCheckboxValue: boolean, triggers: any, subcomponentProperties: SubcomponentProperties,
+  private static activateTriggers(newCheckboxValue: boolean, triggers: any, subcomponent: Subcomponent,
       thisSettingSpec: any, allSettings: any): void {
     (triggers[newCheckboxValue.toString()] || []).forEach((trigger) => {
       if (trigger.customFunctionKeys) {
-        CheckboxUtils.triggerCustomFunction(trigger, subcomponentProperties);
+        CheckboxUtils.triggerCustomFunction(trigger, subcomponent);
       } else if (trigger.cssProperty) {
-        CheckboxUtils.updateCssProperty(trigger, subcomponentProperties, thisSettingSpec, allSettings);
+        CheckboxUtils.updateCssProperty(trigger, subcomponent, thisSettingSpec, allSettings);
       } else if (trigger.customFeatureObjectKeys) {
-        CheckboxUtils.updateCustomFeatureViaTrigger(trigger, subcomponentProperties)
+        CheckboxUtils.updateCustomFeatureViaTrigger(trigger, subcomponent)
       } else if (trigger.currentOptionSettingSpec && trigger.currentOptionSettingSpec.updateSettingSpecViaOtherSettings) {
-        UpdateOtherRangesUtils.updateCurrentOptionSettingAndCustomFeature(trigger.currentOptionSettingSpec, subcomponentProperties);
+        UpdateOtherRangesUtils.updateCurrentOptionSettingAndCustomFeature(trigger.currentOptionSettingSpec, subcomponent);
       }
     });
   }
 
   private static setSetObject(newCheckboxValue: boolean, valueInSetObject: any, customFeatureObjectKeys: string[],
-      subcomponentProperties: SubcomponentProperties): void {
-    const property = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]) as Set<undefined>;
+      subcomponent: Subcomponent): void {
+    const property = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponent[customFeatureObjectKeys[0]]) as Set<undefined>;
     if (newCheckboxValue) {
       property.add(valueInSetObject);
     } else {
@@ -57,48 +57,48 @@ export default class CheckboxUtils {
     }
   }
 
-  private static updateCustomFeature(newCheckboxValue: boolean, spec: any, subcomponentProperties: SubcomponentProperties): void {
+  private static updateCustomFeature(newCheckboxValue: boolean, spec: any, subcomponent: Subcomponent): void {
     const { valueInSetObject, customFeatureObjectKeys } = spec;
     if (valueInSetObject) {
-      CheckboxUtils.setSetObject(newCheckboxValue, valueInSetObject, customFeatureObjectKeys, subcomponentProperties);
+      CheckboxUtils.setSetObject(newCheckboxValue, valueInSetObject, customFeatureObjectKeys, subcomponent);
     } else {
-      SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties, newCheckboxValue);
+      SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponent, newCheckboxValue);
     }
   }
 
-  public static updateProperties(currentCheckboxValue: boolean, spec: any, triggers: any, subcomponentProperties: SubcomponentProperties,
+  public static updateProperties(currentCheckboxValue: boolean, spec: any, triggers: any, subcomponent: Subcomponent,
       allSettings: any): void {
     // need to pass the currentCheckboxValue directly instead of using spec.default as its value will already have been
     // changed by the time this method is called by the following: this.$emit('remove-insync-option-button', callback as RemoveInSyncOptionButton);
     const newCheckboxValue = !currentCheckboxValue;
-    if (spec.customFeatureObjectKeys) { CheckboxUtils.updateCustomFeature(newCheckboxValue, spec, subcomponentProperties); }
-    if (triggers) { CheckboxUtils.activateTriggers(newCheckboxValue, triggers, subcomponentProperties, spec, allSettings); }
+    if (spec.customFeatureObjectKeys) { CheckboxUtils.updateCustomFeature(newCheckboxValue, spec, subcomponent); }
+    if (triggers) { CheckboxUtils.activateTriggers(newCheckboxValue, triggers, subcomponent, spec, allSettings); }
   }
 
-  private static updateCustomCssSetting(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
-    const { customCss, activeCssPseudoClass } = subcomponentProperties;
+  private static updateCustomCssSetting(settingToBeUpdatedSpec: any, subcomponent: Subcomponent): void {
+    const { customCss, activeCssPseudoClass } = subcomponent;
     const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(customCss, activeCssPseudoClass, settingToBeUpdatedSpec.cssProperty);
     if (cssPropertyValue) { settingToBeUpdatedSpec.default = (cssPropertyValue === settingToBeUpdatedSpec.conditionalStyle.truthy); }
   }
 
-  private static updateCustomFeatureSetting(settingToBeUpdated: any, subcomponentProperties: SubcomponentProperties): void {
+  private static updateCustomFeatureSetting(settingToBeUpdated: any, subcomponent: Subcomponent): void {
     const { spec, triggers } = settingToBeUpdated;
     const keys = spec.customFeatureObjectKeys
     if (spec.valueInSetObject) {
-      spec.default = (SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys[0]]) as Set<undefined>).has(spec.valueInSetObject);
+      spec.default = (SharedUtils.getCustomFeatureValue(keys, subcomponent[keys[0]]) as Set<undefined>).has(spec.valueInSetObject);
     } else {
-      spec.default = SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys[0]]);
+      spec.default = SharedUtils.getCustomFeatureValue(keys, subcomponent[keys[0]]);
       (triggers?.[spec.default] || []).forEach((trigger) => {
-        if (trigger.customFunctionKeys) { CheckboxUtils.triggerCustomFunction(trigger, subcomponentProperties); }
+        if (trigger.customFunctionKeys) { CheckboxUtils.triggerCustomFunction(trigger, subcomponent); }
       });
     }
   }
 
-  public static updateSettings(settingToBeUpdated: any, subcomponentProperties: SubcomponentProperties): void {
+  public static updateSettings(settingToBeUpdated: any, subcomponent: Subcomponent): void {
     if (settingToBeUpdated.spec.customFeatureObjectKeys) {
-      CheckboxUtils.updateCustomFeatureSetting(settingToBeUpdated, subcomponentProperties);
+      CheckboxUtils.updateCustomFeatureSetting(settingToBeUpdated, subcomponent);
     } else {
-      CheckboxUtils.updateCustomCssSetting(settingToBeUpdated.spec, subcomponentProperties);
+      CheckboxUtils.updateCustomCssSetting(settingToBeUpdated.spec, subcomponent);
     }
   }
 }

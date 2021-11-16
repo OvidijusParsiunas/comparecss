@@ -1,14 +1,14 @@
 <template>
   <div class="layers" :class="COMPONENT_PREVIEW_MARKER">
     <div v-for="(layer, index) in layers" :key="layer" class="layer" :class="COMPONENT_PREVIEW_MARKER">
-      <div :id="getLayerId(layer.subcomponentProperties.name, 'subcomponentId')"
+      <div :id="getLayerId(layer.subcomponent.name, 'subcomponentId')"
         :style="getStyleProperties(layer, index === layers.length - 1)"
         :class="[...classes, COMPONENT_PREVIEW_MARKER]"
-        @mouseenter="activateSubcomponentMouseEvent(layer.subcomponentProperties.name, 'subcomponentMouseEnter')"
-        @mouseleave="activateSubcomponentMouseEvent(layer.subcomponentProperties.name, 'subcomponentMouseLeave')"
-        @mousedown="activateSubcomponentMouseEvent(layer.subcomponentProperties.name, 'subcomponentMouseDown')"
-        @mouseup="activateSubcomponentMouseEvent(layer.subcomponentProperties.name, 'subcomponentMouseUp')"
-        @click="activateSubcomponentMouseEvent(layer.subcomponentProperties.name, 'subcomponentClick')">
+        @mouseenter="activateSubcomponentMouseEvent(layer.subcomponent.name, 'subcomponentMouseEnter')"
+        @mouseleave="activateSubcomponentMouseEvent(layer.subcomponent.name, 'subcomponentMouseLeave')"
+        @mousedown="activateSubcomponentMouseEvent(layer.subcomponent.name, 'subcomponentMouseDown')"
+        @mouseup="activateSubcomponentMouseEvent(layer.subcomponent.name, 'subcomponentMouseUp')"
+        @click="activateSubcomponentMouseEvent(layer.subcomponent.name, 'subcomponentClick')">
           <layer-sections
             v-if="layer.sections"
             :class="COMPONENT_PREVIEW_MARKER"
@@ -24,7 +24,7 @@
           <div :style="getLayerShadowOverlayStyleProperties(layer, index === layers.length - 1)"
             class="layer-shadow-overlay"></div>
       </div>
-      <div :id="getLayerId(layer.subcomponentProperties.name, 'overlayId')"
+      <div :id="getLayerId(layer.subcomponent.name, 'overlayId')"
         style="display: none"
         :style="getLayerStyleProperties(layer, layers, index)"
         :class="getLayerClasses(layer)"></div>
@@ -61,7 +61,7 @@ export default {
   methods: {
     getLayerShadowOverlayStyleProperties(layer: Layer, isLastLayer: boolean): WorkshopComponentCss[] {
       return [
-        layer.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
+        layer.subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT],
         isLastLayer ? { boxShadow: CSS_PROPERTY_VALUES.UNSET } : {}
       ];
     },
@@ -69,14 +69,14 @@ export default {
       return this.subcomponentAndOverlayElementIds[layerName]?.[idType];
     },
     getLayerStyleProperties(layer: Layer, layers: Layer[], currentIndex: number): WorkshopComponentCss {
-      const subcomponentCss = { ...layer.subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT] };
+      const subcomponentCss = { ...layer.subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT] };
       subcomponentCss.zIndex = layers.length - currentIndex + 1;
-      if (layer.subcomponentProperties.isTemporaryAddPreview) subcomponentCss.display = 'block';
+      if (layer.subcomponent.isTemporaryAddPreview) subcomponentCss.display = 'block';
       return subcomponentCss;
     },
     getLayerClasses(layer: Layer): string[] {
       const classes = [SUBCOMPONENT_OVERLAY_CLASSES.BASE, SUBCOMPONENT_OVERLAY_CLASSES.DEFAULT];
-      if (layer.subcomponentProperties.isTemporaryAddPreview) {
+      if (layer.subcomponent.isTemporaryAddPreview) {
         classes.push(SUBCOMPONENT_OVERLAY_CLASSES.SUBCOMPONENT_TOGGLE_ADD);
       }
       return classes;

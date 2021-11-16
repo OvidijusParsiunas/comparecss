@@ -1,6 +1,6 @@
 import { SETTINGS_TYPES } from '../consts/settingsTypes.enum';
-import { SubcomponentProperties } from './workshopComponent';
+import { Subcomponent } from './workshopComponent';
 
 export type TriggerFuncOnSettingChange = {
-  [key in SETTINGS_TYPES]?: (subcomponentProperties: SubcomponentProperties, updatedSetting?: any) => void;
+  [key in SETTINGS_TYPES]?: (subcomponent: Subcomponent, updatedSetting?: any) => void;
 }

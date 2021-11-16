@@ -17,7 +17,7 @@ export class UpdateContainerComponentDropdownItemNames extends UpdateDropdownIte
       const section = alignedSections[alignedSectionsKeys[i]];
       for (let j = 0; j < section.length; j += 1) {
         UpdateContainerComponentDropdownUtils.updateItemNames(masterComponent, itemDataMaps, containerDropdownStructure,
-          overwrittenItemNames, newDrodpownNames, (section[j] as BaseSubcomponentRef).subcomponentProperties.name,
+          overwrittenItemNames, newDrodpownNames, (section[j] as BaseSubcomponentRef).subcomponent.name,
           overwrittenDropdownStructures);
       }
     }
@@ -46,7 +46,7 @@ export class UpdateContainerComponentDropdownItemNames extends UpdateDropdownIte
 
   public static updateViaParentLayerPreviewStructure({ masterComponent }: WorkshopComponent, layer: Layer,
       useArgComponentStructure = false): void {
-    const { subcomponentProperties: { name: layerName }, sections: { alignedSections }} = layer;
+    const { subcomponent: { name: layerName }, sections: { alignedSections }} = layer;
     TraverseComponentViaDropdownStructure.traverseUsingComponent(masterComponent,
       UpdateContainerComponentDropdownItemNames.updateViaParentLayerIfItemFound, layerName, useArgComponentStructure, alignedSections);
   }

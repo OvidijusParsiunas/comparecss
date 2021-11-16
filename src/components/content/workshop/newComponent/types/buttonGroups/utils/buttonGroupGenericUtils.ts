@@ -8,6 +8,6 @@ export class ButtonGroupGenericUtils {
   public static getAllButtonComponents(buttonGroupBaseComponent: WorkshopComponent): WorkshopComponent[] {
     const baseSubcomponentRefs = buttonGroupBaseComponent.componentPreviewStructure.layers[0]
       .sections.alignedSections[ButtonGroupGenericUtils.BUTTONS_ALIGNED_SECTION_TYPE];
-    return baseSubcomponentRefs.map((button) => button.subcomponentProperties.seedComponent);
+    return baseSubcomponentRefs.map((button) => button.subcomponent.seedComponent);
   }
 }

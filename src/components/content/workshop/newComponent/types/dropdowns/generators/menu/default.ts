@@ -1,4 +1,4 @@
-import { DropdownItemLayer, OverwriteDropdownItemContext, SetTextSubcomponentPropertiesContext } from '../../../layers/generators/dropdownItem';
+import { DropdownItemLayer, OverwriteDropdownItemContext, SetTextSubcomponentContext } from '../../../layers/generators/dropdownItem';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../../interfaces/componentGenerator';
 import { CustomCss, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../../consts/subcomponentCssClasses.enum';
@@ -84,7 +84,7 @@ export class DefaultDropdownMenu {
       .unshift(DropdownItemLayer.overwriteDropdownItem.bind(DefaultDropdownMenu.overwriteLayerCss as OverwriteDropdownItemContext));
     menuComponent.newChildComponents.propertyOverwritables.postBuildFuncs[COMPONENT_TYPES.TEXT] = [
       ApplyDropdownMenuItemTextProperties.apply.bind(
-        { menuComponent, createDefaultTextStyling: DefaultDropdownMenu.createDefaultTextCustomCss } as SetTextSubcomponentPropertiesContext)];
+        { menuComponent, createDefaultTextStyling: DefaultDropdownMenu.createDefaultTextCustomCss } as SetTextSubcomponentContext)];
   }
 }
 

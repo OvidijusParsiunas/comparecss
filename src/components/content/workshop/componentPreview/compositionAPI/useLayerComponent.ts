@@ -12,7 +12,7 @@ import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 
 export default function useLayerComponent(): UseLayerComponent {
 
-  const otherSubcomponentTriggerState: CompositionAPISubcomponentTriggerState = { subcomponentProperties: null };
+  const otherSubcomponentTriggerState: CompositionAPISubcomponentTriggerState = { subcomponent: null };
 
   // part of a fix to make sure that the ripples are rendered on the layers and not on the bases of button components as
   // the overflow: hidden property on the base does not prevent the ripples from leaving the button when the base is clicked
@@ -29,11 +29,11 @@ export default function useLayerComponent(): UseLayerComponent {
   }
 
   const getStyleProperties = (layer: Layer, isLastLayer: boolean): WorkshopComponentCss[] => {
-    const { subcomponentProperties: { overwrittenCustomCssObj, customCss, customStaticFeatures, activeCssPseudoClass } } = layer;
-    SubcomponentTriggers.triggerOtherSubcomponentsCss(layer.subcomponentProperties, activeCssPseudoClass, otherSubcomponentTriggerState);
+    const { subcomponent: { overwrittenCustomCssObj, customCss, customStaticFeatures, activeCssPseudoClass } } = layer;
+    SubcomponentTriggers.triggerOtherSubcomponentsCss(layer.subcomponent, activeCssPseudoClass, otherSubcomponentTriggerState);
     const subcomponentCss = overwrittenCustomCssObj || customCss;
     const selectedDropdownMenuItemCss = getSelectedDropdownMenuItemCss(layer, subcomponentCss);
-    const buttonPaddingCss = getButtonPadding(layer.subcomponentProperties.seedComponent.containerComponent);
+    const buttonPaddingCss = getButtonPadding(layer.subcomponent.seedComponent.containerComponent);
     return [
       subcomponentCss[CSS_PSEUDO_CLASSES.DEFAULT],
       subcomponentCss[activeCssPseudoClass],

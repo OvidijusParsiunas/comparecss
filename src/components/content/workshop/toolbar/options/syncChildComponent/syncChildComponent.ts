@@ -1,6 +1,6 @@
 import { AutoSyncedSiblingContainerComponentUtils } from '../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingContainerComponentUtils';
-import { CustomDynamicProperties, SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SiblingComponentTypes, SiblingComponentState } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
+import { CustomDynamicProperties, Subcomponent, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { AddContainerComponent } from '../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { ComponentTypeToProperties } from '../../../../../../interfaces/componentTypeToProperties';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
@@ -24,7 +24,7 @@ export class SyncChildComponent {
     };
   }
 
-  private static syncAllCustomProperties(syncableSubcomponent: SubcomponentProperties, subcomponentToBeSyncedTo: SubcomponentProperties): void {
+  private static syncAllCustomProperties(syncableSubcomponent: Subcomponent, subcomponentToBeSyncedTo: Subcomponent): void {
     Object.assign(syncableSubcomponent.customFeatures, subcomponentToBeSyncedTo.customFeatures);
     Object.assign(syncableSubcomponent.customCss, subcomponentToBeSyncedTo.customCss);
     const componentToBeSyncedCustomCss = subcomponentToBeSyncedTo.customCss;
@@ -33,14 +33,14 @@ export class SyncChildComponent {
     }
   }
 
-  private static syncPropertiesThatOnlyExistInActiveComponent(syncableSubcomponent: SubcomponentProperties, subcomponentToBeSyncedTo: SubcomponentProperties): void {
+  private static syncPropertiesThatOnlyExistInActiveComponent(syncableSubcomponent: Subcomponent, subcomponentToBeSyncedTo: Subcomponent): void {
     syncableSubcomponent.customCss = subcomponentToBeSyncedTo.customCss;
     // need to create a new object as otherwise tempOriginalCustomProperties would be overwritten by a normal traversal
     syncableSubcomponent.customFeatures = JSONUtils.createObjectUsingObject1AndSameObject2Properties(
       syncableSubcomponent.customFeatures, subcomponentToBeSyncedTo.customFeatures);
   }
 
-  public static syncSubcomponent(syncableSubcomponent: SubcomponentProperties, subcomponentToBeSyncedTo: SubcomponentProperties, addTemporaryProperties: boolean): boolean {
+  public static syncSubcomponent(syncableSubcomponent: Subcomponent, subcomponentToBeSyncedTo: Subcomponent, addTemporaryProperties: boolean): boolean {
     if (addTemporaryProperties && !syncableSubcomponent.tempOriginalCustomProperties) {
       SyncChildComponent.moveCustomPropertiesToTempProperties(syncableSubcomponent);
     }
@@ -150,7 +150,7 @@ export class SyncChildComponent {
     const { alignedSections } = currentlySelectedComponent.parentLayer.sections;
     Object.keys(alignedSections).forEach((alignedSectionType: ALIGNED_SECTION_TYPES) => {
       alignedSections[alignedSectionType].forEach((baseSubcomponent) => {
-        SyncChildComponent.setComponentPropertiesToBeInSync(baseSubcomponent.subcomponentProperties.seedComponent, componenetThisIsSyncedTo);
+        SyncChildComponent.setComponentPropertiesToBeInSync(baseSubcomponent.subcomponent.seedComponent, componenetThisIsSyncedTo);
       });
     });
   }
@@ -166,7 +166,7 @@ export class SyncChildComponent {
 // private static syncUniqueComponents(uniqueComponents: SubcomponentTypeToProperties, componentToBeSyncedTo: WorkshopComponent, isTemporary: boolean): boolean {
 //   let wasAComponentToBeSyncedToMissing = false;
 //   Object.keys(uniqueComponents).forEach((subcomponentType) => {
-//     const syncableSubcomponent: SubcomponentProperties = uniqueComponents[subcomponentType];
+//     const syncableSubcomponent: Subcomponent = uniqueComponents[subcomponentType];
 //     if (!syncableSubcomponent) return;
 //     wasAComponentToBeSyncedToMissing = !!SyncChildComponent.syncSubcomponent(syncableSubcomponent,
 //       componentToBeSyncedTo?.sync.syncables.onCopy.subcomponents[subcomponentType], isTemporary);

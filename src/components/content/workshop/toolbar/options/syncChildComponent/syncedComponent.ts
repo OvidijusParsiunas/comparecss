@@ -4,7 +4,7 @@ import { PropertyReferenceSharingFuncsUtils } from '../../../newComponent/types/
 import { AutoSyncedSiblingComponentUtils } from '../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingComponentUtils';
 import { SiblingComponentTypes, SiblingComponentState } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { SubcomponentPreviewTraversalState, PreviewTraversalResult } from '../../../../../../interfaces/componentTraversal';
-import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { Subcomponent, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
@@ -15,11 +15,11 @@ import JSONUtils from '../../../utils/generic/jsonUtils';
 export class SyncedComponent {
 
   private static dereferenceCopiedComponentCustomProperties(componentTraversalState: SubcomponentPreviewTraversalState): PreviewTraversalResult {
-    const { subcomponentProperties } = componentTraversalState;
-    subcomponentProperties.customCss = JSONUtils.deepCopy(subcomponentProperties.customCss);
-    subcomponentProperties.customFeatures = JSONUtils.deepCopy(subcomponentProperties.customFeatures);
-    const propertySharingFuncType = subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.LAYER ? 'layer' : 'container';
-    PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuncs(false, propertySharingFuncType, subcomponentProperties.seedComponent);
+    const { subcomponent } = componentTraversalState;
+    subcomponent.customCss = JSONUtils.deepCopy(subcomponent.customCss);
+    subcomponent.customFeatures = JSONUtils.deepCopy(subcomponent.customFeatures);
+    const propertySharingFuncType = subcomponent.subcomponentType === SUBCOMPONENT_TYPES.LAYER ? 'layer' : 'container';
+    PropertyReferenceSharingFuncsUtils.executePropertyReferenceSharingFuncs(false, propertySharingFuncType, subcomponent.seedComponent);
     return {};
   }
 
@@ -28,7 +28,7 @@ export class SyncedComponent {
     const { alignedSections } = inSyncComponent.parentLayer.sections;
     Object.keys(alignedSections).forEach((alignedSectionType: ALIGNED_SECTION_TYPES) => {
       alignedSections[alignedSectionType].forEach((baseSubcomponent) => {
-        const { seedComponent } = baseSubcomponent.subcomponentProperties;
+        const { seedComponent } = baseSubcomponent.subcomponent;
         seedComponent.sync.componentThisIsSyncedTo.sync.componentsSyncedToThis.delete(seedComponent);
         seedComponent.sync.componentThisIsSyncedTo = null;
         SyncChildComponentUtils.callFuncOnSyncableComponents(AutoSyncedSiblingComponentUtils.copySiblingComponentSyncableTraversalCallback,
@@ -95,7 +95,7 @@ export class SyncedComponent {
     }
   }
 
-  public static isInSyncButtonDisplayed(activeSubcomponent: SubcomponentProperties): boolean {
+  public static isInSyncButtonDisplayed(activeSubcomponent: Subcomponent): boolean {
     const inSyncComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(activeSubcomponent.seedComponent);
     return inSyncComponent && !inSyncComponent.componentStatus.isRemoved;
   }

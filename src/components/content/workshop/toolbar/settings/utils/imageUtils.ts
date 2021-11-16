@@ -20,8 +20,8 @@ export default class ImageUtils {
     const result = event.target.result;
     const image = new Image();
     image.src = result;
-    SharedUtils.setCustomFeatureValue(spec.customFeatureObjectKeys, settingsComponent.subcomponentProperties, result);
-    SharedUtils.setCustomFeatureValue(spec.auxiliaryCustomFeatureObjectKeys, settingsComponent.subcomponentProperties, file.name);
+    SharedUtils.setCustomFeatureValue(spec.customFeatureObjectKeys, settingsComponent.subcomponent, result);
+    SharedUtils.setCustomFeatureValue(spec.auxiliaryCustomFeatureObjectKeys, settingsComponent.subcomponent, file.name);
     settingsComponent.imageNames[spec.name] = file.name;
   }
 
@@ -34,8 +34,8 @@ export default class ImageUtils {
   }
 
   public static removeImage(settingsComponent: ComponentOptions, spec: any): void {
-    SharedUtils.setCustomFeatureValue(spec.customFeatureObjectKeys, settingsComponent.subcomponentProperties, null);
-    SharedUtils.setCustomFeatureValue(spec.auxiliaryCustomFeatureObjectKeys, settingsComponent.subcomponentProperties, null);
+    SharedUtils.setCustomFeatureValue(spec.customFeatureObjectKeys, settingsComponent.subcomponent, null);
+    SharedUtils.setCustomFeatureValue(spec.auxiliaryCustomFeatureObjectKeys, settingsComponent.subcomponent, null);
     delete settingsComponent.imageNames[spec.name];
   }
 }

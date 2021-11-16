@@ -64,7 +64,7 @@ export class CardOptions {
       return dropdownItemOptions as Options;
     }
     const { layers } = component.componentPreviewStructure;
-    const currentLayerIndex = layers.findIndex((layer) => layer.subcomponentProperties.name === component.activeSubcomponentName);
+    const currentLayerIndex = layers.findIndex((layer) => layer.subcomponent.name === component.activeSubcomponentName);
     if (currentLayerIndex === layers.length - 1) {
       return cardBottomLayerOptions as Options;
     }

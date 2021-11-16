@@ -165,11 +165,11 @@ import { ToggleSubcomponentSelectModeEvent } from '../../../../../interfaces/tog
 import SyncChildComponentModeToggleUtils from './syncChildComponent/modeUtils/syncChildComponentModeToggle';
 import { SetActiveComponentUtils } from '../../utils/componentManipulation/utils/setActiveComponentUtils';
 import { fulPreviewModeState } from '../../componentPreview/utils/fullPreviewMode/fullPreviewModeState';
-import { SubcomponentProperties, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../consts/workshopToolbarOptionTypes.enum';
 import { EnabledIfChildComponentPresent, Option } from '../../../../../interfaces/componentOptions';
 import { subcomponentSelectModeState } from './subcomponentSelectMode/subcomponentSelectModeState';
 import { ToggleFullPreviewModeEvent } from '../../../../../interfaces/toggleFullPreviewModeEvent';
+import { Subcomponent, WorkshopComponent } from '../../../../../interfaces/workshopComponent';
 import { UseToolbarPositionToggle } from '../../../../../interfaces/useToolbarPositionToggle';
 import { RemoveChildComponentEvent } from '../../../../../interfaces/settingsComponentEvents';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../consts/componentStyles.enum';
@@ -315,9 +315,9 @@ export default {
         [subcomponentSelectModeCallbackFunction, keyTriggers, buttonElement, subcomponentNameClickedFunc] as ToggleSubcomponentSelectModeEvent);
     },
     getOptionsForActiveCssPseudoClass(): Option[] {
-      const subcomponentProperties: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
-      return componentTypeToOptions[this.component.type](subcomponentProperties.subcomponentType, this.component)
-        [subcomponentProperties.activeCssPseudoClass];
+      const subcomponent: Subcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
+      return componentTypeToOptions[this.component.type](subcomponent.subcomponentType, this.component)
+        [subcomponent.activeCssPseudoClass];
     },
     findOptionButtonElementViaName(optionName: WORKSHOP_TOOLBAR_OPTION_BUTTON_NAMES): HTMLElement {
       const buttonElements = document.getElementsByClassName(this.OPTION_MENU_SETTING_OPTION_BUTTON_MARKER);
@@ -326,9 +326,9 @@ export default {
     isChildComponentPresentOptionDisabled(enabledIfChildComponentPresent: EnabledIfChildComponentPresent): boolean {
       const { type, style } = enabledIfChildComponentPresent;
       const resultSubcomponent = Object.keys(this.component.subcomponents).find((subcomponentName) => {
-        const subcomponentProperties = this.component.subcomponents[subcomponentName];
-        if (subcomponentProperties.subcomponentType === type) {
-          return style ? subcomponentProperties.seedComponent.style === style : true;
+        const subcomponent = this.component.subcomponents[subcomponentName];
+        if (subcomponent.subcomponentType === type) {
+          return style ? subcomponent.seedComponent.style === style : true;
         }
         return false;
       });
@@ -338,8 +338,8 @@ export default {
       return option.enabledOnExpandedModalPreviewMode && !this.isExpandedModalPreviewModeActive;
     },
     getActiveSubcomponentCustomFeatureValue(customFeatureObjectKeys: string[]): unknown {
-      const activeSubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
-      return SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, activeSubcomponentProperties[customFeatureObjectKeys[0]]);
+      const activeSubcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
+      return SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, activeSubcomponent[customFeatureObjectKeys[0]]);
     },
     isOptionDisabled(option: Option): boolean {
       if (option.enabledIfCustomFeaturePresentWithKeys) {
@@ -396,7 +396,7 @@ export default {
     },
     selectNewSubcomponent(subcomponentName: string): void {
       // reset css state of the previous subcomponent to the first one
-      const oldActiveSubcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
+      const oldActiveSubcomponent: Subcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
       oldActiveSubcomponent.activeCssPseudoClass = oldActiveSubcomponent.defaultCssPseudoClass;
       SetActiveComponentUtils.setActiveSubcomponent(this.component, subcomponentName);
       this.setNewOptionOnNewDropdownItemSelect();
@@ -479,7 +479,7 @@ export default {
       this.$emit('remove-child-component', [true] as RemoveChildComponentEvent);
     },
     getChildComponentsThatCanBeAdded(): NestedDropdownStructure {
-      return (this.component.subcomponents[this.component.activeSubcomponentName] as SubcomponentProperties)
+      return (this.component.subcomponents[this.component.activeSubcomponentName] as Subcomponent)
         .seedComponent.newChildComponents?.dropdown?.items || {};
     },
     getChildComponentsThatCanBeAddAndRefresh(): NestedDropdownStructure {
@@ -602,7 +602,7 @@ export default {
           && (this.component.type === COMPONENT_TYPES.ALERT || this.component.type === COMPONENT_TYPES.CARD));
     },
     isInSyncButtonDisplayed(): boolean {
-      const activeSubcomponent: SubcomponentProperties = this.component.subcomponents[this.component.activeSubcomponentName];
+      const activeSubcomponent: Subcomponent = this.component.subcomponents[this.component.activeSubcomponentName];
       SyncedComponent.updateIfComponentSyncedToIsRemoved(activeSubcomponent.seedComponent);
       return SyncedComponent.isInSyncButtonDisplayed(activeSubcomponent);
     },

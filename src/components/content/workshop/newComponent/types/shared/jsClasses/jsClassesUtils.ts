@@ -1,6 +1,6 @@
 import { TraverseComponentViaPreviewStructureParentFirst } from '../../../../utils/componentTraversal/traverseComponentsViaPreviewStructure/traverseComponentsViaPreviewStructureParentFirst';
-import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SubcomponentPreviewTraversalState } from '../../../../../../../interfaces/componentTraversal';
+import { Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../consts/javascriptClasses.enum';
 
 export interface JsClassesReferences {
@@ -10,37 +10,37 @@ export interface JsClassesReferences {
 
 export class JsClassesUtils {
 
-  private static addJsClassesToFeatures(subcomponentProperties: SubcomponentProperties, overwriteDefaultProperties: boolean,
+  private static addJsClassesToFeatures(subcomponent: Subcomponent, overwriteDefaultProperties: boolean,
       jsClasses: Set<JAVASCRIPT_CLASSES>, featureType: 'customFeatures'|'customStaticFeatures',
       defaultFeatureType: 'defaultCustomFeatures'|'defaultCustomStaticFeatures'): void {
-    if (!subcomponentProperties[featureType]) subcomponentProperties[featureType] = {};
-    subcomponentProperties[featureType].jsClasses = jsClasses;
+    if (!subcomponent[featureType]) subcomponent[featureType] = {};
+    subcomponent[featureType].jsClasses = jsClasses;
     if (overwriteDefaultProperties) {
-      if (!subcomponentProperties[defaultFeatureType]) subcomponentProperties[defaultFeatureType] = {};
-      subcomponentProperties[defaultFeatureType].jsClasses = new Set(jsClasses);
+      if (!subcomponent[defaultFeatureType]) subcomponent[defaultFeatureType] = {};
+      subcomponent[defaultFeatureType].jsClasses = new Set(jsClasses);
     }
   }
 
-  private static addJsClasses(subcomponentProperties: SubcomponentProperties, overwriteDefaultProperties: boolean,
+  private static addJsClasses(subcomponent: Subcomponent, overwriteDefaultProperties: boolean,
       jsClasses: Set<JAVASCRIPT_CLASSES>, staticJsClasses: Set<JAVASCRIPT_CLASSES>): void {
-    if (jsClasses) JsClassesUtils.addJsClassesToFeatures(subcomponentProperties, overwriteDefaultProperties, jsClasses,
+    if (jsClasses) JsClassesUtils.addJsClassesToFeatures(subcomponent, overwriteDefaultProperties, jsClasses,
       'customFeatures', 'defaultCustomFeatures')
-    if (staticJsClasses) JsClassesUtils.addJsClassesToFeatures(subcomponentProperties, overwriteDefaultProperties, staticJsClasses,
+    if (staticJsClasses) JsClassesUtils.addJsClassesToFeatures(subcomponent, overwriteDefaultProperties, staticJsClasses,
       'customStaticFeatures', 'defaultCustomStaticFeatures')
   }
 
-  private static addCustomFeaturesObjects(subcomponentProperties: SubcomponentProperties, overwriteDefaultProperties: boolean): void {
-    subcomponentProperties.customFeatures = {};
-    if (overwriteDefaultProperties) subcomponentProperties.defaultCustomFeatures = {};
+  private static addCustomFeaturesObjects(subcomponent: Subcomponent, overwriteDefaultProperties: boolean): void {
+    subcomponent.customFeatures = {};
+    if (overwriteDefaultProperties) subcomponent.defaultCustomFeatures = {};
   }
 
   private static assign(overwriteDefaultProperties: boolean, jsClasses: Set<JAVASCRIPT_CLASSES>, staticJsClasses: Set<JAVASCRIPT_CLASSES>,
       componentTraversalState: SubcomponentPreviewTraversalState): SubcomponentPreviewTraversalState {
-    const { subcomponentProperties } = componentTraversalState;
-    if (!subcomponentProperties.customFeatures) {
-      JsClassesUtils.addCustomFeaturesObjects(subcomponentProperties, overwriteDefaultProperties);
+    const { subcomponent } = componentTraversalState;
+    if (!subcomponent.customFeatures) {
+      JsClassesUtils.addCustomFeaturesObjects(subcomponent, overwriteDefaultProperties);
     }
-    JsClassesUtils.addJsClasses(subcomponentProperties, overwriteDefaultProperties, jsClasses, staticJsClasses);
+    JsClassesUtils.addJsClasses(subcomponent, overwriteDefaultProperties, jsClasses, staticJsClasses);
     return componentTraversalState;
   }
 

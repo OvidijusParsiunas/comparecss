@@ -65,7 +65,7 @@ export class AddComponentShared {
     PaddingComponentUtils.overwriteSubcomponentsRef(masterComponent);
   }
 
-  protected static cleanSubcomponentProperties(newComponent: WorkshopComponent): void {
+  protected static cleanSubcomponent(newComponent: WorkshopComponent): void {
     newComponent.subcomponents = {};
     newComponent.componentPreviewStructure.subcomponentDropdownStructure = {};
     newComponent.componentPreviewStructure.subcomponentNameToDropdownItemName = {};

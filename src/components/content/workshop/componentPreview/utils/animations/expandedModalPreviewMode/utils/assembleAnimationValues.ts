@@ -1,6 +1,6 @@
 import { AssembledModalOpenAnimationValues, AssembledModalCloseAnimationValues } from '../../../../../../../../interfaces/assembledAnimationValues';
 import { MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../../../../../consts/baseSubcomponentNames.enum';
-import { SubcomponentProperties } from '../../../../../../../../interfaces/workshopComponent';
+import { Subcomponent } from '../../../../../../../../interfaces/workshopComponent';
 import { animationTypeToFunctionality } from '../../animationToFunctionality';
 import { ComponentOptions } from 'vue';
 
@@ -13,7 +13,7 @@ import { ComponentOptions } from 'vue';
 export class AssembleAnimationValues {
 
   public static assembleOpenAnimationValues(componentPreviewComponent: ComponentOptions): AssembledModalOpenAnimationValues {
-    const { customFeatures } = componentPreviewComponent.component.subcomponents[MASTER_SUBCOMPONENT_BASE_NAME.BASE] as SubcomponentProperties;
+    const { customFeatures } = componentPreviewComponent.component.subcomponents[MASTER_SUBCOMPONENT_BASE_NAME.BASE] as Subcomponent;
     return {
       modalOpenAnimation: animationTypeToFunctionality[customFeatures.animations.display.open.type],
       animationDuration: customFeatures.animations.display.open.duration,
@@ -26,7 +26,7 @@ export class AssembleAnimationValues {
   }
 
   public static assembleClosetAnimationValues(componentPreviewComponent: ComponentOptions, closeAnimationCallback: () => void): AssembledModalCloseAnimationValues {
-    const { customFeatures } = componentPreviewComponent.component.subcomponents[MASTER_SUBCOMPONENT_BASE_NAME.BASE] as SubcomponentProperties;
+    const { customFeatures } = componentPreviewComponent.component.subcomponents[MASTER_SUBCOMPONENT_BASE_NAME.BASE] as Subcomponent;
     return {
       modalCloseAnimation: animationTypeToFunctionality[customFeatures.animations.display.close.type],
       animationDuration: customFeatures.animations.display.close.duration,

@@ -1,10 +1,10 @@
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
-import { SubcomponentProperties } from './workshopComponent';
+import { Subcomponent } from './workshopComponent';
 
 export interface DisplayInFrontOfSiblingsContainerState {
   highestZIndex: number;
   numberOfCurrentlyHighlightedButtons: number;
-  conditionalFunc?: (subcomponentProperties: SubcomponentProperties, cssPseudoClass: CSS_PSEUDO_CLASSES) => boolean;
+  conditionalFunc?: (subcomponent: Subcomponent, cssPseudoClass: CSS_PSEUDO_CLASSES) => boolean;
 }
 
 export interface DisplayInFrontOfSiblingsState {

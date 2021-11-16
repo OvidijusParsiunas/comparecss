@@ -1,13 +1,13 @@
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
-import { SubcomponentProperties } from './workshopComponent';
+import { Subcomponent } from './workshopComponent';
 
 export interface SubcomponentNameToDropdownItemName {
   [subcomponentName: string]: string;
 }
 
 export type BaseSubcomponentRef = {
-  subcomponentProperties: SubcomponentProperties;
+  subcomponent: Subcomponent;
 };
 
 export type AlignedSections = { [key in ALIGNED_SECTION_TYPES]: BaseSubcomponentRef[] };

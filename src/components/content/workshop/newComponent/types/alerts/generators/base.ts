@@ -1,4 +1,4 @@
-import { CustomCss, CustomFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { BUTTON_COMPONENTS_BASE_NAMES, PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
@@ -69,7 +69,7 @@ class AlertBase extends ComponentBuilder {
     };
   }
 
-  public static createBaseSubcomponent(name: string): SubcomponentProperties {
+  public static createBaseSubcomponent(name: string): Subcomponent {
     return {
       name,
       subcomponentType: SUBCOMPONENT_TYPES.BASE,

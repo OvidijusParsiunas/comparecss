@@ -138,7 +138,7 @@ export interface CustomDynamicProperties {
 }
 
 // WORK 2 - change to Subcomponent
-export type SubcomponentProperties = CustomDynamicProperties & {
+export type Subcomponent = CustomDynamicProperties & {
   name: string;
   // used for defining options and adding new subcomponents to a layer
   subcomponentType?: SUBCOMPONENT_TYPES;
@@ -177,7 +177,7 @@ export type SubcomponentProperties = CustomDynamicProperties & {
 }
 
 export type Subcomponents = {
-  [subcomponentName: string]: SubcomponentProperties;
+  [subcomponentName: string]: Subcomponent;
 }
 
 export interface WorkshopComponent {
@@ -195,7 +195,7 @@ export interface WorkshopComponent {
   className: string;
   // difference between this and jsClasses is that this is not used for js purposes and is not shared with child components
   componentClasses?: string[];
-  baseSubcomponent: SubcomponentProperties;
+  baseSubcomponent: Subcomponent;
   // only on child container components
   parentLayer?: Layer;
   // gives an in sync child component to identify if the copied component has not been deleted

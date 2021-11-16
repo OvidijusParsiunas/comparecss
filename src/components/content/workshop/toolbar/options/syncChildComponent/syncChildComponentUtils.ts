@@ -1,5 +1,5 @@
-import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SiblingComponentTypes } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
+import { Subcomponent, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 import { BUTTON_STYLES } from '../../../../../../consts/componentStyles.enum';
@@ -21,11 +21,11 @@ export class SyncChildComponentUtils {
     return component.sync.syncables.containerComponents.find((reference) => reference.sync.componentThisIsSyncedTo);
   }
 
-  private static canSeedComponentBeOverwrittenBySynced(activeSubcomponent: SubcomponentProperties): boolean {
+  private static canSeedComponentBeOverwrittenBySynced(activeSubcomponent: Subcomponent): boolean {
     return activeSubcomponent.seedComponent !== activeSubcomponent.seedComponent.masterComponent;
   }
 
-  private static canButtonBeOverwrittenBySynced(buttonSubcomponent: SubcomponentProperties): boolean {
+  private static canButtonBeOverwrittenBySynced(buttonSubcomponent: Subcomponent): boolean {
     if (buttonSubcomponent.seedComponent.style === BUTTON_STYLES.CLOSE) return false;
     if (buttonSubcomponent.seedComponent.paddingComponent?.type === COMPONENT_TYPES.DROPDOWN) {
       return !buttonSubcomponent.seedComponent.paddingComponent.sync.componentThisIsSyncedTo;

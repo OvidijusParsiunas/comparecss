@@ -1,4 +1,4 @@
-import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
@@ -9,7 +9,7 @@ import { buttonBase } from './base';
 
 class DefaultButton extends ComponentBuilder {
 
-  public static overwriteSubcomponentProperties(textBaseSubcomponent: SubcomponentProperties): void {
+  public static overwriteSubcomponentProperties(textBaseSubcomponent: Subcomponent): void {
     textBaseSubcomponent.tempCustomCss = new Set(['transition']);
   }
 

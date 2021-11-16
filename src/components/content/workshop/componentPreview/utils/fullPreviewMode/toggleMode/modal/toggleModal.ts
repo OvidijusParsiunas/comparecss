@@ -2,15 +2,15 @@ import { WorkshopEventCallbackUtils } from '../../../../../toolbar/options/works
 import { ToggleFullPreviewModeOffCallbacks } from '../../../../../../../../interfaces/toggleFullPreviewModeEvent';
 import { WorkshopEventCallbackReturn } from '../../../../../../../../interfaces/workshopEventCallbackReturn';
 import ModeToggleCloseAnimation from '../../../animations/expandedModalPreviewMode/toggleAnimations/close';
+import { MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import ModeToggleOpenAnimation from '../../../animations/expandedModalPreviewMode/toggleAnimations/open';
 import { ELEMENT_CSS_CHANGE_MILLISECONDS, SET_METHODS } from '../../../animations/consts/sharedConsts';
-import { MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../../../../../consts/baseSubcomponentNames.enum';
 import { COMPONENT_PREVIEW_CLASSES } from '../../../../../../../../consts/componentPreviewClasses';
 import { DOM_EVENT_TRIGGER_KEYS } from '../../../../../../../../consts/domEventTriggerKeys.enum';
 import { OPTION_MENU_BUTTON_MARKER } from '../../../../../../../../consts/elementClassMarkers';
-import { SubcomponentProperties } from '../../../../../../../../interfaces/workshopComponent';
 import { JAVASCRIPT_CLASSES } from '../../../../../../../../consts/javascriptClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
+import { Subcomponent } from '../../../../../../../../interfaces/workshopComponent';
 import { CloseTriggers } from '../../../../../../../../interfaces/closeTriggers';
 import { fulPreviewModeState } from '../../fullPreviewModeState';
 import { animationState } from '../../../animations/state';
@@ -28,8 +28,8 @@ export default class ToggleModal {
     const subcomponentNames = Object.keys(subcomponents);
     for (let i = 0; i < subcomponentNames.length; i += 1) {
       if (subcomponents[subcomponentNames[i]].subcomponentType === SUBCOMPONENT_TYPES.BUTTON) {
-        const buttonSubcomponentProperties: SubcomponentProperties = subcomponents[subcomponentNames[i]];
-        buttonSubcomponentProperties.customFeatures.jsClasses[methodName](JAVASCRIPT_CLASSES.CLOSE_COMPONENT);
+        const buttonSubcomponent: Subcomponent = subcomponents[subcomponentNames[i]];
+        buttonSubcomponent.customFeatures.jsClasses[methodName](JAVASCRIPT_CLASSES.CLOSE_COMPONENT);
       }
     }
   }

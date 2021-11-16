@@ -5,7 +5,7 @@
       class="center-section"
       :class="COMPONENT_PREVIEW_MARKER"
       :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-      :subcomponents="getAlignedSection([ALIGNED_SECTION_TYPES.CENTER])"
+      :baseSubcomponents="getAlignedSection([ALIGNED_SECTION_TYPES.CENTER])"
       :mouseEvents="mouseEvents"
       :specialisedSectionContainerClass="SPECIALISED_SECTION_CONTAINER_CLASSES.CENTER_SECTION"/>
     <div class="default-sections-container" :class="[...classes, COMPONENT_PREVIEW_MARKER]">
@@ -15,7 +15,7 @@
         class="default-section"
         :class="COMPONENT_PREVIEW_MARKER"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-        :subcomponents="getAlignedSection([ALIGNED_SECTION_TYPES.LEFT])"
+        :baseSubcomponents="getAlignedSection([ALIGNED_SECTION_TYPES.LEFT])"
         :mouseEvents="mouseEvents"/>
       <!-- right -->
       <layer-section v-if="getAlignedSection([ALIGNED_SECTION_TYPES.RIGHT])"
@@ -23,14 +23,14 @@
         class="default-section right-section"
         :class="COMPONENT_PREVIEW_MARKER"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-        :subcomponents="getAlignedSection([ALIGNED_SECTION_TYPES.RIGHT])"
+        :baseSubcomponents="getAlignedSection([ALIGNED_SECTION_TYPES.RIGHT])"
         :mouseEvents="mouseEvents"/>
       <!-- equal split sections -->
       <layer-section v-if="sections[LAYER_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS]"
         class="default-section equal-split-sections"
         :class="COMPONENT_PREVIEW_MARKER"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-        :subcomponents="sections[LAYER_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS]"
+        :baseSubcomponents="sections[LAYER_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS]"
         :mouseEvents="mouseEvents"
         :specialisedSectionContainerClass="SPECIALISED_SECTION_CONTAINER_CLASSES.EQUAL_SPLIT_SECTIONS"/>
     </div>

@@ -3,14 +3,14 @@
     <!-- when clicked on button text - the ripples don't fade far - this can be fixed on export, alternatively to achieve full ripple effect in the app,
          will have to disable pointer events in the layer sections and have the js class in the layer parent, will also need to find a way to be able to
          highlight the text in the subcomponent select mode -->
-    <div v-for="(subcomponent, index) in subcomponents" :key="subcomponent"
-      :style="getStyleProperties(subcomponent.subcomponentProperties, index)"
+    <div v-for="(baseSubcomponent, index) in baseSubcomponents" :key="baseSubcomponent"
+      :style="getStyleProperties(baseSubcomponent.subcomponent, index)"
       class="subcomponent-element-container"
-      :class="[COMPONENT_PREVIEW_MARKER, specialisedSectionContainerClass, ...getChildComponentJs(subcomponent)]">
-      <base-component v-if="subcomponent.subcomponentProperties.seedComponent"
+      :class="[COMPONENT_PREVIEW_MARKER, specialisedSectionContainerClass, ...getChildComponentJs(baseSubcomponent)]">
+      <base-component v-if="baseSubcomponent.subcomponent.seedComponent"
         class="child-component-container"
-        :class="[COMPONENT_PREVIEW_MARKER, ...getChildComponentContainerJsClasses(subcomponent)]"
-        :component="subcomponent.subcomponentProperties.seedComponent.paddingComponentChild || subcomponent.subcomponentProperties.seedComponent"
+        :class="[COMPONENT_PREVIEW_MARKER, ...getChildComponentContainerJsClasses(baseSubcomponent)]"
+        :component="baseSubcomponent.subcomponent.seedComponent.paddingComponentChild || baseSubcomponent.subcomponent.seedComponent"
         :mouseEvents="mouseEvents"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
         :isChildComponent="true"/>
@@ -38,18 +38,18 @@ export default {
     };
   },
   methods: {
-    getChildComponentContainerJsClasses(subcomponent: BaseSubcomponentRef): string[] {
-      if (subcomponent.subcomponentProperties.subcomponentType === SUBCOMPONENT_TYPES.BUTTON) return [];
-      return this.getChildComponentJs(subcomponent);
+    getChildComponentContainerJsClasses(baseSubcomponent: BaseSubcomponentRef): string[] {
+      if (baseSubcomponent.subcomponent.subcomponentType === SUBCOMPONENT_TYPES.BUTTON) return [];
+      return this.getChildComponentJs(baseSubcomponent);
     },
     getChildComponentJs(layerBaseSubcomponent: BaseSubcomponentRef): string[] {
-      const { customFeatures, customStaticFeatures } = layerBaseSubcomponent.subcomponentProperties;
+      const { customFeatures, customStaticFeatures } = layerBaseSubcomponent.subcomponent;
       return SetUtils.transformSetsToOneDimensionalArray(customFeatures?.jsClasses, customStaticFeatures?.jsClasses);
     }
   },
   props: {
     subcomponentAndOverlayElementIds: Object,
-    subcomponents: Object,
+    baseSubcomponents: Object,
     mouseEvents: Object,
     specialisedSectionContainerClass: String,
   },

@@ -38,6 +38,7 @@ export default function useComponentManipulation(): UseComponentManipulation {
     if (shouldSubcomponentNamesBeUpdated) workshopComponent.$refs.contents.refreshCurrentComponent();
   };
 
+  // WORK 2 - refactor
   const changeSubcomponentOrder = (workshopComponent: ComponentOptions, moveSubcomponentEvent: ChangeSubcomponentOrderEvent): void => {
     ChangeChildComponentOrder.change(...moveSubcomponentEvent);
     workshopComponent.$refs.contents.refreshCurrentComponent();

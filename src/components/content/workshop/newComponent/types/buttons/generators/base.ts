@@ -1,4 +1,4 @@
-import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, CustomStaticFeatures, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SubcomponentTriggers } from '../../../../utils/componentManipulation/utils/subcomponentTriggers';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
@@ -98,7 +98,7 @@ class ButtonBase extends ComponentBuilder {
     };
   }
 
-  public static createBaseSubcomponent(name: string): SubcomponentProperties {
+  public static createBaseSubcomponent(name: string): Subcomponent {
     return {
       name,
       subcomponentType: SUBCOMPONENT_TYPES.BUTTON,

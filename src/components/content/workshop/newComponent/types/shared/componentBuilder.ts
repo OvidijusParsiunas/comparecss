@@ -1,4 +1,4 @@
-import { AlignedLayerSection, BackdropProperties, ComponentCenteringInScreen, Image, SubcomponentProperties, Text, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { AlignedLayerSection, BackdropProperties, ComponentCenteringInScreen, Image, Subcomponent, Text, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { DropdownItemsDisplayStatusUtils } from '../../../utils/dropdownItemsDisplayStatusUtils/dropdownItemsDisplayStatusUtils';
 import { BASE_SUBCOMPONENT_NAMES, MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../../../../../../consts/animationTypes.enum';
@@ -147,7 +147,7 @@ export class ComponentBuilder {
     return syncables;
   }
 
-  protected static addJsClasses(subcomponent: SubcomponentProperties, featureType: 'customFeatures'|'customStaticFeatures',
+  protected static addJsClasses(subcomponent: Subcomponent, featureType: 'customFeatures'|'customStaticFeatures',
       javascriptClass: JAVASCRIPT_CLASSES): void {
     const defaultFeatureType = featureType === 'customFeatures' ? 'defaultCustomFeatures' : 'defaultCustomStaticFeatures';
     if (!subcomponent[featureType]) {
@@ -162,16 +162,16 @@ export class ComponentBuilder {
     subcomponent[defaultFeatureType].jsClasses.add(javascriptClass);
   }
 
-  protected static setCustomAndDefaultCssProperty<T extends keyof WorkshopComponentCss>(subcomponentProperties: SubcomponentProperties,
+  protected static setCustomAndDefaultCssProperty<T extends keyof WorkshopComponentCss>(subcomponent: Subcomponent,
       cssPseudoClass: CSS_PSEUDO_CLASSES, cssProperty: T, value: WorkshopComponentCss[T]): void {
-    subcomponentProperties.customCss[cssPseudoClass][cssProperty] = value;
-    subcomponentProperties.defaultCss[cssPseudoClass][cssProperty] = value;
+    subcomponent.customCss[cssPseudoClass][cssProperty] = value;
+    subcomponent.defaultCss[cssPseudoClass][cssProperty] = value;
   }
 
-  private static toggleSelectDropdownTypeSetting(subcomponentProperties: SubcomponentProperties): void {
-    SelectDropdownUtils.setSelectDropdownText(subcomponentProperties);
-    if (!subcomponentProperties.customFeatures.dropdown.select.enabled) {
-      SelectDropdownUtils.setSelectDropdownAutoWidthToOff(subcomponentProperties);
+  private static toggleSelectDropdownTypeSetting(subcomponent: Subcomponent): void {
+    SelectDropdownUtils.setSelectDropdownText(subcomponent);
+    if (!subcomponent.customFeatures.dropdown.select.enabled) {
+      SelectDropdownUtils.setSelectDropdownAutoWidthToOff(subcomponent);
     }
   }
 
@@ -204,7 +204,7 @@ export class ComponentBuilder {
     };
   }
 
-  private static createComponent(presetProperties: PresetProperties, baseSubcomponent: SubcomponentProperties,
+  private static createComponent(presetProperties: PresetProperties, baseSubcomponent: Subcomponent,
       isBaseOptional = true): WorkshopComponent {
     const baseName = baseSubcomponent.name;
     const subcomponents = { [baseName]: baseSubcomponent };
@@ -224,7 +224,7 @@ export class ComponentBuilder {
     };
   }
   
-  private static alignBase(baseSubcomponent: SubcomponentProperties, alignedSection: ALIGNED_SECTION_TYPES): void {
+  private static alignBase(baseSubcomponent: Subcomponent, alignedSection: ALIGNED_SECTION_TYPES): void {
     if (baseSubcomponent.customStaticFeatures) {
       baseSubcomponent.customStaticFeatures.alignedLayerSection = { section: alignedSection };
       baseSubcomponent.defaultCustomStaticFeatures.alignedLayerSection = { section: alignedSection };
@@ -235,7 +235,7 @@ export class ComponentBuilder {
   }
 
   public static createBaseComponent(presetProperties: PresetProperties,
-      createBaseSubcomponent: (name: string) => SubcomponentProperties, isBaseOptional = true): WorkshopComponent {
+      createBaseSubcomponent: (name: string) => Subcomponent, isBaseOptional = true): WorkshopComponent {
     const baseName = presetProperties.baseName || MASTER_SUBCOMPONENT_BASE_NAME.BASE;
     const baseSubcomponent = createBaseSubcomponent(baseName);
     if (presetProperties.alignmentSection) ComponentBuilder.alignBase(baseSubcomponent, presetProperties.alignmentSection);

@@ -2,7 +2,7 @@ import { DropdownStructureTraversalState, DropdownTraversalResult, TargetDetails
 import { UpdateContainerComponentDropdownItemNames } from '../updateChildComponent/updateContainerComponentDropdownItemNames';
 import { TraverseComponentViaDropdownStructure } from '../../componentTraversal/traverseComponentViaDropdownStructure';
 import { AlignedSections, BaseSubcomponentRef } from '../../../../../../interfaces/componentPreviewStructure';
-import { SubcomponentProperties, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { Subcomponent, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { childComponentAlignmentDropdownState } from './childComponentAlignmentDropdownState';
 import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
@@ -24,8 +24,8 @@ export class ChangeChildComponentAlignment {
   }
 
   private static addSubcomponentToAlignment(previousAlignment: ALIGNED_SECTION_TYPES, newAlignment: ALIGNED_SECTION_TYPES,
-      subcomponentProperties: SubcomponentProperties): void {
-    const { alignedSections } = subcomponentProperties.seedComponent.parentLayer.sections;
+      subcomponent: Subcomponent): void {
+    const { alignedSections } = subcomponent.seedComponent.parentLayer.sections;
     if (newAlignment === childComponentAlignmentDropdownState.getInitialAlignment()) {
       ChangeChildComponentAlignment.addSubcomponentBackToInitialAlignment(previousAlignment, newAlignment, alignedSections);
     } else if (childComponentAlignmentDropdownState.getChildBaseSubcomponent()) {
@@ -38,9 +38,9 @@ export class ChangeChildComponentAlignment {
     childComponentAlignmentDropdownState.setInitialAlignmentIndex(currentSubcomponentIndex);
   }
 
-  private static indexOfSubcomponent(subcomponents: BaseSubcomponentRef[], subcomponentProperties: SubcomponentProperties): number {
+  private static indexOfSubcomponent(subcomponents: BaseSubcomponentRef[], subcomponent: Subcomponent): number {
     for (let i = 0; i < subcomponents.length; i += 1) {
-      if (subcomponents[i].subcomponentProperties === subcomponentProperties) {
+      if (subcomponents[i].subcomponent === subcomponent) {
         return i;
       }
     }
@@ -51,9 +51,9 @@ export class ChangeChildComponentAlignment {
     subcomponents.splice(currentSubcomponentIndex, 1);
   }
 
-  private static setStateAndRemoveSubcomponent(previousAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties): void {
-    const previousAlignmentSubcomponents = subcomponentProperties.seedComponent.parentLayer.sections.alignedSections[previousAlignment];
-    const currentSubcomponentIndex = ChangeChildComponentAlignment.indexOfSubcomponent(previousAlignmentSubcomponents, subcomponentProperties);
+  private static setStateAndRemoveSubcomponent(previousAlignment: ALIGNED_SECTION_TYPES, subcomponent: Subcomponent): void {
+    const previousAlignmentSubcomponents = subcomponent.seedComponent.parentLayer.sections.alignedSections[previousAlignment];
+    const currentSubcomponentIndex = ChangeChildComponentAlignment.indexOfSubcomponent(previousAlignmentSubcomponents, subcomponent);
     ChangeChildComponentAlignment.saveStateAndRemoveSubcomponent(previousAlignmentSubcomponents, currentSubcomponentIndex);
     if (childComponentAlignmentDropdownState.getInitialAlignmentIndex() < 0) {
       ChangeChildComponentAlignment.setInitialDropdownState(previousAlignment, currentSubcomponentIndex);
@@ -71,25 +71,25 @@ export class ChangeChildComponentAlignment {
     return {};
   }
 
-  private static updateNames(newAlignment: ALIGNED_SECTION_TYPES, subcomponentProperties: SubcomponentProperties, masterComponent: WorkshopComponent): void {
+  private static updateNames(newAlignment: ALIGNED_SECTION_TYPES, subcomponent: Subcomponent, masterComponent: WorkshopComponent): void {
     const targetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName) as TargetDetails;
-    const { alignedSections } = subcomponentProperties.seedComponent.parentLayer.sections;
+    const { alignedSections } = subcomponent.seedComponent.parentLayer.sections;
     targetDetails.parentLayerAlignedSections = alignedSections;
     TraverseComponentViaDropdownStructure.traverse(
       masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       ChangeChildComponentAlignment.updateDropdownStructureIfFound.bind(targetDetails));
     // UX - check if need to set the subcomponent to the right of the alignment
     // masterComponent.activeSubcomponentName = newAlignmentSubcomponents[newAlignmentSubcomponents.length - 1].name;
-    SetActiveComponentUtils.setActiveSubcomponent(masterComponent, alignedSections[newAlignment][0].subcomponentProperties.name);
+    SetActiveComponentUtils.setActiveSubcomponent(masterComponent, alignedSections[newAlignment][0].subcomponent.name);
   }
 
   public static change(masterComponent: WorkshopComponent, previousAlignment: ALIGNED_SECTION_TYPES, newAlignment: ALIGNED_SECTION_TYPES,
-      subcomponentProperties: SubcomponentProperties, shouldSubcomponentNamesBeUpdated: boolean): void {
+      subcomponent: Subcomponent, shouldSubcomponentNamesBeUpdated: boolean): void {
     if (shouldSubcomponentNamesBeUpdated) {
-      ChangeChildComponentAlignment.updateNames(newAlignment, subcomponentProperties, masterComponent);
+      ChangeChildComponentAlignment.updateNames(newAlignment, subcomponent, masterComponent);
     } else if (newAlignment !== previousAlignment) {
-      ChangeChildComponentAlignment.setStateAndRemoveSubcomponent(previousAlignment, subcomponentProperties);
-      ChangeChildComponentAlignment.addSubcomponentToAlignment(previousAlignment, newAlignment, subcomponentProperties);
+      ChangeChildComponentAlignment.setStateAndRemoveSubcomponent(previousAlignment, subcomponent);
+      ChangeChildComponentAlignment.addSubcomponentToAlignment(previousAlignment, newAlignment, subcomponent);
     }
   }
 }

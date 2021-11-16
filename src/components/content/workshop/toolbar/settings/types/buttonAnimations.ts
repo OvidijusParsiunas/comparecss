@@ -10,7 +10,6 @@ export default {
       spec: {
         name: 'Ripples',
         default: false,
-        subcomponentPropertiesObject: 'jsClasses',
         customFeatureObjectKeys: ['customFeatures', 'jsClasses'],
         valueInSetObject: JAVASCRIPT_CLASSES.RIPPLES,
       },

@@ -5,8 +5,8 @@ import { AutoSyncedSiblingComponentUtils } from '../../autoSyncedSiblingComponen
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
-import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { AlignedSections, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
@@ -20,7 +20,7 @@ import JSONUtils from '../../../generic/jsonUtils';
 
 export class AddLayerComponent extends AddComponentShared {
 
-  private static updateOtherLayersThatAreSyncedToThis(containerComponent: WorkshopComponent, newLayer: SubcomponentProperties): void {
+  private static updateOtherLayersThatAreSyncedToThis(containerComponent: WorkshopComponent, newLayer: Subcomponent): void {
     if (containerComponent.componentPreviewStructure.layers.length === 1 && containerComponent.sync.siblingChildComponentsAutoSynced) {
       const parentComponent = SyncChildComponentUtils.getParentComponentWithOtherComponentsSyncedToIt(containerComponent);
       if (parentComponent) AddLayerComponent.updateOtherLayers(parentComponent, containerComponent, newLayer);
@@ -56,17 +56,17 @@ export class AddLayerComponent extends AddComponentShared {
     return anotherContainer.sync.syncables.onCopy.repeatedComponents.find((component) => component.type === targetComponent.type);
   }
 
-  private static copySyncedComponent(syncedComponent: WorkshopComponent, containerComponent: WorkshopComponent, newLayerProperties: SubcomponentProperties): void {
+  private static copySyncedComponent(syncedComponent: WorkshopComponent, containerComponent: WorkshopComponent, newLayerProperties: Subcomponent): void {
     const sameContainerComponentInSyncedComponent = AddLayerComponent.getMatchingComponentFromAnotherContainerSyncables(
       containerComponent, syncedComponent.sync.componentThisIsSyncedTo);
     if (sameContainerComponentInSyncedComponent.componentPreviewStructure.layers.length > 0) {
-      const { customCss, customFeatures } = sameContainerComponentInSyncedComponent.componentPreviewStructure.layers[0].subcomponentProperties;
+      const { customCss, customFeatures } = sameContainerComponentInSyncedComponent.componentPreviewStructure.layers[0].subcomponent;
       newLayerProperties.customCss = customCss;
       newLayerProperties.customFeatures = customFeatures;
     }
   }
 
-  private static overwriteSubcomponentCustomProperties(containerComponent: WorkshopComponent, newLayerProperties: SubcomponentProperties): void {
+  private static overwriteSubcomponentCustomProperties(containerComponent: WorkshopComponent, newLayerProperties: Subcomponent): void {
     if (containerComponent.componentPreviewStructure.layers.length === 1) {
       const syncedComponent = SyncChildComponentUtils.getCurrentOrParentComponentThatIsInSync(containerComponent);
       if (syncedComponent) AddLayerComponent.copySyncedComponent(syncedComponent, containerComponent, newLayerProperties);
@@ -75,7 +75,7 @@ export class AddLayerComponent extends AddComponentShared {
       // component, but there currently is no use case that requires such functionality as it is currently handled by childComponentsLockedToLayer
       AutoSyncedSiblingComponentUtils.copySiblingCustomDynamicProperties(
         newLayerProperties,
-        containerComponent.componentPreviewStructure.layers[containerComponent.componentPreviewStructure.layers.length - 2].subcomponentProperties,
+        containerComponent.componentPreviewStructure.layers[containerComponent.componentPreviewStructure.layers.length - 2].subcomponent,
         !!containerComponent.sync.siblingChildComponentsAutoSynced);
     }
   }
@@ -84,12 +84,12 @@ export class AddLayerComponent extends AddComponentShared {
     containerComponent.componentPreviewStructure.layers.push(layer);
   }
 
-  private static updateOtherLayers(parentComponent: WorkshopComponent, containerComponent: WorkshopComponent, newLayer: SubcomponentProperties): void {
+  private static updateOtherLayers(parentComponent: WorkshopComponent, containerComponent: WorkshopComponent, newLayer: Subcomponent): void {
     parentComponent.sync.componentsSyncedToThis.forEach((component) => {
       const sameContainerComponentInSyncedComponent = AddLayerComponent.getMatchingComponentFromAnotherContainerSyncables(containerComponent, component);
-      const { subcomponentProperties } = sameContainerComponentInSyncedComponent.componentPreviewStructure.layers[0];
-      JSONUtils.copyPropertiesThatExistInTarget(subcomponentProperties.customCss, newLayer.customCss);
-      JSONUtils.copyPropertiesThatExistInTarget(subcomponentProperties.customFeatures, newLayer.customFeatures);
+      const { subcomponent } = sameContainerComponentInSyncedComponent.componentPreviewStructure.layers[0];
+      JSONUtils.copyPropertiesThatExistInTarget(subcomponent.customCss, newLayer.customCss);
+      JSONUtils.copyPropertiesThatExistInTarget(subcomponent.customFeatures, newLayer.customFeatures);
     });
   }
 
@@ -107,7 +107,7 @@ export class AddLayerComponent extends AddComponentShared {
     const layerSections = baseSubcomponent.layerSectionsType === LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS
       ? AddLayerComponent.createEmptyAlignedSections() : [];
     return {
-      subcomponentProperties: baseSubcomponent,
+      subcomponent: baseSubcomponent,
       sections: {
         [baseSubcomponent.layerSectionsType]: layerSections,
       },
@@ -142,7 +142,7 @@ export class AddLayerComponent extends AddComponentShared {
     AddComponentShared.addNewSubcomponentNameInContainerDropdownItemNameMap(masterComponent, newComponent, isEditable);
     AddLayerComponent.addNewChildComponentsItems(higherComponentContainer, newComponent);
     IncrementChildComponentCountLimitsState.increment(higherComponentContainer, layerName);
-    AddComponentShared.cleanSubcomponentProperties(newComponent);
+    AddComponentShared.cleanSubcomponent(newComponent);
     // needs to be done after dropdown items have been updated as property overwritables can add new components
     AddComponentShared.executePropertyOverwritables(newComponent, containerComponent, 'layer');
     AddLayerComponent.asyncUpdateSyncedComponents(newComponent, containerComponent);

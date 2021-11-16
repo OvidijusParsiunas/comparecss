@@ -1,4 +1,4 @@
-import { CustomCss, SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { BUTTON_STYLES, TEXT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
@@ -16,17 +16,17 @@ class CloseButton extends ComponentBuilder {
     delete buttonComponent.newChildComponents.dropdown;
   }
 
-  private static overwriteButtonTextProperties(textBaseSubcomponent: SubcomponentProperties, textContent: string): void {
+  private static overwriteButtonTextProperties(textBaseSubcomponent: Subcomponent, textContent: string): void {
     textBaseSubcomponent.customStaticFeatures.subcomponentText.text = textContent;
     textBaseSubcomponent.defaultCustomStaticFeatures.subcomponentText.text = textContent;
     textBaseSubcomponent.isRemovable = true;
   }
 
-  private static overwriteInheritedCss(textBaseSubcomponent: SubcomponentProperties): void {
+  private static overwriteInheritedCss(textBaseSubcomponent: Subcomponent): void {
     textBaseSubcomponent.inheritedCss = inheritedCloseTextCss;
   }
 
-  public static overwriteTextBase(textBaseSubcomponent: SubcomponentProperties): void {
+  public static overwriteTextBase(textBaseSubcomponent: Subcomponent): void {
     CloseButton.overwriteInheritedCss(textBaseSubcomponent);
     CloseButton.overwriteButtonTextProperties(textBaseSubcomponent, CLOSE_BUTTON_X_TEXT);
   }
@@ -87,7 +87,7 @@ class CloseButton extends ComponentBuilder {
     };
   }
 
-  private static overwriteBaseCustomCss(buttonBaseSubcomponent: SubcomponentProperties): void {
+  private static overwriteBaseCustomCss(buttonBaseSubcomponent: Subcomponent): void {
     buttonBaseSubcomponent.customCss = CloseButton.createDefaultButtonBaseCss();
     buttonBaseSubcomponent.defaultCss = CloseButton.createDefaultButtonBaseCss();
   }

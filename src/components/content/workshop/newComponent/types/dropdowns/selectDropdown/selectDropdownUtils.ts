@@ -1,11 +1,11 @@
-import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
+import { Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SelectDropdownText } from '../../../../../../../interfaces/dropdownFeatures';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 
 export class SelectDropdownUtils {
 
-  private static refreshItemTextState(dropdownBaseSubcomponent: SubcomponentProperties, checkBeforeProceeding: boolean): void {
+  private static refreshItemTextState(dropdownBaseSubcomponent: Subcomponent, checkBeforeProceeding: boolean): void {
     const { customFeatures: { dropdown: { select }}, customStaticFeatures } = dropdownBaseSubcomponent;
     if (select.enabled || !checkBeforeProceeding) {
       customStaticFeatures.selectDropdownText.lastHoveredItemText = null;
@@ -43,28 +43,28 @@ export class SelectDropdownUtils {
     }
   }
 
-  public static setSelectDropdownLastHoveredItemText(subcomponentProperties: SubcomponentProperties): void {
-    SelectDropdownUtils.setDetails(subcomponentProperties.seedComponent, 'lastHoveredItemText');
+  public static setSelectDropdownLastHoveredItemText(subcomponent: Subcomponent): void {
+    SelectDropdownUtils.setDetails(subcomponent.seedComponent, 'lastHoveredItemText');
   }
 
-  public static setSelectDropdownText(subcomponentProperties: SubcomponentProperties): void {
-    SelectDropdownUtils.setDetails(subcomponentProperties.seedComponent, 'lastSelectedItemText', true);
+  public static setSelectDropdownText(subcomponent: Subcomponent): void {
+    SelectDropdownUtils.setDetails(subcomponent.seedComponent, 'lastSelectedItemText', true);
   }
 
-  public static setSelectDropdownAutoWidthToOff(subcomponentProperties: SubcomponentProperties): void {
-    const buttonComponent = subcomponentProperties.seedComponent.paddingComponentChild;
+  public static setSelectDropdownAutoWidthToOff(subcomponent: Subcomponent): void {
+    const buttonComponent = subcomponent.seedComponent.paddingComponentChild;
     const { autoSize } = buttonComponent.baseSubcomponent.customFeatures;
     if (autoSize) autoSize.width = false;
   }
   
-  private static isSelected(paddingComponentBase: SubcomponentProperties, text: string): boolean {
+  private static isSelected(paddingComponentBase: Subcomponent, text: string): boolean {
     const { customFeatures: { dropdown: { select } }, customStaticFeatures: { selectDropdownText: { lastSelectedItemText, lastHoveredItemText }}
       } = paddingComponentBase;
     return select?.enabled && lastSelectedItemText && text === lastHoveredItemText; 
   }
 
   public static isItemSelected(layer: Layer): boolean {
-    const { containerComponent, newChildComponents } = layer.subcomponentProperties.seedComponent;
+    const { containerComponent, newChildComponents } = layer.subcomponent.seedComponent;
     if (containerComponent?.type === COMPONENT_TYPES.DROPDOWN_MENU) {
       return SelectDropdownUtils.isSelected(
         containerComponent.linkedComponents.base.baseSubcomponent,

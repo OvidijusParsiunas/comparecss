@@ -1,4 +1,4 @@
-import { SubcomponentProperties } from './workshopComponent';
+import { Subcomponent } from './workshopComponent';
 
 interface AutoSizeDimensions {
   width?: boolean;
@@ -6,8 +6,8 @@ interface AutoSizeDimensions {
 }
 
 export interface AutoSizeFuncs {
-  widthCalculationFunc?: (subcomponentProperties: SubcomponentProperties) => void;
-  heightCalucationFunc?: (subcomponentProperties: SubcomponentProperties) => void;
+  widthCalculationFunc?: (subcomponent: Subcomponent) => void;
+  heightCalucationFunc?: (subcomponent: Subcomponent) => void;
 }
 
 export type AutoSize = AutoSizeDimensions & AutoSizeFuncs;

@@ -1,5 +1,5 @@
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
-import { SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
+import { Subcomponent } from '../../../../../../interfaces/workshopComponent';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { UpdateOtherRangesUtils } from './rangeUtils/updateOtherRangesUtils';
 import { SetUtils } from '../../../utils/generic/setUtils';
@@ -8,25 +8,25 @@ import SharedUtils from './sharedUtils';
 
 export default class SettingsUtils {
 
-  private static removeAuxiliaryPartialCss(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
-    const { auxiliaryPartialCss, activeCssPseudoClass } = subcomponentProperties;
+  private static removeAuxiliaryPartialCss(subcomponent: Subcomponent, cssProperty: string): void {
+    const { auxiliaryPartialCss, activeCssPseudoClass } = subcomponent;
     if (auxiliaryPartialCss && auxiliaryPartialCss[activeCssPseudoClass] && auxiliaryPartialCss[activeCssPseudoClass][cssProperty]) {
       delete auxiliaryPartialCss[activeCssPseudoClass][cssProperty];
     }
   }
 
-  private static resetCssProperties(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
-    const { customCss, defaultCss, activeCssPseudoClass } = subcomponentProperties;
+  private static resetCssProperties(subcomponent: Subcomponent, cssProperty: string): void {
+    const { customCss, defaultCss, activeCssPseudoClass } = subcomponent;
     if (defaultCss[activeCssPseudoClass]?.[cssProperty]) {
       const cssValue = defaultCss[activeCssPseudoClass][cssProperty];
-      SettingsUtils.setCssProperty(subcomponentProperties, cssProperty, cssValue)
+      SettingsUtils.setCssProperty(subcomponent, cssProperty, cssValue)
     } else if (customCss[activeCssPseudoClass]) {
       delete customCss[activeCssPseudoClass][cssProperty];
     }
   }
   
-  private static setCssProperty(subcomponentProperties: SubcomponentProperties, cssProperty: string, cssValue: string): void {
-    const { customCss, activeCssPseudoClass } = subcomponentProperties;
+  private static setCssProperty(subcomponent: Subcomponent, cssProperty: string, cssValue: string): void {
+    const { customCss, activeCssPseudoClass } = subcomponent;
     if (!customCss[activeCssPseudoClass]) {
       customCss[activeCssPseudoClass] = { [cssProperty]: cssValue };
     } else {
@@ -34,15 +34,15 @@ export default class SettingsUtils {
     }
   }
 
-  private static resetCustomCss(subcomponentProperties: SubcomponentProperties, cssProperty: string): void {
-    const { defaultCss, activeCssPseudoClass } = subcomponentProperties;
+  private static resetCustomCss(subcomponent: Subcomponent, cssProperty: string): void {
+    const { defaultCss, activeCssPseudoClass } = subcomponent;
     if (activeCssPseudoClass === CSS_PSEUDO_CLASSES.DEFAULT) {
       if (defaultCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty] !== undefined) {
         const cssValue = defaultCss[CSS_PSEUDO_CLASSES.DEFAULT][cssProperty];
-        SettingsUtils.setCssProperty(subcomponentProperties, cssProperty, cssValue);
+        SettingsUtils.setCssProperty(subcomponent, cssProperty, cssValue);
       }
     } else {
-      SettingsUtils.resetCssProperties(subcomponentProperties, cssProperty);
+      SettingsUtils.resetCssProperties(subcomponent, cssProperty);
     }
   }
   
@@ -51,20 +51,20 @@ export default class SettingsUtils {
     SetUtils.addSetsToSet(currentValue, defaultValue);
   }
 
-  private static resetAuxiliaryCustomFeature(auxiliaryCustomFeatureObjectKeys: string[], subcomponentProperties: SubcomponentProperties,
+  private static resetAuxiliaryCustomFeature(auxiliaryCustomFeatureObjectKeys: string[], subcomponent: Subcomponent,
       defaultKey: 'defaultCustomFeatures'|'defaultCustomStaticFeatures'): void {
-    const defaultValue = SharedUtils.getCustomFeatureValue(auxiliaryCustomFeatureObjectKeys, subcomponentProperties[defaultKey]);
-    SharedUtils.setCustomFeatureValue(auxiliaryCustomFeatureObjectKeys, subcomponentProperties, defaultValue);
+    const defaultValue = SharedUtils.getCustomFeatureValue(auxiliaryCustomFeatureObjectKeys, subcomponent[defaultKey]);
+    SharedUtils.setCustomFeatureValue(auxiliaryCustomFeatureObjectKeys, subcomponent, defaultValue);
   }
 
-  private static updateOtherOptionSettingViaTrigger(triggers: any, spec: any, subcomponentProperties: SubcomponentProperties): void {
+  private static updateOtherOptionSettingViaTrigger(triggers: any, spec: any, subcomponent: Subcomponent): void {
     (triggers || []).forEach((trigger) => {
       if (trigger.otherOptionSettingPath) {
         // when resetting back to not auto, the lastSelectedValue is going to be reset to whatever it was set to originally
         // instead of the max value of the scale. If this is confusing users - will need to activate settings triggers
         // that have customFeatureObjectKeys within them.
-        const rangeValue = UpdateRange.getCustomFeatureRangeNumberValue(spec, subcomponentProperties);
-        UpdateOtherRangesUtils.updateOtherOptionSettingAndCustomFeature(trigger, spec, rangeValue.toString(), subcomponentProperties);
+        const rangeValue = UpdateRange.getCustomFeatureRangeNumberValue(spec, subcomponent);
+        UpdateOtherRangesUtils.updateOtherOptionSettingAndCustomFeature(trigger, spec, rangeValue.toString(), subcomponent);
       }
     });
   }
@@ -74,60 +74,60 @@ export default class SettingsUtils {
   // updated on the screen accordingly, however when the updateSettings is run in RangeUtils (during refreshSettings) to update the value,
   // that update does not cause change detection to trigger again and the actual new value is visibile only after moving to a different
   // option and back. Hence for the resets that have their custom feature value controlled by another setting, this need to run first
-  private static updateCurrentOptionSettingViaTrigger(triggers: any, subcomponentProperties: SubcomponentProperties): void {
+  private static updateCurrentOptionSettingViaTrigger(triggers: any, subcomponent: Subcomponent): void {
     (triggers.true || []).forEach((trigger) => {
       if (trigger.currentOptionSettingSpec) {
-        UpdateOtherRangesUtils.updateCurrentOptionSettingAndCustomFeature(trigger.currentOptionSettingSpec, subcomponentProperties);
+        UpdateOtherRangesUtils.updateCurrentOptionSettingAndCustomFeature(trigger.currentOptionSettingSpec, subcomponent);
       }
     });
   }
 
   // currently only being used to reset other settings and their custom features
-  private static activateTriggers(option: any, subcomponentProperties: SubcomponentProperties): void {
+  private static activateTriggers(option: any, subcomponent: Subcomponent): void {
     const { triggers, spec } = option;
-    if (triggers?.true) SettingsUtils.updateCurrentOptionSettingViaTrigger(triggers, subcomponentProperties);
-    if (Array.isArray(triggers)) SettingsUtils.updateOtherOptionSettingViaTrigger(triggers, spec, subcomponentProperties);
+    if (triggers?.true) SettingsUtils.updateCurrentOptionSettingViaTrigger(triggers, subcomponent);
+    if (Array.isArray(triggers)) SettingsUtils.updateOtherOptionSettingViaTrigger(triggers, spec, subcomponent);
   }
 
-  private static resetCustomFeatures(option: any, subcomponentProperties: SubcomponentProperties, customFeatureObjectKeys: string[]): void {
+  private static resetCustomFeatures(option: any, subcomponent: Subcomponent, customFeatureObjectKeys: string[]): void {
     const { spec: { valueInSetObject, mouseClickItemCallback, auxiliaryCustomFeatureObjectKeys, resetCustomCss } } = option;
     const defaultKey = customFeatureObjectKeys[0] === 'customFeatures' ? 'defaultCustomFeatures' : 'defaultCustomStaticFeatures';
-    const defaultValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[defaultKey]);
-    const currentValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties[customFeatureObjectKeys[0]]);
+    const defaultValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponent[defaultKey]);
+    const currentValue = SharedUtils.getCustomFeatureValue(customFeatureObjectKeys, subcomponent[customFeatureObjectKeys[0]]);
     if (valueInSetObject) {
       SettingsUtils.resetSetObject(currentValue as Set<undefined>, defaultValue as Set<undefined>);
     } else if (mouseClickItemCallback) {
       // only used for actions dropdown
-      mouseClickItemCallback({subcomponentProperties,
+      mouseClickItemCallback({subcomponent,
         previousItemName: currentValue as string, triggeredItemName: defaultValue as string, isCustomFeatureResetTriggered: true }); }
     else {
-      SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties, defaultValue);
-      SettingsUtils.activateTriggers(option, subcomponentProperties);
+      SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponent, defaultValue);
+      SettingsUtils.activateTriggers(option, subcomponent);
     }
     if (auxiliaryCustomFeatureObjectKeys) {
-      SettingsUtils.resetAuxiliaryCustomFeature(auxiliaryCustomFeatureObjectKeys, subcomponentProperties, defaultKey);
+      SettingsUtils.resetAuxiliaryCustomFeature(auxiliaryCustomFeatureObjectKeys, subcomponent, defaultKey);
     }
-    if (resetCustomCss) SettingsUtils.resetCustomCss(subcomponentProperties, resetCustomCss);
+    if (resetCustomCss) SettingsUtils.resetCustomCss(subcomponent, resetCustomCss);
   }
 
-  public static resetSubcomponentProperties(options: any, subcomponentProperties: SubcomponentProperties): void {
+  public static resetSubcomponent(options: any, subcomponent: Subcomponent): void {
     options.forEach((option) => {
       if (!option.spec) return;
       const { cssProperty, customFeatureObjectKeys, lastSelectedValueObjectKeys } = option.spec;
       if (customFeatureObjectKeys) {
-        SettingsUtils.resetCustomFeatures(option, subcomponentProperties, customFeatureObjectKeys);
+        SettingsUtils.resetCustomFeatures(option, subcomponent, customFeatureObjectKeys);
       } else {
-        SettingsUtils.resetCustomCss(subcomponentProperties, cssProperty);
-        SettingsUtils.removeAuxiliaryPartialCss(subcomponentProperties, cssProperty);
-        if (lastSelectedValueObjectKeys) SettingsUtils.resetCustomFeatures(option, subcomponentProperties, lastSelectedValueObjectKeys);
+        SettingsUtils.resetCustomCss(subcomponent, cssProperty);
+        SettingsUtils.removeAuxiliaryPartialCss(subcomponent, cssProperty);
+        if (lastSelectedValueObjectKeys) SettingsUtils.resetCustomFeatures(option, subcomponent, lastSelectedValueObjectKeys);
       }
     });
   }
 
-  public static triggerComponentFunc(settingType: SETTINGS_TYPES, subcomponentProperties: SubcomponentProperties, cssProperty?: string): void {
-    const { seedComponent } = subcomponentProperties;
+  public static triggerComponentFunc(settingType: SETTINGS_TYPES, subcomponent: Subcomponent, cssProperty?: string): void {
+    const { seedComponent } = subcomponent;
     const containerComponent = seedComponent.containerComponent || seedComponent;
     const funcs = containerComponent.triggerFuncOnSettingChange;
-    funcs?.[settingType]?.(subcomponentProperties, cssProperty);
+    funcs?.[settingType]?.(subcomponent, cssProperty);
   }
 }

@@ -11,7 +11,7 @@ class DefaultButtonGroup extends ComponentBuilder {
 
   public static addComponentsToBase(buttonGroupComponent: WorkshopComponent): void {
     const layerComponent = buttonGroupComponent.componentPreviewStructure.layers[0];
-    const layerComponentBaseName = layerComponent.subcomponentProperties.name;
+    const layerComponentBaseName = layerComponent.subcomponent.name;
     AddContainerComponent.add(buttonGroupComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT, layerComponentBaseName);
     AddContainerComponent.add(buttonGroupComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT, layerComponentBaseName);
     AddContainerComponent.add(buttonGroupComponent, COMPONENT_TYPES.BUTTON, DEFAULT_STYLES.DEFAULT, layerComponentBaseName);

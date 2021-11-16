@@ -1,9 +1,9 @@
 // file is called actionsDropdownsMouseEventCallbacks.ts due to a bug with git as it automatically capitalizes actionDropdownsMouseEventCallbacks.ts
-import { SubcomponentProperties } from './workshopComponent';
+import { Subcomponent } from './workshopComponent';
 import { ComponentOptions } from 'vue';
 
 export interface ActionsDropdownMouseEventCallbackEvent {
-  subcomponentProperties?: SubcomponentProperties;
+  subcomponent?: Subcomponent;
   triggeredItemName?: string;
   previousItemName?: string;
   settingsComponent?: ComponentOptions;

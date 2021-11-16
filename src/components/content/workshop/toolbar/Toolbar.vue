@@ -19,7 +19,7 @@
         @display-syncable-component-card-overlays="$emit('display-syncable-component-card-overlays', $event)"/>
       <settings v-if="isSettingsDisplayed" ref="settings"
         :component="component"
-        :subcomponentProperties="component.subcomponents[component.activeSubcomponentName]"
+        :subcomponent="component.subcomponents[component.activeSubcomponentName]"
         @hide-dropdown-menu-callback="$emit('hide-dropdown-menu-callback', $event)"
         @play-animation-preview="$emit('play-animation-preview', $event)"
         @stop-animation-preview="$emit('stop-animation-preview')"

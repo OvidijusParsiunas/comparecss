@@ -8,7 +8,7 @@ export class TraverseComponentViaPreviewStructureShared {
   protected static createTraversalStateFromAlignedComponentWithMeta(alignedComponentWithMeta: AlignedComponentWithMeta, index: number): SubcomponentPreviewTraversalState {
     const [alignedChildComponents, alignedSections] = alignedComponentWithMeta;
     return {
-      subcomponentProperties: alignedChildComponents[index].subcomponentProperties,
+      subcomponent: alignedChildComponents[index].subcomponent,
       alignedChildComponents,
       alignedSections,
       index,

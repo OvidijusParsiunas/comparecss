@@ -1,6 +1,6 @@
 import { WorkshopComponentCss } from './workshopComponentCss';
-import { SubcomponentProperties } from './workshopComponent';
+import { Subcomponent } from './workshopComponent';
 
 export interface UseLayerSectionComponent {
-  getStyleProperties: (subcomponentProperties: SubcomponentProperties, index: string) => WorkshopComponentCss[];
+  getStyleProperties: (subcomponent: Subcomponent, index: string) => WorkshopComponentCss[];
 }

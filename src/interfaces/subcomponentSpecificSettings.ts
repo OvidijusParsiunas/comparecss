@@ -1,6 +1,6 @@
 import { ActionsDropdownMouseEventCallbacks } from './actionsDropdownsMouseEventCallbacks';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../consts/workshopToolbarOptionTypes.enum';
-import { SubcomponentProperties, UpdateOtherCssProperties } from './workshopComponent';
+import { Subcomponent, UpdateOtherCssProperties } from './workshopComponent';
 import { SUBCOMPONENT_TYPES } from '../consts/subcomponentTypes.enum';
 import { SETTING_NAMES } from '../consts/settingNames.enum';
 
@@ -17,5 +17,5 @@ export type SubcomponentSpecificSettings = {
 export interface InterconnectedSetting {
   updateOtherCssProperties: UpdateOtherCssProperties[];
   dependantChildrenTypes: Set<SUBCOMPONENT_TYPES>;
-  updateOtherCssPropertiesObjGenerator: (subcomponentProperties: SubcomponentProperties) => UpdateOtherCssProperties;
+  updateOtherCssPropertiesObjGenerator: (subcomponent: Subcomponent) => UpdateOtherCssProperties;
 }

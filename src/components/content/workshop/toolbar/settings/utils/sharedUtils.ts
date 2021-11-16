@@ -1,4 +1,4 @@
-import { CustomCss, CustomFeatures, CustomStaticFeatures, SubcomponentProperties } from '../../../../../../interfaces/workshopComponent';
+import { CustomCss, CustomFeatures, CustomStaticFeatures, Subcomponent } from '../../../../../../interfaces/workshopComponent';
 import GeneralUtils from '../../../../../../services/workshop/exportFiles/contentBuilders/css/generalUtils';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../consts/cssPropertyValues.enum';
@@ -48,18 +48,18 @@ export default class SharedUtils {
     return SharedUtils.traverseCustomFeatureValueObject(customFeatureObjectKeys.slice(1, customFeatureObjectKeys.length), customFeatures);
   }
 
-  public static setCustomFeatureValue(customFeatureObjectKeys: string[], subcomponentProperties: SubcomponentProperties|CustomFeatures,
+  public static setCustomFeatureValue(customFeatureObjectKeys: string[], subcomponent: Subcomponent|CustomFeatures,
       newValue: unknown): void {
     const keys = customFeatureObjectKeys;
-    SharedUtils.traverseCustomFeatureValueObject(keys.slice(1, keys.length), subcomponentProperties[keys[0]], newValue);
+    SharedUtils.traverseCustomFeatureValueObject(keys.slice(1, keys.length), subcomponent[keys[0]], newValue);
   }
 
-  public static setCustomFeatureSetting(trigger: any, subcomponentProperties: SubcomponentProperties, allSettings: any): void {
+  public static setCustomFeatureSetting(trigger: any, subcomponent: Subcomponent, allSettings: any): void {
     const { customFeatureObjectKeys, defaultValue } = trigger;
     for (let i = 0; i < allSettings.options.length; i += 1) {
       if (GeneralUtils.areArraysEqual(allSettings.options[i].spec.customFeatureObjectKeys, customFeatureObjectKeys)) {
         allSettings.options[i].spec.default = defaultValue;
-        SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponentProperties, defaultValue);
+        SharedUtils.setCustomFeatureValue(customFeatureObjectKeys, subcomponent, defaultValue);
         return;
       }
     }
@@ -70,9 +70,9 @@ export default class SharedUtils {
     return hexAlpha.length === 1 ? '0' + hexAlpha : hexAlpha;
   }
 
-  public static addDefaultValueIfCssModeMissing(cssPropertyName: string, subcomponentProperties: SubcomponentProperties): void {
-    const { customCss, activeCssPseudoClass } = subcomponentProperties;
-    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(subcomponentProperties.customCss, activeCssPseudoClass, cssPropertyName);
+  public static addDefaultValueIfCssModeMissing(cssPropertyName: string, subcomponent: Subcomponent): void {
+    const { customCss, activeCssPseudoClass } = subcomponent;
+    const cssPropertyValue = SharedUtils.getActiveModeCssPropertyValue(subcomponent.customCss, activeCssPseudoClass, cssPropertyName);
     if (!customCss[activeCssPseudoClass]) {
       customCss[activeCssPseudoClass] = { [cssPropertyName]: cssPropertyValue };
     } else if (!customCss[activeCssPseudoClass][cssPropertyName]) {

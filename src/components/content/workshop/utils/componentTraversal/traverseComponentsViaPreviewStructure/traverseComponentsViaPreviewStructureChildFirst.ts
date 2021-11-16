@@ -12,7 +12,7 @@ export class TraverseComponentViaPreviewStructureChildFirst extends TraverseComp
     for (let i = 0; i < (alignedComponentsWithMetaArr[0][0] || []).length; i += 1) {
       const availableComponents = alignedComponentsWithMetaArr.filter((alignedComponentWithMeta) => alignedComponentWithMeta[0][i]);
       traversalResult = TraverseComponentViaPreviewStructureChildFirst.traverse(
-        callback, ...availableComponents.map((alignedComponentWithMeta) => alignedComponentWithMeta[0][i].subcomponentProperties.seedComponent)
+        callback, ...availableComponents.map((alignedComponentWithMeta) => alignedComponentWithMeta[0][i].subcomponent.seedComponent)
       );
       if (traversalResult.stopTraversal) return traversalResult;
       traversalResult = callback(
@@ -30,7 +30,7 @@ export class TraverseComponentViaPreviewStructureChildFirst extends TraverseComp
         TraverseComponentViaPreviewStructureChildFirst.traverseAlignedComponents);
       if (traversalResult.stopTraversal) return traversalResult;
       traversalResult = callback(...layersArr.map((layers) => {
-        return { subcomponentProperties: layers[i].subcomponentProperties, layers, index: i }}));
+        return { subcomponent: layers[i].subcomponent, layers, index: i }}));
       if (traversalResult.stopTraversal) return traversalResult;
     }
     return traversalResult;
@@ -41,7 +41,7 @@ export class TraverseComponentViaPreviewStructureChildFirst extends TraverseComp
       callback, [...componentsArr.map((component) => component.componentPreviewStructure.layers)]);
     if (traversalResult.stopTraversal) return traversalResult;
     return callback(...componentsArr.map((activeComponent) => {
-      return { subcomponentProperties: activeComponent.baseSubcomponent }}));
+      return { subcomponent: activeComponent.baseSubcomponent }}));
   }
   
   private static traversePaddingComponentChild(callback: PreviewTraversalCallback, paddingChildrenArr: WorkshopComponent[]): PreviewTraversalResult {

@@ -13,7 +13,7 @@ import ComponentPreviewUtils from '../utils/componentPreviewUtils';
 
 export default function useBaseComponent(): UseBaseComponent {
 
-  const otherSubcomponentTriggerState: CompositionAPISubcomponentTriggerState = { subcomponentProperties: null };
+  const otherSubcomponentTriggerState: CompositionAPISubcomponentTriggerState = { subcomponent: null };
 
   const isIcon = (component: WorkshopComponent): boolean => {
     return component.baseSubcomponent.subcomponentType === SUBCOMPONENT_TYPES.ICON;

@@ -1,6 +1,6 @@
-import { SubcomponentProperties } from './workshopComponent';
+import { Subcomponent } from './workshopComponent';
 
-type Callback = (subcomponentProperties: SubcomponentProperties) => void;
+type Callback = (subcomponent: Subcomponent) => void;
 
 export interface SubcomponentMouseEventCallbacks {
   click: Callback;

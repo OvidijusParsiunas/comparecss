@@ -1,13 +1,13 @@
 import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallbacks } from '../../../../../../../interfaces/actionsDropdownsMouseEventCallbacks';
-import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { WORKSHOP_TOOLBAR_OPTION_TYPES } from '../../../../../../../consts/workshopToolbarOptionTypes.enum';
 import { SubcomponentSpecificSettings } from '../../../../../../../interfaces/subcomponentSpecificSettings';
+import { Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { SETTING_NAMES } from '../../../../../../../consts/settingNames.enum';
 
 export class IconSpecificSettings {
 
-  private static changeIcon(subcomponentProperties: SubcomponentProperties, newName: string): void {
-    const { icon } = subcomponentProperties.customStaticFeatures;
+  private static changeIcon(subcomponent: Subcomponent, newName: string): void {
+    const { icon } = subcomponent.customStaticFeatures;
     icon.isComponentDisplayed = false;
     icon.name = newName;
     setTimeout(() => {
@@ -17,13 +17,13 @@ export class IconSpecificSettings {
 
   private static readonly ACTIONS_DROPDOWN_MOUSE_EVENT_CALLBACKS: ActionsDropdownMouseEventCallbacks = {
     mouseEnterItemCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
-      IconSpecificSettings.changeIcon(event.subcomponentProperties, event.triggeredItemName);
+      IconSpecificSettings.changeIcon(event.subcomponent, event.triggeredItemName);
     },
     mouseLeaveDropdownCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
-      IconSpecificSettings.changeIcon(event.subcomponentProperties, event.triggeredItemName);
+      IconSpecificSettings.changeIcon(event.subcomponent, event.triggeredItemName);
     },
     mouseClickItemCallback: (event: ActionsDropdownMouseEventCallbackEvent) => {
-      if (event.isCustomFeatureResetTriggered) IconSpecificSettings.changeIcon(event.subcomponentProperties, event.triggeredItemName);
+      if (event.isCustomFeatureResetTriggered) IconSpecificSettings.changeIcon(event.subcomponent, event.triggeredItemName);
     },
   };
 

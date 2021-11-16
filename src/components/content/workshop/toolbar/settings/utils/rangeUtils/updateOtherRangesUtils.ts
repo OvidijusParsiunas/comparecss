@@ -1,5 +1,5 @@
 import { subcomponentAndOverlayElementIdsState } from '../../../../componentPreview/utils/elements/subcomponentAndOverlayElementIdsState';
-import { CustomCss, SubcomponentProperties, UpdateOtherCssProperties } from '../../../../../../../interfaces/workshopComponent';
+import { CustomCss, Subcomponent, UpdateOtherCssProperties } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { SettingPaths } from '../../../../../../../interfaces/settingPaths';
 import { optionToSettings } from '../../types/optionToSettings';
@@ -77,21 +77,21 @@ export class UpdateOtherRangesUtils extends UpdateRange {
     return totalAggregatedValue;
   }
 
-  public static updateOtherOptionSettingAndCssProperties(settingSpec: any, subcomponentProperties: SubcomponentProperties): void {
+  public static updateOtherOptionSettingAndCssProperties(settingSpec: any, subcomponent: Subcomponent): void {
     const scaleBoundaryValue = UpdateOtherRangesUtils.updateCurrentSetting(settingSpec);
-    const currentValue = Number.parseFloat(subcomponentProperties.customCss[CSS_PSEUDO_CLASSES.DEFAULT][settingSpec.cssProperty]);
+    const currentValue = Number.parseFloat(subcomponent.customCss[CSS_PSEUDO_CLASSES.DEFAULT][settingSpec.cssProperty]);
     // if the current value is greater than scaleBoundaryValue, reduce its size to within the bounds
     if (Math.abs(currentValue) > scaleBoundaryValue) {
-      const realRangeValue = UpdateRange.updateCustomCss(scaleBoundaryValue.toString(), settingSpec, subcomponentProperties);
+      const realRangeValue = UpdateRange.updateCustomCss(scaleBoundaryValue.toString(), settingSpec, subcomponent);
       if (settingSpec.updateOtherCssProperties) UpdateOtherRangesUtils.updateOtherSubcomponentRanges(
         settingSpec.updateOtherCssProperties, realRangeValue);
     }
   }
 
   private static resetLastSelectedCustomFeatureValue(scaleBoundaryValue: number, targetSettingRangeValue: number,
-      targetSettingSpec: any, subcomponentProperties: SubcomponentProperties, refreshSettingsCallback?: () => void): void {
+      targetSettingSpec: any, subcomponent: Subcomponent, refreshSettingsCallback?: () => void): void {
     const keys = targetSettingSpec.lastSelectedValueObjectKeys;
-    const customFeatureValue = SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys[0]]);
+    const customFeatureValue = SharedUtils.getCustomFeatureValue(keys, subcomponent[keys[0]]);
     const lastSelectedValue = UpdateRange.parseString(customFeatureValue as string, targetSettingSpec.smoothingDivisible);
     // Remember that this gets called when the scaleBoundaryValue is higher than the targetSettingRangeValue
     if (targetSettingRangeValue < lastSelectedValue) {
@@ -99,25 +99,25 @@ export class UpdateOtherRangesUtils extends UpdateRange {
       // selecting a high range value in the current setting (e.g. entrance delay duration), the scaleBoundaryValue would
       // be higher than lastSelectedValue
       const minRangeValue = Math.min(scaleBoundaryValue, lastSelectedValue);
-      UpdateRange.updateRangeCustomFeature(minRangeValue.toString(), targetSettingSpec, subcomponentProperties);
+      UpdateRange.updateRangeCustomFeature(minRangeValue.toString(), targetSettingSpec, subcomponent);
       if (refreshSettingsCallback) refreshSettingsCallback();
     }
   }
 
   private static updateCustomFeatureValue(scaleBoundaryValue: number, targetSettingSpec: any,
-      subcomponentProperties: SubcomponentProperties, refreshSettingsCallback?: () => void): void {
-    const targetSettingRangeValue = UpdateRange.getCustomFeatureRangeNumberValue(targetSettingSpec, subcomponentProperties);
+      subcomponent: Subcomponent, refreshSettingsCallback?: () => void): void {
+    const targetSettingRangeValue = UpdateRange.getCustomFeatureRangeNumberValue(targetSettingSpec, subcomponent);
     if (scaleBoundaryValue < targetSettingRangeValue) {
-      UpdateRange.updateRangeCustomFeature(scaleBoundaryValue.toString(), targetSettingSpec, subcomponentProperties);
+      UpdateRange.updateRangeCustomFeature(scaleBoundaryValue.toString(), targetSettingSpec, subcomponent);
     } else if (targetSettingSpec.isAutoObjectKeys) {
       const keys = targetSettingSpec.isAutoObjectKeys;
-      const isAuto = SharedUtils.getCustomFeatureValue(keys, subcomponentProperties[keys[0]]);
+      const isAuto = SharedUtils.getCustomFeatureValue(keys, subcomponent[keys[0]]);
       if (isAuto) {
-        UpdateRange.updateRangeCustomFeature(scaleBoundaryValue.toString(), targetSettingSpec, subcomponentProperties);
+        UpdateRange.updateRangeCustomFeature(scaleBoundaryValue.toString(), targetSettingSpec, subcomponent);
         if (refreshSettingsCallback) refreshSettingsCallback();
       } else {
         UpdateOtherRangesUtils.resetLastSelectedCustomFeatureValue(scaleBoundaryValue, targetSettingRangeValue,
-          targetSettingSpec, subcomponentProperties, refreshSettingsCallback);
+          targetSettingSpec, subcomponent, refreshSettingsCallback);
       }
     }
   }
@@ -128,10 +128,10 @@ export class UpdateOtherRangesUtils extends UpdateRange {
   }
 
   private static getAggregateSettingsTotalValue(aggregateSettingSpecs: any, targetSettingSmoothingDivisible: number,
-      subcomponentProperties: SubcomponentProperties): number {
+      subcomponent: Subcomponent): number {
     let total = 0;
     for (let i = 0; i < aggregateSettingSpecs.length; i += 1) {
-      const rangeValue = UpdateRange.getCustomFeatureRangeNumberValue(aggregateSettingSpecs[i], subcomponentProperties);
+      const rangeValue = UpdateRange.getCustomFeatureRangeNumberValue(aggregateSettingSpecs[i], subcomponent);
       total += UpdateOtherRangesUtils.convertRangeValueNumberViaTargetSmoothingDivisible(
         rangeValue, aggregateSettingSpecs[i].smoothingDivisible, targetSettingSmoothingDivisible);
     }
@@ -150,28 +150,28 @@ export class UpdateOtherRangesUtils extends UpdateRange {
 
   // need to pass down the current range value as obtaining it through spec does not give the most up to date value
   private static updateSettingAndCustomFeature(currentSettingRangeValue: string, aggregateSettingSpecs: any, targetSettingSpec: any,
-      currentSmoothingDivisible: number, subcomponentProperties: SubcomponentProperties, refreshSettingsCallback?: () => void): void {
+      currentSmoothingDivisible: number, subcomponent: Subcomponent, refreshSettingsCallback?: () => void): void {
     const totalAggregateSettingValue = UpdateOtherRangesUtils.getAggregateSettingsTotalValue(aggregateSettingSpecs,
-      targetSettingSpec.smoothingDivisible, subcomponentProperties);
+      targetSettingSpec.smoothingDivisible, subcomponent);
     const totalAggregateAndCurrentSettingRangeValue = UpdateOtherRangesUtils.convertRangeValueNumberViaTargetSmoothingDivisible(
       Number.parseFloat(currentSettingRangeValue), currentSmoothingDivisible, targetSettingSpec.smoothingDivisible) + totalAggregateSettingValue;
     targetSettingSpec.scale[1] = totalAggregateAndCurrentSettingRangeValue;
     UpdateOtherRangesUtils.updateCustomFeatureValue(totalAggregateAndCurrentSettingRangeValue, targetSettingSpec,
-      subcomponentProperties, refreshSettingsCallback);
+      subcomponent, refreshSettingsCallback);
   }
 
-  public static updateCurrentOptionSettingAndCustomFeature(settingToBeUpdatedSpec: any, subcomponentProperties: SubcomponentProperties): void {
+  public static updateCurrentOptionSettingAndCustomFeature(settingToBeUpdatedSpec: any, subcomponent: Subcomponent): void {
     const { updateSettingSpecViaOtherSettings, smoothingDivisible } = settingToBeUpdatedSpec;
     const aggregateSettingSpecs = UpdateOtherRangesUtils.getAggregatedSettingSpecs(updateSettingSpecViaOtherSettings.aggregatedSettingPaths);
     UpdateOtherRangesUtils.updateSettingAndCustomFeature('0', aggregateSettingSpecs, settingToBeUpdatedSpec, smoothingDivisible,
-      subcomponentProperties);
+      subcomponent);
   }
 
-  public static updateOtherOptionSettingAndCustomFeature(trigger: any, spec: any, rangeValue: string, subcomponentProperties: SubcomponentProperties,
+  public static updateOtherOptionSettingAndCustomFeature(trigger: any, spec: any, rangeValue: string, subcomponent: Subcomponent,
       refreshSettingsCallback?: () => void): void {
     const { otherOptionSettingPath, aggregateSettingSpecs } = trigger;
     const [otherOptionSettingSpecs] = UpdateOtherRangesUtils.getAggregatedSettingSpecs(otherOptionSettingPath);
     UpdateOtherRangesUtils.updateSettingAndCustomFeature(rangeValue, aggregateSettingSpecs, otherOptionSettingSpecs, spec.smoothingDivisible,
-      subcomponentProperties, refreshSettingsCallback);
+      subcomponent, refreshSettingsCallback);
   }
 }

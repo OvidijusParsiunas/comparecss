@@ -1,7 +1,7 @@
 import { COMPONENT_CARD_MARKER, COMPONENT_LIST_ITEM_MARKER, OPTION_MENU_BUTTON_MARKER } from '../../../../../../../../consts/elementClassMarkers';
 import { WorkshopEventCallbackUtils } from '../../../../../toolbar/options/workshopEventCallbackUtils/workshopEventCallbackUtils';
 import { ToggleFullPreviewModeOffCallbacks } from '../../../../../../../../interfaces/toggleFullPreviewModeEvent';
-import { SubcomponentProperties, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
+import { Subcomponent, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { WorkshopEventCallbackReturn } from '../../../../../../../../interfaces/workshopEventCallbackReturn';
 import { OtherWorkshopEventCallbackDetails } from '../../../../../../../../interfaces/workshopEventCallback';
 import { MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../../../../../consts/baseSubcomponentNames.enum';
@@ -26,8 +26,8 @@ export default class Dismiss {
     const subcomponentNames = Object.keys(subcomponents);
     for (let i = 0; i < subcomponentNames.length; i += 1) {
       if (subcomponents[subcomponentNames[i]].seedComponent?.style === BUTTON_STYLES.CLOSE) {
-        const buttonSubcomponentProperties: SubcomponentProperties = subcomponents[subcomponentNames[i]];
-        buttonSubcomponentProperties.customFeatures.jsClasses[methodName](JAVASCRIPT_CLASSES.CLOSE_COMPONENT);
+        const buttonSubcomponent: Subcomponent = subcomponents[subcomponentNames[i]];
+        buttonSubcomponent.customFeatures.jsClasses[methodName](JAVASCRIPT_CLASSES.CLOSE_COMPONENT);
         break;
       }
     }

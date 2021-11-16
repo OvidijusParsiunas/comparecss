@@ -1,5 +1,5 @@
-import { SubcomponentProperties } from './workshopComponent';
+import { Subcomponent } from './workshopComponent';
 
 export interface CompositionAPISubcomponentTriggerState {
-  subcomponentProperties: SubcomponentProperties;
+  subcomponent: Subcomponent;
 }
