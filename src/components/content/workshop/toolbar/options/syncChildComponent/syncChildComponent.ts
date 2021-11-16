@@ -150,7 +150,7 @@ export class SyncChildComponent {
     const { alignedSections } = currentlySelectedComponent.parentLayer.sections;
     Object.keys(alignedSections).forEach((alignedSectionType: ALIGNED_SECTION_TYPES) => {
       alignedSections[alignedSectionType].forEach((baseSubcomponent) => {
-        SyncChildComponent.setComponentPropertiesToBeInSync(baseSubcomponent.subcomponent.seedComponent, componenetThisIsSyncedTo);
+        SyncChildComponent.setComponentPropertiesToBeInSync(baseSubcomponent.seedComponent, componenetThisIsSyncedTo);
       });
     });
   }

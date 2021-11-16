@@ -40,7 +40,7 @@ export class ApplyDropdownMenuItemTextProperties extends ComponentBuilder {
       const { layers } = component.paddingComponentChild.linkedComponents.auxiliary[0].componentPreviewStructure;
       if (layers.length > 0) {
         JSONUtils.copyPropertiesThatExistInTarget(
-          layers[0].sections.alignedSections.left[0].subcomponent.customCss, textComponent.baseSubcomponent.customCss);
+          layers[0].sections.alignedSections.left[0].customCss, textComponent.baseSubcomponent.customCss);
       }
     });
   }
@@ -59,7 +59,7 @@ export class ApplyDropdownMenuItemTextProperties extends ComponentBuilder {
   private static copyTextFromComponentThisIsSyncedTo(componentThisIsSyncedTo: WorkshopComponent, textComponent: WorkshopComponent, createDefaultTextStyling: () => CustomCss): void {
     const { layers } = componentThisIsSyncedTo.paddingComponentChild.linkedComponents.auxiliary[0].componentPreviewStructure;
     const textSubcomponent = layers.length > 0
-      ? layers[0].sections.alignedSections.left[0].subcomponent.customCss
+      ? layers[0].sections.alignedSections.left[0].customCss
       : createDefaultTextStyling();
     textComponent.baseSubcomponent.customCss = textSubcomponent;
     textComponent.baseSubcomponent.defaultCss = createDefaultTextStyling();

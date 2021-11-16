@@ -54,7 +54,7 @@ export class DropdownMenuAutoWidthUtils {
 
   private static getLongestMenuText(menuComponent: WorkshopComponent): string {
     const menuItemTexts = menuComponent.componentPreviewStructure.layers.map((layer) => {      
-      return layer.sections.alignedSections.left[0].subcomponent.customStaticFeatures.subcomponentText.text
+      return layer.sections.alignedSections.left[0].customStaticFeatures.subcomponentText.text;
     });
     return DropdownMenuAutoWidthUtils.getLongestString(menuItemTexts);
   }
@@ -80,7 +80,7 @@ export class DropdownMenuAutoWidthUtils {
   private static getItemTextWidths(menuComponent: WorkshopComponent): number[] {
     return menuComponent.componentPreviewStructure.layers.map((layer) => {
       const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(
-        layer.sections.alignedSections.left[0].subcomponent.name);
+        layer.sections.alignedSections.left[0].name);
       return document.getElementById(subcomponentId).clientWidth;
     });
   }

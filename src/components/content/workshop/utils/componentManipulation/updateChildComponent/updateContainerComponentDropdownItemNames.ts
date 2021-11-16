@@ -1,9 +1,9 @@
 import { TraverseComponentViaDropdownStructure } from '../../componentTraversal/traverseComponentViaDropdownStructure';
-import { AlignedSections, BaseSubcomponentRef, Layer } from '../../../../../../interfaces/componentPreviewStructure';
+import { Subcomponent, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { AlignedSections, Layer } from '../../../../../../interfaces/componentPreviewStructure';
 import { UpdateContainerComponentDropdownUtils } from './updateContainerComponentDropdownUtils';
 import { NestedDropdownStructure } from '../../../../../../interfaces/nestedDropdownStructure';
 import { ItemDataMaps } from '../../../../../../interfaces/updateDropdownItemNames';
-import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { ActiveComponentUtils } from '../../activeComponent/activeComponentUtils';
 import { UpdateDropdownItemNamesShared } from './updateDropdownItemNamesShared';
 
@@ -17,7 +17,7 @@ export class UpdateContainerComponentDropdownItemNames extends UpdateDropdownIte
       const section = alignedSections[alignedSectionsKeys[i]];
       for (let j = 0; j < section.length; j += 1) {
         UpdateContainerComponentDropdownUtils.updateItemNames(masterComponent, itemDataMaps, containerDropdownStructure,
-          overwrittenItemNames, newDrodpownNames, (section[j] as BaseSubcomponentRef).subcomponent.name,
+          overwrittenItemNames, newDrodpownNames, (section[j] as Subcomponent).name,
           overwrittenDropdownStructures);
       }
     }

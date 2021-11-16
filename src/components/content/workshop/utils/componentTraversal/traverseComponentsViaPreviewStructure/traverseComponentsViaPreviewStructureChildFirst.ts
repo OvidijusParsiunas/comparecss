@@ -12,7 +12,7 @@ export class TraverseComponentViaPreviewStructureChildFirst extends TraverseComp
     for (let i = 0; i < (alignedComponentsWithMetaArr[0][0] || []).length; i += 1) {
       const availableComponents = alignedComponentsWithMetaArr.filter((alignedComponentWithMeta) => alignedComponentWithMeta[0][i]);
       traversalResult = TraverseComponentViaPreviewStructureChildFirst.traverse(
-        callback, ...availableComponents.map((alignedComponentWithMeta) => alignedComponentWithMeta[0][i].subcomponent.seedComponent)
+        callback, ...availableComponents.map((alignedComponentWithMeta) => alignedComponentWithMeta[0][i].seedComponent)
       );
       if (traversalResult.stopTraversal) return traversalResult;
       traversalResult = callback(

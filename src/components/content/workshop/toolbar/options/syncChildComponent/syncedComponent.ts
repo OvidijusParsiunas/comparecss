@@ -28,7 +28,7 @@ export class SyncedComponent {
     const { alignedSections } = inSyncComponent.parentLayer.sections;
     Object.keys(alignedSections).forEach((alignedSectionType: ALIGNED_SECTION_TYPES) => {
       alignedSections[alignedSectionType].forEach((baseSubcomponent) => {
-        const { seedComponent } = baseSubcomponent.subcomponent;
+        const { seedComponent } = baseSubcomponent;
         seedComponent.sync.componentThisIsSyncedTo.sync.componentsSyncedToThis.delete(seedComponent);
         seedComponent.sync.componentThisIsSyncedTo = null;
         SyncChildComponentUtils.callFuncOnSyncableComponents(AutoSyncedSiblingComponentUtils.copySiblingComponentSyncableTraversalCallback,

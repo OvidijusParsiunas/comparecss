@@ -7,10 +7,9 @@ import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildCo
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
-import { DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownItemDisplayStatus';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
+import { DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownItemDisplayStatus';
 import { SyncChildComponent } from '../../../../toolbar/options/syncChildComponent/syncChildComponent';
-import { BaseSubcomponentRef, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
@@ -18,6 +17,7 @@ import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/
 import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
+import { Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { SubcomponentTriggers } from '../../utils/subcomponentTriggers';
 import { AddComponentShared } from './addComponentShared';
 import JSONUtils from '../../../generic/jsonUtils';
@@ -77,8 +77,7 @@ export class AddContainerComponent extends AddComponentShared {
 
   private static addNewSubcomponentToParentLayer(parentLayer: Layer, baseSubcomponent: Subcomponent): void {
     const alignment = baseSubcomponent?.customStaticFeatures?.alignedLayerSection?.section;
-    const baseSubcomponentRef: BaseSubcomponentRef = { subcomponent: baseSubcomponent };
-    parentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][alignment || ALIGNED_SECTION_TYPES.LEFT].push(baseSubcomponentRef);
+    parentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][alignment || ALIGNED_SECTION_TYPES.LEFT].push(baseSubcomponent);
   }
 
   private static addNewComponentToDropdownStructure(newComponent: WorkshopComponent, masterComponent: WorkshopComponent,

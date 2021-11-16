@@ -3,14 +3,14 @@ import { UpdateContainerComponentDropdownItemNames } from '../updateChildCompone
 import { UpdateLinkedComponentsDropdownItemNames } from '../updateChildComponent/updateLinkedComponentsDropdownItemNames';
 import { componentTypeToStyleGenerators } from '../../../newComponent/types/componentTypeToStyleGenerators';
 import { UpdateLayerDropdownItemNames } from '../updateChildComponent/updateLayerDropdownItemNames';
-import { BaseSubcomponentRef, Layer } from '../../../../../../interfaces/componentPreviewStructure';
+import { Subcomponent, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { uniqueSubcomponentIdState } from '../../componentGenerator/uniqueSubcomponentIdState';
 import { PropertyOverwritables } from '../../../../../../interfaces/newChildComponents';
 import { ComponentBuilder } from '../../../newComponent/types/shared/componentBuilder';
 import { AddContainerComponent } from '../addChildComponent/add/addContainerComponent';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { RemoveChildComponent } from '../removeChildComponent/removeChildComponent';
-import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { Layer } from '../../../../../../interfaces/componentPreviewStructure';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
 import { AddLayerComponent } from '../addChildComponent/add/addLayerComponent';
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
@@ -34,10 +34,10 @@ export class CopyComponent extends ComponentBuilder {
     }
   }
 
-  private static getAlignedComponent(newLayer: Layer, baseSubcomponent: BaseSubcomponentRef, section: ALIGNED_SECTION_TYPES,
+  private static getAlignedComponent(newLayer: Layer, baseSubcomponent: Subcomponent, section: ALIGNED_SECTION_TYPES,
       index: number, newComponent: WorkshopComponent, baseComponents: WorkshopComponent[]): WorkshopComponent {
     if (!newLayer.subcomponent.seedComponent.newChildComponents.childComponentsLockedToLayer) {
-      const { type, style } = baseSubcomponent.subcomponent.seedComponent;
+      const { type, style } = baseSubcomponent.seedComponent;
       const originalPropertyOverwritables = JSONUtils.deepCopy(newComponent.newChildComponents.propertyOverwritables);
       CopyComponent.overwritePropertiesAddedOnBuild(newComponent, type, section);
       const alignedComponent = AddContainerComponent.add(newComponent, type, style, newLayer.subcomponent.name);
@@ -45,14 +45,14 @@ export class CopyComponent extends ComponentBuilder {
       baseComponents.push(alignedComponent);
       return alignedComponent;
     }
-    return newLayer.sections.alignedSections[section][index].subcomponent.seedComponent;
+    return newLayer.sections.alignedSections[section][index].seedComponent;
   }
 
-  private static copyAlignedSectionComponents(alignedSectionBaseSubcomponents: BaseSubcomponentRef[], newLayer: Layer, section: ALIGNED_SECTION_TYPES,
+  private static copyAlignedSectionComponents(alignedSectionBaseSubcomponents: Subcomponent[], newLayer: Layer, section: ALIGNED_SECTION_TYPES,
       newComponent: WorkshopComponent, baseComponents: WorkshopComponent[]): void {
-    alignedSectionBaseSubcomponents.forEach((baseSubcomponent: BaseSubcomponentRef, index: number) => {
+    alignedSectionBaseSubcomponents.forEach((baseSubcomponent: Subcomponent, index: number) => {
       const alignedComponent = CopyComponent.getAlignedComponent(newLayer, baseSubcomponent, section, index, newComponent, baseComponents);
-      CopyComponent.copyComponent(alignedComponent, baseSubcomponent.subcomponent.seedComponent);
+      CopyComponent.copyComponent(alignedComponent, baseSubcomponent.seedComponent);
     });
   }
 
@@ -63,7 +63,7 @@ export class CopyComponent extends ComponentBuilder {
     const originalComponentsLength = alignedSectionComponents.length;
     for (let i = 0; i < originalComponentsLength; i += 1) {
       newComponent.masterComponent.activeSubcomponentName = alignedSectionComponents[alignedSectionComponents.length - 1]
-        .subcomponent.seedComponent.activeSubcomponentName;
+        .seedComponent.activeSubcomponentName;
       RemoveChildComponent.remove(newComponent.masterComponent);
     }
     newComponent.masterComponent.activeSubcomponentName = defaultActiveSubcomponentName;

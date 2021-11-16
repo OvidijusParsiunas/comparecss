@@ -1,9 +1,9 @@
 import { DropdownStructureTraversalState, DropdownTraversalResult, TargetDetails } from '../../../../../../interfaces/componentTraversal';
 import { UpdateContainerComponentDropdownItemNames } from '../updateChildComponent/updateContainerComponentDropdownItemNames';
 import { TraverseComponentViaDropdownStructure } from '../../componentTraversal/traverseComponentViaDropdownStructure';
-import { AlignedSections, BaseSubcomponentRef } from '../../../../../../interfaces/componentPreviewStructure';
 import { Subcomponent, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { childComponentAlignmentDropdownState } from './childComponentAlignmentDropdownState';
+import { AlignedSections } from '../../../../../../interfaces/componentPreviewStructure';
 import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { SetActiveComponentUtils } from '../utils/setActiveComponentUtils';
@@ -38,15 +38,15 @@ export class ChangeChildComponentAlignment {
     childComponentAlignmentDropdownState.setInitialAlignmentIndex(currentSubcomponentIndex);
   }
 
-  private static indexOfSubcomponent(subcomponents: BaseSubcomponentRef[], subcomponent: Subcomponent): number {
+  private static indexOfSubcomponent(subcomponents: Subcomponent[], subcomponent: Subcomponent): number {
     for (let i = 0; i < subcomponents.length; i += 1) {
-      if (subcomponents[i].subcomponent === subcomponent) {
+      if (subcomponents[i] === subcomponent) {
         return i;
       }
     }
   }
 
-  private static saveStateAndRemoveSubcomponent(subcomponents: BaseSubcomponentRef[], currentSubcomponentIndex: number): void {
+  private static saveStateAndRemoveSubcomponent(subcomponents: Subcomponent[], currentSubcomponentIndex: number): void {
     childComponentAlignmentDropdownState.setChildBaseComponent(subcomponents[currentSubcomponentIndex]);
     subcomponents.splice(currentSubcomponentIndex, 1);
   }
@@ -80,7 +80,7 @@ export class ChangeChildComponentAlignment {
       ChangeChildComponentAlignment.updateDropdownStructureIfFound.bind(targetDetails));
     // UX - check if need to set the subcomponent to the right of the alignment
     // masterComponent.activeSubcomponentName = newAlignmentSubcomponents[newAlignmentSubcomponents.length - 1].name;
-    SetActiveComponentUtils.setActiveSubcomponent(masterComponent, alignedSections[newAlignment][0].subcomponent.name);
+    SetActiveComponentUtils.setActiveSubcomponent(masterComponent, alignedSections[newAlignment][0].name);
   }
 
   public static change(masterComponent: WorkshopComponent, previousAlignment: ALIGNED_SECTION_TYPES, newAlignment: ALIGNED_SECTION_TYPES,

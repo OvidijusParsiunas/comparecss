@@ -1,15 +1,15 @@
-import { BaseSubcomponentRef } from '../../../../../../interfaces/componentPreviewStructure';
 import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
+import { Subcomponent } from '../../../../../../interfaces/workshopComponent';
 
-let baseSubcomponent: BaseSubcomponentRef = null;
+let baseSubcomponent: Subcomponent = null;
 let initialAlignment: ALIGNED_SECTION_TYPES = null
 let initialAlignmentIndex = -1;
 
-function getChildBaseSubcomponent(): BaseSubcomponentRef {
+function getChildBaseSubcomponent(): Subcomponent {
   return baseSubcomponent;
 }
 
-function setChildBaseComponent(newBaseSubcomponent: BaseSubcomponentRef): void {
+function setChildBaseComponent(newBaseSubcomponent: Subcomponent): void {
   baseSubcomponent = newBaseSubcomponent;
 }
 

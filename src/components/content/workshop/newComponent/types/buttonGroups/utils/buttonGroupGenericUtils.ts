@@ -6,8 +6,8 @@ export class ButtonGroupGenericUtils {
   public static BUTTONS_ALIGNED_SECTION_TYPE = ALIGNED_SECTION_TYPES.LEFT;
 
   public static getAllButtonComponents(buttonGroupBaseComponent: WorkshopComponent): WorkshopComponent[] {
-    const baseSubcomponentRefs = buttonGroupBaseComponent.componentPreviewStructure.layers[0]
+    const baseSubcomponents = buttonGroupBaseComponent.componentPreviewStructure.layers[0]
       .sections.alignedSections[ButtonGroupGenericUtils.BUTTONS_ALIGNED_SECTION_TYPE];
-    return baseSubcomponentRefs.map((button) => button.subcomponent.seedComponent);
+    return baseSubcomponents.map((button) => button.seedComponent);
   }
 }

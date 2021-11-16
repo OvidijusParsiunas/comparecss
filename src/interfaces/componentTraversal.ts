@@ -1,5 +1,5 @@
-import { AlignedSections, Layer, BaseSubcomponentRef } from './componentPreviewStructure';
 import { Subcomponent, WorkshopComponent } from './workshopComponent';
+import { AlignedSections, Layer } from './componentPreviewStructure';
 import { DropdownItemAuxDetails } from './dropdownItemDisplayStatus';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 
@@ -36,7 +36,7 @@ export type DropdownStructureSearchFromStartCallback<T> = (
 
 export interface SubcomponentPreviewTraversalState {
   subcomponent?: Subcomponent;
-  alignedChildComponents?: BaseSubcomponentRef[];
+  alignedSubcomponents?: Subcomponent[];
   alignedSections?: AlignedSections;
   layers?: Layer[];
   index?: number;
@@ -49,4 +49,4 @@ export type PreviewTraversalResult = {
 export type PreviewTraversalCallback = (...activeSubcomponent: SubcomponentPreviewTraversalState[]) => PreviewTraversalResult;
 
 // currently used for preview traversal callbacks only
-export type AlignedComponentWithMeta = [BaseSubcomponentRef[], AlignedSections];
+export type AlignedComponentWithMeta = [Subcomponent[], AlignedSections];

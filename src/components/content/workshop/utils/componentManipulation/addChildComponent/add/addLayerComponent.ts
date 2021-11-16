@@ -104,8 +104,7 @@ export class AddLayerComponent extends AddComponentShared {
   private static createEmptyLayer(newComponent: WorkshopComponent): Layer {
     const baseName = newComponent.baseSubcomponent.name;
     const baseSubcomponent = newComponent.subcomponents[baseName];
-    const layerSections = baseSubcomponent.layerSectionsType === LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS
-      ? AddLayerComponent.createEmptyAlignedSections() : [];
+    const layerSections = AddLayerComponent.createEmptyAlignedSections();
     return {
       subcomponent: baseSubcomponent,
       sections: {

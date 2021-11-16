@@ -6,18 +6,19 @@ export interface SubcomponentNameToDropdownItemName {
   [subcomponentName: string]: string;
 }
 
-export type BaseSubcomponentRef = {
-  subcomponent: Subcomponent;
-};
-
-export type AlignedSections = { [key in ALIGNED_SECTION_TYPES]: BaseSubcomponentRef[] };
+// the reason why aligned sections maps to a subcomponent instead of a workshop component is because
+// their subcomponent names matter during traversals and when a component is used instead - we can't
+// refer to the required subcomponent as it may not always be the base
+export type AlignedSections = { [key in ALIGNED_SECTION_TYPES]: Subcomponent[] };
 
 interface Sections {
   [LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS]?: AlignedSections;
-  [LAYER_SECTIONS_TYPES.EQUAL_SPLIT_SECTIONS]?: BaseSubcomponentRef[];
 }
 
-export type Layer = { sections: Sections; } & BaseSubcomponentRef;
+export type Layer = {
+  sections: Sections;
+  subcomponent: Subcomponent;
+}
 
 export interface ComponentPreviewStructure {
   layers?: Layer[];
