@@ -7,7 +7,7 @@ export class ButtonGroupGenericUtils {
 
   public static getAllButtonComponents(buttonGroupBaseComponent: WorkshopComponent): WorkshopComponent[] {
     const baseSubcomponents = buttonGroupBaseComponent.componentPreviewStructure.layers[0]
-      .alignmentSectionToSubcomponents[ButtonGroupGenericUtils.INDIVIDUAL_BUTTON_ALIGNED_SECTION];
-    return baseSubcomponents.map((button) => button.seedComponent);
+      .alignmentSectionToComponents[ButtonGroupGenericUtils.INDIVIDUAL_BUTTON_ALIGNED_SECTION];
+    return baseSubcomponents.map((button) => button);
   }
 }

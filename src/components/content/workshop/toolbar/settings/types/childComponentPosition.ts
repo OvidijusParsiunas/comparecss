@@ -19,7 +19,7 @@ function changeSubcomponentAlignment(event: ActionsDropdownMouseEventCallbackEve
   const { settingsComponent, previousItemName, triggeredItemName, subcomponent, isCustomFeatureResetTriggered } = event;
   if (isCustomFeatureResetTriggered) return;
   settingsComponent.$emit('change-subcomponent-alignment',
-    [previousItemName, triggeredItemName, subcomponent, shouldSubcomponentNamesBeUpdated] as ChangeSubcomponentAlignmentEvent);
+    [previousItemName, triggeredItemName, subcomponent.seedComponent, shouldSubcomponentNamesBeUpdated] as ChangeSubcomponentAlignmentEvent);
 }
 
 function changeSubcomponentAlignmentItemSelect(event: ActionsDropdownMouseEventCallbackEvent): void {

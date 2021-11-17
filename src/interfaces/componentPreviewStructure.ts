@@ -1,21 +1,17 @@
 import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../consts/horizontalAlignmentSections';
+import { Subcomponent, WorkshopComponent } from './workshopComponent';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
-import { Subcomponent } from './workshopComponent';
 
 export interface SubcomponentNameToDropdownItemName {
   [subcomponentName: string]: string;
 }
 
-// the reason why alignment section maps to a subcomponent instead of a workshop component is because
-// subcomponent names matter during traversals and when a component is used we can't always refer
-// to the required subcomponent as we may not require the base
-// WORK 2 - if this was always the base subcomponent then the API should be valid
-export type AlignmentSectionToSubcomponents = { [key in HORIZONTAL_ALIGNMENT_SECTIONS]: Subcomponent[] };
+export type AlignmentSectionToComponents = { [key in HORIZONTAL_ALIGNMENT_SECTIONS]: WorkshopComponent[] };
 
 export type Layer = {
-  alignmentSectionToSubcomponents: AlignmentSectionToSubcomponents;
+  alignmentSectionToComponents: AlignmentSectionToComponents;
   subcomponent: Subcomponent;
-}
+};
 
 export interface ComponentPreviewStructure {
   layers?: Layer[];

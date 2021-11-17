@@ -3,14 +3,14 @@
     <!-- when clicked on button text - the ripples don't fade far - this can be fixed on export, alternatively to achieve full ripple effect in the app,
          will have to disable pointer events in the layer sections and have the js class in the layer parent, will also need to find a way to be able to
          highlight the text in the subcomponent select mode -->
-    <div v-for="(subcomponent, index) in subcomponents" :key="subcomponent"
-      :style="getStyleProperties(subcomponent, index)"
-      class="subcomponent-element-container"
-      :class="[COMPONENT_PREVIEW_MARKER, specialisedSectionContainerClass, ...getChildComponentJs(subcomponent)]">
-      <base-component v-if="subcomponent.seedComponent"
+    <div v-for="(component, index) in components" :key="component"
+      :style="getStyleProperties(component.baseSubcomponent, index)"
+      class="component-element-container"
+      :class="[COMPONENT_PREVIEW_MARKER, specialisedSectionContainerClass, ...getChildComponentJs(component.baseSubcomponent)]">
+      <base-component v-if="component"
         class="child-component-container"
-        :class="[COMPONENT_PREVIEW_MARKER, ...getChildComponentContainerJsClasses(subcomponent)]"
-        :component="subcomponent.seedComponent.paddingComponentChild || subcomponent.seedComponent"
+        :class="[COMPONENT_PREVIEW_MARKER, ...getChildComponentContainerJsClasses(component.baseSubcomponent)]"
+        :component="component.paddingComponentChild || component"
         :mouseEvents="mouseEvents"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
         :isChildComponent="true"/>
@@ -49,7 +49,7 @@ export default {
   },
   props: {
     subcomponentAndOverlayElementIds: Object,
-    subcomponents: Object,
+    components: Object,
     mouseEvents: Object,
     specialisedSectionContainerClass: String,
   },
@@ -61,7 +61,7 @@ export default {
     justify-content: center;
     pointer-events: all;
   }
-  .subcomponent-element-container {
+  .component-element-container {
     width: 100%;
     height: 100%;
     display: flex;

@@ -10,11 +10,11 @@
         @mouseup="activateSubcomponentMouseEvent(layer.subcomponent.name, 'subcomponentMouseUp')"
         @click="activateSubcomponentMouseEvent(layer.subcomponent.name, 'subcomponentClick')">
           <layer-alignment-sections
-            v-if="layer.alignmentSectionToSubcomponents"
+            v-if="layer.alignmentSectionToComponents"
             :class="COMPONENT_PREVIEW_MARKER"
             :classes="classes"
             :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-            :alignmentSectionToSubcomponents="layer.alignmentSectionToSubcomponents"
+            :alignmentSectionToComponents="layer.alignmentSectionToComponents"
             :mouseEvents="mouseEvents"/>
       </div>
       <!-- zIndex is used for the shadow and overlay to be placed above the next layer's border -->

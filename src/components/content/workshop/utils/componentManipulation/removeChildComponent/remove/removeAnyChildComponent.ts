@@ -5,7 +5,7 @@ import { DecrementChildComponentCountLimitsState } from '../../childComponentCou
 import { DropdownItemAuxDetails, DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownItemDisplayStatus';
 import { UpdateContainerComponentDropdownItemNames } from '../../updateChildComponent/updateContainerComponentDropdownItemNames';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
-import { AlignmentSectionToSubcomponents, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
+import { AlignmentSectionToComponents, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { UpdateLayerDropdownItemNames } from '../../updateChildComponent/updateLayerDropdownItemNames';
 import { Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
@@ -35,12 +35,12 @@ export class RemoveAnyChildComponent {
   }
 
   private static updateDropdownItemNames(targetDetails: TargetRemovalDetails, subcomponentDropdownStructure: NestedDropdownStructure,
-      removedSubcomponentDropdownIndex: number, alignmentSectionToSubcomponents: AlignmentSectionToSubcomponents, dropdownItems: string[]): void {
+      removedSubcomponentDropdownIndex: number, alignedSectionToComponents: AlignmentSectionToComponents, dropdownItems: string[]): void {
     if (dropdownItems.length === 1) return;
     const { masterComponent, targetSubcomponent: { subcomponentType } } = targetDetails;
     if (subcomponentType !== SUBCOMPONENT_TYPES.LAYER) {
       UpdateContainerComponentDropdownItemNames.updateViaParentLayerDropdownStructure(masterComponent, subcomponentDropdownStructure,
-        alignmentSectionToSubcomponents);
+        alignedSectionToComponents);
     } else {
       UpdateLayerDropdownItemNames.update(masterComponent, removedSubcomponentDropdownIndex);
     }
@@ -93,7 +93,7 @@ export class RemoveAnyChildComponent {
       const removedSubcomponentDropdownIndex = dropdownItems.indexOf(targetDetails.targetDropdownItemName);
       RemoveAnyChildComponent.removeDropdownStructure(traversalState, targetDetails, dropdownItems);
       RemoveAnyChildComponent.updateDropdownItemNames(targetDetails, subcomponentDropdownStructure, removedSubcomponentDropdownIndex,
-        targetDetails.parentLayerAlignmentSectionToSubcomponents, dropdownItems);
+        targetDetails.parentLayerAlignmentSectionToComponents, dropdownItems);
       return { stopTraversal: true };
     }
     return {};
@@ -106,24 +106,24 @@ export class RemoveAnyChildComponent {
     delete masterComponent.componentPreviewStructure.subcomponentNameToDropdownItemName[subcomponentName];
   }
 
-  private static removeAlignedComponents(subcomponent: Subcomponent, masterComponent: WorkshopComponent,
+  private static removeAlignedComponents(component: WorkshopComponent, masterComponent: WorkshopComponent,
       containerComponent: WorkshopComponent): void {
-    const { seedComponent, name } = subcomponent;
-    seedComponent.componentPreviewStructure.layers.forEach((layer) => {
+    const { baseSubcomponent: { name } } = component;
+    component.componentPreviewStructure.layers.forEach((layer) => {
       RemoveAnyChildComponent.removeLayerComponents(layer, masterComponent, containerComponent);
     });
     // a child component can be counted by either the parent layer or the container component, hence need to make sure the count is
     // decremented at both of these components
-    DecrementChildComponentCountLimitsState.decrement(seedComponent.containerComponent, name);
-    DecrementChildComponentCountLimitsState.decrement(subcomponent.seedComponent.parentLayer.subcomponent.seedComponent, name);
+    DecrementChildComponentCountLimitsState.decrement(component.containerComponent, name);
+    DecrementChildComponentCountLimitsState.decrement(component.parentLayer.subcomponent.seedComponent, name);
     RemoveAnyChildComponent.removeSubcomponent(name, masterComponent);
   }
 
   private static removeLayerComponents(layer: Layer, masterComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
-    const { alignmentSectionToSubcomponents } = layer;
-    if (alignmentSectionToSubcomponents) {
-      Object.keys(alignmentSectionToSubcomponents).forEach((sectionName) => {
-        const baseSubcomponents: Subcomponent[] = alignmentSectionToSubcomponents[sectionName];
+    const { alignmentSectionToComponents } = layer;
+    if (alignmentSectionToComponents) {
+      Object.keys(alignmentSectionToComponents).forEach((sectionName) => {
+        const baseSubcomponents: WorkshopComponent[] = alignmentSectionToComponents[sectionName];
         baseSubcomponents.forEach((baseSubcomponent) => {
           RemoveAnyChildComponent.removeAlignedComponents(baseSubcomponent, masterComponent, containerComponent);
         });
@@ -134,13 +134,12 @@ export class RemoveAnyChildComponent {
     }
   }
 
-  private static removeAlignedSubcomponent(alignedSubcomponents: Subcomponent[], subcomponent: Subcomponent,
+  private static removeAlignedSubcomponent(alignedSubcomponents: WorkshopComponent[], subcomponent: Subcomponent,
       masterComponent: WorkshopComponent, containerComponent: WorkshopComponent, index: number): void {
-    RemoveAnyChildComponent.removeAlignedComponents(subcomponent, masterComponent, containerComponent);
+    RemoveAnyChildComponent.removeAlignedComponents(subcomponent.seedComponent, masterComponent, containerComponent);
     alignedSubcomponents.splice(index, 1);
     InterconnectedSettings.update(false, containerComponent, subcomponent);
-    AutoSyncedSiblingContainerComponentUtils.decrementSiblingComponentCount(
-      subcomponent.seedComponent.parentLayer, subcomponent.seedComponent);
+    AutoSyncedSiblingContainerComponentUtils.decrementSiblingComponentCount(subcomponent.seedComponent.parentLayer, subcomponent.seedComponent);
   }
 
   private static removeLayer(layers: Layer[], index: number, masterComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
@@ -149,7 +148,7 @@ export class RemoveAnyChildComponent {
   }
 
   protected static removeChildComponentInPreviewStructureIfFound(traversalState: SubcomponentPreviewTraversalState): PreviewTraversalResult {
-    const { subcomponent, layers, alignedSubcomponents, index } = traversalState;
+    const { subcomponent, layers, alignedComponents: alignedSubcomponents, index } = traversalState;
     const { targetSubcomponent, containerComponent, masterComponent } = this as any as TargetRemovalDetails;
     if (targetSubcomponent === subcomponent) {
       // containerComponent variable is not always the actual container component (set as masterComponent by the remove method below)
@@ -174,7 +173,7 @@ export class RemoveAnyChildComponent {
     const { traversalState } = TraverseComponentViaPreviewStructureParentFirst.traverse(
       RemoveAnyChildComponent.removeChildComponentInPreviewStructureIfFound.bind(targetDetails),
       higherActiveComponentContainer);
-    if (traversalState) targetDetails.parentLayerAlignmentSectionToSubcomponents = traversalState.alignmentSectionToSubcomponents;
+    if (traversalState) targetDetails.parentLayerAlignmentSectionToComponents = traversalState.alignmentSectionToComponents;
     TraverseComponentViaDropdownStructure.traverse(
       targetDetails.masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       RemoveAnyChildComponent.removeChildComponentUsingDropdownStructureIfFound.bind(targetDetails));

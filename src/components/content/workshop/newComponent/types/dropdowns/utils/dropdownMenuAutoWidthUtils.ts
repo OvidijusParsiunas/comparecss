@@ -55,7 +55,7 @@ export class DropdownMenuAutoWidthUtils {
 
   private static getLongestMenuText(menuComponent: WorkshopComponent): string {
     const menuItemTexts = menuComponent.componentPreviewStructure.layers.map((layer) => {      
-      return layer.alignmentSectionToSubcomponents[HORIZONTAL_ALIGNMENT_SECTIONS.LEFT][0].customStaticFeatures.subcomponentText.text;
+      return layer.alignmentSectionToComponents[HORIZONTAL_ALIGNMENT_SECTIONS.LEFT][0].baseSubcomponent.customStaticFeatures.subcomponentText.text;
     });
     return DropdownMenuAutoWidthUtils.getLongestString(menuItemTexts);
   }
@@ -81,7 +81,8 @@ export class DropdownMenuAutoWidthUtils {
   private static getItemTextWidths(menuComponent: WorkshopComponent): number[] {
     return menuComponent.componentPreviewStructure.layers.map((layer) => {
       const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(
-        layer.alignmentSectionToSubcomponents[HORIZONTAL_ALIGNMENT_SECTIONS.LEFT][0].name);
+        layer.alignmentSectionToComponents[HORIZONTAL_ALIGNMENT_SECTIONS.LEFT][0].baseSubcomponent.name);
+      // WORK 2 - if dropdown is in card and below screen bottom - this will error out
       return document.getElementById(subcomponentId).clientWidth;
     });
   }

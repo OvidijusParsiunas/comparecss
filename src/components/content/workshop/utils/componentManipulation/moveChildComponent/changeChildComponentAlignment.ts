@@ -1,95 +1,95 @@
 import { DropdownStructureTraversalState, DropdownTraversalResult, TargetDetails } from '../../../../../../interfaces/componentTraversal';
 import { UpdateContainerComponentDropdownItemNames } from '../updateChildComponent/updateContainerComponentDropdownItemNames';
 import { TraverseComponentViaDropdownStructure } from '../../componentTraversal/traverseComponentViaDropdownStructure';
-import { AlignmentSectionToSubcomponents } from '../../../../../../interfaces/componentPreviewStructure';
+import { AlignmentSectionToComponents } from '../../../../../../interfaces/componentPreviewStructure';
 import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../consts/horizontalAlignmentSections';
-import { Subcomponent, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { childComponentAlignmentDropdownState } from './childComponentAlignmentDropdownState';
 import ComponentTraversalUtils from '../../componentTraversal/componentTraversalUtils';
+import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SetActiveComponentUtils } from '../utils/setActiveComponentUtils';
 
 export class ChangeChildComponentAlignment {
 
-  private static addSubcomponentToNewAlignment(newAlignment: HORIZONTAL_ALIGNMENT_SECTIONS, alignmentSectionToSubcomponents: AlignmentSectionToSubcomponents): void {
-    // alignmentSectionToSubcomponents[newAlignment].push(childComponentAlignmentDropdownState.getChildBaseSubcomponent());
-    alignmentSectionToSubcomponents[newAlignment].unshift(childComponentAlignmentDropdownState.getChildBaseSubcomponent());
+  private static addComponentToNewAlignment(newAlignment: HORIZONTAL_ALIGNMENT_SECTIONS, alignedComponents: AlignmentSectionToComponents): void {
+    // alignedComponents[newAlignment].push(childComponentAlignmentDropdownState.getChildComponent());
+    alignedComponents[newAlignment].unshift(childComponentAlignmentDropdownState.getChildComponent());
   }
 
-  private static addSubcomponentBackToInitialAlignment(previousAlignment: HORIZONTAL_ALIGNMENT_SECTIONS, newAlignment: HORIZONTAL_ALIGNMENT_SECTIONS,
-    alignmentSectionToSubcomponents: AlignmentSectionToSubcomponents): void {
+  private static addComponentBackToInitialAlignment(previousAlignment: HORIZONTAL_ALIGNMENT_SECTIONS, newAlignment: HORIZONTAL_ALIGNMENT_SECTIONS,
+    alignedComponents: AlignmentSectionToComponents): void {
     if (previousAlignment !== newAlignment) {
-      alignmentSectionToSubcomponents[childComponentAlignmentDropdownState.getInitialAlignment()].splice(
-        childComponentAlignmentDropdownState.getInitialAlignmentIndex(), 0, childComponentAlignmentDropdownState.getChildBaseSubcomponent());
+      alignedComponents[childComponentAlignmentDropdownState.getInitialAlignment()].splice(
+        childComponentAlignmentDropdownState.getInitialAlignmentIndex(), 0, childComponentAlignmentDropdownState.getChildComponent());
     }
   }
 
-  private static addSubcomponentToAlignment(previousAlignment: HORIZONTAL_ALIGNMENT_SECTIONS, newAlignment: HORIZONTAL_ALIGNMENT_SECTIONS,
-      subcomponent: Subcomponent): void {
-    const { alignmentSectionToSubcomponents } = subcomponent.seedComponent.parentLayer;
+  private static addComponentToAlignment(previousAlignment: HORIZONTAL_ALIGNMENT_SECTIONS, newAlignment: HORIZONTAL_ALIGNMENT_SECTIONS,
+      childComponent: WorkshopComponent): void {
+    const { alignmentSectionToComponents: alignedComponents } = childComponent.parentLayer;
     if (newAlignment === childComponentAlignmentDropdownState.getInitialAlignment()) {
-      ChangeChildComponentAlignment.addSubcomponentBackToInitialAlignment(previousAlignment, newAlignment, alignmentSectionToSubcomponents);
-    } else if (childComponentAlignmentDropdownState.getChildBaseSubcomponent()) {
-      ChangeChildComponentAlignment.addSubcomponentToNewAlignment(newAlignment, alignmentSectionToSubcomponents);
+      ChangeChildComponentAlignment.addComponentBackToInitialAlignment(previousAlignment, newAlignment, alignedComponents);
+    } else if (childComponentAlignmentDropdownState.getChildComponent()) {
+      ChangeChildComponentAlignment.addComponentToNewAlignment(newAlignment, alignedComponents);
     }
   }
 
-  private static setInitialDropdownState(previousAlignment: HORIZONTAL_ALIGNMENT_SECTIONS, currentSubcomponentIndex: number): void {
+  private static setInitialDropdownState(previousAlignment: HORIZONTAL_ALIGNMENT_SECTIONS, currentComponentIndex: number): void {
     childComponentAlignmentDropdownState.setInitialAlignment(previousAlignment);
-    childComponentAlignmentDropdownState.setInitialAlignmentIndex(currentSubcomponentIndex);
+    childComponentAlignmentDropdownState.setInitialAlignmentIndex(currentComponentIndex);
   }
 
-  private static indexOfSubcomponent(subcomponents: Subcomponent[], subcomponent: Subcomponent): number {
-    for (let i = 0; i < subcomponents.length; i += 1) {
-      if (subcomponents[i] === subcomponent) {
+  private static indexOfComponent(childComponents: WorkshopComponent[], childComponent: WorkshopComponent): number {
+    for (let i = 0; i < childComponents.length; i += 1) {
+      if (childComponents[i] === childComponent) {
         return i;
       }
     }
   }
 
-  private static saveStateAndRemoveSubcomponent(subcomponents: Subcomponent[], currentSubcomponentIndex: number): void {
-    childComponentAlignmentDropdownState.setChildBaseComponent(subcomponents[currentSubcomponentIndex]);
-    subcomponents.splice(currentSubcomponentIndex, 1);
+  private static saveStateAndRemoveComponent(childComponents: WorkshopComponent[], currentComponentIndex: number): void {
+    childComponentAlignmentDropdownState.setChildComponent(childComponents[currentComponentIndex]);
+    childComponents.splice(currentComponentIndex, 1);
   }
 
-  private static setStateAndRemoveSubcomponent(previousAlignment: HORIZONTAL_ALIGNMENT_SECTIONS, subcomponent: Subcomponent): void {
-    const previousAlignmentSubcomponents = subcomponent.seedComponent.parentLayer.alignmentSectionToSubcomponents[previousAlignment];
-    const currentSubcomponentIndex = ChangeChildComponentAlignment.indexOfSubcomponent(previousAlignmentSubcomponents, subcomponent);
-    ChangeChildComponentAlignment.saveStateAndRemoveSubcomponent(previousAlignmentSubcomponents, currentSubcomponentIndex);
+  private static setStateAndRemoveComponent(previousAlignment: HORIZONTAL_ALIGNMENT_SECTIONS, childComponent: WorkshopComponent): void {
+    const previousAlignmentComponents = childComponent.parentLayer.alignmentSectionToComponents[previousAlignment];
+    const currentComponentIndex = ChangeChildComponentAlignment.indexOfComponent(previousAlignmentComponents, childComponent);
+    ChangeChildComponentAlignment.saveStateAndRemoveComponent(previousAlignmentComponents, currentComponentIndex);
     if (childComponentAlignmentDropdownState.getInitialAlignmentIndex() < 0) {
-      ChangeChildComponentAlignment.setInitialDropdownState(previousAlignment, currentSubcomponentIndex);
+      ChangeChildComponentAlignment.setInitialDropdownState(previousAlignment, currentComponentIndex);
     }
   }
 
   private static updateDropdownStructureIfFound(traversalState: DropdownStructureTraversalState): DropdownTraversalResult {
     const targetDetails = this as any as TargetDetails;
     if (TraverseComponentViaDropdownStructure.isActualObjectNameMatching(targetDetails, traversalState)) {
-      const { masterComponent, parentLayerAlignmentSectionToSubcomponents } = targetDetails;
+      const { masterComponent, parentLayerAlignmentSectionToComponents } = targetDetails;
       UpdateContainerComponentDropdownItemNames.updateViaParentLayerDropdownStructure(masterComponent,
-        traversalState.subcomponentDropdownStructure, parentLayerAlignmentSectionToSubcomponents);
+        traversalState.subcomponentDropdownStructure, parentLayerAlignmentSectionToComponents);
       return { stopTraversal: true };
     }
     return {};
   }
 
-  private static updateNames(newAlignment: HORIZONTAL_ALIGNMENT_SECTIONS, subcomponent: Subcomponent, masterComponent: WorkshopComponent): void {
+  private static updateNames(newAlignment: HORIZONTAL_ALIGNMENT_SECTIONS, childComponent: WorkshopComponent, masterComponent: WorkshopComponent): void {
     const targetDetails = ComponentTraversalUtils.generateTargetDetails(masterComponent, masterComponent.activeSubcomponentName) as TargetDetails;
-    const { alignmentSectionToSubcomponents } = subcomponent.seedComponent.parentLayer;
-    targetDetails.parentLayerAlignmentSectionToSubcomponents = alignmentSectionToSubcomponents;
+    const { alignmentSectionToComponents } = childComponent.parentLayer;
+    targetDetails.parentLayerAlignmentSectionToComponents = alignmentSectionToComponents;
     TraverseComponentViaDropdownStructure.traverse(
       masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       ChangeChildComponentAlignment.updateDropdownStructureIfFound.bind(targetDetails));
-    // UX - check if need to set the subcomponent to the right of the alignment
+    // UX - check if need to set the childComponent to the right of the alignment
     // masterComponent.activeSubcomponentName = newAlignmentSubcomponents[newAlignmentSubcomponents.length - 1].name;
-    SetActiveComponentUtils.setActiveSubcomponent(masterComponent, alignmentSectionToSubcomponents[newAlignment][0].name);
+    SetActiveComponentUtils.setActiveSubcomponent(masterComponent, alignmentSectionToComponents[newAlignment][0].baseSubcomponent.name);
   }
 
   public static change(masterComponent: WorkshopComponent, previousAlignment: HORIZONTAL_ALIGNMENT_SECTIONS, newAlignment: HORIZONTAL_ALIGNMENT_SECTIONS,
-      subcomponent: Subcomponent, shouldSubcomponentNamesBeUpdated: boolean): void {
+      childComponent: WorkshopComponent, shouldSubcomponentNamesBeUpdated: boolean): void {
     if (shouldSubcomponentNamesBeUpdated) {
-      ChangeChildComponentAlignment.updateNames(newAlignment, subcomponent, masterComponent);
+      ChangeChildComponentAlignment.updateNames(newAlignment, childComponent, masterComponent);
     } else if (newAlignment !== previousAlignment) {
-      ChangeChildComponentAlignment.setStateAndRemoveSubcomponent(previousAlignment, subcomponent);
-      ChangeChildComponentAlignment.addSubcomponentToAlignment(previousAlignment, newAlignment, subcomponent);
+      ChangeChildComponentAlignment.setStateAndRemoveComponent(previousAlignment, childComponent);
+      ChangeChildComponentAlignment.addComponentToAlignment(previousAlignment, newAlignment, childComponent);
     }
   }
 }

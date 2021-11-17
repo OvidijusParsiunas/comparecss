@@ -84,7 +84,7 @@ export class DefaultDropdownMenu {
       .unshift(DropdownItemLayer.overwriteDropdownItem.bind(DefaultDropdownMenu.overwriteLayerCss as OverwriteDropdownItemContext));
     menuComponent.newChildComponents.propertyOverwritables.postBuildFuncs[COMPONENT_TYPES.TEXT] = [
       ApplyDropdownMenuItemTextProperties.apply.bind(
-        { menuComponent, createDefaultTextStyling: DefaultDropdownMenu.createDefaultTextCustomCss } as SetTextSubcomponentContext)];
+        { menuComponent, createDefaultTextCss: DefaultDropdownMenu.createDefaultTextCustomCss } as SetTextSubcomponentContext)];
   }
 }
 

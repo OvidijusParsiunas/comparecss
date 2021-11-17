@@ -19,7 +19,7 @@ import { layerBase } from './base';
 
 export interface SetTextSubcomponentContext {
   menuComponent: WorkshopComponent;
-  createDefaultTextStyling: () => CustomCss;
+  createDefaultTextCss: () => CustomCss;
 }
 
 export type OverwriteDropdownItemContext = (itemComponent: WorkshopComponent) => void;

@@ -1,28 +1,29 @@
 import { AlignedComponentWithMeta, PreviewTraversalCallback, SubcomponentPreviewTraversalState, PreviewTraversalResult } from '../../../../../../interfaces/componentTraversal';
-import { AlignmentSectionToSubcomponents } from '../../../../../../interfaces/componentPreviewStructure';
+import { AlignmentSectionToComponents } from '../../../../../../interfaces/componentPreviewStructure';
 
 type TraverseAlignedComponentsCallback = (callback: PreviewTraversalCallback, alignedComponentsWithMetaArr: AlignedComponentWithMeta[]) => PreviewTraversalResult;
 
 export class TraverseComponentViaPreviewStructureShared {
 
   protected static createTraversalStateFromAlignedComponentWithMeta(alignedComponentWithMeta: AlignedComponentWithMeta, index: number): SubcomponentPreviewTraversalState {
-    const [alignedSubcomponents, alignmentSectionToSubcomponents] = alignedComponentWithMeta;
+    const [alignedComponents, alignmentSectionToComponents] = alignedComponentWithMeta;
     return {
-      subcomponent: alignedSubcomponents[index],
-      alignedSubcomponents,
-      alignmentSectionToSubcomponents,
+      // WORK 4 - refactor
+      subcomponent: alignedComponents[index].baseSubcomponent,
+      alignedComponents,
+      alignmentSectionToComponents,
       index,
-    }
+    };
   }
 
-  protected static traverseAlignmentSections(callback: PreviewTraversalCallback, alignmentSectionToSubcomponentsArr: AlignmentSectionToSubcomponents[],
+  protected static traverseAlignmentSections(callback: PreviewTraversalCallback, alignmentSectionToSubcomponentsArr: AlignmentSectionToComponents[],
       traverseAlignedComponentsCallback: TraverseAlignedComponentsCallback): PreviewTraversalResult {
     let traversalResult: PreviewTraversalResult = {};
     const alignmentSections = Object.keys(alignmentSectionToSubcomponentsArr[0]);
     for (let i = 0; i < alignmentSections.length; i += 1) {
       traversalResult = traverseAlignedComponentsCallback(
-        callback, alignmentSectionToSubcomponentsArr.map((alignmentSectionToSubcomponents) => {
-          return [alignmentSectionToSubcomponents[alignmentSections[i]], alignmentSectionToSubcomponents]; }));
+        callback, alignmentSectionToSubcomponentsArr.map((alignmentSectionToComponents) => {
+          return [alignmentSectionToComponents[alignmentSections[i]], alignmentSectionToComponents]; }));
       if (traversalResult.stopTraversal) return traversalResult;
     }
     return traversalResult;

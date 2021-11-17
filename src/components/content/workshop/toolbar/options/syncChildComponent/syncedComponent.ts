@@ -25,14 +25,13 @@ export class SyncedComponent {
 
   private static removeAutoSyncedSiblingSyncReferencesAndResyncTogether(inSyncComponent: WorkshopComponent,
       siblingComponentTypes: SiblingComponentTypes): void {
-    const { alignmentSectionToSubcomponents } = inSyncComponent.parentLayer;
-    Object.keys(alignmentSectionToSubcomponents).forEach((alignmentSection: HORIZONTAL_ALIGNMENT_SECTIONS) => {
-      alignmentSectionToSubcomponents[alignmentSection].forEach((baseSubcomponent) => {
-        const { seedComponent } = baseSubcomponent;
-        seedComponent.sync.componentThisIsSyncedTo.sync.componentsSyncedToThis.delete(seedComponent);
-        seedComponent.sync.componentThisIsSyncedTo = null;
+    const { alignmentSectionToComponents } = inSyncComponent.parentLayer;
+    Object.keys(alignmentSectionToComponents).forEach((alignmentSection: HORIZONTAL_ALIGNMENT_SECTIONS) => {
+      alignmentSectionToComponents[alignmentSection].forEach((component) => {
+        component.sync.componentThisIsSyncedTo.sync.componentsSyncedToThis.delete(component);
+        component.sync.componentThisIsSyncedTo = null;
         SyncChildComponentUtils.callFuncOnSyncableComponents(AutoSyncedSiblingComponentUtils.copySiblingComponentSyncableTraversalCallback,
-          seedComponent, siblingComponentTypes);
+          component, siblingComponentTypes);
       });
     });
   }

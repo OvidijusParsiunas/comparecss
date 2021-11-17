@@ -2,8 +2,8 @@ import { IncrementChildComponentCountLimitsState } from '../../childComponentCou
 import { DropdownItemsDisplayStatusUtils } from '../../../dropdownItemsDisplayStatusUtils/dropdownItemsDisplayStatusUtils';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
 import { AutoSyncedSiblingComponentUtils } from '../../autoSyncedSiblingComponentUtils/autoSyncedSiblingComponentUtils';
-import { AlignmentSectionToSubcomponents, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
+import { AlignmentSectionToComponents, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
 import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../../consts/horizontalAlignmentSections';
@@ -93,7 +93,7 @@ export class AddLayerComponent extends AddComponentShared {
     });
   }
 
-  private static createEmptyAlignmentSections(): AlignmentSectionToSubcomponents {
+  private static createEmptyAlignmentSections(): AlignmentSectionToComponents {
     return {
       [HORIZONTAL_ALIGNMENT_SECTIONS.LEFT]: [],
       [HORIZONTAL_ALIGNMENT_SECTIONS.CENTER]: [],
@@ -106,7 +106,7 @@ export class AddLayerComponent extends AddComponentShared {
     const baseSubcomponent = newComponent.subcomponents[baseName];
     return {
       subcomponent: baseSubcomponent,
-      alignmentSectionToSubcomponents: AddLayerComponent.createEmptyAlignmentSections(),
+      alignmentSectionToComponents: AddLayerComponent.createEmptyAlignmentSections(),
     };
   }
 

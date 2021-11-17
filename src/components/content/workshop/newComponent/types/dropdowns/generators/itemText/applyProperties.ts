@@ -40,7 +40,7 @@ export class ApplyDropdownMenuItemTextProperties extends ComponentBuilder {
       const { layers } = component.paddingComponentChild.linkedComponents.auxiliary[0].componentPreviewStructure;
       if (layers.length > 0) {
         JSONUtils.copyPropertiesThatExistInTarget(
-          layers[0].alignmentSectionToSubcomponents[HORIZONTAL_ALIGNMENT_SECTIONS.LEFT][0].customCss, textComponent.baseSubcomponent.customCss);
+          layers[0].alignmentSectionToComponents[HORIZONTAL_ALIGNMENT_SECTIONS.LEFT][0].baseSubcomponent.customCss, textComponent.baseSubcomponent.customCss);
       }
     });
   }
@@ -56,25 +56,25 @@ export class ApplyDropdownMenuItemTextProperties extends ComponentBuilder {
     textComponent.baseSubcomponent.defaultCustomFeatures = ApplyDropdownMenuItemTextProperties.createDefaultTextCustomFeatures();
   }
 
-  private static copyTextFromComponentThisIsSyncedTo(componentThisIsSyncedTo: WorkshopComponent, textComponent: WorkshopComponent, createDefaultTextStyling: () => CustomCss): void {
+  private static copyTextFromComponentThisIsSyncedTo(componentThisIsSyncedTo: WorkshopComponent, textComponent: WorkshopComponent, createDefaultTextCss: () => CustomCss): void {
     const { layers } = componentThisIsSyncedTo.paddingComponentChild.linkedComponents.auxiliary[0].componentPreviewStructure;
-    const textSubcomponent = layers.length > 0 ? layers[0].alignmentSectionToSubcomponents[HORIZONTAL_ALIGNMENT_SECTIONS.LEFT][0].customCss : createDefaultTextStyling();
+    const textSubcomponent = layers.length > 0 ? layers[0].alignmentSectionToComponents[HORIZONTAL_ALIGNMENT_SECTIONS.LEFT][0].baseSubcomponent.customCss : createDefaultTextCss();
     textComponent.baseSubcomponent.customCss = textSubcomponent;
-    textComponent.baseSubcomponent.defaultCss = createDefaultTextStyling();
+    textComponent.baseSubcomponent.defaultCss = createDefaultTextCss();
   }
 
-  private static overwriteTextCustomCss(menuComponent: WorkshopComponent, textComponent: WorkshopComponent, createDefaultTextStyling: () => CustomCss): void {
+  private static overwriteTextCustomCss(menuComponent: WorkshopComponent, textComponent: WorkshopComponent, createDefaultTextCss: () => CustomCss): void {
     const { componentThisIsSyncedTo } = menuComponent.linkedComponents.base.paddingComponent?.sync || {};
     if (componentThisIsSyncedTo) {
-      ApplyDropdownMenuItemTextProperties.copyTextFromComponentThisIsSyncedTo(componentThisIsSyncedTo, textComponent, createDefaultTextStyling);
+      ApplyDropdownMenuItemTextProperties.copyTextFromComponentThisIsSyncedTo(componentThisIsSyncedTo, textComponent, createDefaultTextCss);
     } else {
-      textComponent.baseSubcomponent.customCss = createDefaultTextStyling();
-      textComponent.baseSubcomponent.defaultCss = createDefaultTextStyling();
+      textComponent.baseSubcomponent.customCss = createDefaultTextCss();
+      textComponent.baseSubcomponent.defaultCss = createDefaultTextCss();
     }
   }
 
-  private static overwriteTextComponent(menuComponent: WorkshopComponent, textComponent: WorkshopComponent, createDefaultTextStyling: () => CustomCss): void {
-    ApplyDropdownMenuItemTextProperties.overwriteTextCustomCss(menuComponent, textComponent, createDefaultTextStyling);
+  private static overwriteTextComponent(menuComponent: WorkshopComponent, textComponent: WorkshopComponent, createDefaultTextCss: () => CustomCss): void {
+    ApplyDropdownMenuItemTextProperties.overwriteTextCustomCss(menuComponent, textComponent, createDefaultTextCss);
     ApplyDropdownMenuItemTextProperties.overwriteTextCustomFeatures(textComponent);
     ApplyDropdownMenuItemTextProperties.updateItemsOfComponentsSyncedToThis(menuComponent, textComponent);
   }
@@ -90,12 +90,12 @@ export class ApplyDropdownMenuItemTextProperties extends ComponentBuilder {
   }
 
   public static apply(textComponent: WorkshopComponent): void {
-    const { menuComponent, createDefaultTextStyling } = this as unknown as SetTextSubcomponentContext;
+    const { menuComponent, createDefaultTextCss } = this as unknown as SetTextSubcomponentContext;
     const { layers: activeBaseComponentLayers } = menuComponent.componentPreviewStructure;
     if (activeBaseComponentLayers.length > 1) {
       ApplyDropdownMenuItemTextProperties.copyTextFromSiblingItem(activeBaseComponentLayers, textComponent);
     } else {
-      ApplyDropdownMenuItemTextProperties.overwriteTextComponent(menuComponent, textComponent, createDefaultTextStyling);
+      ApplyDropdownMenuItemTextProperties.overwriteTextComponent(menuComponent, textComponent, createDefaultTextCss);
     }
     ApplyDropdownMenuItemTextProperties.overwriteTextCustomStaticFeatures(menuComponent, textComponent);
   }

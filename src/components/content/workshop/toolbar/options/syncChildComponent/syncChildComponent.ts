@@ -147,10 +147,10 @@ export class SyncChildComponent {
   public static setAutoSyncedSiblingComponentsToInSync(currentlySelectedComponent: WorkshopComponent, componenetThisIsSyncedTo: WorkshopComponent): void {
     const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(currentlySelectedComponent);
     if (!siblingComponentTypes) return;
-    const { alignmentSectionToSubcomponents } = currentlySelectedComponent.parentLayer;
-    Object.keys(alignmentSectionToSubcomponents).forEach((alignmentSection: HORIZONTAL_ALIGNMENT_SECTIONS) => {
-      alignmentSectionToSubcomponents[alignmentSection].forEach((baseSubcomponent) => {
-        SyncChildComponent.setComponentPropertiesToBeInSync(baseSubcomponent.seedComponent, componenetThisIsSyncedTo);
+    const { alignmentSectionToComponents } = currentlySelectedComponent.parentLayer;
+    Object.keys(alignmentSectionToComponents).forEach((alignmentSection: HORIZONTAL_ALIGNMENT_SECTIONS) => {
+      alignmentSectionToComponents[alignmentSection].forEach((component) => {
+        SyncChildComponent.setComponentPropertiesToBeInSync(component, componenetThisIsSyncedTo);
       });
     });
   }

@@ -75,9 +75,9 @@ export class AddContainerComponent extends AddComponentShared {
       newComponent.componentPreviewStructure.subcomponentNameToDropdownItemName);
   }
 
-  private static addNewSubcomponentToParentLayer(parentLayer: Layer, baseSubcomponent: Subcomponent): void {
-    const { horizontalSection } = baseSubcomponent?.customStaticFeatures?.alignment || {};
-    parentLayer.alignmentSectionToSubcomponents[horizontalSection || HORIZONTAL_ALIGNMENT_SECTIONS.LEFT].push(baseSubcomponent);
+  private static addNewComponentToParentLayer(parentLayer: Layer, newComponent: WorkshopComponent): void {
+    const { horizontalSection } = newComponent?.baseSubcomponent.customStaticFeatures?.alignment || {};
+    parentLayer.alignmentSectionToComponents[horizontalSection || HORIZONTAL_ALIGNMENT_SECTIONS.LEFT].push(newComponent);
   }
 
   private static addNewComponentToDropdownStructure(newComponent: WorkshopComponent, masterComponent: WorkshopComponent,
@@ -99,7 +99,7 @@ export class AddContainerComponent extends AddComponentShared {
   }
 
   protected static addNewComponentToComponentPreview(newComponent: WorkshopComponent, parentLayer: Layer): void {
-    AddContainerComponent.addNewSubcomponentToParentLayer(parentLayer, newComponent.baseSubcomponent);
+    AddContainerComponent.addNewComponentToParentLayer(parentLayer, newComponent);
     newComponent.parentLayer = parentLayer;
   }
 

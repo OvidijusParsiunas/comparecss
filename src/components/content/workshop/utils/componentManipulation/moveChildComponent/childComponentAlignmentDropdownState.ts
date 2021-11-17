@@ -1,16 +1,16 @@
 import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../consts/horizontalAlignmentSections';
-import { Subcomponent } from '../../../../../../interfaces/workshopComponent';
+import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 
-let baseSubcomponent: Subcomponent = null;
+let childComponnet: WorkshopComponent = null;
 let initialAlignment: HORIZONTAL_ALIGNMENT_SECTIONS = null
 let initialAlignmentIndex = -1;
 
-function getChildBaseSubcomponent(): Subcomponent {
-  return baseSubcomponent;
+function getChildComponent(): WorkshopComponent {
+  return childComponnet;
 }
 
-function setChildBaseComponent(newBaseSubcomponent: Subcomponent): void {
-  baseSubcomponent = newBaseSubcomponent;
+function setChildComponent(newChildComponent: WorkshopComponent): void {
+  childComponnet = newChildComponent;
 }
 
 function getInitialAlignmentIndex(): number {
@@ -30,7 +30,7 @@ function setInitialAlignment(initialAlignmentState: HORIZONTAL_ALIGNMENT_SECTION
 }
 
 function reset(): void {
-  baseSubcomponent = null;
+  childComponnet = null;
   initialAlignment = null;
   initialAlignmentIndex = -1;
 }
@@ -40,7 +40,7 @@ export const childComponentAlignmentDropdownState = {
   getInitialAlignmentIndex,
   setInitialAlignment,
   getInitialAlignment,
-  setChildBaseComponent,
-  getChildBaseSubcomponent,
+  setChildComponent,
+  getChildComponent,
   reset,
 }

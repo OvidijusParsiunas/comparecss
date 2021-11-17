@@ -1,29 +1,29 @@
 <template>
   <div class="layer-sections-container" :class="[...classes, COMPONENT_PREVIEW_MARKER]">
     <!-- center -->
-    <layer-alignment-section v-if="getAlignmentSectionSubcomponents([HORIZONTAL_ALIGNMENT_SECTIONS.CENTER])"
+    <layer-alignment-section v-if="getAlignmentSectionComponents([HORIZONTAL_ALIGNMENT_SECTIONS.CENTER])"
       class="center-section"
       :class="COMPONENT_PREVIEW_MARKER"
       :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-      :subcomponents="getAlignmentSectionSubcomponents([HORIZONTAL_ALIGNMENT_SECTIONS.CENTER])"
+      :components="getAlignmentSectionComponents([HORIZONTAL_ALIGNMENT_SECTIONS.CENTER])"
       :mouseEvents="mouseEvents"
       :specialisedSectionContainerClass="SPECIALISED_SECTION_CONTAINER_CLASSES.CENTER_SECTION"/>
     <div class="default-sections-container" :class="[...classes, COMPONENT_PREVIEW_MARKER]">
       <!-- left -->
-      <layer-alignment-section v-if="getAlignmentSectionSubcomponents([HORIZONTAL_ALIGNMENT_SECTIONS.LEFT])"
+      <layer-alignment-section v-if="getAlignmentSectionComponents([HORIZONTAL_ALIGNMENT_SECTIONS.LEFT])"
         style="order: 0"
         class="default-section"
         :class="COMPONENT_PREVIEW_MARKER"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-        :subcomponents="getAlignmentSectionSubcomponents([HORIZONTAL_ALIGNMENT_SECTIONS.LEFT])"
+        :components="getAlignmentSectionComponents([HORIZONTAL_ALIGNMENT_SECTIONS.LEFT])"
         :mouseEvents="mouseEvents"/>
       <!-- right -->
-      <layer-alignment-section v-if="getAlignmentSectionSubcomponents([HORIZONTAL_ALIGNMENT_SECTIONS.RIGHT])"
+      <layer-alignment-section v-if="getAlignmentSectionComponents([HORIZONTAL_ALIGNMENT_SECTIONS.RIGHT])"
         style="order: 1"
         class="default-section right-section"
         :class="COMPONENT_PREVIEW_MARKER"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-        :subcomponents="getAlignmentSectionSubcomponents([HORIZONTAL_ALIGNMENT_SECTIONS.RIGHT])"
+        :components="getAlignmentSectionComponents([HORIZONTAL_ALIGNMENT_SECTIONS.RIGHT])"
         :mouseEvents="mouseEvents"/>
     </div>
   </div>
@@ -51,8 +51,8 @@ export default {
     };
   },
   methods: {
-    getAlignmentSectionSubcomponents(horizontalAlignmentSection: HORIZONTAL_ALIGNMENT_SECTIONS): WorkshopComponent {
-      return this.alignmentSectionToSubcomponents[horizontalAlignmentSection];
+    getAlignmentSectionComponents(horizontalAlignmentSection: HORIZONTAL_ALIGNMENT_SECTIONS): WorkshopComponent {
+      return this.alignmentSectionToComponents[horizontalAlignmentSection];
     }
   },
   components: {
@@ -60,7 +60,7 @@ export default {
   },
   props: {
     subcomponentAndOverlayElementIds: Object,
-    alignmentSectionToSubcomponents: Object,
+    alignmentSectionToComponents: Object,
     mouseEvents: Object,
     classes: Array,
   },

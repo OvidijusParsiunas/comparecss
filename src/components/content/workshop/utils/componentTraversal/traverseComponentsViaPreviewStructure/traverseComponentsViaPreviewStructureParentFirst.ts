@@ -15,7 +15,7 @@ export class TraverseComponentViaPreviewStructureParentFirst extends TraverseCom
         ...availableComponents.map((alignedComponentWithMeta) => TraverseComponentViaPreviewStructureShared.createTraversalStateFromAlignedComponentWithMeta(alignedComponentWithMeta, i)));
       if (traversalResult.stopTraversal) return traversalResult;
       traversalResult = TraverseComponentViaPreviewStructureParentFirst.traverse(
-        callback, ...availableComponents.map((alignedComponentWithMeta) => alignedComponentWithMeta[0][i].seedComponent)
+        callback, ...availableComponents.map((alignedComponentWithMeta) => alignedComponentWithMeta[0][i])
       );
       if (traversalResult.stopTraversal) return traversalResult;
     }
@@ -29,7 +29,7 @@ export class TraverseComponentViaPreviewStructureParentFirst extends TraverseCom
         return { subcomponent: layers[i].subcomponent, layers, index: i }}));
       if (traversalResult.stopTraversal) return traversalResult;
       traversalResult = TraverseComponentViaPreviewStructureShared.traverseAlignmentSections(
-        callback, [...layersArr.map((activeLayers) => activeLayers[i].alignmentSectionToSubcomponents)],
+        callback, [...layersArr.map((activeLayers) => activeLayers[i].alignmentSectionToComponents)],
         TraverseComponentViaPreviewStructureParentFirst.traverseAlignedComponents);
       if (traversalResult.stopTraversal) return traversalResult;
     }
@@ -93,7 +93,7 @@ initial implementation of traversal made specifically for two components or trav
   private static copyLayers(callback: TraversableCallback, activeLayers: Layer[], layersToBeCopied: Layer[]): void {
     activeLayers.forEach((layer, layerIndex) => {
       const layerToBeCopied = layersToBeCopied?.[layerIndex];
-      SyncChildComponentModeTempPropertiesUtils.copyAlignmentSections(callback, layer.alignmentSectionToSubcomponents, layerToBeCopied?sections.alignmentSectionToSubcomponents);
+      SyncChildComponentModeTempPropertiesUtils.copyAlignmentSections(callback, layer.alignmentTypeToSubcomponents, layerToBeCopied?sections.alignmentTypeToSubcomponents);
       callback(layer.subcomponent, layerToBeCopied?.subcomponent);
     });
   }
@@ -122,10 +122,10 @@ initial implementation of traversal made specifically for two components or trav
 
 1 component:
 
-  private static inspectAlignedChildComponent(alignedSubcomponents: Subcomponent[], index: number, alignmentSectionToSubcomponents: AlignmentTypeToSubcomponents,
+  private static inspectAlignedChildComponent(alignedSubcomponents: Subcomponent[], index: number, alignmentTypeToSubcomponents: AlignmentTypeToSubcomponents,
       callback: PreviewTraversalCallback): SubcomponentPreviewTraversalState {
     const subcomponent = alignedSubcomponents[index];
-    const callbackResult = callback({subcomponent, alignedSubcomponents, alignmentSectionToSubcomponents, index});
+    const callbackResult = callback({subcomponent, alignedSubcomponents, alignmentTypeToSubcomponents, index});
     if (callbackResult) return callbackResult;
     const { componentPreviewStructure } = subcomponent.seedComponent;
     const traversalResult = TraverseComponentViaPreviewStructure.traverse(callback, componentPreviewStructure, );
@@ -133,12 +133,12 @@ initial implementation of traversal made specifically for two components or trav
     return null;
   }
 
-  private static iterateAlignmentSections(callback: PreviewTraversalCallback, alignmentSectionToSubcomponents: AlignmentTypeToSubcomponents): SubcomponentPreviewTraversalState {
-    const alignmentSections = Object.keys(alignmentSectionToSubcomponents);
+  private static iterateAlignmentSections(callback: PreviewTraversalCallback, alignmentTypeToSubcomponents: AlignmentTypeToSubcomponents): SubcomponentPreviewTraversalState {
+    const alignmentSections = Object.keys(alignmentTypeToSubcomponents);
     for (let i = 0; i < alignmentSections.length; i += 1) {
-      const alignedSubcomponents = alignmentSectionToSubcomponents[alignmentSections[i]];
+      const alignedSubcomponents = alignmentTypeToSubcomponents[alignmentSections[i]];
       for (let i = 0; i < alignedSubcomponents.length; i += 1) {
-        const iterationResult = TraverseComponentViaPreviewStructure.inspectAlignedChildComponent(alignedSubcomponents, i, alignmentSectionToSubcomponents, callback);
+        const iterationResult = TraverseComponentViaPreviewStructure.inspectAlignedChildComponent(alignedSubcomponents, i, alignmentTypeToSubcomponents, callback);
         if (iterationResult) return iterationResult;
       }
     }
@@ -148,10 +148,10 @@ initial implementation of traversal made specifically for two components or trav
   public static traverse(callback: PreviewTraversalCallback, previewStructure: ComponentPreviewStructure): SubcomponentPreviewTraversalState {
     const { layers } = previewStructure;
     for (let i = 0; i < layers.length; i += 1) {
-      const { sections: { alignmentSectionToSubcomponents }, subcomponent } = layers[i];
+      const { sections: { alignmentTypeToSubcomponents }, subcomponent } = layers[i];
       const callbackResult = callback({subcomponent, layers, index: i});
       if (callbackResult) return callbackResult;
-      const iterationResult = TraverseComponentViaPreviewStructure.iterateAlignmentSections(callback, alignmentSectionToSubcomponents);
+      const iterationResult = TraverseComponentViaPreviewStructure.iterateAlignmentSections(callback, alignmentTypeToSubcomponents);
       if (iterationResult) return iterationResult;
     }
     return null;
