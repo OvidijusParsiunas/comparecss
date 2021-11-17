@@ -18,8 +18,9 @@ type ChangeComponentTargetDetails = TargetDetails & { isLowerOrderDirection?: bo
 export class ChangeChildComponentOrder {
 
   private static updateNames(targetDetails: ChangeComponentTargetDetails, subcomponentDropdownStructure: NestedDropdownStructure): void {
-    const { masterComponent, parentLayerAlignedSections } = targetDetails;
-    UpdateContainerComponentDropdownItemNames.updateViaParentLayerDropdownStructure(masterComponent, subcomponentDropdownStructure, parentLayerAlignedSections);
+    const { masterComponent, parentLayerAlignmentSectionToSubcomponents } = targetDetails;
+    UpdateContainerComponentDropdownItemNames.updateViaParentLayerDropdownStructure(masterComponent,
+      subcomponentDropdownStructure, parentLayerAlignmentSectionToSubcomponents);
   }
 
   private static swapSubcomponentDropdownStructure(subcomponentDropdownStructure: NestedDropdownStructure, currentItemName: string,
@@ -95,7 +96,9 @@ export class ChangeChildComponentOrder {
       ChangeChildComponentOrder.swapChildComponentInPreviewStructureIfFound.bind(targetDetails),
       masterComponent) as TraversalResultForChangeChildOrder;
     if (!traversalResult.childComponentOrderChanged) return;
-    if (traversalResult.traversalState) targetDetails.parentLayerAlignedSections = traversalResult.traversalState.alignedSections;
+    if (traversalResult.traversalState) {
+      targetDetails.parentLayerAlignmentSectionToSubcomponents = traversalResult.traversalState.alignmentSectionToSubcomponents;
+    }
     TraverseComponentViaDropdownStructure.traverse(
       masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       ChangeChildComponentOrder.swapChildComponentInDropdownStructureIfFound.bind(targetDetails));

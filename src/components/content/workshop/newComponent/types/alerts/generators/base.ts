@@ -1,11 +1,11 @@
-import { CustomCss, CustomFeatures, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { BUTTON_COMPONENTS_BASE_NAMES, PRIMITIVE_COMPONENTS_BASE_NAMES } from '../../../../../../../consts/baseSubcomponentNames.enum';
+import { CustomCss, CustomFeatures, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { uniqueSubcomponentIdState } from '../../../../utils/componentGenerator/uniqueSubcomponentIdState';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
+import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../../consts/horizontalAlignmentSections';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
-import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { inheritedBaseChildCss } from '../../shared/childCss/inheritedBaseChildCss';
 import { AlertBaseSpecificSettings } from '../settings/alertBaseSpecificSettings';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
@@ -26,8 +26,8 @@ class AlertBase extends ComponentBuilder {
         [COMPONENT_TYPES.BUTTON]: [AlertBase.setComponentToRemovable],
       },
       onBuildProperties: {
-        [COMPONENT_TYPES.TEXT]: { alignmentSection: ALIGNED_SECTION_TYPES.CENTER },
-        [COMPONENT_TYPES.BUTTON]: { alignmentSection: ALIGNED_SECTION_TYPES.RIGHT },
+        [COMPONENT_TYPES.TEXT]: { horizontalSection: HORIZONTAL_ALIGNMENT_SECTIONS.CENTER },
+        [COMPONENT_TYPES.BUTTON]: { horizontalSection: HORIZONTAL_ALIGNMENT_SECTIONS.RIGHT },
       },
     };
   }

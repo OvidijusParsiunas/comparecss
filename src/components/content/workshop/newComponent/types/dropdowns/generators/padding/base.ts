@@ -5,11 +5,11 @@ import { ComponentGenerator, CreateNewComponent, PresetProperties } from '../../
 import { CustomStaticFeatures, Subcomponent, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
 import { UniqueSubcomponentNameGenerator } from '../../../../../utils/componentGenerator/uniqueSubcomponentNameGenerator';
 import { AddLayerComponent } from '../../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
+import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../../../consts/horizontalAlignmentSections';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../../../consts/dropdownMenuAlignment.enum';
 import { DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../../consts/componentStyles.enum';
 import { PaddingComponentUtils } from '../../../shared/paddingComponent/paddingComponentUtils';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../../consts/subcomponentTypes.enum';
-import { ALIGNED_SECTION_TYPES } from '../../../../../../../../consts/layerSections.enum';
 import { SelectDropdownText } from '../../../../../../../../interfaces/dropdownFeatures';
 import { COMPONENT_TYPES } from '../../../../../../../../consts/componentTypes.enum';
 import { buttonWithIcon } from '../../../buttons/generators/buttonWithIcon';
@@ -56,7 +56,7 @@ export class DropdownPaddingBase extends ComponentBuilder {
 
   private static createDefaultCustomStaticFeatures(): CustomStaticFeatures {
     return {
-      alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
+      alignment: ComponentBuilder.createHorizontalAlignmentSection(HORIZONTAL_ALIGNMENT_SECTIONS.LEFT),
       selectDropdownText: DropdownPaddingBase.createSelectDropdownTextProperties(),
     };
   }

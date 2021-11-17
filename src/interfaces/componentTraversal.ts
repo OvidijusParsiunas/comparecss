@@ -1,5 +1,5 @@
+import { AlignmentSectionToSubcomponents, Layer } from './componentPreviewStructure';
 import { Subcomponent, WorkshopComponent } from './workshopComponent';
-import { AlignedSections, Layer } from './componentPreviewStructure';
 import { DropdownItemAuxDetails } from './dropdownItemDisplayStatus';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 
@@ -13,7 +13,7 @@ export interface TargetDetails {
   containerComponent: WorkshopComponent;
   masterComponent: WorkshopComponent;
   targetSubcomponent: Subcomponent;
-  parentLayerAlignedSections?: AlignedSections;
+  parentLayerAlignmentSectionToSubcomponents?: AlignmentSectionToSubcomponents;
 }
 
 export interface DropdownStructureTraversalState {
@@ -37,7 +37,7 @@ export type DropdownStructureSearchFromStartCallback<T> = (
 export interface SubcomponentPreviewTraversalState {
   subcomponent?: Subcomponent;
   alignedSubcomponents?: Subcomponent[];
-  alignedSections?: AlignedSections;
+  alignmentSectionToSubcomponents?: AlignmentSectionToSubcomponents;
   layers?: Layer[];
   index?: number;
 }
@@ -49,4 +49,4 @@ export type PreviewTraversalResult = {
 export type PreviewTraversalCallback = (...activeSubcomponent: SubcomponentPreviewTraversalState[]) => PreviewTraversalResult;
 
 // currently used for preview traversal callbacks only
-export type AlignedComponentWithMeta = [Subcomponent[], AlignedSections];
+export type AlignedComponentWithMeta = [Subcomponent[], AlignmentSectionToSubcomponents];

@@ -1,10 +1,10 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
+import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../../consts/horizontalAlignmentSections';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { DROPDOWN_ARROW_ICON_TYPES } from '../../../../../../../consts/dropdownArrowIcons';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
-import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { BORDER_STYLES } from '../../../../../../../consts/borderStyles.enum';
 import { IconSpecificSettings } from '../settings/iconSpecificSettings';
@@ -47,7 +47,7 @@ export class IconBase extends ComponentBuilder {
   private static createDefaultCustomStaticFeatures(): CustomStaticFeatures {
     return {
       icon: { name: DROPDOWN_ARROW_ICON_TYPES.CARET, isComponentDisplayed: true },
-      alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.CENTER),
+      alignment: ComponentBuilder.createHorizontalAlignmentSection(HORIZONTAL_ALIGNMENT_SECTIONS.CENTER),
     };
   }
 

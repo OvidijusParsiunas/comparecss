@@ -5,9 +5,9 @@ import { DecrementChildComponentCountLimitsState } from '../../childComponentCou
 import { DropdownItemAuxDetails, DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownItemDisplayStatus';
 import { UpdateContainerComponentDropdownItemNames } from '../../updateChildComponent/updateContainerComponentDropdownItemNames';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
+import { AlignmentSectionToSubcomponents, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { UpdateLayerDropdownItemNames } from '../../updateChildComponent/updateLayerDropdownItemNames';
 import { Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { AlignedSections, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { InterconnectedSettings } from '../../../interconnectedSettings/interconnectedSettings';
 import ComponentTraversalUtils from '../../../componentTraversal/componentTraversalUtils';
@@ -35,11 +35,12 @@ export class RemoveAnyChildComponent {
   }
 
   private static updateDropdownItemNames(targetDetails: TargetRemovalDetails, subcomponentDropdownStructure: NestedDropdownStructure,
-      removedSubcomponentDropdownIndex: number, alignedSections: AlignedSections, dropdownItems: string[]): void {
+      removedSubcomponentDropdownIndex: number, alignmentSectionToSubcomponents: AlignmentSectionToSubcomponents, dropdownItems: string[]): void {
     if (dropdownItems.length === 1) return;
     const { masterComponent, targetSubcomponent: { subcomponentType } } = targetDetails;
     if (subcomponentType !== SUBCOMPONENT_TYPES.LAYER) {
-      UpdateContainerComponentDropdownItemNames.updateViaParentLayerDropdownStructure(masterComponent, subcomponentDropdownStructure, alignedSections);
+      UpdateContainerComponentDropdownItemNames.updateViaParentLayerDropdownStructure(masterComponent, subcomponentDropdownStructure,
+        alignmentSectionToSubcomponents);
     } else {
       UpdateLayerDropdownItemNames.update(masterComponent, removedSubcomponentDropdownIndex);
     }
@@ -92,7 +93,7 @@ export class RemoveAnyChildComponent {
       const removedSubcomponentDropdownIndex = dropdownItems.indexOf(targetDetails.targetDropdownItemName);
       RemoveAnyChildComponent.removeDropdownStructure(traversalState, targetDetails, dropdownItems);
       RemoveAnyChildComponent.updateDropdownItemNames(targetDetails, subcomponentDropdownStructure, removedSubcomponentDropdownIndex,
-        targetDetails.parentLayerAlignedSections, dropdownItems);
+        targetDetails.parentLayerAlignmentSectionToSubcomponents, dropdownItems);
       return { stopTraversal: true };
     }
     return {};
@@ -119,10 +120,10 @@ export class RemoveAnyChildComponent {
   }
 
   private static removeLayerComponents(layer: Layer, masterComponent: WorkshopComponent, containerComponent: WorkshopComponent): void {
-    const { alignedSections } = layer.sections;
-    if (alignedSections) {
-      Object.keys(alignedSections).forEach((sectionName) => {
-        const baseSubcomponents: Subcomponent[] = alignedSections[sectionName];
+    const { alignmentSectionToSubcomponents } = layer;
+    if (alignmentSectionToSubcomponents) {
+      Object.keys(alignmentSectionToSubcomponents).forEach((sectionName) => {
+        const baseSubcomponents: Subcomponent[] = alignmentSectionToSubcomponents[sectionName];
         baseSubcomponents.forEach((baseSubcomponent) => {
           RemoveAnyChildComponent.removeAlignedComponents(baseSubcomponent, masterComponent, containerComponent);
         });
@@ -173,7 +174,7 @@ export class RemoveAnyChildComponent {
     const { traversalState } = TraverseComponentViaPreviewStructureParentFirst.traverse(
       RemoveAnyChildComponent.removeChildComponentInPreviewStructureIfFound.bind(targetDetails),
       higherActiveComponentContainer);
-    if (traversalState) targetDetails.parentLayerAlignedSections = traversalState.alignedSections;
+    if (traversalState) targetDetails.parentLayerAlignmentSectionToSubcomponents = traversalState.alignmentSectionToSubcomponents;
     TraverseComponentViaDropdownStructure.traverse(
       targetDetails.masterComponent.componentPreviewStructure.subcomponentDropdownStructure,
       RemoveAnyChildComponent.removeChildComponentUsingDropdownStructureIfFound.bind(targetDetails));

@@ -25,8 +25,8 @@ export class TraverseComponentViaPreviewStructureChildFirst extends TraverseComp
   private static traverseLayers(callback: PreviewTraversalCallback, layersArr: Layer[][]): PreviewTraversalResult {
     let traversalResult: PreviewTraversalResult = {};
     for (let i = 0; i < layersArr[0].length; i += 1) {
-      traversalResult = TraverseComponentViaPreviewStructureShared.traverseAlignedSections(
-        callback, [...layersArr.map((activeLayers) => activeLayers[i].sections.alignedSections)],
+      traversalResult = TraverseComponentViaPreviewStructureShared.traverseAlignmentSections(
+        callback, [...layersArr.map((activeLayers) => activeLayers[i].alignmentSectionToSubcomponents)],
         TraverseComponentViaPreviewStructureChildFirst.traverseAlignedComponents);
       if (traversalResult.stopTraversal) return traversalResult;
       traversalResult = callback(...layersArr.map((layers) => {

@@ -9,12 +9,12 @@
         @mousedown="activateSubcomponentMouseEvent(layer.subcomponent.name, 'subcomponentMouseDown')"
         @mouseup="activateSubcomponentMouseEvent(layer.subcomponent.name, 'subcomponentMouseUp')"
         @click="activateSubcomponentMouseEvent(layer.subcomponent.name, 'subcomponentClick')">
-          <layer-sections
-            v-if="layer.sections"
+          <layer-alignment-sections
+            v-if="layer.alignmentSectionToSubcomponents"
             :class="COMPONENT_PREVIEW_MARKER"
             :classes="classes"
             :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-            :sections="layer.sections"
+            :alignmentSectionToSubcomponents="layer.alignmentSectionToSubcomponents"
             :mouseEvents="mouseEvents"/>
       </div>
       <!-- zIndex is used for the shadow and overlay to be placed above the next layer's border -->
@@ -43,7 +43,7 @@ import { CSS_PROPERTY_VALUES } from '../../../../../consts/cssPropertyValues.enu
 import { UseLayerComponent } from '../../../../../interfaces/useLayerComponent';
 import { Layer } from '../../../../../interfaces/componentPreviewStructure';
 import useLayerComponent from '../compositionAPI/useLayerComponent';
-import layerSections from './LayerSections.vue';
+import layerAlignmentSections from './LayerAlignmentSections.vue';
 
 interface Consts {
   COMPONENT_PREVIEW_MARKER: string;
@@ -87,7 +87,7 @@ export default {
     },
   },
   components: {
-    layerSections,
+    layerAlignmentSections,
   },
   props: {
     subcomponentAndOverlayElementIds: Object,

@@ -66,11 +66,11 @@ export class AutoSyncedSiblingContainerComponentUtils {
   }
 
   private static findChildComponentSibling(parentLayer: Layer, childComponent: WorkshopComponent): WorkshopComponent {
-    const { alignedSections } = parentLayer.sections;
-    for (let i = 0; i < Object.keys(alignedSections).length; i += 1) {
-      const alignedSection: Subcomponent[] = alignedSections[Object.keys(alignedSections)[i]];
-      for (let j = 0; j < alignedSection.length; j += 1) {
-        const alignedComponent = alignedSection[j].seedComponent;
+    const { alignmentSectionToSubcomponents } = parentLayer;
+    for (let i = 0; i < Object.keys(alignmentSectionToSubcomponents).length; i += 1) {
+      const subcomponents: Subcomponent[] = alignmentSectionToSubcomponents[Object.keys(alignmentSectionToSubcomponents)[i]];
+      for (let j = 0; j < subcomponents.length; j += 1) {
+        const alignedComponent = subcomponents[j].seedComponent;
         if (alignedComponent !== childComponent) return alignedComponent;
       }
     }

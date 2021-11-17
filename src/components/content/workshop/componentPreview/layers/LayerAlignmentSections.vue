@@ -1,29 +1,29 @@
 <template>
   <div class="layer-sections-container" :class="[...classes, COMPONENT_PREVIEW_MARKER]">
     <!-- center -->
-    <layer-section v-if="getAlignedSection([ALIGNED_SECTION_TYPES.CENTER])"
+    <layer-alignment-section v-if="getAlignmentSectionSubcomponents([HORIZONTAL_ALIGNMENT_SECTIONS.CENTER])"
       class="center-section"
       :class="COMPONENT_PREVIEW_MARKER"
       :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-      :subcomponents="getAlignedSection([ALIGNED_SECTION_TYPES.CENTER])"
+      :subcomponents="getAlignmentSectionSubcomponents([HORIZONTAL_ALIGNMENT_SECTIONS.CENTER])"
       :mouseEvents="mouseEvents"
       :specialisedSectionContainerClass="SPECIALISED_SECTION_CONTAINER_CLASSES.CENTER_SECTION"/>
     <div class="default-sections-container" :class="[...classes, COMPONENT_PREVIEW_MARKER]">
       <!-- left -->
-      <layer-section v-if="getAlignedSection([ALIGNED_SECTION_TYPES.LEFT])"
+      <layer-alignment-section v-if="getAlignmentSectionSubcomponents([HORIZONTAL_ALIGNMENT_SECTIONS.LEFT])"
         style="order: 0"
         class="default-section"
         :class="COMPONENT_PREVIEW_MARKER"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-        :subcomponents="getAlignedSection([ALIGNED_SECTION_TYPES.LEFT])"
+        :subcomponents="getAlignmentSectionSubcomponents([HORIZONTAL_ALIGNMENT_SECTIONS.LEFT])"
         :mouseEvents="mouseEvents"/>
       <!-- right -->
-      <layer-section v-if="getAlignedSection([ALIGNED_SECTION_TYPES.RIGHT])"
+      <layer-alignment-section v-if="getAlignmentSectionSubcomponents([HORIZONTAL_ALIGNMENT_SECTIONS.RIGHT])"
         style="order: 1"
         class="default-section right-section"
         :class="COMPONENT_PREVIEW_MARKER"
         :subcomponentAndOverlayElementIds="subcomponentAndOverlayElementIds"
-        :subcomponents="getAlignedSection([ALIGNED_SECTION_TYPES.RIGHT])"
+        :subcomponents="getAlignmentSectionSubcomponents([HORIZONTAL_ALIGNMENT_SECTIONS.RIGHT])"
         :mouseEvents="mouseEvents"/>
     </div>
   </div>
@@ -31,37 +31,36 @@
                     
 <script lang="ts">
 import { SPECIALISED_SECTION_CONTAINER_CLASSES } from '../../../../../consts/specialisedSectionContainerClasses.enum';
-import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../consts/layerSections.enum';
+import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../consts/horizontalAlignmentSections';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
-import layerSection from './LayerSection.vue';
+import { WorkshopComponent } from '../../../../../interfaces/workshopComponent';
+import layerAlignmentSection from './LayerAlignmentSection.vue';
 
 interface Consts {
   SPECIALISED_SECTION_CONTAINER_CLASSES: typeof SPECIALISED_SECTION_CONTAINER_CLASSES;
+  HORIZONTAL_ALIGNMENT_SECTIONS: typeof HORIZONTAL_ALIGNMENT_SECTIONS;
   COMPONENT_PREVIEW_MARKER: string;
-  ALIGNED_SECTION_TYPES: typeof ALIGNED_SECTION_TYPES;
-  LAYER_SECTIONS_TYPES: typeof LAYER_SECTIONS_TYPES;
 }
 
 export default {
   setup(): Consts {
     return {
       SPECIALISED_SECTION_CONTAINER_CLASSES: SPECIALISED_SECTION_CONTAINER_CLASSES,
+      HORIZONTAL_ALIGNMENT_SECTIONS,
       COMPONENT_PREVIEW_MARKER,
-      ALIGNED_SECTION_TYPES,
-      LAYER_SECTIONS_TYPES,
     };
   },
   methods: {
-    getAlignedSection(alignedSectionType: ALIGNED_SECTION_TYPES): ALIGNED_SECTION_TYPES {
-      return this.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS]?.[alignedSectionType];
+    getAlignmentSectionSubcomponents(horizontalAlignmentSection: HORIZONTAL_ALIGNMENT_SECTIONS): WorkshopComponent {
+      return this.alignmentSectionToSubcomponents[horizontalAlignmentSection];
     }
   },
   components: {
-    layerSection,
+    layerAlignmentSection,
   },
   props: {
     subcomponentAndOverlayElementIds: Object,
-    sections: Object,
+    alignmentSectionToSubcomponents: Object,
     mouseEvents: Object,
     classes: Array,
   },

@@ -1,8 +1,9 @@
-import { AlignedLayerSection, BackdropProperties, ComponentCenteringInScreen, Image, Subcomponent, Text, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
+import { Alignment, BackdropProperties, ComponentCenteringInScreen, Image, Subcomponent, Text, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { DropdownItemsDisplayStatusUtils } from '../../../utils/dropdownItemsDisplayStatusUtils/dropdownItemsDisplayStatusUtils';
 import { BASE_SUBCOMPONENT_NAMES, MASTER_SUBCOMPONENT_BASE_NAME } from '../../../../../../consts/baseSubcomponentNames.enum';
 import { GENERAL_ANIMATION_CLOSE_TYPES, MODAL_ANIMATION_OPEN_TYPES } from '../../../../../../consts/animationTypes.enum';
 import { ChildComponentCountLimitsState } from '../../../../../../interfaces/childComponentCountLimitsState';
+import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../consts/horizontalAlignmentSections';
 import { DROPDOWN_MENU_INDEX_ALIGNMENT } from '../../../../../../consts/dropdownMenuAlignment.enum';
 import { ComponentPreviewStructure } from '../../../../../../interfaces/componentPreviewStructure';
 import { ComponentTypeToProperties } from '../../../../../../interfaces/componentTypeToProperties';
@@ -12,7 +13,6 @@ import { WorkshopComponentCss } from '../../../../../../interfaces/workshopCompo
 import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
 import { SelectDropdownUtils } from '../dropdowns/selectDropdown/selectDropdownUtils';
 import { JAVASCRIPT_CLASSES } from '../../../../../../consts/javascriptClasses.enum';
-import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { PresetProperties } from '../../../../../../interfaces/componentGenerator';
 import { AutoSize, AutoSizeFuncs } from '../../../../../../interfaces/autoSize';
 import { DEFAULT_STYLES } from '../../../../../../consts/componentStyles.enum';
@@ -31,8 +31,8 @@ interface StationaryAnimationsArgs {
 // TO-DO should be using a builder pattern
 export class ComponentBuilder {
 
-  protected static createAlignedLayerSection(section: ALIGNED_SECTION_TYPES): AlignedLayerSection {
-    return { section };
+  protected static createHorizontalAlignmentSection(horizontalSection: HORIZONTAL_ALIGNMENT_SECTIONS): Alignment {
+    return { horizontalSection };
   }
 
   protected static createLastSelectedCssLeftValue(pixels = '0px'): WorkshopComponentCss {
@@ -224,13 +224,13 @@ export class ComponentBuilder {
     };
   }
   
-  private static alignBase(baseSubcomponent: Subcomponent, alignedSection: ALIGNED_SECTION_TYPES): void {
+  private static alignBase(baseSubcomponent: Subcomponent, horizontalSection: HORIZONTAL_ALIGNMENT_SECTIONS): void {
     if (baseSubcomponent.customStaticFeatures) {
-      baseSubcomponent.customStaticFeatures.alignedLayerSection = { section: alignedSection };
-      baseSubcomponent.defaultCustomStaticFeatures.alignedLayerSection = { section: alignedSection };
+      baseSubcomponent.customStaticFeatures.alignment = { horizontalSection };
+      baseSubcomponent.defaultCustomStaticFeatures.alignment = { horizontalSection };
     } else {
-      baseSubcomponent.customStaticFeatures = { alignedLayerSection: { section: alignedSection } };
-      baseSubcomponent.defaultCustomStaticFeatures = { alignedLayerSection: { section: alignedSection } };
+      baseSubcomponent.customStaticFeatures = { alignment: { horizontalSection } };
+      baseSubcomponent.defaultCustomStaticFeatures = { alignment: { horizontalSection } };
     }
   }
 
@@ -238,7 +238,7 @@ export class ComponentBuilder {
       createBaseSubcomponent: (name: string) => Subcomponent, isBaseOptional = true): WorkshopComponent {
     const baseName = presetProperties.baseName || MASTER_SUBCOMPONENT_BASE_NAME.BASE;
     const baseSubcomponent = createBaseSubcomponent(baseName);
-    if (presetProperties.alignmentSection) ComponentBuilder.alignBase(baseSubcomponent, presetProperties.alignmentSection);
+    if (presetProperties.horizontalSection) ComponentBuilder.alignBase(baseSubcomponent, presetProperties.horizontalSection);
     const baseComponent = ComponentBuilder.createComponent(presetProperties, baseSubcomponent, isBaseOptional);
     baseSubcomponent.seedComponent = baseComponent;
     baseComponent.masterComponent = baseComponent;

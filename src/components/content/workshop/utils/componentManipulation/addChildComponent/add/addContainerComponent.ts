@@ -6,9 +6,9 @@ import { ParentBasedPresetProperties, PropertiesAddedOnBuild } from '../../../..
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
-import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { ComponentGenerator, PresetProperties } from '../../../../../../../interfaces/componentGenerator';
 import { DROPDOWN_ITEM_AUX_DETAILS_REF } from '../../../../../../../interfaces/dropdownItemDisplayStatus';
+import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../../consts/horizontalAlignmentSections';
 import { SyncChildComponent } from '../../../../toolbar/options/syncChildComponent/syncChildComponent';
 import { Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { BUTTON_STYLES, COMPONENT_STYLES } from '../../../../../../../consts/componentStyles.enum';
@@ -76,8 +76,8 @@ export class AddContainerComponent extends AddComponentShared {
   }
 
   private static addNewSubcomponentToParentLayer(parentLayer: Layer, baseSubcomponent: Subcomponent): void {
-    const alignment = baseSubcomponent?.customStaticFeatures?.alignedLayerSection?.section;
-    parentLayer.sections[LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS][alignment || ALIGNED_SECTION_TYPES.LEFT].push(baseSubcomponent);
+    const { horizontalSection } = baseSubcomponent?.customStaticFeatures?.alignment || {};
+    parentLayer.alignmentSectionToSubcomponents[horizontalSection || HORIZONTAL_ALIGNMENT_SECTIONS.LEFT].push(baseSubcomponent);
   }
 
   private static addNewComponentToDropdownStructure(newComponent: WorkshopComponent, masterComponent: WorkshopComponent,

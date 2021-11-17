@@ -1,4 +1,5 @@
 import { subcomponentAndOverlayElementIdsState } from '../../../../componentPreview/utils/elements/subcomponentAndOverlayElementIdsState';
+import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../../consts/horizontalAlignmentSections';
 import { Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { WorkshopComponentCss } from '../../../../../../../interfaces/workshopComponentCss';
@@ -54,7 +55,7 @@ export class DropdownMenuAutoWidthUtils {
 
   private static getLongestMenuText(menuComponent: WorkshopComponent): string {
     const menuItemTexts = menuComponent.componentPreviewStructure.layers.map((layer) => {      
-      return layer.sections.alignedSections.left[0].customStaticFeatures.subcomponentText.text;
+      return layer.alignmentSectionToSubcomponents[HORIZONTAL_ALIGNMENT_SECTIONS.LEFT][0].customStaticFeatures.subcomponentText.text;
     });
     return DropdownMenuAutoWidthUtils.getLongestString(menuItemTexts);
   }
@@ -80,7 +81,7 @@ export class DropdownMenuAutoWidthUtils {
   private static getItemTextWidths(menuComponent: WorkshopComponent): number[] {
     return menuComponent.componentPreviewStructure.layers.map((layer) => {
       const subcomponentId = subcomponentAndOverlayElementIdsState.getSubcomponentIdViaSubcomponentName(
-        layer.sections.alignedSections.left[0].name);
+        layer.alignmentSectionToSubcomponents[HORIZONTAL_ALIGNMENT_SECTIONS.LEFT][0].name);
       return document.getElementById(subcomponentId).clientWidth;
     });
   }

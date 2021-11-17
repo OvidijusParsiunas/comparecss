@@ -3,7 +3,6 @@ import { ComponentGenerator, PresetProperties } from '../../../../../../../inter
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../../consts/subcomponentTypes.enum';
-import { LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { ComponentBuilder } from '../../shared/componentBuilder';
 
@@ -34,7 +33,6 @@ class LayerBase extends ComponentBuilder {
       defaultCss: LayerBase.createDefaultBaseCss(),
       activeCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
       defaultCssPseudoClass: CSS_PSEUDO_CLASSES.DEFAULT,
-      layerSectionsType: LAYER_SECTIONS_TYPES.ALIGNED_SECTIONS,
     };
   }
 }

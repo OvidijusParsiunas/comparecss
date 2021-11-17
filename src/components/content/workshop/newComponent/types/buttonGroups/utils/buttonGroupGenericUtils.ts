@@ -1,13 +1,13 @@
-import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../../consts/horizontalAlignmentSections';
 import { WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
 
 export class ButtonGroupGenericUtils {
   
-  public static BUTTONS_ALIGNED_SECTION_TYPE = ALIGNED_SECTION_TYPES.LEFT;
+  public static INDIVIDUAL_BUTTON_ALIGNED_SECTION = HORIZONTAL_ALIGNMENT_SECTIONS.LEFT;
 
   public static getAllButtonComponents(buttonGroupBaseComponent: WorkshopComponent): WorkshopComponent[] {
     const baseSubcomponents = buttonGroupBaseComponent.componentPreviewStructure.layers[0]
-      .sections.alignedSections[ButtonGroupGenericUtils.BUTTONS_ALIGNED_SECTION_TYPE];
+      .alignmentSectionToSubcomponents[ButtonGroupGenericUtils.INDIVIDUAL_BUTTON_ALIGNED_SECTION];
     return baseSubcomponents.map((button) => button.seedComponent);
   }
 }

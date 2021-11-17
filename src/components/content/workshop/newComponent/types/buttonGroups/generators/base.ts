@@ -80,8 +80,8 @@ class ButtonGroupBase extends ComponentBuilder {
   }
 
   private static setButtonGroupOnFirstNewChildButton(buttonComponent: WorkshopComponent, buttonGroupComponent: WorkshopComponent): void {
-    if (buttonGroupComponent.componentPreviewStructure.layers[0].sections
-        .alignedSections[ButtonGroupGenericUtils.BUTTONS_ALIGNED_SECTION_TYPE].length === 1) {
+    if (buttonGroupComponent.componentPreviewStructure.layers[0]
+        .alignmentSectionToSubcomponents[ButtonGroupGenericUtils.INDIVIDUAL_BUTTON_ALIGNED_SECTION].length === 1) {
       ButtonGroupHeightUtils.setButtonGroupHeightViaButtonProperties(buttonComponent, buttonGroupComponent);
     }
   }
@@ -124,7 +124,7 @@ class ButtonGroupBase extends ComponentBuilder {
           ButtonGroupBorderUtils.setDefaultBorderProperties,],
       },
       onBuildProperties: {
-        [COMPONENT_TYPES.BUTTON]: { alignmentSection: ButtonGroupGenericUtils.BUTTONS_ALIGNED_SECTION_TYPE },
+        [COMPONENT_TYPES.BUTTON]: { horizontalSection: ButtonGroupGenericUtils.INDIVIDUAL_BUTTON_ALIGNED_SECTION },
       },
     };
   }

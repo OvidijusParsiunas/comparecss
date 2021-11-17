@@ -4,10 +4,10 @@ import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } fr
 import { AddContainerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
 import { AddLayerComponent } from '../../../../utils/componentManipulation/addChildComponent/add/addLayerComponent';
 import { BUTTON_STYLES, DEFAULT_STYLES, LAYER_STYLES } from '../../../../../../../consts/componentStyles.enum';
+import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../../consts/horizontalAlignmentSections';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../../consts/subcomponentCssClasses.enum';
 import { CSS_PROPERTY_VALUES } from '../../../../../../../consts/cssPropertyValues.enum';
 import { ComponentGenerator } from '../../../../../../../interfaces/componentGenerator';
-import { ALIGNED_SECTION_TYPES } from '../../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../../consts/componentTypes.enum';
 import { ModalBaseSpecificSettings } from '../settings/modalBaseSpecificSettings';
 import { ComponentBuilder } from '../../shared/componentBuilder';
@@ -22,7 +22,7 @@ class DefaultModal extends ComponentBuilder {
   private static createDefaultTextCustomStaticFeatures(text?: string): CustomStaticFeatures {
     return {
       subcomponentText: ComponentBuilder.createText(text || 'text'),
-      alignedLayerSection: ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT),
+      alignment: ComponentBuilder.createHorizontalAlignmentSection(HORIZONTAL_ALIGNMENT_SECTIONS.LEFT),
     };
   }
 
@@ -106,8 +106,8 @@ class DefaultModal extends ComponentBuilder {
       [COMPONENT_TYPES.BUTTON]: [DefaultModal.setComponentToRemovable],
     };
     modalComponent.newChildComponents.propertyOverwritables.onBuildProperties = {
-      [COMPONENT_TYPES.IMAGE]:  { alignmentSection: ALIGNED_SECTION_TYPES.CENTER },
-      [COMPONENT_TYPES.BUTTON]: { alignmentSection: ALIGNED_SECTION_TYPES.RIGHT },
+      [COMPONENT_TYPES.IMAGE]:  { horizontalSection: HORIZONTAL_ALIGNMENT_SECTIONS.CENTER },
+      [COMPONENT_TYPES.BUTTON]: { horizontalSection: HORIZONTAL_ALIGNMENT_SECTIONS.RIGHT },
     };
     AddContainerComponent.add(modalComponent, COMPONENT_TYPES.TEXT, DEFAULT_STYLES.DEFAULT, layer1Component.baseSubcomponent.name);
     AddContainerComponent.add(modalComponent, COMPONENT_TYPES.BUTTON, BUTTON_STYLES.CLOSE, layer1Component.baseSubcomponent.name);

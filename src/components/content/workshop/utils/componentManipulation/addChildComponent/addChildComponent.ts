@@ -29,7 +29,7 @@ export class AddChildComponent extends AddComponentShared {
     const { componentPreviewStructure: { subcomponentNameToDropdownItemName }, activeSubcomponentName } = activeComponent.masterComponent;
     const activeContainerComponentItemName = subcomponentNameToDropdownItemName[activeSubcomponentName];
     UpdateContainerComponentDropdownItemNames.updateViaParentLayerDropdownStructure(activeComponent.masterComponent,
-      dropdownStructure[activeContainerComponentItemName] as NestedDropdownStructure, parentLayer.sections.alignedSections);
+      dropdownStructure[activeContainerComponentItemName] as NestedDropdownStructure, parentLayer.alignmentSectionToSubcomponents);
     return newComponent;
   }
 

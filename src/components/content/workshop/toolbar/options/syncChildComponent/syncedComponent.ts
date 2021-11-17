@@ -4,9 +4,9 @@ import { PropertyReferenceSharingFuncsUtils } from '../../../newComponent/types/
 import { AutoSyncedSiblingComponentUtils } from '../../../utils/componentManipulation/autoSyncedSiblingComponentUtils/autoSyncedSiblingComponentUtils';
 import { SiblingComponentTypes, SiblingComponentState } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { SubcomponentPreviewTraversalState, PreviewTraversalResult } from '../../../../../../interfaces/componentTraversal';
+import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../consts/horizontalAlignmentSections';
 import { Subcomponent, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
-import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 import { SyncChildComponentUtils } from './syncChildComponentUtils';
 import { SyncChildComponent } from './syncChildComponent';
@@ -25,9 +25,9 @@ export class SyncedComponent {
 
   private static removeAutoSyncedSiblingSyncReferencesAndResyncTogether(inSyncComponent: WorkshopComponent,
       siblingComponentTypes: SiblingComponentTypes): void {
-    const { alignedSections } = inSyncComponent.parentLayer.sections;
-    Object.keys(alignedSections).forEach((alignedSectionType: ALIGNED_SECTION_TYPES) => {
-      alignedSections[alignedSectionType].forEach((baseSubcomponent) => {
+    const { alignmentSectionToSubcomponents } = inSyncComponent.parentLayer;
+    Object.keys(alignmentSectionToSubcomponents).forEach((alignmentSection: HORIZONTAL_ALIGNMENT_SECTIONS) => {
+      alignmentSectionToSubcomponents[alignmentSection].forEach((baseSubcomponent) => {
         const { seedComponent } = baseSubcomponent;
         seedComponent.sync.componentThisIsSyncedTo.sync.componentsSyncedToThis.delete(seedComponent);
         seedComponent.sync.componentThisIsSyncedTo = null;

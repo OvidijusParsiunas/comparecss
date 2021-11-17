@@ -1,7 +1,7 @@
 import { DisplayInFrontOfSiblingsContainerState, DisplayInFrontOfSiblingsState } from './displayInFrontOfSiblingsState';
 import { InterconnectedSetting, SubcomponentSpecificSettings } from './subcomponentSpecificSettings';
 import { DropdownFeatures, DropdownMenuData, SelectDropdownText } from './dropdownFeatures';
-import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../consts/layerSections.enum';
+import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../consts/horizontalAlignmentSections';
 import { SubcomponentMouseEventCallbacks } from './subcomponentMouseEventCallbacks';
 import { ComponentPreviewStructure, Layer } from './componentPreviewStructure';
 import { CSS_PSEUDO_CLASSES } from '../consts/subcomponentCssClasses.enum';
@@ -77,8 +77,8 @@ export interface Text {
   text: string;
 }
 
-export interface AlignedLayerSection {
-  section: ALIGNED_SECTION_TYPES;
+export interface Alignment {
+  horizontalSection: HORIZONTAL_ALIGNMENT_SECTIONS;
 }
 
 export interface Image {
@@ -108,7 +108,7 @@ interface TempCustomProperties {
 }
 
 export interface CustomStaticFeatures {
-  alignedLayerSection?: AlignedLayerSection;
+  alignment?: Alignment;
   // applied to the dropdown padding component
   selectDropdownText?: SelectDropdownText;
   // applied to the dropdown menu component
@@ -161,7 +161,6 @@ export type Subcomponent = CustomDynamicProperties & {
   // features that would not be overwritten by imported child component's subcomponents
   customStaticFeatures?: CustomStaticFeatures; 
   defaultCustomStaticFeatures?: CustomStaticFeatures;
-  layerSectionsType?: LAYER_SECTIONS_TYPES;
   // it is important to understand that all subcomponents from child components are moved to the masterComponent and are removed from the children
   // components. However, these subcomponents still hold a reference to the component that they originally came from using the seedComponent property.
   // full structure explained at the bottom of the file titled: 'Component Architecture Information'
@@ -277,7 +276,7 @@ export interface WorkshopComponent {
 // Card Component encompasses multi-level children components.
 // In this architecture, layers are children of the component card (or more accurately its base)
 // and Text/Button/Image Components are children of the layer components.
-// This hierarchy is defined through componentPreviewStructure -> layers -> sections -> base
+// This hierarchy is defined through componentPreviewStructure -> layers -> alignment -> base
 // subcomponents (of the child components) -> seed component -> and the loop is repeated.
 // Each seed component contains a reference to the component that owns it called 'containerComponent'.
 // Hence a text component has reference to button, a button component has reference to card etc.

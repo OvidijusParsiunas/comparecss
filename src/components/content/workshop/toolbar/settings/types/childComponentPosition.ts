@@ -2,8 +2,8 @@ import { ActionsDropdownMouseEventCallbackEvent, ActionsDropdownMouseEventCallba
 import { childComponentAlignmentDropdownState } from '../../../utils/componentManipulation/moveChildComponent/childComponentAlignmentDropdownState';
 import { ChangeSubcomponentAlignmentEvent, ChangeSubcomponentOrderEvent } from '../../../../../../interfaces/settingsComponentEvents';
 import { SUBCOMPONENT_ORDER_DIRECTIONS } from '../../../../../../interfaces/subcomponentOrderDirections.enum';
+import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../consts/horizontalAlignmentSections';
 import { DropdownUtils } from '../../../utils/componentManipulation/utils/dropdownUtils';
-import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { SETTINGS_TYPES } from '../../../../../../consts/settingsTypes.enum';
 import { SETTING_NAMES } from '../../../../../../consts/settingNames.enum';
@@ -43,9 +43,9 @@ export default {
       type: SETTINGS_TYPES.ACTIONS_DROPDOWN,
       spec: {
         name: SETTING_NAMES.ALIGN,
-        options: DropdownUtils.generateDropdownStructure(Object.values(ALIGNED_SECTION_TYPES)),
-        activeItemPropertyKeyName: 'section',
-        customFeatureObjectKeys: ['customStaticFeatures', 'alignedLayerSection', 'section'],
+        options: DropdownUtils.generateDropdownStructure(Object.values(HORIZONTAL_ALIGNMENT_SECTIONS)),
+        activeItemPropertyKeyName: 'horizontalSection',
+        customFeatureObjectKeys: ['customStaticFeatures', 'alignment', 'horizontalSection'],
         ...generateMouseEventCallbacks(),
       },
     },

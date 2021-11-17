@@ -19,10 +19,10 @@
 </template>
                     
 <script lang="ts">
-import { UseLayerSectionComponent } from '../../../../../interfaces/useLayerSectionComponent';
+import { UseLayerAlignmentSectionComponent } from '../../../../../interfaces/useLayerAlignmentSectionComponent';
+import useLayerAlignmentSectionComponent from '../compositionAPI/useLayerSectionComponent';
 import { COMPONENT_PREVIEW_MARKER } from '../../../../../consts/elementClassMarkers';
 import { SUBCOMPONENT_TYPES } from '../../../../../consts/subcomponentTypes.enum';
-import useLayerSectionComponent from '../compositionAPI/useLayerSectionComponent';
 import { Subcomponent } from '../../../../../interfaces/workshopComponent';
 import { SetUtils } from '../../utils/generic/setUtils';
 
@@ -31,10 +31,10 @@ interface Consts {
 }
 
 export default {
-  setup(): Consts & UseLayerSectionComponent {
+  setup(): Consts & UseLayerAlignmentSectionComponent {
     return {
       COMPONENT_PREVIEW_MARKER,
-      ...useLayerSectionComponent(),
+      ...useLayerAlignmentSectionComponent(),
     };
   },
   methods: {

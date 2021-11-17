@@ -1,9 +1,9 @@
-import { UseLayerSectionComponent } from '../../../../../interfaces/useLayerSectionComponent';
+import { UseLayerAlignmentSectionComponent } from '../../../../../interfaces/useLayerAlignmentSectionComponent';
 import { WorkshopComponentCss } from '../../../../../interfaces/workshopComponentCss';
 import { COMPONENT_TYPES } from '../../../../../consts/componentTypes.enum';
 import { Subcomponent } from '../../../../../interfaces/workshopComponent';
 
-export default function useLayerSectionComponent(): UseLayerSectionComponent {
+export default function useLayerAlignmentSectionComponent(): UseLayerAlignmentSectionComponent {
 
   const getStyleProperties = (subcomponent: Subcomponent, index: string): WorkshopComponentCss[] => {
     return [

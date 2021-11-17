@@ -2,12 +2,12 @@ import { IncrementChildComponentCountLimitsState } from '../../childComponentCou
 import { DropdownItemsDisplayStatusUtils } from '../../../dropdownItemsDisplayStatusUtils/dropdownItemsDisplayStatusUtils';
 import { TraverseComponentViaDropdownStructure } from '../../../componentTraversal/traverseComponentViaDropdownStructure';
 import { AutoSyncedSiblingComponentUtils } from '../../autoSyncedSiblingComponentUtils/autoSyncedSiblingComponentUtils';
+import { AlignmentSectionToSubcomponents, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { SyncChildComponentUtils } from '../../../../toolbar/options/syncChildComponent/syncChildComponentUtils';
 import { componentTypeToStyleGenerators } from '../../../../newComponent/types/componentTypeToStyleGenerators';
 import { UniqueSubcomponentNameGenerator } from '../../../componentGenerator/uniqueSubcomponentNameGenerator';
-import { ALIGNED_SECTION_TYPES, LAYER_SECTIONS_TYPES } from '../../../../../../../consts/layerSections.enum';
+import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../../consts/horizontalAlignmentSections';
 import { Subcomponent, WorkshopComponent } from '../../../../../../../interfaces/workshopComponent';
-import { AlignedSections, Layer } from '../../../../../../../interfaces/componentPreviewStructure';
 import { NestedDropdownStructure } from '../../../../../../../interfaces/nestedDropdownStructure';
 import { SyncedComponent } from '../../../../toolbar/options/syncChildComponent/syncedComponent';
 import { ChildComponentBaseNamesToStyles } from '../utils/childComponentBaseNamesToStyles';
@@ -93,23 +93,20 @@ export class AddLayerComponent extends AddComponentShared {
     });
   }
 
-  private static createEmptyAlignedSections(): AlignedSections {
+  private static createEmptyAlignmentSections(): AlignmentSectionToSubcomponents {
     return {
-      [ALIGNED_SECTION_TYPES.LEFT]: [],
-      [ALIGNED_SECTION_TYPES.CENTER]: [],
-      [ALIGNED_SECTION_TYPES.RIGHT]: [],
+      [HORIZONTAL_ALIGNMENT_SECTIONS.LEFT]: [],
+      [HORIZONTAL_ALIGNMENT_SECTIONS.CENTER]: [],
+      [HORIZONTAL_ALIGNMENT_SECTIONS.RIGHT]: [],
     };
   }
 
   private static createEmptyLayer(newComponent: WorkshopComponent): Layer {
     const baseName = newComponent.baseSubcomponent.name;
     const baseSubcomponent = newComponent.subcomponents[baseName];
-    const layerSections = AddLayerComponent.createEmptyAlignedSections();
     return {
       subcomponent: baseSubcomponent,
-      sections: {
-        [baseSubcomponent.layerSectionsType]: layerSections,
-      },
+      alignmentSectionToSubcomponents: AddLayerComponent.createEmptyAlignmentSections(),
     };
   }
 

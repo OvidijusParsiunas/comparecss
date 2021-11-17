@@ -1,5 +1,5 @@
 import { CustomCss, CustomFeatures, CustomStaticFeatures, WorkshopComponent } from '../../../../../../../../interfaces/workshopComponent';
-import { ALIGNED_SECTION_TYPES } from '../../../../../../../../consts/layerSections.enum';
+import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../../../consts/horizontalAlignmentSections';
 import { SetTextSubcomponentContext } from '../../../layers/generators/dropdownItem';
 import { Layer } from '../../../../../../../../interfaces/componentPreviewStructure';
 import { DEFAULT_TEXT } from '../../../../../../../../consts/defaultText';
@@ -14,7 +14,7 @@ export class ApplyDropdownMenuItemTextProperties extends ComponentBuilder {
     const { itemTextOptionIndex } = menuComponent.baseSubcomponent.customStaticFeatures.dropdownMenuData;
     const newDropdownText = ITEM_TEXT_OPTIONS[itemTextOptionIndex];
     customStaticFeatures.subcomponentText = ComponentBuilder.createText(newDropdownText);
-    customStaticFeatures.alignedLayerSection = ComponentBuilder.createAlignedLayerSection(ALIGNED_SECTION_TYPES.LEFT);
+    customStaticFeatures.alignment = ComponentBuilder.createHorizontalAlignmentSection(HORIZONTAL_ALIGNMENT_SECTIONS.LEFT);
   }
 
   private static addMenuJsClassesToText(menuComponent: WorkshopComponent, textComponent: WorkshopComponent): void {
@@ -40,7 +40,7 @@ export class ApplyDropdownMenuItemTextProperties extends ComponentBuilder {
       const { layers } = component.paddingComponentChild.linkedComponents.auxiliary[0].componentPreviewStructure;
       if (layers.length > 0) {
         JSONUtils.copyPropertiesThatExistInTarget(
-          layers[0].sections.alignedSections.left[0].customCss, textComponent.baseSubcomponent.customCss);
+          layers[0].alignmentSectionToSubcomponents[HORIZONTAL_ALIGNMENT_SECTIONS.LEFT][0].customCss, textComponent.baseSubcomponent.customCss);
       }
     });
   }
@@ -58,9 +58,7 @@ export class ApplyDropdownMenuItemTextProperties extends ComponentBuilder {
 
   private static copyTextFromComponentThisIsSyncedTo(componentThisIsSyncedTo: WorkshopComponent, textComponent: WorkshopComponent, createDefaultTextStyling: () => CustomCss): void {
     const { layers } = componentThisIsSyncedTo.paddingComponentChild.linkedComponents.auxiliary[0].componentPreviewStructure;
-    const textSubcomponent = layers.length > 0
-      ? layers[0].sections.alignedSections.left[0].customCss
-      : createDefaultTextStyling();
+    const textSubcomponent = layers.length > 0 ? layers[0].alignmentSectionToSubcomponents[HORIZONTAL_ALIGNMENT_SECTIONS.LEFT][0].customCss : createDefaultTextStyling();
     textComponent.baseSubcomponent.customCss = textSubcomponent;
     textComponent.baseSubcomponent.defaultCss = createDefaultTextStyling();
   }

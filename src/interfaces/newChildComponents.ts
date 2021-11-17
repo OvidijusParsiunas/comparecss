@@ -1,13 +1,13 @@
 import { PropertyReferenceSharingFunc as PropertyReferenceSharingFunc } from './PropertyReferenceSharingFunc';
+import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../consts/horizontalAlignmentSections';
 import { ChildComponentCountLimitsState } from './childComponentCountLimitsState';
 import { PropertyOverwritableFunc } from './removeChildComponentFunc';
-import { ALIGNED_SECTION_TYPES } from '../consts/layerSections.enum';
 import { NestedDropdownStructure } from './nestedDropdownStructure';
 import { COMPONENT_TYPES } from '../consts/componentTypes.enum';
 import { WorkshopComponent } from './workshopComponent';
 
 export interface ParentBasedPresetProperties {
-  alignmentSection?: ALIGNED_SECTION_TYPES;
+  horizontalSection?: HORIZONTAL_ALIGNMENT_SECTIONS;
 }
 
 export type PropertiesAddedOnBuild = {

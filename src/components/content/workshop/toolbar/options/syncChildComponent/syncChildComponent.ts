@@ -2,10 +2,10 @@ import { AutoSyncedSiblingContainerComponentUtils } from '../../../utils/compone
 import { SiblingComponentTypes, SiblingComponentState } from '../../../../../../interfaces/siblingChildComponentsAutoSynced';
 import { CustomDynamicProperties, Subcomponent, WorkshopComponent } from '../../../../../../interfaces/workshopComponent';
 import { AddContainerComponent } from '../../../utils/componentManipulation/addChildComponent/add/addContainerComponent';
+import { HORIZONTAL_ALIGNMENT_SECTIONS } from '../../../../../../consts/horizontalAlignmentSections';
 import { ComponentTypeToProperties } from '../../../../../../interfaces/componentTypeToProperties';
 import { CSS_PSEUDO_CLASSES } from '../../../../../../consts/subcomponentCssClasses.enum';
 import { SUBCOMPONENT_TYPES } from '../../../../../../consts/subcomponentTypes.enum';
-import { ALIGNED_SECTION_TYPES } from '../../../../../../consts/layerSections.enum';
 import { COMPONENT_TYPES } from '../../../../../../consts/componentTypes.enum';
 import { SyncChildComponentUtils } from './syncChildComponentUtils';
 import JSONUtils from '../../../utils/generic/jsonUtils';
@@ -147,9 +147,9 @@ export class SyncChildComponent {
   public static setAutoSyncedSiblingComponentsToInSync(currentlySelectedComponent: WorkshopComponent, componenetThisIsSyncedTo: WorkshopComponent): void {
     const siblingComponentTypes = AutoSyncedSiblingContainerComponentUtils.getSiblingComponentTypes(currentlySelectedComponent);
     if (!siblingComponentTypes) return;
-    const { alignedSections } = currentlySelectedComponent.parentLayer.sections;
-    Object.keys(alignedSections).forEach((alignedSectionType: ALIGNED_SECTION_TYPES) => {
-      alignedSections[alignedSectionType].forEach((baseSubcomponent) => {
+    const { alignmentSectionToSubcomponents } = currentlySelectedComponent.parentLayer;
+    Object.keys(alignmentSectionToSubcomponents).forEach((alignmentSection: HORIZONTAL_ALIGNMENT_SECTIONS) => {
+      alignmentSectionToSubcomponents[alignmentSection].forEach((baseSubcomponent) => {
         SyncChildComponent.setComponentPropertiesToBeInSync(baseSubcomponent.seedComponent, componenetThisIsSyncedTo);
       });
     });

@@ -1,6 +1,6 @@
 import { WorkshopComponentCss } from './workshopComponentCss';
 import { Subcomponent } from './workshopComponent';
 
-export interface UseLayerSectionComponent {
+export interface UseLayerAlignmentSectionComponent {
   getStyleProperties: (subcomponent: Subcomponent, index: string) => WorkshopComponentCss[];
 }
